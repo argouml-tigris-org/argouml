@@ -23,35 +23,49 @@
 
 package org.argouml.model.uml;
 
-import ru.novosoft.uml.MBase;
+import java.util.Collection;
+import java.util.Iterator;
 
-import org.apache.log4j.Category;
+import ru.novosoft.uml.MBase;
+import ru.novosoft.uml.model_management.MModel;
 
 /**
- * Abstract Class that every model package factory should implement
- * to share the initialize() method.
+ * Helper class for UML metamodel.
  *
  * @since ARGO0.11.2
  * @author Thierry Lach
  */
-public abstract class AbstractModelFactory {
+public class UmlHelper {
 
-    /** Log4j logging category.
+    /** Don't allow instantiation.
      */
-    public static Category logger =
-                  Category.getInstance("org.argouml.model.uml");
-
-    /** Default constructor.
-     */
-    protected AbstractModelFactory() {
+    private UmlHelper() {
     }
 
-    protected void initialize(Object o) {
-        logger.debug("initialize(" + o + ")");
-	if (o instanceof MBase) {
-            ((MBase)o).addMElementListener(ModelListener.getInstance());
+    /** 
+     *  Ensures that all of the elements in a model are registered
+     *  to the ModelListener.  This is useful when the MModel is
+     *  not created by the UmlFactory.
+     */
+    public static void addListenersToModel(MModel model) {
+	addListenersToMBase(model);
+    }
+
+    /** 
+     *  Internal recursive worker to add ModelListener.
+     */
+    protected static void addListenersToMBase(MBase mbase) {
+        mbase.addMElementListener(ModelListener.getInstance());
+	Collection elements = mbase.getModelElementContents();
+	if (elements != null) {
+	    Iterator iterator = elements.iterator();
+	    while(iterator.hasNext()) {
+	        Object o = iterator.next();
+	        if (o instanceof MBase) {
+	            addListenersToMBase((MBase)o);
+	        }
+	    }
 	}
     }
-
 }
 

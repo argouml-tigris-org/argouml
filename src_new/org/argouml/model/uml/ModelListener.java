@@ -1,3 +1,26 @@
+// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.model.uml;
 
 import ru.novosoft.uml.MElementEvent;
@@ -5,12 +28,24 @@ import ru.novosoft.uml.MElementListener;
 
 import org.apache.log4j.Category;
 
+/**
+ * A single listener that converts MElementEvents into Argo events. 
+ *
+ * @since ARGO0.11.2
+ * @author Thierry Lach
+ */
 public class ModelListener implements MElementListener {
 
-    private static ModelListener SINGLETON = new ModelListener();
-
+    /** Log4j logging category.
+     */
     Category logger = null;
 
+    /** Singleton instance.
+     */
+    private static ModelListener SINGLETON = new ModelListener();
+
+    /** Singleton instance access method.
+     */
     public static ModelListener getInstance() {
         return SINGLETON;
     }
@@ -22,51 +57,59 @@ public class ModelListener implements MElementListener {
         logger = Category.getInstance("org.argouml.model.uml.listener");
     }
 
-    private void report(String caption, MElementEvent mee) {
-        logger.debug("ModelListener." + caption + "(" + mee + ")");
-	// 
-        // logger.debug("            name: '" + mee.getName() + "'");
-        // logger.debug("        oldValue: '" + mee.getOldValue() + "'");
-        // logger.debug("        newValue: '" + mee.getNewValue() + "'");
-        // logger.debug("        position: '" + mee.getPosition() + "'");
-        // logger.debug("    removedValue: '" + mee.getRemovedValue() + "'");
-        // logger.debug("            type: '" + mee.getType() + "'");
-        // logger.debug("");
-    }
-
+    /** Handle the event.
+     */
     public void listRoleItemSet (MElementEvent mee) {
-        // logger.debug("listRoleItemSet(" + mee + ")");
-        report("listRoleItemSet", mee);
+        logger.debug("listRoleItemSet(" + mee + ")");
+	// TODO:  Do we need to model change notify here?
     }
 
+    /** Handle the event.
+     *  Provides a model change notification only if the property
+     *  values differ.
+     */
     public void propertySet (MElementEvent mee) {
-        report("propertySet", mee);
+        logger.debug("propertySet(" + mee + ")");
 	if (! mee.getNewValue().equals(mee.getOldValue())) {
 	    notifyModelChanged(mee);
 	}
     }
 
+    /** Handle the event.
+     */
     public void recovered (MElementEvent mee) {
-        report("recovered", mee);
+        logger.debug("recovered(" + mee + ")");
+	// TODO:  Do we need to model change notify here?
     }
 
+    /** Handle the event.
+     */
     public void removed (MElementEvent mee) {
-        report("removed", mee);
+        logger.debug("removed(" + mee + ")");
+	// TODO:  Do we need to model change notify here?
     }
 
+    /** Handle the event.
+     *  Provides a model change notification.
+     */
     public void roleAdded (MElementEvent mee) {
-        report("roleAdded", mee);
+        logger.debug("roleAdded(" + mee + ")");
 	notifyModelChanged(mee);
     }
 
+    /** Handle the event.
+     *  Provides a model change notification.
+     */
     public void roleRemoved (MElementEvent mee) {
-        report("roleRemoved", mee);
+        logger.debug("roleRemoved(" + mee + ")");
 	notifyModelChanged(mee);
     }
 
+    /** Common model change notification process.
+     */
     protected void notifyModelChanged(MElementEvent mee) {
-	logger.debug ("MODEL CHANGED");
-	// TODO: Mark the project as needing a save.
+	// TODO: Change the project dirty flag outside this package
+	//       using an event listener.
 
 	// TODO: post an event of some type.
 	//

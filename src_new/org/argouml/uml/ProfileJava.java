@@ -25,6 +25,7 @@
 package org.argouml.uml;
 
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.UmlHelper;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
@@ -110,7 +111,7 @@ public class ProfileJava extends Profile {
             //   would really like to turn validation off to save
             //      a lot of scary messages
             _defaultModel = xmiReader.parse(new InputSource(is));
-            UmlFactory.getFactory().addListenersToModel(_defaultModel);
+            UmlHelper.addListenersToModel(_defaultModel);
           }
           catch(Exception ex) {
             System.out.println("Error reading " + defaultModelFileName + "\n");

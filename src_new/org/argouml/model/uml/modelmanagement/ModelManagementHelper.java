@@ -21,37 +21,21 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.model.uml;
-
-import ru.novosoft.uml.MBase;
-
-import org.apache.log4j.Category;
+package org.argouml.model.uml.modelmanagement;
 
 /**
- * Abstract Class that every model package factory should implement
- * to share the initialize() method.
+ * Helper class for UML ModelManagement Package.
  *
+ * Current implementation is a placeholder.
+ * 
  * @since ARGO0.11.2
  * @author Thierry Lach
  */
-public abstract class AbstractModelFactory {
+public class ModelManagementHelper {
 
-    /** Log4j logging category.
+    /** Don't allow instantiation.
      */
-    public static Category logger =
-                  Category.getInstance("org.argouml.model.uml");
-
-    /** Default constructor.
-     */
-    protected AbstractModelFactory() {
+    private ModelManagementHelper() {
     }
-
-    protected void initialize(Object o) {
-        logger.debug("initialize(" + o + ")");
-	if (o instanceof MBase) {
-            ((MBase)o).addMElementListener(ModelListener.getInstance());
-	}
-    }
-
 }
 

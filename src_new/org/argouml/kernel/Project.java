@@ -63,6 +63,7 @@ import org.argouml.cognitive.critics.*;
 import org.argouml.cognitive.critics.ui.*;
 import org.argouml.cognitive.checklist.*;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.*;
 import org.argouml.uml.generator.*;
 import org.argouml.uml.diagram.*;
@@ -262,7 +263,7 @@ public class Project implements java.io.Serializable {
 
             XMIReader xmiReader = UmlFactory.getFactory().getXMIReader();
             MModel mmodel = xmiReader.parse(new InputSource(zis));
-	    UmlFactory.getFactory().addListenersToModel(mmodel);
+	    UmlHelper.addListenersToModel(mmodel);
             addMember(mmodel);
 
             _UUIDRefs = new HashMap(xmiReader.getXMIUUIDToObjectMap());

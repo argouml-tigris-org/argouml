@@ -1,3 +1,26 @@
+// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.model.uml;
 
 import org.argouml.model.uml.foundation.core.*;
@@ -25,12 +48,25 @@ import org.apache.log4j.Category;
 
 import org.xml.sax.SAXException;
 
+/**
+ * Root factory for UML model element instance creation.
+ *
+ * @since ARGO0.11.2
+ * @author Thierry Lach
+ */
 public class UmlFactory extends AbstractModelFactory {
 
-    private static UmlFactory SINGLETON =
-                   new UmlFactory();
+    /** Log4j logging category.
+     */
     protected Category logger = null;
 
+    /** Singleton instance.
+     */
+    private static UmlFactory SINGLETON =
+                   new UmlFactory();
+
+    /** Singleton instance access method.
+     */
     public static UmlFactory getFactory() {
         return SINGLETON;
     }
@@ -42,42 +78,91 @@ public class UmlFactory extends AbstractModelFactory {
         logger =Category.getInstance("org.argouml.model.uml.factory");
     }
 
+    /** Returns the package factory for the UML
+     *  package Foundation::ExtensionMechanisms.
+     *  
+     *  @return the ExtensionMechanisms factory instance.
+     */
     public ExtensionMechanismsFactory getExtensionMechanisms() {
         return ExtensionMechanismsFactory.getFactory();
     }
 
+    /** Returns the package factory for the UML
+     *  package Foundation::DataTypes.
+     *  
+     *  @return the DataTypes factory instance.
+     */
     public DataTypesFactory getDataTypes() {
         return DataTypesFactory.getFactory();
     }
 
+    /** Returns the package factory for the UML
+     *  package Foundation::Core.
+     *  
+     *  @return the Core factory instance.
+     */
     public CoreFactory getCore() {
         return CoreFactory.getFactory();
     }
 
+    /** Returns the package factory for the UML
+     *  package BehavioralElements::CommonBehavior.
+     *  
+     *  @return the CommonBehavior factory instance.
+     */
     public CommonBehaviorFactory getCommonBehavior() {
         return CommonBehaviorFactory.getFactory();
     }
 
+    /** Returns the package factory for the UML
+     *  package BehavioralElements::UseCases.
+     *  
+     *  @return the UseCases factory instance.
+     */
     public UseCasesFactory getUseCases() {
         return UseCasesFactory.getFactory();
     }
 
+    /** Returns the package factory for the UML
+     *  package BehavioralElements::StateMachines.
+     *  
+     *  @return the StateMachines factory instance.
+     */
     public StateMachinesFactory getStateMachines() {
         return StateMachinesFactory.getFactory();
     }
 
+    /** Returns the package factory for the UML
+     *  package BehavioralElements::Collaborations.
+     *  
+     *  @return the Collaborations factory instance.
+     */
     public CollaborationsFactory getCollaborations() {
         return CollaborationsFactory.getFactory();
     }
 
+    /** Returns the package factory for the UML
+     *  package BehavioralElements::ActivityGraphs.
+     *  
+     *  @return the ActivityGraphs factory instance.
+     */
     public ActivityGraphsFactory getActivityGraphs() {
         return ActivityGraphsFactory.getFactory();
     }
 
+    /** Returns the package factory for the UML
+     *  package ModelManagement.
+     *  
+     *  @return the ModelManagement factory instance.
+     */
     public ModelManagementFactory getModelManagement() {
         return ModelManagementFactory.getFactory();
     }
 
+    /** Returns a configured XmiReader instance. 
+     *  
+     *  @return a configured XmiReader.
+     */
     public XMIReader getXMIReader() 
     throws SAXException,
            ParserConfigurationException {
@@ -85,43 +170,34 @@ public class UmlFactory extends AbstractModelFactory {
 	return reader;
     }
 
+    /** Returns a configured XmiWriter instance. 
+     *  
+     *  @return a configured XmiWriter.
+     */
     public XMIWriter getXMIWriter(MModel model, String filename)
     throws IOException {
         XMIWriter xmiWriter = new XMIWriter(model, filename);
 	return xmiWriter;
     }
 
+    /** Returns a configured XmiWriter instance. 
+     *  
+     *  @return a configured XmiWriter.
+     */
     public XMIWriter getXMIWriter(MModel model, String filename, String encoding)
     throws IOException {
         XMIWriter xmiWriter = new XMIWriter(model, filename, encoding);
 	return xmiWriter;
     }
 
+    /** Returns a configured XmiWriter instance. 
+     *  
+     *  @return a configured XmiWriter.
+     */
     public XMIWriter getXMIWriter(MModel model, Writer writer)
     throws IOException {
         XMIWriter xmiWriter = new XMIWriter(model, writer);
 	return xmiWriter;
     }
 
-
-    public void addListenersToModel(MModel model) {
-	addListenersToMBase(model);
-    }
-
-    protected void addListenersToMBase(MBase mbase) {
-        logger.debug ("Adding listener to: " + mbase);
-        mbase.addMElementListener(ModelListener.getInstance());
-	Collection elements = mbase.getModelElementContents();
-	if (elements != null) {
-	    Iterator iterator = elements.iterator();
-	    while(iterator.hasNext()) {
-	        Object o = iterator.next();
-	        if (o instanceof MBase) {
-	            addListenersToMBase((MBase)o);
-	        }
-	    }
-	}
-    }
-
 }
-

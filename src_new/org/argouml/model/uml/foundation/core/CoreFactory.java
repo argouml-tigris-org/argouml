@@ -1,3 +1,26 @@
+// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.model.uml.foundation.core;
 
 import org.argouml.model.uml.AbstractModelFactory;
@@ -24,11 +47,23 @@ import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.core.MUsage;
 
+/**
+ * Factory to create UML classes for the UML
+ * Foundation::Core package.
+ *
+ * @since ARGO0.11.2
+ * @author Thierry Lach
+ */
+
 public class CoreFactory extends AbstractModelFactory {
 
+    /** Singleton instance.
+     */
     private static CoreFactory SINGLETON =
                    new CoreFactory();
 
+    /** Singleton instance access method.
+     */
     public static CoreFactory getFactory() {
         return SINGLETON;
     }
@@ -38,174 +73,193 @@ public class CoreFactory extends AbstractModelFactory {
     private CoreFactory() {
     }
 
+    /** Create an empty but initialized instance of a UML Abstraction.
+     *  
+     *  @return an initialized UML Abstraction instance.
+     */
     public MAbstraction createAbstraction() {
-        // Line split to hide from ant replace
-        MAbstraction modelElement = MFactory.getDefaultFactory().
-	       createAbstraction();
-	super.addListener(modelElement);
-	super.postprocess(modelElement);
+        MAbstraction modelElement = MFactory.getDefaultFactory().createAbstraction();
+	super.initialize(modelElement);
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML Association.
+     *  
+     *  @return an initialized UML Association instance.
+     */
     public MAssociation createAssociation() {
-        // Line split to hide from ant replace
-        MAssociation modelElement = MFactory.getDefaultFactory().
-	       createAssociation();
-	super.addListener(modelElement);
-	super.postprocess(modelElement);
+        MAssociation modelElement = MFactory.getDefaultFactory().createAssociation();
+	super.initialize(modelElement);
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML AssociationEnd.
+     *  
+     *  @return an initialized UML AssociationEnd instance.
+     */
     public MAssociationEnd createAssociationEnd() {
-        // Line split to hide from ant replace
-        MAssociationEnd modelElement = MFactory.getDefaultFactory().
-	       createAssociationEnd();
-	super.addListener(modelElement);
-	super.postprocess(modelElement);
+        MAssociationEnd modelElement = MFactory.getDefaultFactory().createAssociationEnd();
+	super.initialize(modelElement);
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML Attribute.
+     *  
+     *  @return an initialized UML Attribute instance.
+     */
     public MAttribute createAttribute() {
-        // Line split to hide from ant replace
-        MAttribute modelElement = MFactory.getDefaultFactory().
-	       createAttribute();
-	super.addListener(modelElement);
-	super.postprocess(modelElement);
+        MAttribute modelElement = MFactory.getDefaultFactory().createAttribute();
+	super.initialize(modelElement);
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML Binding.
+     *  
+     *  @return an initialized UML Binding instance.
+     */
     public MBinding createBinding() {
-        // Line split to hide from ant replace
-        MBinding modelElement = MFactory.getDefaultFactory().
-	       createBinding();
-	super.addListener(modelElement);
-	super.postprocess(modelElement);
+        MBinding modelElement = MFactory.getDefaultFactory().createBinding();
+	super.initialize(modelElement);
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML Class.
+     *  
+     *  @return an initialized UML Class instance.
+     */
     public MClass createClass() {
-        // Line split to hide from ant replace
-        MClass modelElement = MFactory.getDefaultFactory().
-	       createClass();
-	super.addListener(modelElement);
-	super.postprocess(modelElement);
+        MClass modelElement = MFactory.getDefaultFactory().createClass();
+	super.initialize(modelElement);
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML Comment.
+     *  
+     *  @return an initialized UML Comment instance.
+     */
     public MComment createComment() {
-        // Line split to hide from ant replace
-        MComment modelElement = MFactory.getDefaultFactory().
-	       createComment();
-	super.addListener(modelElement);
-	super.postprocess(modelElement);
+        MComment modelElement = MFactory.getDefaultFactory().createComment();
+	super.initialize(modelElement);
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML Component.
+     *  
+     *  @return an initialized UML Component instance.
+     */
     public MComponent createComponent() {
-        // Line split to hide from ant replace
-        MComponent modelElement = MFactory.getDefaultFactory().
-	       createComponent();
-	super.addListener(modelElement);
-	super.postprocess(modelElement);
+        MComponent modelElement = MFactory.getDefaultFactory().createComponent();
+	super.initialize(modelElement);
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML Constraint.
+     *  
+     *  @return an initialized UML Constraint instance.
+     */
     public MConstraint createConstraint() {
-        // Line split to hide from ant replace
-        MConstraint modelElement = MFactory.getDefaultFactory().
-	       createConstraint();
-	super.addListener(modelElement);
-	super.postprocess(modelElement);
+        MConstraint modelElement = MFactory.getDefaultFactory().createConstraint();
+	super.initialize(modelElement);
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML DataType.
+     *  
+     *  @return an initialized UML DataType instance.
+     */
     public MDataType createDataType() {
-        // Line split to hide from ant replace
-        MDataType modelElement = MFactory.getDefaultFactory().
-	       createDataType();
-	super.addListener(modelElement);
-	super.postprocess(modelElement);
+        MDataType modelElement = MFactory.getDefaultFactory().createDataType();
+	super.initialize(modelElement);
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML Dependency.
+     *  
+     *  @return an initialized UML Dependency instance.
+     */
     public MDependency createDependency() {
-        // Line split to hide from ant replace
-        MDependency modelElement = MFactory.getDefaultFactory().
-	       createDependency();
-	super.addListener(modelElement);
-	super.postprocess(modelElement);
+        MDependency modelElement = MFactory.getDefaultFactory().createDependency();
+	super.initialize(modelElement);
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML ElementResidence.
+     *  
+     *  @return an initialized UML ElementResidence instance.
+     */
     public MElementResidence createElementResidence() {
-        // Line split to hide from ant replace
-        MElementResidence modelElement = MFactory.getDefaultFactory().
-	       createElementResidence();
-	super.addListener(modelElement);
-	super.postprocess(modelElement);
+        MElementResidence modelElement = MFactory.getDefaultFactory().createElementResidence();
+	super.initialize(modelElement);
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML Generalization.
+     *  
+     *  @return an initialized UML Generalization instance.
+     */
     public MGeneralization createGeneralization() {
-        // Line split to hide from ant replace
-        MGeneralization modelElement = MFactory.getDefaultFactory().
-	       createGeneralization();
-	super.addListener(modelElement);
-	super.postprocess(modelElement);
+        MGeneralization modelElement = MFactory.getDefaultFactory().createGeneralization();
+	super.initialize(modelElement);
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML Interface.
+     *  
+     *  @return an initialized UML Interface instance.
+     */
     public MInterface createInterface() {
-        // Line split to hide from ant replace
-        MInterface modelElement = MFactory.getDefaultFactory().
-	       createInterface();
-	super.addListener(modelElement);
-	super.postprocess(modelElement);
+        MInterface modelElement = MFactory.getDefaultFactory().createInterface();
+	super.initialize(modelElement);
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML Method.
+     *  
+     *  @return an initialized UML Method instance.
+     */
     public MMethod createMethod() {
-        // Line split to hide from ant replace
-        MMethod modelElement = MFactory.getDefaultFactory().
-	       createMethod();
-	super.addListener(modelElement);
-	super.postprocess(modelElement);
+        MMethod modelElement = MFactory.getDefaultFactory().createMethod();
+	super.initialize(modelElement);
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML Node.
+     *  
+     *  @return an initialized UML Node instance.
+     */
     public MNode createNode() {
-        // Line split to hide from ant replace
-        MNode modelElement = MFactory.getDefaultFactory().
-	       createNode();
-	super.addListener(modelElement);
-	super.postprocess(modelElement);
+        MNode modelElement = MFactory.getDefaultFactory().createNode();
+	super.initialize(modelElement);
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML Operation.
+     *  
+     *  @return an initialized UML Operation instance.
+     */
     public MOperation createOperation() {
-        // Line split to hide from ant replace
-        MOperation modelElement = MFactory.getDefaultFactory().
-	       createOperation();
-	super.addListener(modelElement);
-	super.postprocess(modelElement);
+        MOperation modelElement = MFactory.getDefaultFactory().createOperation();
+	super.initialize(modelElement);
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML Parameter.
+     *  
+     *  @return an initialized UML Parameter instance.
+     */
     public MParameter createParameter() {
-        // Line split to hide from ant replace
-        MParameter modelElement = MFactory.getDefaultFactory().
-	       createParameter();
-	super.addListener(modelElement);
-	super.postprocess(modelElement);
+        MParameter modelElement = MFactory.getDefaultFactory().createParameter();
+	super.initialize(modelElement);
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML Usage.
+     *  
+     *  @return an initialized UML Usage instance.
+     */
     public MUsage createUsage() {
-        // Line split to hide from ant replace
-        MUsage modelElement = MFactory.getDefaultFactory().
-	       createUsage();
-	super.addListener(modelElement);
-	super.postprocess(modelElement);
+        MUsage modelElement = MFactory.getDefaultFactory().createUsage();
+	super.initialize(modelElement);
 	return modelElement;
     }
 
