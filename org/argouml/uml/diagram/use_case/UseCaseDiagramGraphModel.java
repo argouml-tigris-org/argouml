@@ -59,7 +59,7 @@ import org.argouml.uml.MMUtil;
  */
 
 public class UseCaseDiagramGraphModel extends MutableGraphSupport
-    implements VetoableChangeListener, MElementListener {
+    implements VetoableChangeListener {
         protected static Category cat = Category.getInstance(UseCaseDiagramGraphModel.class);
 
     ///////////////////////////////////////////////////////////////////////////
@@ -119,16 +119,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
      */
 
     public void setNamespace(MNamespace m) {
-
-        if (_model != null) {
-            _model.removeMElementListener(this);
-        }
-
         _model = m;
-
-        if (_model != null) {
-            _model.addMElementListener(this);
-        }
     }
 
 
@@ -898,89 +889,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Methods that implement the MElementListener interface
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
-    /**
-     * <p>Provided to meet the requirements of the {@link MElementListener}
-     *   interface.</p>
-     *
-     * <p>This implementation is empty.</p>
-     *
-     * @param mee  The event that caused this method to be invoked.
-     */
-
-    public void listRoleItemSet(MElementEvent mee) {
-    }
-
-
-    /**
-     * <p>Provided to meet the requirements of the {@link MElementListener}
-     *   interface.</p>
-     *
-     * <p>This implementation is empty.</p>
-     *
-     * @param mee  The event that caused this method to be invoked.
-     */
-
-    public void propertySet(MElementEvent mee) {
-    }
-
-
-    /**
-     * <p>Provided to meet the requirements of the {@link MElementListener}
-     *   interface.</p>
-     *
-     * <p>This implementation is empty.</p>
-     *
-     * @param mee  The event that caused this method to be invoked.
-     */
-
-    public void recovered(MElementEvent mee) {
-    }
-
-
-    /**
-     * <p>Provided to meet the requirements of the {@link MElementListener}
-     *   interface.</p>
-     *
-     * <p>This implementation is empty.</p>
-     *
-     * @param mee  The event that caused this method to be invoked.
-     */
-
-    public void removed(MElementEvent mee) {
-    }
-
-
-    /**
-     * <p>Provided to meet the requirements of the {@link MElementListener}
-     *   interface.</p>
-     *
-     * <p>This implementation is empty.</p>
-     *
-     * @param mee  The event that caused this method to be invoked.
-     */
-
-    public void roleAdded(MElementEvent mee) {
-    }
-
-
-    /**
-     * <p>Provided to meet the requirements of the {@link MElementListener}
-     *   interface.</p>
-     *
-     * <p>This implementation is empty.</p>
-     *
-     * @param mee  The event that caused this method to be invoked.
-     */
-
-    public void roleRemoved(MElementEvent mee) {
-    }
-
+  
 
     ///////////////////////////////////////////////////////////////////////////
     //

@@ -61,7 +61,7 @@ import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
  *  GEF.  This class handles only UML Sequence Digrams.  */
 
 public class SequenceDiagramGraphModel extends MutableGraphSupport
-implements MElementListener, VetoableChangeListener {
+implements VetoableChangeListener {
     protected static Category cat = 
         Category.getInstance(SequenceDiagramGraphModel.class);
   ////////////////////////////////////////////////////////////////
@@ -84,9 +84,7 @@ implements MElementListener, VetoableChangeListener {
 
   public MNamespace getNamespace() { return _Sequence; }
   public void setNamespace(MNamespace m) {
-    if (_Sequence != null) _Sequence.removeMElementListener(this);
     _Sequence = m;
-    if (_Sequence != null) _Sequence.addMElementListener(this);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -345,17 +343,5 @@ implements MElementListener, VetoableChangeListener {
     }
   }
 
-  public void propertySet(MElementEvent mee) {
-  }
-  public void listRoleItemSet(MElementEvent mee) {
-  }
-  public void recovered(MElementEvent mee) {
-  }
-  public void removed(MElementEvent mee) {
-  }
-  public void roleAdded(MElementEvent mee) {
-  }
-  public void roleRemoved(MElementEvent mee) {
-  }
 } /* end class SequenceDiagramGraphModel */
 
