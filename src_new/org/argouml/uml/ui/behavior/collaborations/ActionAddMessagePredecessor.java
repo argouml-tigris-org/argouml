@@ -24,16 +24,13 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
-import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * Action to add a predecessor to some message.
