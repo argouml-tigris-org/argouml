@@ -22,13 +22,13 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.behavior.common_behavior;
 
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 
 import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionRemoveModelElement;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 
@@ -51,7 +51,7 @@ public class PopupMenuNewAction extends JPopupMenu {
         super();
 
         JMenu newMenu = new JMenu();
-        newMenu.setText(Argo.localize("CoreMenu", "New"));
+        newMenu.setText(Translator.localize("action.new"));
         newMenu.add(ActionNewCallAction.SINGLETON);
         ActionNewCallAction.SINGLETON.setTarget(list.getTarget());
         ActionNewCallAction.SINGLETON.putValue(ActionNewAction.ROLE, role);

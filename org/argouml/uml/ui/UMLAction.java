@@ -55,14 +55,14 @@ public class UMLAction extends AbstractAction {
     }
 
     public UMLAction(String name, boolean global, boolean hasIcon) {
-        super(Translator.localize("CoreMenu", name));
+        super(Translator.localize(name));
         if (hasIcon) {
             Icon icon =
                 ResourceLoaderWrapper
 		.getResourceLoaderWrapper()
 		.lookupIconResource(
 				    Translator.getImageBinding(name),
-				    Translator.localize("CoreMenu", name));
+				    Translator.localize(name));
             if (icon != null)
                 putValue(Action.SMALL_ICON, icon);
             else {
@@ -71,7 +71,7 @@ public class UMLAction extends AbstractAction {
         }
         putValue(
 		 Action.SHORT_DESCRIPTION,
-		 Translator.localize("CoreMenu", name) + " ");
+		 Translator.localize(name) + " ");
         if (global)
             Actions.addAction(this);
         // Jaap B. 17-6-2003 added next line to make sure every action is in the right enable condition on creation.
@@ -122,8 +122,10 @@ public class UMLAction extends AbstractAction {
      *    This function returns a localized menu shortcut key
      *    to the specified key.
      *
+     * @deprecated in 0.15.1. Replace by getMnemonic and the new way of
+     *             retrieving shortcuts.
      */
-    static final public KeyStroke getShortcut(String key) {
+    public static final KeyStroke getShortcut(String key) {
         return Localizer.getShortcut("CoreMenu", key);
     }
 
@@ -133,7 +135,7 @@ public class UMLAction extends AbstractAction {
      *
      */
     static final public String getMnemonic(String key) {
-        return Translator.localize("CoreMenu", key);
+        return Translator.localize(key);
     }
 
     /**

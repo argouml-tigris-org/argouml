@@ -32,6 +32,7 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 
 import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
@@ -67,11 +68,11 @@ public class ActionRemoveFromModel extends UMLChangeAction {
     // constructors
 
     public ActionRemoveFromModel() {
-        super(Argo.localize("CoreMenu", "action.delete-from-model"));
+        super(Translator.localize("action.delete-from-model"));
     }
 
     protected ActionRemoveFromModel(boolean global) {
-        super(Argo.localize("CoreMenu", "action.delete-from-model"), global);
+        super(Translator.localize("action.delete-from-model"), global);
     }
 
     /**

@@ -87,7 +87,7 @@ public class ActionCompartmentDisplay extends UMLAction {
      */
 
     public static UMLAction ShowAttrCompartment =
-        new ActionCompartmentDisplay(true, "Show Attribute Compartment");
+        new ActionCompartmentDisplay(true, "action.show-attribute-compartment");
 
 
     /**
@@ -95,7 +95,7 @@ public class ActionCompartmentDisplay extends UMLAction {
      */
 
     public static UMLAction HideAttrCompartment =
-        new ActionCompartmentDisplay(false, "Hide Attribute Compartment");
+        new ActionCompartmentDisplay(false, "action.hide-attribute-compartment");
 
 
     /**
@@ -103,7 +103,7 @@ public class ActionCompartmentDisplay extends UMLAction {
      */
 
     public static UMLAction ShowOperCompartment =
-        new ActionCompartmentDisplay(true, "Show Operation Compartment");
+        new ActionCompartmentDisplay(true, "action.show-operation-compartment");
 
 
     /**
@@ -111,7 +111,8 @@ public class ActionCompartmentDisplay extends UMLAction {
      */
 
     public static UMLAction HideOperCompartment =
-        new ActionCompartmentDisplay(false, "Hide Operation Compartment");
+        new ActionCompartmentDisplay(false, 
+				     "action.hide-operation-compartment");
 
 
     /**
@@ -121,7 +122,7 @@ public class ActionCompartmentDisplay extends UMLAction {
 
     public static UMLAction ShowExtPointCompartment =
         new ActionCompartmentDisplay(true,
-                                     "Show Extension Point Compartment");
+                                     "action.show-extension-point-compartment");
 
 
     /**
@@ -131,7 +132,7 @@ public class ActionCompartmentDisplay extends UMLAction {
 
     public static UMLAction HideExtPointCompartment =
         new ActionCompartmentDisplay(false,
-                                     "Hide Extension Point Compartment");
+                                     "action.hide-extension-point-compartment");
 
 
     /**
@@ -139,7 +140,7 @@ public class ActionCompartmentDisplay extends UMLAction {
      */
 
     public static UMLAction ShowAllCompartments =
-        new ActionCompartmentDisplay(true, "Show All Compartments");
+        new ActionCompartmentDisplay(true, "action.show-all-compartments");
 
 
     /**
@@ -147,7 +148,7 @@ public class ActionCompartmentDisplay extends UMLAction {
      */
 
     public static UMLAction HideAllCompartments =
-        new ActionCompartmentDisplay(false, "Hide All Compartments");
+        new ActionCompartmentDisplay(false, "action.hide-all-compartments");
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -211,26 +212,26 @@ public class ActionCompartmentDisplay extends UMLAction {
 
             // Perform the action
 
-	    if (_compartment.equals("Show Attribute Compartment")) {
+	    if (_compartment.equals("action.show-attribute-compartment")) {
 		((FigClass) f).setAttributeVisible(_display);
             }
-	    else if (_compartment.equals("Hide Attribute Compartment")) {
+	    else if (_compartment.equals("action.hide-attribute-compartment")) {
 		((FigClass) f).setAttributeVisible(_display);
             }
-	    else if (_compartment.equals("Show Operation Compartment") ||
-	             _compartment.equals("Hide Operation Compartment")) {
+	    else if (_compartment.equals("action.show-operation-compartment")
+		     || _compartment.equals("action.hide-operation-compartment")) {
 		if (f instanceof FigClass)
 			((FigClass) f).setOperationVisible(_display);
 		if (f instanceof FigInterface)
 			((FigInterface) f).setOperationVisible(_display);
             }
-	    else if (_compartment.equals("Show Extension Point Compartment")) {
+	    else if (_compartment.equals("action.show-extension-point-compartment")) {
 		((FigUseCase) f).setExtensionPointVisible(_display);
             }
-	    else if (_compartment.equals("Hide Extension Point Compartment")) {
+	    else if (_compartment.equals("action.hide-extension-point-compartment")) {
 		((FigUseCase) f).setExtensionPointVisible(_display);
             }
-	    else if (_compartment.equals("Show All Compartments")) {
+	    else if (_compartment.equals("action.show-all-compartments")) {
 		((FigClass) f).setAttributeVisible(_display);
 		((FigClass) f).setOperationVisible(_display);
 	    }

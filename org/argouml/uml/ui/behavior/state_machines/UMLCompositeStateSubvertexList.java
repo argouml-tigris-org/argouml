@@ -22,13 +22,12 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionRemoveModelElement;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
@@ -48,7 +47,7 @@ public class UMLCompositeStateSubvertexList extends UMLMutableLinkedList {
             super();
             
             JMenu newMenu = new JMenu();
-            newMenu.setText(Argo.localize("CoreMenu", "New"));
+            newMenu.setText(Translator.localize("action.new"));
             ActionNewPseudoState.SINGLETON.setTarget(getTarget());
             newMenu.add(ActionNewPseudoState.SINGLETON);
             newMenu.add(ActionNewSynchState.SINGLETON);

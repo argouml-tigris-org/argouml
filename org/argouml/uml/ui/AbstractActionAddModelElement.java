@@ -30,7 +30,7 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.ui.ProjectBrowser;
 
 /**
@@ -46,7 +46,7 @@ public abstract class AbstractActionAddModelElement extends UMLChangeAction {
     private boolean _exclusive = true;
     
     protected AbstractActionAddModelElement() {
-        super(Argo.localize("CoreMenu", "Add"), true, NO_ICON);
+        super(Translator.localize("Add"), true, NO_ICON);
     }
         
 

@@ -107,7 +107,7 @@ public class ActionSetSourcePath extends UMLAction {
 	}
 
 	String sChooserTitle =
-	    Translator.localize("CoreMenu", "action.set-source-path");
+	    Translator.localize("action.set-source-path");
 	if (type != null)
 	    sChooserTitle += ' ' + type;
 	if (name != null)

@@ -22,14 +22,13 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.JRadioButton;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
@@ -54,7 +53,7 @@ public class ActionSetAssociationEndChangeability extends UMLChangeAction {
      * @param s
      */
     protected ActionSetAssociationEndChangeability() {
-        super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
+        super(Translator.localize("Set"), true, NO_ICON);
     }
 
     /**

@@ -25,7 +25,7 @@
 // $Id$
 package org.argouml.uml.ui;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 /**
  * @since Oct 3, 2002
@@ -36,7 +36,7 @@ public abstract class AbstractActionNewModelElement extends UMLChangeAction {
     private Object/*MModelElement*/ _target;
     
     protected AbstractActionNewModelElement() {
-        super(Argo.localize("CoreMenu", "action.new"), true, NO_ICON);
+        super(Translator.localize("action.new"), true, NO_ICON);
     }  
     
      /**
