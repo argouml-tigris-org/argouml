@@ -1524,6 +1524,7 @@ What needs to be done when one actually does a release:
 
       <para>
 	<orderedlist>
+<!--
 	  <listitem>
 	    <para>Modify <filename>default.properties</filename> if necessary!</para>
 	    <para>
@@ -1541,6 +1542,7 @@ argo.core.version=0.9.8
 </programlisting>
 </para>
 	  </listitem>
+ -->
 	  <listitem>
 	    <para>Tag the whole CVS repository with the freeze tag!</para>
 	    <para>
@@ -1548,8 +1550,10 @@ Normally this tag is "VERSION_<replaceable>X_Y_Z</replaceable>_F",
 e.g. VERSION_0_9_7_F.
 The according command line CVS command is 
 <command>cvs rtag VERSION_<replaceable>X_Y_Z</replaceable>_F argouml</command>.
-In case you make a mistake doing that (you shouldn't really), 
-you need to remove the tag you mistakenly put there and start over.
+(Because of a problem on the Tigris site, this doesn't work, 
+instead make sure you have a complete checked out copy of ArgoUML,
+go to the root directory and run the command
+<command>cvs tag VERSION_<replaceable>X_Y_Z</replaceable>_F argouml</command>.)
 </para>
 	  </listitem>
 	  <listitem>
@@ -1557,16 +1561,27 @@ you need to remove the tag you mistakenly put there and start over.
 	    <para>
 This is done by checking out from the tag using the command
 <command>cvs co -r VERSION_<replaceable>X_Y_Z</replaceable>_F argouml_modules</command>
+and
+<command>cvs co -r VERSION_<replaceable>X_Y_Z</replaceable>_F argouml/tests</command>
+in a new directory.
 </para>
 	  </listitem>
 	  <listitem>
-	    <para>Build the release with <command>build dist-release</command>!</para>
+	    <para>
+Build the release with <command>build dist-release</command>!
+</para>
+	    <para>
+This is done in the 
+<filename class="directory">argouml/src_new</filename>
+directory.
+</para>
 	    <para>
 The output should be the files
 ArgoUML-<replaceable>VERSION</replaceable>-libs.tar.gz,
 ArgoUML-<replaceable>VERSION</replaceable>-libs.zip,
 ArgoUML-<replaceable>VERSION</replaceable>-src.tar.gz,
 ArgoUML-<replaceable>VERSION</replaceable>-src.zip,
+ArgoUML-<replaceable>VERSION</replaceable>-app.tgz,
 ArgoUML-<replaceable>VERSION</replaceable>.tar.gz, and
 ArgoUML-<replaceable>VERSION</replaceable>.zip
 in the top-level argouml directory.
@@ -1581,13 +1596,33 @@ running through the test cases.
 Currently there isn't any defined test cases.
 </para>
 	    <para>
-All JUnit test cases are run by 
-cd:ing to the <filename class="directory">modules/junit</filename> source directory,
-running <command>build run</command>,
+All JUnit test cases are run by
+<itemizedlist>
+		<listitem>
+		  <para>
+Run the JUnit test cases in
+<filename>argouml/tests</filename>
+by issueing the command
+<command>build tests</command>!
+</para>
+		  <para>
+There should not be any failed tests.
+</para>
+		</listitem>
+		<listitem>
+		  <para>
+Run the JUnit test cases in 
+<filename class="directory">modules/junit</filename>
+by cd:ing to
+<filename class="directory">modules/junit</filename>
+and running <command>build run</command>,
 invoking JUnit tests from the Tools menu,
 specifying the Test Case TestAll,
 and running.
 No problems shall be found.
+</para>
+		</listitem>
+	      </itemizedlist>
 </para>
 	    <para>
 If the tests did not pass See <xref linkend="release_process_test_failed"/>.
@@ -1639,6 +1674,12 @@ source code without libraries
 binary distribution, including all libraries
 </para>
 		</listitem>
+		<listitem>
+		  <para>application bundle</para>
+		  <para>
+binary distribution, runnable as application bundle
+</para>
+		</listitem>
 	      </itemizedlist>
 </para>
 	  </listitem>
@@ -1676,7 +1717,8 @@ target milestones created for them.
 	      </listitem>
 	      <listitem>
 		<para>
-Change the target milestones of all the non yet resolved issues to ---.
+Change the target milestones of all the non yet resolved issues 
+for this release to ---.
 </para>
 	      </listitem>
 	      <listitem>
@@ -1684,7 +1726,7 @@ Change the target milestones of all the non yet resolved issues to ---.
 		<para>
 This can also be a good time to change all 
 RESOLVED/REMIND and RESOLVED/LATER.
-Seach for them and Reopen them.
+Search for them and Reopen them.
 </para>
 	      </listitem>
 	    </orderedlist>
@@ -1695,7 +1737,8 @@ Seach for them and Reopen them.
 The announcement shall include a list of what has changed.
 </para>
 	    <para>
-Write to the dev, users and announce lists.
+Write a News announcements and a short note on 
+the dev, users and announce lists.
 Announcer should make sure that he/she is already subscribed to all lists.
 </para>
 	    <para>
@@ -3660,7 +3703,7 @@ have any effect.
 	<title>org.argouml.cognitive.critics.* class diagram</title> 
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata fileref="images/screenshots/argocogcritics.png" format="png" scale="70"/> 
+	      <imagedata fileref="images/screenshots/argocogcriticsreduced.png" format="png"/> 
 	    </imageobject>
 	</mediaobject>
       </sect2>
