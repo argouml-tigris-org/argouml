@@ -51,8 +51,10 @@ You are not running ANT 1.4.1
 
     <property name="Name" value="ArgoModule-${argo.module.name}"/>
     <property name="name" value="argomodule-${argo.module.name}"/>
-    <property name="version" value="${argo.core.version}-${DSTAMP}-${TSTAMP}"/>
-    <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
+    <property name="build.version" value="${argo.core.version}-${DSTAMP}-${TSTAMP}"/>
+    <echo message="--------------- ${Name} ${build.version} [${year}] ------------"/>
+    <echo message="Using ${ant.version}"/>
+
 
     <property name="argo.src.dir" value="${argo.project.root}/src_new"/>
     <property name="module.src.dir" value="${module.root}/src"/>
@@ -145,7 +147,7 @@ You are not running ANT 1.4.1
   <!-- Creates the class package                                           -->
   <!-- =================================================================== -->
   <target name="package" depends="compile">
-    <filter token="version" value="${version}"/>
+    <filter token="version" value="${build.version}"/>
     <copy file="${manifest.src}" tofile="${module.build.dest}/${manifest}" filtering="on" overwrite="on" />
     <jar jarfile="${module.jarfile}"
          basedir="${module.build.dest}"

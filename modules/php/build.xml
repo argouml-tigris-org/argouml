@@ -140,10 +140,11 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <property name="Name" value="ArgoModule-${argo.module.name}"/>
     <property name="name" value="argomodule-${argo.module.name}"/>
-    <property name="version" value="0.9.5-${DSTAMP}-${TSTAMP}"/>
+    <property name="build.version" value="0.9.5-${DSTAMP}-${TSTAMP}"/>
     <property name="year" value="2001"/>
 
-    <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
+    <echo message="--------------- ${Name} ${build.version} [${year}] ------------"/>
+    <echo message="Using ${ant.version}"/>
 
     <property name="argo.root" value="../.."/>
 
@@ -254,7 +255,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- Creates the class package                                           -->
   <!-- =================================================================== -->
   <target name="package" depends="compile">
-    <filter token="version" value="${version}"/>
+    <filter token="version" value="${build.version}"/>
     <copy file="${manifest.src}" tofile="${module.build.dest}/${manifest}" filtering="on" overwrite="on" />
     <jar jarfile="${module.jarfile}"
          basedir="${module.build.dest}"

@@ -169,9 +169,10 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <property name="Name" value="ArgoUML"/>
     <property name="name" value="argouml"/>
-    <property name="version" value="${argo.core.version}-${DSTAMP}-${TSTAMP}"/>
+    <property name="build.version" value="${argo.core.version}-${DSTAMP}-${TSTAMP}"/>
 
-    <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
+    <echo message="--------------- ${Name} ${build.version} [${year}] ------------"/>
+    <echo message="Using ${ant.version}"/>
 
     <property name="src.dir" value="../src_new"/>
     <!--property name="lib.dir" value="../lib"/-->
@@ -363,7 +364,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- Creates the class package                                           -->
   <!-- =================================================================== -->
   <target name="package" depends="compile">
-    <filter token="version" value="${version}"/>
+    <filter token="version" value="${build.version}"/>
     <copy file="${manifest}" tofile="${build.dest}/${manifest}" filtering="on" overwrite="on" />
     <jar jarfile="${build.dir}/${name}.jar"
          basedir="${build.dest}"
@@ -384,7 +385,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <target name="snapshot" depends="compile">
     <!-- create directories -->
     <mkdir dir="${snapshot.dir}"/>
-    <filter token="version" value="${version}"/>
+    <filter token="version" value="${build.version}"/>
     <copy file="${manifest}" tofile="${build.dest}/${manifest}" filtering="on" />
     <jar jarfile="${snapshot.dir}/${name}-snapshot-${DSTAMP}.jar"
          basedir="${build.dest}"
@@ -449,16 +450,16 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="dist" depends="package">
     <echo message="Building the distribution files (zip,tar)"/>
-    <zip zipfile="../${Name}-${version}.zip" basedir="${build.dir}" includes="${gef.jar.name} log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt"/>
-    <tar tarfile="../${Name}-${version}.tar" basedir="${build.dir}" includes="${gef.jar.name} log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt">
+    <zip zipfile="../${Name}-${build.version}.zip" basedir="${build.dir}" includes="${gef.jar.name} log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt"/>
+    <tar tarfile="../${Name}-${build.version}.tar" basedir="${build.dir}" includes="${gef.jar.name} log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt">
     <!--
       <tarfileset mode="555">
 	<include name="argouml.sh">
       </tarfileset>
     -->
     </tar>
-    <gzip zipfile="../${Name}-${version}.tar.gz" src="../${Name}-${version}.tar" />
-    <delete file="../${Name}-${version}.tar"/>
+    <gzip zipfile="../${Name}-${build.version}.tar.gz" src="../${Name}-${build.version}.tar" />
+    <delete file="../${Name}-${build.version}.tar"/>
   </target>
 
   <!-- =================================================================== -->
@@ -467,10 +468,10 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <target name="dist-src" depends="init">
     <echo message="Building the source distribution files (zip,tar)"/>
     <chmod file="${src.dir}/build.sh" perm="ugo+rx" />
-    <zip zipfile="../${Name}-${version}-src.zip" basedir="${src.dir}/.." excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak" includes="src_new/**"/>
-    <tar tarfile="../${Name}-${version}-src.tar" basedir="${src.dir}/.." excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak" includes="src_new/**"/>
-    <gzip zipfile="../${Name}-${version}-src.tar.gz" src="../${Name}-${version}-src.tar" />
-    <delete file="../${Name}-${version}-src.tar"/>
+    <zip zipfile="../${Name}-${build.version}-src.zip" basedir="${src.dir}/.." excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak" includes="src_new/**"/>
+    <tar tarfile="../${Name}-${build.version}-src.tar" basedir="${src.dir}/.." excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak" includes="src_new/**"/>
+    <gzip zipfile="../${Name}-${build.version}-src.tar.gz" src="../${Name}-${build.version}-src.tar" />
+    <delete file="../${Name}-${build.version}-src.tar"/>
   </target>
 
   <!-- =================================================================== -->
@@ -478,10 +479,10 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="dist-lib" depends="init">
     <echo message="Building the library distribution files (zip,tar)"/>
-    <zip zipfile="../${Name}-${version}-libs.zip" basedir="${lib.dir}/.." includes="lib/${gef.jar.name} lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
-    <tar tarfile="../${Name}-${version}-libs.tar" basedir="${lib.dir}/.." includes="lib/${gef.jar.name} lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
-    <gzip zipfile="../${Name}-${version}-libs.tar.gz" src="../${Name}-${version}-libs.tar" />
-    <delete file="../${Name}-${version}-libs.tar"/>
+    <zip zipfile="../${Name}-${build.version}-libs.zip" basedir="${lib.dir}/.." includes="lib/${gef.jar.name} lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
+    <tar tarfile="../${Name}-${build.version}-libs.tar" basedir="${lib.dir}/.." includes="lib/${gef.jar.name} lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
+    <gzip zipfile="../${Name}-${build.version}-libs.tar.gz" src="../${Name}-${build.version}-libs.tar" />
+    <delete file="../${Name}-${build.version}-libs.tar"/>
   </target>
   <!-- =================================================================== -->
   <!-- Creates the whole distribution                                            -->
@@ -492,7 +493,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- Creates the whole distribution with adjusted version number         -->
   <!-- =================================================================== -->
   <target name="dist-release">
-  	<property name="version" value="${argo.core.version}"/>
+  	<property name="build.version" value="${argo.core.version}"/>
   	<antcall target="dist-all">
   	</antcall>
   </target>
@@ -518,7 +519,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <target name="distclean" depends="clean">
     <delete dir="${dist.dir}"/>
     <delete>
-       <fileset dir=".." includes="${Name}-${version}*" />
+       <fileset dir=".." includes="${Name}-${build.version}*" />
     </delete>
   </target>
 

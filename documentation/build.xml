@@ -172,14 +172,13 @@ After these operations the file will still be visible in the GUI.
     <tstamp>
         <format property="year" pattern="yyyy"/>
     </tstamp>
-    <!--pathconvert targetos="windows" property="p" refid="saxon.classpath"/-->
-    <!--echo message="p = ${p}"/-->
-    <!--fail/-->
 
     <property name="Name"              value="ArgoUML-docs"/>
     <property name="name"              value="argouml-docs"/>
 
-    <echo message="------------ ${Name} v${argo.core.version} [${year}] ------------"/>
+    <echo message="--------------- ${Name} ${argo.core.version} [${year}] ------------"/>
+    <echo message="Using ${ant.version}"/>
+
 
     <property name="build.dir"         value="${basedir}/build"/>
     <property name="output.dir"        value="${build.dir}/documentation"/>
