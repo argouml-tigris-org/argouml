@@ -37,7 +37,7 @@ import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
-import org.tigris.gef.ocl.OCLEvaluator;
+import org.argouml.ocl.OCLEvaluator;
 
 /** "Abstract" Critic subclass that captures commonalities among all
  *  critics in the UML domain.  This class also defines and registers
@@ -176,7 +176,7 @@ public class CrUML extends Critic {
     while (matchPos != -1) {
       int endExpr = res.indexOf(OCL_END, matchPos + 1);
       String expr = res.substring(matchPos + OCL_START.length(), endExpr);
-      String evalStr = OCLEvaluator.evalToString(off1, expr);
+      String evalStr = OCLEvaluator.SINGLETON.evalToString(off1, expr);
       //System.out.println("expr='" + expr + "' = '" + evalStr + "'");
       if (expr.endsWith("") && evalStr.equals(""))
 	evalStr = "(anon)";
