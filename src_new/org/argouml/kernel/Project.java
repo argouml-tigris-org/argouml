@@ -125,7 +125,7 @@ public class Project implements java.io.Serializable {
     public Vector _diagrams = new Vector(); // instances of LayerDiagram
     protected MModel _defaultModel = null;
     public boolean _needsSave = false;
-    protected MNamespace _curModel = null;
+    protected MNamespace _currentNamespace = null;
     public Hashtable _definedTypes = new Hashtable(80);
     public HashMap _UUIDRefs = null;
     public GenerationPreferences _cgPrefs = new GenerationPreferences();
@@ -140,6 +140,12 @@ public class Project implements java.io.Serializable {
      * True if we are in the proces of making a project, otherwise false
      */
     private static boolean _creatingProject;
+    
+    /**
+     * The root of the modeltree the user is working on. (The untitled_model in
+     * the navpane).
+     */
+    private MModel _root;
    
     protected static Category cat = 
         Category.getInstance(org.argouml.kernel.Project.class);
@@ -200,7 +206,7 @@ public class Project implements java.io.Serializable {
         try {
             addMember(new UMLClassDiagram("class diagram 1", model));
             addMember(new UMLUseCaseDiagram("use case diagram 1", model));
-            addMember(model);
+            setRoot(model);
             setNeedsSave(false);
         }
         catch (PropertyVetoException pve) { }
@@ -238,12 +244,9 @@ public class Project implements java.io.Serializable {
             XMIParser.SINGLETON.readModels(p,url);
             MModel model = XMIParser.SINGLETON.getCurModel();
             UmlHelper.getHelper().addListenersToModel(model);
-            p._UUIDRefs = XMIParser.SINGLETON.getUUIDRefs();
-            try {
-                p.addMember(model);
-                p.setNeedsSave(false);
-            }
-            catch (PropertyVetoException pve) { }
+            p._UUIDRefs = XMIParser.SINGLETON.getUUIDRefs();        
+            p.addMember(model);
+            p.setNeedsSave(false);            
             org.argouml.application.Main.addPostLoadAction(new ResetStatsLater());
         }
 	
@@ -354,14 +357,10 @@ public class Project implements java.io.Serializable {
         UmlHelper.getHelper().addListenersToModel(mmodel);
 
         // if (mmodel != null && !xmiReader.getErrors()) {
-            try {
+            
                 addMember(mmodel);
-            }
-            catch (PropertyVetoException pv) {
-                throw new IOException("The model from XMI file" + 
-                    url.toString() +
-                    "could not be added to the project.");
-            }
+            
+            
 	    //}
 	    //        else {
             //throw new IOException("XMI file " + url.toString() + 
@@ -472,11 +471,10 @@ public class Project implements java.io.Serializable {
 
     public URL getURL() { return _url; }
 
-    public void setURL(URL url) throws PropertyVetoException {
+    public void setURL(URL url) {
         if (url != null) {
             url = Util.fixURLExtension(url, COMPRESSED_FILE_EXT);
         }
-        getVetoSupport().fireVetoableChange("url", _url, url);
 
         cat.debug ("Setting project URL from \"" + _url + "\" to \"" + url + "\".");
     
@@ -491,10 +489,9 @@ public class Project implements java.io.Serializable {
     //     _url = url;
     //   }
 
-    public void setFile(File file) throws PropertyVetoException {
+    public void setFile(File file) {
         try {
             URL url = Util.fileToURL(file);
-            getVetoSupport().fireVetoableChange("url", _url, url);
       
             cat.debug ("Setting project file name from \"" + _url + "\" to \"" + url + "\".");
       
@@ -557,7 +554,7 @@ public class Project implements java.io.Serializable {
         _members.addElement(pm);
     }
 
-    public void addMember(MModel m) throws PropertyVetoException {
+    public void addMember(MModel m) {
         Iterator iter = _members.iterator();
         Object currentMember = null;
         boolean memberFound = false;
@@ -581,9 +578,8 @@ public class Project implements java.io.Serializable {
         }
     }
 
-    public void addModel(MNamespace m) throws PropertyVetoException {
+    public void addModel(MNamespace m) {
         // fire indeterminate change to avoid copying vector
-        getVetoSupport().fireVetoableChange("Models", _models, null);
         if (! _models.contains(m)) _models.addElement(m);
         setCurrentNamespace(m);
         setNeedsSave(true);
@@ -595,9 +591,9 @@ public class Project implements java.io.Serializable {
      */
 
     protected void removeProjectMemberDiagram(ArgoDiagram d) {
-    	try {
-        	removeDiagram(d);
-    	} catch (PropertyVetoException ve) {}
+    	
+        removeDiagram(d);
+    	
         // should remove the corresponding ProjectMemberDiagram not the ArgoDiagram from the members
         
         // _members.removeElement(d);
@@ -749,9 +745,9 @@ public class Project implements java.io.Serializable {
     
         postSave();
 
-        try {
-            setFile(file);
-        } catch (PropertyVetoException ex) {}
+       
+        setFile(file);
+       
     }
 
     public String getAuthorname() { return _authorname; }
@@ -862,13 +858,12 @@ public class Project implements java.io.Serializable {
 		return null;
 	}
 
-    public void setCurrentNamespace(MNamespace m) { _curModel = m; }
-    public MNamespace getCurrentNamespace() { return _curModel; }
+    public void setCurrentNamespace(MNamespace m) { _currentNamespace = m; }
+    public MNamespace getCurrentNamespace() { return _currentNamespace; }
 
     public Vector getDiagrams() { return _diagrams; }
     public void addDiagram(ArgoDiagram d) throws PropertyVetoException {
         // send indeterminate new value instead of making copy of vector
-        getVetoSupport().fireVetoableChange("Diagrams", _diagrams, null);
         _diagrams.addElement(d);
         d.addChangeRegistryAsListener( _saveRegistry );
         setNeedsSave(true);
@@ -882,8 +877,7 @@ public class Project implements java.io.Serializable {
      * @param d
      * @throws PropertyVetoException
      */
-    protected void removeDiagram(ArgoDiagram d) throws PropertyVetoException {
-        getVetoSupport().fireVetoableChange("Diagrams", _diagrams, null);
+    protected void removeDiagram(ArgoDiagram d) {
         _diagrams.removeElement(d);
         d.removeChangeRegistryAsListener( _saveRegistry );
         setNeedsSave(true);
@@ -910,15 +904,6 @@ public class Project implements java.io.Serializable {
 
     ////////////////////////////////////////////////////////////////
     // event handling
-
-    public void addVetoableChangeListener(VetoableChangeListener l) {
-        getVetoSupport().removeVetoableChangeListener(l);
-        getVetoSupport().addVetoableChangeListener(l);
-    }
-
-    public void removeVetoableChangeListener(VetoableChangeListener l) {
-        getVetoSupport().removeVetoableChangeListener(l);
-    }
 
     public VetoableChangeSupport getVetoSupport() {
         if (_vetoSupport == null) _vetoSupport = new VetoableChangeSupport(this);
@@ -1178,6 +1163,31 @@ public class Project implements java.io.Serializable {
             pb.setProject(currentProject);
         }
         _currentProject = currentProject;
+    }
+    
+    
+
+    /**
+     * Returns the root.
+     * @return MModel
+     */
+    public MModel getRoot() {
+        return _root;
+    }
+
+    /**
+     * Sets the root.
+     * @param root The root to set
+     */
+    public void setRoot(MModel root) {
+        if (_root != null) {
+            _members.remove(_root);
+            _models.remove(_root);
+        }
+        _root = root;
+        addMember(root);
+        addModel(root);
+        
     }
 
 } /* end class Project */
