@@ -56,6 +56,7 @@ language/region/country.
     <STRONG>(es) Spanish</STRONG>
     <UL>
       <LI>Ricardo Varela
+      <LI>Cecilia Alvarez
     </UL>
     es defaults in ArgoUML to the Spanish spoken in Spain (es_ES).
   </LI>
@@ -80,38 +81,6 @@ For each language there is always a default region/country that is listed
 here.
 Secondary regions/countries (as en_GB) can be started but must
 be for a different region than the default one.
-
-<h2>Comments on the work of the teams</h2>
-<P>
-All the languages suffer the problem that the 
-internationalization in the code is not complete.
-I (Linus Tolke) suggest that all teams make the internationalization
-of the code their first priority and their respective languages
-their second priority.
-Jean-Hugues de Raigniac coordinates the work with completing the
-internationalization throughout the code.
-<P>
-On the other hand it is not really that simple because 
-in order to find the places where the
-code is not complete you have to work with an ArgoUML where
-all the property files has been translated so you have a lot of
-translation work in order to get there.
-<P>
-Suggested work order for each team:
-<OL>
-<LI>Complete localization of ArgoUML excluding GEF-parts (priority 2).
-    When a problem with the code is encountered, report it in Issuezilla
-    and help in solving it (priority 1).
-<LI>Complete localization of GEF (work with the GEF team).
-<LI>Quality assurance, making sure that the terms used match 
-the translations used in books in the domain.
-<LI>Following up on the new development of ArgoUML.
-The checkstyle tools reports when a tag is missing from a specific
-language i.e. when there is a missmatch between the non-localized file
-and any localized file. 
-Check and fix that regularly for your language!
-<LI>User manual.
-</OL>
 
 <HR>
 <A HREF="/index.html">ArgoUML Home</A>
