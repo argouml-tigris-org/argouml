@@ -83,6 +83,7 @@ abstract public class PropPanelModelElement extends PropPanel {
     protected static ImageIcon _classifierRoleIcon = ResourceLoader.lookupIconResource("ClassifierRole");
     protected static ImageIcon _associationRoleIcon = ResourceLoader.lookupIconResource("AssociationRole");
     protected static ImageIcon _callActionIcon = ResourceLoader.lookupIconResource("CallAction");
+     protected static ImageIcon _interactionIcon = ResourceLoader.lookupIconResource("Interaction");
 
     protected JList namespaceList;
     protected JScrollPane namespaceScroll;
