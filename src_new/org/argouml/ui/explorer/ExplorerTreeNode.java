@@ -62,4 +62,23 @@ implements Comparable{
             Collections.sort(this.children,order);
     }
     
+    /**
+     * cleans up for gc.
+     */
+    public void remove(){
+        
+        this.userObject = null;
+        order = null;
+        if(children != null){
+            Iterator childrenIt = children.iterator();
+            while(childrenIt.hasNext()){
+                
+                ((ExplorerTreeNode)childrenIt.next()).remove();
+            }
+            
+            children.clear();
+            children=null;
+        }
+    }
+    
 }

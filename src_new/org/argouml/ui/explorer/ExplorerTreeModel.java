@@ -133,6 +133,8 @@ ItemListener{
             else{
                 nodes.remove(changeNode);
             }
+            // remove reference for gc
+            changeNode.remove();
         }
     }
     
@@ -140,6 +142,16 @@ ItemListener{
      * the model structure has changed, eg a new project.
      */
     public void structureChanged() {
+        
+        // remove references for gc
+        if(this.getRoot() instanceof ExplorerTreeNode)
+            ((ExplorerTreeNode)this.getRoot()).remove();
+        Collection values = modelElementMap.values();
+        Iterator valuesIt = values.iterator();
+        while(valuesIt.hasNext()){
+            ((Collection)valuesIt.next()).clear();
+        }
+        modelElementMap.clear();
         
         Project proj = ProjectManager.getManager().getCurrentProject();
         ExplorerTreeNode rootNode = new ExplorerTreeNode(proj);

@@ -132,7 +132,12 @@ public class ArgoParser extends SAXParserBase {
     }
 
     public Project getProject() {
+        Project returnValue = _proj;
         return _proj;
+    }
+    
+    public void setProject(Project newProj) {
+        _proj = newProj;
     }
 
     public void handleStartElement(XMLElement e) {
