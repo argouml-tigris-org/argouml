@@ -53,6 +53,9 @@ import java.util.*;
 import org.argouml.ui.ProjectBrowser;
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
+import org.argouml.application.api.Notation;
+import org.argouml.application.api.NotationName;
+import org.argouml.application.notation.NotationProviderFactory;
 import org.argouml.kernel.Project;
 
 public class MMUtil {
@@ -140,7 +143,40 @@ public class MMUtil {
 	}
 	sv.remove();
     }
+    
+    /**
+     * Removes a modelelement. Delegates the actual removal to more 
+     * specific methods if specific elements must be removed.
+     * @param me
+     * @see org.argouml.kernel.Project#trashInternal(Object) for the use of the method
+     * @author jaap.branderhorst@xs4all.nl
+     */
+    public void remove(MModelElement me) {
+    	if (me instanceof MClassifier) {
+    		remove((MClassifier)me); return;
+    	}
+    	if (me instanceof MStateVertex) {
+    		remove((MStateVertex)me); return;
+    	}
+    	if (me instanceof MLink) {
+    		remove((MLink)me); return;
+    	}
+    	if (me instanceof MObject) {
+    		remove((MObject)me); return;
+    	}
+    	if (me instanceof MStimulus) {
+    		remove((MStimulus)me); return;
+    	}
+    	if (me instanceof MUseCase) {
+    		remove((MUseCase)me); return;
+    	}
+    	me.remove();
+    }
 
+    /**
+     * Removes a classifier including all depending Modelelements.
+     * @param cls The classifier to be removed
+     */
 	// This method takes care about removing all unneeded associations,
 	// generalizations, ClassifierRoles and dependencies when removing
 	// a classifier.
@@ -188,7 +224,7 @@ public class MMUtil {
 		}
 
 
-		cls.remove();
+		cls.remove(); //takes also care of removing the elementlisteners
     }
 
  public void remove (MObject obj) {
@@ -219,10 +255,35 @@ public class MMUtil {
 	return (MStereotype)STANDARDS.lookup("realize");
     }
 
+    /**
+     * Builds a binary associations between two classifiers with default values for the
+     * association ends and the association itself.
+     * @param c1 The first classifier to connect
+     * @param c2 The second classifier to connect
+     * @return MAssociation
+     */
     public MAssociation buildAssociation(MClassifier c1, MClassifier c2) {
 	return this.buildAssociation(c1, true, c2, true);
     }
     
+    /**
+     * Builds a fully configurable association end. All variables for an associationend can
+     * be given as parameter.
+     * @param assoc The associaton this end will be part of
+     * @param name The name of the association end
+     * @param type The type (classifier) the end will connect. The end
+     * is a connection piece between an association and a classifier
+     * @param multi The multiplicity
+     * @param stereo The stereotype
+     * @param navigable The navigability. True if this association end can be 'passed' from the other
+     * classifier.
+     * @param order Ordering of the association
+     * @param aggregation 
+     * @param scope
+     * @param changeable
+     * @param visibility
+     * @return MAssociationEnd
+     */
     public MAssociationEnd buildAssociationEnd(MAssociation assoc, 
     	String name,
     	MClassifier type,
@@ -288,11 +349,20 @@ public class MMUtil {
     	return end;
     }		
 
+    /**
+     * Builds a default binary association with two default association ends. 
+     * @param c1 The first classifier to connect to
+     * @param nav1 The navigability of the Associaton end
+     * @param c2 The second classifier to connect to
+     * @param nav2 The navigability of the second Associaton end
+     * @return MAssociation
+     */
     public MAssociation buildAssociation(MClassifier c1, boolean nav1, MClassifier c2, boolean nav2) {
     	MAssociation assoc = new MAssociationImpl();
     	assoc.setName("");
     	buildAssociationEnd(assoc, null, c1,null, null, nav1, null, null, null, null, null);
     	buildAssociationEnd(assoc, null, c2,null, null, nav2, null, null, null, null, null);
+        assoc.setUUID(UUIDManager.SINGLETON.getNewUUID());
 		return assoc;
 	}
 
@@ -302,6 +372,7 @@ public class MMUtil {
 		MGeneralization gen = new MGeneralizationImpl();
 		gen.setParent(parent);
 		gen.setChild(child);
+        gen.setUUID(UUIDManager.SINGLETON.getNewUUID());
 		if (parent.getNamespace() != null) gen.setNamespace(parent.getNamespace());
 		else if (child.getNamespace() != null) gen.setNamespace(child.getNamespace());
 		return gen;
@@ -325,6 +396,7 @@ public class MMUtil {
      public MExtend buildExtend(MUseCase base, MUseCase extension) {
 
          MExtend extend = new MExtendImpl();
+         extend.setUUID(UUIDManager.SINGLETON.getNewUUID());
 
          // Set the ends
 
@@ -360,6 +432,7 @@ public class MMUtil {
      public MExtensionPoint buildExtensionPoint(MUseCase useCase) {
 
          MExtensionPoint extensionPoint = new MExtensionPointImpl();
+         extensionPoint.setUUID(UUIDManager.SINGLETON.getNewUUID());
 
          // Set the owning use case if there is one given.
 
@@ -406,6 +479,7 @@ public class MMUtil {
      public MInclude buildInclude(MUseCase base, MUseCase addition) {
 
          MInclude include = new MIncludeImpl();
+         include.setUUID(UUIDManager.SINGLETON.getNewUUID());
 
          // Set the ends. Because of the NSUML bug we reverse the accessors
          // here.
@@ -429,6 +503,7 @@ public class MMUtil {
 
 	public MDependency buildDependency(MModelElement client, MModelElement supplier) {
 		MDependency dep = new MDependencyImpl();
+        dep.setUUID(UUIDManager.SINGLETON.getNewUUID());
 		dep.addSupplier(supplier);
 		dep.addClient(client);
 		if (supplier.getNamespace() != null) dep.setNamespace(supplier.getNamespace());
@@ -438,6 +513,7 @@ public class MMUtil {
 
 	public MAbstraction buildRealization(MModelElement client, MModelElement supplier) {
 		MAbstraction realization = new MAbstractionImpl();
+        realization.setUUID(UUIDManager.SINGLETON.getNewUUID());
 		// 2002-07-13
 		// Jaap Branderhorst
 		// need a singleton for the stereotype.
@@ -504,6 +580,7 @@ public class MMUtil {
 
 	public MBinding buildBinding(MModelElement client, MModelElement supplier) {
 		MBinding binding = new MBindingImpl();
+        binding.setUUID(UUIDManager.SINGLETON.getNewUUID());
 		binding.addSupplier(supplier);
 		binding.addClient(client);
 		if (supplier.getNamespace() != null) binding.setNamespace(supplier.getNamespace());
@@ -513,6 +590,7 @@ public class MMUtil {
 
 	public MUsage buildUsage(MModelElement client, MModelElement supplier) {
 	    MUsage usage = new MUsageImpl();
+        usage.setUUID(UUIDManager.SINGLETON.getNewUUID());
 		usage.addSupplier(supplier);
 		usage.addClient(client);
 		if (supplier.getNamespace() != null) usage.setNamespace(supplier.getNamespace());
@@ -533,6 +611,7 @@ public class MMUtil {
 	MClassifier voidType = p.findType("void");
 
 	MParameter res = new MParameterImpl();
+    res.setUUID(UUIDManager.SINGLETON.getNewUUID());
 	res.setName(null);
 	res.setStereotype(null);
 	res.setType(voidType);
@@ -561,6 +640,7 @@ public class MMUtil {
     public MOperation buildOperation() {
 	//build the default operation
 	MOperation oper = new MOperationImpl();
+    oper.setUUID(UUIDManager.SINGLETON.getNewUUID());
 	oper.setName("newOperation");
 	oper.setStereotype(null);
 	oper.setOwner(null);
@@ -588,13 +668,18 @@ public class MMUtil {
     }
 
 
+    /**
+     * Builds the default attribute.
+     * @return MAttribute
+     */
     public MAttribute buildAttribute() {
-	//build the default operation
+	//build the default attribute
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Project p = pb.getProject();
 	MClassifier intType = p.findType("int");
 
 	MAttribute attr = new MAttributeImpl();
+    attr.setUUID(UUIDManager.SINGLETON.getNewUUID());
 	attr.setName("newAttr");
 	attr.setMultiplicity(new MMultiplicity(1, 1));
 	attr.setStereotype(null);
@@ -616,6 +701,39 @@ public class MMUtil {
 	return attr;
     }
 
+    /**
+     * Builds a default method belonging to a certain operation. The language of the body is set to the 
+     * selected Notation language. The body of the method is set to an emtpy string.
+     * @param op
+     * @return MMethod
+     */
+	public MMethod buildMethod(MOperation op) {
+		return buildMethod(op, Notation.getDefaultNotation(), "");
+	}
+	
+    
+    /**
+     * Builds a method belonging to a certain operation.
+     * @param op The operation this method belongs to
+     * @param notation The notationname (language name) of the body
+     * @param body The actual body of the method
+     * @return MMethod
+     */
+	public MMethod buildMethod(MOperation op, NotationName notation, String body) {
+		MMethod method = new MMethodImpl();
+        method.setUUID(UUIDManager.SINGLETON.getNewUUID());
+		if (op != null) {
+			method.setSpecification(op);
+			MClassifier owner = op.getOwner();
+			if (owner != null) {
+				method.setOwner(owner);
+			}
+		}
+		if (notation != null && notation.getName() != null) {
+			method.setBody(new MProcedureExpression(notation.getName(), body));
+		}
+		return method;
+	}	
 
     public MMessage buildMessage(MAssociationRole ar){
 	return buildMessage(ar, "");
@@ -624,6 +742,7 @@ public class MMUtil {
     public MMessage buildMessage(MAssociationRole ar,String sequenceNumber){
 
 	MMessage msg = new MMessageImpl();
+    msg.setUUID(UUIDManager.SINGLETON.getNewUUID());
 	msg.setName(sequenceNumber);
 	Collection ascEnds = ar.getConnections();
 
@@ -640,6 +759,7 @@ public class MMUtil {
 	msg.setReceiver(crDst);
 
 	MCallAction action = new MCallActionImpl();
+    action.setUUID(UUIDManager.SINGLETON.getNewUUID());
 	action.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
 	action.setName("action"+sequenceNumber);
 	msg.setAction(action);
@@ -935,5 +1055,6 @@ public class MMUtil {
 
         return useCase.getExtensionPoints();
     }
-
+    
+    
 }
