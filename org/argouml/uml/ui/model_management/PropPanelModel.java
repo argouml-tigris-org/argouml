@@ -24,6 +24,7 @@
 package org.argouml.uml.ui.model_management;
 
 import org.argouml.application.api.*;
+import org.argouml.application.ArgoVersion;
 
 import ru.novosoft.uml.model_management.*;
 
@@ -52,7 +53,7 @@ implements PluggablePropertyPanel {
     public String getModuleName() { return "PropPanelModel"; }
     public String getModuleDescription() { return "Property Panel for Model"; }
     public String getModuleAuthor() { return "ArgoUML Core"; }
-    public String getModuleVersion() { return "0.9.4"; }
+    public String getModuleVersion() { return ArgoVersion.VERSION; }
     public String getModuleKey() { return "module.propertypanel.model"; }
 
 } /* end class PropPanelModel */

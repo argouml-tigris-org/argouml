@@ -31,6 +31,7 @@
 package org.argouml.uml.ui.model_management;
 
 import org.argouml.application.api.*;
+import org.argouml.application.ArgoVersion;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import java.awt.*;
@@ -263,7 +264,7 @@ implements PluggablePropertyPanel {
     public String getModuleName() { return "PropPanelPackage"; }
     public String getModuleDescription() { return "Property Panel for Package"; }
     public String getModuleAuthor() { return "ArgoUML Core"; }
-    public String getModuleVersion() { return "0.9.4"; }
+    public String getModuleVersion() { return ArgoVersion.VERSION; }
     public String getModuleKey() { return "module.propertypanel.package"; }
 
 
