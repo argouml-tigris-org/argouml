@@ -1518,7 +1518,7 @@ graphic artifacts to diagrams.</para></listitem>
 
     <para>Earlier versions of &argouml; did implement a tabular representation,
       but the current release only supports a diagram representation, so this
-      tab does not function.</para>
+      tab does not have any function.</para>
   </sect1>
 
   <!-- The context sensitive pop-up menus -->
@@ -1529,7 +1529,7 @@ graphic artifacts to diagrams.</para></listitem>
     <!-- Tool Bar selection -->
 
     <para>Within the editing pane, &button2; click over an artifact will bring
-      up a pop-up menu with a variable number of main entries, each with a
+      up a pop-up menu with a variable number of main entries, many with a
       sub-menu.</para>
 
     <!-- Critiques sub-menu -->
@@ -1540,7 +1540,8 @@ graphic artifacts to diagrams.</para></listitem>
       <para>This sub-menu gives list of all the critics that have triggered for
         this artifact. Selection of a menu entry causes that entry to be
         highlighted in the to-do pane and its detailed explanation to be placed
-        in the <literal>ToDoItem</literal> tab of the details pane.</para>
+        in the <literal>ToDoItem</literal> tab of the details pane. 
+        A solid colored line indicates the offending element.</para>
     </sect2>
 
     <!-- Ordering sub-menu -->
@@ -1586,18 +1587,6 @@ graphic artifacts to diagrams.</para></listitem>
       </itemizedlist>
     </sect2>
 
-    <!-- Properties sub-menu -->
-
-    <sect2>
-      <title>Properties</title>
-
-      <para>This entry has no sub-menu. Selecting the entry will cause the
-        property tab for the selected artifact to be displayed in the details
-        pane.
-        <!-- TODO: Enter an issue to remove this useless item. -->
-      </para>
-    </sect2>
-
     <!-- Add sub-menu -->
 
     <sect2>
@@ -1613,23 +1602,25 @@ graphic artifacts to diagrams.</para></listitem>
             format="GIF" align="center"
             fileref="images/icons/attribute.gif"/>
           </imageobject></inlinemediaobject></guiicon>
-          <literal>Add Attribute</literal>. Only appears where the selected
-            artifact is a class<!-- or interface-->. Adds an attribute to the
+          <literal>New Attribute</literal>. Only appears where the selected
+            artifact is a class<!-- or interface-->. Creates 
+            a new attribute on the
             artifact</para></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/operation.gif"/>
           </imageobject></inlinemediaobject></guiicon>
-          <literal>Add Operation</literal>. Only appears where the selected
-            artifact is a class or interface. Adds an operation to the
+          <literal>New Operation</literal>. Only appears where the selected
+            artifact is a class or interface. 
+            Creates a new operation on the
             artifact</para></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/note.gif"/>
           </imageobject></inlinemediaobject></guiicon>
-          <literal>Note</literal>. Attaches a note to the selected
+          <literal>New Comment</literal>. Attaches a new comment to the selected
           artifact.</para></listitem>
       </itemizedlist>
     </sect2>
@@ -1639,11 +1630,10 @@ graphic artifacts to diagrams.</para></listitem>
     <sect2>
       <title>Show</title>
 
-      <para>This sub-menu only appears with use case, class or object
-        artifacts. It is used to control whether the extension point
-        compartment is displayed for use cases and whether the attribute and
-        operation compartments are displayed for classes and objects. There are
-        six possible entries, but at most three show at any one time.</para>
+      <para>This sub-menu only appears with certain
+        artifacts. It is completely context dependent. 
+        There are many possible entries, 
+        depending on the selected artifact and its state.</para>
 
       <itemizedlist>
         <listitem><para><literal>Hide Extension Point
@@ -1717,9 +1707,6 @@ graphic artifacts to diagrams.</para></listitem>
         or clear the values of the various modifiers available.</para>
 
       <itemizedlist>
-        <listitem><para><literal>Public</literal>. Set if this artifact is
-          visible outside its package.</para></listitem>
-
         <listitem><para><literal>Abstract</literal>. Set for an abstract
         artifact.</para></listitem>
 
@@ -1733,7 +1720,9 @@ graphic artifacts to diagrams.</para></listitem>
           behavior.</para>
 
         <note><para>This really ought to be set automatically for artifacts with
-          state machines or activity diagrams.</para></note></listitem>
+          state machines or activity diagrams.</para></note>
+          <!-- TODO: See issue ... -->
+        </listitem>
       </itemizedlist>
     </sect2>
 
