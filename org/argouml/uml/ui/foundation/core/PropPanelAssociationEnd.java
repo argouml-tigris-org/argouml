@@ -63,8 +63,12 @@ public class PropPanelAssociationEnd extends PropPanel {
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
     addField(namespaceList,4,0,0);
+    
+    addCaption(new JLabel("Navigable:"),0,1,0);
+    addField(new UMLCheckBox("navigable",this,new UMLReflectionBooleanProperty("navigable",mclass,"isNavigable","setNavigable")),0,1,0);
+    
 
-    addCaption(new JLabel("Ordering:"),0,1,0);
+    addCaption(new JLabel("Ordering:"),1,1,0);
     JPanel orderingPanel = new JPanel(new GridLayout(0,1));
     ButtonGroup orderingGroup = new ButtonGroup();
     UMLRadioButton unordered = new UMLRadioButton("unordered",this,new UMLEnumerationBooleanProperty("ordering",mclass,"getOrdering","setOrdering",MOrderingKind.class,MOrderingKind.UNORDERED,null));
@@ -79,9 +83,9 @@ public class PropPanelAssociationEnd extends PropPanel {
     UMLRadioButton sorted = new UMLRadioButton("sorted",this,new UMLEnumerationBooleanProperty("ordering",mclass,"getOrdering","setOrdering",MOrderingKind.class,MOrderingKind.SORTED,null));
     orderingGroup.add(sorted);
     orderingPanel.add(sorted);
-    addField(orderingPanel,0,1,0);
+    addField(orderingPanel,1,1,0);
 
-    addCaption(new JLabel("Aggregation:"),1,1,1);
+    addCaption(new JLabel("Aggregation:"),2,1,1);
     JPanel aggregationPanel = new JPanel(new GridLayout(0,1));
     ButtonGroup aggregationGroup = new ButtonGroup();
     UMLRadioButton none = new UMLRadioButton("none",this,new UMLEnumerationBooleanProperty("aggregation",mclass,"getAggregation","setAggregation",MAggregationKind.class,MAggregationKind.NONE,null));
@@ -95,7 +99,7 @@ public class PropPanelAssociationEnd extends PropPanel {
     UMLRadioButton composite = new UMLRadioButton("composite",this,new UMLEnumerationBooleanProperty("aggregation",mclass,"getAggregation","setAggregation",MAggregationKind.class,MAggregationKind.COMPOSITE,null));
     aggregationGroup.add(composite);
     aggregationPanel.add(composite);
-    addField(aggregationPanel,1,1,0);
+    addField(aggregationPanel,2,1,0);
     
     
     addCaption(new JLabel("Scope:"),0,2,0);
