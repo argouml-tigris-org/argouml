@@ -133,6 +133,13 @@ Modifications
           format="GIF" align="center" fileref="images/icons/new.gif"/>
         </imageobject></inlinemediaobject></guiicon> New&hellip;</title>
 
+      <indexterm>
+	<primary>New&hellip;</primary>
+      </indexterm>
+      <indexterm>
+	<primary>Shortcut key</primary>
+	<secondary>Ctrl-N</secondary>
+      </indexterm>
       <para>Shortcut Ctrl-N.</para>
 
       <para>This initializes a new project within &argouml;. The project is
@@ -158,6 +165,13 @@ Modifications
         </imageobject></inlinemediaobject></guiicon> Open
         Project&hellip;</title>
  
+      <indexterm>
+	<primary>Open Project&hellip;</primary>
+      </indexterm>
+      <indexterm>
+	<primary>Shortcut key</primary>
+	<secondary>Ctrl-O</secondary>
+      </indexterm>
       <para>Shortcut Ctrl-O.</para>
 
       <para>This opens an existing project. Selecting this menu option will
@@ -249,6 +263,13 @@ Modifications
           format="GIF" align="center" fileref="images/icons/save_project.gif"/>
         </imageobject></inlinemediaobject></guiicon> Save Project</title>
 
+      <indexterm>
+	<primary>Save Project</primary>
+      </indexterm>
+      <indexterm>
+	<primary>Shortcut key</primary>
+	<secondary>Ctrl-S</secondary>
+      </indexterm>
       <para>Shortcut Ctrl-S.</para>
 
       <para>This saves the project using its current file name.</para>
@@ -395,6 +416,13 @@ v           new datatypes in their own right (the default) or as their base
           format="GIF" align="center" fileref="images/icons/print.gif"/>
         </imageobject></inlinemediaobject></guiicon> Print&hellip;</title>
 
+      <indexterm>
+	<primary>Print &hellip;</primary>
+      </indexterm>
+      <indexterm>
+	<primary>Shortcut key</primary>
+	<secondary>Ctrl-P</secondary>
+      </indexterm>
       <para>Shortcut Ctrl-P.</para>
 
       <para>This brings up a dialog box allowing the &argouml; model to be
@@ -470,6 +498,13 @@ v           new datatypes in their own right (the default) or as their base
     <sect2>
       <title>Exit</title>
 
+      <indexterm>
+	<primary>Exit</primary>
+      </indexterm>
+      <indexterm>
+	<primary>Shortcut key</primary>
+	<secondary>Alt-F4.</secondary>
+      </indexterm>
       <para>Shortcut Alt-F4.</para>
 
       <para>This closes down &argouml; A warning message will pop-up if you
@@ -508,8 +543,17 @@ v           new datatypes in their own right (the default) or as their base
         menu. It has four entries.</para>
 
       <itemizedlist>
-        <listitem><para><literal>Select All</literal> (shortcut
-          Ctrl-A). Selects all artifacts on the editing pane.</para></listitem>
+        <listitem>
+	  <para>
+<literal>Select All</literal> (shortcut Ctrl-A). 
+<indexterm>
+  <primary>Select All</primary>
+</indexterm>
+<indexterm>
+  <primary>Shortcut key</primary>
+  <secondary>Ctrl-A</secondary>
+</indexterm>
+Selects all artifacts on the editing pane.</para></listitem>
 
         <listitem><para><literal>Select Previous</literal>. &argouml; has a
           concept of the ordering of artifacts on a diagram. This
@@ -568,6 +612,13 @@ v           new datatypes in their own right (the default) or as their base
           format="GIF" align="center" fileref="images/icons/cut.gif"/>
         </imageobject></inlinemediaobject></guiicon> Cut</title>
 
+      <indexterm>
+	<primary>Cut</primary>
+      </indexterm>
+      <indexterm>
+	<primary>Shortcut key</primary>
+	<secondary>Ctrl-X</secondary>
+      </indexterm>
       <para>Shortcut Ctrl-X.</para>
 
       <para>This should take the currently selected items, remove them from the
@@ -585,6 +636,13 @@ v           new datatypes in their own right (the default) or as their base
           format="GIF" align="center" fileref="images/icons/copy.gif"/>
         </imageobject></inlinemediaobject></guiicon> Copy</title>
 
+      <indexterm>
+	<primary>Copy</primary>
+      </indexterm>
+      <indexterm>
+	<primary>Shortcut key</primary>
+	<secondary>Ctrl-C</secondary>
+      </indexterm>
       <para>Shortcut Ctrl-C.</para>
 
       <para>This should take the currently selected items and make a copy of
@@ -608,6 +666,13 @@ v           new datatypes in their own right (the default) or as their base
           format="GIF" align="center" fileref="images/icons/paste.gif"/>
         </imageobject></inlinemediaobject></guiicon> Paste</title>
 
+      <indexterm>
+	<primary>Paste</primary>
+      </indexterm>
+      <indexterm>
+	<primary>Shortcut key</primary>
+	<secondary>Ctrl-V</secondary>
+      </indexterm>
       <para>Shortcut Ctrl-V.</para>
 
       <para>This should paste the item(s) last cut or copied to the clipboard
@@ -629,7 +694,14 @@ v           new datatypes in their own right (the default) or as their base
     <sect2 id="s2.menu_edit_remove_from_diagram">
       <title>Remove From Diagram</title>
 
-      <para>Shortcut Ctrl-R.</para>
+      <indexterm>
+	<primary>Remove From Diagram</primary>
+      </indexterm>
+      <indexterm>
+	<primary>Shortcut key</primary>
+	<secondary>Delete</secondary>
+      </indexterm>
+      <para>Shortcut Delete.</para>
 
       <para>This removes the currently selected item(s) from the diagram, but
         not from the model.</para>
@@ -648,7 +720,14 @@ v           new datatypes in their own right (the default) or as their base
     <sect2>
       <title>Delete From Model</title>
 
-      <para>Shortcut Delete.</para>
+      <indexterm>
+	<primary>Delete From Model</primary>
+      </indexterm>
+      <indexterm>
+	<primary>Shortcut key</primary>
+	<secondary>Ctrl-Delete</secondary>
+      </indexterm>
+      <para>Shortcut Ctrl-Delete.</para>
 
       <para>This function deletes the selected item(s) from the model
         completely.</para>
@@ -1079,29 +1158,69 @@ v           new datatypes in their own right (the default) or as their base
         entries.</para>
 
       <itemizedlist>
-        <listitem><para><literal>Next Editing Tab</literal> (shortcut
-          F6). Selects the next tab on the editing pane.</para>
+        <listitem>
+	  <para>
+<literal>Next Editing Tab</literal> (shortcut F6).
+<indexterm>
+  <primary>Next Editing Tab</primary>
+</indexterm>
+<indexterm>
+  <primary>Shortcut key</primary>
+  <secondary>F6</secondary>
+</indexterm>
+Selects the next tab on the editing pane.
+</para>
 
         <caution><para>Since there is only one editing tab in the current
           version of &argouml;, <literal>As&nbsp;Diagram</literal>, this always
           selects that representation, and is thus a null
           operation.</para></caution></listitem>
 
-        <listitem><para><literal>As Diagram</literal> (shortcut
-          Alt+Shift-1). Selects the <literal>As&nbsp;Diagram</literal> tab on
-          the editing pane.</para></listitem>
+        <listitem>
+	  <para>
+<literal>As Diagram</literal> (shortcut Alt+Shift-1). 
+<indexterm>
+  <primary>As Diagram</primary>
+</indexterm>
+<indexterm>
+  <primary>Shortcut key</primary>
+  <secondary>Alt+Shift-1</secondary>
+</indexterm>
+Selects the <literal>As&nbsp;Diagram</literal> tab on
+the editing pane.
+</para>
+</listitem>
 
-        <listitem><para><literal>As Table</literal> (shortcut
-          Alt+Shift-2). Selects the <literal>As&nbsp;Table</literal> tab on
-          the editing pane.</para>
+        <listitem>
+	  <para>
+<literal>As Table</literal> (shortcut Alt+Shift-2).
+<indexterm>
+  <primary>As Table</primary>
+</indexterm>
+<indexterm>
+  <primary>Shortcut key</primary>
+  <secondary>Alt+Shift-2</secondary>
+</indexterm>
+Selects the <literal>As&nbsp;Table</literal> tab on
+the editing pane.</para>
 
         <caution><para>Since table representation is not supported in the
           current version of &argouml; this entry is always grayed out and not
           available.</para></caution></listitem>
 
-        <listitem><para><literal>As Metrics</literal> (shortcut
-          Alt+Shift-3). Selects the <literal>As&nbsp;Metrics</literal> tab on
-          the editing pane.</para>
+        <listitem>
+	  <para>
+<literal>As Metrics</literal> (shortcut Alt+Shift-3).
+<indexterm>
+  <primary>As Metrics</primary>
+</indexterm>
+<indexterm>
+  <primary>Shortcut key</primary>
+  <secondary>Alt+Shift-3</secondary>
+</indexterm>
+
+Selects the <literal>As&nbsp;Metrics</literal> tab on
+the editing pane.</para>
 
         <caution><para>Since metrics representation is not supported in the
           current version of &argouml; this entry is always grayed out and not
@@ -1119,72 +1238,163 @@ v           new datatypes in their own right (the default) or as their base
         nine entries.</para>
 
       <itemizedlist>
-        <listitem><para><literal>Next Details Tab</literal> (shortcut
-          F5). Selects the next available tab in the details pane.</para>
+        <listitem>
+	  <para>
+<literal>Next Details Tab</literal> (shortcut F5).
+<indexterm>
+  <primary>Next Details Tab</primary>
+</indexterm>
+<indexterm>
+  <primary>Shortcut key</primary>
+  <secondary>F5</secondary>
+</indexterm>
+Selects the next available tab in the details pane.
+</para>
 
         <note><para>If a tab is not available, it is skipped (for example a
           diagram text box only has <literal>ToDoItem</literal>,
           <literal>Properties</literal> and <literal>Source</literal>
           tabs, with all other tabs grayed out).</para></note></listitem>
 
-        <listitem><para><literal>ToDoItem</literal> (shortcut Alt-1). Selects
-          the <literal>ToDoItem</literal> tab for the currently selected
-          artifact.</para></listitem>
+        <listitem>
+	  <para>
+<literal>ToDoItem</literal> (shortcut Alt-1). 
+<indexterm>
+  <primary>ToDoItem</primary>
+</indexterm>
+<indexterm>
+  <primary>Shortcut key</primary>
+  <secondary>Alt-1</secondary>
+</indexterm>
+Selects the <literal>ToDoItem</literal> tab for the currently selected
+artifact.
+</para>
+	</listitem>
 
-        <listitem><para><literal>Properties</literal> (shortcut Alt-2). Selects
-          the <literal>Properties</literal> tab for the currently selected
-          artifact.</para>
+        <listitem>
+	  <para>
+<literal>Properties</literal> (shortcut Alt-2).
+<indexterm>
+  <primary>Properties</primary>
+</indexterm>
+<indexterm>
+  <primary>Shortcut key</primary>
+  <secondary>Alt-2</secondary>
+</indexterm>
+Selects the <literal>Properties</literal> tab for the currently selected
+artifact.
+</para>
 
         <caution><para>The <literal>Properties</literal> tab will be selected
           even if it is not available for the current artifact, in which case
           it will be completely blank.</para></caution></listitem>
 
-        <listitem><para><literal>Javadocs</literal> (shortcut Alt-3). Selects
-          the <literal>Javadocs</literal> tab for the currently selected
-          artifact.</para>
+        <listitem>
+	  <para>
+<literal>Javadocs</literal> (shortcut Alt-3).
+<indexterm>
+  <primary>Javadocs</primary>
+</indexterm>
+<indexterm>
+  <primary>Shortcut key</primary>
+  <secondary>Alt-3</secondary>
+</indexterm>
+Selects the <literal>Javadocs</literal> tab for the currently selected
+artifact.
+</para>
 
         <warning><para>The current version of &argouml; has no
           <literal>Javadocs</literal> tab, so this entry is always grayed
           out.</para></warning></listitem>
 
-        <listitem><para><literal>Source</literal> (shortcut Alt-4). Selects
-          the <literal>Source</literal> tab for the currently selected
-          artifact.</para>
+        <listitem>
+	  <para>
+<literal>Source</literal> (shortcut Alt-4). 
+<indexterm>
+  <primary>Source</primary>
+</indexterm>
+<indexterm>
+  <primary>Shortcut key</primary>
+  <secondary>Alt-4</secondary>
+</indexterm>
+Selects the <literal>Source</literal> tab for the currently selected
+artifact.
+</para>
 
         <caution><para>The <literal>Source</literal> tab will be selected
           even if it is not available for the current artifact, in which case
           it will just hold the grayed out text
           <literal>Nothing&nbsp;selected</literal></para></caution></listitem>
 
-        <listitem><para><literal>Constraints</literal> (shortcut
-          Alt-5). Selects the <literal>Constraints</literal> tab for the
-          currently selected artifact.</para>
+        <listitem>
+	  <para>
+<literal>Constraints</literal> (shortcut Alt-5). 
+<indexterm>
+  <primary>Constraints</primary>
+</indexterm>
+<indexterm>
+  <primary>Shortcut key</primary>
+  <secondary>Alt-5</secondary>
+</indexterm>
+Selects the <literal>Constraints</literal> tab for the
+currently selected artifact.
+</para>
 
         <warning><para>The <literal>Constraints</literal> tab will be selected
           even if it is not available for the current artifact, in which case
           it will present a standard constraints tab with no entries. The side
           effects of entering any data are unknown.</para></warning></listitem>
 
-        <listitem><para><literal>Tagged Values</literal> (shortcut
-          Alt-6). Selects the <literal>Tagged Values</literal> tab for the
-          currently selected artifact.</para>
+        <listitem>
+	  <para>
+<literal>Tagged Values</literal> (shortcut Alt-6).
+<indexterm>
+  <primary>Tagged Values</primary>
+</indexterm>
+<indexterm>
+  <primary>Shortcut key</primary>
+  <secondary>Alt-6</secondary>
+</indexterm>
+Selects the <literal>Tagged Values</literal> tab for the
+currently selected artifact.
+</para>
 
         <warning><para>The <literal>Tagged Values</literal> tab will be
           selected even if it is not available for the current artifact, in
           which case it will contain arbitrary data. The side effects of
           altering this data are unknown.</para></warning></listitem>
 
-        <listitem><para><literal>Checklist</literal> (shortcut Alt-7). Selects
-          the <literal>Checklist</literal> tab for the currently selected
-          artifact.</para>
+        <listitem>
+	  <para>
+<literal>Checklist</literal> (shortcut Alt-7). 
+<indexterm>
+  <primary>Checklist</primary>
+</indexterm>
+<indexterm>
+  <primary>Shortcut key</primary>
+  <secondary>Alt-7</secondary>
+</indexterm>
+Selects the <literal>Checklist</literal> tab for the currently selected
+artifact.
+</para>
 
         <caution><para>The <literal>Checklist</literal> tab will be selected
           even if it is not available for the current artifact, in which case
           it will be completely blank.</para></caution></listitem>
 
-        <listitem><para><literal>History</literal> (shortcut Alt-8). Selects
-          the <literal>History</literal> tab for the currently selected
-          artifact.</para>
+        <listitem>
+	  <para>
+<literal>History</literal> (shortcut Alt-8). 
+<indexterm>
+  <primary>History</primary>
+</indexterm>
+<indexterm>
+  <primary>Shortcut key</primary>
+  <secondary>Alt-8</secondary>
+</indexterm>
+Selects the <literal>History</literal> tab for the currently selected
+artifact.
+</para>
 
         <warning><para>The current version of &argouml; has no
           <literal>History</literal> tab, so this entry is always grayed
@@ -1798,6 +2008,13 @@ v           new datatypes in their own right (the default) or as their base
     <sect2>
       <title>Generate All Classes</title>
 
+      <indexterm>
+	<primary>Generate All Classes</primary>
+      </indexterm>
+      <indexterm>
+	<primary>Shortcut key</primary>
+	<secondary>F7</secondary>
+      </indexterm>
       <para>Shortcut F7.</para>
 
       <para>This function behaves as
