@@ -243,7 +243,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
       setDashed(true);
       dest.setForCreate(this, "Dest", false);
       dest.setForDestroy(this, "Dest", false);
-      //source.breakActivation(this, contents);
+      source.breakActivation(this, contents);
     }
     if (action instanceof MDestroyAction) {
       setDestArrowHead(new ArrowHeadGreater());
