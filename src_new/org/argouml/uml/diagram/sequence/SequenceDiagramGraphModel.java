@@ -29,7 +29,9 @@
 
 package org.argouml.uml.diagram.sequence;
 
+import org.apache.log4j.Category;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
 
 import java.util.*;
 import java.beans.*;
@@ -60,6 +62,8 @@ import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 
 public class SequenceDiagramGraphModel extends MutableGraphSupport
 implements MutableGraphModel, MElementListener, VetoableChangeListener {
+    protected static Category cat = 
+        Category.getInstance(SequenceDiagramGraphModel.class);
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected Vector _nodes = new Vector();
@@ -129,23 +133,19 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
 
   /** Return one end of an edge */
   public Object getSourcePort(Object edge) {
-    if (edge instanceof MLink ) {
-      MLink ml = (MLink) edge;
-      Collection conns = ml.getConnections();
-      return ((Object[])conns.toArray())[0];
+    if (edge instanceof MLink) {
+      return CommonBehaviorHelper.getHelper().getSource((MLink)edge);
     }
-    System.out.println("needs-more-work getSourcePort");
+    cat.debug("needs-more-work getSourcePort");
     return null;
   }
 
   /** Return  the other end of an edge */
   public Object getDestPort(Object edge) {
     if (edge instanceof MLink) {
-      MLink ml = (MLink) edge;
-      Collection conns = ml.getConnections();
-      return ((Object[])conns.toArray())[1];
+      return CommonBehaviorHelper.getHelper().getDestination((MLink)edge);
     }
-    System.out.println("needs-more-work getDestPort");
+    cat.debug("needs-more-work getDestPort");
     return null;
   }
 
@@ -155,12 +155,23 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
 
   /** Return true if the given object is a valid node in this graph */
   public boolean canAddNode(Object node) {
+    if (_nodes.contains(node)) return false;
     return (node instanceof MObject || node instanceof MStimulus);
   }
 
   /** Return true if the given object is a valid edge in this graph */
   public boolean canAddEdge(Object edge)  {
-    return (edge instanceof MLink);
+    Object end0 = null;
+    Object end1 = null;
+    if (edge instanceof MLink) {
+        end0 = CommonBehaviorHelper.getHelper().getSource((MLink)edge);
+        end1 = CommonBehaviorHelper.getHelper().getDestination((MLink)edge);
+    }
+    if (end0 == null || end1 == null) return false;
+    if (!_nodes.contains(end0)) return false;
+    if (!_nodes.contains(end1)) return false;
+    return true;
+        
   }
 
   /** Remove the given node from the graph. */
@@ -188,15 +199,25 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
     if (_edges.contains(edge)) return;
     _edges.addElement(edge);
     // needs-more-work: assumes public
-     if (edge instanceof MLink) {
-       _Sequence.addOwnedElement((MLink) edge);
-       // ((MAssociation)edge).setNamespace(_Sequence.getNamespace());
+     if (edge instanceof MModelElement) {
+        _Sequence.addOwnedElement((MModelElement) edge);
       }
     fireEdgeAdded(edge);
 
   }
 
-  public void addNodeRelatedEdges(Object node) {}
+  public void addNodeRelatedEdges(Object node) {
+    if ( node instanceof MInstance ) {
+      Collection ends = ((MInstance)node).getLinkEnds();
+      Iterator iter = ends.iterator();
+      while (iter.hasNext()) {
+         MLinkEnd ae = (MLinkEnd) iter.next();
+         if(canAddEdge(ae.getLink()))
+           addEdge(ae.getLink());
+           return;
+      }
+    }
+  }
 
   /** Remove the given edge from the graph. */
   public void removeEdge(Object edge) {
@@ -289,13 +310,10 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
       }
       return ml;
     } else {
-      System.out.println("Incorrect edge");
+      cat.debug("Incorrect edge");
       return null;
     }
-    //}
-    //catch (java.beans.PropertyVetoException ex) { }
-    //System.out.println("should not enter here! connect3");
-    //return null;
+    
 
   }
 
@@ -314,13 +332,13 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
       MElementImport eo = (MElementImport) pce.getNewValue();
       MModelElement me = eo.getModelElement();
       if (oldOwned.contains(eo)) {
-	    //System.out.println("model removed " + me);
+	    cat.debug("model removed " + me);
 	    if (me instanceof MObject) removeNode(me);
 	    if (me instanceof MStimulus) removeNode(me);
 	    if (me instanceof MAssociation) removeEdge(me);
       }
       else {
-	    //System.out.println("model added " + me);
+	    cat.debug("model added " + me);
       }
     }
   }

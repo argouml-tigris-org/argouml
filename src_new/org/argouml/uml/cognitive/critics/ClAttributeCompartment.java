@@ -29,10 +29,12 @@ import javax.swing.*;
 import org.tigris.gef.presentation.*;
 
 import org.argouml.ui.*;
+import org.apache.log4j.Category;
 import org.argouml.cognitive.*;
 import org.argouml.uml.diagram.static_structure.ui.*;
 
 public class ClAttributeCompartment implements Clarifier {
+    protected static Category cat = Category.getInstance(ClAttributeCompartment.class);
   public static ClAttributeCompartment TheInstance = new ClAttributeCompartment();
   public static int WAVE_LENGTH = 4;
   public static int WAVE_HEIGHT = 2;
@@ -84,7 +86,7 @@ public class ClAttributeCompartment implements Clarifier {
 
   public boolean hit(int x, int y) {
     if (!(_fig instanceof FigClass)) {
-      System.out.println("not a FigClass");
+      cat.debug("not a FigClass");
       return false;
     }
     FigClass fc = (FigClass) _fig;

@@ -28,11 +28,14 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
 import org.argouml.cognitive.ToDoItem;
 
 public class TreeModelComposite
 implements TreeModel, Cloneable {
+    protected static Category cat = 
+        Category.getInstance(TreeModelComposite.class);
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -86,7 +89,7 @@ implements TreeModel, Cloneable {
 
   public void addFlatChildren(Object node) {
     if (node == null) return;
-    //System.out.println("addFlatChildren");
+    cat.debug("addFlatChildren");
     // hack for to do items only, should check isLeaf(node), but that
     // includes empty folders. Really I need alwaysLeaf(node).
     if ((node instanceof ToDoItem) && !_flatChildren.contains(node)) 
@@ -155,7 +158,7 @@ implements TreeModel, Cloneable {
       if (childIndex != -1) return childIndex + childCount;
       childCount += tm.getChildCount(parent);
     }
-    //System.out.println("child not found!");
+    cat.debug("child not found!");
     //The child is sometimes not found when the tree is being updated
     return -1;
   }
@@ -196,39 +199,20 @@ implements TreeModel, Cloneable {
    * @param newValue the new value from the TreeCellEditor.
    */
   public void valueForPathChanged(TreePath path, Object newValue) {
-    System.out.println("valueForPathChanged TreeModelComposite");
+    cat.debug("valueForPathChanged TreeModelComposite");
   }
 
 
   public void fireTreeStructureChanged() {
-//     Object path[] = new Object[1];
-//     path[0] = getRoot();
-//     fireTreeStructureChanged(new TreePath(path));
   }
 
   public void fireTreeStructureChanged(TreePath path) {
-//     if (_treeListeners == null) return;
-//     TreeModelEvent evt =
-//       new TreeModelEvent(this, path);
-//     System.out.println("fire _treeListeners.size() = " +
-//     _treeListeners.size());
-//     for (int i = 0; i < _treeListeners.size(); i++) {
-//       TreeModelListener target =
-// 	(TreeModelListener) _treeListeners.elementAt(i);
-//       target.treeStructureChanged(evt);
-//     }
   }
 
   public void addTreeModelListener(TreeModelListener l) {
-//     System.out.println("adding tree listener to " + toString());
-//     if (_treeListeners == null) _treeListeners = new Vector();
-//     _treeListeners.removeElement(l);
-//     _treeListeners.addElement(l);
   }
+  
   public void removeTreeModelListener(TreeModelListener l) {
-//     if (_treeListeners == null) return;
-//     _treeListeners.removeElement(l);
-//     //System.out.println("rm _treeListeners.size() = " + _treeListeners.size());
   }
 
 

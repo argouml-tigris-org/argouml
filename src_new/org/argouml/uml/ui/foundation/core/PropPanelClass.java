@@ -138,14 +138,9 @@ public class PropPanelClass extends PropPanelClassifier {
         Object target = getTarget();
         if(target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
-            MClass inner = CoreFactory.getFactory().buildClass();
-            classifier.addOwnedElement(inner);
+            MClass inner = CoreFactory.getFactory().buildClass(classifier);
             navigateTo(inner);
         }
-        // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
     }
 
     public void newClass() {
@@ -154,15 +149,11 @@ public class PropPanelClass extends PropPanelClassifier {
             MClassifier classifier = (MClassifier) target;
             MNamespace ns = classifier.getNamespace();
             if(ns != null) {
-                MClassifier peer = classifier.getFactory().createClass();
-                ns.addOwnedElement(peer);
+                MClassifier peer = CoreFactory.getFactory().buildClass(ns);
                 navigateTo(peer);
             }
         }
-        // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
+       
     }
 
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {

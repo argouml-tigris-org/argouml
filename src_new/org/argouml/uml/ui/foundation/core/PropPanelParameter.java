@@ -25,10 +25,15 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.*;
+import java.util.Iterator;
+import java.util.Vector;
+
 import javax.swing.*;
 
+import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.model_management.*;
 
 import org.argouml.application.api.*;
@@ -43,6 +48,10 @@ public class PropPanelParameter extends PropPanelModelElement {
         super("Parameter", _parameterIcon,2);
 
         Class mclass = MParameter.class;
+        
+         Class[] namesToWatch = { MStereotype.class,MOperation.class,
+        MParameter.class,MClassifier.class };
+    setNameEventListening(namesToWatch);
 
         addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
         addField(nameField,1,0,0);
@@ -55,11 +64,14 @@ public class PropPanelParameter extends PropPanelModelElement {
         addLinkField(new JScrollPane(namespaceList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),3,0,0);
 
         addCaption(Argo.localize("UMLMenu", "label.type"),0,1,0);
+        /*
         UMLComboBoxModel typeModel = new UMLTypeModel(this,"isAcceptibleType",
             "type","getType","setType",true,MClassifier.class,
 	    MParameter.class,true);
+        
 	UMLComboBox typeComboBox=new UMLComboBox(typeModel);
-        addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),typeComboBox),0,1,0);
+        */
+        addField(new UMLTypeComboBox(this),0,1,0);
 
         addCaption("Initial Value:",1,1,0);
         addField(new UMLInitialValueComboBox(this),1,1,0);
@@ -92,6 +104,7 @@ public class PropPanelParameter extends PropPanelModelElement {
 	new PropPanelButton(this,buttonPanel,_parameterIcon, Argo.localize("UMLMenu", "button.add-parameter"),"addParameter",null);
 	//	new PropPanelButton(this,buttonPanel,_dataTypeIcon, Argo.localize("UMLMenu", "button.add-datatype"),"addDataType",null);
 	new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-parameter"),"removeElement",null);
+       
     }
 
     public MClassifier getType() {
@@ -137,7 +150,8 @@ public class PropPanelParameter extends PropPanelModelElement {
         if(target instanceof MParameter) {
             feature = ((MParameter) target).getBehavioralFeature();
             if(feature != null) {
-                navigateTo(CoreFactory.getFactory().buildParameter(feature));
+                MParameter param = CoreFactory.getFactory().buildParameter((MOperation)target);              
+                navigateTo(param);
             }
         }
     }

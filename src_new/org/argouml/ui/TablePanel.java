@@ -39,6 +39,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.ui.*;
 
+import org.apache.log4j.Category;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.diagram.*;
@@ -46,6 +47,8 @@ import org.argouml.uml.diagram.static_structure.*;
 
 public class TablePanel extends TabSpawnable
 implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener, ActionListener {
+    protected static Category cat = 
+        Category.getInstance(TablePanel.class);
 
   ////////////////////////////////////////////////////////////////
   // instance vars
@@ -262,8 +265,8 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
   // actions
 
   public void setFilter() {
-    System.out.println("filter set to: ");
-    System.out.println(_filterCombo.getSelectedItem());
+    cat.debug("filter set to: ");
+    cat.debug(_filterCombo.getSelectedItem());
   }
 
   public void setTablePerspective() {
@@ -279,7 +282,7 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
   // document event handling
 
   public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
+    cat.debug(getClass().getName() + " insert");
 
     Component ed = _filterCombo.getEditor().getEditorComponent();
     Document filterDoc = ((JTextField)ed).getDocument();
@@ -289,8 +292,6 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
   public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
 
   public void changedUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
   }
 
   ////////////////////////////////////////////////////////////////
@@ -299,13 +300,9 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
   public void itemStateChanged(ItemEvent e) {
     Object src = e.getSource();
     if (src == _persCombo) {
-      //System.out.println("class keywords now is " +
-      //_keywordsField.getSelectedItem());
       setTablePerspective();
     }
     else if (src == _filterCombo) {
-      //System.out.println("class MVisibilityKind now is " +
-      //_visField.getSelectedItem());
       setFilter();
     }
   }

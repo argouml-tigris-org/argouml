@@ -38,6 +38,7 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ProjectBrowser;
@@ -295,16 +296,12 @@ public class PropPanelUseCase extends PropPanelClassifier {
             MNamespace ns = ((MUseCase) target).getNamespace();
 
             if(ns != null) {
-                MUseCase useCase = ns.getFactory().createUseCase();
+                MUseCase useCase = UseCasesFactory.getFactory().createUseCase();
 
                 ns.addOwnedElement(useCase);
                 navigateTo(useCase);
             }
         }
-        // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
     }
 
 
@@ -324,23 +321,10 @@ public class PropPanelUseCase extends PropPanelClassifier {
             MUseCase   useCase = (MUseCase) target;
             MNamespace ns      = useCase.getNamespace();
 
-            if(ns != null) {
-                MExtensionPoint extensionPoint =
-                    ns.getFactory().createExtensionPoint();
-
-                // Add to the current use case (NSUML will set the reverse
-                // link) and place in the namespace, before navigating to the
-                // extension point.
-
-                useCase.addExtensionPoint(extensionPoint);
-                ns.addOwnedElement(extensionPoint);
-
-                navigateTo(extensionPoint);
-                // 2002-07-15
-            	// Jaap Branderhorst
-            	// Force an update of the navigation pane to solve issue 323
-            	ProjectBrowser.TheInstance.getNavPane().forceUpdate();
-            }
+            MExtensionPoint extensionPoint =
+                    UseCasesFactory.getFactory().buildExtensionPoint(useCase);
+            navigateTo(extensionPoint);
+            
         }
     }
 

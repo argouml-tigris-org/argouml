@@ -145,6 +145,12 @@ implements Serializable, TreeModel, Cloneable {
 			     new GoModelToElements(),
 			     new PredOR(new PredInstanceOf(MExtend.class),
                                         new PredInstanceOf(MInclude.class)));
+    
+     GoFilteredChildren modelToDependencies = 
+        new GoFilteredChildren("misc.package.dependencies",
+                new GoModelToElements(),
+                new PredInstanceOf(MDependency.class));
+    
 
     GoFilteredChildren modelToInstances =
       new GoFilteredChildren("misc.package.instances",
@@ -182,6 +188,7 @@ implements Serializable, TreeModel, Cloneable {
     packageCentric.addSubTreeModel(modelToComponentInstance);
     packageCentric.addSubTreeModel(modelToNodeInstance);
     packageCentric.addSubTreeModel(modelToGeneralizations);
+    packageCentric.addSubTreeModel(modelToDependencies);
     packageCentric.addSubTreeModel(new GoUseCaseToExtensionPoint());
     packageCentric.addSubTreeModel(new GoClassifierToStr());
     packageCentric.addSubTreeModel(new GoClassifierToBeh());
@@ -420,7 +427,6 @@ implements Serializable, TreeModel, Cloneable {
    * @param newValue the new value from the TreeCellEditor.
    */
   public void valueForPathChanged(TreePath path, Object newValue) {
-    System.out.println("valueForPathChanged NavPerspective");
   }
 
 

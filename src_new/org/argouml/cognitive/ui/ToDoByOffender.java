@@ -30,9 +30,12 @@ import ru.novosoft.uml.foundation.core.*;
 
 import org.tigris.gef.util.*;
 
+import org.apache.log4j.Category;
 import org.argouml.cognitive.*;
 
 public class ToDoByOffender extends ToDoPerspective {
+    protected static Category cat = 
+        Category.getInstance(ToDoByOffender.class);
 
   public ToDoByOffender() {
     super("todo.perspective.offender");
@@ -43,7 +46,7 @@ public class ToDoByOffender extends ToDoPerspective {
   // ToDoListListener implementation
 
   public void toDoItemsChanged(ToDoListEvent tde) {
-    //System.out.println("toDoItemsChanged");
+    cat.debug("toDoItemsChanged");
     Vector items = tde.getToDoItems();
     int nItems = items.size();
     Object path[] = new Object[2];
@@ -78,7 +81,7 @@ public class ToDoByOffender extends ToDoPerspective {
   }
 
   public void toDoItemsAdded(ToDoListEvent tde) {
-    //System.out.println("toDoItemAdded");
+    cat.debug("toDoItemAdded");
     Vector items = tde.getToDoItems();
     int nItems = items.size();
     Object path[] = new Object[2];
@@ -113,7 +116,7 @@ public class ToDoByOffender extends ToDoPerspective {
   }
 
   public void toDoItemsRemoved(ToDoListEvent tde) {
-    //System.out.println("toDoItemRemoved");
+    cat.debug("toDoItemRemoved");
     Vector items = tde.getToDoItems();
     int nItems = items.size();
     Object path[] = new Object[2];
@@ -131,7 +134,7 @@ public class ToDoByOffender extends ToDoPerspective {
 //       }
 //       if (!anyInOff) continue;
 
-      //System.out.println("toDoItemRemoved updating PriorityNode");
+      cat.debug("toDoItemRemoved updating PriorityNode");
       path[1] = off;
       //fireTreeNodesChanged(this, path, childIndices, children);
       fireTreeStructureChanged(path);

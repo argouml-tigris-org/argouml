@@ -48,10 +48,9 @@ public class ActionAddExistingNode extends UMLAction implements GraphFactory
 
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Object target = pb.getDetailsTarget();
-	if (target instanceof MModelElement) 
-	    return true;
-	return false;
+        Object target = pb.getTarget();
+        MutableGraphModel gm = (MutableGraphModel)pb.getActiveDiagram().getGraphModel();
+        return gm.canAddNode(target);
     }
 
     public void actionPerformed(ActionEvent ae) {

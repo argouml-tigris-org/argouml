@@ -39,11 +39,14 @@ import ru.novosoft.uml.model_management.*;
 
 import org.tigris.gef.util.*;
 
+import org.apache.log4j.Category;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 
 public class UMLAction extends AbstractAction {
+    protected static Category cat = 
+        Category.getInstance(UMLAction.class);
 
   public static boolean HAS_ICON = true;
   public static boolean NO_ICON = false;
@@ -60,7 +63,7 @@ public class UMLAction extends AbstractAction {
         Translator.getImageBinding(name),
         Translator.localize("CoreMenu", name));
       if (icon != null) putValue(Action.SMALL_ICON, icon);
-      else { System.out.println("icon not found: " + name); }
+      else { cat.debug("icon not found: " + name); }
     }
     putValue(Action.SHORT_DESCRIPTION,
       Translator.localize("CoreMenu", name) + " ");
@@ -70,7 +73,7 @@ public class UMLAction extends AbstractAction {
   /** Perform the work the action is supposed to do. */
   // needs-more-work: should actions run in their own threads?
   public void actionPerformed(ActionEvent e) {
-    System.out.println("pushed " + getValue(Action.NAME));
+    cat.debug("pushed " + getValue(Action.NAME));
     StatusBar sb = ProjectBrowser.TheInstance.getStatusBar();
     sb.doFakeProgress(stripJunk(getValue(Action.NAME).toString()), 100);
     History.TheHistory.addItemManipulation("pushed " + getValue(Action.NAME),
@@ -89,7 +92,7 @@ public class UMLAction extends AbstractAction {
 
   public void updateEnabled() {
 	  boolean b = shouldBeEnabled();
-	  // System.out.println("b is "+b + " in " +this);
+	  cat.debug("b is "+b + " in " +this);
 	  setEnabled(b);
   }
 

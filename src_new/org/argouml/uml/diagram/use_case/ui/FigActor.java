@@ -120,7 +120,7 @@ public class FigActor extends FigNodeModelElement {
     return new SelectionActor(this);
   }
 
-  public void setOwner(Object node) {
+  public void setOwner(Object node) {  
     super.setOwner(node);
     bindPort(node, _bigPort);
   }

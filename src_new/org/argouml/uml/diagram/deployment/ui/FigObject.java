@@ -125,8 +125,7 @@ public class FigObject extends FigNodeModelElement {
 
   public void setOwner(Object node) {
     super.setOwner(node);
-    Object onlyPort = node;
-    bindPort(onlyPort, _bigPort);
+    bindPort(node, _bigPort);
   }
 
   public Dimension getMinimumSize() {

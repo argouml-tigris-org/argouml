@@ -541,13 +541,6 @@ public class ModuleLoader {
           return null;
       }
 
-      // // Check to see that the class implements Pluggable
-      // if (! (pluginType.isAssignableFrom(Pluggable.class))) {
-          // System.out.println ("Class " + pluginType.getName() +
-	                      // " does not extend Pluggable.");
-          // return null;
-      // }
-
       // Check to see that the class is not Pluggable itself
       if (pluginType.equals(Pluggable.class)) {
           Argo.log.warn ("This is " + pluginType.getName() +
@@ -660,13 +653,6 @@ public class ModuleLoader {
 	                      " is not a core Argo pluggable type.");
           return null;
       }
-
-      // // Check to see that the class implements Pluggable
-      // if (! (pluginType.isAssignableFrom(Pluggable.class))) {
-          // System.out.println ("Class " + pluginType.getName() +
-	                      // " does not extend Pluggable.");
-          // return null;
-      // }
 
       // Check to see that the class is not Pluggable itself
       if (pluginType.equals(Pluggable.class)) {

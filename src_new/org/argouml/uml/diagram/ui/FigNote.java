@@ -88,9 +88,6 @@ public class FigNote extends FigNodeModelElement {
 
   public void setOwner(Object node) {
     super.setOwner(node);
-    // if it is a UML meta-model object, register interest in any change events
-    if (node instanceof MElement)
-      ((MElement)node).addMElementListener(this);
     bindPort(node, _bigPort);
   }
 

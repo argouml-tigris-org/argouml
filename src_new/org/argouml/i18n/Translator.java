@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.Properties;
 
+import org.apache.log4j.Category;
 import org.tigris.gef.util.Localizer;
 
 /**
@@ -39,6 +40,8 @@ import org.tigris.gef.util.Localizer;
  *
  */
 public class Translator {
+    protected static Category cat = 
+        Category.getInstance(Translator.class);
 
     /** Key for menu resource bundle. */
     public static final String MENU_BUNDLE = "CoreMenu";
@@ -91,8 +94,7 @@ public class Translator {
             properties.load(inputStream);
             inputStream.close();
         } catch (IOException ex) {
-            System.out.println("Unable to load properties from file: " + file);
-            ex.printStackTrace(System.out);
+            cat.fatal("Unable to load properties from file: " + file, ex);
             System.exit(1);
         }
 

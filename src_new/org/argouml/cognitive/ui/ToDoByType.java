@@ -28,10 +28,13 @@ import java.util.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 
+import org.apache.log4j.Category;
 import org.argouml.cognitive.*;
 
 public class ToDoByType extends ToDoPerspective
 implements ToDoListListener {
+    protected static Category cat = 
+        Category.getInstance(ToDoByType.class);
 
   public ToDoByType() {
     super("todo.perspective.type");
@@ -43,7 +46,7 @@ implements ToDoListListener {
   // ToDoListListener implementation
 
   public void toDoItemsChanged(ToDoListEvent tde) {
-    //System.out.println("toDoItemsChanged");
+    cat.debug("toDoItemsChanged");
     Vector items = tde.getToDoItems();
     int nItems = items.size();
     Object path[] = new Object[2];
@@ -76,7 +79,7 @@ implements ToDoListListener {
   }
 
   public void toDoItemsAdded(ToDoListEvent tde) {
-    //System.out.println("toDoItemAdded");
+    cat.debug("toDoItemAdded");
     Vector items = tde.getToDoItems();
     int nItems = items.size();
     Object path[] = new Object[2];
@@ -109,7 +112,7 @@ implements ToDoListListener {
   }
 
   public void toDoItemsRemoved(ToDoListEvent tde) {
-    //System.out.println("toDoItemRemoved");
+    cat.debug("toDoItemRemoved");
     ToDoList list = Designer.TheDesigner.getToDoList(); //source?
     Vector items = tde.getToDoItems();
     int nItems = items.size();
@@ -126,7 +129,7 @@ implements ToDoListListener {
 	if (item.containsKnowledgeType(kt)) anyInKT = true;
       }
       if (!anyInKT) continue;
-      //System.out.println("toDoItemRemoved updating PriorityNode");
+      cat.debug("toDoItemRemoved updating PriorityNode");
       path[1] = ktn;
       //fireTreeNodesChanged(this, path, childIndices, children);
       fireTreeStructureChanged(path);

@@ -35,6 +35,7 @@ import javax.swing.event.EventListenerList;
 
 import org.tigris.gef.util.*;
 
+import org.apache.log4j.Category;
 import org.argouml.kernel.*;
 
 /** Implements a list of ToDoItem's.  If desired it can also
@@ -66,6 +67,8 @@ import org.argouml.kernel.*;
  */
 public class ToDoList extends Observable
 implements Runnable, java.io.Serializable {
+    protected static Category cat = 
+        Category.getInstance(ToDoList.class);
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -115,7 +118,7 @@ implements Runnable, java.io.Serializable {
       removes.removeAllElements();
       try { _validityChecker.sleep(3000); }
       catch (InterruptedException ignore) {
-	System.out.println("InterruptedException!!!");
+        cat.error("InterruptedException!!!", ignore);
       }
     }
   }
@@ -142,10 +145,10 @@ implements Runnable, java.io.Serializable {
       try { valid = item.stillValid(_designer); }
       catch (Exception ex) {
 	valid = false;
-	System.out.println("Exception raised in to do list cleaning");
-	System.out.println(item.toString());
-	ex.printStackTrace();
-	System.out.println("----------");
+        StringBuffer buf = new StringBuffer("Exception raised in to do list cleaning");
+        buf.append("\n");
+        buf.append(item.toString());
+        cat.error(buf.toString(), ex);
       }
       if (!valid) {
 	_numNotValid++;
@@ -245,7 +248,7 @@ implements Runnable, java.io.Serializable {
     /* remove any identical items already on the list */
     if (_items.contains(item)) return;
     if (_resolvedItems.contains(item)) {
-      //System.out.println("ToDoItem not added because it was resolved");
+      cat.debug("ToDoItem not added because it was resolved");
       return;
     }
     _items.addElement(item);
@@ -312,7 +315,7 @@ implements Runnable, java.io.Serializable {
   }
 
   public synchronized void removeAllElements() {
-    //System.out.println("removing all todo items");
+    cat.debug("removing all todo items");
     Vector oldItems = (Vector) _items.clone();
     int size = oldItems.size();
     for (int i = 0; i < size; i++)

@@ -32,10 +32,13 @@ import javax.swing.table.*;
 
 import org.tigris.gef.util.*;
 
+import org.apache.log4j.Category;
 import org.argouml.kernel.*;
 
 public class TableModelComposite extends AbstractTableModel
 implements TableModelTarget {
+    protected static Category cat = 
+        Category.getInstance(TableModelComposite.class);
 
   ////////////////
   // instance varables
@@ -67,7 +70,7 @@ implements TableModelTarget {
   }
 
   public Vector rowObjectsFor(Object t) {
-    System.out.println("default rowObjectsFor called. bad!");
+    cat.warn("default rowObjectsFor called. bad!");
     return new Vector();
   }
 
@@ -97,7 +100,6 @@ implements TableModelTarget {
       ColumnDescriptor cd = (ColumnDescriptor) _colDescs.elementAt(c);
       return cd.getColumnClass();
     }
-    System.out.println("asdwasd");
     return String.class;
   }
 

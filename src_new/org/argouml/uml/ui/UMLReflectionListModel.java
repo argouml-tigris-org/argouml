@@ -28,6 +28,8 @@ import ru.novosoft.uml.foundation.core.*;
 import java.util.*;
 import java.awt.*;
 import java.lang.reflect.*;
+
+import org.apache.log4j.Category;
 import org.argouml.ui.ProjectBrowser;
 
 /**
@@ -36,6 +38,7 @@ import org.argouml.ui.ProjectBrowser;
  *  @author Curt Arnold
  */
 public class UMLReflectionListModel extends UMLModelElementListModel   {
+    protected static Category cat = Category.getInstance(UMLReflectionListModel.class);
 
     private Method _getMethod = null;
     private Method _setMethod = null;
@@ -77,7 +80,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
             }
         }
         catch(Exception e) {
-            System.out.println(e.toString() + " in UMLReflectionListModel:" + getMethod);
+            cat.error(e.toString() + " in UMLReflectionListModel:" + getMethod, e);
         }
     }
 
@@ -103,10 +106,10 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 }
             }
 	    catch(InvocationTargetException ex) {
-                System.out.println(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.recalcModelElementSize.");
+                cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.recalcModelElementSize.", ex);
             }
             catch(Exception e) {
-                System.out.println(e.toString() + " in UMLReflectionListModel.recalcModelElementSize.");
+                cat.error(e.toString() + " in UMLReflectionListModel.recalcModelElementSize.", e);
             }
         }
         return size;
@@ -145,7 +148,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 }
             }
             catch(Exception e) {
-                System.out.println(e.toString() + " in UMLReflectionListModel.getElementAt()");
+                cat.error(e.toString() + " in UMLReflectionListModel.getElementAt()", e);
             }
         }
         return element;
@@ -182,8 +185,8 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
             UMLListMenuItem add = new UMLListMenuItem(container.localize("Add"),this,"add",index);
             int upper = getUpperBound();
 	    
-	    // System.out.println("upper "+upper);
-	    // System.out.println("size "+size);
+	    cat.debug("upper "+upper);
+	    cat.debug("size "+size);
 
             if(upper > 0 && size >= upper) {
                 add.setEnabled(false);
@@ -208,25 +211,14 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
             Object[] indexArg = { new Integer(index) };
             Object newTarget = _addMethod.invoke(getContainer(),indexArg);
             if(newTarget != null) {
-			int oldSize = getModelElementSize();
-		//add(newTarget);
-		/* if(newOps == null)
-		     fireIntervalAdded(this,oldSize,oldSize);
-		    else */
-		//		if (_upper==1)
-		//fireIntervalAdded(this,0,size());
-		    //else
-		    //fireIntervalAdded(this,index+1,index+1);
-			
                 getContainer().navigateTo(newTarget);
-                ProjectBrowser.TheInstance.getNavPane().forceUpdate();
             }
         }
 	catch(InvocationTargetException ex) {
-            System.out.println(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.add() ");
+            cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.add() ", ex);
         }
         catch(Exception e) {
-            System.out.println(e.toString() + " in UMLReflectionListModel.add()");
+            cat.error(e.toString() + " in UMLReflectionListModel.add()", e);
         }
 
 
@@ -242,10 +234,10 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 ProjectBrowser.TheInstance.getNavPane().forceUpdate();
             }
 	    catch(InvocationTargetException ex) {
-		System.out.println(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.moveUp()");
+                cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.moveUp()", ex);
 	    }
             catch(Exception e) {
-                System.out.println(e.toString() + " in UMLReflectionListModel.moveUp()");
+                cat.error(e.toString() + " in UMLReflectionListModel.moveUp()", e);
             }
         }
     }
@@ -259,10 +251,10 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 ProjectBrowser.TheInstance.getNavPane().forceUpdate();
             }
 	    catch(InvocationTargetException ex) {
-		System.out.println(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.moveDown() ");
+                cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.moveDown() ", ex.getTargetException());
 	    }
             catch(Exception e) {
-                System.out.println(e.toString() + " in UMLReflectionListModel.moveDown()");
+                cat.error(e.toString() + " in UMLReflectionListModel.moveDown()", e);
             }
         }
     }
@@ -275,10 +267,10 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 ProjectBrowser.TheInstance.getNavPane().forceUpdate();
             }
 	    catch(InvocationTargetException ex) {
-		System.out.println(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.delete()");
+                cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.delete()", ex);
 	    }
 	    catch(Exception e) {
-                System.out.println(e.toString() + " in UMLReflectionListModel.delete()");
+                cat.error(e.toString() + " in UMLReflectionListModel.delete()", e);
             }
         }
     }

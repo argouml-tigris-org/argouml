@@ -36,6 +36,8 @@ import java.util.*;
 import ru.novosoft.uml.foundation.core.*;
 //import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
+import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
@@ -130,12 +132,19 @@ public class FigGeneralization extends FigEdgeModelElement {
     	MGeneralization gen = (MGeneralization)own;
     	MGeneralizableElement subType = gen.getChild();
       MGeneralizableElement superType = gen.getParent();
-      FigNode subTypeFN = (FigNode) getLayer().presentationFor(subType);
-      FigNode superTypeFN = (FigNode) getLayer().presentationFor(superType);
-      setSourcePortFig(subTypeFN);
-      setSourceFigNode(subTypeFN);
-      setDestPortFig(superTypeFN);
-      setDestFigNode(superTypeFN);
+      // due to errors in earlier releases of argouml it can happen that there is a generalization 
+      // without a child or parent. 
+      if (subType == null || superType == null) {
+      	delete();
+      	return;
+      }
+	      FigNode subTypeFN = (FigNode) getLayer().presentationFor(subType);
+	      FigNode superTypeFN = (FigNode) getLayer().presentationFor(superType);
+	      setSourcePortFig(subTypeFN);
+	      setSourceFigNode(subTypeFN);
+	      setDestPortFig(superTypeFN);
+	      setDestFigNode(superTypeFN);
+      
     } else 
     if (own != null) {
     	throw new IllegalStateException("FigGeneralization has an illegal owner");

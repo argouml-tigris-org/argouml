@@ -39,8 +39,10 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 import org.tigris.gef.graph.*;
 
+import org.apache.log4j.Category;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.MMUtil;
 
 /** This class defines a bridge between the UML meta-model
@@ -49,6 +51,7 @@ import org.argouml.uml.MMUtil;
 
 public class ClassDiagramGraphModel extends MutableGraphSupport
 implements MutableGraphModel, VetoableChangeListener, MElementListener {
+    protected static Category cat = Category.getInstance(ClassDiagramGraphModel.class);
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected Vector _nodes = new Vector();
@@ -145,23 +148,19 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
   /** Return one end of an edge */
   public Object getSourcePort(Object edge) {
-    if (edge instanceof MAssociation) {
-      MAssociation assoc = (MAssociation) edge;
-      List conns = assoc.getConnections();
-      return conns.get(0);
+    if (edge instanceof MRelationship) {
+        return CoreHelper.getHelper().getSource((MRelationship)edge);
     }
-    System.out.println("needs-more-work getSourcePort");
+    cat.debug("needs-more-work getSourcePort");
     return null;
   }
 
   /** Return  the other end of an edge */
   public Object getDestPort(Object edge) {
-    if (edge instanceof MAssociation) {
-      MAssociation assoc = (MAssociation) edge;
-      List conns = assoc.getConnections();
-      return conns.get(1);
+    if (edge instanceof MRelationship) {
+        return CoreHelper.getHelper().getDestination((MRelationship)edge);
     }
-    System.out.println("needs-more-work getDestPort");
+    cat.debug("needs-more-work getSourcePort");
     return null;
   }
 
@@ -223,7 +222,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
   /** Add the given node to the graph, if valid. */
   public void addNode(Object node) {
-    //System.out.println("adding class node!!");
+    cat.debug("adding class node!!");
     if (_nodes.contains(node)) return;
     _nodes.addElement(node);
     if (node instanceof MModelElement &&
@@ -231,18 +230,18 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	_model.addOwnedElement((MModelElement) node);
     }
     if (node instanceof MInterface){
-	//System.out.println("Interface stereo: "+MMUtil.STANDARDS.lookup("interface"));
+	cat.debug("Interface stereo: "+MMUtil.STANDARDS.lookup("interface"));
 
 	((MInterface)node).setStereotype((MStereotype)MMUtil.STANDARDS.lookup("interface"));
     }
     
     fireNodeAdded(node);
-    // System.out.println("adding "+node+" OK");
+    cat.debug("adding "+node+" OK");
   }
 
   /** Add the given edge to the graph, if valid. */
   public void addEdge(Object edge) {
-    //System.out.println("adding class edge!!!!!!");
+    cat.debug("adding class edge!!!!!!");
     if (_edges.contains(edge)) return;
     _edges.addElement(edge);
     // needs-more-work: assumes public
@@ -254,14 +253,21 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
   }
 
 
+/**
+ * Adds the edges from the given node. For example, this method lets you add
+ * an allready existing massociation between two figclassifiers.
+ * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(Object)
+ */
   public void addNodeRelatedEdges(Object node) {
     if ( node instanceof MClassifier ) {
       Collection ends = ((MClassifier)node).getAssociationEnds();
       Iterator iter = ends.iterator();
       while (iter.hasNext()) {
          MAssociationEnd ae = (MAssociationEnd) iter.next();
-         if(canAddEdge(ae.getAssociation()))
+         if(canAddEdge(ae.getAssociation())) {
            addEdge(ae.getAssociation());
+           return;
+         }
       }
     }
     if ( node instanceof MGeneralizableElement ) {
@@ -269,15 +275,19 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
       Iterator iter = gn.iterator();
       while (iter.hasNext()) {
          MGeneralization g = (MGeneralization) iter.next();
-         if(canAddEdge(g))
+         if(canAddEdge(g)) {
            addEdge(g);
+           return;
+         }
       }
       Collection sp = ((MGeneralizableElement)node).getSpecializations();
       iter = sp.iterator();
       while (iter.hasNext()) {
          MGeneralization s = (MGeneralization) iter.next();
-         if(canAddEdge(s))
+         if(canAddEdge(s)) {
            addEdge(s);
+           return;
+         }
       }
     }
     if ( node instanceof MModelElement ) {
@@ -286,8 +296,10 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
       Iterator iter = specs.iterator();
       while (iter.hasNext()) {
          MDependency dep = (MDependency) iter.next();
-         if(canAddEdge(dep))
+         if(canAddEdge(dep)) {
            addEdge(dep);
+           return;
+         }
       }
     }
   }
@@ -313,7 +325,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
   /** Contruct and add a new edge of the given kind */
   public Object connect(Object fromPort, Object toPort,
                         java.lang.Class edgeClass) {
-	  // System.out.println("connecting: "+fromPort+toPort+edgeClass);
+	  cat.debug("connecting: "+fromPort+toPort+edgeClass);
       if ((fromPort instanceof MClass) && (toPort instanceof MClass)) {
           MClass fromCls = (MClass) fromPort;
           MClass toCls = (MClass) toPort;
@@ -339,7 +351,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
               return dep;
           }
           else {
-              System.out.println("connect: Cannot make a "+ edgeClass.getName() +
+              cat.debug("connect: Cannot make a "+ edgeClass.getName() +
                                  " between a " + fromPort.getClass().getName() +
                                  " and a " + toPort.getClass().getName());
               return null;
@@ -385,7 +397,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
                   return dep;
               }
           else {
-              System.out.println("Cannot make a "+ edgeClass.getName() +
+              cat.debug("Cannot make a "+ edgeClass.getName() +
                                  " between a " + fromPort.getClass().getName() +
                                  " and a " + toPort.getClass().getName());
               return null;
@@ -422,7 +434,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
               // 	}
 
               else {
-                  System.out.println("Cannot make a "+ edgeClass.getName() +
+                  cat.debug("Cannot make a "+ edgeClass.getName() +
                                      " between a " + fromPort.getClass().getName() +
                                      " and a " + toPort.getClass().getName());
                   return null;
@@ -447,7 +459,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
               return dep;
           }
           else {
-              System.out.println("Cannot make a "+ edgeClass.getName() +
+              cat.debug("Cannot make a "+ edgeClass.getName() +
                                  " between a " + fromPort.getClass().getName() +
                                  " and a " + toPort.getClass().getName());
               return null;
@@ -481,16 +493,15 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
       MElementImport eo = (MElementImport) pce.getNewValue();
       MModelElement me = eo.getModelElement();
       if (oldOwned.contains(eo)) {
-	//System.out.println("model removed " + me);
+	cat.debug("model removed " + me);
 	if (me instanceof MClassifier) removeNode(me);	
 	if (me instanceof MPackage) removeNode(me);
 	if (me instanceof MAssociation) removeEdge(me);
 	if (me instanceof MDependency) removeEdge(me);
 	if (me instanceof MGeneralization) removeEdge(me);
-	//if (me instanceof Realization) removeEdge(me);
       }
       else {
-	//System.out.println("model added " + me);
+	cat.debug("model added " + me);
       }
     }
   }

@@ -93,13 +93,6 @@ public class StylePanelFigMessage extends StylePanelFig {
   ////////////////////////////////////////////////////////////////
   // event handling
 
-  public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
-//     Document bboxDoc = _bboxField.getDocument();
-//     if (e.getDocument() == bboxDoc) setTargetBBox();
-    super.insertUpdate(e);
-  }
-
   public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
 
 

@@ -138,7 +138,6 @@ public class ActionRemoveFromModel extends UMLChangeAction {
                     }
                 }
                 ProjectBrowser.TheInstance.getProject().moveToTrash(target); 
-                ProjectBrowser.TheInstance.getNavPane().forceUpdate();
             } 
             		
         }

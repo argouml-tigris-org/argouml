@@ -681,26 +681,8 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
 	       	if (!target.equals(projectTarget)) {
         		ProjectBrowser.TheInstance.setTarget(projectTarget);
         	}
-	                    /*
-            Object newTarget = null;
-            if(base instanceof MFeature) {
-                newTarget = ((MFeature) base).getOwner();
-            }
-            else {
-                if(base instanceof MModelElement) {
-                    newTarget = ((MModelElement) base).getNamespace();
-                }
-            }
-            base.remove();
-            if(newTarget != null) {
-                navigateTo(newTarget);
-            }
-            */
+	   
         }
-        // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
     }
 
     public boolean isAcceptibleStereotype(MModelElement element) {

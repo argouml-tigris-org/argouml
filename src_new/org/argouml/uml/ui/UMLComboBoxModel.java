@@ -46,6 +46,7 @@ package org.argouml.uml.ui;
 import org.argouml.ui.*;
 import org.argouml.uml.*;
 import org.argouml.kernel.*;
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 
 import java.lang.reflect.*;
@@ -77,6 +78,9 @@ import ru.novosoft.uml.behavior.use_cases.*;
 
 public class UMLComboBoxModel extends AbstractListModel implements
     ComboBoxModel, UMLUserInterfaceComponent, ActionListener {
+    protected static Category cat = 
+        Category.getInstance(UMLComboBoxModel.class);
+        
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -239,9 +243,9 @@ public class UMLComboBoxModel extends AbstractListModel implements
                 _filter = _container.getClass().getMethod(filter, args);
             }
             catch(Exception e) {
-                System.out.println(e.toString() + ". " +
+                cat.error(e.toString() + ". " +
                                    this.getClass().toString() +
-                                   ": invalid filter method " + filter);
+                                   ": invalid filter method " + filter, e);
             }
         }
 
@@ -252,9 +256,9 @@ public class UMLComboBoxModel extends AbstractListModel implements
                 _getMethod = container.getClass().getMethod(getMethod,getArgs);
             }
             catch(Exception e) {
-                System.out.println(e.toString() + ". " +
+                cat.error(e.toString() + ". " +
                                    this.getClass().toString() +
-                                   ": invalid get method " + getMethod);
+                                   ": invalid get method " + getMethod, e);
             }
         }
 
@@ -265,9 +269,9 @@ public class UMLComboBoxModel extends AbstractListModel implements
                 _setMethod = container.getClass().getMethod(setMethod,setArgs);
             }
             catch(Exception e) {
-                System.out.println(e.toString() + ". " +
+                cat.error(e.toString() + ". " +
                                    this.getClass().toString() +
-                                   ": invalid set method " + setMethod);
+                                   ": invalid set method " + setMethod, e);
             }
         }
     }
@@ -549,9 +553,9 @@ public class UMLComboBoxModel extends AbstractListModel implements
             }
         }
         catch(Exception e) {
-            System.out.println(e.toString() + ". " +
+            cat.error(e.toString() + ". " +
                                this.getClass().toString() +
-                               ": isAcceptible() - filter failed.");
+                               ": isAcceptible() - filter failed.", e);
         }
         return isAcceptible;
     }
@@ -719,10 +723,9 @@ public class UMLComboBoxModel extends AbstractListModel implements
             }
         }
         catch(Exception e) {
-            System.out.println(e.toString() + ". " +
+            cat.error(e.toString() + ". " +
                                this.getClass().toString() +
-                               ": targetChanged() - get method failed.");
-
+                               ": targetChanged() - get method failed.", e);
             _selectedItem = null;
         }
 
@@ -1051,9 +1054,9 @@ public class UMLComboBoxModel extends AbstractListModel implements
             _setMethod.invoke(_container, args);
         }
         catch(Exception e) {
-            System.out.println(e.toString() + ". " +
+            cat.error(e.toString() + ". " +
                                this.getClass().toString() +
-                               ": actionPerformed() - set method failed.");
+                               ": actionPerformed() - set method failed.", e);
         }
 
         // Having set a property, mark as needing saving. Commented out for

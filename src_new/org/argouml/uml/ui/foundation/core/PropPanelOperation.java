@@ -38,6 +38,7 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 
 import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
+import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
@@ -255,7 +256,8 @@ public class PropPanelOperation extends PropPanelModelElement {
     public void buttonAddParameter() {
         Object target = getTarget();
         if(target instanceof MOperation) {
-        	navigateTo(CoreFactory.getFactory().buildParameter((MOperation)target));
+        	MParameter param = CoreFactory.getFactory().buildParameter((MOperation)target);
+                navigateTo(param);
         	/*
             MOperation oper = (MOperation) target;
             MParameter newParam = oper.getFactory().createParameter();
@@ -272,8 +274,7 @@ public class PropPanelOperation extends PropPanelModelElement {
             MOperation oper = (MOperation) target;
             MClassifier owner = oper.getOwner();
             if(owner != null) {
-				MOperation newOper = UmlFactory.getFactory().getCore().buildOperation(owner);
-				newOper.addMElementListener(((MElementListener)ProjectBrowser.TheInstance.getActiveDiagram().presentationFor(owner)));
+		MOperation newOper = UmlFactory.getFactory().getCore().buildOperation(owner);
                 navigateTo(newOper);
                
             }

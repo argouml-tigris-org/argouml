@@ -46,12 +46,14 @@ import org.tigris.gef.ui.*;
 import org.argouml.ui.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.state.*;
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 // get the note from the class diagram
 import org.argouml.uml.ui.*;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 
 public class UMLStateDiagram extends UMLDiagram {
+    protected static Category cat = Category.getInstance(UMLStateDiagram.class);
 
   ////////////////
   // actions for toolbar
@@ -139,7 +141,7 @@ public class UMLStateDiagram extends UMLDiagram {
 		if (context != null && context instanceof MClass)
 			setup((MClass)context, sm);
 		else
-			System.out.println("Statemachine without context not yet possible :-(");
+			cat.warn("Statemachine without context not yet possible :-(");
 	}
 
     /** method to perform a number of important initializations of a StateDiagram. 
@@ -182,7 +184,7 @@ public MStateMachine getStateMachine() {
 
   /** initialize the toolbar for this diagram type */
   protected void initToolBar() {
-    //System.out.println("making state toolbar");
+    cat.debug("making state toolbar");
     _toolBar = new ToolBar();
     _toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 //     _toolBar.add(Actions.Cut);

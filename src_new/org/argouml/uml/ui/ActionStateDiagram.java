@@ -23,6 +23,7 @@
 
 package org.argouml.uml.ui;
 
+import org.apache.log4j.Category;
 import org.argouml.kernel.*;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
@@ -41,6 +42,7 @@ import javax.swing.JOptionPane;
 
 
 public class ActionStateDiagram extends UMLChangeAction {
+    protected static Category cat = Category.getInstance(ActionStateDiagram.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -81,7 +83,7 @@ public class ActionStateDiagram extends UMLChangeAction {
 	    pb.setTarget(d);
 	   
 	} catch (PropertyVetoException e) {
-	    System.out.println("PropertyVetoException in ActionStateDiagram");
+            cat.error("PropertyVetoException in ActionStateDiagram", e);
 	}
 	super.actionPerformed(ae);
     }

@@ -175,7 +175,6 @@ public class PropPanelMessage extends PropPanelModelElement {
         if(target instanceof MMessage) {
             action = (MCallAction)CommonBehaviorFactory.getFactory().buildAction((MMessage)target);
         }
-        ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         return action;
     }
     
@@ -185,7 +184,6 @@ public class PropPanelMessage extends PropPanelModelElement {
         if(target instanceof MMessage) {
             action = (MCallAction)CommonBehaviorFactory.getFactory().buildAction((MMessage)target);
         }
-        ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         return action;
     }
     	

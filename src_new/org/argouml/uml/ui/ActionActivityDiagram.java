@@ -23,6 +23,7 @@
 
 package org.argouml.uml.ui;
 
+import org.apache.log4j.Category;
 import org.argouml.kernel.*;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
@@ -46,6 +47,7 @@ public class ActionActivityDiagram extends UMLChangeAction {
     // static variables
     
     public static ActionActivityDiagram SINGLETON = new ActionActivityDiagram(); 
+    protected static Category cat = Category.getInstance(org.argouml.uml.ui.ActionActivityDiagram.class);
 
 
     ////////////////////////////////////////////////////////////////
@@ -80,7 +82,7 @@ public class ActionActivityDiagram extends UMLChangeAction {
 	    pb.setTarget(d);
 	   
 	} catch (PropertyVetoException pve) {
-	    System.out.println("PropertyVetoException in ActionActivityDiagram");
+            cat.error("PropertyVetoException in ActionActivityDiagram", pve);
 	}
 	super.actionPerformed(ae);
     }

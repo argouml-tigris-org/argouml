@@ -289,45 +289,6 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
   		sb.append(properties);
   	}
   	return sb.toString().trim();
-  
-  	
-  	/*
-  	 * 2002-07-22
-  	 * Jaap Branderhorst
-  	 * This does not comply to the UML 1.3 spec
-  	 * so rewritten it. (Patch to issue 765 and 558)
-  	 * Start old code
-  	
-    String s = "";
-    s += generateVisibility(attr);
-    s += generateMultiplicity(attr);
-    s += generateScope(attr);
-    s += generateChangability(attr);
-    
-
-    String slash = "";
-    // not in nsuml: if (attr.containsStereotype(MStereotype.DERIVED)) slash = "/";
-
-    s += slash + generateName(attr.getName());
-
-    MClassifier type = attr.getType();
-    if (type != null) s += ": " + generateClassifierRef(type);
-
-    MExpression init = attr.getInitialValue();
-    if (init != null) {
-      String initStr = generateExpression(init).trim();
-      if (initStr.length() > 0)
-		  s += " = " + initStr;
-    }
-
-
-//     String constraintStr = generateConstraints(attr);
-//     if (constraintStr.length() > 0)
-//       s += " " + constraintStr;
-
-	// System.out.println("generated attribute string: "+s);
-    return s;
-    */
     
   }
 

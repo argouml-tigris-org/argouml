@@ -52,6 +52,7 @@ import org.argouml.ui.*;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
+import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
@@ -71,6 +72,7 @@ import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsH
  */
 
 public class UMLExtendListModel extends UMLModelElementListModel  {
+    protected static Category cat = Category.getInstance(UMLExtendListModel.class);
 
     /**
      * <p>The default text when there is no base class for the extend
@@ -216,7 +218,7 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
         }
         else {
             if (element != null) {
-                System.out.println("UMLExtendListModel." +
+                cat.warn("UMLExtendListModel." +
                                    "formatElement(): Can't format " +
                                    element.getClass().toString());
             }

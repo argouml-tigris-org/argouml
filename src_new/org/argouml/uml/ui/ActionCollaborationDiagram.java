@@ -108,4 +108,5 @@ public class ActionCollaborationDiagram extends UMLChangeAction {
 	catch (PropertyVetoException pve) { }
 	super.actionPerformed(ae);
     }
+
 } /* end class ActionCollaborationDiagram */

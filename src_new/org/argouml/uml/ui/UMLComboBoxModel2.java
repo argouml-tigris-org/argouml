@@ -25,10 +25,15 @@ package org.argouml.uml.ui;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
+
+import org.apache.log4j.Category;
 
 
 import ru.novosoft.uml.MElementEvent;
@@ -43,7 +48,10 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 public abstract class UMLComboBoxModel2
     extends DefaultComboBoxModel
     implements UMLUserInterfaceComponent {
-
+        
+       protected static Category cat = 
+        Category.getInstance(UMLComboBoxModel2.class);
+        
     protected UMLUserInterfaceContainer container = null;
     protected int selectedIndex = -1;
     protected String propertySetName;
@@ -76,7 +84,7 @@ public abstract class UMLComboBoxModel2
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(MElementEvent)
      */
     public void listRoleItemSet(MElementEvent e) {
-        System.out.println("listRoleItemSet");
+        cat.debug("listRoleItemSet");
     }
 
     /**
@@ -84,8 +92,13 @@ public abstract class UMLComboBoxModel2
      */
     public void propertySet(MElementEvent e) {
         if (e.getName().equals(getPropertySetName()) && e.getOldValue() != e.getNewValue()) {
-            selectedIndex = getIndexOf(e.getNewValue());
+            setSelectedItem(e.getNewValue());
         }
+        int index = getIndexOf(e.getSource());
+        if ( index >= 0 ) {
+            fireContentsChanged(this, index, index);
+        }
+            
     }
 
     /**
@@ -170,9 +183,12 @@ public abstract class UMLComboBoxModel2
      * @see javax.swing.MutableComboBoxModel#addElement(Object)
      */
     public void addElement(Object arg0) {
-        list.add(arg0);
-        int size = list.size();
-        fireIntervalAdded(this, size-1, size);
+        int index = getIndexOf(arg0);
+        if (index == -1) {
+            list.add(arg0);
+            int size = list.size();
+            fireIntervalAdded(this, size-1, size);
+        }
     }
 
     /**
@@ -252,7 +268,19 @@ public abstract class UMLComboBoxModel2
      * @see javax.swing.ComboBoxModel#setSelectedItem(Object)
      */
     public void setSelectedItem(Object arg0) {
+        if (arg0 instanceof Collection) {
+            Iterator it = ((Collection)arg0).iterator();
+            if (it.hasNext()) {
+                arg0 = it.next();
+            } else
+                return;
+        }
+        int index = getIndexOf(arg0);
+        if (index == -1) {
+            addElement(arg0);
+        }
         selectedIndex = list.indexOf(arg0);
+        fireContentsChanged(this, selectedIndex, selectedIndex);
     }
     
     /**

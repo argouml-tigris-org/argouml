@@ -45,6 +45,7 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.graph.GraphEdgeRenderer;
+import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Globals;
@@ -758,14 +759,14 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
       ns.addOwnedElement(mca);
     }
   }
-
-  /** Deletes this FigSeqLink from the diagram*/
-  public void delete() {
-
-    FigSeqObject sourceObj = (FigSeqObject) getSourceFigNode();
-    FigSeqObject destObj = (FigSeqObject) getDestFigNode();
-    FigDynPort sourceFig = (FigDynPort) getSourcePortFig();
-    FigDynPort destFig = (FigDynPort) getDestPortFig();
+    
+    public void dispose() {
+        super.dispose();
+        FigSeqObject sourceObj = (FigSeqObject) getSourceFigNode();
+        FigSeqObject destObj = (FigSeqObject) getDestFigNode();
+        FigDynPort sourceFig = (FigDynPort) getSourcePortFig();
+        FigDynPort destFig = (FigDynPort) getDestPortFig();
+    /*
     Vector contents = getContents();
     int size = contents.size();
     int portNumber = getPortNumber(contents);
@@ -808,23 +809,19 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
         mo2.removeStimulus3(ms);
       }
     }
+    */
+    
 
-
-
-    contents = getContents();
-    size = contents.size();
+    Vector contents = getContents();
+    int size = contents.size();
+    int portNumber = getPortNumber(contents);
 
     updatePorts(sourceObj, destObj, sourceFig, destFig, contents, size, portNumber);
-
-    super.delete();
-
-    contents = getContents();
-
-    size = contents.size();
-
     updateActivations(sourceObj, destObj, sourceFig, destFig, contents, size, portNumber);
+    
 
   }
+  
 
 ///////////////////////////////////////////////////////////////////////////////
 // EventListener
@@ -848,7 +845,35 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
    
     addFigSeqStimulusWithAction();
 
-    if (getLayer() != null) ((SequenceDiagramLayout)getLayer()).placeAllFigures();
+    if (getLayer() != null && getLayer() instanceof SequenceDiagramLayout) {
+    	((SequenceDiagramLayout)getLayer()).placeAllFigures();
+    } else {
+    	Diagram diagram = ProjectBrowser.TheInstance.getActiveDiagram();
+    	Layer lay = null;
+    	if (diagram != null) {
+    		lay = diagram.getLayer();
+    		if (lay instanceof SequenceDiagramLayout) {
+    			setLayer(lay);
+    		} else {
+    			String name = null;
+    			GraphModel gm = null;
+    			if (lay != null && lay instanceof LayerPerspective) {
+    				gm = ((LayerPerspective)lay).getGraphModel();
+    				name = ((LayerPerspective)lay).getName();
+    			} else {
+    				Editor ed = Globals.curEditor();
+    				if (ed != null && ed.getGraphModel() != null && ed.getLayerManager() != null && ed.getLayerManager().getActiveLayer() != null) {
+    					lay = ed.getLayerManager().getActiveLayer();
+    					name = lay.getName();
+    					gm = ed.getGraphModel();
+    				} else
+    					throw new IllegalStateException("No way to get graphmodel. Project corrupted");
+    			}
+    			setLayer(new SequenceDiagramLayout(name, gm));
+    		}
+    	}
+    	((SequenceDiagramLayout)getLayer()).placeAllFigures();
+    }
 
   }
 

@@ -26,6 +26,8 @@ package org.argouml.uml;
 import java.util.*;
 import java.beans.*;
 
+import org.apache.log4j.Category;
+
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
@@ -38,6 +40,8 @@ import ru.novosoft.uml.foundation.data_types.*;
  * for the UML foundation data type
  */
 public class AttrKeyword implements java.io.Serializable {
+    protected static Category cat = Category.getInstance(AttrKeyword.class);
+    
   public static final AttrKeyword NONE = new AttrKeyword("none");
   public static final AttrKeyword STATIC = new AttrKeyword("static");
   public static final AttrKeyword FINAL = new AttrKeyword("final");
@@ -82,7 +86,8 @@ public class AttrKeyword implements java.io.Serializable {
     MScopeKind sk = MScopeKind.INSTANCE;
 
     if (this == TRANS)
-      System.out.println("needs-more-work: transient not supported");
+        cat.info("needs-more-work: transient not supported");
+     
     
     if (this == FINAL || this == STATFIN) ck = MChangeableKind.FROZEN;
     if (this == STATIC || this == STATFIN) sk = MScopeKind.CLASSIFIER;

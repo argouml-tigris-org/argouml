@@ -36,6 +36,7 @@ import org.argouml.swingext.*;
 import org.argouml.util.*;
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.AbstractWellformednessRule;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.AssociationEndAggregationWellformednessRule;
 import org.argouml.model.uml.foundation.core.AssociationEndNamespaceWellformednessRule;
 import org.argouml.model.uml.foundation.core.CoreHelper;
@@ -52,6 +53,7 @@ import org.argouml.uml.ui.UMLMultiplicityComboBox;
 import org.argouml.uml.ui.UMLRadioButton;
 import org.argouml.uml.ui.UMLReflectionBooleanProperty;
 import org.argouml.uml.ui.UMLReflectionListModel;
+import org.argouml.uml.ui.UMLTypeComboBox;
 import org.argouml.uml.ui.UMLVisibilityPanel;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
@@ -222,7 +224,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         "type","getType","setType",false,MClassifier.class,true);
     UMLComboBox box = new UMLComboBox(model);
     box.setToolTipText("Warning: Do not use this to change an end that is already in a diagram.");
-    addField(Argo.localize("UMLMenu", "label.type"),new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),box));
+    addField(Argo.localize("UMLMenu", "label.type"),new UMLTypeComboBox(this));
 
     addField(Argo.localize("UMLMenu", "label.multiplicity"),new UMLMultiplicityComboBox(this,mclass));
 
@@ -230,7 +232,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     associationList.setBackground(getBackground());
     associationList.setForeground(Color.blue);
     associationList.setVisibleRowCount(1);
-    associationsLabel = addField(Argo.localize("UMLMenu", "label.association"),new JScrollPane(namespaceList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
+    associationsLabel = addField(Argo.localize("UMLMenu", "label.association"),new JScrollPane(associationList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
 
     add(LabelledLayout.getSeperator());
     
@@ -492,7 +494,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     		while (it.hasNext()) {
     			// should do here something if the association end is shown
     		}
-    		end.remove();
+    		UmlFactory.getFactory().delete(end);
     		navigateTo(assoc);
     	} else {
     		ProjectBrowser.TheInstance.setDetailsTarget(assoc);

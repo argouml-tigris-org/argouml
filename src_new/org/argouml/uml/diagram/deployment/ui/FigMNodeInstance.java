@@ -173,7 +173,7 @@ public class FigMNodeInstance extends FigNodeModelElement {
     Vector figures = getEnclosedFigs();
 
     if (getLayer() != null) {
-      elementOrdering(figures);
+      // elementOrdering(figures);
       Vector contents = getLayer().getContents();
       int contentsSize = contents.size();
       for (int j=0; j<contentsSize; j++) {

@@ -17,6 +17,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 
+import org.apache.log4j.Category;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.*;
@@ -33,6 +34,7 @@ import org.argouml.uml.*;
 
 public class DBWriter
 {
+        protected static Category cat = Category.getInstance(DBWriter.class);
     String configFile = null;
     String stmtString = "";
     Properties props = null;
@@ -51,8 +53,7 @@ public class DBWriter
 	    props.load(is);
 	}	
 	catch (IOException e) {
-	    System.out.println("Could not load DB properties from " + configFile);
-	    System.out.println(e);
+        cat.error("Could not load DB properties from " + configFile, e);
 	    errorMessage("Could not load DB properties from " + configFile, e);
 	}
 
@@ -60,8 +61,7 @@ public class DBWriter
 	    Class.forName(props.getProperty("driver")).newInstance();	    
 	}
 	catch (Exception e) {
-	    System.out.println("Could not load the database driver!");
-	    System.out.println(e);
+            cat.error("Could not load the database driver!", e);
 	    errorMessage("Could not load the database driver!",e);
 	}
 
@@ -95,8 +95,7 @@ public class DBWriter
 	}
 
 	catch (Exception e) {
-	    System.out.println("Could not connect to database!");
-	    System.out.println(e);
+            cat.error("Could not connect to database!", e);
 	    errorMessage("Could not connect to database!",e);
 	}
     }
@@ -123,15 +122,14 @@ public class DBWriter
 	UUIDManager.SINGLETON.createModelUUIDS((MNamespace)model);
 
 	try {
-	    System.out.println("Storing model: "+model.getName() + " to database.");
+	    cat.info("Storing model: "+model.getName() + " to database.");
 		// this statement is reused in all the "store" methods
 	    stmt = Conn.createStatement();
 		store(model,stmt);
 	}
-	catch (Exception E) {
-	    System.out.println("error while executing!");
-	    System.out.println(E);
-	    errorMessage("Error while storing the model to the database!",E);
+	catch (Exception e) {
+            cat.error("Error while storing the model to the database!", e);
+	    errorMessage("Error while storing the model to the database!",e);
 	}
 
 	finally {
@@ -168,7 +166,7 @@ public class DBWriter
 		Iterator ownedElements = ns.getOwnedElements().iterator();
 		while (ownedElements.hasNext()) {
 			MModelElement me = (MModelElement)ownedElements.next();
-			//System.out.println("Processing " + me.toString());
+			cat.debug("Processing " + me.toString());
 			if (me instanceof MClass) store((MClass)me,stmt);
 			if (me instanceof MInterface) store((MInterface)me,stmt);
 			if (me instanceof MDataType) store((MDataType)me,stmt);

@@ -41,8 +41,8 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
+import org.apache.log4j.Category;
 import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.diagram.use_case.ui.*;
 
 
 // could be singleton
@@ -69,6 +69,7 @@ import org.argouml.uml.diagram.use_case.ui.*;
 
 public class UseCaseDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer {
+        protected static Category cat = Category.getInstance(UseCaseDiagramRenderer.class);
 
 
     /**
@@ -97,7 +98,7 @@ public class UseCaseDiagramRenderer
 
         // If we get here we were asked for a fig we can't handle.
 
-        System.out.println(this.getClass().toString() +
+        cat.debug(this.getClass().toString() +
                            ": getFigNodeFor(" + gm.toString() + ", " +
                            lay.toString() + ", " + node.toString() +
                            ") - cannot create this sort of node.");
@@ -123,53 +124,13 @@ public class UseCaseDiagramRenderer
 
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
 
-        // System.out.println("making figedge for " + edge);
+        cat.debug("making figedge for " + edge);
 
         // If the edge is an association, we'll need a FigAssociation
 
         if (edge instanceof MAssociation) {
             MAssociation   asc         = (MAssociation) edge;
             FigAssociation ascFig      = new FigAssociation(asc, lay);
-            /*
-            Vector         connections = new Vector(asc.getConnections());
-
-            // Print out a rude message if the association isn't connected to
-            // anything. Give up here, or we'll run in to difficulties. Note
-            // this should never happen!
-
-            if (connections == null) {
-                System.out.println(this.getClass().toString() +
-                                   ": getFigEdgeFor(" + gm.toString() + ", " +
-                                   lay.toString() + ", " + edge.toString() +
-                                   ") - null connections for association.");
-                return null;
-            }
-
-            // For an association the first connection is the from end. Get the
-            // two ends.
-
-            MAssociationEnd fromEnd =
-                (MAssociationEnd) connections.elementAt(0);
-            MClassifier fromCls     = (MClassifier) fromEnd.getType();
-
-            MAssociationEnd toEnd =
-                (MAssociationEnd) connections.elementAt(1);
-            MClassifier toCls     = (MClassifier) toEnd.getType();
-
-            // The figs for the nodes at the two ends (we know they must be on
-            // the graph)
-
-            FigNode fromFN = (FigNode) lay.presentationFor(fromCls);
-            FigNode toFN   = (FigNode) lay.presentationFor(toCls);
-
-            // Link to the figs
-
-            ascFig.setSourcePortFig(fromFN);
-            ascFig.setSourceFigNode(fromFN);
-
-            ascFig.setDestPortFig(toFN);
-            ascFig.setDestFigNode(toFN);
-            */
 
             return ascFig;
         }
@@ -276,7 +237,7 @@ public class UseCaseDiagramRenderer
         // model maybe they should be, just as an implementation issue, dont
         // remove any of the methods that are there now.
 
-        System.out.println(this.getClass().toString() +
+        cat.debug(this.getClass().toString() +
                            ": getFigEdgeFor(" + gm.toString() + ", " +
                            lay.toString() + ", " + edge.toString() +
                            ") - needs more work to handle this sort of edge");

@@ -113,9 +113,6 @@ public class FigShallowHistoryState extends FigStateVertex {
   public void setOwner(Object node) {
     super.setOwner(node);
     bindPort(node, _bigPort);
-    // if it is a UML meta-model object, register interest in any change events
-    if (node instanceof MElement)
-      ((MElement)node).addMElementListener(this);
   }
 
   /** History states are fixed size. */

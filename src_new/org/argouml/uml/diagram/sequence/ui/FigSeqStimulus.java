@@ -45,6 +45,8 @@ import org.tigris.gef.graph.*;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.graph.GraphEdgeRenderer;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Layer;
@@ -108,10 +110,6 @@ public class FigSeqStimulus extends FigNodeModelElement {
 
   ////////////////////////////////////////////////////////////////
   // Fig accessors
-
-  public void setOwner(Object node) {
-    super.setOwner(node);
-  }
 
   public void setLineColor(Color col) {
     _name.setLineColor(col);
@@ -207,21 +205,39 @@ public class FigSeqStimulus extends FigNodeModelElement {
       else inst.setName("");
     }
 
-    if (getLayer() != null) ((SequenceDiagramLayout)getLayer()).placeAllFigures();
+    if (getLayer() != null && getLayer() instanceof SequenceDiagramLayout) {
+    	((SequenceDiagramLayout)getLayer()).placeAllFigures();
+    } else {
+    	Diagram diagram = ProjectBrowser.TheInstance.getActiveDiagram();
+    	Layer lay = null;
+    	if (diagram != null) {
+    		lay = diagram.getLayer();
+    		if (lay instanceof SequenceDiagramLayout) {
+    			setLayer(lay);
+    		} else {
+    			String name = null;
+    			GraphModel gm = null;
+    			if (lay != null && lay instanceof LayerPerspective) {
+    				gm = ((LayerPerspective)lay).getGraphModel();
+    				name = ((LayerPerspective)lay).getName();
+    			} else {
+    				Editor ed = Globals.curEditor();
+    				if (ed != null && ed.getGraphModel() != null && ed.getLayerManager() != null && ed.getLayerManager().getActiveLayer() != null) {
+    					lay = ed.getLayerManager().getActiveLayer();
+    					name = lay.getName();
+    					gm = ed.getGraphModel();
+    				} else
+    					throw new IllegalStateException("No way to get graphmodel. Project corrupted");
+    			}
+    			setLayer(new SequenceDiagramLayout(name, gm));
+    		}
+    	}
+    	((SequenceDiagramLayout)getLayer()).placeAllFigures();
+    }
+    
 
   }
-
-  public void dispose() {
-    if (!(getOwner() instanceof MElement)) return;
-    MElement elmt = (MElement) getOwner();
-    Project p = ProjectBrowser.TheInstance.getProject();
-    p.moveToTrash(elmt);
-    super.dispose();
-  }
-
- 
-
-  
+   
     /*
   public void delete() {
     // a stimulus can only be removed from the link
@@ -261,14 +277,47 @@ public class FigSeqStimulus extends FigNodeModelElement {
     }
   }
 
-  /* if you move a FigSeqObject around and place it onto  a FigSeqStimulus
+  /** if you move a FigSeqObject around and place it onto  a FigSeqStimulus
      not the FigSeqObject gets the mouseReleased event but the FigSeqStimulus.
      For this case, the diagram has to be replaced, too. */
   public void mouseReleased(MouseEvent me) {
     super.mouseReleased(me);
-    if (getLayer()!= null  &&  getLayer() instanceof SequenceDiagramLayout) {
-         ((SequenceDiagramLayout)getLayer()).placeAllFigures();
+    if (getLayer() != null && getLayer() instanceof SequenceDiagramLayout) {
+    	((SequenceDiagramLayout)getLayer()).placeAllFigures();
+    } else {
+    	Diagram diagram = ProjectBrowser.TheInstance.getActiveDiagram();
+    	Layer lay = null;
+    	if (diagram != null) {
+    		lay = diagram.getLayer();
+    		if (lay instanceof SequenceDiagramLayout) {
+    			setLayer(lay);
+    		} else {
+    			String name = null;
+    			GraphModel gm = null;
+    			if (lay != null && lay instanceof LayerPerspective) {
+    				gm = ((LayerPerspective)lay).getGraphModel();
+    				name = ((LayerPerspective)lay).getName();
+    			} else {
+    				Editor ed = Globals.curEditor();
+    				if (ed != null && ed.getGraphModel() != null && ed.getLayerManager() != null && ed.getLayerManager().getActiveLayer() != null) {
+    					lay = ed.getLayerManager().getActiveLayer();
+    					name = lay.getName();
+    					gm = ed.getGraphModel();
+    				} else
+    					throw new IllegalStateException("No way to get graphmodel. Project corrupted");
+    			}
+    			setLayer(new SequenceDiagramLayout(name, gm));
+    		}
+    	}
+    	((SequenceDiagramLayout)getLayer()).placeAllFigures();
     }
   }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#dispose()
+     */
+    public void dispose() {
+        super.dispose();
+    }
 
 } /* end class FigSeqStimulus */

@@ -39,12 +39,15 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.util.*;
 import org.tigris.gef.util.*;
 
-import org.argouml.ui.*;
+import org.apache.log4j.Category;
 import org.argouml.uml.*;
 import org.argouml.uml.cognitive.*;
 
 public class TabResults extends TabSpawnable
 implements Runnable, MouseListener, ActionListener, ListSelectionListener {
+    protected static Category cat = 
+        Category.getInstance(TabResults.class);
+    
 
   public static int _numJumpToRelated = 0;
   
@@ -147,7 +150,6 @@ implements Runnable, MouseListener, ActionListener, ListSelectionListener {
   // ActionListener implementation
 
   public void actionPerformed(ActionEvent ae) {
-    System.out.println("aasdasd");
   }
 
   ////////////////////////////////////////////////////////////////
@@ -175,7 +177,7 @@ implements Runnable, MouseListener, ActionListener, ListSelectionListener {
       sel = _related.elementAt(row);
     }
 
-    //System.out.println("go " + sel + " in " + d.getName());
+    cat.debug("go " + sel + " in " + d.getName());
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     if (d != null) pb.setTarget(d);
     pb.select(sel);
@@ -190,7 +192,7 @@ implements Runnable, MouseListener, ActionListener, ListSelectionListener {
     if (_showRelated) {
       int row = lse.getFirstIndex();
       Object sel = _results.elementAt(row);
-      //System.out.println("selected " + sel);
+      cat.debug("selected " + sel);
       _related.removeAllElements();
       java.util.Enumeration enum = ChildGenRelated.SINGLETON.gen(sel);
       while (enum.hasMoreElements())

@@ -45,9 +45,11 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import org.argouml.application.events.*;
 import org.argouml.kernel.*;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.*;
 import org.argouml.cognitive.*;
 import org.argouml.uml.*;
@@ -62,7 +64,8 @@ import org.argouml.util.*;
 
 public abstract class FigEdgeModelElement extends FigEdgePoly
 implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener, MElementListener, NotationContext, ArgoNotationEventListener  {
-
+    
+    protected static Category cat = Category.getInstance(FigEdgeModelElement.class);
   ////////////////////////////////////////////////////////////////
   // constants
 
@@ -281,7 +284,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     Object src = pve.getSource();
     String pName = pve.getPropertyName();
     if (pName.equals("editing") && Boolean.FALSE.equals(pve.getNewValue())) {
-      //System.out.println("finished editing");
+      cat.debug("finished editing");
       try {
 	startTrans();
 	textEdited((FigText) src);
@@ -289,7 +292,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	endTrans();
       }
       catch (PropertyVetoException ex) {
-	System.out.println("could not parse and use the text you entered");
+        cat.error("could not parse the text entered. Propertyvetoexception", ex);
       }
     }
     else super.propertyChange(pve);
@@ -345,14 +348,6 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   public void keyReleased(KeyEvent ke) { }
 
   public void keyTyped(KeyEvent ke) {
-//     if (ke.isConsumed()) return;
-//     System.out.println("hjasdjsg222");
-//     _name.keyTyped(ke);
-//     //ke.consume();
-//     MModelElement me = (MModelElement) getOwner();
-//      if (me == null) return;
-//     try { me.setName(new Name(_name.getText())); }
-//     catch (PropertyVetoException pve) { }
   }
 
   ////////////////////////////////////////////////////////////////
@@ -390,25 +385,31 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   }
 
   public void setOwner(Object own) {
-    Object oldOwner = getOwner();
-    super.setOwner(own);
-    if (oldOwner instanceof MModelElement)
-      ((MModelElement)oldOwner).removeMElementListener(this);
-    if (own instanceof MModelElement) {
-	MModelElement me = (MModelElement)own;
-    me.removeMElementListener(this);
-	me.addMElementListener(this);
-	if ( me.getUUID() == null) 
-	    me.setUUID(UUIDManager.SINGLETON.getNewUUID());
-    }
-    modelChanged();
+  	super.setOwner(own);
+  	if (own != null) {
+	    Object oldOwner = getOwner();
+	    
+	    if (oldOwner instanceof MModelElement)
+	      ((MModelElement)oldOwner).removeMElementListener(this);
+	    if (own instanceof MModelElement) {
+		MModelElement me = (MModelElement)own;
+	        me.removeMElementListener(this);
+		me.addMElementListener(this);
+		if ( me.getUUID() == null) 
+		    me.setUUID(UUIDManager.SINGLETON.getNewUUID());
+	    }
+	    modelChanged();
+  	}
+  		
   }
 
 
 	public void propertySet(MElementEvent mee) {
 	    //if (_group != null) _group.propertySet(mee);
-	    modelChanged();
-	    damage();
+	    if (mee.getOldValue() != mee.getNewValue()) {
+	    	modelChanged();
+	    	damage();
+	    }
 	}
 	public void listRoleItemSet(MElementEvent mee) {
 	    //if (_group != null) _group.listRoleItemSet(mee);
@@ -419,7 +420,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	    //if (_group != null) _group.recovered(mee);
 	}
 	public void removed(MElementEvent mee) {
-		//System.out.println("deleting: "+this + mee);
+		cat.debug("deleting: "+this + mee);
 	    //if (_group != null) _group.removed(mee);
 	    this.delete();
 	}
@@ -435,16 +436,22 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	}
 
     /**
-     * Add the owner of this element to the trash, so other Argo components (i.e. critics) 
-     * realize, that it is deleted.
+     * @see org.tigris.gef.presentation.Fig#dispose()
      */
-    public void delete() {
-	if(getOwner() != null) {
-	    Trash.SINGLETON.addItemFrom( getOwner(), null);
-	}
-	super.delete();
+    public void dispose() {
+		Object own = getOwner();
+		if(own != null) {
+	    	Trash.SINGLETON.addItemFrom(getOwner(), null);
+	    	if (own instanceof MModelElement) {	
+                    UmlFactory.getFactory().delete((MModelElement)own);
+	    	}
+		}
+        Iterator it = getPathItemFigs().iterator();
+        while (it.hasNext()) {
+            ((Fig)it.next()).dispose();
+        }
+		super.dispose();
     }
-
 
     /** delete just this object.
      * The owner is preserved.
@@ -471,23 +478,31 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     public void renderingChanged() {
     }
 
-	/**
-	 * Necessary since GEF contains some errors regarding the hit subject.
-	 * TODO make the bigBounds port go off a little less
-	 * @see org.tigris.gef.presentation.Fig#hit(Rectangle)
-	 */
-	public boolean hit(Rectangle r) {
-		if (_fig.hit(r)) return true;
-		int size = _pathItems.size();
-		for (int i = 0; i < size; i++) {
-	  		Fig f = getPathItemFig((FigEdge.PathItem) _pathItems.elementAt(i));
-	  		if (f.hit(r)) return true;
-		}
-		Rectangle bigBounds = getBounds();
-		FigRect rect = new FigRect(bigBounds.x, bigBounds.y, bigBounds.width, bigBounds.height);
-		if (rect.hit(r)) return true;
-		return false;
-	}
+    /**
+     * Necessary since GEF contains some errors regarding the hit subject.
+     * TODO make the bigBounds port go off a little less
+     * @see org.tigris.gef.presentation.Fig#hit(Rectangle)
+     */
+    public boolean hit(Rectangle r) {
+        if (_fig.hit(r)) return true;
+        Polygon polOuter = ((FigPoly)_fig).getPolygon();
+        polOuter.translate(-10, -10);
+        Polygon polInner = ((FigPoly)_fig).getPolygon();
+        polInner.translate(10, 10);
+        if (polOuter.intersects(r) && !polInner.intersects(r)) return true;
+            
+        int size = _pathItems.size();
+        for (int i = 0; i < size; i++) {
+        	Fig f = getPathItemFig((FigEdge.PathItem) _pathItems.elementAt(i));
+        	if (f.hit(r)) return true;
+        }
+        Rectangle bigBounds = getBounds();
+        /*
+        FigRect rect = new FigRect(bigBounds.x, bigBounds.y, bigBounds.width, bigBounds.height);
+        if (rect.hit(r)) return true;
+        */
+        return false;
+    }
 		
 
 } /* end class FigEdgeModelElement */
