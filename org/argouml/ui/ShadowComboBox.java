@@ -43,8 +43,12 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
 **/
 public class ShadowComboBox extends JComboBox {
 
-    private static ShadowFig[]  _shadowFigs = null;
+    private static ShadowFig[]  shadowFigs = null;
 
+    /**
+     * The constructor.
+     * 
+     */
     public ShadowComboBox() {
         super();
         
@@ -69,7 +73,7 @@ public class ShadowComboBox extends JComboBox {
 	extends JComponent
 	implements ListCellRenderer {
 
-        protected ShadowFig  _currentFig = null;
+        private ShadowFig  currentFig = null;
         
         public ShadowRenderer() {
             super();
@@ -82,13 +86,13 @@ public class ShadowComboBox extends JComboBox {
             boolean isSelected,
             boolean cellHasFocus) {  
                 
-            if (_shadowFigs == null) {
-                _shadowFigs = new ShadowFig[ShadowComboBox.this.getItemCount()];
+            if (shadowFigs == null) {
+                shadowFigs = new ShadowFig[ShadowComboBox.this.getItemCount()];
 
-                for (int i = 0; i < _shadowFigs.length; ++i) {
-                    _shadowFigs[i] = new ShadowFig();
-                    _shadowFigs[i].setShadowSize(i);                    
-                    _shadowFigs[i].getNameFig().setText(
+                for (int i = 0; i < shadowFigs.length; ++i) {
+                    shadowFigs[i] = new ShadowFig();
+                    shadowFigs[i].setShadowSize(i);                    
+                    shadowFigs[i].getNameFig().setText(
                         (String) ShadowComboBox.this.getItemAt(i));
                 }
             }
@@ -102,7 +106,7 @@ public class ShadowComboBox extends JComboBox {
             
             int figIndex = index;
             if (figIndex < 0) {
-                for (int i = 0; i < _shadowFigs.length; ++i) {
+                for (int i = 0; i < shadowFigs.length; ++i) {
                     if (value == ShadowComboBox.this.getItemAt(i)) {
                         figIndex = i;
                     }
@@ -110,13 +114,13 @@ public class ShadowComboBox extends JComboBox {
             }
 
             if (figIndex >= 0) {
-                _currentFig = _shadowFigs[figIndex];
+                currentFig = shadowFigs[figIndex];
                 setPreferredSize(new Dimension(
-                    _currentFig.getWidth() + figIndex + 4,
-                    _currentFig.getHeight() + figIndex + 2));
+                    currentFig.getWidth() + figIndex + 4,
+                    currentFig.getHeight() + figIndex + 2));
             }
             else {
-                _currentFig = null;
+                currentFig = null;
             }
 
             return this;
@@ -125,9 +129,9 @@ public class ShadowComboBox extends JComboBox {
         protected void paintComponent(Graphics g) {
             g.setColor(getBackground());
             g.fillRect(0, 0, getWidth(), getHeight());
-            if (_currentFig != null) {
-                _currentFig.setLocation(2, 1);
-                _currentFig.paint(g);
+            if (currentFig != null) {
+                currentFig.setLocation(2, 1);
+                currentFig.paint(g);
             }
         }
     }

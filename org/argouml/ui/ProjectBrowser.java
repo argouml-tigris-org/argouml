@@ -116,32 +116,34 @@ public class ProjectBrowser
 
     private GenericArgoMenuBar menuBar;
 
-    /** partially implemented. needs work to display
-     * import of source and saving of zargo
+    /** 
+     * Partially implemented. Needs work to display
+     * import of source and saving of zargo.
      */
-    protected StatusBar _statusBar = new StatusBar();
+    private StatusBar statusBar = new StatusBar();
 
     /** this needs work so that users can set the font
      * size through a gui preference window
      */
-    public Font defaultFont = new Font("Dialog", Font.PLAIN, 10);
+    private Font defaultFont = new Font("Dialog", Font.PLAIN, 10);
 
-    protected BorderSplitPane _workarea;
+    private BorderSplitPane workAreaPane;
 
     /**
      * The splash screen shown at startup
      */
-    private SplashScreen _splash;
+    private SplashScreen splashScreen;
 
     /**
-     * The navigator pane containing the modelstructure
+     * The explorer (formerly called navigator) pane 
+     * containing the modelstructure.
      */
-    private NavigatorPane _navPane;
+    private NavigatorPane explorerPane;
 
     /**
      * The todopane (lower left corner of screen)
      */
-    private ToDoPane _todoPane;
+    private ToDoPane todoPane;
 
     /**
      * For testing purposes. In tests this constructor can be called so
@@ -156,12 +158,12 @@ public class ProjectBrowser
         theInstance = this;
         SplashScreen.setDoSplash(doSplash);
         if (doSplash) {
-            _splash = SplashScreen.getInstance();
-	    _splash.getStatusBar().showStatus(
+            splashScreen = SplashScreen.getInstance();
+	    splashScreen.getStatusBar().showStatus(
 	            Translator.localize(BUNDLE,
 				   "statusmsg.bar.making-project-browser"));
-            _splash.getStatusBar().showProgress(10);
-            _splash.setVisible(true);
+            splashScreen.getStatusBar().showProgress(10);
+            splashScreen.setVisible(true);
         }
 
         menuBar = new GenericArgoMenuBar();
@@ -172,7 +174,7 @@ public class ProjectBrowser
         this.setJMenuBar(menuBar);
         //getContentPane().add(_menuBar, BorderLayout.NORTH);
         getContentPane().add(createPanels(doSplash), BorderLayout.CENTER);
-        getContentPane().add(_statusBar, BorderLayout.SOUTH);
+        getContentPane().add(statusBar, BorderLayout.SOUTH);
 
         setAppName(appName);
 
@@ -207,13 +209,13 @@ public class ProjectBrowser
      */
     protected Component createPanels(boolean doSplash) {
         if (doSplash) {
-	    _splash.getStatusBar().showStatus(
+	    splashScreen.getStatusBar().showStatus(
 	            Translator.localize(BUNDLE, 
 			     "statusmsg.bar.making-project-browser-explorer"));
-            _splash.getStatusBar().incProgress(5);
+            splashScreen.getStatusBar().incProgress(5);
         }
         //_navPane = new NavigatorPane(doSplash);
-        _navPane = NavigatorPane.getInstance();
+        explorerPane = NavigatorPane.getInstance();
         /* Work in progress here to allow multiple details panes with 
         ** different contents - Bob Tarling
         */
@@ -273,14 +275,14 @@ public class ProjectBrowser
         // toolbar and status bar.  Workarea is layed out as a
         // BorderSplitPane where the various components that make up
         // the argo application can be positioned.
-        _workarea = new BorderSplitPane();
+        workAreaPane = new BorderSplitPane();
         // create the todopane
         if (doSplash) {
-	    _splash.getStatusBar().showStatus(Translator.localize(
+	    splashScreen.getStatusBar().showStatus(Translator.localize(
 		    "statusmsg.bar.making-project-browser-to-do-pane"));
-            _splash.getStatusBar().incProgress(5);
+            splashScreen.getStatusBar().incProgress(5);
         }
-        _todoPane = new ToDoPane(doSplash);
+        todoPane = new ToDoPane(doSplash);
         restorePanelSizes();
 
         // There are various details panes all of which could hold
@@ -294,15 +296,15 @@ public class ProjectBrowser
                 DetailsPane detailsPane = (DetailsPane) entry.getValue();
                 TargetManager.getInstance().addTargetListener(detailsPane);
             }
-            _workarea.add((Component) entry.getValue(), position);
+            workAreaPane.add((Component) entry.getValue(), position);
         }
-        _workarea.add(_navPane, BorderSplitPane.WEST);
+        workAreaPane.add(explorerPane, BorderSplitPane.WEST);
         
         getTab(TabToDo.class); // TODO: If this doesn't have side effects, 
                                //       it can be removed alltogether.
         //todo.setTree(_todoPane);
-        _workarea.add(_todoPane, BorderSplitPane.SOUTHWEST);
-        _workarea.add(_editorPane);
+        workAreaPane.add(todoPane, BorderSplitPane.SOUTHWEST);
+        workAreaPane.add(_editorPane);
         // Toolbar boundry is the area between the menu and the status
         // bar. It contains the workarea at centre and the toolbar
         // position north, south, east or west.
@@ -314,7 +316,7 @@ public class ProjectBrowser
         toolbarBoundry.add(menuBar.getViewToolbar(), BorderLayout.NORTH);
         toolbarBoundry.add(menuBar.getCreateDiagramToolbar(),
 			   BorderLayout.NORTH);
-        toolbarBoundry.add(_workarea, BorderLayout.CENTER);
+        toolbarBoundry.add(workAreaPane, BorderLayout.CENTER);
 
         return toolbarBoundry;
     }
@@ -343,8 +345,8 @@ public class ProjectBrowser
 					  DEFAULT_COMPONENTHEIGHT),
 				  0));
         }
-        if (_navPane != null) {
-            _navPane.setPreferredSize(
+        if (explorerPane != null) {
+            explorerPane.setPreferredSize(
 		    new Dimension(Configuration.getInteger(
 					  Argo.KEY_SCREEN_WEST_WIDTH,
 					  DEFAULT_COMPONENTHEIGHT),
@@ -510,7 +512,7 @@ public class ProjectBrowser
     }
 
     public StatusBar getStatusBar() {
-        return _statusBar;
+        return statusBar;
     }
 
     /**
@@ -636,7 +638,7 @@ public class ProjectBrowser
      * @see org.tigris.gef.ui.IStatusBar#showStatus(java.lang.String)
      */
     public void showStatus(String s) {
-        _statusBar.showStatus(s);
+        statusBar.showStatus(s);
     }
 
     /**    Called by a user interface element when a request to
@@ -657,9 +659,9 @@ public class ProjectBrowser
      * of main window in the properties file
      */
     public void saveScreenConfiguration() {
-        if (_navPane != null)
+        if (explorerPane != null)
 	    Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH,
-				     _navPane.getWidth());
+				     explorerPane.getWidth());
         if (_eastPane != null)
 	    Configuration.setInteger(Argo.KEY_SCREEN_EAST_WIDTH,
 				     _eastPane.getWidth());
@@ -797,7 +799,7 @@ public class ProjectBrowser
      * @return ToDoPane
      */
     public ToDoPane getTodoPane() {
-        return _todoPane;
+        return todoPane;
     }
 
     /**
@@ -805,10 +807,10 @@ public class ProjectBrowser
      * @param splash
      */
     public void setSplashScreen(SplashScreen splash) {
-        if (_splash != null && _splash != splash) {
-            _splash.setVisible(false);
+        if (splashScreen != null && splashScreen != splash) {
+            splashScreen.setVisible(false);
         }
-        _splash = splash;
+        splashScreen = splash;
     }
 
     /**
@@ -825,6 +827,13 @@ public class ProjectBrowser
 
     public static synchronized void setSplash(boolean splash) {
         _Splash = splash;
+    }
+
+    /**
+     * @return Returns the defaultFont.
+     */
+    public Font getDefaultFont() {
+        return defaultFont;
     }
     
 } /* end class ProjectBrowser */

@@ -36,27 +36,33 @@ import org.argouml.application.api.Configuration;
 import org.argouml.application.api.SettingsTabPanel;
 import org.argouml.application.helpers.SettingsTabHelper;
 
-/** Action object for handling Argo settings
+/** 
+ * Action object for handling Argo settings.
  *
- *  @author Thierry Lach
- *  @since  0.9.4
+ * @author Thierry Lach
+ * @since  0.9.4
  */
 public class SettingsTabUser extends SettingsTabHelper
     implements SettingsTabPanel 
 {
-
-    /** This is where the user enters full name in settings tab
-     * unknown where this information is stored
-     * it is NOT stored in myproject.argo
+    /** 
+     * This is where the user enters full name in settings tab.
+     * This information is stored
+     * in the argo.user.properties file.
      */    
-    JTextField _fullname = null;
+    private JTextField userFullname = null;
 
-    /** This is where the user enters email in settings tab
-     * unknown where this information is stored
-     * it is NOT stored in myproject.argo
+    /** 
+     * This is where the user enters email in settings tab.
+     * This information is stored
+     * in the argo.user.properties file.
      */    
-    JTextField _email = null;
+    private JTextField userEmail = null;
 
+    /**
+     * The constructor.
+     * 
+     */
     public SettingsTabUser() {
         super();
         setLayout(new BorderLayout());
@@ -84,39 +90,68 @@ public class SettingsTabUser extends SettingsTabHelper
 	labelConstraints.gridy = 0;
 	fieldConstraints.gridy = 0;
 	top.add(createLabel("label.user"), labelConstraints);
-        _fullname = createTextField();
-	top.add(_fullname, fieldConstraints);
+        userFullname = createTextField();
+	top.add(userFullname, fieldConstraints);
 
 	labelConstraints.gridy = 1;
 	fieldConstraints.gridy = 1;
  	top.add(createLabel("label.email"), labelConstraints);
-        _email = createTextField();
-	top.add(_email, fieldConstraints);
+        userEmail = createTextField();
+	top.add(userEmail, fieldConstraints);
 
 	add(top, BorderLayout.NORTH);
     }
 
+    /**
+     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabRefresh()
+     */
     public void handleSettingsTabRefresh() {
-        _fullname.setText(Configuration.getString(Argo.KEY_USER_FULLNAME));
-        _email.setText(Configuration.getString(Argo.KEY_USER_EMAIL));
+        userFullname.setText(Configuration.getString(Argo.KEY_USER_FULLNAME));
+        userEmail.setText(Configuration.getString(Argo.KEY_USER_EMAIL));
     }
 
+    /**
+     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabSave()
+     */
     public void handleSettingsTabSave() {
-        Configuration.setString(Argo.KEY_USER_FULLNAME, _fullname.getText());
-        Configuration.setString(Argo.KEY_USER_EMAIL, _email.getText());
+        Configuration.setString(Argo.KEY_USER_FULLNAME, userFullname.getText());
+        Configuration.setString(Argo.KEY_USER_EMAIL, userEmail.getText());
     }
 
+    /**
+     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabCancel()
+     */
     public void handleSettingsTabCancel() {
 	handleSettingsTabRefresh();
     }
 
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleName()
+     */
     public String getModuleName() { return "SettingsTabUser"; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleDescription()
+     */
     public String getModuleDescription() { return "Settings Tab for User"; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
+     */
     public String getModuleAuthor() { return "ArgoUML Core"; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleVersion()
+     */
     public String getModuleVersion() { return ArgoVersion.getVersion(); }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleKey()
+     */
     public String getModuleKey() { return "module.settings.user"; }
+    
+    /**
+     * @see org.argouml.application.api.SettingsTabPanel#getTabKey()
+     */
     public String getTabKey() { return "tab.user"; }
 }
-
-
-
