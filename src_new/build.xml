@@ -730,7 +730,7 @@ Most useful targets are:
         <formatter type="xml"/>
       <batchtest todir="${argo.tests.reports}/junit/output">
         <fileset dir="${argo.tests.src}">
-          <include name="org/argouml/**/TestAgainst*.java"/>
+          <include name="org/argouml/**/Test*.java"/>
         </fileset>
       </batchtest>
     </junit>
