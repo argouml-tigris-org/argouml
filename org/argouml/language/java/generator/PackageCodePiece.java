@@ -31,10 +31,11 @@
 
 package org.argouml.language.java.generator;
 
-import java.io.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.util.Stack;
+
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
    This code piece represents a package declaration.

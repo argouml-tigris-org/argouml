@@ -30,8 +30,10 @@
 
 package org.argouml.language.java.generator;
 
-import ru.novosoft.uml.foundation.core.*;
-import java.util.*;
+import java.util.Vector;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MFeature;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
    This class handles information during the replacement of code

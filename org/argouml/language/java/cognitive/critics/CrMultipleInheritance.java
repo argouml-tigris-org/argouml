@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -32,14 +31,16 @@
 
 package org.argouml.language.java.cognitive.critics;
 
-import java.util.*;
+import java.util.Collection;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.kernel.Wizard;
+import org.argouml.uml.cognitive.critics.CrUML;
+import org.argouml.uml.cognitive.critics.WizCueCards;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
-import org.argouml.kernel.*;
-import org.argouml.cognitive.*;
-import org.argouml.uml.cognitive.critics.*;
+import ru.novosoft.uml.foundation.core.MClassifier;
 
 /** Well-formedness rule [2] for MAssociationEnd. See page 28 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */

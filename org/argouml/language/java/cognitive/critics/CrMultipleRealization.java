@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -24,7 +23,6 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 
-
 // File: CrMultipleRealization.java.java
 // Classes: CrMultipleRealization.java
 // Original Author: jrobbins@ics.uci.edu
@@ -32,15 +30,13 @@
 
 package org.argouml.language.java.cognitive.critics;
 
-import java.util.*;
+import java.util.Collection;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-
-import org.argouml.kernel.*;
+import org.argouml.cognitive.Designer;
+import org.argouml.uml.cognitive.critics.CrUML;
 import org.argouml.model.uml.UmlHelper;
-import org.argouml.cognitive.*;
-import org.argouml.uml.cognitive.critics.*;
+
+import ru.novosoft.uml.foundation.core.MInterface;
 
 // related to issue 570
 

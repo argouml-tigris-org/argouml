@@ -67,7 +67,6 @@ import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MConstraint;
-
 import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 import ru.novosoft.uml.foundation.core.MGeneralization;

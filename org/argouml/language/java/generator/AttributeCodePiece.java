@@ -33,10 +33,17 @@
 
 package org.argouml.language.java.generator;
 
-import java.io.*;
-import java.util.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.util.Stack;
+import java.util.Vector;
+import java.util.Iterator;
+
+import ru.novosoft.uml.foundation.core.MFeature;
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MAssociation;
+
 
 /**
    This code piece represents an attribute. Even though the code can
