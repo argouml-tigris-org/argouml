@@ -27,7 +27,7 @@
      NAME IN THE AUTHOR GROUP.
      - IMAGES SHOULD BE LOCATED IN THE GENERAL IMAGES SECTION OF THE 
      DOCUMENTATION MODULE UNDER THE DIRECTORY COOKBOOK
-     - PLEASE VERIFY THAT YOUR CHANGES COMPILE CORRECTLY BEFORE COMMITING THEM
+     - PLEASE VERIFY THAT YOUR CHANGES COMPILE CORRECTLY BEFORE COMMITTING THEM
 -->
 
 <book>
@@ -141,7 +141,7 @@ where you have an opinion, jump right in!
 	    <listitem>
 	      <para>Apply for an Observer role.</para>
 	      <para>
-This shows that you are commited to the project and also
+This shows that you are committed to the project and also
 allows you to enter and comment on issues etc.
 </para>
 	    </listitem>
@@ -165,18 +165,18 @@ You will get updates on all issues so you can monitor what
 we are doing in the project.
 (It could be a lot of mails.
 If it turns out you don't like watching issues in this way
-just unsubscibe again.)
+just unsubscribe again.)
 </para>
 		  </listitem>
 		  <listitem>
-		    <para>Subscribe to the cvs list.</para>
+		    <para>Subscribe to the CVS list.</para>
 		    <para>
 You will get updates on all changes that are done 
 to code, documentation, and the web site.
 (It could be a lot of mails.
 If it turns out you don't like watching 
 what is going on in the project in this way
-just unsubscibe again.)
+just unsubscribe again.)
 </para>
 		  </listitem>
 		  <listitem>
@@ -220,7 +220,7 @@ for your understanding of the project and the code.
 </para>
 		  </listitem>
 		  <listitem>
-		    <para>Check out the source from cvs and build.</para>
+		    <para>Check out the source from CVS and build.</para>
 		  </listitem>
 		</orderedlist>
 </para>
@@ -296,7 +296,7 @@ Good knowledge of CVS.
 		  </listitem>
 		  <listitem>
 		    <para>
-Understanding the set of tools (ant, junit) and how to use them.
+Understanding the set of tools (ant, JUnit) and how to use them.
 </para>
 		  </listitem>
 	      </itemizedlist>
@@ -307,7 +307,7 @@ Understanding the set of tools (ant, junit) and how to use them.
 	      <para>
 Everybody has different interests and the best contribution is made
 when someone is allowed to pursue his own interests.
-Hopefully ArgoUML provides you with interesting challanges to
+Hopefully ArgoUML provides you with interesting challenges to
 your taste.
 </para>
 	    </listitem>
@@ -329,7 +329,7 @@ with the hopes of being helpful for the developers of ArgoUML when
 it comes to learning and understanding how ArgoUML work in order
 to improve on its functions and features. 
 
-It can also be of interest for persons that wish to analyse the
+It can also be of interest for persons that wish to analyze the
 ArgoUML project for whatever purpose that may be.
 </para>
       <sect2>
@@ -361,7 +361,7 @@ use it in your project.
 </para>
 	<para>
 You will not find information on how to convince your project to use
-ArgoUML as a modelling tool.
+ArgoUML as a modeling tool.
 </para>
       </sect2>
     </sect1>
@@ -371,7 +371,7 @@ ArgoUML as a modelling tool.
       <indexterm><primary>Mailing lists</primary></indexterm>
       <indexterm><primary>Developers' Mailing List</primary></indexterm>
       <para>
-All developers <emphasis>MUST</emphasis> subscribe to the mailinglist
+All developers <emphasis>MUST</emphasis> subscribe to the mailing list
 for developers. Please find the details at:
 <ulink url="http://argouml.tigris.org/servlets/ProjectMailingListList">http://argouml.tigris.org/servlets/ProjectMailingListList</ulink>
 </para>
@@ -423,7 +423,7 @@ that each have a few responsibilities.
 The subsystems were earlier called components.
 </para>
     <para>
-In issuezilla each subsystem has its issues sorted in a
+In Issuezilla each subsystem has its issues sorted in a
 subcomponent with the same name as the subsystem.
 Furthermore the Diagrams subsystem has a set of subcomponents
 for issues connected to the different diagrams.
@@ -469,7 +469,7 @@ can reside somewhere else.
 Notice that each other product used by ArgoUML is, in the design,
 located within one of the existing subsystems.
 This means that a change of version or indeed a change of choice
-of such a subproduct is an internal matter for the subsystem 
+of such a sub-product is an internal matter for the subsystem 
 and should ideally not affect any other subsystem.
 </para>
 	  </listitem>
@@ -628,7 +628,7 @@ in the list of used subsystems.
       </indexterm>
       <para>
 Layers are used to organize and 
-clairify the relationships between the different subsystems
+clarify the relationships between the different subsystems
 within ArgoUML.
 </para>
 
@@ -680,7 +680,7 @@ and then end up on file, on the output or not at all.
 	  </indexterm>
 	  <para>
 This is the set of files that is a repository of localized strings.
-Every other module uses these strings in all communcations with
+Every other module uses these strings in all communications with
 the user.
 </para>
       <para>
@@ -718,7 +718,7 @@ The subsystems in this layer do not rely on any other part
 (except layer 0)
 of ArgoUML to do their work.
 They can all be tested in full individually 
-i.e. independant of any other subsystem.
+i.e. independent of any other subsystem.
 </para>
       <para>
 <itemizedlist>
@@ -729,7 +729,7 @@ i.e. independant of any other subsystem.
 	      <primary>Model</primary>
 	    </indexterm>
 	    <para>
-The Model contains a modifyable storage of the UML model
+The Model contains a modifiable storage of the UML model
 and the diagrams.
 </para>
 	    <para>
@@ -1282,7 +1282,7 @@ See <xref linkend="layer2"></xref>.
 Purpose - two purposes:
 to allow the model to be converted into java code and updated either
 in java or in the model;
-to allow some java code to be coverted into a model.
+to allow some java code to be converted into a model.
 </para>
       <para>
 The java things are located in 
@@ -1320,7 +1320,7 @@ or so...
 It's an Antlr (<ulink url="http://www.antlr.org">http://www.antlr.org</ulink>)
 grammar, based on the Antlr Java parser
 example. The main difference is the missing AST (Abstract Syntax Tree)
-generation and treeparser. So the original example generates an AST
+generation and tree-parser. So the original example generates an AST
 (a treelike data structure) and then traverses this tree, while the
 ArgoUML code parses the source file and generates NSUML objects
 directly from the sources. This was done to avoid the memory usage
@@ -1340,11 +1340,11 @@ to visualize it.
 	<title>Which layout algorithm is used?</title>
 	<para>
 The classes in org.argouml.uml.diagram.static_structure.layout.* hold
-the Classdiagram layout code. No layout for other diagram types yet.
+the Class diagram layout code. No layout for other diagram types yet.
 It's based on a ranking scheme for classes and interfaces. The rank of
 a class/interface depends on the total number of (direct or indirect)
-superclasses. So if class B extends A (with rank(A)=0), then rank(B)=1.
-If C extends B, then rank(C)=2 since it has 2 superclasses A,B. An
+super-classes. So if class B extends A (with rank(A)=0), then rank(B)=1.
+If C extends B, then rank(C)=2 since it has 2 super-classes A,B. An
 implemented interface is treated similar to a extended class. The
 objects are placed in rows then, that depend on their rank.
 rank(0)=1st row. rank(1) =2nd row (below the 1st one) etc. Example:
@@ -1355,7 +1355,7 @@ rank(0)=1st row. rank(1) =2nd row (below the 1st one) etc. Example:
 	  </imageobject>
 	</mediaobject>
 	<para>
-In the next diagramm, a link goes to an object that is not in the row
+In the next diagram, a link goes to an object that is not in the row
 above:
 </para>
 	<mediaobject>
@@ -1387,7 +1387,7 @@ D E F : rank 1
 </para>
 	</blockquote>
 	<para>
-We give the superclasses an index in their rank (assuming that they are
+We give the super-classes an index in their rank (assuming that they are
 already sorted):
 </para>
 	<blockquote>
@@ -1397,7 +1397,7 @@ A:0, B:1, C:2
 	</blockquote>
 	<para>
 D, E, F have the following links (A, B, C could be interfaces, so I allow
-links to multiple superclasses here):
+links to multiple super-classes here):
 </para>
 	<blockquote>
 	  <para>
@@ -1411,7 +1411,7 @@ F -> A and B
 </para>
 	</blockquote>
 	<para>
-Compute the average value of the indices:
+Compute the average value of the indexes:
 </para>
 	<blockquote>
 	  <para>
@@ -1506,7 +1506,7 @@ The GUI framework provides the following options
 	    <para>The menu with actions</para>
           </listitem>
           <listitem>
-	    <para>The toolbar with actions</para>
+	    <para>The tool-bar with actions</para>
 	  </listitem>
 	  <listitem>
 	    <para>Explorer (was called the Navigator)</para>
@@ -1553,7 +1553,7 @@ finally as a background thread: cognitive support
 (org.argouml.cognitive.Designer) and some more classes.
 </para>
 	<para>
-The ProjectBrowser initializes the menu, toolbar, status bar
+The ProjectBrowser initializes the menu, tool-bar, status bar
 and the four main areas:
 navigation pane (org.argouml.ui.NavigatorPane),
 editor pane (org.argouml.ui.MultiEditorPane),
@@ -1704,7 +1704,7 @@ diagrams and other objects. Note: the Explorer used to be called the Navigator.
 </para>
       <para>
 The Explorer is located in 
-<classname>org.argouml.ui.explorer</classname> and subpackages.
+<classname>org.argouml.ui.explorer</classname> and sub-packages.
 </para>
       <para>
 The Explorer is a Layer 2 subsystem. See <xref linkend="layer2"></xref>.
@@ -1726,12 +1726,12 @@ which must notify the other views to make the same selection.
 	    </listitem>
 	    <listitem>
 	      <para>
-R2: right click on a node, which brings up a popup menu.
+R2: right click on a node, which brings up a pop-up menu.
 </para>
 	    </listitem>
 	    <listitem>
 	      <para>
-R3: selection of another perspective in the Combox box,
+R3: selection of another perspective in the Combo box,
 which must change the explorer to that perspective. A perspective provides a
 different view of the model that will focus on one or other part of the model.
 </para>
@@ -1744,8 +1744,9 @@ R4: node expansion and collapse.
 
 	    <listitem>
 	      <para>
-R5: It is possible to drag namespace nodes on to other namespace nodes. Dropping
-a namespace node onto another, will, if the destination namespace is a valid 
+R5: It is possible to drag name-space nodes on to other name-space nodes. 
+Dropping a name-space node onto another, will, 
+if the destination name-space is a valid 
 one, update the explorer and model.
 </para>
 	    </listitem>
@@ -1754,19 +1755,19 @@ one, update the explorer and model.
 	      <para>
 R6: sorting of nodes with a particular Ordering.
 [an ordering is a comparator that orders child nodes
-in the explorer, eg.by name and/or type].
+in the explorer, e.g. by name and/or type].
 </para>
 	    </listitem>
 
 	    <listitem>
 	      <para>
-R7: copy diagram to clipboad functionality for windows/java 1.4 users.
+R7: copy diagram to clipboard functionality for windows/java 1.4 users.
 </para>
 	    </listitem>
 
 	    <listitem>
 	      <para>
-R8: tooltip showing node name and type.
+R8: tool-tip showing node name and type.
 </para>
 	    </listitem>
 
@@ -1781,7 +1782,7 @@ R9: standard multiple discontiguous selection with mouse and keyboard.
 R10: the user can configure the perspectives using a dialog. Perspectives
 can be added and deleted. Perspective rules can be added and deleted from
 a perspective. The changes are saved to the user properties. If there are
-user perspectives when ArogUML starts, it loads these, otherwise it loads a
+user perspectives when ArgoUML starts, it loads these, otherwise it loads a
 default set of perspectives.
 </para>
 	    </listitem>
@@ -1799,7 +1800,7 @@ R11: change in selection in another view, any relevant rows to be highlighted.
 	    </listitem>
 	    <listitem>
 	      <para>
-R12: the uml model changes, 
+R12: the UML model changes, 
 the tree must update to reflect additions/deletions 
 and name changes in the model.
 </para>
@@ -1815,7 +1816,7 @@ R13: change of project, the tree must update. the root node should be
       </sect2>
 
       <sect2>
-	<title>Public API's and SPI's</title>
+	<title>Public APIs and SPIs</title>
 	<para>
 The Explorer Subsystem provides/will provide the following APIs:
 <itemizedlist continuation="restarts" spacing="compact">
@@ -1860,7 +1861,7 @@ Status: not implemented
 	    </listitem>
 	    <listitem>
 	      <para>
-SPI2: New PerspectiveRule's can be defined and registered with
+SPI2: New PerspectiveRules can be defined and registered with
 the 'library' of available rules.
 Status: not implemented
 </para>
@@ -1877,8 +1878,8 @@ Status: not implemented
 </para>
 
 <para>
-The API's collectively represent the Explorer subsystem facade 
-and the SPI's represent plugins.
+The APIs collectively represent the Explorer subsystem facade 
+and the SPIs represent plug-ins.
 </para>
       </sect2>
 
@@ -1905,15 +1906,15 @@ parent node in the tree.
 </para>
 
 	<para>
-The Explorer has 3 main subcomponents: a customised JTree,
-a customised TreeModel and an interface for generating child nodes
+The Explorer has 3 main subcomponents: a customized JTree,
+a customized TreeModel and an interface for generating child nodes
 in the tree which forms the tree Perspective.
 <orderedlist continuation="restarts" spacing="compact">
 
 	    <listitem>
 	      <para>
 The JTree (org.argouml.ui.explorer.ExplorerTree) has been
-     customised to maintain consistent selection state with the other
+customized to maintain consistent selection state with the other
      model views. It provides a pop up menu (ExplorerPopup) for
      performing actions on specific model elements. There is specific
      functionality in DnDExplorerTree for Drag and drop, and in
@@ -1922,9 +1923,9 @@ The JTree (org.argouml.ui.explorer.ExplorerTree) has been
 	    </listitem>
 	    <listitem>
 	      <para>
-The TreeModel is a customised DefaultTreeModel that listens to
-     changes in the UML model. The JTree builds the treemodel as the
-     user expands nodes, this minimises the size of the model to those
+The TreeModel is a customized DefaultTreeModel that listens to
+changes in the UML model. The JTree builds the tree model as the
+user expands nodes, this minimizes the size of the model to those
      part that the user is interested in. The TreeModel contains custom
      DefaultMutableTreeNodes, ExplorerTreeNodes, that maintain their
      own order on child nodes; this will typically be an alphabetical
@@ -1935,9 +1936,9 @@ The TreeModel is a customised DefaultTreeModel that listens to
 	    <listitem>
 	      <para>
 The model uses the third part of the Explorer design,
-     PerspectiveRule's, to add child nodes to the leaves of the tree.
+PerspectiveRules, to add child nodes to the leaves of the tree.
      The structure of the tree is wholly dependent on the collection of
-     PerspectiveRules that together provide a specialised view of the
+PerspectiveRules that together provide a specialized view of the
      UML model. This is very flexible and extensible. The is a default
      set of PerspectiveRules in org.argouml.ui.explorer.rules package.
 </para>
@@ -1968,7 +1969,7 @@ the <methodname>convertValueToText(...)</methodname> method in
 The perspectives can be changed using the 
 <classname>org.argouml.ui.explorer.PerspectiveConfigurator</classname> by the
 User. If you want to do this
-as part of an extension to ArgoUML then you could use (see above) API's 1,2 and
+as part of an extension to ArgoUML then you could use (see above) APIs 1,2 and
 3, and SPI 2. However, these are under development or not implemented, so should
 be used knowing that significant changes may be made in the future.
 </para>
@@ -1992,9 +1993,9 @@ You could use SPI1 when it gets implemented.
 	    <listitem>
 	      <para>...extend the Explorer in other ways?</para>
 	      <para>
-The best way is to use the above API's/SPI's; if they are not implemented then
+The best way is to use the above APIs/SPIs; if they are not implemented then
 It would be best to implement them and feedback your improvements to the
-ArgoUML project so that your code works on a recognised public API that will be
+ArgoUML project so that your code works on a recognized public API that will be
 maintained in the future.
 </para>
 	    </listitem>
@@ -2030,7 +2031,7 @@ This handles the enabling and disabling of every module.
 An idea on how it could work:
 It is then the modules responsibility to connect and register to
 the subsystem or subsystems it is going to work with using that
-subsystems Facade or Plugin interface.
+subsystems Facade or Plug-in interface.
 </para>
       <para>
 For details on how to build a module
@@ -2040,7 +2041,7 @@ see <xref linkend="modules_and_plugins"></xref>.
         <title>What the ModuleLoader does</title>
         <para>
 The ModuleLoader is looking for module jars.
-It actually scans through all jars available in the argo ext dir directory.
+It actually scans through all jars available in the ext dir directory.
 See Edit Settings Environment tab.
 If you turn on logging on the debug level while running ArgoUML
 you should be able to see what jar files it finds and what it does with them.
@@ -2074,7 +2075,7 @@ The OCL is located in
 The OCL is a Layer 3 subsystem. See <xref linkend="layer3"></xref>.
 </para>
       <para>
-The OCL editor gui interface is 
+The OCL editor GUI interface is 
 <classname>org.argouml.uml.ui.TabConstraints</classname>
 (shown in the bottom right hand panel - details panel).
 </para>
@@ -2084,9 +2085,9 @@ The OCL editor gui interface is
 There are some other helper classes in 
 <classname>org.argouml.ocl</classname>, 
 with names beginning with OCL but they are used for other purposes.
-Historicaly GEF uses OCL as a kind of template language to 
-convert the uml diagrams to pgml(and back again), 
-it doesn't have anything to do with ocl constraints in your uml model.
+Historically GEF uses OCL as a kind of template language to 
+convert the UML diagrams to pgml(and back again), 
+it doesn't have anything to do with OCL constraints in your UML model.
 </para>
       <para>
 <classname>ArgoFacade</classname> is reused by 
@@ -2162,20 +2163,20 @@ Beware that there might be more than one Fig Element per
 &cookbookmodules;
 
     <sect1>
-      <title>How are modules organized in in the java code</title>
+      <title>How are modules organized in the java code</title>
     <para>
 This section is not yet updated to discuss layers.
 </para>
       <para>
-The previous section describes how modules and plugins are 
-connected on the java level totally independant of how they
+The previous section describes how modules and plug-ins are 
+connected on the java level totally independent of how they
 are actually linked into ArgoUML.
 </para>
       <para>
 Within the ArgoUML project some parts of the code are for
 different reasons developed and kept separate from the main
 ArgoUML source code.
-These parts can be modules or plugins on the java level but
+These parts can be modules or plug-ins on the java level but
 on the source code level they are called modules.
 This section describes how they are organized and how you 
 create such source-code modules.
@@ -2191,32 +2192,32 @@ create such source-code modules.
 </para>
 	      <para>
 Suggestion, copy from the 
-<filename class="directory">junit</filename>
+<filename class="directory">JUnit</filename>
 module as described here.
 </para>
 	      <para>
 Make a copy of
 <filename class="directory">argouml/modules/junit</filename>
 into 
-<filename class="directory">argouml/modules/<replaceable>yourname</replaceable></filename>.
+<filename class="directory">argouml/modules/<replaceable>your name</replaceable></filename>.
 </para>
 	      <para>
 Remove <filename class="libraryfile">junit.jar</filename>
 from
-<filename class="directory">argouml/modules/<replaceable>yourname</replaceable>/lib</filename>.
+<filename class="directory">argouml/modules/<replaceable>your name</replaceable>/lib</filename>.
 </para>
 	      <para>
 Add any jar you need to 
-<filename class="directory">argouml/modules/<replaceable>yourname</replaceable>/lib</filename>.
+<filename class="directory">argouml/modules/<replaceable>your name</replaceable>/lib</filename>.
 </para>
 	      <para>
 Edit
-<filename class="directory">argouml/modules/<replaceable>yourname</replaceable>/module.properties</filename>
+<filename class="directory">argouml/modules/<replaceable>your name</replaceable>/module.properties</filename>
 </para>
 	      <para>
 Edit references to
 <filename class="libraryfile">junit.jar</filename> in
-<filename>argouml/modules/<replaceable>yourname</replaceable>/build.xml</filename>
+<filename>argouml/modules/<replaceable>your name</replaceable>/build.xml</filename>
 to any new jars you need.
 </para>
 	      <para>
@@ -2224,16 +2225,16 @@ Edit <filename>argouml/modules/yourname/src/org/manifest.mf</filename>.
 </para>
 	      <para>
 Reorganize the source files as necessary.
-Something like org.argouml.<replaceable>yourname</replaceable>
+Something like org.argouml.<replaceable>your name</replaceable>
 as the package root.
 </para>
 	    </listitem>
 	    <listitem>
 	      <para>
-...get Argo to use a plugin?
+...get Argo to use a plug-in?
 </para>
-<para>
-    Once you've created a jar file with a plugin in it,
+              <para>
+Once you've created a jar file with a plug-in in it,
     you need to make sure that Argo can find the jar
     to be able to execute it.
 </para>
@@ -2241,10 +2242,10 @@ as the package root.
     If you are using a "standard" ArgoUML source structure,
     then you should be able to execute <command>build install</command>
     or <command>ant install</command>
-    in the source directory of the plugin.
+in the source directory of the plug-in.
     This will copy the jar file to the proper directory in the
     main ArgoUML build target.
-    You can test your plugin by running <command>build run</command>
+You can test your plug-in by running <command>build run</command>
     in the <filename class="directory">src_new</filename> directory.
 </para>
 <para>
@@ -2257,17 +2258,17 @@ as the package root.
       <listitem><para>
          Go to the menu <command>Edit->Settings</command>
 	 and look at the <command>Environment</command> tab.
-	 Find the entry labelled <literal>${argo.ext.dir}</literal>.
+Find the entry labeled <literal>${argo.ext.dir}</literal>.
          Create that directory if it does not already exist.
       </para></listitem>
       <listitem><para>
-         Copy the plugin jar
+Copy the plug-in jar
 	 and any other jars required by it
 	 into that directory.
       </para></listitem>
       <listitem><para>
          Start up ArgoUML again,
-	 and you should see the plugin's startup banner
+and you should see the plug-in's startup banner
 	 (if it has one, of course).
       </para></listitem>
 
@@ -2303,11 +2304,11 @@ part of the documentation. These ideas are formulated by Linus Tolke.
 There are seven significantly different bits of documentation in the
 ArgoUML project.
 By documentation I mean some information of the product that is
-developed alongside the product and that has a persistant value.
+developed alongside the product and that has a persistent value.
 </para>
     <orderedlist>
       <listitem>
-	<para>The code, variablenames, class names</para>
+	<para>The code, variable names, class names</para>
       </listitem>
       <listitem>
 	<para>The javadoc</para>
@@ -2536,7 +2537,7 @@ the issues discussed recently in the user community.
     </table>
     <para>
 The Cookbook, the User Manual, and the Quick Guide, 
-are all written in docbook and generated into html and pdf 
+are all written in docbook and generated into HTML and PDF 
 during deployment.
 See <xref linkend="app.docstand"/> for details on how to write these.
 </para>
@@ -2600,7 +2601,7 @@ combination of heuristic and empirical techniques.
 	<secondary>Dissertation</secondary>
       </indexterm>
       <para>
-Enhancing an UML Modelling Tool with Context-Based Constraints for Components
+Enhancing an UML Modeling Tool with Context-Based Constraints for Components
 </para>
       <sect2>
 	<title>Abstract</title>
