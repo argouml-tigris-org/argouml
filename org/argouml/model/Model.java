@@ -31,12 +31,17 @@ package org.argouml.model;
  * Currently these API:s are hard-coded to work with NSUML but eventually
  * another model component will replace them and then all these API:s
  * will instead work against that component.<p>
+ *
+ * Notice that all API:s returned from this class are to be NSUML-free.<p>
  *  
  * @stereotype utility
  * @since 0.15.5
  * @author Linus Tolke
  */
 public final class Model {
+    /**
+     * The ModelEventPump instance.
+     */
     private static ModelEventPump thePumpInstance;
 
     /**
