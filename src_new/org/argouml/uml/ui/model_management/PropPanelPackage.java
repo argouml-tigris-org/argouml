@@ -49,7 +49,7 @@ public class PropPanelPackage extends PropPanelNamespace implements PluggablePro
     ////////////////////////////////////////////////////////////////
     // contructors
     public PropPanelPackage() {
-        this("Package", _packageIcon, ConfigLoader.getTabPropsOrientation());
+        this("Package", ConfigLoader.getTabPropsOrientation());
     }
 
     /**
@@ -58,8 +58,8 @@ public class PropPanelPackage extends PropPanelNamespace implements PluggablePro
      * @param icon
      * @param orientation
      */
-    public PropPanelPackage(String title, ImageIcon icon, Orientation orientation) {
-        super(title, icon, orientation);
+    public PropPanelPackage(String title, Orientation orientation) {
+        super(title, orientation);
         placeElements();
     }
 

@@ -33,6 +33,7 @@ import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.model_management.MPackage;
 
 /** Action to trigger creation of a new activity diagram.
  *  @stereotype singleton
@@ -58,6 +59,13 @@ public class ActionActivityDiagram extends ActionStateDiagram {
         }
         UMLActivityDiagram d = new UMLActivityDiagram(ns, graph);
         return d;
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
+    public boolean shouldBeEnabled() {
+        return super.shouldBeEnabled() || ProjectBrowser.TheInstance.getTarget() instanceof MPackage;
     }
 
 } /* end class ActionActivityDiagram */

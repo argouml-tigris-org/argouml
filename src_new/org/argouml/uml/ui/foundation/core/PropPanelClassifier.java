@@ -107,8 +107,8 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
       this(name, null, columns);
   }
   
-  public PropPanelClassifier(String title, ImageIcon icon, Orientation orientation) {
-  	super(title, icon, orientation);
+  public PropPanelClassifier(String title, Orientation orientation) {
+  	super(title, orientation);
   	initialize();
   }
 

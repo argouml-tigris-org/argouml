@@ -48,8 +48,8 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
         initialize();
     }
     
-    public PropPanelNamespace(String title, ImageIcon icon, Orientation orientation) {
-    	super(title, icon, orientation);
+    public PropPanelNamespace(String title, Orientation orientation) {
+    	super(title, orientation);
     	initialize();
     }
 

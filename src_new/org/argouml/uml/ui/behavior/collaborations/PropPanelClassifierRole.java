@@ -54,7 +54,7 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelClassifierRole() {
-    super("ClassifierRole",_classifierRoleIcon, ConfigLoader.getTabPropsOrientation());
+    super("ClassifierRole", ConfigLoader.getTabPropsOrientation());
 
     Class mclass = MClassifierRole.class;
    

@@ -45,7 +45,7 @@ import ru.novosoft.uml.behavior.collaborations.MInteraction;
 public class PropPanelInteraction extends PropPanelModelElement {
 
     public PropPanelInteraction() {
-        super("Interaction", _interactionIcon, ConfigLoader.getTabPropsOrientation());
+        super("Interaction", ConfigLoader.getTabPropsOrientation());
 	
     	addField(Argo.localize("UMLMenu", "label.name"), new UMLTextField2(new UMLModelElementNameDocument()));  	
     	addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());

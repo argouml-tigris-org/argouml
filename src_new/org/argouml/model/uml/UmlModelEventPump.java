@@ -168,6 +168,7 @@ public final class UmlModelEventPump implements MElementListener {
      */
     private synchronized void executeAddClassModelEventListener(MElementListener listener, Class modelClass, String eventName) {
         // first register the listener for all elements allready in the model
+        cat.debug("Registring listener " + listener + " to class " + modelClass.getName() + " and event " + eventName);
         Iterator it = ModelManagementHelper.getHelper().getAllModelElementsOfKind(modelClass).iterator();
         while (it.hasNext()) {
             executeAddModelEventListener(listener, (MBase) it.next(), eventName);
@@ -241,9 +242,12 @@ public final class UmlModelEventPump implements MElementListener {
 
     private synchronized void executeRemoveClassModelEventListener(MElementListener listener, Class modelClass, String eventName) {
         // remove all registrations of this listener with all instances of modelClass
+        cat.debug("Removing listener " + listener.toString() + " from modelclass " + modelClass.getName() + ". It was listening to event " + eventName);
         Iterator it = ModelManagementHelper.getHelper().getAllModelElementsOfKind(modelClass).iterator();
         while (it.hasNext()) {
-            removeModelEventListener(listener, (MBase) it.next(), eventName);
+            MBase base = (MBase)it.next();
+            removeModelEventListener(listener, base, eventName);
+            cat.debug("Removed the listener " + listener + " that was registred for modelelement " + base + " and event " + eventName);
         }
         // remove the listener from the registry
         Set listenerList = (Set) _listenerClassModelEventsMap.get(modelClass);
@@ -255,6 +259,7 @@ public final class UmlModelEventPump implements MElementListener {
             }
         }
         if (listenerList.isEmpty()) {
+            cat.debug("Removed the listenerlist for " + modelClass.getName() + " from the eventpump.");
             _listenerClassModelEventsMap.remove(modelClass);
         }
     }
@@ -320,6 +325,7 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     private synchronized void executeAddModelEventListener(MElementListener listener, MBase modelelement, String eventName) {
+        cat.debug("Registring listener " + listener + " to modelelement " + modelelement + " and event " + eventName);
         String key = getKey(modelelement, eventName);
         Set listenerList = (Set) _listenerModelEventsMap.get(key);
         if (listenerList == null) {
@@ -372,6 +378,7 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     private synchronized void executeRemoveModelEventListener(MElementListener listener, MBase elem, String eventName) {
+        cat.debug("Removing listener " + listener + " from modelelement " + elem + " and event " + eventName);
         String key = getKey(elem, eventName);
         Set listenerList = (Set) _listenerModelEventsMap.get(key);
         if (listenerList != null) {
@@ -406,6 +413,7 @@ public final class UmlModelEventPump implements MElementListener {
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
      */
     public void listRoleItemSet(MElementEvent e) {
+        cat.debug("Pumping listRoleItemSet event with name " + e.getName() + " and source " + e.getSource());
         Iterator it = getListenerList(e).iterator();
         while (it.hasNext()) {
             ((MElementListener) it.next()).listRoleItemSet(e);
@@ -431,6 +439,7 @@ public final class UmlModelEventPump implements MElementListener {
      * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
      */
     public void propertySet(MElementEvent e) {
+        cat.debug("Pumping propertySet event with name " + e.getName() + " and source " + e.getSource());
         if (e.getNewValue() != null && !(e.getNewValue().equals(e.getOldValue()))) {
             Iterator it = getListenerList(e).iterator();
 
@@ -444,6 +453,7 @@ public final class UmlModelEventPump implements MElementListener {
      * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
      */
     public void recovered(MElementEvent e) {
+         cat.debug("Pumping recoverd event with name " + e.getName() + " and source " + e.getSource());
         Iterator it = getListenerList(e).iterator();
         while (it.hasNext()) {
             ((MElementListener) it.next()).recovered(e);
@@ -454,6 +464,7 @@ public final class UmlModelEventPump implements MElementListener {
      * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
      */
     public void removed(MElementEvent e) {
+         cat.debug("Pumping removed event with name " + e.getName() + " and source " + e.getSource());
         Iterator it = getListenerList(e).iterator();
         while (it.hasNext()) {
             ((MElementListener) it.next()).removed(e);
@@ -464,6 +475,7 @@ public final class UmlModelEventPump implements MElementListener {
      * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
+         cat.debug("Pumping roleAdded event with name " + e.getName() + " and source " + e.getSource());
         Iterator it = getListenerList(e).iterator();
         while (it.hasNext()) {
             ((MElementListener) it.next()).roleAdded(e);
@@ -474,6 +486,7 @@ public final class UmlModelEventPump implements MElementListener {
      * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
+         cat.debug("Pumping roleRemoved event with name " + e.getName() + " and source " + e.getSource());
         Iterator it = getListenerList(e).iterator();
         while (it.hasNext()) {
             ((MElementListener) it.next()).roleRemoved(e);

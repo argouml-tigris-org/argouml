@@ -45,7 +45,7 @@ public class PropPanelInterface extends PropPanelClassifier {
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelInterface() {
-    super("Interface", _interfaceIcon,ConfigLoader.getTabPropsOrientation());
+    super("Interface", ConfigLoader.getTabPropsOrientation());
 
     Class mclass = MInterface.class;
     

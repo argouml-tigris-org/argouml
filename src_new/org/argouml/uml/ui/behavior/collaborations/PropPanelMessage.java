@@ -60,7 +60,7 @@ public class PropPanelMessage extends PropPanelModelElement {
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelMessage() {
-    super("Message",_messageIcon, ConfigLoader.getTabPropsOrientation());
+    super("Message", ConfigLoader.getTabPropsOrientation());
 
     Class mclass = MMessage.class;
     
