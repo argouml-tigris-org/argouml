@@ -55,6 +55,7 @@ public class GoStateToSubstate extends AbstractGoRule {
   }
 
   public int getIndexOfChild(Object parent, Object child) {
+    if (!(parent instanceof MCompositeState)) return -1;
     Vector children = new Vector(getChildren(parent));
     return (children == null) ? -1 : children.indexOf(child);
   }
