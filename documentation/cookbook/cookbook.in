@@ -1984,6 +1984,16 @@ Currently this component is more or less only
 Dresden OCL Toolkit
 and adaptation.
 </para>
+      <para>
+Because of a problem with the interpretation of the UML specification and
+the OCL specification, 
+the implementation of constraints in ArgoUML is only possible for
+Classes, Interfaces and Features (Attributes and Operations).
+See 
+<ulink url="http://argouml.tigris.org/issues/show_bug.cgi?id=1805">
+Issue 1805
+</ulink>.
+</para>
     </sect1>
 
   </chapter>
