@@ -52,38 +52,40 @@ import org.argouml.model.UseCasesHelper;
  */
 public class NSUMLModelImplementation implements ModelImplementation {
     private ActivityGraphsFactory theActivityGraphsFactory =
-        new ActivityGraphsFactoryImpl();
+        new ActivityGraphsFactoryImpl(this);
     private ActivityGraphsHelper theActivityGraphsHelper =
-        new ActivityGraphsHelperImpl();
+        new ActivityGraphsHelperImpl(this);
     private CollaborationsFactory theCollaborationsFactory =
-        new CollaborationsFactoryImpl();
+        new CollaborationsFactoryImpl(this);
     private CollaborationsHelper theCollaborationsHelper =
-        new CollaborationsHelperImpl();
+        new CollaborationsHelperImpl(this);
     private CommonBehaviorFactory theCommonBehaviorFactory =
-        new CommonBehaviorFactoryImpl();
+        new CommonBehaviorFactoryImpl(this);
     private CommonBehaviorHelper theCommonBehaviorHelper =
-        new CommonBehaviorHelperImpl();
-    private CoreFactory theCoreFactory = new CoreFactoryImpl();
-    private CoreHelper theCoreHelper = new CoreHelperImpl();
-    private DataTypesFactory theDataTypesFactory = new DataTypesFactoryImpl();
-    private DataTypesHelper theDataTypesHelper = new DataTypesHelperImpl();
+        new CommonBehaviorHelperImpl(this);
+    private CopyHelper theCopyHelper = new CopyHelper(this);
+    private CoreFactory theCoreFactory = new CoreFactoryImpl(this);
+    private CoreHelper theCoreHelper = new CoreHelperImpl(this);
+    private DataTypesFactory theDataTypesFactory =
+        new DataTypesFactoryImpl(this);
+    private DataTypesHelper theDataTypesHelper = new DataTypesHelperImpl(this);
     private ExtensionMechanismsFactory theExtensionMechanismsFactory =
-        new ExtensionMechanismsFactoryImpl();
+        new ExtensionMechanismsFactoryImpl(this);
     private ExtensionMechanismsHelper theExtensionMechanismsHelper =
-        new ExtensionMechanismsHelperImpl();
+        new ExtensionMechanismsHelperImpl(this);
     private ModelManagementFactory theModelManagementFactory =
-        new ModelManagementFactoryImpl();
+        new ModelManagementFactoryImpl(this);
     private ModelManagementHelper theModelManagementHelper =
-        new ModelManagementHelperImpl();
+        new ModelManagementHelperImpl(this);
     private StateMachinesFactory theStateMachinesFactory =
-        new StateMachinesFactoryImpl();
+        new StateMachinesFactoryImpl(this);
     private StateMachinesHelper theStateMachinesHelper =
-        new StateMachinesHelperImpl();
+        new StateMachinesHelperImpl(this);
     private UmlFactory theUmlFactory;
-    private UmlHelper theUmlHelper = new UmlHelperImpl();
-    private UseCasesFactory theUseCasesFactory = new UseCasesFactoryImpl();
-    private UseCasesHelper theUseCasesHelper = new UseCasesHelperImpl();
-    private ModelEventPump theModelEventPump = new NSUMLModelEventPump();
+    private UmlHelper theUmlHelper = new UmlHelperImpl(this);
+    private UseCasesFactory theUseCasesFactory = new UseCasesFactoryImpl(this);
+    private UseCasesHelper theUseCasesHelper = new UseCasesHelperImpl(this);
+    private ModelEventPump theModelEventPump = new NSUMLModelEventPump(this);
 
     /**
      * @see org.argouml.model.ModelImplementation#getModelEventPump()
@@ -132,6 +134,13 @@ public class NSUMLModelImplementation implements ModelImplementation {
      */
     public CommonBehaviorHelper getCommonBehaviorHelper() {
         return theCommonBehaviorHelper;
+    }
+
+    /**
+     * @return The Copy helper.
+     */
+    CopyHelper getCopyHelper() {
+        return theCopyHelper;
     }
 
     /**
@@ -209,7 +218,7 @@ public class NSUMLModelImplementation implements ModelImplementation {
      */
     public synchronized UmlFactory getUmlFactory() {
         if (theUmlFactory == null) {
-            theUmlFactory = new UmlFactoryImpl();
+            theUmlFactory = new UmlFactoryImpl(this);
         }
         return theUmlFactory;
     }

@@ -61,9 +61,17 @@ class ModelManagementHelperImpl implements ModelManagementHelper {
 	Logger.getLogger(ModelManagementHelperImpl.class);
 
     /**
-     * Don't allow instantiation.
+     * The model implementation.
      */
-    ModelManagementHelperImpl() {
+    private NSUMLModelImplementation nsmodel;
+
+    /**
+     * Don't allow instantiation.
+     *
+     * @param implementation To get other helpers and factories.
+     */
+    ModelManagementHelperImpl(NSUMLModelImplementation implementation) {
+        nsmodel = implementation;
     }
 
     /**
@@ -284,8 +292,8 @@ class ModelManagementHelperImpl implements ModelManagementHelper {
      * @return a collection of all behavioralfeatures in the current project
      */
     public Collection getAllBehavioralFeatures() {
-        Object model = ProjectManager.getManager().getCurrentProject()
-            .getModel();
+        Object model =
+            ProjectManager.getManager().getCurrentProject().getModel();
         return getAllBehavioralFeatures(model);
     }
 
@@ -431,8 +439,9 @@ class ModelManagementHelperImpl implements ModelManagementHelper {
         }
 
         // The cast is actually safe
-        MNamespace ns = (MNamespace) getCorrespondingElement(
-            ((MModelElement) elem).getNamespace(), model, canCreate);
+        MNamespace ns =
+            (MNamespace) getCorrespondingElement(
+                    ((MModelElement) elem).getNamespace(), model, canCreate);
         if (ns == null) {
             return null;
         }
@@ -454,7 +463,7 @@ class ModelManagementHelperImpl implements ModelManagementHelper {
             return null;
         }
 
-        return CopyHelper.getHelper().copy(elem, ns);
+        return nsmodel.getCopyHelper().copy(elem, ns);
     }
 
     /**

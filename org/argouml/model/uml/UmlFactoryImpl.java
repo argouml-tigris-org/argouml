@@ -40,7 +40,6 @@ import org.argouml.model.CoreFactory;
 import org.argouml.model.DataTypesFactory;
 import org.argouml.model.ExtensionMechanismsFactory;
 import org.argouml.model.IllegalModelElementConnectionException;
-import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.ModelManagementFactory;
 import org.argouml.model.StateMachinesFactory;
@@ -157,6 +156,11 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
         Logger.getLogger(UmlFactoryImpl.class);
 
     /**
+     * The model implementation.
+     */
+    private NSUMLModelImplementation nsmodel;
+
+    /**
      * A map of valid connections keyed by the connection type.
      * The constructor builds this from the data in the VALID_CONNECTIONS array
      */
@@ -266,8 +270,12 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
 
     /**
      * Don't allow external instantiation.
+     *
+     * @param implementation To get other helpers and factories.
      */
-    UmlFactoryImpl() {
+    UmlFactoryImpl(NSUMLModelImplementation implementation) {
+        nsmodel = implementation;
+
         buildValidConnectionMap();
         initializeFactoryMethods();
     }
@@ -369,7 +377,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
             new ObjectCreateInfo(MComponent.class, factory, "createComponent"));
         elements.put(Uml.COMPONENT_INSTANCE,
             new ObjectCreateInfo(MComponentInstance.class,
-                Model.getCommonBehaviorFactory(),
+                nsmodel.getCommonBehaviorFactory(),
                 "createComponentInstance"));
         elements.put(Uml.INSTANCE,
             new ObjectCreateInfo(MInstance.class, factory, "createInstance"));
@@ -505,14 +513,10 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
         } else if (connectionType == ModelFacade.ASSOCIATION_END) {
             if (fromElement instanceof MAssociation) {
                 connection =
-                        getCore().buildAssociationEnd(
-                                (MClassifier) toElement,
-                                (MAssociation) fromElement);
-            }
-            else if (fromElement instanceof MClassifier) {
-                connection = getCore().buildAssociationEnd(
-                        (MClassifier)fromElement,
-                        (MAssociation) toElement);
+                    getCore().buildAssociationEnd(toElement, fromElement);
+            } else if (fromElement instanceof MClassifier) {
+                connection =
+                    getCore().buildAssociationEnd(fromElement, toElement);
             }
         } else if (connectionType == ModelFacade.ASSOCIATION_CLASS) {
             connection =
@@ -530,8 +534,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
             connection = getCore().buildPermission(fromElement, toElement);
         } else if (connectionType == ModelFacade.USAGE) {
             connection =
-                getCore().buildUsage((MModelElement) fromElement,
-                     (MModelElement) toElement);
+                getCore().buildUsage(fromElement, toElement);
         } else if (connectionType == ModelFacade.GENERALIZATION) {
             connection =
                 getCore().buildGeneralization(fromElement, toElement);
@@ -603,7 +606,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
      * @return the ExtensionMechanisms factory instance.
      */
     public ExtensionMechanismsFactory getExtensionMechanisms() {
-        return Model.getExtensionMechanismsFactory();
+        return nsmodel.getExtensionMechanismsFactory();
     }
 
     /**
@@ -613,7 +616,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
      * @return the DataTypes factory instance.
      */
     public DataTypesFactory getDataTypes() {
-        return Model.getDataTypesFactory();
+        return nsmodel.getDataTypesFactory();
     }
 
     /**
@@ -623,7 +626,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
      * @return the Core factory instance.
      */
     public CoreFactory getCore() {
-        return Model.getCoreFactory();
+        return nsmodel.getCoreFactory();
     }
 
     /**
@@ -633,7 +636,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
      * @return the CommonBehavior factory instance.
      */
     public CommonBehaviorFactory getCommonBehavior() {
-        return Model.getCommonBehaviorFactory();
+        return nsmodel.getCommonBehaviorFactory();
     }
 
     /**
@@ -643,7 +646,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
      * @return the UseCases factory instance.
      */
     public UseCasesFactory getUseCases() {
-        return Model.getUseCasesFactory();
+        return nsmodel.getUseCasesFactory();
     }
 
     /**
@@ -653,7 +656,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
      * @return the StateMachines factory instance.
      */
     public StateMachinesFactory getStateMachines() {
-        return Model.getStateMachinesFactory();
+        return nsmodel.getStateMachinesFactory();
     }
 
     /**
@@ -663,7 +666,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
      * @return the Collaborations factory instance.
      */
     public CollaborationsFactory getCollaborations() {
-        return Model.getCollaborationsFactory();
+        return nsmodel.getCollaborationsFactory();
     }
 
     /**
@@ -673,7 +676,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
      * @return the ActivityGraphs factory instance.
      */
     public ActivityGraphsFactory getActivityGraphs() {
-        return Model.getActivityGraphsFactory();
+        return nsmodel.getActivityGraphsFactory();
     }
 
     /**
@@ -683,7 +686,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
      * @return the ModelManagement factory instance.
      */
     public ModelManagementFactory getModelManagement() {
-        return Model.getModelManagementFactory();
+        return nsmodel.getModelManagementFactory();
     }
 
     /**
@@ -727,9 +730,9 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
                 + "in delete");
         }
         if (elem instanceof MElement) {
-            getCore().deleteElement((MElement) elem);
+            getCore().deleteElement(elem);
             if (elem instanceof MModelElement) {
-                getCore().deleteModelElement((MModelElement) elem);
+                getCore().deleteModelElement(elem);
                 if (elem instanceof MFeature) {
                     deleteFeature((MFeature) elem);
                 } else if (elem instanceof MNamespace) {
@@ -749,18 +752,18 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
                 } // no else here to make sure MAssociationClass goes ok
 
                 if (elem instanceof MParameter) {
-                    getCore().deleteParameter((MParameter) elem);
+                    getCore().deleteParameter(elem);
                 } else if (elem instanceof MConstraint) {
-                    getCore().deleteConstraint((MConstraint) elem);
+                    getCore().deleteConstraint(elem);
                 } else if (elem instanceof MRelationship) {
                     deleteRelationship((MRelationship) elem);
                 } else if (elem instanceof MAssociationEnd) {
-                    getCore().deleteAssociationEnd((MAssociationEnd) elem);
+                    getCore().deleteAssociationEnd(elem);
                     if (elem instanceof MAssociationEndRole) {
                         getCollaborations().deleteAssociationEndRole(elem);
                     }
                 } else if (elem instanceof MComment) {
-                    getCore().deleteComment((MComment) elem);
+                    getCore().deleteComment(elem);
                 } else if (ModelFacade.isAAction(elem)) {
                     deleteAction(elem);
                 } else if (elem instanceof MAttributeLink) {
@@ -770,9 +773,9 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
                 } // no else to handle multiple inheritance of linkobject
 
                 if (elem instanceof MLink) {
-                    getCommonBehavior().deleteLink((MLink) elem);
+                    getCommonBehavior().deleteLink(elem);
                 } else if (elem instanceof MLinkEnd) {
-                    getCommonBehavior().deleteLinkEnd((MLinkEnd) elem);
+                    getCommonBehavior().deleteLinkEnd(elem);
                 } else if (elem instanceof MInteraction) {
                     getCollaborations().deleteInteraction(elem);
                 } else if (elem instanceof MMessage) {
@@ -797,11 +800,10 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
         //
         //}
             } else if (elem instanceof MPresentationElement) {
-                getCore().deletePresentationElement(
-                    (MPresentationElement) elem);
+                getCore().deletePresentationElement(elem);
             }
         } else if (elem instanceof MTemplateParameter) {
-            getCore().deleteTemplateParameter((MTemplateParameter) elem);
+            getCore().deleteTemplateParameter(elem);
         } else if (elem instanceof MTaggedValue) {
             getExtensionMechanisms().deleteTaggedValue((MTaggedValue) elem);
         }
@@ -814,7 +816,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
 
         if (elem instanceof MBase) {
             ((MBase) elem).remove();
-            // TODO: (MVW) How do we replace next statement? Model.getPump()...
+            // TODO: (MVW) How do we replace next statement?
             // Answer (Linus): We don't need to replace it. This file is now
             // in org.argouml.model.uml and is allowed to use NSUML API:s.
             UmlModelEventPump.getPump().cleanUp((MBase) elem);
@@ -841,18 +843,18 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
     private void deleteFeature(MFeature elem) {
         getCore().deleteFeature(elem);
         if (elem instanceof MBehavioralFeature) {
-            getCore().deleteBehavioralFeature((MBehavioralFeature) elem);
+            getCore().deleteBehavioralFeature(elem);
             if (elem instanceof MOperation) {
-                getCore().deleteOperation((MOperation) elem);
+                getCore().deleteOperation(elem);
             } else if (elem instanceof MMethod) {
-                getCore().deleteMethod((MMethod) elem);
+                getCore().deleteMethod(elem);
             } else if (elem instanceof MReception) {
-                getCommonBehavior().deleteReception((MReception) elem);
+                getCommonBehavior().deleteReception(elem);
             }
         } else if (elem instanceof MStructuralFeature) {
-            getCore().deleteStructuralFeature((MStructuralFeature) elem);
+            getCore().deleteStructuralFeature(elem);
             if (elem instanceof MAttribute) {
-                getCore().deleteAttribute((MAttribute) elem);
+                getCore().deleteAttribute(elem);
             }
         }
     }
@@ -868,22 +870,22 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
         if (elem instanceof MClassifier) {
             getCore().deleteClassifier(elem);
             if (elem instanceof MClass) {
-                getCore().deleteClass((MClass) elem);
+                getCore().deleteClass(elem);
                 if (elem instanceof MAssociationClass) {
-                    getCore().deleteAssociationClass((MAssociationClass) elem);
+                    getCore().deleteAssociationClass(elem);
                 }
             } else if (elem instanceof MInterface) {
-                getCore().deleteInterface((MInterface) elem);
+                getCore().deleteInterface(elem);
             } else if (elem instanceof MDataType) {
-                getCore().deleteDataType((MDataType) elem);
+                getCore().deleteDataType(elem);
             } else if (elem instanceof MNode) {
-                getCore().deleteNode((MNode) elem);
+                getCore().deleteNode(elem);
             } else if (elem instanceof MComponent) {
-                getCore().deleteComponent((MComponent) elem);
+                getCore().deleteComponent(elem);
             } else if (elem instanceof MSignal) {
-                getCommonBehavior().deleteSignal((MSignal) elem);
+                getCommonBehavior().deleteSignal(elem);
                 if (elem instanceof MException) {
-                    getCommonBehavior().deleteException((MException) elem);
+                    getCommonBehavior().deleteException(elem);
                 }
             } else if (elem instanceof MClassifierRole) {
                 getCollaborations().deleteClassifierRole(elem);
@@ -915,24 +917,24 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
     private void deleteRelationship(MRelationship elem) {
         getCore().deleteRelationship(elem);
         if (elem instanceof MFlow) {
-            getCore().deleteFlow((MFlow) elem);
+            getCore().deleteFlow(elem);
         } else if (elem instanceof MGeneralization) {
-            getCore().deleteGeneralization((MGeneralization) elem);
+            getCore().deleteGeneralization(elem);
         } else if (elem instanceof MAssociation) {
-            getCore().deleteAssociation((MAssociation) elem);
+            getCore().deleteAssociation(elem);
             if (elem instanceof MAssociationRole) {
                 getCollaborations().deleteAssociationRole(elem);
             }
         } else if (elem instanceof MDependency) {
-            getCore().deleteDependency((MDependency) elem);
+            getCore().deleteDependency(elem);
             if (ModelFacade.isAAbstraction(elem)) {
                 getCore().deleteAbstraction(elem);
             } else if (elem instanceof MBinding) {
-                getCore().deleteBinding((MBinding) elem);
+                getCore().deleteBinding(elem);
             } else if (elem instanceof MUsage) {
-                getCore().deleteUsage((MUsage) elem);
+                getCore().deleteUsage(elem);
             } else if (elem instanceof MPermission) {
-                getCore().deletePermission((MPermission) elem);
+                getCore().deletePermission(elem);
             }
         } else if (elem instanceof MInclude) {
             getUseCases().deleteInclude((MInclude) elem);
@@ -952,20 +954,19 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
         if (ModelFacade.isAActionSequence(elem)) {
             getCommonBehavior().deleteActionSequence(elem);
         } else if (elem instanceof MCreateAction) {
-            getCommonBehavior().deleteCreateAction((MCreateAction) elem);
+            getCommonBehavior().deleteCreateAction(elem);
         } else if (elem instanceof MCallAction) {
-            getCommonBehavior().deleteCallAction((MCallAction) elem);
+            getCommonBehavior().deleteCallAction(elem);
         } else if (elem instanceof MReturnAction) {
-            getCommonBehavior().deleteReturnAction((MReturnAction) elem);
+            getCommonBehavior().deleteReturnAction(elem);
         } else if (elem instanceof MSendAction) {
-            getCommonBehavior().deleteSendAction((MSendAction) elem);
+            getCommonBehavior().deleteSendAction(elem);
         } else if (elem instanceof MTerminateAction) {
-            getCommonBehavior().deleteTerminateAction((MTerminateAction) elem);
+            getCommonBehavior().deleteTerminateAction(elem);
         } else if (elem instanceof MUninterpretedAction) {
-            getCommonBehavior().deleteUninterpretedAction(
-                (MUninterpretedAction) elem);
+            getCommonBehavior().deleteUninterpretedAction(elem);
         } else if (elem instanceof MDestroyAction) {
-            getCommonBehavior().deleteDestroyAction((MDestroyAction) elem);
+            getCommonBehavior().deleteDestroyAction(elem);
         }
     }
 
@@ -978,16 +979,15 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
     private void deleteInstance(MInstance elem) {
         getCommonBehavior().deleteInstance(elem);
         if (elem instanceof MDataValue) {
-            getCommonBehavior().deleteDataValue((MDataValue) elem);
+            getCommonBehavior().deleteDataValue(elem);
         } else if (elem instanceof MComponentInstance) {
-            getCommonBehavior().deleteComponentInstance(
-                (MComponentInstance) elem);
+            getCommonBehavior().deleteComponentInstance(elem);
         } else if (elem instanceof MNodeInstance) {
-            getCommonBehavior().deleteNodeInstance((MNodeInstance) elem);
+            getCommonBehavior().deleteNodeInstance(elem);
         } else if (elem instanceof MObject) {
-            getCommonBehavior().deleteObject((MObject) elem);
+            getCommonBehavior().deleteObject(elem);
             if (elem instanceof MLinkObject) {
-                getCommonBehavior().deleteLinkObject((MLinkObject) elem);
+                getCommonBehavior().deleteLinkObject(elem);
             }
         }
         if (elem instanceof MUseCaseInstance) {

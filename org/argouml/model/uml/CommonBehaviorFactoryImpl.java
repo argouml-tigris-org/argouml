@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.model.CommonBehaviorFactory;
-import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.MFactory;
@@ -70,9 +69,17 @@ public class CommonBehaviorFactoryImpl
 	implements CommonBehaviorFactory {
 
     /**
-     * Don't allow instantiation.
+     * The model implementation.
      */
-    CommonBehaviorFactoryImpl() {
+    private NSUMLModelImplementation nsmodel;
+
+    /**
+     * Don't allow instantiation.
+     *
+     * @param implementation To get other helpers and factories.
+     */
+    CommonBehaviorFactoryImpl(NSUMLModelImplementation implementation) {
+        nsmodel = implementation;
     }
 
     /**
@@ -387,12 +394,12 @@ public class CommonBehaviorFactoryImpl
      * @return the newly build link
      */
     public Object buildLink(Object fromInstance, Object toInstance) {
-        Object link = Model.getUmlFactory().getCommonBehavior().createLink();
+        Object link = nsmodel.getUmlFactory().getCommonBehavior().createLink();
         Object /*MLinkEnd*/ le0 =
-	    Model.getUmlFactory().getCommonBehavior().createLinkEnd();
+	    nsmodel.getUmlFactory().getCommonBehavior().createLinkEnd();
         ModelFacade.setInstance(le0, fromInstance);
         Object /*MLinkEnd*/ le1 =
-	    Model.getUmlFactory().getCommonBehavior().createLinkEnd();
+	    nsmodel.getUmlFactory().getCommonBehavior().createLinkEnd();
         ModelFacade.setInstance(le1, toInstance);
         ModelFacade.addConnection(link, le0);
         ModelFacade.addConnection(link, le1);
@@ -451,12 +458,12 @@ public class CommonBehaviorFactoryImpl
      */
     public Object buildStimulus(Object link) {
         if (ModelFacade.isALink(link)
-            && Model.getUmlHelper().getCore().getSource(link) != null
-            && Model.getUmlHelper().getCore().getDestination(link) != null) {
+            && nsmodel.getUmlHelper().getCore().getSource(link) != null
+            && nsmodel.getUmlHelper().getCore().getDestination(link) != null) {
             Object stimulus = createStimulus();
-            Object sender = Model.getUmlHelper().getCore().getSource(link);
+            Object sender = nsmodel.getUmlHelper().getCore().getSource(link);
             Object receiver =
-                Model.getUmlHelper().getCore().getDestination(link);
+                nsmodel.getUmlHelper().getCore().getDestination(link);
             ModelFacade.setReceiver(stimulus, receiver);
             ModelFacade.setSender(stimulus, sender);
             ModelFacade.setCommunicationLink(stimulus, link);
@@ -592,7 +599,7 @@ public class CommonBehaviorFactoryImpl
             Collection col = ((MInstance) elem).getLinkEnds();
             Iterator it = col.iterator();
             while (it.hasNext()) {
-                Model.getUmlFactory().delete(it.next());
+                nsmodel.getUmlFactory().delete(it.next());
             }
         }
     }
@@ -623,7 +630,7 @@ public class CommonBehaviorFactoryImpl
         if (link != null
             && link.getConnections() != null
             && link.getConnections().size() == 2) { // binary link
-            Model.getUmlFactory().delete(link);
+            nsmodel.getUmlFactory().delete(link);
         }
     }
 

@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.argouml.model.CollaborationsHelper;
-import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
@@ -50,7 +49,6 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MOperation;
 
-
 /**
  * Helper class for UML BehavioralElements::Collaborations Package.
  *
@@ -62,9 +60,17 @@ import ru.novosoft.uml.foundation.core.MOperation;
 public class CollaborationsHelperImpl implements CollaborationsHelper {
 
     /**
-     * Don't allow instantiation.
+     * The model implementation.
      */
-    CollaborationsHelperImpl() {
+    private NSUMLModelImplementation nsmodel;
+
+    /**
+     * Don't allow instantiation.
+     *
+     * @param implementation To get other helpers and factories.
+     */
+    CollaborationsHelperImpl(NSUMLModelImplementation implementation) {
+        nsmodel = implementation;
     }
 
     /**
@@ -116,7 +122,7 @@ public class CollaborationsHelperImpl implements CollaborationsHelper {
 	Set associations = new HashSet();
 	while (it.hasNext()) {
 	    MClassifier base = (MClassifier) it.next();
-	    associations.addAll(Model.getCoreHelper().getAssociations(base));
+	    associations.addAll(nsmodel.getCoreHelper().getAssociations(base));
 	}
 	return associations;
     }
@@ -371,7 +377,7 @@ public class CollaborationsHelperImpl implements CollaborationsHelper {
 
             Object/*MCollaboration*/ collab = ModelFacade.getNamespace(role);
             Collection roles =
-		Model.getModelManagementHelper()
+		nsmodel.getModelManagementHelper()
 		    .getAllModelElementsOfKind(collab, MClassifierRole.class);
             Iterator it = roles.iterator();
             while (it.hasNext()) {
@@ -535,9 +541,9 @@ public class CollaborationsHelperImpl implements CollaborationsHelper {
         }
         if (bases.isEmpty()) {
             MNamespace ns = coll.getNamespace();
-            ret.addAll(Model.getModelManagementHelper()
+            ret.addAll(nsmodel.getModelManagementHelper()
 		       .getAllModelElementsOfKind(ns, MAssociation.class));
-            ret.removeAll(Model.getModelManagementHelper()
+            ret.removeAll(nsmodel.getModelManagementHelper()
 			  .getAllModelElementsOfKind(ns,
 						     MAssociationRole.class));
         } else {
@@ -546,7 +552,7 @@ public class CollaborationsHelperImpl implements CollaborationsHelper {
                 MClassifier base1 = (MClassifier) it.next();
                 if (it.hasNext()) {
                     MClassifier base2 = (MClassifier) it.next();
-                    ret.addAll(Model.getCoreHelper()
+                    ret.addAll(nsmodel.getCoreHelper()
 			       .getAssociations(base1, base2));
                 }
             }
@@ -588,9 +594,9 @@ public class CollaborationsHelperImpl implements CollaborationsHelper {
         Object/*MCollaboration*/ coll = ModelFacade.getNamespace(role);
         Object/*MNamespace*/ ns = ModelFacade.getNamespace(coll);
         Collection returnList =
-	    Model.getModelManagementHelper()
+	    nsmodel.getModelManagementHelper()
 	        .getAllModelElementsOfKind(ns, MClassifier.class);
-        returnList.removeAll(Model.getModelManagementHelper()
+        returnList.removeAll(nsmodel.getModelManagementHelper()
 			     .getAllModelElementsOfKind(ns,
 							MClassifierRole.class));
         if (ModelFacade.getName(role) == null
@@ -635,18 +641,18 @@ public class CollaborationsHelperImpl implements CollaborationsHelper {
         }
         role.setBase(base);
         MClassifierRole sender =
-	    (MClassifierRole) Model.getCoreHelper().getSource(role);
+	    (MClassifierRole) nsmodel.getCoreHelper().getSource(role);
         MClassifierRole receiver =
-	    (MClassifierRole) Model.getCoreHelper().getDestination(role);
+	    (MClassifierRole) nsmodel.getCoreHelper().getDestination(role);
         Collection senderBases = sender.getBases();
         Collection receiverBases = receiver.getBases();
 
 	MAssociationEndRole senderRole =
 	    (MAssociationEndRole)
-	    Model.getCoreHelper().getAssociationEnd(sender, role);
+	    nsmodel.getCoreHelper().getAssociationEnd(sender, role);
 	MAssociationEndRole receiverRole =
 	    (MAssociationEndRole)
-	    Model.getCoreHelper().getAssociationEnd(receiver, role);
+	    nsmodel.getCoreHelper().getAssociationEnd(receiver, role);
 
         Collection baseConnections = base.getConnections();
         Iterator it = baseConnections.iterator();

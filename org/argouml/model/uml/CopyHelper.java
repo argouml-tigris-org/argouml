@@ -24,8 +24,6 @@
 
 package org.argouml.model.uml;
 
-import org.argouml.model.Model;
-
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MDataType;
 import ru.novosoft.uml.foundation.core.MInterface;
@@ -41,22 +39,19 @@ import ru.novosoft.uml.model_management.MPackage;
  * @since 0.13.2
  */
 final class CopyHelper {
-    private static CopyHelper theInstance;
+
+    /**
+     * The model implementation.
+     */
+    private NSUMLModelImplementation nsmodel;
 
     /**
      * Constructor to forbid creation of this object.
+     *
+     * @param implementation To get other helpers and factories.
      */
-    private CopyHelper() {
-    }
-
-    /**
-     * @return get the helper
-     */
-    static CopyHelper getHelper() {
-	if (theInstance == null) {
-	    theInstance = new CopyHelper();
-	}
-	return theInstance;
+    CopyHelper(NSUMLModelImplementation implementation) {
+        nsmodel = implementation;
     }
 
     /**
@@ -85,21 +80,21 @@ final class CopyHelper {
 
         if (element instanceof MPackage) {
             return
-            	Model.getModelManagementFactory()
+            	nsmodel.getModelManagementFactory()
             		.copyPackage((MPackage) element, ns);
         }
         if (element instanceof MClass) {
-            return Model.getCoreFactory().copyClass(element, ns);
+            return nsmodel.getCoreFactory().copyClass(element, ns);
         }
         if (element instanceof MDataType) {
-            return Model.getCoreFactory().copyDataType(element, ns);
+            return nsmodel.getCoreFactory().copyDataType(element, ns);
         }
         if (element instanceof MInterface) {
-            return Model.getCoreFactory().copyInterface(element, ns);
+            return nsmodel.getCoreFactory().copyInterface(element, ns);
         }
         if (element instanceof MStereotype) {
             return
-            	Model.getExtensionMechanismsFactory()
+            	nsmodel.getExtensionMechanismsFactory()
             		.copyStereotype((MStereotype) element, ns);
         }
         throw new IllegalArgumentException();

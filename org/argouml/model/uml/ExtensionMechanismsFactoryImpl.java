@@ -27,8 +27,6 @@ package org.argouml.model.uml;
 import java.util.Collection;
 
 import org.argouml.model.ExtensionMechanismsFactory;
-import org.argouml.model.Model;
-
 
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -51,14 +49,23 @@ public class ExtensionMechanismsFactoryImpl
 	implements ExtensionMechanismsFactory {
 
     /**
-     * Don't allow instantiation.
+     * The model implementation.
      */
-    ExtensionMechanismsFactoryImpl() {
+    private NSUMLModelImplementation nsmodel;
+
+    /**
+     * Don't allow instantiation.
+     *
+     * @param implementation To get other helpers and factories.
+     */
+    ExtensionMechanismsFactoryImpl(NSUMLModelImplementation implementation) {
+        nsmodel = implementation;
     }
 
-    /** Create an empty but initialized instance of a UML Stereotype.
+    /**
+     * Create an empty but initialized instance of a UML Stereotype.
      *
-     *  @return an initialized UML Stereotype instance.
+     * @return an initialized UML Stereotype instance.
      */
     public Object/*MStereotype*/ createStereotype() {
         MStereotype modelElement =
@@ -67,9 +74,10 @@ public class ExtensionMechanismsFactoryImpl
 	return modelElement;
     }
 
-    /** Create an empty but initialized instance of a UML TaggedValue.
+    /**
+     * Create an empty but initialized instance of a UML TaggedValue.
      *
-     *  @return an initialized UML TaggedValue instance.
+     * @return an initialized UML TaggedValue instance.
      */
     public MTaggedValue createTaggedValue() {
         MTaggedValue modelElement =
@@ -110,13 +118,13 @@ public class ExtensionMechanismsFactoryImpl
         MNamespace ns = (MNamespace) theNamespaceObject;
     	MStereotype stereo = (MStereotype) createStereotype();
     	stereo.setName(text);
-    	stereo.setBaseClass(Model.getExtensionMechanismsHelper()
+    	stereo.setBaseClass(nsmodel.getExtensionMechanismsHelper()
 			    .getMetaModelName(me));
     	MStereotype stereo2 =
-	    Model.getExtensionMechanismsHelper().getStereotype(ns, stereo);
+	    nsmodel.getExtensionMechanismsHelper().getStereotype(ns, stereo);
     	if (stereo2 != null) {
             stereo2.addExtendedElement(me);
-            Model.getUmlFactory().delete(stereo);
+            nsmodel.getUmlFactory().delete(stereo);
             return stereo2;
         }
         ns.addOwnedElement(stereo);
@@ -141,13 +149,14 @@ public class ExtensionMechanismsFactoryImpl
         MModelElement me = (MModelElement) theModelElementObject;
         MStereotype stereo = (MStereotype) createStereotype();
         stereo.setName(theName);
-        stereo.setBaseClass(Model.getExtensionMechanismsHelper()
+        stereo.setBaseClass(nsmodel.getExtensionMechanismsHelper()
 			    .getMetaModelName(me));
         MStereotype stereo2 =
-	    Model.getExtensionMechanismsHelper().getStereotype(models, stereo);
+	    nsmodel.getExtensionMechanismsHelper()
+	    	.getStereotype(models, stereo);
         if (stereo2 != null) {
             stereo2.addExtendedElement(me);
-            Model.getUmlFactory().delete(stereo);
+            nsmodel.getUmlFactory().delete(stereo);
             return stereo2;
         }
         ((MModel) model).addOwnedElement(stereo);
@@ -215,7 +224,7 @@ public class ExtensionMechanismsFactoryImpl
      * Used by the copy functions. Do not call this function directly.
      */
     private void doCopyStereotype(MStereotype source, MStereotype target) {
-	Model.getCoreFactory().doCopyGeneralizableElement(source, target);
+	nsmodel.getCoreFactory().doCopyGeneralizableElement(source, target);
 	target.setBaseClass(source.getBaseClass());
 	target.setIcon(source.getIcon());
 	// TODO: constraints

@@ -27,7 +27,6 @@ package org.argouml.model.uml;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.StateMachinesFactory;
 
@@ -72,9 +71,17 @@ public class StateMachinesFactoryImpl
 	implements StateMachinesFactory {
 
     /**
-     * Don't allow instantiation.
+     * The model implementation.
      */
-    StateMachinesFactoryImpl() {
+    private NSUMLModelImplementation nsmodel;
+
+    /**
+     * Don't allow instantiation.
+     *
+     * @param implementation To get other helpers and factories.
+     */
+    StateMachinesFactoryImpl(NSUMLModelImplementation implementation) {
+        nsmodel = implementation;
     }
 
     /**
@@ -282,7 +289,7 @@ public class StateMachinesFactoryImpl
      */
     public MStateMachine buildStateMachine(Object oContext) {
     	if (oContext != null
-        	    && (Model.getStateMachinesHelper()
+        	    && (nsmodel.getStateMachinesHelper()
         		.isAddingStatemachineAllowed(oContext))) {
 
     	    MStateMachine machine = createStateMachine();
@@ -294,7 +301,7 @@ public class StateMachinesFactoryImpl
     	        MBehavioralFeature feature = (MBehavioralFeature) context;
     	        machine.setNamespace(feature.getOwner());
     	    }
-    	    Model.getStateMachinesFactory().buildCompositeState(machine);
+    	    nsmodel.getStateMachinesFactory().buildCompositeState(machine);
     	    return machine;
 
     	}
@@ -498,7 +505,7 @@ public class StateMachinesFactoryImpl
             MTransition trans = (MTransition) createTransition();
             trans.setSource((MStateVertex) source);
             trans.setTarget((MStateVertex) target);
-            trans.setStateMachine((MStateMachine) Model
+            trans.setStateMachine((MStateMachine) nsmodel
                     .getStateMachinesHelper().getStateMachine(source));
             return trans;
         }
@@ -535,12 +542,14 @@ public class StateMachinesFactoryImpl
         MCallEvent evt = MFactory.getDefaultFactory().createCallEvent();
         evt.setNamespace((MModel) model);
 
-        String operationName = name.indexOf("(") > 0
+        String operationName =
+            (name.indexOf("(") > 0)
             ? name.substring(0, name.indexOf("(")).trim()
             : name.trim();
         ModelFacade.setName(evt, operationName);
-        Object op = Model.getStateMachinesHelper()
-                                .findOperationByName(trans, operationName);
+        Object op =
+            nsmodel.getStateMachinesHelper()
+            	.findOperationByName(trans, operationName);
         if (op != null) {
             ModelFacade.setOperation(evt, op);
         }
@@ -599,8 +608,9 @@ public class StateMachinesFactoryImpl
         MTimeEvent event = createTimeEvent();
         event.setNamespace((MModel) model);
         event.setName("");
-        Object te = Model.getUmlFactory().getDataTypes()
-                        .createTimeExpression("", s);
+        Object te =
+            nsmodel.getUmlFactory().getDataTypes()
+            	.createTimeExpression("", s);
         ModelFacade.setWhen(event, te);
         return event;
     }
@@ -629,8 +639,9 @@ public class StateMachinesFactoryImpl
         MChangeEvent event = createChangeEvent();
         event.setNamespace((MModel) model);
         event.setName("");
-        Object ce = Model.getUmlFactory().getDataTypes()
-                            .createBooleanExpression("", s);
+        Object ce =
+            nsmodel.getUmlFactory().getDataTypes()
+            	.createBooleanExpression("", s);
         ModelFacade.setExpression(event, ce);
 
         return event;
@@ -673,7 +684,7 @@ public class StateMachinesFactoryImpl
         Iterator it = vertices.iterator();
         while (it.hasNext()) {
             MStateVertex vertex = (MStateVertex) it.next();
-            Model.getUmlFactory().delete(vertex);
+            nsmodel.getUmlFactory().delete(vertex);
         }
     }
 
@@ -720,7 +731,7 @@ public class StateMachinesFactoryImpl
     public void deleteStateMachine(MStateMachine elem) {
         MState top = elem.getTop();
 	if (top != null) {
-	    Model.getUmlFactory().delete(top);
+	    nsmodel.getUmlFactory().delete(top);
 	}
     }
 
@@ -734,12 +745,12 @@ public class StateMachinesFactoryImpl
         Collection col = elem.getIncomings();
         Iterator it = col.iterator();
         while (it.hasNext()) {
-            Model.getUmlFactory().delete(it.next());
+            nsmodel.getUmlFactory().delete(it.next());
         }
         col = elem.getOutgoings();
         it = col.iterator();
         while (it.hasNext()) {
-            Model.getUmlFactory().delete(it.next());
+            nsmodel.getUmlFactory().delete(it.next());
         }
     }
 

@@ -29,8 +29,6 @@ import java.util.List;
 
 import org.argouml.model.DataTypesFactory;
 
-
-
 import ru.novosoft.uml.foundation.data_types.MActionExpression;
 import ru.novosoft.uml.foundation.data_types.MArgListsExpression;
 import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
@@ -58,9 +56,17 @@ public class DataTypesFactoryImpl
 	implements DataTypesFactory {
 
     /**
-     * Don't allow instantiation.
+     * The model implementation.
      */
-    DataTypesFactoryImpl() {
+    private NSUMLModelImplementation nsmodel;
+
+    /**
+     * Don't allow instantiation.
+     *
+     * @param implementation To get other helpers and factories.
+     */
+    DataTypesFactoryImpl(NSUMLModelImplementation implementation) {
+        nsmodel = implementation;
     }
 
     /**

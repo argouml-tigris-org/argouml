@@ -34,7 +34,6 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.CoreHelper;
-import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
@@ -91,9 +90,17 @@ class CoreHelperImpl implements CoreHelper {
     private static final Logger LOG = Logger.getLogger(CoreHelperImpl.class);
 
     /**
-     * Don't allow instantiation.
+     * The model implementation.
      */
-    CoreHelperImpl() {
+    private NSUMLModelImplementation nsmodel;
+
+    /**
+     * Don't allow instantiation.
+     *
+     * @param implementation To get other helpers and factories.
+     */
+    CoreHelperImpl(NSUMLModelImplementation implementation) {
+        nsmodel = implementation;
     }
 
     /**
@@ -1044,7 +1051,7 @@ class CoreHelperImpl implements CoreHelper {
     public Object getSource(Object relationship) {
         if (!(relationship instanceof MRelationship)
 	    && !(ModelFacade.isALink(relationship))
-        && !(ModelFacade.isAAssociationEnd(relationship))) {
+	    && !(ModelFacade.isAAssociationEnd(relationship))) {
 
 
             throw new IllegalArgumentException("Argument "
@@ -1131,7 +1138,7 @@ class CoreHelperImpl implements CoreHelper {
 	if (!(relationship instanceof MRelationship)
 	    && !(ModelFacade.isALink(relationship))
 	    && !(relationship instanceof CommentEdge)
-        && !(ModelFacade.isAAssociationEnd(relationship))) {
+	    && !(ModelFacade.isAAssociationEnd(relationship))) {
 
 	    throw new IllegalArgumentException("Argument is not "
 					       + "a relationship");
@@ -1455,10 +1462,10 @@ class CoreHelperImpl implements CoreHelper {
             return ns1;
         }
         boolean ns1Owner =
-            Model.getModelManagementHelper()
+            nsmodel.getModelManagementHelper()
 	        .getAllNamespaces(ns1).contains(ns2);
         boolean ns2Owner =
-            Model.getModelManagementHelper()
+            nsmodel.getModelManagementHelper()
 	        .getAllNamespaces(ns2).contains(ns1);
         if (ns1Owner) {
             return ns1;
@@ -1489,7 +1496,7 @@ class CoreHelperImpl implements CoreHelper {
             ret.add(model);
         }
         Iterator it =
-            Model.getModelManagementHelper()
+            nsmodel.getModelManagementHelper()
 	        .getAllModelElementsOfKind(model, MNamespace.class)
 	            .iterator();
         while (it.hasNext()) {
@@ -1515,7 +1522,7 @@ class CoreHelperImpl implements CoreHelper {
         Collection col = new ArrayList();
         if (ModelFacade.isANamespace(o)) {
             Iterator it =
-                Model.getModelManagementHelper()
+                nsmodel.getModelManagementHelper()
 		    .getAllModelElementsOfKind(o, MGeneralizableElement.class)
 		        .iterator();
             while (it.hasNext()) {
