@@ -26,7 +26,7 @@ package org.argouml.uml.ui;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.JList;
+
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
@@ -48,9 +48,8 @@ public class UMLLinkedList extends UMLList2 implements MouseListener {
      * @param dataModel
      */
     public UMLLinkedList(
-        UMLUserInterfaceContainer container,
         UMLModelElementListModel2 dataModel) {
-        super(container, dataModel);
+        super(dataModel);
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         addMouseListener(this);
     }
@@ -69,7 +68,7 @@ public class UMLLinkedList extends UMLList2 implements MouseListener {
             if (e.getClickCount() >=2 && SwingUtilities.isLeftMouseButton(e)) {
                 Object o = getSelectedValue();
                 if (o instanceof MModelElement) {
-                    getContainer().navigateTo(o);
+                    ((PropPanel)getParent()).navigateTo(o);
                 }
             }
             e.consume();

@@ -28,7 +28,6 @@ import javax.swing.JPopupMenu;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewAction;
 import org.argouml.uml.ui.behavior.common_behavior.PopupMenuNewAction;
 
@@ -46,9 +45,8 @@ public class UMLStateEntryList extends UMLMutableLinkedList {
      * @param popup
      */
     public UMLStateEntryList(
-        UMLUserInterfaceContainer container,
         UMLModelElementListModel2 dataModel) {
-        super(container, dataModel, null);
+        super(dataModel, null);
     }
 
     /**

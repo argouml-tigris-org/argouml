@@ -28,7 +28,6 @@ import javax.swing.JPopupMenu;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 /**
  * @since Dec 15, 2002
@@ -42,9 +41,8 @@ public class UMLTransitionTriggerList extends UMLMutableLinkedList {
      * @param dataModel
      */
     public UMLTransitionTriggerList(
-        UMLUserInterfaceContainer container,
         UMLModelElementListModel2 dataModel) {
-        super(container, dataModel, null);
+        super(dataModel, null);
     }
 
     /**

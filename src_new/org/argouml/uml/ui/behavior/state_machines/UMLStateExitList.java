@@ -45,9 +45,8 @@ public class UMLStateExitList extends UMLMutableLinkedList {
      * @param popup
      */
     public UMLStateExitList(
-        UMLUserInterfaceContainer container,
         UMLModelElementListModel2 dataModel) {
-        super(container, dataModel, null);
+        super(dataModel, null);
     }
 
     /**

@@ -44,9 +44,8 @@ public class UMLTransitionEffectList extends UMLMutableLinkedList {
      * @param dataModel
      */
     public UMLTransitionEffectList(
-        UMLUserInterfaceContainer container,
         UMLModelElementListModel2 dataModel) {
-        super(container, dataModel, null);
+        super(dataModel, null);
     }
 
     /**

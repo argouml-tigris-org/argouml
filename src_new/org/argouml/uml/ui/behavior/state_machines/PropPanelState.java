@@ -63,17 +63,17 @@ public abstract class PropPanelState extends PropPanelStateVertex {
         Orientation orientation) {
         super(name, icon, orientation);
         
-        JList deferrableList = new UMLLinkedList(this, new UMLStateDeferrableEventListModel());
+        JList deferrableList = new UMLLinkedList(new UMLStateDeferrableEventListModel());
         deferrableEventsScroll = new JScrollPane(deferrableList);
-        JList entryList = new UMLStateEntryList(this, new UMLStateEntryListModel());
+        JList entryList = new UMLStateEntryList(new UMLStateEntryListModel());
         entryList.setVisibleRowCount(1);
         entryScroll = new JScrollPane(entryList);
-        JList exitList = new UMLStateExitList(this, new UMLStateExitListModel());
+        JList exitList = new UMLStateExitList(new UMLStateExitListModel());
         exitList.setVisibleRowCount(1);
         exitScroll = new JScrollPane(exitList);
-        JList internalTransitionList = new UMLMutableLinkedList(this, new UMLStateInternalTransition(), null, ActionNewTransition.SINGLETON);
+        JList internalTransitionList = new UMLMutableLinkedList(new UMLStateInternalTransition(), null, ActionNewTransition.SINGLETON);
         internalTransitionsScroll = new JScrollPane(internalTransitionList);
-        JList doList = new UMLStateDoActivityList(this, new UMLStateDoActivityListModel());
+        JList doList = new UMLStateDoActivityList(new UMLStateDoActivityListModel());
         doList.setVisibleRowCount(1);
         doScroll = new JScrollPane(doList);
     }
