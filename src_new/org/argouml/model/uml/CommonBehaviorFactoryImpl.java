@@ -460,12 +460,12 @@ public class CommonBehaviorFactoryImpl
      */
     public Object buildStimulus(Object link) {
         if (link instanceof MLink
-            && nsmodel.getUmlHelper().getCore().getSource(link) != null
-            && nsmodel.getUmlHelper().getCore().getDestination(link) != null) {
+            && nsmodel.getCoreHelper().getSource(link) != null
+            && nsmodel.getCoreHelper().getDestination(link) != null) {
+
             Object stimulus = createStimulus();
-            Object sender = nsmodel.getUmlHelper().getCore().getSource(link);
-            Object receiver =
-                nsmodel.getUmlHelper().getCore().getDestination(link);
+            Object sender = nsmodel.getCoreHelper().getSource(link);
+            Object receiver = nsmodel.getCoreHelper().getDestination(link);
             nsmodel.getCommonBehaviorHelper().setReceiver(stimulus, receiver);
             nsmodel.getCollaborationsHelper().setSender(stimulus, sender);
             nsmodel.getCommonBehaviorHelper()

@@ -766,7 +766,7 @@ public class GUITestParserDisplay extends TestCase {
         } else if (ModelFacade.isAOperation(feature)) {
             ParserDisplay.SINGLETON.parseOperation(text, feature);
             Collection ret =
-                Model.getUmlHelper().getCore().getReturnParameters(feature);
+                Model.getCoreHelper().getReturnParameters(feature);
             Iterator it = ret.iterator();
             assertTrue(
                    text + " gave extra return value",

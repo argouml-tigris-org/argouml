@@ -52,7 +52,7 @@ public class GoSummaryToAssociation extends AbstractPerspectiveRule {
      */
     public Collection getChildren(Object parent) {
 	if (parent instanceof AssociationsNode) {
-	    return Model.getUmlHelper().getCore()
+	    return Model.getCoreHelper()
                 .getAssociations(((AssociationsNode) parent).getParent());
 	}
 	return null;

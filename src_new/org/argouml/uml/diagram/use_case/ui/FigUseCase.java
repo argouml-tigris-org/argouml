@@ -956,8 +956,9 @@ public class FigUseCase extends FigNodeModelElement {
     public void mouseClicked(MouseEvent me) {
 	super.mouseClicked(me);
 
-	if (me.isConsumed())
-	    return;
+	if (me.isConsumed()) {
+	   return;
+	}
 
 	if (!isExtensionPointVisible() || me.getY() < epSep.getY1()) {
 	    getNameFig().mouseClicked(me);
@@ -1282,7 +1283,7 @@ public class FigUseCase extends FigNodeModelElement {
     }
 
     /**
-     * Updates the extensionpoints in the fig
+     * Updates the extensionpoints in the fig.
      */
     protected void updateExtensionPoint() {
         // Give up if we have no owner
@@ -1301,7 +1302,7 @@ public class FigUseCase extends FigNodeModelElement {
         // fig's index as we go through the extension points.
 
         Collection eps =
-	    Model.getUmlHelper().getUseCases().getExtensionPoints(useCase);
+	    Model.getUseCasesHelper().getExtensionPoints(useCase);
         int epCount = 1;
 
         if (eps != null) {
@@ -1372,8 +1373,9 @@ public class FigUseCase extends FigNodeModelElement {
      */
     protected void updateNameText() {
         Object useCase = /*(MUseCase)*/ getOwner();
-        if (useCase == null)
+        if (useCase == null) {
             return;
+        }
         Rectangle oldBounds = getBounds();
         super.updateNameText();
 

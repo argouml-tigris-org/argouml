@@ -144,7 +144,7 @@ public final class ResourceLoaderWrapper {
 	ResourceLoader.addResourceLocation(lookAndFeelArgoUmlImagePath);
 	ResourceLoader.addResourceLocation("/org/argouml/Images");
 	ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
-    
+
 	actionStateIcon = ResourceLoader.lookupIconResource("ActionState");
         stateIcon = ResourceLoader.lookupIconResource("State");
         initialStateIcon = ResourceLoader.lookupIconResource("Initial");
@@ -159,9 +159,9 @@ public final class ResourceLoaderWrapper {
         signalIcon = ResourceLoader.lookupIconResource("SignalSending");
         commentIcon = ResourceLoader.lookupIconResource("Note");
         callStateIcon = ResourceLoader.lookupIconResource("CallState");
-        objectFlowStateIcon = 
+        objectFlowStateIcon =
             ResourceLoader.lookupIconResource("ObjectFlowState");
-        subactivityStateIcon = 
+        subactivityStateIcon =
             ResourceLoader.lookupIconResource("SubactivityState");
     }
 
@@ -268,7 +268,7 @@ public final class ResourceLoaderWrapper {
         if (ModelFacade.isAPseudostate(value)) {
 
             Object kind = ModelFacade.getKind(value);
-            DataTypesHelper helper = Model.getUmlHelper().getDataTypes();
+            DataTypesHelper helper = Model.getDataTypesHelper();
             if (helper.equalsINITIALKind(kind)) {
                 icon = initialStateIcon;
             }

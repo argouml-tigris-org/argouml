@@ -335,7 +335,7 @@ public class GeneratorCSharp extends Generator2
 	    s += generateVisibility (op);
 	}
 	// pick out return type
-	Object rp = Model.getUmlHelper().getCore().getReturnParameter(op);
+	Object rp = Model.getCoreHelper().getReturnParameter(op);
 	if (rp != null) {
 	    Object returnType = ModelFacade.getType(rp);
 
@@ -385,7 +385,8 @@ public class GeneratorCSharp extends Generator2
 
 	boolean genAccessor = false;
 
-	genAccessor = (((makeGet != null) && (makeGet.equals("true")))
+	genAccessor =
+	    (((makeGet != null) && (makeGet.equals("true")))
 	        || ((makeSet != null) && (makeSet.equals("true"))));
 
 	/*
@@ -652,7 +653,7 @@ public class GeneratorCSharp extends Generator2
 	}
 
 	// TODO: constructors
-	Collection behs = Model.getUmlHelper().getCore().getOperations(cls);
+	Collection behs = Model.getCoreHelper().getOperations(cls);
 	if (behs != null) {
 	    sb.append ('\n');
 	    sb.append (INDENT).append ("// Operations\n");
@@ -863,9 +864,8 @@ public class GeneratorCSharp extends Generator2
 		    sDocComment.substring(0, sDocComment.indexOf("*/") + 1);
 	    } else {
 		if (VERBOSE) {
-		    sDocComment = INDENT + "/**\n"
-		    	+ INDENT + " * \n"
-		    	+ INDENT + " *";
+		    sDocComment =
+		        INDENT + "/**\n" + INDENT + " * \n" + INDENT + " *";
 		} else {
 		    sDocComment = "";
 		}
@@ -915,8 +915,9 @@ public class GeneratorCSharp extends Generator2
 	    for (int i = sDocComment.indexOf ('\n');
 		 i >= 0 && i < sDocComment.length();
 		 i = sDocComment.indexOf ('\n', i + 1)) {
-		sDocComment = sDocComment.substring(0, i + 1)
-			+ INDENT + sDocComment.substring (i + 1);
+		sDocComment =
+		    sDocComment.substring(0, i + 1)
+		    + INDENT + sDocComment.substring (i + 1);
 	    }
 	}
 
@@ -938,9 +939,8 @@ public class GeneratorCSharp extends Generator2
 	        sDocComment.substring(0, sDocComment.indexOf("*/") + 1);
 	} else {
 	    if (VERBOSE) {
-		sDocComment = INDENT + "/**\n"
-			+ INDENT + " * \n"
-			+ INDENT + " *";
+		sDocComment =
+		    INDENT + "/**\n" + INDENT + " * \n" + INDENT + " *";
 	    } else {
 		sDocComment = "";
 	    }
@@ -1217,7 +1217,7 @@ public class GeneratorCSharp extends Generator2
 	//s += cls.getName();
 
 	Collection realizations =
-	    Model.getUmlHelper().getCore().getRealizedInterfaces(cls);
+	    Model.getCoreHelper().getRealizedInterfaces(cls);
 	if (realizations == null) {
 	    return "";
 	}
@@ -1590,8 +1590,7 @@ public class GeneratorCSharp extends Generator2
 
                     // check the return parameter types
                     it =
-                        Model.getUmlHelper()
-			    .getCore()
+                        Model.getCoreHelper()
 			        .getReturnParameters(/*(MOperation)*/mFeature)
 			            .iterator();
                     while (it.hasNext()) {
@@ -1633,8 +1632,7 @@ public class GeneratorCSharp extends Generator2
 		    continue;
 		}
 
-		ftype = generateImportType(parent,
-					   packagePath);
+		ftype = generateImportType(parent, packagePath);
 		if (ftype != null) {
 		    importSet.add(ftype);
 		}
@@ -1647,8 +1645,7 @@ public class GeneratorCSharp extends Generator2
 	    for (j = c.iterator(); j.hasNext();) {
 		Object iface = /*(MInterface)*/ j.next();
 
-		ftype = generateImportType(iface,
-					   packagePath);
+		ftype = generateImportType(iface, packagePath);
 		if (ftype != null) {
 		    importSet.add(ftype);
 		}

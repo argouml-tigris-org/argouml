@@ -174,7 +174,7 @@ public class TestParserDisplay extends TestCase {
 	try {
 	    ParserDisplay.SINGLETON.parseOperation(text, op);
 	    Collection ret =
-		Model.getUmlHelper().getCore().getReturnParameters(op);
+		Model.getCoreHelper().getReturnParameters(op);
 	    Iterator it = ret.iterator();
 	    assertTrue(
 		       text + " gave extra return value",
@@ -196,7 +196,7 @@ public class TestParserDisplay extends TestCase {
 	}
     }
 
-    private void checkParameters(MOperation op, String text, String params[]) {
+    private void checkParameters(MOperation op, String text, String[] params) {
 	int i;
 
 	try {
@@ -278,40 +278,42 @@ public class TestParserDisplay extends TestCase {
     private void checkProperties(
 				 MAttribute attr,
 				 String text,
-				 String props[]) {
+				 String[] props) {
 	int i;
 	try {
 	    ParserDisplay.SINGLETON.parseAttribute(text, attr);
 	    for (i = 0; i + 1 < props.length; i += 2) {
-		if (props[i + 1] == null)
+		if (props[i + 1] == null) {
 		    assertTrue(
 			       "TaggedValue " + props[i] + " exists!",
 			       attr.getTaggedValue(props[i]) == null);
-		else
+		} else {
 		    assertTrue(
 			       "TaggedValue " + props[i] + " wrong!",
 			       props[i + 1].equals(
 				       attr.getTaggedValue(props[i])));
+		}
 	    }
 	} catch (Exception e) {
 	    assertTrue(text + " threw Exception " + e, false);
 	}
     }
 
-    private void checkProperties(MOperation op, String text, String props[]) {
+    private void checkProperties(MOperation op, String text, String[] props) {
 	int i;
 	try {
 	    ParserDisplay.SINGLETON.parseOperation(text, op);
 	    for (i = 0; i + 1 < props.length; i += 2) {
-		if (props[i + 1] == null)
+		if (props[i + 1] == null) {
 		    assertTrue(
 			       "TaggedValue " + props[i] + " exists!",
 			       op.getTaggedValue(props[i]) == null);
-		else
+		} else {
 		    assertTrue(
 			       "TaggedValue " + props[i] + " wrong!",
 			       props[i + 1].equals(
 				       op.getTaggedValue(props[i])));
+		}
 	    }
 	} catch (Exception e) {
 	    assertTrue(text + " threw Exception " + e, false);

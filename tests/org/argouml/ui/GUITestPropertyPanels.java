@@ -144,7 +144,7 @@ public class GUITestPropertyPanels extends TestCase {
         ProjectManager.getManager().setCurrentProject(p);
         Object model = p.getRoot();
         Collection me =
-            Model.getUmlHelper().getModelManagement()
+            Model.getModelManagementHelper()
             	.getAllModelElementsOfKind(
             	        model,
             	        ModelFacade.getModelElementToken());
@@ -177,8 +177,9 @@ public class GUITestPropertyPanels extends TestCase {
 
         elem = new EnumerationComposite(elem, new EnumerationSingle(me));
         Enumeration elem2 = cg.gen(me);
-        if (elem2 == EnumerationEmpty.theInstance())
+        if (elem2 == EnumerationEmpty.theInstance()) {
             return elem;
+        }
         while (elem2.hasMoreElements()) {
             Object newMe = elem2.nextElement();
             elem = getAllModelElements(newMe, elem);
@@ -266,11 +267,14 @@ class ChildGenModelElements implements ChildGenerator {
 
         if (o instanceof Diagram) {
             Collection figs = ((Diagram) o).getLayer().getContents(null);
-            if (figs != null) return new Vector(figs).elements();
+            if (figs != null) {
+                return new Vector(figs).elements();
+            }
         }
 
-        if (!ModelFacade.isAModelElement(o))
+        if (!ModelFacade.isAModelElement(o)) {
             return EnumerationEmpty.theInstance();
+        }
 
         EnumerationComposite res =
 	    new EnumerationComposite(new EnumerationSingle(o));
@@ -318,13 +322,17 @@ class ChildGenModelElements implements ChildGenerator {
 
         if (ModelFacade.isACompositeState(o)) {
             Vector substates = new Vector(ModelFacade.getSubvertices(o));
-            if (substates != null) res.addSub(substates.elements());
+            if (substates != null) {
+                res.addSub(substates.elements());
+            }
         }
 
         if (ModelFacade.isAStateMachine(o)) {
             EnumerationComposite res2 = new EnumerationComposite();
-            Object top = Model.getUmlHelper().getStateMachines().getTop(o);
-            if (top != null) res2.addSub(new EnumerationSingle(top));
+            Object top = Model.getStateMachinesHelper().getTop(o);
+            if (top != null) {
+                res2.addSub(new EnumerationSingle(top));
+            }
             res2.addSub(new Vector(ModelFacade.getTransitions(o)));
             res.addSub(res2);
         }
@@ -336,7 +344,9 @@ class ChildGenModelElements implements ChildGenerator {
 
         if (ModelFacade.isANode(o)) {
             Vector substates = new Vector(ModelFacade.getResidents(o));
-            if (substates != null) res.addSub(substates.elements());
+            if (substates != null) {
+                res.addSub(substates.elements());
+            }
         }
 
 

@@ -61,7 +61,7 @@ public class CrMultipleRealization extends CrUML {
 	Object inter = /*(MInterface)*/ dm;
 
 	Collection realize =
-	    Model.getUmlHelper().getCore().getSpecifications(inter);
+	    Model.getCoreHelper().getSpecifications(inter);
 
 	if (realize != null && realize.size() > 0) {
 	    return PROBLEM_FOUND;

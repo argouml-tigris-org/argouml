@@ -297,8 +297,7 @@ public class GeneratorJava
 
                     // check the return parameter types
                     it =
-                        Model.getUmlHelper()
-			    .getCore()
+                        Model.getCoreHelper()
 			        .getReturnParameters(/*(MOperation)*/mFeature)
 			            .iterator();
                     while (it.hasNext()) {
@@ -340,8 +339,7 @@ public class GeneratorJava
 		    continue;
 		}
 
-		ftype = generateImportType(parent,
-					   packagePath);
+		ftype = generateImportType(parent, packagePath);
 		if (ftype != null) {
 		    importSet.add(ftype);
 		}
@@ -352,10 +350,9 @@ public class GeneratorJava
 	if (c != null) {
 	    // now check packages of the interfaces
 	    for (j = c.iterator(); j.hasNext();) {
-		Object iface = /*(MInterface)*/ j.next();
+		Object iface = j.next();
 
-		ftype = generateImportType(iface,
-					   packagePath);
+		ftype = generateImportType(iface, packagePath);
 		if (ftype != null) {
 		    importSet.add(ftype);
 		}
@@ -501,7 +498,7 @@ public class GeneratorJava
 
         // pick out return type
         Object/*MParameter*/ rp =
-	    Model.getUmlHelper().getCore().getReturnParameter(op);
+	    Model.getCoreHelper().getReturnParameter(op);
         if (rp != null && !constructor) {
             Object/*MClassifier*/ returnType = ModelFacade.getType(rp);
             if (returnType == null) {
@@ -589,8 +586,9 @@ public class GeneratorJava
                 sb.append(generateClassifierRef(type)).append(' ');
             } else if (ModelFacade.isADataType(type)) {
                 sb.append(generateClassifierRef(type)).append("[] ");
-            } else
+            } else {
                 sb.append("java.util.Vector ");
+            }
         }
 
         sb.append(generateName(ModelFacade.getName(attr)));
@@ -654,12 +652,13 @@ public class GeneratorJava
      */
     StringBuffer generateClassifierStart(Object cls) {
         String sClassifierKeyword;
-        if (ModelFacade.isAClass(cls))
+        if (ModelFacade.isAClass(cls)) {
             sClassifierKeyword = "class";
-        else if (ModelFacade.isAInterface(cls))
+        } else if (ModelFacade.isAInterface(cls)) {
             sClassifierKeyword = "interface";
-        else
+        } else {
             return null; // actors, use cases etc.
+        }
 
         StringBuffer sb = new StringBuffer(80);
 
@@ -907,10 +906,11 @@ public class GeneratorJava
                     if ((ModelFacade.isAClass(cls))
                             && (ModelFacade.isAOperation(behavioralFeature))
                             && (!ModelFacade.isAbstract(behavioralFeature))) {
-                        if (lfBeforeCurly)
+                        if (lfBeforeCurly) {
                             sb.append(LINE_SEPARATOR).append(INDENT);
-                        else
+                        } else {
                             sb.append(' ');
+                        }
                         sb.append('{');
 
                         if (tv.length() > 0) {
@@ -977,16 +977,16 @@ public class GeneratorJava
 			    bsb.append(LINE_SEPARATOR);
                         }
                         return bsb.toString();
-                    } else
+                    } else {
                         return "";
+                    }
                 }
             }
 
             // pick out return type
-            Object/*MParameter*/ rp =
-                Model.getUmlHelper().getCore().getReturnParameter(op);
+            Object rp = Model.getCoreHelper().getReturnParameter(op);
             if (rp != null) {
-                Object/*MClassifier*/ returnType = ModelFacade.getType(rp);
+                Object returnType = ModelFacade.getType(rp);
                 return generateDefaultReturnStatement(returnType);
             }
         }
@@ -995,26 +995,35 @@ public class GeneratorJava
     }
 
     private String generateDefaultReturnStatement(Object cls) {
-        if (cls == null)
+        if (cls == null) {
             return "";
+        }
 
         String clsName = ModelFacade.getName(cls);
-        if (clsName.equals("void"))
+        if (clsName.equals("void")) {
             return "";
-        if (clsName.equals("char"))
+        }
+        if (clsName.equals("char")) {
             return INDENT + "return 'x';" + LINE_SEPARATOR;
-        if (clsName.equals("int"))
+        }
+        if (clsName.equals("int")) {
             return INDENT + "return 0;" + LINE_SEPARATOR;
-        if (clsName.equals("boolean"))
+        }
+        if (clsName.equals("boolean")) {
             return INDENT + "return false;" + LINE_SEPARATOR;
-        if (clsName.equals("byte"))
+        }
+        if (clsName.equals("byte")) {
             return INDENT + "return 0;" + LINE_SEPARATOR;
-        if (clsName.equals("long"))
+        }
+        if (clsName.equals("long")) {
             return INDENT + "return 0;" + LINE_SEPARATOR;
-        if (clsName.equals("float"))
+        }
+        if (clsName.equals("float")) {
             return INDENT + "return 0.0;" + LINE_SEPARATOR;
-        if (clsName.equals("double"))
+        }
+        if (clsName.equals("double")) {
             return INDENT + "return 0.0;" + LINE_SEPARATOR;
+        }
         return INDENT + "return null;" + LINE_SEPARATOR;
     }
 

@@ -53,7 +53,8 @@ public class ChildGenUML implements ChildGenerator {
 
     private static final Logger LOG = Logger.getLogger(ChildGenUML.class);
 
-    /** Reply a java.util.Enumeration of the children of the given Object
+    /**
+     * Reply a java.util.Enumeration of the children of the given Object
      * TODO: GEF has moved away from vectors to collections
      * returning an iterator would now seem better.
      *
@@ -61,8 +62,11 @@ public class ChildGenUML implements ChildGenerator {
      */
     public Enumeration gen(Object o) {
 
-        if (o == null) LOG.debug("Object is null");
-        else LOG.debug("Findin g children for " + o.getClass());
+        if (o == null) {
+            LOG.debug("Object is null");
+        } else {
+            LOG.debug("Findin g children for " + o.getClass());
+        }
 
 	if (o instanceof Project) {
 	    Project p = (Project) o;
@@ -72,13 +76,17 @@ public class ChildGenUML implements ChildGenerator {
 
 	if (o instanceof Diagram) {
 	    Collection figs = ((Diagram) o).getLayer().getContents(null);
-	    if (figs != null) return new Vector(figs).elements();
+	    if (figs != null) {
+	        return new Vector(figs).elements();
+	    }
 	}
 
 	if (ModelFacade.isAPackage(o)) {
 	    Vector ownedElements =
 		new Vector(ModelFacade.getOwnedElements(o));
-	    if (ownedElements != null) return ownedElements.elements();
+	    if (ownedElements != null) {
+	        return ownedElements.elements();
+	    }
 	}
 
 	if (ModelFacade.isAElementImport(o)) {
@@ -98,22 +106,27 @@ public class ChildGenUML implements ChildGenerator {
 	    //if (sms != null && sms.size() > 0)
 		//sm = sms.elementAt(0);
 	    //if (sm != null) res.addSub(new EnumerationSingle(sm));
-            if (sms != null)
-                    res.addSub(sms.elements());
+            if (sms != null) {
+                res.addSub(sms.elements());
+            }
 	    return res;
 	}
 
 	if (ModelFacade.isAAssociation(o)) {
 	    Vector assocEnds = new Vector(ModelFacade.getConnections(o));
-	    if (assocEnds != null) return assocEnds.elements();
+	    if (assocEnds != null) {
+	        return assocEnds.elements();
+	    }
 	    //TODO: MAssociationRole
 	}
 
 	// // needed?
 	if (ModelFacade.isAStateMachine(o)) {
 	    EnumerationComposite res = new EnumerationComposite();
-	    Object top = Model.getUmlHelper().getStateMachines().getTop(o);
-	    if (top != null) res.addSub(new EnumerationSingle(top));
+	    Object top = Model.getStateMachinesHelper().getTop(o);
+	    if (top != null) {
+	        res.addSub(new EnumerationSingle(top));
+	    }
 	    res.addSub(new Vector(ModelFacade.getTransitions(o)));
 	    return res;
 	}
@@ -121,17 +134,23 @@ public class ChildGenUML implements ChildGenerator {
 	// needed?
 	if (ModelFacade.isACompositeState(o)) {
 	    Vector substates = new Vector(ModelFacade.getSubvertices(o));
-	    if (substates != null) return substates.elements();
+	    if (substates != null) {
+	        return substates.elements();
+	    }
 	}
 
         if (ModelFacade.isAOperation(o)) {
             Vector params = new Vector(ModelFacade.getParameters(o));
-            if (params != null) return params.elements();
+            if (params != null) {
+                return params.elements();
+            }
         }
 
         if (ModelFacade.isAModelElement(o)) {
 	    Vector behavior = new Vector(ModelFacade.getBehaviors(o));
-	    if (behavior != null) return behavior.elements();
+	    if (behavior != null) {
+	        return behavior.elements();
+	    }
 	}
 
 	// tons more cases

@@ -52,15 +52,15 @@ import org.argouml.uml.generator.FileGenerator;
 import org.argouml.uml.generator.Generator2;
 
 /**
- * Generator2 subclass to generate C++ source code that is used in ArgoUML GUI 
- * and text fields when the cpp notation is selected by the user. It also 
- * implements FileGenerator and makes it possible for the user to generate 
+ * Generator2 subclass to generate C++ source code that is used in ArgoUML GUI
+ * and text fields when the cpp notation is selected by the user. It also
+ * implements FileGenerator and makes it possible for the user to generate
  * the source code files for model elements of his choice.
  */
 public class GeneratorCpp extends Generator2
     implements PluggableNotation, FileGenerator {
 
-    /** 
+    /**
      * The logger.
      */
     private static final Logger LOG = Logger.getLogger(GeneratorCpp.class);
@@ -68,7 +68,7 @@ public class GeneratorCpp extends Generator2
     private boolean verboseDocs = false;
     private boolean lfBeforeCurly = false;
     /**
-     * TODO: make it configurable
+     * TODO: make it configurable.
      */
     private static final boolean VERBOSE_DOCS = false;
 
@@ -76,25 +76,33 @@ public class GeneratorCpp extends Generator2
 
     private static Section sect;
 
-    /** 2002-12-07 Achim Spangler
-     * store actual namespace, to avoid unneeded curley braces
+    /**
+     * Store actual namespace, to avoid unneeded curley braces.
+     *
+     * @author Achim Spangler
+     * @since 2002-12-07
      */
     private Object actualNamespace;
 
-    /** 2002-12-12 Achim Spangler
-     * store extra include dependencies which are generated during
-     * generation of multiplicity to get needed container type
+    /**
+     * Store extra include dependencies which are generated during
+     * generation of multiplicity to get needed container type.
+     *
+     * @author Achim Spangler
+     * @since 2002-12-12
      */
     private String extraIncludes = "";
 
 
     /**
-     * 2002-11-28 Achim Spangler
      * C++ doesn't place visibility information for each class member
      * --> sort items during generation and store visibility state
      * of lastly generated member in central class variable, so that
      * the appropriate lines: "public:\n", "protected:\n", "private:\n"
-     * can be created
+     * can be created.
+     *
+     * @author Achim Spangler
+     * @since 2002-11-28
      */
     private static final int PUBLIC_PART = 1;
     private static final int PROTECTED_PART = 2;
@@ -107,10 +115,12 @@ public class GeneratorCpp extends Generator2
     };
 
     /**
-     * 2002-11-28 Achim Spangler
      * C++ uses two files for each class: header (.h) with class definition
      * and source (.cpp) with methods implementation
-     * --> two generation passes are needed
+     * --> two generation passes are needed.
+     *
+     * @author Achim Spangler
+     * @since 2002-11-28
      */
     private static final int NONE_PASS = 1;
     private static final int HEADER_PASS = 2;
@@ -118,19 +128,23 @@ public class GeneratorCpp extends Generator2
     private static int generatorPass = NONE_PASS;
 
     /**
-     * 2002-12-05 Achim Spangler
      * use Tag generation for generation of: doccomment, simple tags of
-     * tags which are not used for doccomment or simple tags for all
+     * tags which are not used for doccomment or simple tags for all.
+     *
+     * @author Achim Spangler
+     * @since 2002-12-05
      */
     private static final int DOC_COMMENT_TAGS = 1;
     private static final int ALL_BUT_DOC_TAGS = 2;
     private static final int ALL_TAGS = 3;
 
     /**
-     * 2002-12-06 Achim Spangler
      * C++ developers need to specify for parameters whether they are
      * pointers or references (especially for class-types)
-     * -> a general check function must get the searched tag
+     * -> a general check function must get the searched tag.
+     *
+     * @author Achim Spangler
+     * @since 2002-12-06
      */
     private static final int SEARCH_REFERENCE_TAG = 1;
     private static final int SEARCH_POINTER_TAG = 2;
@@ -993,7 +1007,7 @@ public class GeneratorCpp extends Generator2
             .append(generateOperationPrefix(op));
 
         // pick out return type
-        Object rp = Model.getUmlHelper().getCore().getReturnParameter(op);
+        Object rp = Model.getCoreHelper().getReturnParameter(op);
         if (rp != null) {
             Object returnType = ModelFacade.getType(rp);
             if (returnType == null && !constructor) {
@@ -1593,7 +1607,7 @@ public class GeneratorCpp extends Generator2
      */
     private void generateClassifierBodyOperations(Object cls,
             StringBuffer sb) {
-        Collection behs = Model.getUmlHelper().getCore().getOperations(cls);
+        Collection behs = Model.getCoreHelper().getOperations(cls);
         if (behs.isEmpty()) return;
         sb.append('\n');
         if (verboseDocs) {
@@ -1824,7 +1838,7 @@ public class GeneratorCpp extends Generator2
             if (!methodFound) {
                 // pick out return type as default method body
                 Object rp =
-                    Model.getUmlHelper().getCore().getReturnParameter(op);
+                    Model.getCoreHelper().getReturnParameter(op);
                 if (rp != null) {
                     Object returnType = ModelFacade.getType(rp);
                     sb.append(generateDefaultReturnStatement(returnType));

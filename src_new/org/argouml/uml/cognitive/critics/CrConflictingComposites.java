@@ -57,14 +57,18 @@ public class CrConflictingComposites extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object classifier, Designer dsgr) {
-	if (!(ModelFacade.isAClassifier(classifier))) return NO_PROBLEM;
+	if (!(ModelFacade.isAClassifier(classifier))) {
+	    return NO_PROBLEM;
+	}
 	Collection conns = ModelFacade.getAssociationEnds(classifier);
-	if (conns == null) return NO_PROBLEM;
+	if (conns == null) {
+	    return NO_PROBLEM;
+	}
 	int compositeCount = 0;
 	Iterator assocEnds = conns.iterator();
 	while (assocEnds.hasNext()) {
             Object myEnd = assocEnds.next();
-	    if (Model.getUmlHelper().getCore()
+	    if (Model.getCoreHelper()
                 .equalsAggregationKind(myEnd, "composite")) {
 		continue;
 	    }
@@ -73,11 +77,13 @@ public class CrConflictingComposites extends CrUML {
 	    }
 	    Object asc = ModelFacade.getAssociation(myEnd);
 	    if (asc != null
-		&& Model.getUmlHelper().getCore().hasCompositeEnd(asc)) {
+		&& Model.getCoreHelper().hasCompositeEnd(asc)) {
 		compositeCount++;
             }
 	}
-	if (compositeCount > 1) return PROBLEM_FOUND;
+	if (compositeCount > 1) {
+	    return PROBLEM_FOUND;
+	}
 	return NO_PROBLEM;
     }
 } /* end class CrConflictingComposites.java */
