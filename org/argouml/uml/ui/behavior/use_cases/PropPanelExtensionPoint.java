@@ -87,7 +87,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
 
         JList usecaseList = new UMLLinkedList(new UMLExtensionPointUseCaseListModel());
         usecaseList.setVisibleRowCount(1);
-        addField(Argo.localize("UMLMenu", "label.usecase"),
+        addField(Argo.localize("UMLMenu", "label.usecase-base"),
             new JScrollPane(usecaseList));
 
         JList extendList = new UMLLinkedList(new UMLExtensionPointExtendListModel());
