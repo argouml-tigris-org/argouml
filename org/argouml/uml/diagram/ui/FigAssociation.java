@@ -35,6 +35,7 @@ import java.util.Vector;
 import javax.swing.JMenu;
 
 import org.argouml.application.api.Notation;
+import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.ActionAggregation;
 import org.argouml.uml.ui.ActionMultiplicity;
@@ -228,7 +229,7 @@ public class FigAssociation extends FigEdgeModelElement {
 
   protected void modelChanged() {
     MAssociation as = (MAssociation) getOwner();
-    if (as == null) return;
+    if (as == null || getLayer() == null) return;
     String asNameStr = Notation.generate(this, as.getName());
 
     super.modelChanged();
@@ -269,14 +270,18 @@ public class FigAssociation extends FigEdgeModelElement {
             setSourceFigNode((FigNode)getLayer().presentationFor(ae0.getType())); 
             setSourcePortFig(getLayer().presentationFor(ae0.getType()));  
         }
-        computeRoute();
-        calcBounds();
-        Object obj = ProjectBrowser.TheInstance.getTarget();
-        Iterator editors = getLayer().getEditors().iterator();
-        while (editors.hasNext()) {
-            ((Editor)editors.next()).damaged(this); 
+        if (src != null && dest != null) {
+            computeRoute();
+            calcBounds();
+            ArgoDiagram ad = ProjectBrowser.TheInstance.getActiveDiagram();
+            Object obj = ProjectBrowser.TheInstance.getTarget();
+            Iterator editors = getLayer().getEditors().iterator();
+            while (editors.hasNext()) {
+                ((Editor)editors.next()).damaged(this); 
+            }
+            ProjectBrowser.TheInstance.setTarget(obj);
+            ProjectBrowser.TheInstance.setActiveDiagram(ad);
         }
-        ProjectBrowser.TheInstance.setTarget(obj);
     }
     MMultiplicity mult0 = ae0.getMultiplicity();
     MMultiplicity mult1 = ae1.getMultiplicity();
@@ -457,8 +462,13 @@ public class FigAssociation extends FigEdgeModelElement {
   static final long serialVersionUID = 9100125695919853919L;
   
      public void paint(Graphics g) {
-        sourceArrowHead.setLineColor(getLineColor());
-        destArrowHead.setLineColor(getLineColor());   
+        if (sourceArrowHead == null || destArrowHead == null) {
+           modelChanged();
+        }
+        if (sourceArrowHead != null && destArrowHead != null) {
+           sourceArrowHead.setLineColor(getLineColor());
+           destArrowHead.setLineColor(getLineColor());   
+        }
         super.paint(g);
      }
 
