@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigActor.java
-// Classes: FigActor
-// Original Author: abonner@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.diagram.use_case.ui;
 
 import java.awt.Color;
@@ -37,7 +32,6 @@ import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -47,8 +41,9 @@ import org.tigris.gef.presentation.FigRect;
 
 import ru.novosoft.uml.MElementEvent;
 
-/** Class to display graphics for a UML MState in a diagram. */
-
+/**
+ * Class to display graphics for an Actor in a diagram.
+ */
 public class FigActor extends FigNodeModelElement {
 
     ////////////////////////////////////////////////////////////////
@@ -58,7 +53,6 @@ public class FigActor extends FigNodeModelElement {
     //They mst be added in the constructor in this order.
     //For now the name must not be last as this would force
     //zero width lines (until GEF is fixed)
-    private static final int NAME_POSN = 1;
     private static final int HEAD_POSN = 2;
     private static final int BODY_POSN = 3;
     private static final int ARMS_POSN = 4;
@@ -69,13 +63,13 @@ public class FigActor extends FigNodeModelElement {
     // constructors
 
     /**
-     * Main Constructor for the creation of a new Actor. 
+     * Main Constructor for the creation of a new Actor.
      */
     public FigActor() {
         // Put this rectangle behind the rest, so it goes first
         FigRect bigPort = new FigRect(10, 30, 15, 60);
         bigPort.setVisible(false);
-        FigCircle head = 
+        FigCircle head =
             new FigCircle(10, 30, 15, 15, Color.black, Color.white);
         FigLine body = new FigLine(20, 45, 20, 60, Color.black);
         FigLine arms = new FigLine(10, 50, 30, 50, Color.black);
@@ -110,7 +104,7 @@ public class FigActor extends FigNodeModelElement {
         getFigAt(LEFT_LEG_POSN).setLineWidth(width);
         getFigAt(RIGHT_LEG_POSN).setLineWidth(width);
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
@@ -118,11 +112,11 @@ public class FigActor extends FigNodeModelElement {
         // Only the head should be filled (not the text)
         getFigAt(HEAD_POSN).setFilled(filled);
     }
-    
+
     /**
-     * <p>Constructor for use if this figure is created for an existing actor
-     *   node in the metamodel.</p>
-     * 
+     * Constructor for use if this figure is created for an existing actor
+     * node in the metamodel.<p>
+     *
      * @param gm ignored!
      * @param node The UML object being placed.
      */
@@ -147,14 +141,10 @@ public class FigActor extends FigNodeModelElement {
     public Selection makeSelection() {
         return new SelectionActor(this);
     }
-    
+
     /**
-     * Build a collection of menu items relevant for a right-click popup menu.
-     *
-     * @param     me     a mouse event
-     * @return           a collection of menu items
-     *
-     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
+     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(
+     *         java.awt.event.MouseEvent)
      */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
@@ -163,9 +153,9 @@ public class FigActor extends FigNodeModelElement {
                 buildModifierPopUp(ABSTRACT | LEAF | ROOT),
                 popUpActions.size() - POPUP_ADD_OFFSET);
         return popUpActions;
-    }    
+    }
 
-    /** Returns true if this Fig can be resized by the user. 
+    /**
      * @see org.tigris.gef.presentation.Fig#isResizable()
      */
     public boolean isResizable() {
@@ -219,13 +209,15 @@ public class FigActor extends FigNodeModelElement {
      */
     public Object deepHitPort(int x, int y) {
         Object o = super.deepHitPort(x, y);
-        if (o != null)
+        if (o != null) {
             return o;
-        if (hit(new Rectangle(new Dimension(x, y))))
+        }
+        if (hit(new Rectangle(new Dimension(x, y)))) {
             return getOwner();
+        }
         return null;
     }
-    
+
     /**
      * Makes sure that the edges stick to the outline of the fig.
      * @see org.tigris.gef.presentation.Fig#getGravityPoints()
@@ -262,7 +254,7 @@ public class FigActor extends FigNodeModelElement {
                           ((FigLine) getFigAt(ARMS_POSN)).getY1()));
         return ret;
     }
-    
+
     /**
      * Handles changes of the model. Takes into account the event that
      * occured. If you need to update the whole fig, consider using
@@ -273,12 +265,12 @@ public class FigActor extends FigNodeModelElement {
     protected void modelChanged(MElementEvent mee) {
         //      name updating
         super.modelChanged(mee);
-        
+
         boolean damage = false;
         if (getOwner() == null) {
             return;
         }
-        
+
         if (mee == null || mee.getName().equals("isAbstract")) {
             updateAbstract();
             damage = true;
@@ -292,10 +284,12 @@ public class FigActor extends FigNodeModelElement {
             updateStereotypeText();
             damage = true;
         }
-        
-        if (damage) damage();
+
+        if (damage) {
+            damage();
+        }
     }
-    
+
     /**
      * Rerenders the fig if needed. This functionality was originally
      * the functionality of modelChanged but modelChanged takes the
@@ -309,9 +303,9 @@ public class FigActor extends FigNodeModelElement {
         damage();
     }
 
-    
+
     /**
-     * Updates the name if modelchanged receives an "isAbstract" event
+     * Updates the name if modelchanged receives an "isAbstract" event.
      */
     protected void updateAbstract() {
         Rectangle rect = getBounds();
