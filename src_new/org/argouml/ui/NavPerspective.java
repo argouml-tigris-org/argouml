@@ -152,6 +152,17 @@ implements Serializable, TreeModel, Cloneable {
       new GoFilteredChildren("misc.package.collaborations",
 			     new GoModelToElements(),
 			     new PredInstanceOf(MCollaboration.class));
+	
+	GoFilteredChildren modelToComponentInstance = 
+		new GoFilteredChildren("misc.package.componentinstance",
+			     new GoModelToElements(),
+			     new PredInstanceOf(MComponentInstance.class));
+			     
+	GoFilteredChildren modelToNodeInstance = 
+		new GoFilteredChildren("misc.package.nodeinstance",
+			     new GoModelToElements(),
+			     new PredInstanceOf(MNodeInstance.class));
+	
 
     packageCentric.addSubTreeModel(new GoProjectModel());
     packageCentric.addSubTreeModel(new GoModelToDiagram());
@@ -162,6 +173,8 @@ implements Serializable, TreeModel, Cloneable {
     packageCentric.addSubTreeModel(modelToInstances);
     packageCentric.addSubTreeModel(modelToLinks);
     packageCentric.addSubTreeModel(modelToCollaboration);
+    packageCentric.addSubTreeModel(modelToComponentInstance);
+    packageCentric.addSubTreeModel(modelToNodeInstance);
     packageCentric.addSubTreeModel(new GoUseCaseToExtensionPoint());
     packageCentric.addSubTreeModel(new GoClassifierToStr());
     packageCentric.addSubTreeModel(new GoClassifierToBeh());
