@@ -207,7 +207,7 @@ public class Critic implements Poster, Serializable {
 	}
 	addControlRec(SNOOZE_ORDER, new SnoozeOrder());
 	_criticType = "correctness";
-	_knowledgeTypes.addElement("Correctness");
+	_knowledgeTypes.addElement(KT_CORRECTNESS);
 	_decisionCategory = "Checking";
 	// TODO: make this configurable
 	_emailAddr = "users@argouml.tigris.org";
@@ -398,6 +398,7 @@ public class Critic implements Poster, Serializable {
 	_knowledgeTypes.addElement(type);
     }
 
+    public VectorSet getKnowledgeTypes() { return _knowledgeTypes; }
     public void setKnowledgeTypes(VectorSet kt) { _knowledgeTypes = kt; }
     public void setKnowledgeTypes(String t1) {
 	_knowledgeTypes = new VectorSet();
