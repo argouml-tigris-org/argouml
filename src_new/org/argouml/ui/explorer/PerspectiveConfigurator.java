@@ -330,10 +330,12 @@ public class PerspectiveConfigurator extends ArgoDialog {
     class RemovePerspectiveListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             Object sel = perspectiveList.getSelectedValue();
-            perspectiveListModel.removeElement(sel);
+            if (perspectiveListModel.getSize() > 1) {
+                perspectiveListModel.removeElement(sel);
+            }
             perspectiveList.setSelectedIndex(0);
             if (perspectiveListModel.getSize() == 1) {
-                removeRuleButton.setEnabled(false);
+                removePerspectiveButton.setEnabled(false);
 	    }
         }
     }
