@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -21,23 +22,20 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: CrUselessInterface.java
 // Classes: CrUselessInterface
 // Original Author: jrobbins@ics.uci.edu
-// $Id$
 
 package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
 import java.awt.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
+
+// Use Model through ModelFacade
+import org.argouml.model.ModelFacade;
 
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
@@ -52,27 +50,21 @@ public class CrUselessInterface extends CrUML {
     addTrigger("realization");
   }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MInterface)) return false;
-    MInterface intf = (MInterface) dm;
-    if (!(CriticUtils.isPrimaryObject(intf))) return NO_PROBLEM;
-    Collection realization = getRealizations(intf);
-    if (realization == null || realization.size() == 0)
-      return PROBLEM_FOUND;
-    else return NO_PROBLEM;
-  }
-  private Collection getRealizations(MClassifier cls)
-  {
-     Vector res = new Vector();
-     Collection deps = cls.getSupplierDependencies();
-     if (deps==null) return res;
-     for (Iterator iter = deps.iterator(); iter.hasNext();) {
-       MDependency dependency = (MDependency)iter.next();
-       MStereotype stereotype = dependency.getStereotype();
-       if ((stereotype==null) || ("realize".equals(stereotype.getName())))
-         res.addAll(dependency.getClients());
-     };
-     return res;
-  };
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!ModelFacade.isAInterface(dm))
+	    return NO_PROBLEM;
+	
+	if (!ModelFacade.isPrimaryObject(dm))
+	    return NO_PROBLEM;
+
+
+	Iterator iter = ModelFacade.getSupplierDependencies(dm);
+
+	while (iter.hasNext())
+	    if (ModelFacade.isRealize(iter.next()))
+		return NO_PROBLEM;
+
+	return PROBLEM_FOUND;
+    }
 
 } /* end class CrUselessInterface */
