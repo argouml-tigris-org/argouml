@@ -22,47 +22,48 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui;
+package org.argouml.uml.diagram.ui;
 
-import org.argouml.uml.diagram.static_structure.ui.*;
-import org.argouml.ui.*;
+import org.argouml.uml.diagram.ui.*;
 import org.tigris.gef.base.*;
-import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.*;
 import java.awt.event.*;
 import java.util.*;
+import org.argouml.model.ModelFacade;
+import org.argouml.uml.ui.UMLAction;
 
-/** An action that makes all edges on the selected node visible/not visible
- *  on the diagram.
- *
- * <p>$Id$
- *
- * @author David Manura
- * @since 0.13.5
- *
- * @deprecated as of 0.15.2 replace with {@link 
- *  org.argouml.uml.diagram.ui.ActionEdgesDisplay}, remove 0.15.3, alexb
- */
+public class ActionAggregation extends UMLAction {
+    String str = "";
+    Object/*MAggregationKind*/ agg = null;
 
-public class ActionEdgesDisplay extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    // compartments
-    public static UMLAction ShowEdges
-        = new ActionEdgesDisplay(true, "Show All Edges");
-    public static UMLAction HideEdges
-        = new ActionEdgesDisplay(false, "Hide All Edges");
+    // aggregation
+    public static UMLAction SrcAgg =
+	new ActionAggregation(ModelFacade.AGGREGATE_AGGREGATIONKIND, "src");
+    public static UMLAction DestAgg =
+	new ActionAggregation(ModelFacade.AGGREGATE_AGGREGATIONKIND, "dest");
 
-    private boolean _show;
+    public static UMLAction SrcAggComposite =
+	new ActionAggregation(ModelFacade.COMPOSITE_AGGREGATIONKIND, "src");
+    public static UMLAction DestAggComposite =
+	new ActionAggregation(ModelFacade.COMPOSITE_AGGREGATIONKIND, "dest");
+
+    public static UMLAction SrcAggNone =
+	new ActionAggregation(ModelFacade.NONE_AGGREGATIONKIND, "src");
+    public static UMLAction DestAggNone =
+	new ActionAggregation(ModelFacade.NONE_AGGREGATIONKIND, "dest");
+
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    protected ActionEdgesDisplay(boolean show, String desc) {
-        super(desc, NO_ICON);
-        _show = show;
+    protected ActionAggregation(Object/*MAggregationKind*/ a, String s) {
+	super(ModelFacade.getName(a), NO_ICON);
+	str = s;
+	agg = a;
     }
 
 
@@ -70,39 +71,26 @@ public class ActionEdgesDisplay extends UMLAction {
     // main methods
 
     public void actionPerformed(ActionEvent ae) {
-        ProjectBrowser pb = ProjectBrowser.getInstance();
-        ArgoDiagram d = pb.getActiveDiagram();
-        Editor ce = Globals.curEditor();
-        MutableGraphModel mgm = (MutableGraphModel) ce.getGraphModel();
-
-        Enumeration e = ce.getSelectionManager().selections().elements();
-        // note: multiple selection not currently supported (2002-04-05)
-        while (e.hasMoreElements()) {
-            Selection sel = (Selection) e.nextElement();
-            Object owner = sel.getContent().getOwner();
-
-            if (_show) { // add
-                mgm.addNodeRelatedEdges(owner);
-            }
-            else { // remove
-                Vector edges = mgm.getInEdges(owner);
-                edges.addAll(mgm.getOutEdges(owner));
-                Enumeration e2 = edges.elements();
-                while (e2.hasMoreElements()) {
-                    Object edge = e2.nextElement();
-                    Fig fig = d.presentationFor(edge);
-                    if (fig != null)
-                        fig.delete();
+	Vector sels = Globals.curEditor().getSelectionManager().selections();
+	if ( sels.size() == 1 ) {
+	    Selection sel = (Selection) sels.firstElement();
+	    Fig f = sel.getContent();
+	    Object owner = ((FigEdgeModelElement) f).getOwner();
+	    Collection ascEnds = ModelFacade.getConnections(owner);
+            Iterator iter = ascEnds.iterator();
+	    Object ascEnd = null;
+	    if (str.equals("src")) {
+		ascEnd = iter.next();
+            } else {
+                while (iter.hasNext()) {
+                    ascEnd = iter.next();
                 }
             }
-        }
+	    ModelFacade.setAggregation(ascEnd, agg);
+	}
     }
 
     public boolean shouldBeEnabled() { 
-        return true; 
+	return true; 
     }
-
-} /* end class ActionEdgesDisplay */
-
-
-
+} /* end class ActionSrcMultOneToMany */

@@ -28,6 +28,10 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.ui.targetmanager.TargetManager;
 
+/**
+ * this class is not used.
+ * @deprecated as of 0.15.2, remove in 0.15.3, alexb
+ */
 class ActionAddInternalTrans extends UMLChangeAction {
     public ActionAddInternalTrans() { super("action.add-internal-transition"); }
 

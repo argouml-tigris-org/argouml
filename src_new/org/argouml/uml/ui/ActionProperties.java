@@ -32,6 +32,9 @@ import javax.swing.Action;
 
 /** Action to select the properties tab.
  * @stereotype singleton
+ *
+ * @deprecated as of 0.15.2 replace with {@link 
+ *  org.argouml.uml.diagram.ui.ActionProperties}, remove 0.15.3, alexb
  */
 public class ActionProperties extends UMLAction {
 

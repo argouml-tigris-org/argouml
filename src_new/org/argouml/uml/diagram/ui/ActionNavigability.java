@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui;
+package org.argouml.uml.diagram.ui;
 
 import org.argouml.uml.diagram.ui.*;
 import org.tigris.gef.base.*;
@@ -30,15 +30,13 @@ import org.tigris.gef.presentation.*;
 import java.awt.event.*;
 import java.util.*;
 import org.argouml.model.ModelFacade;
+import org.argouml.uml.ui.UMLAction;
 
 /**
  * A class to perform the action of changing the unidirectional or
  * bidirectional navigation of an association.
  *
  * @author  Bob Tarling
- *
- * @deprecated as of 0.15.2 replace with {@link 
- *  org.argouml.uml.diagram.ui.ActionNavigability}, remove 0.15.3, alexb
  */
 public class ActionNavigability extends UMLAction {
     final public static int BIDIRECTIONAL = 0;
