@@ -26,11 +26,6 @@
 // Classes: FigClass
 // Original Author: abonner
 
-// $Id$
-
-// 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Fix for ever
-// increasing vertical size of classes with stereotypes (issue 745).
-
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
@@ -1001,7 +996,7 @@ public class FigClass extends FigNodeModelElement {
         if (me.isConsumed())
             return;
         super.mouseClicked(me);
-	if ((me.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) != 0
+	if (me.isShiftDown()
 	    && TargetManager.getInstance().getTargets().size() > 0)
 	    return;
 
