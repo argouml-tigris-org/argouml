@@ -299,7 +299,7 @@ public class MMUtil {
 		case 1: 
 			return (MParameter)returnParams.elementAt(0);
 		case 0:
-			System.out.println("No ReturnParameter found!");
+		    // System.out.println("No ReturnParameter found!");
 			return null;
 		default:
 			System.out.println("More than one ReturnParameter found, returning first!");

@@ -180,16 +180,16 @@ implements ItemListener {
 		  Object src = e.getSource();
 		  
 		  if (src == _namespaceField) {
-			  System.out.println("namespacefield event");
+		      //  System.out.println("namespacefield event");
 			  // what to do here?
 			  //setTargetInternal();
 		  }
 		  else if (src == _stereoField) {
-			  System.out.println("stereofield event");
+		      //System.out.println("stereofield event");
 			  setTargetStereotype();
 		  }
 		  else if (src == _baseField) {
-			  System.out.println("baseField event");
+		      //  System.out.println("baseField event");
 			  	Component ed = _baseField.getEditor().getEditorComponent();
 				String baseName = ((JTextField)ed).getText();
 	

@@ -191,7 +191,7 @@ public class FigAssociation extends FigEdgeModelElement {
       return ArrowHeadDiamond.WhiteDiamond;
     else if (MAggregationKind.COMPOSITE.equals(ak))
       return ArrowHeadDiamond.BlackDiamond;
-    System.out.println("unknown case in drawing assoc arrowhead");
+    // System.out.println("unknown case in drawing assoc arrowhead");
     return ArrowHeadNone.TheInstance;
   }
 
