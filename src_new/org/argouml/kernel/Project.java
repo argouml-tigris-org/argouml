@@ -341,7 +341,13 @@ public class Project implements java.io.Serializable, TargetListener {
                         (ArgoDiagram) PGMLParser.SINGLETON.readDiagram(
 								      sub,
 								      false);
-                    addMember(d);
+                    if (d != null) {                  
+                        addMember(d);
+                    }
+                    else {
+                        Argo.log.error("An error occurred while loading " 
+                            + currentEntry.getName());
+                    }
                     // sub.closeEntry();
                     Argo.log.info("Finished loading " + currentEntry.getName());
                 }
