@@ -309,7 +309,7 @@ implements ItemListener, TreeSelectionListener, QuadrantPanel {
 		else {
 			//
 			//    otherwise expand the tree?
-			//¨      //if (me.isConsumed()) return;
+			//?      //if (me.isConsumed()) return;
 			int row = _tree.getRowForLocation(me.getX(), me.getY());
 			TreePath path = _tree.getPathForLocation(me.getX(), me.getY());
 			if (row != -1) {
@@ -374,5 +374,14 @@ implements ItemListener, TreeSelectionListener, QuadrantPanel {
   }
 
   public int getQuadrant() { return Q_TOP_LEFT; }
+  
+
+  
+  public TreePath getParentPath() {
+  	TreePath path = _tree.getSelectionPath();
+  	if (path != null) return path.getParentPath();
+  	return null;
+  }
+  	
 
 } /* end class NavigatorPane */
