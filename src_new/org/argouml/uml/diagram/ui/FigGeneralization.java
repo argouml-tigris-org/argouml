@@ -24,6 +24,7 @@
 // File: FigGeneralization.java
 // Classes: FigGeneralization
 // Original Author: abonner@ics.uci.edu
+// Author discriminator: jaap.branderhorst@xs4all.nl
 // $Id$
 
 package org.argouml.uml.diagram.ui;
@@ -39,12 +40,26 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
 public class FigGeneralization extends FigEdgeModelElement {
+	
+	/**
+	 * Text box for discriminator
+	 */
+	FigText _discriminator = new FigText(10, 30, 90, 20);
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
   public FigGeneralization() {
     addPathItem(_stereo, new PathConvPercent(this, 50, 10));
+    _discriminator.setFont(LABEL_FONT);
+    _discriminator.setTextColor(Color.black);
+    _discriminator.setTextFilled(false);
+    _discriminator.setFilled(false);
+    _discriminator.setLineWidth(0);
+    _discriminator.setExpandOnly(false);
+    _discriminator.setMultiLine(false);
+    _discriminator.setAllowsTab(false);
+    addPathItem(_discriminator, new PathConvPercent(this, 40, -10));
     ArrowHeadTriangle endArrow = new ArrowHeadTriangle();
     endArrow.setFillColor(Color.white);
     setDestArrowHead(endArrow);
@@ -67,8 +82,23 @@ public class FigGeneralization extends FigEdgeModelElement {
   protected void modelChanged() {
     // do not set _name
     updateStereotypeText();
+    updateDiscriminatorText();
   }
-
+  
+  /**
+   * Updates the discriminator text. Called if the model is changed and on construction time.
+   */
+  public void updateDiscriminatorText() {
+  	MGeneralization me = (MGeneralization)getOwner();
+  	if (me == null) {
+  		return;
+  	}
+  	String disc = me.getDiscriminator();
+  	if (disc == null) {
+  		disc = "";
+  	}
+  	_discriminator.setText(disc);
+  }
 
 
 } /* end class FigGeneralization */
