@@ -36,6 +36,9 @@ import org.argouml.ui.ProjectBrowser;
 import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
+import ru.novosoft.uml.behavior.collaborations.MCollaboration;
+import ru.novosoft.uml.behavior.collaborations.MInteraction;
+import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -167,5 +170,81 @@ public class CollaborationsHelper {
 		}
 		return null;
 	}
+	
+	/**
+	 * Returns all possible activators for some message mes. The possible
+	 * activators are all messages in the same interaction as the given message
+	 * that are not part of the predecessors of the message and that are
+	 * not equal to the given message.
+	 * @param mes
+	 * @return Collection
+	 */
+	public Collection getAllPossibleActivators(MMessage mes) {
+		if (mes == null) return new ArrayList();
+		MInteraction inter = mes.getInteraction();
+		Collection predecessors = mes.getPredecessors();
+		Collection allMessages = inter.getMessages();
+		Iterator it = allMessages.iterator();
+		List list = new ArrayList();
+		while (it.hasNext()) {
+			Object o = it.next();
+			if (!predecessors.contains(o) && mes!=o && !hasAsActivator((MMessage)o, mes) && !((MMessage)o).getPredecessors().contains(mes)) {
+				list.add(o);
+			}
+		}
+		return list;
+	}
+	
+    /**
+     * Returns true if the given message has the message activator somewhere as it's activator. This is defined
+     * as that the message activator can be the activator itself of the given message OR that the given activator
+     * can be the activator of the activator of the given message (recursive) OR that the given activator is part
+     * of the predecessors of the activator of the given message (recursive too).
+     * @param message
+     * @param activator
+     * @return boolean
+     */
+	public boolean hasAsActivator(MMessage message, MMessage activator) {
+		if (message.getActivator() == null) return false;
+		if (message.getActivator() == activator || message.getActivator().getPredecessors().contains(activator)) return true;
+		else 
+			return hasAsActivator(message.getActivator(), activator);
+	}
+	
+    /**
+     * Sets the activator of some given message mes. Checks the wellformednessrules as defined in the UML 1.3 spec
+     * in section 2.10.3.6, will throw an illegalargumentexception if the wellformednessrules are not met.
+     * Not only sets the activator for the given message mes but also for the predecessors of mes. This is done
+     * since it can not be the case that a list of messages (defined by the predecessor) has a different activator.
+     * @param mes
+     * @param activator
+     */
+	public void setActivator(MMessage mes, MMessage activator) {
+		if (mes == null || activator == null) throw new IllegalArgumentException("In setActivator: either message or activator is null");
+		if (mes == activator) throw new IllegalArgumentException("In setActivator: message may not be equal to activator");
+		if (mes.getInteraction() != activator.getInteraction()) throw new IllegalArgumentException("In setActivator: interaction of message should equal interaction of activator");
+		if (mes.getPredecessors().contains(activator)) throw new IllegalArgumentException("In setActivator: the predecessors of the message may not contain the activator"); 
+		// we must find out if the activator itself does not have message as it's activator
+		if (hasAsActivator(activator, mes)) throw new IllegalArgumentException("In setActivator: message may not be the activator for the original activator");
+		List listToChange = new ArrayList();
+		Collection predecessors = mes.getPredecessors();
+		listToChange.addAll(predecessors);
+		listToChange.add(mes);
+		MInteraction inter = mes.getInteraction();
+		Collection allMessages = inter.getMessages();
+		Iterator it = allMessages.iterator();
+		while (it.hasNext()) {
+			MMessage mes2 = (MMessage)it.next();
+			if (mes2.getPredecessors().contains(mes)) {
+				listToChange.add(mes2);
+			}
+		}
+		it = listToChange.iterator();
+		while (it.hasNext()) {
+			MMessage mes2 = (MMessage)it.next();
+			mes2.setActivator(activator);
+		}
+	}
+		
 }
 
