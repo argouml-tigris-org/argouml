@@ -269,30 +269,27 @@ Property files to be searched:
       <pathelement location="${javasrc.jar.path}" />
     </path>
 
-<!--
     <taskdef name="junit"
              classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
       <classpath>
 	 <path refid="ant.optional.classpath"/>
       </classpath>
     </taskdef>
--->
-<!--
+
     <taskdef name="junitreport"
              classname="org.apache.tools.ant.taskdefs.optional.junit.XMLResultAggregator">
       <classpath>
 	 <path refid="ant.optional.classpath"/>
       </classpath>
     </taskdef>
--->
-<!--
+
     <taskdef name="jdepend"
              classname="org.apache.tools.ant.taskdefs.optional.jdepend.JDependTask">
       <classpath>
 	 <path refid="ant.optional.classpath"/>
       </classpath>
     </taskdef>
--->
+
     <!-- End of support section for ant optional tasks                  -->
 
     <property name="Name" value="ArgoUML"/>
