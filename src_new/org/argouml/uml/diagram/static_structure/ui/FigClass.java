@@ -1158,6 +1158,7 @@ public class FigClass extends FigNodeModelElement {
             Font font = _name.getFont();              
             _name.setFont(font.deriveFont(Font.ITALIC));
         }
+        
     }
 
 } /* end class FigClass */
