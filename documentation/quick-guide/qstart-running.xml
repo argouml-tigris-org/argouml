@@ -2,7 +2,7 @@
 
 
 <chapter id="running">
-	<title>Running &argo;</title>
+	<title>&argo; Principles</title>
 	<para>
     When &argo; starts, then it shows an empty class diagram
     on which you can add various objects. &argo; works according the following
