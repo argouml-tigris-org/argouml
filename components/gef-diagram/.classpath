@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
     <classpathentry kind="src" path="src"/>
     <classpathentry kind="lib" path="/lib/gef-0.9.6.jar"/>
-    <classpathentry kind="src" path="/api"/>
+    <classpathentry kind="lib" path="/lib/argouml-api.jar"/>
+    <classpathentry kind="src" output="build/test_classes" path="tests"/>
+    <classpathentry kind="lib" path="/tools/junit-3.7/junit.jar"/>
+    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
     <classpathentry kind="output" path="build/classes"/>
 </classpath>

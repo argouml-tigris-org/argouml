@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
     <classpathentry kind="src" path="src"/>
+    <classpathentry kind="src" output="build/test_classes" path="tests"/>
     <classpathentry kind="lib" path="/lib/jmi-1.0.jar"/>
     <classpathentry kind="lib" path="/lib/jndi-1.2.1.jar"/>
+    <classpathentry kind="lib" path="/tools/junit-3.7/junit.jar"/>
     <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-    <classpathentry kind="lib" path="D:/j2sdk1.4.1_02/lib/tools.jar"/>
     <classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -3,7 +3,6 @@
 	<name>gef-diagram</name>
 	<comment></comment>
 	<projects>
-		<project>api</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
