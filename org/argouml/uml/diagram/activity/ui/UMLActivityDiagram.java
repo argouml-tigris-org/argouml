@@ -39,10 +39,14 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.behavior.activity_graphs.*;
 
-import org.tigris.gef.base.*;
+import org.tigris.gef.base.CmdSetMode;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.base.LayerPerspectiveMutable;
+import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.ui.*;
 
 import org.argouml.uml.diagram.ui.*;
+import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.state.*;
 import org.argouml.uml.diagram.state.ui.*;
 
@@ -63,14 +67,14 @@ public class UMLActivityDiagram extends UMLDiagram {
 
 
   protected static Action _actionState =
-  new CmdCreateNode(MActionStateImpl.class, "ActionState");
+  new CmdCreateNode(MActionState.class, "ActionState");
 
   // start state, end state, forks, joins, etc.
   protected static Action _actionStartPseudoState =
   new ActionCreatePseudostate(MPseudostateKind.INITIAL, "Initial");
 
   protected static Action _actionFinalPseudoState =
-  new CmdCreateNode(MFinalStateImpl.class, "FinalState");
+  new CmdCreateNode(MFinalState.class, "FinalState");
 
   protected static Action _actionBranchPseudoState =
   new ActionCreatePseudostate(MPseudostateKind.BRANCH, "Branch");
@@ -83,7 +87,7 @@ public class UMLActivityDiagram extends UMLDiagram {
 
   protected static Action _actionTransition =
   new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", MTransitionImpl.class,
+		 "edgeClass", MTransition.class,
 		 "Transition");
 
 

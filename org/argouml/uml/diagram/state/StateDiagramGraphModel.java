@@ -284,7 +284,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
       if (MPseudostateKind.INITIAL.equals(((MPseudostate)toSV).getKind()))
 	return null;
 
-    if (edgeClass == MTransitionImpl.class) {
+    if (edgeClass == MTransition.class) {
       MTransition tr = UmlFactory.getFactory().getStateMachines().buildTransition(_machine, fromSV, toSV);
       addEdge(tr);
       return tr;

@@ -62,19 +62,19 @@ public class UMLSequenceDiagram extends UMLDiagram {
   new CmdCreateNode(MObject.class, "Object");
 
   protected static Action _actionLinkWithStimulusCall =
-  new ActionAddLink(MCallActionImpl.class, "StimulusCall");
+  new ActionAddLink(MCallAction.class, "StimulusCall");
 
   protected static Action _actionLinkWithStimulusCreate =
-  new ActionAddLink(MCreateActionImpl.class, "StimulusCreate");
+  new ActionAddLink(MCreateAction.class, "StimulusCreate");
 
   protected static Action _actionLinkWithStimulusDestroy =
-  new ActionAddLink(MDestroyActionImpl.class, "StimulusDestroy");
+  new ActionAddLink(MDestroyAction.class, "StimulusDestroy");
 
   protected static Action _actionLinkWithStimulusSend =
-  new ActionAddLink(MSendActionImpl.class, "StimulusSend");
+  new ActionAddLink(MSendAction.class, "StimulusSend");
 
   protected static Action _actionLinkWithStimulusReturn =
-  new ActionAddLink(MReturnActionImpl.class, "StimulusReturn");
+  new ActionAddLink(MReturnAction.class, "StimulusReturn");
 
 
 

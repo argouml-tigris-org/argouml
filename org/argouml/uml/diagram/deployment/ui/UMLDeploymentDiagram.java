@@ -13,10 +13,14 @@ import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 
-import org.tigris.gef.base.*;
+import org.tigris.gef.base.CmdSetMode;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.base.LayerPerspectiveMutable;
+import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.ui.*;
 
 import org.argouml.uml.diagram.ui.*;
+import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.deployment.*;
 
 public class UMLDeploymentDiagram extends UMLDiagram {
@@ -25,39 +29,39 @@ public class UMLDeploymentDiagram extends UMLDiagram {
   // actions for toolbar
 
   protected static Action _actionMNode =
-    new CmdCreateNode(MNodeImpl.class, "Node");
+    new CmdCreateNode(MNode.class, "Node");
 
   protected static Action _actionMNodeInstance =
-    new CmdCreateNode(MNodeInstanceImpl.class, "NodeInstance");
+    new CmdCreateNode(MNodeInstance.class, "NodeInstance");
 
   protected static Action _actionMComponent = 
-    new CmdCreateNode(MComponentImpl.class, "Component");
+    new CmdCreateNode(MComponent.class, "Component");
 
   protected static Action _actionMComponentInstance = 
-    new CmdCreateNode(MComponentInstanceImpl.class, "ComponentInstance");
+    new CmdCreateNode(MComponentInstance.class, "ComponentInstance");
 
   protected static Action _actionMClass = 
-    new CmdCreateNode(MClassImpl.class, "Class");
+    new CmdCreateNode(MClass.class, "Class");
 
   protected static Action _actionMInterface = 
-    new CmdCreateNode(MInterfaceImpl.class, "Interface");
+    new CmdCreateNode(MInterface.class, "Interface");
 
   protected static Action _actionMObject =
-    new CmdCreateNode(MObjectImpl.class, "Object");
+    new CmdCreateNode(MObject.class, "Object");
 
   protected static Action _actionMDependency =			
     new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", MDependencyImpl.class,					
+		 "edgeClass", MDependency.class,					
 		 "Dependency");							
 
   protected static Action _actionMAssociation =			
     new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", MAssociationImpl.class,					
+		 "edgeClass", MAssociation.class,					
  		 "Association");							
 
   protected static Action _actionMLink =
     new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", MLinkImpl.class,
+		 "edgeClass", MLink.class,
 		 "Link");
 
 

@@ -199,12 +199,12 @@ public class SelectionActor extends SelectionWButtons {
 
   public Object addAssocClassRight(MutableGraphModel mgm, MActor cls,
 			    MUseCase newCls) {
-    return mgm.connect(cls, newCls, MAssociationImpl.class);
+    return mgm.connect(cls, newCls, MAssociation.class);
   }
 
   public Object addAssocClassLeft(MutableGraphModel mgm, MActor cls,
 			    MUseCase newCls) {
-    return mgm.connect(newCls, cls, MAssociationImpl.class);
+    return mgm.connect(newCls, cls, MAssociation.class);
   }
 
 

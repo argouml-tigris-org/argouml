@@ -317,20 +317,20 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
           MClass fromCls = (MClass) fromPort;
           MClass toCls = (MClass) toPort;
 
-          if (edgeClass == MGeneralizationImpl.class) {
+          if (edgeClass == MGeneralization.class) {
               MGeneralization gen = 
                   UmlFactory.getFactory().getCore().buildGeneralization(fromCls, toCls);
               addEdge(gen);
               return gen;
           }
-          else if (edgeClass == MAssociationImpl.class) {
+          else if (edgeClass == MAssociation.class) {
               MAssociation asc = 
                   UmlFactory.getFactory().getCore().buildAssociation(fromCls, toCls);
               addEdge(asc);
               return asc;
               //return asc;
           }
-          else if (edgeClass == MDependencyImpl.class) {
+          else if (edgeClass == MDependency.class) {
               // nsuml: using Binding as default
               MDependency dep = 
                   UmlFactory.getFactory().getCore().buildDependency(fromCls, toCls);
@@ -350,7 +350,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
               MPackage toPack = (MPackage) toPort;
               // needs-more-work: assumes public, user pref for default visibility?
               //do I have to check the namespace here? (Toby)
-              if (edgeClass == MDependencyImpl.class) {
+              if (edgeClass == MDependency.class) {
                   // nsuml: using Usage as default
                   MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromPack, toPack);
                   addEdge(dep);
@@ -363,20 +363,20 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
           MClass fromCls = (MClass) fromPort;
           MInterface toIntf = (MInterface) toPort;
 	 
-          if (edgeClass == MAbstractionImpl.class) {
+          if (edgeClass == MAbstraction.class) {
               MAbstraction real = 
                   UmlFactory.getFactory().getCore().buildRealization(fromCls, toIntf);
               addEdge(real);
               return real;
           }
 	
-          else  if (edgeClass == MAssociationImpl.class) {
+          else  if (edgeClass == MAssociation.class) {
               MAssociation asc = 
                   UmlFactory.getFactory().getCore().buildAssociation(fromCls, false, toIntf, true);
               addEdge(asc);
               return asc;
           }
-          else if (edgeClass == MDependencyImpl.class) {
+          else if (edgeClass == MDependency.class) {
                   // nsuml: using Binding as default
                   MDependency dep = 
                       UmlFactory.getFactory().getCore().buildDependency(fromCls, toIntf);
@@ -398,14 +398,14 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
               MClass toCls = (MClass) toPort;
 
 
-              if (edgeClass == MAssociationImpl.class) {
+              if (edgeClass == MAssociation.class) {
                   MAssociation asc = 
                       UmlFactory.getFactory().getCore().buildAssociation(fromIntf, true, 
                                                         toCls, false);
                   addEdge(asc);
                   return asc;
               }
-              else if (edgeClass == MDependencyImpl.class) {
+              else if (edgeClass == MDependency.class) {
                   // nsuml: using Binding as default
                   MDependency dep = 
                       UmlFactory.getFactory().getCore().buildDependency(fromIntf, toCls);
@@ -434,14 +434,14 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
           MInterface fromIntf = (MInterface) fromPort;
           MInterface toIntf = (MInterface) toPort;
 
-          if (edgeClass == MGeneralizationImpl.class) {
+          if (edgeClass == MGeneralization.class) {
               MGeneralization gen = UmlFactory.getFactory().getCore().createGeneralization();
               gen.setChild(fromIntf);
               gen.setParent(toIntf);
               addEdge(gen);
               return gen;
           }
-          else if (edgeClass == MDependencyImpl.class) {
+          else if (edgeClass == MDependency.class) {
               //nsuml: using Binding
               MDependency dep = UmlFactory.getFactory().getCore().createDependency();
               dep.addSupplier(fromIntf);
@@ -463,7 +463,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
                (toPort instanceof MInstance)) {
           MInstance fromInst = (MInstance) fromPort;
           MInstance toInst = (MInstance) toPort;
-          if (edgeClass == MLinkImpl.class) {
+          if (edgeClass == MLink.class) {
               MLink link = UmlFactory.getFactory().getCommonBehavior().createLink();
               MLinkEnd le0 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
               le0.setInstance(fromInst);

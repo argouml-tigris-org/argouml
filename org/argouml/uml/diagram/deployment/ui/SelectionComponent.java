@@ -232,21 +232,21 @@ public class SelectionComponent extends SelectionWButtons {
 
   public Object addCompClassAbove(MutableGraphModel mgm, MComponent cls,
 			    MComponent newCls) {
-    return mgm.connect(cls, newCls, MDependencyImpl.class);
+    return mgm.connect(cls, newCls, MDependency.class);
   }
 
   public Object addCompClassBelow(MutableGraphModel mgm, MComponent cls,
 			    MComponent newCls) {
-    return mgm.connect(newCls, cls, MDependencyImpl.class);
+    return mgm.connect(newCls, cls, MDependency.class);
   }
   public Object addCompClassRight(MutableGraphModel mgm, MComponent cls,
 			    MComponent newCls) {
-    return mgm.connect(cls, newCls, MDependencyImpl.class);
+    return mgm.connect(cls, newCls, MDependency.class);
   }
 
   public Object addCompClassLeft(MutableGraphModel mgm, MComponent cls,
 			    MComponent newCls) {
-    return mgm.connect(newCls, cls, MDependencyImpl.class);
+    return mgm.connect(newCls, cls, MDependency.class);
   }
 
 

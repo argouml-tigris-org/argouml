@@ -87,7 +87,7 @@ public class UMLStateDiagram extends UMLDiagram {
 
   protected static Action _actionTransition =
   new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", MTransitionImpl.class,
+		 "edgeClass", MTransition.class,
 		 "Transition");
 
 

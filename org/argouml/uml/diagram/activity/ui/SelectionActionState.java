@@ -283,12 +283,12 @@ public class SelectionActionState extends SelectionWButtons {
 
   public Object addOutgoingTrans(MutableGraphModel mgm, MStateVertex cls,
 			    MStateVertex newCls) {
-    return mgm.connect(cls, newCls, MTransitionImpl.class);
+    return mgm.connect(cls, newCls, MTransition.class);
   }
 
   public Object addIncomingTrans(MutableGraphModel mgm, MStateVertex cls,
 			    MStateVertex newCls) {
-    return mgm.connect(newCls, cls, MTransitionImpl.class);
+    return mgm.connect(newCls, cls, MTransition.class);
   }
 
   ////////////////////////////////////////////////////////////////

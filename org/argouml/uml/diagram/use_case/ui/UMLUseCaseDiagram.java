@@ -48,10 +48,14 @@ import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 
-import org.tigris.gef.base.*;
+import org.tigris.gef.base.CmdSetMode;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.base.LayerPerspectiveMutable;
+import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.ui.*;
 
 import org.argouml.uml.ui.*;
+import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.use_case.*;
 
@@ -73,7 +77,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      */
 
     protected static Action _actionActor =
-        new CmdCreateNode(MActorImpl.class, "Actor");
+        new CmdCreateNode(MActor.class, "Actor");
 
 
     /**
@@ -81,7 +85,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      */
 
     protected static Action _actionUseCase =
-        new CmdCreateNode(MUseCaseImpl.class, "UseCase");
+        new CmdCreateNode(MUseCase.class, "UseCase");
 
 
     /**
@@ -91,7 +95,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
     protected static Action _actionAssoc =
         new CmdSetMode(ModeCreatePolyEdge.class,
-                       "edgeClass", MAssociationImpl.class,
+                       "edgeClass", MAssociation.class,
                        "Association");
 
 
@@ -102,7 +106,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
     protected static Action _actionGeneralize =
         new CmdSetMode(ModeCreatePolyEdge.class,
-                       "edgeClass", MGeneralizationImpl.class,
+                       "edgeClass", MGeneralization.class,
                        "Generalization");
 
     /**
@@ -112,7 +116,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
     protected static Action _actionExtend =
         new CmdSetMode(ModeCreatePolyEdge.class,
-                       "edgeClass", MExtendImpl.class,
+                       "edgeClass", MExtend.class,
                        "Extend");
 
 
@@ -123,7 +127,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
     protected static Action _actionInclude =
         new CmdSetMode(ModeCreatePolyEdge.class,
-                       "edgeClass", MIncludeImpl.class,
+                       "edgeClass", MInclude.class,
                        "Include");
 
     /**
@@ -133,7 +137,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
     protected static Action _actionDependency =
         new CmdSetMode(ModeCreatePolyEdge.class,
-                       "edgeClass", MDependencyImpl.class,
+                       "edgeClass", MDependency.class,
                        "Dependency");
 
 

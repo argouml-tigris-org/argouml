@@ -222,7 +222,7 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
   public Object connect(Object fromPort, Object toPort,
 			java.lang.Class edgeClass) {
   
-    if (edgeClass == MLinkImpl.class &&
+    if (edgeClass == MLink.class &&
       (fromPort instanceof MObject && toPort instanceof MObject)) {
       MLink ml = UmlFactory.getFactory().getCommonBehavior().createLink();
       MLinkEnd le0 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();

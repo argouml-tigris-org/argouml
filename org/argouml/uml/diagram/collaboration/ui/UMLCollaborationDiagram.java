@@ -67,7 +67,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 
   protected static Action _actionAssoc =
   new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", MAssociationRoleImpl.class,
+		 "edgeClass", MAssociationRole.class,
 		 "AssociationRole");
 
 

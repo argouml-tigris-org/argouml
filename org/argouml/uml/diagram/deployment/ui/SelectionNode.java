@@ -233,21 +233,21 @@ public class SelectionNode extends SelectionWButtons {
 
   public Object addNodeClassAbove(MutableGraphModel mgm, MNode cls,
 			    MNode newCls) {
-    return mgm.connect(cls, newCls, MAssociationImpl.class);
+    return mgm.connect(cls, newCls, MAssociation.class);
   }
 
   public Object addNodeClassBelow(MutableGraphModel mgm, MNode cls,
 			    MNode newCls) {
-    return mgm.connect(newCls, cls, MAssociationImpl.class);
+    return mgm.connect(newCls, cls, MAssociation.class);
   }
   public Object addNodeClassRight(MutableGraphModel mgm, MNode cls,
 			    MNode newCls) {
-    return mgm.connect(cls, newCls, MAssociationImpl.class);
+    return mgm.connect(cls, newCls, MAssociation.class);
   }
 
   public Object addNodeClassLeft(MutableGraphModel mgm, MNode cls,
 			    MNode newCls) {
-    return mgm.connect(newCls, cls, MAssociationImpl.class);
+    return mgm.connect(newCls, cls, MAssociation.class);
   }
 
 
