@@ -50,6 +50,12 @@ import org.argouml.uml.diagram.state.ui.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.diagram.static_structure.ui.FigNote;
 
+/** Enabling an activity diagram connected to an
+ * actor has been requested as a feature.
+ *
+ * As well enabling swim lanes in the activity
+ * diagram is considered valuable as well.
+ */
 public class UMLActivityDiagram extends UMLDiagram {
 
   ////////////////

@@ -62,7 +62,12 @@ import org.argouml.xml.xmi.XMIParser;
 
 
 /** A datastructure that represents the designer's current project.  A
- *  Project consists of diagrams and UML models. */
+ * Project consists of diagrams and UML models.
+ *
+ * This needs much work. Currently little project information is saved.
+ *
+ * This is a huge class. Perhaps need refactoring.
+ */
 
 public class Project implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
@@ -83,8 +88,18 @@ public class Project implements java.io.Serializable {
   private URL _url = null;
   protected ChangeRegistry _saveRegistry;
 
+  /** This information is not saved in any central location
+   * or saved in the generated project file.
+   *
+   */  
   public String _authorname = "";
+  /** This information is not saved. Needs work.
+   */  
   public String _description = "";
+  /** This would be very nice to have as users
+   * continue to work and rework the projects and the
+   * diagrams.
+   */  
   public String _version = "";
 
   public Vector _searchpath = new Vector();
@@ -93,6 +108,8 @@ public class Project implements java.io.Serializable {
 
   public Vector _models = new Vector(); //instances of MModel
   public Vector _diagrams = new Vector(); // instances of LayerDiagram
+  /** This, AFAIK, does not work at all.
+   */  
   public boolean _needsSave = false;
   public MNamespace _curModel = null;
   public Hashtable _definedTypes = new Hashtable(80);

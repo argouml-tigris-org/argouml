@@ -27,6 +27,11 @@ import ru.novosoft.uml.behavior.use_cases.*;
  * otherwise it won't work. Additionally, you need a "db.ini" file
  * in the Argo root-directory or as parameter -Dargo.dbconfig="c:\db.ini"
  *
+ * Model information for static structure and use case diagrams can now be stored
+ * to a mySQL database. The adaption to any other JDBC capable database should be
+ * easy by adjusting the DB-scheme, since ArgoUML contains clean JDBC code. Graphical
+ * information is not supported yet.
+ *
  * @author Toby Baier <Toby.Baier@gmx.net>
  * @version 1.0
  */
