@@ -24,7 +24,10 @@
 
 package org.argouml.language.cpp.generator;
 
+import org.argouml.kernel.ProjectManager;
+
 import java.util.Collection;
+import java.util.Vector;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -66,6 +69,74 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
      */
     public static void main(java.lang.String[] args) {
         junit.textui.TestRunner.run(suite());
+    }
+
+    /** The AInterface interface */
+    private Object aInterface;
+
+    /** The AInterface::foo() operation */
+    private Object aInterfaceFooOp;
+
+    /** AClass realize AInterface realization */
+    private Object aRealization;
+
+    /** The AExtended class that generalizes AClass */
+    private Object aExtended;
+
+    /** AExtended extends AClass generalization */
+    private Object aGeneralization;
+
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() {
+        super.setUp();
+        setUpAInterface();
+        setUpAExtended();
+        setUpNamespaces("AModel");
+        setUpARealization(getAClass(), aInterface);
+        setUpAGeneralization(aExtended, getAClass());
+    }
+
+    /**
+     * Generate the AInterface interface
+     */
+    private void setUpAInterface() {
+        aInterface = getFactory().buildInterface("AInterface");
+        Object voidType =
+            ProjectManager.getManager().getCurrentProject().findType("void");
+        aInterfaceFooOp = buildOperation(aInterface, voidType, "foo");
+    }
+
+    private void setUpAExtended() {
+        aExtended = getFactory().buildClass("AExtended");
+    }
+
+    /**
+     * Setup the namespaces, giving a name to the model and assigning the 
+     * model as the namespace of the AClass, AInterface and AExtended
+     * objects.
+     * @param modelName name to give to the model
+     */
+    private void setUpNamespaces(String modelName) {
+        Model.getCoreHelper().setName(getModel(), modelName);
+        Model.getCoreHelper().setNamespace(getAClass(), getModel());
+        Model.getCoreHelper().setNamespace(aInterface, getModel());
+        Model.getCoreHelper().setNamespace(aExtended, getModel());
+    }
+
+    /**
+     * Generate a generalization from child to parent
+     */
+    private void setUpAGeneralization(Object child, Object parent) {
+        aGeneralization = getFactory().buildGeneralization(child, parent);
+    }
+
+    /**
+     * Generate a realization from cls to iface
+     */
+    private void setUpARealization(Object cls, Object iface) {
+        aRealization = getFactory().buildRealization(cls, iface, getModel());
     }
 
     /**
@@ -137,5 +208,44 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
      */
     public void testGetModuleKey() {
         assertNonNullNonZeroLengthString(getGenerator().getModuleKey());
+    }
+
+    private void setTaggedValue(Object o, String name, String value) {
+        Vector tvs = new Vector(
+            Model.getFacade().getTaggedValuesCollection(o));
+        Object tv =
+            Model.getExtensionMechanismsFactory()
+                .buildTaggedValue(name, value);
+        tvs.addElement(tv);
+        Model.getCoreHelper().setTaggedValues(o, tvs);
+    }
+    /**
+     * Test that default inheritance is public for classes and 
+     * "virtual public" for interfaces. Test also if the tag
+     * "visibility" is used, overriding any default (issue 3055).
+     */
+    public void testInheritanceDefaultsToPublicOrVirtualPublic() {
+        String code;
+        String re;
+        code = getGenerator().generateH(getAClass());
+        re = "(?m)(?s).*class\\s+AClass\\s*:\\s*virtual\\s*public" 
+            + "\\s*AInterface.*";
+        assertTrue(code.matches(re));
+
+        code = getGenerator().generate(aExtended);
+        re = "(?m)(?s).*class\\s+AExtended\\s*:\\s*public\\s*AClass.*";
+        assertTrue(code.matches(re));
+
+        // add tagged value visibility and check that it's used
+        setTaggedValue(aRealization, "visibility", "private");
+        setTaggedValue(aGeneralization, "visibility", "private");
+
+        code = getGenerator().generateH(getAClass());
+        re = "(?m)(?s).*class\\s+AClass\\s*:\\s*private\\s*AInterface.*";
+        assertTrue(code.matches(re));
+
+        code = getGenerator().generate(aExtended);
+        re = "(?m)(?s).*class\\s+AExtended\\s*:\\s*private\\s*AClass.*";
+        assertTrue(code.matches(re));   
     }
 }
