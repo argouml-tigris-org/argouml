@@ -1504,34 +1504,6 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * @see org.tigris.gef.presentation.FigNode#superTranslate(int, int)
-     *
-     * Overridden to notify project that save is needed when figure is moved.
-     */
-    public void superTranslate(int dx, int dy) {
-        super.superTranslate(dx, dy);
-        Project p = ProjectManager.getManager().getCurrentProject();
-        if (p != null) {      
-            p.setNeedsSave(true);
-        }
-    }
-
-    /**
-     * @see org.tigris.gef.presentation.Fig#setHandleBox(int, int, int, int)
-     *
-     * Overridden to notify project that save is needed when figure is resized.
-     */
-    public void setHandleBox(int x, int y, int w, int h) {
-        super.setHandleBox(x, y, w, h);
-        Project p = ProjectManager.getManager().getCurrentProject();
-        if (p != null) {      
-            p.setNeedsSave(true);
-        }
-    }
-    
-    
-
-    /**
      * Adds a fig to this FigNodeModelElement and removes it from the
      * group it belonged to if any.  Correction to the GEF
      * implementation that does not handle the double association
