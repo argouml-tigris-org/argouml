@@ -89,9 +89,9 @@ public class TestRerouteEdge extends TestCase {
         
         // add the classes to the diagram (the association will be added
         // automatically).
-        diagramInterface.addClass(class1);
-        diagramInterface.addClass(class2);
-        diagramInterface.addClass(class3);
+        diagramInterface.addClass(class1,false);
+        diagramInterface.addClass(class2,false);
+        diagramInterface.addClass(class3,false);
         
         // move the figs into position
         LayerPerspective lay =
