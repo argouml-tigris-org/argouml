@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-
+<!-- $Id$ -->
 <!-- ===========================================================================
 
 !!!!!!!!!!!!!!!!  Now requires ANT 1.2   !!!!!!!!!!!!!!!!!!!!!
@@ -255,7 +255,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
            optimize="${optimize}">
         <classpath>
             <fileset dir="${argo.build.dir}">
-                <include name="argouml.jar argouml-model.jar" />
+                <include name="argouml.jar"/>
+                <include name="argouml-model.jar"/>
             </fileset>
             <fileset dir="${argo.lib.dir}">
                 <include name="nsuml-0.4.20_modified.jar" />
