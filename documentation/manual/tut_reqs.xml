@@ -1820,9 +1820,30 @@ document.
     </sect2>
 
     <sect2>
-      <title>Identifying Actors and Use Cases (To be written)</title>
+      <title>Identifying Actors and Use Cases</title>
+      
+      <para> For the ATM case study, we will elaborate on the examples in
+        <xref linkend="s1.tut.req_process_output"/>,
+        <xref linkend="fig.tut.atm_use_case_diagram_include"/> 
+        and <xref linkend="fig.tut.atm_use_case_diagram_extend"/>, 
+        and progress to identify additional
+        actors and use cases that comprise our model of the ATM system. 
+        <xref linkend="fig.tut.atm_use_case_diagram_include"/> and 
+        <xref linkend="fig.tut.atm_use_case_diagram_extend"/> 
+        exemplified the essential concepts and components of a use
+        case diagram such as, use cases, actors, multiplicity, and include /
+        extend relationships. They showed the relationships between the actors and
+        use cases, and demonstrated how these actors and use cases interact.
+      </para>
+      <para>In <xref linkend="fig.tut.atm_use_case_diagram_include"/> 
+        we see a use case diagram for an ATM system consisting of
+        &laquo;include&raquo; relationships for the use cases, Maintain ATM and Use ATM.
+        Maintain ATM was further defined by two use cases, "Maintain Equipment" and
+        "Reload ATM". Use ATM was further defined in terms of the behavior of three
+        simpler use cases: "Deposit Cash", "Withdraw Cash" and "Query Account".
+      </para>
 
-      <remark>To be written&hellip;</remark>
+      <remark>More to be written&hellip;</remark>
     </sect2>
 
     <sect2>
