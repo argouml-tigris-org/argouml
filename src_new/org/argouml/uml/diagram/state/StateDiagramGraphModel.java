@@ -171,7 +171,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 
     /** Add the given node to the graph, if valid. */
     public void addNode(Object node) {
-	cat.debug("adding state diagram node: " + node);
+	cat.debug("adding statechart diagram node: " + node);
 	if (!canAddNode(node)) return;
 	if (!(org.argouml.model.ModelFacade.isAStateVertex(node))) {
 	    cat.error("internal error: got past canAddNode");
@@ -197,7 +197,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 
     /** Add the given edge to the graph, if valid. */
     public void addEdge(Object edge) {
-	cat.debug("adding state diagram edge!!!!!!");
+	cat.debug("adding statechart diagram edge!!!!!!");
    
 	if (!canAddEdge(edge)) return;
 	Object tr = /*(MTransition)*/ edge;

@@ -37,7 +37,7 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 
 /** Abstract class to with common behavior for nestable nodes in UML
-    MState diagrams. */
+    Statechart diagrams. */
 
 public abstract class FigStateVertex extends FigNodeModelElement {
 
