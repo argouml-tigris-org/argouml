@@ -82,7 +82,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
 
 	// since when do we know abstract usecases?
 	//    mPanel.add("isAbstract", mclass, "isAbstract", "setAbstract",
-	//               Argo.localize("UMLMenu", "checkbox.abstract-lc"), this);
+	//               Translator.localize("UMLMenu", "checkbox.abstract-lc"), this);
         mPanel.add("isLeaf", mclass, "isLeaf", "setLeaf",
                 Translator.localize("UMLMenu", "checkbox.final-lc"), this);
         mPanel.add("isRoot", mclass, "isRoot", "setRoot",

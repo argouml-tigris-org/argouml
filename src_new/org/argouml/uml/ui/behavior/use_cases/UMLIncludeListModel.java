@@ -55,7 +55,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
@@ -272,7 +272,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 	    choices.addAll(UseCasesHelper.getHelper().getAllUseCases());
 	    choices.remove(usecase);
 	    selected.addAll(UseCasesHelper.getHelper().getIncludedUseCases(usecase));
-	    UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-included-usecases"), true, true);
+	    UMLAddDialog dialog = new UMLAddDialog(choices, selected, Translator.localize("UMLMenu", "dialog.title.add-included-usecases"), true, true);
 	    int returnValue = dialog.showDialog(ProjectBrowser.getInstance());
 	    if (returnValue == JOptionPane.OK_OPTION) {
 		Iterator it = dialog.getSelected().iterator();

@@ -33,7 +33,7 @@ import org.argouml.uml.ui.UMLBinaryRelationListModel;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
@@ -107,7 +107,7 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
      */
     protected String getAddDialogTitle() {
-        return Argo.localize("UMLMenu", "dialog.title.add-extended-usecases");
+        return Translator.localize("UMLMenu", "dialog.title.add-extended-usecases");
     }
 
     /**
