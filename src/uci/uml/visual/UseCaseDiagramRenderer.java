@@ -90,10 +90,10 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       MGeneralizableElement superType = gen.getParent();
       FigNode subTypeFN = (FigNode) lay.presentationFor(subType);
       FigNode superTypeFN = (FigNode) lay.presentationFor(superType);
-      genFig.setSourcePortFig(superTypeFN);
-      genFig.setSourceFigNode(superTypeFN);
-      genFig.setDestPortFig(subTypeFN);
-      genFig.setDestFigNode(subTypeFN);
+      genFig.setSourcePortFig(subTypeFN);
+      genFig.setSourceFigNode(subTypeFN);
+      genFig.setDestPortFig(superTypeFN);
+      genFig.setDestFigNode(superTypeFN);
       return genFig;
     }
    

@@ -52,43 +52,43 @@ public class UMLClassDiagram extends UMLDiagram {
 
 
 
-  protected static Action _actionClass =
-  new CmdCreateNode(MClassImpl.class, "Class");
+	protected static Action _actionClass =
+		new CmdCreateNode(MClassImpl.class, "Class");
 
-   protected static Action _actionObject =
-   new CmdCreateNode(MInstanceImpl.class, "Instance");
+	protected static Action _actionObject =
+		new CmdCreateNode(MInstanceImpl.class, "Instance");
 
-  protected static Action _actionInterface =
-  new CmdCreateNode(MInterfaceImpl.class, "Interface");
+	protected static Action _actionInterface =
+		new CmdCreateNode(MInterfaceImpl.class, "Interface");
 
-  protected static Action _actionDepend =
-  new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", MDependencyImpl.class,
-		 "Dependency");
+	protected static Action _actionDepend =
+		new CmdSetMode(ModeCreatePolyEdge.class,
+					   "edgeClass", MDependencyImpl.class,
+					   "Dependency");
 
-  protected static Action _actionAssoc =
-  new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", MAssociationImpl.class,
-		 "Association");
+	protected static Action _actionAssoc =
+		new CmdSetMode(ModeCreatePolyEdge.class,
+					   "edgeClass", MAssociationImpl.class,
+					   "Association");
 
-  protected static Action _actionLink =
-  new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", MLinkImpl.class,
-		 "Link");
+	protected static Action _actionLink =
+		new CmdSetMode(ModeCreatePolyEdge.class,
+					   "edgeClass", MLinkImpl.class,
+					   "Link");
 
-  protected static Action _actionGeneralize =
-  new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", MGeneralizationImpl.class,
-		 "Generalization");
+	protected static Action _actionGeneralize =
+		new CmdSetMode(ModeCreatePolyEdge.class,
+					   "edgeClass", MGeneralizationImpl.class,
+					   "Generalization");
 
-	/*
-  protected static Action _actionRealize =
-  new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", Realization.class,
-		 "Realization");
-	*/
-  protected static Action _actionPackage =
-  new CmdCreateNode(MModelImpl.class, "Package");
+  
+	protected static Action _actionRealize =
+		new CmdSetMode(ModeCreatePolyEdge.class,
+					   "edgeClass", MAbstractionImpl.class,
+					   "Realization");
+   
+	protected static Action _actionPackage =
+		new CmdCreateNode(MModelImpl.class, "Package");
 
 
   ////////////////////////////////////////////////////////////////
@@ -144,7 +144,7 @@ public class UMLClassDiagram extends UMLDiagram {
 //     _toolBar.addSeparator();
 
     _toolBar.add(_actionInterface);
-	//    _toolBar.add(_actionRealize);
+	_toolBar.add(_actionRealize);
     _toolBar.addSeparator();
 
     _toolBar.add(Actions.AddAttribute);

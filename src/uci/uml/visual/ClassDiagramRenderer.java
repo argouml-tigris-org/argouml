@@ -117,10 +117,10 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       MGeneralizableElement superType = gen.getParent();
       FigNode subTypeFN = (FigNode) lay.presentationFor(subType);
       FigNode superTypeFN = (FigNode) lay.presentationFor(superType);
-      genFig.setSourcePortFig(superTypeFN);
-      genFig.setSourceFigNode(superTypeFN);
-      genFig.setDestPortFig(subTypeFN);
-      genFig.setDestFigNode(subTypeFN);
+      genFig.setSourcePortFig(subTypeFN);
+      genFig.setSourceFigNode(subTypeFN);
+      genFig.setDestPortFig(superTypeFN);
+      genFig.setDestFigNode(superTypeFN);
       return genFig;
     }
 	/*    if (edge instanceof Realization) {
@@ -147,10 +147,10 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
 		  FigNode supFN = (FigNode) lay.presentationFor(supplier);
 		  FigNode cliFN = (FigNode) lay.presentationFor(client);
 		  
-		  realFig.setSourcePortFig(supFN);
-		  realFig.setSourceFigNode(supFN);
-		  realFig.setDestPortFig(cliFN);
-		  realFig.setDestFigNode(cliFN);
+		  realFig.setSourcePortFig(cliFN);
+		  realFig.setSourceFigNode(cliFN);
+		  realFig.setDestPortFig(supFN);
+		  realFig.setDestFigNode(supFN);
 		  return realFig;
 	  }
 	  else {
@@ -162,10 +162,10 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
 		  FigNode supFN = (FigNode) lay.presentationFor(supplier);
 		  FigNode cliFN = (FigNode) lay.presentationFor(client);
 		  
-		  depFig.setSourcePortFig(supFN);
-		  depFig.setSourceFigNode(supFN);
-		  depFig.setDestPortFig(cliFN);
-		  depFig.setDestFigNode(cliFN);
+		  depFig.setSourcePortFig(cliFN);
+		  depFig.setSourceFigNode(cliFN);
+		  depFig.setDestPortFig(supFN);
+		  depFig.setDestFigNode(supFN);
 		  return depFig;
 	  }
 	}

@@ -75,10 +75,10 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       FigNode supFN = (FigNode) lay.presentationFor(supplier);
       FigNode cliFN = (FigNode) lay.presentationFor(client);
 
-      depFig.setSourcePortFig(supFN);
-      depFig.setSourceFigNode(supFN);
-      depFig.setDestPortFig(cliFN);
-      depFig.setDestFigNode(cliFN);
+      depFig.setSourcePortFig(cliFN);
+      depFig.setSourceFigNode(cliFN);
+      depFig.setDestPortFig(supFN);
+      depFig.setDestFigNode(supFN);
       return depFig;
     }
 

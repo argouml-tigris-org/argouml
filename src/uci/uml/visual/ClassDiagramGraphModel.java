@@ -265,6 +265,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
   /** Contruct and add a new edge of the given kind */
   public Object connect(Object fromPort, Object toPort,
 			java.lang.Class edgeClass) {
+	  //    System.out.println("connecting: "+fromPort+toPort+edgeClass);
       if ((fromPort instanceof MClass) && (toPort instanceof MClass)) {
 	    MClass fromCls = (MClass) fromPort;
 	    MClass toCls = (MClass) toPort;

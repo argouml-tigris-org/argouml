@@ -21,7 +21,7 @@ import ru.novosoft.uml.behavior.use_cases.*;
  * mysql database. At the moment the DB must have the name "uml",
  * otherwise it won't work.
  *
- * @author Toby Baier <Toby.Baier at gmx.net>
+ * @author Toby Baier <Toby.Baier@gmx.net>
  * @version 0.1
  */
 public class DBWriter
@@ -132,6 +132,7 @@ public class DBWriter
 			//System.out.println("Processing " + me.toString());
 			if (me instanceof MClass) store((MClass)me,stmt);
 			if (me instanceof MInterface) store((MInterface)me,stmt);
+			if (me instanceof MDataType) store((MDataType)me,stmt);
 			if (me instanceof MAssociation) store((MAssociation)me,stmt);
 			if (me instanceof MGeneralization) store((MGeneralization)me,stmt);
 			if (me instanceof MUseCase) store((MUseCase)me,stmt);
@@ -178,6 +179,15 @@ public class DBWriter
 		stmtString += cls.getUUID()+ "', ";
 		if (cls.isActive()) bool = "1"; else bool = "0";
 		stmtString += bool + ")";
+		stmt.executeUpdate(stmtString);
+
+		store((MClassifier)cls, stmt);
+    }
+
+    private void store(MDataType cls, Statement stmt) throws SQLException {
+		String bool = "0";
+		stmtString = "REPLACE INTO tDataType (uuid) VALUES ('";
+		stmtString += cls.getUUID()+ "')";
 		stmt.executeUpdate(stmtString);
 
 		store((MClassifier)cls, stmt);
@@ -355,7 +365,7 @@ public class DBWriter
 		stmtString = "REPLACE INTO tStructuralFeature (uuid, multiplicity, changeability, targetScope, type) VALUES ('";
 		stmtString += me.getUUID() + "', '";
 		if (me.getMultiplicity() != null) stmtString += me.getMultiplicity().toString() + "',";
-		else stmtString += "',";
+		else stmtString += "-1',";
 		if (me.getChangeability() != null) stmtString += me.getChangeability().getValue() + ",";
 		else stmtString += "-1,";
 		if (me.getTargetScope() != null) stmtString += me.getTargetScope().getValue() + ",'";
@@ -364,6 +374,10 @@ public class DBWriter
 		else stmtString += "')";
 
 		stmt.executeUpdate(stmtString);
+
+		MClassifier type = me.getType();
+		if (!(type.getNamespace().equals(me.getNamespace())))
+			store(type, stmt);
 
 		store((MFeature)me,stmt);
 	}
@@ -417,10 +431,11 @@ public class DBWriter
 	}
 
 	private void store(MParameter me, Statement stmt) throws SQLException {
+		me.setUUID(UUIDManager.SINGLETON.getNewUUID());
 		stmtString = "REPLACE INTO tParameter (uuid, defaultValue, kind, behavioralFeature, type) VALUES ('";
-		stmtString += me.getUUID() + "', ";
-		if (me.getDefaultValue() != null) stmtString += me.getDefaultValue().getBody() + ",";
-		else stmtString += "-1,";
+		stmtString += me.getUUID() + "', '";
+		if (me.getDefaultValue() != null) stmtString += me.getDefaultValue().getBody() + "',";
+		else stmtString += "',";
 		if (me.getKind() != null) stmtString += me.getKind().getValue() + ",'";
 		else stmtString += "-1,'";
 		if (me.getBehavioralFeature() != null) stmtString += me.getBehavioralFeature().getUUID() + "','";
@@ -428,6 +443,12 @@ public class DBWriter
 		if (me.getType() != null) stmtString += me.getType().getUUID() + "')";
 		else stmtString += "')";	
 		stmt.executeUpdate(stmtString);
+
+		System.out.println("Stored: "+stmtString);
+
+		MClassifier type = me.getType();
+		if (!(type.getNamespace().equals(me.getNamespace())))
+			store(type, stmt);
 
 		store((MModelElement)me,stmt);
 	}		

@@ -540,18 +540,23 @@ class ActionStoreModelToDB extends UMLAction {
 		  JOptionPane.showMessageDialog(null, "Error", "Current Namespace is not a Model", JOptionPane.ERROR_MESSAGE);
 		  return;
 	  }
+	  writer.store((MModel)nm);
 
-	  writer.store((MModel)p.getCurrentNamespace());
 // 	  Vector models = p.getModels();
-// 	  for (int i = 0; i< models.size(); i++) {
-// 		  writer.store((MModel)models.elementAt(i));
+//  	  for (int i = 0; i< models.size(); i++) {
+// 		  MNamespace nm = (MNamespace)models.elementAt(i);
+// 		  if (!(nm instanceof MModel)) {
+// 			  JOptionPane.showMessageDialog(null, "Error", "Current Namespace is not a Model", JOptionPane.ERROR_MESSAGE);
+// 			  return;
+// 		  }
 // 		  pb.showStatus("Wrote " + ((MModel)models.elementAt(i)).getName());
+// 		  writer.store((MModel)models.elementAt(i));
 // 	  }
   }
   public boolean shouldBeEnabled() {
 	  try {
 		  Class dbDriver = Class.forName("org.gjt.mm.mysql.Driver");
-	  } catch (ClassNotFoundException e) {
+	  } catch (ClassNotFoundException e) { 
 		  return false;
 	  }
 	  return true;

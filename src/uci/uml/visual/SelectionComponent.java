@@ -127,23 +127,23 @@ public class SelectionComponent extends SelectionWButtons {
     switch (hand.index) {
     case 10: //add dep
       edgeClass = MDependencyImpl.class;
+      reverse = true;
       by = cy;
       bx = cx + cw/2;
       break;
     case 11: //add dep
       edgeClass = MDependencyImpl.class;
-      reverse = true;
       by = cy + ch;
       bx = cx + cw/2;
       break;
     case 12: //add dep
       edgeClass = MDependencyImpl.class;
+      reverse = true;
       by = cy + ch/2;
       bx = cx + cw;
       break;
     case 13: // add dep
       edgeClass = MDependencyImpl.class;
-      reverse = true;
       by = cy + ch/2;
       bx = cx;
       break;

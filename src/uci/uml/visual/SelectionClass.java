@@ -261,12 +261,12 @@ public class SelectionClass extends SelectionWButtons {
 
   public Object addSuperClass(MutableGraphModel mgm, MClass cls,
 			    MClass newCls) {
-    return mgm.connect(newCls, cls, MGeneralizationImpl.class);
+    return mgm.connect(cls, newCls, MGeneralizationImpl.class);
   }
 
   public Object addSubClass(MutableGraphModel mgm, MClass cls,
 			    MClass newCls) {
-    return mgm.connect(cls, newCls, MGeneralizationImpl.class);
+    return mgm.connect(newCls, cls, MGeneralizationImpl.class);
   }
 
   public Object addAssocClassRight(MutableGraphModel mgm, MClass cls,

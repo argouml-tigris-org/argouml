@@ -47,7 +47,7 @@ public class FigRealization extends FigEdgeModelElement {
     addPathItem(_stereo, new PathConvPercent(this, 50, 10));
     ArrowHeadTriangle endArrow = new ArrowHeadTriangle();
     endArrow.setFillColor(Color.white);
-    setSourceArrowHead(endArrow);
+    setDestArrowHead(endArrow);
     setBetweenNearestPoints(true);
   }
 

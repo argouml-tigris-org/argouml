@@ -122,7 +122,7 @@ public class SelectionInterface extends SelectionWButtons {
     switch (hand.index) {
     case 11: //add realization
       edgeClass = MAbstractionImpl.class;
-      // reverse = true;
+      reverse = true;
       by = cy + ch;
       bx = cx + cw/2;
       break;
@@ -190,7 +190,7 @@ public class SelectionInterface extends SelectionWButtons {
 	
   public Object addRealization(MutableGraphModel mgm, MInterface cls,
 			    MClass newCls) {
-    return mgm.connect(cls, newCls, MAbstractionImpl.class);
+    return mgm.connect(newCls, cls, MAbstractionImpl.class);
   }
 	
 } /* end class SelectionInterface */

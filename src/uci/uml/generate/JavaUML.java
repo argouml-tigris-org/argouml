@@ -32,14 +32,18 @@ import com.sun.java.util.collections.*;
 import java.beans.*;
 
 import uci.util.*;
+import uci.uml.util.UUIDManager;
 import com.sun.java.util.collections.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.xmi.*;
 
 /** A file of information about the Java language.  This is used to
  *  fill in the offered data types in variable and operation
- *  declarations. */
+ *  declarations. 
+ * In the end, it would be better to have these in XMI files that are loaded at starting time.
+*/
 
 public class JavaUML {
 
@@ -76,6 +80,7 @@ public class JavaUML {
   public static MClass HASHTABLE_CLASS = new MClassImpl();
   public static MClass STACK_CLASS = new MClassImpl();
 
+	public static MModel javastandards = new MModelImpl();
 
   static{
    STRING_CLASS.setName("String");
@@ -101,6 +106,34 @@ public class JavaUML {
    LONG_TYPE.setName("long");
    FLOAT_TYPE.setName("float");
    DOUBLE_TYPE.setName("double");
+
+   javastandards.addOwnedElement(STRING_CLASS);
+   javastandards.addOwnedElement(CHAR_CLASS);
+   javastandards.addOwnedElement(INT_CLASS);
+   javastandards.addOwnedElement(BOOLEAN_CLASS);
+   javastandards.addOwnedElement(BYTE_CLASS);
+   javastandards.addOwnedElement(LONG_CLASS);
+   javastandards.addOwnedElement(FLOAT_CLASS);
+   javastandards.addOwnedElement(DOUBLE_CLASS);
+   javastandards.addOwnedElement(RECTANGLE_CLASS);
+   javastandards.addOwnedElement(POINT_CLASS);
+   javastandards.addOwnedElement(COLOR_CLASS);
+   javastandards.addOwnedElement(VECTOR_CLASS);
+   javastandards.addOwnedElement(HASHTABLE_CLASS);
+   javastandards.addOwnedElement(STACK_CLASS);
+   javastandards.addOwnedElement(VOID_TYPE);
+   javastandards.addOwnedElement(CHAR_TYPE);
+   javastandards.addOwnedElement(INT_TYPE);
+   javastandards.addOwnedElement(BOOLEAN_TYPE);
+   javastandards.addOwnedElement(BYTE_TYPE);
+   javastandards.addOwnedElement(LONG_TYPE);
+   javastandards.addOwnedElement(FLOAT_TYPE);
+   javastandards.addOwnedElement(DOUBLE_TYPE);
+
+   UUIDManager.SINGLETON.createModelUUIDS(javastandards);
+   javastandards.setName("Javastandards");
+   //try {XMIWriter writer = new XMIWriter(javastandards, "java.xmi");writer.gen();} catch (Exception e) {}
+
   }
 
   

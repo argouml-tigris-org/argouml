@@ -39,6 +39,7 @@ import uci.argo.checklist.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.xmi.*;
 import uci.uml.generate.*;
 import uci.uml.visual.*;
 import uci.xml.argo.*; 
@@ -168,8 +169,19 @@ public class Project implements java.io.Serializable {
     p.defineType(JavaUML.VECTOR_CLASS);    //J.301
     p.defineType(JavaUML.HASHTABLE_CLASS); //J.302
     p.defineType(JavaUML.STACK_CLASS);     //J.303
-
+// 	try { p.addMember(JavaUML.javastandards); }
+// 	catch (PropertyVetoException pve) { } 
+	
     p.addSearchPath("PROJECT_DIR");
+
+// 	try {
+// 		XMIReader reader = new XMIReader();
+// 		MModel model  = reader.parse(new org.xml.sax.InputSource("java.xmi"));
+// 		model.setName("Java standards");
+// 		p.addMember(model);
+// 	} catch (Exception ex) {
+// 		ex.printStackTrace();
+// 	}
 
     MModel m1 = new MModelImpl();
 	m1.setName("untitledModel");

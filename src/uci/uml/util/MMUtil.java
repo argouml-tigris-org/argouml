@@ -127,7 +127,7 @@ public class MMUtil {
 		return asc;
 	}
 
-	public MGeneralization buildGeneralization(MGeneralizableElement parent, MGeneralizableElement child) {
+	public MGeneralization buildGeneralization(MGeneralizableElement child, MGeneralizableElement parent) {
 
 		MGeneralization gen = new MGeneralizationImpl();
 		gen.setParent(parent);
@@ -137,7 +137,7 @@ public class MMUtil {
 		return gen;
 	}
 
-	public MAbstraction buildRealization(MModelElement supplier, MModelElement client) {
+	public MAbstraction buildRealization(MModelElement client, MModelElement supplier) {
 		MAbstraction realization = new MAbstractionImpl();
 		realization.setStereotype((MStereotype)STANDARDS.lookup("realize"));
 		realization.addSupplier(supplier);
@@ -147,7 +147,7 @@ public class MMUtil {
 		return realization;
 	}
 
-	public MBinding buildBinding(MModelElement supplier, MModelElement client) {
+	public MBinding buildBinding(MModelElement client, MModelElement supplier) {
 		MBinding binding = new MBindingImpl();
 		binding.addSupplier(supplier);
 		binding.addClient(client);
@@ -156,7 +156,7 @@ public class MMUtil {
 		return binding;
 	}
 
-	public MUsage buildUsage(MModelElement supplier, MModelElement client) {
+	public MUsage buildUsage(MModelElement client, MModelElement supplier) {
 	    MUsage usage = new MUsageImpl();
 		usage.addSupplier(supplier);
 		usage.addClient(client);

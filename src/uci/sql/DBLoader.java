@@ -95,14 +95,17 @@ public class DBLoader
 
 		ResultSet rs = null;
 
-		rs = stmt.executeQuery("SELECT * FROM tModelElement WHERE namespace = '" + modelUUID + "'");
+		//rs = stmt.executeQuery("SELECT * FROM tModelElement WHERE namespace = '" + modelUUID + "'");
+		rs = stmt.executeQuery("SELECT * FROM tModelElement");
 
-		// first, add all classes, interfaces, use cases and actors to the model
+		// first, load all classifiers
 		while (rs.next()) {
 			if (rs.getString("UMLClassName").equals("Interface"))
-				readInterface(rs.getString("uuid"), rs.getString("name"), model, rs.getString("stereotype"), rs.getString("package"));
+				readInterface(model, rs.getString("uuid"), rs.getString("name"), rs.getString("namespace"), rs.getString("stereotype"), rs.getString("package"));
 			if (rs.getString("UMLClassName").equals("Class"))
-				readClass(rs.getString("uuid"), rs.getString("name"), model, rs.getString("stereotype"), rs.getString("package"), stmt);
+				readClass(model, rs.getString("uuid"), rs.getString("name"), rs.getString("namespace"), rs.getString("stereotype"), rs.getString("package"));
+			if (rs.getString("UMLClassName").equals("DataType"))
+				readDataType(rs.getString("uuid"), rs.getString("name"));
 		}
 
 		// now add attributes and operations to classifiers
@@ -110,7 +113,7 @@ public class DBLoader
 		while (iter.hasNext()) {
 			MClassifier cls = (MClassifier)iter.next();
 			addAttributes(cls, cls.getUUID());
-			//addOperations(cls);
+			addOperations(cls, cls.getUUID());
 		}
 
 		// last not least add relationships
@@ -121,54 +124,121 @@ public class DBLoader
 
 	private MStereotype readStereotype(String uuid) {return null;}
 
-	private void readClass(String classUUID, String name, MNamespace ns, String stereotypeUUID, String packageUUID, Statement stmt) throws SQLException {
+	private void readClass(MModel model, String classUUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
 
 		MClass cls = new MClassImpl();
 		cls.setName(name);
 		cls.setUUID(classUUID);
-		cls.setNamespace(ns);
+		if (ns.equals(model.getUUID()))
+			cls.setNamespace(model);
 		cls.setStereotype(readStereotype(stereotypeUUID));
 
 		uuid2element.put(classUUID, cls);		
 	}
 
-	private void readInterface(String interfaceUUID, String name, MNamespace ns, String stereotypeUUID, String packageUUID) throws SQLException {
+	private void readInterface(MModel model, String interfaceUUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
 
 		MInterface me = new MInterfaceImpl();
 		me.setName(name);
 		me.setUUID(interfaceUUID);
-		me.setNamespace(ns);
+		if (ns.equals(model.getUUID()))
+			me.setNamespace(model);
 		me.setStereotype(readStereotype(stereotypeUUID));
 
 		uuid2element.put(interfaceUUID, me);
 	}
 
-	private void addAttributes(MClassifier me, String uuid) throws SQLException{
+	private void readDataType(String dtUUID, String name) {
 
-		MAttribute attr = new MAttributeImpl();
+		MDataType me = new MDataTypeImpl();
+		me.setName(name);
+		me.setUUID(dtUUID);
+
+		uuid2element.put(dtUUID, me);
+	}
+
+	private void addAttributes(MClassifier me, String uuid) throws SQLException{
 		
-		String query = "SELECT f.ownerScope, f.visibility, ";
-		query += "sf.multiplicity, sf.changeability, sf.targetScope, sf.type ";
-		query += "FROM tFeature f, tStructuralFeature sf ";
+		String query = "SELECT f.uuid, f.ownerScope, f.visibility, ";
+		query += "sf.multiplicity, sf.changeability, sf.targetScope, sf.type, ";
+		query += "me.name, me.namespace ";
+		query += "FROM tFeature f, tStructuralFeature sf, tModelElement me ";
 		query += "WHERE f.owner = '" + uuid +"' ";
-		query += "AND f.uuid = sf.uuid";
+		query += "AND f.uuid = sf.uuid ";
+		query += "AND f.uuid = me.uuid";
 		Statement stmtCl = Conn.createStatement();
 		ResultSet attributes = stmtCl.executeQuery(query);
-		if (attributes.first()) {
+		while (attributes.next()) {
+			MAttribute attr = new MAttributeImpl();
+			attr.setUUID(attributes.getString("uuid"));
 			if (! attributes.getString("ownerScope").equals("-1"))
 				attr.setOwnerScope(MScopeKind.forValue(Integer.parseInt(attributes.getString("ownerScope"))));
 			if (! attributes.getString("visibility").equals("-1"))
 				attr.setVisibility(MVisibilityKind.forValue(Integer.parseInt(attributes.getString("visibility"))));
 			if (! attributes.getString("multiplicity").equals("-1"))
 				attr.setMultiplicity(new MMultiplicity(attributes.getString("multiplicity")));
-			if (! attributes.getString("changeablibity").equals("-1"))
+			if (! attributes.getString("changeability").equals("-1"))
 				attr.setChangeability(MChangeableKind.forValue(Integer.parseInt(attributes.getString("changeablibity"))));
 			if (! attributes.getString("targetScope").equals("-1"))
 				attr.setTargetScope(MScopeKind.forValue(Integer.parseInt(attributes.getString("targetScope"))));
 			attr.setType((MClassifier)uuid2element.get(attributes.getString("type")));
+			attr.setName(attributes.getString("name"));
+			attr.setNamespace((MNamespace)uuid2element.get(attributes.getString("namespace")));
+			me.addFeature(attr);
 		}
 	}
 
+	private void addOperations(MClassifier me, String uuid) throws SQLException{
+		
+		String query = "SELECT f.uuid, f.ownerScope, f.visibility, ";
+		query += "bf.isQuery, ";
+		query += "me.name, me.namespace ";
+		query += "FROM tFeature f, tBehavioralFeature bf, tModelElement me ";
+		query += "WHERE f.owner = '" + uuid +"' ";
+		query += "AND f.uuid = bf.uuid ";
+		query += "AND f.uuid = me.uuid";
+		Statement stmtCl = Conn.createStatement();
+		ResultSet operations = stmtCl.executeQuery(query);
+		while (operations.next()) {
+			MOperation oper = new MOperationImpl();
+			oper.setUUID(operations.getString("uuid"));
+			if (! operations.getString("ownerScope").equals("-1"))
+				oper.setOwnerScope(MScopeKind.forValue(Integer.parseInt(operations.getString("ownerScope"))));
+			if (! operations.getString("visibility").equals("-1"))
+				oper.setVisibility(MVisibilityKind.forValue(Integer.parseInt(operations.getString("visibility"))));
+			oper.setQuery(operations.getBoolean("isQuery"));
+			oper.setName(operations.getString("name"));
+			oper.setNamespace((MNamespace)uuid2element.get(operations.getString("namespace")));
+
+			addParameters(oper);
+
+			me.addFeature(oper);
+		}
+	}
+
+	private void addParameters(MBehavioralFeature oper) throws SQLException{
+			
+		String query = "SELECT p.uuid, p.defaultValue, p.kind, p.type, ";
+		query += "me.name, me.namespace ";
+		query += "FROM tParameter p, tModelElement me ";
+		query += "WHERE p.behavioralFeature = '" + oper.getUUID() +"' ";
+		query += "AND p.uuid = me.uuid";
+		Statement stmtCl = Conn.createStatement();
+		ResultSet parameters = stmtCl.executeQuery(query);
+		while (parameters.next()) {
+			MParameter param = new MParameterImpl();
+			param.setUUID(parameters.getString("uuid"));
+			if (! ((parameters.getString("defaultValue") == null) || (parameters.getString("defaultValue").equals(""))))
+				param.setDefaultValue(new MExpression("",parameters.getString("defaultValue")));
+			if (! parameters.getString("kind").equals("-1"))
+				param.setKind(MParameterDirectionKind.forValue(Integer.parseInt(parameters.getString("kind"))));
+			param.setType((MClassifier)uuid2element.get(parameters.getString("type")));
+			param.setName(parameters.getString("name"));
+			param.setNamespace((MNamespace)uuid2element.get(parameters.getString("namespace")));
+
+			oper.addParameter(param);
+		}
+	}	
 
 	private void read(MGeneralizableElement me, String uuid) throws SQLException{
 		String query = "SELECT * FROM tGeneralizableElement WHERE uuid = '" + uuid +"'";

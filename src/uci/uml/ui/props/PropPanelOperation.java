@@ -33,6 +33,7 @@ import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.table.*;
 import javax.swing.tree.*;
 import javax.swing.text.*;
 import javax.swing.border.*;
@@ -49,9 +50,9 @@ implements ItemListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
-  public static final MVisibilityKind VISIBILITIES[] = {
-    MVisibilityKind.PUBLIC, MVisibilityKind.PRIVATE,
-    MVisibilityKind.PROTECTED };
+  public static final String VISIBILITIES[] = {
+    MVisibilityKind.PUBLIC.getName(), MVisibilityKind.PRIVATE.getName(),
+    MVisibilityKind.PROTECTED.getName() };
 
 	//PACKAGE in nsuml???
   public static final String ATTRKEYWORDS[] = {
@@ -69,7 +70,7 @@ implements ItemListener {
   JLabel _typeLabel = new JLabel("Return Type: ");
   JComboBox _typeField = new JComboBox();
   JLabel _argsLabel = new JLabel("Arguments: ");
-  JTable _argsTable = new JTable(4, 2);
+  JTable _argsTable = new JTable();
   SpacerPanel _spacer = new SpacerPanel();
 
   ////////////////////////////////////////////////////////////////
@@ -149,7 +150,7 @@ implements ItemListener {
     MOperation oper = (MOperation) _target;
 
     MVisibilityKind vk = oper.getVisibility();
-    _visField.setSelectedItem(vk);
+    _visField.setSelectedItem(vk.getName());
 
     MScopeKind sk = oper.getOwnerScope();
     MCallConcurrencyKind ck = oper.getConcurrency();
@@ -168,9 +169,21 @@ implements ItemListener {
 	_keywordsField.setSelectedItem("None");
     }
 
+	Vector parameters = new Vector(oper.getParameters());
+
 	MParameter returnParameter = MMUtil.SINGLETON.getReturnParameter(oper);
 	if (returnParameter != null)
 		_typeField.setSelectedItem(returnParameter.getType());
+
+	DefaultTableModel _argsModel = new DefaultTableModel(0,2);
+	parameters.remove(returnParameter);
+
+	for (int i = 0; i<parameters.size();i++) {
+		MParameter p = (MParameter)parameters.elementAt(i);
+		String[] row = {p.getName(), p.getType().getName()};
+		_argsModel.addRow(row);
+	}
+	_argsTable.setModel(_argsModel);
   }
 
 
@@ -178,7 +191,7 @@ implements ItemListener {
   public void setTargetVisibility() {
     if (_target == null) return;
     if (_inChange) return;
-    MVisibilityKind vk = (MVisibilityKind) _visField.getSelectedItem();
+    MVisibilityKind vk = MVisibilityKind.forName((String)_visField.getSelectedItem());
     MOperation oper = (MOperation) _target;
 	oper.setVisibility(vk);
   }

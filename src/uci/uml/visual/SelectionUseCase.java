@@ -146,12 +146,12 @@ public class SelectionUseCase extends SelectionWButtons {
     switch (hand.index) {
     case 10: //add superclass
       edgeClass = MGeneralizationImpl.class;
-      reverse = true;
       by = cy;
       bx = cx + cw/2;
       break;
     case 11: //add subclass
       edgeClass = MGeneralizationImpl.class;
+      reverse = true;
       by = cy + ch;
       bx = cx + cw/2;
       break;
@@ -254,17 +254,17 @@ public class SelectionUseCase extends SelectionWButtons {
 
   public Object addSuperClass(MutableGraphModel mgm, MUseCase cls,
 			    MClassifier newCls) {
-    return mgm.connect(newCls, cls, MGeneralizationImpl.class);
+    return mgm.connect(cls, newCls, MGeneralizationImpl.class);
   }
 
   public Object addSubClass(MutableGraphModel mgm, MUseCase cls,
 			    MClassifier newCls) {
-    return mgm.connect(cls, newCls, MGeneralizationImpl.class);
+    return mgm.connect(newCls, cls, MGeneralizationImpl.class);
   }
 
   public Object addAssocClassLeft(MutableGraphModel mgm, MUseCase cls,
 			    MClassifier newCls) {
-    return mgm.connect(newCls, cls, MAssociationImpl.class);
+    return mgm.connect(cls, newCls, MAssociationImpl.class);
   }
 
   public Object addAssocClassRight(MutableGraphModel mgm, MUseCase cls,
