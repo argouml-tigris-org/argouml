@@ -5859,7 +5859,6 @@ Information lost.
 Functions not working.
 Strange behavior.
 Exceptions logged.
-Excessive logging.
 </para>
 	    </listitem>
 	    <listitem>
@@ -5875,6 +5874,7 @@ UI not updated.
 	      <para>
 Spelling errors.
 Ugly icons.
+Excessive logging.
 </para>
 	    </listitem>
 	  </itemizedlist>
