@@ -38,9 +38,6 @@ import org.argouml.ocl.OCLUtil;
 import org.argouml.uml.*;
 import org.argouml.uml.reveng.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-
 /** This class receives calls from the parser and builds the UML
  * model. Currently needs work. Class diagrams
  * are stacked on top of each other requiring
@@ -474,97 +471,51 @@ public class Modeller
                               String name,
                               String initializer,
                               String javadoc) {
-	    MMultiplicity multiplicity = MMultiplicity.M1_1;
+	    String multiplicity = null;
 
       if(!arraysAsDatatype && typeSpec.indexOf('[') != -1) {
           typeSpec = typeSpec.substring(0, typeSpec.indexOf('['));
-          multiplicity = MMultiplicity.M1_N;
-      }
+          multiplicity = "1_N";
+      } else
+          multiplicity = "1_1";
 
       try {
-          MClassifier mClassifier =
-        (MClassifier)(getContext(typeSpec).get(getClassifierName(typeSpec)));
-          MAttribute mAttribute =
-        (MAttribute)getAttribute(name, initializer, mClassifier);
+          Object mClassifier = getContext(typeSpec).get(getClassifierName(typeSpec));
+          Object mAttribute = getAttribute(name, initializer, mClassifier);
 
           if(mAttribute != null) {
             parseState.feature(mAttribute);
 
             setOwnerScope(mAttribute, modifiers);
             setVisibility(mAttribute, modifiers);
-            mAttribute.setMultiplicity(multiplicity);
-
-            mAttribute.setType(mClassifier);
+            ModelFacade.setMultiplicity(mAttribute, multiplicity);
+            ModelFacade.setType(mAttribute, mClassifier);
 
             // Set the initial value for the attribute.
             if(initializer != null) {
-                mAttribute.setInitialValue(UmlFactory.getFactory().getDataTypes().createExpression("Java",
-                             initializer));
+                ModelFacade.setInitialValue(mAttribute, UmlFactory.getFactory().getDataTypes().createExpression("Java", initializer));
             }
 
             if((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
-                mAttribute.setChangeability(MChangeableKind.FROZEN);
+                ModelFacade.setChangeable(mAttribute, false);
             }
-            else if(mAttribute.getChangeability() ==
-              MChangeableKind.FROZEN ||
-              mAttribute.getChangeability() == null) {
-                mAttribute.setChangeability(MChangeableKind.CHANGEABLE);
+            else if(!ModelFacade.isChangeable(mAttribute)) {
+                ModelFacade.setChangeable(mAttribute, true);
             }
-
-            /*
-             * Changed 2001-10-05 STEFFEN ZSCHALER
-             *
-             * Was (added space below!):
-             *
-            if((javadoc==null) || "".equals(javadoc)) {
-                javadoc = "/** * /";
-            }
-            getTaggedValue(mAttribute, "documentation").setValue(javadoc);
-             *
-             * Moved to end of method 2001-11-05 to allow addDocumentationTag to access
-             * as much information as possible
-             */
-
-            addDocumentationTag (mAttribute, javadoc);
+            addDocumentationTag(mAttribute, javadoc);
           }
           else {
-            MAssociationEnd mAssociationEnd =
-                (MAssociationEnd)getAssociationEnd(name, mClassifier);
-
+            Object mAssociationEnd = getAssociationEnd(name, mClassifier);
             setTargetScope(mAssociationEnd, modifiers);
             setVisibility(mAssociationEnd, modifiers);
-            mAssociationEnd.setMultiplicity(multiplicity);
-
-            mAssociationEnd.setType(mClassifier);
-            mAssociationEnd.setName(name);
-
-            if((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
-                mAssociationEnd.setChangeability(MChangeableKind.FROZEN);
+            ModelFacade.setMultiplicity(mAssociationEnd, multiplicity);
+            ModelFacade.setType(mAssociationEnd, mClassifier);
+            ModelFacade.setName(mAssociationEnd, name);
+            if ((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
+                ModelFacade.setChangeable(mAssociationEnd, false);
             }
-            else if(mAssociationEnd.getChangeability() ==
-              MChangeableKind.FROZEN ||
-              mAssociationEnd.getChangeability() == null) {
-                mAssociationEnd
-              .setChangeability(MChangeableKind.CHANGEABLE);
-            }
-
-            mAssociationEnd.setNavigable(true);
-
-            /*
-             * Changed 2001-10-05 STEFFEN ZSCHALER
-             *
-             * Was (added space below!):
-             *
-            if((javadoc==null) || "".equals(javadoc)) {
-                javadoc = "/** * /";
-            }
-            getTaggedValue(mAssociationEnd, "documentation").setValue(javadoc);
-             *
-             * Moved to end of method 2001-11-05 to allow addDocumentationTag to access
-             * as much information as possible
-             */
-
-            addDocumentationTag (mAssociationEnd, javadoc);
+            ModelFacade.setNavigable(mAssociationEnd, true);
+            addDocumentationTag(mAssociationEnd, javadoc);
           }
       }
       catch(ClassifierNotFoundException e) {
@@ -967,40 +918,21 @@ public class Modeller
 
       // add as OCL constraint
       String sContext = OCLUtil.getContextString(me);
-
-      MConstraint mc = UmlFactory.getFactory().getCore().createConstraint();
-      mc.setName (sTagData.substring (0, sTagData.indexOf (':')));
-
+      String name = sTagData.substring(0, sTagData.indexOf(':'));
+      String body = null;
       if (sTagName.equals ("invariant")) {
         // add as invariant constraint
         // Note that no checking of constraint syntax is performed... BAD!
-        mc.setBody (
-            UmlFactory.getFactory().getDataTypes().createBooleanExpression (
-              "OCL",
-              sContext +
-              " inv " + sTagData
-            )
-          );
+        body = sContext + " inv " + sTagData;
       }
       else if (sTagName.equals ("pre-condition")) {
-        mc.setBody (
-            UmlFactory.getFactory().getDataTypes().createBooleanExpression (
-              "OCL",
-              sContext +
-              " pre " + sTagData
-            )
-          );
+        body = sContext + " pre " + sTagData;
       }
       else {
-        mc.setBody (
-            UmlFactory.getFactory().getDataTypes().createBooleanExpression (
-              "OCL",
-              sContext +
-              " post " + sTagData
-            )
-          );
+        body = sContext + " post " + sTagData;
       }
-
+      Object bexpr = UmlFactory.getFactory().getDataTypes().createBooleanExpression("OCL",body);
+      Object mc = UmlFactory.getFactory().getCore().buildConstraint(name, bexpr);
       ModelFacade.addConstraint(me,mc);
       if (ModelFacade.getNamespace(me) != null) {
         // Apparently namespace management is not supported for all model

@@ -345,9 +345,11 @@ public class ModelFacade {
      * @returns true if handle is changeable
      */
     public static boolean isChangeable(Object handle) {
-        if (handle instanceof MAttribute) {
-            MAttribute a = (MAttribute)handle;
-            return MChangeableKind.CHANGEABLE.equals(a.getChangeability());
+        if (handle != null && handle instanceof MAttribute) {
+            return MChangeableKind.CHANGEABLE.equals(((MAttribute)handle).getChangeability());
+        }
+        else if (handle != null && handle instanceof MAssociationEnd) {
+            return MChangeableKind.CHANGEABLE.equals(((MAssociationEnd)handle).getChangeability());
         }
         // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
@@ -1405,6 +1407,40 @@ public class ModelFacade {
     }
 
     /**
+     * Sets an initial value of some attribute.
+     * @param attribute
+     * @param expression
+     */
+    public static void setInitialValue(Object at, Object expr) {
+        if (at != null && expr != null && at instanceof MAttribute && expr instanceof MExpression) {
+            ((MAttribute)at).setInitialValue((MExpression)expr);
+        }
+    }
+
+    /**
+     * Sets a multiplicity of some attribute or association end.
+     * @param attribute or association end
+     * @param multiplicity as string
+     */
+    public static void setMultiplicity(Object o, String mult) {
+        // FIXME: the implementation is ugly, because I have no spec at hand...
+        if (o == null)
+            return;
+        if (o instanceof MAttribute) {
+            if ("1_N".equals(mult))
+                ((MAttribute)o).setMultiplicity(MMultiplicity.M1_N);
+            else
+                ((MAttribute)o).setMultiplicity(MMultiplicity.M1_1); // default
+        }
+        else if (o instanceof MAssociationEnd) {
+            if ("1_N".equals(mult))
+                ((MAssociationEnd)o).setMultiplicity(MMultiplicity.M1_N);
+            else
+                ((MAssociationEnd)o).setMultiplicity(MMultiplicity.M1_1); // default
+        }
+    }
+
+    /**
      * Sets a name of some modelelement.
      * @param model element
      * @param name
@@ -1423,6 +1459,17 @@ public class ModelFacade {
     public static void setNamespace(Object o, Object ns) {
         if (o != null && o instanceof MModelElement && ns != null && ns instanceof MNamespace) {
             ((MModelElement)o).setNamespace((MNamespace)ns);
+        }
+    }
+
+    /**
+     * Sets the navigability of some association end.
+     * @param association end
+     * @param navigability flag
+     */
+    public static void setNavigable(Object o, boolean flag) {
+        if (o != null && o instanceof MAssociationEnd) {
+            ((MAssociationEnd)o).setNavigable(flag);
         }
     }
 
@@ -1494,6 +1541,29 @@ public class ModelFacade {
     }
 
     /**
+     * Set the changeability of some feature.
+     * @param feature
+     * @param changeability flag
+     */
+    public static void setChangeable(Object o, boolean flag) {
+        // FIXME: the implementation is ugly, because I have no spec at hand...
+        if (o == null)
+            return;
+        if (o instanceof MAttribute) {
+            if (flag)
+                ((MAttribute)o).setChangeability(MChangeableKind.CHANGEABLE);
+            else
+                ((MAttribute)o).setChangeability(MChangeableKind.FROZEN);
+        }
+        else if (o instanceof MAssociationEnd) {
+            if (flag)
+                ((MAssociationEnd)o).setChangeability(MChangeableKind.CHANGEABLE);
+            else
+                ((MAssociationEnd)o).setChangeability(MChangeableKind.FROZEN);
+        }
+    }
+
+    /**
      * Sets if of some classifier is abstract.
      * @param classifier
      * @param flag
@@ -1554,6 +1624,9 @@ public class ModelFacade {
     public static void setType(Object p, Object cls) {
         if (p != null && cls != null && p instanceof MParameter && cls instanceof MClassifier) {
             ((MParameter)p).setType((MClassifier)cls);
+        }
+        else if (p != null && cls != null && p instanceof MAssociationEnd && cls instanceof MClassifier) {
+            ((MAssociationEnd)p).setType((MClassifier)cls);
         }
     }
 
