@@ -462,7 +462,11 @@ argosrc4:
 
 
 javadocs:
-	$(JAVADOC) -J-mx40m -d api -splitindex -use \
+	@if [ ! -d api ]; then \
+	  echo "Making directory api..."; \
+	  mkdir api; \
+	fi
+	$(JAVADOC) -J-mx64m -d api -splitindex -use \
         -link http://java.sun.com/products/jdk/1.2/docs/api \
 	-group "GEF (Graph Editing Framework)" "uci.gef*:uci.ui:uci.graph:uci.beans*:uci.util" \
 	-group "UML Meta-Model" "uci.uml.F*:uci.uml.M*:uci.uml.B*:uci.uml.util:uci.uml.test*" \
