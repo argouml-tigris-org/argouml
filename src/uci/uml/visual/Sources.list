@@ -35,6 +35,8 @@ SOURCES= \
 	FigLink.java \
 	FigMessage.java \
 	FigNodeModelElement.java \
+	FigCompartment.java \
+	FigNodeWithCompartments.java \
 	FigNote.java \
 	FigPackage.java \
 	FigRealization.java \
