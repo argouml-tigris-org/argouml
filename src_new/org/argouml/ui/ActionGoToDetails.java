@@ -44,6 +44,7 @@ public class ActionGoToDetails extends UMLAction {
 
     public boolean shouldBeEnabled() {
         ProjectBrowser pb = ProjectBrowser.TheInstance;
+        /*
         DetailsPane pane = pb.getDetailsPane();
         JTabbedPane pane2 = pane.getTabs();
         int index = pane2.indexOfTab(_tabName);
@@ -51,12 +52,10 @@ public class ActionGoToDetails extends UMLAction {
             return pane2.isEnabledAt(index);
         } 
         return false;
-        /*
-        Project p = pb.getProject();
+        */
         if (!super.shouldBeEnabled() || pb == null) return false;
         boolean b = (pb.getNamedTab(_tabName) != null);
         return b;
-        */
     }
 
     public void actionPerformed(ActionEvent ae) {
