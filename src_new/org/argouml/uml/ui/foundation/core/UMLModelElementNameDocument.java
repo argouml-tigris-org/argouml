@@ -43,7 +43,7 @@ public class UMLModelElementNameDocument extends UMLPlainTextDocument {
      */
     public UMLModelElementNameDocument(
         UMLUserInterfaceContainer container) {
-        super(container, new Object[] {});
+        super(container);
     }
 
     /**

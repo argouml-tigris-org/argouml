@@ -57,14 +57,6 @@ public class PropPanelClass extends PropPanelClassifier {
     super("Class",_classIcon, ConfigLoader.getTabPropsOrientation());
 
     Class mclass = MClass.class;
-
-    //
-    //   this will cause the components on this page to be notified
-    //      anytime a stereotype, namespace, operation, etc
-    //      has its name changed or is removed anywhere in the model
-    Class[] namesToWatch = { MStereotype.class,MNamespace.class,MOperation.class,
-        MParameter.class,MAttribute.class,MAssociation.class,MClassifier.class };
-    setNameEventListening(namesToWatch);
     
     addField(Argo.localize("UMLMenu", "label.name"), nameField);
     addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));

@@ -79,12 +79,11 @@ public abstract class UMLPlainTextDocument extends PlainDocument
      * thirdpartyeventlistener to the given list of events to listen to.
      * TODO: make an eventpump that's not in the need of a panel
      */
-    public UMLPlainTextDocument(UMLUserInterfaceContainer cont, Object[] propertyList) {
+    public UMLPlainTextDocument(UMLUserInterfaceContainer cont) {
         super();
         if (cont instanceof PropPanel) {    
         _panel = (PropPanel)cont; // only needed untill we have a working eventpump
         setTarget(((PropPanel)cont).getTarget());
-        ((PropPanel)cont).addThirdPartyEventListening(propertyList);  
         }
     }
 

@@ -140,6 +140,25 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     /**
+     * Adds a listener to events fired by metaClass modelClass. All events fired
+     * by instances of modelClass or instances of its subclasses will be pumped
+     * to the listener.
+     * 
+     * <p><em>Note:</em> Due to the fact that ALL events are pumped for some 
+     * metaclass and it's children, this is a very powerfull method but also
+     * one that can hog performance. Use this with care!</p>
+     * @param listener
+     * @param modelClass
+     */
+    public void addClassModelEventListener(MElementListener listener, Class modelClass) {
+        if (listener == null || modelClass == null) 
+            throw new IllegalArgumentException("Tried to add null listener to null class");
+        if (!MBase.class.isAssignableFrom(modelClass)) 
+            throw new IllegalArgumentException("Tried to add illegal class modeleventlistener.");
+        executeAddClassModelEventListener(listener, modelClass, null);
+    }
+    
+    /**
      * Does the actual adding
      * @param listener
      * @param modelClass
@@ -295,6 +314,12 @@ public final class UmlModelEventPump implements MElementListener {
     
     private void fireClassRoleItemSet(Class clazz, MElementEvent e) {
         List listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
+        if (_listenerClassModelEventsMap.get(getKey(clazz, null)) != null) {
+            if (listenerList == null) 
+                listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, null));
+            else 
+                listenerList.addAll((List)_listenerClassModelEventsMap.get(getKey(clazz, null)));
+        }
         if (listenerList != null) {
             Iterator it = listenerList.iterator();
             while(it.hasNext()) {
@@ -326,6 +351,12 @@ public final class UmlModelEventPump implements MElementListener {
     
     private void fireClassPropertySet(Class clazz, MElementEvent e) {
         List listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
+        if (_listenerClassModelEventsMap.get(getKey(clazz, null)) != null) {
+            if (listenerList == null) 
+                listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, null));
+            else 
+                listenerList.addAll((List)_listenerClassModelEventsMap.get(getKey(clazz, null)));
+        }
         if (listenerList != null) {
             Iterator it = listenerList.iterator();
             while(it.hasNext()) {
@@ -357,6 +388,12 @@ public final class UmlModelEventPump implements MElementListener {
     
     private void fireClassRecovered(Class clazz, MElementEvent e) {
         List listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
+        if (_listenerClassModelEventsMap.get(getKey(clazz, null)) != null) {
+            if (listenerList == null) 
+                listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, null));
+            else 
+                listenerList.addAll((List)_listenerClassModelEventsMap.get(getKey(clazz, null)));
+        }
         if (listenerList != null) {
             Iterator it = listenerList.iterator();
             while(it.hasNext()) {
@@ -387,6 +424,12 @@ public final class UmlModelEventPump implements MElementListener {
     
     private void fireClassRemoved(Class clazz, MElementEvent e) {
         List listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, REMOVE));
+        if (_listenerClassModelEventsMap.get(getKey(clazz, null)) != null) {
+            if (listenerList == null) 
+                listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, null));
+            else 
+                listenerList.addAll((List)_listenerClassModelEventsMap.get(getKey(clazz, null)));
+        }
         if (listenerList != null) {
             Iterator it = listenerList.iterator();
             while(it.hasNext()) {
@@ -417,6 +460,12 @@ public final class UmlModelEventPump implements MElementListener {
     
     private void fireClassRoleAdded(Class clazz, MElementEvent e) {
         List listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
+        if (_listenerClassModelEventsMap.get(getKey(clazz, null)) != null) {
+            if (listenerList == null) 
+                listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, null));
+            else 
+                listenerList.addAll((List)_listenerClassModelEventsMap.get(getKey(clazz, null)));
+        }
         if (listenerList != null) {
             Iterator it = listenerList.iterator();
             while(it.hasNext()) {
@@ -447,6 +496,12 @@ public final class UmlModelEventPump implements MElementListener {
     
     private void fireClassRoleRemoved(Class clazz, MElementEvent e) {
         List listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
+        if (_listenerClassModelEventsMap.get(getKey(clazz, null)) != null) {
+            if (listenerList == null) 
+                listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, null));
+            else 
+                listenerList.addAll((List)_listenerClassModelEventsMap.get(getKey(clazz, null)));
+        }
         if (listenerList != null) {
             Iterator it = listenerList.iterator();
             while(it.hasNext()) {
@@ -468,7 +523,7 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * Clears the hasmaps with listeners. This is only needed by the JUnit tests.
+     * Clears the hashmaps with listeners. This is only needed by the JUnit tests.
      * Therefore the visibility is 'default'.
      */
     void cleanUp() {

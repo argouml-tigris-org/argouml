@@ -124,30 +124,4 @@ public class PropPanelReception extends PropPanelModelElement {
 
 }
 
-class UMLClassifierComboBox extends UMLComboBox {
-	/**
-     * <p>Constructor for the box.</p>
-     *
-     * <p>Creates a model ({@link UMLComboBoxModel} and invokes the superclass
-     *   with that. Then sets a third party listener.</p>
-     *
-     * @param container  The container (invariably a {@link PropPanel}) that
-     *                   contains this box.
-     */
 
-    public UMLClassifierComboBox(UMLUserInterfaceContainer container) {
-
-        super(new UMLComboBoxModel(container, "isAcceptibleClassifier",
-                                   "owner", "getOwner",
-                                   "setOwner", true, MClassifier.class,
-                                   true));
-
-        // Only add a listener if we have a prop panel
-
-        if (container instanceof PropPanel) {
-            Object [] eventsToWatch = { MClassifier.class, "name" };
-            ((PropPanel) container).addThirdPartyEventListening(eventsToWatch);
-        }
-    }
-
-} 

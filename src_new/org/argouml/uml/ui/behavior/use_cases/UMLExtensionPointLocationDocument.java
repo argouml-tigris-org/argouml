@@ -40,7 +40,7 @@ public class UMLExtensionPointLocationDocument extends UMLPlainTextDocument {
      * @param propertyList
      */
     public UMLExtensionPointLocationDocument(PropPanel panel) {   
-        super(panel, new Object[] {});
+        super(panel);
     }
 
     /**
