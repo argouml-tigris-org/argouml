@@ -2,8 +2,8 @@
       <!-- JNLP File for launching ArgoUML with WebStart -->
       <jnlp
         spec="1.0+"
-        codebase="http://argouml.tigris.org/"
-        href="http://argouml.tigris.org/ArgoUMLWebStart.jnlp">
+        codebase="http://argouml.tigris.org/files/4/3/"
+        href="http://argouml.tigris.org/files/4/3/ArgoUMLWebStart.jnlp">
         <information>
           <title>ArgoUML</title>
           <vendor>Tigris.org (Open Source)</vendor>
