@@ -61,96 +61,120 @@ import org.argouml.uml.MMUtil;
  */
 
 public class ClassDiagramRenderer
-implements GraphNodeRenderer, GraphEdgeRenderer {
+    implements GraphNodeRenderer, GraphEdgeRenderer {
 
-    protected static Category cat = Category.getInstance(ClassDiagramRenderer.class);
-  /** Return a Fig that can be used to represent the given node */
-  public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
-    if (node instanceof MClass) return new FigClass(gm, node);
-    else if (node instanceof MInterface) return new FigInterface(gm, node);
-    else if (node instanceof MInstance) return new FigInstance(gm, node);
-    else if (node instanceof MPackage) return new FigPackage(gm, node);
-    else if (node instanceof MModel) return new FigPackage(gm, node);
-    cat.debug("needs-more-work ClassDiagramRenderer getFigNodeFor "+node);
-    return null;
-  }
+    protected static Category cat = 
+        Category.getInstance(ClassDiagramRenderer.class);
 
-  /** Return a Fig that can be used to represent the given edge */
-  public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
-    cat.debug("making figedge for " + edge);
-    if (edge instanceof MAssociation) {
-      MAssociation asc = (MAssociation) edge;
-      FigAssociation ascFig = new FigAssociation(asc, lay);
-      return ascFig;
+    /** Return a Fig that can be used to represent the given node */
+    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
+        if (node instanceof MClass) return new FigClass(gm, node);
+        else if (node instanceof MInterface) return new FigInterface(gm, node);
+        else if (node instanceof MInstance) return new FigInstance(gm, node);
+        else if (node instanceof MPackage) return new FigPackage(gm, node);
+        else if (node instanceof MModel) return new FigPackage(gm, node);
+        cat.debug("needs-more-work ClassDiagramRenderer getFigNodeFor "+node);
+        return null;
     }
-    if (edge instanceof MLink) {
-      MLink lnk = (MLink) edge;
-      FigLink lnkFig = new FigLink(lnk);
-      Collection linkEnds = lnk.getConnections();
-      if (linkEnds == null) cat.debug("null linkRoles....");
-	  Object[] leArray = linkEnds.toArray();
-      MLinkEnd fromEnd = (MLinkEnd) leArray[0];
-      MInstance fromInst = fromEnd.getInstance();
-      MLinkEnd toEnd = (MLinkEnd) leArray[1];
-      MInstance toInst = toEnd.getInstance();
-      FigNode fromFN = (FigNode) lay.presentationFor(fromInst);
-      FigNode toFN = (FigNode) lay.presentationFor(toInst);
-      lnkFig.setSourcePortFig(fromFN);
-      lnkFig.setSourceFigNode(fromFN);
-      lnkFig.setDestPortFig(toFN);
-      lnkFig.setDestFigNode(toFN);
-      lnkFig.getFig().setLayer(lay);
-      return lnkFig;
+
+    /** Return a Fig that can be used to represent the given edge */
+    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
+        cat.debug("making figedge for " + edge);
+        if (edge instanceof MAssociation) {
+            MAssociation asc = (MAssociation) edge;
+            FigAssociation ascFig = new FigAssociation(asc, lay);
+            return ascFig;
+        }
+        if (edge instanceof MLink) {
+            MLink lnk = (MLink) edge;
+            FigLink lnkFig = new FigLink(lnk);
+            Collection linkEnds = lnk.getConnections();
+            if (linkEnds == null) cat.debug("null linkRoles....");
+            Object[] leArray = linkEnds.toArray();
+            MLinkEnd fromEnd = (MLinkEnd) leArray[0];
+            MInstance fromInst = fromEnd.getInstance();
+            MLinkEnd toEnd = (MLinkEnd) leArray[1];
+            MInstance toInst = toEnd.getInstance();
+            FigNode fromFN = (FigNode) lay.presentationFor(fromInst);
+            FigNode toFN = (FigNode) lay.presentationFor(toInst);
+            lnkFig.setSourcePortFig(fromFN);
+            lnkFig.setSourceFigNode(fromFN);
+            lnkFig.setDestPortFig(toFN);
+            lnkFig.setDestFigNode(toFN);
+            lnkFig.getFig().setLayer(lay);
+            return lnkFig;
+        }
+        if (edge instanceof MGeneralization) {
+            MGeneralization gen = (MGeneralization) edge;
+            FigGeneralization genFig = new FigGeneralization(gen, lay);
+            return genFig;
+        }
+        if (edge instanceof MPermission) {
+            MPermission per = (MPermission) edge;
+            cat.debug("stereotype of Permission " + per.getStereotype());
+            FigPermission perFig = new FigPermission(per);
+
+            MModelElement supplier = 
+                (MModelElement)((per.getSuppliers().toArray())[0]);
+            MModelElement client = 
+                (MModelElement)((per.getClients().toArray())[0]);
+		  
+            FigNode supFN = (FigNode) lay.presentationFor(supplier);
+            FigNode cliFN = (FigNode) lay.presentationFor(client);
+		  
+            perFig.setSourcePortFig(cliFN);
+            perFig.setSourceFigNode(cliFN);
+            perFig.setDestPortFig(supFN);
+            perFig.setDestFigNode(supFN);
+            perFig.getFig().setLayer(lay);
+            perFig.getFig().setDashed(true);
+            return perFig;
+
+        }
+        if (edge instanceof MDependency) {
+            cat.debug("get fig for "+edge);
+            MDependency dep = (MDependency) edge;
+            cat.debug("stereo "+dep.getStereotype());
+            if (dep.getStereotype() != null && dep.getStereotype().getName().equals("realize")) {
+                FigRealization realFig = new FigRealization(dep);
+		  
+                MModelElement supplier = (MModelElement)((dep.getSuppliers().toArray())[0]);
+                MModelElement client = (MModelElement)((dep.getClients().toArray())[0]);
+		  
+                FigNode supFN = (FigNode) lay.presentationFor(supplier);
+                FigNode cliFN = (FigNode) lay.presentationFor(client);
+		  
+                realFig.setSourcePortFig(cliFN);
+                realFig.setSourceFigNode(cliFN);
+                realFig.setDestPortFig(supFN);
+                realFig.setDestFigNode(supFN);
+                realFig.getFig().setLayer(lay);
+                realFig.getFig().setDashed(true);
+                return realFig;
+            }
+            else {
+                FigDependency depFig = new FigDependency(dep);
+		  
+                MModelElement supplier = (MModelElement)((dep.getSuppliers().toArray())[0]);
+                MModelElement client = (MModelElement)((dep.getClients().toArray())[0]);
+		  
+                FigNode supFN = (FigNode) lay.presentationFor(supplier);
+                FigNode cliFN = (FigNode) lay.presentationFor(client);
+		  
+                depFig.setSourcePortFig(cliFN);
+                depFig.setSourceFigNode(cliFN);
+                depFig.setDestPortFig(supFN);
+                depFig.setDestFigNode(supFN);
+                depFig.getFig().setLayer(lay);
+                depFig.getFig().setDashed(true);
+                return depFig;
+            }
+        }
+        cat.debug("needs-more-work ClassDiagramRenderer getFigEdgeFor");
+        return null;
     }
-    if (edge instanceof MGeneralization) {
-      MGeneralization gen = (MGeneralization) edge;
-      FigGeneralization genFig = new FigGeneralization(gen, lay);
-      return genFig;
-    }
-    if (edge instanceof MDependency) {
-	cat.debug("get fig for "+edge);
-      MDependency dep = (MDependency) edge;
-      cat.debug("stereo "+dep.getStereotype());
-      if (dep.getStereotype() != null && dep.getStereotype().getName().equals("realize")) {
-		  FigRealization realFig = new FigRealization(dep);
-		  
-		  MModelElement supplier = (MModelElement)((dep.getSuppliers().toArray())[0]);
-		  MModelElement client = (MModelElement)((dep.getClients().toArray())[0]);
-		  
-		  FigNode supFN = (FigNode) lay.presentationFor(supplier);
-		  FigNode cliFN = (FigNode) lay.presentationFor(client);
-		  
-		  realFig.setSourcePortFig(cliFN);
-		  realFig.setSourceFigNode(cliFN);
-		  realFig.setDestPortFig(supFN);
-		  realFig.setDestFigNode(supFN);
-		  realFig.getFig().setLayer(lay);
-		  realFig.getFig().setDashed(true);
-		  return realFig;
-	  }
-	  else {
-		  FigDependency depFig = new FigDependency(dep);
-		  
-		  MModelElement supplier = (MModelElement)((dep.getSuppliers().toArray())[0]);
-		  MModelElement client = (MModelElement)((dep.getClients().toArray())[0]);
-		  
-		  FigNode supFN = (FigNode) lay.presentationFor(supplier);
-		  FigNode cliFN = (FigNode) lay.presentationFor(client);
-		  
-		  depFig.setSourcePortFig(cliFN);
-		  depFig.setSourceFigNode(cliFN);
-		  depFig.setDestPortFig(supFN);
-		  depFig.setDestFigNode(supFN);
-		  depFig.getFig().setLayer(lay);
-		  depFig.getFig().setDashed(true);
-		  return depFig;
-	  }
-	}
-    cat.debug("needs-more-work ClassDiagramRenderer getFigEdgeFor");
-    return null;
-  }
 
 
-  static final long serialVersionUID = 675407719309039112L;
+    static final long serialVersionUID = 675407719309039112L;
 
 } /* end class ClassDiagramRenderer */

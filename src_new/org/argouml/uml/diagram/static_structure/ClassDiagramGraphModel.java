@@ -476,7 +476,18 @@ implements VetoableChangeListener  {
               return link;
           }
       }
-    
+      else if ((fromPort instanceof MModelElement) && 
+               (toPort instanceof MModelElement)) {
+          if (edgeClass == MPermission.class) {
+              MModelElement fromMMElem = (MModelElement) fromPort;
+              MModelElement toMMElem = (MModelElement) toPort;
+              MPermission per = 
+                  UmlFactory.getFactory().getCore().
+                  buildPermission(fromMMElem, toMMElem);
+              addEdge(per);
+              return per;
+          }
+      }
       throw new UnsupportedOperationException("should not enter here!");
   }
 
