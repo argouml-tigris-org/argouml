@@ -160,16 +160,8 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      */
 
     public UMLUseCaseDiagram() {
-    	String name = null;
-  		Object[] args = {name};
-  		do {
-        	name = "use case diagram " + _UseCaseDiagramSerial;
-        	_UseCaseDiagramSerial++;
-        	args[0] = name;
-    	}
-    	while (vetoCheck("name", args));
         try {
-            setName(name);
+            setName(getNewDiagramName());
         }
         catch (PropertyVetoException pve) { }
     }
@@ -303,5 +295,17 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
         _toolBar.add(_diagramName);
     }
+    
+     protected static String getNewDiagramName() {
+  	String name = null;
+  	Object[] args = {name};
+  	do {
+        name = "use case diagram " + _UseCaseDiagramSerial;
+        _UseCaseDiagramSerial++;
+        args[0] = name;
+    }
+    while (TheInstance.vetoCheck("name", args));
+    return name;
+  }
 
 } /* end class UMLUseCaseDiagram */
