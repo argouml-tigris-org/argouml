@@ -34,6 +34,9 @@ class PackageContext extends Context
     /** The package this context represents. */
     private MPackage mPackage;
 
+    /** The java style name of the package. */
+    private String javaName;
+
     /** 
 	Create a new context from a package.
 	
@@ -45,6 +48,7 @@ class PackageContext extends Context
     {
 	super(base);
 	this.mPackage = mPackage;
+	javaName = getJavaName(mPackage);
     }
 
     public MInterface getInterface(String name)
@@ -63,8 +67,7 @@ class PackageContext extends Context
 		}
 		else {
 		    classifier = 
-			Class.forName(getJavaName(mPackage) + "." +
-				      name);
+			Class.forName(javaName + "." + name);
 		}		    
 		if(classifier.isInterface()) {
 		    mInterface = new MInterfaceImpl();
@@ -122,8 +125,7 @@ class PackageContext extends Context
 		}
 		else {
 		    classifier = 
-			Class.forName(getJavaName(mPackage) + "." +
-				      name);
+			Class.forName(javaName + "." + name);
 		}		    
 		if(classifier.isInterface()) {
 		    mClassifier = new MInterfaceImpl();
