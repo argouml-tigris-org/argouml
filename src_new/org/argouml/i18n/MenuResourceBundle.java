@@ -153,7 +153,10 @@ public class MenuResourceBundle extends ListResourceBundle {
         {"Layout", "Layout" }, 
         {"Zoom", "Zoom"},
         {"Tools", "Tools"},
-
+    // arrange menu
+        {"Set minimum size", "Fit size for content"},
+        {"Toggle Auto Resizing", "Automatically fit size for content"},
+    // shortcut keys
         { "Shortcut_New", KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_MASK) },
         { "Shortcut_Open", KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK) },
         { "Shortcut_Save", KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK) },
