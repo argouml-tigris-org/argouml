@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
 
 /**
  * Reopens a project with respect of the calling event handler - should be 
- * used with menu item
+ * used with menu item.
  *
  * @author  Frank Jelinek
  * @since 10. November 2003 (0.15.2)

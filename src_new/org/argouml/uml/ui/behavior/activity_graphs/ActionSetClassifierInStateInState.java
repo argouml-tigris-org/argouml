@@ -46,7 +46,7 @@ class ActionSetClassifierInStateInState extends UMLChangeAction {
      * The constructor.
      */
     public ActionSetClassifierInStateInState() {
-        super(Translator.localize("Set"), true, NO_ICON);
+        super(Translator.localize("Set"), false, NO_ICON);
     }
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)

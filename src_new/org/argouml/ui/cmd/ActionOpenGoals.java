@@ -34,7 +34,9 @@ import org.argouml.uml.ui.UMLAction;
 
 class ActionOpenGoals extends UMLAction {
 
-    public ActionOpenGoals() { super("action.design-goals", NO_ICON); }
+    public ActionOpenGoals() { 
+        super("action.design-goals", NO_ICON); 
+    }
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)

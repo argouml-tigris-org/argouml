@@ -43,11 +43,11 @@ public class ActionAddExistingEdge extends UMLAction {
     /**
      * Constructor for ActionAddExistingEdge.
      *
-     * @param tabName       the name of the tab
+     * @param name       the name of the action
      * @param edgeObject    the edge
      */
-    public ActionAddExistingEdge(String tabName, Object edgeObject) {
-        super(tabName, NO_ICON);
+    public ActionAddExistingEdge(String name, Object edgeObject) {
+        super(name, true, NO_ICON);
         edge = edgeObject;
         
     }

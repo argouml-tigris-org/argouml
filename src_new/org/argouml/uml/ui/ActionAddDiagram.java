@@ -53,9 +53,21 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
      * @param s the name for this action
      */
     public ActionAddDiagram(String s) {
-        super(s);
+        super(s, true, HAS_ICON);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param s the name
+     * @param global is global
+     * @param hasIcon has an icon
+     */
+    public ActionAddDiagram(String s, boolean global, boolean hasIcon) {
+        super(s, global, hasIcon);
+    }
+
+    
     /**
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */

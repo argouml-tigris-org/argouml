@@ -55,22 +55,15 @@ public class ActionAddExistingNode extends UMLAction
 
     ////////////////////////////////////////////////////////////////
     // constructor
-    /**
-     * The Constructor.
-     * @param myTabName the tab
-     */
-    public ActionAddExistingNode(String myTabName) {
-        super(myTabName, NO_ICON);
-    }
 
     /**
      * The Constructor.
      *  
-     * @param myTabName the name of the tab
+     * @param name the name of the action
      * @param o the node object to be added
      */
-    public ActionAddExistingNode(String myTabName, Object o) {
-        super(myTabName, NO_ICON);
+    public ActionAddExistingNode(String name, Object o) {
+        super(name, true, NO_ICON);
         object = o;
     }
 

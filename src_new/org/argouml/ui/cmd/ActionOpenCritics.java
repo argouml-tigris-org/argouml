@@ -32,7 +32,9 @@ import org.argouml.uml.ui.UMLAction;
 
 class ActionOpenCritics extends UMLAction {
 
-    public ActionOpenCritics() { super("action.browse-critics", NO_ICON); }
+    public ActionOpenCritics() { 
+        super("action.browse-critics", NO_ICON); 
+    }
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)

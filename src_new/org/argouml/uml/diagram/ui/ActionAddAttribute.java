@@ -44,7 +44,9 @@ public class ActionAddAttribute extends UMLChangeAction {
     /**
      * The constructor for this class.
      */
-    public ActionAddAttribute() { super("button.new-attribute"); }    
+    public ActionAddAttribute() { 
+        super("button.new-attribute", true, HAS_ICON); 
+    }    
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)

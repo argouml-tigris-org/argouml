@@ -64,7 +64,8 @@ public class ActionOpenProject extends ActionFileOperations
      * Constructor for this action.
      */
     public ActionOpenProject() {
-        super("action.open-project");
+        // this is not a "global" action, since it is never downlighted...
+        super("action.open-project", false, true);
     }
 
     ////////////////////////////////////////////////////////////////

@@ -52,7 +52,7 @@ public class ActionStateDiagram extends ActionAddDiagram {
     // constructors
 
     private ActionStateDiagram() {
-        super("action.state-diagram");
+        super("action.state-diagram", true, HAS_ICON);
     }
 
     /**
@@ -61,7 +61,7 @@ public class ActionStateDiagram extends ActionAddDiagram {
      * @param name the name of the action
      */
     protected ActionStateDiagram(String name) {
-        super(name);
+        super(name, true, HAS_ICON);
     }
 
     /**

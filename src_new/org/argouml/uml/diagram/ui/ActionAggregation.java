@@ -73,7 +73,7 @@ public class ActionAggregation extends UMLAction {
      * @param s "src" or "dest". Anything else is interpreted as "dest".
      */
     protected ActionAggregation(Object/*MAggregationKind*/ a, String s) {
-	super(ModelFacade.getName(a), NO_ICON);
+	super(ModelFacade.getName(a), true, NO_ICON);
 	str = s;
 	agg = a;
     }

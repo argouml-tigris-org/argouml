@@ -47,7 +47,9 @@ public class ActionEmptyTrash extends UMLChangeAction {
     /**
      * The constructor.
      */
-    public ActionEmptyTrash() { super("action.empty-trash", NO_ICON); }
+    public ActionEmptyTrash() { 
+        super("action.empty-trash", true, NO_ICON); 
+    }
 
 
     ////////////////////////////////////////////////////////////////

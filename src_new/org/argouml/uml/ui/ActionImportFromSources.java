@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-//$Id$
 
 package org.argouml.uml.ui;
 
@@ -57,7 +56,8 @@ public class ActionImportFromSources extends UMLAction {
      *  The constructor.
      */
     protected ActionImportFromSources() {
-        super("action.import-sources");
+        // this is not a "global" action, since it is never downlighted...
+        super("action.import-sources", HAS_ICON);
     }
 
 

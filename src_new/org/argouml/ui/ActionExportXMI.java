@@ -60,7 +60,7 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
      * Constructor.
      */
     private ActionExportXMI() {
-        super("action.export-project-as-xmi", false);
+        super("action.export-project-as-xmi", NO_ICON);
     }
 
     /**
@@ -239,13 +239,6 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
             }
 
         }
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
-     */
-    public boolean shouldBeEnabled() {
-        return true;
     }
 
 }

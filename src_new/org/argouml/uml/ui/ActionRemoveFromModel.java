@@ -61,17 +61,9 @@ public class ActionRemoveFromModel extends UMLChangeAction {
      * Constructor.
      */
     public ActionRemoveFromModel() {
-        super(Translator.localize("action.delete-from-model"));
+        super(Translator.localize("action.delete-from-model"), true, HAS_ICON);
     }
 
-    /**
-     * Constructor.
-     *
-     * @param global <tt>true</tt> if we have an icon.
-     */
-    protected ActionRemoveFromModel(boolean global) {
-        super(Translator.localize("action.delete-from-model"), global);
-    }
 
     /**
      * Only disabled when nothing is selected. Necessary to use since this 

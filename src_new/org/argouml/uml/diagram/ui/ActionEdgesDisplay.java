@@ -70,7 +70,7 @@ public class ActionEdgesDisplay extends UMLAction {
      * @param desc the name
      */
     protected ActionEdgesDisplay(boolean showEdge, String desc) {
-        super(desc, NO_ICON);
+        super(desc, true, NO_ICON);
         show = showEdge;
     }
 

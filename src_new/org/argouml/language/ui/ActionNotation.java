@@ -36,6 +36,7 @@ import javax.swing.event.MenuListener;
 
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationName;
+import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.UMLAction;
 
 
@@ -71,8 +72,8 @@ public class ActionNotation extends UMLAction
      * Constructor - adds the Notation menu.
      */
     public ActionNotation() {
-        super("Notation", NO_ICON);
-        menu = new JMenu("Notation");
+        super(Translator.localize("menu.notation"), NO_ICON);
+        menu = new JMenu(Translator.localize("menu.notation"));
         menu.add(this);
         menu.addMenuListener(this);
     }

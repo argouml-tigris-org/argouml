@@ -54,7 +54,7 @@ public class ActionGenerateOne extends UMLAction {
      * The constructor.
      */
     protected ActionGenerateOne() {
-        super("action.generate-selected-classes", NO_ICON);
+        super("action.generate-selected-classes", true, NO_ICON);
     }
 
     ////////////////////////////////////////////////////////////////

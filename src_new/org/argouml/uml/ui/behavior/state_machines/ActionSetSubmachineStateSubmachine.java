@@ -44,7 +44,7 @@ public class ActionSetSubmachineStateSubmachine extends UMLChangeAction {
      * Constructor for ActionSetModelElementStereotype.
      */
     protected ActionSetSubmachineStateSubmachine() {
-        super(Translator.localize("action.set"), true, NO_ICON);
+        super(Translator.localize("action.set"), false, NO_ICON);
     }
 
     /**

@@ -40,7 +40,7 @@ import org.argouml.uml.ui.UMLAction;
 public class TestActions extends TestCase {
 
     private class MockGlobalAction extends UMLAction {
-        public MockGlobalAction() { super("test"); }
+        public MockGlobalAction() { super("test", true, NO_ICON); }
 
         /**
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)

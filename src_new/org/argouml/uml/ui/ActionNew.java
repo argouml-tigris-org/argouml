@@ -55,7 +55,10 @@ public class ActionNew extends ActionFileOperations {
     /**
      * The constructor.
      */
-    protected ActionNew() { super("action.new"); }
+    protected ActionNew() { 
+        // this is not a "global" action, since it is never downlighted...
+        super("action.new", false, true); 
+    }
 
     ////////////////////////////////////////////////////////////////
     // main methods

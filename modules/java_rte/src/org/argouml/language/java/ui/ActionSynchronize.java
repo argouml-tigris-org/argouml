@@ -34,7 +34,8 @@ import org.argouml.application.api.PluggableMenu;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.UMLAction;
 
-/** Plugin for synchronizing Java sources (RTE).
+/** 
+ * Plugin for synchronizing Java sources (RTE).
  *
  *  @author Thomas Neustupny
  *  @since  0.11.3

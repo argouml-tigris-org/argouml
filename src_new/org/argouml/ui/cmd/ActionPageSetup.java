@@ -33,7 +33,9 @@ import org.argouml.uml.ui.UMLAction;
 class ActionPageSetup extends UMLAction {
     private static ActionPrint ap = new ActionPrint();
 
-    public ActionPageSetup() { super("action.page-setup", HAS_ICON); }
+    public ActionPageSetup() { 
+        super("action.page-setup", HAS_ICON); 
+    }
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)

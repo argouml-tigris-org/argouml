@@ -62,7 +62,7 @@ public class ActionSetSourcePath extends UMLAction {
      * The constructor.
      */
     protected ActionSetSourcePath() {
-	super("action.set-source-path", NO_ICON);
+	super("action.set-source-path", true, NO_ICON);
     }
 
 

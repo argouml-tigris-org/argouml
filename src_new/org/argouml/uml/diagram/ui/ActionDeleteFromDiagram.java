@@ -61,7 +61,7 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
     // constructors
 
     private ActionDeleteFromDiagram() {
-        super("action.remove-from-diagram");
+        super("action.remove-from-diagram", true, HAS_ICON);
         String localMnemonic =
 	    Translator.localize("action.remove-from-diagram.mnemonic");
         if (localMnemonic != null && localMnemonic.length() == 1) {

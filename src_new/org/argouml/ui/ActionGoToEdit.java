@@ -46,7 +46,7 @@ public class ActionGoToEdit extends UMLAction {
      * @param name The name of the tab.
      */
     public ActionGoToEdit(String name) {
-	super(name, NO_ICON);
+	super(name, true, NO_ICON);
 	tabName = name;
     }
 

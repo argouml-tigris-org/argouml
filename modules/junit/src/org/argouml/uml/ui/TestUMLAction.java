@@ -53,7 +53,7 @@ public class TestUMLAction extends TestCase {
      * 
      */
     public void testCreate1() {
-	UMLAction to = new UMLAction(new String("hejsan"));
+	UMLAction to = new UMLAction(new String("hejsan"), true);
 	assertTrue("Disabled", to.shouldBeEnabled());
     }
 
@@ -71,8 +71,7 @@ public class TestUMLAction extends TestCase {
      * 
      */
     public void testCreate3() {
-	UMLAction to = new UMLAction(new String("hejsan"), true, 
-            UMLAction.NO_ICON);
+	UMLAction to = new UMLAction(new String("hejsan"), UMLAction.NO_ICON);
 	assertTrue("Disabled", to.shouldBeEnabled());
     }
 	
@@ -87,13 +86,13 @@ public class TestUMLAction extends TestCase {
     }
 
     private void compileTestConstructors() {
-	new UMLAction(new String());
 	new UMLAction(new String(), true);
-	new UMLAction(new String(), true, true);
+	new UMLAction(new String(), true);
+	new UMLAction(new String(), true);
     }
 
     private void compileTestMethods() {
-	UMLAction to = new UMLAction(new String());
+	UMLAction to = new UMLAction(new String(), true);
 
 	// to.actionPerformed(new ActionEvent());
 	to.markNeedsSave();

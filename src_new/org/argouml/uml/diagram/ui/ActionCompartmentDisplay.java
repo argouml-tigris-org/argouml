@@ -156,7 +156,7 @@ public class ActionCompartmentDisplay extends UMLAction {
     protected ActionCompartmentDisplay(boolean d, String c) {
 
         // Invoke the parent constructor
-	super(c, NO_ICON);
+	super(c, true, NO_ICON);
 
         // Save copies of the parameters
 	display = d;

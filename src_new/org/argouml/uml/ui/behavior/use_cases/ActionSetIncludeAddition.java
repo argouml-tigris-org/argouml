@@ -46,7 +46,7 @@ public class ActionSetIncludeAddition extends UMLChangeAction {
      * Constructor for ActionSetincBase.
      */
     protected ActionSetIncludeAddition() {
-        super(Translator.localize("action.set"), true, NO_ICON);
+        super(Translator.localize("action.set"), false, NO_ICON);
     }
 
     /**

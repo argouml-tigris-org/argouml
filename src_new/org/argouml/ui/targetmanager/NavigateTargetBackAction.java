@@ -46,7 +46,7 @@ public class NavigateTargetBackAction extends UMLAction {
     }
 
     private NavigateTargetBackAction() {
-        super("action.navigate-back");
+        super("action.navigate-back", true, HAS_ICON);
     }
 
     /**
@@ -58,12 +58,12 @@ public class NavigateTargetBackAction extends UMLAction {
     }
 
     /**
-     * Action is possible as navigateForwardPossible on targetManager
-     * returns true
+     * Action is possible only if navigateForwardPossible on targetManager
+     * returns true.
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
-        super.shouldBeEnabled();
-        return TargetManager.getInstance().navigateBackPossible();
+        return super.shouldBeEnabled()  
+            && TargetManager.getInstance().navigateBackPossible();
     }
 }

@@ -183,7 +183,8 @@ public class NavigatorPane
     class ActionPerspectiveConfig extends UMLAction {
         
         public ActionPerspectiveConfig() {
-	    super("action.configure-perspectives");
+            // this is not a "global" action, since it is never downlighted...
+	    super("action.configure-perspectives", HAS_ICON);
 	}
         
         public void actionPerformed(ActionEvent ae) {

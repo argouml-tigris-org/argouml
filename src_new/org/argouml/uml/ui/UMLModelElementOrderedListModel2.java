@@ -112,7 +112,7 @@ class MoveUpAction extends UMLAction {
      */
     public MoveUpAction(UMLModelElementOrderedListModel2 theModel, 
             int theIndex) {
-        super("menu.popup.moveup", false, false);
+        super("menu.popup.moveup", NO_ICON);
         model = theModel;
         index = theIndex;
     }
@@ -148,7 +148,7 @@ class MoveDownAction extends UMLAction {
      */
     public MoveDownAction(UMLModelElementOrderedListModel2 theModel, 
             int theIndex) {
-        super("menu.popup.movedown", false, false);
+        super("menu.popup.movedown", NO_ICON);
         model = theModel;
         index = theIndex;
     }

@@ -33,10 +33,12 @@ abstract class ToDoItemAction extends UMLAction {
 
     private Object rememberedTarget = null;
 
-    public ToDoItemAction(String name) { super(name, false, HAS_ICON); }
+    public ToDoItemAction(String name) { 
+        super(name, HAS_ICON); 
+    }
 
     public ToDoItemAction(String name, boolean hasIcon) {
-	super(name, false, hasIcon);
+	super(name, hasIcon);
     }
     
     /**

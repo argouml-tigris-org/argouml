@@ -50,7 +50,7 @@ public class ActionLayout extends UMLAction {
      * The constructor.
      */
     public ActionLayout() {
-        super("action.layout", NO_ICON);
+        super("action.layout", true, NO_ICON);
     }
 
     ////////////////////////////////////////////////////////////////

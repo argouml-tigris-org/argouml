@@ -45,7 +45,7 @@ public class ActionSetIncludeBase extends UMLChangeAction {
      * Constructor for ActionSetIncludeBase.
      */
     protected ActionSetIncludeBase() {
-        super(Translator.localize("action.set"), true, NO_ICON);
+        super(Translator.localize("action.set"), false, NO_ICON);
     }
 
     

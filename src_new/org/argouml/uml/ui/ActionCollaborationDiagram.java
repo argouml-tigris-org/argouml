@@ -49,7 +49,7 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
      * Constructor.
      */
     private ActionCollaborationDiagram() {
-        super("action.collaboration-diagram");
+        super("action.collaboration-diagram", true, HAS_ICON);
     }
 
     /**

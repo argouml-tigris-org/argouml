@@ -65,7 +65,7 @@ public class LanguageChooser extends UMLAction implements PluggableMenu {
      * singleton pattern).
      */
     protected LanguageChooser() {
-        super("menu.item.languages", false);
+        super("menu.item.languages", NO_ICON);
     }
 
     /** 

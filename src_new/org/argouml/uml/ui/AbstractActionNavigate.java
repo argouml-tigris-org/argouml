@@ -53,7 +53,7 @@ public abstract class AbstractActionNavigate extends UMLAction {
      * @param hasIcon true if there is an icon for this action
      */
     public AbstractActionNavigate(String name, boolean hasIcon) {
-        super(name, true, hasIcon);
+        super(name, hasIcon);
         putValue(Action.SMALL_ICON,
                  ResourceLoaderWrapper.lookupIconResource("NavigateUp"));
     }
