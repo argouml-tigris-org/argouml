@@ -35,6 +35,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.layout.LayoutedObject;
 import org.argouml.uml.diagram.layout.Layouter;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
@@ -45,8 +46,7 @@ public class ClassdiagramLayouter implements Layouter {
     
     /** Logger for logging events */
     public static final Logger cat =
-	Logger.getLogger("org.argouml.uml.diagram.static_structure.layout"
-			     + ".ClassdiagramLayouter");
+    Logger.getLogger(ClassdiagramLayouter.class);
     
     /** stores the current diagram *
      */
@@ -54,7 +54,7 @@ public class ClassdiagramLayouter implements Layouter {
     
     /** stores all the nodes which will be layouted
      */
-    Vector nodes;
+    Collection nodes;
     /**
      * This constructor is mainly for convenience, so we don't have
      * add every node manually to the layouter.
@@ -63,18 +63,24 @@ public class ClassdiagramLayouter implements Layouter {
         
         this.diagram = theDiagram;
         // Get all the figures from the diagram.
-        nodes = diagram.getLayer().getContents();
+        nodes = diagram.getLayer().getContents(null);
+        Iterator nodeIter = nodes.iterator();
         
         // Create ClassdiagramNodes for all the figures
         // and add them to the layouter.
-        for (int i = 0; i < nodes.size(); i++) {
+        while (nodeIter.hasNext()) {
+//        for (int i = 0; i < nodes.size(); i++) {
             // remember all Nodes
-            if (nodes.elementAt(i) instanceof FigNode) {
-                add(new ClassdiagramNode((FigNode) (nodes.elementAt(i))));
-            }
-            if (nodes.elementAt(i) instanceof FigEdge) {
-		add(ClassdiagramModelElementFactory.SINGLETON
-		    .getInstance(nodes.elementAt(i)));
+            Object fig = nodeIter.next();
+            if (((Fig)fig).getEnclosingFig() == null) {
+                if (fig instanceof FigNode) {
+                    add(new ClassdiagramNode((FigNode) (fig)));
+                }
+                if (fig instanceof FigEdge) {
+                    
+                    add(ClassdiagramModelElementFactory.SINGLETON
+                    .getInstance(fig));
+                }
             }
         }
         // built the subset vector
@@ -170,7 +176,7 @@ public class ClassdiagramLayouter implements Layouter {
                 
                 if ( ModelFacade.isAModelElement(node)) {
                     Vector specs =
-			new Vector(ModelFacade.getClientDependencies(node));
+                    new Vector(ModelFacade.getClientDependencies(node));
                     specs.addAll(ModelFacade.getSupplierDependencies(node));
                     for ( Iterator iter = specs.iterator(); iter.hasNext(); ) {
                         
@@ -181,29 +187,29 @@ public class ClassdiagramLayouter implements Layouter {
                         // abstractions, too.
                         Object dep =  iter.next();
                         if ( ModelFacade.isAAbstraction(dep)) {
-			    // Is this a abstraction?
+                            // Is this a abstraction?
                             Object abstr = dep;
                             if (ModelFacade.isRealize(abstr)) {
                                 // Is this node the class, that
                                 // implements the interface?
                                 Collection clients =
-				    ModelFacade.getClients(abstr);
+                                ModelFacade.getClients(abstr);
                                 for (Iterator iter2 = clients.iterator();
-                                        iter2.hasNext();) {
+                                iter2.hasNext();) {
                                     Object me = /*(MModelElement)*/ iter2.next();
                                     if (node == me) {
                                         Collection suppliers =
-					    ModelFacade.getSuppliers(abstr);
+                                        ModelFacade.getSuppliers(abstr);
                                         Iterator iter3 = suppliers.iterator();
                                         while (iter3.hasNext()) {
                                             Object me2 = iter3.next();
                                             if (ModelFacade.isAClassifier(me2)) {
-                                                ClassdiagramNode superNode = 
-						    getClassdiagramNode4owner(me2);
+                                                ClassdiagramNode superNode =
+                                                getClassdiagramNode4owner(me2);
                                                 
                                                 if (superNode != null) {
                                                     classdiagramNode
-							.addUplink(superNode);
+                                                    .addUplink(superNode);
                                                 }
                                             }
                                         }
@@ -212,25 +218,22 @@ public class ClassdiagramLayouter implements Layouter {
                                 
                                 // Or the implemented interface?
                                 Collection suppliers =
-				    ModelFacade.getSuppliers(abstr);
+                                ModelFacade.getSuppliers(abstr);
                                 for (Iterator iter2 = suppliers.iterator();
-				     iter2.hasNext();
-				     )
-				{
+                                iter2.hasNext();
+                                ) {
                                     Object me =
-					/*(MModelElement)*/ iter2.next();
+                                    /*(MModelElement)*/ iter2.next();
                                     if (node == me) {
                                         clients = ModelFacade.getClients(abstr);
                                         for (Iterator iter3 =
-						 clients.iterator();
-					     iter3.hasNext();
-					     )
-					{
+                                        clients.iterator();
+                                        iter3.hasNext();
+                                        ) {
                                             Object me2 = iter3.next();
-                                            if (ModelFacade.isAClassifier(me2))
-					    {
+                                            if (ModelFacade.isAClassifier(me2)) {
                                                 ClassdiagramNode subNode =
-						    getClassdiagramNode4owner(me2);
+                                                getClassdiagramNode4owner(me2);
                                                 
                                                 if (subNode != null) {
                                                     classdiagramNode.addDownlink(subNode);
@@ -246,11 +249,11 @@ public class ClassdiagramLayouter implements Layouter {
                 
                 if (ModelFacade.isAGeneralizableElement(node) ) {
                     Iterator iter = ModelFacade.getGeneralizations(node).iterator();
-                                        
+                    
                     while(iter.hasNext()) {
                         Object g = iter.next();
-                        ClassdiagramNode superNode = 
-                            getClassdiagramNode4owner(ModelFacade.getParent(g));
+                        ClassdiagramNode superNode =
+                        getClassdiagramNode4owner(ModelFacade.getParent(g));
                         
                         if (superNode != null) {
                             classdiagramNode.addUplink(superNode);
@@ -260,8 +263,8 @@ public class ClassdiagramLayouter implements Layouter {
                     iter = ModelFacade.getSpecializations(node).iterator();
                     while (iter.hasNext()) {
                         Object s = iter.next();
-                        ClassdiagramNode subNode = 
-                            getClassdiagramNode4owner(ModelFacade.getChild(s));
+                        ClassdiagramNode subNode =
+                        getClassdiagramNode4owner(ModelFacade.getChild(s));
                         
                         if (subNode != null) {
                             classdiagramNode.addDownlink(subNode);
@@ -300,14 +303,14 @@ public class ClassdiagramLayouter implements Layouter {
         // For now, all packages go above the classes and
         // interfaces
         int currentColumnPosition = 0;
-	// The number of elements in the current row
+        // The number of elements in the current row
         int currentRow = 0;
         for (int i = 0; i < _layoutedClassNodes.size(); i++) {
             ClassdiagramNode node = getClassdiagramNode(i);
             
             if (node.isPackage()) {
                 if (currentColumnPosition <= _vMax) {
-		    // If there are not too many elements in the current Row
+                    // If there are not too many elements in the current Row
                     node.setRank(currentRow);
                     currentColumnPosition++;
                 } else {
@@ -321,7 +324,7 @@ public class ClassdiagramLayouter implements Layouter {
         // the classes below the packages
         for (int i = 0; i < _layoutedClassNodes.size(); i++) {
             if (getClassdiagramNode(i).isPackage()
-		&& (getClassdiagramNode(i).getRank() > _maxPackageRank)) {
+            && (getClassdiagramNode(i).getRank() > _maxPackageRank)) {
                 _maxPackageRank = getClassdiagramNode(i).getRank();
             }
         }
@@ -339,7 +342,7 @@ public class ClassdiagramLayouter implements Layouter {
         
         int rows = getRows();
         for ( int curRow = _maxPackageRank; curRow < rows; curRow++) {
-	    // Do not include packages in this process
+            // Do not include packages in this process
             
             // The placement for the leftmost figure on the screen.
             xPos = getHGap() / 2;
@@ -364,8 +367,8 @@ public class ClassdiagramLayouter implements Layouter {
                     int nDownlinks = rowObject[i].getDownlinks().size();
                     
                     rowObject[i].setWeight( (nDownlinks > 0)
-					    ? (1 / nDownlinks)
-					    : 2);
+                    ? (1 / nDownlinks)
+                    : 2);
                 } else {
                     
                     // Get the uplinks for this node
@@ -379,8 +382,8 @@ public class ClassdiagramLayouter implements Layouter {
                         float average_col = 0;
                         for (int j = 0; j < uplinks.size(); j++) {
                             average_col +=
-				((ClassdiagramNode) (uplinks.elementAt(j)))
-				.getColumn();
+                            ((ClassdiagramNode) (uplinks.elementAt(j)))
+                            .getColumn();
                         }
                         average_col /= nUplinks;
                         rowObject[i].setWeight(average_col);
@@ -393,11 +396,11 @@ public class ClassdiagramLayouter implements Layouter {
             // At this point all the nodes in the current row have a
             // weight assigned.  Sort the nodes according to this
             // weight and assign them a column.
-
-	    // Array to hold the current column of the objects.
-            int [] pos = new int[rowObject.length];  
-	    // Init the array.
-            for (int i = 0; i < pos.length; i++) { pos[i] = i; }  
+            
+            // Array to hold the current column of the objects.
+            int [] pos = new int[rowObject.length];
+            // Init the array.
+            for (int i = 0; i < pos.length; i++) { pos[i] = i; }
             
             // Now just do a very simple bubblesort on the array
             // (slow, but the array should be small...)
@@ -406,8 +409,7 @@ public class ClassdiagramLayouter implements Layouter {
                 swapped = false;
                 for (int i = 0; i < pos.length - 1; i++) {
                     if (rowObject[pos[i]].getWeight()
-			> rowObject[pos[i + 1]].getWeight()) 
-		    {
+                    > rowObject[pos[i + 1]].getWeight()) {
                         int temp = pos[i];
                         pos[i] = pos[i + 1];
                         pos[i + 1] = temp;
@@ -421,62 +423,61 @@ public class ClassdiagramLayouter implements Layouter {
             // place them within the column.
             for (int i = 0; i < pos.length; i++) {
                 // Required to sort the next rows.
-                rowObject[pos[i]].setColumn(i);  
+                rowObject[pos[i]].setColumn(i);
                 
-                // If we have enough elements in this row and 
+                // If we have enough elements in this row and
                 // this node has no links,
                 // move it down in the diagram
                 if ((i > _vMax)
-                    && (rowObject[pos[i]].getUplinks().size() == 0)
-                    && (rowObject[pos[i]].getDownlinks().size() == 0)) 
-                {
-		    // If there are already too many elements in that row
-		    if (getColumns(rows - 1) > _vMax) { 
-			// add a new empty row.
-			rows++;  
-		    }
-		    // Place the object in the last row.
-		    rowObject[pos[i]].setRank(rows - 1);  
-		} 
+                && (rowObject[pos[i]].getUplinks().size() == 0)
+                && (rowObject[pos[i]].getDownlinks().size() == 0)) {
+                    // If there are already too many elements in that row
+                    if (getColumns(rows - 1) > _vMax) {
+                        // add a new empty row.
+                        rows++;
+                    }
+                    // Place the object in the last row.
+                    rowObject[pos[i]].setRank(rows - 1);
+                }
                 else {
                     // Now set the position within the diagram.
                     ClassdiagramNode curNode = rowObject[pos[i]];
                     Vector downlinks = curNode.getDownlinks();
                     int bumperX = 0;
-                    int currentWidth = 
-                        (int) (curNode.getSize().getWidth());
+                    int currentWidth =
+                    (int) (curNode.getSize().getWidth());
                     double xOffset = currentWidth;
-
+                    
                     if (downlinks != null && downlinks.size() > 1 &&
-                        curNode.getUplinks().size() == 0) {
+                    curNode.getUplinks().size() == 0) {
                         
                         xOffset = 0;
                         for (int j = 0; j < downlinks.size(); j++) {
                             ClassdiagramNode node = (ClassdiagramNode)
-                                downlinks.get(j);
+                            downlinks.get(j);
                             xOffset += node.getSize().getWidth();
                         }
                         xOffset += ((downlinks.size() - 1) * getHGap());
                         bumperX =
-			    (int) (xOffset / 2) - (currentWidth / 2);
+                        (int) (xOffset / 2) - (currentWidth / 2);
                     }
                     curNode.setLocation(
-			    new Point(Math.max(xPos + bumperX, 
-					       curNode.getUplinks().size() == 1
-					       ? curNode.getPlacementHint()
-					       : -1), 
-				      yPos));
+                    new Point(Math.max(xPos + bumperX,
+                    curNode.getUplinks().size() == 1
+                    ? curNode.getPlacementHint()
+                    : -1),
+                    yPos));
                     
                     // put placement hint into a downlink
                     if (downlinks.size() == 1) {
                         ((ClassdiagramNode) downlinks.get(0)).
-                            setPlacementHint(xPos + bumperX);
+                        setPlacementHint(xPos + bumperX);
                     }
                     
                     // Advance the horizontal position by the width of
                     // this figure.
                     xPos += Math.max(curNode.getPlacementHint(),
-				     xOffset + getHGap());
+                    xOffset + getHGap());
                 }
             }
             
@@ -521,8 +522,8 @@ public class ClassdiagramLayouter implements Layouter {
             //        rowObjects[lastObject-1].getSize().getWidth();
             thisRowLength = getRowWidth(curRow);
             rowLengths[ curRow ] = thisRowLength;
-            if (thisRowLength > maxRowSizeInPixels) 
-		maxRowSizeInPixels = thisRowLength;
+            if (thisRowLength > maxRowSizeInPixels)
+                maxRowSizeInPixels = thisRowLength;
         }
         // now shift the nodes to the right, so that they are centered
         // according to the longest row
@@ -533,9 +534,9 @@ public class ClassdiagramLayouter implements Layouter {
             ClassdiagramNode [] rowObjects = getObjectsInRow(curRow);
             for (int i = 0; i < rowObjects.length; i++)
                 rowObjects[i].setLocation(
-			new Point((int) (rowObjects[i].getLocation().getX()
-					 + shiftRight),
-				  (int) (rowObjects[i].getLocation().getY())));
+                new Point((int) (rowObjects[i].getLocation().getX()
+                + shiftRight),
+                (int) (rowObjects[i].getLocation().getY())));
         }
     }
     
@@ -612,24 +613,24 @@ public class ClassdiagramLayouter implements Layouter {
             ClassdiagramNode node = getClassdiagramNode(i);
             
             if ((node.getLocation().x
-		 + node.getSize().getWidth() 
-		 + getHGap() / 2)
-		>= width)
+            + node.getSize().getWidth()
+            + getHGap() / 2)
+            >= width)
                 width =
-		    (int)
-		    (node.getLocation().x
-		     + node.getSize().getWidth()
-		     + getHGap() / 2);
+                (int)
+                (node.getLocation().x
+                + node.getSize().getWidth()
+                + getHGap() / 2);
             
             if ((node.getLocation().y
-		 + node.getSize().getHeight()
-		 + getVGap() / 2)
-		>= height)
+            + node.getSize().getHeight()
+            + getVGap() / 2)
+            >= height)
                 height =
-		    (int)
-		    (node.getLocation().y
-		     + node.getSize().getHeight()
-		     + getVGap() / 2);
+                (int)
+                (node.getLocation().y
+                + node.getSize().getHeight()
+                + getVGap() / 2);
         }
         return new Dimension(width, height);
     }
@@ -664,7 +665,7 @@ public class ClassdiagramLayouter implements Layouter {
         // Check all the nodes in the layouter
         for (int i = 0; i < _layoutedClassNodes.size(); i++) {
             if ((getClassdiagramNode(i)).getRank() == row) {
-		// If the object is in this row
+                // If the object is in this row
                 if ((getClassdiagramNode(i)).getSize().height > currentHeight)
                     currentHeight = (getClassdiagramNode(i)).getSize().height;
             }
@@ -683,7 +684,7 @@ public class ClassdiagramLayouter implements Layouter {
         for (int i = 0; i < _layoutedClassNodes.size(); i++) {
             if ((getClassdiagramNode(i)).getRank() == row) {
                 currentWidth += (getClassdiagramNode(i).getSize().width
-				 + getHGap());
+                + getHGap());
             }
         }
         return currentWidth;
@@ -701,7 +702,7 @@ public class ClassdiagramLayouter implements Layouter {
         // Check all the nodes in the layouter
         for (int i = 0; i < _layoutedClassNodes.size(); i++) {
             if ((getClassdiagramNode(i)).getRank() == row)
-		// If the object is in this row
+                // If the object is in this row
                 result++;	// add it to the result.
         }
         return result;
@@ -718,9 +719,9 @@ public class ClassdiagramLayouter implements Layouter {
         // Check all the nodes in the layouter
         for (int i = 0; i < _layoutedClassNodes.size(); i++) {
             if ((getClassdiagramNode(i)).getRank() == row) {
-		// If the object is in this row add it to the buffer.
-                resultBuffer.add(getClassdiagramNode(i)); 
-	    }
+                // If the object is in this row add it to the buffer.
+                resultBuffer.add(getClassdiagramNode(i));
+            }
         }
         
         // Create an array for the result.
