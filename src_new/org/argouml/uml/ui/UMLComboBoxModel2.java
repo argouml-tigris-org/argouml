@@ -316,14 +316,19 @@ public abstract class UMLComboBoxModel2
      * @param target
      */
     protected void setTarget(Object target) {
-        target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
-            UmlModelEventPump eventPump = UmlModelEventPump.getPump();
-            if (ModelFacade.isABase(_target)) {
-                eventPump.removeModelEventListener(this, _target,
-						   _propertySetName);
-            }
+	UmlModelEventPump eventPump = UmlModelEventPump.getPump();
 
+	if (ModelFacade.isABase(_target)) {
+	    eventPump.removeModelEventListener(this, _target,
+					       _propertySetName);
+	    _target = null;
+	    _fireListEvents = false;
+	    removeAllElements();
+	    _fireListEvents = true;
+	}
+
+	target = target instanceof Fig ? ((Fig) target).getOwner() : target;
+        if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
             if (ModelFacade.isABase(target)) {
                 _target = target;
                 // UmlModelEventPump.getPump()
@@ -516,22 +521,22 @@ public abstract class UMLComboBoxModel2
     /**
      * @see TargetListener#targetAdded(TargetEvent)
      */
-    public void targetAdded(TargetEvent e) { }
+    public void targetAdded(TargetEvent e) {
+	setTarget(e.getNewTarget());
+    }
 
     /**
      * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        setTarget(e.getNewTarget());
-
+	setTarget(e.getNewTarget());
     }
 
     /**
      * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        setTarget(e.getNewTarget());
-
+	setTarget(e.getNewTarget());
     }
 
 }

@@ -194,6 +194,11 @@ public class StylePanelFigText extends StylePanelFig {
      */
     public void refresh() {
         super.refresh();
+
+	if (!(_target instanceof FigText)) {
+	    return;
+	}
+
         FigText ft = (FigText) _target;
         String fontName = ft.getFontFamily();
         int size = ft.getFontSize();

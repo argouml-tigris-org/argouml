@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -388,31 +388,23 @@ public class TabProps
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        setTarget(e.getNewTarget());
-        fireTargetAdded(e);
-        if (_listenerList.getListenerCount() > 0) {
-            validate();
-            repaint();
-        }
-
+	targetSet(e);
     }
 
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        setTarget(e.getNewTarget());
-        fireTargetRemoved(e);
-        validate();
-        repaint(); 
+	targetSet(e);
     }
 
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
+	fireTargetEvent(e);
         setTarget(e.getNewTarget());
-        fireTargetSet(e);        
+	fireTargetEvent(e);
         validate();
         repaint();        
     }
@@ -431,6 +423,18 @@ public class TabProps
      */
     private void removeTargetListener(TargetListener listener) {
         _listenerList.remove(TargetListener.class, listener);
+    }
+
+    private void fireTargetEvent(TargetEvent e) {
+	if (TargetEvent.TARGET_SET.equals(e.getName())) {
+	    fireTargetSet(e);
+	} else if (TargetEvent.TARGET_ADDED.equals(e.getName())) {
+	    fireTargetAdded(e);
+	} else if (TargetEvent.TARGET_REMOVED.equals(e.getName())) {
+	    fireTargetRemoved(e);
+	} else {
+	    cat.warn("fireTargetEvent didn't recognize target event name: " + e.getName());
+	}
     }
 
     private void fireTargetSet(TargetEvent targetEvent) {

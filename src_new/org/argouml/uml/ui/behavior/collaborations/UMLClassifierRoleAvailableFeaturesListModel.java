@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2003 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -52,8 +52,10 @@ public class UMLClassifierRoleAvailableFeaturesListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(
-		       CollaborationsHelper.getHelper().allAvailableFeatures(getTarget()));
+	if (ModelFacade.isAClassifierRole(getTarget())) {
+	    setAllElements(CollaborationsHelper.getHelper()
+			   .allAvailableFeatures(getTarget()));
+	}
     }
 
     /**
@@ -70,10 +72,9 @@ public class UMLClassifierRoleAvailableFeaturesListModel
 							      this,
 							      clazz,
 							      "feature");
-        } else if (
-		   e.getName().equals("feature")
-		   && ModelFacade.getBases(getTarget()).contains(
-									  e.getSource())) {
+        } else if (e.getName().equals("feature")
+		   && ModelFacade.isAClassifierRole(getTarget())
+		   && ModelFacade.getBases(getTarget()).contains(e.getSource())) {
             addElement(getChangedElement(e));
         }
     }
@@ -83,7 +84,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
      * org.argouml.uml.ui.UMLModelElementListModel2#setTarget(java.lang.Object)
      */
     public void setTarget(Object target) {
-        if (_target != null) {
+        if (ModelFacade.isAClassifierRole(getTarget())) {
             Collection bases = ModelFacade.getBases(getTarget());
             Iterator it = bases.iterator();
             while (it.hasNext()) {
@@ -102,7 +103,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
         if (!ModelFacade.isABase(target))
             return;
         _target = target;
-        if (_target != null) {
+        if (ModelFacade.isAClassifierRole(_target)) {
             Collection bases = ModelFacade.getBases(_target);
             Iterator it = bases.iterator();
             while (it.hasNext()) {
@@ -145,12 +146,10 @@ public class UMLClassifierRoleAvailableFeaturesListModel
 								 this,
 								 clazz,
 								 "feature");
-        } else if (
-		   e.getName().equals("feature")
-		   && ModelFacade.getBases(getTarget()).contains(
-									 e.getSource())) {
+        } else if (e.getName().equals("feature")
+		   && ModelFacade.isAClassifierRole(getTarget())
+		   && ModelFacade.getBases(getTarget()).contains(e.getSource())) {
             removeElement(getChangedElement(e));
         }
     }
-
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -45,8 +46,8 @@ public class UMLClassifierParameterListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (getTarget() != null) {
-            setAllElements(org.argouml.model.ModelFacade.getParameters(getTarget()));
+        if (ModelFacade.isAClassifier(getTarget())) {
+            setAllElements(ModelFacade.getParameters(getTarget()));
         }
     }
 
@@ -54,7 +55,7 @@ public class UMLClassifierParameterListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
-        return org.argouml.model.ModelFacade.getParameters(getTarget()).contains(element);
+        return ModelFacade.isAClassifier(getTarget())
+		&& ModelFacade.getParameters(getTarget()).contains(element);
     }
-
 }

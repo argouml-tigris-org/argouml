@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -163,7 +163,6 @@ public class TabText
      */
     public void targetAdded(TargetEvent e) {
         setTarget(e.getNewTarget());
-
     }
 
     /**
@@ -182,8 +181,9 @@ public class TabText
      * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
+        // how to handle empty target lists?
+        // probably the TabText should only show an empty pane in that case
         setTarget(e.getNewTarget());
-
     }
 
 } /* end class TabText */

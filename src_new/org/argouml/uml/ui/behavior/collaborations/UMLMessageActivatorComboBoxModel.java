@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -49,13 +49,13 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAMessage(target)) {
-            Object mes = /*(MMessage)*/ target;
-            removeAllElements();
-            // fill the list with items
-            setElements(CollaborationsHelper.getHelper().getAllPossibleActivators(mes));
-        }
+	Object target = getTarget();
+	removeAllElements();
+	if (ModelFacade.isAMessage(target)) {
+	    Object mes = /*(MMessage)*/ target;
+	    // fill the list with items
+	    setElements(CollaborationsHelper.getHelper().getAllPossibleActivators(mes));
+	}
     }
 
     
@@ -63,20 +63,20 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object m) {
-        return ((org.argouml.model.ModelFacade.isAMessage(m))  && 
-            m != getTarget() && 
-            !ModelFacade.getPredecessors((getTarget())).contains(m) &&
-            ModelFacade.getInteraction(m) == ModelFacade.getInteraction((getTarget())));
+	return ModelFacade.isAMessage(getTarget())
+		&& ModelFacade.isAMessage(m)
+		&& m != getTarget()
+		&& !ModelFacade.getPredecessors((getTarget())).contains(m)
+		&& ModelFacade.getInteraction(m) == ModelFacade.getInteraction((getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
-        if (getTarget() != null) {
-            return ModelFacade.getActivator(getTarget());
-        }
-        return null;
+	return ModelFacade.isAMessage(getTarget())
+		? ModelFacade.getActivator(getTarget())
+		: null;
     }
 
     /**
@@ -95,5 +95,4 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
                 UmlModelEventPump.getPump().addModelEventListener(this, inter, "message");
         }
     }
-
 }

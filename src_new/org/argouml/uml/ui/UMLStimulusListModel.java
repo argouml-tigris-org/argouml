@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -72,14 +72,18 @@ public class UMLStimulusListModel extends UMLModelElementListModel  {
 
     private Collection getStimuli() {
 	Object/*MObject*/ obj = getTarget();
+	if (!ModelFacade.isAStimulus(obj)) {
+	    return null;
+	}
+
 	Collection stimuli = null;
         if (stimulusType.equals("sent") ) {
 	    stimuli = ModelFacade.getStimuli3(obj);
 	} else if (stimulusType.equals("received") ) {
 	    stimuli = ModelFacade.getStimuli2(obj);
   	}
-	return stimuli;
 
+	return stimuli;
     }
 
 

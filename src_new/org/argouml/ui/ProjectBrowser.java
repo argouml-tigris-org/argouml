@@ -799,9 +799,11 @@ public class ProjectBrowser
     // diagram changes. Uses this to update the window title.
     
     public void targetAdded(TargetEvent e) {
+	targetSet(e);
     }
 
     public void targetRemoved(TargetEvent e) {
+	targetSet(e);
     }
 
     public void targetSet(TargetEvent e) {

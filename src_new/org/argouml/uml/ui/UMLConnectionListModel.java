@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -96,7 +96,9 @@ public class UMLConnectionListModel extends UMLBinaryRelationListModel  {
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getSelected()
      */
     protected Collection getSelected() {
-	return CoreHelper.getHelper().getAssociatedClassifiers(getTarget());
+	return ModelFacade.isAClassifier(getTarget())
+		? CoreHelper.getHelper().getAssociatedClassifiers(getTarget())
+		: null;
     }
 
 }

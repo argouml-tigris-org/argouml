@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,6 +42,7 @@ public final class UMLExpressionModel  {
     private UMLUserInterfaceContainer _container;
     private Method _getMethod;
     private Method _setMethod;
+    private Class _objectClass;
     private String _propertyName;
     private Object/*MExpression*/ _expression;
     private boolean _mustRefresh;
@@ -54,6 +55,7 @@ public final class UMLExpressionModel  {
 
         _container = container;
         _propertyName = propertyName;
+	_objectClass = targetClass;
         _mustRefresh = true;
         try {
             _getMethod = targetClass.getMethod(getMethodName, _noClasses);
@@ -98,7 +100,8 @@ public final class UMLExpressionModel  {
         if (_mustRefresh) {
             _expression = null;
             Object target = _container.getTarget();
-            if (_getMethod != null && target != null) {
+            if (_getMethod != null && target != null
+		&& _objectClass.isAssignableFrom(target.getClass())) {
                 try {
                     _expression = _getMethod.invoke(target, _noArgs);
                 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -53,13 +53,21 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
-        return org.argouml.model.ModelFacade.isANamespace(o) && CoreHelper.getHelper().isValidNamespace(/*(MModelElement)*/ getTarget(), /*(MNamespace)*/ o);
+        return ModelFacade.isAModelElement(getTarget())
+		&& ModelFacade.isANamespace(o)
+		&& CoreHelper.getHelper().isValidNamespace(
+			/*(MModelElement)*/ getTarget(),
+			/*(MNamespace)*/ o);
     }
     
     /**  
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
+	if (!ModelFacade.isAModelElement(getTarget())) {
+	    return;
+	}
+
         setElements(CoreHelper.getHelper()
 		    .getAllPossibleNamespaces(/*(MModelElement)*/ getTarget()));
     }
@@ -68,10 +76,8 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
-        if (getTarget() != null) {
-            return ModelFacade.getNamespace(getTarget());
-        }
-        return null;
+	return ModelFacade.isAModelElement(getTarget())
+		? ModelFacade.getNamespace(getTarget())
+		: null;
     }
-       
 }

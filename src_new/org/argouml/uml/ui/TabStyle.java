@@ -421,30 +421,26 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
      * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        setTarget(e.getNewTarget());
-        fireTargetAdded(e);
-
+	targetSet(e);
     }
 
     /**
      * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        // how to handle empty target lists?
-        // probably the TabProps should only show an empty pane in that
-        // case
-        setTarget(e.getNewTarget());
-        fireTargetRemoved(e);
-
+	targetSet(e);
     }
 
     /**
      * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {
+	// how to handle empty target lists?
+	// probably the TabProps should only show an empty pane in that
+	// case
+	fireTargetEvent(e);
         setTarget(e.getNewTarget());
-        fireTargetSet(e);
-
+	fireTargetEvent(e);
     }
 
     /**
@@ -467,6 +463,18 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
         _listenerList.remove(TargetListener.class, listener);
     }
 
+    private void fireTargetEvent(TargetEvent e) {
+	if (TargetEvent.TARGET_SET.equals(e.getName())) {
+	    fireTargetSet(e);
+	} else if (TargetEvent.TARGET_ADDED.equals(e.getName())) {
+	    fireTargetAdded(e);
+	} else if (TargetEvent.TARGET_REMOVED.equals(e.getName())) {
+	    fireTargetRemoved(e);
+	} else {
+	    _cat.warn("fireTargetEvent didn't recognize target event name: " + e.getName());
+	}
+    }
+
     /**
      * @param targetEvent
      */
@@ -475,7 +483,6 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
         Object[] listeners = _listenerList.getListenerList();
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
-                // Lazily create the event:
                 ((TargetListener) listeners[i + 1]).targetSet(targetEvent);
             }
         }
@@ -490,7 +497,6 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
 
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
-                // Lazily create the event:
                 ((TargetListener) listeners[i + 1]).targetAdded(targetEvent);
             }
         }
@@ -504,7 +510,6 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
         Object[] listeners = _listenerList.getListenerList();
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
-                // Lazily create the event:
                 ((TargetListener) listeners[i + 1]).targetRemoved(targetEvent);
             }
         }

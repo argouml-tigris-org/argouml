@@ -50,7 +50,7 @@ What tools do I need to use this build file?
   <property name="docbook-xsl-root" 
 	    value="${documentation.dir}/docbook-setup/${docbook-xsl}"/>
   <property name="docbook-xsl-source-url"
-            value="http://cesnet.dl.sourceforge.net/sourceforge/docbook/${docbook-xsl}.zip"/>
+            value="http://belnet.dl.sourceforge.net/sourceforge/docbook/${docbook-xsl}.zip"/>
 
   <path id="saxon.classpath">
     <pathelement location="${saxon.jar.path}" />
