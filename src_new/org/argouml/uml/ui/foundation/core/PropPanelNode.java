@@ -45,9 +45,7 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-
 import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLList;
 import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.util.ConfigLoader;
@@ -73,7 +71,7 @@ public class PropPanelNode extends PropPanelClassifier {
         addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
         addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-        addField(Translator.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
+        add(_modifiersPanel);
         
         addSeperator();
         

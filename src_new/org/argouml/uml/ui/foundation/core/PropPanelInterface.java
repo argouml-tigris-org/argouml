@@ -34,10 +34,8 @@ package org.argouml.uml.ui.foundation.core;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreFactory;
-
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.util.ConfigLoader;
 
 public class PropPanelInterface extends PropPanelClassifier {
@@ -60,7 +58,7 @@ public class PropPanelInterface extends PropPanelClassifier {
 	  modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", "checkbox.final-uc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
 	  modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", "checkbox.root-uc"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
 	*/
-	addField(Translator.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
+	add( _modifiersPanel);
 	addField(Translator.localize("UMLMenu", "label.namespace-visibility"), getNamespaceVisibilityPanel());
 
 	addSeperator();

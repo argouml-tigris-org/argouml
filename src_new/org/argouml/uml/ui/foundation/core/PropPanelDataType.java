@@ -36,7 +36,6 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.util.ConfigLoader;
 
@@ -69,8 +68,7 @@ public class PropPanelDataType extends PropPanelClassifier {
         addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
         addField(Translator.localize("UMLMenu", "label.namespace"),
                 getNamespaceComboBox());
-        addField(Translator.localize("UMLMenu", "label.modifiers"),
-                _modifiersPanel);
+        add(_modifiersPanel);
         addField(Translator.localize("UMLMenu", "label.namespace-visibility"),
                 getNamespaceVisibilityPanel());
 

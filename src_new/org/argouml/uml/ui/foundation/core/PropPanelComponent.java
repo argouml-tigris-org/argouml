@@ -27,9 +27,7 @@ package org.argouml.uml.ui.foundation.core;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.PropPanelButton;
-
 import org.argouml.util.ConfigLoader;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
 
 /**
  * PropPanel for a UML component.
@@ -51,7 +49,7 @@ public class PropPanelComponent extends PropPanelClassifier {
 	// addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
 	addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
 	addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
-	addField(Translator.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
+	add(_modifiersPanel);
 
 	addSeperator();
 
