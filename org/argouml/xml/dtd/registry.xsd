@@ -190,12 +190,22 @@
 		<xsd:complexType>
 			<xsd:complexContent>
 				<xsd:extension base="Behavior">
-					<xsd:attribute name="critiques" type="xsd:IDREFS" use="required"/>
+					<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+						<xsd:element ref="Critique"/>
+					</xsd:sequence>
+					<xsd:attribute name="defaultPackage" type="package"/>
 				</xsd:extension>
 			</xsd:complexContent>
 		</xsd:complexType>
 	</xsd:element>
-	<xsd:element name="Critique" type="JavaBehavior"/>
+	<xsd:element name="Critique">
+		<xsd:complexType>
+			<xsd:attribute name="name" type="xsd:string"/>
+			<xsd:attribute name="description" type="xsd:string"/>
+			<xsd:attribute name="isEnabled" type="xsd:boolean" use="default" value="true"/>
+			<xsd:attribute name="class" type="class" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
 	<xsd:element name="Personality">
 		<xsd:complexType>
 			<xsd:attribute name="name" type="xsd:string" use="required"/>
