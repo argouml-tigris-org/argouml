@@ -57,18 +57,6 @@ public abstract class ActionAddDiagram extends UMLAction {
     }
 
     /**
-     * The constructor.
-     * 
-     * @param s the name
-     * @param global is global
-     * @param hasIcon has an icon
-     */
-    public ActionAddDiagram(String s, boolean global, boolean hasIcon) {
-        super(s, global, hasIcon);
-    }
-
-    
-    /**
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {       

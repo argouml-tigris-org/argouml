@@ -54,7 +54,7 @@ public class ActionActivityDiagram extends ActionAddDiagram {
      * Constructor.
      */
     private ActionActivityDiagram() {
-        super("action.activity-diagram", true, HAS_ICON);
+        super("action.activity-diagram");
     }
 
     /**
