@@ -45,14 +45,23 @@ import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
+/**
+ * This class defines a renderer object for UML Deployment Diagrams. 
+ *
+ */
 public class DeploymentDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer 
 {
-    protected static Logger cat =
+    private static final Logger LOG =
 	Logger.getLogger(DeploymentDiagramRenderer.class);
 
-    /** Return a Fig that can be used to represent the given node */
-
+    /** 
+     * Return a Fig that can be used to represent the given node. 
+     * 
+     * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
+     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, 
+     * java.lang.Object)
+     */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
 	if (ModelFacade.isANode(node)) return new FigMNode(gm, node);
 	else if (ModelFacade.isANodeInstance(node))
@@ -65,14 +74,20 @@ public class DeploymentDiagramRenderer
 	else if (ModelFacade.isAInterface(node))
 	    return new FigInterface(gm, node); 
 	else if (ModelFacade.isAObject(node)) return new FigObject(gm, node);
-	  else if (ModelFacade.isAComment(node)) {
+	else if (ModelFacade.isAComment(node)) {
 	            return new FigComment(gm, node);
-	        }
-	cat.debug("TODO DeploymentDiagramRenderer getFigNodeFor");
+	}
+	LOG.debug("TODO: DeploymentDiagramRenderer getFigNodeFor");
 	return null;
     }
 
-    /** Return a Fig that can be used to represent the given edge */
+    /** 
+     * Return a Fig that can be used to represent the given edge.
+     * 
+     * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
+     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, 
+     * java.lang.Object)
+     */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
 
 	if (ModelFacade.isAAssociation(edge)) {
@@ -84,7 +99,7 @@ public class DeploymentDiagramRenderer
 	    Object lnk = /*(MLink)*/ edge;
 	    FigLink lnkFig = new FigLink(lnk);
 	    Collection linkEnds = ModelFacade.getConnections(lnk);
-	    if (linkEnds == null) cat.debug("null linkRoles....");
+	    if (linkEnds == null) LOG.debug("null linkRoles....");
 	    Object[] leArray = linkEnds.toArray();
 	    Object fromEnd = leArray[0];
 	    Object fromInst = ModelFacade.getInstance(fromEnd);
@@ -102,10 +117,10 @@ public class DeploymentDiagramRenderer
 	    Object dep = /*(MDependency)*/ edge;
 	    FigDependency depFig = new FigDependency(dep);
 
-	    Object supplier =
-		/*(MModelElement)*/ ((ModelFacade.getSuppliers(dep).toArray())[0]);
-	    Object client =
-		/*(MModelElement)*/ ((ModelFacade.getClients(dep).toArray())[0]);
+	    Object supplier = /*(MModelElement)*/
+		 ((ModelFacade.getSuppliers(dep).toArray())[0]);
+	    Object client = /*(MModelElement)*/
+		 ((ModelFacade.getClients(dep).toArray())[0]);
 
 	    FigNode supFN = (FigNode) lay.presentationFor(supplier);
 	    FigNode cliFN = (FigNode) lay.presentationFor(client);
