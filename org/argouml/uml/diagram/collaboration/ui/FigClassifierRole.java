@@ -237,7 +237,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         
         Object stereo = null;
         if (ModelFacade.getStereotypes(me).size() > 0) {
-            stereo = ModelFacade.getStereotypes(me);
+            stereo = ModelFacade.getStereotypes(me).iterator().next();
         }
 
         // Where we now have no stereotype, mark as not displayed. Were we do
