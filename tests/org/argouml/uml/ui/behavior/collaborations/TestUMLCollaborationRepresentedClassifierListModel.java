@@ -65,7 +65,6 @@ public class TestUMLCollaborationRepresentedClassifierListModel
         MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
         cont.setTarget(elem);
         model = new UMLCollaborationRepresentedClassifierListModel(cont);
-        elem.addMElementListener(model);
     }
     
     /**

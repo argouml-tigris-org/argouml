@@ -68,7 +68,6 @@ public class TestUMLMessageActionListModel
         MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
         cont.setTarget(elem);
         model = new UMLMessageActionListModel(cont);
-        elem.addMElementListener(model);
     }
     
     /**

@@ -65,7 +65,6 @@ public class TestUMLCollaborationRepresentedOperationListModel
         MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
         cont.setTarget(elem);
         model = new UMLCollaborationRepresentedOperationListModel(cont);
-        elem.addMElementListener(model);
     }
     
     /**

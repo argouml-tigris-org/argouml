@@ -82,7 +82,6 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
         MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
         cont.setTarget(elem);
         model = new UMLAssociationEndRoleBaseListModel(cont);
-        elem.addMElementListener(model);
     }
 
     /**

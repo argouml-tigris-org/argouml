@@ -63,7 +63,6 @@ public class TestUMLInteractionCollaborationListModel extends TestCase {
         MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
         cont.setTarget(elem);
         model = new UMLInteractionContextListModel(cont);
-        elem.addMElementListener(model);
     }
     
     /**
