@@ -28,7 +28,6 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ExtensionMechanismsFactory;
-import org.argouml.uml.cognitive.critics.WizOperName;
 
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.foundation.core.MModelElement;

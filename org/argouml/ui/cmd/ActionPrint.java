@@ -30,10 +30,6 @@ import javax.swing.AbstractAction;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.uml.ui.UMLAction;
-import org.tigris.gef.base.CmdPrint;
-import org.tigris.gef.base.Diagram;
 
 
 ////////////////////////////////////////////////////////////////

@@ -25,7 +25,6 @@
 package org.argouml.model.uml;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.Project;
 import org.argouml.model.ModelManagementFactory;
 
 import ru.novosoft.uml.MFactory;

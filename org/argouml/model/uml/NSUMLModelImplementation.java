@@ -24,7 +24,6 @@
 
 package org.argouml.model.uml;
 
-import java.beans.PropertyChangeSupport;
 import java.io.Writer;
 
 import org.argouml.model.ActivityGraphsFactory;
