@@ -520,7 +520,29 @@ public class CollaborationsHelper {
         }
         ((MMessage)message).setAction((MAction)action);
     }
-            
-		
+
+    /**
+     * Returns the source of an AssociationRole.
+     * @param assnr MAssociationRole
+     * @return MClassifierRole
+     */
+    public MClassifierRole getSource(MAssociationRole assnr) {
+        Collection con = assnr.getConnections();
+        if (con.isEmpty()) return null;
+        MAssociationEndRole role = (MAssociationEndRole)con.toArray()[0];
+        return (MClassifierRole)role.getType();
+    }
+
+    /**
+     * Returns the destination of an AssociationRole.
+     * @param assnr MAssociationRole
+     * @return MClassifierRole
+     */
+    public MClassifierRole getDestination(MAssociationRole assnr) {
+        Collection con = assnr.getConnections();
+        if (con.isEmpty()) return null;
+        MAssociationEndRole role = (MAssociationEndRole)con.toArray()[1];
+        return (MClassifierRole)role.getType();
+    }
 }
 
