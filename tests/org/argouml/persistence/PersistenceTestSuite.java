@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.xml.xmi;
+package org.argouml.persistence;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -30,16 +30,16 @@ import junit.framework.TestSuite;
 /**
  * @author Thierry Lach
  */
-public class XmlXmiTestSuite {
+public class PersistenceTestSuite {
 
-	/** Test suite for this package
-	 * 
-	 * @return the junit test suite
-	 */
+    /** Test suite for this package
+     * 
+     * @return the junit test suite
+     */
     public static Test suite() {
         TestSuite suite = new TestSuite("Tests for " 
-                + XmlXmiTestSuite.class.getPackage().getName());
-        suite.addTestSuite(TestXMIReader.class);
+                + PersistenceTestSuite.class.getPackage().getName());
+        suite.addTestSuite(TestXmiFilePersister.class);
         return suite;
     }
 
