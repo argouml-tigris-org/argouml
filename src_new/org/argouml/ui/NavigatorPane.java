@@ -306,13 +306,12 @@ implements ItemListener, TreeSelectionListener {
         //TreeCellEditor tce = _tree.getCellEditor();
         JPopupMenu popup = new JPopupMenu("test");
         Object obj = getSelectedObject();
-		if (obj instanceof PopupGenerator) {
-			Vector actions = ((PopupGenerator)obj).getPopUpActions(me);
-			int size = actions.size();
-			for (int i = 0; i < size; ++i) {
-				popup.add((AbstractAction) actions.elementAt(i));
-			}
-		}
+	if (obj instanceof PopupGenerator) {
+	    Vector actions = ((PopupGenerator)obj).getPopUpActions(me);
+	    for(Enumeration e = actions.elements(); e.hasMoreElements(); ) {
+		popup.add((AbstractAction) e.nextElement());
+	    }
+	}
         else if (obj instanceof MClassifier || obj instanceof MUseCase
 		 || obj instanceof MActor || obj instanceof MPackage 
 		 || obj instanceof MStateVertex || obj instanceof MInstance) {
