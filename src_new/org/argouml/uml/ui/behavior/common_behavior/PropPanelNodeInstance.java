@@ -88,6 +88,6 @@ public class PropPanelNodeInstance extends PropPanelInstance {
         addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
         addButton(new PropPanelButton2(new ActionRemoveFromModel(),
-                lookupIcon("Delete")));;
+                lookupIcon("Delete")));
     }
 }
