@@ -191,7 +191,7 @@ public class DisplayTextTree
             return "-";
     }
     
-    /** needs documenting */
+    /** specific to the Navigator tree */
     public void fireTreeWillExpand(TreePath path) {
         
         showStereotype = Configuration
@@ -260,6 +260,9 @@ public class DisplayTextTree
     
     /** Signals to the tree that something has changed and it is best
      * to update the tree.
+     *
+     * <p>specific to the Navigator tree
+     *
      * <P>
      * For complex operations such as import(?) and add attribute(8), that
      * does several calls to this it is better if we defer the actual update
@@ -285,6 +288,8 @@ public class DisplayTextTree
      * Countpart to forceUpdate() that only updates viewable
      * rows, instead of rebuilding the whole tree; a vast improvement
      * in performance.
+     *
+     * <p>specific to the Navigator tree
      *
      * @see org.argouml.model.uml.UmlModelListener
      */
@@ -320,6 +325,8 @@ public class DisplayTextTree
      * really is updated.
      * <P>
      * Never call this one from any code, it is package private.
+     *
+     *  <p>specific to the Navigator tree
      *
      * @since 0.13.1
      */
@@ -378,11 +385,14 @@ public class DisplayTextTree
     public void setTarget(Object target) {
         
         cat.debug("setTarget");
+        // specific to the Navigator tree
         if (getModel() instanceof NavPerspective) {
             
             if (target instanceof Fig) {
                 target = ((Fig)target).getOwner();
             }
+            
+        }
             
             // clear the tree selection
             this.clearSelection();
@@ -399,8 +409,6 @@ public class DisplayTextTree
                     this.scrollRowToVisible(row);
                 }
             }
-            
-        }
     }
     
 } /* end class DisplayTextTree */
