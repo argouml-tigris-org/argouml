@@ -41,14 +41,71 @@ public class ParserDisplay extends Parser {
   ////////////////////////////////////////////////////////////////
   // parsing methods
 
+  /** Parse a line of the form:
+   *  [visibility] [keywords] returntype name(params)[;] */
   public Operation parseOperation(String s) {
-    return null;
+    s = s.trim();
+    if (s.endsWith(";")) s = s.substring(0, s.length()-2);
+    Operation res = new Operation();
+    s = parseOutVisibility(res, s);
+    s = parseOutKeywords(res, s);
+    s = parseOutReturnType(res, s);
+    s = parseOutName(res, s);
+    s = parseOutParams(res, s);
+    return res;
   }
 
   public Attribute parseAttribute(String s) {
     return null;
   }
 
+
+  public String parseOutVisibility(Feature f, String s) {
+    s = s.trim();
+    int firstSpace = s.indexOf(" ");
+    if (firstSpace == -1) return s;
+    String visStr = s.substring(0, firstSpace-1);
+    if (visStr.equals("public") || visStr.equals("+"))
+      f.setVisibility(VisibilityKind.PUBLIC);
+    else if (visStr.equals("private") || visStr.equals("-"))
+      f.setVisibility(VisibilityKind.PRIVATE);
+    else if (visStr.equals("protected") || visStr.equals("#"))
+      f.setVisibility(VisibilityKind.PROTECTED);
+    else if (visStr.equals("package") || visStr.equals("~"))
+      f.setVisibility(VisibilityKind.UNSPEC);
+    else {
+      System.out.println("unknown visibility, using default");
+      return s;
+    }
+    return s.substring(firstSpace+1);
+  }
+
+  public String parseOutKeywords(Feature s, String s) {
+    s = s.trim();
+    int firstSpace = s.indexOf(" ");
+    if (firstSpace == -1) return s;
+    String visStr = s.substring(0, firstSpace-1);
+    if (visStr.equals("static"))
+      f.setOwnerScope(ScopeKind.CLASSIFIER);
+    else if (visStr.equals("transient"))
+      System.out.println("'transient' keyword is currently ignored");
+    else if (visStr.equals("final"))
+      System.out.println("'final' keyword is currently ignored");
+    else if (visStr.equals("abstract"))
+      System.out.println("'abstract' keyword is currently ignored");
+    else {
+      return s;
+    }
+    return parseOutKeywords(op, s.substring(firstSpace+1));
+  }
+
+  public String parseOutReturnType(Operation op, String s) {
+    return s;
+  }
+
+  public String parseOutParams(Operation op, String s) {
+    return s;
+  }
 
   public Parameter parseParameter(String s) {
     return null;
