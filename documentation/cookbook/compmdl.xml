@@ -543,14 +543,14 @@ MFactory.getDefaultFactory().create<replaceable>Type</replaceable>()
 	  <row>
 	    <entry>Delete a model element</entry>
 	    <entry>
-
-		</entry>
+        &nbsp;
+  		</entry>
 	    <entry>
-
-		</entry>
-	    <entry>
-			UmlFactory.getFactory().delete(<replaceable>object</replaceable>)
-		</entry>
+        &nbsp;
+  		</entry>
+      <entry>
+        ProjectManager.getManager().getCurrentProject().moveToTrash(<replaceable>object</replaceable>) 
+      </entry>
 	  </row>
 	  <row>
 	    <entry>
