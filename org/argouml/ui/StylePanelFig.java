@@ -38,6 +38,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -57,6 +58,9 @@ public class StylePanelFig extends StylePanel
     ////////////////////////////////////////////////////////////////
     // constants
     private static final String BUNDLE = "Cognitive";
+    
+    private static final String CUSTOM_ITEM = Argo.localize(
+        BUNDLE, "stylepane.label.custom") + "...";
 
     ////////////////////////////////////////////////////////////////
     // instance vars
@@ -179,7 +183,7 @@ public class StylePanelFig extends StylePanel
 	_fillField.addItem(Color.green);
 	_fillField.addItem(Color.orange);
 	_fillField.addItem(Color.pink);
-	_fillField.addItem(Argo.localize(BUNDLE, "stylepane.label.custom"));
+	_fillField.addItem(CUSTOM_ITEM);
 
 	_lineField.addItem(Argo.localize(BUNDLE, "stylepane.label.no-line"));
 	_lineField.addItem(Color.black);
@@ -198,7 +202,7 @@ public class StylePanelFig extends StylePanel
 	_lineField.addItem(Color.green);
 	_lineField.addItem(Color.orange);
 	_lineField.addItem(Color.pink);
-	_lineField.addItem(Argo.localize(BUNDLE, "stylepane.label.custom"));
+	_lineField.addItem(CUSTOM_ITEM);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -239,18 +243,28 @@ public class StylePanelFig extends StylePanel
         }
 
         // Change the fill colour
-
+        
         if (_target.getFilled()) {
-            _fillField.setSelectedItem(_target.getFillColor());
+            Color c = _target.getFillColor();
+            _fillField.setSelectedItem(c);
+            if (c != null && !_fillField.getSelectedItem().equals(c)) {
+                _fillField.insertItemAt(c, _fillField.getItemCount() - 1);
+                _fillField.setSelectedItem(c);
+            }
         }
         else {
             _fillField.setSelectedIndex(0);
         }
 
-        // Change the line width
+        // Change the line colour
 
         if (_target.getLineWidth() > 0) {
-            _lineField.setSelectedItem(_target.getLineColor());
+            Color c = _target.getLineColor();
+            _lineField.setSelectedItem(c);
+            if (c != null && !_lineField.getSelectedItem().equals(c)) {
+                _lineField.insertItemAt(c, _lineField.getItemCount() - 1);
+                _lineField.setSelectedItem(c);
+            }
         }
         else {
             _lineField.setSelectedIndex(0);
@@ -393,7 +407,21 @@ public class StylePanelFig extends StylePanel
 
         return res;
     }
-
+    
+    /**
+     * Prompts the user for a new custom color and adds that color to the combo box.
+     */
+    protected void handleCustomColor(JComboBox field, String title, Color targetColor) {
+        Color newColor = JColorChooser.showDialog(
+            ProjectBrowser.getInstance(), title, targetColor);
+        if (newColor != null) {
+            field.insertItemAt(newColor, field.getItemCount() - 1);
+            field.setSelectedItem(newColor);
+        }
+        else if (_target != null) {
+            field.setSelectedItem(targetColor);
+        }        
+    }
 
     public void setTargetFill() {
 	Object c =  _fillField.getSelectedItem();
@@ -435,12 +463,26 @@ public class StylePanelFig extends StylePanel
     // event handling
 
     public void itemStateChanged(ItemEvent e) {
-	Object src = e.getSource();
-	if (src == _fillField) setTargetFill();
-	else if (src == _lineField) setTargetLine();
-	else if (src == _shadowField) setTargetShadow();
-	//else if (src == _dashedField) setTargetDashed();
-	else super.itemStateChanged(e);
+        Object src = e.getSource();
+        if (e.getStateChange() == ItemEvent.SELECTED && _target != null) {
+            if (src == _fillField) {
+                if (e.getItem() == CUSTOM_ITEM) {
+                    handleCustomColor(
+                        _fillField, "Custom Fill Color", _target.getFillColor());
+                }
+                setTargetFill();
+            }
+            else if (src == _lineField) {
+                if (e.getItem() == CUSTOM_ITEM) {
+                    handleCustomColor(
+                        _lineField, "Custom Line Color", _target.getLineColor());
+                }
+                setTargetLine();
+            }
+            else if (src == _shadowField)
+                setTargetShadow();
+            //else if (src == _dashedField) setTargetDashed();
+        }
     }
 
     /**
