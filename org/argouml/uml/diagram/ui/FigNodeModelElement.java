@@ -30,6 +30,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -67,7 +68,6 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ItemUID;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
-import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
@@ -84,6 +84,7 @@ import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.UUIDManager;
 import org.argouml.uml.generator.ParserDisplay;
+import org.argouml.uml.ui.UMLAction;
 import org.argouml.util.Trash;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -424,35 +425,85 @@ public abstract class FigNodeModelElement
     protected Object buildVisibilityPopUp() {
         ArgoJMenu visibilityMenu = new ArgoJMenu("menu.popup.visibility");
 
-        ActionModifier a = new ActionModifier(
-                Translator.localize("checkbox.visibility.public-uc"),
-                "visibility", "getVisibility", "setVisibility",
-                getOwner(),
-                (Class) ModelFacade.VISIBILITYKIND,
-                ModelFacade.PUBLIC_VISIBILITYKIND,
-                null);
-        /*MVW: Strange, but doing this for this one item, 
-         * makes the other 2 default correctly... */
-        a.putValue("SELECTED", new Boolean(ModelFacade.PUBLIC_VISIBILITYKIND
-                .equals(ModelFacade.getVisibility(getOwner()))));
-        visibilityMenu.addCheckItem(a);
-
-        visibilityMenu.addCheckItem( new ActionModifier(
-                Translator.localize("checkbox.visibility.protected-uc"),
-                "visibility", "getVisibility", "setVisibility",
-                getOwner(),
-                (Class) ModelFacade.VISIBILITYKIND,
-                ModelFacade.PROTECTED_VISIBILITYKIND,
-                null)); 
-        visibilityMenu.addCheckItem( new ActionModifier(
-                Translator.localize("checkbox.visibility.private-uc"),
-                "visibility", "getVisibility", "setVisibility",
-                getOwner(),
-                (Class) ModelFacade.VISIBILITYKIND,
-                ModelFacade.PRIVATE_VISIBILITYKIND,
-                null)); 
+        visibilityMenu.addCheckItem(new ActionVisibilityPublic(getOwner()));
+        visibilityMenu.addCheckItem(new ActionVisibilityPrivate(getOwner()));
+        visibilityMenu.addCheckItem(new ActionVisibilityProtected(getOwner()));
+        
         return visibilityMenu;
     }
+    
+    class ActionVisibilityPublic extends UMLAction {
+        private Object owner;
+        /**
+         * The constructor.
+         * 
+         * @param o the target
+         */
+        public ActionVisibilityPublic(Object o) {
+            super("checkbox.visibility.public-uc", NO_ICON);
+            owner = o;
+            putValue("SELECTED", new Boolean(
+                    ModelFacade.PUBLIC_VISIBILITYKIND
+                    .equals(ModelFacade.getVisibility(getOwner()))));
+        }
+
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            ModelFacade.setVisibility(owner, 
+                    ModelFacade.PUBLIC_VISIBILITYKIND);
+        }
+    }
+    
+    class ActionVisibilityProtected extends UMLAction {
+        private Object owner;
+        /**
+         * The constructor.
+         * 
+         * @param o the target
+         */
+        public ActionVisibilityProtected(Object o) {
+            super("checkbox.visibility.protected-uc", NO_ICON);
+            owner = o;
+            putValue("SELECTED", new Boolean(
+                    ModelFacade.PROTECTED_VISIBILITYKIND
+                    .equals(ModelFacade.getVisibility(getOwner()))));
+        }
+
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            ModelFacade.setVisibility(owner, 
+                    ModelFacade.PROTECTED_VISIBILITYKIND);
+        }
+    }
+
+    class ActionVisibilityPrivate extends UMLAction {
+        private Object owner;
+        /**
+         * The constructor.
+         * 
+         * @param o the target
+         */
+        public ActionVisibilityPrivate(Object o) {
+            super("checkbox.visibility.private-uc", NO_ICON);
+            owner = o;
+            putValue("SELECTED", new Boolean(
+                    ModelFacade.PRIVATE_VISIBILITYKIND
+                    .equals(ModelFacade.getVisibility(getOwner()))));
+        }
+
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            ModelFacade.setVisibility(owner, 
+                    ModelFacade.PRIVATE_VISIBILITYKIND);
+        }
+    }
+
     
     /**
      * Build a pop-up menu item for the various modifiers.<p>
@@ -464,26 +515,101 @@ public abstract class FigNodeModelElement
      */
     protected Object buildModifierPopUp(int items) {
         ArgoJMenu modifierMenu = new ArgoJMenu("menu.popup.modifiers");
-
+        
         if ((items & ABSTRACT) > 0) 
-            modifierMenu.addCheckItem( new ActionModifier(
-                    Translator.localize("checkbox.abstract-uc"),
-                    "isAbstract", "isAbstract", "setAbstract",
-                    getOwner()));
+            modifierMenu.addCheckItem(new ActionModifierAbstract(getOwner()));
         if ((items & LEAF) > 0)
-            modifierMenu.addCheckItem( new ActionModifier(
-                    Translator.localize("checkbox.final-uc"),
-                    "isLeaf", "isLeaf", "setLeaf", getOwner()));
+            modifierMenu.addCheckItem(new ActionModifierLeaf(getOwner()));
         if ((items & ROOT) > 0)
-            modifierMenu.addCheckItem(  new ActionModifier(
-                    Translator.localize("checkbox.root-uc"),
-                    "isRoot", "isRoot", "setRoot", getOwner()));
+            modifierMenu.addCheckItem(new ActionModifierRoot(getOwner()));
         if ((items & ACTIVE) > 0)
-            modifierMenu.addCheckItem(  new ActionModifier(
-                    Translator.localize("checkbox.active-uc"),
-                    "isActive", "isActive", "setActive",
-                    getOwner()));
+            modifierMenu.addCheckItem(new ActionModifierActive(getOwner()));
+
         return modifierMenu;
+    }
+    
+    class ActionModifierAbstract extends UMLAction {
+        private Object owner;
+        /**
+         * The constructor.
+         * 
+         * @param o the target
+         */
+        public ActionModifierAbstract(Object o) {
+            super("checkbox.abstract-uc", NO_ICON);
+            owner = o;
+            putValue("SELECTED", new Boolean(ModelFacade.isAbstract(owner)));
+        }
+
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            ModelFacade.setAbstract(owner, !ModelFacade.isAbstract(owner));
+        }
+    }
+
+    class ActionModifierLeaf extends UMLAction {
+        private Object owner;
+        /**
+         * The constructor.
+         * 
+         * @param o the target
+         */
+        public ActionModifierLeaf(Object o) {
+            super("checkbox.final-uc", NO_ICON);
+            owner = o;
+            putValue("SELECTED", new Boolean(ModelFacade.isLeaf(owner)));
+        }
+
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            ModelFacade.setLeaf(owner, !ModelFacade.isLeaf(owner));
+        }
+    }
+
+    class ActionModifierRoot extends UMLAction {
+        private Object owner;
+        /**
+         * The constructor.
+         * 
+         * @param o the target
+         */
+        public ActionModifierRoot(Object o) {
+            super("checkbox.root-uc", NO_ICON);
+            owner = o;
+            putValue("SELECTED", new Boolean(ModelFacade.isRoot(owner)));
+        }
+
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            ModelFacade.setRoot(owner, !ModelFacade.isRoot(owner));
+        }
+    }
+
+    class ActionModifierActive extends UMLAction {
+        private Object owner;
+        /**
+         * The constructor.
+         * 
+         * @param o the target
+         */
+        public ActionModifierActive(Object o) {
+            super("checkbox.active-uc", NO_ICON);
+            owner = o;
+            putValue("SELECTED", new Boolean(ModelFacade.isActive(owner)));
+        }
+
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            ModelFacade.setActive(owner, !ModelFacade.isActive(owner));
+        }
     }
     
     ////////////////////////////////////////////////////////////////
