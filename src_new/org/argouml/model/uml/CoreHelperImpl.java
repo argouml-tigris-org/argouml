@@ -1795,6 +1795,7 @@ class CoreHelperImpl implements CoreHelper {
             ((MComment) handle).removeAnnotatedElement((MModelElement) me);
             return;
         }
+        LOG.error("Failed to remove comment from model element");
         throw new IllegalArgumentException();
     }
 
@@ -1962,6 +1963,7 @@ class CoreHelperImpl implements CoreHelper {
                 .addAnnotatedElement(((MModelElement) annotatedElement));
             return;
         }
+        LOG.error("Failed to link a comment to a model element");
         throw new IllegalArgumentException("comment: " + comment
                 + " or annotatedElement: " + annotatedElement);
     }

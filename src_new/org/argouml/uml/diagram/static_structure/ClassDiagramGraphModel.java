@@ -304,73 +304,75 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * Return true if the given object is a valid edge in this graph.
      */
     public boolean canAddEdge(Object edge) {
-	if (edge == null) {
-	    return false;
-	}
-	if (containsEdge(edge)) {
-	    return false;
-	}
-	Object end0 = null, end1 = null;
-	if (ModelFacade.isAAssociation(edge)) {
-	    Collection conns = ModelFacade.getConnections(edge);
-	    if (conns.size() < 2) {
-	        return false;
-	    }
-	    Iterator iter = conns.iterator();
-	    Object associationEnd0 = iter.next();
-	    Object associationEnd1 = iter.next();
-	    if (associationEnd0 == null || associationEnd1 == null) {
-	        return false;
-	    }
-	    end0 = ModelFacade.getType(associationEnd0);
-	    end1 = ModelFacade.getType(associationEnd1);
-	} else if (ModelFacade.isAAssociationEnd(edge)) {
-	    end0 = ModelFacade.getAssociation(edge);
-	    end1 = ModelFacade.getType(edge);
-
-	    return (end0 != null
-	            && end1 != null
-	            && (containsEdge(end0) || containsNode(end0))
-	            && containsNode(end1));
-	} else if (ModelFacade.isAGeneralization(edge)) {
-	    end0 = ModelFacade.getChild(edge);
-	    end1 = ModelFacade.getParent(edge);
-	} else if (ModelFacade.isADependency(edge)) {
-	    Collection clients = ModelFacade.getClients(edge);
-	    Collection suppliers = ModelFacade.getSuppliers(edge);
-	    if (clients == null || suppliers == null) {
-	        return false;
-	    }
-	    end0 = clients.iterator().next();
-	    end1 = suppliers.iterator().next();
-	} else if (ModelFacade.isALink(edge)) {
-	    Collection roles = ModelFacade.getConnections(edge);
-	    if (roles.size() < 2) {
-	        return false;
-	    }
-	    Iterator iter = roles.iterator();
-	    Object linkEnd0 = iter.next();
-	    Object linkEnd1 = iter.next();
-	    if (linkEnd0 == null || linkEnd1 == null) {
-	        return false;
-	    }
-	    end0 = ModelFacade.getInstance(linkEnd0);
-	    end1 = ModelFacade.getInstance(linkEnd1);
-	} else if (edge instanceof CommentEdge) {
-	    end0 = ((CommentEdge) edge).getSource();
-	    end1 = ((CommentEdge) edge).getDestination();
-	}
-	if (end0 == null || end1 == null) {
-	    return false;
-	}
+        if (edge == null) {
+            return false;
+        }
+        if (containsEdge(edge)) {
+            return false;
+        }
+        Object end0 = null, end1 = null;
+        if (ModelFacade.isAAssociation(edge)) {
+            Collection conns = ModelFacade.getConnections(edge);
+            if (conns.size() < 2) {
+                return false;
+            }
+            Iterator iter = conns.iterator();
+            Object associationEnd0 = iter.next();
+            Object associationEnd1 = iter.next();
+            if (associationEnd0 == null || associationEnd1 == null) {
+                return false;
+            }
+            end0 = ModelFacade.getType(associationEnd0);
+            end1 = ModelFacade.getType(associationEnd1);
+        } else if (ModelFacade.isAAssociationEnd(edge)) {
+            end0 = ModelFacade.getAssociation(edge);
+            end1 = ModelFacade.getType(edge);
+        
+            return (end0 != null
+                    && end1 != null
+                    && (containsEdge(end0) || containsNode(end0))
+                    && containsNode(end1));
+        } else if (ModelFacade.isAGeneralization(edge)) {
+            end0 = ModelFacade.getChild(edge);
+            end1 = ModelFacade.getParent(edge);
+        } else if (ModelFacade.isADependency(edge)) {
+            Collection clients = ModelFacade.getClients(edge);
+            Collection suppliers = ModelFacade.getSuppliers(edge);
+            if (clients == null || suppliers == null) {
+                return false;
+            }
+            end0 = clients.iterator().next();
+            end1 = suppliers.iterator().next();
+        } else if (ModelFacade.isALink(edge)) {
+            Collection roles = ModelFacade.getConnections(edge);
+            if (roles.size() < 2) {
+                return false;
+            }
+            Iterator iter = roles.iterator();
+            Object linkEnd0 = iter.next();
+            Object linkEnd1 = iter.next();
+            if (linkEnd0 == null || linkEnd1 == null) {
+                return false;
+            }
+            end0 = ModelFacade.getInstance(linkEnd0);
+            end1 = ModelFacade.getInstance(linkEnd1);
+        } else if (edge instanceof CommentEdge) {
+            end0 = ((CommentEdge) edge).getSource();
+            end1 = ((CommentEdge) edge).getDestination();
+        }
+        
+        if (end0 == null || end1 == null) {
+            return false;
+        }
+        
         if (!containsNode(end0)) {
-	    return false;
-	}
-        if (!containsNode(end1)) {
-	    return false;
-	}
-
-	return true;
+            return false;
+        }
+            if (!containsNode(end1)) {
+            return false;
+        }
+        
+        return true;
     }
 
 

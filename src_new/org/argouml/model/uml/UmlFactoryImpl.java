@@ -138,9 +138,7 @@ import ru.novosoft.uml.model_management.MSubsystem;
  * @since ARGO0.11.2
  * @author Thierry Lach
  */
-// TODO: change back to default visibility when
-// reflection taken out of CmdCreateNode
-public class UmlFactoryImpl
+class UmlFactoryImpl
     extends AbstractUmlModelFactory
     implements UmlFactory {
     /**

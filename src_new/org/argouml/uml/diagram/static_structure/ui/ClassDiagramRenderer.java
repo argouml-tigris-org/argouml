@@ -213,6 +213,7 @@ public class ClassDiagramRenderer
         } else if (edge instanceof CommentEdge) {
             newEdge = new FigEdgeNote(edge, lay);
         }
+        
         if (newEdge == null) {
             throw new IllegalArgumentException(
                     "Don't know how to create FigEdge for model type "
