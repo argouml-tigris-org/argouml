@@ -97,6 +97,13 @@ public class CollaborationsHelper {
 		return list;
 	}
 	
+	/**
+	 * Returns all associations the bases of the classifierrole has, thereby forming
+	 * the set of associationroles the classifierrole can use. UML Spec 1.3
+	 * section 2.10.3.3
+	 * @param role
+	 * @return Collection
+	 */
 	public Collection getAllPossibleAssociationRoles(MClassifierRole role) {
 		if (role == null || role.getBases().isEmpty()) return new ArrayList();
 		Iterator it = role.getBases().iterator();

@@ -25,17 +25,22 @@ package org.argouml.model.uml.behavioralelements.usecases;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
+import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.model_management.MSubsystem;
 
 /**
  * Helper class for UML BehavioralElements::UseCases Package.
@@ -208,6 +213,26 @@ public class UseCasesHelper {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Returns the specificationpath operation of some usecase. See 
+	 * section 2.11.3.5 of the UML 1.3 spec for a definition
+	 * @param uc
+	 * @return Collection
+	 */
+	public Collection getSpecificationPath(MUseCase uc) {
+		Set set = new HashSet();
+		set.addAll(ModelManagementHelper.getHelper().getAllSurroundingNamespaces(uc));
+		Set set2 = new HashSet();
+		Iterator it = set.iterator();
+		while (it.hasNext()) {
+			Object o = it.next();
+			if (o instanceof MSubsystem || o instanceof MClass) {
+				set2.add(o);
+			}
+		}
+		return set2;
 	}
     	
 }
