@@ -150,7 +150,8 @@ implements ItemListener {
     MOperation oper = (MOperation) _target;
 
     MVisibilityKind vk = oper.getVisibility();
-    _visField.setSelectedItem(vk.getName());
+	if (vk != null)
+		_visField.setSelectedItem(vk.getName());
 
     MScopeKind sk = oper.getOwnerScope();
     MCallConcurrencyKind ck = oper.getConcurrency();

@@ -25,6 +25,7 @@ public class DBLoader
     static Connection Conn = null;
 
 	HashMap uuid2element = new HashMap();
+	HashMap uuid2ascend = new HashMap();
 
     //  default constructor, reads config file and connects to db.
     public DBLoader ()
@@ -104,6 +105,10 @@ public class DBLoader
 				readInterface(model, rs.getString("uuid"), rs.getString("name"), rs.getString("namespace"), rs.getString("stereotype"), rs.getString("package"));
 			if (rs.getString("UMLClassName").equals("Class"))
 				readClass(model, rs.getString("uuid"), rs.getString("name"), rs.getString("namespace"), rs.getString("stereotype"), rs.getString("package"));
+			if (rs.getString("UMLClassName").equals("Actor"))
+				readActor(model, rs.getString("uuid"), rs.getString("name"), rs.getString("namespace"), rs.getString("stereotype"), rs.getString("package"));
+			if (rs.getString("UMLClassName").equals("UseCase"))
+				readUseCase(model, rs.getString("uuid"), rs.getString("name"), rs.getString("namespace"), rs.getString("stereotype"), rs.getString("package"));
 			if (rs.getString("UMLClassName").equals("DataType"))
 				readDataType(rs.getString("uuid"), rs.getString("name"));
 		}
@@ -116,8 +121,26 @@ public class DBLoader
 			addOperations(cls, cls.getUUID());
 		}
 
+		// now construct the AssociationEnds, so the associations can be 
+		//built more easily
+		rs = stmt.executeQuery("SELECT * FROM tModelElement");
+			while (rs.next()) {
+			if (rs.getString("UMLClassName").equals("AssociationEnd"))
+				readAssociationEnd(model, rs.getString("uuid"), rs.getString("name"), rs.getString("namespace"), rs.getString("stereotype"), rs.getString("package"));
+		}
+
 		// last not least add relationships
-		
+		rs = stmt.executeQuery("SELECT * FROM tModelElement");
+			while (rs.next()) {
+			if (rs.getString("UMLClassName").equals("Association"))
+				readAssociation(model, rs.getString("uuid"), rs.getString("name"), rs.getString("namespace"), rs.getString("stereotype"), rs.getString("package"));
+			if (rs.getString("UMLClassName").equals("Generalization"))
+				readGeneralization(model, rs.getString("uuid"), rs.getString("name"), rs.getString("namespace"), rs.getString("stereotype"), rs.getString("package"));
+			if (rs.getString("UMLClassName").equals("Abstraction"))
+				readAbstraction(model, rs.getString("uuid"), rs.getString("name"), rs.getString("namespace"), rs.getString("stereotype"), rs.getString("package"));
+			if (rs.getString("UMLClassName").equals("Usage"))
+				readUsage(model, rs.getString("uuid"), rs.getString("name"), rs.getString("namespace"), rs.getString("stereotype"), rs.getString("package"));
+		}
 
 		return model;
 	}
@@ -146,6 +169,30 @@ public class DBLoader
 		me.setStereotype(readStereotype(stereotypeUUID));
 
 		uuid2element.put(interfaceUUID, me);
+	}
+
+	private void readActor(MModel model, String actorUUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
+
+		MActor actor = new MActorImpl();
+		actor.setName(name);
+		actor.setUUID(actorUUID);
+		if (ns.equals(model.getUUID()))
+			actor.setNamespace(model);
+		actor.setStereotype(readStereotype(stereotypeUUID));
+
+		uuid2element.put(actorUUID, actor);		
+	}
+
+	private void readUseCase(MModel model, String ucUUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
+
+		MUseCase usecase = new MUseCaseImpl();
+		usecase.setName(name);
+		usecase.setUUID(ucUUID);
+		if (ns.equals(model.getUUID()))
+			usecase.setNamespace(model);
+		usecase.setStereotype(readStereotype(stereotypeUUID));
+
+		uuid2element.put(ucUUID, usecase);		
 	}
 
 	private void readDataType(String dtUUID, String name) {
@@ -250,6 +297,145 @@ public class DBLoader
 			me.setAbstract(rsGE.getBoolean("isAbstract"));
 		}
 	}
+
+	//
+	// Here starts the relationship handling
+	//
+
+	private void readAssociationEnd(MModel model, String UUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
+	
+		MAssociationEnd ae = new MAssociationEndImpl();
+		MClassifier type = null;
+		ae.setName(name);
+		ae.setUUID(UUID);
+		if (ns.equals(model.getUUID()))
+			ae.setNamespace(model);
+		ae.setStereotype(readStereotype(stereotypeUUID));
+
+		String query = "SELECT ae.isNavigable, ae.ordering, ae.aggregation, ";
+		query += "ae.targetScope, ae.multiplicity, ae.changeability, ae.visibility, ae.type ";
+		query += "FROM tAssociationEnd ae ";
+		query += "WHERE ae.uuid = '"+UUID+"'";
+
+		Statement stmtAE = Conn.createStatement();
+		ResultSet rsAE = stmtAE.executeQuery(query);
+		if (rsAE.next()) {
+			ae.setNavigable(rsAE.getBoolean("isNavigable"));
+			if (! rsAE.getString("ordering").equals("-1"))
+				ae.setOrdering(MOrderingKind.forValue(Integer.parseInt(rsAE.getString("ordering"))));
+			if (! rsAE.getString("aggregation").equals("-1"))
+				ae.setAggregation(MAggregationKind.forValue(Integer.parseInt(rsAE.getString("aggregation"))));
+			if (! rsAE.getString("targetScope").equals("-1"))
+				ae.setTargetScope(MScopeKind.forValue(Integer.parseInt(rsAE.getString("targetScope"))));
+			if (! rsAE.getString("multiplicity").equals("-1"))
+				ae.setMultiplicity(new MMultiplicity(rsAE.getString("multiplicity")));
+			if (! rsAE.getString("changeability").equals("-1"))
+				ae.setChangeability(MChangeableKind.forValue(Integer.parseInt(rsAE.getString("changeability"))));
+			if (! rsAE.getString("visibility").equals("-1"))
+				ae.setVisibility(MVisibilityKind.forValue(Integer.parseInt(rsAE.getString("visibility"))));
+			if (rsAE.getString("type") != null)
+				type = (MClassifier)uuid2element.get(rsAE.getString("type"));
+			if (type != null)
+				ae.setType(type);
+		}
+
+		uuid2ascend.put(UUID, ae);
+	}
+
+	private void readAssociation(MModel model, String UUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
+	
+		MAssociation me = new MAssociationImpl();
+		MAssociationEnd ae1 = null;
+		MAssociationEnd ae2 = null;
+
+		me.setName(name);
+		me.setUUID(UUID);
+		if (ns.equals(model.getUUID()))
+			me.setNamespace(model);
+		me.setStereotype(readStereotype(stereotypeUUID));
+
+		String query = "SELECT * ";
+		query += "FROM tAssociation ";
+		query += "WHERE uuid = '"+UUID+"'";
+
+		Statement stmtA = Conn.createStatement();
+		ResultSet rsA = stmtA.executeQuery(query);
+		if (rsA.next()) {
+			ae1 = (MAssociationEnd)uuid2ascend.get(rsA.getString("connection1"));
+			me.addConnection(ae1);
+			ae2 = (MAssociationEnd)uuid2ascend.get(rsA.getString("connection2"));
+			me.addConnection(ae2);
+		}
+	}
+
+	private void readGeneralization(MModel model, String UUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
+	
+		MGeneralization me = new MGeneralizationImpl();
+		MGeneralizableElement parent = null;
+		MGeneralizableElement child = null;
+		me.setName(name);
+		me.setUUID(UUID);
+		if (ns.equals(model.getUUID()))
+			me.setNamespace(model);
+		me.setStereotype(readStereotype(stereotypeUUID));
+
+		String query = "SELECT * FROM tGeneralization WHERE uuid = '" + UUID +"'";
+		Statement stmtG = Conn.createStatement();
+		ResultSet rsG = stmtG.executeQuery(query);
+
+		if (rsG.next()) {
+			parent = (MGeneralizableElement)uuid2element.get(rsG.getString("parent"));
+			child = (MGeneralizableElement)uuid2element.get(rsG.getString("child"));
+		}
+
+		if (parent != null) me.setParent(parent);
+		// System.out.println("Parent: "+parent);
+		if (child != null) me.setChild(child);
+		// System.out.println("Child: "+child);
+	}
+
+	private void readAbstraction(MModel model, String UUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
+
+		MAbstraction me = new MAbstractionImpl();
+		me.setName(name);
+		me.setUUID(UUID);
+		if (ns.equals(model.getUUID()))
+			me.setNamespace(model);
+		me.setStereotype(readStereotype(stereotypeUUID));
+
+		readDependency(me, UUID);
+	}
+
+	private void readUsage(MModel model, String UUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
+	
+		MUsage me = new MUsageImpl();
+		me.setName(name);
+		me.setUUID(UUID);
+		if (ns.equals(model.getUUID()))
+			me.setNamespace(model);
+		me.setStereotype(readStereotype(stereotypeUUID));
+
+		readDependency(me, UUID);
+	}
+
+	private void readDependency(MDependency dep, String UUID) throws SQLException {
+
+		MModelElement supplier = null;
+		MModelElement client = null;
+
+		String query = "SELECT * FROM tDependency WHERE uuid = '" + UUID +"'";
+		Statement stmtD = Conn.createStatement();
+		ResultSet rsD = stmtD.executeQuery(query);
+
+		if (rsD.next()) {
+			supplier = (MModelElement)uuid2element.get(rsD.getString("supplier"));
+			client = (MModelElement)uuid2element.get(rsD.getString("client"));
+		}
+		
+		dep.addClient(client);
+		dep.addSupplier(supplier);
+	}
+
 
 	/** Don't use main(), it's only for testing! */
     public static void main(String[] Args) throws Exception {

@@ -159,7 +159,9 @@ public class DBWriter
 		boolean hasStereotype = false;
 		stmtString = "REPLACE INTO tModelElement (uuid, name, namespace, stereotype, UMLClassName) VALUES ('";
 		stmtString += me.getUUID() + "','";
-		stmtString += me.getName() + "','" ;
+		if (me.getName() != null)
+			stmtString += me.getName() + "','" ;
+		else stmtString += "','" ;
 		if (me.getNamespace() != null) stmtString += me.getNamespace().getUUID() + "','";
 		else stmtString += "','";
 		if (me.getStereotype() != null) {
@@ -254,7 +256,7 @@ public class DBWriter
 		if (me.getTargetScope() != null) stmtString += me.getTargetScope().getValue() + ",'";
 		else stmtString += "-1,'";
 		if (me.getMultiplicity() != null) stmtString += me.getMultiplicity().toString() + "',";
-		else stmtString += "',";
+		else stmtString += "-1',";
 		if (me.getChangeability() != null) stmtString += me.getChangeability().getValue() + ",";
 		else stmtString += "-1,";
 		if (me.getVisibility() != null) stmtString += me.getVisibility().getValue() + ",";
@@ -431,7 +433,8 @@ public class DBWriter
 	}
 
 	private void store(MParameter me, Statement stmt) throws SQLException {
-		me.setUUID(UUIDManager.SINGLETON.getNewUUID());
+		if (me.getUUID() == null)
+			me.setUUID(UUIDManager.SINGLETON.getNewUUID());
 		stmtString = "REPLACE INTO tParameter (uuid, defaultValue, kind, behavioralFeature, type) VALUES ('";
 		stmtString += me.getUUID() + "', '";
 		if (me.getDefaultValue() != null) stmtString += me.getDefaultValue().getBody() + "',";
@@ -443,8 +446,6 @@ public class DBWriter
 		if (me.getType() != null) stmtString += me.getType().getUUID() + "')";
 		else stmtString += "')";	
 		stmt.executeUpdate(stmtString);
-
-		System.out.println("Stored: "+stmtString);
 
 		MClassifier type = me.getType();
 		if (!(type.getNamespace().equals(me.getNamespace())))

@@ -111,6 +111,26 @@ implements DocumentListener, ItemListener {
     MVisibilityKind vk = inf.getVisibility();
     _visField.setSelectedItem(vk);
 
+    Vector gens = new Vector(inf.getGeneralizations());
+    MGeneralization gen = null;
+    JTextField ed = (JTextField) _extendsField.getEditor().getEditorComponent();
+    if (gens != null && gens.size() == 1)
+      gen = (MGeneralization) gens.firstElement();
+    if (gen == null) {
+      //System.out.println("null base class");
+      _extendsField.setSelectedItem(null);
+      ed.setText("");
+    }
+    else {
+      //System.out.println("base class found");
+		MGeneralizableElement parent = gen.getParent();
+      _extendsField.setSelectedItem(parent);
+      if (parent != null)
+		  ed.setText(parent.getName());
+      else
+		  ed.setText("");
+    }
+
     updateExtendsChoices();
   }
 
