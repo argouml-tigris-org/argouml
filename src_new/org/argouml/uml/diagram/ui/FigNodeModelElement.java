@@ -52,7 +52,6 @@ import org.argouml.cognitive.*;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.generator.*;
-import org.argouml.uml.diagram.ui.*;
 import org.argouml.util.*;
 
 
@@ -618,4 +617,14 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   public int getShadowSize() {
     return _shadowSize;
   }
+	/**
+	 * Necessary since GEF contains some errors regarding the hit subject.
+	 * @see org.tigris.gef.presentation.Fig#hit(Rectangle)
+	 */
+	public boolean hit(Rectangle r) {
+		int cornersHit = countCornersContained(r.x, r.y, r.width, r.height);
+    	if (_filled) return cornersHit > 0 || intersects(r);
+    	else return (cornersHit > 0 && cornersHit < 4) || intersects(r);
+	}
+
 } /* end class FigNodeModelElement */

@@ -187,4 +187,14 @@ public class FigActor extends FigNodeModelElement {
     firePropChange("bounds", oldBounds, getBounds());
   }
 
+	/**
+	 * @see org.tigris.gef.presentation.FigNode#deepHitPort(int, int)
+	 */
+	public Object deepHitPort(int x, int y) {
+		Object o = super.deepHitPort(x, y);
+		if (o != null) return o;
+		if (hit(new Rectangle(new Dimension(x,y)))) return getOwner();
+		return null;
+	}
+
 } /* end class FigActor */
