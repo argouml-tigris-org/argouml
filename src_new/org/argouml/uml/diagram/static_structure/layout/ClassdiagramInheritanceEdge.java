@@ -41,7 +41,7 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
     /**
      * Constructor.
      *
-     * @param edge
+     * @param edge the fig edge
      */
     public ClassdiagramInheritanceEdge(FigEdge edge) {
         super(edge);
@@ -65,6 +65,9 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
         LOG.debug("Low : " + low.classNameAndBounds());
     }
     
+    /**
+     * @return the vertical offset
+     */
     public abstract int getVerticalOffset();
         
     public int getCenterHigh() {

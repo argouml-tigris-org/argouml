@@ -52,22 +52,34 @@ public class ProjectMemberDiagram extends ProjectMember {
     ////////////////////////////////////////////////////////////////
     // constants
 
-    public static final String MEMBER_TYPE = "pgml";
-    public static final String FILE_EXT = "." + MEMBER_TYPE;
-    public static final String PGML_TEE = "/org/argouml/xml/dtd/PGML.tee";
+    private static final String MEMBER_TYPE = "pgml";
+    private static final String FILE_EXT = "." + MEMBER_TYPE;
+    private static final String PGML_TEE = "/org/argouml/xml/dtd/PGML.tee";
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    private ArgoDiagram _diagram;
+    private ArgoDiagram diagram;
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The constructor.
+     * 
+     * @param name the name
+     * @param p the project
+     */
     public ProjectMemberDiagram(String name, Project p) {
         super(name, p);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param d the diagram
+     * @param p the project
+     */
     public ProjectMemberDiagram(ArgoDiagram d, Project p) {
         super(null, p);
         String s = Util.stripJunk(d.getName());
@@ -78,8 +90,11 @@ public class ProjectMemberDiagram extends ProjectMember {
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @return the diagram
+     */
     public ArgoDiagram getDiagram() {
-        return _diagram;
+        return diagram;
     }
     /**
      * @see org.argouml.kernel.ProjectMember#getType()
@@ -112,11 +127,12 @@ public class ProjectMemberDiagram extends ProjectMember {
      * @see org.argouml.kernel.ProjectMember#save(java.io.Writer)
      */
     public void save(Writer writer, Integer indent) throws SaveException {
-        OCLExpander expander = new OCLExpander(TemplateReader.readFile(PGML_TEE));
+        OCLExpander expander = 
+            new OCLExpander(TemplateReader.readFile(PGML_TEE));
         
         if (indent == null) {
             try {
-                expander.expand(writer, _diagram, "", "");
+                expander.expand(writer, diagram, "", "");
             } catch (ExpansionException e) {
                 throw new SaveException(e);
             }
@@ -125,10 +141,10 @@ public class ProjectMemberDiagram extends ProjectMember {
                 File tempFile = File.createTempFile("pgml", null);
                 tempFile.deleteOnExit();
                 FileWriter w = new FileWriter(tempFile);
-                expander.expand(w, _diagram, "", "");
+                expander.expand(w, diagram, "", "");
                 w.close();
                 addXmlFileToWriter(
-                        (PrintWriter)writer,
+                        (PrintWriter) writer,
                         tempFile,
                         indent.intValue());
             } catch (ExpansionException e) {
@@ -139,8 +155,11 @@ public class ProjectMemberDiagram extends ProjectMember {
         }
     }
 
-    protected void setDiagram(ArgoDiagram diagram) {
-        _diagram = diagram;
+    /**
+     * @param d the diagram
+     */
+    protected void setDiagram(ArgoDiagram d) {
+        diagram = d;
     }
 
 } /* end class ProjectMemberDiagram */

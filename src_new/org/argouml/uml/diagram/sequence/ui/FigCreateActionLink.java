@@ -28,33 +28,31 @@ package org.argouml.uml.diagram.sequence.ui;
 
 /**
  * @author Jaap
- *
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class FigCreateActionLink extends FigLink {
 
     /**
-     * @param owner
+     * @param owner the owner object
      */
     public FigCreateActionLink(Object owner) {
         super(owner);
-        // TODO Auto-generated constructor stub
+        // TODO: Auto-generated constructor stub
     }
 
     /**
+     * The constructor.
      * 
      */
     public FigCreateActionLink() {
         super();
-        // TODO Auto-generated constructor stub
+        // TODO: Auto-generated constructor stub
     }
 
-    /* (non-Javadoc)
+    /**
      * @see org.argouml.uml.diagram.sequence.ui.FigLink#layoutActivations()
      */
     protected void layoutActivations() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
 
     }
 

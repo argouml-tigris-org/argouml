@@ -50,11 +50,8 @@ public class UMLSequenceDiagram extends UMLDiagram {
     /**
      * This is the default sequence number for newly created anonymous
      * sequence diagrams.
-     *
-     * @deprecated by Linus Tolke from 0.15.5.
-     * Use {@link #getNextSequenceDiagramNumber}.
      */
-    protected static int _SequenceDiagramSerial = 1;
+    private static int sequenceDiagramSerial = 1;
 
     /**
      * Returns the next available sequence diagram number.
@@ -62,11 +59,11 @@ public class UMLSequenceDiagram extends UMLDiagram {
      * @return a number.
      */
     private static int getNextSequenceDiagramNumber() {
-	return _SequenceDiagramSerial++;
+	return sequenceDiagramSerial++;
     }
 
 
-    private Object[] _actions;
+    private Object[] actions;
 
     /**
      * Constructs a new sequence diagram with a default name and NO namespace.
@@ -78,6 +75,11 @@ public class UMLSequenceDiagram extends UMLDiagram {
 		 ProjectManager.getManager().getCurrentProject().getRoot()));
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param collaboration the collaboration
+     */
     public UMLSequenceDiagram(Object collaboration) {
         super();
         try {
@@ -141,9 +143,9 @@ public class UMLSequenceDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
-        if (_actions == null) {
-            _actions = new Object[5];
-            _actions[0] =
+        if (actions == null) {
+            actions = new Object[5];
+            actions[0] =
                 new CmdCreateNode((Class) ModelFacade.OBJECT, "Object");
 	    int offset = 1;
 
@@ -158,12 +160,12 @@ public class UMLSequenceDiagram extends UMLDiagram {
 		Hashtable args = new Hashtable();
 		args.put("edgeClass", (Class) ModelFacade.LINK);
 		args.put("action", actionList[i][0]);
-		_actions[i + offset] =
+		actions[i + offset] =
 		    new RadioAction(new CmdSetMode(ModeCreateLink.class, args,
 						   (String) actionList[i][1]));
 	    }
         }
-        return _actions;
+        return actions;
     }
 
     /**

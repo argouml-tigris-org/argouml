@@ -33,20 +33,34 @@ import org.tigris.gef.presentation.*;
 public class ClassdiagramRealizationEdge extends ClassdiagramInheritanceEdge {
     
     
+    /**
+     * The constructor.
+     * 
+     * @param edge the fig edge
+     */
     public ClassdiagramRealizationEdge(FigEdge edge) {
         super(edge);
     }
     
+    /**
+     * @see org.argouml.uml.diagram.static_structure.layout.ClassdiagramInheritanceEdge#getVerticalOffset()
+     */
     public int getVerticalOffset() {
-        return (int) (_vGap * 0.6);
+        return (int) (getVGap() * 0.6);
     }  
     
+    /**
+     * @see org.argouml.uml.diagram.static_structure.layout.ClassdiagramInheritanceEdge#getCenterHigh()
+     */
     public int getCenterHigh() {
         return
 	    (int)
 	    (high.getLocation().getX() + high.getSize().getWidth() / 2 + 10);
     }
     
+    /**
+     * @see org.argouml.uml.diagram.static_structure.layout.ClassdiagramInheritanceEdge#getCenterLow()
+     */
     public int getCenterLow() {
         return
 	    (int)

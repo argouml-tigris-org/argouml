@@ -27,52 +27,66 @@ package org.argouml.uml.diagram.sequence;
 import org.argouml.uml.diagram.sequence.ui.FigLinkPort;
 
 public class LinkNode extends ActivationNode implements LinkPort {
-    private FigLinkPort _figLinkPort;
-    private Object _owner;
-    private boolean _destroyed;
+    private FigLinkPort figLinkPort;
+    private Object ownerObject;
+    private boolean destroyed;
 
+    /**
+     * The constructor.
+     * 
+     * @param owner the owner object
+     */
     public LinkNode(Object owner) {
         this(owner, null);
     }
 
-    public LinkNode(Object owner, FigLinkPort figLinkPort) {
+    /**
+     * The constructor.
+     * 
+     * @param owner the owner object
+     * @param flp the figlinkport
+     */
+    public LinkNode(Object owner, FigLinkPort flp) {
         super();
-        _owner = owner;        
-        setFigLinkPort(figLinkPort);
+        ownerObject = owner;        
+        setFigLinkPort(flp);
     }
 
     /**
-     * @return _figLinkPort
+     * @return the figLinkPort
      */
     public FigLinkPort getFigLinkPort() {
-        return _figLinkPort;
+        return figLinkPort;
     }
 
     /**
-     * @param figLinkPort
+     * @param flp the figlinkport
      */
-    public void setFigLinkPort(FigLinkPort figLinkPort) {
-        _figLinkPort = figLinkPort;
-	if (figLinkPort != null)        
-	    figLinkPort.setOwner(this);
-    }
-
-    public Object getObject() {
-        return _owner;
+    public void setFigLinkPort(FigLinkPort flp) {
+        figLinkPort = flp;
+	if (flp != null)        
+	    flp.setOwner(this);
     }
 
     /**
-     * @return _destroyed
+     * @see org.argouml.uml.diagram.sequence.LinkPort#getObject()
+     */
+    public Object getObject() {
+        return ownerObject;
+    }
+
+    /**
+     * @return destroyed
      */
     public boolean isDestroyed() {
-        return _destroyed;
+        return destroyed;
     }
 
     /**
-     * @param b
+     * @param b destroyed
      */
     public void setDestroyed(boolean b) {
-        _destroyed = b;
+        destroyed = b;
     }
 
 }

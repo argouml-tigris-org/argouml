@@ -642,7 +642,8 @@ public class ClassdiagramLayouter implements Layouter {
             if ((getClassdiagramNode(i)).getRank() == row) {
                 // If the object is in this row
                 if ((getClassdiagramNode(i)).getSize().height > currentHeight)
-                        currentHeight = (getClassdiagramNode(i)).getSize().height;
+                        currentHeight = 
+                            (getClassdiagramNode(i)).getSize().height;
             }
         }
 

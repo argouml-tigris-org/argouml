@@ -59,6 +59,7 @@ public interface Layouter {
      * Operation getObject returns one object from the diagram.
      *
      * @param index represents the index of this object.
+     * @return the object
      */
     LayoutedObject getObject(int index);
 
@@ -71,6 +72,8 @@ public interface Layouter {
      * Operation getMinimumDiagramSize returns the minimum
      * diagram size after the layout, so the diagram could
      * be resized to this size.
+     *
+     * @return the size/dimension
      */
     Dimension getMinimumDiagramSize();
 }

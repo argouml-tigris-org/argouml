@@ -73,7 +73,7 @@ public class FigLinkPort extends FigLine {
      */
     public static final int ACTIVATION_CONTINUOUS_STATUS = 2;
 
-    private int _activationStatus;
+    private int activationStatus;
 
     /**
      * Creates a new horizontal FigLinkPort that's not displayed
@@ -103,7 +103,7 @@ public class FigLinkPort extends FigLine {
      * @return the activation status.
      */
     public int getActivationStatus() {
-        return _activationStatus;
+        return activationStatus;
     }
 
     /**
@@ -116,7 +116,7 @@ public class FigLinkPort extends FigLine {
      * @param i is the new activation status.
      */
     public void setActivationStatus(int i) {
-        _activationStatus = i;
+        activationStatus = i;
     }
 
 }

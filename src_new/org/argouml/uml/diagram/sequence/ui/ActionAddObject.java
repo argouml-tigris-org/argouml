@@ -48,6 +48,10 @@ import ru.novosoft.uml.behavior.common_behavior.MObject;
  */
 public class ActionAddObject extends CmdCreateNode {
 
+    /**
+     * The constructor.
+     * 
+     */
     public ActionAddObject() {
         super(MObject.class, false, "Object");
     }

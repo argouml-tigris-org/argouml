@@ -25,65 +25,84 @@
 package org.argouml.uml.diagram.sequence;
 
 public class ActivationNode extends Node {
-    private boolean _cutOffTop;
+    private boolean cutOffTop;
 
-    private boolean _cutOffBottom;
+    private boolean cutOffBottom;
 
-    private boolean _end;
+    private boolean end;
 
-    private boolean _start;
+    private boolean start;
 
+    /**
+     * The constructor.
+     * 
+     */
     public ActivationNode() { }
 
+    /**
+     * @return true if start
+     */
     public boolean isStart() {
-        return _start;
+        return start;
     }
 
     /**
-     * @param b
+     * @param b start
      */
     public void setStart(boolean b) {
-        _start = b;
-    }
-
-    public void setEnd(boolean end) {
-        _end = end;
-    }
-
-    public boolean isEnd() {
-        return _end;
-    }
-
-    public boolean isCutOffBottom() {
-        return _cutOffBottom;
-    }
-
-    public boolean isCutOffTop() {
-        return _cutOffTop;
+        start = b;
     }
 
     /**
-     * @param b
+     * @param theEnd true if this is an end
+     */
+    public void setEnd(boolean theEnd) {
+        end = theEnd;
+    }
+
+    /**
+     * @return true if this is an end
+     */
+    public boolean isEnd() {
+        return end;
+    }
+
+    /**
+     * @return true is the bottom is cut off
+     */
+    public boolean isCutOffBottom() {
+        return cutOffBottom;
+    }
+
+    /**
+     * @return true if the top is ct off
+     */
+    public boolean isCutOffTop() {
+        return cutOffTop;
+    }
+
+    /**
+     * @param b true if the bottom is cut off
      */
     public void setCutOffBottom(boolean b) {
-        if (b && !(_end)) {
+        if (b && !(end)) {
             throw new IllegalArgumentException("Cannot cutoff "
 					       + "an activationNode "
 					       + "that is not an end");
         }
-        _cutOffBottom = b;
+        cutOffBottom = b;
     }
 
     /**
-     * @param b
+     * @param b true if the top is cut off 
      */
     public void setCutOffTop(boolean b) {
-        if (b && !(_start)) {
+        if (b && !(start)) {
             throw new IllegalArgumentException("Cannot cutoff "
 					       + "an activationNode "
 					       + "that is not a start");
         }
-        _cutOffTop = b;
+        cutOffTop = b;
     }
 
 }

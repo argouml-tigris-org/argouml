@@ -357,11 +357,11 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     }
 
     /**
-     * @see org.tigris.gef.graph.MutableGraphModel#addEdge(java.lang.Object)
-     *
      * Add the given edge to the graph, if of the correct type.
-     * @throws IllegalArgumentException if edge is null or either of its
+     * Throws IllegalArgumentException if edge is null or either of its
      * ends are null.
+     *
+     * @see org.tigris.gef.graph.MutableGraphModel#addEdge(java.lang.Object)
      */
     public void addEdge(Object edge) {
         if (edge == null) {
@@ -369,7 +369,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         }
         
         if (getDestPort(edge) == null || getSourcePort(edge) == null) {
-            throw new IllegalArgumentException("The source and dest port should be provided on an edge");
+            throw new IllegalArgumentException(
+                    "The source and dest port should be provided on an edge");
         }
         
         if (LOG.isInfoEnabled()) {

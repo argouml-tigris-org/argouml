@@ -170,7 +170,7 @@ public class ProjectMemberModel extends ProjectMember {
         } catch (Exception ex) {
             logNotContainedElements(xmiwriter);
             if (ex instanceof SaveException) {
-                throw (SaveException)ex;
+                throw (SaveException) ex;
             }
             throw new SaveException(ex);
         } finally {

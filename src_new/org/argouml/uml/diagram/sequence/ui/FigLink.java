@@ -167,18 +167,30 @@ public abstract class FigLink
      */
     protected abstract void layoutActivations();
 
+    /**
+     * @return the destination link port
+     */
     public LinkPort getDestLinkPort() {
         return (LinkPort) getDestPortFig().getOwner();
     }
 
+    /**
+     * @return the source linkport
+     */
     public LinkPort getSrcLinkPort() {
         return (LinkPort) getSourcePortFig().getOwner();
     }
 
+    /**
+     * @return the source figobject
+     */
     public FigObject getSrcFigObject() {
         return (FigObject) getSourceFigNode();
     }
 
+    /**
+     * @return the destination fig object
+     */
     public FigObject getDestFigObject() {
         return (FigObject) getDestFigNode();
     }
