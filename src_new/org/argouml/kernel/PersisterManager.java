@@ -31,7 +31,6 @@ import java.util.List;
 
 import javax.swing.JFileChooser;
 
-import org.argouml.util.FileConstants;
 import org.tigris.gef.util.UnexpectedException;
 
 
@@ -111,8 +110,10 @@ public class PersisterManager {
     }
     
     /**
-     * @param in the input file ot path name
-     * @return the file or pathname with a default extension added
+     * @param in the input file or path name which may or may not 
+     *           have a recognised extension
+     * @return the amended file or pathname, guaranteed to have 
+     *         a recognised extension
      */
     public String fixExtension(String in) {
         if (getPersisterFromFileName(in) == null) {
@@ -122,7 +123,7 @@ public class PersisterManager {
     }
     
     /**
-     * @param in the input url
+     * @param in the input url which may or may not have a recognised extension
      * @return the url with default extension added, 
      *         if it did not have a valid extension yet
      */
@@ -141,7 +142,8 @@ public class PersisterManager {
     /**
      * Find the base name of the given filename.<p>
      * 
-     * This is the name minus any valid file extension.
+     * This is the name minus any valid file extension. 
+     * Invalid extensions are left alone.
      *
      * @param n the given file name
      * @return the name (a String) without extension
