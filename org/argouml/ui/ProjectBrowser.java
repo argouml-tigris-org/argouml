@@ -395,11 +395,11 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     _view.addSeparator();
 
     JMenu zoom = (JMenu) _view.add(new JMenu(menuLocalize("Zoom")));
+    zoom.add(new ActionZoom(10));
     zoom.add(new ActionZoom(25));
     zoom.add(new ActionZoom(50));
     zoom.add(new ActionZoom(75));
     zoom.add(new ActionZoom(100));
-    zoom.add(new ActionZoom(125));
     zoom.add(new ActionZoom(150));
 
     _view.addSeparator();
