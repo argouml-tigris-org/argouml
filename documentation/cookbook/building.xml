@@ -1276,7 +1276,11 @@ libraries needed to compile
 		<listitem>
 		  <para>sources</para>
 		  <para>
-source code without libraries
+source code without libraries.
+If you want to build ArgoUML from source, the cvs version is recommended.
+</para>
+                  <para>
+For the gnu version add also: Unpack with GNU-tar.
 </para>
 		</listitem>
 		<listitem>
