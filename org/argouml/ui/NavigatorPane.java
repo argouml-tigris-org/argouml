@@ -39,7 +39,9 @@ import ru.novosoft.uml.behavior.state_machines.*;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.*;
 
+import org.argouml.uml.ui.*;
 import org.argouml.uml.diagram.ui.*;
+
 
 /** The upper-left pane of the main Argo/UML window.  This shows the
  *  contents of the current project in one of several ways that are
@@ -316,11 +318,11 @@ implements ItemListener, TreeSelectionListener {
 		 || obj instanceof MStateVertex || obj instanceof MInstance) {
 			popup.add(new ActionGoToDetails("Properties"));
 			popup.add(new ActionAddExistingNode("Add to Diagram",obj));
-			popup.add(Actions.RemoveFromModel);
+			popup.add(ActionRemoveFromModel.SINGLETON);
         }
 		else if (obj instanceof MModelElement || obj instanceof Diagram) {
 			popup.add(new ActionGoToDetails("Properties"));
-			popup.add(Actions.RemoveFromModel);
+			popup.add(ActionRemoveFromModel.SINGLETON);
         }
 		popup.show(_tree,me.getX(),me.getY());
     }

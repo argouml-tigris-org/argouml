@@ -41,6 +41,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.ui.*;
 
 import org.argouml.ui.*;
+import org.argouml.uml.ui.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.static_structure.*;
 
@@ -147,12 +148,12 @@ public class UMLClassDiagram extends UMLDiagram {
 	_toolBar.add(_actionRealize);
     _toolBar.addSeparator();
 
-    _toolBar.add(Actions.AddAttribute);
-    _toolBar.add(Actions.AddOperation);
+    _toolBar.add(ActionAddAttribute.SINGLETON);
+    _toolBar.add(ActionAddOperation.SINGLETON);
     // needs-more-work: remove attribute and operation?
     _toolBar.addSeparator();
 
-    _toolBar.add(Actions.AddNote);
+    _toolBar.add(ActionAddNote.SINGLETON);
     _toolBar.addSeparator();
 
     _toolBar.add(_actionRectangle);

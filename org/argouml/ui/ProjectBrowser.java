@@ -42,7 +42,7 @@ import org.argouml.ui.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.ui.*;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.ui.UMLAction;
+import org.argouml.uml.ui.*;
 
 /** The main window of the Argo/UML application. */
 
@@ -64,17 +64,17 @@ implements IStatusBar, NavigationListener {
 
   protected static Action _actionCreateMultiple = Actions.CreateMultiple;
   // ----- diagrams
-  protected static Action _actionClassDiagram = Actions.ClassDiagram;
-  protected static Action _actionUseCaseDiagram = Actions.UseCaseDiagram;
-  protected static Action _actionStateDiagram = Actions.StateDiagram;
-  protected static Action _actionActivityDiagram = Actions.ActivityDiagram;
-  protected static Action _actionCollaborationDiagram = Actions.CollaborationDiagram;
-  protected static Action _actionDeploymentDiagram = Actions.DeploymentDiagram;
-  protected static Action _actionSequenceDiagram = Actions.SequenceDiagram;
+  protected static Action _actionClassDiagram = ActionClassDiagram.SINGLETON;
+  protected static Action _actionUseCaseDiagram = ActionUseCaseDiagram.SINGLETON;
+  protected static Action _actionStateDiagram = ActionStateDiagram.SINGLETON;
+  protected static Action _actionActivityDiagram = ActionActivityDiagram.SINGLETON;
+  protected static Action _actionCollaborationDiagram = ActionCollaborationDiagram.SINGLETON;
+  protected static Action _actionDeploymentDiagram = ActionDeploymentDiagram.SINGLETON;
+  protected static Action _actionSequenceDiagram = ActionSequenceDiagram.SINGLETON;
 
   // ----- model elements
   //protected static Action _actionModel = Actions.MModel;
-  protected static Action _actionAddTopLevelPackage = Actions.AddTopLevelPackage;
+  protected static Action _actionAddTopLevelPackage = ActionAddTopLevelPackage.SINGLETON;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -244,24 +244,24 @@ implements IStatusBar, NavigationListener {
     edit.add(Actions.Undo);
     edit.add(Actions.Redo);
     edit.addSeparator();
-    JMenuItem cutItem = edit.add(Actions.Cut);
+    JMenuItem cutItem = edit.add(ActionCut.SINGLETON);
     setMnemonic(cutItem,"Cut",'X');
     setAccelerator(cutItem,ctrlX);
-    JMenuItem copyItem = edit.add(Actions.Copy);
+    JMenuItem copyItem = edit.add(ActionCopy.SINGLETON);
     setMnemonic(copyItem,"Copy",'C');
     setAccelerator(copyItem,ctrlC);
-    JMenuItem pasteItem = edit.add(Actions.Paste);
+    JMenuItem pasteItem = edit.add(ActionPaste.SINGLETON);
     setMnemonic(pasteItem,"Paste",'V');
     setAccelerator(pasteItem,ctrlV);
     edit.addSeparator();
     // needs-more-work: confusing name change
-    JMenuItem deleteItem = edit.add(Actions.DeleteFromDiagram);
+    JMenuItem deleteItem = edit.add(ActionDeleteFromDiagram.SINGLETON);
     setMnemonic(deleteItem,"RemoveFromDiagram",'R');
     setAccelerator(deleteItem,ctrlR);
-    JMenuItem removeItem = edit.add(Actions.RemoveFromModel);
+    JMenuItem removeItem = edit.add(ActionRemoveFromModel.SINGLETON);
     setMnemonic(removeItem,"DeleteFromModel",'D');
     setAccelerator(removeItem,delKey);
-    JMenuItem emptyItem = edit.add(Actions.EmptyTrash);
+    JMenuItem emptyItem = edit.add(ActionEmptyTrash.SINGLETON);
 
     Menu view = (Menu) _menuBar.add(new Menu(menuLocalize("View")));
     // maybe should be Navigate instead of view
@@ -301,13 +301,13 @@ implements IStatusBar, NavigationListener {
     create.addSeparator();
 
     JMenu createDiagrams = (JMenu) create.add(new JMenu(menuLocalize("Diagrams")));
-    createDiagrams.add(Actions.ClassDiagram);
-    createDiagrams.add(Actions.UseCaseDiagram);
-    createDiagrams.add(Actions.StateDiagram);
-    createDiagrams.add(Actions.ActivityDiagram);
-    createDiagrams.add(Actions.CollaborationDiagram);
-    createDiagrams.add(Actions.DeploymentDiagram);
-    createDiagrams.add(Actions.SequenceDiagram);
+    createDiagrams.add(ActionClassDiagram.SINGLETON);
+    createDiagrams.add(ActionUseCaseDiagram.SINGLETON);
+    createDiagrams.add(ActionStateDiagram.SINGLETON);
+    createDiagrams.add(ActionActivityDiagram.SINGLETON);
+    createDiagrams.add(ActionCollaborationDiagram.SINGLETON);
+    createDiagrams.add(ActionDeploymentDiagram.SINGLETON);
+    createDiagrams.add(ActionSequenceDiagram.SINGLETON);
 
     //JMenu createModelElements = (JMenu) create.add(new JMenu("Model Elements"));
     //createModelElements.add(Actions.AddTopLevelPackage);

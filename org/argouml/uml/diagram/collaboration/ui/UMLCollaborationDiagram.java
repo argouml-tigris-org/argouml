@@ -42,6 +42,7 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.ui.*;
 
 import org.argouml.ui.*;
+import org.argouml.uml.ui.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.collaboration.*;
 
@@ -115,7 +116,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     _toolBar.add(_actionClassifierRole);
     _toolBar.addSeparator();
     _toolBar.add(_actionAssoc);
-    _toolBar.add(Actions.AddMessage);
+    _toolBar.add(ActionAddMessage.SINGLETON);
     // other actions
     _toolBar.addSeparator();
 
