@@ -394,14 +394,17 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
 
                                 m_mmeiTarget.addConstraint(mc);
 
+                                // the constraint _must_ be owned by a namespace
                                 if (m_mmeiTarget.getNamespace() != null) {
-                                    // Apparently namespace management is not supported for all model
-                                    // elements. As this does not seem to cause problems, I'll just
-                                    // leave it at that for the moment...
                                     m_mmeiTarget
                                         .getNamespace()
                                         .addOwnedElement(
                                         mc);
+                                }
+                                else if(mmeContext.getNamespace() != null){
+                                    
+                                    mmeContext.getNamespace().addOwnedElement(
+                                    m_mcConstraint);
                                 }
 
                                 m_alConstraints.add(mc);
@@ -434,11 +437,14 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
 
                         m_mmeiTarget.addConstraint(m_mcConstraint);
 
+                        // the constraint _must_ be owned by a namespace
                         if (m_mmeiTarget.getNamespace() != null) {
-                            // Apparently namespace management is not supported for all model
-                            // elements. As this does not seem to cause problems, I'll just
-                            // leave it at that for the moment...
                             m_mmeiTarget.getNamespace().addOwnedElement(
+                                m_mcConstraint);
+                        }
+                        else if(mmeContext.getNamespace() != null){
+                            
+                            mmeContext.getNamespace().addOwnedElement(
                                 m_mcConstraint);
                         }
 
