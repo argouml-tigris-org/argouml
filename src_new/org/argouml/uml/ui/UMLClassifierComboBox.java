@@ -33,7 +33,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
 
-public class UMLClassifierComboBox extends JComboBox implements ActionListener, UMLUserInterfaceComponent {
+public class UMLClassifierComboBox extends JComboBox implements ItemListener, UMLUserInterfaceComponent {
 
     private UMLUserInterfaceContainer _container;
     private String _property;
@@ -51,7 +51,7 @@ public class UMLClassifierComboBox extends JComboBox implements ActionListener, 
         _property = property;
         _itemClass = itemClass;
         _showVoid = showVoid;
-        addActionListener(this);
+        addItemListener(this);
         
         if(getMethod != null) {
             Class[] getArgs = {};
@@ -93,43 +93,6 @@ public class UMLClassifierComboBox extends JComboBox implements ActionListener, 
     public void propertySet(final MElementEvent event) {
     }
     
-    public void actionPerformed(final ActionEvent event) {
-        int index = getSelectedIndex();
-        if(index >= 0 && index < _classifiers.size()) {
-            Object obj = null;
-            Iterator iter = _classifiers.iterator();
-            for(int i = 0; iter.hasNext(); i++) {
-                obj = iter.next();
-                if(i == index) {
-                    MClassifier classifier = null;
-                    if(obj instanceof MClassifier) {
-                        classifier = (MClassifier) obj;
-                    }
-                    else {
-                        if(obj instanceof ProfileClassifier) {
-                            Object target = _container.getTarget();
-                            MModel model = null;
-                            if(target instanceof MModelElement) {
-                                model = ((MModelElement) target).getModel();
-                            }
-                            if(model == null && target instanceof MFeature) {
-                                MClassifier owner = ((MFeature) target).getOwner();
-                                if(owner != null) model = owner.getModel();
-                            }
-                            classifier = ((ProfileClassifier) obj).createClassifier(model);
-                        }       
-                    }
-                    try {
-                        _setMethod.invoke(_container,new Object[] { classifier });
-                    }
-                    catch(Exception e) {
-                        System.out.println(e.toString() + " in UMLClassifierComboBox.actionPerformed()");
-                    }
-                    break;
-                }
-            }
-        }
-    }
     
     private void update() {
         if(_classifiers == null) {
@@ -305,4 +268,44 @@ public class UMLClassifierComboBox extends JComboBox implements ActionListener, 
         }
     }
     
+    public void itemStateChanged(final ItemEvent event) {
+        if(event.getStateChange() == ItemEvent.SELECTED) {
+            int index = getSelectedIndex();
+            if(index >= 0 && index < _classifiers.size()) {
+                Object obj = null;
+                Iterator iter = _classifiers.iterator();
+                for(int i = 0; iter.hasNext(); i++) {
+                    obj = iter.next();
+                    if(i == index) {
+                        MClassifier classifier = null;
+                        if(obj instanceof MClassifier) {
+                            classifier = (MClassifier) obj;
+                        }
+                        else {
+                            if(obj instanceof ProfileClassifier) {
+                                Object target = _container.getTarget();
+                                MModel model = null;
+                                if(target instanceof MModelElement) {
+                                    model = ((MModelElement) target).getModel();
+                                }
+                                if(model == null && target instanceof MFeature) {
+                                    MClassifier owner = ((MFeature) target).getOwner();
+                                    if(owner != null) model = owner.getModel();
+                                }
+                                classifier = ((ProfileClassifier) obj).createClassifier(model);
+                            }       
+                        }
+                        try {
+                            _setMethod.invoke(_container,new Object[] { classifier });
+                        }
+                        catch(Exception e) {
+                            System.out.println(e.toString() + " in UMLClassifierComboBox.actionPerformed()");
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+    }
 }
