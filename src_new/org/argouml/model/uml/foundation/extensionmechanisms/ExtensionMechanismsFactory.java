@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,6 +26,7 @@ package org.argouml.model.uml.foundation.extensionmechanisms;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.foundation.core.CoreFactory;
 
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -122,5 +123,29 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     public void deleteStereotype(MStereotype elem) {}
     
     public void deleteTaggedValue(MTaggedValue elem) {}
+
+    /**
+     * Copies a stereotype.
+     *
+     * @param source is the stereotype to copy.
+     * @param ns is the namespace to put the copy in.
+     */
+    public MStereotype copyStereotype(MStereotype source, MNamespace ns) {
+	MStereotype st = createStereotype();
+	ns.addOwnedElement(st);
+	doCopyStereotype(source, st);
+	return st;
+    }
+
+    /**
+     * Used by the copy functions. Do not call this function directly.
+     */
+    public void doCopyStereotype(MStereotype source, MStereotype target) {
+	CoreFactory.getFactory().doCopyGeneralizableElement(source, target);
+	target.setBaseClass(source.getBaseClass());
+	target.setIcon(source.getIcon());
+	// TODO: constraints
+	// TODO: required tags
+    }
 }
 

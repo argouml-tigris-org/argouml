@@ -23,6 +23,11 @@
 
 package org.argouml.model.uml.foundation.datatypes;
 
+import java.util.Iterator;
+
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
+
 /**
  * Helper class for UML Foundation::DataTypes Package.
  *
@@ -49,6 +54,14 @@ public class DataTypesHelper {
      */
     public static DataTypesHelper getHelper() {
         return SINGLETON;
+    }
+
+    public void copyTaggedValues(MModelElement from, MModelElement to) {
+	Iterator it = from.getTaggedValues().iterator();
+	while (it.hasNext()) {
+	    MTaggedValue tv = (MTaggedValue) it.next();
+	    to.setTaggedValue(tv.getTag(), tv.getValue());
+	}
     }
 }
 

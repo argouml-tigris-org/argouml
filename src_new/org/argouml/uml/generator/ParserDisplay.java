@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -53,6 +53,7 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ProfileJava;
@@ -1383,8 +1384,7 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
 	type = UmlFactory.getFactory().getCore().buildClass(name, defaultSpace);
     }
     if (type.getModel() != p.getModel() && !ModelManagementHelper.getHelper().getAllNamespaces(p.getModel()).contains(type.getNamespace())) {
-	ModelManagementHelper.getHelper().importElement(type, type, defaultSpace.getModel());
-    	// type.setNamespace(p.getModel());
+	type = (MClassifier) ModelManagementHelper.getHelper().getCorrespondingElement(type, defaultSpace.getModel());
     }
     return type;
   }
@@ -1497,47 +1497,6 @@ nextProp:
     return null;
   }
 
-  // Refactoring: static to denote that it doesn't use any class members.
-  // TODO:
-  // Idea to move this to MMUtil together with the same function from
-  // org/argouml/uml/ui/UMLComboBoxEntry.java
-  // org/argouml/uml/cognitive/critics/WizOperName.java
-  private static MNamespace findNamespace(MNamespace phantomNS, MModel targetModel) {
-    MNamespace ns = null;
-    MNamespace targetParentNS = null;
-    MNamespace parentNS = phantomNS.getNamespace();
-    if(parentNS == null) {
-	ns = targetModel;
-    } else {
-	targetParentNS = findNamespace(parentNS,targetModel);
-	//
-	//   see if there is already an element with the same name
-	//
-	Collection ownedElements = targetParentNS.getOwnedElements();
-	String phantomName = phantomNS.getName();
-	String targetName;
-	if(ownedElements != null) {
-	    MModelElement ownedElement;
-	    Iterator iter = ownedElements.iterator();
-	    while(iter.hasNext()) {
-		ownedElement = (MModelElement) iter.next();
-		targetName = ownedElement.getName();
-		if(targetName != null && phantomName.equals(targetName)) {
-		    if(ownedElement instanceof MPackage) {
-			ns = (MPackage) ownedElement;
-			break;
-		    }
-		}
-	    }
-	}
-	if(ns == null) {
-	    ns = targetParentNS.getFactory().createPackage();
-	    ns.setName(phantomName);
-	    targetParentNS.addOwnedElement(ns);
-	}
-    }
-    return ns;
-  }
 
   /**
    * Finds a MStereotype named name either in the subtree of the model
@@ -1553,42 +1512,24 @@ nextProp:
   private MStereotype getStereotype(MModelElement obj, String name) {
     MModel root = obj.getModel();
     MStereotype stereo;
-    boolean phantom = false;
 
     stereo = recFindStereotype(obj, root, name);
-    if (stereo == null) {
-	stereo = recFindStereotype(
+    if (stereo != null)
+	return stereo;
+
+    stereo = recFindStereotype(
 		obj,
 		ProfileJava.getInstance().getProfileModel(),
 		name);
 
-	// This (if it exist) is a phantom stereotype...
-	phantom = true;
-    }
+    if (stereo != null)
+	return (MStereotype) ModelManagementHelper.getHelper()
+				.getCorrespondingElement(stereo, root);
 
-    if (stereo != null && phantom) {
-	if (root != null) {
-	    MNamespace targetNS = findNamespace(stereo.getNamespace(), root);
-	    MStereotype clone = null;
-	    try {
-		clone = (MStereotype) stereo.getClass().getConstructor(new Class[] {}).newInstance(new Object[] {});
-		clone.setName(stereo.getName());
-		clone.setStereotype(stereo.getStereotype());
-		clone.setBaseClass(((MStereotype) stereo).getBaseClass());
-		targetNS.addOwnedElement(clone);
-		stereo = clone;
-	    }
-	    catch(Exception ex) {
-		ex.printStackTrace();
-	    }
-	} else {
-	    stereo = null;
-	}
+    if (root != null && name.length() > 0) {
+        stereo = ExtensionMechanismsFactory.getFactory()
+				.buildStereotype(obj, name, root);
     }
-
-    //if (stereo == null && root != null) {
-    //    Create a new stereotype
-    //}
 
     return stereo;
   }

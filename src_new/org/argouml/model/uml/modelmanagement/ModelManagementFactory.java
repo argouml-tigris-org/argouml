@@ -25,8 +25,10 @@ package org.argouml.model.uml.modelmanagement;
 
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.foundation.core.CoreFactory;
 
 import ru.novosoft.uml.MFactory;
+import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.model_management.MElementImport;
 import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.model_management.MPackage;
@@ -107,6 +109,27 @@ public class ModelManagementFactory extends AbstractUmlModelFactory {
     public void deletePackage(MPackage elem) {}
     
     public void deleteSubsystem(MSubsystem elem) {}
-    
-    
+
+    /**
+     * Copies a package, but not any elements within it. This does however
+     * not mean the package will be empty, since eg it or it's parents may
+     * reference a stereotype within it causing that to be copied into it.
+     *
+     * @param source is the package to copy.
+     * @param ns is the namespace to put the copy in.
+     */
+    public MPackage copyPackage(MPackage source, MNamespace ns) {
+	MPackage p = createPackage();
+	ns.addOwnedElement(p);
+	doCopyPackage(source, p);
+	return p;
+    }
+
+    /**
+     * Used by the copy functions. Do not call this function directly.
+     */
+    public void doCopyPackage(MPackage source, MPackage target) {
+	CoreFactory.getFactory().doCopyNamespace(source, target);
+    }
 }
+
