@@ -178,7 +178,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
     /**
      *  This method returns the current "target" of the container.
      */
-    final Object getTarget() {
+    protected final Object getTarget() {
         return _container.getTarget();
     }
 
@@ -186,7 +186,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *  This method returns the container passed as an argument
      *  to the constructor
      */
-    final UMLUserInterfaceContainer getContainer() {
+    protected final UMLUserInterfaceContainer getContainer() {
         return _container;
     }
 
