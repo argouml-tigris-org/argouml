@@ -26,9 +26,6 @@ package org.argouml.uml.diagram.state.ui;
 import java.util.Collection;
 import java.util.Vector;
 
-import javax.swing.event.TreeModelListener;
-import javax.swing.tree.TreePath;
-
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.AbstractGoRule;
@@ -38,63 +35,60 @@ import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 
 public class GoMachineDiagram extends AbstractGoRule {
 
-  public String getRuleName() { return "Machine->Diagram"; }
-
-  public Object getRoot() {
-      throw
-	  new UnsupportedOperationException("getRoot should never be called");
-  }
-  public void setRoot(Object r) { }
-
-  public Object getChild(Object parent, int index) {
-    Vector children = new Vector(getChildren(parent));
-    if (children != null) return children.elementAt(index);
-    throw
-	new UnsupportedOperationException("getChild should never be get here");
-  }
-
-  public int getChildCount(Object parent) {
-    Collection children = getChildren(parent);
-    if (children != null) return children.size();
-    return 0;
-  }
-
-  public int getIndexOfChild(Object parent, Object child) {
-    if (!(parent instanceof MStateMachine)) return -1;
-    Vector children = new Vector(getChildren(parent));
-    if (children != null && children.contains(child))
-      return children.indexOf(child);
-    return -1;
-  }
-
-  public Collection getChildren(Object parent) {
-    Project p = ProjectManager.getManager().getCurrentProject();
-    if (p == null) return null;
-    if (!(parent instanceof MStateMachine)) return null;
-    Vector res = new Vector();
-    Vector diagrams = p.getDiagrams();
-    if (diagrams == null) return null;
-    java.util.Enumeration enum = diagrams.elements();
-    while (enum.hasMoreElements()) {
-      Object d = enum.nextElement();
-      if (d instanceof UMLStateDiagram &&
-	  ((UMLStateDiagram)d).getStateMachine() == parent)
-	res.addElement(d);
-      else if (d instanceof UMLActivityDiagram &&
-	  ((UMLActivityDiagram)d).getStateMachine() == parent)
-	res.addElement(d);
+    public String getRuleName() {
+        return "Machine->Diagram";
     }
-    return res;
-  }
 
-  public boolean isLeaf(Object node) {
-    return !(node instanceof MStateMachine && getChildCount(node) > 0);
-  }
+    
+   
 
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
+    public Object getChild(Object parent, int index) {
+        Vector children = new Vector(getChildren(parent));
+        if (children != null)
+            return children.elementAt(index);
+        throw new UnsupportedOperationException("getChild should never be get here");
+    }
 
+    public int getChildCount(Object parent) {
+        Collection children = getChildren(parent);
+        if (children != null)
+            return children.size();
+        return 0;
+    }
+
+    public int getIndexOfChild(Object parent, Object child) {
+        if (!(parent instanceof MStateMachine))
+            return -1;
+        Vector children = new Vector(getChildren(parent));
+        if (children != null && children.contains(child))
+            return children.indexOf(child);
+        return -1;
+    }
+
+    public Collection getChildren(Object parent) {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        if (p == null)
+            return null;
+        if (!(parent instanceof MStateMachine))
+            return null;
+        Vector res = new Vector();
+        Vector diagrams = p.getDiagrams();
+        if (diagrams == null)
+            return null;
+        java.util.Enumeration enum = diagrams.elements();
+        while (enum.hasMoreElements()) {
+            Object d = enum.nextElement();
+            if (d instanceof UMLStateDiagram && ((UMLStateDiagram) d).getStateMachine() == parent)
+                res.addElement(d);
+            else if (d instanceof UMLActivityDiagram && ((UMLActivityDiagram) d).getStateMachine() == parent)
+                res.addElement(d);
+        }
+        return res;
+    }
+
+    public boolean isLeaf(Object node) {
+        return !(node instanceof MStateMachine && getChildCount(node) > 0);
+    }
+
+    
 }
-
-

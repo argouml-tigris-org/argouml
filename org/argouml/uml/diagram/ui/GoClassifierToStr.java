@@ -23,18 +23,17 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.util.Collection;
+import java.util.Vector;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.TreePath;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.UmlHelper;
-import org.argouml.ui.*;
-import org.argouml.uml.MMUtil;
+import org.argouml.ui.AbstractGoRule;
+
+import ru.novosoft.uml.foundation.core.MClassifier;
 
 public class GoClassifierToStr extends AbstractGoRule {
 

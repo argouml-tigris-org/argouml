@@ -25,7 +25,6 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
-import java.awt.Rectangle;
 import java.util.Iterator;
 
 import org.argouml.application.api.Notation;

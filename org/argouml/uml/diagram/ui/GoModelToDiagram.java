@@ -23,88 +23,91 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.util.Collection;
+import java.util.Vector;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.TreePath;
 
 import org.argouml.application.api.Argo;
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.AbstractGoRule;
+
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 public class GoModelToDiagram extends AbstractGoRule {
 
-  public String getRuleName() {
-    return Argo.localize ("Tree", "misc.package.diagram");
-  }
-
-  public Object getRoot() {
-    throw new UnsupportedOperationException("getRoot should never be called");
-  }
-
-  public Object getChild(Object parent, int index) {
-    if (parent instanceof MNamespace) {
-      MNamespace m = (MNamespace) parent;
-      Project proj = ProjectManager.getManager().getCurrentProject();
-      Vector diags = proj.getDiagrams();
-      java.util.Enumeration diagEnum = diags.elements();
-      while (diagEnum.hasMoreElements()) {
-	UMLDiagram d = (UMLDiagram) diagEnum.nextElement();
-	if (d.getNamespace() == m) index--;
-	if (index == -1) return d;
-      }
+    public String getRuleName() {
+        return Argo.localize("Tree", "misc.package.diagram");
     }
-    throw new UnsupportedOperationException("getChild should never get here");
-  }
 
-  public Collection getChildren(Object parent) { 
-      throw
-          new UnsupportedOperationException("getChildren should not be called");
-  }
-
-  public int getChildCount(Object parent) {
-    if (parent instanceof MNamespace) {
-      int count = 0;
-      MNamespace m = (MNamespace) parent;
-      Project proj = ProjectManager.getManager().getCurrentProject();
-      Vector diags = proj.getDiagrams();
-      java.util.Enumeration diagEnum = diags.elements();
-      while (diagEnum.hasMoreElements()) {
-	UMLDiagram d = (UMLDiagram) diagEnum.nextElement();
-	if (d.getNamespace() == m) count++;
-      }
-      return count;
+    public Object getRoot() {
+        throw new UnsupportedOperationException("getRoot should never be called");
     }
-    return 0;
-  }
 
-  public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof MNamespace) {
-      int count = 0;
-      MNamespace m = (MNamespace) parent;
-      Project proj = ProjectManager.getManager().getCurrentProject();
-      Vector diags = proj.getDiagrams();
-      java.util.Enumeration diagEnum = diags.elements();
-      while (diagEnum.hasMoreElements()) {
-	UMLDiagram d = (UMLDiagram) diagEnum.nextElement();
-	if (d.getNamespace() != m) continue;
-	if (d == child) return count;
-	count++;
-      }
-      return count;
+    public Object getChild(Object parent, int index) {
+        if (parent instanceof MNamespace) {
+            MNamespace m = (MNamespace) parent;
+            Project proj = ProjectManager.getManager().getCurrentProject();
+            Vector diags = proj.getDiagrams();
+            java.util.Enumeration diagEnum = diags.elements();
+            while (diagEnum.hasMoreElements()) {
+                UMLDiagram d = (UMLDiagram) diagEnum.nextElement();
+                if (d.getNamespace() == m)
+                    index--;
+                if (index == -1)
+                    return d;
+            }
+        }
+        throw new UnsupportedOperationException("getChild should never get here");
     }
-    return -1;
-  }
 
-  public boolean isLeaf(Object node) {
-    return !(node instanceof MNamespace && getChildCount(node) > 0);
-  }
+    public Collection getChildren(Object parent) {
+        throw new UnsupportedOperationException("getChildren should not be called");
+    }
 
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
+    public int getChildCount(Object parent) {
+        if (parent instanceof MNamespace) {
+            int count = 0;
+            MNamespace m = (MNamespace) parent;
+            Project proj = ProjectManager.getManager().getCurrentProject();
+            Vector diags = proj.getDiagrams();
+            java.util.Enumeration diagEnum = diags.elements();
+            while (diagEnum.hasMoreElements()) {
+                UMLDiagram d = (UMLDiagram) diagEnum.nextElement();
+                if (d.getNamespace() == m)
+                    count++;
+            }
+            return count;
+        }
+        return 0;
+    }
+
+    public int getIndexOfChild(Object parent, Object child) {
+        if (parent instanceof MNamespace) {
+            int count = 0;
+            MNamespace m = (MNamespace) parent;
+            Project proj = ProjectManager.getManager().getCurrentProject();
+            Vector diags = proj.getDiagrams();
+            java.util.Enumeration diagEnum = diags.elements();
+            while (diagEnum.hasMoreElements()) {
+                UMLDiagram d = (UMLDiagram) diagEnum.nextElement();
+                if (d.getNamespace() != m)
+                    continue;
+                if (d == child)
+                    return count;
+                count++;
+            }
+            return count;
+        }
+        return -1;
+    }
+
+    public boolean isLeaf(Object node) {
+        return !(node instanceof MNamespace && getChildCount(node) > 0);
+    }
+
+    
 
 }
