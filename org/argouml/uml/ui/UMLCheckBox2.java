@@ -28,6 +28,7 @@ import javax.swing.Action;
 import javax.swing.JCheckBox;
 
 import org.argouml.model.uml.UmlModelEventPump;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 
@@ -60,7 +61,7 @@ public abstract class UMLCheckBox2
         _propertySetName = propertySetName;
         setContainer(container);
         addActionListener(a);
-        setActionCommand((String)a.getValue(a.ACTION_COMMAND_KEY));
+        setActionCommand((String)a.getValue(Action.ACTION_COMMAND_KEY));
     }
 
     /**
