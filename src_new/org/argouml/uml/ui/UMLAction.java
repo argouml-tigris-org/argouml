@@ -71,7 +71,7 @@ public class UMLAction extends AbstractAction {
         }
         putValue(
 		 Action.SHORT_DESCRIPTION,
-		 Translator.localize(name) + " ");
+		 Translator.localize(name));
         if (global)
             Actions.addAction(this);
         // Jaap B. 17-6-2003 added next line to make sure every action is in the right enable condition on creation.

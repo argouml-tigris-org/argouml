@@ -31,8 +31,8 @@ package org.argouml.uml.diagram.ui;
 
 
 import org.argouml.model.ModelFacade;
+import org.argouml.ui.CmdSetMode;
 
-import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
 /** 

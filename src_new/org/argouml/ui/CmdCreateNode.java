@@ -31,6 +31,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
 import org.argouml.model.uml.UmlFactory;
 
 /** 
@@ -63,6 +66,7 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      */
     public CmdCreateNode(Hashtable args, String resource, String name) {
         super(args, resource, name);
+        putToolTip(name);
     }
 
     /**
@@ -72,6 +76,7 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      */
     public CmdCreateNode(Hashtable args, String name) {
         super(args, name);
+        putToolTip(name);
     }
 
     /**
@@ -82,6 +87,7 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      */
     public CmdCreateNode(Class nodeClass, String resource, String name) {
         super(nodeClass, resource, name);
+        putToolTip(name);
     }
 
     /**
@@ -91,6 +97,7 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      */
     public CmdCreateNode(Object nodeClass, String name) {
         super((Class)nodeClass, name);
+        putToolTip(name);
     }
 
     /**
@@ -106,6 +113,7 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
 			 String resource,
 			 String name) {
         super(nodeClass, sticky, resource, name);
+        putToolTip(name);
     }
 
     /**
@@ -116,6 +124,7 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      */
     public CmdCreateNode(Object nodeClass, boolean sticky, String name) {
         super((Class)nodeClass, sticky, name);
+        putToolTip(name);
     }
 
     /**
@@ -187,4 +196,10 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
         return name;
     }
 
+    /**
+     * Adds tooltip text to the Action.
+     */
+    private void putToolTip(String name) {
+        putValue(Action.SHORT_DESCRIPTION, Translator.localize(name));
+    }
 }
