@@ -51,8 +51,8 @@ import org.tigris.gef.base.ModeManager;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 
-
-
+import org.argouml.ui.*;
+import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 
 /** This class defines a bridge between the UML meta-model
  *  representation of the design and the GraphModel interface used by
@@ -221,7 +221,6 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
   /** Contruct and add a new edge of the given kind */
   public Object connect(Object fromPort, Object toPort,
 			java.lang.Class edgeClass) {
-  
     if (edgeClass == MLink.class &&
       (fromPort instanceof MObject && toPort instanceof MObject)) {
       MLink ml = UmlFactory.getFactory().getCommonBehavior().createLink();
@@ -232,10 +231,8 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
       ml.addConnection(le0);
       ml.addConnection(le1);
       addEdge(ml);
-     
       // add stimulus with given action, taken from global mode
       Editor curEditor = Globals.curEditor();
-
       if (ml.getStimuli()==null || ml.getStimuli().size() == 0) {
         ModeManager modeManager = curEditor.getModeManager();
         Mode mode = (Mode)modeManager.top();
@@ -245,11 +242,21 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
           // get "action"-Class taken from global mode
           Class actionClass = (Class) args.get("action");
           if (actionClass != null) {
-            try { action = (MAction) actionClass.newInstance(); }
-            catch (java.lang.IllegalAccessException ignore) { }
-            catch (java.lang.InstantiationException ignore) { }
+            //create the action
+            if(actionClass==MCallAction.class)
+                action=UmlFactory.getFactory().getCommonBehavior().createCallAction();
+            else if(actionClass==MCreateAction.class)
+                action=UmlFactory.getFactory().getCommonBehavior().createCreateAction();
+            else if(actionClass==MDestroyAction.class)
+                action=UmlFactory.getFactory().getCommonBehavior().createDestroyAction();
+            else if(actionClass==MSendAction.class)
+                action=UmlFactory.getFactory().getCommonBehavior().createSendAction();
+            else if(actionClass==MReturnAction.class)
+                action=UmlFactory.getFactory().getCommonBehavior().createReturnAction();
+	
             if (action != null)  {
-              // determine action type of arguments in mode
+						  						  
+				// determine action type of arguments in mode
               action.setName("new action");
 
               if (action instanceof MSendAction || action instanceof MReturnAction) {
@@ -257,9 +264,15 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
               } else {
                 action.setAsynchronous(false);
               }
-              // create stimulus
-              MStimulus stimulus = UmlFactory.getFactory().getCommonBehavior().createStimulus();
-              stimulus.setName("");
+                // create stimulus
+                MStimulus stimulus = UmlFactory.getFactory().getCommonBehavior().createStimulus();
+                //if we want to allow the sequence number to appear
+                /*UMLSequenceDiagram sd=(UMLSequenceDiagram) ProjectBrowser.TheInstance.getActiveDiagram();
+                int num=sd.getNumStimuluss()+1;
+                stimulus.setName(""+num);*/
+                //otherwise: no sequence number
+                stimulus.setName("");
+			  
               //set sender and receiver
               stimulus.setSender((MObject)fromPort);
               stimulus.setReceiver((MObject)toPort);
