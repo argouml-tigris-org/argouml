@@ -37,11 +37,21 @@ public class GoListToPriorityToItem implements TreeModel {
     ////////////////////////////////////////////////////////////////
     // TreeModel implementation
 
+    /**
+     * @see javax.swing.tree.TreeModel#getRoot()
+     */
     public Object getRoot() {
 	throw new UnsupportedOperationException();
     } 
+    
+    /**
+     * @param r ignored
+     */
     public void setRoot(Object r) { }
 
+    /**
+     * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
+     */
     public Object getChild(Object parent, int index) {
 	if (parent instanceof ToDoList) {
 	    return PriorityNode.getPriorities().elementAt(index);
@@ -62,6 +72,9 @@ public class GoListToPriorityToItem implements TreeModel {
 					    + "GoListToPriorityToItem");
     }
 
+    /**
+     * @see javax.swing.tree.TreeModel#getChildCount(java.lang.Object)
+     */
     public int getChildCount(Object parent) {
 	if (parent instanceof ToDoList) {
 	    return PriorityNode.getPriorities().size();
@@ -80,6 +93,10 @@ public class GoListToPriorityToItem implements TreeModel {
 	return 0;
     }
 
+    /**
+     * @see javax.swing.tree.TreeModel#getIndexOfChild(
+     * java.lang.Object, java.lang.Object)
+     */
     public int getIndexOfChild(Object parent, Object child) {
 	if (parent instanceof ToDoList) {
 	    return PriorityNode.getPriorities().indexOf(child);
@@ -100,6 +117,9 @@ public class GoListToPriorityToItem implements TreeModel {
 	return -1;
     }
 
+    /**
+     * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
+     */
     public boolean isLeaf(Object node) {
 	if (node instanceof ToDoList) return false;
 	if (node instanceof PriorityNode && getChildCount(node) > 0)
@@ -107,8 +127,20 @@ public class GoListToPriorityToItem implements TreeModel {
 	return true;
     }
 
+    /**
+     * @see javax.swing.tree.TreeModel#valueForPathChanged(
+     * javax.swing.tree.TreePath, java.lang.Object)
+     */
     public void valueForPathChanged(TreePath path, Object newValue) { }
+    
+    /**
+     * @see javax.swing.tree.TreeModel#addTreeModelListener(javax.swing.event.TreeModelListener)
+     */
     public void addTreeModelListener(TreeModelListener l) { }
+    
+    /**
+     * @see javax.swing.tree.TreeModel#removeTreeModelListener(javax.swing.event.TreeModelListener)
+     */
     public void removeTreeModelListener(TreeModelListener l) { }
 
 } /* end class GoListToPriorityToItem */
