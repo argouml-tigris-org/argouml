@@ -99,6 +99,8 @@ public class FigMessage extends FigNodeModelElement {
 	arrowDirections.addElement("East");
 	arrowDirections.addElement("West");
 
+    getBigPort().setFilled(false);
+    getBigPort().setLineWidth(0);
 	// add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
 	addFig(getNameFig());
