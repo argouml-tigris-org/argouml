@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!DOCTYPE TemplateSet [
+  <!ELEMENT TemplateSet (macro | template)* >
+  <!ELEMENT macro (#PCDATA)>
+  <!ATTLIST macro name ID #REQUIRED>
+  <!ELEMENT template (#PCDATA)>
+  <!ATTLIST template class CDATA #REQUIRED
+                     guard CDATA #IMPLIED>
+]>
+<!-- This is argo.tee, for Argo/UML to save project -->
+<!-- files.  "tee" = Template with Embedded Expressions. -->
+
+<!-- Original Author: jrobbins@ics.uci.edu -->
+<!-- $Id$ -->
+
+
+<!-- TO DO LIST: -->
+
+<TemplateSet>
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<template class="org.argouml.kernel.Project">
+<![CDATA[
+<?xml version = "1.0" encoding = "ISO-8859-1" ?>
+<!DOCTYPE argo SYSTEM "argo.dtd" >
+<argo>
+  <documentation>
+    <authorname><ocl>self.authorname</ocl></authorname>
+    <version><ocl>self.version</ocl></version>
+    <description>
+      <ocl>self.description</ocl>
+    </description>
+  </documentation>
+  
+  <searchpath href="<ocl>self.searchPath</ocl>" />
+
+  <ocl>self.members</ocl>
+
+  <historyfile name="<ocl>self.historyFile</ocl>" />
+
+  <stats>
+    <ocl>self.stats</ocl>
+  </stats>
+
+</argo>
+]]>
+</template>
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<template class="org.argouml.kernel.ProjectMember">
+<![CDATA[
+<member
+  type="<ocl>self.type</ocl>"
+  name="<ocl>self.name</ocl>"
+/>
+]]>
+</template>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<template class="org.argouml.ui.UsageStatistic">
+<![CDATA[
+<stat name="<ocl>self.name</ocl>"
+     value="<ocl>self.value</ocl>" />
+]]>
+</template>
+
+</TemplateSet>
+
+<!-- -  End of File  - - - - - - - - - - - - - - - - - - - - - - - - -->

@@ -1,0 +1,3404 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- THIS PRODUCT CONTAINS RESTRICTED MATERIALS OF IBM 5639-D57,             -->
+<!-- (C) COPYRIGHT International Business Machines Corp., 1998               -->
+<!-- All Rights Reserved * Licensed Materials - Property of IBM              -->
+<!-- The source code for this program is not published or otherwise divested -->
+<!-- of its trade secrets, irrespective of what has been deposited with the  -->
+<!-- U. S. Copyright Office.                                                 -->
+
+<!-- UML Model Document Type Declaration -->
+<!-- IBM                                 -->
+
+<!-- Version: 1.24                        -->
+<!-- Date: 8/10/98                       -->
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- The general design of the DTD closely follows the UML description  -->
+<!-- in the UML Semantics version 1.1 document dated September 1, 1997. -->
+
+<!-- The first section of this DTD defines XMI transfer text XML        -->
+<!-- elements for packaging UML information and transmitting in the XMI -->
+<!-- format.  The rest of the DTD defines the UML metamodel.            -->
+
+<!-- It is the intent of this DTD to define a XML ELEMENT for each      -->
+<!-- class in the UML metamodel that is not abstract.  The content      -->
+<!-- models for each element enforce the UML metamodel containment      -->
+<!-- hierarchy.                                                         -->
+
+<!-- Each attribute in a UML metamodel class is represented by an XML   -->
+<!-- element.  If the attribute is an enumerated type, the content of   -->
+<!-- the XML element is EMPTY, and there is an attribute with the name  -->
+<!-- "value" defined for the XML element which holds the literal.  If   -->
+<!-- attribute is not an enumerated type, its corresponding XML element -->
+<!-- has character data content.                                        -->
+
+<!-- This DTD also defines XML ENTITIES to represent the attributes,    -->
+<!-- associations, and compositions for classes in the UML metamodel.   -->
+<!-- The attributes in UML metamodel classes are represented by         -->
+<!-- entities with a suffix of "Properties".  The associations are      -->
+<!-- represented by entities with a suffix of "Associations".           -->
+<!-- Containment is represented by entities with a suffix of            -->
+<!-- "Compositions".  For all entities comprising the definition of     -->
+<!-- UML metamodel classes, the name of the entity is prefixed with the -->
+<!-- name of the class from the UML metamodel.  For example, the        -->
+<!-- UML metamodel class "ModelElement" is represented by three         -->
+<!-- entities:  "ModelElementProperties", "ModelElementAssociations",   -->
+<!-- and "ModelElementCompositions".                                    -->
+
+<!-- The associations and attributes of association classes in the UML  -->
+<!-- metamodel are reflected in this DTD by moving them to an entity    -->
+<!-- corresponding to a UML metamodel abstract class or an element      -->
+<!-- corresponding to a UML metamodel concrete class.  Hence, there are -->
+<!-- no elements in this DTD corresponding to association classes in    -->
+<!-- the UML metamodel.                                                 -->
+
+<!-- Each association role in the UML metamodel is implemented with a   -->
+<!-- reference element defined below.  The rationale for                -->
+<!-- implementing a reference element is to provide a means for XML     -->
+<!-- browsers to enable users to traverse models by following links     -->
+<!-- between related model elements.  The reference element may be      -->
+<!-- redefined later to employ more sophisticated XML links than the    -->
+<!-- simple internal link implemented here.  Note that it is not        -->
+<!-- possible to enforce which kind of elements are referenced by the   -->
+<!-- reference element in the DTD itself, so XML documents that are     -->
+<!-- valid according to this DTD may be semantically incorrect.         -->
+
+<!-- Since XML does not currently provide a means of inheriting         -->
+<!-- attributes and element content between elements, inheritance in    -->
+<!-- the UML metamodel is implemented by including the entities which   -->
+<!-- define superclasses in the definition of the entities which define -->
+<!-- subclasses.                                                        -->
+
+<!-- Where multiple inheritance occurs in the UML metamodel, the        -->
+<!-- inherited attributes and content of elements in this DTD are only  -->
+<!-- included once in the declaration of the element corresponding to   -->
+<!-- a subclass.                                                        -->
+
+<!-- This DTD is organized in sections which correspond to the packages -->
+<!-- in the UML metamodel.                                              -->
+
+<!-- There has been no effort to be concise in defining ELEMENT names.  -->
+<!-- Clarity was more of a priority than shortening the length of XML   -->
+<!-- documents that are valid according to this DTD.                    -->
+
+<!-- The element declarations are arranged according to the packages in -->
+<!-- the UML metamodel.  For each package, the entities which           -->
+<!-- correspond to abstract classes in the package are declared.  The   -->
+<!-- entities are arranged in alphabetical order by the abstract class  -->
+<!-- names.  Then the elements corresponding to concrete UML metamodel  -->
+<!-- classes are listed in alphabetical order.  Please note that some   -->
+<!-- classes are in multiple packages of the UML metamodel.  The        -->
+<!-- complete declaration appears in the first package, and parts of    -->
+<!-- the class defined in other packages are included in the            -->
+<!-- declarations of those other classes.                               -->
+
+<!-- Known deviations from UML are noted where they occur, with the     -->
+<!-- phrase "UML DEVIATION"                                             -->
+
+<!-- If there are inconsistencies in the UML Semantics document, that   -->
+<!-- affect this DTD, they are noted with the phrase "UML               -->
+<!-- INCONSISTENCY".                                                    -->
+
+<!-- Tags that correspond to UML classes have a name that starts with   -->
+<!-- a capital letter.  Tags that correspond to associations in         -->
+<!-- the UML metamodel are in lower case letters.                       -->
+
+<!-- This DTD is basically organized according to the chapters in the   -->
+<!-- UML Semantics document.  The abstract classes in each chapter are  -->
+<!-- listed first, followed by the concrete classes.  The classes are   -->
+<!-- in order from superclasses to subclasses, since the definition of  -->
+<!-- a subclass requires all of its superclasses to be defined.         -->
+
+<!-- All page and chapter numbers in this documentation refer to the    -->
+<!-- document "UML Semantics version 1.1, 1 September 1997".            -->
+<!-- __________________________________________________________________ -->
+
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- This section defines the XMI transfer text XML elements.           -->
+<!-- UML DEVIATION:  None of these elements are derived from the UML    -->
+<!-- metamodel.  They are defined by the XMI submission in response to  -->
+<!-- the SMIF RFP from OMG.                                             -->
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+
+
+<!-- ________________________________________________________ -->
+<!--                                                          -->
+<!-- XMI is the top-level XML element for XMI transfer text.  -->
+<!-- ________________________________________________________ -->
+
+<!ELEMENT XMI (XMI.header, XMI.content, XMI.extensions*) >
+<!ATTLIST XMI
+            xmi-version CDATA #FIXED "1.0"
+            timestamp   CDATA #IMPLIED
+            verified (true | false) #IMPLIED
+>
+
+<!-- ______________________________________________________________ -->
+<!--                                                                -->
+<!-- XMI.header contains metadata about the transfer and data about -->
+<!-- the metamodels which define the content of the transfer.       -->
+<!-- ______________________________________________________________ -->
+
+<!ELEMENT XMI.header (XMI.documentation?, XMI.metamodel+) >
+
+<!-- _____________________________________________________________________ -->
+<!--                                                                       -->
+<!-- documentation contains data about the information being transferred.  -->
+<!-- _____________________________________________________________________ -->
+
+<!ELEMENT XMI.documentation (#PCDATA |
+                         XMI.owner | XMI.contact |
+                         XMI.longDescription |
+                         XMI.shortDescription | XMI.exporter |
+                         XMI.exporterVersion | XMI.notice)* >
+
+<!ELEMENT XMI.owner ANY >
+<!ELEMENT XMI.contact ANY >
+<!ELEMENT XMI.longDescription ANY >
+<!ELEMENT XMI.shortDescription ANY >
+<!ELEMENT XMI.exporter ANY >
+<!ELEMENT XMI.exporterVersion ANY >
+<!ELEMENT XMI.exporterID ANY >
+<!ELEMENT XMI.notice ANY >
+
+<!-- _____________________________________________________________________ -->
+<!--                                                                       -->
+<!-- metamodel contains data about the metamodel(s) to which the content   -->
+<!-- conforms.                                                             -->
+<!-- _____________________________________________________________________ -->
+
+<!ELEMENT XMI.metamodel ANY>
+<!ATTLIST XMI.metamodel
+              name    CDATA #REQUIRED
+              version CDATA #REQUIRED
+              href    CDATA #IMPLIED
+>
+
+<!-- _______________________________________________ -->
+<!--                                                 -->
+<!-- content is the actual data being transferred.   -->
+<!-- _______________________________________________ -->
+
+<!ELEMENT XMI.content ANY >
+
+<!-- ___________________________________________________________________ -->
+<!--                                                                     -->
+<!-- extensions contains information related to the content that is not  -->
+<!-- defined in the metamodel(s) in the header.                          -->
+<!-- ___________________________________________________________________ -->
+
+<!ELEMENT XMI.extensions ANY >
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- This section contains the XMI.reference element declaration.  It   -->
+<!-- can be either an internal reference, in which case the target      -->
+<!-- attribute contains the ID of the XML element being referred to,    -->
+<!-- or it can be a reference to an XML element in another document,    -->
+<!-- in which case the href attribute holds the URI of the document     -->
+<!-- with an XPointer at the end.  When the XLink working draft becomes -->
+<!-- a W3C recommendation, this element will be redefined to be a       -->
+<!-- simple XLink.                                                      -->
+
+<!-- The expectedType attribute may contain the expected type of the    -->
+<!-- XML element to be referred to.  Although XML processors will not   -->
+<!-- enforce that the XML element referred to is the expected type,     -->
+<!-- tools may report a warning if the expectedType does not match      -->
+<!-- what is being referred to.                                         -->
+
+<!-- UML DEVIATION:  The XMI.reference element is not defined in UML.It -->
+<!-- is used to implement associations between UML metamodel classes.   -->
+<!-- __________________________________________________________________ -->
+
+<!ELEMENT XMI.reference ANY >
+<!ATTLIST XMI.reference
+             target IDREF #IMPLIED
+             href   CDATA #IMPLIED
+             expectedType CDATA #IMPLIED
+             content-title CDATA #IMPLIED
+>
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- This section contains the data types which are defined in the MOF. -->
+<!-- __________________________________________________________________ -->
+
+<!ELEMENT XMI.field ANY >
+<!ELEMENT XMI.struct (field)+ >
+
+<!ELEMENT XMI.seqItem ANY >
+<!ELEMENT XMI.sequence (seqItem)* >
+
+<!ELEMENT XMI.arrayLen ANY >
+<!ELEMENT XMI.arrayItem ANY >
+<!ELEMENT XMI.array (XMI.arrayLen, XMI.arrayItem*) >
+
+<!ELEMENT XMI.enum (#PCDATA) >
+
+<!ELEMENT XMI.discrim ANY >
+<!ELEMENT XMI.union (XMI.discrim, XMI.field*) >
+
+<!ELEMENT XMI.any ANY >
+<!ATTLIST XMI.any
+            type CDATA #IMPLIED
+>
+
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!--                        CHAPTER 7                                   -->
+<!-- This section contains the declarations of the entities and         -->
+<!-- elements corresponding to the Data Types package, one of the       -->
+<!-- foundation packages in the UML metamodel.  The UML standard        -->
+<!-- enumerations are defined here, because they are used to define     -->
+<!-- the rest of UML, and XML entities must be declared before being    -->
+<!-- used in a DTD.                                                     -->
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+
+<!ENTITY % AggregationKind
+         ' XMI.value (none | shared |aggregate | composite) #REQUIRED ' >
+
+<!ENTITY % Boolean
+         ' XMI.value (true|false) #REQUIRED ' >
+
+<!ENTITY % CallConcurrencyKind
+         ' XMI.value (sequential | guarded | concurrent) #REQUIRED ' >
+
+<!ENTITY % ChangeableKind
+         ' XMI.value (none | frozen | addOnly) #REQUIRED ' >
+
+<!ENTITY % ParameterDirectionKind
+         ' XMI.value (in | out | inout | return) #REQUIRED ' >
+
+<!ENTITY % PseudoStateKind
+         ' XMI.value (initial | deepHistory | shallowHistory |
+                  join | fork | branch | final) #REQUIRED ' >
+
+<!ENTITY % ScopeKind
+         ' XMI.value (classifier | instance) #REQUIRED ' >
+
+<!ENTITY % SynchronousKind
+         ' XMI.value (synchronous | asynchronous) #REQUIRED ' >
+
+<!-- jer 99/01/31: added package visibility -->
+
+<!ENTITY % VisibilityKind
+         ' XMI.value (public | protected | private | package) #REQUIRED ' >
+
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!--                        CHAPTER 4                                   -->
+<!-- This section contains the declarations of the entities and         -->
+<!-- elements corresponding to the core package, one of the foundation  -->
+<!-- packages in the UML metamodel.                                     -->
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- The declaration of the entities in this section correspond to the  -->
+<!-- abstract classes in the core package.                              -->
+<!-- __________________________________________________________________ -->
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- UML CLASSES:  ModelElement and ElementOwnership                    -->
+
+<!-- The definition of the ModelElement class is on pages 16, 17, 25,   -->
+<!-- and 32.  Other aspects of the ModelElement class are documented in -->
+<!-- later sections of this DTD and the semantics document.             -->
+
+<!-- The definition of the ElementOwnership class is on pages 16, 22,   -->
+<!-- and 31.                                                            -->
+
+<!-- These are properties common to all elements.  Note that the name   -->
+<!-- attribute is from the ModelElement class, the visibility attribute -->
+<!-- is from the ElementOwnership class, and the id attribute is not    -->
+<!-- defined by UML, but is required to implement UML associations      -->
+<!-- using the XMI.reference XML ELEMENT defined above.                 -->
+
+<!-- The content common to every class that inherits from the           -->
+<!-- ModelElement class is included here.  Some of the content is in    -->
+<!-- other packages which will be defined later.                        -->
+
+<!-- UML DEVIATION:  The visibility attribute is implemented in this    -->
+<!-- DTD as an attribute in the ModelElement class; in UML, it is an    -->
+<!-- attribute of the ElementOwnership class.                           -->
+
+<!-- UML DEVIATION:  The visibility attribute is from the               -->
+<!-- ElementOwnership class, an association class in the UML metamodel. -->
+
+<!-- UML INCONSISTENCY: The multiplicity of the stereotype association  -->
+<!-- end is * in the diagram on p. 53 but is documented as 0 or 1 on    -->
+<!-- page 54.                                                           -->
+<!-- __________________________________________________________________ -->
+
+
+<!ENTITY % modelElementName 'name' >
+<!ELEMENT name (#PCDATA) >
+
+<!ENTITY % modelElementVisibility 'visibility' >
+<!ELEMENT visibility EMPTY >
+<!ATTLIST visibility %VisibilityKind; >
+
+<!ENTITY % ModelElementProperties '%modelElementName;,
+                                   %modelElementVisibility;' >
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- namespace should contain a reference to a model element that       -->
+<!-- corresponds to an instance of the Namespace UML class or one of    -->
+<!-- its many subclasses.                                               -->
+<!-- __________________________________________________________________ -->
+
+<!ENTITY % modelElementNamespace 'namespace' >
+<!ELEMENT namespace (XMI.reference) >
+
+<!ENTITY % modelElementStereotype 'stereotype' >
+<!ELEMENT stereotype (XMI.reference) >
+
+<!ENTITY % modelElementConstraint 'constraint' >
+<!ELEMENT constraint (XMI.reference) >
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- provision can contain a reference to any ModelElement.             -->
+<!-- __________________________________________________________________ -->
+
+<!ENTITY % modelElementProvision 'provision' >
+<!ELEMENT provision (XMI.reference) >
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- requirement can contain a reference to any ModelElement.           -->
+<!-- __________________________________________________________________ -->
+
+<!ENTITY % modelElementRequirement 'requirement' >
+<!ELEMENT requirement (XMI.reference) >
+
+<!-- _____________________________________________________________ -->
+<!--                                                               -->
+<!-- templateParameter should contain a reference to a Parameter.  -->
+<!-- _____________________________________________________________ -->
+
+<!ENTITY % modelElementTemplateParameter 'templateParameter' >
+<!ELEMENT templateParameter (XMI.reference) >
+
+<!-- _________________________________________ -->
+<!--                                           -->
+<!-- template should refer to a model element  -->
+<!-- _________________________________________ -->
+
+<!ENTITY % modelElementTemplate 'template' >
+<!ELEMENT template (XMI.reference) >
+
+<!-- _____________________________________________________________ -->
+<!--                                                               -->
+<!-- extensions may refer to an XML element which contains         -->
+<!-- information that is not defined in the metamodel.             -->
+<!-- UML DEVIATION:  This is not defined in UML; it is one XMI     -->
+<!-- technique for representing model information that extends a   -->
+<!-- metamodel.                                                    -->
+<!-- _____________________________________________________________ -->
+
+<!ENTITY % modelElementExtension 'XMI.extension' >
+<!ELEMENT XMI.extension ANY >
+
+<!-- _____________________________________________________________ -->
+<!--                                                               -->
+<!-- implementation should refer to a Component.                   -->
+<!-- _____________________________________________________________ -->
+
+<!ENTITY % modelElementImplementation 'implementation'>
+<!ELEMENT implementation (XMI.reference) >
+
+<!ENTITY % ModelElementAssociations '%modelElementNamespace;?,
+                                     %modelElementTemplate;?,
+                                     (%modelElementStereotype; |
+                                      %modelElementConstraint; |
+                                      %modelElementProvision; |
+                                      %modelElementRequirement; |
+                                      %modelElementTemplateParameter; |
+                                      %modelElementExtension; |
+                                      %modelElementImplementation;)*' >
+
+<!ENTITY % taggedValue 'taggedValue' >
+<!ELEMENT taggedValue (TaggedValue) >
+
+<!ENTITY % modelElementBehavior 'behavior' >
+<!ELEMENT behavior (StateMachine | ActivityModel) >
+
+<!ENTITY % remoteContent 'XMI.remoteContent' >
+<!ELEMENT XMI.remoteContent (XMI.reference) >
+
+<!ENTITY % ModelElementCompositions '(%taggedValue; |
+                                      %modelElementBehavior;)*' >
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- UML CLASS: Feature                                                 -->
+
+<!-- The definition of the Feature class is on pages 16, 23, and 31.    -->
+
+<!-- UML DEVIATION:  The visibility attribute in the Feature class is   -->
+<!-- not included here, it comes from the ModelElementProperties entity -->
+<!-- defined below. The name attribute is also included in the          -->
+<!-- ModelElementProperties entity defined below.                       -->
+<!-- __________________________________________________________________ -->
+
+
+<!ENTITY % ownerScope 'ownerScope' >
+<!ELEMENT ownerScope EMPTY >
+<!ATTLIST ownerScope %ScopeKind; >
+
+<!ENTITY % FeatureProperties '%ModelElementProperties;,
+                              %ownerScope;' >
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- owner refers to the Classifier which the feature belongs to        -->
+<!-- __________________________________________________________________ -->
+
+<!ENTITY % featureOwner 'owner' >
+<!ELEMENT owner (XMI.reference) >
+
+<!ENTITY % FeatureAssociations '%ModelElementAssociations;,
+                                %featureOwner;?' >
+
+<!ENTITY % FeatureCompositions '%ModelElementCompositions;' >
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- UML CLASS: BehavioralFeature                                       -->
+
+<!-- The definition of the BehavioralFeature class is on pages 16, 20,  -->
+<!-- and 28, 66.                                                        -->
+
+<!-- UML DEVIATION:  The attribute name from the UML class              -->
+<!-- BehavioralFeature is not included here because there is a name     -->
+<!-- attribute for every model element defined in the elementProperties -->
+<!-- entity declared below.                                             -->
+<!-- __________________________________________________________________ -->
+
+<!ENTITY % isQuery 'isQuery' >
+<!ELEMENT isQuery EMPTY >
+<!ATTLIST isQuery %Boolean; >
+
+<!ENTITY % BehavioralFeatureProperties '%FeatureProperties;,
+                                        %isQuery;' >
+
+<!ENTITY % raisedException 'raisedException' >
+<!ELEMENT raisedException (XMI.reference) >
+
+<!ENTITY % BehavioralFeatureAssociations '%FeatureAssociations;,
+                                          %raisedException;*' >
+
+<!ENTITY % parameter 'parameter' >
+<!ELEMENT parameter (Parameter) >
+
+<!ENTITY % BehavioralFeatureCompositions '%FeatureCompositions;,
+                                         (parameter | StateMachine |
+                                          ActivityModel)*' >
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- UML CLASS: Namespace                                               -->
+
+<!-- The definition of the Namespace class is on pages 16, 17, 25, 26,  -->
+<!-- and 33.                                                            -->
+<!-- __________________________________________________________________ -->
+
+<!ENTITY % NamespaceProperties '%ModelElementProperties;' >
+
+<!ENTITY % NamespaceAssociations '%ModelElementAssociations;' >
+
+<!ENTITY % modelElements '(Model |
+                        Subsystem |
+                        Package |
+                        Class |
+                        DataType |
+                        Primitive |
+                        Enumeration |
+                        Structure |
+                        Generalization |
+                        Association |
+                        Interface |
+                        UseCase |
+                        AssociationClass |
+                        Node |
+                        Component |
+                        Comment |
+                        Signal |
+                        Exception |
+                        Object |
+                        Link |
+                        LinkObject |
+                        UseCaseInstance |
+                        ElementReference |
+                        Actor |
+                        Dependency |
+                        Refinement |
+                        Usage |
+                        Trace |
+                        Binding |
+                        Constraint |
+                        Stereotype |
+                        StateMachine |
+                        ActivityModel |
+                        Collaboration |
+                        Request |
+                        ClassifierRole |
+                        AssociationRole)' >
+
+<!ENTITY % ownedElement 'ownedElement' >
+<!ELEMENT ownedElement %modelElements; >
+
+<!ENTITY % NamespaceCompositions '(%ModelElementCompositions;,
+                                   %ownedElement;*) ' >
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- UML CLASS: GeneralizableElement                                    -->
+
+<!-- The definition of the GeneralizableElement class is on pages 16,   -->
+<!-- 17, 23, 24, 31, and 32.                                            -->
+<!-- __________________________________________________________________ -->
+
+<!ENTITY % isAbstract 'isAbstract' >
+<!ELEMENT isAbstract EMPTY >
+<!ATTLIST isAbstract %Boolean; >
+
+<!ENTITY % isLeaf 'isLeaf' >
+<!ELEMENT isLeaf EMPTY >
+<!ATTLIST isLeaf %Boolean; >
+
+<!ENTITY % isRoot 'isRoot' >
+<!ELEMENT isRoot EMPTY >
+<!ATTLIST isRoot %Boolean; >
+
+<!ENTITY % GeneralizableElementProperties '%NamespaceProperties;,
+                                           %isAbstract;,
+                                           %isLeaf;,
+                                           %isRoot;' >
+
+<!-- _________________________________________________________ -->
+<!--                                                           -->
+<!-- Both generalization and specialization should refer to    -->
+<!-- GeneralizableElements.                                    -->
+<!-- _________________________________________________________ -->
+
+<!ENTITY % generalization 'generalization' >
+<!ELEMENT generalization (XMI.reference) >
+
+<!ENTITY % specialization 'specialization' >
+<!ELEMENT specialization (XMI.reference) >
+
+<!ENTITY % GeneralizableElementAssociations '%NamespaceAssociations;,
+                                             (%generalization; |
+                                              %specialization;)*' >
+
+<!ENTITY % GeneralizableElementCompositions '%NamespaceCompositions;' >
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- UML CLASS: Classifier                                              -->
+
+<!-- The definition of the Classifier class is on pages 16, 17, 21, 29  -->
+<!-- and 30.                                                            -->
+
+<!-- NOTE:  Classifiers can contain state machines according to         -->
+<!-- page 102.                                                          -->
+
+<!-- __________________________________________________________________ -->
+
+<!ENTITY % ClassifierProperties '%GeneralizableElementProperties;' >
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- participant should contain a reference to an AssociationEnd        -->
+<!-- __________________________________________________________________ -->
+
+<!ENTITY % participant 'participant' >
+<!ELEMENT participant (XMI.reference) >
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- realization should contain a reference to a Classifier, except for -->
+<!-- Interfaces.                                                        -->
+<!-- __________________________________________________________________ -->
+
+<!ENTITY % realization 'realization' >
+<!ELEMENT realization (XMI.reference) >
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- specification should contain a reference to a Classifier.          -->
+<!-- Methods also have a specification reference, which should contain  -->
+<!-- a reference to the Operation the method implements.                -->
+<!-- __________________________________________________________________ -->
+
+<!ENTITY % specification 'specification' >
+<!ELEMENT specification (XMI.reference) >
+
+<!ENTITY % associationEnd 'associationEnd' >
+<!ELEMENT associationEnd (XMI.reference) >
+
+<!ENTITY % ClassifierAssociations '%GeneralizableElementAssociations;,
+                                   (%participant; |
+                                    %realization; |
+                                    %specification; |
+                                    %associationEnd;)*' >
+
+<!ENTITY % ClassifierCompositions '%GeneralizableElementCompositions;,
+                                   feature*' >
+
+<!ELEMENT feature (Attribute |
+                   Operation |
+                   Method |
+                   Reception) >
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- UML CLASS: Element                                                 -->
+
+<!-- The definition of the Element class is on pages 16, 22, and 31.    -->
+
+<!-- UML DEVIATION:  The id attribute is not defined in UML; it is used -->
+<!-- to implement associations in the UML metamodel in XML.             -->
+<!-- __________________________________________________________________ -->
+
+<!ENTITY % XMI.ElementAttributes 'XMI.id ID #REQUIRED
+                                  XMI.remote (true | false) "false" ' >
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- UML CLASS: ElementOwnership                                        -->
+
+<!-- The definition of the ElementOwnership class is on pages 16, 22,   -->
+<!-- and 31.                                                            -->
+
+<!-- UML DEVIATION:  The ElementOwnership attribute visibility is       -->
+<!-- in this DTD in the ModelElementProperties entity. This DTD treats  -->
+<!-- the visibility attribute as an attribute of every ModelElement.    -->
+<!-- __________________________________________________________________ -->
+
+<!-- __________________________________________________________________  -->
+<!--                                                                     -->
+<!-- UML CLASS: StructuralFeature                                        -->
+
+<!-- The definition of the StructuralFeature class is on pages 16, 27,   -->
+<!-- and 34.                                                             -->
+
+<!-- The declaration of the type element is with the declaration of the  -->
+<!-- Attribute element.                                                  -->
+<!-- __________________________________________________________________  -->
+
+<!ENTITY % changeable 'changeable' >
+<!ELEMENT changeable EMPTY >
+<!ATTLIST changeable %ChangeableKind; >
+
+<!ENTITY % multiplicity 'multiplicity' >
+<!ELEMENT multiplicity (#PCDATA) >
+
+<!ENTITY % targetScope 'targetScope' >
+<!ELEMENT targetScope EMPTY >
+<!ATTLIST targetScope %ScopeKind; >
+
+<!ENTITY % StructuralFeatureProperties '%FeatureProperties;,
+                                        %changeable;,
+                                        %multiplicity;,
+                                        %targetScope;' >
+
+<!ENTITY % structuralFeatureType 'type' >
+<!ELEMENT type (#PCDATA |
+	         XMI.reference |
+                XMI.struct |
+                XMI.sequence |
+                XMI.enum |
+                XMI.array |
+                XMI.union |
+                XMI.any)*
+>
+
+<!ENTITY % StructuralFeatureAssociations '%FeatureAssociations;,
+                                          %structuralFeatureType;' >
+
+<!ENTITY % StructuralFeatureCompositions '%FeatureCompositions;' >
+
+<!-- __________________________________________________________________  -->
+<!--                                                                     -->
+<!-- The element declarations in this section correspond to the concrete -->
+<!-- classes in the core package.                                        -->
+<!-- __________________________________________________________________  -->
+
+<!-- __________________________________________________________________  -->
+<!--                                                                     -->
+<!-- UML CLASS: Association                                              -->
+
+<!-- The definition of the Association class is on pages 17, 27, and 28. -->
+
+<!-- UML DEVIATION:  Since two or more association ends are contained    -->
+<!-- within each association, the two required ends are represented as   -->
+<!-- source and target elements in this DTD. They are not defined in     -->
+<!-- UML.                                                                -->
+<!-- __________________________________________________________________  -->
+
+<!-- jer 99/01/31: the above DEVIATION does not seem to be implemented -->
+
+
+<!ENTITY % AssociationProperties '%GeneralizableElementProperties;' >
+
+<!ENTITY % AssociationAssociations '%GeneralizableElementAssociations;' >
+
+<!ENTITY % connection 'connection' >
+<!ELEMENT connection (AssociationEnd) >
+
+<!ENTITY % associationEnds "%connection;*" >
+
+<!ENTITY % AssociationCompositions '%GeneralizableElementCompositions;,
+                                    %associationEnds;' >
+
+<!ELEMENT Association (%remoteContent; |
+                        (%AssociationProperties;,
+                         %AssociationAssociations;,
+                         %AssociationCompositions;)) >
+<!ATTLIST Association
+             %XMI.ElementAttributes;
+>
+
+<!-- __________________________________________________________________  -->
+<!--                                                                     -->
+<!-- UML CLASS: Class                                                    -->
+
+<!-- The definition of the Class class is on pages 16, 20, 21, and 29.   -->
+
+<!-- NOTE:  The content of a class is not completely defined in the core -->
+<!-- package.  Some of it is defined in other UML metamodel packages.    -->
+<!-- __________________________________________________________________  -->
+
+<!ENTITY % isActive 'isActive' >
+<!ELEMENT isActive EMPTY >
+<!ATTLIST isActive %Boolean; >
+
+<!ENTITY % ClassProperties '%ClassifierProperties;,
+                            %isActive;' >
+
+<!ENTITY % ClassAssociations '%ClassifierAssociations;' >
+
+<!ENTITY % ClassCompositions '%ClassifierCompositions;' >
+
+<!ELEMENT Class (%remoteContent; |
+                  (%ClassProperties;,
+                   %ClassAssociations;,
+                   %ClassCompositions;)) >
+<!ATTLIST Class
+            %XMI.ElementAttributes;
+>
+
+<!-- __________________________________________________________________  -->
+<!--                                                                     -->
+<!-- UML CLASS: AssociationClass                                         -->
+
+<!-- The definition of the Association class is on pages 17, 18, and 28. -->
+
+<!-- UML DEVIATION:  Since two or more association ends are contained    -->
+<!-- within each association, the two required ends are represented as   -->
+<!-- source and target elements in this DTD. They are not defined in     -->
+<!-- UML.                                                                -->
+<!-- __________________________________________________________________  -->
+
+<!ENTITY % AssociationClassProperties '%ClassProperties;' >
+
+<!ENTITY % AssociationClassAssociations '%ClassAssociations;' >
+
+<!ENTITY % AssociationClassCompositions '%ClassCompositions;,
+                                         %associationEnds;' >
+
+<!ELEMENT AssociationClass (%remoteContent; |
+                               (%AssociationClassProperties;,
+                                %AssociationClassAssociations;,
+                                %AssociationClassCompositions;)) >
+<!ATTLIST AssociationClass
+            %XMI.ElementAttributes;
+>
+
+<!-- __________________________________________________________________  -->
+<!--                                                                     -->
+<!-- UML CLASS: AssociationEnd                                           -->
+
+<!-- The definition of the Association class is on pages 17, 18, 19, and -->
+<!-- 28.                                                                 -->
+
+<!-- NOTE: Element specification is declared in the declaration of       -->
+<!-- abstract class Classifier. Element type is declared with element    -->
+<!-- Attribute, element isChangeable is declared with StructuralFeature, -->
+<!-- element multiplicity is declared with StructuralFeature, and        -->
+<!-- element targetScope is declared with StructuralFeature.             -->
+
+<!-- __________________________________________________________________  -->
+
+
+<!ENTITY % isNavigable 'isNavigable' >
+<!ELEMENT isNavigable EMPTY >
+<!ATTLIST isNavigable %Boolean; >
+
+<!ENTITY % isOrdered 'isOrdered' >
+<!ELEMENT isOrdered EMPTY >
+<!ATTLIST isOrdered %Boolean; >
+
+<!ENTITY % aggregation 'aggregation' >
+<!ELEMENT aggregation EMPTY >
+<!ATTLIST aggregation %AggregationKind; >
+
+<!ENTITY % AssociationEndProperties '%ModelElementProperties;,
+                                     %isNavigable;,
+                                     %isOrdered;,
+                                     %aggregation;,
+                                     %multiplicity;,
+                                     %changeable;,
+                                     %targetScope;' >
+
+
+<!-- _________________________________________________________  -->
+<!--                                                            -->
+<!-- qualifier should contain an Attribute or a reference to    -->
+<!-- an attribute.                                              -->
+<!-- _________________________________________________________  -->
+
+<!ENTITY % qualifier 'qualifier' >
+<!ELEMENT qualifier (Attribute) >
+
+<!ENTITY % AssociationEndAssociations '%ModelElementAssociations;,
+                                       %structuralFeatureType;,
+                                       %specification;* ' >
+
+<!ENTITY % AssociationEndCompositions '%ModelElementCompositions;,
+                                       %qualifier;* ' >
+
+<!ELEMENT AssociationEnd (%remoteContent; |
+                               (%AssociationEndProperties;,
+                                %AssociationEndAssociations;,
+                                %AssociationEndCompositions;)) >
+<!ATTLIST AssociationEnd
+             %XMI.ElementAttributes;
+>
+<!-- __________________________________________________________________  -->
+<!--                                                                     -->
+<!-- UML CLASS: Attribute                                                -->
+
+<!-- The definition of the Attribute class is on pages 16, 19, 20, and   -->
+<!-- 28.                                                                 -->
+<!-- __________________________________________________________________  -->
+
+<!ENTITY % initialValue 'initialValue' >
+<!ELEMENT initialValue (#PCDATA) >
+
+<!ENTITY % AttributeProperties '%StructuralFeatureProperties;,
+                                %initialValue;' >
+
+<!ENTITY % AttributeAssociations '%StructuralFeatureAssociations;' >
+
+<!ENTITY % AttributeCompositions '%StructuralFeatureCompositions;' >
+
+<!ELEMENT Attribute (%remoteContent; |
+                       (%AttributeProperties;,
+                        %AttributeAssociations;,
+                        %AttributeCompositions;)) >
+<!ATTLIST Attribute
+            %XMI.ElementAttributes;
+>
+
+
+<!-- _______________________________________________________________ -->
+<!--                                                                 -->
+<!-- UML CLASS: Constraint                                           -->
+
+<!-- The definition of the Constraint class is on pages 16, 21, 22,  -->
+<!-- and 31, 53.                                                     -->
+<!-- _______________________________________________________________ -->
+
+<!ENTITY % body 'body' >
+<!ELEMENT body (#PCDATA) >
+<!ATTLIST body
+            xml-space (default | preserve) "preserve" >
+
+<!ENTITY % ConstraintProperties '%ModelElementProperties;,
+                                 %body;' >
+
+<!-- ______________________________________________________________  -->
+<!--                                                                 -->
+<!-- constrainedElement may contain a reference to any ModelElement. -->
+<!-- ______________________________________________________________  -->
+
+<!ENTITY % constrainedElement 'constrainedElement' >
+<!ELEMENT constrainedElement (XMI.reference) >
+
+<!ENTITY % constrainedStereotype 'constrainedStereotype' >
+<!ELEMENT constrainedStereotype (XMI.reference) >
+
+<!ENTITY % ConstraintAssociations '%ModelElementAssociations;,
+                                   %constrainedElement;+,
+                                   %constrainedStereotype;?' >
+
+<!ENTITY % ConstraintCompositions '%ModelElementCompositions;' >
+
+<!ELEMENT Constraint (%remoteContent; |
+                         (%ConstraintProperties;,
+                          %ConstraintAssociations;,
+                          %ConstraintCompositions;)) >
+<!ATTLIST Constraint
+             %XMI.ElementAttributes;
+>
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- UML CLASS: DataType                                                -->
+
+<!-- __________________________________________________________________ -->
+
+<!ENTITY % DataTypeProperties '%ClassifierProperties;' >
+
+<!ENTITY % DataTypeAssociations '%ClassifierAssociations;' >
+
+<!ENTITY % DataTypeCompositions '%ClassifierCompositions;' >
+
+<!ELEMENT DataType (%remoteContent; |
+                       (%DataTypeProperties;,
+                        %DataTypeAssociations;,
+                        %DataTypeCompositions;)) >
+<!ATTLIST DataType
+             %XMI.ElementAttributes;
+>
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- UML CLASS: Dependency                                              -->
+
+<!-- The definition of the Dependency class is on pages 16, 22, 31, and -->
+<!-- 45.                                                                -->
+
+<!-- NOTE: Refinement, usage, trace, binding and owningDependency are   -->
+<!-- declared later in the auxiliary elements package.                  -->
+<!-- __________________________________________________________________ -->
+
+<!ENTITY % dependencyDescription 'description' >
+<!ELEMENT description (#PCDATA) >
+
+<!ENTITY % DependencyProperties '%ModelElementProperties;,
+                                 %dependencyDescription;' >
+
+<!ENTITY % owningDependency 'owningDependency' >
+<!ELEMENT owningDependency (XMI.reference) >
+
+<!-- __________________________________________________  -->
+<!--                                                     -->
+<!-- client may contain a reference to any ModelElement. -->
+<!-- __________________________________________________  -->
+
+<!ENTITY % client 'client' >
+<!ELEMENT client (XMI.reference) >
+
+<!-- ____________________________________________________  -->
+<!--                                                       -->
+<!-- supplier may contain a reference to any ModelElement. -->
+<!-- ____________________________________________________  -->
+
+<!ENTITY % supplier 'supplier' >
+<!ELEMENT supplier (XMI.reference) >
+
+<!ENTITY % DependencyAssociations '%ModelElementAssociations;,
+                                   %owningDependency;?,
+                                   (%client; |
+                                    %supplier;)*' >
+
+<!ENTITY % subDependencies 'subDependencies' >
+<!ELEMENT subDependencies    (Dependency |
+                              Refinement |
+                              Usage |
+                              Trace |
+                              Binding)* >
+
+<!ENTITY % DependencyCompositions '%ModelElementCompositions;,
+                                   %subDependencies;*' >
+
+<!ELEMENT Dependency (%remoteContent; |
+                         (%DependencyProperties;,
+                          %DependencyAssociations;,
+                          %DependencyCompositions;)) >
+<!ATTLIST Dependency
+            %XMI.ElementAttributes;
+>
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- UML CLASS: Generalization                                          -->
+
+<!-- The definition of the Generalization class is on pages 17, 24,     -->
+<!-- and 32.                                                            -->
+<!-- __________________________________________________________________ -->
+
+<!ENTITY % discriminator 'discriminator' >
+<!ELEMENT discriminator (#PCDATA) >
+
+<!ENTITY % GeneralizationProperties '%ModelElementProperties;,
+                                     %discriminator;' >
+
+<!-- ___________________________________________________________  -->
+<!--                                                              -->
+<!-- subType may contain a reference to any GeneralizableElement. -->
+<!-- ___________________________________________________________  -->
+
+<!ENTITY % subtype 'subtype' >
+<!ELEMENT subtype (XMI.reference) >
+
+<!-- _____________________________________________________________  -->
+<!--                                                                -->
+<!-- supertype may contain a reference to any GeneralizableElement. -->
+<!-- _____________________________________________________________  -->
+
+<!ENTITY % supertype 'supertype' >
+<!ELEMENT supertype (XMI.reference) >
+
+<!ENTITY % GeneralizationAssociations '%ModelElementAssociations;,
+                                       %subtype;,
+                                       %supertype;' >
+
+<!ENTITY % GeneralizationCompositions '%ModelElementCompositions;' >
+
+<!ELEMENT Generalization (%remoteContent; |
+                                (%GeneralizationProperties;,
+                                 %GeneralizationAssociations;,
+                                 %GeneralizationCompositions;)) >
+<!ATTLIST Generalization
+              %XMI.ElementAttributes;
+>
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Interface                                              -->
+
+<!-- The definition of the Interface class is on pages 16, 24, 25,     -->
+<!-- and 32.                                                           -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % InterfaceProperties '%ClassifierProperties;' >
+
+<!ENTITY % InterfaceAssociations '%ClassifierAssociations;' >
+
+<!ENTITY % InterfaceCompositions '%ClassifierCompositions;' >
+
+<!ELEMENT Interface (%remoteContent; |
+                        (%InterfaceProperties;,
+                         %InterfaceAssociations;,
+                         %InterfaceCompositions;)) >
+<!ATTLIST Interface
+             %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Method                                                 -->
+
+<!-- The definition of the Method class is on pages 16, 25, and 32.    -->
+
+<!-- NOTE:  The declaration of XML ELEMENTS specification,             -->
+<!-- StateMachine and ActivityModel are in other sections of this DTD. -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % MethodProperties '%BehavioralFeatureProperties;,
+                             %body;' >
+
+<!ENTITY % MethodAssociations '%BehavioralFeatureAssociations;,
+                               %specification;' >
+
+<!ENTITY % MethodCompositions '%BehavioralFeatureCompositions;' >
+
+<!ELEMENT Method (%remoteContent; |
+                     (%MethodProperties;,
+                      %MethodAssociations;,
+                      %MethodCompositions;)) >
+<!ATTLIST Method
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Operation                                              -->
+
+<!-- The definition of the Operation class is on pages 16, 26, and 34. -->
+
+<!-- NOTE:  The declaration of XML ELEMENTS realization,               -->
+<!-- stateMachine and activityModel are in other sections of this DTD. -->
+
+<!-- UML DEVIATION:  This DTD uses element "realization" to reference  -->
+<!-- the methods that implement this operation.  The association end   -->
+<!-- in the UML metamodel does not have a name.                        -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % concurrency 'concurrency' >
+<!ELEMENT concurrency EMPTY >
+<!ATTLIST concurrency %CallConcurrencyKind; >
+
+<!ENTITY % isPolymorphic 'isPolymorphic' >
+<!ELEMENT isPolymorphic EMPTY >
+<!ATTLIST isPolymorphic %Boolean; >
+
+<!ENTITY % operationSpecification 'operationSpecification' >
+<!ELEMENT operationSpecification (#PCDATA) >
+
+<!ENTITY % OperationProperties '%BehavioralFeatureProperties;,
+                                %concurrency;,
+                                %isPolymorphic;,
+                                %operationSpecification;' >
+
+<!-- _____________________________________________________ -->
+<!--                                                       -->
+<!-- occurrence should contain a reference to a CallEvent  -->
+<!-- _____________________________________________________ -->
+
+<!ENTITY % occurrence 'occurrence' >
+<!ELEMENT occurrence (XMI.reference) >
+
+<!ENTITY % OperationAssociations '%BehavioralFeatureAssociations;,
+                                  (%realization; |
+                                   %occurrence;)*' >
+
+<!ENTITY % OperationCompositions '%BehavioralFeatureCompositions;' >
+
+<!ELEMENT Operation (%remoteContent; |
+                        (%OperationProperties;,
+                         %OperationAssociations;,
+                         %OperationCompositions;)) >
+<!ATTLIST Operation
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Parameter                                              -->
+
+<!-- The definition of the Parameter class is on pages 16, 26, 27,     -->
+<!-- and 34.                                                           -->
+
+<!-- NOTE:  The declaration of XML ELEMENT type is declared with       -->
+<!-- XML ELEMENT attribute.                                            -->
+
+<!-- UML DEVIATION:  The name attribute is declared in                 -->
+<!-- ModelElementStructure, not with the Parameter class.              -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % parameterDefaultValue 'defaultValue' >
+<!ELEMENT defaultValue (#PCDATA) >
+
+<!ENTITY % parameterKind 'kind' >
+<!ELEMENT kind EMPTY >
+<!ATTLIST kind %ParameterDirectionKind; >
+
+<!ENTITY % ParameterProperties  '%ModelElementProperties;,
+                                 %parameterDefaultValue;,
+                                 %parameterKind;' >
+
+<!ENTITY % ParameterAssociations '%ModelElementAssociations;,
+                                  %structuralFeatureType;' >
+
+<!ENTITY % ParameterCompositions '%ModelElementCompositions;' >
+
+<!ELEMENT Parameter (%remoteContent; |
+                         (%ParameterProperties;,
+                          %ParameterAssociations;,
+                          %ParameterCompositions;)) >
+<!ATTLIST Parameter
+             %XMI.ElementAttributes;
+>
+
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!--                       CHAPTER 5                                    -->
+<!-- This section contains the declarations of the elements             -->
+<!-- corresponding to the auxiliary elements subpackage of the          -->
+<!-- foundation package of the UML metamodel.                           -->
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- There are no abstract classes in this package.  The concrete      -->
+<!-- classes are handled in this section.                              -->
+<!-- _________________________________________________________________ -->
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Binding                                                -->
+
+<!-- The definition of the Binding class is on pages 43 and 44.        -->
+
+<!-- UML DEVIATION:  The argument association is implemented as a      -->
+<!-- reference instead of containment.                                 -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % BindingProperties '%DependencyProperties;' >
+
+<!-- ______________________________________ -->
+<!--                                        -->
+<!-- argument may contain any ModelElement  -->
+<!-- ______________________________________ -->
+
+<!ENTITY % argument 'argument' >
+<!ELEMENT argument (XMI.reference) >
+
+<!ENTITY % BindingAssociations '%DependencyAssociations;,
+                                %argument;+' >
+
+<!ENTITY % BindingCompositions '%DependencyCompositions;' >
+
+<!ELEMENT Binding (%remoteContent; |
+                      (%BindingProperties;,
+                       %BindingAssociations;,
+                       %BindingCompositions;)) >
+<!ATTLIST Binding
+            %XMI.ElementAttributes;
+>
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Comment                                                -->
+
+<!-- The definition of the Comment class is on pages 44 and 45.        -->
+
+<!-- UML DEVIATION:  The semantics document is ambiguous about whether -->
+<!-- comment inherits from ModelElement or ViewElement.  This DTD      -->
+<!-- defines it as a ModelElement.                                     -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % CommentProperties '%ModelElementProperties;' >
+<!ENTITY % CommentAssociations '%ModelElementAssociations;' >
+<!ENTITY % CommentCompositions '%ModelElementCompositions;' >
+
+<!ELEMENT Comment (%remoteContent; |
+                      (%CommentProperties;,
+                       %CommentAssociations;,
+                       %CommentCompositions;)) >
+<!ATTLIST Comment
+             %XMI.ElementAttributes;
+>
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Component                                              -->
+
+<!-- The definition of the Component class is on pages 44, 45, and 48. -->
+
+<!-- UML INCONSISTENCY:  The semantics document shows Component        -->
+<!-- inheriting from Classifier on page 44, however the definition on  -->
+<!-- page 45 indicates that it inherits from Class.  This DTD defines  -->
+<!-- it as inheriting from Classifier.                                 -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % ComponentProperties '%ClassifierProperties;' >
+
+<!-- ________________________________________________________ -->
+<!--                                                          -->
+<!-- deployment should contain a reference to a Node          -->
+<!-- ________________________________________________________ -->
+
+<!ENTITY % deployment 'deployment' >
+<!ELEMENT deployment (XMI.reference) >
+
+<!ENTITY % modelElement 'modelElement'>
+<!ELEMENT modelElement (XMI.reference) >
+
+<!ENTITY % ComponentAssociations '%ClassifierAssociations;,
+                                  (%deployment; |
+                                   %modelElement;)*' >
+
+<!ENTITY % ComponentCompositions '%ClassifierCompositions;' >
+
+<!ELEMENT Component (%remoteContent; |
+                          (%ComponentProperties;,
+                           %ComponentAssociations;,
+                           %ComponentCompositions;)) >
+<!ATTLIST Component
+            %XMI.ElementAttributes;
+>
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Dependency                                             -->
+
+<!-- NOTE: The XML ELEMENT for this class is declared in the core      -->
+<!-- package section above.                                            -->
+<!-- _________________________________________________________________ -->
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: ModelElement                                           -->
+
+<!-- NOTE: The DTD entities for this class are declared in the core    -->
+<!-- package section above.                                            -->
+<!-- _________________________________________________________________ -->
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Node                                                   -->
+
+<!-- The definition of the Node class is on pages 44, 46, and 48.      -->
+
+<!-- UML INCONSISTENCY:  The semantics document shows Node inheriting  -->
+<!-- from Classifier on page 44, however the definition on page 45     -->
+<!-- indicates that it inherits from Class.  This DTD defines it as    -->
+<!-- inheriting from Classifier.                                       -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % NodeProperties '%ClassifierProperties;' >
+
+<!ENTITY % component 'component' >
+<!ELEMENT component (XMI.reference) >
+
+<!ENTITY % NodeAssociations '%ClassifierAssociations;,
+                             %component;*' >
+
+<!ENTITY % NodeCompositions '%ClassifierCompositions;' >
+
+<!ELEMENT Node (%remoteContent; |
+                   (%NodeProperties;,
+                    %NodeAssociations;,
+                    %NodeCompositions;)) >
+<!ATTLIST Node
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Presentation                                           -->
+
+<!-- The definition of the Presentation class is on pages 43, 46, and  -->
+<!-- 48.                                                               -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % geometry 'geometry' >
+<!ELEMENT geometry (#PCDATA) >
+<!ENTITY % style 'style' >
+<!ELEMENT style (#PCDATA) >
+<!ENTITY % PresentationProperties '%geometry;, %style;' >
+
+<!ENTITY % model 'model' >
+<!ELEMENT model (XMI.reference) >
+<!ENTITY % PresentationAssociations '%model;' >
+
+<!ELEMENT Presentation (%PresentationProperties;,
+                        %PresentationAssociations;) >
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Refinement                                             -->
+
+<!-- The definition of the Refinement class is on pages 43, 46, 47,    -->
+<!-- and 48.                                                           -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % mapping 'mapping' >
+<!ELEMENT mapping (#PCDATA) >
+
+<!ENTITY % RefinementProperties '%DependencyProperties;,
+                                 %mapping;' >
+
+<!ENTITY % RefinementAssociations '%DependencyAssociations;' >
+
+<!ENTITY % RefinementCompositions '%DependencyCompositions;' >
+
+<!ELEMENT Refinement (%remoteContent; |
+                         (%RefinementProperties;,
+                          %RefinementAssociations;,
+                          %RefinementCompositions;)) >
+<!ATTLIST Refinement
+             %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Trace                                                  -->
+
+<!-- The definition of the Trace class is on pages 43, 47, and 49.     -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % TraceProperties '%DependencyProperties;' >
+
+<!ENTITY % TraceAssociations '%DependencyAssociations;' >
+
+<!ENTITY % TraceCompositions '%DependencyCompositions;' >
+
+<!ELEMENT Trace (%remoteContent; |
+                    (%TraceProperties;,
+                     %TraceAssociations;,
+                     %TraceCompositions;)) >
+<!ATTLIST Trace
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Usage                                                  -->
+
+<!-- The definition of the Usage class is on pages 43, 47, and 49.     -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % UsageProperties '%DependencyProperties;' >
+
+<!ENTITY % UsageAssociations '%DependencyAssociations;' >
+
+<!ENTITY % UsageCompositions '%DependencyCompositions;' >
+
+<!ELEMENT Usage (%remoteContent; |
+                    (%UsageProperties;,
+                     %UsageAssociations;,
+                     %UsageCompositions;)) >
+<!ATTLIST Usage
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: ViewElement                                            -->
+
+<!-- The definition of the ViewElement class is on pages 43, 47, and   -->
+<!-- 49.  The class is abstract.                                       -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % ViewElementCompositions 'presentation*' >
+
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!--                         CHAPTER 6                                  -->
+<!-- This section contains the declarations of the elements             -->
+<!-- corresponding to the extension mechanisms subpackage of the        -->
+<!-- foundation package of the UML metamodel.  These classes are DTD    -->
+<!-- elements to allow modeling tools to use UML extensions to specify  -->
+<!-- other model constructs and save them in this DTD format.           -->
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+
+<!-- _______________________________________________________ -->
+<!--                                                         -->
+<!-- There are no abstract classes in this package.  The     -->
+<!-- XML elements corresponding to the concrete classes are  -->
+<!-- declared in this section.                               -->
+<!-- _______________________________________________________ -->
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Constraint                                             -->
+
+<!-- The definition of the Constraint class is on pages 53, 54, and    -->
+<!-- 56.                                                               -->
+
+<!-- NOTE:  The constraint element corresponding to this class is in   -->
+<!-- the core package section.                                         -->
+<!-- _________________________________________________________________ -->
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: ModelElement                                           -->
+
+<!-- The definition of the ModelElement class is on pages 53, 54, 56,  -->
+<!-- and 57.                                                           -->
+
+<!-- NOTE:  The elementProperties and elementStructure entities        -->
+<!-- corresponding to this class are declared in the core package      -->
+<!-- section.                                                          -->
+<!-- _________________________________________________________________ -->
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Stereotype                                             -->
+
+<!-- The definition of the Stereotype class is on pages 53, 54, 55,    -->
+<!-- and 56.                                                           -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % baseClass 'baseClass' >
+<!ELEMENT baseClass (#PCDATA) >
+
+<!ENTITY % icon 'icon' >
+<!ELEMENT icon (#PCDATA) >
+
+<!ENTITY % StereotypeProperties '%GeneralizableElementProperties;,
+                                 %baseClass;,
+                                 %icon;' >
+
+<!ENTITY % stereotypeConstraint 'stereotypeConstraint' >
+<!ELEMENT stereotypeConstraint (XMI.reference) >
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- extendedElement may contain a reference to any ModelElement       -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % extendedElement 'extendedElement' >
+<!ELEMENT extendedElement (XMI.reference) >
+
+<!ENTITY % StereotypeAssociations '%GeneralizableElementAssociations;,
+                                   (%stereotypeConstraint; |
+                                    %extendedElement;)*' >
+
+
+<!-- jer 99/03/10: allowed missing TaggedValue -->
+
+<!ENTITY % requiredTag 'requiredTag' >
+<!ELEMENT requiredTag (TaggedValue?) >
+
+<!ENTITY % StereotypeCompositions '%GeneralizableElementCompositions;,
+                                   %requiredTag;*' >
+
+<!ELEMENT Stereotype (%remoteContent; |
+                         (%StereotypeProperties;,
+                          %StereotypeAssociations;,
+                          %StereotypeCompositions;)) >
+<!ATTLIST Stereotype
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: TaggedValue                                            -->
+
+<!-- The definition of the TaggedValue class is on pages 53, 55, 56,   -->
+<!-- and 57.                                                           -->
+<!-- _________________________________________________________________ -->
+
+<!ELEMENT TaggedValue (tag,
+                       value,
+                       constrainedStereotype?) >
+
+<!ELEMENT tag (#PCDATA) >
+
+<!ELEMENT value (#PCDATA) >
+
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!--                         CHAPTER 7                                  -->
+<!-- This section contains the declarations of the elements             -->
+<!-- corresponding to the data types subpackage of the foundation       -->
+<!-- package of the UML metamodel.  The pre-defined enumerations are    -->
+<!-- included at the beginning of this DTD, since XML entities must be  -->
+<!-- declared before being used.                                        -->
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Primitive                                              -->
+
+<!-- The definition of the Primitive class is on pages 60 and 62.      -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % PrimitiveProperties '%DataTypeProperties;' >
+
+<!ENTITY % PrimitiveAssociations '%DataTypeAssociations;' >
+
+<!ENTITY % PrimitiveCompositions '%DataTypeCompositions;' >
+
+<!ELEMENT Primitive (%remoteContent; |
+                          (%PrimitiveProperties;,
+                           %PrimitiveAssociations;,
+                           %PrimitiveCompositions;)) >
+<!ATTLIST Primitive
+             %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: EnumerationLiteral                                     -->
+
+<!-- The definition of the EnumerationLiteral class is on pages 60 and -->
+<!-- 61.                                                               -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % EnumerationLiteralProperties '%modelElementName;' >
+
+<!ELEMENT EnumerationLiteral (%EnumerationLiteralProperties;) >
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Enumeration                                            -->
+
+<!-- The definition of the Enumeration class is on pages 60 and 61.    -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % EnumerationProperties '%DataTypeProperties;' >
+
+<!ENTITY % EnumerationAssociations '%DataTypeAssociations;' >
+
+<!ENTITY % literal 'literal' >
+<!ELEMENT literal (EnumerationLiteral) >
+
+<!ENTITY % EnumerationCompositions '%DataTypeCompositions;,
+                                    %literal;+' >
+
+<!ELEMENT Enumeration (%remoteContent; |
+                          (%EnumerationProperties;,
+                           %EnumerationAssociations;,
+                           %EnumerationCompositions;)) >
+<!ATTLIST Enumeration
+             %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Structure                                              -->
+
+<!-- The definition of the Structure class is on pages 60 and 62.      -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % StructureProperties '%DataTypeProperties;' >
+
+<!ENTITY % StructureAssociations '%DataTypeAssociations;' >
+
+<!ENTITY % StructureCompositions '%DataTypeCompositions;' >
+
+<!ELEMENT Structure (%remoteContent; |
+                          (%StructureProperties;,
+                           %StructureAssociations;,
+                           %StructureCompositions;)) >
+<!ATTLIST Structure
+             %XMI.ElementAttributes;
+>
+
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!--                           CHAPTER 8                                -->
+<!-- This section contains the declarations of the elements             -->
+<!-- corresponding to the common behavior subpackage of the behavioral  -->
+<!-- elements package of the UML metamodel.                             -->
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- This section contains the declarations of the elements             -->
+<!-- corresponding to the abstract classes in the common behavior       -->
+<!-- package of the UML metamodel.                                      -->
+<!-- __________________________________________________________________ -->
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Action                                                 -->
+
+<!-- The definition of the Action class is on pages 67, and 68.        -->
+
+<!-- UML INCONSISTENCY:  The attributes of Action on page 68 do not    -->
+<!-- include all of the attributes in the diagram on page 67. Also,    -->
+<!-- figure 13 on page 67 shows the Action class as concrete.          -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % recurrence 'recurrence' >
+<!ELEMENT recurrence (#PCDATA) >
+
+<!ENTITY % target 'target' >
+<!ELEMENT target (#PCDATA) >
+
+<!ENTITY % isAsynchronous 'isAsynchronous' >
+<!ELEMENT isAsynchronous EMPTY >
+<!ATTLIST isAsynchronous %Boolean; >
+
+<!ENTITY % script 'script' >
+<!ELEMENT script (#PCDATA) >
+
+<!ENTITY % ActionProperties '%ModelElementProperties;,
+                             %recurrence;,
+                             %target;,
+                             %isAsynchronous;,
+                             %script;' >
+
+<!ENTITY % request 'request' >
+<!ELEMENT request (XMI.reference) >
+
+<!ENTITY % ActionAssociations '%ModelElementAssociations;,
+                               %request;?' >
+
+<!ENTITY % actualArgument 'actualArgument' >
+<!ELEMENT actualArgument (Argument) >
+
+<!ENTITY % ActionCompositions '%ModelElementCompositions;,
+                               %actualArgument;*' >
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Instance                                               -->
+
+<!-- The definition of the Instance class is on pages 67, 70, 74, and  -->
+<!-- 75.                                                               -->
+
+<!-- UML INCONSISTENCY:  Figure 14 on page 67 shows Instance as a      -->
+<!-- concrete class.                                                   -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % InstanceProperties '%ModelElementProperties;' >
+
+<!ENTITY % linkEnd 'linkEnd' >
+<!ELEMENT linkEnd (XMI.reference) >
+
+<!ENTITY % classifier 'classifier' >
+<!ELEMENT classifier (XMI.reference) >
+
+<!ENTITY % InstanceAssociations '%ModelElementAssociations;,
+                                 %classifier;+,
+                                 %linkEnd;*' >
+
+<!ENTITY % instanceSlot 'slot' >
+<!ELEMENT slot (AttributeLink) >
+
+<!ENTITY % InstanceCompositions '%ModelElementCompositions;,
+                                 %instanceSlot;*' >
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Request                                                -->
+
+<!-- The definition of the Request class is on pages 66, 67, 72, and   -->
+<!-- 76.                                                               -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % RequestProperties '%ModelElementProperties;' >
+
+<!ENTITY % RequestAssociations '%ModelElementAssociations;' >
+
+<!ENTITY % RequestCompositions '%ModelElementCompositions;' >
+
+<!ELEMENT Request (%remoteContent; |
+                      (%RequestProperties;,
+                       %RequestAssociations;,
+                       %RequestCompositions;)) >
+<!ATTLIST Request
+             %XMI.ElementAttributes;
+>
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- This section contains the declarations of the elements             -->
+<!-- corresponding to the concrete classes in the common behavior       -->
+<!-- package of the UML metamodel.                                      -->
+<!-- __________________________________________________________________ -->
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: ActionSequence                                         -->
+
+<!-- The definition of the ActionSequence class is on pages 67, and 68 -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % ActionSequenceProperties '%ModelElementProperties;' >
+
+<!ENTITY % ActionSequenceAssociations '%ModelElementAssociations;' >
+
+<!ENTITY % action 'action' >
+<!ELEMENT action (CreateAction | CallAction | LocalInvocation | ReturnAction |
+           SendAction | TerminateAction | DestroyAction | UninterpretedAction) >
+
+<!ENTITY % ActionSequenceCompositions '%ModelElementCompositions;,
+                                       action*' >
+
+<!ELEMENT ActionSequence (%remoteContent; |
+                              (%ActionSequenceProperties;,
+                               %ActionSequenceAssociations;,
+                               %ActionSequenceCompositions;)) >
+<!ATTLIST ActionSequence
+              %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Argument                                               -->
+
+<!-- The definition of the Argument class is on pages 67, and 68.      -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % argumentValue 'argumentValue' >
+<!ELEMENT argumentValue (#PCDATA) >
+
+<!ENTITY % ArgumentProperties '%argumentValue;' >
+
+<!ELEMENT Argument (%remoteContent; | %ArgumentProperties;) >
+<!ATTLIST Argument
+               %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: AttributeLink                                          -->
+
+<!-- The definition of the AttributeLink class is on pages 67, 69, and -->
+<!-- 73.                                                               -->
+
+<!-- UML DEVIATION:  The value association is implemented as the       -->
+<!-- attributeValue element in this DTD.                               -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % AttributeLinkProperties '%ModelElementProperties;' >
+
+<!ENTITY % attributeValue 'attributeValue' >
+<!ELEMENT attributeValue (DataValue) >
+
+<!ENTITY % attribute 'attribute' >
+<!ELEMENT attribute (XMI.reference) >
+
+<!ENTITY % AttributeLinkAssociations '%ModelElementAssociations;,
+                                      %attribute;' >
+
+<!ENTITY % AttributeLinkCompositions '%ModelElementCompositions;,
+                                      %attributeValue;' >
+
+<!ELEMENT AttributeLink (%remoteContent; |
+                           (%AttributeLinkProperties;,
+                            %AttributeLinkAssociations;,
+                            %AttributeLinkCompositions;)) >
+
+<!ATTLIST AttributeLink
+              %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: CallAction                                             -->
+
+<!-- The definition of the CallAction class is on pages 67, 69, 73,    -->
+<!-- and 74.                                                           -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % mode 'mode' >
+<!ELEMENT mode EMPTY >
+<!ATTLIST mode %SynchronousKind; >
+
+<!ENTITY % CallActionProperties '%ActionProperties;,
+                                 %mode;' >
+
+<!ENTITY % CallActionAssociations '%ActionAssociations;' >
+
+<!ENTITY % CallActionCompositions '%ActionCompositions;' >
+
+<!ELEMENT CallAction (%remoteContent; |
+                         (%CallActionProperties;,
+                          %CallActionAssociations;,
+                          %CallActionCompositions;)) >
+<!ATTLIST CallAction
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: CreateAction                                           -->
+
+<!-- The definition of the CreateAction class is on pages 67, 69, and  -->
+<!-- 74.                                                               -->
+
+<!-- UML INCONSISTENCY:  The UML Semantics document incorrectly calls  -->
+<!-- the instantiation association "classifier" on page 69.            -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % CreateActionProperties '%ActionProperties;' >
+
+<!-- _________________________________________________________ -->
+<!--                                                           -->
+<!-- instantiation should contain a reference to a Classifier  -->
+<!-- _________________________________________________________ -->
+
+<!ENTITY % instantiation 'instantiation' >
+<!ELEMENT instantiation (XMI.reference) >
+
+<!ENTITY % CreateActionAssociations '%ActionAssociations;,
+                                     %instantiation;' >
+
+<!ENTITY % CreateActionCompositions '%ActionCompositions;' >
+
+<!ELEMENT CreateAction (%remoteContent; |
+                            (%CreateActionProperties;,
+                             %CreateActionAssociations;,
+                             %CreateActionCompositions;)) >
+<!ATTLIST CreateAction
+            %XMI.ElementAttributes;
+>
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: DestroyAction                                          -->
+
+<!-- The definition of the DestroyAction class is on pages 67, 69, 70, -->
+<!-- and 74.                                                           -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % DestroyActionProperties '%ActionProperties;' >
+
+<!ENTITY % DestroyActionAssociations '%ActionAssociations;' >
+
+<!ENTITY % DestroyActionCompositions '%ActionCompositions;' >
+
+<!ELEMENT DestroyAction (%remoteContent; |
+                             (%DestroyActionProperties;,
+                              %DestroyActionAssociations;,
+                              %DestroyActionCompositions;)) >
+<!ATTLIST DestroyAction
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: DataValue                                              -->
+
+<!-- The definition of the DataValue class is on pages 67, 70, and 74. -->
+
+<!-- UML DEVIATION:  Values are represented as character data in this  -->
+<!-- DTD, not as subclasses of the Instance element.                   -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % DataValueProperties '%InstanceProperties;' >
+
+<!ENTITY % DataValueAssociations '%InstanceAssociations;' >
+
+<!ENTITY % DataValueCompositions '%InstanceCompositions;' >
+
+<!ELEMENT DataValue (%remoteContent; |
+                        (%DataValueProperties;,
+                         %DataValueAssociations;,
+                         %DataValueCompositions;)) >
+<!ATTLIST DataValue
+             %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Signal                                                 -->
+
+<!-- The definition of the Signal class is on pages 66, 73, and 76.    -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % SignalProperties '%GeneralizableElementProperties;' >
+
+<!ENTITY % reception 'reception' >
+<!ELEMENT reception (XMI.reference) >
+
+<!ENTITY % SignalAssociations '%GeneralizableElementAssociations;,
+                               (%reception; |
+                                %occurrence;)*' >
+
+<!ENTITY % signalParameter 'parameter' >
+
+<!ENTITY % SignalCompositions '%GeneralizableElementCompositions;,
+                               %signalParameter;*' >
+
+<!ELEMENT Signal (%remoteContent; |
+                     (%SignalProperties;,
+                      %SignalAssociations;,
+                      %SignalCompositions;)) >
+<!ATTLIST Signal
+             %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Exception                                              -->
+
+<!-- The definition of the Exception class is on pages 66, and 70.     -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % ExceptionProperties '%SignalProperties;,
+                                %body;' >
+
+<!-- _______________________________________ -->
+<!--                                         -->
+<!-- context should refer to a Collaboration -->
+<!-- _______________________________________ -->
+
+<!ENTITY % context 'context' >
+<!ELEMENT context (XMI.reference) >
+
+<!ENTITY % ExceptionAssociations '%SignalAssociations;,
+                                  %context;*' >
+
+<!ENTITY % ExceptionCompositions '%SignalCompositions;' >
+
+<!ELEMENT Exception (%remoteContent; |
+                          (%ExceptionProperties;,
+                           %ExceptionAssociations;,
+                           %ExceptionCompositions;)) >
+<!ATTLIST Exception
+             %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Link                                                   -->
+
+<!-- The definition of the Link class is on pages 67, 70, 71, and 75.  -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % LinkProperties '%ModelElementProperties;' >
+
+<!ENTITY % association 'association' >
+<!ELEMENT association (XMI.reference) >
+
+<!ENTITY % LinkAssociations '%ModelElementAssociations;,
+                             %association;' >
+
+<!ENTITY % linkRole 'linkRole' >
+<!ELEMENT linkRole (LinkEnd) >
+
+<!ENTITY % LinkCompositions '%ModelElementCompositions;,
+                             %linkRole;*' >
+
+<!ELEMENT Link (%remoteContent; |
+                    (%LinkProperties;,
+                     %LinkAssociations;,
+                     %LinkCompositions;)) >
+<!ATTLIST Link
+            %XMI.ElementAttributes;
+>
+
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: LinkEnd                                                -->
+
+<!-- The definition of the LinkEnd class is on pages 67, 71, and 75.   -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % LinkEndProperties '%ModelElementProperties;' >
+
+<!ENTITY % instance 'instance' >
+<!ELEMENT instance (XMI.reference) >
+
+<!ENTITY % LinkEndAssociations '%ModelElementAssociations;,
+                                %instance;,
+                                %associationEnd;' >
+
+<!ENTITY % LinkEndCompositions '%ModelElementCompositions;' >
+
+<!ELEMENT LinkEnd (%remoteContent; |
+                     (%LinkEndProperties;,
+                      %LinkEndAssociations;,
+                      %LinkEndCompositions;)) >
+<!ATTLIST LinkEnd
+             %XMI.ElementAttributes;
+>
+
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Object                                                 -->
+
+<!-- The definition of the Object class is on pages 67, 72, and 76.    -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % ObjectProperties '%InstanceProperties;' >
+
+<!ENTITY % ObjectAssociations '%InstanceAssociations;' >
+
+<!ENTITY % ObjectCompositions '%InstanceCompositions;' >
+
+<!ELEMENT Object (%remoteContent; |
+                     (%ObjectProperties;,
+                      %ObjectAssociations;,
+                      %ObjectCompositions;)) >
+<!ATTLIST Object
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: LinkObject                                             -->
+
+<!-- The definition of the LinkObject class is on pages 67, 71, and 75 -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % LinkObjectProperties '%ObjectProperties;' >
+
+<!ENTITY % LinkObjectAssociations '%ObjectAssociations;,
+                                   %association;' >
+
+<!ENTITY % LinkObjectCompositions '%ObjectCompositions;,
+                                   %linkRole;*' >
+
+<!ELEMENT LinkObject (%remoteContent; |
+                          (%LinkObjectProperties;,
+                           %LinkObjectAssociations;,
+                           %LinkObjectCompositions;)) >
+<!ATTLIST LinkObject
+             %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: LocalInvocation                                        -->
+
+<!-- The definition of the LocalInvocation class is on pages 67 and 71 -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % LocalInvocationProperties '%ActionProperties;' >
+
+<!ENTITY % LocalInvocationAssociations '%ActionAssociations;' >
+
+<!ENTITY % LocalInvocationCompositions '%ActionCompositions;' >
+
+<!ELEMENT LocalInvocation (%remoteContent; |
+                               (%LocalInvocationProperties;,
+                                %LocalInvocationAssociations;,
+                                %LocalInvocationCompositions;)) >
+<!ATTLIST LocalInvocation
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: MessageInstance                                        -->
+
+<!-- The definition of the MessageInstance class is on pages 67, 71,   -->
+<!-- and 75.                                                           -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % MessageInstanceProperties '%ModelElementProperties;' >
+
+<!-- ________________________________________ -->
+<!--                                          -->
+<!-- receiver should refer to a ClassfierRole -->
+<!-- ________________________________________ -->
+
+<!ENTITY % receiver 'receiver' >
+<!ELEMENT receiver (XMI.reference) >
+
+<!-- _______________________________________ -->
+<!--                                         -->
+<!-- sender should refer to a ClassifierRole -->
+<!-- _______________________________________ -->
+
+<!ENTITY % sender 'sender' >
+<!ELEMENT sender (XMI.reference) >
+
+<!ENTITY % MessageInstanceAssociations '%ModelElementAssociations;,
+                                        %specification;,
+                                        %sender;,
+                                        %receiver;,
+                                        %argument;*' >
+
+<!ENTITY % MessageInstanceCompositions '%ModelElementCompositions;' >
+
+<!ELEMENT MessageInstance (%remoteContent; |
+                              (%MessageInstanceProperties;,
+                               %MessageInstanceAssociations;,
+                               %MessageInstanceCompositions;)) >
+<!ATTLIST MessageInstance
+                %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Reception                                              -->
+
+<!-- The definition of the Reception class is on pages 67, 72, and 76. -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % ReceptionProperties '%BehavioralFeatureProperties;,
+                                %isPolymorphic;,
+                                %operationSpecification;' >
+
+<!ENTITY % signal 'signal' >
+<!ELEMENT signal (XMI.reference) >
+
+<!ENTITY % ReceptionAssociations '%BehavioralFeatureAssociations;,
+                                  %signal;' >
+
+<!ENTITY % ReceptionCompositions '%BehavioralFeatureCompositions;' >
+
+<!ELEMENT Reception (%remoteContent; |
+                       (%ReceptionProperties;,
+                        %ReceptionAssociations;,
+                        %ReceptionCompositions;)) >
+<!ATTLIST Reception
+              %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: ReturnAction                                           -->
+
+<!-- The definition of the ReturnAction class is on pages 67 and 72.   -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % ReturnActionProperties '%ActionProperties;' >
+
+<!ENTITY % ReturnActionAssociations '%ActionAssociations;' >
+
+<!ENTITY % ReturnActionCompositions '%ActionCompositions;' >
+
+<!ELEMENT ReturnAction (%remoteContent; |
+                            (%ReturnActionProperties;,
+                             %ReturnActionAssociations;,
+                             %ReturnActionCompositions;)) >
+<!ATTLIST ReturnAction
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: SendAction                                             -->
+
+<!-- The definition of the SendAction class is on pages 67, 72, 73,    -->
+<!-- and 76.                                                           -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % SendActionProperties '%ActionProperties;' >
+
+<!ENTITY % SendActionAssociations '%ActionAssociations;' >
+
+<!ENTITY % SendActionCompositions '%ActionCompositions;' >
+
+<!ELEMENT SendAction (%remoteContent; |
+                        (%SendActionProperties;,
+                         %SendActionAssociations;,
+                         %SendActionCompositions;)) >
+<!ATTLIST SendAction
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: TerminateAction                                        -->
+
+<!-- The definition of the TerminateAction class is on pages 67, 73,   -->
+<!-- and 76.                                                           -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % TerminateActionProperties '%ActionProperties;' >
+
+<!ENTITY % TerminateActionAssociations '%ActionAssociations;' >
+
+<!ENTITY % TerminateActionCompositions '%ActionCompositions;' >
+
+<!ELEMENT TerminateAction (%remoteContent; |
+                               (%TerminateActionProperties;,
+                                %TerminateActionAssociations;,
+                                %TerminateActionCompositions;)) >
+<!ATTLIST TerminateAction
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: UninterpretedAction                                    -->
+
+<!-- The definition of the UninterpretedAction class is on pages 67    -->
+<!-- and 73.                                                           -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % UninterpretedActionProperties '%ActionProperties;,
+                                         %body;' >
+
+<!ENTITY % UninterpretedActionAssociations '%ActionAssociations;' >
+
+<!ENTITY % UninterpretedActionCompositions '%ActionCompositions;' >
+
+<!ELEMENT UninterpretedAction (%remoteContent; |
+                                   (%UninterpretedActionProperties;,
+                                    %UninterpretedActionAssociations;,
+                                    %UninterpretedActionCompositions;)) >
+<!ATTLIST UninterpretedAction
+            %XMI.ElementAttributes;
+>
+
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!--                       CHAPTER 9                                    -->
+<!-- This section contains the declarations of the elements             -->
+<!-- corresponding to the collaborations subpackage of the behavioral   -->
+<!-- elements package of the UML metamodel.                             -->
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!-- There are no abstract classes defined in the UML metamodel in      -->
+<!-- Chapter 9, only concrete classes.                                  -->
+<!-- __________________________________________________________________ -->
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: AssociationEndRole                                     -->
+
+<!-- The definition of the AssociationEndRole class is on pages 81,    -->
+<!-- 82, and 84.                                                       -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % AssociationEndRoleProperties '%AssociationEndProperties;' >
+
+<!-- ________________________________________________________ -->
+<!--                                                          -->
+<!-- base is used in AssociationRole and ClassifierRole also. -->
+<!-- ________________________________________________________ -->
+
+<!ENTITY % base 'base' >
+<!ELEMENT base (XMI.reference) >
+
+<!ENTITY % AssociationEndRoleAssociations '%AssociationEndAssociations;,
+                                           %base;' >
+
+<!ENTITY % AssociationEndRoleCompositions '%AssociationEndCompositions;' >
+
+<!ELEMENT AssociationEndRole (%remoteContent; |
+                                  (%AssociationEndRoleProperties;,
+                                   %AssociationEndRoleAssociations;,
+                                   %AssociationEndRoleCompositions;)) >
+<!ATTLIST AssociationEndRole
+             %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: AssociationRole                                        -->
+
+<!-- The definition of the AssociationRole class is on pages 81, 82,   -->
+<!-- and 84.                                                           -->
+
+<!-- NOTE:  The connection association in the diagram on page 81 does  -->
+<!-- not appear in the description of this class on page 82.           -->
+
+<!-- UML DEVIATION:  The connection association is implemented by      -->
+<!-- XML elements sourceEndRole, targetEndRole, and connectionEndRole. -->
+<!-- _________________________________________________________________ -->
+
+
+
+<!ENTITY % AssociationRoleProperties '%AssociationProperties;,
+                                      %multiplicity;' >
+
+<!ENTITY % AssociationRoleAssociations '%AssociationAssociations;,
+                                        %base;' >
+
+<!-- jer 99/01/31: added associationEndRoles. The UML DEVIATION listed -->
+<!-- above apparently was not included in the XMI spec.  -->
+
+<!ENTITY % assEndRole 'associationEndRole' >
+<!ELEMENT associactionEndRole (AssociationEndRole) >
+
+<!ENTITY % associationEndRoles "%assEndRole;*" >
+
+
+<!-- jer 99/01/31: added message so that I know which messgaes are sent  -->
+<!-- over which AssociactionRoles.  This is an addition in the -->
+<!-- Argo/UML meta-model. -->
+
+<!ENTITY % messageRef 'messageRef' >
+<!ELEMENT messageRef (XMI.reference) >
+
+<!ENTITY % associationEndRoles "%assEndRole;*" >
+
+<!ENTITY % AssociationRoleCompositions '%AssociationCompositions;,
+                                        %associationEndRoles;,
+					%messageRef;*' >
+<!ELEMENT AssociationRole (%remoteContent; |
+                               (%AssociationRoleProperties;,
+                                %AssociationRoleAssociations;,
+                                %AssociationRoleCompositions;)) >
+<!ATTLIST AssociationRole
+              %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: ClassifierRole                                         -->
+
+<!-- The definition of the ClassifierRole class is on pages 81, 82,    -->
+<!-- and 84.                                                           -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % ClassifierRoleProperties '%ModelElementProperties;,
+                                     %multiplicity;' >
+
+<!ENTITY % availableFeature 'availableFeature' >
+<!ELEMENT availableFeature (Attribute |
+                            Operation |
+                            Method |
+                            Reception) >
+
+<!ENTITY % ClassifierRoleAssociations '%ModelElementAssociations;,
+                                       %base;,
+                                       %availableFeature;*' >
+
+<!ENTITY % ClassifierRoleCompositions '%ModelElementCompositions;' >
+
+<!ELEMENT ClassifierRole (%remoteContent; |
+                              (%ClassifierRoleProperties;,
+                               %ClassifierRoleAssociations;,
+                               %ClassifierRoleCompositions;)) >
+<!ATTLIST ClassifierRole
+              %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Collaboration                                          -->
+
+<!-- The definition of the Collaboration class is on pages 81, 82, 83, -->
+<!-- 84, and 85.                                                       -->
+
+<!-- UML DEVIATION:  The ownedElement association is implemented by    -->
+<!-- explicitly listing classifierRole and associationRole in the      -->
+<!-- content model for XML element collaboration.                      -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % CollaborationProperties '%NamespaceProperties;' >
+
+<!-- _________________________________________________ -->
+<!--                                                   -->
+<!-- constrainingElement can refer to any ModelElement -->
+<!-- _________________________________________________ -->
+
+<!ENTITY % constrainingElement 'constrainingElement' >
+<!ELEMENT constrainingElement (XMI.reference) >
+
+<!ENTITY % representedClassifier 'representedClassifier' >
+<!ELEMENT representedClassifier (XMI.reference) >
+
+<!ENTITY % representedOperation 'representedOperation' >
+<!ELEMENT representedOperation (XMI.reference) >
+
+<!ENTITY % CollaborationAssociations '%NamespaceAssociations;,
+                                      %constrainingElement;*,
+                                      (%representedClassifier; |
+                                       %representedOperation;)' >
+
+<!ENTITY % collaborationInteraction 'interaction' >
+<!ELEMENT interaction (Interaction) >
+
+<!ENTITY % CollaborationCompositions '%NamespaceCompositions;,
+                                      %collaborationInteraction;*' >
+
+<!ELEMENT Collaboration (%remoteContent; |
+                             (%CollaborationProperties;,
+                              %CollaborationAssociations;,
+                              %CollaborationCompositions;)) >
+<!ATTLIST Collaboration
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Interaction                                            -->
+
+<!-- The definition of the Interaction class is on pages 81 and 83.    -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % InteractionProperties '%ModelElementProperties;' >
+
+
+<!-- jer 99/01/31: changed XMI.reference to Message, otherwise Message -->
+<!-- could never be legally reached. -->
+
+<!ENTITY % message 'message' >
+<!ELEMENT message (Message) >
+
+<!-- jer 99/03/10: allowed missing context -->
+
+<!ENTITY % InteractionAssociations '%ModelElementAssociations;,
+                                    %context;?,
+                                    %message;*' >
+
+<!ENTITY % InteractionCompositions '%ModelElementCompositions;' >
+
+<!ELEMENT Interaction (%remoteContent; |
+                             (%InteractionProperties;,
+                              %InteractionAssociations;,
+                              %InteractionCompositions;)) >
+<!ATTLIST Interaction
+             %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Message                                                -->
+
+<!-- The definition of the Message class is on pages 81, 83, 84, and   -->
+<!-- 85.                                                               -->
+
+<!-- UML DEVIATION:  The action association on page 81 is implemented  -->
+<!-- by XML element messageAction, since element action is used to     -->
+<!-- define element actionSequence.                                    -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % MessageProperties '%ModelElementProperties;' >
+
+<!-- ___________________________________ -->
+<!--                                     -->
+<!-- activator should refer to a Message -->
+<!-- ___________________________________ -->
+
+<!ENTITY % activator 'activator' >
+<!ELEMENT activator (XMI.reference) >
+
+<!-- jer 99/01/31: changed XMI.reference to UninterpretedAction -->
+
+
+
+<!ENTITY % messageAction 'messageAction' >
+<!ELEMENT messageAction (UninterpretedAction) >
+
+<!-- _____________________________________ -->
+<!--                                       -->
+<!-- predecessor should refer to a Message -->
+<!-- _____________________________________ -->
+
+<!ENTITY % predecessor 'predecessor' >
+<!ELEMENT predecessor (XMI.reference) >
+
+<!ENTITY % MessageAssociations '%ModelElementAssociations;,
+                                %activator;,
+                                %base;,
+                                %receiver;,
+                                %predecessor;*,
+                                %sender;,
+                                %messageAction;' >
+
+<!ENTITY % MessageCompositions '%ModelElementCompositions;' >
+
+<!ELEMENT Message (%remoteContent; |
+                       (%MessageProperties;,
+                        %MessageAssociations;,
+                        %MessageCompositions;)) >
+<!ATTLIST Message
+            %XMI.ElementAttributes;
+>
+
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!--                           CHAPTER 10                               -->
+<!-- This section contains the declarations of the elements             -->
+<!-- corresponding to the use case subpackage of the behavioral         -->
+<!-- elements package of the UML metamodel.                             -->
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Actor                                                  -->
+
+<!-- The definition of the Actor class is on page 90.                  -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % ActorProperties '%ClassifierProperties;' >
+
+<!ENTITY % ActorAssociations '%ClassifierAssociations;' >
+
+<!ENTITY % ActorCompositions '%ClassifierCompositions;' >
+
+<!ELEMENT Actor (%remoteContent; |
+                     (%ActorProperties;,
+                      %ActorAssociations;,
+                      %ActorCompositions;)) >
+<!ATTLIST Actor
+             %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: UseCase                                                -->
+
+<!-- The definition of the UseCase class is on pages 90, 91, and 92.   -->
+
+<!-- UML DEVIATION:  The extensionPoint attribute is implemented by    -->
+<!-- the extensionPoint XML element since it is a list of Strings.     -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % extensionPoint 'extensionPoint' >
+<!ELEMENT extensionPoint (#PCDATA) >
+
+<!-- jer 99/01/31: use cases have any number of extensionPoints -->
+
+<!ENTITY % UseCaseProperties '%ClassifierProperties;, %extensionPoint;*' >
+
+<!ENTITY % UseCaseAssociations '%ClassifierAssociations;' >
+
+<!-- gene moved extensionPoint to properties -->
+<!ENTITY % UseCaseCompositions '%ClassifierCompositions;,
+                                ViewElement*' >
+
+<!ELEMENT UseCase (%remoteContent; |
+                        (%UseCaseProperties;,
+                         %UseCaseAssociations;,
+                         %UseCaseCompositions;)) >
+<!ATTLIST UseCase
+            %XMI.ElementAttributes;
+>
+
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: UseCaseInstance                                        -->
+
+<!-- The definition of the UseCaseInstance class is on pages 90 and 91 -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % UseCaseInstanceProperties '%InstanceProperties;' >
+
+<!ENTITY % UseCaseInstanceAssociations '%InstanceAssociations;' >
+
+<!ENTITY % UseCaseInstanceCompositions '%InstanceCompositions;' >
+
+<!ELEMENT UseCaseInstance (%remoteContent; |
+                              (%UseCaseInstanceProperties;,
+                               %UseCaseInstanceAssociations;,
+                               %UseCaseInstanceCompositions;)) >
+<!ATTLIST UseCaseInstance
+             %XMI.ElementAttributes;
+>
+
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!--                         CHAPTER 11                                 -->
+<!-- This section contains the declarations of the elements             -->
+<!-- corresponding to the state machine subpackage of the behavioral    -->
+<!-- elements package of the UML metamodel.                             -->
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+
+<!-- ___________________________________________________________ -->
+<!--                                                             -->
+<!-- This section contains the XML entities corresponding to the -->
+<!-- abstract classes in the state machine package.              -->
+<!-- ___________________________________________________________ -->
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Event                                                  -->
+
+<!-- The definition of the Event class is on pages 98 and 100. There   -->
+<!-- is no element in this DTD for the Event class in the UML          -->
+<!-- UML metamodel because it is an abstract class that does not       -->
+<!-- define new associations or attributes.                            -->
+<!-- _________________________________________________________________ -->
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: StateVertex                                            -->
+
+<!-- The definition of the StateVertex class is on pages 98 and 102.   -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % StateVertexProperties '%ModelElementProperties;' >
+
+<!-- ____________________________________________________ -->
+<!--                                                      -->
+<!-- parent should refer to the enclosing CompositeState  -->
+<!-- ____________________________________________________ -->
+
+<!ENTITY % parent 'parent' >
+<!ELEMENT parent (XMI.reference) >
+
+<!-- __________________________________________________ -->
+<!--                                                    -->
+<!-- outgoing and incoming should refer to Transitions  -->
+<!-- __________________________________________________ -->
+
+<!ENTITY % outgoing 'outgoing' >
+<!ELEMENT outgoing (XMI.reference) >
+
+<!ENTITY % incoming 'incoming' >
+<!ELEMENT incoming (XMI.reference) >
+
+<!ENTITY % StateVertexAssociations '%ModelElementAssociations;,
+                                    %parent;?,
+                                    (%outgoing; |
+                                     %incoming;)*' >
+
+<!ENTITY % StateVertexCompositions '%ModelElementCompositions;' >
+
+<!-- _______________________________________________________ -->
+<!--                                                         -->
+<!-- This section contains the XML elements for the concrete -->
+<!-- classes in the state machines package.                  -->
+<!-- _______________________________________________________ -->
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: CallEvent                                              -->
+
+<!-- The definition of the CallEvent class is on pages 98 and 99.      -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % CallEventProperties '%ModelElementProperties;' >
+
+<!ENTITY % operation 'operation' >
+<!ELEMENT operation (XMI.reference) >
+
+<!ENTITY % CallEventAssociations '%ModelElementAssociations;,
+                                  %operation;' >
+
+<!ENTITY % CallEventCompositions '%ModelElementCompositions;' >
+
+<!ELEMENT CallEvent (%remoteContent; |
+                          (%CallEventProperties;,
+                           %CallEventAssociations;,
+                           %CallEventCompositions;)) >
+<!ATTLIST CallEvent
+            %XMI.ElementAttributes;
+>
+
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: ChangeEvent                                            -->
+
+<!-- The definition of the ChangeEvent class is on pages 98 and 99.    -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % changeExpression 'changeExpression' >
+<!ELEMENT changeExpression (#PCDATA) >
+
+<!ENTITY % ChangeEventProperties '%ModelElementProperties;,
+                                  %changeExpression;' >
+
+<!ENTITY % ChangeEventAssociations '%ModelElementAssociations;' >
+
+<!ENTITY % ChangeEventCompositions '%ModelElementCompositions;' >
+
+<!ELEMENT ChangeEvent (%remoteContent; |
+                            (%ChangeEventProperties;,
+                             %ChangeEventAssociations;,
+                             %ChangeEventCompositions;)) >
+<!ATTLIST ChangeEvent
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: State                                                  -->
+
+<!-- The definition of the State class is on pages 98 and 101.         -->
+
+<!-- UML DEVIATION:  The internalTransition association is implemented -->
+<!-- by including the transition element in the stateStructure entity. -->
+<!-- _________________________________________________________________ -->
+
+<!-- jer 99/03/10: allowed empty entry and exit tags -->
+<!-- jer 99/03/10: allowed one internalTransition tag to have multiple -->
+<!--               transions -->
+
+
+<!ENTITY % StateProperties '%StateVertexProperties;' >
+
+<!ENTITY % deferredEvent 'deferredEvent' >
+<!ELEMENT deferredEvent (XMI.reference) >
+
+<!ENTITY % StateAssociations '%StateVertexAssociations;,
+                              %deferredEvent;*' >
+
+<!ENTITY % entry 'entry' >
+<!ELEMENT entry (#PCDATA | ActionSequence)* >
+
+<!ENTITY % exit 'exit' >
+<!ELEMENT exit (#PCDATA | ActionSequence)* >
+
+<!ENTITY % internalTransition 'internalTransition' >
+<!ELEMENT internalTransition (Transition*) >
+
+<!ENTITY % StateCompositions '%StateVertexCompositions;,
+                              %entry;?,
+                              %exit;?,
+                              %internalTransition;?' >
+
+<!ELEMENT State (%remoteContent; |
+                     (%StateProperties;,
+                      %StateAssociations;,
+                      %StateCompositions;)) >
+<!ATTLIST State
+              %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: CompositeState                                         -->
+
+<!-- The definition of the CompositeState class is on pages 98, 99,    -->
+<!-- 100, 103, and 104.                                                -->
+
+<!-- UML DEVIATION:  The derived attribute, isRegion, is not defined   -->
+<!-- in this DTD.  The association substates is implemented by         -->
+<!-- explicitly indicating the types of states in the content model of -->
+<!-- the compositeState XML element.                                   -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % isConcurrent 'isConcurrent' >
+<!ELEMENT isConcurrent EMPTY >
+<!ATTLIST isConcurrent %Boolean; >
+
+<!ENTITY % CompositeStateProperties '%StateProperties;,
+                                     %isConcurrent;' >
+
+<!ENTITY % CompositeStateAssociations '%StateAssociations;' >
+
+<!-- jer 99/03/10: allowed substate to contain a State tag -->
+
+<!ENTITY % substate 'substate' >
+<!ELEMENT substate (PseudoState |
+                    SimpleState |
+                    SubmachineState |
+                    ActivityState |
+                    ActionState |
+		    State |
+                    ObjectFlowState |
+                    CompositeState)* >
+
+<!ENTITY % CompositeStateCompositions '%StateCompositions;,
+                                       %substate;+' >
+
+<!ELEMENT CompositeState (%remoteContent; |
+                              (%CompositeStateProperties;,
+                               %CompositeStateAssociations;,
+                               %CompositeStateCompositions;)) >
+<!ATTLIST CompositeState
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Guard                                                  -->
+
+<!-- The definition of the Guard class is on pages 98, 100, and 104.   -->
+<!-- _________________________________________________________________ -->
+
+<!-- jer 99/03/10: allowed missing expression -->
+
+<!ENTITY % expression 'expression?' >
+<!ELEMENT expression (#PCDATA) >
+
+<!ENTITY % GuardProperties '%ModelElementProperties;,
+                            %expression;' >
+
+<!ENTITY % GuardAssociations '%ModelElementAssociations;' >
+
+<!ENTITY % GuardCompositions '%ModelElementCompositions;' >
+
+<!ELEMENT Guard (%remoteContent; |
+                     (%GuardProperties;,
+                      %GuardAssociations;,
+                      %GuardCompositions;)) >
+<!ATTLIST Guard
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: PseudoState                                            -->
+
+<!-- The definition of the PseudoState class is on pages 98, 100, and  -->
+<!-- 104.                                                              -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % stateKind 'stateKind'>
+<!ELEMENT stateKind EMPTY >
+<!ATTLIST stateKind %PseudoStateKind; >
+
+<!ENTITY % PseudoStateProperties '%StateVertexProperties;,
+                                  %stateKind;' >
+
+<!ENTITY % PseudoStateAssociations '%StateVertexAssociations;' >
+
+<!ENTITY % PseudoStateCompositions '%StateVertexCompositions;' >
+
+<!ELEMENT PseudoState (%remoteContent; |
+                            (%PseudoStateProperties;,
+                             %PseudoStateAssociations;,
+                             %PseudoStateCompositions;)) >
+<!ATTLIST PseudoState
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: SignalEvent                                            -->
+
+<!-- The definition of the SignalEvent class is on pages 98 and 101.   -->
+<!-- 104.                                                              -->
+
+<!-- NOTE:  The signal element is declared with the reception element. -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % SignalEventProperties '%ModelElementProperties;' >
+
+<!ENTITY % SignalEventAssociations '%ModelElementAssociations;,
+                                    %signal;' >
+
+<!ENTITY % SignalEventCompositions '%ModelElementCompositions;' >
+
+<!ELEMENT SignalEvent (%remoteContent; |
+                         (%SignalEventProperties;,
+                          %SignalEventAssociations;,
+                          %SignalEventCompositions;)) >
+<!ATTLIST SignalEvent
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: SimpleState                                            -->
+
+<!-- The definition of the SimpleState class is on pages 98 and 101.   -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % SimpleStateProperties '%StateProperties;' >
+
+<!ENTITY % SimpleStateAssociations '%StateAssociations;' >
+
+<!ENTITY % SimpleStateCompositions '%StateCompositions;' >
+
+<!ELEMENT SimpleState (%remoteContent; |
+                         (%SimpleStateProperties;,
+                          %SimpleStateAssociations;,
+                          %SimpleStateCompositions;)) >
+<!ATTLIST SimpleState
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: StateMachine                                           -->
+
+<!-- The definition of the StateMachine class is on pages 98, 101,     -->
+<!-- 104, and 105.                                                     -->
+
+<!-- NOTE:  The element context is declared with element interaction.  -->
+
+<!-- UML DEVIATION:  The association transitions is implemented by     -->
+<!-- including the element transition in the content model of element  -->
+<!-- StateMachine.                                                     -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % StateMachineProperties '%ModelElementProperties;' >
+
+<!-- jer 99/03/10: allowed missing context -->
+
+<!ENTITY % StateMachineAssociations '%ModelElementAssociations;,
+                                     %context;?' >
+
+<!ENTITY % top 'top' >
+<!ELEMENT top (CompositeState) >
+
+<!ENTITY % transitions 'transitions' >
+<!ELEMENT transitions (Transition)* >
+
+<!ENTITY % StateMachineCompositions '%ModelElementCompositions;,
+                                     %top;,
+                                     %transitions;?' >
+
+<!ELEMENT StateMachine (%remoteContent; |
+                             (%StateMachineProperties;,
+                              %StateMachineAssociations;,
+                              %StateMachineCompositions;)) >
+<!ATTLIST StateMachine
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: SubmachineState                                        -->
+
+<!-- The definition of the SubMachineState class is on pages 98, 102,  -->
+<!-- and 103.                                                          -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % SubmachineStateProperties '%StateProperties;' >
+
+<!-- _______________________________________________________ -->
+<!--                                                         -->
+<!-- submachine should contain a reference to a StateMachine -->
+<!-- _______________________________________________________ -->
+
+<!ENTITY % submachine 'submachine' >
+<!ELEMENT submachine (XMI.reference) >
+
+<!ENTITY % SubmachineStateAssociations '%StateAssociations;,
+                                        %submachine;' >
+
+<!ENTITY % SubmachineStateCompositions '%StateCompositions;' >
+
+<!ELEMENT SubmachineState (%remoteContent; |
+                                 (%SubmachineStateProperties;,
+                                  %SubmachineStateAssociations;,
+                                  %SubmachineStateCompositions;)) >
+<!ATTLIST SubmachineState
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: TimeEvent                                              -->
+
+<!-- The definition of the TimeEvent class is on pages 98 and 103.     -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % duration 'duration'>
+<!ELEMENT duration (#PCDATA) >
+
+<!ENTITY % TimeEventProperties '%ModelElementProperties;,
+                                %duration;' >
+
+<!ENTITY % TimeEventAssociations '%ModelElementAssociations;' >
+
+<!ENTITY % TimeEventCompositions '%ModelElementCompositions;' >
+
+<!ELEMENT TimeEvent (%remoteContent; |
+                         (%TimeEventProperties;,
+                          %TimeEventAssociations;,
+                          %TimeEventCompositions;)) >
+<!ATTLIST TimeEvent
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Transition                                             -->
+
+<!-- The definition of the Transition class is on pages 98, 103, 105,  -->
+<!-- and 106.                                                          -->
+
+<!-- UML DEVIATION:  The source and target associations are            -->
+<!-- implemented with sourceState and targetState elements because     -->
+<!-- elements source and target are used elsewhere in this DTD.        -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % TransitionProperties '%ModelElementProperties;' >
+
+<!ENTITY % sourceState 'sourceState' >
+<!ELEMENT sourceState (XMI.reference) >
+
+<!ENTITY % targetState 'targetState' >
+<!ELEMENT targetState (XMI.reference) >
+
+
+
+<!-- jer 99/03/16: allowed empty trigger -->
+
+<!ENTITY % trigger 'trigger' >
+<!ELEMENT trigger (SignalEvent | CallEvent | TimeEvent | ChangeEvent)? >
+
+<!ENTITY % TransitionAssociations '%ModelElementAssociations;,
+                                   %sourceState;,
+                                   %targetState;,
+                                   %trigger;?' >
+
+<!ENTITY % guard 'guard' >
+<!ELEMENT guard (Guard) >
+
+<!-- jer 99/03/10: allowed empty effect -->
+<!ENTITY % effect 'effect' >
+<!ELEMENT effect (ActionSequence?) >
+
+<!ENTITY % TransitionCompositions '%ModelElementCompositions;,
+                                   %guard;?,
+                                   %effect;?' >
+
+<!ELEMENT Transition (%remoteContent; |
+                           (%TransitionProperties;,
+                            %TransitionAssociations;,
+                            %TransitionCompositions;)) >
+<!ATTLIST Transition
+            %XMI.ElementAttributes;
+>
+
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!--                        CHAPTER 11                                  -->
+<!-- This section contains the declarations of the elements             -->
+<!-- corresponding to the activity model subpackage of the behavioral   -->
+<!-- elements package of the UML metamodel.                             -->
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: ActivityModel                                          -->
+
+<!-- The definition of the ActivityModel class is on pages 121, 122,   -->
+<!-- and 124.                                                          -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % ActivityModelProperties '%StateMachineProperties;' >
+
+<!ENTITY % ActivityModelAssociations '%StateMachineAssociations;' >
+
+<!ENTITY % partition 'partition' >
+<!ELEMENT partition (Partition) >
+
+<!ENTITY % ActivityModelCompositions '%StateMachineCompositions;,
+                                      partition*' >
+
+<!ELEMENT ActivityModel (%remoteContent; |
+                              (%ActivityModelProperties;,
+                               %ActivityModelAssociations;,
+                               %ActivityModelCompositions;)) >
+<!ATTLIST ActivityModel
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: ActionState                                            -->
+
+<!-- The definition of the ActionState class is on pages 121, 122,     -->
+<!-- and 124.                                                          -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % ActionStateProperties '%SimpleStateProperties;' >
+
+<!ENTITY % ActionStateAssociations '%SimpleStateAssociations;' >
+
+<!ENTITY % ActionStateCompositions '%SimpleStateCompositions;' >
+
+<!ELEMENT ActionState (%remoteContent; |
+                          (%ActionStateProperties;,
+                           %ActionStateAssociations;,
+                           %ActionStateCompositions;)) >
+<!ATTLIST ActionState
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: ActivityState                                          -->
+
+<!-- The definition of the ActivityState class is on pages 121 and 122 -->
+
+<!-- UML INCONSISTENCY:  The diagram on page 121 shows ActivityState   -->
+<!-- inheriting from SimpleState, but the description on page 122      -->
+<!-- indicates that it inherits from SubmachineState.                  -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % ActivityStateProperties '%SubmachineStateProperties;' >
+
+<!ENTITY % ActivityStateAssociations '%SubmachineStateAssociations;' >
+
+<!ENTITY % ActivityStateCompositions '%SubmachineStateCompositions;' >
+
+<!ELEMENT ActivityState (%remoteContent; |
+                             (%ActivityStateProperties;,
+                              %ActivityStateAssociations;,
+                              %ActivityStateCompositions;)) >
+<!ATTLIST ActivityState
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: ClassifierInState                                      -->
+
+<!-- The definition of the ClassifierState class is on pages 121 and   -->
+<!-- 123.                                                              -->
+
+<!-- NOTE:  Element type is declared with Attribute.                   -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % ClassifierInStateProperties '%ClassifierProperties;' >
+
+<!ENTITY % inState 'inState' >
+<!ELEMENT inState (XMI.reference) >
+
+<!ENTITY % ClassifierInStateAssociations '%ClassifierAssociations;,
+                                          %structuralFeatureType;,
+                                          %inState;' >
+
+<!ENTITY % ClassifierInStateCompositions '%ClassifierCompositions;' >
+
+<!ELEMENT ClassifierInState (%remoteContent; |
+                                 (%ClassifierInStateProperties;,
+                                  %ClassifierInStateAssociations;,
+                                  %ClassifierInStateCompositions;)) >
+<!ATTLIST ClassifierInState
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: ObjectFlowState                                        -->
+
+<!-- The definition of the ObjectFlowState class is on pages 121, 123, -->
+<!-- and 124.                                                          -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % ObjectFlowStateProperties '%SimpleStateProperties;' >
+
+<!-- ____________________________________________________________ -->
+<!--                                                              -->
+<!-- typeState should contain a reference to a ClassifierInState  -->
+<!-- ____________________________________________________________ -->
+
+<!ENTITY % typeState 'typeState' >
+<!ELEMENT typeState (XMI.reference) >
+
+<!ENTITY % ObjectFlowStateAssociations '%SimpleStateAssociations;,
+                                        %typeState;' >
+
+<!ENTITY % ObjectFlowStateCompositions '%SimpleStateCompositions;' >
+
+<!ELEMENT ObjectFlowState (%remoteContent; |
+                                (%ObjectFlowStateProperties;,
+                                 %ObjectFlowStateAssociations;,
+                                 %ObjectFlowStateCompositions;)) >
+<!ATTLIST ObjectFlowState
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Partition                                              -->
+
+<!-- The definition of the Partition class is on pages 121 and 123.    -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % PartitionProperties '%ModelElementProperties;' >
+
+<!-- ______________________________________________________ -->
+<!--                                                        -->
+<!-- contents should contain a reference to a ModelElement  -->
+<!-- ______________________________________________________ -->
+
+<!ENTITY % contents 'contents' >
+<!ELEMENT contents (XMI.reference) >
+
+<!ENTITY % PartitionAssociations '%ModelElementAssociations;,
+                                  %contents;*' >
+
+<!ENTITY % PartitionCompositions '%ModelElementCompositions;' >
+
+
+<!ELEMENT Partition (%remoteContent; |
+                          (%PartitionProperties;,
+                           %PartitionAssociations;,
+                           %PartitionCompositions;)) >
+<!ATTLIST Partition
+            %XMI.ElementAttributes;
+>
+
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+<!--                                                                    -->
+<!--                       CHAPTER 12                                   -->
+<!-- This section contains the declarations of the elements             -->
+<!-- corresponding to the model management package of the UML metamodel.-->
+<!-- __________________________________________________________________ -->
+<!-- __________________________________________________________________ -->
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: ElementReference                                       -->
+
+<!-- The definition of the ElementReference class is on page 129.      -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % alias 'alias' >
+<!ELEMENT alias (#PCDATA) >
+
+<!ENTITY % ElementReferenceProperties '%modelElementVisibility;,
+                                       %alias;' >
+
+<!ENTITY % referencedElement 'referencedElement' >
+<!ELEMENT referencedElement (XMI.reference) >
+
+<!ENTITY % ElementReferenceAssociations '%referencedElement;' >
+
+<!ELEMENT ElementReference (%ElementReferenceProperties;,
+                            %ElementReferenceAssociations;) >
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Package                                                -->
+
+<!-- The definition of the Package class is on pages 129 - 133.        -->
+
+<!-- NOTE:  The fact that packages can contain activityModels is       -->
+<!-- documented on page 124.                                           -->
+
+<!-- UML DEVIATION:  The UMLVersion and DTDVersion attributes are not  -->
+<!-- defined in UML.  They are included to allow tools to recognize    -->
+<!-- which version of UML and which version of the DTD are being used. -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % PackageProperties '%GeneralizableElementProperties;' >
+
+<!ENTITY % PackageAssociations '%GeneralizableElementAssociations;' >
+
+<!ENTITY % elementReference 'elementReference' >
+<!ELEMENT elementReference (ElementReference) >
+
+<!ENTITY % PackageCompositions '%GeneralizableElementCompositions;,
+                                elementReference*' >
+
+<!ELEMENT Package (%remoteContent; |
+                       (%PackageProperties;,
+                        %PackageAssociations;,
+                        %PackageCompositions;)) >
+<!ATTLIST Package
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Model                                                  -->
+
+<!-- The definition of the Model class is on pages 129 and 130.        -->
+
+<!-- UML DEVIATION:  The UMLVersion and DTDVersion attributes are not  -->
+<!-- defined in UML.  They are included to allow tools to recognize    -->
+<!-- which version of UML and which version of the DTD are being used. -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % ModelProperties '%PackageProperties;' >
+
+<!ENTITY % ModelAssociations '%PackageAssociations;' >
+
+<!ENTITY % ModelCompositions '%PackageCompositions;' >
+
+<!ELEMENT Model (%remoteContent; |
+                     (%ModelProperties;,
+                      %ModelAssociations;,
+                      %ModelCompositions;)) >
+<!ATTLIST Model
+            %XMI.ElementAttributes;
+>
+
+<!-- _________________________________________________________________ -->
+<!--                                                                   -->
+<!-- UML CLASS: Subsystem                                              -->
+
+<!-- The definition of the Subsystem class is on pages 130, 131, 133,  -->
+<!-- and 134.                                                          -->
+<!-- _________________________________________________________________ -->
+
+<!ENTITY % isInstantiable 'isInstantiable' >
+<!ELEMENT isInstantiable EMPTY >
+<!ATTLIST isInstantiable %Boolean; >
+
+<!ENTITY % SubsystemProperties '%PackageProperties;,
+                                %isInstantiable;' >
+
+<!ENTITY % SubsystemAssociations '%PackageAssociations;,
+                                  (%participant; |
+                                   %realization; |
+                                   %specification;)*' >
+
+<!ENTITY % SubsystemCompositions '%ClassifierCompositions;,
+                                  elementReference*' >
+
+<!ELEMENT Subsystem (%remoteContent; |
+                         (%SubsystemProperties;,
+                          %SubsystemAssociations;,
+                          %SubsystemCompositions;)) >
+<!ATTLIST Subsystem
+            %XMI.ElementAttributes;
+>
