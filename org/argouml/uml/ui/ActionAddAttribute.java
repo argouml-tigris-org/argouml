@@ -34,8 +34,8 @@ public class ActionAddAttribute extends UMLChangeAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
-    
-    public static ActionAddAttribute SINGLETON = new ActionAddAttribute(); 
+
+    public static ActionAddAttribute SINGLETON = new ActionAddAttribute();
 
     // needs-more-work: should be part of java binding or common elements
     //    public static MDataType INT_TYPE = new MDataTypeImpl();
@@ -44,7 +44,7 @@ public class ActionAddAttribute extends UMLChangeAction {
 
     ////////////////////////////////////////////////////////////////
     // constructors
-    
+
     public ActionAddAttribute() { super("Add Attribute"); }
 
 
@@ -59,6 +59,7 @@ public class ActionAddAttribute extends UMLChangeAction {
 	MClassifier cls = (MClassifier) target;
 
 	MAttribute attr = MMUtil.SINGLETON.buildAttribute(cls);
+	pb.setTarget(attr);
 	super.actionPerformed(ae);
     }
 

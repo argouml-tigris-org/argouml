@@ -30,7 +30,9 @@ package org.argouml.uml.diagram.ui;
 import java.awt.*;
 import java.awt.event.*;
 
+import org.argouml.ui.*;
 import org.tigris.gef.presentation.*;
+import ru.novosoft.uml.foundation.core.*;
 
 /** A FigText class extension for FigClass/FigInterface compartments */
 
@@ -43,6 +45,7 @@ public class CompartmentFigText extends FigText
   protected Fig refFig;
   protected int storedKey = -1; // nothing stored
   protected boolean _isHighlighted = false;
+  protected MFeature _feature = null;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -81,10 +84,20 @@ public class CompartmentFigText extends FigText
   public void setHighlighted(boolean flag) {
     _isHighlighted = flag;
     super.setLineWidth(_isHighlighted ? 1 : 0);
+    if (flag && _feature != null)
+	    ProjectBrowser.TheInstance.setTarget(_feature);
   }
 
   public boolean isHighlighted() {
     return _isHighlighted;
+  }
+
+  public void setFeature(MFeature feature) {
+    _feature = feature;
+  }
+
+  public MFeature getFeature() {
+    return _feature;
   }
 
   ////////////////////////////////////////////////////////////////

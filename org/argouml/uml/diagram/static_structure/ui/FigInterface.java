@@ -62,7 +62,6 @@ public class FigInterface extends FigNodeModelElement {
   protected FigRect _stereoLineBlinder;
   public MElementResidence resident = new MElementResidenceImpl();
 
-  protected Vector mOpers = new Vector();
   protected CompartmentFigText highlightedFigText = null;
 
   ////////////////////////////////////////////////////////////////
@@ -132,7 +131,6 @@ public class FigInterface extends FigNodeModelElement {
 	figClone._name = (FigText) v.elementAt(2);
 	figClone._stereoLineBlinder = (FigRect) v.elementAt(3);
 	figClone._operVec = (FigGroup) v.elementAt(5);
-	figClone.mOpers = mOpers;
 	return figClone;
   }
 
@@ -214,9 +212,8 @@ public class FigInterface extends FigNodeModelElement {
 	Fig f = hitFig(r);
     if (f == _operVec) {
 	  Vector v = _operVec.getFigs();
-	  i = mOpers.size() * (me.getY() - f.getY() - 3) / _operVec.getHeight();
-	  if (i >= 0 && i < mOpers.size() && i < v.size()-1) {
-	    ProjectBrowser.TheInstance.setTarget(mOpers.elementAt(i));
+	  i = (v.size()-1) * (me.getY() - f.getY() - 3) / _operVec.getHeight();
+	  if (i >= 0 && i < v.size()-1) {
 	    targetIsSet = true;
 	    f = (Fig)v.elementAt(i+1);
 		((CompartmentFigText)f).setHighlighted(true);
@@ -234,12 +231,12 @@ public class FigInterface extends FigNodeModelElement {
 
   public void keyPressed(KeyEvent ke) {
     int key = ke.getKeyCode();
-    if (key == KeyEvent.VK_TAB) {
+    if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN) {
       CompartmentFigText ft = unhighlight();
       if (ft != null) {
         int i = _operVec.getFigs().indexOf(ft);
         if (i != -1) {
-          if (ke.isShiftDown()) {
+          if (key == KeyEvent.VK_UP) {
             ft = (CompartmentFigText)getPreviousVisibleFeature(ft,i);
           } else {
             ft = (CompartmentFigText)getNextVisibleFeature(ft,i);
@@ -305,11 +302,9 @@ public class FigInterface extends FigNodeModelElement {
     if (cls == null) return;
     int i = _operVec.getFigs().indexOf(ft);
 	if (i != -1) {
-	  if (i > 0 && i <= mOpers.size()) {
-	    ParserDisplay.SINGLETON.parseOperationFig(cls,(MOperation)mOpers.elementAt(i-1),ft.getText().trim());
-	    highlightedFigText = (CompartmentFigText)ft;
-	    highlightedFigText.setHighlighted(true);
-	  }
+	  highlightedFigText = (CompartmentFigText)ft;
+	  highlightedFigText.setHighlighted(true);
+	  ParserDisplay.SINGLETON.parseOperationFig(cls,(MOperation)highlightedFigText.getFeature(),highlightedFigText.getText().trim());
 	  return;
 	}
   }
@@ -388,7 +383,7 @@ public class FigInterface extends FigNodeModelElement {
     if (behs != null) {
 	  Iterator iter = behs.iterator();
       Vector figs = _operVec.getFigs();
-	  FigText oper;
+	  CompartmentFigText oper;
       while (iter.hasNext()) {
 	    MBehavioralFeature bf = (MBehavioralFeature) iter.next();
 	    if (figs.size() <= ocounter) {
@@ -401,30 +396,22 @@ public class FigInterface extends FigNodeModelElement {
           oper.setMultiLine(false);
 	      _operVec.addFig(oper);
 		} else {
-		  oper = (FigText)figs.elementAt(ocounter);
+		  oper = (CompartmentFigText)figs.elementAt(ocounter);
 	    }
 	    oper.setText(Notation.generate(this,bf));
+	    oper.setFeature(bf);
 	    // underline, if static
 	    oper.setUnderline(MScopeKind.CLASSIFIER.equals(bf.getOwnerScope()));
 	    // italics, if abstract
 	    //oper.setItalic(((MOperation)bf).isAbstract()); // does not properly work (GEF bug?)
         if (((MOperation)bf).isAbstract()) oper.setFont(ITALIC_LABEL_FONT);
         else oper.setFont(LABEL_FONT);
-	    if (ocounter <= mOpers.size())
-	    	mOpers.setElementAt(bf,ocounter-1);
-	    else
-	    	mOpers.addElement(bf);
 	    ocounter++;
       }
       if (figs.size() > ocounter) {
         //cleanup of unused operation FigText's
         for (int i=figs.size()-1; i>=ocounter; i--)
           _operVec.removeFig((Fig)figs.elementAt(i));
-	  }
-      if (mOpers.size() >= ocounter) {
-        //cleanup of unused operations
-        for (int i=mOpers.size()-1; i>=ocounter-1; i--)
-          mOpers.removeElementAt(i);
 	  }
 	}
 

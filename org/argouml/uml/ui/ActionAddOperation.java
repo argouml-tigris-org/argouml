@@ -34,8 +34,8 @@ public class ActionAddOperation extends UMLChangeAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
-    
-    public static ActionAddOperation SINGLETON = new ActionAddOperation(); 
+
+    public static ActionAddOperation SINGLETON = new ActionAddOperation();
 
     // needs-more-work: should be part of java binding or common elements
     //     public static MDataType VOID_TYPE = new MDataTypeImpl();
@@ -51,7 +51,7 @@ public class ActionAddOperation extends UMLChangeAction {
     ////////////////////////////////////////////////////////////////
     // main methods
 
-    public void actionPerformed(ActionEvent ae) {	
+    public void actionPerformed(ActionEvent ae) {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Project p = pb.getProject();
 	Object target = pb.getDetailsTarget();
@@ -59,8 +59,10 @@ public class ActionAddOperation extends UMLChangeAction {
 
 	MClassifier cls = (MClassifier) target;
 	MOperation oper=MMUtil.SINGLETON.buildOperation(cls);
+	pb.setTarget(oper);
 	super.actionPerformed(ae);
     }
+
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Object target = pb.getDetailsTarget();
