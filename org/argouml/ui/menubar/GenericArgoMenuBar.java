@@ -76,7 +76,7 @@ public class GenericArgoMenuBar extends JMenuBar
     /** this should be invoked automatically when
      * importing sources.
      */
-    protected JMenu _arrange = null;
+    protected ArgoJMenu _arrange = null;
     /** currently undergoing significant testing
      */
     protected ArgoJMenu _critique = null;
@@ -422,14 +422,18 @@ public class GenericArgoMenuBar extends JMenuBar
         //createFig.add(_actionPoly);
         //createFig.add(_actionInk);
 
-        _arrange = (JMenu) add(new JMenu(menuLocalize("Arrange")));
+        _arrange = (ArgoJMenu) add(new ArgoJMenu(menuLocalize("Arrange")));
         setMnemonic(_arrange,"Arrange",'A');
 
         JMenu align = (JMenu) _arrange.add(new JMenu(menuLocalize("Align")));
         JMenu distribute = (JMenu) _arrange.add(new JMenu(menuLocalize("Distribute")));
         JMenu reorder = (JMenu) _arrange.add(new JMenu(menuLocalize("Reorder")));
         JMenu nudge = (JMenu) _arrange.add(new JMenu(menuLocalize("Nudge")));
-        JMenu setPreferredSize = (JMenu) _arrange.add(new JMenu(menuLocalize("Set size")));
+
+        JMenu setPreferredSize = 
+            (JMenu) _arrange.add(new JMenu(menuLocalize("Set size")));
+        _arrange.addCheckItem((UMLAction) new ActionAutoResize());
+
         JMenu layout = (JMenu) _arrange.add(new JMenu(menuLocalize("Layout")));
         appendPluggableMenus(_arrange, PluggableMenu.KEY_ARRANGE);
 
