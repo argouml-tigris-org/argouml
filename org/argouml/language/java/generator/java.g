@@ -432,11 +432,12 @@ variableDefinitions returns [Vector codePieces=new Vector()]
  * It can also include possible initialization.
  */
 variableDeclarator returns [CompositeCodePiece cp=null]
-	{CodePiece db=null;}
+	{CodePiece db=null, vin=null;}
 	:	t1:IDENT {cp = new CompositeCodePiece(
 				new SimpleCodePiece(t1));}
 		db=declaratorBrackets {cp.add(db);}
-		varInitializer
+		vin=varInitializer
+                {if (vin!=null) cp.add(vin);}
 	;
 
 declaratorBrackets returns [CompositeCodePiece cp=null]
@@ -454,14 +455,19 @@ declaratorBrackets returns [CompositeCodePiece cp=null]
 	;
 
 varInitializer returns [CompositeCodePiece cp=null]
-	:	( t1:ASSIGN {cp = new CompositeCodePiece(
-				new SimpleCodePiece(t1));}
+	:	( t1:ASSIGN {
+                                //cp = new CompositeCodePiece(
+				//new SimpleCodePiece(t1));
+                            }
 		initializer
-		{cp.add(new SimpleCodePiece(
-			new StringBuffer("@"), 
-			t1.getLine(),
-			t1.getColumn()+1,
-			t1.getColumn()+2));}
+		{
+                    t1=LT(1);
+                    cp = new CompositeCodePiece(new SimpleCodePiece(
+			new StringBuffer(""), 
+			t1.getLine()-1,
+			t1.getColumn()-1,
+			t1.getColumn()-1));
+                }
 		)?
 	;
 

@@ -1,4 +1,4 @@
-// $ANTLR 2.7.2a2 (20020112-1): "../src_new/org/argouml/language/java/generator/java.g" -> "JavaRecognizer.java"$
+// $ANTLR 2.7.2a2 (20020112-1): "java.g" -> "JavaRecognizer.java"$
 
 	package org.argouml.language.java.generator;
 
@@ -1428,7 +1428,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		CompositeCodePiece cp=null;
 		
 		Token  t1 = null;
-		CodePiece db=null;
+		CodePiece db=null, vin=null;
 		
 		t1 = LT(1);
 		match(IDENT);
@@ -1440,7 +1440,10 @@ public JavaRecognizer(ParserSharedInputState state) {
 		if ( inputState.guessing==0 ) {
 			cp.add(db);
 		}
-		varInitializer();
+		vin=varInitializer();
+		if ( inputState.guessing==0 ) {
+			if (vin!=null) cp.add(vin);
+		}
 		return cp;
 	}
 	
@@ -1490,16 +1493,21 @@ public JavaRecognizer(ParserSharedInputState state) {
 			t1 = LT(1);
 			match(ASSIGN);
 			if ( inputState.guessing==0 ) {
-				cp = new CompositeCodePiece(
-								new SimpleCodePiece(t1));
+				
+				//cp = new CompositeCodePiece(
+								//new SimpleCodePiece(t1));
+				
 			}
 			initializer();
 			if ( inputState.guessing==0 ) {
-				cp.add(new SimpleCodePiece(
-							new StringBuffer("@"), 
-							t1.getLine(),
-							t1.getColumn()+1,
-							t1.getColumn()+2));
+				
+				t1=LT(1);
+				cp = new CompositeCodePiece(new SimpleCodePiece(
+							new StringBuffer(""), 
+							t1.getLine()-1,
+							t1.getColumn()-1,
+							t1.getColumn()-1));
+				
 			}
 			break;
 		}
