@@ -28,8 +28,8 @@ CLASSES = \
 	BasicApplication.class \
 	FlexibleApplet.class \
 	EquipmentApplet.class \
-	SampleArc.class \
-	SampleArc2.class \
+	SampleEdge.class \
+	SampleEdge2.class \
 	SampleNode.class \
 	SampleNode2.class \
 	SamplePort.class \
@@ -41,8 +41,8 @@ CLASSES = \
 	NodeWall.class \
 	PortData.class \
 	PortPower.class \
-	ArcData.class \
-	ArcPower.class
+	EdgeData.class \
+	EdgePower.class
 
 
 
