@@ -34,14 +34,15 @@ import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFacto
  */
 public class ActionNewSignalEvent extends ActionNewEvent {
 
-    public static ActionNewSignalEvent SINGLETON = new ActionNewSignalEvent();
+    private static ActionNewSignalEvent singleton = new ActionNewSignalEvent();
 
     /**
      * Constructor for ActionNewSignalEvent.
      */
     protected ActionNewSignalEvent() {
         super();
-        putValue(NAME, Translator.localize("UMLMenu", "button.new-signalevent"));
+        putValue(NAME, Translator.localize("UMLMenu", 
+                                           "button.new-signalevent"));
     }
 
     /**
@@ -49,6 +50,13 @@ public class ActionNewSignalEvent extends ActionNewEvent {
      */
     protected Object createEvent() {
         return StateMachinesFactory.getFactory().buildSignalEvent();
+    }
+
+    /**
+     * @return Returns the singleton.
+     */
+    public static ActionNewSignalEvent getSingleton() {
+        return singleton;
     }
 
 }

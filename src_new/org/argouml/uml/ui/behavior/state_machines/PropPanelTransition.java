@@ -85,7 +85,7 @@ public class PropPanelTransition extends PropPanelModelElement {
                 new JScrollPane(triggerList));
         JList guardList = new UMLMutableLinkedList(
                 new UMLTransitionGuardListModel(), null,
-                ActionNewGuard.SINGLETON);
+                ActionNewGuard.getSingleton());
         guardList.setVisibleRowCount(1);
         addField(Translator.localize("UMLMenu", "label.guard"),
                 new JScrollPane(guardList));

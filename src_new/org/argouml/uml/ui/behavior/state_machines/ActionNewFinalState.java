@@ -39,14 +39,15 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
  */
 public class ActionNewFinalState extends AbstractActionNewModelElement {
 
-    public static ActionNewFinalState SINGLETON = new ActionNewFinalState();
+    private static ActionNewFinalState singleton = new ActionNewFinalState();
     
     /**
      * Constructor for ActionNewFinalState.
      */
     protected ActionNewFinalState() {
         super();
-        putValue(Action.NAME, Translator.localize("UMLMenu", "button.new-finalstate"));
+        putValue(Action.NAME, Translator.localize("UMLMenu", 
+                                                  "button.new-finalstate"));
     }
     
     /**
@@ -55,6 +56,13 @@ public class ActionNewFinalState extends AbstractActionNewModelElement {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         StateMachinesFactory.getFactory().buildFinalState(getTarget());
+    }
+
+    /**
+     * @return Returns the singleton.
+     */
+    public static ActionNewFinalState getSingleton() {
+        return singleton;
     }
 
 }

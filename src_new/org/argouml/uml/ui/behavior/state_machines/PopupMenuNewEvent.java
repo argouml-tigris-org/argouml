@@ -47,18 +47,18 @@ public class PopupMenuNewEvent extends JPopupMenu {
 
         JMenu newMenu = new JMenu();
         newMenu.setText(Translator.localize("action.new"));
-        newMenu.add(ActionNewCallEvent.SINGLETON);
-        ActionNewCallEvent.SINGLETON.setTarget(list.getTarget());
-        ActionNewCallEvent.SINGLETON.putValue(ActionNewEvent.ROLE, role);
-        newMenu.add(ActionNewChangeEvent.SINGLETON);
-        ActionNewChangeEvent.SINGLETON.setTarget(list.getTarget());
-        ActionNewChangeEvent.SINGLETON.putValue(ActionNewEvent.ROLE, role);
-        newMenu.add(ActionNewSignalEvent.SINGLETON);
-        ActionNewSignalEvent.SINGLETON.setTarget(list.getTarget());
-        ActionNewSignalEvent.SINGLETON.putValue(ActionNewEvent.ROLE, role);
-        newMenu.add(ActionNewTimeEvent.SINGLETON);
-        ActionNewTimeEvent.SINGLETON.setTarget(list.getTarget());
-        ActionNewTimeEvent.SINGLETON.putValue(ActionNewEvent.ROLE, role);
+        newMenu.add(ActionNewCallEvent.getSingleton());
+        ActionNewCallEvent.getSingleton().setTarget(list.getTarget());
+        ActionNewCallEvent.getSingleton().putValue(ActionNewEvent.ROLE, role);
+        newMenu.add(ActionNewChangeEvent.getSingleton());
+        ActionNewChangeEvent.getSingleton().setTarget(list.getTarget());
+        ActionNewChangeEvent.getSingleton().putValue(ActionNewEvent.ROLE, role);
+        newMenu.add(ActionNewSignalEvent.getSingleton());
+        ActionNewSignalEvent.getSingleton().setTarget(list.getTarget());
+        ActionNewSignalEvent.getSingleton().putValue(ActionNewEvent.ROLE, role);
+        newMenu.add(ActionNewTimeEvent.getSingleton());
+        ActionNewTimeEvent.getSingleton().setTarget(list.getTarget());
+        ActionNewTimeEvent.getSingleton().putValue(ActionNewEvent.ROLE, role);
         add(newMenu);
 
         addSeparator();

@@ -39,14 +39,16 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
  */
 public class ActionNewCompositeState extends AbstractActionNewModelElement {
 
-    public static ActionNewCompositeState SINGLETON = new ActionNewCompositeState();
+    private static ActionNewCompositeState singleton = 
+            new ActionNewCompositeState();
     
     /**
      * Constructor for ActionNewCompositeState.
      */
     protected ActionNewCompositeState() {
         super();
-        putValue(Action.NAME, Translator.localize("UMLMenu", "button.new-compositestate"));
+        putValue(Action.NAME, Translator.localize("UMLMenu", 
+                                                "button.new-compositestate"));
     }
     
     /**
@@ -55,6 +57,13 @@ public class ActionNewCompositeState extends AbstractActionNewModelElement {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         StateMachinesFactory.getFactory().buildCompositeState(getTarget());
+    }
+
+    /**
+     * @return Returns the singleton.
+     */
+    public static ActionNewCompositeState getSingleton() {
+        return singleton;
     }
 
 }

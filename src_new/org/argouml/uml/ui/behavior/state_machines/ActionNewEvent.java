@@ -44,14 +44,18 @@ public abstract class ActionNewEvent extends AbstractActionNewModelElement {
      * transition, this is filled with "trigger". The values are defined in the
      * interface Roles
      */
-    public final static String ROLE = "role";
+    public static final String ROLE = "role";
 
+    /**
+     * 
+     *
+     */
     public static interface Roles {
 
         /**
          * The trigger for some transition
          */
-        public final static String TRIGGER = "trigger";
+        public static final  String TRIGGER = "trigger";
 
     }
     /**
@@ -76,7 +80,8 @@ public abstract class ActionNewEvent extends AbstractActionNewModelElement {
         super.actionPerformed(e);
         Object event = createEvent();
         if (getValue(ROLE).equals(Roles.TRIGGER)) {
-            StateMachinesHelper.getHelper().setEventAsTrigger(getTarget(), event);
+            StateMachinesHelper.getHelper()
+                        .setEventAsTrigger(getTarget(), event);
         }
         TargetManager.getInstance().setTarget(event);
     }
