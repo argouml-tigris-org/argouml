@@ -24,13 +24,16 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import java.awt.Color;
-import javax.swing.ImageIcon;
+
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
+import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLList;
+import org.argouml.uml.ui.UMLMessagesInteractionListModel;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import ru.novosoft.uml.behavior.collaborations.MInteraction;
 
 /**
  * Proppanel for interactions. 
@@ -51,6 +54,19 @@ public class PropPanelInteraction extends PropPanelModelElement {
     	// addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,1);
     	// addField(namespaceScroll,3,0,0);
     	
+    	addCaption(Argo.localize("UMLMenu", "label.messages"),1,1,0);
+            
+        JList messagesList = new UMLList(new UMLMessagesInteractionListModel(this,"messages",true),true);
+      	messagesList.setBackground(getBackground());
+      	messagesList.setForeground(Color.blue);
+      	JScrollPane messagesScroll= new JScrollPane(messagesList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); 	
+        addField(messagesScroll,2,1,1);
+    	
+    	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
+        new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+        new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+        new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-attribute"),"removeElement",null);
+    	
     	/*
     	addCaption("Messages:",0,1,0);
     	JList messageList = new UMLList(new UMLMessagesListModel(this,"message",true), true);
@@ -58,7 +74,11 @@ public class PropPanelInteraction extends PropPanelModelElement {
     	messageList.setForeground(Color.blue);
     	addField(new JScrollPane(messageList),0,1,1);
     	*/
+	
+
 	}
+
+	
 
 	/**
 	 * Used to determine which stereotypes are legal with an interaction. At 
@@ -69,5 +89,14 @@ public class PropPanelInteraction extends PropPanelModelElement {
 	protected boolean isAcceptibleBaseMetaClass(String baseClass) {
 		return (baseClass.equals("Interaction") || baseClass.equals("Modelelement"));
 	}
+	
+	/**
+	 * Navigates to the owning collaboration
+	 * @see org.argouml.uml.ui.foundation.core.PropPanelModelElement#navigateUp()
+	 */
+	public void navigateUp() {
+		navigateTo(((MInteraction)getTarget()).getContext());
+	}
 
 }
+
