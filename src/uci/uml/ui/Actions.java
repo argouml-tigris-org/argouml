@@ -512,7 +512,7 @@ class ActionLoadModelFromDB extends UMLAction {
 	  
   }
   public boolean shouldBeEnabled() {
-	  return true;
+	  return false;
   }
 
 } /* end class ActionLoadModelFromDB */
@@ -545,7 +545,7 @@ class ActionStoreProjectToDB extends UMLAction {
   }
   public boolean shouldBeEnabled() {
 	  // this is always true, because there is no way for Argo to be without a model
-	  return true;
+	  return false;
   }
 
 } /* end class ActionStoreProjectToDB */
@@ -1250,6 +1250,8 @@ class ActionAddInternalTrans extends UMLChangeAction {
 	MTransition t = new MTransitionImpl();
 	t.setSource(st);
 	t.setTarget(st);
+	MStateMachine sm = (MStateMachine)st.getStateMachine();
+	sm.addTransition(t);
 	
 	// which nsuml-Event to generate as default? is SignalEvent ok?
 	MEvent triggerEvent = new MSignalEventImpl();
