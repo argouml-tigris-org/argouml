@@ -35,6 +35,7 @@ import java.util.Vector;
 import java.util.Hashtable;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.CoreFactory;
 import org.argouml.model.uml.UmlFactory;
@@ -1253,9 +1254,11 @@ public class Modeller
      * created.
      */
     private Object getStereotype(Object me, String name, String baseClass) {
+        Collection models =
+            ProjectManager.getManager().getCurrentProject().getModels();
         Collection stereos =
             UmlHelper.getHelper().getExtensionMechanisms()
-	        .getAllPossibleStereotypes(me);
+	        .getAllPossibleStereotypes(models, me);
         if (stereos != null && stereos.size() > 0) {
             Iterator iter = stereos.iterator();
             while (iter.hasNext()) {
