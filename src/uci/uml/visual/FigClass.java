@@ -80,5 +80,56 @@ public class FigClass extends FigNode {
     }
   }
 
+  ////////////////////////////////////////////////////////////////
+  // notifications and updates
+
+//   public void update(Observable o, Object arg) {
+//     super.update(o, arg);
+//     Boolean abs = (Boolean) ((NodeUML)getOwner()).get(UML.pABSTRACT);
+//     String attrs = (String) ((NodeUML)getOwner()).get(UML.pATTRS);
+//     boolean showAttrs = (attrs.length() > 0 && _showAttrs);
+//     startTrans();
+//     if (arg.equals(UML.pABSTRACT)) {
+//       _nameFig.setItalic(abs.booleanValue());
+//     }
+//     if (arg.equals(UML.pATTRS) || arg.equals(UML.pSHOW_ATTRS)) {
+//       _attrsFig.setText(attrs);
+//       Vector figs = getFigs();
+//       if (!showAttrs) figs.removeElement(_attrsFig);
+//       else if (!figs.contains(_attrsFig))
+// 	figs.insertElementAt(_attrsFig, 1);
+//     }
+//     //GEF v06: _nameFig.measure();
+//     //GEF v06: _attrsFig.measure();
+
+//     Rectangle nameBBox = _nameFig.getBounds();
+//     int origX = nameBBox.x;
+//     int origY = nameBBox.y;
+//     int nameWidth = nameBBox.width;
+//     int nameHeight = nameBBox.height;
+//     int attrsWidth = _attrsFig.getBounds().width;
+//     int maxWidth = Math.max(nameWidth, attrsWidth);
+//     if (showAttrs) {
+//       _nameFig.setWidth(maxWidth);
+//       _nameFig.setLocation(origX, origY);
+//       _attrsFig.setWidth(maxWidth);
+//       _attrsFig.setLocation(origX, origY + nameHeight);
+//     }
+//     Rectangle attrBBox = null;
+//     if (showAttrs) attrBBox = _attrsFig.getBounds();
+//     else attrBBox = _nameFig.getBounds();
+//     Rectangle botArrowBBox = _botArrow.getBounds();
+//     Rectangle topArrowBBox = _topArrow.getBounds();
+//     _botArrow.translate(attrBBox.x + (attrBBox.width -
+// 			 botArrowBBox.width) / 2 - botArrowBBox.x,
+// 			attrBBox.y + attrBBox.height - botArrowBBox.y-
+// 			botArrowBBox.height + 4);
+//     _topArrow.translate(attrBBox.x + (attrBBox.width -
+// 			 topArrowBBox.width) / 2 - topArrowBBox.x,
+// 			0);
+//     endTrans();
+//   }
+
+  
 } /* end class FigClass */
 
