@@ -352,6 +352,16 @@ public class ModelFacade {
         return handle instanceof MOperation;
     }
 
+    /**
+     * Recognizer for Permission
+     *
+     * @param handle candidate
+     * @returns true if handle is an Permission
+     */
+    public static boolean isAPermission(Object handle) {
+        return handle instanceof MPermission;
+    }
+    
     /** Recognizer for Package
      *
      * @param handle candidate

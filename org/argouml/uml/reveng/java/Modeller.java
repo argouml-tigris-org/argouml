@@ -44,15 +44,9 @@ import org.argouml.ocl.OCLUtil;
 import org.argouml.uml.*;
 import org.argouml.uml.reveng.*;
 
-/** This class receives calls from the parser and builds the UML
- * model. Currently needs work. Class diagrams
- * are stacked on top of each other requiring
- * user to manually rearrange artifacts in diagram.
- *
- * This problem has been noted in Poseidon SE as
- * well.
- *
- *The arrange layout/automatic should be automatically invoked.
+/**
+ * Modeller maps Java source code(parsed/recognised by ANTLR) to UML model
+ * elements, it applies some of the semantics in JSR26.
  */
 public class Modeller
 {
@@ -130,18 +124,25 @@ public class Modeller
      */
     public void addComponent(){
         
-        // remove the java specific ending (per JSR 26).
-        // BUT we can't do this because then the component will be confused
-        // with its class with the same name when invoking
-        // ModelFacade.lookupIn(Object,String)
-        /*
-        if(fileName.endsWith(".java"))
-            fileName = fileName.substring(0,
-                                          fileName.length()-5);
-         */
+        // try and find the component in the current package
+        // to cope with repeated imports
+        Object component = ModelFacade.lookupIn(currentPackage,fileName);
         
-        Object component = UmlFactory.getFactory().getCore().createComponent();
-        ModelFacade.setName(component,fileName);
+        if (component == null){
+        
+            // remove the java specific ending (per JSR 26).
+            // BUT we can't do this because then the component will be confused
+            // with its class with the same name when invoking
+            // ModelFacade.lookupIn(Object,String)
+            /*
+            if(fileName.endsWith(".java"))
+               fileName = fileName.substring(0,
+                                             fileName.length()-5);
+            */
+            
+            component = UmlFactory.getFactory().getCore().createComponent();
+            ModelFacade.setName(component,fileName);
+        }
         
         parseState.addComponent(component);
         
@@ -198,30 +199,66 @@ public class Modeller
 	String classifierName = getClassifierName(name);
 	Object mPackage = getPackage(packageName);
 
+        // import on demand
 	if(classifierName.equals("*")) {
 	    parseState.addPackageContext(mPackage);
+            Object perm=null;
             
-            // set up the component
-            Object perm = UmlFactory.getFactory().getCore().buildPermission(parseState.getComponent(), mPackage);
+            // try find an existing permission
+            Iterator dependenciesIt =
+                UmlHelper.getHelper().getCore()
+                    .getDependencies(mPackage, parseState.getComponent())
+                    .iterator();
+            while(dependenciesIt.hasNext()){
+                
+                Object dependency = dependenciesIt.next();
+                if(ModelFacade.isAPermission(dependency)){
+                    
+                    perm = dependency;
+                    break;
+                }
+            }
+            
+            // if no existing permission was found.
+            if(perm == null){
+            perm = UmlFactory.getFactory().getCore().buildPermission(parseState.getComponent(), mPackage);
             ModelFacade.setName(perm,
                 ModelFacade.getName(parseState.getComponent())+
                 " -> "+
                 packageName);
-            // TODO:
-            // add all classes from package to the model
+            }
 	}
+        // single type import
 	else {
             Object mClassifier=null;
 	    try {
 		mClassifier= (new PackageContext(null, mPackage)).get(classifierName);
 		parseState.addClassifierContext(mClassifier);
+                Object perm = null;
                 
-                // set up the component
-                Object perm = UmlFactory.getFactory().getCore().buildPermission(parseState.getComponent(), mClassifier);
-                ModelFacade.setName(perm,
+                // try find an existing permission
+                Iterator dependenciesIt =
+                UmlHelper.getHelper().getCore()
+                    .getDependencies(mClassifier, parseState.getComponent())
+                    .iterator();
+                while(dependenciesIt.hasNext()){
+                    
+                    Object dependency = dependenciesIt.next();
+                    if(ModelFacade.isAPermission(dependency)){
+                        
+                        perm = dependency;
+                        break;
+                    }
+                }
+                
+                // if no existing permission was found.
+                if(perm == null){
+                    perm = UmlFactory.getFactory().getCore().buildPermission(parseState.getComponent(), mClassifier);
+                    ModelFacade.setName(perm,
                     ModelFacade.getName(parseState.getComponent())+
                     " -> "+
                     ModelFacade.getName(mClassifier));
+                }
 	    }
 	    catch(ClassifierNotFoundException e) {
 		// Currently if a classifier cannot be found in the
@@ -408,22 +445,41 @@ public class Modeller
         if(parseState.getClassifier() == null){
             // set the clasifier to be a resident in its component:
             // (before we push a new parse state on the stack)
-        
-            // this doesn't work because of a bug in NSUML (the ElementResidence
-            // association class is never saved to the xmi).
-            //UmlHelper.getHelper().getCore().setResident(parseState.getComponent(),mClassifier);
-        
-            // therefore temporarily use a non-standard hack:
-            if (parseState.getComponent() == null) addComponent();
-            Object dep = CoreFactory.getFactory().buildDependency(parseState.getComponent(),mClassifier);
-            UmlFactory.getFactory().getExtensionMechanisms().buildStereotype(
-                    dep,
-                    "resident",
-                    model);
-            ModelFacade.setName(dep,
-                    ModelFacade.getName(parseState.getComponent())+
+            Object residentDep = null;
+            
+            // try find an existing residency
+            Iterator dependenciesIt =
+            UmlHelper.getHelper().getCore()
+                .getDependencies(mClassifier,parseState.getComponent())
+                    .iterator();
+            while(dependenciesIt.hasNext()){
+                
+                Object dependency = dependenciesIt.next();
+                residentDep = dependency;
+                break;
+            }
+            
+            // if no existing residency was found.
+            if(residentDep == null){
+                
+                // this doesn't work because of a bug in NSUML (the ElementResidence
+                // association class is never saved to the xmi).
+                //UmlHelper.getHelper().getCore().setResident(parseState.getComponent(),mClassifier);
+                
+                // therefore temporarily use a non-standard hack:
+                //if (parseState.getComponent() == null) addComponent();
+                residentDep = CoreFactory.getFactory()
+                         .buildDependency(parseState.getComponent(),mClassifier);
+                UmlFactory.getFactory().getExtensionMechanisms()
+                                       .buildStereotype(
+                                            residentDep,
+                                            "resident",
+                                            model);
+                ModelFacade.setName(residentDep,
+                ModelFacade.getName(parseState.getComponent())+
                     " -(location of)-> "+
                     ModelFacade.getName(mClassifier));
+            }
         }
         
         // change the parse state to a classifier parse state
@@ -1334,4 +1390,5 @@ public class Modeller
 	else
 	    cat.debug("Add call to method " + method + " in " + obj);
     }
+
 }

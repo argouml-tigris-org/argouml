@@ -1021,15 +1021,21 @@ public class CoreHelper {
      * Returns the dependencies between some supplier modelelement and some client
      * modelelement. Does not return the vica versa relationship (dependency 'from
      * client to supplier'.
-     * @param supplier
-     * @param client
+     * @param supplier a MModelElement
+     * @param client a MModelElement
      * @return Collection
      */
     public Collection getDependencies(
-        MModelElement supplier,
-        MModelElement client) {
-        if (supplier == null || client == null)
+        Object supplierObj,
+        Object clientObj) {
+            
+        if ( !(supplierObj instanceof MModelElement) ||
+            !(clientObj instanceof MModelElement))
             return null;
+        
+        MModelElement supplier = (MModelElement)supplierObj;
+        MModelElement client = (MModelElement)clientObj;
+        
         List ret = new ArrayList();
         Collection clientDependencies = client.getClientDependencies();
         Iterator it = supplier.getSupplierDependencies().iterator();
