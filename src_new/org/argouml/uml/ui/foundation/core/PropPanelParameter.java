@@ -161,7 +161,7 @@ public class PropPanelParameter extends PropPanelModelElement {
         if(target instanceof MParameter) {
             feature = ((MParameter) target).getBehavioralFeature();
             if(feature != null) {
-                MParameter param = CoreFactory.getFactory().buildParameter((MOperation)target);              
+                MParameter param = CoreFactory.getFactory().buildParameter((MOperation)feature);              
                 navigateTo(param);
             }
         }

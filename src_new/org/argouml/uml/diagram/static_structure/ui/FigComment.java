@@ -28,29 +28,42 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
+import java.util.Vector;
+
+import javax.swing.SwingUtilities;
 import javax.swing.plaf.metal.MetalLookAndFeel;
-import ru.novosoft.uml.foundation.core.*;
-
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
 
 import org.apache.log4j.Category;
-import org.argouml.kernel.*;  
-import org.argouml.ui.*;
-import org.argouml.uml.*;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.diagram.state.*;
-import org.argouml.uml.diagram.state.ui.*;
+import org.argouml.kernel.DelayedChangeNotify;
+import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.state.StateDiagramGraphModel;
+import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigPoly;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.foundation.core.MComment;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 
 /** 
