@@ -40,12 +40,8 @@ public class ArgoDialog extends Dialog {
     
     /**
      * Suffix to calculate the mnemonic key from the key.
-     *
-     * @deprecated by Linus Tolke as of 0.17.1. 
-     *             Use the {@link #nameButton(AbstractButton, String)} call
-     *             to do this translation. This will become private.
      */
-    protected static final String MNEMONIC_KEY_SUFFIX = ".mnemonic";
+    private static final String MNEMONIC_KEY_SUFFIX = ".mnemonic";
     
     /**
      * @see Dialog#Dialog(Frame, String, boolean)
