@@ -50,7 +50,7 @@ public class ConfigLoader {
     ////////////////////////////////////////////////////////////////
     // static utility functions
 
-    public static String TabPath = "org.argouml";
+    private static String tabPath = "org.argouml";
     private static Orientation tabPropsOrientation;
 
     /**
@@ -60,7 +60,8 @@ public class ConfigLoader {
         return tabPropsOrientation;
     }
 
-    public static void loadTabs(Vector tabs, String panelName, Orientation orientation) {
+    public static void loadTabs(Vector tabs, String panelName, 
+            Orientation orientation) {
         String position = null;
         if (panelName.equals("north") || panelName.equals("south")  
 	    || panelName.equals("west") || panelName.equals("east") 
@@ -149,7 +150,7 @@ public class ConfigLoader {
 					int lineNum, String configFile) {
 	if (line.startsWith("tabpath")) {
 	    String newPath = stripBeforeColon(line).trim();
-	    if (newPath.length() > 0) TabPath = newPath;
+	    if (newPath.length() > 0) tabPath = newPath;
 	    return null;
 	}
 	else if (line.startsWith(panelName)) {
@@ -165,7 +166,7 @@ public class ConfigLoader {
 		if ( tabName.indexOf('.') > 0 )
 		    tabClassName = tabName;
 		else
-		    tabClassName = TabPath + "." + tabName;
+		    tabClassName = tabPath + "." + tabName;
 
 		try {
 		    res = Class.forName(tabClassName);
@@ -201,7 +202,7 @@ public class ConfigLoader {
 	    }
 	    if (Boolean.getBoolean("dbg")) {
 		LOG.warn("\nCould not find any of these classes:\n" 
-			  + "TabPath=" + TabPath + "\n" 
+			  + "TabPath=" + tabPath + "\n" 
 			  + "Config file=" + configFile + "\n" 
 			  + "Config line #" + lineNum + ":" + line);
 	    }
