@@ -49,6 +49,7 @@ import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.xmi.*;
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 
@@ -1053,9 +1054,9 @@ public class Project implements java.io.Serializable {
     protected void trashInternal(Object obj) {
     	boolean needSave = false;
     	
-    	if (obj instanceof MModelElement) { // an object that can be represented
+    	if (obj instanceof MBase) { // an object that can be represented
     		ProjectBrowser.TheInstance.getEditorPane().removePresentationFor(obj, getDiagrams());
-    		UmlFactory.getFactory().remove((MModelElement)obj); // let MMUtil do the job instead of this method
+    		((MBase)obj).remove(); 
     		if (_members.contains(obj)) {
     			_members.remove(obj);
     		}

@@ -23,8 +23,6 @@
 
 package org.argouml.model.uml.behavioralelements.commonbehavior;
 
-import java.util.Iterator;
-
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 
@@ -58,22 +56,8 @@ import ru.novosoft.uml.foundation.core.MOperation;
  * Factory to create UML classes for the UML
  * BehaviorialElements::CommonBehavior package.
  *
- * This class contains all create, remove and build methods for CommonBehavior 
- * modelelements.
- * Create methods create an empty modelelement. It is registred with the 
- * eventpump however. Remove methods remove a modelelement including the listener.
- * Build methods create a modelelement but also instantiate the modelelement, 
- * for example with defaults.
- * 
- * Helper methods for CommonBehavior should not be placed here. Helper methods are methods
- * like getReturnParameters. These should be placed in CommonBehaviorHelper 
- *
  * @since ARGO0.11.2
  * @author Thierry Lach
- * @author jaap.branderhorst@xs4all.nl
- * 
- * @see org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper
- * @see org.argouml.model.uml.UmlFactory
  */
 public class CommonBehaviorFactory extends AbstractUmlModelFactory {
 
@@ -321,158 +305,6 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
         MUninterpretedAction modelElement = MFactory.getDefaultFactory().createUninterpretedAction();
 	super.initialize(modelElement);
 	return modelElement;
-    }
-    
-    /** Remove an instance of a UML Action.
-     */
-    public void  removeAction(MAction modelelement) {
-       modelelement.remove();
-    }
-
-    /** Remove an instance of a UML ActionSequence.
-     */
-    public void  removeActionSequence(MActionSequence modelelement) {
-        modelelement.remove();
-    }
-
-    /** Remove an instance of a UML Argument.
-     */
-    public void  removeArgument(MArgument modelelement) {
-        modelelement.remove();
-    }
-
-    /** Remove an instance of a UML AttributeLink.
-     */
-    public void  removeAttributeLink(MAttributeLink modelelement) {
-        modelelement.remove();
-    }
-
-    /** Remove an instance of a UML CallAction.
-     */
-    public void  removeCallAction(MCallAction modelelement) {
-        modelelement.remove();
-    }
-
-    /** Remove an instance of a UML ComponentInstance.
-     */
-    public void  removeComponentInstance(MComponentInstance modelelement) {
-       modelelement.remove();
-    }
-
-    /** Remove an instance of a UML CreateAction.
-     */
-    public void  removeCreateAction(MCreateAction modelelement) {
-        modelelement.remove();
-    }
-
-    /** Remove an instance of a UML DataValue.
-     */
-    public void  removeDataValue(MDataValue modelelement) {
-        modelelement.remove();
-    }
-
-    /** Remove an instance of a UML DestroyAction.
-     */
-    public void  removeDestroyAction(MDestroyAction modelelement) {
-        modelelement.remove();
-    }
-
-    /** Remove an instance of a UML Exception.
-     */
-    public void  removeException(MException modelelement) {
-        modelelement.remove();
-    }
-
-    /** Remove an instance of a UML Instance.
-     */
-    public void  removeInstance(MInstance modelelement) {
-        modelelement.remove();
-    }
-
-    /** Remove an instance of a UML Link.
-     */
-    public void  removeLink(MLink modelelement) {
-        modelelement.remove();
-    }
-
-    /** Remove an instance of a UML LinkEnd.
-     */
-    public void  removeLinkEnd(MLinkEnd modelelement) {
-        modelelement.remove();
-    }
-
-    /** Remove an instance of a UML LinkObject.
-     */
-    public void  removeLinkObject(MLinkObject modelelement) {
-        modelelement.remove();
-    }
-
-    /** Remove an instance of a UML NodeInstance.
-     */
-    public void  removeNodeInstance(MNodeInstance modelelement) {
-        modelelement.remove();
-    }
-
-    /** Remove an instance of a UML Object.
-     */
-    public void  removeObject(MObject modelelement) {
-    	Iterator linkEndIterator = (modelelement.getLinkEnds()).iterator();
-		while (linkEndIterator.hasNext()) {
-		    MLinkEnd le = (MLinkEnd)linkEndIterator.next();
-		    MLink link = le.getLink();
-		    if ((link.getConnections()).size() < 3)
-			link.remove();
-		    else
-			le.remove();
-		}
-        modelelement.remove();
-    }
-
-    /** Remove an instance of a UML Reception.
-     */
-    public void  removeReception(MReception modelelement) {
-        modelelement.remove();
-    }
-
-    /** Remove an instance of a UML ReturnAction.
-     */
-    public void  removeReturnAction(MReturnAction modelelement) {
-       modelelement.remove();
-    }
-
-    /** Remove an instance of a UML SendAction.
-     */
-    public void  removeSendAction(MSendAction modelelement) {
-        modelelement.remove();
-    }
-
-    /** Remove an instance of a UML Signal.
-     */
-    public void  removeSignal(MSignal modelelement) {
-        modelelement.remove();
-    }
-
-    /** Remove an instance of a UML Stimulus including the communication link
-     * if there is one.
-     */
-    public void  removeStimulus(MStimulus modelelement) {
-    	MLink link = modelelement.getCommunicationLink();
-    	if (link != null) {
-			removeLink(link);
-    	}
-        modelelement.remove();
-    }
-
-    /** Remove an instance of a UML TerminateAction.
-     */
-    public void  removeTerminateAction(MTerminateAction modelelement) {
-        modelelement.remove();
-    }
-
-    /** Remove an instance of a UML UninterpretedAction.
-     */
-    public void  removeUninterpretedAction(MUninterpretedAction modelelement) {
-        modelelement.remove();
     }
     
     /**

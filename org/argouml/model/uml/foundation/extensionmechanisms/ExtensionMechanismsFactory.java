@@ -33,24 +33,9 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 /**
  * Factory to create UML classes for the UML
  * Foundation::ExtensionMechanisms package.
- * 
- * This class contains all create, remove and build methods for ExtensionMechanism 
- * modelelements.
- * Create methods create an empty modelelement. It is registred with the 
- * eventpump however. Remove methods remove a modelelement including the listener.
- * Build methods create a modelelement but also instantiate the modelelement, 
- * for example with defaults.
- * 
- * Helper methods for ExtensionMechanism should not be placed here. Helper 
- * methods are methods like getReturnParameters. These should be placed in 
- * ExtensionMechanismHelper 
  *
  * @since ARGO0.11.2
  * @author Thierry Lach
- * @author jaap.branderhorst@xs4all.nl
- * 
- * @see org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper
- * @see org.argouml.model.uml.UmlFactory
  */
 
 public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
@@ -89,18 +74,6 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
         MTaggedValue modelElement = MFactory.getDefaultFactory().createTaggedValue();
 	super.initialize(modelElement);
 	return modelElement;
-    }
-    
-    /** Remove an instance of a UML Stereotype.
-     */
-    public void  removeStereotype(MStereotype modelelement) {
-    	modelelement.remove();
-    }
-    
-    /** Remove an instance of a UML TaggedValue
-     */
-    public void  removeTaggedValue(MTaggedValue  modelelement) {
-    	modelelement.remove();
     }
 
 }

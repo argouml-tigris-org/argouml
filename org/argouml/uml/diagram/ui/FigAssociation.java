@@ -155,12 +155,8 @@ public class FigAssociation extends FigEdgeModelElement {
   public void setOwner(Object own) {
     Object oldOwner = getOwner();
     super.setOwner(own);
-    if (oldOwner instanceof MAssociation) {
-	MAssociation oldAsc = (MAssociation)oldOwner;
-	for (int i = 0; i < oldAsc.getConnections().size(); i++)
-	    ((MAssociationEnd)((Object[]) oldAsc.getConnections().toArray())[i]).removeMElementListener(this);
-
-	oldAsc.removeMElementListener(this);
+    if (oldOwner instanceof MAssociation && !oldOwner.equals(own)) {
+		((MAssociation)oldOwner).remove();
     }
 
     if (own instanceof MAssociation) {
@@ -442,6 +438,20 @@ public class FigAssociation extends FigEdgeModelElement {
         destArrowHead.setLineColor(getLineColor());   
         super.paint(g);
      }
+
+	/**
+	 * @see java.awt.event.MouseListener#mousePressed(MouseEvent)
+	 */
+	public void mousePressed(MouseEvent e) {
+		super.mousePressed(e);
+	}
+
+	/**
+	 * @see org.tigris.gef.presentation.Fig#makeSelection()
+	 */
+	public Selection makeSelection() {
+		return super.makeSelection();
+	}
 
 } /* end class FigAssociation */
 
