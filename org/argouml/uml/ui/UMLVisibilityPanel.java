@@ -52,17 +52,33 @@ public class UMLVisibilityPanel extends JPanel {
 						      "getVisibility",
 						      "setVisibility",
 						      (Class)ModelFacade.VISIBILITYKIND,
-						      (Class)ModelFacade.PUBLIC_VISIBILITYKIND,
+						      ModelFacade.PUBLIC_VISIBILITYKIND,
 						      null));
 	publicButton.setSelected(true);
 	add(publicButton);
 	group.add(publicButton);
     
-	UMLRadioButton protectedButton = new UMLRadioButton("protected", container, new UMLEnumerationBooleanProperty("visibility", mclass, "getVisibility", "setVisibility", (Class)ModelFacade.VISIBILITYKIND, (Class)ModelFacade.PROTECTED_VISIBILITYKIND, null));
+	UMLRadioButton protectedButton =
+	    new UMLRadioButton("protected", container,
+		    new UMLEnumerationBooleanProperty("visibility",
+						      mclass,
+						      "getVisibility",
+						      "setVisibility",
+						      (Class)ModelFacade.VISIBILITYKIND,
+						      ModelFacade.PROTECTED_VISIBILITYKIND,
+						      null));
 	add(protectedButton);
 	group.add(protectedButton);
     
-	UMLRadioButton privateButton = new UMLRadioButton("private", container, new UMLEnumerationBooleanProperty("visibility", mclass, "getVisibility", "setVisibility", (Class)ModelFacade.VISIBILITYKIND, (Class)ModelFacade.PRIVATE_VISIBILITYKIND, null));
+	UMLRadioButton privateButton =
+	    new UMLRadioButton("private", container,
+		    new UMLEnumerationBooleanProperty("visibility",
+						      mclass,
+						      "getVisibility",
+						      "setVisibility",
+						      (Class)ModelFacade.VISIBILITYKIND,
+						      ModelFacade.PRIVATE_VISIBILITYKIND,
+						      null));
 	add(privateButton);
 	group.add(privateButton);
     
