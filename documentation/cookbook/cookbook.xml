@@ -1408,8 +1408,99 @@ The GUI Framework is a Layer 1 component. See <xref linkend="layer1"></xref>.
       <para>
 This is implemented directly on top of Swing and Java2.
 </para>
+      <para>
+The GUI has (currently) a menu and four panes. The panes are:
+<itemizedlist>
+	  <listitem>
+	    <para>Navigator pane</para>
+	    <para>Upper left.</para>
+	    <para>Contains a tree of the model.</para>
+	  </listitem>
+	  <listitem>
+	    <para>Multi editor pane</para>
+	    <para>Upper right.</para>
+	    <para>
+Contains the diagrams (could eventually be something else).
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>To do pane</para>
+	    <para>Lower left.</para>
+	    <para>To do items, different views.</para>
+	  </listitem>
+	  <listitem>
+	    <para>Details pane</para>
+	    <para>Lower right.</para>
+	    <para>
+Contains a wizard from a To do item, 
+a property panel of the current object,
+some other view of the current object.
+</para>
+	  </listitem>
+	</itemizedlist>
+</para>
 
-      <sect2 id="howdoi_detailspanel">
+      <sect2>
+	<title>Multi editor pane</title>
+	<para>
+The multieditorpane is the pane with the diagram editor in it.
+Normally it is placed in the upper right corner of the application.
+One of the feature requests is to make the pane dockable so maybe 
+it won't be there in the future.
+</para>
+	<para>
+The multieditorpane consists of tabs that hold editors as you can see
+in the classdiagram.
+        <mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/cookbook/multieditorpane.gif" 
+		       format="gif"/>
+	  </imageobject>
+        </mediaobject>
+</para>
+	<para>
+At the moment there is only one editor tab in place.
+This is the TabDiagram that shows an UMLDiagram, the target.
+</para>
+	<para>
+The TabDiagram is spawnable.
+This means that the user can double click the tab and the diagram will
+spawn as a separate window.
+</para>
+	<para>
+The target of the MultiEditorPane is set via the setTarget method 
+of the pane.
+This method is called by the setTarget method of the ProjectBrowser.
+The pane's setTarget method will call each setTarget method of each
+tab that is an instance of TabModelTarget.
+Besides setting the target of the tabs, the setTarget method also
+calls MultiEditorPane.select(Object o).
+This selects the new target on a tab. This probably belongs in 
+the setTarget method of the individual tabs and diagrams but 
+that's how it's implemented at the moment.
+</para>
+	<sect3>
+	  <title>How do I ...?</title>
+	  <para>
+<itemizedlist>
+	      <listitem>
+		<para>...add a new tab to the MultiEditorPane?</para>
+		<para>
+Create a new class that's a child of JPanel and put the following 
+line in argo.ini:
+<programlisting>
+multi:	<replaceable>fully classified name of new tab class</replaceable>
+</programlisting>
+</para>
+	      </listitem>
+	    </itemizedlist>
+</para>
+	</sect3>
+      </sect2>
+
+      <sect2>
+	<title>Details pane</title>
+      <sect3 id="howdoi_detailspanel">
 	<title>How do I ...?</title>
 	<para>
 	  <itemizedlist>
@@ -1438,6 +1529,7 @@ Remove the line for the tab from
 	    </listitem>
 	  </itemizedlist>
 </para>
+	</sect3>
       </sect2>
     </sect1>
 
