@@ -336,13 +336,15 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
             for (int c = 0; c < actualCols ; ++c) {
                 for (int r = 0; r < actualRows; ++r) {
                     int i = r * actualCols + c;
-                    if (parent.getComponent(i).getPreferredSize().getWidth() > colWidth[c]) {
-                        colWidth[c] = (int) parent.getComponent(i).getPreferredSize().getWidth();
-                        if (colWidth[c] > largestPreferredWidth) largestPreferredWidth = colWidth[c];
-                    }
-                    if (parent.getComponent(i).getPreferredSize().getHeight() > rowHeight[r]) {
-                        rowHeight[r] = (int) parent.getComponent(i).getPreferredSize().getHeight();
-                        if (rowHeight[r] > largestPreferredHeight) largestPreferredHeight = rowHeight[r];
+                    if (i < componentCount) {
+                        if (parent.getComponent(i).getPreferredSize().getWidth() > colWidth[c]) {
+                            colWidth[c] = (int) parent.getComponent(i).getPreferredSize().getWidth();
+                            if (colWidth[c] > largestPreferredWidth) largestPreferredWidth = colWidth[c];
+                        }
+                        if (parent.getComponent(i).getPreferredSize().getHeight() > rowHeight[r]) {
+                            rowHeight[r] = (int) parent.getComponent(i).getPreferredSize().getHeight();
+                            if (rowHeight[r] > largestPreferredHeight) largestPreferredHeight = rowHeight[r];
+                        }
                     }
                 }
             }
@@ -372,13 +374,15 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
             for (int c = 0; c < actualCols ; ++c) {
                 for (int r = 0; r < actualRows; ++r) {
                     int i = r * actualCols + c;
-                    if (parent.getComponent(i).getMinimumSize().getWidth() > colWidth[c]) {
-                        colWidth[c] = (int) parent.getComponent(i).getMinimumSize().getWidth();
-                        if (colWidth[c] > largestMinimumWidth) largestMinimumWidth = colWidth[c];
-                    }
-                    if (parent.getComponent(i).getMinimumSize().getHeight() > rowHeight[r]) {
-                        rowHeight[r] = (int) parent.getComponent(i).getMinimumSize().getHeight();
-                        if (rowHeight[r] > largestMinimumHeight) largestMinimumHeight = rowHeight[r];
+                    if (i < componentCount) {
+                        if (parent.getComponent(i).getMinimumSize().getWidth() > colWidth[c]) {
+                            colWidth[c] = (int) parent.getComponent(i).getMinimumSize().getWidth();
+                            if (colWidth[c] > largestMinimumWidth) largestMinimumWidth = colWidth[c];
+                        }
+                        if (parent.getComponent(i).getMinimumSize().getHeight() > rowHeight[r]) {
+                            rowHeight[r] = (int) parent.getComponent(i).getMinimumSize().getHeight();
+                            if (rowHeight[r] > largestMinimumHeight) largestMinimumHeight = rowHeight[r];
+                        }
                     }
                 }
             }
@@ -418,13 +422,15 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
                 for (int c = 0; c < ncols ; ++c) {
                     for (int r = 0; r < nrows; ++r) {
                         int i = r * ncols + c;
-                        if (parent.getComponent(i).getPreferredSize().getWidth() > colWidth[c]) {
-                            colWidth[c] = (int) parent.getComponent(i).getPreferredSize().getWidth();
-                            if (colWidth[c] > largestWidth) largestWidth = colWidth[c];
-                        }
-                        if (parent.getComponent(i).getPreferredSize().getHeight() > rowHeight[r]) {
-                            rowHeight[r] = (int) parent.getComponent(i).getPreferredSize().getHeight();
-                            if (rowHeight[r] > largestHeight) largestHeight = rowHeight[r];
+                        if (i < ncomponents) {
+                            if (parent.getComponent(i).getPreferredSize().getWidth() > colWidth[c]) {
+                                colWidth[c] = (int) parent.getComponent(i).getPreferredSize().getWidth();
+                                if (colWidth[c] > largestWidth) largestWidth = colWidth[c];
+                            }
+                            if (parent.getComponent(i).getPreferredSize().getHeight() > rowHeight[r]) {
+                                rowHeight[r] = (int) parent.getComponent(i).getPreferredSize().getHeight();
+                                if (rowHeight[r] > largestHeight) largestHeight = rowHeight[r];
+                            }
                         }
                     }
                 }
