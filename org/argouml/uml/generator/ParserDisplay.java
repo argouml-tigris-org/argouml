@@ -59,7 +59,6 @@ import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsF
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ProfileJava;
-import org.argouml.uml.generator.GeneratorDisplay.MsgPtr;
 import org.argouml.util.MyTokenizer;
 
 import ru.novosoft.uml.behavior.collaborations.MMessage;
