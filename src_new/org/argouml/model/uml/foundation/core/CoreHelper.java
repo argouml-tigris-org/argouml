@@ -724,6 +724,36 @@ public class CoreHelper {
 		}
 		return null;
 	}
+	
+	/**
+	 * Returns all classifiers found in the projectbrowser model
+	 * @return Collection
+	 */
+	public Collection getAllClassifiers() {
+		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		return getAllClassifiers(model);
+	}
+	
+	/**
+	 * Returns all classifiers found in this namespace and in its children
+	 * @return Collection
+	 */
+	public Collection getAllClassifiers(MNamespace ns) {
+		if (ns == null) return new ArrayList();
+		Iterator it = ns.getOwnedElements().iterator();
+		List list = new ArrayList();
+		while (it.hasNext()) {
+			Object o = it.next();
+			if (o instanceof MNamespace) {
+				list.addAll(getAllClasses((MNamespace)o));
+			} 
+			if (o instanceof MClassifier) {
+				list.add(o);
+			}
+			
+		}
+		return list;
+	}
 		
 		
 	

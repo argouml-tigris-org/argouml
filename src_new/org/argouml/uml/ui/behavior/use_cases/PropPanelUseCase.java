@@ -132,6 +132,10 @@ public class PropPanelUseCase extends PropPanelClassifier {
 		
 		add(LabelledLayout.getSeperator());
 		
+		JList connectList = new UMLList(new UMLUseCaseAssociationListModel(this,null,true),true);
+      	connectList.setForeground(Color.blue);
+      	connectList.setVisibleRowCount(3);
+      	connectScroll= new JScrollPane(connectList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		addField(Argo.localize("UMLMenu", "label.associations"), connectScroll);
     	addField(Argo.localize("UMLMenu", "label.operations"), opsScroll);
    	 	addField(Argo.localize("UMLMenu", "label.attributes"), attrScroll);	
