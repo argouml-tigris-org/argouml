@@ -90,6 +90,13 @@ public class ActionImportFromSources extends UMLAction {
                         //p = ArgoParser.SINGLETON.getProject();
                         Import.doFile(p, theFile);
                         p.postLoad();
+
+			// Check if any diagrams where modified and the project
+			// should be saved before exiting.
+			if(Import.needsSave()) {
+			    p.setNeedsSave(true);
+			}
+
                         pb.setProject(p);
                         pb.showStatus("Parsed " + filename);
                         return;
