@@ -90,42 +90,48 @@ public class SettingsTabEnvironment extends SettingsTabHelper
 
 	labelConstraints.gridy = 0;
 	fieldConstraints.gridy = 0;
-	top.add(createLabel("${argo.root}"), labelConstraints);
-        _argoRoot = createTextField();
+	top.add(createLabel("label.argo-root"), labelConstraints);
+  //top.add(createLabel("${argo.root}"), labelConstraints);
+      _argoRoot = createTextField();
 	_argoRoot.setEnabled(false);
 	top.add(_argoRoot, fieldConstraints);
 
 	labelConstraints.gridy = 1;
 	fieldConstraints.gridy = 1;
- 	top.add(createLabel("${argo.home}"), labelConstraints);
+ 	top.add(createLabel("label.argo-home"), labelConstraints);
+  //top.add(createLabel("${argo.home}"), labelConstraints);
         _argoHome = createTextField();
 	_argoHome.setEnabled(false);
 	top.add(_argoHome, fieldConstraints);
 
 	labelConstraints.gridy = 2;
 	fieldConstraints.gridy = 2;
- 	top.add(createLabel("${argo.ext.dir}"), labelConstraints);
+ 	top.add(createLabel("label.argo-ext-dir"), labelConstraints);
+  //top.add(createLabel("${argo.ext.dir}"), labelConstraints);
         _argoExtDir = createTextField();
 	_argoExtDir.setEnabled(false);
 	top.add(_argoExtDir, fieldConstraints);
 
 	labelConstraints.gridy = 3;
 	fieldConstraints.gridy = 3;
-  	top.add(createLabel("${java.home}"), labelConstraints);
+  	top.add(createLabel("label.java-home"), labelConstraints);
+    //top.add(createLabel("${java.home}"), labelConstraints);
         _javaHome = createTextField();
 	_javaHome.setEnabled(false);
 	top.add(_javaHome, fieldConstraints);
 
 	labelConstraints.gridy = 4;
 	fieldConstraints.gridy = 4;
-  	top.add(createLabel("${user.home}"), labelConstraints);
+  	top.add(createLabel("label.user-home"), labelConstraints);
+    //top.add(createLabel("${user.home}"), labelConstraints);
         _userHome = createTextField();
 	_userHome.setEnabled(false);
 	top.add(_userHome, fieldConstraints);
 
 	labelConstraints.gridy = 5;
 	fieldConstraints.gridy = 5;
-  	top.add(createLabel("${user.dir}"), labelConstraints);
+  	top.add(createLabel("label.user-dir"), labelConstraints);
+    //top.add(createLabel("${user.dir}"), labelConstraints);
         _userDir = createTextField();
 	_userDir.setEnabled(false);
 	top.add(_userDir, fieldConstraints);
