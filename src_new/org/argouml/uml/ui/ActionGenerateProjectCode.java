@@ -50,7 +50,7 @@ public class ActionGenerateProjectCode extends UMLAction {
     /**
      * The singleton.
      */
-    public static ActionGenerateProjectCode SINGLETON =
+    private static final ActionGenerateProjectCode SINGLETON =
 	new ActionGenerateProjectCode();
 
 
@@ -133,6 +133,14 @@ public class ActionGenerateProjectCode extends UMLAction {
 	    parent = ModelFacade.getNamespace(parent);
 	}
 	return false;
+    }
+
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionGenerateProjectCode getSingleton() {
+        return SINGLETON;
     }
 
 } /* end class ActionGenerateProjectCode */
