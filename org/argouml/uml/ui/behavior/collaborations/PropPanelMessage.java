@@ -45,8 +45,7 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
 /**
- * TODO: this property panel needs refactoring to remove dependency on
- *       old gui components, specifically namesToWatch mechanism.
+ * Properties panel for a Message.
  */
 public class PropPanelMessage extends PropPanelModelElement {
 
@@ -139,18 +138,5 @@ public class PropPanelMessage extends PropPanelModelElement {
             }
         }
     }
-
-    /**
-     * Set the target to the interaction of this message.
-     */
-    public void navigateInteraction() {
-    	Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAMessage(target)) {
-            TargetManager.getInstance()
-                .setTarget(ModelFacade.getInteraction(target));
-        }
-    }
-
-
 
 } /* end class PropPanelMessage */
