@@ -77,6 +77,7 @@ import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 import ru.novosoft.uml.foundation.data_types.MProcedureExpression;
+import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
@@ -178,8 +179,21 @@ public class ModelFacade {
     public static final Object OPERATION          = MOperation.class;
     
     public static final Object MODELELEMENT       = MModelElement.class;
-   
-    
+
+    public static final Object INITIAL_PSEUDOSTATEKIND = 
+        MPseudostateKind.INITIAL;
+    public static final Object DEEPHISTORY_PSEUDOSTATEKIND = 
+        MPseudostateKind.DEEP_HISTORY;
+    public static final Object SHALLOWHISTORY_PSEUDOSTATEKIND = 
+        MPseudostateKind.SHALLOW_HISTORY;
+    public static final Object FORK_PSEUDOSTATEKIND = 
+        MPseudostateKind.FORK;
+    public static final Object JOIN_PSEUDOSTATEKIND = 
+        MPseudostateKind.JOIN;
+    public static final Object BRANCH_PSEUDOSTATEKIND = 
+        MPseudostateKind.BRANCH;
+
+
     /** Constructor that forbids instantiation.
      */
     private ModelFacade() {
@@ -562,6 +576,19 @@ public class ModelFacade {
      */
     public static boolean isAPseudostate(Object handle) {
         return handle instanceof MPseudostate;
+    }
+
+    public static Object getPseudostateKind(Object handle) {
+        if (handle instanceof MPseudostate) {
+            return ((MPseudostate)handle).getKind();
+        }
+        throw new IllegalArgumentException("Unrecognized handle " + handle);
+    }
+
+    /** check whether two pseudostatekinds are equal/of the same type.
+     */
+    public static boolean equalsPseudostateKind(Object ps1, Object ps2) {
+        return ((MPseudostateKind)ps1).equals(ps2);
     }
 
     /** Recognizer for Reception
@@ -1209,6 +1236,18 @@ public class ModelFacade {
         }
 
         // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
+     * Gets the guard for some given transition.
+     * @param handle
+     * @return Object
+     */
+    public static Object getGuard(Object handle) {
+        if (isATransition(handle)) {
+            return ((MTransition)handle).getGuard();
+        }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
