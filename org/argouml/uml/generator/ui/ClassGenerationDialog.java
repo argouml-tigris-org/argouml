@@ -319,13 +319,15 @@ public class ClassGenerationDialog
                         if (isPathInModel) {
                             path = Generator2.getCodePath(node);
                             if (path == null) {
-                                Object parent = Model.getFacade().getNamespace(node);
+                                Object parent = 
+                                    Model.getFacade().getNamespace(node);
                                 while (parent != null) {
                                     path = Generator2.getCodePath(parent);
                                     if (path != null) {
                                         break;
                                     }
-                                    parent = Model.getFacade().getNamespace(parent);
+                                    parent = 
+                                        Model.getFacade().getNamespace(parent);
                                 }
                             }
                         }
@@ -338,8 +340,9 @@ public class ClassGenerationDialog
                             // save the selected language in the model
                             // TODO: no support of multiple checked
                             // languages
-                            Object taggedValue = Model.getFacade().getTaggedValue(
-                                node, "src_lang");
+                            Object taggedValue = 
+                                Model.getFacade().getTaggedValue(
+                                        node, "src_lang");
                             String savedLang = null;
                             if (taggedValue != null) {
                                 savedLang = Model.getFacade().getValueOfTag(
@@ -456,7 +459,8 @@ public class ClassGenerationDialog
                 return false;
             }
 
-            Object taggedValue = Model.getFacade().getTaggedValue(cls, "src_lang");
+            Object taggedValue = 
+                Model.getFacade().getTaggedValue(cls, "src_lang");
             if (taggedValue == null) {
                 return false;
             }

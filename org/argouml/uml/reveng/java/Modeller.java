@@ -446,7 +446,8 @@ public class Modeller {
 			    .getInterface(getClassifierName(interfaceName));
 		    Object mAbstraction =
 			getAbstraction(mInterface, mClass);
-		    if (Model.getFacade().getSuppliers(mAbstraction).size() == 0) {
+		    if (Model.getFacade().getSuppliers(mAbstraction).size() 
+		            == 0) {
 			Model.getCoreHelper().addSupplier(
 			        mAbstraction,
 			        mInterface);
@@ -753,7 +754,8 @@ public class Modeller {
 	            Model.getConcurrencyKind().getSequential());
 	}
 
-	for (Iterator i = Model.getFacade().getParameters(mOperation).iterator();
+	for (Iterator i = 
+	        Model.getFacade().getParameters(mOperation).iterator();
 	     i.hasNext();) {
 	    Model.getCoreHelper().removeParameter(mOperation, i.next());
 	}
@@ -887,7 +889,8 @@ public class Modeller {
 
         // Add this method as a feature to the classifier that owns
         // the operation.
-        Model.getCoreHelper().addFeature(Model.getFacade().getOwner(op), method);
+        Model.getCoreHelper().addFeature(Model.getFacade().getOwner(op), 
+                method);
     }
 
     /**
@@ -1028,8 +1031,8 @@ public class Modeller {
     private Object getGeneralization(Object mPackage,
                                      Object parent,
                                      Object child) {
-        String name =
-	    Model.getFacade().getName(child) + " -> " + Model.getFacade().getName(parent);
+        String name = Model.getFacade().getName(child) + " -> " 
+            + Model.getFacade().getName(parent);
         Object mGeneralization = null;
         mGeneralization = Model.getFacade().getGeneralization(child, parent);
         if (mGeneralization == null) {
@@ -1053,10 +1056,11 @@ public class Modeller {
      */
     private Object getAbstraction(Object parent,
                                   Object child) {
-        String name =
-	    Model.getFacade().getName(child) + " -> " + Model.getFacade().getName(parent);
+        String name = Model.getFacade().getName(child) + " -> " 
+            + Model.getFacade().getName(parent);
         Object mAbstraction = null;
-        for (Iterator i = Model.getFacade().getClientDependencies(child).iterator();
+        for (Iterator i = 
+                Model.getFacade().getClientDependencies(child).iterator();
 	     i.hasNext();) {
             mAbstraction = i.next();
             Collection c = Model.getFacade().getSuppliers(mAbstraction);
@@ -1125,7 +1129,8 @@ public class Modeller {
 	    Object owner = searchPackageInModel(getPackageName(name));
 	    return owner == null
 		? null
-		: Model.getFacade().lookupIn(owner, getRelativePackageName(name));
+		: Model.getFacade().lookupIn(owner, 
+		            getRelativePackageName(name));
 	}
     }
 
@@ -1164,7 +1169,7 @@ public class Modeller {
 //                // mOperation.getParameter(0));
 //                UmlModelEventPump.getPump()
 //		    .addModelEventListener(listener,
-//					   Model.getFacade().getParameter(mOperation,
+//				Model.getFacade().getParameter(mOperation,
 //								    0));
 //            }
         }

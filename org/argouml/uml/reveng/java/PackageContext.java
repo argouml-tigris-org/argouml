@@ -24,6 +24,7 @@
 
 package org.argouml.uml.reveng.java;
 
+import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.uml.reveng.ImportClassLoader;
 
@@ -76,7 +77,7 @@ class PackageContext extends Context {
 			Model.getCoreFactory()
 			    .buildInterface(name, mPackage);
 		    Model.getCoreHelper().setTaggedValue(mInterface,
-					       Model.getFacade().GENERATED_TAG,
+					       Facade.GENERATED_TAG,
 					       "yes");
 		}
 	    }
@@ -100,7 +101,7 @@ class PackageContext extends Context {
 			    Model.getCoreFactory()
 			        .buildInterface(name, mPackage);
 			Model.getCoreHelper().setTaggedValue(mInterface,
-						   Model.getFacade().GENERATED_TAG,
+						   Facade.GENERATED_TAG,
 						   "yes");
 		    }
                 }
@@ -159,7 +160,7 @@ class PackageContext extends Context {
 			    .buildClass(name, mPackage);
 		}
 		Model.getCoreHelper().setTaggedValue(mClassifier,
-					   Model.getFacade().GENERATED_TAG,
+					   Facade.GENERATED_TAG,
 					   "yes");
 	    }
 	    catch (ClassNotFoundException e) {
@@ -188,7 +189,7 @@ class PackageContext extends Context {
 			        .buildClass(name, mPackage);
 		    }
 		    Model.getCoreHelper().setTaggedValue(mClassifier,
-					       Model.getFacade().GENERATED_TAG,
+					       Facade.GENERATED_TAG,
 					       "yes");
                 }
                 catch (Exception e1) {
