@@ -445,9 +445,10 @@ public class ParserDisplay extends Parser {
 
             if (nspe == null || !(ModelFacade.isANamespace(nspe)))
                 throw new ParseException("Unable to resolve namespace", 0);
-            Object model = ProjectManager.getManager().getCurrentProject().getRoot();
-            if (!Model.getCoreHelper().getAllPossibleNamespaces(me, model).contains(
-                    nspe))
+            Object model = ProjectManager.getManager().getCurrentProject()
+                .getRoot();
+            if (!Model.getCoreHelper().getAllPossibleNamespaces(me, model)
+                        .contains(nspe))
                 throw new ParseException("Invalid namespace for element", 0);
 
             ModelFacade.addOwnedElement(nspe, me);
@@ -518,11 +519,15 @@ public class ParserDisplay extends Parser {
             s = text.substring(start, end).trim();
             if (s != null && s.length() > 0) {
                 // yes, there are more:
-                Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(cls);
-                Object model = ProjectManager.getManager().getCurrentProject().getModel();
-                Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
+                Collection propertyChangeListeners = ProjectManager
+                    .getManager().getCurrentProject().findFigsForMember(cls);
+                Object model = ProjectManager.getManager().getCurrentProject()
+                    .getModel();
+                Object voidType = ProjectManager.getManager()
+                    .getCurrentProject().findType("void");
                 Object newOp = Model.getUmlFactory().getCore()
-                        .buildOperation(cls, model, voidType, propertyChangeListeners);
+                    .buildOperation(cls, model, voidType, 
+                            propertyChangeListeners);
                 if (newOp != null) {
                     try {
                         parseOperation(s, newOp);
@@ -586,8 +591,10 @@ public class ParserDisplay extends Parser {
             s = text.substring(start, end).trim();
             if (s != null && s.length() > 0) {
                 // yes, there are more:
-                Object model = ProjectManager.getManager().getCurrentProject().getModel();
-                Object intType = ProjectManager.getManager().getCurrentProject().findType("int");
+                Object model = ProjectManager.getManager().getCurrentProject()
+                    .getModel();
+                Object intType = ProjectManager.getManager().getCurrentProject()
+                    .findType("int");
                 Object newAt = Model.getUmlFactory().getCore()
                         .buildAttribute(model, intType);
                 if (newAt != null) {
@@ -1061,10 +1068,14 @@ public class ParserDisplay extends Parser {
             }
 
             if (p == null) {
-                Object model = ProjectManager.getManager().getCurrentProject().getModel();
-                Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
-                Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(op);
-                p = Model.getCoreFactory().buildParameter(op, model, voidType, propertyChangeListeners);
+                Object model = ProjectManager.getManager().getCurrentProject()
+                    .getModel();
+                Object voidType = ProjectManager.getManager()
+                    .getCurrentProject().findType("void");
+                Collection propertyChangeListeners = ProjectManager.getManager()
+                    .getCurrentProject().findFigsForMember(op);
+                p = Model.getCoreFactory().buildParameter(op, model, voidType, 
+                        propertyChangeListeners);
                 // op.addParameter(p);
             }
 
@@ -1113,10 +1124,14 @@ public class ParserDisplay extends Parser {
                 ProjectManager.getManager().getCurrentProject().moveToTrash(p);
         }
         if (param == null) {
-            Object model = ProjectManager.getManager().getCurrentProject().getModel();
-            Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
-            Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(op);
-            param = Model.getUmlFactory().getCore().buildParameter(op, model, voidType, propertyChangeListeners);
+            Object model = ProjectManager.getManager()
+                .getCurrentProject().getModel();
+            Object voidType = ProjectManager.getManager()
+                .getCurrentProject().findType("void");
+            Collection propertyChangeListeners = ProjectManager.getManager()
+                .getCurrentProject().findFigsForMember(op);
+            param = Model.getUmlFactory().getCore()
+                .buildParameter(op, model, voidType, propertyChangeListeners);
         }
         ModelFacade.setType(param, type);
     }
@@ -3332,10 +3347,14 @@ public class ParserDisplay extends Parser {
             // parameters and operations to the figs that represent
             // them
             Object cls = /* (MClassifier) */it.next();
-            Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(cls);
-            Object model = ProjectManager.getManager().getCurrentProject().getModel();
-            Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
-            Object op = Model.getUmlFactory().getCore().buildOperation(cls, model, voidType, propertyChangeListeners);
+            Collection propertyChangeListeners = ProjectManager.getManager()
+                .getCurrentProject().findFigsForMember(cls);
+            Object model = ProjectManager.getManager()
+                .getCurrentProject().getModel();
+            Object voidType = ProjectManager.getManager()
+                .getCurrentProject().findType("void");
+            Object op = Model.getUmlFactory().getCore()
+                .buildOperation(cls, model, voidType, propertyChangeListeners);
 
             try {
                 parseOperation(expr, op);

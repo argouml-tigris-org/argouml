@@ -139,6 +139,10 @@ public class XmlInputStream extends BufferedInputStream {
     /**
      * Reopen a stream that has already reached the end
      * of an XML fragment.
+     *
+     * @param theTag the tag name
+     * @param attribs the attributes 
+     * @param child child only
      */
     public void reopen(
                 String theTag,
@@ -156,6 +160,8 @@ public class XmlInputStream extends BufferedInputStream {
     /**
      * Reopen a stream that has already reached the end
      * of an XML fragment.
+     *
+     * @param theTag the tag name
      */
     public void reopen(String theTag) {
         endStream = false;

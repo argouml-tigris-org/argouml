@@ -59,10 +59,14 @@ public class ActionNewParameter extends AbstractActionNewModelElement {
         super.actionPerformed(e);
         //Object target =  getTarget(); // it is not set anywhere, pity...
         Object target =  TargetManager.getInstance().getModelTarget();
-        Object model = ProjectManager.getManager().getCurrentProject().getModel();
-        Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
-        Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(target);
-        Object param = Model.getCoreFactory().buildParameter(target, model, voidType, propertyChangeListeners);
+        Object model = ProjectManager.getManager()
+            .getCurrentProject().getModel();
+        Object voidType = ProjectManager.getManager()
+            .getCurrentProject().findType("void");
+        Collection propertyChangeListeners = ProjectManager.getManager()
+            .getCurrentProject().findFigsForMember(target);
+        Object param = Model.getCoreFactory().buildParameter(target, model,
+                voidType, propertyChangeListeners);
         TargetManager.getInstance().setTarget(param);
     }
 

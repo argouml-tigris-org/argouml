@@ -30,6 +30,7 @@ import java.util.Collection;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
@@ -59,15 +60,16 @@ public class ActionNewStereotype extends AbstractActionNewModelElement {
     public void actionPerformed(ActionEvent e) {
         Object t = TargetManager.getInstance().getTarget();
         if (t instanceof Fig) t = ((Fig) t).getOwner();
-        Object model = ProjectManager.getManager().getCurrentProject().getModel();
-        Collection models = ProjectManager.getManager().getCurrentProject().getModels();
+        Project p = ProjectManager.getManager().getCurrentProject();
+        Object model = p.getModel();
+        Collection models = p.getModels();
         Object newStereo = Model.getExtensionMechanismsFactory()
             .buildStereotype(
                     ModelFacade.isAModelElement(t) ? t : null,
                     (String) null,
                     model,
                     models
-                    );
+            );
         if (ModelFacade.isAModelElement(t)) { 
             Object ns = ModelFacade.getNamespace(t);
             if (ModelFacade.isANamespace(ns)) 

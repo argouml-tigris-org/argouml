@@ -127,11 +127,15 @@ public class PropPanelDataType extends PropPanelClassifier {
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
             if (org.argouml.model.ModelFacade.isAClassifier(target)) {
-                Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(target);
-                Object model = ProjectManager.getManager().getCurrentProject().getModel();
-                Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
-                Object newOper = 
-                    Model.getUmlFactory().getCore().buildOperation(target, model, voidType, propertyChangeListeners);
+                Collection propertyChangeListeners = ProjectManager.getManager()
+                    .getCurrentProject().findFigsForMember(target);
+                Object model = ProjectManager.getManager()
+                    .getCurrentProject().getModel();
+                Object voidType = ProjectManager.getManager()
+                    .getCurrentProject().findType("void");
+                Object newOper = Model.getUmlFactory().getCore()
+                    .buildOperation(target, model, voidType, 
+                            propertyChangeListeners);
                 // due to Well Defined rule [2.5.3.12/1]
                 ModelFacade.setQuery(newOper, true);
                 TargetManager.getInstance().setTarget(newOper);
@@ -200,11 +204,14 @@ public class PropPanelDataType extends PropPanelClassifier {
                     }
                 }
                 
-                Collection propertyChangeListeners = 
-                    ProjectManager.getManager().getCurrentProject().findFigsForMember(target);
-                Object intType = ProjectManager.getManager().getCurrentProject().findType("int");
-                Object model = ProjectManager.getManager().getCurrentProject().getModel();
-                Object attr = Model.getCoreFactory().buildAttribute(target, model, intType, propertyChangeListeners);
+                Collection propertyChangeListeners = ProjectManager.getManager()
+                    .getCurrentProject().findFigsForMember(target);
+                Object intType = ProjectManager.getManager()
+                    .getCurrentProject().findType("int");
+                Object model = ProjectManager.getManager()
+                    .getCurrentProject().getModel();
+                Object attr = Model.getCoreFactory().buildAttribute(target, 
+                            model, intType, propertyChangeListeners);
                 ModelFacade.setChangeable(attr, false);
                 TargetManager.getInstance().setTarget(attr);
                 super.actionPerformed(e);

@@ -348,11 +348,10 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         } else
             if (edgeClass == CommentEdge.class) {
                 try {
-                    Object connection = Model.getUmlFactory()
-                        .buildConnection(
-                                edgeClass, fromPort, null, 
-                                toPort, null, null,
-                                ProjectManager.getManager().getCurrentProject().getModel());
+                    Object connection = Model.getUmlFactory().buildConnection(
+                        edgeClass, fromPort, null, toPort, null, null,
+                        ProjectManager.getManager().getCurrentProject()
+                            .getModel());
                     addEdge(connection);
                     return connection;
                 }

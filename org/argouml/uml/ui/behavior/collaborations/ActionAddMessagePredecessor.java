@@ -25,12 +25,11 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
+import java.util.Vector;
+
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import java.util.Vector;
-
-import org.argouml.model.uml.CollaborationsHelperImpl;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 
 /**

@@ -125,7 +125,8 @@ public class WizOperName extends WizMEName {
 
         case 1:
             if (step1 == null) {
-                step1 = new WizStepChoice(this, getInstructions(), getOptions());
+                step1 = new WizStepChoice(this, getInstructions(), 
+                        getOptions());
                 step1.setTarget(getToDoItem());
             }
             return step1;
@@ -213,8 +214,8 @@ public class WizOperName extends WizMEName {
                 // put it there.
                 Object m = ModelFacade.getModel(oper);
                 Object theStereotype = null;
-                for (Iterator iter = ModelFacade.getOwnedElements(m).iterator(); iter
-                        .hasNext();) {
+                for (Iterator iter = ModelFacade.getOwnedElements(m).iterator();
+                                        iter.hasNext();) {
                     Object candidate = iter.next();
                     if (!(ModelFacade.isAStereotype(candidate))) {
                         continue;

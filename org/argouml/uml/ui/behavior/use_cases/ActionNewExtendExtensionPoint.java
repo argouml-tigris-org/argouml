@@ -28,8 +28,6 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-
-import org.argouml.model.uml.UseCasesFactoryImpl;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
