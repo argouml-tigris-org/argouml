@@ -36,15 +36,15 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
  * @author jaap.branderhorst@xs4all.nl
  * @stereotype singleton
  */
-public class ActionNewAction extends AbstractActionNewModelElement {
+public class ActionNewActionForMessage extends AbstractActionNewModelElement {
 
-    private static final ActionNewAction SINGLETON = new ActionNewAction();
+    private static final ActionNewActionForMessage SINGLETON = 
+        new ActionNewActionForMessage();
     
     /**
      * The constructor.
-     * 
      */
-    protected ActionNewAction() {
+    public ActionNewActionForMessage() {
         super();
     }    
 
@@ -71,7 +71,7 @@ public class ActionNewAction extends AbstractActionNewModelElement {
     /**
      * @return Returns the SINGLETON.
      */
-    public static ActionNewAction getInstance() {
+    public static ActionNewActionForMessage getInstance() {
         return SINGLETON;
     }
 
