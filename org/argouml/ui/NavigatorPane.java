@@ -60,6 +60,7 @@ import org.argouml.uml.diagram.ui.ActionAddExistingEdge;
 import org.argouml.uml.diagram.ui.ActionAddExistingNode;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.ActionSetSourcePath;
+import org.argouml.uml.ui.ActionAddPackage;
 import org.argouml.uml.ui.UMLAction;
 
 import org.tigris.gef.base.Diagram;
@@ -76,6 +77,7 @@ import ru.novosoft.uml.foundation.core.MFlow;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MRelationship;
 import ru.novosoft.uml.model_management.MPackage;
+import ru.novosoft.uml.model_management.MModel;
 
 /** The upper-left pane of the main Argo/UML window.  This shows the
  * contents of the current project in one of several ways that are
@@ -461,6 +463,9 @@ public class NavigatorPane
                 }
                 if (obj instanceof MClassifier || obj instanceof MPackage) {
                     popup.add(ActionSetSourcePath.SINGLETON);
+                }
+                if (obj instanceof MPackage || obj instanceof MModel){
+                    popup.add(ActionAddPackage.SINGLETON);
                 }
                 popup.add(new ActionGoToDetails(menuLocalize("Properties")));
             }
