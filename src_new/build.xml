@@ -149,7 +149,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <property name="debug" value="off"/>
     <property name="optimize" value="on"/>
-    <property name="deprecation" value="on"/>
+    <property name="deprecation" value="off"/>
 
     <property name="src.dir" value="../src_new"/>
     <property name="lib.dir" value="../lib"/>
@@ -324,6 +324,12 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
           classpath="${build.dest};${classpath};${ant.xml-libs}"/>
   </target>
 
+  <target name="test">
+    <echo message="Datum: ${system.date}"/>
+  </target>
+
 </project>
+
+
 
 <!-- End of file -->

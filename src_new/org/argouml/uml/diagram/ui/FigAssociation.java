@@ -174,26 +174,21 @@ public class FigAssociation extends FigEdgeModelElement {
 			 ArrowHeadGreater.TheInstance);
 
   protected ArrowHead chooseArrowHead(MAggregationKind ak, boolean nav) {
-    if (nav) {
-//       if (MAggregationKind.UNSPEC.equals(ak))
-// 	return ArrowHeadGreater.TheInstance;
-      if (MAggregationKind.NONE.equals(ak))
-	return ArrowHeadGreater.TheInstance;
+      if (nav) {
+	  if (MAggregationKind.NONE.equals(ak) || (ak == null))
+	      return ArrowHeadGreater.TheInstance;
+	  else if (MAggregationKind.AGGREGATE.equals(ak))
+	      return _NAV_AGGREGATE;
+	  else if (MAggregationKind.COMPOSITE.equals(ak))
+	      return _NAV_COMP;
+      }
+      if (MAggregationKind.NONE.equals(ak) || (ak == null))
+	  return ArrowHeadNone.TheInstance;
       else if (MAggregationKind.AGGREGATE.equals(ak))
-	return _NAV_AGGREGATE;
+	  return ArrowHeadDiamond.WhiteDiamond;
       else if (MAggregationKind.COMPOSITE.equals(ak))
-	return _NAV_COMP;
-    }
-//     if (MAggregationKind.UNSPEC.equals(ak))
-//       return ArrowHeadNone.TheInstance;
-    if (MAggregationKind.NONE.equals(ak))
+	  return ArrowHeadDiamond.BlackDiamond;
       return ArrowHeadNone.TheInstance;
-    else if (MAggregationKind.AGGREGATE.equals(ak))
-      return ArrowHeadDiamond.WhiteDiamond;
-    else if (MAggregationKind.COMPOSITE.equals(ak))
-      return ArrowHeadDiamond.BlackDiamond;
-    // System.out.println("unknown case in drawing assoc arrowhead");
-    return ArrowHeadNone.TheInstance;
   }
 
   public Vector getPopUpActions(MouseEvent me) {
