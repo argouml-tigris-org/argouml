@@ -30,7 +30,8 @@ own chapters.
     <para><xref linkend="fig.ref.gui_overview"/> shows the main &argouml;
       window.</para>
 
-    <!-- A big diagram with all the bits pointed out. At the moment its just a
+    <!-- A big diagram with all the bits pointed out.--> 
+<!--    TODO: At the moment its just a
          plane screenshot, but it would be nice to float in some bubbles
          pointing out things. -->
 
