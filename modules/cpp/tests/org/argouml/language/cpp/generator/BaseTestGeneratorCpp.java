@@ -24,8 +24,11 @@
 
 package org.argouml.language.cpp.generator;
 
+import java.util.Collection;
+
 import junit.framework.TestCase;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.CoreFactory;
 import org.argouml.model.uml.UmlFactory;
 
@@ -64,7 +67,16 @@ class BaseTestGeneratorCpp extends TestCase {
         setGenerator(GeneratorCpp.getInstance());
         setFactory(UmlFactory.getFactory().getCore());
         setAClass(getFactory().buildClass("AClass"));
-        setFooMethod(getFactory().buildOperation(getAClass(), "foo"));
+        
+        Object me = getAClass();
+        Collection propertyChangeListeners = ProjectManager.getManager()
+            .getCurrentProject().findFigsForMember(me);
+        Object model = ProjectManager.getManager().getCurrentProject()
+            .getModel();
+        Object voidType = ProjectManager.getManager().getCurrentProject()
+            .findType("void");
+        setFooMethod(UmlFactory.getFactory().getCore().buildOperation(me, 
+                model, voidType, "foo", propertyChangeListeners));
     }
 
     /**
