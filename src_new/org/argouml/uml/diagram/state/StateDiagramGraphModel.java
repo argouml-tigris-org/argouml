@@ -304,5 +304,44 @@ implements VetoableChangeListener {
 
   static final long serialVersionUID = -8056507319026044174L;
 
+  /**
+   * @param newNode this is the new node that one of the ends is dragged to.
+   * @param oldNode this is the existing node that is already connected.
+   * @param edge this is the edge that is being dragged/rerouted
+   * @return true if a transition is being rerouted between two states.
+   */
+  public boolean canChangeConnectedNode(Object newNode, Object oldNode, Object edge) {
+           
+    // prevent no changes... 
+    if ( newNode == oldNode)
+    return false;
+            
+    // check parameter types:
+    if ( !(newNode instanceof MState ||
+         oldNode instanceof MState ||
+         edge instanceof MTransition ) )
+         return false;
+            
+    return true;
+  }
+
+  /**
+   * Reroutes the connection to the old node to be connected to
+   * the new node.
+   *
+   * @param newNode this is the new node that one of the ends is dragged to.
+   * @param oldNode this is the existing node that is already connected.
+   * @param edge this is the edge that is being dragged/rerouted
+   * @param isSource tells us which end is being rerouted.
+   */
+  public void changeConnectedNode(Object newNode, Object oldNode, Object edge, boolean isSource) {
+      
+      if(isSource)
+        ((MTransition)edge).setSource((MState)newNode);
+      else
+          ((MTransition)edge).setTarget((MState)newNode);
+          
+  }
+  
 } /* end class StateDiagramGraphModel */
 
