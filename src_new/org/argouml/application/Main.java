@@ -167,15 +167,23 @@ public class Main {
 	ResourceLoader.addResourceLocation("/org/argouml/Images");
 	ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
 	Localizer.initialize();
-	Localizer.addResource("GefBase","org.tigris.gef.base.BaseResourceBundle");
-	Localizer.addResource("GefPres","org.tigris.gef.presentation.PresentationResourceBundle");
-	Localizer.addResource("CoreMenu","org.argouml.ui.MenuResourceBundle");
-	Localizer.addResource("CoreSettings","org.argouml.ui.SettingsResourceBundle");
-	Localizer.addResource("DiagramType","org.argouml.ui.DiagramResourceBundle");
-	Localizer.addResource("UMLMenu","org.argouml.uml.ui.UMLResourceBundle");
-	Localizer.addResource("Cognitive","org.argouml.uml.cognitive.UMLCognitiveResourceBundle");
-	Localizer.addResource("Tree","org.argouml.ui.TreeResourceBundle");
-  Localizer.addResource ("Actions","org.argouml.ui.ActionResourceBundle");
+	Localizer.addResource("GefBase",
+			      "org.tigris.gef.base.BaseResourceBundle");
+	Localizer.addResource("GefPres",
+			      "org.tigris.gef.presentation.PresentationResourceBundle");
+	Localizer.addResource("CoreMenu",
+			      "org.argouml.i18n.MenuResourceBundle");
+	Localizer.addResource("CoreSettings",
+			      "org.argouml.i18n.SettingsResourceBundle");
+	Localizer.addResource("DiagramType",
+			      "org.argouml.i18n.DiagramResourceBundle");
+	Localizer.addResource("UMLMenu",
+			      "org.argouml.i18n.UMLResourceBundle");
+	Localizer.addResource("Cognitive",
+			      "org.argouml.i18n.UMLCognitiveResourceBundle");
+	Localizer.addResource("Tree", "org.argouml.i18n.TreeResourceBundle");
+	Localizer.addResource("Actions",
+			      "org.argouml.i18n.ActionResourceBundle");
 
     start = System.currentTimeMillis();
     SplashScreen splash = new SplashScreen("Loading ArgoUML...", "Splash");
