@@ -29,11 +29,11 @@ import java.util.Enumeration;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
 import org.argouml.uml.GenCompositeClasses;
 import org.argouml.uml.cognitive.UMLToDoItem;
-import org.tigris.gef.util.VectorSet;
 
 /**
  * @author jrobbins@ics.uci.edu
@@ -59,8 +59,8 @@ public class CrCircularComposition extends CrUML {
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAClassifier(dm))) return NO_PROBLEM;
-	VectorSet reach =
-	    (new VectorSet(dm)).reachable(GenCompositeClasses.getSINGLETON());
+	ListSet reach =
+	    (new ListSet(dm)).reachable(GenCompositeClasses.getSINGLETON());
 	if (reach.contains(dm)) return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }
@@ -71,7 +71,7 @@ public class CrCircularComposition extends CrUML {
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 
-        VectorSet offs = computeOffenders(dm);
+        ListSet offs = computeOffenders(dm);
 	return new UMLToDoItem(this, offs, dsgr);
     }
 
@@ -79,13 +79,13 @@ public class CrCircularComposition extends CrUML {
      * @param dm is the UML entity (an NSUML object) that is being checked
      * @return the list of offenders
      */
-    protected VectorSet computeOffenders(Object dm) {
-	VectorSet offs = new VectorSet(dm);
-	VectorSet above = offs.reachable(GenCompositeClasses.getSINGLETON());
+    protected ListSet computeOffenders(Object dm) {
+	ListSet offs = new ListSet(dm);
+	ListSet above = offs.reachable(GenCompositeClasses.getSINGLETON());
 	Enumeration elems = above.elements();
 	while (elems.hasMoreElements()) {
 	    Object cls2 = elems.nextElement();
-	    VectorSet trans = (new VectorSet(cls2))
+	    ListSet trans = (new ListSet(cls2))
 	        .reachable(GenCompositeClasses.getSINGLETON());
 	    if (trans.contains(dm)) offs.addElement(cls2);
 	}
@@ -98,10 +98,10 @@ public class CrCircularComposition extends CrUML {
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
-	VectorSet offs = i.getOffenders();
+	ListSet offs = i.getOffenders();
 	Object dm =  offs.firstElement();
 	if (!predicate(dm, dsgr)) return false;
-	VectorSet newOffs = computeOffenders(dm);
+	ListSet newOffs = computeOffenders(dm);
 	boolean res = offs.equals(newOffs);
 	LOG.debug("offs=" + offs.toString()
 		  + " newOffs=" + newOffs.toString()

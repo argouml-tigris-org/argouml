@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
@@ -153,37 +154,27 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
 
     /**
      * The connect method without specifying a connection
-     * type is unavailable by default.
+     * type is unavailable in the ArgoUML implmentation.
      *
      * @see org.tigris.gef.graph.MutableGraphModel#connect(
      *         java.lang.Object, java.lang.Object)
      */
     public Object connect(Object fromPort, Object toPort) {
-        throw new UnsupportedOperationException("The connect method is "
-						+ "not supported");
+        throw new UnsupportedOperationException(
+                "The connect method is not supported");
     }
 
     /**
      * @return the namespace of the diagram
      */
     public abstract Object getNamespace();
-
+    
     /**
-     * Construct and add a new edge of the given kind and connect
-     * the given ports.
-     *
-     * @param fromPort   The originating port to connect
-     *
-     * @param toPort     The destination port to connect
-     *
-     * @param edgeClass  The NSUML type of edge to create.
-     *
-     * @return           The type of edge created (the same as
-     *                   <code>edgeClass</code> if we succeeded,
-     *                   <code>null</code> otherwise)
+     * The connect method specifying a connection
+     * type by class is unavailable in the ArgoUML implmentation.
+     * TODO: This should be unsupported. Use the 3 Object version
      */
-    public Object connect(Object fromPort, Object toPort,
-			  java.lang.Class edgeClass) {
+    public Object connect(Object fromPort, Object toPort, Class edgeClass) {
         // If this was an association then there will be relevant
         // information to fetch out of the mode arguments.  If it
         // not an association then these will be passed forward
@@ -207,16 +198,90 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
 
         if (connection == null) {
             LOG.debug("Cannot make a " + edgeClass.getName()
-		      + " between a " + fromPort.getClass().getName()
-		      + " and a " + toPort.getClass().getName());
+              + " between a " + fromPort.getClass().getName()
+              + " and a " + toPort.getClass().getName());
             return null;
         }
 
         addEdge(connection);
         LOG.debug("Connection type" + edgeClass.getName()
-		  + " made between a " + fromPort.getClass().getName()
-		  + " and a " + toPort.getClass().getName());
+          + " made between a " + fromPort.getClass().getName()
+          + " and a " + toPort.getClass().getName());
         return connection;
+    }
+    
+    /**
+     * Construct and add a new edge of the given kind and connect
+     * the given ports.
+     *
+     * @param fromPort   The originating port to connect
+     *
+     * @param toPort     The destination port to connect
+     *
+     * @param edgeType  The type of edge to create. This is one of the types
+     *                  returned by the methods of
+     *                  <code>org.argouml.model.MetaTypes</code>
+     *
+     * @return           The type of edge created (the same as
+     *                   <code>edgeClass</code> if we succeeded,
+     *                   <code>null</code> otherwise)
+     */
+    public Object connect(Object fromPort, Object toPort, Object edgeType) {
+        Class edgeClass = (Class)edgeType;
+        // If this was an association then there will be relevant
+        // information to fetch out of the mode arguments.  If it
+        // not an association then these will be passed forward
+        // harmlessly as null.
+        Editor curEditor = Globals.curEditor();
+        ModeManager modeManager = curEditor.getModeManager();
+        Mode mode = modeManager.top();
+        Dictionary args = mode.getArgs();
+        Object style = args.get("aggregation"); //MAggregationKind
+        Boolean unidirectional = (Boolean) args.get("unidirectional");
+        Object model =
+            ProjectManager.getManager().getCurrentProject().getModel();
+
+        // Create the UML connection of the given type between the
+        // given model elements.
+        // default aggregation (none)
+        Object connection = buildConnection(
+                edgeClass, fromPort, style, toPort,
+                null, unidirectional,
+                model);
+
+        if (connection == null) {
+            LOG.debug("Cannot make a " + edgeClass.getName()
+              + " between a " + fromPort.getClass().getName()
+              + " and a " + toPort.getClass().getName());
+            return null;
+        }
+
+        addEdge(connection);
+        LOG.debug("Connection type" + edgeClass.getName()
+          + " made between a " + fromPort.getClass().getName()
+          + " and a " + toPort.getClass().getName());
+        return connection;
+    }
+
+    /**
+     * Construct and add a new edge of the given kind and connect
+     * the given ports.
+     *
+     * @param fromPort   The originating port to connect
+     *
+     * @param toPort     The destination port to connect
+     *
+     * @param edgeType   An indicator of the edge type to create.
+     *
+     * @param styleAttributes key/value pairs from which to style the edge.
+     *
+     * @return           The type of edge created (the same as
+     *                   <code>edgeClass</code> if we succeeded,
+     *                   <code>null</code> otherwise)
+     */
+    public Object connect(Object fromPort, Object toPort, Object edgeType, 
+            Map styleAttributes) {
+        return null;
     }
 
 

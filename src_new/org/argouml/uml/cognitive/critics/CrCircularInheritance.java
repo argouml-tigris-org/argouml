@@ -29,11 +29,11 @@ import java.util.Enumeration;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
 import org.argouml.uml.SuperclassGen;
 import org.argouml.uml.cognitive.UMLToDoItem;
-import org.tigris.gef.util.VectorSet;
 
 /**
  * Well-formedness rule [2] for MGeneralizableElement. See page 31 of UML 1.1
@@ -82,7 +82,7 @@ public class CrCircularInheritance extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
-	VectorSet offs = computeOffenders(dm);
+	ListSet offs = computeOffenders(dm);
 	return new UMLToDoItem(this, offs, dsgr);
     }
 
@@ -90,14 +90,14 @@ public class CrCircularInheritance extends CrUML {
      * @param dm the object
      * @return the set of offenders
      */
-    protected VectorSet computeOffenders(Object dm) {
-	VectorSet offs = new VectorSet(dm);
-	VectorSet above = offs.reachable(new SuperclassGen());
+    protected ListSet computeOffenders(Object dm) {
+	ListSet offs = new ListSet(dm);
+	ListSet above = offs.reachable(new SuperclassGen());
 	Enumeration elems = above.elements();
 	while (elems.hasMoreElements()) {
 	    Object ge2 = elems.nextElement();
-	    VectorSet trans =
-		(new VectorSet(ge2)).reachable(new SuperclassGen());
+	    ListSet trans =
+		(new ListSet(ge2)).reachable(new SuperclassGen());
 	    if (trans.contains(dm)) {
 	        offs.addElement(ge2);
 	    }
@@ -113,12 +113,12 @@ public class CrCircularInheritance extends CrUML {
 	if (!isActive()) {
 	    return false;
 	}
-	VectorSet offs = i.getOffenders();
+	ListSet offs = i.getOffenders();
 	Object dm =  offs.firstElement();
 	if (!predicate(dm, dsgr)) {
 	    return false;
 	}
-	VectorSet newOffs = computeOffenders(dm);
+	ListSet newOffs = computeOffenders(dm);
 	boolean res = offs.equals(newOffs);
 	LOG.debug("offs=" + offs.toString()
 		  + " newOffs=" + newOffs.toString()

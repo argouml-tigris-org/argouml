@@ -35,7 +35,7 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
 import org.argouml.cognitive.ToDoListEvent;
 import org.argouml.cognitive.ToDoListListener;
-import org.tigris.gef.util.VectorSet;
+import org.argouml.cognitive.ListSet;
 
 /**
  * Represents a perspective for ToDo items: grouping by poster type.
@@ -68,7 +68,7 @@ public class ToDoByPoster extends ToDoPerspective
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-	VectorSet posters = Designer.theDesigner().getToDoList().getPosters();
+	ListSet posters = Designer.theDesigner().getToDoList().getPosters();
 	Enumeration elems = posters.elements();
 	while (elems.hasMoreElements()) {
 	    Poster p = (Poster) elems.nextElement();
@@ -106,7 +106,7 @@ public class ToDoByPoster extends ToDoPerspective
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-	VectorSet posters = Designer.theDesigner().getToDoList().getPosters();
+	ListSet posters = Designer.theDesigner().getToDoList().getPosters();
 	Enumeration elems = posters.elements();
 	while (elems.hasMoreElements()) {
 	    Poster p = (Poster) elems.nextElement();

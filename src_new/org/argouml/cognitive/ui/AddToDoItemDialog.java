@@ -40,11 +40,11 @@ import javax.swing.ListCellRenderer;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
+import org.argouml.cognitive.ListSet;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.cognitive.UMLToDoItem;
-import org.tigris.gef.util.VectorSet;
 import org.tigris.swidgets.LabelledLayout;
 
 /**
@@ -177,7 +177,7 @@ public class AddToDoItemDialog extends ArgoDialog {
         String moreInfoURL = moreinfoTextField.getText();
         ToDoItem item =
 	    new UMLToDoItem(designer, headline, priority, desc, moreInfoURL);
-        VectorSet newOffenders = new VectorSet();
+        ListSet newOffenders = new ListSet();
         for (int i = 0; i < offenderList.getModel().getSize(); i++) {
             newOffenders.addElement(offenderList.getModel().getElementAt(i));
         }

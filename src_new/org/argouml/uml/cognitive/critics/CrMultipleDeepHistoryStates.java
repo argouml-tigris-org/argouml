@@ -26,9 +26,9 @@ package org.argouml.uml.cognitive.critics;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ListSet;
 import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLToDoItem;
-import org.tigris.gef.util.VectorSet;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -80,12 +80,12 @@ public class CrMultipleDeepHistoryStates extends CrUML {
     }
 
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
-        VectorSet offs = computeOffenders(dm);
+        ListSet offs = computeOffenders(dm);
         return new UMLToDoItem(this, offs, dsgr);
     }
 
-    protected VectorSet computeOffenders(Object ps) {
-        VectorSet offs = new VectorSet(ps);
+    protected ListSet computeOffenders(Object ps) {
+        ListSet offs = new ListSet(ps);
         Object cs = Model.getFacade().getModelElementContainer(ps);
         if (cs == null) {
             cat.debug("null parent in still valid");
@@ -107,9 +107,9 @@ public class CrMultipleDeepHistoryStates extends CrUML {
 
     public boolean stillValid(ToDoItem i, Designer dsgr) {
         if (!isActive()) return false;
-        VectorSet offs = i.getOffenders();
+        ListSet offs = i.getOffenders();
         Object dm = offs.firstElement();
-        VectorSet newOffs = computeOffenders(dm);
+        ListSet newOffs = computeOffenders(dm);
         boolean res = offs.equals(newOffs);
         return res;
     }

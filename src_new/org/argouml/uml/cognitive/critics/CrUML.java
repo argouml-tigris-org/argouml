@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -36,7 +37,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.ocl.CriticOclEvaluator;
 import org.argouml.uml.cognitive.UMLToDoItem;
 import org.tigris.gef.ocl.ExpansionException;
-import org.tigris.gef.util.VectorSet;
 
 /** "Abstract" Critic subclass that captures commonalities among all
  *  critics in the UML domain.  This class also defines and registers
@@ -247,7 +247,7 @@ public class CrUML extends Critic {
      * @param res is the text to expand.
      * @param offs is the elements to replace
      */
-    public String expand(String res, VectorSet offs) {
+    public String expand(String res, ListSet offs) {
 
         if (offs.size() == 0) return res;
 

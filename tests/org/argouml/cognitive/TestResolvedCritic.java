@@ -30,7 +30,6 @@ import junit.framework.TestCase;
 
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
-import org.tigris.gef.util.VectorSet;
 
 /**
  * Test the ResolvedCritic class.
@@ -56,7 +55,7 @@ public class TestResolvedCritic extends TestCase {
         String crString = "class org.argouml.cognitive.critics.Critic";
         ResolvedCritic rc;
         Vector vec = new Vector();
-        VectorSet set = new VectorSet();
+        ListSet set = new ListSet();
 
         /* ResolvedCritic(String, Vector) */
 
@@ -135,7 +134,7 @@ public class TestResolvedCritic extends TestCase {
 	Critic c = new Critic();
 	ResolvedCritic rc1, rc2;
 	Vector vec = new Vector();
-	VectorSet set = new VectorSet();
+	ListSet set = new ListSet();
 
 	rc1 = new ResolvedCritic("RC", null);
 	rc2 = new ResolvedCritic("RC", null);

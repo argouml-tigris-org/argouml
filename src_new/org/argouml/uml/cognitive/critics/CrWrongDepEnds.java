@@ -29,11 +29,11 @@ import java.util.Iterator;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ListSet;
 import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.ui.FigDependency;
-import org.tigris.gef.util.VectorSet;
 
 /**
  * A critic to detect when in a deployment-diagram the supplier or the
@@ -60,7 +60,7 @@ public class CrWrongDepEnds extends CrUML {
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(dm instanceof UMLDeploymentDiagram)) return NO_PROBLEM;
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
-	VectorSet offs = computeOffenders(dd);
+	ListSet offs = computeOffenders(dd);
 	if (offs == null) return NO_PROBLEM;
 	return PROBLEM_FOUND;
     }
@@ -71,7 +71,7 @@ public class CrWrongDepEnds extends CrUML {
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
-	VectorSet offs = computeOffenders(dd);
+	ListSet offs = computeOffenders(dd);
 	return new UMLToDoItem(this, offs, dsgr);
     }
 
@@ -81,10 +81,10 @@ public class CrWrongDepEnds extends CrUML {
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
-	VectorSet offs = i.getOffenders();
+	ListSet offs = i.getOffenders();
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) offs.firstElement();
 	//if (!predicate(dm, dsgr)) return false;
-	VectorSet newOffs = computeOffenders(dd);
+	ListSet newOffs = computeOffenders(dd);
 	boolean res = offs.equals(newOffs);
 	return res;
     }
@@ -99,9 +99,9 @@ public class CrWrongDepEnds extends CrUML {
      * @param dd the diagram to check
      * @return the set of offenders
      */
-    public VectorSet computeOffenders(UMLDeploymentDiagram dd) {
+    public ListSet computeOffenders(UMLDeploymentDiagram dd) {
 	Collection figs = dd.getLayer().getContents(null);
-	VectorSet offs = null;
+	ListSet offs = null;
 	int size = figs.size();
         Iterator figIter = figs.iterator();
 	while (figIter.hasNext()) {
@@ -157,7 +157,7 @@ public class CrWrongDepEnds extends CrUML {
 	    }
 	    if (count == 3) {
 		if (offs == null) {
-		    offs = new VectorSet();
+		    offs = new ListSet();
 		    offs.addElement(dd);
 		}
 		offs.addElement(figDependency);

@@ -28,7 +28,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
 
-import org.tigris.gef.util.VectorSet;
 
 import org.argouml.cognitive.critics.Critic;
 
@@ -84,7 +83,7 @@ public class ResolvedCritic {
      *			not have a ItemUID and does not accept a new
      *			one.
      */
-    public ResolvedCritic(Critic c, VectorSet offs)
+    public ResolvedCritic(Critic c, ListSet offs)
     	throws UnresolvableException {
 
 	this(c, offs, true);
@@ -101,7 +100,7 @@ public class ResolvedCritic {
      *			not have a ItemUID and does not accept a new
      *			one.
      */
-    public ResolvedCritic(Critic c, VectorSet offs, boolean canCreate)
+    public ResolvedCritic(Critic c, ListSet offs, boolean canCreate)
 	throws UnresolvableException {
 	if (c == null) {
 	    throw new NullPointerException();
@@ -230,7 +229,7 @@ public class ResolvedCritic {
      * @throws	UnresolvableException if not all objects can be
      *		imported.
      */
-    protected void importOffenders(VectorSet set, boolean canCreate)
+    protected void importOffenders(ListSet set, boolean canCreate)
 	throws UnresolvableException {
 
 	Enumeration elems = set.elements();

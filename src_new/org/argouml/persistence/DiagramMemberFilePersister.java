@@ -40,6 +40,7 @@ import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
+import org.xml.sax.SAXException;
 
 /**
  * The file persister for the diagram members.
@@ -81,6 +82,8 @@ public class DiagramMemberFilePersister extends MemberFilePersister {
             } else {
                 LOG.error("An error occurred while loading PGML");
             }
+        } catch (SAXException e) {
+            throw new OpenException(e);
         } catch (IOException e) {
             throw new OpenException(e);
         }

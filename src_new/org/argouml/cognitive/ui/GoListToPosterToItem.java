@@ -34,7 +34,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
-import org.tigris.gef.util.VectorSet;
+import org.argouml.cognitive.ListSet;
 
 
 
@@ -87,7 +87,7 @@ public class GoListToPosterToItem extends AbstractGoList {
      * @return the children
      */
     public Vector getChildren(Object parent) {
-	VectorSet allPosters =
+	ListSet allPosters =
 	    Designer.theDesigner().getToDoList().getPosters();
 	if (parent instanceof ToDoList) {
 	    return allPosters.asVector();

@@ -24,12 +24,14 @@
 
 package org.argouml.persistence;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -457,17 +459,18 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
      * @see org.tigris.gef.xml.pgml.PGMLParser#readDiagram(
      *          java.io.InputStream, boolean)
      */
-    public synchronized Diagram readDiagram(
+    public synchronized Diagram readDiagram (
             InputStream is,
-            boolean closeStream) {
-        String errmsg = "Exception in readDiagram";
-
-        //initialise parsing attributes:
-        _figRegistry = new HashMap();
-        InputSource source = new InputSource(is);
-        _nestedGroups = 0; //issue 2452
-
+            boolean closeStream) throws SAXException {
+        
         try {
+            String errmsg = "Exception in readDiagram";
+    
+            //initialise parsing attributes:
+            _figRegistry = new HashMap();
+            InputSource source = new InputSource(is);
+            _nestedGroups = 0; //issue 2452
+    
             LOG.info("=======================================");
             LOG.info("== READING DIAGRAM");
             SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -477,7 +480,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             SAXParser pc = factory.newSAXParser();
             source.setSystemId(systemId);
             source.setEncoding("UTF-8");
-
+    
             // what is this for?
             // source.setSystemId(url.toString());
             pc.parse(source, this);
@@ -489,22 +492,11 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
                 LOG.debug("leaving stream OPEN!");
             }
             return _diagram;
-        } catch (SAXException saxEx) {
-            //
-            //  a SAX exception could have been generated
-            //    because of another exception.
-            //    Get the initial exception to display the
-            //    location of the true error
-            Exception ex = saxEx.getException();
-            if (ex == null) {
-                LOG.error(errmsg, saxEx);
-            } else {
-                LOG.error(errmsg, ex);
-            }
-        } catch (Exception ex) {
-            LOG.error(errmsg, ex);
+        } catch (IOException e) {
+            throw new SAXException(e);
+        } catch (ParserConfigurationException e) {
+            throw new SAXException(e);
         }
-        return null;
     }
 
     /**
@@ -576,7 +568,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
      * FigGroups to the diagram ONLY if they are
      * not a FigNode AND if they are not part of a FigNode.
      */
-    protected Fig handleGroup(Attributes attrList) {
+    protected Fig handleGroup(Attributes attrList) throws SAXException {
 
         Fig f = null;
         // The description is "figclass[bounds]style"
@@ -610,6 +602,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             Class nodeClass = Class.forName(translateClassName(clsName));
             f = (Fig) nodeClass.newInstance();
             setStyleAttributes(f, attributeMap);
+            LOG.info("Created a " + f.getClass().getName());
         } catch (IllegalAccessException e) {
             // TODO: Change to SAXException on next release of GEF
             LOG.error("IllegalAccessException caught ", e);
@@ -754,7 +747,8 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     /**
      * @see org.tigris.gef.xml.pgml.PGMLParser#handlePGML(org.xml.sax.Attributes)
      */
-    protected void handlePGML(Attributes attrList) {
+    protected void handlePGML(Attributes attrList) throws SAXException {
+        LOG.info("attrList " + attrList);
         super.handlePGML(attrList);
         LOG.info("Diagram name is " + _diagram.getName());
     }

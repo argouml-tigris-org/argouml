@@ -28,7 +28,6 @@ import java.util.Vector;
 
 import javax.swing.Icon;
 
-import org.tigris.gef.util.VectorSet;
 
 /**
  * Interface that defines methods required on any object that can
@@ -107,7 +106,7 @@ public interface Poster {
      * @param offs the offenders
      * @return the customized/expanded string
      */
-    String expand(String desc, VectorSet offs);
+    String expand(String desc, ListSet offs);
 
     /**
      * @return the icon shown on the todo item to show the wizard's progress

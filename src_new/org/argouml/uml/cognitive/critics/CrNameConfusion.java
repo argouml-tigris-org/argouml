@@ -31,11 +31,11 @@ import javax.swing.Icon;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLToDoItem;
-import org.tigris.gef.util.VectorSet;
 
 /**
  * Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
@@ -61,7 +61,7 @@ public class CrNameConfusion extends CrUML {
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAModelElement(dm))) return NO_PROBLEM;
 	Object me = /*(MModelElement)*/ dm;
-	VectorSet offs = computeOffenders(me);
+	ListSet offs = computeOffenders(me);
 	if (offs.size() > 1) return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }
@@ -70,9 +70,9 @@ public class CrNameConfusion extends CrUML {
      * @param dm the given modelelement
      * @return the vectorset of offenders
      */
-    public VectorSet computeOffenders(Object/*MModelElement*/ dm) {
+    public ListSet computeOffenders(Object/*MModelElement*/ dm) {
 	Object ns = Model.getFacade().getNamespace(dm);
-	VectorSet res = new VectorSet(dm);
+	ListSet res = new ListSet(dm);
 	String n = Model.getFacade().getName(dm);
 	if (n == null || n.equals("")) return res;
 	String dmNameStr = n;
@@ -102,7 +102,7 @@ public class CrNameConfusion extends CrUML {
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	Object me = /*(MModelElement)*/ dm;
-	VectorSet offs = computeOffenders(me);
+	ListSet offs = computeOffenders(me);
 	return new UMLToDoItem(this, offs, dsgr);
     }
 
@@ -112,10 +112,10 @@ public class CrNameConfusion extends CrUML {
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
-	VectorSet offs = i.getOffenders();
+	ListSet offs = i.getOffenders();
 	Object dm = /*(MModelElement)*/ offs.firstElement();
 	if (!predicate(dm, dsgr)) return false;
-	VectorSet newOffs = computeOffenders(dm);
+	ListSet newOffs = computeOffenders(dm);
 	boolean res = offs.equals(newOffs);
 	return res;
     }

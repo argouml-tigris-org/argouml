@@ -30,9 +30,9 @@ import java.util.Iterator;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ListSet;
 import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLToDoItem;
-import org.tigris.gef.util.VectorSet;
 
 /**
  * A critic to detect when a state has no outgoing transitions.
@@ -102,7 +102,7 @@ public class CrMultipleInitialStates extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
-        VectorSet offs = computeOffenders(dm);
+        ListSet offs = computeOffenders(dm);
         return new UMLToDoItem(this, offs, dsgr);
     }
 
@@ -110,8 +110,8 @@ public class CrMultipleInitialStates extends CrUML {
      * @param ps the object to check
      * @return the list of offenders
      */
-    protected VectorSet computeOffenders(Object ps) {
-        VectorSet offs = new VectorSet(ps);
+    protected ListSet computeOffenders(Object ps) {
+        ListSet offs = new ListSet(ps);
         Object cs = Model.getFacade().getModelElementContainer(ps);
         if (cs == null) {
             LOG.debug("null parent in still valid");
@@ -140,9 +140,9 @@ public class CrMultipleInitialStates extends CrUML {
         if (!isActive()) {
             return false;
         }
-        VectorSet offs = i.getOffenders();
+        ListSet offs = i.getOffenders();
         Object dm = offs.firstElement();
-        VectorSet newOffs = computeOffenders(dm);
+        ListSet newOffs = computeOffenders(dm);
         boolean res = offs.equals(newOffs);
         return res;
     }

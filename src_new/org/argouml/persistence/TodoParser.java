@@ -31,9 +31,9 @@ import org.argouml.cognitive.Designer;
 
 import org.argouml.cognitive.ResolvedCritic;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ListSet;
 import org.xml.sax.SAXException;
 
-import org.tigris.gef.util.VectorSet;
 
 // TODO: Reuse the offender Vector.
 
@@ -251,7 +251,7 @@ public class TodoParser extends SAXParserBase {
 
         dsgr = Designer.theDesigner();
         item = new ToDoItem(dsgr, headline, priority, description, moreinfourl,
-                            new VectorSet());
+                            new ListSet());
         dsgr.getToDoList().addElement(item);
         //cat.debug("Added ToDoItem: " + _headline);
     }

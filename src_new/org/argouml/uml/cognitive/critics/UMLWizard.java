@@ -26,9 +26,9 @@
 package org.argouml.uml.cognitive.critics;
 
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.Model;
-import org.tigris.gef.util.VectorSet;
 
 
 /**
@@ -67,7 +67,7 @@ public abstract class UMLWizard extends Wizard {
     public Object getModelElement() {
         if (getToDoItem() != null) {
             ToDoItem item = (ToDoItem) getToDoItem();
-            VectorSet offs = item.getOffenders();
+            ListSet offs = item.getOffenders();
             if (offs.size() >= 1) {
                 Object me = /*(MModelElement)*/ offs.elementAt(0);
                 return me;

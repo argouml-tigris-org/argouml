@@ -42,8 +42,8 @@ import org.argouml.cognitive.Goal;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
+import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ui.Wizard;
-import org.tigris.gef.util.VectorSet;
 
 /**
  * "Abstract" base class for design critics.  Each subclass should define
@@ -251,7 +251,7 @@ public class Critic implements Poster, Serializable {
      */
     private Hashtable controlRecs = new Hashtable();
 
-    private VectorSet knowledgeTypes = new VectorSet();
+    private ListSet knowledgeTypes = new ListSet();
     private long triggerMask = 0L;
 
     private static int numCriticsFired = 0;
@@ -531,12 +531,12 @@ public class Critic implements Poster, Serializable {
     /**
      * @return the knowledgetypes
      */
-    public VectorSet getKnowledgeTypes() { return knowledgeTypes; }
+    public ListSet getKnowledgeTypes() { return knowledgeTypes; }
 
     /**
      * @param kt the knowledgetypes
      */
-    public void setKnowledgeTypes(VectorSet kt) { knowledgeTypes = kt; }
+    public void setKnowledgeTypes(ListSet kt) { knowledgeTypes = kt; }
 
     /**
      * Reset all knowledgetypes, and add the given one.
@@ -544,7 +544,7 @@ public class Critic implements Poster, Serializable {
      * @param t1 the only knowledgetype in string format
      */
     public void setKnowledgeTypes(String t1) {
-	knowledgeTypes = new VectorSet();
+	knowledgeTypes = new ListSet();
 	addKnowledgeType(t1);
     }
 
@@ -555,7 +555,7 @@ public class Critic implements Poster, Serializable {
      * @param t2 a knowledgetype in string format
      */
     public void setKnowledgeTypes(String t1, String t2) {
-	knowledgeTypes = new VectorSet();
+	knowledgeTypes = new ListSet();
 	addKnowledgeType(t1);
 	addKnowledgeType(t2);
     }
@@ -568,7 +568,7 @@ public class Critic implements Poster, Serializable {
      * @param t3 a knowledgetype in string format
      */
     public void setKnowledgeTypes(String t1, String t2, String t3) {
-	knowledgeTypes = new VectorSet();
+	knowledgeTypes = new ListSet();
 	addKnowledgeType(t1);
 	addKnowledgeType(t2);
 	addKnowledgeType(t3);
@@ -607,7 +607,7 @@ public class Critic implements Poster, Serializable {
      * @see org.argouml.cognitive.Poster#expand(java.lang.String,
      * org.tigris.gef.util.VectorSet)
      */
-    public String expand(String desc, VectorSet offs) { return desc; }
+    public String expand(String desc, ListSet offs) { return desc; }
 
     /**
      * @see org.argouml.cognitive.Poster#getClarifier()
@@ -879,7 +879,7 @@ public class Critic implements Poster, Serializable {
      * @param dsgr the designer
      * @return the headline
      */
-    public String getHeadline(VectorSet offenders, Designer dsgr) {
+    public String getHeadline(ListSet offenders, Designer dsgr) {
 	return getHeadline(offenders.firstElement(), dsgr);
     }
 
@@ -904,7 +904,7 @@ public class Critic implements Poster, Serializable {
      * @param dsgr the designer
      * @return the priority
      */
-    public int getPriority(VectorSet offenders, Designer dsgr) {
+    public int getPriority(ListSet offenders, Designer dsgr) {
 	return priority;
     }
 
@@ -927,7 +927,7 @@ public class Critic implements Poster, Serializable {
      * @param dsgr the designer
      * @return the description
      */
-    public String getDescription(VectorSet offenders, Designer dsgr) {
+    public String getDescription(ListSet offenders, Designer dsgr) {
 	return description;
     }
 
@@ -950,7 +950,7 @@ public class Critic implements Poster, Serializable {
      * @param dsgr the designer
      * @return the more-info-url
      */
-    public String getMoreInfoURL(VectorSet offenders, Designer dsgr) {
+    public String getMoreInfoURL(ListSet offenders, Designer dsgr) {
 	return moreInfoURL;
     }
 

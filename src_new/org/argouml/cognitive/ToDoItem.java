@@ -32,7 +32,6 @@ import org.argouml.cognitive.ui.Wizard;
 import org.argouml.cognitive.ui.WizardItem;
 import org.tigris.gef.ui.Highlightable;
 
-import org.tigris.gef.util.VectorSet;
 
 
 /**
@@ -102,7 +101,7 @@ public class ToDoItem implements Serializable, WizardItem {
      *
      * This is set by the constructor and cannot change.
      */
-    private VectorSet theOffenders;
+    private ListSet theOffenders;
 
     private Icon theClarifier;
 
@@ -121,7 +120,7 @@ public class ToDoItem implements Serializable, WizardItem {
      * @param offs the offenders
      */
     public ToDoItem(Poster poster, String h, int p, String d, String m,
-		    VectorSet offs) {
+		    ListSet offs) {
 	thePoster = poster;
 	theHeadline = h;
 	theOffenders = offs;
@@ -142,7 +141,7 @@ public class ToDoItem implements Serializable, WizardItem {
     public ToDoItem(Poster poster, String h, int p, String d, String m) {
 	thePoster = poster;
 	theHeadline = h;
-	theOffenders = new VectorSet();
+	theOffenders = new ListSet();
 	thePriority = p;
 	theDescription = d;
 	theMoreInfoURL = m;
@@ -158,7 +157,7 @@ public class ToDoItem implements Serializable, WizardItem {
     public ToDoItem(Critic c, Object dm, Designer dsgr) {
 	thePoster = c;
 	theHeadline = c.getHeadline(dm, dsgr);
-	theOffenders = new VectorSet(dm);
+	theOffenders = new ListSet(dm);
 	thePriority = c.getPriority(theOffenders, dsgr);
 	theDescription = c.getDescription(theOffenders, dsgr);
 	theMoreInfoURL = c.getMoreInfoURL(theOffenders, dsgr);
@@ -172,7 +171,7 @@ public class ToDoItem implements Serializable, WizardItem {
      * @param offs the offenders
      * @param dsgr the designer
      */
-    public ToDoItem(Critic c, VectorSet offs, Designer dsgr) {
+    public ToDoItem(Critic c, ListSet offs, Designer dsgr) {
 	thePoster = c;
 	theHeadline = c.getHeadline(offs, dsgr);
 	theOffenders = offs;
@@ -192,7 +191,7 @@ public class ToDoItem implements Serializable, WizardItem {
     public ToDoItem(Critic c) {
 	thePoster = c;
 	theHeadline = c.getHeadline();
-	theOffenders = new VectorSet();
+	theOffenders = new ListSet();
 	thePriority = c.getPriority(null, null);
 	theDescription = c.getDescription(null, null);
 	theMoreInfoURL = c.getMoreInfoURL(null, null);
@@ -281,7 +280,7 @@ public class ToDoItem implements Serializable, WizardItem {
      *
      * @return the offenders
      */
-    public VectorSet getOffenders() {
+    public ListSet getOffenders() {
         return theOffenders;
     }
 
@@ -290,7 +289,7 @@ public class ToDoItem implements Serializable, WizardItem {
      *
      * @param offenders the offenders
      */
-    public void setOffenders(VectorSet offenders) {
+    public void setOffenders(ListSet offenders) {
         theOffenders = offenders;
     }
 
