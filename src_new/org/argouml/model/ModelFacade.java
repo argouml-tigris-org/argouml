@@ -6216,7 +6216,7 @@ public class ModelFacade {
      * @param type is the type (a classifier)
      */
     public static void setType(Object handle, Object type) {
-        if (type instanceof MClassifier) {
+        if (type == null || type instanceof MClassifier) {
             if (handle instanceof MObjectFlowState) {
 		((MObjectFlowState) handle).setType((MClassifier) type);
 		return;
