@@ -50,7 +50,7 @@ import org.tigris.swidgets.Orientation;
 public abstract class PropPanelClassifier extends PropPanelNamespace {
 
     private JPanel modifiersPanel;
-    
+
     /**
      * The action used to add a reception to the classifier.
      */
@@ -71,15 +71,15 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
     private JScrollPane parameterScroll;
     private JScrollPane structuralFeatureScroll;
 
-    // all GUI models that can be singletons and 
+    // all GUI models that can be singletons and
     // that are being used in subclasses
     // implemented as static (singleton) instances so that only one model is
     // registered for some modelevent and not an instance per proppanel.
-    
-    private static UMLGeneralizableElementGeneralizationListModel 
+
+    private static UMLGeneralizableElementGeneralizationListModel
         generalizationListModel =
         new UMLGeneralizableElementGeneralizationListModel();
-    private static UMLGeneralizableElementSpecializationListModel 
+    private static UMLGeneralizableElementSpecializationListModel
         specializationListModel =
         new UMLGeneralizableElementSpecializationListModel();
     private static UMLClassifierFeatureListModel featureListModel =
@@ -92,30 +92,30 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
         new UMLClassifierInstanceListModel();
     private static UMLClassifierCollaborationListModel collaborationListModel =
         new UMLClassifierCollaborationListModel();
-    private static UMLClassifierClassifierRoleListModel 
+    private static UMLClassifierClassifierRoleListModel
         classifierRoleListModel =
         new UMLClassifierClassifierRoleListModel();
-    private static UMLClassifierClassifierInStateListModel 
+    private static UMLClassifierClassifierInStateListModel
         classifierInStateListModel =
         new UMLClassifierClassifierInStateListModel();
-    private static UMLClassifierObjectFlowStateListModel 
+    private static UMLClassifierObjectFlowStateListModel
         objectFlowStateListModel =
         new UMLClassifierObjectFlowStateListModel();
-    private static UMLClassifierPowertypeRangeListModel 
+    private static UMLClassifierPowertypeRangeListModel
         powertypeRangeListModel =
         new UMLClassifierPowertypeRangeListModel();
-    private static UMLClassifierAssociationEndListModel 
+    private static UMLClassifierAssociationEndListModel
         associationEndListModel =
         new UMLClassifierAssociationEndListModel();
     private static UMLClassifierParameterListModel parameterListModel =
         new UMLClassifierParameterListModel();
-    private static UMLClassifierStructuralFeatureListModel 
+    private static UMLClassifierStructuralFeatureListModel
         structuralFeatureListModel =
         new UMLClassifierStructuralFeatureListModel();
 
     /**
      * The constructor.
-     * 
+     *
      * @param title the title of the properties panel
      * @param orientation the orientation of the panel
      */
@@ -126,12 +126,12 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
 
     /**
      * The constructor.
-     * 
+     *
      * @param name the title of the properties panel
      * @param orientation the orientation of the panel
      * @param icon the icon shown next to the name
      */
-    public PropPanelClassifier(String name, ImageIcon icon, 
+    public PropPanelClassifier(String name, ImageIcon icon,
             Orientation orientation) {
         super(name, icon, orientation);
         initialize();
@@ -151,11 +151,11 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
                 .getCurrentProject().findType("void");
             Object newOper =
                 Model.getCoreFactory().buildOperation(
-                    /*(MClassifier)*/ target, model, voidType, 
+                    /*(MClassifier)*/ target, model, voidType,
                     propertyChangeListeners);
             TargetManager.getInstance().setTarget(newOper);
         }
-    }       
+    }
 
     /**
      * Add an attribute to the classifier.
@@ -171,7 +171,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
             Object model = ProjectManager.getManager()
                 .getCurrentProject().getModel();
             Object attr =
-                Model.getCoreFactory().buildAttribute(cls, model, 
+                Model.getCoreFactory().buildAttribute(cls, model,
                         intType, propertyChangeListeners);
             TargetManager.getInstance().setTarget(attr);
         }
@@ -180,10 +180,10 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
     /**
      * Initialize the panel with the common fields and stuff.
      */
-    private void initialize() { 
+    private void initialize() {
 
         modifiersPanel =
-            new JPanel(new GridLayout2()); 
+            new JPanel(new GridLayout2());
         modifiersPanel.setBorder(
                 new TitledBorder(Translator.localize("label.modifiers")));
         modifiersPanel.add(
@@ -192,7 +192,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
             new UMLGeneralizableElementLeafCheckBox());
         modifiersPanel.add(
             new UMLGeneralizableElementRootCheckBox());
-       
+
     }
 
     /**
@@ -364,7 +364,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
         }
         return specializationScroll;
     }
-        
+
     /**
      * @return the action for a new reception
      */
@@ -383,12 +383,12 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
         }
         return structuralFeatureScroll;
     }
-    
+
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
-    public void targetSet(TargetEvent e) {       
-        super.targetSet(e);       
+    public void targetSet(TargetEvent e) {
+        super.targetSet(e);
         Object target = TargetManager.getInstance().getModelTarget();
         getActionNewReception().putValue(ActionNewReception.CLASSIFIER, target);
     }
@@ -399,6 +399,6 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
     protected JPanel getModifiersPanel() {
         return modifiersPanel;
     }
-    
+
 
 } /* end class PropPanelClassifier */

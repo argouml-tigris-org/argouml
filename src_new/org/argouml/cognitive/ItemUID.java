@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2004 The Regents of the University of California. All
+// Copyright (c) 2002-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,11 +34,11 @@ import org.argouml.uml.UUIDHelper;
 /**
  * An instances of this class is supposed to be attached to an instance
  * of another class to uniquely identify it. It is intended that such
- * a tagging should be persistent over saving and loading, if applicable.
+ * a tagging should be persistent over saving and loading, if applicable.<p>
  *
- * <P>The class also harbors the
+ * The class also harbors the
  * {@link #getIDOfObject getIDOfObject(Object, boolean)} which provides
- * a way to get the ItemUID of any object with a method 
+ * a way to get the ItemUID of any object with a method
  * <code>ItemUID getItemUID()</code>
  * and creating new ItemUIDs for any object with a method
  * <code>setItemUID(ItemUID)</code>
@@ -72,22 +72,26 @@ import org.argouml.uml.UUIDHelper;
  *
  * @author Michael Stockman
  */
-public class ItemUID
-{
-    /** The logger */
+public class ItemUID {
+    /**
+     * The logger.
+     */
     private static final Logger LOG = Logger.getLogger(ItemUID.class);
 
-    /** Keeps a reference to the Class object of this class */
+    /**
+     * Keeps a reference to the Class object of this class.
+     */
     private static final Class MYCLASS = (new ItemUID()).getClass();
 
-    /** This actual ID of this instance. */
+    /**
+     * This actual ID of this instance.
+     */
     private String id;
 
     /**
      * Constructs a new ItemUID and creates a new ID for it.
      */
-    public ItemUID()
-    {
+    public ItemUID() {
 	id = generateID();
     }
 
@@ -98,8 +102,7 @@ public class ItemUID
      * @param	param	The ID to used for the new instance.
      * @see		#toString()
      */
-    public ItemUID(String param)
-    {
+    public ItemUID(String param) {
 	id = param;
     }
 
@@ -111,8 +114,7 @@ public class ItemUID
      * @return	The ID as a String.
      * @see		#ItemUID(String)
      */
-    public String toString()
-    {
+    public String toString() {
 	return id;
     }
 
@@ -123,8 +125,7 @@ public class ItemUID
      *
      * @return	A String with unique content.
      */
-    public static String generateID()
-    {
+    public static String generateID() {
 	return (new java.rmi.server.UID()).toString();
     }
 
@@ -137,12 +138,12 @@ public class ItemUID
      * @param canCreate If an ID can be created, should object not have one.
      * @return	The ID of the object, or null.
      */
-    public static String getIDOfObject(Object obj, boolean canCreate)
-    {
+    public static String getIDOfObject(Object obj, boolean canCreate) {
 	String s = readObjectID(obj);
 
-	if (s == null && canCreate)
+	if (s == null && canCreate) {
 	    s = createObjectID(obj);
+	}
 
 	return s;
     }
@@ -171,54 +172,41 @@ public class ItemUID
 	*/
 
 	Object rv;
-	try
-	{
+	try {
 	    Method m = obj.getClass().getMethod("getItemUID", null);
 	    rv = m.invoke(obj, null);
-	}
-	catch (NoSuchMethodException nsme)
-	{
+	} catch (NoSuchMethodException nsme) {
 	    // Apparently this object had no getItemUID
 	    return null;
-	}
-	catch (SecurityException se)
-	{
+	} catch (SecurityException se) {
 	    // Apparently it had a getItemUID,
 	    // but we're not allowed to call it
 	    return null;
-	}
-	catch (InvocationTargetException tie)
-	{
+	} catch (InvocationTargetException tie) {
 	    LOG.error("getItemUID for " + obj.getClass() + " threw: ",
 		      tie);
 	    return null;
-	}
-	catch (IllegalAccessException iace)
-	{
+	} catch (IllegalAccessException iace) {
 	    // Apparently it had a getItemUID,
 	    // but we're not allowed to call it
 	    return null;
-	}
-	catch (IllegalArgumentException iare)
-	{
+	} catch (IllegalArgumentException iare) {
 	    LOG.error("getItemUID for " + obj.getClass()
 		      + " takes strange parameter: ",
 		      iare);
 	    return null;
-	}
-	catch (ExceptionInInitializerError eiie)
-	{
+	} catch (ExceptionInInitializerError eiie) {
 	    LOG.error("getItemUID for " + obj.getClass()
 		      + " exception: ",
 		      eiie);
 	    return null;
 	}
 
-	if (rv == null)
+	if (rv == null) {
 	    return null;
+	}
 
-	if (!(rv instanceof ItemUID))
-	{
+	if (!(rv instanceof ItemUID)) {
 	    LOG.error("getItemUID for " + obj.getClass()
 		      + " returns strange value: " + rv.getClass());
 	    return null;
@@ -228,7 +216,7 @@ public class ItemUID
     }
 
     /**
-     * Tries to create a new ID for the object. It uses the reflective 
+     * Tries to create a new ID for the object. It uses the reflective
      * properties of java to access a method named setItemUID(ItemUID).
      * If that method exist and doesn't throw when called, then the call
      * is assumed to have been successful and the object is responsible
@@ -237,52 +225,40 @@ public class ItemUID
      * @param obj The object to assign a new ID.
      * @return	The new ID of the object, or null.
      */
-    protected static String createObjectID(Object obj)
-    {
-	if (org.argouml.model.ModelFacade.isABase(obj))
+    protected static String createObjectID(Object obj) {
+	if (ModelFacade.isABase(obj)) {
 	    return null;
+	}
 
-	Class params[] = new Class[1];
-	Object mparam[];
+	Class[] params = new Class[1];
+	Object[] mparam;
 	params[0] = MYCLASS;
 	try {
 	    Method m = obj.getClass().getMethod("setItemUID", params);
 	    mparam = new Object[1];
 	    mparam[0] = new ItemUID();
 	    m.invoke(obj, mparam);
-	}
-	catch (NoSuchMethodException nsme)
-	{
+	} catch (NoSuchMethodException nsme) {
 	    // Apparently this object had no setItemUID
 	    return null;
-	}
-	catch (SecurityException se)
-	{
+	} catch (SecurityException se) {
 	    // Apparently it had a setItemUID,
 	    // but we're not allowed to call it
 	    return null;
-	}
-	catch (InvocationTargetException tie)
-	{
+	} catch (InvocationTargetException tie) {
 	    LOG.error("setItemUID for " + obj.getClass() + " threw",
 		      tie);
 	    return null;
-	}
-	catch (IllegalAccessException iace)
-	{
+	} catch (IllegalAccessException iace) {
 	    // Apparently it had a setItemUID,
 	    // but we're not allowed to call it
 	    return null;
-	}
-	catch (IllegalArgumentException iare)
-	{
+	} catch (IllegalArgumentException iare) {
 	    LOG.error("setItemUID for " + obj.getClass()
 		      + " takes strange parameter",
 		      iare);
 	    return null;
-	}
-	catch (ExceptionInInitializerError eiie)
-	{
+	} catch (ExceptionInInitializerError eiie) {
 	    LOG.error("setItemUID for " + obj.getClass() + " threw",
 		      eiie);
 	    return null;

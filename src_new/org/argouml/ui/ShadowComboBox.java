@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,7 +38,7 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
 
 /**
  * A ComboBox that contains the set of possible Shadow Width values.
- * 
+ *
  * @author Jeremy Jones
 **/
 public class ShadowComboBox extends JComboBox {
@@ -47,11 +47,11 @@ public class ShadowComboBox extends JComboBox {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public ShadowComboBox() {
         super();
-        
+
         addItem(Translator.localize("label.stylepane.no-shadow"));
         addItem("1");
         addItem("2");
@@ -64,7 +64,7 @@ public class ShadowComboBox extends JComboBox {
 
         setRenderer(new ShadowRenderer());
     }
-    
+
     /**
      * Renders each combo box entry as a shadowed diagram figure with the
      * associated level of shadow.
@@ -74,24 +74,24 @@ public class ShadowComboBox extends JComboBox {
 	implements ListCellRenderer {
 
         private ShadowFig  currentFig = null;
-        
+
         public ShadowRenderer() {
             super();
         }
-        
+
         public Component getListCellRendererComponent(
             JList list,
             Object value,
             int index,
             boolean isSelected,
-            boolean cellHasFocus) {  
-                
+            boolean cellHasFocus) {
+
             if (shadowFigs == null) {
                 shadowFigs = new ShadowFig[ShadowComboBox.this.getItemCount()];
 
                 for (int i = 0; i < shadowFigs.length; ++i) {
                     shadowFigs[i] = new ShadowFig();
-                    shadowFigs[i].setShadowSize(i);                    
+                    shadowFigs[i].setShadowSize(i);
                     shadowFigs[i].getNameFig().setText(
                         (String) ShadowComboBox.this.getItemAt(i));
                 }
@@ -103,7 +103,7 @@ public class ShadowComboBox extends JComboBox {
             else {
                 setBackground(list.getBackground());
             }
-            
+
             int figIndex = index;
             if (figIndex < 0) {
                 for (int i = 0; i < shadowFigs.length; ++i) {
@@ -125,7 +125,7 @@ public class ShadowComboBox extends JComboBox {
 
             return this;
         }
-        
+
         protected void paintComponent(Graphics g) {
             g.setColor(getBackground());
             g.fillRect(0, 0, getWidth(), getHeight());
@@ -135,7 +135,7 @@ public class ShadowComboBox extends JComboBox {
             }
         }
     }
-    
+
     private class ShadowFig extends FigNodeModelElement {
         public ShadowFig() {
             super();

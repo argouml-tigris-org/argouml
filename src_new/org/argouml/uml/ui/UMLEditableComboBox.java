@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,8 +46,8 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
  * An editable combobox. Upon pressing enter the text entered by the user is
  * sent as an actioncommand to the actionlistener (this). The item that's being
  * edited is sent to the method doIt after that. The developer should implement
- * this method 
- * @author jaap.branderhorst@xs4all.nl	
+ * this method
+ * @author jaap.branderhorst@xs4all.nl
  * @since Jan 4, 2003
  */
 public abstract class UMLEditableComboBox extends UMLComboBox2 {
@@ -58,8 +58,8 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
      * the list elements. Setitem has to give the correct value. Furthermore,
      * the standard comboboxeditor (BasicComboBoxEditor) does not support
      * showing icons.
-     * 
-     * @author jaap.branderhorst@xs4all.nl	
+     *
+     * @author jaap.branderhorst@xs4all.nl
      * @since Jan 5, 2003
      */
     protected class UMLComboBoxEditor extends BasicComboBoxEditor {
@@ -67,8 +67,8 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
         /**
          * A panel which helps us to show the editable textfield for this
          * combobox (including the Icon).
-         * 
-         * @author jaap.branderhorst@xs4all.nl	
+         *
+         * @author jaap.branderhorst@xs4all.nl
          * @since Jan 5, 2003
          */
         private class UMLImagePanel extends JPanel {
@@ -81,7 +81,7 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
              * The textfield the user can edit.
              */
             private JTextField theTextField;
-            
+
             /**
              * Constructs a UMLImagePanel
              * @param textField The textfield the user can edit
@@ -93,7 +93,7 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
                 theTextField = textField;
                 setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
                 if (showIcon) {
-                    // we don't want to show some nasty gray background 
+                    // we don't want to show some nasty gray background
                     // color, now do we?
                     imageIconLabel.setOpaque(true);
                     imageIconLabel.setBackground(theTextField.getBackground());
@@ -117,7 +117,7 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
             public void setIcon(Icon i) {
                 if (i != null) {
                     imageIconLabel.setIcon(i);
-                    // necessary to create distance between 
+                    // necessary to create distance between
                     // the textfield and the icon.
                     imageIconLabel.setBorder(BorderFactory
                             .createEmptyBorder(0, 2, 0, 2));
@@ -134,11 +134,11 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
             public void selectAll() {
                 theTextField.selectAll();
             }
-            
+
             public void addActionListener(ActionListener l) {
-                theTextField.addActionListener(l);                
+                theTextField.addActionListener(l);
             }
-            
+
             public void removeActionListener(ActionListener l) {
                 theTextField.removeActionListener(l);
             }
@@ -208,8 +208,8 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
         public void addActionListener(ActionListener l) {
             panel.addActionListener(l);
         }
-        
-        
+
+
 
         /**
          * @see javax.swing.ComboBoxEditor#removeActionListener(java.awt.event.ActionListener)
@@ -238,7 +238,7 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
      * @see org.argouml.uml.ui.UMLComboBox2#UMLComboBox2(
      * UMLComboBoxModel2, UMLAction, boolean)
      */
-    public UMLEditableComboBox(UMLComboBoxModel2 model, UMLAction selectAction, 
+    public UMLEditableComboBox(UMLComboBoxModel2 model, UMLAction selectAction,
             boolean showIcon) {
         super(model, selectAction, showIcon);
         setEditable(true);
@@ -264,14 +264,14 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
             ComboBoxEditor editor = getEditor();
             Object item = editor.getItem();
             doOnEdit(item);
-            // next statement is necessary to update the textfield 
+            // next statement is necessary to update the textfield
             // if the selection is equal to what was allready
             // selected
             if (oldValue == getSelectedItem())
                 getEditor().setItem(getSelectedItem());
         }
     }
-    
+
     /**
      * This method is called after the user has edited the editable textfield
      * and has press enter. ActionPerformed determines that the action is about

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -92,10 +92,10 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
         String position =
 	    Configuration.getString(Configuration.makeKey("layout",
 							  "tabtodo"));
-        setOrientation( 
+        setOrientation(
             ((position.equals("West") || position.equals("East"))
              ? Vertical.getInstance() : Horizontal.getInstance()));
-        
+
         setLayout(new BorderLayout());
 
         JToolBar toolBar = new ToolBar(JToolBar.VERTICAL);
@@ -105,7 +105,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
         toolBar.add(actionEmailExpert);
         toolBar.add(actionSnooze);
         toolBar.setFloatable(false);
-        
+
         add(toolBar, BorderLayout.WEST);
 
         splitPane = new BorderSplitPane();
@@ -125,7 +125,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
         validate();
         repaint();
     }
-    
+
     /**
      * @param tdp the todo pane
      */
@@ -159,7 +159,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
      * Sets the target of the TabToDo
      * @deprecated As of ArgoUml version 0.13.5,
      *             the visibility of this method will change in the future,
-     *             replaced by 
+     *             replaced by
      *             {@link org.argouml.ui.targetmanager.TargetManager}.
      * @param item the new target
      */
@@ -199,7 +199,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     /**
      * @param target ignored
      */
-    protected static void updateActionsEnabled(Object target) {      
+    protected static void updateActionsEnabled(Object target) {
         actionResolve.updateEnabled(target);
         actionEmailExpert.updateEnabled(target);
         actionSnooze.updateEnabled(target);

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,16 +44,16 @@ public class UUIDManager {
 
     ////////////////////////////////////////////////////////////////
     // static variables
-    
+
     private static final UUIDManager INSTANCE = new UUIDManager();
 
     private InetAddress address;
 
     ////////////////////////////////////////////////////////////////
     // constructors
-    
+
     /**
-     * Constructor for the UUIDManager. This is private to make sure that 
+     * Constructor for the UUIDManager. This is private to make sure that
      * we are a proper singleton.
      */
     private UUIDManager() {
@@ -69,7 +69,7 @@ public class UUIDManager {
                     "UnknownHostException caught - set up your /etc/hosts");
         }
     }
-    
+
     /**
      * Return the UUIDManager.
      *
@@ -81,7 +81,7 @@ public class UUIDManager {
 
     ////////////////////////////////////////////////////////////////
     // public methods
-    
+
     /**
      * @return the new uuid
      */
@@ -90,8 +90,9 @@ public class UUIDManager {
 	StringBuffer s = new StringBuffer();
 	if (address != null) {
 	    byte[] b = address.getAddress();
-	    for (int i = 0; i < b.length; i++)
+	    for (int i = 0; i < b.length; i++) {
 		s.append((new Byte(b[i])).longValue()).append("-");
+	    }
 	}
 	s.append(uid.toString());
 	return s.toString();
@@ -112,17 +113,17 @@ public class UUIDManager {
      * method means.
      */
     public synchronized void createModelUUIDS(Object model) {
-        
+
         LOG.info("NOTE: The temporary method 'createModelUUIDs' "
 		 + "has been called.");
-        
+
         if (!ModelFacade.isANamespace(model)) {
             throw new IllegalArgumentException();
 	}
-        
+
         Collection ownedElements = ModelFacade.getOwnedElements(model);
 	Iterator oeIterator = ownedElements.iterator();
-        
+
         String uuid = ModelFacade.getUUID(model);
         if (uuid == null) {
 	    ModelFacade.setUUID(model, getNewUUID());

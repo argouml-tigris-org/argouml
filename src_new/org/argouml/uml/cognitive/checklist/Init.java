@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,7 +38,7 @@ import org.argouml.i18n.Translator;
  * @see org.argouml.cognitive.checklist.CheckManager
  */
 public class Init {
-    /** 
+    /**
      * static initializer, register all appropriate critics<p>
      */
     public static void init() {
@@ -54,9 +54,9 @@ public class Init {
      * @param key to get the localized string.
      * @param checklist to add the item to.
      */
-    private static void newCheckItem(String category, String key, 
+    private static void newCheckItem(String category, String key,
 				     Checklist checklist) {
-	CheckItem checkitem = new UMLCheckItem(category, 
+	CheckItem checkitem = new UMLCheckItem(category,
 					       Translator.localize(key));
 	checklist.addItem(checkitem);
     }
@@ -69,13 +69,13 @@ public class Init {
      * what to check.<p>
      *
      * The purpose of this is to allow the ArgoUML project to jointly develop
-     * the knowledge database and let the internationalizations be just 
+     * the knowledge database and let the internationalizations be just
      * internationalizations.<p>
      *
      * When adding a new check list or an item to an existing check list you
      * will have to:<ol>
      * <li>Add the lines in this function.
-     * <li>Add the tags for the new items to the i18n property file 
+     * <li>Add the tags for the new items to the i18n property file
      *     (checklist.properties).
      * <li>Notify the localization teams.
      * </ol>
@@ -85,7 +85,7 @@ public class Init {
 	// This function will, by design, contain long lists of i18n keys.
 	// It might be tempting to shorten these by constructing them from
 	// the parts but please then consider that we might loose the
-	// possibility to build tools to statically check the property files 
+	// possibility to build tools to statically check the property files
 	// against this file.
 	//
 	Checklist cl;
@@ -194,7 +194,7 @@ public class Init {
 	newCheckItem(cat,
 	    "checklist.operation.encoding.does-returntype-allow-impossible-"
             + "values", cl);
-	newCheckItem(cat, 
+	newCheckItem(cat,
             "checklist.operation.encoding.combine-with-other", cl);
 	newCheckItem(cat, "checklist.operation.encoding.break-into-parts", cl);
 	newCheckItem(cat, "checklist.operation.encoding.break-into-series", cl);
@@ -273,7 +273,7 @@ public class Init {
 	cat = Translator.localize("checklist.association.updates");
 	newCheckItem(cat, "checklist.association.updates.reasons-for-update",
 		     cl);
-	newCheckItem(cat, 
+	newCheckItem(cat,
             "checklist.association.updates.affects-something-else",
 	    cl);
 
@@ -343,7 +343,7 @@ public class Init {
 	newCheckItem(cat, "checklist.instance.structure.belong", cl);
 	newCheckItem(cat, "checklist.instance.structure.make-internal", cl);
 	newCheckItem(cat,
-	    "checklist.instance.structure.is-state-in-another-machine-" 
+	    "checklist.instance.structure.is-state-in-another-machine-"
             + "exclusive", cl);
 
 	cat = Translator.localize("checklist.instance.actions");
@@ -509,7 +509,7 @@ public class Init {
 	newCheckItem(cat, "checklist.transition.actions.is-precondition-met",
 		     cl);
 	newCheckItem(cat,
-	    "checklist.transition.actions.is-postcondition-consistant-with-" 
+	    "checklist.transition.actions.is-postcondition-consistant-with-"
             + "destination", cl);
 
 	CheckManager.register((Class) ModelFacade.TRANSITION, cl);
@@ -582,7 +582,7 @@ public class Init {
 	newCheckItem(cat, "checklist.actor.location.move-somewhere", cl);
 	newCheckItem(cat, "checklist.actor.location.planned-subclasses", cl);
 	newCheckItem(cat, "checklist.actor.location.eliminate-from-model", cl);
-	newCheckItem(cat, 
+	newCheckItem(cat,
             "checklist.actor.location.eliminates-or-affects-something-else",
 	    cl);
 
@@ -592,6 +592,6 @@ public class Init {
 
 	CheckManager.register((Class) ModelFacade.ACTOR, cl);
 
-    }	
+    }
 
 } /* end class Init */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrNoInitialState.java
-// Classes: CrNoInitialState
-// Original Author: jrobbins@ics.uci.edu
 // $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
@@ -34,14 +30,16 @@ import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
 
-/** A critic to detect whether the Compositestate attached to a 
- *  Statemachine has no initial state. 
+/** A critic to detect whether the Compositestate attached to a
+ *  Statemachine has no initial state.
+ *
+ * @author jrobbins
  */
 public class CrNoInitialState extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrNoInitialState() {
 	setHeadline("Place an Initial MState");
@@ -56,7 +54,7 @@ public class CrNoInitialState extends CrUML {
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isACompositeState(dm))) return NO_PROBLEM;
 	Object cs = /*(MCompositeState)*/ dm;
-    
+
 	// if this composite state is not attached to a statemachine
 	// it is not the toplevel composite state.
 	if (ModelFacade.getStateMachine(cs) == null) return NO_PROBLEM;
@@ -66,7 +64,7 @@ public class CrNoInitialState extends CrUML {
 	int size = peers.size();
 	for (Iterator iter = peers.iterator(); iter.hasNext();) {
 	    Object sv = iter.next();
-	    if (ModelFacade.isAPseudostate(sv) 
+	    if (ModelFacade.isAPseudostate(sv)
 		&& (ModelFacade.getKind(sv).equals(
                         ModelFacade.INITIAL_PSEUDOSTATEKIND)))
 		initialStateCount++;

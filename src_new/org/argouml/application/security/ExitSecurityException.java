@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,26 +24,26 @@
 
 package org.argouml.application.security;
 
-/** An Argo security exception.
+/**
+ * An Argo security exception.
  *
- *  @author Thierry Lach
- *  @since 0.9.4
+ * @author Thierry Lach
+ * @since 0.9.4
  */
-public class ExitSecurityException extends SecurityException
-{
+public class ExitSecurityException extends SecurityException {
     private boolean hidden = false;
 
     /**
      * The constructor.
-     * 
+     *
      */
     public ExitSecurityException() {
         this(false);
-    } 
+    }
 
     /**
      * The constructor.
-     * 
+     *
      * @param h true if the exception is hidden
      */
     public ExitSecurityException(boolean h) {

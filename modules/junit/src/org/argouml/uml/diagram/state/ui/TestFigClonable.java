@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2002, 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,13 +27,13 @@ package org.argouml.uml.diagram.state.ui;
 import junit.framework.*;
 
 /** Tests whether Figs in state.ui are clonable, 
- * apart from FigStateVertex which is abstract. 
+ * apart from FigStateVertex which is abstract.
  */
 public class TestFigClonable extends TestCase {
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param name the test name
      */
     public TestFigClonable(String name) {
@@ -46,7 +46,7 @@ public class TestFigClonable extends TestCase {
         try {
             FigBranchState fig = new FigBranchState();
             FigBranchState figclone;
-             
+
             figclone = (FigBranchState) fig.clone();
             assertTrue("FigBranchState cloned", true);
         }
@@ -61,7 +61,7 @@ public class TestFigClonable extends TestCase {
         try {
             FigCompositeState fig = new FigCompositeState();
             FigCompositeState figclone;
-             
+
             figclone = (FigCompositeState) fig.clone();
             assertTrue("FigCompositeState cloned", true);
         }
@@ -76,7 +76,7 @@ public class TestFigClonable extends TestCase {
         try {
             FigDeepHistoryState fig = new FigDeepHistoryState();
             FigDeepHistoryState figclone;
-             
+
             figclone = (FigDeepHistoryState) fig.clone();
             assertTrue("FigDeepHistoryState cloned", true);
         }
@@ -91,7 +91,7 @@ public class TestFigClonable extends TestCase {
         try {
             FigFinalState fig = new FigFinalState();
             FigFinalState figclone;
-             
+
             figclone = (FigFinalState) fig.clone();
             assertTrue("FigFinalState cloned", true);
         }
@@ -107,7 +107,7 @@ public class TestFigClonable extends TestCase {
         try {
             FigForkState fig = new FigForkState();
             FigForkState figclone;
-             
+
             figclone = (FigForkState) fig.clone();
             assertTrue("FigForkState cloned", true);
         }
@@ -122,7 +122,7 @@ public class TestFigClonable extends TestCase {
         try {
             FigInitialState fig = new FigInitialState();
             FigInitialState figclone;
-             
+
             figclone = (FigInitialState) fig.clone();
             assertTrue("FigInitialState cloned", true);
         }
@@ -138,7 +138,7 @@ public class TestFigClonable extends TestCase {
         try {
             FigJoinState fig = new FigJoinState();
             FigJoinState figclone;
-             
+
             figclone = (FigJoinState) fig.clone();
             assertTrue("FigJoinState cloned", true);
         }
@@ -153,7 +153,7 @@ public class TestFigClonable extends TestCase {
         try {
             FigShallowHistoryState fig = new FigShallowHistoryState();
             FigShallowHistoryState figclone;
-             
+
             figclone = (FigShallowHistoryState) fig.clone();
             assertTrue("FigShallowHistoryState cloned", true);
         }
@@ -168,7 +168,7 @@ public class TestFigClonable extends TestCase {
         try {
             FigSimpleState fig = new FigSimpleState();
             FigSimpleState figclone;
-             
+
             figclone = (FigSimpleState) fig.clone();
             assertTrue("FigState cloned", true);
         }
@@ -184,7 +184,7 @@ public class TestFigClonable extends TestCase {
         try {
             FigTransition fig = new FigTransition();
             FigTransition figclone;
-             
+
             figclone = (FigTransition) fig.clone();
             assertTrue("FigTransition cloned", true);
         }

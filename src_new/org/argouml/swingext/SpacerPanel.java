@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,36 +29,36 @@ import javax.swing.JPanel;
 
 /** A Swing panel that displays nothing, but takes up a specified
  *  amount of space.  Used to make panels with GridBagLayouts look
- *  better. 
+ *  better.
  */
 public class SpacerPanel extends JPanel {
-    
+
     private int w = 10, h = 10;
-    
+
     /**
      * The constructor.
-     * 
+     *
      */
     public SpacerPanel() { }
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param width the width
      * @param height the height
      */
     public SpacerPanel(int width, int height) { w = width; h = height; }
-    
+
     /**
      * @see java.awt.Component#getMinimumSize()
      */
     public Dimension getMinimumSize() { return new Dimension(w, h); }
-    
+
     /**
      * @see java.awt.Component#getPreferredSize()
      */
     public Dimension getPreferredSize() { return new Dimension(w, h); }
-    
+
     /**
      * @see java.awt.Component#getSize()
      */

@@ -41,16 +41,16 @@ public class ActionNewUseCaseExtensionPoint
     /**
      * The singleton.
      */
-    public static final ActionNewUseCaseExtensionPoint SINGLETON = 
+    public static final ActionNewUseCaseExtensionPoint SINGLETON =
         new ActionNewUseCaseExtensionPoint();
-    
+
     /**
      * Constructor for ActionNewUseCaseExtensionPoint.
      */
     protected ActionNewUseCaseExtensionPoint() {
         super();
     }
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,10 +42,10 @@ public class StatusBar extends JPanel implements Runnable {
     private JLabel msg = new JLabel();
     private JProgressBar progress = new JProgressBar();
     private String statusText;
-  
+
     /**
      * The constructor.
-     * 
+     *
      */
     public StatusBar() {
 	progress.setMinimum(0);
@@ -88,7 +88,7 @@ public class StatusBar extends JPanel implements Runnable {
 
     /**
      * @param s the status bar text
-     * @param work the work that has to be done, 
+     * @param work the work that has to be done,
      *        i.e. the maximum value for the progress
      */
     public synchronized void doFakeProgress(String s, int work) {
@@ -124,5 +124,5 @@ public class StatusBar extends JPanel implements Runnable {
     //   public boolean isOptimizedDrawingEnabled() {
     //     return false;
     //   }
-  
+
 } /* end class StatusBar */

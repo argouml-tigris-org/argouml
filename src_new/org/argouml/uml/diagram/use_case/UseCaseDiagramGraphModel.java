@@ -234,7 +234,7 @@ public class UseCaseDiagramGraphModel
      *              edge given is not an association or has no source defined.
      */
     public Object getSourcePort(Object edge) {
-        
+
         if (ModelFacade.isARelationship(edge)) {
             return Model.getCoreHelper().getSource(/*(MRelationship)*/ edge);
 	}
@@ -351,7 +351,7 @@ public class UseCaseDiagramGraphModel
 
             Collection conns = ModelFacade.getConnections(edge);
             Iterator iter = conns.iterator();
-            
+
             if (conns.size() < 2) {
                 return false;
             }
@@ -376,7 +376,7 @@ public class UseCaseDiagramGraphModel
             end0 = ModelFacade.getBase(edge);
             end1 = ModelFacade.getExtension(edge);
         }
-        else if (ModelFacade.isAInclude(edge)) {           
+        else if (ModelFacade.isAInclude(edge)) {
 
             end0 = ModelFacade.getBase(edge);
             end1 = ModelFacade.getAddition(edge);
@@ -416,8 +416,8 @@ public class UseCaseDiagramGraphModel
         return true;
     }
 
-    
-    /** 
+
+    /**
      * Add the given node to the graph, if valid.<p>
      *
      * We add the node if it is not already on the graph, and
@@ -428,7 +428,7 @@ public class UseCaseDiagramGraphModel
      * elements of the model namespace, we are implicitly making it
      * public visibility (it could be private to this namespace).<p>
      *
-     * <em>Note</em>.  This method is inconsistent with 
+     * <em>Note</em>.  This method is inconsistent with
      * {@link #canAddNode}, which will allow a node to be added to the
      * graph if it is already there.<p>
      *
@@ -453,13 +453,13 @@ public class UseCaseDiagramGraphModel
          * Issue 324
          * Next line of code didn't check if the node allready was
          * owned by some namespace. So when a node was added that was allready
-         * owned by a namespace, the node was moved to the namespace the 
+         * owned by a namespace, the node was moved to the namespace the
          * usecase diagram belongs to.
          * OLD CODE
 
 	 if ((node instanceof MActor) ||
 	 (node instanceof MUseCase)) {
-         
+
          * NEW CODE:
          */
 	if (((ModelFacade.isAActor(node))
@@ -477,7 +477,7 @@ public class UseCaseDiagramGraphModel
     }
 
 
-    /** 
+    /**
      * Add the given edge to the graph, if valid.<p>
      *
      * We add the edge if it is not already on the graph, and
@@ -498,7 +498,7 @@ public class UseCaseDiagramGraphModel
         // Add the element and place it in the namespace of the model
         getEdges().add(edge);
 
-        if (ModelFacade.isAModelElement(edge) 
+        if (ModelFacade.isAModelElement(edge)
                 && ModelFacade.getNamespace(edge) == null) {
             ModelFacade.addOwnedElement(model, /*(MModelElement)*/ edge);
         }
@@ -601,7 +601,7 @@ public class UseCaseDiagramGraphModel
         // Dependencies for model elements. Iterate over client and suppliers
         // together.
 
-        if ( ModelFacade.isAModelElement(node) ) {
+        if (ModelFacade.isAModelElement(node)) {
             Vector specs =
                 new Vector(ModelFacade.getClientDependencies(node));
 
@@ -620,7 +620,7 @@ public class UseCaseDiagramGraphModel
     }
 
 
- 
+
     /**
      * Determine if the two given ports can be connected by a kind of
      * edge to be determined by the ports.<p>

@@ -38,7 +38,7 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
  * This action creates a new Actor.
- * 
+ *
  * @author Michiel
  */
 class ActionNewActor extends AbstractActionNewModelElement {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,7 +39,7 @@ import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 
-/** 
+/**
  * An action that makes all edges on the selected node visible/not visible
  * on the diagram.
  *
@@ -52,7 +52,7 @@ public class ActionEdgesDisplay extends UMLAction {
     // static variables
 
     // compartments
-    private static UMLAction showEdges = new ActionEdgesDisplay(true, 
+    private static UMLAction showEdges = new ActionEdgesDisplay(true,
                 Translator.localize("menu.popup.show.all-edges"));
     private static UMLAction hideEdges
         = new ActionEdgesDisplay(false,
@@ -65,7 +65,7 @@ public class ActionEdgesDisplay extends UMLAction {
 
     /**
      * The constructor.
-     * 
+     *
      * @param showEdge to show or not to show
      * @param desc the name
      */
@@ -127,8 +127,8 @@ public class ActionEdgesDisplay extends UMLAction {
     /**
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
-    public boolean shouldBeEnabled() { 
-        return true; 
+    public boolean shouldBeEnabled() {
+        return true;
     }
 
 

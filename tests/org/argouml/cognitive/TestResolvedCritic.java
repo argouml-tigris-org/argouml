@@ -37,10 +37,10 @@ import org.tigris.gef.util.VectorSet;
  *
  */
 public class TestResolvedCritic extends TestCase {
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param name the name of the test
      */
     public TestResolvedCritic(String name) {
@@ -57,16 +57,16 @@ public class TestResolvedCritic extends TestCase {
         ResolvedCritic rc;
         Vector vec = new Vector();
         VectorSet set = new VectorSet();
-        
+
         /* ResolvedCritic(String, Vector) */
-        
+
         rc = new ResolvedCritic("rc", null);
         assertTrue("getCritic simple", "rc".equals(rc.getCritic()));
         assertTrue(
         	   "getOffenderList simple",
         	   (rc.getOffenderList() == null
         	    || rc.getOffenderList().size() == 0));
-        
+
         vec.add("str1");
         rc = new ResolvedCritic("rc2", vec);
         assertTrue("getCritic 2nd", "rc2".equals(rc.getCritic()));
@@ -74,9 +74,9 @@ public class TestResolvedCritic extends TestCase {
         	   "getOffenderList 2nd",
         	   rc.getOffenderList() != null
         	   && "str1".equals(rc.getOffenderList().get(0)));
-        
+
         /* ResolvedCritic(Critic, VectorSet) */
-        
+
         try {
             rc = new ResolvedCritic(c, null);
             System.out.println(rc.getCritic());
@@ -88,11 +88,11 @@ public class TestResolvedCritic extends TestCase {
         } catch (UnresolvableException ure1) {
             assertTrue("create 1 with MClass", false);
         }
-        
+
         set.addElement(testmc);
         try {
             rc = new ResolvedCritic(c, set);
-        
+
             assertTrue("getCritic 2", crString.equals(rc.getCritic()));
             assertTrue(
         	       "assigns id 2",
@@ -105,14 +105,14 @@ public class TestResolvedCritic extends TestCase {
         } catch (UnresolvableException ure1) {
             assertTrue("create 2 with MClass", false);
         }
-        
+
         /* ResolvedCritic(Critic, VectorSet, boolean) */
-        
+
         /* testmc should now have an ItemUID so we should be able to
          * create without adding a new ItemUID */
         try {
             rc = new ResolvedCritic(c, set, false);
-        
+
             assertTrue("getCritic 3", crString.equals(rc.getCritic()));
             assertTrue(
         	       "assigns id 3",

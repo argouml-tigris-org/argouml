@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,22 +35,22 @@ public class ProjectMemberModel extends AbstractProjectMember {
 
     private static final String MEMBER_TYPE = "xmi";
     private static final String FILE_EXT = "." + MEMBER_TYPE;
-    
+
     private Object model;
 
     /**
      * The constructor.
-     * 
+     *
      * @param m the model
      * @param p the project
      */
     public ProjectMemberModel(Object m, Project p) {
-        
+
         super(p.getBaseName() + FILE_EXT, p);
-        
+
         if (!ModelFacade.isAModel(m))
             throw new IllegalArgumentException();
-        
+
         setModel(m);
     }
 
@@ -60,7 +60,7 @@ public class ProjectMemberModel extends AbstractProjectMember {
     public Object getModel() {
         return model;
     }
-    
+
     /**
      * @param m the model
      */

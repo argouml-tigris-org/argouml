@@ -115,7 +115,7 @@ public class TestTargetManager extends TestCase {
 	Runnable[] runnables = new Runnable[50];
 	final TargetManager manager = TargetManager.getInstance();
 	for (int i = 0; i < 50; i++) {
-	    runnables[i] = new Runnable() 
+	    runnables[i] = new Runnable()
 		{
 		    public void run() {
 			assertEquals(manager, TargetManager.getInstance());
@@ -363,9 +363,9 @@ public class TestTargetManager extends TestCase {
 	targetAddedObjects = null;
 	TargetManager.getInstance().addTarget(testObject);
 	assertTrue(targetAddedCalled);
-	assertTrue(newList.containsAll(Arrays.asList(targetAddedObjects)) 
+	assertTrue(newList.containsAll(Arrays.asList(targetAddedObjects))
             && newList.size() == targetAddedObjects.length);
-	assertTrue(TargetManager.getInstance().getTarget() == testObject);	
+	assertTrue(TargetManager.getInstance().getTarget() == testObject);
 	targetAddedCalled = false;
 	TargetManager.getInstance().addTarget(testObject);
 	assertTrue(!targetAddedCalled);
@@ -633,10 +633,10 @@ public class TestTargetManager extends TestCase {
     }
 
     /**
-     * Testing to {@link TargetManager#addTarget(Object) add}, 
+     * Testing to {@link TargetManager#addTarget(Object) add},
      * {@link TargetManager#setTarget(Object) set}, and
      * {@link TargetManager#removeTarget(Object) remove}
-     * a target from within the {@link TargetListener} calls 
+     * a target from within the {@link TargetListener} calls
      * ({@link TargetListener#targetAdded(TargetEvent)},
      * {@link TargetListener#targetRemoved(TargetEvent)}, and
      * {@link TargetListener#targetSet(TargetEvent)}).
@@ -707,7 +707,7 @@ public class TestTargetManager extends TestCase {
 	TargetManager.getInstance().removeTarget(list.get(0));
 	assertEquals(1, listener.counter);
     }
-    
+
     /**
      * Test navigate().
      */
@@ -722,7 +722,7 @@ public class TestTargetManager extends TestCase {
         assertTrue(TargetManager.getInstance().navigateBackPossible());
         assertEquals(false,
 		     TargetManager.getInstance().navigateForwardPossible());
-        try {        
+        try {
             TargetManager.getInstance().navigateForward();
             fail();
         }
@@ -743,7 +743,7 @@ public class TestTargetManager extends TestCase {
         assertEquals(false, TargetManager.getInstance().navigateBackPossible());
         try {
             TargetManager.getInstance().navigateBackward();
-            fail(); 
+            fail();
         } catch (IllegalStateException e) {
         }
         TargetManager.getInstance().navigateForward();
@@ -765,8 +765,8 @@ public class TestTargetManager extends TestCase {
         TargetManager.getInstance().navigateBackward();
         assertTrue(TargetManager.getInstance().navigateForwardPossible());
         assertEquals(false, TargetManager.getInstance().navigateBackPossible());
-        
-        
+
+
     }
 
     /**
@@ -774,7 +774,7 @@ public class TestTargetManager extends TestCase {
      */
     protected void setUp() {
 	TargetManager.getInstance().setTarget(null);
-        
+
     }
 
     /**

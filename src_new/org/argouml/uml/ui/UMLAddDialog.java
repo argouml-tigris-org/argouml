@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -66,7 +66,7 @@ import org.argouml.i18n.Translator;
  * </ol>
  */
 public class UMLAddDialog extends JPanel implements ActionListener {
-	
+
     /**
      * The choices a user has
      */
@@ -79,7 +79,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      * The selected choices.
      */
     private Vector selected = null;
-	
+
     /**
      * The GUI list for the choices
      */
@@ -92,7 +92,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
     private JButton removeButton = null;
     private JButton okButton = null;
     private JButton cancelButton = null;
-	
+
     private JDialog dialog = null;
     private String title = null;
 
@@ -101,7 +101,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      * either JOptionPane.OK_OPTION or JOptionPane.CANCEL_OPTION
      */
     private int returnValue;
-	
+
     /**
      * Constructs a UMLAddDialog with a
      * UMLListCellRenderer. Modelelements are represented with their
@@ -119,10 +119,10 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 			boolean multiselectAllowed, boolean exclusive) {
 	this(theChoices, preselected, theTitle, new UMLListCellRenderer2(true),
 	     multiselectAllowed, exclusive);
-    }	
-	
+    }
+
     /**
-     * Constructs a UMLAddDialog with a given UMLListCellRenderer. 
+     * Constructs a UMLAddDialog with a given UMLListCellRenderer.
      *
      * @param theChoices A vector with the choices a user has.
      * @param preselected A vector with already preselected choices
@@ -155,14 +155,14 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 	if (preselected != null) {
 	    selected.addAll(preselected);
 	}
-		
+
 	setLayout(new BorderLayout());
-		
-	JPanel upperPanel = new JPanel();	
+
+	JPanel upperPanel = new JPanel();
 	JPanel panelChoices = new JPanel(new BorderLayout());
 	JPanel panelSelected = new JPanel(new BorderLayout());
-		
-		
+
+
 	choicesList = new JList(constructListModel(theChoices));
 	choicesList.setMinimumSize(new Dimension(150, 300));
 	if (renderer != null) {
@@ -176,10 +176,10 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 	}
 	choicesList.setVisibleRowCount(15);
 	JScrollPane choicesScroll = new JScrollPane(choicesList);
-	panelChoices.add(new JLabel(Translator.localize("label.choices")), 
+	panelChoices.add(new JLabel(Translator.localize("label.choices")),
 	        BorderLayout.NORTH);
 	panelChoices.add(choicesScroll, BorderLayout.CENTER);
-		
+
 	addButton = new JButton(ResourceLoaderWrapper.lookupIconResource(
             "NavigateForward"));
 	addButton.addActionListener(this);
@@ -191,8 +191,8 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 	buttonBox.add(addButton);
 	buttonBox.add(Box.createRigidArea(new Dimension(0, 5)));
 	buttonBox.add(removeButton);
-		
-	selectedList = new JList(constructListModel(selected));	
+
+	selectedList = new JList(constructListModel(selected));
 	selectedList.setMinimumSize(new Dimension(150, 300));
 	if (renderer != null) {
 	    selectedList.setCellRenderer(renderer);
@@ -204,38 +204,38 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 	panelSelected.add(new JLabel(Translator.localize("label.selected")),
 	        BorderLayout.NORTH);
 	panelSelected.add(selectedScroll, BorderLayout.CENTER);
-		
-	upperPanel.add(panelChoices);	
+
+	upperPanel.add(panelChoices);
 	upperPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 	upperPanel.add(buttonBox);
 	upperPanel.add(Box.createRigidArea(new Dimension(5, 0)));
-	upperPanel.add(panelSelected);	
+	upperPanel.add(panelSelected);
 	// upperPanel.setBorder(BorderFactory.createEtchedBorder());
-		
+
 	add(upperPanel, BorderLayout.NORTH);
-		
-		
+
+
 	JPanel okCancelPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		
+
 	okButton = new JButton(Translator.localize("button.ok"));
 	okButton.addActionListener(this);
 	cancelButton =
 	    new JButton(Translator.localize("button.cancel"));
-	cancelButton.addActionListener(this);		
+	cancelButton.addActionListener(this);
 	okCancelPanel.add(okButton);
 	okCancelPanel.add(cancelButton);
 	okCancelPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 10));
-		
+
 	add(okCancelPanel, BorderLayout.SOUTH);
 	setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
 	update();
     }
-	
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-	Object source = e.getSource(); 
+	Object source = e.getSource();
 	if (source.equals(addButton)) {
 	    addSelection();
 	    update();
@@ -251,7 +251,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 	    cancel();
 	}
     }
-	
+
     /**
      * Updates the add and remove button (sets
      * enabled/disabled). Called whenever the model is changed.
@@ -268,7 +268,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 	    removeButton.setEnabled(true);
 	}
     }
-	
+
     /**
      * Utility method to construct a DefaultListModel from a Vector
      * @param vec the given list
@@ -279,9 +279,9 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 	for (int i = 0; i < vec.size(); i++) {
 	    model.addElement(vec.get(i));
 	}
-	return model;		
+	return model;
     }
-	
+
     /**
      * Shows the dialog. First a dialog must be constructed using one
      * of the constructors of this class.  After that this method
@@ -304,7 +304,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
         Container contentPane = dialog.getContentPane();
         contentPane.setLayout(new BorderLayout());
         contentPane.add(this, BorderLayout.CENTER);
- 
+
 	dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 	dialog.addWindowListener(new WindowAdapter() {
     	    public void windowClosing(WindowEvent we) {
@@ -314,11 +314,11 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 
         dialog.pack();
         dialog.setLocationRelativeTo(parent);
- 
+
         dialog.show();
 	return returnValue;
     }
-	
+
     /**
      * Returns the choices a user can make.
      * @return Vector
@@ -331,7 +331,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 	}
 	return returnVector;
     }
-	
+
     /**
      * Returns the selected elements in the selected list
      * @return Vector
@@ -339,14 +339,14 @@ public class UMLAddDialog extends JPanel implements ActionListener {
     public Vector getSelectedChoices() {
 	Vector returnVector = new Vector();
 	if (selectedList != null && selected != null) {
-	    int[] indices = selectedList.getSelectedIndices();			
+	    int[] indices = selectedList.getSelectedIndices();
 	    for (int i = 0; i < indices.length; i++) {
 		returnVector.add(selected.get(indices[i]));
 	    }
 	}
 	return returnVector;
     }
-	
+
     /**
      * Returns the by the user selected elements. This method should
      * be called if the selected choices are to be known.
@@ -356,7 +356,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
     public Vector getSelected() {
 	return selected;
     }
-	
+
     /**
      * Adds the selected elements in the choices list to the selected
      * list. Updates the GUI too.
@@ -374,7 +374,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 	        .addElement(theChoices.get(i));
 	}
     }
-	
+
     /**
      * Removes the selected elements in the selected list and adds
      * them to the choices list. Updates the GUI too.
@@ -392,7 +392,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 	        .addElement(theChoices.get(i));
 	}
     }
-	
+
     /**
      * Called when the okbutton is pressed. Closes this dialog and
      * sets the returnvalue to JOptionPane.OK_OPTION.
@@ -403,7 +403,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 	    returnValue = JOptionPane.OK_OPTION;
 	}
     }
-	
+
     /**
      * Called when the cancel button is pressed. Closes this dialog
      * and sets the returnvalue to JOptionPane.CANCEL_OPTION.  Resets
@@ -422,7 +422,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
     }
 }
 
-	
+
 
 
 

@@ -77,7 +77,7 @@ public class GUITestProject extends TestCase {
         assertEquals(sizeDiagrams, p.getDiagrams().size());
         assertEquals(sizeMembers, p.getMembers().size());
     }
-    
+
     /**
      * Test deleting a class that contains a Statechart diagram.
      * The diagram should be deleted, too.
@@ -85,16 +85,16 @@ public class GUITestProject extends TestCase {
     public void testDeleteClassWithStateDiagram() {
         Project p = ProjectManager.getManager().getCurrentProject();
         assertEquals(2, p.getDiagrams().size());
-        
+
         int sizeMembers = p.getMembers().size();
         int sizeDiagrams = p.getDiagrams().size();
-        
+
         // test with a class and class diagram
         Object package1 = Model.getModelManagementFactory().buildPackage(
                 "test1", null);
         Object aClass = Model.getCoreFactory().buildClass(package1);
-        
-        
+
+
         // try with Statediagram
         Object machine = Model.getStateMachinesFactory().buildStateMachine(
                 aClass);
@@ -109,23 +109,23 @@ public class GUITestProject extends TestCase {
         assertEquals(sizeDiagrams, p.getDiagrams().size());
         assertEquals(sizeMembers, p.getMembers().size());
     }
-    
+
     /**
      * Test deleting a statechart diagram directly.
      */
     public void testDeleteStateDiagram() {
         Project p = ProjectManager.getManager().getCurrentProject();
         assertEquals(2, p.getDiagrams().size());
-        
+
         int sizeMembers = p.getMembers().size();
         int sizeDiagrams = p.getDiagrams().size();
-        
+
         // test with a class and class diagram
         Object package1 = Model.getModelManagementFactory().buildPackage(
                 "test1", null);
         Object aClass = Model.getCoreFactory().buildClass(package1);
-        
-        
+
+
         // try with Statediagram
         Object machine = Model.getStateMachinesFactory().buildStateMachine(
                 aClass);
@@ -143,59 +143,59 @@ public class GUITestProject extends TestCase {
     /**
      * Test deleting a package that contains a Class.
      * The class should be deleted, too.
-     */ 
+     */
     public void testDeleteClassWithInnerClass() {
         Project p = ProjectManager.getManager().getCurrentProject();
         assertEquals(2, p.getDiagrams().size());
-        
+
         // test with a class and an inner class
         Object aClass = Model.getCoreFactory().buildClass("Test");
         Object bClass = Model.getCoreFactory().buildClass(aClass);
 
         p.moveToTrash(aClass);
-        
+
         assertTrue("Class not in trash", p.isInTrash(aClass));
-        assertTrue("Inner Class not in trash", 
+        assertTrue("Inner Class not in trash",
                 Model.getUmlFactory().isRemoved(bClass));
     }
-   
+
     /**
      * Test deleting a package that contains a Class.
      * The class should be deleted, too.
-     */ 
+     */
     public void testDeletePackageWithClass() {
         Project p = ProjectManager.getManager().getCurrentProject();
         assertEquals(2, p.getDiagrams().size());
-        
+
         // test with a class and class diagram
         Object package1 = Model.getModelManagementFactory().buildPackage(
                 "test1", null);
         Object aClass = Model.getCoreFactory().buildClass(package1);
 
         p.moveToTrash(package1);
-        
-        assertTrue("Class not in trash", 
+
+        assertTrue("Class not in trash",
                 Model.getUmlFactory().isRemoved(aClass));
     }
 
-    
+
     /**
      * Test deleting a package that contains a Class with Statechart diagram.
      * The diagram should be deleted, too.
-     */ 
+     */
     public void testDeletePackageWithStateDiagram() {
         Project p = ProjectManager.getManager().getCurrentProject();
         assertEquals(2, p.getDiagrams().size());
-        
+
         int sizeMembers = p.getMembers().size();
         int sizeDiagrams = p.getDiagrams().size();
-        
+
         // test with a class and class diagram
         Object package1 = Model.getModelManagementFactory().buildPackage(
                 "test1", null);
         Object aClass = Model.getCoreFactory().buildClass(package1);
-        
-        
+
+
         // try with Statediagram
         Object machine = Model.getStateMachinesFactory().buildStateMachine(
                 aClass);
@@ -205,9 +205,9 @@ public class GUITestProject extends TestCase {
         assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
         assertEquals(sizeMembers + 1, p.getMembers().size());
         p.moveToTrash(package1);
-        assertTrue("Class not in trash", 
+        assertTrue("Class not in trash",
                 Model.getUmlFactory().isRemoved(aClass));
-        assertTrue("Statemachine not in trash", 
+        assertTrue("Statemachine not in trash",
                 Model.getUmlFactory().isRemoved(machine));
         assertEquals(sizeDiagrams, p.getDiagrams().size());
         assertEquals(sizeMembers, p.getMembers().size());
@@ -220,21 +220,21 @@ public class GUITestProject extends TestCase {
     public void testDeleteOperationWithStateDiagram() {
         Project p = ProjectManager.getManager().getCurrentProject();
         assertEquals(2, p.getDiagrams().size());
-        
+
         int sizeMembers = p.getMembers().size();
         int sizeDiagrams = p.getDiagrams().size();
-        
+
         // test with a class and class diagram
         Object package1 = Model.getModelManagementFactory().buildPackage(
                 "test1", null);
         Object aClass = Model.getCoreFactory().buildClass(package1);
-        
+
         Collection propertyChangeListeners = p.findFigsForMember(aClass);
         Object model = p.getModel();
         Object voidType = p.findType("void");
         Object oper = Model.getCoreFactory()
             .buildOperation(aClass, model, voidType, propertyChangeListeners);
-        
+
         // try with Statediagram
         Object machine = Model.getStateMachinesFactory().buildStateMachine(
                 oper);
@@ -243,33 +243,33 @@ public class GUITestProject extends TestCase {
         p.addMember(d);
         assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
         assertEquals(sizeMembers + 1, p.getMembers().size());
-        
+
         p.moveToTrash(oper);
-        
+
         assertTrue("Operation not in trash", p.isInTrash(oper));
-        assertTrue("Statemachine not in trash", 
+        assertTrue("Statemachine not in trash",
                 Model.getUmlFactory().isRemoved(machine));
         assertEquals(sizeDiagrams, p.getDiagrams().size());
         assertEquals(sizeMembers, p.getMembers().size());
     }
 
-    
+
     /**
      * Test deleting a package with a Class with a Activity diagram.
      * The diagram should be deleted, too.
-     */ 
+     */
     public void testDeletePackageWithClassWithActivityDiagram() {
         Project p = ProjectManager.getManager().getCurrentProject();
         assertEquals(2, p.getDiagrams().size());
-        
+
         int sizeMembers = p.getMembers().size();
         int sizeDiagrams = p.getDiagrams().size();
-        
+
         // test with a package and a class and activity diagram
         Object package1 = Model.getModelManagementFactory().buildPackage(
                 "test1", null);
         Object aClass = Model.getCoreFactory().buildClass(package1);
-      
+
         // build the Activity Diagram
         Object actgrph = Model.getActivityGraphsFactory().buildActivityGraph(
                 aClass);
@@ -278,12 +278,12 @@ public class GUITestProject extends TestCase {
         p.addMember(d);
         assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
         assertEquals(sizeMembers + 1, p.getMembers().size());
-        
+
         p.moveToTrash(package1);
-        
-        assertTrue("Class not in trash", 
+
+        assertTrue("Class not in trash",
                 Model.getUmlFactory().isRemoved(aClass));
-        assertTrue("ActivityGraph not in trash", 
+        assertTrue("ActivityGraph not in trash",
                 Model.getUmlFactory().isRemoved(actgrph));
         assertEquals(sizeDiagrams, p.getDiagrams().size());
         assertEquals(sizeMembers, p.getMembers().size());

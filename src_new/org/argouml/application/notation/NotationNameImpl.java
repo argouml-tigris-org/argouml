@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -50,7 +50,9 @@ import org.argouml.application.events.ArgoNotationEvent;
 public class NotationNameImpl
     implements NotationName, ArgoModuleEventListener {
 
-    /** Logger. */
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(NotationNameImpl.class);
 
     private String name;
@@ -59,7 +61,8 @@ public class NotationNameImpl
 
     private static ArrayList notations = new ArrayList();
 
-    /** A notation without a version or icon.
+    /**
+     * A notation without a version or icon.
      *
      * @param theName the name of the notation
      */
@@ -67,7 +70,8 @@ public class NotationNameImpl
         this(theName, null, null);
     }
 
-    /** A notation without a version and with an icon.
+    /**
+     * A notation without a version and with an icon.
      *
      * @param theName the name of the notation
      * @param theIcon the icon for of the notation
@@ -76,7 +80,8 @@ public class NotationNameImpl
         this(theName, null, theIcon);
     }
 
-    /** A notation with a version and no icon.
+    /**
+     * A notation with a version and no icon.
      *
      * @param theName the name of the notation
      * @param theVersion the version of the notation
@@ -85,7 +90,8 @@ public class NotationNameImpl
         this(theName, theVersion, null);
     }
 
-    /** A notation with a version and an icon.
+    /**
+     * A notation with a version and an icon.
      *
      * @param myName    the name of the notation
      * @param myVersion the version of the notation
@@ -134,7 +140,8 @@ public class NotationNameImpl
         }
     }
 
-    /** Returns an icon for the notation, or null if no icon is available.
+    /**
+     * Returns an icon for the notation, or null if no icon is available.
      *
      * @see org.argouml.application.api.NotationName#getIcon()
      */
@@ -180,7 +187,7 @@ public class NotationNameImpl
 	ArgoEventPump.fireEvent(new ArgoNotationEvent(eventType, nn));
     }
 
-    /** 
+    /**
      * Create a NotationName with or without a version.
      * The NotationName is only created if there is no such notation before.
      *
@@ -200,7 +207,8 @@ public class NotationNameImpl
         return nn;
     }
 
-    /** Get all of the registered notations.
+    /**
+     * Get all of the registered notations.
      *
      * @return an ArrayList with all notations
      */
@@ -238,8 +246,9 @@ public class NotationNameImpl
         return this.getConfigurationValue().equals(nn.getConfigurationValue());
     }
 
-    /** Finds a NotationName matching the language with no version.
-     *  Returns null if no match.
+    /**
+     * Finds a NotationName matching the language with no version.
+     * Returns null if no match.
      *
      * @param k1 the notation name string
      * @return the notation name
@@ -248,7 +257,7 @@ public class NotationNameImpl
         return findNotation(getNotationNameString(k1, null));
     }
 
-    /** 
+    /**
      * Finds a NotationName matching the language and version.
      * Returns null if no match.
      *

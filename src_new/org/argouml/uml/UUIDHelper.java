@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,21 +40,21 @@ public class UUIDHelper {
 
     ////////////////////////////////////////////////////////////////
     // static variables
-    
+
     private static final UUIDHelper INSTANCE = new UUIDHelper();
 
     ////////////////////////////////////////////////////////////////
     // constructors
-    
+
     /**
-     * Constructor for the UUIDManager. This is private to make sure that 
+     * Constructor for the UUIDManager. This is private to make sure that
      * we are a proper singleton.
      *
      * @deprecated by Linus Tolke as of 0.15.4. Will be made private.
      * Use the UUIDManager singleton instead.
      */
     protected UUIDHelper() { }
-    
+
     /**
      * Return the UUIDManager singleton.
      *
@@ -76,7 +76,7 @@ public class UUIDHelper {
         }
         return ModelFacade.getUUID(base);
     }
-    
+
     /**
      * @return a new UUID
      */

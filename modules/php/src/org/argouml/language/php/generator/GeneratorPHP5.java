@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004, 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,7 +28,7 @@ import org.apache.log4j.Logger;
 
 /**
  * Generator class for PHP 5.x source code
- * 
+ *
  * @author Kai Schr&ouml;der
  * @since  ArgoUML 0.15.5
  */
@@ -37,26 +37,26 @@ public final class GeneratorPHP5 extends GeneratorPHP4 {
      * The log4j logger to log messages to
      */
     private static final Logger LOG = Logger.getLogger(GeneratorPHP5.class);
-    
+
     /**
      * The major version of the language this module generates source code for
      */
     private static final int LANGUAGE_MAJOR_VERSION = 5;
-    
+
     // ----- class constructor -------------------------------------------------
-        
+
     /**
      * Zero-argument class constructor
      */
     private GeneratorPHP5() {
         super(LANGUAGE_MAJOR_VERSION);
     }
-    
+
     // ----- org.argouml.application.api.ArgoModule ----------------------------
-    
+
     /**
      * Gets version of this module
-     * 
+     *
      * @see org.argouml.application.api.ArgoModule#getModuleVersion()
      */
     public String getModuleVersion() {

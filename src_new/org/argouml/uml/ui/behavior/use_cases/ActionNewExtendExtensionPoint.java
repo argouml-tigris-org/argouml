@@ -41,9 +41,9 @@ public class ActionNewExtendExtensionPoint
     /**
      * The singleton.
      */
-    public static final ActionNewExtendExtensionPoint SINGLETON = 
+    public static final ActionNewExtendExtensionPoint SINGLETON =
         new ActionNewExtendExtensionPoint();
-    
+
     /**
      * Constructor for ActionNewExtendExtensionPoint.
      */
@@ -57,7 +57,7 @@ public class ActionNewExtendExtensionPoint
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         if (ModelFacade.isAExtend(getTarget())) {
-            Object point = 
+            Object point =
                 Model.getUseCasesFactory().buildExtensionPoint(
                         ModelFacade.getBase(getTarget()));
             ModelFacade.addExtensionPoint(getTarget(), point);

@@ -36,9 +36,9 @@ import org.argouml.model.Model;
  */
 public class ActionNewUninterpretedAction extends ActionNewAction {
 
-    private static final ActionNewUninterpretedAction SINGLETON = 
+    private static final ActionNewUninterpretedAction SINGLETON =
         new ActionNewUninterpretedAction();
-    
+
     /**
      * Constructor for ActionNewUninterpretedAction.
      */
@@ -47,8 +47,8 @@ public class ActionNewUninterpretedAction extends ActionNewAction {
         putValue(Action.NAME, Translator.localize(
                 "button.new-uninterpretedaction"));
     }
-    
-    
+
+
     /**
      * @see org.argouml.uml.ui.behavior.common_behavior.ActionNewAction#createAction()
      */

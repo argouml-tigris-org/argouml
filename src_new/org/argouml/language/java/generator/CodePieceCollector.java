@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,7 +44,7 @@ import org.argouml.application.api.Configuration;
  * and then updates the file with new code from the model.
  *
  * taken from:
- * 
+ *
  * JavaRE - Code generation and reverse engineering for UML and Java.
  *
  * @author Marcus Andersson andersson@users.sourceforge.net
@@ -66,8 +66,7 @@ public class CodePieceCollector {
 
        @param codePiece A named code piece found in the code.
     */
-    public void add(NamedCodePiece codePiece)
-    {
+    public void add(NamedCodePiece codePiece) {
 	int index = 0;
 
 	// Insert in sorted order
@@ -95,7 +94,7 @@ public class CodePieceCollector {
                        File destination,
                        Object/*MNamespace*/ mNamespace) throws IOException {
 	String encoding = null;
-	if (Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING) == null 
+	if (Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING) == null
 	    || Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING)
 	    	.trim().equals("")) {
 	    encoding = System.getProperty("file.encoding");
@@ -114,7 +113,7 @@ public class CodePieceCollector {
 	Stack parseStateStack = new Stack();
 	parseStateStack.push(new ParseState(mNamespace));
 
-	for (Iterator i = codePieces.iterator(); i.hasNext(); ) {
+	for (Iterator i = codePieces.iterator(); i.hasNext();) {
 	    NamedCodePiece cp = (NamedCodePiece) i.next();
 	    // copy until code piece
 	    while (line < cp.getStartLine()) {

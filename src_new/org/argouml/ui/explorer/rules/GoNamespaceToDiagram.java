@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,9 +41,9 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 
 /**
  * Rule for Package->Diagram.
- * Shows the diagrams as children of their namespace. 
- * 
- * @author jaap.branderhorst@xs4all.nl	
+ * Shows the diagrams as children of their namespace.
+ *
+ * @author jaap.branderhorst@xs4all.nl
  * @since Dec 30, 2002
  */
 public class GoNamespaceToDiagram extends AbstractPerspectiveRule {
@@ -69,13 +69,13 @@ public class GoNamespaceToDiagram extends AbstractPerspectiveRule {
                 // Sequence diagrams are not shown as children of the
                 // collaboration that they show but as children of the
                 // classifier/operation the collaboration represents.
-                // Statediagrams and activitydiagrams are shown as children 
+                // Statediagrams and activitydiagrams are shown as children
                 // of the statemachine or activitygraph they belong to.
-                if (diagram instanceof UMLStateDiagram 
-                        || diagram instanceof UMLActivityDiagram 
+                if (diagram instanceof UMLStateDiagram
+                        || diagram instanceof UMLActivityDiagram
                         || diagram instanceof UMLSequenceDiagram) {
                     continue;
-                }                      
+                }
                 if (diagram.getNamespace() == namespace) {
                     returnList.add(diagram);
                 }

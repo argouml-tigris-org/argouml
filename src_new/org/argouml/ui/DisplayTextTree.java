@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -56,7 +56,7 @@ public class DisplayTextTree extends JTree {
 
     private boolean reexpanding;
 
-    /** 
+    /**
      * Sets the label renderer, line style angled, enable tooltips,
      * sets row height to 18 pixels.
      */
@@ -70,7 +70,7 @@ public class DisplayTextTree extends JTree {
         setShowsRootHandles(true);
         setToolTipText("Tree"); // Enables tooltips for tree. Won't be shown.
 
-        this.setRowHeight(18); 
+        this.setRowHeight(18);
 
         expandedPathsInModel = new Hashtable();
         reexpanding = false;
@@ -82,17 +82,17 @@ public class DisplayTextTree extends JTree {
      * Override the default JTree implementation to display the
      * appropriate text for any object that will be displayed in
      * the todo list.
-     * 
+     *
      * @param value the given object
      * @param selected ignored
      * @param expanded ignored
      * @param leaf ignored
      * @param row ignored
      * @param hasFocus ignored
-     * 
+     *
      * @return the value converted to text.
      *
-     * @see javax.swing.JTree#convertValueToText(java.lang.Object, 
+     * @see javax.swing.JTree#convertValueToText(java.lang.Object,
      * boolean, boolean, boolean, int, boolean)
      */
     public String convertValueToText(
@@ -179,7 +179,7 @@ public class DisplayTextTree extends JTree {
         return res;
     }
 
-    /** 
+    /**
      * We re-expand the ones
      * that were open before to maintain the same viewable tree.
      *

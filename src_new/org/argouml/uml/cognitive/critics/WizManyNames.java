@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,39 +35,39 @@ import org.argouml.model.ModelFacade;
 /**
  * A non-modal wizard to help the user change the name of a
  * MModelElement to a better name.
- * 
+ *
  * @author jrobbins
  */
 
 public class WizManyNames extends UMLWizard {
     private static final Logger LOG = Logger.getLogger(WizManyNames.class);
-					      
+
     private String instructions =
 	"Please change the name of the offending model element.";
     private Vector mes = null;
-							  
+
     private WizStepManyTextFields step1 = null;
-							      
+
     /**
      * The constructor.
-     * 
+     *
      */
     public WizManyNames() { }
-								  
-								      
+
+
     /**
      * @param m the offenders
      */
     public void setMEs(Vector m) { mes = m; }
-									  
+
     /**
      * @param s set the new instructions
      */
     public void setInstructions(String s) { instructions = s; }
-									      
-    /** 
+
+    /**
      * Create a new panel for the given step.
-     * 
+     *
      * @see org.argouml.cognitive.ui.Wizard#makePanel(int)
      */
     public JPanel makePanel(int newStep) {
@@ -87,13 +87,13 @@ public class WizManyNames extends UMLWizard {
 	return null;
     }
 
-    /** 
+    /**
      * Take action at the completion of a step. For example, when the
      * given step is 0, do nothing; and when the given step is 1, do
      * the first action.  Argo non-modal wizards should take action as
      * they do along, as soon as possible, they should not wait until
      * the final step.
-     * 
+     *
      * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {

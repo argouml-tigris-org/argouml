@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -67,7 +67,7 @@ public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
 
     /**
      * The constructor.
-     * 
+     *
      * @param parent the parent frame for this dialog
      */
     public DesignIssuesDialog(Frame parent) {
@@ -80,7 +80,7 @@ public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
 
         JScrollPane scroll = new JScrollPane(mainPanel);
         scroll.setPreferredSize(new Dimension(width, height));
-        
+
         setContent(scroll);
     }
 
@@ -151,7 +151,7 @@ public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
             Decision d = (Decision) elems.nextElement();
             JLabel decLabel = new JLabel(d.getName());
             JLabel valueLabel = new JLabel(getValueText(d.getPriority()));
-            JSlider decSlide = 
+            JSlider decSlide =
                 new JSlider(SwingConstants.HORIZONTAL,
                             1, 4, (d.getPriority() == 0 ? 4 : d.getPriority()));
 
@@ -162,7 +162,7 @@ public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
             // decSlide.setPaintLabels(true);
             decSlide.addChangeListener(this);
             Dimension origSize = decSlide.getPreferredSize();
-            Dimension smallSize = 
+            Dimension smallSize =
                 new Dimension(origSize.width / 2, origSize.height);
             decSlide.setSize(smallSize);
             decSlide.setPreferredSize(smallSize);
@@ -193,7 +193,7 @@ public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
             c.gridy++;
         }
     }
-  
+
     ////////////////////////////////////////////////////////////////
     // event handlers
 
@@ -213,22 +213,22 @@ public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
         String label = "";
         switch(priority) {
         case 1:
-	    label = "    1"; 
+	    label = "    1";
 	    break;
         case 2:
-	    label = "    2"; 
+	    label = "    2";
 	    break;
         case 3:
 	    label = "    3";
 	    break;
         case 0:
-        case 4: 
-	    label = Translator.localize("label.off"); 
+        case 4:
+	    label = Translator.localize("label.off");
 	    break;
         }
         return label;
     }
- 
+
 } /* end class DesignIssuesDialog */
 
 

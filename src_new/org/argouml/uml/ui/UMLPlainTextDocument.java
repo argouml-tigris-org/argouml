@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,10 +40,10 @@ import org.argouml.ui.targetmanager.TargetListener;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * A new model for a textproperty. This model does not use reflection to reach 
- * its goal and will perform better therefore. Furthermore, it only reacts to 
- * events that are meant for this model which improves maintainability and 
- * performance. 
+ * A new model for a textproperty. This model does not use reflection to reach
+ * its goal and will perform better therefore. Furthermore, it only reacts to
+ * events that are meant for this model which improves maintainability and
+ * performance.
  *
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -203,7 +203,7 @@ public abstract class UMLPlainTextDocument
      * @param ed The editing to set
      */
     public void setEditing(boolean ed) {
-        editing = ed;       
+        editing = ed;
     }
 
     /**

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,7 +40,7 @@ import org.tigris.gef.base.Diagram;
  * @author Bob Tarling
  */
 public class MemberList implements List {
-    
+
     /** logger */
     private static final Logger LOG = Logger.getLogger(MemberList.class);
 
@@ -54,7 +54,7 @@ public class MemberList implements List {
     public MemberList() {
         LOG.info("Creating a member list");
     }
-    
+
     /**
      * @see java.util.Collection#add(java.lang.Object)
      */
@@ -95,7 +95,7 @@ public class MemberList implements List {
             return diagramMembers.remove(member);
         }
     }
-    
+
     /**
      * @see java.util.Collection#iterator()
      */
@@ -140,7 +140,7 @@ public class MemberList implements List {
         }
         return temp.listIterator(arg0);
     }
-    
+
     private boolean removeDiagram(Diagram d) {
         Iterator it = diagramMembers.iterator();
         while (it.hasNext()) {
@@ -155,8 +155,8 @@ public class MemberList implements List {
         return false;
     }
 
-    
-    
+
+
     /**
      * @see java.util.Collection#size()
      */
@@ -166,7 +166,7 @@ public class MemberList implements List {
         if (todoList != null) ++size;
         return size;
     }
-    
+
     /**
      * @see java.util.Collection#contains(java.lang.Object)
      */
@@ -179,7 +179,7 @@ public class MemberList implements List {
         }
         return diagramMembers.contains(member);
     }
-    
+
     /**
      * @see java.util.Collection#clear()
      */
@@ -197,7 +197,7 @@ public class MemberList implements List {
         }
         diagramMembers.clear();
     }
-    
+
     /**
      * @param type the type of the member
      * @return the member of the project
@@ -212,7 +212,7 @@ public class MemberList implements List {
         throw new IllegalArgumentException(
             "There is no single instance of a " + type.getName() + " member");
     }
-    
+
     /**
      * @param type the type of the member
      * @return the member of the project
@@ -234,7 +234,7 @@ public class MemberList implements List {
         throw new IllegalArgumentException(
             "There is no single instance of a " + type.getName() + " member");
     }
-    
+
     /**
      * @see java.util.List#get(int)
      */
@@ -245,11 +245,11 @@ public class MemberList implements List {
             }
             --i;
         }
-        
+
         if (i == diagramMembers.size()) {
             return todoList;
         }
-        
+
         return (ProjectMember) diagramMembers.get(i);
     }
 
@@ -282,7 +282,7 @@ public class MemberList implements List {
         LOG.info("Setting todoList to " + member);
         todoList = member;
     }
-    
+
     /**
      * @see java.util.List#toArray(java.lang.Object[])
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,7 +42,7 @@ public class CrNodeInstanceWithoutClassifier extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrNodeInstanceWithoutClassifier() {
 	setHeadline("Set NodeInstance-Classifier");
@@ -58,38 +58,38 @@ public class CrNodeInstanceWithoutClassifier extends CrUML {
 	    return NO_PROBLEM;
 	}
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
-	VectorSet offs = computeOffenders(dd); 
+	VectorSet offs = computeOffenders(dd);
 	if (offs == null) {
-	    return NO_PROBLEM; 
+	    return NO_PROBLEM;
 	}
-	return PROBLEM_FOUND; 
+	return PROBLEM_FOUND;
     }
 
     /**
      * @see org.argouml.cognitive.critics.Critic#toDoItem(
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
-    public ToDoItem toDoItem(Object dm, Designer dsgr) { 
-	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm; 
-	VectorSet offs = computeOffenders(dd); 
-	return new UMLToDoItem(this, offs, dsgr); 
-    } 
- 
+    public ToDoItem toDoItem(Object dm, Designer dsgr) {
+	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
+	VectorSet offs = computeOffenders(dd);
+	return new UMLToDoItem(this, offs, dsgr);
+    }
+
     /**
      * @see org.argouml.cognitive.Poster#stillValid(
      * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
-    public boolean stillValid(ToDoItem i, Designer dsgr) { 
+    public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) {
-	    return false; 
+	    return false;
 	}
-	VectorSet offs = i.getOffenders(); 
-	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) offs.firstElement(); 
-	//if (!predicate(dm, dsgr)) return false; 
-	VectorSet newOffs = computeOffenders(dd); 
-	boolean res = offs.equals(newOffs); 
-	return res; 
-    } 
+	VectorSet offs = i.getOffenders();
+	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) offs.firstElement();
+	//if (!predicate(dm, dsgr)) return false;
+	VectorSet newOffs = computeOffenders(dd);
+	boolean res = offs.equals(newOffs);
+	return res;
+    }
 
     /**
      * If there are node-instances that have an enclosing Fig
@@ -100,7 +100,7 @@ public class CrNodeInstanceWithoutClassifier extends CrUML {
      * @param dd the diagram to check
      * @return the set of offenders
      */
-    public VectorSet computeOffenders(UMLDeploymentDiagram dd) { 
+    public VectorSet computeOffenders(UMLDeploymentDiagram dd) {
 	Collection figs = dd.getLayer().getContents(null);
         Iterator figIter = figs.iterator();
 	VectorSet offs = null;
@@ -115,9 +115,9 @@ public class CrNodeInstanceWithoutClassifier extends CrUML {
 		if (noi != null) {
 		    Collection col = ModelFacade.getClassifiers(noi);
 		    if (col.size() > 0) {
-		        continue;     
+		        continue;
 		    }
-		}       
+		}
 		if (offs == null) {
 		    offs = new VectorSet();
 		    offs.addElement(dd);
@@ -126,7 +126,7 @@ public class CrNodeInstanceWithoutClassifier extends CrUML {
 	    }
 	}
 	return offs;
-    } 
+    }
 
 
 } /* end class CrNodeInstanceWithoutClassifier.java */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,12 +38,12 @@ public class CrMergeClasses extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrMergeClasses() {
 	setHeadline("Consider Combining Classes");
 	setPriority(ToDoItem.LOW_PRIORITY);
-	addSupportedDecision(CrUML.DEC_CLASS_SELECTION); 
+	addSupportedDecision(CrUML.DEC_CLASS_SELECTION);
 	addTrigger("associationEnd");
     }
 
@@ -63,15 +63,15 @@ public class CrMergeClasses extends CrUML {
 	Object ae0 = /*(MAssociationEnd)*/ conns.get(0);
 	Object ae1 = /*(MAssociationEnd)*/ conns.get(1);
 	// both ends must be classes, otherwise there is nothing to merge
-	if (!(ModelFacade.isAClass(ModelFacade.getType(ae0)) 
-            && ModelFacade.isAClass(ModelFacade.getType(ae1)))) 
+	if (!(ModelFacade.isAClass(ModelFacade.getType(ae0))
+            && ModelFacade.isAClass(ModelFacade.getType(ae1))))
 	    return NO_PROBLEM;
 	// both ends must be navigable, otherwise there is nothing to merge
-	if (!(ModelFacade.isNavigable(ae0) 
+	if (!(ModelFacade.isNavigable(ae0)
             && ModelFacade.isNavigable(ae1)))
 	    return NO_PROBLEM;
 	if (ModelFacade.getMultiplicity(ae0)
-            .equals(ModelFacade.M1_1_MULTIPLICITY) 
+            .equals(ModelFacade.M1_1_MULTIPLICITY)
                 && ModelFacade.getMultiplicity(ae1)
                     .equals(ModelFacade.M1_1_MULTIPLICITY))
 	    return PROBLEM_FOUND;

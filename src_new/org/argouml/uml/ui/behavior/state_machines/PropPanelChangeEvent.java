@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: PropPanelChangeEvent
-// Classes: PropPanelChangeEvent
-// Original Author: oliver.heyden@gentleware.de
-
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.uml.ui.ActionRemoveFromModel;
@@ -35,15 +31,17 @@ import org.argouml.util.ConfigLoader;
 /**
  * The properties panel for a ChangeEvent.
  *
+ *
+ * @author oliver.heyden
  */
 public class PropPanelChangeEvent extends PropPanelEvent {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public PropPanelChangeEvent() {
-        super("Change event", lookupIcon("ChangeEvent"), 
+        super("Change event", lookupIcon("ChangeEvent"),
               ConfigLoader.getTabPropsOrientation());
     }
 
@@ -52,11 +50,11 @@ public class PropPanelChangeEvent extends PropPanelEvent {
      */
     public void initialize() {
         super.initialize();
-        
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));;
     }
 
-} 
+}
 
 

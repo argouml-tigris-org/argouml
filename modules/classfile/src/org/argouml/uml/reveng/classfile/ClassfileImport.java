@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2002, 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -70,7 +70,7 @@ public class ClassfileImport extends FileImportSupport {
     private Project currentProject = null;
 
     private Import theImport;
- 
+
     /**
      * Return the singleton instance of the Import class.
      *
@@ -82,10 +82,10 @@ public class ClassfileImport extends FileImportSupport {
 
     /**
      * @see org.argouml.application.api.PluggableImport#parseFile(
-     * org.argouml.kernel.Project, java.lang.Object, 
+     * org.argouml.kernel.Project, java.lang.Object,
      * org.argouml.uml.reveng.DiagramInterface, org.argouml.uml.reveng.Import)
      */
-    public void parseFile( Project p, Object o, 
+    public void parseFile( Project p, Object o,
             DiagramInterface d, Import i)
 	throws Exception {
 	if (o instanceof File ) {
@@ -95,7 +95,7 @@ public class ClassfileImport extends FileImportSupport {
 	    startImport(p, f);
 	}
     }
-    
+
     /**
      * Start the import process for a project and a file.
      *
@@ -108,7 +108,7 @@ public class ClassfileImport extends FileImportSupport {
 	secondPassFiles = new ArrayList();
 	currentProject = p;
 
-	// Process the current file. If it's a directory, 
+	// Process the current file. If it's a directory,
 	// process all the files in it.
 	processFile(f, true);
 
@@ -131,9 +131,9 @@ public class ClassfileImport extends FileImportSupport {
 	}
 
 	// Layout the modified diagrams.
-	for (Enumeration e = diagram.getModifiedDiagrams().elements(); 
+	for (Enumeration e = diagram.getModifiedDiagrams().elements();
 	                                        e.hasMoreElements(); ) {
-	    ClassdiagramLayouter layouter = 
+	    ClassdiagramLayouter layouter =
 	        new ClassdiagramLayouter((UMLDiagram) e.nextElement());
 	    layouter.layout();
 
@@ -159,10 +159,10 @@ public class ClassfileImport extends FileImportSupport {
 	    } else {
 		int total = 0;
 		if (f.getName().endsWith(".jar")) {
-		    for ( Enumeration e = 
+		    for ( Enumeration e =
 		            (new JarFile(f)).entries(); e.hasMoreElements(); ) {
 			ZipEntry entry = (ZipEntry) e.nextElement();
-			if ( !entry.isDirectory() 
+			if ( !entry.isDirectory()
 			        && entry.getName().endsWith(".class")) {
 			    total++;
 			}
@@ -183,9 +183,9 @@ public class ClassfileImport extends FileImportSupport {
 	String [] files = f.list();  // Get the content of the directory
 
 	for ( int i = 0; i < files.length; i++) {
-	    total += countFiles( new File( f, files[i]), 
+	    total += countFiles( new File( f, files[i]),
 	                        theImport.isDiscendDirectoriesRecursively());
-            
+
         }
 
 	return total;
@@ -201,7 +201,7 @@ public class ClassfileImport extends FileImportSupport {
 
 	for (Iterator i = secondPassFiles.iterator(); i.hasNext();) {
 	    Object next = i.next();
-	    nfiles += ((next instanceof ArrayList) 
+	    nfiles += ((next instanceof ArrayList)
                 ? ((ArrayList) next).size() - 1 : 1);
 	}
 	return nfiles;
@@ -214,11 +214,11 @@ public class ClassfileImport extends FileImportSupport {
      *
      * @param f The file or directory, we want to parse.
      * @param subdirectories boolean true if subdirs are processed, too
-     * @throws Exception Parser exceptions 
+     * @throws Exception Parser exceptions
      */
     public void processFile(File f, boolean subdirectories) throws Exception {
-        
-	if ( f.isDirectory() && subdirectories) {    
+
+	if ( f.isDirectory() && subdirectories) {
 	    // If f is a directory and the subdirectory flag is set,
 	    // import all the files in this directory
 	    processDirectory(f);
@@ -266,7 +266,7 @@ public class ClassfileImport extends FileImportSupport {
     private void processJarFile(File f) throws Exception {
 	JarFile jarfile = new JarFile(f);
 	// A second pass buffer just for this jar.
-	ArrayList jarSecondPassFiles = new ArrayList();  
+	ArrayList jarSecondPassFiles = new ArrayList();
 
 	for ( Enumeration e = jarfile.entries(); e.hasMoreElements(); ) {
 	    ZipEntry entry = (ZipEntry) e.nextElement();
@@ -275,16 +275,16 @@ public class ClassfileImport extends FileImportSupport {
 		try {
 		    parseFile(jarfile.getInputStream(entry), entryName);
 		} catch (Exception e1) {
-		    if (jarSecondPassFiles.isEmpty()) {     
+		    if (jarSecondPassFiles.isEmpty()) {
 		        // If there are no files tagged for a second pass,
 		        // add the jar files as the 1st element.
-			jarSecondPassFiles.add(f);  
+			jarSecondPassFiles.add(f);
 		    }
-		    System.out.println("Exception in " + entryName + " : " 
+		    System.out.println("Exception in " + entryName + " : "
 		                                        + e1.getMessage());
 		    e1.printStackTrace();
 		    // Store the entry to be parsed a 2nd time.
-		    jarSecondPassFiles.add(entryName); 
+		    jarSecondPassFiles.add(entryName);
 		}
 		Thread.sleep(10);
 	    }
@@ -312,7 +312,7 @@ public class ClassfileImport extends FileImportSupport {
 	    while (iterator.hasNext()) {
 		String filename = (String) iterator.next();
 		do2ndFilePass(
-		        jarfile.getInputStream(jarfile.getEntry(filename)), 
+		        jarfile.getInputStream(jarfile.getEntry(filename)),
 		        filename);
 	    }
 	    jarfile.close();
@@ -320,7 +320,7 @@ public class ClassfileImport extends FileImportSupport {
     }
 
     /**
-     * Parse a file for 2nd time. The main difference 
+     * Parse a file for 2nd time. The main difference
      * is, that the exceptions are printed,
      * instead of storing the file for a 2nd pass.
      *
@@ -341,7 +341,7 @@ public class ClassfileImport extends FileImportSupport {
      * @param is The inputStream for the file to parse.
      * @param fileName the name of the file to parse
      * @throws Exception Parser exception.
-     * 
+     *
      */
     public void parseFile(InputStream is, String fileName) throws Exception {
 
@@ -349,7 +349,7 @@ public class ClassfileImport extends FileImportSupport {
 	if (lastSlash != -1) {
 	    fileName = fileName.substring(lastSlash + 1);
 	}
-        
+
         ClassfileParser parser = new ClassfileParser(
                                  new SimpleByteLexer(
                                  new BufferedInputStream(is)));
@@ -358,12 +358,12 @@ public class ClassfileImport extends FileImportSupport {
         parser.classfile();
 
         // Create a modeller for the parser
-        org.argouml.uml.reveng.java.Modeller modeller = 
+        org.argouml.uml.reveng.java.Modeller modeller =
             new org.argouml.uml.reveng.java.Modeller(
                                                  currentProject.getModel(),
 						 diagram, theImport,
                                                  getAttribute().isSelected(),
-                                                 getDatatype().isSelected(), 
+                                                 getDatatype().isSelected(),
                                                  fileName);
 
 	// do something with the tree
@@ -385,22 +385,22 @@ public class ClassfileImport extends FileImportSupport {
      * Project.postLoad() is called after the import and it sets the
      * _needsSave flag to false.
      *
-     * @return true, if any diagrams where modified and 
+     * @return true, if any diagrams where modified and
      *         the project should be saved before exit.
      */
     public boolean needsSave() {
 	return ( !diagram.getModifiedDiagrams().isEmpty());
     }
-    
-    /** 
+
+    /**
      * Textual description of the module.
-     * 
+     *
      * @see org.argouml.application.api.ArgoModule#getModuleDescription()
      */
     public String getModuleDescription() {
 	return "Java import from class or jar files";
     }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleKey()
      */
@@ -414,20 +414,20 @@ public class ClassfileImport extends FileImportSupport {
     public boolean initializeModule() {
 
 	// Advertise a little
-	
+
 
         return true;
     }
-    
-    /** 
+
+    /**
      * Display name of the module.
-     * 
+     *
      * @see org.argouml.application.api.ArgoModule#getModuleName()
      */
     public String getModuleName() {
         return "Java from classes";
     }
-    
+
     /**
      * Provides an array of suffixe filters for the module.
      * Must be implemented in child class.
@@ -440,7 +440,7 @@ public class ClassfileImport extends FileImportSupport {
 	};
 	return result;
     }
-    
+
 }
 
 

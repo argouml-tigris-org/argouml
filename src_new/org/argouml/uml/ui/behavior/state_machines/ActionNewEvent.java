@@ -48,7 +48,7 @@ public abstract class ActionNewEvent extends AbstractActionNewModelElement {
     public static final String ROLE = "role";
 
     /**
-     * 
+     *
      *
      */
     public static interface Roles {
@@ -95,7 +95,7 @@ public abstract class ActionNewEvent extends AbstractActionNewModelElement {
     public static Object getAction(String role, Object t) {
         if (role.equals(Roles.TRIGGER)) {
             return ModelFacade.getTrigger(t);
-        }  
+        }
         return null;
     }
 }

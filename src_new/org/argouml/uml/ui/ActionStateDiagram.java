@@ -43,8 +43,8 @@ public class ActionStateDiagram extends ActionAddDiagram {
      * The singleton.
      */
     public static final ActionStateDiagram SINGLETON = new ActionStateDiagram();
-    
-    private static final Logger LOG = 
+
+    private static final Logger LOG =
         Logger.getLogger(ActionStateDiagram.class);
 
     ////////////////////////////////////////////////////////////////
@@ -65,7 +65,7 @@ public class ActionStateDiagram extends ActionAddDiagram {
             new UMLStateDiagram(ModelFacade.getNamespace(machine), machine);
         return d;
     }
-    
+
     /**
      * Overriden since it should only be possible to add statediagrams and
      * activitydiagrams to classifiers and behavioral features.
@@ -76,7 +76,7 @@ public class ActionStateDiagram extends ActionAddDiagram {
             && Model.getStateMachinesHelper().isAddingStatemachineAllowed(
                     TargetManager.getInstance().getModelTarget());
     }
-    
+
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(Object)
      */

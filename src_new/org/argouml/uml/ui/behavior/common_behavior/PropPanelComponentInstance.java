@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,7 +40,7 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
 /**
- * The properties panel for a ComponentInstance. 
+ * The properties panel for a ComponentInstance.
  */
 public class PropPanelComponentInstance extends PropPanelInstance {
 
@@ -48,35 +48,36 @@ public class PropPanelComponentInstance extends PropPanelInstance {
      * Contructor.
      */
     public PropPanelComponentInstance() {
-        super("Component Instance", lookupIcon("ComponentInstance"), 
+        super("Component Instance", lookupIcon("ComponentInstance"),
                 ConfigLoader.getTabPropsOrientation());
 
         Object[] namesToWatch = {ModelFacade.STEREOTYPE,
-            ModelFacade.NAMESPACE, ModelFacade.CLASSIFIER };
+            ModelFacade.NAMESPACE, ModelFacade.CLASSIFIER,
+	};
 
         setNameEventListening(namesToWatch);
 
         addField(Translator.localize("label.name"), getNameTextField());
 
         addField(Translator.localize("label.stereotype"), getStereotypeBox());
-        addField(Translator.localize("label.namespace"), 
+        addField(Translator.localize("label.namespace"),
                 getNamespaceComboBox());
 
         addSeperator();
 
-        addField(Translator.localize("label.stimili-sent"), 
+        addField(Translator.localize("label.stimili-sent"),
                 getStimuliSenderScroll());
 
-        addField(Translator.localize("label.stimili-received"), 
+        addField(Translator.localize("label.stimili-received"),
                 getStimuliReceiverScroll());
-        
+
         JList resList = new UMLLinkedList(new UMLContainerResidentListModel());
-        addField(Translator.localize("label.residents"), 
+        addField(Translator.localize("label.residents"),
                 new JScrollPane(resList));
 
         addSeperator();
-        AbstractActionAddModelElement action = 
-            new ActionAddInstanceClassifier( (Class) ModelFacade.COMPONENT);
+        AbstractActionAddModelElement action =
+            new ActionAddInstanceClassifier((Class) ModelFacade.COMPONENT);
         JScrollPane classifierScroll = new JScrollPane(
                 new UMLMutableLinkedList(new UMLInstanceClassifierListModel(),
                         action, null, null, true));
@@ -84,9 +85,9 @@ public class PropPanelComponentInstance extends PropPanelInstance {
                 classifierScroll);
 
         addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));
     }
 

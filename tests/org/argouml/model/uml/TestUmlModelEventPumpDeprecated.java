@@ -244,7 +244,7 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
 							       listener2,
 							       elem.getClass(),
 							       new String[] {
-								   "isRoot" 
+								   "isRoot"
 							       });
         elem.setRoot(true);
         assertTrue(eventcalled);
@@ -255,7 +255,7 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
      * on the class level really received the event.
      */
     public void testRecoveredClass() {
-        // this is never done, not by NSUML and not by Argo... 
+        // this is never done, not by NSUML and not by Argo...
         // therefore no implementation possible
     }
 
@@ -268,7 +268,7 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
 							       listener2,
 							       elem.getClass(),
 							       new String[] {
-								   "remove" 
+								   "remove"
 							       });
         elem.remove();
         assertTrue(eventcalled);
@@ -283,7 +283,7 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
 							       listener2,
 							       elem.getClass(),
 							       new String[] {
-								   "parameter" 
+								   "parameter"
 							       });
         elem.addParameter(new MParameterImpl());
         assertTrue(eventcalled);
@@ -300,7 +300,7 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
 							       listener2,
 							       elem.getClass(),
 							       new String[] {
-								   "parameter" 
+								   "parameter"
 							       });
         elem.removeParameter(param);
         assertTrue(eventcalled);
@@ -326,7 +326,7 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
 							  listener2,
 							  elem,
 							  new String[] {
-							      "feature" 
+							      "feature"
 							  });
         elem.setFeature(0, new MOperationImpl());
         assertTrue(eventcalled);
@@ -341,7 +341,7 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
 							  listener2,
 							  elem,
 							  new String[] {
-							      "isRoot" 
+							      "isRoot"
 							  });
         elem.setRoot(true);
         assertTrue(eventcalled);
@@ -352,7 +352,7 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
      * received the event.
      */
     public void testRecovered() {
-        // this is never done, not by NSUML and not by Argo... 
+        // this is never done, not by NSUML and not by Argo...
         // therefore no implementation possible
     }
 
@@ -365,7 +365,7 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
 	    .addModelEventListener(listener2,
 				   elem,
 				   new String[] {
-				       UmlModelEventPump.REMOVE 
+				       UmlModelEventPump.REMOVE
 				   });
         elem.remove();
         assertTrue(eventcalled);
@@ -380,7 +380,7 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
 							  listener2,
 							  elem,
 							  new String[] {
-							      "parameter" 
+							      "parameter"
 							  });
         elem.addParameter(new MParameterImpl());
         assertTrue(eventcalled);
@@ -397,7 +397,7 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
 							  listener2,
 							  elem,
 							  new String[] {
-							      "parameter" 
+							      "parameter"
 							  });
         elem.removeParameter(param);
         assertTrue(eventcalled);
@@ -412,13 +412,13 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
 							       listener2,
 							       elem.getClass(),
 							       new String[] {
-								   "isRoot" 
+								   "isRoot"
 							       });
         UmlModelEventPump.getPump()
 	    .removeClassModelEventListener(listener2,
 					   elem.getClass(),
 					   new String[] {
-					       "isRoot" 
+					       "isRoot"
 					   });
         assertEquals(0,
 		     UmlModelEventPump.getPump()
@@ -435,17 +435,17 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
      * really is removed.
      */
     public void testRemoveLegalListener() {
-        
+
         int existingListeners = UmlModelEventPump.getPump()
                                     .getEventListenerMap().getListeners(
                                         elem,
 					new EventKey(2, "isRoot")).length;
-        
+
         UmlModelEventPump.getPump().addModelEventListener(
 							  listener2,
 							  elem,
 							  new String[] {
-							      "isRoot" 
+							      "isRoot"
 							  });
         UmlModelEventPump.getPump().removeModelEventListener(
 							     listener2,
@@ -464,7 +464,7 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
     }
 
     /**
-     * Tests if the hashmap with listeners not is empty after removing one 
+     * Tests if the hashmap with listeners not is empty after removing one
      * listener but not all listeners.
      */
     public void testRemoveListenerNonEmptyClass() {
@@ -472,7 +472,7 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
 							       listener2,
 							       elem.getClass(),
 							       new String[] {
-								   "isRoot" 
+								   "isRoot"
 							       });
         UmlModelEventPump.getPump().addClassModelEventListener(
 							       listener,
@@ -495,7 +495,7 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
     }
 
     /**
-     * Tests if the hashmap with listeners not is empty after removing one 
+     * Tests if the hashmap with listeners not is empty after removing one
      * listener but not all listeners.
      */
     public void testRemoveListenerNonEmpty() {
@@ -532,15 +532,15 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
     /*
       public void testListensDependencyToSuperClass() {
       MDependency dep = CoreFactory.getFactory().createDependency();
-      UmlModelEventPump.getPump().addClassModelEventListener(listener2, 
+      UmlModelEventPump.getPump().addClassModelEventListener(listener2,
           dep.getClass(), "behavior");
       dep.addBehavior(StateMachinesFactory.getFactory().createStateMachine());
       assertTrue(eventcalled);
       }
-    
+
       public void testListensSuperClassToDependency() {
       MDependency dep = CoreFactory.getFactory().createDependency();
-      UmlModelEventPump.getPump().addClassModelEventListener(listener2, 
+      UmlModelEventPump.getPump().addClassModelEventListener(listener2,
           MModelElement.class, "behavior");
       dep.addBehavior(StateMachinesFactory.getFactory().createStateMachine());
       assertTrue(eventcalled);
@@ -552,7 +552,7 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
      * receives all events
      */
     public void testRecoveredClass2() {
-        // this is never done, not by NSUML and not by Argo... 
+        // this is never done, not by NSUML and not by Argo...
         // therefore no implementation possible
     }
 

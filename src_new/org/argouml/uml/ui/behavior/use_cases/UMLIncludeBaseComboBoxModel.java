@@ -42,10 +42,10 @@ public class UMLIncludeBaseComboBoxModel extends UMLComboBoxModel2 {
      * Constructor for UMLIncludeBaseComboBoxModel.
      */
     public UMLIncludeBaseComboBoxModel() {
-        // there is a bug in NSUML so this model 
+        // there is a bug in NSUML so this model
         // listens for addition modelevents
         super("addition", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, 
+        UmlModelEventPump.getPump().addClassModelEventListener(this,
                 ModelFacade.NAMESPACE, "ownedElement");
     }
 
@@ -77,8 +77,8 @@ public class UMLIncludeBaseComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return ModelFacade.isAUseCase(element) 
-            && ModelFacade.getNamespace(element) 
+        return ModelFacade.isAUseCase(element)
+            && ModelFacade.getNamespace(element)
                 == ModelFacade.getNamespace(getTarget());
     }
 

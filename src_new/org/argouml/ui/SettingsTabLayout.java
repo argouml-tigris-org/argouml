@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -64,14 +64,14 @@ public class SettingsTabLayout extends SettingsTabHelper {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public SettingsTabLayout() {
         super();
         setLayout(new BorderLayout());
 
         // TODO: Localize these
-        final String positions[] = {"North", "South", "East"};        
+        final String[] positions = {"North", "South", "East"};
         final String paneColumnHeader = "Pane";
         final String positionColumnHeader = "Position";
 
@@ -90,19 +90,19 @@ public class SettingsTabLayout extends SettingsTabHelper {
 				      positions, TabConstraints.class);
         prpTaggedValues = createProperty("label.tagged-values-pane",
 				       positions, TabTaggedValues.class);
-        
+
         Property[] propertyList = new Property[] {
             prpTodo, prpProperties, prpDocumentation, prpStyle,
-	    prpSource, prpConstraints, prpTaggedValues
+	    prpSource, prpConstraints, prpTaggedValues,
         };
         Arrays.sort(propertyList);
-        
+
         top.add(new JScrollPane(new PropertyTable(
 						  propertyList,
 						  paneColumnHeader,
 						  positionColumnHeader)),
 		BorderLayout.CENTER);
-       
+
         top.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
         add(top, BorderLayout.CENTER);
 
@@ -118,19 +118,18 @@ public class SettingsTabLayout extends SettingsTabHelper {
      * the current display value from the user properties file.
      */
     private Property createProperty(String text, String[] positions,
-				    Class tab)
-    {
+				    Class tab) {
         ConfigurationKey key = makeKey(tab);
-        String currentValue = Configuration.getString(key, "South");        
+        String currentValue = Configuration.getString(key, "South");
         return new Property(localize(text), String.class,
 			    currentValue, positions);
     }
 
-    private void loadPosition(Property position, Class tab) {     
+    private void loadPosition(Property position, Class tab) {
         ConfigurationKey key = makeKey(tab);
         position.setCurrentValue(Configuration.getString(key, "South"));
     }
-        
+
     private void savePosition(Property position, Class tab) {
         ConfigurationKey key = makeKey(tab);
         Configuration.setString(key, position.getCurrentValue().toString());
@@ -143,7 +142,7 @@ public class SettingsTabLayout extends SettingsTabHelper {
         ConfigurationKey key = Configuration.makeKey("layout", shortClassName);
         return key;
     }
-    
+
     /**
      * When the setting values should be reloaded
      */
@@ -174,32 +173,32 @@ public class SettingsTabLayout extends SettingsTabHelper {
      * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabCancel()
      */
     public void handleSettingsTabCancel() { }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleName()
      */
     public String getModuleName() { return "SettingsTabLayout"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleDescription()
      */
     public String getModuleDescription() { return "Positioning of components"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
      */
     public String getModuleAuthor() { return "ArgoUML Core"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleVersion()
      */
     public String getModuleVersion() { return ArgoVersion.getVersion(); }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleKey()
      */
     public String getModuleKey() { return "module.settings.layout"; }
-    
+
     /**
      * @see org.argouml.application.api.SettingsTabPanel#getTabKey()
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,22 +46,22 @@ public class Configuration {
     ////////////////////////////////////////////////////////////////
     // Instance variables
 
-    /** 
+    /**
      * Property to indicate configuration load from file.
      */
     public static final String FILE_LOADED = "configuration.load.file";
 
-    /** 
+    /**
      * Property to indicate configuration load from url.
      */
     public static final String URL_LOADED = "configuration.load.url";
 
-    /** 
+    /**
      * Property to indicate configuration save to file.
      */
     public static final String FILE_SAVED = "configuration.save.file";
 
-    /** 
+    /**
      * Property to indicate configuration save to url.
      */
     public static final String URL_SAVED = "configuration.save.url";
@@ -83,8 +83,7 @@ public class Configuration {
      *
      * @return the configuration handler
      */
-    public static ConfigurationHandler getConfigurationHandler()
-    {
+    public static ConfigurationHandler getConfigurationHandler() {
 	return config;
     }
 
@@ -102,7 +101,7 @@ public class Configuration {
 	return ConfigurationFactory.getInstance();
     }
 
-    /** 
+    /**
      * Load the configuration from the default location.
      *
      * The configuration will be automatically loaded from the default
@@ -112,7 +111,7 @@ public class Configuration {
      * a non-default location, load(name) must be used prior to any
      * other call.  The configuration can be loaded only one time.
      *
-     * Implementations must ignore load requests once a load is 
+     * Implementations must ignore load requests once a load is
      * already successful, and must return false for each of those
      * ignored requests.
      *
@@ -123,7 +122,7 @@ public class Configuration {
     }
 
     /**
-     * Load the configuration from a specified file
+     * Load the configuration from a specified file.
      *
      * @param file the File to load
      *
@@ -134,7 +133,7 @@ public class Configuration {
     }
 
     /**
-     * Load the configuration from a specified url
+     * Load the configuration from a specified url.
      *
      * @param url the URL to load
      *
@@ -166,7 +165,7 @@ public class Configuration {
      *
      * @param force the file to save even if it would not normally
      * be saved.
-     * 
+     *
      * @return true if the save is successful, otherwise false
      */
     public static final boolean save(boolean force) {
@@ -178,7 +177,7 @@ public class Configuration {
      *
      * @param key the key to retrieve the value of
      *
-     * @return the string value of the parameter if it exists, otherwise 
+     * @return the string value of the parameter if it exists, otherwise
      * a zero length string
      */
     public static String getString(ConfigurationKey key) {
@@ -195,8 +194,7 @@ public class Configuration {
      *   default value
      */
     public static final String getString(ConfigurationKey key,
-					 String defaultValue) 
-    {
+					 String defaultValue) {
 	return config.getString(key, defaultValue);
     }
 
@@ -269,9 +267,8 @@ public class Configuration {
      * @return the boolean value of the parameter if it exists, otherwise
      *  the default value
      */
-    public static final boolean getBoolean(ConfigurationKey key, 
-					   boolean defaultValue) 
-    {
+    public static final boolean getBoolean(ConfigurationKey key,
+					   boolean defaultValue) {
 	return config.getBoolean(key, defaultValue);
     }
 
@@ -304,14 +301,14 @@ public class Configuration {
     public static final void setDouble(ConfigurationKey key, double newValue) {
 	config.setDouble(key, newValue);
     }
-    
+
     /**
      * Sets the boolean value of a configuration property.
      *
      * @param key the key to set
      * @param newValue the value to set the key to.
      */
-    public static final void setBoolean(ConfigurationKey key, 
+    public static final void setBoolean(ConfigurationKey key,
 					boolean newValue) {
 	config.setBoolean(key, newValue);
     }
@@ -340,7 +337,7 @@ public class Configuration {
      * @param key The key to listen for changes of
      * @param pcl The property change listener to add
      */
-    public static final void addListener(ConfigurationKey key, 
+    public static final void addListener(ConfigurationKey key,
 					 PropertyChangeListener pcl) {
 	config.addListener(key, pcl);
     }
@@ -351,7 +348,7 @@ public class Configuration {
      * @param key The key to listen for changes of
      * @param pcl The property change listener to remove
      */
-    public static final void removeListener(ConfigurationKey key, 
+    public static final void removeListener(ConfigurationKey key,
 					    PropertyChangeListener pcl) {
 	config.removeListener(key, pcl);
     }
@@ -377,7 +374,7 @@ public class Configuration {
 	return new ConfigurationKeyImpl(ck, k1);
     }
 
-    /** 
+    /**
      * Create a two-component configuration key.
      *
      * @param k1 key component 1.
@@ -388,7 +385,7 @@ public class Configuration {
 	return new ConfigurationKeyImpl(k1, k2);
     }
 
-    /** 
+    /**
      * Create a three-component configuration key.
      *
      * @param k1 key component 1.
@@ -409,12 +406,12 @@ public class Configuration {
      * @param k4 key component 4.
      * @return the new {@link ConfigurationKey}.
      */
-    public static ConfigurationKey makeKey(String k1, String k2, 
+    public static ConfigurationKey makeKey(String k1, String k2,
 					   String k3, String k4) {
 	return new ConfigurationKeyImpl(k1, k2, k3, k4);
     }
 
-    /** 
+    /**
      * Create a five-component configuration key.
      *
      * @param k1 key component 1.
@@ -424,8 +421,8 @@ public class Configuration {
      * @param k5 key component 5.
      * @return the new {@link ConfigurationKey}.
      */
-    public static ConfigurationKey makeKey(String k1, String k2, 
-					   String k3, String k4, 
+    public static ConfigurationKey makeKey(String k1, String k2,
+					   String k3, String k4,
 					   String k5) {
 	return new ConfigurationKeyImpl(k1, k2, k3, k4, k5);
     }

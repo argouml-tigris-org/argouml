@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,22 +34,22 @@ import org.argouml.i18n.Translator;
 
 /**
  * Test the ActionAddAttribute.
- * 
+ *
  * @author mkl
  *
  */
 public class GUITestActionAddAttribute extends TestCase {
 
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param arg0 the test name
      */
     public GUITestActionAddAttribute(String arg0) {
         super(arg0);
     }
-    
+
     /**
      * @see TestCase#setUp()
      */
@@ -57,9 +57,9 @@ public class GUITestActionAddAttribute extends TestCase {
         super.setUp();
         Translator.init();
     }
-    
+
     /**
-     * Test if the action has an icon. 
+     * Test if the action has an icon.
      */
     public void testHasIcon() {
         ActionAddAttribute action = new ActionAddAttribute();

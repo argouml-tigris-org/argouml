@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,7 +35,7 @@ import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Globals;
 
 /**
- * ActionAddAllClassesFromModel enables pasting of an existing node into a 
+ * ActionAddAllClassesFromModel enables pasting of an existing node into a
  * Diagram.
  *
  * @author Timothy M. Lebo (Oct 2003)
@@ -70,7 +70,7 @@ public class ActionAddAllClassesFromModel extends UMLAction {
      *
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
-    public boolean shouldBeEnabled() {	
+    public boolean shouldBeEnabled() {
 	return object instanceof UMLClassDiagram;
     }
 
@@ -88,20 +88,20 @@ public class ActionAddAllClassesFromModel extends UMLAction {
      */
     public void actionPerformed(ActionEvent ae) {
 
-	if ( object instanceof UMLClassDiagram ) {
+	if (object instanceof UMLClassDiagram) {
 
 	    // Use DiagramInterface to add classes to diagram
 	    DiagramInterface diagram =
-		new DiagramInterface( Globals.curEditor() );
-	    diagram.setCurrentDiagram( (UMLClassDiagram) object );
+		new DiagramInterface(Globals.curEditor());
+	    diagram.setCurrentDiagram((UMLClassDiagram) object);
 
 	    Object namespace = ((UMLClassDiagram) object).getNamespace();
 	    Iterator elements =
-		ModelFacade.getOwnedElements( namespace ).iterator();
-	    while ( elements.hasNext() ) {
+		ModelFacade.getOwnedElements(namespace).iterator();
+	    while (elements.hasNext()) {
 		Object element = elements.next();
-		if ( ModelFacade.isAClass(element) ) {
-		    diagram.addClass( element , false );
+		if (ModelFacade.isAClass(element)) {
+		    diagram.addClass(element, false);
 		}
 	    }
 	}

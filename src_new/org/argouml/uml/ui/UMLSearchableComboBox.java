@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,7 +31,7 @@ import org.argouml.model.ModelFacade;
  * A searchable combobox. Searchable means that the user only has to type the
  * starting of a modelelement name to select that modelelement. The first
  * modelelement that conforms to the typed text is selected.
- * @author jaap.branderhorst@xs4all.nl	
+ * @author jaap.branderhorst@xs4all.nl
  * @since Jan 5, 2003
  */
 public class UMLSearchableComboBox extends UMLEditableComboBox {
@@ -42,7 +42,7 @@ public class UMLSearchableComboBox extends UMLEditableComboBox {
      * @param selectAction the action for selction
      * @param showIcon true if we show an icon in the list
      */
-    public UMLSearchableComboBox(UMLComboBoxModel2 model, 
+    public UMLSearchableComboBox(UMLComboBoxModel2 model,
             UMLAction selectAction, boolean showIcon) {
         super(model, selectAction, showIcon);
     }
@@ -52,7 +52,7 @@ public class UMLSearchableComboBox extends UMLEditableComboBox {
      * @param arg0 the model
      * @param selectAction the action for selection
      */
-    public UMLSearchableComboBox(UMLComboBoxModel2 arg0, 
+    public UMLSearchableComboBox(UMLComboBoxModel2 arg0,
             UMLAction selectAction) {
         this(arg0, selectAction, true);
     }
@@ -72,7 +72,7 @@ public class UMLSearchableComboBox extends UMLEditableComboBox {
             setSelectedItem(element);
         }
     }
-    
+
     /**
      * Does the actual searching. Returns the item found or null if there is no
      * item found.

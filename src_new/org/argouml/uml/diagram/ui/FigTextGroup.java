@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,7 +37,7 @@ import org.tigris.gef.presentation.FigText;
  * Custom class to group FigTexts in such a way that they don't
  * overlap and that the group is shrinked to fit (no whitespace in
  * group).
- * 
+ *
  * @author jaap.branderhorst@xs4all.nl
  */
 public class FigTextGroup extends FigGroup implements MouseListener {
@@ -55,10 +55,10 @@ public class FigTextGroup extends FigGroup implements MouseListener {
         updateFigTexts();
         calcBounds();
     }
-    
+
     /**
-     * Updates the FigTexts. FigTexts without text (equals "") are not shown. 
-     * The rest of the figtexts are shown non-overlapping. The first figtext 
+     * Updates the FigTexts. FigTexts without text (equals "") are not shown.
+     * The rest of the figtexts are shown non-overlapping. The first figtext
      * added (via addFig) is shown at the bottom of the FigTextGroup.
      */
     protected void updateFigTexts() {
@@ -78,7 +78,7 @@ public class FigTextGroup extends FigGroup implements MouseListener {
         }
         // calcBounds();
     }
-            
+
 
     /**
      * @see org.tigris.gef.presentation.Fig#calcBounds()
@@ -96,7 +96,7 @@ public class FigTextGroup extends FigGroup implements MouseListener {
                 FigText fig = (FigText) it.next();
                 if (fig.getText().equals("")) {
                     fig.setBounds(fig.getX(), fig.getY(), fig.getWidth(), 0);
-                } 
+                }
                 else {
                     if (fig.getWidth() > maxWidth) {
                         maxWidth = fig.getWidth();
@@ -106,11 +106,11 @@ public class FigTextGroup extends FigGroup implements MouseListener {
                     }
                     height += fig.getHeight();
                 }
-            }        
+            }
             _w = maxWidth;
             _h = height;
         }
-    }   
+    }
 
     /**
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
@@ -142,19 +142,19 @@ public class FigTextGroup extends FigGroup implements MouseListener {
      */
     public void mousePressed(MouseEvent me) {
     }
-    
+
     /**
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent me) {
     }
-    
+
     /**
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
     public void mouseEntered(MouseEvent me) {
     }
-    
+
     /**
      * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
      */

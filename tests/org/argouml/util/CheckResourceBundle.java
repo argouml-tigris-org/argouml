@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -65,7 +65,7 @@ public class CheckResourceBundle {
 	     e.hasMoreElements();
 	     ) {
 	    Object c = e.nextElement();
-	    TestCase.assertTrue("Duplicate key \"" 
+	    TestCase.assertTrue("Duplicate key \""
 				+ c
 				+ "\" in "
 				+ b.getClass().getName(),
@@ -134,9 +134,9 @@ public class CheckResourceBundle {
     /**
      * Localizations that we do.
      */
-    private static final String[][] SUPPORTEDLANGUAGES = { 
+    private static final String[][] SUPPORTEDLANGUAGES = {
 	{
-	    "fr", "", "" 
+	    "fr", "", ""
 	},
 	{
 	    "de", "", ""
@@ -147,7 +147,7 @@ public class CheckResourceBundle {
 	{
 	    "es", "", ""
 	},
-	null 
+	null
     };
 
     /**
@@ -186,7 +186,7 @@ public class CheckResourceBundle {
 			      ""));
 
 	if (System.getProperty("user.language") != null)
-	    el.add(new Locale(System.getProperty("user.language"), 
+	    el.add(new Locale(System.getProperty("user.language"),
 			      "", ""));
 
 	Vector v = new Vector();
@@ -231,7 +231,7 @@ public class CheckResourceBundle {
     public static void checkResourceBundle(TestCase tc,
 					   String bname,
 					   String[] tags) {
-	ResourceBundle b = ResourceBundle.getBundle(bname, 
+	ResourceBundle b = ResourceBundle.getBundle(bname,
 						    new Locale("", "", ""));
 
 	checkContainsAllFrom(tc, b, tags);
@@ -248,7 +248,7 @@ public class CheckResourceBundle {
 
 	    TestCase.assertTrue("Resource bundle "
 				+ bname
-				+ " does not exist for " 
+				+ " does not exist for "
 				+ l.toString(),
 				locb != null && locb != b);
 

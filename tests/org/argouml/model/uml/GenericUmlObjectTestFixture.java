@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,7 +46,7 @@ import junit.framework.TestCase;
 public abstract class GenericUmlObjectTestFixture extends TestCase {
 
     private HashMap truths = new HashMap();
-    
+
     private boolean validated = false;
 
     private ModelEntity entity;
@@ -100,18 +100,18 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
     protected void validateTestClassIsGeneric(TestCase self) {
         // TODO: Use reflection against the test case to ensure that it
         // does not import nsuml
-        
+
 	// Check superclass.
         //Make sure this class does not extend or reference nsuml.
         assertNotNsumlClass(self.getClass().getSuperclass());
-        
+
 	// Enumerate declaring class
-        
+
 	// Enumerate constructors
-        
+
         // Enumerate methods
         // Enumerate method arguments
-        
+
         // Enumerate fields
 
         // Indicate that the test was validated
@@ -121,7 +121,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
     /**
      * Indicate that the class being tested should be a type of the
      * passed class.
-     * 
+     *
      * @param class1 the class being tested
      */
     protected void setShouldBe(ModelEntity class1) {
@@ -131,7 +131,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
     /**
      * Indicate if the class being tested should be a type of the
      * testcase class.
-     * 
+     *
      * @param class1 the modelentity
      * @param b the value
      */
@@ -237,7 +237,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 	runTruthTest(ModelFacade.isAClassifier(o), Uml.CLASSIFIER);
 	runTruthTest(ModelFacade.isAComment(o), Uml.COMMENT);
 	runTruthTest(ModelFacade.isAComponent(o), Uml.COMPONENT);
-	runTruthTest(ModelFacade.isAComponentInstance(o), 
+	runTruthTest(ModelFacade.isAComponentInstance(o),
             Uml.COMPONENT_INSTANCE);
 	runTruthTest(ModelFacade.isADataType(o), Uml.DATATYPE);
 	runTruthTest(ModelFacade.isADependency(o), Uml.DEPENDENCY);
@@ -246,7 +246,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 	runTruthTest(ModelFacade.isAExpression(o), Uml.EXPRESSION);
 	runTruthTest(ModelFacade.isAExtensionPoint(o), Uml.EXTENSION_POINT);
 	runTruthTest(ModelFacade.isAFeature(o), Uml.FEATURE);
-	runTruthTest(ModelFacade.isAGeneralizableElement(o), 
+	runTruthTest(ModelFacade.isAGeneralizableElement(o),
             Uml.GENERALIZABLE_ELEMENT);
 	runTruthTest(ModelFacade.isAGeneralization(o), Uml.GENERALIZATION);
 
@@ -276,7 +276,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 	runTruthTest(ModelFacade.isAStateMachine(o), Uml.STATE_MACHINE);
 	runTruthTest(ModelFacade.isAStateVertex(o), Uml.STATE_VERTEX);
 	runTruthTest(ModelFacade.isAStereotype(o), Uml.STEREOTYPE);
-	runTruthTest(ModelFacade.isAStructuralFeature(o), 
+	runTruthTest(ModelFacade.isAStructuralFeature(o),
             Uml.STRUCTURAL_FEATURE);
 	runTruthTest(ModelFacade.isATaggedValue(o), Uml.TAGGED_VALUE);
 	runTruthTest(ModelFacade.isATransition(o), Uml.TRANSITION);
@@ -288,7 +288,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
      * @param b
      * @param c
      */
-    private void runTruthTest(boolean result, boolean expected, 
+    private void runTruthTest(boolean result, boolean expected,
             ModelEntity class1) {
 	assertEquals("Failure testing "
 		     + (class1 == null ? "MBase" : class1.getName()),
@@ -303,7 +303,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
         // TODO: Look up class in truth table
         Boolean truth = (Boolean) truths.get(class1);
         if (truth == null) {
-	    truth = Boolean.FALSE;        
+	    truth = Boolean.FALSE;
         }
         runTruthTest(result, truth.booleanValue(), class1);
     }

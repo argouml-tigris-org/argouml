@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -49,7 +49,7 @@ import org.tigris.gef.ui.Highlightable;
 import org.tigris.gef.util.VectorSet;
 
 
-/** 
+/**
  * UMLToDoItem is the preferred class for newly created ToDoItems within
  * ArgoUML. It knows more about possible designmaterial and can for example
  * highlight offenders when they are ModelElements by finding the according Fig
@@ -60,10 +60,10 @@ import org.tigris.gef.util.VectorSet;
  * @author  mkl
  */
 public class UMLToDoItem extends ToDoItem {
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param poster the poster
      * @param h the headline
      * @param p the priority
@@ -75,10 +75,10 @@ public class UMLToDoItem extends ToDoItem {
     VectorSet offs) {
         super(poster, h, p, d, m, offs);
     }
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param poster the poster
      * @param h the headline
      * @param p the priority
@@ -88,10 +88,10 @@ public class UMLToDoItem extends ToDoItem {
     public UMLToDoItem(Poster poster, String h, int p, String d, String m) {
         super(poster, h, p, d, m);
     }
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param c the poster (critic)
      * @param dm the offenders
      * @param dsgr the designer
@@ -99,10 +99,10 @@ public class UMLToDoItem extends ToDoItem {
     public UMLToDoItem(Critic c, Object dm, Designer dsgr) {
         super(c, dm, dsgr);
     }
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param c the poster (critic)
      * @param offs the offenders
      * @param dsgr the designer
@@ -110,17 +110,17 @@ public class UMLToDoItem extends ToDoItem {
     public UMLToDoItem(Critic c, VectorSet offs, Designer dsgr) {
         super(c, offs, dsgr);
     }
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param c the critic that created this todoitem
      */
     public UMLToDoItem(Critic c) {
         super(c);
     }
-    
-    /** 
+
+    /**
      * Action jumps to the diagram containing all or most of the
      * offenders and calls {@link #deselect()}, {@link #select()}
      * around the call to
@@ -140,14 +140,14 @@ public class UMLToDoItem extends ToDoItem {
         }
         select();
     }
-    
+
     /**
      * @see org.argouml.cognitive.ToDoItem#deselect()
      */
     public void deselect() {
         Enumeration offs = getOffenders().elements();
         Project p = ProjectManager.getManager().getCurrentProject();
-        
+
         while (offs.hasMoreElements()) {
             Object dm =  offs.nextElement();
             if (dm instanceof Highlightable)
@@ -162,7 +162,7 @@ public class UMLToDoItem extends ToDoItem {
             }
         }
     }
-    
+
     /**
      * @see org.argouml.cognitive.ToDoItem#select()
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -47,7 +47,7 @@ public class PropPanelCompositeState extends PropPanelState {
      * @param icon the icon to be shown next to the name
      * @param orientation the orientation of the panel
      */
-    public PropPanelCompositeState(String name, ImageIcon icon, 
+    public PropPanelCompositeState(String name, ImageIcon icon,
             Orientation orientation) {
         super(name, icon, orientation);
         initialize();
@@ -55,45 +55,45 @@ public class PropPanelCompositeState extends PropPanelState {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public PropPanelCompositeState() {
-        super("Composite State", lookupIcon("CompositeState"), 
+        super("Composite State", lookupIcon("CompositeState"),
                 ConfigLoader.getTabPropsOrientation());
         initialize();
 
-        addField(Translator.localize("label.name"), 
+        addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"), 
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
-        addField(Translator.localize("label.container"), 
+        addField(Translator.localize("label.container"),
                 getContainerScroll());
-        addField(Translator.localize("label.modifiers"), 
+        addField(Translator.localize("label.modifiers"),
                 new UMLCompositeStateConcurrentCheckBox());
-        addField(Translator.localize("label.entry"), 
+        addField(Translator.localize("label.entry"),
                 getEntryScroll());
-        addField(Translator.localize("label.exit"), 
+        addField(Translator.localize("label.exit"),
                 getExitScroll());
-        addField(Translator.localize("label.do-activity"), 
+        addField(Translator.localize("label.do-activity"),
                 getDoScroll());
 
         addSeperator();
 
-        addField(Translator.localize("label.incoming"), 
+        addField(Translator.localize("label.incoming"),
                 getIncomingScroll());
-        addField(Translator.localize("label.outgoing"), 
+        addField(Translator.localize("label.outgoing"),
                 getOutgoingScroll());
-        addField(Translator.localize("label.internal-transitions"), 
+        addField(Translator.localize("label.internal-transitions"),
                 getInternalTransitionsScroll());
 
         addSeperator();
 
-        addField(Translator.localize("label.subvertex"), 
+        addField(Translator.localize("label.subvertex"),
                 new JScrollPane(subverticesList));
     }
 
     /**
-     * Initialize the panel with its specific fields, in casu 
+     * Initialize the panel with its specific fields, in casu
      * the substate vertex list.
      */
     protected void initialize() {

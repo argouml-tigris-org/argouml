@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2001-2004 The Regents of the University of California. All
+// Copyright (c) 2001-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,18 +29,18 @@ import org.argouml.application.api.PluggableNotation;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.generator.Generator2;
 
-/** 
+/**
  * Generator2 subclass to generate text for display in diagrams in in
  * text fields in the ArgoUML user interface.
  * The generated code is a dummy language. The purpose is to provide
- * an illustration of how the Generator and Notation mechanisms are 
+ * an illustration of how the Generator and Notation mechanisms are
  * supposed to work.
  *
  * @author Linus Tolke
  * @stereotype singleton
  */
-public final class GeneratorDummy 
-	extends Generator2 
+public final class GeneratorDummy
+	extends Generator2
 	implements PluggableNotation {
     /**
      * The singleton.
@@ -213,7 +213,7 @@ public final class GeneratorDummy
             return "";
         }
         return ModelFacade.getName(c);
-    }    
+    }
 
     /**
      * @see org.argouml.uml.generator.Generator2#generateEvent(java.lang.Object)

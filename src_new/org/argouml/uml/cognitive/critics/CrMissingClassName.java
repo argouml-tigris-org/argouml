@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,7 +33,7 @@ import org.argouml.model.ModelFacade;
 
 /**
  * Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
- * Semantics. OMG document ad/97-08-04. 
+ * Semantics. OMG document ad/97-08-04.
  */
 public class CrMissingClassName extends CrUML {
 
@@ -86,7 +86,7 @@ public class CrMissingClassName extends CrUML {
 	    ((WizMEName) w).setSuggestion(sug);
 	}
     }
-    
+
     /**
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */

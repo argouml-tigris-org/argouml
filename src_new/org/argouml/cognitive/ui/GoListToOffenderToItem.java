@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,16 +42,16 @@ import org.tigris.gef.util.VectorSet;
  *
  */
 public class GoListToOffenderToItem extends AbstractGoList {
-  
+
     /**
      * The constructor.
      */
     public GoListToOffenderToItem() {
         setListPredicate(new PredicateNotInTrash());
     }
-    
+
     ////////////////////////////////////////////////////////////////
-    // TreeModel implementation   
+    // TreeModel implementation
 
     /**
      * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
@@ -60,7 +60,7 @@ public class GoListToOffenderToItem extends AbstractGoList {
 	Vector children = getChildren(parent);
 	return (children == null) ? null : children.elementAt(index);
     }
-  
+
     /**
      * @see javax.swing.tree.TreeModel#getChildCount(java.lang.Object)
      */
@@ -68,7 +68,7 @@ public class GoListToOffenderToItem extends AbstractGoList {
 	Vector children = getChildren(parent);
 	return (children == null) ? 0 : children.size();
     }
-  
+
     /**
      * @see javax.swing.tree.TreeModel#getIndexOfChild(
      * java.lang.Object, java.lang.Object)
@@ -95,10 +95,10 @@ public class GoListToOffenderToItem extends AbstractGoList {
     public Vector getChildren(Object parent) {
         VectorSet allOffenders = new VectorSet();
         allOffenders.addAllElementsSuchThat(Designer.theDesigner()
-            .getToDoList().getOffenders(), 
+            .getToDoList().getOffenders(),
             getListPredicate());
-        
-        
+
+
 	if (parent instanceof ToDoList) {
 	    return allOffenders.asVector();
 	}
@@ -118,18 +118,18 @@ public class GoListToOffenderToItem extends AbstractGoList {
 	}
 	return null;
     }
-  
+
     /**
      * @see javax.swing.tree.TreeModel#valueForPathChanged(
      * javax.swing.tree.TreePath, java.lang.Object)
      */
     public void valueForPathChanged(TreePath path, Object newValue) { }
-    
+
     /**
      * @see javax.swing.tree.TreeModel#addTreeModelListener(javax.swing.event.TreeModelListener)
      */
     public void addTreeModelListener(TreeModelListener l) { }
-    
+
     /**
      * @see javax.swing.tree.TreeModel#removeTreeModelListener(javax.swing.event.TreeModelListener)
      */

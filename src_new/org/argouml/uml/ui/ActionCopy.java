@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -88,10 +88,10 @@ public class ActionCopy extends AbstractAction implements CaretListener {
     public void actionPerformed(ActionEvent ae) {
         if (textSource != null) {
             textSource.copy();
-            Globals.clipBoard = null;            
+            Globals.clipBoard = null;
         } else {
             CmdCopy cmd = new CmdCopy();
-            cmd.doIt();            
+            cmd.doIt();
         }
         if (isSystemClipBoardEmpty()
             && (Globals.clipBoard == null
@@ -107,7 +107,7 @@ public class ActionCopy extends AbstractAction implements CaretListener {
      * javax.swing.event.CaretListener#caretUpdate(javax.swing.event.CaretEvent)
      */
     public void caretUpdate(CaretEvent e) {
-        if (e.getMark() != e.getDot()) { // there is a selection        
+        if (e.getMark() != e.getDot()) { // there is a selection
             setEnabled(true);
             textSource = (JTextComponent) e.getSource();
         } else {

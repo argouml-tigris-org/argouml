@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,7 +37,7 @@ import org.tigris.gef.util.VectorSet;
 
 /**
  * Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
- * Semantics. OMG document ad/97-08-04. 
+ * Semantics. OMG document ad/97-08-04.
  */
 public class CrNameConfusion extends CrUML {
 
@@ -86,7 +86,7 @@ public class CrNameConfusion extends CrUML {
 	    String meName = ModelFacade.getName(me2);
 	    if (meName == null || meName.equals("")) continue;
 	    String compareName = meName;
-	    if (confusable(stripped2, strip(compareName)) 
+	    if (confusable(stripped2, strip(compareName))
                 && !dmNameStr.equals(compareName)) {
 		res.addElement(me2);
 	    }
@@ -131,7 +131,7 @@ public class CrNameConfusion extends CrUML {
     /**
      * @param s1 given string 1
      * @param s2 given string 2
-     * @return positive int, representing the number of different chars, or 
+     * @return positive int, representing the number of different chars, or
      *         if the lengths differ more than 2, this length difference
      */
     public int countDiffs(String s1, String s2) {
@@ -180,13 +180,13 @@ public class CrNameConfusion extends CrUML {
 	    String ins =
 		"Change each name to be significantly different from "
 		+ "the others.  "
-		+ "Names should differ my more than one character and " 
+		+ "Names should differ my more than one character and "
 		+ "not just differ my case (capital or lower case).";
 	    ((WizManyNames) w).setInstructions(ins);
 	    ((WizManyNames) w).setMEs(item.getOffenders().asVector());
 	}
     }
-    
+
     /**
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */

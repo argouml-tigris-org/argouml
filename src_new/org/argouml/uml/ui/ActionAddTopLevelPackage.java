@@ -36,12 +36,12 @@ public class ActionAddTopLevelPackage extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
-    
+
     /**
      * The singleton.
      */
     public static final ActionAddTopLevelPackage SINGLETON =
-	new ActionAddTopLevelPackage(); 
+	new ActionAddTopLevelPackage();
 
 
     ////////////////////////////////////////////////////////////////
@@ -62,7 +62,7 @@ public class ActionAddTopLevelPackage extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-	Project p = ProjectManager.getManager().getCurrentProject();	
+	Project p = ProjectManager.getManager().getCurrentProject();
         int numPacks = p.getUserDefinedModels().size();
         String nameStr = "package_" + (numPacks + 1);
         Object/*MModel*/ model =
@@ -71,7 +71,7 @@ public class ActionAddTopLevelPackage extends UMLAction {
         p.addMember(model);
         super.actionPerformed(ae);
         ActionClassDiagram.SINGLETON.actionPerformed(ae);
-	
-	
+
+
     }
 } /* end class ActionAddTopLevelPackage */

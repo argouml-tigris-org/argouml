@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004, 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,7 +35,7 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.moduleloader.ModuleInterface;
 
-/** 
+/**
  * Module that registers itself to the Tools menu.<p>
  *
  * This is primarily designed to be able to test ModuleLoader2.
@@ -51,7 +51,7 @@ public final class ActionTestLoadableModule extends UMLAction
      */
     private static final Logger LOG =
         Logger.getLogger(ActionTestLoadableModule.class);
-    
+
     private JMenuItem menuItem;
 
     /**
@@ -93,7 +93,7 @@ public final class ActionTestLoadableModule extends UMLAction
 	}
 	return true;
     }
-    
+
     /**
      * @see ModuleInterface#disable()
      *

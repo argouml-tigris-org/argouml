@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,7 +41,7 @@ class ClassdiagramNode implements LayoutedNode {
 
     /**
      * Operation ClassdiagramNode creates a new ClassdiagramNode.
-     * 
+     *
      * @param f
      *            represents the figure in the diagram, that peers this layout
      *            node.
@@ -53,7 +53,7 @@ class ClassdiagramNode implements LayoutedNode {
     /**
      * Operation getSize returns the size of the figure associated with this
      * layout node.
-     * 
+     *
      * @return The size of the associated figure.
      */
     public Dimension getSize() {
@@ -63,7 +63,7 @@ class ClassdiagramNode implements LayoutedNode {
     /**
      * Operation getLocation returns the location of the associated figure in
      * the diagram.
-     * 
+     *
      * @return The location of the associated figure.
      */
     public Point getLocation() {
@@ -73,7 +73,7 @@ class ClassdiagramNode implements LayoutedNode {
     /**
      * Operation setLocation set the new location of the associated figure in
      * the diagram.
-     * 
+     *
      * @param newLocation
      *            represents the new location for this figure.
      */
@@ -92,7 +92,7 @@ class ClassdiagramNode implements LayoutedNode {
 
     /**
      * Check if this node is associated with a package.
-     * 
+     *
      * @return true, if this node is associated with a package, false otherwise.
      */
     boolean isPackage() {
@@ -105,7 +105,7 @@ class ClassdiagramNode implements LayoutedNode {
 
     /**
      * Compute or just return the rank of this node.
-     * 
+     *
      * @return The rank for this node.
      */
     public int getRank() {
@@ -133,7 +133,7 @@ class ClassdiagramNode implements LayoutedNode {
 
     /**
      * Operation setRank changes the value of the attribute _rank.
-     * 
+     *
      * @param newRank
      *            represents the new value of _rank.
      */
@@ -143,7 +143,7 @@ class ClassdiagramNode implements LayoutedNode {
 
     /**
      * Add a constant to the rank of this node.
-     * 
+     *
      * @param n
      *            The value to add.
      */
@@ -153,7 +153,7 @@ class ClassdiagramNode implements LayoutedNode {
 
     /**
      * Operation getColumn returns the value of the attribute _column.
-     * 
+     *
      * @return The value of the attribute _column.
      */
     public int getColumn() {
@@ -172,7 +172,7 @@ class ClassdiagramNode implements LayoutedNode {
 
     /**
      * Operation getUplinks returns the value of the attribute _uplinks.
-     * 
+     *
      * @return The value of the attribute _uplinks.
      */
     public Vector getUplinks() {
@@ -181,7 +181,7 @@ class ClassdiagramNode implements LayoutedNode {
 
     /**
      * Get the uplink for a given index.
-     * 
+     *
      * @param i The index of this uplink.
      * @return The ClassdiagramNode for this uplink.
      */
@@ -191,7 +191,7 @@ class ClassdiagramNode implements LayoutedNode {
 
     /**
      * Add an uplink to this node.
-     * 
+     *
      * @param newUplink
      *            represents the new uplinks.
      */
@@ -201,7 +201,7 @@ class ClassdiagramNode implements LayoutedNode {
 
     /**
      * Operation getDownlinks returns the value of the attribute _downlinks.
-     * 
+     *
      * @return The value of the attribute _downlinks.
      */
     public Vector getDownlinks() {
@@ -210,7 +210,7 @@ class ClassdiagramNode implements LayoutedNode {
 
     /**
      * Get the downlink for a given index.
-     * 
+     *
      * @param i The index of this downlink.
      * @return The ClassdiagramNode of this downlink.
      */
@@ -220,7 +220,7 @@ class ClassdiagramNode implements LayoutedNode {
 
     /**
      * Operation setDownlinks changes the value of the attribute _downlinks.
-     * 
+     *
      * @param newDownlink Represents the new value of _downlinks.
      */
     public void addDownlink(ClassdiagramNode newDownlink) {
@@ -229,7 +229,7 @@ class ClassdiagramNode implements LayoutedNode {
 
     /**
      * Operation getFigure returns the value of the attribute _figure.
-     * 
+     *
      * @return The value of the attribute _figure.
      */
     public FigNode getFigure() {
@@ -238,7 +238,7 @@ class ClassdiagramNode implements LayoutedNode {
 
     /**
      * Operation setFigure changes the value of the attribute _figure.
-     * 
+     *
      * @param newFigure
      *            represents the new value of _figure.
      */
@@ -248,7 +248,7 @@ class ClassdiagramNode implements LayoutedNode {
 
     /**
      * Return the weight of this node.
-     * 
+     *
      * @return The weight of this node.
      */
     public float getWeight() {
@@ -257,7 +257,7 @@ class ClassdiagramNode implements LayoutedNode {
 
     /**
      * Set a new weight for this node.
-     * 
+     *
      * @param w
      *            The new weight of this node.
      */
@@ -267,7 +267,7 @@ class ClassdiagramNode implements LayoutedNode {
 
     /**
      * a node is movable when it hasn't got any up- or downlinks.
-     * 
+     *
      * @return whether the node is movable
      */
     public boolean isMovable() {
@@ -278,7 +278,7 @@ class ClassdiagramNode implements LayoutedNode {
      * A placementhint gives an indication where it might be feasible to place
      * this node. It is used by the layouter, and there is no guarantee that it
      * will be used.
-     * 
+     *
      * @param hint
      *            x coordinate of the desired placement
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004, 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -161,7 +161,7 @@ public class GeneratorPHP4
         if (c == null) return "";
         return ModelFacade.getName(c);
     }
-    
+
     /**
      * Generates operation
      *
@@ -1837,11 +1837,11 @@ public class GeneratorPHP4
 
         return null;
     }
-    
+
     /**
      * @see org.argouml.application.api.NotationProvider2#generateActionState(java.lang.Object)
      */
-    public String generateActionState(Object actionState) {       
+    public String generateActionState(Object actionState) {
         return generateState(actionState);
     }
 }

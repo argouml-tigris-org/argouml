@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,7 +36,7 @@ import junit.framework.TestCase;
  * The following panes support the following types of targets:<br/>
  * <table>
  * <tr>
- * <td> 
+ * <td>
  * Todo pane
  * </td>
  * <td>
@@ -95,15 +95,15 @@ import junit.framework.TestCase;
  * class or a feature.
  * </td>
  * </tr> 
- * </table>  
+ * </table>
  * @author jaap.branderhorst@xs4all.nl
  * Jul 20, 2003
  */
 public class GUITestActionGoToDetails extends TestCase {
-    
+
     private ActionGoToDetails action;
 
-    
+
 
     /**
      * @param arg0 is the name of the test case.
@@ -115,7 +115,7 @@ public class GUITestActionGoToDetails extends TestCase {
     /**
      * @see junit.framework.TestCase#setUp()
      */
-    protected void setUp() throws Exception {       
+    protected void setUp() throws Exception {
         super.setUp();
         action = new ActionGoToDetails("");
     }
@@ -124,7 +124,7 @@ public class GUITestActionGoToDetails extends TestCase {
      * Test the todo tab.
      * TODO: Write this test.
      */
-    public void testToDoTab() {    
+    public void testToDoTab() {
     }
 
 }

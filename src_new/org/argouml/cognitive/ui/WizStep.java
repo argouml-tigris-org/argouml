@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -59,8 +59,7 @@ import org.argouml.util.osdep.StartBrowser;
  */
 
 public class WizStep extends JPanel
-    implements TabToDoTarget, ActionListener, DocumentListener 
-{
+    implements TabToDoTarget, ActionListener, DocumentListener {
     private static final Logger LOG = Logger.getLogger(WizStep.class);
 
     ////////////////////////////////////////////////////////////////
@@ -73,16 +72,16 @@ public class WizStep extends JPanel
     // instance variables
 
     private JPanel  mainPanel = new JPanel();
-    private JButton backButton = 
+    private JButton backButton =
         new JButton(Translator.localize("button.back"));
-    private JButton nextButton = 
+    private JButton nextButton =
         new JButton(Translator.localize("button.next"));
-    private JButton finishButton = 
+    private JButton finishButton =
         new JButton(Translator.localize("button.finish"));
-    private JButton helpButton = 
+    private JButton helpButton =
         new JButton(Translator.localize("button.help"));
     private JPanel  buttonPanel = new JPanel();
-  
+
     /**
      * The current target
      */
@@ -112,9 +111,9 @@ public class WizStep extends JPanel
 	if (m.length() == 1) {
 	    b.setMnemonic(m.charAt(0));
 	}
-    }   
+    }
 
-    
+
     /**
      * The constructor.
      */
@@ -123,11 +122,11 @@ public class WizStep extends JPanel
     }
     /**
      * The constructor.
-     * @param helpAction 
-     *      an action which does the needful, 
-     *      e.g. open a browser, display help, 
+     * @param helpAction
+     *      an action which does the needful,
+     *      e.g. open a browser, display help,
      *      when the according button had been pressed.
-     * 
+     *
      */
     public WizStep(Action helpAction) {
 	setMnemonic(backButton, "mnemonic.button.back");
@@ -165,7 +164,7 @@ public class WizStep extends JPanel
 
     /**
      * @deprecated since 0.15.3. The method in TabToDoTarget has been
-     * 		   deprecated and replaced by 
+     * 		   deprecated and replaced by
      * 		   {@link org.argouml.ui.targetmanager.TargetManager}.
      *
      * @param item the target item
@@ -193,7 +192,7 @@ public class WizStep extends JPanel
 	    finishButton.setEnabled(w != null ? w.canFinish() : false);
 	    helpButton.setEnabled(true);
 	}
-	else {  
+	else {
 	    return;
 	}
     }
@@ -203,14 +202,14 @@ public class WizStep extends JPanel
      *
      * @deprecated As of ArgoUml version 0.13.5,
      *             the visibility of this method will change in the future,
-     *             replaced by 
+     *             replaced by
      *             {@link org.argouml.ui.targetmanager.TargetManager#getTarget()
      *             TargetManager.getInstance().getTarget()}.
      *             this method will be removed in a couple of releases
      * @return The current target of the TabToDo
      */
     public Object getTarget() {
-	return TargetManager.getInstance().getTarget(); 
+	return TargetManager.getInstance().getTarget();
     }
 
     /**
@@ -251,9 +250,9 @@ public class WizStep extends JPanel
 	    updateTabToDo();
 	}
     }
-    
+
     /**
-     * The Finish button has been pressed, so we do the "finish" action. 
+     * The Finish button has been pressed, so we do the "finish" action.
      */
     public void doFinsh() {
 	Wizard w = getWizard();

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,10 +34,10 @@ import junit.framework.TestCase;
  *
  */
 public class TestMyTokenizer extends TestCase {
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param str the name of the test.
      */
     public TestMyTokenizer(String str) {
@@ -69,7 +69,7 @@ public class TestMyTokenizer extends TestCase {
 		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 	checkConstr(str1, delim1, res1, seps);
     }
-    
+
     /**
      * Test the constructor.
      */
@@ -113,7 +113,7 @@ public class TestMyTokenizer extends TestCase {
 		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 	checkConstr(str2, delim2, res2, seps);
     }
-    
+
     /**
      * Test the constructor.
      */
@@ -127,7 +127,7 @@ public class TestMyTokenizer extends TestCase {
 	String res3[] = {
 	    "<<", " ", "stereo", " ", ">>", " ", "newAttr"
 	};
-	
+
 	checkConstr(str3, delim3, res3);
 	checkConstr(str3, delim3, res3, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
 	checkConstr(str3, delim3, res3, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
@@ -139,7 +139,7 @@ public class TestMyTokenizer extends TestCase {
 		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 	checkConstr(str3, delim3, res3, seps);
     }
-    
+
     /**
      * Test the constructor.
      */
@@ -151,16 +151,16 @@ public class TestMyTokenizer extends TestCase {
 	String str4 = " newAttr = \": h\" ";
 	String delim4 = " ,\t,<<,>>,[,],:,=,{,},\\,";
 	String res4dot1[] = {
-	    " ", "newAttr", " ", "=", " ", "\"", ":", " ", "h\"", " " 
+	    " ", "newAttr", " ", "=", " ", "\"", ":", " ", "h\"", " "
 	};
 	String res4dot2[] = {
 	    " ", "newAttr", " ", "=", " ", "\": h\"", " "
 	};
 
 	checkConstr(str4, delim4, res4dot1);
-	checkConstr(str4, delim4, res4dot1, 
+	checkConstr(str4, delim4, res4dot1,
 	            MyTokenizer.SINGLE_QUOTED_SEPARATOR);
-	checkConstr(str4, delim4, res4dot2, 
+	checkConstr(str4, delim4, res4dot2,
 	            MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
 	checkConstr(str4, delim4, res4dot1, MyTokenizer.PAREN_EXPR_SEPARATOR);
 	checkConstr(
@@ -170,7 +170,7 @@ public class TestMyTokenizer extends TestCase {
 		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 	checkConstr(str4, delim4, res4dot2, seps);
     }
-    
+
     /**
      * Test the constructor.
      */
@@ -182,16 +182,16 @@ public class TestMyTokenizer extends TestCase {
 	String str5 = " newAttr = \': h\' ";
 	String delim5 = " ,\t,<<,>>,[,],:,=,{,},\\,";
 	String res5dot1[] = {
-	    " ", "newAttr", " ", "=", " ", "\'", ":", " ", "h\'", " " 
+	    " ", "newAttr", " ", "=", " ", "\'", ":", " ", "h\'", " "
 	};
 	String res5dot2[] = {
 	    " ", "newAttr", " ", "=", " ", "\': h\'", " "
 	};
 
 	checkConstr(str5, delim5, res5dot1);
-	checkConstr(str5, delim5, res5dot2, 
+	checkConstr(str5, delim5, res5dot2,
 	            MyTokenizer.SINGLE_QUOTED_SEPARATOR);
-	checkConstr(str5, delim5, res5dot1, 
+	checkConstr(str5, delim5, res5dot1,
 	            MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
 	checkConstr(str5, delim5, res5dot1, MyTokenizer.PAREN_EXPR_SEPARATOR);
 	checkConstr(
@@ -201,7 +201,7 @@ public class TestMyTokenizer extends TestCase {
 		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 	checkConstr(str5, delim5, res5dot2, seps);
     }
-    
+
     /**
      * Test the constructor.
      */
@@ -213,16 +213,16 @@ public class TestMyTokenizer extends TestCase {
 	String str6 = "newAttr = (: ()h) ";
 	String delim6 = " ,\t,<<,>>,[,],:,=,{,},\\,";
 	String res6dot1[] = {
-	    "newAttr", " ", "=", " ", "(", ":", " ", "()h)", " " 
+	    "newAttr", " ", "=", " ", "(", ":", " ", "()h)", " "
 	};
 	String res6dot2[] = {
 	    "newAttr", " ", "=", " ", "(: ()h)", " "
 	};
 
 	checkConstr(str6, delim6, res6dot1);
-	checkConstr(str6, delim6, res6dot1, 
+	checkConstr(str6, delim6, res6dot1,
 	            MyTokenizer.SINGLE_QUOTED_SEPARATOR);
-	checkConstr(str6, delim6, res6dot1, 
+	checkConstr(str6, delim6, res6dot1,
 	            MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
 	checkConstr(str6, delim6, res6dot2, MyTokenizer.PAREN_EXPR_SEPARATOR);
 	checkConstr(
@@ -232,7 +232,7 @@ public class TestMyTokenizer extends TestCase {
 		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 	checkConstr(str6, delim6, res6dot1, seps);
     }
-    
+
     /**
      * Test the constructor.
      */
@@ -256,7 +256,7 @@ public class TestMyTokenizer extends TestCase {
 	    " ",
 	    "\'\\\'",
 	    " ",
-	    ")(\')" 
+	    ")(\')"
 	};
 	String res7dot2[] = {
 	    "newAttr",
@@ -270,7 +270,7 @@ public class TestMyTokenizer extends TestCase {
 	    "()",
 	    " ",
 	    "\'\\\' )(\'",
-	    ")" 
+	    ")"
 	};
 	String res7dot3[] = {
 	    "newAttr",
@@ -284,7 +284,7 @@ public class TestMyTokenizer extends TestCase {
 	    " ",
 	    "\'\\\'",
 	    " ",
-	    ")(\')" 
+	    ")(\')"
 	};
 	String res7dot4[] = {
 	    "newAttr",
@@ -293,10 +293,10 @@ public class TestMyTokenizer extends TestCase {
 	    " ",
 	    "(\"\\\" )",
 	    "(\" () \'\\\' )",
-	    "(\')" 
+	    "(\')"
 	};
 	String res7dot5[] = {
-	    "newAttr", " ", "=", " ", "(\"\\\" )(\" () \'\\\' )(\')" 
+	    "newAttr", " ", "=", " ", "(\"\\\" )(\" () \'\\\' )(\')"
 	};
 	String res7dot6[] = {
 	    "newAttr",
@@ -309,13 +309,13 @@ public class TestMyTokenizer extends TestCase {
 	    "()",
 	    " ",
 	    "\'\\\' )(\'",
-	    ")" 
+	    ")"
 	};
 
 	checkConstr(str7, delim7, res7dot1);
-	checkConstr(str7, delim7, res7dot2, 
+	checkConstr(str7, delim7, res7dot2,
 	            MyTokenizer.SINGLE_QUOTED_SEPARATOR);
-	checkConstr(str7, delim7, res7dot3, 
+	checkConstr(str7, delim7, res7dot3,
 	            MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
 	checkConstr(str7, delim7, res7dot4, MyTokenizer.PAREN_EXPR_SEPARATOR);
 	checkConstr(
@@ -406,7 +406,7 @@ public class TestMyTokenizer extends TestCase {
 
 	for (i = 0; i < res.length; i++) {
 	    assertTrue(
-		       "MyTokenizer(\"" + str + "\", \"" + delim 
+		       "MyTokenizer(\"" + str + "\", \"" + delim
 		           + "\") lacks tokens",
 		       tokenizer.hasMoreTokens());
 	    tok = tokenizer.nextToken();
@@ -445,7 +445,7 @@ public class TestMyTokenizer extends TestCase {
 
 	for (i = 0; i < res.length; i++) {
 	    assertTrue(
-		       "MyTokenizer(\"" + str + "\", \"" + delim 
+		       "MyTokenizer(\"" + str + "\", \"" + delim
 		           + "\") lacks tokens",
 		       tokenizer.hasMoreTokens());
 	    tok = tokenizer.nextToken();
@@ -484,7 +484,7 @@ public class TestMyTokenizer extends TestCase {
 
 	for (i = 0; i < res.length; i++) {
 	    assertTrue(
-		       "MyTokenizer(\"" + str + "\", \"" + delim 
+		       "MyTokenizer(\"" + str + "\", \"" + delim
 		           + "\") lacks tokens",
 		       tokenizer.hasMoreTokens());
 	    tok = tokenizer.nextToken();

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2003 The Regents of the University of California. All
+// Copyright (c) 2002-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,7 +32,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @author jaap.branderhorst@xs4all.nl
  */
 public class UMLExtendExtensionPointListModel
-    extends UMLModelElementListModel2 { 
+    extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLExtendExtensionPointListModel.
@@ -48,13 +48,13 @@ public class UMLExtendExtensionPointListModel
         setAllElements(ModelFacade.getExtensionPoints(getTarget()));
     }
 
-   
+
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
-        return ModelFacade.isAExtensionPoint(o) 
+        return ModelFacade.isAExtensionPoint(o)
             && ModelFacade.getExtensionPoints(getTarget()).contains(o);
     }
 

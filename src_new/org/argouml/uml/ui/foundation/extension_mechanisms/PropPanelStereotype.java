@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -50,12 +50,12 @@ import org.tigris.swidgets.FlexiGridLayout;
  */
 public class PropPanelStereotype extends PropPanelModelElement {
 
-    private static UMLGeneralizableElementSpecializationListModel 
-        specializationListModel = 
+    private static UMLGeneralizableElementSpecializationListModel
+        specializationListModel =
             new UMLGeneralizableElementSpecializationListModel();
 
-    private static UMLGeneralizableElementGeneralizationListModel 
-        generalizationListModel = 
+    private static UMLGeneralizableElementGeneralizationListModel
+        generalizationListModel =
             new UMLGeneralizableElementGeneralizationListModel();
 
     private JScrollPane generalizationScroll;
@@ -66,21 +66,21 @@ public class PropPanelStereotype extends PropPanelModelElement {
      * Construct new stereotype properties tab
      */
     public PropPanelStereotype() {
-        super("Stereotype", lookupIcon("Stereotype"), 
+        super("Stereotype", lookupIcon("Stereotype"),
                 ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"), getNameTextField());
 
-        
+
         JComboBox baseClass = new UMLComboBox2(new UMLMetaClassComboBoxModel(),
                 ActionSetMetaClass.SINGLETON, false);
         addField(Translator.localize("label.base-class"), baseClass);
 
         addField(Translator.localize("label.namespace"),
                  getNamespaceComboBox());
-        
 
-        JPanel modifiersPanel = new JPanel(new FlexiGridLayout(0, 3, 
+
+        JPanel modifiersPanel = new JPanel(new FlexiGridLayout(0, 3,
                 FlexiGridLayout.ROWCOLPREFERRED));
         modifiersPanel.setBorder(new TitledBorder(
                 Translator.localize("label.modifiers")));
@@ -91,24 +91,24 @@ public class PropPanelStereotype extends PropPanelModelElement {
 
         addSeperator();
 
-        addField(Translator.localize("label.generalizations"), 
+        addField(Translator.localize("label.generalizations"),
                 getGeneralizationScroll());
         addField(Translator.localize("label.specializations"),
                 getSpecializationScroll());
 
         addButton(new PropPanelButton2(new ActionNavigateNamespace()));
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));
     }
 
     /**
      * Returns the generalizationScroll.
-     * 
+     *
      * @return JScrollPane
      */
-    
+
     protected JScrollPane getGeneralizationScroll() {
         if (generalizationScroll == null) {
             JList list = new UMLLinkedList(generalizationListModel);
@@ -119,7 +119,7 @@ public class PropPanelStereotype extends PropPanelModelElement {
 
     /**
      * Returns the specializationScroll.
-     * 
+     *
      * @return JScrollPane
      */
     protected JScrollPane getSpecializationScroll() {

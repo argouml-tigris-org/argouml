@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,15 +44,14 @@ public class Tools {
     /** logger */
     private static final Logger LOG = Logger.getLogger(Tools.class);
 
-    private static final String PACKAGELIST[] =
+    private static final String[] PACKAGELIST =
 	new String[]{
-	    "org.argouml.application", "ru.novosoft.uml", 
-            "org.tigris.gef.base", "org.xml.sax", 
+	    "org.argouml.application", "ru.novosoft.uml",
+            "org.tigris.gef.base", "org.xml.sax",
             "java.lang", "org.apache.log4j",
 	};
 
-    private static void getComponentVersionInfo(StringBuffer sb, String pn) 
-    {
+    private static void getComponentVersionInfo(StringBuffer sb, String pn) {
         sb.append(Translator.localize("label.package")).append(": ");
         sb.append(pn);
         sb.append('\n');
@@ -88,8 +87,7 @@ public class Tools {
     /**
      * @return a String containing the version information
      */
-    public static String getVersionInfo()
-    {
+    public static String getVersionInfo() {
         try {
 
             // class preloading, so packages are there...
@@ -99,13 +97,13 @@ public class Tools {
 
             StringBuffer sb = new StringBuffer();
 
-            String saxFactory = 
+            String saxFactory =
                 System.getProperty("javax.xml.parsers.SAXParserFactory");
             if (saxFactory != null) {
                 Object[] msgArgs = {
-                    saxFactory
+                    saxFactory,
                 };
-                sb.append(Translator.messageFormat("label.sax-factory1", 
+                sb.append(Translator.messageFormat("label.sax-factory1",
                                                    msgArgs));
             }
 
@@ -113,9 +111,9 @@ public class Tools {
             try {
                 saxObject = SAXParserFactory.newInstance();
                 Object[] msgArgs = {
-                    saxObject.getClass().getName()
+                    saxObject.getClass().getName(),
                 };
-                sb.append(Translator.messageFormat("label.sax-factory2", 
+                sb.append(Translator.messageFormat("label.sax-factory2",
                                                    msgArgs));
                 sb.append("\n");
             }
@@ -135,7 +133,7 @@ public class Tools {
                     getComponentVersionInfo(sb, pckg.getName());
                 }
             }
-      
+
 
 
             sb.append("\n");
@@ -163,9 +161,8 @@ public class Tools {
     /**
      * Print out some version info for debugging.
      */
-    public static void logVersionInfo()
-    {
-        BufferedReader r = 
+    public static void logVersionInfo() {
+        BufferedReader r =
             new BufferedReader(new StringReader(getVersionInfo()));
 
         try {
@@ -181,7 +178,7 @@ public class Tools {
     /** getFileExtension returns the file extension of a file.
      *  @param file the File to examine
      *  @return extension including the dot, or null
-     */  
+     */
     public static String getFileExtension(File file) {
         String ext = null;
         String s = file.getName();

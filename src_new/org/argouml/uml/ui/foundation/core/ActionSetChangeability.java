@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,19 +38,19 @@ import org.argouml.uml.ui.UMLRadioButtonPanel;
  */
 public class ActionSetChangeability extends UMLAction {
 
-    private static final ActionSetChangeability SINGLETON = 
+    private static final ActionSetChangeability SINGLETON =
         new ActionSetChangeability();
 
     /**
      * ADDONLY_COMMAND determines a changeability kind.
      */
     public static final String ADDONLY_COMMAND = "addonly";
-    
+
     /**
      * CHANGEABLE_COMMAND determines a changeability kind.
      */
     public static final String CHANGEABLE_COMMAND = "changeable";
-    
+
     /**
      * FROZEN_COMMAND determines a changeability kind.
      */
@@ -71,7 +71,7 @@ public class ActionSetChangeability extends UMLAction {
         if (e.getSource() instanceof JRadioButton) {
             JRadioButton source = (JRadioButton) e.getSource();
             String actionCommand = source.getActionCommand();
-            Object target = 
+            Object target =
                 ((UMLRadioButtonPanel) source.getParent()).getTarget();
             if (ModelFacade.isAAssociationEnd(target)
 		|| ModelFacade.isAAttribute(target)) {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -63,9 +63,9 @@ import org.argouml.util.ConfigLoader;
 /**
  * The lower-right pane of the main ArgoUML window, which shows
  * the details of a selected model element. <p>
- * 
+ *
  * This panel has several tabs that show details of the selected
- * ToDoItem, or the selected model element in the Explorer (NavigatorPane), 
+ * ToDoItem, or the selected model element in the Explorer (NavigatorPane),
  * or the MultiEditorPane. <p>
  *
  * There are requests to have the cursor automatically
@@ -76,8 +76,7 @@ public class DetailsPane
     implements ChangeListener, MouseListener,
 	       QuadrantPanel,
 	       Orientable,
-	       TargetListener
-{
+	       TargetListener {
 
     /** logger */
     private static final Logger LOG = Logger.getLogger(DetailsPane.class);
@@ -95,8 +94,8 @@ public class DetailsPane
      */
     private JTabbedPane topLevelTabbedPane = new JTabbedPane();
 
-    /** 
-     * The current target
+    /**
+     * The current target.
      */
     private Object currentTarget;
 
@@ -136,7 +135,7 @@ public class DetailsPane
     // constructors
 
     /**
-     * Gets all of the tabPanels from the ConfigLoader, then 
+     * Gets all of the tabPanels from the ConfigLoader, then
      * adds them to the JTabbedPane.<p>
      *
      * Sets the target to null.<p>
@@ -434,11 +433,11 @@ public class DetailsPane
 
     /**
      * Reacts to a change in the selected tab by calling
-     * 
+     *
      * refresh() for TabToDoTarget's
      * &
      * setTarget on a  TabModelTarget or TabFigTarget instance
-     * 
+     *
      * old notes: called when the user selects a new tab, by clicking or
      *  otherwise.
      *
@@ -455,7 +454,7 @@ public class DetailsPane
 		removeTargetListener((TargetListener) tab);
 	}
         Object target = TargetManager.getInstance().getTarget();
-        
+
         if (!(sel instanceof TargetListener)) {
             if (sel instanceof TabToDo)
 		((TabToDo) sel).refresh();
@@ -466,7 +465,7 @@ public class DetailsPane
             removeTargetListener((TargetListener) sel);
             addTargetListener((TargetListener) sel);
         }
-        
+
         if (target != null
             && ModelFacade.isABase(target)
             && topLevelTabbedPane.getSelectedIndex() > 0)
@@ -483,7 +482,7 @@ public class DetailsPane
     public void mySingleClick(int tab) {
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
-        LOG.debug("single: " 
+        LOG.debug("single: "
                 + topLevelTabbedPane.getComponentAt(tab).toString());
     }
 
@@ -496,7 +495,7 @@ public class DetailsPane
     public void myDoubleClick(int tab) {
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
-        LOG.debug("double: " 
+        LOG.debug("double: "
                 + topLevelTabbedPane.getComponentAt(tab).toString());
         JPanel t = (JPanel) tabPanelList.elementAt(tab);
         // Currently this feature is disabled for ArgoUML.
@@ -511,7 +510,7 @@ public class DetailsPane
      */
     public void mousePressed(MouseEvent me) {
     }
-    
+
     /**
      * empty, no action taken.
      *
@@ -519,7 +518,7 @@ public class DetailsPane
      */
     public void mouseReleased(MouseEvent me) {
     }
-    
+
     /**
      * empty, no action taken.
      *
@@ -527,7 +526,7 @@ public class DetailsPane
      */
     public void mouseEntered(MouseEvent me) {
     }
-    
+
     /**
      * empty, no action taken.
      *
@@ -614,13 +613,13 @@ public class DetailsPane
     }
 
     /**
-     * Enables/disables the tabs on the tabbed card. Also selects the tab to 
+     * Enables/disables the tabs on the tabbed card. Also selects the tab to
      * show.
      */
     private void enableTabs(Object target) {
 
         // iterate through the tabbed panels to determine wether they
-        // should be enabled. 
+        // should be enabled.
         for (int i = 0; i < tabPanelList.size(); i++) {
             JPanel tab = (JPanel) tabPanelList.elementAt(i);
             boolean shouldEnable = false;
@@ -648,7 +647,7 @@ public class DetailsPane
         Object[] listeners = listenerList.getListenerList();
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
-                // Lazily create the event:                     
+                // Lazily create the event:
 		((TargetListener) listeners[i + 1]).targetSet(targetEvent);
             }
         }
@@ -660,7 +659,7 @@ public class DetailsPane
 
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
-                // Lazily create the event:                     
+                // Lazily create the event:
 		((TargetListener) listeners[i + 1]).targetAdded(targetEvent);
             }
         }
@@ -671,7 +670,7 @@ public class DetailsPane
         Object[] listeners = listenerList.getListenerList();
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
-                // Lazily create the event:                     
+                // Lazily create the event:
                 ((TargetListener) listeners[i + 1]).targetRemoved(targetEvent);
             }
         }

@@ -28,15 +28,15 @@ import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 /**
- * 
+ *
  * @author mkl
- *  
+ *
  */
 public class UMLScriptExpressionModel extends UMLExpressionModel2 {
 
     /**
      * The constructor.
-     * 
+     *
      * @param container the container of UML user interface components
      * @param propertyName the name of the property
      */

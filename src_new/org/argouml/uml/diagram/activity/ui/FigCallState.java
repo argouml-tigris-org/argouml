@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,12 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-//File: FigCallState.java
-//Classes: FigCallState
-//Original Author: MVW
-
 package org.argouml.uml.diagram.activity.ui;
-
 
 import java.beans.PropertyVetoException;
 
@@ -35,27 +30,30 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigText;
 
 
-/** Class to display graphics for a UML CallState in a diagram. 
- * The UML 1.3 standard does not contain a description of CallState 
+/**
+ * Class to display graphics for a UML CallState in a diagram.
+ * The UML 1.3 standard does not contain a description of CallState
  * in the Notation Guide chapters. The later UML versions correct this omission.
- * So, for UML 1.3 it looks the same as an ActionState. 
- * The only difference with an ActionState is 
+ * So, for UML 1.3 it looks the same as an ActionState.
+ * The only difference with an ActionState is
  * the extra Well-Formedness rule for a CallState.
+ *
+ * @author MVW
  */
 public class FigCallState extends FigActionState {
-    
+
     ////////////////////////////////////////////////////////////////
     // constructors
-    
+
     /**
      * Main Constructor FigCallState (called from file loading)
      */
     public FigCallState() {
         super();
     }
-    
+
     /**
-     * Constructor FigCallState that hooks the Fig into 
+     * Constructor FigCallState that hooks the Fig into
      * an existing UML model element
      * @param gm ignored!
      * @param node owner, i.e. the UML element
@@ -64,14 +62,14 @@ public class FigCallState extends FigActionState {
         this();
         setOwner(node);
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
     public String placeString() {
         return "new CallState";
     }
-    
+
     /**
      * @see java.lang.Object#clone()
      */
@@ -79,16 +77,16 @@ public class FigCallState extends FigActionState {
         FigCallState figClone = (FigCallState) super.clone();
         return figClone;
     }
-        
+
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         /*if (ft == getNameFig() && this.getOwner() != null) {
-            //TODO: Write this function in ParserDisplay. Uncomment then. 
-            ParserDisplay.SINGLETON.parseCallActionState(ft.getText(), 
+            //TODO: Write this function in ParserDisplay. Uncomment then.
+            ParserDisplay.SINGLETON.parseCallActionState(ft.getText(),
                     this.getOwner());
         } else*/
         super.textEdited(ft);
-    } 
+    }
 } /* end class FigCallState */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -56,8 +56,7 @@ import org.argouml.util.osdep.OsUtil;
  *  @since 0.9.4
  *  @stereotype singleton
  */
-public final class ExitSecurityManager extends SecurityManager
-{
+public final class ExitSecurityManager extends SecurityManager {
     private static final Logger LOG =
 	Logger.getLogger(ExitSecurityManager.class);
 
@@ -73,7 +72,9 @@ public final class ExitSecurityManager extends SecurityManager
      */
     private boolean allowExit = true;
 
-    /** The only allowed instance. */
+    /**
+     * The only allowed instance.
+     */
     private static final ExitSecurityManager SINGLETON =
 	new ExitSecurityManager();
 
@@ -86,7 +87,9 @@ public final class ExitSecurityManager extends SecurityManager
         return SINGLETON;
     }
 
-    /** Don't allow it to be instantiated from the outside. */
+    /**
+     * Don't allow it to be instantiated from the outside.
+     */
     private ExitSecurityManager() {
     }
 
@@ -94,7 +97,7 @@ public final class ExitSecurityManager extends SecurityManager
      * @see java.lang.SecurityManager#checkPermission(java.security.Permission)
      */
     public void checkPermission(Permission perm) {
-        // TODO:  
+        // TODO:
 	// Don't allow write access to <code>sun.awt.exception.handler</code>
 	if (perm.getClass().equals(PropertyPermission.class)) {
 	    if ("sun.awt.exception.handler".equals(perm.getName())) {
@@ -112,7 +115,7 @@ public final class ExitSecurityManager extends SecurityManager
 	else if (perm.getClass().equals(java.lang.RuntimePermission.class)) {
 	    RuntimePermission rp = (RuntimePermission) perm;
             // Uncomment for more information about what happens...
-	    LOG.debug("RuntimePermission: " + rp.getName() 
+	    LOG.debug("RuntimePermission: " + rp.getName()
 		      + " - '" + rp.getActions() + "'");
 	    if ("exitVM".equals(rp.getName())) {
 		if (!getInstance().getAllowExit()) {

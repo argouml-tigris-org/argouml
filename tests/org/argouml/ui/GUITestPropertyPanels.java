@@ -71,17 +71,17 @@ import org.tigris.swidgets.Horizontal;
  * @author mkl
  */
 public class GUITestPropertyPanels extends TestCase {
-    
+
     private static Project p = null;
     private static String projectFile;
     private Object modelElement;
-    
+
     /**
      * For an explanation on why this is static @see #setUp
      */
     private static DetailsPane theDetailsPane = null;
     private JPanel propertyPane;
-    
+
     // we need the translator to work in order to access
     // the property panels. It is also a common source for
     // problems.
@@ -89,8 +89,8 @@ public class GUITestPropertyPanels extends TestCase {
         Translator.init();
         projectFile = "../tests/testmodels/GUITestPropertyPanels.zargo";
     }
-    
-    
+
+
     /**
      * @param me is the type of object to test
      * @param arg0 is the name of the test case
@@ -99,7 +99,7 @@ public class GUITestPropertyPanels extends TestCase {
         super(arg0);
         modelElement = me;
     }
-    
+
     /**
      * Here we are actually violating the test independance since we keep
      * the DetailsPane from test to test. The reason to do this is to make
@@ -130,26 +130,26 @@ public class GUITestPropertyPanels extends TestCase {
         // once
         HashMap meMap = new HashMap();
         ChildGenerator cg = new ChildGenModelElements();
-        
+
         TestSuite suite =
 	    new TestSuite("Tests to access proppanels "
 			  + "for all known model elements");
-        
+
         p = ProjectManager.getManager().makeEmptyProject();
         File testfile =
 	    new File(projectFile);
-        
+
         ZargoFilePersister persister = new ZargoFilePersister();
         p = persister.doLoad(testfile);
         ProjectManager.getManager().setCurrentProject(p);
-        
+
         Collection me = Model.getUmlHelper().getModelManagement().
 	    getAllModelElementsOfKind((Class) ModelFacade.MODELELEMENT);
-        
+
         Enumeration meEnum = getAllModelElements(p);
-        
+
         Iterator iter = me.iterator();
-        
+
         while (meEnum.hasMoreElements()) {
             Object obj = meEnum.nextElement();
             if (ModelFacade.isAModelElement(obj)) {
@@ -161,19 +161,19 @@ public class GUITestPropertyPanels extends TestCase {
                 }
             }
         }
-        
+
         return suite;
     }
-    
+
     private static Enumeration getAllModelElements(Object me) {
         Enumeration elem = new EnumerationComposite();
         return getAllModelElements(me, elem);
     }
-    
+
     private static Enumeration getAllModelElements(Object me,
 						   Enumeration elem) {
         ChildGenUML cg = new ChildGenUML();
-        
+
         elem = new EnumerationComposite(elem, new EnumerationSingle(me));
         Enumeration elem2 = cg.gen(me);
         if (elem2 == EnumerationEmpty.theInstance())
@@ -184,15 +184,15 @@ public class GUITestPropertyPanels extends TestCase {
         }
         return elem;
     }
-    
-    
+
+
     /**
      * @see junit.framework.TestCase#runTest()
      */
     protected void runTest() throws Throwable {
         testPropertyTab();
     }
-    
+
     /**
      * @throws Throwable any error or exception
      */
@@ -207,16 +207,16 @@ public class GUITestPropertyPanels extends TestCase {
 				modelElement,
 			    });
         theDetailsPane.targetSet(e);
-        
+
         propertyPane = /*TabProps */
             theDetailsPane.getNamedTab(Translator.localize("tab.properties"));
-        
+
         // currently this is in this try block as it does not work
         // _propertyPanel always has size 0,0
         /*
           try {
             saveImageAsJPEG((BufferedImage)createImageFromComponent(
-                _propertyPane), 
+                _propertyPane),
                 1000000, "/Users/mkl/argoimg/"+this.getName() + ".jpg");
         }
         catch (Exception ex) {
@@ -232,9 +232,9 @@ public class GUITestPropertyPanels extends TestCase {
         comp.paint(g);
         return image;
     }
-    
-    
-    public static void saveImageAsJPEG(BufferedImage bi, float quality, 
+
+
+    public static void saveImageAsJPEG(BufferedImage bi, float quality,
             String filename) {
         try {
             ByteArrayOutputStream boutstream = new ByteArrayOutputStream();
@@ -253,55 +253,55 @@ public class GUITestPropertyPanels extends TestCase {
 }
 
 class ChildGenModelElements implements ChildGenerator {
-    
-    
+
+
     public Enumeration gen(Object o) {
-        
+
         if (o instanceof Project) {
             Project p = (Project) o;
             return new EnumerationComposite(p.getUserDefinedModels().elements(),
             p.getDiagrams().elements());
         }
-        
+
         if (o instanceof Diagram) {
             Collection figs = ((Diagram) o).getLayer().getContents(null);
             if (figs != null) return new Vector(figs).elements();
         }
-        
+
         if (!ModelFacade.isAModelElement(o))
             return EnumerationEmpty.theInstance();
-        
+
         EnumerationComposite res =
 	    new EnumerationComposite(new EnumerationSingle(o));
-        
-        
+
+
         // now we deal only with modelelements
         if (ModelFacade.getBehaviors(o) != null) {
             Vector beh = new Vector(ModelFacade.getBehaviors(o));
             res.addSub(beh.elements());
         }
-        
+
         if (ModelFacade.isANamespace(o)) {
             if (ModelFacade.getOwnedElements(o) != null) {
                 Vector own = new Vector(ModelFacade.getOwnedElements(o));
                 res.addSub(own.elements());
             }
         }
-        
+
         if (ModelFacade.isAClassifier(o)) {
             if (ModelFacade.getFeatures(o) != null) {
                 Vector own = new Vector(ModelFacade.getFeatures(o));
                 res.addSub(own.elements());
             }
         }
-        
+
         if (ModelFacade.isABehavioralFeature(o)) {
             if (ModelFacade.getParameters(o) != null) {
                 Vector params = new Vector(ModelFacade.getParameters(o));
                 res.addSub(params.elements());
             }
         }
-        
+
         if (ModelFacade.isAAssociation(o)) {
             if (ModelFacade.getConnections(o) != null) {
                 Vector assocEnds = new Vector(ModelFacade.getConnections(o));
@@ -309,17 +309,17 @@ class ChildGenModelElements implements ChildGenerator {
             }
             //TODO: MAssociationRole
         }
-        
+
         if (ModelFacade.isAElementImport(o)) {
             Object me = ModelFacade.getModelElement(o);
             res.addSub(new EnumerationSingle(me));
         }
-        
+
         if (ModelFacade.isACompositeState(o)) {
             Vector substates = new Vector(ModelFacade.getSubvertices(o));
             if (substates != null) res.addSub(substates.elements());
         }
-        
+
         if (ModelFacade.isAStateMachine(o)) {
             EnumerationComposite res2 = new EnumerationComposite();
             Object top = Model.getUmlHelper().getStateMachines().getTop(o);
@@ -327,23 +327,23 @@ class ChildGenModelElements implements ChildGenerator {
             res2.addSub(new Vector(ModelFacade.getTransitions(o)));
             res.addSub(res2);
         }
-        
+
         // if (ModelFacade.isATransition(o)) {
         ///   Vector action = new Vector(ModelFacade.getAction(o));
         //if (action != null) res.addSub(action.elements());
         //}
-        
+
         if (ModelFacade.isANode(o)) {
             Vector substates = new Vector(ModelFacade.getResidents(o));
             if (substates != null) res.addSub(substates.elements());
         }
-        
-        
-        
-        
+
+
+
+
         return res;
-        
+
     }
-    
-    
+
+
 }

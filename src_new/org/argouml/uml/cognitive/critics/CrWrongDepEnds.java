@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrWrongDepEnds.java
-// Classes: CrWrongDepEnds
-// Original Author: 5eichler@informatik.uni-hamburg.de
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
@@ -38,17 +33,19 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.ui.FigDependency;
 import org.tigris.gef.util.VectorSet;
+
 /**
  * A critic to detect when in a deployment-diagram the supplier or the
  * client of a dependency is a mobject and inside a figComponent and
  * the other end is a mobject and inside a figComponentInstance
- **/
-
+ *
+ * @author 5eichler
+ */
 public class CrWrongDepEnds extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrWrongDepEnds() {
 	setHeadline("Wrong location-types");
@@ -101,7 +98,7 @@ public class CrWrongDepEnds extends CrUML {
      * @param dd the diagram to check
      * @return the set of offenders
      */
-    public VectorSet computeOffenders(UMLDeploymentDiagram dd) { 
+    public VectorSet computeOffenders(UMLDeploymentDiagram dd) {
 	Collection figs = dd.getLayer().getContents(null);
 	VectorSet offs = null;
 	int size = figs.size();
@@ -159,11 +156,11 @@ public class CrWrongDepEnds extends CrUML {
 		    offs.addElement(dd);
 		}
 		offs.addElement(figDependency);
-		offs.addElement(figDependency.getSourcePortFig()); 
-		offs.addElement(figDependency.getDestPortFig()); 
+		offs.addElement(figDependency.getSourcePortFig());
+		offs.addElement(figDependency.getDestPortFig());
 	    }
 	}
 	return offs;
-    } 
+    }
 
 } /* end class CrWrongDepEnds.java */

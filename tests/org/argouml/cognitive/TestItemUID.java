@@ -68,10 +68,10 @@ import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
  *
  */
 public class TestItemUID extends TestCase {
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param name the name of the test.
      */
     public TestItemUID(String name) {
@@ -83,7 +83,7 @@ public class TestItemUID extends TestCase {
      */
     public void testConstructors() {
 	String strs[] = {
-	    "a", "b", "c", "d", "e" 
+	    "a", "b", "c", "d", "e"
 	};
 	ItemUID uids[] = new ItemUID[10];
 	ItemUID uids2[] = new ItemUID[strs.length];
@@ -136,7 +136,7 @@ public class TestItemUID extends TestCase {
         FigMNode figmnode = new FigMNode();
         FigMNodeInstance figmnodeinstance = new FigMNodeInstance();
         FigObject figobject = new FigObject();
-        
+
         FigBranchState figbranchstate = new FigBranchState();
         FigCompositeState figcompositestate = new FigCompositeState();
         FigDeepHistoryState figdeephistorystate = new FigDeepHistoryState();
@@ -149,19 +149,19 @@ public class TestItemUID extends TestCase {
             new FigShallowHistoryState();
         //FigState figstate = new FigState();
         FigTransition figtransition = new FigTransition();
-        
+
         FigClass figclass = new FigClass();
         FigEdgeNote figedgenote = new FigEdgeNote();
         FigInstance figinstance = new FigInstance();
         FigInterface figinterface = new FigInterface();
         FigLink figlink = new FigLink();
         FigPackage figpackage = new FigPackage();
-        
+
         FigActor figactor = new FigActor();
         FigExtend figextend = new FigExtend();
         FigInclude figinclude = new FigInclude();
         FigUseCase figusecase = new FigUseCase();
-        
+
         checkAssignIDToObject(testmc, true, true);
         checkAssignIDToObject(actdiag, true, true);
         checkAssignIDToObject(classdiag, true, true);
@@ -170,18 +170,18 @@ public class TestItemUID extends TestCase {
         checkAssignIDToObject(seqdiag, true, true);
         checkAssignIDToObject(statediag, true, true);
         checkAssignIDToObject(ucdiag, true, true);
-        
+
         checkAssignIDToObject(figactionstate, true, true);
-        
+
         //checkAssignIDToObject(figassociationrole, true, true);
         checkAssignIDToObject(figclassifierrole, true, true);
-        
+
         checkAssignIDToObject(figcomponent, true, true);
         checkAssignIDToObject(figcomponentinstance, true, true);
         checkAssignIDToObject(figmnode, true, true);
         checkAssignIDToObject(figmnodeinstance, true, true);
         checkAssignIDToObject(figobject, true, true);
-        
+
         checkAssignIDToObject(figbranchstate, true, true);
         checkAssignIDToObject(figcompositestate, true, true);
         checkAssignIDToObject(figdeephistorystate, true, true);
@@ -193,14 +193,14 @@ public class TestItemUID extends TestCase {
         checkAssignIDToObject(figshallowhistorystate, true, true);
         //checkAssignIDToObject(figstate, true, true);
         checkAssignIDToObject(figtransition, true, true);
-        
+
         checkAssignIDToObject(figclass, true, true);
         checkAssignIDToObject(figedgenote, true, true);
         checkAssignIDToObject(figinstance, true, true);
         checkAssignIDToObject(figinterface, true, true);
         checkAssignIDToObject(figlink, true, true);
         checkAssignIDToObject(figpackage, true, true);
-        
+
         checkAssignIDToObject(figactor, true, true);
         checkAssignIDToObject(figextend, true, true);
         checkAssignIDToObject(figinclude, true, true);

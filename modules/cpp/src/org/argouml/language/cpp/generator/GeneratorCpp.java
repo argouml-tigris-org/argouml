@@ -155,7 +155,7 @@ public class GeneratorCpp extends Generator2
 
     /**
      * @param o the object to be generated
-     * @return the generated string 
+     * @return the generated string
      */
     public static String cppGenerate(Object o) {
         return SINGLETON.generate(o);
@@ -214,7 +214,7 @@ public class GeneratorCpp extends Generator2
             int index = packagePath.indexOf (".", lastIndex + 1);
             if (index == -1) index = packagePath.length();
 
-            path += packagePath.substring(lastIndex + 1, index) 
+            path += packagePath.substring(lastIndex + 1, index)
                 + FILE_SEPARATOR;
             lastIndex = index;
         } while (true);
@@ -351,7 +351,7 @@ public class GeneratorCpp extends Generator2
     private void writeTemplate(Object cls, String path, BufferedWriter fos) {
         String templatePathName = path + "/templates/";
         String fileName = ModelFacade.getName(cls);
-        String tagTemplatePathName = 
+        String tagTemplatePathName =
             ModelFacade.getTaggedValueValue(cls, "TemplatePath");
         String authorTag = ModelFacade.getTaggedValueValue(cls, "author");
         String emailTag = ModelFacade.getTaggedValueValue(cls, "email");
@@ -411,7 +411,7 @@ public class GeneratorCpp extends Generator2
      * @param tokenName is the string we search for.
      * @param tokenValue is the value we replace.
      */
-    private void replaceToken(StringBuffer line, String tokenName, 
+    private void replaceToken(StringBuffer line, String tokenName,
             String tokenValue) {
         int tokenStart;
         tokenStart = line.toString().indexOf(tokenName);
@@ -455,16 +455,16 @@ public class GeneratorCpp extends Generator2
         // clsDepend.getNamespace().getName());
         StringBuffer sb = new StringBuffer(80);
         String packagePath = ModelFacade.getName(clsDepend);
-        Object parent = 
+        Object parent =
             ModelFacade.getNamespace(ModelFacade.getNamespace(clsDepend));
         if (parent != null) {
             packagePath =
-                ModelFacade.getName(ModelFacade.getNamespace(clsDepend)) 
+                ModelFacade.getName(ModelFacade.getNamespace(clsDepend))
                 + "/" + packagePath;
             while (parent != null) {
                 // ommit root package name; it's the model's root
                 if (ModelFacade.getNamespace(parent) != null) {
-                    packagePath = 
+                    packagePath =
                         ModelFacade.getName(parent) + "/" + packagePath;
                 }
                 // cat.info("generateHeaderImportLine4Item: Runde mit
@@ -657,7 +657,7 @@ public class GeneratorCpp extends Generator2
                     if (dependency == null) {
                         break;
                     }
-                    Collection clientsCol = 
+                    Collection clientsCol =
                         ModelFacade.getSuppliers(dependency);
                     if (clientsCol == null) {
                         break;
@@ -690,7 +690,7 @@ public class GeneratorCpp extends Generator2
         }
         return sb.toString();
     }
-    
+
     private String removeModelFromPackage(String packageName) {
         int firstDot = packageName.indexOf('.');
         if (firstDot == -1) {
@@ -749,7 +749,7 @@ public class GeneratorCpp extends Generator2
         for (Object actual = pkg;
              actual != null;
              actual = ModelFacade.getNamespace(actual)) {
-            StringTokenizer st = 
+            StringTokenizer st =
                 new StringTokenizer(ModelFacade.getName(actual), ".");
             StringBuffer tempBuf = new StringBuffer(20);
             while (st.hasMoreTokens()) {
@@ -862,13 +862,13 @@ public class GeneratorCpp extends Generator2
         actualNamespace = getNamespaceWithoutModel(cls);
         return sb.toString();
     }
-    
+
     /**
-     * Retrieve the namespace of the given model element, excluding the model, 
+     * Retrieve the namespace of the given model element, excluding the model,
      * which shouldn't be considered a namespace.
      * @param me the model element for which to get the namespace
-     * @return the namespace if it exists or null if the model is the 
-     * containing namespace for <code>me</code> 
+     * @return the namespace if it exists or null if the model is the
+     * containing namespace for <code>me</code>
      */
     private Object getNamespaceWithoutModel(Object me) {
         Object parent = ModelFacade.getNamespace(me);
@@ -938,7 +938,7 @@ public class GeneratorCpp extends Generator2
         if (c == null) return "";
         return ModelFacade.getName(c);
     }
-    
+
     /** 2002-11-28 Achim Spangler
      * seperate generation of Operation Prefix from generateOperation
      * so that generateOperation is language independent
@@ -979,10 +979,10 @@ public class GeneratorCpp extends Generator2
      * seperate generation of Operation Name from generateOperation
      * so that generateOperation is language independent
      * -> for C++: if we create .cpp we must prepend Owner name
-     * 
+     *
      * @param sb Where to put the result.
      */
-    private boolean generateOperationNameAndTestForConstructor(Object op, 
+    private boolean generateOperationNameAndTestForConstructor(Object op,
             StringBuffer sb) {
         // cat.info("generate Operation for File" + generatorPass + "
         // fuer Op: " + op.getName());
@@ -1110,7 +1110,7 @@ public class GeneratorCpp extends Generator2
     private String generateAttributeParameterModifier(Object attr) {
         boolean isReference =
             checkAttributeParameter4Tag(attr, SEARCH_REFERENCE_TAG);
-        boolean isPointer = 
+        boolean isPointer =
             checkAttributeParameter4Tag(attr, SEARCH_POINTER_TAG);
         StringBuffer sb = new StringBuffer(2);
 
@@ -1296,7 +1296,7 @@ public class GeneratorCpp extends Generator2
         sb.append(generateName(ModelFacade.getName(cls)));
 
         // add base class/interface
-        String baseClass = 
+        String baseClass =
             generateGeneralization(ModelFacade.getGeneralizations(cls));
         if (!baseClass.equals ("")) {
             sb.append (" : ")
@@ -1382,7 +1382,7 @@ public class GeneratorCpp extends Generator2
      */
     private StringBuffer generateGlobalTypedefs(Object cls) {
         StringBuffer sb = new StringBuffer();
-        if (ModelFacade.isAClass(cls) || ModelFacade.isAInstance(cls)) { 
+        if (ModelFacade.isAClass(cls) || ModelFacade.isAInstance(cls)) {
             // add typedefs
             if (generatorPass == HEADER_PASS) {
                 sb.append("// global type definitions for header defined "
@@ -1425,7 +1425,7 @@ public class GeneratorCpp extends Generator2
      * @param cls
      * @param sb Where to put the result.
      */
-    private void generateClassifierBodyAttributes(Object cls, 
+    private void generateClassifierBodyAttributes(Object cls,
             StringBuffer sb) {
         Collection strs = ModelFacade.getAttributes(cls);
         if (strs.isEmpty() || (generatorPass != HEADER_PASS)) {
@@ -1548,8 +1548,8 @@ public class GeneratorCpp extends Generator2
      */
     private boolean checkGenerateOperationBody(Object cls) {
         boolean result =
-            !((generatorPass == HEADER_PASS) 
-                    || (ModelFacade.isAbstract(cls)) 
+            !((generatorPass == HEADER_PASS)
+                    || (ModelFacade.isAbstract(cls))
                     || ModelFacade.isAInterface(ModelFacade.getOwner(cls)));
 
         // if this operation has Tag "inline" the method shall be
@@ -1791,7 +1791,7 @@ public class GeneratorCpp extends Generator2
      */
     private void generateClassifierBodyTypedefs(Object cls, StringBuffer sb) {
         if (generatorPass == HEADER_PASS) {
-            Collection publicTypedefStatements = 
+            Collection publicTypedefStatements =
                 findTagValues(cls, "typedef_public");
             Collection protectedTypedefStatements =
                 findTagValues(cls, "typedef_protected");
@@ -1841,7 +1841,7 @@ public class GeneratorCpp extends Generator2
             }
         }
     }
-    
+
     /**
      * Generates a virtual destructor when the classifier is an interface.
      * @param cls the classifier object
@@ -1868,7 +1868,7 @@ public class GeneratorCpp extends Generator2
             // TODO: constructors
             generateClassifierBodyOperations(cls, sb);
 
-            // fixing issue #2587 
+            // fixing issue #2587
             generateClassifierDestructor(cls, sb);
 
             // add attributes
@@ -1925,7 +1925,7 @@ public class GeneratorCpp extends Generator2
                 if (method != null) {
                     //cat.info(", BODY of "+m.getName());
                     //cat.info("|"+m.getBody().getBody()+"|");
-                    if ((ModelFacade.getBody(method) != null) 
+                    if ((ModelFacade.getBody(method) != null)
                             && (!methodFound)) {
                         Object body = ModelFacade.getBody(method);
                         sb.append(ModelFacade.getBody(body));
@@ -2087,7 +2087,7 @@ public class GeneratorCpp extends Generator2
             || (tagName.indexOf("_incl") != -1)) {
             return "";
         }
-        if ((tagSelection == DOC_COMMENT_TAGS) 
+        if ((tagSelection == DOC_COMMENT_TAGS)
                 && (isDocCommentTag(tagName))) {
             return generateDocComment4Tag(generateName(tagName)) + s;
         } else if (((tagSelection == ALL_BUT_DOC_TAGS)
@@ -2215,7 +2215,7 @@ public class GeneratorCpp extends Generator2
         String s = generateTaggedValues (me, DOC_COMMENT_TAGS);
 
         Object multiplicity = ModelFacade.getMultiplicity(ae);
-        if (!(ModelFacade.M1_1_MULTIPLICITY.equals(multiplicity) 
+        if (!(ModelFacade.M1_1_MULTIPLICITY.equals(multiplicity)
                 || ModelFacade.M0_1_MULTIPLICITY.equals (multiplicity))) {
             // Multiplicity greater 1, that means we will generate some sort of
             // collection, so we need to specify the element type tag
@@ -2336,8 +2336,8 @@ public class GeneratorCpp extends Generator2
 
         if (n != null  && n != null && n.length() > 0) {
             name = generateName(n);
-        } else if (ascName != null  
-                   && ascName != null 
+        } else if (ascName != null
+                   && ascName != null
                    && ascName.length() > 0) {
             name = generateName(ascName);
         } else {
@@ -2345,7 +2345,7 @@ public class GeneratorCpp extends Generator2
         }
 
         sb.append(
-                generateMultiplicity(ae, name, 
+                generateMultiplicity(ae, name,
                              ModelFacade.getMultiplicity(ae),
                              generateAttributeParameterModifier(asc)));
 
@@ -2368,8 +2368,8 @@ public class GeneratorCpp extends Generator2
             Object ge = ModelFacade.getParent(generalization);
             // assert ge != null
             if (ge != null) {
-                String visibilityTag = 
-                    ModelFacade.getTaggedValueValue(generalization, 
+                String visibilityTag =
+                    ModelFacade.getTaggedValueValue(generalization,
                                             "visibility");
                 if (visibilityTag != null && visibilityTag != "")
                     sb.append(visibilityTag).append(" ");
@@ -2407,9 +2407,9 @@ public class GeneratorCpp extends Generator2
             Object dependency = depIterator.next();
             if (ModelFacade.isAAbstraction(dependency)
                     && ModelFacade.isRealize(dependency)) {
-                Object iFace = 
+                Object iFace =
                     ModelFacade.getSuppliers(dependency).iterator().next();
-                String visibilityTag = 
+                String visibilityTag =
                     ModelFacade.getTaggedValueValue(dependency, "visibility");
                 if (visibilityTag != null && visibilityTag != "")
                     sb.append(visibilityTag).append(" ");
@@ -2532,7 +2532,7 @@ public class GeneratorCpp extends Generator2
     private String generateConcurrency(Object op) {
         Object concurrency = ModelFacade.getConcurrency(op);
         if (concurrency != null
-                && (ModelFacade.getValue(concurrency) 
+                && (ModelFacade.getValue(concurrency)
                     == ModelFacade.GUARDED_CONCURRENCYKIND)) {
             return "synchronized ";
         }
@@ -2544,7 +2544,7 @@ public class GeneratorCpp extends Generator2
      */
     public String generateMultiplicity(Object multiplicity) {
         if (multiplicity == null) {
-            return ""; 
+            return "";
         }
         if (ModelFacade.M0_N_MULTIPLICITY.equals(multiplicity)) {
             return ANY_RANGE;
@@ -2580,8 +2580,8 @@ public class GeneratorCpp extends Generator2
             type = generateNameWithPkgSelection(typeCls);
         }
         // cat.info("resolved type_name: " + type);
-        if (m == null) { 
-            return (type + " " + modifier + name); 
+        if (m == null) {
+            return (type + " " + modifier + name);
         }
         StringBuffer sb = new StringBuffer(80);
         int countUpper = ModelFacade.getUpper(m);
@@ -2602,7 +2602,7 @@ public class GeneratorCpp extends Generator2
             // variable association -> if no tag found use []
             // else search for tag:
             // <MultipliciyType> : array|vector|list|slist|map|stack
-            String multType = 
+            String multType =
                 ModelFacade.getTaggedValueValue(item, "MultiplicityType");
             if (multType == null) {
                 // no known container type found
@@ -2831,7 +2831,7 @@ public class GeneratorCpp extends Generator2
     /**
      * @see org.argouml.application.api.NotationProvider2#generateActionState(java.lang.Object)
      */
-    public String generateActionState(Object actionState) {       
+    public String generateActionState(Object actionState) {
         return generateState(actionState);
     }
 } /* end class GeneratorCpp */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -50,20 +50,20 @@ public class TabText
     private JTextArea textArea = new JTextArea();
     private boolean parseChanges = true;
     private boolean enabled = false;
-    
-    /** 
+
+    /**
      * The optional toolbar. Contains null if no toolbar was requested.
      */
     private JToolBar toolbar = null;
-    
+
     private static final Logger LOG = Logger.getLogger(TabText.class);
 
     ////////////////////////////////////////////////////////////////
     // constructor
 
-    /** 
+    /**
      * Create a text tab without a toolbar.
-     * 
+     *
      * @param title the title of the tab
      */
     public TabText(String title) {
@@ -72,7 +72,7 @@ public class TabText
 
     /** Create a text tab and optionally request a toolbar.
      *  @since ARGO0.9.4
-     * 
+     *
      * @param title the title
      * @param withToolbar true if a toolbar is needed
      */
@@ -167,7 +167,7 @@ public class TabText
 
     ////////////////////////////////////////////////////////////////
     // event handlers
-    
+
     /**
      * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,29 +41,29 @@ import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
 
 /**
- * This dialog appears when selecting 
+ * This dialog appears when selecting
  * <code>Generation -> Settings for Generate for Project...</code>
  * in the menu.<p>
- * 
+ *
  * Provides support for setting a "src_path" tagged value used in Java
  * round trip engineering.
  */
 public class SourcePathDialog extends ArgoDialog implements ActionListener {
 
     private SourcePathController srcPathCtrl = new SourcePathControllerImpl();
-    
-    private SourcePathTableModel srcPathTableModel = 
+
+    private SourcePathTableModel srcPathTableModel =
         srcPathCtrl.getSourcePathSettings();
 
     private JTable srcPathTable;
-    
+
     private JButton delButton;
-    
+
     private ListSelectionModel rowSM;
 
     /**
      * The constructor.
-     * 
+     *
      */
     public SourcePathDialog() {
         super(
@@ -75,16 +75,16 @@ public class SourcePathDialog extends ArgoDialog implements ActionListener {
         srcPathTable = new JTable();
         srcPathTable.setModel(srcPathTableModel);
         srcPathTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-        // Hack: don't show first column, where the model element object is 
+        // Hack: don't show first column, where the model element object is
         // placed.
         TableColumn elemCol = srcPathTable.getColumnModel().getColumn(0);
         elemCol.setMinWidth(0);
         elemCol.setMaxWidth(0);
-        
+
         delButton = new JButton(Translator.localize("button.delete"));
         delButton.setEnabled(false);
         addButton(delButton, 0);
-        
+
         rowSM = srcPathTable.getSelectionModel();
         rowSM.addListSelectionListener(new SelectionListener());
         delButton.addActionListener(this);
@@ -112,12 +112,12 @@ public class SourcePathDialog extends ArgoDialog implements ActionListener {
     }
 
     /**
-     * The OK button is pressed. 
+     * The OK button is pressed.
      */
     private void buttonOkActionPerformed() {
         srcPathCtrl.setSourcePath(srcPathTableModel);
     }
-    
+
     /**
      * Retrieve the selected rows indexes.
      */
@@ -139,16 +139,16 @@ public class SourcePathDialog extends ArgoDialog implements ActionListener {
         }
         return indexes;
     }
-    
+
     /**
      * Delete the source path settings of the selected table rows.
      */
     private void deleteSelectedSettings() {
-        // find selected rows and make a list of the model elements 
+        // find selected rows and make a list of the model elements
         // that are selected
         int[] selectedIndexes = getSelectedIndexes();
-        
-        // confirm with the user that he wants to delete, presenting the 
+
+        // confirm with the user that he wants to delete, presenting the
         // list of settings to delete
         StringBuffer msg = new StringBuffer();
         msg.append(Translator.localize("dialog.source-path-del.question"));
@@ -159,12 +159,12 @@ public class SourcePathDialog extends ArgoDialog implements ActionListener {
             msg.append(srcPathTableModel.getMEType(selectedIndexes[i]));
             msg.append(")");
         }
-        
-        int res = JOptionPane.showConfirmDialog(this, 
-            msg.toString(), 
-            Translator.localize("dialog.title.source-path-del"), 
+
+        int res = JOptionPane.showConfirmDialog(this,
+            msg.toString(),
+            Translator.localize("dialog.title.source-path-del"),
             JOptionPane.OK_CANCEL_OPTION);
-        
+
         if (res == JOptionPane.OK_OPTION) {
             // procede with the deletion in the model
             int firstSel = rowSM.getMinSelectionIndex();
@@ -178,7 +178,7 @@ public class SourcePathDialog extends ArgoDialog implements ActionListener {
             delButton.setEnabled(false);
         }
     }
-    
+
     /**
      * Class that listens to selection events.
      */

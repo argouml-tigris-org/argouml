@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,7 +36,7 @@ import org.argouml.uml.ui.UMLLinkedList;
 
 /**
  * Abstract class for the properties panel of a Feature.
- * 
+ *
  * @since Nov 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -51,7 +51,7 @@ public abstract class PropPanelFeature extends PropPanelModelElement {
     private static UMLFeatureOwnerListModel ownerListModel;
 
     private static UMLFeatureOwnerComboBoxModel ownerComboBoxModel;
-    
+
     private JPanel visibilityPanel;
 
     /**
@@ -67,7 +67,7 @@ public abstract class PropPanelFeature extends PropPanelModelElement {
 
     /**
      * Constructor for PropPanelFeature.
-     * 
+     *
      * @param name the name to be shown at the top of the panel
      * @param orientation the orientation of the panel
      */
@@ -77,7 +77,7 @@ public abstract class PropPanelFeature extends PropPanelModelElement {
 
     /**
      * Returns the ownerComboBox.
-     * 
+     *
      * @return UMLComboBox2
      */
     public UMLComboBox2 getOwnerComboBox() {
@@ -93,7 +93,7 @@ public abstract class PropPanelFeature extends PropPanelModelElement {
 
     /**
      * Returns the ownerScroll.
-     * 
+     *
      * @return JScrollPane
      */
     public JScrollPane getOwnerScroll() {
@@ -110,7 +110,7 @@ public abstract class PropPanelFeature extends PropPanelModelElement {
 
     /**
      * Returns the ownerScopeCheckbox.
-     * 
+     *
      * @return UMLFeatureOwnerScopeCheckBox
      */
     public UMLFeatureOwnerScopeCheckBox getOwnerScopeCheckbox() {
@@ -119,7 +119,7 @@ public abstract class PropPanelFeature extends PropPanelModelElement {
         }
         return ownerScopeCheckbox;
     }
-    
+
     /**
      * @return the panel for the visibility
      */

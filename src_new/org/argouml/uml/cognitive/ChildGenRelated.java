@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,12 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: ChildGenRelated.java
-// Classes: ChildGenRelated
-// Original Author: jrobbins
-// $Id$
-
-
 package org.argouml.uml.cognitive;
 
 import java.util.Collection;
@@ -40,7 +34,9 @@ import org.argouml.model.ModelFacade;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.util.ChildGenerator;
 
-/** @stereotype singleton
+/**
+ * @stereotype singleton
+ * @author jrobbins
  */
 public class ChildGenRelated implements ChildGenerator {
     private static final ChildGenRelated SINGLETON = new ChildGenRelated();
@@ -51,22 +47,22 @@ public class ChildGenRelated implements ChildGenerator {
     public static ChildGenRelated getSingleton() {
         return SINGLETON;
     }
-    /** 
-     * Reply a java.util.Enumeration of the children of the given Object 
+    /**
+     * Reply a java.util.Enumeration of the children of the given Object
      * Returns an enumeration or null if not possible to get the children.
-     * 
+     *
      * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
      */
     public Enumeration gen(Object o) {
-		
+
 	Vector res = new Vector();
-		
+
 	if (ModelFacade.isAPackage(o)) {
 	    Collection ownedElements = ModelFacade.getOwnedElements(o);
 	    if (ownedElements != null)
 		return null;
 	}
-		
+
 	if (ModelFacade.isAClassifier(o)) {
 	    Object cls = /*(MClassifier)*/ o;
 	    Collection assocEnds = ModelFacade.getAssociationEnds(cls);
@@ -79,7 +75,7 @@ public class ChildGenRelated implements ChildGenerator {
 	    res.addAll(ModelFacade.getBehaviors(cls));
 	    return res.elements();
 	}
-		
+
 	if (ModelFacade.isAAssociation(o)) {
 	    Object asc = /*(MAssociation)*/ o;
 	    Collection assocEnds = ModelFacade.getConnections(asc);
@@ -89,7 +85,7 @@ public class ChildGenRelated implements ChildGenerator {
 	    }
 	    return res.elements();
 	}
-		
+
 	if (ModelFacade.isAStateMachine(o)) {
 	    Object sm = /*(MStateMachine)*/ o;
 	    Object top = ModelFacade.getTop(sm);
@@ -99,24 +95,24 @@ public class ChildGenRelated implements ChildGenerator {
 	    res.addAll(ModelFacade.getTransitions(sm));
 	    return res.elements();
 	}
-		
+
 	if (ModelFacade.isAStateVertex(o)) {
 	    Object sv = /*(MStateVertex)*/ o;
 	    res.addAll(ModelFacade.getIncomings(sv));
 	    res.addAll(ModelFacade.getOutgoings(sv));
-			
+
 	    if (ModelFacade.isAState(o)) {
 		Object s = /*(MState)*/ o;
 		res.addAll(ModelFacade.getInternalTransitions(s));
 	    }
-			
+
 	    if (ModelFacade.isACompositeState(o)) {
 		Object cs = /*(MCompositeState)*/ o;
 		res.addAll(ModelFacade.getSubvertices(cs));
 	    }
 	    return res.elements();
 	}
-		
+
 	if (ModelFacade.isATransition(o)) {
 	    Object tr = /*(MTransition)*/ o;
 	    res.add(ModelFacade.getTrigger(tr));
@@ -126,9 +122,9 @@ public class ChildGenRelated implements ChildGenerator {
 	    res.add(ModelFacade.getTarget(tr));
 	    return res.elements();
 	}
-		
+
 	// tons more cases
-		
+
 	if (o instanceof Diagram) {
 	    Diagram d = (Diagram) o;
 	    res.add(d.getGraphModel().getNodes());

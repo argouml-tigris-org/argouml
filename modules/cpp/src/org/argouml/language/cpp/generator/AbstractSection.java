@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2001, 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,7 +27,7 @@
 // Original Author: Marian Heddesheimer
 
 // 09 Feb 2003: Thomas Neustupny (thn@tigris.org), extraced abstract class
-// 14 Dec 2004: Luis Sergio Oliveira (euluis@tigris.org), fixed rewriting of 
+// 14 Dec 2004: Luis Sergio Oliveira (euluis@tigris.org), fixed rewriting of
 //              generated sources for C++ module, e.g., issue 2828.
 
 package org.argouml.language.cpp.generator;
@@ -90,22 +90,22 @@ public abstract class AbstractSection
                     if (content != null) {
                         fw.write(line + "\n");
                         fw.write(content);
-                        // read until the end section is found, discard 
+                        // read until the end section is found, discard
                         // generated content
                         String endSectionId = null;
                         do {
                             line = fr.readLine();
                             if (line == null) {
                                 throw new EOFException(
-                                        "Reached end of file while looking " 
-                                        + "for the end of section with ID = \"" 
+                                        "Reached end of file while looking "
+                                        + "for the end of section with ID = \""
                                         + sectionId + "\"!");
                             }
                             endSectionId = getSectId(line);
                         } while (endSectionId == null);
                         if (!endSectionId.equals(sectionId))
-                            LOG.error("Mismatch between sectionId (\"" 
-                                    + sectionId + "\") and endSectionId (\"" 
+                            LOG.error("Mismatch between sectionId (\""
+                                    + sectionId + "\") and endSectionId (\""
                                     + endSectionId + "\")!");
                     }
                     mAry.remove(sectionId);

@@ -68,12 +68,12 @@ public class UMLStateDiagram extends UMLDiagram {
     private Action actionShallowHistoryPseudoState;
     private Action actionDeepHistoryPseudoState;
     private Action actionTransition;
-    private Action actionJunctionPseudoState; 
+    private Action actionJunctionPseudoState;
 
     ////////////////////////////////////////////////////////////////
     // contructors
 
-    /** 
+    /**
      *  this constructor is used to build a dummy statechart diagram so
      *  that a project will load properly.
      */
@@ -84,7 +84,7 @@ public class UMLStateDiagram extends UMLDiagram {
         } catch (PropertyVetoException pve) { }
     }
 
-    /** constructor 
+    /** constructor
      * @param namespace the NameSpace for the new diagram
      * @param sm the StateMachine
      */
@@ -160,10 +160,10 @@ public class UMLStateDiagram extends UMLDiagram {
         }
     }
 
-    /** 
+    /**
      * Method to perform a number of important initializations of a
      * StateDiagram.<p>
-     * 
+     *
      * Each diagram type has a similar <I>UMLxxxDiagram</I> class.<p>
      *
      * Changed <I>lay</I> from <I>LayerPerspective</I> to
@@ -186,7 +186,7 @@ public class UMLStateDiagram extends UMLDiagram {
         // that when the statemachine is removed() the diagram is deleted also.
         // Remark MVW: It also works without the next line.... So why?
         // UmlModelEventPump.getPump().addModelEventListener(this, sm);
-        
+
         theStateMachine = sm;
 
         StateDiagramGraphModel gm = new StateDiagramGraphModel();
@@ -228,7 +228,7 @@ public class UMLStateDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
-        Object actions[] =
+        Object[] actions =
         {
             getActionState(),
 	    getActionCompositeState(),
@@ -241,7 +241,7 @@ public class UMLStateDiagram extends UMLDiagram {
 	    getActionForkPseudoState(),
 	    getActionJoinPseudoState(),
 	    getActionShallowHistoryPseudoState(),
-	    getActionDeepHistoryPseudoState()
+	    getActionDeepHistoryPseudoState(),
         };
         return actions;
     }
@@ -257,14 +257,14 @@ public class UMLStateDiagram extends UMLDiagram {
         }
         return name;
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
      */
     public String getLabelName() {
         return Translator.localize("label.state-chart-diagram");
     }
-    
+
     /**
      * This diagram listens to NSUML events from its Statemachine;
      * When the Statemachine is removed, we also want to delete this diagram.
@@ -326,7 +326,7 @@ public class UMLStateDiagram extends UMLDiagram {
      */
     protected Action getActionForkPseudoState() {
         if (actionForkPseudoState == null) {
-            actionForkPseudoState = new RadioAction( 
+            actionForkPseudoState = new RadioAction(
                     new ActionCreatePseudostate(
                             ModelFacade.FORK_PSEUDOSTATEKIND, "Fork"));
         }
@@ -402,7 +402,7 @@ public class UMLStateDiagram extends UMLDiagram {
         }
         return actionTransition;
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.UMLDiagram#needsToBeRemoved()
      */
@@ -413,5 +413,5 @@ public class UMLStateDiagram extends UMLDiagram {
         if (Model.getUmlFactory().isRemoved(getNamespace())) return true;
         return false;
     }
-    
+
 } /* end class UMLStateDiagram */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -50,28 +50,28 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
      * The combobox for the multiplicity of this type.
      */
     private UMLComboBox2 multiplicityComboBox;
-    
-    /** 
-     * Model for the MultiplicityComboBox 
+
+    /**
+     * Model for the MultiplicityComboBox
      */
     private static UMLMultiplicityComboBoxModel multiplicityComboBoxModel;
-    
+
     /**
      * The constructor.
-     * 
+     *
      */
     public PropPanelClassifierRole() {
 	super("ClassifierRole", ConfigLoader.getTabPropsOrientation());
 
 	addField(Translator.localize("label.name"),
 	    getNameTextField());
-	addField(Translator.localize("label.stereotype"), 
+	addField(Translator.localize("label.stereotype"),
             getStereotypeBox());
 	addField(Translator.localize("label.namespace"),
 	    getNamespaceScroll());
 
 	addField(Translator.localize("label.multiplicity"),
-            getMultiplicityComboBox()); 
+            getMultiplicityComboBox());
 	JList baseList =
 	    new UMLMutableLinkedList(new UMLClassifierRoleBaseListModel(),
 		ActionAddClassifierRoleBase.SINGLETON,
@@ -106,11 +106,11 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 		 new JScrollPane(availableFeaturesList));
 
 	addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
-	addButton(new PropPanelButton2(getActionNewReception(), 
+	addButton(new PropPanelButton2(getActionNewReception(),
                 lookupIcon("Reception")));
-	addButton(new PropPanelButton2(new ActionNewStereotype(), 
+	addButton(new PropPanelButton2(new ActionNewStereotype(),
 	        lookupIcon("Stereotype")));
-	addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+	addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));
     }
 

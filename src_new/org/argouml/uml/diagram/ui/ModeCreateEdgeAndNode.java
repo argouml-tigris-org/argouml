@@ -63,7 +63,7 @@ import org.tigris.gef.presentation.Handle;
  *  that the Editor's GraphModel construct.  The GraphModel is
  *  responsible for acutally making an edge in the underlying model
  *  and connecting it to other model elements.
- * 
+ *
  * @author jrobbins
  */
 public class ModeCreateEdgeAndNode extends ModeCreate {
@@ -106,20 +106,20 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public ModeCreateEdgeAndNode() {
         super();
     }
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param ed the parent editor of this mode. Each Mode instance belongs to
      *           exactly one Editor instance.
      * @param edgeClass the class of the edge
      * @param nodeClass the class of the node
-     * @param post if true, then the edge is postprocessed. 
+     * @param post if true, then the edge is postprocessed.
      *             See postProcessEdge().
      */
     public ModeCreateEdgeAndNode(
@@ -142,10 +142,10 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
      * @param port the port
      * @param x the x to start from
      * @param y the y to start from
-     * @param reverse true if the direction is reversed, i.e. 
+     * @param reverse true if the direction is reversed, i.e.
      *                from destination to source
      */
-    public void setup(FigNode fignode, Object port, int x, int y, 
+    public void setup(FigNode fignode, Object port, int x, int y,
             boolean reverse) {
         start();
         sourceFigNode = fignode;
@@ -169,11 +169,11 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
     ////////////////////////////////////////////////////////////////
     // ModeCreate API
 
-    /** 
+    /**
      * Create the new item that will be drawn. In this case I would
      * rather create the FigEdge when I am done. Here I just
      * create a rubberband FigLine to show during dragging.
-     * 
+     *
      * @see org.tigris.gef.base.ModeCreate#createNewItem(
      * java.awt.event.MouseEvent, int, int)
      */
@@ -202,21 +202,21 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
     ////////////////////////////////////////////////////////////////
     // mouse event handlers
 
-    /** 
+    /**
      * On mousePressed determine what port the user is dragging from.
      * The mousePressed event is sent via ModeSelect.
-     * 
+     *
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent me) {
     }
 
-    /** 
+    /**
      * On mouseReleased, find the destination port, ask the GraphModel
      * to connect the two ports.  If that connection is allowed, then
      * construct a new FigEdge and add it to the Layer and send it to
      * the back.
-     * 
+     *
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent me) {
@@ -291,8 +291,8 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
         }
         if (f instanceof FigNode) {
             FigNode destFigNode = (FigNode) f;
-            // If its a FigNode, then check within the  
-            // FigNode to see if a port exists 
+            // If its a FigNode, then check within the
+            // FigNode to see if a port exists
             Object foundPort = destFigNode.deepHitPort(x, y);
             if (foundPort == null) {
                 Iterator it = destFigNode.getPortFigs().iterator();

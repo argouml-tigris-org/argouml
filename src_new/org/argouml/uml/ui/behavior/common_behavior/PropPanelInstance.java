@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: PropPanelInstance.java
-// Classes: PropPanelInstance
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.ui.behavior.common_behavior;
 
 import javax.swing.ImageIcon;
@@ -40,6 +35,7 @@ import org.tigris.swidgets.Orientation;
 /**
  * The abstract properties panel for any type of Instance.
  *
+ * @author jrobbins
  */
 public abstract class PropPanelInstance extends PropPanelModelElement {
 
@@ -47,15 +43,15 @@ public abstract class PropPanelInstance extends PropPanelModelElement {
 
     private JScrollPane stimuliReceiverScroll;
 
-    private static UMLInstanceSenderStimulusListModel 
+    private static UMLInstanceSenderStimulusListModel
         stimuliSenderListModel = new UMLInstanceSenderStimulusListModel();
 
-    private static UMLInstanceReceiverStimulusListModel 
+    private static UMLInstanceReceiverStimulusListModel
         stimuliReceiverListModel = new UMLInstanceReceiverStimulusListModel();
 
     /**
      * The constructor.
-     * 
+     *
      * @param name the name for the properties panel
      * @param icon the icon shown next to the name
      * @param orientation the orientation

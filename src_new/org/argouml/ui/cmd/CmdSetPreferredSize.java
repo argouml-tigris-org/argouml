@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,7 +39,7 @@ import org.tigris.gef.presentation.Fig;
 
 /**
  * A command to set selected figs to their preferred size or minimum size.
- * 
+ *
  * @author Markus Klink
  */
 public class CmdSetPreferredSize extends Cmd {
@@ -49,7 +49,7 @@ public class CmdSetPreferredSize extends Cmd {
 
     /** constant for MINIMUM_SIZE */
     public static final int MINIMUM_SIZE = 1;
-    
+
     private int mode;
 
     /**
@@ -70,10 +70,10 @@ public class CmdSetPreferredSize extends Cmd {
         throw new IllegalArgumentException("CmdSetPreferredSize invoked with "
 					   + "incompatible mode: " + r);
     }
-    
-    /** 
-     * Set the fig to be resized. 
-     * 
+
+    /**
+     * Set the fig to be resized.
+     *
      * @param f the fig to resize
      */
     public void setFigToResize(Fig f) {
@@ -82,9 +82,9 @@ public class CmdSetPreferredSize extends Cmd {
         setArg("figs", figs);
     }
 
-    /** 
+    /**
      * Set the figs to be resized.
-     * 
+     *
      * @param figs the list of figs to resize
      */
     public void setFigToResize(Vector figs) {
@@ -93,7 +93,7 @@ public class CmdSetPreferredSize extends Cmd {
 
 
     /**
-     * Set all the figs in the selection or passed by param "figs" to the 
+     * Set all the figs in the selection or passed by param "figs" to the
      * size according to the mode of the command.
      */
     public void doIt() {
@@ -111,14 +111,13 @@ public class CmdSetPreferredSize extends Cmd {
         if (figs == null) return;
         int size = figs.size();
         if (size == 0) return;
-    
+
         for (int i = 0; i < size; i++) {
             Fig fi = (Fig) figs.elementAt(i);
-            // only resize elements which the user would also be able 
+            // only resize elements which the user would also be able
             // to resize.
             if (fi.isResizable() && (!((fi instanceof FigPackage)
-		                     || (fi instanceof FigCompositeState))))
-	    {
+		                     || (fi instanceof FigCompositeState)))) {
                 if (mode == PREFERRED_SIZE)
                     fi.setSize(fi.getPreferredSize());
                 else
@@ -131,5 +130,5 @@ public class CmdSetPreferredSize extends Cmd {
 
     /** unsupported. */
     public void undoIt() { }
-            
+
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -47,7 +47,7 @@ public class AboutBox extends JDialog {
 
     /** Insets in pixels  */
     private static final int INSET_PX = 3;
-    
+
     ////////////////////////////////////////////////////////////////
     // instance variables
 
@@ -153,7 +153,7 @@ public class AboutBox extends JDialog {
 		     createPane(localize("aboutbox.legal")));
 
 	// Add the About tabs from the modules.
-	ArrayList list = Argo.getPlugins( PluggableAboutTab.class);
+	ArrayList list = Argo.getPlugins(PluggableAboutTab.class);
 	ListIterator iterator = list.listIterator();
 	while (iterator.hasNext()) {
 	    Object o = iterator.next();

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,11 +35,11 @@ import org.argouml.cognitive.Translator;
 public class PriorityNode {
 
     // Private members.
-    private static final String HIGH = 
+    private static final String HIGH =
         Translator.localize("misc.level.high");
-    private static final String MEDIUM = 
+    private static final String MEDIUM =
         Translator.localize("misc.level.medium");
-    private static final String LOW = 
+    private static final String LOW =
         Translator.localize("misc.level.low");
 
     ////////////////////////////////////////////////////////////////
@@ -52,13 +52,13 @@ public class PriorityNode {
 
     private String name;
     private int priority;
-  
+
     ////////////////////////////////////////////////////////////////
     // contrsuctors
 
     /**
      * The constructor.
-     * 
+     *
      * @param n the name of this priority
      * @param pri the priority number
      */
@@ -91,7 +91,7 @@ public class PriorityNode {
      * @return the name
      */
     public String getName() { return name; }
-    
+
     /**
      * @return the priority
      */
@@ -101,5 +101,5 @@ public class PriorityNode {
      * @see java.lang.Object#toString()
      */
     public String toString() { return getName(); }
-  
+
 } /* end class PriorityNode */

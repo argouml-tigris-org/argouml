@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2002, 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,7 +34,7 @@ import org.argouml.application.api.PluggableMenu;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.UMLAction;
 
-/** 
+/**
  * Plugin for synchronizing Java sources (RTE).
  *
  *  @author Thomas Neustupny
@@ -56,7 +56,7 @@ public class ActionSynchronize extends UMLAction implements PluggableMenu
      */
     public void actionPerformed(ActionEvent event) {
 	//Argo.log.info("User clicked on '" + event.getActionCommand() + "'");
-	SynchronizeDialog syndia = 
+	SynchronizeDialog syndia =
 	    new SynchronizeDialog(ProjectBrowser.getInstance(), true);
 	syndia.show();
     }
@@ -104,40 +104,40 @@ public class ActionSynchronize extends UMLAction implements PluggableMenu
      * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
      */
     public boolean isModuleEnabled() { return true; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModulePopUpActions(
      * java.util.Vector, java.lang.Object)
      */
     public Vector getModulePopUpActions(Vector v, Object o) { return null; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#shutdownModule()
      */
     public boolean shutdownModule() { return true; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleName()
      */
     public String getModuleName() { return "ActionSynchronize"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleDescription()
      */
-    public String getModuleDescription() { 
-        return "Menu Item for Synchronizing Model and Java Code"; 
+    public String getModuleDescription() {
+        return "Menu Item for Synchronizing Model and Java Code";
     }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
      */
     public String getModuleAuthor() { return "Thomas Neustupny"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleVersion()
      */
     public String getModuleVersion() { return "0.11.3"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleKey()
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,9 +38,9 @@ import org.tigris.gef.util.PredicateTrue;
  *
  */
 public abstract class AbstractGoList implements TreeModel {
-    
+
     private Predicate listPredicate = new PredicateTrue();
-    
+
     /**
      * @param newPredicate the new list predicate
      */
@@ -54,17 +54,17 @@ public abstract class AbstractGoList implements TreeModel {
     public Predicate getListPredicate() {
         return listPredicate;
     }
-    
+
     /**
      * @see javax.swing.tree.TreeModel#getRoot()
      */
     public Object getRoot() {
     throw new UnsupportedOperationException();
-    } 
-    
+    }
+
     /**
      * @param r ignored
      */
     public void setRoot(Object r) { }
-    
+
 }

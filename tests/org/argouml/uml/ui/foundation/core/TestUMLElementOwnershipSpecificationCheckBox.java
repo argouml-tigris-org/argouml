@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2004 The Regents of the University of California. All
+// Copyright (c) 2002-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,7 +38,7 @@ public class TestUMLElementOwnershipSpecificationCheckBox extends TestCase {
 
     private UMLElementOwnershipSpecificationCheckBox box = null;
     private MModelElement elem = null;
-    
+
     /**
      * Constructor for TestUMLElementOwnershipSpecificationCheckBox.
      * @param arg0 is the name of the test case.
@@ -46,9 +46,9 @@ public class TestUMLElementOwnershipSpecificationCheckBox extends TestCase {
     public TestUMLElementOwnershipSpecificationCheckBox(String arg0) {
         super(arg0);
     }
-    
+
     /**
-     * Tests the marking/clicking of the checkbox. Simulates the behaviour when 
+     * Tests the marking/clicking of the checkbox. Simulates the behaviour when
      * the users selects the checkbox. Tests if the specification of the model
      * element really is changed.
      */
@@ -58,9 +58,9 @@ public class TestUMLElementOwnershipSpecificationCheckBox extends TestCase {
         box.doClick();
         assertTrue("click did not work!", spec != elem.isSpecification());
     }
-    
+
     /**
-     * Tests wether a change in the NSUML modelelement is reflected in the 
+     * Tests wether a change in the NSUML modelelement is reflected in the
      * checkbox
      */
     public void testPropertySet() {
@@ -78,7 +78,7 @@ public class TestUMLElementOwnershipSpecificationCheckBox extends TestCase {
         super.setUp();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         elem = new MClassImpl();
-        
+
 	box = new UMLElementOwnershipSpecificationCheckBox();
         box.setTarget(elem);
         elem.addMElementListener(box);

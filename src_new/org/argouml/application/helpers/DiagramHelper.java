@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,27 +31,28 @@ import org.argouml.application.api.PluggableDiagram;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.ArgoDiagram;
 
-/** Helper object for Diagrams
+/**
+ * Helper object for Diagrams
  *
- *   @author Thomas Neustupny
- *   @since 0.9.5
+ * @author Thomas Neustupny
+ * @since 0.9.5
  */
-
 public abstract class DiagramHelper extends ArgoDiagram
-    implements PluggableDiagram
-{
+    implements PluggableDiagram {
 
-    /** Default localization key for diagrams
+    /**
+     * Default localization key for diagrams
      */
     public static final String DIAGRAM_BUNDLE = "DiagramType";
 
-    /** String naming the resource bundle to use for localization.
+    /**
+     * String naming the resource bundle to use for localization.
      */
     private String bundle = "";
 
     /**
      * The constructor.
-     * 
+     *
      */
     public DiagramHelper() {
         bundle = getDiagramResourceBundleKey();
@@ -61,33 +62,33 @@ public abstract class DiagramHelper extends ArgoDiagram
      * @see org.argouml.application.api.ArgoModule#setModuleEnabled(boolean)
      */
     public void setModuleEnabled(boolean v) { }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#initializeModule()
      */
     public boolean initializeModule() { return true; }
-    
+
     /**
      * @see org.argouml.application.api.Pluggable#inContext(java.lang.Object[])
      */
     public boolean inContext(Object[] o) { return true; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
      */
     public boolean isModuleEnabled() { return true; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModulePopUpActions(
      * java.util.Vector, java.lang.Object)
      */
     public Vector getModulePopUpActions(Vector v, Object o) { return null; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#shutdownModule()
      */
     public boolean shutdownModule() { return true; }
-    
+
     /**
      * @see org.argouml.application.api.PluggableDiagram#getDiagramMenuItem()
      */

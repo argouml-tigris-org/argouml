@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,7 +39,7 @@ import org.tigris.swidgets.Orientation;
 
 /**
  * The properties panel for a Statemachine.
- * 
+ *
  * @since Dec 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -55,7 +55,7 @@ public class PropPanelStateMachine extends PropPanelModelElement {
 
     /**
      * The constructor.
-     * 
+     *
      * @param name the title of the properties panel, to be shown at the top
      * @param orient the orientation of the panel
      */
@@ -78,7 +78,7 @@ public class PropPanelStateMachine extends PropPanelModelElement {
         // the context in which the statemachine resides
         JList contextList = new UMLLinkedList(
                 new UMLStateMachineContextListModel());
-        addField(Translator.localize("label.represented-modelelement"), 
+        addField(Translator.localize("label.represented-modelelement"),
                 new JScrollPane(contextList));
 
         // the top state
@@ -103,9 +103,9 @@ public class PropPanelStateMachine extends PropPanelModelElement {
                 new JScrollPane(submachineStateList));
 
         addButton(new PropPanelButton2(new ActionNavigateNamespace()));
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));;
     }
 

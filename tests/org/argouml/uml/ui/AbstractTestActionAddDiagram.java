@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -132,9 +132,9 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
      */
     public void testDifferentNames() {
 	UMLDiagram diagram1 = action.createDiagram(ns);
-	// This next line is needed to register the diagram in the project, 
-        // since creating a next diagram will need the new name to be compared 
-        // with existing diagrams in the project, to validate 
+	// This next line is needed to register the diagram in the project,
+        // since creating a next diagram will need the new name to be compared
+        // with existing diagrams in the project, to validate
         // there are no duplicates.
 	ProjectManager.getManager().getCurrentProject().addMember(diagram1);
         UMLDiagram diagram2 = action.createDiagram(ns);
@@ -164,7 +164,7 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
      *                                be called.
      *                                @see java.lang.Class#newInstance()
      */
-    public void testValidNamespaces() 
+    public void testValidNamespaces()
 	throws InstantiationException, IllegalAccessException
     {
 	Iterator it = validNamespaces.iterator();

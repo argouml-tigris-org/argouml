@@ -43,7 +43,7 @@ import org.tigris.gef.ui.ColorRenderer;
 /**
  * Stylepanel which provides base style information for modelelements, e.g.
  * shadow width.
- * 
+ *
  */
 public class StylePanelFigNodeModelElement extends StylePanelFig implements
         ItemListener, FocusListener, KeyListener {
@@ -56,7 +56,7 @@ public class StylePanelFigNodeModelElement extends StylePanelFig implements
 
     /**
      * The constructor.
-     * 
+     *
      */
     public StylePanelFigNodeModelElement() {
         super("Fig Appearance");
@@ -139,7 +139,7 @@ public class StylePanelFigNodeModelElement extends StylePanelFig implements
         // Change the shadow size if appropriate
         if (getPanelTarget() instanceof FigNodeModelElement) {
 
-            int shadowSize = ((FigNodeModelElement) 
+            int shadowSize = ((FigNodeModelElement)
                     getPanelTarget()).getShadowSize();
 
             if (shadowSize > 0) {
@@ -157,7 +157,7 @@ public class StylePanelFigNodeModelElement extends StylePanelFig implements
      */
     public void setTargetShadow() {
         int i = shadowField.getSelectedIndex();
-        if (getPanelTarget() == null 
+        if (getPanelTarget() == null
                 || !(getPanelTarget() instanceof FigNodeModelElement))
             return;
         FigNodeModelElement nodeTarget = (FigNodeModelElement) getPanelTarget();

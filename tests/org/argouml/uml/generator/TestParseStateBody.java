@@ -36,7 +36,7 @@ import org.argouml.model.ModelFacade;
 
 /**
  * Test ParserDisplay: parsing state body.
- * 
+ *
  * @author Michiel
  */
 public class TestParseStateBody extends TestCase {
@@ -47,7 +47,7 @@ public class TestParseStateBody extends TestCase {
 
     /**
      * The constructor.
-     * 
+     *
      * @param str the name
      */
     public TestParseStateBody(String str) {
@@ -65,7 +65,7 @@ public class TestParseStateBody extends TestCase {
         Collection propertyChangeListeners = p.findFigsForMember(aClass);
         Object mdl = p.getModel();
         Object voidType = p.findType("void");
-        aOper = Model.getCoreFactory().buildOperation(aClass, mdl, 
+        aOper = Model.getCoreFactory().buildOperation(aClass, mdl,
                 voidType, "myOper", propertyChangeListeners);
         aStateMachine = Model.getStateMachinesFactory()
             .buildStateMachine(aClass);
@@ -116,7 +116,7 @@ public class TestParseStateBody extends TestCase {
                 + "k/a\nl/b\nm/c\nn/d\no/e\np/f\nq/g\nr/h\ns/i\nt/j",
                 false, false, false, 20, false);
     }
-    
+
     /**
      * Test the parseStateBody() method: syntax errors.
      */
@@ -124,20 +124,20 @@ public class TestParseStateBody extends TestCase {
         checkGenerated(aState, "do[a/b]test10",
                 false, false, false, 1, true); // or should the 1 be 0 ?
     }
-    
+
     /**
      * Test the parseStateBody() method: changing the signature.
      */
     public final void testParseStateBodyRemove() {
         Object st;
-        
-        st = checkGenerated(aState, 
+
+        st = checkGenerated(aState,
                 "entry/test1\nexit/b\ndo/it\ninternal/activity",
                 true, true, true, 1, false);
         checkChanged(st, "", // deleting it all
                 false, false, false, 0, false);
-        
-        st = checkGenerated(aState, 
+
+        st = checkGenerated(aState,
                 "int1/act1\nexit/test2\nint2/act2\ndo/b\nentry/it",
                 true, true, true, 2, false);
         checkChanged(st, // changing the sequence only
@@ -150,93 +150,93 @@ public class TestParseStateBody extends TestCase {
      */
     public final void testParseStateBodyRemoveInternals() {
         Object st;
-        
-        st = checkGenerated(aState, 
+
+        st = checkGenerated(aState,
                 "int1/act1\nint2/act2\nint3/act3\nint4/act4\nint5/act5",
                 false, false, false, 5, false);
-        checkChanged(st, 
+        checkChanged(st,
                 "int1/act1\nint5/act5\nint4/act4",
                 false, false, false, 3, false);
-        checkChanged(st, 
+        checkChanged(st,
                 "int5/act5\nint4/act4",
                 false, false, false, 2, false);
-        checkChanged(st, 
+        checkChanged(st,
                 "int6/act6\nint4/act4",
-                false, false, false, 2, false);    
+                false, false, false, 2, false);
     }
-    
+
     /**
      * Check if the elements are generated or not.
-     * 
+     *
      * @param st          the parent state in which a substate is to be created
      * @param text        the text to be parsed
      * @param entryAction true if an entry action is expected to be created
      * @param exitAction  true if an exit action is expected to be created
      * @param doAction    true if an do activity is expected to be created
-     * @param internals   the number of internal transitions 
+     * @param internals   the number of internal transitions
      *                    expected to be created
-     * @param exception   true if there is a syntax error 
+     * @param exception   true if there is a syntax error
      *                    and an exception is expected
      * @return            the internal state in which elements are created
      */
-    private Object checkGenerated(Object st, String text, boolean entryAction, 
-            boolean exitAction, boolean doAction, 
+    private Object checkGenerated(Object st, String text, boolean entryAction,
+            boolean exitAction, boolean doAction,
             int internals, boolean exception) {
         Object sst = Model.getStateMachinesFactory()
             .buildSimpleState(st);
-        checkChanged(sst, text, entryAction, exitAction, doAction, 
+        checkChanged(sst, text, entryAction, exitAction, doAction,
                 internals, exception);
         return sst;
     }
 
     /**
      * Check if the elements are changed or not.
-     * 
+     *
      * @param sst         the state to test
      * @param text        the text to be parsed
      * @param entryAction true if an entry action is expected to be created
      * @param exitAction  true if an exit action is expected to be created
      * @param doAction    true if an do activity is expected to be created
-     * @param internals   the number of internal transitions 
+     * @param internals   the number of internal transitions
      *                    expected to be created
-     * @param exception   true if there is a syntax error 
+     * @param exception   true if there is a syntax error
      *                    and an exception is expected
      */
-    private void checkChanged(Object sst, String text, 
-            boolean entryAction, boolean exitAction, 
+    private void checkChanged(Object sst, String text,
+            boolean entryAction, boolean exitAction,
             boolean doAction, int internals, boolean exception) {
         try {
             ParserDisplay.SINGLETON.parseStateBody(sst, text);
         } catch (ParseException e) {
             assertTrue("Unexpected exception for " + text, exception);
         }
-        if (entryAction) { 
-            assertTrue("Entry Action was not generated for " + text, 
+        if (entryAction) {
+            assertTrue("Entry Action was not generated for " + text,
                     ModelFacade.getEntry(sst) != null);
         } else {
-            assertTrue("Entry Action was generated for " + text, 
+            assertTrue("Entry Action was generated for " + text,
                     ModelFacade.getEntry(sst) == null);
         }
         if (exitAction) {
-            assertTrue("Exit Action was not generated for " + text, 
+            assertTrue("Exit Action was not generated for " + text,
                     ModelFacade.getExit(sst) != null);
         } else {
-            assertTrue("Exit Action was generated for " + text, 
+            assertTrue("Exit Action was generated for " + text,
                     ModelFacade.getExit(sst) == null);
         }
         if (doAction) {
-            assertTrue("Do Action was not generated for " + text, 
+            assertTrue("Do Action was not generated for " + text,
                     ModelFacade.getDoActivity(sst) != null);
         } else {
-            assertTrue("Do Action was generated for " + text, 
+            assertTrue("Do Action was generated for " + text,
                     ModelFacade.getDoActivity(sst) == null);
         }
         Collection c = ModelFacade.getInternalTransitions(sst);
-        assertTrue("Incorrect number of internal transitions (" + c.size() 
+        assertTrue("Incorrect number of internal transitions (" + c.size()
                 + ") found for " + text,
                 c.size() == internals);
     }
 
 
-    
+
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,14 +28,14 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
- * List model for the operation with a callevent. Might be replaced by a 
+ * List model for the operation with a callevent. Might be replaced by a
  * comboboxmodel in the future.
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public class UMLCallEventOperationListModel extends UMLModelElementListModel2 {
 
-    
+
 
     /**
      * Constructor for UMLCallEventOperationListModel.

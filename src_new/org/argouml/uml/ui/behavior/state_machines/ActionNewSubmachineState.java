@@ -38,18 +38,18 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
  */
 public class ActionNewSubmachineState extends AbstractActionNewModelElement {
 
-    private static final ActionNewSubmachineState SINGLETON = 
+    private static final ActionNewSubmachineState SINGLETON =
         new ActionNewSubmachineState();
-    
+
     /**
      * Constructor for ActionNewFinalState.
      */
     protected ActionNewSubmachineState() {
         super();
-        putValue(Action.NAME, Translator.localize( 
+        putValue(Action.NAME, Translator.localize(
                 "button.new-submachinestate"));
     }
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,8 +26,8 @@ package org.argouml.application.api;
 
 import javax.swing.JPanel;
 
-/** 
- * An interface which must be implemented as the UI for 
+/**
+ * An interface which must be implemented as the UI for
  * tabs used on the settings panel.<p>
  *
  * Tabs will only need to load data during {@link #handleSettingsTabRefresh}
@@ -41,29 +41,29 @@ import javax.swing.JPanel;
  */
 public interface SettingsTabPanel {
 
-    /** 
+    /**
      * Save any fields changed.
      */
     void handleSettingsTabSave();
 
-    /** 
+    /**
      * Cancel any changes.
      */
     void handleSettingsTabCancel();
 
-    /** 
+    /**
      * Load or reload field settings.
      */
     void handleSettingsTabRefresh();
 
-    /** 
+    /**
      * Gets the unlocalized settings tab name.
      *
      * @return the unlocalized settings tab name
      */
     String getTabKey();
 
-    /** 
+    /**
      * Gets the JPanel which implements the tab.
      *
      * @return the JPanel which implements the tab

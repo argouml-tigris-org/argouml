@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,21 +37,21 @@ import org.argouml.model.ModelFacade;
 
 public class WizNavigable extends UMLWizard {
     private static final Logger LOG = Logger.getLogger(WizNavigable.class);
-					      
+
     private String instructions =
 	"Please select one of the following navigability options.";
     private String option0 = "Navigable Toward Start";
     private String option1 = "Navigable Toward End";
     private String option2 = "Navigable Both Ways";
-							      
+
     private WizStepChoice step1 = null;
-								  
+
     /**
      * The constructor.
-     * 
+     *
      */
     public WizNavigable() { }
-								      
+
     /**
      * @return the options
      */
@@ -64,30 +64,30 @@ public class WizNavigable extends UMLWizard {
 	    new ArrayList(ModelFacade.getConnections(asc)).get(1);
 	Object cls0 = ModelFacade.getType(ae0);
 	Object cls1 = ModelFacade.getType(ae1);
-			
+
 	if (cls0 != null && !"".equals(ModelFacade.getName(cls0))) {
 	    option0 = "Navigable Toward " + ModelFacade.getName(cls0);
         }
-									   
+
 	if (cls1 != null && !"".equals(ModelFacade.getName(cls1))) {
 	    option1 = "Navigable Toward " + ModelFacade.getName(cls1);
         }
- 
+
 	// TODO: put in class names
 	res.addElement(option0);
 	res.addElement(option1);
 	res.addElement(option2);
 	return res;
     }
- 
+
     /**
      * @param s the instructions
      */
     public void setInstructions(String s) { instructions = s; }
- 
-    /** 
+
+    /**
      * Create a new panel for the given step.
-     * 
+     *
      * @see org.argouml.cognitive.ui.Wizard#makePanel(int)
      */
     public JPanel makePanel(int newStep) {
@@ -101,14 +101,14 @@ public class WizNavigable extends UMLWizard {
 	}
 	return null;
     }
- 
-    /** 
+
+    /**
      * Take action at the completion of a step. For example, when the
      * given step is 0, do nothing; and when the given step is 1, do
      * the first action.  Argo non-modal wizards should take action as
      * they do along, as soon as possible, they should not wait until
-     * the final step. 
-     * 
+     * the final step.
+     *
      * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {
@@ -122,9 +122,9 @@ public class WizNavigable extends UMLWizard {
 	    }
 	    try {
 		Object asc = /*(MAssociation)*/ getModelElement();
-		Object ae0 = /*(MAssociationEnd)*/ 
+		Object ae0 = /*(MAssociationEnd)*/
 		    new ArrayList(ModelFacade.getConnections(asc)).get(0);
-		Object ae1 = /*(MAssociationEnd)*/ 
+		Object ae1 = /*(MAssociationEnd)*/
 		    new ArrayList(ModelFacade.getConnections(asc)).get(1);
 		ModelFacade.setNavigable(ae0, choice == 0 || choice == 2);
 		ModelFacade.setNavigable(ae1, choice == 1 || choice == 2);
@@ -134,7 +134,7 @@ public class WizNavigable extends UMLWizard {
 	    }
 	}
     }
- 
+
     /**
      * @see org.argouml.cognitive.ui.Wizard#canFinish()
      */
@@ -145,5 +145,5 @@ public class WizNavigable extends UMLWizard {
 	    return true;
 	return false;
     }
- 
+
 } /* end class WizNavigable */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,9 +34,9 @@ import org.argouml.uml.ui.UMLComboBox2;
 
 /**
  * The Action to set the "inState" of a ClassifierInState.
- * 
+ *
  * TODO: This is not correct yet! Should set all the states from a list!
- * 
+ *
  * @author mvw
  *
  */
@@ -58,12 +58,12 @@ class ActionSetClassifierInStateInState extends UMLAction {
             Object cis = box.getTarget();
             if (ModelFacade.isAClassifierInState(cis)) {
                 Collection c = ModelFacade.getInStates(cis);
-                
+
                 Object state = box.getSelectedItem();
                 if (ModelFacade.isAState(state)) {
                     if (!c.contains(state)) {
                         ModelFacade.addInState(cis, state);
-                    
+
                         super.actionPerformed(e);
                     }
                 }

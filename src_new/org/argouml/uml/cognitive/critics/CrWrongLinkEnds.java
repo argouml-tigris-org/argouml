@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrClassWithoutComponent.java
-// Classes: CrClassWithoutComponent
-// Original Author: 5eichler@informatik.uni-hamburg.de
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
@@ -43,13 +38,14 @@ import org.tigris.gef.util.VectorSet;
  * A critic to detect when in a deployment-diagram
  * the FigObject of the first MLinkEnd is inside a FigComponent
  * and the FigObject of the other MLinkEnd is inside a FigComponentInstance
- **/
-
+ *
+ * @author 5eichler
+ */
 public class CrWrongLinkEnds extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrWrongLinkEnds() {
 	setHeadline("LinkEnds have not the same locations");
@@ -102,7 +98,7 @@ public class CrWrongLinkEnds extends CrUML {
      * @param deploymentDiagram the diagram to check
      * @return the set of offenders
      */
-    public VectorSet computeOffenders(UMLDeploymentDiagram deploymentDiagram) { 
+    public VectorSet computeOffenders(UMLDeploymentDiagram deploymentDiagram) {
 	Collection figs = deploymentDiagram.getLayer().getContents(null);
 	VectorSet offs = null;
         Iterator figIter = figs.iterator();
@@ -124,8 +120,8 @@ public class CrWrongLinkEnds extends CrUML {
 		    if (residencies != null
 			&& (residencies.size() > 0))
 			count = count + 2;
-                    
-                    Object component = 
+
+                    Object component =
                         ModelFacade.getComponentInstance(instance);
 		    if (component != null)
 			count = count + 1;
@@ -136,12 +132,12 @@ public class CrWrongLinkEnds extends CrUML {
 			offs.addElement(deploymentDiagram);
 		    }
 		    offs.addElement(figLink);
-		    offs.addElement(figLink.getSourcePortFig()); 
-		    offs.addElement(figLink.getDestPortFig()); 
+		    offs.addElement(figLink.getSourcePortFig());
+		    offs.addElement(figLink.getDestPortFig());
 		}
 	    }
 	}
 	return offs;
-    } 
+    }
 
 } /* end class CrWrongLinkEnds.java */

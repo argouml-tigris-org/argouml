@@ -29,18 +29,18 @@ import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 /**
- * 
+ *
  * @author mkl
- *  
+ *
  */
 public class UMLConditionExpressionModel extends UMLExpressionModel2 {
 
     private static final Logger LOG =
         Logger.getLogger(UMLConditionExpressionModel.class);
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param container the container of UML user interface components
      * @param propertyName the name of the property
      */

@@ -41,7 +41,7 @@ import org.tigris.gef.presentation.Fig;
 
 /**
  * This action creates a new Stereotype in the current Model.
- * 
+ *
  * @author mvw@tigris.org
  */
 public class ActionNewStereotype extends AbstractActionNewModelElement {
@@ -70,9 +70,9 @@ public class ActionNewStereotype extends AbstractActionNewModelElement {
                     model,
                     models
             );
-        if (ModelFacade.isAModelElement(t)) { 
+        if (ModelFacade.isAModelElement(t)) {
             Object ns = ModelFacade.getNamespace(t);
-            if (ModelFacade.isANamespace(ns)) 
+            if (ModelFacade.isANamespace(ns))
                 ModelFacade.setNamespace(newStereo, ns);
         }
         TargetManager.getInstance().setTarget(newStereo);

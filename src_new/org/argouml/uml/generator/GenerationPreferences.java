@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,11 +37,11 @@ public class GenerationPreferences implements java.io.Serializable {
      *  Constructor
      */
     public GenerationPreferences() {
-	if (System.getProperty("file.separator").equals("/") )
+	if (System.getProperty("file.separator").equals("/"))
 	    outputDir = "/tmp";
 	else
 	    //This does not even exist on many systems:
-	    //_outputDir = "c:\\temp"; 
+	    //_outputDir = "c:\\temp";
             outputDir = System.getProperty("java.io.tmpdir");
     }
 
@@ -51,7 +51,7 @@ public class GenerationPreferences implements java.io.Serializable {
      * @return the output directory name
      */
     public String getOutputDir() { return outputDir; }
-    
+
     /**
      * @param od the output directory name
      */
@@ -61,7 +61,7 @@ public class GenerationPreferences implements java.io.Serializable {
      * @return the header comment string
      */
     public String getHeaderComment() { return headerComment; }
-    
+
     /**
      * @param c the header comment string
      */

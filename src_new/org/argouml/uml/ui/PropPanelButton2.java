@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2003 The Regents of the University of California. All
+// Copyright (c) 2002-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,7 +34,7 @@ import ru.novosoft.uml.MElementEvent;
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class PropPanelButton2 extends JButton 
+public class PropPanelButton2 extends JButton
         implements UMLUserInterfaceComponent {
 
     /**
@@ -48,7 +48,7 @@ public class PropPanelButton2 extends JButton
 
     /**
      * The constructor.
-     * 
+     *
      * @param a the action for this button
      * @param i the icon to be shown
      */
@@ -56,7 +56,7 @@ public class PropPanelButton2 extends JButton
         this(a);
         a.putValue(Action.SMALL_ICON, i);
     }
- 
+
     /**
      * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
      */

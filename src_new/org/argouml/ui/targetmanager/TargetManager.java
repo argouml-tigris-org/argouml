@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2004 The Regents of the University of California. All
+// Copyright (c) 2002-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,24 +43,24 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * The manager of the target of ArgoUML. 
- * The target of ArgoUML is the element currently selected by the user. 
+ * The manager of the target of ArgoUML.
+ * The target of ArgoUML is the element currently selected by the user.
  * This can either be an instance of a meta-class (an
- * Interface or a Class for example) but it can also be a diagram or a figure 
+ * Interface or a Class for example) but it can also be a diagram or a figure
  * on a diagram.<p>
- * 
+ *
  * There can be multiple targets in case
  * someone selected multiple modelelements or
  * figs in the explorer or on the diagram .<p>
- * 
+ *
  * The purpose of the targetmanager is to have a central spot where we
  * manage the list of current targets.<p>
- * 
- * Via an event mechanism this manager makes sure that all objects interested 
+ *
+ * Via an event mechanism this manager makes sure that all objects interested
  * in knowing wether the selection changed are acknowledged. <p>
- * 
+ *
  * Note in particular that null is an invalid target.
- * 
+ *
  * @author jaap.branderhorst@xs4all.nl
  */
 public final class TargetManager {
@@ -94,7 +94,7 @@ public final class TargetManager {
         private int currentTarget = -1;
 
         /**
-         * Default constructor that registrates the history manager as target 
+         * Default constructor that registrates the history manager as target
          * listener with the target manager.
          *
          */
@@ -204,7 +204,7 @@ public final class TargetManager {
         }
 
         /**
-         * Checks if it's possible to navigate forward         
+         * Checks if it's possible to navigate forward
          * @return true if it's possible to navigate forward
          */
         private boolean navigateForwardPossible() {
@@ -212,15 +212,15 @@ public final class TargetManager {
         }
 
         /**
-         * Listener for additions of targets to the selected targets. 
+         * Listener for additions of targets to the selected targets.
          * On addition of targets we put them in the history.
          * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
          * org.argouml.ui.targetmanager.TargetEvent)
          */
         public void targetAdded(TargetEvent e) {
             Object[] addedTargets = e.getAddedTargets();
-            // we put the targets 'backwards' in the history 
-            // since the first target in the addedTargets array is 
+            // we put the targets 'backwards' in the history
+            // since the first target in the addedTargets array is
             // the first one selected.
             for (int i = addedTargets.length - 1; i >= 0; i--) {
                 putInHistory(addedTargets[i]);
@@ -228,17 +228,17 @@ public final class TargetManager {
         }
 
         /**
-         * Listener for the removal of targets from the selection. 
+         * Listener for the removal of targets from the selection.
          * On removal of a target from the selection we do nothing
          * with respect to the history of targets.
          * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
          */
-        public void targetRemoved(TargetEvent e) {            
+        public void targetRemoved(TargetEvent e) {
         }
 
         /**
-         * Listener for the selection of a whole bunch of targets 
-         * in one go (or just one). Puts all the new 
+         * Listener for the selection of a whole bunch of targets
+         * in one go (or just one). Puts all the new
          * targets in the history starting with the 'newest' target.
          * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
          */
@@ -292,7 +292,7 @@ public final class TargetManager {
                 // times in history
             }
             if (oldCurrentTarget != currentTarget) {
-                Actions.updateAllEnabled(); /*TODO: (MVW) Why? Actions is 
+                Actions.updateAllEnabled(); /*TODO: (MVW) Why? Actions is
                 * listening to target changes already... */
             }
         }
@@ -313,7 +313,7 @@ public final class TargetManager {
      */
     private List targets = new ArrayList();
 
-    /** 
+    /**
      * Cache for the modeltarget. See getModelTarget.
      */
     private Object modelTarget = null;
@@ -348,9 +348,9 @@ public final class TargetManager {
     }
 
     /**
-     * Sets the targets to the single given object. If there are targets at the 
-     * moment of calling this method, these will be removed as targets. To 
-     * all interested targetlisteners, a TargetEvent will be fired. If the 
+     * Sets the targets to the single given object. If there are targets at the
+     * moment of calling this method, these will be removed as targets. To
+     * all interested targetlisteners, a TargetEvent will be fired. If the
      * new target o equals the current target, no events will be fired, nor will
      * the target be (re)set.
      * @param o The new target, null clears all targets.
@@ -359,13 +359,13 @@ public final class TargetManager {
 	if (isInTargetTransaction())
 	    return;
 
-	if ((targets.size() == 0 && o == null) 
+	if ((targets.size() == 0 && o == null)
             || (targets.size() == 1 && targets.get(0).equals(o)))
 	    return;
 
 	startTargetTransaction();
 
-	Object oldTargets[] = targets.toArray();
+	Object[] oldTargets = targets.toArray();
 	targets.clear();
 	// internalOnSetTarget(TargetEvent.TARGET_REMOVED, oldTargets);
 	if (o != null)
@@ -375,7 +375,7 @@ public final class TargetManager {
         endTargetTransaction();
     }
 
-    private void internalOnSetTarget(String eventName, Object oldTargets[]) {
+    private void internalOnSetTarget(String eventName, Object[] oldTargets) {
 	TargetEvent event =
 	    new TargetEvent(this, eventName, oldTargets, targets.toArray());
 
@@ -417,14 +417,14 @@ public final class TargetManager {
     }
 
     /**
-     * Sets the given collection to the current targets. If the collection 
+     * Sets the given collection to the current targets. If the collection
      * equals the current targets, then does nothing. When setting
      * the targets, a TargetEvent will be fired to each interested listener.
      * Note that the first element returned by an Iterator on targetList
      * will be taken to be the primary target (see getTarget()), and that
      * an event will be fired also in case that that element would not equal
      * the element returned by getTarget().
-     * Note also that any nulls within the Collection will be ignored.    
+     * Note also that any nulls within the Collection will be ignored.
      * @param targetsList The new targets list.
      */
     public synchronized void setTargets(Collection targetsList) {
@@ -445,10 +445,10 @@ public final class TargetManager {
 	    }
 	    targetsList = withoutNullList;
 	}
-	
-	Object oldTargets[] = null;
 
-	// check if there are new elements in the list 
+	Object[] oldTargets = null;
+
+	// check if there are new elements in the list
 	// if the old and new list are of the same size
 	// set the oldTargets to the correct selection
 	if (targetsList.size() == targets.size()) {
@@ -470,13 +470,13 @@ public final class TargetManager {
 	    oldTargets = targets.toArray();
 
 	if (oldTargets == null)
-	    return;	
+	    return;
 
 	startTargetTransaction();
-	
+
 	targets.clear();
-	
-	// implement set-like behaviour. The same element 
+
+	// implement set-like behaviour. The same element
 	// may not be added more then once.
 	ntarg = targetsList.iterator();
 	while (ntarg.hasNext()) {
@@ -484,7 +484,7 @@ public final class TargetManager {
 	    if (targets.contains(targ))
 		continue;
 	    targets.add(targ);
-	}		
+	}
 
 	internalOnSetTarget(TargetEvent.TARGET_SET, oldTargets);
 
@@ -517,7 +517,7 @@ public final class TargetManager {
 
     /**
      * Removes the target from the targets list. Does nothing if the target
-     * does not exist in the targets list. Fires an appropriate TargetEvent to 
+     * does not exist in the targets list. Fires an appropriate TargetEvent to
      * all interested listeners. Since null can never be a target, removing
      * null will never do anything.
      * @param target The target to remove.
@@ -554,7 +554,7 @@ public final class TargetManager {
     public synchronized Collection getTargets() {
         return new ArrayList(targets);
     }
-    
+
     /**
      * @return the target from the model
      */
@@ -589,7 +589,7 @@ public final class TargetManager {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
 	    try {
 		if (listeners[i] == TargetListener.class) {
-		    // Lazily create the event:                     
+		    // Lazily create the event:
 		    ((TargetListener) listeners[i + 1]).targetSet(targetEvent);
 		}
 	    } catch (RuntimeException e) {
@@ -609,7 +609,7 @@ public final class TargetManager {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
 	    try {
 		if (listeners[i] == TargetListener.class) {
-		    // Lazily create the event:                     
+		    // Lazily create the event:
 		    ((TargetListener) listeners[i + 1])
 		        .targetAdded(targetEvent);
 		}
@@ -630,7 +630,7 @@ public final class TargetManager {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
 	    try {
 		if (listeners[i] == TargetListener.class) {
-		    // Lazily create the event:                     
+		    // Lazily create the event:
 		    ((TargetListener) listeners[i + 1])
 		        .targetRemoved(targetEvent);
 		}
@@ -721,7 +721,7 @@ public final class TargetManager {
     /**
      * Navigates the target pointer one target forward. This implements together
      * with navigateBackward browser like functionality.
-     * @throws IllegalStateException If the target pointer is at the end of the 
+     * @throws IllegalStateException If the target pointer is at the end of the
      * history.
      */
     public void navigateForward() throws IllegalStateException {
@@ -756,7 +756,7 @@ public final class TargetManager {
     }
 
     /**
-     * Cleans the history. Needed for the JUnit tests and when instantiating a 
+     * Cleans the history. Needed for the JUnit tests and when instantiating a
      * new project.
      */
     public void cleanHistory() {

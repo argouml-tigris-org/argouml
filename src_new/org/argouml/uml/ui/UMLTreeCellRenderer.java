@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -73,13 +73,13 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
 	Translator.localize("label.class-diagram");
     private static String name = Translator.localize("label.name");
     private static String typeName = Translator.localize("label.type");
-    
+
     ////////////////////////////////////////////////////////////////
     // TreeCellRenderer implementation
 
     /**
      * @see javax.swing.tree.TreeCellRenderer#getTreeCellRendererComponent(
-     * javax.swing.JTree, java.lang.Object, boolean, boolean, boolean, int, 
+     * javax.swing.JTree, java.lang.Object, boolean, boolean, boolean, int,
      * boolean)
      */
     public Component getTreeCellRendererComponent(
@@ -90,11 +90,11 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
         boolean leaf,
         int row,
         boolean hasFocusParam) {
-            
+
 	if (value instanceof DefaultMutableTreeNode) {
 	    value = ((DefaultMutableTreeNode) value).getUserObject();
 	}
-        
+
         Component r =
             super.getTreeCellRendererComponent(
                 tree,
@@ -107,7 +107,7 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
 
         if (r instanceof JLabel) {
             JLabel lab = (JLabel) r;
-            
+
             Icon icon =
                 ResourceLoaderWrapper.getInstance().lookupIcon(
                     value);
@@ -137,7 +137,7 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
                     type = classDiag;
                 }
             }
-            
+
             if (type != null) {
                 StringBuffer buf = new StringBuffer();
                 buf.append("<html>");

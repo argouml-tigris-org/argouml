@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,10 +33,10 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Diagram;
 
-/** 
- * TMResults (Table Model Results) implements a default table model 
- * which is used by Find and Goto Operations in order to display search 
- * results. It defines a default table model with columns and can 
+/**
+ * TMResults (Table Model Results) implements a default table model
+ * which is used by Find and Goto Operations in order to display search
+ * results. It defines a default table model with columns and can
  * resolve found objects to strings.
  */
 public class TMResults extends AbstractTableModel {
@@ -47,7 +47,7 @@ public class TMResults extends AbstractTableModel {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public TMResults() {
         showInDiagramColumn = true;
@@ -55,17 +55,17 @@ public class TMResults extends AbstractTableModel {
 
     /**
      * The constructor.
-     * 
-     * @param showTheInDiagramColumn true if the "In Diagram" column 
+     *
+     * @param showTheInDiagramColumn true if the "In Diagram" column
      *                               should be shown
      */
     public TMResults(boolean showTheInDiagramColumn) {
         showInDiagramColumn = showTheInDiagramColumn;
     }
-    
+
     ////////////////
     // accessors
-    
+
     /**
      * @param results the row objects
      * @param theDiagrams the diagrams
@@ -78,14 +78,14 @@ public class TMResults extends AbstractTableModel {
 
     ////////////////
     // TableModel implementation
-    
+
     /**
      * @see javax.swing.table.TableModel#getColumnCount()
      */
     public int getColumnCount() {
         return showInDiagramColumn ? 4 : 3;
     }
-    
+
     /**
      * @see javax.swing.table.TableModel#getRowCount()
      */
@@ -104,7 +104,7 @@ public class TMResults extends AbstractTableModel {
         if (c == 1)
             return Translator.localize("dialog.find.column-name.name");
         if (c == 2)
-            return Translator.localize(showInDiagramColumn 
+            return Translator.localize(showInDiagramColumn
                     ? "dialog.find.column-name.in-diagram"
                     : "dialog.find.column-name.description");
         if (c == 3)
@@ -138,7 +138,7 @@ public class TMResults extends AbstractTableModel {
         if (rowObj instanceof Diagram) {
             Diagram d = (Diagram) rowObj;
             switch (col) {
-	    case 0 : // the name of this type of diagram 
+	    case 0 : // the name of this type of diagram
 		String name = null;
 		if (d instanceof UMLDiagram)
 		    name = ((UMLDiagram) d).getLabelName();
@@ -146,7 +146,7 @@ public class TMResults extends AbstractTableModel {
 	    case 1 : // the name of this instance of diagram
 		return d.getName();
 	    case 2 : // "N/A" or "x nodes and x edges"
-		return showInDiagramColumn 
+		return showInDiagramColumn
 		    ? Translator.localize("dialog.find.not-applicable")
                     : countNodesAndEdges(d);
 	    case 3 : // "x nodes and x edges"
@@ -164,14 +164,14 @@ public class TMResults extends AbstractTableModel {
 	    case 1 : // the name of this instance of ModelElement
 		return ModelFacade.getName(rowObj);
 	    case 2 : // the name of the parent diagram instance
-		return (d == null) 
-		    ? Translator.localize("dialog.find.not-applicable") 
+		return (d == null)
+		    ? Translator.localize("dialog.find.not-applicable")
                     : d.getName();
 	    case 3 : // TODO: implement this - show some documentation?
 		return "docs";
             }
         }
-        switch (col) { // TODO: do we need this - when will this appear? 
+        switch (col) { // TODO: do we need this - when will this appear?
 	case 0 : // the name of this type of Object
 	    String clsName = rowObj.getClass().getName();
 	    int lastDot = clsName.lastIndexOf(".");
@@ -193,8 +193,9 @@ public class TMResults extends AbstractTableModel {
     private Object countNodesAndEdges(Diagram d) {
         int numNodes = d.getNodes(null).size();
         int numEdges = d.getEdges(null).size();
-        Object[] msgArgs = {new Integer(numNodes), 
-                            new Integer(numEdges) }; 
+        Object[] msgArgs = {new Integer(numNodes),
+                            new Integer(numEdges),
+	};
         return Translator.messageFormat("dialog.nodes-and-edges", msgArgs);
     }
 

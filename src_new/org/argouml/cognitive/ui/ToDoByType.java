@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,14 +39,13 @@ import org.argouml.cognitive.ToDoListListener;
  *
  */
 public class ToDoByType extends ToDoPerspective
-    implements ToDoListListener 
-{
-    private static final Logger LOG = 
+    implements ToDoListListener {
+    private static final Logger LOG =
         Logger.getLogger(ToDoByType.class);
 
     /**
      * The constructor.
-     * 
+     *
      */
     public ToDoByType() {
 	super("combobox.todo-perspective-type");
@@ -64,7 +63,7 @@ public class ToDoByType extends ToDoPerspective
 	LOG.debug("toDoItemsChanged");
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
-	Object path[] = new Object[2];
+	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
 	Enumeration elems = KnowledgeTypeNode.getTypes().elements();
@@ -79,8 +78,8 @@ public class ToDoByType extends ToDoPerspective
 		nMatchingItems++;
 	    }
 	    if (nMatchingItems == 0) continue;
-	    int childIndices[] = new int[nMatchingItems];
-	    Object children[] = new Object[nMatchingItems];
+	    int[] childIndices = new int[nMatchingItems];
+	    Object[] children = new Object[nMatchingItems];
 	    nMatchingItems = 0;
 	    for (int i = 0; i < nItems; i++) {
 		ToDoItem item = (ToDoItem) items.elementAt(i);
@@ -100,7 +99,7 @@ public class ToDoByType extends ToDoPerspective
 	LOG.debug("toDoItemAdded");
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
-	Object path[] = new Object[2];
+	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
 	Enumeration elems = KnowledgeTypeNode.getTypes().elements();
@@ -115,8 +114,8 @@ public class ToDoByType extends ToDoPerspective
 		nMatchingItems++;
 	    }
 	    if (nMatchingItems == 0) continue;
-	    int childIndices[] = new int[nMatchingItems];
-	    Object children[] = new Object[nMatchingItems];
+	    int[] childIndices = new int[nMatchingItems];
+	    Object[] children = new Object[nMatchingItems];
 	    nMatchingItems = 0;
 	    for (int i = 0; i < nItems; i++) {
 		ToDoItem item = (ToDoItem) items.elementAt(i);
@@ -137,7 +136,7 @@ public class ToDoByType extends ToDoPerspective
 	ToDoList list = Designer.theDesigner().getToDoList(); //source?
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
-	Object path[] = new Object[2];
+	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
 	Enumeration elems = KnowledgeTypeNode.getTypes().elements();

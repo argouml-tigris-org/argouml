@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,25 +22,22 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: CrIllegalName.java
-// Classes: CrIllegalName
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import javax.swing.Icon;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
-/** A critic to detect whether a model element name is legally formed.
+
+/**
+ * A critic to detect whether a model element name is legally formed.
+ *
+ * @author jrobbins
  */
 public class CrIllegalName extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrIllegalName() {
 	setHeadline("Choose a Legal Name");
@@ -64,7 +61,7 @@ public class CrIllegalName extends CrUML {
 	// but for States we make an exception
 	for (int i = 0; i < len; i++) {
 	    char c = nameStr.charAt(i);
-	    if (!(Character.isLetterOrDigit(c) || c == '_' 
+	    if (!(Character.isLetterOrDigit(c) || c == '_'
 	        || (c == ' ' && ModelFacade.isAStateVertex(me))))
 		return PROBLEM_FOUND;
 	}

@@ -44,9 +44,9 @@ import org.argouml.persistence.ProjectFilePersister;
 import org.argouml.ui.ProjectBrowser;
 
 /**
- * This class provides common functions for all FileOperations 
+ * This class provides common functions for all FileOperations
  * like new, save, load, and reopen.
- * 
+ *
  * @author mvw@tigris.org
  *
  */
@@ -56,7 +56,7 @@ public abstract class ActionFileOperations extends AbstractAction {
 
     /**
      * The constructor.
-     * 
+     *
      * @param name the name of the action
      */
     public ActionFileOperations(String name) {
@@ -65,7 +65,7 @@ public abstract class ActionFileOperations extends AbstractAction {
 
     /**
      * The constructor.
-     * 
+     *
      * @param name the name of the action
      * @param icon the icon to represent this action graphically
      */
@@ -75,9 +75,9 @@ public abstract class ActionFileOperations extends AbstractAction {
 
     /**
      * If the current project is dirty (needs saving) then this function will
-     * ask confirmation from the user. 
+     * ask confirmation from the user.
      * If the user indicates that saving is needed, then saving is attempted.
-     *  
+     *
      * @return true if we can continue with opening
      */
     protected boolean askConfirmationAndSave() {
@@ -90,10 +90,10 @@ public abstract class ActionFileOperations extends AbstractAction {
                         "optionpane.open-project-save-changes-to"),
                         new Object[] {p.getName()});
 
-            int response = JOptionPane.showConfirmDialog(pb, t, t, 
+            int response = JOptionPane.showConfirmDialog(pb, t, t,
                     JOptionPane.YES_NO_CANCEL_OPTION);
 
-            if (response == JOptionPane.CANCEL_OPTION 
+            if (response == JOptionPane.CANCEL_OPTION
                     || response == JOptionPane.CLOSED_OPTION) {
                 return false;
             }
@@ -118,7 +118,7 @@ public abstract class ActionFileOperations extends AbstractAction {
      * Loads the project file and opens all kinds of error message windows
      * if it doesn't work for some reason. In those cases it preserves
      * the old project.
-     * 
+     *
      * @param url the url to open.
      * @return true if the file was successfully opened
      */
@@ -127,11 +127,11 @@ public abstract class ActionFileOperations extends AbstractAction {
         PersistenceManager pm = PersistenceManager.getInstance();
         Project oldProject = ProjectManager.getManager().getCurrentProject();
         boolean success = true;
-        
+
         // TODO:
         // This is actually a hack! Some diagram types
         // (like the statechart diagrams) access the current
-        // diagram to get some info. This might cause 
+        // diagram to get some info. This might cause
         // problems if there's another statechart diagram
         // active, so I remove the current project, before
         // loading the new one.
@@ -146,20 +146,20 @@ public abstract class ActionFileOperations extends AbstractAction {
             success = false;
         } else {
             try {
-                ProjectFilePersister persister = 
+                ProjectFilePersister persister =
                     pm.getPersisterFromFileName(url.getFile());
                 if (persister == null) {
                     success = false;
-                    throw new IllegalStateException("Filename " + url.getFile() 
+                    throw new IllegalStateException("Filename " + url.getFile()
                             + " is not of a known file type");
                 }
                 p = persister.doLoad(url);
-                
+
                 ProjectBrowser.getInstance().showStatus(
                         MessageFormat.format(Translator.localize(
                         "label.open-project-status-read"),
                         new Object[] {
-                                url.toString()
+			    url.toString(),
                         }));
             } catch (OpenException ex) {
                 LOG.error("Exception while loading project", ex);

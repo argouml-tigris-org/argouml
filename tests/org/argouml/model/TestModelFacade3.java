@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,7 +23,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 
-package org.argouml.model; 
+package org.argouml.model;
 
 import junit.framework.*;
 
@@ -39,7 +39,7 @@ import java.util.ArrayList;
  * throw an IllegalArgumentException.
  */
 public class TestModelFacade3 extends TestCase {
-    
+
 
     private Method methodToTest = null;
     private ModelFacade facade = null;
@@ -53,13 +53,13 @@ public class TestModelFacade3 extends TestCase {
 	super(method.toString());
 	methodToTest = method;
     }
- 
+
     /**
      * @return the test suite
      */
     public static Test suite() {
-	TestSuite suite = 
-	    new TestSuite("Tests for " 
+	TestSuite suite =
+	    new TestSuite("Tests for "
 			  + TestModelFacade.class.getPackage().getName());
 
         Method methods[] = ModelFacade.class.getDeclaredMethods();
@@ -67,10 +67,10 @@ public class TestModelFacade3 extends TestCase {
 	for (int i = 0; i < methods.length; i++) {
             suite.addTest(new TestModelFacade3(methods[i]));
         }
-        
+
         return suite;
     }
-    
+
     /** This method checks whether a test should be executed for a given
      * method.
      * @return true if method is not eligible for testing (e.g. helper methods)
@@ -80,7 +80,7 @@ public class TestModelFacade3 extends TestCase {
 	    || methodToTest.getName().startsWith("isA")
 	    || methodToTest.getName().equals("create");
     }
-    
+
     /**
      * @see junit.framework.TestCase#runTest()
      */
@@ -93,7 +93,7 @@ public class TestModelFacade3 extends TestCase {
             }
         }
     }
-    
+
     /** testOneOrMoreParameters checks whether a public method in the
      * ModelFacade throws an IllegalArgumentException when invoked with
      * stupid arguments. Stupid arguments are arguments which are not
@@ -103,7 +103,7 @@ public class TestModelFacade3 extends TestCase {
         int nrParameters = methodToTest.getParameterTypes().length;
         Class[] params = methodToTest.getParameterTypes();
         Object[] foo = new Object[nrParameters ];
-        
+
         // set up all parameters. Some methods are invoked with
         // primitives or collections, so we need to create them
         // accordingly
@@ -140,8 +140,8 @@ public class TestModelFacade3 extends TestCase {
                 fail("Illegal Access to : " + params[i].getName());
             }
         }
-        
-        
+
+
         try {
             methodToTest.invoke(facade,  foo);
             fail(methodToTest.getName()
@@ -158,9 +158,9 @@ public class TestModelFacade3 extends TestCase {
             fail("Test failed for " + methodToTest.toString()
 		 + " because of: " + e.toString());
         }
-        
+
     }
-    
+
     /**
      * @see junit.framework.TestCase#setUp()
      */

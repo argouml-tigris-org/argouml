@@ -38,7 +38,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.UUIDManager;
 
 /**
- * Tests for GeneratorCpp file generation functionalities, i.e., generateFile2 
+ * Tests for GeneratorCpp file generation functionalities, i.e., generateFile2
  * method.
  * @see GeneratorCpp
  * @author euluis
@@ -57,7 +57,7 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
     public TestCppFileGeneration(String testName) {
         super(testName);
     }
-    
+
     /**
      * @return the test suite
      */
@@ -76,13 +76,13 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
 
     /** system temporary directory property name */
     static final String SYSPROPNAME_TMPDIR = "java.io.tmpdir";
-    
+
     /** path of the temporary directory in the system */
     private File tmpDir;
 
     /** directory to be deleted on tearDown if not null */
     private File genDir;
-    
+
     /**
      * @see junit.framework.TestCase#setUp()
      */
@@ -102,12 +102,12 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
     protected void tearDown() throws IOException {
         if (genDir != null && genDir.exists()) {
             FileUtils.deleteDirectory(genDir);
-        } 
+        }
     }
 
     /**
      * Setup a directory with the given name for the caller test.
-     * @param dirName the directory to be created in the system temporary dir 
+     * @param dirName the directory to be created in the system temporary dir
      * @return the created directory
      */
     private File setUpDirectory4Test(String dirName) {
@@ -117,9 +117,9 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
     }
 
     /**
-     * Test for file generation of a classifier, checking if in the second time 
-     * the empty method implementation is generated correctly (no extra curly 
-     * braces each time the class is generated - issue 2828) and the added 
+     * Test for file generation of a classifier, checking if in the second time
+     * the empty method implementation is generated correctly (no extra curly
+     * braces each time the class is generated - issue 2828) and the added
      * code is preserved.
      * @throws IOException some unexpected file access problem occurred
      */
@@ -130,7 +130,7 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
                 getAClass(), genDir.getPath());
         assertNotNull(filePath);
         File genFile = new File(filePath);
-        
+
         // create some content in the foo method implementation
         String encoding = getEncoding(genFile);
         String originalGenerated = FileUtils.readFileToString(
@@ -149,16 +149,16 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
         modified.append(originalGenerated.substring(fooImplIndex));
         genFile.delete();
         FileUtils.writeStringToFile(genFile, modified.toString(), encoding);
-        
+
         // generate the classifier for the second time
-        assertEquals(filePath, 
+        assertEquals(filePath,
             getGenerator().generateFile2(getAClass(), genDir.getPath()));
-        // check if the file generated in the second time is equal to the 
+        // check if the file generated in the second time is equal to the
         // modified file
         String secondGenerated = FileUtils.readFileToString(genFile, encoding);
         assertEquals(modified.toString(), secondGenerated);
     }
-    
+
     /**
      * Test that the model isn't used as a namespace - issue #2963.
      * @throws IOException
@@ -168,12 +168,12 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
         genDir = setUpDirectory4Test(testName);
         ModelFacade.setName(getModel(), testName);
         ModelFacade.setNamespace(getPack(), getModel());
-        
+
         String filePath = getGenerator().generateFile2(
                 getAClass(), genDir.getPath());
         assertNotNull(filePath);
         File genFile = new File(filePath);
-        
+
         String encoding = getEncoding(genFile);
         String generated = FileUtils.readFileToString(
             genFile, encoding);

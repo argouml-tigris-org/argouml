@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,14 +22,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-/*
- * ModuleLoader.java
- *
- * Created on June 11, 2001, 6:26 AM
- */
-
 package org.argouml.application.modules;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
@@ -59,7 +53,8 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoModuleEvent;
 import org.argouml.application.security.ArgoJarClassLoader;
 
-/**  Handles loading of modules and plugins for ArgoUML.
+/**
+ * Handles loading of modules and plugins for ArgoUML.
  *
  * @author  Will Howery
  * @author  Thierry Lach
@@ -71,7 +66,9 @@ public class ModuleLoader {
      */
     private static final Logger LOG = Logger.getLogger(ModuleLoader.class);
 
-    /** Class file suffix */
+    /**
+     * Class file suffix
+     */
     public static final String CLASS_SUFFIX = ".class";
 
     // String mModulePropertyFile=null;
@@ -83,7 +80,8 @@ public class ModuleLoader {
     private static String argoRoot = null;
     private static String argoHome = null;
 
-    /** Make sure the module loader cannot be instantiated from outside.
+    /**
+     * Make sure the module loader cannot be instantiated from outside.
      */
     private ModuleLoader() {
         singletons = new Hashtable();
@@ -91,10 +89,10 @@ public class ModuleLoader {
         menuActionList = new Vector();
 
 	// Use a little trick to find out where Argo is being loaded from.
-        String extForm = 
+        String extForm =
 	    org.argouml.application.Main.class.getResource(Argo.ARGOINI)
 	        .toExternalForm();
-	argoRoot = extForm.substring(0, 
+	argoRoot = extForm.substring(0,
 				     extForm.length() - Argo.ARGOINI.length());
 
 	// If it's a jar, clean it up and make it look like a file url
@@ -109,8 +107,7 @@ public class ModuleLoader {
 	    if (argoRoot.startsWith("file:")) {
 	        argoHome = new File(argoRoot.substring(5)).getAbsoluteFile()
 		    .getParent();
-	    }
-	    else {
+	    } else {
 	        argoHome = new File(argoRoot).getAbsoluteFile().getParent();
 	    }
 	    try {
@@ -119,8 +116,7 @@ public class ModuleLoader {
 		 * JDK 1.3 and JDK 1.4 do not.
 		 */
 	        argoHome = java.net.URLDecoder.decode(argoHome);
-	    }
-	    catch (Exception e) {
+	    } catch (Exception e) {
 		LOG.warn(e);
             }
 
@@ -128,8 +124,9 @@ public class ModuleLoader {
 	}
     }
 
-    /** Get the singleton instance
-     * 
+    /**
+     * Get the singleton instance.
+     *
      * @return the module loader singleton
      */
     public static ModuleLoader getInstance() {
@@ -139,7 +136,8 @@ public class ModuleLoader {
         return singleton;
     }
 
-    /** Load the internal modules.
+    /**
+     * Load the internal modules.
      */
     public void initialize() {
 	loadInternalModules(getClass(), "standard.modules");
@@ -148,14 +146,15 @@ public class ModuleLoader {
 	loadModulesFromPredefinedLists();
     }
 
-    /** Search for and load modules from predefined places.
-     *  Look in the following locations in the following order, using
-     *  System.getProperty() to retrieve the values.
+    /**
+     * Search for and load modules from predefined places.
+     * Look in the following locations in the following order, using
+     * System.getProperty() to retrieve the values.
      *
-     *  Property name
-     *  ${user.dir}
-     *  ${user.home}
-     *  ${java.home}/lib
+     * Property name
+     * ${user.dir}
+     * ${user.home}
+     * ${java.home}/lib
      */
     public void loadModulesFromPredefinedLists() {
         String fs = System.getProperty("file.separator");
@@ -171,7 +170,8 @@ public class ModuleLoader {
             System.getProperty("java.home") + fs + "lib" + fs
                 + ArgoModule.MODULEFILENAME,
             System.getProperty("java.home") + fs + "lib" + fs
-                + ArgoModule.MODULEFILENAME_ALTERNATE };
+                + ArgoModule.MODULEFILENAME_ALTERNATE,
+	};
 
 	// Get all of the file paths.  Check if the file exists,
 	// is a file (not a directory), and is readable.
@@ -182,19 +182,18 @@ public class ModuleLoader {
 	            LOG.info ("Loading modules from " + file);
 		    loadModules(new FileInputStream(file), file.getPath());
 		}
-	    }
-	    catch (FileNotFoundException fnfe) {
+	    } catch (FileNotFoundException fnfe) {
 	        // Ignore problem
 	        LOG.error ("File not found " + path[i], fnfe);
-	    }
-	    catch (IOException ioe) {
+	    } catch (IOException ioe) {
 	        // Ignore problem
 	        LOG.error ("IO Exception " + path[i], ioe);
 	    }
 	}
     }
 
-    /** Check the manifest of a jar file for an argo extension.
+    /**
+     * Check the manifest of a jar file for an argo extension.
      */
     private void processJarFile(ClassLoader classloader, File file) {
 	JarFile jarfile = null;
@@ -204,8 +203,7 @@ public class ModuleLoader {
 	// File file = new File(jarName);
 	try {
 	    jarfile = new JarFile(file);
-	}
-	catch (Exception e) {
+	} catch (Exception e) {
 	    LOG.debug("Unable to open " + file, e);
 	}
 
@@ -215,8 +213,7 @@ public class ModuleLoader {
 	        if (manifest == null) {
 	            LOG.debug(file + " does not have a manifest");
 	        }
-	    }
-	    catch (Exception e) {
+	    } catch (Exception e) {
 	        LOG.debug("Unable to read manifest of " + file, e);
 		manifest = null;
 	    }
@@ -232,12 +229,12 @@ public class ModuleLoader {
                 Attributes atrs = manifest.getAttributes(cname);
                 String s1 = atrs.getValue(Attributes.Name.SPECIFICATION_TITLE);
                 String s2 = atrs.getValue(Attributes.Name.SPECIFICATION_VENDOR);
-                
+
                 // TODO:  If we are in jdk1.3 or above, check
                 // EXTENSION_NAME.  Otherwise pass the class name.  It's not
                 // as good of a check (we might get duplicate modules with
                 // the same key), but it's better than nothing.
-                
+
                 // String key = atrs.getValue(Attributes.Name.EXTENSION_NAME);
                 String key = cname;
                 if (Pluggable.PLUGIN_TITLE.equals(s1)
@@ -260,17 +257,17 @@ public class ModuleLoader {
 	// }
     }
 
-    /** Search for and load modules from classpath, and from
-     *  other places.
+    /**
+     * Search for and load modules from classpath, and from
+     * other places.
      */
     public void loadModulesFromExtensionDir() {
 	if (argoHome != null) {
 	    if (argoHome.startsWith("file:")) {
-	        loadModulesFromNamedDirectory(argoHome.substring(5) 
+	        loadModulesFromNamedDirectory(argoHome.substring(5)
 					      + File.separator + "ext");
-	    }
-	    else {
-	        loadModulesFromNamedDirectory(argoHome 
+	    } else {
+	        loadModulesFromNamedDirectory(argoHome
 					      + File.separator + "ext");
 	    }
 
@@ -295,19 +292,19 @@ public class ModuleLoader {
 		    if (jarfile != null) {
 	                ClassLoader classloader =
 			    new ArgoJarClassLoader(file[i].toURL());
-	                // ClassLoader classloader = 
+	                // ClassLoader classloader =
 			// getClass().getClassLoader();
 	                processJarFile(classloader, file[i]);
 	                // processJarFile(getClass().getClassLoader(), file[i]);
 		    }
-		}
-		catch (IOException ioe) { }
+		} catch (IOException ioe) { }
 	    }
 	}
     }
 
-    /** Load modules from a jar file
-     * 
+    /**
+     * Load modules from a jar file.
+     *
      * @param filename jar file name to load from
      */
     public void loadModulesFromJar(String filename) {
@@ -316,18 +313,20 @@ public class ModuleLoader {
 	}
     }
 
-    /** Load modules from jars in the class path
+    /**
+     * Load modules from jars in the class path
      */
     public void loadModulesFromClassPathJars() {
 	StringTokenizer st;
-	st = new StringTokenizer(System.getProperty("java.class.path"),
-	                         System.getProperty("path.separator"));
+	st =
+	    new StringTokenizer(System.getProperty("java.class.path"),
+				System.getProperty("path.separator"));
 
 	while (st.hasMoreTokens()) {
 	    String component = st.nextToken();
 
 	    if (component.toLowerCase().endsWith(".jar")) {
-	        processJarFile(getClass().getClassLoader(), 
+	        processJarFile(getClass().getClassLoader(),
 			       new File(component));
 	    }
 
@@ -335,8 +334,9 @@ public class ModuleLoader {
 
     }
 
-    /** Load modules listed in Argo resources.
-     * 
+    /**
+     * Load modules listed in Argo resources.
+     *
      * @param loaderClass class to retrieve classloader from
      * @param rsrcName resource name to load
      * @return false if the resource is not found
@@ -349,10 +349,11 @@ public class ModuleLoader {
 	return (is == null) ? false : loadModules(is, rsrcName);
     }
 
-    /** Load modules from a property file.
-     * 
+    /**
+     * Load modules from a property file.
+     *
      * The load may be successful even if no modules are loaded.
-     * 
+     *
      * @param moduleFile name of file
      * @return false if the load succeeded
      */
@@ -360,8 +361,7 @@ public class ModuleLoader {
 	LOG.info("Loading modules from " + moduleFile);
         try {
 	    return loadModules(new FileInputStream(moduleFile), moduleFile);
-	}
-	catch (Exception e) {
+	} catch (Exception e) {
             e.printStackTrace();
         }
         return false;
@@ -371,9 +371,11 @@ public class ModuleLoader {
         ListIterator iterator = moduleClasses.listIterator();
         while (iterator.hasNext()) {
             Object obj = iterator.next();
-            if (obj instanceof ArgoModule)
-                if (key.equals(((ArgoModule) obj).getModuleKey()))
+            if (obj instanceof ArgoModule) {
+                if (key.equals(((ArgoModule) obj).getModuleKey())) {
 		    return true;
+		}
+	    }
 	}
 	return false;
     }
@@ -384,8 +386,10 @@ public class ModuleLoader {
 				     boolean secure) {
 
 	LOG.debug("Load key:" + key + " class:" + classname);
-	if (keyAlreadyLoaded(key)) return;
-    
+	if (keyAlreadyLoaded(key)) {
+	    return;
+	}
+
 	Object obj = null;
 	try {
             Class moduleClass = classloader.loadClass(classname);
@@ -398,8 +402,7 @@ public class ModuleLoader {
 	    c.setAccessible(true);
 	    // Instantiate it
 	    obj = c.newInstance(new Object[]{});
-	}
-	catch (Exception e) {
+	} catch (Exception e) {
 	    obj = null;
             LOG.error("Could not instantiate module" + classname, e);
 	}
@@ -418,28 +421,27 @@ public class ModuleLoader {
 		            if (!(singletons.containsKey(moduleType))) {
 			        requestNewSingleton(moduleType, sModule);
 		            }
-		        }
-		        catch (Exception e) {
+		        } catch (Exception e) {
 		            LOG.debug ("Exception", e);
 		        }
 		    }
                 }
-	    }
-	    else {
+	    } else {
 	        LOG.warn ("Key '" + key
-			       + "' does not match module key '" 
+			       + "' does not match module key '"
 			       + aModule.getModuleKey() + "'");
 	    }
         }
     }
 
-    /** Load modules from an input stream.
-     * 
+    /**
+     * Load modules from an input stream.
+     *
      * The load may be successful even if no modules are loaded.
-     * 
+     *
      * @param is input stream in property file format
      * @param filename the input stream is from (for reporting purposes)
-     * 
+     *
      * @return false if the load succeeded
      */
     public boolean loadModules(InputStream is, String filename) {
@@ -448,20 +450,27 @@ public class ModuleLoader {
 		new LineNumberReader(new InputStreamReader(is));
 	    while (true) {
 	        String realLine = lnr.readLine();
-		if (realLine == null) return true;
+		if (realLine == null) {
+		    return true;
+		}
 		String line = realLine.trim();
-		if (line.length() == 0) continue;
-		if (line.charAt(0) == '#') continue;
-		if (line.charAt(0) == '!') continue;
+		if (line.length() == 0) {
+		    continue;
+		}
+		if (line.charAt(0) == '#') {
+		    continue;
+		}
+		if (line.charAt(0) == '!') {
+		    continue;
+		}
 		String sKey = "";
 		String sClassName = "";
 		try {
 		    int equalPos = line.indexOf("=");
 		    sKey = line.substring(0, equalPos).trim();
-		    sClassName = line.substring(equalPos + 1).trim()
-		            .replace('/', '.');
-		}
-		catch (Exception e) {
+		    sClassName =
+			line.substring(equalPos + 1).trim().replace('/', '.');
+		} catch (Exception e) {
 		    LOG.warn ("Unable to process " + filename
 			      + " at line " + lnr.getLineNumber()
 			      + " data = '" + realLine + "'");
@@ -481,15 +490,16 @@ public class ModuleLoader {
 		}
 		sKey = "";
 	    }
-	}
-	catch (Exception e) {
+	} catch (Exception e) {
             e.printStackTrace();
 	    System.exit(1);
         }
         return false;
     }
 
-    /** Shut down all modules */
+    /**
+     * Shut down all modules.
+     */
     public void shutdown() {
         try {
             ListIterator iterator = moduleClasses.listIterator();
@@ -509,9 +519,10 @@ public class ModuleLoader {
 
     }
 
-    /** Process all of the modules to add popup actions for the
+    /**
+     * Process all of the modules to add popup actions for the
      * given context.
-     * 
+     *
      * @param popUpActions vector of actions
      * @param context to filter by
      */
@@ -533,8 +544,9 @@ public class ModuleLoader {
         }
     }
 
-    /** Get the list of modules
-     * 
+    /**
+     * Get the list of modules.
+     *
      * @return the list of modules.
      */
     public ArrayList getModules() {
@@ -542,8 +554,9 @@ public class ModuleLoader {
 	return moduleClasses;
     }
 
-    /** Locates a module by key.
-     * 
+    /**
+     * Locates a module by key.
+     *
      * @param key module identifier to find
      * @return a module object or null if not found.
      */
@@ -551,14 +564,18 @@ public class ModuleLoader {
         ListIterator iterator = moduleClasses.listIterator();
         while (iterator.hasNext()) {
             Object obj = iterator.next();
-            if (obj instanceof ArgoModule)
-                if (key.equals(((ArgoModule) obj).getModuleKey()))
+            if (obj instanceof ArgoModule) {
+                if (key.equals(((ArgoModule) obj).getModuleKey())) {
 		    return obj;
+		}
+	    }
 	}
 	return null;
     }
 
-    /** Activate a loaded module.
+    /**
+     * Activate a loaded module.
+     *
      * @param module to activate
      * @return true if the module was activated,
      *         false if not or if it was already active.
@@ -567,7 +584,8 @@ public class ModuleLoader {
         return false;
     }
 
-    /** Gets the current singleton of the module type requested.
+    /**
+     * Gets the current singleton of the module type requested.
      *
      * @param moduleClass the class of the module singleton
      * @return null if there is some problem.
@@ -575,43 +593,42 @@ public class ModuleLoader {
     public static ArgoModule getCurrentSingleton(Class moduleClass) {
 	try {
 	    return (ArgoModule) singletons.get(moduleClass);
-	}
-	catch (Exception e) {
+	} catch (Exception e) {
 	    return null;
 	}
     }
 
-    /** Requests the passed singleton to become the current singleton
-     *  of the module type requested.
+    /**
+     * Requests the passed singleton to become the current singleton
+     * of the module type requested.
      *
-     *  Singletons may refuse to be activated.  In this case,
-     *  requestNewSingleton returns false and does not deactivate the
-     *  current singleton.
-     * 
+     * Singletons may refuse to be activated.  In this case,
+     * requestNewSingleton returns false and does not deactivate the
+     * current singleton.
+     *
      * @param modClass class which identifies the singleton
      * @param moduleInstance the module to make the singleton
      * @return true if the singleton is activated
      */
     public static boolean requestNewSingleton(Class modClass,
 					      ArgoSingletonModule
-					              moduleInstance)
-    {
+					              moduleInstance) {
 	boolean rc = moduleInstance.canActivateSingleton();
 	ArgoSingletonModule currentSingleton;
-	if (!moduleInstance.canActivateSingleton()) return false;
+	if (!moduleInstance.canActivateSingleton()) {
+	    return false;
+	}
 	try {
 	    currentSingleton =
 		(ArgoSingletonModule) getCurrentSingleton(modClass);
 	    if (currentSingleton.canDeactivateSingleton()) {
 		currentSingleton.deactivateSingleton();
 		singletons.remove(modClass);
-	    }
-	    else {
+	    } else {
 		// The current singleton refused to relinquish control.
 		return false;
 	    }
-	}
-	catch (Exception e) {
+	} catch (Exception e) {
 	    currentSingleton = moduleInstance;
 	}
 	singletons.put(modClass, currentSingleton);
@@ -619,7 +636,8 @@ public class ModuleLoader {
 	return true;
     }
 
-    /** Returns a plug-in of a given type.
+    /**
+     * Returns a plug-in of a given type.
      *
      *  The type of plug-in returned is determined by the class passed.
      *
@@ -659,8 +677,7 @@ public class ModuleLoader {
 		// if (pluggable.isModuleType(pluginType))
 		if (context == null) {
 		    return pluggable;
-		}
-		else {
+		} else {
 		    if (pluggable.inContext(context)) {
 			return pluggable;
 		    }
@@ -671,19 +688,18 @@ public class ModuleLoader {
 
     }
 
-    /** Indicates whether a requested plug-in is available.  This guarantees
-     *  not to instantiate the plug-in.
+    /**
+     * Indicates whether a requested plug-in is available.  This guarantees
+     * not to instantiate the plug-in.
      *
-     *  @param pluginType a Class which extends Pluggable and indicates
-     *                    the type of plug-in to return.
+     * @param pluginType a Class which extends Pluggable and indicates
+     *                   the type of plug-in to return.
      *
-     *  @param context   Additional information used to choose between
-     *                    plugins.
+     * @param context   Additional information used to choose between
+     *                   plugins.
      *
-     *  @return A plug-in class which extends the type of class passed
-     *          as the argument.
-     *
-     *
+     * @return A plug-in class which extends the type of class passed
+     *         as the argument.
      */
     public boolean hasPlugin (Class pluginType,
 			      Object[] context) {
@@ -719,8 +735,7 @@ public class ModuleLoader {
 		Pluggable module = (Pluggable) element;
 		if (context == null) {
 		    return true;
-		}
-		else {
+		} else {
 		    if (module.inContext(context)) {
 			return true;
 		    }
@@ -731,19 +746,20 @@ public class ModuleLoader {
     }
 
 
-    /** Returns all plug-in of a given type.
+    /**
+     * Returns all plug-in of a given type.
      *
-     *  The type of plug-in returned is determined by the class passed.
+     * The type of plug-in returned is determined by the class passed.
      *
-     *  @param pluginType a Class which extends Pluggable and indicates
-     *                    the type of plug-in to return.
+     * @param pluginType a Class which extends Pluggable and indicates
+     *                   the type of plug-in to return.
      *
-     *  @param context An object (or null) which allows the plugin to
-     *                 determine if it should be included in a list.
+     * @param context An object (or null) which allows the plugin to
+     *                determine if it should be included in a list.
      *
-     *  @return A Vector containing all the plugins of the type
-     *          passed for the passed context, or null if none
-     *          are available.
+     * @return A Vector containing all the plugins of the type
+     *         passed for the passed context, or null if none
+     *         are available.
      */
     public ArrayList getPlugins (Class pluginType, Object[] context) {
 
@@ -774,29 +790,29 @@ public class ModuleLoader {
 		if (classImplements(module, pluginType)) {
 		    if (context == null) {
 			results.add(module);
-		    }
-		    else {
+		    } else {
 			if (pluggable.inContext(context)) {
 			    results.add(module);
 			}
 		    }
 		}
-	    }
-	    catch (Exception ex) {
+	    } catch (Exception ex) {
 		LOG.warn("Exception for " + module, ex);
 	    }
 	}
 	return results;
     }
 
-    /** Returns argo home
-     * 
+    /**
+     * Returns argo home.
+     *
      * @return the argo home directory
      */
     public String getArgoHome() { return argoHome; }
 
-    /** Returns argo root
-     * 
+    /**
+     * Returns argo root.
+     *
      * @return the argo root directory
      */
     public String getArgoRoot() { return argoRoot; }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,7 +30,7 @@ import ru.novosoft.uml.MElementListener;
  * This interface accepts all notifications signaled by NSUML's
  * MElementListener interface plus accepts notification that a
  * container's target model element has been changed (typically due to
- * navigation).  
+ * navigation).
  *
  * @author Curt Arnold
  */
@@ -40,7 +40,7 @@ public interface UMLUserInterfaceComponent extends MElementListener {
      *  has been changed.
      */
     public void targetChanged();
-        
+
     /**  This method is called when the navigation history has been changed
      *     (and navigation buttons may need to be updated).  targetChanged
      *     implies navigationHistoryChanged, so this method will not

@@ -6,7 +6,9 @@
 <module name="Checker">
     <module name="NewlineAtEndOfFile"/>
     <module name="PackageHtml"/>
-    <module name="StrictDuplicateCode"/>
+    <module name="StrictDuplicateCode">
+      <property name="min" value="30"/> <!-- Raised to avoid the Copyright -->
+    </module>
     <module name="Translation"/>
 
     <module name="TreeWalker">

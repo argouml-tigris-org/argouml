@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,9 +30,9 @@ package org.argouml.cognitive;
  *
  */
 public class Goal {
-    
+
     // TODO: values
-    
+
     ////////////////////////////////////////////////////////////////
     // constants
 
@@ -40,7 +40,7 @@ public class Goal {
      * The unspecified goal.
      */
     private static final Goal UNSPEC = new Goal("label.goal.unspecified", 1);
-		       
+
     ////////////////////////////////////////////////////////////////
     // instance variables
     /**
@@ -55,7 +55,7 @@ public class Goal {
 
     /**
      * The constructor.
-     * 
+     *
      * @param n the name (to be localized)
      * @param p the priority
      */
@@ -63,10 +63,10 @@ public class Goal {
 	name = Translator.localize(n);
 	priority = p;
     }
-				   
+
     ////////////////////////////////////////////////////////////////
     // accessors
-				   
+
     /**
      * @see java.lang.Object#hashCode()
      */
@@ -86,27 +86,27 @@ public class Goal {
 	}
 	return ((Goal) d2).getName().equals(getName());
     }
-				       
+
     /**
      * @return the localized name
      */
     public String getName() { return name; }
-    
+
     /**
      * @param n the localized name
      */
     public void setName(String n) { name = n; }
-    
+
     /**
      * @return the priority
      */
     public int getPriority() { return priority; }
-    
+
     /**
      * @param p the priority
      */
     public void setPriority(int p) { priority = p; }
-						       
+
     /**
      * @see java.lang.Object#toString()
      */
@@ -118,5 +118,5 @@ public class Goal {
     public static Goal getUnspecifiedGoal() {
         return UNSPEC;
     }
-							   
+
 } /* end class Goal */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,12 +45,12 @@ class ActionAutoCritique extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-        
+
         // stop/start creating more critics
 	Designer d = Designer.theDesigner();
 	boolean b = d.getAutoCritique();
 	d.setAutoCritique(!b);
-        
+
         // stop/start cleaning up invalid TodoItems.
         ToDoList.getInstance().setPaused(!ToDoList.getInstance().isPaused());
     }

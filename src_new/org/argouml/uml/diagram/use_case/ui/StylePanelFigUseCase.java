@@ -38,7 +38,7 @@ import org.argouml.ui.StylePanelFigNodeModelElement;
 
 /**
  * A class to provide a style panel for use cases.<p>
- * 
+ *
  * This adds a check box to control the display of he extension point
  * compartment.
  *
@@ -133,7 +133,7 @@ public class StylePanelFigUseCase extends StylePanelFigNodeModelElement {
 
     /**
      * Something has changed, check if its the check box.<p>
-     * 
+     *
      * @param e
      *            The event that triggeed us.
      */

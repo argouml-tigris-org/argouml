@@ -39,7 +39,7 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 public class ActionNewFinalState extends AbstractActionNewModelElement {
 
     private static ActionNewFinalState singleton = new ActionNewFinalState();
-    
+
     /**
      * Constructor for ActionNewFinalState.
      */
@@ -47,7 +47,7 @@ public class ActionNewFinalState extends AbstractActionNewModelElement {
         super();
         putValue(Action.NAME, Translator.localize("button.new-finalstate"));
     }
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

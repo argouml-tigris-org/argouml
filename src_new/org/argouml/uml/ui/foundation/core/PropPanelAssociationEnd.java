@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -129,7 +129,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     /**
      * Constructs the proppanel including initializing all scrollpanes, panels
      * etc. but excluding placing them on the proppanel itself.
-     * 
+     *
      * @see org.argouml.uml.ui.PropPanel#PropPanel(String, Orientation)
      */
     protected PropPanelAssociationEnd(String name, Orientation orientation) {
@@ -143,7 +143,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     /**
      * Constructs the proppanel and places all scrollpanes etc. on the canvas.
-     * 
+     *
      * @see java.lang.Object#Object()
      */
     public PropPanelAssociationEnd() {
@@ -168,18 +168,18 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         navigabilityCheckBox = new UMLAssociationEndNavigableCheckBox();
         orderingCheckBox = new UMLAssociationEndOrderingCheckBox();
         targetScopeCheckBox = new UMLAssociationEndTargetScopeCheckbox();
-        aggregationRadioButtonpanel = 
+        aggregationRadioButtonpanel =
             new UMLAssociationEndAggregationRadioButtonPanel(
                 Translator.localize("label.aggregation"), true);
-        changeabilityRadioButtonpanel = 
+        changeabilityRadioButtonpanel =
             new UMLAssociationEndChangeabilityRadioButtonPanel(
                 Translator.localize("label.changeability"), true);
-        visibilityRadioButtonPanel = 
+        visibilityRadioButtonPanel =
             new UMLModelElementVisibilityRadioButtonPanel(
                 Translator.localize("label.visibility"), true);
         specificationScroll = new JScrollPane(new UMLMutableLinkedList(
                 new UMLAssociationEndSpecificationListModel(),
-                ActionAddAssociationSpecification.getInstance(), 
+                ActionAddAssociationSpecification.getInstance(),
                 null, null, true));
     }
 
@@ -223,9 +223,9 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
         addButton(new PropPanelButton2(new ActionNavigateAssociation()));
         addButton(oppositeEndButton);
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));;
     }
 
@@ -237,13 +237,13 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     /**
      * Returns the multiplicityComboBox.
-     * 
+     *
      * @return UMLMultiplicityComboBox2
      */
     protected UMLComboBox2 getMultiplicityComboBox() {
         if (multiplicityComboBox == null) {
             if (multiplicityComboBoxModel == null) {
-                multiplicityComboBoxModel = 
+                multiplicityComboBoxModel =
                     new UMLAssociationEndMultiplicityComboBoxModel();
             }
             multiplicityComboBox = new UMLMultiplicityComboBox2(
@@ -270,12 +270,12 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     /**
      * Checks if the delete button of the associationend panel should be
      * enabled. It should be disabled if there are two or less association ends.
-     * 
+     *
      * @return boolean
      */
     public boolean isDeleteEnabled() {
-        if (ModelFacade.isAAssociationEnd(getTarget())) { 
-            return ModelFacade.getOtherAssociationEnds(getTarget()).size() > 1; 
+        if (ModelFacade.isAAssociationEnd(getTarget())) {
+            return ModelFacade.getOtherAssociationEnds(getTarget()).size() > 1;
         }
         return false;
     }
@@ -287,7 +287,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
             o = ((Fig) o).getOwner();
         if(o != null && ModelFacade.isAAssociationEnd(o)) {
             Collection ascEnds = ModelFacade.getConnections(ModelFacade.getAssociation(o));
-            if (ascEnds.size()>2)
+            if (ascEnds.size() > 2)
                 oppositeEndButton.setEnabled(false);
             else
                 oppositeEndButton.setEnabled(true);

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -57,7 +57,6 @@ import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.UUIDManager;
 import org.argouml.moduleloader.ModuleLoader2;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.Actions;
@@ -77,14 +76,16 @@ import org.tigris.gef.util.Util;
  */
 public class Main {
 
-    /** logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(Main.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
 
     /**
-     * The location of the default logging configuration (.lcf) file
+     * The location of the default logging configuration (.lcf) file.
      */
     public static final String DEFAULT_LOGGING_CONFIGURATION =
         "org/argouml/resource/default.lcf";
@@ -102,11 +103,11 @@ public class Main {
      * The main entry point of ArgoUML.
      * @param args command line parameters
      */
-    public static void main(String args[]) {        
+    public static void main(String[] args) {
 
         checkJVMVersion();
         checkHostsFile();
-        
+
         // Force the configuration to load
         Configuration.load();
 
@@ -124,7 +125,7 @@ public class Main {
             public String i18nlocalize(String key) {
                 return Translator.localize(key);
             }
-            
+
             public String i18nmessageFormat(String key, Object[] args) {
                 return Translator.messageFormat(key, args);
             }
@@ -210,10 +211,10 @@ public class Main {
 
 	// Register the default notation.
 	org.argouml.uml.generator.GeneratorDisplay.getInstance();
-        
+
 	// Initialize the UMLActions
 	Actions.getInstance();
-                
+
 	// The reason the gui is initialized before the commands are run
 	// is that some of the commands will use the projectbrowser.
 	st.mark("initialize gui");
@@ -239,7 +240,7 @@ public class Main {
         URL urlToOpen = null;
 
         if (projectName != null) {
-            projectName = 
+            projectName =
                 PersistenceManager.getInstance().fixExtension(projectName);
             urlToOpen = projectUrl(projectName, urlToOpen);
         }
@@ -260,13 +261,10 @@ public class Main {
 
         if (doSplash) {
             SplashScreen splash = SplashScreen.getInstance();
-            if (urlToOpen == null)
-            {
+            if (urlToOpen == null) {
 		splash.getStatusBar().showStatus(
 		    Translator.localize("statusmsg.bar.defaultproject"));
-            }
-            else
-            {
+            } else {
 		Object[] msgArgs = {
 		    projectName,
 		};
@@ -300,8 +298,9 @@ public class Main {
 
         st.mark("perspectives");
 
-        if (urlToOpen == null)
+        if (urlToOpen == null) {
             pb.setTitle(Translator.localize("label.projectbrowser-title"));
+	}
 
         if (doSplash) {
             SplashScreen splash = SplashScreen.getInstance();
@@ -324,11 +323,11 @@ public class Main {
         }
 
         pb.setVisible(true);
-        
+
         // set the initial target
-        Object diag = p.getDiagrams().elementAt(0); 
+        Object diag = p.getDiagrams().elementAt(0);
         TargetManager.getInstance().setTarget(diag);
-            
+
         st.mark("close splash");
         if (doSplash) {
             SplashScreen splash = SplashScreen.getInstance();
@@ -433,13 +432,13 @@ public class Main {
         // exit if unsupported java version.
         if (javaVersion.startsWith("1.2")
 	    || javaVersion.startsWith("1.1")) {
-            
+
 	    System.err.println("You are using Java " + javaVersion + ", "
 			       + "Please use Java 1.3 or later with ArgoUml");
 	    System.exit(0);
         }
     }
-    
+
     /**
      * Check that we can get the InetAddress for localhost.
      * This can fail on Unix if /etc/hosts is not correctly set up.
@@ -456,9 +455,11 @@ public class Main {
             System.exit(0);
         }
     }
-    
 
-    /** Add an element to the PostLoadActions list.
+
+    /**
+     * Add an element to the PostLoadActions list.
+     *
      * @param r a "Runnable" action
      */
     public static void addPostLoadAction(Runnable r) {
@@ -487,8 +488,7 @@ public class Main {
 	    if (pos == -1) {
 		commandname = commandstring;
 		commandargument = null;
-	    }
-	    else {
+	    } else {
 		commandname = commandstring.substring(0, pos);
 		commandargument = commandstring.substring(pos + 1);
 	    }
@@ -506,15 +506,13 @@ public class Main {
 	    Object o = null;
 	    try {
 		o = c.newInstance();
-	    }
-	    catch (InstantiationException e) { 
-		System.out.println(commandname 
+	    } catch (InstantiationException e) {
+		System.out.println(commandname
 				   + " could not be instantiated - skipping"
 				   + " (InstantiationException)");
 		continue;
-	    }
-	    catch (IllegalAccessException e) { 
-		System.out.println(commandname 
+	    } catch (IllegalAccessException e) {
+		System.out.println(commandname
 				   + " could not be instantiated - skipping"
 				   + " (IllegalAccessException)");
 		continue;
@@ -522,40 +520,41 @@ public class Main {
 
 
 	    if (o == null || !(o instanceof CommandLineInterface)) {
-		System.out.println(commandname 
+		System.out.println(commandname
 				   + " is not a command - skipping.");
 		continue;
 	    }
-		
+
 	    CommandLineInterface clio = (CommandLineInterface) o;
 
-	    System.out.println("Performing command " 
-			       + commandname + "( " 
-			       + (commandargument == null 
-				  ? "" : commandargument ) + " )");
+	    System.out.println("Performing command "
+			       + commandname + "( "
+			       + (commandargument == null
+				  ? "" : commandargument) + " )");
 	    boolean result = clio.doCommand(commandargument);
 	    if (!result) {
 		System.out.println("There was an error executing "
 				   + "the command "
-				   + commandname + "( " 
-				   + (commandargument == null 
-				      ? "" : commandargument ) + " )");
+				   + commandname + "( "
+				   + (commandargument == null
+				      ? "" : commandargument) + " )");
 		System.out.println("Aborting the rest of the commands.");
 		return;
 	    }
 	}
     }
 
-    /** Install our security handlers,
-     *  and do basic initialization of log4j.
+    /**
+     * Install our security handlers,
+     * and do basic initialization of log4j.
      *
-     *  Log4j initialization must be done as
-     *  part of the main class initializer, so that
-     *  the log4j initialization is complete
-     *  before any other static initializers.
+     * Log4j initialization must be done as
+     * part of the main class initializer, so that
+     * the log4j initialization is complete
+     * before any other static initializers.
      *
-     *  Also installs a trap to "eat" certain SecurityExceptions.
-     *  Refer to {@link java.awt.EventDispatchThread} for details.
+     * Also installs a trap to "eat" certain SecurityExceptions.
+     * Refer to {@link java.awt.EventDispatchThread} for details.
      */
     static {
 
@@ -581,7 +580,7 @@ public class Main {
          *  If it is set, then we let the static initializer in
          * {@link Argo} perform the initialization.
          */
-         
+
         if (System.getProperty("log4j.configuration") == null) {
             Properties props = new Properties();
 	    InputStream stream = null;
@@ -590,10 +589,10 @@ public class Main {
 		    ClassLoader.getSystemResourceAsStream(
 		        DEFAULT_LOGGING_CONFIGURATION);
 
-		if (stream != null)
+		if (stream != null) {
 		    props.load(stream);
-            }
-            catch (IOException io) {
+		}
+            } catch (IOException io) {
                 io.printStackTrace();
                 System.exit(-1);
             }
@@ -606,22 +605,20 @@ public class Main {
 		    .setThreshold(Level.OFF);
 	    }
         }
-        
+
         // initLogging();
     }
-    
+
     /**
      * Do a part of the initialization that is very much GUI-stuff.
      *
      * @param doSplash true if we are updating the splash
      * @param themeMemory is the theme to set.
      */
-    private static void initializeGUI(boolean doSplash, String themeMemory) 
-    {
+    private static void initializeGUI(boolean doSplash, String themeMemory) {
 	// initialize the correct look and feel
 	LookAndFeelMgr.getInstance().initializeLookAndFeel();
-	if (themeMemory != null)
-	{
+	if (themeMemory != null) {
 	    LookAndFeelMgr.getInstance().setCurrentTheme(themeMemory);
 	}
 
@@ -650,12 +647,14 @@ public class Main {
 	pb.setSize(w, h);
     }
 
-    
+
 
 } /* end Class Main */
 
 class PostLoad implements Runnable {
-    /** logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(PostLoad.class);
 
     private Vector postLoadActions = null;
@@ -686,11 +685,13 @@ class PostLoad implements Runnable {
 } /* end class PostLoad */
 
 class PreloadClasses implements Runnable {
-    /** logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(PreloadClasses.class);
 
     public void run() {
-        
+
         Class c = null;
         LOG.info("preloading...");
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,7 +29,7 @@ import javax.swing.KeyStroke;
 import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
 
 /**
- * This class extends the Explorer with 'copy to clipboard' capability for 
+ * This class extends the Explorer with 'copy to clipboard' capability for
  * diagrams.
  *
  * see: http://java.sun.com/j2se/1.3/docs/guide/swing/KeyBindChanges.html
@@ -39,20 +39,20 @@ import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
  */
 public class ExportExplorer
     extends DnDExplorerTree {
-    
-    private static final String DIAGRAM_TO_CLIPBOARD_ACTION = 
+
+    private static final String DIAGRAM_TO_CLIPBOARD_ACTION =
         "export Diagram as GIF";
-    
+
     /** Creates a new instance of ExportExplorer */
     public ExportExplorer() {
-        
+
         createDiagramExportBinding();
     }
-    
+
     private void createDiagramExportBinding() {
-        
+
         KeyStroke ctrlC = KeyStroke.getKeyStroke("control C");
-        
+
         this.getInputMap().put(ctrlC, DIAGRAM_TO_CLIPBOARD_ACTION);
         this.getActionMap().put(DIAGRAM_TO_CLIPBOARD_ACTION,
 				new ActionSaveDiagramToClipboard());

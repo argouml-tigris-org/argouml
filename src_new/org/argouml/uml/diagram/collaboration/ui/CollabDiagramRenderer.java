@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CollabDiagramRenderer.java
-// Classes: CollabDiagramRenderer
-// Original Author: agauthie@ics.uci.edu
 // $Id$
-
 package org.argouml.uml.diagram.collaboration.ui;
 
 import org.apache.log4j.Logger;
@@ -47,7 +43,7 @@ import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
 /**
- * <p>This class defines a renderer object for UML Collaboration Diagrams. 
+ * <p>This class defines a renderer object for UML Collaboration Diagrams.
  *   In a collaboration Diagram the following UML objects are displayed with the
  *   following Figs:</p>
  *
@@ -66,17 +62,18 @@ import org.tigris.gef.presentation.FigNode;
  * <p><em>Note</em>. Should be implemented as a singleton - we don't really
  *   need a separate instance for each use case diagram.</p>
  *
+ *
+ * @author agauthie
  */
 public class CollabDiagramRenderer
-    implements GraphNodeRenderer, GraphEdgeRenderer 
-{
+    implements GraphNodeRenderer, GraphEdgeRenderer {
     private static final Logger LOG =
 	Logger.getLogger(CollabDiagramRenderer.class);
 
-    /** Return a Fig that can be used to represent the given node 
-     * 
+    /** Return a Fig that can be used to represent the given node
+     *
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, 
+     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      * java.lang.Object)
      */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
@@ -96,14 +93,14 @@ public class CollabDiagramRenderer
      * very related to it.
      *
      * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
-     * org.tigris.gef.graph.GraphModel, 
+     * org.tigris.gef.graph.GraphModel,
      * org.tigris.gef.base.Layer, java.lang.Object)
      */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
 	if (ModelFacade.isAAssociationRole(edge)) {
 	    FigAssociationRole asrFig = new FigAssociationRole(edge, lay);
 	    return asrFig;
-	} else 
+	} else
 	    if (ModelFacade.isAGeneralization(edge)) {
 		FigGeneralization genFig = new FigGeneralization(edge, lay);
 		return genFig;

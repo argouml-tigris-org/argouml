@@ -46,7 +46,7 @@ import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.GridLayout2;
 
 /**
- * A property panel for operations. 
+ * A property panel for operations.
  */
 public class PropPanelOperation extends PropPanelFeature {
 
@@ -61,7 +61,7 @@ public class PropPanelOperation extends PropPanelFeature {
 
         /* This will cause the components on this page to be notified
          * anytime a stereotype, namespace or classifier
-         * has its name, ownedElement or baseClass changed 
+         * has its name, ownedElement or baseClass changed
          * anywhere in the model. */
 //        Object[] namesToWatch = {ModelFacade.STEREOTYPE,
 //            ModelFacade.NAMESPACE, ModelFacade.CLASSIFIER,
@@ -77,7 +77,7 @@ public class PropPanelOperation extends PropPanelFeature {
         addField(Translator.localize("label.owner"),
                 getOwnerScroll());
 
-        addSeperator();    
+        addSeperator();
 
         add(getVisibilityPanel());
 
@@ -104,17 +104,17 @@ public class PropPanelOperation extends PropPanelFeature {
         addField(Translator.localize("label.raisedsignals"),
                new JScrollPane(new UMLLinkedList(
                new UMLOperationRaisedSignalsListModel())));
-        
+
         addButton(new PropPanelButton2(new ActionNavigateOwner()));
         addButton(new PropPanelButton2(new ActionAddOperation()));
         addButton(new PropPanelButton2(new ActionNewParameter()));
-        addButton(new PropPanelButton2(new ActionNewRaisedSignal(), 
+        addButton(new PropPanelButton2(new ActionNewRaisedSignal(),
                 lookupIcon("SignalSending")));
-        addButton(new PropPanelButton2(new ActionAddDataType(), 
+        addButton(new PropPanelButton2(new ActionAddDataType(),
                 lookupIcon("DataType")));
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));
     }
 
@@ -126,9 +126,9 @@ public class PropPanelOperation extends PropPanelFeature {
         if (ModelFacade.isAOperation(target)) {
             Object oper = /* (MOperation) */target;
             Object newSignal = Model.getCommonBehaviorFactory()
-                    .createSignal(); 
+                    .createSignal();
                     //((MOperation)oper).getFactory().createSignal();
-            
+
             ModelFacade.addOwnedElement(ModelFacade.getNamespace(ModelFacade
                     .getOwner(oper)), newSignal);
             ModelFacade.addRaisedSignal(oper, newSignal);
@@ -153,7 +153,7 @@ public class PropPanelOperation extends PropPanelFeature {
          */
         public ActionNewRaisedSignal() {
             super("button.new-raised-signal");
-            putValue(Action.NAME, 
+            putValue(Action.NAME,
                     Translator.localize("button.new-raised-signal"));
         }
 
@@ -169,7 +169,7 @@ public class PropPanelOperation extends PropPanelFeature {
         }
     }
 
-    
+
     /**
      * Appropriate namespace is the namespace of our class, not the class itself
      *

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,7 +29,7 @@ import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for a SynchState.
- * 
+ *
  * @author Michiel
  *
  */
@@ -39,21 +39,21 @@ public class PropPanelSynchState extends PropPanelStateVertex {
      * The constructor.
      */
     public PropPanelSynchState() {
-        super("Synch State", lookupIcon("SyncState"), 
+        super("Synch State", lookupIcon("SyncState"),
                 ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("label.name"), 
+        addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"), 
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
-        addField(Translator.localize("label.container"), 
+        addField(Translator.localize("label.container"),
                 getContainerScroll());
 
         addSeperator();
 
-        addField(Translator.localize("label.incoming"), 
+        addField(Translator.localize("label.incoming"),
                 getIncomingScroll());
-        addField(Translator.localize("label.outgoing"), 
+        addField(Translator.localize("label.outgoing"),
                 getOutgoingScroll());
     }
 

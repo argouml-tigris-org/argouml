@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,9 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: CrNavFromInterface.java
-// Classes: CrNavFromInterface.java
 
 package org.argouml.uml.cognitive.critics;
 
@@ -90,7 +87,7 @@ public class CrNavFromInterface extends CrUML {
      *
      * As a consequence, we also don't need to check for associations with
      * ClassifierRoles.<p>
-     * 
+     *
      * Iterate over all the AssociationEnds. We only have a problem if:<p>
      * <ol>
      *   <li>There is an end connected to an Interface; and
@@ -102,7 +99,7 @@ public class CrNavFromInterface extends CrUML {
      *               future development of ArgoUML
      * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
      *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.  */
-    
+
     public boolean predicate2(Object dm, Designer dsgr) {
 
         // Only look at Associations
@@ -117,7 +114,7 @@ public class CrNavFromInterface extends CrUML {
 
         // Iterate over all the AssociationEnds. We only have a problem if 1)
         // there is an end connected to an Interface and 2) an end other than
-        // that end is navigable. 
+        // that end is navigable.
 
         Iterator assocEnds = ModelFacade.getConnections(dm).iterator();
 

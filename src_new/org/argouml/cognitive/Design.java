@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,69 +22,71 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: Design.java
-// Classes: Design
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.cognitive;
 
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 
-/** A composite DesignMaterial that contains other
- *  DesignMaterial's. */
-
+/**
+ * A composite DesignMaterial that contains other
+ * DesignMaterial's.
+ *
+ * @author Jason Robbins
+ */
 public class Design extends DesignMaterial {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** The contained DesignMaterial's (including other Design's). */
+    /**
+     * The contained DesignMaterial's (including other Design's).
+     */
     private Vector subdesigns = new Vector();
 
     ////////////////////////////////////////////////////////////////
     // constructor
 
-    /** Construct a new Design. This method is currently empty. The
-     * _subdesigns instance variable is set through an initializer. */
+    /**
+     * Construct a new Design. This method is currently empty. The
+     * _subdesigns instance variable is set through an initializer.
+     */
     public Design() { }
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /** 
-     * Reply a vector of contained DesignMaterial's. 
-     * 
+    /**
+     * Reply a vector of contained DesignMaterial's.
+     *
      * @return the contained design material
      */
     public Vector getSubdesigns() { return subdesigns; }
 
-    /** 
+    /**
      * Set the vector of contained DesignMaterial's.
-     * 
+     *
      * @param subs replace the complete list of dm
      */
     public void setSubdesigns(Vector subs) { subdesigns = subs; }
 
-    /** 
-     * Enumerate all contained DesignMaterial's. 
-     * 
+    /**
+     * Enumerate all contained DesignMaterial's.
+     *
      * @return an enumeration for all dm
      */
     public Enumeration elements() { return subdesigns.elements(); }
-    
-    /** 
-     * Iterate through all contained DesignMaterial's. 
-     * 
+
+    /**
+     * Iterate through all contained DesignMaterial's.
+     *
      * @return an iterator for the subdesigns
      */
     public Iterator iterator() { return subdesigns.iterator(); }
 
-    /** 
+    /**
      * Reply true if the given DesignMaterial is part of this design.
-     * 
+     *
      * @param dm the design material
      * @return true if the dm is included
      */
@@ -92,8 +94,10 @@ public class Design extends DesignMaterial {
 	Enumeration cur = elements();
 	while (cur.hasMoreElements()) {
 	    DesignMaterial dm2 = (DesignMaterial) cur.nextElement();
-	    if (dm == dm2) return true;
-	    if ((dm2 instanceof Design) 
+	    if (dm == dm2) {
+		return true;
+	    }
+	    if ((dm2 instanceof Design)
                 && (((Design) dm2).transativelyIncludes(dm))) {
 		return true;
 	    }
@@ -101,10 +105,10 @@ public class Design extends DesignMaterial {
 	return false;
     }
 
-    /** 
+    /**
      * Add the given DesignMaterial to this Design, if it is not
      * already.
-     *  
+     *
      * @param dm the design material
      */
     public synchronized void addElement(DesignMaterial dm) {
@@ -114,10 +118,10 @@ public class Design extends DesignMaterial {
 	}
     }
 
-    /** 
-     * Remove the given DesignMaterial from this Design. 
-     * 
-     * @param dm the design material 
+    /**
+     * Remove the given DesignMaterial from this Design.
+     *
+     * @param dm the design material
      */
     public synchronized void removeElement(DesignMaterial dm) {
 	subdesigns.removeElement(dm);
@@ -127,13 +131,14 @@ public class Design extends DesignMaterial {
     ////////////////////////////////////////////////////////////////
     // critiquing
 
-    /** Critique a Design by critiquing each contained
+    /**
+     * Critique a Design by critiquing each contained
      * DesignMaterial. <p>
      *
      * TODO: in the future Argo will use less tree walking
      * and more trigger-driven critiquing. I.e., critiquing will be done
-     * in response to specific manipulations in the editor.  
-     * 
+     * in response to specific manipulations in the editor.
+     *
      * @see org.argouml.cognitive.DesignMaterial#critique(org.argouml.cognitive.Designer)
      */
     public void critique(Designer d) {
@@ -146,10 +151,10 @@ public class Design extends DesignMaterial {
 	}
     }
 
-    /** 
+    /**
      * Reply a string that describes this Design. Inteneded for
-     * debugging. 
-     * 
+     * debugging.
+     *
      * @see java.lang.Object#toString()
      */
     public String toString() {

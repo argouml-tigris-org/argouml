@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,15 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: UseCaseDiagramRenderer.java
-// Classes: UseCaseDiagramRenderer
-// Original Author: abonner@ics.uci.edu
-// $Id$
-
-// 3 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support the
-// Extend and Include relationships. JavaDoc added for clarity.
-
-
 package org.argouml.uml.diagram.use_case.ui;
 
 import org.apache.log4j.Logger;
@@ -51,9 +42,9 @@ import org.tigris.gef.presentation.FigNode;
 // could be singleton
 
 /**
- * <p>This class defines a renderer object for UML Use Case Diagrams. In a
- *   Class Diagram the following UML objects are displayed with the
- *   following Figs:</p>
+ * This class defines a renderer object for UML Use Case Diagrams. In a
+ * Class Diagram the following UML objects are displayed with the
+ * following Figs:<p>
  *
  * <pre>
  *   UML Object       ---  Fig
@@ -62,17 +53,17 @@ import org.tigris.gef.presentation.FigNode;
  *   MUseCase         ---  FigUseCase
  * </pre>
  *
- * <p>Provides {@link #getFigNodeFor} to implement the {@link
- *   GraphNodeRenderer} interface and {@link #getFigEdgeFor} to implement the
- *   {@link GraphEdgeRenderer} interface.</p>
+ * Provides {@link #getFigNodeFor} to implement the {@link
+ * GraphNodeRenderer} interface and {@link #getFigEdgeFor} to implement the
+ * {@link GraphEdgeRenderer} interface.<p>
  *
- * <p><em>Note</em>. Should be implemented as a singleton - we don't really
- *   need a separate instance for each use case diagram.</p>
+ * <em>Note</em>. Should be implemented as a singleton - we don't really
+ * need a separate instance for each use case diagram.<p>
+ *
+ * @author abonner
  */
-
 public class UseCaseDiagramRenderer
-    implements GraphNodeRenderer, GraphEdgeRenderer 
-{
+    implements GraphNodeRenderer, GraphEdgeRenderer {
     private static final Logger LOG =
 	Logger.getLogger(UseCaseDiagramRenderer.class);
 
@@ -106,9 +97,9 @@ public class UseCaseDiagramRenderer
 
         // If we get here we were asked for a fig we can't handle.
 
-        LOG.debug(this.getClass().toString() 
-		  + ": getFigNodeFor(" + gm.toString() + ", " 
-		  + lay.toString() + ", " + node.toString() 
+        LOG.debug(this.getClass().toString()
+		  + ": getFigNodeFor(" + gm.toString() + ", "
+		  + lay.toString() + ", " + node.toString()
 		  + ") - cannot create this sort of node.");
         return null;
     }
@@ -130,10 +121,10 @@ public class UseCaseDiagramRenderer
      *              one.
      *
      * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, 
+     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      * java.lang.Object)
      */
-    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {       
+    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
 
         LOG.debug("making figedge for " + edge);
 
@@ -187,7 +178,7 @@ public class UseCaseDiagramRenderer
 
         else if (org.argouml.model.ModelFacade.isAInclude(edge)) {
             Object   inc    = /*(MInclude)*/ edge;
-            FigInclude incFig = new FigInclude(inc);          
+            FigInclude incFig = new FigInclude(inc);
 
             Object base     = ModelFacade.getBase(inc);
             Object addition = ModelFacade.getAddition(inc);
@@ -237,11 +228,11 @@ public class UseCaseDiagramRenderer
             depFig.setDestFigNode(supplierFN);
 
             return depFig;
-        } else 
+        } else
             if (edge instanceof CommentEdge) {
                 return new FigEdgeNote(edge, lay);
             }
-            
+
 
         // If we get here, we can't handle this sort of edge.
 
@@ -249,9 +240,9 @@ public class UseCaseDiagramRenderer
         // model maybe they should be, just as an implementation issue, dont
         // remove any of the methods that are there now.
 
-        LOG.debug(this.getClass().toString() 
-		  + ": getFigEdgeFor(" + gm.toString() + ", " 
-		  + lay.toString() + ", " + edge.toString() 
+        LOG.debug(this.getClass().toString()
+		  + ": getFigEdgeFor(" + gm.toString() + ", "
+		  + lay.toString() + ", " + edge.toString()
 		  + ") - needs more work to handle this sort of edge");
         return null;
     }

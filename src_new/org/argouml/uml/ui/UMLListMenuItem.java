@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,7 +37,7 @@ import java.awt.event.*;
  *
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
  *             replaced by nothing?,
- *             this class is part of the 'old'(pre 0.13.*) 
+ *             this class is part of the 'old'(pre 0.13.*)
  *             implementation of proppanels
  *             that used reflection a lot.
  */
@@ -48,18 +48,18 @@ public class UMLListMenuItem extends JMenuItem implements ActionListener {
     private int index;
     private Method action;
     static final Class[] ARGCLASS = {
-	int.class 
+	int.class,
     };
-    
+
     /**
      *   Creates a new menu item.
      *   @param caption Caption for menu item.
      *   @param theActionObj object on which method will be invoked.
      *   @param theAction name of method.
-     *   @param theIndex integer value passed to method, 
+     *   @param theIndex integer value passed to method,
      *                   typically position in list.
      */
-    public UMLListMenuItem(String caption, Object theActionObj, 
+    public UMLListMenuItem(String caption, Object theActionObj,
             String theAction, int theIndex) {
         super(caption);
         actionObj = theActionObj;
@@ -76,7 +76,7 @@ public class UMLListMenuItem extends JMenuItem implements ActionListener {
             LOG.error("Exception in " + action + " popup.", e);
             setEnabled(false);
         }
-        
+
         addActionListener(this);
     }
 
@@ -87,17 +87,17 @@ public class UMLListMenuItem extends JMenuItem implements ActionListener {
     public void actionPerformed(final java.awt.event.ActionEvent event) {
         try {
 	    Object[] argValue = {
-		new Integer(index)
+		new Integer(index),
 	    };
             action.invoke(actionObj, argValue);
         }
         catch (InvocationTargetException ex) {
-            LOG.error(ex.getTargetException().toString() 
-                + " is InvocationTargetException in " 
+            LOG.error(ex.getTargetException().toString()
+                + " is InvocationTargetException in "
                 + "UMLListMenuItem.actionPerformed()", ex);
         }
         catch (Exception e) {
-            LOG.error(e.toString() 
+            LOG.error(e.toString()
                 + " in UMLListMenuItem.actionPerformed()", e);
         }
     }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -57,7 +57,7 @@ import org.tigris.gef.persistence.*;
 
 
 /**
- * Wraps a CmdSaveGIF or CmdSave(E)PS to allow selection of an output file. 
+ * Wraps a CmdSaveGIF or CmdSave(E)PS to allow selection of an output file.
  */
 public class ActionSaveGraphics
     extends UMLAction
@@ -83,8 +83,8 @@ public class ActionSaveGraphics
     /**
      * @see UMLAction#actionPerformed(ActionEvent)
      */
-    public void actionPerformed( ActionEvent ae ) {
-	trySave( false );
+    public void actionPerformed(ActionEvent ae) {
+	trySave(false);
     }
 
     /**
@@ -93,7 +93,7 @@ public class ActionSaveGraphics
      * @param overwrite True if we shouldn't care that we erase an old copy.
      * @return true if all went well.
      */
-    public boolean trySave( boolean overwrite ) {
+    public boolean trySave(boolean overwrite) {
 	Object target =
 	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
 
@@ -115,7 +115,7 @@ public class ActionSaveGraphics
 
 	    if (p != null
 		&& p.getURL() != null
-		&& p.getURL().getFile().length() > 0 ) {
+		&& p.getURL().getFile().length() > 0) {
 
 		String filename = p.getURL().getFile();
 		if (!filename.startsWith("/FILE1/+/")) {
@@ -128,7 +128,7 @@ public class ActionSaveGraphics
 	    }
 
 	    chooser.setDialogTitle("Save Diagram as Graphics: "
-				   + defaultName );
+				   + defaultName);
 	    // Only specified format are allowed.
 	    chooser.removeChoosableFileFilter(chooser.
 					      getAcceptAllFileFilter());
@@ -152,7 +152,7 @@ public class ActionSaveGraphics
 		    // the suffix from the selected filter and
 		    // according to the format of the selected
 		    // filter.  start new code
-			
+
 		    if (suffix == null
 			|| !(suffix.equals(FileFilters.PS_FILTER.getSuffix())
 			|| suffix.equals(FileFilters.EPS_FILTER.getSuffix())
@@ -161,13 +161,13 @@ public class ActionSaveGraphics
 			                                     .getSuffix()))) {
 			// add the selected filter suffix
 			FileFilter filter = chooser.getFileFilter();
-			suffix = FileFilters.getSuffix(filter);  
+			suffix = FileFilters.getSuffix(filter);
 			theFile =
 			    new File(theFile.getParentFile(),
 				     theFile.getName() + "." + suffix);
 		    }
 		    // end new code
-				
+
 		    return doSave(theFile, suffix, overwrite);
 		}
 	    }
@@ -187,7 +187,7 @@ public class ActionSaveGraphics
      *
      * @return true if it was successful.
      * @param theFile is the file that we are writing to
-     * @param suffix is the suffix. Used for deciding what format the file 
+     * @param suffix is the suffix. Used for deciding what format the file
      * shall have.
      * @param overwrite is true if we are not supposed to warn that we are
      * replacing an old file.
@@ -235,12 +235,12 @@ public class ActionSaveGraphics
     /**
      * Execute this action from the command line.
      *
-     * TODO: The underlying GEF library relies on Acme that doesn't allow 
+     * TODO: The underlying GEF library relies on Acme that doesn't allow
      * us to create these files unless there is a window showing. For this
-     * reason I have had to split the performing of commands in 
+     * reason I have had to split the performing of commands in
      * {@link org.argouml.application.Main#main(String[])} so that we can,
      * by not supplying the -batch option, run these commands
-     * with the window showing. Hopefully this can eventually be fixed. 
+     * with the window showing. Hopefully this can eventually be fixed.
      *
      * @see org.argouml.application.api.CommandLineInterface#doCommand(String)
      * @param argument is the file name that we save to.
@@ -270,7 +270,7 @@ public class ActionSaveGraphics
  *
  * While doing this refactoring (February 2004) it is unclear to me (Linus
  * Tolke) why this modification in the {@link org.tigris.gef.base.CmdSaveEPS}
- * behavior is needed. Is it a bug in GEF? Is it an added feature? 
+ * behavior is needed. Is it a bug in GEF? Is it an added feature?
  * The old comment was: override gef default to cope with scaling.
  */
 class ActionSaveGraphicsCmdSaveEPS extends CmdSaveEPS {

@@ -36,9 +36,9 @@ import org.argouml.model.Model;
  */
 public class ActionNewCallAction extends ActionNewAction {
 
-    private static final ActionNewCallAction SINGLETON = 
+    private static final ActionNewCallAction SINGLETON =
         new ActionNewCallAction();
-    
+
     /**
      * Constructor for ActionNewCallAction.
      */
@@ -47,8 +47,8 @@ public class ActionNewCallAction extends ActionNewAction {
         putValue(Action.NAME, Translator.localize(
                 "button.new-callaction"));
     }
-    
-    
+
+
     /**
      * @see org.argouml.uml.ui.behavior.common_behavior.ActionNewAction#createAction()
      */

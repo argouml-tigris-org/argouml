@@ -47,7 +47,7 @@ import org.argouml.util.ConfigLoader;
 
 /**
  * Builds the property panel for an extension point.<p>
- * 
+ *
  * This is a child of PropPanelModelElement.<p>
  *
  * @author Jeremy Bennett
@@ -97,20 +97,20 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         addField(Translator.localize("label.extend"),
                 new JScrollPane(extendList));
 
-        
+
         addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
-        addButton(new PropPanelButton2(new ActionNewExtensionPoint(), 
+        addButton(new PropPanelButton2(new ActionNewExtensionPoint(),
                 lookupIcon("ExtensionPoint")));
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));
     }
 
     /**
      * The method for the navigate up button, which takes us to the owning use
      * case.<p>
-     * 
+     *
      * This is a change from the norm, which is to navigate to the parent
      * namespace.<p>
      */
@@ -119,8 +119,8 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
 
         // Only works for extension points
 
-        if (!(org.argouml.model.ModelFacade.isAExtensionPoint(target))) { 
-            return; 
+        if (!(org.argouml.model.ModelFacade.isAExtensionPoint(target))) {
+            return;
         }
 
         // Get the owning use case and navigate to it if it exists.
@@ -131,19 +131,19 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
             TargetManager.getInstance().setTarget(owner);
         }
     }
-    
-    private class ActionNewExtensionPoint 
+
+    private class ActionNewExtensionPoint
         extends AbstractActionNewModelElement {
-    
+
         /**
          * The constructor.
          */
         public ActionNewExtensionPoint() {
             super("button.new-extension-point");
-            putValue(Action.NAME, 
+            putValue(Action.NAME,
                     Translator.localize("button.new-extension-point"));
         }
-        
+
         /**
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */

@@ -556,7 +556,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
         } else if (connectionType == ModelFacade.INCLUDE) {
             connection = getUseCases().buildInclude(fromElement, toElement);
         }
-        
+
         if (connection == null) {
             throw new IllegalModelElementConnectionException(
             "Cannot make a "

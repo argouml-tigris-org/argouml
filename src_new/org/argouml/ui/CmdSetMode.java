@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,7 +36,7 @@ import org.tigris.gef.base.ModeSelect;
 
 /**
  * Extends GEF CmdSetMode to add additional metadata such as tooltips.
- * 
+ *
  * @author Jeremy Jones
  */
 public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
@@ -45,7 +45,7 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
 
     /**
      * The constructor.
-     * 
+     *
      * @param args arguments
      */
     public CmdSetMode(Properties args) {
@@ -54,7 +54,7 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
 
     /**
      * The constructor.
-     * 
+     *
      * @param modeClass the next global editor mode
      */
     public CmdSetMode(Class modeClass) {
@@ -63,7 +63,7 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
 
     /**
      * The constructor.
-     * 
+     *
      * @param modeClass the next global editor mode
      * @param name the name of the command = tooltip text
      */
@@ -74,7 +74,7 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
 
     /**
      * The constructor.
-     * 
+     *
      * @param modeClass the next global editor mode
      * @param name the to be localized name of the command
      * @param tooltip the tooltip text
@@ -86,9 +86,9 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
 
     /**
      * The constructor.
-     * 
+     *
      * @param modeClass the next global editor mode
-     * @param sticky the global sticky mode boolean allows the user 
+     * @param sticky the global sticky mode boolean allows the user
      *               to place several nodes rapidly (in succession)
      */
     public CmdSetMode(Class modeClass, boolean sticky) {
@@ -97,17 +97,17 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
 
     /**
      * The constructor.
-     * 
+     *
      * @param modeClass the next global editor mode
      * @param modeArgs arguments for the new mode
      */
     public CmdSetMode(Class modeClass, Hashtable modeArgs) {
         super(modeClass, modeArgs);
     }
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param modeClass the next global editor mode
      * @param modeArgs arguments for the new mode
      * @param name the name of the command = tooltip text
@@ -119,7 +119,7 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
 
     /**
      * The constructor.
-     * 
+     *
      * @param modeClass the next global editor mode
      * @param arg the name of a new argument for the new mode
      * @param value the value of a new argument for the new mode
@@ -130,7 +130,7 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
 
     /**
      * The constructor.
-     * 
+     *
      * @param modeClass the next global editor mode
      * @param arg the name of a new argument for the new mode
      * @param value the value of a new argument for the new mode
@@ -143,7 +143,7 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
 
     /**
      * The constructor.
-     * 
+     *
      * @param modeClass the next global editor mode
      * @param arg the name of a new argument for the new mode
      * @param value the value of a new argument for the new mode
@@ -170,8 +170,8 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
             putValue(Action.SHORT_DESCRIPTION, Translator.localize(name));
         }
         else {
-            putValue(Action.SHORT_DESCRIPTION, 
-		     Translator.localize(ACTION_PREFIX_KEY) + " " 
+            putValue(Action.SHORT_DESCRIPTION,
+		     Translator.localize(ACTION_PREFIX_KEY) + " "
 		     + Translator.localize(name));
         }
     }

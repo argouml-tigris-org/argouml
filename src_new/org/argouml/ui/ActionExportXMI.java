@@ -86,7 +86,7 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
         if (!inContext(context)) {
             return null;
         }
-        // next code does not work with JDK 1.2 
+        // next code does not work with JDK 1.2
         return new JMenuItem(this);
     }
 
@@ -95,7 +95,7 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
      */
     public Object[] buildContext(JMenuItem parentMenuItem, String menuType) {
         return new Object[] {
-	    parentMenuItem, menuType 
+	    parentMenuItem, menuType,
 	};
     }
 
@@ -198,7 +198,7 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
 				       "action.export-project-as-xmi"));
         chooser.setApproveButtonText(Translator.localize(
 					     "filechooser.export"));
-        
+
         chooser.setFileFilter(new FileFilter() {
             public boolean accept(File file) {
                 return (file.getName().endsWith(".xmi")
@@ -208,11 +208,11 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
                 return "An XMI project file";
             }
         });
-        
+
         int result = chooser.showSaveDialog(ProjectBrowser.getInstance());
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = chooser.getSelectedFile();
-            
+
             Project currentProject =
                 ProjectManager.getManager().getCurrentProject();
             ProjectMember member =
@@ -234,7 +234,7 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
                     MessageFormat.format(Translator.localize(
                     	"optionpane.save-project-general-exception"),
                     	new Object[] {
-                            ex.getMessage()
+                            ex.getMessage(),
                     	});
 
                 String sTitle =
@@ -248,7 +248,7 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
                     sMessage,
                     sTitle,
                     JOptionPane.ERROR_MESSAGE);
-	
+
                 LOG.error(sMessage, ex);
             }
         }

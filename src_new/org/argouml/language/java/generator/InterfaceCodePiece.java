@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,8 +38,7 @@ import java.util.Stack;
 /**
    This code piece represents an interface declaration.
 */
-public class InterfaceCodePiece extends NamedCodePiece
-{
+public class InterfaceCodePiece extends NamedCodePiece {
     /** The code piece this interface represents. */
     private CodePiece interfaceDef;
 
@@ -53,8 +52,7 @@ public class InterfaceCodePiece extends NamedCodePiece
        @param n The name of the interface.
     */
     public InterfaceCodePiece(CodePiece def,
-                              String n)
-    {
+                              String n) {
 	interfaceDef = def;
 	name = n;
     }
@@ -64,18 +62,16 @@ public class InterfaceCodePiece extends NamedCodePiece
      *
      * Return the string representation for this piece of code.
      */
-    public StringBuffer getText()
-    {
+    public StringBuffer getText() {
 	return interfaceDef.getText();
     }
 
     /**
      * @see org.argouml.language.java.generator.CodePiece#getStartPosition()
-     * 
+     *
      * Return the start position.
      */
-    public int getStartPosition()
-    {
+    public int getStartPosition() {
 	return interfaceDef.getStartPosition();
     }
 
@@ -84,18 +80,16 @@ public class InterfaceCodePiece extends NamedCodePiece
      *
      * Return the end position.
      */
-    public int getEndPosition()
-    {
+    public int getEndPosition() {
 	return interfaceDef.getEndPosition();
     }
 
     /**
      * @see org.argouml.language.java.generator.CodePiece#getStartLine()
-     * 
+     *
      * Return the start line
      */
-    public int getStartLine()
-    {
+    public int getStartLine() {
 	return interfaceDef.getStartLine();
     }
 
@@ -103,15 +97,14 @@ public class InterfaceCodePiece extends NamedCodePiece
      * @see org.argouml.language.java.generator.CodePiece#getEndLine()
      * Return the end line
      */
-    public int getEndLine()
-    {
+    public int getEndLine() {
 	return interfaceDef.getEndLine();
     }
 
     /**
      * @see org.argouml.language.java.generator.NamedCodePiece#write(
      *         java.io.BufferedReader, java.io.BufferedWriter, java.util.Stack)
-     * 
+     *
      * Write the code this piece represents to file. This will add one
      * level to the stack if the interface is in the model.
      */

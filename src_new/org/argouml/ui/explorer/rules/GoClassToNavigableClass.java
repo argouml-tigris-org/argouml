@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -55,17 +55,17 @@ public class GoClassToNavigableClass extends AbstractPerspectiveRule {
             return null;
 
         List childClasses = new ArrayList();
-        
+
         Collection ends = ModelFacade.getAssociationEnds(parent);
         if (ends == null)
             return null;
-        
+
         Iterator it = ends.iterator();
         while (it.hasNext()) {
             Object ae = /*(MAssociationEnd)*/ it.next();
             Object asc = ModelFacade.getAssociation(ae);
             Collection allEnds = ModelFacade.getConnections(asc);
-            
+
             Object otherEnd = null;
             Iterator endIt = allEnds.iterator();
             if (endIt.hasNext()) {
@@ -76,7 +76,7 @@ public class GoClassToNavigableClass extends AbstractPerspectiveRule {
                         otherEnd = null;
                 }
             }
-            
+
             if (otherEnd == null)
                 continue;
             if (!ModelFacade.isNavigable(otherEnd))

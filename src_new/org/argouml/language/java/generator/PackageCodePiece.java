@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,8 +37,7 @@ import org.argouml.model.ModelFacade;
  *
  * @author Marcus Andersson andersson@users.sourceforge.net
  */
-public class PackageCodePiece extends NamedCodePiece
-{
+public class PackageCodePiece extends NamedCodePiece {
     /** The code piece for the package identifier. */
     private CodePiece identifier;
 
@@ -47,8 +46,7 @@ public class PackageCodePiece extends NamedCodePiece
      *
      * @param id Code piece for the package identifier.
      */
-    public PackageCodePiece(CodePiece id)
-    {
+    public PackageCodePiece(CodePiece id) {
 	identifier = id;
     }
 
@@ -57,8 +55,7 @@ public class PackageCodePiece extends NamedCodePiece
      *
      * Return the string representation for this piece of code.
      */
-    public StringBuffer getText()
-    {
+    public StringBuffer getText() {
 	return identifier.getText();
     }
 
@@ -67,8 +64,7 @@ public class PackageCodePiece extends NamedCodePiece
      *
      * Return the start position.
      */
-    public int getStartPosition()
-    {
+    public int getStartPosition() {
 	return identifier.getStartPosition();
     }
 
@@ -77,28 +73,25 @@ public class PackageCodePiece extends NamedCodePiece
      *
      * Return the end position.
      */
-    public int getEndPosition()
-    {
+    public int getEndPosition() {
 	return identifier.getEndPosition();
     }
 
     /**
      * @see org.argouml.language.java.generator.CodePiece#getStartLine()
-     * 
+     *
      * Return the start line
      */
-    public int getStartLine()
-    {
+    public int getStartLine() {
 	return identifier.getStartLine();
     }
 
     /**
      * @see org.argouml.language.java.generator.CodePiece#getEndLine()
-     * 
+     *
      * Return the end line
      */
-    public int getEndLine()
-    {
+    public int getEndLine() {
 	return identifier.getEndLine();
     }
 
@@ -111,7 +104,7 @@ public class PackageCodePiece extends NamedCodePiece
     public void write(BufferedReader reader,
                       BufferedWriter writer,
                       Stack parseStateStack) throws IOException {
-                          
+
 	ParseState parseState = (ParseState) parseStateStack.peek();
 	Object mNamespace = parseState.getNamespace();
 

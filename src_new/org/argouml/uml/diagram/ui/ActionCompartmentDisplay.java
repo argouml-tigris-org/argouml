@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,15 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: ActionCompartmentDisplay.java
-// Classes: ActionCompartmentDisplay
-// Original Author: your email address here
-// $Id$
-
-// 8 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
-// compartments for extension points on use cases.
-
 
 package org.argouml.uml.diagram.ui;
 
@@ -93,7 +84,7 @@ public class ActionCompartmentDisplay extends UMLAction {
      * Static instance to hide the attribute compartment of a class.
      */
     private static final UMLAction HIDE_ATTR_COMPARTMENT =
-        new ActionCompartmentDisplay(false, 
+        new ActionCompartmentDisplay(false,
                 "action.hide-attribute-compartment");
 
     /**
@@ -106,7 +97,7 @@ public class ActionCompartmentDisplay extends UMLAction {
      * Static instance to hide the operation compartment of a class.
      */
     private static final UMLAction HIDE_OPER_COMPARTMENT =
-        new ActionCompartmentDisplay(false, 
+        new ActionCompartmentDisplay(false,
 				     "action.hide-operation-compartment");
 
     /**
@@ -189,7 +180,7 @@ public class ActionCompartmentDisplay extends UMLAction {
 
 	Vector sels = Globals.curEditor().getSelectionManager().selections();
 
-	if ( sels.size() == 1 ) {
+	if (sels.size() == 1) {
 	    Selection sel = (Selection) sels.firstElement();
 	    Fig       f   = sel.getContent();
 

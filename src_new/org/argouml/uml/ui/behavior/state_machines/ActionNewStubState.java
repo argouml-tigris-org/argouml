@@ -38,18 +38,18 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
  */
 public class ActionNewStubState extends AbstractActionNewModelElement {
 
-    private static final ActionNewStubState SINGLETON = 
+    private static final ActionNewStubState SINGLETON =
         new ActionNewStubState();
-    
+
     /**
      * Constructor for ActionNewPseudoState.
      */
     protected ActionNewStubState() {
         super();
-        putValue(Action.NAME, Translator.localize( 
+        putValue(Action.NAME, Translator.localize(
                 "button.new-stubstate"));
     }
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

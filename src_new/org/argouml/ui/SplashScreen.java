@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,7 +35,7 @@ import org.tigris.gef.ui.IStatusBar;
 
 /**
  * The splash screen.
- * 
+ *
  * TODO: JWindow? I don't want a frame or close widgets.
  *
  */
@@ -47,7 +47,7 @@ public class SplashScreen extends JWindow implements IStatusBar {
     // = new SplashScreen("Loading ArgoUML...", "Splash");
 
     private static boolean doSplash;
-    
+
     /**
      * @return the splash screen instance / singleton
      */
@@ -58,10 +58,10 @@ public class SplashScreen extends JWindow implements IStatusBar {
         }
         return instance;
     }
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param title the title of the window
      * @param iconName the icon for the window
      */
@@ -100,29 +100,29 @@ public class SplashScreen extends JWindow implements IStatusBar {
      * @return the status bar of this dialog
      */
     public StatusBar getStatusBar() { return statusBar; }
-  
+
     ////////////////////////////////////////////////////////////////
     // IStatusBar
-    
+
     /**
      * @see org.tigris.gef.ui.IStatusBar#showStatus(java.lang.String)
      */
     public void showStatus(String s) { statusBar.showStatus(s); }
-  
+
     /**
      * @see java.awt.Component#setVisible(boolean)
      */
     public void setVisible(boolean b) {
 	super.setVisible(b);
     }
-    
+
     /**
      * @param doTheSplash true if the splash screen should be shown
      */
     public static void setDoSplash(boolean doTheSplash) {
         doSplash = doTheSplash;
     }
-    
+
     /**
      * @return true if the splash should be shown
      */

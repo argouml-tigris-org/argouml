@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,14 +37,14 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public PropPanelPseudostate() {
         super("Pseudostate", null, ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.stereotype"), 
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
         addField(Translator.localize("label.container"),
                 getContainerScroll());
@@ -63,7 +63,7 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
      * according to the type of the pseudo state displayed in the property
      * panel. This is required as pseudostates share a common class and are
      * distinguished only by an attribute (pseudostatekind).
-     * 
+     *
      * @param target
      *            the current target
      */

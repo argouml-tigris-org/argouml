@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,7 +37,7 @@ import org.argouml.model.ModelFacade;
  * The critic fires currently only if a class and its base classes have
  * no attributes at all.
  * This is not neccesarily correct and the critic will have to deal with
- * static attributes or attributes which are defined in a base class but are 
+ * static attributes or attributes which are defined in a base class but are
  * private.
  */
 public class CrNoInstanceVariables extends CrUML {
@@ -72,7 +72,7 @@ public class CrNoInstanceVariables extends CrUML {
 	// not having any.
 	if (ModelFacade.isType(dm)) return NO_PROBLEM;
 
-	// utility is a namespace collection - also not strictly 
+	// utility is a namespace collection - also not strictly
 	// required to have variables.
 	if (ModelFacade.isUtility(dm)) return NO_PROBLEM;
 
@@ -147,7 +147,7 @@ public class CrNoInstanceVariables extends CrUML {
 	    ((WizAddInstanceVariable) w).setSuggestion(sug);
 	}
     }
-    
+
     /**
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */

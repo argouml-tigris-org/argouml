@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,16 +46,16 @@ import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
 /**
- * ComboBoxmodel for UML modelelements. This implementation does not use 
+ * ComboBoxmodel for UML modelelements. This implementation does not use
  * reflection and seperates Model, View and Controller better then does
  * the former UMLComboBoxModel. <p>
- * 
- * This combobox allows selecting no value, if so indicated 
+ *
+ * This combobox allows selecting no value, if so indicated
  * at construction time of this class. I.e. it is "clearable".
  */
 public abstract class UMLComboBoxModel2
     extends AbstractListModel
-    implements MElementListener, ComboBoxModel, TargetListener, 
+    implements MElementListener, ComboBoxModel, TargetListener,
     PropertyChangeListener {
 
     private static final Logger LOG =
@@ -94,7 +94,7 @@ public abstract class UMLComboBoxModel2
      * Flag to indicate wether list events should be fired
      */
     private boolean fireListEvents = true;
-    
+
     /**
      * Flag to indicate wether the model is being build
      */
@@ -110,8 +110,8 @@ public abstract class UMLComboBoxModel2
      * fired to set the selected item programmatically (via setting
      * the NSUML model)
      * @throws IllegalArgumentException if one of the arguments is null
-     * @param clearable Flag to indicate if the user may select "" 
-     * as value in the combobox. If true the attribute that is shown 
+     * @param clearable Flag to indicate if the user may select ""
+     * as value in the combobox. If true the attribute that is shown
      * by this combobox may be set to null.
      * Makes sure that there is allways a "" in the list with objects so the
      * user has the oportunity to select this to clear the attribute.
@@ -132,7 +132,7 @@ public abstract class UMLComboBoxModel2
      * model, this method will make sure that it is changed in the comboboxmodel
      * too.
      * TODO: This function is not yet completely written!
-     * 
+     *
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
@@ -140,8 +140,7 @@ public abstract class UMLComboBoxModel2
         // propertySet
         if (evt.getPropertyName().equals(propertySetName)
                 && evt.getSource() == getTarget()
-            && (isClearable || evt.getNewValue() != null))
-        {
+            && (isClearable || evt.getNewValue() != null)) {
             Object elem = evt.getNewValue();
             if (!contains(elem)) {
                 addElement(elem);
@@ -163,7 +162,7 @@ public abstract class UMLComboBoxModel2
     /**
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(MElementEvent)
      */
-    public void listRoleItemSet(MElementEvent e) { 
+    public void listRoleItemSet(MElementEvent e) {
     }
 
     /**
@@ -175,8 +174,7 @@ public abstract class UMLComboBoxModel2
     public void propertySet(MElementEvent e) {
         if (e.getName().equals(propertySetName)
             && e.getSource() == getTarget()
-	    && (isClearable || getChangedElement(e) != null))
-	{
+	    && (isClearable || getChangedElement(e) != null)) {
 	    Object elem = getChangedElement(e);
 	    if (!contains(elem))
 		addElement(elem);
@@ -187,7 +185,7 @@ public abstract class UMLComboBoxModel2
     /**
      * @see ru.novosoft.uml.MElementListener#recovered(MElementEvent)
      */
-    public void recovered(MElementEvent e) { 
+    public void recovered(MElementEvent e) {
     }
 
     /**
@@ -241,7 +239,7 @@ public abstract class UMLComboBoxModel2
     }
 
     /**
-     * Returns true if the given element is valid, i.e. it may be added to the 
+     * Returns true if the given element is valid, i.e. it may be added to the
      * list of elements.
      * @param element the given element
      * @return true if the given element is valid
@@ -249,8 +247,8 @@ public abstract class UMLComboBoxModel2
     protected abstract boolean isValidElement(Object element);
 
     /**
-     * Builds the list of elements and sets the selectedIndex to the currently 
-     * selected item if there is one. Called from targetChanged every time the 
+     * Builds the list of elements and sets the selectedIndex to the currently
+     * selected item if there is one. Called from targetChanged every time the
      * target of the proppanel is changed.
      */
     protected abstract void buildModelList();
@@ -258,7 +256,7 @@ public abstract class UMLComboBoxModel2
     /**
      * Utility method to change all elements in the list with modelelements
      * at once.
-     * 
+     *
      * @param elements the given elements
      */
     protected void setElements(Collection elements) {
@@ -358,7 +356,7 @@ public abstract class UMLComboBoxModel2
     /**
      * Sets the target. If the old target is instanceof MBase, it also removes
      * the model from the element listener list of the target. If the new target
-     * is instanceof MBase, the model is added as element listener to the new 
+     * is instanceof MBase, the model is added as element listener to the new
      * target.
      * @param target the target
      */
@@ -392,7 +390,7 @@ public abstract class UMLComboBoxModel2
                 if (getSize() > 0) {
                     fireIntervalAdded(this, 0, getSize() - 1);
                 }
-               
+
             }
             if (getSelectedItem() != null && isClearable) {
                 addElement(""); // makes sure we can select 'none'
@@ -592,7 +590,7 @@ public abstract class UMLComboBoxModel2
      */
     public void targetRemoved(TargetEvent e) {
         Object currentTarget = comboBoxTarget;
-        Object oldTarget = e.getOldTargets().length > 0 
+        Object oldTarget = e.getOldTargets().length > 0
             ? e.getOldTargets()[0] : null;
         if (oldTarget instanceof Fig) {
             oldTarget = ((Fig) oldTarget).getOwner();
@@ -603,7 +601,7 @@ public abstract class UMLComboBoxModel2
                         currentTarget, propertySetName);
             }
             comboBoxTarget = e.getNewTarget();
-        }                
+        }
         // setTarget(e.getNewTarget());
     }
 

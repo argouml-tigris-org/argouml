@@ -111,11 +111,11 @@ public class ActionAddNote extends UMLAction {
                 }
             }
         } else if (elemFig instanceof FigEdge) {
-            /* We cannot attach a Comment to an Edge yet since we have to 
+            /* We cannot attach a Comment to an Edge yet since we have to
              * modify all our edges probably */
             /*
 	      Point startPoint = new Point(elemFig.getX(), elemFig.getY());
-	      Point endPoint = new Point(elemFig.getX() + elemFig.getWidth(), 
+	      Point endPoint = new Point(elemFig.getX() + elemFig.getWidth(),
 	          elemFig.getY() + elemFig.getHeight());
             */
             Model.getUmlFactory().delete(comment);

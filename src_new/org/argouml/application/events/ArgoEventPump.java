@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.ArgoEventListener;
 
 /**
- * ArgoEventPump is an eventhandler which handles events regarding 
+ * ArgoEventPump is an eventhandler which handles events regarding
  * the loading and unloading of modules.
  */
 public final class ArgoEventPump {
@@ -44,7 +44,7 @@ public final class ArgoEventPump {
 
     /**
      * <code>listeners</code> contains the list of register listeners.
-     * 
+     *
      * It is a list of {@link Pair}.
      */
     private ArrayList listeners = null;
@@ -111,9 +111,9 @@ public final class ArgoEventPump {
     /**
      * Removes a listener, eventtype pair from the listener list.
      *
-     * TODO: replace the listener implementation with a EventListenerList 
+     * TODO: replace the listener implementation with a EventListenerList
      * for better performance
-     * 
+     *
      * @param event the event to which the listener will not listen any more
      * @param listener the listener to be removed
      */

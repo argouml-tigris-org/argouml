@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,13 +33,13 @@ import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.ModelFacade;
 
 
-/** 
+/**
  * A critic to detect whether a state has a name.
  * Does not apply to all kinds of states!
  * E.g. excluded are final state, initial state, action state,...
  */
 public class CrMissingStateName extends CrUML {
-    
+
     /**
      * The constructor.
      */
@@ -49,14 +49,14 @@ public class CrMissingStateName extends CrUML {
 	setKnowledgeTypes(Critic.KT_COMPLETENESS, Critic.KT_SYNTAX);
 	addTrigger("name");
     }
-						   
+
     /**
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!ModelFacade.isAStateVertex(dm))
-	    return NO_PROBLEM;   
+	    return NO_PROBLEM;
         if (ModelFacade.isACompositeState(dm) && ModelFacade.isTop(dm))
             return NO_PROBLEM;
         if (ModelFacade.isAFinalState(dm))
@@ -67,20 +67,20 @@ public class CrMissingStateName extends CrUML {
             return NO_PROBLEM;
         if (ModelFacade.isAObjectFlowState(dm))
             return NO_PROBLEM;
-        
+
 	String myName = ModelFacade.getName(dm);
 	if (myName == null || myName.equals("") || myName.length() == 0)
 	    return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }
-						       
+
     /**
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
     public Icon getClarifier() {
 	return ClClassName.getTheInstance();
     }
-							   
+
     /**
      * @see org.argouml.cognitive.critics.Critic#initWizard(
      *         org.argouml.cognitive.ui.Wizard)
@@ -103,10 +103,10 @@ public class CrMissingStateName extends CrUML {
 	    ((WizMEName) w).setSuggestion(sug);
 	}
     }
-    
+
     /**
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
-								   
+
 } /* end class CrMissingStateName.java */

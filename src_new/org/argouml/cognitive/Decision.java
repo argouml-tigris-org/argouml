@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,10 +34,10 @@ public class Decision {
     // constants
     /**
      * This is another test.
-     */    
-    public static final Decision UNSPEC = 
+     */
+    public static final Decision UNSPEC =
 	new Decision("misc.decision.uncategorized", 1);
-  
+
     ////////////////////////////////////////////////////////////////
     // instance variables
     /**
@@ -49,10 +49,10 @@ public class Decision {
      * The priority.
      */
     private int priority;
-  
+
     /**
      * The constructor.
-     * 
+     *
      * @param n the (not yet localized) name
      * @param p the priority
      */
@@ -88,17 +88,17 @@ public class Decision {
      * @return the localized name
      */
     public String getName() { return name; }
-    
+
     /**
-     * @param n the localized name 
+     * @param n the localized name
      */
     public void setName(String n) { name = n; }
-    
+
     /**
      * @return the priority
      */
     public int getPriority() { return priority; }
-    
+
     /**
      * @param p the priority
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,7 +31,7 @@ package org.argouml.kernel;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public interface ProjectMember {
-    
+
     /**
      * In contrast to {@link #getZipName} returns the member's
      * name without the prepended name of the project. This is
@@ -42,7 +42,7 @@ public interface ProjectMember {
      * @return the member's name without any prefix or suffix
      */
     public String getUniqueDiagramName();
-    
+
     /**
      * Returns a unique member's name for storage in a zipfile.
      * The project's base name is prepended followed by an
@@ -53,7 +53,7 @@ public interface ProjectMember {
     public abstract String getZipName();
 
     /**
-     * @return a short string defining the member type. 
+     * @return a short string defining the member type.
      * Usually equals the file extension.
      */
     public abstract String getType();

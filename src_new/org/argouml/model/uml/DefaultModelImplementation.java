@@ -29,7 +29,7 @@ import org.argouml.model.ModelImplementation;
 /**
  * This is the default model implementation used for JUnit tests.<p>
  *
- * TODO: Once it is solve how the Model subsystem is initiated for 
+ * TODO: Once it is solve how the Model subsystem is initiated for
  * testing this can be removed.
  */
 public class DefaultModelImplementation extends NSUMLModelImplementation

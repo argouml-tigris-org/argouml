@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004, 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,7 +34,7 @@ public class FalseActionExit extends ActionExit {
     private boolean isExited = false;
     private String argument = null;
     private static FalseActionExit lastInvoked = null;
-    
+
     /**
      * @see org.argouml.application.api.CommandLineInterface#doCommand(java.lang.String)
      */

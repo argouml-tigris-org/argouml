@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2002, 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -61,14 +61,14 @@ public class LanguageChooser extends UMLAction implements PluggableMenu {
     private HashMap item2Locale;
 
     /**
-     * Create a new LanguageChooser instance (is not public, due to 
+     * Create a new LanguageChooser instance (is not public, due to
      * singleton pattern).
      */
     protected LanguageChooser() {
         super("menu.item.languages", NO_ICON);
     }
 
-    /** 
+    /**
      * Get the instance.
      *
      * @return The LanguageChooser instance
@@ -110,18 +110,18 @@ public class LanguageChooser extends UMLAction implements PluggableMenu {
      * @see org.argouml.application.api.ArgoModule#setModuleEnabled(boolean)
      */
     public void setModuleEnabled(boolean v) { /* empty */ }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
      */
     public boolean isModuleEnabled() { return true; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModulePopUpActions(
      * java.util.Vector, java.lang.Object)
      */
     public Vector getModulePopUpActions(Vector v, Object o) { return null; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#shutdownModule()
      */
@@ -131,24 +131,24 @@ public class LanguageChooser extends UMLAction implements PluggableMenu {
      * @see org.argouml.application.api.ArgoModule#getModuleName()
      */
     public String getModuleName() { return "LanguageChooser"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleDescription()
      */
     public String getModuleDescription() {
         return "Menu Item for LanguageChooser";
     }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
      */
     public String getModuleAuthor() { return "Jean-Hugues de Raigniac"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleVersion()
      */
     public String getModuleVersion() { return "0.11.3"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleKey()
      */
@@ -169,11 +169,11 @@ public class LanguageChooser extends UMLAction implements PluggableMenu {
      */
     public Object[] buildContext(JMenuItem a, String b) {
         return new Object[] {
-	    a, b 
+	    a, b
 	};
     }
 
-    /** 
+    /**
      * Return the JMenuItem controlled by the plugin under the specific
      * context.  One menu plugin may control multiple menu items.
      * @param context array of objects as created by

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,14 +42,13 @@ import org.tigris.gef.util.VectorSet;
  *
  */
 public class ToDoByPoster extends ToDoPerspective
-    implements ToDoListListener 
-{
-    private static final Logger LOG = 
+    implements ToDoListListener {
+    private static final Logger LOG =
         Logger.getLogger(ToDoByPoster.class);
 
     /**
      * The constructor.
-     * 
+     *
      */
     public ToDoByPoster() {
 	super("combobox.todo-perspective-poster");
@@ -66,7 +65,7 @@ public class ToDoByPoster extends ToDoPerspective
 	LOG.debug("toDoItemsChanged");
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
-	Object path[] = new Object[2];
+	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
 	VectorSet posters = Designer.theDesigner().getToDoList().getPosters();
@@ -82,8 +81,8 @@ public class ToDoByPoster extends ToDoPerspective
 		nMatchingItems++;
 	    }
 	    if (nMatchingItems == 0) continue;
-	    int childIndices[] = new int[nMatchingItems];
-	    Object children[] = new Object[nMatchingItems];
+	    int[] childIndices = new int[nMatchingItems];
+	    Object[] children = new Object[nMatchingItems];
 	    nMatchingItems = 0;
 	    for (int i = 0; i < nItems; i++) {
 		ToDoItem item = (ToDoItem) items.elementAt(i);
@@ -104,7 +103,7 @@ public class ToDoByPoster extends ToDoPerspective
 	LOG.debug("toDoItemAdded");
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
-	Object path[] = new Object[2];
+	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
 	VectorSet posters = Designer.theDesigner().getToDoList().getPosters();
@@ -120,8 +119,8 @@ public class ToDoByPoster extends ToDoPerspective
 		nMatchingItems++;
 	    }
 	    if (nMatchingItems == 0) continue;
-	    int childIndices[] = new int[nMatchingItems];
-	    Object children[] = new Object[nMatchingItems];
+	    int[] childIndices = new int[nMatchingItems];
+	    Object[] children = new Object[nMatchingItems];
 	    nMatchingItems = 0;
 	    for (int i = 0; i < nItems; i++) {
 		ToDoItem item = (ToDoItem) items.elementAt(i);
@@ -143,7 +142,7 @@ public class ToDoByPoster extends ToDoPerspective
 	ToDoList list = Designer.theDesigner().getToDoList(); //source?
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
-	Object path[] = new Object[2];
+	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
 
@@ -166,7 +165,7 @@ public class ToDoByPoster extends ToDoPerspective
      * @see org.argouml.cognitive.ToDoListListener#toDoListChanged(org.argouml.cognitive.ToDoListEvent)
      */
     public void toDoListChanged(ToDoListEvent tde) { }
-  
+
 
 } /* end class ToDoByPoster */
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,13 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-
-
-// File: PropPanelState.java
-// Classes: PropPanelState
-// Original Author: your email address here
-// $Id$
 
 package org.argouml.uml.ui.behavior.state_machines;
 
@@ -62,10 +55,10 @@ public abstract class PropPanelState extends PropPanelStateVertex {
      * @param icon the icon to be shown next to the name
      * @param orientation the orientation of the panel
      */
-    public PropPanelState(String name, ImageIcon icon, Orientation orientation) 
+    public PropPanelState(String name, ImageIcon icon, Orientation orientation)
     {
         super(name, icon, orientation);
-        
+
         JList deferrableList = new UMLLinkedList(
                 new UMLStateDeferrableEventListModel());
         deferrableEventsScroll = new JScrollPane(deferrableList);
@@ -76,7 +69,7 @@ public abstract class PropPanelState extends PropPanelStateVertex {
         exitList.setVisibleRowCount(1);
         exitScroll = new JScrollPane(exitList);
         internalTransitionList = new UMLMutableLinkedList(
-                new UMLStateInternalTransition(), null, 
+                new UMLStateInternalTransition(), null,
                 ActionNewTransition.getInstance());
         internalTransitionsScroll = new JScrollPane(internalTransitionList);
         doList = new UMLStateDoActivityList(
@@ -125,7 +118,7 @@ public abstract class PropPanelState extends PropPanelStateVertex {
         return deferrableEventsScroll;
     }
 
-    
+
 
 
 } /* end class PropPanelState */

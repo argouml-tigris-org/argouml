@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrInvalidInitial.java
-// Classes: CrInvalidInitial
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
@@ -34,15 +29,18 @@ import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
 
 
-/** A critic to detect when an initial state has more than one
- *  outgoing transitions.  Implements a constraint from the UML
- *  1.1 standard: page 10, MPseudostate [1]. */
-
+/**
+ * A critic to detect when an initial state has more than one
+ * outgoing transitions.  Implements a constraint from the UML
+ * 1.1 standard: page 10, MPseudostate [1].
+ *
+ * @author jrobbins
+ */
 public class CrInvalidInitial extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrInvalidInitial() {
 	setHeadline("Remove Extra Outgoing Transitions");

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -20,7 +20,7 @@
 // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
-// UPDATES, ENHANCEMENTS, OR MODIFICATIONS. 
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.reveng.java;
 
@@ -35,10 +35,10 @@ public class ArgoToken extends CommonToken {
 
     /**
      * Set the whitespaces for this token.
-     * 
+     *
      * @param whiteSpaces The whitespaces for the buffer.
      */
-    public void setWhitespace( String whiteSpaces) {
+    public void setWhitespace(String whiteSpaces) {
 	this.ws = whiteSpaces;
     }
 

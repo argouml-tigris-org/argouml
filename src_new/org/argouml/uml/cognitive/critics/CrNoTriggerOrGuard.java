@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,13 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: CrNoTriggerOrGuard.java
-// Classes: CrNoTriggerOrGuard.java
-// Original Author: jrobbins@ics.uci.edu
 // $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import org.argouml.cognitive.Designer;
@@ -37,12 +31,14 @@ import org.argouml.model.ModelFacade;
 /**
  * A critic that checks for missing trigger and/or guard.
  *
+ *
+ * @author jrobbins
  */
 public class CrNoTriggerOrGuard extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrNoTriggerOrGuard() {
 	setHeadline("Add Trigger or Guard to Transistion");
@@ -65,13 +61,13 @@ public class CrNoTriggerOrGuard extends CrUML {
 	if (!(ModelFacade.isAState(sv))) return NO_PROBLEM;
 	if (ModelFacade.getDoActivity(sv) != null) return NO_PROBLEM;
 	boolean hasTrigger =
-	    (t != null 
-            && ModelFacade.getName(t) != null 
+	    (t != null
+            && ModelFacade.getName(t) != null
             && ModelFacade.getName(t).length() > 0);
 	if (hasTrigger) return NO_PROBLEM;
-	boolean noGuard = (g == null 
-            || ModelFacade.getExpression(g) == null 
-            || ModelFacade.getBody(ModelFacade.getExpression(g)) == null 
+	boolean noGuard = (g == null
+            || ModelFacade.getExpression(g) == null
+            || ModelFacade.getBody(ModelFacade.getExpression(g)) == null
             || ModelFacade.getBody(ModelFacade.getExpression(g)).toString()
                                 .length() == 0);
 	if (noGuard) return PROBLEM_FOUND;

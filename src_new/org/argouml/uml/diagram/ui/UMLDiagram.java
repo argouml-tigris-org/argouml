@@ -82,14 +82,14 @@ public abstract class UMLDiagram
     private static final Logger LOG = Logger.getLogger(UMLDiagram.class);
 
     /**
-     * The serial number for new diagrams. 
-     * Used to create an unique number for the name of the diagram. 
+     * The serial number for new diagrams.
+     * Used to create an unique number for the name of the diagram.
      */
     private int diagramSerial = 1;
-    
+
     ////////////////////////////////////////////////////////////////
     // actions for toolbar
-    
+
     /**
      * Tool to add a comment node.
      */
@@ -98,11 +98,11 @@ public abstract class UMLDiagram
 
     /**
      * Tool to create an relationship between a comment node and some other node
-     * using a polyedge.<p> 
+     * using a polyedge.<p>
      */
     private static Action actionCommentLink = new RadioAction(
         new CmdSetMode(
-            ModeCreatePolyEdge.class,  
+            ModeCreatePolyEdge.class,
             "edgeClass",
             CommentEdge.class,
             "CommentLink"));
@@ -149,7 +149,7 @@ public abstract class UMLDiagram
     ////////////////////////////////////////////////////////////////
     // instance variables
     private Object namespace;
-    
+
     private JToolBar toolBar;
 
     ////////////////////////////////////////////////////////////////
@@ -278,12 +278,12 @@ public abstract class UMLDiagram
      * @return an array of available actions.
      */
     public Object[] getActions() {
-        Object manipulateActions[] = getManipulateActions();
-        Object umlActions[] = getUmlActions();
-        Object commentActions[] = getCommentActions();
-        Object shapeActions[] = getShapeActions();
+        Object[] manipulateActions = getManipulateActions();
+        Object[] umlActions = getUmlActions();
+        Object[] commentActions = getCommentActions();
+        Object[] shapeActions = getShapeActions();
 
-        Object actions[] =
+        Object[] actions =
             new Object[manipulateActions.length
                 + umlActions.length
                 + commentActions.length
@@ -297,14 +297,14 @@ public abstract class UMLDiagram
             posn,                        // destination position
             manipulateActions.length);   // number of objects to be copied
         posn += manipulateActions.length;
-        
+
         System.arraycopy(umlActions, 0, actions, posn, umlActions.length);
         posn += umlActions.length;
-        
-        System.arraycopy(commentActions, 0, actions, posn, 
+
+        System.arraycopy(commentActions, 0, actions, posn,
                 commentActions.length);
         posn += commentActions.length;
-        
+
         System.arraycopy(shapeActions, 0, actions, posn, shapeActions.length);
 
         return actions;
@@ -323,11 +323,11 @@ public abstract class UMLDiagram
      * @return the actions structure
      */
     private Object[] getManipulateActions() {
-        Object actions[] =
+        Object[] actions =
         {
 	    new RadioAction(actionSelect),
 	    new RadioAction(actionBroom),
-	    null
+	    null,
 	};
         return actions;
     }
@@ -338,22 +338,22 @@ public abstract class UMLDiagram
      * @return the actions structure
      */
     private Object[] getCommentActions() {
-        Object actions[] =
+        Object[] actions =
         {
             null,
             actionComment,
-            actionCommentLink
+            actionCommentLink,
         };
         return actions;
     }
-    
+
     /**
      * Get a 'structure' of actions for appending primitive drawing
      * tools to the toolbar.
      * @return the actions structure
      */
     private Object[] getShapeActions() {
-        Object actions[] = {
+        Object[] actions = {
 	    null,
             getShapePopupActions(),
 	};
@@ -366,11 +366,11 @@ public abstract class UMLDiagram
      * @return the actions structure
      */
     private Object[] getShapePopupActions() {
-        Object actions[][] = {
+        Object[][] actions = {
 	    {actionRectangle, actionRRectangle },
 	    {actionCircle,    actionLine },
             {actionText,      actionPoly },
-            {actionSpline,    actionInk }
+            {actionSpline,    actionInk },
         };
 
         return actions;
@@ -390,20 +390,20 @@ public abstract class UMLDiagram
     public void propertyChange(PropertyChangeEvent evt) {
         if ((evt.getSource() == namespace) && ProjectManager.getManager()
                 .getCurrentProject().isInTrash(namespace)) {
-            
+
             Model.getPump().removeModelEventListener(this, namespace, "remove");
             ProjectManager.getManager().getCurrentProject().moveToTrash(this);
-        
+
             Object newTarget = ProjectManager.getManager().getCurrentProject()
                 .getDiagrams().get(0);
             TargetManager.getInstance().setTarget(newTarget);
         }
     }
-    
+
     /**
-     * Removes the UMLDiagram and all the figs on it as listener to 
-     * UML Events. Is called by setTarget in TabDiagram to improve 
-     * performance. 
+     * Removes the UMLDiagram and all the figs on it as listener to
+     * UML Events. Is called by setTarget in TabDiagram to improve
+     * performance.
      */
     public void removeAsTarget() {
         Enumeration elems = elements();
@@ -432,9 +432,9 @@ public abstract class UMLDiagram
                 Object owner = fig.getOwner();
                 /* pump.addModelEventListener(
                  *      (PropertyChangeListener)fig, owner);
-                 * Instead, this will make sure all the correct 
-                 * event listeners are set: 
-                 * */ 
+                 * Instead, this will make sure all the correct
+                 * event listeners are set:
+                 * */
                 fig.setOwner(null);
                 fig.setOwner(owner);
             }
@@ -445,7 +445,7 @@ public abstract class UMLDiagram
      * Set all toolbar buttons to unselected other then the toolbar button
      * with the supplied action.
      *
-     * @param otherThanAction the action of the button 
+     * @param otherThanAction the action of the button
      *                        that is NOT to be deselected
      */
     public void deselectOtherTools(Action otherThanAction) {
@@ -511,7 +511,7 @@ public abstract class UMLDiagram
     /**
      * Factory method to build an Action for creating a node in the
      * diagram.
-     * 
+     *
      * @param modelElement identifies the model element type to make
      * @param descr the description to give this action.
      * @return The action to create a new node.
@@ -523,7 +523,7 @@ public abstract class UMLDiagram
     /**
      * Factory method to build an Action for creating an edge in the
      * diagram.
-     * 
+     *
      * @param modelElement identifies the model element type to make
      * @param descr the description to give this action.
      * @return The action to create a new node.
@@ -533,11 +533,11 @@ public abstract class UMLDiagram
             new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
             modelElement, descr));
     }
-    
+
     /**
      * Factory method to build an Action for creating an association edge in
      * the diagram.
-     * 
+     *
      * @param aggregationKind the type of aggregation for this association
      * @param unidirectional true if this is a one way association.
      * @param descr the description to give this action.
@@ -547,14 +547,14 @@ public abstract class UMLDiagram
             Object aggregationKind,
             boolean unidirectional,
             String descr) {
-        
+
         return new RadioAction(
             new ActionAddAssociation(aggregationKind, unidirectional, descr));
     }
 
     /**
-     * Reset the diagram serial counter to the initial value. 
-     * This should e.g. be done when the menuitem File->New is activated. 
+     * Reset the diagram serial counter to the initial value.
+     * This should e.g. be done when the menuitem File->New is activated.
      */
     public void resetDiagramSerial() {
         diagramSerial = 1;
@@ -566,27 +566,27 @@ public abstract class UMLDiagram
     protected int getNextDiagramSerial() {
         return diagramSerial++;
     }
-    
+
     /**
      * @return a string that can be used as a label for this kind of diagram
      */
     public abstract String getLabelName();
-    
+
     /**
-     * This method shall indicate if the diagram needs to be removed 
-     * because the modelelements on which it depends are removed. 
-     * The default implementation is applicable to e.g. a ClassDiagram, 
+     * This method shall indicate if the diagram needs to be removed
+     * because the modelelements on which it depends are removed.
+     * The default implementation is applicable to e.g. a ClassDiagram,
      * which only depends on its namespace. <p>
-     *  
-     * Matters get more complicated for e.g. a Statechart Diagram, 
+     *
+     * Matters get more complicated for e.g. a Statechart Diagram,
      * which also depends on its context (the represented modelelement).
      * Hence such a diagram needs to override this method.
-     * 
+     *
      * @return true if the diagram needs to be removed
      */
     public boolean needsToBeRemoved() {
         return Model.getUmlFactory().isRemoved(namespace);
     }
-    
+
 } /* end class UMLDiagram */
 

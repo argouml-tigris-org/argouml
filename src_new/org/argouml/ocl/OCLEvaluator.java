@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,25 +40,23 @@ public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public OCLEvaluator() {
     }
 
     /**
-     * @see org.tigris.gef.ocl.OCLEvaluator#evalToString(java.lang.Object, 
+     * @see org.tigris.gef.ocl.OCLEvaluator#evalToString(java.lang.Object,
      * java.lang.String)
      */
     protected synchronized String evalToString(Object self, String expr)
         throws ExpansionException {
         String res = null;
-        if (GET_NAME_EXPR_1.equals(expr) && ModelFacade.isAModelElement(self)) 
-        {
+        if (GET_NAME_EXPR_1.equals(expr) && ModelFacade.isAModelElement(self)) {
             res = ModelFacade.getName(self);
             if (res == null || "".equals(res)) res = "(anon)";
         }
-        if (GET_NAME_EXPR_2.equals(expr) && ModelFacade.isAModelElement(self))
-        {
+        if (GET_NAME_EXPR_2.equals(expr) && ModelFacade.isAModelElement(self)) {
             res = ModelFacade.getName(self);
             if (res == null || "".equals(res)) res = "(anon)";
         }
@@ -85,12 +83,12 @@ public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
     }
 
     /**
-     * @see org.tigris.gef.ocl.OCLEvaluator#evalToString(java.lang.Object, 
+     * @see org.tigris.gef.ocl.OCLEvaluator#evalToString(java.lang.Object,
      * java.lang.String, java.lang.String)
      */
     protected synchronized String evalToString(
-            Object self, 
-            String expr, 
+            Object self,
+            String expr,
             String sep) throws ExpansionException {
         _scratchBindings.put("self", self);
         java.util.List values = eval(_scratchBindings, expr);

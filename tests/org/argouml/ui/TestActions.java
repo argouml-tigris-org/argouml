@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -61,7 +61,7 @@ public class TestActions extends TestCase {
         private boolean called = false;
 
         /**
-         * @return true if {@link #shouldBeEnabled(java.lang.Object[])} 
+         * @return true if {@link #shouldBeEnabled(java.lang.Object[])}
 	 *              is called.
          */
         public boolean isCalled() {
@@ -69,7 +69,7 @@ public class TestActions extends TestCase {
         }
 
         /**
-         * @param b true when {@link #shouldBeEnabled(java.lang.Object[])} 
+         * @param b true when {@link #shouldBeEnabled(java.lang.Object[])}
          *          is called.
          */
         public void setCalled(boolean b) {
@@ -86,8 +86,8 @@ public class TestActions extends TestCase {
     }
 
     /**
-     * Tests if targetSet on the singleton instance of Actions updates the 
-     * registred global actions.    
+     * Tests if targetSet on the singleton instance of Actions updates the
+     * registred global actions.
      */
     public void testTargetSet() {
         MockGlobalAction a = new MockGlobalAction();

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -66,12 +66,11 @@ public class TabResults
                 MouseListener,
                 ActionListener,
                 ListSelectionListener,
-                KeyListener
-{
+                KeyListener {
     private static final Logger LOG = Logger.getLogger(TabResults.class);
 
     private static int numJumpToRelated = 0;
-    
+
     /** Insets in pixels  */
     private static final int INSET_PX = 3;
 
@@ -96,20 +95,18 @@ public class TabResults
 
     /**
      * The constructor.
-     * 
+     *
      */
-    public TabResults()
-    {
+    public TabResults() {
 	this(true);
     }
 
     /**
      * The constructor.
-     * 
+     *
      * @param showRelated true if related results should be shown
      */
-    public TabResults(boolean showRelated)
-    {
+    public TabResults(boolean showRelated) {
 	super("Results", true);
 	relatedShown = showRelated;
 	setLayout(new BorderLayout());
@@ -164,24 +161,21 @@ public class TabResults
     /**
      * @param p the predicate for the search
      */
-    public void setPredicate(PredicateFind p)
-    {
+    public void setPredicate(PredicateFind p) {
 	pred = p;
     }
-    
+
     /**
      * @param r the root object for the search
      */
-    public void setRoot(Object r)
-    {
+    public void setRoot(Object r) {
 	root = r;
     }
-    
+
     /**
      * @param gen the generator
      */
-    public void setGenerator(ChildGenerator gen)
-    {
+    public void setGenerator(ChildGenerator gen) {
 	cg = gen;
     }
 
@@ -189,8 +183,7 @@ public class TabResults
      * @param res the results
      * @param dia the diagrams
      */
-    public void setResults(Vector res, Vector dia)
-    {
+    public void setResults(Vector res, Vector dia) {
 	results = res;
 	diagrams = dia;
 	Object[] msgArgs = {new Integer(results.size()) };
@@ -205,8 +198,7 @@ public class TabResults
     /**
      * @see org.argouml.ui.TabSpawnable#spawn()
      */
-    public TabSpawnable spawn()
-    {
+    public TabSpawnable spawn() {
 	TabResults newPanel = (TabResults) super.spawn();
 	if (newPanel != null) {
 	    newPanel.setResults(results, diagrams);
@@ -217,18 +209,16 @@ public class TabResults
     /**
      * Handle a doubleclick on the results tab.
      */
-    public void doDoubleClick()
-    {
+    public void doDoubleClick() {
 	myDoubleClick(resultsTable);
     }
 
     /**
      * Select the result at the given index.
-     * 
-     * @param index the given index 
+     *
+     * @param index the given index
      */
-    public void selectResult(int index)
-    {
+    public void selectResult(int index) {
 	if (index < resultsTable.getRowCount()) {
 	    resultsTable.getSelectionModel().setSelectionInterval(index,
 								   index);
@@ -241,8 +231,7 @@ public class TabResults
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    public void actionPerformed(ActionEvent ae)
-    {
+    public void actionPerformed(ActionEvent ae) {
     }
 
     ////////////////////////////////////////////////////////////////
@@ -251,22 +240,19 @@ public class TabResults
     /**
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
-    public void mousePressed(MouseEvent me)
-    {
+    public void mousePressed(MouseEvent me) {
     }
 
     /**
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
-    public void mouseReleased(MouseEvent me)
-    {
+    public void mouseReleased(MouseEvent me) {
     }
 
     /**
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
-    public void mouseClicked(MouseEvent me)
-    {
+    public void mouseClicked(MouseEvent me) {
 	if (me.getClickCount() >= 2)
 	    myDoubleClick(me.getSource());
     }
@@ -274,19 +260,16 @@ public class TabResults
     /**
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
-    public void mouseEntered(MouseEvent me)
-    {
+    public void mouseEntered(MouseEvent me) {
     }
-    
+
     /**
      * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
      */
-    public void mouseExited(MouseEvent me)
-    {
+    public void mouseExited(MouseEvent me) {
     }
 
-    private void myDoubleClick(Object src)
-    {
+    private void myDoubleClick(Object src) {
 	Object sel = null;
 	Diagram d = null;
 	if (src == resultsTable) {
@@ -316,8 +299,7 @@ public class TabResults
     /**
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
-    public void keyPressed(KeyEvent e)
-    {
+    public void keyPressed(KeyEvent e) {
 	if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 	    e.consume();
 	    myDoubleClick(e.getSource());
@@ -327,15 +309,13 @@ public class TabResults
     /**
      * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
      */
-    public void keyReleased(KeyEvent e)
-    {
+    public void keyReleased(KeyEvent e) {
     }
 
     /**
      * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
      */
-    public void keyTyped(KeyEvent e)
-    {
+    public void keyTyped(KeyEvent e) {
     }
 
     ////////////////////////////////////////////////////////////////
@@ -344,8 +324,7 @@ public class TabResults
     /**
      * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
      */
-    public void valueChanged(ListSelectionEvent lse)
-    {
+    public void valueChanged(ListSelectionEvent lse) {
 	if (lse.getValueIsAdjusting()) {
 	    return;
 	}
@@ -374,16 +353,14 @@ public class TabResults
     /**
      * @see java.lang.Runnable#run()
      */
-    public void run()
-    {
+    public void run() {
 	resultsLabel.setText(Translator.localize("dialog.find.searching"));
 	results.removeAllElements();
 	depthFirst(root, null);
 	setResults(results, diagrams);
     }
 
-    private void depthFirst(Object node, Diagram lastDiagram)
-    {
+    private void depthFirst(Object node, Diagram lastDiagram) {
 	if (node instanceof Diagram) {
 	    lastDiagram = (Diagram) node;
 	    if (!pred.matchDiagram(lastDiagram))

@@ -117,7 +117,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
     /**
      * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
-     * 
+     *
      * Return all edges going to given port (read Model Element).
      *
      * Instances can't currently be added to a class diagram.
@@ -151,9 +151,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 		}
 	    }
 	}
-      
+
 	return edges;
-      
+
 	//    Vector res = new Vector(); //wasteful!
 	//    if (port instanceof MClass) {
 	//      MClass cls = (MClass) port;
@@ -202,7 +202,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     public List getOutEdges(Object port) {
 
 	Vector edges = new Vector();
-      
+
 	// top of the hierarchy is ME:
 	if (ModelFacade.isAModelElement(port)) {
 	    Iterator it = ModelFacade.getClientDependencies(port).iterator();
@@ -228,7 +228,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 		}
 	    }
 	}
-      
+
 	return edges;
     }
 
@@ -239,7 +239,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      */
     public Object getSourcePort(Object edge) {
         if (edge instanceof CommentEdge) {
-            return ((CommentEdge)edge).getSource();
+            return ((CommentEdge) edge).getSource();
         } else {
             return Model.getUmlHelper().getSource(edge);
         }
@@ -252,7 +252,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      */
     public Object getDestPort(Object edge) {
         if (edge instanceof CommentEdge) {
-            return ((CommentEdge)edge).getDestination();
+            return ((CommentEdge) edge).getDestination();
         } else {
             return Model.getUmlHelper().getDestination(edge);
         }
@@ -281,7 +281,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
             while (iter.hasNext()) {
                 Object classifier = ModelFacade.getClassifier(iter.next());
                 if (!containsNode(classifier)) {
-                    canAdd =false;
+                    canAdd = false;
                     break;
                 }
             }
@@ -290,7 +290,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
         // TODO: This logic may well be worth moving into the model component.
         // Provide a similar grid to the connectionsGrid
-	return ModelFacade.isAClass(node) 
+	return ModelFacade.isAClass(node)
 		|| ModelFacade.isAInterface(node)
 		|| ModelFacade.isAModel(node)
 		|| ModelFacade.isAPackage(node)
@@ -302,7 +302,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      *
      * Return true if the given object is a valid edge in this graph.
      */
-    public boolean canAddEdge(Object edge)  {        
+    public boolean canAddEdge(Object edge) {
 	if (edge == null) {
 	    return false;
 	}
@@ -323,13 +323,13 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	    }
 	    end0 = ModelFacade.getType(associationEnd0);
 	    end1 = ModelFacade.getType(associationEnd1);
-    } else if (ModelFacade.isAAssociationEnd(edge)) {
-        end0 = ModelFacade.getAssociation(edge);
-        end1 = ModelFacade.getType(edge);
+	} else if (ModelFacade.isAAssociationEnd(edge)) {
+	    end0 = ModelFacade.getAssociation(edge);
+	    end1 = ModelFacade.getType(edge);
             if (end0 != null
-                    && end1 != null
-                    && (containsEdge(end0) || containsNode(end0))
-                    && containsNode(end1)) {
+		&& end1 != null
+		&& (containsEdge(end0) || containsNode(end0))
+		&& containsNode(end1)) {
                 return true;
             } else {
                 return false;
@@ -363,15 +363,15 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	    end1 = ((CommentEdge) edge).getDestination();
 	}
 	if (end0 == null || end1 == null) {
-	    return false;	
+	    return false;
 	}
         if (!containsNode(end0)) {
 	    return false;
 	}
         if (!containsNode(end1)) {
-	    return false;	
+	    return false;
 	}
-        
+
 	return true;
     }
 
@@ -405,27 +405,27 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         if (edge == null) {
             throw new IllegalArgumentException("Cannot add a null edge");
         }
-        
+
         if (getDestPort(edge) == null || getSourcePort(edge) == null) {
             throw new IllegalArgumentException(
                     "The source and dest port should be provided on an edge");
         }
-        
+
         if (LOG.isInfoEnabled()) {
             LOG.info("Adding an edge of type "
                    + edge.getClass().getName()
                    + " to class diagram.");
         }
-        
+
         if (!canAddEdge(edge)) {
             LOG.info("Attempt to add edge rejected");
             return;
         }
-        
+
         getEdges().add(edge);
-        
+
         // TODO: assumes public
-        if (ModelFacade.isAModelElement(edge) 
+        if (ModelFacade.isAModelElement(edge)
                 && ModelFacade.getNamespace(edge) == null
                 && !ModelFacade.isAAssociationEnd(edge)) {
     	    ModelFacade.addOwnedElement(model, edge);
@@ -433,14 +433,14 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         fireEdgeAdded(edge);
     }
 
-    
+
     /**
      * Adds the edges from the given node. For example, this method lets you add
      * an allready existing massociation between two figclassifiers.
      * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(Object)
      */
     public void addNodeRelatedEdges(Object node) {
-        if (ModelFacade.isAClassifier(node) ) {
+        if (ModelFacade.isAClassifier(node)) {
             Collection ends = ModelFacade.getAssociationEnds(node);
             Iterator iter = ends.iterator();
             while (iter.hasNext()) {
@@ -451,7 +451,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
                 }
             }
         }
-        if (ModelFacade.isAGeneralizableElement(node) ) {
+        if (ModelFacade.isAGeneralizableElement(node)) {
             Collection generalizations = ModelFacade.getGeneralizations(node);
             Iterator iter = generalizations.iterator();
             while (iter.hasNext()) {
@@ -471,7 +471,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         	}
             }
         }
-        if (ModelFacade.isAModelElement(node) ) {
+        if (ModelFacade.isAModelElement(node)) {
             Vector specs =
         	new Vector(ModelFacade.getClientDependencies(node));
             specs.addAll(ModelFacade.getSupplierDependencies(node));
@@ -484,7 +484,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
                 }
             }
         }
-        if (ModelFacade.isAAssociation(node) ) {
+        if (ModelFacade.isAAssociation(node)) {
             Collection ends = ModelFacade.getConnections(node);
             Iterator iter = ends.iterator();
             while (iter.hasNext()) {
@@ -552,16 +552,15 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * @return whether or not the rerouting is allowed
      */
     public boolean canChangeConnectedNode(Object newNode, Object oldNode,
-					  Object edge)
-    {
+					  Object edge) {
 
 	// prevent no changes...
-	if ( newNode == oldNode)
+	if (newNode == oldNode)
 	    return false;
 
 	// check parameter types:
 	if (!(ModelFacade.isAClass(newNode)
-	        || ModelFacade.isAClass(oldNode) 
+	        || ModelFacade.isAClass(oldNode)
 	        || ModelFacade.isAAssociation(edge))) {
 	    return false;
 	}
@@ -582,8 +581,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * @param isSource tells us which end is being rerouted.
      */
     public void changeConnectedNode(Object newNode, Object oldNode,
-				    Object edge, boolean isSource)
-    {
+				    Object edge, boolean isSource) {
 	if (ModelFacade.isAAssociation(edge))
 	    rerouteAssociation(newNode,  oldNode,  edge,  isSource);
 	else if (ModelFacade.isAGeneralization(edge))
@@ -598,8 +596,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * helper method for changeConnectedNode
      */
     private void rerouteAssociation(Object newNode, Object oldNode,
-				    Object edge, boolean isSource)
-    {
+				    Object edge, boolean isSource) {
 	// check param types: only some connections are legal uml connections:
 
 	if (!(ModelFacade.isAClassifier(newNode))
@@ -661,7 +658,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      */
     private void rerouteGeneralization(Object newNode, Object oldNode,
 				       Object edge, boolean isSource) {
-      
+
     }
 
     /**

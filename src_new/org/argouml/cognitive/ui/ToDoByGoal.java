@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,15 +40,14 @@ import org.argouml.cognitive.ToDoListListener;
  *
  */
 public class ToDoByGoal extends ToDoPerspective
-    implements ToDoListListener
-{
-    private static final Logger LOG = 
+    implements ToDoListListener {
+    private static final Logger LOG =
         Logger.getLogger(ToDoByGoal.class);
 
 
     /**
      * The constructor.
-     * 
+     *
      */
     public ToDoByGoal() {
 	super("combobox.todo-perspective-goal");
@@ -65,7 +64,7 @@ public class ToDoByGoal extends ToDoPerspective
 	LOG.debug("toDoItemsChanged");
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
-	Object path[] = new Object[2];
+	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
 	Vector goals = Designer.theDesigner().getGoals();
@@ -80,8 +79,8 @@ public class ToDoByGoal extends ToDoPerspective
 		nMatchingItems++;
 	    }
 	    if (nMatchingItems == 0) continue;
-	    int childIndices[] = new int[nMatchingItems];
-	    Object children[] = new Object[nMatchingItems];
+	    int[] childIndices = new int[nMatchingItems];
+	    Object[] children = new Object[nMatchingItems];
 	    nMatchingItems = 0;
 	    for (int i = 0; i < nItems; i++) {
 		ToDoItem item = (ToDoItem) items.elementAt(i);
@@ -101,7 +100,7 @@ public class ToDoByGoal extends ToDoPerspective
 	LOG.debug("toDoItemAdded");
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
-	Object path[] = new Object[2];
+	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
 	Vector goals = Designer.theDesigner().getGoals();
@@ -112,12 +111,16 @@ public class ToDoByGoal extends ToDoPerspective
 	    int nMatchingItems = 0;
 	    for (int i = 0; i < nItems; i++) {
 		ToDoItem item = (ToDoItem) items.elementAt(i);
-		if (!item.supports(g)) continue;
+		if (!item.supports(g)) {
+		    continue;
+		}
 		nMatchingItems++;
 	    }
-	    if (nMatchingItems == 0) continue;
-	    int childIndices[] = new int[nMatchingItems];
-	    Object children[] = new Object[nMatchingItems];
+	    if (nMatchingItems == 0) {
+		continue;
+	    }
+	    int[] childIndices = new int[nMatchingItems];
+	    Object[] children = new Object[nMatchingItems];
 	    nMatchingItems = 0;
 	    for (int i = 0; i < nItems; i++) {
 		ToDoItem item = (ToDoItem) items.elementAt(i);
@@ -138,7 +141,7 @@ public class ToDoByGoal extends ToDoPerspective
 	ToDoList list = Designer.theDesigner().getToDoList(); //source?
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
-	Object path[] = new Object[2];
+	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
 	Vector goals = Designer.theDesigner().getGoals();

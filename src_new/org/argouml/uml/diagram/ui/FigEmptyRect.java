@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,7 +32,7 @@ import org.tigris.gef.presentation.FigRect;
  * @author Bob Tarling
  */
 public class FigEmptyRect extends FigRect {
-    
+
     /**
      * @param x x
      * @param y y
@@ -43,7 +43,7 @@ public class FigEmptyRect extends FigRect {
         super(x, y, w, h);
         super.setFilled(false);
     }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */

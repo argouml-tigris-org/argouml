@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,39 +22,35 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-// File: Wizard.java
-// Classes: Wizard
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.cognitive.ui;
 
 import java.util.Vector;
 
 import javax.swing.JPanel;
 
-/** "Abstract" base class for non-modal wizards.  Each subclass should
- *  define its own makeNextPanel methods. Because most
- *  wizards will not be run to completion, the panels are constructed
- *  only as needed. This implies that Wizards should not initialize
- *  many instance variables in their constructors.<p>
+/**
+ * "Abstract" base class for non-modal wizards.  Each subclass should
+ * define its own makeNextPanel methods. Because most
+ * wizards will not be run to completion, the panels are constructed
+ * only as needed. This implies that Wizards should not initialize
+ * many instance variables in their constructors.<p>
  *
- *  By convention step 0 is the problem description of the ToDoItem,
- *  step 1 is the first panel displayed after the user presses
- *  "Next>", and so on.  The problem description panel is not stored in
- *  this wizard, only the panels that are specific to the wizard are
- *  stored. If the user presses "Back>" enough times to get back to the
- *  problem description, backPanel should return null.  A null panel
- *  indicates that the problem description should be shown. <p>
+ * By convention step 0 is the problem description of the ToDoItem,
+ * step 1 is the first panel displayed after the user presses
+ * "Next>", and so on.  The problem description panel is not stored in
+ * this wizard, only the panels that are specific to the wizard are
+ * stored. If the user presses "Back>" enough times to get back to the
+ * problem description, backPanel should return null.  A null panel
+ * indicates that the problem description should be shown. <p>
  *
- *  Several of the comments in this class refer to "context".  Context
- *  is the data about this execution of this wizard, for example, values
- *  that the user enters in step 1 is part of the context of later steps,
- *  and the ToDoItem with its offenders Set is always context.  Most
- *  context should be stored in instance variables of Wizard subclasses.
+ * Several of the comments in this class refer to "context".  Context
+ * is the data about this execution of this wizard, for example, values
+ * that the user enters in step 1 is part of the context of later steps,
+ * and the ToDoItem with its offenders Set is always context.  Most
+ * context should be stored in instance variables of Wizard subclasses.
+ *
+ * @author jrobbins
  */
-
 public abstract class Wizard implements java.io.Serializable {
 
     ////////////////////////////////////////////////////////////////
@@ -88,14 +84,14 @@ public abstract class Wizard implements java.io.Serializable {
     protected void removePanel(int s) {
         panels.remove(s);
     }
-    
+
     /**
      * Setter for the todoitem.
-     * 
+     *
      * @param i the todoitem
      */
-    public void setToDoItem(WizardItem i) { 
-        item = i; 
+    public void setToDoItem(WizardItem i) {
+        item = i;
     }
 
     /**
@@ -111,7 +107,7 @@ public abstract class Wizard implements java.io.Serializable {
     public int getProgress() { return step * 100 / getNumSteps(); }
 
     /** Get the number of steps in this wizard.  Subclasses should
-     *  override to return a constant, or compute based on context. 
+     *  override to return a constant, or compute based on context.
      *  @return the number of steps in this wizard.
      */
     public abstract int getNumSteps();
@@ -120,14 +116,14 @@ public abstract class Wizard implements java.io.Serializable {
      *  after the user pressed "Next&gt;" and next() has returned, or after
      *  the user pressed "&lt;Back" and back() has returned.  Also called
      *  when the user turns away from the wizard to do something else and
-     *  then returns his or her attention to the wizard. 
+     *  then returns his or her attention to the wizard.
      *  @return the panel that should be displayed now.
      */
     public JPanel getCurrentPanel() { return getPanel(step); }
 
 
     /** Get the exising panel at step s. Step 1 is the first wizard
-     *  panel. 
+     *  panel.
      * @param s the step
      * @return the panel for step s or null if none.
      */
@@ -142,13 +138,13 @@ public abstract class Wizard implements java.io.Serializable {
 
     /** Return true iff the "Next&gt;" button should be enabled.
      *  Subclasses should override to first check super.nextEnabled()
-     *  and then check for legal context values. 
+     *  and then check for legal context values.
      *  @return <code>true</code> iff the "Next&gt;" button should be enabled.
      */
     public boolean canGoNext() { return step < getNumSteps(); }
 
     /**
-     * The next step of the wizard. 
+     * The next step of the wizard.
      */
     public void next() {
 	doAction(step);
@@ -178,12 +174,12 @@ public abstract class Wizard implements java.io.Serializable {
      * @return true if we can finish (i.e. the finish button is not downlighted)
      */
     public boolean canFinish() { return true; }
-    
+
     /**
      * @return true if the wizard is started
      */
     public boolean isStarted() { return started; }
-    
+
     /**
      * @return true if the wizard is finished
      */
@@ -224,7 +220,7 @@ public abstract class Wizard implements java.io.Serializable {
      *  they do along, as soon as possible, they should not wait until
      *  the final step. Also, if the user pressed "Finish" doAction may
      *  be called for steps that never constructored or displayed their
-     *  panels. 
+     *  panels.
      *
      * @param oldStep the given step
      */
@@ -239,7 +235,7 @@ public abstract class Wizard implements java.io.Serializable {
      *  given step is 0, nothing was done, so nothing can be undone; and
      *  when the given step is 1, undo the first action.  Undo allows
      *  users to work part way through fixing a problem, see the partial
-     *  result, and explore a different alternative. 
+     *  result, and explore a different alternative.
      *
      * @param oldStep the given step
      */

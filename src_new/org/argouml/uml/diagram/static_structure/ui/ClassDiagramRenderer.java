@@ -45,11 +45,11 @@ import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
-/** 
+/**
  * This class defines a renderer object for UML Class Diagrams. In a
  * Class Diagram the following UML objects are displayed with the
  * following Figs: <p>
- * 
+ *
  * <pre>
  *  UML Object       ---  Fig
  *  ---------------------------------------
@@ -77,12 +77,12 @@ import org.tigris.gef.presentation.FigNode;
 public class ClassDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer {
 
-    private static final Logger LOG = 
+    private static final Logger LOG =
         Logger.getLogger(ClassDiagramRenderer.class);
 
     /**
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
-     *         org.tigris.gef.graph.GraphModel, 
+     *         org.tigris.gef.graph.GraphModel,
      *         org.tigris.gef.base.Layer, java.lang.Object)
      *
      * Return a Fig that can be used to represent the given node.
@@ -112,15 +112,15 @@ public class ClassDiagramRenderer
     /**
      * Return a Fig that can be used to represent the given edge.
      * Throws IllegalArgumentException if the edge is not of an expected type.
-     * Throws IllegalStateException if the edge generated has no source 
+     * Throws IllegalStateException if the edge generated has no source
      *                               or dest port.
      *
      * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, 
+     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      * java.lang.Object)
      */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
-        if (LOG.isDebugEnabled() ) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("making figedge for " + edge);
         }
         if (edge == null) {
@@ -148,11 +148,11 @@ public class ClassDiagramRenderer
             Object lnk = /*(MLink)*/ edge;
             FigLink lnkFig = new FigLink(lnk);
             Collection linkEndsColn = ModelFacade.getConnections(lnk);
-            
+
             Object[] linkEnds = linkEndsColn.toArray();
             Object fromInst = ModelFacade.getInstance(linkEnds[0]);
             Object toInst = ModelFacade.getInstance(linkEnds[1]);
-            
+
             FigNode fromFN = (FigNode) lay.presentationFor(fromInst);
             FigNode toFN = (FigNode) lay.presentationFor(toInst);
             lnkFig.setSourcePortFig(fromFN);
@@ -176,22 +176,22 @@ public class ClassDiagramRenderer
             if (ModelFacade.getStereotypes(edge).size() > 0) {
                 stereotype = ModelFacade.getStereotypes(edge).iterator().next();
             }
-            if (LOG.isDebugEnabled() ) {
+            if (LOG.isDebugEnabled()) {
             	if (stereotype != null) {
                     LOG.debug("stereotype: " + ModelFacade.getName(stereotype));
                 } else {
                     LOG.debug("stereotype is null");
                 }
-            } 
+            }
             if (stereotype != null
                     && Model.getExtensionMechanismsHelper().isStereotypeInh(
                             stereotype, "realize", "Abstraction")) {
-                if (LOG.isDebugEnabled() ) {
+                if (LOG.isDebugEnabled()) {
                     LOG.debug("is a realisation");
                 }
                 FigRealization realFig = new FigRealization(edge);
 
-                Object supplier = 
+                Object supplier =
                     ((ModelFacade.getSuppliers(edge).toArray())[0]);
                 Object client = ((ModelFacade.getClients(edge).toArray())[0]);
 
@@ -213,13 +213,13 @@ public class ClassDiagramRenderer
         }
         if (newEdge == null) {
             throw new IllegalArgumentException(
-                    "Don't know how to create FigEdge for model type " 
+                    "Don't know how to create FigEdge for model type "
                     + edge.getClass().getName());
         } else {
             if (newEdge.getSourcePortFig() == null) {
                 Object source;
                 if (edge instanceof CommentEdge) {
-                    source = ((CommentEdge)edge).getSource();
+                    source = ((CommentEdge) edge).getSource();
                 } else {
                     source = Model.getUmlHelper().getSource(edge);
                 }
@@ -228,16 +228,16 @@ public class ClassDiagramRenderer
             if (newEdge.getDestPortFig() == null) {
                 Object dest;
                 if (edge instanceof CommentEdge) {
-                    dest = ((CommentEdge)edge).getDestination();
+                    dest = ((CommentEdge) edge).getDestination();
                 } else {
                     dest = Model.getUmlHelper().getDestination(edge);
                 }
                 setDestPort(newEdge, (FigNode) lay.presentationFor(dest));
             }
-            if (newEdge.getSourcePortFig() == null 
-                    || newEdge.getDestPortFig() == null ) {
+            if (newEdge.getSourcePortFig() == null
+                    || newEdge.getDestPortFig() == null) {
                 throw new IllegalStateException("Edge of type "
-                    + newEdge.getClass().getName() 
+                    + newEdge.getClass().getName()
                     + " created with no source or destination port");
             }
         }

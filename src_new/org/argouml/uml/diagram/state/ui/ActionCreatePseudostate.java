@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: ActionCreatePseudostate.java
-// Classes: ActionCreatePseudostate
-// Original Author: jrobbins@ics.uci.edu
-
 package org.argouml.uml.diagram.state.ui;
 
 import java.util.Hashtable;
@@ -36,6 +32,8 @@ import org.argouml.model.ModelFacade;
 /**
  * An Action to create a Pseudostate of some kind
  *
+ *
+ * @author jrobbins
  */
 public class ActionCreatePseudostate extends CmdCreateNode {
 
@@ -43,18 +41,18 @@ public class ActionCreatePseudostate extends CmdCreateNode {
     // constructors
 
     /** Construct a new Cmd with the given classes for the NetNode
-     *  and its FigNode. 
-     * 
+     *  and its FigNode.
+     *
      * @param kind the pseudostatekind
      * @param name the name of this kind of pseudostate
      */
     public ActionCreatePseudostate(Object kind, String name) {
 	super(new Hashtable(), name);
-        
+
         if (!ModelFacade.isAPseudostateKind(kind)) {
             throw new IllegalArgumentException();
 	}
-        
+
 	setArg("className", ModelFacade.PSEUDOSTATE);
 	setArg("kind", kind);
     }
@@ -63,7 +61,7 @@ public class ActionCreatePseudostate extends CmdCreateNode {
     // Cmd API
 
     /** Actually instanciate the NetNode and FigNode objects and
-     * set the global next mode to ModePlace 
+     * set the global next mode to ModePlace
      * TODO: should call super, reduce code volume!
      *
      * @see org.tigris.gef.graph.GraphFactory#makeNode()
@@ -72,7 +70,7 @@ public class ActionCreatePseudostate extends CmdCreateNode {
 	Object newNode = super.makeNode();
 	Object kind = _args.get("kind");
 	ModelFacade.setKind(newNode, kind);
-    
+
 	return newNode;
     }
 

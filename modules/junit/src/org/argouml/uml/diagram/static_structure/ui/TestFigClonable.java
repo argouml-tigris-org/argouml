@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2002, 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,10 +28,10 @@ import junit.framework.*;
 
 /** Testcase to clone all Figs in static_structure.ui. */
 public class TestFigClonable extends TestCase {
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param name the test name
      */
     public TestFigClonable(String name) {
@@ -45,7 +45,7 @@ public class TestFigClonable extends TestCase {
 
 	FigClass fig = new FigClass();
 	FigClass figclone;
-             
+
 	figclone = (FigClass) fig.clone();
 
     }
@@ -56,7 +56,7 @@ public class TestFigClonable extends TestCase {
 
 	FigEdgeNote fig = new FigEdgeNote();
 	FigEdgeNote figclone;
-             
+
 	figclone = (FigEdgeNote) fig.clone();
 
     }
@@ -67,7 +67,7 @@ public class TestFigClonable extends TestCase {
 
 	FigInstance fig = new FigInstance();
 	FigInstance figclone;
-             
+
 	figclone = (FigInstance) fig.clone();
 
     }
@@ -78,7 +78,7 @@ public class TestFigClonable extends TestCase {
 
 	FigInterface fig = new FigInterface();
 	FigInterface figclone;
-             
+
 	figclone = (FigInterface) fig.clone();
 
     }
@@ -89,7 +89,7 @@ public class TestFigClonable extends TestCase {
 
 	FigLink fig = new FigLink();
 	FigLink figclone;
-             
+
 	figclone = (FigLink) fig.clone();
 
     }
@@ -101,7 +101,7 @@ public class TestFigClonable extends TestCase {
 
 	FigModel fig = new FigModel();
 	FigModel figclone;
-             
+
 	figclone = (FigModel) fig.clone();
 
     }
@@ -112,12 +112,12 @@ public class TestFigClonable extends TestCase {
 
 	FigSubsystem fig = new FigSubsystem();
 	FigSubsystem figclone;
-             
+
 	figclone = (FigSubsystem) fig.clone();
 
     }
-    
-    
+
+
 
     /** try to clone FigComment in package diagram.static_structure.ui.
      */
@@ -125,7 +125,7 @@ public class TestFigClonable extends TestCase {
 
 	FigComment fig = new FigComment();
 	FigComment figclone;
-             
+
 	figclone = (FigComment) fig.clone();
 
     }
@@ -137,7 +137,7 @@ public class TestFigClonable extends TestCase {
 
 	FigPackage fig = new FigPackage();
 	FigPackage figclone;
-             
+
 	figclone = (FigPackage) fig.clone();
 
     }

@@ -108,7 +108,7 @@ public abstract class FigNodeModelElement
         KeyListener,
         PropertyChangeListener,
         NotationContext,
-        ArgoNotationEventListener {            
+        ArgoNotationEventListener {
 
     private static final Logger LOG =
         Logger.getLogger(FigNodeModelElement.class);
@@ -127,23 +127,23 @@ public abstract class FigNodeModelElement
     protected static final int ROWHEIGHT = 17;
 
     /**
-     * min. 18, used to calculate y pos of stereotype FigText items 
+     * min. 18, used to calculate y pos of stereotype FigText items
      * in a compartment
      */
     protected static final int STEREOHEIGHT = 18;
-    
+
     /**
      * Needed for loading. Warning: if false, a too small size might look bad!
      */
     private boolean checkSize = true;
-    
+
     /**
      * Offset from the end of the set of popup actions at which new items
      * should be inserted by concrete figures.
      * See #getPopUpActions()
      */
     protected static final int POPUP_ADD_OFFSET = 3;
-    
+
     // Fields used in paint() for painting shadows
     private BufferedImage           shadowImage = null;
     private int                     cachedWidth = -1;
@@ -155,10 +155,10 @@ public abstract class FigNodeModelElement
      * The intensity value of the shadow color (0-255).
     **/
     protected static final int SHADOW_COLOR_VALUE = 32;
-    
+
     /**
      * The transparency value of the shadow color (0-255).
-    **/    
+    **/
     protected static final int SHADOW_COLOR_ALPHA = 128;
 
     static {
@@ -167,20 +167,20 @@ public abstract class FigNodeModelElement
         ITALIC_LABEL_FONT =
             new Font(LABEL_FONT.getFamily(), Font.ITALIC, LABEL_FONT.getSize());
 
-        // Setup image ops used in rendering shadows            
+        // Setup image ops used in rendering shadows
         byte[][] data = new byte[4][256];
         for (int i = 1; i < 256; ++i) {
             data[0][i] = (byte) SHADOW_COLOR_VALUE;
             data[1][i] = (byte) SHADOW_COLOR_VALUE;
             data[2][i] = (byte) SHADOW_COLOR_VALUE;
             data[3][i] = (byte) SHADOW_COLOR_ALPHA;
-        }        
+        }
         float[] blur = new float[9];
         for (int i = 0; i < blur.length; ++i) {
             blur[i] = 1 / 12f;
         }
         SHADOW_LOOKUP_OP = new LookupOp(new ByteLookupTable(0, data), null);
-        SHADOW_CONVOLVE_OP = new ConvolveOp(new Kernel(3, 3, blur));            
+        SHADOW_CONVOLVE_OP = new ConvolveOp(new Kernel(3, 3, blur));
     }
 
     /** Used for #buildModifierPopUp() */
@@ -191,7 +191,7 @@ public abstract class FigNodeModelElement
     protected static final int LEAF = 4;
     /** Used for #buildModifierPopUp() */
     protected static final int ACTIVE = 8;
-    
+
     ////////////////////////////////////////////////////////////////
     // instance variables
 
@@ -201,18 +201,18 @@ public abstract class FigNodeModelElement
      * use getNameFig() and setNameFig() to access the Figs.
      * Use getName() and setName() to just change the text.
      */
-    private FigText name; 
+    private FigText name;
 
     /**
      * use getter/setter
      * getStereotypeFig() and setStereoTypeFig() to access the Figs.
      * Use getStereotype() and setStereotype() to change stereotype
      * text.
-     *  
+     *
      * MVW: Why are the getter/setter not returning a FigText, but a Fig?
      * I created a new (real) getter: getStereotypeFigText()
      */
-    private FigText stereo; 
+    private FigText stereo;
 
     /**
      * enclosedFigs are the Figs that are enclosed by this figure. Say that
@@ -228,7 +228,7 @@ public abstract class FigNodeModelElement
 
     private boolean readyToEdit = true;
     private boolean suppressCalcBounds = false;
-    
+
     private int shadowSize =
         Configuration.getInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH, 1);
 
@@ -236,7 +236,7 @@ public abstract class FigNodeModelElement
 
     /**
      * The main constructor.
-     * 
+     *
      */
     public FigNodeModelElement() {
         // this rectangle marks the whole interface figure; everything
@@ -265,8 +265,8 @@ public abstract class FigNodeModelElement
 
     /** Partially construct a new FigNode.  This method creates the
      *  name element that holds the name of the model element and adds
-     *  itself as a listener. 
-     * 
+     *  itself as a listener.
+     *
      * @param gm ignored
      * @param node the owning UML element
      */
@@ -318,11 +318,11 @@ public abstract class FigNodeModelElement
     }
 // _enclosedFigs, _encloser and _eventSenders may also need to be cloned
 // must check usage
-// MVW: What are these Clone functions used for? Who would want to clone a fig? 
+// MVW: What are these Clone functions used for? Who would want to clone a fig?
 
 
-    /** Default Reply text to be shown while placing node in diagram. 
-     * Overrule this when the text is not "new [UMLClassName]".  
+    /** Default Reply text to be shown while placing node in diagram.
+     * Overrule this when the text is not "new [UMLClassName]".
      * @return the text to be shown while placing node in diagram
      */
     public String placeString() {
@@ -425,15 +425,15 @@ public abstract class FigNodeModelElement
         visibilityMenu.addCheckItem(new ActionVisibilityPublic(getOwner()));
         visibilityMenu.addCheckItem(new ActionVisibilityPrivate(getOwner()));
         visibilityMenu.addCheckItem(new ActionVisibilityProtected(getOwner()));
-        
+
         return visibilityMenu;
     }
-    
+
     class ActionVisibilityPublic extends UMLAction {
         private Object owner;
         /**
          * The constructor.
-         * 
+         *
          * @param o the target
          */
         public ActionVisibilityPublic(Object o) {
@@ -448,16 +448,16 @@ public abstract class FigNodeModelElement
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
-            ModelFacade.setVisibility(owner, 
+            ModelFacade.setVisibility(owner,
                     ModelFacade.PUBLIC_VISIBILITYKIND);
         }
     }
-    
+
     class ActionVisibilityProtected extends UMLAction {
         private Object owner;
         /**
          * The constructor.
-         * 
+         *
          * @param o the target
          */
         public ActionVisibilityProtected(Object o) {
@@ -472,7 +472,7 @@ public abstract class FigNodeModelElement
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
-            ModelFacade.setVisibility(owner, 
+            ModelFacade.setVisibility(owner,
                     ModelFacade.PROTECTED_VISIBILITYKIND);
         }
     }
@@ -481,7 +481,7 @@ public abstract class FigNodeModelElement
         private Object owner;
         /**
          * The constructor.
-         * 
+         *
          * @param o the target
          */
         public ActionVisibilityPrivate(Object o) {
@@ -496,40 +496,44 @@ public abstract class FigNodeModelElement
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
-            ModelFacade.setVisibility(owner, 
+            ModelFacade.setVisibility(owner,
                     ModelFacade.PRIVATE_VISIBILITYKIND);
         }
     }
 
-    
+
     /**
      * Build a pop-up menu item for the various modifiers.<p>
-     * 
+     *
      * This function is designed to be easily extendable with new items.
-     * 
+     *
      * @param items bitwise OR of the items: ROOT, ABSTRACT, LEAF, ACTIVE.
      * @return the menu item
      */
     protected Object buildModifierPopUp(int items) {
         ArgoJMenu modifierMenu = new ArgoJMenu("menu.popup.modifiers");
-        
-        if ((items & ABSTRACT) > 0) 
+
+        if ((items & ABSTRACT) > 0) {
             modifierMenu.addCheckItem(new ActionModifierAbstract(getOwner()));
-        if ((items & LEAF) > 0)
+	}
+        if ((items & LEAF) > 0) {
             modifierMenu.addCheckItem(new ActionModifierLeaf(getOwner()));
-        if ((items & ROOT) > 0)
+	}
+        if ((items & ROOT) > 0) {
             modifierMenu.addCheckItem(new ActionModifierRoot(getOwner()));
-        if ((items & ACTIVE) > 0)
+	}
+        if ((items & ACTIVE) > 0) {
             modifierMenu.addCheckItem(new ActionModifierActive(getOwner()));
+	}
 
         return modifierMenu;
     }
-    
+
     class ActionModifierAbstract extends UMLAction {
         private Object owner;
         /**
          * The constructor.
-         * 
+         *
          * @param o the target
          */
         public ActionModifierAbstract(Object o) {
@@ -550,7 +554,7 @@ public abstract class FigNodeModelElement
         private Object owner;
         /**
          * The constructor.
-         * 
+         *
          * @param o the target
          */
         public ActionModifierLeaf(Object o) {
@@ -571,7 +575,7 @@ public abstract class FigNodeModelElement
         private Object owner;
         /**
          * The constructor.
-         * 
+         *
          * @param o the target
          */
         public ActionModifierRoot(Object o) {
@@ -592,7 +596,7 @@ public abstract class FigNodeModelElement
         private Object owner;
         /**
          * The constructor.
-         * 
+         *
          * @param o the target
          */
         public ActionModifierActive(Object o) {
@@ -608,7 +612,7 @@ public abstract class FigNodeModelElement
             ModelFacade.setActive(owner, !ModelFacade.isActive(owner));
         }
     }
-    
+
     ////////////////////////////////////////////////////////////////
     // Fig API
 
@@ -657,7 +661,7 @@ public abstract class FigNodeModelElement
 		&& ((Model.getCoreHelper()
 			.isValidNamespace(getOwner(),
 					  owningModelelement)))) {
-                ModelFacade.setModelElementContainer(getOwner(), 
+                ModelFacade.setModelElementContainer(getOwner(),
 						     owningModelelement);
                 // TODO: move the associations to the correct owner (namespace)
             }
@@ -674,7 +678,7 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * @param fig The fig to be added 
+     * @param fig The fig to be added
      */
     public void addEnclosedFig(Fig fig) {
         enclosedFigs.add(fig);
@@ -695,8 +699,8 @@ public abstract class FigNodeModelElement
     }
 
     /** Update the order of this fig and the order of the
-     *    figs that are inside of this fig 
-     * @param figures in the new order 
+     *    figs that are inside of this fig
+     * @param figures in the new order
      */
     public void elementOrdering(Vector figures) {
         int size = figures.size();
@@ -740,7 +744,7 @@ public abstract class FigNodeModelElement
             int y = getY();
 
             // Only create new shadow image if figure size has changed.
-            if (width != cachedWidth 
+            if (width != cachedWidth
                     || height != cachedHeight) {
                 cachedWidth = width;
                 cachedHeight = height;
@@ -772,11 +776,11 @@ public abstract class FigNodeModelElement
                 x + shadowSize - 50,
                 y + shadowSize - 50);
         }
-            
+
         // Paint figure on top of shadow
         super.paint(g);
     }
-    
+
     /**
      * Displays visual indications of pending ToDoItems.
      * Please note that the list of advices (ToDoList) is not the same
@@ -886,7 +890,7 @@ public abstract class FigNodeModelElement
     public String getTipString(MouseEvent me) {
         ToDoItem item = hitClarifier(me.getX(), me.getY());
         String tip = "";
-        if (item != null 
+        if (item != null
             && Globals.curEditor().getSelectionManager().containsFig(this)) {
             tip = item.getHeadline() + " ";
         } else if (getOwner() != null) {
@@ -972,9 +976,9 @@ public abstract class FigNodeModelElement
             super.propertyChange(pve);
         }
         if (ModelFacade.isABase(src)) {
-            /* If the source of the event is an UML object, 
-             * e.g. the owner of this Fig (but not always only the owner 
-             * is shown, e.g. for a class, also its attributes are shown), 
+            /* If the source of the event is an UML object,
+             * e.g. the owner of this Fig (but not always only the owner
+             * is shown, e.g. for a class, also its attributes are shown),
              * then the UML model has been changed.*/
             modelChanged(pve);
         }
@@ -985,9 +989,9 @@ public abstract class FigNodeModelElement
      * field that is in the FigNodeModelElement.  Determine which
      * field and update the model.  This class handles the name,
      * subclasses should override to handle other text elements.
-     * 
+     *
      * @param ft the FigText that has been edited and contains the new text
-     * @throws PropertyVetoException thrown when new text represents 
+     * @throws PropertyVetoException thrown when new text represents
      * an unacceptable value
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
@@ -1022,7 +1026,7 @@ public abstract class FigNodeModelElement
      * If the user double clicks on any part of this FigNode, pass it
      * down to one of the internal Figs. This allows the user to
      * initiate direct text editing.
-     * 
+     *
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent me) {
@@ -1113,7 +1117,7 @@ public abstract class FigNodeModelElement
         if (getOwner() == null) {
             return;
         }
-        if ("name".equals(mee.getPropertyName()) 
+        if ("name".equals(mee.getPropertyName())
                 && mee.getSource() == getOwner()) {
             updateNameText();
             damage();
@@ -1123,11 +1127,11 @@ public abstract class FigNodeModelElement
             if (mee.getOldValue() != null) {
                 /* TODO: MVW: No idea what to replace getRemovedValue() with...
                  * I try getOldValue() for now. To be checked! */
-                Model.getPump().removeModelEventListener(this, 
+                Model.getPump().removeModelEventListener(this,
                         mee.getOldValue(), "name");
             }
             if (mee.getNewValue() != null) {
-                Model.getPump().addModelEventListener(this, 
+                Model.getPump().addModelEventListener(this,
                         mee.getNewValue(), "name");
             }
             updateStereotypeText();
@@ -1135,19 +1139,19 @@ public abstract class FigNodeModelElement
         }
     }
 
-    
+
     /**
      * Create a new "feature" in the owner fig.
-     * 
+     *
      * must be overridden to make sense
      * (I didn't want to make it abstract because it might not be required)
-     * 
+     *
      * @param fg The fig group to which this applies
      * @param me The input event that triggered us. In the current
      *            implementation a mouse double click.
      */
     protected void createFeatureIn(FigGroup fg, InputEvent me) {
-        
+
     }
 
     /**
@@ -1372,11 +1376,11 @@ public abstract class FigNodeModelElement
      * displayed; no update event is fired.<p>
      *
      * This method has side effects that are sometimes used.
-     * 
+     *
      * @param fg the FigGroup to be updated
      * @param x x
      * @param y y
-     * @param w w 
+     * @param w w
      * @param h h
      * @return the new dimension
      */
@@ -1457,7 +1461,7 @@ public abstract class FigNodeModelElement
                     Iterator it2 =
 			ModelFacade.getParameters(feature).iterator();
                     while (it2.hasNext()) {
-                        Model.getPump().removeModelEventListener(this, 
+                        Model.getPump().removeModelEventListener(this,
                                 it2.next());
                     }
                 }
@@ -1481,7 +1485,7 @@ public abstract class FigNodeModelElement
     /**
      * @see org.tigris.gef.presentation.Fig#postLoad()
      */
-    public void postLoad() {       
+    public void postLoad() {
         super.postLoad();
         if (this instanceof ArgoEventListener) {
             ArgoEventPump.removeListener(this);
@@ -1556,7 +1560,7 @@ public abstract class FigNodeModelElement
     public String getStereotype() {
         return stereo.getText();
     }
-    
+
     /**
      * @return Returns the lABEL_FONT.
      */
@@ -1618,7 +1622,7 @@ public abstract class FigNodeModelElement
     protected void setReadyToEdit(boolean v) {
         readyToEdit = v;
     }
-    
+
     /**
      * @param scb The suppressCalcBounds to set.
      */

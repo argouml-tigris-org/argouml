@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,10 +35,10 @@ import org.argouml.uml.ui.UMLAction;
 import org.argouml.util.osdep.StartBrowser;
 
 /**
- * ActionOpenBrowser opens a web browser, 
+ * ActionOpenBrowser opens a web browser,
  * using the current target if it is a ToDoItem.
  * Enhance the actionPerformed method for better functionality.
- * 
+ *
  * @author MarkusK
  *
  */
@@ -46,10 +46,10 @@ public class ActionOpenBrowser extends UMLAction {
     /**
      * The constructor.
      */
-    public ActionOpenBrowser() { 
-        super("action.open-browser", NO_ICON); 
+    public ActionOpenBrowser() {
+        super("action.open-browser", NO_ICON);
     }
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -60,5 +60,5 @@ public class ActionOpenBrowser extends UMLAction {
             StartBrowser.openUrl(item.getMoreInfoURL());
         }
     }
-    
+
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,18 +28,18 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.util.Trash;
 
-/** Action to empty the trashcan. 
+/** Action to empty the trashcan.
  *  @stereotype singleton
  */
 public class ActionEmptyTrash extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
-    
+
     /**
      * The singleton.
      */
-    public static final ActionEmptyTrash SINGLETON = new ActionEmptyTrash(); 
+    public static final ActionEmptyTrash SINGLETON = new ActionEmptyTrash();
 
 
     ////////////////////////////////////////////////////////////////
@@ -48,8 +48,8 @@ public class ActionEmptyTrash extends UMLAction {
     /**
      * The constructor.
      */
-    public ActionEmptyTrash() { 
-        super("action.empty-trash", true, NO_ICON); 
+    public ActionEmptyTrash() {
+        super("action.empty-trash", true, NO_ICON);
     }
 
 

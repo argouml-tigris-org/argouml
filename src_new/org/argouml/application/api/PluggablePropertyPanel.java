@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,25 +26,30 @@ package org.argouml.application.api;
 
 import org.argouml.uml.ui.PropPanel;
 
-/**  An interface which identifies an ArgoUML plug-in property panel.
- *   Plug-ins are replacements or additions to standard Argo classes.
- *   
- *   PluggablePropertyPanel should expect to be passed a
- *   {@link QuadrantPanel} as the first argument in the inContext call.
- *   The plugin can use getQuadrant to determine which panel is requesting
- *   plugins.
- * 
- *   @author Thierry Lach
- *   @since ARGO0.9.4
+/**
+ * An interface which identifies an ArgoUML plug-in property panel.
+ * Plug-ins are replacements or additions to standard Argo classes.
+ *
+ * PluggablePropertyPanel should expect to be passed a
+ * {@link QuadrantPanel} as the first argument in the inContext call.
+ * The plugin can use getQuadrant to determine which panel is requesting
+ * plugins.
+ *
+ * @author Thierry Lach
+ * @since ARGO0.9.4
  */
 public interface PluggablePropertyPanel extends Pluggable {
 
-    /** Returns the <code>Class</code> that the panel handles.
+    /**
+     * Returns the <code>Class</code> that the panel handles.
+     *
      * @return the <code>Class</code>.
      */
     Class getClassForPanel();
 
-    /** Returns an instance of the property panel.
+    /**
+     * Returns an instance of the property panel.
+     *
      * @return the <code>PropPanel</code>.
      */
     PropPanel getPropertyPanel();

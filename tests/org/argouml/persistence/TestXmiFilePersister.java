@@ -67,9 +67,9 @@ public class TestXmiFilePersister extends TestCase {
                 .getCurrentProject().getModel();
             Object voidType = ProjectManager.getManager()
                 .getCurrentProject().findType("void");
-            Object oper = Model.getCoreFactory().buildOperation(clazz, model, 
+            Object oper = Model.getCoreFactory().buildOperation(clazz, model,
                         voidType, propertyChangeListeners);
-            ModelFacade.setType(ModelFacade.getParameter(oper, 0), 
+            ModelFacade.setType(ModelFacade.getParameter(oper, 0),
                     p.findType("String"));
             File file = new File("test.xmi");
             XmiFilePersister persister = new XmiFilePersister();

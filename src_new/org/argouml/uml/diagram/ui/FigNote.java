@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,8 +36,8 @@ import org.tigris.gef.presentation.FigRect;
  * Renders a Comment in a diagram.
  *
  * @deprecated as of 0.15.1, but don't remove because it is need for loading
- *             'old' .zargo project files, replaced by 
- *             {@link org.argouml.uml.diagram.static_structure.ui.FigComment 
+ *             'old' .zargo project files, replaced by
+ *             {@link org.argouml.uml.diagram.static_structure.ui.FigComment
  *             FigComment}
  * TODO: When can this be removed? What do we need to do to remove this?
  */
@@ -77,7 +77,7 @@ public class FigNote extends FigNodeModelElement {
     }
 
     /**
-     * Constructor 
+     * Constructor
      * @param gm ignored
      * @param node the UML element
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -55,12 +55,12 @@ public class CrMissingAttrName extends CrUML {
 	if (!(ModelFacade.isAAttribute(dm))) return NO_PROBLEM;
 	Object attr = /*(MAttribute)*/ dm;
 	String myName = ModelFacade.getName(attr);
-	if (myName == null 
+	if (myName == null
             || "".equals(myName)) return PROBLEM_FOUND;
 	if (myName.length() == 0) return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }
-    
+
     /**
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
@@ -90,7 +90,7 @@ public class CrMissingAttrName extends CrUML {
 	    ((WizMEName) w).setSuggestion(sug);
 	}
     }
-    
+
     /**
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */

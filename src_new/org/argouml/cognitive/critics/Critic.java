@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,12 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: Critic.java
-// Classes: Critic
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 
 package org.argouml.cognitive.critics;
 
@@ -51,73 +45,113 @@ import org.argouml.cognitive.Translator;
 import org.argouml.cognitive.ui.Wizard;
 import org.tigris.gef.util.VectorSet;
 
-/** "Abstract" base class for design critics.  Each subclass should define
- *  its own predicate method and define its own relevance tags. <p>
+/**
+ * "Abstract" base class for design critics.  Each subclass should define
+ * its own predicate method and define its own relevance tags. <p>
  *
- *  A critic supports design goals and decisions, which can be adjusted
- *  accordingly. It will post todo items which may or may not be relevant to
- *  the particular designer.<p>
+ * A critic supports design goals and decisions, which can be adjusted
+ * accordingly. It will post todo items which may or may not be relevant to
+ * the particular designer.<p>
  *
- *  Steps to follow when adding a critic are listed in the Argo
- *  cookbook under <A HREF="../cookbook.html#define_critic">
- *  define_critic</a>. */
-
+ * Steps to follow when adding a critic are listed in the Argo
+ * cookbook under <a HREF="../cookbook.html#define_critic">
+ * define_critic</a>.
+ *
+ * @author Jason Robbins
+ */
 public class Critic implements Poster, Serializable {
-	
-    /** logger */
+
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(Critic.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
 
     /**
-     * PROBLEM_FOUND is used for the result of the check of a critic
+     * PROBLEM_FOUND is used for the result of the check of a critic.
      */
     public static final boolean PROBLEM_FOUND = true;
+
     /**
-     * NO_PROBLEM is used for the result of the check of a critic
+     * NO_PROBLEM is used for the result of the check of a critic.
      */
     public static final boolean NO_PROBLEM = false;
 
-    /** The keys of some predefined control records. */
+    /**
+     * The keys of some predefined control records.
+     */
     private static final String ENABLED = "enabled";
     private static final String SNOOZE_ORDER = "snoozeOrder";
 
-    /** Type of knowledge that critics can deliver */
-    public static final String KT_DESIGNERS = 
+    /**
+     * Type of knowledge that critics can deliver
+     */
+    public static final String KT_DESIGNERS =
 	Translator.localize("misc.knowledge.designers");
-    /** Type of knowledge that critics can deliver */
+
+    /**
+     * Type of knowledge that critics can deliver
+     */
     public static final String KT_CORRECTNESS =
 	Translator.localize("misc.knowledge.correctness");
-    /** Type of knowledge that critics can deliver */
+
+    /**
+     * Type of knowledge that critics can deliver
+     */
     public static final String KT_COMPLETENESS =
 	Translator.localize("misc.knowledge.completeness");
-    /** Type of knowledge that critics can deliver */
+
+    /**
+     * Type of knowledge that critics can deliver
+     */
     public static final String KT_CONSISTENCY =
 	Translator.localize("misc.knowledge.consistency");
-    /** Type of knowledge that critics can deliver */
-    public static final String KT_SYNTAX = 
+
+    /**
+     * Type of knowledge that critics can deliver
+     */
+    public static final String KT_SYNTAX =
 	Translator.localize("misc.knowledge.syntax");
-    /** Type of knowledge that critics can deliver */
-    public static final String KT_SEMANTICS = 
+
+    /**
+     * Type of knowledge that critics can deliver
+     */
+    public static final String KT_SEMANTICS =
 	Translator.localize("misc.knowledge.semantics");
-    /** Type of knowledge that critics can deliver */
+
+    /**
+     * Type of knowledge that critics can deliver
+     */
     public static final String KT_OPTIMIZATION =
 	Translator.localize("misc.knowledge.optimization");
-    /** Type of knowledge that critics can deliver */
+
+    /**
+     * Type of knowledge that critics can deliver
+     */
     public static final String KT_PRESENTATION =
 	Translator.localize("misc.knowledge.presentation");
-    /** Type of knowledge that critics can deliver */
+
+    /**
+     * Type of knowledge that critics can deliver
+     */
     public static final String KT_ORGANIZATIONAL =
 	Translator.localize("misc.knowledge.organizational");
-    /** Type of knowledge that critics can deliver */
+
+    /**
+     * Type of knowledge that critics can deliver
+     */
     public static final String KT_EXPERIENCIAL =
 	Translator.localize("misc.knowledge.experiential");
-    /** Type of knowledge that critics can deliver */
-    public static final String KT_TOOL = 
+
+    /**
+     * Type of knowledge that critics can deliver
+     */
+    public static final String KT_TOOL =
 	Translator.localize("misc.knowledge.tool");
 
-    /** 
+    /**
      * This function calculates the default url to describe this critic.
      * This syntax is synchronized with:
      * <OL>
@@ -140,19 +174,29 @@ public class Critic implements Poster, Serializable {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** The email address of the author/maintainer of this critic. */
+    /**
+     * The email address of the author/maintainer of this critic.
+     */
     private String emailAddr;
 
-    /** The priority of the ToDoItem produced. */
+    /**
+     * The priority of the ToDoItem produced.
+     */
     private int priority;
 
-    /** The headline of the ToDoItem produced. */
+    /**
+     * The headline of the ToDoItem produced.
+     */
     private String headline;
 
-    /** The description of the ToDoItem produced. */
+    /**
+     * The description of the ToDoItem produced.
+     */
     private String description;
 
-    /** The moreInfoURL of the ToDoItem produced. */
+    /**
+     * The moreInfoURL of the ToDoItem produced.
+     */
     private String moreInfoURL;
 
     /**
@@ -161,12 +205,13 @@ public class Critic implements Poster, Serializable {
      */
     private Hashtable args = new Hashtable();
 
-    /** The icon representing the resource.
+    /**
+     * The icon representing the resource.
      */
     public static final Icon DEFAULT_CLARIFIER =
 	ResourceLoaderWrapper
 	    .lookupIconResource("PostIt0");
-    
+
     private Icon clarifier = DEFAULT_CLARIFIER;
 
     /**
@@ -187,17 +232,23 @@ public class Critic implements Poster, Serializable {
 
     private Vector supportedGoals = new Vector();
 
-    /** The decision type of this critic.  For example, correctness,
-     *  completeness, consistency, alternative, presentation,
-     *  optimization, organizational, tool critics, etc. */
+    /**
+     * The decision type of this critic.  For example, correctness,
+     * completeness, consistency, alternative, presentation,
+     * optimization, organizational, tool critics, etc.
+     */
     private String criticType;
 
-    /** Internal flag that stores the end result of all ControlMech
-     *  evaluations of this critic. */
+    /**
+     * Internal flag that stores the end result of all ControlMech
+     * evaluations of this critic.
+     */
     private boolean isActive = true;
 
-    /** Control records used in determining if this Critic should be
-     *  active. */
+    /**
+     * Control records used in determining if this Critic should be
+     * active.
+     */
     private Hashtable controlRecs = new Hashtable();
 
     private VectorSet knowledgeTypes = new VectorSet();
@@ -208,11 +259,13 @@ public class Critic implements Poster, Serializable {
     ////////////////////////////////////////////////////////////////
     // constructor
 
-    /** Construct a new critic instance.  Typically only one instance of
-     *  each critic class is created and stored in a static variable, as
-     *  per the Singleton pattern.  Each domain extension should define
-     *  a static initializer block to make one instance of each critic and
-     *  call {@link Agency#register} with that instance. */
+    /**
+     * Construct a new critic instance.  Typically only one instance of
+     * each critic class is created and stored in a static variable, as
+     * per the Singleton pattern.  Each domain extension should define
+     * a static initializer block to make one instance of each critic and
+     * call {@link Agency#register} with that instance.
+     */
     public Critic() {
 	/* TODO:  THIS IS A HACK.
 	 * A much better way of doing this would be not to start
@@ -230,7 +283,7 @@ public class Critic implements Poster, Serializable {
 	criticType = "correctness";
 	knowledgeTypes.addElement(KT_CORRECTNESS);
 	decisionCategory = "Checking";
-    
+
 	// TODO: make this configurable
 	emailAddr = "users@argouml.tigris.org";
 
@@ -240,30 +293,32 @@ public class Critic implements Poster, Serializable {
 	priority = ToDoItem.MED_PRIORITY;
     }
 
-    /** Returns the {@link org.argouml.application.api.ConfigurationKey}
-     *  that the critic uses to determine if it is enabled or disabled.<p>
-     * 
-     *  The string resulting from the ConfigurationKey
-     *  <code>argo.critic.critic_category.critic_name</code>.<p>
-     *  
-     *  <code>critic_category</code> would describe the type of critic and is
-     *  taken from {@link #getCriticCategory}.<p>
+    /**
+     * Returns the {@link org.argouml.application.api.ConfigurationKey}
+     * that the critic uses to determine if it is enabled or disabled.<p>
      *
-     *  <code>critic_name</code> would describe the function of the critic 
-     *  and is taken from {@link #getCriticName}.<p>
+     * The string resulting from the ConfigurationKey
+     * <code>argo.critic.critic_category.critic_name</code>.<p>
      *
-     *  Some examples:<p>
-     *  <ul><li>
-     *  argo.critic.layout.Overlap<li>
-     *  argo.critic.uml.ReservedWord<li>
-     *  argo.critic.java.ReservedWord<li>
-     *  argo.critic.idl.ReservedWord</ul>
+     * <code>critic_category</code> would describe the type of critic and is
+     * taken from {@link #getCriticCategory}.<p>
      *
-     *  @see org.argouml.application.api.Configuration#makeKey
-     *  @see #getCriticCategory
-     *  @see #getCriticName
+     * <code>critic_name</code> would describe the function of the critic
+     * and is taken from {@link #getCriticName}.<p>
      *
-     *  @since 0.9.4
+     * Some examples:<p>
+     * <ul>
+     * <li>argo.critic.layout.Overlap
+     * <li>argo.critic.uml.ReservedWord
+     * <li>argo.critic.java.ReservedWord
+     * <li>argo.critic.idl.ReservedWord
+     * </ul>
+     *
+     * @see org.argouml.application.api.Configuration#makeKey
+     * @see #getCriticCategory
+     * @see #getCriticName
+     *
+     * @since 0.9.4
      *
      * @return the key
      */
@@ -273,11 +328,12 @@ public class Critic implements Poster, Serializable {
 				     getCriticName());
     }
 
-    /** Returns a default critic category.
-     *  Critics should override this
-     *  to provide specific classification information.
+    /**
+     * Returns a default critic category.
+     * Critics should override this
+     * to provide specific classification information.
      *
-     *  @since 0.9.4
+     * @since 0.9.4
      *
      * @return a default category
      */
@@ -285,12 +341,13 @@ public class Critic implements Poster, Serializable {
 	return "unclassified";
     }
 
-    /** Returns a default critic name.
-     *  By default this is the simple class name.
-     *  Critic implementations should override this
-     *  to provide a better (more descriptive) string.
+    /**
+     * Returns a default critic name.
+     * By default this is the simple class name.
+     * Critic implementations should override this
+     * to provide a better (more descriptive) string.
      *
-     *  @since 0.9.4
+     * @since 0.9.4
      *
      * @return a default critic name
      */
@@ -302,23 +359,24 @@ public class Critic implements Poster, Serializable {
     ////////////////////////////////////////////////////////////////
     // critiquing
 
-    /** Examine the given Object and Designer and, if
-     *  appropriate, produce one or more ToDoItem's and add them to the
-     *  offending design material's and the Designer's ToDoList. By
-     *  default this is basically a simple if-statement that relies on
-     *  predicate() to determine if there is some appropriate feedback,
-     *  and toDoItem() to produce the ToDoItem.
+    /**
+     * Examine the given Object and Designer and, if
+     * appropriate, produce one or more ToDoItem's and add them to the
+     * offending design material's and the Designer's ToDoList. By
+     * default this is basically a simple if-statement that relies on
+     * predicate() to determine if there is some appropriate feedback,
+     * and toDoItem() to produce the ToDoItem.
      *
-     *  The predicate() and toDoItem() pair of methods is simple and
-     *  convient for many critics. More sophisticated critics that
-     *  produce more than one ToDoItem per critiquing, or that produce
-     *  ToDoItem's that contain information that was already computed in
-     *  the predicate, should override critique. If you override this
-     *  method, you should call super.critique().
+     * The predicate() and toDoItem() pair of methods is simple and
+     * convient for many critics. More sophisticated critics that
+     * produce more than one ToDoItem per critiquing, or that produce
+     * ToDoItem's that contain information that was already computed in
+     * the predicate, should override critique. If you override this
+     * method, you should call super.critique().
      *
      * @see Critic#predicate
-     * @see Critic#toDoItem 
-     * 
+     * @see Critic#toDoItem
+     *
      * @param dm            the design material
      * @param dsgr          the designer
      */
@@ -327,8 +385,8 @@ public class Critic implements Poster, Serializable {
 	// line in the whole of ArgoUML. It allocates approximately 18% of
 	// all memory allocated.
 	// Suggestions for solutions:
-	// Check if there is a LOG.debug(String, String) method that can 
-	// be used instead. 
+	// Check if there is a LOG.debug(String, String) method that can
+	// be used instead.
 	// Use two calls.
 	// For now I (Linus) just comment it out.
 	// LOG.debug("applying critic: " + _headline);
@@ -352,16 +410,17 @@ public class Critic implements Poster, Serializable {
 
 
 
-    /** Perform the Critic's analysis of the design. Subclasses should test
-     *  the given Object to make sure that it is the type of
-     *  object that is expected.  Each object in the design registers its
-     *  own critics with the run-time system. The dm parameter is bound
-     *  to each design object that registered this critic, one per
-     *  call. Returning true means that feedback should be delivered to
-     *  the Designer. By convention, subclasses should return their
-     *  superclass predicate method if their own predicate would
-     *  return false. 
-     * 
+    /**
+     * Perform the Critic's analysis of the design. Subclasses should test
+     * the given Object to make sure that it is the type of
+     * object that is expected.  Each object in the design registers its
+     * own critics with the run-time system. The dm parameter is bound
+     * to each design object that registered this critic, one per
+     * call. Returning true means that feedback should be delivered to
+     * the Designer. By convention, subclasses should return their
+     * superclass predicate method if their own predicate would
+     * return false.
+     *
      * @param dm the design material, which is to be checked
      * @param dsgr the designer
      * @return the critic result
@@ -370,23 +429,24 @@ public class Critic implements Poster, Serializable {
 	return false;
     }
 
-    /** Return true iff the given ToDoItem is still valid and should be
-     *  kept in the given designers ToDoList. Critics that are not
-     *  enabled should always return false so that their ToDoItems will
-     *  be removed. Subclasses of Critic that supply multiple offenders
-     *  should always override this method. <p>
+    /**
+     * Return true iff the given ToDoItem is still valid and should be
+     * kept in the given designers ToDoList. Critics that are not
+     * enabled should always return false so that their ToDoItems will
+     * be removed. Subclasses of Critic that supply multiple offenders
+     * should always override this method. <p>
      *
-     *  By default this method basically asks the critic to again
-     *  critique the offending Object and then it checks if the
-     *  resulting ToDoItem is the same as the one already posted. This is
-     *  simple and it works fine for light-weight critics. Critics that
-     *  expend a lot of computational effort in making feedback that can
-     *  be easily check to see if it still holds, should override this
-     *  method. <p>
+     * By default this method basically asks the critic to again
+     * critique the offending Object and then it checks if the
+     * resulting ToDoItem is the same as the one already posted. This is
+     * simple and it works fine for light-weight critics. Critics that
+     * expend a lot of computational effort in making feedback that can
+     * be easily check to see if it still holds, should override this
+     * method. <p>
      *
-     *  TODO: Maybe ToDoItem should carry some data to make
-     *  this method more efficient. 
-     * 
+     * TODO: Maybe ToDoItem should carry some data to make
+     * this method more efficient.
+     *
      * @see org.argouml.cognitive.Poster#stillValid(
      * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
@@ -400,7 +460,7 @@ public class Critic implements Poster, Serializable {
 	    // Now we know that this critic is still valid. What we need to
 	    // figure out is if the corresponding to-do item is still valid.
 	    // The to-do item is to be replaced if the name of some offender
-	    // has changed that affects its description or if the contents 
+	    // has changed that affects its description or if the contents
 	    // of the list of offenders has changed.
 	    // We check that by creating a new ToDoItem and then verifying
 	    // that it looks exactly the same.
@@ -435,10 +495,10 @@ public class Critic implements Poster, Serializable {
     /**
      * @see org.argouml.cognitive.Poster#supports(org.argouml.cognitive.Goal)
      */
-    public boolean supports(Goal g) { 
+    public boolean supports(Goal g) {
         return supportedGoals.contains(g);
     }
-    
+
     /**
      * @see org.argouml.cognitive.Poster#getSupportedGoals()
      */
@@ -460,7 +520,7 @@ public class Critic implements Poster, Serializable {
     public boolean containsKnowledgeType(String type) {
 	return knowledgeTypes.contains(type);
     }
-    
+
     /**
      * @param type the knowledgetype
      */
@@ -472,25 +532,25 @@ public class Critic implements Poster, Serializable {
      * @return the knowledgetypes
      */
     public VectorSet getKnowledgeTypes() { return knowledgeTypes; }
-    
+
     /**
      * @param kt the knowledgetypes
      */
     public void setKnowledgeTypes(VectorSet kt) { knowledgeTypes = kt; }
-    
+
     /**
      * Reset all knowledgetypes, and add the given one.
-     * 
+     *
      * @param t1 the only knowledgetype in string format
      */
     public void setKnowledgeTypes(String t1) {
 	knowledgeTypes = new VectorSet();
 	addKnowledgeType(t1);
     }
-    
+
     /**
      * Reset all knowledgetypes, and add the given ones.
-     * 
+     *
      * @param t1 a knowledgetype in string format
      * @param t2 a knowledgetype in string format
      */
@@ -499,10 +559,10 @@ public class Critic implements Poster, Serializable {
 	addKnowledgeType(t1);
 	addKnowledgeType(t2);
     }
-    
+
     /**
      * Reset all knowledgetypes, and add the given ones.
-     * 
+     *
      * @param t1 a knowledgetype in string format
      * @param t2 a knowledgetype in string format
      * @param t3 a knowledgetype in string format
@@ -521,12 +581,12 @@ public class Critic implements Poster, Serializable {
     public static int reasonCodeFor(String s) {
 	return 1 << (s.hashCode() % 62);
     }
-  
+
     /**
      * @return the trigger mask
      */
     public long getTriggerMask() { return triggerMask; }
-    
+
     /**
      * @param s the trigger to be added (is ORed into the mask)
      */
@@ -534,7 +594,7 @@ public class Critic implements Poster, Serializable {
 	int newCode = reasonCodeFor(s);
 	triggerMask |= newCode;
     }
-    
+
     /**
      * @param patternCode the mask to be checked
      * @return true if it matches a trigger
@@ -542,9 +602,9 @@ public class Critic implements Poster, Serializable {
     public boolean matchReason(long patternCode) {
 	return (triggerMask == 0) || ((triggerMask & patternCode) != 0);
     }
-  
+
     /**
-     * @see org.argouml.cognitive.Poster#expand(java.lang.String, 
+     * @see org.argouml.cognitive.Poster#expand(java.lang.String,
      * org.tigris.gef.util.VectorSet)
      */
     public String expand(String desc, VectorSet offs) { return desc; }
@@ -560,15 +620,17 @@ public class Critic implements Poster, Serializable {
     ////////////////////////////////////////////////////////////////
     // criticism control
 
-    /** Reply true iff this Critic can execute. This fact is normally
-     *  determined by a ControlMech.
-     * 
+    /**
+     * Reply true iff this Critic can execute. This fact is normally
+     * determined by a ControlMech.
+     *
      * @return true iff this Critic can execute
      */
     public boolean isActive() { return isActive; }
 
-    /** Make this critic active. From now on it can be applied to a
-     *  design material in critiquing. 
+    /**
+     * Make this critic active. From now on it can be applied to a
+     * design material in critiquing.
      */
     public void beActive() {
 	if (!isActive) {
@@ -577,8 +639,9 @@ public class Critic implements Poster, Serializable {
 	isActive = true;
     }
 
-    /** Make this critic inactive. From now on it will be idle and will
-     *  not be applied to a design material in critiquing. 
+    /**
+     * Make this critic inactive. From now on it will be idle and will
+     * not be applied to a design material in critiquing.
      */
     public void beInactive() {
 	if (isActive) {
@@ -587,25 +650,26 @@ public class Critic implements Poster, Serializable {
 	isActive = false;
     }
 
-    /** Add some attribute used by ControlMech to determine if this
-     *  Critic should be active. Critics store control record so that
-     *  stateful ControlMech's do not need to store a parallel data
-     *  structure. But Critic's do not directy use or modify this
-     *  data.
-     * 
+    /**
+     * Add some attribute used by ControlMech to determine if this
+     * Critic should be active. Critics store control record so that
+     * stateful ControlMech's do not need to store a parallel data
+     * structure. But Critic's do not directy use or modify this
+     * data.
+     *
      * @param name          the key
      * @param controlData   the value
-     * @return              the previous value of the specified key 
-     *                      in this hashtable, or <code>null</code> 
-     *                      if it did not have one
+     * @return              the previous value of the specified key
+     *                     in this hashtable, or <code>null</code>
+     *                     if it did not have one
      */
     public Object addControlRec(String name, Object controlData) {
 	return controlRecs.put(name, controlData);
     }
 
-    /** 
+    /**
      * Reply the named control record, or null if not defined.
-     * 
+     *
      * @param name the key
      * @return the value
      */
@@ -613,12 +677,13 @@ public class Critic implements Poster, Serializable {
 	return controlRecs.get(name);
     }
 
-    /** This is a convient method for accessing one well-known control
-     *  record. The enabled control record is a boolean that the user can
-     *  turn on or off to manually enable or disable this Critic. It is
-     *  normally combined with other ControlMech determinations with a
-     *  logic-and.
-     * 
+    /**
+     * This is a convient method for accessing one well-known control
+     * record. The enabled control record is a boolean that the user can
+     * turn on or off to manually enable or disable this Critic. It is
+     * normally combined with other ControlMech determinations with a
+     * logic-and.
+     *
      * @return true if enabled
      */
     public boolean isEnabled() {
@@ -633,28 +698,33 @@ public class Critic implements Poster, Serializable {
 	addControlRec(ENABLED, enabledBool);
     }
 
-    /** 
+    /**
      * Reply the SnoozeOrder that is defined for this critic.
-     * 
+     *
      * @return the snooze order
      */
     public SnoozeOrder snoozeOrder() {
 	return (SnoozeOrder) getControlRec(SNOOZE_ORDER);
     }
 
-    /** Disable this Critic for the next few minutes. */
+    /**
+     * Disable this Critic for the next few minutes.
+     */
     public void snooze() { snoozeOrder().snooze(); }
 
-    /** Lift any previous SnoozeOrder. */
+    /**
+     * Lift any previous SnoozeOrder.
+     */
     public void unsnooze() { snoozeOrder().unsnooze(); }
 
-    /** Reply true if this Critic is relevant to the decisions that
-     *  the Designer is considering. By default just asks the Designer if
-     *  he/she is considering my decisionCategory. Really this is
-     *  something for a ControlMech to compute, but if a subclass of
-     *  Critic encapsulates some information you may need to override
-     *  this method. 
-     * 
+    /**
+     * Reply true if this Critic is relevant to the decisions that
+     * the Designer is considering. By default just asks the Designer if
+     * he/she is considering my decisionCategory. Really this is
+     * something for a ControlMech to compute, but if a subclass of
+     * Critic encapsulates some information you may need to override
+     * this method.
+     *
      * @param dsgr the designer
      * @return true if relevant
      */
@@ -665,7 +735,7 @@ public class Critic implements Poster, Serializable {
 	while (elems.hasMoreElements()) {
 	    Decision d = (Decision) elems.nextElement();
 	    if (d.getPriority() > 0 && d.getPriority() <= getPriority()) {
-                
+
 //                if(isDebugEnabled) cat.debug(d + " " + d.getPriority());
 		return true;
             }
@@ -673,16 +743,17 @@ public class Critic implements Poster, Serializable {
 	return false;
     }
 
-    /** Reply true iff this Critic is relevant to the goals that the
-     *  Designer is trying to achieve. By default, all Critic's are
-     *  relevant regardless of the GoalModel. Really this is something for a
-     *  ControlMech to compute, but if a subclass of Critic encapsulates
-     *  some information you may need to override this method. <p>
+    /**
+     * Reply true iff this Critic is relevant to the goals that the
+     * Designer is trying to achieve. By default, all Critic's are
+     * relevant regardless of the GoalModel. Really this is something for a
+     * ControlMech to compute, but if a subclass of Critic encapsulates
+     * some information you may need to override this method. <p>
      *
-     *  TODO: I would like a better default action, but goals
-     *  are typed and their values must be interperted by critics. They
-     *  are not as generic as the DecisionModel. 
-     * 
+     * TODO: I would like a better default action, but goals
+     * are typed and their values must be interperted by critics. They
+     * are not as generic as the DecisionModel.
+     *
      * @param dsgr the designer
      * @return true if relevant
      */
@@ -699,9 +770,9 @@ public class Critic implements Poster, Serializable {
      * Class of wizard. Critic subclasses that need to initialize their wizard
      * might override this to call super.makeWizard() and then work with the
      * result.
-     * 
+     *
      * @param item
-     *            the todo item
+     *           the todo item
      * @return the wizard
      */
     public Wizard makeWizard(ToDoItem item) {
@@ -722,9 +793,10 @@ public class Critic implements Poster, Serializable {
         return null;
     }
 
-    /** Return the Class of wizard that can fix the problem identifed by
-     *  this critic.
-     *  This method returns null, subclasses with wizards should override it.
+    /**
+     * Return the Class of wizard that can fix the problem identifed by
+     * this critic.
+     * This method returns null, subclasses with wizards should override it.
      *
      * @param item the todo item
      * @return null if no wizard is defined.
@@ -732,12 +804,13 @@ public class Critic implements Poster, Serializable {
     public Class getWizardClass(ToDoItem item) { return null; }
 
 
-    /** Initialize a newly created wizard with information found by the
-     *  critic.  This is called right after the wizard is made in
-     *  makeWizard() and after the wizard's ToDoItem is set.  Any critic
-     *  that supports wizards should probably override this method, and
-     *  call super initWizard() first. 
-     * 
+    /**
+     * Initialize a newly created wizard with information found by the
+     * critic.  This is called right after the wizard is made in
+     * makeWizard() and after the wizard's ToDoItem is set.  Any critic
+     * that supports wizards should probably override this method, and
+     * call super initWizard() first.
+     *
      * @param w the wizard
      */
     public void initWizard(Wizard w) { }
@@ -745,47 +818,52 @@ public class Critic implements Poster, Serializable {
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /** Reply a string used to determine if this critic would be
-     *  relevant to current design decisions. Strings returned from here
-     *  are compared to strings in the DecisionModel. 
-     * 
+    /**
+     * Reply a string used to determine if this critic would be
+     * relevant to current design decisions. Strings returned from here
+     * are compared to strings in the DecisionModel.
+     *
      * @return the decision category
      */
     public String getDecisionCategory() { return decisionCategory; }
 
-    /** Set the decisionCategory, usually done in the constructor. I
-     *  have not yet thought of a case where dynamically changing the
-     *  Critic's decisionCategory is useful. 
-     * 
+    /**
+     * Set the decisionCategory, usually done in the constructor. I
+     * have not yet thought of a case where dynamically changing the
+     * Critic's decisionCategory is useful.
+     *
      * @param c the category
      */
     protected void setDecisionCategory(String c) { decisionCategory = c; }
 
-    /** Reply a string used to contol critics according to
-     *  type. Examples include: correctness, completeness, consistency,
-     *  optimization, presentation, and alternative. 
-     * 
+    /**
+     * Reply a string used to contol critics according to
+     * type. Examples include: correctness, completeness, consistency,
+     * optimization, presentation, and alternative.
+     *
      * @return the critic knowledge type
      */
     public String getCriticType() { return criticType; }
 
-    /** Reply the email address of the person who is the author or
-     *  maintainer of this critic. 
-     * 
+    /**
+     * Reply the email address of the person who is the author or
+     * maintainer of this critic.
+     *
      * @see org.argouml.cognitive.Poster#getExpertEmail()
      */
     public String getExpertEmail() { return emailAddr; }
 
-    /** Set the email address of the person who is the author or
-     *  maintainer of this critic. 
-     * 
+    /**
+     * Set the email address of the person who is the author or
+     * maintainer of this critic.
+     *
      * @see org.argouml.cognitive.Poster#setExpertEmail(java.lang.String)
      */
     public void setExpertEmail(String addr) { emailAddr = addr; }
 
-    /** 
-     * Reply the headline used in feedback produced by this Critic. 
-     * 
+    /**
+     * Reply the headline used in feedback produced by this Critic.
+     *
      * @param dm the design material
      * @param dsgr the designer
      * @return the headline
@@ -794,9 +872,9 @@ public class Critic implements Poster, Serializable {
 	return getHeadline();
     }
 
-    /** 
-     * Reply the headline used in feedback produced by this Critic. 
-     * 
+    /**
+     * Reply the headline used in feedback produced by this Critic.
+     *
      * @param offenders the set of offenders
      * @param dsgr the designer
      * @return the headline
@@ -805,23 +883,23 @@ public class Critic implements Poster, Serializable {
 	return getHeadline(offenders.firstElement(), dsgr);
     }
 
-    /** 
-     * Reply the headline used in feedback produced by this Critic. 
-     * 
+    /**
+     * Reply the headline used in feedback produced by this Critic.
+     *
      * @return the headline
      */
     public String getHeadline() { return headline; }
 
-    /** 
+    /**
      * Set the headline used in feedback produced by this Critic.
-     *  
+     *
      * @param h the headline
      */
     public void setHeadline(String h) {  headline = h; }
 
-    /** 
-     * Reply the priority used in feedback produced by this Critic. 
-     * 
+    /**
+     * Reply the priority used in feedback produced by this Critic.
+     *
      * @param offenders the offenders
      * @param dsgr the designer
      * @return the priority
@@ -829,12 +907,12 @@ public class Critic implements Poster, Serializable {
     public int getPriority(VectorSet offenders, Designer dsgr) {
 	return priority;
     }
-    
+
     /**
      * @param p the priority
      */
     public void setPriority(int p) { priority = p; }
-    
+
     /**
      * @return the priority
      */
@@ -842,9 +920,9 @@ public class Critic implements Poster, Serializable {
 	return priority;
     }
 
-    /** 
-     * Reply the description used in feedback produced by this Critic. 
-     * 
+    /**
+     * Reply the description used in feedback produced by this Critic.
+     *
      * @param offenders the offenders
      * @param dsgr the designer
      * @return the description
@@ -852,12 +930,12 @@ public class Critic implements Poster, Serializable {
     public String getDescription(VectorSet offenders, Designer dsgr) {
 	return description;
     }
-    
+
     /**
      * @param d the description
      */
     public void setDescription(String d) {  description = d; }
-    
+
     /**
      * @return the description
      */
@@ -865,9 +943,9 @@ public class Critic implements Poster, Serializable {
 	return description;
     }
 
-    /** 
-     * Reply the moreInfoURL used in feedback produced by this Critic. 
-     * 
+    /**
+     * Reply the moreInfoURL used in feedback produced by this Critic.
+     *
      * @param offenders the offenders
      * @param dsgr the designer
      * @return the more-info-url
@@ -875,12 +953,12 @@ public class Critic implements Poster, Serializable {
     public String getMoreInfoURL(VectorSet offenders, Designer dsgr) {
 	return moreInfoURL;
     }
-    
+
     /**
      * @param m the more-info-url
      */
     public void setMoreInfoURL(String m) {  moreInfoURL = m; }
-    
+
     /**
      * @return the more-info-url
      */
@@ -895,7 +973,7 @@ public class Critic implements Poster, Serializable {
     protected void setArg(String name, Object value) {
 	args.put(name, value);
     }
-    
+
     /**
      * @param name the key
      * @return     the value
@@ -903,12 +981,12 @@ public class Critic implements Poster, Serializable {
     protected Object getArg(String name) {
 	return args.get(name);
     }
-    
+
     /**
      * @return the (key, value) pairs
      */
     public Hashtable  getArgs() { return args; }
-    
+
     /**
      * @param h the new table of (key, value) pairs
      */
@@ -917,16 +995,18 @@ public class Critic implements Poster, Serializable {
     ////////////////////////////////////////////////////////////////
     // design feedback
 
-    /** Reply the ToDoItem that the designer should see iff predicate()
-     *  returns true. By default it just fills in the fields of the
-     *  ToDoItem from accessor methods of this Critic. Critic Subclasses
-     *  may override this method or the accessor methods to add computed
-     *  fields to the ToDoItem.
+    /**
+     * Reply the ToDoItem that the designer should see iff predicate()
+     * returns true. By default it just fills in the fields of the
+     * ToDoItem from accessor methods of this Critic. Critic Subclasses
+     * may override this method or the accessor methods to add computed
+     * fields to the ToDoItem.
      *
-     *  TODO: Critic's may want to add new fields to a
-     *  ToDoItem to make stillValid more efficent.
+     * TODO: Critic's may want to add new fields to a
+     * ToDoItem to make stillValid more efficent.
      *
-     * @see Critic#critique */
+     * @see Critic#critique
+     */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	return new ToDoItem(this, dm, dsgr);
     }
@@ -934,28 +1014,31 @@ public class Critic implements Poster, Serializable {
     ////////////////////////////////////////////////////////////////
     // issue resolution
 
-    /** TODO: Not implemented yet. The idea is that some
-     *  problems identified by Critic's can be fixed with certain design
-     *  manipulations (or transforms) that can be applied automatically
-     *  to resolve the problem. This method replies true iff the given
-     *  problem can be fixed. The fixIt() method actually does the fix.
+    /**
+     * TODO: Not implemented yet. The idea is that some
+     * problems identified by Critic's can be fixed with certain design
+     * manipulations (or transforms) that can be applied automatically
+     * to resolve the problem. This method replies true iff the given
+     * problem can be fixed. The fixIt() method actually does the fix.
      *
-     * @see Critic#fixIt */
+     * @see Critic#fixIt
+     */
     public boolean canFixIt(ToDoItem item) {
 	return false;
     }
 
-    /** TODO: Not implemented yet. If the given ToDoItem can
-     *  be fixed automatically, and the user wants that to happen, then do
-     *  it. Obviously, this depends on the specific Critic and
-     *  problem. By default this method does nothing.
+    /**
+     * TODO: Not implemented yet. If the given ToDoItem can
+     * be fixed automatically, and the user wants that to happen, then do
+     * it. Obviously, this depends on the specific Critic and
+     * problem. By default this method does nothing.
      *
-     * @see Critic#canFixIt 
+     * @see Critic#canFixIt
      */
     public void fixIt(ToDoItem item, Object arg) { }
 
-    /** 
-     * Reply a string that describes this Critic. Identical to getCriticName() 
+    /**
+     * Reply a string that describes this Critic. Identical to getCriticName()
      *
      * @see java.lang.Object#toString()
      */

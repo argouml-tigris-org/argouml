@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -54,11 +54,11 @@ import org.tigris.gef.base.Globals;
  * diagram. When the user presses the button, a popup is displayed which
  * contains a vertical slider representing the range of zoom magnifications.
  * Dragging the slider changes the zoom magnification for the current diagram.
- * 
+ *
  * @author Jeremy Jones
  */
 public class ZoomSliderButton extends PopupButton {
-    
+
     /**
      * Used for loading the zoom icon from the Zoom Reset action.
      */
@@ -69,7 +69,7 @@ public class ZoomSliderButton extends PopupButton {
      * value label.
      */
     private static final Font   LABEL_FONT = new Font("Dialog", Font.PLAIN, 10);
-    
+
     /**
      * The minimum zoom magnification slider value.
      */
@@ -79,17 +79,17 @@ public class ZoomSliderButton extends PopupButton {
      * The maximum zoom magnification slider value.
      */
     private static final int    MAXIMUM_ZOOM = 500;
-    
+
     /**
      * The preferred height of the slider component.
-     */    
+     */
     private static final int    SLIDER_HEIGHT = 250;
-    
+
     /**
      * The slider component.
      */
     private JSlider             slider = null;
-    
+
     /**
      * The text field which shows the current zoom magnification value.
      */
@@ -104,7 +104,7 @@ public class ZoomSliderButton extends PopupButton {
         Icon icon = ResourceLoaderWrapper.
             lookupIconResource(Translator.getImageBinding(RESOURCE_NAME),
 			       Translator.localize(RESOURCE_NAME));
-                
+
         setIcon(icon);
         setToolTipText(Translator.localize("button.zoom"));
     }
@@ -114,9 +114,9 @@ public class ZoomSliderButton extends PopupButton {
      */
     private void createPopupComponent() {
         slider = new JSlider(
-            JSlider.VERTICAL, 
-            MINIMUM_ZOOM, 
-            MAXIMUM_ZOOM, 
+            JSlider.VERTICAL,
+            MINIMUM_ZOOM,
+            MAXIMUM_ZOOM,
             MINIMUM_ZOOM);
         slider.setInverted(true);
         slider.setMajorTickSpacing(MAXIMUM_ZOOM / 10);
@@ -125,27 +125,27 @@ public class ZoomSliderButton extends PopupButton {
         slider.setPaintTrack(true);
         int sliderBaseWidth = slider.getPreferredSize().width;
         slider.setPaintLabels(true);
-        
+
         for (Enumeration components = slider.getLabelTable().elements();
              components.hasMoreElements();) {
             ((Component) components.nextElement()).setFont(LABEL_FONT);
         }
-        
+
         slider.setToolTipText(Translator.localize(
-                "button.zoom.slider-tooltip"));   
-        
+                "button.zoom.slider-tooltip"));
+
         slider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 handleSliderValueChange();
-            }            
+            }
         });
-        
+
         int labelWidth = slider.getFontMetrics(LABEL_FONT).stringWidth(
             String.valueOf(MAXIMUM_ZOOM)) + 6;
-        
+
         slider.setPreferredSize(new Dimension(
             sliderBaseWidth + labelWidth, SLIDER_HEIGHT));
-        
+
         currentValue = new JTextField(5);
         currentValue.setHorizontalAlignment(JLabel.CENTER);
         currentValue.setFont(LABEL_FONT);
@@ -162,18 +162,18 @@ public class ZoomSliderButton extends PopupButton {
                 handleTextEntry();
             }
         });
-        
+
         JPanel currentValuePanel = new JPanel(new FlowLayout(
             FlowLayout.CENTER, 0, 0));
         currentValuePanel.add(currentValue);
-        
+
         JPanel zoomPanel = new JPanel(new BorderLayout(0, 0));
         zoomPanel.add(slider, BorderLayout.CENTER);
         zoomPanel.add(currentValuePanel, BorderLayout.NORTH);
-                
+
         setPopupComponent(zoomPanel);
     }
-    
+
     /**
      * Update the slider value every time the popup is shown.
      */
@@ -181,14 +181,14 @@ public class ZoomSliderButton extends PopupButton {
         if (slider == null) {
             createPopupComponent();
         }
-        
+
         Editor ed = Globals.curEditor();
         if (ed != null) {
             slider.setValue((int) (ed.getScale() * 100d));
-        } 
-        
+        }
+
         super.showPopup();
-        
+
         slider.requestFocus();
     }
 
@@ -197,15 +197,15 @@ public class ZoomSliderButton extends PopupButton {
      */
     private void handleSliderValueChange() {
         updateCurrentValueLabel();
-                
+
         //if (!source.getValueIsAdjusting()) {
         double zoomPercentage = slider.getValue() / 100d;
-                
+
         Editor ed = Globals.curEditor();
         if (ed == null || zoomPercentage <= 0.0) {
             return;
-        } 
-                
+        }
+
         if (zoomPercentage != ed.getScale()) {
             ed.setScale(zoomPercentage);
             ed.damageAll();
@@ -238,5 +238,5 @@ public class ZoomSliderButton extends PopupButton {
      */
     private void updateCurrentValueLabel() {
         currentValue.setText(String.valueOf(slider.getValue()) + '%');
-    }   
+    }
 }

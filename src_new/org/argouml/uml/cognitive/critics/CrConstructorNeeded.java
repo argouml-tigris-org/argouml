@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,12 +34,13 @@ import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.ModelFacade;
 
 /**
- * <p> A critic to detect when a class requires a constructor.</p>
+ * A critic to detect when a class requires a constructor.<p>
  *
- * <p>The critic will trigger whenever a class has instance variables that are
- * uninitialised and there is no constructor. It will not trigger for 
- * certain stereotyped classes.</p>
- * <p>this critic is part of a compound critic</p>
+ * The critic will trigger whenever a class has instance variables that are
+ * uninitialised and there is no constructor. It will not trigger for
+ * certain stereotyped classes.<p>
+ *
+ * This critic is part of a compound critic.<p>
  *
  * @see <a href=
  * "http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/
@@ -49,14 +50,13 @@ import org.argouml.model.ModelFacade;
 public class CrConstructorNeeded extends CrUML {
 
     /**
-     * <p>Constructor for the critic.</p>
+     * Constructor for the critic.<p>
      *
-     * <p>Sets up the resource name, which will allow headline and description
+     * Sets up the resource name, which will allow headline and description
      * to found for the current locale. Provides a design issue category
      * (STORAGE) and adds triggers for metaclasses "behaviouralFeature" and
-     * "structuralFeature".</p>
+     * "structuralFeature".
      */
-
     public CrConstructorNeeded() {
 
         setResource("CrConstructorNeeded");
@@ -72,11 +72,11 @@ public class CrConstructorNeeded extends CrUML {
     }
 
     /**
-     * <p>The trigger for the critic.</p>
+     * The trigger for the critic.<p>
      *
-     * <p>First see if we have any instance variables that are not
+     * First see if we have any instance variables that are not
      * initialised. If not there is no problem. If there are any uninitialised
-     * instance variables, then look for a constructor.</p>
+     * instance variables, then look for a constructor.<p>
      *
      * @param  dm    the {@link java.lang.Object Object} to be checked against
      *               the critic.
@@ -86,7 +86,7 @@ public class CrConstructorNeeded extends CrUML {
      *               development of ArgoUML.
      *
      * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
-     *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.  
+     *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.
      */
 
     public boolean predicate2(Object dm, Designer dsgr) {
@@ -95,17 +95,17 @@ public class CrConstructorNeeded extends CrUML {
         if (!(ModelFacade.isAClass(dm))) {
             return NO_PROBLEM;
         }
-        
-            
+
+
 	// We don't consider secondary stuff.
-	if (!(ModelFacade.isPrimaryObject(dm))) 
+	if (!(ModelFacade.isPrimaryObject(dm)))
 	    return NO_PROBLEM;
 
         // Types don't need a constructor.
         if (ModelFacade.isType(dm)) {
             return NO_PROBLEM;
         }
-        
+
         // Utilities usually do not require a constructor either
         if (ModelFacade.isUtility(dm)) {
             return NO_PROBLEM;
@@ -139,11 +139,11 @@ public class CrConstructorNeeded extends CrUML {
             return PROBLEM_FOUND;
         }
 
-        // yeah right...we don't have an operation (and thus no 
+        // yeah right...we don't have an operation (and thus no
         return NO_PROBLEM;
     }
 
-    
+
     /**
      * @see org.argouml.cognitive.critics.Critic#initWizard(
      *         org.argouml.cognitive.ui.Wizard)
@@ -162,7 +162,7 @@ public class CrConstructorNeeded extends CrUML {
 	    ((WizAddConstructor) w).setSuggestion(sug);
 	}
     }
-    
+
     /**
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -78,24 +78,23 @@ import org.argouml.ui.explorer.rules.PerspectiveRule;
  * <li>- selecting any number and combination of rules for a perspective.
  * </ul><p>
  *
- * This dialog behaves almost exactly as described in 
+ * This dialog behaves almost exactly as described in
  * http://java.sun.com/products/jlf/at/book/Idioms6.html#57371
- * 
- * <p>
- * Created on 21 December 2003.
+ *
+ * @since 21 December 2003.
  * @author  alexb
  */
 public class PerspectiveConfigurator extends ArgoDialog {
-    
+
     private static final Logger LOG =
 	Logger.getLogger(PerspectiveConfigurator.class);
-    
+
     /** Insets in pixels  */
     private static final int INSET_PX = 3;
-    
+
     ////////////////////////////////////////////////////////////////
     // instance variables
-    
+
     private JPanel  configPanelNorth;
     private JPanel  configPanelSouth;
     private JSplitPane splitPane;
@@ -107,37 +106,37 @@ public class PerspectiveConfigurator extends ArgoDialog {
     private JButton addRuleButton;
     private JButton removeRuleButton;
     private JButton resetToDefaultButton;
-    
+
     private JList   perspectiveList;
     private JList   perspectiveRulesList;
     private JList   ruleLibraryList;
     private DefaultListModel perspectiveListModel;       // at the top
     private DefaultListModel perspectiveRulesListModel;  // right bottom
     private DefaultListModel ruleLibraryListModel;       // left bottom
-    
+
     private JLabel persLabel;
     private JLabel ruleLibLabel;
     private JLabel rulesLabel;
-    
-    /** 
+
+    /**
      * Creates a new instance of PerspectiveDesignerDialog.
-     * 
+     *
      * @param parent the parent frame
      */
     public PerspectiveConfigurator(Frame parent) {
-        
+
         super(parent,
 	      Translator.localize("dialog.title.configure-perspectives"),
 	      ArgoDialog.OK_CANCEL_OPTION,
 	      true); // the dialog is modal
-        
+
         configPanelNorth = new JPanel();
         configPanelSouth = new JPanel();
-        
+
         makeLists();
-        
+
         makeButtons();
-        
+
         makeLayout();
         updateRuleLabel();
 
@@ -146,8 +145,8 @@ public class PerspectiveConfigurator extends ArgoDialog {
         loadPerspectives();
         loadLibrary();
         //sortJListModel(ruleLibraryList);
-        
-        splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, 
+
+        splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                 configPanelNorth, configPanelSouth);
         splitPane.setContinuousLayout(true);
 
@@ -159,21 +158,21 @@ public class PerspectiveConfigurator extends ArgoDialog {
      */
     private void makeLists() {
         renameTextField = new JTextField();
-        
+
         perspectiveListModel = new DefaultListModel();
         perspectiveList = new JList(perspectiveListModel);
         perspectiveRulesListModel = new DefaultListModel();
         perspectiveRulesList = new JList(perspectiveRulesListModel);
         ruleLibraryListModel = new DefaultListModel();
         ruleLibraryList = new JList(ruleLibraryListModel);
-        
+
         perspectiveList.setBorder(BorderFactory.createEmptyBorder(
                 INSET_PX, INSET_PX, INSET_PX, INSET_PX));
         perspectiveRulesList.setBorder(BorderFactory.createEmptyBorder(
                 INSET_PX, INSET_PX, INSET_PX, INSET_PX));
         ruleLibraryList.setBorder(BorderFactory.createEmptyBorder(
                 INSET_PX, INSET_PX, INSET_PX, INSET_PX));
-        
+
         perspectiveList.setSelectionMode(
                 ListSelectionModel.SINGLE_SELECTION);
         perspectiveRulesList.setSelectionMode(
@@ -190,38 +189,38 @@ public class PerspectiveConfigurator extends ArgoDialog {
         nameButton(newPerspectiveButton, "button.new");
         newPerspectiveButton.setToolTipText(
                 Translator.localize("button.new.tooltip"));
-        
+
         removePerspectiveButton = new JButton();
         nameButton(removePerspectiveButton, "button.remove");
         removePerspectiveButton.setToolTipText(
                 Translator.localize("button.remove.tooltip"));
-        
+
         duplicatePerspectiveButton = new JButton();
         nameButton(duplicatePerspectiveButton, "button.duplicate");
         duplicatePerspectiveButton.setToolTipText(
                 Translator.localize("button.duplicate.tooltip"));
-        
+
         moveUpButton = new JButton();
         nameButton(moveUpButton, "button.move-up");
         moveUpButton.setToolTipText(
                 Translator.localize("button.move-up.tooltip"));
-        
+
         moveDownButton = new JButton();
         nameButton(moveDownButton, "button.move-down");
         moveDownButton.setToolTipText(
                 Translator.localize("button.move-down.tooltip"));
-        
+
         addRuleButton = new JButton(">>");
         addRuleButton.setToolTipText(Translator.localize("button.add-rule"));
         removeRuleButton = new JButton("<<");
         removeRuleButton.setToolTipText(Translator.localize(
                 "button.remove-rule"));
-        
+
         resetToDefaultButton = new JButton();
         nameButton(resetToDefaultButton, "button.restore-defaults");
         resetToDefaultButton.setToolTipText(
                 Translator.localize("button.restore-defaults.tooltip"));
-        
+
         //disable the buttons for now, since no selection has been made yet
         removePerspectiveButton.setEnabled(false);
         duplicatePerspectiveButton.setEnabled(false);
@@ -241,7 +240,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         configPanelSouth.setLayout(gb);
         GridBagConstraints c = new GridBagConstraints();
         c.ipadx = 3;      c.ipady = 3;
-        
+
         persLabel = new JLabel(); // the text will be set later
         persLabel.setBorder(BorderFactory.createEmptyBorder(
                 INSET_PX, INSET_PX, INSET_PX, INSET_PX));
@@ -251,7 +250,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         c.weightx = 1.0;  c.weighty = 0.0;
         gb.setConstraints(persLabel, c);
         configPanelNorth.add(persLabel);
-        
+
         JPanel persPanel = new JPanel(new BorderLayout());
         JScrollPane persScroll = new JScrollPane(perspectiveList,
 			    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -263,7 +262,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         c.weightx = 1.0;  c.weighty = 1.0;
         gb.setConstraints(persPanel, c);
         configPanelNorth.add(persPanel);
-        
+
         JPanel persButtons = new JPanel(new GridLayout(6, 1, 0, 5));
         persButtons.add(newPerspectiveButton);
         persButtons.add(removePerspectiveButton);
@@ -281,7 +280,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         c.insets = new Insets(0, 5, 0, 0);
         gb.setConstraints(persButtonWrapper, c);
         configPanelNorth.add(persButtonWrapper);
-        
+
         ruleLibLabel = new JLabel(); // the text will be set later
         ruleLibLabel.setBorder(BorderFactory.createEmptyBorder(
                 INSET_PX, INSET_PX, INSET_PX, INSET_PX));
@@ -292,7 +291,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         c.insets = new Insets(10, 0, 0, 0);
         gb.setConstraints(ruleLibLabel, c);
         configPanelSouth.add(ruleLibLabel);
-        
+
         addRuleButton.setMargin(new Insets(2, 15, 2, 15));
         removeRuleButton.setMargin(new Insets(2, 15, 2, 15));
         JPanel xferButtons = new JPanel();
@@ -305,7 +304,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         c.insets = new Insets(0, 3, 0, 5);
         gb.setConstraints(xferButtons, c);
         configPanelSouth.add(xferButtons);
-        
+
         rulesLabel = new JLabel(); // the text will be set later
         rulesLabel.setBorder(BorderFactory.createEmptyBorder(
                 INSET_PX, INSET_PX, INSET_PX, INSET_PX));
@@ -315,7 +314,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         c.insets = new Insets(10, 0, 0, 0);
         gb.setConstraints(rulesLabel, c);
         configPanelSouth.add(rulesLabel);
-        
+
         c.gridx = 0;      c.gridy = 4;
         c.weighty = 1.0;
         c.gridwidth = 2;  c.gridheight = 2;
@@ -326,7 +325,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
 			    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         gb.setConstraints(ruleLibScroll, c);
         configPanelSouth.add(ruleLibScroll);
-        
+
         c.gridx = 3;	  c.gridy = 4;
         c.gridwidth = 2;  c.gridheight = 2;
         JScrollPane rulesScroll = new JScrollPane(perspectiveRulesList,
@@ -344,7 +343,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         renameTextField.getDocument().addDocumentListener(
                 new RenameDocumentListener());
 
-        
+
         newPerspectiveButton.addActionListener(new NewPerspectiveListener());
         removePerspectiveButton.addActionListener(
                 new RemovePerspectiveListener());
@@ -355,7 +354,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         addRuleButton.addActionListener(new RuleListener());
         removeRuleButton.addActionListener(new RuleListener());
         resetToDefaultButton.addActionListener(new ResetListener());
-        
+
         perspectiveList.addListSelectionListener(
                 new PerspectiveListSelectionListener());
         perspectiveRulesList.addListSelectionListener(
@@ -364,14 +363,14 @@ public class PerspectiveConfigurator extends ArgoDialog {
         ruleLibraryList.addListSelectionListener(
                 new LibraryListSelectionListener());
         ruleLibraryList.addMouseListener(new RuleListMouseListener());
-        
+
         getOkButton().addActionListener(new OkListener());
     }
 
     /**
-     * Load all the existing rules from the perspective manager 
-     * for presentation. These will be presented as the library of rules 
-     * the user may pick from. 
+     * Load all the existing rules from the perspective manager
+     * for presentation. These will be presented as the library of rules
+     * the user may pick from.
      */
     private void loadLibrary() {
         List rulesLib = new ArrayList();
@@ -384,7 +383,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
             }
         });
         // remove the ones already selected (if a perspective is selected)
-        ExplorerPerspective selPers = 
+        ExplorerPerspective selPers =
             (ExplorerPerspective) perspectiveList.getSelectedValue();
         if (selPers != null) {
             Iterator it1 = selPers.getList().iterator();
@@ -419,27 +418,27 @@ public class PerspectiveConfigurator extends ArgoDialog {
         // to the list model so that the orginal ones are not changed
         // in the case of a cancel action by the user.
         for (int i = 0; i < perspectives.size(); i++) {
-            ExplorerPerspective perspective =  
+            ExplorerPerspective perspective =
                 (ExplorerPerspective) perspectives.get(i);
             Object[] ruleArray = perspective.getRulesArray();
-            
-            ExplorerPerspective editablePerspective = 
+
+            ExplorerPerspective editablePerspective =
                 new ExplorerPerspective(perspective.toString());
             for (int r = 0; r < ruleArray.length; r++) {
                 editablePerspective.addRule((PerspectiveRule) ruleArray[r]);
             }
-            
+
             perspectiveListModel.addElement(editablePerspective);
         }
-        
+
         updatePersLabel();
     }
-    
+
     /**
-     * Update the label above the list of perspectives with count. 
+     * Update the label above the list of perspectives with count.
      */
     private void updatePersLabel() {
-        persLabel.setText(Translator.localize("label.perspectives") 
+        persLabel.setText(Translator.localize("label.perspectives")
                 + " (" + perspectiveListModel.size() + ")");
     }
 
@@ -448,7 +447,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
      */
     private void updateLibLabel() {
         // update the label (which shows the number of rules)
-        ruleLibLabel.setText(Translator.localize("label.rules-library") 
+        ruleLibLabel.setText(Translator.localize("label.rules-library")
                 + " (" + ruleLibraryListModel.size() + ")");
     }
 
@@ -457,7 +456,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
      */
     private void updateRuleLabel() {
         // update the label (which shows the number of rules)
-        rulesLabel.setText(Translator.localize("label.selected-rules") 
+        rulesLabel.setText(Translator.localize("label.selected-rules")
                 + " (" + perspectiveRulesListModel.size() + ")");
     }
 
@@ -480,36 +479,36 @@ public class PerspectiveConfigurator extends ArgoDialog {
         while (it.hasNext())
             model.addElement(it.next());
     }
-    
+
     /**
      * Handles pressing the OK button. <p>
-     * 
+     *
      * Updates the perspectives in the explorer,
      * saves the user perspectives and exits.
      */
     class OkListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            
+
             PerspectiveManager.getInstance().removeAllPerspectives();
-            
+
             for (int i = 0; i < perspectiveListModel.getSize(); i++) {
                 Object elem = perspectiveListModel.getElementAt(i);
                 PerspectiveManager.getInstance().addPerspective(elem);
             }
-            
+
             PerspectiveManager.getInstance().saveUserPerspectives();
         }
     }
 
     /**
      * Handles pressing the Reset-To-Default button. <p>
-     * 
+     *
      * Resets all prerspectives to the build-in defaults.
      */
     class ResetListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            
-            Collection c = 
+
+            Collection c =
                 PerspectiveManager.getInstance().getDefaultPerspectives();
             if (c.size() > 0) {
                 perspectiveListModel.removeAllElements();
@@ -521,14 +520,15 @@ public class PerspectiveConfigurator extends ArgoDialog {
             }
         }
     }
-    
+
     /**
      * Handles pressing the "New" button.
      */
     class NewPerspectiveListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             Object[] msgArgs = {
-                new Integer((perspectiveList.getModel().getSize() + 1)) };
+                new Integer((perspectiveList.getModel().getSize() + 1)),
+	    };
 	    ExplorerPerspective newPers =
 		new ExplorerPerspective(Translator.messageFormat(
                     "dialog.perspective.explorer-perspective", msgArgs));
@@ -539,7 +539,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
 	    updateRuleLabel();
         }
     }
-    
+
     /**
      * Handles pressing the "Remove" button.
      */
@@ -556,7 +556,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
             updatePersLabel();
         }
     }
-    
+
     /**
      * Handles pressing the Duplicate button.
      */
@@ -565,7 +565,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
             Object sel = perspectiveList.getSelectedValue();
             if (sel != null) {
                 Object[] msgArgs = {sel.toString() };
-                ExplorerPerspective newPers = 
+                ExplorerPerspective newPers =
                     ((ExplorerPerspective) sel).makeNamedClone(Translator
                         .messageFormat("dialog.perspective.copy-of", msgArgs));
                 perspectiveListModel.insertElementAt(newPers, 0);
@@ -574,27 +574,27 @@ public class PerspectiveConfigurator extends ArgoDialog {
             updatePersLabel();
         }
     }
-    
+
     /**
      * Handles pressing the ">>" or "<<" buttons.
      */
     class RuleListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            
+
             Object src = e.getSource();
-            if (perspectiveList.getSelectedValue() == null) { 
+            if (perspectiveList.getSelectedValue() == null) {
                 return;
             }
-            if (src == addRuleButton) { 
+            if (src == addRuleButton) {
                 doAddRule();
-            } else if (src == removeRuleButton) { 
+            } else if (src == removeRuleButton) {
                 doRemoveRule();
             }
         }
     }
-    
+
     /**
-     * Handles double-clicking on the library list or on the ruleslist. 
+     * Handles double-clicking on the library list or on the ruleslist.
      * This triggers the same functions as ">>" or "<<".
      */
     class RuleListMouseListener extends MouseAdapter {
@@ -604,7 +604,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
 		|| perspectiveList.getSelectedValue() == null) {
 		return;
 	    }
-            
+
             if (src == ruleLibraryList && addRuleButton.isEnabled()) {
                 doAddRule();
 	    }
@@ -613,9 +613,9 @@ public class PerspectiveConfigurator extends ArgoDialog {
 	    }
         }
     }
-    
+
     /**
-     * Add the currently selected rule from the library to the rules list 
+     * Add the currently selected rule from the library to the rules list
      * for the current perspective.
      */
     private void doAddRule() {
@@ -623,9 +623,9 @@ public class PerspectiveConfigurator extends ArgoDialog {
         int selLibNr = ruleLibraryList.getSelectedIndex();
         try {
             String ruleName = sel.getClass().getName();
-            PerspectiveRule newRule =  
+            PerspectiveRule newRule =
                 (PerspectiveRule) Class.forName(ruleName).newInstance();
-            
+
             perspectiveRulesListModel.insertElementAt(newRule, 0);
             ((ExplorerPerspective) perspectiveList.getSelectedValue())
                 .addRule(newRule);
@@ -634,7 +634,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
             // remove the rule from the library list
             loadLibrary();
             // set the newly selected item in the library list
-            selLibNr = ruleLibraryListModel.size() > selLibNr 
+            selLibNr = ruleLibraryListModel.size() > selLibNr
                 ? selLibNr : ruleLibraryListModel.size() - 1;
             ruleLibraryList.setSelectedIndex(selLibNr);
             updateRuleLabel();
@@ -642,9 +642,9 @@ public class PerspectiveConfigurator extends ArgoDialog {
             LOG.error("problem adding rule");
         }
     }
-    
+
     /**
-     * Remove the currently selected rule from the rules list 
+     * Remove the currently selected rule from the rules list
      * for the current perspective.
      */
     private void doRemoveRule() {
@@ -653,10 +653,10 @@ public class PerspectiveConfigurator extends ArgoDialog {
 	    (PerspectiveRule) perspectiveRulesList.getSelectedValue();
         int selectedItem = perspectiveRulesList.getSelectedIndex();
 	Object selPers = perspectiveList.getSelectedValue();
-        
+
         perspectiveRulesListModel.removeElement(sel);
         ((ExplorerPerspective) selPers).removeRule(sel);
-        
+
         if (perspectiveRulesListModel.getSize() > selectedItem) {
             perspectiveRulesList.setSelectedIndex(selectedItem);
         } else if (perspectiveRulesListModel.getSize() > 0)
@@ -667,7 +667,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         ruleLibraryList.setSelectedIndex(selLibNr);
         updateRuleLabel();
     }
-    
+
     /**
      * Handles pressing the move up button.
      */
@@ -684,7 +684,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
             }
         }
     }
-    
+
     /**
      * Handles pressing the move down button.
      */
@@ -701,7 +701,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
             }
         }
     }
-    
+
     /**
      * Handles confirming a changed text in the text-entry field
      * (e.g. pressing Enter) for the perspective name.
@@ -714,7 +714,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
             if (sel >= 0 && newName.length() > 0) {
                 ((ExplorerPerspective) selPers).setName(newName);
                 perspectiveListModel.set(sel, selPers);
-                /* TODO: Replace the functioncall in the next line 
+                /* TODO: Replace the functioncall in the next line
                  * by .requestFocusInWindow() once
                  * we do not support Java 1.3 any more.
                  */
@@ -722,9 +722,9 @@ public class PerspectiveConfigurator extends ArgoDialog {
             }
         }
     }
-    
+
     /**
-     * Handles changes in the text in the text-entry field 
+     * Handles changes in the text in the text-entry field
      * for the perspective name.
      */
     class RenameDocumentListener implements DocumentListener {
@@ -748,14 +748,14 @@ public class PerspectiveConfigurator extends ArgoDialog {
         }
 
     }
-    
+
     /**
      * Handles selection changes in the perspective list.
      */
     class PerspectiveListSelectionListener implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent lse) {
             if (lse.getValueIsAdjusting()) return;
-            
+
             Object selPers = perspectiveList.getSelectedValue();
             loadLibrary();
             Object selRule = ruleLibraryList.getSelectedValue();
@@ -763,16 +763,16 @@ public class PerspectiveConfigurator extends ArgoDialog {
             removePerspectiveButton.setEnabled(selPers != null);
             duplicatePerspectiveButton.setEnabled(selPers != null);
             moveUpButton.setEnabled(perspectiveList.getSelectedIndex() > 0);
-            moveDownButton.setEnabled((selPers != null) 
-                    && (perspectiveList.getSelectedIndex() 
+            moveDownButton.setEnabled((selPers != null)
+                    && (perspectiveList.getSelectedIndex()
                             < (perspectiveList.getModel().getSize() - 1)));
-            
+
             if (selPers == null) return;
             renameTextField.setText(selPers.toString());
-            
+
             ExplorerPerspective pers = (ExplorerPerspective) selPers;
             perspectiveRulesListModel.clear();
-            
+
             for (int i = 0; i < pers.getRulesArray().length; i++) {
                 perspectiveRulesListModel.insertElementAt(
                                 pers.getRulesArray()[i], 0);
@@ -782,26 +782,26 @@ public class PerspectiveConfigurator extends ArgoDialog {
             updateRuleLabel();
         }
     }
-    
+
     /**
      * Handles selection changes in the rules list.
      */
     class RulesListSelectionListener implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent lse) {
             if (lse.getValueIsAdjusting()) return;
-            
+
             Object selPers = null;
             if (perspectiveListModel.size() > 0)
                 selPers = perspectiveList.getSelectedValue();
-            
+
             Object selRule = null;
-            if (perspectiveRulesListModel.size() > 0) 
+            if (perspectiveRulesListModel.size() > 0)
                 selRule = perspectiveRulesList.getSelectedValue();
-            
+
             removeRuleButton.setEnabled(selPers != null && selRule != null);
         }
     }
-    
+
     /**
      * Handles selection changes in the library list.
      *
@@ -809,7 +809,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
     class LibraryListSelectionListener implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent lse) {
             if (lse.getValueIsAdjusting()) return;
-            
+
             Object selPers = perspectiveList.getSelectedValue();
             Object selRule = ruleLibraryList.getSelectedValue();
             addRuleButton.setEnabled(selPers != null && selRule != null);

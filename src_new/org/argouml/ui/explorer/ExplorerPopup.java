@@ -57,7 +57,7 @@ import org.tigris.gef.ui.PopupGenerator;
  * @since 0.15.2
  */
 public class ExplorerPopup extends JPopupMenu {
-    
+
     /**
      * Creates a new instance of ExplorerPopup.
      *
@@ -65,9 +65,9 @@ public class ExplorerPopup extends JPopupMenu {
      * @param me is the event.
      */
     public ExplorerPopup(Object selectedItem, MouseEvent me) {
-        
+
         super("Explorer popup menu");
-        
+
         if (selectedItem instanceof PopupGenerator) {
             Vector actions =
 		((PopupGenerator) selectedItem).getPopUpActions(me);
@@ -75,10 +75,10 @@ public class ExplorerPopup extends JPopupMenu {
                 this.add((AbstractAction) e.nextElement());
             }
         } else {
-            final Project currentProject = 
+            final Project currentProject =
                 ProjectManager.getManager().getCurrentProject();
             final Diagram activeDiagram = currentProject.getActiveDiagram();
-            
+
             // TODO: I've made some attempt to rationalize the conditions here
             // and make them more readable. However I'd suggest that the
             // conditions should move to each diagram.
@@ -96,9 +96,9 @@ public class ExplorerPopup extends JPopupMenu {
             //    action.setEnabled(action.shouldBeEnabled());
             //    this.add(action);
             //}
-            
+
             final Object projectModel = currentProject.getModel();
-            final boolean modelElementSelected = 
+            final boolean modelElementSelected =
                 ModelFacade.isAModelElement(selectedItem);
 
             if (modelElementSelected) {
@@ -106,51 +106,51 @@ public class ExplorerPopup extends JPopupMenu {
                         ModelFacade.isANaryAssociation(selectedItem);
                 final boolean classifierAndRelationShipSelected =
                     ModelFacade.isAClassifierAndARelationship(selectedItem);
-                final boolean classifierSelected = 
+                final boolean classifierSelected =
                     ModelFacade.isAClassifier(selectedItem);
-                final boolean dataTypeSelected = 
+                final boolean dataTypeSelected =
                     ModelFacade.isADataType(selectedItem);
-                final boolean packageSelected = 
+                final boolean packageSelected =
                     ModelFacade.isAPackage(selectedItem);
-                final boolean stateVertexSelected = 
+                final boolean stateVertexSelected =
                     ModelFacade.isAStateVertex(selectedItem);
-                final boolean instanceSelected = 
+                final boolean instanceSelected =
                     ModelFacade.isAInstance(selectedItem);
-                final boolean dataValueSelected = 
+                final boolean dataValueSelected =
                     ModelFacade.isADataValue(selectedItem);
-                final boolean relationshipSelected = 
+                final boolean relationshipSelected =
                     ModelFacade.isARelationship(selectedItem);
-                final boolean flowSelected = 
+                final boolean flowSelected =
                     ModelFacade.isAFlow(selectedItem);
-                final boolean linkSelected = 
+                final boolean linkSelected =
                     ModelFacade.isALink(selectedItem);
-                final boolean transitionSelected = 
+                final boolean transitionSelected =
                     ModelFacade.isATransition(selectedItem);
-                final boolean diagramSelected = 
+                final boolean diagramSelected =
                     selectedItem instanceof Diagram;
-                    
-                final boolean sequenceDiagramActive = 
+
+                final boolean sequenceDiagramActive =
                     activeDiagram instanceof UMLSequenceDiagram;
-                final boolean stateDiagramActive = 
+                final boolean stateDiagramActive =
                     activeDiagram instanceof UMLStateDiagram;
-                    
+
                 final Object selectedStateMachine
                     = (stateVertexSelected)
                     ? Model.getStateMachinesHelper()
 		          .getStateMachine(selectedItem)
                     : null;
-                
-                final Object diagramStateMachine 
+
+                final Object diagramStateMachine
                     = (stateDiagramActive)
                     ? ((UMLStateDiagram) activeDiagram).getStateMachine()
                     : null;
-                
-                if ((classifierSelected && !dataTypeSelected 
+
+                if ((classifierSelected && !dataTypeSelected
                     && !classifierAndRelationShipSelected)
                         || (packageSelected && selectedItem != projectModel)
                         || (stateVertexSelected && stateDiagramActive
                             && diagramStateMachine == selectedStateMachine)
-                        || (instanceSelected && !dataValueSelected 
+                        || (instanceSelected && !dataValueSelected
                             && !sequenceDiagramActive)
                         || nAryAssociationSelected) {
                     UMLAction action =
@@ -160,7 +160,7 @@ public class ExplorerPopup extends JPopupMenu {
                     action.setEnabled(action.shouldBeEnabled());
                     this.add(action);
                 }
-    
+
                 if ((relationshipSelected && !flowSelected && !nAryAssociationSelected)
                         || (linkSelected && !sequenceDiagramActive)
                         || transitionSelected) {
@@ -170,16 +170,16 @@ public class ExplorerPopup extends JPopupMenu {
                     action.setEnabled(action.shouldBeEnabled());
                     this.add(action);
                 }
-                
+
                 if (selectedItem != projectModel || diagramSelected) {
                     this.add(new ActionRemoveFromModel());
                 }
-    
+
                 if (ModelFacade.isAClassifier(selectedItem)
 		    || ModelFacade.isAPackage(selectedItem)) {
                     this.add(ActionSetSourcePath.SINGLETON);
                 }
-    
+
                 if (ModelFacade.isAPackage(selectedItem)
                         || ModelFacade.isAModel(selectedItem)) {
                     this.add(ActionAddPackage.SINGLETON);
@@ -204,7 +204,7 @@ public class ExplorerPopup extends JPopupMenu {
             }
         }
     }
-    
+
     /**
      * Locale a popup menu item in the navigator pane.
      *
@@ -214,5 +214,5 @@ public class ExplorerPopup extends JPopupMenu {
     private final String menuLocalize(String key) {
         return Translator.localize(key);
     }
-    
+
 }

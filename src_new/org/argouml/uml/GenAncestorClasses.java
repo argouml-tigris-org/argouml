@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,7 +31,7 @@ import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.ChildGenerator;
 /** Utility class to generate the base classes of a class. It
  *  recursively moves up the class hierarchy.  But it does that in a
- *  safe way that will not hang in case of cyclic inheritance. 
+ *  safe way that will not hang in case of cyclic inheritance.
  */
 public class GenAncestorClasses implements ChildGenerator {
     //public static GenAncestorClasses TheInstance = new GenAncestorClasses();
@@ -51,15 +51,15 @@ public class GenAncestorClasses implements ChildGenerator {
 
     /**
      * @param cls the class (in fact any GeneralizableElement will do)
-     * @param accum the accumulated list of generalizations 
+     * @param accum the accumulated list of generalizations
      */
-    public void accumulateAncestors(Object/*MGeneralizableElement*/ cls, 
+    public void accumulateAncestors(Object/*MGeneralizableElement*/ cls,
             Vector accum) {
 	Vector gens = new Vector(ModelFacade.getGeneralizations(cls));
 	if (gens == null) return;
 	int size = gens.size();
 	for (int i = 0; i < size; i++) {
-	    Object/*MGeneralization*/ g = /*(MGeneralization)*/ 
+	    Object/*MGeneralization*/ g = /*(MGeneralization)*/
 	                                    (gens).elementAt(i);
 	    Object ge = ModelFacade.getParent(g);
 	    if (!accum.contains(ge)) {

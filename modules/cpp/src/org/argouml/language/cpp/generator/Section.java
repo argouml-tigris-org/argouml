@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003, 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,7 +43,7 @@ public class Section extends AbstractSection {
     public static String generate(String id, String indent) {
         return (generateTop( id, indent ) + generateBottom( id, indent ));
     }
-    
+
     /** Variant of generate( String id, String indent ) which allows
      * parted generation of Top and Bottom, so that GeneratorXX.java
      * can place an initial body within the both identifying lines
@@ -59,7 +59,7 @@ public class Section extends AbstractSection {
         s += indent + "// section " + id + " begin\n";
         return s;
     }
-    
+
     /** Variant of generate( String id, String indent ) which allows
      * parted generation of Top and Bottom, so that GeneratorXX.java
      * can place an initial body within the both identifying lines

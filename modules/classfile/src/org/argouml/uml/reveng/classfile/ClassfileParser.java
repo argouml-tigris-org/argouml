@@ -31,14 +31,14 @@ public class ClassfileParser extends antlr.LLkParser
  {
 
 	// Constants as defined in the JVM classfile specs.
-	public static final byte CONSTANT_Class 		=  7; 
- 	public static final byte CONSTANT_Fieldref 		=  9; 
+	public static final byte CONSTANT_Class 		=  7;
+ 	public static final byte CONSTANT_Fieldref 		=  9;
  	public static final byte CONSTANT_Methodref 		= 10;
  	public static final byte CONSTANT_InterfaceMethodref 	= 11;
  	public static final byte CONSTANT_String 		=  8;
- 	public static final byte CONSTANT_Integer 		=  3; 
- 	public static final byte CONSTANT_Float 		=  4; 
- 	public static final byte CONSTANT_Long 	 		=  5; 
+ 	public static final byte CONSTANT_Integer 		=  3;
+ 	public static final byte CONSTANT_Float 		=  4;
+ 	public static final byte CONSTANT_Long 	 		=  5;
  	public static final byte CONSTANT_Double 		=  6;
  	public static final byte CONSTANT_NameAndType 		= 12;
  	public static final byte CONSTANT_Utf8 			=  1;
@@ -70,7 +70,7 @@ public class ClassfileParser extends antlr.LLkParser
 		_className = name;
             }  else {
                 _className = name.substring(lastDot+1);
-            }    
+            }
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class ClassfileParser extends antlr.LLkParser
 	private void initPoolBuffer(int size) {
 	    // This is a casted short, so we have to remove the sign extension.
 	    _constant = new AST[size & 0xffff];
-	}	
+	}
 
 	/**
 	 * Add a AST holding a constant to the buffer.
@@ -170,7 +170,7 @@ public class ClassfileParser extends antlr.LLkParser
 			arrayDim++;
 			paramDesc = paramDesc.substring(1);
 		    }
-			
+
 		    switch(paramDesc.charAt(0)) {
 	    	        case 'B': typeIdent = "byte"; paramDesc = paramDesc.substring(1); break;
 		        case 'C': typeIdent = "char"; paramDesc = paramDesc.substring(1); break;
@@ -183,7 +183,7 @@ public class ClassfileParser extends antlr.LLkParser
 		        case 'L': int len = paramDesc.indexOf(';') - 1;
 				  typeIdent = paramDesc.substring( 1, 1 + len).replace('/', '.');
 				  paramDesc = paramDesc.substring(len + 2);
-		    }		
+		    }
 
 		    for(int i=0; i < arrayDim; i++) {
 			typeIdent += "[]";
@@ -250,11 +250,11 @@ public ClassfileParser(ParserSharedInputState state) {
 }
 
 	public final void classfile() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST classfile_AST = null;
-		
+
 		magic_number();
 		astFactory.addASTChild(currentAST, returnAST);
 		version_number();
@@ -276,14 +276,14 @@ public ClassfileParser(ParserSharedInputState state) {
 		classfile_AST = (AST)currentAST.root;
 		returnAST = classfile_AST;
 	}
-	
+
 	public final void magic_number() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST magic_number_AST = null;
 		int magic=0;
-		
+
 		magic=u4();
 		if (!(magic==0xcafebabe))
 		  throw new SemanticException("magic==0xcafebabe");
@@ -295,14 +295,14 @@ public ClassfileParser(ParserSharedInputState state) {
 		currentAST.advanceChildToEnd();
 		returnAST = magic_number_AST;
 	}
-	
+
 	public final void version_number() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST version_number_AST = null;
 		short minor=0,major=0; String verStr=null;
-		
+
 		minor=u2();
 		major=u2();
 		version_number_AST = (AST)currentAST.root;
@@ -313,15 +313,15 @@ public ClassfileParser(ParserSharedInputState state) {
 		currentAST.advanceChildToEnd();
 		returnAST = version_number_AST;
 	}
-	
+
 	public final void constant_pool() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST constant_pool_AST = null;
 		AST cp_AST = null;
 		short poolSize=0; int index=1;
-		
+
 		poolSize=u2();
 		initPoolBuffer(poolSize);
 		{
@@ -330,28 +330,28 @@ public ClassfileParser(ParserSharedInputState state) {
 			if (((LA(1)==BYTE))&&(index < ((int)poolSize & 0xffff))) {
 				cp_info();
 				cp_AST = (AST)returnAST;
-				
-				copyConstant(index++, cp_AST); 
-				
+
+				copyConstant(index++, cp_AST);
+
 					       // 8 byte constants consume 2 constant pool entries (according to the JVM specs).
 					       if( (cp_AST.getType() == CONSTANT_LONGINFO) || (cp_AST.getType() == CONSTANT_DOUBLEINFO)) {
 						  index++;
 					       }
-				
+
 			}
 			else {
 				break _loop6;
 			}
-			
+
 		} while (true);
 		}
 		if (!(index==((int)poolSize & 0xffff)))
 		  throw new SemanticException("index==((int)poolSize & 0xffff)");
 		returnAST = constant_pool_AST;
 	}
-	
+
 	public final void type_definition() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST type_definition_AST = null;
@@ -359,7 +359,7 @@ public ClassfileParser(ParserSharedInputState state) {
 		AST c_AST = null;
 		AST s_AST = null;
 		AST i_AST = null;
-		
+
 		access_modifiers();
 		m_AST = (AST)returnAST;
 		class_info();
@@ -369,27 +369,27 @@ public ClassfileParser(ParserSharedInputState state) {
 		interface_block();
 		i_AST = (AST)returnAST;
 		type_definition_AST = (AST)currentAST.root;
-		
+
 			     if( (((ShortAST)m_AST).getShortValue() & ACC_INTERFACE) > 0) {
 			         type_definition_AST = (AST)astFactory.make( (new ASTArray(4)).add((AST)astFactory.create(INTERFACE_DEF)).add(m_AST).add(c_AST).add((AST)astFactory.make( (new ASTArray(2)).add((AST)astFactory.create(EXTENDS_CLAUSE)).add(i_AST))));
 			     } else {
 				 type_definition_AST = (AST)astFactory.make( (new ASTArray(5)).add((AST)astFactory.create(CLASS_DEF)).add(m_AST).add(c_AST).add((AST)astFactory.make( (new ASTArray(2)).add((AST)astFactory.create(EXTENDS_CLAUSE)).add(s_AST))).add((AST)astFactory.make( (new ASTArray(2)).add((AST)astFactory.create(IMPLEMENTS_CLAUSE)).add(i_AST))));
 			     }
-			
+
 		currentAST.root = type_definition_AST;
 		currentAST.child = type_definition_AST!=null &&type_definition_AST.getFirstChild()!=null ?
 			type_definition_AST.getFirstChild() : type_definition_AST;
 		currentAST.advanceChildToEnd();
 		returnAST = type_definition_AST;
 	}
-	
+
 	public final void field_block() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST field_block_AST = null;
 		short fields_count=0;
-		
+
 		fields_count=u2();
 		astFactory.addASTChild(currentAST, returnAST);
 		{
@@ -403,7 +403,7 @@ public ClassfileParser(ParserSharedInputState state) {
 			else {
 				break _loop32;
 			}
-			
+
 		} while (true);
 		}
 		if (!(fields_count==0))
@@ -411,14 +411,14 @@ public ClassfileParser(ParserSharedInputState state) {
 		field_block_AST = (AST)currentAST.root;
 		returnAST = field_block_AST;
 	}
-	
+
 	public final void method_block() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST method_block_AST = null;
 		int methods_count=0;
-		
+
 		methods_count=u2();
 		astFactory.addASTChild(currentAST, returnAST);
 		{
@@ -432,7 +432,7 @@ public ClassfileParser(ParserSharedInputState state) {
 			else {
 				break _loop38;
 			}
-			
+
 		} while (true);
 		}
 		if (!(methods_count==0))
@@ -440,14 +440,14 @@ public ClassfileParser(ParserSharedInputState state) {
 		method_block_AST = (AST)currentAST.root;
 		returnAST = method_block_AST;
 	}
-	
+
 	public final void attribute_block() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST attribute_block_AST = null;
 		int attributes_count=0;
-		
+
 		attributes_count=u2();
 		astFactory.addASTChild(currentAST, returnAST);
 		{
@@ -461,7 +461,7 @@ public ClassfileParser(ParserSharedInputState state) {
 			else {
 				break _loop45;
 			}
-			
+
 		} while (true);
 		}
 		if (!(attributes_count==0))
@@ -469,10 +469,10 @@ public ClassfileParser(ParserSharedInputState state) {
 		attribute_block_AST = (AST)currentAST.root;
 		returnAST = attribute_block_AST;
 	}
-	
+
 	public final int  u4() throws RecognitionException, TokenStreamException {
 		int res=0;
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST u4_AST = null;
@@ -484,7 +484,7 @@ public ClassfileParser(ParserSharedInputState state) {
 		AST low1_AST = null;
 		Token  low2 = null;
 		AST low2_AST = null;
-		
+
 		{
 		high1 = LT(1);
 		high1_AST = (AST)astFactory.create(high1);
@@ -499,19 +499,19 @@ public ClassfileParser(ParserSharedInputState state) {
 		low2_AST = (AST)astFactory.create(low2);
 		match(BYTE);
 		}
-		
+
 			    res = ((ByteToken)high1).getIntValue() << 24
-			          | ((ByteToken)high2).getIntValue() << 16 
+			          | ((ByteToken)high2).getIntValue() << 16
 			          | ((ByteToken)low1).getIntValue() << 8
 			          | ((ByteToken)low2).getIntValue();
-			
+
 		returnAST = u4_AST;
 		return res;
 	}
-	
+
 	public final short  u2() throws RecognitionException, TokenStreamException {
 		short res=0;
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST u2_AST = null;
@@ -519,7 +519,7 @@ public ClassfileParser(ParserSharedInputState state) {
 		AST high_AST = null;
 		Token  low = null;
 		AST low_AST = null;
-		
+
 		{
 		high = LT(1);
 		high_AST = (AST)astFactory.create(high);
@@ -532,9 +532,9 @@ public ClassfileParser(ParserSharedInputState state) {
 		returnAST = u2_AST;
 		return res;
 	}
-	
+
 	public final void cp_info() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST cp_info_AST = null;
@@ -550,7 +550,7 @@ public ClassfileParser(ParserSharedInputState state) {
 		AST cn_AST = null;
 		AST cu_AST = null;
 		byte tag=0;
-		
+
 		tag=u1();
 		{
 		if (((LA(1)==BYTE))&&(tag == CONSTANT_Class)) {
@@ -666,20 +666,20 @@ public ClassfileParser(ParserSharedInputState state) {
 		else {
 			throw new NoViableAltException(LT(1), getFilename());
 		}
-		
+
 		}
 		returnAST = cp_info_AST;
 	}
-	
+
 	public final byte  u1() throws RecognitionException, TokenStreamException {
 		byte res=0;
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST u1_AST = null;
 		Token  val = null;
 		AST val_AST = null;
-		
+
 		val = LT(1);
 		val_AST = (AST)astFactory.create(val);
 		match(BYTE);
@@ -687,14 +687,14 @@ public ClassfileParser(ParserSharedInputState state) {
 		returnAST = u1_AST;
 		return res;
 	}
-	
+
 	public final void constant_class_info() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST constant_class_info_AST = null;
 		short name_index=0;
-		
+
 		name_index=u2();
 		constant_class_info_AST = (AST)currentAST.root;
 		constant_class_info_AST = new ShortAST( CONSTANT_CLASSINFO, name_index);
@@ -704,86 +704,86 @@ public ClassfileParser(ParserSharedInputState state) {
 		currentAST.advanceChildToEnd();
 		returnAST = constant_class_info_AST;
 	}
-	
+
 	public final void constant_fieldref_info() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST constant_fieldref_info_AST = null;
-		
+
 		short class_index=0;
 		short name_and_type_index=0;
-		
-		
+
+
 		class_index=u2();
 		name_and_type_index=u2();
 		constant_fieldref_info_AST = (AST)currentAST.root;
-		
+
 			     constant_fieldref_info_AST = new ShortAST( CONSTANT_FIELDINFO, class_index);
 			     constant_fieldref_info_AST.addChild( new ShortAST( CONSTANT_NAME_TYPE_INFO, name_and_type_index));
-		
+
 		currentAST.root = constant_fieldref_info_AST;
 		currentAST.child = constant_fieldref_info_AST!=null &&constant_fieldref_info_AST.getFirstChild()!=null ?
 			constant_fieldref_info_AST.getFirstChild() : constant_fieldref_info_AST;
 		currentAST.advanceChildToEnd();
 		returnAST = constant_fieldref_info_AST;
 	}
-	
+
 	public final void constant_methodref_info() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST constant_methodref_info_AST = null;
-		
+
 		short class_index=0;
 		short name_and_type_index=0;
-		
-		
+
+
 		class_index=u2();
 		name_and_type_index=u2();
 		constant_methodref_info_AST = (AST)currentAST.root;
-		
+
 			     constant_methodref_info_AST = new ShortAST(CONSTANT_METHODINFO, class_index);
 			     constant_methodref_info_AST.addChild( new ShortAST( CONSTANT_NAME_TYPE_INFO, name_and_type_index));
-			
+
 		currentAST.root = constant_methodref_info_AST;
 		currentAST.child = constant_methodref_info_AST!=null &&constant_methodref_info_AST.getFirstChild()!=null ?
 			constant_methodref_info_AST.getFirstChild() : constant_methodref_info_AST;
 		currentAST.advanceChildToEnd();
 		returnAST = constant_methodref_info_AST;
 	}
-	
+
 	public final void constant_interface_methodref_info() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST constant_interface_methodref_info_AST = null;
-		
+
 		short class_index=0;
 		short name_and_type_index=0;
-		
-		
+
+
 		class_index=u2();
 		name_and_type_index=u2();
 		constant_interface_methodref_info_AST = (AST)currentAST.root;
-		
+
 			     constant_interface_methodref_info_AST = new ShortAST(CONSTANT_INTERFACE_METHODINFO,class_index);
 			     constant_interface_methodref_info_AST.addChild( new ShortAST( CONSTANT_NAME_TYPE_INFO,name_and_type_index));
-			
+
 		currentAST.root = constant_interface_methodref_info_AST;
 		currentAST.child = constant_interface_methodref_info_AST!=null &&constant_interface_methodref_info_AST.getFirstChild()!=null ?
 			constant_interface_methodref_info_AST.getFirstChild() : constant_interface_methodref_info_AST;
 		currentAST.advanceChildToEnd();
 		returnAST = constant_interface_methodref_info_AST;
 	}
-	
+
 	public final void constant_string_info() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST constant_string_info_AST = null;
 		short string_index=0;
-		
+
 		string_index=u2();
 		constant_string_info_AST = (AST)currentAST.root;
 		constant_string_info_AST = new ShortAST( CONSTANT_STRINGINFO, string_index);
@@ -793,14 +793,14 @@ public ClassfileParser(ParserSharedInputState state) {
 		currentAST.advanceChildToEnd();
 		returnAST = constant_string_info_AST;
 	}
-	
+
 	public final void constant_integer_info() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST constant_integer_info_AST = null;
 		int val=0;
-		
+
 		val=u4();
 		constant_integer_info_AST = (AST)currentAST.root;
 		constant_integer_info_AST = new ObjectAST(CONSTANT_INTEGERINFO, new Integer(val));
@@ -810,14 +810,14 @@ public ClassfileParser(ParserSharedInputState state) {
 		currentAST.advanceChildToEnd();
 		returnAST = constant_integer_info_AST;
 	}
-	
+
 	public final void constant_float_info() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST constant_float_info_AST = null;
 		int bytes=0;
-		
+
 		bytes=u4();
 		constant_float_info_AST = (AST)currentAST.root;
 		constant_float_info_AST = new ObjectAST(CONSTANT_FLOATINFO, new Double(Float.intBitsToFloat(bytes)));
@@ -827,14 +827,14 @@ public ClassfileParser(ParserSharedInputState state) {
 		currentAST.advanceChildToEnd();
 		returnAST = constant_float_info_AST;
 	}
-	
+
 	public final void constant_long_info() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST constant_long_info_AST = null;
 		int high_bytes=0, low_bytes=0; long val = 0L;
-		
+
 		high_bytes=u4();
 		low_bytes=u4();
 		constant_long_info_AST = (AST)currentAST.root;
@@ -845,59 +845,59 @@ public ClassfileParser(ParserSharedInputState state) {
 		currentAST.advanceChildToEnd();
 		returnAST = constant_long_info_AST;
 	}
-	
+
 	public final void constant_double_info() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST constant_double_info_AST = null;
 		int high_bytes=0, low_bytes=0;
-		
+
 		high_bytes=u4();
 		low_bytes=u4();
 		constant_double_info_AST = (AST)currentAST.root;
 		constant_double_info_AST = new ObjectAST(CONSTANT_DOUBLEINFO, new Double(Double.longBitsToDouble( (long)high_bytes | ((long)low_bytes & 0xFFFFL))));
-		
+
 		currentAST.root = constant_double_info_AST;
 		currentAST.child = constant_double_info_AST!=null &&constant_double_info_AST.getFirstChild()!=null ?
 			constant_double_info_AST.getFirstChild() : constant_double_info_AST;
 		currentAST.advanceChildToEnd();
 		returnAST = constant_double_info_AST;
 	}
-	
+
 	public final void constant_name_and_type_info() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST constant_name_and_type_info_AST = null;
 		short name_index=0, descriptor_index=0;
-		
+
 		name_index=u2();
 		descriptor_index=u2();
 		constant_name_and_type_info_AST = (AST)currentAST.root;
-		
+
 			     constant_name_and_type_info_AST = new ShortAST(CONSTANT_NAME_TYPE_INFO,name_index);
 			     constant_name_and_type_info_AST.addChild(new ShortAST(CONSTANT_STRINGINFO,descriptor_index));
-			
+
 		currentAST.root = constant_name_and_type_info_AST;
 		currentAST.child = constant_name_and_type_info_AST!=null &&constant_name_and_type_info_AST.getFirstChild()!=null ?
 			constant_name_and_type_info_AST.getFirstChild() : constant_name_and_type_info_AST;
 		currentAST.advanceChildToEnd();
 		returnAST = constant_name_and_type_info_AST;
 	}
-	
+
 	public final void constant_utf8_info() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST constant_utf8_info_AST = null;
-		
+
 		short length=0;
 		byte [] bytes;
 		byte bytebuf=0;
 		int bytepos=0;
-		
-		
+
+
 		length=u2();
 		bytes = new byte[length];
 		{
@@ -910,34 +910,34 @@ public ClassfileParser(ParserSharedInputState state) {
 			else {
 				break _loop21;
 			}
-			
+
 		} while (true);
 		}
 		if (!(length==0))
 		  throw new SemanticException("length==0");
 		constant_utf8_info_AST = (AST)currentAST.root;
-		
+
 		String name = new String(bytes);
-			    name= name.replace('/','.'); 
+			    name= name.replace('/','.');
 			    if(name.startsWith("[") && name.endsWith("]")) {
 				name = name.substring(1,name.length()-1) + "[]";
 			    }
 			    constant_utf8_info_AST = (AST)astFactory.create(CONSTANT_UTF8STRING,name);
-		
+
 		currentAST.root = constant_utf8_info_AST;
 		currentAST.child = constant_utf8_info_AST!=null &&constant_utf8_info_AST.getFirstChild()!=null ?
 			constant_utf8_info_AST.getFirstChild() : constant_utf8_info_AST;
 		currentAST.advanceChildToEnd();
 		returnAST = constant_utf8_info_AST;
 	}
-	
+
 	public final void access_modifiers() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST access_modifiers_AST = null;
 		short modifiers=0;
-		
+
 		modifiers=u2();
 		access_modifiers_AST = (AST)currentAST.root;
 		access_modifiers_AST = new ShortAST( ACCESS_MODIFIERS, modifiers);
@@ -947,55 +947,55 @@ public ClassfileParser(ParserSharedInputState state) {
 		currentAST.advanceChildToEnd();
 		returnAST = access_modifiers_AST;
 	}
-	
+
 	public final void class_info() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST class_info_AST = null;
 		short class_info_index = 0;
-		
+
 		class_info_index=u2();
 		class_info_AST = (AST)currentAST.root;
-		
+
 		String class_name = getConstant(((ShortAST)getConstant(class_info_index)).getShortValue()).getText();
 			    setClassName(class_name);
 			    class_info_AST = (AST)astFactory.create(IDENT,class_name);
-			
+
 		currentAST.root = class_info_AST;
 		currentAST.child = class_info_AST!=null &&class_info_AST.getFirstChild()!=null ?
 			class_info_AST.getFirstChild() : class_info_AST;
 		currentAST.advanceChildToEnd();
 		returnAST = class_info_AST;
 	}
-	
+
 	public final void superclass_info() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST superclass_info_AST = null;
 		short class_info_index = 0;
-		
+
 		class_info_index=u2();
 		superclass_info_AST = (AST)currentAST.root;
-		
+
 		String class_name = getConstant(((ShortAST)getConstant(class_info_index)).getShortValue()).getText();
 			    superclass_info_AST = (AST)astFactory.create(IDENT,class_name);
-			
+
 		currentAST.root = superclass_info_AST;
 		currentAST.child = superclass_info_AST!=null &&superclass_info_AST.getFirstChild()!=null ?
 			superclass_info_AST.getFirstChild() : superclass_info_AST;
 		currentAST.advanceChildToEnd();
 		returnAST = superclass_info_AST;
 	}
-	
+
 	public final void interface_block() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST interface_block_AST = null;
 		short interfaces_count=0;
-		
+
 		interfaces_count=u2();
 		astFactory.addASTChild(currentAST, returnAST);
 		{
@@ -1009,7 +1009,7 @@ public ClassfileParser(ParserSharedInputState state) {
 			else {
 				break _loop28;
 			}
-			
+
 		} while (true);
 		}
 		if (!(interfaces_count==0))
@@ -1017,39 +1017,39 @@ public ClassfileParser(ParserSharedInputState state) {
 		interface_block_AST = (AST)currentAST.root;
 		returnAST = interface_block_AST;
 	}
-	
+
 	public final void interface_info() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST interface_info_AST = null;
 		short interface_index=0;
-		
+
 		interface_index=u2();
 		interface_info_AST = (AST)currentAST.root;
-		
+
 		String interface_name = getConstant(((ShortAST)getConstant(interface_index)).getShortValue()).getText();
 			     interface_info_AST = (AST)astFactory.create(IDENT,interface_name);
-			
+
 		currentAST.root = interface_info_AST;
 		currentAST.child = interface_info_AST!=null &&interface_info_AST.getFirstChild()!=null ?
 			interface_info_AST.getFirstChild() : interface_info_AST;
 		currentAST.advanceChildToEnd();
 		returnAST = interface_info_AST;
 	}
-	
+
 	public final void field_info() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST field_info_AST = null;
-		
+
 		short access_flags=0;
 		short name_index=0;
 		short descriptor_index=0;
 		short attributes_count;
-		
-		
+
+
 		access_flags=u2();
 		astFactory.addASTChild(currentAST, returnAST);
 		name_index=u2();
@@ -1069,18 +1069,18 @@ public ClassfileParser(ParserSharedInputState state) {
 			else {
 				break _loop35;
 			}
-			
+
 		} while (true);
 		}
 		if (!(attributes_count==0))
 		  throw new SemanticException("attributes_count==0");
 		field_info_AST = (AST)currentAST.root;
-		
+
 			     AST access = new ShortAST(ACCESS_MODIFIERS,access_flags);
 			     String typeIdent = convertDescriptor(getConstant(descriptor_index).getText());
 			     String name = getConstant(name_index).getText();
 			     field_info_AST = (AST)astFactory.make( (new ASTArray(5)).add(field_info_AST).add((AST)astFactory.create(VARIABLE_DEF)).add(access).add((AST)astFactory.create(TYPE,typeIdent)).add((AST)astFactory.create(IDENT,name)));
-			
+
 		currentAST.root = field_info_AST;
 		currentAST.child = field_info_AST!=null &&field_info_AST.getFirstChild()!=null ?
 			field_info_AST.getFirstChild() : field_info_AST;
@@ -1088,9 +1088,9 @@ public ClassfileParser(ParserSharedInputState state) {
 		field_info_AST = (AST)currentAST.root;
 		returnAST = field_info_AST;
 	}
-	
+
 	public final void attribute_info() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST attribute_info_AST = null;
@@ -1100,15 +1100,15 @@ public ClassfileParser(ParserSharedInputState state) {
 		AST lnattr_AST = null;
 		AST lattr_AST = null;
 		AST sattr_AST = null;
-		
+
 		short attribute_name_index=0;
 		int attribute_length=0;
 		String attribute_name=null;
 		byte [] info;
 		int bytepos=0;
 		byte bytebuf=0;
-		
-		
+
+
 		try {      // for error handling
 			attribute_name_index=u2();
 			if (!(getConstant(attribute_name_index).getType()==CONSTANT_UTF8STRING))
@@ -1188,7 +1188,7 @@ public ClassfileParser(ParserSharedInputState state) {
 					else {
 						break _loop49;
 					}
-					
+
 				} while (true);
 				}
 				if (!(bytepos==attribute_length))
@@ -1203,28 +1203,28 @@ public ClassfileParser(ParserSharedInputState state) {
 			else {
 				throw new NoViableAltException(LT(1), getFilename());
 			}
-			
+
 			}
 		}
 		catch (SemanticException se) {
 		}
 		returnAST = attribute_info_AST;
 	}
-	
+
 	public final void method_info() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST method_info_AST = null;
 		AST attr_AST = null;
-		
+
 		short access_flags=0;
 		short name_index=0;
 		short descriptor_index=0;
 		short attributes_count=0;
 		AST exceptions = (AST)astFactory.create(THROWS);  // Create a empty exception clause.
-		
-		
+
+
 		access_flags=u2();
 		name_index=u2();
 		descriptor_index=u2();
@@ -1244,20 +1244,20 @@ public ClassfileParser(ParserSharedInputState state) {
 				else {
 					throw new NoViableAltException(LT(1), getFilename());
 				}
-				
+
 				}
 				attributes_count--;
 			}
 			else {
 				break _loop42;
 			}
-			
+
 		} while (true);
 		}
 		if (!(attributes_count==0))
 		  throw new SemanticException("attributes_count==0");
 		method_info_AST = (AST)currentAST.root;
-		
+
 			      String [] method_descriptor = convertMethodDescriptor(getConstant(descriptor_index).getText());
 			      AST parameters = new CommonAST();
 			      parameters.setType(PARAMETERS);
@@ -1268,7 +1268,7 @@ public ClassfileParser(ParserSharedInputState state) {
 				 AST param = (AST)astFactory.make( (new ASTArray(4)).add((AST)astFactory.create(PARAMETER_DEF)).add(access).add((AST)astFactory.create(TYPE,paramType)).add((AST)astFactory.create(IDENT,paramIdent)));
 				 parameters.addChild(param);
 			      }
-		
+
 			      AST access = new ShortAST(ACCESS_MODIFIERS,access_flags);
 			      String ident = getConstant(name_index).getText();
 			      if( "<init>".equals(ident)) {  // is this a constructor?
@@ -1278,20 +1278,20 @@ public ClassfileParser(ParserSharedInputState state) {
 			          String retType = method_descriptor[0];
 			          method_info_AST = (AST)astFactory.make( (new ASTArray(6)).add((AST)astFactory.create(METHOD_DEF)).add(access).add((AST)astFactory.create(TYPE,retType)).add((AST)astFactory.create(IDENT,ident)).add(parameters).add(exceptions));
 			      }
-			
+
 		currentAST.root = method_info_AST;
 		currentAST.child = method_info_AST!=null &&method_info_AST.getFirstChild()!=null ?
 			method_info_AST.getFirstChild() : method_info_AST;
 		currentAST.advanceChildToEnd();
 		returnAST = method_info_AST;
 	}
-	
+
 	public final void code_attribute() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST code_attribute_AST = null;
-		
+
 		short max_stack = 0;
 		short max_locals = 0;
 		int code_length = 0;
@@ -1302,8 +1302,8 @@ public ClassfileParser(ParserSharedInputState state) {
 		int exceptionpos=0;
 		short attribute_count=0;
 		int attributepos=0;
-		
-		
+
+
 		max_stack=u2();
 		astFactory.addASTChild(currentAST, returnAST);
 		max_locals=u2();
@@ -1322,7 +1322,7 @@ public ClassfileParser(ParserSharedInputState state) {
 			else {
 				break _loop54;
 			}
-			
+
 		} while (true);
 		}
 		if (!(codepos==code_length))
@@ -1340,7 +1340,7 @@ public ClassfileParser(ParserSharedInputState state) {
 			else {
 				break _loop56;
 			}
-			
+
 		} while (true);
 		}
 		if (!(exceptionpos==((int)exception_table_length & 0xffff)))
@@ -1358,7 +1358,7 @@ public ClassfileParser(ParserSharedInputState state) {
 			else {
 				break _loop58;
 			}
-			
+
 		} while (true);
 		}
 		if (!(attributepos==((int)attribute_count & 0xffff)))
@@ -1366,14 +1366,14 @@ public ClassfileParser(ParserSharedInputState state) {
 		code_attribute_AST = (AST)currentAST.root;
 		returnAST = code_attribute_AST;
 	}
-	
+
 	public final void constantValue_attribute() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST constantValue_attribute_AST = null;
 		short constantvalue_index = 0;
-		
+
 		constantvalue_index=u2();
 		constantValue_attribute_AST = (AST)currentAST.root;
 		constantValue_attribute_AST = new ShortAST(ATTRIBUTE_CONSTANT, constantvalue_index);
@@ -1383,17 +1383,17 @@ public ClassfileParser(ParserSharedInputState state) {
 		currentAST.advanceChildToEnd();
 		returnAST = constantValue_attribute_AST;
 	}
-	
+
 	public final void exceptions_attribute() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST exceptions_attribute_AST = null;
-		
+
 		short number_of_exceptions = 0;
 		int indexpos=0;
-		
-		
+
+
 		number_of_exceptions=u2();
 		astFactory.addASTChild(currentAST, returnAST);
 		{
@@ -1407,7 +1407,7 @@ public ClassfileParser(ParserSharedInputState state) {
 			else {
 				break _loop62;
 			}
-			
+
 		} while (true);
 		}
 		if (!(indexpos==((int)number_of_exceptions & 0xffff)))
@@ -1421,17 +1421,17 @@ public ClassfileParser(ParserSharedInputState state) {
 		exceptions_attribute_AST = (AST)currentAST.root;
 		returnAST = exceptions_attribute_AST;
 	}
-	
+
 	public final void lineNumberTable_attribute() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST lineNumberTable_attribute_AST = null;
-		
-		short line_number_table_length = 0; 
+
+		short line_number_table_length = 0;
 		int entrypos = 0;
-		
-		
+
+
 		line_number_table_length=u2();
 		astFactory.addASTChild(currentAST, returnAST);
 		{
@@ -1445,7 +1445,7 @@ public ClassfileParser(ParserSharedInputState state) {
 			else {
 				break _loop66;
 			}
-			
+
 		} while (true);
 		}
 		if (!(entrypos==((int)line_number_table_length & 0xffff)))
@@ -1453,17 +1453,17 @@ public ClassfileParser(ParserSharedInputState state) {
 		lineNumberTable_attribute_AST = (AST)currentAST.root;
 		returnAST = lineNumberTable_attribute_AST;
 	}
-	
+
 	public final void localVariableTable_attribute() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST localVariableTable_attribute_AST = null;
-		
-		short local_variable_table_length = 0; 
+
+		short local_variable_table_length = 0;
 		int entrypos=0;
-		
-		
+
+
 		local_variable_table_length=u2();
 		astFactory.addASTChild(currentAST, returnAST);
 		{
@@ -1477,7 +1477,7 @@ public ClassfileParser(ParserSharedInputState state) {
 			else {
 				break _loop70;
 			}
-			
+
 		} while (true);
 		}
 		if (!(entrypos==((int)local_variable_table_length & 0xffff)))
@@ -1485,39 +1485,39 @@ public ClassfileParser(ParserSharedInputState state) {
 		localVariableTable_attribute_AST = (AST)currentAST.root;
 		returnAST = localVariableTable_attribute_AST;
 	}
-	
+
 	public final void sourcefile_attribute() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST sourcefile_attribute_AST = null;
 		short sourcefile_index = 0;
-		
+
 		sourcefile_index=u2();
 		sourcefile_attribute_AST = (AST)currentAST.root;
-		
+
 			     String sourcefile_name = getConstant(sourcefile_index).getText();
 			     sourcefile_attribute_AST = (AST)astFactory.create(SOURCEFILE,sourcefile_name);
-			
+
 		currentAST.root = sourcefile_attribute_AST;
 		currentAST.child = sourcefile_attribute_AST!=null &&sourcefile_attribute_AST.getFirstChild()!=null ?
 			sourcefile_attribute_AST.getFirstChild() : sourcefile_attribute_AST;
 		currentAST.advanceChildToEnd();
 		returnAST = sourcefile_attribute_AST;
 	}
-	
+
 	public final void exception_table_entry() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST exception_table_entry_AST = null;
-		
+
 		short start_pc = 0;
 		short end_pc = 0;
 		short handler_pc = 0;
 		short catch_type = 0;
-		
-		
+
+
 		start_pc=u2();
 		astFactory.addASTChild(currentAST, returnAST);
 		end_pc=u2();
@@ -1529,38 +1529,38 @@ public ClassfileParser(ParserSharedInputState state) {
 		exception_table_entry_AST = (AST)currentAST.root;
 		returnAST = exception_table_entry_AST;
 	}
-	
+
 	public final void exception_index_entry() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST exception_index_entry_AST = null;
 		short index=0;
-		
+
 		index=u2();
 		if (!(index != 0))
 		  throw new SemanticException("index != 0");
 		exception_index_entry_AST = (AST)currentAST.root;
-		
+
 			     // The index references a Class_info structure in the constant pool,
 			     // that we can use to get the name of the exception (class).
 		String exception_name = getConstant(((ShortAST)getConstant(index)).getShortValue()).getText();
 			     exception_index_entry_AST = (AST)astFactory.create(IDENT,exception_name);
-			
+
 		currentAST.root = exception_index_entry_AST;
 		currentAST.child = exception_index_entry_AST!=null &&exception_index_entry_AST.getFirstChild()!=null ?
 			exception_index_entry_AST.getFirstChild() : exception_index_entry_AST;
 		currentAST.advanceChildToEnd();
 		returnAST = exception_index_entry_AST;
 	}
-	
+
 	public final void lineNumberTableEntry() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST lineNumberTableEntry_AST = null;
 		short start_pc=0, line_number=0;
-		
+
 		start_pc=u2();
 		astFactory.addASTChild(currentAST, returnAST);
 		line_number=u2();
@@ -1568,14 +1568,14 @@ public ClassfileParser(ParserSharedInputState state) {
 		lineNumberTableEntry_AST = (AST)currentAST.root;
 		returnAST = lineNumberTableEntry_AST;
 	}
-	
+
 	public final void localVariableTableEntry() throws RecognitionException, TokenStreamException {
-		
+
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		AST localVariableTableEntry_AST = null;
 		short start_pc = 0, length = 0, name_index = 0, descriptor_index = 0, index = 0;
-		
+
 		start_pc=u2();
 		astFactory.addASTChild(currentAST, returnAST);
 		length=u2();
@@ -1589,8 +1589,8 @@ public ClassfileParser(ParserSharedInputState state) {
 		localVariableTableEntry_AST = (AST)currentAST.root;
 		returnAST = localVariableTableEntry_AST;
 	}
-	
-	
+
+
 	public static final String[] _tokenNames = {
 		"<0>",
 		"EOF",
@@ -1627,11 +1627,11 @@ public ClassfileParser(ParserSharedInputState state) {
 		"VERSION",
 		"BYTE"
 	};
-	
+
 	private static final long[] mk_tokenSet_0() {
 		long[] data = { 8589934594L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
-	
+
 	}

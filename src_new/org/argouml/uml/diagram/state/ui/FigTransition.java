@@ -44,21 +44,21 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigText;
 
 /**
- * This class represents the graphical representation of a transition 
+ * This class represents the graphical representation of a transition
  * on a diagram.
  *
  */
 public class FigTransition extends FigEdgeModelElement {
-    
+
     private ArrowHeadGreater endArrow = new ArrowHeadGreater();
-    
+
     /**
-     * If <code>dashed</code> is true, then the transition represents 
-     * "object flow". 
+     * If <code>dashed</code> is true, then the transition represents
+     * "object flow".
      * If the line is solid, then it represents "control flow".
      */
-    private boolean dashed = false; 
-    
+    private boolean dashed = false;
+
     ////////////////////////////////////////////////////////////////
     // constructors
     /**
@@ -73,10 +73,10 @@ public class FigTransition extends FigEdgeModelElement {
 
     /**
      * The constructor that hooks the Fig into an existing UML element.
-     * 
-     * It also adapts the line to be dashed if the source or destination 
+     *
+     * It also adapts the line to be dashed if the source or destination
      * is an ObjectFlowState.
-     * 
+     *
      * @param edge the UML element
      * @param lay the layer
      */
@@ -92,14 +92,14 @@ public class FigTransition extends FigEdgeModelElement {
             setSourceFigNode(sourceFN);
             setDestPortFig(destFN);
             setDestFigNode(destFN);
-            
+
             dashed = ModelFacade.isAObjectFlowState(sourceSV)
                     || ModelFacade.isAObjectFlowState(destSV);
         }
         setLayer(lay);
         setOwner(edge);
     }
-    
+
     /**
      * The constructor that hooks the Fig into an existing UML element
      * @param edge the UML element
@@ -145,7 +145,7 @@ public class FigTransition extends FigEdgeModelElement {
      * This is called after any part of the UML ModelElement has changed. This
      * method automatically updates the name FigText. Subclasses should override
      * and update other parts.
-     * 
+     *
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent e) {
@@ -156,7 +156,7 @@ public class FigTransition extends FigEdgeModelElement {
 
         // register the guard condition
         if (ModelFacade.isATransition(e.getSource())
-                && (e.getSource() == getOwner() 
+                && (e.getSource() == getOwner()
                         && e.getPropertyName().equals("guard"))) {
             Model.getPump().addModelEventListener(this,
                     e.getNewValue(), "expression");
@@ -173,7 +173,7 @@ public class FigTransition extends FigEdgeModelElement {
             updateNameText();
             damage();
         } else if (ModelFacade.isATransition(e.getSource())
-                && e.getSource() == getOwner() 
+                && e.getSource() == getOwner()
                 && e.getPropertyName().equals("effect")) {
             // register the action
             Model.getPump().addModelEventListener(this,
@@ -188,11 +188,11 @@ public class FigTransition extends FigEdgeModelElement {
                 ; // TODO: When does this ever get used? How to replace?
 //                if (e.getAddedValue() != null) {
 //                    Model.getPump().addModelEventListener(
-//                            this, 
+//                            this,
 //                            e.getAddedValue());
 //                } else if (e.getRemovedValue() != null) {
 //                    Model.getPump().removeModelEventListener(
-//                            this, 
+//                            this,
 //                            e.getRemovedValue());
 //                }
             }
@@ -210,8 +210,8 @@ public class FigTransition extends FigEdgeModelElement {
             // handle events send by the parameters of the event
             updateNameText();
             damage();
-        } else if ((e.getSource() == getOwner()) 
-                && (e.getPropertyName().equals("source") 
+        } else if ((e.getSource() == getOwner())
+                && (e.getPropertyName().equals("source")
                         || (e.getPropertyName().equals("target")))) {
             dashed = ModelFacade.isAObjectFlowState(getSource())
                 || ModelFacade.isAObjectFlowState(getDestination());
@@ -222,7 +222,7 @@ public class FigTransition extends FigEdgeModelElement {
     /**
      * This function is not called anywhere. And it is not documented.
      * Let's deprecate it, just in case.
-     * @deprecated  by mvw in V0.17.1. Use your own routine, 
+     * @deprecated  by mvw in V0.17.1. Use your own routine,
      *              or document this one and remove the deprecation.
      * @param ps ?
      * @return ?
@@ -275,7 +275,7 @@ public class FigTransition extends FigEdgeModelElement {
      * </ul>
      * <p>
      * The contents of the text box is generated by the Generator
-     * 
+     *
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateNameText()
      */
     protected void updateNameText() {

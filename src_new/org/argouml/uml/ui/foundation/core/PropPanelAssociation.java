@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -68,7 +68,7 @@ public class PropPanelAssociation extends PropPanelRelationship {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public PropPanelAssociation() {
         this("Association", ConfigLoader.getTabPropsOrientation());
@@ -93,17 +93,17 @@ public class PropPanelAssociation extends PropPanelRelationship {
                 linksScroll);
 
         addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));
 
     }
 
     /**
      * The constructor.
-     * 
-     * @param title the title of the panel 
+     *
+     * @param title the title of the panel
      * @param orientation the orientation of the panel
      */
     protected PropPanelAssociation(String title, Orientation orientation) {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,11 +42,11 @@ public class GoProjectToDiagram extends AbstractPerspectiveRule {
     public String getRuleName() {
 	return Translator.localize ("misc.project.diagram");
     }
-  
+
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
-    public Collection getChildren(Object parent) { 
+    public Collection getChildren(Object parent) {
 	if (parent instanceof Project) {
 	    return ((Project) parent).getDiagrams();
 	}

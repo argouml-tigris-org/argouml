@@ -36,9 +36,9 @@ import org.argouml.model.Model;
  */
 public class ActionNewTerminateAction extends ActionNewAction {
 
-    private static final ActionNewTerminateAction SINGLETON = 
+    private static final ActionNewTerminateAction SINGLETON =
         new ActionNewTerminateAction();
-    
+
     /**
      * Constructor for ActionNewTerminateAction.
      */
@@ -47,8 +47,8 @@ public class ActionNewTerminateAction extends ActionNewAction {
         putValue(Action.NAME, Translator.localize(
                 "button.new-terminateaction"));
     }
-    
-    
+
+
     /**
      * @see org.argouml.uml.ui.behavior.common_behavior.ActionNewAction#createAction()
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,36 +22,30 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrInvalidBranch.java
-// Classes: CrInvalidBranch
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
 
-
-/** 
- * A critic to detect when a Branch (i.e. Choice or Junction) 
- * state has the wrong number of transitions.  
+/**
+ * A critic to detect when a Branch (i.e. Choice or Junction)
+ * state has the wrong number of transitions.
  * Implements constraint [5] and [6] on PseudoState in the UML
- * Semantics v1.3, p. 2-140: 
- * 
- * [5] A junction vertex must have at least one incoming and 
+ * Semantics v1.3, p. 2-140:
+ *
+ * [5] A junction vertex must have at least one incoming and
  * one outgoing transition.
  * (self.kind = #junction) implies
  *     ((self.incoming->size >= 1) and (self.outgoing->size >= 1))
- * 
- * [6] A choice vertex must have at least one incoming and 
+ *
+ * [6] A choice vertex must have at least one incoming and
  * one outgoing transition.
  * (self.kind = #choice) implies
  *     ((self.incoming->size >= 1) and (self.outgoing->size >= 1))
- * 
- * */
-
+ *
+ * @author jrobbins
+ */
 public class CrInvalidBranch extends CrUML {
 
     /** the constructor
@@ -62,11 +56,11 @@ public class CrInvalidBranch extends CrUML {
 	addTrigger("incoming");
     }
 
-    /** This is the decision routine for the critic. 
-     * 
-     * @param dm is the UML entity (an NSUML object) that is being checked. 
+    /** This is the decision routine for the critic.
+     *
+     * @param dm is the UML entity (an NSUML object) that is being checked.
      * @param dsgr is for future development and can be ignored.
-     * 
+     *
      * @return boolean problem found
      */
     public boolean predicate2(Object dm, Designer dsgr) {

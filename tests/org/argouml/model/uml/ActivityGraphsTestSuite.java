@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2004 The Regents of the University of California. All
+// Copyright (c) 2002-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,7 +34,7 @@ import junit.framework.TestSuite;
 public class ActivityGraphsTestSuite {
 
 	/** Test suite for this package
-	 * 
+	 *
 	 * @return the junit test suite
 	 */
     public static Test suite() {

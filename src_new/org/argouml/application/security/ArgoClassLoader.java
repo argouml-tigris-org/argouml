@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,13 +29,14 @@ import java.util.jar.JarEntry;
 import java.io.DataInputStream;
 
 
-/** Argo custom classloader.
+/**
+ * Argo custom classloader.
  *
- *  Much of the code that this is based upon is taken from the
- *  O'reilly book <cite>TODO:</cite>.
+ * Much of the code that this is based upon is taken from the
+ * O'reilly book. TODO: Add reference.
  *
- *  @author Thierry Lach
- *  @since 0.9.4
+ * @author Thierry Lach
+ * @since 0.9.4
  */
 public final class ArgoClassLoader extends ClassLoader {
 
@@ -44,14 +45,15 @@ public final class ArgoClassLoader extends ClassLoader {
 
     /**
      * The constructor.
-     * 
+     *
      * @param jarfile the jar to be loaded
      */
     public ArgoClassLoader (JarFile jarfile) {
         jf = jarfile;
     }
 
-    /** The worker for this classloader.
+    /**
+     * The worker for this classloader.
      *
      * @see java.lang.ClassLoader#loadClass(java.lang.String)
      */
@@ -68,8 +70,7 @@ public final class ArgoClassLoader extends ClassLoader {
 	    if (c == null) {
 	        try {
 	            c = findSystemClass(classname);
-	        }
-	        catch (Exception e) { }
+	        } catch (Exception e) { }
 	    }
 	    // If we still haven't found it, then it must be up to us.
 	    if (c == null) {
@@ -80,13 +81,12 @@ public final class ArgoClassLoader extends ClassLoader {
 		byte[] classbytes = new byte[entrylength];
 		di.readFully(classbytes);
 		di.close();
-		c = defineClass(classname, classbytes, 0, entrylength); 
+		c = defineClass(classname, classbytes, 0, entrylength);
 	    }
 	    return c;
-	}
-	catch (Exception e) {
+	} catch (Exception e) {
 	    throw new ClassNotFoundException(e.toString());
-	} 
+	}
     }
 }
 

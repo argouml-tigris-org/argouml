@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2001, 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,12 +39,12 @@ class ClassFinder {
     }
 
     /**
-     * Recursive method that adds all class names 
+     * Recursive method that adds all class names
      * related to classfiles it finds in
      * the currentDirectory (and below).
      */
     private void findAndStoreTestClasses(final File currentDirectory,
-					 final String packageprefix) 
+					 final String packageprefix)
         throws IOException
     {
 	String files[] = currentDirectory.list();
@@ -53,7 +53,7 @@ class ClassFinder {
 	    String fileBase = file.getName ();
 	    int idx = fileBase.indexOf(".class");
 	    final int classExtensionLength = 6;
-	    if (idx != -1 
+	    if (idx != -1
 		&& (fileBase.length() - idx) == classExtensionLength
 		&& fileBase.startsWith("Test")) {
 		String fname = packageprefix + "." + fileBase.substring(0, idx);
@@ -65,7 +65,7 @@ class ClassFinder {
 		if (packageprefix == null)
 		    findAndStoreTestClasses(file, fileBase);
 		else
-		    findAndStoreTestClasses(file, 
+		    findAndStoreTestClasses(file,
 					    packageprefix + "." + fileBase);
 	    }
 	}
@@ -96,7 +96,7 @@ class TestCaseLoader {
     }
 
     /**
-     * Obtain an iterator over the collection of test case classes 
+     * Obtain an iterator over the collection of test case classes
      * loaded by loadTestCases
      */
     public Iterator getClasses () {
@@ -116,7 +116,7 @@ public class TestAll extends TestCase {
 	while (classIterator.hasNext ()) {
 	    Class testCaseClass = (Class) classIterator.next ();
 	    suite.addTest(new TestSuite(testCaseClass));
-	    System.out.println("Loaded test case: " 
+	    System.out.println("Loaded test case: "
 			       + testCaseClass.getName ());
 	    testClassCount++;
 	}
@@ -138,7 +138,7 @@ public class TestAll extends TestCase {
 	    TestCaseLoader testCaseLoader = new TestCaseLoader();
 	    testCaseLoader.loadTestCases(classFinder.getClasses());
 	    int numberOfTests = addAllTests(suite, testCaseLoader.getClasses());
-	    System.out.println("Number of test classes found: " 
+	    System.out.println("Number of test classes found: "
                 + numberOfTests);
 	    return suite;
 	} catch (Throwable t) {

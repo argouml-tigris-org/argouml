@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,52 +36,52 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 
 /**
- * Class that represents the clarifier (red wavy line) 
+ * Class that represents the clarifier (red wavy line)
  * for a attribute compartment.
  *
  */
 public class ClAttributeCompartment implements Clarifier {
-    
+
     private static final Logger LOG =
 	Logger.getLogger(ClAttributeCompartment.class);
-    
+
     private static ClAttributeCompartment theInstance =
 	new ClAttributeCompartment();
-    
+
     private static final int WAVE_LENGTH = 4;
     private static final int WAVE_HEIGHT = 2;
-									  
+
     ////////////////////////////////////////////////////////////////
     // instance variables
     private Fig fig;
-									      
+
     /**
      * @see org.argouml.ui.Clarifier#setFig(org.tigris.gef.presentation.Fig)
      */
     public void setFig(Fig f) { fig = f; }
-    
+
     /**
      * @see org.argouml.ui.Clarifier#setToDoItem(org.argouml.cognitive.ToDoItem)
      */
     public void setToDoItem(ToDoItem i) { }
 
     /**
-     * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics, 
+     * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics,
      * int, int)
      */
     public void paintIcon(Component c, Graphics g, int x, int y) {
 	if (fig instanceof AttributesCompartmentContainer) {
-	    AttributesCompartmentContainer fc = 
+	    AttributesCompartmentContainer fc =
 	        (AttributesCompartmentContainer) fig;
-    
+
 	    // added by Eric Lefevre 13 Mar 1999: we must check if the
 	    // FigText for attributes is drawn before drawing things
 	    // over it
-	    if ( !fc.isAttributesVisible() ) {
+	    if (!fc.isAttributesVisible()) {
 		fig = null;
 		return;
 	    }
-					
+
 	    FigGroup fg = fc.getAttributesFig();
 	    int left  = fg.getX() + 6;
 	    int height = fg.getY() + fg.getHeight() - 5;
@@ -112,7 +112,7 @@ public class ClAttributeCompartment implements Clarifier {
      * @see javax.swing.Icon#getIconWidth()
      */
     public int getIconWidth() { return 0; }
-    
+
     /**
      * @see javax.swing.Icon#getIconHeight()
      */
@@ -126,7 +126,7 @@ public class ClAttributeCompartment implements Clarifier {
 	    LOG.debug("not a FigClass");
 	    return false;
 	}
-	AttributesCompartmentContainer fc = 
+	AttributesCompartmentContainer fc =
 	    (AttributesCompartmentContainer) fig;
 	FigGroup fg = fc.getAttributesFig();
 	boolean res = fg.contains(x, y);

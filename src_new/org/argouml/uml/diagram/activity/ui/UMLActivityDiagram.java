@@ -95,7 +95,7 @@ public class UMLActivityDiagram extends UMLDiagram {
         }
     }
 
-    /** 
+    /**
      * Constructor
      * @param namespace the namespace for the diagram
      * @param agraph the ActivityGraph for the diagram
@@ -108,7 +108,7 @@ public class UMLActivityDiagram extends UMLDiagram {
             || !ModelFacade.isAActivityGraph(agraph))
             throw new IllegalArgumentException();
 
-        if (namespace != null && ModelFacade.getName(namespace) != null) 
+        if (namespace != null && ModelFacade.getName(namespace) != null)
             if (ModelFacade.getName(namespace).trim() != "") {
                 String name =
                     ModelFacade.getName(namespace)
@@ -141,7 +141,7 @@ public class UMLActivityDiagram extends UMLDiagram {
     /**
      * Method to perform a number of important initializations of an
      * <I>Activity Diagram</I>.<p>
-     * 
+     *
      * Each diagram type has a similar <I>UMLxxxDiagram</I> class.<p>
      *
      * Changed <I>lay</I> from <I>LayerPerspective</I> to
@@ -169,7 +169,7 @@ public class UMLActivityDiagram extends UMLDiagram {
         }
         LayerPerspective lay =
             new LayerPerspectiveMutable(ModelFacade.getName(m), gm);
-        ActivityDiagramRenderer rend = new ActivityDiagramRenderer();  
+        ActivityDiagramRenderer rend = new ActivityDiagramRenderer();
         lay.setGraphNodeRenderer(rend);
         lay.setGraphEdgeRenderer(rend);
 
@@ -181,7 +181,7 @@ public class UMLActivityDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getOwner()
      */
     public Object getOwner() {
-        ActivityDiagramGraphModel gm = (ActivityDiagramGraphModel) 
+        ActivityDiagramGraphModel gm = (ActivityDiagramGraphModel)
                                     getGraphModel();
         Object sm = gm.getMachine();
         if (sm != null)
@@ -214,7 +214,7 @@ public class UMLActivityDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
-        Object actions[] =
+        Object[] actions =
         {
             getActionState(),
             getActionTransition(),
@@ -246,14 +246,14 @@ public class UMLActivityDiagram extends UMLDiagram {
         }
         return name;
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
      */
     public String getLabelName() {
         return Translator.localize("label.activity-diagram");
     }
-    
+
     /**
      * @return Returns the actionCallState.
      */
@@ -270,7 +270,7 @@ public class UMLActivityDiagram extends UMLDiagram {
     protected Action getActionFinalPseudoState() {
         if (actionFinalPseudoState == null) {
             actionFinalPseudoState = new RadioAction(
-                    new CmdCreateNode(ModelFacade.FINALSTATE, 
+                    new CmdCreateNode(ModelFacade.FINALSTATE,
                                                 "FinalState"));
         }
         return actionFinalPseudoState;
@@ -281,7 +281,7 @@ public class UMLActivityDiagram extends UMLDiagram {
     protected Action getActionForkPseudoState() {
         if (actionForkPseudoState == null) {
             actionForkPseudoState = new RadioAction(
-                new ActionCreatePseudostate(ModelFacade.FORK_PSEUDOSTATEKIND, 
+                new ActionCreatePseudostate(ModelFacade.FORK_PSEUDOSTATEKIND,
                             "Fork"));
         }
         return actionForkPseudoState;

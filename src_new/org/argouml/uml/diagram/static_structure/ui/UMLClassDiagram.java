@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -79,7 +79,7 @@ public class UMLClassDiagram extends UMLDiagram {
 
     /**
      * constructor
-     * @param name the name for the new diagram 
+     * @param name the name for the new diagram
      * @param namespace the namespace for the new diagram
      */
     public UMLClassDiagram(String name, Object namespace) {
@@ -126,52 +126,52 @@ public class UMLClassDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
-        Object actions[] = {
+        Object[] actions = {
             getActionPackage(),
             getActionClass(),
             getAssociationActions(),
             getActionGeneralization(),
             null,
             getActionInterface(),
-            getActionRealization(), 
+            getActionRealization(),
             null,
-            getDependencyActions(), 
+            getDependencyActions(),
             null,
             getActionAttribute(),
             getActionOperation(),
-            getActionAssociationClass()
+            getActionAssociationClass(),
         };
 
         return actions;
     }
-    
+
     // To enable models and subsystems,
-    // replace getActionPackage() in the function getUmlActions() above 
+    // replace getActionPackage() in the function getUmlActions() above
     // with getPackageActions().
     private Object[] getPackageActions() {
-        Object actions[] = 
-        { 
-                getActionPackage(), 
+        Object[] actions =
+        {
+                getActionPackage(),
                 getActionModel(),
-                getActionSubsystem() 
+                getActionSubsystem(),
         };
         return actions;
     }
-    
+
     /**
      * Return an array of dependency actions in the
      * pattern of which to build a popup toolbutton
      */
     private Object[] getDependencyActions() {
-        Object actions[][] = {
+        Object[][] actions = {
             {getActionDependency()},
             {getActionPermission()},
-            {getActionUsage()}
+            {getActionUsage()},
         };
 
         return actions;
     }
-    
+
     /**
      * Return an array of association actions in the
      * pattern of which to build a popup toolbutton
@@ -182,16 +182,16 @@ public class UMLClassDiagram extends UMLDiagram {
         // This is because any number of action getters could have
         // been overridden in a descendent and it is the action from
         // that overridden method that should be returned in the array.
-        Object actions[][] = {
+        Object[][] actions = {
             {getActionAssociation(), getActionUniAssociation()},
             {getActionAggregation(), getActionUniAggregation()},
-            {getActionComposition(), getActionUniComposition()}
+            {getActionComposition(), getActionUniComposition()},
         };
 
         return actions;
     }
-    
-    
+
+
     /**
      * Creates a new diagramname.
      * @return String
@@ -204,14 +204,14 @@ public class UMLClassDiagram extends UMLDiagram {
         }
         return name;
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
      */
     public String getLabelName() {
         return Translator.localize("label.class-diagram");
     }
-    
+
     /**
      * @return Returns the actionAggregation.
      */
@@ -245,7 +245,7 @@ public class UMLClassDiagram extends UMLDiagram {
 
         return actionClass;
     }
-    
+
     /**
     * @return Returns the actionAssociationClass.
     */
@@ -257,7 +257,7 @@ public class UMLClassDiagram extends UMLDiagram {
                     "AssociationClass");
         }
         return actionAssociationClass;
-    }    
+    }
     /**
      * @return Returns the actionComposition.
      */
@@ -279,7 +279,7 @@ public class UMLClassDiagram extends UMLDiagram {
         }
         return actionDependency;
     }
-    
+
     /**
      * @return Returns the actionGeneralize.
      */
@@ -289,7 +289,7 @@ public class UMLClassDiagram extends UMLDiagram {
                     ModelFacade.GENERALIZATION,
                     "Generalization");
         }
-        
+
         return actionGeneralization;
     }
 
@@ -303,7 +303,7 @@ public class UMLClassDiagram extends UMLDiagram {
         }
         return actionInterface;
     }
-    
+
     /**
      * @return Returns the actionLink.
      */
@@ -321,7 +321,7 @@ public class UMLClassDiagram extends UMLDiagram {
         if (actionModel == null) {
             actionModel = makeCreateNodeAction(ModelFacade.MODEL, "Model");
         }
-        
+
         return actionModel;
     }
     /**
@@ -340,7 +340,7 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     protected Action getActionPackage() {
         if (actionPackage == null) {
-            actionPackage = 
+            actionPackage =
                 makeCreateNodeAction(ModelFacade.PACKAGE, "Package");
         }
 
@@ -351,13 +351,13 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     protected Action getActionPermission() {
         if (actionPermission == null) {
-            actionPermission = 
+            actionPermission =
                 makeCreateEdgeAction(ModelFacade.PERMISSION, "Permission");
         }
 
         return actionPermission;
     }
-    
+
     /**
      * @return Returns the actionRealize.
      */
@@ -369,18 +369,18 @@ public class UMLClassDiagram extends UMLDiagram {
 
         return actionRealization;
     }
-    
+
     /**
      * @return Returns the actionSubsystem.
      */
     protected Action getActionSubsystem() {
         if (actionSubsystem == null) {
-            actionSubsystem = 
+            actionSubsystem =
                 makeCreateNodeAction(ModelFacade.SUBSYSTEM, "Subsystem");
         }
         return actionSubsystem;
     }
-    
+
     /**
      * @return Returns the actionUniAggregation.
      */
@@ -393,7 +393,7 @@ public class UMLClassDiagram extends UMLDiagram {
         }
         return actionUniAggregation;
     }
-    
+
     /**
      * @return Returns the actionUniAssociation.
      */
@@ -406,7 +406,7 @@ public class UMLClassDiagram extends UMLDiagram {
         }
         return actionUniAssociation;
     }
-    
+
     /**
      * @return Returns the actionUniComposition.
      */
@@ -419,7 +419,7 @@ public class UMLClassDiagram extends UMLDiagram {
         }
         return actionUniComposition;
     }
-    
+
     /**
      * @return Returns the actionUsage.
      */

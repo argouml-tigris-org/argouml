@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrUselessInterface.java
-// Classes: CrUselessInterface
-// Original Author: jrobbins@ics.uci.edu
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Iterator;
@@ -37,13 +33,15 @@ import org.argouml.model.ModelFacade;
 // Use Model through ModelFacade
 
 /** A critic to detect when a class can never have instances (of
- *  itself of any subclasses). */
-
+ *  itself of any subclasses).
+ *
+ * @author jrobbins
+ */
 public class CrUselessInterface extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrUselessInterface() {
 	setHeadline("Define Class to Implement <ocl>self</ocl>");
@@ -60,7 +58,7 @@ public class CrUselessInterface extends CrUML {
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!ModelFacade.isAInterface(dm))
 	    return NO_PROBLEM;
-	
+
 	if (!ModelFacade.isPrimaryObject(dm))
 	    return NO_PROBLEM;
 

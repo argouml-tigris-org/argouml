@@ -36,7 +36,7 @@ import org.argouml.model.ModelFacade;
 
 /**
  * Test ParserDisplay: parsing transitions.
- * 
+ *
  * @author MVW
  *
  */
@@ -48,7 +48,7 @@ public class TestParseTransition extends TestCase {
 
     /**
      * The constructor.
-     * 
+     *
      * @param str the name
      */
     public TestParseTransition(String str) {
@@ -66,7 +66,7 @@ public class TestParseTransition extends TestCase {
         Collection propertyChangeListeners = p.findFigsForMember(aClass);
         Object mdl = p.getModel();
         Object voidType = p.findType("void");
-        aOper = Model.getCoreFactory().buildOperation(aClass, mdl, 
+        aOper = Model.getCoreFactory().buildOperation(aClass, mdl,
                 voidType, "myOper", propertyChangeListeners);
         aStateMachine = Model.getStateMachinesFactory()
             .buildStateMachine(aClass);
@@ -74,35 +74,35 @@ public class TestParseTransition extends TestCase {
         aState = Model.getStateMachinesFactory()
             .buildCompositeState(top);
     }
-    
-    
+
+
     /**
      * Test for the parseTransition() method.
      * These should NOT generate a ParseException.
      */
     public void testParseTransitionCreate() {
-        checkGenerated(aState, "trigger[guard]/effect", true, true, true, 
+        checkGenerated(aState, "trigger[guard]/effect", true, true, true,
                 false);
         checkGenerated(aState, "trigger[]/effect", true, false, true, false);
-        checkGenerated(aState, " tri gg er ( w ) [ ] / e ffect ", true, false, 
+        checkGenerated(aState, " tri gg er ( w ) [ ] / e ffect ", true, false,
                 true, false);
         checkGenerated(aState, "trigger / effect", true, false, true, false);
         checkGenerated(aState, "/effect", false, false, true, false);
         checkGenerated(aState, "trigger", true, false, false, false);
-        checkGenerated(aState, "t(a:int=3, b=4.0:double)", true, false, false, 
+        checkGenerated(aState, "t(a:int=3, b=4.0:double)", true, false, false,
                 false);
         checkGenerated(aState, "", false, false, false, false);
         checkGenerated(aState, "[]/", false, false, false, false);
         checkGenerated(aState, "[ guard ]", false, true, false, false);
         checkGenerated(aState, "trigger()/", true, false, false, false);
     }
-    
+
     /**
      * Test for the parseTransition() method.
      * These should generate a ParseException.
      */
     public void testParseTransitionNotCreate() {
-        checkGenerated(aState, "trigger[guard/effect", false, false, false, 
+        checkGenerated(aState, "trigger[guard/effect", false, false, false,
                 true);
         checkGenerated(aState, "trigger(", false, false, false, true);
         checkGenerated(aState, "trigger)/eff()", false, false, false, true);
@@ -112,13 +112,13 @@ public class TestParseTransition extends TestCase {
         checkGenerated(aState, "tr/i[gg]er", false, false, false, true);
         checkGenerated(aState, "tri[g/g]er", false, false, false, true);
     }
-    
+
     /**
      * Check if the transition parts are generated or not. <p>
-     * 
-     * An internal transition is chosen to test these cases, 
+     *
+     * An internal transition is chosen to test these cases,
      * instead of a transition between states. Reason: simplicity.
-     * 
+     *
      * @param st the state in which to create an internal transition
      * @param text the text to be parsed
      * @param trigger true if we expect a trigger to be generated
@@ -127,7 +127,7 @@ public class TestParseTransition extends TestCase {
      * @param exception true if we expect an exception to be trown
      * @return the generated internal transition
      */
-    private Object checkGenerated(Object st, String text, boolean trigger, 
+    private Object checkGenerated(Object st, String text, boolean trigger,
             boolean guard, boolean effect, boolean exception) {
         Object it = Model.getStateMachinesFactory()
             .buildInternalTransition(st);
@@ -136,25 +136,25 @@ public class TestParseTransition extends TestCase {
         } catch (ParseException e) {
             assertTrue("Unexpected exception for " + text, exception);
         }
-        if (trigger) { 
-            assertTrue("Trigger was not generated for " + text, 
+        if (trigger) {
+            assertTrue("Trigger was not generated for " + text,
                     ModelFacade.getTrigger(it) != null);
         } else {
-            assertTrue("Trigger was generated for " + text, 
+            assertTrue("Trigger was generated for " + text,
                     ModelFacade.getTrigger(it) == null);
         }
         if (guard) {
-            assertTrue("Guard was not generated for " + text, 
+            assertTrue("Guard was not generated for " + text,
                     ModelFacade.getGuard(it) != null);
         } else {
-            assertTrue("Guard was generated for " + text, 
+            assertTrue("Guard was generated for " + text,
                     ModelFacade.getGuard(it) == null);
         }
         if (effect) {
-            assertTrue("Effect (action) was not generated for " + text, 
+            assertTrue("Effect (action) was not generated for " + text,
                     ModelFacade.getEffect(it) != null);
         } else {
-            assertTrue("Effect (action) was generated for " + text, 
+            assertTrue("Effect (action) was generated for " + text,
                     ModelFacade.getEffect(it) == null);
         }
         return it;
@@ -169,19 +169,19 @@ public class TestParseTransition extends TestCase {
         Object trig;
         String text;
         Object expr;
-        
+
         //try creating a TimeEvent
         text = "after(a while)";
-        trans = checkGenerated(aState, text, true, false, false, 
+        trans = checkGenerated(aState, text, true, false, false,
                 false);
         trig = ModelFacade.getTrigger(trans);
-        assertTrue("Unexpected triggertype found instead of TimeEvent for " 
+        assertTrue("Unexpected triggertype found instead of TimeEvent for "
                 + text, ModelFacade.isATimeEvent(trig));
         expr = ModelFacade.getExpression(trig);
-        assertTrue("Incorrectly set TimeExpression for" + text, 
+        assertTrue("Incorrectly set TimeExpression for" + text,
                 ModelFacade.getBody(expr).equals("a while"));
 
-        
+
         //try changing the triggertype to ChangeEvent
         text = "when(it happens)";
         try {
@@ -190,7 +190,7 @@ public class TestParseTransition extends TestCase {
             assertTrue("Unexpected exception for " + text, true);
         }
         trig = ModelFacade.getTrigger(trans);
-        assertTrue("Unexpected triggertype found instead of ChangeEvent", 
+        assertTrue("Unexpected triggertype found instead of ChangeEvent",
                 ModelFacade.isAChangeEvent(trig));
     }
 
@@ -203,16 +203,16 @@ public class TestParseTransition extends TestCase {
         Object trig;
         String text;
         Object expr;
-        
+
         text = "when(it changed)/effect";
         trans = checkGenerated(aState, text, true, false, true, false);
         trig = ModelFacade.getTrigger(trans);
         assertTrue("Unexpected triggertype found instead of ChangeEvent for "
                 + text, ModelFacade.isAChangeEvent(trig));
         expr = ModelFacade.getExpression(trig);
-        assertTrue("Incorrectly set ChangeExpression for" + text, 
+        assertTrue("Incorrectly set ChangeExpression for" + text,
                 ModelFacade.getBody(expr).equals("it changed"));
-        
+
         text = "/effect";
         try {
             ParserDisplay.SINGLETON.parseTransition(trans, text);
@@ -231,17 +231,17 @@ public class TestParseTransition extends TestCase {
         Object trans;
         Object trig;
         String text;
-        
+
         text = "call(a method)";
         trans = checkGenerated(aState, text, true, false, false, false);
         trig = ModelFacade.getTrigger(trans);
-        assertTrue("Unexpected triggertype found instead of CallEvent for " 
+        assertTrue("Unexpected triggertype found instead of CallEvent for "
                 + text, ModelFacade.isACallEvent(trig));
 
         text = "call()";
         trans = checkGenerated(aState, text, true, false, false, false);
         trig = ModelFacade.getTrigger(trans);
-        assertTrue("Unexpected triggertype found instead of CallEvent for " 
+        assertTrue("Unexpected triggertype found instead of CallEvent for "
                 + text, ModelFacade.isACallEvent(trig));
     }
 
@@ -252,13 +252,13 @@ public class TestParseTransition extends TestCase {
         Object trans;
         Object trig;
         String text;
-        
+
         text = "signal";
         trans = checkGenerated(aState, text, true, false, false, false);
         trig = ModelFacade.getTrigger(trans);
-        assertTrue("Unexpected triggertype found instead of SignalEvent", 
+        assertTrue("Unexpected triggertype found instead of SignalEvent",
                 ModelFacade.isASignalEvent(trig));
-        
+
         text = "/effect";
         try {
             ParserDisplay.SINGLETON.parseTransition(trans, text);
@@ -271,7 +271,7 @@ public class TestParseTransition extends TestCase {
     }
 
     /**
-     * Test for the parseTrigger() method: 
+     * Test for the parseTrigger() method:
      * linking of an Operation for a CallEvent.
      */
     public void testParseTriggerCallEventOperation() {
@@ -283,7 +283,7 @@ public class TestParseTransition extends TestCase {
         text = "myOper()"; // this is an existing operation of the class!
         trans = checkGenerated(aState, text, true, false, false, false);
         trig = ModelFacade.getTrigger(trans);
-        assertTrue("Unexpected triggertype found instead of CallEvent for " 
+        assertTrue("Unexpected triggertype found instead of CallEvent for "
                 + text, ModelFacade.isACallEvent(trig));
         myOp = ModelFacade.getOperation(trig);
         assertTrue("Operation of CallEvent not linked", myOp != null);

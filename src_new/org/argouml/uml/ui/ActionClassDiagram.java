@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,7 +33,7 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  *  @stereotype singleton
  */
 public class ActionClassDiagram extends ActionAddDiagram {
-    private static final Logger LOG = 
+    private static final Logger LOG =
         Logger.getLogger(ActionClassDiagram.class);
 
     ////////////////////////////////////////////////////////////////
@@ -74,6 +74,6 @@ public class ActionClassDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + " is not a namespace.");
         }
-        return true;       
+        return true;
     }
 } /* end class ActionClassDiagram */

@@ -38,7 +38,7 @@ public class ActionNewReturnAction extends ActionNewAction {
 
     private static final ActionNewReturnAction SINGLETON =
         new ActionNewReturnAction();
-    
+
     /**
      * Constructor for ActionNewReturnAction.
      */
@@ -47,8 +47,8 @@ public class ActionNewReturnAction extends ActionNewAction {
         putValue(Action.NAME, Translator.localize(
                 "button.new-returnaction"));
     }
-    
-    
+
+
     /**
      * @see org.argouml.uml.ui.behavior.common_behavior.ActionNewAction#createAction()
      */

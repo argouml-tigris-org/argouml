@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrConsiderSingleton.java
-// Classes: CrConsiderSingleton
-// Original Author: jrobbins@ics.uci.edu
-
 package org.argouml.pattern.cognitive.critics;
 
 import java.util.Iterator;
@@ -38,7 +34,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.cognitive.critics.CrUML;
 
 /**
- * <p>A critic to detect when a class can never have more than one instance (of
+ * A critic to detect when a class can never have more than one instance (of
  * itself of any subclasses), and thus whether it is suitable for declaration
  * as a Singleton (with stereotype &laquo;Singleton&raquo;.<p>
  *
@@ -46,19 +42,20 @@ import org.argouml.uml.cognitive.critics.CrUML;
  * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#
  * s2.ref.critics_singleton_violated">
  * ArgoUML User Manual: Singleton Violated</a>
+ *
+ * @author jrobbins
  */
 public class CrConsiderSingleton extends CrUML {
 
     /**
-     * <p>Constructor for the critic.</p>
+     * Constructor for the critic.<p>
      *
-     * <p>Sets up the resource name, which will allow headline and description
+     * Sets up the resource name, which will allow headline and description
      * to be found for the current locale. Provides a design issue category
      * (PATTERNS), sets a priority for any to-do items (LOW) and adds triggers
      * for metaclasses "stereotype", "structuralFeature" and
-     * "associationEnd".</p>
+     * "associationEnd".
      */
-
     public CrConsiderSingleton() {
 
         setResource("CrConsiderSingleton");
@@ -76,11 +73,11 @@ public class CrConsiderSingleton extends CrUML {
 
 
     /**
-     * <p>The trigger for the critic.</p>
+     * The trigger for the critic.<p>
      *
-     * <p>First check we are already a Singleton.</p>
+     * First check we are already a Singleton.<p>
      *
-     * <p>Otherwise plausible candidates for the Singleton design pattern are
+     * Otherwise plausible candidates for the Singleton design pattern are
      * classes with no instance variables (i.e. non-static attributes) and no
      * outgoing associations.<p>
      *
@@ -92,7 +89,7 @@ public class CrConsiderSingleton extends CrUML {
      *               development of ArgoUML.
      *
      * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
-     *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.  
+     *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.
      */
 
     public boolean predicate2(Object dm, Designer dsgr) {
@@ -102,19 +99,19 @@ public class CrConsiderSingleton extends CrUML {
         if (!(ModelFacade.isAClass(dm))) {
             return NO_PROBLEM;
         }
-        
+
         // with a name...
-        if (ModelFacade.getName(dm) == null 
+        if (ModelFacade.getName(dm) == null
                 || "".equals(ModelFacade.getName(dm))) {
                 return NO_PROBLEM;
         }
-        
+
         // ... and not incompletely imported
         if (!(ModelFacade.isPrimaryObject(dm))) return NO_PROBLEM;
 
         	// abstract classes are hardly ever singletons
         if (ModelFacade.isAbstract(dm)) return NO_PROBLEM;
-        
+
         // Check for Singleton stereotype, uninitialised instance variables and
         // outgoing associations, as per JavaDoc above.
 
@@ -139,7 +136,7 @@ public class CrConsiderSingleton extends CrUML {
 	Iterator ends = ModelFacade.getAssociationEnds(dm).iterator();
 
 	while (ends.hasNext()) {
-	    Iterator otherends = 
+	    Iterator otherends =
 		ModelFacade.getOtherAssociationEnds(ends.next()).iterator();
 
 	    while (otherends.hasNext()) {

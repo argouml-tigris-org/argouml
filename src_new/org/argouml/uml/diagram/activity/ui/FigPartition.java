@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,19 +37,19 @@ import org.tigris.gef.presentation.FigText;
 
 /**
  * This class represents a Partition or Swimlane for Activity diagrams.
- * 
+ *
  * @author mkl
- *  
+ *
  */
 public class FigPartition extends FigNodeModelElement {
 
     private FigLine leftLine, rightLine;
-    
+
     private static final int PADDING = 8;
 
     /**
      * Constructor.
-     *  
+     *
      */
     public FigPartition() {
         setBigPort(new FigRect(10, 10, 150, 200, Color.white, Color.white));
@@ -75,7 +75,7 @@ public class FigPartition extends FigNodeModelElement {
 
     /**
      * Constructor which hooks the Fig into an existing UML element
-     * 
+     *
      * @param gm ignored
      * @param node the UML element
      */
@@ -85,7 +85,7 @@ public class FigPartition extends FigNodeModelElement {
     }
 
     /**
-     * 
+     *
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -99,7 +99,7 @@ public class FigPartition extends FigNodeModelElement {
     }
 
     /**
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) {
@@ -108,7 +108,7 @@ public class FigPartition extends FigNodeModelElement {
     }
 
     /**
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() {
@@ -116,7 +116,7 @@ public class FigPartition extends FigNodeModelElement {
     }
 
     /**
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
@@ -125,7 +125,7 @@ public class FigPartition extends FigNodeModelElement {
     }
 
     /**
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() {
@@ -133,7 +133,7 @@ public class FigPartition extends FigNodeModelElement {
     }
 
     /**
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) {
@@ -141,7 +141,7 @@ public class FigPartition extends FigNodeModelElement {
     }
 
     /**
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
@@ -149,7 +149,7 @@ public class FigPartition extends FigNodeModelElement {
     }
 
     /**
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
@@ -158,7 +158,7 @@ public class FigPartition extends FigNodeModelElement {
     }
 
     /**
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
@@ -166,7 +166,7 @@ public class FigPartition extends FigNodeModelElement {
     }
 
     /**
-     * 
+     *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
     public String placeString() {
@@ -185,9 +185,9 @@ public class FigPartition extends FigNodeModelElement {
 
     /**
      * Using a traprect enables us to move containing figs easily.
-     * 
+     *
      * @return <code>true</code>
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
      */
     public boolean getUseTrapRect() {
@@ -195,7 +195,7 @@ public class FigPartition extends FigNodeModelElement {
     }
 
     /**
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
     public void setBounds(int x, int y, int w, int h) {

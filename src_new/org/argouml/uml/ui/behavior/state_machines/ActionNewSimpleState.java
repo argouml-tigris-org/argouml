@@ -39,7 +39,7 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 public class ActionNewSimpleState extends AbstractActionNewModelElement {
 
     private static ActionNewSimpleState singleton = new ActionNewSimpleState();
-    
+
     /**
      * Constructor for ActionNewPseudoState.
      */
@@ -47,7 +47,7 @@ public class ActionNewSimpleState extends AbstractActionNewModelElement {
         super();
         putValue(Action.NAME, Translator.localize("button.new-simplestate"));
     }
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */

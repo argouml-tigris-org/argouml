@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -49,11 +49,11 @@ public class ArgoJMenu extends JMenu {
         super();
         localize(this, key);
     }
-   
+
     /**
      * Sets a menu item's text and mnemonic values using the specified resource
      * key.
-     * 
+     *
      * @param   menuItem    the menu or menu item to localize
      * @param   key         the resource string to find
      */
@@ -65,7 +65,7 @@ public class ArgoJMenu extends JMenu {
             menuItem.setMnemonic(localMnemonic.charAt(0));
         }
     }
-    
+
     /**
      * Creates a new checkbox menu item attached to the specified
      * Action object and appends it to the end of this menu.
@@ -83,7 +83,7 @@ public class ArgoJMenu extends JMenu {
 	Boolean selected = (Boolean) a.getValue("SELECTED");
 	JCheckBoxMenuItem mi =
 	    new JCheckBoxMenuItem(name, icon,
-				  (selected == null 
+				  (selected == null
 				   || selected.booleanValue()));
 	// End of block
 	mi.setHorizontalTextPosition(JButton.RIGHT);

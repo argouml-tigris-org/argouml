@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,11 +36,12 @@ import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
 
-/**  An interface which identifies an ArgoUML plug-in to the Import.
- *   Plug-ins are replacements or additions to standard Argo classes.
- *   
- *   @author Alexander Lepekhine
- *   @since 0.13.4
+/**
+ * An interface which identifies an ArgoUML plug-in to the Import.
+ * Plug-ins are replacements or additions to standard Argo classes.
+ *
+ * @author Alexander Lepekhine
+ * @since 0.13.4
  */
 public interface PluggableImport extends Pluggable {
 
@@ -54,15 +55,15 @@ public interface PluggableImport extends Pluggable {
      * @return The panel to show in import dialog.
      */
     JComponent getChooser(Import  importElement);
-    
-    /** 
+
+    /**
      * Provide pannel added to JTabbedPane after general panel.
      *
      * @return the panel with configuration info for plugin
      *         or null if no parameters are needed.
      */
     JComponent getConfigPanel();
-    
+
     /**
      * This method returns a Vector with objects to import.
      * These objects are selected with chooser and may be
@@ -78,7 +79,7 @@ public interface PluggableImport extends Pluggable {
      * @return true if parseable, false if not.
      */
     boolean isParseable(Object f);
-	
+
     /**
      * One parseable object from the list will be parsed by this method.
      * Objects will be parsed in order defined by getList().
@@ -89,8 +90,8 @@ public interface PluggableImport extends Pluggable {
      * common settings.
      * @throws Exception (all kinds)
      */
-    void parseFile(Project p, Object o, 
-			  DiagramInterface diagram, Import importElement) 
+    void parseFile(Project p, Object o,
+		   DiagramInterface diagram, Import importElement)
 	throws Exception;
 
     /**

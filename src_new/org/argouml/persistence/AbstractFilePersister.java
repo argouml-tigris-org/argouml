@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,27 +38,27 @@ import org.argouml.kernel.Project;
 
 /**
  * To persist to and from zargo (zipped file) storage.
- * 
+ *
  * @author Bob Tarling
  */
-public abstract class AbstractFilePersister extends FileFilter 
+public abstract class AbstractFilePersister extends FileFilter
         implements ProjectFilePersister {
-    
-    private static final Logger LOG = 
+
+    private static final Logger LOG =
         Logger.getLogger(AbstractFilePersister.class);
-    
+
     /**
-     * The PERSISTENCE_VERSION is increased every time a new version of 
+     * The PERSISTENCE_VERSION is increased every time a new version of
      * ArgoUML is released, which uses an forwards incompatible file format.
-     * This allows conversion of old persistence version files 
+     * This allows conversion of old persistence version files
      * to be converted to the current one.
      */
     protected static final int PERSISTENCE_VERSION = 2;
-    
+
     /**
      * Copies one file src to another, raising file exceptions
      * if there are some problems.
-     * 
+     *
      * @param dest The destination file.
      * @param src The source file.
      * @return The destination file after successful copying.
@@ -67,7 +67,7 @@ public abstract class AbstractFilePersister extends FileFilter
      */
     protected File copyFile(File dest, File src)
         throws FileNotFoundException, IOException {
-        
+
         // first delete dest file
         if (dest.exists()) {
             dest.delete();
@@ -82,14 +82,14 @@ public abstract class AbstractFilePersister extends FileFilter
         }
         fis.close();
         fos.close();
-        
+
         dest.setLastModified(src.lastModified());
-        
+
         return dest;
     }
-    
-    
-    
+
+
+
     ////////////////////////////////////////////////////////////////
     // FileFilter API
 
@@ -99,12 +99,12 @@ public abstract class AbstractFilePersister extends FileFilter
     public boolean accept(File f) {
         if (f == null) return false;
         if (f.isDirectory()) return true;
-        String s = getExtension(f); 
-        if (s != null) // this check for files without extension... 
+        String s = getExtension(f);
+        if (s != null) // this check for files without extension...
             if (s.equalsIgnoreCase(getExtension())) return true;
         return false;
     }
-    
+
     /**
      * The extension valid for this type of file.
      * (Just the chars, not the dot: e.g. "zargo".)
@@ -115,11 +115,11 @@ public abstract class AbstractFilePersister extends FileFilter
 
     /**
      * (Just the description, not the extension between "()".)
-     * 
+     *
      * @return the description valid for this type of file
      */
     protected abstract String getDesc();
-    
+
     private static String getExtension(File f) {
         if (f == null) return null;
         return getExtension(f.getName());
@@ -139,7 +139,7 @@ public abstract class AbstractFilePersister extends FileFilter
     public String getDescription() {
         return getDesc() + " (*." + getExtension() + ")";
     }
-    
+
     /**
      * Save a project to file.<p>
      * This first archives the existing file, then calls
@@ -147,7 +147,7 @@ public abstract class AbstractFilePersister extends FileFilter
      * Should doSave(...) throw an exception then it is
      * caught here and any rollback handled before rethrowing
      * the exception.
-     * 
+     *
      * @param project The project being saved.
      * @param file The file to which the save is taking place.
      * @throws SaveException when anything goes wrong
@@ -160,29 +160,29 @@ public abstract class AbstractFilePersister extends FileFilter
         doSave(project, file);
         postSave(project, file);
     }
-    
+
     /**
-     * Handle archiving of previous file or any other common 
+     * Handle archiving of previous file or any other common
      * requirements before saving a model to a file.
-     * 
+     *
      * @param project The project being saved.
      * @param file The file to which the save is taking place.
      * @throws SaveException when anything goes wrong
      */
     private void preSave(Project project, File file) throws SaveException {
-        
+
     }
-    
+
     /**
      * Handle archiving on completion of a save such as renaming
      * the temporary save file to the real filename.
-     * 
+     *
      * @param project The project being saved.
      * @param file The file to which the save is taking place.
      * @throws SaveException when anything goes wrong
      */
     private void postSave(Project project, File file) throws SaveException {
-        
+
     }
 
     /**
@@ -190,7 +190,7 @@ public abstract class AbstractFilePersister extends FileFilter
      * Such as restoring the archive. This method is called should
      * the concrete implementation of doSave(...) throw a
      * SaveException.
-     * 
+     *
      * @param project The project being saved.
      * @param file The file to which the save is taking place.
      * @param e The original exception that triggered a call to
@@ -200,7 +200,7 @@ public abstract class AbstractFilePersister extends FileFilter
      */
     private void postSaveFailure(Project project, File file, SaveException e)
         throws SaveException {
-        
+
     }
 
     /**
@@ -209,7 +209,7 @@ public abstract class AbstractFilePersister extends FileFilter
      * There is no need to worry about archiving or restoring
      * archive on failure, that is handled by the rest of the
      * framework.<p>
-     * 
+     *
      * @param project the project to save
      * @param file The file to write.
      * @throws SaveException when anything goes wrong
@@ -219,7 +219,7 @@ public abstract class AbstractFilePersister extends FileFilter
      */
     protected abstract void doSave(Project project, File file)
         throws SaveException;
-    
+
     /**
      * @see org.argouml.persistence.ProjectFilePersister#loadProject(File)
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -58,7 +58,7 @@ import org.tigris.gef.presentation.Fig;
 public class DiagramInterface {
     private static final Logger LOG =
         Logger.getLogger(DiagramInterface.class);
-    
+
     private Editor currentEditor = null;
 
     /**
@@ -71,17 +71,17 @@ public class DiagramInterface {
      * The current GraphModel of the current classdiagram.
      */
     private ClassDiagramGraphModel currentGM;
-    
+
     /**
      * The current Layer of the current classdiagram.
      */
     private LayerPerspective currentLayer;
-    
+
     /**
      * The current diagram for the isInDiagram method.
      */
     private ArgoDiagram currentDiagram;
-    
+
     /**
      * Creates a new DiagramInterface.
      *
@@ -110,7 +110,7 @@ public class DiagramInterface {
      */
     void markDiagramAsModified(Object diagram) {
 	if (!modifiedDiagrams.contains(diagram)) {
-	    modifiedDiagrams.add(diagram);       
+	    modifiedDiagrams.add(diagram);
 	}
     }
 
@@ -137,12 +137,12 @@ public class DiagramInterface {
      * @param newPackage The package to add.
      */
     public void addPackage(Object newPackage) {
-        
+
         if (!isInDiagram(newPackage)) {
-            
-            FigPackage newPackageFig = new FigPackage( currentGM, newPackage);
+
+            FigPackage newPackageFig = new FigPackage(currentGM, newPackage);
             if (currentGM.canAddNode(newPackage)) {
-                
+
                 currentGM.addNode(newPackage);
                 currentLayer.add(newPackageFig);
                 currentLayer.putInPosition(newPackageFig);
@@ -159,13 +159,13 @@ public class DiagramInterface {
      *         false otherwise.
      */
     public boolean isInDiagram(Object p) {
-        
+
 	if (currentDiagram == null)
             return false;
         else
             return currentDiagram.getNodes(null).contains(p);
     }
-    
+
     /**
      * Check if this diagram already exists in the project.<p>
      *
@@ -197,7 +197,7 @@ public class DiagramInterface {
 
 	// Check if this diagram already exists in the project
 	ProjectMember m;
-	if ( isDiagramInProject(name) ) {
+	if (isDiagramInProject(name)) {
             Project project = ProjectManager.getManager().getCurrentProject();
 	    m = findDiagramMemberByUniqueName(project, getDiagramName(name) + ".pgml");
 
@@ -235,22 +235,22 @@ public class DiagramInterface {
      * Add a class to the current diagram.
      *
      * @param newClass The new class to add to the editor.
-     * @param minimise minimise the class fig by hiding compartiments 
+     * @param minimise minimise the class fig by hiding compartiments
      *                 (of attributes and operations)
      */
     public void addClass(Object newClass, boolean minimise) {
-        
+
         // if the class is not in the current diagram, add it:
         if (currentGM.canAddNode(newClass)) {
-            
-	    FigClass newClassFig = new FigClass( currentGM, newClass);
-            currentLayer.add( newClassFig);
+
+	    FigClass newClassFig = new FigClass(currentGM, newClass);
+            currentLayer.add(newClassFig);
             currentGM.addNode(newClass);
             currentLayer.putInPosition(newClassFig);
-            
+
             newClassFig.setAttributesVisible(!minimise);
             newClassFig.setOperationsVisible(!minimise);
-            
+
             newClassFig.setSize(newClassFig.getMinimumSize());
         }
         // the class is in the diagram
@@ -266,33 +266,33 @@ public class DiagramInterface {
             }
             existingFig.renderingChanged();
         }
-        
+
         // add edges
         // for a 2-pass r.e. process we might have already added the
         // class but not its edges
-	currentGM.addNodeRelatedEdges( newClass);
+	currentGM.addNodeRelatedEdges(newClass);
     }
 
     /**
      * Add a interface to the current diagram.
      *
      * @param newInterface The interface to add.
-     * @param minimise minimise the class fig by hiding compartiments 
+     * @param minimise minimise the class fig by hiding compartiments
      *                 (of attributes and operations)
      */
     public void addInterface(Object newInterface, boolean minimise) {
-        
-        
+
+
         // if the Interface is not in the current diagram, add it:
         if (currentGM.canAddNode(newInterface)) {
-        
+
             FigInterface     newInterfaceFig =
-		new FigInterface( currentGM, newInterface);
-        
-            currentLayer.add( newInterfaceFig);
+		new FigInterface(currentGM, newInterface);
+
+            currentLayer.add(newInterfaceFig);
             currentGM.addNode(newInterface);
             currentLayer.putInPosition(newInterfaceFig);
-            
+
             newInterfaceFig.setOperationsVisible(!minimise);
             newInterfaceFig.setSize(newInterfaceFig.getMinimumSize());
         }
@@ -309,11 +309,11 @@ public class DiagramInterface {
             }
             existingFig.renderingChanged();
         }
-        
+
         // add edges
         // for a 2-pass r.e. process we might have already added the
         // interface but not its edges
-	currentGM.addNodeRelatedEdges( newInterface);
+	currentGM.addNodeRelatedEdges(newInterface);
     }
 
     /**
@@ -323,8 +323,7 @@ public class DiagramInterface {
      * package, which is used to generate the diagram name from.
      */
     public void createOrSelectClassDiagram(Object currentPackage,
-					   String currentPackageName)
-    {
+					   String currentPackageName) {
 	Project p = ProjectManager.getManager().getCurrentProject();
 	String diagramName = currentPackageName.replace('.', '_') + "_classes";
 	UMLClassDiagram d =
@@ -347,7 +346,7 @@ public class DiagramInterface {
 	    setCurrentDiagram(ddi);
 	}
     }
-	
+
     /**
      * Creates class diagram under the root.
      * Is used for classes out of packages.
@@ -356,25 +355,25 @@ public class DiagramInterface {
     public void createRootClassDiagram() {
 	createOrSelectClassDiagram(null, "");
     }
-        
+
     /**
      * selects a diagram without affecting the gui.
      *
      * @param diagram the diagram
      */
     public void setCurrentDiagram(ArgoDiagram diagram) {
-        
+
         if (diagram == null) {
             throw new RuntimeException("you can't select a null diagram");
         }
-        
+
         currentGM = (ClassDiagramGraphModel) diagram.getGraphModel();
         currentLayer = diagram.getLayer();
         currentDiagram = diagram;
-        
+
         markDiagramAsModified(diagram);
     }
-    
+
     /**
      * @param name the name of the member to be found
      * @return the member

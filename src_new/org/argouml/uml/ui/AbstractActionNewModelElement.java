@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,24 +34,24 @@ import org.argouml.i18n.Translator;
 public abstract class AbstractActionNewModelElement extends UMLAction {
 
     private Object/*MModelElement*/ target;
-    
+
     /**
      * The constructor.
      * Defaults to name "action.new", global and NO_ICON
      */
     protected AbstractActionNewModelElement() {
         super(Translator.localize("action.new"), true, NO_ICON);
-    }  
-    
+    }
+
     /**
      * The constructor.
-     * 
+     *
      * @param name the to be localized name of the action
      */
     protected AbstractActionNewModelElement(String name) {
         super(name, true, HAS_ICON);
     }
-    
+
      /**
      * Returns the target.
      * @return MModelElement
@@ -67,5 +67,5 @@ public abstract class AbstractActionNewModelElement extends UMLAction {
     public void setTarget(Object theTarget) {
         target = theTarget;
     }
-       
+
 }

@@ -48,7 +48,7 @@ public class ClassfileTreeParser extends antlr.TreeParser
 
     /**
      * Split class and package name and set package.
-     * 
+     *
      * @param classname The fully qualified classname.
      *
      * @return The class name.
@@ -68,10 +68,10 @@ public ClassfileTreeParser() {
 	public final void classfile(AST _t,
 		Modeller modeller
 	) throws RecognitionException {
-		
+
 		AST classfile_AST_in = (AST)_t;
 		setModeller(modeller);
-		
+
 		magic_number(_t);
 		_t = _retTree;
 		version_number(_t);
@@ -85,37 +85,37 @@ public ClassfileTreeParser() {
 		getModeller().popClassifier();
 		_retTree = _t;
 	}
-	
+
 	public final void magic_number(AST _t) throws RecognitionException {
-		
+
 		AST magic_number_AST_in = (AST)_t;
-		
+
 		AST tmp1_AST_in = (AST)_t;
 		match(_t,MAGIC);
 		_t = _t.getNextSibling();
 		_retTree = _t;
 	}
-	
+
 	public final void version_number(AST _t) throws RecognitionException {
-		
+
 		AST version_number_AST_in = (AST)_t;
-		
+
 		AST tmp2_AST_in = (AST)_t;
 		match(_t,VERSION);
 		_t = _t.getNextSibling();
 		_retTree = _t;
 	}
-	
+
 	public final void typeDefinition(AST _t) throws RecognitionException {
-		
+
 		AST typeDefinition_AST_in = (AST)_t;
-		
+
 		short modifiers=0;
 		String class_name=null;
 		String superclass_name=null;
 		Vector interfaces = new Vector();
-		
-		
+
+
 		if (_t==null) _t=ASTNULL;
 		switch ( _t.getType()) {
 		case INTERFACE_DEF:
@@ -138,10 +138,10 @@ public ClassfileTreeParser() {
 			_t = _t.getNextSibling();
 			_t = __t5;
 			_t = _t.getNextSibling();
-			
+
 			getModeller().addComponent();
 				       getModeller().addInterface( splitPackageFromClass(class_name), modifiers, interfaces, null);
-			
+
 			break;
 		}
 		case CLASS_DEF:
@@ -172,13 +172,13 @@ public ClassfileTreeParser() {
 			_t = _t.getNextSibling();
 			_t = __t7;
 			_t = _t.getNextSibling();
-			
+
 				       if( "java.lang.Object".equals(superclass_name)) {
-					   superclass_name=null;  
+					   superclass_name=null;
 				       }
 			getModeller().addComponent();
 				       getModeller().addClass( splitPackageFromClass(class_name), modifiers, superclass_name, interfaces, null);
-				
+
 			break;
 		}
 		default:
@@ -188,11 +188,11 @@ public ClassfileTreeParser() {
 		}
 		_retTree = _t;
 	}
-	
+
 	public final void attribute_block(AST _t) throws RecognitionException {
-		
+
 		AST attribute_block_AST_in = (AST)_t;
-		
+
 		{
 		_loop17:
 		do {
@@ -204,16 +204,16 @@ public ClassfileTreeParser() {
 			else {
 				break _loop17;
 			}
-			
+
 		} while (true);
 		}
 		_retTree = _t;
 	}
-	
+
 	public final void method_block(AST _t) throws RecognitionException {
-		
+
 		AST method_block_AST_in = (AST)_t;
-		
+
 		{
 		_loop21:
 		do {
@@ -240,12 +240,12 @@ public ClassfileTreeParser() {
 		}
 		_retTree = _t;
 	}
-	
+
 	public final short  access_modifiers(AST _t) throws RecognitionException {
 		short modifiers;
-		
+
 		AST access_modifiers_AST_in = (AST)_t;
-		
+
 		AST tmp8_AST_in = (AST)_t;
 		match(_t,ACCESS_MODIFIERS);
 		_t = _t.getNextSibling();
@@ -253,12 +253,12 @@ public ClassfileTreeParser() {
 		_retTree = _t;
 		return modifiers;
 	}
-	
+
 	public final String  class_info(AST _t) throws RecognitionException {
 		String name;
-		
+
 		AST class_info_AST_in = (AST)_t;
-		
+
 		AST tmp9_AST_in = (AST)_t;
 		match(_t,IDENT);
 		_t = _t.getNextSibling();
@@ -266,13 +266,13 @@ public ClassfileTreeParser() {
 		_retTree = _t;
 		return name;
 	}
-	
+
 	public final void interface_block(AST _t,
 		Vector interfaces
 	) throws RecognitionException {
-		
+
 		AST interface_block_AST_in = (AST)_t;
-		
+
 		{
 		_loop14:
 		do {
@@ -286,16 +286,16 @@ public ClassfileTreeParser() {
 			else {
 				break _loop14;
 			}
-			
+
 		} while (true);
 		}
 		_retTree = _t;
 	}
-	
+
 	public final void attribute_info(AST _t) throws RecognitionException {
-		
+
 		AST attribute_info_AST_in = (AST)_t;
-		
+
 		AST tmp11_AST_in = (AST)_t;
 		match(_t,VARIABLE_DEF);
 		_t = _t.getNextSibling();
@@ -310,20 +310,20 @@ public ClassfileTreeParser() {
 		_t = _t.getNextSibling();
 		// Add the attribute to the model element, that holds
 			      // the class/interface info.
-			      getModeller().addAttribute( ((ShortAST)tmp12_AST_in).getShortValue(), 
+			      getModeller().addAttribute( ((ShortAST)tmp12_AST_in).getShortValue(),
 							  tmp13_AST_in.getText(),
 							  tmp14_AST_in.getText(),
 							  null,	     // I parse no initializers yet.
 							  null);     // And there's no javadoc info available.
-			
+
 		_retTree = _t;
 	}
-	
+
 	public final void ctorDef(AST _t) throws RecognitionException {
-		
+
 		AST ctorDef_AST_in = (AST)_t;
 		Vector params = null;
-		
+
 		AST __t23 = _t;
 		AST tmp15_AST_in = (AST)_t;
 		match(_t,CTOR_DEF);
@@ -357,21 +357,21 @@ public ClassfileTreeParser() {
 		}
 		_t = __t23;
 		_t = _t.getNextSibling();
-		
+
 			    getModeller().addOperation( ((ShortAST)tmp16_AST_in).getShortValue(),
 							null,
 							tmp17_AST_in.getText(),
 							params,
 							null);
-			
+
 		_retTree = _t;
 	}
-	
+
 	public final void methodDecl(AST _t) throws RecognitionException {
-		
+
 		AST methodDecl_AST_in = (AST)_t;
 		Vector params = null;
-		
+
 		AST __t26 = _t;
 		AST tmp18_AST_in = (AST)_t;
 		match(_t,METHOD_DEF);
@@ -408,25 +408,25 @@ public ClassfileTreeParser() {
 		}
 		_t = __t26;
 		_t = _t.getNextSibling();
-		
+
 			    getModeller().addOperation( ((ShortAST)tmp19_AST_in).getShortValue(),
 							tmp20_AST_in.getText(),
 							tmp21_AST_in.getText(),
 							params,
 							null);
-			
+
 		_retTree = _t;
 	}
-	
+
 	public final Vector  parameters(AST _t) throws RecognitionException {
 		Vector params;
-		
+
 		AST parameters_AST_in = (AST)_t;
-		
-		params = new Vector(); 
+
+		params = new Vector();
 		Vector currentParam = null;
-		
-		
+
+
 		AST __t29 = _t;
 		AST tmp22_AST_in = (AST)_t;
 		match(_t,PARAMETERS);
@@ -443,7 +443,7 @@ public ClassfileTreeParser() {
 			else {
 				break _loop31;
 			}
-			
+
 		} while (true);
 		}
 		_t = __t29;
@@ -451,11 +451,11 @@ public ClassfileTreeParser() {
 		_retTree = _t;
 		return params;
 	}
-	
+
 	public final void exceptions(AST _t) throws RecognitionException {
-		
+
 		AST exceptions_AST_in = (AST)_t;
-		
+
 		AST __t35 = _t;
 		AST tmp23_AST_in = (AST)_t;
 		match(_t,THROWS);
@@ -472,20 +472,20 @@ public ClassfileTreeParser() {
 			else {
 				break _loop37;
 			}
-			
+
 		} while (true);
 		}
 		_t = __t35;
 		_t = _t.getNextSibling();
 		_retTree = _t;
 	}
-	
+
 	public final Vector  parameterDef(AST _t) throws RecognitionException {
 		Vector param;
-		
+
 		AST parameterDef_AST_in = (AST)_t;
 		param = new Vector();
-		
+
 		AST __t33 = _t;
 		AST tmp25_AST_in = (AST)_t;
 		match(_t,PARAMETER_DEF);
@@ -501,16 +501,16 @@ public ClassfileTreeParser() {
 		_t = _t.getNextSibling();
 		_t = __t33;
 		_t = _t.getNextSibling();
-		
+
 			    param.add(new Short(((ShortAST)tmp26_AST_in).getShortValue()));
 			    param.add(tmp27_AST_in.getText());
 			    param.add(tmp28_AST_in.getText());
-			
+
 		_retTree = _t;
 		return param;
 	}
-	
-	
+
+
 	public static final String[] _tokenNames = {
 		"<0>",
 		"EOF",
@@ -547,6 +547,6 @@ public ClassfileTreeParser() {
 		"VERSION",
 		"BYTE"
 	};
-	
+
 	}
-	
+

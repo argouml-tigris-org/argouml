@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: SnoozeOrder.java
-// Classes: SnoozeOrder
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.cognitive.critics;
 
 import java.io.Serializable;
@@ -34,15 +29,18 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
-/** A Critic can be disabled for a certain amount of time by giving it
- *  the snooze command.  Whereas most ControlMech's activate or deactivate
- *  Critic's based on evidence of the Designer's state of mind, this
- *  command allows the Designer to disable Critic's without stating any
- *  reason.  However, after a period of time, the critic may become
- *  active again.  We think this will often be convienent because
- *  Designer's have a lot of tacit knowledge about their own state of
- *  mind that is not worth making explicit. */
-
+/**
+ * A Critic can be disabled for a certain amount of time by giving it
+ * the snooze command.  Whereas most ControlMech's activate or deactivate
+ * Critic's based on evidence of the Designer's state of mind, this
+ * command allows the Designer to disable Critic's without stating any
+ * reason.  However, after a period of time, the critic may become
+ * active again.  We think this will often be convienent because
+ * Designer's have a lot of tacit knowledge about their own state of
+ * mind that is not worth making explicit.
+ *
+ * @author Jason Robbins
+ */
 public class SnoozeOrder implements Serializable {
     /** logger */
     private static final Logger LOG = Logger.getLogger(SnoozeOrder.class);
@@ -68,15 +66,15 @@ public class SnoozeOrder implements Serializable {
 	now.setTime(System.currentTimeMillis());
 	return now;
     }
-	
+
     /**
      * The constructor.
-     * 
+     *
      */
     public SnoozeOrder() {
 	/* in the past, 0 milliseconds after January 1, 1970, 00:00:00 GMT. */
-	snoozeUntil =  new Date(0); 
-	snoozeAgain =  new Date(0); 
+	snoozeUntil =  new Date(0);
+	snoozeAgain =  new Date(0);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -93,10 +91,11 @@ public class SnoozeOrder implements Serializable {
      * @param h if true, then snooze, else unsnooze
      */
     public void setSnoozed(boolean h) {
-	if (h) 
+	if (h) {
 	    snooze();
-	else
+	} else {
 	    unsnooze();
+	}
     }
 
     ////////////////////////////////////////////////////////////////
@@ -106,8 +105,11 @@ public class SnoozeOrder implements Serializable {
      * Snooze the critic.
      */
     public void snooze() {
-	if (snoozeAgain.after(getNow())) interval = nextInterval(interval);
-	else interval = initialIntervalMS;
+	if (snoozeAgain.after(getNow())) {
+	    interval = nextInterval(interval);
+	} else {
+	    interval = initialIntervalMS;
+	}
 	long n = (getNow()).getTime();
 	snoozeUntil.setTime(n + interval);
 	snoozeAgain.setTime(n + interval + initialIntervalMS);
@@ -119,12 +121,12 @@ public class SnoozeOrder implements Serializable {
      */
     public void unsnooze() {
 	/* in the past, 0 milliseconds after January 1, 1970, 00:00:00 GMT. */
-	snoozeUntil =  new Date(0); 
+	snoozeUntil =  new Date(0);
     }
 
     /**
      * @param last the previous interval
-     * @return the next longer interval 
+     * @return the next longer interval
      */
     protected long nextInterval(long last) {
 	/* by default, double the snooze interval each time */

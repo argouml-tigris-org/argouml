@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,7 +28,7 @@ import javax.swing.JMenuItem;
 /**
  * An interface which identifies an ArgoUML plug-in to the menu.
  * Plug-ins are replacements or additions to standard Argo classes.
- *   
+ *
  * PluggableMenu require two criteria.  The first is a JMenuItem.  The
  * second is an unlocalized string which identifies the menu
  * requesting the plugin, such as "File" or "Edit".
@@ -44,31 +44,38 @@ public interface PluggableMenu extends Pluggable {
        change it in the future.
      */
 
-    /** Key looked for in ProjectBrowser for File Import submenu.
+    /**
+     * Key looked for in ProjectBrowser for File Import submenu.
      */
     String KEY_FILE_IMPORT = "File:Import";
 
-    /** Key looked for in ProjectBrowser for View menu.
+    /**
+     * Key looked for in ProjectBrowser for View menu.
      */
     String KEY_VIEW = "View";
 
-    /** Key looked for in ProjectBrowser for Create Diagram menu.
+    /**
+     * Key looked for in ProjectBrowser for Create Diagram menu.
      */
     String KEY_CREATE_DIAGRAMS = "Create Diagrams";
 
-    /** Key looked for in ProjectBrowser for Arrange menu.
+    /**
+     * Key looked for in ProjectBrowser for Arrange menu.
      */
     String KEY_ARRANGE = "Arrange";
 
-    /** Key looked for in ProjectBrowser for Generate menu.
+    /**
+     * Key looked for in ProjectBrowser for Generate menu.
      */
     String KEY_GENERATE = "Generate";
 
-    /** Key looked for in ProjectBrowser for Tools menu.
+    /**
+     * Key looked for in ProjectBrowser for Tools menu.
      */
     String KEY_TOOLS = "Tools";
 
-    /** Key looked for in ProjectBrowser for Help menu.
+    /**
+     * Key looked for in ProjectBrowser for Help menu.
      */
     String KEY_HELP = "Help";
 

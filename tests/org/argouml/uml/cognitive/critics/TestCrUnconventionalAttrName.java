@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,18 +30,18 @@ import junit.framework.TestCase;
 
 /**
  * Tests for the CrUnconventionalAttrName class.
- * 
+ *
  * @author mkl
  *
  */
 public class TestCrUnconventionalAttrName extends TestCase {
-    
+
 
     private CrUnconventionalAttrName cr = new CrUnconventionalAttrName();
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param arg0 the name of the test
      */
     public TestCrUnconventionalAttrName(String arg0) {
@@ -54,29 +54,29 @@ public class TestCrUnconventionalAttrName extends TestCase {
     public void testNullName() {
         assertEquals("attr", cr.computeSuggestion(null));
     }
-    
+
     /**
      * A name not starting with a capital should capitalize the first character.
      */
     public void testNoUnderscoreName() {
         assertEquals("test", cr.computeSuggestion("Test"));
     }
-    
+
     /**
-     * A name not starting with a capital should capitalize 
+     * A name not starting with a capital should capitalize
      * the first non-underscore character.
      */
     public void testSmallUnderscoreName() {
         assertEquals("_x", cr.computeSuggestion("_X"));
     }
-    
+
     /**
      * ...and only the first character, not the 2nd.
      */
     public void testLongUnderscoreName() {
         assertEquals("_xx", cr.computeSuggestion("_Xx"));
     }
-    
+
     /**
      * A name that consists of a single underscore should remain untouched.
      */

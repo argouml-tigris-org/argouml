@@ -50,7 +50,7 @@ import org.tigris.gef.ui.ColorRenderer;
 
 /**
  * The basic stylepanel which provides line and fill color information.
- *  
+ *
  */
 public class StylePanelFig extends StylePanel implements ItemListener,
         FocusListener, KeyListener {
@@ -88,7 +88,7 @@ public class StylePanelFig extends StylePanel implements ItemListener,
 
     /**
      * The constructor of the style panel of a Fig.
-     * 
+     *
      * @param title the title string
      */
     public StylePanelFig(String title) {
@@ -97,7 +97,7 @@ public class StylePanelFig extends StylePanel implements ItemListener,
 
     /**
      * The constructor.
-     * 
+     *
      */
     public StylePanelFig() {
         super("Fig Appearance");
@@ -215,7 +215,7 @@ public class StylePanelFig extends StylePanel implements ItemListener,
      * set whether this Fig has a editable boundingbox. This is done normally in
      * <code>refresh()</code>, e.g. for FigEdgeModelElements where it does
      * not make sense to edit the bounding box.
-     * 
+     *
      * @param value
      *            the boolean value of the bounding box property
      */
@@ -226,20 +226,15 @@ public class StylePanelFig extends StylePanel implements ItemListener,
     }
 
     /**
-     * <p>
-     * Handle a refresh of the style panel after the fig has moved.
-     * </p>
-     * 
-     * <p>
-     * <em>Warning</em>. There is a circular trap here. Editing the boundary
-     * box will also trigger a refresh, and so we reset the boundary box, which
-     * causes funny behaviour (the cursor keeps jumping to the end of the text).
-     * </p>
-     * 
-     * <p>
+     * Handle a refresh of the style panel after the fig has moved.<p>
+     *
+     * <em>Warning</em>. There is a circular trap here. Editing the
+     * boundary box will also trigger a refresh, and so we reset the
+     * boundary box, which causes funny behaviour (the cursor keeps
+     * jumping to the end of the text).
+     *
      * The solution is to not reset the boundary box field if the boundaries
-     * have not changed.
-     * </p>
+     * have not changed.<p>
      */
     public void refresh() {
 
@@ -247,7 +242,7 @@ public class StylePanelFig extends StylePanel implements ItemListener,
             hasEditableBoundingBox(false);
         } else
             hasEditableBoundingBox(true);
-        
+
         // The boundary box as held in the target fig, and as listed in
         // the
         // boundary box style field (null if we don't have anything
@@ -300,18 +295,18 @@ public class StylePanelFig extends StylePanel implements ItemListener,
     /**
      * Change the bounds of the target fig. Called whenever the bounds box is
      * edited. <p>
-     * 
+     *
      * Format of the bounds is four integers representing x, y, width and height
      * separated by spaces or commas. An empty field is treated as no change and
      * leading and trailing spaces are ignored. <p>
-     * 
+     *
      * <em>Note</em>. There is a note in the old code that more work might be
      * needed, because this could change the graph model. I don't see how that
      * could ever be.
      */
-    protected void setTargetBBox() { 
+    protected void setTargetBBox() {
         // Can't do anything if we don't have a fig.
-        if (getPanelTarget() == null) { return; } 
+        if (getPanelTarget() == null) { return; }
         // Parse the boundary box text. Null is
         // returned if it is empty or
         // invalid, which causes no change. Otherwise we tell
@@ -322,7 +317,7 @@ public class StylePanelFig extends StylePanel implements ItemListener,
         if (bounds == null) { return; }
 
         if (!getPanelTarget().getBounds().equals(bounds)) {
-            getPanelTarget().setBounds(bounds.x, bounds.y, bounds.width, 
+            getPanelTarget().setBounds(bounds.x, bounds.y, bounds.width,
                     bounds.height);
             getPanelTarget().endTrans();
             ProjectManager.getManager().setNeedsSave(true);
@@ -330,24 +325,17 @@ public class StylePanelFig extends StylePanel implements ItemListener,
     }
 
     /**
-     * <p>
-     * Parse the boundary box string and return the rectangle it represents.
-     * </p>
-     * 
-     * <p>
-     * The syntax are four integers separated by spaces or commas. We ignore
-     * leading and trailing blanks.
-     * </p>
-     * 
-     * <p>
-     * If we have the empty string we return <code>null</code>.
-     * </p>
-     * 
-     * <p>
-     * If we fail to parse, then we return <code>null</code> and print out a
-     * rude message.
-     * </p>
-     * 
+     * Parse the boundary box string and return the rectangle it
+     * represents.<p>
+     *
+     * The syntax are four integers separated by spaces or commas. We
+     * ignore leading and trailing blanks.<p>
+     *
+     * If we have the empty string we return <code>null</code>.<p>
+     *
+     * If we fail to parse, then we return <code>null</code> and print
+     * out a rude message.<p>
+     *
      * @return The size of the box, or <code>null</code> if the bounds string
      *         is empty or invalid.
      */
@@ -464,17 +452,17 @@ public class StylePanelFig extends StylePanel implements ItemListener,
      */
     public void itemStateChanged(ItemEvent e) {
         Object src = e.getSource();
-        if (e.getStateChange() == ItemEvent.SELECTED 
+        if (e.getStateChange() == ItemEvent.SELECTED
                 && getPanelTarget() != null) {
             if (src == fillField) {
                 if (e.getItem() == CUSTOM_ITEM) {
-                    handleCustomColor(fillField, "Custom Fill Color", 
+                    handleCustomColor(fillField, "Custom Fill Color",
                             getPanelTarget().getFillColor());
                 }
                 setTargetFill();
             } else if (src == lineField) {
                 if (e.getItem() == CUSTOM_ITEM) {
-                    handleCustomColor(lineField, "Custom Line Color", 
+                    handleCustomColor(lineField, "Custom Line Color",
                             getPanelTarget().getLineColor());
                 }
                 setTargetLine();
@@ -490,7 +478,7 @@ public class StylePanelFig extends StylePanel implements ItemListener,
 
     /**
      * Makes sure that the fig is updated when the _bboxField loses focus.
-     * 
+     *
      * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
      */
     public void focusLost(FocusEvent e) {
@@ -514,7 +502,7 @@ public class StylePanelFig extends StylePanel implements ItemListener,
     /**
      * Tests if enter is pressed in the _bbodField so we need to set the target
      * bounds.
-     * 
+     *
      * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
      */
     public void keyTyped(KeyEvent e) {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,24 +35,24 @@ import junit.framework.TestCase;
  *
  */
 public class TestUUIDManager extends TestCase {
-    
-    
+
+
     /**
      * The constructor.
-     * 
+     *
      * @param name the name of the test
      */
     public TestUUIDManager(String name) {
         super(name);
     }
-    
+
     /**
      * Test the UUIDManager.getInstance().getNewUUID() function.
      */
     public void testGetNewUUID() {
         String uuid1 = UUIDManager.getInstance().getNewUUID();
         String uuid2 = UUIDManager.getInstance().getNewUUID();
-        
+
         assertNotNull(uuid1);
         assertNotNull(uuid2);
         assertTrue(!uuid1.equals(uuid2));

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,8 +38,8 @@ import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 
 /**
  * The rule for Behavioral Feature->Statechart diagram.
- * 
- * @author jaap.branderhorst@xs4all.nl	
+ *
+ * @author jaap.branderhorst@xs4all.nl
  * @since Dec 30, 2002
  */
 public class GoBehavioralFeatureToStateDiagram extends AbstractPerspectiveRule {
@@ -48,7 +48,7 @@ public class GoBehavioralFeatureToStateDiagram extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        
+
         if (ModelFacade.isABehavioralFeature(parent)) {
             Collection col = ModelFacade.getBehaviors(parent);
             Vector ret = new Vector();
@@ -57,12 +57,12 @@ public class GoBehavioralFeatureToStateDiagram extends AbstractPerspectiveRule {
             Iterator it = diagrams.iterator();
             while (it.hasNext()) {
                 ArgoDiagram diagram = (ArgoDiagram) it.next();
-                if (diagram instanceof UMLStateDiagram 
+                if (diagram instanceof UMLStateDiagram
                     && col.contains(((UMLStateDiagram) diagram)
                             .getStateMachine())) {
                     ret.add(diagram);
                 }
-                
+
             }
             return ret;
         }
@@ -77,7 +77,7 @@ public class GoBehavioralFeatureToStateDiagram extends AbstractPerspectiveRule {
 	return null;
     }
 
-    
+
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */

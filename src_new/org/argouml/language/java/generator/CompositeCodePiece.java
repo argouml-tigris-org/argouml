@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,8 +36,7 @@ import java.util.*;
    This piece of code is a composition of several adjacent pieces of
    code. The code piece can have holes.
 */
-public class CompositeCodePiece extends CodePiece
-{
+public class CompositeCodePiece extends CodePiece {
     /** The code pieces this code piece consists of. */
     private Vector codePieces;
 
@@ -46,8 +45,7 @@ public class CompositeCodePiece extends CodePiece
 
        @param codePiece A starter code piece.
     */
-    public CompositeCodePiece(CodePiece codePiece)
-    {
+    public CompositeCodePiece(CodePiece codePiece) {
 	codePieces = new Vector();
 	if (codePiece != null) {
 	    codePieces.addElement(codePiece);
@@ -56,11 +54,10 @@ public class CompositeCodePiece extends CodePiece
 
     /**
      * Append a code piece to the end.
-     * 
+     *
      * @param codePiece the given codepiece
      */
-    public void add(CodePiece codePiece)
-    {
+    public void add(CodePiece codePiece) {
 	if (codePiece != null) {
 	    codePieces.addElement(codePiece);
 	}
@@ -69,15 +66,14 @@ public class CompositeCodePiece extends CodePiece
     /**
      *  @return the string representation for this piece of code
      */
-    public StringBuffer getText()
-    {
+    public StringBuffer getText() {
 	Iterator i = codePieces.iterator();
 	CodePiece cp = (CodePiece) i.next();
 	StringBuffer text = cp.getText();
 	int prevEnd = cp.getEndPosition();
 	int prevLine = cp.getEndLine();
 
-	for (; i.hasNext(); ) {
+	for (; i.hasNext();) {
 	    cp = (CodePiece) i.next();
 	    int spaces = cp.getStartPosition() - prevEnd;
 	    if (prevLine != cp.getStartLine()) {
@@ -96,11 +92,10 @@ public class CompositeCodePiece extends CodePiece
 
     /**
      * Return the start position.
-     * 
+     *
      * @see org.argouml.language.java.generator.CodePiece#getStartPosition()
      */
-    public int getStartPosition()
-    {
+    public int getStartPosition() {
 	if (codePieces.size() > 0)
 	    return ((CodePiece) codePieces.firstElement()).getStartPosition();
 	else
@@ -109,11 +104,10 @@ public class CompositeCodePiece extends CodePiece
 
     /**
      * Return the end position.
-     * 
+     *
      * @see org.argouml.language.java.generator.CodePiece#getEndPosition()
      */
-    public int getEndPosition()
-    {
+    public int getEndPosition() {
 	if (codePieces.size() > 0)
 	    return ((CodePiece) codePieces.lastElement()).getEndPosition();
 	else
@@ -122,11 +116,10 @@ public class CompositeCodePiece extends CodePiece
 
     /**
      * Return the start line.
-     * 
+     *
      * @see org.argouml.language.java.generator.CodePiece#getStartLine()
      */
-    public int getStartLine()
-    {
+    public int getStartLine() {
 	if (codePieces.size() > 0)
 	    return ((CodePiece) codePieces.firstElement()).getStartLine();
 	else
@@ -135,11 +128,10 @@ public class CompositeCodePiece extends CodePiece
 
     /**
      * Return the end line.
-     * 
+     *
      * @see org.argouml.language.java.generator.CodePiece#getEndLine()
      */
-    public int getEndLine()
-    {
+    public int getEndLine() {
 	if (codePieces.size() > 0)
 	    return ((CodePiece) codePieces.lastElement()).getEndLine();
 	else

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,21 +46,21 @@ import org.tigris.gef.ocl.TemplateReader;
  * @author Bob Tarling
  */
 public class DiagramMemberFilePersister extends MemberFilePersister {
-    
+
     /** logger */
     private static final Logger LOG =
         Logger.getLogger(ModelMemberFilePersister.class);
 
     /** The tee file for persistence */
     private static final String PGML_TEE = "/org/argouml/persistence/PGML.tee";
-    
+
     /**
      * @see org.argouml.persistence.MemberFilePersister#load(org.argouml.kernel.Project,
      * java.io.InputStream)
      */
     public void load(Project project, InputStream inputStream)
         throws OpenException {
-        
+
         try {
             PGMLParser parser = new PGMLParser();
             parser.setOwnerRegistry(project.getUUIDRefs());
@@ -79,24 +79,24 @@ public class DiagramMemberFilePersister extends MemberFilePersister {
             throw new OpenException(e);
         }
     }
-    
+
     /**
      * @see org.argouml.persistence.MemberFilePersister#getTag()
      */
     public String getMainTag() {
         return "pgml";
     }
-    
+
     /**
      * Write the diagram to the given writer.
      * @see org.argouml.kernel.ProjectMember#save(java.io.Writer, Integer)
      */
     public void save(ProjectMember member, Writer writer, Integer indent) throws SaveException {
-        
-        ProjectMemberDiagram diagramMember = (ProjectMemberDiagram)member; 
+
+        ProjectMemberDiagram diagramMember = (ProjectMemberDiagram) member;
         OCLExpander expander;
         try {
-            expander = 
+            expander =
                 new OCLExpander(TemplateReader.getInstance().read(PGML_TEE));
         } catch (FileNotFoundException e) {
             throw new SaveException(e);

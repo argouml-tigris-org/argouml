@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,8 +39,7 @@ import org.argouml.model.ModelFacade;
  *
  * @author Marcus Andersson andersson@users.sourceforge.net
  */
-public class OperationCodePiece extends NamedCodePiece
-{
+public class OperationCodePiece extends NamedCodePiece {
     /** The code piece this operation represents. */
     private CodePiece operationDef;
 
@@ -56,8 +55,7 @@ public class OperationCodePiece extends NamedCodePiece
      */
     public OperationCodePiece(CodePiece javadoc,
                               CodePiece operation,
-                              String n)
-    {
+                              String n) {
 	name = n;
 	if (javadoc != null) {
 	    CompositeCodePiece cp = new CompositeCodePiece(javadoc);
@@ -70,11 +68,10 @@ public class OperationCodePiece extends NamedCodePiece
 
     /**
      * @see org.argouml.language.java.generator.CodePiece#getText()
-     * 
+     *
      * Return the string representation for this piece of code.
      */
-    public StringBuffer getText()
-    {
+    public StringBuffer getText() {
 	return operationDef.getText();
     }
 
@@ -83,38 +80,34 @@ public class OperationCodePiece extends NamedCodePiece
      *
      * Return the start position.
      */
-    public int getStartPosition()
-    {
+    public int getStartPosition() {
 	return operationDef.getStartPosition();
     }
 
     /**
      * @see org.argouml.language.java.generator.CodePiece#getEndPosition()
-     * 
+     *
      * Return the end position.
      */
-    public int getEndPosition()
-    {
+    public int getEndPosition() {
 	return operationDef.getEndPosition();
     }
 
     /**
      * @see org.argouml.language.java.generator.CodePiece#getStartLine()
-     * 
+     *
      * Return the start line
      */
-    public int getStartLine()
-    {
+    public int getStartLine() {
 	return operationDef.getStartLine();
     }
 
     /**
      * @see org.argouml.language.java.generator.CodePiece#getEndLine()
-     * 
+     *
      * Return the end line
      */
-    public int getEndLine()
-    {
+    public int getEndLine() {
 	return operationDef.getEndLine();
     }
 
@@ -127,15 +120,14 @@ public class OperationCodePiece extends NamedCodePiece
      */
     public void write (BufferedReader reader,
                        BufferedWriter writer,
-                       Stack parseStateStack) throws IOException
-    {
+                       Stack parseStateStack) throws IOException {
         ParseState parseState = (ParseState) parseStateStack.peek();
         Vector features = parseState.getNewFeatures();
         boolean found = false;
 
-        for (Iterator j = features.iterator(); j.hasNext() && !found; ) {
+        for (Iterator j = features.iterator(); j.hasNext() && !found;) {
             Object feature = /*(MFeature)*/ j.next();
-            if (ModelFacade.getName(feature).equals(name) 
+            if (ModelFacade.getName(feature).equals(name)
                     && ModelFacade.isAOperation(feature)) {
                 found = true;
                 parseState.newFeature(feature);

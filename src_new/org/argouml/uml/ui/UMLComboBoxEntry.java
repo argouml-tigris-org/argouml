@@ -32,35 +32,35 @@ import org.argouml.uml.Profile;
 
 /**
  * A combobox entry.
- * 
+ *
  * TODO: What is a Phantom element? Document it.
  *
  */
 public class UMLComboBoxEntry implements Comparable {
     private Object/*MModelElement*/ element;
     private String shortName;
-    
+
     /** longName is composed of an identifier and a name as in Class: String */
     private String longName;
     private Profile profile;
-    
-    /** display name will be the same as shortName unless there 
+
+    /** display name will be the same as shortName unless there
      *  is a name collision */
     private String displayName;
-    
+
     /** i am not quite sure what isPhantom means, it may be that it is an
      *  entry that is not in the model list...pjs */
     private boolean thisIsAPhantom;
 
     /**
      * The constructor.
-     * 
+     *
      * @param modelElement the model element that this combobox entry represents
-     * @param theProfile the profile according which the textual 
+     * @param theProfile the profile according which the textual
      *                   representatation of the modelelement is generated
      * @param isPhantom true if this is a phantom element
      */
-    public UMLComboBoxEntry(Object/*MModelElement*/ modelElement, 
+    public UMLComboBoxEntry(Object/*MModelElement*/ modelElement,
             Profile theProfile, boolean isPhantom) {
         element = modelElement;
         if (modelElement != null) {
@@ -88,7 +88,7 @@ public class UMLComboBoxEntry implements Comparable {
     }
 
     /**
-     * Generate a string representatation of the UML modelelement 
+     * Generate a string representatation of the UML modelelement
      * of this combobox element.
      */
     public void updateName() {
@@ -99,14 +99,14 @@ public class UMLComboBoxEntry implements Comparable {
     }
 
     /**
-     * If one of the given names equals the "short name", then 
+     * If one of the given names equals the "short name", then
      * we'll display the longname.
-     * 
+     *
      * @param before the first given name
      * @param after the 2nd given name
      */
     public void checkCollision(String before, String after) {
-        boolean collision = (before != null && before.equals(shortName)) 
+        boolean collision = (before != null && before.equals(shortName))
             || (after != null && after.equals(shortName));
         if (collision) {
             if (longName == null) {
@@ -143,7 +143,7 @@ public class UMLComboBoxEntry implements Comparable {
     // Idea to move this to MMUtil together with the same function from
     // org/argouml/uml/cognitive/critics/WizOperName.java
     // org/argouml/uml/generator/ParserDisplay.java
-    private static Object findNamespace(Object/*MNamespace*/ phantomNS, 
+    private static Object findNamespace(Object/*MNamespace*/ phantomNS,
             Object/*MModel*/ targetModel) {
         Object/*MNamespace*/ ns = null;
         Object/*MNamespace*/ targetParentNS = null;
@@ -156,7 +156,7 @@ public class UMLComboBoxEntry implements Comparable {
             //
             //   see if there is already an element with the same name
             //
-            Collection ownedElements = 
+            Collection ownedElements =
                 ModelFacade.getOwnedElements(targetParentNS);
             String phantomName = ModelFacade.getName(phantomNS);
             String targetName;
@@ -194,7 +194,7 @@ public class UMLComboBoxEntry implements Comparable {
         //    we need to possibly recreate the package structure
         //       in the target model
         if (thisIsAPhantom && targetModel != null) {
-            Object/*MNamespace*/ targetNS = 
+            Object/*MNamespace*/ targetNS =
                 findNamespace(ModelFacade.getNamespace(element), targetModel);
             Object/*MModelElement*/ clone = null;
             try {
@@ -203,12 +203,12 @@ public class UMLComboBoxEntry implements Comparable {
                 ModelFacade.setName(clone, ModelFacade.getName(element));
                 Object stereo = null;
                 if (ModelFacade.getStereotypes(element).size() > 0) {
-                    stereo = 
+                    stereo =
                         ModelFacade.getStereotypes(element).iterator().next();
                 }
                 ModelFacade.setStereotype(clone, stereo);
                 if (ModelFacade.isAStereotype(clone)) {
-                    ModelFacade.setBaseClass(clone, 
+                    ModelFacade.setBaseClass(clone,
                             ModelFacade.getBaseClass(element));
                 }
                 ModelFacade.addOwnedElement(targetNS, clone);
@@ -227,7 +227,7 @@ public class UMLComboBoxEntry implements Comparable {
      * @param modelElement the modelelement represented by this combobox item
      * @param isPhantom true if this is a phantom element
      */
-    public void setElement(Object/*MModelElement*/ modelElement, 
+    public void setElement(Object/*MModelElement*/ modelElement,
             boolean isPhantom) {
         element = modelElement;
         thisIsAPhantom = isPhantom;

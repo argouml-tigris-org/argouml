@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrNoAssociations.javoa
-// Classes: CrNoAssociations
-// Original Author: jrobbins@ics.uci.edu
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Iterator;
@@ -43,7 +39,7 @@ import org.argouml.model.ModelFacade;
  * extend/include relationships as well.
  */
 public class CrNoAssociations extends CrUML {
-    
+
     /** */
     public CrNoAssociations() {
         setHeadline("Add Associations to <ocl>self</ocl>");
@@ -51,7 +47,7 @@ public class CrNoAssociations extends CrUML {
         setKnowledgeTypes(Critic.KT_COMPLETENESS);
         addTrigger("associationEnd");
     }
-    
+
     /**
      * Decide whether the given design material causes a problem.
      *
@@ -66,20 +62,20 @@ public class CrNoAssociations extends CrUML {
             return NO_PROBLEM;
         if (!(ModelFacade.isPrimaryObject(dm)))
             return NO_PROBLEM;
-        
+
         // if the object does not have a name,
         // than no problem
         if ((ModelFacade.getName(dm) == null)
 	    || ("".equals(ModelFacade.getName(dm)))) {
             return NO_PROBLEM;
 	}
-        
+
         // abstract elements do not necessarily require associations
         if (ModelFacade.isAGeneralizableElement(dm)
 	    && ModelFacade.isAbstract(dm)) {
             return NO_PROBLEM;
         }
-        
+
         // types can probably have associations, but we should not nag at them
         // not having any.
         // utility is a namespace collection - also not strictly required
@@ -88,15 +84,15 @@ public class CrNoAssociations extends CrUML {
             return NO_PROBLEM;
         if (ModelFacade.isUtility(dm))
             return NO_PROBLEM;
-        
+
         //TODO: different critic or special message for classes
         //that inherit all ops but define none of their own.
-        
+
         if (findAssociation(dm, 0))
             return NO_PROBLEM;
         return PROBLEM_FOUND;
     }
-    
+
     /**
      * @param dm The classifier to examine.
      * @param depth Number of levels searched.
@@ -106,45 +102,45 @@ public class CrNoAssociations extends CrUML {
     private boolean findAssociation(Object dm, int depth) {
         if (ModelFacade.getAssociationEnds(dm).iterator().hasNext())
             return true;
-        
+
         if (depth > 50)
             return false;
-        
+
         Iterator iter = ModelFacade.getGeneralizations(dm).iterator();
-        
+
         while (iter.hasNext()) {
             Object parent = ModelFacade.getParent(iter.next());
-            
+
             if (parent == dm)
                 continue;
-            
+
             if (ModelFacade.isAClassifier(parent))
                 if (findAssociation(parent, depth + 1))
                     return true;
         }
-        
+
         if (ModelFacade.isAUseCase(dm)) {
             // for use cases we need to check for extend/includes
             // actors cannot have them, so no need to check
             Iterator iter2 = ModelFacade.getExtends(dm).iterator();
             while (iter2.hasNext()) {
                 Object parent = ModelFacade.getExtension(iter2.next());
-                
+
                 if (parent == dm)
                     continue;
-                
+
                 if (ModelFacade.isAClassifier(parent))
                     if (findAssociation(parent, depth + 1))
                         return true;
             }
-            
+
             Iterator iter3 = ModelFacade.getIncludes(dm).iterator();
             while (iter3.hasNext()) {
                 Object parent = ModelFacade.getBase(iter3.next());
-                
+
                 if (parent == dm)
                     continue;
-                
+
                 if (ModelFacade.isAClassifier(parent))
                     if (findAssociation(parent, depth + 1))
                         return true;
@@ -152,5 +148,5 @@ public class CrNoAssociations extends CrUML {
         }
         return false;
     }
-    
+
 } /* end class CrNoAssociations */

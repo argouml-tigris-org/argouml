@@ -29,19 +29,19 @@ import org.argouml.model.ModelFacade;
 
 /**
  * The model for a UML Expression that is obtained from its "parent"
- * by getExpression - hence: Guard, ChangeEvent, TimeEvent. 
- * 
+ * by getExpression - hence: Guard, ChangeEvent, TimeEvent.
+ *
  * @author Michiel
  */
 public class UMLExpressionExpressionModel extends UMLExpressionModel2 {
 
     /**
      * The constructor.
-     * 
+     *
      * @param c the container of UML user interface components
      * @param name the name of the property
      */
-    public UMLExpressionExpressionModel(UMLUserInterfaceContainer c, 
+    public UMLExpressionExpressionModel(UMLUserInterfaceContainer c,
             String name) {
         super(c, name);
     }

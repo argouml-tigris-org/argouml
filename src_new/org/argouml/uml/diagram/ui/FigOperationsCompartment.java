@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,7 +31,7 @@ package org.argouml.uml.diagram.ui;
 public class FigOperationsCompartment extends FigFeaturesCompartment {
     /**
      * The constructor.
-     * 
+     *
      * @param x x
      * @param y y
      * @param w width
@@ -39,5 +39,5 @@ public class FigOperationsCompartment extends FigFeaturesCompartment {
      */
     public FigOperationsCompartment(int x, int y, int w, int h) {
         super(x, y, w, h);
-    }   
+    }
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,14 +45,14 @@ import org.apache.log4j.Logger;
  */
 public class Section {
     private Map mAry;
-    
+
     private static final Logger LOG = Logger.getLogger(Section.class);
 
     private static final String BEGIN = "// section ";
     private static final String END1 = " begin";
     private static final String END2 = " end";
 
-    /** 
+    /**
      * Creates a new instance of Section.
      */
     public Section() {

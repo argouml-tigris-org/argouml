@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,7 +38,7 @@ public abstract class Parser {
      * @return the extensionpoint
      */
     public abstract Object parseExtensionPoint(String s);
-    
+
     /**
      * @param s the input string to be parsed
      * @param op the operation
@@ -46,7 +46,7 @@ public abstract class Parser {
      */
     public abstract void parseOperation(String s, Object op)
 	throws ParseException;
-    
+
     /**
      * @param s   the input string to be parsed
      * @param attr the attribute
@@ -59,18 +59,18 @@ public abstract class Parser {
      * @param trans the transition
      * @param s  the input string to be parsed
      * @return the transition
-     * @throws ParseException when there is a syntax error in the input text 
+     * @throws ParseException when there is a syntax error in the input text
      *                        so that it should be rejected
      */
     public abstract Object parseTransition(Object trans, String s)
         throws ParseException;
-    
+
     /**
-     * Parse a given string s with the information given from 
+     * Parse a given string s with the information given from
      * the action state actionState and update this actionState.
      * @param actionState the input actionstate
      * @param s the input string
      * @return the actionstate
      */
-    public abstract Object parseActionState(String s, Object actionState );
+    public abstract Object parseActionState(String s, Object actionState);
 } /* end class Parser */

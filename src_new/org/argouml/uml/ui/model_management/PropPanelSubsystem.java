@@ -50,27 +50,27 @@ public class PropPanelSubsystem extends PropPanelPackage {
 
     private JScrollPane featureScroll;
 
-    private static UMLClassifierFeatureListModel featureListModel = 
+    private static UMLClassifierFeatureListModel featureListModel =
         new UMLClassifierFeatureListModel();
 
     /**
      * The constructor.
-     * 
+     *
      */
     public PropPanelSubsystem() {
-        super("Subsystem", lookupIcon("Subsystem"), 
+        super("Subsystem", lookupIcon("Subsystem"),
                 ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.available-features"),
                 getFeatureScroll());
 
-        addButton(new PropPanelButton2(new ActionNewOperation(), 
+        addButton(new PropPanelButton2(new ActionNewOperation(),
                 lookupIcon("NewOperation")));
     }
 
     /**
      * Add a new operation to this classifier.
-     * 
+     *
      * @author mvw@tigris.org
      */
     private class ActionNewOperation extends AbstractActionNewModelElement {
@@ -103,7 +103,7 @@ public class PropPanelSubsystem extends PropPanelPackage {
 
     /**
      * Returns the featureScroll.
-     * 
+     *
      * @return JScrollPane
      */
     public JScrollPane getFeatureScroll() {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,24 +32,24 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
 /**
- * 
- * @author jaap.branderhorst@xs4all.nl	
+ *
+ * @author jaap.branderhorst@xs4all.nl
  * @since Jan 4, 2003
  */
-public class UMLAssociationEndAggregationRadioButtonPanel 
+public class UMLAssociationEndAggregationRadioButtonPanel
     extends UMLRadioButtonPanel {
 
     private static Map labelTextsAndActionCommands = new HashMap();
 
     static {
         labelTextsAndActionCommands.put(
-            Translator.localize("label.aggregationkind-aggregate"), 
+            Translator.localize("label.aggregationkind-aggregate"),
             ActionSetAssociationEndAggregation.AGGREGATE_COMMAND);
         labelTextsAndActionCommands.put(
-            Translator.localize("label.aggregationkind-composite"), 
+            Translator.localize("label.aggregationkind-composite"),
             ActionSetAssociationEndAggregation.COMPOSITE_COMMAND);
         labelTextsAndActionCommands.put(
-            Translator.localize("label.aggregationkind-none"), 
+            Translator.localize("label.aggregationkind-none"),
             ActionSetAssociationEndAggregation.NONE_COMMAND);
     }
 
@@ -58,9 +58,9 @@ public class UMLAssociationEndAggregationRadioButtonPanel
      * @param title the title for the panel
      * @param horizontal determines the orientation
      */
-    public UMLAssociationEndAggregationRadioButtonPanel(String title, 
+    public UMLAssociationEndAggregationRadioButtonPanel(String title,
             boolean horizontal) {
-        super(title, labelTextsAndActionCommands, "aggregation", 
+        super(title, labelTextsAndActionCommands, "aggregation",
                 ActionSetAssociationEndAggregation.getInstance(), horizontal);
     }
 
@@ -76,7 +76,7 @@ public class UMLAssociationEndAggregationRadioButtonPanel
             } else
 		if (kind.equals(ModelFacade.AGGREGATE_AGGREGATIONKIND)) {
 		    setSelected(ActionSetAssociationEndAggregation
-		            .AGGREGATE_COMMAND); 
+		            .AGGREGATE_COMMAND);
 		} else
 		    if (kind.equals(ModelFacade.COMPOSITE_AGGREGATIONKIND)) {
 			setSelected(ActionSetAssociationEndAggregation

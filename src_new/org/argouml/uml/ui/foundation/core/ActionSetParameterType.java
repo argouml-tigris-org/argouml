@@ -38,9 +38,9 @@ import org.argouml.uml.ui.UMLComboBox2;
  */
 public class ActionSetParameterType extends UMLAction {
 
-    private static final ActionSetParameterType SINGLETON = 
+    private static final ActionSetParameterType SINGLETON =
         new ActionSetParameterType();
-    
+
     /**
      * Constructor for ActionSetStructuralFeatureType.
      */
@@ -48,7 +48,7 @@ public class ActionSetParameterType extends UMLAction {
         super(Translator.localize("Set"), true, NO_ICON);
     }
 
-    
+
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -70,8 +70,8 @@ public class ActionSetParameterType extends UMLAction {
                 newClassifier = /*(MClassifier)*/ o;
             }
         }
-        if (newClassifier != null 
-                && newClassifier != oldClassifier 
+        if (newClassifier != null
+                && newClassifier != oldClassifier
                 && para != null) {
             newClassifier = /*(MClassifier)*/ Model.getModelManagementHelper()
                 .getCorrespondingElement(
@@ -80,7 +80,7 @@ public class ActionSetParameterType extends UMLAction {
             ModelFacade.setType(para, newClassifier);
             super.actionPerformed(e);
         }
-        
+
     }
 
 

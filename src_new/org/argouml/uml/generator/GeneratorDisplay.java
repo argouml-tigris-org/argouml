@@ -42,7 +42,7 @@ import org.argouml.model.ModelFacade;
  * could be written for other languages.  This code is just a
  * placeholder for future development, I expect it to be totally
  * replaced. <p>
- * 
+ *
  * TODO: always check for null!!!
  *
  * @stereotype singleton
@@ -169,7 +169,7 @@ public class GeneratorDisplay extends Generator2 {
                 returnParasSb.length() - 1,
                 returnParasSb.length());
         }
-        
+
         // the properties
         StringBuffer propertySb = new StringBuffer().append("{");
         // the query state
@@ -307,7 +307,7 @@ public class GeneratorDisplay extends Generator2 {
         return sb.toString().trim();
 
     }
-    
+
     /**
      * Generates the representation of a parameter on the display
      * (diagram). The string to be returned will have the following
@@ -321,7 +321,7 @@ public class GeneratorDisplay extends Generator2 {
         StringBuffer s = new StringBuffer();
         s.append(generateKind(ModelFacade.getKind(parameter)));
         s.append(" ");
-        s.append(generateName(ModelFacade.getName(parameter)));        
+        s.append(generateName(ModelFacade.getName(parameter)));
         String classRef = generateClassifierRef(ModelFacade.getType(parameter));
         if (classRef.length() > 0) {
             s.append(" : ");
@@ -468,7 +468,7 @@ public class GeneratorDisplay extends Generator2 {
         int pos = recCountPredecessors(m, ptr) + 1;
         return generateMessageNumber(m, ptr.message, pos);
     }
-    
+
     private String generateKind(Object /*Parameter etc.*/ kind) {
         StringBuffer s = new StringBuffer();
         if (kind == null || kind == ModelFacade.IN_PARAMETERDIRECTIONKIND) {
@@ -481,7 +481,7 @@ public class GeneratorDisplay extends Generator2 {
             s.append("out");
         }
         return s.toString();
-             
+
     }
 
     private String generateMessageNumber(
@@ -765,7 +765,7 @@ public class GeneratorDisplay extends Generator2 {
     /**
      * generate the name of an association role of the form:
      *  / name : name of the base association
-     * 
+     *
      * @param assocRole the given associationrole
      * @return the generated name
      *
@@ -787,7 +787,7 @@ public class GeneratorDisplay extends Generator2 {
 
     /**
      * @param generalizations the given collection of generalizations
-     * @param impl 
+     * @param impl
      * @return a string representing the g.
      */
     private String generateGeneralization(
@@ -1004,7 +1004,7 @@ public class GeneratorDisplay extends Generator2 {
     /**
      * @see org.argouml.application.api.NotationProvider2#generateTransition(java.lang.Object)
      */
-    public String generateTransition(Object m) {       
+    public String generateTransition(Object m) {
         String t = generate(ModelFacade.getTrigger(m));
         String g = generate(ModelFacade.getGuard(m));
         String e = generate(ModelFacade.getEffect(m));
@@ -1050,15 +1050,15 @@ public class GeneratorDisplay extends Generator2 {
         }
         if (s.length() == 0 && p.length() == 0)
             return "";
-        
+
         /* If there are no arguments, then do not show the ().
-         * This solves issue 1758. 
+         * This solves issue 1758.
          * Arguments are not supported anyhow in the UI yet.
-         * These brackets are easily confused with the brackets 
+         * These brackets are easily confused with the brackets
          * for the Operation of a CallAction.
          */
         if (p.length() == 0) return s;
-        
+
         return s + " (" + p + ")";
     }
 
@@ -1073,7 +1073,7 @@ public class GeneratorDisplay extends Generator2 {
 
     /**
      * Generates the text for a (trigger) event.
-     * 
+     *
      * @param m Object of any MEvent kind
      * @return the string representing the event
      *
@@ -1084,27 +1084,27 @@ public class GeneratorDisplay extends Generator2 {
         if (ModelFacade.isAChangeEvent(m)) {
             event.append("when(");
             event.append(generateExpression(ModelFacade.getExpression(m)));
-            event.append(")");           
+            event.append(")");
         } else if (ModelFacade.isATimeEvent(m)) {
             event.append("after(");
             event.append(generateExpression(ModelFacade.getExpression(m)));
-            event.append(")");                   
+            event.append(")");
         } else if (ModelFacade.isASignalEvent(m)) {
-            event.append(generateName(ModelFacade.getName(m)));         
+            event.append(generateName(ModelFacade.getName(m)));
         } else if (ModelFacade.isACallEvent(m)) {
-            event.append(generateName(ModelFacade.getName(m)));     
-            event.append(generateParameterList(m));           
+            event.append(generateName(ModelFacade.getName(m)));
+            event.append(generateParameterList(m));
         }
         return event.toString();
     }
-    
+
     /**
      * Generates a list of parameters. The parameters belong to the
      * given object.  The returned string will have the following
      * syntax:<p>
-     * 
-     * (param1, param2, param3, ..., paramN) 
-     * 
+     *
+     * (param1, param2, param3, ..., paramN)
+     *
      * <p> If there are no parameters, then "()" is returned.
      *
      * @param parameterListOwner the 'owner' of the parameters
@@ -1122,14 +1122,14 @@ public class GeneratorDisplay extends Generator2 {
                     list.append(", ");
                 }
             }
-        }        
+        }
         list.append(")");
         return list.toString();
     }
-    
-    
 
-    
+
+
+
     /**
      * @see org.argouml.application.api.NotationProvider2#generateActionState(java.lang.Object)
      */
@@ -1143,14 +1143,14 @@ public class GeneratorDisplay extends Generator2 {
         }
         return ret;
     }
-    
+
     // public NotationName getNotation() {
     // return Notation.NOTATION_ARGO;
     // }
 
     /**
      * This function is never used, so I commented it out.
-     * 
+     *
      * @return
      */
     /*public boolean canParse() {
@@ -1159,7 +1159,7 @@ public class GeneratorDisplay extends Generator2 {
 
     /**
      * This function is never used, so I commented it out.
-     * 
+     *
      * @param o
      * @return
      */
@@ -1173,35 +1173,35 @@ public class GeneratorDisplay extends Generator2 {
     public String getModuleName() {
         return "GeneratorDisplay";
     }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleDescription()
      */
     public String getModuleDescription() {
         return "Uml 1.3 Notation Generator";
     }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
      */
     public String getModuleAuthor() {
         return "ArgoUML Core";
     }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleVersion()
      */
     public String getModuleVersion() {
         return ArgoVersion.getVersion();
     }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleKey()
      */
     public String getModuleKey() {
         return "module.language.uml.generator";
     }
-    
+
     /**
      * @see org.argouml.application.api.Pluggable#inContext(java.lang.Object[])
      */
@@ -1213,6 +1213,6 @@ public class GeneratorDisplay extends Generator2 {
      * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
      */
     public boolean isModuleEnabled() { return true; }
-    
-    
+
+
 } /* end class GeneratorDisplay */

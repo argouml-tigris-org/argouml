@@ -36,7 +36,7 @@ import org.tigris.gef.presentation.Fig;
 import ru.novosoft.uml.MElementEvent;
 /**
  * Binary relation list model for available con between classifierroles
- * 
+ *
  * @author jaap.branderhorst@xs4all.nl
  */
 public class UMLClassifierRoleAvailableContentsListModel
@@ -60,7 +60,7 @@ public class UMLClassifierRoleAvailableContentsListModel
 
     /**
      * TODO: Why this function that the other models do not need?
-     * 
+     *
      * @see
      * ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
@@ -84,14 +84,14 @@ public class UMLClassifierRoleAvailableContentsListModel
 
     /**
      * TODO: Why this function that the other models do not need?
-     * 
+     *
      * @see
      * org.argouml.uml.ui.UMLModelElementListModel2#setTarget(java.lang.Object)
      */
     public void setTarget(Object theNewTarget) {
-        theNewTarget = theNewTarget instanceof Fig 
+        theNewTarget = theNewTarget instanceof Fig
             ? ((Fig) theNewTarget).getOwner() : theNewTarget;
-        if (ModelFacade.isABase(theNewTarget) 
+        if (ModelFacade.isABase(theNewTarget)
                 || ModelFacade.isADiagram(theNewTarget)) {
             if (getTarget() != null) {
                 Collection bases = ModelFacade.getBases(getTarget());
@@ -146,7 +146,7 @@ public class UMLClassifierRoleAvailableContentsListModel
 
     /**
      * TODO: Why this function that the other models do not need?
-     * 
+     *
      * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -60,25 +60,25 @@ public class ClOperationCompartment implements Clarifier {
      * @see org.argouml.ui.Clarifier#setFig(org.tigris.gef.presentation.Fig)
      */
     public void setFig(Fig f) { fig = f; }
-    
+
     /**
      * @see org.argouml.ui.Clarifier#setToDoItem(org.argouml.cognitive.ToDoItem)
      */
     public void setToDoItem(ToDoItem i) { }
 
     /**
-     * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics, 
+     * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics,
      * int, int)
      */
     public void paintIcon(Component c, Graphics g, int x, int y) {
 	if (fig instanceof OperationsCompartmentContainer) {
-	    OperationsCompartmentContainer fc = 
+	    OperationsCompartmentContainer fc =
 	        (OperationsCompartmentContainer) fig;
 
 	    // added by Eric Lefevre 13 Mar 1999: we must check if the
 	    // FigText for operations is drawn before drawing things
 	    // over it
-	    if ( !fc.isOperationsVisible() ) {
+	    if (!fc.isOperationsVisible()) {
 		fig = null;
 		return;
 	    }
@@ -113,7 +113,7 @@ public class ClOperationCompartment implements Clarifier {
      * @see javax.swing.Icon#getIconWidth()
      */
     public int getIconWidth() { return 0; }
-    
+
     /**
      * @see javax.swing.Icon#getIconHeight()
      */
@@ -124,7 +124,7 @@ public class ClOperationCompartment implements Clarifier {
      */
     public boolean hit(int x, int y) {
 	if (!(fig instanceof OperationsCompartmentContainer)) return false;
-	OperationsCompartmentContainer fc = 
+	OperationsCompartmentContainer fc =
 	    (OperationsCompartmentContainer) fig;
 	FigGroup fg = fc.getOperationsFig();
 	boolean res = fg.contains(x, y);

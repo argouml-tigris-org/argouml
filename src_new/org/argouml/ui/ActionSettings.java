@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,12 +44,12 @@ import org.argouml.uml.ui.UMLAction;
 
 /**
  * Action for starting the Argo settings window.
- * 
+ *
  * @author Thomas N
  * @author Thierry Lach
  * @since 0.9.4
  */
-public class ActionSettings extends UMLAction 
+public class ActionSettings extends UMLAction
 	implements ArgoModuleEventListener {
 
     ////////////////////////////////////////////////////////////////
@@ -62,7 +62,7 @@ public class ActionSettings extends UMLAction
 
     /**
      * One and only instance.
-     * 
+     *
      * @deprecated by Linus Tolke as of 0.17.1. Create your own instance of this
      *             action.
      */
@@ -70,7 +70,7 @@ public class ActionSettings extends UMLAction
 
     /**
      * Get the instance.
-     * 
+     *
      * @return The instance.
      * @deprecated by Linus Tolke as of 0.17.1. Create your own instance of this
      *             action.
@@ -96,7 +96,7 @@ public class ActionSettings extends UMLAction
 
     /**
      * Helper for localization.
-     * 
+     *
      * @param key The key to localize.
      * @return The localized String.
      */
@@ -148,11 +148,11 @@ public class ActionSettings extends UMLAction
                 ListIterator iterator = list.listIterator();
                 while (iterator.hasNext()) {
                     Object o = iterator.next();
-                    SettingsTabPanel stp = 
+                    SettingsTabPanel stp =
                         ((PluggableSettingsTab) o).getSettingsTabPanel();
 
                     tabs.addTab(
-                            Translator.localize(stp.getTabKey()), 
+                            Translator.localize(stp.getTabKey()),
                             stp.getTabPanel());
                 }
 
@@ -160,8 +160,8 @@ public class ActionSettings extends UMLAction
                 // (temporary solution until tabs are replaced with tree)
                 final int minimumWidth = 465;
                 tabs.setPreferredSize(
-                        new Dimension(Math.max(tabs.getPreferredSize().width, 
-                                	       minimumWidth), 
+                        new Dimension(Math.max(tabs.getPreferredSize().width,
+                                	       minimumWidth),
                                       tabs.getPreferredSize().height));
 
                 dialog.setContent(tabs);

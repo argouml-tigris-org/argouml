@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,8 +42,7 @@ import org.argouml.model.ModelFacade;
  *
  * @author Marcus Andersson andersson@users.sourceforge.net
  */
-public class AttributeCodePiece extends NamedCodePiece
-{
+public class AttributeCodePiece extends NamedCodePiece {
     /** The code piece this attribute represents. */
     private CompositeCodePiece attributeDef;
 
@@ -64,7 +63,7 @@ public class AttributeCodePiece extends NamedCodePiece
 	attributeNames = new Vector();
 	attributeDef = new CompositeCodePiece(modifiers);
 	attributeDef.add(type);
-	for (Iterator i = names.iterator(); i.hasNext(); ) {
+	for (Iterator i = names.iterator(); i.hasNext();) {
 	    CodePiece cp = (CodePiece) i.next();
 	    String cpText = cp.getText().toString().trim();
             if (cpText.indexOf('\n') > 0)
@@ -100,7 +99,7 @@ public class AttributeCodePiece extends NamedCodePiece
 
     /**
      * @see org.argouml.language.java.generator.CodePiece#getEndPosition()
-     * 
+     *
      * Return the end position.
      */
     public int getEndPosition() {
@@ -109,7 +108,7 @@ public class AttributeCodePiece extends NamedCodePiece
 
     /**
      * @see org.argouml.language.java.generator.CodePiece#getStartLine()
-     * 
+     *
      * Return the start line
      */
     public int getStartLine() {
@@ -118,7 +117,7 @@ public class AttributeCodePiece extends NamedCodePiece
 
     /**
      * @see org.argouml.language.java.generator.CodePiece#getEndLine()
-     * 
+     *
      * Return the end line
      */
     public int getEndLine() {
@@ -147,7 +146,7 @@ public class AttributeCodePiece extends NamedCodePiece
 	    // now find the matching feature
 	    for (j = features.iterator(); j.hasNext();) {
 		Object mFeature = /*(MFeature)*/ j.next();
-		if (ModelFacade.isAAttribute(mFeature) 
+		if (ModelFacade.isAAttribute(mFeature)
 		        && ModelFacade.getName(mFeature).equals(name)) {
 		    // feature found, so it's an attribute (and no
 		    // association end)
@@ -159,7 +158,7 @@ public class AttributeCodePiece extends NamedCodePiece
 		    Object attr = /*(MAttribute)*/ mFeature;
 		    writer.write(generator().generateCoreAttribute(attr));
 
-		    if ( k < count ) {
+		    if (k < count) {
 			writer.write("; "); // fixed comma separated attributes
 		    }
 		    break;
@@ -172,11 +171,11 @@ public class AttributeCodePiece extends NamedCodePiece
 		Vector ends = parseState.getAssociationEnds();
 		if (!ends.isEmpty()) {
 		    // now find the first matching association end
-		    for (j = ends.iterator(); j.hasNext(); ) {
+		    for (j = ends.iterator(); j.hasNext();) {
 			Object associationEnd = /*(MAssociationEnd)*/ j.next();
-			Object association = 
+			Object association =
 			    ModelFacade.getAssociation(associationEnd);
-			Iterator connEnum = 
+			Iterator connEnum =
 			    ModelFacade.getConnections(association).iterator();
 			while (connEnum.hasNext()) {
 			    Object associationEnd2 =

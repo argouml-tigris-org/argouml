@@ -42,7 +42,7 @@ public class CrConflictingComposites extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrConflictingComposites() {
 	setHeadline("Remove Conflicting Composite Associations");

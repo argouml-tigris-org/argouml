@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,11 +24,7 @@
 
 
 
-// File: CrUselessAbstract.java
-// Classes: CrUselessAbstract
-// Original Author: jrobbins@ics.uci.edu
 // $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Enumeration;
@@ -43,12 +39,14 @@ import org.tigris.gef.util.EnumerationEmpty;
 import org.tigris.gef.util.VectorSet;
 
 /** A critic to detect when a class can never have instances (of
+ *
+ * @author jrobbins
  *  itself of any subclasses). */
 public class CrUselessAbstract extends CrUML {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public CrUselessAbstract() {
 	setHeadline("Define Concrete (Sub)Class");

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,80 +34,80 @@ import java.util.Vector;
  * @author  Thierry Lach
  * @since 0.9.4
  */
-public interface ArgoModule { 
+public interface ArgoModule {
     /**
-     * External modules are supposed to be located at 
+     * External modules are supposed to be located at
      * <code>MODULEFILENAME</code>.
      */
-    static final String MODULEFILENAME = ".argo.modules";
-    
-    /**
-     * Or, alternatively, external modules may be located at 
-     * <code>MODULEFILENAME_ALTERNATE</code>
-     */
-    static final String MODULEFILENAME_ALTERNATE = "argo.modules";
+    String MODULEFILENAME = ".argo.modules";
 
-    /** 
+    /**
+     * Or, alternatively, external modules may be located at
+     * <code>MODULEFILENAME_ALTERNATE</code>.
+     */
+    String MODULEFILENAME_ALTERNATE = "argo.modules";
+
+    /**
      * Method called when Argo is loading a module.
-     * 
+     *
      * @return true if the module initialized properly.
      */
     boolean initializeModule();
-    
-    /** 
+
+    /**
      * Method called when Argo is unloading a module.
-     * 
+     *
      * @return true if the module terminated properly.
      */
     boolean shutdownModule();
 
-    /** 
+    /**
      * Called to enable or disable a module programmatically.
-     * 
+     *
      * @param tf true to enable module, false to disable
      */
     void setModuleEnabled(boolean tf);
-    
-    /** 
-     * Allows determination if a module is enabled or disabled
-     * 
+
+    /**
+     * Allows determination if a module is enabled or disabled.
+     *
      * @return true if the module is enabled, otherwise false
      */
     boolean isModuleEnabled(); // determines if enabled-disabled
 
-    /** 
+    /**
      * Display name of the module.
      *
      * @return the module name
      */
     String getModuleName();
 
-    /** 
+    /**
      * Textual description of the module.
-     * 
+     *
      * @return the module description
      */
-    String getModuleDescription(); 
+    String getModuleDescription();
 
-    /** 
+    /**
      * The module version.
-     * 
+     *
      * There is no specified format.
-     * 
+     *
      * @return a string containing the module version
      */
-    String getModuleVersion(); 
-    
-    /** 
+    String getModuleVersion();
+
+    /**
      * The module author.
-     * 
+     *
      * @return a string containing the module author
      */
-    String getModuleAuthor(); 
-    
-    /** 
+    String getModuleAuthor();
+
+    /**
      * Calls all modules to let them add to a popup menu.
-     * 
+     *
      * @param popUpActions Vector of actions
      * @param context which the actions are valid for
      *
@@ -115,11 +115,10 @@ public interface ArgoModule {
      */
     Vector getModulePopUpActions(Vector popUpActions, Object context);
 
-    /** 
+    /**
      * The module identifying key.
-     * 
+     *
      * @return the string key the module uses to identify itself
      */
     String getModuleKey();
 }
-

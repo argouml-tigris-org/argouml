@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -47,7 +47,7 @@ public class UMLAction extends AbstractAction {
      * Constant for determining the icon.
      */
     public static final boolean HAS_ICON = true;
-    
+
     /**
      * Constant for determining the icon.
      */
@@ -57,16 +57,16 @@ public class UMLAction extends AbstractAction {
 
     /**
      * The constructor for a non-global action with icon.
-     * 
+     *
      * @param name the (to be localized) description of the action
      */
     public UMLAction(String name) {
         this(name, false, HAS_ICON);
     }
-    
+
     /**
      * The constructor for a non-global action.
-     * 
+     *
      * @param name the (to be localized) description of the action
      * @param hasIcon true if an icon is to be shown
      */
@@ -78,7 +78,7 @@ public class UMLAction extends AbstractAction {
      * The constructor.
      * @param hasIcon true if an icon has to be shown
      * @param name the (to be localized) description of the action
-     * @param global the action is global, i.e. implements shouldBeEnabled(), 
+     * @param global the action is global, i.e. implements shouldBeEnabled(),
      *               and listens to Target changes
      */
     public UMLAction(String name, boolean global, boolean hasIcon) {
@@ -122,13 +122,13 @@ public class UMLAction extends AbstractAction {
             Icon icon = ResourceLoaderWrapper
                 .lookupIconResource(Translator.getImageBinding(iconName),
                         Translator.localize(iconName));
-            
+
             if (icon != null) {
                 putValue(Action.SMALL_ICON, icon);
             } else {
-                LOG.warn("Requested icon for: " + getClass()  
-                    + ". \nIcon not found: " + iconName 
-                    + "\nImagebinding:" + Translator.getImageBinding(iconName) 
+                LOG.warn("Requested icon for: " + getClass()
+                    + ". \nIcon not found: " + iconName
+                    + "\nImagebinding:" + Translator.getImageBinding(iconName)
                     + "\nLocalization:" + Translator.localize(iconName));
             }
             iconName = null;
@@ -136,11 +136,11 @@ public class UMLAction extends AbstractAction {
         return super.getValue(key);
     }
 
-    /** 
-     * Perform the work the action is supposed to do. 
-     * This method needs to be overridden by all actions, 
+    /**
+     * Perform the work the action is supposed to do.
+     * This method needs to be overridden by all actions,
      * since it only shows a fake progressbar...
-     * 
+     *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -163,13 +163,13 @@ public class UMLAction extends AbstractAction {
         setEnabled(b);
     }
 
-    /** 
+    /**
      * Return true if this action should be available to the user. This
      * method should examine the ProjectBrowser that owns it. Subclass
      * implementations of this method should always call
      * super.shouldBeEnabled first, and AND it with their own condition. <p>
-     * 
-     * "Global" actions shall implement this function! - Otherwise 
+     *
+     * "Global" actions shall implement this function! - Otherwise
      * it is not usefull to make them global...
      *
      * @return true if the action should be available.
@@ -192,7 +192,7 @@ public class UMLAction extends AbstractAction {
         }
         return res;
     }
-    
+
     /**
      * This function returns a localized string corresponding
      * to the specified key.

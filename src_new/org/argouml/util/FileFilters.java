@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,39 +44,39 @@ public class FileFilters {
      * This is a filter for uncompressed project format.
      */
     public static final SuffixFilter UNCOMPRESSED_FILE_FILTER = new
-        SuffixFilter(FileConstants.UNCOMPRESSED_FILE_EXT.substring(1), 
+        SuffixFilter(FileConstants.UNCOMPRESSED_FILE_EXT.substring(1),
                      "Argo uncompressed project file");
-  
+
     /**
      * This is a filter for compressed project format.
      */
     public static final SuffixFilter COMPRESSED_FILE_FILTER = new
-        SuffixFilter(FileConstants.COMPRESSED_FILE_EXT.substring(1), 
+        SuffixFilter(FileConstants.COMPRESSED_FILE_EXT.substring(1),
                      "Argo compressed project file");
-  
+
     /**
      * This is a filter for xmi files.
      */
     public static final SuffixFilter XMI_FILTER = new
         SuffixFilter("xmi", "XML Metadata Interchange");
-  
+
     /** This is for Precision Graphics Markup Language
      * a very old and now mostly dead standard.
      * see W3C.org for more info
-     */  
+     */
     public static final SuffixFilter PGML_FILTER = new
         SuffixFilter("pgml", "Argo diagram");
 
     /** This should read or write a config file
      * but as yet not fully implemented.
-     */  
+     */
     public static final SuffixFilter CONFIG_FILTER = new
         SuffixFilter("config", "Argo configutation file");
 
     /** History Filter...Argo has trouble with remembering
      * things at times. Maybe this filter helps.
      * status is unknown. last reveiwed 8 months ago.
-     */  
+     */
     public static final SuffixFilter HIST_FILTER = new
         SuffixFilter("hist", "Argo history file");
 
@@ -102,7 +102,7 @@ public class FileFilters {
      * http://argouml.tigris.org/issues/show_bug.cgi?id=396
      * http://argouml.tigris.org/issues/show_bug.cgi?id=407
      *
-     */  
+     */
     public static final SuffixFilter GIF_FILTER = new
         SuffixFilter("gif", "GIF image");
 
@@ -137,18 +137,18 @@ public class FileFilters {
      * is considered very useful for modeling the
      * behaviors of a class for example in state or
      * sequence diagrams.
-     */  
+     */
     public static final SuffixFilter SVG_FILTER = new
         SuffixFilter("svg", "Scalable Vector Graphics file");
-  
+
     /** Filter for IDL files */
     public static final SuffixFilter IDL_FILTER = new
 		SuffixFilter("idl", "Interface Definition Language file");
-    
+
     /**
-     * Returns the suffix for which a FileFilter filters. 
+     * Returns the suffix for which a FileFilter filters.
      * @param filter The FileFilter from which we want to know the suffix
-     * @return String The suffix of the FileFilter. 
+     * @return String The suffix of the FileFilter.
      * Returns null if the FileFilter is not an instance of SuffixFilter.
      */
     public static String getSuffix(FileFilter filter) {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,13 +46,13 @@ import org.argouml.i18n.Translator;
 public abstract class SettingsTabHelper extends JPanel
     implements SettingsTabPanel, PluggableSettingsTab {
 
-    /** 
+    /**
      * Constructor.
      */
     public SettingsTabHelper() {
     }
 
-    /** 
+    /**
      * Helper for localization, localizes using the bundle passed in
      * the constructor.
      *
@@ -63,7 +63,8 @@ public abstract class SettingsTabHelper extends JPanel
         return Translator.localize(key);
     }
 
-    /** Create a localized JLabel.
+    /**
+     * Create a localized JLabel.
      *
      * @param key the key of the text for the label
      * @return a new label with a localized text for the given key
@@ -72,7 +73,8 @@ public abstract class SettingsTabHelper extends JPanel
     	return new JLabel(localize(key));
     }
 
-    /** Create a localized JCheckBox.
+    /**
+     * Create a localized JCheckBox.
      *
      * @param key the key for the string to be localized
      * @return a new checkbox with localized text
@@ -82,21 +84,22 @@ public abstract class SettingsTabHelper extends JPanel
 	return j;
     }
 
-    /** Create a localized JRadioButton.
+    /**
+     * Create a localized JRadioButton.
      *
      * @param bg the buttongroup
      * @param key the key for the string to be localized
      * @param selected true if selected
      * @return a new radiobutton with localized string
      */
-    protected JRadioButton createRadioButton(ButtonGroup bg, String key, 
+    protected JRadioButton createRadioButton(ButtonGroup bg, String key,
 					     boolean selected) {
 	JRadioButton j = new JRadioButton(localize(key), selected);
 	bg.add(j);
 	return j;
     }
 
-    /** 
+    /**
      * Create a JTextField.
      *
      * @return a new textfield
@@ -110,38 +113,38 @@ public abstract class SettingsTabHelper extends JPanel
      * @see org.argouml.application.api.ArgoModule#setModuleEnabled(boolean)
      */
     public void setModuleEnabled(boolean v) { }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#initializeModule()
      */
     public boolean initializeModule() { return true; }
-    
+
     /**
      * @see org.argouml.application.api.Pluggable#inContext(java.lang.Object[])
      */
     public boolean inContext(Object[] o) { return true; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
      */
     public boolean isModuleEnabled() { return true; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModulePopUpActions(
      * java.util.Vector, java.lang.Object)
      */
     public Vector getModulePopUpActions(Vector v, Object o) { return null; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#shutdownModule()
      */
     public boolean shutdownModule() { return true; }
-    
+
     /**
      * @see org.argouml.application.api.PluggableSettingsTab#getSettingsTabPanel()
      */
     public SettingsTabPanel getSettingsTabPanel() { return this; }
-    
+
     /**
      * @see org.argouml.application.api.SettingsTabPanel#getTabPanel()
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,12 +27,11 @@ package org.argouml.uml.util.namespace;
 /**
  * A NamespaceElement wraps any kind of object around a NamespaceElement so
  * that namespaces can be constructed using these elements.
- * 
+ *
  * @author mkl
- *  
+ *
  */
-public interface NamespaceElement
-{
+public interface NamespaceElement {
 
     /**
      * @return the wrapped NamespaceElement

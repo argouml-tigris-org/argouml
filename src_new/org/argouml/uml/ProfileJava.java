@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,22 +38,22 @@ import org.xml.sax.InputSource;
  *   This class implements the abstract class Profile for use in modelling
  *   Java language projects.  Eventually, this class may be replaced by
  *   a configurable profile.
- * 
- * TODO: (MVW) I see only little Java specific stuff here. 
- * Most of this should be moved to a ProfileUML.java file, which 
+ *
+ * TODO: (MVW) I see only little Java specific stuff here.
+ * Most of this should be moved to a ProfileUML.java file, which
  * should be used by default.
- * 
- * TODO: (MVW) Document the use of "argo.defaultModel" in 
+ *
+ * TODO: (MVW) Document the use of "argo.defaultModel" in
  * the argo.user.properties file.
  *
  *   @author Curt Arnold
  */
 public class ProfileJava extends Profile {
-    
+
     private static final Logger LOG = Logger.getLogger(ProfileJava.class);
-    
+
     private static ProfileJava instance = null;
-    
+
     /**
      * @return the instance of this class
      */
@@ -70,7 +70,7 @@ public class ProfileJava extends Profile {
     }
 
     /**
-     * @see org.argouml.uml.Profile#formatElement(java.lang.Object, 
+     * @see org.argouml.uml.Profile#formatElement(java.lang.Object,
      * java.lang.Object)
      */
     public String formatElement(Object/*MModelElement*/ element,
@@ -139,7 +139,7 @@ public class ProfileJava extends Profile {
 
     /**
      * This function creates a default association name from its ends.
-     * 
+     *
      * @param assoc the given association
      * @param ns the namespace
      * @return the default association name
@@ -240,7 +240,7 @@ public class ProfileJava extends Profile {
     }
 
     /**
-     * @see org.argouml.uml.Profile#formatCollection(java.util.Iterator, 
+     * @see org.argouml.uml.Profile#formatCollection(java.util.Iterator,
      * java.lang.Object)
      */
     public String formatCollection(Iterator iter, Object namespace) {
@@ -276,12 +276,12 @@ public class ProfileJava extends Profile {
 	}
 	return defaultModel;
     }
-	
+
     /**
-     * This function loads the model object containing the default model from 
+     * This function loads the model object containing the default model from
      * either property "argo.defaultModel", or "/org/argouml/default.xmi".
      * May result in null, if the files are not found.
-     * 
+     *
      * @return the model object
      */
     public static Object/*MModel*/ loadProfileModel() {
@@ -327,19 +327,19 @@ public class ProfileJava extends Profile {
 	    // in the same ClassLoader that the default.xmi.
 	    // If we run using Java Web Start then we have every ArgoUML
 	    // file in the same jar (i.e. the same ClassLoader).
-	    is = 
+	    is =
 		new Object() { }
 		.getClass().getResourceAsStream(defaultModelFileName);
 
 	    if (is == null) {
 		try {
-		    is = 
+		    is =
 			new FileInputStream(defaultModelFileName.substring(1));
 		} catch (FileNotFoundException ex) {
 		    LOG.error("Default model ("
 			      + defaultModelFileName
 			      + ") not found.\n", ex);
-						
+
 		}
 	    }
 	}

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -71,8 +71,8 @@ import org.tigris.gef.presentation.FigText;
 /**
  * <p>Class to display graphics for a UML Class in a diagram.</p>
  */
-public class FigClass extends FigNodeModelElement 
-        implements AttributesCompartmentContainer, 
+public class FigClass extends FigNodeModelElement
+        implements AttributesCompartmentContainer,
         OperationsCompartmentContainer {
 
 
@@ -87,7 +87,7 @@ public class FigClass extends FigNodeModelElement
     private static final int BLINDER_POSN = 3;
     private static final int OPERATIONS_POSN = 4;
     private static final int ATTRIBUTES_POSN = 5;
-    
+
     /**
      * <p>Manages residency of a class within a component on a deployment
      *   diagram. Not clear why it is public, or even why it is an instance
@@ -166,12 +166,12 @@ public class FigClass extends FigNodeModelElement
         getNameFig().setFilled(true);
 
         // Attributes inside. First one is the attribute box itself.
-        FigCompartment attributesFigCompartment = 
+        FigCompartment attributesFigCompartment =
             new FigAttributesCompartment(10, 30, 60, ROWHEIGHT + 2);
 
         // this rectangle marks the operation section; all operations
         // are inside it
-        FigCompartment operationsFigCompartment = 
+        FigCompartment operationsFigCompartment =
             new FigOperationsCompartment(10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2);
 
         // Set properties of the stereotype box. Make it 1 pixel higher than
@@ -200,7 +200,7 @@ public class FigClass extends FigNodeModelElement
         bigPort.setLineWidth(1);
         bigPort.setLineColor(Color.black);
         setBigPort(bigPort);
-        
+
         // Mark this as newly created. This is to get round the problem with
         // creating figs for loaded classes that had stereotypes. They are
         // saved with their dimensions INCLUDING the stereotype, but since we
@@ -317,20 +317,20 @@ public class FigClass extends FigNodeModelElement
         // Visibility ...
         popUpActions.insertElementAt(buildVisibilityPopUp(),
                 popUpActions.size() - POPUP_ADD_OFFSET);
-           
+
         return popUpActions;
     }
 
     /**
-     * @return The vector of graphics for operations (if any). 
+     * @return The vector of graphics for operations (if any).
      * First one is the rectangle for the entire operations box.
      */
     public FigGroup getOperationsFig() {
         return (FigGroup) getFigAt(OPERATIONS_POSN);
     }
-    
+
     /**
-     * @return The vector of graphics for operations (if any). 
+     * @return The vector of graphics for operations (if any).
      * First one is the rectangle for the entire operations box.
      */
     public FigGroup getAttributesFig() {
@@ -360,7 +360,7 @@ public class FigClass extends FigNodeModelElement
         Rectangle rect = getBounds();
         int h;
     	if (isCheckSize()) {
-    	    h = ((ROWHEIGHT  
+    	    h = ((ROWHEIGHT
                 * Math.max(1, getAttributesFig().getFigs(null).size() - 1) + 2)
                 * rect.height
                 / getMinimumSize().height);
@@ -401,7 +401,7 @@ public class FigClass extends FigNodeModelElement
         Rectangle rect = getBounds();
         int h =
     	    isCheckSize()
-    	    ? ((ROWHEIGHT  
+    	    ? ((ROWHEIGHT
                 * Math.max(1, getOperationsFig().getFigs(null).size() - 1) + 2)
     	        * rect.height
     	        / getMinimumSize().height)
@@ -481,7 +481,7 @@ public class FigClass extends FigNodeModelElement
             // first element.
 
             aSize.height +=
-		ROWHEIGHT * Math.max(1, 
+		ROWHEIGHT * Math.max(1,
 		        getAttributesFig().getFigs(null).size() - 1) + 1;
         }
 
@@ -502,7 +502,7 @@ public class FigClass extends FigNodeModelElement
             }
 
             aSize.height +=
-		ROWHEIGHT * Math.max(1, 
+		ROWHEIGHT * Math.max(1,
 		        getOperationsFig().getFigs(null).size() - 1) + 1;
         }
 
@@ -660,8 +660,8 @@ public class FigClass extends FigNodeModelElement
         do {
             i--;
             while (i < 1) {
-                fgVec = (fgVec == getAttributesFig()) 
-                    ? getOperationsFig() 
+                fgVec = (fgVec == getAttributesFig())
+                    ? getOperationsFig()
                     : getAttributesFig();
                 v = new Vector(fgVec.getFigs(null));
                 i = v.size() - 1;
@@ -680,8 +680,7 @@ public class FigClass extends FigNodeModelElement
      * @param i     get the fig after fig i
      * @return the FigText
      */
-    protected FigText getNextVisibleFeature(FigGroup fgVec, FigText ft, int i)
-    {
+    protected FigText getNextVisibleFeature(FigGroup fgVec, FigText ft, int i) {
         if (fgVec == null || i < 1) {
             return null;
         }
@@ -694,8 +693,8 @@ public class FigClass extends FigNodeModelElement
         do {
             i++;
             while (i >= v.size()) {
-                fgVec = (fgVec == getAttributesFig()) 
-                    ? getOperationsFig() 
+                fgVec = (fgVec == getAttributesFig())
+                    ? getOperationsFig()
                     : getAttributesFig();
                 v = new Vector(fgVec.getFigs(null));
                 i = 1;
@@ -790,7 +789,7 @@ public class FigClass extends FigNodeModelElement
             updateOperations();
             damage();
         }
-        if (mee != null && mee.getPropertyName().equals("parameter") 
+        if (mee != null && mee.getPropertyName().equals("parameter")
                 && ModelFacade.isAOperation(mee.getSource())) {
             /* Copy the lists, since we will alter them below. */
             ArrayList oldP = new ArrayList((List) mee.getOldValue());
@@ -799,9 +798,9 @@ public class FigClass extends FigNodeModelElement
                 if (newP.containsAll(oldP)) {
                     // the list grew bigger somehow... (parameter added)
                     newP.removeAll(oldP);
-                    /* Ensure we will get an event for the name change of 
+                    /* Ensure we will get an event for the name change of
                      * the newly created attribute: */
-                    Model.getPump().addModelEventListener(this, newP.get(0), 
+                    Model.getPump().addModelEventListener(this, newP.get(0),
                         new String[] {"name", "kind", "type", "defaultValue"});
                 } else {
                     // the list shrunk somehow... (parameter removed)
@@ -916,7 +915,7 @@ public class FigClass extends FigNodeModelElement
         // compartment
 
         Rectangle oldBounds = getBounds();
-        Dimension aSize = 
+        Dimension aSize =
             isCheckSize() ? getMinimumSize() : new Dimension(w, h);
 
         int newW = Math.max(w, aSize.width);
@@ -1004,7 +1003,7 @@ public class FigClass extends FigNodeModelElement
         } else {
             height = 1;
         }
-        aSize = updateFigGroupSize(getAttributesFig(), x, currentY, 
+        aSize = updateFigGroupSize(getAttributesFig(), x, currentY,
                 newW, height);
 
         if (getAttributesFig().isVisible()) {
@@ -1014,7 +1013,7 @@ public class FigClass extends FigNodeModelElement
         // Finally update the bounds of the operations box
 
         aSize =
-	    updateFigGroupSize(getOperationsFig(), x, currentY, 
+	    updateFigGroupSize(getOperationsFig(), x, currentY,
                 newW, newH + y - currentY);
 
         // set bounds of big box
@@ -1067,7 +1066,7 @@ public class FigClass extends FigNodeModelElement
                 highlightedFigText = (CompartmentFigText) f;
                 TargetManager.getInstance().setTarget(f);
             }
-        } else if (f == getOperationsFig() 
+        } else if (f == getOperationsFig()
                      && getOperationsFig().getHeight() > 0) {
             // TODO: in future version of GEF call getFigs returning array
             Vector v = new Vector(getOperationsFig().getFigs(null));
@@ -1124,10 +1123,10 @@ public class FigClass extends FigNodeModelElement
                     attr = (CompartmentFigText) figs.elementAt(acounter);
                 }
                 attr.setText(Notation.generate(this, sf));
-                attr.setOwner(sf); //TODO: update the model again here? 
-                /* This causes another event, and modelChanged() called, 
+                attr.setOwner(sf); //TODO: update the model again here?
+                /* This causes another event, and modelChanged() called,
                  * and updateAttributes() called again... */
-                
+
                 // underline, if static
                 attr.setUnderline(ModelFacade.CLASSIFIER_SCOPEKIND
 				  .equals(ModelFacade.getOwnerScope(sf)));
@@ -1191,10 +1190,10 @@ public class FigClass extends FigNodeModelElement
                     oper = (CompartmentFigText) figs.elementAt(ocounter);
                 }
                 oper.setText(Notation.generate(this, bf));
-                oper.setOwner(bf); //TODO: update the model again here? 
-                /* This causes another event, and modelChanged() called, 
+                oper.setOwner(bf); //TODO: update the model again here?
+                /* This causes another event, and modelChanged() called,
                  * and updateOperations() called again... */
-                
+
                 // underline, if static
                 oper.setUnderline(ModelFacade.CLASSIFIER_SCOPEKIND
 				  .equals(ModelFacade.getOwnerScope(bf)));

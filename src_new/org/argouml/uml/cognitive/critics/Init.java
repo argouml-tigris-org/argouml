@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,10 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: Init.java
-// Classes: Init
-// Original Author: jrobbins@ics.uci.edu
 
 package org.argouml.uml.cognitive.critics;
 
@@ -50,6 +46,8 @@ import org.argouml.model.ModelFacade;
  *  system startup time. If you add a new critic, you need to add a
  *  line here.
  *
+ *
+ * @author jrobbins
  * @see org.argouml.cognitive.critics.Agency */
 public class Init {
 
@@ -193,7 +191,7 @@ public class Init {
 	new CrInstanceWithoutClassifier();
 
     // private static Critic crCallWithoutReturn = new CrCallWithoutReturn();
-    // private static Critic crReturnWithoutCall = new CrReturnWithoutCall(); 
+    // private static Critic crReturnWithoutCall = new CrReturnWithoutCall();
     // private static Critic crSeqInstanceWithoutClassifier =
 	// new CrSeqInstanceWithoutClassifier();
     // private static Critic crStimulusWithWrongPosition =
@@ -206,13 +204,13 @@ public class Init {
 	crUnconventionalOperName = new CrUnconventionalOperName();
 
     private static Critic
-	crUnconventionalAttrName = new CrUnconventionalAttrName(); 
+	crUnconventionalAttrName = new CrUnconventionalAttrName();
 
     private static Critic
-	crUnconventionalClassName = new CrUnconventionalClassName(); 
+	crUnconventionalClassName = new CrUnconventionalClassName();
 
     private static Critic
-	crUnconventionalPackName = new CrUnconventionalPackName(); 
+	crUnconventionalPackName = new CrUnconventionalPackName();
 
     // Java specific
     private static Critic crClassMustBeAbstract = new CrClassMustBeAbstract();
@@ -247,7 +245,7 @@ public class Init {
 
     private static CompoundCritic noTrans1 =
 	new CompoundCritic(crNoTransitions, crNoIncomingTransitions);
-    
+
     private static CompoundCritic noTrans2 =
 	new CompoundCritic(crNoTransitions, crNoOutgoingTransitions);
 
@@ -290,7 +288,7 @@ public class Init {
 	Agency.register(crCircularAssocClass, assocClassCls);
 	Agency.register(crCircularInheritance, genElementCls);
 	Agency.register(crCircularComposition, classCls);
-	Agency.register(crClassMustBeAbstract, classCls); 
+	Agency.register(crClassMustBeAbstract, classCls);
 	Agency.register(crCrossNamespaceAssoc, assocCls);
 	Agency.register(crDupParamName, operCls);
 	Agency.register(crDupRoleNames, assocCls);
@@ -401,5 +399,5 @@ public class Init {
 	Agency.register(new CrUtilityViolated(), classifierCls);
 	Agency.register(new CrOppEndVsAttr(), classifierCls);
     }
-      
+
 } /* end class Init */

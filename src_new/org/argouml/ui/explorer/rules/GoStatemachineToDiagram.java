@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,7 +39,7 @@ import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
 /**
- * A go rule to navigate from a statemachine or activitygraph 
+ * A go rule to navigate from a statemachine or activitygraph
  * to the statediagram or activitydiagram that's showing it.
  *
  * @since Jul 12, 2004
@@ -58,7 +58,7 @@ public class GoStatemachineToDiagram extends AbstractPerspectiveRule {
             while (it.hasNext()) {
                 UMLDiagram diagram = (UMLDiagram) it.next();
                 if (diagram instanceof UMLActivityDiagram) {
-                    UMLActivityDiagram activityDiagram = 
+                    UMLActivityDiagram activityDiagram =
                         (UMLActivityDiagram) diagram;
                     Object activityGraph = activityDiagram.getStateMachine();
                     if (activityGraph == parent) {
@@ -73,7 +73,7 @@ public class GoStatemachineToDiagram extends AbstractPerspectiveRule {
                         returnList.add(stateDiagram);
                         continue;
                     }
-                }                                   
+                }
             }
             return returnList;
         }
@@ -90,7 +90,7 @@ public class GoStatemachineToDiagram extends AbstractPerspectiveRule {
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
-    public Set getDependencies(Object parent) {       
+    public Set getDependencies(Object parent) {
         return null;
     }
 

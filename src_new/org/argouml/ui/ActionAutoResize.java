@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,17 +27,17 @@ package org.argouml.ui;
 import java.awt.event.ActionEvent;
 import org.argouml.uml.ui.UMLAction;
 
-/** 
+/**
  * A class to keep track of the users desire to have his diagram nodes
  * automatically resized.
- *  
+ *
  * @see org.argouml.ui.cmd.CmdSetPreferredSize
  * @author Markus Klink
  */
 public class ActionAutoResize extends UMLAction {
 
     private static boolean autoResize = false;
-  
+
     /**
      * The constructor.
      */

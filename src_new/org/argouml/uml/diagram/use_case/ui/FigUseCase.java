@@ -282,7 +282,7 @@ public class FigUseCase extends FigNodeModelElement {
 			     epSize.height);
 
         setBigPort(bigPort);
-        
+
         // add Figs to the FigNode in back-to-front order
         addFig(bigPort);
         addFig(cover);
@@ -302,9 +302,9 @@ public class FigUseCase extends FigNodeModelElement {
      * A version of the constructor used to associated the Fig with a
      * particular NSUML object.<p>
      *
-     * Used at creation time of a UseCase. 
+     * Used at creation time of a UseCase.
      * And also when Add to Diagram is activated.
-     * However, the load routines use the main constructor and 
+     * However, the load routines use the main constructor and
      * call setOwner directly.<p>
      *
      * @param gm    The graph model to associate with this Fig. Ignored in this
@@ -1107,8 +1107,7 @@ public class FigUseCase extends FigNodeModelElement {
      */
 
     private CompartmentFigText getPreviousVisibleFeature(FigGroup fgVec,
-							 int i)
-    {
+							 int i) {
 
         // Give up if the index we don't have a vector, or the index is less
         // than 1 (the 0th entry is the bigPort surrounding all entries)
@@ -1263,7 +1262,7 @@ public class FigUseCase extends FigNodeModelElement {
      *
      * Called both when there has been a change to notation, and when there
      * has been an NSUML event.
-     * 
+     *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
@@ -1273,8 +1272,7 @@ public class FigUseCase extends FigNodeModelElement {
         super.modelChanged(mee);
         if (mee == null
 	    || mee.getPropertyName().equals("extensionPoint")
-	    || org.argouml.model.ModelFacade.isAExtensionPoint(mee.getSource()))
-	{
+	    || org.argouml.model.ModelFacade.isAExtensionPoint(mee.getSource())) {
             updateExtensionPoint();
             return;
         }
@@ -1436,13 +1434,13 @@ public class FigUseCase extends FigNodeModelElement {
         }
         damage();
     }
-    
-    
+
+
 
     /**
      * @see org.tigris.gef.presentation.Fig#postLoad()
      */
-    public void postLoad() {       
+    public void postLoad() {
         super.postLoad();
         if (epVec != null && epVec.isVisible()) {
             setExtensionPointVisible(true);

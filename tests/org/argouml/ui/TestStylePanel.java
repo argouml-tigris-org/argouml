@@ -66,7 +66,7 @@ public class TestStylePanel extends TestCase {
      * @param arg0 is the name of the test case.
      */
     public TestStylePanel(String arg0) {
-        super(arg0);       
+        super(arg0);
     }
 
     /**

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,22 +38,22 @@ import org.tigris.gef.util.VectorSet;
  * @see org.argouml.cognitive.ui.Wizard
  */
 public abstract class UMLWizard extends Wizard {
-    
+
     protected String suggestion;
 
     /**
      * The constructor.
-     * 
+     *
      */
     public UMLWizard() {
         super();
     }
-    
+
     /**
-     * Preset the number of steps to 1. You need to override this 
+     * Preset the number of steps to 1. You need to override this
      * method, in case your Wizard requires a different number of steps.
      * This method is a convenience implementation.
-     * 
+     *
      * @see org.argouml.cognitive.ui.Wizard#getNumSteps()
      */
     public int getNumSteps() { return 1; }
@@ -72,7 +72,7 @@ public abstract class UMLWizard extends Wizard {
         }
         return null;
     }
-    
+
     /**
      * @return the suggestion string
      */
@@ -85,7 +85,7 @@ public abstract class UMLWizard extends Wizard {
         }
         return "";
     }
-    
+
     /**
      * @param s set a new suggestion string
      */

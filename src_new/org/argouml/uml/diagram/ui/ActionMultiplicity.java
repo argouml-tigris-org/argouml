@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -75,7 +75,7 @@ public class ActionMultiplicity extends UMLAction {
 
     /**
      * The Constructor.
-     * 
+     *
      * @param m the multiplicity
      * @param s "src" or "dest". Anything else is interpreted as "dest".
      */
@@ -95,7 +95,7 @@ public class ActionMultiplicity extends UMLAction {
      */
     public void actionPerformed(ActionEvent ae) {
 	Vector sels = Globals.curEditor().getSelectionManager().selections();
-	if ( sels.size() == 1 ) {
+	if (sels.size() == 1) {
 	    Selection sel = (Selection) sels.firstElement();
 	    Fig f = sel.getContent();
 	    Object owner = ((FigEdgeModelElement) f).getOwner();
@@ -117,8 +117,8 @@ public class ActionMultiplicity extends UMLAction {
     /**
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
-    public boolean shouldBeEnabled() { 
-	return true; 
+    public boolean shouldBeEnabled() {
+	return true;
     }
 
 

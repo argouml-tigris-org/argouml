@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -107,11 +107,11 @@ public class ModuleLoader2 {
     // Access methods for program infrastructure.
     /**
      * Enables all selected modules and disabling all modules not selected.<p>
-     * 
+     *
      * In short this attempts to make the modules obey their selection.<p>
      *
-     * @param failingAllowed is <tt>true</tt> if enabling or disabling of 
-     *                       some of the modules is allowed to fail. 
+     * @param failingAllowed is <tt>true</tt> if enabling or disabling of
+     *                       some of the modules is allowed to fail.
      */
     public static void doLoad(boolean failingAllowed) {
 	getInstance().doInternal(failingAllowed);
@@ -129,7 +129,7 @@ public class ModuleLoader2 {
 	return getInstance().isEnabledInternal(name);
     }
 
-    // Access methods for the GUI that the user uses to enable and disable 
+    // Access methods for the GUI that the user uses to enable and disable
     // modules.
 
     /**
@@ -143,7 +143,7 @@ public class ModuleLoader2 {
 	Iterator iter = getInstance().availableModules().iterator();
 	while (iter.hasNext()) {
 	    ModuleInterface mf = (ModuleInterface) iter.next();
-	
+
 	    coll.add(mf.getName());
 	}
 
@@ -200,7 +200,7 @@ public class ModuleLoader2 {
 	    status.setSelected(value);
 	}
     }
-    
+
     /**
      * Create a description of the module based on the information provided
      * by the module itself.
@@ -260,7 +260,7 @@ public class ModuleLoader2 {
 	    {
 		"ActionTestLoadableModule",
 		"org.argouml.ui.test.ActionTestLoadableModule",
-	    }
+	    },
 	};
 	// End of the hardcoded list.
 
@@ -281,7 +281,7 @@ public class ModuleLoader2 {
     /**
      * Enables all selected modules.
      *
-     * @param failingAllowed is true if this is not the last attempt at 
+     * @param failingAllowed is true if this is not the last attempt at
      * turning on.
      */
     private void doInternal(boolean failingAllowed) {
@@ -308,7 +308,7 @@ public class ModuleLoader2 {
 		    } catch (Exception e) {
 		        // An exception was thrown while enabling.
 		    }
-		    
+
 		    if (result) {
 		        someModuleSucceeded = true;
 		        status.setEnabled();
@@ -427,7 +427,7 @@ public class ModuleLoader2 {
 	// Use a little trick to find out where Argo is being loaded from.
         String extForm = getClass().getResource(Argo.ARGOINI).toExternalForm();
 	String argoRoot =
-	    extForm.substring(0, 
+	    extForm.substring(0,
 			      extForm.length() - Argo.ARGOINI.length());
 
 	// If it's a jar, clean it up and make it look like a file url
@@ -455,10 +455,10 @@ public class ModuleLoader2 {
 	}
 	if (argoHome != null) {
 	    if (argoHome.startsWith("file:")) {
-	        huntModulesFromNamedDirectory(argoHome.substring(5) 
+	        huntModulesFromNamedDirectory(argoHome.substring(5)
 					      + File.separator + "ext");
 	    } else {
-	        huntModulesFromNamedDirectory(argoHome 
+	        huntModulesFromNamedDirectory(argoHome
 					      + File.separator + "ext");
 	    }
 
@@ -595,7 +595,7 @@ public class ModuleLoader2 {
      * know about it, don't add it.
      */
     private void addModule(ModuleInterface mf) {
-	// Since there is no way to compare the objects as equal, 
+	// Since there is no way to compare the objects as equal,
 	// we have to search through the list at this point.
 	Iterator iter = moduleStatus.keySet().iterator();
 	while (iter.hasNext()) {

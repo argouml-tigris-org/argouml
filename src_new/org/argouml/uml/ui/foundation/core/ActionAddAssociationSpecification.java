@@ -32,14 +32,14 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 
 /**
- * 
- * @author jaap.branderhorst@xs4all.nl	
+ *
+ * @author jaap.branderhorst@xs4all.nl
  * @since Jan 4, 2003
  */
-public class ActionAddAssociationSpecification 
+public class ActionAddAssociationSpecification
     extends AbstractActionAddModelElement {
 
-    private static final ActionAddAssociationSpecification SINGLETON = 
+    private static final ActionAddAssociationSpecification SINGLETON =
         new ActionAddAssociationSpecification();
     /**
      * Constructor for ActionAddExtendExtensionPoint.
@@ -47,7 +47,7 @@ public class ActionAddAssociationSpecification
     protected ActionAddAssociationSpecification() {
         super();
     }
-    
+
     /**
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,9 +41,9 @@ import org.tigris.gef.util.ChildGenerator;
 public class GenCompositeClasses implements ChildGenerator {
     /**
      * This SINGLETON is used in CrCircularComposition.
-     * 
+     *
      */
-    private static final GenCompositeClasses SINGLETON = 
+    private static final GenCompositeClasses SINGLETON =
         new GenCompositeClasses();
 
     /**
@@ -69,7 +69,7 @@ public class GenCompositeClasses implements ChildGenerator {
 		Object asc = ModelFacade.getAssociation(ae);
 		ArrayList conn = new ArrayList(ModelFacade.getConnections(asc));
 		if (conn == null || conn.size() != 2) continue;
-		Object otherEnd = (ae == conn.get(0)) 
+		Object otherEnd = (ae == conn.get(0))
 		    ? conn.get(1) : conn.get(0);
 		if (ModelFacade.getType(ae) != ModelFacade.getType(otherEnd)) {
 		    res.add(ModelFacade.getType(otherEnd));
@@ -79,4 +79,4 @@ public class GenCompositeClasses implements ChildGenerator {
 	return res.elements();
     }
 } /* end class GenCompositeClasses */
-  
+

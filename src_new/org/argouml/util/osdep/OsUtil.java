@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,34 +32,34 @@ package org.argouml.util.osdep;
  *  @since ARGO0.9.8
  */
 
-public class OsUtil { 
+public class OsUtil {
 
     /** Do not allow this class to be instantiated.
      */
     private OsUtil() {
     }
 
-    /** 
+    /**
      * Check whether we deal with a Windows Operating System.
-     * 
+     *
      * @return true if this is Windows
      */
     public static boolean isWin32() {
         return (System.getProperty("os.name").indexOf("Windows") != -1);
     }
-    
-    /** 
+
+    /**
      * Check whether we deal with a Macintosh.
-     * 
+     *
      * @return true if this is a Mac
      */
     public static boolean isMac() {
         return (System.getProperty("mrj.version") != null);
     }
 
-    /** 
-     * Check whether we deal with a Sun Java. 
-     * 
+    /**
+     * Check whether we deal with a Sun Java.
+     *
      * @return true if this is a Sun Java
      */
     public static boolean isSunJdk() {
@@ -67,11 +67,11 @@ public class OsUtil {
                 .equals("Sun Microsystems Inc."));
     }
 
-    /** 
-     * Check whether we deal with a JDK 1.3.x. 
+    /**
+     * Check whether we deal with a JDK 1.3.x.
      * @return true if we deal with Java 1.3.x.
      */
     public static boolean isJdk131() {
-        return (System.getProperty("java.version").startsWith("1.3.")); 
+        return (System.getProperty("java.version").startsWith("1.3."));
     }
 }

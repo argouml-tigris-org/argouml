@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,12 +43,12 @@ import org.tigris.gef.util.Predicate;
  * @see org.argouml.ocl.OCLEvaluator */
 
 public class UMLCheckItem extends CheckItem {
-    private static final Logger LOG = 
+    private static final Logger LOG =
         Logger.getLogger(UMLCheckItem.class);
 
     /**
      * The constructor.
-     * 
+     *
      * @param c the category
      * @param d the description
      */
@@ -56,7 +56,7 @@ public class UMLCheckItem extends CheckItem {
 
     /**
      * The constructor.
-     * 
+     *
      * @param c the category
      * @param d the description
      * @param m the more-info-url
@@ -68,7 +68,7 @@ public class UMLCheckItem extends CheckItem {
 
 
     /**
-     * @see org.argouml.cognitive.checklist.CheckItem#expand(java.lang.String, 
+     * @see org.argouml.cognitive.checklist.CheckItem#expand(java.lang.String,
      * java.lang.Object)
      */
     public String expand(String res, Object dm) {
@@ -79,10 +79,10 @@ public class UMLCheckItem extends CheckItem {
 	// first offender
 	while (matchPos != -1) {
 	    int endExpr = res.indexOf(OCLEvaluator.OCL_END, matchPos + 1);
-	    String expr = res.substring(matchPos 
+	    String expr = res.substring(matchPos
                 + OCLEvaluator.OCL_START.length(), endExpr);
 	    String evalStr = null;
-	    
+
 	    try {
 	        evalStr = CriticOclEvaluator.getInstance()
 	                            .evalToString(dm, expr);
@@ -91,7 +91,7 @@ public class UMLCheckItem extends CheckItem {
 	        LOG.error("Failed to evaluate critic expression", e);
 	    }
 	    LOG.debug("expr='" + expr + "' = '" + evalStr + "'");
-	    res = res.substring(0, matchPos) + evalStr 
+	    res = res.substring(0, matchPos) + evalStr
 	        + res.substring(endExpr + OCLEvaluator.OCL_END.length());
 	    searchPos = endExpr + 1;
 	    matchPos = res.indexOf(OCLEvaluator.OCL_START, searchPos);

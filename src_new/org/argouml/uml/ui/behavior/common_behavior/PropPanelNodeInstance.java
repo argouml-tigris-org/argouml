@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,7 +41,7 @@ import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel of a NodeInstance.
- * 
+ *
  * TODO: this property panel needs refactoring to remove dependency on old gui
  * components.
  */
@@ -51,43 +51,43 @@ public class PropPanelNodeInstance extends PropPanelInstance {
      * Constructor.
      */
     public PropPanelNodeInstance() {
-        super("Node Instance", lookupIcon("NodeInstance"), 
+        super("Node Instance", lookupIcon("NodeInstance"),
                 ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"), getNameTextField());
 
-        addField(Translator.localize("label.stereotype"), 
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
-        addField(Translator.localize("label.namespace"), 
+        addField(Translator.localize("label.namespace"),
                 getNamespaceComboBox());
 
         addSeperator();
 
-        addField(Translator.localize("label.stimili-sent"), 
+        addField(Translator.localize("label.stimili-sent"),
                 getStimuliSenderScroll());
 
-        addField(Translator.localize("label.stimili-received"), 
+        addField(Translator.localize("label.stimili-received"),
                 getStimuliReceiverScroll());
-        
+
         JList resList = new UMLLinkedList(new UMLContainerResidentListModel());
-        addField(Translator.localize("label.residents"), 
+        addField(Translator.localize("label.residents"),
                 new JScrollPane(resList));
-        
+
         addSeperator();
-        AbstractActionAddModelElement a = 
+        AbstractActionAddModelElement a =
             new ActionAddInstanceClassifier(ModelFacade.NODE);
-        JScrollPane classifierScroll = 
+        JScrollPane classifierScroll =
                 new JScrollPane(new UMLMutableLinkedList(
-	                new UMLInstanceClassifierListModel(), 
+	                new UMLInstanceClassifierListModel(),
 	            a, null, null, true));
-	addField(Translator.localize("label.classifiers"), 
+	addField(Translator.localize("label.classifiers"),
                     classifierScroll);
 
 
         addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));;
     }
 }

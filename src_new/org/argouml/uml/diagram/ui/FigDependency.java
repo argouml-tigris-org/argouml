@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,7 +45,7 @@ import org.tigris.gef.presentation.FigNode;
 public class FigDependency extends FigEdgeModelElement {
 
     private ArrowHeadGreater endArrow;
-    
+
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -133,7 +133,7 @@ public class FigDependency extends FigEdgeModelElement {
     public void setFig(Fig f) {
         super.setFig(f);
         _fig.setDashed(true);
-        // computeRoute(); 
+        // computeRoute();
         // this recomputes the route if you reload the diagram.
     }
 
@@ -147,10 +147,10 @@ public class FigDependency extends FigEdgeModelElement {
     ////////////////////////////////////////////////////////////////
     // event handlers
 
-    /** 
+    /**
      * This is called aftern any part of the UML MModelElement has
-     * changed. 
-     * 
+     * changed.
+     *
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent e) {

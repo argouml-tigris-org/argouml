@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,15 +22,13 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigShallowHistoryState.java
-// Classes: FigShallowHistoryState
-// Original Author: jrobbins@ics.uci.edu
-
 package org.argouml.uml.diagram.state.ui;
 
 import org.tigris.gef.graph.GraphModel;
 
-/** Class to display graphics for a UML ShallowHistoryState in a diagram. 
+/** Class to display graphics for a UML ShallowHistoryState in a diagram.
+ *
+ * @author jrobbins
  */
 public class FigShallowHistoryState extends FigHistoryState {
 
@@ -38,7 +36,7 @@ public class FigShallowHistoryState extends FigHistoryState {
      * Main constructor
      */
     public FigShallowHistoryState() {
-        super();    
+        super();
     }
 
     /**
@@ -49,7 +47,7 @@ public class FigShallowHistoryState extends FigHistoryState {
     }
 
     /**
-     * The constructor which links the Fig into the existing UML element 
+     * The constructor which links the Fig into the existing UML element
      * @param gm ignored
      * @param node the UML element
      */

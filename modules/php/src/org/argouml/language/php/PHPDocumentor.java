@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004, 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -160,7 +160,7 @@ public final class PHPDocumentor {
      * @param modelElement The model element to document.
      * @param iType        The type of DocBlock to generate.
      *
-     * @throws Exception IllegalArgumentException if the modelElement 
+     * @throws Exception IllegalArgumentException if the modelElement
      *                   is of the wrong type
      */
     public PHPDocumentor(Object modelElement, int iType) throws Exception {
@@ -1133,8 +1133,8 @@ public final class PHPDocumentor {
                 return setTag(TAG_TYPE_VERSION, sTagValue);
             } else {
                 /* tags we ignore for PHP */
-                if (!sTagName.equals("src_lang") 
-                    && !sTagName.equals("transient") 
+                if (!sTagName.equals("src_lang")
+                    && !sTagName.equals("transient")
                     && !sTagName.equals("volatile")) {
                     throw new IllegalArgumentException("Can not set value '"
                             + sTagValue + "' for tag '" + sTagName + "'");

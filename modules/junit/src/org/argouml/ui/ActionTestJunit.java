@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2003, 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,7 +42,7 @@ import javax.swing.*;
  *  @since  0.9.4
  */
 public class ActionTestJunit extends UMLAction
-    implements PluggableMenu 
+    implements PluggableMenu
 {
 
 
@@ -52,7 +52,7 @@ public class ActionTestJunit extends UMLAction
     /** logger */
     private static final Logger LOG = Logger.getLogger(ActionTestJunit.class);
 
-    /** 
+    /**
      * A singleton as the only instance of this action.
      */
     private static ActionTestJunit singleton = new ActionTestJunit();
@@ -67,7 +67,7 @@ public class ActionTestJunit extends UMLAction
     // Constructors.
 
     /**
-     * Create a new ActionTestJunit instance (is not public, due to 
+     * Create a new ActionTestJunit instance (is not public, due to
      * singleton pattern).
      */
     protected ActionTestJunit() {
@@ -78,7 +78,7 @@ public class ActionTestJunit extends UMLAction
     ////////////////////////////////////////////////////////////////
     // Main methods.
 
-    /** 
+    /**
      * Get the instance.
      *
      * @return The ActionTestJunit instance
@@ -126,7 +126,7 @@ public class ActionTestJunit extends UMLAction
      * @see org.argouml.application.api.ArgoModule#setModuleEnabled(boolean)
      */
     public void setModuleEnabled(boolean v) { }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#initializeModule()
      */
@@ -151,7 +151,7 @@ public class ActionTestJunit extends UMLAction
 	}
         return initialized;
     }
-    
+
     /**
      * @see org.argouml.application.api.PluggableMenu#buildContext(
      * javax.swing.JMenuItem, java.lang.String)
@@ -167,24 +167,24 @@ public class ActionTestJunit extends UMLAction
      */
     public boolean inContext(Object[] o) {
         if (o.length < 2) return false;
-	if ((o[0] instanceof JMenuItem) 
+	if ((o[0] instanceof JMenuItem)
             && (PluggableMenu.KEY_TOOLS.equals(o[1]))) {
 	    return true;
 	}
         return false;
     }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
      */
     public boolean isModuleEnabled() { return true; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModulePopUpActions(
      * java.util.Vector, java.lang.Object)
      */
     public Vector getModulePopUpActions(Vector v, Object o) { return null; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#shutdownModule()
      */
@@ -194,24 +194,24 @@ public class ActionTestJunit extends UMLAction
      * @see org.argouml.application.api.ArgoModule#getModuleName()
      */
     public String getModuleName() { return "ActionTestJunit"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleDescription()
      */
-    public String getModuleDescription() { 
-        return "Menu Item for JUnit Testing"; 
+    public String getModuleDescription() {
+        return "Menu Item for JUnit Testing";
     }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
      */
     public String getModuleAuthor() { return "Andreas Rueckert"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleVersion()
      */
     public String getModuleVersion() { return "0.9.4"; }
-    
+
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleKey()
      */

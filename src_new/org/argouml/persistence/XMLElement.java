@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,17 +31,17 @@ import org.xml.sax.helpers.AttributesImpl;
  * @author Jim Holt
  */
 public class XMLElement {
-    
+
     ////////////////////////////////////////////////////////////////
     // instance variables
 
     private String        name       = null;
     private StringBuffer  text       = new StringBuffer(100);
     private Attributes    attributes = null;
-    
+
     /**
      * Constructor.
-     * 
+     *
      * @param n The name of the element.
      * @param a The attributes.
      */
@@ -66,17 +66,17 @@ public class XMLElement {
      * @param t the text to be appended
      */
     public void   addText(String t) { text = text.append(t); }
-    
+
     /**
      * @param t the new text
      */
     public void   setText(String t) { text = new StringBuffer(t); }
-    
+
     /**
      * Erase the text of this element.
      */
     public void   resetText()          { text.setLength(0); }
-    
+
     /**
      * @return the text of this element
      */
@@ -84,7 +84,7 @@ public class XMLElement {
 
     /**
      * Change the attributes for this element.
-     * 
+     *
      * @param a The new list of attributes.
      */
     public void   setAttributes(Attributes a) {
@@ -98,23 +98,23 @@ public class XMLElement {
     public String getAttribute(String attribute) {
 	return attributes.getValue(attribute);
     }
-    
+
     /**
      * @param i the index for the list of attributes
      * @return the attribute name for the attribute at the given index
      */
-    public String getAttributeName(int i) { 
-        return attributes.getLocalName(i); 
+    public String getAttributeName(int i) {
+        return attributes.getLocalName(i);
     }
-    
+
     /**
      * @param i the index for the list of attributes
      * @return the attribute value for the attribute at the given index
      */
-    public String getAttributeValue(int i) { 
-        return attributes.getValue(i); 
+    public String getAttributeValue(int i) {
+        return attributes.getValue(i);
     }
-    
+
     /**
      * @return the number of attributes
      */

@@ -34,10 +34,10 @@ import ru.novosoft.uml.MFactoryImpl;
 
 /**
  * Testing the ProjectBrowser.
- * The reason for this being a GUITest is that all the tests rely on 
+ * The reason for this being a GUITest is that all the tests rely on
  * that the ProjectBrowser can be created and it can only be created
  * if there is a real gui available.
- * 
+ *
  * @since Nov 23, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -84,7 +84,7 @@ public class GUITestProjectBrowser extends TestCase {
      * accessing the splashscreen.
      *
      * Since ProjectBrowser is a singleton without possibilities to remove it
-     * and the existance of the SplashScreen is determined when initially 
+     * and the existance of the SplashScreen is determined when initially
      * creating it, it is not possible to test it.
      */
     public void compileTestSplashScreen() {
@@ -94,7 +94,7 @@ public class GUITestProjectBrowser extends TestCase {
     /** Test the existance of public static members.
      */
     public void compileTestPublicStaticMembers() {
-	int r = ProjectBrowser.DEFAULT_COMPONENTWIDTH 
+	int r = ProjectBrowser.DEFAULT_COMPONENTWIDTH
 	        + ProjectBrowser.DEFAULT_COMPONENTHEIGHT;
     }
 
@@ -104,7 +104,7 @@ public class GUITestProjectBrowser extends TestCase {
     public void compileTestPublicMembers() {
 	assertNotNull(ProjectBrowser.getInstance().getDefaultFont());
     }
-    
+
 
     /**
      * @see junit.framework.TestCase#setUp()
@@ -112,16 +112,16 @@ public class GUITestProjectBrowser extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
     }
-    
+
     /**
      * Testing the setTarget method in ProjectBrowser.
      * The method has been deprecated.
      */
     public void testSetTarget() {
 	MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-	Object package1 = 
+	Object package1 =
 	    Model.getModelManagementFactory().buildPackage("test1", null);
-	Object package2 = 
+	Object package2 =
 	    Model.getModelManagementFactory().buildPackage("test2", null);
 	UMLClassDiagram diagram1 = new UMLClassDiagram(package1);
 	UMLClassDiagram diagram2 = new UMLClassDiagram(package2);
@@ -136,7 +136,7 @@ public class GUITestProjectBrowser extends TestCase {
 
 	ProjectManager.getManager().getCurrentProject().moveToTrash(package2);
 	ProjectManager pm = ProjectManager.getManager();
-	assertEquals("The target is not reset to the first diagram", 
+	assertEquals("The target is not reset to the first diagram",
             pm.getCurrentProject().getDiagrams().get(0), pb.getTarget());
     }
 

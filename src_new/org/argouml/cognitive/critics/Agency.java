@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -63,14 +63,14 @@ public class Agency extends Observable { //implements java.io.Serialization
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-    
+
     /**
      * A registery of all critics that are currently loaded into the
      * design environment.
      */
     private static Hashtable criticRegistry = new Hashtable(100);
     private static Vector critics = new Vector();
-    
+
     //   private static boolean _hot = false;
     /**
      * The main control mechanism for determining which critics should
@@ -81,7 +81,7 @@ public class Agency extends Observable { //implements java.io.Serialization
     private static Hashtable singletonCritics = new Hashtable(40);
     ////////////////////////////////////////////////////////////////
     // constructor and singleton methdos
-    
+
     /**
      * Contruct a new Agency instance with the given ControlMech as the
      * main control mechanism for determining which critics should be
@@ -92,7 +92,7 @@ public class Agency extends Observable { //implements java.io.Serialization
     public Agency(ControlMech cm) {
         controlMech = cm;
     }
-    
+
     /**
      * Contruct a new Agency instance and use a StandardCM as the main
      * control mechanism for determining which critics should be
@@ -101,7 +101,7 @@ public class Agency extends Observable { //implements java.io.Serialization
     public Agency() {
         controlMech = new StandardCM();
     }
-    
+
     /**
      * Since Java does not really suport classes as first class
      *  objects, there is one instance of Agency that is passed around as
@@ -120,21 +120,21 @@ public class Agency extends Observable { //implements java.io.Serialization
     }
     ////////////////////////////////////////////////////////////////
     // accessors
-    
+
     /**
      * Reply the registery.
      */
     private static Hashtable getCriticRegistry() {
         return criticRegistry;
     }
-    
+
     /**
      * @return the critics
      */
     public static Vector getCritics() {
         return critics;
     }
-    
+
     ////////////////////////////////////////////////////////////////
     // critic registration
     /**
@@ -155,7 +155,7 @@ public class Agency extends Observable { //implements java.io.Serialization
             return;
         }
     }
-    
+
     /**
      * @param crClassName the critic class name
      * @param dmClassName the design material class name
@@ -191,7 +191,7 @@ public class Agency extends Observable { //implements java.io.Serialization
         }
         register(cr, dmClass);
     }
-    
+
     /**
      * Register a critic in the global table of critics that have been
      * loaded. Critics are associated with one or more design material
@@ -214,9 +214,9 @@ public class Agency extends Observable { //implements java.io.Serialization
         cachedCritics.remove(clazz);
         addCritic(cr);
     }
-    
+
     private static Hashtable cachedCritics = new Hashtable();
-    
+
     /**
      * Return a collection of all critics that can be applied to the
      * design material subclass, including inherited critics.
@@ -231,7 +231,7 @@ public class Agency extends Observable { //implements java.io.Serialization
 	    col.addAll(criticsForSpecificClass(clazz));
 	    Collection classes = new ArrayList();
 	    if (clazz.getSuperclass() != null) {
-		classes.add(clazz.getSuperclass()); 
+		classes.add(clazz.getSuperclass());
 	    }
 	    if (clazz.getInterfaces() != null) {
 		classes.addAll(Arrays.asList(clazz.getInterfaces()));
@@ -243,7 +243,7 @@ public class Agency extends Observable { //implements java.io.Serialization
 	    cachedCritics.put(clazz, col);
         }
                 return col;
-        
+
     }
 
     /**
@@ -263,10 +263,10 @@ public class Agency extends Observable { //implements java.io.Serialization
         }
         return theCritics;
     }
-    
+
     ////////////////////////////////////////////////////////////////
     // criticism control
-    
+
     /**
      * Apply all critics that can be applied to the given
      * design material instance as appropriate for the given
@@ -277,7 +277,7 @@ public class Agency extends Observable { //implements java.io.Serialization
      *
      * @param dm the design material
      * @param d the designer
-     * @param reasonCode the reason 
+     * @param reasonCode the reason
      */
     public static void applyAllCritics(
         Object dm,
@@ -287,7 +287,7 @@ public class Agency extends Observable { //implements java.io.Serialization
         Collection c = criticsForClass(dmClazz);
         applyCritics(dm, d, c, reasonCode);
     }
-    
+
     /**
      * @param dm the design material
      * @param d the designer
@@ -297,7 +297,7 @@ public class Agency extends Observable { //implements java.io.Serialization
         Collection c = criticsForClass(dmClazz);
         applyCritics(dm, d, c, -1L);
     }
-    
+
     /**
      * @param dm the design material
      * @param d the designer
@@ -311,7 +311,7 @@ public class Agency extends Observable { //implements java.io.Serialization
         long reasonCode) {
 
         Iterator it = theCritics.iterator();
-        while (it.hasNext()) {                  
+        while (it.hasNext()) {
             Critic c = (Critic) it.next();
             if (c.isActive() && c.matchReason(reasonCode)) {
                 try {
@@ -323,9 +323,9 @@ public class Agency extends Observable { //implements java.io.Serialization
                     c.setEnabled(false);
                 }
             }
-        }        
+        }
     }
-    
+
     /**
      * Compute which critics should be active (i.e., they can be
      * applied by applyAllCritics) for a given Designer. <p>
@@ -333,7 +333,7 @@ public class Agency extends Observable { //implements java.io.Serialization
      * TODO: I am setting global data, the
      * isEnabled bit in each critic, based on the needs of one designer.
      * I don't really support more than one Designer.
-     * 
+     *
      * TODO: should loop over simpler vector of critics, not CompoundCritics
      *
      * @param d the designer
@@ -353,7 +353,7 @@ public class Agency extends Observable { //implements java.io.Serialization
         }
         //}
     }
-    
+
     ////////////////////////////////////////////////////////////////
     // triggers
     //
@@ -393,7 +393,7 @@ public class Agency extends Observable { //implements java.io.Serialization
     //   }
     ////////////////////////////////////////////////////////////////
     // notifications and updates
-    
+
     /**
      * Let some object recieve notifications when the Agency changes
      * state.  Static observers are normal Observers on the singleton
@@ -409,7 +409,7 @@ public class Agency extends Observable { //implements java.io.Serialization
             a.addObserver(obs);
 	}
     }
-    
+
     /**
      * When the agency changes, notify observers.
      *
@@ -421,7 +421,7 @@ public class Agency extends Observable { //implements java.io.Serialization
             theAgency().notifyObservers(o);
         }
     }
-    
+
 } /* end class Agency */
 // /** This class store information about a design manipulation that
 //  * happens in some design editor and then it is matched against a

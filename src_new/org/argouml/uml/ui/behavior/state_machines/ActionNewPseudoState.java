@@ -40,8 +40,8 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
  */
 public class ActionNewPseudoState extends AbstractActionNewModelElement {
 
-    private Object kind; 
-    
+    private Object kind;
+
     /**
      * Constructor for ActionNewPseudoState.
      */
@@ -49,10 +49,10 @@ public class ActionNewPseudoState extends AbstractActionNewModelElement {
         super();
         putValue(Action.NAME, Translator.localize("button.new-pseudostate"));
     }
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param k the pseudostate kind
      * @param n the to be localized name for the pseudostate kind
      */
@@ -68,7 +68,7 @@ public class ActionNewPseudoState extends AbstractActionNewModelElement {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object target = TargetManager.getInstance().getModelTarget();
-        Object ps = 
+        Object ps =
             Model.getStateMachinesFactory().buildPseudoState(target);
         if (kind != null) {
             ModelFacade.setKind(ps, kind);

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -56,31 +56,31 @@ import org.tigris.gef.base.Globals;
 public class ActionSaveDiagramToClipboard
     extends AbstractAction
     implements ClipboardOwner {
-    
-    /** get diagram image and put in system clipboard. 
-     * 
+
+    /** get diagram image and put in system clipboard.
+     *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent actionEvent) {
-        
+
         Image diagramGifImage = getImage();
-        
+
         if (diagramGifImage == null) {
             return;
         }
-        
+
         // copy the gif image to the clipboard
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(new ImageSelection(diagramGifImage), this);
     }
-    
+
     /** get image from gef */
     private Image getImage() {
-        
+
         Editor ce = Globals.curEditor();
         Rectangle drawingArea =
 	    ce.getLayerManager().getActiveLayer().calcDrawingArea();
-        
+
         // avoid GEF calcDrawingArea bug when nothing in a diagram.
         if (drawingArea.x < 0
 	    || drawingArea.y < 0
@@ -88,25 +88,25 @@ public class ActionSaveDiagramToClipboard
 	    || drawingArea.height < 0) {
             return null;
         }
-        
+
         boolean isGridHidden = ce.getGridHidden();
-        ce.setGridHidden( true ); // hide grid, otherwise can't see anything
+        ce.setGridHidden(true); // hide grid, otherwise can't see anything
         Image diagramGifImage =
 	    ce.createImage(drawingArea.width, drawingArea.height);
         Graphics g = diagramGifImage.getGraphics();
-        
+
 	// background color.
-        g.setColor( new Color(CmdSaveGIF.TRANSPARENT_BG_COLOR) );
-        g.fillRect( 0, 0, drawingArea.width, drawingArea.height );
-        g.translate( -drawingArea.x, -drawingArea.y );
-        ce.print( g );
-        ce.setGridHidden( isGridHidden);
-        
+        g.setColor(new Color(CmdSaveGIF.TRANSPARENT_BG_COLOR));
+        g.fillRect(0, 0, drawingArea.width, drawingArea.height);
+        g.translate(-drawingArea.x, -drawingArea.y);
+        ce.print(g);
+        ce.setGridHidden(isGridHidden);
+
         return diagramGifImage;
     }
-    
+
     /** do nothing
-     * 
+     *
      * @see java.awt.datatransfer.ClipboardOwner#lostOwnership(
      * java.awt.datatransfer.Clipboard, java.awt.datatransfer.Transferable)
      */
@@ -118,46 +118,46 @@ public class ActionSaveDiagramToClipboard
  * Encapsulates an awt Image for Data Transfer to/from the clipboard.
  */
 class ImageSelection implements Transferable {
-    
+
     private static DataFlavor imageFlavor;
     private DataFlavor [] supportedFlavors = {imageFlavor};
-    
+
     // the diagram image data
     private Image diagramImage;
-    
+
     public ImageSelection(Image newDiagramImage) {
-        
+
         diagramImage = newDiagramImage;
         // hack in order to be able to compile in java1.3
         imageFlavor =
 	    new DataFlavor("image/x-java-image; class=java.awt.Image",
 			   "Image");
     }
-    
+
     public synchronized DataFlavor [] getTransferDataFlavors() {
-        
+
         return (supportedFlavors);
     }
-    
+
     public boolean isDataFlavorSupported(DataFlavor parFlavor) {
-        
+
         // hack in order to be able to compile in java1.3
         return (parFlavor.getMimeType().
                     equals(imageFlavor.getMimeType())
 		&& parFlavor.getHumanPresentableName()
                        .equals(imageFlavor.getHumanPresentableName()));
-        
+
     }
-    
+
     public synchronized Object getTransferData(DataFlavor parFlavor)
 	throws UnsupportedFlavorException {
-        
+
         if (isDataFlavorSupported(parFlavor)) {
             return (diagramImage);
         }
         else {
             throw new UnsupportedFlavorException(imageFlavor);
         }
-        
+
     }
 }

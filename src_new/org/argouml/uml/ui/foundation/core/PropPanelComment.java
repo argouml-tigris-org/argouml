@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,9 +38,9 @@ import org.argouml.util.ConfigLoader;
 
 /**
  * Proppanel for comments (notes). <p>
- * 
+ *
  * In UML 1.3, the text of the comment is kept
- * in the name of the MComment. 
+ * in the name of the MComment.
  * In UML 1.4 and beyond, the MComment has a "body"
  * attribute, to contain the comment string.
  */
@@ -60,14 +60,14 @@ public class PropPanelComment extends PropPanelModelElement {
          * javax.swing.text.PlainDocument See issue 1812.
          */
         uptd.putProperty("filterNewlines", Boolean.FALSE);
-        
-        addField(Translator.localize("label.stereotype"), 
+
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
-        
-        addField(Translator.localize("label.annotated-elements"), 
+
+        addField(Translator.localize("label.annotated-elements"),
             new JScrollPane(new UMLLinkedList(
                     new UMLCommentAnnotatedElementListModel())));
-        
+
         addSeperator();
 
         UMLTextArea2 text = new UMLTextArea2(uptd);
@@ -75,11 +75,11 @@ public class PropPanelComment extends PropPanelModelElement {
         text.setRows(5);
         JScrollPane pane = new JScrollPane(text);
         addField(Translator.localize("label.comment.body"), pane);
-        
+
         addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
-        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));;
     }
 }

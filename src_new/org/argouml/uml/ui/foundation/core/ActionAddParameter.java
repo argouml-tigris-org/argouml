@@ -38,9 +38,9 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 
 /**
- * Action to create a new parameter "next to" the existing parameter 
+ * Action to create a new parameter "next to" the existing parameter
  * (that is actually selected by the user).
- * 
+ *
  * @author Michiel
  */
 class ActionAddParameter extends AbstractActionNewModelElement {

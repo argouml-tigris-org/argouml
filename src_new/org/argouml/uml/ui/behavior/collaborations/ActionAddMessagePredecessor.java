@@ -42,7 +42,7 @@ public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
 
     private static final ActionAddMessagePredecessor SINGLETON =
 	new ActionAddMessagePredecessor();
-    
+
     /**
      * Constructor for ActionAddMessagePredecessor.
      */

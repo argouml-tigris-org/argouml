@@ -36,9 +36,9 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
  * @author jaap.branderhorst@xs4all.nl, alexb
  * @since Mar 22, 2003
  */
-public class UMLClassAttributeListModel 
+public class UMLClassAttributeListModel
     extends UMLModelElementOrderedListModel2 {
-        
+
     /**
      * Constructor for UMLClassifierStructuralFeatureListModel.
      */
@@ -51,7 +51,7 @@ public class UMLClassAttributeListModel
      */
     protected void buildModelList() {
         if (getTarget() != null) {
-            
+
             setAllElements(ModelFacade.getAttributes(getTarget()));
         }
     }

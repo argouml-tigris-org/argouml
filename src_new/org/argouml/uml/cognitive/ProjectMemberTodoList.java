@@ -42,12 +42,12 @@ import org.argouml.persistence.ToDoItemXMLHelper;
  * @author	Michael Stockman
  */
 public class ProjectMemberTodoList extends AbstractProjectMember {
-    
+
     private static final String TO_DO_EXT = ".todo";
 
     /**
-     * The constructor. 
-     * 
+     * The constructor.
+     *
      * @param name the name
      * @param p the project
      */
@@ -77,7 +77,7 @@ public class ProjectMemberTodoList extends AbstractProjectMember {
         ToDoItem tdi;
         Designer dsgr;
         int i;
-        
+
         dsgr = Designer.theDesigner();
         in = dsgr.getToDoList().getToDoItems();
         out = new Vector();
@@ -90,7 +90,7 @@ public class ProjectMemberTodoList extends AbstractProjectMember {
             } catch (ClassCastException e) {
                 continue;
             }
-        
+
             if (tdi.getPoster() instanceof Designer) {
                 out.addElement(new ToDoItemXMLHelper(tdi));
             }
@@ -106,7 +106,7 @@ public class ProjectMemberTodoList extends AbstractProjectMember {
     	ResolvedCritic rci;
     	Designer dsgr;
     	int i;
-    
+
     	dsgr = Designer.theDesigner();
     	in = dsgr.getToDoList().getResolvedItems();
     	out = new Vector();

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,12 +45,12 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public PropPanelAssociationRole() {
         super("Association Role", ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("label.name"), 
+        addField(Translator.localize("label.name"),
                 getNameTextField());
         addField(Translator.localize("label.stereotype"),
 		 getStereotypeBox());
@@ -58,7 +58,7 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
 		 getNamespaceScroll());
 
         JComboBox baseComboBox =
-	    new UMLComboBox2(new UMLAssociationRoleBaseComboBoxModel(), 
+	    new UMLComboBox2(new UMLAssociationRoleBaseComboBoxModel(),
                 ActionSetAssociationRoleBase.getInstance());
         addField(Translator.localize("label.base"), baseComboBox);
 
@@ -77,7 +77,7 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
 		 new JScrollPane(messageList));
 
         addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));;
     }
 

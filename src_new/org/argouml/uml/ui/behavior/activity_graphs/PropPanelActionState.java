@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: PropPanelState.java
-// Classes: PropPanelState
-// Original Author: your email address here
-// $Id$
-
 package org.argouml.uml.ui.behavior.activity_graphs;
 
 import javax.swing.ImageIcon;
@@ -44,7 +39,7 @@ public class PropPanelActionState extends PropPanelState {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public PropPanelActionState() {
         this("Action State", lookupIcon("ActionState"), ConfigLoader
@@ -53,7 +48,7 @@ public class PropPanelActionState extends PropPanelState {
 
     /**
      * The constructor.
-     * 
+     *
      * @param name the name of the properties panel
      * @param icon the icon to be shown next to the name
      * @param orientation the orientation of the panel
@@ -68,7 +63,7 @@ public class PropPanelActionState extends PropPanelState {
         addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
 
-        addField(Translator.localize("label.entry"), 
+        addField(Translator.localize("label.entry"),
                 getEntryScroll());
         addSeperator();
 

@@ -32,9 +32,9 @@ import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 /**
- * The combobox for activators on the message proppanel. The only reason this 
- * combobox implements melementlistener is to conform to UMLChangeDispatch. The 
- * combobox serves as a proxy for the 
+ * The combobox for activators on the message proppanel. The only reason this
+ * combobox implements melementlistener is to conform to UMLChangeDispatch. The
+ * combobox serves as a proxy for the
  * model (UMLMessageActivatorComboBoxModel). Kind of strange...
  */
 public class UMLMessageActivatorComboBox extends UMLComboBox2 {

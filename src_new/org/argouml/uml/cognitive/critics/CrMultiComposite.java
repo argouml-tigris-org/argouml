@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,25 +21,25 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-// File: CrMultiComposite.java
-// Classes: CrMultiComposite
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
 
 package org.argouml.uml.cognitive.critics;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
 
-/** Well-formedness rule [2] for MAssociationEnd. See page 28 of UML
- *  1.1 Semantics. OMG document ad/97-08-04.  */
-
+/**
+ * Well-formedness rule [2] for MAssociationEnd. See page 28 of UML
+ * 1.1 Semantics. OMG document ad/97-08-04.
+ *
+ * @author jrobbins
+ */
 public class CrMultiComposite extends CrUML {
-    
+
     /**
      * The constructor.
-     * 
+     *
      */
     public CrMultiComposite() {
         setHeadline("Composite Role with MMultiplicity > 1");
@@ -48,7 +48,7 @@ public class CrMultiComposite extends CrUML {
         addTrigger("aggregation");
         addTrigger("multiplicity");
     }
-    
+
     /**
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      * java.lang.Object, org.argouml.cognitive.Designer)
@@ -64,12 +64,12 @@ public class CrMultiComposite extends CrUML {
         }
         return problem;
     }
-    
+
     /**
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
     public Class getWizardClass(ToDoItem item) {
         return WizAssocComposite.class;
     }
-    
+
 } /* end class CrMultiComposite */

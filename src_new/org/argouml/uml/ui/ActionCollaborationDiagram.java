@@ -34,8 +34,8 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  *  @stereotype singleton
  */
 public class ActionCollaborationDiagram extends ActionAddDiagram {
-    
-    private static final Logger LOG = 
+
+    private static final Logger LOG =
         Logger.getLogger(ActionCollaborationDiagram.class);
 
     /**
@@ -87,7 +87,7 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
 //                Model.getCollaborationsFactory().buildCollaboration(
 //                    namespace);
         }
-        UMLCollaborationDiagram d = 
+        UMLCollaborationDiagram d =
             new UMLCollaborationDiagram(namespace, collaboration);
         return d;
     }
@@ -113,7 +113,7 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
     public boolean shouldBeEnabled() {
         Object target = TargetManager.getInstance().getModelTarget();
         if (ModelFacade.isAOperation(target))
-            return super.shouldBeEnabled() 
+            return super.shouldBeEnabled()
                 && Model.getCollaborationsHelper()
                     .isAddingCollaborationAllowed(target);
         else if (ModelFacade.isANamespace(target))

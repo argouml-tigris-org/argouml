@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -48,7 +48,7 @@ import org.tigris.gef.base.Globals;
 
 /**
  * Action that loads the project.
- * This will throw away the project that we were working with up to this 
+ * This will throw away the project that we were working with up to this
  * point so some extra caution.
  *
  * @see ActionSaveProject
@@ -58,7 +58,7 @@ public class ActionOpenProject extends ActionFileOperations
 
     private static final Logger LOG =
         Logger.getLogger(ActionOpenProject.class);
-    
+
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -75,8 +75,8 @@ public class ActionOpenProject extends ActionFileOperations
     ////////////////////////////////////////////////////////////////
     // main methods
 
-    
-    /** 
+
+    /**
      * Performs the action of opening a project.
      *
      * @param e an event
@@ -85,9 +85,9 @@ public class ActionOpenProject extends ActionFileOperations
         ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
         PersistenceManager pm = PersistenceManager.getInstance();
-        
+
         if (!askConfirmationAndSave()) return;
-        
+
         try {
             // next line does give user.home back but this is not
             // compliant with how the project.url works and therefore
@@ -110,10 +110,10 @@ public class ActionOpenProject extends ActionFileOperations
 
             chooser.setDialogTitle(
                     Translator.localize("filechooser.open-project"));
-            
+
             FileFilter allFiles = chooser.getFileFilter();
             chooser.removeChoosableFileFilter(allFiles);
-            
+
             pm.setFileChooserFilters(chooser);
 
             int retval = chooser.showOpenDialog(pb);
@@ -121,10 +121,10 @@ public class ActionOpenProject extends ActionFileOperations
                 File theFile = chooser.getSelectedFile();
                 if (!theFile.canRead()) {
                     /* Try adding the default extension. */
-                    File n = new File(theFile.getPath() + "." 
+                    File n = new File(theFile.getPath() + "."
                             + pm.getDefaultExtension());
-                    /* The above could have been the selected extension 
-                     * in the chooser, but I have no direct means 
+                    /* The above could have been the selected extension
+                     * in the chooser, but I have no direct means
                      * of getting the extension of a FileFilter... */
                     if (n.canRead()) theFile = n;
                 }

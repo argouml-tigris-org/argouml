@@ -84,6 +84,6 @@ public class ActionAddClassifierRoleBase extends AbstractActionAddModelElement {
         Object role = /*(MClassifierRole)*/ getTarget();
         Model.getCollaborationsHelper().setBases(role, selected);
     }
-        
+
 
 }

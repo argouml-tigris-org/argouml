@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -49,14 +49,16 @@ import org.argouml.uml.generator.GeneratorDisplay;
  */
 public final class NotationProviderFactory
     implements ArgoModuleEventListener {
-    /** Logger. */
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(NotationProviderFactory.class);
 
     /**
      * The singleton representing this class.
      */
-    private static final NotationProviderFactory SINGLETON = 
+    private static final NotationProviderFactory SINGLETON =
         new NotationProviderFactory();
 
     /**
@@ -87,7 +89,7 @@ public final class NotationProviderFactory
 	ArgoEventPump.addListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
     }
 
-    /** 
+    /**
      * Remove the notation change listener.
      * <code>finalize</code> should never happen, but play it safe.
      *

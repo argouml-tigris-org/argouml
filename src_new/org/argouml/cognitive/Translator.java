@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,16 +33,16 @@ package org.argouml.cognitive;
  *
  */
 public class Translator {
-    
+
     private static AbstractCognitiveTranslator translator;
-    
+
     /**
      * @param trans the translator
      */
     public static void setTranslator(AbstractCognitiveTranslator trans) {
         translator = trans;
     }
-    
+
     /**
      * @param key the key for the string to be localized
      * @return the localized string
@@ -50,15 +50,15 @@ public class Translator {
     public static String localize(String key) {
         return (translator != null) ? translator.i18nlocalize(key) : key;
     }
-    
+
     /**
      * @param key the key for the string to be localized
      * @param args arguments that will be inserted in the string
      * @return the localized string containing the arguments
      */
     public static String messageFormat(String key, Object[] args) {
-        return (translator != null) 
-            ? translator.i18nmessageFormat(key, args) 
+        return (translator != null)
+            ? translator.i18nmessageFormat(key, args)
             : key;
     }
 

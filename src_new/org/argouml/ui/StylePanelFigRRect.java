@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,7 +38,7 @@ import org.tigris.gef.presentation.FigRRect;
 /**
  * Provide a stylepanel for rounded rectancles in order to set the rounding edge
  * level.
- *  
+ *
  */
 public class StylePanelFigRRect extends StylePanelFig {
 
@@ -50,7 +50,7 @@ public class StylePanelFigRRect extends StylePanelFig {
 
     /**
      * construct a default panel for rounded rectancular elements.
-     *  
+     *
      */
     public StylePanelFigRRect() {
         super();
@@ -81,7 +81,7 @@ public class StylePanelFigRRect extends StylePanelFig {
      */
     public void refresh() {
         super.refresh();
-        String roundingStr = 
+        String roundingStr =
             ((FigRRect) getPanelTarget()).getCornerRadius() + "";
         roundingField.setText(roundingStr);
     }
@@ -100,7 +100,7 @@ public class StylePanelFigRRect extends StylePanelFig {
 
     /**
      * react to changes in the rounding field text box.
-     * 
+     *
      * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
      */
     public void insertUpdate(DocumentEvent e) {

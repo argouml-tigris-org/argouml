@@ -84,7 +84,7 @@ public abstract class FigStateVertex extends FigNodeModelElement {
     /**
      * return selectors, depending whether we deal with activity or state
      * diagrams.
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {

@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: OuterClassifierContext.java
-// Classes: OuterClassifierContext
-// Original Author: Marcus Andersson andersson@users.sourceforge.net
-
 package org.argouml.uml.reveng.java;
 
 import org.argouml.model.Model;
@@ -33,10 +29,11 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.reveng.ImportClassLoader;
 
 /**
-   This context is an outer class containing inner classes.
-*/
-class OuterClassifierContext extends Context
-{
+ * This context is an outer class containing inner classes.
+ *
+ * @author Marcus Andersson
+ */
+class OuterClassifierContext extends Context {
     /** The classifier this context represents. */
     private Object mClassifier;
 
@@ -51,7 +48,7 @@ class OuterClassifierContext extends Context
 
     /**
      Create a new context from a classifier.
-     
+
      @param base Based on this context.
      @param theClassifier The classifier.
      @param thePackage The package the classifier belongs to.
@@ -60,8 +57,7 @@ class OuterClassifierContext extends Context
     public OuterClassifierContext(Context base,
 				  Object theClassifier,
 				  Object thePackage,
-				  String theNamePrefix)
-    {
+				  String theNamePrefix) {
 	super(base);
 	this.mClassifier = theClassifier;
 	this.mPackage = thePackage;
@@ -70,8 +66,7 @@ class OuterClassifierContext extends Context
     }
 
     public Object getInterface(String name)
-	throws ClassifierNotFoundException
-    {
+	throws ClassifierNotFoundException {
         // Search in classifier
         Object mInterface = ModelFacade.lookupIn(mClassifier, name);
 
@@ -101,7 +96,7 @@ class OuterClassifierContext extends Context
 		}
 	    }
 	    catch (ClassNotFoundException e) {
-                
+
                 // try USER classpath
                 try {
                     // Special case for model
@@ -127,7 +122,7 @@ class OuterClassifierContext extends Context
                         // Only interfaces will do
                         throw new ClassNotFoundException();
                     }
-                    
+
                 }
                 catch (Exception e1) {
                     // Continue the search through the rest of the model
@@ -150,8 +145,7 @@ class OuterClassifierContext extends Context
      * @return Found classifier.
      */
     public Object get(String name)
-	throws ClassifierNotFoundException
-    {
+	throws ClassifierNotFoundException {
 	// Search in classifier
 	Object iClassifier = ModelFacade.lookupIn(mClassifier, name);
 
@@ -182,10 +176,10 @@ class OuterClassifierContext extends Context
 		}
 	    }
 	    catch (ClassNotFoundException e) {
-                
+
                 // try USER classpath
                 try {
-                    
+
                     // Special case for model
                     if (ModelFacade.isAModel(mPackage)) {
                         classifier =
@@ -209,10 +203,10 @@ class OuterClassifierContext extends Context
 			    Model.getCoreFactory()
 			        .buildClass(name, mClassifier);
                     }
-                    
+
                 }
                 catch (Exception e1) {
-                    
+
                     // Continue the search through the rest of the model
                     if (getContext() != null) {
                         iClassifier = getContext().get(name);

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,12 +35,12 @@ import org.tigris.gef.presentation.FigRect;
  * @author Bob Tarling
  */
 public abstract class FigFeaturesCompartment extends FigCompartment {
-    
+
     private Fig bigPort;
 
     /**
      * The constructor.
-     * 
+     *
      * @param x x
      * @param y y
      * @param w width
@@ -54,7 +54,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
         setLineWidth(1);
         addFig(bigPort);
     }
-    
+
     /**
      * USED BY PGML.tee
      * @see org.tigris.gef.presentation.Fig#getNameAndBounds()
@@ -66,7 +66,7 @@ public abstract class FigFeaturesCompartment extends FigCompartment {
             return getClass().getName() + "[]";
         }
     }
-    
+
     /**
      * @return the bigport
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -47,7 +47,7 @@ public class ActionExecSilk extends UMLAction
 
     ////////////////////////////////////////////////////////////////
     // static variables
-    
+
     private static final Logger LOG =
         Logger.getLogger(ActionExecSilk.class);
 
@@ -87,7 +87,7 @@ public class ActionExecSilk extends UMLAction
             //      FileFilter filter = FileFilters.SilkFilter;
             //chooser.addChoosableFileFilter(filter);
             //chooser.setFileFilter(filter);
-	    
+
             int retval = chooser.showOpenDialog(pb);
 
             if (retval == 0) {
@@ -95,7 +95,7 @@ public class ActionExecSilk extends UMLAction
                 if (theFile != null) {
 		    silk.Scheme.load(theFile.getCanonicalPath());
 
-		    Symbol init = Symbol.intern("main");      
+		    Symbol init = Symbol.intern("main");
 		    if (init != null) {
 			silk.Scheme.eval(
 			        new Pair(init,
@@ -213,7 +213,7 @@ public class ActionExecSilk extends UMLAction
     }
 
 }
-/* end class ActionExecSilk */   
+/* end class ActionExecSilk */
 
 
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,11 +29,11 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLMultiplicityComboBoxModel;
 
 /**
- * 
- * @author jaap.branderhorst@xs4all.nl	
+ *
+ * @author jaap.branderhorst@xs4all.nl
  * @since Jan 6, 2003
  */
-public class UMLStructuralFeatureMultiplicityComboBoxModel 
+public class UMLStructuralFeatureMultiplicityComboBoxModel
     extends UMLMultiplicityComboBoxModel {
 
     /**
@@ -47,8 +47,8 @@ public class UMLStructuralFeatureMultiplicityComboBoxModel
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
-        if (getTarget() != null 
-                && (ModelFacade.isAStructuralFeature(getTarget()))) 
+        if (getTarget() != null
+                && (ModelFacade.isAStructuralFeature(getTarget())))
             return ModelFacade.getMultiplicity(getTarget());
         return null;
     }

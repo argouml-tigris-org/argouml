@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,24 +42,24 @@ import org.tigris.gef.ui.ColorRenderer;
  */
 public class StylePanelFigText extends StylePanelFig {
 
-    private static final String FONT_NAMES[] = {
+    private static final String[] FONT_NAMES = {
 	"dialog", "serif", "sanserif",
 	"monospaced",
     };
 
-    private static final Integer COMMON_SIZES[] = {
+    private static final Integer[] COMMON_SIZES = {
 	new Integer(8), new Integer(9),
 	new Integer(10), new Integer(12), new Integer(16), new Integer(18),
 	new Integer(24), new Integer(36), new Integer(48), new Integer(72),
 	new Integer(96),
     };
 
-    private static final String STYLES[] = {
+    private static final String[] STYLES = {
 	"Plain", "Bold", "Italic",
 	"Bold-Italic",
     };
 
-    private static final String JUSTIFIES[] = {
+    private static final String[] JUSTIFIES = {
 	"Left", "Right", "Center",
     };
 
@@ -89,7 +89,7 @@ public class StylePanelFigText extends StylePanelFig {
 
     /**
      * Construct default style panel for text elements.
-     *  
+     *
      */
     public StylePanelFigText() {
         super();
@@ -192,7 +192,7 @@ public class StylePanelFigText extends StylePanelFig {
 
     /**
      * refresh the text element with all selected values.
-     * 
+     *
      * @see org.argouml.ui.TabTarget#refresh()
      */
     public void refresh() {
@@ -232,7 +232,7 @@ public class StylePanelFigText extends StylePanelFig {
 
     /**
      * set the font of the text element to the selected value.
-     *  
+     *
      */
     protected void setTargetFont() {
         if (getPanelTarget() == null) return;
@@ -244,7 +244,7 @@ public class StylePanelFigText extends StylePanelFig {
 
     /**
      * change font size of the text element according to the selected value.
-     *  
+     *
      */
     protected void setTargetSize() {
         if (getPanelTarget() == null) return;
@@ -256,7 +256,7 @@ public class StylePanelFigText extends StylePanelFig {
     /**
      * change style of the text element (bold/italic) according to the selected
      * value.
-     *  
+     *
      */
     protected void setTargetStyle() {
         if (getPanelTarget() == null) return;
@@ -271,7 +271,7 @@ public class StylePanelFigText extends StylePanelFig {
 
     /**
      * change the justification of the text according to the selected value.
-     *  
+     *
      */
     protected void setTargetJustification() {
         if (getPanelTarget() == null) return;
@@ -283,7 +283,7 @@ public class StylePanelFigText extends StylePanelFig {
 
     /**
      * change color of the text fill / background to the selected value.
-     *  
+     *
      */
     protected void setTargetTextFill() {
         if (getPanelTarget() == null) return;
@@ -296,12 +296,12 @@ public class StylePanelFigText extends StylePanelFig {
 
     /**
      * change the color of the text element according to the selected value.
-     *  
+     *
      */
     protected void setTargetTextColor() {
         if (getPanelTarget() == null) return;
         Object c = textColorField.getSelectedItem();
-        if (c instanceof Color) 
+        if (c instanceof Color)
             ((FigText) getPanelTarget()).setTextColor((Color) c);
         getPanelTarget().endTrans();
     }

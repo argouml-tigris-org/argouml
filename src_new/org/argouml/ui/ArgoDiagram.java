@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,7 +36,7 @@ import org.tigris.gef.base.Editor;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * This class represents all Diagrams within ArgoUML. 
+ * This class represents all Diagrams within ArgoUML.
  * It is based upon the GEF Diagram.
  *
  */
@@ -47,12 +47,12 @@ public class ArgoDiagram extends Diagram {
     /**
      * hack to use vetocheck in constructing names
      */
-    private static ArgoDiagram theInstance = new ArgoDiagram(); 
-  
+    private static ArgoDiagram theInstance = new ArgoDiagram();
+
     /**
      * The constructor.
      */
-    public ArgoDiagram() { 
+    public ArgoDiagram() {
         super();
         // really dirty hack to remove unwanted listeners
         getLayer().getGraphModel().removeGraphEventListener(getLayer());
@@ -60,7 +60,7 @@ public class ArgoDiagram extends Diagram {
 
     /**
      * The constructor.
-     * 
+     *
      * @param diagramName the name of the diagram
      */
     public ArgoDiagram(String diagramName) {
@@ -155,7 +155,7 @@ public class ArgoDiagram extends Diagram {
 	super.initialize(owner);
 	ProjectManager.getManager().getCurrentProject().setActiveDiagram(this);
     }
-    
+
     /**
      * This will mark the entire visible area of all Editors to be repaired
      *  from any damage - i.e. repainted.
@@ -188,13 +188,13 @@ public class ArgoDiagram extends Diagram {
         }
         return super.getNodes(c);
     }
-    
+
     /**
      * @see java.lang.Object#toString()
      */
     public String toString() {
         return "Diagram: " + getName();
     }
-    
+
 
 } /* end class ArgoDiagram */

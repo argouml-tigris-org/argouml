@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigForkState.java
-// Classes: FigForkState
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
@@ -38,8 +33,11 @@ import java.util.Iterator;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 
-/** Class to display graphics for a UML ForkState in a diagram. */
-
+/**
+ * Class to display graphics for a UML ForkState in a diagram.
+ *
+ * @author jrobbins
+ */
 public class FigForkState extends FigStateVertex {
 
     ////////////////////////////////////////////////////////////////
@@ -74,7 +72,7 @@ public class FigForkState extends FigStateVertex {
     }
 
     /**
-     * The constructor which links the Fig into the existing UML element 
+     * The constructor which links the Fig into the existing UML element
      * @param gm ignored
      * @param node the UML element
      */
@@ -97,7 +95,7 @@ public class FigForkState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
-    /** Override setBounds to keep shapes looking right 
+    /** Override setBounds to keep shapes looking right
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
     public void setBounds(int x, int y, int w, int h) {
@@ -109,7 +107,7 @@ public class FigForkState extends FigStateVertex {
         getBigPort().setBounds(x, y, w, h);
         head.setBounds(x, y, w, h);
 
-        calcBounds(); 
+        calcBounds();
         updateEdges();
         firePropChange("bounds", oldBounds, getBounds());
     }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,19 +30,19 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
  * The list model for the annotated modelelements of a comment.
- * 
+ *
  * @author mvw@tigris.org
  */
 public class UMLCommentAnnotatedElementListModel
-    extends UMLModelElementListModel2 {    
-    
+    extends UMLModelElementListModel2 {
+
     /**
      * Constructor for UMLCommentAnnotatedElementListModel.
      */
     public UMLCommentAnnotatedElementListModel() {
         super("annotatedElement");
     }
-    
+
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
@@ -51,13 +51,13 @@ public class UMLCommentAnnotatedElementListModel
             setAllElements(ModelFacade.getAnnotatedElements(getTarget()));
         }
     }
-    
+
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
-        return ModelFacade.isAModelElement(element) 
+        return ModelFacade.isAModelElement(element)
         && ModelFacade.getAnnotatedElements(getTarget()).contains(element);
     }
-    
+
 }

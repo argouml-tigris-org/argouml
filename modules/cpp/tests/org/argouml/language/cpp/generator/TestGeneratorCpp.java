@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,21 +36,21 @@ import org.argouml.model.ModelFacade;
  * @see GeneratorCpp
  * @author euluis
  * @since 0.17.2
- */                                
+ */
 public class TestGeneratorCpp extends BaseTestGeneratorCpp {
 
     /** The Logger for this class */
     private static final Logger LOG = Logger.getLogger(TestGeneratorCpp.class);
-    
+
     /**
      * The constructor.
-     * 
+     *
      * @param testName the name of the test
      */
     public TestGeneratorCpp(java.lang.String testName) {
         super(testName);
     }
-    
+
     /**
      * @return the test suite
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,19 +24,19 @@
 
 package org.argouml.application.api;
 
-/**  
- * A module interface which identifies an ArgoUML plug-in used 
+/**
+ * A module interface which identifies an ArgoUML plug-in used
  * as a tab in the about dialog.
  *
- *   @author Andreas Rueckert <mail@andreas-rueckert.de>
- *   @since 0.13.2
+ * @author Andreas Rueckert
+ * @since 0.13.2
  */
 public interface PluggableAboutTab extends Pluggable {
 
 
     // Methods
 
-    /** 
+    /**
      * Returns the about tab panel for the plugin.
      * @return the provided tab panel.
      */

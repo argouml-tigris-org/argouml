@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,10 +41,10 @@ public class PropPanelCallEvent extends PropPanelEvent {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public PropPanelCallEvent() {
-        super("Call event", lookupIcon("CallEvent"), 
+        super("Call event", lookupIcon("CallEvent"),
               ConfigLoader.getTabPropsOrientation());
     }
 
@@ -53,15 +53,15 @@ public class PropPanelCallEvent extends PropPanelEvent {
      */
     public void initialize() {
         super.initialize();
-        
+
         // TODO: make the next list into a scrollbox (issue 2288)
         JList operationList =
 	    new UMLLinkedList(new UMLCallEventOperationListModel());
         addField(Translator.localize("label.operations"),
 		 new JScrollPane(operationList));
-        addButton(new PropPanelButton2(new ActionNewParameter(), 
+        addButton(new PropPanelButton2(new ActionNewParameter(),
                 lookupIcon("Parameter")));
-        addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));
     }
 

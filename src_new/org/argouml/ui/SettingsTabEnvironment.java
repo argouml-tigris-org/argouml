@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -51,7 +51,7 @@ public class SettingsTabEnvironment extends SettingsTabHelper
     implements SettingsTabPanel {
 
     private String userDir;
-    
+
     private JTextField fieldArgoRoot;
     private JTextField fieldArgoHome;
     private JTextField fieldArgoExtDir;
@@ -59,18 +59,18 @@ public class SettingsTabEnvironment extends SettingsTabHelper
     private JTextField fieldUserHome;
     private JTextField fieldUserDir;
     private JTextField fieldStartupDir;
-    
+
     private JButton userDirButton;
 
     /**
      * The constructor.
-     * 
+     *
      */
     public SettingsTabEnvironment() {
         super();
         setLayout(new BorderLayout());
 	JPanel top = new JPanel();
-    	top.setLayout(new GridBagLayout()); 
+    	top.setLayout(new GridBagLayout());
 
 	GridBagConstraints labelConstraints = new GridBagConstraints();
 	labelConstraints.anchor = GridBagConstraints.WEST;

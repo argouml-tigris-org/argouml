@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004, 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -60,13 +60,13 @@ public class GUITestActionGotoDiagram extends TestCase {
             "-command",
             "org.argouml.uml.ui.ActionSaveGraphics=" + OUTPUT_FILE1,
             "-command",
-            "org.argouml.ui.cmd.ActionGotoDiagram=Deployment Diagram 1", 
+            "org.argouml.ui.cmd.ActionGotoDiagram=Deployment Diagram 1",
             "-command",
             "org.argouml.uml.ui.ActionSaveGraphics=" + OUTPUT_FILE2,
         });
         assertTrue(new File(OUTPUT_FILE1).exists());
         assertTrue(new File(OUTPUT_FILE2).exists());
-        
+
         // TODO: We could check that the contents of the files differ.
 
         new File(OUTPUT_FILE1).delete();

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,8 +39,7 @@ import org.argouml.model.ModelFacade;
  *
  * @author Marcus Andersson andersson@users.sourceforge.net
  */
-public class ClassifierEndCodePiece extends NamedCodePiece
-{
+public class ClassifierEndCodePiece extends NamedCodePiece {
     /** The curly bracket at the end. */
     private CodePiece bracket;
 
@@ -55,51 +54,46 @@ public class ClassifierEndCodePiece extends NamedCodePiece
 
     /**
      * @see org.argouml.language.java.generator.CodePiece#getText()
-     * 
+     *
      * Return the string representation for this piece of code.
      */
-    public StringBuffer getText()
-    {
+    public StringBuffer getText() {
 	return bracket.getText();
     }
 
     /**
      * @see org.argouml.language.java.generator.CodePiece#getStartPosition()
-     * 
+     *
      * Return the start position.
      */
-    public int getStartPosition()
-    {
+    public int getStartPosition() {
 	return bracket.getStartPosition();
     }
 
     /**
      * @see org.argouml.language.java.generator.CodePiece#getEndPosition()
-     * 
+     *
      * Return the end position.
      */
-    public int getEndPosition()
-    {
+    public int getEndPosition() {
 	return bracket.getEndPosition();
     }
 
     /**
      * @see org.argouml.language.java.generator.CodePiece#getStartLine()
-     * 
+     *
      * Return the start line
      */
-    public int getStartLine()
-    {
+    public int getStartLine() {
 	return bracket.getStartLine();
     }
 
     /**
      * @see org.argouml.language.java.generator.CodePiece#getEndLine()
-     * 
+     *
      * Return the end line
      */
-    public int getEndLine()
-    {
+    public int getEndLine() {
 	return bracket.getEndLine();
     }
 
@@ -120,7 +114,7 @@ public class ClassifierEndCodePiece extends NamedCodePiece
         Vector newInnerClasses = parseState.getNewInnerClasses();
 
         // Insert new features
-        for (Iterator i = newFeatures.iterator(); i.hasNext(); ) {
+        for (Iterator i = newFeatures.iterator(); i.hasNext();) {
             Object mFeature = /*(MFeature)*/ i.next();
             if (ModelFacade.isAOperation(mFeature)) {
                 CodeGenerator.generateOperation(mFeature,
@@ -133,7 +127,7 @@ public class ClassifierEndCodePiece extends NamedCodePiece
         }
 
         // Insert new inner classes
-        for (Iterator i = newInnerClasses.iterator(); i.hasNext(); ) {
+        for (Iterator i = newInnerClasses.iterator(); i.hasNext();) {
             Object element = /*(MModelElement)*/ i.next();
             if (ModelFacade.isAClass(element)) {
                 CodeGenerator.generateClass(element, reader, writer);
@@ -142,7 +136,7 @@ public class ClassifierEndCodePiece extends NamedCodePiece
             }
         }
 
-	StringBuffer sb = 
+	StringBuffer sb =
 	    GeneratorJava.getInstance()
 	        .appendClassifierEnd(new StringBuffer(2), mClassifier);
 	writer.write (sb.toString());

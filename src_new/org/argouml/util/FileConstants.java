@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,14 +24,14 @@
 
 package org.argouml.util;
 
-/** 
+/**
  * Utility class to store file extensions frequently used across ArgoUML. <p>
- * These extensions are only to be used to distinguish between parts 
- * (i.e. the contents) of a project file, 
- * and NOT for filnamens for loading and saving projects. 
- * Filename extensions are handled by the Persisters themselves. 
+ * These extensions are only to be used to distinguish between parts
+ * (i.e. the contents) of a project file,
+ * and NOT for filnamens for loading and saving projects.
+ * Filename extensions are handled by the Persisters themselves.
  * See AbstractFilePersister.
- * 
+ *
  * @stereotype utility
  */
 public class FileConstants {
@@ -39,12 +39,12 @@ public class FileConstants {
      * The extension for .zargo files is COMPRESSED_FILE_EXT.
      */
     public static final String COMPRESSED_FILE_EXT = ".zargo";
-    
+
     /**
      * The extension for .argo files is UNCOMPRESSED_FILE_EXT.
      */
     public static final String UNCOMPRESSED_FILE_EXT = ".argo";
-    
+
     /**
      * The extension for .argo files is PROJECT_FILE_EXT.
      */

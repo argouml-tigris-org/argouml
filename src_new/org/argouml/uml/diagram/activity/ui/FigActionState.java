@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigActionState.java
-// Classes: FigActionState
-// Original Author: ics 125b silverbullet team
-
 package org.argouml.uml.diagram.activity.ui;
 
 import java.awt.Color;
@@ -44,8 +40,11 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigText;
 
-/** Class to display graphics for a UML ActionState in a diagram. */
-
+/**
+ * Class to display graphics for a UML ActionState in a diagram.
+ *
+ * @author ics 125b silverbullet team
+ */
 public class FigActionState extends FigStateVertex {
 
     ////////////////////////////////////////////////////////////////
@@ -145,7 +144,7 @@ public class FigActionState extends FigStateVertex {
         ((FigRRect) getBigPort()).setCornerRadius(h);
         cover.setCornerRadius(h);
 
-        calcBounds(); 
+        calcBounds();
         updateEdges();
         firePropChange("bounds", oldBounds, getBounds());
     }
@@ -205,20 +204,20 @@ public class FigActionState extends FigStateVertex {
     public int getLineWidth() {
         return cover.getLineWidth();
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    protected void modelChanged(PropertyChangeEvent mee) {        
+    protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
-        if (mee.getSource() == getOwner() 
+        if (mee.getSource() == getOwner()
                 && mee.getPropertyName().equals("entry")) {
             if (mee.getNewValue() != null) {
-                Model.getPump().addModelEventListener(this, 
+                Model.getPump().addModelEventListener(this,
                                             mee.getNewValue(), "script");
             } else
                 if (mee.getOldValue() != null) {
-                    Model.getPump().removeModelEventListener(this, 
+                    Model.getPump().removeModelEventListener(this,
                                             mee.getOldValue(), "script");
                 }
             updateNameText();
@@ -227,11 +226,11 @@ public class FigActionState extends FigStateVertex {
             if (ModelFacade.getEntry(getOwner()) == mee.getSource()) {
                 updateNameText();
                 damage();
-            } 
-        
+            }
+
     }
-    
-    
+
+
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
@@ -239,14 +238,14 @@ public class FigActionState extends FigStateVertex {
         if (getOwner() != null)
             getNameFig().setText(Notation.generate(this, getOwner()));
     }
-    
-    
+
+
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         if (ft == getNameFig() && this.getOwner() != null) {
-            ParserDisplay.SINGLETON.parseActionState(ft.getText(), 
+            ParserDisplay.SINGLETON.parseActionState(ft.getText(),
                     this.getOwner());
         } else
             super.textEdited(ft);

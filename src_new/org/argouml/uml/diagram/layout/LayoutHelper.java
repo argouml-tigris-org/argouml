@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,37 +40,37 @@ public class LayoutHelper {
      * A constant bitmask for a direction.
      */
     public static final int NORTH = 0;
-    
+
     /**
      * A constant bitmask for a direction.
      */
     public static final int NORTHEAST = 1;
-    
+
     /**
      * A constant bitmask for a direction.
      */
     public static final int EAST = 2;
-    
+
     /**
      * A constant bitmask for a direction.
      */
     public static final int SOUTHEAST = 4;
-    
+
     /**
      * A constant bitmask for a direction.
      */
     public static final int SOUTH = 8;
-    
+
     /**
      * A constant bitmask for a direction.
      */
     public static final int SOUTHWEST = 16;
-    
+
     /**
      * A constant bitmask for a direction.
      */
     public static final int WEST = 32;
-    
+
     /**
      * A constant bitmask for a direction.
      */
@@ -81,8 +81,7 @@ public class LayoutHelper {
      * @param direction the direction
      * @return the point on the perimeter
      */
-    public static Point getPointOnPerimeter(Rectangle rect, int direction) 
-    {
+    public static Point getPointOnPerimeter(Rectangle rect, int direction) {
         return getPointOnPerimeter(rect, direction, 0, 0);
     }
 
@@ -93,45 +92,44 @@ public class LayoutHelper {
      * @param yOff the y offset
      * @return the point on the perimeter
      */
-    public static Point getPointOnPerimeter(Rectangle rect, int direction, 
-					    double xOff, double yOff)
-    {
+    public static Point getPointOnPerimeter(Rectangle rect, int direction,
+					    double xOff, double yOff) {
         double x = 0;
         double y = 0;
-        if (direction == NORTH 
-                || direction == NORTHEAST 
-                || direction == NORTHWEST) { 
-            y = rect.getY(); 
+        if (direction == NORTH
+                || direction == NORTHEAST
+                || direction == NORTHWEST) {
+            y = rect.getY();
         }
-        if (direction == SOUTH 
-                || direction == SOUTHWEST 
-                || direction == SOUTHEAST) { 
-            y = rect.getY() + rect.getHeight(); 
+        if (direction == SOUTH
+                || direction == SOUTHWEST
+                || direction == SOUTHEAST) {
+            y = rect.getY() + rect.getHeight();
         }
-        if (direction == EAST 
+        if (direction == EAST
                 || direction == WEST) {
             y = rect.getY() + rect.getHeight() / 2.0;
 	}
-        if (direction == NORTHWEST 
-                || direction == WEST 
-                || direction == SOUTHWEST) { 
-            x = rect.getX(); 
+        if (direction == NORTHWEST
+                || direction == WEST
+                || direction == SOUTHWEST) {
+            x = rect.getX();
         }
-        if (direction == NORTHEAST 
-                || direction == EAST 
-                || direction == SOUTHEAST) { 
-            x = rect.getX() + rect.getWidth(); 
+        if (direction == NORTHEAST
+                || direction == EAST
+                || direction == SOUTHEAST) {
+            x = rect.getX() + rect.getWidth();
         }
         if (direction == NORTH || direction == SOUTH) {
-            x = rect.getX() + rect.getWidth() / 2.0; 
+            x = rect.getX() + rect.getWidth() / 2.0;
 	}
 
         x += xOff;
         y += yOff;
-        return new Point((int) x, (int) y);        
+        return new Point((int) x, (int) y);
     }
 
-    /** 
+    /**
      * Get a routing polygon for a straightline between two points.
      *
      * @param start start of the line
@@ -143,33 +141,32 @@ public class LayoutHelper {
         return getRoutingPolygonStraightLineWithOffset(start, end, 0);
     }
 
-    /** 
+    /**
      * Get a routing polygon with a horizontal offset from the two points.
-     * 
+     *
      * @param start start of the line
      * @param end end of the line
      * @param offset the given offset
      * @return the routing polygon between start and end
      */
-    public static Polygon getRoutingPolygonStraightLineWithOffset(Point start, 
-                                                Point end, int offset) 
-    {
+    public static Polygon getRoutingPolygonStraightLineWithOffset(Point start,
+                                                Point end, int offset) {
         Polygon newPoly = new Polygon();
 
         newPoly.addPoint((int) start.getX(), (int) start.getY());
         if (offset != 0) {
             double newY = 0.0;
             if (offset < 0) {
-                newY = 
+                newY =
                     Math.min(start.getY() + offset, end.getY() + offset);
             }
             if (offset > 0) {
-                newY = 
+                newY =
                     Math.max(start.getY() + offset, end.getY() + offset);
             }
             newPoly.addPoint((int) start.getX(), (int) newY);
             newPoly.addPoint((int) end.getX(), (int) newY);
-            
+
         }
         newPoly.addPoint((int) end.getX(), (int) end.getY());
         return newPoly;

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigInitialState.java
-// Classes: FigInitialState
-// Original Author: abonner@ics.uci.edu
-
 package org.argouml.uml.diagram.state.ui;
 
 import org.argouml.model.ModelFacade;
@@ -42,8 +38,10 @@ import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
 
-/** 
- * Class to display graphics for a UML Initial State in a diagram. 
+/**
+ * Class to display graphics for a UML Initial State in a diagram.
+ *
+ * @author abonner
  */
 public class FigInitialState extends FigStateVertex {
 
@@ -68,24 +66,24 @@ public class FigInitialState extends FigStateVertex {
      * Main constructor
      */
     public FigInitialState() {
-        FigCircle bigPort = 
+        FigCircle bigPort =
             new FigCircle(X, Y, WIDTH, HEIGHT, Color.cyan, Color.cyan);
         head = new FigCircle(X, Y, WIDTH, HEIGHT, Color.black, Color.black);
 
         // add Figs to the FigNode in back-to-front order
         addFig(bigPort);
         addFig(head);
-        
+
         setBigPort(bigPort);
-        
+
         setBlinkPorts(false); //make port invisble unless mouse enters
         Rectangle r = getBounds();
     }
 
     /**
      * Constructor which hooks the Fig into an existing UML element
-     * 
-     * @param gm ignored 
+     *
+     * @param gm ignored
      * @param node the UML element
      */
     public FigInitialState(GraphModel gm, Object node) {
@@ -138,7 +136,7 @@ public class FigInitialState extends FigStateVertex {
 
     /**
      * Initial states are fixed size.
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#isResizable()
      */
     public boolean isResizable() {
@@ -211,7 +209,7 @@ public class FigInitialState extends FigStateVertex {
 
     /**
      * Block keypresses. There is nothing to enter on the diagram.
-     * 
+     *
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent ke) {

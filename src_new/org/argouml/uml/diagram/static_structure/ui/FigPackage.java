@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -67,7 +67,7 @@ public class FigPackage extends FigNodeModelElement {
     private int indentX = 50;
     //private int indentY = 20;
     private int textH = 20;
-    
+
     ////////////////////////////////////////////////////////////////
     // instance variables
 
@@ -484,7 +484,7 @@ public class FigPackage extends FigNodeModelElement {
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
         if (!showStereotype) {
             showMenu.add(new UMLAction(
-                    Translator.localize("menu.popup.show.show-stereotype"), 
+                    Translator.localize("menu.popup.show.show-stereotype"),
                     UMLAction.NO_ICON)
 	    {
 		/**
@@ -499,7 +499,7 @@ public class FigPackage extends FigNodeModelElement {
 	    });
         } else {
             showMenu.add(new UMLAction(
-                    Translator.localize("menu.popup.show.hide-stereotype"), 
+                    Translator.localize("menu.popup.show.hide-stereotype"),
                     UMLAction.NO_ICON)
 	    {
 		/**
@@ -519,7 +519,7 @@ public class FigPackage extends FigNodeModelElement {
         // Modifier ...
         popUpActions.insertElementAt(buildModifierPopUp(ABSTRACT | LEAF | ROOT),
                 popUpActions.size() - POPUP_ADD_OFFSET);
-        
+
         // Visibility ...
         popUpActions.insertElementAt(buildVisibilityPopUp(),
                 popUpActions.size() - POPUP_ADD_OFFSET);

@@ -44,7 +44,7 @@ import org.argouml.model.UmlFactory;
  * is initialized via the build methods on the uml factories. If there is no
  * no-parameter build method, the create method corresponding to the
  * modelelement is used.
- * 
+ *
  * @see org.argouml.model.uml.CoreFactoryImpl
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -74,7 +74,7 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
 
     /**
      * Constructor for CmdCreateNode.
-     * 
+     *
      * @param args a hastable of arguments
      * @param resource for localizing the name
      * @param name the to be localized tooltip name
@@ -86,7 +86,7 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
 
     /**
      * Constructor for CmdCreateNode.
-     * 
+     *
      * @param args a hastable of arguments
      * @param name the to be localized name of the command = tooltip name
      */
@@ -97,8 +97,8 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
 
     /**
      * Constructor for CmdCreateNode.
-     * 
-     * @param nodeClass the class for which to create a node, and which 
+     *
+     * @param nodeClass the class for which to create a node, and which
      *                  to create itself
      * @param resource for localizing the name
      * @param name the tooltip name
@@ -110,8 +110,8 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
 
     /**
      * Constructor for CmdCreateNode.
-     * 
-     * @param nodeClass the class for which to create a node, and which 
+     *
+     * @param nodeClass the class for which to create a node, and which
      *                  to create itself
      * @param name the tooltip name
      */
@@ -122,10 +122,10 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
 
     /**
      * Constructor for CmdCreateNode.
-     * 
-     * @param nodeClass the class for which to create a node, and which 
+     *
+     * @param nodeClass the class for which to create a node, and which
      *                  to create itself
-     * @param sticky the global sticky mode boolean allows the user 
+     * @param sticky the global sticky mode boolean allows the user
      *               to place several nodes rapidly (in succession)
      * @param resource for localizing the name
      * @param name the tooltip name
@@ -138,10 +138,10 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
 
     /**
      * Constructor for CmdCreateNode.
-     * 
+     *
      * @param nodeClass the class for which to create a node, and which
      *                  to create itself
-     * @param sticky the global sticky mode boolean allows the user 
+     * @param sticky the global sticky mode boolean allows the user
      *               to place several nodes rapidly (in succession)
      * @param name the tooltip name
      */
@@ -156,10 +156,10 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      * cache, so that subsequent lookups do not have to iterate through all
      * methods again. If no match is found it will delegate to
      * <code>super.makeNode()</code>.
-     * 
+     *
      * @return an object which represents in most cases a particular UML
      *         Element.
-     * 
+     *
      * @see org.tigris.gef.graph.GraphFactory#makeNode()
      * @see org.tigris.gef.base.CmdCreateNode#makeNode()
      */
@@ -229,7 +229,7 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
 
     /**
      * returns the name of the uml modelelement without impl, M or the fullname
-     * 
+     *
      * @return String
      */
     private String getCreateClassName() {

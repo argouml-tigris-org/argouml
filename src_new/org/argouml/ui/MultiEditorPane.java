@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -53,7 +53,7 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.presentation.Fig;
 
-/** 
+/**
  * The upper right pane in the ArgoUML user interface.  It may have several
  * tabs with different kinds of "major" editors that allow the user to
  * edit whatever is selected in the NavigatorPane.
@@ -72,7 +72,7 @@ public class MultiEditorPane
     private Object target;
     private JTabbedPane tabs = new JTabbedPane(JTabbedPane.BOTTOM);
     private Editor ed;
-    
+
     private Vector tabPanels = new Vector();
     private Component lastTab;
 
@@ -112,7 +112,7 @@ public class MultiEditorPane
         tabs.addMouseListener(this);
         setTarget(null);
     }
-    
+
     /**
      * @see java.awt.Component#getPreferredSize()
      */
@@ -142,9 +142,9 @@ public class MultiEditorPane
                 tabs.setSelectedComponent(tab);
                 break;
             }
-        }       
+        }
     }
-    
+
     /**
      * Enables the tabs on the MultiEditorPane depending on the result of its
      * shouldBeEnabled method.
@@ -157,7 +157,7 @@ public class MultiEditorPane
             if (tab instanceof TabTarget) {
                 TabTarget targetTab = (TabTarget) tab;
                 boolean shouldBeEnabled = targetTab.shouldBeEnabled(t);
-                tabs.setEnabledAt(i, shouldBeEnabled);                
+                tabs.setEnabledAt(i, shouldBeEnabled);
             }
         }
     }
@@ -211,7 +211,7 @@ public class MultiEditorPane
 
 
     /**
-     * Called when the user selects a tab, by clicking or otherwise. 
+     * Called when the user selects a tab, by clicking or otherwise.
      *
      * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
      */
@@ -309,7 +309,7 @@ public class MultiEditorPane
     }
 
     /**
-     * Removes all figs from all diagrams for some object obj. Does not remove 
+     * Removes all figs from all diagrams for some object obj. Does not remove
      * the owner of the objects (does not do a call to dispose).<p>
      *
      * TODO: move this to ProjectManager for example, in any case: out

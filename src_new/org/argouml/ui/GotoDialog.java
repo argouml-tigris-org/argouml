@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,36 +37,36 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 
 /**
- * The dialog that allows the user to go to any diagram in the project 
+ * The dialog that allows the user to go to any diagram in the project
  * by doubleclicking on it.<p>
- * 
- * This dialog is not modal, and can stay open while the user 
- * is working on the model. It is even possible to open multiple 
+ *
+ * This dialog is not modal, and can stay open while the user
+ * is working on the model. It is even possible to open multiple
  * of these dialogs, although the purpose of such useraction eludes me.<p>
- * 
+ *
  * TODO: This dialog should have multiple tabs named "Help", "Diagram",
- * "Classifier", "StateVertex", etc. Which would allow the user to go to other 
+ * "Classifier", "StateVertex", etc. Which would allow the user to go to other
  * things than diagrams.
- * 
+ *
  * @author MVW
  *
  */
 public class GotoDialog extends ArgoDialog {
-    
+
     private final TabResults allDiagrams = new TabResults(false); // no related
-    
+
     /**
      * The constructor.
      */
     public GotoDialog() {
         super(ProjectBrowser.getInstance(), // the parent frame
-                Translator.localize("dialog.gotodiagram.title"), 
+                Translator.localize("dialog.gotodiagram.title"),
                 ArgoDialog.OK_CANCEL_OPTION, false);
-        
+
         Project p = ProjectManager.getManager().getCurrentProject();
-         
+
         allDiagrams.setResults(p.getDiagrams(), p.getDiagrams());
-        
+
         // TabResults has really large preferred height, so divide in
         // half to reduce size of dialog which will be sized based on
         // this preferred size.
@@ -74,7 +74,7 @@ public class GotoDialog extends ArgoDialog {
                 allDiagrams.getPreferredSize().width,
                 allDiagrams.getPreferredSize().height / 2));
         allDiagrams.selectResult(0);
-        
+
         JPanel mainPanel = new JPanel(new BorderLayout());
         //JTabbedPane tabs = new JTabbedPane();
         //mainPanel.add(tabs, BorderLayout.CENTER);

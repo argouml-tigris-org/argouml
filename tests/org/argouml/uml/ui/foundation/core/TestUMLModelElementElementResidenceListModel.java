@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2004 The Regents of the University of California. All
+// Copyright (c) 2002-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,7 +40,7 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
 
     private MModelElement elem;
     private UMLModelElementElementResidenceListModel list;
-    
+
     /**
      * Constructor for TestUMLModelElementElementResidenceListModel.
      * @param arg0 is the name of the test case.
@@ -48,19 +48,19 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
     public TestUMLModelElementElementResidenceListModel(String arg0) {
         super(arg0);
     }
-    
+
     /**
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        elem = new MClassImpl();     
+        elem = new MClassImpl();
         list = new UMLModelElementElementResidenceListModel();
         elem.addMElementListener(list);
         list.setTarget(elem);
     }
-    
+
     /**
      * @see junit.framework.TestCase#tearDown()
      */
@@ -70,7 +70,7 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
         elem = null;
         list = null;
     }
-    
+
     /**
      * Test addElementResidence().
      */
@@ -80,7 +80,7 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
         assertTrue(list.getSize() == 1);
         assertTrue(list.getElementAt(0) == res);
     }
-    
+
     /**
      * Test removeElementResidence().
      */
@@ -92,7 +92,7 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
         elem.removeElementResidence(res);
         assertTrue(list.getSize() == 0);
     }
-    
+
     /**
      * Test getting an element when there is none.
      */
@@ -105,7 +105,7 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
         assertTrue(list.size() == 0);
         assertTrue(elem.getElementResidences().isEmpty());
     }
-        
+
 
 
 }

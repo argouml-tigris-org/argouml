@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -82,7 +82,7 @@ public class TodoTokenTable extends XMLTokenTableBase {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public TodoTokenTable() {
 	super(32);
@@ -91,8 +91,7 @@ public class TodoTokenTable extends XMLTokenTableBase {
     /**
      * @see org.argouml.persistence.XMLTokenTableBase#setupTokens()
      */
-    protected void setupTokens()
-    {
+    protected void setupTokens() {
 	addToken(STRING_TO_DO, new Integer(TOKEN_TO_DO));
 	addToken(STRING_TO_DO_LIST, new Integer(TOKEN_TO_DO_LIST));
 	addToken(STRING_TO_DO_ITEM, new Integer(TOKEN_TO_DO_ITEM));

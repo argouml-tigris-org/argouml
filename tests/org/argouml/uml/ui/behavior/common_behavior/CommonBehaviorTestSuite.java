@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2003 The Regents of the University of California. All
+// Copyright (c) 2002-2003, 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,11 +33,11 @@ import junit.framework.TestSuite;
 public class CommonBehaviorTestSuite {
 
 	/** Test suite for this package
-	 * 
+	 *
 	 * @return the junit test suite
 	 */
     public static Test suite() {
-        TestSuite suite = new TestSuite("Tests for " 
+        TestSuite suite = new TestSuite("Tests for "
                 + CommonBehaviorTestSuite.class.getPackage().getName());
         suite.addTestSuite(TestUMLReceptionSignalComboBoxModel.class);
         return suite;

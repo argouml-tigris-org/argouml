@@ -36,7 +36,7 @@ import org.argouml.ui.ProjectBrowser;
 
 /**
  * Action that reverts to the previously saved version of the project.
- * 
+ *
  * @see ActionOpenProject
  */
 public class ActionRevertToSaved extends ActionFileOperations {
@@ -54,7 +54,7 @@ public class ActionRevertToSaved extends ActionFileOperations {
     ////////////////////////////////////////////////////////////////
     // main methods
 
-    /** 
+    /**
      * Performs the action.
      *
      * @param e an event
@@ -62,17 +62,17 @@ public class ActionRevertToSaved extends ActionFileOperations {
     public void actionPerformed(ActionEvent e) {
         ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
-        
+
         if (p == null || !ProjectManager.getManager().needsSave()) {
             return;
         }
-        
+
         String message =
             MessageFormat.format(
                     Translator.localize(
                        "optionpane.revert-to-saved-confirm"),
 		    new Object[] {
-			p.getName()
+			p.getName(),
 		    });
 
         int response =
@@ -83,7 +83,7 @@ public class ActionRevertToSaved extends ActionFileOperations {
                       "optionpane.revert-to-saved-confirm-title"),
                   JOptionPane.YES_NO_OPTION);
 
-        if (response == JOptionPane.YES_OPTION) {        
+        if (response == JOptionPane.YES_OPTION) {
             loadProject(p.getURL());
         }
     }

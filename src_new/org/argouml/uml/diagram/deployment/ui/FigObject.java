@@ -126,7 +126,7 @@ public class FigObject extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) { cover.setFillColor(col); }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
@@ -136,7 +136,7 @@ public class FigObject extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) { cover.setFilled(f); }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */

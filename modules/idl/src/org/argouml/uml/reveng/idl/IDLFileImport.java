@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004, 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,7 +44,7 @@ import org.argouml.util.SuffixFilter;
 
 /**
  * This is the main class for the IDL import.
- * 
+ *
  * @author Andreas Rueckert a_rueckert@gmx.net
  */
 public class IDLFileImport extends FileImportSupport {
@@ -64,7 +64,7 @@ public class IDLFileImport extends FileImportSupport {
 
     /**
      * An interface to the current diagram.
-     */ 
+     */
     private DiagramInterface diagram;
 
     /** The files that needs a second RE pass. */
@@ -77,7 +77,7 @@ public class IDLFileImport extends FileImportSupport {
 
     /**
      * Return the singleton instance of the Import class.
-     * 
+     *
      * @return The only instance of this class.
      */
     public static IDLFileImport getInstance() {
@@ -86,8 +86,8 @@ public class IDLFileImport extends FileImportSupport {
 
     /**
      * @see org.argouml.application.api.PluggableImport#parseFile(
-     *         org.argouml.kernel.Project, java.lang.Object, 
-     *         org.argouml.uml.reveng.DiagramInterface, 
+     *         org.argouml.kernel.Project, java.lang.Object,
+     *         org.argouml.uml.reveng.DiagramInterface,
      *         org.argouml.uml.reveng.Import)
      */
     public void parseFile(
@@ -106,7 +106,7 @@ public class IDLFileImport extends FileImportSupport {
 
     /**
      * Start the import process for a project and a file.
-     * 
+     *
      * @param p The project, where the import results are added.
      * @param f The file to start with.
      * @throws Exception if something goes wrong.
@@ -156,7 +156,7 @@ public class IDLFileImport extends FileImportSupport {
 
     /**
      * Count the files to process in a directory.
-     * 
+     *
      * @param f  The directory as a File.
      * @return The number of files in that directory.
      * @throws Exception if something goes wrong.
@@ -179,19 +179,19 @@ public class IDLFileImport extends FileImportSupport {
     /**
      * The main method for all parsing actions. It calls the actual parser
      * methods depending on the type of the file.
-     * 
+     *
      * @param f The file or directory, we want to parse.
      * @param subdirectories If <tt>true</tt> we process subdirectories.
      * @throws Exception Parser exceptions.
      */
     public void processFile(File f, boolean subdirectories) throws Exception {
-		
+
 	if (f.isDirectory()
 	    && subdirectories) { // If f is a directory and the subdirectory
 	    // flag is set,
 	    processDirectory(f); // import all the files in this directory
 	} else {
-			
+
 	    if (f.getName().endsWith(".idl")) {
 		String fileName = f.getName();
 		try {
@@ -201,7 +201,7 @@ public class IDLFileImport extends FileImportSupport {
 		    e1.printStackTrace();
 		    secondPassFiles.add(f);
 		}
-				
+
 	    }
 	}
     }
@@ -209,9 +209,9 @@ public class IDLFileImport extends FileImportSupport {
     /**
      * This method imports an entire directory. It calls the parser for files
      * and creates packages for the directories.
-     * 
+     *
      * @param f The directory.
-     * 
+     *
      * @throws Exception Parser exceptions.
      */
     protected void processDirectory(File f) throws Exception {
@@ -227,7 +227,7 @@ public class IDLFileImport extends FileImportSupport {
 
     /**
      * This method parses 1 Java classfile.
-     * 
+     *
      * @param is The InputStream for the file to parse.
      * @param fileName The name of the parsed file.
      * @throws Exception Parser exception.
@@ -239,7 +239,7 @@ public class IDLFileImport extends FileImportSupport {
 	    fileName = fileName.substring(lastSlash + 1);
 	}
 
-	IDLParser parser = 
+	IDLParser parser =
 	    new IDLParser(new IDLLexer(new BufferedInputStream(is)));
 
 	// Create a modeller for the parser
@@ -259,7 +259,7 @@ public class IDLFileImport extends FileImportSupport {
      * this point (Andreas Rueckert). Calling
      * Project.setNeedsSave(true) doesn't work here, because Project.postLoad()
      * is called after the import and it sets the _needsSave flag to false.
-     * 
+     *
      * @return true, if any diagrams where modified and the project should be
      *         saved before exit.
      */
@@ -296,7 +296,7 @@ public class IDLFileImport extends FileImportSupport {
 
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleName()
-     * 
+     *
      * Display name of the module.
      */
     public String getModuleName() {
@@ -306,7 +306,7 @@ public class IDLFileImport extends FileImportSupport {
     /**
      * Provides an array of suffixe filters for the module. Must be implemented
      * in child class.
-     * 
+     *
      * @return SuffixFilter[] suffixes for processing
      */
     public SuffixFilter[] getSuffixFilters() {
