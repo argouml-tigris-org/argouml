@@ -26,7 +26,6 @@ package org.argouml.xml.argo;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.HashMap;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -50,25 +49,6 @@ public class ModelMemberFilePersister extends MemberFilePersister {
     private static final Logger LOG =
         Logger.getLogger(ModelMemberFilePersister.class);
     
-    private InputStream inputStream;
-    
-    private Project project;
-
-    private static final String ROOT_TAG = "XMI";
-    
-    /**
-     * Construct a new ModelMemberFilePersister.
-     * @param url the url from which to load the model.
-     * @param theProject the project to populate.
-     * @throws SAXException on any parsing error.
-     */
-    public ModelMemberFilePersister(Project theProject, 
-                                    InputStream inputStream) {
-        
-        this.project = theProject;
-        this.inputStream = inputStream;
-    }
-    
     /**
      * Loads a model (XMI only) from an input source. BE ADVISED this
      * method has a side effect. It sets _UUIDREFS to the model.<p>
@@ -77,12 +57,11 @@ public class ModelMemberFilePersister extends MemberFilePersister {
      * getLastLoadStatus() field. This needs to be examined by the
      * calling function.<p>
      *
-     * @throws OpenException if the parser template is syntactically
-     * incorrect. 
-     *
-     * @see org.argouml.xml.argo.MemberFilePersister#load()
+     * @see org.argouml.xml.argo.MemberFilePersister#load(org.argouml.kernel.Project,
+     * java.io.InputStream)
      */
-    public void load() throws OpenException {
+    public void load(Project project, InputStream inputStream)
+        throws OpenException {
         
         InputSource source = new InputSource(inputStream);
         Object mmodel = null;
@@ -133,7 +112,7 @@ public class ModelMemberFilePersister extends MemberFilePersister {
     /**
      * @see org.argouml.xml.argo.MemberFilePersister#getTag()
      */
-    public String getTag() {
-        return ROOT_TAG;
+    public String getMainTag() {
+        return "XMI";
     }
 }

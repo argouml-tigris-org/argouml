@@ -26,7 +26,6 @@ package org.argouml.xml.argo;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -49,7 +48,6 @@ public class XmlInputStream extends BufferedInputStream {
     private boolean inTag;
     private StringBuffer currentTag = new StringBuffer();
     private boolean endStream;
-    private boolean firstReadAfterReopen;
     private String tagName;
     private String endTagName;
     private Map attributes;
@@ -142,12 +140,33 @@ public class XmlInputStream extends BufferedInputStream {
      * Reopen a stream that has already reached the end
      * of an XML fragment.
      */
-    public void reopen() {
+    public void reopen(
+                String theTag,
+                Map attribs,
+                boolean child) {
         endStream = false;
         xmlStarted = false;
         inTag = false;
+        this.tagName = theTag;
+        this.endTagName = '/' + theTag;
+        this.attributes = attribs;
+        this.childOnly = child;
     }
-    
+
+    /**
+     * Reopen a stream that has already reached the end
+     * of an XML fragment.
+     */
+    public void reopen(String theTag) {
+        endStream = false;
+        xmlStarted = false;
+        inTag = false;
+        this.tagName = theTag;
+        this.endTagName = '/' + theTag;
+        this.attributes = null;
+        this.childOnly = false;
+    }
+
     /**
      * @see java.io.InputStream#read()
      */
@@ -178,60 +197,58 @@ public class XmlInputStream extends BufferedInputStream {
         if (endStream) {
             return -1;
         }
-        int read = super.read(b, off, len);
-        if (read == -1) {
-            return -1;
+
+        int readCount;
+        for (readCount = 0; readCount < len; ++readCount) {
+            int read = read();
+            if (read == -1) break;
+            b[readCount + off] = (byte) read;
         }
-        for (int i = 0; i < read; ++i) {
-            if (endStream) {
-                copyBuffer(b, i + off);
-                b[i + off] = -1;
-                read = i;
-                return read;
-            } else {
-                endStream = isLastTag(b[i + off]);
-            }
-        }
-        return read;
-    }
-    
-    
-    
-    /**
-     * @see java.io.InputStream#read(byte[])
-     */
-    public int read(byte[] b) throws IOException {
         
-        if (!xmlStarted) {
-            skipToTag();
-            xmlStarted = true;
-        }
-        if (endStream) {
-            b[0] = -1;
+        if (readCount > 0) {
+            return readCount;
+        } else {
             return -1;
         }
-        int read = super.read(b);
-        if (read == -1) {
-            b[0] = -1;
-            return -1;
-        }
-        for (int i = 0; i < read; ++i) {
-            if (endStream) {
-                read = i;
-                b[i] = -1;
-                copyBuffer(b, i);
-                if (i == 0) {
-                    return -1;
-                } else {
-                    return i;
-                }
-            } else {
-                endStream = isLastTag(b[i]);
-            }
-        }
-        return read;
     }
     
+    
+    
+//    /**
+//     * @see java.io.InputStream#read(byte[])
+//     */
+//    public int read(byte[] b) throws IOException {
+//        
+//        if (!xmlStarted) {
+//            skipToTag();
+//            xmlStarted = true;
+//        }
+//        if (endStream) {
+//            b[0] = -1;
+//            return -1;
+//        }
+//        int read = super.read(b);
+//        if (read == -1) {
+//            b[0] = -1;
+//            return -1;
+//        }
+//        for (int i = 0; i < read; ++i) {
+//            if (endStream) {
+//                read = i;
+//                b[i] = -1;
+//                copyBuffer(b, i);
+//                if (i == 0) {
+//                    return -1;
+//                } else {
+//                    return i;
+//                }
+//            } else {
+//                endStream = isLastTag(b[i]);
+//            }
+//        }
+//        return read;
+//    }
+//    
     /**
      * Determines if the character is the last character of the last tag of
      * interest.
@@ -256,13 +273,6 @@ public class XmlInputStream extends BufferedInputStream {
         return false;
     }
 
-    private void copyBuffer(byte b[], int offset) {
-        buffer = new byte[b.length - offset];
-        for (int i = 0; i < b.length - offset; ++i) {
-            buffer[i] = b[i + offset];
-        }
-    }
-    
     /**
      * Keep on reading an input stream until a specific
      * sequence of characters has ben read.

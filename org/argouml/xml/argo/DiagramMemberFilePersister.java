@@ -26,14 +26,12 @@ package org.argouml.xml.argo;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.OpenException;
 import org.argouml.kernel.Project;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.xml.pgml.PGMLParser;
-import org.xml.sax.SAXException;
 
 /**
  * The file persister for the diagram members.
@@ -45,31 +43,13 @@ public class DiagramMemberFilePersister extends MemberFilePersister {
     private static final Logger LOG =
         Logger.getLogger(ModelMemberFilePersister.class);
     
-    private InputStream inputStream;
-    
-    private Project project;
-    private Map attributes;
-    
-    private static final String ROOT_TAG = "pgml";
-    
     /**
-     * The constructor.
-     * 
-     * @param theUrl the location where the diagram members 
-     *               are stored persistently
-     * @param theProject the project to persist
-     * @throws SAXException when SAX finds a problem
+     * @see org.argouml.xml.argo.MemberFilePersister#load(org.argouml.kernel.Project,
+     * java.io.InputStream)
      */
-    public DiagramMemberFilePersister(Project theProject,
-                                      InputStream inputStream) {
-        this.project = theProject;
-        this.inputStream = inputStream;
-    }
+    public void load(Project project, InputStream inputStream)
+        throws OpenException {
         
-    /**
-     * @see org.argouml.xml.argo.MemberFilePersister#load(java.util.Map)
-     */
-    public void load() throws OpenException {
         try {
             PGMLParser parser = new PGMLParser();
             parser.setOwnerRegistry(project.getUUIDRefs());
@@ -92,7 +72,7 @@ public class DiagramMemberFilePersister extends MemberFilePersister {
     /**
      * @see org.argouml.xml.argo.MemberFilePersister#getTag()
      */
-    public String getTag() {
-        return ROOT_TAG;
+    public String getMainTag() {
+        return "pgml";
     }
 }

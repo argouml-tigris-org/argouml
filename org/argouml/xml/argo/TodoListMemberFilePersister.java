@@ -26,11 +26,9 @@ package org.argouml.xml.argo;
 
 import java.io.InputStream;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.OpenException;
 import org.argouml.kernel.Project;
 import org.argouml.xml.todo.TodoParser;
-import org.xml.sax.SAXException;
 
 /**
  * The file persister for the Todo members.
@@ -38,33 +36,14 @@ import org.xml.sax.SAXException;
  */
 public class TodoListMemberFilePersister extends MemberFilePersister {
     
-    private InputStream inputStream;
-
-    private static final Logger LOG =
-        Logger.getLogger(TodoListMemberFilePersister.class);
-    
-    private static final String ROOT_TAG = "todo";
-    
-    /**
-     * The constructor.
-     * 
-     * @param theUrl the location where the diagram members 
-     *               are stored persistently
-     * @param theProject the project to persist
-     * @throws SAXException when SAX finds a problem
-     */
-    public TodoListMemberFilePersister(Project theProject,
-                                       InputStream inputStream) {
-        this.inputStream = inputStream;
-    }
-    
     /**
      * Load the todo member.
-     * Throws a SAXException on any parsing error.
-     *
-     * @see org.argouml.xml.argo.MemberFilePersister#load(java.util.Map)
+     * @see org.argouml.xml.argo.MemberFilePersister#load(org.argouml.kernel.Project,
+     * java.io.InputStream)
      */
-    public void load() throws OpenException {
+    public void load(Project project, InputStream inputStream)
+        throws OpenException {
+        
         TodoParser parser = new TodoParser();
         parser.readTodoList(inputStream, true);
     }
@@ -72,7 +51,7 @@ public class TodoListMemberFilePersister extends MemberFilePersister {
     /**
      * @see org.argouml.xml.argo.MemberFilePersister#getTag()
      */
-    public final String getTag() {
-        return ROOT_TAG;
+    public final String getMainTag() {
+        return "todo";
     }
 }
