@@ -59,6 +59,7 @@ public class PropPanelInterface extends PropPanelClassifier {
     modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.root-uc"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
     */
     addField(Argo.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
+    addField(Argo.localize("UMLMenu", "label.namespace-visibility"), getNamespaceVisibilityPanel());
     
     add(LabelledLayout.getSeperator());
     

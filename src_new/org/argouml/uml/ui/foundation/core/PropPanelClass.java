@@ -69,7 +69,7 @@ public class PropPanelClass extends PropPanelClassifier {
     addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
     _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.active-uc"),this,new UMLReflectionBooleanProperty("isActive",mclass,"isActive","setActive")));
     addField(Argo.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
-    // addField(Argo.localize("UMLMenu", "label.namespace-visibility"), namespaceVisibilitypanel);
+    addField(Argo.localize("UMLMenu", "label.namespace-visibility"), getNamespaceVisibilityPanel());
     
     add(LabelledLayout.getSeperator());
     
