@@ -916,10 +916,21 @@ public class Project implements java.io.Serializable, TargetListener {
     // trash related methods
 
     /**
-     * Moves some object to trash.
-     *
-     * TODO: This mechanism must be rethought since it only deletes an
-     * object completely from the project
+     * Moves some object to trash, i.e. deletes it completely with all
+     * dependent structures. <p>
+     * 
+     * Deleting an object involves: <pre>
+     * - Removing Target history
+     * - Deleting all Fig representations for the object
+     * - Deleting the UML element
+     * - Deleting all dependent UML modelelements
+     * - Deleting CommentEdges (which are not UML elements)
+     * - Move to trash for enclosed objects, i.e. graphically drawn on top of
+     * - Move to trash subdiagrams for the object
+     * - Saveguard that there is always at least 1 diagram left
+     * - Trigger the explorer when a diagram is deleted
+     * - Set the needsSave (dirty) flag of the projectmanager
+     * </pre>
      *
      * @param obj The object to be deleted
      * @see org.argouml.kernel.Project#trashInternal(Object)
@@ -949,7 +960,6 @@ public class Project implements java.io.Serializable, TargetListener {
             removeAllFigs(allFigs);
 
             Model.getUmlFactory().delete(obj);
-
 
             if (obj instanceof ProjectMember
                     && members.contains(obj)) {
@@ -1021,16 +1031,6 @@ public class Project implements java.io.Serializable, TargetListener {
             // This should prevent the removeFromDiagram to update the model:
             obj.setVisible(false); 
             obj.removeFromDiagram();
-        }
-    }
-    
-    /**
-     * @param obj the object to be moved from the trash
-     * TODO: Is "move" remove or restore?
-     */
-    public void moveFromTrash(Object obj) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("TODO: not restoring " + obj);
         }
     }
 
