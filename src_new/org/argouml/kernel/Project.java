@@ -1152,8 +1152,7 @@ public class Project implements java.io.Serializable, TargetListener {
             // if the statemachine has already been deleted,
             // and is now null,
             // don't attempt to delete it!
-            if (ModelFacade.getTop(ModelFacade.getStateMachine(statediagram))
-		!= null) {
+            if (statediagram.getStateMachine() != null) {
                 this.moveToTrash(statediagram.getStateMachine());
             }
         }
