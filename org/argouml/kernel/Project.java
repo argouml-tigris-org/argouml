@@ -853,7 +853,7 @@ public class Project implements java.io.Serializable, TargetListener {
     // event handling
 
     /**
-     * @return
+     * @return the VetoableChangeSupport
      */
     public VetoableChangeSupport getVetoSupport() {
         if (vetoSupport == null) {
@@ -862,6 +862,9 @@ public class Project implements java.io.Serializable, TargetListener {
         return vetoSupport;
     }
 
+    /**
+     * This is executed before a save.
+     */
     public void preSave() {
         for (int i = 0; i < diagrams.size(); i++) {
             ((Diagram) diagrams.elementAt(i)).preSave();
@@ -869,6 +872,9 @@ public class Project implements java.io.Serializable, TargetListener {
         // TODO: is preSave needed for models?
     }
 
+    /**
+     * This is execcuted after a save.
+     */
     public void postSave() {
         for (int i = 0; i < diagrams.size(); i++) {
             ((Diagram) diagrams.elementAt(i)).postSave();
@@ -877,6 +883,9 @@ public class Project implements java.io.Serializable, TargetListener {
         setNeedsSave(false);
     }
 
+    /**
+     * This is executed after a load.
+     */
     protected void postLoad() {
         for (int i = 0; i < diagrams.size(); i++) {
             ((Diagram) diagrams.elementAt(i)).postLoad();
