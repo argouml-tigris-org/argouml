@@ -356,32 +356,32 @@ rowsep="1"
 ></chapter
 ><chapter
 ><title
->State Diagrams</title
+>Statechart Diagrams</title
 ><qandaset
 ><qandadiv
 ><title
->State Diagrams: Contribute.</title
+>Statechart Diagrams: Contribute.</title
 ><qandadiv
 ><title
->State Diagrams</title
+>Statechart Diagrams</title
 ><qandaentry
 ><question
 ><para
->How do I create a state diagram?</para
+>How do I create a statechart diagram?</para
 ></question
 ><answer
 ><para
->Select a class, then you can create a state diagram. The same applies for activity diagrams.</para
+>Select a class, then you can create a statechart diagram. The same applies for activity diagrams.</para
 ></answer
 ></qandaentry
 ><qandaentry
 ><question
 ><para
->I am trying to use Argo to edit a state machine diagram for a model. But when I edit a composite state, I don&#39;t know how to provide do and event for a composite state. Can you help me?</para
+>I am trying to use Argo to edit a state machine diagram for a model. But when I edit a composite state, I don&#39;t know how to provide an event for a composite state. Can you help me?</para
 ></question
 ><answer
 ><para
->Select a class, then you can create a state diagram.</para
+>Select a class, then you can create a statechart diagram.</para
 ></answer
 ></qandaentry
 ></qandadiv
@@ -405,7 +405,7 @@ rowsep="1"
 ></question
 ><answer
 ><para
->Select a use case or class, then you can create an activity diagram. Same as for a state diagram.</para
+>Select a use case or class, then you can create an activity diagram. Same as for a statechart diagram.</para
 ><para
 >Enabling an activity diagram that is connected to an actor has been requested as a feature. As well swim lanes have been requested.</para
 ></answer
