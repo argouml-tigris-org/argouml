@@ -44,6 +44,9 @@ public class ActionExit extends UMLAction
     ////////////////////////////////////////////////////////////////
     // static variables
   
+    /**
+     * The singleton.
+     */
     public static ActionExit SINGLETON = new ActionExit();
  
     /** remember if this form is already active, so that it does
@@ -54,6 +57,9 @@ public class ActionExit extends UMLAction
     ////////////////////////////////////////////////////////////////
     // constructors
   
+    /**
+     * The constructor.
+     */
     public ActionExit() {
 	super ("action.exit", NO_ICON);
 	active = false;
@@ -62,6 +68,9 @@ public class ActionExit extends UMLAction
     ////////////////////////////////////////////////////////////////
     // main methods
   
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed (ActionEvent ae) {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project p = ProjectManager.getManager().getCurrentProject();
@@ -70,8 +79,8 @@ public class ActionExit extends UMLAction
 	    active = true;
 	    String t = 
 		MessageFormat.format(Translator.localize("Actions",
-						   "optionpane.exit-save-changes-to"),
-				     new Object[] {p.getName()} );
+			"optionpane.exit-save-changes-to"),
+			new Object[] {p.getName()} );
 	    int response = 
 		JOptionPane.showConfirmDialog(pb, t, t, 
 					      JOptionPane.YES_NO_CANCEL_OPTION);

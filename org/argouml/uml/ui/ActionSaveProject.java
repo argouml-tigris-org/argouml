@@ -62,17 +62,36 @@ public class ActionSaveProject extends UMLAction {
 
     public static ActionSaveProject SINGLETON = new ActionSaveProject(); 
 
+    /**
+     * To persist to and from zargo (zipped file) storage.
+     */
     protected AbstractFilePersister zargoPersister = new ZargoFilePersister();
+    
+    /**
+     * To persist to and from argo (xml file) storage.
+     */
     protected AbstractFilePersister argoPersister  = new ArgoFilePersister();
+    
+    /**
+     * To persist to and from XMI file storage.
+     */
     protected AbstractFilePersister xmiPersister  = new XmiFilePersister();
     
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The constructor.
+     */
     protected ActionSaveProject() {
         super("action.save-project");
     }
 
+    /**
+     * The constructor.
+     * @param title the title for this action
+     * @param icon the icon for this action
+     */
     protected ActionSaveProject(String title, boolean icon) {
         super(title, icon);
     }
@@ -81,6 +100,9 @@ public class ActionSaveProject extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // main methods
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent e) {
         URL url =
             ProjectManager.getManager().getCurrentProject() != null
@@ -92,31 +114,42 @@ public class ActionSaveProject extends UMLAction {
         }
     }
 
+    /**
+     * Try to save the project.
+     * @param overwrite if true, then we overwrite without asking
+     * @return true if successful
+     */
     public boolean trySave (boolean overwrite) {
         URL url = ProjectManager.getManager().getCurrentProject().getURL();
         return url != null && trySave(overwrite, new File(url.getFile()));
     }
 
+    /**
+     * Try to save the project.
+     * @param overwrite if true, then we overwrite without asking
+     * @param file the File to save to
+     * @return true if successful
+     */
     public boolean trySave(boolean overwrite, File file) {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project project = ProjectManager.getManager().getCurrentProject();
 
 	try {
 	    if (file.exists() && !overwrite) {
-            String sConfirm = 
-                MessageFormat.format(Translator.localize("Actions",
-            	    "optionpane.save-project-confirm-overwrite"),
-            			 new Object[] {file} );
-            int nResult = 
-                JOptionPane.showConfirmDialog(pb, sConfirm,
+	        String sConfirm = 
+	            MessageFormat.format(Translator.localize("Actions",
+	                "optionpane.save-project-confirm-overwrite"),
+	                new Object[] {file} );
+	        int nResult = 
+	            JOptionPane.showConfirmDialog(pb, sConfirm,
                         Translator.localize("Actions", 
             		    "optionpane.save-project-confirm-overwrite-title"),
             				  JOptionPane.YES_NO_OPTION,
             				  JOptionPane.QUESTION_MESSAGE);
             
-            if (nResult != JOptionPane.YES_OPTION) {
-                return false;
-            }
+	        if (nResult != JOptionPane.YES_OPTION) {
+	            return false;
+	        }
 	    }
       
 	    String sStatus =
@@ -125,20 +158,20 @@ public class ActionSaveProject extends UMLAction {
 				     new Object[] {file} );
 	    pb.showStatus (sStatus);
 		
-        ProjectFilePersister persister = null;
-        String name = file.getName();
-        if (name.endsWith("." + zargoPersister.getExtension())) {
-            persister = zargoPersister;
-        } else if (name.endsWith("." + argoPersister.getExtension())) {
-            persister = argoPersister;
-        } else {
-            throw new IllegalStateException("Filename " + project.getName() + 
-                                            " is not of a known file type");
-        }
-	  
-        project.preSave();
-        persister.save(project, file);
-        project.postSave();
+	    ProjectFilePersister persister = null;
+	    String name = file.getName();
+	    if (name.endsWith("." + zargoPersister.getExtension())) {
+	        persister = zargoPersister;
+	    } else if (name.endsWith("." + argoPersister.getExtension())) {
+	        persister = argoPersister;
+	    } else {
+	        throw new IllegalStateException("Filename " + project.getName() 
+	        + " is not of a known file type");
+	    }
+	    
+	    project.preSave();
+	    persister.save(project, file);
+	    project.postSave();
 
 	    sStatus =
 		MessageFormat.format(Translator.localize("Actions", 
@@ -151,8 +184,8 @@ public class ActionSaveProject extends UMLAction {
         /* 
          * notification of menu bar
          */
-        GenericArgoMenuBar menuBar = (GenericArgoMenuBar) pb.getJMenuBar();
-        menuBar.addFileSaved( file.getCanonicalPath());
+	    GenericArgoMenuBar menuBar = (GenericArgoMenuBar) pb.getJMenuBar();
+	    menuBar.addFileSaved( file.getCanonicalPath());
             
 	    Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE,
 				    file.getCanonicalPath());
@@ -202,6 +235,9 @@ public class ActionSaveProject extends UMLAction {
 	return false;
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
     public boolean shouldBeEnabled() {
         super.shouldBeEnabled();
         Project p = ProjectManager.getManager().getCurrentProject();

@@ -218,8 +218,8 @@ public class ActionOpenProject
             } else if (file.endsWith("." + xmiPersister.getExtension())) {
                 persister = xmiPersister;
             } else {
-                throw new IllegalStateException("Filename " + url.getFile() + 
-                                                " is not of a known file type");
+                throw new IllegalStateException("Filename " + url.getFile()  
+                                + " is not of a known file type");
             }
           
             p = persister.loadProject(url);
@@ -301,7 +301,7 @@ public class ActionOpenProject
         try {
             url = new URL(argument);
         } catch (MalformedURLException e) {
-                e.printStackTrace();
+            e.printStackTrace();
             LOG.error("Incorrectly formatted URL.", e);
             return false;
         }

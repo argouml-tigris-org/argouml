@@ -46,14 +46,20 @@ public class ActionSaveProjectAs extends ActionSaveProject {
     ////////////////////////////////////////////////////////////////
     // static variables
 
+    /**
+     * The singleton.
+     */
     public static ActionSaveProjectAs SINGLETON = new ActionSaveProjectAs();
 
-    public static final String separator = "/";
+    //public static final String separator = "/";
     //System.getProperty("file.separator");
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The constructor. 
+     */
     protected ActionSaveProjectAs() {
         super("action.save-project-as", HAS_ICON);
     }
@@ -61,10 +67,16 @@ public class ActionSaveProjectAs extends ActionSaveProject {
     ////////////////////////////////////////////////////////////////
     // main methods
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent e) {
         trySave(false);
     }
 
+    /**
+     * @see org.argouml.uml.ui.ActionSaveProject#trySave(boolean)
+     */
     public boolean trySave(boolean overwrite) {
         File f = getNewFile();
         if (f == null)
@@ -77,6 +89,9 @@ public class ActionSaveProjectAs extends ActionSaveProject {
         return success;
     }
 
+    /**
+     * @return the File to save to
+     */
     protected File getNewFile() {
         ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
@@ -109,7 +124,8 @@ public class ActionSaveProjectAs extends ActionSaveProject {
         int retval = chooser.showSaveDialog(pb);
         if (retval == JFileChooser.APPROVE_OPTION) {
             File file = chooser.getSelectedFile();
-            AbstractFilePersister filter = (AbstractFilePersister)chooser.getFileFilter();
+            AbstractFilePersister filter = 
+                (AbstractFilePersister) chooser.getFileFilter();
             if (file != null) {
                 String name = file.getName();
                 if (!name.endsWith("." + filter.getExtension())) {
@@ -125,6 +141,9 @@ public class ActionSaveProjectAs extends ActionSaveProject {
         }
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
     public boolean shouldBeEnabled() {
         return true;
     }
