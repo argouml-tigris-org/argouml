@@ -51,7 +51,9 @@ import org.tigris.gef.util.Converter;
 /**
  * The "Configure Perspectives" dialog.
  *
- * This class will need work done on it after issue 1739.
+ * This class will need work done on it after issue 1739/2245.
+ *
+ * It is not used at the moment until the explorer becomes stable.
  *
  */
 public class NavigatorConfigDialog extends JDialog

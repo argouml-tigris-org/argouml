@@ -38,11 +38,8 @@ import java.util.Iterator;
  * <p>This class represents:
  *   - a navigation tree model / perspective (which is a collection of GoRules)
  *
- * <p>16 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
- * the display of extends/includes and extension points in the package centric
- * view.
- *
- * <p>$Id$
+ * @deprecated since 0.15.2 replace with ExplorerPerspective,
+ *             remove in 0.15.3
  */
 public class NavPerspective
     extends TreeModelComposite
