@@ -60,10 +60,23 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+
+        Object classifier = Model.getCoreFactory().createClass();
+        Object collaboration =
+            Model.getCollaborationsFactory().buildCollaboration(classifier);
+
         elem = Model.getCollaborationsFactory().createAssociationEndRole();
         baseEnd = Model.getCoreFactory().createAssociationEnd();
         assocRole = Model.getCollaborationsFactory().createAssociationRole();
         baseAssoc = Model.getCoreFactory().createAssociation();
+
+        // Model.getCoreHelper().addOwnedElement(collaboration, elem);
+        Model.getCoreHelper().addOwnedElement(collaboration, baseEnd);
+        Model.getCoreHelper().addOwnedElement(collaboration, assocRole);
+        Model.getCoreHelper().addOwnedElement(collaboration, baseAssoc);
+
+        Model.getCoreHelper().setName(assocRole, "TestAssocRole");
+
         Model.getCoreHelper().setAssociation(elem, assocRole);
         Model.getCollaborationsHelper().setBase(assocRole, baseAssoc);
         Model.getCoreHelper().setAssociation(baseEnd, baseAssoc);
