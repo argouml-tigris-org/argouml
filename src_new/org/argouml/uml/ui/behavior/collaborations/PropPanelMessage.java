@@ -150,7 +150,7 @@ public class PropPanelMessage extends PropPanelModelElement {
     public void navigateInteraction() {
     	Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAMessage(target)) {
-            TargetManager.getInstance().setTarget(((MMessage) target).getInteraction());
+            TargetManager.getInstance().setTarget(ModelFacade.getInteraction(target));
         }
     }
 

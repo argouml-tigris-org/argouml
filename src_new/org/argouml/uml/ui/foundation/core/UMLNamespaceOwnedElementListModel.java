@@ -25,11 +25,10 @@
 // $Id$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
 /**
  * 
  * @author jaap.branderhorst@xs4all.nl	
@@ -50,7 +49,7 @@ public class UMLNamespaceOwnedElementListModel extends UMLModelElementListModel2
      */
     protected void buildModelList() {
         if (_target != null) {
-            setAllElements(((MNamespace) getTarget()).getOwnedElements());
+            setAllElements(ModelFacade.getOwnedElements(getTarget()));
         }
     }
 
@@ -58,7 +57,7 @@ public class UMLNamespaceOwnedElementListModel extends UMLModelElementListModel2
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase element) {
-        return ((MNamespace) getTarget()).getOwnedElements().contains(element);
+        return ModelFacade.getOwnedElements(getTarget()).contains(element);
     }
 
 }

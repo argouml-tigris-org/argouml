@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -25,12 +24,11 @@
 
 package org.argouml.uml.diagram.ui;
 
+import org.argouml.model.ModelFacade;
 import java.util.Collection;
 
 import org.argouml.application.api.Argo;
 import org.argouml.ui.AbstractGoRule;
-
-import ru.novosoft.uml.foundation.core.MNamespace;
 
 public class GoModelToElements extends AbstractGoRule {
 
@@ -40,7 +38,7 @@ public class GoModelToElements extends AbstractGoRule {
 
     public Collection getChildren(Object parent) { 
 	if (org.argouml.model.ModelFacade.isANamespace(parent)) {
-	    return ((MNamespace) parent).getOwnedElements();
+	    return ModelFacade.getOwnedElements(parent);
 	}
 	return null;
     }

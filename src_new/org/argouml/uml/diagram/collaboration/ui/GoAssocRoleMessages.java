@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -25,11 +24,10 @@
 
 package org.argouml.uml.diagram.collaboration.ui;
 
+import org.argouml.model.ModelFacade;
 import java.util.Collection;
 
 import org.argouml.ui.AbstractGoRule;
-
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 
 public class GoAssocRoleMessages extends AbstractGoRule {
 
@@ -37,7 +35,7 @@ public class GoAssocRoleMessages extends AbstractGoRule {
 
     public Collection getChildren(Object parent) {
 	if (!(org.argouml.model.ModelFacade.isAAssociationRole(parent))) return null;
-	return ((MAssociationRole) parent).getMessages();
+	return ModelFacade.getMessages(parent);
     }
 
 }

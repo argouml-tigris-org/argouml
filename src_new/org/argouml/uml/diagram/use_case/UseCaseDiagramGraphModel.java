@@ -51,7 +51,6 @@ import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MDependency;
-import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
@@ -397,7 +396,7 @@ public class UseCaseDiagramGraphModel
         }
         else if (org.argouml.model.ModelFacade.isAGeneralization(edge)) {
             end0 = ModelFacade.getChild(edge);
-            end1 = ((MGeneralization) edge).getParent();
+            end1 = ModelFacade.getParent(edge);
         }
         else if (org.argouml.model.ModelFacade.isAExtend(edge)) {
             end0 = ModelFacade.getBase(edge);
@@ -559,8 +558,8 @@ public class UseCaseDiagramGraphModel
 
             // Collect all the includes at either end.
 
-            ends.addAll(((MUseCase) node).getIncludes());
-            ends.addAll(((MUseCase) node).getIncludes2());
+            ends.addAll(ModelFacade.getIncludes(node));
+            ends.addAll(ModelFacade.getIncludes2(node));
             ends.addAll(ModelFacade.getExtends(node));
             ends.addAll(ModelFacade.getExtends2(node));
 
@@ -612,7 +611,7 @@ public class UseCaseDiagramGraphModel
 
             // The specializations
 
-            Collection sp = ((MGeneralizableElement) node).getSpecializations();
+            Collection sp = ModelFacade.getSpecializations(node);
 
             iter = sp.iterator();
 

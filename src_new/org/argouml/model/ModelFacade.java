@@ -1856,6 +1856,32 @@ public class ModelFacade {
     }
 
     /**
+     * Returns the includes for some use case
+     * @param handle
+     * @return
+     */
+    public static Collection getIncludes(Object handle) {
+        if (handle instanceof MUseCase) {
+            return ((MUseCase) handle).getIncludes();
+        }
+        throw new IllegalArgumentException(
+					   "Unrecognized object " + handle);
+    }
+
+    /**
+     * Returns the includes for some use case
+     * @param handle
+     * @return
+     */
+    public static Collection getIncludes2(Object handle) {
+        if (handle instanceof MUseCase) {
+            return ((MUseCase) handle).getIncludes();
+        }
+        throw new IllegalArgumentException(
+					   "Unrecognized object " + handle);
+    }
+
+    /**
      * Returns the incoming transitions for some statevertex
      * @param handle
      * @return Collection
@@ -1863,6 +1889,31 @@ public class ModelFacade {
     public static Collection getIncomings(Object handle) {
         if (isAStateVertex(handle)) {
             return ((MStateVertex) handle).getIncomings();
+        }
+        throw new IllegalArgumentException(
+					   "Unrecognized object " + handle);
+    }
+
+    /**
+     * Returns the initial value for some attribute
+     * @param handle
+     * @return initial value
+     */
+    public static Object getInitialValue(Object handle) {
+        if (handle instanceof MAttribute) {
+            return ((MAttribute)handle).getInitialValue();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
+     * Returns the incoming transitions for some statevertex
+     * @param handle
+     * @return Collection
+     */
+    public static Collection getInstances(Object handle) {
+        if (handle instanceof MClassifier) {
+            return ((MClassifier) handle).getInstances();
         }
         throw new IllegalArgumentException(
 					   "Unrecognized object " + handle);
@@ -1882,6 +1933,30 @@ public class ModelFacade {
     }
 
     /**
+     * Returns the interactions belonging to a collaboration
+     * @param handle
+     * @return Collection
+     */
+    public static Collection getInteractions(Object handle) {
+        if (handle instanceof MCollaboration) {
+            return ((MCollaboration) handle).getInteractions();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
+     * Returns the internal transitions belonging to a state
+     * @param handle
+     * @return Collection
+     */
+    public static Collection getInternalTransitions(Object handle) {
+        if (handle instanceof MState) {
+            return ((MState) handle).getInternalTransitions();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
      * Returns the messages belonging to some interaction
      * @param handle
      * @return Collection
@@ -1889,6 +1964,12 @@ public class ModelFacade {
     public static Collection getMessages(Object handle) {
         if (isAInteraction(handle)) {
             return ((MInteraction) handle).getMessages();
+        }
+        if (handle instanceof MAssociationRole) {
+            return ((MAssociationRole) handle).getMessages();
+        }
+        if (handle instanceof MAction) {
+            return ((MAction) handle).getMessages();
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
@@ -1911,22 +1992,27 @@ public class ModelFacade {
      * @param elemImport an Element Import.
      */
     public static Object getModelElement(Object elemImport){
-        
         if(!(elemImport instanceof MElementImport))
             throw new IllegalArgumentException();
         
-        return ((MElementImport) elemImport).getModelElement();
+        return ((MElementImport)elemImport).getModelElement();
     }
     
-    /** Get the Multiplicity from an AssociationEnd.
+    /** Get the Multiplicity from a model element.
      *
-     * @param handle Classifier to retrieve from.
-     * @return Collection with Features
+     * @param handle model element to retrieve from.
+     * @return multiplicity
      */
     public static Object getMultiplicity(Object handle) {
-        if (!(handle instanceof MAssociationEnd))
-            throw new IllegalArgumentException("Unrecognized object " + handle);
-        return ((MAssociationEnd) handle).getMultiplicity();
+        if ((handle instanceof MAssociationEnd))
+            return ((MAssociationEnd) handle).getMultiplicity();
+        if ((handle instanceof MAssociationRole))
+            return ((MAssociationRole) handle).getMultiplicity();
+        if ((handle instanceof MClassifierRole))
+            return ((MClassifierRole) handle).getMultiplicity();
+        if ((handle instanceof MStructuralFeature))
+            return ((MStructuralFeature) handle).getMultiplicity();
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** Get the comments of an element.
@@ -2118,6 +2204,23 @@ public class ModelFacade {
     public static Object getDoActivity(Object handle) {
         if (handle instanceof MState) {
             return ((MState) handle).getDoActivity();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    public static Collection getLinks(Object handle) {
+        if (handle instanceof MAssociation) {
+            return ((MAssociation) handle).getLinks();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    public static Collection getLinkEnds(Object handle) {
+        if (handle instanceof MInstance) {
+            return ((MInstance) handle).getLinkEnds();
+        }
+        if (handle instanceof MAssociationEnd) {
+            return ((MAssociationEnd)handle).getLinkEnds();
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -25,11 +24,10 @@
 
 package org.argouml.uml.diagram.state.ui;
 
+import org.argouml.model.ModelFacade;
 import java.util.Collection;
 
 import org.argouml.ui.AbstractGoRule;
-
-import ru.novosoft.uml.behavior.state_machines.MState;
 
 public class GoStateToInternalTrans extends AbstractGoRule {
 
@@ -40,7 +38,7 @@ public class GoStateToInternalTrans extends AbstractGoRule {
      */
     public Collection getChildren(Object parent) {
 	if (org.argouml.model.ModelFacade.isAState(parent)) {
-	    return ((MState) parent).getInternalTransitions();
+	    return ModelFacade.getInternalTransitions(parent);
 	}
 	return null;
     }

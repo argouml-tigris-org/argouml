@@ -81,7 +81,6 @@ import org.argouml.uml.ProfileJava;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.toolbar.ToolBar;
 
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -291,7 +290,7 @@ abstract public class PropPanel
        @param target target of prop panel
     
     */
-    protected void removeMElementListener(MBase target) {
+    protected void removeMElementListener(Object target) {
         UmlModelEventPump.getPump().removeModelEventListener(this, target);
     }
 
@@ -302,7 +301,7 @@ abstract public class PropPanel
     
        @param target target of prop panel
     */
-    public void addMElementListener(MBase target) {
+    public void addMElementListener(Object target) {
         UmlModelEventPump.getPump().addModelEventListener(this, target);
     }
 
@@ -591,8 +590,8 @@ abstract public class PropPanel
     public void removeElement() {
         Object target = getTarget();
         if (ModelFacade.isABase(target)) {
-            MModelElement newTarget = ((MModelElement) target).getModelElementContainer();
-            MBase base = (MBase) target;
+            Object newTarget = ModelFacade.getModelElementContainer(target);
+            Object base = target;
             TargetManager.getInstance().setTarget(base);
             ActionEvent event = new ActionEvent(this, 1, "delete");
             ActionRemoveFromModel.SINGLETON.actionPerformed(event);

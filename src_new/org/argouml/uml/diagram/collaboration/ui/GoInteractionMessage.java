@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -25,12 +24,11 @@
 
 package org.argouml.uml.diagram.collaboration.ui;
 
+import org.argouml.model.ModelFacade;
 import java.util.Collection;
 
 import org.argouml.application.api.Argo;
 import org.argouml.ui.AbstractGoRule;
-
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
 
 /**
  * 
@@ -48,7 +46,7 @@ public class GoInteractionMessage extends AbstractGoRule {
      */
     public Collection getChildren(Object parent) {
 	if (org.argouml.model.ModelFacade.isAInteraction(parent))
-	    return ((MInteraction) parent).getMessages();
+	    return ModelFacade.getMessages(parent);
 	return null;
     }
 

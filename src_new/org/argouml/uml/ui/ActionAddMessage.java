@@ -39,7 +39,6 @@ import org.tigris.gef.presentation.FigNode;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 
 /** Action to add a message.
@@ -85,7 +84,7 @@ public class ActionAddMessage extends UMLChangeAction {
         MMessage msg =
 	    UmlFactory.getFactory().getCollaborations().buildMessage(collab, ar);
         String nextStr =
-	    "" + ((MInteraction) (collab.getInteractions().toArray())[0]).getMessages().size();	
+	    "" + ModelFacade.getMessages((collab.getInteractions().toArray())[0]).size();	
         Editor e = Globals.curEditor();
         GraphModel gm = e.getGraphModel();
         Layer lay = e.getLayerManager().getActiveLayer();

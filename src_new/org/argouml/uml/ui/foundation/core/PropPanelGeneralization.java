@@ -134,11 +134,11 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     }
 
 
-    public MGeneralizableElement getParentElement() {
-        MGeneralizableElement parent = null;
+    public Object getParentElement() {
+        Object parent = null;
         Object target = getTarget();
         if (ModelFacade.isAGeneralization(target)) {
-            parent = ((MGeneralization) target).getParent();
+            parent = ModelFacade.getParent(target);
         }
         return parent;
     }
@@ -146,16 +146,15 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     public void setParentElement(MGeneralizableElement parent) {
         Object target = getTarget();
         if (ModelFacade.isAGeneralization(target)) {
-            MGeneralization gen = (MGeneralization) target;
-            MGeneralizableElement child = gen.getChild();
-            MGeneralizableElement oldParent = gen.getParent();
+            Object generalization = target;
+            Object child = ModelFacade.getChild(generalization);
+            Object oldParent = ModelFacade.getParent(generalization);
             //
             //   can't do immediate circular generalization
             //
             if (parent != child && parent != oldParent) {
-                gen.setParent(parent);
-            }
-            else {
+                ((MGeneralization)generalization).setParent(parent);
+            } else {
                 //
                 //   force a refresh of the panel
 		//                refresh();

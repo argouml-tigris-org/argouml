@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -240,7 +238,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         while (oeIterator.hasNext()) {
             MModelElement me = (MModelElement) oeIterator.next();
             if (org.argouml.model.ModelFacade.isAAssociationRole(me)) {
-                messages = ((MAssociationRole) me).getMessages();
+                messages = ModelFacade.getMessages(me);
                 msgIterator = messages.iterator();
                 while (msgIterator.hasNext()) {
                     MMessage message = (MMessage) msgIterator.next();

@@ -25,6 +25,7 @@
 // $header$
 package org.argouml.uml.ui.behavior.use_cases;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
@@ -55,7 +56,7 @@ public class UMLExtensionPointLocationDocument extends UMLPlainTextDocument {
      * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
      */
     protected String getProperty() {
-        return ((MExtensionPoint) getTarget()).getLocation();
+        return ModelFacade.getLocation(getTarget());
     }
 
 }

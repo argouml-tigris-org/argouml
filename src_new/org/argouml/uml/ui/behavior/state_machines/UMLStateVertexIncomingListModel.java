@@ -25,11 +25,10 @@
 // $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
-
 /**
  * Listmodel for the incoming transitions of a Statevertex
  * @since Dec 14, 2002
@@ -50,14 +49,14 @@ public class UMLStateVertexIncomingListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MStateVertex) getTarget()).getIncomings());
+        setAllElements(ModelFacade.getIncomings(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase element) {
-        return ((MStateVertex) getTarget()).getIncomings().contains(element);
+        return ModelFacade.getIncomings(getTarget()).contains(element);
     }
 
 }

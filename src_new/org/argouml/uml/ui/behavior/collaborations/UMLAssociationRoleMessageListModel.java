@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -26,12 +24,10 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-
-
 public class UMLAssociationRoleMessageListModel
     extends UMLModelElementListModel2
 {
@@ -48,7 +44,7 @@ public class UMLAssociationRoleMessageListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MAssociationRole) getTarget()).getMessages());
+        setAllElements(ModelFacade.getMessages(getTarget()));
     }
 
     /**
@@ -56,7 +52,7 @@ public class UMLAssociationRoleMessageListModel
      */
     protected boolean isValidElement(MBase o) {
         return org.argouml.model.ModelFacade.isAMessage(o) &&
-            ((MAssociationRole) getTarget()).getMessages().contains(o);
+            ModelFacade.getMessages(getTarget()).contains(o);
     }
 
 }
