@@ -81,7 +81,6 @@ public class Init {
   public static Critic crNonAggDataType = new CrNonAggDataType();
   public static Critic crOppEndConflict = new CrOppEndConflict();
   public static Critic crParamTypeNotImported = new CrParamTypeNotImported();
-  public static Critic crSignatureConflict = new CrSignatureConflict();
   public static Critic crUselessAbstract = new CrUselessAbstract();
   public static Critic crUselessInterface = new CrUselessInterface();
   public static Critic crDisambigClassName = new CrDisambigClassName();
@@ -259,7 +258,6 @@ public class Init {
       Agency.register(crNonAggDataType, datatypeCls);
 //      Agency.register(crOppEndConflict, classifierCls);
       Agency.register(crParamTypeNotImported, operCls);
-      Agency.register(crSignatureConflict, classifierCls);
       Agency.register(crUselessAbstract, classCls);
       Agency.register(crUselessInterface, interfaceCls);
       Agency.register(crDisambigStateName, stateCls);

@@ -37,6 +37,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
 import org.argouml.cognitive.*;
+import org.argouml.cognitive.critics.*;
 
 public class CrOperNameConflict extends CrUML {
 
@@ -44,6 +45,7 @@ public class CrOperNameConflict extends CrUML {
         setHeadline("Change Names or Signatures in <ocl>self</ocl>");
         addSupportedDecision(CrUML.decMETHODS);
         addSupportedDecision(CrUML.decNAMING);
+        setKnowledgeTypes(Critic.KT_SYNTAX);
         addTrigger("behavioralFeature");
         addTrigger("feature_name");
     }
