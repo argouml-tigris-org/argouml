@@ -645,14 +645,9 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         Object target = getTarget();
         if(target instanceof MBase) { 
             MBase base = (MBase) target;
-            Object projectTarget = ProjectBrowser.TheInstance.getTarget();
             ProjectBrowser.TheInstance.setTarget(base);
             ActionEvent event = new ActionEvent(this, 1, "delete");
-	        ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-	       	if (!target.equals(projectTarget)) {
-        		ProjectBrowser.TheInstance.setTarget(projectTarget);
-        	}
-	   
+	    ActionRemoveFromModel.SINGLETON.actionPerformed(event);	   
         }
     }
 
