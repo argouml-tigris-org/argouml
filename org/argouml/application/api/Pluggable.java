@@ -51,13 +51,13 @@ package org.argouml.application.api;
 public interface Pluggable extends ArgoModule {
 
     /** Constant required in plugin manifest. */
-    static final String PLUGIN_TITLE = "ArgoUML Dynamic Load Module";
+    String PLUGIN_TITLE = "ArgoUML Dynamic Load Module";
 
     /** Constant required in plugin manifest. */
-    static final String PLUGIN_VENDOR = "University of California";
+    String PLUGIN_VENDOR = "University of California";
 
     /** Constant required in plugin manifest. */
-    static final String PLUGIN_PREFIX = 
+    String PLUGIN_PREFIX = 
 	"org.argouml.application.api.Pluggable";
 
     /** A function which allows a plug-in to decide if it is available

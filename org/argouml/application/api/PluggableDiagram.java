@@ -23,7 +23,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.api;
-import javax.swing.*;
+import javax.swing.JMenuItem;
 
 /**  An module interface which identifies an ArgoUML plug-in used
  *   as a diagram type.

@@ -24,7 +24,7 @@
 
 package org.argouml.application.api;
 
-import org.argouml.uml.ui.*;
+import org.argouml.uml.ui.PropPanel;
 
 /**  An interface which identifies an ArgoUML plug-in property panel.
  *   Plug-ins are replacements or additions to standard Argo classes.
