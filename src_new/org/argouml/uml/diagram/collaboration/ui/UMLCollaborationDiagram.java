@@ -70,6 +70,11 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 		 "edgeClass", MAssociationRole.class,
 		 "AssociationRole");
 
+  protected static Action _actionGeneralize =
+		new CmdSetMode(ModeCreatePolyEdge.class,
+					   "edgeClass", MGeneralization.class,
+					   "Generalization");
+
 
   ////////////////////////////////////////////////////////////////
   // contructors
@@ -141,6 +146,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     _toolBar.addSeparator();
     _toolBar.add(_actionAssoc);
     _toolBar.add(ActionAddMessage.SINGLETON);
+    _toolBar.add(_actionGeneralize);
     // other actions
     _toolBar.addSeparator();
 

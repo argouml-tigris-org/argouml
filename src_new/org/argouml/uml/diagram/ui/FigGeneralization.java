@@ -36,6 +36,7 @@ import java.util.*;
 import ru.novosoft.uml.foundation.core.*;
 //import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
+import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
@@ -67,11 +68,23 @@ public class FigGeneralization extends FigEdgeModelElement {
     endArrow.setFillColor(Color.white);
     setDestArrowHead(endArrow);
     setBetweenNearestPoints(true);
+    
+    if (getLayer() == null) {
+	   	setLayer(ProjectBrowser.TheInstance.getActiveDiagram().getLayer());
+    }
+    
   }
 
-  public FigGeneralization(Object edge) {
+  public FigGeneralization(Object edge, Layer lay) {
     this();
+    setLayer(lay);
     setOwner(edge);
+    
+  }
+  
+  public FigGeneralization(Object edge) {
+  	this();
+  	setOwner(edge);
   }
 
   protected boolean canEdit(Fig f) { return false; }
@@ -107,6 +120,27 @@ public class FigGeneralization extends FigEdgeModelElement {
         endArrow.setLineColor(getLineColor());
         super.paint(g);
   }
+
+	/**
+	 * @see org.tigris.gef.presentation.Fig#setOwner(Object)
+	 */
+	public void setOwner(Object own) {
+		super.setOwner(own);
+		if (own instanceof MGeneralization) {
+    	MGeneralization gen = (MGeneralization)own;
+    	MGeneralizableElement subType = gen.getChild();
+      MGeneralizableElement superType = gen.getParent();
+      FigNode subTypeFN = (FigNode) getLayer().presentationFor(subType);
+      FigNode superTypeFN = (FigNode) getLayer().presentationFor(superType);
+      setSourcePortFig(subTypeFN);
+      setSourceFigNode(subTypeFN);
+      setDestPortFig(superTypeFN);
+      setDestFigNode(superTypeFN);
+    } else 
+    if (own != null) {
+    	throw new IllegalStateException("FigGeneralization has an illegal owner");
+	}
+	}
 
 } /* end class FigGeneralization */
 

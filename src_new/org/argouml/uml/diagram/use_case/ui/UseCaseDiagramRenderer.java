@@ -178,26 +178,7 @@ public class UseCaseDiagramRenderer
 
         else if (edge instanceof MGeneralization) {
             MGeneralization   gen    = (MGeneralization) edge;
-            FigGeneralization genFig = new FigGeneralization(gen);
-
-            // The nodes at the two ends
-
-            MGeneralizableElement subType   = gen.getChild();
-            MGeneralizableElement superType = gen.getParent();
-
-            // The figs for the two end nodes
-
-            FigNode subTypeFN   = (FigNode) lay.presentationFor(subType);
-            FigNode superTypeFN = (FigNode) lay.presentationFor(superType);
-
-            // Link the new generalization in to the ends
-
-            genFig.setSourcePortFig(subTypeFN);
-            genFig.setSourceFigNode(subTypeFN);
-
-            genFig.setDestPortFig(superTypeFN);
-            genFig.setDestFigNode(superTypeFN);
-
+            FigGeneralization genFig = new FigGeneralization(gen, lay);
             return genFig;
         }
 
