@@ -59,6 +59,11 @@ public class TypeThenNameOrder extends NameOrder{
         String typeName = userObject.getClass().getName();
         String typeName1 = userObject1.getClass().getName();
         
+        // all diagram types treated equally
+        if(typeName.indexOf("Diagram") != -1 &&
+        typeName1.indexOf("Diagram") != -1)
+            return compareUserObjects(userObject,userObject1);
+        
         int typeNameOrder = typeName.compareToIgnoreCase(typeName1);
         if(typeNameOrder == 0)
             return compareUserObjects(userObject,userObject1);
