@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -137,7 +139,7 @@ public class ZargoFilePersister extends UmlFilePersister {
             Hashtable templates = TemplateReader.getInstance().read(
                     ARGO_MINI_TEE);
             OCLExpander expander = new OCLExpander(templates);
-            expander.expand(writer, project, "", "");
+            expander.expand(writer, project);
 
             writer.flush();
 
@@ -192,7 +194,8 @@ public class ZargoFilePersister extends UmlFilePersister {
                                 + ((ProjectMember) project.getMembers()
                                         .get(i)).getType());
                     }
-                    stream.putNextEntry(new ZipEntry(projectMember.getZipName()));
+                    stream.putNextEntry(
+                            new ZipEntry(projectMember.getZipName()));
                     MemberFilePersister persister = null;
                     if (projectMember instanceof ProjectMemberDiagram) {
                         persister = new DiagramMemberFilePersister();
@@ -246,6 +249,9 @@ public class ZargoFilePersister extends UmlFilePersister {
     public Project doLoad(URL url) throws OpenException {
         try {
             File file = File.createTempFile("xxx", ".uml");
+            LOG.info(
+                "Combining old style zargo sub files into new style uml file "
+                    + file.getAbsolutePath());
             file.deleteOnExit();
 
             String encoding = "UTF-8";
@@ -262,7 +268,7 @@ public class ZargoFilePersister extends UmlFilePersister {
             BufferedReader reader;
 
             zis = openZipStreamAt(url, FileConstants.PROJECT_FILE_EXT);
-            reader = new BufferedReader(new InputStreamReader(zis));
+            reader = new BufferedReader(new InputStreamReader(zis, encoding));
             // Keep reading till we hit the <argo> tag
             String rootLine;
             while (!(rootLine = reader.readLine()).startsWith("<argo")) {
@@ -283,12 +289,12 @@ public class ZargoFilePersister extends UmlFilePersister {
 
             // then the xmi
             zis = openZipStreamAt(url, ".xmi");
-            reader = new BufferedReader(new InputStreamReader(zis));
+            reader = new BufferedReader(new InputStreamReader(zis, encoding));
             // Skip 1 lines
             reader.readLine();
-            while ((line = reader.readLine()) != null) {
-                writer.println(line);
-            }
+        
+            readerToWriter(reader, writer);
+            
             zis.close();
             reader.close();
 
@@ -301,13 +307,12 @@ public class ZargoFilePersister extends UmlFilePersister {
                 if (currentEntry.getName().endsWith(".pgml")
                         || currentEntry.getName().endsWith(".todo")) {
 
-                    reader = new BufferedReader(new InputStreamReader(sub));
+                    reader = new BufferedReader(
+                            new InputStreamReader(sub, encoding));
                     // Skip 2 lines
                     reader.readLine();
                     reader.readLine();
-                    while ((line = reader.readLine()) != null) {
-                        writer.println(line);
-                    }
+                    readerToWriter(reader, writer);
                     sub.close();
                     reader.close();
                 }
@@ -316,6 +321,7 @@ public class ZargoFilePersister extends UmlFilePersister {
 
             writer.println("</uml>");
             writer.close();
+            LOG.info("Complated combining files");
             Project p = super.doLoad(file.toURL());
             p.setURL(url);
             return p;
@@ -324,6 +330,20 @@ public class ZargoFilePersister extends UmlFilePersister {
         }
     }
 
+    private void readerToWriter(
+            Reader reader,
+            Writer writer) throws IOException {
+        
+        int ch;
+        while ((ch = reader.read()) != -1) {
+            if (ch != 0xFFFF) {
+                writer.write(ch);
+            } else {
+                LOG.info("Stripping out 0xFFFF from XMI");
+            }
+        }
+    }
+    
     /**
      * Open a ZipInputStream to the first file found with a given extension.
      * 
