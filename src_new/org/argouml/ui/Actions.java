@@ -119,13 +119,13 @@ public class Actions {
   public static UMLAction Snooze = new ActionSnooze();
 
   public static UMLAction AboutArgoUML = new ActionAboutArgoUML();
-  public static UMLAction Quickguide = 
+  public static UMLAction HelpQuickguide = 
       new ActionHelp("QuickGuide","quickguide.hs");
-  public static UMLAction Manual = 
+  public static UMLAction HelpManual = 
       new ActionHelp("Manual","manual.hs");
-  public static UMLAction FAQ = 
+  public static UMLAction HelpFAQ = 
       new ActionHelp("FAQ","faq.hs");
-  public static UMLAction CookBook =
+  public static UMLAction HelpCookBook =
       new ActionHelp("Cookbook", "cookbook.hs");
 
   public static void updateAllEnabled() {
@@ -413,7 +413,10 @@ class ActionEmailExpert extends ToDoItemAction {
 } /* end class ActionEmailExpert */
 
 class ActionMoreInfo extends ToDoItemAction {
-  public ActionMoreInfo() { super("More Info...", NO_ICON); }
+  public ActionMoreInfo() { super("More Info..."); }
+  public void actionPerformed(ActionEvent ae) {
+   
+  }
 } /* end class ActionMoreInfo */
 
 class ActionSnooze extends ToDoItemAction {
@@ -445,20 +448,20 @@ class ActionAboutArgoUML extends UMLAction {
 class ActionHelp extends UMLAction {
 
     private HelpSet mainHS = null;
-    private HelpBroker mainHB = null;
+    private DefaultHelpBroker mainHB = null;
     private String helpsetName = null;
-
+    private String defaultHelpID = null;
 
     public ActionHelp(String menuName, String helpsetName) { 
         super(menuName, NO_ICON); 
         this.helpsetName = helpsetName;
-    }
-
-    public void actionPerformed(ActionEvent ae) {
+        
         try {
             ClassLoader cl = ActionHelp.class.getClassLoader();
             URL url = HelpSet.findHelpSet(cl, helpsetName);
             mainHS = new HelpSet(cl, url);
+            mainHB =  new DefaultHelpBroker();
+            mainHB.setHelpSet(mainHS);
         } catch (Exception ee) {
             System.out.println ("Help Set "+helpsetName+" not found");
             return;
@@ -466,25 +469,31 @@ class ActionHelp extends UMLAction {
             System.err.println("initialization error:");
             ex.getException().printStackTrace();
         }
-        JFrame helpFrame = new JFrame();
-        showHelp(helpFrame, mainHS, null);
     }
 
-    public void showHelp(java.awt.Component comp, 
-                            javax.help.HelpSet hs,
-                         String helpID) {
-        DefaultHelpBroker hb = new DefaultHelpBroker();
-        hb.setHelpSet(hs);
+    public void actionPerformed(ActionEvent ae) {
+        showHelp(defaultHelpID);
+    }
+
+    public void showHelp() {
+        showHelp(defaultHelpID);
+    }
+        
+    public void showHelp(String helpID) {
+        JFrame comp = new JFrame();
         Window window = null;
         if (comp instanceof Window)
             window = (Window)comp;
         else
             window = (Window)SwingUtilities.getAncestorOfClass(Window.class,comp);
         if (window != null)
-            hb.setActivationWindow(window);
+            mainHB.setActivationWindow(window);
         if (helpID != null)
-            hb.setCurrentID(helpID);
-        hb.setDisplayed(true);
+            mainHB.setCurrentID(helpID);
+        mainHB.setDisplayed(true);
     }
-    public boolean shouldbeEnabled() { return true; }
+
+    public boolean shouldBeEnabled() { 
+        return super.shouldBeEnabled() && true; 
+    }
 }
