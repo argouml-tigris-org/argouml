@@ -26,8 +26,7 @@ package org.argouml.uml.ui;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
-
-import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
+import org.argouml.model.uml.DataTypesFactory;
 
 /**
  * 
@@ -72,7 +71,7 @@ public class UMLConditionExpressionModel extends UMLExpressionModel2 {
      */
     public Object newExpression() {
         LOG.debug("new boolean expression");
-        return new MBooleanExpression("", "");
+        return DataTypesFactory.getFactory().createBooleanExpression("", "");
     }
 
 }
