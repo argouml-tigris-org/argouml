@@ -162,22 +162,22 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     }
 
     /**
-     * <p>Initialize the toolbar with buttons required for a use case diagram.</p>
-     * @param toolBar The toolbar to which to add the buttons.
+     * Get the actions from which to create a toolbar or equivilent graphic triggers
      */
-    protected void initToolBar(JToolBar toolBar) {
-        toolBar.add(_actionMNode);
-        toolBar.add(_actionMNodeInstance);
-        toolBar.add(_actionMComponent);
-        toolBar.add(_actionMComponentInstance);
-        toolBar.add(_actionMDependency);
-        //toolBar.add(_actionMAssociation);
-        toolBar.add(buildAssociationPopup());
-        toolBar.add(_actionMObject);
-        toolBar.add(_actionMLink);
-        // other actions
-        toolBar.addSeparator();
-        toolBar.add(ActionAddNote.SINGLETON);
+    protected Object[] getUmlActions() {
+        Object actions[] = {
+            _actionMNode,
+            _actionMNodeInstance,
+            _actionMComponent,
+            _actionMComponentInstance,
+            _actionMDependency,
+            buildAssociationPopup(),
+            _actionMObject,
+            _actionMLink,
+            null,
+            ActionAddNote.SINGLETON
+        };
+        return actions;
     }
 
     private PopupToolBoxButton buildAssociationPopup() {

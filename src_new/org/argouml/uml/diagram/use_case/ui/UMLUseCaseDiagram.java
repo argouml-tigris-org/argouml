@@ -268,32 +268,21 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     }
 
     /**
-     * <p>Initialize the toolbar with buttons required for a use case diagram.</p>
-     * @param toolBar The toolbar to which to add the buttons.
+     * Get the actions from which to create a toolbar or equivilent graphic triggers
      */
-    protected void initToolBar(JToolBar toolBar) {
-        // Use case diagram specific nodes
-
-        toolBar.add(_actionActor);
-        toolBar.add(_actionUseCase);
-
-        toolBar.addSeparator();
-
-        // Use case diagram specific edges
-
-        //toolBar.add(_actionAssoc);
-        toolBar.add(buildAssociationPopup());
-        toolBar.add(_actionDependency);
-        toolBar.add(_actionGeneralize);
-        toolBar.add(_actionExtend);
-        toolBar.add(_actionInclude);
-        toolBar.addSeparator();
-
-        // The extension point button
-
-        toolBar.add(ActionAddExtensionPoint.singleton());
-        toolBar.addSeparator();
-        toolBar.add(ActionAddNote.SINGLETON);
+    protected Object[] getUmlActions() {
+        Object actions[] = {
+            _actionActor,
+            _actionUseCase, null,
+            buildAssociationPopup(),
+            _actionDependency,
+            _actionGeneralize,
+            _actionExtend,
+            _actionInclude, null,
+            ActionAddExtensionPoint.singleton(), null,
+            ActionAddNote.SINGLETON
+        };
+        return actions;
     }
 
     private PopupToolBoxButton buildAssociationPopup() {
