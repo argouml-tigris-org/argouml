@@ -22,6 +22,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
+
 import ru.novosoft.uml.*;
 import javax.swing.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -136,30 +137,39 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
 	
     }
     
-    protected java.util.List swap(Collection source,int lowIndex,Object before,Object after) {
-        ArrayList dest = new ArrayList(source.size());
-        Object obj = null;
-        Iterator iter = source.iterator();
-        for(int i = 0; iter.hasNext(); i++) {
-            obj = iter.next();
-            if(obj == before) {
-                dest.add(i++,after);
-                dest.add(i,before);
+/**
+ * Swap two items in a Collection. The Collection contains the attributes list
+ * and operations list together, however these items need to be swapped 
+ * independantly of each other so we must iterate through the list to find 
+ * a "value match". The parameter "lowIndex" is no longer needed, however I 
+ * left it in for compatability. The same operation is performed twice, 
+ * once for the source Collection, and again for the cache list.
+ */
+    protected java.util.List swap(Collection source,int lowIndex,Object first,Object second) {
+        java.util.List dest = new ArrayList(source);
+
+        for(ListIterator i = dest.listIterator(); i.hasNext();) {
+            if(first == i.next()) {
+                dest.set(i.previousIndex(), second);
+                dest.set(i.nextIndex(), first);
+                break;
             }
-            else {
-                if(obj != after) {
-                    dest.add(i,obj);
+        }
+
+        java.util.List cache = getCache();
+        
+        if(cache != null) {
+            for(ListIterator i = cache.listIterator(); i.hasNext();){
+                if(first == i.next()){
+                    cache.set(i.previousIndex(), second);
+                    cache.set(i.nextIndex(),first);
+                    break;
                 }
             }
         }
-        
-        java.util.List cache = getCache();
-        if(cache != null) {
-            cache.set(lowIndex,after);
-            cache.set(lowIndex+1,before);
-        }
         return dest;
     }
+
     
     protected java.util.List addElement(Collection source,int index,MModelElement newElement) {
         int size = getModelElementSize();
