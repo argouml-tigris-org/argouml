@@ -34,7 +34,7 @@ function fnUpdateTabs()
   if (parent.window.g_iIEVer>=4) {
    if (parent.document.readyState=="complete"
     && parent.frames['frTabs'].document.readyState=="complete")
-   parent.fnSetActiveSheet(0);
+   parent.fnSetActiveSheet(1);
   else
    window.setTimeout("fnUpdateTabs();",150);
  }
@@ -49,7 +49,6 @@ else
 <![endif]><!--[if gte mso 9]><xml>
  <x:WorksheetOptions>
   <x:Zoom>72</x:Zoom>
-  <x:Selected/>
   <x:ProtectContents>False</x:ProtectContents>
   <x:ProtectObjects>False</x:ProtectObjects>
  </x:WorksheetOptions>
@@ -126,7 +125,7 @@ else
    <x:Orientation>MinMax</x:Orientation>
   </x:Scaling>
   <x:Chart>
-   <x:Name>Defects</x:Name>
+   <x:Name>Issues</x:Name>
    <x:PageSetup>
     <x:ChartSize>FullPage</x:ChartSize>
    </x:PageSetup>
@@ -183,80 +182,128 @@ else
       <x:Index>0</x:Index>
       <x:Caption>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$B$3</x:Data>
+       <x:Data>Data!$B$8</x:Data>
       </x:Caption>
-      <x:Name>Open DEFECTs that noone works with</x:Name>
+      <x:Name>Open issues that noone works with</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$1</x:Data>
+       <x:Data>Data!$C$1:$C$1</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$3</x:Data>
+       <x:Data>Data!$C$8:$C$8</x:Data>
       </x:Value>
      </x:Series>
      <x:Series>
       <x:Index>1</x:Index>
       <x:Caption>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$B$4</x:Data>
+       <x:Data>Data!$B$9</x:Data>
       </x:Caption>
-      <x:Name>Resolved DEFECTs in 0.9.6</x:Name>
+      <x:Name>Resolved issues in 0.9.6</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$1</x:Data>
+       <x:Data>Data!$C$1:$C$1</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$4</x:Data>
+       <x:Data>Data!$C$9:$C$9</x:Data>
       </x:Value>
      </x:Series>
      <x:Series>
       <x:Index>2</x:Index>
       <x:Caption>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$B$5</x:Data>
+       <x:Data>Data!$B$10</x:Data>
       </x:Caption>
-      <x:Name>Resolved DEFECTs in 0.9.7</x:Name>
+      <x:Name>Resolved issues in 0.9.7</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$1</x:Data>
+       <x:Data>Data!$C$1:$C$1</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$5</x:Data>
+       <x:Data>Data!$C$10:$C$10</x:Data>
       </x:Value>
      </x:Series>
      <x:Series>
       <x:Index>3</x:Index>
       <x:Caption>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$B$6</x:Data>
+       <x:Data>Data!$B$11</x:Data>
       </x:Caption>
-      <x:Name>Older resolved DEFECTs</x:Name>
+      <x:Name>Rejected issues</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$1</x:Data>
+       <x:Data>Data!$C$1:$C$1</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$6</x:Data>
+       <x:Data>Data!$C$11:$C$11</x:Data>
       </x:Value>
      </x:Series>
      <x:Series>
       <x:Index>4</x:Index>
       <x:Caption>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$B$7</x:Data>
+       <x:Data>Data!$B$12</x:Data>
       </x:Caption>
-      <x:Name>The list of Open DEFECTs that someone works with</x:Name>
+      <x:Name>Older resolved issues</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$1</x:Data>
+       <x:Data>Data!$C$1:$C$1</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$7</x:Data>
+       <x:Data>Data!$C$12:$C$12</x:Data>
+      </x:Value>
+     </x:Series>
+     <x:Series>
+      <x:Index>5</x:Index>
+      <x:Caption>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$B$13</x:Data>
+      </x:Caption>
+      <x:Name>Verified issues</x:Name>
+      <x:Category>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$C$1:$C$1</x:Data>
+      </x:Category>
+      <x:Value>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$C$13:$C$13</x:Data>
+      </x:Value>
+     </x:Series>
+     <x:Series>
+      <x:Index>6</x:Index>
+      <x:Caption>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$B$14</x:Data>
+      </x:Caption>
+      <x:Name>The list of all Open issues for Other</x:Name>
+      <x:Category>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$C$1:$C$1</x:Data>
+      </x:Category>
+      <x:Value>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$C$14:$C$14</x:Data>
+      </x:Value>
+     </x:Series>
+     <x:Series>
+      <x:Index>7</x:Index>
+      <x:Caption>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$B$15</x:Data>
+      </x:Caption>
+      <x:Name>The list of Open issues that someone works with</x:Name>
+      <x:Category>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$C$1:$C$1</x:Data>
+      </x:Category>
+      <x:Value>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$C$15:$C$15</x:Data>
       </x:Value>
      </x:Series>
      <x:PlotVisible/>
@@ -308,18 +355,18 @@ else
    </x:Legend>
   </x:Chart>
   <o:shapelayout v:ext="edit">
-   <o:idmap v:ext="edit" data="3"/>
+   <o:idmap v:ext="edit" data="1"/>
   </o:shapelayout><v:shapetype id="_x0000_t202" coordsize="21600,21600" o:spt="202"
    path="m0,0l0,21600,21600,21600,21600,0xe">
    <v:stroke joinstyle="miter"/>
    <v:path gradientshapeok="t" o:connecttype="rect"/>
-  </v:shapetype><v:shape id="_x0000_s3073" type="#_x0000_t202" style='position:absolute;
-   margin-left:4494809emu;margin-top:221.25pt;width:195727emu;height:184047emu;
+  </v:shapetype><v:shape id="_x0000_s1025" type="#_x0000_t202" style='position:absolute;
+   margin-left:4635272emu;margin-top:221.25pt;width:5.62875mm;height:184047emu;
    z-index:1;mso-wrap-style:tight' filled="f" fillcolor="windowText [64]"
    stroked="f" strokecolor="window [65]" strokeweight="1emu" o:insetmode="auto">
    <v:fill color2="window [65]"/>
    <v:textbox>
-    <div style='text-align:center'><font class=font12>D</font></div>
+    <div style='text-align:center'><font class=font9>D</font></div>
    </v:textbox>
    <x:ClientData ObjectType="Text">
     <x:AutoFill>False</x:AutoFill>
@@ -329,7 +376,7 @@ else
     <x:AutoScale/>
    </x:ClientData>
   </v:shape></x:WebChart>
-</xml><![endif]--><![if !supportChartImage]><img src=image001.gif alt=Defects><![endif]>
+</xml><![endif]--><![if !supportChartImage]><img src=image002.gif alt=Issues><![endif]>
 </body>
 
 </html>
