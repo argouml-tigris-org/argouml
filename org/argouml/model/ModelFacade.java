@@ -149,9 +149,9 @@ import ru.novosoft.uml.model_management.MSubsystem;
  * The purpose of this Facade object is to allow for decoupling other
  * subsystems from the insides of the model. For this purpose all of
  * the methods in this class give away and accept handles (of type
- * java.lang.Object) to the objects within the model.<p>
+ * {@link java.lang.Object}) to the objects within the model.<p>
  *
- * This is just getters, recognizers, and tokens.<p>
+ * This is just recognizers and getters.<p>
  *
  * To manipulate the objects of the model there is a set of factories
  * and helpers within the Model subsystem.<p>
@@ -169,14 +169,6 @@ import ru.novosoft.uml.model_management.MSubsystem;
  * <li>public Iterator/Collection getROLENAMEs(Object handle) - 0..*
  * <li>public String getName(Object handle) - Name
  * </ul>
- *
- * Signature to get a token is:
- * <ul>
- * <li>public Object getTYPEToken().
- * </ul>
- *
- * The reason for having the tokens as methods is that it needs to be a
- * method for the interface to work correctly.
  *
  * @author Linus Tolke
  */
@@ -2199,23 +2191,6 @@ public class ModelFacade {
             return ((MLink) handle).getConnections();
         }
 	return illegalArgumentCollection(handle);
-    }
-
-    /**
-     * Determine if a model element contains a connection.
-     *
-     * @param handle is the model element
-     * @param connection is the connection that is searched for.
-     * @return true if the model element contains a connection
-     */
-    public boolean containsConnection(Object handle, Object connection) {
-        if (handle instanceof MAssociation) {
-            return ((MAssociation) handle).getConnections().contains(
-                connection);
-        }
-
-        // ...
-	return illegalArgumentBoolean(handle);
     }
 
     /**
