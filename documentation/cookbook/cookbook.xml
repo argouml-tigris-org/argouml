@@ -5357,7 +5357,7 @@ Each domain has a name and is handled by a file.
 This is set up in <classname>org.argouml.application.Main</classname>.
 </para>
       <sect2>
-	<title>Organising translators</title>
+	<title>Organizing translators</title>
 	<indexterm>
 	  <primary>Language</primary>
 	  <secondary>teams</secondary>
@@ -6251,7 +6251,7 @@ part of the documentation. These ideas are formulated by Linus Tolke.
 	</author>
       </authorgroup>
     </chapterinfo>
-    <title>Organisation of ArgoUML documentation</title>
+    <title>Organization of ArgoUML documentation</title>
     <para>
 There are seven significantly different bits of documentation in the
 ArgoUML project.
@@ -7832,7 +7832,7 @@ join or move each section into the
       <sect2>
 	<title>Linux</title> 
   <para>There's a number of screen shots apps under Linux.
-  In KDE you kan use <comand>ksnapshot</command>. In Gnome you can use <command>Take a Screenshot</command> from the "Action" menu.</para>
+  In KDE you kan use <command>ksnapshot</command>. In Gnome you can use <command>Take a Screenshot</command> from the "Action" menu.</para>
       </sect2>
     </sect1>
     <sect1>
