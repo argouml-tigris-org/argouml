@@ -35,34 +35,57 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyVetoException;
 import java.text.ParseException;
-import javax.swing.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Vector;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
+import javax.swing.JMenu;
 
 import org.apache.log4j.Category;
-import org.argouml.application.api.*;
-import org.argouml.uml.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.generator.*;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.ui.*;
+import org.argouml.application.api.Notation;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.ui.ArgoJMenu;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.ui.CompartmentFigText;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.generator.ParserDisplay;
+import org.argouml.uml.ui.ActionAddAttribute;
+import org.argouml.uml.ui.ActionAddNote;
+import org.argouml.uml.ui.ActionAddOperation;
+import org.argouml.uml.ui.ActionCompartmentDisplay;
+import org.argouml.uml.ui.ActionModifier;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MBehavioralFeature;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MElementResidence;
+import ru.novosoft.uml.foundation.core.MFeature;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.foundation.core.MParameter;
+import ru.novosoft.uml.foundation.core.MStructuralFeature;
+import ru.novosoft.uml.foundation.data_types.MScopeKind;
+import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /**
  * <p>Class to display graphics for a UML Class in a diagram.</p>
@@ -499,43 +522,6 @@ public class FigClass extends FigNodeModelElement {
   ////////////////////////////////////////////////////////////////
   // user interaction methods
 
-  public void mousePressed(MouseEvent me) {
-    super.mousePressed(me);
-    boolean targetIsSet = false;
-    int i = 0;
-    Editor ce = Globals.curEditor();
-    Selection sel = ce.getSelectionManager().findSelectionFor(this);
-    if (sel instanceof SelectionClass)
-      ((SelectionClass)sel).hideButtons();
-    unhighlight();
-    //display attr/op properties if necessary:
-    Rectangle r = new Rectangle(me.getX() - 1, me.getY() - 1, 2, 2);
-	Fig f = hitFig(r);
-    if (f == _attrVec && _attrVec.getHeight() > 0) {
-	  Vector v = _attrVec.getFigs();
-	  i = (v.size()-1) * (me.getY() - f.getY() - 3) / _attrVec.getHeight();
-	  if (i >= 0 && i < v.size()-1) {
-	    targetIsSet = true;
-	    f = (Fig)v.elementAt(i+1);
-		((CompartmentFigText)f).setHighlighted(true);
-		highlightedFigText = (CompartmentFigText)f;
-		ProjectBrowser.TheInstance.setTarget(f);
-	  }
-	}
-    else if (f == _operVec && _operVec.getHeight() > 0) {
-	  Vector v = _operVec.getFigs();
-	  i = (v.size()-1) * (me.getY() - f.getY() - 3) / _operVec.getHeight();
-	  if (i >= 0 && i < v.size()-1) {
-	    targetIsSet = true;
-	    f = (Fig)v.elementAt(i+1);
-		((CompartmentFigText)f).setHighlighted(true);
-		highlightedFigText = (CompartmentFigText)f;
-		ProjectBrowser.TheInstance.setTarget(f);
-	  }
-	}
-	if (targetIsSet == false)
-	  ProjectBrowser.TheInstance.setTarget(getOwner());
-  }
 
   public void mouseExited(MouseEvent me) {
     super.mouseExited(me);
@@ -998,5 +984,52 @@ public class FigClass extends FigNodeModelElement {
        super.setOwner(own);
     }
 
+
+    /**
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     */
+    public void mouseClicked(MouseEvent me) {
+        
+        if (me.isConsumed()) return;
+    super.mouseClicked(me);
+    
+    boolean targetIsSet = false;
+    int i = 0;
+    Editor ce = Globals.curEditor();
+    Selection sel = ce.getSelectionManager().findSelectionFor(this);
+    if (sel instanceof SelectionClass)
+      ((SelectionClass)sel).hideButtons();
+    unhighlight();
+    //display attr/op properties if necessary:
+    Rectangle r = new Rectangle(me.getX() - 1, me.getY() - 1, 2, 2);
+    Fig f = hitFig(r);
+    if (f == _attrVec && _attrVec.getHeight() > 0) {
+      Vector v = _attrVec.getFigs();
+      i = (v.size()-1) * (me.getY() - f.getY() - 3) / _attrVec.getHeight();
+      if (i >= 0 && i < v.size()-1) {
+        targetIsSet = true;
+            me.consume();
+        f = (Fig)v.elementAt(i+1);
+        ((CompartmentFigText)f).setHighlighted(true);
+        highlightedFigText = (CompartmentFigText)f;
+        ProjectBrowser.TheInstance.setTarget(f);
+      }
+    }
+    else if (f == _operVec && _operVec.getHeight() > 0) {
+      Vector v = _operVec.getFigs();
+      i = (v.size()-1) * (me.getY() - f.getY() - 3) / _operVec.getHeight();
+      if (i >= 0 && i < v.size()-1) {
+        targetIsSet = true;
+            me.consume();
+        f = (Fig)v.elementAt(i+1);
+        ((CompartmentFigText)f).setHighlighted(true);
+        highlightedFigText = (CompartmentFigText)f;
+        ProjectBrowser.TheInstance.setTarget(f);
+      }
+    }
+    if (targetIsSet == false)
+      ProjectBrowser.TheInstance.setTarget(getOwner());
+      
+    }
 
 } /* end class FigClass */
