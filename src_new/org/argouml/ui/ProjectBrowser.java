@@ -121,7 +121,7 @@ public class ProjectBrowser extends JFrame
   
     private Map detailsPanesByCompassPoint = new HashMap();
   
-    protected JMenuBar _menuBar = new GenericArgoMenuBar();
+    protected GenericArgoMenuBar _menuBar = new GenericArgoMenuBar();
 
 
     /**
@@ -301,7 +301,7 @@ public class ProjectBrowser extends JFrame
         // @todo - there is work in progress for toolbars - Bob Tarling
         JPanel toolbarBoundry = new JPanel();
         toolbarBoundry.setLayout(new BorderLayout());
-    
+        toolbarBoundry.add(_menuBar.getMultiToolbar(), BorderLayout.NORTH);
         toolbarBoundry.add(_workarea, BorderLayout.CENTER);
 
         return toolbarBoundry;
