@@ -6140,23 +6140,10 @@ Like this:
 // &dollar;Id&dollar;
 // Copyright (c) 2002 The Regents of the University of California. All
 // ...
-// $Id$
-// Copyright ...
+
 // Classes: blabla, blabla (all classes of interest in this file)
 // Original Author: who ever
 </programlisting>
-</para>
-      </listitem>
-      <listitem>
-	<para>
-Use the 
-<programlisting>
-import ...*;
-</programlisting>
-command to keep the code short. 
-We prefer to let name conflicts arrise so that I can catch them, rather
-than always use explicit package.class names and end up with code that
-cannot be changed to the package-name-only style.
 </para>
       </listitem>
       <listitem>
