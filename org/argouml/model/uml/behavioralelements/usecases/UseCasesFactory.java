@@ -25,6 +25,7 @@ package org.argouml.model.uml.behavioralelements.usecases;
 
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.use_cases.MActor;
@@ -33,6 +34,7 @@ import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.behavior.use_cases.MUseCaseInstance;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  * Factory to create UML classes for the UML
@@ -230,6 +232,30 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
          }
 
          return include;
+     }
+     
+	/**
+	 * Builds an actor in the project's model namespace.
+	 * @return MActor
+	 */
+     public MActor buildActor() {
+	     MNamespace ns = ProjectBrowser.TheInstance.getProject().getModel();
+	     return buildActor(ns);
+     }
+     
+	/**
+	 * Builds an actor in the given namespace.
+	 * @param ns
+	 * @return MActor
+	 */
+     public MActor buildActor(MNamespace ns) {
+     	if (ns == null) return buildActor();
+     	MActor actor = createActor();
+     	actor.setNamespace(ns);
+     	actor.setLeaf(false);
+     	actor.setRoot(false);
+     	actor.setName("newActor");
+     	return actor;
      }
 
 

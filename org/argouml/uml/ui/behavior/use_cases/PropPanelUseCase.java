@@ -39,9 +39,11 @@ package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.application.api.*;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
+import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
+import org.argouml.util.ConfigLoader;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -76,8 +78,66 @@ public class PropPanelUseCase extends PropPanelClassifier {
         // Invoke the Classifier constructor, but passing in our name and
         // representation and requesting 3 columns
 
-        super("UseCase", _useCaseIcon, 3);
+        super("UseCase", _useCaseIcon, ConfigLoader.getTabPropsOrientation());
+        
+        addField(Argo.localize("UMLMenu", "label.name"), nameField);
+    	addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+    	addField(Argo.localize("UMLMenu", "label.namespace"),namespaceScroll);
+		
+		PropPanelModifiers mPanel = new PropPanelModifiers(2);
+        Class              mclass = MUseCase.class;
 
+        mPanel.add("isAbstract", mclass, "isAbstract", "setAbstract",
+                   Argo.localize("UMLMenu", "checkbox.abstract-lc"), this);
+        mPanel.add("isLeaf", mclass, "isLeaf", "setLeaf",
+                   Argo.localize("UMLMenu", "checkbox.final-lc"), this);
+        mPanel.add("isRoot", mclass, "isRoot", "setRoot",
+                   localize("root"), this);
+		addField(Argo.localize("UMLMenu", "label.modifiers"),mPanel);
+		
+		JList extensionPoints =
+            new UMLList(new UMLExtensionPointListModel(this, true, false),
+                        true);
+        extensionPoints.setForeground(Color.blue);
+        JScrollPane extensionPointsScroll =
+            new JScrollPane(extensionPoints,
+                            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        addField(Argo.localize("UMLMenu", "label.extensionpoints"), extensionPointsScroll);
+		
+		add(LabelledLayout.getSeperator());
+		
+		addField(Argo.localize("UMLMenu", "label.generalizations"), extendsScroll);
+    	addField(Argo.localize("UMLMenu", "label.specializations"), derivedScroll);
+    	
+    	JList extendsList =
+            new UMLList(new UMLExtendListModel(this, "extend", true), true);
+        extendsList.setBackground(getBackground());
+        extendsList.setForeground(Color.blue);
+        JScrollPane extendsScroll =
+            new JScrollPane(extendsList,
+                            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		addField(Argo.localize("UMLMenu", "label.extends"), extendsScroll);
+		
+		JList includeList =
+            new UMLList(new UMLIncludeListModel(this, "include", true), true);
+        includeList.setBackground(getBackground());
+        includeList.setForeground(Color.blue);
+        JScrollPane includeScroll =
+            new JScrollPane(includeList,
+                            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		addField(Argo.localize("UMLMenu", "label.includes"), includeScroll);
+		
+		add(LabelledLayout.getSeperator());
+		
+		addField(Argo.localize("UMLMenu", "label.associations"), connectScroll);
+    	addField(Argo.localize("UMLMenu", "label.operations"), opsScroll);
+   	 	addField(Argo.localize("UMLMenu", "label.attributes"), attrScroll);	
+		
+	
+		/*
         // The first column. All single line entries, so we just let the label
         // at the bottom (modifiers) take the vertical weighting.
 
@@ -192,6 +252,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
 
         // The toolbar buttons that go at the top.
 
+		*/
         new PropPanelButton(this, buttonPanel, _navUpIcon,
                             Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace",
                             null);
