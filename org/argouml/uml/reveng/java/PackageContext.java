@@ -76,7 +76,7 @@ class PackageContext extends Context
 		    ModelFacade.setTaggedValue(mInterface,MMUtil.GENERATED_TAG,"yes");
 		}
 	    }
-	    catch(Throwable e) {
+	    catch(ClassNotFoundException e) {
 		// We didn't find any interface
 	    }
 	}
@@ -127,7 +127,7 @@ class PackageContext extends Context
 		}
 		ModelFacade.setTaggedValue(mClassifier,MMUtil.GENERATED_TAG,"yes");
 	    }
-	    catch(Throwable e) {
+	    catch(ClassNotFoundException e) {
 		// No class or interface found
 	    }
 	}
