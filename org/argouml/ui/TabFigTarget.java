@@ -24,8 +24,6 @@
 
 package org.argouml.ui;
 
-import org.tigris.gef.presentation.Fig;
-
 /**
  * Empty interface used to tag Tabbed panels that accept a Fig Target.
  */

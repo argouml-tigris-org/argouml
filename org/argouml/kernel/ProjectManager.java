@@ -52,19 +52,21 @@ import org.xml.sax.SAXException;
 import ru.novosoft.uml.model_management.MModel;
 
 /**
- * This class manages the projects loaded in argouml. It is a singleton. Classes
- * in Argouml can ask this class for the current project and set the current project.
- * Since we only have one project in ArgoUML at the moment, this class does not 
- * manage a list of projects like one would expect. This could be a nice extension
- * for the future of argouml.
- * As soon as the current project is changed, a property changed event is fired.
+ * This class manages the projects loaded in argouml. It is a
+ * singleton. Classes in Argouml can ask this class for the current
+ * project and set the current project.  Since we only have one
+ * project in ArgoUML at the moment, this class does not manage a list
+ * of projects like one would expect. This could be a nice extension
+ * for the future of argouml.  As soon as the current project is
+ * changed, a property changed event is fired.
  * @since Nov 17, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public final class ProjectManager {
 
-    public final static String CURRENT_PROJECT_PROPERTY_NAME = "currentProject";
-    public final static String SAVE_STATE_PROPERTY_NAME = "saveState";
+    public static final String CURRENT_PROJECT_PROPERTY_NAME =
+	"currentProject";
+    public static final String SAVE_STATE_PROPERTY_NAME = "saveState";
 
     private Category cat = Category.getInstance(this.getClass());
 
@@ -126,7 +128,9 @@ public final class ProjectManager {
         _listenerList.remove(PropertyChangeListener.class, listener);
     }
 
-    private void firePropertyChanged(String propertyName, Object oldValue, Object newValue) {
+    private void firePropertyChanged(String propertyName,
+				     Object oldValue, Object newValue) 
+    {
         // Guaranteed to return a non-null array
         Object[] listeners = _listenerList.getListenerList();
         // Process the listeners last to first, notifying
@@ -165,10 +169,14 @@ public final class ProjectManager {
         if (_currentProject != null
 	    && _currentProject.getActiveDiagram() == null) {
             Vector diagrams = _currentProject.getDiagrams();
-            if (diagrams != null && !diagrams.isEmpty())
-                _currentProject.setActiveDiagram((ArgoDiagram) _currentProject.getDiagrams().get(0));
+            if (diagrams != null && !diagrams.isEmpty()) {
+		ArgoDiagram activeDiagram =
+		    (ArgoDiagram) _currentProject.getDiagrams().get(0);
+                _currentProject.setActiveDiagram(activeDiagram);
+	    }
         }
-        firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME, oldProject, newProject);
+        firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME,
+			    oldProject, newProject);
     }
 
     /**
@@ -197,20 +205,22 @@ public final class ProjectManager {
     }
 
     /**   
-        * This method creates a project from the specified URL
-        *
-        * Unlike    the constructor which forces an .argo extension    This method
-        * will attempt to load a raw XMI file
-        * <P>
-        * This method can fail in several different ways. Either by throwing
-        * an exception or by having the ArgoParser.SINGLETON.getLastLoadStatus()
-        * set to not true.
-        * <P>
-        * TODO: The exception in the throws clause should be splitted in several
-        * other types of exceptions to handle errors better
-        */
+     * This method creates a project from the specified URL
+     *
+     * Unlike the constructor which forces an .argo extension This
+     * method will attempt to load a raw XMI file
+     * 
+     * This method can fail in several different ways. Either by
+     * throwing an exception or by having the
+     * ArgoParser.SINGLETON.getLastLoadStatus() set to not true.
+     * 
+     * TODO: The exception in the throws clause should be splitted
+     * in several other types of exceptions to handle errors better
+     */
     public Project loadProject(URL url)
-        throws IOException, IllegalFormatException, SAXException, ParserConfigurationException {
+        throws IOException, IllegalFormatException, SAXException,
+	       ParserConfigurationException 
+    {
         Project p = null;
         String urlString = url.toString();
         int lastDot = urlString.lastIndexOf(".");
@@ -220,9 +230,11 @@ public final class ProjectManager {
         }
         if (suffix.equals(".xmi")) {
             p = loadProjectFromXMI(url);
-        } else if (suffix.equals(FileConstants.COMPRESSED_FILE_EXT)) { // normal case, .zargo
+        } else if (suffix.equals(FileConstants.COMPRESSED_FILE_EXT)) {
+	    // normal case, .zargo
             p = loadProjectFromZargo(url);
-        } else if (suffix.equals(FileConstants.UNCOMPRESSED_FILE_EXT)) { // the old argo format probably
+        } else if (suffix.equals(FileConstants.UNCOMPRESSED_FILE_EXT)) {
+	    // the old argo format probably
             p = loadProjectFromZargo(url);
         } else {
             throw new IllegalFormatException(
@@ -268,7 +280,9 @@ public final class ProjectManager {
             // first read the .argo file from Zip
             ZipEntry entry = zis.getNextEntry();
             String name = null;
-            while (entry != null && !entry.getName().endsWith(FileConstants.PROJECT_FILE_EXT)) {                            
+            while (entry != null
+		   && !entry.getName().endsWith(FileConstants.PROJECT_FILE_EXT))
+	    {
                 entry = zis.getNextEntry();
             }
 
@@ -281,7 +295,8 @@ public final class ProjectManager {
             zis.close();
 
         } catch (IOException e) {
-            // exception can occur both due to argouml code as to J2SE code, so lets log it
+            // exception can occur both due to argouml code as to J2SE
+            // code, so lets log it
             cat.error(e);
             throw e;
         }
@@ -294,7 +309,8 @@ public final class ProjectManager {
             while (!name.endsWith(".xmi")) {
                 ZipEntry nextEntry = zis.getNextEntry();
                 if (nextEntry == null)
-                    throw new IOException("The XMI file is missing from the .zargo file.");
+                    throw new IOException("The XMI file is missing "
+					  + "from the .zargo file.");
                 name = nextEntry.getName();
             }
 
@@ -304,7 +320,8 @@ public final class ProjectManager {
             } catch (SAXException se) { // duh, this must be catched and handled
                 cat.error(se);
                 throw se;
-            } catch (ParserConfigurationException pc) { // duh, this must be catched and handled
+            } catch (ParserConfigurationException pc) {
+		// duh, this must be catched and handled
                 cat.error(pc);
                 throw pc;
             }
@@ -313,8 +330,9 @@ public final class ProjectManager {
             InputSource source = new InputSource(zis);
             source.setEncoding("UTF-8");
             mmodel = xmiReader.parseToModel(new InputSource(zis));
-            // the following strange construction is needed because Novosoft does 
-            // not really know how to handle exceptions...
+            // the following strange construction is needed because
+            // Novosoft does not really know how to handle
+            // exceptions...
             if (xmiReader.getErrors()) {
                 if (xmiReader.getErrors()) {
                     ArgoParser.SINGLETON.setLastLoadStatus(false);
@@ -338,7 +356,8 @@ public final class ProjectManager {
             zis.close();
 
         } catch (IOException e) {
-            // exception can occur both due to argouml code as to J2SE code, so lets log it
+            // exception can occur both due to argouml code as to J2SE
+            // code, so lets log it
             cat.error(e);
             throw e;
         }

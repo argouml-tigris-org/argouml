@@ -25,7 +25,6 @@
 package org.argouml.kernel;
 
 import java.util.*;
-import java.util.Enumeration;
 import javax.swing.event.EventListenerList;
 
 import org.argouml.cognitive.*;
@@ -59,7 +58,8 @@ public class History {
 
     public void addItem(String head, String desc, Object target,
 			Object oldValue, Object newValue) {
-	HistoryItem hi = new HistoryItem(head, desc, target, oldValue, newValue);
+	HistoryItem hi =
+	    new HistoryItem(head, desc, target, oldValue, newValue);
 	addItem(hi);
     }
 
@@ -86,7 +86,8 @@ public class History {
     }
 
     public void addItemCritique(ToDoItem item) {
-	HistoryItem hi = new org.argouml.cognitive.critics.HistoryItemCritique(item);
+	HistoryItem hi =
+	    new org.argouml.cognitive.critics.HistoryItemCritique(item);
 	addItem(hi);
     }
 

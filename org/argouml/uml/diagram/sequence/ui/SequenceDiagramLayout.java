@@ -40,10 +40,7 @@ import java.awt.Rectangle;
 import java.awt.Color;
 
 import org.apache.log4j.Category;
-import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.LayerPerspective;
-import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.FigDynPort;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;

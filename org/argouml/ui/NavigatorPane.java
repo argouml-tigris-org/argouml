@@ -111,7 +111,10 @@ import ru.novosoft.uml.MElementListener;
  */
 public class NavigatorPane
     extends JPanel
-    implements ItemListener, PropertyChangeListener, QuadrantPanel, MElementListener {
+    implements ItemListener, PropertyChangeListener,
+	       QuadrantPanel,
+	       MElementListener
+{
 
     protected transient Category cat = Category.getInstance(this.getClass());
 
@@ -186,8 +189,8 @@ public class NavigatorPane
         if (doSplash) {
             SplashScreen splash =
                 ProjectBrowser.getInstance().getSplashScreen();
-            splash.getStatusBar().showStatus(
-					     "Making NavigatorPane: Setting Perspectives");
+            splash.getStatusBar().showStatus("Making NavigatorPane: "
+					     + "Setting Perspectives");
             splash.getStatusBar().showProgress(25);
         }
 
@@ -507,96 +510,96 @@ public class NavigatorPane
         // Subsystem is travsersed via Classifier. Eugenio
         GoFilteredChildren modelToPackages =
             new GoFilteredChildren(
-				   "misc.package.subpackages",
-				   new GoModelToElements(),
-				   new PredAND(
-					       new PredInstanceOf((Class) ModelFacade.PACKAGE),
-					       new PredNotInstanceOf((Class) ModelFacade.SUBSYSTEM)));
+		    "misc.package.subpackages",
+		    new GoModelToElements(),
+		    new PredAND(new PredInstanceOf(
+					(Class) ModelFacade.PACKAGE),
+				new PredNotInstanceOf(
+					(Class) ModelFacade.SUBSYSTEM)));
 
         GoFilteredChildren modelToClassifiers =
             new GoFilteredChildren(
-				   "misc.package.classifiers",
-				   new GoModelToElements(),
-				   new PredInstanceOf((Class) ModelFacade.CLASSIFIER));
+		    "misc.package.classifiers",
+		    new GoModelToElements(),
+		    new PredInstanceOf((Class) ModelFacade.CLASSIFIER));
 
         // AssociationClass is traversed via Classifier. Eugenio
         GoFilteredChildren modelToAssociations =
             new GoFilteredChildren(
-				   "misc.package.associations",
-				   new GoModelToElements(),
-				   new PredAND(
-					       new PredInstanceOf((Class) ModelFacade.ASSOCIATION),
-					       new PredNotInstanceOf((Class) ModelFacade.ASSOCIATION_CLASS)));
+		    "misc.package.associations",
+		    new GoModelToElements(),
+		    new PredAND(
+			    new PredInstanceOf(
+				    (Class) ModelFacade.ASSOCIATION),
+			    new PredNotInstanceOf(
+				    (Class) ModelFacade.ASSOCIATION_CLASS)));
 
         GoFilteredChildren modelToGeneralizations =
             new GoFilteredChildren(
-				   "misc.package.generalizations",
-				   new GoModelToElements(),
-				   new PredInstanceOf((Class) ModelFacade.GENERALIZATION));
+		    "misc.package.generalizations",
+		    new GoModelToElements(),
+		    new PredInstanceOf((Class) ModelFacade.GENERALIZATION));
 
         // Extend and include are traversed via use case.
         GoFilteredChildren modelToExtendsAndIncludes =
             new GoFilteredChildren(
-				   "Package->Extends/Includes",
-				   new GoModelToElements(),
-				   new PredOR(
-					      new PredInstanceOf((Class) ModelFacade.EXTEND),
-					      new PredInstanceOf((Class) ModelFacade.INCLUDE)));
+		    "Package->Extends/Includes",
+		    new GoModelToElements(),
+		    new PredOR(new PredInstanceOf((Class) ModelFacade.EXTEND),
+			       new PredInstanceOf(
+				       (Class) ModelFacade.INCLUDE)));
 
         GoFilteredChildren modelToDependencies =
-            new GoFilteredChildren(
-				   "misc.package.dependencies",
+            new GoFilteredChildren("misc.package.dependencies",
 				   new GoModelToElements(),
-				   new PredInstanceOf((Class) ModelFacade.DEPENDENCY));
+				   new PredInstanceOf(
+					   (Class) ModelFacade.DEPENDENCY));
 
         GoFilteredChildren modelToInstances =
-            new GoFilteredChildren(
-				   "misc.package.instances",
+            new GoFilteredChildren("misc.package.instances",
 				   new GoModelToElements(),
-				   new PredInstanceOf((Class) ModelFacade.OBJECT));
+				   new PredInstanceOf(
+					   (Class) ModelFacade.OBJECT));
         GoFilteredChildren modelToLinks =
-            new GoFilteredChildren(
-				   "misc.package.links",
+            new GoFilteredChildren("misc.package.links",
 				   new GoModelToElements(),
-				   new PredInstanceOf((Class) ModelFacade.LINK));
+				   new PredInstanceOf(
+					   (Class) ModelFacade.LINK));
         GoFilteredChildren modelToCollaboration =
-            new GoFilteredChildren(
-				   "misc.package.collaborations",
+            new GoFilteredChildren("misc.package.collaborations",
 				   new GoModelToElements(),
-				   new PredInstanceOf((Class) ModelFacade.COLLABORATION));
+				   new PredInstanceOf(
+					   (Class) ModelFacade.COLLABORATION));
 
         GoFilteredChildren modelToComponentInstance =
             new GoFilteredChildren(
-				   "misc.package.componentinstance",
-				   new GoModelToElements(),
-				   new PredInstanceOf((Class) ModelFacade.COMPONENT_INSTANCE));
+		    "misc.package.componentinstance",
+		    new GoModelToElements(),
+		    new PredInstanceOf(
+			    (Class) ModelFacade.COMPONENT_INSTANCE));
 
         GoFilteredChildren modelToNodeInstance =
             new GoFilteredChildren(
-				   "misc.package.nodeinstance",
-				   new GoModelToElements(),
-				   new PredInstanceOf((Class) ModelFacade.NODE_INSTANCE));
+		    "misc.package.nodeinstance",
+		    new GoModelToElements(),
+		    new PredInstanceOf((Class) ModelFacade.NODE_INSTANCE));
 
         GoFilteredChildren machineToFinalState =
-            new GoFilteredChildren(
-				   "misc.state-machine.final-states",
+            new GoFilteredChildren("misc.state-machine.final-states",
 				   new GoMachineToState(),
 				   PredIsFinalState.TheInstance);
         GoFilteredChildren machineToInitialState =
-            new GoFilteredChildren(
-				   "misc.state-machine.initial-states",
+            new GoFilteredChildren("misc.state-machine.initial-states",
 				   new GoMachineToState(),
 				   PredIsStartState.TheInstance);
         transitionPaths.addSubTreeModel(machineToInitialState);
 
         GoFilteredChildren compositeToFinalStates =
-            new GoFilteredChildren(
-				   "misc.state.final-substates",
+            new GoFilteredChildren("misc.state.final-substates",
 				   new GoCompositeStateToSubvertex(),
 				   PredIsFinalState.TheInstance);
         GoFilteredChildren compositeToInitialStates =
-            new GoFilteredChildren(
-				   "misc.state.initial-substates",
+            new GoFilteredChildren("misc.state.initial-substates",
 				   new GoCompositeStateToSubvertex(),
 				   PredIsStartState.TheInstance);
 
@@ -688,7 +691,7 @@ public class NavigatorPane
         collabCentric.addSubTreeModel(new GoInteractionMessages());
 
         useCaseToExtensionPoint.addSubTreeModel(
-						new GoUseCaseToExtensionPoint());
+		new GoUseCaseToExtensionPoint());
 
         classToBehStr.addSubTreeModel(new GoClassifierToStructuralFeature());
         classToBehStr.addSubTreeModel(new GoClassifierToBeh());
@@ -832,8 +835,8 @@ public class NavigatorPane
 			     instanceof UMLSequenceDiagram))) {
                     UMLAction action =
                         new ActionAddExistingNode(
-						  menuLocalize("menu.popup.add-to-diagram"),
-						  obj);
+			        menuLocalize("menu.popup.add-to-diagram"),
+				obj);
                     action.setEnabled(action.shouldBeEnabled());
                     popup.add(action);
                 }
@@ -848,8 +851,8 @@ public class NavigatorPane
                     || (ModelFacade.isATransition(obj))) {
                     UMLAction action =
                         new ActionAddExistingEdge(
-						  menuLocalize("menu.popup.add-to-diagram"),
-						  obj);
+				menuLocalize("menu.popup.add-to-diagram"),
+				obj);
                     action.setEnabled(action.shouldBeEnabled());
                     popup.add(action);
                 }
@@ -871,7 +874,8 @@ public class NavigatorPane
                     popup.add(ActionAddPackage.SINGLETON);
                 }
                 if (obj != null) { 
-                    popup.add(new ActionGoToDetails(menuLocalize("action.properties")));
+                    popup.add(new ActionGoToDetails(
+				      menuLocalize("action.properties")));
                 }
             }
             if (popup.getComponentCount() > 0) {
@@ -885,7 +889,7 @@ public class NavigatorPane
          * @param key The key for the string to localize.
          * @return The localized string.
          */
-        final private String menuLocalize(String key) {
+        private final String menuLocalize(String key) {
             return Argo.localize("Tree", key);
         }
 
@@ -915,7 +919,8 @@ public class NavigatorPane
     /**
      * If a element changes, this will be catched by this method and reflected
      * in the tree.
-     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
+     * @see
+     * ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
      */
     public void listRoleItemSet(MElementEvent e) {
         if (e.getAddedValue() != null
@@ -930,7 +935,8 @@ public class NavigatorPane
     /**
      * If a element changes, this will be catched by this method and reflected
      * in the tree.
-     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     * @see
+     * ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
      */
     public void propertySet(MElementEvent e) {
         if (e.getAddedValue() != null
@@ -945,7 +951,8 @@ public class NavigatorPane
     /**
      * If a element changes, this will be catched by this method and reflected
      * in the tree.
-     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
+     * @see
+     * ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
      */
     public void recovered(MElementEvent e) {
         if (e.getAddedValue() != null
@@ -960,7 +967,8 @@ public class NavigatorPane
     /**
      * If a element changes, this will be catched by this method and reflected
      * in the tree.
-     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     * @see
+     * ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
      */
     public void removed(MElementEvent e) {
         if (e.getAddedValue() != null
@@ -975,7 +983,8 @@ public class NavigatorPane
     /**
      * If a element changes, this will be catched by this method and reflected
      * in the tree.
-     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     * @see
+     * ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
         if (e.getAddedValue() != null
@@ -990,7 +999,8 @@ public class NavigatorPane
     /**
      * If a element changes, this will be catched by this method and reflected
      * in the tree.
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     * @see
+     * ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
         if (e.getAddedValue() != null

@@ -30,14 +30,6 @@ package org.argouml.ui;
 
 import java.io.Serializable;
 import java.util.Iterator;
-import java.util.Vector;
-
-import javax.swing.event.EventListenerList;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
 
 /**
  * This class represents 3 concepts, although it should only represent
@@ -69,14 +61,17 @@ public class NavPerspective
     // TreeModel implementation - overriding TreeModelComposite
 
     /**
-     * Will return the first found child object in the navtree. The child can be 
-     * a TreeNode in case the super will be called to handle this. In all other
-     * cases we try to handle it in a recursive way.
+     * Will return the first found child object in the navtree. The
+     * child can be a TreeNode in case the super will be called to
+     * handle this. In all other cases we try to handle it in a
+     * recursive way.
      *
      * <p>TODO this does not work yet since the implementation of getChildren of
      * AbstractGoRule only takes one level into account.
      *
-     * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object, java.lang.Object)
+     * @see
+     * javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object,
+     * java.lang.Object)
      */
     public int getIndexOfChild(Object parent, Object child) {
         
@@ -115,7 +110,8 @@ public class NavPerspective
         else {
             int index = rule.getIndexOfChild(parent, child);
             if (index == -1) {
-                // the level directly under the parent does not contain the child
+                // the level directly under the parent does not
+                // contain the child
 
 		int counter = 0;
 		Iterator it = rule.getChildren(parent).iterator();

@@ -41,7 +41,6 @@ import org.tigris.gef.graph.*;
 
 import org.argouml.uml.diagram.ui.*;
 import org.apache.log4j.Category;
-import org.argouml.uml.MMUtil;
 
 // could be singleton
 
@@ -126,11 +125,15 @@ public class ClassDiagramRenderer
             cat.debug("get fig for " + edge);
             MDependency dep = (MDependency) edge;
             cat.debug("stereo " + dep.getStereotype());
-            if (dep.getStereotype() != null && dep.getStereotype().getName().equals("realize")) {
+            if (dep.getStereotype() != null
+		&& dep.getStereotype().getName().equals("realize"))
+	    {
                 FigRealization realFig = new FigRealization(dep);
 		  
-                MModelElement supplier = (MModelElement) ((dep.getSuppliers().toArray())[0]);
-                MModelElement client = (MModelElement) ((dep.getClients().toArray())[0]);
+                MModelElement supplier =
+		    (MModelElement) ((dep.getSuppliers().toArray())[0]);
+                MModelElement client =
+		    (MModelElement) ((dep.getClients().toArray())[0]);
 		  
                 FigNode supFN = (FigNode) lay.presentationFor(supplier);
                 FigNode cliFN = (FigNode) lay.presentationFor(client);

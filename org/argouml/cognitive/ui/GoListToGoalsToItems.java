@@ -38,7 +38,7 @@ public class GoListToGoalsToItems implements TreeModel {
     // TreeModel implementation
   
     public Object getRoot() {
-	throw new UnsupportedOperationException("getRoot should never be called");
+	throw new UnsupportedOperationException();
     } 
     public void setRoot(Object r) { }
 
@@ -48,7 +48,8 @@ public class GoListToGoalsToItems implements TreeModel {
 	}
 	if (parent instanceof Goal) {
 	    Goal g = (Goal) parent;
-	    java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
+	    Enumeration itemEnum =
+		Designer.TheDesigner.getToDoList().elements();
 	    while (itemEnum.hasMoreElements()) {
 		ToDoItem item = (ToDoItem) itemEnum.nextElement();
 		if (item.getPoster().supports(g)) {
@@ -57,7 +58,8 @@ public class GoListToGoalsToItems implements TreeModel {
 		}
 	    }
 	}
-	throw new IndexOutOfBoundsException("getChild shouldnt get here GoListToGoalsToItems");
+	throw new IndexOutOfBoundsException("getChild shouldnt get here "
+					    + "GoListToGoalsToItems");
     }
   
     public int getChildCount(Object parent) {
@@ -66,7 +68,8 @@ public class GoListToGoalsToItems implements TreeModel {
 	}
 	if (parent instanceof Goal) {
 	    Goal g = (Goal) parent;
-	    java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
+	    Enumeration itemEnum =
+		Designer.TheDesigner.getToDoList().elements();
 	    int count = 0;
 	    while (itemEnum.hasMoreElements()) {
 		ToDoItem item = (ToDoItem) itemEnum.nextElement();
@@ -86,7 +89,8 @@ public class GoListToGoalsToItems implements TreeModel {
 	    // found and index == 0
 	    Vector candidates = new Vector();
 	    Goal g = (Goal) parent;
-	    java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
+	    Enumeration itemEnum =
+		Designer.TheDesigner.getToDoList().elements();
 	    while (itemEnum.hasMoreElements()) {
 		ToDoItem item = (ToDoItem) itemEnum.nextElement();
 		if (item.getPoster().supports(g)) candidates.addElement(item);

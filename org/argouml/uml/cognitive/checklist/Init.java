@@ -43,7 +43,9 @@ public class Init {
 
     /** static initializer, register all appropriate critics */
     public static void init(Locale locale) {
-	ResourceBundle bundle = ResourceBundle.getBundle("org.argouml.i18n.UMLCognitiveResourceBundle", locale);
+	ResourceBundle bundle =
+	    ResourceBundle
+	    .getBundle("org.argouml.i18n.UMLCognitiveResourceBundle", locale);
 	addChecklist(bundle,  MClass.class, "ChClass");
 	addChecklist(bundle,  MInterface.class, "ChInterface");
 	addChecklist(bundle,  MAttribute.class, "ChAttribute");
@@ -59,7 +61,8 @@ public class Init {
     private static void addChecklist(ResourceBundle bundle,
 				     Class cls, String key) {
         try {
-            UMLChecklist checklist = new UMLChecklist((String[][]) bundle.getObject(key));
+            UMLChecklist checklist =
+		new UMLChecklist((String[][]) bundle.getObject(key));
             CheckManager.register(cls, checklist);
         }
         catch (MissingResourceException e) {

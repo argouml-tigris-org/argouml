@@ -40,7 +40,6 @@ package org.argouml.uml.ui;
 
 import java.util.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 import javax.swing.*;
 

@@ -74,23 +74,25 @@ public class DnDNavigatorTree extends DisplayTextTree
         _dragSource = DragSource.getDefaultDragSource();
         
         DragGestureRecognizer dgr =
-	    _dragSource.createDefaultDragGestureRecognizer(
-							   this,
-							   DnDConstants.ACTION_COPY_OR_MOVE, //specifies valid actions
-							   this);
+	    _dragSource
+	        .createDefaultDragGestureRecognizer(
+		    this,
+		    DnDConstants.ACTION_COPY_OR_MOVE, //specifies valid actions
+		    this);
         
         // Eliminates right mouse clicks as valid actions
         dgr.setSourceActions(dgr.getSourceActions() & ~InputEvent.BUTTON3_MASK);
         
         // First argument:  Component to associate the target with
         // Second argument: DropTargetListener
-        DropTarget dropTarget = new DropTarget(this, new ArgoDropTargetListener());
+        DropTarget dropTarget =
+	    new DropTarget(this, new ArgoDropTargetListener());
     }
     
     /**
      * recognises the start of the drag
      */
-    public void dragGestureRecognized(java.awt.dnd.DragGestureEvent dragGestureEvent) {
+    public void dragGestureRecognized(DragGestureEvent dragGestureEvent) {
         
         //Get the selected node from the JTree
         _selectedTreePath = getSelectionPath();
@@ -130,7 +132,7 @@ public class DnDNavigatorTree extends DisplayTextTree
         /**
          * set correct cursor.
          */
-        public void dragOver(java.awt.dnd.DropTargetDragEvent dropTargetDragEvent) {
+        public void dragOver(DropTargetDragEvent dropTargetDragEvent) {
             
             // _cat.debug("dragOver");
             //set cursor location. Needed in setCursor method
@@ -142,7 +144,8 @@ public class DnDNavigatorTree extends DisplayTextTree
             // can't drag to a descendant
             // there will be other rules.
             if (!_selectedTreePath.isDescendant(destinationPath)) {
-                dropTargetDragEvent.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
+                dropTargetDragEvent
+		    .acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
             }
             // ...otherwise reject drop
             else
@@ -162,14 +165,14 @@ public class DnDNavigatorTree extends DisplayTextTree
                 
                 //flavor not supported, reject drop
                 if (!tr.isDataFlavorSupported( 
-					      TransferableModelElement.ELEM_FLAVOR)) {
+			     TransferableModelElement.ELEM_FLAVOR)) {
                     _cat.debug("! isDataFlavorSupported");
                     dropTargetDropEvent.rejectDrop();
                 }
                 
                 //get the model element that is being transfered.
-                Object modelElement = tr.getTransferData( 
-							 TransferableModelElement.ELEM_FLAVOR );
+                Object modelElement =
+		    tr.getTransferData(TransferableModelElement.ELEM_FLAVOR );
                 
                 _cat.debug("transfer data = " + modelElement);
                 
@@ -186,11 +189,11 @@ public class DnDNavigatorTree extends DisplayTextTree
 			{
 			    public void run() {
 				JOptionPane.showMessageDialog(
-							      ProjectBrowser.getInstance(),
-							      msg,
-							      "Error Dialog", 
-							      JOptionPane.ERROR_MESSAGE
-							      );
+					ProjectBrowser.getInstance(),
+					msg,
+					"Error Dialog", 
+					JOptionPane.ERROR_MESSAGE
+					);
 			    }
 			});
                     // reset the cursor.
@@ -218,9 +221,11 @@ public class DnDNavigatorTree extends DisplayTextTree
                     }
                     
                     if (copyAction)
-                        dropTargetDropEvent.acceptDrop(DnDConstants.ACTION_COPY);
+                        dropTargetDropEvent
+			    .acceptDrop(DnDConstants.ACTION_COPY);
                     else
-                        dropTargetDropEvent.acceptDrop(DnDConstants.ACTION_MOVE);
+                        dropTargetDropEvent
+			    .acceptDrop(DnDConstants.ACTION_MOVE);
                 }
                 catch (java.lang.IllegalStateException ils) {
                     _cat.debug("drop IllegalStateException");
@@ -269,7 +274,9 @@ public class DnDNavigatorTree extends DisplayTextTree
         }
         
         /** empty implementation - not used */
-        public void dropActionChanged(DropTargetDragEvent dropTargetDragEvent) { }
+        public void dropActionChanged(DropTargetDragEvent dropTargetDragEvent)
+	{
+	}
         
     }
     
@@ -306,7 +313,7 @@ public class DnDNavigatorTree extends DisplayTextTree
  */
 class TransferableModelElement implements Transferable {
     
-    final public static DataFlavor ELEM_FLAVOR =
+    public static final DataFlavor ELEM_FLAVOR =
 	new DataFlavor(Object.class, "UML Model Element");
     
     static DataFlavor flavors[] = {ELEM_FLAVOR };
@@ -333,7 +340,7 @@ class TransferableModelElement implements Transferable {
         return flavors;
     }
     
-    public boolean isDataFlavorSupported(java.awt.datatransfer.DataFlavor dataFlavor) {
+    public boolean isDataFlavorSupported(DataFlavor dataFlavor) {
         
         return dataFlavor.match(ELEM_FLAVOR);
     }

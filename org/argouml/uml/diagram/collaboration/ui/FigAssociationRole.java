@@ -72,7 +72,8 @@ public class FigAssociationRole extends FigAssociation {
         //change the name
         MAssociationRole ar = (MAssociationRole) getOwner();
         if (ar == null) return;
-        // String asNameStr = ((ar.getName() == null) && (ar.getBase() == null)) ? "" : Notation.generate(this, ar);
+        // String asNameStr = ((ar.getName() == null) && (ar.getBase()
+        // == null)) ? "" : Notation.generate(this, ar);
         String asNameStr = Notation.generate(this, ar);
         _name.setText(asNameStr);
     }
@@ -121,7 +122,9 @@ class FigMessageGroup extends FigGroup {
 		fig.startTrans();
 		fig.setX(getX());
 		if (i != 0) {
-		    fig.setY(((FigMessage) figs.get(i - 1)).getY() + ((FigMessage) figs.get(i - 1)).getHeight() + 5);
+		    fig.setY(((FigMessage) figs.get(i - 1)).getY()
+			     + ((FigMessage) figs.get(i - 1)).getHeight()
+			     + 5);
 		} else {
 		    fig.setY(getY());
 		}

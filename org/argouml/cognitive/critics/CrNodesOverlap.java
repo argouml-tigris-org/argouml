@@ -111,11 +111,13 @@ public class CrNodesOverlap extends CrUML {
 		if (fn_j.intersects(bounds_i)) {
 		    if (!(d instanceof UMLDeploymentDiagram)) {   
 			if (fn_i instanceof FigNodeModelElement) {
-			    if (((FigNodeModelElement) fn_i).getEnclosingFig() == fn_j)
+			    if (((FigNodeModelElement) fn_i).getEnclosingFig()
+				== fn_j)
 				continue;
 			}
 			if (fn_j instanceof FigNodeModelElement) {
-			    if (((FigNodeModelElement) fn_j).getEnclosingFig() == fn_i)
+			    if (((FigNodeModelElement) fn_j).getEnclosingFig() 
+				== fn_i)
 				continue;
 			}
 		    }

@@ -34,7 +34,6 @@ import javax.swing.*;
 import org.argouml.model.ModelFacade;
 
 import org.argouml.kernel.*;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 

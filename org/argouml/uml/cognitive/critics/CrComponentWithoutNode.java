@@ -102,9 +102,12 @@ public class CrComponentWithoutNode extends CrUML {
 		}
 		offs.addElement(fc);
 	    }
-	    else if (fc.getEnclosingFig() != null &&
-		     (((MComponent) fc.getOwner()).getDeploymentLocations() == null || 
-		      (((MComponent) fc.getOwner()).getDeploymentLocations().size() == 0))) {
+	    else if (fc.getEnclosingFig() != null
+		     && ((((MComponent) fc.getOwner()).getDeploymentLocations()
+			  == null)
+			 || ((((MComponent)
+			       fc.getOwner()).getDeploymentLocations().size())
+			     == 0))) {
 		if (offs == null) {
 		    offs = new VectorSet();
 		    offs.addElement(dd);

@@ -97,7 +97,8 @@ public class ActionSettings extends UMLAction
 				if (event.getSource() == getOkButton()) {
 				    handleSave();
 				}
-				else if (event.getSource() == getCancelButton()) {
+				else if (event.getSource() == getCancelButton())
+				{
 				    handleCancel();
 				}
 			    }
@@ -136,9 +137,11 @@ public class ActionSettings extends UMLAction
                     // Increase width to accommodate all tabs on one row.
                     // (temporary solution until tabs are replaced with tree)
                     final int minimumWidth = 465;
-                    tabs.setPreferredSize(new Dimension(
-							Math.max(tabs.getPreferredSize().width, minimumWidth),
-							tabs.getPreferredSize().height));
+                    tabs.setPreferredSize(
+                            new Dimension(Math.max(tabs
+						   .getPreferredSize().width,
+						   minimumWidth),
+					  tabs.getPreferredSize().height));
 
                     dlg.setContent(tabs);                    
                 }

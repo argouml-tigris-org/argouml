@@ -37,7 +37,10 @@ import javax.swing.Icon;
  *
  * @author Bob Tarling
  */
-abstract public class AbstractButtonAction extends AbstractAction implements ButtonAction {
+public abstract class AbstractButtonAction
+    extends AbstractAction
+    implements ButtonAction
+{
     
     private boolean modal;
     private int lockMethod = NONE;
@@ -64,7 +67,8 @@ abstract public class AbstractButtonAction extends AbstractAction implements But
     /**
      * Creates a new instance of AbstractButtonAction
      */
-    public AbstractButtonAction(String name, Icon icon, boolean modal, int lockMethod) {
+    public AbstractButtonAction(String name, Icon icon,
+				boolean modal, int lockMethod) {
         super(name, icon);
         this.modal = modal;
         this.lockMethod = lockMethod;

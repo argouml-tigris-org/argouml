@@ -61,7 +61,8 @@ public final class OCLUtil extends Object {
     public static String getContextString (final Object me) {
 	if (me == null || !(me instanceof MModelElement))
 	    return "";
-	MNamespace mnsContext = getInnerMostEnclosingNamespace ((MModelElement) me);
+	MNamespace mnsContext =
+	    getInnerMostEnclosingNamespace ((MModelElement) me);
 
 	if (me instanceof MBehavioralFeature) {
 	    StringBuffer sbContext =

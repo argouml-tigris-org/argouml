@@ -36,7 +36,6 @@ import org.argouml.model.uml.foundation.core.CoreHelper;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.model_management.MModel;
 
 /**
@@ -103,7 +102,8 @@ public class ExtensionMechanismsHelper {
     }
 
     /**
-     * Finds a stereotype in some namespace. Returns null if no such stereotype is found.
+     * Finds a stereotype in some namespace. Returns null if no such
+     * stereotype is found.
      */
     public MStereotype getStereotype(MNamespace ns, MStereotype stereo) {
     	String name = stereo.getName();
@@ -132,7 +132,9 @@ public class ExtensionMechanismsHelper {
         String name = stereo.getName();
         String baseClass = stereo.getBaseClass();
         if (name == null || baseClass == null) return null;
-        Iterator it2 = ProjectManager.getManager().getCurrentProject().getModels().iterator();
+        Iterator it2 =
+	    ProjectManager.getManager().getCurrentProject()
+	    .getModels().iterator();
         while (it2.hasNext()) {
             MModel model = (MModel) it2.next();
             Iterator it = getStereotypes(model).iterator();
@@ -164,10 +166,11 @@ public class ExtensionMechanismsHelper {
     }
 
     /**
-     * Returns all possible stereotypes for some modelelement. Possible stereotypes
-     * are those stereotypes that are owned by the same namespace the modelelement
-     * is owned by and that have a baseclass that is the same as the metamodelelement
-     * name of the modelelement.
+     * Returns all possible stereotypes for some
+     * modelelement. Possible stereotypes are those stereotypes that
+     * are owned by the same namespace the modelelement is owned by
+     * and that have a baseclass that is the same as the
+     * metamodelelement name of the modelelement.
      * @param m
      * @return Collection
      */
@@ -196,8 +199,9 @@ public class ExtensionMechanismsHelper {
     }
 
     /**
-     * Returns true if the given stereotype has a baseclass that equals the baseclass
-     * of the given modelelement or one of the superclasses of the given modelelement.
+     * Returns true if the given stereotype has a baseclass that
+     * equals the baseclass of the given modelelement or one of the
+     * superclasses of the given modelelement.
      * @param m
      * @param stereo
      * @return boolean

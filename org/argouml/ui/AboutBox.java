@@ -78,20 +78,27 @@ public class AboutBox extends JDialog {
 	versionBuf.append(
 			  "\n" +
 			  "Intended for use with:\n" +
-			  "  JDK 1.2 or higher plus\n" +
-			  "    GEF Graph Editing Framework (gef.tigris.org)\n" +
-			  "      including GIF generation code from www.acme.com\n" +
-			  "    A JAXP 1.0.1 compatible parser\n" +
-			  "       [Xerces-J 1.2.2 or later recommended, (xml.apache.org), it's just great!]\n" +
-			  "    Novosoft's NSUML 0.4.19 or higher (nsuml.sourceforge.net)\n" +
-			  "    Frank Finger's (TU-Dresden) OCL-Compiler (dresden-ocl.sourceforge.net)\n" +
-			  "    ANTLR (www.antlr.org) version 2.7\n" +
+			  "* JDK 1.2 or higher plus\n" +
+			  "* GEF Graph Editing Framework (gef.tigris.org)\n" +
+			  "  including GIF generation code " +
+			     "from www.acme.com\n" +
+			  "* A JAXP 1.0.1 compatible parser\n" +
+			  "  [Xerces-J 1.2.2 or later recommended, " +
+			     "(xml.apache.org), it's just great!]\n" +
+			  "* Novosoft's NSUML 0.4.19 or higher " +
+			     "(nsuml.sourceforge.net)\n" +
+			  "* Frank Finger's (TU-Dresden) OCL-Compiler " +
+			     "(dresden-ocl.sourceforge.net)\n" +
+			  "* ANTLR (www.antlr.org) version 2.7\n" +
 			  "\n");
 
 	versionBuf.append("\n");
-	versionBuf.append("The ArgoUML developers would like to thank all those broad-minded people\n");
-	versionBuf.append("who spend their valuable time in contributing to the projects ArgoUML\n");
-	versionBuf.append("depends on! We wouldn't be here without your work!\n");
+	versionBuf.append("The ArgoUML developers would like to thank "
+			  + "all those broad-minded people\n");
+	versionBuf.append("who spend their valuable time in contributing "
+			  + "to the projects ArgoUML\n");
+	versionBuf.append("depends on! We wouldn't be here without your "
+			  + "work!\n");
 	versionBuf.append("\n");
 
 	InputStreamReader isr = null;
@@ -110,9 +117,9 @@ public class AboutBox extends JDialog {
 
 	try {
 	    JTextArea a = new JTextArea();
-	    a.read(new InputStreamReader(getClass().
-					 getResourceAsStream(Argo.RESOURCEDIR 
-							     + "credits.about")),
+	    a.read(new InputStreamReader(
+		           getClass().getResourceAsStream(Argo.RESOURCEDIR 
+							  + "credits.about")),
 		   null);
 	    a.setEditable(false);
 	    _tabs.addTab("Credits", new JScrollPane(a));
@@ -125,8 +132,8 @@ public class AboutBox extends JDialog {
 	    JTextArea a = new JTextArea();
 	    a.setEditable(false);
 	    a.read(new InputStreamReader(getClass().
-					 getResourceAsStream(Argo.RESOURCEDIR
-							     + "contacts.about")),
+			   getResourceAsStream(Argo.RESOURCEDIR
+					       + "contacts.about")),
 		   null);
 	    _tabs.addTab("Contact Info", new JScrollPane(a));
 	}
@@ -139,8 +146,8 @@ public class AboutBox extends JDialog {
 	    JTextArea a = new JTextArea();
 	    a.setEditable(false);
 	    a.read(new InputStreamReader(getClass().
-					 getResourceAsStream(Argo.RESOURCEDIR
-							     + "bugreport.about")),
+			  getResourceAsStream(Argo.RESOURCEDIR
+					      + "bugreport.about")),
 		   null);
 	    _tabs.addTab("Report bugs", new JScrollPane(a));
 	}
@@ -169,7 +176,9 @@ public class AboutBox extends JDialog {
 	    Object o = iterator.next();
 	    AboutTabPanel atp = ((PluggableAboutTab) o).getAboutTabPanel();
 	
-	    _tabs.addTab(Argo.localize( atp.getTabResourceBundleKey(), atp.getTabKey()), atp.getTabPanel());
+	    _tabs.addTab(Argo.localize(atp.getTabResourceBundleKey(),
+				       atp.getTabKey()),
+			 atp.getTabPanel());
 	}
 
 	getContentPane().setLayout(new BorderLayout(0, 0));

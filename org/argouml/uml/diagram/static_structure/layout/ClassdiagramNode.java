@@ -97,7 +97,8 @@ class ClassdiagramNode implements LayoutedNode {
      */
     public int getRank() {
 
-	if (_rank == NORANK) {  // If the rank was not computed yet, compute it now.
+	if (_rank == NORANK) { 
+	    // If the rank was not computed yet, compute it now.
 	    if (getUplinks().size() == 0) {  // If there are no uplinks,
 		_rank = 0;  // place the node in the 1st row.
 	    } else {  // Otherwise compute the max rank of the uplinks + 1
@@ -154,14 +155,18 @@ class ClassdiagramNode implements LayoutedNode {
      * @param The index of this uplink.
      * @return The ClassdiagramNode for this uplink.
      */
-    public ClassdiagramNode getUplink(int i) { return (ClassdiagramNode) (_uplinks.elementAt(i)); }
+    public ClassdiagramNode getUplink(int i) {
+	return (ClassdiagramNode) (_uplinks.elementAt(i)); 
+    }
 
     /**
      * Add an uplink to this node.
      *
      * @param new_uplink represents the new uplinks.	
      */
-    public void addUplink(ClassdiagramNode new_uplink) { _uplinks.add(new_uplink); }
+    public void addUplink(ClassdiagramNode new_uplink) {
+	_uplinks.add(new_uplink);
+    }
 
     /**
      * Operation getDownlinks returns the value of the attribute _downlinks.
@@ -176,14 +181,18 @@ class ClassdiagramNode implements LayoutedNode {
      * @param The index of this downlink.
      * @return The ClassdiagramNode of this downlink.
      */
-    public ClassdiagramNode getDownlink(int i) { return (ClassdiagramNode) (_downlinks.elementAt(i)); }
+    public ClassdiagramNode getDownlink(int i) {
+	return (ClassdiagramNode) (_downlinks.elementAt(i));
+    }
 
     /**
      * Operation setDownlinks changes the value of the attribute _downlinks.
      *
      * @param new_downlinks represents the new value of _downlinks.	
      */
-    public void addDownlink(ClassdiagramNode new_downlink) { _downlinks.add(new_downlink); }
+    public void addDownlink(ClassdiagramNode new_downlink) {
+	_downlinks.add(new_downlink);
+    }
 
     /**
      * Operation getFigure returns the value of the attribute _figure.
@@ -218,7 +227,9 @@ class ClassdiagramNode implements LayoutedNode {
      * @return whether the node is movable
      */
     boolean isMovable() {
-        return ( _downlinks.size() == 0 && _uplinks.size() == 0 && _sidelinks.size() > 0);
+        return (_downlinks.size() == 0
+		&& _uplinks.size() == 0
+		&& _sidelinks.size() > 0);
     }
 
     /** A placementhint gives an indication where it might be feasible to
@@ -299,10 +310,11 @@ class ClassdiagramNode implements LayoutedNode {
     private float _weight = 1;
     
     
-    /** a Node is movable when it has associations and no up- or downlinks.
-     * The logic behind this is, that we would like to move nodes which
-     * were skipped during the rankking process to a position where they are
-     * as close as possible to the respective(s) nodes they share an association to
+    /** a Node is movable when it has associations and no up- or
+     * downlinks.  The logic behind this is, that we would like to
+     * move nodes which were skipped during the rankking process to a
+     * position where they are as close as possible to the
+     * respective(s) nodes they share an association to
      */
     private boolean _movable = false;
 

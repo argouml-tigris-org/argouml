@@ -48,7 +48,8 @@ public class ActionAutoResize extends UMLAction {
     }
 
     /** Accessor to determine whether the nodes should be resized or not.
-     *  @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(MElementEvent)
+     * @see
+     * org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(MElementEvent)
      */
-    static public boolean isAutoResizable() { return _autoResize; }
+    public static boolean isAutoResizable() { return _autoResize; }
 } /* end class ActionAutoResize */

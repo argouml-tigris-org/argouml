@@ -34,7 +34,6 @@ package org.argouml.uml.ui.behavior.common_behavior;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.ModelFacade;
 
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;

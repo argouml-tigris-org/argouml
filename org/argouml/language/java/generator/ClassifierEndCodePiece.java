@@ -110,10 +110,12 @@ public class ClassifierEndCodePiece extends NamedCodePiece
         for (Iterator i = newFeatures.iterator(); i.hasNext(); ) {
             MFeature mFeature = (MFeature) i.next();
             if (mFeature instanceof MOperation) {
-                CodeGenerator.generateOperation((MOperation) mFeature, mClassifier, reader, writer);
+                CodeGenerator.generateOperation((MOperation) mFeature,
+						mClassifier, reader, writer);
             }
             else if (mFeature instanceof MAttribute) {
-                CodeGenerator.generateAttribute((MAttribute) mFeature, mClassifier, reader, writer);
+                CodeGenerator.generateAttribute((MAttribute) mFeature,
+						mClassifier, reader, writer);
             }
         }
 
@@ -124,7 +126,8 @@ public class ClassifierEndCodePiece extends NamedCodePiece
                 CodeGenerator.generateClass((MClass) element, reader, writer);
             }
             else if (element instanceof MInterface) {
-		CodeGenerator.generateInterface((MInterface) element, reader, writer);
+		CodeGenerator.generateInterface((MInterface) element,
+						reader, writer);
             }
         }
 

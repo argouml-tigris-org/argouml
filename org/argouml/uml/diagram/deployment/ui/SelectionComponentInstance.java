@@ -57,9 +57,12 @@ public class SelectionComponentInstance extends SelectionWButtons {
         Category.getInstance(SelectionComponentInstance.class);
     ////////////////////////////////////////////////////////////////
     // constants
-    public static Icon dep = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Dependency");
+    public static Icon dep =
+	ResourceLoaderWrapper.getResourceLoaderWrapper()
+	.lookupIconResource("Dependency");
     public static Icon depRight = 
-	ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("DependencyRight");
+	ResourceLoaderWrapper.getResourceLoaderWrapper()
+	.lookupIconResource("DependencyRight");
 
 
     ////////////////////////////////////////////////////////////////
@@ -181,25 +184,32 @@ public class SelectionComponentInstance extends SelectionWButtons {
      * @see org.argouml.uml.diagram.ui.SelectionWButtons#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {
-        return UmlFactory.getFactory().getCommonBehavior().createComponentInstance();
+        return UmlFactory.getFactory().getCommonBehavior()
+	    .createComponentInstance();
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeAbove(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     * @see
+     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeAbove(org.tigris.gef.graph.MutableGraphModel,
+     * java.lang.Object)
      */
     protected Object createEdgeAbove(MutableGraphModel gm, Object newNode) {
         return gm.connect(_content.getOwner(), newNode, MDependency.class);
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeLeft(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     * @see
+     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeLeft(org.tigris.gef.graph.MutableGraphModel,
+     * java.lang.Object)
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
         return gm.connect(newNode, _content.getOwner(), MDependency.class);
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeRight(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     * @see
+     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeRight(org.tigris.gef.graph.MutableGraphModel,
+     * java.lang.Object)
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
         return gm.connect(_content.getOwner(), newNode, MDependency.class);
@@ -208,7 +218,9 @@ public class SelectionComponentInstance extends SelectionWButtons {
     
 
     /**
-     * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeUnder(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     * @see
+     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeUnder(org.tigris.gef.graph.MutableGraphModel,
+     * java.lang.Object)
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
         return gm.connect(newNode, _content.getOwner(), MDependency.class);

@@ -43,7 +43,7 @@ public abstract class DiagramHelper extends ArgoDiagram
 
     /** Default localization key for diagrams
      */
-    public final static String DIAGRAM_BUNDLE = "DiagramType";
+    public static final String DIAGRAM_BUNDLE = "DiagramType";
 
     /** String naming the resource bundle to use for localization.
      */

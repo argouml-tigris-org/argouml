@@ -50,8 +50,9 @@ public class ToDoByOffender extends ToDoPerspective {
 	Object path[] = new Object[2];
 	path[0] = Designer.TheDesigner.getToDoList();
 
-	VectorSet allOffenders = Designer.TheDesigner.getToDoList().getOffenders();
-	java.util.Enumeration enum = allOffenders.elements();
+	VectorSet allOffenders =
+	    Designer.TheDesigner.getToDoList().getOffenders();
+	Enumeration enum = allOffenders.elements();
 	while (enum.hasMoreElements()) {
 	    Object off = enum.nextElement();
 	    path[1] = off;
@@ -85,8 +86,9 @@ public class ToDoByOffender extends ToDoPerspective {
 	Object path[] = new Object[2];
 	path[0] = Designer.TheDesigner.getToDoList();
 
-	VectorSet allOffenders = Designer.TheDesigner.getToDoList().getOffenders();
-	java.util.Enumeration enum = allOffenders.elements();
+	VectorSet allOffenders =
+	    Designer.TheDesigner.getToDoList().getOffenders();
+	Enumeration enum = allOffenders.elements();
 	while (enum.hasMoreElements()) {
 	    Object off = enum.nextElement();
 	    path[1] = off;
@@ -120,8 +122,9 @@ public class ToDoByOffender extends ToDoPerspective {
 	Object path[] = new Object[2];
 	path[0] = Designer.TheDesigner.getToDoList();
 
-	VectorSet allOffenders = Designer.TheDesigner.getToDoList().getOffenders();
-	java.util.Enumeration enum = allOffenders.elements();
+	VectorSet allOffenders =
+	    Designer.TheDesigner.getToDoList().getOffenders();
+	Enumeration enum = allOffenders.elements();
 	while (enum.hasMoreElements()) {
 	    Object off = enum.nextElement();
 	    //       boolean anyInOff = false;

@@ -37,8 +37,6 @@ import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHel
 
 import java.util.*;
 import java.beans.*;
-import java.awt.Point;
-import java.awt.event.MouseEvent;
 
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -56,7 +54,6 @@ import org.tigris.gef.base.Globals;
 
 import org.argouml.ui.*;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
-import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 
 /** This class defines a bridge between the UML meta-model
  *  representation of the design and the GraphModel interface used by
@@ -142,7 +139,8 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
     /** Return  the other end of an edge */
     public Object getDestPort(Object edge) {
 	if (edge instanceof MLink) {
-	    return CommonBehaviorHelper.getHelper().getDestination((MLink) edge);
+	    return CommonBehaviorHelper.getHelper()
+		.getDestination((MLink) edge);
 	}
 	cat.debug("TODO getDestPort");
 	return null;
@@ -166,7 +164,8 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
 	Object end1 = null;
 	if (edge instanceof MLink) {
 	    end0 = CommonBehaviorHelper.getHelper().getSource((MLink) edge);
-	    end1 = CommonBehaviorHelper.getHelper().getDestination((MLink) edge);
+	    end1 =
+		CommonBehaviorHelper.getHelper().getDestination((MLink) edge);
 	}
 	if (end0 == null || end1 == null) return false;
 	if (!_nodes.contains(end0)) return false;
@@ -224,12 +223,18 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
 
   
     /** Contruct and add a new edge of the given kind */
-    public Object connect(Object fromPort, Object toPort, java.lang.Class edgeClass) {
-        if (edgeClass == MLink.class && (fromPort instanceof MObject && toPort instanceof MObject)) {
+    public Object connect(Object fromPort, Object toPort,
+			  java.lang.Class edgeClass)
+    {
+        if (edgeClass == MLink.class
+	    && (fromPort instanceof MObject && toPort instanceof MObject))
+	{
             MLink ml = UmlFactory.getFactory().getCommonBehavior().createLink();
-            MLinkEnd le0 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
+            MLinkEnd le0 =
+		UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
             le0.setInstance((MObject) fromPort);
-            MLinkEnd le1 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
+            MLinkEnd le1 =
+		UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
             le1.setInstance((MObject) toPort);
             ml.addConnection(le0);
             ml.addConnection(le1);
@@ -247,29 +252,45 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
                     if (actionClass != null) {
                         //create the action
                         if (actionClass == MCallAction.class)
-                            action = UmlFactory.getFactory().getCommonBehavior().createCallAction();
+                            action =
+				UmlFactory.getFactory().getCommonBehavior()
+				.createCallAction();
                         else if (actionClass == MCreateAction.class)
-                            action = UmlFactory.getFactory().getCommonBehavior().createCreateAction();
+                            action =
+				UmlFactory.getFactory().getCommonBehavior()
+				.createCreateAction();
                         else if (actionClass == MDestroyAction.class)
-                            action = UmlFactory.getFactory().getCommonBehavior().createDestroyAction();
+                            action =
+				UmlFactory.getFactory().getCommonBehavior()
+				.createDestroyAction();
                         else if (actionClass == MSendAction.class)
-                            action = UmlFactory.getFactory().getCommonBehavior().createSendAction();
+                            action =
+				UmlFactory.getFactory().getCommonBehavior()
+				.createSendAction();
                         else if (actionClass == MReturnAction.class)
-                            action = UmlFactory.getFactory().getCommonBehavior().createReturnAction();
+                            action =
+				UmlFactory.getFactory().getCommonBehavior()
+				.createReturnAction();
 
                         if (action != null)  {
                             // determine action type of arguments in mode
                             ModelFacade.setName(action, "new action");
 
-                            if (ModelFacade.isASendAction(action) || ModelFacade.isAReturnAction(action)) {
+                            if (ModelFacade.isASendAction(action)
+				|| ModelFacade.isAReturnAction(action))
+			    {
                                 ModelFacade.setAsynchronous(action, true);
                             } else {
                                 ModelFacade.setAsynchronous(action, false);
                             }
                             // create stimulus
-                            MStimulus stimulus = UmlFactory.getFactory().getCommonBehavior().createStimulus();
+                            MStimulus stimulus =
+				UmlFactory.getFactory().getCommonBehavior()
+				.createStimulus();
                             //if we want to allow the sequence number to appear
-                            /*UMLSequenceDiagram sd=(UMLSequenceDiagram) ProjectBrowser.TheInstance.getActiveDiagram();
+                            /*UMLSequenceDiagram
+			      sd=(UMLSequenceDiagram)
+			      ProjectBrowser.TheInstance.getActiveDiagram();
 			      int num=sd.getNumStimuluss()+1;
 			      stimulus.setName(""+num);*/
                             //otherwise: no sequence number
@@ -282,9 +303,10 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
                             ModelFacade.setDispatchAction(stimulus, action);
                             // add stimulus to link
                             ml.addStimulus(stimulus);
-                            // add new modelelements: stimulus and action to namesapce
+                            // add new modelelements: stimulus and
+                            // action to namesapce
                             ModelFacade.addOwnedElement(_Sequence, stimulus);
-                            ModelFacade.addOwnedElement(_Sequence, action);                            
+                            ModelFacade.addOwnedElement(_Sequence, action);
                         }
                     }
                 }

@@ -44,7 +44,9 @@ import org.argouml.model.ModelFacade;
  * <p>The critic will trigger whenever an association between an interface and
  * a class is navigable <em>from</em> the interface.</p>
  *
- * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_nav_from_interface">ArgoUML User Manual: N</a>
+ * @see <a
+ * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_nav_from_interface">ArgoUML
+ * User Manual: N</a>
  */
 
 public class CrNavFromInterface extends CrUML {

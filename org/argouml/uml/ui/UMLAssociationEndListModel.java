@@ -25,14 +25,11 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.model.uml.UmlFactory;
-
 import java.util.*;
 import java.awt.*;
 
 import javax.swing.*;
 
-import ru.novosoft.uml.*;
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 

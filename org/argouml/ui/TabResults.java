@@ -195,8 +195,8 @@ public class TabResults extends TabSpawnable
                 }
             }
             _relatedModel.setTarget(_related, null);
-            _relatedLabel.setText(
-				  "Related Elements: " + _related.size() + " items");
+            _relatedLabel.setText("Related Elements: " + _related.size()
+				  + " items");
         }
     }
 

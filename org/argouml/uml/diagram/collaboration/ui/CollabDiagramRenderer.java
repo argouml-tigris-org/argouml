@@ -44,12 +44,15 @@ import org.argouml.uml.diagram.ui.*;
 public class CollabDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer 
 {
-    protected static Category cat = Category.getInstance(CollabDiagramRenderer.class);
+    protected static Category cat =
+	Category.getInstance(CollabDiagramRenderer.class);
 
     /** Return a Fig that can be used to represent the given node */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
-	if (node instanceof MClassifierRole) return new FigClassifierRole(gm, lay, node);
-	if (node instanceof MMessage) return new FigMessage(gm, lay, node);
+	if (node instanceof MClassifierRole)
+	    return new FigClassifierRole(gm, lay, node);
+	if (node instanceof MMessage)
+	    return new FigMessage(gm, lay, node);
 	cat.debug("TODO CollabDiagramRenderer getFigNodeFor");
 	return null;
     }

@@ -25,7 +25,6 @@
 package org.argouml.uml.diagram.collaboration.ui;
 
 import java.util.Collection;
-import java.util.Vector;
 
 import org.argouml.ui.AbstractGoRule;
 

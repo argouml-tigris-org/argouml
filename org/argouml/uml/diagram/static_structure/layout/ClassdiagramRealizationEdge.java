@@ -44,11 +44,15 @@ public class ClassdiagramRealizationEdge extends ClassdiagramInheritanceEdge {
     }  
     
     public int getCenterHigh() {
-        return (int) (high.getLocation().getX() + high.getSize().getWidth() / 2 + 10);
+        return
+	    (int)
+	    (high.getLocation().getX() + high.getSize().getWidth() / 2 + 10);
     }
     
     public int getCenterLow() {
-        return (int) (low.getLocation().getX() + low.getSize().getWidth() / 2 + 10);
+        return
+	    (int)
+	    (low.getLocation().getX() + low.getSize().getWidth() / 2 + 10);
     }    
 }
 

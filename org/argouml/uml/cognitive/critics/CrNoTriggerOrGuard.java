@@ -58,7 +58,8 @@ public class CrNoTriggerOrGuard extends CrUML {
 	MStateVertex sv = tr.getSource();
 	if (!(sv instanceof MState)) return NO_PROBLEM;
 	if (((MState) sv).getDoActivity() != null) return NO_PROBLEM;
-	boolean hasTrigger = (t != null && t.getName() != null && t.getName().length() > 0);
+	boolean hasTrigger =
+	    (t != null && t.getName() != null && t.getName().length() > 0);
 	if (hasTrigger) return NO_PROBLEM;
 	boolean noGuard = (g == null || g.getExpression() == null ||
 			   g.getExpression().getBody() == null ||

@@ -40,7 +40,7 @@ public class GoListToOffenderToItem implements TreeModel {
     // TreeModel implementation
   
     public Object getRoot() {
-	throw new UnsupportedOperationException("getRoot should never be called");
+	throw new UnsupportedOperationException();
     } 
     public void setRoot(Object r) { }
 
@@ -67,7 +67,8 @@ public class GoListToOffenderToItem implements TreeModel {
 
 
     public Vector getChildren(Object parent) {
-	VectorSet allOffenders = Designer.TheDesigner.getToDoList().getOffenders();
+	VectorSet allOffenders =
+	    Designer.TheDesigner.getToDoList().getOffenders();
 	if (parent instanceof ToDoList) {
 	    return allOffenders.asVector();
 	}

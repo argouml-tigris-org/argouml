@@ -57,8 +57,10 @@ public abstract class FigState extends FigStateVertex {
      */
     public FigState() {
         super();
-        _internal = new FigText(getInitialX() + 2, getInitialY() + 2 + 21 + 4,
-				getInitialWidth() - 4, getInitialHeight() - (getInitialY() + 2 + 21 + 4));
+        _internal =
+	    new FigText(getInitialX() + 2, getInitialY() + 2 + 21 + 4,
+			getInitialWidth() - 4,
+			getInitialHeight() - (getInitialY() + 2 + 21 + 4));
         _internal.setFont(LABEL_FONT);
         _internal.setTextColor(Color.black);
         _internal.setLineWidth(0);
@@ -84,11 +86,13 @@ public abstract class FigState extends FigStateVertex {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     * @see
+     * org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
      */
     protected void modelChanged(MElementEvent mee) {
         super.modelChanged(mee);
-        if (mee.getSource().equals(getOwner())) { // the events concerning the MState
+        if (mee.getSource().equals(getOwner())) {
+	    // the events concerning the MState
             if (mee.getName().equals("classifierInState")
                 || mee.getName().equals("deferrableEvent")
                 || mee.getName().equals("internalTransition")
@@ -96,12 +100,13 @@ public abstract class FigState extends FigStateVertex {
                 || mee.getName().equals("entry")
                 || mee.getName().equals("exit")) {
                 updateInternal();
-                // register this fig as a listener if the event is about adding modelelements to the state
+                // register this fig as a listener if the event is
+                // about adding modelelements to the state
                 updateListeners(getOwner());
                 damage();
             }
-            // we don't have to act on incoming and outgoing transitions since that doesn't 
-            // change the fig.
+            // we don't have to act on incoming and outgoing
+            // transitions since that doesn't change the fig.
         } else if (
 		   ((MState) getOwner()).getInternalTransitions().contains(mee.getSource())
 		   || // the internal transitions
@@ -111,7 +116,10 @@ public abstract class FigState extends FigStateVertex {
 		   || // the exit
 		   (mee.getSource() == ((MState) getOwner()).getDoActivity())
 		   || // the doacitivity
-		   ((MState) getOwner()).getDeferrableEvents().contains(mee.getSource())) { // the defered events
+		   ((MState)
+		    getOwner()).getDeferrableEvents().contains(mee.getSource()))
+	{
+	    // the defered events
             updateInternal();
             updateListeners(getOwner());
             damage();
@@ -120,7 +128,8 @@ public abstract class FigState extends FigStateVertex {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     * @see
+     * org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object newOwner) {
         super.updateListeners(newOwner);
@@ -129,36 +138,48 @@ public abstract class FigState extends FigStateVertex {
             MState state = (MState) newOwner;
             Iterator it = state.getInternalTransitions().iterator();
             while (it.hasNext()) {
-                UmlModelEventPump.getPump().addModelEventListener(this, (MBase) it.next());
+                UmlModelEventPump.getPump()
+		    .addModelEventListener(this, (MBase) it.next());
             }
             // register for the doactivity etc.
             if (state.getDoActivity() != null) {
-                UmlModelEventPump.getPump().addModelEventListener(this, (MBase) state.getDoActivity());
+                UmlModelEventPump.getPump()
+		    .addModelEventListener(this, (MBase) state.getDoActivity());
             }
             if (state.getEntry() != null) {
-                UmlModelEventPump.getPump().addModelEventListener(this, (MBase) state.getEntry());
+                UmlModelEventPump.getPump()
+		    .addModelEventListener(this, (MBase) state.getEntry());
             }
             if (state.getExit() != null) {
-                UmlModelEventPump.getPump().addModelEventListener(this, (MBase) state.getExit());
+                UmlModelEventPump.getPump()
+		    .addModelEventListener(this, (MBase) state.getExit());
             }
         } else {
-            // lets remove all registrations
-            // since this is called BEFORE the owner is changed (I hope nobody is going to change that...)
-            // the owner is the oldOwner
+            // lets remove all registrations since this is called
+            // BEFORE the owner is changed (I hope nobody is going to
+            // change that...)  the owner is the oldOwner
             MState state = (MState) getOwner();
             if (state != null) {
                 Iterator it = state.getInternalTransitions().iterator();
                 while (it.hasNext()) {
-                    UmlModelEventPump.getPump().removeModelEventListener(this, (MBase) it.next());
+                    UmlModelEventPump.getPump()
+			.removeModelEventListener(this, (MBase) it.next());
                 }
                 if (state.getDoActivity() != null) {
-                    UmlModelEventPump.getPump().removeModelEventListener(this, (MBase) state.getDoActivity());
+                    UmlModelEventPump.getPump()
+			.removeModelEventListener(this,
+						  (MBase)
+						  state.getDoActivity());
                 }
                 if (state.getEntry() != null) {
-                    UmlModelEventPump.getPump().removeModelEventListener(this, (MBase) state.getEntry());
+                    UmlModelEventPump.getPump()
+			.removeModelEventListener(this,
+						  (MBase) state.getEntry());
                 }
                 if (state.getExit() != null) {
-                    UmlModelEventPump.getPump().removeModelEventListener(this, (MBase) state.getExit());
+                    UmlModelEventPump.getPump()
+			.removeModelEventListener(this,
+						  (MBase) state.getExit());
                 }
             }
 

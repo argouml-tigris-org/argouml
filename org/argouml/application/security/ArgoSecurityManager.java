@@ -26,13 +26,8 @@ package org.argouml.application.security;
 
 // Import the following classes fully qualified to ensure that
 // no one can short-circuit our intended inheritance.
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
-import java.util.jar.Attributes;
 import java.util.PropertyPermission;
 import java.security.Permission;
-import java.io.FileDescriptor;
-import java.net.InetAddress;
 
 import org.apache.log4j.Category;
 
@@ -66,11 +61,11 @@ public final class ArgoSecurityManager extends SecurityManager
     private boolean _allowExit = false;
 
     /** The only allowed instance. */
-    private final static ArgoSecurityManager SINGLETON =
+    private static final ArgoSecurityManager SINGLETON =
 	new ArgoSecurityManager();
 
     /** Accessor for the instance. */
-    public final static ArgoSecurityManager getInstance() {
+    public static final ArgoSecurityManager getInstance() {
         return SINGLETON;
     }
 

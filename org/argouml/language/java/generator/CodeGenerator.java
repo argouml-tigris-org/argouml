@@ -36,9 +36,6 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.model_management.*;
 import java.util.*;
 
-// Added 2001-10-05 STEFFEN ZSCHALER
-import org.argouml.uml.DocumentationManager;
-
 /**
  * This helper class generates CodePiece based code.
  * It needs some work. See issue
@@ -52,7 +49,9 @@ class CodeGenerator
        @param mClass The class to generate code for.
        @param writer The writer to write to.
     */
-    static public void generateClass(MClass mClass, BufferedReader reader, BufferedWriter writer)
+    public static void generateClass(MClass mClass,
+				     BufferedReader reader,
+				     BufferedWriter writer)
 	throws Exception
     {
 	ClassCodePiece ccp = new ClassCodePiece(null, mClass.getName());
@@ -90,12 +89,14 @@ class CodeGenerator
     }
 
     /**
-       Generate code for an interface.
-
-       @param mInterface The interface to generate code for.
-       @param writer The writer to write to.
-    */
-    static public void generateInterface(MInterface mInterface, BufferedReader reader, BufferedWriter writer)
+     * Generate code for an interface.
+     *
+     * @param mInterface The interface to generate code for.
+     * @param writer The writer to write to.
+     */
+    public static void generateInterface(MInterface mInterface,
+					 BufferedReader reader,
+					 BufferedWriter writer)
 	throws Exception
     {
 	InterfaceCodePiece icp =
@@ -111,10 +112,12 @@ class CodeGenerator
 	for (Iterator i = features.iterator(); i.hasNext(); ) {
 	    MFeature feature = (MFeature) i.next();
 	    if (feature instanceof MOperation) {
-		generateOperation((MOperation) feature, mInterface, reader, writer);
+		generateOperation((MOperation) feature,
+				  mInterface, reader, writer);
 	    }
 	    if (feature instanceof MAttribute) {
-		generateAttribute((MAttribute) feature, mInterface, reader, writer);
+		generateAttribute((MAttribute) feature,
+				  mInterface, reader, writer);
 	    }
 	}
 
@@ -140,12 +143,17 @@ class CodeGenerator
        @param mClassifier The classifier the operation belongs to.
        @param writer The writer to write to.
     */
-    static public void generateOperation(MOperation mOperation, MClassifier mClassifier, BufferedReader reader, BufferedWriter writer)
+    public static void generateOperation(MOperation mOperation,
+					 MClassifier mClassifier,
+					 BufferedReader reader,
+					 BufferedWriter writer)
 	throws Exception
     {
 	OperationCodePiece ocp =
-	    new OperationCodePiece(new SimpleCodePiece(new StringBuffer(), 0, 0, 0),
-				   new SimpleCodePiece(new StringBuffer(), 0, 0, 0),
+	    new OperationCodePiece(new SimpleCodePiece(new StringBuffer(),
+						       0, 0, 0),
+				   new SimpleCodePiece(new StringBuffer(),
+						       0, 0, 0),
 				   mOperation.getName());
 	Stack parseStateStack = new Stack();
 	parseStateStack.push(new ParseState(mClassifier));
@@ -160,20 +168,25 @@ class CodeGenerator
     }
 
     /**
-       Generate code for an attribute.
-
-       @param mAttribute The attribute to generate code for.
-       @param mClassifier The classifier the attribute belongs to.
-       @param writer The writer to write to.
-    */
-    static public void generateAttribute(MAttribute mAttribute, MClassifier mClassifier, BufferedReader reader, BufferedWriter writer)
+     * Generate code for an attribute.
+     *
+     * @param mAttribute The attribute to generate code for.
+     * @param mClassifier The classifier the attribute belongs to.
+     * @param writer The writer to write to.
+     */
+    public static void generateAttribute(MAttribute mAttribute,
+					 MClassifier mClassifier,
+					 BufferedReader reader,
+					 BufferedWriter writer)
 	throws Exception
     {
 	Vector names = new Vector();
-	names.addElement(new SimpleCodePiece(new StringBuffer(mAttribute.getName()), 0, 0, 0));
+	StringBuffer sbName = new StringBuffer(mAttribute.getName());
+	names.addElement(new SimpleCodePiece(sbName, 0, 0, 0));
 	AttributeCodePiece acp =
 	    new AttributeCodePiece(null,
-				   new SimpleCodePiece(new StringBuffer(), 0, 0, 0),
+				   new SimpleCodePiece(new StringBuffer(),
+						       0, 0, 0),
 				   names);
 	Stack parseStateStack = new Stack();
 	parseStateStack.push(new ParseState(mClassifier));

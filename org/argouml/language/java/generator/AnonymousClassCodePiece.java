@@ -30,8 +30,6 @@
 
 package org.argouml.language.java.generator;
 
-import org.argouml.model.uml.UmlFactory;
-
 import java.io.*;
 import java.util.*;
 

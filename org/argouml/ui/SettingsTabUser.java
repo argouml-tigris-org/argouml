@@ -27,7 +27,6 @@ import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.*;
 import org.argouml.application.helpers.*;
 import org.argouml.kernel.*;
-import org.argouml.uml.ui.UMLAction;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;

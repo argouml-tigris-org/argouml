@@ -55,9 +55,11 @@ public class GoMachineDiagram extends AbstractGoRule {
         java.util.Enumeration enum = diagrams.elements();
         while (enum.hasMoreElements()) {
             Object d = enum.nextElement();
-            if (d instanceof UMLStateDiagram && ((UMLStateDiagram) d).getStateMachine() == parent)
+            if (d instanceof UMLStateDiagram
+		&& ((UMLStateDiagram) d).getStateMachine() == parent)
                 res.addElement(d);
-            else if (d instanceof UMLActivityDiagram && ((UMLActivityDiagram) d).getStateMachine() == parent)
+            else if (d instanceof UMLActivityDiagram
+		     && ((UMLActivityDiagram) d).getStateMachine() == parent)
                 res.addElement(d);
         }
         return res;

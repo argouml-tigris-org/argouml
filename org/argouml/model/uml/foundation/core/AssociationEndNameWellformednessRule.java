@@ -53,16 +53,19 @@ public class AssociationEndNameWellformednessRule
     /**
      * Checks that all associationends have an unique name in an association
      * 
-     * @see org.argouml.model.uml.AbstractWellformednessRule#isWellformed(MBase, Object)
+     * @see org.argouml.model.uml.AbstractWellformednessRule#isWellformed(MBase,Object)
      */
     public boolean isWellformed(MBase element, Object newValue) {
 	if (element instanceof MAssociationEnd && newValue instanceof String) {
 	    MAssociationEnd modelelement = (MAssociationEnd) element;
 	    String name = (String) newValue;
-	    Iterator it = modelelement.getAssociation().getConnections().iterator();
+	    Iterator it =
+		modelelement.getAssociation().getConnections().iterator();
 	    while (it.hasNext()) {
 		MAssociationEnd otherend = ((MAssociationEnd) it.next());
-		if (otherend.getName() != null && otherend.getName().equals(name)) {
+		if (otherend.getName() != null
+		    && otherend.getName().equals(name))
+		{
 		    return false;
 		}
 	    }

@@ -35,7 +35,6 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.Action;
-import javax.swing.JToolBar;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
@@ -47,7 +46,6 @@ import org.argouml.uml.ui.ActionAddNote;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.ui.ToolBar;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.behavior.common_behavior.MCreateAction;
 import ru.novosoft.uml.behavior.common_behavior.MDestroyAction;

@@ -221,12 +221,16 @@ class TableModelChecklist extends AbstractTableModel
 
     ////////////////
     // accessors
+    private UmlModelEventPump getPump() {
+	return UmlModelEventPump.getPump();
+    }
+
     public void setTarget(MModelElement t) {
 	if (_target instanceof MElement)
-	    UmlModelEventPump.getPump().removeModelEventListener(this, (MElement) _target);
+	    getPump().removeModelEventListener(this, (MElement) _target);
 	_target = t;
 	if (_target instanceof MElement)
-	    UmlModelEventPump.getPump().addModelEventListener(this, (MElement) _target);
+	    getPump().addModelEventListener(this, (MElement) _target);
 	fireTableStructureChanged();
     }
 

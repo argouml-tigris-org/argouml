@@ -36,51 +36,59 @@ package org.argouml.ui;
  */
 public interface NavigationListener {
     /**
-     *     Called by a user interface element when a request to 
-     *     navigate to a model element has been received.
-     * @deprecated As of ArgoUml version 0.13.5,replaced by
-     *             {@link org.argouml.ui.targetmanager.TargetManager#setTarget(Object) TargetManager.getInstance().setTarget(Object target)}
+     * Called by a user interface element when a request to navigate
+     * to a model element has been received.
+     *
+     * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
+     * org.argouml.ui.targetmanager.TargetManager#setTarget(Object)
+     * TargetManager.getInstance().setTarget(Object target)}
      */
     public void navigateTo(Object element);
 
 
     /**
-     *    Called to navigate to previous selection
-     *    returns true if navigation performed
+     * Called to navigate to previous selection returns true if
+     * navigation performed
      *
-     *    @param attempt false if navigation accomplished by earlier listener
-     *    @return true if navigation performed
-     * @deprecated As of ArgoUml version 0.13.5,replaced by
-     *             {@link org.argouml.ui.targetmanager.TargetManager#navigateBack() TargetManager.getInstance().navigateBack()}
+     * @param attempt false if navigation accomplished by earlier listener
+     * @return true if navigation performed
+     * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
+     * org.argouml.ui.targetmanager.TargetManager#navigateBack()
+     * TargetManager.getInstance().navigateBack()}
      */
     public boolean navigateBack(boolean attempt);  
     
     /**
-     *    Called to navigate to next selection
-     *    returns true if navigation performed
+     * Called to navigate to next selection
+     * returns true if navigation performed
      *
-     *    @param attempt false if navigation accomplished by earlier listener
-     *    @return true if navigation performed
-     * @deprecated As of ArgoUml version 0.13.5,replaced by
-     *             {@link org.argouml.ui.targetmanager.TargetManager#navigateForward() TargetManager.getInstance().navigateForward()}
+     * @param attempt false if navigation accomplished by earlier listener
+     * @return true if navigation performed
+     * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
+     * org.argouml.ui.targetmanager.TargetManager#navigateForward()
+     * TargetManager.getInstance().navigateForward()}
      */
     public boolean navigateForward(boolean attempt);    
 
     /**  
-     *    Returns true if this listener has a target for
-     *    a back navigation.  Only one listener needs to
-     *    return true for the back button to be enabled.
-     * @deprecated As of ArgoUml version 0.13.5,replaced by
-     *             {@link org.argouml.ui.targetmanager.TargetManager#navigateBackPossible() TargetManager.getInstance().navigateBackPossible()}
+     * Returns true if this listener has a target for
+     * a back navigation.  Only one listener needs to
+     * return true for the back button to be enabled.
+     * 
+     * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
+     * org.argouml.ui.targetmanager.TargetManager#navigateBackPossible()
+     * TargetManager.getInstance().navigateBackPossible()}
     */
     public boolean isNavigateBackEnabled();
 
     /**  
-     *    Returns true if this listener has a target for
-     *    a back navigation.  Only one listener needs to
-     *    return true for the back button to be enabled.
-      * @deprecated As of ArgoUml version 0.13.5,replaced by
-     *             {@link org.argouml.ui.targetmanager.TargetManager#navigateForwardPossible() TargetManager.getInstance().navigateForwardPossible()}
+     * Returns true if this listener has a target for
+     * a back navigation.  Only one listener needs to
+     * return true for the back button to be enabled.
+     *
+     * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
+     * org.argouml.ui.targetmanager.TargetManager#navigateForwardPossible()
+     * TargetManager.getInstance().navigateForwardPossible()}
     */
     public boolean isNavigateForwardEnabled();
 

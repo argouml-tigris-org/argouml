@@ -31,7 +31,6 @@ import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.AbstractGoRule;
 
 import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.model_management.MPackage;
 
 public class GoModelToClass extends AbstractGoRule {
 

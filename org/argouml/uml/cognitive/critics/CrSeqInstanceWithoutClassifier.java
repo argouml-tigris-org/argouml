@@ -22,12 +22,9 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: CrSeqInstanceWithoutClassifier.java
 // Classes: CrSeqInstanceWithoutClassifier
 // Original Author: 5eichler@informatik.uni-hamburg.de
-// $Id$
 
 package org.argouml.uml.cognitive.critics;
 

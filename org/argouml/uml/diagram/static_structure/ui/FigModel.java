@@ -27,41 +27,15 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.Polygon;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.util.Enumeration;
-import java.util.Vector;
-
-import javax.swing.JOptionPane;
 
 import org.apache.log4j.Category;
-import org.argouml.application.api.Notation;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.ArgoDiagram;
-import org.argouml.ui.ArgoJMenu;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.ui.ActionModifier;
-import org.argouml.uml.ui.UMLAction;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigRect;
-import org.tigris.gef.presentation.FigText;
 import org.tigris.gef.presentation.FigPoly;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.model_management.MModel;
-import ru.novosoft.uml.model_management.MPackage;
 
 /** Class to display graphics for a UML model in a class diagram. */
 

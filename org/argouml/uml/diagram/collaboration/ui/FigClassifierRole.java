@@ -447,7 +447,8 @@ public class FigClassifierRole extends FigNodeModelElement {
 		ParserDisplay.SINGLETON.parseClassifierRole(cls, s);
 		ProjectBrowser.getInstance().getStatusBar().showStatus("");
 	    } catch (ParseException pe) {
-		ProjectBrowser.getInstance().getStatusBar().showStatus("Error: " + pe + " at " + pe.getErrorOffset());
+		ProjectBrowser.getInstance().getStatusBar()
+		    .showStatus("Error: " + pe + " at " + pe.getErrorOffset());
 	    }
         }
     }
@@ -495,12 +496,16 @@ public class FigClassifierRole extends FigNodeModelElement {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     * @see
+     * org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
      */
     protected void modelChanged(MElementEvent mee) {
         // base should get it's own figtext and it's own update method
         // TODO: remove the mee == null as soon as everything is migrated
-        if (mee == null || mee.getName().equals("base") && mee.getSource() == getOwner()) { 
+        if (mee == null
+	    || mee.getName().equals("base")
+	    && mee.getSource() == getOwner())
+	{
             updateNameText();
         } else
             super.modelChanged(mee);

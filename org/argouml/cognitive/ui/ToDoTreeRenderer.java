@@ -33,6 +33,8 @@ import javax.swing.JTree;
 import javax.swing.plaf.metal.MetalIconFactory;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import org.tigris.gef.base.Globals;
+
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.Goal;
@@ -44,15 +46,21 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
     ////////////////////////////////////////////////////////////////
     // class variables
-    public ImageIcon _PostIt0     = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt0");
-    public ImageIcon _PostIt25    = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt25");
-    public ImageIcon _PostIt50    = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt50");
-    public ImageIcon _PostIt75    = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt75");
-    public ImageIcon _PostIt99    = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt99");
-    public ImageIcon _PostIt100   = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt100");
-    //public ImageIcon _MultiPostIt = ResourceLoaderWrapper.getResourceLoaderWrapper()Wrapper.lookupIconResource("MultiPostIt");
+    public ImageIcon _PostIt0     = lookupIconResource("PostIt0");
+    public ImageIcon _PostIt25    = lookupIconResource("PostIt25");
+    public ImageIcon _PostIt50    = lookupIconResource("PostIt50");
+    public ImageIcon _PostIt75    = lookupIconResource("PostIt75");
+    public ImageIcon _PostIt99    = lookupIconResource("PostIt99");
+    public ImageIcon _PostIt100   = lookupIconResource("PostIt100");
+    //public ImageIcon _MultiPostIt = lookupIconResource("MultiPostIt");
 
     protected UMLTreeCellRenderer _navRenderer = new UMLTreeCellRenderer();
+
+    private static ImageIcon lookupIconResource(String name) {
+	ResourceLoaderWrapper w =
+	    ResourceLoaderWrapper.getResourceLoaderWrapper();
+	return w.lookupIconResource(name);
+    }
 
     ////////////////////////////////////////////////////////////////
     // TreeCellRenderer implementation
@@ -94,8 +102,13 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
 		lab.setIcon(MetalIconFactory.getTreeFolderIcon());
 	    }
 	    else if (value instanceof MModelElement) {
-		return _navRenderer.getTreeCellRendererComponent(tree, value, sel,
-								 expanded, leaf, row, hasFocus);
+		return _navRenderer.getTreeCellRendererComponent(tree,
+								 value,
+								 sel,
+								 expanded,
+								 leaf,
+								 row,
+								 hasFocus);
 	    }
 
 	    String tip = lab.getText() + " ";
@@ -105,7 +118,7 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
 	    if (!sel)
 		lab.setBackground(getBackgroundNonSelectionColor());
 	    else {
-		Color high = org.tigris.gef.base.Globals.getPrefs().getHighlightColor();
+		Color high = Globals.getPrefs().getHighlightColor();
 		high = high.brighter().brighter();
 		lab.setBackground(high);
 	    }

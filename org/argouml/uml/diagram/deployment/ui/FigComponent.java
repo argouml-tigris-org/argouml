@@ -90,7 +90,8 @@ public class FigComponent extends FigNodeModelElement {
     public FigComponent(GraphModel gm, Object node) {
 	this();
 	setOwner(node);
-	if (node instanceof MClassifier && (((MClassifier) node).getName() != null))
+	if (node instanceof MClassifier
+	    && (((MClassifier) node).getName() != null))
 	    _name.setText(((MModelElement) node).getName());
 	//     _name.setText(placeString());
 	updateBounds();
@@ -163,8 +164,10 @@ public class FigComponent extends FigNodeModelElement {
 	    _lowerRect.setBounds(x, y + 39, 20, 10);
 	}
 
-	_stereo.setBounds(x + BIGPORT_X + 1, y + 1, w - BIGPORT_X - 2, stereoDim.height);
-	_name.setBounds(x + BIGPORT_X + 1, y + stereoDim.height - OVERLAP + 1, w - BIGPORT_X - 2,
+	_stereo.setBounds(x + BIGPORT_X + 1, y + 1, w - BIGPORT_X - 2,
+			  stereoDim.height);
+	_name.setBounds(x + BIGPORT_X + 1, y + stereoDim.height - OVERLAP + 1,
+			w - BIGPORT_X - 2,
 			nameDim.height);
 	_x = x; _y = y; _w = w; _h = h;
 	firePropChange("bounds", oldBounds, getBounds());
@@ -193,7 +196,10 @@ public class FigComponent extends FigNodeModelElement {
 
     public void setEnclosingFig(Fig encloser) {
     
-	if (encloser != null && encloser.getOwner() instanceof MNode && getOwner() != null) {
+	if (encloser != null
+	    && encloser.getOwner() instanceof MNode
+	    && getOwner() != null)
+	{
 	    MNode node = (MNode) encloser.getOwner();
 	    MComponent comp = (MComponent) getOwner();
 	    if (!comp.getDeploymentLocations().contains(node)) {
@@ -219,7 +225,8 @@ public class FigComponent extends FigNodeModelElement {
 	} else
 	    if (encloser == null && getEnclosingFig() != null) {
 		if (getEnclosingFig() instanceof FigNodeModelElement)
-		    ((FigNodeModelElement) getEnclosingFig()).getEnclosedFigs().removeElement(this);
+		    ((FigNodeModelElement)
+		     getEnclosingFig()).getEnclosedFigs().removeElement(this);
 		_encloser = null;
 	    }
 	/*
@@ -287,7 +294,9 @@ public class FigComponent extends FigNodeModelElement {
 	MModelElement me = (MModelElement) getOwner();
 	if (me == null) return;
 	MStereotype stereo = me.getStereotype();
-	if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0)
+	if (stereo == null
+	    || stereo.getName() == null
+	    || stereo.getName().length() == 0)
 	    _stereo.setText("");
 	else {
 	    _stereo.setText(Notation.generateStereotype(this, stereo));
@@ -296,12 +305,14 @@ public class FigComponent extends FigNodeModelElement {
 
 
 
-    /** Get the rectangle on whose corners the dragging handles are to be drawn.
-	Used by Selection Resize. */
+    /** Get the rectangle on whose corners the dragging handles are to
+     *  be drawn.  Used by Selection Resize.
+     */
     public Rectangle getHandleBox() {
 
   	Rectangle r = getBounds();
-  	return new Rectangle( r.x + BIGPORT_X, r.y, r.width - BIGPORT_X, r.height );
+  	return new Rectangle(r.x + BIGPORT_X, r.y, r.width - BIGPORT_X,
+			     r.height );
 
     }
 

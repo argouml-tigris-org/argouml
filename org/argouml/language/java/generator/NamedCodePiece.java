@@ -39,7 +39,7 @@ import java.util.Stack;
    This is a code piece that has been identified by the parser to be
    of a specific kind. See the subclasses for further details.
 */
-abstract public class NamedCodePiece extends CodePiece
+public abstract class NamedCodePiece extends CodePiece
 {
     /**
        Write the code this piece represents to file. The stack in the
@@ -53,7 +53,7 @@ abstract public class NamedCodePiece extends CodePiece
        @param writer Write code to this.
        @param parseStateStack Information with one stack frame for each
                               classifier that the parser has descended into. */
-    abstract public void write(BufferedReader reader,
+    public abstract void write(BufferedReader reader,
                                BufferedWriter writer,
                                Stack parseStateStack) throws Exception;
 
@@ -65,7 +65,7 @@ abstract public class NamedCodePiece extends CodePiece
 
        @param reader Read original code from this.
        @param writer Write code to this.  */
-    final public void ffCodePiece(BufferedReader reader,
+    public final void ffCodePiece(BufferedReader reader,
                                   BufferedWriter writer) throws Exception
     {
         int line = getStartLine();

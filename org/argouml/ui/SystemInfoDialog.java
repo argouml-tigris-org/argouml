@@ -52,7 +52,8 @@ public class SystemInfoDialog extends JDialog {
     JTabbedPane _tabs = new JTabbedPane();
     JTextArea   _info = new JTextArea();
     JButton     _runGCButton = new JButton("Run GC");
-    JButton     _copyButton = new JButton("Copy Information to System Clipboard");
+    JButton     _copyButton =
+	new JButton("Copy Information to System Clipboard");
     JButton     _cancelButton = new JButton("Cancel");
     JPanel      _buttons = new JPanel();
 
@@ -158,7 +159,8 @@ public class SystemInfoDialog extends JDialog {
 	_info.setText(info.toString());
     } //end updateInfo()
 
-    private static ClipboardOwner defaultClipboardOwner = new ClipboardObserver();
+    private static ClipboardOwner defaultClipboardOwner =
+	new ClipboardObserver();
 
     static class ClipboardObserver implements ClipboardOwner {
 	public void lostOwnership(Clipboard clipboard, Transferable contents) {

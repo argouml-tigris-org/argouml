@@ -31,7 +31,6 @@ import java.util.Iterator;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.AbstractGoRule;
 
 /**

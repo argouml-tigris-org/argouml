@@ -78,10 +78,11 @@ public class CrWrongLinkEnds extends CrUML {
     }
 
     /**
-     * If there are links that are going from inside a FigComponent 
-     * to inside a FigComponentInstance the returned vector-set is not null. 
-     * Then in the vector-set are the UMLDeploymentDiagram and all FigLinks 
-     * with this characteristic and their FigObjects described over the links MLinkEnds 
+     * If there are links that are going from inside a FigComponent to
+     * inside a FigComponentInstance the returned vector-set is not
+     * null.  Then in the vector-set are the UMLDeploymentDiagram and
+     * all FigLinks with this characteristic and their FigObjects
+     * described over the links MLinkEnds
      **/
     public VectorSet computeOffenders(UMLDeploymentDiagram dd) { 
 	Vector figs = dd.getLayer().getContents();
@@ -99,8 +100,11 @@ public class CrWrongLinkEnds extends CrUML {
 		Iterator it = ends.iterator();
 		while (it.hasNext()) {
 		    MLinkEnd le = (MLinkEnd) it.next();
-		    if (le.getInstance().getElementResidences() != null && (le.getInstance().getElementResidences().size() > 0)) count = count + 2;
-		    if (le.getInstance().getComponentInstance() != null) count = count + 1;
+		    if (le.getInstance().getElementResidences() != null
+			&& (le.getInstance().getElementResidences().size() > 0))
+			count = count + 2;
+		    if (le.getInstance().getComponentInstance() != null)
+			count = count + 1;
 		}
 		if (count == 3) {
 		    if (offs == null) {

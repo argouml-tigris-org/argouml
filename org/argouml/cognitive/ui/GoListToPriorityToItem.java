@@ -38,7 +38,7 @@ public class GoListToPriorityToItem implements TreeModel {
     // TreeModel implementation
 
     public Object getRoot() {
-	throw new UnsupportedOperationException("getRoot should never be called");
+	throw new UnsupportedOperationException();
     } 
     public void setRoot(Object r) { }
 
@@ -58,7 +58,8 @@ public class GoListToPriorityToItem implements TreeModel {
 		}
 	    }
 	}
-	throw new IndexOutOfBoundsException("getChild shouldnt get here GoListToPriorityToItem");
+	throw new IndexOutOfBoundsException("getChild shouldnt get here "
+					    + "GoListToPriorityToItem");
     }
 
     public int getChildCount(Object parent) {
@@ -101,7 +102,8 @@ public class GoListToPriorityToItem implements TreeModel {
 
     public boolean isLeaf(Object node) {
 	if (node instanceof ToDoList) return false;
-	if (node instanceof PriorityNode && getChildCount(node) > 0) return false;
+	if (node instanceof PriorityNode && getChildCount(node) > 0)
+	    return false;
 	return true;
     }
 

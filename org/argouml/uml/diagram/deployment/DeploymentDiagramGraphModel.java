@@ -26,22 +26,14 @@ package org.argouml.uml.diagram.deployment;
 
 import org.apache.log4j.Category;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
 import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.uml.MMUtil;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 
 import java.util.*;
 import java.beans.*;
 
 import org.tigris.gef.graph.*;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.Mode;
-import org.tigris.gef.base.ModeManager;
-
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
@@ -50,7 +42,8 @@ import ru.novosoft.uml.model_management.*;
 public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     implements VetoableChangeListener 
 {
-    protected static Category cat = Category.getInstance(DeploymentDiagramGraphModel.class);
+    protected static Category cat =
+	Category.getInstance(DeploymentDiagramGraphModel.class);
 
     /** The "home" UML model of this diagram, not all ModelElements in this
      *  graph are in the home model, but if they are added and don't
@@ -79,12 +72,13 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     public Vector getPorts(Object nodeOrEdge) {
 	Vector res = new Vector();  //wasteful!
 	if (ModelFacade.isANode(nodeOrEdge)) res.addElement(nodeOrEdge);
-	if (ModelFacade.isANodeInstance(nodeOrEdge)) res.addElement(nodeOrEdge);
-	if (ModelFacade.isAComponent(nodeOrEdge)) res.addElement(nodeOrEdge);    
+	if (ModelFacade.isANodeInstance(nodeOrEdge))
+	    res.addElement(nodeOrEdge);
+	if (ModelFacade.isAComponent(nodeOrEdge)) res.addElement(nodeOrEdge);
 	if (ModelFacade.isAComponentInstance(nodeOrEdge)) 
 	    res.addElement(nodeOrEdge);
 	if (ModelFacade.isAClass(nodeOrEdge)) res.addElement(nodeOrEdge);    
-	if (ModelFacade.isAInterface(nodeOrEdge)) res.addElement(nodeOrEdge);    
+	if (ModelFacade.isAInterface(nodeOrEdge)) res.addElement(nodeOrEdge);
 	if (ModelFacade.isAObject(nodeOrEdge)) res.addElement(nodeOrEdge);
 	return res;
     }
@@ -179,10 +173,10 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     public Object getDestPort(Object edge) {
 	if (ModelFacade.isARelationship(edge)) {
 	    return CoreHelper.getHelper().getDestination((MRelationship) edge);
-	} else
-	    if (ModelFacade.isALink(edge)) {
-		return CommonBehaviorHelper.getHelper().getDestination((MLink) edge);
-	    }
+	} else if (ModelFacade.isALink(edge)) {
+	    return CommonBehaviorHelper.getHelper()
+		.getDestination((MLink) edge);
+	}
     
 	cat.debug("TODO getDestPort");
 
@@ -218,7 +212,8 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	}
 	else if (ModelFacade.isALink(edge)) {
 	    end0 = CommonBehaviorHelper.getHelper().getSource((MLink) edge);
-	    end1 = CommonBehaviorHelper.getHelper().getDestination((MLink) edge);
+	    end1 =
+		CommonBehaviorHelper.getHelper().getDestination((MLink) edge);
 	}
 	if (end0 == null || end1 == null) return false;
 	if (!_nodes.contains(end0)) return false;
@@ -293,7 +288,8 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	    }
 	}
 	if ( ModelFacade.isAModelElement(node) ) {
-	    Vector specs = new Vector(((MModelElement) node).getClientDependencies());
+	    Vector specs =
+		new Vector(((MModelElement) node).getClientDependencies());
 	    specs.addAll(((MModelElement) node).getSupplierDependencies());
 	    Iterator iter = specs.iterator();
 	    while (iter.hasNext()) {

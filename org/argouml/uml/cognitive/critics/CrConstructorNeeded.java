@@ -41,7 +41,9 @@ import org.argouml.model.ModelFacade;
  * <p>The critic will trigger whenever a class has instance variables that are
  * uninitialised and there is no constructor.</p>
  *
- * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_constructor_needed">ArgoUML User Manual: Constructor Needed</a>
+ * @see <a
+ * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_constructor_needed">ArgoUML
+ * User Manual: Constructor Needed</a>
  */
 
 public class CrConstructorNeeded extends CrUML {

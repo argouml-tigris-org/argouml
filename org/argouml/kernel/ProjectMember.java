@@ -74,9 +74,9 @@ public abstract class ProjectMember {
     }
 
     /**
-     * In contrast to {@link #getPlainName} returns the member's name including the
-     * project's base name. The project's base name is prepended followed by an
-     * underscore '_'.
+     * In contrast to {@link #getPlainName} returns the member's name
+     * including the project's base name. The project's base name is
+     * prepended followed by an underscore '_'.
      */
     public String getName() {
 	if (_name == null)
@@ -110,7 +110,9 @@ public abstract class ProjectMember {
 	}
 
 	if (_name.endsWith(getFileExtension()))
-	    _name = _name.substring(0, _name.length() - getFileExtension().length());
+	    _name =
+		_name.substring(0,
+				_name.length() - getFileExtension().length());
     }
 
     public Project getProject() { return _project; }
@@ -127,24 +129,28 @@ public abstract class ProjectMember {
 
     public abstract void load() throws IOException, org.xml.sax.SAXException;
     /**
-     * @deprecated As of 7 June 2003 (ArgoUml version 0.13.6). Will be removed in future.
+     * @deprecated As of 7 June 2003 (ArgoUml version 0.13.6).
+     *             Will be removed in future.
      * @param path
      * @param overwrite
      * @throws Exception
      */
     public abstract void save(String path, boolean overwrite) throws Exception;
+
     /**
-     * @deprecated As of 7 June 2003 (ArgoUml version 0.13.6). Will be removed in future.
+     * @deprecated As of 7 June 2003 (ArgoUml version 0.13.6).
+     *             Will be removed in future.
      * @param path
      * @param overwrite
      * @param writer
      * @throws Exception
      */
-    public abstract void save(String path, boolean overwrite, Writer writer) throws Exception;
+    public abstract void save(String path, boolean overwrite, Writer writer)
+	throws Exception;
   
     /**
-     * Save the projectmember to the given writer. Not abstract since this would break the public
-     * API prematuraly.
+     * Save the projectmember to the given writer. Not abstract since
+     * this would break the public API prematuraly.
      * @param writer
      * @throws Exception
      */

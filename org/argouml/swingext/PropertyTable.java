@@ -65,8 +65,10 @@ public class PropertyTable extends JTable {
      * Creates a new PropertyTable for the specified set of Properties.
      * 
      * @param properties        set of properties to display in the table
-     * @param nameColumnTitle   title to be displayed in the first column header
-     * @param valueColumnTitle  title to be displayed in the second column header
+     * @param nameColumnTitle title to be displayed in the first
+     * column header
+     * @param valueColumnTitle title to be displayed in the second
+     * column header
     **/
     public PropertyTable(
             Property[] properties,
@@ -87,8 +89,10 @@ public class PropertyTable extends JTable {
 	});
         setRowHeight(heightBox.getPreferredSize().height);
         
-        int width = Math.min(getPreferredSize().width, getPreferredScrollableViewportSize().width);
-        int height = Math.min(getPreferredSize().height, getPreferredScrollableViewportSize().height);
+        int width = Math.min(getPreferredSize().width,
+			     getPreferredScrollableViewportSize().width);
+        int height = Math.min(getPreferredSize().height,
+			      getPreferredScrollableViewportSize().height);
         setPreferredScrollableViewportSize(new Dimension(width, height));
     }
 

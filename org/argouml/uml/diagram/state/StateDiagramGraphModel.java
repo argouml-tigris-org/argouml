@@ -125,7 +125,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
     /** Return one end of an edge */
     public Object getSourcePort(Object edge) {
 	if (edge instanceof MTransition) {
-	    return StateMachinesHelper.getHelper().getSource((MTransition) edge);
+	    return StateMachinesHelper.getHelper()
+		.getSource((MTransition) edge);
 	}
 	cat.debug("TODO getSourcePort of MTransition");
 	return null;
@@ -134,7 +135,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
     /** Return  the other end of an edge */
     public Object getDestPort(Object edge) {
 	if (edge instanceof MTransition) {
-	    return StateMachinesHelper.getHelper().getDestination((MTransition) edge);
+	    return StateMachinesHelper.getHelper()
+		.getDestination((MTransition) edge);
 	}
 	cat.debug("TODO getDestPort of MTransition");
 	return null;
@@ -190,7 +192,9 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 
 	top.addSubvertex(sv);
 	//       sv.setParent(top); this is done in setEnclosingFig!!
-	//      if ((sv instanceof MState) && (sv.getNamespace()==null)) ((MState)sv).setStateMachine(_machine);
+	//      if ((sv instanceof MState) &&
+	//      (sv.getNamespace()==null))
+	//      ((MState)sv).setStateMachine(_machine);
 	fireNodeAdded(node);
     }
 
@@ -235,14 +239,17 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 
 	if (fromSV instanceof MFinalState)	return false;
 	if (toSV instanceof MPseudostate)
-	    if (MPseudostateKind.INITIAL.equals(((MPseudostate) toSV).getKind()))
+	    if (MPseudostateKind.INITIAL
+		.equals(((MPseudostate) toSV).getKind()))
 		return false;
 
 	return true;
     }
 
     /** Contruct and add a new edge of the given kind */
-    public Object connect(Object fromPort, Object toPort, java.lang.Class edgeClass) {
+    public Object connect(Object fromPort, Object toPort,
+			  java.lang.Class edgeClass)
+    {
 	//    try {
 	if (!(fromPort instanceof MStateVertex)) {
 	    cat.error("internal error not from sv");
@@ -255,20 +262,24 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 	MStateVertex fromSV = (MStateVertex) fromPort;
 	MStateVertex toSV = (MStateVertex) toPort;
 
-	if (fromSV instanceof MFinalState)	return null;
+	if (fromSV instanceof MFinalState)
+	    return null;
 	if (toSV instanceof MPseudostate)
-	    if (MPseudostateKind.INITIAL.equals(((MPseudostate) toSV).getKind()))
+	    if (MPseudostateKind.INITIAL
+		.equals(((MPseudostate) toSV).getKind()))
 		return null;
 
 	if (edgeClass == MTransition.class) {
 	    MTransition tr = null;
 	    MCompositeState comp = fromSV.getContainer();
-	    tr = StateMachinesFactory.getFactory().buildTransition(fromSV, toSV);
+	    tr = StateMachinesFactory.getFactory().buildTransition(fromSV,
+								   toSV);
 	    addEdge(tr);
 	    return tr;
 	}
 	else {
-	    cat.debug("wrong kind of edge in StateDiagram connect3 " + edgeClass);
+	    cat.debug("wrong kind of edge in StateDiagram connect3 "
+		      + edgeClass);
 	    return null;
 	}
     }
@@ -305,9 +316,10 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
      * @param edge this is the edge that is being dragged/rerouted
      * @return true if a transition is being rerouted between two states.
      */
-    public boolean canChangeConnectedNode(Object newNode, Object oldNode, Object edge) {
-           
-	// prevent no changes... 
+    public boolean canChangeConnectedNode(Object newNode, Object oldNode,
+					  Object edge)
+    {
+    	// prevent no changes... 
 	if ( newNode == oldNode)
 	    return false;
             
@@ -329,7 +341,9 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
      * @param edge this is the edge that is being dragged/rerouted
      * @param isSource tells us which end is being rerouted.
      */
-    public void changeConnectedNode(Object newNode, Object oldNode, Object edge, boolean isSource) {
+    public void changeConnectedNode(Object newNode, Object oldNode,
+				    Object edge, boolean isSource)
+    {
       
 	if (isSource)
 	    ((MTransition) edge).setSource((MState) newNode);

@@ -30,8 +30,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 import org.argouml.ui.AbstractGoRule;
 
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
-
 public class GoStateToDownstream extends AbstractGoRule {
 
     public String getRuleName() { return "State->Following States"; }

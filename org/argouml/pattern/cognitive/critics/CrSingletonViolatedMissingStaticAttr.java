@@ -46,7 +46,8 @@ import org.argouml.model.ModelFacade;
  * meet the requirements of a Singleton class. These are:
  *
  * <ol>
- *   <li>An static variable to hold the sole instance of the class; (This critic)
+ *   <li>An static variable to hold the sole instance of the class;
+ *       (This critic)
  *   <li>only private constructors to create the sole instance; and
  *   <li>At least one constructor to override the default constructor.
  * </ol>
@@ -55,7 +56,9 @@ import org.argouml.model.ModelFacade;
  * This version includes an implementation for the first test above!
  *
  * <p>
- * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_singleton_violated">ArgoUML User Manual: Singleton Violated</a>
+ * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_singleton_violated">
+ * ArgoUML User Manual: Singleton Violated
+ * </a>
  */
 public class CrSingletonViolatedMissingStaticAttr extends CrUML {
 

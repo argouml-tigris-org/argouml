@@ -47,14 +47,16 @@ public class NavigateTargetBackAction extends UMLAction {
     }
 
     /**
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see
+     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {    
         TargetManager.getInstance().navigateBackward();
     }
 
     /**
-     * Action is possible as navigateForwardPossible on targetManager returns true
+     * Action is possible as navigateForwardPossible on targetManager
+     * returns true
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {

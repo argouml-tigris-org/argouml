@@ -31,32 +31,17 @@
 package org.argouml.swingext;
 
 import javax.swing.Action;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JButton;
 import javax.swing.JPopupMenu;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Insets;
-import java.awt.LayoutManager2;
-import java.awt.GridLayout;
-import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import java.io.Serializable;
 
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
@@ -76,8 +61,10 @@ public class PopupToolBoxButton extends JButton {
     
     /** Creates a new instance of PopupToolboxButton
      * @param a The default action when pressing this button
-     * @param rows The number of rows of buttons to display in the popup toolbox
-     * @param cols The number of columns of buttons to display in the popup toolbox
+     * @param rows The number of rows of buttons to display in the
+     * popup toolbox
+     * @param cols The number of columns of buttons to display in the
+     * popup toolbox
      */
     public PopupToolBoxButton(Action a, int rows, int cols) {
         super(a);
@@ -169,8 +156,10 @@ public class PopupToolBoxButton extends JButton {
 	    MetalLookAndFeel.getPrimaryControlHighlight()};
 
         if (_showSplitter) {
-            showSplitter(colors[1], g, getSplitterPosn(),     1, getHeight() - 4);
-            showSplitter(colors[3], g, getSplitterPosn() + 1, 1, getHeight() - 4);
+            showSplitter(colors[1], g, getSplitterPosn(),     1,
+			 getHeight() - 4);
+            showSplitter(colors[3], g, getSplitterPosn() + 1, 1,
+			 getHeight() - 4);
         }
     }
     
@@ -197,15 +186,17 @@ public class PopupToolBoxButton extends JButton {
      *  loses its rollover border. So the mouselistener is more complex
      *  and needs to determine where oon the main button the mouse is.
      */
-    private class MyMouseListener implements MouseMotionListener, MouseListener {
+    private class MyMouseListener
+	implements MouseMotionListener, MouseListener
+    {
 
         public void mouseDragged(MouseEvent me) {
         }
 
         /**
          * If the mouse movement occurs within the PopupToolBoxButton.
-         * If the mouse moves in and out of the area of the button that has the dropdown
-         * then change the icon.
+         * If the mouse moves in and out of the area of the button
+         * that has the dropdown then change the icon.
          */
         public void mouseMoved(MouseEvent me) {
             showSplitter(me.getX() >= getSplitterPosn());
@@ -220,8 +211,8 @@ public class PopupToolBoxButton extends JButton {
         }
 
         /**
-         * Be double sure the dropdowns rollover divider is removed when we leave the
-         * button.
+         * Be double sure the dropdowns rollover divider is removed
+         * when we leave the button.
          */
         public void mouseExited(MouseEvent me) {
             showSplitter(false);
@@ -230,8 +221,9 @@ public class PopupToolBoxButton extends JButton {
         
         public void mouseClicked(MouseEvent me) {
             if (me.getX() >= getSplitterPosn()) {
-                // If the dropdown area was clicked then do the dropdown action instead of the
-                // current button action
+                // If the dropdown area was clicked then do the
+                // dropdown action instead of the current button
+                // action
                 popup();
             } else {
                 // If clicked elsewhere do the current button action

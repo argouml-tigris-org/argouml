@@ -29,16 +29,18 @@ import org.apache.log4j.Category;
 import org.argouml.uml.diagram.ui.*;
 
 /** a class to get the proper layouter for a Fig.
-Currently this deals only with Generalizations and Realizations.
-
-@author Markus Klink
-
+ * Currently this deals only with Generalizations and Realizations.
+ *
+ * @author Markus Klink
+ * @stereotype singleton
 */
 public class ClassdiagramModelElementFactory 
 {
-    protected static Category cat = Category.getInstance(ClassdiagramModelElementFactory.class);
-    /** Singleton */
-    public static ClassdiagramModelElementFactory SINGLETON = new ClassdiagramModelElementFactory();
+    protected static Category cat =
+	Category.getInstance(ClassdiagramModelElementFactory.class);
+
+    public static ClassdiagramModelElementFactory SINGLETON =
+	new ClassdiagramModelElementFactory();
     
     private ClassdiagramModelElementFactory() { }
     
@@ -50,7 +52,7 @@ public class ClassdiagramModelElementFactory
     public ClassdiagramEdge getInstance(Object f) {
         if (f instanceof FigEdge) {
 	    if (f instanceof FigGeneralization)
-		return (new ClassdiagramGeneralizationEdge((FigGeneralization) f));
+		return new ClassdiagramGeneralizationEdge((FigGeneralization) f);
 	    if (f instanceof FigRealization)
 		return (new ClassdiagramRealizationEdge((FigRealization) f));
 	    if (f instanceof FigAssociation)

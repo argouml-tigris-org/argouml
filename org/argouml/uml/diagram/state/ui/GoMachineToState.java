@@ -27,7 +27,6 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.util.Collection;
-import java.util.Vector;
 
 import org.argouml.ui.AbstractGoRule;
 
@@ -35,7 +34,8 @@ import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 
 /**
- * Navigation rule for navperspective to navigate from statemachine to its top state.
+ * Navigation rule for navperspective to navigate from statemachine to
+ * its top state.
  * 
  * @author jaap.branderhorst@xs4all.nl
  */

@@ -24,11 +24,9 @@
 
 package org.argouml.uml.ui;
 
-import java.awt.event.ActionEvent;
 import javax.swing.JPopupMenu;
 
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
-import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.foundation.core.MModelElement;

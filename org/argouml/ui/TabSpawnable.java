@@ -39,14 +39,16 @@ import org.argouml.cognitive.ui.TabToDoTarget;
 import org.argouml.swingext.Orientation;
 import org.argouml.uml.diagram.ui.TabDiagram;
 import org.argouml.uml.ui.TabModelTarget;
-import org.argouml.uml.ui.TabProps;
 
 /** A subclass of JPanel that can act as a tab in the DetailsPane or
  *  MultiEditorPane.  When the tab is double-clicked, this JPanel will
  *  generate a separate window of the same size and with the same
  *  contents.  This is almost like "tearing off" a tab.
  */
-public class TabSpawnable extends JPanel implements Cloneable, org.argouml.swingext.Orientable {
+public class TabSpawnable
+    extends JPanel
+    implements Cloneable, org.argouml.swingext.Orientable
+{
         
     private Category cat = Category.getInstance(TabSpawnable.class);
     

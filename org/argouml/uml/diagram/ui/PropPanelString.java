@@ -38,8 +38,6 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.model_management.*;
 
-import org.tigris.gef.base.Diagram;
-import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
 import org.argouml.ui.*;

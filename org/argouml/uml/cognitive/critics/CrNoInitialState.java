@@ -62,8 +62,9 @@ public class CrNoInitialState extends CrUML {
 	int size = peers.size();
 	for (Iterator iter = peers.iterator(); iter.hasNext();) {
 	    Object sv = iter.next();
-	    if (sv instanceof MPseudostate &&
-		(MPseudostateKind.INITIAL.equals(((MPseudostate) sv).getKind())))
+	    if (sv instanceof MPseudostate 
+		&& (MPseudostateKind.INITIAL.equals(((MPseudostate) sv)
+						    .getKind())))
 		initialStateCount++;
 	}
 	if (initialStateCount == 0) return PROBLEM_FOUND;

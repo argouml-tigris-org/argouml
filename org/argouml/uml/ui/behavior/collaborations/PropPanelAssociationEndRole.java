@@ -29,7 +29,6 @@ import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
 
-import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelAssociationEnd;
 import org.argouml.util.ConfigLoader;

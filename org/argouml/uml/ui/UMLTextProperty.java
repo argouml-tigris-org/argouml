@@ -30,12 +30,7 @@ import org.argouml.kernel.*;
 
 import org.argouml.ui.*;
 
-import java.awt.event.InvocationEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
 import java.lang.reflect.*;
-
-import javax.swing.JOptionPane;
 
 import ru.novosoft.uml.*;
 

@@ -26,7 +26,6 @@ package org.argouml.cognitive.ui;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -46,9 +45,9 @@ public class AddToDoItemDialog extends ArgoDialog {
     ////////////////////////////////////////////////////////////////
     // constants    
     private static final String PRIORITIES[] = {
-        Argo.localize(BUNDLE, "level.high"),
-        Argo.localize(BUNDLE, "level.medium"),
-        Argo.localize(BUNDLE, "level.low")
+        localize("level.high"),
+        localize("level.medium"),
+        localize("level.low")
     };
     private static final int TEXT_ROWS = 8;
     private static final int TEXT_COLUMNS = 30;
@@ -65,7 +64,7 @@ public class AddToDoItemDialog extends ArgoDialog {
      */
     public AddToDoItemDialog() {
         super(ProjectBrowser.getInstance(), 
-	      Argo.localize(BUNDLE, "dialog.title.add-todo-item"), 
+	      localize("dialog.title.add-todo-item"), 
 	      ArgoDialog.OK_CANCEL_OPTION, true);
         
         _headline = new JTextField(TEXT_COLUMNS);
@@ -73,9 +72,9 @@ public class AddToDoItemDialog extends ArgoDialog {
         _moreinfo = new JTextField(TEXT_COLUMNS);
         _description = new JTextArea(TEXT_ROWS, TEXT_COLUMNS);
 
-        JLabel headlineLabel = new JLabel(Argo.localize(BUNDLE, "label.headline"));
-        JLabel priorityLabel = new JLabel(Argo.localize(BUNDLE, "label.priority"));
-        JLabel moreInfoLabel = new JLabel(Argo.localize(BUNDLE, "label.more-info-url"));
+        JLabel headlineLabel = new JLabel(localize("label.headline"));
+        JLabel priorityLabel = new JLabel(localize("label.priority"));
+        JLabel moreInfoLabel = new JLabel(localize("label.more-info-url"));
    
         _priority.setSelectedItem(PRIORITIES[0]);
 
@@ -93,7 +92,7 @@ public class AddToDoItemDialog extends ArgoDialog {
         panel.add(moreInfoLabel);
         panel.add(_moreinfo);
     
-        _description.setText(Argo.localize(BUNDLE, "label.enter-todo-item") + "\n");
+        _description.setText(localize("label.enter-todo-item") + "\n");
         JScrollPane descriptionScroller = new JScrollPane(_description);
         descriptionScroller.setPreferredSize(_description.getPreferredSize());
         panel.add(descriptionScroller);
@@ -127,8 +126,19 @@ public class AddToDoItemDialog extends ArgoDialog {
         }
         String desc = _description.getText();
         String moreInfoURL = _moreinfo.getText();
-        ToDoItem item = new ToDoItem(designer, headline, priority, desc, moreInfoURL);
+        ToDoItem item =
+	    new ToDoItem(designer, headline, priority, desc, moreInfoURL);
         designer.getToDoList().addElement(item); //? inform()
+    }
+
+
+    /** Localize label for this class.
+     *
+     * @param label the label to localize
+     * @return the localized value.
+     */
+    private static String localize(String label) {
+	return Argo.localize(BUNDLE, label);
     }
 
 } /* end class AddToDoItemDialog */

@@ -25,9 +25,6 @@
 package org.argouml.ui;
 
 import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -49,7 +46,10 @@ import org.argouml.swingext.LabelledLayout;
  *  @author Jeremy Jones
  *  @since  0.9.7
  */
-public class SettingsTabFonts extends SettingsTabHelper implements SettingsTabPanel {
+public class SettingsTabFonts
+    extends SettingsTabHelper
+    implements SettingsTabPanel
+{
 
     private JComboBox	_lookAndFeel;
     private JComboBox	_metalTheme;
@@ -65,7 +65,9 @@ public class SettingsTabFonts extends SettingsTabHelper implements SettingsTabPa
         JPanel top = new JPanel(new LabelledLayout(labelGap, componentGap));
 
         JLabel label = createLabel("label.look-and-feel");
-        _lookAndFeel = new JComboBox(LookAndFeelMgr.SINGLETON.getAvailableLookAndFeelNames());
+        _lookAndFeel =
+	    new JComboBox(LookAndFeelMgr.SINGLETON
+			  .getAvailableLookAndFeelNames());
         _lookAndFeel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
@@ -78,18 +80,19 @@ public class SettingsTabFonts extends SettingsTabHelper implements SettingsTabPa
 
         _metalLabel = createLabel("label.metal-theme");
 
-        _metalTheme = new JComboBox(LookAndFeelMgr.SINGLETON.getAvailableThemeNames());
+        _metalTheme =
+	    new JComboBox(LookAndFeelMgr.SINGLETON.getAvailableThemeNames());
         _metalLabel.setLabelFor(_metalTheme);
         top.add(_metalLabel);
         top.add(_metalTheme);
 
-        top.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));		
+        top.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(top, BorderLayout.CENTER);
 
         JLabel restart = createLabel("label.restart-application");
         restart.setHorizontalAlignment(SwingConstants.CENTER);
         restart.setVerticalAlignment(SwingConstants.CENTER);
-        restart.setBorder(BorderFactory.createEmptyBorder(10, 2, 10, 2));		
+        restart.setBorder(BorderFactory.createEmptyBorder(10, 2, 10, 2));
         add(restart, BorderLayout.SOUTH);
 
         setMetalThemeState();
@@ -102,8 +105,9 @@ public class SettingsTabFonts extends SettingsTabHelper implements SettingsTabPa
     private void setMetalThemeState()
     {
         String lafName = (String) _lookAndFeel.getSelectedItem();
-        boolean enabled = LookAndFeelMgr.SINGLETON.isThemeCompatibleLookAndFeel(
-                        LookAndFeelMgr.SINGLETON.getLookAndFeelFromName(lafName));
+        boolean enabled =
+	    LookAndFeelMgr.SINGLETON.isThemeCompatibleLookAndFeel(
+		    LookAndFeelMgr.SINGLETON.getLookAndFeelFromName(lafName));
 
         _metalLabel.setEnabled(enabled);
         _metalTheme.setEnabled(enabled);

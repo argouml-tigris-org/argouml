@@ -65,7 +65,8 @@ public class ChildGenUML implements ChildGenerator {
 	}
 
 	if (o instanceof MPackage) {
-	    Vector ownedElements = new Vector(((MPackage) o).getOwnedElements());
+	    Vector ownedElements =
+		new Vector(((MPackage) o).getOwnedElements());
 	    if (ownedElements != null) return ownedElements.elements();
 	}
 
@@ -88,7 +89,8 @@ public class ChildGenUML implements ChildGenerator {
 
 	    Vector sms = new Vector(cls.getBehaviors());
 	    MStateMachine sm = null;
-	    if (sms != null && sms.size() > 0) sm = (MStateMachine) sms.elementAt(0);
+	    if (sms != null && sms.size() > 0)
+		sm = (MStateMachine) sms.elementAt(0);
 	    if (sm != null) res.addSub(new EnumerationSingle(sm));
 	    return res;
 	}

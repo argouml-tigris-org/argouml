@@ -36,8 +36,9 @@ import java.io.IOException;
 /**
  * A class loader for loading jar files, both local and remote.
  *
- * This source was taken primarily from 
- *  <a href="http://java.sun.com/docs/books/tutorial/jar/api/jarclassloader.html">Sun's tutorial</a>
+ * This source was taken primarily from <a
+ * href="http://java.sun.com/docs/books/tutorial/jar/api/jarclassloader.html">
+ * Sun's tutorial</a>
  *
  *  @author Unascribed
  */

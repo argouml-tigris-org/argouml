@@ -30,7 +30,6 @@ import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.AbstractGoRule;
 
-import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 
 public class GoGenElementToDerived extends AbstractGoRule {
 

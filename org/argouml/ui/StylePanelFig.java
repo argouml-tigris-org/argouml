@@ -60,13 +60,17 @@ public class StylePanelFig extends StylePanel
 
     ////////////////////////////////////////////////////////////////
     // instance vars
-    protected JLabel _bboxLabel = new JLabel(Argo.localize(BUNDLE, "stylepane.label.bounds") + ": ");
+    protected JLabel _bboxLabel =
+	new JLabel(Argo.localize(BUNDLE, "stylepane.label.bounds") + ": ");
     protected JTextField _bboxField = new JTextField();
-    protected JLabel _fillLabel = new JLabel(Argo.localize(BUNDLE, "stylepane.label.fill") + ": ");
+    protected JLabel _fillLabel =
+	new JLabel(Argo.localize(BUNDLE, "stylepane.label.fill") + ": ");
     protected JComboBox _fillField = new JComboBox();
-    protected JLabel _lineLabel = new JLabel(Argo.localize(BUNDLE, "stylepane.label.line") + ": ");
+    protected JLabel _lineLabel =
+	new JLabel(Argo.localize(BUNDLE, "stylepane.label.line") + ": ");
     protected JComboBox _lineField = new JComboBox();
-    protected JLabel _shadowLabel = new JLabel(Argo.localize(BUNDLE, "stylepane.label.shadow") + ": ");
+    protected JLabel _shadowLabel =
+	new JLabel(Argo.localize(BUNDLE, "stylepane.label.shadow") + ": ");
     protected JComboBox _shadowField = new JComboBox();
     //protected JLabel _dashedLabel = new JLabel("Dashed: ");
     //protected JComboBox _dashedField = new JComboBox(Fig.DASHED_CHOICES);
@@ -196,7 +200,8 @@ public class StylePanelFig extends StylePanel
 	_lineField.addItem(Color.pink);
 	_lineField.addItem(Argo.localize(BUNDLE, "stylepane.label.custom"));
 
-	_shadowField.addItem(Argo.localize(BUNDLE, "stylepane.label.no-shadow"));
+	_shadowField.addItem(Argo.localize(BUNDLE,
+					   "stylepane.label.no-shadow"));
 	_shadowField.addItem("1");
 	_shadowField.addItem("2");
 	_shadowField.addItem("3");
@@ -421,7 +426,8 @@ public class StylePanelFig extends StylePanel
 
     public void setTargetShadow() {
 	int i =  _shadowField.getSelectedIndex();
-	if (_target == null || !(_target instanceof FigNodeModelElement)) return;
+	if (_target == null || !(_target instanceof FigNodeModelElement))
+	    return;
 	_target.startTrans();
 	((FigNodeModelElement) _target).setShadowSize(i);
 	_target.endTrans();

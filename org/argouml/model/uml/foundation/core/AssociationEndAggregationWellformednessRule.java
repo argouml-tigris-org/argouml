@@ -29,7 +29,6 @@ import java.util.Iterator;
 
 import org.argouml.model.uml.AbstractWellformednessRule;
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 
@@ -60,10 +59,12 @@ public class AssociationEndAggregationWellformednessRule
     /**
      * Checks that there is at most one associationend within an association an 
      * aggregation or composite.
-     * @see org.argouml.model.uml.AbstractWellformednessRule#isWellformed(MBase, Object)
+     * @see org.argouml.model.uml.AbstractWellformednessRule#isWellformed(MBase,Object)
      */
     public boolean isWellformed(MBase element, Object newValue) {
-	if (element instanceof MAssociationEnd && newValue instanceof MAggregationKind) {
+	if (element instanceof MAssociationEnd
+	    && newValue instanceof MAggregationKind)
+	{
 	    MAssociationEnd modelelement = (MAssociationEnd) element;
 	    MAggregationKind aggregation = (MAggregationKind) newValue;
 	    if (aggregation.equals(MAggregationKind.NONE)) return true;
@@ -73,7 +74,9 @@ public class AssociationEndAggregationWellformednessRule
 	    int counter = 0;
 	    while (it.hasNext()) {
 		MAssociationEnd end = (MAssociationEnd) it.next();
-		if (!modelelement.equals(end) && !(end.getAggregation().equals(MAggregationKind.NONE))) {
+		if (!modelelement.equals(end)
+		    && !(end.getAggregation().equals(MAggregationKind.NONE)))
+		{
 		    return false;
 		}
 	    }

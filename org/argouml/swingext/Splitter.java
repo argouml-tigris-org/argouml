@@ -37,32 +37,35 @@ import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 /**
- * Acts as a seperator between components and will automatically resize those components
- * when the splitter is moved by dragging the mouse across it.
+ * Acts as a seperator between components and will automatically
+ * resize those components when the splitter is moved by dragging the
+ * mouse across it.
  *
  * @author Bob Tarling
  *
  * TODO: Bring splitter to top when not dynamic resize
  * TODO: Add constructor and getter/setter for dynamic resize
- * TODO: Implement the setLocation method, anything currently calling setLocation
- * should then call super.setLocation.
+ *
+ * TODO: Implement the setLocation method, anything currently calling
+ * setLocation should then call super.setLocation.
  */
 public class Splitter extends JComponent {
 
-    final static public Orientation HORIZONTAL_SPLIT = Horizontal.getInstance();
-    final static public Orientation VERTICAL_SPLIT = Vertical.getInstance();
+    public static final Orientation HORIZONTAL_SPLIT = Horizontal.getInstance();
+    public static final Orientation VERTICAL_SPLIT = Vertical.getInstance();
 
-    final static public int NONE = -1;
-    final static public int WEST = 0;
-    final static public int EAST = 1;
-    final static public int NORTH = 0;
-    final static public int SOUTH = 1;
+    public static final int NONE = -1;
+    public static final int WEST = 0;
+    public static final int EAST = 1;
+    public static final int NORTH = 0;
+    public static final int SOUTH = 1;
 
     /**
-     * The orientation of this splitter. Orientation does not represent the shape of the
-     * splitter but rather the layout of the objects being seperated by the splitter.
-     * In other words a horizontal splitter seperates components layed out in a horizontal
-     * row.
+     * The orientation of this splitter. Orientation does not
+     * represent the shape of the splitter but rather the layout of
+     * the objects being seperated by the splitter.  In other words a
+     * horizontal splitter seperates components layed out in a
+     * horizontal row.
      */
     private Orientation orientation;
 
@@ -75,14 +78,15 @@ public class Splitter extends JComponent {
     private int quickHide = NONE;
     
     /**
-     * True if a component has been hidden by using the quick hide process of the Splitter
+     * True if a component has been hidden by using the quick hide
+     * process of the Splitter
      */ 
     private boolean panelHidden = false;
 
     /**
-     * True if components are resized dymically when the plitter is dragged. If false
-     * then components are only resized when the splitter is dropped by releasing the 
-     * mouse.
+     * True if components are resized dymically when the plitter is
+     * dragged. If false then components are only resized when the
+     * splitter is dropped by releasing the mouse.
      */ 
     private boolean dynamicResize = true;
 
@@ -121,9 +125,9 @@ public class Splitter extends JComponent {
     /**
      * The constructor
      *
-     * @parameter orientation A Horizontal or Vertical object to indicate whether this
-     *                        splitter is designed to seperate components laid out
-     *                        horizontally or vertically.
+     * @parameter orientation A Horizontal or Vertical object to
+     * indicate whether this splitter is designed to seperate
+     * components laid out horizontally or vertically.
      */ 
     public Splitter(Orientation orientation) {
         super();
@@ -135,10 +139,14 @@ public class Splitter extends JComponent {
         JSplitPane splitpane;
         if (orientation == HORIZONTAL_SPLIT) {
             splitpane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
-            splitterSize = Math.max(splitpane.getPreferredSize().width - DIVIDER_PADDING, MIN_SPLITTER_SIZE);
+            splitterSize =
+		Math.max(splitpane.getPreferredSize().width - DIVIDER_PADDING,
+			 MIN_SPLITTER_SIZE);
         } else {
             splitpane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
-            splitterSize = Math.max(splitpane.getPreferredSize().height - DIVIDER_PADDING, MIN_SPLITTER_SIZE);
+            splitterSize =
+		Math.max(splitpane.getPreferredSize().height - DIVIDER_PADDING,
+			 MIN_SPLITTER_SIZE);
         }
 
         setLayout(new SerialLayout(orientation.getPerpendicular()));
@@ -164,20 +172,21 @@ public class Splitter extends JComponent {
     /**
      * Register a component to be resized by this splitter.
      *
-     * @parameter side the side of the splitter to place the component being one of the
-     *                 constants NORTH, SOUTH, EAST or WEST
+     * @parameter side the side of the splitter to place the component
+     * being one of the constants NORTH, SOUTH, EAST or WEST
      */
     public void registerComponent(int side, Component comp)
     {
         this.sideComponent[side] = comp;
-        setVisible(this.sideComponent[WEST] != null && this.sideComponent[EAST] != null);
+        setVisible(this.sideComponent[WEST] != null
+		   && this.sideComponent[EAST] != null);
     }
 
     /**
      * Get a registered component.
      *
-     * @parameter side the side of the splitter of the component to return, being one of the
-     *                 constants NORTH, SOUTH, EAST or WEST
+     * @parameter side the side of the splitter of the component to
+     * return, being one of the constants NORTH, SOUTH, EAST or WEST
      * @return the registered component
      */
     public Component getRegisteredComponent(int side)
@@ -186,13 +195,14 @@ public class Splitter extends JComponent {
     }
 
     /**
-     * Change the quick hide action. If quick hide is turned on then an arrow button
-     * appears on the splitter to allow the user to instantly reposition the splitter to
-     * hide one of the components.
+     * Change the quick hide action. If quick hide is turned on then
+     * an arrow button appears on the splitter to allow the user to
+     * instantly reposition the splitter to hide one of the
+     * components.
      *
-     * @parameter side the side of the splitter of the component to be hidden on a quick
-     *                 hide action. This being one of the constants NORTH, SOUTH, EAST, 
-     *                 WEST or NONE.
+     * @parameter side the side of the splitter of the component to be
+     * hidden on a quick hide action. This being one of the constants
+     * NORTH, SOUTH, EAST, WEST or NONE.
      */
     public void setQuickHide(int side) {
         quickHide = side;
@@ -215,9 +225,10 @@ public class Splitter extends JComponent {
     }
 
     /*
-     * Show the correct button symbol. The arrow button should point in the direction that
-     * the splitter will move on the button press. This will be towards the component to
-     * hide or if already hidden it should point away from the hidden component.
+     * Show the correct button symbol. The arrow button should point
+     * in the direction that the splitter will move on the button
+     * press. This will be towards the component to hide or if already
+     * hidden it should point away from the hidden component.
      */
     private void showButtons() {
         if (buttonNorth != null) {
@@ -233,7 +244,8 @@ public class Splitter extends JComponent {
     }
 
     /*
-     * Hide or restore the component currently selected as the quick hide component.
+     * Hide or restore the component currently selected as the quick
+     * hide component.
      */
     public void toggleHide()
     {
@@ -248,7 +260,9 @@ public class Splitter extends JComponent {
             }
         }
         else if (quickHide == EAST) {
-            position = orientation.getPosition(this) + orientation.getLength(sideComponent[EAST]);
+            position =
+		orientation.getPosition(this)
+		+ orientation.getLength(sideComponent[EAST]);
         }
 
         lastLength = orientation.getLength(sideComponent[quickHide]);
@@ -293,12 +307,13 @@ public class Splitter extends JComponent {
     }	
 	
     /*
-     * Attempt to move the splitter by a given amount. It may not be possible to move
-     * the splitter as far as requested because it may result in one of the components
-     * having a negative size or breaking it min/max size.
+     * Attempt to move the splitter by a given amount. It may not be
+     * possible to move the splitter as far as requested because it
+     * may result in one of the components having a negative size or
+     * breaking it min/max size.
      *
-     * @parameter movement the distance in pixels to move the splitter from its current
-     *                     position.
+     * @parameter movement the distance in pixels to move the splitter
+     * from its current position.
      *
      * @return the actual number of pixels the splitter was moved.
      */
@@ -308,13 +323,22 @@ public class Splitter extends JComponent {
             int restrictedMovement = 0;
             
             if (movement >= 0) {
-                restrictedMovement = restrictMovement(sideComponent[WEST], sideComponent[EAST], movement, -1);
+                restrictedMovement =
+		    restrictMovement(sideComponent[WEST],
+				     sideComponent[EAST],
+				     movement,
+				     -1);
             }
             else {
-                restrictedMovement = restrictMovement(sideComponent[EAST], sideComponent[WEST], movement, 1);
+                restrictedMovement =
+		    restrictMovement(sideComponent[EAST],
+				     sideComponent[WEST],
+				     movement,
+				     1);
             }
 
-            setLocation(orientation.addToPosition(getLocation(), restrictedMovement));
+            setLocation(orientation.addToPosition(getLocation(),
+						  restrictedMovement));
 
             return restrictedMovement;
         }
@@ -322,14 +346,22 @@ public class Splitter extends JComponent {
     }
 
     /**
-     * Resize and reposition the components according to the movement of the splitter
+     * Resize and reposition the components according to the movement
+     * of the splitter
      *
      * @parameter movement the distance the splitter has moved.
      */
     private void resizeComponents(int movement) {
-        sideComponent[NORTH].setSize(orientation.addLength(sideComponent[NORTH].getSize(), movement));
-        sideComponent[SOUTH].setSize(orientation.subtractLength(sideComponent[SOUTH].getSize(), movement));
-        sideComponent[SOUTH].setLocation(orientation.addToPosition(sideComponent[SOUTH].getLocation(), movement));
+        sideComponent[NORTH]
+	    .setSize(orientation.addLength(sideComponent[NORTH].getSize(),
+					   movement));
+        sideComponent[SOUTH]
+	    .setSize(orientation.subtractLength(sideComponent[SOUTH].getSize(),
+						movement));
+        sideComponent[SOUTH].
+	    setLocation(orientation
+			.addToPosition(sideComponent[SOUTH].getLocation(),
+				       movement));
         sideComponent[NORTH].validate();
         sideComponent[SOUTH].validate();
     }
@@ -338,14 +370,17 @@ public class Splitter extends JComponent {
      * calculates any restriction of movement based on the min/max values of the
      * registered components.
      *
-     * @parameter growingComponent   The component that is expanding as the result of a
-     *                               splitter move.
-     * @parameter shrinkingComponent The component that is shrinking as the result of a
-     *                               splitter move.
+     * @parameter growingComponent The component that is expanding as
+     * the result of a splitter move.
+     * @parameter shrinkingComponent The component that is shrinking
+     * as the result of a splitter move.
      * @parameter movement           The number of pixels of the attempted move
-     * @parameter sign               The direction of the move -ve or +ve (-1 or +1)
+     * @parameter sign The direction of the move -ve or +ve (-1 or +1)
      */
-    private int restrictMovement(Component growingComponent, Component shrinkingComponent, int movement, int sign) {
+    private int restrictMovement(Component growingComponent,
+				 Component shrinkingComponent,
+				 int movement, int sign)
+    {
 
         Dimension maxSize = growingComponent.getMaximumSize();
         int maxLength = orientation.getLength(maxSize);
@@ -369,17 +404,20 @@ public class Splitter extends JComponent {
     /**
      * The mouse listener to detect mouse interaction with this splitter
      */
-    private class MyMouseListener implements MouseMotionListener, MouseListener {
+    private class MyMouseListener
+	implements MouseMotionListener, MouseListener
+    {
         /**
-         * When the mouse is pressed the splitter position is recorded so that the
-         * the difference in position can be calculated when the mouse is released.
+         * When the mouse is pressed the splitter position is recorded
+         * so that the the difference in position can be calculated
+         * when the mouse is released.
          */
         private int positionOfSplitterWhenPressed;
         
         /**
-         * A value is recorded here when the mouse is pressed on the splitter. This allows
-         * the position of the mouse on the splitter to remain consistent when the splitter
-         * is moved.
+         * A value is recorded here when the mouse is pressed on the
+         * splitter. This allows the position of the mouse on the
+         * splitter to remain consistent when the splitter is moved.
          */
         private int mousePositionOnSplitterWhenPressed;
 
@@ -389,8 +427,10 @@ public class Splitter extends JComponent {
         public void mouseReleased(MouseEvent me)
         {
             if (!dynamicResize) {
-                moveSplitter(orientation.getPosition(me) - mousePositionOnSplitterWhenPressed);
-                resizeComponents(orientation.getPosition(getLocation()) - positionOfSplitterWhenPressed);
+                moveSplitter(orientation.getPosition(me)
+			     - mousePositionOnSplitterWhenPressed);
+                resizeComponents(orientation.getPosition(getLocation())
+				 - positionOfSplitterWhenPressed);
             }
             mousePositionOnSplitterWhenPressed = 0;
             positionOfSplitterWhenPressed = 0;
@@ -401,7 +441,9 @@ public class Splitter extends JComponent {
          */
         public void mouseDragged(MouseEvent me)
         {
-            int mouseMovement = orientation.getPosition(me) - mousePositionOnSplitterWhenPressed;
+            int mouseMovement =
+		orientation.getPosition(me)
+		- mousePositionOnSplitterWhenPressed;
             int restrictedMovement = moveSplitter(mouseMovement);
             if (restrictedMovement == 0) return;
             
@@ -415,23 +457,28 @@ public class Splitter extends JComponent {
         }
 
         /**
-         * On a mouse press record the position of the splitter and the position of the
-         * mouse on the splitter.
+         * On a mouse press record the position of the splitter and
+         * the position of the mouse on the splitter.
          *
          */
         public void mousePressed(MouseEvent me)
         {
             mousePositionOnSplitterWhenPressed = orientation.getPosition(me);
-            positionOfSplitterWhenPressed = orientation.getPosition(getLocation());
+            positionOfSplitterWhenPressed =
+		orientation.getPosition(getLocation());
         }
 
         /**
-         * On a double click either hide or show the component selected for quick hide.
+         * On a double click either hide or show the component
+         * selected for quick hide.
          *
          */
         public void mouseClicked(MouseEvent me)
         {
-            if (me.getClickCount() == 2 && sideComponent[WEST] != null && sideComponent[EAST] != null) {
+            if (me.getClickCount() == 2
+		&& sideComponent[WEST] != null
+		&& sideComponent[EAST] != null)
+	    {
                 toggleHide();
             }
         }

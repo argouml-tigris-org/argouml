@@ -32,7 +32,9 @@ import org.tigris.gef.presentation.*;
  *
  * @author  mkl
  */
-public class ClassdiagramGeneralizationEdge extends ClassdiagramInheritanceEdge {
+public class ClassdiagramGeneralizationEdge
+    extends ClassdiagramInheritanceEdge
+{
     
     
     public ClassdiagramGeneralizationEdge(FigEdge edge) {

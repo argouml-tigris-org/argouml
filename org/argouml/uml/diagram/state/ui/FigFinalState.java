@@ -228,7 +228,13 @@ public class FigFinalState extends FigStateVertex {
 	int MAXPOINTS = 20;
 	Point point = null;
 	for (int i = 0; i < MAXPOINTS; i++) {
-	    point = new Point((int) (cx + Math.cos(2 * Math.PI / MAXPOINTS * i) * radius), (int) (cy + Math.sin(2 * Math.PI / MAXPOINTS * i) * radius));
+	    point =
+		new Point((int)
+			  (cx
+			   + Math.cos(2 * Math.PI / MAXPOINTS * i) * radius),
+			  (int)
+			  (cy
+			   + Math.sin(2 * Math.PI / MAXPOINTS * i) * radius));
 	    ret.add(point);
 	}
 	return ret;

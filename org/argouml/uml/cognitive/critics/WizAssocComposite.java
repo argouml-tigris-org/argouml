@@ -56,12 +56,15 @@ import org.tigris.gef.util.*;
  * <p><em>Note</em>. This only applies to binary associations. A separate
  *   wizard is needed for 3-way (or more) associations.</p>
  *
- * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_multiple_agg">ArgoUML User Manual: Two Aggregate ends (roles) in binary Association</a>
+ * @see <a
+ * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_multiple_agg">ArgoUML
+ * User Manual: Two Aggregate ends (roles) in binary Association</a>
  */
 
 
 public class WizAssocComposite extends Wizard {
-    protected static Category cat = Category.getInstance(WizAssocComposite.class);
+    protected static Category cat =
+	Category.getInstance(WizAssocComposite.class);
     
 
     /**
@@ -195,11 +198,17 @@ public class WizAssocComposite extends Wizard {
         String start = "(anon)";
         String end   = "(anon)";
 
-        if ((cls0 != null) && (cls0.getName() != null) && (!(cls0.getName().equals("")))) {
+        if ((cls0 != null)
+	    && (cls0.getName() != null)
+	    && (!(cls0.getName().equals(""))))
+	{
             start = cls0.getName();
         }
 
-        if ((cls1 != null) && (cls1.getName() != null) && (!(cls1.getName().equals("")))) {
+        if ((cls1 != null)
+	    && (cls1.getName() != null)
+	    && (!(cls1.getName().equals(""))))
+	{
             end = cls1.getName();
         }
 

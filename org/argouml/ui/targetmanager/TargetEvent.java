@@ -36,17 +36,17 @@ public class TargetEvent extends EventObject {
     /**
      * Indicates that a total new set of targets is set
      */
-    public final static String TARGET_SET = "set";
+    public static final String TARGET_SET = "set";
     
     /**
      * Indicates that a target is being added to the list of targets
      */
-    public final static String TARGET_ADDED = "added";
+    public static final String TARGET_ADDED = "added";
     
     /**
      * Indicates that a target is being removed from the list of targets
      */
-    public final static String TARGET_REMOVED = "removed";
+    public static final String TARGET_REMOVED = "removed";
     
     /**
      * The name of the event
@@ -65,12 +65,16 @@ public class TargetEvent extends EventObject {
 
     /**
      * Constructs a new TargetEvent
-     * @param source The source that fired the TargetEvent, will allways be the TargetManager
-     * @param name The name of the TargetEvent, can be TARGET_SET, TARGET_REMOVED or TARGET_ADDED
+     * @param source The source that fired the TargetEvent, will
+     * allways be the TargetManager
+     * @param name The name of the TargetEvent, can be TARGET_SET,
+     * TARGET_REMOVED or TARGET_ADDED
      * @param oldTargets The old targets before the change took place
      * @param newTargets The new targets after the change took place
      */
-    public TargetEvent(Object source, String name, Object[] oldTargets, Object[] newTargets) {
+    public TargetEvent(Object source, String name,
+		       Object[] oldTargets, Object[] newTargets)
+    {
 	super(source);
 	_name = name;
         _oldTargets = oldTargets;

@@ -153,7 +153,9 @@ public abstract class NotationHelper
     }
 
     public String generateStereotype(MStereotype s) {
-	return getLeftGuillemot() + generateName(s.getName()) + getRightGuillemot();
+	return getLeftGuillemot()
+	    + generateName(s.getName())
+	    + getRightGuillemot();
     }
 
     public String generateExpression(MExpression expr) {

@@ -110,7 +110,8 @@ public class FigSeqObject extends FigNodeModelElement
 	_bigPort = new FigRect(10, 10, 90, 50, Color.cyan, Color.cyan);
 	_cover = new FigRect(10, 10, 90, 50, Color.black, Color.white);
 
-	_lifeline = new FigRect(50, 10 + nameMin.height, 10, 40, Color.black, Color.white);
+	_lifeline = new FigRect(50, 10 + nameMin.height, 10, 40,
+				Color.black, Color.white);
 
 	//object's termination symbol
 	_terminateLine1 = new FigLine(10, 49, 19, 49, Color.black);
@@ -167,8 +168,8 @@ public class FigSeqObject extends FigNodeModelElement
 
 
     /**
-     * If the object is terminated , the termination symbol will appear as  a cross.
-     * If not, the termination symbol is hidden.
+     * If the object is terminated , the termination symbol will
+     * appear as a cross.  If not, the termination symbol is hidden.
      */
     public void terminateSymbolSetBounds( int x1, int y1, int x2, int y2) {
 	_terminateLine1.setX1( x1);
@@ -238,7 +239,8 @@ public class FigSeqObject extends FigNodeModelElement
 	    String next = st.nextToken().trim();
     
 	    if (next.equals("a")) {
-		// next token is an activation fig ["a"| _FromPos| _toPos| _fromBegin| end]
+		// next token is an activation fig ["a"| _FromPos|
+		// _toPos| _fromBegin| end]
 		FigActivation fa = new FigActivation(10, 10, 21, 10, 0, 0);
 		addFig(fa);
 		_activations.addElement(fa);
@@ -317,8 +319,9 @@ public class FigSeqObject extends FigNodeModelElement
 	Fig f = hitFig(new Rectangle(x, y, 1, 1));
    
 	if (Globals.mode() instanceof ModeSelect )   {
-	    /* if we are in the select mode  and the hit fig is tho object's lifeline, 
-	     *  return null, so the object can be selected 
+	    /* if we are in the select mode and the hit fig is tho
+	     *  object's lifeline, return null, so the object can be
+	     *  selected
 	     */ 
 	    return null;
 	}
@@ -333,8 +336,10 @@ public class FigSeqObject extends FigNodeModelElement
 	Dimension coverMin = _cover.getMinimumSize();
 	Dimension nameMin = _name.getMinimumSize();
 
-	int h = Math.max(bigPortMin.height, Math.max(coverMin.height, nameMin.height));
-	int w = Math.max(bigPortMin.width, Math.max(coverMin.width, nameMin.width));
+	int h = Math.max(bigPortMin.height,
+			 Math.max(coverMin.height, nameMin.height));
+	int w = Math.max(bigPortMin.width,
+			 Math.max(coverMin.width, nameMin.width));
 	return new Dimension(w, h);
     }
 
@@ -356,49 +361,68 @@ public class FigSeqObject extends FigNodeModelElement
 
 
 	if (_created && _terminated) {
-	    mainX = x;        mainY = y + 40 * (_createHeight + 1) + 10;
-	    mainW = nameMin.width + 20;     mainH = nameMin.height + 10;
-	    lifeX = x + nameMin.width / 2 + 6;    lifeY = y + nameMin.height + 40 * (_createHeight + 1) + 20;
-	    lifeW = 10;       lifeH = 25 + 40 * (_terminateHeight - _createHeight - 1);
-	    portX = x;        portY = y + nameMin.height + 45;
-	    portW = 10;       portH = 1;
+	    mainX = x;
+	    mainY = y + 40 * (_createHeight + 1) + 10;
+	    mainW = nameMin.width + 20;
+	    mainH = nameMin.height + 10;
+	    lifeX = x + nameMin.width / 2 + 6;
+	    lifeY = y + nameMin.height + 40 * (_createHeight + 1) + 20;
+	    lifeW = 10;
+	    lifeH = 25 + 40 * (_terminateHeight - _createHeight - 1);
+	    portX = x;
+	    portY = y + nameMin.height + 45;
+	    portW = 10;
+	    portH = 1;
 
 	}
 
 	if (_created && (!(_terminated))) {
-	    mainX = x; 				mainY = y + 40 * (_createHeight + 1) + 10;
-	    mainW = nameMin.width + 20; 		mainH = nameMin.height + 10;
-	    lifeX = x + nameMin.width / 2 + 6;		lifeY = y + nameMin.height + 40 * (_createHeight + 1) + 20;
-	    lifeW = 10;				lifeH = 30 + 40 * (edges - _createHeight - 1);
-	    portX = x;				portY = y + nameMin.height + 45;
-	    portW = 10;				portH = 1;
-
-
-
+	    mainX = x;
+	    mainY = y + 40 * (_createHeight + 1) + 10;
+	    mainW = nameMin.width + 20;
+	    mainH = nameMin.height + 10;
+	    lifeX = x + nameMin.width / 2 + 6;
+	    lifeY = y + nameMin.height + 40 * (_createHeight + 1) + 20;
+	    lifeW = 10;
+	    lifeH = 30 + 40 * (edges - _createHeight - 1);
+	    portX = x;
+	    portY = y + nameMin.height + 45;
+	    portW = 10;
+	    portH = 1;
 	}
 
 	if ((!(_created)) && _terminated) {
-	    mainX = x; 				mainY = y;
-	    mainW = nameMin.width + 20; 		mainH = nameMin.height + 10;
-	    lifeX = x + nameMin.width / 2 + 6;		lifeY = y + nameMin.height + 10;
-	    lifeW = 10;				lifeH = 40 * _terminateHeight + 35;
-	    portX = lifeX - 3;			portY = y + nameMin.height + 45;
-	    portW = 21;				portH = 1;
-
-
+	    mainX = x;
+	    mainY = y;
+	    mainW = nameMin.width + 20;
+	    mainH = nameMin.height + 10;
+	    lifeX = x + nameMin.width / 2 + 6;
+	    lifeY = y + nameMin.height + 10;
+	    lifeW = 10;
+	    lifeH = 40 * _terminateHeight + 35;
+	    portX = lifeX - 3;
+	    portY = y + nameMin.height + 45;
+	    portW = 21;
+	    portH = 1;
 	}
 	if ((!(_created)) && (!(_terminated))) {
-	    mainX = x; 				mainY = y;
-	    mainW = nameMin.width + 20; 		mainH = nameMin.height + 10;
-	    lifeX = x + nameMin.width / 2 + 6;		lifeY = y + nameMin.height + 10;
-	    lifeW = 10;				lifeH = 40 * edges + 40;
-	    portX = lifeX - 3;		 	portY = y + nameMin.height + 45;
-	    portW = 21;				portH = 1;
-
-
+	    mainX = x;
+	    mainY = y;
+	    mainW = nameMin.width + 20;
+	    mainH = nameMin.height + 10;
+	    lifeX = x + nameMin.width / 2 + 6;
+	    lifeY = y + nameMin.height + 10;
+	    lifeW = 10;
+	    lifeH = 40 * edges + 40;
+	    portX = lifeX - 3;
+	    portY = y + nameMin.height + 45;
+	    portW = 21;
+	    portH = 1;
 	}
-	int activX = lifeX - 6;	int activY = 0;
-	int activW = 21;		int activH = 0;
+	int activX = lifeX - 6;
+	int activY = 0;
+	int activW = 21;
+	int activH = 0;
 
 	// the dynamci ports are invisible
 	portH = 0;
@@ -418,9 +442,11 @@ public class FigSeqObject extends FigNodeModelElement
 
 	    if (_created) {
 		if (number == _createHeight) {
-		    r.setBounds(mainX, mainY + mainH / 2 - 3 , mainW, portH); //-1
+		    r.setBounds(mainX, mainY + mainH / 2 - 3 , mainW,
+				portH); //-1
 		} else  {
-		    r.setBounds(portX + ((nameMin.width) / 2), portY + 40 * number, 21, portH);
+		    r.setBounds(portX + ((nameMin.width) / 2),
+				portY + 40 * number, 21, portH);
 		}
 	    }
 	    if (!(_created)) {
@@ -535,7 +561,9 @@ public class FigSeqObject extends FigNodeModelElement
 	if (getLayer() != null && getLayer() instanceof SequenceDiagramLayout) {
 	    ((SequenceDiagramLayout) getLayer()).placeAllFigures();
 	} else {
-	    Diagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+	    Diagram diagram =
+		ProjectManager.getManager().getCurrentProject()
+		.getActiveDiagram();
 	    Layer lay = null;
 	    if (diagram != null) {
     		lay = diagram.getLayer();
@@ -549,12 +577,18 @@ public class FigSeqObject extends FigNodeModelElement
 			name = ((LayerPerspective) lay).getName();
 		    } else {
 			Editor ed = Globals.curEditor();
-			if (ed != null && ed.getGraphModel() != null && ed.getLayerManager() != null && ed.getLayerManager().getActiveLayer() != null) {
+			if (ed != null
+			    && ed.getGraphModel() != null
+			    && ed.getLayerManager() != null
+			    && ed.getLayerManager().getActiveLayer() != null)
+			{
 			    lay = ed.getLayerManager().getActiveLayer();
 			    name = lay.getName();
 			    gm = ed.getGraphModel();
 			} else
-			    throw new IllegalStateException("No way to get graphmodel. Project corrupted");
+			    throw new IllegalStateException(
+				    "No way to get graphmodel. "
+				    + "Project corrupted");
 		    }
 		    setLayer(new SequenceDiagramLayout(name, gm));
     		}
@@ -577,7 +611,9 @@ public class FigSeqObject extends FigNodeModelElement
 		FigSeqObject figure = (FigSeqObject) contents.elementAt(k);
 		if (figure != this) {
 		    Rectangle rect = figure.getBounds();
-		    if (((this.getBounds()).x + (this.getBounds()).width) > (rect.x + rect.width)) {
+		    if (((this.getBounds()).x + (this.getBounds()).width)
+			> (rect.x + rect.width))
+		    {
 			int indexFigure = contents.indexOf(figure);
 			int indexThis = contents.indexOf(this);
 			if (indexFigure > indexThis) {
@@ -615,7 +651,9 @@ public class FigSeqObject extends FigNodeModelElement
 
     /** If the FigSeqLink linkFig is connected to a create-action
      *    this FigSeqObject will be updated with the right values */
-    public void setForCreate(FigSeqLink linkFig, String connectTo, boolean isCreate) {
+    public void setForCreate(FigSeqLink linkFig, String connectTo,
+			     boolean isCreate)
+    {
 	Vector contents = getContents();   
 	int portNumber = linkFig.getPortNumber(contents);   
 	FigRect fsp = (FigRect) linkFig.getSourcePortFig();
@@ -650,7 +688,9 @@ public class FigSeqObject extends FigNodeModelElement
 
     /** If the FigSeqLink linkFig is connected to a destroy-action
      *    this FigSeqObject will be updated with the right values */
-    public void setForDestroy(FigSeqLink linkFig, String connectTo, boolean isTerminate) {
+    public void setForDestroy(FigSeqLink linkFig, String connectTo,
+			      boolean isTerminate)
+    {
 	Vector contents = getContents();
 	int portNumber = linkFig.getPortNumber(contents);   
 	FigRect fsp = (FigRect) linkFig.getSourcePortFig();
@@ -694,17 +734,26 @@ public class FigSeqObject extends FigNodeModelElement
 
 	for (int i = 0; i < _activations.size(); i++) {
 	    FigActivation figAct = (FigActivation) _activations.elementAt(i);
-	    if (figAct.getFromPosition() <= portNumber && figAct.getToPosition() > portNumber) {
+	    if (figAct.getFromPosition() <= portNumber
+		&& figAct.getToPosition() > portNumber)
+	    {
 		Vector figEdges = getFigEdges();
 		Vector _nearest = nearestLink(figEdges, portNumber, contents);
 		int nearest = ((Integer) _nearest.elementAt(0)).intValue();
 		int high = ((Integer) _nearest.elementAt(1)).intValue();
 
 		if (nearest > portNumber) {
-		    //FigActivation newAct = new FigActivation(0, 0, 21, 40, nearest, high);
-		    FigActivation newAct = new FigActivation(0, 0, 21, 40, nearest, figAct.getToPosition());
+		    // FigActivation newAct = new FigActivation(0, 0,
+		    // 21, 40, nearest, high);
+		    FigActivation newAct =
+			new FigActivation(0, 0, 21, 40, nearest,
+					  figAct.getToPosition());
 		    _activations.addElement(newAct);
-		    String dynStr = "a|" + newAct.getFromPosition() + "|" + newAct.getToPosition() + "|" + newAct.isFromTheBeg() + "|" + newAct.isEnd();
+		    String dynStr =
+			"a|" + newAct.getFromPosition()
+			+ "|" + newAct.getToPosition()
+			+ "|" + newAct.isFromTheBeg()
+			+ "|" + newAct.isEnd();
 		    _dynVector.addElement(dynStr);
 		    _dynObjects = _dynVector.toString();
 		    newAct.setDynVectorPos(_dynVector.indexOf(dynStr));
@@ -714,7 +763,9 @@ public class FigSeqObject extends FigNodeModelElement
 		figAct.setToPosition(portNumber);
 		figAct.setEnd(true);
 	    }
-	    else if (figAct.getFromPosition() <= portNumber && figAct.getToPosition() == portNumber) {
+	    else if (figAct.getFromPosition() <= portNumber
+		     && figAct.getToPosition() == portNumber)
+	    {
 		figAct.setEnd(true);
 	    }
 	    //      else if (figAct.getFromPosition() == portNumber) {
@@ -722,7 +773,11 @@ public class FigSeqObject extends FigNodeModelElement
 	    //      }
 	    int dynPos = figAct.getDynVectorPos();
 	    _dynVector.removeElementAt(dynPos);
-	    String newDynStr = "a|" + figAct.getFromPosition() + "|" + figAct.getToPosition() + "|" + figAct.isFromTheBeg() + "|" + figAct.isEnd();
+	    String newDynStr =
+		"a|" + figAct.getFromPosition() +
+		"|" + figAct.getToPosition() +
+		"|" + figAct.isFromTheBeg() +
+		"|" + figAct.isEnd();
 	    _dynVector.insertElementAt(newDynStr, dynPos);
 	    _dynObjects = _dynVector.toString();
 	}
@@ -743,7 +798,9 @@ public class FigSeqObject extends FigNodeModelElement
 	    FigActivation nextAct = null;
 	    for (int i = 0; i < _activations.size(); i++) {
 		FigActivation fa = (FigActivation) _activations.elementAt(i);
-		if (fa.getFromPosition() > portNumber && fa.getFromPosition() < max)  {
+		if (fa.getFromPosition() > portNumber
+		    && fa.getFromPosition() < max)
+		{
 		    nextAct = fa;
 		    max = fa.getFromPosition();
 		}
@@ -758,20 +815,22 @@ public class FigSeqObject extends FigNodeModelElement
 		    Fig df = (Fig) dynFigs.elementAt(i);
 		    if (df instanceof FigActivation) {
 			FigActivation dfa = (FigActivation) df;
-			if (dfa.getDynVectorPos() > dynPos) dfa.setDynVectorPos(dfa.getDynVectorPos() - 1);
+			if (dfa.getDynVectorPos() > dynPos)
+			    dfa.setDynVectorPos(dfa.getDynVectorPos() - 1);
 		    }
 		    else if (df instanceof FigDynPort) {
 			FigDynPort dfsp = (FigDynPort) df;
-			if (dfsp.getDynVectorPos() > dynPos) dfsp.setDynVectorPos(dfsp.getDynVectorPos() - 1);
+			if (dfsp.getDynVectorPos() > dynPos)
+			    dfsp.setDynVectorPos(dfsp.getDynVectorPos() - 1);
 		    }
 		}
 		_dynObjects = _dynVector.toString();
 		removeFig(nextAct);
 		nextAct.delete();
 	    }
-	    else {
-		// do nothing
-	    }
+	    // else {
+	    // do nothing
+	    // }
 	}
     }
 
@@ -805,7 +864,8 @@ public class FigSeqObject extends FigNodeModelElement
 	if (!(side)) {
 	    FigSeqObject dest = (FigSeqObject) fsl.getSourceFigNode();
 	    for (int i = 0; i < dest._activations.size(); i++) {
-		FigActivation fa = (FigActivation) dest._activations.elementAt(i);
+		FigActivation fa =
+		    (FigActivation) dest._activations.elementAt(i);
 		if (fa.getFromPosition() == portNumber) _canDo = false;
 	    }
 	}
@@ -863,8 +923,9 @@ public class FigSeqObject extends FigNodeModelElement
   
     public void mouseClicked(MouseEvent me) {
    
-	/* by clicking on the object's lifeline or activation bar, the rapid buttons are painted
-	 *  at this position */
+	/* by clicking on the object's lifeline or activation bar, the
+	 * rapid buttons are painted at this position
+	 */
       
 	Fig f = hitFig( new Rectangle(me.getX(), me.getY(), 1, 1) );
 	if ( (f == _lifeline ||  f instanceof FigActivation) && (me.getY() != _yPos)) {
@@ -886,7 +947,9 @@ public class FigSeqObject extends FigNodeModelElement
 	if (getLayer() != null && getLayer() instanceof SequenceDiagramLayout) {
 	    ((SequenceDiagramLayout) getLayer()).placeAllFigures();
 	} else {
-	    Diagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+	    Diagram diagram =
+		ProjectManager.getManager().getCurrentProject()
+		.getActiveDiagram();
 	    Layer lay = null;
 	    if (diagram != null) {
     		lay = diagram.getLayer();
@@ -900,12 +963,18 @@ public class FigSeqObject extends FigNodeModelElement
 			name = ((LayerPerspective) lay).getName();
 		    } else {
 			Editor ed = Globals.curEditor();
-			if (ed != null && ed.getGraphModel() != null && ed.getLayerManager() != null && ed.getLayerManager().getActiveLayer() != null) {
+			if (ed != null
+			    && ed.getGraphModel() != null
+			    && ed.getLayerManager() != null
+			    && ed.getLayerManager().getActiveLayer() != null)
+			{
 			    lay = ed.getLayerManager().getActiveLayer();
 			    name = lay.getName();
 			    gm = ed.getGraphModel();
 			} else
-			    throw new IllegalStateException("No way to get graphmodel. Project corrupted");
+			    throw new IllegalStateException(
+				    "No way to get graphmodel. "
+				    + "Project corrupted");
 		    }
 		    setLayer(new SequenceDiagramLayout(name, gm));
     		}
@@ -915,7 +984,7 @@ public class FigSeqObject extends FigNodeModelElement
     
     }
 
-    ///////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////
     // MouseMotionListener-implementation
 
     public void mouseDragged(MouseEvent me) {

@@ -145,9 +145,11 @@ public class CrNameConfusion extends CrUML {
     public void initWizard(Wizard w) {
 	if (w instanceof WizManyNames) {
 	    ToDoItem item = w.getToDoItem();
-	    String ins = "Change each name to be significantly different from " +
-		"the others.  Names should differ my more than one character and " +
-		"not just differ my case (capital or lower case).";
+	    String ins =
+		"Change each name to be significantly different from "
+		+ "the others.  "
+		+ "Names should differ my more than one character and " 
+		+ "not just differ my case (capital or lower case).";
 	    ((WizManyNames) w).setInstructions(ins);
 	    ((WizManyNames) w).setMEs(item.getOffenders().asVector());
 	}

@@ -36,7 +36,7 @@ public class ArgoEventPump {
 
     private ArrayList _listeners = null;
 
-    final static ArgoEventPump SINGLETON = new ArgoEventPump();
+    static final ArgoEventPump SINGLETON = new ArgoEventPump();
 
     public static ArgoEventPump getInstance() {
         return SINGLETON;

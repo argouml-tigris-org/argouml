@@ -53,7 +53,9 @@ import org.argouml.model.ModelFacade;
  *   useful for the future when multiple models and sub-systems are
  *   supported.</p>
  *
- * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_cross_namespace_assoc">ArgoUML User Manual: Classifier not in Namespace of its Association</a>
+ * @see <a
+ * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_cross_namespace_assoc">ArgoUML
+ * User Manual: Classifier not in Namespace of its Association</a>
  */
 public class CrCrossNamespaceAssoc extends CrUML {
     /**

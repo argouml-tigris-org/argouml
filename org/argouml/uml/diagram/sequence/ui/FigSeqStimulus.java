@@ -170,8 +170,14 @@ public class FigSeqStimulus extends FigNodeModelElement {
 	String nameStr = Notation.generate(this, sti.getName()).trim();
 	String actionString = "new Action";
 
-	if (sti.getDispatchAction() != null && sti.getDispatchAction().getName() != null)
-	    actionString = Notation.generate(this, ModelFacade.getName(ModelFacade.getDispatchAction(sti))).trim();
+	if (sti.getDispatchAction() != null
+	    && sti.getDispatchAction().getName() != null)
+	    actionString =
+		Notation
+		.generate(this,
+			  ModelFacade.getName(ModelFacade
+					      .getDispatchAction(sti)))
+		.trim();
 
 	if ( nameStr.equals("") && actionString.equals("") )
 	    _name.setText("");
@@ -204,7 +210,9 @@ public class FigSeqStimulus extends FigNodeModelElement {
 	if (getLayer() != null && getLayer() instanceof SequenceDiagramLayout) {
 	    ((SequenceDiagramLayout) getLayer()).placeAllFigures();
 	} else {
-	    Diagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+	    Diagram diagram =
+		ProjectManager.getManager().getCurrentProject()
+		.getActiveDiagram();
 	    Layer lay = null;
 	    if (diagram != null) {
     		lay = diagram.getLayer();
@@ -218,7 +226,11 @@ public class FigSeqStimulus extends FigNodeModelElement {
 			name = ((LayerPerspective) lay).getName();
 		    } else {
 			Editor ed = Globals.curEditor();
-			if (ed != null && ed.getGraphModel() != null && ed.getLayerManager() != null && ed.getLayerManager().getActiveLayer() != null) {
+			if (ed != null
+			    && ed.getGraphModel() != null
+			    && ed.getLayerManager() != null
+			    && ed.getLayerManager().getActiveLayer() != null)
+			{
 			    lay = ed.getLayerManager().getActiveLayer();
 			    name = lay.getName();
 			    gm = ed.getGraphModel();
@@ -254,16 +266,21 @@ public class FigSeqStimulus extends FigNodeModelElement {
 		}
 		int percent = 15 + size * 10;
 		if (percent > 100) percent = 100;
-		figSeqLink.addPathItem(this, new PathConvPercent(figSeqLink, percent, 10));
+		figSeqLink.addPathItem(this,
+				       new PathConvPercent(figSeqLink,
+							   percent,
+							   10));
 		figSeqLink.updatePathItemLocations();
 		lay.bringToFront(this);
 	    }
 	}
     }
 
-    /** if you move a FigSeqObject around and place it onto  a FigSeqStimulus
-	not the FigSeqObject gets the mouseReleased event but the FigSeqStimulus.
-	For this case, the diagram has to be replaced, too. */
+    /** if you move a FigSeqObject around and place it onto a
+     * FigSeqStimulus not the FigSeqObject gets the mouseReleased
+     * event but the FigSeqStimulus.  For this case, the diagram has
+     * to be replaced, too. 
+     */
     public void mouseReleased(MouseEvent me) {
 	super.mouseReleased(me);
 	if (getLayer() != null && getLayer() instanceof SequenceDiagramLayout) {
@@ -283,7 +300,11 @@ public class FigSeqStimulus extends FigNodeModelElement {
 			name = ((LayerPerspective) lay).getName();
 		    } else {
 			Editor ed = Globals.curEditor();
-			if (ed != null && ed.getGraphModel() != null && ed.getLayerManager() != null && ed.getLayerManager().getActiveLayer() != null) {
+			if (ed != null
+			    && ed.getGraphModel() != null
+			    && ed.getLayerManager() != null
+			    && ed.getLayerManager().getActiveLayer() != null) 
+			{
 			    lay = ed.getLayerManager().getActiveLayer();
 			    name = lay.getName();
 			    gm = ed.getGraphModel();

@@ -54,18 +54,23 @@ import org.argouml.application.api.Configuration;
 public class LookAndFeelMgr {
     public static final LookAndFeelMgr	SINGLETON = new LookAndFeelMgr();
 
-    private static Category 			cat = Category.getInstance(LookAndFeelMgr.class);
+    private static Category                     cat =
+	Category.getInstance(LookAndFeelMgr.class);
 
     // The Metal look and feel class name
-    private static final String			METAL_LAF = "javax.swing.plaf.metal.MetalLookAndFeel";
+    private static final String                 METAL_LAF =
+	"javax.swing.plaf.metal.MetalLookAndFeel";
 
     // Display name and configuration key for default look and feel and theme
     private static final String			DEFAULT_KEY = "Default";
 
     // JasonsThemes
-    private static final MetalTheme		DEFAULT_THEME = new JasonsTheme();
-    private static final MetalTheme		BIG_THEME = new JasonsBigTheme();
-    private static final MetalTheme		HUGE_THEME = new JasonsHugeTheme();
+    private static final MetalTheme		DEFAULT_THEME =
+	new JasonsTheme();
+    private static final MetalTheme		BIG_THEME =
+	new JasonsBigTheme();
+    private static final MetalTheme		HUGE_THEME =
+	new JasonsHugeTheme();
 
     // The list of supported MetalThemes
     private static final MetalTheme[] THEMES = {
@@ -83,7 +88,7 @@ public class LookAndFeelMgr {
      * The class name of Swing's default look and feel (will be used if
      * the LookAndFeel property is null).
      **/
-    private String						_defaultLafClass;
+    private String				_defaultLafClass;
 
     /** Creates a new instance of LookAndFeelMgr. */
     private LookAndFeelMgr() {
@@ -227,7 +232,8 @@ public class LookAndFeelMgr {
      **/
     public String getCurrentLookAndFeel()
     {
-        String value = Configuration.getString(Argo.KEY_LOOK_AND_FEEL_CLASS, null);
+        String value =
+	    Configuration.getString(Argo.KEY_LOOK_AND_FEEL_CLASS, null);
         if (DEFAULT_KEY.equals(value)) {
             value = null;
         }
@@ -368,7 +374,8 @@ public class LookAndFeelMgr {
     }
 
     /**
-     * Sets the metal theme in the GUI by calling MetalLookAndFeel.setCurrentTheme().
+     * Sets the metal theme in the GUI by calling
+     * MetalLookAndFeel.setCurrentTheme().
      * 
      * @param	theme	new MetalTheme to set
      **/

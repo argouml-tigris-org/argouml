@@ -30,8 +30,6 @@
 
 package org.argouml.language.java.generator;
 
-import org.argouml.model.uml.UmlFactory;
-
 import java.io.*;
 import java.util.*;
 
@@ -116,7 +114,8 @@ public class ClassCodePiece extends NamedCodePiece
 
 	if (mClass != null) {
 	    parseStateStack.push(new ParseState(mClass));
-	    StringBuffer sbText = GeneratorJava.getInstance().generateClassifierStart(mClass);
+	    StringBuffer sbText =
+		GeneratorJava.getInstance().generateClassifierStart(mClass);
 	    if (sbText != null) {
 		writer.write (sbText.toString());
 	    }

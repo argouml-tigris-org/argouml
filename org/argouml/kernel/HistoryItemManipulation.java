@@ -27,7 +27,6 @@ package org.argouml.kernel;
 
 
 import java.util.*;
-import java.util.Enumeration;
 
 // TODO: how can this possibly be persistent?
 // TODO: provide accessors

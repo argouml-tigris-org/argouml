@@ -157,7 +157,8 @@ public class GoalsDialog extends JDialog
 	    decSlide.setPaintLabels(true);
 	    decSlide.addChangeListener(this);
 	    Dimension origSize = decSlide.getPreferredSize();
-	    Dimension smallSize = new Dimension(origSize.width / 2, origSize.height);
+	    Dimension smallSize =
+		new Dimension(origSize.width / 2, origSize.height);
 	    decSlide.setSize(smallSize);
 	    decSlide.setPreferredSize(smallSize);
 

@@ -31,7 +31,8 @@ import ru.novosoft.uml.foundation.core.*;
 
 public class MMClassKeyword implements java.io.Serializable {
     public static final MMClassKeyword NONE = new MMClassKeyword("none"); 
-    public static final MMClassKeyword ABSTRACT = new MMClassKeyword("abstract"); 
+    public static final MMClassKeyword ABSTRACT =
+	new MMClassKeyword("abstract"); 
     public static final MMClassKeyword FINAL = new MMClassKeyword("final");
 
     public static final MMClassKeyword[] POSSIBLES = {

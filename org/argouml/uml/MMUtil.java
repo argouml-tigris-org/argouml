@@ -50,13 +50,7 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 
 import java.util.*;
 
-import org.argouml.ui.ProjectBrowser;
 import org.apache.log4j.Category;
-import org.argouml.application.api.Argo;
-import org.argouml.application.api.Notation;
-import org.argouml.application.api.NotationName;
-import org.argouml.application.notation.NotationProviderFactory;
-import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlFactory;
 
 /** Class with utility methods. Now mostly outdated.

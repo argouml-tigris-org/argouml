@@ -31,7 +31,6 @@ package org.argouml.uml.diagram.deployment.ui;
 import java.beans.PropertyVetoException;
 
 import javax.swing.Action;
-import javax.swing.JToolBar;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
@@ -41,13 +40,11 @@ import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddAssociation;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionAddNote;
-import org.argouml.swingext.PopupToolBoxButton;
 
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.ui.ToolBar;
 
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
@@ -153,24 +150,28 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         setNamespace(m);
     }
 
-    /** method to perform a number of important initializations of a <I>Deployment Diagram</I>. 
+    /** method to perform a number of important initializations of a
+     * <I>Deployment Diagram</I>.
      * 
      * each diagram type has a similar <I>UMLxxxDiagram</I> class.
      *
      * @param m  MNamespace from the model in NSUML...
-     * @modified changed <I>lay</I> from <I>LayerPerspective</I> to <I>LayerPerspectiveMutable</I>. 
-     *           This class is a child of <I>LayerPerspective</I> and was implemented 
-     *           to correct some difficulties in changing the model. <I>lay</I> is used 
-     *           mainly in <I>LayerManager</I>(GEF) to control the adding, changing and 
-     *           deleting layers on the diagram...
-     *           psager@tigris.org   Jan. 24, 2oo2
+     * @modified changed <I>lay</I> from <I>LayerPerspective</I> to
+     * <I>LayerPerspectiveMutable</I>.  This class is a child of
+     * <I>LayerPerspective</I> and was implemented to correct some
+     * difficulties in changing the model. <I>lay</I> is used mainly
+     * in <I>LayerManager</I>(GEF) to control the adding, changing and
+     * deleting layers on the diagram...
+     *
+     * @author psager@tigris.org Jan. 24, 2oo2
      */
     public void setNamespace(Object handle) {
         if (!ModelFacade.isANamespace(handle)) {
-            cat.error(
-		      "Illegal argument. Object " + handle + " is not a namespace");
-            throw new IllegalArgumentException(
-					       "Illegal argument. Object " + handle + " is not a namespace");
+            cat.error("Illegal argument. Object " + handle
+		      + " is not a namespace");
+            throw new IllegalArgumentException("Illegal argument. Object "
+					       + handle
+					       + " is not a namespace");
         }
         MNamespace m = (MNamespace) handle;
         super.setNamespace(m);
@@ -186,7 +187,8 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     }
 
     /**
-     * Get the actions from which to create a toolbar or equivilent graphic triggers
+     * Get the actions from which to create a toolbar or equivilent
+     * graphic triggers
      */
     protected Object[] getUmlActions() {
         Object actions[] = {

@@ -32,7 +32,8 @@ import org.argouml.cognitive.*;
  * TODO: at the moment only a dummy implementation
 */
 public class CrConsiderFacade extends CrUML {
-    protected static Category cat = Category.getInstance(CrConsiderFacade.class);
+    protected static Category cat =
+	Category.getInstance(CrConsiderFacade.class);
 
     public CrConsiderFacade() {
 	setHeadline("Consider using facade stereotype for <ocl>self</ocl>");

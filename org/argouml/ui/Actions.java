@@ -27,22 +27,13 @@ package org.argouml.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import org.argouml.application.api.Argo;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Poster;
@@ -56,7 +47,6 @@ import org.argouml.cognitive.ui.TabToDo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.swingext.ActionUtilities;
-import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -157,7 +147,8 @@ public class Actions implements TargetListener {
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         updateAllEnabled(e);
@@ -165,7 +156,8 @@ public class Actions implements TargetListener {
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         updateAllEnabled(e);
@@ -184,7 +176,8 @@ class ActionPrint extends UMLAction {
     public ActionPrint() { super("action.print"); }
 
     public void actionPerformed(ActionEvent ae) {
-	Object target = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+	Object target =
+	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
 	if (target instanceof Diagram) {
 	    String n = ((Diagram) target).getName();
 	    cmd.setDiagramName(n);
@@ -244,10 +237,13 @@ class ActionGotoDiagram extends UMLAction {
 	mainPanel.add(tabs, BorderLayout.CENTER);
 	TabResults allDiagrams = new TabResults(false); // no related
 	allDiagrams.setResults(p.getDiagrams(), p.getDiagrams());
-	// TabResults has really large preferred height, so divide in half to reduce
-	// size of dialog which will be sized based on this preferred size.
-	allDiagrams.setPreferredSize(new Dimension(
-						   allDiagrams.getPreferredSize().width, allDiagrams.getPreferredSize().height / 2));
+	// TabResults has really large preferred height, so divide in
+	// half to reduce size of dialog which will be sized based on
+	// this preferred size.
+	allDiagrams.
+	    setPreferredSize(new Dimension(
+                                  allDiagrams.getPreferredSize().width,
+				  allDiagrams.getPreferredSize().height / 2));
 	tabs.addTab("All Diagrams", allDiagrams);
 	f.setContent(mainPanel);
 	//TODO: tabs for class, state, usecase, help
@@ -325,16 +321,14 @@ class ActionNextEditTab extends UMLAction {
 //   public ActionAddToFavs() { super("Add To Favorites"); }
 // } /* end class ActionAddToFavs */
 
-// This option does not make much sense now that tabpanes can be in different panels.
-// Direct manipulation seems a better option anyway Bob Tarling 18/8/2002
-//class ActionNextDetailsTab extends UMLAction {
-//  public ActionNextDetailsTab() { super("action.next-details-tab", NO_ICON); }
-//  public void actionPerformed(ActionEvent ae) {
-//    ProjectBrowser pb = ProjectBrowser.TheInstance;
-//    DetailsPane dp = pb.getDetailsPane();
-//    dp.selectNextTab();
-//  }
-//} /* end class ActionNextDetailsTab */
+// This option does not make much sense now that tabpanes can be in
+// different panels.  Direct manipulation seems a better option anyway
+// Bob Tarling 18/8/2002 //class ActionNextDetailsTab extends
+// UMLAction { public ActionNextDetailsTab() {
+// super("action.next-details-tab", NO_ICON); } public void
+// actionPerformed(ActionEvent ae) { ProjectBrowser pb =
+// ProjectBrowser.TheInstance; DetailsPane dp = pb.getDetailsPane();
+// dp.selectNextTab(); } //} /* end class ActionNextDetailsTab */
 
 // class ActionPrevDetailsTab extends UMLAction {
 //   public ActionPrevDetailsTab() { super("Previous Details Tab"); }
@@ -396,7 +390,8 @@ class ActionAutoCritique extends UMLAction {
 class ActionOpenDecisions extends UMLAction {
     public ActionOpenDecisions() { super("action.design-issues", NO_ICON); }
     public void actionPerformed(ActionEvent ae) {
-	DesignIssuesDialog d = new DesignIssuesDialog(ProjectBrowser.getInstance());
+	DesignIssuesDialog d =
+	    new DesignIssuesDialog(ProjectBrowser.getInstance());
 	d.show();
     }
 } /* end class ActionOpenDecisions */

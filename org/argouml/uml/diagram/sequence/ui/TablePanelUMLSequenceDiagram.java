@@ -37,7 +37,6 @@ import java.util.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.text.Document;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import ru.novosoft.uml.foundation.core.*;
@@ -45,9 +44,6 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 
 import org.tigris.gef.ui.*;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.Globals;
 
 import org.argouml.ui.*;
 import org.argouml.uml.*;

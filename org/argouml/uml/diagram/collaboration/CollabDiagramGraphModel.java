@@ -34,7 +34,6 @@ package org.argouml.uml.diagram.collaboration;
 import org.apache.log4j.Category;
 
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
-import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 
 import java.util.*;
@@ -55,7 +54,8 @@ import ru.novosoft.uml.model_management.*;
 public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     implements VetoableChangeListener 
 {
-    protected static Category cat = Category.getInstance(CollabDiagramGraphModel.class);
+    protected static Category cat =
+	Category.getInstance(CollabDiagramGraphModel.class);
 
     /** The "home" UML model of this diagram, not all ModelElements in this
      *  graph are in the home model, but if they are added and don't
@@ -73,7 +73,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     public MNamespace getNamespace() { return _collab; }
     public void setNamespace(MNamespace m) {
         if (!(m instanceof MCollaboration)) {
-            throw new IllegalArgumentException("invalid namespace for CollabDiagramGraphModel");
+            throw new IllegalArgumentException("invalid namespace");
         }
         _collab = (MCollaboration) m;
     }
@@ -198,7 +198,9 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
         if (!canAddEdge(edge)) return;
         _edges.addElement(edge);
         // TODO: assumes public
-        if (edge instanceof MModelElement && ((MModelElement) edge).getNamespace() == null) {
+        if (edge instanceof MModelElement
+	    && ((MModelElement) edge).getNamespace() == null)
+	{
             _collab.addOwnedElement((MModelElement) edge);
         }
         fireEdgeAdded(edge);
@@ -235,7 +237,8 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	    }
 	}
 	if ( node instanceof MModelElement ) {
-	    Vector specs = new Vector(((MModelElement) node).getClientDependencies());
+	    Vector specs =
+		new Vector(((MModelElement) node).getClientDependencies());
 	    specs.addAll(((MModelElement) node).getSupplierDependencies());
 	    Iterator iter = specs.iterator();
 	    while (iter.hasNext()) {
@@ -252,7 +255,9 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     /** Return true if the two given ports can be connected by a
      * kind of edge to be determined by the ports. */
     public boolean canConnect(Object fromP, Object toP) {
-	if ((fromP instanceof MClassifierRole) && (toP instanceof MClassifierRole)) return true;
+	if ((fromP instanceof MClassifierRole)
+	    && (toP instanceof MClassifierRole))
+	    return true;
 	return false;
     }
 

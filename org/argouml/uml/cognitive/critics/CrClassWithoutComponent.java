@@ -89,7 +89,9 @@ public class CrClassWithoutComponent extends CrUML {
 	    Object obj = figs.elementAt(i);
 	    if (!(obj instanceof FigClass)) continue;
 	    FigClass fc = (FigClass) obj;
-	    if (fc.getEnclosingFig() == null || (!(fc.getEnclosingFig().getOwner() instanceof MComponent))) {
+	    if (fc.getEnclosingFig() == null
+		|| (!(fc.getEnclosingFig().getOwner() instanceof MComponent)))
+	    {
 		if (offs == null) {
 		    offs = new VectorSet();
 		    offs.addElement(dd);

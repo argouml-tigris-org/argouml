@@ -35,12 +35,10 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.Action;
-import javax.swing.JToolBar;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.swingext.PopupToolBoxButton;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddAssociationRole;
@@ -67,9 +65,9 @@ import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 public class UMLCollaborationDiagram extends UMLDiagram {
 
     /** for logging */
-    private final static Category cat =
-        Category.getInstance(
-			     "org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram");
+    private static final Category cat =
+        Category.getInstance("org.argouml.uml.diagram.collaboration.ui."
+			     + "UMLCollaborationDiagram");
 
     ////////////////
     // actions for toolbar
@@ -156,24 +154,28 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         return res;
     }
 
-    /** method to perform a number of important initializations of a <I>CollaborationDiagram</I>. 
+    /** method to perform a number of important initializations of a
+     * <I>CollaborationDiagram</I>.
      * 
      * each diagram type has a similar <I>UMLxxxDiagram</I> class.
      *
      * @param m  MNamespace from the model in NSUML...
-     * @modified changed <I>lay</I> from <I>LayerPerspective</I> to <I>LayerPerspectiveMutable</I>. 
-     *           This class is a child of <I>LayerPerspective</I> and was implemented 
-     *           to correct some difficulties in changing the model. <I>lay</I> is used 
-     *           mainly in <I>LayerManager</I>(GEF) to control the adding, changing and 
-     *           deleting layers on the diagram...
-     *           psager@tigris.org   Jan. 24, 2oo2
+     * @modified changed <I>lay</I> from <I>LayerPerspective</I> to
+     * <I>LayerPerspectiveMutable</I>.  This class is a child of
+     * <I>LayerPerspective</I> and was implemented to correct some
+     * difficulties in changing the model. <I>lay</I> is used mainly
+     * in <I>LayerManager</I>(GEF) to control the adding, changing and
+     * deleting layers on the diagram...
+     * 
+     * @author psager@tigris.org Jan. 24, 2oo2
      */
     public void setNamespace(Object handle) {
         if (!ModelFacade.isANamespace(handle)) {
-            cat.error(
-		      "Illegal argument. Object " + handle + " is not a namespace");
-            throw new IllegalArgumentException(
-					       "Illegal argument. Object " + handle + " is not a namespace");
+            cat.error("Illegal argument. Object "
+		      + handle + " is not a namespace");
+            throw new IllegalArgumentException("Illegal argument. Object "
+					       + handle
+					       + " is not a namespace");
         }
         MNamespace m = (MNamespace) handle;
         super.setNamespace(m);
@@ -188,7 +190,8 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     }
 
     /**
-     * Get the actions from which to create a toolbar or equivilent graphic triggers
+     * Get the actions from which to create a toolbar or equivilent
+     * graphic triggers
      */
     protected Object[] getUmlActions() {
         Object actions[] = {

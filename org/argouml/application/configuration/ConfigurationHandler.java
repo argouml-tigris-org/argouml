@@ -332,7 +332,7 @@ public abstract class ConfigurationHandler {
      *  @param key the configuration key to modify.
      *  @param newValue the new value of the key.
      */
-    private synchronized final void workerSetValue(ConfigurationKey key,
+    private final synchronized void workerSetValue(ConfigurationKey key,
 						   String newValue) 
     {
 	loadIfNecessary();

@@ -38,7 +38,6 @@ import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.foundation.datatypes.DataTypesHelper;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
-import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.model_management.MModel;

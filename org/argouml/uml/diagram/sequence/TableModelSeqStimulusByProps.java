@@ -58,7 +58,8 @@ public class TableModelSeqStimulusByProps extends TableModelComposite {
     }
 
     public Vector rowObjectsFor(Object t) {
-	if (!(t instanceof UMLSequenceDiagram || t instanceof MLink)) return new Vector();
+	if (!(t instanceof UMLSequenceDiagram || t instanceof MLink))
+	    return new Vector();
 	if (t instanceof UMLSequenceDiagram) {
 	    Editor _editor = Globals.curEditor();
 	    Layer lay = _editor.getLayerManager().getActiveLayer();

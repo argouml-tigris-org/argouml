@@ -82,7 +82,7 @@ public class WizManyNames extends Wizard {
 	}
 	return null;
     }
-										  
+
     /** Take action at the completion of a step. For example, when the
      *  given step is 0, do nothing; and when the given step is 1, do
      *  the first action.  Argo non-modal wizards should take action as
@@ -106,6 +106,4 @@ public class WizManyNames extends Wizard {
 	    }
 	}
     }
-										      
-										      
 } /* end class WizManyNames */

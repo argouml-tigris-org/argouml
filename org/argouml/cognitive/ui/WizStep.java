@@ -65,7 +65,9 @@ public class WizStep extends JPanel
     ////////////////////////////////////////////////////////////////
     // constants
     private static final String BUNDLE = "Cognitive";
-    public static final ImageIcon WIZ_ICON = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Wiz", "Wiz");
+    public static final ImageIcon WIZ_ICON =
+	ResourceLoaderWrapper.getResourceLoaderWrapper()
+	    .lookupIconResource("Wiz", "Wiz");
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -82,7 +84,7 @@ public class WizStep extends JPanel
      */
     private Object _target;
 
-    static final protected void setMnemonic(JButton b, String key) {
+    protected static final void setMnemonic(JButton b, String key) {
 	String m = Argo.localize(BUNDLE, key);
 	if (m == null)
 	    return;
@@ -157,11 +159,15 @@ public class WizStep extends JPanel
      *
      * @deprecated As of ArgoUml version 0.13.5,
      *             the visibility of this method will change in the future,
-     *             replaced by {@link org.argouml.ui.targetmanager.TargetManager#getTarget() TargetManager.getInstance().getTarget()}.
+     *             replaced by 
+     *             {@link org.argouml.ui.targetmanager.TargetManager#getTarget()
+     *             TargetManager.getInstance().getTarget()}.
      *             this method will be removed in a couple of releases
      * @return The current target of the TabToDo
      */
-    public Object getTarget() { return TargetManager.getInstance().getTarget(); }
+    public Object getTarget() {
+	return TargetManager.getInstance().getTarget(); 
+    }
 
     public void refresh() { setTarget(_target); }
 
@@ -197,14 +203,16 @@ public class WizStep extends JPanel
 	}
     }
     public void doHelp() {
-	if (!(TargetManager.getInstance().getTarget() instanceof ToDoItem)) return;
+	if (!(TargetManager.getInstance().getTarget() instanceof ToDoItem))
+	    return;
 	ToDoItem item = (ToDoItem) TargetManager.getInstance().getTarget();
 	String urlString = item.getMoreInfoURL();
 	StartBrowser.openUrl(urlString);
     }
 
     protected void updateTabToDo() {
-	TabToDo ttd = (TabToDo) ProjectBrowser.getInstance().getTab(TabToDo.class);
+	TabToDo ttd =
+	    (TabToDo) ProjectBrowser.getInstance().getTab(TabToDo.class);
 	JPanel ws = getWizard().getCurrentPanel();
 	if (ws instanceof WizStep) ((WizStep) ws).setTarget(_target);
 	ttd.showStep(ws);

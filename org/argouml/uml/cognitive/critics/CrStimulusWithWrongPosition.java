@@ -98,31 +98,49 @@ public class CrStimulusWithWrongPosition extends CrUML {
 			    Object ma = ModelFacade.getDispatchAction(ms);
 			    if (ModelFacade.isAReturnAction(ma)) continue;
 			    else {
-				FigSeqObject fso = (FigSeqObject) fsl.getSourceFigNode();
+				FigSeqObject fso =
+				    (FigSeqObject) fsl.getSourceFigNode();
 				if ( fso != null) {
 				    Vector edges = fso.getFigEdges();
 				    if (edges != null && edges.size() > 0) {
-					int portNumber = fsl.getPortNumber(edges);
+					int portNumber =
+					    fsl.getPortNumber(edges);
 					int low = 10000;		
-					for (int j = 0; j < edges.size(); j++) {
-					    FigSeqLink edge = (FigSeqLink) edges.elementAt(j);
-					    int edge_number = edge.getPortNumber(edges);
-					    if (edge_number < low) low = edge_number;
+					for (int j = 0; j < edges.size(); j++)
+					{
+					    FigSeqLink edge =
+						(FigSeqLink) edges.elementAt(j);
+					    int edge_number =
+						edge.getPortNumber(edges);
+					    if (edge_number < low)
+						low = edge_number;
 					}
 					if (low >= portNumber) {
 					    Vector act = fso._activations;
-					    if ( act != null && act.size() > 0) {
-						FigActivation fa = (FigActivation) act.elementAt(0);
-						if (!fa.isFromTheBeg()) found = true;
+					    if ( act != null && act.size() > 0)
+					    {
+						FigActivation fa =
+						    (FigActivation)
+						    act.elementAt(0);
+						if (!fa.isFromTheBeg())
+						    found = true;
 					    }
 					}
 					else {
 					    Vector act = fso._activations;
-					    if (act != null && act.size() > 0) {
-						for (int k = 0; k < act.size(); k++) {
-						    FigActivation fa = (FigActivation) act.elementAt(k);
-						    int from = fa.getFromPosition();
-						    if (from ==  portNumber) found = true;  
+					    if (act != null && act.size() > 0)
+					    {
+						for (int k = 0;
+						     k < act.size();
+						     k++)
+						{
+						    FigActivation fa =
+							(FigActivation)
+							act.elementAt(k);
+						    int from =
+							fa.getFromPosition();
+						    if (from ==  portNumber)
+							found = true;  
 						}
 					    }
 					}

@@ -77,7 +77,7 @@ public final class Notation implements PropertyChangeListener {
 
     /** Define a static log4j category variable for ArgoUML notation.
      */
-    public final static Logger cat =
+    public static final Logger cat =
         Logger.getLogger("org.argouml.application.notation");
     // TODO:  JDK 1.2 seems to not return the package name if
     // not running from a jar.
@@ -122,7 +122,8 @@ public final class Notation implements PropertyChangeListener {
         Configuration.makeKey("notation", "only", "uml");
 
     /**
-     * Indicates if the user wants to see visibility signs (public, private, protected or # + -)
+     * Indicates if the user wants to see visibility signs (public,
+     * private, protected or # + -)
      */
     public static final ConfigurationKey KEY_SHOW_VISIBILITY =
         Configuration.makeKey("notation", "show", "visibility");
@@ -140,7 +141,8 @@ public final class Notation implements PropertyChangeListener {
         Configuration.makeKey("notation", "show", "initialvalue");
 
     /**
-     * Indicates if the user wants to see the properties (everything between braces), that is for example the concurrency
+     * Indicates if the user wants to see the properties (everything
+     * between braces), that is for example the concurrency
      */
     public static final ConfigurationKey KEY_SHOW_PROPERTIES =
         Configuration.makeKey("notation", "show", "properties");

@@ -24,8 +24,6 @@
 
 package org.argouml.ui;
 
-import java.beans.PropertyChangeEvent;
-
 import org.argouml.ui.targetmanager.TargetListener;
 
 /**

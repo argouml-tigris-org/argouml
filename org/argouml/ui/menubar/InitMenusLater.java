@@ -42,8 +42,8 @@ import org.tigris.gef.base.CmdNudge;
 import org.tigris.gef.base.CmdReorder;
 
 /**
- * Thread to initialize the submenus of the main menu of argouml (only third level, so the ones with the triangle on windows systems).
- * @author unknown
+ * Thread to initialize the submenus of the main menu of argouml (only
+ * third level, so the ones with the triangle on windows systems).
  */
 class InitMenusLater implements Runnable {
     JMenu align, distribute, reorder, nudge, setPreferredSize, layout;
@@ -79,7 +79,9 @@ class InitMenusLater implements Runnable {
      * @param layout the layout submenu
      * @param editTabs the edit tabs submenu
      */
-    public InitMenusLater(JMenu align, JMenu distribute, JMenu reorder, JMenu nudge, JMenu layout, JMenu editTabs) {
+    public InitMenusLater(JMenu align, JMenu distribute,
+			  JMenu reorder, JMenu nudge,
+			  JMenu layout, JMenu editTabs) {
 	this.align = align;
 	this.distribute = distribute;
 	this.reorder = reorder;
@@ -109,16 +111,26 @@ class InitMenusLater implements Runnable {
         KeyStroke F9 = KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0);
         KeyStroke F10 = KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0);
 
-        KeyStroke alt1 = KeyStroke.getKeyStroke(KeyEvent.VK_1, KeyEvent.ALT_MASK);
-        KeyStroke alt2 = KeyStroke.getKeyStroke(KeyEvent.VK_2, KeyEvent.ALT_MASK);
-        KeyStroke alt3 = KeyStroke.getKeyStroke(KeyEvent.VK_3, KeyEvent.ALT_MASK);
-        KeyStroke alt4 = KeyStroke.getKeyStroke(KeyEvent.VK_4, KeyEvent.ALT_MASK);
-        KeyStroke alt5 = KeyStroke.getKeyStroke(KeyEvent.VK_5, KeyEvent.ALT_MASK);
-        KeyStroke alt6 = KeyStroke.getKeyStroke(KeyEvent.VK_6, KeyEvent.ALT_MASK);
-        KeyStroke alt7 = KeyStroke.getKeyStroke(KeyEvent.VK_7, KeyEvent.ALT_MASK);
-        KeyStroke alt8 = KeyStroke.getKeyStroke(KeyEvent.VK_8, KeyEvent.ALT_MASK);
-        KeyStroke alt9 = KeyStroke.getKeyStroke(KeyEvent.VK_9, KeyEvent.ALT_MASK);
-        KeyStroke alt0 = KeyStroke.getKeyStroke(KeyEvent.VK_0, KeyEvent.ALT_MASK);
+        KeyStroke alt1 =
+	    KeyStroke.getKeyStroke(KeyEvent.VK_1, KeyEvent.ALT_MASK);
+        KeyStroke alt2 =
+	    KeyStroke.getKeyStroke(KeyEvent.VK_2, KeyEvent.ALT_MASK);
+        KeyStroke alt3 =
+	    KeyStroke.getKeyStroke(KeyEvent.VK_3, KeyEvent.ALT_MASK);
+        KeyStroke alt4 =
+	    KeyStroke.getKeyStroke(KeyEvent.VK_4, KeyEvent.ALT_MASK);
+        KeyStroke alt5 =
+	    KeyStroke.getKeyStroke(KeyEvent.VK_5, KeyEvent.ALT_MASK);
+        KeyStroke alt6 =
+	    KeyStroke.getKeyStroke(KeyEvent.VK_6, KeyEvent.ALT_MASK);
+        KeyStroke alt7 =
+	    KeyStroke.getKeyStroke(KeyEvent.VK_7, KeyEvent.ALT_MASK);
+        KeyStroke alt8 =
+	    KeyStroke.getKeyStroke(KeyEvent.VK_8, KeyEvent.ALT_MASK);
+        KeyStroke alt9 =
+	    KeyStroke.getKeyStroke(KeyEvent.VK_9, KeyEvent.ALT_MASK);
+        KeyStroke alt0 =
+	    KeyStroke.getKeyStroke(KeyEvent.VK_0, KeyEvent.ALT_MASK);
 
         KeyStroke altshift1 =
 	    KeyStroke.getKeyStroke(KeyEvent.VK_1,
@@ -132,8 +144,12 @@ class InitMenusLater implements Runnable {
 
         align.add(new CmdAlign(CmdAlign.ALIGN_TOPS));
         align.add(new CmdAlign(CmdAlign.ALIGN_BOTTOMS));
-        GenericArgoMenuBar.setAccelerator(align.add(new CmdAlign(CmdAlign.ALIGN_RIGHTS)), ctrlR);
-        GenericArgoMenuBar.setAccelerator(align.add(new CmdAlign(CmdAlign.ALIGN_LEFTS)), ctrlL);
+        GenericArgoMenuBar
+	    .setAccelerator(align.add(new CmdAlign(CmdAlign.ALIGN_RIGHTS)),
+			    ctrlR);
+        GenericArgoMenuBar
+	    .setAccelerator(align.add(new CmdAlign(CmdAlign.ALIGN_LEFTS)),
+			    ctrlL);
 
         align.add(new CmdAlign(CmdAlign.ALIGN_H_CENTERS));
         align.add(new CmdAlign(CmdAlign.ALIGN_V_CENTERS));
@@ -156,8 +172,10 @@ class InitMenusLater implements Runnable {
         nudge.add(new CmdNudge(CmdNudge.UP));
         nudge.add(new CmdNudge(CmdNudge.DOWN));
 
-        JMenuItem autoLayout = layout.add(new ActionLayout("action.layout-automatic"));
-        JMenuItem incrLayout = layout.add(new ActionLayout("action.layout-incremental"));
+        JMenuItem autoLayout =
+	    layout.add(new ActionLayout("action.layout-automatic"));
+        JMenuItem incrLayout =
+	    layout.add(new ActionLayout("action.layout-incremental"));
         /** incremental layout is currently not implemented */
         incrLayout.setEnabled(false);
 
@@ -165,27 +183,14 @@ class InitMenusLater implements Runnable {
         nextEditItem.setAccelerator(F6);
         editTabs.addSeparator();
 
-        JMenuItem tabe1Item = editTabs.add(new ActionGoToEdit("action.as-diagram"));
+        JMenuItem tabe1Item =
+	    editTabs.add(new ActionGoToEdit("action.as-diagram"));
         tabe1Item.setAccelerator(altshift1);
-        JMenuItem tabe2Item = editTabs.add(new ActionGoToEdit("action.as-table"));
+        JMenuItem tabe2Item =
+	    editTabs.add(new ActionGoToEdit("action.as-table"));
         tabe2Item.setAccelerator(altshift2);
-        JMenuItem tabe3Item = editTabs.add(new ActionGoToEdit("action.as-metrics"));
+        JMenuItem tabe3Item =
+	    editTabs.add(new ActionGoToEdit("action.as-metrics"));
         tabe3Item.setAccelerator(altshift3);
-        /*
-	  JMenuItem tab1Item = detailsTabs.add(new ActionGoToDetails("tab.todo-item"));
-	  tab1Item.setAccelerator(alt1);
-	  JMenuItem tab2Item = detailsTabs.add(new ActionGoToDetails("tab.properties"));
-	  tab2Item.setAccelerator(alt2);
-	  JMenuItem tab3Item = detailsTabs.add(new ActionGoToDetails("tab.documentation"));
-	  tab3Item.setAccelerator(alt3);
-	  JMenuItem tab4Item = detailsTabs.add(new ActionGoToDetails("tab.source"));
-	  tab4Item.setAccelerator(alt4);
-	  JMenuItem tab5Item = detailsTabs.add(new ActionGoToDetails("tab.constraints"));
-	  tab5Item.setAccelerator(alt5);
-	  JMenuItem tab6Item = detailsTabs.add(new ActionGoToDetails("tab.tagged-values"));
-	  tab6Item.setAccelerator(alt6);
-	  JMenuItem tab7Item = detailsTabs.add(new ActionGoToDetails("tab.checklist"));
-	  tab7Item.setAccelerator(alt7);
-        */
     }
 } /* end class InitMenusLater */

@@ -26,7 +26,6 @@
 package org.argouml.uml.ui;
 
 import org.apache.log4j.Category;
-import org.argouml.model.uml.UmlFactory;
 
 import javax.swing.*;
 

@@ -147,12 +147,18 @@ public class AttributeCodePiece extends NamedCodePiece
 	    // now find the matching feature
 	    for (j = features.iterator(); j.hasNext();) {
 		MFeature mFeature = (MFeature) j.next();
-		if (mFeature instanceof MAttribute && mFeature.getName().equals(name)) {
-		    // feature found, so it's an attribute (and no association end)
+		if (mFeature instanceof MAttribute
+		    && mFeature.getName().equals(name)) {
+		    // feature found, so it's an attribute (and no
+		    // association end)
 		    found = true;
 		    checkAssociations = false;
-		    parseState.newFeature(mFeature); // deletes feature from current ParseState
-		    writer.write(GeneratorJava.getInstance().generateCoreAttribute((MAttribute) mFeature));
+		    // deletes feature from current ParseState
+		    parseState.newFeature(mFeature);
+
+		    MAttribute attr = (MAttribute) mFeature;
+		    writer.write(generator().generateCoreAttribute(attr));
+
 		    if ( k < count ) {
 			writer.write("; "); // fixed comma separated attributes
 		    }
@@ -171,12 +177,18 @@ public class AttributeCodePiece extends NamedCodePiece
 			MAssociation a = ae.getAssociation();
 			Iterator connEnum = a.getConnections().iterator();
 			while (connEnum.hasNext()) {
-			    MAssociationEnd ae2 = (MAssociationEnd) connEnum.next();
-			    if (ae2 != ae && ae2.isNavigable() && !ae2.getAssociation().isAbstract()
-				&& GeneratorJava.getInstance().generateAscEndName(ae2).equals(name)) {
+			    MAssociationEnd ae2 =
+				(MAssociationEnd) connEnum.next();
+			    if (ae2 != ae
+				&& ae2.isNavigable()
+				&& !ae2.getAssociation().isAbstract()
+				&& generator()
+				   .generateAscEndName(ae2).equals(name))
+			    {
 				// association end found
 				found = true;
-				writer.write(GeneratorJava.getInstance().generateCoreAssociationEnd(ae2));
+				writer.write(generator()
+					     .generateCoreAssociationEnd(ae2));
 				break;
 			    }
 			}
@@ -191,5 +203,14 @@ public class AttributeCodePiece extends NamedCodePiece
 	    // not in model, so write the original code
 	    ffCodePiece(reader, writer);
 	}
+    }
+
+    /**
+     * Get the generator.
+     *
+     * @returns the generator.
+     */
+    private GeneratorJava generator() {
+	return GeneratorJava.getInstance();
     }
 }

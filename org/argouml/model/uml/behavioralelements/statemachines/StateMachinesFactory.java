@@ -87,7 +87,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML CallEvent instance.
      */
     public MCallEvent createCallEvent() {
-        MCallEvent modelElement = MFactory.getDefaultFactory().createCallEvent();
+        MCallEvent modelElement =
+	    MFactory.getDefaultFactory().createCallEvent();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -97,7 +98,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML ChangeEvent instance.
      */
     public MChangeEvent createChangeEvent() {
-        MChangeEvent modelElement = MFactory.getDefaultFactory().createChangeEvent();
+        MChangeEvent modelElement =
+	    MFactory.getDefaultFactory().createChangeEvent();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -107,7 +109,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML CompositeState instance.
      */
     public MCompositeState createCompositeState() {
-        MCompositeState modelElement = MFactory.getDefaultFactory().createCompositeState();
+        MCompositeState modelElement =
+	    MFactory.getDefaultFactory().createCompositeState();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -117,7 +120,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML FinalState instance.
      */
     public MFinalState createFinalState() {
-        MFinalState modelElement = MFactory.getDefaultFactory().createFinalState();
+        MFinalState modelElement =
+	    MFactory.getDefaultFactory().createFinalState();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -137,7 +141,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML Pseudostate instance.
      */
     public MPseudostate createPseudostate() {
-        MPseudostate modelElement = MFactory.getDefaultFactory().createPseudostate();
+        MPseudostate modelElement =
+	    MFactory.getDefaultFactory().createPseudostate();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -147,7 +152,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML SignalEvent instance.
      */
     public MSignalEvent createSignalEvent() {
-        MSignalEvent modelElement = MFactory.getDefaultFactory().createSignalEvent();
+        MSignalEvent modelElement =
+	    MFactory.getDefaultFactory().createSignalEvent();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -157,7 +163,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML SimpleState instance.
      */
     public MSimpleState createSimpleState() {
-        MSimpleState modelElement = MFactory.getDefaultFactory().createSimpleState();
+        MSimpleState modelElement =
+	    MFactory.getDefaultFactory().createSimpleState();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -177,7 +184,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML StateMachine instance.
      */
     public MStateMachine createStateMachine() {
-        MStateMachine modelElement = MFactory.getDefaultFactory().createStateMachine();
+        MStateMachine modelElement =
+	    MFactory.getDefaultFactory().createStateMachine();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -187,7 +195,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML StubState instance.
      */
     public MStubState createStubState() {
-        MStubState modelElement = MFactory.getDefaultFactory().createStubState();
+        MStubState modelElement =
+	    MFactory.getDefaultFactory().createStubState();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -197,7 +206,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML SubmachineState instance.
      */
     public MSubmachineState createSubmachineState() {
-        MSubmachineState modelElement = MFactory.getDefaultFactory().createSubmachineState();
+        MSubmachineState modelElement =
+	    MFactory.getDefaultFactory().createSubmachineState();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -207,7 +217,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML SynchState instance.
      */
     public MSynchState createSynchState() {
-        MSynchState modelElement = MFactory.getDefaultFactory().createSynchState();
+        MSynchState modelElement =
+	    MFactory.getDefaultFactory().createSynchState();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -217,7 +228,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML TimeEvent instance.
      */
     public MTimeEvent createTimeEvent() {
-        MTimeEvent modelElement = MFactory.getDefaultFactory().createTimeEvent();
+        MTimeEvent modelElement =
+	    MFactory.getDefaultFactory().createTimeEvent();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -227,7 +239,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML Transition instance.
      */
     public MTransition createTransition() {
-        MTransition modelElement = MFactory.getDefaultFactory().createTransition();
+        MTransition modelElement =
+	    MFactory.getDefaultFactory().createTransition();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -243,7 +256,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
 	    state.setStateMachine(statemachine);
 	    return state;
     	} else
-	    throw new IllegalArgumentException("In buildCompositeState: statemachine is null");
+	    throw new IllegalArgumentException("In buildCompositeState: "
+					       + "statemachine is null");
     }
     
     /**
@@ -252,7 +266,10 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * @return MActivityGraph
      */
     public MStateMachine buildStateMachine(Object oContext) {
-    	if (oContext != null && StateMachinesHelper.getHelper().isAddingStatemachineAllowed(oContext)) {
+    	if (oContext != null
+	    && StateMachinesHelper.getHelper()
+	       .isAddingStatemachineAllowed(oContext))
+	{
 	    MStateMachine graph = createStateMachine();
             MModelElement context = (MModelElement) oContext;
 	    graph.setContext(context);
@@ -265,13 +282,15 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
 	    StateMachinesFactory.getFactory().buildCompositeState(graph);
 	    return graph;
     	} else 
-	    throw new IllegalArgumentException("In buildStateMachine: context null or not legal");
+	    throw new IllegalArgumentException("In buildStateMachine: "
+					       + "context null or not legal");
     }
     
     /**
-     * Builds a complete transition including all associations (composite state the
-     * transition belongs to, source the transition is coming from, destination
-     * the transition is going to). The transition is owned by the compositestate.
+     * Builds a complete transition including all associations
+     * (composite state the transition belongs to, source the
+     * transition is coming from, destination the transition is going
+     * to). The transition is owned by the compositestate.
      * @param owningState
      * @param source
      * @param dest
@@ -288,14 +307,16 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
 	    trans.setTarget(dest);
 	    return trans;
       	} else 
-	    throw new IllegalArgumentException("In buildTransition: arguments not legal");
+	    throw new IllegalArgumentException("In buildTransition: "
+					       + "arguments not legal");
     }
     
     /**
-     * Builds a pseudostate initialized as a branch pseudostate. The pseudostate
-     * will be a subvertix of the given compositestate. The parameter compositeState
-     * is of type Object to decouple the factory and NSUML as much as possible from
-     * the rest of ArgoUML.
+     * Builds a pseudostate initialized as a branch pseudostate. The
+     * pseudostate will be a subvertix of the given
+     * compositestate. The parameter compositeState is of type Object
+     * to decouple the factory and NSUML as much as possible from the
+     * rest of ArgoUML.
      * @param compositeState
      * @return MPseudostate
      */
@@ -311,10 +332,10 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * Builds a synchstate initalized with bound 0. The synchstate will be a 
-     * subvertix of the given compositestate. The parameter compositeState
-     * is of type Object to decouple the factory and NSUML as much as possible from
-     * the rest of ArgoUML.
+     * Builds a synchstate initalized with bound 0. The synchstate
+     * will be a subvertix of the given compositestate. The parameter
+     * compositeState is of type Object to decouple the factory and
+     * NSUML as much as possible from the rest of ArgoUML.
      * @param compositeState
      * @return MSynchState
      */
@@ -329,10 +350,11 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * Builds a stubstate initalized with an empty referenced state. The stubstate will be a 
-     * subvertix of the given compositestate. The parameter compositeState
-     * is of type Object to decouple the factory and NSUML as much as possible from
-     * the rest of ArgoUML.
+     * Builds a stubstate initalized with an empty referenced
+     * state. The stubstate will be a subvertix of the given
+     * compositestate. The parameter compositeState is of type Object
+     * to decouple the factory and NSUML as much as possible from the
+     * rest of ArgoUML.
      * @param compositeState
      * @return MSynchState
      */
@@ -347,9 +369,10 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * Builds a compositestate initalized as a non-concurrent composite state. 
-     * The compositestate will be a subvertix of the given compositestate. The parameter 
-     * compositeState is of type Object to decouple the factory and NSUML as much as possible 
+     * Builds a compositestate initalized as a non-concurrent
+     * composite state.  The compositestate will be a subvertix of the
+     * given compositestate. The parameter compositeState is of type
+     * Object to decouple the factory and NSUML as much as possible
      * from the rest of ArgoUML.
      * @param compositeState
      * @return MSynchState
@@ -365,10 +388,10 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * Builds a simplestate. The simplestate will be a subvertix of the given 
-     * compositestate. The parameter compositeState is of type Object to decouple 
-     * the factory and NSUML as much as possible. 
-     * from the rest of ArgoUML.
+     * Builds a simplestate. The simplestate will be a subvertix of
+     * the given compositestate. The parameter compositeState is of
+     * type Object to decouple the factory and NSUML as much as
+     * possible.  from the rest of ArgoUML.
      * @param compositeState
      * @return MSynchState
      */
@@ -382,9 +405,9 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * Builds a finalstate. The finalstate will be a subvertix of the given 
-     * compositestate. The parameter compositeState is of type Object to decouple 
-     * the factory and NSUML as much as possible. 
+     * Builds a finalstate. The finalstate will be a subvertix of the
+     * given compositestate. The parameter compositeState is of type
+     * Object to decouple the factory and NSUML as much as possible.
      * from the rest of ArgoUML.
      * @param compositeState
      * @return MSynchState
@@ -399,10 +422,10 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * Builds a submachinestate. The submachinestate will be a subvertix of the given 
-     * compositestate. The parameter compositeState is of type Object to decouple 
-     * the factory and NSUML as much as possible. 
-     * from the rest of ArgoUML.
+     * Builds a submachinestate. The submachinestate will be a
+     * subvertix of the given compositestate. The parameter
+     * compositeState is of type Object to decouple the factory and
+     * NSUML as much as possible.  from the rest of ArgoUML.
      * @param compositeState
      * @return MSynchState
      */
@@ -446,7 +469,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
             MTransition trans = createTransition();
             trans.setSource((MStateVertex) source);
             trans.setTarget((MStateVertex) target);
-            trans.setStateMachine(StateMachinesHelper.getHelper().getStateMachine(source));
+            trans.setStateMachine(StateMachinesHelper.getHelper()
+				  .getStateMachine(source));
             return trans;
         }
         return null;
@@ -459,7 +483,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      */
     public MCallEvent buildCallEvent() {
         MCallEvent event = createCallEvent();
-        event.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+        event.setNamespace(ProjectManager.getManager()
+			   .getCurrentProject().getModel());
         event.setName("");
         return event;
     }
@@ -471,7 +496,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      */
     public MSignalEvent buildSignalEvent() {
         MSignalEvent event = createSignalEvent();
-        event.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+        event.setNamespace(ProjectManager.getManager()
+			   .getCurrentProject().getModel());
         event.setName("");
         return event;
     }
@@ -483,7 +509,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      */
     public MTimeEvent buildTimeEvent() {
         MTimeEvent event = createTimeEvent();
-        event.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+        event.setNamespace(ProjectManager.getManager()
+			   .getCurrentProject().getModel());
         event.setName("");
         return event;
     }
@@ -495,7 +522,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      */
     public MChangeEvent buildChangeEvent() {
         MChangeEvent event = createChangeEvent();
-        event.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+        event.setNamespace(ProjectManager.getManager()
+			   .getCurrentProject().getModel());
         event.setName("");
         return event;
     }

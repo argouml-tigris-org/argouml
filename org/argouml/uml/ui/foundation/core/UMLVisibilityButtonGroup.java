@@ -22,14 +22,12 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.KeyEvent;
 import javax.swing.JRadioButton;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLButtonGroup;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import ru.novosoft.uml.foundation.core.MModelElement;

@@ -50,7 +50,7 @@ public class ActionNotation extends UMLAction
 
     private JMenu _menu = null;
 
-    public final static ActionNotation getInstance() { return SINGLETON; }
+    public static final ActionNotation getInstance() { return SINGLETON; }
 
     public ActionNotation() {
 	super("Notation", NO_ICON);
@@ -87,7 +87,8 @@ public class ActionNotation extends UMLAction
             Object o = iterator.next();
 	    if (o instanceof NotationName) {
 		NotationName nn = (NotationName) o;
-	        JRadioButtonMenuItem mi = new JRadioButtonMenuItem(nn.getTitle());
+	        JRadioButtonMenuItem mi =
+		    new JRadioButtonMenuItem(nn.getTitle());
                 if (nn.getIcon() != null) {
                     mi.setIcon(nn.getIcon());
                 }

@@ -50,7 +50,6 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
 import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -250,10 +249,12 @@ public class FigComponentInstance extends FigNodeModelElement {
           MComponentInstance me = (MComponentInstance) getOwner();
           MNodeInstance mnode = null;
         
-          if (encloser != null && (encloser.getOwner() instanceof MNodeInstance)) {
+          if (encloser != null
+	  && (encloser.getOwner() instanceof MNodeInstance)) {
 	  mnode = (MNodeInstance) encloser.getOwner();
           }
-          if (encloser != null && (encloser.getOwner() instanceof MComponentInstance)) {
+          if (encloser != null
+	  && (encloser.getOwner() instanceof MComponentInstance)) {
 	  MComponentInstance comp = (MComponentInstance) encloser.getOwner();
 	  mnode = (MNodeInstance) comp.getNodeInstance();
           }

@@ -100,7 +100,8 @@ public class MultiEditorPane
             _tabs.addTab("As " + title, t);
             _tabs.setEnabledAt(i, false);
             if (t instanceof TargetListener) {
-                TargetManager.getInstance().addTargetListener((TargetListener) t);
+                TargetManager.getInstance()
+		    .addTargetListener((TargetListener) t);
             }
         } /* end for */
 
@@ -119,10 +120,10 @@ public class MultiEditorPane
     }
 
     /**
-     * Sets the target of the multieditorpane. The multieditorpane can have several 
-     * tabs. If a tab is an instance of tabmodeltarget (that is a tab that displays
-     * model elements) that tab should display the target if the target is an 
-     * ArgoDiagram.
+     * Sets the target of the multieditorpane. The multieditorpane can
+     * have several tabs. If a tab is an instance of tabmodeltarget
+     * (that is a tab that displays model elements) that tab should
+     * display the target if the target is an ArgoDiagram.
      * @param target
      * @deprecated As of ArgoUml version 0.13.5, 
      *             this method will change visibility in the near future
@@ -141,7 +142,8 @@ public class MultiEditorPane
     /**
      * Enables the tabs on the MultiEditorPane depending on the result of its
      * shouldBeEnabled method.
-     * @param target The target for which the shouldBeEnabled test should hold true.
+     * @param target The target for which the shouldBeEnabled test
+     * should hold true.
      */
     private void enableTabs(Object target) {
         for (int i = 0; i < _tabs.getTabCount(); i++) {
@@ -160,8 +162,9 @@ public class MultiEditorPane
      * TODO: check if the target is needed for the multieditorpane as an
      * instance variable.
      * @return Object
-     * @deprecated As of ArgoUml version 0.13.5, 
-     *             use {@link org.argouml.ui.targetmanager.TargetManager.getTarget() TargetManager.getInstance().getTarget()} instead
+     * @deprecated As of ArgoUml version 0.13.5, use {@link
+     * org.argouml.ui.targetmanager.TargetManager.getTarget()
+     * TargetManager.getInstance().getTarget()} instead
      */
     public Object getTarget() {
         return TargetManager.getInstance().getTarget();
@@ -357,26 +360,29 @@ public class MultiEditorPane
         return returnList;
     }
 
-	/**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+    /**
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        // we can neglect this, the MultiEditorPane allways selects the first target
-        // in a set of targets. The first target can only be 
-        // changed in a targetRemoved or a TargetSet event
+        // we can neglect this, the MultiEditorPane allways selects
+        // the first target in a set of targets. The first target can
+        // only be changed in a targetRemoved or a TargetSet event
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        // how to handle empty target lists?
-        // probably the MultiEditorPane should only show an empty pane in that case
+        // how to handle empty target lists?  probably the
+        // MultiEditorPane should only show an empty pane in that case
         setTarget(e.getNewTargets()[0]);
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTargets()[0]);

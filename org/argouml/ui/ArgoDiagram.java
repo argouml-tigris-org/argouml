@@ -110,8 +110,9 @@ public class ArgoDiagram extends Diagram {
      */
     public Fig getContainingFig(Object obj) {
         Fig fig = super.presentationFor(obj);
-        if (fig == null && obj instanceof MModelElement) { // maybe we have a modelelement
-            // that is part of some other fig
+        if (fig == null && obj instanceof MModelElement) {
+	    // maybe we have a modelelement that is part of some other
+            // fig
             if (obj instanceof MOperation || obj instanceof MAttribute) {
                 // get all the classes from the diagram
                 Iterator it = getNodes().iterator();
@@ -119,7 +120,8 @@ public class ArgoDiagram extends Diagram {
                     Object o = it.next();
                     if (o instanceof MClassifier) {
                         MClassifier cl = (MClassifier) o;
-                        if (cl.getFeatures().contains(obj)) return presentationFor(cl);
+                        if (cl.getFeatures().contains(obj))
+			    return presentationFor(cl);
                     }
                 }
             }

@@ -67,7 +67,7 @@ public class Main {
     ////////////////////////////////////////////////////////////////
     // constants
 
-    public final static String DEFAULT_LOGGING_CONFIGURATION =
+    public static final String DEFAULT_LOGGING_CONFIGURATION =
         "org/argouml/resource/default.lcf";
 
     ////////////////////////////////////////////////////////////////
@@ -157,11 +157,13 @@ public class Main {
                         "  -norecentfile   don't reload last saved file");
                     System.err.println("");
                     System.err.println(
-                        "You can also set java settings which influence the behaviour of ArgoUML:");
+                        "You can also set java settings which influence "
+			+ "the behaviour of ArgoUML:");
                     System.err.println("  -Duser.language    [e.g. en]");
                     System.err.println("  -Duser.region      [e.g. US]");
                     System.err.println(
-                        "  -Dforce.nativelaf  [force ArgoUML to use the native look and feel. UNSUPPORTED]");
+                        "  -Dforce.nativelaf  [force ArgoUML to use "
+			+ "the native look and feel. UNSUPPORTED]");
                     System.err.println("\n\n");
                     ArgoSecurityManager.getInstance().setAllowExit(true);
                     System.exit(0);

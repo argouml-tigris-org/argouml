@@ -68,7 +68,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.swingext.Orientation;
-import org.argouml.swingext.SerialLayout;
 import org.argouml.swingext.Toolbar;
 import org.argouml.swingext.Vertical;
 import org.argouml.ui.TabSpawnable;

@@ -37,7 +37,6 @@ import java.util.Iterator;
 import javax.swing.JTree;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
 
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLClassifierComboBoxModel;

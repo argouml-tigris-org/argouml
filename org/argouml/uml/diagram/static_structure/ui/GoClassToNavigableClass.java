@@ -25,13 +25,10 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.util.Collection;
-import java.util.Vector;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
 
-import javax.swing.event.TreeModelListener;
-import javax.swing.tree.TreePath;
 
 import org.argouml.ui.AbstractGoRule;
 

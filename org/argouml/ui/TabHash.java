@@ -24,8 +24,6 @@
 
 package org.argouml.ui;
 
-import org.argouml.ui.targetmanager.TargetManager;
-
 
 public class TabHash extends TabText {
 

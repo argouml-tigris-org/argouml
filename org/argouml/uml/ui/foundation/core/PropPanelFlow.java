@@ -28,7 +28,6 @@ package org.argouml.uml.ui.foundation.core;
 import org.argouml.application.api.Argo;
 
 import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.util.ConfigLoader;
 
 /**

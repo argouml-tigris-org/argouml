@@ -29,8 +29,6 @@ import java.util.Collection;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.AbstractGoRule;
 
-import ru.novosoft.uml.behavior.state_machines.MStateMachine;
-
 public class GoMachineToTrans extends AbstractGoRule {
 
     public String getRuleName() { return "State Machine->Transition"; }
