@@ -295,21 +295,16 @@ extends DisplayTextTree
      */
     private void setSelection(Object[] targets){
         
-        int rowToSelect = 0;
-        int[] rowIndexes = new int[targets.length];
-        int rowIndexCounter = 0;
+        this.clearSelection();
+        
         int rows = getRowCount();
         for (int i = 0; i < targets.length; i++) {
             Object target = targets[i];
-            target =
-            target instanceof Fig
-            ? ((Fig)target).getOwner()
-            : target;
+            target = target instanceof Fig ? ((Fig)target).getOwner() : target;
             for (int j = 0; j < rows; j++) {
-                Object rowItem =
-                ((DefaultMutableTreeNode)getPathForRow(j)
-                .getLastPathComponent())
-                .getUserObject();
+                Object rowItem = ((DefaultMutableTreeNode)getPathForRow(j)
+                                    .getLastPathComponent())
+                                    .getUserObject();
                 if (rowItem == target) {
                     this.addSelectionRow(j);
                 }
