@@ -72,7 +72,7 @@ public class AboutBox extends JDialog {
 
     public AboutBox(Frame owner, boolean modal) {
 	super(owner, modal);
-  // TODO: i18n
+        // TODO: i18n
 	this.setTitle("About ArgoUML");
 	_splashPanel = new SplashPanel("Splash");
 	int imgWidth = _splashPanel.getImage().getIconWidth();
@@ -111,27 +111,27 @@ public class AboutBox extends JDialog {
 			  + "work!\n");
 	versionBuf.append("\n");
 
-  /** MVW: Added the inset JPanel, so that the image width is also
-     applied to the "ArgoUML Vx,xx.x" part */
-  JPanel myInsetPanel = new JPanel(); //MVW
-  /* top, left, bottom, right */
-  myInsetPanel.setBorder(new EmptyBorder(30,40,40,40)); //MVW
-  /* This gives some more space to the row of tabs, 
-     so that there will not be 2 rows of tabs
-     See issue 2365, remark 3 from Jeremy.         */
-  imgWidth  += 40 + 40; //MVW
-  /* It looks better is the height increases, too */
-  imgHeight += 40 + 40; //MVW
-  myInsetPanel.add(_splashPanel); //MVW
-  _tabs.addTab("Splash", myInsetPanel); //MVW
+        /** MVW: Added the inset JPanel, so that the image width is also
+        applied to the "ArgoUML Vx,xx.x" part */
+        JPanel myInsetPanel = new JPanel(); //MVW
+        /* top, left, bottom, right */
+        myInsetPanel.setBorder(new EmptyBorder(30,40,40,40)); //MVW
+        /* This gives some more space to the row of tabs, 
+           so that there will not be 2 rows of tabs
+           See issue 2365, remark 3 from Jeremy.         */
+        imgWidth  += 40 + 40; //MVW
+        /* It looks better is the height increases, too */
+        imgHeight += 40 + 40; //MVW
+        myInsetPanel.add(_splashPanel); //MVW
+        _tabs.addTab("Splash", myInsetPanel); //MVW
 	//_tabs.addTab("Splash", _splashPanel);
 
 	try {
 	    JTextArea a = new JTextArea();
 	    a.setEditable(false);
-      a.setLineWrap(true);
-      a.setWrapStyleWord(true);
-      a.setMargin(new Insets(i, i, i, i));
+            a.setLineWrap(true);
+            a.setWrapStyleWord(true);
+            a.setMargin(new Insets(i, i, i, i));
 	    a.read(new StringReader(versionBuf.toString()), null);
 	    _tabs.addTab("Version", new JScrollPane(a));
 	}
@@ -146,9 +146,9 @@ public class AboutBox extends JDialog {
 							  + "credits.about")),
 		   null);
 	    a.setEditable(false);
-      a.setLineWrap(true);
-      a.setWrapStyleWord(true);
-      a.setMargin(new Insets(i, i, i, i));
+            a.setLineWrap(true);
+            a.setWrapStyleWord(true);
+            a.setMargin(new Insets(i, i, i, i));
 	    _tabs.addTab("Credits", new JScrollPane(a));
 	}
 	catch (Exception e) {
@@ -158,9 +158,9 @@ public class AboutBox extends JDialog {
 	try {
 	    JTextArea a = new JTextArea();
 	    a.setEditable(false);
-      a.setLineWrap(true);
-      a.setWrapStyleWord(true);
-      a.setMargin(new Insets(i, i, i, i));
+            a.setLineWrap(true);
+            a.setWrapStyleWord(true);
+            a.setMargin(new Insets(i, i, i, i));
 	    a.read(new InputStreamReader(getClass().
 			   getResourceAsStream(Argo.RESOURCEDIR
 					       + "contacts.about")),
@@ -175,9 +175,9 @@ public class AboutBox extends JDialog {
 	try {
 	    JTextArea a = new JTextArea();
 	    a.setEditable(false);
-      a.setLineWrap(true);
-      a.setWrapStyleWord(true);
-      a.setMargin(new Insets(i, i, i, i));
+            a.setLineWrap(true);
+            a.setWrapStyleWord(true);
+            a.setMargin(new Insets(i, i, i, i));
 	    a.read(new InputStreamReader(getClass().
 			  getResourceAsStream(Argo.RESOURCEDIR
 					      + "bugreport.about")),
@@ -192,9 +192,9 @@ public class AboutBox extends JDialog {
 	try {
 	    JTextArea a = new JTextArea();
 	    a.setEditable(false);
-      a.setLineWrap(true);
-      a.setWrapStyleWord(true);
-      a.setMargin(new Insets(i, i, i, i));
+            a.setLineWrap(true);
+            a.setWrapStyleWord(true);
+            a.setMargin(new Insets(i, i, i, i));
 	    a.read(new InputStreamReader(getClass().
 					 getResourceAsStream(Argo.RESOURCEDIR
 							     + "legal.about")),
