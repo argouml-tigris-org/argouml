@@ -49,7 +49,7 @@ class TableModelStateByProps extends TableModelComposite {
     System.out.println("rowObjectsFor " + t);
     if (!(t instanceof UMLStateDiagram)) return new Vector();
     UMLStateDiagram d = (UMLStateDiagram) t;
-    Vector nodes = d.getGraphModel().getNodes();
+    Vector nodes = d.getNodes();
     Vector res = new Vector();
     int size = nodes.size();
     for (int i = 0; i < size; i++) {

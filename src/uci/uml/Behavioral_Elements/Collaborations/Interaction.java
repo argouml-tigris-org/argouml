@@ -52,19 +52,25 @@ public class Interaction extends ModelElementImpl {
   }
   public void addMessage(Message x) throws PropertyVetoException {
     if (_message == null) _message = new Vector();
+    if (_message.contains(x)) return;
     fireVetoableChange("message", _message, x);
     _message.addElement(x);
+    x.addInteraction(this);
   }
-  public void removeMesage(Message x) throws PropertyVetoException {
+  public void removeMessage(Message x) throws PropertyVetoException {
     if (_message == null) return;
+    if (!_message.contains(x)) return;
     fireVetoableChange("message", _message, x);
     _message.removeElement(x);
+    x.removeInteraction(this);
   }
 
   public Collaboration getContext() { return _context; }
   public void setContext(Collaboration x) throws PropertyVetoException {
+    if (_context == x) return;
     fireVetoableChange("context", _context, x);
     _context = x;
+    setNamespace(_context);
   }
 
   public Vector getLink() { return _link; }

@@ -72,6 +72,9 @@ public class ElementImpl implements Element, Highlightable {
     return "S." + (100000 + elementCount);
   }
 
+  public static int getElementCount() { return elementCount; }
+  public static void setElementCount(int c) { elementCount = c; }
+
   public Vector getNamedProperty(String propName) {
     Class voidArray[] = {};
     Object objArray[] = {};
@@ -128,11 +131,13 @@ public class ElementImpl implements Element, Highlightable {
   }
 
   public Name getName() { return _name; }
+  public void setName(String x) throws PropertyVetoException {
+    setName(new Name(x));
+  }
   public void setName(Name x) throws PropertyVetoException {
     fireVetoableChange("name", _name, x);
     _name = x;
   }
-
   public Vector getTaggedValue() { return (Vector) _taggedValue;}
   public void setTaggedValue(Vector x) throws PropertyVetoException {
     if (_taggedValue == null) _taggedValue = new Vector();
@@ -280,6 +285,10 @@ public class ElementImpl implements Element, Highlightable {
 	(PropertyChangeListener) _propertyListeners.elementAt(i);
       target.propertyChange(evt);
     }
+  }
+
+  public String toString() {
+    return getOCLTypeStr() + "[id=" + getId() + "]";
   }
 
   ////////////////////////////////////////////////////////////////

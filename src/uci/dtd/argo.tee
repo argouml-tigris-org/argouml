@@ -8,7 +8,7 @@
                      guard CDATA #IMPLIED>
 ]>
 <!-- This is argo.tee, for Argo/UML to save project -->
-<!-- files.  'tee' = Template with Embedded Expressions. -->
+<!-- files.  "tee" = Template with Embedded Expressions. -->
 
 <!-- Original Author: jrobbins@ics.uci.edu -->
 <!-- $Id$ -->
@@ -22,8 +22,8 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="uci.uml.ui.Project">
 <![CDATA[
-<?xml version = '1.0' encoding = 'ISO-8859-1' ?>
-<!DOCTYPE argo SYSTEM 'argo.dtd' >
+<?xml version = "1.0" encoding = "ISO-8859-1" ?>
+<!DOCTYPE argo SYSTEM "argo.dtd" >
 <argo>
   <documentation>
     <authorname><ocl>self.authorname</ocl></authorname>
@@ -33,11 +33,11 @@
     </description>
   </documentation>
   
-  <searchpath href='<ocl>self.searchpath</ocl>' />
+  <searchpath href="<ocl>self.searchPath</ocl>" />
 
   <ocl>self.members</ocl>
 
-  <historyfile name='<ocl>self.historyfile</ocl>' />
+  <historyfile name="<ocl>self.historyFile</ocl>" />
 
 </argo>
 ]]>
@@ -48,8 +48,8 @@
 <template class="uci.uml.ui.ProjectMember">
 <![CDATA[
 <member
-  type='<ocl>self.type</ocl>'
-  name='<ocl>self.name</ocl>'
+  type="<ocl>self.type</ocl>"
+  name="<ocl>self.name</ocl>"
 />
 ]]>
 </template>

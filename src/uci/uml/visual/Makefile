@@ -34,6 +34,7 @@ GEN =
 CLASSES = \
 	ClassDiagramGraphModel.class \
 	ClassDiagramRenderer.class \
+	DiagramInfo.class \
 	FigActionState.class \
 	FigNodeModelElement.class \
 	FigEdgeModelElement.class \

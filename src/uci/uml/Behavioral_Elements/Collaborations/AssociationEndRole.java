@@ -54,8 +54,13 @@ public class AssociationEndRole extends AssociationEnd {
     return _associationRole;
   }
   public void setAssociationRole(AssociationRole x) throws PropertyVetoException {
+    if (_associationRole == x) return;
+    AssociationRole old = _associationRole;
     fireVetoableChange("associationRole", _associationRole, x);
     _associationRole = x;
+    if (old != null) old.removeAssociationEndRole(this);
+    if (_associationRole != null)
+      _associationRole.addAssociationEndRole(this);
   }
 
   ////////////////////////////////////////////////////////////////

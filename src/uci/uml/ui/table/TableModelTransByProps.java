@@ -51,7 +51,7 @@ class TableModelTransByProps extends TableModelComposite {
     System.out.println("rowObjectsFor " + t);
     if (!(t instanceof UMLStateDiagram)) return new Vector();
     UMLStateDiagram d = (UMLStateDiagram) t;
-    Vector edges = d.getGraphModel().getEdges();
+    Vector edges = d.getEdges();
     Vector res = new Vector();
     int size = edges.size();
     for (int i = 0; i < size; i++) {

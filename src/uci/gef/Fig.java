@@ -212,6 +212,17 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   }
   public Object getOwner() { return _owner; }
 
+  public String getId() {
+    if (getGroup() != null) {
+      String gID = getGroup().getId();
+      if (getGroup() instanceof FigGroup)
+	return gID + "." + ((FigGroup)getGroup()).getFigs().indexOf(this);
+      else return gID + ".1";
+    }
+    int index = getLayer().getContents().indexOf(this);
+    return "Fig" + index;
+  }
+
   /** Sets the enclosing FigGroup of this Fig.  The enclosing group is
    * always notified of property changes, without need to add a listener. */
   public void setGroup(Fig f) { _group = f; }
@@ -266,6 +277,7 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
     _filled = f;
   }
   public boolean getFilled() { return _filled; }
+  public int getFilled01() { return _filled ? 1 : 0; }
 
   /** Internal function to change the line width attribute is used.
    *  Other code should use put(String key, Object value). */
@@ -301,9 +313,8 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   }
 
   /** Get the dashed attribute **/
-  public boolean getDashed() {
-    return (_dashes != null);
-  }
+  public boolean getDashed() { return (_dashes != null); }
+  public int getDashed01() { return getDashed() ? 1 : 0; }
 
   public String getTipString(MouseEvent me) {
     return toString();
@@ -379,6 +390,11 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
     return (length + phase) % dashesDist;
   }
 
+  public String  classNameAndBounds() {
+    return getClass().getName() + "[" +
+      getX() + ", " + getY() + ", " +
+      getWidth() + ", " + getHeight() + "]";
+  }
 
   /** Return a Rectangle that completely encloses this Fig. */
   public Rectangle getBounds() { return new Rectangle(_x, _y, _w, _h); }
@@ -552,9 +568,11 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
 
   public void setWidth(int w) { setBounds(_x, _y, w, _h); }
   public int getWidth() { return _w; }
+  public int getHalfWidth() { return _w / 2; }
 
   public void setHeight(int h) { setBounds(_x, _y, _w, h); }
   public int getHeight() { return _h; }
+  public int getHalfHeight() { return _h / 2; }
 
   /** Get and set the points along a path for Figs that are path-like. */
   public void setPoints(Point[] ps) { }
@@ -729,6 +747,31 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
    * needs-more-work: define gravity points, berths
    */
   public Point connectionPoint(Point anotherPt) {
+    Vector grav = getGravityPoints();
+    if (grav != null && grav.size() > 0) {
+      int ax = anotherPt.x;
+      int ay = anotherPt.y;
+      Point bestPoint = (Point) grav.elementAt(0);
+      int bestDist = Integer.MAX_VALUE;
+      int size = grav.size();
+      for (int i = 0; i < size; i++) {
+	Point gp = (Point) grav.elementAt(i);
+	int dx = gp.x - ax;
+	int dy = gp.y - ay;
+	int dist = dx*dx + dy*dy;
+	if (dist < bestDist) {
+	  bestDist = dist;
+	  bestPoint = gp;
+	}
+      }
+      return new Point(bestPoint.x, bestPoint.y);
+    }
+    return getClosestPoint(anotherPt);
+  }
+
+  public Vector getGravityPoints() { return null; }
+
+  public Point getClosestPoint(Point anotherPt) {
     return Geometry.ptClosestTo(getBounds(), anotherPt);
   }
 

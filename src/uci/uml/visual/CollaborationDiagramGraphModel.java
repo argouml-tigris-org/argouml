@@ -58,17 +58,23 @@ implements MutableGraphModel, VetoableChangeListener {
    *  Also, elements from other models will have their FigNodes add a
    *  line to say what their model is. */
 
-  protected Model _model;
+  /** The collaboration we are diagramming */
+  protected Collaboration _collab;
 
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public Model getModel() { return _model; }
-  public void setModel(Model m) {
-    if (_model != null) _model.removeVetoableChangeListener(this);
-    _model = m;
-    if (_model != null) _model.addVetoableChangeListener(this);
+  public Namespace getNamespace() { return _collab; }
+  public void setNamespace(Namespace m) {
+    if (!(m instanceof Collaboration)) {
+      System.out.println("invalid namespace for CollaborationDiagramGraphModel");
+      return;
+    }
+    if (_collab != null) _collab.removeVetoableChangeListener(this);
+    _collab = (Collaboration) m;
+    if (_collab != null) _collab.addVetoableChangeListener(this);
   }
+
 
   ////////////////////////////////////////////////////////////////
   // GraphModel implementation
@@ -163,7 +169,7 @@ implements MutableGraphModel, VetoableChangeListener {
     // needs-more-work: assumes public, user pref for default visibility?
     try {
       if (node instanceof Classifier) {
-	    _model.addPublicOwnedElement((Classifier) node);
+	    _collab.addPublicOwnedElement((Classifier) node);
       }
     }
     catch (PropertyVetoException pve) {
@@ -180,7 +186,7 @@ implements MutableGraphModel, VetoableChangeListener {
     // needs-more-work: assumes public
     try {
       if (edge instanceof Association) {
-	    _model.addPublicOwnedElement((Association) edge);
+	    _collab.addPublicOwnedElement((Association) edge);
       }
     }
     catch (PropertyVetoException pve) {

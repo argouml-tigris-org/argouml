@@ -34,30 +34,58 @@ import java.beans.*;
 import uci.gef.*;
 import uci.graph.*;
 import uci.ui.*;
-import uci.uml.Model_Management.*;
+import uci.uml.Foundation.Core.*;
 
 
 public class UMLDiagram extends Diagram {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
-  protected Model _model;
+  protected Namespace _namespace;
+  protected DiagramInfo _diagramName = new DiagramInfo(this);
+
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public UMLDiagram(Model m) {
-    _model = m;
+  public UMLDiagram() { }
+
+  public UMLDiagram(Namespace ns) {
+    _namespace = ns;
   }
 
-  public UMLDiagram(String diagramName, Model m) {
+  public UMLDiagram(String diagramName, Namespace ns) {
     try { setName(diagramName); }
     catch (PropertyVetoException pve) { }
-    _model = m;
+    _namespace = ns;
   }
 
-  public Model getModel() { return _model; }
-  
+  public void initialize(Object owner) {
+    super.initialize(owner);
+    if (owner instanceof Namespace) setNamespace((Namespace) owner);
+    else System.out.println("unknown object in UMLDiagram initialize:"
+			    + owner);
+  }
+
+
+  ////////////////////////////////////////////////////////////////
+  // accessors
+
+  public Namespace getNamespace() { return _namespace; }
+  public void setNamespace(Namespace m) { _namespace = m; }
+
+  public String getClassAndModelID() {
+    String s = super.getClassAndModelID();
+    if (getNamespace() == null) return s;
+    return s + "|" + getNamespace().getId();
+  }
+
+
+  public void setName(String n) throws PropertyVetoException {
+    super.setName(n);
+    _diagramName.updateName();
+  }
+
   static final long serialVersionUID = -401219134410459387L;
 
 } /* end class UMLDiagram */

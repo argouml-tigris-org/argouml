@@ -40,6 +40,7 @@ import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.gef.*;
 import uci.graph.*;
+import uci.argo.kernel.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
 import uci.uml.Foundation.Core.*;
@@ -116,6 +117,12 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
 //   public boolean isResizable() { return false; }
 //   public boolean isLowerRightResizable() { return true; }
 
+  public String getTipString(MouseEvent me) {
+    ToDoItem item = hitClarifier(me.getX(), me.getY());
+    if (item != null) return item.getHeadline();
+    if (getOwner() != null) return getOwner().toString();
+    return toString();
+  }
 
 
   public FigText getNameFig() { return _name; }
@@ -128,6 +135,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
 
   ////////////////////////////////////////////////////////////////
   // Fig API
+
   public Fig getEnclosingFig() { return _encloser; }
 
   public void setEnclosingFig(Fig f) {
@@ -162,13 +170,16 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
     // update any text, colors, fonts, etc.
     modelChanged();
     // update the relative sizes and positions of internel Figs
+    updateBounds();
+    endTrans();
+  }
+
+  protected void updateBounds() {
     Rectangle bbox = getBounds();
     Dimension minSize = getMinimumSize();
     bbox.width = Math.max(bbox.width, minSize.width);
     bbox.height = Math.max(bbox.height, minSize.height);
     setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
-    endTrans();
-    _readyToEdit = true;
   }
 
   public void propertyChange(PropertyChangeEvent pve) {
@@ -281,8 +292,10 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
   protected void modelChanged() {
     ModelElement me = (ModelElement) getOwner();
     if (me == null) return;
-    String nameStr = GeneratorDisplay.Generate(me.getName());
-    _name.setText(nameStr);
+    if (_readyToEdit) {
+      String nameStr = GeneratorDisplay.Generate(me.getName());
+      _name.setText(nameStr);
+    }
   }
 
 
@@ -293,6 +306,9 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
       ((ModelElement)oldOwner).removeVetoableChangeListener(this);
     if (own instanceof ModelElement)
       ((ModelElement)own).addVetoableChangeListener(this);
+    modelChanged();
+    _readyToEdit = true;
+    updateBounds();
   }
 
 

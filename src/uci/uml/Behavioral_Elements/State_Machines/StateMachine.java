@@ -121,6 +121,12 @@ public class StateMachine extends ModelElementImpl {
     _submachineState.removeElement(x);
   }
 
+  public Vector alsoTrash() {
+    Vector res = new Vector();
+    res.addElement(getTop());
+    return res;
+  }
+  
   ////////////////////////////////////////////////////////////////
   // debugging
 

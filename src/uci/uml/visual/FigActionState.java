@@ -51,7 +51,7 @@ public class FigActionState extends FigNodeModelElement {
   // constants
 
   public final int MARGIN = 2;
-  public int PADDING = 10;
+  public int PADDING = 8;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -72,7 +72,7 @@ public class FigActionState extends FigNodeModelElement {
 
     _bigPort.setLineWidth(0);
     _name.setLineWidth(0);
-    _name.setBounds(10+5, 10+5, 90-5*2, 25-5*2);
+    _name.setBounds(10+PADDING, 10, 90-PADDING*2, 25);
     _name.setFilled(false);
     _name.setMultiLine(true);
 
@@ -113,7 +113,7 @@ public class FigActionState extends FigNodeModelElement {
   public Dimension getMinimumSize() {
     Dimension nameDim = _name.getMinimumSize();
     int w = nameDim.width + PADDING*2;
-    int h = nameDim.height + PADDING*2;
+    int h = nameDim.height;// + PADDING*2;
     return new Dimension(w, h);
   }
 
@@ -122,8 +122,8 @@ public class FigActionState extends FigNodeModelElement {
     if (_name == null) return;
     Rectangle oldBounds = getBounds();
 
-    _name.setBounds(x+5, y+5, w-5*2, h-5*2);
-    _bigPort.setBounds(x, y, w, h);
+    _name.setBounds(x+PADDING, y, w-PADDING*2, h);
+    _bigPort.setBounds(x+1, y+1, w-2, h-2);
     _cover.setBounds(x, y, w, h);
     _bigPort.setCornerRadius(h);
     _cover.setCornerRadius(h);

@@ -152,10 +152,10 @@ public class FigActor extends FigNodeModelElement {
   ////////////////////////////////////////////////////////////////
   // event handlers
 
-  /** Update the text labels */
-  protected void modelChanged() {
-    super.modelChanged();
-  }
+//   /** Update the text labels */
+//   protected void modelChanged() {
+//     super.modelChanged();
+//   }
 
 
 } /* end class FigActor */

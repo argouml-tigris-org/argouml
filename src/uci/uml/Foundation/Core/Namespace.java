@@ -39,12 +39,16 @@ public interface Namespace extends ModelElement, java.io.Serializable {
   //public ModelElement _ownedElement[];
 
   public Vector getOwnedElement();
-  public void setOwnedElement(Vector x)
-       throws PropertyVetoException;
-  public void addOwnedElement(ElementOwnership x)
-       throws PropertyVetoException;
-  public void removeOwnedElement(ElementOwnership x)
-       throws PropertyVetoException;
+  public void setOwnedElement(Vector x) throws PropertyVetoException;
+  public void addOwnedElement(ElementOwnership x) throws PropertyVetoException;
+  public void removeOwnedElement(ElementOwnership x) throws PropertyVetoException;
+
+  public void addPublicOwnedElement(ModelElement x) throws PropertyVetoException;
+  public void addProtectedOwnedElement(ModelElement x) throws PropertyVetoException;
+  public void addPrivateOwnedElement(ModelElement x) throws PropertyVetoException;
+
+  public ElementOwnership findElementNamed(String s);
+
 
   public static final long serialVersionUID = -4295847011515862757L;
 }

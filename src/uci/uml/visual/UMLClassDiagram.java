@@ -34,6 +34,7 @@ package uci.uml.visual;
 
 import java.util.*;
 import java.awt.*;
+import java.beans.*;
 import com.sun.java.swing.*;
 
 import uci.gef.*;
@@ -121,16 +122,25 @@ public class UMLClassDiagram extends UMLDiagram {
   protected static Action _actionInk =
   new CmdSetMode(ModeCreateFigInk.class, "Ink");
 
-
   ////////////////////////////////////////////////////////////////
   // contructors
   protected static int _ClassDiagramSerial = 1;
 
 
-  public UMLClassDiagram(Model m) {
-    super("class diagram " + _ClassDiagramSerial++, m);
+  public UMLClassDiagram() {
+    try { setName("class diagram " + _ClassDiagramSerial++); }
+    catch (PropertyVetoException pve) { }
+  }
+
+  public UMLClassDiagram(Namespace m) {
+    this();
+    setNamespace(m);
+  }
+
+  public void setNamespace(Namespace m) {
+    super.setNamespace(m);
     ClassDiagramGraphModel gm = new ClassDiagramGraphModel();
-    gm.setModel(m);
+    gm.setNamespace(m);
     setGraphModel(gm);
     LayerPerspective lay = new LayerPerspective(m.getName().getBody(), gm);
     setLayer(lay);
@@ -139,10 +149,11 @@ public class UMLClassDiagram extends UMLDiagram {
     lay.setGraphEdgeRenderer(rend);
   }
 
-
   /** initialize the toolbar for this diagram type */
   protected void initToolBar() {
     _toolBar = new ToolBar();
+    _toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+    
 //     _toolBar.add(Actions.Cut);
 //     _toolBar.add(Actions.Copy);
 //     _toolBar.add(Actions.Paste);
@@ -167,8 +178,8 @@ public class UMLClassDiagram extends UMLDiagram {
     _toolBar.add(_actionRealize);
     _toolBar.addSeparator();
 
-    _toolBar.add(Actions.Attr);
-    _toolBar.add(Actions.Oper);
+    _toolBar.add(Actions.AddAttribute);
+    _toolBar.add(Actions.AddOperation);
     // needs-more-work: remove attribute and operation?
     _toolBar.addSeparator();
 
@@ -180,6 +191,9 @@ public class UMLClassDiagram extends UMLDiagram {
     _toolBar.add(_actionPoly);
     _toolBar.add(_actionSpline);
     _toolBar.add(_actionInk);
+    _toolBar.addSeparator();
+
+    _toolBar.add(_diagramName);
   }
 
 } /* end class UMLClassDiagram */

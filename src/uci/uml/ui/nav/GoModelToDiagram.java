@@ -37,54 +37,54 @@ import uci.uml.ui.*;
 public class GoModelToDiagram implements TreeModelPrereqs {
 
   public String toString() { return "Package->Diagram"; }
-  
+
   public Object getRoot() {
     System.out.println("getRoot should never be called");
     return null;
-  } 
+  }
 
   public Object getChild(Object parent, int index) {
-    if (parent instanceof Model) {
-      Model m = (Model) parent;
+    if (parent instanceof Namespace) {
+      Namespace m = (Namespace) parent;
       Project proj = ProjectBrowser.TheInstance.getProject();
       Vector diags = proj.getDiagrams();
       java.util.Enumeration diagEnum = diags.elements();
       while (diagEnum.hasMoreElements()) {
 	UMLDiagram d = (UMLDiagram) diagEnum.nextElement();
-	if (d.getModel() == m) index--;
+	if (d.getNamespace() == m) index--;
 	if (index == -1) return d;
       }
     }
     System.out.println("getChild should never be get here GoModelToDiagram");
     return null;
   }
-  
+
   public int getChildCount(Object parent) {
-    if (parent instanceof Model) {
+    if (parent instanceof Namespace) {
       int count = 0;
-      Model m = (Model) parent;
+      Namespace m = (Namespace) parent;
       Project proj = ProjectBrowser.TheInstance.getProject();
       Vector diags = proj.getDiagrams();
       java.util.Enumeration diagEnum = diags.elements();
       while (diagEnum.hasMoreElements()) {
 	UMLDiagram d = (UMLDiagram) diagEnum.nextElement();
-	if (d.getModel() == m) count++;
+	if (d.getNamespace() == m) count++;
       }
       return count;
     }
     return 0;
   }
-  
+
   public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof Model) {
+    if (parent instanceof Namespace) {
       int count = 0;
-      Model m = (Model) parent;
+      Namespace m = (Namespace) parent;
       Project proj = ProjectBrowser.TheInstance.getProject();
       Vector diags = proj.getDiagrams();
       java.util.Enumeration diagEnum = diags.elements();
       while (diagEnum.hasMoreElements()) {
 	UMLDiagram d = (UMLDiagram) diagEnum.nextElement();
-	if (d.getModel() != m) continue;
+	if (d.getNamespace() != m) continue;
 	if (d == child) return count;
 	count++;
       }
@@ -94,9 +94,9 @@ public class GoModelToDiagram implements TreeModelPrereqs {
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof Model && getChildCount(node) > 0);
+    return !(node instanceof Namespace && getChildCount(node) > 0);
   }
-  
+
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }

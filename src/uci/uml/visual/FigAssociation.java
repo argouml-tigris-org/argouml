@@ -154,22 +154,22 @@ public class FigAssociation extends FigEdgeModelElement {
 
   protected ArrowHead chooseArrowHead(AggregationKind ak, boolean nav) {
     if (nav) {
-      if (AggregationKind.UNSPEC.equals(ak))
-	return ArrowHeadGreater.TheInstance;
+//       if (AggregationKind.UNSPEC.equals(ak))
+// 	return ArrowHeadGreater.TheInstance;
       if (AggregationKind.NONE.equals(ak))
 	return ArrowHeadGreater.TheInstance;
-      if (AggregationKind.AGG.equals(ak))
+      else if (AggregationKind.AGG.equals(ak))
 	return _NAV_AGG;
-      if (AggregationKind.COMPOSITE.equals(ak))
+      else if (AggregationKind.COMPOSITE.equals(ak))
 	return _NAV_COMP;
     }
-    if (AggregationKind.UNSPEC.equals(ak))
-      return ArrowHeadNone.TheInstance;
+//     if (AggregationKind.UNSPEC.equals(ak))
+//       return ArrowHeadNone.TheInstance;
     if (AggregationKind.NONE.equals(ak))
       return ArrowHeadNone.TheInstance;
-    if (AggregationKind.AGG.equals(ak))
+    else if (AggregationKind.AGG.equals(ak))
       return ArrowHeadDiamond.WhiteDiamond;
-    if (AggregationKind.COMPOSITE.equals(ak))
+    else if (AggregationKind.COMPOSITE.equals(ak))
       return ArrowHeadDiamond.BlackDiamond;
     System.out.println("unknown case in drawing assoc arrowhead");
     return ArrowHeadNone.TheInstance;

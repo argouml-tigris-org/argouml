@@ -34,6 +34,9 @@ GEN =
 CLASSES = \
 	TreeModelComposite.class \
 	TreeModelPrereqs.class \
+	GoAssocRoleMessages.class \
+	GoCollaborationInteraction.class \
+	GoInteractionMessages.class \
 	GoAssocToSource.class \
 	GoAssocToTarget.class \
 	GoClassToAggrClass.class \
@@ -49,6 +52,9 @@ CLASSES = \
 	GoElementToReqElement.class \
 	GoFilteredChildren.class \
 	GoGenElementToDerived.class \
+	GoProjectCollaboration.class \
+	GoCollaborationDiagram.class \
+	GoMachineDiagram.class \
 	GoMachineToStartState.class \
 	GoMachineToState.class \
 	GoMachineToTrans.class \
@@ -61,6 +67,7 @@ CLASSES = \
 	GoModelToUseCase.class \
 	GoProjectDiagram.class \
 	GoProjectModel.class \
+	GoProjectMachine.class \
 	GoStateToDownstream.class \
 	GoStateToIncomingTrans.class \
 	GoStateToOutgoingTrans.class \

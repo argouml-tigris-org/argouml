@@ -261,10 +261,8 @@
 <!-- __________________________________________________________________ -->
 <!-- __________________________________________________________________ -->
 
-<!-- jer 99/01/31: added unspec aggregation -->
-
 <!ENTITY % AggregationKind
-         ' XMI.value (none | shared |aggregate | composite | unspec) #REQUIRED ' >
+         ' XMI.value (none | shared |aggregate | composite) #REQUIRED ' >
 
 <!ENTITY % Boolean
          ' XMI.value (true|false) #REQUIRED ' >
@@ -289,10 +287,9 @@
          ' XMI.value (synchronous | asynchronous) #REQUIRED ' >
 
 <!-- jer 99/01/31: added package visibility -->
-<!-- jer 99/01/31: added unspec visibility -->
 
 <!ENTITY % VisibilityKind
-         ' XMI.value (public | protected | private | package | unspec) #REQUIRED ' >
+         ' XMI.value (public | protected | private | package) #REQUIRED ' >
 
 <!-- __________________________________________________________________ -->
 <!-- __________________________________________________________________ -->
@@ -2371,14 +2368,35 @@
 <!-- XML elements sourceEndRole, targetEndRole, and connectionEndRole. -->
 <!-- _________________________________________________________________ -->
 
+
+
 <!ENTITY % AssociationRoleProperties '%AssociationProperties;,
                                       %multiplicity;' >
 
 <!ENTITY % AssociationRoleAssociations '%AssociationAssociations;,
                                         %base;' >
 
-<!ENTITY % AssociationRoleCompositions '%AssociationCompositions;' >
+<!-- jer 99/01/31: added associationEndRoles. The UML DEVIATION listed -->
+<!-- above apparently was not included in the XMI spec.  -->
 
+<!ENTITY % assEndRole 'associationEndRole' >
+<!ELEMENT associactionEndRole (AssociationEndRole) >
+
+<!ENTITY % associationEndRoles "%assEndRole;*" >
+
+
+<!-- jer 99/01/31: added message so that I know which messgaes are sent  -->
+<!-- over which AssociactionRoles.  This is an addition in the -->
+<!-- Argo/UML meta-model. -->
+
+<!ENTITY % messageRef 'messageRef' >
+<!ELEMENT messageRef (XMI.reference) >
+
+<!ENTITY % associationEndRoles "%assEndRole;*" >
+
+<!ENTITY % AssociationRoleCompositions '%AssociationCompositions;,
+                                        %associationEndRoles;,
+					%messageRef;*' >
 <!ELEMENT AssociationRole (%remoteContent; |
                                (%AssociationRoleProperties;,
                                 %AssociationRoleAssociations;,
@@ -2474,12 +2492,16 @@
 
 <!ENTITY % InteractionProperties '%ModelElementProperties;' >
 
+
+<!-- jer 99/01/31: changed XMI.reference to Message, otherwise Message -->
+<!-- could never be legally reached. -->
+
 <!ENTITY % message 'message' >
-<!ELEMENT message (XMI.reference) >
+<!ELEMENT message (Message) >
 
 <!ENTITY % InteractionAssociations '%ModelElementAssociations;,
                                     %context;,
-                                    %message;+' >
+                                    %message;*' >
 
 <!ENTITY % InteractionCompositions '%ModelElementCompositions;' >
 
@@ -2513,8 +2535,12 @@
 <!ENTITY % activator 'activator' >
 <!ELEMENT activator (XMI.reference) >
 
+<!-- jer 99/01/31: changed XMI.reference to UninterpretedAction -->
+
+
+
 <!ENTITY % messageAction 'messageAction' >
-<!ELEMENT messageAction (XMI.reference) >
+<!ELEMENT messageAction (UninterpretedAction) >
 
 <!-- _____________________________________ -->
 <!--                                       -->

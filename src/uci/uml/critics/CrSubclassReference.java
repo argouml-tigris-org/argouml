@@ -117,7 +117,6 @@ public class CrSubclassReference extends CrUML {
 	offs.addElement(otherCls);
       }
     }
-    
     return offs;
   }
 

@@ -39,12 +39,15 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
 
 public class Collaboration extends NamespaceImpl {
   public Operation _representedOperation;
-  public Vector _interaction;
+  //needs-more-work: should it be multiple Interactions?
+  public Interaction _interaction = new Interaction("Interaction");
   public Vector _constrainingElement;
 
   public Collaboration() { }
-  public Collaboration(Name name) { super(name); }
-  public Collaboration(String nameStr) { super(new Name(nameStr)); }
+  public Collaboration(Name name) {
+    super(name);
+  }
+  public Collaboration(String nameStr) { this(new Name(nameStr)); }
 
 
   public Operation getRepresentedOperation() {
@@ -55,20 +58,10 @@ public class Collaboration extends NamespaceImpl {
     _representedOperation = x;
   }
 
-  public Vector getInteraction() { return _interaction; }
-  public void setInteraction(Vector x) throws PropertyVetoException {
-    fireVetoableChangeNoCompare("interaction", _interaction, x);
+  public Interaction getInteraction() { return _interaction; }
+  public void setInteraction(Interaction x) throws PropertyVetoException {
+    fireVetoableChange("interaction", _interaction, x);
     _interaction = x;
-  }
-  public void addInteraction(Interaction x) throws PropertyVetoException {
-    if (_interaction == null) _interaction = new Vector();
-    fireVetoableChange("interaction", _interaction, x);
-    _interaction.addElement(x);
-  }
-  public void removeInteraction(Interaction x) throws PropertyVetoException {
-    if (_interaction == null) return;
-    fireVetoableChange("interaction", _interaction, x);
-    _interaction.removeElement(x);
   }
 
   public Vector getConstrainingElement() {

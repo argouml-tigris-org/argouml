@@ -43,8 +43,9 @@ import uci.gef.*;
  * @see Example */
 public class SampleNode extends NetNode implements Serializable {
 
-  SamplePort north, east, west, south;
-
+  public SamplePort north, east, west, south;
+  protected int _number;
+  
    /** Initialize a new SampleNode from the given default node and
     *  application specific model. <p>
     *
@@ -61,34 +62,17 @@ public class SampleNode extends NetNode implements Serializable {
     addPort(west = new SamplePort2(this));
     addPort(north = new SamplePort(this));
     addPort(south = new SamplePort(this));
+    _number = _NextNumber++;
    }
 
   static int _NextNumber = 1;
 
+  public int getNumber() { return _number; }
+  public int getId() { return _number; }
+  
   public FigNode makePresentation(Layer lay) {
-    Fig obj1 = new FigRect(-25, -25, 50, 50, Color.black, Color.white);
-    Fig obj2 = new FigCircle(-20, -20, 40, 40, Color.red, null);
-    Fig obj3 = new FigCircle( -5, -30, 10, 10, Color.black, Color.blue);
-    Fig obj4 = new FigCircle( -5,  20, 10, 10, Color.black, Color.blue);
-    Fig obj5 = new FigRect(-30,  -5, 10, 10, Color.black, Color.green);
-    Fig obj6 = new FigRect( 20,  -5, 10, 10, Color.black, Color.green);
-    FigText obj7 = new FigText( -10,  -10, 20, 20);
-    obj7.setLineWidth(0);
-    obj7.setText(""+_NextNumber++);
-    obj7.setJustification(FigText.JUSTIFY_CENTER);
-    Vector temp_list = new Vector();
-    temp_list.addElement(obj1);
-    temp_list.addElement(obj2);
-    temp_list.addElement(obj3);
-    temp_list.addElement(obj4);
-    temp_list.addElement(obj5);
-    temp_list.addElement(obj6);
-    temp_list.addElement(obj7);
-    FigNode fn = new FigNode(this, temp_list);
-    fn.bindPort(north, obj3);
-    fn.bindPort(south, obj4);
-    fn.bindPort(east, obj5);
-    fn.bindPort(west, obj6);
+    FigSampleNode fn = new FigSampleNode();
+    fn.setOwner(this);
     return fn;
   }
 

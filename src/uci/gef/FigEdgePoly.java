@@ -68,6 +68,10 @@ public class FigEdgePoly extends FigEdge {
     return res;
   }
 
+  ////////////////////////////////////////////////////////////////
+  // accessors
+
+  public void setInitiallyLaidOut(boolean b) { _initiallyLaidOut = b; }
 
   ////////////////////////////////////////////////////////////////
   // routing methods

@@ -43,6 +43,8 @@ public class Message extends ModelElementImpl {
   public AssociationRole _associationRole;
 
   public Message() { }
+  public Message(String nameStr) { this(new Name(nameStr)); }
+  public Message(Name name) { super(name); }
 
   public MMAction getAction() { return _action; }
   public void setAction(MMAction x) throws PropertyVetoException {
@@ -118,14 +120,35 @@ public class Message extends ModelElementImpl {
   }
   public void addInteraction(Interaction x) throws PropertyVetoException {
     if (_interaction == null) _interaction = new Vector();
+    if (_interaction.contains(x)) return;
     fireVetoableChange("interaction", _interaction, x);
     _interaction.addElement(x);
+    x.addMessage(this);
   }
   public void removeInteraction(Interaction x) throws PropertyVetoException {
     if (_interaction == null) return;
+    if (!_interaction.contains(x)) return;
     fireVetoableChange("interaction", _interaction, x);
      _interaction.removeElement(x);
+     x.removeMessage(this);
   }
+
+  public Object prepareForTrash() throws PropertyVetoException {
+    //setInteraction(null);
+    setSender(null);
+    setReceiver(null);
+    setPredecessor(null);
+    setActivator(null);
+    setAssociationRole(null);
+    //needs-more-work
+    return super.prepareForTrash();
+  }
+
+  public void recoverFromTrash(Object momento) throws PropertyVetoException {
+    // needs-more-work
+    super.recoverFromTrash(momento);
+  }
+
 
   static final long serialVersionUID = 6766833621483911685L;
 }

@@ -27,23 +27,27 @@
 
 package uci.uml.ui;
 
+import java.io.*;
 import java.util.*;
 import java.beans.*;
+import java.net.URL;
 
-import uci.gef.Layer;
-import uci.gef.Diagram;
-import uci.gef.Fig;
+import uci.gef.*;
 import uci.argo.kernel.*;
 import uci.argo.checklist.*;
 import uci.uml.Model_Management.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.generate.*;
 import uci.uml.visual.*;
+import uci.uml.xmi.*;
 
 /** A datastructure that represents the designer's current project.  A
  *  Project consists of diagrams and UML models. */
 
 public class Project implements java.io.Serializable {
+
+  public static final String separator = "/";
+
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -55,13 +59,14 @@ public class Project implements java.io.Serializable {
 
   public Vector _searchpath = new Vector();
   public Vector _members = new Vector();
-  public String _historyfile = "";
+  public String _historyFile = "";
 
   public Vector _models = new Vector(); //instances of Model
   public Vector _diagrams = new Vector(); // instances of LayerDiagram
   public boolean _needsSave = false;
-  public Model _curModel = null;
+  public Namespace _curModel = null;
   public Hashtable _definedTypes = new Hashtable(80);
+  public Hashtable _idRegistry = new Hashtable(80);
   public GenerationPreferences _cgPrefs = new GenerationPreferences();
   public transient VetoableChangeSupport _vetoSupport = null;
 
@@ -75,14 +80,17 @@ public class Project implements java.io.Serializable {
   }
 
   public static Project makeEmptyProject() {
-    Project p = new Project("Untitled");
-    Model m1 = new Model("untitledpackage");
-    try {
-      p.addDiagram(new UMLClassDiagram(m1));
-      p.addModel(m1);
-      p.setNeedsSave(false);
-    }
+    String path = "/uci/uml/templates/";
+    String filename = "EmptyProject.argo";
+    System.out.println("Reading " + path + filename + "...");
+    URL url = Project.class.getResource(path + filename);
+    ArgoParserIBM.SINGLETON.readProject(filename, url);
+    Project p = ArgoParserIBM.SINGLETON.getProject();
+    p.loadAllMembers();
+    p.postLoad();
+    try { p.setName("Untitled.argo"); }
     catch (PropertyVetoException pve) { }
+    System.out.println("Read " + path + filename + "...");
     return p;
   }
 
@@ -91,35 +99,42 @@ public class Project implements java.io.Serializable {
     //_models.addElement(new Model("Object Model"));
     //_diagrams.addElement(new LayerDiagram("Untitled Diagram"));
 
-    defineType(JavaUML.STRING_CLASS);
-    defineType(JavaUML.VOID_TYPE);
-    defineType(JavaUML.CHAR_TYPE);
-    defineType(JavaUML.INT_TYPE);
-    defineType(JavaUML.BOOLEAN_TYPE);
-    defineType(JavaUML.BYTE_TYPE);
-    defineType(JavaUML.LONG_TYPE);
-    defineType(JavaUML.FLOAT_TYPE);
-    defineType(JavaUML.DOUBLE_TYPE);
+    defineType(JavaUML.VOID_TYPE);     //J.101
+    defineType(JavaUML.CHAR_TYPE);     //J.102
+    defineType(JavaUML.INT_TYPE);      //J.103
+    defineType(JavaUML.BOOLEAN_TYPE);  //J.104
+    defineType(JavaUML.BYTE_TYPE);     //J.105
+    defineType(JavaUML.LONG_TYPE);     //J.106
+    defineType(JavaUML.FLOAT_TYPE);    //J.107
+    defineType(JavaUML.DOUBLE_TYPE);   //J.108
+    defineType(JavaUML.STRING_CLASS);  //J.109
+    defineType(JavaUML.CHAR_CLASS);    //J.110
+    defineType(JavaUML.INT_CLASS);     //J.111
+    defineType(JavaUML.BOOLEAN_CLASS); //J.112
+    defineType(JavaUML.BYTE_CLASS);    //J.113
+    defineType(JavaUML.LONG_CLASS);    //J.114
+    defineType(JavaUML.FLOAT_CLASS);   //J.115
+    defineType(JavaUML.DOUBLE_CLASS);  //J.116
 
-    defineType(JavaUML.CHAR_CLASS);
-    defineType(JavaUML.INT_CLASS);
-    defineType(JavaUML.BOOLEAN_CLASS);
-    defineType(JavaUML.BYTE_CLASS);
-    defineType(JavaUML.LONG_CLASS);
-    defineType(JavaUML.FLOAT_CLASS);
-    defineType(JavaUML.DOUBLE_CLASS);
+    defineType(JavaUML.RECTANGLE_CLASS); //J.201
+    defineType(JavaUML.POINT_CLASS);     //J.202
+    defineType(JavaUML.COLOR_CLASS);     //J.203
 
-    defineType(JavaUML.RECTANGLE_CLASS);
-    defineType(JavaUML.POINT_CLASS);
-    defineType(JavaUML.COLOR_CLASS);
-
-    defineType(JavaUML.VECTOR_CLASS);
-    defineType(JavaUML.HASHTABLE_CLASS);
-    defineType(JavaUML.STACK_CLASS);
+    defineType(JavaUML.VECTOR_CLASS);    //J.301
+    defineType(JavaUML.HASHTABLE_CLASS); //J.302
+    defineType(JavaUML.STACK_CLASS);     //J.303
   }
   ////////////////////////////////////////////////////////////////
   // accessors
   // needs-more-work 
+
+  public Hashtable getIDRegistry() { return _idRegistry; }
+
+  public String getBaseName() {
+    String n = getName();
+    if (!n.endsWith(".argo")) return n;
+    return n.substring(0, n.length() - ".argo".length());
+  }
 
   public String getName() {
     // needs-more-work: maybe separate name
@@ -138,38 +153,105 @@ public class Project implements java.io.Serializable {
 
   public String getPathname() { return _pathname; }
   public void setPathname(String n) throws PropertyVetoException {
+    if (!n.endsWith(separator)) n += separator;
     getVetoSupport().fireVetoableChange("Pathname", _pathname, n);
     _pathname = n;
   }
 
+  public Vector getSearchPath() { return _searchpath; }
   public void addSearchPath(String searchpath) {
     _searchpath.addElement(searchpath);
   }
 
-  public void addMember(ProjectMember pm) {
+  public Vector getMembers() { return _members; }
+
+  public void addMember(String name, String type) {
+    ProjectMember pm = new ProjectMember(name, type, this);
     _members.addElement(pm);
-    pm.load();
   }
 
-  public void saveAllMembers() {
+  public void addMember(Diagram d) {
+    ProjectMember pm = new ProjectMember(null, "pgml", this);
+    pm.setMember(d);
+    _members.addElement(pm);
+    try { addDiagram(d); }
+    catch (PropertyVetoException pve) { }
+  }
+
+  public void addMember(Model m) {
+    ProjectMember pm = new ProjectMember(null, "xmi", this);
+    pm.setMember(m);
+    _members.addElement(pm);
+    try { addModel(m); }
+    catch (PropertyVetoException pve) { }
+  }
+  public void removeMember(Diagram d) {
+    int size = _members.size();
+    for (int i = 0; i < size; i++) {
+      ProjectMember pm = (ProjectMember) _members.elementAt(i);
+      if (pm.member == d) {
+	_members.removeElementAt(i);
+	try { removeDiagram(d); }
+	catch (PropertyVetoException pve) { }
+	return;
+      }
+    }
+  }
+
+  public void loadAllMembers() {
+    loadMembersOfType("xmi");
+    loadMembersOfType("argo");
+    loadMembersOfType("pgml");
+    loadMembersOfType("text");
+    loadMembersOfType("html");
+  }
+
+  public void loadMembersOfType(String type) {
+    int size = _members.size();
+    for (int i = 0; i < size; i++) {
+      ProjectMember pm = (ProjectMember) _members.elementAt(i);
+      if (pm.type != null && pm.type.equalsIgnoreCase(type))
+	pm.load();
+    }
+  }
+
+  public void saveAllMembers(boolean overwrite) {
     int size = _members.size();
     for (int i = 0; i < size; i++)
-      ((ProjectMember)_members.elementAt(i)).save();
+      ((ProjectMember)_members.elementAt(i)).save(overwrite);
     // needs-more-work: check if each file is dirty
   }
+
+  public String getAuthorname() { return _authorname; }
+  public void setAuthorname(String s) { _authorname = s; }
+
+  public String getVersion() { return _version; }
+  public void setVersion(String s) { _version = s; }
+
+  public String getDescription() { return _description; }
+  public void setDescription(String s) { _description = s; }
+
+  public String getHistoryFile() { return _historyFile; }
+  public void setHistoryFile(String s) { _historyFile = s; }
 
   public boolean getNeedsSave() { return _needsSave; }
   public void setNeedsSave(boolean ns) { _needsSave = ns; }
   public void needsSave() { setNeedsSave(true); }
 
   public Vector getModels() { return _models; }
-  public void addModel(Model m) throws PropertyVetoException {
+  public void addModel(Namespace m) throws PropertyVetoException {
     getVetoSupport().fireVetoableChange("Models", _models, m);
     _models.addElement(m);
-    setCurrentModel(m);
+    setCurrentNamespace(m);
     _needsSave = true;
   }
 
+  public Vector getDefinedTypesVector() {
+    Vector res = new Vector();
+    Enumeration enum = _definedTypes.elements();
+    while (enum.hasMoreElements()) res.addElement(enum.nextElement());
+    return res;
+  }
   public Hashtable getDefinedTypes() { return _definedTypes; }
   public void setDefinedTypes(Hashtable h) { _definedTypes = h; }
   public void defineType(Classifier cls) {
@@ -179,7 +261,13 @@ public class Project implements java.io.Serializable {
   public Classifier findType(String s) {
     if (s != null) s = s.trim();
     if (s == null || s.length()==0) return null;
-    Classifier cls = (Classifier) _definedTypes.get(s);
+    Classifier cls = null;
+    int numModels = _models.size();
+    for (int i = 0; i < numModels; i++) {
+      cls = findTypeInModel(s, (Namespace) _models.elementAt(i));
+      if (cls != null) return cls;
+    }
+    cls = (Classifier) _definedTypes.get(s);
     if (cls == null) {
       cls = new MMClass(s);
       _definedTypes.put(s, cls);
@@ -187,15 +275,45 @@ public class Project implements java.io.Serializable {
     return cls;
   }
 
+  public Classifier findTypeInModel(String s, Namespace ns) {
+    Vector ownedElements = ns.getOwnedElement();
+    int size = ownedElements.size();
+    for (int i = 0; i < size; i++) {
+      ElementOwnership eo = (ElementOwnership) ownedElements.elementAt(i);
+      ModelElement me = eo.getModelElement();
+      if (me instanceof Classifier && me.getName().getBody().equals(s))
+	return (Classifier) me;
+      if (me instanceof Namespace) {
+	Classifier res = findTypeInModel(s, (Namespace) me);
+	if (res != null) return res;
+      }
+    }
+    return null;
+  }
 
-  public void setCurrentModel(Model m) { _curModel = m; }
-  public Model getCurrentModel() { return _curModel; }
+  public void setCurrentNamespace(Namespace m) { _curModel = m; }
+  public Namespace getCurrentNamespace() { return _curModel; }
 
   public Vector getDiagrams() { return _diagrams; }
   public void addDiagram(Diagram d) throws PropertyVetoException {
     getVetoSupport().fireVetoableChange("Diagrams", _diagrams, d);
     _diagrams.addElement(d);
     _needsSave = true;
+  }
+  public void removeDiagram(Diagram d) throws PropertyVetoException {
+    getVetoSupport().fireVetoableChange("Diagrams", _diagrams, d);
+    _diagrams.removeElement(d);
+    _needsSave = true;
+  }
+
+  public int getPresentationCountFor(ModelElement me) {
+    int presentations = 0;
+    int size = _diagrams.size();
+    for (int i = 0; i < size; i++) {
+      Diagram d = (Diagram) _diagrams.elementAt(i);
+      presentations += d.getLayer().presentationCountFor(me);
+    }
+    return presentations;
   }
 
   public Object getInitialTarget() {
@@ -260,7 +378,7 @@ public class Project implements java.io.Serializable {
   }
 
   protected void trashInternal(Object obj) {
-    System.out.println("trashing: " + obj);
+    //System.out.println("trashing: " + obj);
     if (obj instanceof ModelElement) {
       ModelElement me = (ModelElement) obj;
       Vector places = new Vector();
@@ -275,8 +393,28 @@ public class Project implements java.io.Serializable {
 	} /* end while */
       } /* end while */
       Trash.SINGLETON.addItemFrom(obj, places);
+      if (obj instanceof Namespace) trashDiagramsOn((Namespace)obj);
     }
     // needs-more-work: trash diagrams
+  }
+
+  protected void trashDiagramsOn(Namespace ns) {
+    //System.out.println("trashDiagramsOn: " + ns);
+    int size = _diagrams.size();
+    Vector removes = new Vector();
+    for (int i = 0; i < size; i++) {
+      Object obj = _diagrams.elementAt(i);
+      if (!(obj instanceof UMLDiagram)) continue;
+      if (ns == ((UMLDiagram)obj).getNamespace()) {
+	//System.out.println("found diagram to remove");
+	removes.addElement(obj);
+      }
+    }
+    int numRemoves = removes.size();
+    for (int i = 0; i < numRemoves; i++) {
+      Diagram d = (Diagram) removes.elementAt(i);
+      removeMember(d);
+    }
   }
 
   public void moveFromTrash(Object obj) {
@@ -382,3 +520,7 @@ public class Project implements java.io.Serializable {
 
   static final long serialVersionUID = 1399111233978692444L;
 } /* end class Project */
+
+
+
+

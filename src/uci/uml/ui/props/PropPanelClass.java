@@ -183,7 +183,7 @@ implements ItemListener, DocumentListener {
       ed.setText("");
     }
     else {
-      System.out.println("base class found");
+      //System.out.println("base class found");
       _extendsField.setSelectedItem(gen.getSupertype());
       if (gen.getSupertype() != null)
 	ed.setText(gen.getSupertype().getName().getBody());
@@ -206,7 +206,7 @@ implements ItemListener, DocumentListener {
   public void setTargetExtends() {
     if (_target == null) return;
     Object base = _extendsField.getSelectedItem();
-    System.out.println("needs-more-work: baseClass = " + base);
+    //System.out.println("needs-more-work: baseClass = " + base);
     // needs-more-work: this could involve changes to the graph model
   }
 

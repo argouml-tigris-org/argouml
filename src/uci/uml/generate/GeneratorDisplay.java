@@ -127,9 +127,25 @@ public class GeneratorDisplay extends Generator {
 
 
   public String generatePackage(Package p) {
-    String s = "";
+    String s = "package ";
     String packName = generateName(p.getName());
-    s += "package " + packName + " {\n";
+
+    Stack stack = new Stack();
+    Namespace ns = p.getNamespace();
+    while ( ns != null ) {
+      stack.push(ns.getName().getBody());
+      ns = ns.getNamespace();
+    }
+    while(!stack.isEmpty())
+      s += (String) stack.pop() + ".";
+    
+    if (s.endsWith(".")) {
+      int lastIndex = s.lastIndexOf(".");
+      s = s.substring(0, lastIndex);
+    }
+    s += "." + packName + " {\n";
+      
+
     Vector ownedElements = p.getOwnedElement();
     if (ownedElements != null) {
       java.util.Enumeration ownedEnum = ownedElements.elements();

@@ -101,6 +101,7 @@ public abstract class Generator {
 
 
   public String generateExpression(Expression expr) {
+    if (expr == null) return "";
     return generateUninterpreted(expr.getBody());
   }
 

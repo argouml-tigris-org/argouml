@@ -181,6 +181,16 @@ public class LayerDiagram extends Layer {
     return null;
   }
 
+  public int presentationCountFor(Object obj) {
+    int count = 0;
+    Enumeration figs = elements();
+    while (figs.hasMoreElements()) {
+      Fig f = (Fig) figs.nextElement();
+      if (f.getOwner() == obj) count++;
+    }
+    return count;
+  }
+
   ////////////////////////////////////////////////////////////////
   // painting methods
 

@@ -67,7 +67,7 @@ public abstract class BehavioralFeature extends Feature {
   public void setReturnType(Classifier rt) throws PropertyVetoException {
     Parameter p = findParameter(Parameter.RETURN_NAME);
     if (p == null) {
-      p = new Parameter(rt, ParameterDirectionKind.IN, Parameter.RETURN_NAME);
+      p = new Parameter(rt, ParameterDirectionKind.RETURN, Parameter.RETURN_NAME);
       addParameter(p);
       //System.out.println("just set return type");
     }

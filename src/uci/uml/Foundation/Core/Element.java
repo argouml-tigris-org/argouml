@@ -51,6 +51,8 @@ public interface Element extends java.io.Serializable {
   public Name getName();
   public void setName(Name n) throws PropertyVetoException;
 
+  public String getId();
+
   public Vector getTaggedValue();
   public void setTaggedValue(Vector x) throws PropertyVetoException;
 

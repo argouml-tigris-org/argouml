@@ -121,8 +121,8 @@ public class JGraph extends JPanel implements Cloneable {
     bindKey(new CmdSelectNext(true), KeyEvent.VK_TAB, 0);
     bindKey(new CmdSelectNext(false), KeyEvent.VK_TAB, shift);
 
-    bindKey(new CmdDelete(), KeyEvent.VK_DELETE, 0);
-    bindKey(new CmdDispose(), KeyEvent.VK_D, ctrl);
+    //bindKey(new CmdDelete(), KeyEvent.VK_DELETE, 0);
+    //bindKey(new CmdDispose(), KeyEvent.VK_D, ctrl);
 
     bindKey(new CmdGroup(), KeyEvent.VK_G, ctrl);
     bindKey(new CmdUngroup(), KeyEvent.VK_U, ctrl);

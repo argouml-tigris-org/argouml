@@ -49,6 +49,7 @@ CLASSES = \
 	PropPanelInterface.class \
 	PropPanelGeneralization.class \
 	PropPanelModel.class \
+	PropPanelModelElementImpl.class \
 	PropPanelActor.class \
 	PropPanelUseCase.class \
 	PropPanelNote.class \

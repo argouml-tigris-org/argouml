@@ -46,7 +46,7 @@ class TableModelUseCaseByProps extends TableModelComposite {
   public Vector rowObjectsFor(Object t) {
     if (!(t instanceof UMLUseCaseDiagram)) return new Vector();
     UMLUseCaseDiagram d = (UMLUseCaseDiagram) t;
-    Vector nodes = d.getGraphModel().getNodes();
+    Vector nodes = d.getNodes();
     Vector res = new Vector();
     int size = nodes.size();
     for (int i = 0; i < size; i++) {

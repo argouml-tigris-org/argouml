@@ -58,7 +58,7 @@ public class UMLActivityDiagram extends UMLDiagram {
   new CmdSetMode(ModeBroom.class, "Broom");
 
   protected static Action _actionState =
-  new CmdCreateNode(ActionState.class, "ActionState");
+  new CmdCreateNode(uci.uml.Behavioral_Elements.State_Machines.ActionState.class, "ActionState");
 
   // start state, end state, forks, joins, etc.
   protected static Action _actionStartPseudoState =
@@ -75,9 +75,6 @@ public class UMLActivityDiagram extends UMLDiagram {
 
   protected static Action _actionJoinPseudoState =
   new ActionCreatePseudostate(PseudostateKind.JOIN, "Join");
-
-  protected static Action _actionHistoryPseudoState =
-  new ActionCreatePseudostate(PseudostateKind.SHALLOW_HISTORY, "History");
 
   protected static Action _actionTransition =
   new CmdSetMode(ModeCreatePolyEdge.class,
@@ -115,19 +112,33 @@ public class UMLActivityDiagram extends UMLDiagram {
 
   protected static int _ActivityDiagramSerial = 1;
 
-  public UMLActivityDiagram(Model m, ActivityModel sm) {
-    super(m);
+  public UMLActivityDiagram() {
+    String name = "activity diagram " + _ActivityDiagramSerial;
+    _ActivityDiagramSerial++;
+    try { setName(name); }
+    catch (PropertyVetoException pve) { }
+  }
+
+  public UMLActivityDiagram(Namespace m) {
+    this();
+    setNamespace(m);
+    StateMachine sm = getStateMachine();
     String name = null;
     if (sm.getContext() != null && sm.getContext().getName() != Name.UNSPEC &&
-	sm.getContext().getName().getBody().length() > 0)
+	sm.getContext().getName().getBody().length() > 0) {
       name = sm.getContext().getName().getBody() + " states";
-    else
-      name = "activity diagram " + _ActivityDiagramSerial;
-    _ActivityDiagramSerial++;
-    try { setName(name); } catch (PropertyVetoException pve) { }
+      try { setName(name); }
+      catch (PropertyVetoException pve) { }
+    }
+  }
 
+  public void setNamespace(Namespace m) {
+    super.setNamespace(m);
     StateDiagramGraphModel gm = new StateDiagramGraphModel();
-    gm.setModel(m);
+    gm.setNamespace(m);
+    StateMachine sm = null;
+    Vector beh = m.getBehavior();
+    if (beh.size() == 1) sm = (StateMachine) beh.elementAt(0);
     gm.setMachine(sm);
     setGraphModel(gm);
     LayerPerspective lay = new LayerPerspective(m.getName().getBody(), gm);
@@ -137,15 +148,26 @@ public class UMLActivityDiagram extends UMLDiagram {
     lay.setGraphEdgeRenderer(rend);
   }
 
+  public StateMachine getStateMachine() {
+    return ((StateDiagramGraphModel)getGraphModel()).getMachine();
+  }
+
+  public void setStateMachine(StateMachine sm) {
+    ((StateDiagramGraphModel)getGraphModel()).setMachine(sm);
+  }
+
+
 
   /** initialize the toolbar for this diagram type */
   protected void initToolBar() {
     //System.out.println("making state toolbar");
     _toolBar = new ToolBar();
-//     _toolBar.add(Actions.Cut);
-//     _toolBar.add(Actions.Copy);
-//     _toolBar.add(Actions.Paste);
-//     _toolBar.addSeparator();
+    _toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+
+    //     _toolBar.add(Actions.Cut);
+    //     _toolBar.add(Actions.Copy);
+    //     _toolBar.add(Actions.Paste);
+    //     _toolBar.addSeparator();
 
     _toolBar.add(_actionSelect);
     _toolBar.add(_actionBroom);
@@ -153,17 +175,14 @@ public class UMLActivityDiagram extends UMLDiagram {
 
     _toolBar.add(_actionState);
     _toolBar.add(_actionTransition);
-    _toolBar.addSeparator();
-
     _toolBar.add(_actionStartPseudoState);
     _toolBar.add(_actionFinalPseudoState);
     _toolBar.add(_actionBranchPseudoState);
     _toolBar.add(_actionForkPseudoState);
     _toolBar.add(_actionJoinPseudoState);
-    _toolBar.add(_actionHistoryPseudoState);
     _toolBar.addSeparator();
 
-    _toolBar.add(Actions.InternalTransition);
+    _toolBar.add(Actions.AddInternalTrans);
     _toolBar.addSeparator();
 
     _toolBar.add(_actionRectangle);
@@ -174,6 +193,9 @@ public class UMLActivityDiagram extends UMLDiagram {
     _toolBar.add(_actionPoly);
     _toolBar.add(_actionSpline);
     _toolBar.add(_actionInk);
+    _toolBar.addSeparator();
+
+    _toolBar.add(_diagramName);
   }
 
 

@@ -55,6 +55,7 @@ implements TabModelTarget, DocumentListener {
   ////////////////////////////////////////////////////////////////
   // instance vars
   Object _target;
+  boolean _inChange = false;
   JLabel _nameLabel = new JLabel("Name: ");
   JTextField _nameField = new JTextField();
   JLabel _stereoLabel = new JLabel("Stereotype: ");
@@ -124,33 +125,46 @@ implements TabModelTarget, DocumentListener {
 
   public void setTarget(Object t) {
     _target = t;
-    ModelElement me = (ModelElement) _target;
-    _nameField.setText(me.getName().getBody());
-    _nameField.setCaretPosition(0);
-    Vector stereos = me.getStereotype();
-    JTextField ed = (JTextField) _stereoField.getEditor().getEditorComponent();
-    if (stereos != null && stereos.size() == 1) {
-      Stereotype s = (Stereotype) stereos.firstElement();
-      String stereoName = s.getName().getBody();
-      // needs-more-work: select from list
-      _stereoField.setSelectedItem(s);
-      ed.setText(stereoName);
+    try {
+      _inChange = true;
+      ModelElement me = (ModelElement) _target;
+      String n = me.getName().getBody();
+      _nameField.setText(n);
+      _nameField.setCaretPosition(0);
+      Vector stereos = me.getStereotype();
+      JTextField ed = (JTextField) _stereoField.getEditor().getEditorComponent();
+      if (stereos != null && stereos.size() == 1) {
+	Stereotype s = (Stereotype) stereos.firstElement();
+	String stereoName = s.getName().getBody();
+	// needs-more-work: select from list
+	_stereoField.setSelectedItem(s);
+	ed.setText(stereoName);
+      }
+      else {
+	_stereoField.setSelectedItem(null);
+	ed.setText("");
+      }
+      Namespace ns = me.getNamespace();
+      ed = (JTextField) _namespaceField.getEditor().getEditorComponent();
+      if (ns != null) {
+	String namespaceName = ns.getName().getBody();
+	while (ns.getNamespace() != null) {
+	  namespaceName = ns.getNamespace().getName().getBody() +
+	    "." + namespaceName;
+	  ns = ns.getNamespace();
+	}
+
+	// needs-more-work: select from list
+	_namespaceField.setSelectedItem(ns);
+	ed.setText(namespaceName);
+      }
+      else {
+	_namespaceField.setSelectedItem(null);
+	ed.setText("");
+      }
     }
-    else {
-      _stereoField.setSelectedItem(null);
-      ed.setText("");
-    }
-    Namespace ns = me.getNamespace();
-    ed = (JTextField) _namespaceField.getEditor().getEditorComponent();
-    if (ns != null) {
-      String namespaceName = ns.getName().getBody();
-      // needs-more-work: select from list
-      _namespaceField.setSelectedItem(ns);
-      ed.setText(namespaceName);
-    }
-    else {
-      _namespaceField.setSelectedItem(null);
-      ed.setText("");
+    finally {
+      _inChange = false;
     }
   }
 
@@ -163,10 +177,12 @@ implements TabModelTarget, DocumentListener {
 
   protected void setTargetName() {
     if (_target == null) return;
+    if (_inChange) return;
     try {
-      ((ModelElement)_target).setName(new Name(_nameField.getText()));
+      String newName = _nameField.getText();
+      ((ModelElement)_target).setName(new Name(newName));
     }
-    catch (PropertyVetoException pve) { } 
+    catch (PropertyVetoException pve) { }
   }
 
   protected void setTargetStereotype() {
@@ -176,13 +192,21 @@ implements TabModelTarget, DocumentListener {
     // needs-more-work: find predefined stereotype
     Component ed = _stereoField.getEditor().getEditorComponent();
     String stereoName = ((JTextField)ed).getText();
-    Stereotype s = new Stereotype(stereoName);
+    Namespace m = ProjectBrowser.TheInstance.getProject().getCurrentNamespace();
+    Stereotype s = null;
+    ElementOwnership eo = m.findElementNamed(stereoName);
+    if (eo != null && eo.getModelElement() instanceof Stereotype)
+      s = (Stereotype) eo.getModelElement();
+    else {
+      s = new Stereotype(stereoName);
+      m.addPublicOwnedElement(s);
+    }
     Vector stereos = new Vector();
     stereos.addElement(s);
     //System.out.println("setting stereotype");
     me.setStereotype(stereos);
     }
-    catch (PropertyVetoException pve) { } 
+    catch (PropertyVetoException pve) { }
   }
 
   ////////////////////////////////////////////////////////////////

@@ -104,7 +104,8 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   }
 
   public VisibilityKind getVisibility() {
-    if (getElementOwnership() == null) return VisibilityKind.UNSPEC;
+    //if (getElementOwnership() == null) return VisibilityKind.UNSPEC;
+    if (getElementOwnership() == null) return VisibilityKind.PUBLIC;
     return getElementOwnership().getVisibility();
   }
   public void setVisibility(VisibilityKind x) throws PropertyVetoException {
@@ -322,7 +323,14 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   }
 
   public Vector alsoTrash() {
-    return new Vector();
+    Vector res = new Vector();
+    for (int i = 0; i < _provision.size(); i++)
+      res.addElement(_provision.elementAt(i));
+    for (int i = 0; i < _requirement.size(); i++)
+      res.addElement(_requirement.elementAt(i));
+    for (int i = 0; i < _behavior.size(); i++)
+      res.addElement(_behavior.elementAt(i));
+    return res;
   }
 
   public boolean isLegalXMI() { return true; }

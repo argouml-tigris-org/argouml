@@ -213,7 +213,7 @@ public class ParserDisplay extends Parser {
     else if (visStr.equals("protected") || s.startsWith("#"))
       vk = VisibilityKind.PROTECTED;
     else if (visStr.equals("package") || s.startsWith("~"))
-      vk = VisibilityKind.UNSPEC;
+      vk = VisibilityKind.PACKAGE;
     else {
       System.out.println("unknown visibility \"" + visStr +
 			 "\", using default");
@@ -529,8 +529,11 @@ public class ParserDisplay extends Parser {
     String action = "";
     if (s.indexOf(":", 0) > -1) {
       name = s.substring(0, s.indexOf(":")).trim();
+      //System.out.println("set message name to: '" + name + "'");
       action = s.substring(s.indexOf(":") + 1).trim();
     }
+    else action = s;
+
     try {
      UninterpretedAction ua = (UninterpretedAction) mes.getAction();
      ua.setBody(action);
@@ -557,7 +560,7 @@ public class ParserDisplay extends Parser {
   }
 
   public Event parseEvent(String s) {
-    return new uci.uml.Behavioral_Elements.State_Machines.Event(s);
+    return new uci.uml.Behavioral_Elements.State_Machines.SignalEvent(s);
   }
 
 

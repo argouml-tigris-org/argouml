@@ -1,0 +1,34 @@
+<?xml version = "1.0" encoding = "ISO-8859-1" ?>
+<!DOCTYPE argo SYSTEM "argo.dtd" >
+<argo>
+  <documentation>
+    <authorname></authorname>
+    <version></version>
+    <description>
+      
+    </description>
+  </documentation>
+  
+  <searchpath href="PROJECT_DIR" />
+  <member
+    type="xmi"
+    name="enroll.xmi"
+  />
+  <member
+    type="pgml"
+    name="enroll_mainclassdiagram.pgml"
+  />
+  <member
+    type="pgml"
+    name="enroll_telephoneusecases.pgml"
+  />
+  <member
+    type="pgml"
+    name="enroll_Gradstates.pgml"
+  />
+  <member
+    type="pgml"
+    name="enroll_LogInstates.pgml"
+  />
+  <historyfile name="Empty.hist" />
+</argo>

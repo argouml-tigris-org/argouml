@@ -34,44 +34,44 @@ import uci.uml.Foundation.Core.*;
 
 public class GoModelToElements implements TreeModelPrereqs {
 
-  public String toString() { return "Package->Model Element"; }
-  
+  public String toString() { return "Namespace->Owned Element"; }
+
   public Object getRoot() {
     System.out.println("getRoot should never be called");
     return null;
-  } 
+  }
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    if (parent instanceof Package) {
+    if (parent instanceof Namespace) {
       ElementOwnership eo = (ElementOwnership)
-	((Package)parent).getOwnedElement().elementAt(index);
+	((Namespace)parent).getOwnedElement().elementAt(index);
       return eo.getModelElement();
     }
     System.out.println("getChild should never be get here GoModelToElements");
     return null;
   }
-  
+
   public int getChildCount(Object parent) {
-    if (parent instanceof Package) {
-      Vector oes = ((Package) parent).getOwnedElement();
+    if (parent instanceof Namespace) {
+      Vector oes = ((Namespace) parent).getOwnedElement();
       return (oes == null) ? 0 : oes.size();
     }
     return 0;
   }
-  
+
   public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof Package) {
-      Vector oes = ((Package)parent).getOwnedElement();
+    if (parent instanceof Namespace) {
+      Vector oes = ((Namespace)parent).getOwnedElement();
       if (oes.contains(child)) return oes.indexOf(child);
     }
     return -1;
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof Package && getChildCount(node) > 0);
+    return !(node instanceof Namespace && getChildCount(node) > 0);
   }
-  
+
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }

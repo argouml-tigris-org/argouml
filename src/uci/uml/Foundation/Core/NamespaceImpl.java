@@ -24,9 +24,6 @@
 
 
 
-
-// Source file: Foundation/Core/Namespace.java
-
 package uci.uml.Foundation.Core;
 
 import java.util.*;
@@ -60,7 +57,7 @@ public class NamespaceImpl extends ModelElementImpl implements Namespace {
     x.setNamespace(this);
   }
   public void removeOwnedElement(ElementOwnership x) throws PropertyVetoException {
-    System.out.println("namespace removing: " + x);
+    //System.out.println("namespace removing: " + x);
     if (_ownedElement == null) return;
     else if (!_ownedElement.contains(x)) return;
     fireVetoableChange("ownedElement", _ownedElement, x);
@@ -86,7 +83,7 @@ public class NamespaceImpl extends ModelElementImpl implements Namespace {
   public void addUnspecOwnedElement(ModelElement x)
        throws PropertyVetoException {
     if (elementOwnershipFor(x, null) != null) return;
-    ElementOwnership eo = new ElementOwnership(this, VisibilityKind.UNSPEC, x);
+    ElementOwnership eo = new ElementOwnership(this, VisibilityKind.PUBLIC, x);
     addOwnedElement(eo);
   }
 
@@ -102,12 +99,22 @@ public class NamespaceImpl extends ModelElementImpl implements Namespace {
 
   public ElementOwnership elementOwnershipFor(ModelElement me,
 					      VisibilityKind vk) {
-    java.util.Enumeration eoEnum = _ownedElement.elements();
-    while (eoEnum.hasMoreElements()) {
-      ElementOwnership eo = (ElementOwnership) eoEnum.nextElement();
+    int size = _ownedElement.size();
+    for (int i = 0; i < size; i++) {
+      ElementOwnership eo = (ElementOwnership) _ownedElement.elementAt(i);
       if (eo.getModelElement() == me &&
 	  (vk == null || vk.equals(eo.getVisibility())))
 	return eo;
+    }
+    return null;
+  }
+
+  public ElementOwnership findElementNamed(String name) {
+    int size = _ownedElement.size();
+    for (int i = 0; i < size; i++) {
+      ElementOwnership eo = (ElementOwnership) _ownedElement.elementAt(i);
+      ModelElement me = eo.getModelElement();
+      if (me.getName().getBody().equals(name)) return eo;
     }
     return null;
   }

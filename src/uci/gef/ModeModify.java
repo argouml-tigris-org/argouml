@@ -33,9 +33,7 @@
 package uci.gef;
 
 import java.awt.event.*;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Cursor;
+import java.awt.*;
 import java.util.*;
 
 /** A Mode to process events from the Editor when the user is
@@ -92,6 +90,8 @@ public class ModeModify extends Mode {
    *  applied. Possible values are NO_CONSTRAINT,
    *  HORIZONTAL_CONSTRAINT, or VERTICAL_CONSTRAINT. */
   protected int _constraint = NO_CONSTRAINT;
+
+  protected Rectangle _highlightTrap = null;
 
   /** Construct a new ModeModify with the given parent, and set the
    *  Anchor point to a default location (the _anchor's proper position
@@ -252,6 +252,22 @@ public class ModeModify extends Mode {
     super.done();
     SelectionManager sm = getEditor().getSelectionManager();
     sm.cleanUp();
+    if (_highlightTrap != null) {
+      _editor.damaged(_highlightTrap);
+      _highlightTrap = null;
+    }
+  }
+
+  public void paint(Graphics g) {
+    super.paint(g);
+    if (_highlightTrap != null) {
+      Color selectRectColor = (Color) Globals.getPrefs().getRubberbandColor();
+      g.setColor(selectRectColor);
+      g.drawRect(_highlightTrap.x-1, _highlightTrap.y-1,
+		 _highlightTrap.width+1, _highlightTrap.height+1);
+      g.drawRect(_highlightTrap.x-2, _highlightTrap.y-2,
+		 _highlightTrap.width+3, _highlightTrap.height+3);
+    }
   }
 
   /** Reply true if the user had moved the mouse enough to signify
@@ -266,6 +282,8 @@ public class ModeModify extends Mode {
   }
 
   protected boolean legal(int dx, int dy, SelectionManager sm, MouseEvent me) {
+    if (_highlightTrap != null) _editor.damaged(_highlightTrap);
+    _highlightTrap = null;
     Vector figs = sm.getFigs();
     Enumeration sels = figs.elements();
     while (sels.hasMoreElements()) {
@@ -295,6 +313,8 @@ public class ModeModify extends Mode {
 	     trap.contains(bbox.x + bbox.width, bbox.y + bbox.height))) continue;
         if ((bbox.contains(trap.x, trap.y) &&
 	     bbox.contains(trap.x + trap.width, trap.y + trap.height))) continue;
+	_highlightTrap = trap;
+	_editor.damaged(_highlightTrap);
         return false;
       }
     }

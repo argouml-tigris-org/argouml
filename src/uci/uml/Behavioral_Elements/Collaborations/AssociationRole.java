@@ -72,6 +72,7 @@ public class AssociationRole extends Association {
   public void setCollaboration(Collaboration x) throws PropertyVetoException {
     fireVetoableChange("collaboration", _collaboration, x);
      _collaboration = x;
+     setNamespace(_collaboration);
   }
 
   public Vector getMessages() { return _messages; }
@@ -103,17 +104,45 @@ public class AssociationRole extends Association {
   }
   public void addAssociationEndRole(AssociationEndRole x) throws PropertyVetoException {
     if (_associationEndRole == null) _associationEndRole = new Vector();
+    if (_associationEndRole.contains(x)) return;
     fireVetoableChange("associationEndRole", _associationEndRole, x);
     _associationEndRole.addElement(x);
     x.setAssociationRole(this);
   }
   public void removeAssociationEndRole(AssociationEndRole x) throws PropertyVetoException {
     if (_associationEndRole == null) return;
+    if (!_associationEndRole.contains(x)) return;
     fireVetoableChange("associationEndRole", _associationEndRole, x);
     _associationEndRole.removeElement(x);
-    x.setAssociationRole(null);
+    if (x.getAssociationRole() == this) x.setAssociationRole(null);
   }
 
+  public Object prepareForTrash() throws PropertyVetoException {
+    Vector conns = getAssociationEndRole();
+    for (int i = 0; i < conns.size(); i++) {
+      try {
+	((AssociationEndRole)conns.elementAt(i)).setBase(null);
+	((AssociationEndRole)conns.elementAt(i)).setType(null);
+      }
+      catch (PropertyVetoException pve) { }
+    }
+    //needs-more-work
+    return super.prepareForTrash();
+  }
+
+  public void recoverFromTrash(Object momento) throws PropertyVetoException {
+    // needs-more-work
+    super.recoverFromTrash(momento);
+  }
+
+  public Vector alsoTrash() {
+    Vector res = super.alsoTrash();
+    if (_messages != null) {
+      for (int i = 0; i < _messages.size(); i++)
+	res.addElement(_messages.elementAt(i));
+    }
+    return res;
+  }
 
   /*public void removeBehavioralFeature(Feature x)
   throws PropertyVetoException {

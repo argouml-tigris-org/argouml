@@ -72,6 +72,12 @@ public class GeneratorJava extends Generator {
     }
 
     String packagePath = cls.getNamespace().getName().getBody();
+    Namespace parent = cls.getNamespace().getNamespace();
+    while (parent != null) {
+      packagePath = parent.getName().getBody() + "." + packagePath;
+      parent = parent.getNamespace();
+    }
+
     int dotIndex = packagePath.indexOf(".");
     while (dotIndex != -1) {
       path += packagePath.substring(0, dotIndex) + "/";

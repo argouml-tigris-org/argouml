@@ -86,6 +86,7 @@ public class CompositeState extends State {
       StateVertex sv = (StateVertex) _substate.elementAt(i);
       sv.setParent(enclosing);
     }
+    super.prepareForTrash();
     return null;
     //needs-more-work: remember old substates
   }

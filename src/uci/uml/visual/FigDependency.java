@@ -63,6 +63,7 @@ public class FigDependency extends FigEdgeModelElement {
   public void setFig(Fig f) {
     super.setFig(f);
     _fig.setDashed(true);
+    computeRoute();
   }
 
   protected boolean canEdit(Fig f) { return false; }

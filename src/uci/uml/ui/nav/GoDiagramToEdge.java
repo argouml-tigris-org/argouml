@@ -36,32 +36,32 @@ import uci.uml.Foundation.Core.*;
 public class GoDiagramToEdge implements TreeModelPrereqs {
 
   public String toString() { return "Diagram->Edge"; }
-  
+
   public Object getRoot() {
     System.out.println("getRoot should never be called");
     return null;
-  } 
-  
+  }
+
   public Object getChild(Object parent, int index) {
     if (parent instanceof Diagram) {
-      Vector edges = ((Diagram)parent).getGraphModel().getEdges();
+      Vector edges = ((Diagram)parent).getEdges();
       return edges.elementAt(index);
     }
     System.out.println("getChild should never be get here GoModelToElements");
     return null;
   }
-  
+
   public int getChildCount(Object parent) {
     if (parent instanceof Diagram) {
-      Vector edges = ((Diagram) parent).getGraphModel().getEdges();
+      Vector edges = ((Diagram) parent).getEdges();
       return (edges == null) ? 0 : edges.size();
     }
     return 0;
   }
-  
+
   public int getIndexOfChild(Object parent, Object child) {
     if (parent instanceof Diagram) {
-      Vector edges = ((Diagram)child).getGraphModel().getEdges();
+      Vector edges = ((Diagram)child).getEdges();
       if (edges.contains(child)) return edges.indexOf(child);
     }
     return -1;
@@ -70,7 +70,7 @@ public class GoDiagramToEdge implements TreeModelPrereqs {
   public boolean isLeaf(Object node) {
     return !(node instanceof Diagram && getChildCount(node) > 0);
   }
-  
+
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }

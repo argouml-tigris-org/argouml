@@ -77,10 +77,12 @@ public class FigPackage extends FigNodeModelElement {
   public FigPackage() {
     Color handleColor = Globals.getPrefs().getHandleColor();
     _body = new FigText(x, y + textH, width, height - textH);
-    _bigPort = new FigRect(x, y + textH, width, height - textH,
-			   handleColor, Color.lightGray);
+    _bigPort = new FigRect(x, y, width, height, null, null);
     _name.setBounds(x, y, width - indentX, textH + 2);
     _name.setJustification(FigText.JUSTIFY_LEFT);
+
+    _bigPort.setFilled(false);
+    _bigPort.setLineWidth(0);
 
     // add Figs to the FigNode in back-to-front order
     addFig(_bigPort);
@@ -110,20 +112,47 @@ public class FigPackage extends FigNodeModelElement {
   }
 
   ////////////////////////////////////////////////////////////////
+  // Fig accessors
+
+  public void setLineColor(Color col) {
+    _name.setLineColor(col);
+    _body.setLineColor(col);
+  }
+ public Color getLineColor() { return _body.getLineColor(); }
+
+  public void setFillColor(Color col) {
+    _name.setFillColor(col);
+    _body.setFillColor(col);
+  }
+  public Color getFillColor() { return _body.getFillColor(); }
+
+  public void setFilled(boolean f) {
+    _name.setFilled(f);
+    _body.setFilled(f);
+  }
+  public boolean getFilled() { return _body.getFilled(); }
+
+  public void setLineWidth(int w) {
+    _name.setLineWidth(w);
+    _body.setLineWidth(w);
+  }
+  public int getLineWidth() { return _body.getLineWidth(); }
+
+  ////////////////////////////////////////////////////////////////
   // user interaction methods
 
   public void setEnclosingFig(Fig encloser) {
     super.setEnclosingFig(encloser);
     if (!(getOwner() instanceof ModelElement)) return;
     ModelElement me = (ModelElement) getOwner();
-    Model m = null;
+    Namespace m = null;
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     if (encloser != null && (encloser.getOwner() instanceof Model)) {
-      m = (Model) encloser.getOwner();
+      m = (Namespace) encloser.getOwner();
     }
     else {
       if (pb.getTarget() instanceof UMLDiagram) {
-	m = (Model) ((UMLDiagram)pb.getTarget()).getModel();
+	m = (Namespace) ((UMLDiagram)pb.getTarget()).getNamespace();
       }
     }
     try {
@@ -158,8 +187,8 @@ public class FigPackage extends FigNodeModelElement {
     Dimension nameMinimum = _name.getMinimumSize();
 
     _name.setBounds(x, y, w - indentX, nameMinimum.height + 2);
-    _bigPort.setBounds(x+1, y+1 + nameMinimum.height,
-		       w-2, h - 2 - nameMinimum.height);
+    _bigPort.setBounds(x+1, y+1,
+		       w-2, h - 2);
     _body.setBounds(x, y+1 + nameMinimum.height,
 		    w, h - 1 - nameMinimum.height);
 

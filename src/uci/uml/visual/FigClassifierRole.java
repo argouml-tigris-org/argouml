@@ -168,10 +168,12 @@ public class FigClassifierRole extends FigNodeModelElement {
     if (cr == null) return;
     String nameStr = GeneratorDisplay.Generate(cr.getName()).trim();
     String baseString = cr.getBaseString().trim();
-    if( nameStr == "" && baseString == "")
-      _name.setText("");
-    else
-      _name.setText(nameStr.trim() + " : " + baseString);
+    if (_readyToEdit) {
+      if( nameStr == "" && baseString == "")
+	_name.setText("");
+      else
+	_name.setText(nameStr.trim() + " : " + baseString);
+    }
   }
 
 //  public void keyPressed(KeyEvent ke) {}

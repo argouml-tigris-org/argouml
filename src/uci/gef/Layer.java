@@ -154,6 +154,30 @@ public abstract class Layer implements java.io.Serializable {
 
   public abstract Vector getContents();
 
+  public Vector getContentsNoEdges() {
+    Vector contents = getContents();
+    int size = contents.size();
+    Vector res = new Vector(size);
+    for (int i = 0; i < size; i++) {
+      Object o = contents.elementAt(i);
+      if (!(o instanceof FigEdge))
+	res.addElement(o);
+    }
+    return res;
+  }
+
+  public Vector getContentsEdgesOnly() {
+    Vector contents = getContents();
+    int size = contents.size();
+    Vector res = new Vector(size);
+    for (int i = 0; i < size; i++) {
+      Object o = contents.elementAt(i);
+      if (o instanceof FigEdge)
+	res.addElement(o);
+    }
+    return res;
+  }
+
   /** Return the Vector of Editors that are showing this Layer. */
   public Vector getEditors() { return _editors; }
 

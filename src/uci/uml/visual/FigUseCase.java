@@ -146,9 +146,9 @@ public class FigUseCase extends FigNodeModelElement {
   // event handlers
 
   /** Update the text labels */
-  protected void modelChanged() {
-    super.modelChanged();
-    // needs-more-work: update extension points?
-  }
+//   protected void modelChanged() {
+//     super.modelChanged();
+//     // needs-more-work: update extension points?
+//   }
 
 } /* end class FigUseCase */

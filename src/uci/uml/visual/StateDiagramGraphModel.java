@@ -59,7 +59,7 @@ implements MutableGraphModel, VetoableChangeListener {
    *  Also, elements from other models will have their FigNodes add a
    *  line to say what their model is. */
 
-  protected Model _model;
+  protected Namespace _model;
 
   /** The statemachine we are diagramming */
   protected StateMachine _machine;
@@ -67,8 +67,8 @@ implements MutableGraphModel, VetoableChangeListener {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public Model getModel() { return _model; }
-  public void setModel(Model m) {
+  public Namespace getNamespace() { return _model; }
+  public void setNamespace(Namespace m) {
     if (_model != null) _model.removeVetoableChangeListener(this);
     _model = m;
     if (_model != null) _model.addVetoableChangeListener(this);

@@ -209,14 +209,17 @@ implements ChangeListener, MouseListener {
   ////////////////////////////////////////////////////////////////
   // actions
 
-  public void selectTabNamed(String tabName) {
+  public int getIndexOfNamedTab(String tabName) {
     for (int i = 0; i < _tabPanels.size(); i++) {
       String title = _tabs.getTitleAt(i);
-      if (title != null && title.equals(tabName)) {
-	_tabs.setSelectedIndex(i);
-	return;
-      }
+      if (title != null && title.equals(tabName)) return i;
     }
+    return -1;
+  }
+
+  public void selectTabNamed(String tabName) {
+    int index = getIndexOfNamedTab(tabName);
+    if (index != -1) _tabs.setSelectedIndex(index);
   }
 
   public void selectNextTab() {

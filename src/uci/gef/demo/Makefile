@@ -41,6 +41,7 @@ CLASSES = \
 	SampleEdge.class \
 	SampleEdge2.class \
 	SampleNode.class \
+	FigSampleNode.class \
 	SampleNode2.class \
 	SamplePalette.class \
 	SamplePort.class \

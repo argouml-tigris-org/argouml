@@ -32,6 +32,7 @@
 package uci.uml.visual;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
 import java.beans.*;
 import com.sun.java.swing.*;
@@ -53,8 +54,8 @@ public class FigBranchState extends FigStateVertex {
   public static final int MARGIN = 2;
   public static final int X = 0;
   public static final int Y = 0;
-  public static final int WIDTH = 24;
-  public static final int HEIGHT = 24;
+  public static final int WIDTH = 32;
+  public static final int HEIGHT = 32;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -125,6 +126,11 @@ public class FigBranchState extends FigStateVertex {
   public void setLineWidth(int w) { _head.setLineWidth(w); }
   public int getLineWidth() { return _head.getLineWidth(); }
 
+  ////////////////////////////////////////////////////////////////
+  // Event handlers
+  
+  public void mouseClicked(MouseEvent me) { }
+  public void keyPressed(KeyEvent ke) { }
 
   static final long serialVersionUID = 7975577199958200215L;
 

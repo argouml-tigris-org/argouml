@@ -72,7 +72,7 @@ public class FigPoly extends Fig {
   protected boolean _rectilinear = false;
 
   /** Flag to indicate when the polygon is completed */
-  protected boolean _isComplete = false;
+  public boolean _isComplete = false;
 
   /** Flag to indicate when the polygon is used as a self-loop for a node */
   protected boolean _isSelfLoop = false;
@@ -225,9 +225,9 @@ public class FigPoly extends Fig {
    *  PropertyChange with "bounds".*/
   public void moveVertex(Handle h, int x, int y, boolean ov) {
     int i = h.index;
-    if (!_rectilinear) { 
-      _xpoints[i] = x; 
-      _ypoints[i] = y; 
+    if (!_rectilinear) {
+      _xpoints[i] = x;
+      _ypoints[i] = y;
     }
     else {
       if (ov) { _xpoints[i] = x; _ypoints[i] = y; }
@@ -340,7 +340,22 @@ public class FigPoly extends Fig {
   /** return the point at index i. */
   public Point getPoints(int i) { return new Point(_xpoints[i], _ypoints[i]); }
 
-  
+  public Vector getPointsVector() {
+    Vector res = new Vector();
+    for (int i = 0; i < _npoints; i++)
+      res.addElement(new Point(_xpoints[i], _ypoints[i]));
+    return res;
+  }
+
+  public Vector getPointsVectorNotFirst() {
+    Vector res = new Vector();
+    for (int i = 1; i < _npoints; i++)
+      res.addElement(new Point(_xpoints[i], _ypoints[i]));
+    return res;
+  }
+
+  public Point getFirstPoint() { return getPoints(0); }
+
   /** When the user drags the handles, move individual points */
   public void setPoints(Handle h, int mX, int mY) {
     moveVertex(h, mX, mY, false);
@@ -369,10 +384,11 @@ public class FigPoly extends Fig {
 
   /** Returns the point that other connected Figs should attach to. By
    *  default, returns the point closest to anotherPt. */
-  public Point connectionPoint(Point anotherPt) {
+  public Point getClosestPoint(Point anotherPt) {
     return Geometry.ptClosestTo(_xpoints, _ypoints, _npoints, anotherPt);
   }
 
+  public Vector getGravityPoints() { return getPointsVector(); }
 
   ////////////////////////////////////////////////////////////////
   // painting methods

@@ -142,6 +142,30 @@ public class ClassifierRole extends Classifier {
   public void setCollaboration(Collaboration x) throws PropertyVetoException {
     fireVetoableChange("collaboration", _collaboration, x);
      _collaboration = x;
+     setNamespace(_collaboration);
+  }
+
+  public Object prepareForTrash() throws PropertyVetoException {
+    setCollaboration(null);
+    //needs-more-work
+    return super.prepareForTrash();
+  }
+
+  public void recoverFromTrash(Object momento) throws PropertyVetoException {
+    // needs-more-work
+    super.recoverFromTrash(momento);
+  }
+
+
+  public Vector alsoTrash() {
+    Vector res = super.alsoTrash();
+    if (_associationEndRole != null) {
+      for (int i = 0; i < _associationEndRole.size(); i++) {
+	AssociationEndRole aer = (AssociationEndRole) _associationEndRole.elementAt(i);
+	res.addElement(aer.getAssociationRole());
+      }
+    }
+    return res;
   }
 
   static final long serialVersionUID = -817836238906155325L;

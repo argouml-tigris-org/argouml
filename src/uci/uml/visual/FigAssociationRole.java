@@ -83,7 +83,6 @@ public class FigAssociationRole extends FigEdgeModelElement {
     _destRole.setLineWidth(0);
     addPathItem(_destRole, new PathConvPercentPlusConst(this, 100, -35, -15));
     setBetweenNearestPoints(true);
-    modelChanged();
   }
 
   public FigAssociationRole(Object edge) {
@@ -128,8 +127,13 @@ public class FigAssociationRole extends FigEdgeModelElement {
 
     super.modelChanged();
 
-    AssociationEndRole ae0 = ((AssociationEndRole)(as.getAssociationEndRole().elementAt(0)));
-    AssociationEndRole ae1 = ((AssociationEndRole)(as.getAssociationEndRole().elementAt(1)));
+    Vector endRoles = as.getAssociationEndRole();
+    if (endRoles == null || endRoles.size() != 2) {
+      System.out.println("endRoles=" + endRoles);
+    }
+    
+    AssociationEndRole ae0 = (AssociationEndRole) endRoles.elementAt(0);
+    AssociationEndRole ae1 = (AssociationEndRole) endRoles.elementAt(1);
 
     Multiplicity mult0 = ae0.getMultiplicity();
     Multiplicity mult1 = ae1.getMultiplicity();
@@ -160,22 +164,22 @@ public class FigAssociationRole extends FigEdgeModelElement {
 
   protected ArrowHead chooseArrowHead(AggregationKind ak, boolean nav) {
     if (nav) {
-      if (AggregationKind.UNSPEC.equals(ak))
-	    return ArrowHeadGreater.TheInstance;
+//       if (AggregationKind.UNSPEC.equals(ak))
+// 	    return ArrowHeadGreater.TheInstance;
       if (AggregationKind.NONE.equals(ak))
 	    return ArrowHeadGreater.TheInstance;
-      if (AggregationKind.AGG.equals(ak))
+      else if (AggregationKind.AGG.equals(ak))
 	    return _NAV_AGG;
-      if (AggregationKind.COMPOSITE.equals(ak))
+      else if (AggregationKind.COMPOSITE.equals(ak))
 	    return _NAV_COMP;
     }
-    if (AggregationKind.UNSPEC.equals(ak))
-      return ArrowHeadNone.TheInstance;
+//     if (AggregationKind.UNSPEC.equals(ak))
+//       return ArrowHeadNone.TheInstance;
     if (AggregationKind.NONE.equals(ak))
       return ArrowHeadNone.TheInstance;
-    if (AggregationKind.AGG.equals(ak))
+    else if (AggregationKind.AGG.equals(ak))
       return ArrowHeadDiamond.WhiteDiamond;
-    if (AggregationKind.COMPOSITE.equals(ak))
+    else if (AggregationKind.COMPOSITE.equals(ak))
       return ArrowHeadDiamond.BlackDiamond;
     System.out.println("unknown case in drawing assoc arrowhead");
     return ArrowHeadNone.TheInstance;

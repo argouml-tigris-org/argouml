@@ -41,7 +41,7 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.ui.*;
 import uci.uml.ui.*;
-import uci.uml.Model_Management.*;
+//import uci.uml.Model_Management.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
@@ -82,7 +82,7 @@ public class UMLStateDiagram extends UMLDiagram {
   new ActionCreatePseudostate(PseudostateKind.JOIN, "Join");
 
   protected static Action _actionHistoryPseudoState =
-  new ActionCreatePseudostate(PseudostateKind.SHALLOW_HISTORY, "History");
+  new ActionCreatePseudostate(PseudostateKind.SHALLOW_HISTORY, "ShallowHistory");
 
 
   protected static Action _actionTransition =
@@ -122,19 +122,33 @@ public class UMLStateDiagram extends UMLDiagram {
   protected static int _StateDiagramSerial = 1;
 
 
-  public UMLStateDiagram(Model m, StateMachine sm) {
-    super(m);
-    String name = null;
-    if (sm.getContext() != null && sm.getContext().getName() != Name.UNSPEC &&
-	sm.getContext().getName().getBody().length() > 0)
-      name = sm.getContext().getName().getBody() + " states";
-    else
-      name = "state diagram " + _StateDiagramSerial;
+  public UMLStateDiagram() {
+    String name = "state diagram " + _StateDiagramSerial;
     _StateDiagramSerial++;
     try { setName(name); } catch (PropertyVetoException pve) { }
+  }
 
+  public UMLStateDiagram(Namespace m) {
+    this();
+    setNamespace(m);
+    StateMachine sm = getStateMachine();
+    String name = null;
+    if (sm.getContext() != null && sm.getContext().getName() != Name.UNSPEC &&
+	sm.getContext().getName().getBody().length() > 0) {
+      name = sm.getContext().getName().getBody() + " states";
+      try { setName(name); }
+      catch (PropertyVetoException pve) { }
+    }
+  }
+
+  public void setNamespace(Namespace m) {
+    super.setNamespace(m);
     StateDiagramGraphModel gm = new StateDiagramGraphModel();
-    gm.setModel(m);
+    gm.setNamespace(m);
+    StateMachine sm = null;
+    Vector beh = m.getBehavior();
+    if (beh.size() == 1) sm = (StateMachine) beh.elementAt(0);
+    else System.out.println("could not setMachine()");
     gm.setMachine(sm);
     setGraphModel(gm);
     LayerPerspective lay = new LayerPerspective(m.getName().getBody(), gm);
@@ -144,11 +158,19 @@ public class UMLStateDiagram extends UMLDiagram {
     lay.setGraphEdgeRenderer(rend);
   }
 
+  public StateMachine getStateMachine() {
+    return ((StateDiagramGraphModel)getGraphModel()).getMachine();
+  }
+
+  public void setStateMachine(StateMachine sm) {
+    ((StateDiagramGraphModel)getGraphModel()).setMachine(sm);
+  }
 
   /** initialize the toolbar for this diagram type */
   protected void initToolBar() {
     //System.out.println("making state toolbar");
     _toolBar = new ToolBar();
+    _toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 //     _toolBar.add(Actions.Cut);
 //     _toolBar.add(Actions.Copy);
 //     _toolBar.add(Actions.Paste);
@@ -171,7 +193,7 @@ public class UMLStateDiagram extends UMLDiagram {
     _toolBar.add(_actionHistoryPseudoState);
     _toolBar.addSeparator();
 
-    _toolBar.add(Actions.InternalTransition);
+    _toolBar.add(Actions.AddInternalTrans);
     _toolBar.addSeparator();
 
     _toolBar.add(_actionRectangle);
@@ -182,6 +204,9 @@ public class UMLStateDiagram extends UMLDiagram {
     _toolBar.add(_actionPoly);
     _toolBar.add(_actionSpline);
     _toolBar.add(_actionInk);
+    _toolBar.addSeparator();
+
+    _toolBar.add(_diagramName);
   }
 
 } /* end class UMLStateDiagram */

@@ -50,10 +50,13 @@ public class FigMessage extends FigNodeModelElement {
   ////////////////////////////////////////////////////////////////
   // constants
   public int PADDING = 5;
+  public static Vector ARROW_DIRECTIONS = new Vector();
+
   ////////////////////////////////////////////////////////////////
   // instance variables
 
   protected FigPoly _figPoly;
+  protected int _arrowDirection = 0;
   //protected Polygon _polygon;
 
   ////////////////////////////////////////////////////////////////
@@ -66,13 +69,17 @@ public class FigMessage extends FigNodeModelElement {
     Dimension nameMin = _name.getMinimumSize();
     _name.setBounds(10, 10, 90, nameMin.height);
 
-    ///////////////////////////
     _figPoly = new FigPoly(Color.black, Color.black);
-    int[] xpoints = {75,73,75,75,75,77,75};
-    int[] ypoints = {15,24,24,33,24,24,15};
-    Polygon polygon = new Polygon(xpoints, ypoints, 7);
+    int[] xpoints = {75,75,77,75,73,75};
+    int[] ypoints = {33,24,24,15,24,24};
+    Polygon polygon = new Polygon(xpoints, ypoints, 6);
     _figPoly.setPolygon(polygon);
     _figPoly.setBounds(100,10,5,18);
+
+    ARROW_DIRECTIONS.addElement("North");
+    ARROW_DIRECTIONS.addElement("South");
+    ARROW_DIRECTIONS.addElement("East");
+    ARROW_DIRECTIONS.addElement("West");
 
     // add Figs to the FigNode in back-to-front order
     addFig(_name);
@@ -103,9 +110,6 @@ public class FigMessage extends FigNodeModelElement {
   ////////////////////////////////////////////////////////////////
   // Fig accessors
 
-  ////////////////////////////////////////////////////////////////
-  // Fig accessors
-
   public void setLineColor(Color col) {
     _figPoly.setLineColor(col);
     _name.setLineColor(col);
@@ -123,6 +127,47 @@ public class FigMessage extends FigNodeModelElement {
 
   public void setLineWidth(int w) { _figPoly.setLineWidth(w); }
   public int getLineWidth() { return _figPoly.getLineWidth(); }
+
+  public void setArrow(int direction) {
+    Rectangle bbox = getBounds();
+    
+    _arrowDirection = direction;
+    switch (direction) {
+      // south
+      case 1: {
+        int[] xpoints = {75,75,77,75,73,75};
+        int[] ypoints = {15,24,24,33,24,24};
+        Polygon polygon = new Polygon(xpoints, ypoints, 6);
+        _figPoly.setPolygon(polygon);
+        break;
+      }
+      // east
+      case 2: {
+        int[] xpoints = {66,75,75,84,75,75};
+        int[] ypoints = {24,24,26,24,22,24};
+        Polygon polygon = new Polygon(xpoints, ypoints, 6);
+        _figPoly.setPolygon(polygon);
+        break;
+      }
+      // west
+      case 3: {
+        int[] xpoints = {84,75,75,66,75,75};
+        int[] ypoints = {24,24,26,24,22,24};
+        Polygon polygon = new Polygon(xpoints, ypoints, 6);
+        _figPoly.setPolygon(polygon);
+        break;
+      }
+      // north
+      default: {
+        int[] xpoints = {75,75,77,75,73,75};
+        int[] ypoints = {33,24,24,15,24,24};
+        Polygon polygon = new Polygon(xpoints, ypoints, 6);
+        _figPoly.setPolygon(polygon);
+      }
+    }
+    setBounds(bbox);
+  }
+  public int getArrow() { return _arrowDirection; }
 
   public Dimension getMinimumSize() {
     Dimension nameMin = _name.getMinimumSize();
@@ -170,8 +215,11 @@ public class FigMessage extends FigNodeModelElement {
     if (mes == null) return;
     String nameStr = GeneratorDisplay.Generate(mes.getName()).trim();
     String actionString = ((UninterpretedAction)mes.getAction()).getBody().trim();
-    
-    if( nameStr == "" && actionString == "")
+
+//     System.out.println("nameStr = " + nameStr);
+//     System.out.println("name = " + _name);
+//     System.out.println("actionString = " + actionString);
+    if( nameStr.equals("") && actionString.equals("") )
       _name.setText("");
     else
       _name.setText(nameStr.trim() + " : " + actionString);

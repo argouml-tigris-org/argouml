@@ -27,6 +27,7 @@ package uci.gef;
 import java.util.*;
 import java.awt.*;
 import java.io.*;
+import java.net.URL;
 
 import uci.graph.*;
 
@@ -45,6 +46,8 @@ public class PGMLParserIBM implements ElementHandler, TagHandler {
 
   protected Diagram _diagram = null;
   protected int _nestedGroups = 0;
+  protected Hashtable _figRegistry;
+  protected Hashtable _ownerRegistry;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -54,20 +57,60 @@ public class PGMLParserIBM implements ElementHandler, TagHandler {
   ////////////////////////////////////////////////////////////////
   // main parsing methods
 
-  protected Diagram readDiagram(String filename, InputStream is) {
-    Parser pc = new Parser(filename);
-    pc.addElementHandler(this);
-    pc.setTagHandler(this);
-    initDiagram();
-    pc.readStream(is);
-    return _diagram;
+  public Diagram readDiagram(String pathname, String filename) {
+    try {
+      InputStream is = null;
+      if (pathname.indexOf(":") == -1) {
+	is = new FileInputStream(pathname + filename);
+      }
+      else {
+	is = (new URL(pathname + filename)).openStream();
+      }
+      Parser pc = new Parser(filename);
+      pc.addElementHandler(this);
+      pc.setTagHandler(this);
+      pc.setProcessExternalDTD(false);
+      initDiagram("uci.gef.Diagram");
+      _figRegistry = new Hashtable();
+      pc.readStream(is);
+      is.close();
+      return _diagram;
+    }
+    catch (Exception ex) {
+      System.out.println("Exception in readDiagram");
+      ex.printStackTrace();
+    }
+    return null;
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // accessors
+
+  public void setOwnerRegistery(Hashtable owners) {
+    _ownerRegistry = owners;
   }
 
   ////////////////////////////////////////////////////////////////
   // internal methods
 
-  protected void initDiagram() {
-    _diagram = new Diagram();
+  protected void initDiagram(String diagDescr) {
+    String clsName = diagDescr;
+    String initStr = null;
+    int bar = diagDescr.indexOf("|");
+    if (bar != -1) {
+      clsName = diagDescr.substring(0, bar);
+      initStr = diagDescr.substring(bar + 1);
+    }
+    try {
+      Class cls = Class.forName(clsName);
+      _diagram = (Diagram) cls.newInstance();
+      if (initStr != null && !initStr.equals(""))
+	_diagram.initialize(findOwner(initStr));
+    }
+    catch (Exception ex) {
+      System.out.println("could not set diagram type to " + clsName);
+      ex.printStackTrace();
+    }
   }
 
 
@@ -77,6 +120,7 @@ public class PGMLParserIBM implements ElementHandler, TagHandler {
   public void handleStartTag(TXElement e, boolean empty) {
     String elementName = e.getName();
     if ("group".equals(elementName) && !empty) _nestedGroups++;
+    else if (elementName.equals("pgml")) handlePGML(e);
   }
 
   public void handleEndTag(TXElement e, boolean empty) {
@@ -85,30 +129,36 @@ public class PGMLParserIBM implements ElementHandler, TagHandler {
   }
 
   public TXElement handleElement(TXElement e) {
-    String elementName = e.getName();
-    if (elementName.equals("pgml")) handlePGML(e);
-    else if (elementName.equals("group"))
-      _diagram.add(handleGroup(e));
-    else if (_nestedGroups == 0) {
-      if (elementName.equals("path"))
-	_diagram.add(handlePolyLine(e));
-      else if (elementName.equals("ellipse"))
-	_diagram.add(handleEllipse(e));
-      else if (elementName.equals("rectangle"))
-	_diagram.add(handleRect(e));
-      else if (elementName.equals("text"))
-	_diagram.add(handleText(e));
-      else if (elementName.equals("piewedge")) { }
-      else if (elementName.equals("circle")) { }
-      else if (elementName.equals("moveto")) { }
-      else if (elementName.equals("lineto")) { }
-      else if (elementName.equals("curveto")) { }
-      else if (elementName.equals("arc")) { }
-      else if (elementName.equals("closepath")) { }
-      else System.out.println("unknown top-level tag: " + elementName);
+    try {
+      String elementName = e.getName();
+      if (elementName.equals("pgml")) { /* do nothing */ }
+      else if (elementName.equals("group"))
+	_diagram.add(handleGroup(e));
+      else if (_nestedGroups == 0) {
+	if (elementName.equals("path"))
+	  _diagram.add(handlePolyLine(e));
+	else if (elementName.equals("ellipse"))
+	  _diagram.add(handleEllipse(e));
+	else if (elementName.equals("rectangle"))
+	  _diagram.add(handleRect(e));
+	else if (elementName.equals("text"))
+	  _diagram.add(handleText(e));
+	else if (elementName.equals("piewedge")) { }
+	else if (elementName.equals("circle")) { }
+	else if (elementName.equals("moveto")) { }
+	else if (elementName.equals("lineto")) { }
+	else if (elementName.equals("curveto")) { }
+	else if (elementName.equals("arc")) { }
+	else if (elementName.equals("closepath")) { }
+	else System.out.println("unknown top-level tag: " + elementName);
+      }
+      else if (_nestedGroups > 0) {
+	//System.out.println("skipping nested " + elementName);
+      }
     }
-    else if (_nestedGroups > 0) {
-      System.out.println("skipping nested " + elementName);
+    catch (Exception ex) {
+      System.out.println("Exception in PGMLParserIBM handleElement");
+      ex.printStackTrace();
     }
     return e; // needs-more-work: too much memory? should return null.
   }
@@ -118,15 +168,15 @@ public class PGMLParserIBM implements ElementHandler, TagHandler {
     String name = e.getAttribute("name");
     String clsName = e.getAttribute("description");
     try {
-      if (name != null) _diagram.setName(name);
-      if (clsName != null) _diagram.setGraphModel(getGraphModelFor(clsName));
+      if (clsName != null && !clsName.equals("")) initDiagram(clsName);
+      if (name != null && !name.equals("")) _diagram.setName(name);
     }
     catch (Exception ex) { System.out.println("Exception in handlePGML"); }
   }
 
   protected Fig handlePolyLine(TXElement e) {
     String clsName = e.getAttribute("description");
-    if (clsName != null && clsName.indexOf("FigLine") != 0)
+    if (clsName != null && clsName.indexOf("FigLine") != -1)
       return handleLine(e);
     else
       return handlePath(e);
@@ -142,10 +192,10 @@ public class PGMLParserIBM implements ElementHandler, TagHandler {
       String y1 = moveto.getAttribute("y");
       String x2 = lineto.getAttribute("x");
       String y2 = lineto.getAttribute("y");
-      int x1Int = (x1 == null) ? 0 : Integer.parseInt(x1);
-      int y1Int = (y1 == null) ? 0 : Integer.parseInt(y1);
-      int x2Int = (x2 == null) ? x1Int : Integer.parseInt(x2);
-      int y2Int = (y2 == null) ? y1Int : Integer.parseInt(y2);
+      int x1Int = (x1 == null || x1.equals("")) ? 0 : Integer.parseInt(x1);
+      int y1Int = (y1 == null || y1.equals("")) ? 0 : Integer.parseInt(y1);
+      int x2Int = (x2 == null || x2.equals("")) ? x1Int : Integer.parseInt(x2);
+      int y2Int = (y2 == null || y2.equals("")) ? y1Int : Integer.parseInt(y2);
       f.setX1(x1Int);
       f.setY1(y1Int);
       f.setX2(x2Int);
@@ -159,8 +209,10 @@ public class PGMLParserIBM implements ElementHandler, TagHandler {
     setAttrs(f, e);
     String rx = e.getAttribute("rx");
     String ry = e.getAttribute("ry");
-    int rxInt = (rx == null) ? 10 : Integer.parseInt(rx);
-    int ryInt = (ry == null) ? 10 : Integer.parseInt(ry);
+    int rxInt = (rx == null || rx.equals("")) ? 10 : Integer.parseInt(rx);
+    int ryInt = (ry == null || ry.equals("")) ? 10 : Integer.parseInt(ry);
+    f.setX(f.getX() - rxInt);
+    f.setY(f.getY() - ryInt);
     f.setWidth(rxInt * 2);
     f.setHeight(ryInt * 2);
     return f;
@@ -169,7 +221,7 @@ public class PGMLParserIBM implements ElementHandler, TagHandler {
   protected FigRect handleRect(TXElement e) {
     FigRect f;
     String cornerRadius = e.getAttribute("rounding");
-    if (cornerRadius == null) {
+    if (cornerRadius == null || cornerRadius.equals("")) {
       f = new FigRect(0, 0, 80, 80);
     }
     else {
@@ -187,9 +239,10 @@ public class PGMLParserIBM implements ElementHandler, TagHandler {
     String text = e.getText();
     f.setText(text);
     String font = e.getAttribute("font");
-    if (font != null) f.setFontFamily(font);
+    if (font != null && !font.equals("")) f.setFontFamily(font);
     String textsize = e.getAttribute("textsize");
-    if (textsize != null) {
+    if (textsize != null && !textsize.equals("")) {
+      System.out.println("textsize=" + textsize + ".");
       int textsizeInt = Integer.parseInt(textsize);
       f.setFontSize(textsizeInt);
     }
@@ -208,9 +261,9 @@ public class PGMLParserIBM implements ElementHandler, TagHandler {
 	int yInt = 0;
 	if (n instanceof TXElement) {
 	  String x = ((TXElement)n).getAttribute("x");
-	  if (x != null) xInt = Integer.parseInt(x);
+	  if (x != null && !x.equals("")) xInt = Integer.parseInt(x);
 	  String y = ((TXElement)n).getAttribute("y");
-	  if (y != null) yInt = Integer.parseInt(y);
+	  if (y != null && !y.equals("")) yInt = Integer.parseInt(y);
 	  //needs-more-work: dx, dy
 	  f.addPoint(xInt, yInt);
 	}
@@ -236,13 +289,38 @@ public class PGMLParserIBM implements ElementHandler, TagHandler {
     try {
       Class nodeClass = Class.forName(clsName);
       f = (Fig) nodeClass.newInstance();
-      //System.out.println("made instance " + f);
-      if (xStr != null) {
+      if (xStr != null && !xStr.equals("")) {
 	int x = Integer.parseInt(xStr);
 	int y = Integer.parseInt(yStr);
 	int w = Integer.parseInt(wStr);
 	int h = Integer.parseInt(hStr);
 	f.setBounds(x, y, w, h);
+      }
+      if (f instanceof FigNode) {
+	FigNode fn = (FigNode) f;
+	if (e.hasChildNodes()) {
+	  NodeList nl = e.getChildNodes();
+	  int size = nl.getLength();
+	  for (int i = 0; i < size; i++) {
+	    Node n = nl.item(i);
+	    if (n instanceof TXElement) {
+	      TXElement pe = (TXElement) n;
+	      String peName = pe.getName();
+	      if ("private".equals(peName)) {
+		Fig encloser = null;
+		String body = pe.getText();
+		StringTokenizer st2 = new StringTokenizer(body, "=\"' \t\n");
+		while (st2.hasMoreElements()) {
+		  String t = st2.nextToken();
+		  String v = "no such fig";
+		  if (st2.hasMoreElements()) v = st2.nextToken();
+		  if (t.equals("enclosingFig")) encloser = findFig(v);
+		}
+		fn.setEnclosingFig(encloser);
+	      }
+	    }
+	  }
+	}
       }
       if (f instanceof FigEdge) {
 	FigEdge fe = (FigEdge) f;
@@ -251,14 +329,37 @@ public class PGMLParserIBM implements ElementHandler, TagHandler {
 	  int size = nl.getLength();
 	  for (int i = 0; i < size; i++) {
 	    Node n = nl.item(i);
-	    int xInt = 0;
-	    int yInt = 0;
 	    if (n instanceof TXElement) {
 	      TXElement pe = (TXElement) n;
 	      String peName = pe.getName();
-	      if (!"path".equals(peName)) continue;
-	      Fig p = handlePath(pe);
-	      fe.setFig(p);
+	      if ("path".equals(peName)) {
+		Fig p = handlePath(pe);
+		fe.setFig(p);
+		((FigPoly)p)._isComplete = true;
+		fe.calcBounds();
+		if (fe instanceof FigEdgePoly)
+		  ((FigEdgePoly)fe).setInitiallyLaidOut(true);
+	      }
+	      else if ("private".equals(peName)) {
+		Fig spf = null;
+		Fig dpf = null;
+		FigNode sfn = null;
+		FigNode dfn = null;
+		String body = pe.getText();
+		StringTokenizer st2 = new StringTokenizer(body, "=\"' \t\n");
+		while (st2.hasMoreElements()) {
+		  String t = st2.nextToken();
+		  String v = st2.nextToken();
+		  if (t.equals("sourcePortFig")) spf = findFig(v);
+		  if (t.equals("destPortFig")) dpf = findFig(v);
+		  if (t.equals("sourceFigNode")) sfn = (FigNode) findFig(v);
+		  if (t.equals("destFigNode")) dfn = (FigNode) findFig(v);
+		}
+		fe.setSourcePortFig(spf);
+		fe.setDestPortFig(dpf);
+		fe.setSourceFigNode(sfn);
+		fe.setDestFigNode(dfn);
+	      }
 	    }
 	  }
 	}
@@ -266,6 +367,10 @@ public class PGMLParserIBM implements ElementHandler, TagHandler {
     }
     catch (Exception ex) {
       System.out.println("Exception in handleGroup");
+      ex.printStackTrace();
+    }
+    catch (NoSuchMethodError ex) {
+      System.out.println("No constructor() in class " + clsName);
       ex.printStackTrace();
     }
     setAttrs(f, e);
@@ -276,43 +381,73 @@ public class PGMLParserIBM implements ElementHandler, TagHandler {
   // internal parsing methods
 
   protected void setAttrs(Fig f, TXElement e) {
+    String name = e.getAttribute("name");
+    if (name != null && !name.equals("")) _figRegistry.put(name, f);
     String x = e.getAttribute("x");
-    if (x != null) {
+    if (x != null && !x.equals("")) {
       String y = e.getAttribute("y");
       String w = e.getAttribute("width");
       String h = e.getAttribute("height");
       int xInt = Integer.parseInt(x);
-      int yInt = (y == null) ? 0 : Integer.parseInt(y);
-      int wInt = (w == null) ? 20 : Integer.parseInt(w);
-      int hInt = (h == null) ? 20 : Integer.parseInt(h);
+      int yInt = (y == null || y.equals("")) ? 0 : Integer.parseInt(y);
+      int wInt = (w == null || w.equals("")) ? 20 : Integer.parseInt(w);
+      int hInt = (h == null || h.equals("")) ? 20 : Integer.parseInt(h);
       f.setBounds(xInt, yInt, wInt, hInt);
     }
     String linewidth = e.getAttribute("linewidth");
-    if (linewidth != null) f.setLineWidth(Integer.parseInt(linewidth));
+    if (linewidth != null && !linewidth.equals(""))
+      f.setLineWidth(Integer.parseInt(linewidth));
     String strokecolor = e.getAttribute("strokecolor");
-    if (strokecolor != null)
+    if (strokecolor != null && !strokecolor.equals(""))
       f.setLineColor(colorByName(strokecolor, Color.blue));
 
     String fill = e.getAttribute("fill");
-    if (fill != null)
+    if (fill != null && !fill.equals(""))
       f.setFilled(fill.equals("1") || fill.startsWith("t"));
     String fillcolor = e.getAttribute("fillcolor");
-    if (fillcolor != null)
+    if (fillcolor != null && !fillcolor.equals(""))
       f.setFillColor(colorByName(fillcolor, Color.white));
 
     String dasharray = e.getAttribute("dasharray");
-    if (dasharray != null && !dasharray.equals("solid"))
+    if (dasharray != null && !dasharray.equals("") &&
+	!dasharray.equals("solid"))
       f.setDashed(true);
 
-    String owner = e.getAttribute("href");
-    if (owner != null) f.setOwner(findOwner(owner));
+    try {
+      String owner = e.getAttribute("href");
+      if (owner != null && !owner.equals("")) f.setOwner(findOwner(owner));
+    }
+    catch (Exception ex) {
+      System.out.println("could not set owner");
+    }
   }
 
 
   //needs-more-work: find object in model
   protected Object findOwner(String uri) {
-    System.out.println("setting owner: " + uri);
-    return null;
+    Object own = _ownerRegistry.get(uri);
+    return own;
+  }
+
+  protected Fig findFig(String uri) {
+    Fig f = null;
+    if (uri.indexOf(".") == -1) {
+      f = (Fig) _figRegistry.get(uri);
+    }
+    else {
+      StringTokenizer st = new StringTokenizer(uri, ".");
+      String figNum = st.nextToken();
+      f = (Fig) _figRegistry.get(figNum);
+      if (f instanceof FigEdge) return ((FigEdge)f).getFig();
+      while (st.hasMoreElements()) {
+	if (f instanceof FigGroup) {
+	  String subIndex = st.nextToken();
+	  int i = Integer.parseInt(subIndex);
+	  f = (Fig)((FigGroup)f).getFigs().elementAt(i);
+	}
+      }
+    }
+    return f;
   }
 
   //needs-more-work: make an instance of the named class
@@ -321,26 +456,24 @@ public class PGMLParserIBM implements ElementHandler, TagHandler {
   }
 
   protected Color colorByName(String name, Color defaultColor) {
-    if (name.equals("white")) return Color.white;
-    if (name.equals("lightGray")) return Color.lightGray;
-    if (name.equals("gray")) return Color.gray;
-    if (name.equals("darkGray")) return Color.darkGray;
-    if (name.equals("black")) return Color.black;
-    if (name.equals("red")) return Color.red;
-    if (name.equals("pink")) return Color.pink;
-    if (name.equals("orange")) return Color.orange;
-    if (name.equals("yellow")) return Color.yellow;
-    if (name.equals("green")) return Color.green;
-    if (name.equals("magenta")) return Color.magenta;
-    if (name.equals("cyan")) return Color.cyan;
-    if (name.equals("blue")) return Color.blue;
-    int code = defaultColor.getRGB();
-    try {
-      Integer i = Integer.decode(name);
-      code = i.intValue();
+    if (name.equalsIgnoreCase("white")) return Color.white;
+    if (name.equalsIgnoreCase("lightGray")) return Color.lightGray;
+    if (name.equalsIgnoreCase("gray")) return Color.gray;
+    if (name.equalsIgnoreCase("darkGray")) return Color.darkGray;
+    if (name.equalsIgnoreCase("black")) return Color.black;
+    if (name.equalsIgnoreCase("red")) return Color.red;
+    if (name.equalsIgnoreCase("pink")) return Color.pink;
+    if (name.equalsIgnoreCase("orange")) return Color.orange;
+    if (name.equalsIgnoreCase("yellow")) return Color.yellow;
+    if (name.equalsIgnoreCase("green")) return Color.green;
+    if (name.equalsIgnoreCase("magenta")) return Color.magenta;
+    if (name.equalsIgnoreCase("cyan")) return Color.cyan;
+    if (name.equalsIgnoreCase("blue")) return Color.blue;
+    try { return Color.decode(name); }
+    catch (Exception ex) {
+      System.out.println("invalid color code string: " + name);
     }
-    catch (Exception ex) { }
-    return new Color(code);
+    return defaultColor;
   }
 
 

@@ -61,7 +61,7 @@ public class Trash {
 	TrashItem ti = new TrashItem(obj, places);
 	_contents.addElement(ti);
 	me.setNamespace(Trash_Model);
-	System.out.println("added " + obj + " to trash");
+	//System.out.println("added " + obj + " to trash");
       }
       catch (PropertyVetoException pve) {
 	System.out.println("Trash add had a PropertyVetoException");

@@ -158,14 +158,14 @@ public class FigClass extends FigNodeModelElement  {
     super.setEnclosingFig(encloser);
     if (!(getOwner() instanceof ModelElement)) return;
     ModelElement me = (ModelElement) getOwner();
-    Model m = null;
+    Namespace m = null;
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     if (encloser != null && (encloser.getOwner() instanceof Model)) {
-      m = (Model) encloser.getOwner();
+      m = (Namespace) encloser.getOwner();
     }
     else {
       if (pb.getTarget() instanceof UMLDiagram) {
-	m = (Model) ((UMLDiagram)pb.getTarget()).getModel();
+	m = (Namespace) ((UMLDiagram)pb.getTarget()).getNamespace();
       }
     }
     try {

@@ -36,6 +36,8 @@ CLASSES = \
 	UMLAction.class \
 	Actions.class \
 	ActionCreatePseudostate.class \
+	ActionGoToDetails.class \
+	ActionGoToEdit.class \
 	AddToDoItemDialog.class \
 	FileFilters.class \
 	ClassGenerationDialog.class \
@@ -54,18 +56,16 @@ CLASSES = \
 	ChildGenRelated.class \
 	GoalsDialog.class \
 	JasonsTheme.class \
-	JasonsBigTheme.class \
-	JasonsHugeTheme.class \
-	JavaDocument.class \
-	JavaEditorKit.class \
 	Menu.class \
 	ModelElementRenderer.class \
 	MultiEditorPane.class \
 	NavigatorConfigDialog.class \
 	NavigatorPane.class \
+	PredInstanceOf.class \
 	PredIsFinalState.class \
 	PredIsStartState.class \
 	Project.class \
+	ProjectMember.class \
 	ProjectBrowser.class \
 	SpacerPanel.class \
 	SplashScreen.class \
@@ -76,7 +76,6 @@ CLASSES = \
 	TabDocs.class \
 	TabHash.class \
 	TabHistory.class \
-	TabJavaSrc.class \
 	TabFigTarget.class \
 	TabModelTarget.class \
 	TabProps.class \
@@ -92,10 +91,18 @@ CLASSES = \
 	TabUMLDisplay.class \
 	ToDoPane.class \
 	ToDoTreeRenderer.class \
-	Token.class \
 	Trash.class \
 	UMLListCellRenderer.class \
 	UMLTreeCellRenderer.class
+
+COLORIZE = \
+	JavaDocument.class \
+	JavaEditorKit.class \
+	TabJavaSrc.class \
+	Token.class 
+
+#	JasonsBigTheme.class 
+#	JasonsHugeTheme.class 
 
 
 all: $(GEN) $(CLASSES)

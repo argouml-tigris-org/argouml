@@ -7,24 +7,29 @@
   <!ATTLIST template class CDATA #REQUIRED>
 ]>
 <!-- This is PGML.tee, for GEF Diagrams to generate Percision Graphics -->
-<!-- Markup Langauge files.  'tee' = Template with Embedded Expressions. -->
+<!-- Markup Langauge files.  "tee" = Template with Embedded Expressions. -->
 
 <TemplateSet>
 
 <macro name="FILL_AND_STROKE">
 <![CDATA[
-  fill='<ocl>self.filled</ocl>'
-  fillcolor='<ocl>self.fillColor</ocl>'
-  stroke='<ocl>self.lineWidth</ocl>'
-  strokecolor='<ocl>self.lineColor</ocl>'
+fill="<ocl>self.filled01</ocl>"
+fillcolor="<ocl>self.fillColor</ocl>"
+stroke="<ocl>self.lineWidth</ocl>"
+strokecolor="<ocl>self.lineColor</ocl>"
 ]]>
 </macro>
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 <template class="uci.gef.Diagram">
 <![CDATA[
-<pgml>
-  <ocl>self.contents</ocl>
+<?xml version="1.0"?>
+<!DOCTYPE pgml SYSTEM "pgml.dtd">
+<pgml description="<ocl>self.classAndModelID</ocl>"
+      name="<ocl>self.name</ocl>"
+>
+  <ocl>self.layer.contentsNoEdges</ocl>
+  <ocl>self.layer.contentsEdgesOnly</ocl>
 </pgml>
 ]]>
 </template>
@@ -32,26 +37,35 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="java.awt.Rectangle">
 <![CDATA[
-x='<ocl>self.x</ocl>'
-y='<ocl>self.y</ocl>'
-w='<ocl>self.width</ocl>'
-h='<ocl>self.height</ocl>'
+x="<ocl>self.x</ocl>"
+y="<ocl>self.y</ocl>"
+width="<ocl>self.width</ocl>"
+height="<ocl>self.height</ocl>"
 ]]>
 </template>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="java.awt.Point">
 <![CDATA[
-x='<ocl>self.x</ocl>'
-y='<ocl>self.y</ocl>'
+<lineto x="<ocl>self.x</ocl>"
+        y="<ocl>self.y</ocl>" />
+]]>
+</template>
+<!-- luckily, points are only used in paths -->
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<template class="java.awt.Color">
+<![CDATA[
+<ocl>self.RGB</ocl>
 ]]>
 </template>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="uci.gef.FigRect">
 <![CDATA[
-<rectangle <ocl>self.bounds</ocl>
-FILL_AND_STROKE
+<rectangle name="<ocl>self.id</ocl>"
+  <ocl>self.bounds</ocl>
+  FILL_AND_STROKE
 />
 ]]>
 </template>
@@ -59,9 +73,10 @@ FILL_AND_STROKE
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="uci.gef.FigRRect">
 <![CDATA[
-<rectangle <ocl>self.bounds</ocl>
-FILL_AND_STROKE
-  rounding='<ocl>self.cornerRadius</ocl>'
+<rectangle name="<ocl>self.id</ocl>"
+  <ocl>self.bounds</ocl>
+  FILL_AND_STROKE
+  rounding="<ocl>self.cornerRadius</ocl>"
 />
 ]]>
 </template>
@@ -69,8 +84,12 @@ FILL_AND_STROKE
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="uci.gef.FigCircle">
 <![CDATA[
-<ellipse <ocl>self.bounds</ocl>
-FILL_AND_STROKE
+<ellipse name="<ocl>self.id</ocl>"
+  x="<ocl>self.center.x</ocl>"
+  y="<ocl>self.center.y</ocl>"
+  rx="<ocl>self.halfWidth</ocl>"
+  ry="<ocl>self.halfHeight</ocl>"
+  FILL_AND_STROKE
 />
 ]]>
 </template>
@@ -78,10 +97,12 @@ FILL_AND_STROKE
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="uci.gef.FigText">
 <![CDATA[
-<text <ocl>self.bounds</ocl>
-FILL_AND_STROKE
-  font='<ocl>self.font.fontName</ocl>'
-  textsize='<ocl>self.fontSize</ocl>'
+<text name="<ocl>self.id</ocl>"
+  x="<ocl>self.x</ocl>"
+  y="<ocl>self.y</ocl>"
+  FILL_AND_STROKE
+  font="<ocl>self.fontFamily</ocl>"
+  textsize="<ocl>self.fontSize</ocl>"
 ><ocl>self.text</ocl></text>
 ]]>
 </template>
@@ -90,13 +111,14 @@ FILL_AND_STROKE
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="uci.gef.FigLine">
 <![CDATA[
-<path
-FILL_AND_STROKE
+<path name="<ocl>self.id</ocl>"
+  description="<ocl>self.class.name</ocl>"
+  FILL_AND_STROKE
 >
-  <moveto x='<ocl>self.x1</ocl>'
-          y='<ocl>self.y1</ocl>'>
-  <lineto x='<ocl>self.x2</ocl>'
-          y='<ocl>self.y2</ocl>'>
+  <moveto x="<ocl>self.x1</ocl>"
+          y="<ocl>self.y1</ocl>" />
+  <lineto x="<ocl>self.x2</ocl>"
+          y="<ocl>self.y2</ocl>" />
 </path>
 ]]>
 </template>
@@ -104,25 +126,60 @@ FILL_AND_STROKE
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="uci.gef.FigPoly">
 <![CDATA[
-<path>
-  <moveto x='<ocl>self.x1</ocl>'
-          y='<ocl>self.y1</ocl>'>
-  <lineto <ocl>self.points</ocl>>
+<path name="<ocl>self.id</ocl>"
+  description="<ocl>self.class.name</ocl>"
+  FILL_AND_STROKE
+>
+  <moveto x="<ocl>self.firstPoint.x</ocl>"
+          y="<ocl>self.firstPoint.y</ocl>" />
+  <ocl>self.pointsVectorNotFirst</ocl>
 </path>
 ]]>
 </template>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<!-- spline? -->
+<template class="uci.gef.FigSpline">
+<![CDATA[
+<path name="<ocl>self.id</ocl>"
+  description="<ocl>self.class.name</ocl>"
+  FILL_AND_STROKE
+>
+  <moveto x="<ocl>self.firstPoint.x</ocl>"
+          y="<ocl>self.firstPoint.y</ocl>" />
+  <ocl>self.pointsVector</ocl>
+</path>
+]]>
+</template>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<template class="uci.gef.FigInk">
+<![CDATA[
+<path name="<ocl>self.id</ocl>"
+  description="<ocl>self.class.name</ocl>"
+  FILL_AND_STROKE
+>
+  <moveto x="<ocl>self.firstPoint.x</ocl>"
+          y="<ocl>self.firstPoint.y</ocl>" />
+  <ocl>self.pointsVector</ocl>
+</path>
+]]>
+</template>
+
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <!-- image? -->
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="uci.gef.FigGroup">
 <![CDATA[
-<group description='<ocl>self.class</ocl>'
-     href='<ocl>ref.owner</ocl>
+<group name="<ocl>self.id</ocl>"
+     description="<ocl>self.classNameAndBounds</ocl>"
+     href="<ocl>self.owner.id</ocl>"
+     FILL_AND_STROKE
 >
+  <private>
+    enclosingFig="<ocl>self.enclosingFig.id</ocl>"
+  </private>
+  
   <ocl>self.figs</ocl>
 </group>
 ]]>
@@ -131,9 +188,17 @@ FILL_AND_STROKE
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="uci.gef.FigEdge">
 <![CDATA[
-<group description='<ocl>self.class</ocl>'
-     href='<ocl>ref.owner</ocl>'
+<group name="<ocl>self.id</ocl>"
+     description="<ocl>self.class.name</ocl>"
+     href="<ocl>self.owner.id</ocl>"
 >
+  <private>
+    sourcePortFig="<ocl>self.sourcePortFig.id</ocl>"
+    destPortFig="<ocl>self.destPortFig.id</ocl>"
+    sourceFigNode="<ocl>self.sourceFigNode.id</ocl>"
+    destFigNode="<ocl>self.destFigNode.id</ocl>"
+  </private>
+
   <ocl>self.fig</ocl>
 </group>
 ]]>

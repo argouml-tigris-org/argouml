@@ -97,9 +97,9 @@ public class TMResults extends AbstractTableModel {
       case 1: return d.getName();
       case 2: return "N/A";
       case 3:
-	GraphModel gm = d.getGraphModel();
-	int numNodes = gm.getNodes().size();
-	int numEdges = gm.getEdges().size();
+	//GraphModel gm = d.getGraphModel();
+	int numNodes = d.getNodes().size();
+	int numEdges = d.getEdges().size();
 	return numNodes + " nodes and "+ numEdges + " edges";
       }
     }

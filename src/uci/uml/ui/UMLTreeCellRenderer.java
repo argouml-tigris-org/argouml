@@ -109,10 +109,10 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
 	    if (PseudostateKind.BRANCH.equals(kind)) lab.setIcon(_BranchIcon);
 	    if (PseudostateKind.FINAL.equals(kind)) lab.setIcon(_FinalStateIcon);
       }
-      else if (value instanceof
-	       uci.uml.Behavioral_Elements.State_Machines.ActionState)
-	    lab.setIcon(_ActionStateIcon);
-      else if (value instanceof State) lab.setIcon(_StateIcon);
+//       else if (value instanceof
+// 	       uci.uml.Behavioral_Elements.State_Machines.ActionState)
+// 	    lab.setIcon(_ActionStateIcon);
+//       else if (value instanceof State) lab.setIcon(_StateIcon);
 
       String tip = (value == null) ? "null" : value.toString();
       if (value instanceof ElementImpl)

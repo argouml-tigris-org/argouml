@@ -93,7 +93,7 @@ public class Geometry {
   public static void ptClosestTo(int x1, int y1, int x2, int y2,
 				 Point p, Point res) {
     // segment is a point
-    if (y1 == y2 && x1 == x1) { res.x = x1; res.y = y1; return; }
+    if (y1 == y2 && x1 == x2) { res.x = x1; res.y = y1; return; }
     // segment is horizontal
     if (y1 == y2) { res.y = y1; res.x = mid(x1, x2, p.x); return; }
     // segment is vertical
@@ -106,7 +106,7 @@ public class Geometry {
 
   /** Given three ints, return the one with the middle value. I.e., it
    *  is not the single largest or the single smallest. */
-  public static int mid(int a, int b, int c) {
+  private static int mid(int a, int b, int c) {
     if (a <= b) {
       if (b <= c) return b;
       else if (c <= a) return a;
@@ -142,13 +142,15 @@ public class Geometry {
    *  point. */
   public static synchronized void ptClosestTo(int xs[], int ys[],
 					      int n, Point p, Point res) {
+    System.out.println("a");
     res.x = xs[0]; res.y = ys[0];
     int bestDist = (res.x - p.x)*(res.x - p.x) + (res.y - p.y)*(res.y - p.y);
     int tDist;
     tempPoint.x = 0; tempPoint.y = 0;
     for (int i = 0; i < n - 1; ++i) {
       ptClosestTo(xs[i], ys[i], xs[i+1], ys[i+1], p, tempPoint);
-      tDist = (tempPoint.x-res.x)*(tempPoint.x-res.x) + (tempPoint.y-res.y)*(tempPoint.y-res.y);
+      tDist = (tempPoint.x-p.x)*(tempPoint.x-p.x) + (tempPoint.y-p.y)*(tempPoint.y-p.y);
+      System.out.println("b:" + tDist);
       if (bestDist > tDist) {
 	bestDist = tDist;
 	res.x = tempPoint.x; res.y = tempPoint.y;

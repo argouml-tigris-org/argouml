@@ -58,14 +58,17 @@ public class ActionGoToEdit extends UMLAction {
   }
 
   public boolean shouldBeEnabled() {
-    Project p = ProjectBrowser.TheInstance.getProject();
-    return super.shouldBeEnabled() && p != null;
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p = pb.getProject();
+    if (!super.shouldBeEnabled() || p == null) return false;
+    MultiEditorPane mep = pb.getEditorPane();
+    return mep.getIndexOfNamedTab(_tabName) != -1;
   }
 
   public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     MultiEditorPane mep = pb.getEditorPane();
-    mep.selectTabNamed(_tabName);    
+    mep.selectTabNamed(_tabName);
   }
-  
+
 } /* end class ActionGoToEdit */

@@ -32,6 +32,7 @@
 package uci.uml.visual;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
 import java.beans.*;
 import com.sun.java.swing.*;
@@ -127,6 +128,13 @@ public class FigForkState extends FigStateVertex {
 
   public void setLineWidth(int w) { _head.setLineWidth(w); }
   public int getLineWidth() { return _head.getLineWidth(); }
+
+  ////////////////////////////////////////////////////////////////
+  // Event handlers
+  
+  public void mouseClicked(MouseEvent me) { }
+  public void keyPressed(KeyEvent ke) { }
+
 
   static final long serialVersionUID = 6702818473439087473L;
 

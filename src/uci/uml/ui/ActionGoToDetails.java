@@ -58,14 +58,17 @@ public class ActionGoToDetails extends UMLAction {
   }
 
   public boolean shouldBeEnabled() {
-    Project p = ProjectBrowser.TheInstance.getProject();
-    return super.shouldBeEnabled() && p != null;
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p = pb.getProject();
+    if (!super.shouldBeEnabled() || pb == null) return false;
+    DetailsPane dp = pb.getDetailsPane();
+    return dp.getIndexOfNamedTab(_tabName) != -1;
   }
 
   public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     DetailsPane dp = pb.getDetailsPane();
-    dp.selectTabNamed(_tabName);    
+    dp.selectTabNamed(_tabName);
   }
-  
+
 } /* end class ActionGoToDetails */

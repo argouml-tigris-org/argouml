@@ -56,7 +56,7 @@ class TableModelAssocByProps extends TableModelComposite {
   public Vector rowObjectsFor(Object t) {
     if (!(t instanceof UMLClassDiagram)) return new Vector();
     UMLClassDiagram d = (UMLClassDiagram) t;
-    Vector edges = d.getGraphModel().getEdges();
+    Vector edges = d.getEdges();
     Vector res = new Vector();
     int size = edges.size();
     for (int i = 0; i < size; i++) {

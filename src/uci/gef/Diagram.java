@@ -74,6 +74,10 @@ public class Diagram implements java.io.Serializable, GraphListener {
     _toolBar = new PaletteFig();
   }
 
+  public void initialize(Object owner) {
+    /* do nothing by default */
+  }
+  
   ////////////////////////////////////////////////////////////////
   // accessors
 
@@ -95,6 +99,10 @@ public class Diagram implements java.io.Serializable, GraphListener {
     _name = n;
   }
 
+  public String getClassAndModelID() {
+    return getClass().getName();
+  }
+
   public GraphModel getGraphModel() { return getLayer().getGraphModel(); }
   public void setGraphModel(GraphModel gm) {
     GraphModel oldGM = getLayer().getGraphModel();
@@ -109,11 +117,11 @@ public class Diagram implements java.io.Serializable, GraphListener {
   public int countContained(Set owners) {
     int count = 0;
     int numOwners = owners.size();
-    Vector nodes = getGraphModel().getNodes();
+    Vector nodes = getNodes();
     for (int i = 0; i < nodes.size(); i++)
       for (int j = 0; j < numOwners; j++)
 	if (nodes.elementAt(i) == owners.elementAt(j)) count++;
-    Vector edges = getGraphModel().getEdges();
+    Vector edges = getEdges();
     for (int i = 0; i < edges.size(); i++)
       for (int j = 0; j < numOwners; j++)
 	if (edges.elementAt(i) == owners.elementAt(j)) count++;
@@ -124,7 +132,30 @@ public class Diagram implements java.io.Serializable, GraphListener {
     return count;
   }
 
-  
+  public Vector getNodes() {
+    // needs-more-work: should just do getGraphModel().getNodes()
+    // but that is not updated when the diagram is loaded
+    Vector res = new Vector();
+    Vector figs = getLayer().getContents();
+    int size = figs.size();
+    for (int i = 0; i < size; i++)
+      if (figs.elementAt(i) instanceof FigNode)
+	res.addElement(((FigNode)figs.elementAt(i)).getOwner());
+    return res;
+  }
+
+  public Vector getEdges() {
+    // needs-more-work: should just do getGraphModel().getEdges()
+    // but that is not updated when the diagram is loaded
+    Vector res = new Vector();
+    Vector figs = getLayer().getContents();
+    int size = figs.size();
+    for (int i = 0; i < size; i++)
+      if (figs.elementAt(i) instanceof FigEdge)
+	res.addElement(((FigEdge)figs.elementAt(i)).getOwner());
+    return res;
+  }
+
   ////////////////////////////////////////////////////////////////
   // accessors on the Layer
   

@@ -51,21 +51,21 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
   public static UMLAction _actionEmailExpert = Actions.EmailExpert;
   //public static UMLAction _actionMoreInfo = Actions.MoreInfo;
   public static UMLAction _actionSnooze = Actions.Snooze;
-  public static UMLAction _actionRecordFix = Actions.RecordFix;
-  public static UMLAction _actionReplayFix = Actions.ReplayFix;
-//   public static UMLAction _actionFixItNext = Actions.FixItNext;
-//   public static UMLAction _actionFixItBack = Actions.FixItBack;
-//   public static UMLAction _actionFixItFinish = Actions.FixItFinish;
+  //public static UMLAction _actionRecordFix = Actions.RecordFix;
+  //public static UMLAction _actionReplayFix = Actions.ReplayFix;
+  //public static UMLAction _actionFixItNext = Actions.FixItNext;
+  //public static UMLAction _actionFixItBack = Actions.FixItBack;
+  //public static UMLAction _actionFixItFinish = Actions.FixItFinish;
   
   ////////////////////////////////////////////////////////////////
   // instance variables
   Object _target;  //not ToDoItem
-//   JButton _newButton = new JButton("New");
-//   JButton _resolveButton = new JButton("Resolve");
-//   JButton _fixItButton = new JButton("FixIt");  //html
-//   JButton _moreInfoButton = new JButton("More Info"); //html
-//   JButton _emailExpertButton = new JButton("Email Expert"); //html
-//   JButton _snoozeButton = new JButton("Snooze");
+  //JButton _newButton = new JButton("New");
+  //JButton _resolveButton = new JButton("Resolve");
+  //JButton _fixItButton = new JButton("FixIt");  //html
+  //JButton _moreInfoButton = new JButton("More Info"); //html
+  //JButton _emailExpertButton = new JButton("Email Expert"); //html
+  //JButton _snoozeButton = new JButton("Snooze");
   //JTextArea _description = new JTextArea();
   WizDescription _description = new WizDescription();
   
@@ -171,8 +171,8 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     _actionEmailExpert.updateEnabled(_target);
     //_actionMoreInfo.updateEnabled(_target);
     _actionSnooze.updateEnabled(_target);
-    _actionRecordFix.updateEnabled(_target);
-    _actionReplayFix.updateEnabled(_target);
+    //_actionRecordFix.updateEnabled(_target);
+    //_actionReplayFix.updateEnabled(_target);
     //     _actionFixItNext.updateEnabled(_target);
     //     _actionFixItBack.updateEnabled(_target);
     //     _actionFixItFinish.updateEnabled(_target);

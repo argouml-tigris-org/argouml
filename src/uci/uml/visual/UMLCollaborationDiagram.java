@@ -34,6 +34,7 @@ package uci.uml.visual;
 
 import java.util.*;
 import java.awt.*;
+import java.beans.*;
 import com.sun.java.swing.*;
 
 import uci.gef.*;
@@ -101,10 +102,32 @@ public class UMLCollaborationDiagram extends UMLDiagram {
   protected static int _CollaborationDiagramSerial = 1;
 
 
-  public UMLCollaborationDiagram(Model m) {
-    super("collaboration diagram " + _CollaborationDiagramSerial++, m);
+  public UMLCollaborationDiagram() {
+    try { setName("collaboration diagram " + _CollaborationDiagramSerial++); }
+    catch (PropertyVetoException pve) { }
+  }
+
+  public UMLCollaborationDiagram(Namespace m) {
+    this();
+    setNamespace(m);
+  }
+
+  public int getNumMessages() {
+    Layer lay = getLayer();
+    Vector figs = lay.getContents();
+    int res = 0;
+    int size = figs.size();
+    for (int i=0; i < size; i++) {
+      Fig f = (Fig) figs.elementAt(i);
+      if (f.getOwner() instanceof Message) res++;
+    }
+    return res;
+  }
+
+  public void setNamespace(Namespace m) {
+    super.setNamespace(m);
     CollaborationDiagramGraphModel gm = new CollaborationDiagramGraphModel();
-    gm.setModel(m);
+    gm.setNamespace(m);
     setGraphModel(gm);
     LayerPerspective lay = new LayerPerspective(m.getName().getBody(), gm);
     setLayer(lay);
@@ -113,10 +136,10 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     lay.setGraphEdgeRenderer(rend);
   }
 
-
   /** initialize the toolbar for this diagram type */
   protected void initToolBar() {
     _toolBar = new ToolBar();
+    _toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 //     _toolBar.add(Actions.Cut);
 //     _toolBar.add(Actions.Copy);
 //     _toolBar.add(Actions.Paste);
@@ -129,7 +152,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     _toolBar.add(_actionClassifierRole);
     _toolBar.addSeparator();
     _toolBar.add(_actionAssoc);
-    _toolBar.add(Actions.Message);
+    _toolBar.add(Actions.AddMessage);
     // other actions
     _toolBar.addSeparator();
 
@@ -141,6 +164,9 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     _toolBar.add(_actionPoly);
     _toolBar.add(_actionSpline);
     _toolBar.add(_actionInk);
+    _toolBar.addSeparator();
+
+    _toolBar.add(_diagramName);
   }
 
 } /* end class UMLCollaborationDiagram */

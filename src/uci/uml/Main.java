@@ -168,43 +168,4 @@ public class Main {
 
 
 
-class MockProject extends Project {
-
-  public MockProject() {
-    super("MockProject");
-    Model m1 = makeModel1();
-    Model m2 = makeModel2();
-    Model m3 = makeModel3();
-    try {
-      addDiagram(makeDiagram(m1));
-      addDiagram(makeDiagram(m3));
-      addModel(m1);
-      addModel(m2);
-      addModel(m3);
-    }
-    catch (PropertyVetoException pve) { }
-  }
-
-  public UMLDiagram makeDiagram(Model m) {
-    return new UMLClassDiagram(m);
-  }
-
-  public Model makeModel1() {
-    ConcurrentSubstatesExample cse = new ConcurrentSubstatesExample();
-    return cse.model;
-//     HumanResourcesExample hre = new HumanResourcesExample();
-//     return hre.model;
-  }
-
-  public Model makeModel2() {
-    ShapesExample she = new ShapesExample();
-    return she.model;
-  }
-
-  public Model makeModel3() {
-    WindowExample we = new WindowExample();
-    return we.model;
-  }
-
-} /* end class MockProject */
 

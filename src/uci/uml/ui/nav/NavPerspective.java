@@ -29,6 +29,13 @@ import java.awt.*;
 import java.io.Serializable;
 import com.sun.java.swing.tree.*;
 import com.sun.java.swing.event.*;
+
+import uci.uml.Foundation.Core.*;
+import uci.uml.Behavioral_Elements.Common_Behavior.*;
+import uci.uml.Behavioral_Elements.State_Machines.*;
+import uci.uml.Behavioral_Elements.Collaborations.*;
+import uci.uml.Behavioral_Elements.Use_Cases.*;
+import uci.uml.Model_Management.*;
 import uci.uml.ui.*;
 
 /** This defines a NavPerspective as a kind of TreeModel that is made
@@ -68,7 +75,8 @@ implements Serializable, TreeModel, Cloneable {
     NavPerspective stateTransitions = new NavPerspective("State-transitions");
     NavPerspective transitionCentric = new NavPerspective("Transitions-centric");
     NavPerspective transitionPaths = new NavPerspective("Transitions paths");
-    NavPerspective useCaseCentric = new NavPerspective("UseCase-centric");
+//     NavPerspective useCaseCentric = new NavPerspective("UseCase-centric");
+    NavPerspective collabCentric = new NavPerspective("Collaboration-centric");
     NavPerspective depCentric = new NavPerspective("Dependency-centric");
 
 
@@ -80,11 +88,42 @@ implements Serializable, TreeModel, Cloneable {
     NavPerspective machineToState = new NavPerspective("States of Class");
     NavPerspective machineToTransition = new NavPerspective("Transitions of Class");
 
+    GoFilteredChildren modelToPackages =
+      new GoFilteredChildren("Package->Subpackages",
+			     new GoModelToElements(),
+			     new PredInstanceOf(Model.class));
+    GoFilteredChildren modelToClassifiers =
+      new GoFilteredChildren("Package->Classifiers",
+			     new GoModelToElements(),
+			     new PredInstanceOf(Classifier.class));
+    GoFilteredChildren modelToAssociations =
+      new GoFilteredChildren("Package->Associations",
+			     new GoModelToElements(),
+			     new PredInstanceOf(Association.class));
+    GoFilteredChildren modelToInstances =
+      new GoFilteredChildren("Package->Instances",
+			     new GoModelToElements(),
+			     new PredInstanceOf(MMObject.class));
+    GoFilteredChildren modelToLinks =
+      new GoFilteredChildren("Package->Links",
+			     new GoModelToElements(),
+			     new PredInstanceOf(Link.class));
+    GoFilteredChildren modelToCollaboration =
+      new GoFilteredChildren("Package->Subpackages",
+			     new GoModelToElements(),
+			     new PredInstanceOf(Collaboration.class));
+
     packageCentric.addSubTreeModel(new GoProjectModel());
     packageCentric.addSubTreeModel(new GoModelToDiagram());
-    packageCentric.addSubTreeModel(new GoModelToElements());
+    packageCentric.addSubTreeModel(modelToPackages);
+    packageCentric.addSubTreeModel(modelToClassifiers);
+    packageCentric.addSubTreeModel(modelToAssociations);
+    packageCentric.addSubTreeModel(modelToInstances);
+    packageCentric.addSubTreeModel(modelToLinks);
+    packageCentric.addSubTreeModel(modelToCollaboration);
     packageCentric.addSubTreeModel(new GoClassifierToStr());
     packageCentric.addSubTreeModel(new GoClassifierToBeh());
+    packageCentric.addSubTreeModel(new GoAssocRoleMessages());
 
     diagramCentric.addSubTreeModel(new GoProjectDiagram());
     diagramCentric.addSubTreeModel(new GoDiagramToNode());
@@ -133,27 +172,21 @@ implements Serializable, TreeModel, Cloneable {
 //     classStates.addSubTreeModel(new GoElementToMachine());
 //     classStates.addSubTreeModel(new GoMachineToState());
 
-    stateCentric.addSubTreeModel(new GoProjectModel());
-    stateCentric.addSubTreeModel(new GoModelToDiagram());
-    stateCentric.addSubTreeModel(new GoModelToClass());
-    stateCentric.addSubTreeModel(new GoElementToMachine());
+    stateCentric.addSubTreeModel(new GoProjectMachine());
+    stateCentric.addSubTreeModel(new GoMachineDiagram());
     stateCentric.addSubTreeModel(new GoMachineToState());
     stateCentric.addSubTreeModel(new GoStateToSubstate());
     stateCentric.addSubTreeModel(new GoStateToIncomingTrans());
     stateCentric.addSubTreeModel(new GoStateToOutgoingTrans());
 
-    transitionCentric.addSubTreeModel(new GoProjectModel());
-    transitionCentric.addSubTreeModel(new GoModelToDiagram());
-    transitionCentric.addSubTreeModel(new GoModelToClass());
-    transitionCentric.addSubTreeModel(new GoElementToMachine());
+    transitionCentric.addSubTreeModel(new GoProjectMachine());
+    transitionCentric.addSubTreeModel(new GoMachineDiagram());
     transitionCentric.addSubTreeModel(new GoMachineToTrans());
     transitionCentric.addSubTreeModel(new GoTransToSourceState());
     transitionCentric.addSubTreeModel(new GoTransToTargetState());
 
-    transitionPaths.addSubTreeModel(new GoProjectModel());
-    transitionPaths.addSubTreeModel(new GoModelToDiagram());
-    transitionPaths.addSubTreeModel(new GoModelToClass());
-    transitionPaths.addSubTreeModel(new GoElementToMachine());
+    transitionPaths.addSubTreeModel(new GoProjectMachine());
+    transitionPaths.addSubTreeModel(new GoMachineDiagram());
 
     //transitionPaths.addSubTreeModel(new GoMachineToStartState());
     GoFilteredChildren machineToFinalState =
@@ -180,10 +213,17 @@ implements Serializable, TreeModel, Cloneable {
 //     transitionPaths.addSubTreeModel(new GoStateToOutgoingTrans());
 //     transitionPaths.addSubTreeModel(new GoTransToTargetState());
 
-    useCaseCentric.addSubTreeModel(new GoProjectModel());
-    useCaseCentric.addSubTreeModel(new GoModelToDiagram());
-    useCaseCentric.addSubTreeModel(new GoModelToUseCase());
-    useCaseCentric.addSubTreeModel(new GoModelToActor());
+//     useCaseCentric.addSubTreeModel(new GoProjectModel());
+//     useCaseCentric.addSubTreeModel(new GoModelToDiagram());
+//     useCaseCentric.addSubTreeModel(new GoModelToUseCase());
+//     useCaseCentric.addSubTreeModel(new GoModelToActor());
+
+    collabCentric.addSubTreeModel(new GoProjectCollaboration());
+    collabCentric.addSubTreeModel(new GoCollaborationDiagram());
+    collabCentric.addSubTreeModel(new GoModelToElements());
+    collabCentric.addSubTreeModel(new GoAssocRoleMessages());
+    collabCentric.addSubTreeModel(new GoCollaborationInteraction());
+    collabCentric.addSubTreeModel(new GoInteractionMessages());
 
     depCentric.addSubTreeModel(new GoProjectModel());
     depCentric.addSubTreeModel(new GoModelToDiagram());
@@ -211,7 +251,8 @@ implements Serializable, TreeModel, Cloneable {
     registerPerspective(stateCentric);
     registerPerspective(transitionCentric);
     registerPerspective(transitionPaths);
-    registerPerspective(useCaseCentric);
+    //registerPerspective(useCaseCentric);
+    registerPerspective(collabCentric);
     registerPerspective(depCentric);
 
     registerRule(new GoProjectModel());
@@ -248,8 +289,9 @@ implements Serializable, TreeModel, Cloneable {
     registerRule(new GoAssocToTarget());
     registerRule(new GoAssocToSource());
     registerRule(new GoAssocToSource());
+    // needs-more-work: this list is not updated
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // static methods
 

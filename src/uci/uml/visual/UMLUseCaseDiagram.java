@@ -34,6 +34,7 @@ package uci.uml.visual;
 
 import java.util.*;
 import java.awt.*;
+import java.beans.*;
 import com.sun.java.swing.*;
 
 import uci.gef.*;
@@ -108,10 +109,20 @@ public class UMLUseCaseDiagram extends UMLDiagram {
   protected static int _UseCaseDiagramSerial = 1;
 
 
-  public UMLUseCaseDiagram(Model m) {
-    super("use case diagram " + _UseCaseDiagramSerial++, m);
+  public UMLUseCaseDiagram() {
+    try { setName("use case diagram " + _UseCaseDiagramSerial++); }
+    catch (PropertyVetoException pve) { }
+  }
+
+  public UMLUseCaseDiagram(Namespace m) {
+    this();
+    setNamespace(m);
+  }
+
+  public void setNamespace(Namespace m) {
+    super.setNamespace(m);
     UseCaseDiagramGraphModel gm = new UseCaseDiagramGraphModel();
-    gm.setModel(m);
+    gm.setNamespace(m);
     setGraphModel(gm);
     LayerPerspective lay = new LayerPerspective(m.getName().getBody(), gm);
     setLayer(lay);
@@ -125,6 +136,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
   protected void initToolBar() {
     //System.out.println("making usecase toolbar");
     _toolBar = new ToolBar();
+    _toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 //     _toolBar.add(Actions.Cut);
 //     _toolBar.add(Actions.Copy);
 //     _toolBar.add(Actions.Paste);
@@ -149,6 +161,9 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     _toolBar.add(_actionPoly);
     _toolBar.add(_actionSpline);
     _toolBar.add(_actionInk);
+    _toolBar.addSeparator();
+
+    _toolBar.add(_diagramName);
   }
 
 } /* end class UMLUseCaseDiagram */

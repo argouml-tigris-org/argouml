@@ -281,7 +281,7 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
   }
   public void setCritiquingInterval(int i) { _critiquingInterval = i; }
 
-   public synchronized static void setCritiquingRoot(Object d) {
+   public static void setCritiquingRoot(Object d) {
      _CritiquingRoot = d;
      theDesigner()._toDoList.removeAllElements();
      synchronized (theDesigner()) {
@@ -471,7 +471,3 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
   public boolean canFixIt(ToDoItem item) { return false; }
 
 } /* end class Designer */
-
-
-
-

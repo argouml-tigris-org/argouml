@@ -44,6 +44,7 @@ import uci.gef.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Model_Management.*;
 import uci.uml.ui.nav.NavPerspective;
+import uci.uml.visual.UMLDiagram;
 
 
 /** The main window of the Argo/UML application. */
@@ -66,13 +67,16 @@ implements IStatusBar {
   // Actions
   // file menu
   protected static Action _actionNew =  Actions.New;
-  protected static Action _actionOpen = Actions.Open;
-  protected static Action _actionOpenXMI = Actions.OpenXMI;
-  protected static Action _actionSave = Actions.Save;
-  protected static Action _actionSaveAs = Actions.SaveAs;
-  protected static Action _actionSaveAsXMI = Actions.SaveAsXMI;
+  //protected static Action _actionOpen = Actions.Open;
+  //protected static Action _actionOpenXMI = Actions.OpenXMI;
+  protected static Action _actionOpenProject = Actions.OpenProject;
+  //protected static Action _actionSave = Actions.Save;
+  //protected static Action _actionSaveAs = Actions.SaveAs;
+  //protected static Action _actionSaveAsXMI = Actions.SaveAsXMI;
+  protected static Action _actionSaveProject = Actions.SaveProject;
+  protected static Action _actionSaveProjectAs = Actions.SaveProjectAs;
   // -----
-  protected static Action _actionAddToProj = Actions.AddToProj;
+  //protected static Action _actionAddToProj = Actions.AddToProj;
   // -----
   protected static Action _actionPrint = Actions.Print;
   // -----
@@ -89,14 +93,14 @@ implements IStatusBar {
   protected static Action _actionEmpty = Actions.EmptyTrash;
 
   // view menu
-  protected static Action _actionNavUp = Actions.NavUp;
-  protected static Action _actionNavDown = Actions.NavDown;
+//   protected static Action _actionNavUp = Actions.NavUp;
+//   protected static Action _actionNavDown = Actions.NavDown;
   protected static Action _actionNavBack = Actions.NavBack;
   protected static Action _actionNavForw = Actions.NavForw;
   protected static Action _actionFind = Actions.Find;
   protected static Action _actionGotoDiagram = Actions.GotoDiagram;
   protected static Action _actionNextEditTab = Actions.NextEditTab;
-  protected static Action _actionAddToFavs = Actions.AddToFavs;
+  //protected static Action _actionAddToFavs = Actions.AddToFavs;
   protected static Action _actionNextDetailsTab = Actions.NextDetailsTab;
 
   // create menu
@@ -110,6 +114,7 @@ implements IStatusBar {
 
   // ----- model elements
   //protected static Action _actionModel = Actions.Model;
+  protected static Action _actionAddTopLevelPackage = Actions.AddTopLevelPackage;
   //protected static Action _actionClass = Actions.Class;
   //protected static Action _actionInterface = Actions.Interface;
   //protected static Action _actionActor = Actions.Actor;
@@ -119,18 +124,18 @@ implements IStatusBar {
   //protected static Action _actionAttr = Actions.Attr;
   //protected static Action _actionOper = Actions.Oper;
   // -----  shapes
-  protected static Action _actionRectangle = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigRect.class, "Rectangle");
-  protected static Action _actionRRectangle = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigRRect.class, "RRect");
-  protected static Action _actionCircle = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigCircle.class, "Circle");
-  protected static Action _actionLine = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigLine.class, "Line");
-  protected static Action _actionText = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigText.class, "Text");
-  protected static Action _actionPoly = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigPoly.class, "Polygon");
-  protected static Action _actionInk = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigInk.class, "Ink");
+//   protected static Action _actionRectangle = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigRect.class, "Rectangle");
+//   protected static Action _actionRRectangle = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigRRect.class, "RRect");
+//   protected static Action _actionCircle = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigCircle.class, "Circle");
+//   protected static Action _actionLine = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigLine.class, "Line");
+//   protected static Action _actionText = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigText.class, "Text");
+//   protected static Action _actionPoly = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigPoly.class, "Polygon");
+//   protected static Action _actionInk = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigInk.class, "Ink");
 
   // actions menu
   protected static Action _actionGenerateOne = Actions.GenerateOne;
   protected static Action _actionGenerateAll = Actions.GenerateAll;
-  protected static Action _actionGenerateWeb = Actions.GenerateWeb;
+  //protected static Action _actionGenerateWeb = Actions.GenerateWeb;
 
   // critique menu
   protected static Action _actionAutoCritique = Actions.AutoCritique;
@@ -260,6 +265,9 @@ implements IStatusBar {
     KeyStroke ctrlright =
       KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, KeyEvent.CTRL_MASK);
 
+    KeyStroke delKey =
+      KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
+
     JMenuItem mi;
     // File Menu
     JMenu file = (JMenu) _menuBar.add(new JMenu("File"));
@@ -267,15 +275,19 @@ implements IStatusBar {
     JMenuItem newItem = file.add(_actionNew);
     newItem.setMnemonic('N');
     newItem.setAccelerator(ctrlN);
-    JMenuItem openItem = file.add(_actionOpen);
-    openItem.setMnemonic('O');
-    openItem.setAccelerator(ctrlO);
-    JMenuItem openXMIItem = file.add(_actionOpenXMI);
-    JMenuItem saveItem = file.add(_actionSave);
-    saveItem.setMnemonic('S');
-    saveItem.setAccelerator(ctrlS);
-    file.add(_actionSaveAs);
-    file.add(_actionSaveAsXMI);
+    //JMenuItem openItem = file.add(_actionOpen);
+    //JMenuItem openXMIItem = file.add(_actionOpenXMI);
+    JMenuItem openProjectItem = file.add(_actionOpenProject);
+    openProjectItem.setMnemonic('O');
+    openProjectItem.setAccelerator(ctrlO);
+    //JMenuItem saveItem = file.add(_actionSave);
+    //file.add(_actionSaveAs);
+    //file.add(_actionSaveAsXMI);
+    JMenuItem saveProjectItem = file.add(_actionSaveProject);
+    saveProjectItem.setMnemonic('S');
+    saveProjectItem.setAccelerator(ctrlS);
+    JMenuItem saveProjectAsItem = file.add(_actionSaveProjectAs);
+    saveProjectAsItem.setMnemonic('A');
     file.addSeparator();
     JMenuItem printItem = file.add(_actionPrint);
     printItem.setMnemonic('P');
@@ -313,25 +325,28 @@ implements IStatusBar {
     pasteItem.setMnemonic('V');
     pasteItem.setAccelerator(ctrlV);
     edit.addSeparator();
-    edit.add(_actionDelete);
+    // needs-more-work: confusing name change
+    JMenuItem deleteItem = edit.add(_actionDelete);
+    deleteItem.setMnemonic('R');
+    deleteItem.setAccelerator(ctrlR);
     JMenuItem removeItem = edit.add(_actionRemove);
-    removeItem.setMnemonic('R');
-    removeItem.setAccelerator(ctrlR);
+    removeItem.setMnemonic('D');
+    removeItem.setAccelerator(delKey);
     JMenuItem emptyItem = edit.add(_actionEmpty);
 
     JMenu view = (JMenu) _menuBar.add(new JMenu("View"));
     // maybe should be Navigate instead of view
     view.setMnemonic('V');
 
-    JMenu nav = (JMenu) view.add(new JMenu("Navigate"));
-    JMenuItem downItem = nav.add(_actionNavDown);
-    downItem.setAccelerator(ctrldown);
-    JMenuItem upItem = nav.add(_actionNavUp);
-    upItem.setAccelerator(ctrlup);
-    JMenuItem backItem = nav.add(_actionNavBack);
-    backItem.setAccelerator(ctrlleft);
-    JMenuItem forwItem = nav.add(_actionNavForw);
-    forwItem.setAccelerator(ctrlright);
+//     JMenu nav = (JMenu) view.add(new JMenu("Navigate"));
+//     JMenuItem downItem = nav.add(_actionNavDown);
+//     downItem.setAccelerator(ctrldown);
+//     JMenuItem upItem = nav.add(_actionNavUp);
+//     upItem.setAccelerator(ctrlup);
+//     JMenuItem backItem = nav.add(_actionNavBack);
+//     backItem.setAccelerator(ctrlleft);
+//     JMenuItem forwItem = nav.add(_actionNavForw);
+//     forwItem.setAccelerator(ctrlright);
 
     view.add(_actionGotoDiagram);
     JMenuItem findItem =  view.add(_actionFind);
@@ -356,7 +371,7 @@ implements IStatusBar {
     JMenuItem nextDetailsItem = detailsTabs.add(_actionNextDetailsTab);
     nextDetailsItem.setAccelerator(F5);
     detailsTabs.addSeparator();
-    
+
     JMenuItem tab1Item = detailsTabs.add(new ActionGoToDetails("ToDoItem"));
     tab1Item.setAccelerator(alt1);
     JMenuItem tab2Item = detailsTabs.add(new ActionGoToDetails("Properties"));
@@ -373,10 +388,10 @@ implements IStatusBar {
     tab7Item.setAccelerator(alt7);
     JMenuItem tab8Item = detailsTabs.add(new ActionGoToDetails("History"));
     tab8Item.setAccelerator(alt8);
-//     JMenuItem tab9Item = detailsTabs.add(new ActionGoToDetails(""));
-//     tab9Item.setAccelerator(alt9);
-//     JMenuItem tab0Item = detailsTabs.add(new ActionGoToDetails(""));
-//     tab0Item.setAccelerator(alt0);
+    //JMenuItem tab9Item = detailsTabs.add(new ActionGoToDetails(""));
+    //tab9Item.setAccelerator(alt9);
+    //JMenuItem tab0Item = detailsTabs.add(new ActionGoToDetails(""));
+    //tab0Item.setAccelerator(alt0);
 
     view.addSeparator();
     view.add(new CmdAdjustGrid());
@@ -397,7 +412,7 @@ implements IStatusBar {
     createDiagrams.add(_actionCollabortationDiagram);
 
     JMenu createModelElements = (JMenu) create.add(new JMenu("Model Elements"));
-    //createModelElements.add(_actionModel);
+    createModelElements.add(_actionAddTopLevelPackage);
     //createModelElements.add(_actionClass);
     //createModelElements.add(_actionInterface);
     //createModelElements.add(_actionActor);
@@ -407,14 +422,14 @@ implements IStatusBar {
     //createModelElements.add(_actionAttr);
     //createModelElements.add(_actionOper);
 
-    JMenu createFig = (JMenu) create.add(new JMenu("Shapes"));
-    createFig.add(_actionRectangle);
-    createFig.add(_actionRRectangle);
-    createFig.add(_actionCircle);
-    createFig.add(_actionLine);
-    createFig.add(_actionText);
-    createFig.add(_actionPoly);
-    createFig.add(_actionInk);
+    //JMenu createFig = (JMenu) create.add(new JMenu("Shapes"));
+    //createFig.add(_actionRectangle);
+    //createFig.add(_actionRRectangle);
+    //createFig.add(_actionCircle);
+    //createFig.add(_actionLine);
+    //createFig.add(_actionText);
+    //createFig.add(_actionPoly);
+    //createFig.add(_actionInk);
 
     JMenu arrange = (JMenu) _menuBar.add(new JMenu("Arrange"));
     arrange.setMnemonic('A');
@@ -451,7 +466,7 @@ implements IStatusBar {
     generate.add(_actionGenerateOne);
     JMenuItem genAllItem = generate.add(_actionGenerateAll);
     genAllItem.setAccelerator(F7);
-    generate.add(_actionGenerateWeb);
+    //generate.add(_actionGenerateWeb);
 
     Menu critique = (Menu) _menuBar.add(new Menu("Critique"));
     critique.setMnemonic('R');
@@ -539,7 +554,11 @@ implements IStatusBar {
   public void setTarget(Object o) {
     _multiPane.setTarget(o);
     _detailsPane.setTarget(o);
-    if (o instanceof Model) _project.setCurrentModel((Model)o);
+    if (o instanceof Namespace) _project.setCurrentNamespace((Namespace)o);
+    if (o instanceof UMLDiagram) {
+      Namespace m = ((UMLDiagram)o).getNamespace();
+      if (m != null) _project.setCurrentNamespace(m);
+    }
     if (o instanceof ModelElement) {
       ElementOwnership eo = ((ModelElement)o).getElementOwnership();
       if (eo == null) { System.out.println("no path to model"); return; }
@@ -547,7 +566,7 @@ implements IStatusBar {
 	if (eo.getNamespace() == null) break;
 	eo = eo.getNamespace().getElementOwnership();
       }
-      _project.setCurrentModel((Model)eo.getNamespace());
+      _project.setCurrentNamespace(eo.getNamespace());
     }
     Actions.updateAllEnabled();
   }
@@ -636,6 +655,8 @@ implements IStatusBar {
 
 class WindowCloser extends WindowAdapter {
   public WindowCloser() { }
-  public void windowClosing(WindowEvent e) { System.exit(0); }
+  public void windowClosing(WindowEvent e) {
+    Actions.Exit.actionPerformed(null);
+  }
 };
 

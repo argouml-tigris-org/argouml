@@ -108,13 +108,22 @@ implements PropertyChangeListener, Highlightable {
   /** Return the Fig that will be drawn. */
   public Fig getFig() { return _fig; }
 
-  public void setFig(Fig f) { _fig = f; }
+  public void setFig(Fig f) {
+    if (_fig != null && _fig.getGroup() == this) _fig.setGroup(null);
+    _fig = f;
+    _fig.setGroup(this);
+  }
 
   /** Get the Fig reprenting this FigEdge's from-port. */ 
   public void setSourcePortFig(Fig fig) { _sourcePortFig = fig; }
+  public Fig getSourcePortFig() { return _sourcePortFig; }
 
   /** Get the Fig reprenting this FigEdge's to-port. */ 
   public void setDestPortFig(Fig fig) { _destPortFig = fig; }
+  public Fig getDestPortFig() { return _destPortFig; }
+
+  public Fig getSourceFigNode() { return _sourceFigNode; }
+  public Fig getDestFigNode() { return _destFigNode; }
 
   /** Set the FigNode reprenting this FigEdge's from-node. */ 
   public void setSourceFigNode(FigNode fn) {
@@ -219,13 +228,22 @@ implements PropertyChangeListener, Highlightable {
   ////////////////////////////////////////////////////////////////
   // Fig API
 
+//   public void startTrans() {
+//     super.startTrans();
+//     int size = _pathItems.size();
+//     for (int i = 0; i < size; i+) {
+//       Fig f = ((PathItem) _pathItems.elementAt(i)).getFig();
+//       f.startTrans();
+//     }    
+//   }
+  
   /** Reply the bounding box for this FigEdge. */
   public Rectangle getBounds() {
     Rectangle res = _fig.getBounds();
-    Enumeration enum = _pathItems.elements();
-    while (enum.hasMoreElements()) {
-      Fig f = ((PathItem) enum.nextElement()).getFig();
-      res = res.union(f.getBounds());
+    int size = _pathItems.size();
+    for (int i = 0; i < size; i++) {
+      Fig f = ((PathItem) _pathItems.elementAt(i)).getFig();
+      res.add(f.getBounds());
     }
     return res;
   }
@@ -234,20 +252,24 @@ implements PropertyChangeListener, Highlightable {
   protected void calcBounds() {
     _fig.calcBounds();
     Rectangle res = _fig.getBounds();
-    Vector pathVec = getPathItemsRaw();
 
     Point loc = new Point();
-    for (int i = 0; i < pathVec.size(); i++) {
-      PathItem element = (PathItem) pathVec.elementAt(i);
-      PathConv path = element.getPath();
+    int size = _pathItems.size();
+    for (int i = 0; i < size; i++) {
+      PathItem element = (PathItem) _pathItems.elementAt(i);
+      PathConv pc = element.getPath();
       Fig f = element.getFig();
+      int oldX = f.getX();
+      int oldY = f.getY();
       int halfWidth = f.getWidth() / 2;
       int halfHeight = f.getHeight() / 2;
-      path.stuffPoint(loc);
-      f.setLocation(loc.x - halfWidth, loc.y - halfHeight);
-      res = res.union(f.getBounds());
+      pc.stuffPoint(loc);
+      if (oldX != loc.x || oldY != loc.y) {
+	f.damage();
+	f.setLocation(loc.x - halfWidth, loc.y - halfHeight);
+      }
+      res.add(f.getBounds());
     }
-
 
     _x = res.x;
     _y = res.y;
@@ -255,11 +277,13 @@ implements PropertyChangeListener, Highlightable {
     _h = res.height;
   }
 
+  public void updatePathItemLocations() { calcBounds(); }
+
   public boolean contains(int x, int y) {
     if (_fig.contains(x, y)) return true;
-    Enumeration enum = _pathItems.elements();
-    while (enum.hasMoreElements()) {
-      Fig f = ((PathItem) enum.nextElement()).getFig();
+    int size = _pathItems.size();
+    for (int i = 0; i < size; i++) {
+      Fig f = ((PathItem) _pathItems.elementAt(i)).getFig();
       if (f.contains(x, y)) return true;
     }
     return false;
@@ -267,9 +291,9 @@ implements PropertyChangeListener, Highlightable {
 
   public boolean intersects(Rectangle r) {
     if (_fig.intersects(r)) return true;
-    Enumeration enum = _pathItems.elements();
-    while (enum.hasMoreElements()) {
-      Fig f = ((PathItem) enum.nextElement()).getFig();
+    int size = _pathItems.size();
+    for (int i = 0; i < size; i++) {
+      Fig f = ((PathItem) _pathItems.elementAt(i)).getFig();
       if (f.intersects(r)) return true;
     }
     return false;
@@ -277,9 +301,9 @@ implements PropertyChangeListener, Highlightable {
 
   public boolean hit(Rectangle r) {
     if (_fig.hit(r)) return true;
-    Enumeration enum = _pathItems.elements();
-    while (enum.hasMoreElements()) {
-      Fig f = ((PathItem) enum.nextElement()).getFig();
+    int size = _pathItems.size();
+    for (int i = 0; i < size; i++) {
+      Fig f = ((PathItem) _pathItems.elementAt(i)).getFig();
       if (f.hit(r)) return true;
     }
     return false;

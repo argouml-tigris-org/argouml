@@ -66,7 +66,7 @@ public class DialingExample {
       
       idle = new SimpleState("Idle");
       active = new CompositeState("Active");
-      active.setIsConcurent(false);
+      active.setIsConcurrent(false);
       // note: top does not have an initial state, this is an incompletness
       
       activeInitial = new Pseudostate(PseudostateKind.INITIAL);
