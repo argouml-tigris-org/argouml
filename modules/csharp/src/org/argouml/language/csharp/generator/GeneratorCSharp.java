@@ -35,9 +35,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.PluggableNotation;
+import org.argouml.kernel.Project;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.DocumentationManager;
@@ -57,12 +59,17 @@ import tudresden.ocl.parser.node.AConstraintBody;
 public class GeneratorCSharp extends Generator2
     implements PluggableNotation, FileGenerator {
     private static final boolean VERBOSE = false;
+    private static final String LINE_SEPARATOR =
+	System.getProperty("line.separator");
+
     private static Section sect;
 
+    private static final Logger LOG = Logger.getLogger(GeneratorCSharp.class);
+    
     /**
      * The singleton.
      */
-    private static final GeneratorCSharp SINGLETON = new GeneratorCSharp();
+    private static final GeneratorCSharp INSTANCE = new GeneratorCSharp();
 
     /**
      * Get this object.
@@ -70,7 +77,7 @@ public class GeneratorCSharp extends Generator2
      * @return The one and only instance.
      */
     public static GeneratorCSharp getInstance() { 
-        return SINGLETON; 
+        return INSTANCE; 
     }
 
     /**
@@ -89,7 +96,7 @@ public class GeneratorCSharp extends Generator2
      * @deprecated by Linus Tolke as of 0.17.1. Use {link #generate(Object)}.
      */
     public static String cSharpGenerate(Object o) {
-	return SINGLETON.generate(o);
+	return INSTANCE.generate(o);
     }
 
     /** 
@@ -113,9 +120,11 @@ public class GeneratorCSharp extends Generator2
 	    path += FILE_SEPARATOR;
 	}
 	
-	Object namespace = ModelFacade.getNamespace(cls);
-	String packagePath = ModelFacade.getName(namespace);
-	Object parent = ModelFacade.getNamespace(namespace);
+        String packagePath = "";
+        Object parent = ModelFacade.getNamespace(ModelFacade.getNamespace(cls));
+        if (parent != null) {
+            packagePath = ModelFacade.getName(ModelFacade.getNamespace(cls));
+        }
 	while (parent != null) {
 	    // ommit root package name; it's the model's root
 	    if (ModelFacade.getNamespace(parent) != null) {
@@ -129,7 +138,7 @@ public class GeneratorCSharp extends Generator2
 	    File f = new File(path);
 	    if (!f.isDirectory()) {
 		if (!f.mkdir()) {
-		    System.out.println(" could not make directory " + path);
+		    LOG.debug(" could not make directory " + path);
 		    return null;
 		}
 	    }
@@ -145,19 +154,19 @@ public class GeneratorCSharp extends Generator2
 	    lastIndex = index;
 	} while (true);
 	String pathname = path + filename;
-	System.out.println("-----" + pathname + "-----");
+	LOG.debug("-----" + pathname + "-----");
 
 	//String pathname = path + filename;
 	// TODO: package, project basepath, tagged values to configure
 	File f = new File(pathname);
 	if (f.exists()) {
-	    System.out.println("Generating (updated) " + f.getPath());
+	    LOG.debug("Generating (updated) " + f.getPath());
 	    sect.read(pathname);
 	} else {
-	    System.out.println("Generating (new) " + f.getPath());
+	    LOG.debug("Generating (new) " + f.getPath());
 	}
-	String header = SINGLETON.generateHeader(cls, pathname, packagePath);
-	String src = SINGLETON.generate(cls);
+	String header = INSTANCE.generateHeader(cls, pathname, packagePath);
+	String src = INSTANCE.generate(cls);
 	if (packagePath.length() > 0) {
 	    src += "\n}";
 	}
@@ -174,12 +183,12 @@ public class GeneratorCSharp extends Generator2
 		    fos.close();
 		}
 	    } catch (IOException exp) {
-		System.out.println("FAILED: " + f.getPath());
+		LOG.debug("FAILED: " + f.getPath());
 	    }
 	}
 
 	sect.write(pathname, INDENT);
-	System.out.println("written: " + pathname);
+	LOG.debug("written: " + pathname);
 
 
 	File f1 = new File(pathname + ".bak");
@@ -197,7 +206,7 @@ public class GeneratorCSharp extends Generator2
 	    f3.renameTo(new File(pathname));
 	}
 
-	System.out.println("----- end updating -----");
+	LOG.debug("----- end updating -----");
 	return pathname;
     }
 
@@ -210,7 +219,9 @@ public class GeneratorCSharp extends Generator2
 	String s = "";
 	// TODO: add user-defined copyright
 	s += "// FILE: " + pathname.replace('\\', '/') + "\n\n";
-
+        
+        s += generateImports(cls, packagePath);
+        
 	if (packagePath.length() > 0) {
 	    s += "namespace " + packagePath + " {\n";
 	}
@@ -243,7 +254,7 @@ public class GeneratorCSharp extends Generator2
 
 	//   {
 	//       Collection col = cls.getClientDependencies();
-	//       System.out.println("col: " + col);
+	//       LOG.debug("col: " + col);
 	//       if (col != null){
 	//           Iterator itr = col.iterator();
 	//           while (itr.hasNext()) {
@@ -477,6 +488,7 @@ public class GeneratorCSharp extends Generator2
      */
     public String generateParameter(Object param) {
 	String s = "";
+        String temp = "";
 	// TODO: qualifiers (e.g., const)
 	// TODO: stereotypes...
 	s +=  generateClassifierRef(ModelFacade.getType(param)) + " ";
@@ -485,7 +497,8 @@ public class GeneratorCSharp extends Generator2
 	    || (ModelFacade.getKind(param).equals(
 	            ModelFacade.OUT_PARAMETERDIRECTIONKIND))) {
 	    // if OUT or INOUT, then pass by Reference
-	    s += "ByRef ";
+	    temp = "ref " + s;
+            s = temp;
 	}
 	s += generateName(ModelFacade.getName(param));
 
@@ -531,7 +544,7 @@ public class GeneratorCSharp extends Generator2
 	String classifierKeyword;
 	if (ModelFacade.isAClass(cls)) {
 	    classifierKeyword = "class";
-	} else if (ModelFacade.isAClass(cls)) {
+	} else if (ModelFacade.isAInterface(cls)) {
 	    classifierKeyword = "interface";
 	} else {
 	    return ""; // actors and use cases
@@ -700,8 +713,8 @@ public class GeneratorCSharp extends Generator2
 	      m = (MMethod) i.next();
 
 	      if (m != null) {
-	      //System.out.println(", BODY of "+m.getName());
-	      //System.out.println("|"+m.getBody().getBody()+"|");
+	      //LOG.debug(", BODY of "+m.getName());
+	      //LOG.debug("|"+m.getBody().getBody()+"|");
 	      if (m.getBody() != null)
 	      return m.getBody().getBody();
 	      else
@@ -1090,8 +1103,8 @@ public class GeneratorCSharp extends Generator2
 	if (!ModelFacade.isNavigable(associationEnd)) {
 	    return "";
 	}
-	//String s = INDENT + "protected ";
-	String s = INDENT;
+	String s = INDENT + "protected ";
+	//String s = INDENT;
 	String tempS = "";
 	if (VERBOSE) {
 	    tempS += "/* public */ ";
@@ -1130,6 +1143,12 @@ public class GeneratorCSharp extends Generator2
 
 	String name = ModelFacade.getName(associationEnd);
 	Object association = ModelFacade.getAssociation(associationEnd);
+        Object multi = ModelFacade.getMultiplicity(associationEnd);
+        if ((multi.equals(ModelFacade.M1_1_MULTIPLICITY)) || multi.equals(ModelFacade.M0_1_MULTIPLICITY)){
+            s += generateClassifierRef(ModelFacade.getType(associationEnd)) + " ";
+        }else if ((multi.equals(ModelFacade.M1_N_MULTIPLICITY)) || multi.equals(ModelFacade.M0_N_MULTIPLICITY)){
+            s += "ArrayList ";
+        }
 	String associationName = ModelFacade.getName(association);
 	if (name != null  
 	        && name != null && name.length() > 0) {
@@ -1361,7 +1380,7 @@ public class GeneratorCSharp extends Generator2
      * @see org.argouml.application.api.NotationProvider2#generateStateBody(java.lang.Object)
      */
     public String generateStateBody(Object state) {
-	System.out.println("GeneratorCSharp: generating state body");
+	LOG.debug("GeneratorCSharp: generating state body");
 	String s = "";
 	Object entry = ModelFacade.getEntry(state);
 	Object exit = ModelFacade.getExit(state);
@@ -1537,5 +1556,187 @@ public class GeneratorCSharp extends Generator2
         return generateState(actionState);
     }
 
+    private String generateImports(Object cls, String packagePath) {
+        // TODO: check also generalizations
+        StringBuffer sb = new StringBuffer(80);
+        java.util.HashSet importSet = new java.util.HashSet();
+        String ftype;
+        Iterator j;
+        Collection c = ModelFacade.getFeatures(cls);
+        if (c != null) {
+            // now check packages of all feature types
+            for (j = c.iterator(); j.hasNext();) {
+                Object mFeature = /*(MFeature)*/ j.next();
+                if (ModelFacade.isAAttribute(mFeature)) {
+                    if ((ftype =
+                            generateImportType(ModelFacade.getType(mFeature),
+                                               packagePath))
+                            != null) {
+                        importSet.add(ftype);
+                    }
+                } else if (ModelFacade.isAOperation(mFeature)) {
+                    // check the parameter types
+                    Iterator it =
+			ModelFacade.getParameters(mFeature).iterator();
+                    while (it.hasNext()) {
+                        Object parameter = it.next();
+			ftype =
+			    generateImportType(ModelFacade.getType(parameter),
+					       packagePath);
+			if (ftype != null) {
+                            importSet.add(ftype);
+                        }
+                    }
 
+                    // check the return parameter types
+                    it =
+                        UmlHelper.getHelper()
+			    .getCore()
+			        .getReturnParameters(/*(MOperation)*/mFeature)
+			            .iterator();
+                    while (it.hasNext()) {
+                        Object parameter = it.next();
+			ftype =
+			    generateImportType(ModelFacade.getType(parameter),
+					       packagePath);
+                        if (ftype != null) {
+                            importSet.add(ftype);
+                        }
+                    }
+
+		    // check raised signals
+		    it = ModelFacade.getRaisedSignals(mFeature).iterator();
+		    while (it.hasNext()) {
+			Object signal = it.next();
+			if (!ModelFacade.isAException(signal)) {
+			    continue;
+			}
+
+			ftype =
+			    generateImportType(ModelFacade.getType(signal),
+					       packagePath);
+			if (ftype != null) {
+			    importSet.add(ftype);
+			}
+		    }
+                }
+            }
+        }
+
+	c = ModelFacade.getGeneralizations(cls);
+	if (c != null) {
+	    // now check packages of all generalized types
+	    for (j = c.iterator(); j.hasNext();) {
+		Object gen = /*(MGeneralization)*/ j.next();
+		Object parent = ModelFacade.getParent(gen);
+		if (parent == cls) {
+		    continue;
+		}
+
+		ftype = generateImportType(parent,
+					   packagePath);
+		if (ftype != null) {
+		    importSet.add(ftype);
+		}
+	    }
+	}
+
+	c = ModelFacade.getSpecifications(cls);
+	if (c != null) {
+	    // now check packages of the interfaces
+	    for (j = c.iterator(); j.hasNext();) {
+		Object iface = /*(MInterface)*/ j.next();
+
+		ftype = generateImportType(iface,
+					   packagePath);
+		if (ftype != null) {
+		    importSet.add(ftype);
+		}
+	    }
+	}
+
+        c = ModelFacade.getAssociationEnds(cls);
+        if (!c.isEmpty()) {
+            // check association end types
+            for (j = c.iterator(); j.hasNext();) {
+                Object associationEnd = /*(MAssociationEnd)*/ j.next();
+                Object association = ModelFacade.getAssociation(associationEnd);
+                Iterator connEnum =
+		    ModelFacade.getConnections(association).iterator();
+                while (connEnum.hasNext()) {
+                    Object associationEnd2 =
+			/*(MAssociationEnd)*/ connEnum.next();
+                    if (associationEnd2 != associationEnd
+                            && ModelFacade.isNavigable(associationEnd2)
+                            && !ModelFacade.isAbstract(
+                                    ModelFacade.getAssociation(
+                                            associationEnd2))) {
+                        // association end found
+                        Object multiplicity =
+			    ModelFacade.getMultiplicity(associationEnd2);
+                        if (!ModelFacade.M1_1_MULTIPLICITY.equals(multiplicity)
+                                && !ModelFacade.M0_1_MULTIPLICITY.equals(
+                                        multiplicity)) {
+                            importSet.add("System.Collections");
+                        } else {
+			    ftype =
+				generateImportType(ModelFacade.getType(
+				        associationEnd2),
+						   packagePath);
+			    if (ftype != null) {
+				importSet.add(ftype);
+			    }
+                        }
+                    }
+                }
+            }
+        }
+        // finally generate the import statements
+        for (j = importSet.iterator(); j.hasNext();) {
+            ftype = (String) j.next();
+            sb.append("using ").append(ftype).append(";");
+	    sb.append(LINE_SEPARATOR);
+        }
+        if (!importSet.isEmpty()) {
+            sb.append(LINE_SEPARATOR);
+        }
+        return sb.toString();
+    }
+
+    private String generateImportType(Object type, String exclude) {
+        String ret = null;
+        if (type != null && ModelFacade.getNamespace(type) != null) {
+            String p = getPackageName(ModelFacade.getNamespace(type));
+            if (!p.equals(exclude)) {
+                ret = p;
+		if (p.length() > 0) {
+		    ret = p;
+		} else {
+		    ret = null;
+		}
+	    }
+        }
+        return ret;
+    }
+    /**
+       Gets the .NET package name for a given namespace,
+       ignoring the root namespace (which is the model).
+
+       @param namespace the namespace
+       @return the Java package name
+    */
+    public String getPackageName(Object namespace) {
+        if (namespace == null
+	    || !ModelFacade.isANamespace(namespace)
+	    || ModelFacade.getNamespace(namespace) == null)
+            return "";
+        String packagePath = ModelFacade.getName(namespace);
+        while ((namespace = ModelFacade.getNamespace(namespace)) != null) {
+            // ommit root package name; it's the model's root
+            if (ModelFacade.getNamespace(namespace) != null)
+                packagePath =
+		    ModelFacade.getName(namespace) + '.' + packagePath;
+        }
+        return packagePath;
+    }
 } /* end class GeneratorCSharp */
