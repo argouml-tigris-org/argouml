@@ -624,6 +624,9 @@ public class ParserDisplay extends Parser {
      *   as a token, so we can distinguish between "name:" and "location". The
      *   number of tokens will distinguish our four cases.</p>
      *
+     * TODO: This method needs to be replaced, since it by design cannot cope
+     *       with the current design of the model component.
+     *
      * @param text  The string to parse
      *
      * @return      A new extension point, with fields set appropriately, or
@@ -642,8 +645,11 @@ public class ParserDisplay extends Parser {
 
         // Build a new extension point
 
+	// This method has insufficient information to call buildExtensionPoint.
+	// Thus we'll need to create one, and pray that whomever called us knows
+	// what kind of mess they got.
         Object ep =
-	    UmlFactory.getFactory().getUseCases().buildExtensionPoint(null);
+	    UmlFactory.getFactory().getUseCases().createExtensionPoint();
 
         StringTokenizer st = new StringTokenizer(text.trim(), ":", true);
         int numTokens = st.countTokens();
