@@ -23,8 +23,17 @@
 
 package org.argouml.model.uml.behavioralelements.statemachines;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
+import org.argouml.kernel.Project;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.state_machines.MCallEvent;
@@ -323,7 +332,9 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     
     public void deleteState(MState elem) {}
     
-    public void deleteStateMachine(MStateMachine elem) {}
+    public void deleteStateMachine(MStateMachine elem) {
+    }    
+                
     
     public void deleteStateVertex(MStateVertex elem) {}
     

@@ -64,10 +64,6 @@ public class PropPanelReception extends PropPanelModelElement {
         addCaption(Argo.localize("UMLMenu", "label.signal"),1,1,0);
         addField(new UMLSignalComboBox(this, new UMLSignalComboBoxModel(this)),1,1,0);
         
-        // TODO: make it possible to select a classifier that has this reception
-        addCaption(Argo.localize("UMLMenu", "label.owner"),2,1,0);
-        addField(new UMLClassifierComboBox(this),2,1,0);
-        
         addCaption(Argo.localize("UMLMenu", "label.specification"),3,1,0);
         JScrollPane specificationScroll = new JScrollPane(new UMLTextArea(this, new UMLTextProperty(mclass, "specification", "getSpecification" , "setSpecification")),JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         addField(specificationScroll, 3, 1, 1);

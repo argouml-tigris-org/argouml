@@ -56,6 +56,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
         // we must build a new list here
         // we delegate that to the abstract method buildModelList to give
         // the user of this library class some influence
+        removeAllElements();
         buildModelList();
     }
 
@@ -174,7 +175,8 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * @param col
      */
     protected void setAllElements(Collection col) {
-        removeAllElements();
+        if (!isEmpty())
+            removeAllElements();
         addAll(col);
     }
     
