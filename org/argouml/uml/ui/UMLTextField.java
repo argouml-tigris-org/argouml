@@ -37,8 +37,9 @@ import ru.novosoft.uml.behavior.state_machines.*;
 /**
  *  This class handles the updating of text as it is typed into the text field on one
  *  of the many property panels. By catching the MElementEvent dispatched from NSUML it
- *  updates the diagram as each charachter is typed. */
-public class UMLTextField extends JTextField implements DocumentListener, UMLUserInterfaceComponent {
+ *  updates the diagram as each character is typed. */
+public class UMLTextField extends JTextField implements DocumentListener, 
+                                                        UMLUserInterfaceComponent {
 
     private UMLUserInterfaceContainer _container;
     private UMLTextProperty _property;
@@ -118,41 +119,51 @@ public class UMLTextField extends JTextField implements DocumentListener, UMLUse
         }
         if (_target instanceof MClassifier){
             _classifier = (MClassifier) _target;
+            if(_classifier == null){
+                return;
+            }
             _classifier.setFeatures(_classifier.getFeatures());
         }
         else if (_target instanceof MOperation){
             _classifier = (MClassifier) ((MOperation)_target).getOwner();
+            if(_classifier == null){
+                return;
+            }
             _classifier.setFeatures(_classifier.getFeatures());
         }
         else if (_target instanceof MAttribute){
             _classifier = (MClassifier) ((MAttribute)_target).getOwner();
+//            Argo.log.info("UMLTextField.update()..._classifier = " + _classifier);
+            if(_classifier == null){
+                return;
+            }
             _classifier.setFeatures(_classifier.getFeatures());
         }
-        // needs_more_work We can fall into this by setting a parameter for a Call Event
-        // of a transition and get a Null Pointer Exception on the feature.getOwner()
-        // method. Have to somehow find the correct Feature...
         else if (_target instanceof MParameter){
             MBehavioralFeature feature = ((MParameter) _target).getBehavioralFeature();
             //
-            // check if we are dealing with a valid parameter...Hack to prevent
-            // Null Pointer Exceptions on Call Event parameter list box...
+            // check if we are dealing with a valid parameter...
+            // 
             if (feature == null){
                 return;
             }
             _classifier = (MClassifier) feature.getOwner();
+            if(_classifier == null){
+                return;
+            }
             _classifier.setFeatures(_classifier.getFeatures());
         } 
         else if (_target instanceof MCallEvent){
-            Argo.log.info("UMLTextField.update()...target = " + _target);
+//            Argo.log.info("UMLTextField.update()...target = " + _target);
         }
-        else
-            Argo.log.info("UMLTextField.update()else...target = " + _target);
+//        else
+//            Argo.log.info("UMLTextField.update()else...target = " + _target);
     }
 
     
     public void changedUpdate(final DocumentEvent p1) {
         _property.setProperty(_container,getText());
-        Argo.log.info("UMLTextField.changedUpdate: DocumentEvent p1 " );       
+//        Argo.log.info("UMLTextField.changedUpdate: DocumentEvent p1 " );       
     }
     public void removeUpdate(final DocumentEvent p1) {
         _property.setProperty(_container,getText());
