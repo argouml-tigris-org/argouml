@@ -37,7 +37,7 @@ public class ActionNewChangeEvent extends ActionNewEvent {
     public static ActionNewChangeEvent SINGLETON = new ActionNewChangeEvent();
 
     /**
-     * Constructor for ActionNewCallEvent.
+     * Constructor for ActionNewChangeEvent.
      */
     protected ActionNewChangeEvent() {
         super();

@@ -22,8 +22,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: PropPanelCallEvent.java
-// Classes: PropPanelCallEvent
+// File: PropPanelChangeEvent
+// Classes: PropPanelChangeEvent
 // Original Author: oliver.heyden@gentleware.de
 
 package org.argouml.uml.ui.behavior.state_machines;

@@ -37,7 +37,7 @@ public class ActionNewSignalEvent extends ActionNewEvent {
     public static ActionNewSignalEvent SINGLETON = new ActionNewSignalEvent();
 
     /**
-     * Constructor for ActionNewCallAction.
+     * Constructor for ActionNewSignalEvent.
      */
     protected ActionNewSignalEvent() {
         super();
