@@ -153,6 +153,8 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     addWindowListener(new WindowCloser());
     if (_componentResizer == null) _componentResizer = new ComponentResizer();
     addComponentListener(_componentResizer);
+     ImageIcon argoImage = ResourceLoader.lookupIconResource("Model");
+     this.setIconImage(argoImage.getImage());
  }
 
 
