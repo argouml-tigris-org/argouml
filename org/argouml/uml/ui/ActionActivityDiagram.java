@@ -57,7 +57,7 @@ public class ActionActivityDiagram extends UMLChangeAction {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Project p = pb.getProject();
 	try {
-	    MModelElement me = (MModelElement)pb.getDetailsTarget();
+	    Object me = pb.getDetailsTarget();
 	    if (!((me instanceof MNamespace) && ((me instanceof MUseCase) || (me instanceof MClass))))  {
 	    	JOptionPane.showMessageDialog(null, 
 	    	"You need to have a class or use case as your target in order to\nspecify for what you want to define a behaviour for.",
