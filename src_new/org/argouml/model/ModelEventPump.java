@@ -32,7 +32,8 @@ import java.beans.PropertyChangeListener;
  * 
  * Neither the registration or unregistration, nor the events themselves
  * contain any reference to the model implementation (NSUML).  Instead they
- * use the {@link PropertyChangeListener}, {@link PropertyChangeEvent} to
+ * use the {@link java.beans.PropertyChangeListener},
+ * {@link java.beans.PropertyChangeEvent} to
  * deliver events.<p>
  * 
  * The reference to the listener is a WeakReference so you don't need to 

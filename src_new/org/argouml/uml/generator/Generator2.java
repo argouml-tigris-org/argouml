@@ -46,9 +46,6 @@ import org.argouml.model.ModelFacade;
  * pattern</a> in "Design Patterns", and the <a href=
  * "http://www.ccs.neu.edu/research/demeter/">Demeter project</a>.<p>
  *
- * This is created from the {@link Generator} class and has the exact same
- * functions.
- *
  * @since 0.15.6
  */
 public abstract class Generator2

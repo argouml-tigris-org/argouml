@@ -111,9 +111,9 @@ class PropertySpecialString {
     private PropertyOperation op;
 
     /**
-     * Constructs a new PropertySpecialString that will invoke the action in op
-     * when {@link #invoke() invoke}is called with name equal to str and then
-     * return true from invoke.
+     * Constructs a new PropertySpecialString that will invoke the
+     * action in op when {@link #invoke(Object, String, String)} is
+     * called with name equal to str and then return true from invoke.
      * 
      * @param str
      *            The name of this PropertySpecialString.
@@ -126,16 +126,18 @@ class PropertySpecialString {
     }
 
     /**
-     * Called by {@link ParserDisplay#setProperties()
-     * ParserDisplay.setProperties} while searching for an action to invoke for
-     * a property. If it returns true, then setProperties may assume that all
-     * required actions have been taken and stop searching.
+     * Called by {@link ParserDisplay#setProperties(Object, Vector,
+     * PropertySpecialString[])} while searching for an action to
+     * invoke for a property. If it returns true, then setProperties
+     * may assume that all required actions have been taken and stop
+     * searching.
      * 
      * @param pname
      *            The name of a property.
      * @param value
      *            The value of a property.
-     * @return <b>true </b> if an action is performed, otherwise <b>false </b>.
+     * @return <tt>true</tt> if an action is performed, otherwise
+     *         <tt>false</tt>.
      */
     public boolean invoke(Object element, String pname, String value) {
         if (!name.equalsIgnoreCase(pname))
@@ -190,7 +192,7 @@ public class ParserDisplay extends Parser {
      * Constructs the object contained in SINGLETON and initializes some
      * instance variables.
      * 
-     * @see SINGLETON
+     * @see #SINGLETON
      */
     private ParserDisplay() {
         attributeSpecialStrings = new PropertySpecialString[2];
@@ -2900,11 +2902,9 @@ public class ParserDisplay extends Parser {
      * to a destination node. If the destination node cannot be reached, then
      * null is returned.
      * 
-     * @param MMessage
-     *            root The root of the call tree.
-     * @param path
-     *            The path to walk in the call tree.
-     * @return MMessage The message at the end of path, or null.
+     * @param root The root of the call tree.
+     * @param path The path to walk in the call tree.
+     * @return The message at the end of path, or <tt>null</tt>.
      */
     private Object walkTree(Object root, Vector path) {
         int i;
@@ -3302,8 +3302,8 @@ public class ParserDisplay extends Parser {
      *             breaks the idea that the parser is editing preexisting
      *             objects, which is bad. It is not used within core ArgoUML.
      *             d00mst.
-     *             It is used in {@link #parseTransition(Object, String) above.
-     * @see org.argouml.uml.generator.Parser#parseAction(java.lang.String)
+     *             It is used in {@link #parseTransition(Object, String)}
+     *             above.
      */
     public Object parseAction(String s) {
         Object a = UmlFactory.getFactory().getCommonBehavior()
@@ -3320,8 +3320,8 @@ public class ParserDisplay extends Parser {
      *             breaks the idea the idea that the parser is editing
      *             preexisting objects, which is bad. It is not used within core
      *             ArgoUML. d00mst.
-     *             It is used in {@link #parseTransition(Object, String) above.
-     * @see org.argouml.uml.generator.Parser#parseGuard(java.lang.String)
+     *             It is used in {@link #parseTransition(Object, String)}
+     *             above.
      */
     public Object parseGuard(String s) {
         Object g = UmlFactory.getFactory().getStateMachines().createGuard();
@@ -3576,19 +3576,24 @@ public class ParserDisplay extends Parser {
     
 
     /**
-     * An action state figure shows the action expression of the entry action according to the
-     * UML spec.
-     * @see org.argouml.uml.generator.Parser#parseActionState(java.lang.String, java.lang.Object)
+     * An action state figure shows the action expression of the entry
+     * action according to the UML spec.
+     *
+     * @see org.argouml.uml.generator.Parser#parseActionState(
+     *         java.lang.String, java.lang.Object)
      */
     public Object parseActionState(String s, Object actionState) {
         Object entry = ModelFacade.getEntry(actionState);
         String language = "";
         if (entry == null) {
-            entry = CommonBehaviorFactory.getFactory().buildUninterpretedAction(actionState);
+            entry =
+		CommonBehaviorFactory.getFactory()
+		    .buildUninterpretedAction(actionState);
         } else {
             language = ModelFacade.getLanguage(ModelFacade.getScript(entry));
         }
-        Object actionExpression = DataTypesFactory.getFactory().createActionExpression(language, s);
+        Object actionExpression =
+	    DataTypesFactory.getFactory().createActionExpression(language, s);
         ModelFacade.setScript(entry, actionExpression);
        return actionState;
     }

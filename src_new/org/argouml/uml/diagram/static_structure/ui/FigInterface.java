@@ -76,32 +76,32 @@ public class FigInterface extends FigNodeModelElement {
     // instance variables
 
     /**
-     * <p>The vector of graphics for operations (if any). First one is the
-     *   rectangle for the entire operations box.</p>
+     * The vector of graphics for operations (if any). First one is the
+     * rectangle for the entire operations box.<p>
      */
     protected FigGroup _operVec;
 
     /**
-     * <p>The rectangle for the entire operations box.</p>
+     * The rectangle for the entire operations box.<p>
      */
     protected FigRect _operBigPort;
 
     /**
-     * <p>A rectangle to blank out the line that would otherwise appear at the
-     *   bottom of the stereotype text box.</p>
+     * A rectangle to blank out the line that would otherwise appear at the
+     * bottom of the stereotype text box.<p>
      */
     protected FigRect _stereoLineBlinder;
 
     /**
-     * <p>Manages residency of an interface within a component on a deployment
-     *   diagram. Not clear why it is public, or even why it is an instance
-     *   variable (rather than local to the method).</p>
+     * Manages residency of an interface within a component on a deployment
+     * diagram. Not clear why it is public, or even why it is an instance
+     * variable (rather than local to the method).<p>
      */
     public Object resident =
 	UmlFactory.getFactory().getCore().createElementResidence();
 
     /**
-     * <p>Text highlighted by mouse actions on the diagram.</p>
+     * Text highlighted by mouse actions on the diagram.<p>
      */
     protected CompartmentFigText highlightedFigText = null;
 
@@ -109,33 +109,33 @@ public class FigInterface extends FigNodeModelElement {
     // constructors
 
     /**
-     * <p>Main constructor for a {@link FigInterface}.</p>
+     * Main constructor for a {@link FigInterface}.
      *
-     * <p>Parent {@link FigNodeModelElement} will have created the main box
-     *   {@link #_bigPort} and its name {@link #_name} and stereotype (@link
-     *   #_stereo}. This constructor creates a box for the operations.</p>
+     * Parent {@link FigNodeModelElement} will have created the main
+     * box {@link #getBigPort()} and its name {@link #getNameFig()}
+     * and stereotype (@link #getStereotypeFig()}. This constructor
+     * creates a box for the operations.<p>
      *
-     * <p>The properties of all these graphic elements are adjusted
-     *   appropriately. The main boxes are all filled and have outlines.</p>
+     * The properties of all these graphic elements are adjusted
+     * appropriately. The main boxes are all filled and have outlines.<p>
      *
-     * <p>For reasons I don't understand the stereotype is created in a box
-     *   with lines. So we have to created a blanking rectangle to overlay the
-     *   bottom line, and avoid three compartments showing.</p>
+     * For reasons I don't understand the stereotype is created in a box
+     * with lines. So we have to created a blanking rectangle to overlay the
+     * bottom line, and avoid three compartments showing.<p>
      *
-     * <p><em>Warning</em>. Much of the graphics positioning is hard coded. The
-     *   overall figure is placed at location (10,10). The name compartment (in
-     *   the parent {@link FigNodeModelElement} is 21 pixels high. The
-     *   stereotype compartment is created 15 pixels high in the parent, but we
-     *   change it to 19 pixels, 1 more than ({@link #STEREOHEIGHT} here. The
-     *   operations box is created at 19 pixels, 2 more than
-     *   {@link #ROWHEIGHT}.</p>
+     * <em>Warning</em>. Much of the graphics positioning is hard coded. The
+     * overall figure is placed at location (10,10). The name compartment (in
+     * the parent {@link FigNodeModelElement} is 21 pixels high. The
+     * stereotype compartment is created 15 pixels high in the parent, but we
+     * change it to 19 pixels, 1 more than ({@link #STEREOHEIGHT} here. The
+     * operations box is created at 19 pixels, 2 more than
+     * {@link #ROWHEIGHT}.<p>
      *
-     * <p>CAUTION: This constructor (with no arguments) is the only one
-     *   that does enableSizeChecking(false), all others must set it true.
-     *   This is because this constructor is the only one called when loading
-     *   a project. In this case, the parsed size must be maintained.</p>
+     * CAUTION: This constructor (with no arguments) is the only one
+     * that does enableSizeChecking(false), all others must set it true.
+     * This is because this constructor is the only one called when loading
+     * a project. In this case, the parsed size must be maintained.<p>
      */
-
     public FigInterface() {
 
         // Set name box. Note the upper line will be blanked out if there is
@@ -197,14 +197,14 @@ public class FigInterface extends FigNodeModelElement {
     }
 
     /**
-     * <p>Constructor for use if this figure is created for an
-     * existing interface node in the metamodel.</p>
+     * Constructor for use if this figure is created for an
+     * existing interface node in the metamodel.<p>
      *
-     * <p>Set the figure's name according to this node. This is used when the
-     *   user click's on 'add to diagram' in the navpane.  Don't know if this
-     *   should rather be done in one of the super classes, since similar code
-     *   is used in FigClass.java etc.  Andreas Rueckert
-     *   &lt;a_rueckert@gmx.net&gt;</p>
+     * Set the figure's name according to this node. This is used when the
+     * user click's on 'add to diagram' in the navpane.  Don't know if this
+     * should rather be done in one of the super classes, since similar code
+     * is used in FigClass.java etc.  Andreas Rueckert
+     * &lt;a_rueckert@gmx.net&gt;<p>
      *
      * @param gm   Not actually used in the current implementation
      *
@@ -349,10 +349,10 @@ public class FigInterface extends FigNodeModelElement {
     }
 
     /**
-     * <p>Gets the minimum size permitted for an interface on the diagram.</p>
+     * Gets the minimum size permitted for an interface on the diagram.<p>
      *
-     * <p>Parts of this are hardcoded, notably the fact that the name
-     *   compartment has a minimum height of 21 pixels.</p>
+     * Parts of this are hardcoded, notably the fact that the name
+     * compartment has a minimum height of 21 pixels.<p>
      *
      * @return  the size of the minimum bounding box.
      */
@@ -706,16 +706,16 @@ public class FigInterface extends FigNodeModelElement {
     }
 
     /**
-     * <p>Sets the bounds, but the size will be at least the one returned by
-     *   {@link #getMinimumSize()}, unless checking of size is disabled.</p>
+     * Sets the bounds, but the size will be at least the one returned by
+     * {@link #getMinimumSize()}, unless checking of size is disabled.<p>
      *
-     * <p>If the required height is bigger, then the additional height is
-     *   equally distributed among all figs (i.e. compartments), such that the
-     *   cumulated height of all visible figs equals the demanded height<p>.
+     * If the required height is bigger, then the additional height is
+     * equally distributed among all figs (i.e. compartments), such that the
+     * cumulated height of all visible figs equals the demanded height<p>.
      *
-     * <p>Some of this has "magic numbers" hardcoded in. In particular there is
-     *   a knowledge that the minimum height of a name compartment is 21
-     *   pixels.</p>
+     * Some of this has "magic numbers" hardcoded in. In particular there is
+     * a knowledge that the minimum height of a name compartment is 21
+     * pixels.<p>
      *
      * @param x  Desired X coordinate of upper left corner
      *
@@ -737,7 +737,8 @@ public class FigInterface extends FigNodeModelElement {
         // compartment
 
         Rectangle oldBounds = getBounds();
-        Dimension aSize = isCheckSize() ? getMinimumSize() : new Dimension(w, h);
+        Dimension aSize =
+	    isCheckSize() ? getMinimumSize() : new Dimension(w, h);
 
         int newW = Math.max(w, aSize.width);
         int newH = h;
@@ -810,7 +811,8 @@ public class FigInterface extends FigNodeModelElement {
         // Finally update the bounds of the operations box
 
         aSize =
-	    updateFigGroupSize(_operVec, x, currentY, newW, newH + y - currentY);
+	    updateFigGroupSize(_operVec, x, currentY,
+			       newW, newH + y - currentY);
 
         // set bounds of big box
 

@@ -244,8 +244,8 @@ public class TabDiagram
             ActionCopy.getInstance()
                     .setEnabled(sels != null && !sels.isEmpty());
             /*
-             * ActionPaste.getInstance().setEnabled( Globals.clipBoard != null &&
-             * !Globals.clipBoard.isEmpty());
+             * ActionPaste.getInstance().setEnabled( Globals.clipBoard
+             * != null && !Globals.clipBoard.isEmpty());
              */
             Collection currentSelection = TargetManager.getInstance()
                     .getTargets();
@@ -403,8 +403,10 @@ class ArgoJGraph extends JGraph {
         return false;
     }
 
-    /** Make a new JGraph with a new DefaultGraphModel.
-       * @see uci.graph.DefaultGraphModel */
+    /**
+     * Make a new JGraph with a new DefaultGraphModel.
+     * @see org.tigris.gef.graph.presentation.DefaultGraphModel
+     */
     public ArgoJGraph() {
         this(new DefaultGraphModel());
     }

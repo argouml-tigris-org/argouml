@@ -1432,15 +1432,15 @@ public class Modeller
      * This is called from {@link #addDocumentationTag} only.
      *
      * @param me the model element to add to
-     * @sTagName the name of the javadoc tag
-     * @sTagData the contents of the javadoc tag
+     * @param sTagName the name of the javadoc tag
+     * @param sTagData the contents of the javadoc tag
      */
-    private void addJavadocTagContents (Object me,
-					String sTagName,
-					String sTagData) {
-	if ((sTagName.equals ("invariant"))
-	    || (sTagName.equals ("pre-condition"))
-	    || (sTagName.equals ("post-condition"))) {
+    private void addJavadocTagContents(Object me,
+				       String sTagName,
+				       String sTagData) {
+	if ((sTagName.equals("invariant"))
+	    || (sTagName.equals("pre-condition"))
+	    || (sTagName.equals("post-condition"))) {
 
 	    // add as OCL constraint
 	    String sContext = OCLUtil.getContextString(me);
@@ -1483,7 +1483,7 @@ public class Modeller
      *
      * Added 2001-10-05 STEFFEN ZSCHALER.
      *
-     * @param me the model element to which to add the documentation
+     * @param modelElement the model element to which to add the documentation
      * @param sJavaDocs the documentation comment to add ("" or null
      * if no java docs)
      */

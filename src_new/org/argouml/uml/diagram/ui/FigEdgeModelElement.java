@@ -899,7 +899,7 @@ public abstract class FigEdgeModelElement
 
     /**
      * Overridden to notify project that save is needed when edge is moved.
-     * @see org.tigris.gef.presentation.FigEdgePoly#setPoint(Hand, int, int)
+     * @see org.tigris.gef.presentation.FigEdgePoly#setPoint(Handle, int, int)
      */
     public void setPoint(Handle h, int x, int y) {
         super.setPoint(h, x, y);

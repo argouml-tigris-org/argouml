@@ -93,6 +93,7 @@ public class StringNamespace implements Namespace, Cloneable {
      */
     public StringNamespace(NamespaceElement[] elements, String token) {
         this(token);
+
         for (int i = 0; i < elements.length; i++) {
             pushNamespaceElement(new StringNamespaceElement(elements[i]
                     .toString()));
@@ -110,7 +111,7 @@ public class StringNamespace implements Namespace, Cloneable {
     }
 
     /**
-     * @see org.argouml.uml.util.namespace.Namespace#addNamespaceElement(org.argouml.model.util.namespace.NamespaceElement)
+     * @see Namespace#pushNamespaceElement(NamespaceElement)
      */
     public void pushNamespaceElement(NamespaceElement element) {
         ns.push(element);
@@ -153,7 +154,8 @@ public class StringNamespace implements Namespace, Cloneable {
     }
 
     /**
-     * @see org.argouml.uml.util.namespace.Namespace#getCommonNamespace(org.argouml.model.util.namespace.Namespace)
+     * @see org.argouml.uml.util.namespace.Namespace#getCommonNamespace(
+     *         org.argouml.uml.util.namespace.Namespace)
      */
     public Namespace getCommonNamespace(Namespace namespace) {
         Iterator i = iterator();

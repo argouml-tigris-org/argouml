@@ -141,14 +141,14 @@ class OuterClassifierContext extends Context
     }
 
     /**
-       Get a classifier from the model. If it is not in the model, try
-       to find it with the CLASSPATH. If found, in the classpath, the
-       classifier is created and added to the model. If not found at
-       all, a datatype is created and added to the model.
-
-       @param classifierName The name of the classifier to find.
-       @return Found classifier.
-    */
+     * Get a classifier from the model. If it is not in the model, try
+     * to find it with the CLASSPATH. If found, in the classpath, the
+     * classifier is created and added to the model. If not found at
+     * all, a datatype is created and added to the model.
+     *
+     * @param name The name of the classifier to find.
+     * @return Found classifier.
+     */
     public Object get(String name)
 	throws ClassifierNotFoundException
     {

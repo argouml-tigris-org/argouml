@@ -37,10 +37,11 @@ import org.argouml.uml.ui.UMLComboBox2;
  */
 public class ActionSetMetaClass extends UMLChangeAction {
 
-    public final static ActionSetMetaClass SINGLETON = new ActionSetMetaClass();
+    public static final ActionSetMetaClass SINGLETON =
+	new ActionSetMetaClass();
 
     /**
-     * @param s
+     * Constructor.
      */
     public ActionSetMetaClass() {
         super("Set");

@@ -58,7 +58,8 @@ public class CrNoAssociations extends CrUML {
      * @param dm the object to criticize
      * the designer who decides the design process
      * @param dsgr the designer
-     * @return <CODE>PROBLEM_FOUND</CODE> if there is a problem, otherwise <CODE>NO_PROBLEM</CODE>
+     * @return <CODE>PROBLEM_FOUND</CODE> if there is a problem,
+     *         otherwise <CODE>NO_PROBLEM</CODE>
      */
     public boolean predicate2(Object dm, Designer dsgr) {
         if (!(ModelFacade.isAClassifier(dm)))
@@ -97,8 +98,8 @@ public class CrNoAssociations extends CrUML {
     }
     
     /**
-     * @param handle the classifier to examine
-     * @param number of levels searched
+     * @param dm The classifier to examine.
+     * @param depth Number of levels searched.
      * @return true if an association can be found in this classifier
      *		or in any of its generalizations.
      */

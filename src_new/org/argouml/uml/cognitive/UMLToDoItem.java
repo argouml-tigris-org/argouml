@@ -85,7 +85,7 @@ public class UMLToDoItem extends ToDoItem {
      * Action jumps to the diagram containing all or most of the
      * offenders and calls {@link #deselect()}, {@link #select()}
      * around the call to
-     * {@link ProjectManager#jumpToDiagramShowing(VectorSet)}.
+     * {@link ProjectBrowser#jumpToDiagramShowing(VectorSet)}.
      */
     public void action() {
         deselect();

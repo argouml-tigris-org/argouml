@@ -119,7 +119,7 @@ public class TabChecklist extends TabSpawnable
      * or a model element when an object is selected from the explorer.<p>
      *
      * @param target that is an object.
-     * @returns target that is always model element.
+     * @return target that is always model element.
      */
     private Object findTarget(Object target) {
         if (target instanceof Fig) {
@@ -237,8 +237,9 @@ public class TabChecklist extends TabSpawnable
 class TableModelChecklist extends AbstractTableModel
     implements VetoableChangeListener, DelayedVChangeListener, MElementListener
 {
-    protected static Logger cat =
+    private static final Logger LOG =
         Logger.getLogger(TableModelChecklist.class);
+
     ////////////////
     // instance varables
     Object _target;
@@ -306,7 +307,7 @@ class TableModelChecklist extends AbstractTableModel
     }
 
     public void setValueAt(Object aValue, int rowIndex, int columnIndex)  {
-	cat.debug("setting table value " + rowIndex + ", " + columnIndex);
+	LOG.debug("setting table value " + rowIndex + ", " + columnIndex);
 	if (columnIndex != 0) return;
 	if (!(aValue instanceof Boolean)) return;
 	boolean val = ((Boolean) aValue).booleanValue();
