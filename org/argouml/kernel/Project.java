@@ -423,6 +423,15 @@ public class Project implements java.io.Serializable, TargetListener {
                 }
             }
         }
+        
+        /* Issue 2909: if there is no diagram left, then let's add a default
+         * new one... */
+        if (diagrams.size() < 1) {
+            ArgoDiagram defaultDiagram = new UMLClassDiagram(treeRoot);
+            addMember(defaultDiagram);
+            setActiveDiagram(defaultDiagram); 
+            TargetManager.getInstance().setTarget(defaultDiagram);
+        }
     }
 
     /**
@@ -764,7 +773,6 @@ public class Project implements java.io.Serializable, TargetListener {
             }
         }
         d.removeChangeRegistryAsListener(saveRegistry);
-        setNeedsSave(true);
     }
 
     /**
