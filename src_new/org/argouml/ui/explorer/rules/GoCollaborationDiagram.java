@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,22 +25,25 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 
-public class GoCollaborationDiagram extends AbstractPerspectiveRule{
+public class GoCollaborationDiagram extends AbstractPerspectiveRule {
 
     public String getRuleName() {
         return "Collaboration->Diagram";
     }
 
     public Collection getChildren(Object parent) {
-
-        if (!(org.argouml.model.ModelFacade.isACollaboration(parent)))
+        if (!ModelFacade.isACollaboration(parent))
             return null;
+
         Project p = ProjectManager.getManager().getCurrentProject();
         if (p == null)
             return null;
@@ -59,4 +62,8 @@ public class GoCollaborationDiagram extends AbstractPerspectiveRule{
         return res;
     }
 
+    public Set getDependencies(Object parent) {
+        // TODO: What?
+	return null;
+    }
 }

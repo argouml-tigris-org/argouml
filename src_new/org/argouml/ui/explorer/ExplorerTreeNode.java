@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,6 +27,7 @@ package org.argouml.ui.explorer;
 import java.util.*;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 /**
  * Ensures that explorer tree nodes have a default ordering.
@@ -34,51 +35,64 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @author  alexb
  * @since 0.15.2, Created on 27 September 2003, 17:40
  */
-public class ExplorerTreeNode 
-extends DefaultMutableTreeNode
-implements Comparable{
-    
-    private Comparator order;
-    
+public class ExplorerTreeNode extends DefaultMutableTreeNode {
+
+    private ExplorerTreeModel model;
+    private boolean expanded;
+    private boolean pending;
+    private Set modifySet = Collections.EMPTY_SET;
+
     /** Creates a new instance of ExplorerTreeNode */
-    public ExplorerTreeNode(Object userObj) {
+    public ExplorerTreeNode(Object userObj, ExplorerTreeModel model) {
 
         super(userObj);
-        order = new TypeThenNameOrder();
+	this.model = model;
     }
-    
-    public int compareTo(Object obj) {
-        
-        return order.compare(this, obj);
-        
+
+    public boolean isLeaf() {
+	if (!expanded) {
+	    model.updateChildren(new TreePath(model.getPathToRoot(this)));
+	    expanded = true;
+	}
+	return super.isLeaf();
     }
-    
-    public void setOrder(Comparator newOrder){
-        order = newOrder;
+
+    boolean getPending() {
+	return pending;
     }
-    
-    public void orderChildren(){
-        if(children != null)
-            Collections.sort(this.children,order);
+
+    void setPending(boolean value) {
+	pending = value;
     }
-    
+
+    public void setModifySet(Set set) {
+	if (set == null || set.size() == 0)
+	    modifySet = Collections.EMPTY_SET;
+	else
+	    modifySet = set;
+    }
+
+    public void nodeModified(Object node) {
+	if (modifySet.contains(node))
+	    model.nodeUpdater.schedule(this);
+	if (node == getUserObject())
+	    model.nodeChanged(this);
+    }
+
     /**
      * cleans up for gc.
      */
     public void remove(){
-        
-        this.userObject = null;
-        order = null;
-        if(children != null){
-            Iterator childrenIt = children.iterator();
-            while(childrenIt.hasNext()){
-                
-                ((ExplorerTreeNode)childrenIt.next()).remove();
-            }
-            
-            children.clear();
-            children=null;
-        }
+	this.userObject = null;
+
+	if (children != null) {
+	    Iterator childrenIt = children.iterator();
+	    while (childrenIt.hasNext()) {
+		((ExplorerTreeNode) childrenIt.next()).remove();
+	    }
+
+	    children.clear();
+	    children = null;
+	}
     }
-    
 }

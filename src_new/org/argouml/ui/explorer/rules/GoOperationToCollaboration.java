@@ -26,6 +26,9 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.argouml.model.ModelFacade;
 
 /**
@@ -48,4 +51,14 @@ public class GoOperationToCollaboration extends AbstractPerspectiveRule{
         return null;
     }
 
+    public Set getDependencies(Object parent) {
+        if (ModelFacade.isAOperation(parent)) {
+	    Set set = new HashSet();
+	    set.add(parent);
+	    if (ModelFacade.getOwner(parent) != null)
+		set.add(ModelFacade.getOwner(parent));
+	    return set;
+	}
+	return null;
+    }
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,16 +25,27 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.argouml.model.ModelFacade;
 
-public class GoAssocRoleMessages extends AbstractPerspectiveRule{
+public class GoAssocRoleMessages extends AbstractPerspectiveRule {
 
     public String getRuleName() { return "AssociationRole->Messages"; }
 
     public Collection getChildren(Object parent) {
-	if (!(org.argouml.model.ModelFacade.isAAssociationRole(parent))) return null;
+	if (!ModelFacade.isAAssociationRole(parent))
+	    return null;
 	return ModelFacade.getMessages(parent);
     }
 
+    public Set getDependencies(Object parent) {
+        if (ModelFacade.isAAssociationRole(parent)) {
+	    Set set = new HashSet();
+	    set.add(parent);
+	    return set;
+	}
+	return null;
+    }
 }

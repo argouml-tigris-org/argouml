@@ -1,7 +1,5 @@
-
-
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,32 +26,44 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.argouml.model.ModelFacade;
-
 
 /**
  * Go rule to navigate from some message to it's corresponding action
  * @author jaap.branderhorst
  */
-public class GoMessageAction extends AbstractPerspectiveRule{
+public class GoMessageAction extends AbstractPerspectiveRule {
 
-    public String getRuleName() { return "Message->Action"; }
+    public String getRuleName() {
+	return "Message->Action";
+    }
 
     /**
      * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
      */
     public Collection getChildren(Object parent) {
-	if (org.argouml.model.ModelFacade.isAMessage(parent)) {
-            
+	if (ModelFacade.isAMessage(parent)) {
 	    Object action = ModelFacade.getAction(parent);
+
 	    if (action != null) {
 		ArrayList children = new ArrayList();
 		children.add(action);
 		return children;
 	    }
 	}
+
 	return null;
     }
 
+    public Set getDependencies(Object parent) {
+        if (ModelFacade.isAMessage(parent)) {
+	    Set set = new HashSet();
+	    set.add(parent);
+	    return set;
+	}
+	return null;
+    }
 }

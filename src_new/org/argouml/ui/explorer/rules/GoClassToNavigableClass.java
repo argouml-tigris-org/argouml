@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,28 +26,30 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.argouml.model.ModelFacade;
 
-public class GoClassToNavigableClass extends AbstractPerspectiveRule{
+public class GoClassToNavigableClass extends AbstractPerspectiveRule {
 
     public String getRuleName() {
         return "Class->Navigable Class";
     }
 
     public Collection getChildren(Object parent) {
-        if (!(org.argouml.model.ModelFacade.isAClass(parent)))
+        if (!ModelFacade.isAClass(parent))
             return null;
-        
+
         List childClasses = new ArrayList();
         
         Collection ends = ModelFacade.getAssociationEnds(parent);
         if (ends == null)
             return null;
         
-        java.util.Iterator enum = ends.iterator();
+        Iterator enum = ends.iterator();
         while (enum.hasNext()) {
             Object ae = /*(MAssociationEnd)*/ enum.next();
             Object asc = ModelFacade.getAssociation(ae);
@@ -73,7 +75,16 @@ public class GoClassToNavigableClass extends AbstractPerspectiveRule{
             childClasses.add(ModelFacade.getType(otherEnd));
             // TODO: handle n-way Associations
         }
+
         return childClasses;
     }
 
+    public Set getDependencies(Object parent) {
+        if (ModelFacade.isAClass(parent)) {
+	    Set set = new HashSet();
+	    set.add(parent);
+	    return set;
+	}
+	return null;
+    }
 }

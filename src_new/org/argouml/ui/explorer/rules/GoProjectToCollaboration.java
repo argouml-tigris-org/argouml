@@ -26,7 +26,9 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.argouml.kernel.Project;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
@@ -49,4 +51,12 @@ public class GoProjectToCollaboration extends AbstractPerspectiveRule{
 	return col;
     }
 
+    public Set getDependencies(Object parent) {
+        if (parent instanceof Project) {
+	    Set set = new HashSet();
+	    set.add(parent);
+	    return set;
+	}
+	return null;
+    }
 }

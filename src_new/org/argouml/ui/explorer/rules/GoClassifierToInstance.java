@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,13 +27,15 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.argouml.model.ModelFacade;
 
 /**
  * @author : jaap.branderhorst@xs4all.nl
  */
-public class GoClassifierToInstance extends AbstractPerspectiveRule{
+public class GoClassifierToInstance extends AbstractPerspectiveRule {
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
@@ -51,4 +53,12 @@ public class GoClassifierToInstance extends AbstractPerspectiveRule{
         return ModelFacade.getInstances(parent);
     }
 
+    public Set getDependencies(Object parent) {
+        if (ModelFacade.isAClassifier(parent)) {
+	    Set set = new HashSet();
+	    set.add(parent);
+	    return set;
+	}
+	return null;
+    }
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,8 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.argouml.model.ModelFacade;
 
@@ -43,10 +45,18 @@ public class GoSummaryToOperation extends AbstractPerspectiveRule{
     }
 
     public Collection getChildren(Object parent) {
-	if ( parent instanceof OperationsNode) {
+	if (parent instanceof OperationsNode) {
 	    return ModelFacade.getOperations(((OperationsNode) parent).getParent());
 	}
 	return null;
     }
 
+    public Set getDependencies(Object parent) {
+        if (parent instanceof OperationsNode) {
+	    Set set = new HashSet();
+	    set.add(((OperationsNode) parent).getParent());
+	    return set;
+	}
+	return null;
+    }
 }

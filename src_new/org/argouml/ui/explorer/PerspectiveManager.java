@@ -216,6 +216,7 @@ public class PerspectiveManager {
     public void oldLoadDefaultPerspectives(){
         ExplorerPerspective classPerspective = 
             new ExplorerPerspective("Class centric");
+        classPerspective.addRule(new GoProjectToModel());
         classPerspective.addRule(new GoNamespaceToClassifierAndPackage());
         classPerspective.addRule(new GoNamespaceToDiagram());
         classPerspective.addRule(new GoClassToSummary());
@@ -259,7 +260,7 @@ public class PerspectiveManager {
         
         ExplorerPerspective diagramPerspective = 
             new ExplorerPerspective("combobox.item.diagram-centric");
-        packagePerspective.addRule(new GoProjectToModel());
+        diagramPerspective.addRule(new GoProjectToModel());
         diagramPerspective.addRule(new GoModelToDiagrams());
         diagramPerspective.addRule(new GoDiagramToNode());
         diagramPerspective.addRule(new GoDiagramToEdge());

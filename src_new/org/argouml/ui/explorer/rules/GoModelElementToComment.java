@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,6 +26,9 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.argouml.model.ModelFacade;
 
 /**
@@ -34,7 +37,7 @@ import org.argouml.model.ModelFacade;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 21, 2003
  */
-public class GoModelElementToComment extends AbstractPerspectiveRule{
+public class GoModelElementToComment extends AbstractPerspectiveRule {
 
     /**
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
@@ -53,4 +56,12 @@ public class GoModelElementToComment extends AbstractPerspectiveRule{
         return "ModelElement->Comment";
     }
 
+    public Set getDependencies(Object parent) {
+        if (ModelFacade.isAModelElement(parent)) {
+	    Set set = new HashSet();
+	    set.add(parent);
+	    return set;
+	}
+	return null;
+    }
 }

@@ -24,13 +24,16 @@
 
 package org.argouml.ui.explorer.rules;
 
+import java.util.Collection;
+import java.util.Set;
+
 /**
  *
  * @author  alexb
  */
 public abstract class AbstractPerspectiveRule implements PerspectiveRule {
     
-    public abstract java.util.Collection getChildren(Object parent);
+    public abstract Collection getChildren(Object parent);
     
     public abstract String getRuleName();
 
