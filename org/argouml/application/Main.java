@@ -47,6 +47,8 @@ import org.argouml.xml.argo.ArgoParser;
 import org.argouml.uml.ui.UMLAction;
 
 import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.application.security.ArgoAwtExceptionHandler;
+import org.argouml.application.security.ArgoSecurityException;
 
 import org.apache.log4j.*;
 
@@ -66,8 +68,6 @@ public class Main {
   // main
 
   public static void main(String args[]) {
-
-    System.setSecurityManager(ArgoSecurityManager.getInstance());
 
     // Force the configuration to load
     Configuration.load();
@@ -340,12 +340,30 @@ public class Main {
     postLoadActions.addElement(r);
   }
 
-   /** Do basic initialization of log4j.
+   /** Install our security handlers, 
+    *  and do basic initialization of log4j.
     *
-    *  This must be done as part of the main class initializer, so that
-    *  the initialization is complete before any other static initializers.
+    *  Log4j initialization must be done as
+    *  part of the main class initializer, so that
+    *  the log4j initialization is complete
+    *  before any other static initializers.
+    *
+    *  Also installs a trap to "eat" certain SecurityExceptions.
+    *  Refer to {@link java.awt.EventDispatchThread} for details.
     */
    static {
+ 
+       /*  Install the trap to "eat" SecurityExceptions.
+        */
+       System.setProperty("sun.awt.exception.handler",
+                          ArgoAwtExceptionHandler.class.getName());
+
+       /*  Install our own security manager.
+        *  Once this is done, no one else
+	*  can change "sun.awt.exception.handler".
+        */
+       System.setSecurityManager(ArgoSecurityManager.getInstance());
+
        /*  The string <code>log4j.configuration</code> is the
         *  same string found in
 	*  {@link org.apache.log4j.Configuration.DEFAULT_CONFIGURATION_FILE}
@@ -360,7 +378,6 @@ public class Main {
            BasicConfigurator.configure();
            Category.getRoot().getHierarchy().disableAll();
        }
-
    }
 
 
