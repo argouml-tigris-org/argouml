@@ -97,6 +97,10 @@ public class ProjectBrowser extends JFrame
     protected String _appName = "ProjectBrowser";
 
     protected MultiEditorPane _editorPane;
+    
+    /* Work in progress here to allow multiple details panes with 
+    ** different contents - Bob Tarling
+    */
     protected DetailsPane _northEastPane;
     protected DetailsPane _northPane;
     protected DetailsPane _northWestPane;
@@ -161,6 +165,9 @@ public class ProjectBrowser extends JFrame
         _editorPane = new MultiEditorPane();
         _editorPane.addNavigationListener(this);
         
+        /* Work in progress here to allow multiple details panes with 
+        ** different contents - Bob Tarling
+        */
         _eastPane      = makeDetailsPane(BorderSplitPane.EAST.toLowerCase(), Vertical.getInstance());
         _southPane     = makeDetailsPane(BorderSplitPane.SOUTH. toLowerCase(), Horizontal.getInstance());
         _southEastPane = makeDetailsPane(BorderSplitPane.SOUTHEAST.toLowerCase(), Horizontal.getInstance());
@@ -369,7 +376,7 @@ public class ProjectBrowser extends JFrame
     public TabProps getTabProps() {
         // In theory there can be multiple details pane (work in
         // progress). It must first be determined which details
-        // pabe contains the properties tab. Bob Tarling 7 Dec 2002
+        // page contains the properties tab. Bob Tarling 7 Dec 2002
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         while(it.hasNext()) {
             DetailsPane detailsPane = (DetailsPane)it.next();
@@ -415,8 +422,10 @@ public class ProjectBrowser extends JFrame
             panel = detailsPane.getNamedTab(tabName);
             if (panel != null) return panel;
         }
-        return null;
+        //I'd prefer to throw this exception here but doing Argo currently
+        //falls over - needs more investigation Bob Tarling 8 Dec 2002
         //throw new IllegalArgumentException("No such tab named " + tabName);
+        return null;
     }
     
     public void jumpToDiagramShowing(VectorSet dms) {
@@ -616,8 +625,6 @@ public class ProjectBrowser extends JFrame
         }                    
         _splash = splash;
     }
-    
-
 } /* end class ProjectBrowser */
 
 
