@@ -952,7 +952,7 @@ public class Project implements java.io.Serializable, TargetListener {
                 ExplorerEventAdaptor.getInstance().modelElementRemoved(obj);
             }
             if (obj instanceof Fig) {
-                ((Fig) obj).dispose();
+                ((Fig) obj).deleteFromModel();
                 needSave = true;
                 // for explorer deletion:
                 obj = ((Fig) obj).getOwner();

@@ -343,7 +343,7 @@ public class MultiEditorPane
                     if (aFig != null) {
                         tabDia.getJGraph().setDiagram(diagram);
                         if (aFig.getOwner() == obj) {
-                            aFig.delete();
+                            aFig.removeFromDiagram();
                         }
                     }
                 }

@@ -968,7 +968,7 @@ public abstract class FigNodeModelElement
         LOG.debug("deleting: " + this + mee);
         Object o = mee.getSource();
         if (o == getOwner()) {
-            delete();
+            removeFromDiagram();
         } else if (isPartlyOwner(o)) {
             updateBounds();
             damage();
@@ -1040,9 +1040,9 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * @see org.tigris.gef.presentation.Fig#dispose()
+     * @see org.tigris.gef.presentation.Fig#deleteFromModel()
      */
-    public void dispose() {
+    public void deleteFromModel() {
         Object own = getOwner();
         if (own != null) {
             Trash.SINGLETON.addItemFrom(own, null);
@@ -1052,7 +1052,7 @@ public abstract class FigNodeModelElement
         }
         Iterator it = getFigs(null).iterator();
         while (it.hasNext()) {
-            ((Fig) it.next()).dispose();
+            ((Fig) it.next()).deleteFromModel();
         }
         super.dispose();
     }
@@ -1280,9 +1280,9 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * @see org.tigris.gef.presentation.Fig#delete()
+     * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
-    public void delete() {
+    public void removeFromDiagram() {
         if (this instanceof ArgoEventListener) {
             ArgoEventPump.removeListener(this);
         }
@@ -1309,7 +1309,7 @@ public abstract class FigNodeModelElement
         if (ModelFacade.isABase(own)) {
             UmlModelEventPump.getPump().removeModelEventListener(this, own);
         }
-        super.delete();
+        super.removeFromDiagram();
     }
 
     /**
