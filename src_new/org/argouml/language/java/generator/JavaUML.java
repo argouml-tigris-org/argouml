@@ -25,20 +25,13 @@
 
 package org.argouml.language.java.generator;
 
+import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.UmlFactory;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MDataType;
+import ru.novosoft.uml.model_management.MModel;
 
-import org.argouml.model.uml.foundation.core.CoreFactory;
-
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.xmi.*;
 
 /** A file of information about the Java language.  This is used to
  *  fill in the offered data types in variable and operation

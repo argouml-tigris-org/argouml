@@ -31,9 +31,15 @@
 
 package org.argouml.language.java.generator;
 
-import java.io.*;
-import java.util.*;
-import ru.novosoft.uml.foundation.core.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.Iterator;
+import java.util.Stack;
+import java.util.Vector;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 
 /**

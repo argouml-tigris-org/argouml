@@ -31,9 +31,10 @@
 
 package org.argouml.language.java.generator;
 
-import java.io.*;
-//import ru.novosoft.uml.foundation.core.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.util.Stack;
+
 
 /**
    This is a code piece that has been identified by the parser to be

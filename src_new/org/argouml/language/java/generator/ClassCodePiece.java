@@ -30,12 +30,11 @@
 
 package org.argouml.language.java.generator;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.util.Stack;
+import ru.novosoft.uml.foundation.core.MClass;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
 
 /**
    This code piece represents a class declaration.

@@ -30,12 +30,11 @@
 
 package org.argouml.language.java.generator;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.util.Stack;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.core.MInterface;
 
 /**
    This code piece represents an interface declaration.
