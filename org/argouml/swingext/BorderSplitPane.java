@@ -130,11 +130,14 @@ public class BorderSplitPane extends JComponent {
         }
     }
 
-    /** This class is not implemented
-     * @param comp
-     * @param index The index position to place the component
-     * @throws UnsupportedOperationException Always thrown
-     * @return  */    
+    /** 
+     * This method is only implemented to satisfy the superclass declaration.
+     * add(Component comp) should be used in preference
+     * 
+     * @param comp The component to be added
+     * @param index The index value is ignored
+     * @return the component argument
+     */    
     public Component add(Component comp, int index) {
         return add(comp);
     }

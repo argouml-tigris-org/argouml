@@ -14,22 +14,22 @@ import java.awt.*;
 public class GridLayout2 implements LayoutManager, java.io.Serializable {
 
      /**
-       * Do not resize the component.
+       * Do not resize the child components.
        */
     public static final int NONE = 0;
 
      /**
-       * Resize the component both horizontally and vertically.
+       * Resize all child components to fit their cell both horizontally and vertically.
        */
     public static final int BOTH = 1;
 
      /**
-       * Resize the component horizontally but not vertically.
+       * Resize all child components to fit their cell horizontally but not vertically.
        */
     public static final int HORIZONTAL = 2;
 
      /**
-       * Resize the component vertically but not horizontally.
+       * Resize all child components to fit their cell vertically but not horizontally.
        */
     public static final int VERTICAL = 3;
 
@@ -82,7 +82,7 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
        */
     public static final int NORTHWEST = 18;
 
-        /**
+    /**
      * This is the horizontal gap (in pixels) which specifies the space
      * between columns.  They can be changed at any time.
      * This should be a non negative integer.
@@ -127,8 +127,27 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
      */
     private int cols;
 
+    /**
+     * Size all cells as the largest prefered width and height component. <br />
+     * A possible value for the cellSizing parameter of the constructor in order to size
+     * cells so that each have the same width and height. The width is the largest
+     * prefered width and the height is the largest prefered height of all these child components.
+     */
     public static final int MAXPREFERRED = 20;
+    /**
+     * Size all cells so that all in the same row are the same height and all in the 
+     * same column are the same width. <br />
+     * A possible value for the cellSizing parameter of the constructor. The width is the largest
+     * prefered width of all components in the same column and the height is the largest prefered
+     * height of all components in the same row.
+     */
     public static final int ROWCOLPREFERRED = 21;
+    /**
+     * Size all cells as the same width and height to fit the parent component. <br />
+     * A possible value for the cellSizing parameter of the constructor in order to size
+     * cells so that each has the same height and width and are sized to fit their parent.
+     * This emulates the sizing done by a standard GridLayout.
+     */
     public static final int FITPARENT = 22;
 
     int cellSizing = FITPARENT;
@@ -136,19 +155,49 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
     private int fill = BOTH;
     private int anchor = WEST;
 
+    /**
+     * The height of the child component with the largest height
+     */
     protected int largestHeight;
+    /**
+     * The width of the child component with the largest width
+     */
     protected int largestWidth;
+    /**
+     * The required cell width of each column
+     */
     protected int[] colWidth;
+    /**
+     * The required cell height of each row
+     */
     protected int[] rowHeight;
 
+    /**
+     * Construct a new GridLayout2 with a default of one column per component, in a single row.
+     */
     public GridLayout2() {
 	this(1, 0, 0, 0);
     }
 
+    /**
+     * Construct a new GridLayout2 with the specified number of rows and columns.
+     *
+     * @param rows the number of rows in the layout
+     * @param cols the number of columns in the layout
+     */
     public GridLayout2(int rows, int cols) {
 	this(rows, cols, 0, 0);
     }
 
+    /**
+     * Construct a new GridLayout2 with the specified number of rows and columns and cell
+     * spacing.
+     *
+     * @param rows the number of rows in the layout
+     * @param cols the number of columns in the layout
+     * @param hgap the horizontal gap between cells
+     * @param vgap the vertical gap between cells
+     */
     public GridLayout2(int rows, int cols, int hgap, int vgap) {
 	if ((rows == 0) && (cols == 0)) {
 	    throw new IllegalArgumentException("rows and cols cannot both be zero");
@@ -159,38 +208,114 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
 	this.vgap = vgap;
     }
 
-    public GridLayout2(int cellSizing) {
-	this(1, 0, 0, 0, cellSizing);
-    }
-
+    /**
+     * Construct a new GridLayout2 with the specified number of rows and columns and cell sizing
+     * scheme.
+     *
+     * @param rows the number of rows in the layout
+     * @param cols the number of columns in the layout
+     * @param cellSizing the required cell sizing scheme
+     */
     public GridLayout2(int rows, int cols, int cellSizing) {
 	this(rows, cols, 0, 0, cellSizing);
     }
 
+    /**
+     * Construct a new GridLayout2 with the specified number of rows and columns, cell
+     * spacing and cell sizing scheme.
+     *
+     * @param rows the number of rows in the layout
+     * @param cols the number of columns in the layout
+     * @param hgap the horizontal gap between cells
+     * @param vgap the vertical gap between cells
+     * @param cellSizing the required cell sizing scheme
+     */
     public GridLayout2(int rows, int cols, int hgap, int vgap, int cellSizing) {
         this(rows, cols, hgap, vgap);
         this.cellSizing = cellSizing;
     }
 
+    /**
+     * Construct a new GridLayout2 with the specified number of rows and columns, cell
+     * spacing, cell sizing scheme and filling scheme.
+     *
+     * @param rows the number of rows in the layout
+     * @param cols the number of columns in the layout
+     * @param hgap the horizontal gap between cells
+     * @param vgap the vertical gap between cells
+     * @param cellSizing the required cell sizing scheme
+     * @param fill the required cell filling scheme
+     */
     public GridLayout2(int rows, int cols, int hgap, int vgap, int cellSizing, int fill) {
         this(rows, cols, hgap, vgap, cellSizing);
         this.fill = fill;
     }
 
+    /**
+     * Construct a new GridLayout2 with the specified number of rows and columns, cell
+     * spacing, cell sizing scheme and component sizing and anchoring scheme.
+     *
+     * @param rows the number of rows in the layout
+     * @param cols the number of columns in the layout
+     * @param hgap the horizontal gap between cells
+     * @param vgap the vertical gap between cells
+     * @param cellSizing the required cell sizing scheme
+     * @param fill the required cell filling scheme
+     * @param anchor the required anchoring of a child component within its cell
+     */
     public GridLayout2(int rows, int cols, int hgap, int vgap, int cellSizing, int fill, int anchor) {
         this(rows, cols, hgap, vgap, cellSizing, fill);
         this.anchor = anchor;
     }
 
 
+    /** 
+     * Adds the specified component with the specified name to the layout. This is included
+     * to satisfy the LayoutManager interface but is not actually used in this layout
+     * implementation.
+     *
+     * @param name the name of the component
+     * @param comp the component to be added
+     */    
     public void addLayoutComponent(String name, Component comp) {
     }
 
+    /** 
+     * Removes the specified component with the specified name from the layout. This is included
+     * to satisfy the LayoutManager interface but is not actually used in this layout
+     * implementation.
+     *
+     * @param name the name of the component
+     */    
     public void removeLayoutComponent(Component comp) {
     }
 
-
-    /* Required by LayoutManager. */
+    /**
+     * Determines the preferred size of the container argument using this grid layout. 
+     * The preferred size of a grid layout is dependant on the cellSizing scheme.<br />
+     *<br />
+     * MAXPREFERRED and FITPARENT use the same formula to calculate prefered size.<br />
+     * The prefered width using MAXPREFERRED or FITPARENT is the largest preferred width of any 
+     * of the widths in the container times the number of columns, plus the horizontal padding 
+     * times the number of columns plus one, plus the left and right insets of the target
+     * container. <br />
+     *<br />
+     * The preferred height using MAXPREFERRED or FITPARENT is the largest preferred height of
+     * any of the heights in the container times the number of rows, plus the vertical padding 
+     * times the number of rows plus one, plus the top and bottom insets of the target 
+     * container.<br />
+     *<br />
+     * The prefered width using ROWCOLPREFERRED is the largest preferred is the sum of the widths 
+     * of of all columns, plus the horizontal padding times the number of columns plus one, plus
+     * the left and right insets of the target container. <br />
+     *<br />
+     * The prefered height using ROWCOLPREFERRED is the largest preferred is the sum of the
+     * heights of of all columns, plus the horizontal padding times the number of columns plus 
+     * one, plus the left and right insets of the target container.
+     *
+     * @param parent the container to be laid out 
+     * @return the preferred dimensions to lay out the subcomponents of the specified container
+     */
     public Dimension preferredLayoutSize(Container parent) {
         synchronized (parent.getTreeLock()) {
             int componentCount = parent.getComponentCount();
@@ -428,6 +553,4 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
     public void setVgap(int vgap) {
         this.vgap = vgap;
     }
-
-
 }
