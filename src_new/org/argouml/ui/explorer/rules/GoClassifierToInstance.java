@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
@@ -41,7 +42,7 @@ public class GoClassifierToInstance extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return "Classifier->Instance";
+        return Translator.localize ("Tree", "misc.classifier.collaboration");
     }
 
     /**

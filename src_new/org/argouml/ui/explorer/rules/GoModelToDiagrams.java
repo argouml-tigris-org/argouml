@@ -28,10 +28,11 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.argouml.model.ModelFacade;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 
 /**
- * Rule for Model->Diagrams.
+ * Rule for Model->Diagram.
  * @author  alexb
  * @since 0.15.2, Created on 05 October 2003, 19:18
  */
@@ -41,7 +42,7 @@ public class GoModelToDiagrams extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return "Model->Diagrams"; //"misc.model-diagram");
+        return Translator.localize ("Tree", "misc.model.diagram");
     }
 
     /**

@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
@@ -43,7 +44,7 @@ public class GoClassToNavigableClass extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return "Class->Navigable Class";
+        return Translator.localize ("Tree", "misc.class.navigable-class");
     }
 
     /**

@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
 
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
@@ -81,6 +82,7 @@ public class GoBehavioralFeatureToStateDiagram extends AbstractPerspectiveRule {
      * @see org.argouml.ui.AbstractGoRule#getRuleName()
      */
     public String getRuleName() {
-        return "Behavioral Feature->Statechart diagram";
+        return Translator.localize ("Tree", 
+                "misc.behavioral-feature.statechart-diagram");
     }
 }

@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.model.ModelFacade;
@@ -42,7 +43,9 @@ public class GoProjectToStateMachine extends AbstractPerspectiveRule {
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
-    public String getRuleName() { return "Project->Statemachine"; }
+    public String getRuleName() {
+        return Translator.localize ("Tree", "misc.project.state-machine");
+    }
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)

@@ -30,10 +30,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
- * Rule for Namespace->Owned Elements.
+ * Rule for Namespace->Owned Element.
  *
  */
 public class GoNamespaceToOwnedElements extends AbstractPerspectiveRule {
@@ -42,7 +43,7 @@ public class GoNamespaceToOwnedElements extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return "Namespace->Owned Elements";
+        return Translator.localize ("Tree", "misc.namespace.owned-element");
     }
 
     /**
