@@ -44,11 +44,11 @@ include Makefile.config
 
 UCI_DIR=$(ARGO_DIR)/uci
 
-VER_NAME=argouml072
+VER_NAME=argouml08RC1
 
-JAR_NAME=argouml072
+JAR_NAME=argouml08RC1
 
-SRC_NAME=argosrc072
+SRC_NAME=argosrc08RC1
 
 
 all: classes jar
@@ -57,7 +57,7 @@ jar:
 	( $(CD) $(UCI_DIR) ; \
 	$(MAKE) $(MAKEFLAGS) TARGET=archive archive )
 	( $(CD) $(OBJ_DIR) ; \
-	$(JAVA_AR) cvf0 $(JAR_NAME).jar uci )
+	$(JAVA_AR) cvfm $(JAR_NAME).jar $(UCI_DIR)/argouml.mf uci )
 
 classes:
 	( $(CD) $(UCI_DIR) ; \
@@ -219,7 +219,7 @@ argosrc:
 
 
 argouml:
-	$(JAVA_AR) -J-mx40m cmvf0 uci/argouml.mf $(JAR_NAME).jar \
+	$(JAVA_AR) -J-mx40m cmvf uci/argouml.mf $(JAR_NAME).jar \
 	uci/COPYRIGHT  \
 	uci/Images/*.gif \
 	Acme/*.class \

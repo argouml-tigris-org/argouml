@@ -184,7 +184,9 @@ public class Project implements java.io.Serializable {
 // 	}
 
     MModel m1 = new MModelImpl();
-	m1.setName("untitledModel");
+    m1.setUUID(UUIDManager.SINGLETON.getNewUUID());
+    m1.setName("untitledModel");
+    
     try {
       p.addMember(new UMLClassDiagram(m1));
       p.addMember(new UMLUseCaseDiagram(m1));
