@@ -1,0 +1,337 @@
+<html><head><title>ArgoUML user manual</title><link type="text/css" href="look-and-feel.css" rel="stylesheet"><meta content="DocBook XSL Stylesheets V1.37" name="generator"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div id="Na21" class="book"><div class="titlepage"><div><h1 class="title"><a name="Na21"></a>ArgoUML user manual</h1></div><div><h2 class="subtitle">A introduction to Argo</h2></div><div><h3 class="author">Alejandro Ramirez</h3><h3 class="author">Philippe Vanpeperstraete</h3><h3 class="author">Andreas Rueckert</h3></div><div><p class="copyright">Copyright &copy; 2000
+ Philippe</p></div><div><div class="legalnotice"><p>The legalnotice is missing in this document.</p></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>1 <a href="#Na5e">Introduction</a></dt><dd><dl><dt>1.1 <a href="#Na63">About this Manual...</a></dt><dd><dl><dt>1.1.1 <a href="#Na6b">In this Manual, you will find...</a></dt><dt>1.1.2 <a href="#Na7d">In this guide, you will not find...</a></dt></dl></dd></dl></dd><dt>2 <a href="#getting-started">Getting started with ArgoUML</a></dt><dd><dl><dt>2.1 <a href="#installation">Installation</a></dt><dt>2.2 <a href="#quick-tour">Quick tour</a></dt><dd><dl><dt>2.2.1 <a href="#navigator-pane">The navigator pane</a></dt><dt>2.2.2 <a href="#diagram-editor-pane">The diagram editor pane</a></dt><dt>2.2.3 <a href="#todo-pane">The ToDo pane</a></dt><dt>2.2.4 <a href="#details-pane">The details pane</a></dt></dl></dd><dt>2.3 <a href="#tutorial">ArgoUML tutorial</a></dt></dl></dd><dt>3 <a href="#Nb40">ArgoUML user manual</a></dt><dd><dl><dt>3.1 <a href="#Nb45">An introduction to UML modeling</a></dt><dt>3.2 <a href="#Nb4e">Working with projects</a></dt><dd><dl><dt>3.2.1 <a href="#Nb53">The startup screen </a></dt><dt>3.2.2 <a href="#Nb7a">Saving a project - the file menu </a></dt><dt>3.2.3 <a href="#Nb9b">The File Chooser Dialog </a></dt><dt>3.2.4 <a href="#Nc1a">File formats used by Argo/UML</a></dt></dl></dd><dt>3.3 <a href="#Nc46">Working with diagrams</a></dt><dt>3.4 <a href="#Nc4f">The diagram editor - general features</a></dt><dt>3.5 <a href="#Nc58">Use case diagrams</a></dt><dt>3.6 <a href="#Nc61">Class diagrams</a></dt><dt>3.7 <a href="#Nc6a">From the User FAQ</a></dt><dd><dl><dt>3.7.1 <a href="#Nc72">Sequence Diagrams</a></dt><dt>3.7.2 <a href="#Ncc3">State Diagrams</a></dt><dt>3.7.3 <a href="#Ncf0">Activity Diagrams</a></dt><dt>3.7.4 <a href="#Nd11">Class Diagrams</a></dt><dt>3.7.5 <a href="#Nd59">Output</a></dt></dl></dd><dt>3.8 <a href="#Nea0">Working with design critics</a></dt><dd><dl><dt>3.8.1 <a href="#Nea5">The To Do pane - messages from the design critics </a></dt><dt>3.8.2 <a href="#Nf0b">Design critics at work: the Rename Package wizard </a></dt></dl></dd></dl></dd><dt>4 <a href="#Nf37">ArgoUML reference</a></dt><dd><dl><dt>4.1 <a href="#Nf3c">From the User FAQ</a></dt><dt>4.2 <a href="#N1020">The navigator pane</a></dt><dd><dl><dt>4.2.1 <a href="#N103d">Perspective selector combo box</a></dt><dt>4.2.2 <a href="#N1046">Back button</a></dt><dt>4.2.3 <a href="#N104f">Forward button</a></dt><dt>4.2.4 <a href="#N1058">Navigator configuration button</a></dt><dt>4.2.5 <a href="#N1061">Scrollable tree view</a></dt></dl></dd><dt>4.3 <a href="#N106b">The ToDo pane</a></dt><dd><dl><dt>4.3.1 <a href="#N1070">View selector combo box</a></dt><dt>4.3.2 <a href="#N1079">Flat/hierachical button</a></dt></dl></dd><dt>4.4 <a href="#N1083">The multi-editor pane</a></dt><dd><dl><dt>4.4.1 <a href="#N1088">As diagram tab</a></dt><dt>4.4.2 <a href="#N1091">As table tab</a></dt></dl></dd><dt>4.5 <a href="#N109b">The details pane</a></dt><dd><dl><dt>4.5.1 <a href="#N10a0">ToDo tab</a></dt><dt>4.5.2 <a href="#N10a9">Properties tab</a></dt><dt>4.5.3 <a href="#N10b2">Docs tab</a></dt><dt>4.5.4 <a href="#N10bb">Javasource tab</a></dt><dt>4.5.5 <a href="#N10c4">Constraints tab</a></dt><dt>4.5.6 <a href="#N10cd">Tagged values tab</a></dt><dt>4.5.7 <a href="#N10d6">Checklist tab</a></dt><dt>4.5.8 <a href="#N10df">History tab</a></dt></dl></dd><dt>4.6 <a href="#N10e9">The Menu bar</a></dt><dd><dl><dt>4.6.1 <a href="#N10ee">The File menu</a></dt><dd><dl><dt>4.6.1.1 <a href="#N10f3">New</a></dt><dt>4.6.1.2 <a href="#N10fc">Open project</a></dt><dt>4.6.1.3 <a href="#N1105">Save project</a></dt><dt>4.6.1.4 <a href="#N110e">Save project as</a></dt><dt>4.6.1.5 <a href="#N1117">Print</a></dt><dt>4.6.1.6 <a href="#N1120">Save GIF</a></dt><dt>4.6.1.7 <a href="#N1129">Exit</a></dt></dl></dd><dt>4.6.2 <a href="#N1133">The Edit menu</a></dt><dd><dl><dt>4.6.2.1 <a href="#N1138">Select</a></dt><dt>4.6.2.2 <a href="#N1141">Select all</a></dt><dt>4.6.2.3 <a href="#N114a">Select next</a></dt><dt>4.6.2.4 <a href="#N1153">Invert selection</a></dt><dt>4.6.2.5 <a href="#N115c">Undo/Redo</a></dt><dt>4.6.2.6 <a href="#N1165">Cut</a></dt><dt>4.6.2.7 <a href="#N116e">Copy</a></dt><dt>4.6.2.8 <a href="#N1177">Paste</a></dt><dt>4.6.2.9 <a href="#N1180">Remove from diagram</a></dt><dt>4.6.2.10 <a href="#N1189">Delete from model</a></dt><dt>4.6.2.11 <a href="#N1192">Empty trash</a></dt></dl></dd></dl></dd><dt>4.7 <a href="#N119d">The status bar</a></dt><dt>4.8 <a href="#N11a6">The toolbar</a></dt></dl></dd><dt><a href="#glossary">Glossary</a></dt></dl></div><div class="chapter" id="Na5e"><div class="titlepage"><div><h2 class="title"><a name="Na5e"></a>Chapter 1. Introduction</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>1.1 <a href="#Na63">About this Manual...</a></dt><dd><dl><dt>1.1.1 <a href="#Na6b">In this Manual, you will find...</a></dt><dt>1.1.2 <a href="#Na7d">In this guide, you will not find...</a></dt></dl></dd></dl></div><div class="sect1"><a name="Na63"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Na63"></a>1.1. About this Manual...</h2></div></div><p>
+This document, the ArgoUML User Manual, is provided
+with the hopes to be helpful for the users of ArgoUML when
+it comes to installing and using ArgoUML as a tool in their
+projects.
+</p><div class="sect2"><a name="Na6b"></a><div class="titlepage"><div><h3 class="title"><a name="Na6b"></a>1.1.1. In this Manual, you will find...</h3></div></div><i>
+This refers to the ambition of the document and not to the current contents.
+</i><p>
+Information on how you download, install, and start ArgoUML.
+</p><p>
+Information on how to work with ArgoUML.
+</p><p>
+A complete reference of everything you can do with ArgoUML.
+</p></div><div class="sect2"><a name="Na7d"></a><div class="titlepage"><div><h3 class="title"><a name="Na7d"></a>1.1.2. In this guide, you will not find...</h3></div></div><p>
+Descriptions on how ArgoUML works on the inside or on
+how to improve on ArgoUML with new features and functions.
+This is covered in the Cookbook.
+</p><p>
+Information on how ArgoUML is included in your development process.
+</p></div></div></div><div class="chapter" id="getting-started"><div class="titlepage"><div><h2 class="title"><a name="getting-started"></a>Chapter 2. Getting started with ArgoUML</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>2.1 <a href="#installation">Installation</a></dt><dt>2.2 <a href="#quick-tour">Quick tour</a></dt><dd><dl><dt>2.2.1 <a href="#navigator-pane">The navigator pane</a></dt><dt>2.2.2 <a href="#diagram-editor-pane">The diagram editor pane</a></dt><dt>2.2.3 <a href="#todo-pane">The ToDo pane</a></dt><dt>2.2.4 <a href="#details-pane">The details pane</a></dt></dl></dd><dt>2.3 <a href="#tutorial">ArgoUML tutorial</a></dt></dl></div><p>Here's the introduction.</p><div class="sect1"><a name="installation"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="installation"></a>2.1. Installation</h2></div></div><p>...
+</p></div><div class="sect1"><a name="quick-tour"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="quick-tour"></a>2.2. Quick tour</h2></div></div><div class="sect2"><a name="navigator-pane"></a><div class="titlepage"><div><h3 class="title"><a name="navigator-pane"></a>2.2.1. The navigator pane</h3></div></div><p>
+This pane list all the classes, interfaces and datatypes of your model as a treeview.
+<div class="mediaobject"><img src="images/screenshots/NavigatorPaneScreen.gif" alt="The ArgoUML navigator pane
+"><div class="caption"><p>This is the navigator pane, where you can navigate through your model.
+</p></div></div>
+				</p></div><div class="sect2"><a name="diagram-editor-pane"></a><div class="titlepage"><div><h3 class="title"><a name="diagram-editor-pane"></a>2.2.2. The diagram editor pane</h3></div></div><p>
+This pane lets the user edit her diagram in a graphical way.
+<div class="mediaobject"><img src="images/screenshots/DiagramEditorScreen.gif" alt="The ArgoUML diagram editor pane
+"><div class="caption"><p>
+This is the diagram editor pane, where you can edit your diagram.
+</p></div></div>
+				</p></div><div class="sect2"><a name="todo-pane"></a><div class="titlepage"><div><h3 class="title"><a name="todo-pane"></a>2.2.3. The ToDo pane</h3></div></div><p>
+The todo pane list the items on the users todo list.
+<div class="mediaobject"><img src="images/screenshots/ToDoPaneScreen.gif" alt="The ArgoUML todo pane
+"><div class="caption"><p>This is the todo pane, that shows all the items on your todo list.
+</p></div></div>
+				</p></div><div class="sect2"><a name="details-pane"></a><div class="titlepage"><div><h3 class="title"><a name="details-pane"></a>2.2.4. The details pane</h3></div></div><p>
+The details pane lets the user edit various details of the model.
+<div class="mediaobject"><img src="images/screenshots/DetailsPaneScreen.gif" alt="The ArgoUML details pane
+"><div class="caption"><p>This is the detials pane, that allows you to edit various details of your model.
+</p></div></div>
+				</p></div></div><div class="sect1"><a name="tutorial"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="tutorial"></a>2.3. ArgoUML tutorial</h2></div></div><p>...
+</p></div></div><div class="chapter" id="Nb40"><div class="titlepage"><div><h2 class="title"><a name="Nb40"></a>Chapter 3. ArgoUML user manual</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>3.1 <a href="#Nb45">An introduction to UML modeling</a></dt><dt>3.2 <a href="#Nb4e">Working with projects</a></dt><dd><dl><dt>3.2.1 <a href="#Nb53">The startup screen </a></dt><dt>3.2.2 <a href="#Nb7a">Saving a project - the file menu </a></dt><dt>3.2.3 <a href="#Nb9b">The File Chooser Dialog </a></dt><dt>3.2.4 <a href="#Nc1a">File formats used by Argo/UML</a></dt></dl></dd><dt>3.3 <a href="#Nc46">Working with diagrams</a></dt><dt>3.4 <a href="#Nc4f">The diagram editor - general features</a></dt><dt>3.5 <a href="#Nc58">Use case diagrams</a></dt><dt>3.6 <a href="#Nc61">Class diagrams</a></dt><dt>3.7 <a href="#Nc6a">From the User FAQ</a></dt><dd><dl><dt>3.7.1 <a href="#Nc72">Sequence Diagrams</a></dt><dt>3.7.2 <a href="#Ncc3">State Diagrams</a></dt><dt>3.7.3 <a href="#Ncf0">Activity Diagrams</a></dt><dt>3.7.4 <a href="#Nd11">Class Diagrams</a></dt><dt>3.7.5 <a href="#Nd59">Output</a></dt></dl></dd><dt>3.8 <a href="#Nea0">Working with design critics</a></dt><dd><dl><dt>3.8.1 <a href="#Nea5">The To Do pane - messages from the design critics </a></dt><dt>3.8.2 <a href="#Nf0b">Design critics at work: the Rename Package wizard </a></dt></dl></dd></dl></div><div class="sect1"><a name="Nb45"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Nb45"></a>3.1. An introduction to UML modeling</h2></div></div><p>...
+</p></div><div class="sect1"><a name="Nb4e"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Nb4e"></a>3.2. Working with projects</h2></div></div><div class="sect2"><a name="Nb53"></a><div class="titlepage"><div><h3 class="title"><a name="Nb53"></a>3.2.1. The startup screen </h3></div></div><p>Right after startup, Argo/UML's main window appears as follows: </p><div class="mediaobject"><img src="images/screenshots/StartupScreen.gif"></div><p>The main window's client area, below the menu bar, is subdivided into four panes: Starting at the leftmost top pane, and working around the clock, you can see the navigation pane, showing an explorer-like tree view of your UML model, the editing pane with its toolbar, two scroll bars and grey drawing area, the details pane with the ToDoItem tab selected, and the todo pane with a tree view of the to do items, ranked into three priority levels (High, Medium and Low). 
+</p><p>Notice that the title bar says "Argo/UML - Untitled". The "Untitled means that the current project has not yet been saved. After saving the current project, the "Untitled" will be replaced by the file name of the current project. 
+</p><p>Each time Argo/UML is started up without a project file as an argument, a new blank project is created. This project contains a model called untitledModel. This model contains a blank class diagram, called "class diagram 1", and a blank use case diagram called "use case diagram 1". 
+</p><p>The model and both empty diagrams can be seen in the navigation pane, which is the main tool for you to navigate through your model. 
+</p><p>Let's assume for a moment that this is the point where you want to start modeling a new purchasing system. You want to give the name "purchasingmodel" to your model, and you want to store it in a file called "FirstProject". 
+</p><p>First, let's save the model in it's current (empty and unnamed) state. On the menu bar, click on "File", then on "Save Project As..., as shown in the following screen shot. 
+</p></div><div class="sect2"><a name="Nb7a"></a><div class="titlepage"><div><h3 class="title"><a name="Nb7a"></a>3.2.2. Saving a project - the file menu </h3></div></div><p>Please notice that the File menu contains the usual options for creating a new project, for opening an existing project, for saving a project under a new name, for printing the currently displayed diagram (which of course is empty at this moment), for saving the currently displayed diagram as a file, and for program Exit. 
+</p><div class="mediaobject"><img src="images/screenshots/SaveAsCommand.gif"></div><p>Some of these menu commands can be invoked by pressing key combinations, as indicated on the drop-down menu. For instance, holding down the "Ctrl" key, and pressing "N", will create a new project. 
+</p><p>In the current version, Argo/UML can only contain one active project at a time. In addition, a project can only contain one UML model. Since an UML model can contain an unlimited number of elements and diagrams, this should not present any serious limitations, even for modelling quite large and complex systems. 
+</p><p>Also take notice of a number of disabled commands, greyed out on the drop-down menu. First, the "Save Project" command (Ctrl-S), which obviously cannot be executed since we haven't entered a file name yet to store our project. Second, you can see the two commands "Load model from DB" and "Store model to DB". This is a unique feature of Argo/UML that allows you to save and retrieve your model into a relational database. Currently, the only database supported is MySQL, but support for other database engines will undoubtedly be introduced in the future. 
+</p><p>But let's go back to saving our project. After clicking on the "Save Project As..." menu command, we get the following file chooser dialog to enter the file name we wish to use: 
+</p></div><div class="sect2"><a name="Nb9b"></a><div class="titlepage"><div><h3 class="title"><a name="Nb9b"></a>3.2.3. The File Chooser Dialog </h3></div></div><p>This is a standard Java FileChooser. Let's go over it in some detail: 
+</p><div class="mediaobject"><img src="images/screenshots/FileChooseDialog.gif"></div><p>The main, outstanding feature, is the scrollable folders list in the center of the dialog. By using the scrollbar on the right, you can move up and down in the list of folders contained inside the currently selected folder. 
+</p><p>Double-clicking on one of the displayed folders navigates you into that folder, allowing you to quickly navigate down into the folders hierarchy on your hard disk. 
+</p><p>Notice that only folder names , and no file names are displayed in the scrollable area. Indeed, the dialog is currently set up in order to show only ArgoUML project files with an extension of .argo, as can be seen on the lower drop-down control labeled "Files of type:" 
+</p><p>Also notice that the currently selected folder's name is displayed in the upper drop-down control labeled "Look in:". A single click on a folder inside the scrollable area does select that folder on screen but does not select the folder for saving. 
+</p><p>At the top of the dialog, above the scrollable folder chooser area, there are a few more folder navigation tools: 
+</p><div class="itemizedlist"><ul><li><p><a name="Nbc0"></a>
+							
+								<img src="images/screenshots/FolderDropdown.gif">
+							 The Folder drop-down control. Clicking on the down-arrow displays a tree view of the folder hierarchy, allowing you to navigate quickly up the hierarchy, and at the same time to quickly determine where in the hierarchy you are currently positioned.</p></li><li><p><a name="Nbd1"></a>
+							
+								<img src="images/screenshots/FolderUpIcon.gif">
+							 The Folder-Up icon. Clicking on this icon will bring you to the parent folder of the current folder.</p></li><li><p><a name="Nbe2"></a>
+							
+								<img src="images/screenshots/HomeFolderIcon.gif">
+							 The Home Folder icon. Clicking on this icon will bring you to your home directory</p></li><li><p><a name="Nbf3"></a>
+							
+								<img src="images/screenshots/NewFolderIcon.gif">
+							 The New Folder icon. Clicking on this icon will create a new folder called "New Folder" under the current folder. (I haven't been able to create a folder with a specific name, using this button. This forces me to use my file manager to rename the newly created folder. Any suggestions on how this can be done would be welcome)</p></li><li><p><a name="Nc04"></a>
+							
+								<img src="images/screenshots/FoldersPresentationIcon.gif">
+							 The Folders Presentation Icon. This button is not functional at this time.</p></li></ul></div><p>Ok, now navigate to the directory where you want to save your Argo/UML project, fill in the "File name" with an appropriate name, such as "FirstProject" and click on the "Save button. 
+</p></div><div class="sect2"><a name="Nc1a"></a><div class="titlepage"><div><h3 class="title"><a name="Nc1a"></a>3.2.4. File formats used by Argo/UML</h3></div></div><p>Notice that the file name of your project (FirstProject.argo) is now reflected in the title bar of Argo/UML. If you select the java console, you will notice that three files have been written to the hard disk: 
+</p><div class="itemizedlist"><ul><li><p><a name="Nc24"></a>A file FirstProject.xmi - this is a representation of your (still empty) model in xmi format. If you want to know more about the Xml Metadata Interchange format (XMI), you can start at the following <a href="http://www.oasis-open.org/cover/xmi.html" target="_top">rather extensive XMI page</a>. In short, XMI allows your models created with Argo/UML to be used by other applications. That is, only the contents of your model, without the graphic representation of the diagrams. 
+</p></li><li><p><a name="Nc2f"></a>A file FirstProject_classdiagram1.pgml, containing the graphical representation of the (still empty) class diagram "classdiagram1" in pgml format. The PGML (Precision Graphics Markup Language) is probably the first proposal for sending vector graphics over the Web. You can find more information at the <a href="http://www.w3.org/TR/1998/NOTE-PGML" target="_top">PGML specification page</a>. 
+</p></li><li><p><a name="Nc3a"></a>A file FirstProject_usecasediagram1.pgml, containing a graphical representation of the (still empty) use case diagram "usecasediagram1". 
+</p></li></ul></div><p>You have now an active project called "FirstProject", connected to the file "FirstProject.argo" 
+</p></div></div><div class="sect1"><a name="Nc46"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Nc46"></a>3.3. Working with diagrams</h2></div></div><p>...
+</p></div><div class="sect1"><a name="Nc4f"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Nc4f"></a>3.4. The diagram editor - general features</h2></div></div><p>...
+</p></div><div class="sect1"><a name="Nc58"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Nc58"></a>3.5. Use case diagrams</h2></div></div><p>...
+</p></div><div class="sect1"><a name="Nc61"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Nc61"></a>3.6. Class diagrams</h2></div></div><p>...
+</p></div><div class="sect1"><a name="Nc6a"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Nc6a"></a>3.7. From the User FAQ</h2></div></div><p>
++++ From the User FAQ. Needs rework.
+</p><div class="sect2"><a name="Nc72"></a><div class="titlepage"><div><h3 class="title"><a name="Nc72"></a>3.7.1. Sequence Diagrams</h3></div></div><div class="qandaset"><dl><dt>3.7.1.1 <a href="#Nc79">Sequence Diagrams</a></dt><dd><dl><dt> <a href="#Nc80">Are there known issues with sequence diagrams in Argo?</a></dt><dt> <a href="#Nc9e">
+How do I create a sequence diagram?
+</a></dt><dt> <a href="#Ncad">I'm trying to change the ordering of the links in the sequence diagram. How do I do that?
+</a></dt></dl></dd></dl><div class="qandadiv"><h5 class="title"><a name="Nc79">3.7.1.1 Sequence Diagrams</a></h5><div class="qandaentry"><div class="question"><p><a name="Nc80"></a><b> </b>Are there known issues with sequence diagrams in Argo?</p></div><div class="answer"><p><a name="Nc86"></a><b> </b>Yes.
+</p><p>Checklist is not enabled with Sequence artifacts.</p><p>It is not possible (as yet) to create call backs.</p><p>You cannot change the order of the connectivity of a link artifact in ArgoUML yet.</p><p>StimulusDestroy is not dependable.</p><p>If you would like to help us out, please see to do list.</p></div></div><div class="qandaentry"><div class="question"><p><a name="Nc9e"></a><b> </b>
+How do I create a sequence diagram?
+</p></div><div class="answer"><p><a name="Nca4"></a><b> </b>Normally, you can just start a sequence diagram right away. Create&gt;Diagrams&gt;Sequence
+</p></div></div><div class="qandaentry"><div class="question"><p><a name="Ncad"></a><b> </b>I'm trying to change the ordering of the links in the sequence diagram. How do I do that?
+</p></div><div class="answer"><p><a name="Ncb3"></a><b> </b>Unimplemented feature.</p><p>If you can help out there please let us know.</p><p>see to do list</p></div></div></div></div></div><div class="sect2"><a name="Ncc3"></a><div class="titlepage"><div><h3 class="title"><a name="Ncc3"></a>3.7.2. State Diagrams</h3></div></div><div class="qandaset"><dl><dt>3.7.2.1 <a href="#Ncca">State Diagrams</a></dt><dd><dl><dt> <a href="#Ncd1">
+How do I create a state diagram?
+</a></dt><dt> <a href="#Nce0">
+I am trying to use ArgoUML to edit a state machine diagram for a model. But when I edit a composite state, I don't know how to provide do and event for a composite state. Can you help me?
+</a></dt></dl></dd></dl><div class="qandadiv"><h5 class="title"><a name="Ncca">3.7.2.1 State Diagrams</a></h5><div class="qandaentry"><div class="question"><p><a name="Ncd1"></a><b> </b>
+How do I create a state diagram?
+</p></div><div class="answer"><p><a name="Ncd7"></a><b> </b>
+Select a class, then you can create a state
+diagram.
+</p></div></div><div class="qandaentry"><div class="question"><p><a name="Nce0"></a><b> </b>
+I am trying to use ArgoUML to edit a state machine diagram for a model. But when I edit a composite state, I don't know how to provide do and event for a composite state. Can you help me?
+</p></div><div class="answer"><p><a name="Nce6"></a><b> </b>
+Select a class, then you can create a state
+diagram.
+</p></div></div></div></div></div><div class="sect2"><a name="Ncf0"></a><div class="titlepage"><div><h3 class="title"><a name="Ncf0"></a>3.7.3. Activity Diagrams</h3></div></div><div class="qandaset"><dl><dt>3.7.3.1 <a href="#Ncf7">Activity Diagrams</a></dt><dd><dl><dt> <a href="#Ncfe">How do I create an activity diagram?
+                                                </a></dt></dl></dd></dl><div class="qandadiv"><h5 class="title"><a name="Ncf7">3.7.3.1 Activity Diagrams</a></h5><div class="qandaentry"><div class="question"><p><a name="Ncfe"></a><b> </b>How do I create an activity diagram?
+                                                </p></div><div class="answer"><p><a name="Nd04"></a><b> </b>
+Select a use case or class, then you can create an activity
+diagram.
+</p><p>Enabling an activity diagram that is connected to an actor has been requested as a feature.
+</p></div></div></div></div></div><div class="sect2"><a name="Nd11"></a><div class="titlepage"><div><h3 class="title"><a name="Nd11"></a>3.7.4. Class Diagrams</h3></div></div><div class="qandaset"><dl><dt>3.7.4.1 <a href="#Nd18">Class Diagrams</a></dt><dd><dl><dt> <a href="#Nd1f">Is it possible to switch to 'real' UML Syntax, like 'Name : String' in class diagrams?</a></dt><dt> <a href="#Nd2e">I see there is a note icon in the tool bar. How do I use it?</a></dt><dt> <a href="#Nd46">What is the easiet way to enter data into attributes and methods window for classes?</a></dt></dl></dd></dl><div class="qandadiv"><h5 class="title"><a name="Nd18">3.7.4.1 Class Diagrams</a></h5><div class="qandaentry"><div class="question"><p><a name="Nd1f"></a><b> </b>Is it possible to switch to 'real' UML Syntax, like 'Name : String' in class diagrams?</p></div><div class="answer"><p><a name="Nd25"></a><b> </b>No, but it is planned to make that the default.</p></div></div><div class="qandaentry"><div class="question"><p><a name="Nd2e"></a><b> </b>I see there is a note icon in the tool bar. How do I use it?</p></div><div class="answer"><p><a name="Nd34"></a><b> </b>Click on your target class. Then click on the note icon. ArgoUML will generate the link automatically.</p><p>You can also right click to add a note as well! Be aware that you can add an undefined number of notes to any one class!</p><p>Be aware that your note will not appear in the source code documentation tab.</p><p>Please see to do list.</p></div></div><div class="qandaentry"><div class="question"><p><a name="Nd46"></a><b> </b>What is the easiet way to enter data into attributes and methods window for classes?</p></div><div class="answer"><p><a name="Nd4c"></a><b> </b>Click directly in the class artifact and start typing. Do not use the properties window dialog fields...they are not fully functional and liable to cause you a little frustration.</p><p> In fact, it would be interesting to see if you can type 'stereotypes' write in the class attribute box for generating XML diagrams.
+</p></div></div></div></div></div><div class="sect2"><a name="Nd59"></a><div class="titlepage"><div><h3 class="title"><a name="Nd59"></a>3.7.5. Output</h3></div></div><div class="qandaset"><dl><dt>3.7.5.1 <a href="#Nd60">Loading and Saving</a></dt><dd><dl><dt> <a href="#Nd67">
+Do ArgoUML save .xmi files?
+</a></dt><dt> <a href="#Nd76">
+How do I import an .xmi into ArgoUML and what formats are known to be
+supported?
+</a></dt><dt> <a href="#Nd85">
+If i design a model by using ArgoUML how I can generate XMI format?
+</a></dt></dl></dd><dt>3.7.5.2 <a href="#Nd93">Graphics and Printing</a></dt><dd><dl><dt> <a href="#Nd9a">
+What does GEF mean?
+</a></dt><dt> <a href="#Nda9">
+What is PGML?
+</a></dt><dt> <a href="#Ndb8">
+What applications open PGML?
+</a></dt><dt> <a href="#Ndca">
+How can I print my diagrams?
+</a></dt><dt> <a href="#Ndd9">
+What does SVG stand for?
+</a></dt><dt> <a href="#Ndeb"> How do I save my diagrams as .SVG?
+</a></dt><dt> <a href="#Ne0e">
+							Can I output my entire ZArgo project as an HTML?
+						</a></dt></dl></dd><dt>3.7.5.3 <a href="#Ne25">.XMI</a></dt><dd><dl><dt> <a href="#Ne2c">I have a model generated by Rational Rose in xmi format and I want input it into ArgoUML case tool. Could anyone tell me how I can do that? </a></dt><dt> <a href="#Ne3b">When I save in 0.8.1a .xmi files show up in my save directory, are these just as interchangeable as the 0.9.x .xmi files?</a></dt><dt> <a href="#Ne4a">How do I import an .xmi into ArgoUML and what formats are known to be supported?</a></dt><dt> <a href="#Ne5c">Does ArgoUML generate an XMI document?</a></dt></dl></dd><dt>3.7.5.4 <a href="#Ne70">Code Generation</a></dt><dd><dl><dt> <a href="#Ne77">
+Is the generated code meant to be able to compile?
+</a></dt><dt> <a href="#Ne8f">Where/how do I implement code for my methods?</a></dt></dl></dd></dl><div class="qandadiv"><h5 class="title"><a name="Nd60">3.7.5.1 Loading and Saving</a></h5><div class="qandaentry"><div class="question"><p><a name="Nd67"></a><b> </b>
+Do ArgoUML save .xmi files?
+</p></div><div class="answer"><p><a name="Nd6d"></a><b> </b>
+Yes. They save the model information in an .xmi-file, the diagram
+information in a .pgml-file and information about the project in a .Argo
+file. All of these are
+then
+zipped  to a .zArgo-file. You can easily extract the .xmi from the
+.zArgo file
+using any old generic ZIP application. Give it a try and look into the
+magic of Argo.
+Be aware that double clicking will launch a ZIP utility, if one is
+installed, and NOT Argo.
+</p></div></div><div class="qandaentry"><div class="question"><p><a name="Nd76"></a><b> </b>
+How do I import an .xmi into ArgoUML and what formats are known to be
+supported?
+</p></div><div class="answer"><p><a name="Nd7c"></a><b> </b>
+Because of the variety of .xmi formats being generated you will
+encounter problems using other .xmis generated from other applications.
+ArgoUML's native storage format is another implementation of XMI (Curt
+Arnold believes that it has been hacked so it can also read the Unisys
+variant).  He recommends that if you are comfortable with XSLT, you can
+typically transform one variant of UML + XMI to another, plus
+MetaIntegrations (http://www.metaintegrations.net) makes a version of
+their Bridge product available to transform between XMI flavors.
+</p></div></div><div class="qandaentry"><div class="question"><p><a name="Nd85"></a><b> </b>
+If i design a model by using ArgoUML how I can generate XMI format?
+</p></div><div class="answer"><p><a name="Nd8b"></a><b> </b>
+Check out the .zArgo file. Open it and Viola! It's tucked inside...
+</p></div></div></div><div class="qandadiv"><h5 class="title"><a name="Nd93">3.7.5.2 Graphics and Printing</a></h5><div class="qandaentry"><div class="question"><p><a name="Nd9a"></a><b> </b>
+What does GEF mean?
+</p></div><div class="answer"><p><a name="Nda0"></a><b> </b>
+GEF = Graph Editing Framework - the thing which is hidden in gef.jar and
+is responsible for displaying the graphs and which gives you the the
+ability to move things around. GEF used to be closely interwoven with
+Argo, but is now more or less separate as far as I know. The sources are
+also available via www.tigris.org
+</p></div></div><div class="qandaentry"><div class="question"><p><a name="Nda9"></a><b> </b>
+What is PGML?
+</p></div><div class="answer"><p><a name="Ndaf"></a><b> </b>
+PGML is the saving format for diagram information used in ArgoUML. Although this is outdated a little, it shows why we chose PGML in the first place. In the future, PGML will be replaced by an extended XMI format which will include graphical representation. PGML is shortcut for Precision Graphics Markup Language. In April 1998 Adobe Systems proposed a new Standard for Vector Graphics to the World Wide Web Consortium (W3C), which should facilitate the creation and usage of image material in the World Wide Web. It will be replaced by SVG. We will support SVG by generating it from the XMI in the future.
+</p></div></div><div class="qandaentry"><div class="question"><p><a name="Ndb8"></a><b> </b>
+What applications open PGML?
+</p></div><div class="answer"><p><a name="Ndbe"></a><b> </b>PGML is a predecessor of SVG. It was dropped by the W3C Consortium.</p><p>Currently there are no other tools that we know of working on PGML. We will move to SVG soon. And THAT will be read by many tools.
+</p></div></div><div class="qandaentry"><div class="question"><p><a name="Ndca"></a><b> </b>
+How can I print my diagrams?
+</p></div><div class="answer"><p><a name="Ndd0"></a><b> </b>
+Select a diagram, then go to File-&gt;Export Diagrams. You can generate
+gif, postscript, eps or .svg format.
+</p></div></div><div class="qandaentry"><div class="question"><p><a name="Ndd9"></a><b> </b>
+What does SVG stand for?
+</p></div><div class="answer"><p><a name="Nddf"></a><b> </b>
+A super cool vector graphics format (like MM Flash) that is totally open
+and is gaining enormous ground in the graphics world. Find out more at
+the www.W3C.org. </p><p>As well visit Adobe.com for the plugin for NN and IE</p></div></div><div class="qandaentry"><div class="question"><p><a name="Ndeb"></a><b> </b> How do I save my diagrams as .SVG?
+</p></div><div class="answer"><p><a name="Ndf1"></a><b> </b>First: select .svg as the file type. Second: type the name of the file as you like with the .svg tag at the end. Example myumldiagram.svg</p><p>ArgoUML does not do it automatically. See the to-do list.</p><p> Et viola! SVG! Give it a try and zoom around a little...They are not pretty though, so if you know anything about rendering beautiful SVG let us know!</p><p>Oh, and by the way, you'll need a browser that can read SVG, the plugin for NN and IE are available at Adobe.com</p><p>There are a few browsers that read SVG natively: Amaya, X-Smiles, and a rudimentary version of Mozilla.</p><p></p><p>See to do list</p><p>Be aware: You will not have scroll bars for your SVG unless it is embedded into an HTML! Good luck and let us know what you find!
+</p></div></div><div class="qandaentry"><div class="question"><p><a name="Ne0e"></a><b> </b>
+							Can I output my entire ZArgo project as an HTML?
+						</p></div><div class="answer"><p><a name="Ne14"></a><b> </b>No not yet. This feature is much desired. Please see the to-do list.</p><p>Use case: File&gt;Save As&gt;project.html&gt;select diagram output i.e. .svg, .gif, .jpg, etc.</p><p>Output would include: Java docs.</p><p>Diagrams with rollover functionality i.e. when users rollover diagram elements their is an embedded link to the javadocs.</p></div></div></div><div class="qandadiv"><h5 class="title"><a name="Ne25">3.7.5.3 .XMI</a></h5><div class="qandaentry"><div class="question"><p><a name="Ne2c"></a><b> </b>I have a model generated by Rational Rose in xmi format and I want input it into ArgoUML case tool. Could anyone tell me how I can do that? </p></div><div class="answer"><p><a name="Ne32"></a><b> </b>Probably not possible but if you want to take on the task of writing an XSLT that transposes the ROSE .xmi to ArgoUML .xmi you'd make a lot of friends in a hurry!</p></div></div><div class="qandaentry"><div class="question"><p><a name="Ne3b"></a><b> </b>When I save in 0.8.1a .xmi files show up in my save directory, are these just as interchangeable as the 0.9.x .xmi files?</p></div><div class="answer"><p><a name="Ne41"></a><b> </b>This depends on the nsuml version you are using (you can find out about this i your startup messages on console). Version 0.4.19 is okay, should be interchangeable.</p></div></div><div class="qandaentry"><div class="question"><p><a name="Ne4a"></a><b> </b>How do I import an .xmi into ArgoUML and what formats are known to be supported?</p></div><div class="answer"><p><a name="Ne50"></a><b> </b>Because of the variety of .xmi formats being generated you will encounter problems using other .xmis generated from other applications. </p><p>ArgoUML's native storage format is another implementation of XMI (Curt Arnold believes that it has been hacked so it can also read the Unisys variant).  He recommends that if you are comfortable with XSLT, you can typically transform one variant of UML + XMI to another, plus MetaIntegrations (http://www.metaintegrations.net) makes a version of their Bridge product available to transform between XMI flavors.</p></div></div><div class="qandaentry"><div class="question"><p><a name="Ne5c"></a><b> </b>Does ArgoUML generate an XMI document?</p></div><div class="answer"><p><a name="Ne62"></a><b> </b>Yes! Check out the .zArgo file. Open it and Viola! It's tucked inside...</p><p> ArgoUML saves all .xmi and .pgml and .Argo files in one zipped .ZArgo file. You can easily extract the .xmi from the .zArgo file using any old generic ZIP application. (PowerArchiver is a cool freeware app for the Win folks). Give it a try and look into the magic of Argo!</p><p>
+
+</p></div></div></div><div class="qandadiv"><h5 class="title"><a name="Ne70">3.7.5.4 Code Generation</a></h5><div class="qandaentry"><div class="question"><p><a name="Ne77"></a><b> </b>
+Is the generated code meant to be able to compile?
+</p></div><div class="answer"><p><a name="Ne7d"></a><b> </b>
+Yes, it is possible to compile your generated code with ArgoUML, you
+still need to implement method bodies, though, to get usable results.
+</p><p>But not Argo!</p><p>Yes, it is possible to compile your generated code from Argo, but that is of no use yet, since you can't implement method bodies.
+</p><p>You can help us out there if you'd like!</p></div></div><div class="qandaentry"><div class="question"><p><a name="Ne8f"></a><b> </b>Where/how do I implement code for my methods?</p></div><div class="answer"><p><a name="Ne95"></a><b> </b>Nowhere, yet. The source pane is editable, but the changes are ignored.
+ArgoUML is a pure design tool for now, no IDE functionality but the desire is there. You might consider using Forte and ArgoUML together...it's a good work around!</p></div></div></div></div></div></div><div class="sect1"><a name="Nea0"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Nea0"></a>3.8. Working with design critics</h2></div></div><div class="sect2"><a name="Nea5"></a><div class="titlepage"><div><h3 class="title"><a name="Nea5"></a>3.8.1. The To Do pane - messages from the design critics </h3></div></div><p>Where do we stand now? A new project has been created, and is connected to the file FirstProject.argo. Your Argo/UML screen should look as follows: 
+</p><div class="mediaobject"><img src="images/screenshots/ProjectSavedScreen.gif"></div><p>The project filename is displayed in the title bar, the project contains a top-level package, called "untitledModel", which contains a class diagram and a use case diagram. 
+</p><p>If we look carefully at the screen, we can see that the "Medium" folder in the To Do pane (the lower left pane) must contain some items, since it's activation icon 
+						<img src="images/screenshots/TreeFolderCloseIcon.gif">
+					 is displayed. 
+</p><p>Clicking on this icon will open the "Medium" folder. An open folder is indicated by the 
+						<img src="images/screenshots/TreeFolderOpenIcon.gif">
+					 icon.
+</p><p>But what is this "To do" pane anyway. You haven't recorded anything yet that has to be done, so where do these to do items originate. 
+</p><p>The answer is simple, and is at the same time one of the strong points of Argo/UML. While you are working on your UML model, your work is monitored continuously and invisibly by a piece of code called a design critic. This is like a personal mentor that watches over your shoulder and notifies you each time he sees something questionable in your design. 
+</p><p>Critics are quite unobstrusive. They give you a friendly warning, but they do not force you into design principles that you don't want or like to follow.  Let us take a look at what the critics are telling us. Click on the 
+						<img src="images/screenshots/TreeFolderCloseIcon.gif">
+					 icon next to the "Medium" folder, and click on the "Revise Package Name UntitledModel" item. 
+</p><p>Your screen should now look as follows: 
+</p><div class="mediaobject"><img src="images/screenshots/LookatCriticsAdvice.gif"></div><p>Notice that your selection is highlighted in red in the To Do pane, and that a full explanation appears now in the Properties Pane (the lower right pane). You may have to resize your properties panel or to scroll down in order to see the full message as diplayed in our example. 
+</p><p>What Argo/UML is trying to tell you is that usually, package names are written in lower cases. The default top level package created by Argo/UML is called untitledModel and therefore violates a sound design principle. (Actually, this could be considered as a bug within Argo/UML, but it comes in handy to demonstrate the working of critics). 
+</p><p>At this point, you can choose to change the package name manually, to impose silence on the design critic for some time or permanently, or to request a more comprehensive explanation by Email from an expert . 
+</p><p>We will do nothing of this (we'll come back to it when we talk about the design critics in more detail) but we'll use another handy feature of ArgoUML: an auto-correct feature. 
+</p><p>In order to do that, just click on the "Next" button on the properties pane. This will cause a renaming wizard to be diplayed inside the properties panel, proposing to use the name "untitledmodel" (all in lower cases). 
+</p></div><div class="sect2"><a name="Nf0b"></a><div class="titlepage"><div><h3 class="title"><a name="Nf0b"></a>3.8.2. Design critics at work: the Rename Package wizard </h3></div></div><p>Replace the name "untitledmodel" with "purchasingmodel", and click on the "Finish" button as shown below: 
+</p><div class="mediaobject"><img src="images/screenshots/RenamingTopPackage.gif"></div><p>Watch now how the design critic note in the To Do panel disappears, leaving only the "Add Elements to Package purchasingmodel" note in the to do list. 
+</p><p>If this doen't happen at once, wait for a few seconds. Argo/UML makes heavy use of several threads of execution that execute in parallel. This can cause delays of a few seconds before the information gets updated on the screen. 
+</p><p>Normally, the package name change shoudl also be reflected in the navigation pane, in the top left corner of your Argo/UML window. 
+</p><p>Actually, that doesn't happen until you click on one of the items in the navigator pane. This is also a small bug in Argo/UML that will need to be fixed in following versions. 
+</p><p>Don't let this discourage you, but remember that Argo/UML is still pretty much "work in progress", and that still quite a bit can be done to improve the user interface. 
+</p><p>We are now ready to create our first UML diagram, a Use Case diagram, but first let's save what we've done so far. 
+</p><p>Click on the "File" menu item, and select "Save Project". You can now safely exit Argo/UML without losing your work so far, or go on creating your first diagram. 
+</p></div></div></div><div class="chapter" id="Nf37"><div class="titlepage"><div><h2 class="title"><a name="Nf37"></a>Chapter 4. ArgoUML reference</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>4.1 <a href="#Nf3c">From the User FAQ</a></dt><dt>4.2 <a href="#N1020">The navigator pane</a></dt><dd><dl><dt>4.2.1 <a href="#N103d">Perspective selector combo box</a></dt><dt>4.2.2 <a href="#N1046">Back button</a></dt><dt>4.2.3 <a href="#N104f">Forward button</a></dt><dt>4.2.4 <a href="#N1058">Navigator configuration button</a></dt><dt>4.2.5 <a href="#N1061">Scrollable tree view</a></dt></dl></dd><dt>4.3 <a href="#N106b">The ToDo pane</a></dt><dd><dl><dt>4.3.1 <a href="#N1070">View selector combo box</a></dt><dt>4.3.2 <a href="#N1079">Flat/hierachical button</a></dt></dl></dd><dt>4.4 <a href="#N1083">The multi-editor pane</a></dt><dd><dl><dt>4.4.1 <a href="#N1088">As diagram tab</a></dt><dt>4.4.2 <a href="#N1091">As table tab</a></dt></dl></dd><dt>4.5 <a href="#N109b">The details pane</a></dt><dd><dl><dt>4.5.1 <a href="#N10a0">ToDo tab</a></dt><dt>4.5.2 <a href="#N10a9">Properties tab</a></dt><dt>4.5.3 <a href="#N10b2">Docs tab</a></dt><dt>4.5.4 <a href="#N10bb">Javasource tab</a></dt><dt>4.5.5 <a href="#N10c4">Constraints tab</a></dt><dt>4.5.6 <a href="#N10cd">Tagged values tab</a></dt><dt>4.5.7 <a href="#N10d6">Checklist tab</a></dt><dt>4.5.8 <a href="#N10df">History tab</a></dt></dl></dd><dt>4.6 <a href="#N10e9">The Menu bar</a></dt><dd><dl><dt>4.6.1 <a href="#N10ee">The File menu</a></dt><dd><dl><dt>4.6.1.1 <a href="#N10f3">New</a></dt><dt>4.6.1.2 <a href="#N10fc">Open project</a></dt><dt>4.6.1.3 <a href="#N1105">Save project</a></dt><dt>4.6.1.4 <a href="#N110e">Save project as</a></dt><dt>4.6.1.5 <a href="#N1117">Print</a></dt><dt>4.6.1.6 <a href="#N1120">Save GIF</a></dt><dt>4.6.1.7 <a href="#N1129">Exit</a></dt></dl></dd><dt>4.6.2 <a href="#N1133">The Edit menu</a></dt><dd><dl><dt>4.6.2.1 <a href="#N1138">Select</a></dt><dt>4.6.2.2 <a href="#N1141">Select all</a></dt><dt>4.6.2.3 <a href="#N114a">Select next</a></dt><dt>4.6.2.4 <a href="#N1153">Invert selection</a></dt><dt>4.6.2.5 <a href="#N115c">Undo/Redo</a></dt><dt>4.6.2.6 <a href="#N1165">Cut</a></dt><dt>4.6.2.7 <a href="#N116e">Copy</a></dt><dt>4.6.2.8 <a href="#N1177">Paste</a></dt><dt>4.6.2.9 <a href="#N1180">Remove from diagram</a></dt><dt>4.6.2.10 <a href="#N1189">Delete from model</a></dt><dt>4.6.2.11 <a href="#N1192">Empty trash</a></dt></dl></dd></dl></dd><dt>4.7 <a href="#N119d">The status bar</a></dt><dt>4.8 <a href="#N11a6">The toolbar</a></dt></dl></div><div class="sect1"><a name="Nf3c"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Nf3c"></a>4.1. From the User FAQ</h2></div></div><p>
++++ This information needs to be added into the manual in a better way.
+</p><div class="qandaset"><dl><dt>4.1.1 <a href="#Nf46"> Diagrams: Contribute.</a></dt><dd><dl><dt>4.1.1.1 <a href="#Nf4b">User Interface:Navigation Panes</a></dt><dd><dl><dt> <a href="#Nf52">
+How do I know what diagram I'm working on?</a></dt><dt> <a href="#Nf61">What are the names of the various work screens?</a></dt><dt> <a href="#Nf9a">
+How can I look at different diagrams at the same time?	
+</a></dt><dt> <a href="#Nfa9">
+How do I reduce the  number of panes open in the window?
+</a></dt><dt> <a href="#Nfbb">
+How can I sort the artifacts in the Navigation Pane, for example sort
+all of my Actors?
+</a></dt></dl></dd></dl></dd></dl><div class="qandadiv"><h4 class="title"><a name="Nf46">4.1.1  Diagrams: Contribute.</a></h4><div class="qandadiv"><h5 class="title"><a name="Nf4b">4.1.1.1 User Interface:Navigation Panes</a></h5><div class="qandaentry"><div class="question"><p><a name="Nf52"></a><b> </b>
+How do I know what diagram I'm working on?</p></div><div class="answer"><p><a name="Nf58"></a><b> </b>
+Sometimes, if your screen is large enough, you will see the name of the diagram in the top right corner.</p></div></div><div class="qandaentry"><div class="question"><p><a name="Nf61"></a><b> </b>What are the names of the various work screens?</p></div><div class="answer"><p><a name="Nf67"></a><b> </b>
+The different screens are called panes. They all have an individual
+name, Navigation Pane, Diagram Pane, ToDo Pane and Details Pane, as
+shown in the following table.
+                    <div class="table"><p><a name="Nf6b"></a><b>Table 4.1. Table title</b></p><table summary="Table title" border="1"><colgroup><col><col></colgroup><tbody><tr><td>Navigation Pane</td><td>Diagram Pane</td></tr><tr><td>ToDo Pane</td><td>Details Pane</td></tr></tbody></table></div>
+		   </p></div></div><div class="qandaentry"><div class="question"><p><a name="Nf9a"></a><b> </b>
+How can I look at different diagrams at the same time?	
+</p></div><div class="answer"><p><a name="Nfa0"></a><b> </b>
+You can 'spawn' a panel by double-clicking on the tab. It will then
+show as individual window and you can put it next to another. But
+beware, this function does not work in the diagram window for the
+moment. This is believed to be an issue with GEF.
+</p></div></div><div class="qandaentry"><div class="question"><p><a name="Nfa9"></a><b> </b>
+How do I reduce the  number of panes open in the window?
+</p></div><div class="answer"><p><a name="Nfaf"></a><b> </b>
+Unimplemented feature :(You can, however, "spawn" a window by
+double-clicking on the tab, and maximize that.
+</p><p>See to do list.</p></div></div><div class="qandaentry"><div class="question"><p><a name="Nfbb"></a><b> </b>
+How can I sort the artifacts in the Navigation Pane, for example sort
+all of my Actors?
+</p></div><div class="answer"><p><a name="Nfc1"></a><b> </b>
+It's an unimplemented feature? It would be nice though wouldn't it?
+</p><p>See to do list.</p></div></div></div></div></div><div class="qandaset"><dl><dt>4.1.1 <a href="#Nfd0">Navigation Pane: Contribute.</a></dt><dd><dl><dt>4.1.1.1 <a href="#Nfd5">User Interface:Navigation Panes</a></dt><dd><dl><dt> <a href="#Nfdc"> How do I arrange my diagram elements?</a></dt><dt> <a href="#Nffa">
+I've reviewed the list of to-dos as determined by "poster" but every
+time I try to click in the properties pane, it closes on me. What can
+I do?
+</a></dt><dt> <a href="#N100f">What works under the details pane?
+</a></dt></dl></dd></dl></dd></dl><div class="qandadiv"><h4 class="title"><a name="Nfd0">4.1.1 Navigation Pane: Contribute.</a></h4><div class="qandadiv"><h5 class="title"><a name="Nfd5">4.1.1.1 User Interface:Navigation Panes</a></h5><div class="qandaentry"><div class="question"><p><a name="Nfdc"></a><b> </b> How do I arrange my diagram elements?</p></div><div class="answer"><p><a name="Nfe2"></a><b> </b>
+There are several ways to easily and elegantly move diagram elements.
+</p><p>
+Select the elements you want to move. By holding down the control key
+you can select several.
+</p><p>
+Now hit your arrow keys. Your elements move a little with every key
+stroke.
+</p><p>
+If you also hold down the shift key, they move a bit faster.</p><p>
+Or click on the broom button, move your mouse to the diagram pane,
+right click and hold. Now moving your mouse side ways (or up and down)
+will align elements.
+</p><p>
+There also is the menu item arrange where you can align, group or
+nudge (move a little bit) elements.
+</p></div></div><div class="qandaentry"><div class="question"><p><a name="Nffa"></a><b> </b>
+I've reviewed the list of to-dos as determined by "poster" but every
+time I try to click in the properties pane, it closes on me. What can
+I do?
+</p></div><div class="answer"><p><a name="N1000"></a><b> </b>
+Review the bug list first to see if it has already been posted.
+</p><p>If not, post the bug.</p><p>If you know how to fix it, then submit a patch.</p></div></div><div class="qandaentry"><div class="question"><p><a name="N100f"></a><b> </b>What works under the details pane?
+</p></div><div class="answer"><p><a name="N1015"></a><b> </b>Plenty.</p></div></div></div></div></div></div><div class="sect1"><a name="N1020"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N1020"></a>4.2. The navigator pane</h2></div></div><div class="mediaobject"><img src="images/screenshots/NavigatorPaneScreen.gif" alt="The ArgoUML navigator pane
+"><div class="caption"><p>This is the navigator pane, where you can navigate through your model.
+</p></div></div><div class="sect2"><a name="N103d"></a><div class="titlepage"><div><h3 class="title"><a name="N103d"></a>4.2.1. Perspective selector combo box</h3></div></div><p>...
+</p></div><div class="sect2"><a name="N1046"></a><div class="titlepage"><div><h3 class="title"><a name="N1046"></a>4.2.2. Back button</h3></div></div><p>...
+</p></div><div class="sect2"><a name="N104f"></a><div class="titlepage"><div><h3 class="title"><a name="N104f"></a>4.2.3. Forward button</h3></div></div><p>...
+</p></div><div class="sect2"><a name="N1058"></a><div class="titlepage"><div><h3 class="title"><a name="N1058"></a>4.2.4. Navigator configuration button</h3></div></div><p>...
+</p></div><div class="sect2"><a name="N1061"></a><div class="titlepage"><div><h3 class="title"><a name="N1061"></a>4.2.5. Scrollable tree view</h3></div></div><p>...
+</p></div></div><div class="sect1"><a name="N106b"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N106b"></a>4.3. The ToDo pane</h2></div></div><div class="sect2"><a name="N1070"></a><div class="titlepage"><div><h3 class="title"><a name="N1070"></a>4.3.1. View selector combo box</h3></div></div><p>...
+</p></div><div class="sect2"><a name="N1079"></a><div class="titlepage"><div><h3 class="title"><a name="N1079"></a>4.3.2. Flat/hierachical button</h3></div></div><p>...
+</p></div></div><div class="sect1"><a name="N1083"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N1083"></a>4.4. The multi-editor pane</h2></div></div><div class="sect2"><a name="N1088"></a><div class="titlepage"><div><h3 class="title"><a name="N1088"></a>4.4.1. As diagram tab</h3></div></div><p>...
+</p></div><div class="sect2"><a name="N1091"></a><div class="titlepage"><div><h3 class="title"><a name="N1091"></a>4.4.2. As table tab</h3></div></div><p>...
+</p></div></div><div class="sect1"><a name="N109b"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N109b"></a>4.5. The details pane</h2></div></div><div class="sect2"><a name="N10a0"></a><div class="titlepage"><div><h3 class="title"><a name="N10a0"></a>4.5.1. ToDo tab</h3></div></div><p>...
+</p></div><div class="sect2"><a name="N10a9"></a><div class="titlepage"><div><h3 class="title"><a name="N10a9"></a>4.5.2. Properties tab</h3></div></div><p>...
+</p></div><div class="sect2"><a name="N10b2"></a><div class="titlepage"><div><h3 class="title"><a name="N10b2"></a>4.5.3. Docs tab</h3></div></div><p>...
+</p></div><div class="sect2"><a name="N10bb"></a><div class="titlepage"><div><h3 class="title"><a name="N10bb"></a>4.5.4. Javasource tab</h3></div></div><p>...
+</p></div><div class="sect2"><a name="N10c4"></a><div class="titlepage"><div><h3 class="title"><a name="N10c4"></a>4.5.5. Constraints tab</h3></div></div><p>...
+</p></div><div class="sect2"><a name="N10cd"></a><div class="titlepage"><div><h3 class="title"><a name="N10cd"></a>4.5.6. Tagged values tab</h3></div></div><p>...
+</p></div><div class="sect2"><a name="N10d6"></a><div class="titlepage"><div><h3 class="title"><a name="N10d6"></a>4.5.7. Checklist tab</h3></div></div><p>...
+</p></div><div class="sect2"><a name="N10df"></a><div class="titlepage"><div><h3 class="title"><a name="N10df"></a>4.5.8. History tab</h3></div></div><p>...
+</p></div></div><div class="sect1"><a name="N10e9"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N10e9"></a>4.6. The Menu bar</h2></div></div><div class="sect2"><a name="N10ee"></a><div class="titlepage"><div><h3 class="title"><a name="N10ee"></a>4.6.1. The File menu</h3></div></div><div class="sect3"><a name="N10f3"></a><div class="titlepage"><div><h4 class="title"><a name="N10f3"></a>4.6.1.1. New</h4></div></div><p>...
+</p></div><div class="sect3"><a name="N10fc"></a><div class="titlepage"><div><h4 class="title"><a name="N10fc"></a>4.6.1.2. Open project</h4></div></div><p>...
+</p></div><div class="sect3"><a name="N1105"></a><div class="titlepage"><div><h4 class="title"><a name="N1105"></a>4.6.1.3. Save project</h4></div></div><p>...
+</p></div><div class="sect3"><a name="N110e"></a><div class="titlepage"><div><h4 class="title"><a name="N110e"></a>4.6.1.4. Save project as</h4></div></div><p>...
+</p></div><div class="sect3"><a name="N1117"></a><div class="titlepage"><div><h4 class="title"><a name="N1117"></a>4.6.1.5. Print</h4></div></div><p>...
+</p></div><div class="sect3"><a name="N1120"></a><div class="titlepage"><div><h4 class="title"><a name="N1120"></a>4.6.1.6. Save GIF</h4></div></div><p>...
+</p></div><div class="sect3"><a name="N1129"></a><div class="titlepage"><div><h4 class="title"><a name="N1129"></a>4.6.1.7. Exit</h4></div></div><p>...
+</p></div></div><div class="sect2"><a name="N1133"></a><div class="titlepage"><div><h3 class="title"><a name="N1133"></a>4.6.2. The Edit menu</h3></div></div><div class="sect3"><a name="N1138"></a><div class="titlepage"><div><h4 class="title"><a name="N1138"></a>4.6.2.1. Select</h4></div></div><p>...
+</p></div><div class="sect3"><a name="N1141"></a><div class="titlepage"><div><h4 class="title"><a name="N1141"></a>4.6.2.2. Select all</h4></div></div><p>...
+</p></div><div class="sect3"><a name="N114a"></a><div class="titlepage"><div><h4 class="title"><a name="N114a"></a>4.6.2.3. Select next</h4></div></div><p>...
+</p></div><div class="sect3"><a name="N1153"></a><div class="titlepage"><div><h4 class="title"><a name="N1153"></a>4.6.2.4. Invert selection</h4></div></div><p>...
+</p></div><div class="sect3"><a name="N115c"></a><div class="titlepage"><div><h4 class="title"><a name="N115c"></a>4.6.2.5. Undo/Redo</h4></div></div><p>...
+</p></div><div class="sect3"><a name="N1165"></a><div class="titlepage"><div><h4 class="title"><a name="N1165"></a>4.6.2.6. Cut</h4></div></div><p>...
+</p></div><div class="sect3"><a name="N116e"></a><div class="titlepage"><div><h4 class="title"><a name="N116e"></a>4.6.2.7. Copy</h4></div></div><p>...
+</p></div><div class="sect3"><a name="N1177"></a><div class="titlepage"><div><h4 class="title"><a name="N1177"></a>4.6.2.8. Paste</h4></div></div><p>...
+</p></div><div class="sect3"><a name="N1180"></a><div class="titlepage"><div><h4 class="title"><a name="N1180"></a>4.6.2.9. Remove from diagram</h4></div></div><p>...
+</p></div><div class="sect3"><a name="N1189"></a><div class="titlepage"><div><h4 class="title"><a name="N1189"></a>4.6.2.10. Delete from model</h4></div></div><p>...
+</p></div><div class="sect3"><a name="N1192"></a><div class="titlepage"><div><h4 class="title"><a name="N1192"></a>4.6.2.11. Empty trash</h4></div></div><p>...
+</p></div></div></div><div class="sect1"><a name="N119d"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N119d"></a>4.7. The status bar</h2></div></div><p>...
+</p></div><div class="sect1"><a name="N11a6"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N11a6"></a>4.8. The toolbar</h2></div></div><p>...
+</p></div></div><div class="glossary" id="glossary"><div class="titlepage"><div><h2 class="title"><a name="glossary"></a>Glossary</h2></div></div><p>
+This is not a real glossary, it's just an example.
+</p><div class="glossdiv"><h3 class="title">E</h3><dl><dt><a name="xml">Extensible Markup Language</a></dt><dd><p>Some reasonable definition here.</p><p>See Also <a href="#sgml">Standard Generalized Markup Language</a>.</p></dd></dl></div><div class="glossdiv"><h3 class="title">S</h3><dl><dt><a name="N11dc">SGML</a></dt><dd><p>See <a href="#sgml">Standard Generalized Markup Language</a>.</p></dd><dt><a name="sgml">Standard Generalized Markup Language</a></dt><dd><p>Some reasonable definition here.</p><p>See Also <a href="#xml">Extensible Markup Language</a>.</p></dd></dl></div><div class="glossdiv"><h3 class="title">S</h3><dl><dt><a name="N11dc">SGML</a></dt><dd><p>See <a href="#sgml">Standard Generalized Markup Language</a>.</p></dd><dt><a name="sgml">Standard Generalized Markup Language</a></dt><dd><p>Some reasonable definition here.</p><p>See Also <a href="#xml">Extensible Markup Language</a>.</p></dd></dl></div></div></div></body></html>

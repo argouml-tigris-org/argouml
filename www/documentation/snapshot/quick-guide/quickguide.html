@@ -1,0 +1,391 @@
+<html><head><title>ArgoUML QuickStart Guide</title><link type="text/css" href="look-and-feel.css" rel="stylesheet"><meta content="DocBook XSL Stylesheets V1.37" name="generator"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div id="Na35" class="book"><div class="titlepage"><div><h1 class="title"><a name="Na35"></a>ArgoUML QuickStart Guide</h1></div><div><h2 class="subtitle">Get started with ArgoUML v0.9.x</h2></div><div><h3 class="author">Kunle Odutola</h3><h3 class="author">Anthony Oguntimehin</h3></div><div><p class="copyright">Copyright &copy; 2001 Kunle Odutola</p></div><div><div class="legalnotice"><p>Copyright (c) 2001 by Kunle Odutola. All rights reserved</p><p>
+													This material may be distributed only subject to the terms and 
+													conditions set forth in the Open Publication License, v1.0 or 
+													later (the latest version is presently available at 
+													http://www.opencontent.org/openpub/).
+												</p></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>1 <a href="#Na61">Preface</a></dt><dt>1 <a href="#introduction">Introduction</a></dt><dd><dl><dt>1.1 <a href="#Nac0">Welcome to ArgoUML</a></dt><dt>1.2 <a href="#Nb22">About this guide...</a></dt><dd><dl><dt>1.2.1 <a href="#Nb2f">In this guide, you will find...</a></dt><dt>1.2.2 <a href="#Nb4d">In this guide, you will not find...</a></dt><dt>1.2.3 <a href="#Nb5e">What you should already know</a></dt><dt>1.2.4 <a href="#Nb6a">Documentation conventions</a></dt><dd><dl><dt>1.2.4.1 <a href="#Nb72">Conventions related to the use of the mouse</a></dt><dt>1.2.4.2 <a href="#Nc1f">Conventions related to the use of the keyboard</a></dt></dl></dd></dl></dd><dt>1.3 <a href="#Nc94">If you need further help</a></dt></dl></dd><dt>2 <a href="#installation">Installing ArgoUML</a></dt><dd><dl><dt>2.1 <a href="#Ncdc">Can your computer run ArgoUML?</a></dt><dd><dl><dt>2.1.1 <a href="#installation-checks-hardware">Check your computer's hardware specification</a></dt><dt>2.1.2 <a href="#installation-checks-java">Check the version of Java on your computer</a></dt></dl></dd><dt>2.2 <a href="#Nd58">Installation options</a></dt><dd><dl><dt>2.2.1 <a href="#installation-options-webstart">Java Web Start option</a></dt><dt>2.2.2 <a href="#installation-options-binarydist">Binary distribution option</a></dt><dd><dl><dt>2.2.2.1 <a href="#Nd9e">Obtain the ArgoUML binary distribution</a></dt><dt>2.2.2.2 <a href="#Ndac">Create an ArgoUML installation directory</a></dt><dt>2.2.2.3 <a href="#Ne02">Extract the ArgoUML files to the installation directory</a></dt></dl></dd><dt>2.2.3 <a href="#installation-options-sourcedist">Source or CVS distribution option</a></dt><dd><dl><dt>2.2.3.1 <a href="#Neb0">Obtain the ArgoUML source code</a></dt><dt>2.2.3.2 <a href="#Nee4">Extract the ArgoUML source code (source archive method only)</a></dt></dl></dd></dl></dd><dt>2.3 <a href="#Nfae">About this guide...</a></dt><dt>2.4 <a href="#Nfbc">If you need further help</a></dt></dl></dd><dt>3 <a href="#credits">Credits</a></dt></dl></div><div class="preface" id="Na61"><div class="titlepage"><div><h2 class="title"><a name="Na61"></a>Preface</h2></div></div><p>
+		1 April 2001
+	</p><p>
+		In the last decade of the last millenium, object-oriented (OO) technology finally completed it's 
+		transformation from a laboratory curiousity in the 1960s to become <i>the</i> mainstream 
+		software development paradigm. It has been a long, tough journey - that nearly ended in obscurity - 
+		primarily because OO technology required a major shift in the thought processes of systems designers, 
+		developers and others involved in the software development lifecycle.
+	</p><p>
+		It wasn't until the introduction of OO-hybrid languages such as C++, Classic Ada and Object Pascal in  
+		the eighties that the mainstream was introduced to and, given the opportunity to experiment with OO technology. 
+		These languages combined support for OO programming with support for traditional procedural programming. 
+		The lack of support of procedural programming in pure OO languages had hindered the adoption of OO technology 
+		for many years. The journey that had begun with the introduction of <i>objects</i> in Simula in 
+		the 1960s was now complete. OO technology was now accessible to the mainstream...well, OO programming was at least.
+	</p><p>
+		Simulation is the basic premise that underpins OO technology. An OO system is designed and implemented 
+		essentially as a simulation of the real world using software artifacts. This premise is as powerful 
+		as it is simple. By designing and buidling software systems in this manner, the same language and ideas 
+		can be used in the analysis, design and implementation of OO systems. This allowed a system to be designed 
+		and tested (or more correctly allowed a system to be simulated) without having to actually build the system first. 
+		This feature coupled with the ability to design systems at a very high level empowered experienced OO 
+		practitioners to design and successfully implement more complex systems than had previously been possible.
+	</p><p>
+		The availabilty of various OO methodologies and the eventual adoption of the Unified Modelling Language 
+		(UML) as the standard language for communicating OO concepts continued the advance of OO technology into 
+		the mainstream. The popularity of the object-based Visual Basic language and the parallel development and 
+		meteoric adoption of the fully object-orinted Java programming language was the final catlayst that fuelled 
+		the final stages of the rapid adoption of OO technologies by the mainstream.
+	</p><p>
+		ArgoUML was conceived as a tool and environment for use in the analysis and design of object-oriented software 
+		systems. In this sense it is similar to many of the commercial CASE tools that are sold as tools for modelling 
+		software systems. ArgoUML has a number of very important distictions from many of these tools:
+		<div class="itemizedlist"><ul><li><p><a name="Na7f"></a>
+					ArgoUML includes a number of features that support the cognitive needs object-oriented software 
+					designers and architects.
+				</p></li><li><p><a name="Na85"></a>
+					ArgoUML supports open standards extensively - UML, XMI, SVG, OCL and others. In this respect, 
+					ArgoUML is still ahead (even almost five years after it's initial introduction) of many commercial 
+					tools.
+				</p></li><li><p><a name="Na8b"></a>
+					ArgoUML is a 100% Pure Java application. This allows ArgoUML to run on all platforms for which 
+					a reliable port of the Java2 platform is available.
+				</p></li><li><p><a name="Na91"></a>
+					ArgoUML is an open source product. The availability of the source permits ensures that a new 
+					generation of software designers and researchers now have a proven framework from which they 
+					can drive the development and evolution of CASE tools technologies.
+				</p></li></ul></div>
+	</p><p>
+		In creating the ArgoUML development tool and environment, Jason Robbins and the rest of his research team at 
+		UCL leveraged the benefits of UML as the most prevalent OO modelling language and Java as one of the most 
+		productive OO development platforms to produce a solid tool for OO systems design and, further a testbed for
+		the evolution of OO CASE tools development and research.
+	</p><p>
+		Kunle Odutola
+	</p></div><div class="chapter" id="introduction"><div class="titlepage"><div><h2 class="title"><a name="introduction"></a>Chapter 1. Introduction</h2></div><div><h3 class="author">Kunle Odutola</h3></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>1.1 <a href="#Nac0">Welcome to ArgoUML</a></dt><dt>1.2 <a href="#Nb22">About this guide...</a></dt><dd><dl><dt>1.2.1 <a href="#Nb2f">In this guide, you will find...</a></dt><dt>1.2.2 <a href="#Nb4d">In this guide, you will not find...</a></dt><dt>1.2.3 <a href="#Nb5e">What you should already know</a></dt><dt>1.2.4 <a href="#Nb6a">Documentation conventions</a></dt><dd><dl><dt>1.2.4.1 <a href="#Nb72">Conventions related to the use of the mouse</a></dt><dt>1.2.4.2 <a href="#Nc1f">Conventions related to the use of the keyboard</a></dt></dl></dd></dl></dd><dt>1.3 <a href="#Nc94">If you need further help</a></dt></dl></div><div class="sect1"><a name="Nac0"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Nac0"></a>1.1. Welcome to ArgoUML</h2></div></div><p>
+			Welcome to ArgoUML from the <a href="http://www.argouml.org/" target="_top">ArgoUML project</a> team at <a href="http://www.tigris.org/" target="_top">Tigris</a>. ArgoUML is a powerful yet 
+			easy-to-use interactive, graphical software design environment that supports the design, 
+			development and documentation of object-oriented software applications. It leverages 
+			the <i>Write Once, Run Anywhere</i> promise of the Java2 platform to allow 
+			you to design great object-oriented software in your preferred Operating System environment.
+		</p><p>
+			If you are familiar with a family of software applications called Computer Aided Software 
+			Engineering (CASE) tools then you should find ArgoUML instantly familiar. 
+			It is an interactive, graphical modelling CASE tool that is easy to install, learn, 
+			use and customise for your own unique design environment. It is built on an extendible foundation 
+			of open standards (or industry standards) to ensure interoperability with the rest of the industry. 
+			You can share designs created with ArgoUML and collaborate with colleagues using other tools easily 
+			because of it's support for open standards. 
+		</p><p>
+			The typical users of ArgoUML include software designers &amp; architects, software developers, 
+			business analysts, systems analysts and other professionals involved in the analysis, design and 
+			development of software applications. It has a number of features (some unique) that enables 
+			it to better support these users in the design of software systems:
+			<div class="itemizedlist"><ul><li><p><a name="Nadc"></a>
+						Uses the open standard Unified Modelling Language (UML) as the language for 
+						documenting and communicating object-oriented designs
+					</p></li><li><p><a name="Nae2"></a>
+						Supports open standards including XML Metadata Interchange format (XMI), Scalable Vector 
+						Graphics format (SVG) and Portable Graphics Markup Language natively and as formats 
+						for the communicating design information with external systems
+					</p></li><li><p><a name="Nae8"></a>
+						Is a 100% Java application to ensure that it is available for use on all the major OS platforms 
+						plus any other OS an implementation of the Java2 platform exists
+					</p></li><li><p><a name="Naee"></a>
+						Is an Open Source product that enables it's users to extend or customize it. Many users also 
+						eventually become contributors to the future development of ArgoUML itself. On particularly 
+						important group of users are researchers and research groups who often endow ArgoUML with 
+						state-of-the-art features ahead of other CASE tools
+					</p></li><li><p><a name="Naf4"></a>
+						Incorporates a number of specific cognitive features to better support the design process:
+						<div class="itemizedlist"><ul><li style="list-style-type: square"><p><a name="Nafc"></a>
+									reflection-in-action
+								</p></li><li style="list-style-type: square"><p><a name="Nb02"></a>
+									opportunistic design
+								</p></li><li style="list-style-type: square"><p><a name="Nb08"></a>
+									comprehension and problem solving
+								</p></li></ul></div>
+					</p></li></ul></div>
+		</p><p>
+				ArgoUML was originally a product of a research programme at UCL led by Jason E. Robbins.
+		</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td valign="top" align="center" rowspan="2" width="25"><img src="images/caution.png"></td><th><a name="Nb16"></a>ArgoUML version 0.8.x or earlier</th></tr><tr><td valign="top" align="left" colspan="2"><p>
+				This guide is designed for the 0.9.x versions of ArgoUML. Many of the comments may also 
+				be applicable to earlier versions of the software but that has not been tested.
+			</p></td></tr></table></div></div><div class="sect1"><a name="Nb22"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Nb22"></a>1.2. About this guide...</h2></div></div><p>
+			This guide - the ArgoUML QuickStart Guide	- is provided to help you get up and running as quickly as 
+			possible with ArgoUML. It provides step-by-step instructions for obtaining and installing 
+			ArgoUML, performing common tasks, and outlines your options for contacting <a href="http://www.argouml.org/" target="_top">ArgoUML project</a> 
+			team should you need further support or to contribute to ArgoUML's development.
+		</p><div class="sect2"><a name="Nb2f"></a><div class="titlepage"><div><h3 class="title"><a name="Nb2f"></a>1.2.1. In this guide, you will find...</h3></div></div><p>
+				The remainder of this chapter includes information about documentation conventions and what 
+				you need to know to be able to use ArgoUML effectively. Here's what you can expect to find 
+				in the remaining chapters in this guide:
+			<div class="itemizedlist"><ul><li><p><a name="Nb38"></a>
+						Download and Installation instructions
+					</p></li><li><p><a name="Nb3e"></a>
+						Basic tutorial/introduction to ArgoUML - step-by-step procedures on essentials
+					</p></li><li><p><a name="Nb44"></a>
+						Support option - mailing list, resources, contributions, source code/CVS etc..
+					</p></li></ul></div>
+			</p></div><div class="sect2"><a name="Nb4d"></a><div class="titlepage"><div><h3 class="title"><a name="Nb4d"></a>1.2.2. In this guide, you will not find...</h3></div></div><p>
+				This guide is not a complete user or reference manual for ArgoUML. The <a href="http://www.argouml.org/" target="_top">ArgoUML project website</a> has 
+				information about the status of other ArgoUML documentation including a user manual. 
+			</p><p>
+				This guide does not attempt to teach you about UML, XMI, SVG or any other such standards 
+				that ArgoUML implements or supports. Neither does it attempt to teach you about the Java 
+				platform or your Operating System platform.
+			</p></div><div class="sect2"><a name="Nb5e"></a><div class="titlepage"><div><h3 class="title"><a name="Nb5e"></a>1.2.3. What you should already know</h3></div></div><p>
+				This guide assumes that you know how to use your computer. It also assumes that you have some 
+				knowledge of object-oriented software design given your interest in ArgoUML. You should be familiar 
+				with the process of installing software applications on your computer although full installation 
+				instructions are 	given for ArgoUML. 
+			</p><p>
+				Once ArgoUML is installed, it is assumed that you know how to point, click, and drag with 
+				a mouse or another pointing device and that you can use a keyboard.
+			</p></div><div class="sect2"><a name="Nb6a"></a><div class="titlepage"><div><h3 class="title"><a name="Nb6a"></a>1.2.4. Documentation conventions</h3></div></div><p>
+				Before reading this guide, please take a moment to ensure that you understand the conventions 
+				followed in the guide. This will help you to use the guide more effectively.
+			</p><div class="sect3"><a name="Nb72"></a><div class="titlepage"><div><h4 class="title"><a name="Nb72"></a>1.2.4.1. Conventions related to the use of the mouse</h4></div></div><div id="Nb77" class="informaltable"><p></p><a name="Nb77"></a><table border="1"><colgroup><col align="left"><col align="left"></colgroup><thead><tr><th>When you see this...</th><th>Do this...</th></tr></thead><tbody><tr><td><b>Click</b></td><td>
+									Press the primary mouse button (usually the left mouse button).
+								</td></tr><tr><td><b>Double-click</b></td><td>
+									Press the primary mouse button quickly twice.
+								</td></tr><tr><td><b>Right-click</b></td><td>
+									Press the secondary mouse button (usually the right mouse button).
+								</td></tr><tr><td>Files-&gt;New</td><td>
+									Click <i>File</i> on the top-level menu bar and, click the 
+									<i>New</i> option in the displayed 'File' menu.
+								</td></tr><tr><td>Create-&gt;Diagrams-&gt;ClassDiagram</td><td>
+									Click <i>Create</i> on the top-level menu bar, click 
+									<i>Diagrams</i> in the 'Create' menu that appears, click the 
+									<i>ClassDiagram</i> option in the 'Diagrams' submenu that appears.
+								</td></tr><tr><td><b>Select text</b></td><td>
+									Click and drag to highlight text.
+								</td></tr></tbody></table><p></p></div></div><div class="sect3"><a name="Nc1f"></a><div class="titlepage"><div><h4 class="title"><a name="Nc1f"></a>1.2.4.2. Conventions related to the use of the keyboard</h4></div></div><div id="Nc24" class="informaltable"><p></p><a name="Nc24"></a><table border="1"><colgroup><col align="left"><col align="left"></colgroup><thead><tr><th>When you see this...</th><th>Do this...</th></tr></thead><tbody><tr><td><b>Enter</b></td><td>
+									Press the Enter key on your keyboard.
+								</td></tr><tr><td>Control+Shift</td><td>
+									Press the Control key and the Shift key at the same time.
+								</td></tr><tr><td>Control-C</td><td>
+									Press the Control key and while keeping it pressed, press the C key at the same time.
+								</td></tr></tbody></table><p></p></div></div></div></div><div class="sect1"><a name="Nc94"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Nc94"></a>1.3. If you need further help</h2></div></div><p>
+			The website, mailing lists etc...
+		</p></div></div><div class="chapter" id="installation"><div class="titlepage"><div><h2 class="title"><a name="installation"></a>Chapter 2. Installing ArgoUML</h2></div><div><h3 class="author">Kunle Odutola</h3></div><div><h3 class="author">Anthony Oguntimehin</h3></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>2.1 <a href="#Ncdc">Can your computer run ArgoUML?</a></dt><dd><dl><dt>2.1.1 <a href="#installation-checks-hardware">Check your computer's hardware specification</a></dt><dt>2.1.2 <a href="#installation-checks-java">Check the version of Java on your computer</a></dt></dl></dd><dt>2.2 <a href="#Nd58">Installation options</a></dt><dd><dl><dt>2.2.1 <a href="#installation-options-webstart">Java Web Start option</a></dt><dt>2.2.2 <a href="#installation-options-binarydist">Binary distribution option</a></dt><dd><dl><dt>2.2.2.1 <a href="#Nd9e">Obtain the ArgoUML binary distribution</a></dt><dt>2.2.2.2 <a href="#Ndac">Create an ArgoUML installation directory</a></dt><dt>2.2.2.3 <a href="#Ne02">Extract the ArgoUML files to the installation directory</a></dt></dl></dd><dt>2.2.3 <a href="#installation-options-sourcedist">Source or CVS distribution option</a></dt><dd><dl><dt>2.2.3.1 <a href="#Neb0">Obtain the ArgoUML source code</a></dt><dt>2.2.3.2 <a href="#Nee4">Extract the ArgoUML source code (source archive method only)</a></dt></dl></dd></dl></dd><dt>2.3 <a href="#Nfae">About this guide...</a></dt><dt>2.4 <a href="#Nfbc">If you need further help</a></dt></dl></div><p>
+		This chapter presents step by step procedures for 
+		<div class="itemizedlist"><ul><li><p><a name="Ncc8"></a>checking ArgoUML system requirement</p></li><li><p><a name="Ncce"></a>obtaining ArgoUML</p></li><li><p><a name="Ncd4"></a>installing ArgoUML</p></li></ul></div>
+	</p><div class="sect1"><a name="Ncdc"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Ncdc"></a>2.1. Can your computer run ArgoUML?</h2></div></div><p>
+			Before you can install and use ArgoUML you must ensure that your computer's configuration meets the 
+			minimum system requirements for running ArgoUML. To ensure that your computer can run ArgoUML properly 
+			we will check the following:
+		</p><div class="itemizedlist"><ul><li><p><a name="Nce6"></a>
+					<a href="#installation-checks-hardware" title="2.1.1. Check your computer's hardware specification">Your computer's hardware specification</a>
+				</p></li><li><p><a name="Ncf1"></a>
+					<a href="#installation-checks-java" title="2.1.2. Check the version of Java on your computer">
+						The version of the Java Platform installed on your computer (if any)
+					</a>
+				</p></li></ul></div><div class="sect2"><a name="installation-checks-hardware"></a><div class="titlepage"><div><h3 class="title"><a name="installation-checks-hardware"></a>2.1.1. Check your computer's hardware specification</h3></div></div><p>
+				ArgoUML is a complex application with an interactive, graphics editing user interface. The minimum 
+				<i>recommended</i> configuration for a computer running ArgoUML is shown below. 
+				Please check and ensure that your computer meets the following <i>minimum</i> 
+				requirements before installing or using ArgoUML:				
+				<div class="itemizedlist"><ul><li><p><a name="Nd0e"></a>Microsoft Windows 95/98/Me/NT/2000, Linux or other OS that supports Java2</p></li><li><p><a name="Nd14"></a>200MHz Intel Pentium, AMD K6 or similar processor</p></li><li><p><a name="Nd1a"></a>64MB (128MB for Windows 2000) RAM</p></li><li><p><a name="Nd20"></a>10MB of free disk storage space on your hard disk</p></li><li><p><a name="Nd26"></a>SVGA video output and monitor</p></li><li><p><a name="Nd2c"></a>Mouse (or other pointing device) and a Keyboard</p></li></ul></div>
+			</p></div><div class="sect2"><a name="installation-checks-java"></a><div class="titlepage"><div><h3 class="title"><a name="installation-checks-java"></a>2.1.2. Check the version of Java on your computer</h3></div></div><p>
+				ArgoUML is a 100% Pure Java application. Your computer <i>must</i> have a version of the 
+				Java 2 platform JDK installed to use ArgoUML. More specifically, the Java 2 JDK v1.2 
+				(i.e. JDK1.2 or later) is <i>recommended</i> for use with ArgoUML. Although ArgoUML
+				has not been tested an <i>all</i> Java 2 platforms, it <i>should</i> 
+				run on all Java 2 installations regardless of the underlying OS platform. 
+			</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td valign="top" align="center" rowspan="2" width="25"><img src="images/note.png"></td><th><a name="Nd4b"></a>Note</th></tr><tr><td valign="top" align="left" colspan="2"><p>
+					Official Java 2 JDKs are available to download from Sun at 
+					<a href="http://java.sun.com/jdk/" target="_top">http://java.sun.com/jdk/</a>.
+				</p></td></tr></table></div></div></div><div class="sect1"><a name="Nd58"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Nd58"></a>2.2. Installation options</h2></div></div><p>
+			Now that you have a computer that can install and run ArgoUML effectively, you need to decide which 
+			of the installation options available is appropriate for you. You can choose from the following options:
+			<div class="itemizedlist"><ul><li><p><a name="Nd61"></a>
+						<a href="#installation-options-webstart" title="2.2.1. Java Web Start option">Java Web Start option</a> - this option 
+						is provided for first-time or occasional users. It is the easiest and quickest way to 
+						start using ArgoUML
+					</p></li><li><p><a name="Nd6c"></a>						
+						<a href="#installation-options-binarydist" title="2.2.2. Binary distribution option">Binary distribution option</a> - this 
+						option is provided for regular users. You should also choose this option if you are having 
+						problems with the Java Web Start option.
+					</p></li><li><p><a name="Nd77"></a>
+						<a href="#installation-options-sourcedist" title="2.2.3. Source or CVS distribution option">Source or CVS distribution option</a> - this 
+						option is provided for ArgoUML developers and contributors. You should choose this option if you 
+						are having problems with the other options.
+					</p></li></ul></div>
+		</p><div class="sect2"><a name="installation-options-webstart"></a><div class="titlepage"><div><h3 class="title"><a name="installation-options-webstart"></a>2.2.1. Java Web Start option</h3></div></div><p>
+				TBD: Using ArgoUML with JWS
+			</p></div><div class="sect2"><a name="installation-options-binarydist"></a><div class="titlepage"><div><h3 class="title"><a name="installation-options-binarydist"></a>2.2.2. Binary distribution option</h3></div></div><p>
+				This is the most common installation option for regular ArgoUML users. It involves obtaining a copy of 
+				the binary distribution archive from the <a href="http://www.argouml.org/" target="_top">ArgoUML project website</a> and then preparing your computer to be able to 
+				run ArgoUML using the contents of the binary distribution. You should use this option if you are either 
+				unable or unwilling to run the Java Web Start version or, your computer is not directly connected to 
+				the internet or, you already have the binary distribution.
+			</p><div class="sect3"><a name="Nd9e"></a><div class="titlepage"><div><h4 class="title"><a name="Nd9e"></a>2.2.2.1. Obtain the ArgoUML binary distribution</h4></div></div><p>
+					If you haven't already done so, please download a copy of the binary distribution from the 
+					<a href="http://www.argouml.org/" target="_top">ArgoUML homepage</a>. If the computer on which ArgoUML will be installed is not connected to the internet, 
+					download the file using another computer and copy the binary distribution file to the target computer.
+				</p></div><div class="sect3"><a name="Ndac"></a><div class="titlepage"><div><h4 class="title"><a name="Ndac"></a>2.2.2.2. Create an ArgoUML installation directory</h4></div></div><p>
+					Create a directory on your computer for the ArgoUML application. This directory will thereafter be 
+					referred to as the <i>ArgoUML installation directory</i> or just as 
+					<tt>ARGOUML_HOME</tt>. Sample commands for creating an ArgoUML installation directory on 
+					computers running Windows and Linux are shown below. You might want to choose a different location for 
+					ArgoUML on your computer.
+				</p><div class="example"><p><a name="Ndba"></a><b>Example 2.1. Creating an installation directory</b></p><div id="Ndbf" class="informalexample"><p></p><a name="Ndbf"></a><p>
+							Sample commands for Windows
+							<pre class="programlisting">
+mkdir <i><tt>C:\OO-Tools\ArgoUML</tt></i>
+							</pre>
+						</p><p></p></div><div id="Ndcd" class="informalexample"><p></p><a name="Ndcd"></a><p>
+							Sample commands for Linux and other Unixes
+							<pre class="programlisting">
+md <i><tt>/usr/bin/ArgoUML</tt></i>
+							</pre>
+						</p><p></p></div></div><div class="example"><p><a name="Nddc"></a><b>Example 2.2. Creating an installation directory</b></p><blockquote class="blockquote"><p>
+							Sample commands for Windows
+							<blockquote class="blockquote"><pre class="programlisting">
+mkdir <i><tt>C:\OO-Tools\ArgoUML</tt></i>
+								</pre></blockquote>
+						</p><p>
+							Sample commands for Linux and other Unixes
+							<blockquote class="blockquote"><pre class="programlisting">
+md <i><tt>/usr/bin/ArgoUML</tt></i>
+								</pre></blockquote>
+						</p></blockquote></div></div><div class="sect3"><a name="Ne02"></a><div class="titlepage"><div><h4 class="title"><a name="Ne02"></a>2.2.2.3. Extract the ArgoUML files to the installation directory</h4></div></div><p>
+					You will now change the current directory to the ArgoUML installation directory you have just created and 
+					extract the files contained in the binary distribution to the directory. The general 
+					form of the command to extract the files is:
+				</p><p>
+					<tt>jar xvf <i><tt>ArgoUML-archive-filename</tt></i>
+					</tt>
+				</p><p>
+					As an example, let's say you have an ArgoUML binary distribution archive named 
+					<tt>ArgoUML-0.9.3.zip</tt> that it is stored in a directory called 
+					<tt>C:\Distributions</tt> or <tt>~/distributions</tt> on a Windows or Linux 
+					computer respectively. To extract the ArgoUML files from the archive, you would type the following 
+					commands on the Windows and Linux/Unix platforms. 
+				</p><div class="example"><p><a name="Ne27"></a><b>Example 2.3. Extracting ArgoUML files from binary distribution</b></p><pre class="programlisting">
+chdir <i><tt>C:\OO-Tools\ArgoUML</tt></i>                                       <a name="install-bin-extract-win"></a><img border="0" alt="1" src="images/callouts/1.png">
+jar xvf <i><tt>C:\Distributions\ArgoUML-0.9.3.zip</tt></i>
+
+cd <i><tt>/usr/bin/ArgoUML</tt></i>                                             <a name="install-bin-extract-unix"></a><img border="0" alt="2" src="images/callouts/2.png">
+jar xvf <i><tt>~/distributions/ArgoUML-0.9.3.zip</tt></i>
+					</pre><div class="calloutlist"><a name="Ne45"></a><table summary="Callout list" border="0"><tr><td align="left" valign="top" width="5%"><a name="Ne47"></a><a href="#install-bin-extract-win"><img border="0" alt="1" src="images/callouts/1.png"></a> </td><td align="left" valign="top"><p>
+								Sample commands for Windows
+							</p></td></tr><tr><td align="left" valign="top" width="5%"><a name="Ne4f"></a><a href="#install-bin-extract-unix"><img border="0" alt="2" src="images/callouts/2.png"></a> </td><td align="left" valign="top"><p>
+								Sample commands for Linux/Unix
+							</p></td></tr></table></div></div><div class="example"><p><a name="Ne59"></a><b>Example 2.4. Extracting ArgoUML files from binary distribution</b></p><p>
+						Sample commands for Windows
+						<blockquote class="blockquote"><pre class="programlisting">
+chdir <i><tt>C:\OO-Tools\ArgoUML</tt></i>
+jar xvf <i><tt>C:\Distributions\ArgoUML-0.9.3.zip</tt></i>
+							</pre></blockquote>
+					</p><p>
+						Sample commands for Linux and other Unixes
+						<blockquote class="blockquote"><pre class="programlisting">
+cd <i><tt>/usr/bin/ArgoUML</tt></i>
+jar xvf <i><tt>~/distributions/ArgoUML-0.9.3.zip</tt></i>
+							</pre></blockquote>
+					</p></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td valign="top" align="center" rowspan="2" width="25"><img src="images/note.png"></td><th><a name="Ne81"></a>Note</th></tr><tr><td valign="top" align="left" colspan="2"><p>
+						For the above command to work, the <tt>bin</tt> sub-directory of the JDK directory tree 
+						must be added to your <tt>PATH</tt> environment variable. You might also be able to use a compatible 
+						de-archiver such as <tt>winzip</tt> or <tt>gzip</tt> to extract the files.
+					</p></td></tr></table></div><p>
+					You should now have the ArgoUML application's files copied to the installation directory on your system.
+				</p></div></div><div class="sect2"><a name="installation-options-sourcedist"></a><div class="titlepage"><div><h3 class="title"><a name="installation-options-sourcedist"></a>2.2.3. Source or CVS distribution option</h3></div></div><p>
+				This is the preferred installation option for ArgoUML developers, contributors and advanced users.
+				It involves obtaining the ArgoUML source code as a distribution from the <a href="http://www.argouml.org/" target="_top">ArgoUML project website</a> or from CVS, 
+				building ArgoUML on your computer, and then preparing your computer to run ArgoUML. 
+			</p><p>
+				You should use this option if you want to keep up with the latest developments, you are a developer 
+				or contributor on the ArgoUML project or if you have problems using the other installation options. 
+				Please note however that the devlopment copy of ArgoUML is quite often unstable and is not advised 
+				for production use.
+			</p><div class="sect3"><a name="Neb0"></a><div class="titlepage"><div><h4 class="title"><a name="Neb0"></a>2.2.3.1. Obtain the ArgoUML source code</h4></div></div><p>
+					You can obtain the <a href="http://argouml.tigris.org/servlets/ProjectSource" target="_top">ArgoUML source code</a> via one of two methods:
+				</p><div class="itemizedlist"><ul><li><p><a name="Nebf"></a>
+							<a href="http://argouml.tigris.org/v09/ds4.html" target="_top">Source archive</a> 
+							- this is a snapshot of the entire ArgoUML source code that is updated for each release 
+							(and maybe at other times too). This is the easiest way to get the ArgoUML source code 
+							but the contents may not be the latest available ArgoUML source code. You will need to 
+							obtain two archive files, one for the ArgoUML source code and one for the add-ons that 
+							ArgoUML depends on.
+						</p></li><li><p><a name="Neca"></a>
+							<a href="http://argouml.tigris.org/servlets/ProjectSource" target="_top">CVS checkout</a> 
+							- in this case you will extract the latest copy of the ArgoUML source code from the 
+							public CVS database that the <a href="http://www.argouml.org/" target="_top">ArgoUML project</a> uses to track the development of ArgoUML 
+							itself. This is really only recommended for developers and other contributors as the 
+							latest source code is also the least stable version of ArgoUML. When you use this method, 
+							what you get is always a snapshot of ArgoUML's source code as it is being developed.
+						</p></li></ul></div><p>
+					If you haven't already done so, please please obtain a copy of the <a href="http://argouml.tigris.org/servlets/ProjectSource" target="_top">ArgoUML source code</a> here. If the 
+					computer on which ArgoUML will be installed is not connected to the internet, download the file(s) 
+					using another computer and copy the file(s) to the target computer.
+				</p></div><div class="sect3"><a name="Nee4"></a><div class="titlepage"><div><h4 class="title"><a name="Nee4"></a>2.2.3.2. Extract the ArgoUML source code (source archive method only)</h4></div></div><p>
+					If you have chosen to obtain the ArgoUML source distribution archive(s), you need to extract the files 
+					from the archive(s) to a directory on your computer before you can build your copy ArgoUML.
+				</p><p>
+					Firstly, create a directory on your computer for the ArgoUML source code. This directory will 
+					thereafter be referred to as the <i>ArgoUML source directory</i> or just as 
+					<tt>ARGOSOURCE_HOME</tt>. Sample commands for creating an ArgoUML source directory on 
+					computers running Windows and Linux are shown below. You might want to choose a different location for 
+					ArgoUML on your computer.
+				</p><div class="example"><p><a name="Nef5"></a><b>Example 2.5. Creating a source directory</b></p><blockquote class="blockquote"><p>
+							Sample commands for Windows
+							<blockquote class="blockquote"><pre class="programlisting">
+mkdir <i><tt>C:\OO-Tools\ArgoUML-source</tt></i>
+								</pre></blockquote>
+						</p><p>
+							Sample commands for Linux and other Unixes
+							<blockquote class="blockquote"><pre class="programlisting">
+md <i><tt>/usr/bin/ArgoUML-source</tt></i>
+								</pre></blockquote>
+						</p></blockquote></div><p>
+					Next, change the current directory to the ArgoUML source directory you have just created and 
+					extract the files contained in the source distribution archive(s) to the directory. The general 
+					form of the command to extract the files is:
+				</p><p>
+					<tt>jar xvf <i><tt>ArgoUML-archive-filename</tt></i></tt>
+				</p><p>
+					As an example, given the following assumption on a Windows computer (with Linux/Unix-specific
+					details in brackets):
+					<div class="itemizedlist"><ul><li><p><a name="Nf2b"></a>
+								an ArgoUML source archive named <tt>ArgoUML-0.9.3-src.zip</tt> 
+								(<tt>ArgoUML-0.9.3-src.tar.gz</tt> on Linux/Unix)
+							</p></li><li><p><a name="Nf3b"></a>
+								an ArgoUML add-ons source archive named <tt>ArgoUML-0.9.3-libs.zip</tt> 
+								(<tt>ArgoUML-0.9.3-libs.tar.gz</tt> on Linux/Unix)
+							</p></li><li><p><a name="Nf4b"></a>
+								both source archives are stored in the directory <tt>C:\Distributions</tt> 
+								(<tt>~/distributions</tt> on Linux/Unix)
+							</p></li></ul></div>				
+					To extract the files from both archives to the ArgoUML source directory, you would type the 
+					following commands on the Windows and Linux/Unix platforms. 
+				</p><div class="example"><p><a name="Nf5d"></a><b>Example 2.6. Extracting ArgoUML files from source distribution</b></p><blockquote class="blockquote"><p>
+							Sample commands for Windows
+							<blockquote class="blockquote"><pre class="programlisting">
+chdir <i><tt>C:\OO-Tools\ArgoUML-source</tt></i>
+jar xvf <i><tt>C:\Distributions\ArgoUML-0.9.3-src.zip</tt></i>
+jar xvf <i><tt>C:\Distributions\ArgoUML-0.9.3-libs.zip</tt></i>
+								</pre></blockquote>
+						</p><p>
+							Sample commands for Linux and other Unixes
+							<blockquote class="blockquote"><pre class="programlisting">
+cd <i><tt>/usr/bin/ArgoUML-source</tt></i>
+jar xvf <i><tt>~/distributions/ArgoUML-0.9.3-src.tar.gz</tt></i>
+jar xvf <i><tt>~/distributions/ArgoUML-0.9.3-libs.tar.gz</tt></i>
+								</pre></blockquote>
+						</p></blockquote></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td valign="top" align="center" rowspan="2" width="25"><img src="images/note.png"></td><th><a name="Nf8e"></a>Note</th></tr><tr><td valign="top" align="left" colspan="2"><p>
+						For the above command to work, the <tt>bin</tt> sub-directory of the JDK directory tree 
+						must be added to your <tt>PATH</tt> environment variable. You might also be able to use a compatible 
+						de-archiver such as <tt>winzip</tt> or <tt>gzip</tt> to extract the files.
+					</p></td></tr></table></div><p>
+					You should now have the ArgoUML application's source files copied to the ArgoUML source directory on 
+					your system.
+				</p></div></div></div><div class="sect1"><a name="Nfae"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Nfae"></a>2.3. About this guide...</h2></div></div><p>
+			This guide - the ArgoUML QuickStart Guide	- is provided to help you get up and running as quickly as 
+			possible with ArgoUML. It provides step-by-step instructions for obtaining and installing 
+			ArgoUML, performing common tasks, and outlines your options for contact the <a href="http://www.argouml.org/" target="_top">ArgoUML project</a> 
+			team should you need further support or to contribute to ArgoUML's development.
+		</p></div><div class="sect1"><a name="Nfbc"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Nfbc"></a>2.4. If you need further help</h2></div></div><p>
+			The website, mailing lists etc...
+		</p></div></div><div class="chapter" id="credits"><div class="titlepage"><div><h2 class="title"><a name="credits"></a>Chapter 3. Credits</h2></div></div><p>Author:
+		
+		<span class="author">Kunle Odutola</span>
+		<tt>&lt;<a href="mailto:Kunle_Odutola@hotmail.com">Kunle_Odutola@hotmail.com</a>&gt;</tt>
+	</p></div></div></body></html>
