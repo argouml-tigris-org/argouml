@@ -42,7 +42,7 @@ public class Init {
 
   /** static initializer, register all appropriate critics */
   public static void init(Locale locale) {
-    ResourceBundle bundle = ResourceBundle.getBundle("org.argouml.uml.cognitive.UMLCognitiveResourceBundle",locale);
+    ResourceBundle bundle = ResourceBundle.getBundle("org.argouml.i18n.UMLCognitiveResourceBundle",locale);
     addChecklist(bundle,  MClass.class, "ChClass");
     addChecklist(bundle,  MInterface.class, "ChInterface");
     addChecklist(bundle,  MAttribute.class, "ChAttribute");
