@@ -30,9 +30,10 @@ import junit.framework.TestSuite;
 /**
  * @author Thierry Lach
  */
-public class UtilTestSuite {
+public final class UtilTestSuite {
 
-    /** Test suite for this package
+    /**
+     * Test suite for this package.
      * 
      * @return the junit test suite
      */
@@ -40,8 +41,6 @@ public class UtilTestSuite {
         TestSuite suite =
 	    new TestSuite("Tests for "
 			  + UtilTestSuite.class.getPackage().getName());
-        suite.addTestSuite(TestLinkedHashMap.class);
-        suite.addTestSuite(TestLinkedHashSet.class);
 	suite.addTestSuite(TestMyTokenizer.class);
         return suite;
     }
