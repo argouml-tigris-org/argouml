@@ -161,7 +161,7 @@ public class JavaImport {
 	
 	// Print the name of the current file, so we can associate
 	// exceptions to the file.
-	Argo.log.info("Parsing " + f.getAbsolutePath());
+	Argo.logger.info("Parsing " + f.getAbsolutePath());
 	
 	// start parsing at the compilationUnit rule
 	parser.compilationUnit(modeller, lexer);

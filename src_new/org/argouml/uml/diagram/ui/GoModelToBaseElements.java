@@ -31,12 +31,12 @@ import javax.swing.tree.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.Argo;
 import org.argouml.ui.*;
 
 public class GoModelToBaseElements extends AbstractGoRule {
-    protected static Category cat = Category.getInstance(GoModelToBaseElements.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(GoModelToBaseElements.class);
 
   public String getRuleName() {
     return Argo.localize ("Tree", "misc.package.base-class");
@@ -60,7 +60,7 @@ public class GoModelToBaseElements extends AbstractGoRule {
 	  if (index == -1) return me;
 	}
       }
-      cat.warn("getChild not enough base elements found!");
+      logger.warn("getChild not enough base elements found!");
     }
     throw new UnsupportedOperationException("getChild should not get here");
   }

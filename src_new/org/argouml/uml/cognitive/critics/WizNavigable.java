@@ -34,7 +34,7 @@ import java.util.*;
 import java.beans.*;
 import javax.swing.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.cognitive.ui.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -48,7 +48,7 @@ import org.argouml.kernel.*;
  *  of an association. */
 
 public class WizNavigable extends Wizard {
-    protected static Category cat = Category.getInstance(WizNavigable.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(WizNavigable.class);
 
   protected String _instructions =
   "Please select one of the following navigability options.";
@@ -115,7 +115,7 @@ public class WizNavigable extends Wizard {
    *  they do along, as soon as possible, they should not wait until
    *  the final step. */
   public void doAction(int oldStep) {
-    cat.debug("doAction " + oldStep);
+    logger.debug("doAction " + oldStep);
     switch (oldStep) {
     case 1:
       int choice = -1;
@@ -131,7 +131,7 @@ public class WizNavigable extends Wizard {
 	ae1.setNavigable(choice == 1 || choice == 2);
       }
       catch (Exception pve) {
-	cat.error("could not set navigablity", pve);
+	logger.error("could not set navigablity", pve);
       }
     }
   }

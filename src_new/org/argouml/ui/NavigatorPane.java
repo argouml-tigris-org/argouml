@@ -41,7 +41,7 @@ import ru.novosoft.uml.behavior.state_machines.*;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
@@ -63,7 +63,7 @@ import org.argouml.uml.diagram.ui.*;
 
 public class NavigatorPane extends JPanel
 implements ItemListener, TreeSelectionListener, PropertyChangeListener, QuadrantPanel {
-    protected static Category cat = Category.getInstance(NavigatorPane.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(NavigatorPane.class);
     
   //, CellEditorListener
 
@@ -292,7 +292,7 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
     //if (tm == _curPerspective) return;
     _curPerspective = tm;
     if (_curPerspective == null) {
-	cat.warn("null perspective!");
+	logger.warn("null perspective!");
       _tree.setVisible(false);
     }
     else {
@@ -392,7 +392,7 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
   class NavigatorKeyListener extends KeyAdapter {
     // maybe use keyTyped?
     public void keyPressed(KeyEvent e) {
-      cat.debug("got key: " + e.getKeyCode());
+      logger.debug("got key: " + e.getKeyCode());
       int code = e.getKeyCode();
       if (code == KeyEvent.VK_ENTER || code  == KeyEvent.VK_SPACE) {
 	Object newTarget = getSelectedObject();

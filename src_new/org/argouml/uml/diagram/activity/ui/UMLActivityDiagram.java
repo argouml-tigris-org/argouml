@@ -46,7 +46,7 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.ui.*;
 
 import org.argouml.uml.diagram.ui.*;
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.state.*;
 import org.argouml.uml.diagram.state.ui.*;
@@ -62,8 +62,8 @@ import org.argouml.uml.diagram.static_structure.ui.FigComment;
  * diagram is considered valuable as well.
  */
 public class UMLActivityDiagram extends UMLDiagram {
-    protected static Category cat = 
-        Category.getInstance(UMLActivityDiagram.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(UMLActivityDiagram.class);
 
   ////////////////
   // actions for toolbar
@@ -137,7 +137,7 @@ public class UMLActivityDiagram extends UMLDiagram {
 		if (context != null && context instanceof MNamespace)
 			setup((MNamespace)context, sm);
 		else
-			cat.debug("ActivityGraph without context not yet possible :-(");
+			logger.debug("ActivityGraph without context not yet possible :-(");
 	}
         
     /** method to perform a number of important initializations of an <I>Activity Diagram</I>. 
@@ -187,7 +187,7 @@ public class UMLActivityDiagram extends UMLDiagram {
 
   /** initialize the toolbar for this diagram type */
   protected void initToolBar() {
-    cat.debug("making state toolbar");
+    logger.debug("making state toolbar");
     _toolBar = new ToolBar();
     _toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 

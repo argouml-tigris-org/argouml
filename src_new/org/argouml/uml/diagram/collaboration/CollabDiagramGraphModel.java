@@ -28,7 +28,7 @@
 // $Id$
 
 package org.argouml.uml.diagram.collaboration;
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
@@ -51,7 +51,7 @@ import org.tigris.gef.graph.*;
 
 public class CollabDiagramGraphModel extends MutableGraphSupport
 implements VetoableChangeListener {
-    protected static Category cat = Category.getInstance(CollabDiagramGraphModel.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(CollabDiagramGraphModel.class);
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected Vector _nodes = new Vector();
@@ -126,7 +126,7 @@ implements VetoableChangeListener {
     if (edge instanceof MRelationship) {
         return CoreHelper.getHelper().getSource((MRelationship)edge);
     }
-    cat.debug("needs-more-work getSourcePort");
+    logger.debug("needs-more-work getSourcePort");
     return null;
   }
 
@@ -135,7 +135,7 @@ implements VetoableChangeListener {
     if (edge instanceof MRelationship) {
         return CoreHelper.getHelper().getDestination((MRelationship)edge);
     }
-    cat.debug("needs-more-work getDestPort");
+    logger.debug("needs-more-work getDestPort");
     return null;
   }
 
@@ -184,7 +184,7 @@ implements VetoableChangeListener {
 
   /** Add the given node to the graph, if valid. */
   public void addNode(Object node) {
-    cat.debug("adding MClassifierRole node!!");
+    logger.debug("adding MClassifierRole node!!");
     if (!canAddNode(node)) return;
     _nodes.addElement(node);
     // needs-more-work: assumes public, user pref for default visibility?
@@ -198,7 +198,7 @@ implements VetoableChangeListener {
 
   /** Add the given edge to the graph, if valid. */
   public void addEdge(Object edge) {
-    cat.debug("adding class edge!!!!!!");
+    logger.debug("adding class edge!!!!!!");
     if (!canAddEdge(edge)) return;
     _edges.addElement(edge);
     // needs-more-work: assumes public
@@ -293,7 +293,7 @@ implements VetoableChangeListener {
       }
       
       else {
-	    cat.debug("Incorrect edge");
+	    logger.debug("Incorrect edge");
 	    return null;
       }
       return null;
@@ -311,13 +311,13 @@ implements VetoableChangeListener {
       MElementImport eo = (MElementImport) pce.getNewValue();
       MModelElement me = eo.getModelElement();
       if (oldOwned.contains(eo)) {
-	    cat.debug("model removed " + me);
+	    logger.debug("model removed " + me);
 	    if (me instanceof MClassifier) removeNode(me);
 	    if (me instanceof MMessage) removeNode(me);
 	    if (me instanceof MAssociation) removeEdge(me);
       }
       else {
-	    cat.debug("model added " + me);
+	    logger.debug("model added " + me);
       }
     }
   }

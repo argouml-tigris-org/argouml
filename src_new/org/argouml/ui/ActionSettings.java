@@ -143,8 +143,8 @@ implements ArgoModuleEventListener {
 		                    stp.getTabPanel());
                     }
                 } catch (Exception exception) {
-                    Argo.log.error("got an Exception in ActionSettings");
-	            Argo.log.error(exception);
+                    Argo.logger.error("got an Exception in ActionSettings");
+	            Argo.logger.error(exception);
                 }
 	    }
 	    dlg.setSize(500, 300);

@@ -41,7 +41,7 @@ import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.*;
@@ -55,7 +55,7 @@ import org.argouml.uml.MMUtil;
  */
 
 public class GoUseCaseToExtensionPoint extends AbstractGoRule {
-    protected static Category cat = Category.getInstance(GoUseCaseToExtensionPoint.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(GoUseCaseToExtensionPoint.class);
 
 
     /**
@@ -96,7 +96,7 @@ public class GoUseCaseToExtensionPoint extends AbstractGoRule {
      */
 
     public void setRoot(Object r) {
-        cat.error(getClass().toString() +
+        logger.error(getClass().toString() +
                            ": setRoot() should never be called");
     }
 

@@ -155,7 +155,7 @@ public class Import {
 		    pb.getStatusBar().showProgress(100 * act/tot);
 		}
 		catch(Exception e1) {
-		    Argo.log.debug(e1);
+		    Argo.logger.debug(e1);
 		    nextPassFiles.addElement(curFile);
 		}
 	    }
@@ -167,9 +167,9 @@ public class Import {
 	}
 
 	if (files.size() > 0) {
-	    Argo.log.info("There are unparseable files:");
+	    Argo.logger.info("There are unparseable files:");
 	    for (int i = 0; i < files.size(); i++) {
-		Argo.log.info("Unparseable file: " 
+		Argo.logger.info("Unparseable file: " 
 			      + ((File)files.elementAt(i)).getName());
 	    }
 	}
@@ -189,7 +189,7 @@ public class Import {
 
 	iss.done();
 	
-	Argo.log.info(st);
+	Argo.logger.info(st);
 	pb.getStatusBar().showProgress(0);
     }
 
@@ -345,7 +345,7 @@ class ImportRun implements Runnable {
 		pb.getStatusBar().showProgress(100 * act/tot);
 	    }
 	    catch(Exception e1) {
-		Argo.log.debug(e1);
+		Argo.logger.debug(e1);
 		_nextPassFiles.addElement(curFile);
 	    }
 
@@ -378,7 +378,7 @@ class ImportRun implements Runnable {
 
 	_iss.done();
 	
-	Argo.log.info(_st);
+	Argo.logger.info(_st);
 	pb.getStatusBar().showProgress(0);
     }
 }

@@ -50,7 +50,7 @@ import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.model_management.*;
 
-import org.apache.log4j.*;
+import org.apache.commons.logging.*;
 
 
 /** Provides centralized methods dealing with notation.
@@ -65,11 +65,11 @@ implements PropertyChangeListener {
 
   /** Define a static log4j category variable for ArgoUML notation.
    */
-  public final static Category cat = Category.getInstance("org.argouml.application.notation");
+  public final static Log logger = org.apache.commons.logging.LogFactory.getLog("org.argouml.application.notation");
     // needs-more-work:  JDK 1.2 seems to not return the package name if
     // not running from a jar.
     //
-  // public final static Category cat = Category.getInstance(NotationNameImpl.class.getPackage().getName()); 
+  // public final static Log logger = org.apache.commons.logging.LogFactory.getLog(NotationNameImpl.class.getPackage().getName()); 
 
   /** The name of the default Argo notation.  This notation is
    *  part of Argo core distribution.
@@ -148,12 +148,12 @@ implements PropertyChangeListener {
   private NotationProvider getProvider(NotationName notation) {
       NotationProvider np = null;
       np = NotationProviderFactory.getInstance().getProvider(notation);
-      cat.debug ("getProvider(" + notation + ") returns " + np);
+      logger.debug ("getProvider(" + notation + ") returns " + np);
       return np;
   }
 
   public static void setDefaultNotation(NotationName n) {
-      cat.info ("default notation set to " + n.getConfigurationValue());
+      logger.info ("default notation set to " + n.getConfigurationValue());
       Configuration.setString(KEY_DEFAULT_NOTATION, n.getConfigurationValue());
   }
 
@@ -172,7 +172,7 @@ implements PropertyChangeListener {
       // at a later stage.
       if (n == null)
 	  n = NotationNameImpl.findNotation("Uml.1.3");
-      cat.debug ("default notation is " + n.getConfigurationValue());
+      logger.debug ("default notation is " + n.getConfigurationValue());
       return n;
   }
   ////////////////////////////////////////////////////////////////
@@ -463,7 +463,7 @@ implements PropertyChangeListener {
     /** Called after the notation default property gets changed.
      */
     public void propertyChange(PropertyChangeEvent pce) {
-	cat.info ("Notation change:" + pce.getOldValue() + " to " + pce.getNewValue());
+	logger.info ("Notation change:" + pce.getOldValue() + " to " + pce.getNewValue());
         ArgoEventPump.fireEvent(
 	             new ArgoNotationEvent(ArgoEvent.NOTATION_CHANGED, pce));
     }

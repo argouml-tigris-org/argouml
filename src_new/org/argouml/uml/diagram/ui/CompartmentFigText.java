@@ -34,7 +34,7 @@ package org.argouml.uml.diagram.ui;
 import java.awt.*;
 import java.awt.event.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.ui.*;
 import org.tigris.gef.presentation.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -52,7 +52,7 @@ import ru.novosoft.uml.foundation.core.*;
 
 public class CompartmentFigText extends FigText
 {
-    protected static Category cat = Category.getInstance(CompartmentFigText.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(CompartmentFigText.class);
 
     ///////////////////////////////////////////////////////////////////////////
     //
@@ -118,7 +118,7 @@ public class CompartmentFigText extends FigText
         _refFig = aFig;
 
         if (_refFig == null) {
-            cat.warn(this.getClass().toString() +
+            logger.warn(this.getClass().toString() +
                                ": Cannot create with null compartment fig");
         }
     }

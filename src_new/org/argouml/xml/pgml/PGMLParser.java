@@ -35,12 +35,12 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.FigNode;
 // the following three ugly package dependency are for restoring compartment visibility
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 
 public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
-    protected static Category cat = Category.getInstance(PGMLParser.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(PGMLParser.class);
 
   ////////////////////////////////////////////////////////////////
   // static variables
@@ -163,7 +163,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         }
 
         String translated = (String)_translateUciToOrg.get(oldName);
-        cat.debug( "old = " + oldName + " / new = " + translated );
+        logger.debug( "old = " + oldName + " / new = " + translated );
         return translated;
     }
 
@@ -177,7 +177,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
   protected FigNode _previousNode = null;
 
   public void startElement(String elementName,AttributeList attrList) {
-    cat.debug("startElement("+elementName+",AttributeList)"+_elementState+";"+_nestedGroups);
+    logger.debug("startElement("+elementName+",AttributeList)"+_elementState+";"+_nestedGroups);
     if (_elementState == NODE_STATE && elementName.equals("group") &&
         _currentNode != null && attrList != null &&
         (_currentNode instanceof FigClass  || _currentNode instanceof FigInterface)) {
@@ -223,8 +223,8 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
   
   public synchronized Diagram readDiagram(InputStream is, boolean closeStream) {
         try {
-            cat.info("=======================================");
-            cat.info("== READING DIAGRAM");
+            logger.info("=======================================");
+            logger.info("== READING DIAGRAM");
             SAXParserFactory factory = SAXParserFactory.newInstance();
             factory.setNamespaceAware(false);
             factory.setValidating(false);
@@ -240,11 +240,11 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             pc.parse(source,this);
             // source = null;
             if (closeStream) {
-                cat.debug("closing stream now (in PGMLParser.readDiagram)");
+                logger.debug("closing stream now (in PGMLParser.readDiagram)");
                 is.close();
             }
             else {
-                cat.debug("leaving stream OPEN!");
+                logger.debug("leaving stream OPEN!");
             }
             return _diagram;
         }

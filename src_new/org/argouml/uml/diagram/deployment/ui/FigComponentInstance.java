@@ -45,7 +45,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.generator.*;
@@ -53,7 +53,7 @@ import org.argouml.uml.generator.*;
 /** Class to display graphics for a UML ComponentInstance in a diagram. */
 
 public class FigComponentInstance extends FigNodeModelElement {
-    protected static Category cat = Category.getInstance(FigComponentInstance.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(FigComponentInstance.class);
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -253,7 +253,7 @@ public class FigComponentInstance extends FigNodeModelElement {
         setNode(figures);
       }
       catch (Exception e) {
-        cat.error("could not set package", e);
+        logger.error("could not set package", e);
        
       }
     }

@@ -39,14 +39,14 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.util.*;
 import org.tigris.gef.util.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.uml.*;
 import org.argouml.uml.cognitive.*;
 
 public class TabResults extends TabSpawnable
 implements Runnable, MouseListener, ActionListener, ListSelectionListener {
-    protected static Category cat = 
-        Category.getInstance(TabResults.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(TabResults.class);
     
 
   public static int _numJumpToRelated = 0;
@@ -177,7 +177,7 @@ implements Runnable, MouseListener, ActionListener, ListSelectionListener {
       sel = _related.elementAt(row);
     }
 
-    cat.debug("go " + sel + " in " + d.getName());
+    logger.debug("go " + sel + " in " + d.getName());
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     if (d != null) pb.setTarget(d);
     pb.select(sel);
@@ -192,7 +192,7 @@ implements Runnable, MouseListener, ActionListener, ListSelectionListener {
     if (_showRelated) {
       int row = lse.getFirstIndex();
       Object sel = _results.elementAt(row);
-      cat.debug("selected " + sel);
+      logger.debug("selected " + sel);
       _related.removeAllElements();
       java.util.Enumeration enum = ChildGenRelated.SINGLETON.gen(sel);
       while (enum.hasMoreElements())

@@ -27,7 +27,7 @@
 // $Id$
 
 package org.argouml.uml.diagram.state;
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
@@ -50,8 +50,8 @@ import org.tigris.gef.graph.*;
 
 public class StateDiagramGraphModel extends MutableGraphSupport
 implements VetoableChangeListener {
-    protected static Category cat = 
-        Category.getInstance(StateDiagramGraphModel.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(StateDiagramGraphModel.class);
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected Vector _nodes = new Vector();
@@ -110,7 +110,7 @@ implements VetoableChangeListener {
     if (port instanceof MStateVertex) {
       return new Vector(((MStateVertex)port).getIncomings());
     }
-    cat.debug("needs-more-work getInEdges of MState");
+    logger.debug("needs-more-work getInEdges of MState");
     return new Vector(); //wasteful!
   }
 
@@ -119,7 +119,7 @@ implements VetoableChangeListener {
     if (port instanceof MStateVertex) {
       return new Vector(((MStateVertex)port).getOutgoings());
     }
-    cat.debug("needs-more-work getOutEdges of MState");
+    logger.debug("needs-more-work getOutEdges of MState");
     return new Vector(); //wasteful!
   }
 
@@ -128,7 +128,7 @@ implements VetoableChangeListener {
     if (edge instanceof MTransition) {
         return StateMachinesHelper.getHelper().getSource((MTransition)edge);
     }
-    cat.debug("needs-more-work getSourcePort of MTransition");
+    logger.debug("needs-more-work getSourcePort of MTransition");
     return null;
   }
 
@@ -137,7 +137,7 @@ implements VetoableChangeListener {
     if (edge instanceof MTransition) {
         return StateMachinesHelper.getHelper().getDestination((MTransition)edge);
     }
-    cat.debug("needs-more-work getDestPort of MTransition");
+    logger.debug("needs-more-work getDestPort of MTransition");
     return null;
   }
 
@@ -178,10 +178,10 @@ implements VetoableChangeListener {
 
   /** Add the given node to the graph, if valid. */
   public void addNode(Object node) {
-    cat.debug("adding state diagram node: " + node);
+    logger.debug("adding state diagram node: " + node);
     if (!canAddNode(node)) return;
     if (!(node instanceof MStateVertex)) {
-      cat.error("internal error: got past canAddNode");
+      logger.error("internal error: got past canAddNode");
       return;
     }
     MStateVertex sv = (MStateVertex) node;
@@ -202,7 +202,7 @@ implements VetoableChangeListener {
 
   /** Add the given edge to the graph, if valid. */
   public void addEdge(Object edge) {
-    cat.debug("adding state diagram edge!!!!!!");
+    logger.debug("adding state diagram edge!!!!!!");
    
     if (!canAddEdge(edge)) return;
      MTransition tr = (MTransition) edge;
@@ -235,11 +235,11 @@ implements VetoableChangeListener {
    * kind of edge to be determined by the ports. */
   public boolean canConnect(Object fromPort, Object toPort) {
     if (!(fromPort instanceof MStateVertex)) {
-      cat.error("internal error not from sv");
+      logger.error("internal error not from sv");
       return false;
     }
     if (!(toPort instanceof MStateVertex)) {
-      cat.error("internal error not to sv");
+      logger.error("internal error not to sv");
       return false;
     }
     MStateVertex fromSV = (MStateVertex) fromPort;
@@ -264,11 +264,11 @@ implements VetoableChangeListener {
 			java.lang.Class edgeClass) {
     //    try {
     if (!(fromPort instanceof MStateVertex)) {
-      cat.error("internal error not from sv");
+      logger.error("internal error not from sv");
       return null;
     }
     if (!(toPort instanceof MStateVertex)) {
-      cat.error("internal error not to sv");
+      logger.error("internal error not to sv");
       return null;
     }
     MStateVertex fromSV = (MStateVertex) fromPort;
@@ -287,7 +287,7 @@ implements VetoableChangeListener {
       return tr;
     }
     else {
-      cat.debug("wrong kind of edge in StateDiagram connect3 "+edgeClass);
+      logger.debug("wrong kind of edge in StateDiagram connect3 "+edgeClass);
       return null;
     }
   }
@@ -304,13 +304,13 @@ implements VetoableChangeListener {
       MElementImport eo = (MElementImport) pce.getNewValue();
       MModelElement me = eo.getModelElement();
       if (oldOwned.contains(eo)) {
-	cat.debug("model removed " + me);
+	logger.debug("model removed " + me);
 	if (me instanceof MState) removeNode(me);
 	if (me instanceof MPseudostate) removeNode(me);
 	if (me instanceof MTransition) removeEdge(me);
       }
       else {
-	cat.debug("model added " + me);
+	logger.debug("model added " + me);
       }
     }
   }

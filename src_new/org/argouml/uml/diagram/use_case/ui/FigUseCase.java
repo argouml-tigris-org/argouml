@@ -45,7 +45,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.*;
@@ -873,7 +873,7 @@ public class FigUseCase extends FigNodeModelElement {
      */
 
     public class FigMyCircle extends FigCircle {
-        protected Category cat = Category.getInstance(FigMyCircle.class);
+        protected Log logger = org.apache.commons.logging.LogFactory.getLog(FigMyCircle.class);
 
         /**
          * <p>Constructor just invokes the parent constructor.</p>
@@ -918,7 +918,7 @@ public class FigUseCase extends FigNodeModelElement {
             double mu = rx*ry/Math.sqrt(dd);
 
             Point res = new Point((int)(mu*dx+_x+rx),(int)(mu*dy+_y+ry));
-            cat.debug("    returns "+res.x+','+res.y+')');
+            logger.debug("    returns "+res.x+','+res.y+')');
             return res;
         }
     }

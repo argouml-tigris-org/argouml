@@ -39,7 +39,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.uml.diagram.activity.ui.*;
 // could be singleton
 
@@ -67,8 +67,8 @@ import org.argouml.uml.diagram.activity.ui.*;
  */
 
 public class StateDiagramRenderer implements GraphNodeRenderer, GraphEdgeRenderer {
-    protected static Category cat = 
-        Category.getInstance(StateDiagramRenderer.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(StateDiagramRenderer.class);
 
     /** Return a Fig that can be used to represent the given node */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
@@ -108,23 +108,23 @@ public class StateDiagramRenderer implements GraphNodeRenderer, GraphEdgeRendere
                 return new FigDeepHistoryState(gm, node);     
             }
             else {
-                cat.warn("found a type not known");
+                logger.warn("found a type not known");
             }
         }
-        cat.debug("needs-more-work StateDiagramRenderer getFigNodeFor");
+        logger.debug("needs-more-work StateDiagramRenderer getFigNodeFor");
         return null;
     }
 
   /** Return a Fig that can be used to represent the given edge */
   public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
-    cat.debug("making figedge for " + edge);
+    logger.debug("making figedge for " + edge);
     if (edge instanceof MTransition) {
       MTransition tr = (MTransition) edge;
       FigTransition trFig = new FigTransition(tr, lay);
       return trFig;
     }
 
-    cat.debug("needs-more-work StateDiagramRenderer getFigEdgeFor");
+    logger.debug("needs-more-work StateDiagramRenderer getFigEdgeFor");
     return null;
   }
 

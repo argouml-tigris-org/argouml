@@ -26,13 +26,13 @@ import java.text.*;
 import javax.swing.event.*;
 import javax.swing.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import java.lang.reflect.*;
 import ru.novosoft.uml.*;
 
 public class UMLExpressionBodyField extends JTextArea implements DocumentListener, UMLUserInterfaceComponent {
-    protected static Category cat = 
-        Category.getInstance(UMLExpressionBodyField.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(UMLExpressionBodyField.class);
 
     private UMLExpressionModel _model;
     private boolean _notifyModel;
@@ -44,7 +44,7 @@ public class UMLExpressionBodyField extends JTextArea implements DocumentListene
     }
 
     public void targetChanged() {
-	cat.debug("UMLExpressionBodyField: targetChanged");
+	logger.debug("UMLExpressionBodyField: targetChanged");
 	if(_notifyModel) _model.targetChanged();
         update();
     }
@@ -63,17 +63,17 @@ public class UMLExpressionBodyField extends JTextArea implements DocumentListene
     public void removed(final MElementEvent p1) {
     }
     public void propertySet(final MElementEvent event) {
-       	cat.debug("UMLExpressionBodyField: propertySet"+event);
+       	logger.debug("UMLExpressionBodyField: propertySet"+event);
     }
     
     private void update() {
         String oldText = getText();
         String newText = _model.getBody();
-	cat.debug("UMLExpressionBodyField: update: "+oldText+" "+newText);
+	logger.debug("UMLExpressionBodyField: update: "+oldText+" "+newText);
 
 	if(oldText == null || newText == null || !oldText.equals(newText)) {
             if(oldText != newText) {
-		cat.debug("setNewText!!");
+		logger.debug("setNewText!!");
                 setText(newText);
             }
         }

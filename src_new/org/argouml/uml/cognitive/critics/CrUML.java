@@ -33,7 +33,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 
 import org.tigris.gef.util.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
@@ -53,7 +53,7 @@ import java.util.*;
  */
 
 public class CrUML extends Critic {
-    protected static Category cat = Category.getInstance(CrUML.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(CrUML.class);
     
   public static final Decision decINHERITANCE = new
   Decision("decision.inheritance", 5);
@@ -159,7 +159,7 @@ public class CrUML extends Critic {
   public boolean predicate(Object dm, Designer dsgr) {
     Project p = ProjectBrowser.TheInstance.getProject();
     if (p.isInTrash(dm)) {
-      cat.debug("in trash:" + dm);
+      logger.debug("in trash:" + dm);
       return NO_PROBLEM;
     }
     else return predicate2(dm, dsgr);
@@ -189,7 +189,7 @@ public class CrUML extends Critic {
      * No recursive expansion.
      */
   public String expand(String res, VectorSet offs) {
-      cat.debug("expanding: " + res);
+      logger.debug("expanding: " + res);
     if (offs.size() == 0) return res;
     Object off1 = offs.firstElement();
     if (!(off1 instanceof MElement)) return res;
@@ -205,7 +205,7 @@ public class CrUML extends Critic {
       if (matchPos > 0) beginning.append(res.substring(0, matchPos));
       String expr = res.substring(matchPos + OCL_START.length(), endExpr);
       String evalStr = OCLEvaluator.SINGLETON.evalToString(off1, expr);
-      cat.debug("expr='" + expr + "' = '" + evalStr + "'");
+      logger.debug("expr='" + expr + "' = '" + evalStr + "'");
       if (expr.endsWith("") && evalStr.equals(""))
 	evalStr = "(anon)";
       beginning.append(evalStr);

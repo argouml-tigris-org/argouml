@@ -187,7 +187,7 @@ abstract public class PropPanelModelElement extends PropPanel {
     public Vector getModulePopUpActions(Vector v, Object o) { return null; }
     public boolean shutdownModule() { return true; }
     public boolean initializeModule() {
-        ArgoModule.cat.debug("initializeModule()");
+        ArgoModule.logger.debug("initializeModule()");
         return true;
     }
     public void setModuleEnabled(boolean enabled) { }

@@ -64,8 +64,8 @@ import org.argouml.uml.MMUtil;
 import org.argouml.uml.ProfileJava;
 import org.argouml.uml.diagram.static_structure.*;
 import org.argouml.uml.diagram.deployment.*;
-import org.apache.log4j.Category;
-import org.apache.log4j.Priority;
+import org.apache.commons.logging.Log;
+// import org.apache.log4j.Priority;
 import org.argouml.application.api.*;
 import org.argouml.util.MyTokenizer;
 import org.argouml.model.uml.foundation.core.*;
@@ -162,8 +162,8 @@ public class ParserDisplay extends Parser {
   /**
    * The standard error etc. logger
    */
-  protected static final Category _cat = 
-    Category.getInstance(ParserDisplay.class);
+  protected static final Log _logger = 
+    org.apache.commons.logging.LogFactory.getLog(ParserDisplay.class);
 
   /** The array of special properties for attributes */
   private PropertySpecialString _attributeSpecialStrings[];
@@ -1057,13 +1057,13 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
 	throw pre;
     }
 
-    _cat.debug("ParseAttribute [name: " + name + " visibility: " +
+    _logger.debug("ParseAttribute [name: " + name + " visibility: " +
 	visibility + " type: " + type + " value: " + value + " stereo: " +
 	stereotype + " mult: " + multiplicity);
 
     if (properties != null) {
 	for (int i = 0; i + 1 < properties.size(); i += 2) {
-	    _cat.debug("\tProperty [name: " + properties.get(i) +
+	    _logger.debug("\tProperty [name: " + properties.get(i) +
 		" = " + properties.get(i+1) + "]");
 	}
     }
@@ -1231,7 +1231,7 @@ nextProp:
 	if (base == null || i < base.length)
 	    return (MStereotype) root;
 	else
-	    _cat.debug("Missed stereotype " + ((MStereotype)root).getBaseClass());
+	    _logger.debug("Missed stereotype " + ((MStereotype)root).getBaseClass());
 
     }
 
@@ -1586,7 +1586,7 @@ nextProp:
     // any of these indicate that name is to an end.    
     java.util.StringTokenizer st = new java.util.StringTokenizer(s, delim);
     if (!st.hasMoreTokens()) {
-      _cat.debug("name not parsed");
+      _logger.debug("name not parsed");
       return s;
     }
     String nameStr = st.nextToken();
@@ -1741,7 +1741,7 @@ nextProp:
  
 
 	      if (t == null) continue;
-	      _cat.debug("just parsed:" + GeneratorDisplay.Generate(t));
+	      _logger.debug("just parsed:" + GeneratorDisplay.Generate(t));
 	      t.setStateMachine(st.getStateMachine());
 	      t.setTarget(st);
 	      t.setSource(st);
@@ -1806,10 +1806,10 @@ nextProp:
 
     trigger = s;
 
-    _cat.debug("name=|" + name +"|");
-    _cat.debug("trigger=|" + trigger +"|");
-    _cat.debug("guard=|" + guard +"|");
-    _cat.debug("actions=|" + actions +"|");
+    _logger.debug("name=|" + name +"|");
+    _logger.debug("trigger=|" + trigger +"|");
+    _logger.debug("guard=|" + guard +"|");
+    _logger.debug("actions=|" + actions +"|");
     
     trans.setName(parseName(name));
 
@@ -1926,7 +1926,7 @@ nextProp:
     } catch (NoSuchElementException nsee) {
 	throw new ParseException("Unexpected end of attribute", s.length());
     } catch (ParseException pre) {
-	_cat.error("parseexception", pre);
+	_logger.error("parseexception", pre);
 
 	throw pre;
     }
@@ -2265,7 +2265,7 @@ addBases:
     } catch (NoSuchElementException nsee) {
 	throw new ParseException("Unexpected end of message", s.length());
     } catch (ParseException pre) {
-	_cat.error("parseexception" ,pre);
+	_logger.error("parseexception" ,pre);
 	throw pre;
     }
 
@@ -2298,7 +2298,7 @@ addBases:
 	args = new Vector();
     }
 
-    if (_cat.getPriority() != null && _cat.getPriority().equals(Priority.DEBUG)) {
+    if (_logger.isDebugEnabled()) {
         StringBuffer buf = new StringBuffer();
         buf.append("ParseMessage: " + s + "\n");
         buf.append("Message: ");
@@ -2321,7 +2321,7 @@ addBases:
         }
         buf.append("guard: " + guard + " it: " + iterative + " pl: " + parallell + "\n");
         buf.append(varname + " := " + fname + " ( " + paramExpr + " )" + "\n");
-        _cat.debug(buf);
+        _logger.debug(buf);
     }
         
 
@@ -2913,7 +2913,7 @@ predfor:
 	try {
 	    parseOperation(expr, op);
 	} catch (ParseException pe) {
-            _cat.error("Unexpected ParseException in getOperation: " + pe, pe);
+            _logger.error("Unexpected ParseException in getOperation: " + pe, pe);
 
 	}
 	options.add(op);

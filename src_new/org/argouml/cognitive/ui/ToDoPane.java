@@ -31,7 +31,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 
 import org.tigris.gef.ui.*;
@@ -46,8 +46,8 @@ import org.argouml.ui.*;
 
 public class ToDoPane extends JPanel
 implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener, QuadrantPanel {
-    protected static Category cat = 
-        Category.getInstance(ToDoPane.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(ToDoPane.class);
     
   ////////////////////////////////////////////////////////////////
   // constants
@@ -199,7 +199,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
   /** called when the user selects an item in the tree, by clicking or
    *  otherwise. */
   public void valueChanged(TreeSelectionEvent e) {
-    cat.debug("ToDoPane valueChanged");
+    logger.debug("ToDoPane valueChanged");
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
     Object sel = getSelectedObject();
@@ -236,7 +236,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
     if (getSelectedObject() == null) return;
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
-    cat.debug("1: " + getSelectedObject().toString());
+    logger.debug("1: " + getSelectedObject().toString());
   }
 
   /** called when the user clicks once on an item in the tree. */
@@ -252,7 +252,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
 
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
-    cat.debug("2: " + getSelectedObject().toString());
+    logger.debug("2: " + getSelectedObject().toString());
   }
 
   ////////////////////////////////////////////////////////////////
@@ -329,7 +329,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
     _curPerspective = tm;
     if (_curPerspective == null) _tree.setVisible(false);
     else {
-      cat.debug("ToDoPane setting tree model");
+      logger.debug("ToDoPane setting tree model");
       _curPerspective.setRoot(_root);
       _curPerspective.setFlat(_flat);
       _tree.setModel(_curPerspective);

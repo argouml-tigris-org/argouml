@@ -23,7 +23,7 @@
 
 package org.argouml.uml.ui;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.kernel.*;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
@@ -42,7 +42,7 @@ import javax.swing.JOptionPane;
 
 
 public class ActionStateDiagram extends ActionAddDiagram {
-    protected static Category cat = Category.getInstance(ActionStateDiagram.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(ActionStateDiagram.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables

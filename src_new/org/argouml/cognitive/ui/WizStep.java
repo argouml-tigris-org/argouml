@@ -33,7 +33,7 @@ import javax.swing.tree.*;
 import org.tigris.gef.ui.*;
 import org.tigris.gef.util.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
@@ -50,7 +50,7 @@ import org.argouml.cognitive.*;
 
 public class WizStep extends JPanel
 implements TabToDoTarget, ActionListener, DocumentListener {
-    protected static Category cat = Category.getInstance(WizStep.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(WizStep.class);
 
   ////////////////////////////////////////////////////////////////
   // constants

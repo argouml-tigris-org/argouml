@@ -23,7 +23,7 @@
 
 package org.argouml.uml.ui;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.uml.reveng.*;
@@ -37,7 +37,7 @@ import javax.swing.*;
 /* class ActionImportFromSources */
 public class ActionImportFromSources extends UMLAction {
     
-    protected static Category cat = Category.getInstance(org.argouml.uml.ui.ActionImportFromSources.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(org.argouml.uml.ui.ActionImportFromSources.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -108,7 +108,7 @@ public class ActionImportFromSources extends UMLAction {
                 }
             }
         } catch (Exception exception) {
-            cat.error("got an Exception in ActionImportFromSources", exception);
+            logger.error("got an Exception in ActionImportFromSources", exception);
         }
     }
 }

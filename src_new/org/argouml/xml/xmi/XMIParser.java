@@ -89,8 +89,8 @@ public class XMIParser {
 
         _proj = p;
 
-        Argo.log.info("=======================================");
-        Argo.log.info("== READING MODEL " + url);
+        Argo.logger.info("=======================================");
+        Argo.logger.info("== READING MODEL " + url);
         try {
             XMIReader reader = new XMIReader();
             InputSource source = new InputSource(url.openStream());
@@ -119,7 +119,7 @@ public class XMIParser {
         catch (Exception ex) {
             ex.printStackTrace();
         }
-        Argo.log.info("=======================================");
+        Argo.logger.info("=======================================");
 
         try {
             _proj.addModel(

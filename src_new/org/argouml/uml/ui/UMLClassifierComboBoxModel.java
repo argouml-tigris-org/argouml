@@ -34,7 +34,7 @@
 
 package org.argouml.uml.ui;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.uml.*;
 import javax.swing.event.*;
 import javax.swing.*;
@@ -51,8 +51,8 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 
 
 public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
-    protected static Category cat = 
-        Category.getInstance(UMLClassifierComboBoxModel.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(UMLClassifierComboBoxModel.class);
 
    
 
@@ -132,7 +132,7 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 		MModelElement elem = entry.getElement(model);
 		String name = null;
 		if (elem !=  null ) name=elem.getName();
-		cat.debug("setSelectedItem");
+		logger.debug("setSelectedItem");
 		setSelectedItem( entry);
 			    
 	    }
@@ -179,11 +179,11 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 		
 	    }
 	    catch(InvocationTargetException ex){
-                cat.error(ex.getTargetException()+" is IncovationTargetException in UMLClassifierComboBoxModel", ex);
+                logger.error(ex.getTargetException()+" is IncovationTargetException in UMLClassifierComboBoxModel", ex);
 		setSelectedItem(null);
 	    }
             catch(Exception e) {
-                cat.error("Exception in targetchanged", e);
+                logger.error("Exception in targetchanged", e);
                 setSelectedItem(null);
             }
 	}

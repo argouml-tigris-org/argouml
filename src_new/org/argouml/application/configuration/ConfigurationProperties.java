@@ -65,11 +65,11 @@ public class ConfigurationProperties extends ConfigurationHandler {
       Properties defaults = new Properties();
       try {
           defaults.load(getClass().getResourceAsStream(PROPERTIES));
-	  Configuration.cat.debug("Configuration loaded from " + PROPERTIES);
+	  Configuration.logger.debug("Configuration loaded from " + PROPERTIES);
       }
       catch (Exception ioe) {
           // needs-more-work:  What should we do here?
-	  Configuration.cat.warn("Configuration not loaded from " + PROPERTIES,
+	  Configuration.logger.warn("Configuration not loaded from " + PROPERTIES,
 	                          ioe);
       }
       _properties = new Properties(defaults);
@@ -93,12 +93,12 @@ public class ConfigurationProperties extends ConfigurationHandler {
   public boolean loadFile(File file) {
       try {
           _properties.load(new FileInputStream(file));
-	  Argo.log.info ("Configuration loaded from " + file + "\n");
+	  Argo.logger.info ("Configuration loaded from " + file + "\n");
           return true;
       }
       catch (Exception e) {
           if (_canComplain)
-              Argo.log.warn ("Unable to load configuration " + file + "\n");
+              Argo.logger.warn ("Unable to load configuration " + file + "\n");
           _canComplain = false;
       }
 
@@ -114,12 +114,12 @@ public class ConfigurationProperties extends ConfigurationHandler {
   boolean saveFile(File file) {
       try {
           _properties.store(new FileOutputStream(file), "Argo properties");
-	  Argo.log.info ("Configuration saved to " + file);
+	  Argo.logger.info ("Configuration saved to " + file);
           return true;
       }
       catch (Exception e) {
           if (_canComplain)
-              Argo.log.warn ("Unable to save configuration " + file + "\n");
+              Argo.logger.warn ("Unable to save configuration " + file + "\n");
           _canComplain = false;
       }
 
@@ -134,12 +134,12 @@ public class ConfigurationProperties extends ConfigurationHandler {
   public boolean loadURL(URL url) {
       try {
           _properties.load(url.openStream());
-	  Argo.log.info ("Configuration loaded from " + url + "\n");
+	  Argo.logger.info ("Configuration loaded from " + url + "\n");
           return true;
       }
       catch (Exception e) {
           if (_canComplain)
-              Argo.log.warn ("Unable to load configuration " + url + "\n");
+              Argo.logger.warn ("Unable to load configuration " + url + "\n");
           _canComplain = false;
           return false;
       }
@@ -171,7 +171,7 @@ public class ConfigurationProperties extends ConfigurationHandler {
       catch (Exception e) {
           result = defaultValue;
       }
-      Configuration.cat.debug("key '" + key + "' returns '" + result + "'");
+      Configuration.logger.debug("key '" + key + "' returns '" + result + "'");
       return result;
   }
 
@@ -181,7 +181,7 @@ public class ConfigurationProperties extends ConfigurationHandler {
    *  @param value the value to set the key to.
    */
   public void setValue(String key, String value) {
-     Configuration.cat.debug("key '" + key + "' set to '" + value + "'");
+     Configuration.logger.debug("key '" + key + "' set to '" + value + "'");
      _properties.setProperty(key, value);
   }
 }

@@ -153,7 +153,7 @@ implements TabFigTarget, PropertyChangeListener, DelayedVChangeListener {
       catch (InstantiationException ignore) { return null; }
       _panels.put(targetClass, p);
     }
-    else cat.debug("found style for " + targetClass.getName());
+    else logger.debug("found style for " + targetClass.getName());
     return p;
   }
 

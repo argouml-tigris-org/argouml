@@ -33,7 +33,7 @@ import javax.swing.tree.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.tigris.gef.util.*;
 
 /**
@@ -43,7 +43,7 @@ import org.tigris.gef.util.*;
 public class NavigatorConfigDialog extends JDialog
 implements ActionListener, ChangeListener, ListSelectionListener, MouseListener {
     
-    protected static Category cat = Category.getInstance(NavigatorConfigDialog.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(NavigatorConfigDialog.class);
 
   public static int _numNavConfig = 0;
   ////////////////////////////////////////////////////////////////
@@ -313,7 +313,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
   public void doRemovePers() {
     Object sel = _persList.getSelectedValue();
     if (!(sel instanceof NavPerspective)) {
-      cat.warn("doRemovePers: unexepected non-NavPerspective");
+      logger.warn("doRemovePers: unexepected non-NavPerspective");
       return;
     }
     NavPerspective np = (NavPerspective) sel;
@@ -334,7 +334,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
   public void doDupPers() {
     Object sel = _persList.getSelectedValue();
     if (!(sel instanceof NavPerspective)) {
-      cat.warn("doDupPers: unexepected non-NavPerspective");
+      logger.warn("doDupPers: unexepected non-NavPerspective");
       return;
     }
     NavPerspective np = (NavPerspective) sel;
@@ -343,20 +343,20 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
       NavPerspective.unregisterPerspective(newNP);
     }
     catch (CloneNotSupportedException cnse) {
-        cat.error("exception while cloning NavPerspective", cnse);
+        logger.error("exception while cloning NavPerspective", cnse);
     }
   }
 
   public void doAddRule() {
     Object sel = _persList.getSelectedValue();
     if (!(sel instanceof NavPerspective)) {
-      cat.warn("doAddRule: unexepected non-NavPerspective");
+      logger.warn("doAddRule: unexepected non-NavPerspective");
       return;
     }
     NavPerspective np = (NavPerspective) sel;
     Object selRule = _ruleLibList.getSelectedValue();
     if (!(selRule instanceof TreeModel)) {
-      cat.warn("doAddRule: unexepected non-TreeModel");
+      logger.warn("doAddRule: unexepected non-TreeModel");
       return;
     }
     TreeModel tm = (TreeModel) selRule;
@@ -368,13 +368,13 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
   public void doRemoveRule() {
     Object sel = _persList.getSelectedValue();
     if (!(sel instanceof NavPerspective)) {
-      cat.warn("doRemoveRule: unexepected non-NavPerspective");
+      logger.warn("doRemoveRule: unexepected non-NavPerspective");
       return;
     }
     NavPerspective np = (NavPerspective) sel;
     Object selRule = _rulesList.getSelectedValue();
     if (!(selRule instanceof TreeModel)) {
-      cat.warn("doRemoveRule: unexepected non-TreeModel");
+      logger.warn("doRemoveRule: unexepected non-TreeModel");
       return;
     }
     TreeModel tm = (TreeModel) selRule;
@@ -433,7 +433,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
 
   public void stateChanged(ChangeEvent ce) {
     Object src = ce.getSource();
-    cat.debug("stateChanged " + src);
+    logger.debug("stateChanged " + src);
   }
 
 

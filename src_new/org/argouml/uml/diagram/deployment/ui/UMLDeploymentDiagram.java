@@ -21,13 +21,13 @@ import org.tigris.gef.ui.*;
 
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.ui.ActionAddNote;
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.deployment.*;
 
 public class UMLDeploymentDiagram extends UMLDiagram {
-    protected static Category cat = 
-        Category.getInstance(UMLDeploymentDiagram.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(UMLDeploymentDiagram.class);
 
   ////////////////
   // actions for toolbar
@@ -113,7 +113,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 
   /** initialize the toolbar for this diagram type */
   protected void initToolBar() {
-    cat.debug("making deployment toolbar");
+    logger.debug("making deployment toolbar");
     _toolBar = new ToolBar();
     _toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 //     _toolBar.add(Actions.Cut);

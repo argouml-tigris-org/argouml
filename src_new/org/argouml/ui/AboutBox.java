@@ -104,7 +104,7 @@ public class AboutBox extends JDialog {
         _tabs.addTab("Version", new JScrollPane(a));
     }
     catch (Exception e) {
-        Argo.log.error("Unable to read version information", e);
+        Argo.logger.error("Unable to read version information", e);
     }
 
     try {
@@ -117,7 +117,7 @@ public class AboutBox extends JDialog {
         _tabs.addTab("Credits", new JScrollPane(a));
     }
     catch (Exception e) {
-        Argo.log.error("Unable to read 'credits.about'", e);
+        Argo.logger.error("Unable to read 'credits.about'", e);
     }
 
     try {
@@ -130,7 +130,7 @@ public class AboutBox extends JDialog {
         _tabs.addTab("Contact Info", new JScrollPane(a));
     }
     catch (Exception e) {
-        Argo.log.error("Unable to read 'contacts.about'", e);
+        Argo.logger.error("Unable to read 'contacts.about'", e);
     }
 
 
@@ -144,7 +144,7 @@ public class AboutBox extends JDialog {
         _tabs.addTab("Report bugs", new JScrollPane(a));
     }
     catch (Exception e) {
-        Argo.log.error("Unable to read 'bugreport.about'", e);
+        Argo.logger.error("Unable to read 'bugreport.about'", e);
     }
 
 
@@ -158,7 +158,7 @@ public class AboutBox extends JDialog {
         _tabs.addTab("Legal", new JScrollPane(a));
     }
     catch (Exception e) {
-        Argo.log.error("Unable to read 'legal.about'", e);
+        Argo.logger.error("Unable to read 'legal.about'", e);
     }
 
     getContentPane().setLayout(new BorderLayout(0, 0));

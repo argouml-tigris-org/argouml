@@ -40,7 +40,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.MFactory;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlFactory;
@@ -49,8 +49,8 @@ import org.argouml.uml.ui.*;
 import org.argouml.ui.ProjectBrowser;
 
 public class PropPanelTransition extends PropPanelModelElement {
-         protected static Category cat = 
-        Category.getInstance(PropPanelTransition.class);
+         protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(PropPanelTransition.class);
 
     ////////////////////////////////////////////////////////////////
     // contructors
@@ -136,7 +136,7 @@ public class PropPanelTransition extends PropPanelModelElement {
         if(target instanceof MTransition) {
             machine = ((MTransition) target).getStateMachine();
         }
-	if (machine==null) cat.debug("PropPanelTransition: StateMachine is null!");
+	if (machine==null) logger.debug("PropPanelTransition: StateMachine is null!");
         return machine;
     }
 

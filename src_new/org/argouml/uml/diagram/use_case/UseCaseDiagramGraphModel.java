@@ -46,7 +46,7 @@ import ru.novosoft.uml.model_management.*;
 
 import org.tigris.gef.graph.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.MMUtil;
@@ -60,7 +60,7 @@ import org.argouml.uml.MMUtil;
 
 public class UseCaseDiagramGraphModel extends MutableGraphSupport
     implements VetoableChangeListener {
-        protected static Category cat = Category.getInstance(UseCaseDiagramGraphModel.class);
+        protected static Log logger = org.apache.commons.logging.LogFactory.getLog(UseCaseDiagramGraphModel.class);
 
     ///////////////////////////////////////////////////////////////////////////
     //
@@ -295,7 +295,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
 
         // Don't know what to do otherwise
 
-        cat.debug(this.getClass().toString() + ": getSourcePort(" +
+        logger.debug(this.getClass().toString() + ": getSourcePort(" +
                            edge.toString() + ") - can't handle");
 
         return null;
@@ -329,7 +329,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
 
         // Don't know what to do otherwise
 
-        cat.debug(this.getClass().toString() + ": getDestPort(" +
+        logger.debug(this.getClass().toString() + ": getDestPort(" +
                            edge.toString() + ") - can't handle");
 
         return null;
@@ -504,7 +504,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
 
     public void addNode(Object node) {
 
-        cat.debug("adding usecase node!!");
+        logger.debug("adding usecase node!!");
 
         // Give up if we are already on the graph. This is a bit inconistent
         // with canAddNode above.
@@ -533,7 +533,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
          if (((node instanceof MActor) || (node instanceof MUseCase)) && 
          	(((MModelElement)node).getNamespace() == null)) {
          // end NEW CODE
-            cat.debug("setting namespace " + _model +
+            logger.debug("setting namespace " + _model +
                                 " to element "+node);
             _model.addOwnedElement((MModelElement) node);
         }
@@ -560,7 +560,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
 
     public void addEdge(Object edge) {
 
-        cat.debug("adding class edge!!!!!!");
+        logger.debug("adding class edge!!!!!!");
         
         // Give up if we are already on the graph.
 
@@ -880,7 +880,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
         // We shouldn't be asked for any other sort of edge
 
         else {
-            cat.debug(this.getClass().toString() + ": connect(" +
+            logger.debug(this.getClass().toString() + ": connect(" +
                                fromPort.toString() + ", " +
                                toPort.toString() + ", " +
                                edgeClass.toString() +
@@ -929,7 +929,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
 
             if (oldOwned.contains(eo)) {
 
-                cat.debug("model removed " + me);
+                logger.debug("model removed " + me);
 
                 // Remove a node
 
@@ -953,7 +953,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
 
             // Something was added - nothing for us to worry about
             else {
-                cat.debug("model added " + me);
+                logger.debug("model added " + me);
             }
         }
     }

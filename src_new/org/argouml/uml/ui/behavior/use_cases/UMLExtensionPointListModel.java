@@ -40,7 +40,7 @@ import org.argouml.ui.*;
 import org.argouml.uml.ui.UMLListMenuItem;
 import org.argouml.uml.ui.UMLModelElementListLinkModel;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.kernel.*;
 
 
@@ -58,7 +58,7 @@ import org.argouml.kernel.*;
  */
 
 public class UMLExtensionPointListModel extends UMLModelElementListLinkModel  {
-    protected static Category cat = Category.getInstance(UMLExtensionPointListModel.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(UMLExtensionPointListModel.class);
 
     /**
      * <p>The default text when there is no location for the

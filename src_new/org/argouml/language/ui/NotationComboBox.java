@@ -60,7 +60,7 @@ implements ArgoNotationEventListener {
     }
 
     public void notationChanged(ArgoNotationEvent event) {
-        Notation.cat.debug("NotationComboBox.notationChanged(" + event + ")");
+        Notation.logger.debug("NotationComboBox.notationChanged(" + event + ")");
         refresh();
     }
     public void notationAdded(ArgoNotationEvent event) { }
@@ -81,7 +81,7 @@ implements ArgoNotationEventListener {
 		    addItem(nn.getConfigurationValue());
 	        }
 	        catch (Exception e) {
-	            Argo.log.error ("Unexpected exception", e);
+	            Argo.logger.error ("Unexpected exception", e);
 	        }
 	    }
 	    setVisible(true);

@@ -43,7 +43,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.kernel.*;  
 import org.argouml.ui.*;
 import org.argouml.uml.*;
@@ -60,7 +60,7 @@ import org.argouml.model.uml.UmlFactory;
  * note layout, I subclass FigNode instead of FigNodeModelElement.
  */
 public class FigComment extends FigNodeModelElement implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener {
-    protected static Category cat = Category.getInstance(FigComment.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(FigComment.class);
 
 
     ////////////////////////////////////////////////////////////////
@@ -236,7 +236,7 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
 		storeNote("");
 		_readyToEdit = true;
 	    } else {
-		cat.debug("not ready to edit note");
+		logger.debug("not ready to edit note");
 		return;
 	    }
 	}
@@ -256,7 +256,7 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
 	    DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
 	    SwingUtilities.invokeLater(delayedNotify);
 	}
-	else cat.debug("FigNodeModelElement got vetoableChange"+
+	else logger.debug("FigNodeModelElement got vetoableChange"+
 				" from non-owner:" + src);
     }     
 
@@ -287,7 +287,7 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
 		endTrans();
 	    }
 	    catch (PropertyVetoException ex) {
-                cat.error("could not parse and use the text entered in figcomment", ex);
+                logger.error("could not parse and use the text entered in figcomment", ex);
 	    }
 	}
 	else super.propertyChange(pve);
@@ -299,7 +299,7 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
 		storeNote("");
 		_readyToEdit = true;
 	    } else {
-		cat.debug("not ready to edit note");
+		logger.debug("not ready to edit note");
 		return;
 	    }
 	}

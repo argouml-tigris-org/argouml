@@ -36,7 +36,7 @@ import ru.novosoft.uml.foundation.core.*;
 
 import org.tigris.gef.util.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 import org.argouml.uml.*;
@@ -45,7 +45,7 @@ import org.argouml.uml.*;
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrCircularInheritance extends CrUML {
-    protected static Category cat = Category.getInstance(CrCircularInheritance.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(CrCircularInheritance.class);
 
   public CrCircularInheritance() {
     setHeadline("Remove <ocl>self</ocl>'s Circular Inheritance");
@@ -89,7 +89,7 @@ public class CrCircularInheritance extends CrUML {
     if (!predicate(dm, dsgr)) return false;
     VectorSet newOffs = computeOffenders(dm);
     boolean res = offs.equals(newOffs);
-    cat.debug("offs="+ offs.toString() +
+    logger.debug("offs="+ offs.toString() +
   		       " newOffs="+ newOffs.toString() +
   		       " res = " + res);
     return res;

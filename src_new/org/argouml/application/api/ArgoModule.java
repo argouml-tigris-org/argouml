@@ -33,7 +33,7 @@ import org.argouml.application.modules.*;
 
 import java.util.Vector;
 
-import org.apache.log4j.*;
+import org.apache.commons.logging.*;
 
 /** Interface that defines the characteristics of an external
  *  module usable by Argo.
@@ -46,11 +46,11 @@ public interface ArgoModule {
 
     /** Define a static log4j category variable for ArgoUML configuration.
      */
-    public final static Category cat = Category.getInstance("org.argouml.application.modules");
+    public final static Log logger = org.apache.commons.logging.LogFactory.getLog("org.argouml.application.modules");
     // needs-more-work:  JDK 1.2 seems to not return the package name if
     // not running from a jar.
     //
-    // public final static Category cat = Category.getInstance(ModuleLoader.class.getPackage().getName());
+    // public final static Log logger = org.apache.commons.logging.LogFactory.getLog(ModuleLoader.class.getPackage().getName());
 
 
     public static final String MODULEFILENAME = ".argo.modules";

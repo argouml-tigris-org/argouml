@@ -64,7 +64,7 @@ import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
@@ -90,7 +90,7 @@ import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
  */
 
 public class UMLIncludeListModel extends UMLModelElementListModel  {
-    protected static Category cat = Category.getInstance(UMLIncludeListModel.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(UMLIncludeListModel.class);
 
     /**
      * <p>The default text when there is no addition class for the include
@@ -228,7 +228,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
         }
         else {
             if (element != null) {
-                cat.warn("UMLIncludeListModel." +
+                logger.warn("UMLIncludeListModel." +
                                    "formatElement(): Can't format " +
                                    element.getClass().toString());
             }

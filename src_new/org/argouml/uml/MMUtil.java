@@ -50,7 +50,7 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 import java.util.*;
 
 import org.argouml.ui.ProjectBrowser;
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationName;
@@ -60,7 +60,7 @@ import org.argouml.model.uml.UmlFactory;
 
 public class MMUtil {
 
-	Category cat = Category.getInstance(org.argouml.uml.MMUtil.class);
+	Log cat = org.apache.commons.logging.LogFactory.getLog(org.argouml.uml.MMUtil.class);
 
 	public static MMUtil SINGLETON = new MMUtil();
 

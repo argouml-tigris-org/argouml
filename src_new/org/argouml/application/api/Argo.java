@@ -26,10 +26,10 @@ import org.argouml.application.configuration.*;
 import org.argouml.application.modules.*;
 import org.argouml.application.events.*;
 import org.argouml.util.logging.*;
-import org.apache.log4j.*;
-import org.apache.log4j.helpers.*;
-import org.apache.log4j.or.*;
-import org.apache.log4j.spi.*;
+import org.apache.commons.logging.*;
+// import org.apache.log4j.helpers.*;
+// import org.apache.log4j.or.*;
+// import org.apache.log4j.spi.*;
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
@@ -52,7 +52,7 @@ import javax.swing.*;
  * <li>definitions of resource bundle identifier strings</li>
  * <li>methods for localization using <code>gef</code></li>
  * <li>methods for environment manipulation</li>
- * <li>methods for console <code>log4j</code> logging</li>
+ * <li>methods for console logging</li>
  * </ul>
  *
  */
@@ -174,7 +174,8 @@ public class Argo
      *  custom <code>log4j</code> formatters
      *  to be used on objects displayed on the console log.
      */
-    public final static Category log;
+    public final static Log logger =
+             org.apache.commons.logging.LogFactory.getLog("argouml.console");
 
     /** Don't let this class be instantiated. */
     private Argo()
@@ -258,28 +259,27 @@ public class Argo
 	return org.tigris.gef.util.ResourceLoader.lookupIconResource(arg1, arg2);
     }
 
-    static {
-	// Create a throwable renderer
-	ThrowableRenderer tr = new ThrowableRenderer();
-	// Create a separate hierarchy for the argo logger
-	Hierarchy hier = new Hierarchy(new RootCategory(Priority.INFO));
-	// Add the ThrowableRenderer
-	hier.getRendererMap().put(Throwable.class, tr);
-	// Set up the argo console logger in its own hierarchy
-	Category cat = hier.getInstance(CONSOLE_LOG);
-	cat.addAppender(new ConsoleAppender(
-	    new PatternLayout(System.getProperty(ARGO_CONSOLE_PREFIX, "")
-			      + "%m%n"),
-	    ConsoleAppender.SYSTEM_OUT));
-
-	// Add the throwable renderer
-	cat.getRoot().getHierarchy().getRendererMap().put(Throwable.class, tr);
-
-	if (System.getProperty(ARGO_CONSOLE_SUPPRESS) != null) {
-	    cat.getRoot().getHierarchy().disableAll();
-	}
-
-	// Set log here.  No going back.
-	log = cat;
-    }
+    // static {
+	// // Create a throwable renderer
+	// ThrowableRenderer tr = new ThrowableRenderer();
+	// // Create a separate hierarchy for the argo logger
+	// Hierarchy hier = new Hierarchy(new RootCategory(Priority.INFO));
+	// // Add the ThrowableRenderer
+	// hier.getRendererMap().put(Throwable.class, tr);
+	// // Set up the argo console logger in its own hierarchy
+	// Log logger = hier.getInstance(CONSOLE_LOG);
+	// cat.addAppender(new ConsoleAppender(
+	    // new PatternLayout(System.getProperty(ARGO_CONSOLE_PREFIX, "")
+			      // + "%m%n"),
+	    // ConsoleAppender.SYSTEM_OUT));
+// 
+	// // Add the throwable renderer
+	// cat.getRoot().getHierarchy().getRendererMap().put(Throwable.class, tr);
+// 
+	// if (System.getProperty(ARGO_CONSOLE_SUPPRESS) != null) {
+	    // cat.getRoot().getHierarchy().disableAll();
+	// }
+// 
+	// // Set log here.  No going back.
+    // }
 }

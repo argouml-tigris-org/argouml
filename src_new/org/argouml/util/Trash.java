@@ -23,8 +23,8 @@
 
 package org.argouml.util;
 
-import org.apache.log4j.Category;
-import org.apache.log4j.Priority;
+import org.apache.commons.logging.Log;
+// import org.apache.log4j.Priority;
 import org.argouml.model.uml.UmlFactory;
 
 import java.util.*;
@@ -42,8 +42,8 @@ import ru.novosoft.uml.foundation.core.*;
  * the trash, you must fix this before you empty the trash. */
 
 public class Trash {
-    protected static Category cat = 
-        Category.getInstance(Trash.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(Trash.class);
     
   public static Trash SINGLETON = new Trash();
 
@@ -58,7 +58,7 @@ public class Trash {
 
   public void addItemFrom(Object obj, Vector places) {
     if (obj == null) {
-      cat.warn("tried to add null to trash!");
+      logger.warn("tried to add null to trash!");
       return;
     }
     if (obj instanceof MModelElement) {
@@ -68,7 +68,7 @@ public class Trash {
       // next two lines give runtime exceptions. Remove should be done properly
 	  //me.setNamespace(null);
       // me.setNamespace(Trash_Model);
-	  cat.debug("added " + obj + " to trash");
+	  logger.debug("added " + obj + " to trash");
     }
     //needs-more-work: trash diagrams
   }
@@ -83,7 +83,7 @@ public class Trash {
   }
   
   public void recoverItem(Object obj) {
-    cat.debug("needs-more-work: recover from trash");
+    logger.debug("needs-more-work: recover from trash");
     if (obj instanceof MModelElement) {
       TrashItem ti = null; //needs-more-work: find in trash
 	  //((MModelElement)obj).recoverFromTrash(ti);
@@ -92,7 +92,7 @@ public class Trash {
 
   public void removeItem(Object obj) {
     if (obj == null) {
-      cat.debug("tried to remove null from trash!");
+      logger.debug("tried to remove null from trash!");
       return;
     }
     TrashItem ti = null; //needs-more-work: find in trash
@@ -100,8 +100,8 @@ public class Trash {
   }
 
   public void emptyTrash() {
-    cat.debug("needs-more-work: emptyTheTrash not implemented yet");
-    if (cat.getPriority() != null && cat.getPriority().equals(Priority.DEBUG)) {
+    logger.debug("needs-more-work: emptyTheTrash not implemented yet");
+    if (logger.isDebugEnabled()) {
         StringBuffer buf = new StringBuffer("Trash contents:");
         buf.append("\n");
         java.util.Enumeration keys = _contents.elements();
@@ -109,7 +109,7 @@ public class Trash {
           Object k = keys.nextElement();
           buf.append("| " + ((TrashItem)k)._item + "\n");
         }
-        cat.debug(buf.toString());
+        logger.debug(buf.toString());
     }
     
   }

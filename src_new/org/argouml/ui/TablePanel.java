@@ -39,7 +39,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.ui.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.diagram.*;
@@ -47,8 +47,8 @@ import org.argouml.uml.diagram.static_structure.*;
 
 public class TablePanel extends TabSpawnable
 implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener, ActionListener {
-    protected static Category cat = 
-        Category.getInstance(TablePanel.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(TablePanel.class);
 
   ////////////////////////////////////////////////////////////////
   // instance vars
@@ -265,8 +265,8 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
   // actions
 
   public void setFilter() {
-    cat.debug("filter set to: ");
-    cat.debug(_filterCombo.getSelectedItem());
+    logger.debug("filter set to: ");
+    logger.debug(_filterCombo.getSelectedItem());
   }
 
   public void setTablePerspective() {
@@ -282,7 +282,7 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
   // document event handling
 
   public void insertUpdate(DocumentEvent e) {
-    cat.debug(getClass().getName() + " insert");
+    logger.debug(getClass().getName() + " insert");
 
     Component ed = _filterCombo.getEditor().getEditorComponent();
     Document filterDoc = ((JTextField)ed).getDocument();

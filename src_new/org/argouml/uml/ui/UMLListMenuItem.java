@@ -25,7 +25,7 @@ package org.argouml.uml.ui;
 import javax.swing.event.*;
 import javax.swing.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 
 import java.lang.reflect.*;
 import ru.novosoft.uml.*;
@@ -39,7 +39,7 @@ import java.awt.*;
  *   @author Curt Arnold
  */
 public class UMLListMenuItem extends JMenuItem implements ActionListener {
-    protected static Category cat = Category.getInstance(UMLListMenuItem.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(UMLListMenuItem.class);
 
     private Object _actionObj;
     private int _index;
@@ -66,7 +66,7 @@ public class UMLListMenuItem extends JMenuItem implements ActionListener {
             _action = _actionObj.getClass().getMethod(action,_argClass);
         }
         catch(Exception e) {
-            cat.error("Exception in " + _action + " popup.", e);
+            logger.error("Exception in " + _action + " popup.", e);
             setEnabled(false);
         }
         
@@ -83,10 +83,10 @@ public class UMLListMenuItem extends JMenuItem implements ActionListener {
             _action.invoke(_actionObj,argValue);
         }
         catch(InvocationTargetException ex) {
-            cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLListMenuItem.actionPerformed()", ex);
+            logger.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLListMenuItem.actionPerformed()", ex);
         }
         catch(Exception e) {
-            cat.error(e.toString() + " in UMLListMenuItem.actionPerformed()", e);
+            logger.error(e.toString() + " in UMLListMenuItem.actionPerformed()", e);
         }
     }
 }

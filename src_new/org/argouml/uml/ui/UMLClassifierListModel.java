@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.model.uml.UmlFactory;
 
 import javax.swing.*;
@@ -37,8 +37,8 @@ import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 
 public class UMLClassifierListModel extends UMLModelElementCachedListModel  {
-    protected static Category cat = 
-        Category.getInstance(UMLClassifierListModel.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(UMLClassifierListModel.class);
     
 
     final private static String _nullLabel = "null";
@@ -97,7 +97,7 @@ public class UMLClassifierListModel extends UMLModelElementCachedListModel  {
                 navigateTo(newClass);
             }
             catch(Exception e) {
-                cat.error(e.toString() + " in UMLClassifierListModel.add()", e);
+                logger.error(e.toString() + " in UMLClassifierListModel.add()", e);
             }
         }
     }

@@ -37,7 +37,7 @@ import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 
-import org.apache.log4j.*;
+import org.apache.commons.logging.*;
 
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.Layer;
@@ -55,8 +55,8 @@ import org.argouml.uml.diagram.collaboration.*;
 public class UMLCollaborationDiagram extends UMLDiagram {
 
   /** for logging */
-  private final static Category cat = 
-      Category.getInstance("org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram");
+  private final static Log logger = 
+      org.apache.commons.logging.LogFactory.getLog("org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram");
 
   ////////////////
   // actions for toolbar
@@ -174,7 +174,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     Collection messages;
     Iterator msgIterator;
     if (getNamespace() == null) {
-        cat.error("Collaboration Diagram does not belong to a namespace");
+        logger.error("Collaboration Diagram does not belong to a namespace");
         return;
     }
     Collection ownedElements = getNamespace().getOwnedElements();

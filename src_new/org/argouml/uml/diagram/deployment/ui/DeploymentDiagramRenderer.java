@@ -12,12 +12,12 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
 import org.argouml.uml.diagram.ui.*;
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.uml.diagram.static_structure.ui.*;
 
 public class DeploymentDiagramRenderer
 implements GraphNodeRenderer, GraphEdgeRenderer {
-    protected static Category cat = Category.getInstance(DeploymentDiagramRenderer.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(DeploymentDiagramRenderer.class);
 
   /** Return a Fig that can be used to represent the given node */
 
@@ -29,7 +29,7 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
     else if (node instanceof MClass) return new FigClass(gm, node); 
     else if (node instanceof MInterface) return new FigInterface(gm, node); 
     else if (node instanceof MObject) return new FigObject(gm, node);
-    cat.debug("needs-more-work DeploymentDiagramRenderer getFigNodeFor");
+    logger.debug("needs-more-work DeploymentDiagramRenderer getFigNodeFor");
     return null;
   }
 
@@ -45,7 +45,7 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       MLink lnk = (MLink) edge;
       FigLink lnkFig = new FigLink(lnk);
       Collection linkEnds = lnk.getConnections();
-      if (linkEnds == null) cat.debug("null linkRoles....");
+      if (linkEnds == null) logger.debug("null linkRoles....");
 	  Object[] leArray = linkEnds.toArray();
       MLinkEnd fromEnd = (MLinkEnd) leArray[0];
       MInstance fromInst = fromEnd.getInstance();

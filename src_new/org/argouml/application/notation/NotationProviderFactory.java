@@ -49,7 +49,7 @@ import java.util.*;
 // import ru.novosoft.uml.behavior.collaborations.*;
 // import ru.novosoft.uml.model_management.*;
 
-// import org.apache.log4j.*;
+// import org.apache.commons.logging.*;
 
 /** Provides a factory for handling notation providers.
  *
@@ -74,7 +74,7 @@ implements ArgoModuleEventListener {
             Object o = iterator.next();
             if (o instanceof NotationProvider) {
 	        NotationProvider np = (NotationProvider)o;
-                Notation.cat.debug ("added provider:" + np);
+                Notation.logger.debug ("added provider:" + np);
                 _providers.add(np);
                 fireEvent(ArgoEventTypes.NOTATION_PROVIDER_ADDED, np);
 	    }
@@ -93,13 +93,13 @@ implements ArgoModuleEventListener {
     public NotationProvider getProvider(NotationName nn) {
         NotationName n = (nn == null) ? Notation.getDefaultNotation() : nn;
 
-	Notation.cat.debug ("looking for " + n);
+	Notation.logger.debug ("looking for " + n);
         ListIterator iterator = _providers.listIterator();
         while (iterator.hasNext()) {
             NotationProvider np = (NotationProvider)iterator.next();
-	    Notation.cat.debug ("Checking " + np + ", " + np.getNotation());
+	    Notation.logger.debug ("Checking " + np + ", " + np.getNotation());
 	    if (np.getNotation().equals(n)) {
-	        Notation.cat.debug ("found provider " + np);
+	        Notation.logger.debug ("found provider " + np);
 	        return np;
 	    }
 	}
@@ -129,10 +129,10 @@ implements ArgoModuleEventListener {
     }
  
   public void moduleLoaded(ArgoModuleEvent event) {
-    Notation.cat.debug (event);
+    Notation.logger.debug (event);
     if(event.getSource() instanceof NotationProvider) {
         NotationProvider np = (NotationProvider)event.getSource();
-        Notation.cat.debug ("added:" + np);
+        Notation.logger.debug ("added:" + np);
         _providers.add(np);
         fireEvent(ArgoEventTypes.NOTATION_PROVIDER_ADDED, np);
     }

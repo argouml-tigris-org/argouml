@@ -1,5 +1,5 @@
 package org.argouml.uml.diagram.deployment;
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
@@ -22,7 +22,7 @@ import org.argouml.uml.MMUtil;
 
 public class DeploymentDiagramGraphModel extends MutableGraphSupport
 implements VetoableChangeListener  {
-    protected static Category cat = Category.getInstance(DeploymentDiagramGraphModel.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(DeploymentDiagramGraphModel.class);
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected Vector _nodes = new Vector();
@@ -150,7 +150,7 @@ implements VetoableChangeListener  {
        return CommonBehaviorHelper.getHelper().getSource((MLink)edge);
     }
     
-    cat.debug("needs-more-work getSourcePort");
+    logger.debug("needs-more-work getSourcePort");
 
     return null;
   }
@@ -165,7 +165,7 @@ implements VetoableChangeListener  {
        return CommonBehaviorHelper.getHelper().getDestination((MLink)edge);
     }
     
-    cat.debug("needs-more-work getDestPort");
+    logger.debug("needs-more-work getDestPort");
 
     return null;
   }
@@ -213,7 +213,7 @@ if(_edges.contains(edge)) return false;
 
   /** Add the given node to the graph, if valid. */
   public void addNode(Object node) {
-    cat.debug("adding class node!!");
+    logger.debug("adding class node!!");
     if (!canAddNode(node)) return;
     _nodes.addElement(node);
     // needs-more-work: assumes public, user pref for default visibility?
@@ -227,7 +227,7 @@ if(_edges.contains(edge)) return false;
 
   /** Add the given edge to the graph, if valid. */
   public void addEdge(Object edge) {
-    cat.debug("adding class edge!!!!!!");
+    logger.debug("adding class edge!!!!!!");
     if (!canAddEdge(edge)) return;
     _edges.addElement(edge);
     // needs-more-work: assumes public
@@ -322,7 +322,7 @@ if(_edges.contains(edge)) return false;
 		    return asc;
 	    }
 	    else {
-	  		cat.debug("Cannot make a "+ edgeClass.getName() +
+	  		logger.debug("Cannot make a "+ edgeClass.getName() +
 			     " between a " + fromPort.getClass().getName() +
 			     " and a " + toPort.getClass().getName());
 	  		return null;
@@ -337,7 +337,7 @@ if(_edges.contains(edge)) return false;
     		return link;
     	}
     	else {
-	  		cat.debug("Cannot make a "+ edgeClass.getName() +
+	  		logger.debug("Cannot make a "+ edgeClass.getName() +
 			     " between a " + fromPort.getClass().getName() +
 			     " and a " + toPort.getClass().getName());
 	  		return null;
@@ -352,7 +352,7 @@ if(_edges.contains(edge)) return false;
 	    	return dep;
 	  	}
 	  	else {
-	  		cat.debug("Cannot make a "+ edgeClass.getName() +
+	  		logger.debug("Cannot make a "+ edgeClass.getName() +
 			     " between a " + fromPort.getClass().getName() +
 			     " and a " + toPort.getClass().getName());
 	  		return null;
@@ -367,7 +367,7 @@ if(_edges.contains(edge)) return false;
 	    	return dep;
 	  	}
 	  	else {
-	      	cat.debug("Cannot make a "+ edgeClass.getName() +
+	      	logger.debug("Cannot make a "+ edgeClass.getName() +
 			     " between a " + fromPort.getClass().getName() +
 			     " and a " + toPort.getClass().getName());
 	      	return null;
@@ -387,7 +387,7 @@ if(_edges.contains(edge)) return false;
 	      	return dep;
 	    }
 	    else {
-	      	cat.debug("Cannot make a "+ edgeClass.getName() +
+	      	logger.debug("Cannot make a "+ edgeClass.getName() +
 			     " between a " + fromPort.getClass().getName() +
 			     " and a " + toPort.getClass().getName());
 	      	return null;
@@ -407,7 +407,7 @@ if(_edges.contains(edge)) return false;
 	      return dep;
 	    }
 	    else {
-	      cat.debug("Cannot make a "+ edgeClass.getName() +
+	      logger.debug("Cannot make a "+ edgeClass.getName() +
 			     " between a " + fromPort.getClass().getName() +
 			     " and a " + toPort.getClass().getName());
 	      return null;
@@ -427,7 +427,7 @@ if(_edges.contains(edge)) return false;
 	      return dep;
 	    }
 	    else {
-	      cat.debug("Cannot make a "+ edgeClass.getName() +
+	      logger.debug("Cannot make a "+ edgeClass.getName() +
 			     " between a " + fromPort.getClass().getName() +
 			     " and a " + toPort.getClass().getName());
 	      return null;
@@ -442,7 +442,7 @@ if(_edges.contains(edge)) return false;
 	  		return dep;
 		}
 		else {
-	  		cat.debug("Cannot make a "+ edgeClass.getName() +
+	  		logger.debug("Cannot make a "+ edgeClass.getName() +
 			     " between a " + fromPort.getClass().getName() +
 			     " and a " + toPort.getClass().getName());
 	  		return null;
@@ -463,7 +463,7 @@ if(_edges.contains(edge)) return false;
 	  		return dep;
 		}
 		else {
-	  		cat.debug("Cannot make a "+ edgeClass.getName() +
+	  		logger.debug("Cannot make a "+ edgeClass.getName() +
 			     " between a " + fromPort.getClass().getName() +
 			     " and a " + toPort.getClass().getName());
 	  		return null;
@@ -481,7 +481,7 @@ if(_edges.contains(edge)) return false;
 	  		return dep;
     	}
     	else {
-	  		cat.debug("Cannot make a "+ edgeClass.getName() +
+	  		logger.debug("Cannot make a "+ edgeClass.getName() +
 			     " between a " + fromPort.getClass().getName() +
 			     " and a " + toPort.getClass().getName());
 	  		return null;
@@ -496,7 +496,7 @@ if(_edges.contains(edge)) return false;
 	  		return dep;
     	}
     	else {
-	  		cat.debug("Cannot make a "+ edgeClass.getName() +
+	  		logger.debug("Cannot make a "+ edgeClass.getName() +
 			     " between a " + fromPort.getClass().getName() +
 			     " and a " + toPort.getClass().getName());
 	  		return null;
@@ -511,7 +511,7 @@ if(_edges.contains(edge)) return false;
 	  		return dep;
     	}
     	else {
-	  		cat.debug("Cannot make a "+ edgeClass.getName() +
+	  		logger.debug("Cannot make a "+ edgeClass.getName() +
 			     " between a " + fromPort.getClass().getName() +
 			     " and a " + toPort.getClass().getName());
 	  		return null;
@@ -526,7 +526,7 @@ if(_edges.contains(edge)) return false;
 	  		return dep;
     	}
     	else {
-	  		cat.debug("Cannot make a "+ edgeClass.getName() +
+	  		logger.debug("Cannot make a "+ edgeClass.getName() +
 			     " between a " + fromPort.getClass().getName() +
 			     " and a " + toPort.getClass().getName());
 	  		return null;
@@ -534,7 +534,7 @@ if(_edges.contains(edge)) return false;
       }
 
       else {
-	  cat.debug("Incorrect edge");
+	  logger.debug("Incorrect edge");
 	  return null;
       }
     }
@@ -553,7 +553,7 @@ if(_edges.contains(edge)) return false;
       MElementImport eo = (MElementImport) pce.getNewValue();
       MModelElement me = eo.getModelElement();
       if (oldOwned.contains(eo)) {
-	    cat.debug("model removed " + me);
+	    logger.debug("model removed " + me);
 	    if (me instanceof MNode) removeNode(me);
 	    if (me instanceof MNodeInstance) removeNode(me);
 	    if (me instanceof MComponent) removeNode(me);
@@ -566,7 +566,7 @@ if(_edges.contains(edge)) return false;
             if (me instanceof MLink) removeEdge(me);
       }
       else {
-	    cat.debug("model added " + me);
+	    logger.debug("model added " + me);
       }
     }
   }

@@ -44,14 +44,14 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.uml.diagram.ui.*;
 
 /** Class to display graphics for a UML Component in a diagram. */
 
 public class FigComponent extends FigNodeModelElement {
-    protected static Category cat = Category.getInstance(FigComponent.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(FigComponent.class);
     
 /** The distance between the left edge of the fig and the left edge of the
   	  main rectangle. */
@@ -255,7 +255,7 @@ public class FigComponent extends FigNodeModelElement {
         setNode(figures);
       }
       catch (Exception e) {
-        cat.error("could not set package", e);
+        logger.error("could not set package", e);
       }
     }
     */

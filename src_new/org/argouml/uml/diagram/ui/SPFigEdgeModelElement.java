@@ -37,13 +37,13 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.tigris.gef.ui.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.ui.*;
 
 public class SPFigEdgeModelElement extends StylePanel
 implements ItemListener, DocumentListener {
-    protected static Category cat = 
-        Category.getInstance(SPFigEdgeModelElement.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(SPFigEdgeModelElement.class);
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -177,7 +177,7 @@ implements ItemListener, DocumentListener {
       _target.setBounds(x, y, w, h);
     }
     catch (Exception ex) {
-        cat.error("could not parse bounds string", ex);
+        logger.error("could not parse bounds string", ex);
     }
     _target.endTrans();
   }
@@ -196,7 +196,7 @@ implements ItemListener, DocumentListener {
   // event handling
 
   public void insertUpdate(DocumentEvent e) {
-    cat.debug(getClass().getName() + " insertUpdate");
+    logger.debug(getClass().getName() + " insertUpdate");
     Document bboxDoc = _bboxField.getDocument();
     if (e.getDocument() == bboxDoc) setTargetBBox();
     super.insertUpdate(e);

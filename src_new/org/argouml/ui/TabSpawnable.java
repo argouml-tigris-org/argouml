@@ -27,7 +27,7 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.cognitive.ui.*;
 import org.argouml.uml.ui.*;
@@ -39,8 +39,8 @@ import org.argouml.swingext.*;
  *  contents.  This is almost like "tearing off" a tab. */
 
 public class TabSpawnable extends JPanel implements Cloneable, org.argouml.swingext.Orientable  {
-    protected static Category cat = 
-        Category.getInstance(TabProps.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(TabProps.class);
   public final int OVERLAPP = 30;
     private static final String BUNDLE = "UMLMenu";
 
@@ -77,7 +77,7 @@ public class TabSpawnable extends JPanel implements Cloneable, org.argouml.swing
   public Object clone() {
     try { return this.getClass().newInstance(); }
     catch (Exception ex) {
-        cat.error("exception in clone()", ex);
+        logger.error("exception in clone()", ex);
     }
     return null;
   }

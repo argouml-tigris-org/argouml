@@ -48,7 +48,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 import org.tigris.gef.base.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.*;
@@ -59,7 +59,7 @@ import org.argouml.uml.ui.*;
 public class DisplayTextTree extends JTree
 implements MElementListener, VetoableChangeListener {
     
-    protected static Category cat = Category.getInstance(DisplayTextTree.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(DisplayTextTree.class);
 
   Hashtable _expandedPathsInModel = new Hashtable();
   boolean _reexpanding = false;
@@ -208,12 +208,12 @@ implements MElementListener, VetoableChangeListener {
   }
 
 	public void vetoableChange(PropertyChangeEvent e) {
-		cat.debug("DisplayTextTree vetoableChange: " + e.getPropertyName());
+		logger.debug("DisplayTextTree vetoableChange: " + e.getPropertyName());
 		if (!_myUpdateTreeHack.pending) {
 			SwingUtilities.invokeLater(_myUpdateTreeHack);
 			_myUpdateTreeHack.pending = true;
 		}
-		else cat.debug("update already pending");
+		else logger.debug("update already pending");
 	}
 
 

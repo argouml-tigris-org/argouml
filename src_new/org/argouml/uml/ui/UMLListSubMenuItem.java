@@ -36,8 +36,8 @@ package org.argouml.uml.ui;
 import javax.swing.event.*;
 import javax.swing.*;
 
-import org.apache.log4j.Category;
-import org.apache.log4j.Priority;
+import org.apache.commons.logging.Log;
+// import org.apache.log4j.Priority;
 
 import java.lang.reflect.*;
 import ru.novosoft.uml.*;
@@ -57,7 +57,7 @@ import java.awt.*;
  */
 
 public class UMLListSubMenuItem extends JMenuItem implements ActionListener {
-    protected static Category cat = Category.getInstance(UMLListSubMenuItem.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(UMLListSubMenuItem.class);
 
     /**
      * <p>The object (typically a list model of some sort) on which the method
@@ -145,7 +145,7 @@ public class UMLListSubMenuItem extends JMenuItem implements ActionListener {
                                                       _PARAMETER_SIGNATURE);
         }
         catch(Exception e) {
-            cat.error(this.getClass().toString() + ":" +
+            logger.error(this.getClass().toString() + ":" +
                                e.toString() + " while getting method " +
                                action + "(int, MModelElement)", e);
         }
@@ -178,7 +178,7 @@ public class UMLListSubMenuItem extends JMenuItem implements ActionListener {
             _action.invoke(_actionObj, argValue);
         }
         catch(InvocationTargetException ex) {
-            if (cat.getPriority() != null && cat.getPriority().equals(Priority.ERROR)) {
+            if (logger.isDebugEnabled()) {
                 StringBuffer buf = new StringBuffer();
                 buf.append(this.getClass().toString() +
                                ": actionPerformed(). " + 
@@ -188,12 +188,12 @@ public class UMLListSubMenuItem extends JMenuItem implements ActionListener {
                 buf.append(_actionObj.toString() + "(" + _index + ", " +
                                _subEntry.toString() + ")");
                 buf.append("\n");
-                cat.error(buf.toString(), ex);
+                logger.error(buf.toString(), ex);
             }
            
         }
         catch(Exception e) {
-            cat.error(this.getClass().toString() +
+            logger.error(this.getClass().toString() +
                                ": actionPerformed(). " + 
                                e.toString(), e);
         }

@@ -23,8 +23,8 @@
 
 package org.argouml.xml;
 
-import org.apache.log4j.Category;
-import org.apache.log4j.Priority;
+import org.apache.commons.logging.Log;
+// import org.apache.log4j.Priority;
 import org.argouml.application.api.*;
 import org.xml.sax.*;
 import org.xml.sax.helpers.*;
@@ -40,8 +40,8 @@ import javax.xml.parsers.SAXParser;
 
 public abstract class SAXParserBase extends HandlerBase {
     
-    protected Category cat = 
-        Category.getInstance(SAXParserBase.class);
+    protected Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(SAXParserBase.class);
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -105,7 +105,7 @@ public abstract class SAXParserBase extends HandlerBase {
       end = System.currentTimeMillis();
       _parseTime = end - start;
       if (_stats) {
-	Argo.log.info("Elapsed time: " + (end - start) + " ms");
+	Argo.logger.info("Elapsed time: " + (end - start) + " ms");
       }
     }
     catch(SAXException saxEx) {
@@ -148,14 +148,14 @@ public abstract class SAXParserBase extends HandlerBase {
     }
     else e = new XMLElement(name, atts);
 
-    if (cat.getPriority() != null && cat.getPriority().equals(Priority.DEBUG)) {
+    if (logger.isDebugEnabled()) {
         StringBuffer buf = new StringBuffer();
         buf.append("START: " + name + " " + e);
         for (int i = 0; i < atts.getLength(); i++) {
             buf.append("   ATT: " + atts.getName(i) + " " +
                atts.getValue(i));
         }
-        cat.debug(buf.toString());
+        logger.debug(buf.toString());
     }
         
     
@@ -167,7 +167,7 @@ public abstract class SAXParserBase extends HandlerBase {
 
   public void endElement(String name) throws SAXException {
     XMLElement e = _elements[-- _nElements];
-    if (cat.getPriority() != null && cat.getPriority().equals(Priority.DEBUG)) {
+    if (logger.isDebugEnabled()) {
         StringBuffer buf = new StringBuffer();
         buf.append("END: " + e.getName() + " [" +
              e.getText() + "] " + e + "\n");
@@ -175,7 +175,7 @@ public abstract class SAXParserBase extends HandlerBase {
             buf.append("   ATT: " + e.getAttributeName(i) + " " +
                e.getAttributeValue(i) + "\n");
         }
-        cat.debug(buf);
+        logger.debug(buf);
     }     
     handleEndElement(e);
     _freeElements[_nFreeElements++] = e;
@@ -198,7 +198,7 @@ public abstract class SAXParserBase extends HandlerBase {
       InputSource s = new InputSource(testIt.openStream());
       return s;
     } catch (Exception e) {
-      cat.info("NOTE: Could not open DTD " + systemId + " due to exception");
+      logger.info("NOTE: Could not open DTD " + systemId + " due to exception");
      
       String dtdName = systemId.substring(systemId.lastIndexOf('/')+1);
       String dtdPath = "/org/argouml/xml/dtd/" + dtdName;
@@ -236,10 +236,10 @@ public abstract class SAXParserBase extends HandlerBase {
   // convenience methods
 
   public void ignoreElement(XMLElement e) {
-    cat.debug("NOTE: ignoring tag:" + e.getName());
+    logger.debug("NOTE: ignoring tag:" + e.getName());
   }
 
   public void notImplemented(XMLElement e) {
-    cat.debug("NOTE: element not implemented: " + e.getName());
+    logger.debug("NOTE: element not implemented: " + e.getName());
   }
 } /* end class SAXParserBase */

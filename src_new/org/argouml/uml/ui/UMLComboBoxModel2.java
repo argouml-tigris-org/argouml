@@ -33,7 +33,7 @@ import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 
 
 import ru.novosoft.uml.MElementEvent;
@@ -49,8 +49,8 @@ public abstract class UMLComboBoxModel2
     extends DefaultComboBoxModel
     implements UMLUserInterfaceComponent {
         
-       protected static Category cat = 
-        Category.getInstance(UMLComboBoxModel2.class);
+       protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(UMLComboBoxModel2.class);
         
     protected UMLUserInterfaceContainer container = null;
     protected int selectedIndex = -1;
@@ -82,7 +82,7 @@ public abstract class UMLComboBoxModel2
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(MElementEvent)
      */
     public void listRoleItemSet(MElementEvent e) {
-        cat.debug("listRoleItemSet");
+        logger.debug("listRoleItemSet");
     }
 
     /**
@@ -107,14 +107,14 @@ public abstract class UMLComboBoxModel2
      * @see ru.novosoft.uml.MElementListener#recovered(MElementEvent)
      */
     public void recovered(MElementEvent e) {
-         cat.debug("recovered");
+         logger.debug("recovered");
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#removed(MElementEvent)
      */
     public void removed(MElementEvent e) {
-        cat.debug("removed");
+        logger.debug("removed");
         Object o = getChangedElement(e);
         if (getIndexOf(o) >= 0) {
             removeElement(o);

@@ -49,7 +49,7 @@ import java.util.Iterator;
 
 import javax.swing.Icon;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionWButtons;
@@ -76,8 +76,8 @@ import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
 
 public class SelectionSeqObject extends SelectionWButtons  {
-    protected static Category cat = 
-        Category.getInstance(SelectionSeqObject.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(SelectionSeqObject.class);
 
   
   ////////////////////////////////////////////////////////////////
@@ -191,7 +191,7 @@ public class SelectionSeqObject extends SelectionWButtons  {
       bx = cx;
       break;
     default:
-      cat.warn("invalid handle number");
+      logger.warn("invalid handle number");
       break;
     }
     if (edgeClass != null && nodeClass != null && actionClass != null) {

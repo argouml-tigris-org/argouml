@@ -51,7 +51,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
@@ -66,7 +66,7 @@ import org.argouml.model.uml.UmlHelper;
  */
 
 public class FigClass extends FigNodeModelElement {
-    protected static Category cat = Category.getInstance(FigClass.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(FigClass.class);
 
   ////////////////////////////////////////////////////////////////
   // constants

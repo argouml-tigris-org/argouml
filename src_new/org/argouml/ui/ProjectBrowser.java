@@ -39,7 +39,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.ui.*;
 import org.tigris.gef.util.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 
 import org.argouml.ui.menubar.GenericArgoMenuBar;
 import org.argouml.application.api.*;
@@ -56,8 +56,8 @@ import org.argouml.swingext.*;
 public class ProjectBrowser extends JFrame
     implements IStatusBar, NavigationListener {
     
-    protected static Category cat = 
-        Category.getInstance(ProjectBrowser.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(ProjectBrowser.class);
     
     ////////////////////////////////////////////////////////////////
     // constants
@@ -388,7 +388,7 @@ public class ProjectBrowser extends JFrame
         }
         if (o instanceof MModelElement) {
             MModelElement eo = (MModelElement)o;
-            if (eo == null) { cat.debug("no path to model"); return; }
+            if (eo == null) { logger.debug("no path to model"); return; }
             if (eo.getNamespace() != null) {
                 _project.setCurrentNamespace(eo.getNamespace());
             } else
@@ -413,7 +413,7 @@ public class ProjectBrowser extends JFrame
      */
     public void setActiveDiagram (ArgoDiagram ad) {
         _activeDiagram = ad;    
-        cat.debug ("Active diagram set to " + ad.getName());
+        logger.debug ("Active diagram set to " + ad.getName());
     }
 
 
@@ -799,13 +799,13 @@ public class ProjectBrowser extends JFrame
         catch (UnsupportedLookAndFeelException e) {
         }
         catch (ClassNotFoundException e) {
-            cat.error(e);
+            logger.error(e);
         }
         catch (InstantiationException e) {
-            cat.error(e);
+            logger.error(e);
         }
         catch (IllegalAccessException e) {
-            cat.error(e);
+            logger.error(e);
         }
         SwingUtilities.updateComponentTreeUI(this);
         pack();
@@ -821,7 +821,7 @@ public class ProjectBrowser extends JFrame
         else if ("huge".equals(arg))
             setCurrentTheme(ThemeHuge);
         else {
-            cat.debug("ProjectBrowser.setCurrentTheme: "
+            logger.debug("ProjectBrowser.setCurrentTheme: "
                       + "Incorrect theme: " + arg);
         }
     }
@@ -833,7 +833,7 @@ public class ProjectBrowser extends JFrame
         else if ("huge".equals(arg))
             return getCurrentTheme() == ThemeHuge;
         else {
-            cat.debug("ProjectBrowser.isCurrentTheme: "
+            logger.debug("ProjectBrowser.isCurrentTheme: "
                       + "Incorrect theme: " + arg);
             return false;
         }

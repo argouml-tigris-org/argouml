@@ -39,7 +39,7 @@ import org.argouml.cognitive.*;
 import org.argouml.util.*;
 import org.argouml.application.api.*;
 
-import org.apache.log4j.*;
+import org.apache.commons.logging.*;
 
 /** "Abstract" base class for design critics.  Each subclass should define
  *  its own predicate method and define its own relevance tags. <p>
@@ -99,11 +99,11 @@ public class Critic implements Poster, Serializable {
    *
    *  @since 0.9.4
    */
-  public final static Category cat = Category.getInstance("org.argouml.cognitive.critics");
+  public final static Log logger = org.apache.commons.logging.LogFactory.getLog("org.argouml.cognitive.critics");
     // needs-more-work:  JDK 1.2 seems to not return the package name if
     // not running from a jar.
     //
-  // public final static Category cat = Category.getInstance(Critic.class.getPackage().getName());
+  // public final static Log logger = org.apache.commons.logging.LogFactory.getLog(Critic.class.getPackage().getName());
 
 
   /** The email address of the author/maintainer of this critic. */
@@ -274,13 +274,13 @@ public class Critic implements Poster, Serializable {
       // line in the whole of ArgoUML. It allocates approximately 18% of
       // all memory allocated.
       // Suggestions for solutions:
-      // Check if there is a cat.debug(String, String) method that can 
+      // Check if there is a logger.debug(String, String) method that can 
       // be used instead. 
       // Use two calls.
       // For now I (Linus) just comment it out.
-      // cat.debug("applying critic: " + _headline);
+      // logger.debug("applying critic: " + _headline);
     if (predicate(dm, dsgr)) {
-      cat.debug("predicate() detected error");
+      logger.debug("predicate() detected error");
       _numCriticsFired++;
       ToDoItem item = toDoItem(dm, dsgr);
       postItem(item, dm, dsgr);
@@ -325,7 +325,7 @@ public class Critic implements Poster, Serializable {
    *  this method more efficient. */
   public boolean stillValid(ToDoItem i, Designer dsgr) {
     if (!isActive()) {
-        cat.warn("got to stillvalid while not active");
+        logger.warn("got to stillvalid while not active");
 	return false;
     }
     if (i.getOffenders().size() != 1) return true;
@@ -523,7 +523,7 @@ public class Critic implements Poster, Serializable {
 	return w;
       }
       catch (Exception ex) {
-	Argo.log.error("Could not make wizard: " + item, ex);
+	Argo.logger.error("Could not make wizard: " + item, ex);
       }
     }
     return null;

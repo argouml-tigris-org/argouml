@@ -45,7 +45,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.application.events.*;
 import org.argouml.kernel.*;
@@ -69,7 +69,7 @@ import org.argouml.util.*;
 public abstract class FigNodeModelElement extends FigNode
 implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener, MElementListener, NotationContext, ArgoNotationEventListener  {
 
-     protected static Category cat = Category.getInstance(FigNodeModelElement.class);
+     protected static Log logger = org.apache.commons.logging.LogFactory.getLog(FigNodeModelElement.class);
   ////////////////////////////////////////////////////////////////
   // constants
 
@@ -332,18 +332,18 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   // event handlers
 
   public void vetoableChange(PropertyChangeEvent pce) {
-    cat.debug("in vetoableChange");
+    logger.debug("in vetoableChange");
     Object src = pce.getSource();
     if (src == getOwner()) {
       DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
       SwingUtilities.invokeLater(delayedNotify);
     }
-    else cat.debug("FigNodeModelElement got vetoableChange"+
+    else logger.debug("FigNodeModelElement got vetoableChange"+
 			    " from non-owner:" + src);
   }
 
   public void delayedVetoableChange(PropertyChangeEvent pce) {
-    cat.debug("in delayedVetoableChange");
+    logger.debug("in delayedVetoableChange");
     Object src = pce.getSource();
     startTrans();
     // update any text, colors, fonts, etc.
@@ -367,7 +367,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     Object src = pve.getSource();
     String pName = pve.getPropertyName();
     if (pName.equals("editing") && Boolean.FALSE.equals(pve.getNewValue())) {
-      cat.debug("finished editing");
+      logger.debug("finished editing");
       try {
 	startTrans();
 	//parse the text that was edited
@@ -381,7 +381,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	endTrans();
       }
       catch (PropertyVetoException ex) {
-        cat.error("could not parse the text entered. PropertyVetoException", ex);
+        logger.error("could not parse the text entered. PropertyVetoException", ex);
       }
     }
     else super.propertyChange(pve);
@@ -413,7 +413,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 				_readyToEdit = true;
 			}
 			else {
-				cat.debug("not ready to edit name");
+				logger.debug("not ready to edit name");
 				return;
 			}
 		}
@@ -444,7 +444,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	_readyToEdit = true;
       }
       else {
-	cat.debug("not ready to edit name");
+	logger.debug("not ready to edit name");
 	return;
       }
     }
@@ -506,7 +506,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	    //if (_group != null) _group.recovered(mee);
 	}
 	public void removed(MElementEvent mee) {
-	   cat.debug("deleting: "+this + mee);
+	   logger.debug("deleting: "+this + mee);
 	   Object o = mee.getSource(); 
            if (isPartlyOwner(o)) {
                updateBounds();

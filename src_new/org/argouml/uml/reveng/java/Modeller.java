@@ -26,7 +26,7 @@ package org.argouml.uml.reveng.java;
 import java.util.*;
 
 import org.argouml.ui.*;
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
@@ -52,7 +52,7 @@ import ru.novosoft.uml.foundation.data_types.*;
  */
 public class Modeller
 {
-        protected static Category cat = Category.getInstance(Modeller.class);
+        protected static Log logger = org.apache.commons.logging.LogFactory.getLog(Modeller.class);
     /** Current working model. */
     private MModel model;
 
@@ -483,7 +483,7 @@ public class Modeller
     public void addBodyToOperation(Object op, String body)
     {
 	if (op == null || !(op instanceof MOperation)) {
-	    cat.warn("adding body failed: no operation!");
+	    logger.warn("adding body failed: no operation!");
 	    return;
 	}
 	if (body == null || body.length() == 0)
@@ -1088,7 +1088,7 @@ public class Modeller
     if ((sJavaDocs != null) &&
         (! "".equals (sJavaDocs))) {
 
-      cat.debug ("Modeller.addDocumentationTag: sJavaDocs = \"" + sJavaDocs + "\"");
+      logger.debug ("Modeller.addDocumentationTag: sJavaDocs = \"" + sJavaDocs + "\"");
 
       StringBuffer sbPureDocs = new StringBuffer(80);
 
@@ -1144,7 +1144,7 @@ public class Modeller
                     nTemp
                   );
 
-                cat.debug (
+                logger.debug (
                     "Modeller.addDocumentationTag (starting tag): " +
                     "current tag name: " + sCurrentTagName
                 );
@@ -1158,7 +1158,7 @@ public class Modeller
                 }
 
                 sCurrentTagData = sJavaDocs.substring (nTemp, nTemp1);
-                cat.debug (
+                logger.debug (
                     "Modeller.addDocumentationTag (starting tag): "+
                     "current tag data: " + sCurrentTagData
                   );
@@ -1176,19 +1176,19 @@ public class Modeller
                 }
 
                 if (sCurrentTagName != null) {
-                  cat.debug (
+                  logger.debug (
                       "Modeller.addDocumentationTag (continuing tag): nTemp = " +
                       nTemp + ", nStartPos = " + nStartPos
                     );
                   sCurrentTagData +=
                       " " +
                       sJavaDocs.substring (nStartPos, nTemp);
-                  cat.debug (
+                  logger.debug (
                      "Modeller.addDocumentationTag (continuing tag): tag data = " +
                       sCurrentTagData);
                 }
                 else {
-                  cat.debug ("Modeller.addDocumentationTag: nTemp = " + nTemp + ", nStartPos = " + nStartPos);
+                  logger.debug ("Modeller.addDocumentationTag: nTemp = " + nTemp + ", nStartPos = " + nStartPos);
                   sbPureDocs.append (sJavaDocs.substring (nStartPos, nTemp));
                 }
 
@@ -1256,9 +1256,9 @@ public class Modeller
 
     public void addCall(String method, String obj) {
 	if (obj.equals(""))
-	    cat.debug("Add call to method " + method);
+	    logger.debug("Add call to method " + method);
 	else
-	    cat.debug("Add call to method " + method + " in " + obj);
+	    logger.debug("Add call to method " + method + " in " + obj);
     }
 }
 

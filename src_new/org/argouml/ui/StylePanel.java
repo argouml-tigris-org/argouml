@@ -38,12 +38,12 @@ import ru.novosoft.uml.foundation.data_types.*;
 
 import org.tigris.gef.presentation.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 
 public class StylePanel extends TabSpawnable
 implements TabFigTarget, ItemListener, DocumentListener, ListSelectionListener, ActionListener {
-    protected static Category cat = 
-        Category.getInstance(StylePanel.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(StylePanel.class);
   ////////////////////////////////////////////////////////////////
   // instance vars
   protected Fig    _target;
@@ -91,7 +91,7 @@ implements TabFigTarget, ItemListener, DocumentListener, ListSelectionListener, 
   // document event handling
 
   public void insertUpdate(DocumentEvent e) {
-    cat.debug(getClass().getName() + " insert");
+    logger.debug(getClass().getName() + " insert");
   }
 
   public void removeUpdate(DocumentEvent e) { insertUpdate(e); }

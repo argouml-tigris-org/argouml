@@ -53,7 +53,7 @@ import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
 import org.argouml.model.uml.UmlFactory;
@@ -75,7 +75,7 @@ import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
  */
 
 public class UMLExtendListModel extends UMLBinaryRelationListModel  {
-    protected static Category cat = Category.getInstance(UMLExtendListModel.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(UMLExtendListModel.class);
 
     /**
      * <p>The default text when there is no base class for the extend
@@ -221,7 +221,7 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
         }
         else {
             if (element != null) {
-                cat.warn("UMLExtendListModel." +
+                logger.warn("UMLExtendListModel." +
                                    "formatElement(): Can't format " +
                                    element.getClass().toString());
             }

@@ -28,13 +28,13 @@ import java.util.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.cognitive.*;
 
 public class ToDoByPriority extends ToDoPerspective
 implements ToDoListListener {
-    protected static Category cat = 
-        Category.getInstance(ToDoByPriority.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(ToDoByPriority.class);
 
   public ToDoByPriority() {
     super("todo.perspective.priority");
@@ -47,7 +47,7 @@ implements ToDoListListener {
   // ToDoListListener implementation
 
   public void toDoItemsChanged(ToDoListEvent tde) {
-    cat.debug("toDoItemChanged");
+    logger.debug("toDoItemChanged");
     Vector items = tde.getToDoItems();
     int nItems = items.size();
     Object path[] = new Object[2];
@@ -79,7 +79,7 @@ implements ToDoListListener {
   }
 
   public void toDoItemsAdded(ToDoListEvent tde) {
-    cat.debug("toDoItemAdded");
+    logger.debug("toDoItemAdded");
     Vector items = tde.getToDoItems();
     int nItems = items.size();
     Object path[] = new Object[2];
@@ -111,7 +111,7 @@ implements ToDoListListener {
   }
 
   public void toDoItemsRemoved(ToDoListEvent tde) {
-    cat.debug("toDoItemRemoved");
+    logger.debug("toDoItemRemoved");
     ToDoList list = Designer.TheDesigner.getToDoList(); //source?
     Vector items = tde.getToDoItems();
     int nItems = items.size();
@@ -129,7 +129,7 @@ implements ToDoListListener {
 	if (pri == nodePriority) anyInPri = true;
       }
       if (!anyInPri) continue;
-      cat.debug("toDoItemRemoved updating PriorityNode");
+      logger.debug("toDoItemRemoved updating PriorityNode");
       path[1] = pn;
       //fireTreeNodesChanged(this, path, childIndices, children);
       fireTreeStructureChanged(path);

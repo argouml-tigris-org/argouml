@@ -24,13 +24,13 @@
 package org.argouml.uml.ui;
 import java.lang.reflect.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
 public final class UMLExpressionModel  {
-    protected static Category cat = 
-            Category.getInstance(UMLExpressionModel.class);
+    protected static Log logger = 
+            org.apache.commons.logging.LogFactory.getLog(UMLExpressionModel.class);
 
     private UMLUserInterfaceContainer _container;
     private Method _getMethod;
@@ -52,19 +52,19 @@ public final class UMLExpressionModel  {
             _getMethod = targetClass.getMethod(getMethodName,_noClasses);
         }
         catch(Exception e) {
-            cat.error(e.toString() + " in UMLExpressionModel() for " + getMethodName, e);
+            logger.error(e.toString() + " in UMLExpressionModel() for " + getMethodName, e);
         }
         try {
             _setMethod = targetClass.getMethod(setMethodName,new Class[] { expressionClass });
         }
         catch(Exception e) {
-            cat.error(e.toString() + " in UMLExpressionModel() for " + setMethodName, e);
+            logger.error(e.toString() + " in UMLExpressionModel() for " + setMethodName, e);
         }
         try {
             _constructor = expressionClass.getConstructor(new Class[] { String.class, String.class });
         }
         catch(Exception e) {
-            cat.error(e.toString() + " in UMLExpressionModel() for " + expressionClass.getName(), e);
+            logger.error(e.toString() + " in UMLExpressionModel() for " + expressionClass.getName(), e);
         }
     }
 
@@ -91,7 +91,7 @@ public final class UMLExpressionModel  {
                     _expression = (MExpression) _getMethod.invoke(target,_noArgs);
                 }
                 catch(Exception e) {
-                    cat.error(e.toString() + " in UMLExpressionModel.getExpression()", e);
+                    logger.error(e.toString() + " in UMLExpressionModel.getExpression()", e);
                 }
             }
         }
@@ -170,7 +170,7 @@ public final class UMLExpressionModel  {
             }
         }
         catch(Exception e) {
-            cat.error(e.toString() + " in UMLExpressionModel.setExpression()", e);
+            logger.error(e.toString() + " in UMLExpressionModel.setExpression()", e);
         }
     }
         

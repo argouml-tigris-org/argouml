@@ -23,7 +23,7 @@
 
 package org.argouml.model.uml;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
@@ -140,7 +140,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
 
     /** Log4j logging category.
      */
-    protected Category logger = null;
+    protected Log logger = null;
 
     /** Singleton instance.
      */
@@ -157,7 +157,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
      *  Create a logger.
      */
     private UmlFactory() {
-        logger =Category.getInstance("org.argouml.model.uml.factory");
+        logger = org.apache.commons.logging.LogFactory.getLog("org.argouml.model.uml.factory");
     }
 
     /** Returns the package factory for the UML

@@ -33,7 +33,7 @@ import java.security.Permission;
 import java.io.FileDescriptor;
 import java.net.InetAddress;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 
 /** The Argo custom security manager.
  *
@@ -60,7 +60,7 @@ import org.apache.log4j.Category;
  */
 public final class ArgoSecurityManager extends SecurityManager
 {
-    protected static Category cat = Category.getInstance(ArgoSecurityManager.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(ArgoSecurityManager.class);
     private boolean _allowExit = false;
 
     /** The only allowed instance. */
@@ -92,7 +92,7 @@ public final class ArgoSecurityManager extends SecurityManager
 	else if (perm.getClass().equals(java.lang.RuntimePermission.class)) {
 	    RuntimePermission rp = (RuntimePermission)perm;
             // Uncomment for more information about what happens...
-	    cat.debug("RuntimePermission: " + rp.getName() + " - '" + rp.getActions()+ "'");
+	    logger.debug("RuntimePermission: " + rp.getName() + " - '" + rp.getActions()+ "'");
 	    if ("exitVM".equals(rp.getName())) {
 		if (! _allowExit) {
 		    throw new ArgoSecurityException(true);

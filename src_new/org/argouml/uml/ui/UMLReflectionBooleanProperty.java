@@ -32,12 +32,12 @@ import java.lang.reflect.*;
 import ru.novosoft.uml.*;
 
 import org.argouml.ui.*;
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.kernel.*;
 
 
 public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
-    protected static Category cat = Category.getInstance(UMLReflectionBooleanProperty.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(UMLReflectionBooleanProperty.class);
 
     private Method _getMethod;
     private Method _setMethod;
@@ -54,14 +54,14 @@ public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
             _getMethod = elementClass.getMethod(getMethod,noClass);
         }
         catch(Exception e) {
-            cat.error(e.toString() + " in UMLReflectionBooleanProperty(): " + getMethod, e);
+            logger.error(e.toString() + " in UMLReflectionBooleanProperty(): " + getMethod, e);
         }
         Class[] boolClass = { boolean.class };
         try {
             _setMethod = elementClass.getMethod(setMethod,boolClass);
         }
         catch(Exception e) {
-            cat.error(e.toString() + " in UMLReflectionBooleanProperty(): "  + setMethod, e);
+            logger.error(e.toString() + " in UMLReflectionBooleanProperty(): "  + setMethod, e);
         }
     }
     
@@ -84,7 +84,7 @@ public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
                 }
             }
             catch(Exception e) {
-                cat.error(e.toString() + " in UMLReflectionBooleanProperty.setMethod()", e);
+                logger.error(e.toString() + " in UMLReflectionBooleanProperty.setMethod()", e);
             }
 
             // Having set a property, mark as needing saving
@@ -104,7 +104,7 @@ public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
                 }
             }
             catch(Exception e) {
-                cat.error(e.toString() + " in UMLReflectionBooleanProperty.getMethod()", e);
+                logger.error(e.toString() + " in UMLReflectionBooleanProperty.getMethod()", e);
             }
         }
         return state;

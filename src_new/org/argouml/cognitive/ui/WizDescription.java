@@ -49,7 +49,7 @@ public class WizDescription extends WizStep {
 
   public WizDescription() {
     super();
-    Argo.log.info("making WizDescription");
+    Argo.logger.info("making WizDescription");
 
     _description.setLineWrap(true);
     _description.setWrapStyleWord(true);

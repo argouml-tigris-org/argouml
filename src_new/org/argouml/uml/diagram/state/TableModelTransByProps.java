@@ -28,13 +28,13 @@ import java.beans.*;
 
 import ru.novosoft.uml.behavior.state_machines.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.uml.*;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 
 public class TableModelTransByProps extends TableModelComposite {
-    protected static Category cat = 
-        Category.getInstance(TableModelTransByProps.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(TableModelTransByProps.class);
   ////////////////
   // constructor
   public TableModelTransByProps() { }

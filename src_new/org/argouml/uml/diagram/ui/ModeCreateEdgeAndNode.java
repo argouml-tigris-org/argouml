@@ -36,7 +36,7 @@ import java.beans.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
@@ -53,7 +53,7 @@ import org.tigris.gef.graph.*;
  *  and connecting it to other model elements. */
 
 public class ModeCreateEdgeAndNode extends ModeCreate {
-    protected static Category cat = Category.getInstance(ModeCreateEdgeAndNode.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(ModeCreateEdgeAndNode.class);
   ////////////////////////////////////////////////////////////////
   // static variables
   public static int Drags_To_Existing = 0;
@@ -172,7 +172,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 		// needs-more-work: potential class cast exception
 
 		if (f == null) {
-			cat.debug("make new node");
+			logger.debug("make new node");
 			Drags_To_New++;
 			Object newNode = null;
 			Class nodeClass = (Class) getArg("nodeClass");
@@ -290,10 +290,10 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 					return;
 				}
 				else
-					cat.warn("connection return null");
+					logger.warn("connection return null");
 			}
 			else
-				cat.warn("in dest node but no port");
+				logger.warn("in dest node but no port");
 		}
 
 		_sourceFigNode.damage();

@@ -221,6 +221,7 @@ Property files to be searched:
       <pathelement location="${gef.jar.path}" />
       <pathelement location="${antlrall.jar.path}" />
       <pathelement location="${logging.jar.path}" />
+      <pathelement location="${log4j.jar.path}" />
       <pathelement location="${jh.jar.path}" />
     </path>
 
@@ -231,6 +232,7 @@ Property files to be searched:
       <pathelement location="${gef.jar.path}" />
       <pathelement location="${antlrall.jar.path}" />
       <pathelement location="${logging.jar.path}" />
+      <pathelement location="${log4j.jar.path}" />
       <pathelement location="${jh.jar.path}" />
     </path>
 
@@ -364,9 +366,13 @@ ${Name} Build file
       </srcfiles>
     </uptodate>
 
+    <copy todir="${argo.build.classes}"
+          file="${argo.src.dir}/commons-logging.properties"/>
+    <!--copy todir="${argo.build.classes}"
+          file="${argo.src.dir}/simplelog.properties"/-->
+
     <copy todir="${argo.build.classes}/org/argouml/Images">
       <fileset dir="${argo.src.dir}/org/argouml/Images" includes="**/**" excludes="CVS/**" />
-
     </copy>
     <copy todir="${argo.build.classes}/org/argouml/i18n">
       <fileset dir="${argo.src.dir}/org/argouml/i18n" includes="*.properties" />
@@ -525,13 +531,14 @@ ${Name} Build file
           overwrite="on" />
     <jar jarfile="${argo.build.dir}/${name}.jar"
          basedir="${argo.build.classes}"
-         includes="org/argouml/**"
-         excludes="*.txt,*.bat,*.xml,*.sh"
+         includes="**"
+         excludes="*.txt,*.bat,*.xml,*.sh,argouml.mf"
          manifest="${argo.build.manifest}"/>
     <copy file="${antlrall.jar.path}" tofile="${argo.build.dir}/antlrall.jar" />
     <copy file="${gef.jar.path}" tofile="${argo.build.dir}/gef.jar" />
     <copy file="${jh.jar.path}" tofile="${argo.build.dir}/jh.jar" />
     <copy file="${logging.jar.path}" tofile="${argo.build.dir}/commons-logging.jar" />
+    <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar" />
     <copy file="${nsuml.jar.path}" tofile="${argo.build.dir}/nsuml.jar" />
     <copy file="${ocl-argo.jar.path}" tofile="${argo.build.dir}/ocl-argo.jar" />
     <copy file="${xerces.jar.path}" tofile="${argo.build.dir}/xerces.jar" />
@@ -610,8 +617,8 @@ ${Name} Build file
   <!-- =================================================================== -->
   <target name="dist" depends="package">
     <echo message="Building the distribution files (zip,tar)"/>
-    <zip zipfile="${argo.root.dir}/${Name}-${argo.build.version}.zip" basedir="${argo.build.dir}" includes="${gef.jar.name} commons-logging.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt"/>
-    <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}.tar" basedir="${argo.build.dir}" includes="${gef.jar.name} commons-logging.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt">
+    <zip zipfile="${argo.root.dir}/${Name}-${argo.build.version}.zip" basedir="${argo.build.dir}" includes="${gef.jar.name} log4j.jar commons-logging.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt"/>
+    <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}.tar" basedir="${argo.build.dir}" includes="${gef.jar.name} log4j.jar commons-logging.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt">
     <!--
       <tarfileset mode="555">
 	<include name="argouml.sh">
@@ -639,8 +646,8 @@ ${Name} Build file
   <!-- =================================================================== -->
   <target name="dist-lib" depends="init">
     <echo message="Building the library distribution files (zip,tar)"/>
-    <zip zipfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.zip" basedir="${argo.lib.dir}/.." includes="lib/${gef.jar.name} lib/commons-logging.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
-    <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar" basedir="${argo.lib.dir}/.." includes="lib/${gef.jar.name} lib/commons-logging.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
+    <zip zipfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.zip" basedir="${argo.lib.dir}/.." includes="lib/${gef.jar.name} lib/log4j.jar lib/commons-logging.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
+    <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar" basedir="${argo.lib.dir}/.." includes="lib/${gef.jar.name} lib/log4j.jar lib/commons-logging.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
     <gzip zipfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar.gz" src="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar" />
     <delete file="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar"/>
   </target>
@@ -829,6 +836,7 @@ ${Name} Build file
             <pathelement location="${gef.jar.path}" />
             <pathelement location="${antlrall.jar.path}" />
             <pathelement location="${logging.jar.path}" />
+            <pathelement location="${log4j.jar.path}" />
             <pathelement location="${jh.jar.path}" />
         </classpath>
      </javac>
@@ -879,6 +887,7 @@ ${Name} Build file
             <pathelement location="${gef.jar.path}" />
             <pathelement location="${antlrall.jar.path}" />
             <pathelement location="${logging.jar.path}" />
+            <pathelement location="${log4j.jar.path}" />
             <pathelement location="${jh.jar.path}" />
         </classpath>
         <formatter type="xml"/>
@@ -932,6 +941,67 @@ For details see http://www.clarkware.com/software/JDepend.html.
       </classpath>
     </java>
   </target>
+
+  <target name="replace">
+      <replace dir="org/argouml" summary="yes" includes="**/*.java">
+
+<replacefilter token="import org.apache.log4j.*;"
+value="import org.apache.commons.logging.*;"/>
+<replacefilter token="import org.apache.log4j.Category;"
+value="import org.apache.commons.logging.Log;"/>
+<replacefilter token=" Category cat "
+value=" Log logger "/>
+<replacefilter token="protected static Category cat "
+value="protected static Log logger "/>
+<replacefilter token="protected static Log log "
+value="protected static Log logger "/>
+<replacefilter token="	cat.error("
+value="	logger.error("/>
+<replacefilter token=" cat.error("
+value=" logger.error("/>
+<replacefilter token=" cat.error ("
+value=" logger.error ("/>
+<replacefilter token=" cat.info("
+value=" logger.info("/>
+<replacefilter token=" cat.info ("
+value=" logger.info ("/>
+<replacefilter token=" cat.warn("
+value=" logger.warn("/>
+<replacefilter token=" cat.warn ("
+value=" logger.warn ("/>
+<replacefilter token="	cat.debug("
+value="	logger.debug("/>
+<replacefilter token="	cat.debug ("
+value="	logger.debug ("/>
+<replacefilter token=" cat.debug("
+value=" logger.debug("/>
+<replacefilter token="	cat.debug ("
+value="	logger.debug ("/>
+<replacefilter token=" Category log;"
+value=" Category logger;"/>
+<replacefilter token=" Category logger"
+value=" Log logger"/>
+<replacefilter token="Argo.log."
+value="Argo.logger."/>
+<replacefilter token=" Category.getInstance("
+value=" org.apache.commons.logging.LogFactory.getLog("/>
+
+<replacefilter token=".cat.debug("
+value=".logger.debug("/>
+<replacefilter token=".cat.debug ("
+value=".logger.debug ("/>
+
+<replacefilter token=" cat.fatal("
+value=" logger.fatal("/>
+<replacefilter token=" cat.fatal ("
+value=" logger.fatal ("/>
+
+<replacefilter token=".cat."
+value=".logger."/>
+
+      </replace>
+  </target>
+
 
 </project>
 

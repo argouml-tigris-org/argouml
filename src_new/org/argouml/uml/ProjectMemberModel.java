@@ -23,7 +23,7 @@
 
 package org.argouml.uml;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.kernel.*;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.*;
@@ -51,7 +51,7 @@ import org.tigris.gef.util.Dbg;
 
 public class ProjectMemberModel extends ProjectMember {
 	
-	private static Category cat = Category.getInstance(org.argouml.uml.ProjectMemberModel.class);
+	private static Log logger = org.apache.commons.logging.LogFactory.getLog(org.argouml.uml.ProjectMemberModel.class);
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -88,11 +88,11 @@ public class ProjectMemberModel extends ProjectMember {
   // actions
 
   public void load() throws java.io.IOException, org.xml.sax.SAXException {
-    cat.info("Reading " + getURL());
+    logger.info("Reading " + getURL());
     XMIParser.SINGLETON.readModels(_project,getURL());
     _model = XMIParser.SINGLETON.getCurModel();
     _project._UUIDRefs = XMIParser.SINGLETON.getUUIDRefs();
-    cat.info("Done reading " + getURL());
+    logger.info("Done reading " + getURL());
   }
 
   public void save(String path, boolean overwrite) throws Exception {
@@ -135,7 +135,7 @@ public class ProjectMemberModel extends ProjectMember {
 		if (xmiwriter != null) {
 			Iterator it = xmiwriter.getNotContainedElements().iterator();
 			while (it.hasNext())
-	  			cat.error("Not contained in XMI: " + it.next());
+	  			logger.error("Not contained in XMI: " + it.next());
       	}
 	}
 

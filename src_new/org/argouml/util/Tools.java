@@ -29,7 +29,7 @@ import java.util.*;
 public class Tools {
 
     static String packageList[] = new 
-String[]{"org.argouml.application","ru.novosoft.uml","org.tigris.gef.base","org.xml.sax","java.lang","org.apache.log4j"};
+String[]{"org.argouml.application","ru.novosoft.uml","org.tigris.gef.base","org.xml.sax","java.lang","org.apache.commons.logging"};
 
     private static void getComponentVersionInfo(StringBuffer sb, String pn) 
 {
@@ -70,7 +70,7 @@ String[]{"org.argouml.application","ru.novosoft.uml","org.tigris.gef.base","org.
 	cls = Class.forName("org.tigris.gef.base.Editor");
 	cls = Class.forName("ru.novosoft.uml.MBase");
 	cls = Class.forName("org.xml.sax.AttributeList");
-	cls = Class.forName("org.apache.log4j.Category");
+	cls = Class.forName("org.apache.commons.logging.Log");
 
 	StringBuffer sb = new StringBuffer();
 
@@ -134,7 +134,7 @@ String[]{"org.argouml.application","ru.novosoft.uml","org.tigris.gef.base","org.
           while (true) {
               String s = r.readLine();
 	      if (s == null) break;
-	      Argo.log.info(s);
+	      Argo.logger.info(s);
           }
       }
       catch (IOException ioe) { }

@@ -56,7 +56,7 @@ import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
 import org.argouml.application.security.ArgoSecurityException;
 
-import org.apache.log4j.*;
+import org.apache.commons.logging.*;
 
 public class Main {
     ////////////////////////////////////////////////////////////////
@@ -177,11 +177,11 @@ public class Main {
             if (s != "") {
                 File file = new File(s);
                 if (file.exists()) {
-                    Argo.log.info("Re-opening project " + s);
+                    Argo.logger.info("Re-opening project " + s);
                     projectName = s;
                 }
                 else {
-                    Argo.log.warn("Cannot re-open " + s +
+                    Argo.logger.warn("Cannot re-open " + s +
                     " because it does not exist");
                 }
             }
@@ -199,7 +199,7 @@ public class Main {
             } else {
                 try { urlToOpen = Util.fileToURL(projectFile); }
                 catch (Exception e) {
-                    Argo.log.error("Exception opening project in main()", e);
+                    Argo.logger.error("Exception opening project in main()", e);
                 }
             }
         }
@@ -272,9 +272,9 @@ public class Main {
                         "\n",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
-               Argo.log.error("Could not load most recent project file: " + 
+               Argo.logger.error("Could not load most recent project file: " + 
                     urlToOpen.toString());
-                Argo.log.error(fn);
+                Argo.logger.error(fn);
                 Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
                 urlToOpen = null;
                 p = Project.makeEmptyProject();
@@ -288,17 +288,17 @@ public class Main {
                     " the corrupted project file.",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
-                Argo.log.error("Could not load most recent project file: " + 
+                Argo.logger.error("Could not load most recent project file: " + 
                     urlToOpen.toString());
-                Argo.log.error(io);
+                Argo.logger.error(io);
                 Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
                 urlToOpen = null;
                 p = Project.makeEmptyProject();
             }   
         	catch (Exception ex) {
-        		Argo.log.error("Could not load most recent project file: " + 
+        		Argo.logger.error("Could not load most recent project file: " + 
                     urlToOpen.toString());
-        		Argo.log.error(ex);
+        		Argo.logger.error(ex);
         		Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
         		urlToOpen = null;
         		p = Project.makeEmptyProject();
@@ -417,14 +417,14 @@ public class Main {
         postLoadThead.start();
 
         if (profileLoad) {
-            Argo.log.info("");
-            Argo.log.info("profile of load time ############");
+            Argo.logger.info("");
+            Argo.logger.info("profile of load time ############");
 	    for(Enumeration i = st.result(); i.hasMoreElements();) {
-		Argo.log.info(i.nextElement());
+		Argo.logger.info(i.nextElement());
 	    }
 
-            Argo.log.info("#################################");
-            Argo.log.info("");
+            Argo.logger.info("#################################");
+            Argo.logger.info("");
         }
 	st = null;
 
@@ -480,10 +480,11 @@ public class Main {
         *  If it is set, then we let the static initializer in
         * {@link Argo} perform the initialization.
         */
-        if(System.getProperty("log4j.configuration") == null) {
-            BasicConfigurator.configure();
-            Category.getRoot().getHierarchy().disableAll();
-        }
+        // if(System.getProperty("log4j.configuration") == null) {
+            // BasicConfigurator.configure();
+            // Category.getRoot().getHierarchy().disableAll();
+        // }
+
     }
 
 
@@ -506,7 +507,7 @@ class StartCritics implements Runnable {
             ((MModel)o).removeMElementListener(dsgr);
             ((MModel)o).addMElementListener(dsgr);
         }
-        Argo.log.info("spawned critiquing thread");
+        Argo.logger.info("spawned critiquing thread");
 
         // should be in logon wizard?
         dsgr.startConsidering(org.argouml.uml.cognitive.critics.CrUML.decINHERITANCE);
@@ -527,13 +528,13 @@ class PostLoad implements Runnable {
     }
     public void run() {
         try { myThread.sleep(1000); }
-        catch (Exception ex) { Argo.log.error("post load no sleep", ex); }
+        catch (Exception ex) { Argo.logger.error("post load no sleep", ex); }
         int size = postLoadActions.size();
         for (int i = 0; i < size; i++) {
             Runnable r = (Runnable) postLoadActions.elementAt(i);
             r.run();
             try { myThread.sleep(100); }
-            catch (Exception ex) { Argo.log.error("post load no sleep2", ex); }
+            catch (Exception ex) { Argo.logger.error("post load no sleep2", ex); }
         }
     }
 } /* end class PostLoad */
@@ -548,7 +549,7 @@ class PreloadClasses implements Runnable {
 
 
         Class c = null;
-        Argo.log.info("preloading...");
+        Argo.logger.info("preloading...");
         c = org.tigris.gef.base.CmdSetMode.class;
         c = org.tigris.gef.base.ModePlace.class;
         c = org.tigris.gef.base.ModeModify.class;
@@ -606,7 +607,7 @@ class PreloadClasses implements Runnable {
         c = java.lang.SecurityException.class;
         c = java.lang.NullPointerException.class;
 
-        Argo.log.info(" done preloading");
+        Argo.logger.info(" done preloading");
     }
 
 } /* end class PreloadClasses */

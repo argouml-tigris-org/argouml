@@ -39,7 +39,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.graph.presentation.*;
 import org.tigris.gef.presentation.Fig;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.util.*;
 import org.argouml.uml.ui.*;
@@ -52,7 +52,7 @@ import org.argouml.swingext.*;
 
 public class MultiEditorPane extends JPanel
 implements ChangeListener, MouseListener, QuadrantPanel {
-    protected static Category cat = Category.getInstance(MultiEditorPane.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(MultiEditorPane.class);
 	
 	protected class DiagramFigDeleter {
 		Fig fig = null;
@@ -78,7 +78,7 @@ implements ChangeListener, MouseListener, QuadrantPanel {
   // constructors
 
   public MultiEditorPane(StatusBar sb) {
-    Argo.log.info("making MultiEditorPane");
+    Argo.logger.info("making MultiEditorPane");
     ConfigLoader.loadTabs(_tabPanels, "multi", sb, Horizontal.getInstance());
 
     setLayout(new BorderLayout());
@@ -193,7 +193,7 @@ implements ChangeListener, MouseListener, QuadrantPanel {
     //should register a listener
     if (_lastTab != null) { _lastTab.setVisible(false); }
     _lastTab = _tabs.getSelectedComponent();
-    cat.debug("MultiEditorPane state changed:" +
+    logger.debug("MultiEditorPane state changed:" +
         _lastTab.getClass().getName());
     _lastTab.setVisible(true);
     if (_lastTab instanceof TabModelTarget)
@@ -220,14 +220,14 @@ implements ChangeListener, MouseListener, QuadrantPanel {
   public void mySingleClick(int tab) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
-    cat.debug("single: " + _tabs.getComponentAt(tab).toString());
+    logger.debug("single: " + _tabs.getComponentAt(tab).toString());
   }
 
   /** called when the user clicks twice on a tab. */
   public void myDoubleClick(int tab) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
-    cat.debug("double: " + _tabs.getComponentAt(tab).toString());
+    logger.debug("double: " + _tabs.getComponentAt(tab).toString());
     JPanel t = (JPanel) _tabPanels.elementAt(tab);
     if (t instanceof TabSpawnable) ((TabSpawnable)t).spawn();
   }

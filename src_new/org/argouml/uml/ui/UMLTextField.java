@@ -46,7 +46,7 @@ import java.awt.event.FocusListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.lang.reflect.*;
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
@@ -62,8 +62,8 @@ public class UMLTextField
     extends JTextField
     implements DocumentListener, UMLUserInterfaceComponent, FocusListener {
 
-    protected final static Category cat =
-        Category.getInstance("org.argouml.uml.ui.UMLTextField");
+    protected final static Log logger =
+        org.apache.commons.logging.LogFactory.getLog("org.argouml.uml.ui.UMLTextField");
 
     private UMLUserInterfaceContainer _container;
     private UMLTextProperty _property;
@@ -133,16 +133,16 @@ public class UMLTextField
     public void targetReasserted() {
     }
     public void roleAdded(final MElementEvent p1) {
-        //        Argo.log.info("UMLTextField.roleAdded: event p1 happened...");
+        //        Argo.logger.info("UMLTextField.roleAdded: event p1 happened...");
     }
     public void recovered(final MElementEvent p1) {
-        //        Argo.log.info("UMLTextField.recovered: event p1 happened...");
+        //        Argo.logger.info("UMLTextField.recovered: event p1 happened...");
     }
     public void roleRemoved(final MElementEvent p1) {
-        //        Argo.log.info("UMLTextField.roleRemoved: event p1 happened...");        
+        //        Argo.logger.info("UMLTextField.roleRemoved: event p1 happened...");        
     }
     public void listRoleItemSet(final MElementEvent p1) {
-        //        Argo.log.info("UMLTextField.listRoleItemSet: event p1 happened...");        
+        //        Argo.logger.info("UMLTextField.listRoleItemSet: event p1 happened...");        
     }
     public void removed(final MElementEvent p1) {
     }
@@ -170,7 +170,7 @@ public class UMLTextField
             }
         }
         //        else if(_target instanceof MDataType)
-        //            Argo.log.info("UMLTextField.propertySet: else :Target = " + _target);
+        //            Argo.logger.info("UMLTextField.propertySet: else :Target = " + _target);
     }
     
     /**
@@ -279,7 +279,7 @@ public class UMLTextField
                     if (_target instanceof MAttribute) {
                         _classifier =
                             (MClassifier) ((MAttribute) _target).getOwner();
-                        //            Argo.log.info("UMLTextField.update()..._classifier = " + _classifier);
+                        //            Argo.logger.info("UMLTextField.update()..._classifier = " + _classifier);
                         if (_classifier == null) {
                             return;
                         }
@@ -303,7 +303,7 @@ public class UMLTextField
                         }
                         else
                             if (_target instanceof MCallEvent) {
-                                //            Argo.log.info("UMLTextField.update()...target = " + _target);
+                                //            Argo.logger.info("UMLTextField.update()...target = " + _target);
                             }
           */
             
@@ -312,7 +312,7 @@ public class UMLTextField
     public void changedUpdate(final DocumentEvent p1) {
         // never happens since UMLTextFields don't support non-plain documents
         // handleEvent();
-        //        Argo.log.info("UMLTextField.changedUpdate: DocumentEvent p1 " );       
+        //        Argo.logger.info("UMLTextField.changedUpdate: DocumentEvent p1 " );       
     }
     
     /**
@@ -371,15 +371,15 @@ public class UMLTextField
             		SwingUtilities.invokeLater(textSetter);
                 }
                 catch (Exception e) {
-                    cat.fatal("Repeating exception");
-                    cat.fatal(e);
+                    logger.fatal("Repeating exception");
+                    logger.fatal(e);
                     System.exit(-1);
                 }
                 _firstException = false;
             }
             else {
-                cat.fatal("Repeating exception");
-                cat.fatal(ex);
+                logger.fatal("Repeating exception");
+                logger.fatal(ex);
                 System.exit(-1);
             }
         }

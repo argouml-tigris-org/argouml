@@ -23,7 +23,7 @@
 
 package org.argouml.xml.argo;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import java.util.*;
 import java.io.*;
@@ -35,7 +35,7 @@ import org.argouml.xml.XMLElement;
 import org.xml.sax.*;
 
 public class ArgoParser extends SAXParserBase {
-    protected static Category cat = Category.getInstance(ArgoParser.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(ArgoParser.class);
     
 
     ////////////////////////////////////////////////////////////////
@@ -80,7 +80,7 @@ public class ArgoParser extends SAXParserBase {
         try{
             readProject(url.openStream(), addMembers);
         } catch (IOException e) {
-            Argo.log.info("Couldn't open InputStream in ArgoParser.load("+url+") "+e);
+            Argo.logger.info("Couldn't open InputStream in ArgoParser.load("+url+") "+e);
             e.printStackTrace();
             lastLoadMessage = e.toString();
             // we need to forward this up - mkl
@@ -100,21 +100,21 @@ public class ArgoParser extends SAXParserBase {
         _addMembers = addMembers;
 
         if ((_url == null) && _addMembers) {
-            Argo.log.info("URL not set! Won't be able to add members! Aborting...");
+            Argo.logger.info("URL not set! Won't be able to add members! Aborting...");
             lastLoadMessage = "URL not set!";
             return;
         }
 	  
 
         try {
-            Argo.log.info("=======================================");
-            Argo.log.info("== READING PROJECT "+_url);
+            Argo.logger.info("=======================================");
+            Argo.logger.info("== READING PROJECT "+_url);
             _proj = new Project(_url);
             parse(is);
         }
         catch(SAXException saxEx) {
             lastLoadStatus = false;
-            Argo.log.info("Exception reading project================");
+            Argo.logger.info("Exception reading project================");
             //
             //  a SAX exception could have been generated
             //    because of another exception.
@@ -131,7 +131,7 @@ public class ArgoParser extends SAXParserBase {
             }
         }
         catch (Exception ex) {
-            Argo.log.info("Exception reading project================");
+            Argo.logger.info("Exception reading project================");
             ex.printStackTrace();
             lastLoadMessage = ex.toString();
         }        
@@ -140,23 +140,23 @@ public class ArgoParser extends SAXParserBase {
     public Project getProject() { return _proj; }
 
     public void handleStartElement(XMLElement e) {
-        if (_dbg) cat.debug("NOTE: ArgoParser handleStartTag:" + e.getName());
+        if (_dbg) logger.debug("NOTE: ArgoParser handleStartTag:" + e.getName());
         try {
             switch (_tokens.toToken(e.getName(), true)) {
             case ArgoTokenTable.TOKEN_argo: handleArgo(e); break;
             case ArgoTokenTable.TOKEN_documentation: handleDocumentation(e); break;
             default: if (_dbg)
-                cat.warn("WARNING: unknown tag:" + e.getName());  break;
+                logger.warn("WARNING: unknown tag:" + e.getName());  break;
             }
         }
         catch (Exception ex) {
-            cat.error(ex);
+            logger.error(ex);
         }
     }
 
 
     public void handleEndElement(XMLElement e) {
-        if (_dbg) cat.debug("NOTE: ArgoParser handleEndTag:" + e.getName()+".");
+        if (_dbg) logger.debug("NOTE: ArgoParser handleEndTag:" + e.getName()+".");
         try {
             switch (_tokens.toToken(e.getName(), false)) {
             case ArgoTokenTable.TOKEN_authorname : handleAuthorname(e); break;
@@ -166,7 +166,7 @@ public class ArgoParser extends SAXParserBase {
             case ArgoTokenTable.TOKEN_member : handleMember(e); break;
             case ArgoTokenTable.TOKEN_historyfile : handleHistoryfile(e); break;
             default : if (_dbg)
-                cat.warn("WARNING: unknown end tag:" + e.getName()); break;
+                logger.warn("WARNING: unknown end tag:" + e.getName()); break;
             }
         }
         catch (Exception ex) {

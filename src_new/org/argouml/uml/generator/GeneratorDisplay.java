@@ -241,7 +241,7 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
   public String generateAttribute(MAttribute attr, boolean documented) { 
   	String visibility = generateVisibility(attr.getVisibility());
   	String stereo = generateStereotype(attr.getStereotype());
-  	cat.debug("Stereotype: " + stereo);
+  	logger.debug("Stereotype: " + stereo);
   	String name = attr.getName();
   	String multiplicity = generateMultiplicity(attr.getMultiplicity());
     String type = ""; // fix for loading bad projects

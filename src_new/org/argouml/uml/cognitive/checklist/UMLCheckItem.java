@@ -30,7 +30,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 
 import org.tigris.gef.util.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.cognitive.checklist.*;
 //
 //  slightly different from its GEF counterpart
@@ -43,8 +43,8 @@ import org.argouml.ocl.OCLEvaluator;
  * @see org.argouml.ocl.OCLEvaluator */
 
 public class UMLCheckItem extends CheckItem {
-    protected static Category cat = 
-        Category.getInstance(UMLCheckItem.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(UMLCheckItem.class);
 
   public UMLCheckItem(String c, String d) { super(c, d); }
 
@@ -63,7 +63,7 @@ public class UMLCheckItem extends CheckItem {
       String expr = res.substring(matchPos + OCLEvaluator.OCL_START.length(),
 				  endExpr);
       String evalStr = OCLEvaluator.SINGLETON.evalToString(dm, expr);
-      cat.debug("expr='" + expr + "' = '" + evalStr + "'");
+      logger.debug("expr='" + expr + "' = '" + evalStr + "'");
       res = res.substring(0, matchPos) +
 	evalStr +
 	res.substring(endExpr + OCLEvaluator.OCL_END.length());

@@ -58,7 +58,7 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.util.*;
 import org.tigris.gef.ocl.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.ui.*;
@@ -131,8 +131,8 @@ public class Project implements java.io.Serializable {
     public GenerationPreferences _cgPrefs = new GenerationPreferences();
     public transient VetoableChangeSupport _vetoSupport = null;
    
-    protected static Category cat = 
-        Category.getInstance(org.argouml.kernel.Project.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(org.argouml.kernel.Project.class);
     ////////////////////////////////////////////////////////////////
     // constructor
 
@@ -157,7 +157,7 @@ public class Project implements java.io.Serializable {
 
     public Project (MModel model) {
     	this();
-        Argo.log.info("making empty project with model: "+model.getName());
+        Argo.logger.info("making empty project with model: "+model.getName());
         _saveRegistry = new UMLChangeRegistry();
 		/*
         defineType(JavaUML.VOID_TYPE);     //J.101
@@ -256,8 +256,8 @@ public class Project implements java.io.Serializable {
                 zis.close();
                 
             } catch (Exception e) {
-                cat.error("Oops, something went wrong in Project.loadProject ");
-                cat.error(e);
+                logger.error("Oops, something went wrong in Project.loadProject ");
+                logger.error(e);
                 // yeah and now we want to have the old state of the Project back but we dont know the old state
                 // so we propagate the error
                 throw e;
@@ -266,8 +266,8 @@ public class Project implements java.io.Serializable {
                 p.loadZippedProjectMembers(url);
             }
             catch (IOException e) {
-                cat.error("Project file corrupted");
-                cat.error(e);
+                logger.error("Project file corrupted");
+                logger.error(e);
                 throw e;
             }
             p.postLoad();
@@ -301,7 +301,7 @@ public class Project implements java.io.Serializable {
         while(!name.endsWith(".xmi")) {
             name = zis.getNextEntry().getName();
         }
-        Argo.log.info("Loading Model from "+url);
+        Argo.logger.info("Loading Model from "+url);
         // 2002-07-18
         // Jaap Branderhorst
         // changed the loading of the projectfiles to solve hanging 
@@ -391,13 +391,13 @@ public class Project implements java.io.Serializable {
             ZipEntry currentEntry = null;
             while ( (currentEntry = sub.getNextEntry()) != null) {
                 if (currentEntry.getName().endsWith(".pgml")) {
-                    Argo.log.info("Now going to load "+currentEntry.getName()+" from ZipInputStream");
+                    Argo.logger.info("Now going to load "+currentEntry.getName()+" from ZipInputStream");
 
                     // "false" means the stream shall not be closed, but it doesn't seem to matter...
                     ArgoDiagram d = (ArgoDiagram)PGMLParser.SINGLETON.readDiagram(sub,false);
                     addMember(d);
                     // sub.closeEntry();
-                    Argo.log.info("Finished loading "+currentEntry.getName());
+                    Argo.logger.info("Finished loading "+currentEntry.getName());
                 }
             }
             zis.close();
@@ -406,13 +406,13 @@ public class Project implements java.io.Serializable {
         } catch (IOException e) {
             ArgoParser.SINGLETON.setLastLoadStatus(false);
             ArgoParser.SINGLETON.setLastLoadMessage(e.toString());
-            cat.error("Oops, something went wrong in Project.loadZippedProjectMembers() ", e);
+            logger.error("Oops, something went wrong in Project.loadZippedProjectMembers() ", e);
             throw e; 
         }
     }
 
     public static Project makeEmptyProject() {
-        Argo.log.info("making empty project");
+        Argo.logger.info("making empty project");
 
         MModel m1 = UmlFactory.getFactory().getModelManagement().createModel();
         m1.setName("untitledModel");
@@ -468,7 +468,7 @@ public class Project implements java.io.Serializable {
         }
         getVetoSupport().fireVetoableChange("url", _url, url);
 
-        cat.debug ("Setting project URL from \"" + _url + "\" to \"" + url + "\".");
+        logger.debug ("Setting project URL from \"" + _url + "\" to \"" + url + "\".");
     
         _url = url;
     }
@@ -486,15 +486,15 @@ public class Project implements java.io.Serializable {
             URL url = Util.fileToURL(file);
             getVetoSupport().fireVetoableChange("url", _url, url);
       
-            cat.debug ("Setting project file name from \"" + _url + "\" to \"" + url + "\".");
+            logger.debug ("Setting project file name from \"" + _url + "\" to \"" + url + "\".");
       
             _url = url;
         }
         catch (MalformedURLException murle) {
-            cat.error("problem in setFile:" + file, murle);
+            logger.error("problem in setFile:" + file, murle);
         }
         catch (IOException ex) {
-            cat.error("problem in setFile:" + file, ex);
+            logger.error("problem in setFile:" + file, ex);
             
         }
     }
@@ -512,7 +512,7 @@ public class Project implements java.io.Serializable {
         URL url = null;
         try { url = new URL(u + name); }
         catch (MalformedURLException murle) {
-            cat.error("MalformedURLException in findMemberURLInSearchPath:" + u + name, murle);
+            logger.error("MalformedURLException in findMemberURLInSearchPath:" + u + name, murle);
         }
         return url;
     }
@@ -523,10 +523,10 @@ public class Project implements java.io.Serializable {
         //try {
         URL memberURL = findMemberURLInSearchPath(name);
         if (memberURL == null) {
-            cat.debug("null memberURL");
+            logger.debug("null memberURL");
             return;
         }
-        else cat.debug("memberURL = " + memberURL);
+        else logger.debug("memberURL = " + memberURL);
         ProjectMember pm = findMemberByName(name);
         if (pm != null) return;
         if ("pgml".equals(type))
@@ -606,12 +606,12 @@ public class Project implements java.io.Serializable {
     }
 
     public ProjectMember findMemberByName(String name) {
-        cat.debug ("findMemberByName called for \"" + name + "\".");
+        logger.debug ("findMemberByName called for \"" + name + "\".");
         for (int i = 0; i < _members.size(); i++) {
             ProjectMember pm = (ProjectMember) _members.elementAt(i);
             if (name.equals(pm.getPlainName())) return pm;
         }
-        cat.debug ("Member \"" + name + "\" not found.");
+        logger.debug ("Member \"" + name + "\" not found.");
         return null;
     }
 
@@ -648,10 +648,10 @@ public class Project implements java.io.Serializable {
             }
         }
         catch (IOException ignore) {
-            cat.error("IOException in makeEmptyProject", ignore);
+            logger.error("IOException in makeEmptyProject", ignore);
         }
         catch (org.xml.sax.SAXException ignore) {
-            cat.error("SAXException in makeEmptyProject", ignore);
+            logger.error("SAXException in makeEmptyProject", ignore);
         }
     }
 
@@ -700,7 +700,7 @@ public class Project implements java.io.Serializable {
         stream.closeEntry();
         
         String path = file.getParent();
-        Argo.log.info ("Dir ==" + path);
+        Argo.logger.info ("Dir ==" + path);
         int size = _members.size();
     
         try {
@@ -711,7 +711,7 @@ public class Project implements java.io.Serializable {
             for (int i = 0; i < size; i++) {
                 ProjectMember p = (ProjectMember) _members.elementAt(i);
                 if (!(p.getType().equalsIgnoreCase("xmi"))){
-                    Argo.log.info("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
+                    Argo.logger.info("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
                     stream.putNextEntry(new ZipEntry(p.getName()));
                     p.save(path,overwrite,writer);
                     writer.flush();
@@ -722,14 +722,14 @@ public class Project implements java.io.Serializable {
             for (int i = 0; i < size; i++) {
                 ProjectMember p = (ProjectMember) _members.elementAt(i);
                 if (p.getType().equalsIgnoreCase("xmi")) {
-                    Argo.log.info("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
+                    Argo.logger.info("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
                     stream.putNextEntry(new ZipEntry(p.getName()));
                     p.save(path,overwrite,writer);
                 }
             }
 
         } catch (IOException e) {
-            cat.debug("hat nicht geklappt: "+e);
+            logger.debug("hat nicht geklappt: "+e);
             e.printStackTrace();
         }
     
@@ -811,7 +811,7 @@ public class Project implements java.io.Serializable {
         if (cls != null ) return cls;
         cls = (MClassifier) _definedTypes.get(s);
         if (cls == null) {
-            cat.debug("new Type defined!");
+            logger.debug("new Type defined!");
             cls = UmlFactory.getFactory().getCore().buildClass();
             cls.setName(s);
         }
@@ -1006,7 +1006,7 @@ public class Project implements java.io.Serializable {
     }
 
     public void moveFromTrash(Object obj) {
-        cat.debug("needs-more-work: not restoring " + obj);
+        logger.debug("needs-more-work: not restoring " + obj);
     }
 
     public boolean isInTrash(Object dm) {
@@ -1046,7 +1046,7 @@ public class Project implements java.io.Serializable {
     public static void setStat(String n, int v) {
         //     String n = us.name;
         //     int v = us.value;
-        cat.debug("setStat: " + n + " = " + v);
+        logger.debug("setStat: " + n + " = " + v);
         if (n.equals("clicksInToDoPane"))
             ToDoPane._clicksInToDoPane = v;
         else if (n.equals("dblClicksInToDoPane"))
@@ -1096,7 +1096,7 @@ public class Project implements java.io.Serializable {
             ModeCreateEdgeAndNode.Drags_To_Existing = v;
 
         else {
-            cat.warn("unknown UsageStatistic: " + n);
+            logger.warn("unknown UsageStatistic: " + n);
         }
     }
 

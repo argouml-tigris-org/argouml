@@ -34,7 +34,7 @@ import java.util.*;
 
 import org.tigris.gef.util.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.cognitive.*;
 
 /** Agency manages Critics.  Since classes are not really first class
@@ -56,7 +56,7 @@ import org.argouml.cognitive.*;
  *  for triggers is currently dormant (latent?). */
 
 public class Agency extends Observable { //implements java.io.Serialization
-     protected static Category cat = Category.getInstance(Agency.class);
+     protected static Log logger = org.apache.commons.logging.LogFactory.getLog(Agency.class);
 
 
   ////////////////////////////////////////////////////////////////
@@ -133,7 +133,7 @@ public class Agency extends Observable { //implements java.io.Serialization
     Class dmClass;
     try { dmClass = Class.forName(dmClassName); }
     catch (java.lang.ClassNotFoundException e) {
-        cat.error("Error loading dm " + dmClassName, e);
+        logger.error("Error loading dm " + dmClassName, e);
 	return;
     }
     Critic cr = (Critic) _singletonCritics.get(crClassName);
@@ -141,16 +141,16 @@ public class Agency extends Observable { //implements java.io.Serialization
       Class crClass;
       try { crClass = Class.forName(crClassName); }
       catch (java.lang.ClassNotFoundException e) {
-        cat.error("Error loading cr " + crClassName, e);
+        logger.error("Error loading cr " + crClassName, e);
 	return;
       }
       try { cr = (Critic) crClass.newInstance(); }
       catch (java.lang.IllegalAccessException e) {
-        cat.error("Error instancating cr " + crClassName, e);
+        logger.error("Error instancating cr " + crClassName, e);
 	return;
       }
       catch (java.lang.InstantiationException e) {
-        cat.error("Error instancating cr " + crClassName, e);
+        logger.error("Error instancating cr " + crClassName, e);
 	return;
       }
       _singletonCritics.put(crClassName, cr);
@@ -245,7 +245,7 @@ public class Agency extends Observable { //implements java.io.Serialization
 	  c.critique(dm, d);
 	}
 	catch (Exception ex) {
-            cat.error("Disabling critique due to exception\n" + c + "\n" + dm, ex);
+            logger.error("Disabling critique due to exception\n" + c + "\n" + dm, ex);
           c.setEnabled(false);
 	}
       }

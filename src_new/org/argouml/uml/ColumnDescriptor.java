@@ -39,7 +39,7 @@ import ru.novosoft.uml.behavior.collaborations.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.graph.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
@@ -941,7 +941,7 @@ class ColumnQuery extends ColumnDescriptor {
 
 
 class ColumnType extends ColumnDescriptor {
-    protected static Category cat = Category.getInstance(ColumnType.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(ColumnType.class);
   ColumnType() {
     super("Type", String.class, true);  //MClassifier.type?
   }
@@ -963,7 +963,7 @@ class ColumnType extends ColumnDescriptor {
     Project p = pb.getProject();
     MClassifier t = p.findType(s);
     if (t == null) {
-      cat.warn("attribute type not found");
+      logger.warn("attribute type not found");
       return;
     }
     ParserDisplay pd = ParserDisplay.SINGLETON;

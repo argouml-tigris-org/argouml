@@ -30,11 +30,11 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 import org.argouml.ui.*;
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.cognitive.*;
 
 public class DismissToDoItemDialog extends JDialog implements ActionListener {
-    protected static Category cat = Category.getInstance(DismissToDoItemDialog.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(DismissToDoItemDialog.class);
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -117,7 +117,7 @@ public class DismissToDoItemDialog extends JDialog implements ActionListener {
   // event handlers
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == _badGoalButton) {
-      cat.debug("bad goal");
+      logger.debug("bad goal");
       GoalsDialog d = new GoalsDialog(ProjectBrowser.TheInstance);
       d.setVisible(true);
       setVisible(false);
@@ -125,7 +125,7 @@ public class DismissToDoItemDialog extends JDialog implements ActionListener {
       return;
     }
     if (e.getSource() == _badDecButton) {
-      cat.debug("bad decision");
+      logger.debug("bad decision");
       DesignIssuesDialog d = new DesignIssuesDialog(ProjectBrowser.TheInstance);
       d.setVisible(true);
       setVisible(false);
@@ -133,7 +133,7 @@ public class DismissToDoItemDialog extends JDialog implements ActionListener {
       return;
     }
     if (e.getSource() == _explainButton) {
-      cat.debug("I can explain!");
+      logger.debug("I can explain!");
       //needs-more-work: make a new history item
       ToDoList list = Designer.TheDesigner.getToDoList();
       list.explicitlyResolve(_target, _explaination.getText());
@@ -141,7 +141,7 @@ public class DismissToDoItemDialog extends JDialog implements ActionListener {
       dispose();
       return;
     }
-    cat.debug("unknown src in DismissToDoItemDialog: " + e.getSource());
+    logger.debug("unknown src in DismissToDoItemDialog: " + e.getSource());
   }
 
 } /* end class DismissToDoItemDialog */

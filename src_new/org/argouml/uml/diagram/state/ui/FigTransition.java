@@ -49,7 +49,7 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 import org.argouml.ui.ProjectBrowser;
@@ -57,7 +57,7 @@ import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.generator.*;
 
 public class FigTransition extends FigEdgeModelElement {
-    protected static Category cat = Category.getInstance(FigTransition.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(FigTransition.class);
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -113,7 +113,7 @@ public class FigTransition extends FigEdgeModelElement {
     super.modelChanged();
     MModelElement me = (MModelElement) getOwner();
     if (me == null) return;
-    cat.debug("FigTransition modelChanged: " + me.getClass());
+    logger.debug("FigTransition modelChanged: " + me.getClass());
     String nameStr = Notation.generate(this, me);
     _name.setText(nameStr);
     _name.calcBounds();

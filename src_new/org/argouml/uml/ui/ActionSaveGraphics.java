@@ -23,7 +23,7 @@
 
 package org.argouml.uml.ui;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.util.*;
@@ -39,7 +39,7 @@ import javax.swing.*;
 /** Wraps a CmdSaveGIF or CmdSave(E)PS to allow selection of an output file. */
 
 public class ActionSaveGraphics extends UMLAction {
-    protected static Category cat = Category.getInstance(ActionSaveGraphics.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(ActionSaveGraphics.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -86,7 +86,7 @@ public class ActionSaveGraphics extends UMLAction {
 		    }
 		}
 		catch( Exception ex ) {
-                    cat.error("exception in opening JFileChooser", ex);
+                    logger.error("exception in opening JFileChooser", ex);
 		}
 
 		if( chooser == null ) chooser = OsUtil.getFileChooser();
@@ -172,11 +172,11 @@ public class ActionSaveGraphics extends UMLAction {
 	    }
 	    catch( FileNotFoundException ignore )
 		{
-                cat.error("got a FileNotFoundException", ignore);
+                logger.error("got a FileNotFoundException", ignore);
 		}
 	    catch( IOException ignore )
 		{
-                cat.error("got an IOException", ignore);
+                logger.error("got an IOException", ignore);
 		}
 	}
 

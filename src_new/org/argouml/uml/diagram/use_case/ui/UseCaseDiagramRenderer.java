@@ -41,7 +41,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.uml.diagram.ui.*;
 
 
@@ -69,7 +69,7 @@ import org.argouml.uml.diagram.ui.*;
 
 public class UseCaseDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer {
-        protected static Category cat = Category.getInstance(UseCaseDiagramRenderer.class);
+        protected static Log logger = org.apache.commons.logging.LogFactory.getLog(UseCaseDiagramRenderer.class);
 
 
     /**
@@ -98,7 +98,7 @@ public class UseCaseDiagramRenderer
 
         // If we get here we were asked for a fig we can't handle.
 
-        cat.debug(this.getClass().toString() +
+        logger.debug(this.getClass().toString() +
                            ": getFigNodeFor(" + gm.toString() + ", " +
                            lay.toString() + ", " + node.toString() +
                            ") - cannot create this sort of node.");
@@ -124,7 +124,7 @@ public class UseCaseDiagramRenderer
 
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
 
-        cat.debug("making figedge for " + edge);
+        logger.debug("making figedge for " + edge);
 
         // If the edge is an association, we'll need a FigAssociation
 
@@ -237,7 +237,7 @@ public class UseCaseDiagramRenderer
         // model maybe they should be, just as an implementation issue, dont
         // remove any of the methods that are there now.
 
-        cat.debug(this.getClass().toString() +
+        logger.debug(this.getClass().toString() +
                            ": getFigEdgeFor(" + gm.toString() + ", " +
                            lay.toString() + ", " + edge.toString() +
                            ") - needs more work to handle this sort of edge");

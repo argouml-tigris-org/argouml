@@ -35,7 +35,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.util.*;
 import org.argouml.uml.ui.*;
@@ -54,7 +54,7 @@ import org.argouml.swingext.*;
 public class DetailsPane extends JPanel
 implements ChangeListener, MouseListener, QuadrantPanel, Orientable {
     
-    protected static Category cat = Category.getInstance(DetailsPane.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(DetailsPane.class);
   ////////////////////////////////////////////////////////////////
   // constants
 
@@ -84,7 +84,7 @@ implements ChangeListener, MouseListener, QuadrantPanel, Orientable {
   // constructors
 
   public DetailsPane(StatusBar sb, String pane, Orientation orientation) {
-    Argo.log.info("making DetailsPane("+pane+")");
+    Argo.logger.info("making DetailsPane("+pane+")");
     orientation = orientation;
     ConfigLoader.loadTabs(_tabPanels, pane, sb, orientation);
 
@@ -324,9 +324,9 @@ implements ChangeListener, MouseListener, QuadrantPanel, Orientable {
   /** called when the user selects a new tab, by clicking or
    *  otherwise. */
   public void stateChanged(ChangeEvent e) {
-    cat.debug("DetailsPane state changed");
+    logger.debug("DetailsPane state changed");
     Component sel = _tabs.getSelectedComponent();
-    cat.debug(sel.getClass().getName());
+    logger.debug(sel.getClass().getName());
     if (sel instanceof TabToDoTarget)
       ((TabToDoTarget)sel).refresh();
     else if (sel instanceof TabModelTarget)
@@ -340,14 +340,14 @@ implements ChangeListener, MouseListener, QuadrantPanel, Orientable {
   public void mySingleClick(int tab) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
-    cat.debug("single: " + _tabs.getComponentAt(tab).toString());
+    logger.debug("single: " + _tabs.getComponentAt(tab).toString());
   }
 
   /** called when the user clicks twice on a tab. */
   public void myDoubleClick(int tab) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
-    cat.debug("double: " + _tabs.getComponentAt(tab).toString());
+    logger.debug("double: " + _tabs.getComponentAt(tab).toString());
     JPanel t = (JPanel) _tabPanels.elementAt(tab);
     if (t instanceof TabSpawnable) ((TabSpawnable)t).spawn();
   }

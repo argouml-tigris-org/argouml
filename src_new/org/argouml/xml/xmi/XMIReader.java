@@ -104,8 +104,8 @@ public class XMIReader extends ru.novosoft.uml.xmi.XMIReader {
             performLinking();
         }
         catch (Exception ex) {
-            Argo.log.error("The model file loaded is corrupted.");
-            Argo.log.error(ex);
+            Argo.logger.error("The model file loaded is corrupted.");
+            Argo.logger.error(ex);
             setErrors(true);
         }
 

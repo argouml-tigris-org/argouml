@@ -46,7 +46,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 
@@ -60,7 +60,7 @@ import org.argouml.ui.*;
 /** Class to display graphics for a UML MState in a diagram. */
 
 public class FigPackage extends FigNodeModelElement {
-    protected static Category cat = Category.getInstance(FigPackage.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(FigPackage.class);
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -454,7 +454,7 @@ public class FigPackage extends FigNodeModelElement {
         }
     }
     catch (Exception e) {
-        cat.error("could not set package due to:"+e + "' at "+encloser, e);
+        logger.error("could not set package due to:"+e + "' at "+encloser, e);
     }
   }
 

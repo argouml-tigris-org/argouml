@@ -119,7 +119,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         Object target = getTarget();
         if (target != null) {
             if (sureRemove(target)) {
-                // Argo.log.info("deleting "+target+"+ "+(((MModelElement)target).getMElementListeners()).size());
+                // Argo.logger.info("deleting "+target+"+ "+(((MModelElement)target).getMElementListeners()).size());
                 // move the pointer to the target in the NavPane to some other target (up)
                 ProjectBrowser pb = ProjectBrowser.TheInstance;
                 TreePath path = pb.getNavPane().getParentPath();

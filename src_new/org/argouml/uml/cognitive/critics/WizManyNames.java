@@ -34,7 +34,7 @@ import java.util.*;
 import java.beans.*;
 import javax.swing.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.cognitive.ui.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -47,7 +47,7 @@ import org.argouml.kernel.*;
  *  MModelElement to a better name. */
 
 public class WizManyNames extends Wizard {
-    protected static Category cat = Category.getInstance(WizManyNames.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(WizManyNames.class);
 
   protected String _instructions =
   "Please change the name of the offending model element.";
@@ -88,7 +88,7 @@ public class WizManyNames extends Wizard {
    *  they do along, as soon as possible, they should not wait until
    *  the final step. */
   public void doAction(int oldStep) {
-    cat.debug("doAction " + oldStep);
+    logger.debug("doAction " + oldStep);
     switch (oldStep) {
     case 1:
       Vector newNames = null;
@@ -101,7 +101,7 @@ public class WizManyNames extends Wizard {
 	}
       }
       catch (Exception pve) {
-	cat.error("could not set name", pve);
+	logger.error("could not set name", pve);
       }
     }
   }

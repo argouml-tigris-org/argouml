@@ -25,7 +25,7 @@ package org.argouml.model.uml;
 
 import ru.novosoft.uml.MBase;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.uml.UUIDManager;
 
 /**
@@ -39,8 +39,8 @@ public abstract class AbstractUmlModelFactory {
 
     /** Log4j logging category.
      */
-    public static Category logger =
-                  Category.getInstance("org.argouml.model.uml");
+    public static Log logger =
+                  org.apache.commons.logging.LogFactory.getLog("org.argouml.model.uml");
 
     /** Default constructor.
      */

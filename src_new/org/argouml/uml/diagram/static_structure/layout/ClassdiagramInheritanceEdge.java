@@ -40,20 +40,20 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
         super(edge);
         
 	// calculate the higher and lower Figs
-        ClassdiagramLayouter.cat.debug("sourceFigNode: " + sourceFigNode.classNameAndBounds());
-        ClassdiagramLayouter.cat.debug("destFigNode: " + destFigNode.classNameAndBounds());
+        ClassdiagramLayouter.logger.debug("sourceFigNode: " + sourceFigNode.classNameAndBounds());
+        ClassdiagramLayouter.logger.debug("destFigNode: " + destFigNode.classNameAndBounds());
         if (sourceFigNode.getLocation().getY()<=destFigNode.getLocation().getY()) {
             high = sourceFigNode;
             low = destFigNode;
-            ClassdiagramLayouter.cat.debug("high is sourcenode, is low destnode");
+            ClassdiagramLayouter.logger.debug("high is sourcenode, is low destnode");
         }
         else {
             high = destFigNode;
             low = sourceFigNode;
-            ClassdiagramLayouter.cat.debug("high is destnode, low is sourcenode");
+            ClassdiagramLayouter.logger.debug("high is destnode, low is sourcenode");
         }
-        ClassdiagramLayouter.cat.debug("High: " + high.classNameAndBounds());
-        ClassdiagramLayouter.cat.debug("Low : " + low.classNameAndBounds());
+        ClassdiagramLayouter.logger.debug("High: " + high.classNameAndBounds());
+        ClassdiagramLayouter.logger.debug("Low : " + low.classNameAndBounds());
     }
     
     public abstract int getVerticalOffset();
@@ -78,37 +78,37 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
      * @since 0.9.6
      */
     public void layout() {
-        ClassdiagramLayouter.cat.debug("underlyingFig: " + underlyingFig.classNameAndBounds());
+        ClassdiagramLayouter.logger.debug("underlyingFig: " + underlyingFig.classNameAndBounds());
 	
         // now we construct the zig zag inheritance line
         int centerHigh =  getCenterHigh();
         int centerLow  =  getCenterLow();
         
-        ClassdiagramLayouter.cat.debug("centerHigh: " + centerHigh + " centerLow: " + centerLow + " downGap: " + getDownGap());
+        ClassdiagramLayouter.logger.debug("centerHigh: " + centerHigh + " centerLow: " + centerLow + " downGap: " + getDownGap());
         
         // the amount of the "sidestep"
         int difference = centerHigh - centerLow;
         
         underlyingFig.addPoint(centerLow, (int)
             (low.getLocation().getY()));
-        ClassdiagramLayouter.cat.debug("Point: x: " + centerLow + " y: " + (int)(low.getLocation().getY()));
+        ClassdiagramLayouter.logger.debug("Point: x: " + centerLow + " y: " + (int)(low.getLocation().getY()));
         
         // if the Figs are directly under each other we
         // do not need to add these points
         if (difference!=0) { 
             underlyingFig.addPoint(centerHigh - difference,
                 getDownGap());
-            ClassdiagramLayouter.cat.debug("Point: x: " + (centerHigh - difference) +" y: " + getDownGap());
+            ClassdiagramLayouter.logger.debug("Point: x: " + (centerHigh - difference) +" y: " + getDownGap());
             underlyingFig.addPoint(centerHigh,
                 getDownGap());
-            ClassdiagramLayouter.cat.debug("Point: x: " +centerHigh+" y: "+getDownGap());
+            ClassdiagramLayouter.logger.debug("Point: x: " +centerHigh+" y: "+getDownGap());
             
         }
         
         underlyingFig.addPoint( centerHigh,
         (int)(high.getLocation().getY()+
         high.getSize().getHeight()));
-        ClassdiagramLayouter.cat.debug("Point x: " + centerHigh +" y: "+(int)(high.getLocation().getY()+high.getSize().getHeight()));
+        ClassdiagramLayouter.logger.debug("Point x: " + centerHigh +" y: "+(int)(high.getLocation().getY()+high.getSize().getHeight()));
         
         underlyingFig.setFilled(false);
         currentEdge.setFig(underlyingFig);

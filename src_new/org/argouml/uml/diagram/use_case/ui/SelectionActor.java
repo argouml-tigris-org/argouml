@@ -43,13 +43,13 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.util.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.ui.*;
 
 public class SelectionActor extends SelectionWButtons {
-    protected static Category cat = 
-        Category.getInstance(SelectionActor.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(SelectionActor.class);
   ////////////////////////////////////////////////////////////////
   // constants
   public static Icon assoc = ResourceLoader.lookupIconResource("Association");
@@ -132,7 +132,7 @@ public class SelectionActor extends SelectionWButtons {
       bx = cx;
       break;
     default:
-      cat.warn("invalid handle number");
+      logger.warn("invalid handle number");
       break;
     }
     if (edgeClass != null && nodeClass != null) {

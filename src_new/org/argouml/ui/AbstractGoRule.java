@@ -6,7 +6,7 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 
 /**
  * Abstract class to be used as a convenience class for implementing 'go rules'.
@@ -23,7 +23,7 @@ import org.apache.log4j.Category;
  */
 public abstract class AbstractGoRule implements TreeModel {
 	
-	private static Category cat = Category.getInstance(org.argouml.ui.AbstractGoRule.class);
+	private static Log logger = org.apache.commons.logging.LogFactory.getLog(org.argouml.ui.AbstractGoRule.class);
 
 	/**
 	 * @see javax.swing.tree.TreeModel#getRoot()
@@ -40,7 +40,7 @@ public abstract class AbstractGoRule implements TreeModel {
     	if (children != null) {
     		return children.elementAt(index); 
     	} else {
-    		cat.fatal("getChild should never get here");
+    		logger.fatal("getChild should never get here");
     		return null;
     	}
 	}

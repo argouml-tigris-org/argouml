@@ -23,7 +23,7 @@
 
 package org.argouml.uml.ui;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.*;
@@ -51,7 +51,7 @@ import javax.swing.*;
  */
 public class ActionOpenProject extends UMLAction {
     
-    protected static Category cat = Category.getInstance(org.argouml.uml.ui.ActionOpenProject.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(org.argouml.uml.ui.ActionOpenProject.class);
   
   ////////////////////////////////////////////////////////////////
   // static variables
@@ -224,7 +224,7 @@ public class ActionOpenProject extends UMLAction {
       }
     }
     catch (IOException ignore) {
-        cat.error("got an IOException in ActionOpenProject", ignore);
+        logger.error("got an IOException in ActionOpenProject", ignore);
     }
   }
 } /* end class ActionOpenProject */

@@ -97,7 +97,7 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
             }
         }
         catch(Exception ex) {
-            Argo.log.error("ActionDeleteFromDiagram.actionPerformed()Exception = ");
+            Argo.logger.error("ActionDeleteFromDiagram.actionPerformed()Exception = ");
         }
     } 
 

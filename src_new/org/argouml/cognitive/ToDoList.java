@@ -35,7 +35,7 @@ import javax.swing.event.EventListenerList;
 
 import org.tigris.gef.util.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.kernel.*;
 
 /** Implements a list of ToDoItem's.  If desired it can also
@@ -67,8 +67,8 @@ import org.argouml.kernel.*;
  */
 public class ToDoList extends Observable
 implements Runnable, java.io.Serializable {
-    protected static Category cat = 
-        Category.getInstance(ToDoList.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(ToDoList.class);
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -118,7 +118,7 @@ implements Runnable, java.io.Serializable {
       removes.removeAllElements();
       try { _validityChecker.sleep(3000); }
       catch (InterruptedException ignore) {
-        cat.error("InterruptedException!!!", ignore);
+        logger.error("InterruptedException!!!", ignore);
       }
     }
   }
@@ -148,7 +148,7 @@ implements Runnable, java.io.Serializable {
         StringBuffer buf = new StringBuffer("Exception raised in to do list cleaning");
         buf.append("\n");
         buf.append(item.toString());
-        cat.error(buf.toString(), ex);
+        logger.error(buf.toString(), ex);
       }
       if (!valid) {
 	_numNotValid++;
@@ -248,7 +248,7 @@ implements Runnable, java.io.Serializable {
     /* remove any identical items already on the list */
     if (_items.contains(item)) return;
     if (_resolvedItems.contains(item)) {
-      cat.debug("ToDoItem not added because it was resolved");
+      logger.debug("ToDoItem not added because it was resolved");
       return;
     }
     _items.addElement(item);
@@ -315,7 +315,7 @@ implements Runnable, java.io.Serializable {
   }
 
   public synchronized void removeAllElements() {
-    cat.debug("removing all todo items");
+    logger.debug("removing all todo items");
     Vector oldItems = (Vector) _items.clone();
     int size = oldItems.size();
     for (int i = 0; i < size; i++)

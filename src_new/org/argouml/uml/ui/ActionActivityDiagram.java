@@ -23,7 +23,7 @@
 
 package org.argouml.uml.ui;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
@@ -37,7 +37,7 @@ public class ActionActivityDiagram extends ActionStateDiagram {
     
     public static ActionActivityDiagram SINGLETON = new ActionActivityDiagram(); 
     
-    protected static Category cat = Category.getInstance(org.argouml.uml.ui.ActionActivityDiagram.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(org.argouml.uml.ui.ActionActivityDiagram.class);
 
     private ActionActivityDiagram() { super("ActivityDiagram"); }
    

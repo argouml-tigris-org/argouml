@@ -32,13 +32,13 @@ import ru.novosoft.uml.foundation.core.*;
 
 import org.tigris.gef.base.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.ui.*;
 
 public class UMLDiagram extends ArgoDiagram {
     
 
-  protected static Category cat = Category.getInstance(UMLDiagram.class);
+  protected static Log logger = org.apache.commons.logging.LogFactory.getLog(UMLDiagram.class);
   ////////////////////////////////////////////////////////////////
   // actions for toolbar
 
@@ -102,7 +102,7 @@ public class UMLDiagram extends ArgoDiagram {
   public void initialize(Object owner) {
     super.initialize(owner);
     if (owner instanceof MNamespace) setNamespace((MNamespace) owner);
-    else cat.debug("unknown object in UMLDiagram initialize:"
+    else logger.debug("unknown object in UMLDiagram initialize:"
 			    + owner);
   }
 

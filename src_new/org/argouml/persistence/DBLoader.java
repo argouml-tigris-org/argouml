@@ -1,6 +1,6 @@
 package org.argouml.persistence;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.model.uml.UmlFactory;
 
 import java.sql.*;
@@ -42,7 +42,7 @@ import ru.novosoft.uml.behavior.use_cases.*;
 
 public class DBLoader
 {
-    protected static Category cat = Category.getInstance(DBLoader.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(DBLoader.class);
     String DBUrl = "jdbc:mysql://";
     String DBName = "";
     String configFile = null;
@@ -62,7 +62,7 @@ public class DBLoader
 	    props.load(is);
 	}	
 	catch (IOException e) {
-            cat.error("Could not load DB properties from " + configFile, e);
+            logger.error("Could not load DB properties from " + configFile, e);
 	    errorMessage("Could not load DB properties from " + configFile,e);
 	}
 
@@ -70,7 +70,7 @@ public class DBLoader
 	    Class.forName(props.getProperty("driver")).newInstance();	    
 	}
 	catch (Exception e) {
-	     cat.error("Could not load the database driver!", e);
+	     logger.error("Could not load the database driver!", e);
 	    errorMessage("Could not load the database driver!",e);
 	}
 
@@ -102,7 +102,7 @@ public class DBLoader
 	}
 
 	catch (Exception e) {
-	      cat.error("Could not connect to database!", e);
+	      logger.error("Could not connect to database!", e);
 	    errorMessage("Could not connect to database!",e);
 	}
     }
@@ -129,7 +129,7 @@ public class DBLoader
 		String uuid = "";
 		
 		try {
-			cat.debug("Loading model: "+modelName);
+			logger.debug("Loading model: "+modelName);
 			stmt = Conn.createStatement();
             rs = stmt.executeQuery("SELECT uuid FROM tModelElement WHERE name = '" + modelName + "'");
 			if (rs.next())
@@ -138,7 +138,7 @@ public class DBLoader
 			return readModel(uuid, modelName, stmt);
 		}
 		catch (SQLException e) {
-                    cat.error("error while executing!", e);
+                    logger.error("error while executing!", e);
 			errorMessage("Error while loading the model from the database!",e);
 		}
 		finally {
@@ -150,7 +150,7 @@ public class DBLoader
     }
 
 	private MModel readModel(String modelUUID, String modelName, Statement stmt) throws SQLException {
-		cat.debug("Loading model with uuid: "+ modelUUID);
+		logger.debug("Loading model with uuid: "+ modelUUID);
 
 		MModel model = UmlFactory.getFactory().getModelManagement().createModel();
 		model.setName(modelName);
@@ -472,9 +472,9 @@ public class DBLoader
 		}
 
 		if (parent != null) me.setParent(parent);
-		cat.debug("Parent: "+parent);
+		logger.debug("Parent: "+parent);
 		if (child != null) me.setChild(child);
-		cat.debug("Child: "+child);
+		logger.debug("Child: "+child);
 	}
 
 	private void readAbstraction(MModel model, String UUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {

@@ -33,12 +33,12 @@ import javax.swing.text.*;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.ui.*;
 
 public class TabUMLDisplay extends TabText {
-    protected static Category cat = 
-        Category.getInstance(TabUMLDisplay.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(TabUMLDisplay.class);
   ////////////////////////////////////////////////////////////////
   // constructor
   public TabUMLDisplay() {
@@ -56,7 +56,7 @@ public class TabUMLDisplay extends TabText {
 
   protected void parseText(String s) {
     if (s == null) s = "(null)";
-    cat.debug("TabUMLDisplay parsing text:" + s);
+    logger.debug("TabUMLDisplay parsing text:" + s);
   }
   
 

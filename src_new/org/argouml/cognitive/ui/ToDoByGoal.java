@@ -28,13 +28,13 @@ import java.util.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.cognitive.*;
 
 public class ToDoByGoal extends ToDoPerspective
 implements ToDoListListener {
-    protected static Category cat = 
-        Category.getInstance(ToDoByGoal.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(ToDoByGoal.class);
 
 
   public ToDoByGoal() {
@@ -46,7 +46,7 @@ implements ToDoListListener {
   // ToDoListListener implementation
 
   public void toDoItemsChanged(ToDoListEvent tde) {
-    cat.debug("toDoItemsChanged");
+    logger.debug("toDoItemsChanged");
     Vector items = tde.getToDoItems();
     int nItems = items.size();
     Object path[] = new Object[2];
@@ -79,7 +79,7 @@ implements ToDoListListener {
   }
 
   public void toDoItemsAdded(ToDoListEvent tde) {
-    cat.debug("toDoItemAdded");
+    logger.debug("toDoItemAdded");
     Vector items = tde.getToDoItems();
     int nItems = items.size();
     Object path[] = new Object[2];
@@ -112,7 +112,7 @@ implements ToDoListListener {
   }
 
   public void toDoItemsRemoved(ToDoListEvent tde) {
-    cat.debug("toDoItemAdded");
+    logger.debug("toDoItemAdded");
     ToDoList list = Designer.TheDesigner.getToDoList(); //source?
     Vector items = tde.getToDoItems();
     int nItems = items.size();
@@ -123,7 +123,7 @@ implements ToDoListListener {
     java.util.Enumeration enum = goals.elements();
     while (enum.hasMoreElements()) {
       Goal g = (Goal) enum.nextElement();
-      cat.debug("toDoItemRemoved updating decision node!");
+      logger.debug("toDoItemRemoved updating decision node!");
       boolean anyInGoal = false;
       for (int i = 0; i < nItems; i++) {
 	ToDoItem item = (ToDoItem) items.elementAt(i);

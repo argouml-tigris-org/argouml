@@ -40,7 +40,7 @@ import ru.novosoft.uml.*;
 import org.tigris.gef.util.*;
 
 import org.argouml.kernel.*;
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.cognitive.critics.*;
 
 /** This class models the designer who is building a complex design in
@@ -52,7 +52,7 @@ import org.argouml.cognitive.critics.*;
 public class Designer
 implements Poster, Runnable, PropertyChangeListener, MElementListener, java.io.Serializable {
     
-    protected static Category cat = Category.getInstance(Designer.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(Designer.class);
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -204,10 +204,10 @@ implements Poster, Runnable, PropertyChangeListener, MElementListener, java.io.S
       long cycleDuration = (_critiqueDuration * 100) / _critiqueCPUPercent;
       long sleepDuration = Math.min(cycleDuration - _critiqueDuration, 3000);
       sleepDuration = Math.max(sleepDuration, 1000);
-      cat.debug("sleepDuration= " + sleepDuration);
+      logger.debug("sleepDuration= " + sleepDuration);
       try { _critiquer.sleep(sleepDuration); }
       catch (InterruptedException ignore) {
-        cat.error("InterruptedException!!!", ignore);
+        logger.error("InterruptedException!!!", ignore);
       }
     }
   }
@@ -216,7 +216,7 @@ implements Poster, Runnable, PropertyChangeListener, MElementListener, java.io.S
   public synchronized void critiqueASAP(Object dm, String reason) {
     long rCode = Critic.reasonCodeFor(reason);
       if (!_userWorking) return;
-      cat.debug("critiqueASAP:" + dm);
+      logger.debug("critiqueASAP:" + dm);
       int addQueueIndex = _addQueue.indexOf(dm);
       if (addQueueIndex == -1) {
 	_addQueue.addElement(dm);

@@ -148,7 +148,7 @@ implements NotationName, ArgoModuleEventListener {
 		}
 	    }
 	    catch (Exception e) {
-	        Argo.log.error ("Unexpected exception", e);
+	        Argo.logger.error ("Unexpected exception", e);
 	    }
 	}
 	return null;
@@ -179,7 +179,7 @@ implements NotationName, ArgoModuleEventListener {
     }
 
     public void moduleLoaded(ArgoModuleEvent event) {
-        Argo.log.info ("notation.moduleLoaded(" + event + ")");
+        Argo.logger.info ("notation.moduleLoaded(" + event + ")");
     }
 
     public void moduleUnloaded(ArgoModuleEvent event) {

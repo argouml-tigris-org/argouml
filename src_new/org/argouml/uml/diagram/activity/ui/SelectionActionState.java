@@ -44,14 +44,14 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.util.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.state.ui.*;
 
 public class SelectionActionState extends SelectionWButtons {
-    protected static Category cat = 
-        Category.getInstance(SelectionActionState.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(SelectionActionState.class);
   ////////////////////////////////////////////////////////////////
   // constants
   public static Icon trans = 
@@ -204,7 +204,7 @@ public class SelectionActionState extends SelectionWButtons {
       bx = cx + cw/2;
       break;
     default:
-      cat.warn("invalid handle number");
+      logger.warn("invalid handle number");
       break;
     }
     if (edgeClass != null && nodeClass != null) {

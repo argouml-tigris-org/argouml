@@ -27,7 +27,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
-import org.apache.log4j.*;
+import org.apache.commons.logging.*;
 
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -39,8 +39,8 @@ import org.argouml.ui.*;
 public class GoProjectCollaboration extends AbstractGoRule {
 
   /** for logging */
-  private final static Category cat = 
-      Category.getInstance("org.argouml.uml.diagram.collaboration.ui.GoProjectCollaboration");
+  private final static Log logger = 
+      org.apache.commons.logging.LogFactory.getLog("org.argouml.uml.diagram.collaboration.ui.GoProjectCollaboration");
   
   public String getRuleName() { return "Project->MCollaboration"; }
 

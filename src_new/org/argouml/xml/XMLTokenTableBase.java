@@ -25,7 +25,7 @@ package org.argouml.xml;
 
 import java.util.Hashtable;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 //import java.util.Hashtable;
 
 /**
@@ -33,7 +33,7 @@ import org.apache.log4j.Category;
  */
 
 public abstract class XMLTokenTableBase {
-    protected static Category cat = Category.getInstance(XMLTokenTableBase.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(XMLTokenTableBase.class);
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -59,7 +59,7 @@ public abstract class XMLTokenTableBase {
   public final int toToken(String s, boolean push) {
     if (push) _openTags[++_numOpen] = s;
     else if (s.equals(_openTags[_numOpen])) {
-      cat.debug("matched: " + s);
+      logger.debug("matched: " + s);
       return _openTokens[_numOpen--];
     }
     Integer i = (Integer) _tokens.get(s);
@@ -80,13 +80,13 @@ public abstract class XMLTokenTableBase {
     boolean error = false;
     if (_dbg) {
       if (_tokens.contains(i) || _tokens.containsKey(s)) {
-	cat.error("ERROR: token table already contains " + s);
+	logger.error("ERROR: token table already contains " + s);
 	error = true;
       }
     }
     _tokens.put(s,i);
     if (_dbg && !error) {
-      cat.debug("NOTE: added '" + s + "' to token table");
+      logger.debug("NOTE: added '" + s + "' to token table");
     }
   }
 

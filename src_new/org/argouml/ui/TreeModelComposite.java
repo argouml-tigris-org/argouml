@@ -28,14 +28,14 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.Argo;
 import org.argouml.cognitive.ToDoItem;
 
 public class TreeModelComposite
 implements TreeModel, Cloneable {
-    protected static Category cat = 
-        Category.getInstance(TreeModelComposite.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(TreeModelComposite.class);
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -89,7 +89,7 @@ implements TreeModel, Cloneable {
 
   public void addFlatChildren(Object node) {
     if (node == null) return;
-    cat.debug("addFlatChildren");
+    logger.debug("addFlatChildren");
     // hack for to do items only, should check isLeaf(node), but that
     // includes empty folders. Really I need alwaysLeaf(node).
     if ((node instanceof ToDoItem) && !_flatChildren.contains(node)) 
@@ -158,7 +158,7 @@ implements TreeModel, Cloneable {
       if (childIndex != -1) return childIndex + childCount;
       childCount += tm.getChildCount(parent);
     }
-    cat.debug("child not found!");
+    logger.debug("child not found!");
     //The child is sometimes not found when the tree is being updated
     return -1;
   }
@@ -199,7 +199,7 @@ implements TreeModel, Cloneable {
    * @param newValue the new value from the TreeCellEditor.
    */
   public void valueForPathChanged(TreePath path, Object newValue) {
-    cat.debug("valueForPathChanged TreeModelComposite");
+    logger.debug("valueForPathChanged TreeModelComposite");
   }
 
 

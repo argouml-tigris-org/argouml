@@ -35,7 +35,7 @@ package org.argouml.uml.ui;
 
 import javax.swing.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 
 import java.awt.*;
 import java.util.*;
@@ -59,7 +59,7 @@ import ru.novosoft.uml.model_management.*;
  */
 
 public class UMLThirdPartyEventListener implements MElementListener {
-            protected static Category cat = Category.getInstance(UMLThirdPartyEventListener.class);
+            protected static Log logger = org.apache.commons.logging.LogFactory.getLog(UMLThirdPartyEventListener.class);
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -343,7 +343,7 @@ public class UMLThirdPartyEventListener implements MElementListener {
          // Deal with the pathological case
 
          if (metaClass == null) {
-             cat.warn(getClass().toString() + ": isTargetEvent() " +
+             logger.warn(getClass().toString() + ": isTargetEvent() " +
                                 "called with null metaclass");
              return false;
          }
@@ -445,7 +445,7 @@ public class UMLThirdPartyEventListener implements MElementListener {
 
     public void propertySet(MElementEvent mee) {
 
-        cat.debug("**** property set: " + mee);
+        logger.debug("**** property set: " + mee);
 
         // We can only do something if we have a non-null source object that is
         // an MModelElement and a property that is non-null.
@@ -523,7 +523,7 @@ public class UMLThirdPartyEventListener implements MElementListener {
 
     public void listRoleItemSet(MElementEvent mee) {
 
-        cat.debug("**** list role item set: " + mee);
+        logger.debug("**** list role item set: " + mee);
 
         // We can only do something if we have a non-null source object that is
         // a MModelElement and a property that is non-null.
@@ -579,7 +579,7 @@ public class UMLThirdPartyEventListener implements MElementListener {
 
     public void recovered(MElementEvent mee) {
 
-        cat.debug("**** recovered: " + mee);
+        logger.debug("**** recovered: " + mee);
 
         // We can only do something if we have a non-null source object that is
         // a MModelElement.
@@ -640,7 +640,7 @@ public class UMLThirdPartyEventListener implements MElementListener {
 
     public void removed(MElementEvent mee) {
 
-        cat.debug("**** removed: " + mee);
+        logger.debug("**** removed: " + mee);
 
         // We can only do something if we have a non-null source object that is
         // an MModelElement and a property that is non-null.
@@ -702,7 +702,7 @@ public class UMLThirdPartyEventListener implements MElementListener {
 
     public void roleAdded(MElementEvent mee) {
 
-        cat.debug("**** role added: " + mee);
+        logger.debug("**** role added: " + mee);
 
         // We can only do something if we have a non-null source object that is
         // an MModelElement and a property that is non-null.
@@ -786,7 +786,7 @@ public class UMLThirdPartyEventListener implements MElementListener {
 
     public void roleRemoved(MElementEvent mee) {
 
-        cat.debug("**** Role removed: " + mee);
+        logger.debug("**** Role removed: " + mee);
 
         // We can only do something if we have a non-null source object that is
         // an MModelElement and a property that is non-null.

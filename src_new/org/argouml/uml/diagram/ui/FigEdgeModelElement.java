@@ -45,8 +45,8 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
-import org.apache.log4j.Category;
-import org.apache.log4j.helpers.RelativeTimeDateFormat;
+import org.apache.commons.logging.Log;
+// import org.apache.log4j.helpers.RelativeTimeDateFormat;
 import org.argouml.application.api.*;
 import org.argouml.application.events.*;
 import org.argouml.kernel.*;
@@ -67,7 +67,7 @@ import org.argouml.util.*;
 public abstract class FigEdgeModelElement extends FigEdgePoly
 implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener, MElementListener, NotationContext, ArgoNotationEventListener  {
     
-    protected static Category cat = Category.getInstance(FigEdgeModelElement.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(FigEdgeModelElement.class);
   ////////////////////////////////////////////////////////////////
   // constants
 
@@ -286,7 +286,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     Object src = pve.getSource();
     String pName = pve.getPropertyName();
     if (pName.equals("editing") && Boolean.FALSE.equals(pve.getNewValue())) {
-      cat.debug("finished editing");
+      logger.debug("finished editing");
       try {
 	startTrans();
 	textEdited((FigText) src);
@@ -294,7 +294,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	endTrans();
       }
       catch (PropertyVetoException ex) {
-        cat.error("could not parse the text entered. Propertyvetoexception", ex);
+        logger.error("could not parse the text entered. Propertyvetoexception", ex);
       }
     }
     else super.propertyChange(pve);
@@ -423,7 +423,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	    //if (_group != null) _group.recovered(mee);
 	}
 	public void removed(MElementEvent mee) {
-		cat.debug("deleting: "+this + mee);
+		logger.debug("deleting: "+this + mee);
 	    //if (_group != null) _group.removed(mee);
 	    this.delete();
 	}

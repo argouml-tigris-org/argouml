@@ -31,7 +31,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 import javax.swing.text.AbstractDocument.DefaultDocumentEvent;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
@@ -54,7 +54,7 @@ import ru.novosoft.uml.MElementListener;
 public abstract class UMLPlainTextDocument extends PlainDocument
     implements UMLUserInterfaceComponent {
         
-    public static Category cat = Category.getInstance(UMLPlainTextDocument.class);
+    public static Log logger = org.apache.commons.logging.LogFactory.getLog(UMLPlainTextDocument.class);
     
     /**
      * True if an event should be fired when the text of the document is changed
@@ -189,7 +189,7 @@ public abstract class UMLPlainTextDocument extends PlainDocument
             remove(0, getLength());
             insertString(0, getProperty(), null);
         } catch (BadLocationException b) {
-            cat.error("A BadLocationException happened\n" +
+            logger.error("A BadLocationException happened\n" +
                 "The string to set was: " +
                 getProperty(), b);
         }

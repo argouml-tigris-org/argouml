@@ -35,7 +35,7 @@ import java.beans.*;
 import javax.swing.*;
 
 import org.argouml.uml.*;
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.cognitive.ui.*;
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -64,7 +64,7 @@ import org.argouml.model.uml.UmlFactory;
  */
 
 public class WizOperName extends WizMEName {
-    protected static Category cat = Category.getInstance(WizOperName.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(WizOperName.class);
 
     boolean _possibleConstructor = false;
     boolean _stereotypePathChosen;
@@ -217,7 +217,7 @@ public class WizOperName extends WizMEName {
 		    oper.setStereotype(theStereotype);
 		}
 		catch (Exception pve) {
-		    cat.error("could not set stereotype", pve);
+		    logger.error("could not set stereotype", pve);
 		}
 		return;
 

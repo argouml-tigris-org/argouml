@@ -36,7 +36,7 @@ import java.io.*;
 import java.util.*;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.xml.xmi.XMIReader;
 import org.xml.sax.*;
@@ -49,7 +49,7 @@ import org.xml.sax.*;
  *   @author Curt Arnold
  */
 public class ProfileJava extends Profile {
-    protected static Category cat = Category.getInstance(ProfileJava.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(ProfileJava.class);
 	private static ProfileJava _instance = null;
 	public static ProfileJava getInstance() {
 		if (_instance == null)
@@ -252,7 +252,7 @@ public class ProfileJava extends Profile {
 				catch (FileNotFoundException ex) {
 					is = new Object().getClass().getResourceAsStream(defaultModelFileName);
 					if (is == null) {
-						cat.error(
+						logger.error(
 							"Value of property argo.defaultModel ("
 								+ defaultModelFileName
 								+ ") did not correspond to an available file.\n");
@@ -272,7 +272,7 @@ public class ProfileJava extends Profile {
 							new FileInputStream(
 								defaultModelFileName.substring(1));
 					} catch (FileNotFoundException ex) {
-                                            cat.error("Default model ("
+                                            logger.error("Default model ("
                                 + defaultModelFileName
                                 + ") not found.\n", ex);
 						
@@ -299,7 +299,7 @@ public class ProfileJava extends Profile {
 					}
 					return model;
 				} catch (Exception ex) {
-                    cat.error("Error reading " + defaultModelFileName + "\n", ex);
+                    logger.error("Error reading " + defaultModelFileName + "\n", ex);
 				}
 			}
 			return null;

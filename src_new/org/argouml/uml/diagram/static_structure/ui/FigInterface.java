@@ -40,7 +40,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.language.helpers.*;
 import org.argouml.ui.*;
@@ -54,7 +54,7 @@ import org.argouml.model.uml.UmlHelper;
 /** Class to display graphics for a UML Interface in a diagram. */
 
 public class FigInterface extends FigNodeModelElement {
-    protected static Category cat = Category.getInstance(FigInterface.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(FigInterface.class);
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -440,7 +440,7 @@ public class FigInterface extends FigNodeModelElement {
         }
     }
     catch (Exception e) {
-        cat.error("could not set package due to:"+e + "' at "+encloser, e);
+        logger.error("could not set package due to:"+e + "' at "+encloser, e);
     }
 
     // The next if-clause is important for the Deployment-diagram

@@ -27,7 +27,7 @@ import java.io.*;
 import java.beans.*;
 import java.util.*;
 import java.net.*;
-import org.apache.log4j.*;
+import org.apache.commons.logging.*;
 
 /**
  *   This class provides the core user configuration implementation
@@ -45,11 +45,11 @@ public class Configuration {
 
    /** Define a static log4j category variable for ArgoUML configuration.
     */
-   public final static Category cat = Category.getInstance("org.argouml.application.configuration");
+   public final static Log logger = org.apache.commons.logging.LogFactory.getLog("org.argouml.application.configuration");
     // needs-more-work:  JDK 1.2 seems to not return the package name if
     // not running from a jar.
     //
-   // public final static Category cat = Category.getInstance(ConfigurationHandler.class.getPackage().getName()); 
+   // public final static Log logger = org.apache.commons.logging.LogFactory.getLog(ConfigurationHandler.class.getPackage().getName()); 
 
   /** Property to indicate configuration load from file
    */

@@ -117,7 +117,7 @@ implements PluggableNotation, FileGenerator {
       File f = new File (path);
       if (!f.isDirectory()) {
 		    if (!f.mkdir()) {
-			    Argo.log.error(" could not make directory "+path);
+			    Argo.logger.error(" could not make directory "+path);
 			    return null;
 		    }
       }
@@ -134,7 +134,7 @@ implements PluggableNotation, FileGenerator {
 	  } while (true);
 
     String pathname = path + filename;
-	//Argo.log.info("-----" + pathname + "-----");
+	//Argo.logger.info("-----" + pathname + "-----");
 
     //now decide wether file exist and need an update or is to be newly generated
     File f = new File(pathname);
@@ -143,16 +143,16 @@ implements PluggableNotation, FileGenerator {
         update (cls, f);
       }
       catch (Exception exp) {
-        Argo.log.error("FAILED: " + f.getPath());
+        Argo.logger.error("FAILED: " + f.getPath());
       }
 
-      //Argo.log.info("----- end generating -----");
+      //Argo.logger.info("----- end generating -----");
 	    return pathname;
 	  }
 
     //String pathname = path + filename;
     // needs-more-work: package, project basepath, tagged values to configure
-	Argo.log.info("Generating (new) " + f.getPath());
+	Argo.logger.info("Generating (new) " + f.getPath());
     String header = SINGLETON.generateHeader (cls, pathname, packagePath);
     String src = SINGLETON.generate (cls);
     BufferedWriter fos = null;
@@ -167,11 +167,11 @@ implements PluggableNotation, FileGenerator {
         if (fos != null) fos.close();
       }
       catch (IOException exp) {
-        Argo.log.error("FAILED: " + f.getPath());
+        Argo.logger.error("FAILED: " + f.getPath());
       }
     }
 
-	//Argo.log.info("----- end updating -----");
+	//Argo.logger.info("----- end updating -----");
     return pathname;
   }
 
@@ -836,7 +836,7 @@ implements PluggableNotation, FileGenerator {
    * be generated.
    */
   public String generateMethodBody (MOperation op) {
-    //Argo.log.info("generateMethodBody");
+    //Argo.logger.info("generateMethodBody");
     if (op != null) {
       Collection methods = op.getMethods();
       Iterator i = methods.iterator();
@@ -1140,7 +1140,7 @@ implements PluggableNotation, FileGenerator {
     if (VERBOSE_DOCS) sb.append(INDENT).append("// constraints\n");
     int size = cs.size();
     // MConstraint[] csarray = (MConstraint[])cs.toArray();
-    // Argo.log.debug("Got " + csarray.size() + " constraints.");
+    // Argo.logger.debug("Got " + csarray.size() + " constraints.");
     for (Iterator i = cs.iterator(); i.hasNext();) {
       MConstraint c = (MConstraint) i.next();
       String constrStr = generateConstraint(c);
@@ -1417,7 +1417,7 @@ implements PluggableNotation, FileGenerator {
   }
 
   public String generateStateBody(MState m) {
-    Argo.log.info("GeneratorJava: generating state body");
+    Argo.logger.info("GeneratorJava: generating state body");
     StringBuffer sb = new StringBuffer(80);
     MAction entry = m.getEntry();
     MAction exit = m.getExit();
@@ -1510,7 +1510,7 @@ implements PluggableNotation, FileGenerator {
                         File file)
 	throws Exception
     {
-	Argo.log.info("Parsing " + file.getPath());
+	Argo.logger.info("Parsing " + file.getPath());
 
 	BufferedReader in = new BufferedReader(new FileReader(file));
 	JavaLexer lexer = new JavaLexer(in);
@@ -1524,11 +1524,11 @@ implements PluggableNotation, FileGenerator {
 	File backupFile = new File(file.getAbsolutePath()+".backup");
 	if (backupFile.exists())
 	  backupFile.delete();
-	//Argo.log.info("Generating " + newFile.getPath());
+	//Argo.logger.info("Generating " + newFile.getPath());
 	cpc.filter(file, newFile, mClassifier.getNamespace());
-	//Argo.log.info("Backing up " + file.getPath());
+	//Argo.logger.info("Backing up " + file.getPath());
 	file.renameTo(backupFile);
-	Argo.log.info("Updating " + file.getPath());
+	Argo.logger.info("Updating " + file.getPath());
 	newFile.renameTo(origFile);
     }
 

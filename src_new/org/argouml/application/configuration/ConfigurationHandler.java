@@ -28,7 +28,7 @@ import java.beans.*;
 import java.io.*;
 import java.util.*;
 import java.net.*;
-import org.apache.log4j.*;
+import org.apache.commons.logging.*;
 
 /**
  *   This class provides a user configuration based upon properties.
@@ -381,7 +381,7 @@ public abstract class ConfigurationHandler {
       if (_pcl == null) {
           _pcl = new PropertyChangeSupport(this);
       }
-      Configuration.cat.debug("addPropertyChangeListener(" + pcl + ")");
+      Configuration.logger.debug("addPropertyChangeListener(" + pcl + ")");
       _pcl.addPropertyChangeListener(pcl);
   }
 
@@ -391,7 +391,7 @@ public abstract class ConfigurationHandler {
    */
   public final void removeListener(PropertyChangeListener pcl) {
       if (_pcl != null) {
-          Configuration.cat.debug("removePropertyChangeListener()");
+          Configuration.logger.debug("removePropertyChangeListener()");
           _pcl.removePropertyChangeListener(pcl);
       }
   }
@@ -405,7 +405,7 @@ public abstract class ConfigurationHandler {
       if (_pcl == null) {
           _pcl = new PropertyChangeSupport(this);
       }
-      Configuration.cat.debug("addPropertyChangeListener(" + key.getKey() + ")");
+      Configuration.logger.debug("addPropertyChangeListener(" + key.getKey() + ")");
       _pcl.addPropertyChangeListener(key.getKey(), pcl);
   }
 
@@ -416,7 +416,7 @@ public abstract class ConfigurationHandler {
    */
   public final void removeListener(ConfigurationKey key, PropertyChangeListener pcl) {
       if (_pcl != null) {
-          Configuration.cat.debug("removePropertyChangeListener(" + key.getKey() + ")");
+          Configuration.logger.debug("removePropertyChangeListener(" + key.getKey() + ")");
           _pcl.removePropertyChangeListener(key.getKey(), pcl);
       }
   }

@@ -26,7 +26,7 @@ package org.argouml.uml.diagram.static_structure.layout;
 import java.awt.*;
 import java.util.*;
 
-import org.apache.log4j.*;
+import org.apache.commons.logging.*;
 
 import org.argouml.uml.diagram.layout.*;
 import org.argouml.uml.diagram.ui.*;
@@ -42,7 +42,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 public class ClassdiagramLayouter implements Layouter {
     
     /** Category for logging events */
-    public final static Category cat = Category.getInstance("org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter");
+    public final static Log logger = org.apache.commons.logging.LogFactory.getLog("org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter");
     
     /** stores the current diagram *
      */
@@ -466,19 +466,19 @@ public class ClassdiagramLayouter implements Layouter {
         
         xPos = getHGap()/2;
         yPos = getVGap()/2;
-        cat.debug("Number of rows in layout process: " + rows);
+        logger.debug("Number of rows in layout process: " + rows);
         
         // Layout the packages above the classes and interfaces
         for( int curRow=0; curRow < _maxPackageRank; curRow++) {
             
-            cat.debug("Processing row nr: " + curRow);
+            logger.debug("Processing row nr: " + curRow);
             // The placement for the leftmost figure on the screen.
             xPos = getHGap() / 2;
             
             // Get all the objects for this row
             ClassdiagramNode [] rowObject = getObjectsInRow(curRow);
             
-            cat.debug("Objects in this row: " + rowObject.length);
+            logger.debug("Objects in this row: " + rowObject.length);
             // Go through this row.
             for(int i=0; i < rowObject.length; i++) {
                 

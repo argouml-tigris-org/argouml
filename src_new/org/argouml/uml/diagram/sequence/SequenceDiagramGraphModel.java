@@ -29,7 +29,7 @@
 
 package org.argouml.uml.diagram.sequence;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
 
@@ -62,8 +62,8 @@ import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 
 public class SequenceDiagramGraphModel extends MutableGraphSupport
 implements VetoableChangeListener {
-    protected static Category cat = 
-        Category.getInstance(SequenceDiagramGraphModel.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(SequenceDiagramGraphModel.class);
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected Vector _nodes = new Vector();
@@ -134,7 +134,7 @@ implements VetoableChangeListener {
     if (edge instanceof MLink) {
       return CommonBehaviorHelper.getHelper().getSource((MLink)edge);
     }
-    cat.debug("needs-more-work getSourcePort");
+    logger.debug("needs-more-work getSourcePort");
     return null;
   }
 
@@ -143,7 +143,7 @@ implements VetoableChangeListener {
     if (edge instanceof MLink) {
       return CommonBehaviorHelper.getHelper().getDestination((MLink)edge);
     }
-    cat.debug("needs-more-work getDestPort");
+    logger.debug("needs-more-work getDestPort");
     return null;
   }
 
@@ -310,7 +310,7 @@ implements VetoableChangeListener {
       }
       return ml;
     } else {
-      cat.debug("Incorrect edge");
+      logger.debug("Incorrect edge");
       return null;
     }
     
@@ -332,13 +332,13 @@ implements VetoableChangeListener {
       MElementImport eo = (MElementImport) pce.getNewValue();
       MModelElement me = eo.getModelElement();
       if (oldOwned.contains(eo)) {
-	    cat.debug("model removed " + me);
+	    logger.debug("model removed " + me);
 	    if (me instanceof MObject) removeNode(me);
 	    if (me instanceof MStimulus) removeNode(me);
 	    if (me instanceof MAssociation) removeEdge(me);
       }
       else {
-	    cat.debug("model added " + me);
+	    logger.debug("model added " + me);
       }
     }
   }

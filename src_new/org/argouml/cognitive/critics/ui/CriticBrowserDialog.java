@@ -38,7 +38,7 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 
 /** Dialog box to list all critics and allow editing of some of their
@@ -47,7 +47,7 @@ import org.argouml.application.api.*;
 public class CriticBrowserDialog extends JDialog
 implements ActionListener, ListSelectionListener, ItemListener, DocumentListener {
     
-    protected static Category cat = Category.getInstance(CriticBrowserDialog.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(CriticBrowserDialog.class);
     
   public static int _numCriticBrowser = 0;
 
@@ -342,7 +342,7 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
   }
 
   public void setTargetUseClarifiers() {
-    cat.debug("setting clarifier usage rule");
+    logger.debug("setting clarifier usage rule");
   }
 
   ////////////////////////////////////////////////////////////////
@@ -356,39 +356,39 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
       return;
     }
     if (e.getSource() == _goButton) {
-      cat.debug("needs-more-work go!");
+      logger.debug("needs-more-work go!");
       return;
     }
     if (e.getSource() == _networkButton) {
-      cat.debug("needs-more-work network!");
+      logger.debug("needs-more-work network!");
       return;
     }
     if (e.getSource() == _configButton) {
-      cat.debug("needs-more-work config!");
+      logger.debug("needs-more-work config!");
       return;
     }
     if (e.getSource() == _wakeButton) {
       _target.unsnooze();
       return;
     }
-    cat.debug("unknown src in CriticBrowserDialog: " + e.getSource());
+    logger.debug("unknown src in CriticBrowserDialog: " + e.getSource());
   }
 
   public void valueChanged(ListSelectionEvent lse) {
     if (lse.getValueIsAdjusting()) return;
     Object src = lse.getSource();
     if (src != _table.getSelectionModel()) {
-      cat.debug("src = " + src);
+      logger.debug("src = " + src);
       return;
     }
-    cat.debug("got valueChanged from " + src);
+    logger.debug("got valueChanged from " + src);
     int row = _table.getSelectedRow();
     Vector critics = Agency.getCritics();
     setTarget(critics.elementAt(row));
   }
 
   public void insertUpdate(DocumentEvent e) {
-    cat.debug(getClass().getName() + " insert");
+    logger.debug(getClass().getName() + " insert");
     Document hDoc = _headline.getDocument();
     Document miDoc = _moreInfo.getDocument();
     Document dDoc = _desc.getDocument();
@@ -400,7 +400,7 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
   public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
 
   public void changedUpdate(DocumentEvent e) {
-    cat.debug(getClass().getName() + " changed");
+    logger.debug(getClass().getName() + " changed");
     // Apparently, this method is never called.
   }
 
@@ -412,7 +412,7 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
     else if (src == _useClar) {
       setTargetUseClarifiers();
     }
-    else cat.debug("unknown itemStateChanged src: "+ src);
+    else logger.debug("unknown itemStateChanged src: "+ src);
   }
 
 } /* end class CriticBrowserDialog */
@@ -422,7 +422,7 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
 
 class TableModelCritics extends AbstractTableModel
 implements VetoableChangeListener, DelayedVChangeListener {
-    protected static Category cat = Category.getInstance(TableModelCritics.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(TableModelCritics.class);
   ////////////////
   // instance varables
   Vector _target;
@@ -474,7 +474,7 @@ implements VetoableChangeListener, DelayedVChangeListener {
   }
 
   public void setValueAt(Object aValue, int rowIndex, int columnIndex)  {
-    cat.debug("setting table value " + rowIndex + ", " + columnIndex);
+    logger.debug("setting table value " + rowIndex + ", " + columnIndex);
     if (columnIndex != 0) return;
     if (!(aValue instanceof Boolean)) return;
     Boolean enable = (Boolean) aValue;

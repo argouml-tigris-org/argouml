@@ -77,7 +77,7 @@ public class ActionSaveProject extends UMLAction {
     try {
 
       if (file.exists() && !overwrite) {
-        //Argo.log.info ("Are you sure you want to overwrite " + fullpath + "?");
+        //Argo.logger.info ("Are you sure you want to overwrite " + fullpath + "?");
         String sConfirm = MessageFormat.format (
             Argo.localize ("Actions",
                                 "template.save_project.confirm_overwrite"),
@@ -111,7 +111,7 @@ public class ActionSaveProject extends UMLAction {
           new Object[] {p.getURL()}
         );
       pb.showStatus (sStatus);
-      Argo.log.debug ("setting most recent project file to " +
+      Argo.logger.debug ("setting most recent project file to " +
                       file.getCanonicalPath());
       Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, file.getCanonicalPath());
       

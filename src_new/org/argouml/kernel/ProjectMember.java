@@ -28,11 +28,11 @@ import java.io.*;
 import java.util.*;
 import java.beans.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 
 public abstract class ProjectMember {
-    protected static Category cat = 
-        Category.getInstance(ProjectMember.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(ProjectMember.class);
 
   ////////////////////////////////////////////////////////////////
   // instance varables
@@ -95,11 +95,11 @@ public abstract class ProjectMember {
   public void setName(String s) { 
     if ((s != null) &&
         (s.startsWith (_project.getBaseName()))) {
-      cat.debug ("Setting project member name excluding project base name...");
+      logger.debug ("Setting project member name excluding project base name...");
       _name = s.substring (_project.getBaseName().length());
     }
     else {
-      cat.debug ("Setting project member name including project base name...");
+      logger.debug ("Setting project member name including project base name...");
       _name = s;
     }
   }

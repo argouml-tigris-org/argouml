@@ -41,13 +41,13 @@ import org.argouml.ui.*;
 import org.argouml.language.java.generator.*;
 import org.argouml.language.ui.*;
 
-import org.apache.log4j.*;
+import org.apache.commons.logging.*;
 
 public class TabSrc extends TabText
 implements ArgoNotationEventListener, NotationContext, ItemListener {
   ////////////////////////////////////////////////////////////////
   // constructor
-  private final Category cat = Category.getInstance(TabSrc.class);
+  private final Log logger = org.apache.commons.logging.LogFactory.getLog(TabSrc.class);
 
   private NotationName _notationName = null;
 
@@ -76,33 +76,33 @@ implements ArgoNotationEventListener, NotationContext, ItemListener {
 
   protected String genText() {
 
-    cat.debug("TabSrc getting src for " + _target);
+    logger.debug("TabSrc getting src for " + _target);
     Object modelObject = _target;
     if (_target instanceof FigNode)
       modelObject = ((FigNode)_target).getOwner();
     if (_target instanceof FigEdge)
       modelObject = ((FigEdge)_target).getOwner();
     if (modelObject == null) return null;
-    cat.debug("TabSrc getting src for " + modelObject);
+    logger.debug("TabSrc getting src for " + modelObject);
     return Notation.generate(this, modelObject, true);
     // return GeneratorJava.Generate(modelObject);
   }
 
   protected void parseText(String s) {
-    cat.debug("TabSrc   setting src for "+ _target);
+    logger.debug("TabSrc   setting src for "+ _target);
     Object modelObject = _target;
     if (_target instanceof FigNode)
       modelObject = ((FigNode)_target).getOwner();
     if (_target instanceof FigEdge)
       modelObject = ((FigEdge)_target).getOwner();
     if (modelObject == null) return;
-    cat.debug("TabSrc   setting src for " + modelObject);
+    logger.debug("TabSrc   setting src for " + modelObject);
     //Parser.ParseAndUpdate(modelObject, s);
   }
 
   public void setTarget(Object t) {
 
-    cat.debug ("TabSrc.setTarget()");
+    logger.debug ("TabSrc.setTarget()");
     _notationName = null;
     _shouldBeEnabled = false;
     if (t instanceof MModelElement) _shouldBeEnabled = true;
@@ -113,15 +113,15 @@ implements ArgoNotationEventListener, NotationContext, ItemListener {
     // If the target is a notation context, use its notation.
     if (t instanceof NotationContext) {
         _notationName = ((NotationContext)t).getContextNotation();
-        cat.debug ("Target is notation context with notation name: " +
+        logger.debug ("Target is notation context with notation name: " +
 		   _notationName);
 	}
     else {
         // needs-more-work:  Get it from the combo box
-	cat.debug ("ComboBox.getSelectedItem() '" + NotationComboBox.getInstance().getSelectedItem() + "'");
+	logger.debug ("ComboBox.getSelectedItem() '" + NotationComboBox.getInstance().getSelectedItem() + "'");
 	_notationName = Notation.getDefaultNotation();
 	}
-    cat.debug ("Going to set target(" + t + "), notation name:" +
+    logger.debug ("Going to set target(" + t + "), notation name:" +
                _notationName); 
     super.setTarget(t);
   }

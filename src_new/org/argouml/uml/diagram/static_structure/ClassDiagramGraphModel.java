@@ -39,7 +39,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 import org.tigris.gef.graph.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
@@ -51,7 +51,7 @@ import org.argouml.uml.MMUtil;
 
 public class ClassDiagramGraphModel extends MutableGraphSupport
 implements VetoableChangeListener  {
-    protected static Category cat = Category.getInstance(ClassDiagramGraphModel.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(ClassDiagramGraphModel.class);
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected Vector _nodes = new Vector();
@@ -149,7 +149,7 @@ implements VetoableChangeListener  {
     if (edge instanceof MRelationship) {
         return CoreHelper.getHelper().getSource((MRelationship)edge);
     }
-    cat.debug("needs-more-work getSourcePort");
+    logger.debug("needs-more-work getSourcePort");
     return null;
   }
 
@@ -158,7 +158,7 @@ implements VetoableChangeListener  {
     if (edge instanceof MRelationship) {
         return CoreHelper.getHelper().getDestination((MRelationship)edge);
     }
-    cat.debug("needs-more-work getSourcePort");
+    logger.debug("needs-more-work getSourcePort");
     return null;
   }
 
@@ -221,7 +221,7 @@ implements VetoableChangeListener  {
 
   /** Add the given node to the graph, if valid. */
   public void addNode(Object node) {
-    cat.debug("adding class node!!");
+    logger.debug("adding class node!!");
     if (!canAddNode(node)) return;
     _nodes.addElement(node);
     if (node instanceof MModelElement &&
@@ -229,18 +229,18 @@ implements VetoableChangeListener  {
 	_model.addOwnedElement((MModelElement) node);
     }
     if (node instanceof MInterface){
-	cat.debug("Interface stereo: "+MMUtil.STANDARDS.lookup("interface"));
+	logger.debug("Interface stereo: "+MMUtil.STANDARDS.lookup("interface"));
 
 	((MInterface)node).setStereotype((MStereotype)MMUtil.STANDARDS.lookup("interface"));
     }
     
     fireNodeAdded(node);
-    cat.debug("adding "+node+" OK");
+    logger.debug("adding "+node+" OK");
   }
 
   /** Add the given edge to the graph, if valid. */
   public void addEdge(Object edge) {
-    cat.debug("adding class edge!!!!!!");
+    logger.debug("adding class edge!!!!!!");
     if (!canAddEdge(edge)) return;
     _edges.addElement(edge);
     // needs-more-work: assumes public
@@ -324,7 +324,7 @@ implements VetoableChangeListener  {
   /** Contruct and add a new edge of the given kind */
   public Object connect(Object fromPort, Object toPort,
                         java.lang.Class edgeClass) {
-	  cat.debug("connecting: "+fromPort+toPort+edgeClass);
+	  logger.debug("connecting: "+fromPort+toPort+edgeClass);
       if ((fromPort instanceof MClass) && (toPort instanceof MClass)) {
           MClass fromCls = (MClass) fromPort;
           MClass toCls = (MClass) toPort;
@@ -350,7 +350,7 @@ implements VetoableChangeListener  {
               return dep;
           }
           else {
-              cat.debug("connect: Cannot make a "+ edgeClass.getName() +
+              logger.debug("connect: Cannot make a "+ edgeClass.getName() +
                                  " between a " + fromPort.getClass().getName() +
                                  " and a " + toPort.getClass().getName());
               return null;
@@ -396,7 +396,7 @@ implements VetoableChangeListener  {
                   return dep;
               }
           else {
-              cat.debug("Cannot make a "+ edgeClass.getName() +
+              logger.debug("Cannot make a "+ edgeClass.getName() +
                                  " between a " + fromPort.getClass().getName() +
                                  " and a " + toPort.getClass().getName());
               return null;
@@ -433,7 +433,7 @@ implements VetoableChangeListener  {
               // 	}
 
               else {
-                  cat.debug("Cannot make a "+ edgeClass.getName() +
+                  logger.debug("Cannot make a "+ edgeClass.getName() +
                                      " between a " + fromPort.getClass().getName() +
                                      " and a " + toPort.getClass().getName());
                   return null;
@@ -458,7 +458,7 @@ implements VetoableChangeListener  {
               return dep;
           }
           else {
-              cat.debug("Cannot make a "+ edgeClass.getName() +
+              logger.debug("Cannot make a "+ edgeClass.getName() +
                                  " between a " + fromPort.getClass().getName() +
                                  " and a " + toPort.getClass().getName());
               return null;
@@ -492,7 +492,7 @@ implements VetoableChangeListener  {
       MElementImport eo = (MElementImport) pce.getNewValue();
       MModelElement me = eo.getModelElement();
       if (oldOwned.contains(eo)) {
-	cat.debug("model removed " + me);
+	logger.debug("model removed " + me);
 	if (me instanceof MClassifier) removeNode(me);	
 	if (me instanceof MPackage) removeNode(me);
 	if (me instanceof MAssociation) removeEdge(me);
@@ -500,7 +500,7 @@ implements VetoableChangeListener  {
 	if (me instanceof MGeneralization) removeEdge(me);
       }
       else {
-	cat.debug("model added " + me);
+	logger.debug("model added " + me);
       }
     }
   }

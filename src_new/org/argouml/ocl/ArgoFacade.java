@@ -8,7 +8,7 @@ import tudresden.ocl.check.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.kernel.*;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
@@ -59,7 +59,7 @@ public class ArgoFacade implements ModelFacade {
 }
 
 class ArgoAny implements Any, Type2 {
-    protected static Category cat = Category.getInstance(ArgoAny.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(ArgoAny.class);
 
     MClassifier classifier;
 
@@ -199,7 +199,7 @@ class ArgoAny implements Any, Type2 {
       MParameter rp = UmlHelper.getHelper().getCore().getReturnParameter(foundOp);
 
       if (rp == null || rp.getType() == null) {
-          cat.warn("WARNING: supposing return type void!");
+          logger.warn("WARNING: supposing return type void!");
           return new ArgoAny(null);
       }
       MClassifier returnType = rp.getType();
@@ -239,7 +239,7 @@ class ArgoAny implements Any, Type2 {
     }
 
     public boolean hasState(String name) {
-      cat.warn("ArgoAny.hasState() has been called, but is not implemented yet!");
+      logger.warn("ArgoAny.hasState() has been called, but is not implemented yet!");
       return false;
     }
 

@@ -6,7 +6,7 @@ package org.argouml.swingext;
 import java.awt.*;
 import java.util.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 
 /**
  * Lays out components in a single row or column starting from any side and aligning  components
@@ -20,8 +20,8 @@ import org.apache.log4j.Category;
  */
 public class SerialLayout extends LineLayout {
     
-    protected static Category cat = 
-        Category.getInstance(SerialLayout.class);
+    protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(SerialLayout.class);
         
     public final static int LEFTTORIGHT = 10;
     public final static int TOPTOBOTTOM = 10;
@@ -91,7 +91,7 @@ public class SerialLayout extends LineLayout {
             for (int i = 0 ; i < nComps ; i++) {
                 Component comp = parent.getComponent(i);
                 if (comp != null && comp.isVisible()) {
-                    if (loc == null) cat.debug("null orientation");
+                    if (loc == null) logger.debug("null orientation");
                     loc = orientation.subtractFromPosition(loc, comp);
                     comp.setSize(comp.getPreferredSize());
                     comp.setLocation(loc);

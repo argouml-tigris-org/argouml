@@ -40,14 +40,14 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.uml.generator.*;
 
 /** Class to display graphics for a UML MCompositeState in a diagram. */
 
 public class FigCompositeState extends FigStateVertex {
-    protected static Category cat = Category.getInstance(FigCompositeState.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(FigCompositeState.class);
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -215,7 +215,7 @@ public class FigCompositeState extends FigStateVertex {
   /** Update the text labels */
   protected void modelChanged() {
     super.modelChanged();
-    cat.debug("FigCompositeState modelChanged");
+    logger.debug("FigCompositeState modelChanged");
     MState s = (MState) getOwner();
     if (s == null) return;
     String newText = Notation.generateStateBody(this, s);

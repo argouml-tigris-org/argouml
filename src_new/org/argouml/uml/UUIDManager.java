@@ -27,7 +27,7 @@ import java.rmi.server.UID;
 import java.net.InetAddress;
 import java.util.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -38,7 +38,7 @@ import ru.novosoft.uml.behavior.use_cases.*;
 
 
 public class UUIDManager {
-    protected static Category cat = Category.getInstance(UUIDManager.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(UUIDManager.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -51,7 +51,7 @@ public class UUIDManager {
         try {
             _address = InetAddress.getLocalHost(); 
         } catch (java.net.UnknownHostException e) {
-            cat.fatal("ERROR: unable to get localhost information.  UUIDs will not be unique.", e);
+            logger.fatal("ERROR: unable to get localhost information.  UUIDs will not be unique.", e);
             System.exit(-1);
         }
     }
@@ -73,13 +73,13 @@ public class UUIDManager {
 				s += (new Byte(b[i])).longValue() + "-";
 		}
 		s += uid.toString();
-		cat.debug("new UUID: "+s);
+		logger.debug("new UUID: "+s);
 		return s;
     }
 
     public synchronized void createModelUUIDS(MNamespace model) {
         
-        cat.info("NOTE: The temporary method 'createModelUUIDs' has been called.");
+        logger.info("NOTE: The temporary method 'createModelUUIDs' has been called.");
         
         Collection ownedElements = model.getOwnedElements();
 		Iterator oeIterator = ownedElements.iterator();
@@ -111,7 +111,7 @@ public class UUIDManager {
             }
 			//recursive handling of namespaces, needed for Collaborations
 			if (me instanceof MNamespace) {
-				cat.debug("Found another namespace: "+me);
+				logger.debug("Found another namespace: "+me);
 				createModelUUIDS((MNamespace)me);
 			}
         }

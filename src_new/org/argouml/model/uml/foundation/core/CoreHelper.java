@@ -32,7 +32,7 @@ import java.util.ListIterator;
 import java.util.Set;
 import java.util.Vector;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.kernel.Project;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
@@ -87,7 +87,7 @@ import ru.novosoft.uml.model_management.MPackage;
  * @author Jaap Branderhorst
  */
 public class CoreHelper {
-    protected static Category cat = Category.getInstance(CoreHelper.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(CoreHelper.class);
 
     /** Don't allow instantiation.
      */
@@ -235,7 +235,7 @@ public class CoreHelper {
 		Iterator parents = classifier.getParents().iterator();
 		while (parents.hasNext()) {
 			MClassifier parent = (MClassifier)parents.next();
-  			cat.debug("Adding attributes for: "+parent);
+  			logger.debug("Adding attributes for: "+parent);
 			result.addAll(getAttributesInh(parent));
 		}
 		return result;
@@ -281,10 +281,10 @@ public class CoreHelper {
 		case 1:
 			return (MParameter)returnParams.elementAt(0);
 		case 0:
-		    cat.debug("No ReturnParameter found!");
+		    logger.debug("No ReturnParameter found!");
 			return null;
 		default:
-			cat.debug("More than one ReturnParameter found, returning first!");
+			logger.debug("More than one ReturnParameter found, returning first!");
 			return (MParameter)returnParams.elementAt(0);
 		}
 	}

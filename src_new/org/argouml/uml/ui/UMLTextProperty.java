@@ -46,7 +46,7 @@
 
 package org.argouml.uml.ui;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
 
@@ -64,7 +64,7 @@ import ru.novosoft.uml.*;
 
 
 public class UMLTextProperty  {
-    protected static Category cat = Category.getInstance(UMLTextProperty.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(UMLTextProperty.class);
            
     private Method _getMethod;
     private Method _setMethod;
@@ -83,7 +83,7 @@ public class UMLTextProperty  {
             _getMethod = elementClass.getMethod(getMethod,noClass);
         }
         catch(Exception e) {
-            cat.error(e.toString() + " in UMLTextProperty: " + getMethod, e);
+            logger.error(e.toString() + " in UMLTextProperty: " + getMethod, e);
             // 2002-07-20
             // Jaap Branderhorst
             // If it is illegal we should throw an exception
@@ -95,7 +95,7 @@ public class UMLTextProperty  {
             _setMethod = elementClass.getMethod(setMethod,stringClass);
         }
         catch(Exception e) {
-            cat.error(e.toString() + " in UMLTextProperty: " + setMethod, e);
+            logger.error(e.toString() + " in UMLTextProperty: " + setMethod, e);
             // 2002-07-20
             // Jaap Branderhorst
             // If it is illegal we should throw an exception
@@ -144,8 +144,8 @@ public class UMLTextProperty  {
                             }
                             catch (InvocationTargetException inv) {
                             	Throwable targetException = inv.getTargetException();
-                            	Argo.log.error(inv);
-                            	Argo.log.error(targetException);
+                            	Argo.logger.error(inv);
+                            	Argo.logger.error(targetException);
                    				if (targetException instanceof Exception) {
                    					throw (Exception)targetException;
                    				}
@@ -178,13 +178,13 @@ public class UMLTextProperty  {
 
                 }
                 catch(InvocationTargetException e) {
-                    cat.error(e.getTargetException().toString() + 
+                    logger.error(e.getTargetException().toString() + 
                         " is invocationtargetexception in UMLTextProperty.getMethod()", 
                         e.getTargetException());
                 }
 
                 catch(Exception e) {
-                    cat.error(e.toString() + " in UMLTextProperty.getMethod()", e);
+                    logger.error(e.toString() + " in UMLTextProperty.getMethod()", e);
 
                 }
 

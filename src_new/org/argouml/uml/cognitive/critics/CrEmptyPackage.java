@@ -39,14 +39,14 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.model_management.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.cognitive.*;
 
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
 
 public class CrEmptyPackage extends CrUML {
-    protected static Category cat = Category.getInstance(CrEmptyPackage.class);
+    protected static Log logger = org.apache.commons.logging.LogFactory.getLog(CrEmptyPackage.class);
 
   public CrEmptyPackage() {
     setHeadline("Add Elements to Package <ocl>self</ocl>");
@@ -56,7 +56,7 @@ public class CrEmptyPackage extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    cat.debug("predicate2 on " + dm);
+    logger.debug("predicate2 on " + dm);
     if (!(dm instanceof MModel)) return NO_PROBLEM;
     MModel mod = (MModel) dm;
     Collection elms = mod.getOwnedElements();

@@ -26,7 +26,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.lang.reflect.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.model.uml.AbstractWellformednessRule;
 import org.argouml.model.uml.UmlHelper;
 
@@ -42,8 +42,8 @@ public class UMLEnumerationBooleanProperty extends UMLBooleanProperty {
     
      /** Log4j logging category.
      */
-    public static Category logger =
-                  Category.getInstance("org.argouml.uml.ui.UMLEnumerationBooleanProperty");
+    public static Log logger =
+                  org.apache.commons.logging.LogFactory.getLog("org.argouml.uml.ui.UMLEnumerationBooleanProperty");
                   
     /**
      * wellformednessRules are rules that should be hold true if the property is set

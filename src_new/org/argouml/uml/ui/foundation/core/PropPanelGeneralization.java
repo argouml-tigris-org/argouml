@@ -34,14 +34,14 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.model_management.*;
 
-import org.apache.log4j.Category;
+import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 
 public class PropPanelGeneralization extends PropPanelModelElement {
-     protected static Category cat = 
-        Category.getInstance(PropPanelGeneralization.class);
+     protected static Log logger = 
+        org.apache.commons.logging.LogFactory.getLog(PropPanelGeneralization.class);
 
   private PropPanelButton _newButton;
 
@@ -232,7 +232,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
             			ProjectBrowser.TheInstance.getNavPane().forceUpdate();
                     }
                     catch(Exception e) {
-                        cat.error(e.toString() + " in PropPanelGeneralization.newElement", e);
+                        logger.error(e.toString() + " in PropPanelGeneralization.newElement", e);
                     }
                 }
             }
@@ -281,7 +281,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
     public boolean isAcceptibleChild(MModelElement element) {
         boolean isAcceptible = false;
-	cat.debug("PropPanelGeneralization: testing isAcceptibleChild");
+	logger.debug("PropPanelGeneralization: testing isAcceptibleChild");
         Object target = getTarget();
         if(target instanceof MGeneralization) {
             MGeneralizableElement parent = ((MGeneralization) target).getParent();
@@ -292,7 +292,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
               isAcceptible = isAcceptible(parent,element);
             }
         }
-	cat.debug("isAcceptible: "+isAcceptible);
+	logger.debug("isAcceptible: "+isAcceptible);
         return isAcceptible;
     }
 
