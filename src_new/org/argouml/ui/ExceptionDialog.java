@@ -52,13 +52,27 @@ public class ExceptionDialog extends JDialog implements ActionListener {
     private JButton closeButton;
     private JLabel northLabel;
 
+    /**
+     * The constructor.
+     * 
+     * @param f the <code>Frame</code> from which the dialog is displayed
+     * @param e the exception
+     */
     public ExceptionDialog(Frame f, Throwable e) {
         this(f, "An error has occured.", e);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param f the <code>Frame</code> from which the dialog is displayed
+     * @param message the message
+     * @param e the exception
+     */
     public ExceptionDialog(Frame f, String message, Throwable e) {
         super(f);
-        message += "\n" + "Please copy and paste the stack trace below and report an issue at http://www.argouml.com";
+        message += "\n" + "Please copy and paste the stack trace below " 
+                + "and report an issue at http://www.argouml.org";
         setResizable(true);
         setModal(false);
         setTitle("Error");
@@ -104,11 +118,15 @@ public class ExceptionDialog extends JDialog implements ActionListener {
         pack();
     }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent e) {
         disposeDialog();
     }
 
-    public void disposeDialog() {
-        hide(); dispose();
+    private void disposeDialog() {
+        hide(); 
+        dispose();
     }
 }
