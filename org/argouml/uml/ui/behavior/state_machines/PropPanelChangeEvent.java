@@ -39,25 +39,14 @@ import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.util.ConfigLoader;
 
-public class PropPanelCallEvent extends PropPanelEvent {
+public class PropPanelChangeEvent extends PropPanelEvent {
 
     ////////////////////////////////////////////////////////////////
     // contructors
-    public PropPanelCallEvent() {
-        super("Call event", _eventIcon, 
+    public PropPanelChangeEvent() {
+        super("Change event", _eventIcon, 
               ConfigLoader.getTabPropsOrientation());
     }
-
-    public void initialize() {
-        super.initialize();
-       
-        // TODO: make the next list into a scrollbox
-        JList operationList = new UMLLinkedList(new UMLCallEventOperationListModel());
-        addField(Argo.localize("UMLMenu", "label.operations"), new JScrollPane(operationList));
-        addField(Argo.localize("UMLMenu", "label.parameters"), paramScroll);
-    }
-
-} /* end class PropPanelCallEvent */
-
+} 
 
 
