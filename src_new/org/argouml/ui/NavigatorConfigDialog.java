@@ -35,6 +35,10 @@ import ru.novosoft.uml.model_management.*;
 
 import org.tigris.gef.util.*;
 
+/**
+ * The "Configure Perspectives" dialog.
+ *
+ */
 public class NavigatorConfigDialog extends JDialog
 implements ActionListener, ChangeListener, ListSelectionListener, MouseListener {
 
@@ -55,11 +59,9 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
   protected JList   _persList = new JList();
   protected JList   _rulesList = new JList();
   protected JList   _ruleLibList = new JList();
-  protected JPanel  _persButtons = new JPanel();
   protected JButton _newPersButton = new JButton("New");
   protected JButton _removePersButton = new JButton("Remove");
   protected JButton _dupPersButton = new JButton("Duplicate");
-  protected JPanel  _xferButtons = new JPanel();
   protected JButton _addRuleButton = new JButton(">>");
   protected JButton _removeRuleButton = new JButton("<<");
 
@@ -87,6 +89,9 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
   ////////////////////////////////////////////////////////////////
   // constructors
 
+  /**
+   * Constructor, initializes all GUI components.
+   */
   public NavigatorConfigDialog(Frame parent) {
     super(parent, "Configure Perspectives", false);
     int x = parent.getLocation().x + (parent.getSize().width - WIDTH) / 2;
@@ -118,6 +123,9 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
   }
 
 
+  /**
+   * Initialize the Perspectives tab panel.
+   */
   public void initPersPanel() {
     _persList.setListData(Converter.convert(NavPerspective.getRegisteredPerspectives()));
     _ruleLibList.setListData(Converter.convert(NavPerspective.getRegisteredRules()));
@@ -125,96 +133,81 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
 
     GridBagLayout gb = new GridBagLayout();
     _persPanel.setLayout(gb);
-
     GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 1.0;
-    c.weighty = 0.0;
-    c.ipadx = 3; c.ipady = 3;
+    c.ipadx = 3;      c.ipady = 3;
 
     JLabel persLabel = new JLabel("Perspectives");
-    c.gridx = 0; c.gridy = 0;
+    c.fill = GridBagConstraints.BOTH;
+    c.gridx = 0;      c.gridy = 0;
     c.gridwidth = 3;
+    c.weightx = 1.0;  c.weighty = 0.0;
     gb.setConstraints(persLabel, c);
     _persPanel.add(persLabel);
 
-    _persList.setPreferredSize(new Dimension(400, 120));
-
-    c.gridx = 0; c.gridy = 1;
-    c.gridwidth = 3;
-    c.weighty = 0.5;
-    JScrollPane persScroll =
-      new JScrollPane(_persList,
+    JScrollPane persScroll = new JScrollPane(_persList,
 		      JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		      JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    c.gridx = 0;      c.gridy = 1;
+    c.gridwidth = 4;
+    c.weightx = 1.0;  c.weighty = 1.0;
     gb.setConstraints(persScroll, c);
     _persPanel.add(persScroll);
 
-    c.weighty = 0.0;
-
-    _persButtons.setLayout(new GridLayout(3, 1));
     _newPersButton.setMargin(new Insets(0, 0, 0, 0));
     _removePersButton.setMargin(new Insets(0, 0, 0, 0));
     _dupPersButton.setMargin(new Insets(0, 0, 0, 0));
-    _persButtons.add(_newPersButton);
-    _persButtons.add(_removePersButton);
-    _persButtons.add(_dupPersButton);
+    JPanel persButtons = new JPanel(new GridLayout(3, 1));
+    persButtons.add(_newPersButton);
+    persButtons.add(_removePersButton);
+    persButtons.add(_dupPersButton);
     JPanel persButtonWrapper = new JPanel();
-    persButtonWrapper.add(_persButtons);
+    persButtonWrapper.add(persButtons);
 
-    c.gridx = 3; c.gridy = 1;
+    c.gridx = 4;      c.gridy = 1;
     c.gridwidth = 1;
-    c.weightx = 0.0;
+    c.weightx = 0.0;  c.weighty = 0.0;
     gb.setConstraints(persButtonWrapper, c);
     _persPanel.add(persButtonWrapper);
 
-    c.gridwidth = 1;
-    c.weightx = 1.0;
-
     JLabel ruleLibLabel = new JLabel("Rules Library");
     c.gridx = 0; c.gridy = 3;
+    c.gridwidth = 1;
+    c.weightx = 1.0;  c.weighty = 0.0;
     gb.setConstraints(ruleLibLabel, c);
     _persPanel.add(ruleLibLabel);
 
     _addRuleButton.setMargin(new Insets(0, 0, 0, 0));
     _removeRuleButton.setMargin(new Insets(0, 0, 0, 0));
-    _xferButtons.setLayout(new BoxLayout(_xferButtons, BoxLayout.Y_AXIS));
-    _xferButtons.add(_addRuleButton);
-    _xferButtons.add(new SpacerPanel());
-    _xferButtons.add(_removeRuleButton);
+    JPanel xferButtons = new JPanel();
+    xferButtons.setLayout(new BoxLayout(xferButtons, BoxLayout.Y_AXIS));
+    xferButtons.add(_addRuleButton);
+    xferButtons.add(new SpacerPanel());
+    xferButtons.add(_removeRuleButton);
 
-    c.gridx = 1; c.gridy = 4;
-    c.weightx = 0.0;
-    gb.setConstraints(_xferButtons, c);
-    _persPanel.add(_xferButtons);
-
-    c.weightx = 1.0;
+    c.gridx = 2;      c.gridy = 4;
+    c.weightx = 0.0;  c.weighty = 0.0;
+    gb.setConstraints(xferButtons, c);
+    _persPanel.add(xferButtons);
 
     JLabel rulesLabel = new JLabel("Selected Rules");
-    c.gridx = 2; c.gridy = 3;
+    c.gridx = 3;      c.gridy = 3;
     c.gridwidth = 1;
+    c.weightx = 1.0;
     gb.setConstraints(rulesLabel, c);
     _persPanel.add(rulesLabel);
 
+    c.gridx = 0;      c.gridy = 4;
     c.weighty = 1.0;
-    c.gridheight = 2;
-
-    _ruleLibList.setMinimumSize(new Dimension(250, 350));
-    _rulesList.setMinimumSize(new Dimension(250, 350));
-
-    c.gridx = 0; c.gridy = 4;
-    c.gridwidth = 1;
-    JScrollPane ruleLibScroll =
-      new JScrollPane(_ruleLibList,
+    c.gridwidth = 2;  c.gridheight = 2;
+    JScrollPane ruleLibScroll = new JScrollPane(_ruleLibList,
 		      JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		      JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     gb.setConstraints(ruleLibScroll, c);
     _persPanel.add(ruleLibScroll);
 
-    c.gridx = 2; c.gridy = 4;
-    c.gridwidth = 2;
-    JScrollPane rulesScroll =
-      new JScrollPane(_rulesList,
+    c.gridx = 3;      c.gridy = 4;
+    c.gridwidth = 2;  c.gridheight = 2;
+    JScrollPane rulesScroll = new JScrollPane(_rulesList,
 		      JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		      JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     gb.setConstraints(rulesScroll, c);
@@ -242,6 +235,9 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     // allow renaming.  Will this force me to use a JTable instead?
   }
 
+  /**
+   * Initialize the Panes tab panel.
+   */
   public void initPanesPanel() {
     _paneOnePanel.setBorder(BorderFactory.createTitledBorder("Panel One"));
     _paneOnePanel.setLayout(new BoxLayout(_paneOnePanel, BoxLayout.Y_AXIS));
@@ -294,23 +290,42 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
   ////////////////////////////////////////////////////////////////
   // actions
 
+  /**
+   * Create a new perspective, add to the list.
+   *
+   * needs-more-work: Not a robust naming scheme since duplicates
+   * are still possible; initPersPanel() mentions the need to allow editing.
+   */
   public void doNewPers() {
-    NavPerspective newPers = new NavPerspective("New Perspective");
+    NavPerspective newPers = new NavPerspective("New Perspective " +
+      (NavPerspective.getRegisteredPerspectives().size() + 1));
     NavPerspective.registerPerspective(newPers);
     _persList.setListData(Converter.convert(NavPerspective.getRegisteredPerspectives()));
     _persList.setSelectedValue(newPers, true);
-    _persList.repaint();
   }
 
+  /**
+   * Remove selected perspective from the list.
+   */
   public void doRemovePers() {
     Object sel = _persList.getSelectedValue();
-    if (!(sel instanceof NavPerspective)) {
+    if (false == (sel instanceof NavPerspective)) {
       System.out.println("doRemovePers: unexepected non-NavPerspective");
       return;
     }
-    //needs-more-work: are you sure?
     NavPerspective np = (NavPerspective) sel;
-    NavPerspective.unregisterPerspective(np);
+
+    // are you sure?
+    int response = JOptionPane.showConfirmDialog(this,
+      "Remove Perspective, \"" + np.getName() + "\"?",
+      "Are you sure?",
+      JOptionPane.YES_NO_OPTION);
+    if (response == JOptionPane.YES_OPTION) {
+      NavPerspective.unregisterPerspective(np);
+
+      // Remove it from the UI list
+      _persList.setListData(Converter.convert(NavPerspective.getRegisteredPerspectives()));
+    }
   }
 
   public void doDupPers() {
@@ -345,9 +360,6 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     np.addSubTreeModel(tm);
     _rulesList.clearSelection();
     _rulesList.setListData(Converter.convert(np.getSubTreeModels()));
-    //_ruleLibList.repaint();
-    //_rulesList.repaint();
-    repaint();
   }
 
   public void doRemoveRule() {
@@ -366,9 +378,6 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     np.removeSubTreeModel(tm);
     _rulesList.clearSelection();
     _rulesList.setListData(Converter.convert(np.getSubTreeModels()));
-    //_ruleLibList.repaint();
-    //_rulesList.repaint();
-    repaint();
   }
 
   public void doSelectPers() {
@@ -379,9 +388,6 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     if (selPers == null) return;
     NavPerspective np = (NavPerspective) selPers;
     _rulesList.setListData(Converter.convert(np.getSubTreeModels()));
-    getContentPane().doLayout();
-    getContentPane().validate();
-    getContentPane().repaint();
     _addRuleButton.setEnabled(selPers != null && selRule != null);
   }
 
@@ -448,5 +454,16 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     if (src == _rulesList && _removeRuleButton.isEnabled()) doRemoveRule();
   }
 
-} /* end class NavigatorConfigDialog */
+  /**
+   * For testing the dialog.
+   * Displays the dialog without needing to load the application.
+   */
+  public static void main(String[] args) {
+    NavigatorConfigDialog dialog = new NavigatorConfigDialog( JOptionPane.getRootFrame() );
+    dialog.setLocation(0,0);
+    dialog.setVisible(true);
+  }
+
+}
+
 

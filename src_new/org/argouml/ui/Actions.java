@@ -858,12 +858,21 @@ class ActionExit extends UMLAction {
     if (p != null) { // && p.getNeedsSave()) {
       String t = "Save changes to " + p.getName();
       int response =
-	JOptionPane.showConfirmDialog(pb, t, t,
-				      JOptionPane.YES_NO_CANCEL_OPTION);
+        JOptionPane.showConfirmDialog(pb, t, t,
+                                      JOptionPane.YES_NO_CANCEL_OPTION);
       if (response == JOptionPane.CANCEL_OPTION) return;
-      if (response == JOptionPane.YES_OPTION)
-	if (!((ActionSaveProjectAs)Actions.SaveProjectAs).trySave(false))
-	  return;
+      if (response == JOptionPane.YES_OPTION) {
+        boolean safe = false;
+        if (((ActionSaveProject)Actions.SaveProject).shouldBeEnabled()) {
+          safe = ((ActionSaveProject)Actions.SaveProject).trySave(true);
+        }
+        if (!safe) {
+          safe = ((ActionSaveProjectAs)Actions.SaveProjectAs).trySave(false);
+        }
+        if (!safe) {
+          return;
+        }
+      }
     }
     System.exit(0);
   }
@@ -1885,7 +1894,7 @@ class ToDoItemAction extends UMLAction {
   }
 
   public void updateEnabled(Object target) {
-	  if (target == null) return;
+    if (target == null) return;
     _target = target;
     setEnabled(shouldBeEnabled(target));
   }
@@ -2066,3 +2075,5 @@ class ActionCompartmentDisplay extends UMLAction {
   }
   public boolean shouldBeEnabled() { return true; }
 } /* end class ActionCompartmentDisplay */
+
+

@@ -209,8 +209,12 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <copy todir="${build.dest}/org/argouml/Images">
       <fileset dir="${build.src}/org/argouml/Images" includes="**/**" excludes="CVS/**" />
     </copy>
+    <copy todir="${build.dest}/org/argouml/xml/dtd">
+      <fileset dir="${build.src}/org/argouml/xml/dtd" includes="**/**" excludes="CVS/**" />
+    </copy>
     <copy file="${build.src}/org/argouml/argo.ini" tofile="${build.dest}/org/argouml/argo.ini" />
     <copy file="${build.src}/org/argouml/default.xmi" tofile="${build.dest}/org/argouml/default.xmi" />
+	<copy file="${build.src}/org/argouml/registry.xml" tofile="${build.dest}/org/argouml/registry.xml"/>
   </target>
 
   <!-- =================================================================== -->
