@@ -1041,6 +1041,9 @@ Select the class with the main method.
 	<para>
 It is in
 <filename>argouml/src_new/org/argouml/application/Main.java</filename>.
+<!-- TODO: MVW: Yes, but what do I do with it? 
+Select the class... means clicking on it with the mouse. 
+What else do I do here? -->
 </para>
       </listitem>
       <listitem>
@@ -1080,7 +1083,7 @@ Press <command>Add Jars</command> and add
 	    <para>
 Press <command>Add Jars</command> and add
 all jars from
-<filename>tools/ant-/lib<replaceable>1.4.1</replaceable></filename>.
+<filename>tools/ant-<replaceable>1.4.1</replaceable>/lib</filename>.
 </para>
 	  </listitem>
 
@@ -1111,6 +1114,10 @@ This is done by right-clicking on
 <filename>src_new/build.xml</filename>
 and selecting 
 <command>Run Ant</command>
+<!-- TODO: MVW: I do not get this. 
+If I rightclick on the build.xml file, 
+I get "Run" and submenu "Run..." which opens the 
+"Create manage and run configurations" dialog. -->
 and then selecting the <command>alltests</command> target,
 deselecting all other targets,
 and pressing run.
