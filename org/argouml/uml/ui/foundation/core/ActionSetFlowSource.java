@@ -36,6 +36,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 /**
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @stereotype singleton
  */
 public class ActionSetFlowSource extends UMLChangeAction {
 

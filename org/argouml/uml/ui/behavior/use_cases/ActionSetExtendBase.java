@@ -38,6 +38,7 @@ import ru.novosoft.uml.behavior.use_cases.MUseCase;
  * Sets the base of an extend. Updates both the model (NSUML) as the diagrams.
  * @since Oct 5, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @stereotype singleton
  */
 public class ActionSetExtendBase extends UMLChangeAction {
 

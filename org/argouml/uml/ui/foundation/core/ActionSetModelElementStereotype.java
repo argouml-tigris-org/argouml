@@ -37,6 +37,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 /**
  * @since Oct 10, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @stereotype singleton
  */
 public class ActionSetModelElementStereotype extends UMLChangeAction {
 
