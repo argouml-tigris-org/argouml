@@ -22,21 +22,16 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrTooManyStates.java
-// Classes: CrTooManyStates
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
-/** A critic to detect when a composite state has too many subvertices. */
 
-public class CrTooManyStates extends CrUML {
-
-    private static final String THRESHOLD = "Threshold";
+/** A critic to detect when a composite state has too 
+ * many subvertices. 
+ */
+public class CrTooManyStates extends AbstractCrTooMany {
 
     /**
      * The constructor.
@@ -45,7 +40,7 @@ public class CrTooManyStates extends CrUML {
     public CrTooManyStates() {
 	setHeadline("Reduce States in machine <ocl>self</ocl>");
 	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
-	setArg(THRESHOLD, new Integer(20));
+	setThreshold(20);
 	addTrigger("substate");
     }
 
@@ -57,7 +52,7 @@ public class CrTooManyStates extends CrUML {
 	if (!(ModelFacade.isACompositeState(dm))) return NO_PROBLEM;
 	Object cs = /*(MCompositeState)*/ dm;
 
-	int threshold = ((Integer) getArg(THRESHOLD)).intValue();
+	int threshold = getThreshold();
 	Collection subs = ModelFacade.getSubvertices(cs);
 	if (subs.size() <= threshold) return NO_PROBLEM;
 	return PROBLEM_FOUND;

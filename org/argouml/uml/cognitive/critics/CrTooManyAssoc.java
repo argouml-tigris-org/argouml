@@ -22,23 +22,15 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrTooManyAssoc.java
-// Classes: CrTooManyAssoc
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
+
 /** A critic to detect when a classifier has too many associations.
  */
-public class CrTooManyAssoc extends CrUML {
-
-    ////////////////////////////////////////////////////////////////
-    // constants
-    private static final String THRESHOLD = "Threshold";
+public class CrTooManyAssoc extends AbstractCrTooMany {
 
     /**
      * The constructor.
@@ -48,7 +40,7 @@ public class CrTooManyAssoc extends CrUML {
 	setHeadline("Reduce Associations on <ocl>self</ocl>");
 
 	addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
-	setArg(THRESHOLD, new Integer(7));
+	setThreshold(7);
 	addTrigger("associationEnd");
     }
 
@@ -61,7 +53,7 @@ public class CrTooManyAssoc extends CrUML {
 	Object cls = /*(MClassifier)*/ dm;
 	// TODO: consider inherited associations?
 	// TODO: self loops are double counted
-	int threshold = ((Integer) getArg(THRESHOLD)).intValue();
+	int threshold = getThreshold();
 	Collection aes = ModelFacade.getAssociationEnds(cls);
 	if (aes == null || aes.size() <= threshold) return NO_PROBLEM;
 	return PROBLEM_FOUND;
