@@ -85,44 +85,7 @@ public class PropPanelClass extends PropPanelClassifier {
     addField(Argo.localize("UMLMenu", "label.attributes"), attrScroll);
     addField(Argo.localize("UMLMenu", "label.owned-elements"),innerScroll);
     
-    
-
-	/*
-    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-    addField(nameField,1,0,0);
-
-    addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
-    addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
-
-    addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,0);
-    addLinkField(namespaceScroll,3,0,0);
-
-    addCaption("Generalizations:",4,0,0);
-    addField(extendsScroll,4,0,0);
-
-    addCaption(Argo.localize("UMLMenu", "label.modifiers"),5,0,1);
-    _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.active"),this,new UMLReflectionBooleanProperty("isActive",mclass,"isActive","setActive")));
-    addField(_modifiersPanel,5,0,0);
-
-    addCaption(Argo.localize("UMLMenu", "label.associations"),0,1,0);
-    addField(connectScroll,0,1,0.5);
-
-    addCaption(Argo.localize("UMLMenu", "label.implements"),1,1,0);
-    addField(implementsScroll,1,1,0);
-   
-
-    addCaption("Specializations:",2,1,0);
-    addField(derivedScroll,2,1,0);
-
-    addCaption(Argo.localize("UMLMenu", "label.operations"),0,2,0);
-    addField(opsScroll,0,2,0);
-
-    addCaption(Argo.localize("UMLMenu", "label.attributes"),1,2,0);
-    addField(attrScroll,1,2,0);
-
-    addCaption(Argo.localize("UMLMenu", "label.owned-elements"),2,2,0);
-    addField(innerScroll,2,2,0);
-	*/
+  
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
     new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");

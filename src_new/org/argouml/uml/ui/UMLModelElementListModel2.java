@@ -78,6 +78,8 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      */
     public void propertySet(MElementEvent e) {
         if (isValidPropertySet(e)) {
+            buildModelList();
+            /*
         Object o = getChangedElement(e);
         if (o instanceof Collection) {
             Iterator it = ((Collection)o).iterator();
@@ -92,11 +94,6 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
             if (index >= 0) {
                fireContentsChanged(this, index, index); 
             }
-        }
-        /*
-        int index = indexOf(e.getSource());
-        if ( index >= 0 ) {
-            fireContentsChanged(this, index, index);
         }
         */
         }
@@ -120,7 +117,15 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      */
     public void roleAdded(MElementEvent e) {
         if (isValidRoleAdded(e)) {
-            addElement(e.getAddedValue());
+            Object o = getChangedElement(e);
+            if (o instanceof Collection) {
+                Iterator it = ((Collection)o).iterator();
+                while(it.hasNext()) {
+                    addElement(it.next());
+                }
+            } else {
+                addElement(o);
+            }
         }
     }
 
@@ -129,7 +134,15 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      */
     public void roleRemoved(MElementEvent e) {
         if (isValidRoleRemoved(e)) {
-            removeElement(e.getRemovedValue());
+            Object o = getChangedElement(e);
+            if (o instanceof Collection) {
+                Iterator it = ((Collection)o).iterator();
+                while(it.hasNext()) {
+                    removeElement(it.next());
+                }
+            } else {
+                removeElement(o);
+            }
         }
     }
 
@@ -237,5 +250,20 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
     } 
             
 
+
+    /**
+     * @see javax.swing.DefaultListModel#contains(java.lang.Object)
+     */
+    public boolean contains(Object elem) {
+        if (super.contains(elem)) return true;
+        if (elem instanceof Collection) {
+            Iterator it = ((Collection)elem).iterator();
+            while(it.hasNext()) {
+                if (super.contains(it.next())) return true;
+            }
+        }
+        return false;
+    }
+    
 
 }

@@ -201,6 +201,7 @@ implements Serializable, TreeModel, Cloneable {
     packageCentric.addSubTreeModel(new GoStimulusAction());
     packageCentric.addSubTreeModel(new GoClassifierToCollaboration());
     packageCentric.addSubTreeModel(new GoOperationToCollaboration());
+    packageCentric.addSubTreeModel(new GoOperationToCollaborationDiagram());
     
     // rules for statemachinediagram and activitydiagram
     packageCentric.addSubTreeModel(new GoBehavioralFeatureToStateMachine());

@@ -26,37 +26,51 @@ package org.argouml.uml.ui.behavior.use_cases;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
-import org.argouml.uml.ui.AbstractActionNewModelElement;
-import ru.novosoft.uml.behavior.use_cases.MExtend;
-import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
+import org.argouml.application.api.Argo;
+import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLComboBox2;
+
+import ru.novosoft.uml.behavior.use_cases.MInclude;
+import ru.novosoft.uml.behavior.use_cases.MUseCase;
 
 /**
- * @since Oct 6, 2002
+ * @since Oct 7, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class ActionNewExtendExtensionPoint
-    extends AbstractActionNewModelElement {
-        
-    public final static ActionNewExtendExtensionPoint SINGLETON = 
-        new ActionNewExtendExtensionPoint();
-    
-    /**
-     * Constructor for ActionNewExtendExtensionPoint.
-     */
-    protected ActionNewExtendExtensionPoint() {
-        super();
-    }
+public class ActionSetIncludeAddition extends UMLChangeAction {
+
+     public static final ActionSetIncludeAddition SINGLETON = new ActionSetIncludeAddition();
 
     /**
+     * Constructor for ActionSetincBase.
+     * @param s
+     */
+    protected ActionSetIncludeAddition() {
+        super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
+    }
+
+     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        if (getTarget() instanceof MExtend) {
-            MExtensionPoint point = UseCasesFactory.getFactory().buildExtensionPoint(((MExtend)getTarget()).getBase());
-            ((MExtend)getTarget()).addExtensionPoint(point);
+        Object source = e.getSource();
+        MUseCase newAddition = null;
+        MInclude inc = null;
+        if (source instanceof UMLComboBox2) {
+            UMLComboBox2 combo = (UMLComboBox2)source;
+            newAddition = (MUseCase)combo.getSelectedItem();
+            if (combo.getTarget() instanceof MInclude) {
+                inc = (MInclude)combo.getTarget();
+            }
+        }
+        MUseCase oldAddition = inc.getAddition();
+        // oldbase can never be null
+        if (oldAddition == null || newAddition == null) throw new IllegalStateException("Base of inc is null!");
+        if (oldAddition != newAddition) {
+            inc.setAddition(newAddition);
         }
     }
+
 
 }

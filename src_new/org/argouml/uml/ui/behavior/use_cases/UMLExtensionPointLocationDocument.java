@@ -24,39 +24,37 @@
 // $header$
 package org.argouml.uml.ui.behavior.use_cases;
 
-import java.awt.event.ActionEvent;
-
-import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
-import org.argouml.uml.ui.AbstractActionNewModelElement;
-import ru.novosoft.uml.behavior.use_cases.MExtend;
+import org.argouml.uml.ui.PropPanel;
+import org.argouml.uml.ui.UMLPlainTextDocument;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 
 /**
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class ActionNewExtendExtensionPoint
-    extends AbstractActionNewModelElement {
-        
-    public final static ActionNewExtendExtensionPoint SINGLETON = 
-        new ActionNewExtendExtensionPoint();
-    
+public class UMLExtensionPointLocationDocument extends UMLPlainTextDocument {
+
     /**
-     * Constructor for ActionNewExtendExtensionPoint.
+     * Constructor for UMLExtensionPointLocationDocument.
+     * @param panel
+     * @param propertyList
      */
-    protected ActionNewExtendExtensionPoint() {
-        super();
+    public UMLExtensionPointLocationDocument(PropPanel panel) {   
+        super(panel, new Object[] {});
     }
 
     /**
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
      */
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        if (getTarget() instanceof MExtend) {
-            MExtensionPoint point = UseCasesFactory.getFactory().buildExtensionPoint(((MExtend)getTarget()).getBase());
-            ((MExtend)getTarget()).addExtensionPoint(point);
-        }
+    protected void setProperty(String text) {
+        ((MExtensionPoint)getTarget()).setLocation(text);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
+     */
+    protected String getProperty() {
+        return ((MExtensionPoint)getTarget()).getLocation();
     }
 
 }

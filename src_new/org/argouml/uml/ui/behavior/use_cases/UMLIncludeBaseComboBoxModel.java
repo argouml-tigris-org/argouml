@@ -24,49 +24,63 @@
 // $header$
 package org.argouml.uml.ui.behavior.use_cases;
 
-import org.argouml.uml.ui.PropPanel;
-import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.use_cases.MExtend;
-import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
+import ru.novosoft.uml.behavior.use_cases.MInclude;
+import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
- * @since Oct 6, 2002
+ * @since Oct 7, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLExtendExtensionPointListModel
-    extends UMLModelElementListModel2 { 
+public class UMLIncludeBaseComboBoxModel extends UMLComboBoxModel2 {
 
     /**
-     * Constructor for UMLExtendExtensionPointListModel.
+     * Constructor for UMLIncludeBaseComboBoxModel.
      * @param container
      */
-    public UMLExtendExtensionPointListModel(UMLUserInterfaceContainer container) {
+    public UMLIncludeBaseComboBoxModel(UMLUserInterfaceContainer container) {
         super(container);
-        if (container instanceof PropPanel) {
-            PropPanel panel = (PropPanel)container;
-            panel.addThirdPartyEventListening(new Object[] {MExtend.class, "extensionPoint"});
-        }
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
-     */
-    protected void buildModelList() {
-        setAllElements(((MExtend)getTarget()).getExtensionPoints());
-    }
-
-   
-
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
      */
     protected boolean isValidRoleAdded(MElementEvent e) {
-        Object o = getChangedElement(e);
-        return o instanceof MExtensionPoint && ((MExtend)getTarget()).getExtensionPoints().contains(o);
+         MModelElement m = (MModelElement)getChangedElement(e);
+        MInclude inc = (MInclude)getTarget();
+        return (m instanceof MUseCase && m != inc.getAddition());
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidPropertySet(ru.novosoft.uml.MElementEvent)
+     */
+    protected boolean isValidPropertySet(MElementEvent e) {
+        return e.getSource() == getTarget() && e.getName().equals("base");
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     */
+    protected void buildModelList() {
+        MInclude inc = (MInclude)getTarget();
+        if (inc == null) return;
+        List list = new ArrayList();
+        MNamespace ns = inc.getNamespace();
+        list.addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MUseCase.class));
+        list.remove(inc.getAddition());
+        addAll(list);
+        if (inc.getBase() != null) {
+            setSelectedItem(inc.getBase());
+        } else
+            setSelectedItem("");
     }
 
 }

@@ -39,18 +39,18 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
-import org.argouml.application.api.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.ui.foundation.core.*;
+import javax.swing.JComboBox;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.model_management.*;
+import org.argouml.application.api.Argo;
+import org.argouml.swingext.LabelledLayout;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.util.ConfigLoader;
+import ru.novosoft.uml.behavior.use_cases.MInclude;
+import ru.novosoft.uml.behavior.use_cases.MUseCase;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 
 /**
@@ -60,12 +60,6 @@ import ru.novosoft.uml.model_management.*;
  *   meaning of its own, we derive directly from PropPanelModelElement (as
  *   other children of Relationship do).</p>
  *
- * <p><em>Note</em>. There is a bug in NSUML, where the "include" and
- *   "include2" associations of a use case are back to front, i.e "include" is
- *   used as the opposite end of "addition" to point to an including use case,
- *   rather than an included use case. Fixed within the include relationship,
- *   rather than the use case, by reversing the use of access functions for the
- *   "base" and "addition" associations in the code.</p>
  */
 
 public class PropPanelInclude extends PropPanelModelElement {
@@ -80,37 +74,22 @@ public class PropPanelInclude extends PropPanelModelElement {
         // Invoke the ModelElement constructor, but passing in our name and
         // representation and requesting 2 columns
 
-        super("Include", _includeIcon, 2);
+        super("Include", _includeIcon, ConfigLoader.getTabPropsOrientation());
 
-        // nameField, stereotypeBox and namespaceScroll are all set up by
-        // PropPanelModelElement. Allow the namespace label to expand
-        // vertically so we all float to the top.
-
-        addCaption(Argo.localize("UMLMenu", "label.name"), 1, 0, 0);
-        addField(nameField, 1, 0, 0);
-
-        addCaption(Argo.localize("UMLMenu", "label.stereotype"), 2, 0, 0);
-        addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),
-                 2, 0, 0);
-
-        addCaption(Argo.localize("UMLMenu", "label.namespace"), 3, 0, 1);
-        addField(namespaceScroll, 3, 0, 0);
-
-        // Link to the two ends. This is done as a drop down. First for the
-        // base use case. Note that because of the NSUML bug we look for the
-        // "addition" event, rather than the "base" event" here.
-
-        UMLComboBoxModel     model = 
-            new UMLComboBoxModel(this, "isAcceptableUseCase",
-                                 "addition", "getBase", "setBase",
-                                 true, MUseCase.class, true);
-        UMLComboBox          box   = new UMLComboBox(model);
-        UMLComboBoxNavigator nav   =
-            new UMLComboBoxNavigator(this, "NavUseCase", box);
-
-        addCaption("Base:", 0, 1, 0);
-        addField(nav, 0, 1, 0);
-
+        addField(Argo.localize("UMLMenu", "label.name"), nameField);
+        addField(Argo.localize("UMLMenu", "label.stereotype"), 
+            new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
+    
+    JComboBox baseBox = new UMLComboBox2(this, new UMLIncludeBaseComboBoxModel(this), ActionSetIncludeBase.SINGLETON);
+    addField(Argo.localize("UMLMenu", "label.usecase-base"), baseBox);
+    
+    JComboBox additionBox = new UMLComboBox2(this, new UMLIncludeAdditionComboBoxModel(this), ActionSetIncludeAddition.SINGLETON);
+    addField(Argo.localize("UMLMenu", "label.addition"), additionBox);
+    
+    add(LabelledLayout.getSeperator());
+    
+   /*
         // The addition use case (reuse earlier variables). Note that because
         // of the NSUML bug we look for the "base" event, rather than the
         // "addition" event" here.
@@ -124,7 +103,7 @@ public class PropPanelInclude extends PropPanelModelElement {
 
         addCaption("Addition:", 1, 1, 0);
         addField(nav, 1, 1, 0);
-
+*/
         // Add the toolbar. Just the four basic buttons for now.
 
         new PropPanelButton(this, buttonPanel, _navUpIcon,

@@ -56,10 +56,5 @@ public abstract class AbstractActionNewModelElement extends UMLChangeAction {
     public void setTarget(MModelElement target) {
         _target = target;
     }
-
-    /**
-     * @see javax.swing.Action#isEnabled()
-     */
-    public abstract boolean isEnabled();
        
 }

@@ -24,39 +24,39 @@
 // $header$
 package org.argouml.uml.ui.behavior.use_cases;
 
-import java.awt.event.ActionEvent;
-
-import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
-import org.argouml.uml.ui.AbstractActionNewModelElement;
-import ru.novosoft.uml.behavior.use_cases.MExtend;
+import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.UMLUserInterfaceContainer;
+import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
+import ru.novosoft.uml.behavior.use_cases.MUseCase;
 
 /**
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class ActionNewExtendExtensionPoint
-    extends AbstractActionNewModelElement {
-        
-    public final static ActionNewExtendExtensionPoint SINGLETON = 
-        new ActionNewExtendExtensionPoint();
-    
+public class UMLExtensionPointUseCaseListModel extends UMLModelElementListModel2 {
+
     /**
-     * Constructor for ActionNewExtendExtensionPoint.
+     * Constructor for UMLExtensionPointUseCaseListModel.
+     * @param container
      */
-    protected ActionNewExtendExtensionPoint() {
-        super();
+    public UMLExtensionPointUseCaseListModel(UMLUserInterfaceContainer container) {
+        super(container);
     }
 
     /**
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        if (getTarget() instanceof MExtend) {
-            MExtensionPoint point = UseCasesFactory.getFactory().buildExtensionPoint(((MExtend)getTarget()).getBase());
-            ((MExtend)getTarget()).addExtensionPoint(point);
-        }
+    protected void buildModelList() {
+        addElement(((MExtensionPoint)getTarget()).getUseCase());
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
+     */
+    protected boolean isValidRoleAdded(MElementEvent e) {
+        Object o = getChangedElement(e);
+        return o instanceof MUseCase && ((MExtensionPoint)getTarget()).getUseCase() == o;
     }
 
 }

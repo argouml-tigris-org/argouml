@@ -24,39 +24,56 @@
 // $header$
 package org.argouml.uml.ui.behavior.use_cases;
 
-import java.awt.event.ActionEvent;
+import java.util.Vector;
 
-import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
-import org.argouml.uml.ui.AbstractActionNewModelElement;
+import org.argouml.application.api.Argo;
+import org.argouml.uml.ui.AbstractActionAddModelElement;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
-import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 
 /**
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class ActionNewExtendExtensionPoint
-    extends AbstractActionNewModelElement {
-        
-    public final static ActionNewExtendExtensionPoint SINGLETON = 
-        new ActionNewExtendExtensionPoint();
+public class ActionAddExtendExtensionPoint extends AbstractActionAddModelElement {
+ 
+    public final static ActionAddExtendExtensionPoint SINGLETON = new ActionAddExtendExtensionPoint();
+    /**
+     * Constructor for ActionAddExtendExtensionPoint.
+     */
+    protected ActionAddExtendExtensionPoint() {
+        super();
+    }
     
     /**
-     * Constructor for ActionNewExtendExtensionPoint.
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
-    protected ActionNewExtendExtensionPoint() {
-        super();
+    protected void doIt(Vector selected) {
+        ((MExtend)getTarget()).setExtensionPoints(selected);
     }
 
     /**
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
      */
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        if (getTarget() instanceof MExtend) {
-            MExtensionPoint point = UseCasesFactory.getFactory().buildExtensionPoint(((MExtend)getTarget()).getBase());
-            ((MExtend)getTarget()).addExtensionPoint(point);
-        }
+    protected Vector getChoices() {
+        Vector ret = new Vector();
+        ret.addAll(((MExtend)getTarget()).getBase().getExtensionPoints());
+        return ret;
+    }
+
+    /**
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
+     */
+    protected String getDialogTitle() {
+        return Argo.localize("UMLMenu", "dialog.title.add-extensionpoints");
+    }
+
+    /**
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
+     */
+    protected Vector getSelected() {
+        Vector ret = new Vector();
+        ret.addAll(((MExtend)getTarget()).getExtensionPoints());
+        return ret;
     }
 
 }
