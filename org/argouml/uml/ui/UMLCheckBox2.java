@@ -140,7 +140,7 @@ public abstract class UMLCheckBox2
      * @see org.argouml.uml.ui.TargetChangedListener#targetChanged(java.lang.Object)
      */
     public void targetChanged(Object newTarget) {
-        if ((_target != null) && (newTarget != null) && (newTarget.getClass().equals(_target.getClass())))
+        if (_target != newTarget)
             setTarget(newTarget);
     }
 

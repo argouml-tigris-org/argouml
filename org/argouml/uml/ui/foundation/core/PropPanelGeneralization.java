@@ -28,7 +28,6 @@ import javax.swing.JScrollPane;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
-import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -37,7 +36,9 @@ import org.argouml.uml.ui.UMLList;
 import org.argouml.uml.ui.UMLModelElementListModel;
 import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.uml.ui.UMLTextField;
+import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.UMLTextProperty;
+
 import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.foundation.core.MClass;
@@ -66,16 +67,16 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     setNameEventListening(namesToWatch);
 
     addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-    addField(nameField,1,0,0);
+    addField(new UMLTextField2(new UMLModelElementNameDocument()),1,0,0);
 
     addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
-    addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
+    addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()),2,0,0);
 
     addCaption("Discriminator:",3,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"discriminator","getDiscriminator","setDiscriminator")),3,0,0);
 
     addCaption(Argo.localize("UMLMenu", "label.namespace"),4,0,1);
-    addField(namespaceComboBox,4,0,0);
+    addField(getNamespaceComboBox(),4,0,0);
 
     addCaption("Parent:",0,1,0);
     UMLModelElementListModel parentModel = new UMLReflectionListModel(this,"parent",true,"getParentElement",null,null,null);

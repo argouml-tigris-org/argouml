@@ -33,7 +33,9 @@ import org.argouml.swingext.LabelledLayout;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.PropPanelAssociation;
+import org.argouml.uml.ui.foundation.core.UMLModelElementNameDocument;
 import org.argouml.util.ConfigLoader;
 
 public class PropPanelAssociationRole extends PropPanelAssociation {
@@ -47,9 +49,9 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
     public PropPanelAssociationRole() {
         super("Association Role", ConfigLoader.getTabPropsOrientation());        
 
-        addField(Argo.localize("UMLMenu", "label.name"), nameField);
-        addField(Argo.localize("UMLMenu", "label.stereotype"), stereotypeBox);
-        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
+        addField(Argo.localize("UMLMenu", "label.name"), new UMLTextField2(new UMLModelElementNameDocument()));
+        addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
 
         JComboBox baseComboBox = new UMLComboBox2(new UMLAssociationRoleBaseComboBoxModel(), ActionSetAssociationRoleBase.SINGLETON);
         addField(Argo.localize("UMLMenu", "label.base"), baseComboBox);

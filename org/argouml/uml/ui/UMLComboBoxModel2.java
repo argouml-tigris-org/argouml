@@ -158,7 +158,7 @@ public abstract class UMLComboBoxModel2
     }
     
     public void targetChanged(Object newTarget) {
-        if ((_target != null) && (newTarget != null) && (newTarget.getClass().equals(_target.getClass())))
+        if (_target != newTarget)
             setTarget(newTarget);
     }
 
