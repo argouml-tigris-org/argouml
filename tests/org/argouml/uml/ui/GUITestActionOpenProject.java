@@ -59,9 +59,8 @@ public class GUITestActionOpenProject extends TestCase {
      * Test an empty project.
      */
     public void testEmptyProject() {
-        URL url =
-            this.getClass().getClassLoader()
-                .getResource("testmodels/EmptyProject0161.zargo");
+        URL url = CheckMain.getTestModel("testmodels/EmptyProject0161.zargo");
+	
         CheckMain.callMain(new String[] {
             "-nosplash",
             "-command",
@@ -77,8 +76,8 @@ public class GUITestActionOpenProject extends TestCase {
      */
     public void testProjectWithContents() {
         URL url =
-            this.getClass().getClassLoader()
-                .getResource("testmodels/GUITestPropertyPanels.zargo");
+	    CheckMain.getTestModel("testmodels/GUITestPropertyPanels.zargo");
+
         CheckMain.callMain(new String[] {
             "-nosplash",
             "-command",
@@ -88,6 +87,5 @@ public class GUITestActionOpenProject extends TestCase {
         assertEquals("GUITestPropertyPanels",
 		ProjectManager.getManager().getCurrentProject().getBaseName());
     }
-
 }
 

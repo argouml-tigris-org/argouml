@@ -24,6 +24,12 @@
 
 package org.argouml.util;
 
+import java.io.File;
+import java.net.URL;
+import java.net.MalformedURLException;
+
+import junit.framework.Assert;
+
 import org.argouml.application.Main;
 import org.argouml.application.security.ArgoSecurityManager;
 
@@ -31,8 +37,9 @@ import org.argouml.application.security.ArgoSecurityManager;
  * This class is a helper for testing things connected to the Main class.
  *
  * @author Linus Tolke
+ * @stereotype utility
  */
-public class CheckMain {
+public final class CheckMain {
     /**
      * Call main in the application.
      *
@@ -41,6 +48,41 @@ public class CheckMain {
     public static void callMain(String[] args) {
         Main.main(args);
         ArgoSecurityManager.getInstance().setAllowExit(true);
+    }
+
+
+    /**
+     * Convert a relative filename (from the tests source tree)
+     * to an URL.<p>
+     *
+     * This function have a set of ways to attempt to find the file. If
+     * it doesn't succeed, it makes the test case fail.<p>
+     *
+     * @param filename The name to search for.
+     * @return The URL.
+     */
+    public static URL getTestModel(String filename) {
+	// This works when running the test from within Eclipse.
+	// Appearantly Eclipse runs the tests using a classloader that
+	// has the tests Folder among the URL:s.
+        URL url = CheckMain.class.getClassLoader().getResource(filename);
+	if (url != null) {
+	    return url;
+	}
+
+	// We have the path provided from the build script.
+	String dir = System.getProperty("argouml.tests.dir");
+	if (dir != null) {
+	    try {
+		return new File(dir, filename).toURL();
+	    } catch (MalformedURLException e) {
+		// A problem detected.
+		e.printStackTrace();
+	    }
+	}
+
+	Assert.fail("Could not locate the model " + filename);
+	return null;
     }
 }
 
