@@ -25,7 +25,6 @@
 package org.argouml.model.uml.modelmanagement;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -303,8 +302,15 @@ public class ModelManagementHelper {
         return set;
     }
 
-    public MModelElement getElement(Vector path, Object rt) {
-        MModelElement root = (MModelElement) rt;
+    /**
+     * Get the modelelement a given path below a given root-namespace.
+     * 
+     * @param path the given path
+     * @param theRootNamespace the given namespace to start from
+     * @return the modelelement looked for, or null if not found
+     */
+    public MModelElement getElement(Vector path, Object theRootNamespace) {
+        MModelElement root = (MModelElement) theRootNamespace;
         Object name;
         int i;
 
