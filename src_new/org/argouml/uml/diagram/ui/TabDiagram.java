@@ -438,31 +438,38 @@ class ArgoEditor extends Editor {
      * Overridden to set Argo-specific RenderingHints to determine whether
      * or not antialiasing should be turned on.
      */
-    /*
     public synchronized void paint(Graphics g) {
-        if(!shouldPaint())
-            return;
-
-        if(g instanceof Graphics2D) {
+        if (g instanceof Graphics2D) {
             Graphics2D g2 = (Graphics2D) g;
             g2.setRenderingHints(_argoRenderingHints);
             g2.scale(_scale, _scale);
         }
         getLayerManager().paint(g);
-        //getLayerManager().getActiveLayer().paint(g);
-        if(_canSelectElements) {
-            _selectionManager.paint(g);
-            _modeManager.paint(g);
-        }        
+        _selectionManager.paint(g);
+        _modeManager.paint(g);
+        
+// Use this code once new version of GEF (post-0.9.6) becomes available:        
+//        if(!shouldPaint())
+//            return;
+//
+//        if(g instanceof Graphics2D) {
+//            Graphics2D g2 = (Graphics2D) g;
+//            g2.setRenderingHints(_argoRenderingHints);
+//            g2.scale(_scale, _scale);
+//        }
+//        getLayerManager().paint(g);
+//        //getLayerManager().getActiveLayer().paint(g);
+//        if(_canSelectElements) {
+//            _selectionManager.paint(g);
+//            _modeManager.paint(g);
+//        }        
     }
-    */
     
     /**
      * Construct a new set of RenderingHints to reflect current user
      * settings.
      */
-    private void setupRenderingHints()
-    {
+    private void setupRenderingHints() {
         _argoRenderingHints = new RenderingHints(null);
 
         _argoRenderingHints.put(RenderingHints.KEY_FRACTIONALMETRICS, 
