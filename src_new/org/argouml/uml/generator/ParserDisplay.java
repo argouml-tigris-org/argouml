@@ -448,7 +448,7 @@ public class ParserDisplay extends Parser {
     }
     else action = s;
 
-     MUninterpretedAction ua = (MUninterpretedAction) mes.getAction();
+     MAction ua = (MAction) mes.getAction();
      ua.setName(action);
      mes.setName(name);
 
@@ -457,7 +457,6 @@ public class ParserDisplay extends Parser {
   public MAction parseAction(String s) {
 	  MAction a = new MActionImpl();
 	  a.setScript(new MActionExpression("Java",s));
-	  a.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
 	  return a;
   }
 
