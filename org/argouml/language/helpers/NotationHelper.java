@@ -52,7 +52,7 @@ import ru.novosoft.uml.model_management.MPackage;
  * the UML model that generates strings as it goes.  This framework
  * should probably be redesigned to separate the traversal logic from
  * the generation logic.  See the <a href=
- * "http://hillside.net/patterns/patterns.html">Vistor design
+ * "http://hillside.net/patterns/">Vistor design
  * pattern</a> in "Design Patterns", and the <a href=
  * "http://www.ccs.neu.edu/research/demeter/"> Demeter project</a>. */
 
