@@ -636,6 +636,7 @@ public class Import {
     
     /**
      * A window that shows the progress bar and a cancel button.
+     * TODO: React on the close button as if the Cancel button was pressed.
      */
     class ImportStatusScreen extends JDialog {
     
@@ -675,6 +676,8 @@ public class Import {
 			scrSize.height / 2 - contentPaneSize.height / 2);
             pack();
             this.setResizable(false);
+            this.setModal(true);        //MVW - Issue 2539.
+            this.getParent().setEnabled(false);   //MVW: do we really need this?
         }
         
         public void setMaximum(int i) {
@@ -686,16 +689,19 @@ public class Import {
             _progress.setValue(i);
             
 	    String pass = "1-st pass";
-            // if there ae 2 passes:
+            // if there are 2 passes:
             if(importLevel > 0){
                 if (i >= numberOfFiles/2) pass = "2-nd pass";
             }
 	    
             int fileNumber = i != 1 ? ((i-1)%(numberOfFiles/2)+1) : 1;
             
-            progressLabel.setText("Parsing file " + ((i-1)%(numberOfFiles/2)+1) + " of " + numberOfFiles/2
-				  + ". "+pass);
-            pack();
+            progressLabel.setText("Parsing file " + ((i-1)%(numberOfFiles/2)+1)
+                                  + " of " + numberOfFiles/2
+				  + ", " + pass + ". ");
+            pack(); // MVW: Is this not time-consuming?
+                    // Better make the window big enough at the start, 
+                    // and only refresh the label.
         }
         
         public void addCancelButtonListener(ActionListener al) {
@@ -730,7 +736,7 @@ class ImportClasspathDialog extends JDialog{
     public ImportClasspathDialog(Import importProcess1){
         
         super();
-        setName("Set up the import classpath");
+        setTitle("Set up the import classpath"); //MVW - Issue 2539.
         importProcess = importProcess1;
         
         Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -770,6 +776,8 @@ class ImportClasspathDialog extends JDialog{
             scrSize.height / 2 - contentPaneSize.height / 2);
         pack();
         setVisible(true);
+        this.setModal(true);        //MVW   Issue 2539.
+        this.getParent().setEnabled(false);   //MVW: do we really need this?
     }
     
     private void initList(){
@@ -780,7 +788,7 @@ class ImportClasspathDialog extends JDialog{
             pathsModel.addElement(urls[i].getFile());
         }
         
-        paths.setSelectedIndex(0);
+        paths.setSelectedIndex(0);   
     }
     
     
