@@ -63,7 +63,7 @@ public class TestExtensionMechanismsHelper extends TestCase {
 								    "test2");
         Collection col =
 	    ExtensionMechanismsHelper.getHelper()
-	    .getAllPossibleStereotypes(clazz);
+	        .getAllPossibleStereotypes(clazz);
         assertTrue("stereotype not in list of possible stereotypes",
 		   col.contains(stereo1));
         assertTrue("stereotype not in list of possible stereotypes",

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2003 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,28 +32,30 @@ import junit.framework.TestSuite;
  */
 public class CoreTestSuite {
 
-	/** Test suite for this package
-	 * 
-	 * @return the junit test suite
-	 */
+    /** Test suite for this package
+     * 
+     * @return the junit test suite
+     */
     public static Test suite() {
-        TestSuite suite = new TestSuite("Tests for " + CoreTestSuite.class.getPackage().getName());
-		suite.addTestSuite(TestUMLCollaborationInteractionListModel.class);
-		suite.addTestSuite(TestUMLElementOwnershipSpecificationCheckBox.class);
-		suite.addTestSuite(TestUMLElementOwnershipVisibilityButtonGroup.class);
-		suite.addTestSuite(TestUMLFeatureOwnerComboBoxModel.class);
-		suite.addTestSuite(TestUMLFeatureOwnerScopeCheckBox.class);
-		suite.addTestSuite(TestUMLGeneralizationPowertypeComboBoxModel.class);
-		suite.addTestSuite(TestUMLModelElementClientDependencyListModel.class);
-		suite.addTestSuite(TestUMLModelElementConstraintListModel.class);
-		suite.addTestSuite(TestUMLModelElementElementResidenceListModel.class);
-		suite.addTestSuite(TestUMLModelElementNameDocument.class);
-		suite.addTestSuite(TestUMLModelElementNamespaceListModel.class);
-		suite.addTestSuite(TestUMLModelElementSourceFlowListModel.class);
-		suite.addTestSuite(TestUMLModelElementStereotypeComboBoxModel.class);
-		suite.addTestSuite(TestUMLModelElementSupplierDependencyListModel.class);
-		suite.addTestSuite(TestUMLModelElementTargetFlowListModel.class);
-		suite.addTestSuite(TestUMLStructuralFeatureTypeComboBoxModel.class);
+        TestSuite suite =
+	    new TestSuite("Tests for "
+			  + CoreTestSuite.class.getPackage().getName());
+	suite.addTestSuite(TestUMLCollaborationInteractionListModel.class);
+	suite.addTestSuite(TestUMLElementOwnershipSpecificationCheckBox.class);
+	suite.addTestSuite(TestUMLElementOwnershipVisibilityButtonGroup.class);
+	suite.addTestSuite(TestUMLFeatureOwnerComboBoxModel.class);
+	suite.addTestSuite(TestUMLFeatureOwnerScopeCheckBox.class);
+	suite.addTestSuite(TestUMLGeneralizationPowertypeComboBoxModel.class);
+	suite.addTestSuite(TestUMLModelElementClientDependencyListModel.class);
+	suite.addTestSuite(TestUMLModelElementConstraintListModel.class);
+	suite.addTestSuite(TestUMLModelElementElementResidenceListModel.class);
+	suite.addTestSuite(TestUMLModelElementNameDocument.class);
+	suite.addTestSuite(TestUMLModelElementNamespaceListModel.class);
+	suite.addTestSuite(TestUMLModelElementSourceFlowListModel.class);
+	suite.addTestSuite(TestUMLModelElementStereotypeComboBoxModel.class);
+	suite.addTestSuite(TestUMLModelElementSupplierDependencyListModel.class);
+	suite.addTestSuite(TestUMLModelElementTargetFlowListModel.class);
+	suite.addTestSuite(TestUMLStructuralFeatureTypeComboBoxModel.class);
         return suite;
     }
 

@@ -401,14 +401,13 @@ public class GUITestParserDisplay extends TestCase {
 	    ProjectManager.getManager().getCurrentProject().getModel();
 
 	Iterator it =
-	    ExtensionMechanismsHelper
-	    .getHelper()
-	    .getStereotypes(ns)
-	    .iterator();
+	    ExtensionMechanismsHelper.getHelper()
+	        .getStereotypes(ns).iterator();
 	while (it.hasNext()) {
 	    MStereotype s = (MStereotype) it.next();
-	    if (name.equals(s.getName()))
+	    if (name.equals(s.getName())) {
 		return;
+	    }
 	}
 	ExtensionMechanismsFactory.getFactory().buildStereotype(elem, 
 								name,

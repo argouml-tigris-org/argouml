@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2003 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,15 +32,17 @@ import junit.framework.TestSuite;
  */
 public class UtilTestSuite {
 
-	/** Test suite for this package
-	 * 
-	 * @return the junit test suite
-	 */
+    /** Test suite for this package
+     * 
+     * @return the junit test suite
+     */
     public static Test suite() {
-        TestSuite suite = new TestSuite("Tests for " + UtilTestSuite.class.getPackage().getName());
+        TestSuite suite =
+	    new TestSuite("Tests for "
+			  + UtilTestSuite.class.getPackage().getName());
         suite.addTestSuite(TestLinkedHashMap.class);
         suite.addTestSuite(TestLinkedHashSet.class);
-		suite.addTestSuite(TestMyTokenizer.class);
+	suite.addTestSuite(TestMyTokenizer.class);
         return suite;
     }
 

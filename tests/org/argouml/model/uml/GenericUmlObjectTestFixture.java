@@ -155,7 +155,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
      */
     protected void runTestRefPackage(Object o) {
 	assertTrue("Should be a RefPackage", o instanceof RefPackage);
-	RefPackage rp = (RefPackage)o;
+	RefPackage rp = (RefPackage) o;
 	// TODO: test method refAllAssociations()
 	// TODO: test method refAllClasses()
 	// TODO: test method refAllPackages()

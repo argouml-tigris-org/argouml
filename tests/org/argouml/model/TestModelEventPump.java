@@ -133,7 +133,7 @@ public class TestModelEventPump extends TestCase {
         Model.getPump().addClassModelEventListener(listener,
                 				   elem.getClass(),
                 				   new String[] {
-                					"isRoot" 
+						       "isRoot" 
         					   });
         elem.setRoot(true);
         assertTrue(eventcalled);
@@ -147,7 +147,7 @@ public class TestModelEventPump extends TestCase {
         Model.getPump().addClassModelEventListener(listener,
                 				   elem.getClass(),
                 				   new String[] {
-                					"remove" 
+						       "remove" 
         					   });
         elem.remove();
         assertTrue(eventcalled);
@@ -161,7 +161,7 @@ public class TestModelEventPump extends TestCase {
         Model.getPump().addClassModelEventListener(listener,
                 				   elem.getClass(),
                 				   new String[] {
-                					"parameter" 
+						       "parameter" 
         					   });
         elem.addParameter(new MParameterImpl());
         assertTrue(eventcalled);
@@ -177,7 +177,7 @@ public class TestModelEventPump extends TestCase {
         Model.getPump().addClassModelEventListener(listener,
                 				   elem.getClass(),
                 				   new String[] {
-                					"parameter" 
+						       "parameter" 
         					   });
         elem.removeParameter(param);
         assertTrue(eventcalled);
@@ -274,7 +274,7 @@ public class TestModelEventPump extends TestCase {
         Model.getPump().addClassModelEventListener(listener,
                 				   elem.getClass(),
                 				   new String[] {
-                					"isRoot" 
+						       "isRoot" 
         					   });
         Model.getPump().removeClassModelEventListener(listener,
                 				      elem.getClass(),
