@@ -255,7 +255,6 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                 LOG.error(ignore);
                 return;
             }
-
             if (newNode instanceof GraphNodeHooks)
 		((GraphNodeHooks) newNode).initialize(_args);
             UmlFactory.getFactory().addListenersToModelElement(newNode);
@@ -292,7 +291,6 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
         } else {
             dragsToExisting++;
         }
-
         if (f instanceof FigNode) {
             FigNode destFigNode = (FigNode) f;
             // If its a FigNode, then check within the  
@@ -307,7 +305,6 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
             FigPoly p = (FigPoly) _newItem;
             editor.damaged(p);
             p._isComplete = true;
-
             if (foundPort != null && foundPort != startPort) {
                 Fig destPortFig = destFigNode.getPortFig(foundPort);
                 Class edgeClass = (Class) getArg("edgeClass");
@@ -326,7 +323,6 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                     newEdge = mgm.connect(startPort, foundPort, edgeClass);
                 } else
                     newEdge = mgm.connect(startPort, foundPort);
-
                 // Calling connect() will add the edge to the GraphModel and
                 // any LayerPersectives on that GraphModel will get a
                 // edgeAdded event and will add an appropriate FigEdge
@@ -356,11 +352,9 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                     if (fe != null && !nodeWasCreated)
                         ce.getSelectionManager().select(fe);
                     done();
-                    //me.consume();
                     _newItem = null;
                     if (fe instanceof MouseListener)
 			((MouseListener) fe).mouseReleased(me);
-
                     // set the new edge in place
                     if (sourceFigNode != null)
                         sourceFigNode.updateEdges();

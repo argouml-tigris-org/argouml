@@ -85,6 +85,9 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
         return (int) (low.getLocation().getX() + low.getSize().getWidth() / 2);
     }
     
+    /**
+     * @return the gap with the node one level down
+     */
     public int getDownGap() {
         return (int) (low.getLocation().getY() - getVerticalOffset());
     }

@@ -116,17 +116,6 @@ public class GeneratorJava
 				    Argo.lookupIconResource("JavaNotation")));
     }
 
-    /**
-     * @deprecated by Linus Tolke for 0.17.1. 
-     *             Replace by call to {@link #generate(Object)}.
-     *
-     * @param o the object to generate
-     * @return the generated string
-     */
-    public static String Generate(Object o) {
-        return SINGLETON.generate(o);
-    }
-
     /** 
      * Generates a file for the classifier.
      * This method could have been static if it where not for the need to
@@ -1579,12 +1568,12 @@ public class GeneratorJava
         Object doAction = ModelFacade.getDoActivity(m);
 
         if (entryAction != null) {
-            String entryStr = Generate(entryAction);
+            String entryStr = generate(entryAction);
             if (entryStr.length() > 0)
                 sb.append("entry / ").append(entryStr);
         }
         if (doAction != null) {
-            String doStr = Generate(doAction);
+            String doStr = generate(doAction);
             if (doStr.length() > 0) {
                 if (sb.length() > 0)
                     sb.append(LINE_SEPARATOR);
@@ -1592,7 +1581,7 @@ public class GeneratorJava
             }
         }
         if (exitAction != null) {
-            String exitStr = Generate(exitAction);
+            String exitStr = generate(exitAction);
             if (sb.length() > 0)
                 sb.append(LINE_SEPARATOR);
             if (exitStr.length() > 0)

@@ -116,7 +116,8 @@ public class ArgoFilePersister extends AbstractFilePersister {
                         stream, "UTF-8")));
     
             try {
-                Hashtable templates = TemplateReader.SINGLETON.read(ARGO_TEE);
+                Hashtable templates = TemplateReader.getInstance()
+                    .read(ARGO_TEE);
                 OCLExpander expander = new OCLExpander(templates);
                 expander.expand(writer, project, "", "");
             } catch (ExpansionException e) {

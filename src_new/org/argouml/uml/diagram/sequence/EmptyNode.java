@@ -27,6 +27,10 @@
 package org.argouml.uml.diagram.sequence;
 
 
+/**
+ * An Empty Node for the sequence diagram.
+ *
+ */
 public class EmptyNode extends Node {
     /**
      * The constructor.

@@ -167,7 +167,8 @@ public class ProjectMemberTodoList extends ProjectMember {
         
         OCLExpander expander;
         try {
-            expander = new OCLExpander(TemplateReader.SINGLETON.read(TO_DO_TEE));
+            expander = new OCLExpander(TemplateReader.getInstance()
+                    .read(TO_DO_TEE));
         } catch (FileNotFoundException e) {
             throw new SaveException(e);
         }
