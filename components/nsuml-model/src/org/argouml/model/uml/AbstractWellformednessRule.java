@@ -2,6 +2,8 @@ package org.argouml.model.uml;
 
 // import org.argouml.application.api.Argo;
 
+import org.workingfrog.i18n.util.Translator;
+
 import ru.novosoft.uml.MBase;
 
 /**
@@ -28,13 +30,13 @@ public abstract class AbstractWellformednessRule {
 	 */
 	public abstract boolean isWellformed(MBase element, Object newValue);
 	
-//	/**
-//	 * Returns the localized user message
-//	 */
-//	public String getUserMessage() {
-//		// UI should not be handled in here
-//		return Argo.localize("UMLMenu", "wellformednessrule." + _key);
-//	}
+	/**
+	 * Returns the localized user message
+	 */
+	public String getUserMessage() {
+		// TODO Use a different bundle name
+		return Translator.localize("UMLMenu", "wellformednessrule." + _key);
+	}
 	
 	/**
 	 * sets the message key. The message key here is of the form elementname.propertytocheck
