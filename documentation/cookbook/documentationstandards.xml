@@ -167,6 +167,29 @@ They have been added
 generously on certain parts but that makes the index
 strangely biased.
         </para>
+
+        <para>
+Capitalize the part of the indexterms that are terms.
+</para>
+
+        <para>
+Don't use the tertiary level of the index terms but 
+use only two alternatives:
+Only primary, and primary/secondary.
+If you are unsure when to use primary or primary/secondary use
+the small word approach.
+I.e. if the indexterm contains a small word (typically to, of, for, in)
+and normally not capitalized, let the secondary start with that
+small word.
+</para>
+
+        <para>
+When using primary/secondary, see that you get the same kind of
+word as used before in the index (especially when it comes to
+differences in singular/plural-form).
+Also create other indexterm by turning the phrase to as many
+permutations that you can think of.
+</para>
       </listitem>
       
     </itemizedlist>
