@@ -42,6 +42,7 @@ import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -97,12 +98,14 @@ public class PropPanelDataType extends PropPanelClassifier {
                 getAttributeScroll());
 
         addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
-        addButton(new PropPanelButton2(new ActionAddDataTypeToDataType(), 
+        addButton(new PropPanelButton2(new ActionAddDataType(), 
                 lookupIcon("DataType")));
         addButton(new PropPanelButton2(new ActionAddAttributeToDataType(), 
                 lookupIcon("NewAttribute")));
         addButton(new PropPanelButton2(new ActionAddQueryOperation(), 
                 lookupIcon("NewOperation")));
+        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+                lookupIcon("Stereotype")));
         addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
                 lookupIcon("Delete")));
     }
@@ -227,32 +230,5 @@ public class PropPanelDataType extends PropPanelClassifier {
         }
         return attributeScroll;
     }
-
-    private class ActionAddDataTypeToDataType 
-        extends AbstractActionNewModelElement {
-        
-        /**
-         * The constructor.
-         */
-        public ActionAddDataTypeToDataType() {
-            super("button.new-datatype");
-            putValue(Action.NAME, Translator.localize(
-                "button.new-datatype"));
-        }
-        
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e) {
-            Object target = TargetManager.getInstance().getModelTarget();
-            if (ModelFacade.isADataType(target)) {
-                Object ns = ModelFacade.getNamespace(target);
-                Object newDt = CoreFactory.getFactory().createDataType();
-                ModelFacade.addOwnedElement(ns, newDt);
-                TargetManager.getInstance().setTarget(newDt);
-                super.actionPerformed(e);
-            }
-        }
-    }
-
+    
 } /* end class PropPanelDataType */

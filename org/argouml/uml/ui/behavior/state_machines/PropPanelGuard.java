@@ -37,6 +37,7 @@ import org.argouml.uml.ui.UMLExpressionLanguageField;
 import org.argouml.uml.ui.UMLExpressionModel2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -82,6 +83,8 @@ public class PropPanelGuard extends PropPanelModelElement {
 	
 	addButton(new PropPanelButton2(new ActionNavigateTransition(), 
                 lookupIcon("NavigateUp")));
+	addButton(new PropPanelButton2(new ActionNewStereotype(), 
+	        lookupIcon("Stereotype")));
 	addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
                 lookupIcon("Delete")));
     }

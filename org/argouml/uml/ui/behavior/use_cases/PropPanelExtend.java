@@ -46,6 +46,7 @@ import org.argouml.uml.ui.UMLExpressionBodyField;
 import org.argouml.uml.ui.UMLExpressionModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -116,6 +117,8 @@ public class PropPanelExtend extends PropPanelModelElement {
         addButton(new PropPanelButton2(new ActionNavigateNamespace()));
         addButton(new PropPanelButton2(new ActionNewExtensionPoint(), 
                 lookupIcon("ExtensionPoint")));
+        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+                lookupIcon("Stereotype")));
         addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
                 lookupIcon("Delete")));
     }

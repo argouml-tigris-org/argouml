@@ -41,6 +41,7 @@ import org.argouml.uml.ui.ActionNavigateOwner;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.GridLayout2;
 
@@ -109,6 +110,10 @@ public class PropPanelOperation extends PropPanelFeature {
         addButton(new PropPanelButton2(new ActionNewParameter()));
         addButton(new PropPanelButton2(new ActionNewRaisedSignal(), 
                 lookupIcon("SignalSending")));
+        addButton(new PropPanelButton2(new ActionAddDataType(), 
+                lookupIcon("DataType")));
+        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+                lookupIcon("Stereotype")));
         addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
                 lookupIcon("Delete")));
     }

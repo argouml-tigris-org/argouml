@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui.foundation.extension_mechanisms;
+package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
 
@@ -30,42 +30,47 @@ import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ExtensionMechanismsFactory;
+import org.argouml.model.uml.CoreFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
-import org.tigris.gef.presentation.Fig;
 
 
 /**
- * This action creates a new Stereotype in the current Model.
+ * This action creates a new datatype.
  * 
  * @author mvw@tigris.org
  */
-public class ActionNewStereotype extends AbstractActionNewModelElement {
-
+public class ActionAddDataType extends AbstractActionNewModelElement {
+    
     /**
      * The constructor.
      */
-    public ActionNewStereotype() {
-        super("button.new-stereotype");
-        putValue(Action.NAME, Translator.localize("button.new-stereotype"));
+    public ActionAddDataType() {
+        super("button.new-datatype");
+        putValue(Action.NAME, Translator.localize("button.new-datatype"));
     }
-
+    
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-        Object t = TargetManager.getInstance().getTarget();
-        if (t instanceof Fig) t = ((Fig) t).getOwner();
-        Object newStereo = ExtensionMechanismsFactory.getFactory()
-            .buildStereotype(ModelFacade.isAModelElement(t) ? t : null,
-                    (String) null);
-        if (ModelFacade.isAModelElement(t)) { 
-            Object ns = ModelFacade.getNamespace(t);
-            if (ModelFacade.isANamespace(ns)) 
-                ModelFacade.setNamespace(newStereo, ns);
-        }
-        TargetManager.getInstance().setTarget(newStereo);
+        Object target = TargetManager.getInstance().getModelTarget();
+        Object ns = null;
+        if (ModelFacade.isANamespace(target)) 
+            ns = target; 
+        if (ModelFacade.isAParameter(target))
+            if (ModelFacade.getModelElementContainer(target) != null) 
+                target = ModelFacade.getModelElementContainer(target);
+        if (ModelFacade.isAFeature(target)) 
+            if (ModelFacade.getOwner(target) != null) 
+                target = ModelFacade.getOwner(target); 
+        if (ModelFacade.isAEvent(target)) 
+            ns = ModelFacade.getNamespace(target);
+        if (ModelFacade.isAClassifier(target)) 
+            ns = ModelFacade.getNamespace(target);
+        
+        Object newDt = CoreFactory.getFactory().buildDataType("", ns);
+        TargetManager.getInstance().setTarget(newDt);
         super.actionPerformed(e);
     }
 }
