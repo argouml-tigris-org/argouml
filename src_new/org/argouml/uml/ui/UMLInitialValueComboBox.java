@@ -33,6 +33,7 @@ import javax.swing.plaf.basic.*;
 import ru.novosoft.uml.*;
 
 import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.foundation.data_types.MExpression;
 
 /** handles communication between the initial value JComboBox and the Collection.
@@ -168,12 +169,21 @@ public class UMLInitialValueComboBox extends JComboBox
         Object target = _container.getTarget();
         if (target instanceof MAttribute){
             MClassifier classifier = (MClassifier) ((MAttribute)target).getOwner();
+            if (classifier == null){
+                return;
+            }
             classifier.setFeatures(classifier.getFeatures());
         }
         else if (target instanceof MParameter){
+            if (target instanceof MCallEvent){
+                return;
+            }
             MBehavioralFeature feature = ((MParameter) target).getBehavioralFeature();
             if (feature != null){
                 MClassifier classifier = (MClassifier) feature.getOwner();
+                if (classifier == null){
+                    return;
+                }
                 classifier.setFeatures(classifier.getFeatures());
             }
         }
