@@ -34,6 +34,7 @@ import org.argouml.kernel.ProjectManager;
  * Action to delete modelelements from the model without navigating
  * to/from them.  Used in UMLMutableList for deletion of modelelements
  * from the list.
+ * @see org.argouml.uml.ui.ActionRemoveFromModel
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  * @stereotype singleton
