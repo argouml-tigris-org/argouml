@@ -155,8 +155,8 @@ public class PropPanelUseCase extends PropPanelClassifier {
         // Build up a panel for extension points.
 
         JList extensionPoints =
-            new UMLList(new UMLExtensionPointListModel(this, "extensionPoint",
-                                                       true, false), true);
+            new UMLList(new UMLExtensionPointListModel(this, true, false),
+                        true);
 
         extensionPoints.setForeground(Color.blue);
         extensionPoints.setVisibleRowCount(1);
@@ -173,8 +173,8 @@ public class PropPanelUseCase extends PropPanelClassifier {
         // The third column
 
         // The details of assocations, operations and attributes are all
-        // inherited from PropPanelClassifier. Note that these ARE allowed for
-        // use cases by the UML 1.3 standard.
+        // inherited from PropPanelClassifier. Note that these last two ARE
+        // allowed for use cases by the UML 1.3 standard.
 
         addCaption("Associations:", 0, 2, 1);
         addField(connectScroll, 0, 2, 1);

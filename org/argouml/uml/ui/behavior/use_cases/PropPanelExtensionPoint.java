@@ -41,6 +41,7 @@ import javax.swing.*;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.model_management.*;
 
@@ -65,6 +66,15 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         // columns 
 
         super("ExtensionPoint", _extensionPointIcon, 2);
+
+        // This will cause the components on this property panel to be notified
+        // anytime a stereotype, namespace or use case has its name changed
+        // or is removed anywhere in the model.
+
+        Class[] namesToWatch = { MStereotype.class,
+                                 MNamespace.class,
+                                 MUseCase.class };
+        setNameEventListening(namesToWatch);
 
         // First column
 
@@ -106,7 +116,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         UMLComboBoxNavigator nav   =
             new UMLComboBoxNavigator(this, "NavUseCase", box);
 
-        addCaption("Base Use Case:", 0, 1, 0);
+        addCaption("Owning Use Case:", 0, 1, 0);
         addField(nav, 0, 1, 0);
 
         // The extension use cases (via the Extend relationship)
@@ -127,10 +137,12 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         addField(extendScroll, 2, 1, 1);
 
 
-        // Add the toolbar. Just the four basic buttons for now.
+        // Add the toolbar. Just the four basic buttons for now. Note that
+        // navigate up is not to the namespace, but to our local routine that
+        // selects the owning use case.
 
         new PropPanelButton(this, buttonPanel, _navUpIcon,
-                            localize("Go up"), "navigateNamespace", null);
+                            localize("Go up"), "navigateUp", null);
         new PropPanelButton(this, buttonPanel, _navBackIcon,
                             localize("Go back"), "navigateBackAction",
                             "isNavigateBackEnabled");
@@ -139,6 +151,33 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
                             "isNavigateForwardEnabled");
         new PropPanelButton(this, buttonPanel, _deleteIcon,
                             localize("Delete"), "removeElement", null); 
+    }
+
+
+    /**
+     * <p>The method for the navigate up button, which takes us to the owning
+     *   use case.</p>
+     *
+     * <p>This is a change from the norm, which is to navigate to the parent
+     *   namespace.</p>
+     */
+
+    public void navigateUp() {
+        Object target = getTarget();
+
+        // Only works for extension points
+
+        if (!(target instanceof MExtensionPoint)) {
+            return;
+        }
+
+        // Get the owning use case and navigate to it if it exists.
+
+        MUseCase owner = ((MExtensionPoint) target).getUseCase();
+
+        if(owner != null) {
+            navigateTo(owner);
+        }
     }
 
 

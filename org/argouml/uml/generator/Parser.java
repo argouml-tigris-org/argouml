@@ -21,6 +21,15 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// File: Parser.java
+// Classes: Parser
+// Original Author:
+// $Id$
+
+// 12 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
+// extension points.
+
+
 package org.argouml.uml.generator;
 
 import ru.novosoft.uml.foundation.core.*;
@@ -28,6 +37,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.model_management.*;
@@ -35,6 +45,7 @@ import java.util.*;
 
 public abstract class Parser {
 
+  public abstract MExtensionPoint parseExtensionPoint(String s);
   public abstract MOperation parseOperation(String s);
   public abstract MAttribute parseAttribute(String s);
   public abstract MParameter parseParameter(String s);

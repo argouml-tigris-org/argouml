@@ -290,9 +290,9 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
 
     public void setTarget(Object t) {
 
-        // If the target has changed reset the third party listeners and
-        // dispatch a new NSUML element listener to ourself. Otherwise dispatch
-        // a target reasserted to ourself.
+        // If the target has changed notify the third party listener if it
+        // exists and dispatch a new NSUML element listener to
+        // ourself. Otherwise dispatch a target reasserted to ourself.
 
         if(t != _target) {
 
@@ -305,17 +305,10 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
                 _modelElement = (MModelElement) _target;
             }
 
-            // Remove the third party listeners if they exist
+            // Tell the third party listener if it exists
 
             if (_thirdPartyListener != null) {
-                _thirdPartyListener.removeAllListeners();
-            }
-
-            // Create a new third party listener if we have a target list
-
-            if (_targetList != null) {
-                _thirdPartyListener =
-                    new UMLThirdPartyEventListener(this, _targetList);
+                _thirdPartyListener.targetChanged();
             }
 
             // This will add a new MElement listener after update is complete
@@ -558,7 +551,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         }
 
         // If we don't have a third party listener at present, create one with
-        // this target list, otherwise tell the one we have about the new list.
+        // this target list. Otherwise tell the one we have about the new list.
 
         if (_thirdPartyListener == null) {
             _thirdPartyListener =

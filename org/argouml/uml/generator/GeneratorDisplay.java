@@ -30,6 +30,9 @@
 // 5 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Return text for
 // operations that have no return parameter made "" rather than ": void??"
 
+// 10 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
+// extension points.
+
 
 package org.argouml.uml.generator;
 import org.argouml.application.api.*;
@@ -44,8 +47,9 @@ import ru.novosoft.uml.foundation.data_types.MMultiplicityRange;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.behavior.use_cases.*;
+import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.model_management.*;
 
@@ -77,6 +81,45 @@ implements PluggableNotation {
   public static String Generate(Object o) {
     return SINGLETON.generate(o);
   }
+
+
+    /**
+     * <p>Generate the display for an extension point.</p>
+     *
+     * <p>The representation is "name: location". "name :" is omitted if there
+     *   is no name given.</p>
+     *
+     * @param ep  The extension point.
+     *
+     * @return    The string representing the extension point.
+     */
+
+    public String generateExtensionPoint(MExtensionPoint ep) {
+
+        // The string to build
+
+        String s = "";
+
+        // Get the fields we want
+
+        String epName     = ep.getName();
+        String epLocation = ep.getLocation();
+
+        // Put in the name field if it's there
+
+        if ((epName != null) && (epName.length() > 0)) {
+            s += epName + ": ";
+        }
+
+        // Put in the location field if it's there
+
+        if ((epLocation != null) && (epLocation.length() > 0)) {
+            s+= epLocation;
+        }
+
+        return s;
+    }
+
 
   public String generateOperation(MOperation op, boolean documented) {
     boolean isConstructor = false;

@@ -21,6 +21,15 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// File: ActionModifier.java
+// Classes: ActionModifier
+// Original Author: Bob Tarling
+// $Id$
+
+// 9 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
+// use cases
+
+
 package org.argouml.uml.ui;
 
 import org.argouml.uml.diagram.ui.*;
@@ -36,16 +45,21 @@ import ru.novosoft.uml.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 
 /**
- * A class to perform the action of changing value of the modifiers on a package, interface or class.
+ * <p>A class to perform the action of changing value of the modifiers on a
+ *   package, use case, interface or class. </p>
  *
  * @author  Bob Tarling
+ *
+ * @author  Jeremy Bennett (mail@jeremybennett.com)&mdash; use case extensions.
  */
+
 public class ActionModifier extends UMLAction {
 	private UMLBooleanProperty _property;
 	private Object object;
 	Class mclassClass = MClass.class;
 	Class mpackageClass = MPackage.class;
 	Class minterfaceClass = MInterface.class;
+        Class museCaseClass = MUseCase.class;      // Jeremy Bennett
 	Object trueValue = null;
 	Object falseValue = null;
 
@@ -147,7 +161,7 @@ public class ActionModifier extends UMLAction {
      * @param     name           the text for the actions menu item
      * @param     propertyName   the name of the modifier property to be amended
      * @param     getMethod      the name of the getter method to retrieve the property
-     * @param     setMethod      the name of the setter method to change the property
+     * @param     setMethod      the name of the setter method to change the prvoperty
      * @param     mpackage       the <code>MPackage</code> object containing the modifier property.
      * @param     enumClass      the class representing the enumeration
      * @param     trueValue      The enumerated value representing true
@@ -159,6 +173,77 @@ public class ActionModifier extends UMLAction {
 		_property = new UMLEnumerationBooleanProperty(propertyName,mpackageClass,getMethod,setMethod, enumClass, trueValue, falseValue);
 		putValue("SELECTED", new Boolean(_property.getProperty(object)));
     }
+
+    /**
+     * <p>Defines an Action object with the specified description which will
+     *   use the given reflection methods to modify boolean values in a {@link
+     *   MUseCase} object.
+     *
+     * @param name          the text for the actions menu item
+     *
+     * @param propertyName  the name of the modifier property to be amended 
+     *
+     * @param getMethod     the name of the getter method to retrieve the
+     *                      property 
+     *
+     * @param setMethod     the name of the setter method to change the
+     *                      property 
+     *
+     * @param museCase      the use case object containing the modifier
+     *                      property. 
+     */ 
+
+    public ActionModifier(String name, String propertyName, String getMethod,
+                          String setMethod, MUseCase museCase) { 
+        super(name, NO_ICON);
+        this.object = museCase;
+        _property   = new UMLReflectionBooleanProperty(propertyName,
+                                                       museCaseClass,
+                                                       getMethod,setMethod);
+        putValue("SELECTED", new Boolean(_property.getProperty(object)));
+    }
+
+
+    /**
+     * <p>Defines an Action object with the specified description which will
+     *   use the given reflection methods to modify an enumerated values in a
+     *   {@link MUseCase} object.</p>
+     *
+     * @param name          The text for the actions menu item.
+     *
+     * @param propertyName  The name of the modifier property to be amended.
+     *
+     * @param getMethod     The name of the getter method to retrieve the
+     *                      property.
+     *
+     * @param setMethod     The name of the setter method to change the
+     *                      property.
+     *
+     * @param museCase      The use case object containing the modifier
+     *                      property.
+     *
+     * @param enumClass     The class representing the enumeration.
+     *
+     * @param trueValue     The enumerated value representing true.
+     *
+     * @param falseValue    The enumerated value representing false.
+     */
+
+    public ActionModifier(String name, String propertyName, String getMethod,
+                          String setMethod, MUseCase museCase, Class enumClass,
+                          Object trueValue,Object falseValue) {
+        super(name, NO_ICON);
+        this.object = museCase;
+        _property   = new UMLEnumerationBooleanProperty(propertyName,
+                                                        museCaseClass,
+                                                        getMethod,
+                                                        setMethod,
+                                                        enumClass,
+                                                        trueValue,
+                                                        falseValue);
+        putValue("SELECTED", new Boolean(_property.getProperty(object)));
+    }
+
 
     ////////////////////////////////////////////////////////////////
     // main methods

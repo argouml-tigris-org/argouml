@@ -22,6 +22,15 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 
+// File: GeneratorJava.java
+// Classes: GeneratorJava
+// Original Author:
+// $Id$
+
+// 12 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
+// extension points.
+
+
 package org.argouml.language.java.generator;
 
 import java.io.*;
@@ -31,6 +40,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.model_management.*;
@@ -156,6 +166,25 @@ public class GeneratorJava extends Generator implements PluggableNotation {
     sb.append("import java.util.*;\n\n");
     return sb.toString();
   }
+
+    /**
+     * <p>Generate code for an extension point.</p>
+     *
+     * <p>Provided to comply with the interface, but returns null
+     *   since no code will be generated. This should prevent a source tab
+     *   being shown.</p>
+     *
+     * @param ep  The extension point to generate for
+     *
+     * @return    The generated code string. Always empty in this
+     *            implementation.
+     */
+
+    public String generateExtensionPoint (MExtensionPoint ep) {
+
+        return null;
+    }
+
 
   public String generateOperation (MOperation op, boolean documented) {
     StringBuffer sb = new StringBuffer(80);

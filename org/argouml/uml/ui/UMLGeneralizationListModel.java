@@ -30,14 +30,23 @@
 // factory. Remove the open() method, since it merely duplicates the parent
 // routine.
 
+// 3 May 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to mark the
+// project as needing saving if a generalization is added, deleted, changed or
+// moved.
+
 
 package org.argouml.uml.ui;
 
-import javax.swing.*;
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
 import java.util.*;
 import java.awt.*;
+
+import javax.swing.*;
+
+import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.core.*;
+
+import org.argouml.ui.*;
+import org.argouml.kernel.*;
 
 
 /**
@@ -241,6 +250,11 @@ public class UMLGeneralizationListModel extends UMLModelElementListModel  {
                                                  newGen, index));
         }
 
+        // Having added a generalization, mark as needing saving
+
+        Project p = ProjectBrowser.TheInstance.getProject();
+        p.setNeedsSave(true);
+
         // Tell Swing and then navigate there
 
         fireIntervalAdded(this, index, index);
@@ -303,6 +317,11 @@ public class UMLGeneralizationListModel extends UMLModelElementListModel  {
             ns.removeOwnedElement(gen);
         }
 
+        // Having removed a generalization, mark as needing saving
+
+        Project p = ProjectBrowser.TheInstance.getProject();
+        p.setNeedsSave(true);
+
         // Tell Swing this entry has gone
 
         fireIntervalRemoved(this,index,index);
@@ -327,6 +346,11 @@ public class UMLGeneralizationListModel extends UMLModelElementListModel  {
 
             genElem.setGeneralizations(
                 moveUpUtil(genElem.getGeneralizations(), index));
+
+            // Having moved a generalization, mark as needing saving
+
+            Project p = ProjectBrowser.TheInstance.getProject();
+            p.setNeedsSave(true);
 
             // Tell Swing
 
@@ -353,6 +377,11 @@ public class UMLGeneralizationListModel extends UMLModelElementListModel  {
 
             genElem.setGeneralizations(
                 moveDownUtil(genElem.getGeneralizations(), index));
+
+            // Having moved a generalization, mark as needing saving
+
+            Project p = ProjectBrowser.TheInstance.getProject();
+            p.setNeedsSave(true);
 
             // Tell Swing
 

@@ -31,16 +31,24 @@
 // relationship at the correct place in the list. buildPopup removed, since the
 // parent implementation is fine.
 
+// 3 May 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to mark the
+// project as needing saving if an extend relationship is added, deleted,
+// changed or moved.
+
 
 package org.argouml.uml.ui;
 
-import ru.novosoft.uml.*;
+import java.util.*;
+import java.awt.*;
+
 import javax.swing.*;
+
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.use_cases.*;
-import java.util.*;
-import java.awt.*;
+
+import org.argouml.ui.*;
+import org.argouml.kernel.*;
 
 
 /**
@@ -290,6 +298,11 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
             }
         }
 
+        // Having added an extend relationship, mark as needing saving
+
+        Project p = ProjectBrowser.TheInstance.getProject();
+        p.setNeedsSave(true);
+
         // Advise Swing that we have added something at this index and
         // navigate there.
 
@@ -354,6 +367,11 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
             ns.removeOwnedElement(xtend);
         }
 
+        // Having removed an extend relationship, mark as needing saving
+
+        Project p = ProjectBrowser.TheInstance.getProject();
+        p.setNeedsSave(true);
+
         // Tell Swing this entry has gone
         
         fireIntervalRemoved(this,index,index);
@@ -394,6 +412,11 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
             useCase.setExtends(moveUpUtil(useCase.getExtends(), index));
         }
 
+        // Having moved an extend relationship, mark as needing saving
+
+        Project p = ProjectBrowser.TheInstance.getProject();
+        p.setNeedsSave(true);
+
         // Tell Swing
 
         fireContentsChanged(this, index - 1, index);
@@ -433,6 +456,11 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
             MUseCase useCase = (MUseCase) target;
             useCase.setExtends(moveDownUtil(useCase.getExtends(), index));
         }
+
+        // Having moved an extend relationship, mark as needing saving
+
+        Project p = ProjectBrowser.TheInstance.getProject();
+        p.setNeedsSave(true);
 
         // Tell Swing
 

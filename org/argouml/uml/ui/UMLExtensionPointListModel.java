@@ -27,12 +27,18 @@
 
 package org.argouml.uml.ui;
 
-import ru.novosoft.uml.*;
-import javax.swing.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.use_cases.*;
 import java.util.*;
 import java.awt.*;
+
+import javax.swing.*;
+
+import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.use_cases.*;
+
+import org.argouml.ui.*;
+import org.argouml.kernel.*;
+import org.argouml.application.api.*;
 
 
 /**
@@ -61,15 +67,11 @@ public class UMLExtensionPointListModel extends UMLModelElementListLinkModel  {
     /**
      * <p>Create a new list model.<p>
      *
-     * <p>Implementation is just an invocation of the parent constructor.</p>
+     * <p>Implementation is just an invocation of the parent constructor,
+     *   passing in the class of interest.</p>
      *
      * @param container  The container for this list&mdash;the use case
      *                   or extend property panel.
-     *
-     * @param property   The name associated with the NSUML {@link
-     *                   MElementEvent} that we are tracking or
-     *                   <code>null</code> if we track them all. We 
-     *                   want to just track the "extensionPoint" event.
      *
      * @param showNone   True if an empty list is represented by the keyword
      *                   "none"
@@ -80,10 +82,9 @@ public class UMLExtensionPointListModel extends UMLModelElementListLinkModel  {
      */
 
     public UMLExtensionPointListModel(UMLUserInterfaceContainer container,
-                                      String property, boolean showNone,
-                                      boolean useLink) {
+                                      boolean showNone, boolean useLink) {
 
-        super(container, property, showNone, useLink);
+        super(container, MExtensionPoint.class, showNone, useLink);
     }
 
 
@@ -164,13 +165,15 @@ public class UMLExtensionPointListModel extends UMLModelElementListLinkModel  {
      * <p>Format a given model element.</p>
      *
      * <p>If there is no location (or it is the empty string), use the default
-     *   text ("(anon)"). If there is use the location of the extension
-     *   point.</p>
+     *   text ("(anon)"). If there is use the notation generator (which should
+     *   generate "name: location", with both "name:" and "location" omitted if
+     *   undefined.</p> 
      *
      * <p>In this current implementation, more rigorously checks it is
-     *   formatting an extensionPoint relationship. Since the location is only
-     *   represented as a string, we do not pass it on to the parent for
-     *   formatting.</p>
+     *   formatting an extensionPoint relationship. We can't just use the
+     *   parent formatter, since that just takes the name. Instead we use the
+     *   notation generator, which knows what to do with an extension
+     *   point.</p>
      *
      * @param element  the model element to format
      *
@@ -186,7 +189,7 @@ public class UMLExtensionPointListModel extends UMLModelElementListLinkModel  {
             String           location       = extensionPoint.getLocation();
 
             if((location != null) && (!(location.equals("")))) {
-                value = location;
+                value = Notation.generate(this, element);
             }
         }
         else {
@@ -256,6 +259,11 @@ public class UMLExtensionPointListModel extends UMLModelElementListLinkModel  {
                                                 extensionPoint,
                                                 index));
         }
+
+        // Having added an extension point, mark as needing saving
+
+        Project p = ProjectBrowser.TheInstance.getProject();
+        p.setNeedsSave(true);
 
         // Advise Swing that we have added something at this index and
         // navigate there.
@@ -354,6 +362,11 @@ public class UMLExtensionPointListModel extends UMLModelElementListLinkModel  {
             }
         }
 
+        // Having added an extension point, mark as needing saving
+
+        Project p = ProjectBrowser.TheInstance.getProject();
+        p.setNeedsSave(true);
+
         // Advise Swing that we have added something at this index and
         // navigate there.
 
@@ -422,6 +435,11 @@ public class UMLExtensionPointListModel extends UMLModelElementListLinkModel  {
             ns.removeOwnedElement(extensionPoint);
         }
 
+        // Having removed an extension point, mark as needing saving
+
+        Project p = ProjectBrowser.TheInstance.getProject();
+        p.setNeedsSave(true);
+
         // Tell Swing this entry has gone
         
         fireIntervalRemoved(this,index,index);
@@ -461,6 +479,11 @@ public class UMLExtensionPointListModel extends UMLModelElementListLinkModel  {
                                                   index));
         }
 
+        // Having moved an extension point, mark as needing saving
+
+        Project p = ProjectBrowser.TheInstance.getProject();
+        p.setNeedsSave(true);
+
         // Tell Swing
 
         fireContentsChanged(this, index - 1, index);
@@ -499,6 +522,11 @@ public class UMLExtensionPointListModel extends UMLModelElementListLinkModel  {
             useCase.setExtensionPoints(
                 moveDownUtil(useCase.getExtensionPoints(), index));
         }
+
+        // Having moved an extension point, mark as needing saving
+
+        Project p = ProjectBrowser.TheInstance.getProject();
+        p.setNeedsSave(true);
 
         // Tell Swing
 

@@ -21,6 +21,15 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// File: ParserDisplay.java
+// Classes: ParserDisplay
+// Original Author:
+// $Id$
+
+// 12 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
+// extension points.
+
+
 package org.argouml.uml.generator;
 
 import java.beans.*;
@@ -33,6 +42,7 @@ import ru.novosoft.uml.foundation.data_types.MActionExpression;
 import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.behavior.collaborations.*;
@@ -54,6 +64,48 @@ public class ParserDisplay extends Parser {
 
   ////////////////////////////////////////////////////////////////
   // parsing methods
+
+    /**
+     * <p>Parse an extension point.<p>
+     *
+     * <p>The syntax is "name: location", "name:", "location" or "". The
+     *   fields of the extension point are updated appropriately.</p>
+     *
+     * @param useCase  The use case that owns this extension point
+     *
+     * @param ep       The extension point concerned
+     *
+     * @param text     The text to parse
+     *
+     */
+
+    public void parseExtensionPointFig(MUseCase useCase, MExtensionPoint ep,
+                                       String text) {
+
+        // We can do nothing if we don't have both the use case and extension
+        // point.
+
+        if ((useCase == null) || (ep == null)) {
+            return;
+        }
+
+        // Parse the string to creat a new extension point.
+
+        MExtensionPoint newEp = parseExtensionPoint(text);
+
+        // If we got back null we interpret this as meaning delete the
+        // reference to the extension point from the use case, otherwise we set
+        // the fields of the extension point to the values in newEp.
+
+        if (newEp == null) {
+            useCase.removeExtensionPoint(ep);
+        }
+        else {
+            ep.setName(newEp.getName());
+            ep.setLocation(newEp.getLocation());
+        }
+    }
+
 
   public void parseOperationCompartment(MClassifier cls, String s) {
     java.util.StringTokenizer st = new java.util.StringTokenizer(s, "\n\r");
@@ -186,6 +238,105 @@ public class ParserDisplay extends Parser {
       }
     }
   }
+
+    /**
+     * <p>Parse a string representing an extension point and return a new
+     *   extension point.</p>
+     *
+     * <p>The syntax is "name: location", "name:", "location" or
+     *   "". <em>Note</em>. If either field is blank, it will be set to null in
+     *   the extension point.</p>
+     *
+     * <p>We break up the string into tokens at the ":". We must keep the ":"
+     *   as a token, so we can distinguish between "name:" and "location". The
+     *   number of tokens will distinguish our four cases.</p>
+     *
+     * @param text  The string to parse
+     *
+     * @return      A new extension point, with fields set appropriately, or
+     *              <code>null</code> if we are given <code>null</code> or a
+     *              blank string. <em>Note</em>. The string ":" can be used to
+     *              set both name and location to null.
+     */
+
+    public MExtensionPoint parseExtensionPoint(String text) {
+
+        // If we are given the null string, return immediately
+
+        if (text == null) {
+            return null;
+        }
+
+        // Build a new extension point
+
+        MExtensionPoint ep = MMUtil.SINGLETON.buildExtensionPoint(null);
+
+        StringTokenizer st        = new StringTokenizer(text.trim(), ":",
+                                                        true);
+        int             numTokens = st.countTokens();
+
+        String epLocation;
+        String colon;
+        String epName;
+
+        switch (numTokens) {
+
+        case 0:
+
+            // The empty string. Return null
+
+            ep = null;
+
+            break;
+
+        case 1:
+
+            // A string of the form "location". This will be confused by the
+            // string ":", so we pick this out as an instruction to clear both
+            // name and location.
+
+            epLocation = st.nextToken().trim();
+
+            if (epLocation.equals(":")) {
+                ep.setName(null);
+                ep.setLocation(null);
+            }
+            else {
+                ep.setName(null);
+                ep.setLocation(epLocation);
+            }
+
+            break;
+
+        case 2:
+
+            // A string of the form "name:"
+
+            epName = st.nextToken().trim();
+
+            ep.setName(epName);
+            ep.setLocation(null);
+
+            break;
+
+        case 3:
+
+            // A string of the form "name:location". Discard the middle token
+            // (":")
+
+            epName     = st.nextToken().trim();
+            colon      = st.nextToken();
+            epLocation = st.nextToken().trim();
+
+            ep.setName(epName);
+            ep.setLocation(epLocation);
+
+            break;
+        }
+
+        return ep;
+    }
+
 
   /** Parse a line of the form:
    *  [visibility] [keywords] name(params) ": " returntype[;] */

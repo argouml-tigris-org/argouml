@@ -39,7 +39,9 @@ import org.argouml.application.api.*;
 import org.argouml.uml.diagram.ui.*;
 
 import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
@@ -49,7 +51,7 @@ import org.tigris.gef.presentation.*;
  * <p>A fig for use with extend relationships on use case diagrams.</p>
  *
  * <p>Realised as a dotted line with an open arrow head and the label
- *   <<extend>> alongside a la stereotype.</p>
+ *   &laquo;extend&raquo; together with any condition alongside.</p>
  */
 
 public class FigExtend extends FigEdgeModelElement {
@@ -82,6 +84,32 @@ public class FigExtend extends FigEdgeModelElement {
 
     ///////////////////////////////////////////////////////////////////////////
     //
+    // Instance varibles
+    //
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     * <p>The &laquo;extend&raquo; label.</p>
+     */
+
+    protected FigText _label;
+
+    /**
+     * <p>The condition expression.</p>
+     */
+
+    protected FigText _condition;
+
+    /**
+     * <p>The group of label and condition.</p>
+     */
+
+    protected FigGroup _fg;
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    //
     // Constructors
     //
     ///////////////////////////////////////////////////////////////////////////
@@ -99,30 +127,55 @@ public class FigExtend extends FigEdgeModelElement {
 
         // We need a FigText to hold the <<extend>> label. Details are the
         // same as a stereotype, and we use the stereotype notation generator
-        // to give us the text.
+        // to give us the text. When its all done, use calcBounds() to shrink
+        // to size.
 
-        FigText label = new FigText(10, 30, 90, 20);
+        _label = new FigText(10, 30, 90, 20);
 
-        label.setFont(LABEL_FONT);
-        label.setTextColor(Color.black);
-        label.setTextFilled(false);
-        label.setFilled(false);
-        label.setLineWidth(0);
-        label.setExpandOnly(false);
-        label.setMultiLine(false);
-        label.setAllowsTab(false);
+        _label.setFont(LABEL_FONT);
+        _label.setTextColor(Color.black);
+        _label.setTextFilled(false);
+        _label.setFilled(false);
+        _label.setLineWidth(0);
+        _label.setExpandOnly(false);
+        _label.setMultiLine(false);
+        _label.setAllowsTab(false);
+        _label.setText(Notation.generateStereotype(this, _EXTEND_LABEL));
 
-        label.setText(Notation.generateStereotype(this, _EXTEND_LABEL));
+        _label.calcBounds();
 
-        addPathItem(label, new PathConvPercent(this, 50, 10));
+        // We need a FigText to hold the condition. At this stage we have
+        // nothing to put in it (since we have no owner). Place it immediately
+        // below the label, and with the same height and width.
 
-        // Make the line dashed
+        _condition = new FigText(10, 30 + _label.getBounds().height,
+                                _label.getBounds().width,
+                                _label.getBounds().height);
 
-        setDashed(true);
+        _condition.setFont(LABEL_FONT);
+        _condition.setTextColor(Color.black);
+        _condition.setTextFilled(false);
+        _condition.setFilled(false);
+        _condition.setLineWidth(0);
+        _condition.setExpandOnly(false);
+        _condition.setMultiLine(false);
+        _condition.setAllowsTab(false);
 
-        // Add an arrow with an open arrow head. Remember that for an extends
+        // Join the two into a group
+
+        _fg = new FigGroup();
+
+        _fg.addFig(_label);
+        _fg.addFig(_condition);
+
+        // Place in the middle of the line and ensure the line is dashed.  Add
+        // an arrow with an open arrow head. Remember that for an extends
         // relationship, the arrow points to the base use case, but because of
         // the way we draw it, that is still the destination end.
+
+        addPathItem(_fg, new PathConvPercent(this, 50, 10));
+
+        setDashed(true);
 
         ArrowHeadGreater endArrow = new ArrowHeadGreater();
         setDestArrowHead(endArrow);
@@ -190,14 +243,51 @@ public class FigExtend extends FigEdgeModelElement {
     ///////////////////////////////////////////////////////////////////////////
 
     /**
-     * <p>This is called aftern any part of the UML MModelElement has
+     * <p>This is called after any part of the UML MModelElement has
      *   changed. This method automatically updates things specific to this
      *   fig. Subclasses should override and update other parts.</p>
      *
-     * <p>This implementation does nothing.</p>
+     * <p>We reset the condition text. We really ought to check that there has
+     *    actually been a change, but for now we do it every time. We do it
+     *    within {@link #startTrans()} and {@link #endTrans()} so GEF will get
+     *    the redrawing right.</p>
      */
 
-    protected void modelChanged() { }
+    protected void modelChanged() {
+
+        // Give up if we have no owner
+
+        MExtend extend = (MExtend) getOwner();
+
+        if (extend == null) {
+            return;
+        }
+        
+        // Let the superclass sort itself out, and then tell GEF we are going
+        // to start something
+
+        super.modelChanged();
+        startTrans();
+
+        // Now sort out the condition text. Use the null string if there is no
+        // condition set. We call the main generate method, which will realise
+        // this is a MExpression (subclass) and invoke the correct method.
+
+        MBooleanExpression condition = extend.getCondition();
+
+        if (condition == null) {
+            _condition.setText("");
+        }
+        else {
+            _condition.setText(Notation.generate(this, condition));
+        }
+
+        // Let the group recalculate its bounds and then tell GEF we've
+        // finished.
+
+        _fg.calcBounds();
+        endTrans();
+    }
 
 
 } /* end class FigExtend */

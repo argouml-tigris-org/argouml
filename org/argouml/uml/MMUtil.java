@@ -21,7 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 // File: MMUtil.java
 // Classes: MMUtil
 // Original Author: not known
@@ -29,6 +28,12 @@
 
 // 3 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
 // the Extend and Include relationships.
+
+// 8 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to add
+// buildExtensionPoint and getExtensionPoints methods for use cases.
+
+// 16 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to remove
+// include and extend relationships when deleting a use case.
 
 
 package org.argouml.uml;
@@ -67,6 +72,52 @@ public class MMUtil {
 		interfaceStereo.setUUID(UUIDManager.SINGLETON.getNewUUID());
 		STANDARDS.addOwnedElement(interfaceStereo);
 	}
+
+    /**
+     * <p>Remove a use case and its associated connections from the model.<p>
+     *
+     * <p>We remove the include and extend here, then use the classifier
+     *   version of this method to remove everything else. Note that we must
+     *   get rid of both ends.</p>
+     *
+     * @param useCase  The use case to remove form the model
+     */
+
+    public void remove(MUseCase useCase) {
+
+        // Get rid of extends
+
+        Iterator extendIterator = (useCase.getExtends()).iterator();
+
+        while (extendIterator.hasNext()) {
+            ((MExtend) extendIterator.next()).remove();
+        }
+
+        extendIterator = (useCase.getExtends2()).iterator();
+
+        while (extendIterator.hasNext()) {
+            ((MExtend) extendIterator.next()).remove();
+        }
+
+        // Get rid of includes
+
+        Iterator includeIterator = (useCase.getIncludes()).iterator();
+
+        while (includeIterator.hasNext()) {
+            ((MInclude) includeIterator.next()).remove();
+        }
+
+        includeIterator = (useCase.getIncludes2()).iterator();
+
+        while (includeIterator.hasNext()) {
+            ((MInclude) includeIterator.next()).remove();
+        }
+
+        // Use the classifier version to get rid of everything else (including
+        // our very own good selves).
+
+        remove((MClassifier) useCase);
+    }
 
     // This method takes care about removing all unneeded transitions
     // while removing a StateVertex (like a State or ActionState, also Fork et.al.)
@@ -235,6 +286,45 @@ public class MMUtil {
          }
 
          return extend;
+     }
+
+
+    /**
+     * <p>Build an extension point for a use case.</p>
+     *
+     * <p>Set the namespace to that of the use case if possible.</p>
+     *
+     * @param useCase  The owning use case for the extension point. May be
+     *                 <code>null</code>.
+     *
+     * @return         The new extension point or <code>null</code> if it
+     *                 can't be created.
+     */
+
+     public MExtensionPoint buildExtensionPoint(MUseCase useCase) {
+
+         MExtensionPoint extensionPoint = new MExtensionPointImpl();
+
+         // Set the owning use case if there is one given.
+
+         if (useCase != null) {
+
+             extensionPoint.setUseCase(useCase);
+
+             // Set the namespace to that of the useCase if possible.
+
+             if (useCase.getNamespace() != null) {
+                 extensionPoint.setNamespace(useCase.getNamespace());
+             }
+         }
+
+         // For consistency with attribute and operation, give it a default
+         // name and location
+
+         extensionPoint.setName("newEP");
+         extensionPoint.setLocation("loc");
+
+         return extensionPoint;
      }
 
 
@@ -649,4 +739,22 @@ public class MMUtil {
 		newReturnParameter.setKind(MParameterDirectionKind.RETURN);
 		operation.addParameter(0, newReturnParameter);
 	}
+
+
+    /** 
+     * <p>This method returns all extension points of a given use case.
+     *
+     * <p>Here for completeness, but actually just a wrapper for the NSUML
+     *   function.</p>
+     *
+     * @param useCase  The use case for which we want the extension points.
+     *
+     * @return         A collection of the extension points.
+     */
+
+    public Collection getExtensionPoints(MUseCase useCase) {
+
+        return useCase.getExtensionPoints();
+    }
+
 }

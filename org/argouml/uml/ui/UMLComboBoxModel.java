@@ -37,17 +37,23 @@
 // now extended to use nameChanged() (which changes the display name) rather
 // than updateName().
 
+// 3 May 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to mark the
+// project as needing saving if the selected field is changed.
+
 
 package org.argouml.uml.ui;
 
+import org.argouml.ui.*;
 import org.argouml.uml.*;
+import org.argouml.kernel.*;
 import org.argouml.application.api.*;
 
-import javax.swing.event.*;
-import javax.swing.*;
 import java.lang.reflect.*;
 import java.awt.event.*;
 import java.util.*;
+
+import javax.swing.event.*;
+import javax.swing.*;
 
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -55,6 +61,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.use_cases.*;
+
 
 /**
  * <p>A model for use with drop down combo boxes. Used to supply the correct
@@ -887,21 +894,6 @@ public class UMLComboBoxModel extends AbstractListModel implements
      */
 
     public void recovered(final MElementEvent event) {
-        if (_container.getTarget() instanceof MExtend) {
-            System.out.println("**** recovered for " +
-                               _container.getTarget());
-
-            System.out.println("     source:        " + event.getSource());
-
-            System.out.println("     added value:   " + event.getAddedValue());
-            System.out.println("     name:          " + event.getName());
-            System.out.println("     new value:     " + event.getNewValue());
-            System.out.println("     old value:     " + event.getOldValue());
-            System.out.println("     position:      " + event.getPosition());
-            System.out.println("     removed value: " +
-                               event.getRemovedValue());
-            System.out.println("     type:          " + event.getType());
-        }
     }
 
 
@@ -918,22 +910,6 @@ public class UMLComboBoxModel extends AbstractListModel implements
      */
 
     public void listRoleItemSet(final MElementEvent event) {
-        if (_container.getTarget() instanceof MExtend) {
-            System.out.println("**** listRoleItemSet for " +
-                               _container.getTarget());
-
-            System.out.println("     source:        " + event.getSource());
-
-            System.out.println("     added value:   " + event.getAddedValue());
-            System.out.println("     name:          " + event.getName());
-            System.out.println("     new value:     " + event.getNewValue());
-            System.out.println("     old value:     " + event.getOldValue());
-            System.out.println("     position:      " + event.getPosition());
-            System.out.println("     removed value: " +
-                               event.getRemovedValue());
-            System.out.println("     type:          " + event.getType());
-        }
-
     }
 
 
@@ -949,22 +925,6 @@ public class UMLComboBoxModel extends AbstractListModel implements
      */
 
     public void removed(final MElementEvent event) {
-
-        if (_container.getTarget() instanceof MExtend) {
-            System.out.println("**** removed for " +
-                               _container.getTarget());
-
-            System.out.println("     source:        " + event.getSource());
-
-            System.out.println("     added value:   " + event.getAddedValue());
-            System.out.println("     name:          " + event.getName());
-            System.out.println("     new value:     " + event.getNewValue());
-            System.out.println("     old value:     " + event.getOldValue());
-            System.out.println("     position:      " + event.getPosition());
-            System.out.println("     removed value: " +
-                               event.getRemovedValue());
-            System.out.println("     type:          " + event.getType());
-        }
 
         // Loop round looking for a non-phantom entry that has the source of
         // this event as its element.
@@ -1084,6 +1044,13 @@ public class UMLComboBoxModel extends AbstractListModel implements
                                this.getClass().toString() +
                                ": actionPerformed() - set method failed.");
         }
+
+        // Having set a property, mark as needing saving. Commented out for
+        // now, because this triggers even when we just show the combo for
+        // the first time on selection.
+
+        Project p = ProjectBrowser.TheInstance.getProject();
+        //p.setNeedsSave(true);
     }
 
 }  /* End of class UMLComboBoxModel */

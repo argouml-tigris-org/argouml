@@ -29,11 +29,14 @@
 // 22 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Created to support a
 // proper Extend implementation with Use Cases
 
+// 11 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Condition field added.
+
 
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -68,8 +71,7 @@ public class PropPanelExtend extends PropPanelModelElement {
         super("Extend", _extendIcon, 2);
 
         // nameField, stereotypeBox and namespaceScroll are all set up by
-        // PropPanelModelElement. Allow the namespace label to expand
-        // vertically so we all float to the top.
+        // PropPanelModelElement.
 
         addCaption("Name:", 1, 0, 0);
         addField(nameField, 1, 0, 0);
@@ -78,31 +80,49 @@ public class PropPanelExtend extends PropPanelModelElement {
         addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),
                  2, 0, 0);
 
-        addCaption("Namespace:", 3, 0, 1);
+        addCaption("Namespace:", 3, 0, 0);
         addField(namespaceScroll, 3, 0, 0);
+
+        // Our condition (ultimately a String). NSUML actually returns a
+        // MBooleanExpression, so we must provide our own get and set methods.
+        // Allow the condition label to expand vertically so we all float to
+        // the top.
+
+        UMLExpressionModel conditionModel =
+            new UMLExpressionModel(this,MExtend.class,"condition",
+		    MBooleanExpression.class,"getCondition","setCondition");
+
+        JTextArea conditionArea = new UMLExpressionBodyField(conditionModel,
+                                                            true);
+        JScrollPane conditionScroll =
+            new JScrollPane(conditionArea,
+                            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        addCaption("Condition:", 4, 0, 1);
+        addField(conditionScroll, 4, 0, 0);
 
         // Link to the two ends. This is done as a drop down. First for the
         // base use case.
 
-        UMLComboBoxModel     model = 
-            new UMLComboBoxModel(this, "isAcceptableUseCase",
-                                 "base", "getBase", "setBase",
-                                 true, MUseCase.class, true);
-        UMLComboBox          box   = new UMLComboBox(model);
-        UMLComboBoxNavigator nav   =
-            new UMLComboBoxNavigator(this, "NavUseCase", box);
+        UMLModelElementComboBoxModel     model = 
+            new UMLModelElementComboBoxModel(this, "getBase", "setBase",
+                                             true, MUseCase.class);
+        UMLModelElementComboBox          box   =
+            new UMLModelElementComboBox(model);
+        UMLModelElementComboBoxNavigator nav   =
+            new UMLModelElementComboBoxNavigator(this, "NavUseCase", box);
 
         addCaption("Base:", 0, 1, 0);
         addField(nav, 0, 1, 0);
 
         // The extension use case (reuse earlier variables)
 
-        model = new UMLComboBoxModel(this, "isAcceptableUseCase",
-                                     "extension", "getExtension",
-                                     "setExtension", true, MUseCase.class,
-                                     true);
-        box   = new UMLComboBox(model);
-        nav   = new UMLComboBoxNavigator(this, "NavUseCase", box);
+        model = new UMLModelElementComboBoxModel(this, "getExtension",
+                                                 "setExtension", true,
+                                                 MUseCase.class);
+        box   = new UMLModelElementComboBox(model);
+        nav   = new UMLModelElementComboBoxNavigator(this, "NavUseCase", box);
 
         addCaption("Extension:", 1, 1, 0);
         addField(nav, 1, 1, 0);
@@ -111,8 +131,8 @@ public class PropPanelExtend extends PropPanelModelElement {
         // vertically
 
         JList extensionPointList =
-            new UMLList(new UMLExtensionPointListModel(this, "extensionPoint",
-                                                       true, true), true);
+            new UMLList(new UMLExtensionPointListModel(this, true, true),
+                        true);
 
         extensionPointList.setBackground(getBackground());
         extensionPointList.setForeground(Color.blue);
@@ -142,6 +162,61 @@ public class PropPanelExtend extends PropPanelModelElement {
                             null);
         new PropPanelButton(this, buttonPanel, _deleteIcon,
                             localize("Delete"), "removeElement", null); 
+    }
+
+
+    /**
+     * <p>Get the condition associated with the extend relationship.</p>
+     *
+     * <p>The condition is actually of type {@link MBooleanExpression}, which
+     *   defines both a language and a body. We are only interested in the
+     *   body, which is just a string.</p>
+     *
+     * @return  The body of the {@link MBooleanExpression} which is the
+     *          condition associated with this extend relationship, or
+     *          <code>null</code> if there is none.
+     */ 
+
+    public String getCondition() {
+        String condBody = null;
+        Object target   = getTarget();
+
+        if (target instanceof MExtend) {
+            MBooleanExpression condition = ((MExtend) target).getCondition();
+
+            if (condition != null) {
+                condBody = condition.getBody();
+            }
+        }
+
+        return condBody;
+    }
+
+
+    /**
+     * <p>Set the condition associated with the extend relationship.</p>
+     *
+     * <p>The condition is actually of type {@link MBooleanExpression}, which
+     *   defines both a language and a body. We are only interested in setting
+     *   the body, which is just a string.</p>
+     *
+     * @param condBody  The body of the condition to associate with this
+     *                  extend relationship.
+     */
+
+    public void setCondition(String condBody) {
+
+        // Give up if we are not an extend relationship
+
+        Object target = getTarget();
+
+        if (!(target instanceof MExtend)) {
+            return;
+        }
+
+        // Set the condition body.
+
+        ((MExtend) target).setCondition(new MBooleanExpression(null,condBody));
     }
 
 

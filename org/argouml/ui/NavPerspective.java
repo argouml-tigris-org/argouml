@@ -21,6 +21,16 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// File: NavPerspective.java
+// Classes: NavPerspective
+// Original Author: your email address here
+// $Id$
+
+// 16 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
+// the display of extends/includes and extension points in the package centric
+// view.
+
+
 package org.argouml.ui;
 
 import java.util.*;
@@ -90,6 +100,8 @@ implements Serializable, TreeModel, Cloneable {
 
     // These are intended for pane-2 of NavigatorPane, the tend to be
     // simple and shallow, and have something in pane-1 as a prerequiste
+    NavPerspective useCaseToExtensionPoint =
+        new NavPerspective("Extension Points of Use Case");
     NavPerspective classToBehStr = new NavPerspective("Features of Class");
     NavPerspective classToBeh = new NavPerspective("Methods of Class");
     NavPerspective classToStr = new NavPerspective("Attributes of Class");
@@ -115,6 +127,14 @@ implements Serializable, TreeModel, Cloneable {
 			     new PredAND(new PredInstanceOf(MAssociation.class),
                              new PredNotInstanceOf(MAssociationClass.class)));
 
+    // Extend and include are traversed via use case.
+
+    GoFilteredChildren modelToExtendsAndIncludes =
+      new GoFilteredChildren("Package->Extends/Includes",
+			     new GoModelToElements(),
+			     new PredOR(new PredInstanceOf(MExtend.class),
+                                        new PredInstanceOf(MInclude.class)));
+
     GoFilteredChildren modelToInstances =
       new GoFilteredChildren("Package->Instances",
 			     new GoModelToElements(),
@@ -133,9 +153,11 @@ implements Serializable, TreeModel, Cloneable {
     packageCentric.addSubTreeModel(modelToPackages);
     packageCentric.addSubTreeModel(modelToClassifiers);
     packageCentric.addSubTreeModel(modelToAssociations);
+    packageCentric.addSubTreeModel(modelToExtendsAndIncludes);
     packageCentric.addSubTreeModel(modelToInstances);
     packageCentric.addSubTreeModel(modelToLinks);
     packageCentric.addSubTreeModel(modelToCollaboration);
+    packageCentric.addSubTreeModel(new GoUseCaseToExtensionPoint());
     packageCentric.addSubTreeModel(new GoClassifierToStr());
     packageCentric.addSubTreeModel(new GoClassifierToBeh());
     packageCentric.addSubTreeModel(new GoAssocRoleMessages());
@@ -146,6 +168,7 @@ implements Serializable, TreeModel, Cloneable {
     diagramCentric.addSubTreeModel(new GoProjectDiagram());
     diagramCentric.addSubTreeModel(new GoDiagramToNode());
     diagramCentric.addSubTreeModel(new GoDiagramToEdge());
+    diagramCentric.addSubTreeModel(new GoUseCaseToExtensionPoint());
     diagramCentric.addSubTreeModel(new GoClassifierToStr());
     diagramCentric.addSubTreeModel(new GoClassifierToBeh());
 
@@ -248,6 +271,8 @@ implements Serializable, TreeModel, Cloneable {
     depCentric.addSubTreeModel(new GoModelToElements());
     depCentric.addSubTreeModel(new GoElement2DependentElement());
 
+    useCaseToExtensionPoint.addSubTreeModel(new GoUseCaseToExtensionPoint());
+
     classToBehStr.addSubTreeModel(new GoClassifierToStr());
     classToBehStr.addSubTreeModel(new GoClassifierToBeh());
 
@@ -280,6 +305,7 @@ implements Serializable, TreeModel, Cloneable {
     registerRule(new GoModelToAssociation());
     registerRule(new GoModelToBaseElements());
     registerRule(new GoProjectDiagram());
+    registerRule(new GoUseCaseToExtensionPoint());
     registerRule(new GoClassifierToBeh());
     registerRule(new GoClassifierToStr());
     registerRule(new GoDiagramToNode());

@@ -21,6 +21,18 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// File: Project.java
+// Classes: Project
+// Original Author: not known
+// $Id$
+
+// 16 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to remove
+// include and extend relationships when deleting a use case.
+
+// 3 May 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to mark the
+// project as needing saving if any object is trashed.
+
+
 package org.argouml.kernel;
 
 import java.io.*;
@@ -36,6 +48,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.xmi.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
@@ -872,8 +885,20 @@ public class Project implements java.io.Serializable {
   }
 
   // Attention: whole Trash mechanism should be rethought concerning nsuml
+
+    // Jeremy Bennett. Note that at present these are all if, not
+    // else-if. Rather than make a big change, I've just explicitly dealt with
+    // the case where we have a use case that is not classifier.
+
   protected void trashInternal(Object obj) {
-	  if (obj instanceof MClassifier) {
+	  if (obj instanceof MUseCase) {
+		  // System.out.println("trashInternal: "+obj);
+		  MUseCase me = (MUseCase) obj;
+		  // me.remove();
+		  MMUtil.SINGLETON.remove(me);
+	  }
+	  if ((obj instanceof MClassifier) &&
+              (!(obj instanceof MUseCase))) {
 		  // System.out.println("trashInternal: "+obj);
 		  MClassifier me = (MClassifier) obj;
 		  // me.remove();
@@ -902,6 +927,11 @@ public class Project implements java.io.Serializable {
 		  MModelElement me = (MModelElement) obj;
 		  me.remove();
 	  }
+
+          // If we've trashed anything, we'll need to save the project.
+
+          Project p = ProjectBrowser.TheInstance.getProject();
+          p.setNeedsSave(true);
 
 	  /* old version
 		 if (obj instanceof MModelElement) {

@@ -38,15 +38,24 @@
 // within the include relationship, rather than the use case, by reversing the
 // use of access functions for the "base" and "addition" associations.
 
+// 3 May 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to mark the
+// project as needing saving if an include relationship is added, deleted,
+// changed or moved.
+
 
 package org.argouml.uml.ui;
 
-import ru.novosoft.uml.*;
-import javax.swing.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.use_cases.*;
 import java.util.*;
 import java.awt.*;
+
+import javax.swing.*;
+
+import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.use_cases.*;
+
+import org.argouml.ui.*;
+import org.argouml.kernel.*;
 
 
 /**
@@ -278,6 +287,11 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
                                            newInclude, index));
         }
 
+        // Having added an include relationship, mark as needing saving
+
+        Project p = ProjectBrowser.TheInstance.getProject();
+        p.setNeedsSave(true);
+
         // Advise Swing that we have added something at this index and
         // navigate there.
 
@@ -359,6 +373,11 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
             ns.removeOwnedElement(include);
         }
 
+        // Having removed an include relationship, mark as needing saving
+
+        Project p = ProjectBrowser.TheInstance.getProject();
+        p.setNeedsSave(true);
+
         // Tell Swing this entry has gone
         
         fireIntervalRemoved(this,index,index);
@@ -396,6 +415,11 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
         MUseCase useCase = (MUseCase) target;
         useCase.setIncludes(moveUpUtil(useCase.getIncludes(), index));
 
+        // Having moved an include relationship, mark as needing saving
+
+        Project p = ProjectBrowser.TheInstance.getProject();
+        p.setNeedsSave(true);
+
         // Tell Swing
 
         fireContentsChanged(this, index - 1, index);
@@ -432,6 +456,11 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 
         MUseCase useCase = (MUseCase) target;
         useCase.setIncludes(moveDownUtil(useCase.getIncludes(), index));
+
+        // Having moved an include relationship, mark as needing saving
+
+        Project p = ProjectBrowser.TheInstance.getProject();
+        p.setNeedsSave(true);
 
         // Tell Swing
 

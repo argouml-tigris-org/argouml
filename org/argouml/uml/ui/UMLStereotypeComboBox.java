@@ -21,31 +21,70 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+
+// File: UMLStereotypeComboBox.java
+// Classes: UMLStereotypeComboBox
+// Original Author: Curt Arnold
+// $Id$
+
+// 26 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Added third party
+// event listener to ensure name changes to stereotypes are picked up.
+
+
 package org.argouml.uml.ui;
+
 import org.argouml.uml.*;
+
 import javax.swing.*;
-import ru.novosoft.uml.*;
+
 import java.awt.event.*;
 import java.awt.*;
+import java.util.*;
+
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import java.util.*;
+
 
 /**
- *   This class implements a combo box for stereotypes.
- *   The class polls the model and profile for appropriate
- *   stereotypes for the target object.  A context popup menu
- *   allows for new stereotypes to be created and existing
- *   stereotypes to be deleted.
+ * <p>Implements a combo box for stereotypes.</p>
  *
- *   @author Curt Arnold
+ * <p>The class polls the model and profile for appropriate stereotypes for the
+ *   target object.  A context popup menu allows for new stereotypes to be
+ *   created and existing stereotypes to be deleted.</p>
+ *
+ * @author Curt Arnold
+ *
+ * @author Jeremy Bennett (mail@jeremybennett.com), 26 Apr 2002. Added third
+ *         party listener, to ensure name change events are tracked.
  */
+
 public class UMLStereotypeComboBox extends UMLComboBox {
 
+    /**
+     * <p>Constructor for the box.</p>
+     *
+     * <p>Creates a model ({@link UMLComboBoxModel} and invokes the superclass
+     *   with that. Then sets a third party listener.</p>
+     *
+     * @param container  The container (invariably a {@link PropPanel}) that
+     *                   contains this box.
+     */
+
     public UMLStereotypeComboBox(UMLUserInterfaceContainer container) {
-        super(new UMLComboBoxModel(container,"isAcceptibleStereotype",
-            "stereotype","getStereotype","setStereotype",true,MStereotype.class,true));
+
+        super(new UMLComboBoxModel(container, "isAcceptibleStereotype",
+                                   "stereotype", "getStereotype",
+                                   "setStereotype", true, MStereotype.class,
+                                   true));
+
+        // Only add a listener if we have a prop panel
+
+        if (container instanceof PropPanel) {
+            Object [] eventsToWatch = { MStereotype.class, "name" };
+            ((PropPanel) container).addThirdPartyEventListening(eventsToWatch);
+        }
     }
 
-}
+}  /* End of UMLStereotypeComboBox.java */

@@ -38,6 +38,10 @@
 // needed - if you set one end, NSUML will do the other), which compensates for
 // this.
 
+// 16 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Added implementation
+// of NotationContext interface, to allow underlying classes to use the
+// Notation package. Ultimately we should consider moving this into
+// UMLUserInterfaceComponent.
 
 package org.argouml.uml.ui;
 
@@ -48,13 +52,16 @@ import ru.novosoft.uml.behavior.use_cases.*;
 import java.util.*;
 import java.awt.*;
 
+import org.argouml.application.api.*;
+
+
 /**
  *  This class is an abstract superclass for classes that provide a list
  *  of UML model elements.
  *
  *  @author Curt Arnold
  */
-abstract public class UMLModelElementListModel extends AbstractListModel implements UMLUserInterfaceComponent  {
+abstract public class UMLModelElementListModel extends AbstractListModel implements UMLUserInterfaceComponent, NotationContext {
 
     /**
      *   The container that provides the "target" model element.
@@ -539,10 +546,19 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
     }
 
 
+    /**
+     * <p>Gives a notation name, so subclasses can use the Notation
+     *   package.</p>
+     *
+     * <p>This default implementation simply requests the default notation.</p>
+     *
+     * @return  The notation to use. In this implementation always
+     *          <code>null</code>, meaning use the default notation.
+     */
+
+    public NotationName getContextNotation() {
+        return null;
+    }
 
 
 }
-
-
-
-

@@ -21,7 +21,17 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// File: Notation.java
+// Classes: Notation
+// Original Author: Thierry Lach
+// $Id$
+
+// 8 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
+// extension points.
+
+
 package org.argouml.application.api;
+
 import org.argouml.application.notation.*;
 import org.argouml.application.events.*;
 
@@ -144,6 +154,20 @@ implements PropertyChangeListener {
   ////////////////////////////////////////////////////////////////
   // class accessors
 
+    /**
+     * <p>General accessor for an extension point.</p>
+     *
+     * @param notation    Name of the notation to be used.
+     *
+     * @param ep          The extension point to generate for.
+     *
+     * @return            The generated text.
+     */
+
+    protected String generateExtensionPoint(NotationName notation,
+                                            MExtensionPoint ep) {
+        return getProvider(notation).generateExtensionPoint(ep);
+    }
   protected String generateOperation(NotationName notation, MOperation op,
                                      boolean documented) {
       return getProvider(notation).generateOperation(op, documented);
@@ -208,6 +232,25 @@ implements PropertyChangeListener {
   // static accessors
 
   public static Notation getInstance() { return SINGLETON; }
+
+
+    /**
+     * <p>Static accessor for extension point generation. Invokes our protected
+     *   accessor from the singleton instance with the "documented" flag set
+     *   false.</p>
+     *
+     * @param ctx  Context used to identify the notation
+     *
+     * @param ep   The extension point to generate for.
+     *
+     * @return     The generated text.
+     */
+
+    public static String generateExtensionPoint(NotationContext ctx,
+                                                MExtensionPoint ep) {
+        return SINGLETON.generateExtensionPoint(Notation.getNotation(ctx), ep);
+    }
+
 
   public static String generateOperation(NotationContext ctx, MOperation op) {
       return SINGLETON.generateOperation(Notation.getNotation(ctx), op, false);
@@ -275,6 +318,26 @@ implements PropertyChangeListener {
       return SINGLETON.generateClassifierRef(Notation.getNotation(ctx), cls);
   }
  
+
+    /**
+     * <p>General purpose static generator for any object that wishes to set
+     *   the documented flag.</p>
+     *
+     * <p>Uses the class of the object to determine which method to
+     *   invoke. Only actually looks for MOperation and MAttribute. All others
+     *   invoke the simpler version with no documented flag, so taking the
+     *   default version.</p>
+     *
+     * @param ctx        The context to look up the notation generator.
+     *
+     * @param o          The object to generate.
+     *
+     * @param documented  A flag of unknown meaning. Only has any effect for
+     *                    {@link MOperation} and {@link MAttribute}.
+     *
+     * @return            The generated string.
+     */
+
   public static String generate(NotationContext ctx, Object o,
                                 boolean documented) {
     if (o == null)
@@ -293,6 +356,14 @@ implements PropertyChangeListener {
   public static String generate(NotationContext ctx, Object o) {
     if (o == null)
       return "";
+
+    // Added to support extension points
+
+    if (o instanceof MExtensionPoint) {
+        return SINGLETON.generateExtensionPoint(Notation.getNotation(ctx),
+                                                (MExtensionPoint) o);
+    }
+
     if (o instanceof MOperation)
       return SINGLETON.generateOperation(Notation.getNotation(ctx),
                                          (MOperation) o,
@@ -375,12 +446,20 @@ implements PropertyChangeListener {
   //                   only using those methods that are necessary.
   ////////////////////////////////////////////////////////////////
 
+  // public static void parseExtensionPointCompartment(NotationContext ctx, MUseCase uc, String s) {
+      // SINGLETON.getParser(Notation.getNotation(ctx)).parseExtensionPointCompartment(uc, s);
+  // }
+
   // public static void parseOperationCompartment(NotationContext ctx, MClassifier cls, String s) {
       // SINGLETON.getParser(Notation.getNotation(ctx)).parseOperationCompartment(cls, s);
   // }
 
   // public static void parseAttributeCompartment(NotationContext ctx, MClassifier cls, String s) {
       // SINGLETON.getParser(Notation.getNotation(ctx)).parseAttributeCompartment(cls, s);
+  // }
+
+  // public static MExtensionPoint parseExtensionPoint(NotationContext ctx, String s) {
+      // return SINGLETON.getParser(Notation.getNotation(ctx)).parseExtensionPoint(s);
   // }
 
   // public static MOperation parseOperation(NotationContext ctx, String s) {

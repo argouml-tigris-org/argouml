@@ -21,7 +21,17 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// File: NotationProvider.java
+// Interfaces: NotationProvider
+// Original Author: Thierry Lach
+// $Id$
+
+// 10 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
+// extension points.
+
+
 package org.argouml.application.api;
+
 // import org.argouml.application.events.*;
 import org.argouml.language.*;
 import org.argouml.uml.diagram.ui.*;
@@ -44,6 +54,7 @@ public interface NotationProvider {
 
   public NotationName getNotation();
 
+  public String generateExtensionPoint(MExtensionPoint op);
   public String generateOperation(MOperation op, boolean documented);
   public String generateAttribute(MAttribute attr, boolean documented);
   public String generateParameter(MParameter param);
@@ -72,8 +83,10 @@ public interface NotationProvider {
    */
   public boolean canParse();
 
+  // public void parseExtensionPointCompartment(MUseCase uc, String s);
   // public void parseOperationCompartment(MClassifier cls, String s);
   // public void parseAttributeCompartment(MClassifier cls, String s);
+  // public MExtensionPoint parseExtensionPoint(String s);
   // public MOperation parseOperation(String s);
   // public MAttribute parseAttribute(String s);
   // public String parseOutVisibility(MFeature f, String s);
