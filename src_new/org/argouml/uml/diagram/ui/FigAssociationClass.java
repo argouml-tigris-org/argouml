@@ -229,7 +229,9 @@ public class FigAssociationClass
     public void figDamaged() {
         if (!damageLock) {
             damageLock = true;
-            Layer lay = getLayer();
+
+            Editor editor = Globals.curEditor();
+            Layer lay = editor.getLayerManager().getActiveLayer();
             if (!lay.equals(null) 
                     && lay instanceof LayerPerspective 
                     && fig != null && edge != null 

@@ -140,10 +140,10 @@ public class ModeCreateAssociation extends ModeCreatePolyEdge{
                     mutableGraphModel.removeEdge(association);
                     f.setOwner(null);
                     f.removeFromDiagram();
-                    FigNode figNode = renderer.getFigNodeFor(gm, lay, association);
+                    mutableGraphModel.addNode(association);
+                    FigNode figNode = (FigNode) lay.presentationFor(association);
                     figNode.setX(x - figNode.getWidth()/2);
                     figNode.setY(y - figNode.getHeight()/2);
-                    mutableGraphModel.addNode(association);
                     editor.add(figNode);
                     associationEnds = ModelFacade.getConnections(association);
                     Iterator it = associationEnds.iterator();
