@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+    "-//Puppy Crawl//DTD Check Configuration 1.1//EN"
+    "http://www.puppycrawl.com/dtds/configuration_1_1.dtd">
+
+<module name="Checker">
+
+    <module name="PackageHtml"/>
+
+    <module name="NewlineAtEndOfFile"/>
+
+    <module name="Translation"/>
+
+    <module name="TreeWalker">
+
+        <module name="ArrayTypeStyle"/>
+        <module name="AvoidInlineConditionals"/>
+        <module name="AvoidNestedBlocks"/>
+        <module name="AvoidStarImport"/>
+        <module name="ConstantName"/>
+        <module name="DoubleCheckedLocking"/>
+        <module name="EmptyBlock">
+	  <!-- All except catch and for. -->
+          <property name="tokens" value="LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_IF,LITERAL_TRY,LITERAL_WHILE,STATIC_INIT"/>
+        </module>
+
+        <module name="EmptyBlock">
+          <property name="tokens" value="LITERAL_CATCH"/>
+          <property name="option" value="text"/>
+        </module>
+
+        <module name="EmptyForIteratorPad"/>
+
+        <module name="EmptyStatement"/>
+
+        <module name="EqualsHashCode"/>
+        <module name="FileLength"/>
+        <module name="FinalClass"/>
+
+        <module name="GenericIllegalRegexp">
+          <property name="format" value="@todo"/>
+        </module>
+        <module name="GenericIllegalRegexp">
+          <property name="format" value="TODO[^:]"/>
+        </module>
+        <module name="GenericIllegalRegexp">
+          <property name="format" value="[Nn]eeds?-?more-?work"/>
+        </module>
+        <module name="GenericIllegalRegexp">
+          <property name="format" value="non-Javadoc"/>
+        </module>
+
+        <module name="GenericIllegalRegexp">
+          <property 
+		name="format"
+                value="/\*\* (needs documenting|to be documented|\s*) \*/"/>
+        </module>
+
+        <module name="GenericIllegalRegexp">
+          <property 
+		name="format"
+                value="(public|protected).*Logger"/>
+          <property
+	        name="message"
+                value="The Logger shall be private in the ArgoUML project."/>
+        </module>
+        <module name="GenericIllegalRegexp">
+          <property 
+		name="format"
+                value="^[^/*]*Logger[ \t][ \t]*([^L]|L[^O]|LO[^G]|LOG[^ \t])"/>
+          <property
+	        name="message"
+                value="The Logger shall be named LOG in the ArgoUML project."/>
+        </module>
+
+        <module name="GenericIllegalRegexp">
+          <property name="format" value="^//\s*File:"/>
+	  <property name="message"
+	            value="Remove line from old style header format. Get filename from your editor."/>
+        </module>
+
+        <module name="GenericIllegalRegexp">
+          <property name="format" value="^//\s*Class(es)?:"/>
+          <property name="message"
+	            value="Remove line from old style header format. Get class list from your IDE."/>
+        </module>
+
+        <module name="GenericIllegalRegexp">
+          <property name="format" value="^//\s*(Original )?[Aa]uthor:"/>
+          <property name="message"
+	            value="Remove line from old style header format. Use @author tag."/>
+        </module>
+
+ 	<module name="HiddenField"/>
+        <module name="HideUtilityClassConstructor"/>
+
+        <module name="IllegalImport"/>
+        <module name="IllegalInstantiation"/>
+	<module name="Indentation">
+            <property name="caseIndent" value="0"/>
+        </module>
+        <module name="InterfaceIsType"/>
+
+        <module name="InnerAssignment"/>
+        <module name="JavadocType">
+            <property name="scope" value="private"/>
+        </module>
+        <module name="JavadocMethod">
+            <property name="scope" value="private"/>
+            <property name="allowUndeclaredRTE" value="true"/>
+        </module>
+	<module name="JavadocStyle"/>
+        <module name="JavadocVariable">
+            <property name="scope" value="private"/>
+	</module>
+
+        <module name="LeftCurly"/>
+
+        <module name="LineLength">
+	  <property name="ignorePattern"
+	            value="^( *\* @see |import |// [$]Id:.*[$])[^ ]*$"/>
+	</module>
+
+        <module name="LocalFinalVariableName"/>
+        <module name="LocalVariableName"/>
+        <module name="MagicNumber"/>
+        <module name="MemberName"/>
+        <module name="MethodLength"/>
+        <module name="MethodName"/>
+        <module name="MissingSwitchDefault"/>
+        <module name="ModifierOrder"/>
+        <module name="NeedBraces"/>
+        <module name="NoWhitespaceAfter"/>
+
+        <module name="NoWhitespaceBefore"/>
+        <module name="NoWhitespaceBefore">
+            <property name="tokens" value="DOT"/>
+            <property name="allowLineBreaks" value="true"/>
+        </module>
+
+        <module name="OperatorWrap"/>
+
+        <module name="PackageName"/>
+        <module name="ParameterName"/>
+        <module name="ParameterNumber"/>
+        <module name="ParenPad"/>
+        <module name="RedundantImport"/>
+
+        <module name="RedundantModifier"/>
+        <module name="RedundantThrows"/>
+
+        <module name="RegexpHeader">
+          <property name="headerFile" value="${checkstyle.header.file}"/>
+        </module>
+
+        <module name="RightCurly"/>
+
+        <module name="SimplifyBooleanExpression"/>
+        <module name="SimplifyBooleanReturn"/>
+        <module name="StaticVariableName"/>
+        <module name="TypecastParenPad"/>
+        <module name="TypeName"/>
+        <module name="UnusedImports"/>
+        <module name="UpperEll"/>
+        <module name="VisibilityModifier">
+            <property name="publicMemberPattern" value="^$"/>
+        </module>
+        <module name="WhitespaceAfter"/>
+        <module name="WhitespaceAround"/>
+
+	<!-- Over the top also in the paranoid version:
+        <module name="DesignForExtension"/>
+
+        <module name="FinalParameters"/>
+
+        <module name="GenericIllegalRegexp">
+            <property name="format" value="\s+$"/>
+            <property name="message" value="Line has trailing spaces."/>
+        </module>
+	-->
+
+    </module>
+</module>
