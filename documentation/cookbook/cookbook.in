@@ -226,6 +226,10 @@ for your understanding of the project and the code.
 		  </listitem>
 		</orderedlist>
 </para>
+
+
+
+
 	    </listitem>
 	    <listitem>
 	      <para>Familiarize yourself with the code.</para>
@@ -1646,6 +1650,7 @@ project is set to either a read from file project
 (see ArgoParser.SINGLETON.readProject(URL) and
 ArgoParser.SINGLETON.getProject() in org.argouml.xml.argo.ArgoParser)
 or a newly generated project (see Project.makeEmptyProject()).
+
 </para>
       </sect2>
 
@@ -2082,8 +2087,58 @@ ArgoUML project so that your code works on a recognized public API that will be
 maintained in the future.
 </para>
 	    </listitem>
+        
+        <listitem>
+	      <para>...add new rules for new modelelements?</para>
+          <para>
+            You would create a GoRule/PerspectiveRule in org/argouml/ui/explorer/rules. 
+            There are plenty of examples to look at. 
+            The important things to get right is of course that:</para>
+          <para>
+            <itemizedlist>
+              <listitem><para> you return the right children</para></listitem>
+              <listitem><para> return the objects that the TreeModel must listen to to know when to update the node (and the list of immediate children)
+                After that you must register your GoRule in org/argouml/ui/explorer/PerspectiveManager</para></listitem>
+              <listitem><para> Add it to the list in loadRules()</para></listitem>
+              <listitem><para> Perhaps add it to some of the default perspectives in oldLoadDefaultPerspectives(), I guess
+                And then I think it should just be a matter of recompiling and possibly switching to the perspective you added your rule to.</para></listitem>
+            </itemizedlist>
+          </para>
+        </listitem>
+        
+        <listitem>
+	      <para>...tell the explorer to refresh?</para>
+          <para>
+            You are not supposed to. 
+            The TreeModel is supposed to listen to events and refresh affected parts. 
+            And this is where the lack of events for adding diagrams creates a problem.
+          </para>
+          <para>
+            Obviously it would be possible to add an operation somewhere to 
+            revalidate the expanded parts of the Explorer, but I'm not aware
+            of the existance of such an operation today.
+          </para>
+        </listitem>
+        
+        <listitem>
+	      <para>...navigate programmatically to a certain explorer element so that its path is exploded?</para>
+          <para>In general you can't. 
+            The Explorer tree is lazy in that it only explores the parts of the tree that the user has opened. 
+            And since the GoRules are general navigating to them would require a complete tree search. 
+            Which is also complicated by the fact that the answer is not unique and there can be branches with infinite depth.
+          </para>
+          <para>
+            In reality it would be possible to create an algorithm 
+            to search out one occurance of an element (since the model only contains
+            finitely many elements and I assume that noone will add 
+            gorules that add branches of infinite length that does not infinitely
+            often contain elements from the model), 
+            but I don't think anyone has don't it. 
+            Obviously finding all occurances cannot be done.
+          </para>
+	    </listitem>
 	  </itemizedlist>
-</para>
+      </para>
       </sect2>
     </sect1>
 
