@@ -56,7 +56,7 @@ public class UMLLinkedList extends UMLList2 implements ListSelectionListener {
     }
     
     public UMLLinkedList(UMLModelElementListModel2 dataModel) {
-        this(dataModel, false);
+        this(dataModel, true);
     }
 
     /**

@@ -29,6 +29,7 @@ import javax.swing.JCheckBox;
 import org.argouml.model.ModelFacade;
 
 import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.tigris.gef.presentation.Fig;
@@ -60,6 +61,7 @@ public abstract class UMLCheckBox2
      */
     public UMLCheckBox2(String text, Action a, String propertySetName) {
         super(text);
+        setFont(LookAndFeelMgr.getInstance().getSmallFont());
         _propertySetName = propertySetName;
         addActionListener(a);
 

@@ -72,13 +72,15 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
      */
     public Component getListCellRendererComponent(JList list, Object value, 
                     int index, boolean isSelected, boolean cellHasFocus) {
-        
+        cat.debug("determine rendering for: " + value);
+        cat.debug("show icon: " + _showIcon);
         if (ModelFacade.isABase(value) || ModelFacade.isAMultiplicity(value)) {
             
+            cat.debug("is a MBase or MMultiplicity");
             String text = makeText(value);
             setText(text);
             
-            if (_showIcon) {
+            if (_showIcon) {                
                 
                 // ----- setup similar to the super() implementation -----
                 setComponentOrientation(list.getComponentOrientation());

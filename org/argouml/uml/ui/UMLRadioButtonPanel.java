@@ -39,6 +39,7 @@ import javax.swing.border.TitledBorder;
 import org.argouml.model.ModelFacade;
 
 import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.tigris.gef.presentation.Fig;
@@ -150,7 +151,7 @@ public abstract class UMLRadioButtonPanel
 	    String actionCommand =
 		(String) labeltextsActioncommands.get(keyAndLabel);
             button.setActionCommand(actionCommand);
-
+            button.setFont(LookAndFeelMgr.getInstance().getSmallFont());
             _buttonGroup.add(button);
             add(button);
         }

@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JComboBox;
 
+import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargettableModelView;
@@ -49,6 +50,7 @@ public class UMLComboBox2
      */
     protected UMLComboBox2(UMLComboBoxModel2 arg0) {
         super(arg0);
+        setFont(LookAndFeelMgr.getInstance().getSmallFont());
         addActionListener(this);
 
     }
@@ -62,6 +64,7 @@ public class UMLComboBox2
     public UMLComboBox2(UMLComboBoxModel2 arg0, UMLAction action,
 			boolean showIcon) {
         super(arg0);
+        setFont(LookAndFeelMgr.getInstance().getSmallFont());
         addActionListener(action);
         // setDoubleBuffered(true);
         setRenderer(new UMLListCellRenderer2(showIcon));      
