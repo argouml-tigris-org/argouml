@@ -25,8 +25,7 @@
 package org.argouml.uml.ui;
 
 import org.argouml.model.ModelFacade;
-
-import ru.novosoft.uml.foundation.data_types.MActionExpression;
+import org.argouml.model.uml.DataTypesFactory;
 
 /**
  * 
@@ -64,7 +63,7 @@ public class UMLScriptExpressionModel extends UMLExpressionModel2 {
      * @see org.argouml.uml.ui.UMLExpressionModel2#newExpression()
      */
     public Object newExpression() {
-        return new MActionExpression("", "");
+        return DataTypesFactory.getFactory().createActionExpression("", "");
     }
 
 }
