@@ -114,7 +114,7 @@ public class PropPanelSignal extends PropPanelModelElement {
     	if (target instanceof MSignal) {
     		MSignal signal = (MSignal)target;
     		MReception reception = CommonBehaviorFactory.getFactory().buildReception(signal);
-    		navigateTo(reception);
+    		ProjectBrowser.TheInstance.setTarget(reception);
     	}
     }
 
