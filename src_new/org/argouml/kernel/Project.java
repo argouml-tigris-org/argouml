@@ -67,6 +67,8 @@ import org.argouml.cognitive.critics.ui.*;
 import org.argouml.cognitive.checklist.*;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.*;
 import org.argouml.uml.generator.*;
 import org.argouml.uml.diagram.*;
@@ -121,6 +123,7 @@ public class Project implements java.io.Serializable {
 
     public Vector _models = new Vector(); //instances of MModel
     public Vector _diagrams = new Vector(); // instances of LayerDiagram
+    protected MModel _defaultModel = null;
     public boolean _needsSave = false;
     public MNamespace _curModel = null;
     public Hashtable _definedTypes = new Hashtable(80);
@@ -138,18 +141,25 @@ public class Project implements java.io.Serializable {
     }
 
     public Project(URL url) {
+    	this();
         _url = Util.fixURLExtension(url, COMPRESSED_FILE_EXT);
         _saveRegistry = new UMLChangeRegistry();
+        
     }
 
     public Project() {
         _saveRegistry = new UMLChangeRegistry();
+         // Jaap Branderhorst 2002-12-09
+        // load the default model
+        // this is NOT the way how it should be since this makes argo depend on Java even more.
+       setDefaultModel(ProfileJava.getInstance().getProfileModel());
     }
 
     public Project (MModel model) {
+    	this();
         Argo.log.info("making empty project with model: "+model.getName());
         _saveRegistry = new UMLChangeRegistry();
-
+		/*
         defineType(JavaUML.VOID_TYPE);     //J.101
         defineType(JavaUML.CHAR_TYPE);     //J.102
         defineType(JavaUML.INT_TYPE);      //J.103
@@ -174,7 +184,7 @@ public class Project implements java.io.Serializable {
         defineType(JavaUML.VECTOR_CLASS);    //J.301
         defineType(JavaUML.HASHTABLE_CLASS); //J.302
         defineType(JavaUML.STACK_CLASS);     //J.303
-
+		*/
         addSearchPath("PROJECT_DIR");
 
         try {
@@ -187,6 +197,7 @@ public class Project implements java.io.Serializable {
 
         Runnable resetStatsLater = new ResetStatsLater();
         org.argouml.application.Main.addPostLoadAction(resetStatsLater);
+        
     }
 
     /**   This method creates a project from the specified URL
@@ -396,36 +407,7 @@ public class Project implements java.io.Serializable {
 
     public static Project makeEmptyProject() {
         Argo.log.info("making empty project");
-        Project p = new Project();
-
-        p.defineType(JavaUML.VOID_TYPE);     //J.101
-        p.defineType(JavaUML.CHAR_TYPE);     //J.102
-        p.defineType(JavaUML.INT_TYPE);      //J.103
-        p.defineType(JavaUML.BOOLEAN_TYPE);  //J.104
-        p.defineType(JavaUML.BYTE_TYPE);     //J.105
-        p.defineType(JavaUML.LONG_TYPE);     //J.106
-        p.defineType(JavaUML.FLOAT_TYPE);    //J.107
-        p.defineType(JavaUML.DOUBLE_TYPE);   //J.108
-        p.defineType(JavaUML.STRING_CLASS);  //J.109
-        p.defineType(JavaUML.CHAR_CLASS);    //J.110
-        p.defineType(JavaUML.INT_CLASS);     //J.111
-        p.defineType(JavaUML.BOOLEAN_CLASS); //J.112
-        p.defineType(JavaUML.BYTE_CLASS);    //J.113
-        p.defineType(JavaUML.LONG_CLASS);    //J.114
-        p.defineType(JavaUML.FLOAT_CLASS);   //J.115
-        p.defineType(JavaUML.DOUBLE_CLASS);  //J.116
-
-        p.defineType(JavaUML.RECTANGLE_CLASS); //J.201
-        p.defineType(JavaUML.POINT_CLASS);     //J.202
-        p.defineType(JavaUML.COLOR_CLASS);     //J.203
-
-        p.defineType(JavaUML.VECTOR_CLASS);    //J.301
-        p.defineType(JavaUML.HASHTABLE_CLASS); //J.302
-        p.defineType(JavaUML.STACK_CLASS);     //J.303
-        // 	try { p.addMember(JavaUML.javastandards); }
-        // 	catch (PropertyVetoException pve) { }
-
-        p.addSearchPath("PROJECT_DIR");
+        
 
         // 	try {
         // 		XMIReader reader = new XMIReader();
@@ -441,17 +423,12 @@ public class Project implements java.io.Serializable {
 
         // m1.setUUID(UUIDManager.SINGLETON.getNewUUID());
         m1.setName("untitledModel");
+        Project p = new Project(m1);
 
-        try {
-            p.addMember(new UMLClassDiagram(m1));
-            p.addMember(new UMLUseCaseDiagram(m1));
-            p.addMember(m1);
-            p.setNeedsSave(false);
-        }
-        catch (PropertyVetoException pve) { }
 
-        Runnable resetStatsLater = new ResetStatsLater();
-        org.argouml.application.Main.addPostLoadAction(resetStatsLater);
+        p.addSearchPath("PROJECT_DIR");
+
+       
 
         return p;
     }
@@ -877,12 +854,13 @@ public class Project implements java.io.Serializable {
             cls = findTypeInModel(s, (MNamespace) _models.elementAt(i));
             if (cls != null) return cls;
         }
+        cls = findTypeInModel(s, _defaultModel);
+        if (cls != null ) return cls;
         cls = (MClassifier) _definedTypes.get(s);
         if (cls == null) {
             System.out.println("new Type defined!");
-            cls = UmlFactory.getFactory().getCore().createClass();
+            cls = UmlFactory.getFactory().getCore().buildClass();
             cls.setName(s);
-            _definedTypes.put(s, cls);
         }
         if (cls.getNamespace() == null)
             cls.setNamespace(getCurrentNamespace());
@@ -911,17 +889,13 @@ public class Project implements java.io.Serializable {
     
 	public MClassifier findTypeInModel(String s, MNamespace ns) {
 		// System.out.println("Looking for type "+s+" in Namespace "+ns.getName());
-		Collection ownedElements = ns.getOwnedElements();
-		Iterator oeIterator = ownedElements.iterator();
-
-		while(oeIterator.hasNext()) {
-			MModelElement me = (MModelElement)oeIterator.next();
-			if (me instanceof MClassifier && (me.getName() != null && me.getName().equals(s)))
-				return (MClassifier) me;
-			if (me instanceof MNamespace) {
-				MClassifier res = findTypeInModel(s, (MNamespace) me);
-				if (res != null) return res;
-			}
+		// s is short name
+		// will only return first found element
+		Collection allClassifiers = ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MClassifier.class);
+		Iterator it = allClassifiers.iterator();
+		while (it.hasNext()) {
+			MClassifier classifier = (MClassifier)it.next();
+			if (classifier.getName() != null && classifier.getName().equals(s)) return classifier;
 		}
 		return null;
 	}
@@ -1254,6 +1228,14 @@ public class Project implements java.io.Serializable {
 
     public static void addStat(Vector stats, String name, int value) {
         stats.addElement(new UsageStatistic(name, value));
+    }
+    
+    public void setDefaultModel(MModel defaultModel) {
+    	_defaultModel = defaultModel;
+    }
+    
+    public MModel getDefaultModel() {
+    	return _defaultModel;
     }
 
     static final long serialVersionUID = 1399111233978692444L;
