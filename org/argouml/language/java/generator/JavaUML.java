@@ -40,36 +40,36 @@ public class JavaUML {
 
     // java.lang
 
-    public static Object/*MClass*/ STRING_CLASS = getCore().createClass();
+    private static final Object STRING_CLASS = getCore().createClass();
 
-    public static Object/*MDataType*/ VOID_TYPE = getCore().createDataType();
-    public static Object/*MDataType*/ CHAR_TYPE = getCore().createDataType();
-    public static Object/*MDataType*/ INT_TYPE = getCore().createDataType();
-    public static Object/*MDataType*/ BOOLEAN_TYPE = getCore().createDataType();
-    public static Object/*MDataType*/ BYTE_TYPE = getCore().createDataType();
-    public static Object/*MDataType*/ LONG_TYPE = getCore().createDataType();
-    public static Object/*MDataType*/ FLOAT_TYPE = getCore().createDataType();
-    public static Object/*MDataType*/ DOUBLE_TYPE = getCore().createDataType();
+    private static final Object VOID_TYPE = getCore().createDataType();
+    private static final Object CHAR_TYPE = getCore().createDataType();
+    private static final Object INT_TYPE = getCore().createDataType();
+    private static final Object BOOLEAN_TYPE = getCore().createDataType();
+    private static final Object BYTE_TYPE = getCore().createDataType();
+    private static final Object LONG_TYPE = getCore().createDataType();
+    private static final Object FLOAT_TYPE = getCore().createDataType();
+    private static final Object DOUBLE_TYPE = getCore().createDataType();
 
-    public static Object/*MClass*/ CHAR_CLASS = getCore().createClass();
-    public static Object/*MClass*/ INT_CLASS = getCore().createClass();
-    public static Object/*MClass*/ BOOLEAN_CLASS = getCore().createClass();
-    public static Object/*MClass*/ BYTE_CLASS = getCore().createClass();
-    public static Object/*MClass*/ LONG_CLASS = getCore().createClass();
-    public static Object/*MClass*/ FLOAT_CLASS = getCore().createClass();
-    public static Object/*MClass*/ DOUBLE_CLASS = getCore().createClass();
+    private static final Object CHAR_CLASS = getCore().createClass();
+    private static final Object INT_CLASS = getCore().createClass();
+    private static final Object BOOLEAN_CLASS = getCore().createClass();
+    private static final Object BYTE_CLASS = getCore().createClass();
+    private static final Object LONG_CLASS = getCore().createClass();
+    private static final Object FLOAT_CLASS = getCore().createClass();
+    private static final Object DOUBLE_CLASS = getCore().createClass();
 
 
     // java.awt
-    public static Object/*MClass*/ RECTANGLE_CLASS = getCore().createClass();
-    public static Object/*MClass*/ POINT_CLASS = getCore().createClass();
-    public static Object/*MClass*/ COLOR_CLASS = getCore().createClass();
+    private static final Object RECTANGLE_CLASS = getCore().createClass();
+    private static final Object POINT_CLASS = getCore().createClass();
+    private static final Object COLOR_CLASS = getCore().createClass();
 
 
     // java.util
-    public static Object/*MClass*/ VECTOR_CLASS = getCore().createClass();
-    public static Object/*MClass*/ HASHTABLE_CLASS = getCore().createClass();
-    public static Object/*MClass*/ STACK_CLASS = getCore().createClass();
+    private static final Object VECTOR_CLASS = getCore().createClass();
+    private static final Object HASHTABLE_CLASS = getCore().createClass();
+    private static final Object STACK_CLASS = getCore().createClass();
 
     /** 
      * Get the CoreFactory.
@@ -83,7 +83,7 @@ public class JavaUML {
     /**
      * This UML Model contains the Java standard elements.
      */
-    public static Object/*MModel*/ javastandards =
+    private static Object/*MModel*/ javastandards =
 	UmlFactory.getFactory().getModelManagement().createModel();
 
     static {
