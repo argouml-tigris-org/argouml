@@ -42,8 +42,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.GenCompositeClasses;
 import org.tigris.gef.util.VectorSet;
 
-import ru.novosoft.uml.foundation.core.MClassifier;
-
 /**  */
 public class CrCircularComposition extends CrUML {
     protected static Category cat =

@@ -1848,7 +1848,7 @@ public class ModelFacade {
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-
+   
     /**
      * Returns the do activity action of a state
      * @param handle
@@ -1885,6 +1885,18 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /** Get the nodeInstance of a MComponentInstance.
+     *
+     * @param handle the MComponentInstance
+     * @returns the dispatchaction (or null)
+     */
+    public static Object getNodeInstance(Object handle) {
+        if (handle instanceof MComponentInstance) {
+            return ((MComponentInstance) handle).getNodeInstance();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
     /** The list of operations
      *
      * @param handle classifier to examine.

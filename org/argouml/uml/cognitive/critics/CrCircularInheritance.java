@@ -40,7 +40,6 @@ import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.SuperclassGen;
 import org.tigris.gef.util.VectorSet;
 
-import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 
 /** Well-formedness rule [2] for MGeneralizableElement. See page 31 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
@@ -72,18 +71,16 @@ public class CrCircularInheritance extends CrUML {
     }
 							      
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
-	MGeneralizableElement ge = (MGeneralizableElement) dm;
-	VectorSet offs = computeOffenders(ge);
+	VectorSet offs = computeOffenders(dm);
 	return new ToDoItem(this, offs, dsgr);
     }
 								  
-    protected VectorSet computeOffenders(MGeneralizableElement dm) {
+    protected VectorSet computeOffenders(Object dm) {
 	VectorSet offs = new VectorSet(dm);
 	VectorSet above = offs.reachable(new SuperclassGen());
 	java.util.Enumeration enum = above.elements();
 	while (enum.hasMoreElements()) {
-	    MGeneralizableElement ge2 =
-		(MGeneralizableElement) enum.nextElement();
+	    Object ge2 = enum.nextElement();
 	    VectorSet trans =
 		(new VectorSet(ge2)).reachable(new SuperclassGen());
 	    if (trans.contains(dm)) offs.addElement(ge2);
@@ -94,7 +91,7 @@ public class CrCircularInheritance extends CrUML {
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
 	VectorSet offs = i.getOffenders();
-	MGeneralizableElement dm = (MGeneralizableElement) offs.firstElement();
+	Object dm =  offs.firstElement();
 	if (!predicate(dm, dsgr)) return false;
 	VectorSet newOffs = computeOffenders(dm);
 	boolean res = offs.equals(newOffs);
