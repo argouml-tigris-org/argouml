@@ -295,7 +295,7 @@
                   <sourceState> <XMI.reference target="S.100203"/> </sourceState>
                   <targetState> <XMI.reference target="S.100204"/> </targetState>
                   <trigger>
-                    <SignalEvent XMI.id = "S.100652">
+                    <SignalEvent XMI.id = "S.101265">
                       <name>pass</name>
                       <visibility XMI.value = "public"/>
                       <signal> <XMI.reference /> </signal>
@@ -320,7 +320,7 @@
                   <sourceState> <XMI.reference target="S.100204"/> </sourceState>
                   <targetState> <XMI.reference target="S.100205"/> </targetState>
                   <trigger>
-                    <SignalEvent XMI.id = "S.100654">
+                    <SignalEvent XMI.id = "S.101267">
                       <name>pass</name>
                       <visibility XMI.value = "public"/>
                       <signal> <XMI.reference /> </signal>
@@ -345,7 +345,7 @@
                   <sourceState> <XMI.reference target="S.100205"/> </sourceState>
                   <targetState> <XMI.reference target="S.100206"/> </targetState>
                   <trigger>
-                    <SignalEvent XMI.id = "S.100656">
+                    <SignalEvent XMI.id = "S.101269">
                       <name>done</name>
                       <visibility XMI.value = "public"/>
                       <signal> <XMI.reference /> </signal>
@@ -370,7 +370,7 @@
                   <sourceState> <XMI.reference target="S.100206"/> </sourceState>
                   <targetState> <XMI.reference target="S.100211"/> </targetState>
                   <trigger>
-                    <SignalEvent XMI.id = "S.100658">
+                    <SignalEvent XMI.id = "S.101271">
                       <name>pass</name>
                       <visibility XMI.value = "public"/>
                       <signal> <XMI.reference /> </signal>
@@ -395,7 +395,7 @@
                   <sourceState> <XMI.reference target="S.100211"/> </sourceState>
                   <targetState> <XMI.reference target="S.100251"/> </targetState>
                   <trigger>
-                    <SignalEvent XMI.id = "S.100634">
+                    <SignalEvent XMI.id = "S.101273">
                       <name>pass</name>
                       <visibility XMI.value = "public"/>
                       <signal> <XMI.reference /> </signal>
@@ -420,7 +420,7 @@
                   <sourceState> <XMI.reference target="S.100251"/> </sourceState>
                   <targetState> <XMI.reference target="S.100252"/> </targetState>
                   <trigger>
-                    <SignalEvent XMI.id = "S.100650">
+                    <SignalEvent XMI.id = "S.101275">
                       <name>getJob</name>
                       <visibility XMI.value = "public"/>
                       <signal> <XMI.reference /> </signal>
@@ -445,6 +445,11 @@
                   <sourceState> <XMI.reference target="S.100252"/> </sourceState>
                   <targetState> <XMI.reference target="S.100202"/> </targetState>
                   <trigger>
+                    <SignalEvent XMI.id = "S.101278">
+                      <name></name>
+                      <visibility XMI.value = "public"/>
+                      <signal> <XMI.reference /> </signal>
+                    </SignalEvent>
                   </trigger>
                   <effect>
                   </effect>
@@ -455,7 +460,7 @@
                   <sourceState> <XMI.reference target="S.100203"/> </sourceState>
                   <targetState> <XMI.reference target="S.100511"/> </targetState>
                   <trigger>
-                    <SignalEvent XMI.id = "S.100660">
+                    <SignalEvent XMI.id = "S.101285">
                       <name>quit</name>
                       <visibility XMI.value = "public"/>
                       <signal> <XMI.reference /> </signal>
@@ -480,7 +485,7 @@
                   <sourceState> <XMI.reference target="S.100204"/> </sourceState>
                   <targetState> <XMI.reference target="S.100511"/> </targetState>
                   <trigger>
-                    <SignalEvent XMI.id = "S.100662">
+                    <SignalEvent XMI.id = "S.101287">
                       <name>quit</name>
                       <visibility XMI.value = "public"/>
                       <signal> <XMI.reference /> </signal>
@@ -505,7 +510,7 @@
                   <sourceState> <XMI.reference target="S.100205"/> </sourceState>
                   <targetState> <XMI.reference target="S.100511"/> </targetState>
                   <trigger>
-                    <SignalEvent XMI.id = "S.100664">
+                    <SignalEvent XMI.id = "S.101289">
                       <name>quit</name>
                       <visibility XMI.value = "public"/>
                       <signal> <XMI.reference /> </signal>
@@ -530,7 +535,7 @@
                   <sourceState> <XMI.reference target="S.100206"/> </sourceState>
                   <targetState> <XMI.reference target="S.100511"/> </targetState>
                   <trigger>
-                    <SignalEvent XMI.id = "S.100666">
+                    <SignalEvent XMI.id = "S.101283">
                       <name>fail</name>
                       <visibility XMI.value = "public"/>
                       <signal> <XMI.reference /> </signal>
@@ -555,7 +560,7 @@
                   <sourceState> <XMI.reference target="S.100211"/> </sourceState>
                   <targetState> <XMI.reference target="S.100511"/> </targetState>
                   <trigger>
-                    <SignalEvent XMI.id = "S.100613">
+                    <SignalEvent XMI.id = "S.101281">
                       <name>fail</name>
                       <visibility XMI.value = "public"/>
                       <signal> <XMI.reference /> </signal>
@@ -580,7 +585,7 @@
                   <sourceState> <XMI.reference target="S.100251"/> </sourceState>
                   <targetState> <XMI.reference target="S.100511"/> </targetState>
                   <trigger>
-                    <SignalEvent XMI.id = "S.100603">
+                    <SignalEvent XMI.id = "S.101279">
                       <name>quit</name>
                       <visibility XMI.value = "public"/>
                       <signal> <XMI.reference /> </signal>
@@ -605,7 +610,7 @@
                   <sourceState> <XMI.reference target="S.100252"/> </sourceState>
                   <targetState> <XMI.reference target="S.100511"/> </targetState>
                   <trigger>
-                    <SignalEvent XMI.id = "S.100630">
+                    <SignalEvent XMI.id = "S.101277">
                       <name>fail</name>
                       <visibility XMI.value = "public"/>
                       <signal> <XMI.reference /> </signal>
@@ -1270,6 +1275,13 @@
                   <targetState> <XMI.reference target="S.101000"/> </targetState>
                   <trigger>
                   </trigger>
+                  <guard>
+                    <Guard XMI.id = "S.101294">
+                      <name></name>
+                      <visibility XMI.value = "public"/>
+                      <expression></expression>
+                    </Guard>
+                  </guard>
                   <effect>
                   </effect>
                 </Transition>
@@ -1286,7 +1298,7 @@
                     </SignalEvent>
                   </trigger>
                   <guard>
-                    <Guard XMI.id = "S.101011">
+                    <Guard XMI.id = "S.101292">
                       <name></name>
                       <visibility XMI.value = "public"/>
                       <expression>invalid</expression>
@@ -1312,7 +1324,7 @@
                     </SignalEvent>
                   </trigger>
                   <guard>
-                    <Guard XMI.id = "S.101258">
+                    <Guard XMI.id = "S.101296">
                       <name></name>
                       <visibility XMI.value = "public"/>
                       <expression>valid</expression>
@@ -1332,6 +1344,13 @@
                   <targetState> <XMI.reference target="S.101228"/> </targetState>
                   <trigger>
                   </trigger>
+                  <guard>
+                    <Guard XMI.id = "S.101302">
+                      <name></name>
+                      <visibility XMI.value = "public"/>
+                      <expression></expression>
+                    </Guard>
+                  </guard>
                   <effect>
                   </effect>
                 </Transition>
@@ -1358,7 +1377,7 @@
                     </SignalEvent>
                   </trigger>
                   <guard>
-                    <Guard XMI.id = "S.101253">
+                    <Guard XMI.id = "S.101300">
                       <name></name>
                       <visibility XMI.value = "public"/>
                       <expression>invalid</expression>
@@ -1384,7 +1403,7 @@
                     </SignalEvent>
                   </trigger>
                   <guard>
-                    <Guard XMI.id = "S.101247">
+                    <Guard XMI.id = "S.101304">
                       <name></name>
                       <visibility XMI.value = "public"/>
                       <expression>valid</expression>
@@ -1789,6 +1808,51 @@
       </ownedElement>
       <ownedElement>
         <Stereotype XMI.id = "S.100707">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+            
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101262">
+          <name>Stereotype[id=S.100705]</name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+            
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101263">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+            
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101264">
           <name></name>
           <visibility XMI.value = "public"/>
           <isAbstract XMI.value="false"/>

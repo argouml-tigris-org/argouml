@@ -77,8 +77,7 @@ CRITICS_DIRS= uml\checklist       \
 	uml\critics               \
 	uml\critics\patterns      \
 	uml\critics\java          \
-	uml\critics\presentation  \
-	uml\checklist
+	uml\critics\presentation  
 
 
 gefDir:

@@ -185,7 +185,7 @@ class ActionNew extends UMLAction {
       if (response == JOptionPane.CANCEL_OPTION) return;
       if (response == JOptionPane.YES_OPTION) {
 	boolean safe = false;
-	if (((ActionSaveProject)Actions.SaveProjectAs).shouldBeEnabled())
+	if (((ActionSaveProject)Actions.SaveProject).shouldBeEnabled())
 	  safe = ((ActionSaveProject)Actions.SaveProject).trySave(true);
 	if (!safe)
 	  safe = ((ActionSaveProjectAs)Actions.SaveProjectAs).trySave(false);
@@ -612,7 +612,10 @@ class ActionSaveProject extends UMLAction {
       System.out.println("ActionSaveProject at " + p.getURL());
       System.out.println("filename is " + p.getURL().getFile());
 //       System.out.println("ActionSaveProject name = " + name);
-      File f = new File(p.getURL().getFile());
+      String fullpath = p.getURL().getFile();
+      if (fullpath.charAt(0) == '/' && fullpath.charAt(2) == ':')
+	fullpath = fullpath.substring(1); // for Windows /D: -> D:
+      File f = new File(fullpath);
       if (f.exists() && !overwrite) {
 	System.out.println("Are you sure you want to overwrite " +
 			   p.getURL().getFile() + "?");
@@ -620,7 +623,9 @@ class ActionSaveProject extends UMLAction {
       FileWriter fw = new FileWriter(f);
       p.preSave();
       expander.expand(fw, p, "", "");
-      p.saveAllMembers(f.getParent(), overwrite);
+      String parentDirName = fullpath.substring(0, fullpath.lastIndexOf("/"));
+      System.out.println("Dir ==" + parentDirName);
+      p.saveAllMembers(parentDirName, overwrite);
       //needs-more-work: in future allow independent saving
       p.postSave();
       fw.close();

@@ -46,6 +46,14 @@ public class ClAttributeCompartment implements Clarifier {
   public void paintIcon(Component c, Graphics g, int x, int y) {
     if (_fig instanceof FigClass) {
       FigClass fc = (FigClass) _fig;
+
+      // added by Eric Lefevre 13 Mar 1999: we must check if the FigText for
+      // attributes is drawn before drawing things over it
+      if ( !fc.isAttributeVisible() ) {
+        _fig = null;
+        return;
+      }
+
       FigText ft = fc.getAttributeFig();
       int left  = ft.getX() + 6;
       int height = ft.getY() + ft.getHeight() - 5;

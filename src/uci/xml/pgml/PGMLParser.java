@@ -118,13 +118,13 @@ public class PGMLParser implements ElementHandler, TagHandler {
 
   public void handleStartTag(TXElement e, boolean empty) {
     String elementName = e.getName();
-    if ("group".equals(elementName) && !empty) _nestedGroups++;
+    if ("group".equals(elementName)) _nestedGroups++;
     else if (elementName.equals("pgml")) handlePGML(e);
   }
 
   public void handleEndTag(TXElement e, boolean empty) {
     String elementName = e.getName();
-    if ("group".equals(elementName) && !empty) _nestedGroups--;
+    if ("group".equals(elementName)) _nestedGroups--;
   }
 
   public TXElement handleElement(TXElement e) {
@@ -241,7 +241,6 @@ public class PGMLParser implements ElementHandler, TagHandler {
     if (font != null && !font.equals("")) f.setFontFamily(font);
     String textsize = e.getAttribute("textsize");
     if (textsize != null && !textsize.equals("")) {
-      System.out.println("textsize=" + textsize + ".");
       int textsizeInt = Integer.parseInt(textsize);
       f.setFontSize(textsizeInt);
     }
@@ -393,9 +392,10 @@ public class PGMLParser implements ElementHandler, TagHandler {
       int hInt = (h == null || h.equals("")) ? 20 : Integer.parseInt(h);
       f.setBounds(xInt, yInt, wInt, hInt);
     }
-    String linewidth = e.getAttribute("linewidth");
-    if (linewidth != null && !linewidth.equals(""))
+    String linewidth = e.getAttribute("stroke");
+    if (linewidth != null && !linewidth.equals("")) {
       f.setLineWidth(Integer.parseInt(linewidth));
+    }
     String strokecolor = e.getAttribute("strokecolor");
     if (strokecolor != null && !strokecolor.equals(""))
       f.setLineColor(colorByName(strokecolor, Color.blue));

@@ -46,6 +46,14 @@ public class ClOperationCompartment implements Clarifier {
   public void paintIcon(Component c, Graphics g, int x, int y) {
     if (_fig instanceof FigClass) {
       FigClass fc = (FigClass) _fig;
+
+      // added by Eric Lefevre 13 Mar 1999: we must check if the FigText for
+      // operations is drawn before drawing things over it
+      if ( !fc.isOperationVisible() ) {
+        _fig = null;
+        return;
+      }
+
       FigText ft = fc.getOperationFig();
       int left  = ft.getX() + 10;
       int height = ft.getY() + ft.getHeight() - 7;

@@ -107,6 +107,7 @@ implements TabFigTarget, PropertyChangeListener, DelayedVChangeListener {
       _lastPanel = _blankPanel;
     }
     validate();
+    repaint();
   }
 
   public void refresh() { setTarget(_target); }

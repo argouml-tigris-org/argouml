@@ -53,6 +53,10 @@ public class StylePanelFigClass extends StylePanelFig {
   ////////////////////////////////////////////////////////////////
   // instance vars
 
+  protected JCheckBox _attrCheckBox = new JCheckBox("Attributes");
+  protected JCheckBox _operCheckBox = new JCheckBox("Operations");
+  protected JLabel _displayLabel = new JLabel("Display: ");
+
   ////////////////////////////////////////////////////////////////
   // contructors
 
@@ -63,24 +67,45 @@ public class StylePanelFigClass extends StylePanelFig {
     c.fill = GridBagConstraints.BOTH;
     c.ipadx = 0; c.ipady = 0;
 
+    c.gridx = 0;
+    c.gridwidth = 1;
+    c.gridy = 0;
+    c.weightx = 0.0;
+    gb.setConstraints(_displayLabel, c);
+    add(_displayLabel);
+
+    c.gridx = 1;
+    c.gridwidth = 1;
+    c.gridy = 0;
+    c.weightx = 0.0;
+    JPanel pane = new JPanel();
+    pane.setLayout(new FlowLayout(FlowLayout.LEFT));
+    pane.add(_attrCheckBox);
+    pane.add(_operCheckBox);
+    gb.setConstraints(pane, c);
+    add(pane);
+
+    _attrCheckBox.setSelected(false);
+    _operCheckBox.setSelected(false);
+    _attrCheckBox.addItemListener(this);
+    _operCheckBox.addItemListener(this);
   }
 
 
   ////////////////////////////////////////////////////////////////
   // accessors
 
-//   public void refresh() {
-//     super.refresh();
-//   }
-
+  public void refresh() {
+    super.refresh();
+    uci.uml.visual.FigClass tc = (uci.uml.visual.FigClass)_target;
+    _attrCheckBox.setSelected(tc.isAttributeVisible());
+    _operCheckBox.setSelected(tc.isOperationVisible());
+  }
 
   ////////////////////////////////////////////////////////////////
   // event handling
 
   public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
-//     Document bboxDoc = _bboxField.getDocument();
-//     if (e.getDocument() == bboxDoc) setTargetBBox();
     super.insertUpdate(e);
   }
 
@@ -89,12 +114,15 @@ public class StylePanelFigClass extends StylePanelFig {
 
 
   public void itemStateChanged(ItemEvent e) {
-    //    Object src = e.getSource();
-    //     if (src == _fillField) setTargetFill();
-    //     else if (src == _lineField) setTargetLine();
-    //     else if (src == _dashedField) setTargetDashed();
-    // else
-    super.itemStateChanged(e);
+    Object src = e.getSource();
+
+    if (src == _attrCheckBox) {
+      ((uci.uml.visual.FigClass)_target).setAttributeVisible(_attrCheckBox.isSelected());
+    }
+    else if (src == _operCheckBox) {
+      ((uci.uml.visual.FigClass)_target).setOperationVisible(_operCheckBox.isSelected());
+    }
+    else super.itemStateChanged(e);
   }
 
 

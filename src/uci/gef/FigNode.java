@@ -348,6 +348,14 @@ implements MouseListener, PropertyChangeListener, Highlightable {
     //paintClarifiers(g);
   }
 
+  /**
+   * Displays visual indications of pending ToDoItems.
+   * Please note that the list of advices (ToDoList) is not the same
+   * as the list of element known by the FigNode (_figs). Therefore,
+   * it is necessary to check if the graphic item exists before drawing
+   * on it. See ClAttributeCompartment for an example.
+   * @see uci.uml.critics.ClAttributeCompartment
+   */
   public void paintClarifiers(Graphics g) {
     int iconX = _x;
     int iconY = _y - 10;

@@ -53,21 +53,26 @@ public class StylePanelFigText extends StylePanelFig {
     new Integer(8), new Integer(9), new Integer(10), new Integer(12),
     new Integer(16), new Integer(18), new Integer(24), new
     Integer(36), new Integer(48), new Integer(72), new Integer(96) }; 
-  
+
   public static String STYLES[] = { "Plain", "Bold", "Italic", "Bold-Italic"};
+  public static String JUSTIFIES[] = { "Left", "Right", "Center"};
 
   ////////////////////////////////////////////////////////////////
   // instance vars
-  JLabel _fontLabel = new JLabel("Font: ");
-  JComboBox _fontField = new JComboBox(FONT_NAMES);
-  JLabel _sizeLabel = new JLabel("Size: ");
-  JComboBox _sizeField = new JComboBox(COMMON_SIZES);
-  JLabel _styleLabel = new JLabel("Style: ");
-  JComboBox _styleField = new JComboBox(STYLES);
-  JLabel _textColorLabel = new JLabel("Text Color: ");
-  JComboBox _textColorField = new JComboBox();
-  JLabel _textFillLabel = new JLabel("Text Fill: ");
-  JComboBox _textFillField = new JComboBox();
+
+  protected JLabel _fontLabel = new JLabel("Font: ");
+  protected JComboBox _fontField = new JComboBox(FONT_NAMES);
+  protected JLabel _sizeLabel = new JLabel("Size: ");
+  protected JComboBox _sizeField = new JComboBox(COMMON_SIZES);
+  protected JLabel _styleLabel = new JLabel("Style: ");
+  protected JComboBox _styleField = new JComboBox(STYLES);
+  protected JLabel _justLabel = new JLabel("Justify: ");
+  protected JComboBox _justField = new JComboBox(JUSTIFIES);
+
+  protected JLabel _textColorLabel = new JLabel("Text Color: ");
+  protected JComboBox _textColorField = new JComboBox();
+  protected JLabel _textFillLabel = new JLabel("Text Fill: ");
+  protected JComboBox _textFillField = new JComboBox();
 
 
 
@@ -84,12 +89,13 @@ public class StylePanelFigText extends StylePanelFig {
     _fontField.addItemListener(this);
     _sizeField.addItemListener(this);
     _styleField.addItemListener(this);
+    _justField.addItemListener(this);
     _textColorField.addItemListener(this);
     _textFillField.addItemListener(this);
 
     _textColorField.setRenderer(new ColorRenderer());
     _textFillField.setRenderer(new ColorRenderer());
-    
+
     c.weightx = 0.0;
     c.gridx = 0;
     c.gridwidth = 1;
@@ -112,8 +118,11 @@ public class StylePanelFigText extends StylePanelFig {
     c.gridy = 3;
     gb.setConstraints(_styleLabel, c);
     add(_styleLabel);
+    // row 4 left blank for some reason...
+    c.gridy = 5;
+    gb.setConstraints(_justLabel, c);
+    add(_justLabel);
 
-    
     c.weightx = 1.0;
     c.gridx = 1;
     c.gridy = 5;
@@ -132,6 +141,9 @@ public class StylePanelFigText extends StylePanelFig {
     c.gridy = 3;
     gb.setConstraints(_styleField, c);
     add(_styleField);
+    c.gridy = 5;
+    gb.setConstraints(_justField, c);
+    add(_justField);
     initChoices2();
   }
 
@@ -168,19 +180,24 @@ public class StylePanelFigText extends StylePanelFig {
 
   public void refresh() {
     super.refresh();
-    FigText ft = (FigText) _target; 
+    FigText ft = (FigText) _target;
     String fontName = ft.getFontFamily();
     int size = ft.getFontSize();
     String styleName = STYLES[0];
-    
+
     _fontField.setSelectedItem(fontName);
     _sizeField.setSelectedItem(new Integer(size));
     if (ft.getBold()) styleName = STYLES[1];
     if (ft.getItalic()) styleName = STYLES[2];
     if (ft.getBold() && ft.getItalic()) styleName = STYLES[3];
     _styleField.setSelectedItem(styleName);
-  }
 
+    String justName = JUSTIFIES[0];
+    int justCode = ft.getJustification();
+    if (justCode >= 0 && justCode <= JUSTIFIES.length)
+      justName = JUSTIFIES[justCode];
+    _justField.setSelectedItem(justName);
+  }
 
   public void setTargetFont() {
     if (_target == null) return;
@@ -191,7 +208,6 @@ public class StylePanelFigText extends StylePanelFig {
     _target.endTrans();
   }
 
-
   public void setTargetSize() {
     if (_target == null) return;
     Integer size = (Integer) _sizeField.getSelectedItem();
@@ -199,7 +215,6 @@ public class StylePanelFigText extends StylePanelFig {
     ((FigText)_target).setFontSize(size.intValue());
     _target.endTrans();
   }
-
 
   public void setTargetStyle() {
     if (_target == null) return;
@@ -213,6 +228,15 @@ public class StylePanelFigText extends StylePanelFig {
     _target.endTrans();
   }
 
+  public void setTargetJustification() {
+    if (_target == null) return;
+    String justStr = (String) _justField.getSelectedItem();
+    if (justStr == null) return;
+    _target.startTrans();
+    ((FigText)_target).setJustifciaionByName(justStr);
+    _target.endTrans();
+  }
+
   public void setTargetTextFill() {
     if (_target == null) return;
     _target.startTrans();
@@ -223,7 +247,6 @@ public class StylePanelFigText extends StylePanelFig {
     _target.endTrans();
   }
 
-  
   public void setTargetTextColor() {
     if (_target == null) return;
     _target.startTrans();
@@ -233,20 +256,18 @@ public class StylePanelFigText extends StylePanelFig {
     _target.endTrans();
   }
 
-  
   ////////////////////////////////////////////////////////////////
   // event handling
-
 
   public void itemStateChanged(ItemEvent e) {
     Object src = e.getSource();
     if (src == _fontField) setTargetFont();
     else if (src == _sizeField) setTargetSize();
     else if (src == _styleField) setTargetStyle();
+    else if (src == _justField) setTargetJustification();
     else if (src == _textColorField) setTargetTextColor();
     else if (src == _textFillField) setTargetTextFill();
     else super.itemStateChanged(e);
   }
 
-  
 } /* end class StylePanelFigText */

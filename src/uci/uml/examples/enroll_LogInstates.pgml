@@ -211,7 +211,7 @@
               y="208" />
     </path>
   </group>
-  <group name="Fig9"
+  <group name="Fig5"
        description="uci.uml.visual.FigActionState[392, 48, 90, 25]"
        href="S.101227"
        fill="1"
@@ -222,7 +222,7 @@
     <private>
     </private>
     
-    <rectangle name="Fig9.0"
+    <rectangle name="Fig5.0"
       x="393"
       y="49"
       width="88"
@@ -233,7 +233,7 @@
       strokecolor="-16711681"
       rounding="25"
     />
-    <rectangle name="Fig9.1"
+    <rectangle name="Fig5.1"
       x="392"
       y="48"
       width="90"
@@ -244,7 +244,7 @@
       strokecolor="-16777216"
       rounding="25"
     />
-    <text name="Fig9.2"
+    <text name="Fig5.2"
       x="400"
       y="48"
       fill="0"
@@ -255,7 +255,7 @@
       textsize="9"
     >Propmt for PIN</text>
   </group>
-  <group name="Fig10"
+  <group name="Fig6"
        description="uci.uml.visual.FigActionState[456, 144, 90, 25]"
        href="S.101228"
        fill="1"
@@ -266,7 +266,7 @@
     <private>
     </private>
     
-    <rectangle name="Fig10.0"
+    <rectangle name="Fig6.0"
       x="457"
       y="145"
       width="88"
@@ -277,7 +277,7 @@
       strokecolor="-16711681"
       rounding="25"
     />
-    <rectangle name="Fig10.1"
+    <rectangle name="Fig6.1"
       x="456"
       y="144"
       width="90"
@@ -288,7 +288,7 @@
       strokecolor="-16777216"
       rounding="25"
     />
-    <text name="Fig10.2"
+    <text name="Fig6.2"
       x="464"
       y="144"
       fill="0"
@@ -299,7 +299,7 @@
       textsize="9"
     >Capture PIN</text>
   </group>
-  <group name="Fig11"
+  <group name="Fig7"
        description="uci.uml.visual.FigBranchState[456, 208, 32, 32]"
        href="S.101229"
        fill="1"
@@ -310,7 +310,7 @@
     <private>
     </private>
     
-    <path name="Fig11.0"
+    <path name="Fig7.0"
       description="uci.gef.FigPoly"
       fill="1"
       fillcolor="-16711681"
@@ -326,7 +326,7 @@
       <lineto x="456"
               y="224" />
     </path>
-    <path name="Fig11.1"
+    <path name="Fig7.1"
       description="uci.gef.FigPoly"
       fill="1"
       fillcolor="-1"
@@ -345,9 +345,11 @@
               y="208" />
     </path>
   </group>
-  <group name="Fig5"
+  <group name="Fig8"
        description="uci.uml.visual.FigTransition"
        href="S.100997"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig0.0"
@@ -355,7 +357,7 @@
       sourceFigNode="Fig0"
       destFigNode="Fig2"
     </private>
-    <path name="Fig5.1"
+    <path name="Fig8.1"
       description="uci.gef.FigPoly"
       fill="0"
       fillcolor="-1"
@@ -368,9 +370,11 @@
               y="41" />
     </path>
   </group>
-  <group name="Fig6"
+  <group name="Fig9"
        description="uci.uml.visual.FigTransition"
        href="S.100998"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig2.0"
@@ -378,7 +382,7 @@
       sourceFigNode="Fig2"
       destFigNode="Fig3"
     </private>
-    <path name="Fig6.1"
+    <path name="Fig9.1"
       description="uci.gef.FigPoly"
       fill="0"
       fillcolor="-1"
@@ -391,9 +395,11 @@
               y="137" />
     </path>
   </group>
-  <group name="Fig7"
+  <group name="Fig10"
        description="uci.uml.visual.FigTransition"
        href="S.101001"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig3.0"
@@ -401,7 +407,7 @@
       sourceFigNode="Fig3"
       destFigNode="Fig4"
     </private>
-    <path name="Fig7.1"
+    <path name="Fig10.1"
       description="uci.gef.FigPoly"
       fill="0"
       fillcolor="-1"
@@ -414,9 +420,11 @@
               y="208" />
     </path>
   </group>
-  <group name="Fig8"
+  <group name="Fig11"
        description="uci.uml.visual.FigTransition"
        href="S.101002"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig4.0"
@@ -424,7 +432,7 @@
       sourceFigNode="Fig4"
       destFigNode="Fig2"
     </private>
-    <path name="Fig8.1"
+    <path name="Fig11.1"
       description="uci.gef.FigPoly"
       fill="0"
       fillcolor="-1"
@@ -442,12 +450,14 @@
   <group name="Fig12"
        description="uci.uml.visual.FigTransition"
        href="S.101230"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig4.0"
-      destPortFig="Fig9.0"
+      destPortFig="Fig5.0"
       sourceFigNode="Fig4"
-      destFigNode="Fig9"
+      destFigNode="Fig5"
     </private>
     <path name="Fig12.1"
       description="uci.gef.FigPoly"
@@ -469,12 +479,14 @@
   <group name="Fig13"
        description="uci.uml.visual.FigTransition"
        href="S.101233"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
-      sourcePortFig="Fig9.0"
-      destPortFig="Fig10.0"
-      sourceFigNode="Fig9"
-      destFigNode="Fig10"
+      sourcePortFig="Fig5.0"
+      destPortFig="Fig6.0"
+      sourceFigNode="Fig5"
+      destFigNode="Fig6"
     </private>
     <path name="Fig13.1"
       description="uci.gef.FigPoly"
@@ -492,12 +504,14 @@
   <group name="Fig14"
        description="uci.uml.visual.FigTransition"
        href="S.101234"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
-      sourcePortFig="Fig10.0"
-      destPortFig="Fig11.0"
-      sourceFigNode="Fig10"
-      destFigNode="Fig11"
+      sourcePortFig="Fig6.0"
+      destPortFig="Fig7.0"
+      sourceFigNode="Fig6"
+      destFigNode="Fig7"
     </private>
     <path name="Fig14.1"
       description="uci.gef.FigPoly"
@@ -515,12 +529,14 @@
   <group name="Fig15"
        description="uci.uml.visual.FigTransition"
        href="S.101235"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
-      sourcePortFig="Fig11.0"
-      destPortFig="Fig9.0"
-      sourceFigNode="Fig11"
-      destFigNode="Fig9"
+      sourcePortFig="Fig7.0"
+      destPortFig="Fig5.0"
+      sourceFigNode="Fig7"
+      destFigNode="Fig5"
     </private>
     <path name="Fig15.1"
       description="uci.gef.FigPoly"
@@ -540,11 +556,13 @@
   <group name="Fig16"
        description="uci.uml.visual.FigTransition"
        href="S.101236"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
-      sourcePortFig="Fig11.0"
+      sourcePortFig="Fig7.0"
       destPortFig="Fig1.0"
-      sourceFigNode="Fig11"
+      sourceFigNode="Fig7"
       destFigNode="Fig1"
     </private>
     <path name="Fig16.1"

@@ -1,0 +1,22 @@
+<?xml version = "1.0" encoding = "ISO-8859-1" ?>
+<!DOCTYPE argo SYSTEM "argo.dtd" >
+<argo>
+  <documentation>
+    <authorname></authorname>
+    <version></version>
+    <description>
+      
+    </description>
+  </documentation>
+  
+  <searchpath href="PROJECT_DIR" />
+  <member
+    type="xmi"
+    name="tinygef.xmi"
+  />
+  <member
+    type="pgml"
+    name="gefclasses.pgml"
+  />
+  <historyfile name="Empty.hist" />
+</argo>

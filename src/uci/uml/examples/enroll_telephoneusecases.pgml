@@ -305,8 +305,8 @@
       strokecolor="-16777216"
     />
     <text name="Fig3.2"
-      x="255"
-      y="108"
+      x="257"
+      y="107"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -347,8 +347,8 @@
       strokecolor="-16777216"
     />
     <text name="Fig4.2"
-      x="258"
-      y="212"
+      x="260"
+      y="211"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -389,8 +389,8 @@
       strokecolor="-16777216"
     />
     <text name="Fig5.2"
-      x="276"
-      y="324"
+      x="280"
+      y="323"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -431,8 +431,8 @@
       strokecolor="-16777216"
     />
     <text name="Fig6.2"
-      x="255"
-      y="60"
+      x="256"
+      y="59"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -473,8 +473,8 @@
       strokecolor="-16777216"
     />
     <text name="Fig7.2"
-      x="362"
-      y="180"
+      x="365"
+      y="179"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -515,8 +515,8 @@
       strokecolor="-16777216"
     />
     <text name="Fig8.2"
-      x="285"
-      y="388"
+      x="287"
+      y="387"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -557,8 +557,8 @@
       strokecolor="-16777216"
     />
     <text name="Fig9.2"
-      x="538"
-      y="284"
+      x="539"
+      y="283"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -570,6 +570,8 @@
   <group name="Fig10"
        description="uci.uml.visual.FigAssociation"
        href="S.100678"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig0.0"
@@ -593,6 +595,8 @@
   <group name="Fig11"
        description="uci.uml.visual.FigAssociation"
        href="S.100681"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig0.0"
@@ -616,6 +620,8 @@
   <group name="Fig12"
        description="uci.uml.visual.FigAssociation"
        href="S.100684"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig2.0"
@@ -639,6 +645,8 @@
   <group name="Fig13"
        description="uci.uml.visual.FigAssociation"
        href="S.100687"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig2.0"
@@ -662,6 +670,8 @@
   <group name="Fig14"
        description="uci.uml.visual.FigAssociation"
        href="S.100690"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig1.0"
@@ -685,6 +695,8 @@
   <group name="Fig15"
        description="uci.uml.visual.FigAssociation"
        href="S.100693"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig1.0"
@@ -708,6 +720,8 @@
   <group name="Fig16"
        description="uci.uml.visual.FigGeneralization"
        href="S.100696"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig5.0"

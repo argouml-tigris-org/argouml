@@ -128,13 +128,13 @@
       strokecolor="-16777216"
     >
       <moveto x="136"
-              y="184" />
+              y="186" />
       <lineto x="205"
-              y="184" />
+              y="186" />
     </path>
     <text name="Fig2.4"
       x="138"
-      y="187"
+      y="189"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -194,13 +194,13 @@
       strokecolor="-16777216"
     >
       <moveto x="136"
-              y="72" />
+              y="74" />
       <lineto x="205"
-              y="72" />
+              y="74" />
     </path>
     <text name="Fig3.4"
       x="138"
-      y="75"
+      y="77"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -260,13 +260,13 @@
       strokecolor="-16777216"
     >
       <moveto x="442"
-              y="72" />
+              y="74" />
       <lineto x="511"
-              y="72" />
+              y="74" />
     </path>
     <text name="Fig4.4"
       x="444"
-      y="75"
+      y="77"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -326,13 +326,13 @@
       strokecolor="-16777216"
     >
       <moveto x="436"
-              y="176" />
+              y="178" />
       <lineto x="511"
-              y="176" />
+              y="178" />
     </path>
     <text name="Fig5.4"
       x="438"
-      y="179"
+      y="181"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -392,13 +392,13 @@
       strokecolor="-16777216"
     >
       <moveto x="442"
-              y="328" />
+              y="330" />
       <lineto x="511"
-              y="328" />
+              y="330" />
     </path>
     <text name="Fig6.4"
       x="444"
-      y="331"
+      y="333"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -500,13 +500,13 @@
       strokecolor="-16777216"
     >
       <moveto x="120"
-              y="304" />
+              y="306" />
       <lineto x="351"
-              y="304" />
+              y="306" />
     </path>
     <text name="Fig8.4"
       x="122"
-      y="307"
+      y="309"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -567,13 +567,13 @@
       strokecolor="-16777216"
     >
       <moveto x="128"
-              y="328" />
+              y="330" />
       <lineto x="197"
-              y="328" />
+              y="330" />
     </path>
     <text name="Fig9.4"
       x="130"
-      y="331"
+      y="333"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -634,13 +634,13 @@
       strokecolor="-16777216"
     >
       <moveto x="264"
-              y="328" />
+              y="330" />
       <lineto x="346"
-              y="328" />
+              y="330" />
     </path>
     <text name="Fig10.4"
       x="266"
-      y="331"
+      y="333"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -652,6 +652,8 @@
   <group name="Fig11"
        description="uci.uml.visual.FigTransition"
        href="S.100207"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig0.0"
@@ -675,6 +677,8 @@
   <group name="Fig12"
        description="uci.uml.visual.FigTransition"
        href="S.100208"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig2.0"
@@ -698,6 +702,8 @@
   <group name="Fig13"
        description="uci.uml.visual.FigTransition"
        href="S.100209"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig3.0"
@@ -721,6 +727,8 @@
   <group name="Fig14"
        description="uci.uml.visual.FigTransition"
        href="S.100210"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig4.0"
@@ -744,6 +752,8 @@
   <group name="Fig15"
        description="uci.uml.visual.FigTransition"
        href="S.100242"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig5.0"
@@ -767,6 +777,8 @@
   <group name="Fig16"
        description="uci.uml.visual.FigTransition"
        href="S.100512"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig2.0"
@@ -790,6 +802,8 @@
   <group name="Fig17"
        description="uci.uml.visual.FigTransition"
        href="S.100513"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig3.0"
@@ -813,6 +827,8 @@
   <group name="Fig18"
        description="uci.uml.visual.FigTransition"
        href="S.100514"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig4.0"
@@ -836,6 +852,8 @@
   <group name="Fig19"
        description="uci.uml.visual.FigTransition"
        href="S.100515"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig5.0"
@@ -859,6 +877,8 @@
   <group name="Fig20"
        description="uci.uml.visual.FigTransition"
        href="S.100516"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig6.0"
@@ -882,6 +902,8 @@
   <group name="Fig21"
        description="uci.uml.visual.FigTransition"
        href="S.100518"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig9.0"
@@ -907,6 +929,8 @@
   <group name="Fig22"
        description="uci.uml.visual.FigTransition"
        href="S.100255"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig9.0"
@@ -930,6 +954,8 @@
   <group name="Fig23"
        description="uci.uml.visual.FigTransition"
        href="S.100517"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig10.0"
@@ -953,6 +979,8 @@
   <group name="Fig24"
        description="uci.uml.visual.FigTransition"
        href="S.100254"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig10.0"
@@ -976,6 +1004,8 @@
   <group name="Fig25"
        description="uci.uml.visual.FigTransition"
        href="S.100253"
+       stroke="1"
+       strokecolor="-16777216"
   >
     <private>
       sourcePortFig="Fig6.0"
