@@ -60,18 +60,31 @@ public class Critic implements Poster, Serializable {
   public static final String ENABLED = "enabled";
   public static final String SNOOZE_ORDER = "snoozeOrder";
 
+  public static final String RESOURCE_BUNDLE = "Cognitive";
+
   /** Types of knowledge that critics can deliver */
-  public static String KT_DESIGNERS = "Designer's";
-  public static String KT_CORRECTNESS = "Correctness";
-  public static String KT_COMPLETENESS = "Completeness";
-  public static String KT_CONSISTENCY = "Consistency";
-  public static String KT_SYNTAX = "Syntax";
-  public static String KT_SEMANTICS = "Semantics";
-  public static String KT_OPTIMIZATION = "Optimization";
-  public static String KT_PRESENTATION = "Presentation";
-  public static String KT_ORGANIZATIONAL = "Organizational";
-  public static String KT_EXPERIENCIAL = "Experiencial";
-  public static String KT_TOOL = "Tool";
+  public static String KT_DESIGNERS = 
+      Localizer.localize(RESOURCE_BUNDLE, "knowledge.designers");
+  public static String KT_CORRECTNESS =
+      Localizer.localize(RESOURCE_BUNDLE, "knowledge.correctness");
+  public static String KT_COMPLETENESS =
+      Localizer.localize(RESOURCE_BUNDLE, "knowledge.completeness");
+  public static String KT_CONSISTENCY =
+      Localizer.localize(RESOURCE_BUNDLE, "knowledge.consistency");
+  public static String KT_SYNTAX = 
+      Localizer.localize(RESOURCE_BUNDLE, "knowledge.syntax");
+  public static String KT_SEMANTICS = 
+      Localizer.localize(RESOURCE_BUNDLE, "knowledge.semantics");
+  public static String KT_OPTIMIZATION =
+      Localizer.localize(RESOURCE_BUNDLE, "knowledge.optimization");
+  public static String KT_PRESENTATION =
+      Localizer.localize(RESOURCE_BUNDLE, "knowledge.presentation");
+  public static String KT_ORGANIZATIONAL =
+      Localizer.localize(RESOURCE_BUNDLE, "knowledge.organizational");
+  public static String KT_EXPERIENCIAL =
+      Localizer.localize(RESOURCE_BUNDLE, "knowledge.experiential");
+  public static String KT_TOOL = 
+      Localizer.localize(RESOURCE_BUNDLE, "knowledge.tool");
 
 
   /** Some priority constants for ToDoItem's. */

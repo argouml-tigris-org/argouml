@@ -37,7 +37,13 @@ public class AddToDoItemDialog extends JFrame implements ActionListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
-  public static final String PRIORITIES[] = { "High", "Medium", "Low" };
+  private static final String BUNDLE = "Cognitive";
+
+  static final String high = Localizer.localize(BUNDLE, "level.high");
+  static final String medium = Localizer.localize(BUNDLE, "level.medium");
+  static final String low = Localizer.localize(BUNDLE, "level.low");
+
+  public static final String PRIORITIES[] = { high, medium, low };
 
   ////////////////////////////////////////////////////////////////
   // instance variables

@@ -27,7 +27,16 @@ import java.util.*;
 
 import org.argouml.cognitive.*;
 
+import org.tigris.gef.util.*;
+
+
 public class PriorityNode {
+    // Private members.
+    private static final String BUNDLE = "Cognitive";
+
+    static final String high = Localizer.localize(BUNDLE, "level.high");
+    static final String medium = Localizer.localize(BUNDLE, "level.medium");
+    static final String low = Localizer.localize(BUNDLE, "level.low");
 
   ////////////////////////////////////////////////////////////////
   // static variables and methods
@@ -36,9 +45,9 @@ public class PriorityNode {
   public static Vector getPriorities() {
     if (_PRIORITIES == null) {
       _PRIORITIES = new Vector();
-      _PRIORITIES.addElement(new PriorityNode("High", ToDoItem.HIGH_PRIORITY));
-      _PRIORITIES.addElement(new PriorityNode("Medium", ToDoItem.MED_PRIORITY));
-      _PRIORITIES.addElement(new PriorityNode("Low", ToDoItem.LOW_PRIORITY));
+      _PRIORITIES.addElement(new PriorityNode(high, ToDoItem.HIGH_PRIORITY));
+      _PRIORITIES.addElement(new PriorityNode(medium, ToDoItem.MED_PRIORITY));
+      _PRIORITIES.addElement(new PriorityNode(low, ToDoItem.LOW_PRIORITY));
     }
     return _PRIORITIES;
   }

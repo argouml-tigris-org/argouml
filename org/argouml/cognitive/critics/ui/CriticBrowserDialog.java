@@ -37,6 +37,8 @@ import org.argouml.kernel.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
+import org.tigris.gef.util.*;
+
 /** Dialog box to list all critics and allow editing of some of their
  *  properties.  Needs-More-Work: knowledge type, supported goals,
  *  supported decisions, critic network. */
@@ -46,7 +48,13 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
 
   ////////////////////////////////////////////////////////////////
   // constants
-  public static final String PRIORITIES[] = { "High", "Medium", "Low" };
+  private static final String BUNDLE = "Cognitive";
+
+  static final String high = Localizer.localize(BUNDLE, "level.high");
+  static final String medium = Localizer.localize(BUNDLE, "level.medium");
+  static final String low = Localizer.localize(BUNDLE, "level.low");
+
+  public static final String PRIORITIES[] = { high, medium, low };
   public static final String USE_CLAR[] = { "Always", "If Only One", "Never" };
 
 
@@ -286,9 +294,12 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
     _headline.setText(_target.getHeadline());
 
     int p = _target.getPriority();
-    if (p == ToDoItem.HIGH_PRIORITY) _priority.setSelectedItem("High");
-    else if (p == ToDoItem.MED_PRIORITY) _priority.setSelectedItem("Medium");
-    else _priority.setSelectedItem("Low");
+    if (p == ToDoItem.HIGH_PRIORITY) 
+	_priority.setSelectedItem(high);
+    else if (p == ToDoItem.MED_PRIORITY)
+	_priority.setSelectedItem(medium);
+    else
+	_priority.setSelectedItem(low);
     _priority.repaint();
 
     _moreInfo.setText(_target.getMoreInfoURL());

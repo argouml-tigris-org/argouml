@@ -35,7 +35,7 @@ implements ToDoListListener {
 
 
   public ToDoByGoal() {
-    super("By Goal");
+    super("todo.perspective.goal");
     addSubTreeModel(new GoListToGoalsToItems());
   }
 

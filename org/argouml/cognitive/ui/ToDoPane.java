@@ -26,6 +26,8 @@ package org.argouml.cognitive.ui;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.text.*;
+import java.lang.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
@@ -71,7 +73,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
   protected ToDoList _root = null;
   protected Action _flatView = Actions.FlatToDo;
   protected JToggleButton _flatButton;
-  protected JLabel _countLabel = new JLabel(" 000 Items ");
+  protected JLabel _countLabel = new JLabel(formatCountLabel(999));
   protected ToDoPerspective _curPerspective = null;
   protected JTree _tree = new DisplayTextTree();
   protected boolean _flat = false;
@@ -290,13 +292,29 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
     updateCountLabel();
   }
 
+    private static String formatCountLabel(int size) {
+	switch (size) {
+	case 0:
+	    return Localizer.localize("Cognitive", "todopane.label.no-items");
+	case 1:
+	    return MessageFormat.
+		format(Localizer.localize("Cognitive", "todopane.label.item"),
+		       new Object[] { new Integer(size) }
+		       );
+	default:
+	    return MessageFormat.
+		format(Localizer.localize("Cognitive", "todopane.label.items"),
+		       new Object[] { new Integer(size) }
+		       );
+	}
+    }
+
   public void updateCountLabel() {
     int size = Designer.TheDesigner.getToDoList().size();
     if (size > _oldSize) _dir = '+';
     if (size < _oldSize) _dir = '-';
     _oldSize = size;
-    if (size == 0) _countLabel.setText(" No Items ");
-    else _countLabel.setText(" " + size + " Items " + _dir);
+    _countLabel.setText(formatCountLabel(size));
     _countLabel.setOpaque(size > WARN_THRESHOLD);
     _countLabel.setBackground((size >= ALARM_THRESHOLD) ? ALARM_COLOR
 			                                : WARN_COLOR);

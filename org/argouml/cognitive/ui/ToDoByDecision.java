@@ -37,7 +37,7 @@ implements ToDoListListener {
 
 
   public ToDoByDecision() {
-    super("By Decision");
+    super("todo.perspective.decision");
     addSubTreeModel(new GoListToDecisionsToItems());
   }
 

@@ -34,7 +34,7 @@ public class ToDoByPriority extends ToDoPerspective
 implements ToDoListListener {
 
   public ToDoByPriority() {
-    super("By Priority");
+    super("todo.perspective.priority");
     addSubTreeModel(new GoListToPriorityToItem());
   }
 

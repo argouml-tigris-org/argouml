@@ -62,6 +62,61 @@ import org.argouml.util.*;
 public class UMLCognitiveResourceBundle extends ListResourceBundle {
 
     private static final Object[][] _contents = {
+	// General stuff
+        {"decision.behavior", "Behavior"},
+        {"decision.class-selection", "Class Selection"},
+        {"decision.code-generation", "Code Generation"},
+        {"decision.containment", "Containment"},
+        {"decision.design-patterns", "Design Patterns"},
+        {"decision.expected-usage", "Expected Usage"},
+        {"decision.inheritance", "Inheritance"},
+        {"decision.instantiation", "Instantiation"},
+        {"decision.methods", "Methods"},
+        {"decision.modularity", "Modularity"},
+        {"decision.mstate-machines", "MState Machines"},
+        {"decision.naming", "Naming"},
+        {"decision.planned-extensions", "Planned Extensions"},
+        {"decision.relationships", "Relationships"},
+        {"decision.stereotypes", "Stereotypes"},
+        {"decision.storage", "Storage"},
+        {"decision.uncategorized", "Uncategorized"},
+
+        {"goal.unspecified", "Unspecified"},
+
+        {"knowledge.completeness", "Completeness"},
+        {"knowledge.consistency", "Consistency"},
+        {"knowledge.correctness", "Correctness"},
+        {"knowledge.designers", "Designer's"},
+        {"knowledge.experiential", "Experiential"},
+        {"knowledge.optimization", "Optimization"},
+        {"knowledge.organizational", "Organizational"},
+        {"knowledge.presentation", "Presentation"},
+        {"knowledge.semantics", "Semantics"},
+        {"knowledge.syntax", "Syntax"},
+        {"knowledge.tool", "Tool"},
+
+        {"todopane.label.no-items", " No Items "},
+        {"todopane.label.item", " {0} Item "},
+        {"todopane.label.items", " {0} Items "},
+
+        {"button.ok", "OK"},
+        {"button.cancel", "Cancel"},
+        {"button.open", "Open"},
+        {"button.back", "Back"},
+        {"button.next", "Next"},
+        {"button.finish", "Finish"},
+        {"button.help", "Help"},
+
+        {"mnemonic.button.back", "B"},
+        {"mnemonic.button.next", "N"},
+        {"mnemonic.button.finish", "F"},
+        {"mnemonic.button.help", "H"},
+
+        {"level.low", "Low"},
+        {"level.medium", "Medium"},
+        {"level.high", "High"},
+
+	// Critics text
         { "CrAssocNameConflict_head" ,
                 "Resolve Association Name Conflict" },
         { "CrAssocNameConflict_desc" ,
