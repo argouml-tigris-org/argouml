@@ -41,6 +41,7 @@ import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigLine;
+import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 /** Class to display graphics for a UML MState in a diagram. */
@@ -49,10 +50,6 @@ public class FigActor extends FigNodeModelElement {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-
-    /** UML does not really use ports, so just define one big one so
-     *  that users can drag edges to or from any point in the icon. */
-    private FigCircle bigPort;
 
     /* Put in the things for the "person" in the FigActor */
     private FigCircle head;
@@ -71,7 +68,9 @@ public class FigActor extends FigNodeModelElement {
      */
     public FigActor() {
         // Put this rectangle behind the rest, so it goes first
-        bigPort = new FigCircle(10, 30, 15, 15, Color.gray, Color.gray);
+        FigRect bigPort = new FigRect(10, 30, 15, 45);
+        bigPort.setFilled(false);
+        bigPort.setLineWidth(0);
         head = new FigCircle(10, 30, 15, 15, Color.black, Color.white);
         body = new FigLine(20, 45, 20, 60, Color.black);
         arms = new FigLine(10, 50, 30, 50, Color.black);
@@ -92,6 +91,7 @@ public class FigActor extends FigNodeModelElement {
         addFig(leftLeg);
         addFig(rightLeg);
         addFig(getNameFig());
+        setBigPort(bigPort);
     }
 
     /**
@@ -119,7 +119,7 @@ public class FigActor extends FigNodeModelElement {
     public Object clone() {
         FigActor figClone = (FigActor) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
-        figClone.bigPort = (FigCircle) it.next();
+        figClone.setBigPort((FigCircle) it.next());
         figClone.head = (FigCircle) it.next();
         figClone.body = (FigLine) it.next();
         figClone.arms = (FigLine) it.next();
@@ -137,14 +137,6 @@ public class FigActor extends FigNodeModelElement {
      */
     public Selection makeSelection() {
         return new SelectionActor(this);
-    }
-
-    /**
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     */
-    public void setOwner(Object node) {
-        super.setOwner(node);
-        bindPort(node, bigPort);
     }
 
     /** Returns true if this Fig can be resized by the user. 
@@ -235,7 +227,8 @@ public class FigActor extends FigNodeModelElement {
         int middle = w / 2;
         h = _h;
         Rectangle oldBounds = getBounds();
-        bigPort.setLocation(x + middle - bigPort.getWidth() / 2, y + h - 65);
+        getBigPort().setLocation(x + middle - getBigPort().getWidth() / 2,
+                                 y + h - 65);
         head.setLocation(x + middle - head.getWidth() / 2, y + h - 65);
         body.setLocation(x + middle, y + h - 50);
         arms.setLocation(x + middle - arms.getWidth() / 2, y + h - 45);
