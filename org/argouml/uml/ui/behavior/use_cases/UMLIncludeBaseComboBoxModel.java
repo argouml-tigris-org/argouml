@@ -27,9 +27,12 @@ package org.argouml.uml.ui.behavior.use_cases;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
@@ -47,23 +50,8 @@ public class UMLIncludeBaseComboBoxModel extends UMLComboBoxModel2 {
      * @param container
      */
     public UMLIncludeBaseComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container, false);
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
-     */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-         MModelElement m = (MModelElement)getChangedElement(e);
-        MInclude inc = (MInclude)getTarget();
-        return (m instanceof MUseCase && m != inc.getAddition());
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidPropertySet(ru.novosoft.uml.MElementEvent)
-     */
-    protected boolean isValidPropertySet(MElementEvent e) {
-        return e.getSource() == getTarget() && e.getName().equals("base");
+        super(container, "base", false);
+        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
     }
 
     /**
@@ -87,6 +75,13 @@ public class UMLIncludeBaseComboBoxModel extends UMLComboBoxModel2 {
             return ((MInclude)getTarget()).getBase();
         }
         return null;
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
+     */
+    protected boolean isValidElement(MBase element) {
+        return element instanceof MUseCase && ((MUseCase)element).getNamespace() == ((MInclude)getTarget()).getNamespace();
     }
 
 }

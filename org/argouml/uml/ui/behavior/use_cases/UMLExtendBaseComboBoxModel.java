@@ -24,9 +24,12 @@
 // $header$
 package org.argouml.uml.ui.behavior.use_cases;
 
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
@@ -48,7 +51,8 @@ public class UMLExtendBaseComboBoxModel extends UMLComboBoxModel2 {
      * @param container
      */
     public UMLExtendBaseComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container, false);
+        super(container, "base", false);
+        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
     }
 
     /**
@@ -59,23 +63,9 @@ public class UMLExtendBaseComboBoxModel extends UMLComboBoxModel2 {
         if (extend == null) return;
         MNamespace ns = extend.getNamespace();
         setElements(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MUseCase.class));
-        removeElement(extend.getExtension());
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidPropertySet(ru.novosoft.uml.MElementEvent)
-     */
-    protected boolean isValidPropertySet(MElementEvent e) {
-        return e.getSource() == getTarget() && e.getName().equals("base");
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
-     */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        MModelElement m = (MModelElement)getChangedElement(e);
-        MExtend extend = (MExtend)getTarget();
-        return (m instanceof MUseCase && m != extend.getExtension()); 
+        if (extend.getExtension() != null) {
+            removeElement(extend.getExtension());
+        }
     }
 
     /**
@@ -86,6 +76,13 @@ public class UMLExtendBaseComboBoxModel extends UMLComboBoxModel2 {
             return ((MExtend)getTarget()).getBase();
         }
         return null;
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
+     */
+    protected boolean isValidElement(MBase element) {
+        return element instanceof MUseCase;
     }
 
 }

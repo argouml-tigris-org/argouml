@@ -26,6 +26,8 @@ package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MFlow;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -42,21 +44,23 @@ public class UMLModelElementTargetFlowListModel
      * @param container
      */
     public UMLModelElementTargetFlowListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "targetFlow");
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MModelElement)getTarget()).getTargetFlows());
+        if (_target != null) {
+            setAllElements(((MModelElement)getTarget()).getTargetFlows());
+        }
     }
 
+    
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        Object o = getChangedElement(e);
+     protected boolean isValidElement(MBase o) {
         return o instanceof MFlow && ((MModelElement)getTarget()).getTargetFlows().contains(o);
     }
 

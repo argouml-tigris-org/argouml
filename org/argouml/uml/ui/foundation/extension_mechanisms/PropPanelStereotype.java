@@ -41,6 +41,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
@@ -95,6 +96,9 @@ public class PropPanelStereotype extends PropPanelModelElement {
 
     public void newStereotype() {
         Object target = getTarget();
+        MStereotype newStereo = ExtensionMechanismsFactory.getFactory().buildStereotype(null, null);
+        navigateTo(newStereo);
+        /*
         if(target instanceof MStereotype) {
             MNamespace ns = ((MStereotype) target).getNamespace();
             if(ns != null) {
@@ -103,6 +107,7 @@ public class PropPanelStereotype extends PropPanelModelElement {
                 navigateTo(newStereo);
             }
         }
+        */
     }
 
     public String getBaseClass() {

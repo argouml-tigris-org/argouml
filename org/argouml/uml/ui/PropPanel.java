@@ -38,6 +38,7 @@ package org.argouml.uml.ui;
 
 import org.argouml.application.api.*;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.*;
 import org.argouml.uml.*;
 import org.argouml.swingext.*;
@@ -79,12 +80,6 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
     private UMLNameEventListener _nameListener;
 
     private int lastRow;
-    /**
-     * <p>The third party listener (if we have set one up. We use this to shut
-     *   down listeners when a new listener is set up.</p>
-     */
-
-    private UMLThirdPartyEventListener _thirdPartyListener = null;
 
 
     /**
@@ -373,7 +368,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
 
     */
     protected void removeMElementListener(MBase target) {
-        target.removeMElementListener(this);
+        UmlModelEventPump.getPump().removeModelEventListener(this, target);
     }
 
     /**
@@ -384,7 +379,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         @param target target of prop panel
     */
     public void addMElementListener(MBase target) {
-        target.addMElementListener(this);
+        UmlModelEventPump.getPump().addModelEventListener(this, target);
     }
 
     /**
@@ -412,11 +407,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
                 _modelElement = (MModelElement) _target;
             }
 
-            // Tell the third party listener if it exists
-
-            if (_thirdPartyListener != null) {
-                _thirdPartyListener.targetChanged();
-            }
+           
 
             // This will add a new MElement listener after update is complete
 
@@ -598,12 +589,23 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
      * <p><em>Note</em>. Despite the name, the old implementation tried to
      *   listen for ownedElement and baseClass events as well as name
      *   events. We incorporate all these.</p>
+     * 
+     * <p><em>Note</em> Reworked the implementation to use the new 
+     * UmlModelEventPump mechanism. In the future proppanels should 
+     * register directly with UmlModelEventPump IF they are really interested
+     * in the events themselves. If components on the proppanels are interested,
+     * these components should register themselves.</p>
+     * 
+     * @deprecated since components should register themselves.
      *
      * @param metaclasses  The metaclass array we wish to listen to.
      */
 
     public void setNameEventListening(Class[] metaclasses) {
 
+        /* 
+          old implementation
+         
         // Convert to the third party listening pair list
 
         Vector targetList = new Vector (metaclasses.length * 6);
@@ -622,50 +624,18 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         }
 
         addThirdPartyEventListening(targetList.toArray());
-    }
-
-
-    /**
-     * <p>Enable this prop panel to listen to further NSUML events raised by
-     *   third party objects (i.e. objects other than the target).</p>
-     *
-     * <p>Supplied with an array of pairs; {metaclass, property, ...} and will
-     *   listen to NSUML events on that metaclass affecting that property, and
-     *   propagate to this prop panel.</p>
-     *
-     * <p>Implemented by listening to all relevant objects in the current
-     *   model, and adding a listener to all the namespaces in the model, so we
-     *   can add new listeners when necessary.</p>
-     *
-     * <p><em>Note</em>. We can only do this with objects within an NSUML
-     *   model&mdash;that is {@link MModelElement} and its children.</p>
-     *
-     * @param  targetList  A list of pairs, {metaclass, property, ...} to which
-     *                     we are listening.  */
-
-    public void addThirdPartyEventListening(Object[] targetArray) {
-
-        // Create a target list if we don't have one
-
-        if (_targetList == null) {
-            _targetList = new Vector(targetArray.length);
-        }
-
-        // Add the supplied pairs to the target list.
-
-        for (int i = 0 ; i < targetArray.length ; i++) {
-            _targetList.add(targetArray[i]);
-        }
-
-        // If we don't have a third party listener at present, create one with
-        // this target list. Otherwise tell the one we have about the new list.
-
-        if (_thirdPartyListener == null) {
-            _thirdPartyListener =
-                new UMLThirdPartyEventListener(this, _targetList);
-        }
-        else {
-            _thirdPartyListener.setPairList(_targetList);
+        */
+        for (int i = 0; i < metaclasses.length; i++) {
+            Class clazz = metaclasses[i];
+            if (MNamespace.class.isAssignableFrom(clazz)) {
+                UmlModelEventPump.getPump().addClassModelEventListener(this, clazz, "ownedElement");
+            }
+            if (MModelElement.class.isAssignableFrom(clazz)) {
+                UmlModelEventPump.getPump().addClassModelEventListener(this, clazz, "name");
+            }
+            if (clazz.equals(MStereotype.class)) {
+                UmlModelEventPump.getPump().addClassModelEventListener(this, clazz, "baseClass");
+            }
         }
     }
 

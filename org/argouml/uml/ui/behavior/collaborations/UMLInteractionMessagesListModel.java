@@ -33,6 +33,7 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
@@ -50,7 +51,7 @@ public class UMLInteractionMessagesListModel extends UMLModelElementListModel2 {
      * @param container
      */
     public UMLInteractionMessagesListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "message");
     }
 
     /**
@@ -67,8 +68,7 @@ public class UMLInteractionMessagesListModel extends UMLModelElementListModel2 {
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
      */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        Object elem = getChangedElement(e);
+    protected boolean isValidElement(MBase elem) {
         return elem instanceof MMessage && 
             ((MMessage)elem).getInteraction() == getContainer().getTarget();
     }

@@ -37,6 +37,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 
 import org.apache.log4j.Category;
+import org.argouml.model.uml.UmlModelEventPump;
 
 
 import ru.novosoft.uml.MBase;
@@ -61,8 +62,10 @@ public abstract class UMLComboBoxModel2
     
     private List _objects = Collections.synchronizedList(new ArrayList());
     private Object _selectedObject = null;
+    
     private boolean _clearable = false;
     
+    private String _propertySetName;
 	
     /**
      * Constructs a model for a combobox. The container given is used to retreive
@@ -70,19 +73,19 @@ public abstract class UMLComboBoxModel2
      * the user can select null in the combobox and thereby clear the attribute
      * in the model.
      * @param container
-     * @param propertySetName
-     * @param roleAddedName
+     * @param propertySetName The name of the NSUML event that must be fired to set
+     * the selected item programmatically (via setting the NSUML model)
      * @throws IllegalArgumentException if one of the arguments is null
      */
-    public UMLComboBoxModel2(UMLUserInterfaceContainer container, boolean clearable) {
+    public UMLComboBoxModel2(UMLUserInterfaceContainer container, String propertySetName, boolean clearable) {
         super();
-        if (container == null) throw new IllegalArgumentException("In UMLComboBoxModel2: one of the arguments is null");
+        if (container == null || propertySetName == null || propertySetName.equals("")) throw new IllegalArgumentException("In UMLComboBoxModel2: one of the arguments is null");
         // it would be better that we don't need the container to get the target
         // this constructor can be without parameters as soon as we improve
         // targetChanged
         _clearable = clearable;
+        _propertySetName = propertySetName;
         setContainer(container);
-        targetChanged();
     }
     
     
@@ -94,22 +97,16 @@ public abstract class UMLComboBoxModel2
     }
 
     /**
+     * If the property that this comboboxmodel depicts is changed by the NSUML
+     * model, this method will make sure that it is changed in the comboboxmodel
+     * too.
      * @see ru.novosoft.uml.MElementListener#propertySet(MElementEvent)
      */
     public void propertySet(MElementEvent e) {
-        if (isValidRoleAdded(e)) { 
-            Object o = getChangedElement(e);
-            if (o instanceof Collection) {
-                addAll((Collection)o);
-            } else {
-                if (getIndexOf(o) < 0) {
-                    addElement(o);
-                }
-            }
-            setSelectedItem(getSelectedModelElement());
-        } else
-        if (isValidPropertySet(e)) {
-            setSelectedItem(getSelectedModelElement());
+        if (e.getName().equals(_propertySetName) 
+            && e.getSource() == getTarget() && 
+            contains(getChangedElement(e))) {
+                setSelectedItem(getChangedElement(e));
         }
     }
 
@@ -123,9 +120,13 @@ public abstract class UMLComboBoxModel2
      * @see ru.novosoft.uml.MElementListener#removed(MElementEvent)
      */
     public void removed(MElementEvent e) {
-        Object o = getChangedElement(e);
-        if (getIndexOf(o) >= 0) {
-            removeElement(o);
+        if (contains(getChangedElement(e))) {
+            Object o = getChangedElement(e);
+            if (o instanceof Collection) {
+                removeAll((Collection)o);
+            } else {
+                removeElement(o);
+            }      
         }
     }
 
@@ -133,16 +134,20 @@ public abstract class UMLComboBoxModel2
      * @see ru.novosoft.uml.MElementListener#roleAdded(MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
-        if (isValidRoleAdded(e)) { 
+        if (isValidEvent(e)) {
             Object o = getChangedElement(e);
-            if (o instanceof Collection) {
-                addAll((Collection)o);
-            } else {
-                if (getIndexOf(o) < 0) {
-                    addElement(o);
+            if (o instanceof Collection) { // this should not happen but
+                    // you never know with NSUML
+                log.warn("Collection added via roleAdded! The correct element" +
+                    "is probably not selected...");
+                Iterator it = ((Collection)o).iterator();
+                while(it.hasNext()) {
+                    Object o2 = it.next();
+                    addElement(it.next());                    
                 }
+            } else {
+                addElement(o);
             }
-            setSelectedItem(getSelectedModelElement());
         }
     }
 
@@ -150,7 +155,7 @@ public abstract class UMLComboBoxModel2
      * @see ru.novosoft.uml.MElementListener#roleRemoved(MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
-        if (isValidRoleRemoved(e)) {
+        if (contains(getChangedElement(e))) {
             Object o = getChangedElement(e);
             if (o instanceof Collection) {
                 removeAll((Collection)o);
@@ -174,6 +179,7 @@ public abstract class UMLComboBoxModel2
      */
     protected void setContainer(UMLUserInterfaceContainer container) {
         _container = container;
+        setTarget(_container.getTarget());
     }
 
     /**
@@ -184,13 +190,10 @@ public abstract class UMLComboBoxModel2
         // the change (the actual old and new target)
         // this must be implemented in the whole of argo one time or another
         // to improve performance and reduce errors
-        setTarget(getContainer().getTarget());
-        removeAllElements();
-        buildModelList();
-        setSelectedItem(getSelectedModelElement());
-        if (getSelectedItem() != null && _clearable) {
-            addElement(""); // makes sure we can select 'none'
-        }
+        
+        setTarget(getContainer().getTarget());  
+       
+       
     }
 
     /**
@@ -199,39 +202,15 @@ public abstract class UMLComboBoxModel2
     public void targetReasserted() {
         // in the current implementation of argouml, history is not implemented
         // this event is for future releases
+        targetChanged();
     }
     
     /**
-     * Returns true if roleAdded(MElementEvent e) should be executed. Developers
-     * should override this method and not directly override roleAdded.  
-     * @param m
-     * @return boolean
+     * Returns true if the given element is valid, i.e. it may be added to the 
+     * list of elements.
+     * @param element
      */
-    protected abstract boolean isValidRoleAdded(MElementEvent e);
-    
-    
-    /**
-     * Returns true if roleRemoved(MElementEvent e) should be executed. Standard
-     * behaviour is such that some element that is changed allways may be 
-     * removed.
-     * @param m
-     * @return boolean
-     */
-    protected boolean isValidRoleRemoved(MElementEvent e) {
-        return getIndexOf(getChangedElement(e)) >= 0;
-    }
-    
-    /**
-     * Returns true if propertySet(MElementEvent e) should be executed. Developers
-     * should override this method and not directly override propertySet in order
-     * to let this comboboxmodel and the combobox(es) representing this model 
-     * function properly.  
-     * @param m
-     * @return boolean
-     */
-    protected abstract boolean isValidPropertySet(MElementEvent e);
-    
-    
+    protected abstract boolean isValidElement(MBase element);
     
     /**
      * Builds the list of elements and sets the selectedIndex to the currently 
@@ -261,9 +240,6 @@ public abstract class UMLComboBoxModel2
      * @return MModelElement
      */
     protected Object getTarget() {
-        if (_target == null) {
-            setTarget(getContainer().getTarget());
-        }
         return _target;
     }
     
@@ -286,13 +262,10 @@ public abstract class UMLComboBoxModel2
      */
     protected void addAll(Collection col) {
         Iterator it = col.iterator();
-        // addElement has side effects so we have to do something for that
         Object o2 = getSelectedItem();
         while (it.hasNext()) {
             Object o = it.next();
-            if (getIndexOf(o) < 0) {
-                addElement(o);
-            }
+            addElement(o);
         }
         setSelectedItem(o2);
     }
@@ -319,15 +292,30 @@ public abstract class UMLComboBoxModel2
      * @param target
      */
     protected void setTarget(Object target) {
+        if (_propertySetName == null || _propertySetName.equals("")) 
+            throw new IllegalStateException("propertySetname not set!");
         if (_target instanceof MBase) {
-            ((MBase)_target).removeMElementListener(this);
+            UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
         }
         _target = target;
-        if (target instanceof MBase) {
-            ((MBase)_target).addMElementListener(this);
+        if (_target instanceof MBase) {
+             UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
+             UmlModelEventPump.getPump().addModelEventListener(this, (MBase)_target, _propertySetName);
+        }
+        removeAllElements();
+        buildModelList();
+        setSelectedItem(getSelectedModelElement());
+        if (getSelectedItem() != null && _clearable) {
+            addElement(""); // makes sure we can select 'none'
         }
     }
     
+    /**
+     * Gets the modelelement that is selected in the NSUML model. For example,
+     * say that this ComboBoxmodel contains all namespaces (as in UMLNamespaceComboBoxmodel)
+     * , this method should return the namespace that owns the target then.
+     * @return Object
+     */
     protected abstract Object getSelectedModelElement();
 
    
@@ -336,7 +324,9 @@ public abstract class UMLComboBoxModel2
      * @see javax.swing.ListModel#getElementAt(int)
      */
     public Object getElementAt(int index) {
-        return _objects.get(index);
+        if (index >= 0 && index < _objects.size())
+            return _objects.get(index);
+        return null;
     }
 
     /**
@@ -353,30 +343,97 @@ public abstract class UMLComboBoxModel2
     public void addElement(Object o) {
         if (!_objects.contains(o)) {
             _objects.add(o);
+            fireIntervalAdded(this, _objects.size()-1, _objects.size()-1);
         }
     }
     
     public void setSelectedItem(Object o) {
-        if (_objects.contains(o)) {
+        if ((_selectedObject != null && !_selectedObject.equals( o )) || _selectedObject == null && o != null) {
             _selectedObject = o;
-        } else
-            _selectedObject = null;
+            fireContentsChanged(this, -1, -1);
+        }
     }
     
     public void removeElement(Object o) {
-        _objects.remove(o);
-        if (_selectedObject == o) {
-            _selectedObject = null;
-        } 
+        int index = _objects.indexOf(o);
+        if ( getElementAt( index ) == _selectedObject ) {
+            if ( index == 0 ) {
+                setSelectedItem( getSize() == 1 ? null : getElementAt( index + 1 ) );
+            }
+            else {
+                setSelectedItem( getElementAt( index - 1 ) );
+            }
+        }
+        _objects.remove(index);
+
+        fireIntervalRemoved(this, index, index);
     }
     
     public void removeAllElements() {
-        _objects.clear();
-        _selectedObject = null;
+        int startIndex = 0;
+        int endIndex = _objects.size()-1;
+        if (!_objects.isEmpty()) {
+            _objects.clear();
+            _selectedObject = null;
+            fireIntervalRemoved(this, startIndex, endIndex);
+        }
     }
     
     public Object getSelectedItem() {
         return _selectedObject;
+    }
+    
+    /**
+     * Returns true if some object elem is contained by the list of choices
+     * @param elem
+     * @return boolean
+     */
+    public boolean contains(Object elem) {
+        if (_objects.contains(elem)) return true;
+        if (elem instanceof Collection) {
+            Iterator it = ((Collection)elem).iterator();      
+            while(it.hasNext()) {
+                if (!_objects.contains(it.next())) return false;
+            }
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Returns true if some event is valid. An event is valid if the element
+     * changed in the event is valid. This is determined via a call to isValidElement.
+     * This method can be overriden by subclasses if they cannot determine if
+     * it is a valid event just by checking the changed element.
+     * @param e
+     * @return boolean
+     */
+    protected boolean isValidEvent(MElementEvent e) {
+        boolean valid = false;
+        if (!(getChangedElement(e) instanceof Collection)) {
+            valid = isValidElement((MBase)getChangedElement(e));
+            if (!valid && e.getNewValue() == null && e.getOldValue() != null) {
+                valid = true; // we tried to remove a value
+            }
+        } else {
+            Collection col = (Collection)getChangedElement(e);
+            Iterator it = col.iterator();
+            if (!col.isEmpty()) {
+                valid = true;
+                while (it.hasNext()) {
+                    Object o = it.next();
+                    if (!isValidElement((MBase)o)) {
+                        valid = false;
+                        break;
+                    }
+                }
+            } else {
+                if (e.getOldValue() instanceof Collection && !((Collection)e.getOldValue()).isEmpty()) {
+                    valid = true;
+                }
+            }   
+        }
+        return valid;
     }
 
 }

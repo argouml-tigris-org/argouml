@@ -54,10 +54,7 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
     super("ClassifierRole",_classifierRoleIcon, ConfigLoader.getTabPropsOrientation());
 
     Class mclass = MClassifierRole.class;
-    
-     Class[] namesToWatch = { MStereotype.class,MNamespace.class,MClassifier.class};
-    setNameEventListening(namesToWatch);
-    
+   
     addField(Argo.localize("UMLMenu", "label.name"), nameField);
     addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
     addField(Argo.localize("UMLMenu", "label.namespace"),namespaceScroll);

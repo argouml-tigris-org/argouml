@@ -26,11 +26,14 @@ package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
+ * The listmodel of the client dependencies for some modelelement
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -42,21 +45,21 @@ public class UMLModelElementClientDependencyListModel
      * @param container
      */
     public UMLModelElementClientDependencyListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "clientDependency");
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MModelElement)getTarget()).getClientDependencies());
+        if (_target != null) 
+            setAllElements(((MModelElement)getTarget()).getClientDependencies());
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
      */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        Object o = getChangedElement(e);
+    protected boolean isValidElement(MBase o) {  
         return o instanceof MDependency && ((MModelElement)getTarget()).getClientDependencies().contains(o);
     }
 

@@ -26,6 +26,7 @@
 // File: Checklist.java
 // Class: Checklist
 // Original Author: jrobbins@ics.uci.edu
+
 // $Id$
 
 package org.argouml.cognitive.checklist;

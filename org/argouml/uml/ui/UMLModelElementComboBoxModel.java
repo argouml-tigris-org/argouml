@@ -33,6 +33,7 @@
 
 package org.argouml.uml.ui;
 
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.*;
 import org.apache.log4j.Category;
 import org.argouml.application.api.*;
@@ -229,8 +230,7 @@ public class UMLModelElementComboBoxModel
         // Other containers will have to do this for themselves.
 
         if (container instanceof PropPanel) {
-            Object[] eventsToWatch = {elementType, null};
-            ((PropPanel) container).addThirdPartyEventListening(eventsToWatch);
+            UmlModelEventPump.getPump().addClassModelEventListener(this, elementType);
         }
     }
 

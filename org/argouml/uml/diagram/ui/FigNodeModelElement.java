@@ -24,7 +24,9 @@
 // File: FigNodeModelElement.java
 // Classes: FigNodeModelElement
 // Original Author: abonner
+
 // $Id$
+
 
 package org.argouml.uml.diagram.ui;
 
@@ -52,6 +54,7 @@ import org.argouml.application.api.*;
 import org.argouml.application.events.*;
 import org.argouml.kernel.*;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.*;
 import org.argouml.ui.cmd.CmdSetPreferredSize;
@@ -620,8 +623,8 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
       ((MModelElement)oldOwner).removeMElementListener(this);
     if (own instanceof MModelElement) {
 	MModelElement me = (MModelElement)own;
-        me.removeMElementListener(this);
-	me.addMElementListener(this);
+        UmlModelEventPump.getPump().removeModelEventListener(this, me);
+        UmlModelEventPump.getPump().addModelEventListener(this, me);
 	if ( me.getUUID() == null)
 	    me.setUUID(UUIDManager.SINGLETON.getNewUUID());
     }

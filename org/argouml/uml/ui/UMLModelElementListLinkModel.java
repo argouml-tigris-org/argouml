@@ -34,6 +34,9 @@ package org.argouml.uml.ui;
 
 import ru.novosoft.uml.*;
 import javax.swing.*;
+
+import org.argouml.model.uml.UmlModelEventPump;
+
 import ru.novosoft.uml.foundation.core.*;
 import java.util.*;
 import java.awt.*;
@@ -147,8 +150,7 @@ abstract public class UMLModelElementListLinkModel extends
         // Other containers will have to do this for themselves.
 
         if (container instanceof PropPanel) {
-            Object[] eventsToWatch = {elementType, null};
-            ((PropPanel) container).addThirdPartyEventListening(eventsToWatch);
+            UmlModelEventPump.getPump().addClassModelEventListener(this, elementType);
         }
     }
 

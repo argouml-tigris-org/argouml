@@ -62,7 +62,13 @@ public class ActionSaveProject extends UMLAction {
   // main methods
 
   public void actionPerformed(ActionEvent e) {
-    trySave(true);
+    URL url = ProjectBrowser.TheInstance.getProject() != null ?
+        ProjectBrowser.TheInstance.getProject().getURL() : null;
+    if (url == null) { 
+        ActionSaveProjectAs.SINGLETON.actionPerformed(e);
+    } else {
+        trySave(true);
+    }
   }
 
   public boolean trySave (boolean overwrite) {
@@ -167,8 +173,7 @@ public class ActionSaveProject extends UMLAction {
   }
 
   public boolean shouldBeEnabled() {
-    URL url = ProjectBrowser.TheInstance.getProject() != null ?
-		ProjectBrowser.TheInstance.getProject().getURL() : null;
-    return super.shouldBeEnabled() && url != null;
+    
+    return super.shouldBeEnabled();
   }
 } /* end class ActionSaveProject */

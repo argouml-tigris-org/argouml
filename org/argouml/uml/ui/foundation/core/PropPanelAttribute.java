@@ -78,7 +78,7 @@ public class PropPanelAttribute extends PropPanelModelElement {
 
 	addCaption(Argo.localize("UMLMenu", "label.type"),0,1,0);
         addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),
-            new UMLTypeComboBox(this)),0,1,0);
+            new UMLComboBox2(this, new UMLAttributeTypeComboBoxModel(this), ActionSetAttributeType.SINGLETON)),0,1,0);
 
         addCaption("Initial Value:",1,1,0);
         addField(new UMLInitialValueComboBox(this),1,1,0);

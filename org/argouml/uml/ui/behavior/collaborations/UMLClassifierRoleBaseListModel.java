@@ -27,12 +27,14 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
+ * Shows the bases belonging to some classifierrole.
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -43,7 +45,7 @@ public class UMLClassifierRoleBaseListModel extends UMLModelElementListModel2 {
      * @param container
      */
     public UMLClassifierRoleBaseListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "base");
     }
 
     /**
@@ -56,10 +58,9 @@ public class UMLClassifierRoleBaseListModel extends UMLModelElementListModel2 {
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
      */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        Object elem = getChangedElement(e);
+    protected boolean isValidElement(MBase elem) {
         return elem instanceof MClassifier &&
-             ((MClassifier)elem).getClassifierRoles().contains(getTarget());
+             ((MClassifierRole)getTarget()).getBases().contains(elem);
     }
 
 }

@@ -28,6 +28,8 @@ import java.util.Iterator;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
@@ -43,31 +45,21 @@ public class UMLUseCaseIncludeListModel extends UMLModelElementListModel2 {
      * @param container
      */
     public UMLUseCaseIncludeListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "include");
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        Iterator it = ((MUseCase)getTarget()).getIncludes().iterator();
-        while (it.hasNext()) {
-            MInclude include = (MInclude)it.next();
-            addElement(include.getAddition());
-        }
+        setAllElements(((MUseCase)getTarget()).getIncludes());
     }
 
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
+     /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        Object o = getChangedElement(e);
-        Iterator it = ((MUseCase)getTarget()).getIncludes().iterator();
-        while (it.hasNext()) {
-            MInclude include = (MInclude)it.next();
-            if (include.getAddition() == o) return true;
-        }
-        return false;
+     protected boolean isValidElement(MBase o) {
+        return ((MUseCase)getTarget()).getIncludes().contains(o);
     }
 
 }

@@ -32,7 +32,9 @@ import javax.swing.text.PlainDocument;
 import javax.swing.text.AbstractDocument.DefaultDocumentEvent;
 
 import org.apache.log4j.Category;
+import org.argouml.model.uml.UmlModelEventPump;
 
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
@@ -62,30 +64,39 @@ public abstract class UMLPlainTextDocument extends PlainDocument
     private boolean _firing = true;
     
     /**
+     * True if an user edits the document directly (by typing in text)
+     */
+    private boolean _editing = false;
+    
+    /**
      * The target of the propertypanel that's behind this property.
      */    
     private Object _target = null;
 
-
-    private PropPanel _panel = null;
+    /**
+     * The name of the property set event that will change the property this document
+     * shows.
+     */
+    private String _eventName = null;
+    
+    private UMLUserInterfaceContainer _container = null;
     
     /**
      * Constructor for UMLPlainTextDocument. This takes a panel to set the
      * thirdpartyeventlistener to the given list of events to listen to.
-     * TODO: make an eventpump that's not in the need of a panel
      */
-    public UMLPlainTextDocument(PropPanel panel, Object[] propertyList) {
-        super();     
-        _panel = panel; // only needed untill we have a working eventpump
-        setTarget(panel.getTarget());
-        panel.addThirdPartyEventListening(propertyList);  
+    public UMLPlainTextDocument(UMLUserInterfaceContainer cont, String eventName) {
+        super();
+        _container = cont;
+        setEventName(eventName);
+        setTarget(cont.getTarget());
     }
 
     /**
      * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
      */
     public void targetChanged() {
-        setTarget(_panel.getTarget());
+        setTarget(_container.getTarget());
         handleEvent();   
     }
 
@@ -93,6 +104,8 @@ public abstract class UMLPlainTextDocument extends PlainDocument
      * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
      */
     public void targetReasserted() {
+        setTarget(_container.getTarget());
+        handleEvent();  
     }
 
     /**
@@ -145,8 +158,12 @@ public abstract class UMLPlainTextDocument extends PlainDocument
      * @param target The target to set
      */
     public final void setTarget(Object target) {
-        _target = target;
-        
+        if (target instanceof MBase) {
+            if (_target != null)
+                UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, getEventName());
+            _target = target;
+            UmlModelEventPump.getPump().addModelEventListener(this, (MBase)_target, getEventName());
+        }
     }
 
     /**
@@ -154,11 +171,13 @@ public abstract class UMLPlainTextDocument extends PlainDocument
      */
     public void insertString(int offset, String str, AttributeSet a)
         throws BadLocationException {
-         super.insertString(offset, str, a);
-        if (isFiring()) {
-            setProperty(getText(0, getLength()));
-        }
-       
+        super.insertString(offset, str, a);
+        if (!isFiring()) {
+            setEditing(true); 
+            setProperty(getText(0, getLength()));    
+            setEditing(false);
+        } else
+            setProperty(getText(0, getLength()));             
     }
 
     /**
@@ -166,9 +185,13 @@ public abstract class UMLPlainTextDocument extends PlainDocument
      */
     public void remove(int offs, int len) throws BadLocationException {
         super.remove(offs, len);
-        if (isFiring()) {
-            setProperty(getText(0, getLength()));
-        }      
+        if (!isFiring()) {
+            setEditing(true); 
+        }
+        setProperty(getText(0, getLength()));     
+        if (!isFiring()) {
+            setEditing(false);
+        }
     }
     
     protected abstract void setProperty(String text);
@@ -186,8 +209,10 @@ public abstract class UMLPlainTextDocument extends PlainDocument
     private final void handleEvent() {
         try {
             setFiring(false);
-            remove(0, getLength());
-            insertString(0, getProperty(), null);
+            if (!isEditing()) {
+                super.remove(0, getLength());
+                insertString(0, getProperty(), null);
+            }
         } catch (BadLocationException b) {
             cat.error("A BadLocationException happened\n" +
                 "The string to set was: " +
@@ -199,5 +224,37 @@ public abstract class UMLPlainTextDocument extends PlainDocument
     }
     
     
+
+    /**
+     * Returns the editing.
+     * @return boolean
+     */
+    public boolean isEditing() {
+        return _editing;
+    }
+
+    /**
+     * Sets the editing.
+     * @param editing The editing to set
+     */
+    public void setEditing(boolean editing) {
+        _editing = editing;
+    }
+
+    /**
+     * Returns the eventName.
+     * @return String
+     */
+    public String getEventName() {
+        return _eventName;
+    }
+
+    /**
+     * Sets the eventName.
+     * @param eventName The eventName to set
+     */
+    protected void setEventName(String eventName) {
+        _eventName = eventName;
+    }
 
 }

@@ -42,6 +42,7 @@ import ru.novosoft.uml.*;
 import org.tigris.gef.util.*;
 
 import org.argouml.kernel.*;
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.ui.*;
@@ -510,9 +511,9 @@ class StartCritics implements Runnable {
         dsgr.setChildGenerator(new ChildGenUML());
         java.util.Enumeration models = (p.getUserDefinedModels()).elements();
         while (models.hasMoreElements()) {
-            Object o = models.nextElement();     
-            ((MModel)o).removeMElementListener(dsgr);
-            ((MModel)o).addMElementListener(dsgr);
+            Object o = models.nextElement();    
+            UmlModelEventPump.getPump().removeModelEventListener(dsgr, (MModel)o);
+            UmlModelEventPump.getPump().addModelEventListener(dsgr, (MModel)o); 
         }
         Argo.log.info("spawned critiquing thread");
 
