@@ -133,16 +133,26 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 <project name="argouml" default="usage" basedir=".">
 
   <!-- =================================================================== -->
+  <!-- Global initialization                                               -->
+  <!-- =================================================================== -->
+
+  <target name="setversion">
+    <property name="nextversion" value="0.9.4"/>
+    <property name="lastversion" value="0.9.3"/>
+  </target>
+
+
+  <!-- =================================================================== -->
   <!-- Initialization target                                               -->
   <!-- =================================================================== -->
 
- <target name="init">
+ <target name="init" depends="setversion">
 
     <tstamp/>
 
     <property name="Name" value="ArgoUML"/>
     <property name="name" value="argouml"/>
-    <property name="version" value="0.9.3-${DSTAMP}-${TSTAMP}"/>
+    <property name="version" value="${lastversion}-${DSTAMP}-${TSTAMP}"/>
     <property name="year" value="2001"/>
 
     <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
@@ -165,6 +175,22 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <property name="dist.dir" value="${build.dir}/dist"/>
     <property name="docs.dir" value="${build.dir}/doc"/>
     <property name="snapshot.dir" value="../www/snapshots"/>
+
+    <available classname="org.tigris.gef.base.Globals"
+	       classpath="${classpath}"
+               property="has.gef" />
+    <available classname="org.tigris.gef.util.Localizer"
+	       classpath="${classpath}"
+               property="has.gef.localizer" />
+    <available classname="org.apache.log4j.Category"
+	       classpath="${classpath}"
+               property="has.log4j" />
+    <available classname="antlr.ANTLRException"
+	       classpath="${classpath}"
+               property="has.antlr" />
+    <available classname="junit.framework.Test"
+	       classpath="${classpath}"
+               property="has.junit" />
 
     <exec executable="set user.home=C:\" os="windows" />
     <property file="${user.home}/.ant.properties"/>
@@ -210,6 +236,9 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <copy todir="${build.dest}/org/argouml/Images">
       <fileset dir="${build.src}/org/argouml/Images" includes="**/**" excludes="CVS/**" />
     </copy>
+    <copy todir="${build.dest}/org/argouml/resource">
+      <fileset dir="${build.src}/org/argouml/resource" includes="**/**" excludes="CVS/**" />
+    </copy>
     <copy todir="${build.dest}/org/argouml/xml/dtd">
       <fileset dir="${build.src}/org/argouml/xml/dtd" includes="**/**" excludes="CVS/**" />
     </copy>
@@ -246,11 +275,54 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   </target>
 
   <!-- =================================================================== -->
+  <!-- Checks for necessary libraries and correct versions of libraries    -->
+  <!-- =================================================================== -->
+
+  <target name="prerequisites"
+          depends="prepare,
+	           check.gef.localizer,
+		   check.gef,
+		   check.log4j,
+		   check.antlr,
+		   check.junit">
+  </target>
+
+  <target name="check.gef"
+          depends="prepare"
+	  unless="has.gef">
+    <fail message="gef library does not appear to be in the classpath."/>
+  </target>
+
+  <target name="check.gef.localizer"
+          depends="prepare, check.gef"
+	  unless="has.gef.localizer">
+    <fail message="Please install a more recent version of the gef library (minimum 0.9.5)"/>
+  </target>
+
+  <target name="check.log4j"
+          depends="prepare"
+	  unless="has.log4j">
+    <fail message="log4j library does not appear to be in the classpath."/>
+  </target>
+
+  <target name="check.antlr"
+          depends="prepare"
+	  unless="has.antlr">
+    <fail message="antlrall library does not appear to be in the classpath."/>
+  </target>
+
+  <target name="check.junit"
+          depends="prepare"
+	  unless="has.junit">
+    <fail message="junit library does not appear to be in the classpath."/>
+  </target>
+
+  <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
   <!-- <target name="compile" depends="generateparser,prepare"> -->
 
-  <target name="compile" depends="prepare">
+  <target name="compile" depends="prepare, prerequisites">
 
     <echo message="Compiling the sources"/>
 
@@ -350,8 +422,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <!-- Creates the whole distribution with adjusted version number         -->
   <!-- =================================================================== -->
-  <target name="dist-release">
-  	<property name="version" value="0.9.4"/>
+  <target name="dist-release" depends="setversion">
+  	<property name="version" value="${nextversion}"/>
   	<antcall target="dist-all">
   	</antcall>
   </target>
