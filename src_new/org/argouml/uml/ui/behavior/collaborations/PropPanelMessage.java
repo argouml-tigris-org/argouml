@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -145,7 +144,7 @@ public class PropPanelMessage extends PropPanelModelElement {
     }
 
     public boolean isAddActionEnabled() {
-    	return (org.argouml.model.ModelFacade.isAMessage(getTarget())) && (((MMessage) getTarget()).getAction() == null);
+    	return (org.argouml.model.ModelFacade.isAMessage(getTarget())) && (ModelFacade.getAction(getTarget()) == null);
     }
 
     public void navigateInteraction() {

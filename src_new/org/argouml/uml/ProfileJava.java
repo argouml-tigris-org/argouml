@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -72,16 +71,15 @@ public class ProfileJava extends Profile {
 	if (element == null) {
 	    value = "";
 	} else {
-	    MNamespace elementNs = element.getNamespace();
+	    Object elementNs = ModelFacade.getNamespace(element);
 	    //
 	    //   if element is an AssociationEnd use
 	    //      the namespace of containing association
 	    //
 	    if (ModelFacade.isAAssociationEnd(element)) {
-		MAssociation assoc =
-		    ((MAssociationEnd) element).getAssociation();
+		Object assoc = ModelFacade.getAssociation(element);
 		if (assoc != null) {
-		    elementNs = assoc.getNamespace();
+		    elementNs = ModelFacade.getNamespace(assoc);
 		}
 	    }
 	    if (elementNs == namespace) {

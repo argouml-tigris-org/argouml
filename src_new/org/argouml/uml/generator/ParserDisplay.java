@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -1529,7 +1528,7 @@ public class ParserDisplay extends Parser {
 		return root;
 	    else
 		_cat.debug("Missed stereotype "
-			   + ((MStereotype) root).getBaseClass());
+			   + ModelFacade.getBaseClass(root));
 
 	}
 
@@ -2996,7 +2995,7 @@ public class ParserDisplay extends Parser {
     private boolean hasMsgWithActivator(MClassifierRole r, MMessage m) {
 	Iterator it = r.getMessages2().iterator();
 	while (it.hasNext())
-	    if (((MMessage) it.next()).getActivator() == m)
+	    if (ModelFacade.getActivator(it.next()) == m)
 		return true;
 	return false;
     }

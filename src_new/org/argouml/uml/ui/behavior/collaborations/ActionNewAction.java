@@ -26,6 +26,7 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import java.awt.event.ActionEvent;
+import org.argouml.model.ModelFacade;
 
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
@@ -61,7 +62,7 @@ public class ActionNewAction extends AbstractActionNewModelElement {
      */
     public boolean isEnabled() {
         if (getTarget() != null) {
-            return ((MMessage) getTarget()).getAction() == null;
+            return ModelFacade.getAction(getTarget()) == null;
         }
         return false;
     }

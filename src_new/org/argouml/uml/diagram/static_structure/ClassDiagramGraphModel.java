@@ -333,7 +333,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      */
     public void addNodeRelatedEdges(Object node) {
 	if ( org.argouml.model.ModelFacade.isAClassifier(node) ) {
-	    Collection ends = ((MClassifier) node).getAssociationEnds();
+	    Collection ends = ModelFacade.getAssociationEnds(node);
 	    Iterator iter = ends.iterator();
 	    while (iter.hasNext()) {
 		MAssociationEnd ae = (MAssociationEnd) iter.next();

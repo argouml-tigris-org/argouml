@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -27,11 +25,10 @@
 // $Id$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
 
 /**
  * 
@@ -53,7 +50,7 @@ public class UMLAssociationEndAssociationListModel extends UMLModelElementListMo
     protected void buildModelList() {
         removeAllElements();
         if (_target != null) {
-            addElement(((MAssociationEnd) _target).getAssociation());
+            addElement(ModelFacade.getAssociation(_target));
         }
     }
 
@@ -61,7 +58,7 @@ public class UMLAssociationEndAssociationListModel extends UMLModelElementListMo
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase element) {
-        return org.argouml.model.ModelFacade.isAAssociation(element) && ((MAssociationEnd) _target).getAssociation().equals(element);
+        return org.argouml.model.ModelFacade.isAAssociation(element) && ModelFacade.getAssociation(_target).equals(element);
     }
 
 }

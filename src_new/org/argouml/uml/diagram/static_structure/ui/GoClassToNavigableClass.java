@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -29,14 +28,13 @@ import java.util.Collection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
+import org.argouml.model.ModelFacade;
 
 
 import org.argouml.ui.AbstractGoRule;
 
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MClass;
-
 public class GoClassToNavigableClass extends AbstractGoRule {
 
     public String getRuleName() {
@@ -49,7 +47,7 @@ public class GoClassToNavigableClass extends AbstractGoRule {
         
         List childClasses = new ArrayList();
         
-        Collection ends = ((MClass) parent).getAssociationEnds();
+        Collection ends = ModelFacade.getAssociationEnds(parent);
         if (ends == null)
             return null;
         

@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -27,11 +25,10 @@
 // $Id$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-
-import ru.novosoft.uml.foundation.core.MAssociation;
 
 /**
  * 
@@ -53,13 +50,13 @@ public class UMLAssociationAssociationRoleListModel extends UMLModelElementListM
      */
     protected void buildModelList() {
         if (_target != null) 
-            setAllElements(((MAssociation) getTarget()).getAssociationRoles());
+            setAllElements(ModelFacade.getAssociationRoles(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase o) {  
-        return org.argouml.model.ModelFacade.isAAssociationRole(o) && ((MAssociation) getTarget()).getAssociationRoles().contains(o);
+        return org.argouml.model.ModelFacade.isAAssociationRole(o) && ModelFacade.getAssociationRoles(getTarget()).contains(o);
     }
 }

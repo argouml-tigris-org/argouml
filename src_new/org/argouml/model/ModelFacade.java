@@ -2914,6 +2914,18 @@ public class ModelFacade {
     }
 
     /**
+     * Set the baseclass of some stereotype
+     * @param handle the stereotype
+     * @param baseClass the baseclass
+     */
+    public static void setBaseClass(Object handle, Object baseClass) {
+        if (isAStereotype(handle) && baseClass instanceof String) {
+            ((MStereotype) handle).setBaseClass((String)baseClass);
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
      * Sets a body of some method.
      * @param method
      * @param expression

@@ -29,8 +29,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-
 /**
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -50,7 +48,7 @@ public class UMLMessageActionListModel extends UMLModelElementListModel2 {
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(((MMessage) getTarget()).getAction());
+        addElement(ModelFacade.getAction(getTarget()));
     }
 
     
@@ -59,7 +57,7 @@ public class UMLMessageActionListModel extends UMLModelElementListModel2 {
      */
     protected boolean isValidElement(MBase elem) {        
         return ModelFacade.isAAction(elem) && 
-            ((MMessage) getTarget()).getAction() == elem;
+            ModelFacade.getAction(getTarget()) == elem;
     }
 
 }

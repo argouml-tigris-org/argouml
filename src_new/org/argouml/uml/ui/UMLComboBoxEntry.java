@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -167,7 +166,7 @@ public class UMLComboBoxEntry implements Comparable {
                 clone.setName(_element.getName());
                 clone.setStereotype(_element.getStereotype());
                 if (ModelFacade.isAStereotype(clone)) {
-                    ((MStereotype) clone).setBaseClass(((MStereotype) _element).getBaseClass());
+                    ModelFacade.setBaseClass(clone, ModelFacade.getBaseClass(_element));
                 }
                 targetNS.addOwnedElement(clone);
                 _element = clone;
@@ -236,4 +235,3 @@ public class UMLComboBoxEntry implements Comparable {
         return _isPhantom;
     }
 }
-

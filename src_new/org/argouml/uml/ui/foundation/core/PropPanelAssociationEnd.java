@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -47,7 +46,6 @@ import org.argouml.uml.ui.UMLMultiplicityComboBox;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 
 /**
@@ -206,7 +204,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     public void navigateUp() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAAssociationEnd(target)) {
-            MAssociation assoc = ((MAssociationEnd) target).getAssociation();
+            Object assoc = ModelFacade.getAssociation(target);
             if (assoc != null) {
                 TargetManager.getInstance().setTarget(assoc);
             }

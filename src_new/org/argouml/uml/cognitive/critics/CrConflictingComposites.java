@@ -22,8 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: CrConflictingComposites.java
 // Classes: CrConflictingComposites
 // Original Author: jrobbins@ics.uci.edu
@@ -33,21 +31,12 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
 
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
-import ru.novosoft.uml.foundation.data_types.MMultiplicity;
-
-
-
-/** Well-formedness rule [2] for MAssociationEnd. See page 28 of UML 1.1
+/** Well-formedness rule [2] for association end. See page 28 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrConflictingComposites extends CrUML {
@@ -60,10 +49,9 @@ public class CrConflictingComposites extends CrUML {
 	// no good trigger
     }
 
-    public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
-	MClassifier cls = (MClassifier) dm;
-	Collection conns = cls.getAssociationEnds();
+    public boolean predicate2(Object classifier, Designer dsgr) {
+	if (!(ModelFacade.isAClassifier(classifier))) return NO_PROBLEM;
+	Collection conns = ModelFacade.getAssociationEnds(classifier);
 	if (conns == null) return NO_PROBLEM;
 	int compositeCount = 0;
 	Iterator enum = conns.iterator();

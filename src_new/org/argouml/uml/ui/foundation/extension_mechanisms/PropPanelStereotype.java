@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -34,6 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 
 import org.argouml.ui.targetmanager.TargetManager;
@@ -111,11 +111,11 @@ public class PropPanelStereotype extends PropPanelModelElement {
         */
     }
 
-    public String getBaseClass() {
-	String baseClass = "ModelElement";
+    public Object getBaseClass() {
+	Object baseClass = "ModelElement";
 	Object target = getTarget();
-	if (org.argouml.model.ModelFacade.isAStereotype(target)) {
-	    baseClass = ((MStereotype) target).getBaseClass();
+	if (ModelFacade.isAStereotype(target)) {
+	    baseClass = ModelFacade.getBaseClass(target);
 	}
 	return baseClass;
     }
