@@ -23,16 +23,19 @@
 
 package org.argouml.cognitive.ui;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
 import java.text.MessageFormat;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import org.argouml.application.api.Argo;
-import org.argouml.cognitive.*;
+import org.argouml.cognitive.Decision;
+import org.argouml.cognitive.Goal;
+import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.ui.targetmanager.TargetManager;
+
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 public class WizDescription extends WizStep {
 
@@ -58,10 +61,12 @@ public class WizDescription extends WizStep {
     super.setTarget(item);
     Object target = item;
     if (target == null) {
+        _description.setEditable(false);
       _description.setText(Argo.localize("Cognitive", "message.no-item-selected"));
     }
     else if (target instanceof ToDoItem) {
       ToDoItem tdi = (ToDoItem) target;
+      _description.setEditable(false);
       _description.setEnabled(true);
       _description.setText(tdi.getDescription());
       _description.setCaretPosition(0);
@@ -70,6 +75,7 @@ public class WizDescription extends WizStep {
       message = MessageFormat. 
                 format(Argo.localize("Cognitive", "message.branch-priority"),
                        new Object [] { target.toString() });
+      _description.setEditable(false);
       _description.setText(message);
 
       return;
@@ -78,6 +84,7 @@ public class WizDescription extends WizStep {
       message = MessageFormat. 
                 format(Argo.localize("Cognitive", "message.branch-critic"),
                        new Object [] { target.toString() });
+      _description.setEditable(false);
       _description.setText(message);
 
       return;
@@ -86,6 +93,7 @@ public class WizDescription extends WizStep {
       message = MessageFormat. 
                 format(Argo.localize("Cognitive", "message.branch-model"),
                        new Object [] { target.toString() });
+      _description.setEditable(false);
       _description.setText(message);
 
       return;

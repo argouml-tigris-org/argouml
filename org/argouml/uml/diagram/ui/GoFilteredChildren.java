@@ -68,21 +68,18 @@ public class GoFilteredChildren extends AbstractGoRule {
         return _name;
     }
 
-    public Object getChild(Object parent, int index) {
-        _tm.setCacheable(parent, true);
+    public Object getChild(Object parent, int index) {  
         int unfilteredCount = _tm.getChildCount(parent);
         int filteredCount = 0;
         for (int i = 0; i < unfilteredCount; ++i) {
             Object kid = _tm.getChild(parent, i);
             if (_pred.predicate(kid)) {
-                if (filteredCount == index) {
-                    _tm.setCacheable(parent, false);                
+                if (filteredCount == index) {             
                     return kid;
                 }
                 filteredCount++;
             }
-        }
-        _tm.setCacheable(parent, false);    
+        } 
         return null;
     }
 

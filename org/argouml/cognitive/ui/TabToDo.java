@@ -155,7 +155,6 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     public void setTarget(Object item) {
         Object target = item;
         _target = target;
-        updateActionsEnabled();
         // the target of description will allways be set directly by tabtodo
         _description.setTarget(target);
         Wizard w = null;
@@ -181,8 +180,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
         setTarget(TargetManager.getInstance().getTarget());
     }
 
-    protected void updateActionsEnabled() {
-        Object target = TargetManager.getInstance().getTarget();
+    protected void updateActionsEnabled(Object target) {      
         _actionResolve.updateEnabled(target);
         _actionEmailExpert.updateEnabled(target);
         _actionSnooze.updateEnabled(target);
@@ -213,6 +211,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTargets()[0]);
+        updateActionsEnabled(e.getNewTargets()[0]);
     }
 
 } /* end class TabToDo */

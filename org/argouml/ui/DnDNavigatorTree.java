@@ -92,6 +92,7 @@ DragSourceListener{
         
         //Get the selected node from the JTree
         _selectedTreePath = getSelectionPath();
+        if (_selectedTreePath == null) return;
         Object dragNode = _selectedTreePath.getLastPathComponent();
         if (dragNode != null) {
             
