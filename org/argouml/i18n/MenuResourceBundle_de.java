@@ -37,7 +37,6 @@ import java.awt.event.*;
 public class MenuResourceBundle_de extends ListResourceBundle {
 
    static final Object[][] _contents = {
-        {"action.import", "Importieren" },
         {"1", "1" },
         {"0..1", "0..1" },
         {"0..*", "0..*" },
@@ -88,9 +87,6 @@ public class MenuResourceBundle_de extends ListResourceBundle {
         {"Mnemonic_Critique", "R" },
         {"Help", "Hilfe" },
         {"Mnemonic_Help", "H" },
-        {"action.as-diagram", "Als Diagramm"},
-        {"action.as-metrics", "Als Metrik"},
-        {"action.as-table", "Als Tabelle"},
         {"ToDoItem", "ToDo Eintrag" },
         {"Javadocs", "Javadocs" },
         {"Source", "Sourcecode" },
