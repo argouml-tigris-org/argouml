@@ -46,9 +46,17 @@ import org.xml.sax.*;
  *   @author Curt Arnold
  */
 public class ProfileJava extends Profile {
+    private static ProfileJava _instance = null;
+    public static ProfileJava getInstance() {
+	if (_instance == null)
+	    _instance = new ProfileJava();
+	return _instance;
+    }
+
+
     MModel _defaultModel;
 
-    public ProfileJava() {
+    private ProfileJava() {
         //
         //    get a file name for the default model
         //
