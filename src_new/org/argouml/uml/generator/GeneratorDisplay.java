@@ -63,24 +63,32 @@ public class GeneratorDisplay extends Generator {
   }
 
   public String generateOperation(MOperation op) {
+    boolean isConstructor = false;
+    if(op.getStereotype() != null) {
+	isConstructor = "create".equals(op.getStereotype().getName());
+    }
     String s = "";
     s += generateVisibility(op);
-    s += generateScope(op);
+    if (!isConstructor) {
+	s += generateScope(op);
+    }
     String nameStr = generateName(op.getName());
     String clsName = generateName(op.getOwner().getName());
 
     // pick out return type
-	MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
-	if (rp != null) {
-		MClassifier returnType = rp.getType();
-		if (returnType == null && !nameStr.equals(clsName)) s += "void?? ";
-		else if (returnType != null) s += generateClassifierRef(returnType) + " ";
-	} else s += "void?? ";
-
-
+    MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
+    if (!isConstructor) {
+	if (rp != null && rp.getType() != null) {
+	    s += generateClassifierRef(rp.getType()) + " ";
+	}
+	else {
+	    s += "void?? ";
+	}
+    }
+    
     // name and params
     Vector params = new Vector(op.getParameters());
-	params.remove(rp);
+    params.remove(rp);
     s += nameStr + "(";
 	if (params != null) {
 		boolean first = true;
