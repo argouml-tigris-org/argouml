@@ -29,7 +29,7 @@ import java.util.*;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.xml.sax.AttributeList;
+import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.tigris.gef.base.Diagram;
@@ -70,7 +70,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    private static final PGMLParser SINGLETON = new PGMLParser();
+    private static final PGMLParser INSTANCE = new PGMLParser();
 
     private HashMap translationTable = new HashMap();
 
@@ -222,7 +222,10 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
      *
      * Called by the XML framework when an entity starts.
      */
-    public void startElement(String elementName, AttributeList attrList) {
+    public void startElement(String uri,
+                String localname, 
+                String elementName, 
+                Attributes attrList) throws SAXException {
 
         String descr = null;
         if (attrList != null) {
@@ -308,7 +311,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         if ("private".equals(elementName)) {
             privateTextDepth++;
         }
-        super.startElement(elementName, attrList);
+        super.startElement(uri, localname, elementName, attrList);
         if (nestedGroupFlag) {
             _diagram.remove(figGroup);
             figGroup = null;
@@ -317,7 +320,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         
     }
     
-    private boolean isAttributesXml(AttributeList attrList) {
+    private boolean isAttributesXml(Attributes attrList) {
         if (attrList == null) {
             return false;
         }
@@ -325,7 +328,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         return (descr.indexOf("FigAttributesCompartment[") > 0);
     }
 
-    private boolean isOperationsXml(AttributeList attrList) {
+    private boolean isOperationsXml(Attributes attrList) {
         if (attrList == null) {
             return false;
         }
@@ -352,8 +355,9 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
      * entity.
      */
     public void characters(char[] ch, int start, int length) {
-	if (privateTextDepth == 1)
+	if (privateTextDepth == 1) {
 	    privateText.append(ch, start, length);
+        }
 	super.characters(ch, start, length);
     }
 
@@ -488,8 +492,10 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     /**
      * @see org.xml.sax.DocumentHandler#endElement(java.lang.String)
      */
-    public void endElement(String arg0)  {
-	if ("private".equals(arg0)) {
+    public void endElement(String uri, String localname, String name) 
+        throws SAXException {
+        
+	if ("private".equals(name)) {
 	    if (privateTextDepth == 1) {
 		String str = privateText.toString();
 		StringTokenizer st = new StringTokenizer(str, "\n");
@@ -531,7 +537,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 	    break;
         }
 
-        super.endElement(arg0);
+        super.endElement(uri, localname, name);
     }
     
     /**
@@ -541,8 +547,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
      *
      * @see org.tigris.gef.xml.pgml.PGMLParser#handleGroup(org.xml.sax.AttributeList)
      */
-    protected Fig handleGroup(AttributeList attrList) {
-     //System.out.println("[PGMLParser]: handleGroup: ");
+    protected Fig handleGroup(Attributes attrList) {
         Fig f = null;
         String clsNameBounds = attrList.getValue("description");
         StringTokenizer st = new StringTokenizer(clsNameBounds, ",;[] ");
@@ -594,11 +599,9 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             }  
             
         } catch (Exception ex) {
-            LOG.debug("Exception in handleGroup", ex);
-            ex.printStackTrace();
+            LOG.error("Exception in handleGroup", ex);
         } catch (NoSuchMethodError ex) {
-            LOG.debug("No constructor() in class " + clsName, ex);
-            ex.printStackTrace();
+            LOG.error("No constructor() in class " + clsName, ex);
         }
         
         setAttrs(f, attrList);
@@ -607,10 +610,10 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     
     
     /**
-     * @return Returns the sINGLETON.
+     * @return Returns the singleton instance.
      */
-    public static PGMLParser getSingleton() {
-        return SINGLETON;
+    public static PGMLParser getInstance() {
+        return INSTANCE;
     }
  
  

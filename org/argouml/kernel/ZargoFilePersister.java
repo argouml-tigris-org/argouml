@@ -233,9 +233,9 @@ public class ZargoFilePersister extends AbstractFilePersister {
 
                 // the "false" means that members should not be added,
                 // we want to do this by hand from the zipped stream.
-                ArgoParser.SINGLETON.readProject(url, zis, false);
-                p = ArgoParser.SINGLETON.getProject();
-                ArgoParser.SINGLETON.setProject(null); // clear up project refs
+                ArgoParser.getInstance().readProject(url, zis, false);
+                p = ArgoParser.getInstance().getProject();
+                ArgoParser.getInstance().setProject(null); // clear up project refs
                 zis.close();
             } catch (IOException e) {
                 // exception can occur both due to argouml code as to J2SE
@@ -288,7 +288,7 @@ public class ZargoFilePersister extends AbstractFilePersister {
 
             // now close again, reopen and read the Diagrams.
 
-            PGMLParser.getSingleton().setOwnerRegistry(project.getUUIDRefs());
+            PGMLParser.getInstance().setOwnerRegistry(project.getUUIDRefs());
 
             //zis.close();
             ZipInputStream zis = new ZipInputStream(theUrl.openStream());
@@ -306,7 +306,7 @@ public class ZargoFilePersister extends AbstractFilePersister {
                     // "false" means the stream shall not be closed,
                     // but it doesn't seem to matter...
                     ArgoDiagram d =
-                        (ArgoDiagram) PGMLParser.getSingleton().readDiagram(
+                        (ArgoDiagram) PGMLParser.getInstance().readDiagram(
                                       sub,
                                       false);
                     if (d != null) {
@@ -336,8 +336,8 @@ public class ZargoFilePersister extends AbstractFilePersister {
         } catch (ParserConfigurationException e) {
         throw new OpenException(e);
         } catch (IOException e) {
-            ArgoParser.SINGLETON.setLastLoadStatus(false);
-            ArgoParser.SINGLETON.setLastLoadMessage(e.toString());
+            ArgoParser.getInstance().setLastLoadStatus(false);
+            ArgoParser.getInstance().setLastLoadMessage(e.toString());
             LOG.error("Failure in Project.loadProjectMembers()", e);
             throw new OpenException(e);
         }
@@ -409,8 +409,8 @@ public class ZargoFilePersister extends AbstractFilePersister {
         source.setEncoding("UTF-8");
         mmodel = xmiReader.parseToModel(source);        
         if (xmiReader.getErrors()) {
-            ArgoParser.SINGLETON.setLastLoadStatus(false);
-            ArgoParser.SINGLETON.setLastLoadMessage(
+            ArgoParser.getInstance().setLastLoadStatus(false);
+            ArgoParser.getInstance().setLastLoadMessage(
                     "XMI file could not be parsed.");
             LOG.error("XMI file could not be parsed.");
             throw new SAXException(

@@ -28,6 +28,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.VetoableChangeListener;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
@@ -108,7 +109,7 @@ public class UseCaseDiagramGraphModel
      *
      * @return            A vector of the ports found.
      */
-    public Vector getPorts(Object nodeOrEdge) {
+    public List getPorts(Object nodeOrEdge) {
         Vector res = new Vector();  //wasteful!
 
         if (ModelFacade.isAActor(nodeOrEdge)) {
@@ -147,7 +148,7 @@ public class UseCaseDiagramGraphModel
      *
      * @return      A vector of objects which are the incoming edges.
      */
-    public Vector getInEdges(Object port) {
+    public List getInEdges(Object port) {
         Vector res = new Vector(); //wasteful!
 
         // The actor case
@@ -212,7 +213,7 @@ public class UseCaseDiagramGraphModel
      * @return      A vector of objects which are the outgoing edges. Currently
      *              return the empty vector.
      */
-    public Vector getOutEdges(Object port) {
+    public List getOutEdges(Object port) {
         return new Vector();
     }
 
@@ -443,7 +444,7 @@ public class UseCaseDiagramGraphModel
         // Add the node, check that it is an actor or use case and add it to
         // the model namespace.
 
-        getNodes().addElement(node);
+        getNodes().add(node);
         /*
          * 2002-07-14
          * Jaap Branderhorst
@@ -493,7 +494,7 @@ public class UseCaseDiagramGraphModel
         if (!canAddEdge(edge)) return;
 
         // Add the element and place it in the namespace of the model
-        getEdges().addElement(edge);
+        getEdges().add(edge);
 
         if (ModelFacade.isAModelElement(edge) 
                 && ModelFacade.getNamespace(edge) == null) {

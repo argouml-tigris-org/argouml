@@ -34,6 +34,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.VetoableChangeListener;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
@@ -92,7 +93,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      *
      * Return all ports on node or edge.
      */
-    public Vector getPorts(Object nodeOrEdge) {
+    public List getPorts(Object nodeOrEdge) {
 	Vector res = new Vector();  //wasteful!
 	if (ModelFacade.isAClass(nodeOrEdge)) res.addElement(nodeOrEdge);
 	if (ModelFacade.isAInterface(nodeOrEdge)) res.addElement(nodeOrEdge);
@@ -117,7 +118,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      *
      * Instances can't currently be added to a class diagram.
      */
-    public Vector getInEdges(Object port) {
+    public List getInEdges(Object port) {
       
 	Vector edges = new Vector();
       
@@ -194,7 +195,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      *
      * Return all edges going from given port (model element).
      */
-    public Vector getOutEdges(Object port) {
+    public List getOutEdges(Object port) {
 
 	Vector edges = new Vector();
       
@@ -346,7 +347,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     public void addNode(Object node) {
 	LOG.debug("adding class node!!");
 	if (!canAddNode(node)) return;
-	getNodes().addElement(node);
+	getNodes().add(node);
 	if (ModelFacade.isAModelElement(node)
 	        && ModelFacade.getNamespace(node) == null) {
             ModelFacade.addOwnedElement(model, node);
@@ -384,7 +385,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
             return;
         }
         
-        getEdges().addElement(edge);
+        getEdges().add(edge);
         
         // TODO: assumes public
         if (ModelFacade.isAModelElement(edge) 

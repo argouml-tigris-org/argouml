@@ -60,8 +60,7 @@ public class CrTooManyClasses extends CrUML {
 	UMLClassDiagram d = (UMLClassDiagram) dm;
 
 	int threshold = ((Integer) getArg(THRESHOLD)).intValue();
-	Vector nodes = d.getGraphModel().getNodes();
-	if (nodes.size() <= threshold) return NO_PROBLEM;
+	if (d.getGraphModel().getNodes().size() <= threshold) return NO_PROBLEM;
 	return PROBLEM_FOUND;
     }
 

@@ -92,14 +92,14 @@ public class ActionEdgesDisplay extends UMLAction {
                 mgm.addNodeRelatedEdges(owner);
             }
             else { // remove
-                Vector edges = mgm.getInEdges(owner);
+                List edges = mgm.getInEdges(owner);
                 edges.addAll(mgm.getOutEdges(owner));
-                Enumeration e2 = edges.elements();
-                while (e2.hasMoreElements()) {
-                    Object edge = e2.nextElement();
+                Iterator e2 = edges.iterator();
+                while (e2.hasNext()) {
+                    Object edge = e2.next();
                     Fig fig = d.presentationFor(edge);
                     if (fig != null)
-                        fig.delete();
+                        fig.removeFromDiagram();
                 }
             }
         }

@@ -32,6 +32,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.VetoableChangeListener;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
@@ -87,7 +88,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      * 
      * @see org.tigris.gef.graph.GraphModel#getPorts(java.lang.Object)
      */
-    public Vector getPorts(Object nodeOrEdge) {
+    public List getPorts(Object nodeOrEdge) {
 	Vector res = new Vector();  //wasteful!
 	if (ModelFacade.isAClassifierRole(nodeOrEdge)) 
 	    res.addElement(nodeOrEdge);
@@ -106,7 +107,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      * 
      * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
      */
-    public Vector getInEdges(Object port) {
+    public List getInEdges(Object port) {
 	Vector res = new Vector(); //wasteful!
 	if (ModelFacade.isAClassifierRole(port)) {
 	    Object cr = /*(MClassifierRole)*/ port;
@@ -125,7 +126,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      * 
      * @see org.tigris.gef.graph.GraphModel#getOutEdges(java.lang.Object)
      */
-    public Vector getOutEdges(Object port) {
+    public List getOutEdges(Object port) {
 	return new Vector(); // TODO:?
     }
 
@@ -218,7 +219,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     public void addNode(Object node) {
 	LOG.debug("adding MClassifierRole node!!");
 	if (!canAddNode(node)) return;
-	getNodes().addElement(node);
+	getNodes().add(node);
 	// TODO: assumes public, user pref for default visibility?
 	if (ModelFacade.isAClassifier(node)) {
 	    ModelFacade.addOwnedElement(collab, /*(MClassifier)*/ node);
@@ -235,7 +236,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     public void addEdge(Object edge) {
         LOG.debug("adding class edge!!!!!!");
         if (!canAddEdge(edge)) return;
-        getEdges().addElement(edge);
+        getEdges().add(edge);
         // TODO: assumes public
         if (ModelFacade.isAModelElement(edge)
 	    && ModelFacade.getNamespace(edge) == null) {
