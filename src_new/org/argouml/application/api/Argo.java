@@ -219,6 +219,7 @@ public class Argo
     }
 
     /** Change the default startup directory.
+     * @param dir the directory to save
      */
     public static void setDirectory(String dir) {
 	// Store in the user configuration, and
@@ -229,6 +230,7 @@ public class Argo
     }
 
     /** Get the default startup directory.
+     * @return the startup directory
      */
     public static String getDirectory() {
 	// Use the configuration if it exists, otherwise
@@ -240,6 +242,10 @@ public class Argo
 
     /** Helper for localization to eliminate the need to import
      *  the gef util library.
+     * 
+     * @param bundle the localization bundle name to use
+     * @param key the resource string to find
+     * @return the localized string
      */
     public static String localize(String bundle, String key) {
         return org.argouml.i18n.Translator.localize(bundle, key);
@@ -249,6 +255,10 @@ public class Argo
      *  which satisfy both of the contexts required.
      *
      *  If no plugins are available, returns null.
+     * 
+     * @param pluginType class of the plugin to search for
+     * @param context plugin-specific query parameters
+     * @return a vector of plugins or null
      */
     public static final ArrayList getPlugins(Class pluginType, 
 					     Object[] context) {
@@ -258,6 +268,9 @@ public class Argo
     /** Returns a vector of all plugins of the class type passed.
      *
      *  If no plugins are available, returns null.
+     * @param pluginType class of the plugin to search for
+     * @return a vector of plugins or null
+
      */
     public static final ArrayList getPlugins(Class pluginType) {
 	return ModuleLoader.getInstance().getPlugins(pluginType, null);
@@ -269,19 +282,40 @@ public class Argo
 	ModuleLoader.getInstance().initialize();
     }
 
+    /** Convenience helper to access the argo home directory
+     * 
+     * @return the argo home directory
+     */
     public static String getArgoHome() {
 	return ModuleLoader.getInstance().getArgoHome();
     }
 
+    /** Convenience helper to access the argo root directory
+     * 
+     * @return the argo root directory
+     */
     public static String getArgoRoot() {
 	return ModuleLoader.getInstance().getArgoRoot();
     }
 
+    /**
+     * Look up an icon resource.
+     * 
+     * @param arg1 the name of the resource to find.
+     * @return an Icon
+     */
     public static Icon lookupIconResource(String arg1) {
 	return ResourceLoaderWrapper.getResourceLoaderWrapper()
 	    .lookupIconResource(arg1);
     }
 
+    /**
+     * Look up an icon resource.
+     * 
+     * @param arg1 the name of the resource to find.
+     * @param arg2 the description of the resource
+     * @return an Icon
+     */
     public static Icon lookupIconResource(String arg1, String arg2) {
 	return ResourceLoaderWrapper.getResourceLoaderWrapper()
 	    .lookupIconResource(arg1, arg2);
