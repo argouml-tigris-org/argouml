@@ -321,6 +321,10 @@ public class UmlFactory extends AbstractUmlModelFactory {
             new ObjectCreateInfo(MAssociation.class,
                 factory,
                 "createAssociation"));
+        elements.put(Uml.ASSOCIATION_CLASS,
+            new ObjectCreateInfo(MAssociationClass.class,
+                factory,
+                "createAssociationClass"));
         elements.put(Uml.ASSOCIATION_ROLE,
             new ObjectCreateInfo(MAssociationRole.class,
                 factory,
