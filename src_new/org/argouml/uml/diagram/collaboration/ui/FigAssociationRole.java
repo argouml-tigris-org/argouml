@@ -132,7 +132,7 @@ class FigMessageGroup extends FigGroup {
     }
 
     protected void updateFigPositions() {
-    	Collection figs = getFigs(null); // the figs that make up this group
+    	Collection figs = getFigs(); // the figs that make up this group
         Iterator it = figs.iterator();
     	if (!figs.isEmpty()) {
             FigMessage previousFig = null;
@@ -159,7 +159,7 @@ class FigMessageGroup extends FigGroup {
      */
     public void calcBounds() {
 	super.calcBounds();
-	Collection figs = getFigs(null);
+	Collection figs = getFigs();
 	if (!figs.isEmpty()) {
 	    Fig last = null;
 	    Fig first = null;
@@ -205,7 +205,7 @@ class FigMessageGroup extends FigGroup {
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
     public void removeFromDiagram() {
-        Collection figs = getFigs(null);
+        Collection figs = getFigs();
         if (figs != null) {
             Iterator it = figs.iterator();
             while (it.hasNext()) {
@@ -222,7 +222,7 @@ class FigMessageGroup extends FigGroup {
      * @see org.tigris.gef.presentation.Fig#deleteFromModel()
      */
     public void deleteFromModel() {
-    	Collection figs = getFigs(null);
+    	Collection figs = getFigs();
         if (figs != null) {
 	    Iterator it = figs.iterator();
 	    while (it.hasNext()) {

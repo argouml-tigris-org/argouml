@@ -224,7 +224,7 @@ public class FigInterface extends FigNodeModelElement
      */
     public Object clone() {
         FigInterface figClone = (FigInterface) super.clone();
-        Iterator it = figClone.getFigs(null).iterator();
+        Iterator it = figClone.getFigs().iterator();
         figClone.setBigPort((FigRect) it.next());
         figClone.setStereotypeFig((FigText) it.next());
         figClone.setNameFig((FigText) it.next());
@@ -305,14 +305,14 @@ public class FigInterface extends FigNodeModelElement
         Rectangle rect = getBounds();
         int h =
 	    isCheckSize()
-	    ? ((ROWHEIGHT * Math.max(1, operVec.getFigs(null).size() - 1) + 2)
+	    ? ((ROWHEIGHT * Math.max(1, operVec.getFigs().size() - 1) + 2)
 	       * rect.height
 	       / getMinimumSize().height)
 	    : 0;
         if (operVec.isVisible()) {
             if (!isVisible) {
                 damage();
-                Iterator it = operVec.getFigs(null).iterator();
+                Iterator it = operVec.getFigs().iterator();
                 while (it.hasNext()) {
 		    ((Fig) (it.next())).setVisible(false);
                 }
@@ -321,7 +321,7 @@ public class FigInterface extends FigNodeModelElement
             }
         } else {
             if (isVisible) {
-                Iterator it = operVec.getFigs(null).iterator();
+                Iterator it = operVec.getFigs().iterator();
                 while (it.hasNext()) {
 		    ((Fig) (it.next())).setVisible(true);
                 }
@@ -367,7 +367,7 @@ public class FigInterface extends FigNodeModelElement
             // Loop through all the operations, to find the widest (remember
             // the first fig is the box for the whole lot, so ignore it).
 
-            Iterator it = operVec.getFigs(null).iterator();
+            Iterator it = operVec.getFigs().iterator();
             it.next(); // ignore
 
             while (it.hasNext()) {
@@ -376,7 +376,7 @@ public class FigInterface extends FigNodeModelElement
                 aSize.width = Math.max(aSize.width, elemWidth);
             }
             aSize.height +=
-		ROWHEIGHT * Math.max(1, operVec.getFigs(null).size() - 1) + 1;
+		ROWHEIGHT * Math.max(1, operVec.getFigs().size() - 1) + 1;
         }
 
         // we want to maintain a minimum width for Interfaces
@@ -439,7 +439,7 @@ public class FigInterface extends FigNodeModelElement
         Fig f = hitFig(r);
         if (f == operVec && operVec.getHeight() > 0) {
             // TODO: in future version of GEF call getFigs returning array
-            Vector v = new Vector(operVec.getFigs(null));
+            Vector v = new Vector(operVec.getFigs());
             i = (v.size() - 1)
 		* (me.getY() - f.getY() - 3)
 		/ operVec.getHeight();
@@ -470,7 +470,7 @@ public class FigInterface extends FigNodeModelElement
             CompartmentFigText ft = unhighlight();
             if (ft != null) {
                 // TODO: in future version of GEF call getFigs returning array
-                int i = new Vector(operVec.getFigs(null)).indexOf(ft);
+                int i = new Vector(operVec.getFigs()).indexOf(ft);
                 if (i != -1) {
                     if (key == KeyEvent.VK_UP) {
                         ft =
@@ -558,7 +558,7 @@ public class FigInterface extends FigNodeModelElement
             return;
         }
         // TODO: in future version of GEF call getFigs returning array
-        int i = new Vector(operVec.getFigs(null)).indexOf(ft);
+        int i = new Vector(operVec.getFigs()).indexOf(ft);
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
@@ -585,7 +585,7 @@ public class FigInterface extends FigNodeModelElement
     protected FigText getPreviousVisibleFeature(FigText ft, int i) {
         FigText ft2 = null;
         // TODO: in future version of GEF call getFigs returning array
-        Vector v = new Vector(operVec.getFigs(null));
+        Vector v = new Vector(operVec.getFigs());
         if (i < 1 || i >= v.size()
                 || !((FigText) v.elementAt(i)).isVisible()) {
             return null;
@@ -612,7 +612,7 @@ public class FigInterface extends FigNodeModelElement
      */
     protected FigText getNextVisibleFeature(FigText ft, int i) {
         FigText ft2 = null;
-        Vector v = new Vector(operVec.getFigs(null));
+        Vector v = new Vector(operVec.getFigs());
         if (i < 1 || i >= v.size()
                 || !((FigText) v.elementAt(i)).isVisible()) {
             return null;
@@ -644,7 +644,7 @@ public class FigInterface extends FigNodeModelElement
         new ActionAddOperation().actionPerformed(null);
         // TODO: in future version of GEF call getFigs returning array
         CompartmentFigText ft =
-            (CompartmentFigText) new Vector(fg.getFigs(null)).lastElement();
+            (CompartmentFigText) new Vector(fg.getFigs()).lastElement();
         if (ft != null) {
             ft.startTextEditor(ie);
             ft.setHighlighted(true);
@@ -659,7 +659,7 @@ public class FigInterface extends FigNodeModelElement
     protected CompartmentFigText unhighlight() {
         CompartmentFigText ft;
         // TODO: in future version of GEF call getFigs returning array
-        Vector v = new Vector(operVec.getFigs(null));
+        Vector v = new Vector(operVec.getFigs());
         int i;
         for (i = 1; i < v.size(); i++) {
             ft = (CompartmentFigText) v.elementAt(i);
@@ -846,7 +846,7 @@ public class FigInterface extends FigNodeModelElement
         if (behs != null) {
             Iterator iter = behs.iterator();
             // TODO: in future version of GEF call getFigs returning array
-            Vector figs = new Vector(operVec.getFigs(null));
+            Vector figs = new Vector(operVec.getFigs());
             CompartmentFigText oper;
             while (iter.hasNext()) {
         	Object behavioralFeature =

@@ -153,7 +153,7 @@ public class FigSubactivityState extends FigStateVertex {
      */
     public Object clone() {
         FigSubactivityState figClone = (FigSubactivityState) super.clone();
-        Iterator it = figClone.getFigs(null).iterator();
+        Iterator it = figClone.getFigs().iterator();
         figClone.setBigPort((FigRRect) it.next());
         figClone.cover = (FigRRect) it.next();
         figClone.setNameFig((FigText) it.next());

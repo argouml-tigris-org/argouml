@@ -86,7 +86,7 @@ public class FigJoinState extends FigStateVertex {
      */
     public Object clone() {
         FigJoinState figClone = (FigJoinState) super.clone();
-        Iterator it = figClone.getFigs(null).iterator();
+        Iterator it = figClone.getFigs().iterator();
         figClone.setBigPort((FigRect) it.next());
         figClone.head = (FigRect) it.next();
         return figClone;

@@ -112,7 +112,7 @@ public abstract class FigHistoryState extends FigStateVertex {
      */
     public Object clone() {
         FigHistoryState figClone = (FigHistoryState) super.clone();
-        Iterator it = figClone.getFigs(null).iterator();
+        Iterator it = figClone.getFigs().iterator();
         figClone.setBigPort((FigCircle) it.next());
         figClone.head = (FigCircle) it.next();
         figClone.h = (FigText) it.next();

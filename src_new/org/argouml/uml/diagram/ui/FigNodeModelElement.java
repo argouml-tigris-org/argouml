@@ -299,14 +299,16 @@ public abstract class FigNodeModelElement
 
     /**
      * After the base clone method has been called determine which child
-     * figs of the clone represent the name, stereotype and port.
+     * figs of the clone represent the name, stereotype and port. <p>
+     * 
+     * The clone function is used by Copy/Paste operations.
      *
      * @see java.lang.Object#clone()
      */
     public Object clone() {
         FigNodeModelElement clone = (FigNodeModelElement) super.clone();
-        Iterator thisIter = this.getFigs(null).iterator();
-        Iterator cloneIter = clone.getFigs(null).iterator();
+        Iterator thisIter = this.getFigs().iterator();
+        Iterator cloneIter = clone.getFigs().iterator();
         while (thisIter.hasNext()) {
             Fig thisFig = (Fig) thisIter.next();
             Fig cloneFig = (Fig) cloneIter.next();
@@ -316,9 +318,8 @@ public abstract class FigNodeModelElement
         }
         return clone;
     }
-// _enclosedFigs, _encloser and _eventSenders may also need to be cloned
-// must check usage
-// MVW: What are these Clone functions used for? Who would want to clone a fig?
+// TODO: _enclosedFigs, _encloser and _eventSenders may also need to be cloned
+
 
 
     /** Default Reply text to be shown while placing node in diagram.
@@ -1162,7 +1163,7 @@ public abstract class FigNodeModelElement
         if (o == null || o == getOwner()) {
             return true;
         }
-        Iterator it = getFigs(null).iterator();
+        Iterator it = getFigs().iterator();
         while (it.hasNext()) {
             Fig fig = (Fig) it.next();
             if (isPartlyOwner(fig, o)) {
@@ -1185,7 +1186,7 @@ public abstract class FigNodeModelElement
             return true;
         }
         if (fig instanceof FigGroup) {
-            Iterator it = ((FigGroup) fig).getFigs(null).iterator();
+            Iterator it = ((FigGroup) fig).getFigs().iterator();
             while (it.hasNext()) {
                 Fig fig2 = (Fig) it.next();
                 if (isPartlyOwner(fig2, o)) {
@@ -1207,7 +1208,7 @@ public abstract class FigNodeModelElement
                 Model.getUmlFactory().delete(own);
             }
         }
-        Iterator it = getFigs(null).iterator();
+        Iterator it = getFigs().iterator();
         while (it.hasNext()) {
             ((Fig) it.next()).deleteFromModel();
         }
@@ -1391,7 +1392,7 @@ public abstract class FigNodeModelElement
 				       int w,
 				       int h) {
         int newW = w;
-        int n = fg.getFigs(null).size() - 1;
+        int n = fg.getFigs().size() - 1;
         int newH = checkSize ? Math.max(h, ROWHEIGHT * Math.max(1, n) + 2) : h;
         int step = (n > 0) ? (newH - 1) / n : 0;
         // width step between FigText objects int maxA =
@@ -1491,7 +1492,7 @@ public abstract class FigNodeModelElement
             ArgoEventPump.removeListener(this);
             ArgoEventPump.addListener(this);
         }
-        Iterator it = getFigs(null).iterator();
+        Iterator it = getFigs().iterator();
         while (it.hasNext()) {
             Fig fig = (Fig) it.next();
             if (fig instanceof ArgoEventListener) {

@@ -196,7 +196,7 @@ public class FigClassifierRole extends FigNodeModelElement {
 
     public Object clone() {
         FigClassifierRole figClone = (FigClassifierRole) super.clone();
-        Iterator it = figClone.getFigs(null).iterator();
+        Iterator it = figClone.getFigs().iterator();
 
         figClone.setBigPort((FigRect) it.next());
         figClone.cover   = (FigRect) it.next();

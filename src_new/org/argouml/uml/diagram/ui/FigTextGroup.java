@@ -62,7 +62,7 @@ public class FigTextGroup extends FigGroup implements MouseListener {
      * added (via addFig) is shown at the bottom of the FigTextGroup.
      */
     protected void updateFigTexts() {
-        Iterator it = getFigs(null).iterator();
+        Iterator it = getFigs().iterator();
         int height = 0;
         while (it.hasNext()) {
             FigText fig = (FigText) it.next();
@@ -91,7 +91,7 @@ public class FigTextGroup extends FigGroup implements MouseListener {
             // calculate the total height
             int maxWidth = 0;
             int height = 0;
-            Iterator it = getFigs(null).iterator();
+            Iterator it = getFigs().iterator();
             while (it.hasNext()) {
                 FigText fig = (FigText) it.next();
                 if (fig.getText().equals("")) {
@@ -116,7 +116,7 @@ public class FigTextGroup extends FigGroup implements MouseListener {
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
     public void removeFromDiagram() {
-        Iterator it = getFigs(null).iterator();
+        Iterator it = getFigs().iterator();
         while (it.hasNext()) {
             ((Fig) it.next()).removeFromDiagram();
         }
@@ -127,7 +127,7 @@ public class FigTextGroup extends FigGroup implements MouseListener {
      * @see org.tigris.gef.presentation.Fig#deleteFromModel()
      */
     public void deleteFromModel() {
-        Iterator it = getFigs(null).iterator();
+        Iterator it = getFigs().iterator();
         while (it.hasNext()) {
             ((Fig) it.next()).deleteFromModel();
         }

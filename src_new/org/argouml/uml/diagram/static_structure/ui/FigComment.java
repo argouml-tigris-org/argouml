@@ -226,7 +226,7 @@ public class FigComment
      */
     public Object clone() {
         FigComment figClone = (FigComment) super.clone();
-        Iterator it = figClone.getFigs(null).iterator();
+        Iterator it = figClone.getFigs().iterator();
         figClone.setBigPort((FigRect) it.next());
         figClone.body = (FigPoly) it.next();
         figClone.urCorner = (FigPoly) it.next();

@@ -90,7 +90,7 @@ public class FigPartition extends FigNodeModelElement {
      */
     public Object clone() {
         FigPartition figClone = (FigPartition) super.clone();
-        Iterator it = figClone.getFigs(null).iterator();
+        Iterator it = figClone.getFigs().iterator();
         figClone.setBigPort((FigRect) it.next());
         figClone.rightLine = (FigLine) it.next();
         figClone.leftLine = (FigLine) it.next();
