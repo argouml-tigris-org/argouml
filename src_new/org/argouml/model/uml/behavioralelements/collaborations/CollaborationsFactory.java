@@ -27,6 +27,7 @@ package org.argouml.model.uml.behavioralelements.collaborations;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 
@@ -135,7 +136,9 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     /**
      * Builds a default collaboration not attached to a classifier
      */
-    public MCollaboration buildCollaboration(MNamespace namespace) {
+    public MCollaboration buildCollaboration(Object handle) {
+        if (ModelFacade.isANamespace(handle)) {
+        MNamespace namespace = (MNamespace)handle;            
     	MCollaboration modelelement = createCollaboration();
     	modelelement.setNamespace(namespace);
     	modelelement.setName("newCollaboration");
@@ -144,16 +147,22 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
             modelelement.setRepresentedClassifier((MClassifier) namespace);
         }
     	return modelelement;
+        }
+        throw new IllegalArgumentException("Argument is not a namespace");
     }
     
     /**
      * Builds an interaction belonging to some collaboration
      */
-    public MInteraction buildInteraction(MCollaboration collab) {
-    	MInteraction inter = createInteraction();
-    	inter.setContext(collab);
-    	inter.setName("newInteraction");
-    	return inter;
+    public MInteraction buildInteraction(Object handle) {
+        if (ModelFacade.isACollaboration(handle)) {
+            MCollaboration collab = (MCollaboration) handle;
+            MInteraction inter = createInteraction();
+            inter.setContext(collab);
+            inter.setName("newInteraction");
+            return inter;
+        }
+        throw new IllegalArgumentException("Argument is not a collaboration");
     }
     
     /**

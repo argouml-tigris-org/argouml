@@ -315,15 +315,26 @@ public class ModelFacade {
         // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
+    
+    
 
     /** Recognizer for bases. A base is an object that is some form of
      *  an element in the model. MBase in Novosoft terms.
      *
      * @param handle candidate
-     * @returns true if handle is abstract.
+     * @returns true if handle is a base.
      */
     public static boolean isABase(Object handle) {
         return handle instanceof MBase;
+    }
+    
+    /** Recognizer for behavioral features. 
+    *
+    * @param handle candidate
+    * @returns true if handle is a behavioral feature
+    */
+    public static boolean isABehavioralFeature(Object handle) {
+        return handle instanceof MBehavioralFeature;
     }
 
     /** Recognizer for Class
@@ -342,6 +353,15 @@ public class ModelFacade {
      */
     public static boolean isAClassifier(Object handle) {
         return handle instanceof MClassifier;
+    }
+    
+    /** Recognizer for Collaboration
+     *
+     * @param handle candidate
+     * @returns true if handle is a Collaboration
+     */
+    public static boolean isACollaboration(Object handle) {
+        return handle instanceof MCollaboration;
     }
 
     /** Recognizer for Comment

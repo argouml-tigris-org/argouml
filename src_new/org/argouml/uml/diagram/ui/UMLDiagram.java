@@ -426,8 +426,7 @@ public abstract class UMLDiagram
 	}    
       
     }
-
-
+    
   
   
 } /* end class UMLDiagram */

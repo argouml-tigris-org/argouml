@@ -156,7 +156,7 @@ public class UMLStateDiagram extends UMLDiagram {
     /**
      * The owner of a statediagram is the statediagram it's showing.
      */
-    public MModelElement getOwner() {
+    public Object getOwner() {
         StateDiagramGraphModel gm = (StateDiagramGraphModel) getGraphModel();
         return gm.getMachine();
     }
@@ -282,4 +282,14 @@ public class UMLStateDiagram extends UMLDiagram {
 							     theStateMachine);
         super.removed(e);
     }
+    
+    
+    /**
+     * @see org.argouml.ui.ArgoDiagram#cleanUp()
+     */
+    public void cleanUp() {       
+        super.cleanUp();
+        ProjectManager.getManager().getCurrentProject().moveToTrash(getStateMachine());
+    }
+
 } /* end class UMLStateDiagram */
