@@ -45,16 +45,20 @@ import javax.swing.JToolBar;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.swingext.PopupToolBoxButton;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.UseCaseDiagramGraphModel;
 import org.argouml.uml.ui.ActionAddExtensionPoint;
 import org.argouml.uml.ui.ActionAddNote;
+import org.argouml.uml.diagram.ui.ActionAddAssociation;
+
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.ui.ToolBar;
+
 import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
@@ -63,6 +67,7 @@ import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 
 /**
  * <p>The base class of the use case diagram.</p>
@@ -91,7 +96,14 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * <p>Tool to create an association between UML artifacts using a
      *   polyedge.</p>
      */
-    protected static Action _actionAssoc = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, "Association");
+    //protected static Action _actionAssoc = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, "Association");
+    protected static Action _actionAssociation = new ActionAddAssociation(MAggregationKind.NONE, false, "Association");
+    protected static Action _actionAggregation = new ActionAddAssociation(MAggregationKind.AGGREGATE, false, "Aggregation");
+    protected static Action _actionComposition = new ActionAddAssociation(MAggregationKind.COMPOSITE, false, "Composition");
+    protected static Action _actionUniAssociation = new ActionAddAssociation(MAggregationKind.NONE, true, "UniAssociation");
+    protected static Action _actionUniAggregation = new ActionAddAssociation(MAggregationKind.AGGREGATE, true, "UniAggregation");
+    protected static Action _actionUniComposition = new ActionAddAssociation(MAggregationKind.COMPOSITE, true, "UniComposition");
+
 
     /**
      * <p>Tool to create a generalization between UML artifacts using a
@@ -224,7 +236,8 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
         // Use case diagram specific edges
 
-        toolBar.add(_actionAssoc);
+        //toolBar.add(_actionAssoc);
+        toolBar.add(buildAssociationPopup());
         toolBar.add(_actionDependency);
         toolBar.add(_actionGeneralize);
         toolBar.add(_actionExtend);
@@ -238,6 +251,18 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         toolBar.add(ActionAddNote.SINGLETON);
     }
 
+    
+    private PopupToolBoxButton buildAssociationPopup() {
+        PopupToolBoxButton toolBox = new PopupToolBoxButton(_actionAssociation, 0, 2);
+        toolBox.add(_actionAssociation);
+        toolBox.add(_actionUniAssociation);
+        toolBox.add(_actionAggregation);
+        toolBox.add(_actionUniAggregation);
+        toolBox.add(_actionComposition);
+        toolBox.add(_actionUniComposition);
+        return toolBox;
+    }
+    
     protected static String getNewDiagramName() {
         String name = null;
         name = "Usecase Diagram " + _UseCaseDiagramSerial;
