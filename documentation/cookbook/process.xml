@@ -101,7 +101,7 @@ Missing javadoc.
 </para>
       </sect2>
 
-      <sect2>
+      <sect2 id="issuezilla_resolutions">
         <title>Resolutions</title>
         <indexterm>
           <primary>Resolution</primary>
@@ -118,6 +118,91 @@ Missing javadoc.
               <para>
 Not used.
 </para>
+	      <sidebar>
+	        <para>
+Rationale: Each issue have basically four states:
+<orderedlist>
+		  <listitem>
+		    <para>NEW/STARTED/REOPENED - To be resolved</para>
+		  </listitem>
+		  <listitem>
+		    <para>RESOLVED - To be verified</para>
+		  </listitem>
+		  <listitem>
+		    <para>VERIFIED - To be closed</para>
+		  </listitem>
+		  <listitem>
+		    <para>CLOSED - Finished.</para>
+		  </listitem>
+		</orderedlist>
+The statistics is based on this and persons looking for 
+issues to resolve look among the "To be resolved"-group
+(the web pages to help in this are set up in this way).
+This is also in synch with our release process.
+</para>
+	      <para>
+Looking at it from a single persons perspective an issue is either a
+"I could work with this issue but I currently don't",
+"I work with this one", or
+"I am now done with my work on this issue".
+For a resolver this is corresponds to NEW/REOPEN for the first group,
+STARTED for the second and
+RESOLVED for the third.
+For a verifier this corresponds to 
+RESOLVED for the first group and
+VERIFIED for the third group.
+</para>
+	      <para>
+The RESOLVED/LATER and RESOLVED/REMIND does not fit this.
+They risk to be verified because the rest of our process urges
+people to resolve issues that are RESOLVED
+in which case they are probably lost.
+
+They risk to be hanging in the RESOLVED state because nobody understands 
+where they should go from there.
+
+It is not clear who is responsible to move them forward.
+The person that "resolved" them or someone else.
+Someone risk to think that there is nothing left to do since it is resolved 
+and if so his options of doing work are reduced which could lead to that 
+he actually does less with ArgoUML than he else would.
+</para>
+	      <para>
+To amend this we have made two things:
+<orderedlist>
+		  <listitem>
+		    <para>Decided that we don't use the
+RESOLVED/LATER and 
+RESOLVED/REMIND
+states.
+</para>
+		  </listitem>
+		  <listitem>
+		    <para>At every release,
+as part of the release process,
+clean up issues that for some mysterious reason ended up
+in these states
+(See <xref linkend="release_process"/>,
+<xref linkend="issuezilla_release_maintenance"/>,
+<xref linkend="reopen_remind_and_later"/>)
+</para>
+		  </listitem>
+		</orderedlist>
+</para>
+	      <para>
+If you plan to solve an issue now,
+assign it to you,
+start it, and 
+set the target milestone to the release you plan to have it solved.
+This will signal to everyone that you have the responsibility,
+will pursue it, and your time plan.
+</para>
+	      <para>
+If you don't plan to solve this now,
+leave it in the "up for grabs"-pile (as not resolved).
+Somebody else might want to work with it.
+</para>
+	    </sidebar>
             </listitem>
             <listitem>
               <para>WORKSFORME</para>

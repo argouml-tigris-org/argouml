@@ -1745,7 +1745,7 @@ A tree with all files is located in
 This complete tree is uploaded to argouml-upload on the site.
 </para>
 	  </listitem>
-	  <listitem>
+	  <listitem id="issuezilla_release_maintenance">
 	    <para>
 Go through Issuezilla and check things.
 </para>
@@ -1803,7 +1803,7 @@ Since 'current' will be reused for the next release, they need to be
 locked to the closest release to where they were found.
 </para>
               </listitem>
-	      <listitem>
+	      <listitem id="reopen_remind_and_later">
 		<para>Other stuff.</para>
 		<para>
 This can also be a good time to change all 

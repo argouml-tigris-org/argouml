@@ -33,6 +33,17 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2004-08-02</entry>
+          <entry>
+Added rationale for not using RESOLVED/REMIND or RESOLVED/LATER
+(See <xref linkend="issuezilla_resolutions"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
           <entry>2004-07-28</entry>
           <entry>
 Reorganized the description on how to use Eclipse 3.
