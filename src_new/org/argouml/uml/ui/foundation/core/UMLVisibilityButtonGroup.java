@@ -106,6 +106,9 @@ public abstract class UMLVisibilityButtonGroup extends UMLButtonGroup {
         return publicButton;
     }
     
+    /**
+     * Set the actions for the buttons.
+     */
     protected abstract void setActions();
 
 }
