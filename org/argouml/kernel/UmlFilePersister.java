@@ -131,6 +131,7 @@ public class UmlFilePersister extends AbstractFilePersister {
                     .read(ARGO_TEE);
                 OCLExpander expander = new OCLExpander(templates);
                 expander.expand(writer, project, "  ", "");
+                //expander.expand(writer, project, "  "); //For next version of GEF
             } catch (ExpansionException e) {
                 throw new SaveException(e);
             }
@@ -212,14 +213,14 @@ public class UmlFilePersister extends AbstractFilePersister {
 
             ArgoParser parser = new ArgoParser();
             parser.readProject(url, inputStream, false);
+            inputStream.close();
+            
             List memberList = parser.getMemberList();
             Project p = parser.getProject();
             
             parser.setProject(null); // clear up project refs
 
             LOG.info(memberList.size() + " members");
-            
-            int diagramNumber = 0;
             
             HashMap instanceCountByType = new HashMap();
             
@@ -233,13 +234,20 @@ public class UmlFilePersister extends AbstractFilePersister {
                 
                 MemberFilePersister persister = null;
                 if (memberList.get(i).equals("pgml")) {
-                    persister = new DiagramMemberFilePersister(url, p);
+                    inputStream =
+                        new XmlInputStream(url.openStream(), "pgml", instanceCount.getIntValue());
+                    persister = new DiagramMemberFilePersister(p, inputStream);
                 } else if (memberList.get(i).equals("todo")) {
-                    persister = new TodoListMemberFilePersister(url, p);
+                    inputStream =
+                        new XmlInputStream(url.openStream(), "todo");
+                    persister = new TodoListMemberFilePersister(p, inputStream);
                 } else if (memberList.get(i).equals("xmi")) {
-                    persister = new ModelMemberFilePersister(url, p);
+                    inputStream =
+                        new XmlInputStream(url.openStream(), "XMI");
+                    persister = new ModelMemberFilePersister(p, inputStream);
                 }
-                persister.load(instanceCount.getIntValue());
+                persister.load();
+                inputStream.close();
                 instanceCount.increment();
                 instanceCountByType.put(type, instanceCount);
             }

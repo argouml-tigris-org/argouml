@@ -24,7 +24,7 @@
 
 package org.argouml.xml.argo;
 
-import org.xml.sax.SAXException;
+import org.argouml.kernel.OpenException;
 
 /**
  * A base class file persister for project members.
@@ -38,5 +38,11 @@ public abstract class MemberFilePersister {
      * @throws SAXException on any parsing errors.
      * @param instance the instance of the tag to load.
      */
-    public abstract void load(int instance) throws SAXException;
+    public abstract void load() throws OpenException;
+    
+    /**
+     * Gets the tag name which is the root tag for this member.
+     * @return tag name.
+     */
+    public abstract String getTag();
 }

@@ -33,6 +33,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.LastLoadInfo;
+import org.argouml.kernel.OpenException;
 import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.XmiReader;
@@ -53,34 +54,21 @@ public class ModelMemberFilePersister extends MemberFilePersister {
     
     private Project project;
 
+    private static final String ROOT_TAG = "XMI";
+    
     /**
      * Construct a new ModelMemberFilePersister.
      * @param url the url from which to load the model.
      * @param theProject the project to populate.
      * @throws SAXException on any parsing error.
      */
-    public ModelMemberFilePersister(URL url, Project theProject)
-        throws SAXException {
+    public ModelMemberFilePersister(Project theProject, 
+                                    InputStream inputStream) {
         
         this.project = theProject;
-        try {
-            inputStream = openStreamAtXmi(url);
-        } catch (IOException e) {
-            throw new SAXException(e);
-        }
+        this.inputStream = inputStream;
     }
     
-    /**
-     * Opens the input stream of a URL and positions
-     * it at the start of the XMI.
-     * This is a first draft of this method.
-     * Work still in progress (Bob Tarling).
-     */
-    private InputStream openStreamAtXmi(URL theUrl) throws IOException {
-        XmlInputStream is = new XmlInputStream(theUrl.openStream(), "XMI");
-        return is;
-    }
-
     /**
      * Loads a model (XMI only) from an input source. BE ADVISED this
      * method has a side effect. It sets _UUIDREFS to the model.<p>
@@ -89,12 +77,13 @@ public class ModelMemberFilePersister extends MemberFilePersister {
      * getLastLoadStatus() field. This needs to be examined by the
      * calling function.<p>
      *
-     * Throws a SAXException if the parser template is syntactically incorrect. 
+     * @throws OpenException if the parser template is syntactically
+     * incorrect. 
      *
-     * @see org.argouml.xml.argo.MemberFilePersister#load(java.util.Map)
+     * @see org.argouml.xml.argo.MemberFilePersister#load()
      */
-    public void load(int instance) throws SAXException {
-                
+    public void load() throws OpenException {
+        
         InputSource source = new InputSource(inputStream);
         Object mmodel = null;
 
@@ -110,13 +99,13 @@ public class ModelMemberFilePersister extends MemberFilePersister {
             mmodel = xmiReader.parseToModel(source);        
         } catch (SAXException e) { // duh, this must be caught and handled
             LOG.error("SAXException caught", e);
-            throw e;
+            throw new OpenException(e);
         } catch (ParserConfigurationException e) { 
             LOG.error("ParserConfigurationException caught", e);
-            throw new SAXException(e);
+            throw new OpenException(e);
         } catch (IOException e) {
             LOG.error("IOException caught", e);
-            throw new SAXException(e);
+            throw new OpenException(e);
         }
 
         if (xmiReader.getErrors()) {
@@ -124,7 +113,7 @@ public class ModelMemberFilePersister extends MemberFilePersister {
             LastLoadInfo.getInstance().setLastLoadMessage(
                     "XMI file could not be parsed.");
             LOG.error("XMI file could not be parsed.");
-            throw new SAXException(
+            throw new OpenException(
                     "XMI file could not be parsed.");
         }
 
@@ -139,5 +128,12 @@ public class ModelMemberFilePersister extends MemberFilePersister {
         project.addMember(mmodel);
 
         project.setUUIDRefs(new HashMap(xmiReader.getXMIUUIDToObjectMap()));
+    }
+    
+    /**
+     * @see org.argouml.xml.argo.MemberFilePersister#getTag()
+     */
+    public String getTag() {
+        return ROOT_TAG;
     }
 }
