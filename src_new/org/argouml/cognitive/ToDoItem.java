@@ -210,14 +210,20 @@ public class ToDoItem implements java.io.Serializable {
   }
 
 
-  /** Is this item already on the list? */
+  /**
+   * Is this item a copy?
+   */
   public boolean equals(Object o) {
     if (!(o instanceof ToDoItem)) return false;
     ToDoItem i = (ToDoItem) o;
-    boolean b1 = getHeadline().equals(i.getHeadline());
-    boolean b2 = getPoster() == (i.getPoster());
-    boolean b3 = getOffenders().equals(i.getOffenders());
-    return  b1 && b2 && b3;
+    if (!getHeadline().equals(i.getHeadline())) return false;
+    if (!(getPoster() == (i.getPoster()))) return false;
+
+    // For some reason VectorSet.equals() allocates a lot of memory, well
+    // some memory at least. Lets try to avoid that when not needed by
+    // invoking this test only when the two previous tests are not decisive.
+    if (!getOffenders().equals(i.getOffenders())) return false;
+    return true;
   }
 
   ////////////////////////////////////////////////////////////////
