@@ -33,57 +33,56 @@ package org.argouml.uml.cognitive.critics;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /** Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrNameConflict extends CrUML {
 
-  public CrNameConflict() {
-    setHeadline("Revise Name to Avoid Conflict");
-    addSupportedDecision(CrUML.decNAMING);
-    setKnowledgeTypes(Critic.KT_SYNTAX);
-    addTrigger("name");
-    addTrigger("feature_name");
-  }
-
-  public boolean predicate2(Object dm, Designer dsgr) {
-      boolean problem = NO_PROBLEM;      
-      if (ModelFacade.isANamespace(dm)) {
-          Iterator it = ModelFacade.getOwnedElements(dm).iterator();
-          Collection names = new ArrayList();
-          while (it.hasNext()) {
-              String name = ModelFacade.getName(it.next());
-              if (names.contains(name)) {
-                  problem = PROBLEM_FOUND;
-                  break;              
-              }
-              names.add(name);
-          }
-      }
-      return problem;
-  }
-
-  public void initWizard(Wizard w) {
-    if (w instanceof WizMEName) {
-      ToDoItem item = w.getToDoItem();
-      MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
-      String sug = me.getName();
-      String ins = "Change the name to something different.";
-      ((WizMEName)w).setInstructions(ins);
-      ((WizMEName)w).setSuggestion(sug);
-      ((WizMEName)w).setMustEdit(true);
+    public CrNameConflict() {
+        setHeadline("Revise Name to Avoid Conflict");
+        addSupportedDecision(CrUML.decNAMING);
+        setKnowledgeTypes(Critic.KT_SYNTAX);
+        addTrigger("name");
+        addTrigger("feature_name");
     }
-  }
-  public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
+
+    public boolean predicate2(Object dm, Designer dsgr) {      
+        boolean problem = NO_PROBLEM;
+        if (ModelFacade.isANamespace(dm)) {
+            Iterator it = ModelFacade.getOwnedElements(dm).iterator();
+            Collection names = new ArrayList(); 
+            while (it.hasNext()) {  
+                String name = ModelFacade.getName(it.next());
+                if (names.contains(name)) {  
+                    problem = PROBLEM_FOUND; 
+                    break;   
+                }
+                names.add(name); 
+            } 
+        } 
+        return problem; 
+    }
+
+    public void initWizard(Wizard w) {
+        if (w instanceof WizMEName) {
+            ToDoItem item = w.getToDoItem();
+            Object me = item.getOffenders().elementAt(0);
+            String sug = ModelFacade.getName(me);
+            String ins = "Change the name to something different.";
+            ((WizMEName)w).setInstructions(ins);
+            ((WizMEName)w).setSuggestion(sug);
+            ((WizMEName)w).setMustEdit(true);
+        }
+    }
+
+    public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
 
 } /* end class CrNameConflict.java */
