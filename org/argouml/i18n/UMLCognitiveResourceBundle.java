@@ -265,10 +265,9 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
                 "The Association <ocl>self</ocl> is not navigable in any direction. All associations should be navigable at least one way.\n\nSetting the navigablility of associations allows your code to access data by following pointers. \n\nTo fix this, select association \"<ocl>self</ocl>\" in the diagram or navigator panel and click the properties tab.  Then use the checkboxes at the bottom of the properties panel to turn on navigablility." },
 
 	{ "CrNameConflict_head",
-	  "Name conflict" },
+	  "Name conflict caused by <ocl>self</ocl>" },
 	{ "CrNameConflict_desc",
-	  "Names of contained elements must be unique within a namespace. "
-	  + "Except names of Associations or Generalizations." },
+	  "Names of contained elements in a namespace (e.g. packages) must be unique. The element <ocl>self</ocl> violates this condition. This condition does not apply for names of Associations or Generalizations." },
 
         { "CrNameConflictAC_head" ,
                 "Role name conflicts with member" },
