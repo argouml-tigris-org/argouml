@@ -92,7 +92,7 @@ public class FigShallowHistoryState extends FigStateVertex {
 
   public FigShallowHistoryState(GraphModel gm, Object node) {
     this();
-    // setOwner(node);
+    setOwner(node);
   }
 
   public Object clone() {
