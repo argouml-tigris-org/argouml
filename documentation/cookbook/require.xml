@@ -115,12 +115,10 @@ REQ12 REVa
 	    <para>
 <emphasis>Rationale:</emphasis>
 If a text field requires validation there exists, by definition,
-a possibility that the validation turns out that it is not valid.
-For this reason there is a need to use the modal approach for these
-fields, forcing the users to exit the field
-either with "OK" with a valid contents
-or with "Cancel" throwing the work in the field away.
-TODO: Is this the correct motivation for this?
+a possibility that the text field is in an invalid state
+at any time during editing.
+Therefore the model cannot be updated until the field is completed 
+in a valid state or rejected.
 </para>
 	    <para>
 <emphasis>Stakeholder:</emphasis>
@@ -140,11 +138,10 @@ REQ13 REVa
 </para>
 	    <para>
 <emphasis>Rationale:</emphasis>
-If some part of the edits within the dialog are valid and some others 
-are not, the whole dialog is not valid and the user shall be able to
-press "Cancel" and all the changes made throughout the dialog shall be
-ignored.
-TODO: Is this the correct motivation for this?
+It is a common feature of GUIs that a dialog displays
+a snapshot of its model at the time of creation and
+only updates that model on the user acceptance of the entire dialog.
+This is a familiar look and feel for users.
 </para>
 	    <para>
 <emphasis>Stakeholder:</emphasis>
