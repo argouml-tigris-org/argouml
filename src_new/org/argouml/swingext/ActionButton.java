@@ -9,6 +9,7 @@ package org.argouml.swingext;
 import javax.swing.*;
 import java.awt.event.*;
 import java.lang.UnsupportedOperationException;
+import java.beans.*;
 
 /**
  *
@@ -17,7 +18,8 @@ import java.lang.UnsupportedOperationException;
 public class ActionButton extends javax.swing.JButton {
     
     private Action action;
-    
+    private PropertyChangeListener actionPropertyChangeListener;
+
     /** Creates a new instance of ActionButton */
     public ActionButton(Action a) {
         super();
@@ -35,8 +37,8 @@ public class ActionButton extends javax.swing.JButton {
             addActionListener(action);
         }
         // Reverse linkage:
-        //actionPropertyChangeListener = createActionPropertyChangeListener(action2);
-        //action2.addPropertyChangeListener(actionPropertyChangeListener);
+        actionPropertyChangeListener = createActionPropertyChangeListener(action);
+        action.addPropertyChangeListener(actionPropertyChangeListener);
         //firePropertyChange("action", oldValue, action2);
     }
     
