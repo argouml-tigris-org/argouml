@@ -21,15 +21,20 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.application.api;
-import org.argouml.application.events.*;
-import java.util.*;
+package org.argouml.application.events;
+import org.argouml.application.api.*;
 
-/** A tagging interface that all Argo event listener interfaces must extend.
- *
- *  @author Thierry Lach
- *  @since 0.9.4
+/** ArgoNotationEvent is used to notify interested parties
+ *  that the module which is the event source
+ *  has been posted, selected, or canceled.
  */
-public interface ArgoEventListener extends EventListener {
 
+public class ArgoNotationEvent extends ArgoEvent {
+
+    public ArgoNotationEvent(int eventType, Object src) {
+        super(eventType, src);
+    }
+
+    public int getEventStartRange() { return ANY_NOTATION_EVENT; }
 }
+

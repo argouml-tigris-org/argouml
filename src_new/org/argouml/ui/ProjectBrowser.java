@@ -382,11 +382,13 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     // Tools Menu
     _tools = new JMenu(menuLocalize("Tools"));
     _tools.setEnabled(false);
-    ArrayList list = Argo.getPlugins(PluggableMenu.class);
+    Object[] context = { _tools, "Tools" };
+    ArrayList list = Argo.getPlugins(PluggableMenu.class, context);
     ListIterator iterator = list.listIterator();
     while (iterator.hasNext()) {
-        Object o = iterator.next();
+        PluggableMenu module = (PluggableMenu)iterator.next();
 	_tools.setEnabled(true);
+	_tools.add(module.getMenuItem(_tools, "Tools"));
     }
 
     _menuBar.add(_tools);
@@ -641,7 +643,6 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 	if (event.getSource() instanceof PluggableMenu) {
 	    PluggableMenu module = (PluggableMenu)event.getSource();
 	    if (module.inContext(module.buildContext(_tools, "Tools"))) {
-                // Argo.log.info("Module loaded:" + module); 
 		_tools.add(module.getMenuItem(_tools, "Tools"));
 	        _tools.setEnabled(true);
 	    }
@@ -649,7 +650,15 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     }
 
     public void moduleUnloaded(ArgoModuleEvent event) {
-        Argo.log.info("Module unloaded:" + event);
+        // needs-more-work:  Disable menu
+    }
+
+    public void moduleEnabled(ArgoModuleEvent event) {
+        // needs-more-work:  Enable menu
+    }
+
+    public void moduleDisabled(ArgoModuleEvent event) {
+        // needs-more-work:  Disable menu
     }
 
 

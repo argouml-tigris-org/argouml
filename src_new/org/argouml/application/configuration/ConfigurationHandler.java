@@ -316,14 +316,14 @@ public abstract class ConfigurationHandler {
    *  @param key the configuration key to modify.
    *  @param newValue the new value of the key.
    */
-  private final void workerSetValue(ConfigurationKey key, String newValue) {
+  private synchronized final void workerSetValue(ConfigurationKey key, String newValue) {
       loadIfNecessary();
 
+      String oldValue = getValue(key.getKey(), "");
+      setValue(key.getKey(), newValue);
       if (_pcl != null) {
-          String oldValue = getValue(key.getKey(), "");
           _pcl.firePropertyChange(key.getKey(), oldValue, newValue);
       }
-      setValue(key.getKey(), newValue);
   }
 
   /** Sets the string value of a configuration property.
@@ -371,7 +371,7 @@ public abstract class ConfigurationHandler {
       if (_pcl == null) {
           _pcl = new PropertyChangeSupport(this);
       }
-      Configuration.cat.debug("addPropertyChangeListener()");
+      Configuration.cat.debug("addPropertyChangeListener(" + pcl + ")");
       _pcl.addPropertyChangeListener(pcl);
   }
 

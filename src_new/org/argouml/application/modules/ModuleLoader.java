@@ -133,13 +133,17 @@ public class ModuleLoader {
 	    try {
 	        File file = new File(path[i]).getCanonicalFile();
 	        if (file.exists() && file.isFile() && file.canRead()) {
-	            ArgoModule.cat.info ("Loading modules from " + file);
+	            Argo.log.info ("Loading modules from " + file);
 		    loadModules(new FileInputStream(file), file.getPath());
 		}
 	    }
-	    catch (Exception e) {
+	    catch (FileNotFoundException fnfe) {
 	        // Ignore problem
-	        ArgoModule.cat.debug ("Exception", e);
+	        ArgoModule.cat.error ("File not found " + path[i], fnfe);
+	    }
+	    catch (IOException ioe) {
+	        // Ignore problem
+	        ArgoModule.cat.error ("IO Exception " + path[i], ioe);
 	    }
 	}
     }
@@ -282,7 +286,7 @@ public class ModuleLoader {
     }
 
     public boolean loadModulesFromFile(String moduleFile) {
-	ArgoModule.cat.info("Loading modules from " + moduleFile);
+	Argo.log.info("Loading modules from " + moduleFile);
         try {
 	    return loadModules(new FileInputStream(moduleFile), moduleFile);
 	}
@@ -318,27 +322,28 @@ public class ModuleLoader {
 	}
 	catch (Exception e) {
 	    obj = null;
+            Argo.log.warn("Could not instantiate module " + classname);
             ArgoModule.cat.debug("Could not instantiate " + classname, e);
 	}
         if (obj!= null && obj instanceof ArgoModule) {
             ArgoModule aModule = (ArgoModule) obj;
 	    if (aModule.getModuleKey().equals(key) || (! secure)) {
                 if (aModule.initializeModule()){
-                    ArgoModule.cat.info("Loaded Module: " +
+                    Argo.log.info("Loaded Module: " +
 			                   aModule.getModuleName());
                     mModuleClasses.add(aModule);
-		    try {
-		        if (aModule instanceof ArgoSingletonModule) {
-			    ArgoSingletonModule sModule = (ArgoSingletonModule)aModule;
+		    fireEvent(ArgoModuleEvent.MODULE_LOADED, aModule);
+		    if (aModule instanceof ArgoSingletonModule) {
+			ArgoSingletonModule sModule = (ArgoSingletonModule)aModule;
+		        try {
 			    Class moduleType = sModule.getSingletonType();
 		            if (! (_singletons.containsKey(moduleType))) {
 			        requestNewSingleton(moduleType, sModule);
 		            }
 		        }
-		        fireEvent(ArgoModuleEvent.MODULE_LOADED, aModule);
-		    }
-		    catch (Exception e) {
-		        ArgoModule.cat.debug ("Exception", e);
+		        catch (Exception e) {
+		            ArgoModule.cat.debug ("Exception", e);
+		        }
 		    }
                 }
 	    }
@@ -380,7 +385,8 @@ public class ModuleLoader {
 					    true);
 		    }
                  } catch (Exception e){
-                     ArgoModule.cat.debug("Could not load Module: " + sKey);
+                     Argo.log.warn("Could not load Module: " + sKey);
+                     ArgoModule.cat.debug("Could not load Module: " + sKey, e);
                  }
                  sKey ="";
                }
@@ -701,5 +707,4 @@ public class ModuleLoader {
   }
 
 } /* end class ModuleLoader */
-
 

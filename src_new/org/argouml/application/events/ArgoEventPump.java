@@ -62,8 +62,8 @@ public class ArgoEventPump {
 
     protected void doRemoveListener(int event, ArgoEventListener listener) {
         if (_listeners == null) return;
-        // Argo.log.info("removeListener(" + event + "," + listener + ")");
     }
+
 
     private void handleFireModuleEvent(ArgoModuleEvent event,
                                        ArgoModuleEventListener listener) {
@@ -76,6 +76,27 @@ public class ArgoEventPump {
 	        listener.moduleUnloaded(event);
 		break;
 
+	    case ArgoEvent.MODULE_ENABLED:
+	        listener.moduleEnabled(event);
+		break;
+
+	    case ArgoEvent.MODULE_DISABLED:
+	        listener.moduleDisabled(event);
+		break;
+
+	    default:
+	        Argo.log.error("Invalid event:" + event.getEventType());
+		break;
+	}
+    }
+
+    private void handleFireNotationEvent(ArgoNotationEvent event,
+                                       ArgoNotationEventListener listener) {
+	switch (event.getEventType()) {
+	    case ArgoEvent.NOTATION_CHANGED:
+	        listener.notationChanged(event);
+		break;
+
 	    default:
 	        Argo.log.error("Invalid event:" + event.getEventType());
 		break;
@@ -84,16 +105,22 @@ public class ArgoEventPump {
 
     private void handleFireEvent(ArgoEvent event,
                                  ArgoEventListener listener) {
-        // Argo.log.info ("handleFireEvent(" + listener + ")");
 	if (event.getEventType() == ArgoEvent.ANY_EVENT) {
 	    handleFireModuleEvent((ArgoModuleEvent)event,
 	                          (ArgoModuleEventListener)listener);
+	    handleFireNotationEvent((ArgoNotationEvent)event,
+	                          (ArgoNotationEventListener)listener);
 	}
 	else {
 	    if (event.getEventType() >= ArgoEvent.ANY_MODULE_EVENT &&
 	            event.getEventType() < ArgoEvent.ANY_MODULE_EVENT + 100) {
 	        handleFireModuleEvent((ArgoModuleEvent)event,
 	                              (ArgoModuleEventListener)listener);
+	    }
+	    if (event.getEventType() >= ArgoEvent.ANY_NOTATION_EVENT &&
+	            event.getEventType() < ArgoEvent.ANY_NOTATION_EVENT + 100) {
+	        handleFireNotationEvent((ArgoNotationEvent)event,
+	                              (ArgoNotationEventListener)listener);
 	    }
 	}
     }
@@ -104,15 +131,13 @@ public class ArgoEventPump {
 
     protected void doFireEvent(ArgoEvent event) {
 
-        if (_listeners == null) return;
+        if (_listeners == null) {
+	    return;
+	}
 
-        // Argo.log.info("fireEvent:" + event);
         ListIterator iterator = _listeners.listIterator();
         while (iterator.hasNext()) {
 	     Pair pair = (Pair)iterator.next();
-             // Argo.log.info(" Event:" + event);
-             // Argo.log.info("    event.getEventType():" + event.getEventType());
-             // Argo.log.info("    pair.getEventType():" + pair.getEventType());
 	     if (pair.getEventType() == ArgoEvent.ANY_EVENT) {
 		 handleFireEvent(event, pair.getListener());
 	     }

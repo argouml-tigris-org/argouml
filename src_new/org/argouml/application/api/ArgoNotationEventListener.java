@@ -22,14 +22,22 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.api;
+import org.argouml.application.modules.*;
 import org.argouml.application.events.*;
-import java.util.*;
 
-/** A tagging interface that all Argo event listener interfaces must extend.
+/** An interface that objects interested in NotationEvent
+ *  notifications must extend.
  *
  *  @author Thierry Lach
  *  @since 0.9.4
  */
-public interface ArgoEventListener extends EventListener {
+
+public interface ArgoNotationEventListener extends ArgoEventListener {
+
+    /**
+     * Invoked when any aspect of the notation has been changed.
+     */
+    public void notationChanged(ArgoNotationEvent e);
 
 }
+

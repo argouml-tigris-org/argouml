@@ -72,6 +72,15 @@ public class Main {
     // Force the configuration to load
     Configuration.load();
 
+    // Synchronize the startup directory
+    //
+    // needs-more-work:  This is a temporary hack.  The real change must
+    //                   be to never refer to Globals.getLastDirectory
+    //                   or Globals.setLastDirectory within Argo, but
+    //                   use Argo.getDirectory and Argo.setDirectory.  
+    String directory = Argo.getDirectory();
+    org.tigris.gef.base.Globals.setLastDirectory(directory);
+
     // then, print out some version info for debuggers...
 
     org.argouml.util.Tools.logVersionInfo();
@@ -503,4 +512,5 @@ class PreloadClasses implements Runnable {
 
       Argo.log.info(" done preloading");
   }
+
 } /* end class PreloadClasses */
