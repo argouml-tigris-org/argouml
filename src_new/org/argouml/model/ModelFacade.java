@@ -1476,6 +1476,18 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /**
+     * Gets a location of some extension point.
+     * @param extension point
+     * @returns the location
+     */
+    public static String getLocation(Object handle) {
+        if (handle instanceof MExtensionPoint) {
+            return ((MExtensionPoint) handle).getLocation();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
     /** Get the namespace of an element.
      *
      * @param handle the model element that we are getting the namespace of
@@ -1594,10 +1606,12 @@ public class ModelFacade {
      * @param n parameter number
      * @return parameter.
      */
-    public static Object getParameter(Object op, int n) {
-        if (op == null || !(op instanceof MOperation))
-            return null;
-        return ((MOperation) op).getParameter(n);
+    public static Object getParameter(Object handle, int n) {
+        if (handle instanceof MOperation)
+            return ((MOperation) handle).getParameter(n);
+
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** Get the parameters of an operation.
@@ -1878,10 +1892,10 @@ public class ModelFacade {
      * @return a collection of the suppliers
      */
     public static Collection getSuppliers(Object handle) {
-        if (handle == null || !(handle instanceof MAbstraction
-				))
-            return null;
-        return ((MAbstraction) handle).getSuppliers();
+        if (handle instanceof MAbstraction) {
+            return ((MAbstraction) handle).getSuppliers();
+		}
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /**
@@ -2236,13 +2250,30 @@ public class ModelFacade {
         }
     }
 
+    /** This method removes an extension point from a use case.
+     *
+     * @param use case
+     * @param extension point
+     */
+    public static void removeExtensionPoint(Object uc, Object ep) {
+        if (uc != null
+            && ep != null
+            && uc instanceof MUseCase
+            && ep instanceof MExtensionPoint) {
+            ((MUseCase) uc).removeExtensionPoint((MExtensionPoint) ep);
+        }
+    }
+
     /**
      * Removes a owned modelelement from a namespace
      * @param handle
      * @param value
      */
     public static void removeOwnedElement(Object handle, Object value) {
-        if (handle instanceof MNamespace && value instanceof MModelElement) {
+        if (handle != null
+            && value != null
+            && handle instanceof MNamespace
+            && value instanceof MModelElement) {
             ((MNamespace) handle).removeOwnedElement((MModelElement) value);
         }
         throw new IllegalArgumentException("Unrecognized object " + handle
@@ -2270,24 +2301,9 @@ public class ModelFacade {
      */
     public static void setBody(Object m, Object expr) {
         if (m != null
-            && expr != null
             && m instanceof MMethod
-            && expr instanceof MProcedureExpression) {
+            && (expr == null || expr instanceof MProcedureExpression)) {
             ((MMethod) m).setBody((MProcedureExpression) expr);
-        }
-    }
-
-    /**
-     * Sets an initial value of some attribute.
-     * @param attribute
-     * @param expression
-     */
-    public static void setInitialValue(Object at, Object expr) {
-        if (at != null
-            && expr != null
-            && at instanceof MAttribute
-            && expr instanceof MExpression) {
-            ((MAttribute) at).setInitialValue((MExpression) expr);
         }
     }
 
@@ -2298,10 +2314,33 @@ public class ModelFacade {
      */
     public static void setDefaultValue(Object p, Object expr) {
         if (p != null
-            && expr != null
             && p instanceof MParameter
-            && expr instanceof MExpression) {
+            && (expr == null || expr instanceof MExpression)) {
             ((MParameter) p).setDefaultValue((MExpression) expr);
+        }
+    }
+
+    /**
+     * Sets an initial value of some attribute.
+     * @param attribute
+     * @param expression
+     */
+    public static void setInitialValue(Object at, Object expr) {
+        if (at != null
+            && at instanceof MAttribute
+            && (expr == null || expr instanceof MExpression)) {
+            ((MAttribute) at).setInitialValue((MExpression) expr);
+        }
+    }
+
+    /**
+     * Sets a location of some extension point.
+     * @param extension point
+     * @param location
+     */
+    public static void setLocation(Object ep, String loc) {
+        if (ep != null && ep instanceof MExtensionPoint) {
+            ((MExtensionPoint) ep).setLocation(loc);
         }
     }
 
@@ -2451,8 +2490,7 @@ public class ModelFacade {
     public static void setNamespace(Object o, Object ns) {
         if (o != null
             && o instanceof MModelElement
-            && ns != null
-            && ns instanceof MNamespace) {
+            && (ns == null || ns instanceof MNamespace)) {
             ((MModelElement) o).setNamespace((MNamespace) ns);
         }
     }
@@ -2537,7 +2575,8 @@ public class ModelFacade {
      * @param value
      */
     public static void setDispatchAction(Object handle, Object value) {
-        if (handle instanceof MStimulus && value instanceof MAction) {
+        if (handle instanceof MStimulus
+            && (value == null || value instanceof MAction)) {
             ((MStimulus) handle).setDispatchAction((MAction) value);
             return;
         }
@@ -2551,7 +2590,8 @@ public class ModelFacade {
      * @param value
      */
     public static void setDoActivity(Object handle, Object value) {
-        if (handle instanceof MState && value instanceof MAction) {
+        if (handle instanceof MState
+            && (value == null || value instanceof MAction)) {
             ((MState) handle).setDoActivity((MAction) value);
             return;
         }
@@ -2565,7 +2605,8 @@ public class ModelFacade {
      * @param value
      */
     public static void setEffect(Object handle, Object value) {
-        if (handle instanceof MTransition && value instanceof MAction) {
+        if (handle instanceof MTransition
+            && (value == null || value instanceof MAction)) {
             ((MTransition) handle).setEffect((MAction) value);
             return;
         }
@@ -2579,7 +2620,8 @@ public class ModelFacade {
      * @param value
      */
     public static void setEntry(Object handle, Object value) {
-        if (handle instanceof MState && value instanceof MAction) {
+        if (handle instanceof MState
+            && (value == null || value instanceof MAction)) {
             ((MState) handle).setEntry((MAction) value);
             return;
         }
@@ -2593,7 +2635,8 @@ public class ModelFacade {
      * @param value
      */
     public static void setExit(Object handle, Object value) {
-        if (handle instanceof MState && value instanceof MAction) {
+        if (handle instanceof MState
+            && (value == null || value instanceof MAction)) {
             ((MState) handle).setExit((MAction) value);
             return;
         }
@@ -2645,7 +2688,8 @@ public class ModelFacade {
      * @param action
      */
     public static void setAction(Object message, Object action) {
-        if (message instanceof MMessage && action instanceof MAction) {
+        if (message instanceof MMessage
+            && (action == null || action instanceof MAction)) {
             ((MMessage) message).setAction((MAction) action);
             return;
         }
@@ -2734,7 +2778,7 @@ public class ModelFacade {
      * @param type
      */
     public static void setType(Object p, Object cls) {
-        if (p != null && cls != null && cls instanceof MClassifier) {
+        if (p != null && (cls == null || cls instanceof MClassifier)) {
             if (p instanceof MParameter)
 		((MParameter) p).setType((MClassifier) cls);
             else if (p instanceof MAssociationEnd)
@@ -2777,15 +2821,15 @@ public class ModelFacade {
      * @param stereo stereotype
      */
     public static void setStereotype(Object m, Object stereo) {
-        if (m instanceof MModelElement) {
-	    MModelElement me = (MModelElement) m;
+        if (m != null && m instanceof MModelElement) {
+            MModelElement me = (MModelElement) m;
             if (stereo != null
                 && stereo instanceof MStereotype
-                && me.getModel() != ((MStereotype) stereo).getModel())
-	    {
+                && me.getModel() != ((MStereotype) stereo).getModel()) {
                 ((MStereotype) stereo).setNamespace(me.getModel());
             }
-            me.setStereotype((MStereotype) stereo);
+            if (stereo == null || stereo instanceof MStereotype)
+                me.setStereotype((MStereotype) stereo);
         }
     }
 
