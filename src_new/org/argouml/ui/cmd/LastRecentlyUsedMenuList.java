@@ -128,6 +128,7 @@ public class LastRecentlyUsedMenuList {
 					     maxCountDefault);
         Configuration.setInteger(Argo.KEY_NUMBER_LAST_RECENT_USED, maxCount);
         confKeys = new ConfigurationKey[maxCount];
+        menuItems = new JMenuItem[maxCount];
         
         // create all nessessary configuration keys for lru
         for (i = 0; i < maxCount; i++) {
