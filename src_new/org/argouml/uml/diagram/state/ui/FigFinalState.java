@@ -62,7 +62,6 @@ public class FigFinalState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    private FigRect bigPort;
     private FigCircle inCircle;
     private FigCircle outCircle;
 
@@ -73,43 +72,45 @@ public class FigFinalState extends FigStateVertex {
      * The main constructor.
      */
     public FigFinalState() {
-	super();
-	Color handleColor = Globals.getPrefs().getHandleColor();
-	x = 45;
-	y = 0;
-	bigPort = new FigRect(x, y, width, height);
-	bigPort.setLineWidth(0);
-	bigPort.setFilled(false);
-	outCircle =
-	    new FigCircle(x, y, width, height, Color.black, Color.white);
-	inCircle =
-	    new FigCircle(
-			  x + 5,
-			  y + 5,
-			  width - 10,
-			  height - 10,
-			  handleColor,
-			  Color.black);
-
-	outCircle.setLineWidth(1);
-	inCircle.setLineWidth(0);
-
-	setNameFig(new FigText(x + 10, y + 22, 0, 21, true));
-	getNameFig().setFilled(false);
-	getNameFig().setLineWidth(0);
-	getNameFig().setFont(getLabelFont());
-	getNameFig().setTextColor(Color.black);
-	getNameFig().setMultiLine(false);
-	getNameFig().setAllowsTab(false);
-	getNameFig().setJustificationByName("center");
-		
-	addFig(bigPort);
-	addFig(outCircle);
-	addFig(inCircle);
-	addFig(getNameFig());
-
-	setBlinkPorts(false); //make port invisble unless mouse enters
-	Rectangle r = getBounds();
+        super();
+        Color handleColor = Globals.getPrefs().getHandleColor();
+        x = 45;
+        y = 0;
+        FigRect bigPort = new FigRect(x, y, width, height);
+        bigPort.setLineWidth(0);
+        bigPort.setFilled(false);
+        setBigPort(bigPort);
+        
+        outCircle =
+            new FigCircle(x, y, width, height, Color.black, Color.white);
+        inCircle =
+            new FigCircle(
+        		  x + 5,
+        		  y + 5,
+        		  width - 10,
+        		  height - 10,
+        		  handleColor,
+        		  Color.black);
+        
+        outCircle.setLineWidth(1);
+        inCircle.setLineWidth(0);
+        
+        setNameFig(new FigText(x + 10, y + 22, 0, 21, true));
+        getNameFig().setFilled(false);
+        getNameFig().setLineWidth(0);
+        getNameFig().setFont(getLabelFont());
+        getNameFig().setTextColor(Color.black);
+        getNameFig().setMultiLine(false);
+        getNameFig().setAllowsTab(false);
+        getNameFig().setJustificationByName("center");
+        	
+        addFig(bigPort);
+        addFig(outCircle);
+        addFig(inCircle);
+        addFig(getNameFig());
+        
+        setBlinkPorts(false); //make port invisble unless mouse enters
+        Rectangle r = getBounds();
     }
 
     /**
@@ -118,20 +119,20 @@ public class FigFinalState extends FigStateVertex {
      * @param node the UML element
      */
     public FigFinalState(GraphModel gm, Object node) {
-	this();
-	setOwner(node);
+    	this();
+    	setOwner(node);
     }
 
     /**
      * @see java.lang.Object#clone()
      */
     public Object clone() {
-	FigFinalState figClone = (FigFinalState) super.clone();
-	Iterator it = figClone.getFigs(null).iterator();
-	figClone.bigPort = (FigRect) it.next();
-	figClone.outCircle = (FigCircle) it.next();
-	figClone.inCircle = (FigCircle) it.next();
-	return figClone;
+        FigFinalState figClone = (FigFinalState) super.clone();
+        Iterator it = figClone.getFigs(null).iterator();
+        figClone.setBigPort((FigRect) it.next());
+        figClone.outCircle = (FigCircle) it.next();
+        figClone.inCircle = (FigCircle) it.next();
+        return figClone;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -141,28 +142,27 @@ public class FigFinalState extends FigStateVertex {
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {
-	Object pstate = null;
-	Selection sel = null;
-	if (getOwner() != null) {
-	    pstate = getOwner();
-	    if (org.argouml.model.ModelFacade.isAActivityGraph(
-                    ModelFacade.getStateMachine(
-                        ModelFacade.getContainer(pstate)))) {
-		sel = new SelectionActionState(this);
-		((SelectionActionState) sel).setOutgoingButtonEnabled(false);
-	    } else {
-		sel = new SelectionState(this);
-		((SelectionState) sel).setOutgoingButtonEnabled(false);
-	    }
-	}
-	return sel;
+        Object pstate = null;
+        Selection sel = null;
+        if (getOwner() != null) {
+            pstate = getOwner();
+            if (ModelFacade.isAActivityGraph(ModelFacade.getStateMachine(
+                            ModelFacade.getContainer(pstate)))) {
+                sel = new SelectionActionState(this);
+                ((SelectionActionState) sel).setOutgoingButtonEnabled(false);
+            } else {
+                sel = new SelectionState(this);
+                ((SelectionState) sel).setOutgoingButtonEnabled(false);
+            }
+        }
+        return sel;
     }
 
     /** Final states are fixed size. 
      * @see org.tigris.gef.presentation.Fig#isResizable()
      */
     public boolean isResizable() {
-	return false;
+        return false;
     }
 
     //   public Selection makeSelection() {
@@ -173,28 +173,28 @@ public class FigFinalState extends FigStateVertex {
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) {
-	outCircle.setLineColor(col);
+        outCircle.setLineColor(col);
     }
     
     /**
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() {
-	return outCircle.getLineColor();
+        return outCircle.getLineColor();
     }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
-	inCircle.setFillColor(col);
+        inCircle.setFillColor(col);
     }
     
     /**
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() {
-	return inCircle.getFillColor();
+        return inCircle.getFillColor();
     }
 
     /**
@@ -207,14 +207,14 @@ public class FigFinalState extends FigStateVertex {
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
-	return true;
+        return true;
     }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
-	outCircle.setLineWidth(w);
+        outCircle.setLineWidth(w);
     }
     
     /**
@@ -246,16 +246,16 @@ public class FigFinalState extends FigStateVertex {
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
     public void setBounds(int boundX, int boundY, int boundW, int boundH) {
-	_x = boundX;
-	_y = boundY;
-	bigPort.setX(boundX);
-	bigPort.setY(boundY);
-	outCircle.setX(boundX);
-	outCircle.setY(boundY);
-	inCircle.setX(boundX + 5);
-	inCircle.setY(boundY + 5);
-	// bigPort.setBounds(boundX, boundY, boundW, boundH);
-	// outCircle.setBounds(boundX, boundY, boundW, boundH);
+        _x = boundX;
+        _y = boundY;
+        getBigPort().setX(boundX);
+        getBigPort().setY(boundY);
+        outCircle.setX(boundX);
+        outCircle.setY(boundY);
+        inCircle.setX(boundX + 5);
+        inCircle.setY(boundY + 5);
+        // bigPort.setBounds(boundX, boundY, boundW, boundH);
+        // outCircle.setBounds(boundX, boundY, boundW, boundH);
     }
 
     /**
@@ -272,24 +272,20 @@ public class FigFinalState extends FigStateVertex {
      * @see org.tigris.gef.presentation.Fig#getGravityPoints()
      */
     public Vector getGravityPoints() {
-	Vector ret = new Vector();
-	int cx = outCircle.center().x;
-	int cy = outCircle.center().y;
-	int radius = Math.round(outCircle.getWidth() / 2) + 1;
-	final int maxPoints = 20;
-	Point point = null;
-	for (int i = 0; i < maxPoints; i++) {
-	    point =
-		new Point((int)
-			  (cx
-			   + Math.cos(2 * Math.PI / maxPoints * i) * radius),
-			  (int)
-			  (cy
-			   + Math.sin(2 * Math.PI / maxPoints * i) * radius));
-	    ret.add(point);
-	}
-	return ret;
-		
+        Vector ret = new Vector();
+        int cx = outCircle.center().x;
+        int cy = outCircle.center().y;
+        int radius = Math.round(outCircle.getWidth() / 2) + 1;
+        final int maxPoints = 20;
+        Point point = null;
+        for (int i = 0; i < maxPoints; i++) {
+            int x = (int) (cx + Math.cos(2 * Math.PI / maxPoints * i) * radius);
+            int y = (int) (cy + Math.sin(2 * Math.PI / maxPoints * i) * radius);
+            point = new Point(x, y);
+            ret.add(point);
+        }
+        return ret;
+        	
     }
 
 } /* end class FigFinalState */
