@@ -22,11 +22,15 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
-import javax.swing.event.*;
-import javax.swing.*;
-import java.lang.reflect.*;
-import ru.novosoft.uml.*;
+
 import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import java.lang.reflect.*;
+
+import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
 public class UMLRadioButton extends JRadioButton implements ItemListener, UMLUserInterfaceComponent {
 
@@ -43,7 +47,7 @@ public class UMLRadioButton extends JRadioButton implements ItemListener, UMLUse
     }
 
     public void itemStateChanged(final ItemEvent event) {
-	//	System.out.println(getAccessibleContext().getAccessibleName()+" itemStateChanged "+event.getStateChange());
+//		System.out.println(getAccessibleContext().getAccessibleName()+" itemStateChanged "+event.getStateChange());
         _property.setProperty(_container.getTarget(),event.getStateChange() == ItemEvent.SELECTED);
     }
 
@@ -69,12 +73,23 @@ public class UMLRadioButton extends JRadioButton implements ItemListener, UMLUse
 	  update();*/
     }
     
+/** update the radio button selection on a target change to reflect the 
+ *  attribute's visibility. newState is what was saved with the collection,
+ *  sel generally reflects the vis. of the previously displayed attribute or the
+ *  direction kind of a parameter. Each change makes a number of passes through 
+ *  update, 1 pass for each radio button in the property panel. Therefore, if 
+ *  sel and newState are different, and newState is true, we set the currently 
+ *  selected radio button to reflect the visibility for attributes, or the 
+ *  direction kind for parameters. 
+ *      Modified psager@tigris.org Sept. 01, 2001
+ */    
     private void update() {
-        //boolean oldState = isSelected();
-	//if (_container.getTarget()!=null)
-	    //    System.out.println("Name: "+((ru.novosoft.uml.foundation.core.MModelElement)_container.getTarget()).getName());
+        Object target = _container.getTarget();
+        boolean sel = isSelected();
         boolean newState = _property.getProperty(_container.getTarget());
-        //if(oldState ^ newState)
-            setSelected(newState);
-    }
-}
+        if (newState && sel != newState){
+            setSelected(true);
+        }
+    }  //...end of update()...
+
+}   //...end of class...
