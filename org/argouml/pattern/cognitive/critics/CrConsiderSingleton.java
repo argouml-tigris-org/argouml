@@ -43,29 +43,8 @@ import org.argouml.model.ModelFacade;
  * itself of any subclasses), and thus whether it is suitable for declaration
  * as a Singleton (with stereotype &laquo;Singleton&raquo;.<p>
  *
- * <p>This stereotype is used to indicate a class which only ever has a single
- * instance. The critic will trigger whenever a class has stereotype
- * &laquo;Singleton&raquo; (or &laquo;singleton&raquo;), but does not meet the
- * requirements of a Singleton class. These are:</p>
- *
- * <ol>
- *   <li>An static variable to hold the sole instance of the class;</li>
- *
- *   <li>only private constructors to create the sole instance; and</li>
- *
- *   <li>At least one constructor to override the default constructor.</li>
- * </ol>
- *
- * <p>The original version would always trigger for any class with stereotype
- * &laquo;Singleton&raquo;. This version includes an implementation for the
- * three tests above!</p>
- *
- * <p>Internally we use some of the static utility methods of the {@link
- * org.argouml.cognitive.critics.CriticUtils CriticUtils} class.</p>
- *
  * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_singleton_violated">ArgoUML User Manual: Singleton Violated</a>
  */
-
 public class CrConsiderSingleton extends CrUML {
 
     /**
