@@ -34,10 +34,10 @@ import org.apache.log4j.Logger;
  * @stereotype utility
  */
 public class StartBrowser {
-	/** logger */
-	private static Logger cat = Logger.getLogger(StartBrowser.class);
+    /** logger */
+    private static Logger cat = Logger.getLogger(StartBrowser.class);
 
-	/**
+    /**
      * Open an Url in the system's default browser.
      * <P>
      * This will probably not be perfect for everyone but hopefully it is a
