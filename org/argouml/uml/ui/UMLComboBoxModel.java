@@ -90,14 +90,14 @@ public class UMLComboBoxModel extends AbstractListModel implements
      * <p>The container (PropPanel) in which we are used.</p>
      */
 
-    private UMLUserInterfaceContainer _container;
+    protected UMLUserInterfaceContainer _container;
 
 
     /**
      * <p>The name of the NSUML event that affects our data model.</p>
      */
 
-    private String _property;
+    protected String _property;
 
 
     /**
@@ -106,7 +106,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
      *   non-existent has the value <code>null</code>.</p>
      */
 
-    private Method _filter = null;
+    protected Method _filter = null;
 
 
     /**
@@ -116,7 +116,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
      *   the method is non-existent has the value <code>null</code>.</p> 
      */
 
-    private Method _getMethod;
+    protected Method _getMethod;
 
 
     /**
@@ -127,14 +127,14 @@ public class UMLComboBoxModel extends AbstractListModel implements
      *   <code>null</code>.</p>
      */
 
-    private Method _setMethod;
+    protected Method _setMethod;
 
 
     /**
      * <p>The set of objects that are displayed in the drop down.</p>
      */
 
-    private TreeSet _set;
+    protected TreeSet _set;
 
 
     /**
@@ -142,7 +142,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
      *   drop-down is not being shown).</p>
      */
 
-    private Object _selectedItem;
+    protected Object _selectedItem;
 
 
     /**
@@ -150,7 +150,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
      *   the drop down list.</p>
      */
 
-    private boolean _allowVoid;
+    protected boolean _allowVoid;
 
 
     /**
@@ -158,7 +158,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
      *   model included within the profile.</p>
      */
 
-    private boolean _addElementsFromProfileModel;
+    protected boolean _addElementsFromProfileModel;
 
 
     ///////////////////////////////////////////////////////////////////////////
