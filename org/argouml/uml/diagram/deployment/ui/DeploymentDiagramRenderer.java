@@ -38,6 +38,7 @@ import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 import org.argouml.uml.diagram.static_structure.ui.FigLink;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigDependency;
+import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigEdge;
@@ -139,11 +140,15 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
             depFig.getFig().setDashed(true);
             return depFig;
         }
-        
+        if (Model.getFacade().isAGeneralization(edge)) {
+            Object gen = /*(MGeneralization)*/ edge;
+            FigGeneralization genFig = new FigGeneralization(gen, lay);
+            return genFig;
+        }
         if (edge instanceof CommentEdge) {
             return new FigEdgeNote(edge, lay);
         }
-        
+
         return null;
     }
 
