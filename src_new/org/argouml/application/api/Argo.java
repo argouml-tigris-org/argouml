@@ -214,12 +214,11 @@ public class Argo
      */
     public static final String ARGO_CONSOLE_PREFIX = "argo.console.prefix";
 
-    /** Define a static log4j category variable for ArgoUML to log to
-     *  the console.  This would be used in preference to System.out.println
-     *  for console output because this information can be intercepted
-     *  by <code>log4j</code> and included in other logs.  This also allows
-     *  custom <code>log4j</code> formatters
-     *  to be used on objects displayed on the console log.
+    /** 
+     * Define a static log4j category variable for ArgoUML to do logging for
+     * classes that don't have a Logger object of their own.
+     *
+     * @deprecated as of 0.15.2. Use your own instance of Logger in each class.
      */
     public static final Logger log;
 
