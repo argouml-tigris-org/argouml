@@ -89,15 +89,16 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         } catch (Exception e) {
 	    // Ignore
         }
-        if (size > 0)
+        if (size > 0) {
             return true;
+        }
         Object target = TargetManager.getInstance().getTarget();
         if (target instanceof Diagram) { // we cannot delete the last diagram
             return (ProjectManager.getManager().getCurrentProject()
 		    .getDiagrams().size()
 		    > 1);
         }
-        if (org.argouml.model.ModelFacade.isAModel(target)
+        if (ModelFacade.isAModel(target)
 	    // we cannot delete the model itself
             && target.equals(ProjectManager.getManager().getCurrentProject()
 			     .getModel())) {
@@ -106,11 +107,12 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         if (ModelFacade.isAAssociationEnd(target)) {
             return ModelFacade.getOtherAssociationEnds(target).size() > 1;
         }
-        if (StateMachinesHelper.getHelper().isTopState(target))
+        if (StateMachinesHelper.getHelper().isTopState(target)) {
             /* we can not delete a "top" state, 
              * it comes and goes with the statemachine. Issue 2655.
              */
             return false;
+        }
         return target != null;
     }
 
@@ -129,8 +131,9 @@ public class ActionRemoveFromModel extends UMLChangeAction {
                 new Object[] {
 		    TargetManager.getInstance().getModelTarget()
 		};
-        } else
+        } else {
             targets = getTargets();
+        }
         Object target = null;
         Object newTarget = null;
         for (int i = targets.length - 1; i >= 0; i--) {
@@ -153,8 +156,9 @@ public class ActionRemoveFromModel extends UMLChangeAction {
             }
         }
         
-        if (newTarget != null)
+        if (newTarget != null) {
             TargetManager.getInstance().setTarget(newTarget);
+        }
         super.actionPerformed(ae);
     }
     
@@ -163,23 +167,26 @@ public class ActionRemoveFromModel extends UMLChangeAction {
      * deleted from the model.
      *
      * @param target the target to delete
-     * @return
+     * @return The object.
      */
     private Object getNewTarget(Object target) {
         Project p = ProjectManager.getManager().getCurrentProject();
         Object newTarget = null;
-        target = target instanceof Fig ? ((Fig) target).getOwner() : target;
+        if (target instanceof Fig) {
+            target = ((Fig) target).getOwner();
+        }
         if (ModelFacade.isABase(target)) {
             newTarget = ModelFacade.getModelElementContainer(target);
         } else if (ModelFacade.isADiagram(target)) {
             Diagram firstDiagram = (Diagram) p.getDiagrams().get(0);
-            if (target != firstDiagram)
+            if (target != firstDiagram) {
                 newTarget = firstDiagram;
-            else {
+            } else {
                 if (p.getDiagrams().size() > 1) {
                     newTarget = p.getDiagrams().get(1);
-                } else
+                } else {
                     newTarget = p.getRoot();
+                }
             }
         } else {
             newTarget = p.getRoot();
@@ -198,7 +205,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         // usage of other sureRemove method is legacy. They should be
         // integrated.
         boolean sure = false;
-        if (org.argouml.model.ModelFacade.isAModelElement(target)) {
+        if (ModelFacade.isAModelElement(target)) {
             sure = sureRemoveModelElement(target);
         } else if (target instanceof UMLDiagram) {
             // lets see if this diagram has some figs on it
@@ -232,8 +239,9 @@ public class ActionRemoveFromModel extends UMLChangeAction {
             // we can delete figs like figrects now too
             if (ModelFacade.isAModelElement(((Fig) target).getOwner())) {
                 sure = sureRemoveModelElement(((Fig) target).getOwner());
-            } else
+            } else {
                 sure = true;
+            }
         }
         return sure;
     }

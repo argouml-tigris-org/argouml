@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,9 +42,12 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
     /**
      * The singleton.
      */
-    public static ActionCollaborationDiagram SINGLETON =
+    public static final ActionCollaborationDiagram SINGLETON =
         new ActionCollaborationDiagram();
 
+    /**
+     * Constructor.
+     */
     private ActionCollaborationDiagram() {
         super("action.collaboration-diagram");
     }
@@ -114,10 +117,11 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
     public boolean shouldBeEnabled() {
 
         Object target = TargetManager.getInstance().getModelTarget();
-        if (org.argouml.model.ModelFacade.isANamespace(target))
+        if (ModelFacade.isANamespace(target)) {
             return isValidNamespace(target);
-        else
+        } else {
             return false;
+        }
     }
 
 } /* end class ActionCollaborationDiagram */

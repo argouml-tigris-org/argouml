@@ -22,48 +22,38 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: WizOperName.java
-// Classes: WizOperName
-// Original Author: Linus Tolke <linus@epact.se>
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 import javax.swing.JPanel;
-import org.apache.log4j.Logger;
-
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.cognitive.ui.WizStepCue;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 
-/** A wizard to help the user change the name of an operation to a better name.
+/**
+ * A wizard to help the user change the name of an operation to a better name.
  * Same as WizMEName expect that it handles the special case where 
  * the operation instead should be made a constructor of the class.
  * This is helpful in languages where constructors have names that
- * do not agree with the convention for method names (i.e. Java).
+ * do not agree with the convention for method names (i.e. Java).<p>
  *
  * Path looks like this for the case when it is not supposed to be a 
  * constructor:
+ * <pre>
  * step0 -> step1
+ * </pre>
  *
- * Path looks like this for the case when it is supposed to be a constructor:
+ * Path looks like this for the case when it is supposed to be a
+ * constructor:
+ * <pre>
  * step0 -> step1 -> step2 (OK! in the case converted to constructor)
  *                -> step2 (same as step1 in the scenario above)
+ * </pre>
  */
-
 public class WizOperName extends WizMEName {
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
-     */
-    private static final Logger LOG = Logger.getLogger(WizOperName.class);
-
     boolean _possibleConstructor = false;
     boolean _stereotypePathChosen;
 
@@ -75,13 +65,15 @@ public class WizOperName extends WizMEName {
     protected Object _oldStereotype;
     protected boolean _oldStereotypeIsSet = false;
 
-    public WizOperName() { super(); }
-
+    /**
+     * @see org.argouml.kernel.Wizard#getNumSteps()
+     */
     public int getNumSteps() {
-	if (_possibleConstructor)
+	if (_possibleConstructor) {
 	    return 2;
-	else
+	} else {
 	    return 1;
+	}
     }
 
     private Vector getOptions() {
@@ -97,14 +89,19 @@ public class WizOperName extends WizMEName {
      * @param b setToConstructor is true if we shall take the path where
      * the oper is converted to a constructor.
      */
-    public void setPossibleConstructor(boolean b) { _possibleConstructor = b; }
+    public void setPossibleConstructor(boolean b) {
+        _possibleConstructor = b;
+    }
 
     /**
+     * @see org.argouml.kernel.Wizard#makePanel(int)
+     *
      * Create a new panel for the given step.
      */
     public JPanel makePanel(int newStep) {
-	if (!_possibleConstructor)
+	if (!_possibleConstructor) {
 	    return super.makePanel(newStep);
+	}
 
 	switch (newStep) {
 	case 0:
@@ -126,20 +123,23 @@ public class WizOperName extends WizMEName {
 		    _step2.setTarget(_item);
 		}
 		return _step2;
+	    } else {
+	        return super.makePanel(1);
 	    }
-	    else
-		return super.makePanel(1);
 	}
 	return null;
     }
 
-    /** There is a possibility that the next step forward takes another path
+    /**
+     * There is a possibility that the next step forward takes another path
      * in this wizard. To allow for this we must destroy the path already 
      * traveled by.
      * TODO:
      * I (Linus) would say that this is really a problem with the Wizard 
      * implementation since I believe it should be possible to explore a 
      * path in the wizard and then go back.
+     *
+     * @see org.argouml.kernel.Wizard#undoAction(int)
      */
     public void undoAction(int origStep) {
 	super.undoAction(origStep);
@@ -147,7 +147,7 @@ public class WizOperName extends WizMEName {
 	    _panels.remove(origStep);
 	}
 	if (origStep == 1) {
-	    Object oper = /*(MOperation)*/ getModelElement();
+	    Object oper = getModelElement();
 
 	    if (_oldStereotypeIsSet) {
 		ModelFacade.setStereotype(oper, _oldStereotype);
@@ -155,11 +155,13 @@ public class WizOperName extends WizMEName {
 	}
     }
 
-    /** Take action at the completion of a step. For example, when the
-     *  given step is 0, do nothing; and when the given step is 1, do
-     *  the first action.  Argo non-modal wizards should take action as
-     *  they do along, as soon as possible, they should not wait until
-     *  the final step. */
+    /** 
+     * Take action at the completion of a step. For example, when the
+     * given step is 0, do nothing; and when the given step is 1, do
+     * the first action.  Argo non-modal wizards should take action as
+     * they do along, as soon as possible, they should not wait until
+     * the final step.
+     */
     public void doAction(int oldStep) {
 	if (!_possibleConstructor) {
 	    super.doAction(oldStep);
@@ -169,15 +171,18 @@ public class WizOperName extends WizMEName {
 	switch (oldStep) {
 	case 1:
 	    int choice = -1;
-	    if (_step1 != null) choice = _step1.getSelectedIndex();
+	    if (_step1 != null) {
+	        choice = _step1.getSelectedIndex();
+	    }
 	    
 	    switch (choice) {
 	    case -1:
-		throw new Error("nothing selected, should not get here");
+		throw new IllegalArgumentException(
+		        "nothing selected, should not get here");
 
 	    case 0:
 		_stereotypePathChosen = true;
-		Object oper = /*(MOperation)*/ getModelElement();
+		Object oper = getModelElement();
 
 		if (!_oldStereotypeIsSet) {
 		    _oldStereotype = null;
@@ -196,18 +201,18 @@ public class WizOperName extends WizMEName {
                 Object theStereotype = null;
                 for (Iterator iter = ModelFacade.getOwnedElements(m).iterator();
                      iter.hasNext();) {
-                    Object candidate = /*(MModelElement)*/ iter.next();
-		    if (!(ModelFacade.isAStereotype(candidate)))
+                    Object candidate = iter.next();
+		    if (!(ModelFacade.isAStereotype(candidate))) {
+		        continue;
+		    }
+                    if (!("create".equals(ModelFacade.getName(candidate)))) {
                         continue;
-                    Object ster = /*(MStereotype)*/ candidate;
-                    Object ns = ModelFacade.getNamespace(ster);
-                    if (!("create".equals(ModelFacade.getName(ster))))
-                        continue;
+                    }
                     if (!("BehavioralFeature".equals(
-			    ModelFacade.getBaseClass(ster)))) {
+			    ModelFacade.getBaseClass(candidate)))) {
                         continue;
 		    }
-                    theStereotype = ster;
+                    theStereotype = candidate;
                     break;
                 }
                 if (theStereotype == null) {
@@ -226,8 +231,7 @@ public class WizOperName extends WizMEName {
 
 		try {
 		    ModelFacade.setStereotype(oper, theStereotype);
-		}
-		catch (Exception pve) {
+		} catch (Exception pve) {
 		    cat.error("could not set stereotype", pve);
 		}
 		return;
@@ -236,13 +240,18 @@ public class WizOperName extends WizMEName {
 		// Nothing to do.
 		_stereotypePathChosen = false;
 		return;
+
+	    default:
 	    }
 	    return;
 
 	case 2:
-	    if (!_stereotypePathChosen)
-		super.doAction(1);
+	    if (!_stereotypePathChosen) {
+	        super.doAction(1);
+	    }
 	    return;
+	    
+	default:
 	}
     }
     
@@ -250,18 +259,17 @@ public class WizOperName extends WizMEName {
     // TODO:
     // Move to MMUtil or some other common place and merge with 
     // UMLComboBoxEntry::findNamespace()
-    private static Object findNamespace(Object/*MNamespace*/ phantomNS,
-					Object/*MModel*/ targetModel) {
+    private static Object findNamespace(Object phantomNS,
+					Object targetModel) {
         Object ns = null;
-        Object /*MNamespace*/ targetParentNS = null;
+        Object targetParentNS = null;
         if (phantomNS == null) {
             return targetModel;
         }
-        Object/*MNamespace*/ parentNS = ModelFacade.getNamespace(phantomNS);
+        Object parentNS = ModelFacade.getNamespace(phantomNS);
         if (parentNS == null) {
             return targetModel;
-        }
-        else {
+        } else {
             targetParentNS = findNamespace(parentNS, targetModel);
             //
             //   see if there is already an element with the same name
@@ -274,11 +282,11 @@ public class WizOperName extends WizMEName {
                 Object ownedElement;
                 Iterator iter = ownedElements.iterator();
                 while (iter.hasNext()) {
-                    ownedElement = /*(MModelElement)*/ iter.next();
+                    ownedElement = iter.next();
                     targetName = ModelFacade.getName(ownedElement);
                     if (targetName != null && phantomName.equals(targetName)) {
                         if (ModelFacade.isAPackage(ownedElement)) {
-                            ns = /*(MPackage)*/ ownedElement;
+                            ns = ownedElement;
                             break;
                         }
                     }
