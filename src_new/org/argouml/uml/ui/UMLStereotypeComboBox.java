@@ -41,17 +41,17 @@ import java.util.*;
  *
  *   @author Curt Arnold
  */
-public class UMLStereotypeComboBox extends JComboBox implements UMLUserInterfaceComponent, ActionListener, MouseListener {
+public class UMLStereotypeComboBox extends JComboBox implements UMLUserInterfaceComponent, ItemListener {
 
     private UMLUserInterfaceContainer _container;
     private static String _noneStereotype = "";
     private Set _stereotypes;
+    private static HashMap _metaclasses;
     
     public UMLStereotypeComboBox(UMLUserInterfaceContainer container) {
         super();
         _container = container;
-        addActionListener(this);
-        addMouseListener(this);
+        addItemListener(this);
     }
 
     public Object getTarget() {
@@ -71,17 +71,89 @@ public class UMLStereotypeComboBox extends JComboBox implements UMLUserInterface
             }
             if(model != null) {
                 setModel(updateStereotypes(model));
+                updateSelection();
             }
         }
     }
 
+    private void addStereotypes(MNamespace ns,Class metaclass,Collection stereotypes) {
+        Collection ownedElements = ns.getOwnedElements();
+        if(ownedElements != null) {
+            Iterator iter = ownedElements.iterator();
+            Object element;
+            String metaName = metaclass.getName();
+            String currentBase;
+
+            while(iter.hasNext()) {
+                element = iter.next();
+                if(element instanceof MStereotype) {
+                    currentBase = ((MStereotype) element).getBaseClass();
+                    //
+                    //   if base class is not supplied or is most generic
+                    //      then add it to the list
+                    if(currentBase == null || currentBase.length() == 0 || 
+                        currentBase.equals("ModelElement") || 
+                        metaName.endsWith(currentBase)) {
+                        stereotypes.add(element);
+                    }
+                    else {
+                        //
+                        //   see if we can find this class in the map
+                        //
+                        Class currentMetaclass = findMetaclass(currentBase);
+                        if(currentMetaclass.isAssignableFrom(metaclass)) {
+                            stereotypes.add(element);
+                        }
+                    }
+                 }
+            }
+        }
+    }
+    
+    private Class findMetaclass(String name) {
+        Class metaclass = null;
+        if(_metaclasses != null) {
+            metaclass = (Class) _metaclasses.get(name);
+        }
+        if(metaclass == null) {
+            metaclass = findClass("ru.novosoft.uml.foundation.core.M" + name);
+            if(metaclass == null) metaclass = findClass("ru.novosoft.uml.model_management.M"+ name);
+            if(metaclass == null) metaclass = findClass("ru.novosoft.uml.foundation.data_types.M" + name);
+            if(metaclass == null) metaclass = findClass("ru.novosoft.uml.foundation.extension_mechanisms.M" + name);
+            if(metaclass == null) metaclass = findClass("ru.novosoft.uml.foundation.M" + name);
+            if(metaclass == null) metaclass = findClass("ru.novosoft.uml.behavior.activity_graphs.M" + name);
+            if(metaclass == null) metaclass = findClass("ru.novosoft.uml.behavior.collaborations.M" + name);
+            if(metaclass == null) metaclass = findClass("ru.novosoft.uml.behavior.common_behavior.M" + name);
+            if(metaclass == null) metaclass = findClass("ru.novosoft.uml.behavior.state_machines.M" + name);
+            if(metaclass == null) metaclass = findClass("ru.novosoft.uml.behavior.use_cases.M" + name);
+            //
+            //  if a total mismatch, then let it apply to anything
+            if(metaclass == null) metaclass = MModelElement.class;
+            if(_metaclasses == null) {
+                _metaclasses = new HashMap();
+            }
+            _metaclasses.put(name,metaclass);
+        }
+        return metaclass;
+    }
+    
+    private Class findClass(String className) {
+        try {
+            return Class.forName(className);
+        }
+        catch(ClassNotFoundException e) {
+        }
+        return null;
+    }
+        
+    
     private ComboBoxModel updateStereotypes(MModel model) {
         //
         //   create a sorted set of stereotypes
         //      we will manually place "" at top and "Create New Stereotype"
         //      at bottom
         if(_stereotypes == null) {
-            _stereotypes = new TreeSet(new UMLClassifierNameComparator());
+            _stereotypes = new TreeSet(new UMLModelElementNameComparator());
         }
         else {
             _stereotypes.clear();
@@ -90,42 +162,19 @@ public class UMLStereotypeComboBox extends JComboBox implements UMLUserInterface
         MModelElement target = (MModelElement) getTarget();
         Class targetClass = target.getClass();
         if(model != null) {
-            Collection modelElements = model.getOwnedElements();
-            Iterator iter = modelElements.iterator();
-            Object obj = null;
-            while(iter.hasNext()) {
-                obj = iter.next();
-                if(obj instanceof MStereotype) {
-                    if(profile.isAppropriateStereotype(targetClass,(MStereotype) obj)) {
-                        _stereotypes.add(obj);
-                    }
-                }
-            }
+            addStereotypes(model,targetClass,_stereotypes);
         }
         profile.addWellKnownStereotypes(targetClass,_stereotypes);
         
-        //
-        //  find current stereotype in list
-        //
-        int index = -1;
-        MStereotype stereotype = target.getStereotype();
-        if(stereotype != null) {
-            Iterator iter = _stereotypes.iterator();
-            for(int i = 0;iter.hasNext();i++) {
-                if(iter.next() == stereotype) {
-                    index = i;
-                    break;
-                }
-            }
-        }
                 
-        Vector comboEntries = new Vector(_stereotypes.size()+2);
-        comboEntries.add(_noneStereotype);
+        Object[] comboEntries = new Object[_stereotypes.size()+1];
+        int index = 0;
+        comboEntries[index++] = _noneStereotype;
         if(_stereotypes.size() > 0) {
             //
             //  this fairly complex code makes sure that
             //     identically named stereotypes get unambiguated
-            //     by there package prefixes
+            //     by their package prefixes
             Iterator iter = _stereotypes.iterator();
             String prevName = null;
             String currentName = null;
@@ -153,10 +202,10 @@ public class UMLStereotypeComboBox extends JComboBox implements UMLUserInterface
                 }
                 if(wasDup || prevName.equals(currentName)) {
                     if(prevStereotype instanceof MStereotype) {
-                        comboEntries.add(profile.formatElement((MStereotype) stereotype,null));
+                        comboEntries[index++] = profile.formatElement((MStereotype) prevStereotype,null);
                     }
                     else {
-                        comboEntries.add(prevStereotype.toString());
+                        comboEntries[index++] = prevStereotype.toString();
                     }
                     if(wasDup) {
                         wasDup = prevName.equals(currentName);
@@ -166,7 +215,7 @@ public class UMLStereotypeComboBox extends JComboBox implements UMLUserInterface
                     }
                 }
                 else {
-                    comboEntries.add(prevName);
+                    comboEntries[index++] = prevName;
                 }
             }
             //
@@ -174,20 +223,18 @@ public class UMLStereotypeComboBox extends JComboBox implements UMLUserInterface
             //
             if(prevName != null && currentName.equals(prevName)) {
                 if(currentStereotype instanceof MStereotype) {
-                    comboEntries.add(profile.formatElement((MStereotype) currentStereotype,null));
+                    comboEntries[index++] = profile.formatElement((MStereotype) currentStereotype,null);
                 }
                 else {
-                    comboEntries.add(currentStereotype.toString());
+                    comboEntries[index++] = currentStereotype.toString();
                 }
             }
             else {
-                comboEntries.add(currentName);
+                comboEntries[index++] = currentName;
             }
         }
         
         DefaultComboBoxModel comboModel = new DefaultComboBoxModel(comboEntries);
-        Object selected = comboModel.getElementAt(index+1);
-        comboModel.setSelectedItem(selected);
         
         return comboModel;
     }
@@ -222,10 +269,19 @@ public class UMLStereotypeComboBox extends JComboBox implements UMLUserInterface
             int index = 0;
             if(stereotype != null) {
                 Iterator iter = _stereotypes.iterator();
+                Object currentStereotype;
                 for(int i = 0; iter.hasNext(); i++) {
-                    if(iter.next() == stereotype) {
+                    currentStereotype = iter.next();
+                    if(currentStereotype == stereotype) {
                         index = i+1;
                         break;
+                    }
+                    else {
+                        if(currentStereotype instanceof ProfileStereotype &&
+                            ((ProfileStereotype) currentStereotype).equals(stereotype)) {
+                                index = i + 1;
+                                break;
+                        }
                     }
                 }
             }
@@ -238,9 +294,9 @@ public class UMLStereotypeComboBox extends JComboBox implements UMLUserInterface
         }
     }
     
-    public void actionPerformed(ActionEvent event) {
+    public void itemStateChanged(final java.awt.event.ItemEvent event) {
         Object target = getTarget();
-        if(target instanceof MModelElement) {
+        if(event.getStateChange() == ItemEvent.SELECTED && target instanceof MModelElement) {
             MModelElement element = (MModelElement) target;
             
             int index = getSelectedIndex();
@@ -257,20 +313,20 @@ public class UMLStereotypeComboBox extends JComboBox implements UMLUserInterface
                                 stereotype = (MStereotype) obj;
                             }
                             else {
-                                stereotype = new MStereotypeImpl();
-                                stereotype.setName(obj.toString());
-                                MModel model = element.getModel();
-                                if(model == null) {
-                                    if(element instanceof MFeature) {
-                                        MClassifier owner = ((MFeature) element).getOwner();
-                                        if(owner != null) {
-                                            model = owner.getModel();
+                                if(obj instanceof ProfileStereotype) {
+                                    MModel model = element.getModel();
+                                    if(model == null) {
+                                        if(element instanceof MFeature) {
+                                            MClassifier owner = ((MFeature) element).getOwner();
+                                            if(owner != null) {
+                                                model = owner.getModel();
+                                            }
                                         }
                                     }
+                                    if(model != null) {
+                                        stereotype = ((ProfileStereotype) obj).createStereotype(model);
+                                    }
                                 }
-                                _stereotypes.remove(obj);
-                                _stereotypes.add(stereotype);
-                                model.addOwnedElement(stereotype);
                             }
                             break;
                         }
@@ -281,90 +337,4 @@ public class UMLStereotypeComboBox extends JComboBox implements UMLUserInterface
         }
     }
 
-    public void mouseReleased(final java.awt.event.MouseEvent event) {
-        if(event.isPopupTrigger()) {
-            showPopup(event);
-        }
-    }
-    public void mouseEntered(final java.awt.event.MouseEvent event) {
-        if(event.isPopupTrigger()) {
-            showPopup(event);
-        }
-    }
-    public void mouseClicked(final java.awt.event.MouseEvent event) {
-        if(event.isPopupTrigger()) {
-            showPopup(event);
-        }
-    }
-    public void mousePressed(final java.awt.event.MouseEvent event) {
-        if(event.isPopupTrigger()) {
-            showPopup(event);
-        }
-    }
-    public void mouseExited(final java.awt.event.MouseEvent event) {
-        if(event.isPopupTrigger()) {
-            showPopup(event);
-        }
-    }
-    
-    private final void showPopup(MouseEvent event) {
-        Point point = event.getPoint();
-        JPopupMenu popup = new JPopupMenu();
-
-        int index = getSelectedIndex();
-        UMLListMenuItem open = new UMLListMenuItem("Open...",this,"open",index);
-        UMLListMenuItem delete = new UMLListMenuItem("Delete",this,"delete",index);
-        if(index == 0) {
-            open.setEnabled(false);
-            delete.setEnabled(false);
-        }
-        popup.add(open);
-        popup.add(new UMLListMenuItem("Add...",this,"add",index));
-        popup.add(delete);
-        popup.show(this,point.x,point.y);
-    }
-    
-    public void open(int index) {
-        Object target = getTarget();
-        if(target instanceof MModelElement) {
-            MStereotype stereotype = ((MModelElement) target).getStereotype();
-            if(stereotype != null) {
-                _container.navigateTo(stereotype);
-            }
-        }
-    }
-    
-    public void add(int index) {
-        Object target = getTarget();
-        if(target instanceof MModelElement) {
-            MModelElement element = (MModelElement) target;
-            MModel model = element.getModel();
-            MStereotype stereotype = new MStereotypeImpl();
-            model.addOwnedElement(stereotype);
-            element.setStereotype(stereotype);
-            _container.navigateTo(stereotype);
-        }
-    }
-    
-    public void delete(int index) {
-        Object target = getTarget();
-        if(target instanceof MModelElement) {
-            MStereotype stereotype = ((MModelElement) target).getStereotype();
-            if(stereotype != null) {
-                Collection extendedElements = stereotype.getExtendedElements();
-                if(extendedElements != null) {
-                    ArrayList tempList = new ArrayList(extendedElements);
-                    Iterator iter = tempList.iterator();
-                    while(iter.hasNext()) {
-                        ((MModelElement) iter.next()).setStereotype(null);
-                    }
-                }
-                 MNamespace namespace = stereotype.getNamespace();
-                 if(namespace != null) {
-                    namespace.removeOwnedElement(stereotype);
-                }
-            }
-        }
-    }
-    
 }

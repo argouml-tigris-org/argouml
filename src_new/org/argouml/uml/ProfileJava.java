@@ -41,86 +41,108 @@ import java.util.*;
  *   @author Curt Arnold
  */
 public class ProfileJava extends Profile {
-    java.util.List _modelElement;
-    java.util.List _stereotypes;
+    java.util.List _metaClasses;
+    
+    //java.util.List _modelElement;
+    //java.util.List _stereotypes;
     java.util.List _classifiers;
     ProfileClassifier _defaultClassifier;
     ProfileClassifier _voidClassifier;
     //java.util.List _tags;
     
     public ProfileJava() {
-        _modelElement = new ArrayList(21);
-        _stereotypes = new ArrayList(21);
-        //_tags = new ArrayList(21);
+        _metaClasses = new ArrayList(25);
         
-        _modelElement.add(MPermission.class);
-        _stereotypes.add(new String[] {"access","friend","import"});
+        _metaClasses.add(
+            new ProfileMetaclass(MPermission.class,
+                new String[] {"access","friend","import"}));
 
-        _modelElement.add(MAssociationEnd.class);
-        _stereotypes.add(new String[] {"association","global","local","parameter","self"});
+        _metaClasses.add(
+            new ProfileMetaclass(MAssociationEnd.class,
+                new String[] {"association","global","local","parameter","self"}));
 
-        _modelElement.add(MFlow.class);
-        _stereotypes.add(new String[] {"become", "copy", "create"});
+        _metaClasses.add(
+            new ProfileMetaclass(MFlow.class,
+                new String[] {"become", "copy", "create"}));
 
-        _modelElement.add(MUsage.class);
-        _stereotypes.add(new String[] { "call","instantiate","send" });
+        _metaClasses.add(
+            new ProfileMetaclass(MUsage.class,
+                new String[] { "call","instantiate","send" }));
 
-        _modelElement.add(MBehavioralFeature.class);
-        _stereotypes.add(new String[] { "create", "destroy" });
+        _metaClasses.add(
+            new ProfileMetaclass(MBehavioralFeature.class,
+                new String[] { "create", "destroy" }));
 
-        _modelElement.add(MCallEvent.class);
-        _stereotypes.add(new String[] { "create", "destroy" });
+        _metaClasses.add(
+            new ProfileMetaclass(MCallEvent.class, 
+                new String[] { "create", "destroy" }));
 
-        _modelElement.add(MAbstraction.class);
-        _stereotypes.add(new String[] {"derive","realize","refine","trace"});
+        _metaClasses.add(
+            new ProfileMetaclass(MAbstraction.class,
+                new String[] {"derive","realize","refine","trace"}));
 
-        _modelElement.add(MComponent.class);
-        _stereotypes.add( new String[] {"document","executable","file","library","table"});
+        _metaClasses.add(
+            new ProfileMetaclass(MComponent.class,
+                new String[] {"document","executable","file","library","table"}));
 
-        _modelElement.add(MPackage.class);
-        _stereotypes.add(new String[] {"facade","framework","metamodel","stub","systemModel","topLevel","use-case system","analysis system","analysis package","use-case package","analysis service package"});
+        _metaClasses.add(
+            new ProfileMetaclass(MPackage.class,
+                new String[] {"facade","framework","metamodel","stub","systemModel","topLevel","use-case system","analysis system","analysis package",
+                        "use-case package","analysis service package"}));
 
-        _modelElement.add(MGeneralization.class);
-        _stereotypes.add(new String[] {"implementation"});
+        _metaClasses.add(
+            new ProfileMetaclass(MGeneralization.class,
+                new String[] {"implementation"}));
 
-        _modelElement.add(MClass.class);
-        _stereotypes.add(new String[] {"implementationClass","type","boundary","entity","control","worker","case worker","internal worker","entity"});
+        _metaClasses.add(
+            new ProfileMetaclass(MClass.class,
+                new String[] {"implementationClass","type","boundary",
+                       "entity","control","worker","case worker",
+                        "internal worker","entity"}));
 
-        _modelElement.add(MAssociation.class);
-        _stereotypes.add(new String[] {"implicit","communicate","subscribe"});
+        _metaClasses.add(
+            new ProfileMetaclass(MAssociation.class,
+                new String[] {"implicit","communicate","subscribe"}));
         //_tags.add(new String[] {"persistence","persistent"});
 
-        _modelElement.add(MConstraint.class);
-        _stereotypes.add(new String[] { "invariant","postcondition","precondition" });
+        _metaClasses.add(
+            new ProfileMetaclass(MConstraint.class,
+                new String[] { "invariant","postcondition","precondition" }));
 
-        _modelElement.add(MClassifier.class);
-        _stereotypes.add(new String[] {"metaclass","powertype","process","thread","utility"});
+        _metaClasses.add(
+            new ProfileMetaclass(MClassifier.class,
+                new String[] {"metaclass","powertype","process","thread","utility"}));
         //_tags.add(new String[] {"persistence","semantics"});
         
         
         
-        _modelElement.add(MAttribute.class);
-        _stereotypes.add(null);
-        //_tags.add(new String[] {"persistence"});
+        _metaClasses.add(new ProfileMetaclass(MAttribute.class,null));
         
-        _modelElement.add(MComment.class);
-        _stereotypes.add(new String[] {"requirement","responsibility"});
+        _metaClasses.add(
+            new ProfileMetaclass(MComment.class,
+                new String[] {"requirement","responsibility"} ));
         
-        _modelElement.add(MOperation.class);
-        _stereotypes.add(null);
+        _metaClasses.add(new ProfileMetaclass(MOperation.class,null));
         //_tags.add(new String[] {"semantics"});
         
-        _modelElement.add(MObjectFlowState.class);
-        _stereotypes.add(new String[] {"signalflow"});
+        _metaClasses.add(
+            new ProfileMetaclass(MObjectFlowState.class,
+                new String[] {"signalflow"}));
         
-        _modelElement.add(MModel.class);
-        _stereotypes.add(new String[] {"use-case model","analysis model","design model","implementation model","object model"});
+        _metaClasses.add(
+            new ProfileMetaclass(MModel.class,
+                new String[] {"use-case model","analysis model",
+                    "design model","implementation model","object model"}));
         
-        _modelElement.add(MSubsystem.class);
-        _stereotypes.add(new String[] {"design system","implementation system","implementation subsystem","design service subsystem","object system","organization unit","work unit"});
+        _metaClasses.add(
+            new ProfileMetaclass(MSubsystem.class,
+                new String[] {"design system","implementation system",
+                    "implementation subsystem","design service subsystem",
+                    "object system","organization unit","work unit"}));
         
-        _modelElement.add(MCollaboration.class);
-        _stereotypes.add(new String[] {"use-case realization"});
+        _metaClasses.add(
+            new ProfileMetaclass(MCollaboration.class,
+                new String[] {"use-case realization"}));
         
         String[] javaLang = {"java","lang" };
         String[] javaUtil = {"java","util" };
@@ -381,70 +403,18 @@ public class ProfileJava extends Profile {
         return initialValues;
     }
 
-    // javadoc'd in Profile
-    public boolean isAppropriateStereotype(Class targetClass,MStereotype stereotype)
-    {
-        boolean isAppropriate = false;
-        String stereoName = stereotype.getName();
-        if(stereoName != null && stereoName.length() > 0) {
-            int voteFor = 0;
-            int voteAgainst = 0;
-            Iterator elementClassIter = _modelElement.iterator();
-            Iterator stereoIter = _stereotypes.iterator();
-            Class elementClass;
-            String[] stereotypes;
-            while(elementClassIter.hasNext()) {
-                boolean match = false;
-                stereotypes = (String[]) stereoIter.next();
-                elementClass = (Class) elementClassIter.next();
-                if(stereotypes != null) {
-                    for(int i = 0; i < stereotypes.length; i++) {
-                        if(stereoName.equals(stereotypes[i])) {
-                            match = true;
-                            break;
-                        }
-                    }
-                }
-                //
-                //  if the stereotype matched, see if this class is a match
-                if(match) {
-                    if(elementClass.isAssignableFrom(targetClass)) {
-                        voteFor++;
-                    }
-                    else {
-                        voteAgainst++;
-                    }
-                }
-            }            
-            if(voteFor > 0 || voteAgainst == 0) {
-                isAppropriate = true;
-            }
-        }
-                    
-        return isAppropriate;
-    }
     
     //  javadoc'd in Profile
     public void addWellKnownStereotypes(Class targetClass,Set stereotypes)
     {
-        Iterator modelElementIter = _modelElement.iterator();
-        Iterator stereotypesIter = _stereotypes.iterator();
-        Class modelElement;
-        String[] stereotypeNames;
-        while(modelElementIter.hasNext()) {
-            modelElement = (Class) modelElementIter.next();
-            stereotypeNames = (String[]) stereotypesIter.next();
-            if(stereotypeNames != null && modelElement.isAssignableFrom(targetClass)) {
-                for(int i = 0; i < stereotypeNames.length; i++) {
-                    stereotypes.add(stereotypeNames[i]);
-                }
+        Iterator iter = _metaClasses.iterator();
+        ProfileMetaclass meta;
+        while(iter.hasNext()) {
+            meta = (ProfileMetaclass) iter.next();
+            if(meta.isAssignableFrom(targetClass)) {
+                meta.addStereotypes(stereotypes);
             }
         }
-    }
-    
-    public MStereotype constructWellKnownStereotype(MModel model,String name)
-    {
-        return null;
     }
     
     

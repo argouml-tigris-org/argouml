@@ -84,14 +84,6 @@ abstract public class Profile {
      */
     abstract public Vector getInitialValues(MClassifier type);
     
-    /**
-     *   This method is used to filter out well-known stereotypes
-     *   from being applied to inappropriate model elements.
-     *   @param targetClass class of model element, for example, MAttribute.class.
-     *   @param stereotype  stereotype
-     *   @return false if stereotype is inappropriate for model element class.
-     */
-    abstract public boolean isAppropriateStereotype(Class targetClass,MStereotype stereotype);
     
     /**
      *   This method is used to populate stereotype combo boxes with
@@ -100,14 +92,5 @@ abstract public class Profile {
      *   @param stereotypes set of stereotypes to display.
      */
     abstract public void addWellKnownStereotypes(Class targetClass,Set stereotypes); 
-    
-    /**
-     *   This method creates the corresponding stereotype when a
-     *   stereotype entry created by addWellKnownStereotypes was selected.
-     *   @param model model
-     *   @param name name of stereotype
-     *   @return corresponding stereotype
-     */
-    abstract public MStereotype constructWellKnownStereotype(MModel model,String name);
     
 }

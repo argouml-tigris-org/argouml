@@ -25,11 +25,42 @@ package org.argouml.uml.ui;
 import java.util.*;
 import ru.novosoft.uml.foundation.core.*;
 
-public class UMLClassifierNameComparator extends UMLModelElementNameComparator {
+public class UMLModelElementNameComparator implements Comparator {
 
     /** Creates new BooleanChangeListener */
-    public UMLClassifierNameComparator() {
+    public UMLModelElementNameComparator() {
     }
     
+    public int compare(Object obj1,Object obj2) {
+        String name1 = toString(obj1);
+        String name2 = toString(obj2);
+        int compare = name1.compareToIgnoreCase(name2);
+        if(compare == 0) {
+            compare = name1.compareTo(name2);
+        }
+        return compare;        
+    }
+    
+    public boolean equals(Object obj) {
+        if(obj == this) {
+            return true;
+        }
+        return false;
+    }
+        
+    private static final String toString(Object obj) {
+        String name = null;
+        if(obj instanceof MModelElement) {
+            name = ((MModelElement) obj).getName();
+        }
+        if(name == null && obj != null) {
+            name = obj.toString();
+        }
+        if(name == null) {
+            name = "unnamed";
+        }
+        return name;
+    }
+            
         
 }
