@@ -2057,7 +2057,10 @@ public class ModelFacade {
     public static Object getExpression(Object handle) {
         if (handle instanceof MGuard)
             return ((MGuard)handle).getExpression();
-        return null;
+        
+        throw new IllegalArgumentException("Unrecognized object " + 
+					   getClassNull(handle));
+        
     }
 
     /**
@@ -5886,7 +5889,8 @@ public class ModelFacade {
         if (handle instanceof MBase) {
             return ((MBase)handle).getUMLClassName();
         }
-        return null;
+        throw new IllegalArgumentException(
+            "Unrecognized object " + getClassNull(handle));
     }
 
     ////////////////////////////////////////////////////////////////
@@ -5908,7 +5912,7 @@ public class ModelFacade {
             if (handle == null) {
                     return "[null]";
             } else {
-                    return "[" + handle + "/" + getClassNull(handle) + "]";
+                    return "[" +handle + "/" + handle.getClass() + "]";
             }
     }
 }
