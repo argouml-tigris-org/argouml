@@ -23,24 +23,36 @@
 
 package org.argouml.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Iterator;
+import java.util.Vector;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
+import javax.swing.Icon;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Category;
-import org.argouml.application.api.*;
-import org.argouml.util.*;
-import org.argouml.uml.ui.*;
-import org.argouml.cognitive.ui.*;
-import org.argouml.swingext.*;
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.QuadrantPanel;
+import org.argouml.cognitive.ui.TabToDoTarget;
+import org.argouml.swingext.Orientable;
+import org.argouml.swingext.Orientation;
+import org.argouml.uml.ui.PropPanel;
+import org.argouml.uml.ui.TabModelTarget;
+import org.argouml.uml.ui.TabProps;
+import org.argouml.util.ConfigLoader;
+import org.tigris.gef.presentation.Fig;
 
 /** The lower-right pane of the main Argo/UML window.  This panel has
  * several tabs that show details of the selected ToDoItem, or the

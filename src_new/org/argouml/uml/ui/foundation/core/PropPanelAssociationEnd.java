@@ -325,9 +325,10 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     		}
     		UmlFactory.getFactory().delete(end);
     		navigateTo(assoc);
-    	} else {
-    		ProjectBrowser.TheInstance.setDetailsTarget(assoc);
-    		ActionRemoveFromModel.SINGLETON.actionPerformed(new ActionEvent(this, 0, null));
+    	} else {            
+            ProjectBrowser.TheInstance.setTarget(assoc);
+    	    ActionRemoveFromModel.SINGLETON.actionPerformed(new ActionEvent(this, 0, null));
+            ProjectBrowser.TheInstance.setTarget(ProjectBrowser.TheInstance.getActiveDiagram());
     	}
     		
     }

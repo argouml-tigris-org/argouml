@@ -134,6 +134,7 @@ implements ChangeListener, MouseListener, QuadrantPanel {
                 nextTab = i;
 	   }
     }
+    select(target);
 //    if this target doesn't match the tabs expectation    
 //        leave the previous tab displayed
     

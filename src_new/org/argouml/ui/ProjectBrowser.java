@@ -23,31 +23,52 @@
 
 package org.argouml.ui;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.tree.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.ListIterator;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Vector;
 
-import ru.novosoft.uml.foundation.core.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.ui.*;
-import org.tigris.gef.util.*;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
 import org.apache.log4j.Category;
-
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
+import org.argouml.application.api.PluggableMenu;
+import org.argouml.application.events.ArgoModuleEvent;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ui.ToDoPane;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.swingext.BorderSplitPane;
+import org.argouml.swingext.Horizontal;
+import org.argouml.swingext.Orientation;
+import org.argouml.swingext.Vertical;
 import org.argouml.ui.menubar.GenericArgoMenuBar;
-import org.argouml.application.api.*;
-import org.argouml.application.events.*;
-import org.argouml.kernel.*;
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.ui.*;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.ui.*;
-import org.argouml.swingext.*;
+import org.argouml.uml.ui.ActionExit;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.ui.IStatusBar;
+import org.tigris.gef.util.Localizer;
+import org.tigris.gef.util.ResourceLoader;
+import org.tigris.gef.util.VectorSet;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 /** The main window of the ArgoUML application. */
 
@@ -76,11 +97,10 @@ public class ProjectBrowser extends JFrame
     protected String _appName = "ProjectBrowser";
 
     protected MultiEditorPane _editorPane;
-    protected DetailsPane _northEastPane;
-    protected DetailsPane _northPane;
-    protected DetailsPane _northWestPane;
-    protected DetailsPane _eastPane;
-    protected DetailsPane _southEastPane;
+    
+    /** 
+     * the detailspane in the lower right part of the projectbrowser
+     */
     protected DetailsPane _southPane;
   
     private Map detailsPanesByCompassPoint = new HashMap();
@@ -120,12 +140,12 @@ public class ProjectBrowser extends JFrame
         _editorPane = new MultiEditorPane();
         _editorPane.addNavigationListener(this);
         
-        _eastPane      = makeDetailsPane(BorderSplitPane.EAST.toLowerCase(), Vertical.getInstance());
+        DetailsPane _eastPane      = makeDetailsPane(BorderSplitPane.EAST.toLowerCase(), Vertical.getInstance());
         _southPane     = makeDetailsPane(BorderSplitPane.SOUTH. toLowerCase(), Horizontal.getInstance());
-        _southEastPane = makeDetailsPane(BorderSplitPane.SOUTHEAST.toLowerCase(), Horizontal.getInstance());
-        _northWestPane = makeDetailsPane(BorderSplitPane.NORTHWEST.toLowerCase(), Horizontal.getInstance());
-        _northPane     = makeDetailsPane(BorderSplitPane.NORTH.toLowerCase(), Horizontal.getInstance());
-        _northEastPane = makeDetailsPane(BorderSplitPane.NORTHEAST.toLowerCase(), Horizontal.getInstance());
+        DetailsPane _southEastPane = makeDetailsPane(BorderSplitPane.SOUTHEAST.toLowerCase(), Horizontal.getInstance());
+        DetailsPane _northWestPane = makeDetailsPane(BorderSplitPane.NORTHWEST.toLowerCase(), Horizontal.getInstance());
+        DetailsPane _northPane     = makeDetailsPane(BorderSplitPane.NORTH.toLowerCase(), Horizontal.getInstance());
+        DetailsPane _northEastPane = makeDetailsPane(BorderSplitPane.NORTHEAST.toLowerCase(), Horizontal.getInstance());
 
         if (_southPane != null) detailsPanesByCompassPoint.put(BorderSplitPane.SOUTH, _southPane);
         if (_southEastPane != null) detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHEAST, _southEastPane);
@@ -134,21 +154,13 @@ public class ProjectBrowser extends JFrame
         if (_northPane != null) detailsPanesByCompassPoint.put(BorderSplitPane.NORTH, _northPane);
         if (_northEastPane != null) detailsPanesByCompassPoint.put(BorderSplitPane.NORTHEAST, _northEastPane);
 
-        getTabProps().addNavigationListener(this);
+        getDetailsPane().getTabProps().addNavigationListener(this);
 
         setAppName(appName);
         if (TheInstance == null) TheInstance = this;
-        //setName(title);
-        //loadImages();
         getContentPane().setFont(defaultFont);
         getContentPane().setLayout(new BorderLayout());
-        //initMenus();
-        //initToolBar();
         getContentPane().add(_menuBar, BorderLayout.NORTH);
-        //JPanel p = new JPanel();
-        //p.setLayout(new BorderLayout());
-        //getContentPane().add(p, BorderLayout.CENTER);
-        //p.add(_toolBar, BorderLayout.NORTH);
         getContentPane().add(createPanels(), BorderLayout.CENTER);
         getContentPane().add(_statusBar, BorderLayout.SOUTH);
 
@@ -157,47 +169,14 @@ public class ProjectBrowser extends JFrame
         addWindowListener(new WindowCloser());
         ImageIcon argoImage = ResourceLoader.lookupIconResource("Model");
         this.setIconImage(argoImage.getImage());
+        
+        // adds this as listener to projectmanager so it gets updated when the 
+        // project changes
         ProjectManager.getManager().addPropertyChangeListener(this);
     }
-    
-    //   void loadImages() {
-    //     String s = "A blue bullet icon - to draw attention to a menu item";
-    //     blueDot = loadImageIcon("images/dot.gif", s);
-    //     s = "A red bullet icon - to draw attention to a menu item";
-    //     redDot = loadImageIcon("images/redDot.gif", s);
-    //   }
 
     public Locale getLocale() {
         return Locale.getDefault();
-    }
-
-    static final protected KeyStroke getShortcut(String key) {
-        return Localizer.getShortcut("CoreMenu",key);
-    }
-
-    /** This should be a user specified option. New laws
-     * for handicapped people who cannot use the
-     * mouse require software developers in US to
-     * make all components of User interface accessible
-     * through keyboard
-     */
-    static final protected void setMnemonic(JMenuItem item,String key,char defMnemonic) {
-        String localMnemonic = Argo.localize("CoreMenu","Mnemonic_" + key);
-        char mnemonic = defMnemonic;
-        if(localMnemonic != null && localMnemonic.length() == 1) {
-            mnemonic = localMnemonic.charAt(0);
-        }
-        item.setMnemonic(mnemonic);
-    }
-
-    static final protected String menuLocalize(String key) {
-        return Argo.localize("CoreMenu",key);
-    }
-
-    static final protected void setAccelerator(JMenuItem item,KeyStroke keystroke) {
-        if(keystroke != null) {
-            item.setAccelerator(keystroke);
-        }
     }
 
     /** Scans through all loaded modules to see if it has an item to add
@@ -217,6 +196,10 @@ public class ProjectBrowser extends JFrame
         }
     }
 
+    /**
+     * Creates the panels in the working area
+     * @return Component
+     */
     protected Component createPanels() {
         // Set preferred sizes from config file
         if (_southPane != null) {
@@ -253,12 +236,6 @@ public class ProjectBrowser extends JFrame
 
     ////////////////////////////////////////////////////////////////
     // accessors
-   
-
-    public void updateTitle(Project p) {
-        if (p == null) setTitle(null);
-        setTitle(p.getName());
-    }
 
     public void setTitle(String title) {
         if (title == null || "".equals(title)) setTitle(getAppName());
@@ -268,28 +245,12 @@ public class ProjectBrowser extends JFrame
     public String getAppName() { return _appName; }
     public void setAppName(String n) { _appName = n; }
 
-    public void select(Object o) {
-        _editorPane.select(o);
-        setDetailsTarget(o);
-    }
-
     public void setTarget(Object o) {
-        _editorPane.setTarget(o);
         
-        Iterator it = detailsPanesByCompassPoint.values().iterator();
-        while(it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane)it.next();
-            detailsPane.setTarget(o);
-        }
          
-        if (o instanceof MNamespace) ProjectManager.getManager().getCurrentProject().setCurrentNamespace((MNamespace)o);
-        if (o instanceof UMLDiagram) {
-            MNamespace m = ((UMLDiagram)o).getNamespace();
-            if (m != null) ProjectManager.getManager().getCurrentProject().setCurrentNamespace(m);
-        }
-        if (o instanceof ArgoDiagram) {
-            setActiveDiagram ((ArgoDiagram) o);
-        }
+        if (o instanceof MNamespace) {
+            ProjectManager.getManager().getCurrentProject().setCurrentNamespace((MNamespace)o);
+        } else 
         if (o instanceof MModelElement) {
             MModelElement eo = (MModelElement)o;
             if (eo == null) { cat.debug("no path to model"); return; }
@@ -297,7 +258,17 @@ public class ProjectBrowser extends JFrame
                 ProjectManager.getManager().getCurrentProject().setCurrentNamespace(eo.getNamespace());
             } else
                 ProjectManager.getManager().getCurrentProject().setCurrentNamespace((MNamespace)ProjectManager.getManager().getCurrentProject().getUserDefinedModels().get(0));
-	}
+        }
+        if (o instanceof UMLDiagram) {
+            MNamespace m = ((UMLDiagram)o).getNamespace();
+            if (m != null) ProjectManager.getManager().getCurrentProject().setCurrentNamespace(m);
+        }
+        if (o instanceof ArgoDiagram) {
+            setActiveDiagram ((ArgoDiagram) o);
+        }        
+        _editorPane.setTarget(o);
+        
+        setDetailsTarget(o);
 	Actions.updateAllEnabled();
     }
 
@@ -405,42 +376,23 @@ public class ProjectBrowser extends JFrame
         return null;
         //throw new IllegalArgumentException("No such tab named " + tabName);
     }
-
-    /**
-     * Find the tabpage with the given label
-     * @param The tabpage label
-     * @return the tabpage
-     */
-    public TabProps getTabProps() {
-        Iterator it = detailsPanesByCompassPoint.values().iterator();
-        while(it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane)it.next();
-            TabProps tabProps = detailsPane.getTabProps();
-            if (tabProps != null) {
-                return tabProps;
-            }
-        }
-        return null;
-        //throw new IllegalStateException("No such tab named " + tabName);
-    }
     
     public void jumpToDiagramShowing(VectorSet dms) {
         if (dms.size() == 0) return;
         Object first = dms.elementAt(0);
         if (first instanceof Diagram && dms.size() > 1) {
             setTarget(first);
-            select(dms.elementAt(1));
+            setTarget(dms.elementAt(1));
             return;
         }
         if (first instanceof Diagram && dms.size() == 1) {
             setTarget(first);
-            select(null);
             return;
         }
         Vector diagrams = ProjectManager.getManager().getCurrentProject().getDiagrams();
         Object target = _editorPane.getTarget();
         if ((target instanceof Diagram) && ((Diagram)target).countContained(dms) == dms.size()) {
-            select(first);
+            setTarget(first);
             return;
         }
 
@@ -457,7 +409,11 @@ public class ProjectBrowser extends JFrame
         }
         if (bestDiagram != null) {
             setTarget(bestDiagram);
-            select(first);
+            setTarget(first);
+        }
+        // making it possible to jump to the modelroot
+        if (first.equals(ProjectManager.getManager().getCurrentProject().getRoot())) {
+            setTarget(first);
         }
     }
 
@@ -574,7 +530,7 @@ public class ProjectBrowser extends JFrame
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
             Project p = (Project)evt.getNewValue();
-            updateTitle(p);
+            setTitle(p.getName());
             Actions.updateAllEnabled();
             //Designer.TheDesigner.getToDoList().removeAllElements();
             Designer.TheDesigner.setCritiquingRoot(p);

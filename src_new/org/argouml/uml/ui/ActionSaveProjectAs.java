@@ -73,7 +73,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
 	  return false;
 	boolean success = trySave(overwrite,f);
 	if (success) {
-	    ProjectBrowser.TheInstance.updateTitle(ProjectManager.getManager().getCurrentProject());
+	    ProjectBrowser.TheInstance.setTitle(ProjectManager.getManager().getCurrentProject().getName());
 	}
 	return success;
   }

@@ -132,11 +132,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
                         o = targetIndex == 0? pr.getDiagrams().get(1): 
                             pr.getDiagrams().get(targetIndex-1);
                     }
-                    if (o instanceof Diagram) {
-                        ProjectBrowser.TheInstance.setTarget(o);
-                    } else {
-                        ProjectBrowser.TheInstance.select(o);
-                    }
+                    ProjectBrowser.TheInstance.setTarget(o);
                 }
                 ProjectManager.getManager().getCurrentProject().moveToTrash(target); 
             } 

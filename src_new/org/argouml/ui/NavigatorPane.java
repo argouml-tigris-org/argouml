@@ -278,7 +278,7 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
     if (row == _tree.getRowCount()) row = 0;
     else row = row + 1;
     _tree.setSelectionRow(row);
-    ProjectBrowser.TheInstance.select(getSelectedObject());
+    ProjectBrowser.TheInstance.setTarget(getSelectedObject());
   }
 
   public void navUp() {
@@ -286,7 +286,7 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
     if (row == 0) row = _tree.getRowCount();
     else row = row - 1;
     _tree.setSelectionRow(row);
-    ProjectBrowser.TheInstance.select(getSelectedObject());
+    ProjectBrowser.TheInstance.setTarget(getSelectedObject());
   }
 
   public void clearHistory() {
@@ -438,7 +438,7 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
       if (code == KeyEvent.VK_ENTER || code  == KeyEvent.VK_SPACE) {
 	Object newTarget = getSelectedObject();
 	if (newTarget != null)
-	  ProjectBrowser.TheInstance.select(newTarget);
+	  ProjectBrowser.TheInstance.setTarget(newTarget);
       }
     }
   }
