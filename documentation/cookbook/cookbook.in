@@ -2366,12 +2366,23 @@ Issue 1805
     <title>Extending ArgoUML</title>
 
       <para>
-This section is not yet updated to discuss layers.
+This section explains some general concepts which come in handy, when 
+developing additions to ArgoUML.
+</para>
+
+    <warning>
+      <para>
+There are two module loading mechanisms,
+"the old one", and
+"the new one".
+This is so because we have made a change of the design used for
+this in order to simplify the writing of modules.
 </para>
       <para>
-This section explains some general concepts which come in handy, when 
-programming in ArgoUML.
+Eventually "the old moduleloader" will be removed so for all
+new additions, the new moduleloader shall be used.
 </para>
+    </warning>
 
     <sect1 id="howdoi_general">
 	<title>How do I ...?</title>
@@ -2411,9 +2422,6 @@ Beware that there might be more than one Fig Element per
     <sect1>
       <title>How are modules organized in the java code</title>
       <para>
-This section is not yet updated to discuss layers.
-</para>
-      <para>
 The previous section describes how modules and plug-ins are 
 connected on the java level totally independent of how they
 are actually linked into ArgoUML.
@@ -2451,47 +2459,47 @@ addition.
 </para>
 	      <para>
 Suggestion, copy from the 
-<filename class="directory">JUnit</filename>
+<filename class="directory">menutest</filename>
 module as described here.
 </para>
 	      <para>
 Make a copy of
-<filename class="directory">argouml/modules/junit</filename>
+<filename class="directory">argouml/modules/menutest</filename>
 into 
 <filename class="directory">argouml/modules/<replaceable>your name</replaceable></filename>.
 </para>
 	      <para>
-Remove <filename class="libraryfile">junit.jar</filename>
-from
-<filename class="directory">argouml/modules/<replaceable>your name</replaceable>/lib</filename>.
-</para>
-	      <para>
 Add any jar you need to 
-<filename class="directory">argouml/modules/<replaceable>your name</replaceable>/lib</filename>.
+<filename class="directory">argouml/modules/<replaceable>your name</replaceable>/lib</filename>
+and add references to each of the jars in
+<filename>argouml/modules/<replaceable>your name</replaceable>/build.xml</filename>.
 </para>
 	      <para>
 Edit
 <filename class="directory">argouml/modules/<replaceable>your name</replaceable>/module.properties</filename>
 </para>
 	      <para>
-Edit references to
-<filename class="libraryfile">junit.jar</filename> in
-<filename>argouml/modules/<replaceable>your name</replaceable>/build.xml</filename>
-to any new jars you need.
-</para>
-	      <para>
-Edit <filename>argouml/modules/yourname/src/org/manifest.mf</filename>.
+Edit <filename>argouml/modules/<replaceable>your name</replaceable>/src/org/manifest.mf</filename>.
 </para>
 	      <para>
 Reorganize the source files as necessary.
-Something like org.argouml.<replaceable>your name</replaceable>
-as the package root.
+Remove the directory
+<filename class="directory">argouml/modules/<replaceable>your name</replaceable>/src/org/argouml/ui</filename>
+and create your own classes like
+org.argouml.<replaceable>your package name</replaceable>
+in
+<filename class="directory">argouml/modules/<replaceable>your name</replaceable>/src/org/argouml/<replaceable>your package name</replaceable></filename>.
 </para>
 	    </listitem>
 	    <listitem>
 	      <para>
 ...get Argo to use a plug-in?
 </para>
+              <note>
+                <para>
+This description is for the old moduleloader.
+</para>
+              </note>
               <para>
 Once you've created a jar file with a plug-in in it,
     you need to make sure that Argo can find the jar

@@ -43,20 +43,28 @@
 </authorgroup>
 </sect1info>
 -->
-<title>Modules and PlugIns</title>
-    <para>
-This section is not yet updated to discuss layers.
-</para>
-<sect2 id="modules_vs_plugins">
-<title>Differences between modules and plugins</title>
-<para>
+  <title>Modules and PlugIns</title>
+  <para>
 The ArgoUML tool provides a basis
 for UML design and potentially an executable architecture 
 environment for other applications.
 This is solved by clear interfaces between the ArgoUML core
 and the extensions.
-Extensions are called modules and the classes within the modules
+Extensions are called modules.
+</para>
+
+  <sect2 id="modules_vs_plugins">
+    <title>Differences between modules and plugins</title>
+    <note>
+      <para>
+This description is only relevant for the old moduleloader
+since the plugins concept is not used in the new one.
+</para>
+    </note>
+    <para>
+In the old moduleloader implementation the classes within the modules
 that attach to ArgoUML core are called plugins.
+In the new moduleloader implementation they don't have any special name.
 </para>
 <para>
 <itemizedlist>
@@ -101,6 +109,11 @@ delivered as separate jar-files.
 
 <listitem>
 <para>Plugins</para>
+	  <note>
+	    <para>
+This description is for the old moduleloader.
+</para>
+	  </note>
 <para>
 A plug-in in ArgoUML is a module
 that implements the
@@ -138,7 +151,7 @@ AbstractLoadableClass.
 <title>Modules</title>
 
 <sect3 id="architecture_modules">
-<title>Module Architecture</title>
+<title>Module Architecture for the old implementation</title>
 <para>
 The controlling class of the module/plugin extension
 is <classname>org.argouml.application.modules.ModuleLoader</classname>.
@@ -178,7 +191,7 @@ internal list of modules</para>
 </sect3>
 
 <sect3 id="argomodule_interface">
-<title>The ArgoModule interface</title>
+<title>The ArgoModule interface - used in the old implementation</title>
 <para>
 Each class must derive from the <classname>ArgoModule</classname> interface.
 This interface provides the following methods:
@@ -363,6 +376,68 @@ String <function>getModuleKey</function>
 
 </sect3>
 
+    <sect3>
+      <title>Module Architecture for the new implementation</title>
+      <para>
+The controlling class for the new implementation is
+<classname>org.argouml.moduleloader.ModuleLoader2</classname>.
+It is a singleton created when first used.
+It is first used in the main initialization routine.
+</para>
+
+      <para>
+When created it searches through all available modules and creates
+a list of their main objects.
+Currently (September 2004) this also means that the found modules are
+by default selected i.e. they are marked to be enabled.
+</para>
+
+      <para>
+At the end of the main initialization routine
+the selected modules are enabled.
+(The original idea was to do this several times during the main routine
+to allow for modules to add
+command line arguments,
+load things available for batch command,
+but the example used for testing loaded the ProjectBrowser "too early"
+and the result wasn't so good.
+I (Linus) hopes this can be eventually fixed.)
+</para>
+    </sect3>
+
+    <sect3>
+      <title>The ModuleInterface interface - in the new implementation</title>
+      <para>
+Each class used by the <classname>ModuleLoader2</classname>
+must implement the <classname>ModuleInterface</classname> interface.
+</para>
+      <para>
+This interface has methods for enabling and disabling the module
+and also for identifying the module.
+</para>
+      <para>
+When a module is enabled it is expected to register some class
+wherever it affects ArgoUML using the interfaces provided there.
+Since the same interfaces and registration mechanism is used internally
+within ArgoUML there is a small likelyhood that there already is
+an interface and a possibility to register.
+If there isn't, ArgoUML cannot be extended
+at that point.
+Then the interface and registration mechanism needs to be added
+to ArgoUML before it is possible.
+</para>
+
+      <para>
+Classes administered by the module that registers to whatever
+place of ArgoUML they are interested in, does not need to have any
+connection to the module loader.
+They are written exactly as if they would have been if they were
+part of the core ArgoUML.
+</para>
+    </sect3>
+
+
+
 <sect3 id="using_modules">
 <title>Using Modules</title>
 <para>
@@ -390,11 +465,15 @@ rest of the ArgoUML environment.
 </para>
 
 </sect3>
-
 </sect2>
 
 <sect2 id="plugins">
 <title>Plugins</title>
+    <note>
+      <para>
+This description is for the old moduleloader.
+</para>
+    </note>
 
 <sect3 id="architecture_plugins">
 <title>Plugin Architecture</title>
@@ -690,6 +769,12 @@ which is used as follows:
 	  <primary>NSUML</primary>
 	  <secondary>understanding</secondary>
 	</indexterm>
+    <note>
+      <para>
+This description is for the old moduleloader.
+</para>
+    </note>
+
 	<para>Florent wrote a small tutorial for creating modules. It can be found on the <ulink url="http://argopno.tigris.org/documentation/argouml.html">ArgoPNO website</ulink>.
 </para>
 </sect2>
