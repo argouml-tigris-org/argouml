@@ -146,11 +146,21 @@ public class ActionOpenProject extends UMLAction {
                 	new Object[] {url.toString()}
               	));
             }
+            catch (java.io.FileNotFoundException ex) {
+               JOptionPane.showMessageDialog(pb,
+    				"Could not load the project " + url.toString() + "\n" +
+    				"Exception message:\n" + ex,
+   					"Error",
+    				JOptionPane.ERROR_MESSAGE);
+               // restore old state of the project browser
+               pb.setProject(oldProject);
+            }
             catch (Exception ex) {
             	// now show some errorpane
             	JOptionPane.showMessageDialog(pb,
-    				"Could not load the project " + url.toString() + "/n" +
-    				"Project file probably corrupted.",
+    				"Could not load the project " + url.toString() + "\n" +
+    				"Project file probably corrupted.\n" +
+                    "Exception message:\n" + ex,
    					"Error",
     				JOptionPane.ERROR_MESSAGE);
 
