@@ -91,7 +91,8 @@ public class PropPanelSignal extends PropPanelModelElement {
 	//new PropPanelButton(this,buttonPanel,_generalizationIcon, Argo.localize("UMLMenu", "button.add-generalization"),"addGeneralization",null);
 	//new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-actor"),"removeElement",null);
 	//new PropPanelButton(this,buttonPanel,_realizationIcon, Argo.localize("UMLMenu", "button.add-realization"),"addRealization",null);
-	new PropPanelButton(this,buttonPanel,_classIcon, Argo.localize("UMLMenu", "button.add-signal"),"newSignal",null);
+	new PropPanelButton(this,buttonPanel,_signalIcon, Argo.localize("UMLMenu", "button.add-signal"),"newSignal",null);
+	new PropPanelButton(this,buttonPanel,_receptionIcon, Argo.localize("UMLMenu", "button.add-reception"), "newReception", null);
 
 
     }
@@ -104,12 +105,17 @@ public class PropPanelSignal extends PropPanelModelElement {
                 MSignal newSig = ns.getFactory().createSignal();
                 ns.addOwnedElement(newSig);
                 navigateTo(newSig);
-                // 2002-07-15
-            	// Jaap Branderhorst
-            	// Force an update of the navigation pane to solve issue 323
-            	ProjectBrowser.TheInstance.getNavPane().forceUpdate();
             }
         }
+    }
+    
+    public void newReception() {
+    	Object target = getTarget();
+    	if (target instanceof MSignal) {
+    		MSignal signal = (MSignal)target;
+    		MReception reception = CommonBehaviorFactory.getFactory().buildReception(signal);
+    		navigateTo(reception);
+    	}
     }
 
 
@@ -175,12 +181,7 @@ public class PropPanelSignal extends PropPanelModelElement {
 	 * @param index
 	 */
     public void addReception(Integer index) {
-    	Object target = getTarget();
-    	if (target instanceof MSignal) {
-    		MSignal signal = (MSignal)target;
-    		MReception reception = CommonBehaviorFactory.getFactory().buildReception(signal);
-    		navigateTo(reception);
-    	}
+    	newReception();
     }
     
     /**

@@ -88,6 +88,7 @@ abstract public class PropPanelModelElement extends PropPanel {
     protected static ImageIcon _interactionIcon = ResourceLoader.lookupIconResource("Interaction");
     // added next one so someone can change the icon independant of callaction
     protected static ImageIcon _actionIcon = ResourceLoader.lookupIconResource("CallAction");
+    protected static ImageIcon _receptionIcon = ResourceLoader.lookupIconResource("Reception");
 
     protected JList namespaceList;
     protected JScrollPane namespaceScroll;

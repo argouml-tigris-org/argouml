@@ -371,6 +371,9 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
     	if (signal == null) return null;
     	MReception reception = createReception();
     	reception.setSignal(signal);
+    	if (signal.getNamespace() != null) {
+    		reception.setNamespace(signal.getNamespace());
+    	}
     	return reception;
     }
     	

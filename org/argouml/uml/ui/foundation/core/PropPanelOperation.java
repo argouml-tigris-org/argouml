@@ -110,7 +110,7 @@ public class PropPanelOperation extends PropPanelModelElement {
 	paramList.setFont(smallFont);
 	addField(new JScrollPane(paramList),0,2,0.5);
 
-        addCaption("Raised Signals:",1,2,0.5);
+        addCaption(Argo.localize("UMLMenu", "label.raisedsignals"),1,2,0.5);
         JList exceptList = new UMLList(new UMLReflectionListModel(this,"signal",true,"getRaisedSignals","setRaisedSignals","addRaisedSignal",null),true);
         exceptList.setForeground(Color.blue);
         exceptList.setVisibleRowCount(1);

@@ -54,6 +54,7 @@ import org.argouml.uml.diagram.state.*;
 import org.argouml.uml.diagram.state.ui.*;
 import org.argouml.uml.diagram.collaboration.ui.*;
 import org.argouml.uml.diagram.use_case.ui.*;
+import org.argouml.uml.ui.behavior.common_behavior.GoSignalToReception;
 import org.argouml.uml.diagram.sequence.ui.*;
 
 import org.argouml.uml.cognitive.*;
@@ -182,6 +183,7 @@ implements Serializable, TreeModel, Cloneable {
     packageCentric.addSubTreeModel(new GoCollaborationInteraction());
     packageCentric.addSubTreeModel(new GoInteractionMessage());
     packageCentric.addSubTreeModel(new GoMessageAction());
+    packageCentric.addSubTreeModel(new GoSignalToReception());
 
     packageCentric.addSubTreeModel(new GoLinkStimuli());
     packageCentric.addSubTreeModel(new GoStimulusAction());
