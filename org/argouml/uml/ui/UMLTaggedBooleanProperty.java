@@ -32,6 +32,9 @@ import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
+/** An UMLTaggedBooleanProperty is a property which maintains a tagged value
+ *  as a boolean field. It is e.g. used to work with UMLCheckbox.
+ */
 public class UMLTaggedBooleanProperty extends UMLBooleanProperty {
     private String _tagName;
     
@@ -89,12 +92,11 @@ public class UMLTaggedBooleanProperty extends UMLBooleanProperty {
             if(taggedValues != null) {
                 MTaggedValue taggedValue;
                 Iterator iter = taggedValues.iterator();
-                
                 while(iter.hasNext()) {
                     taggedValue = (MTaggedValue) iter.next();
                     if(_tagName.equals(taggedValue.getTag())) {
                         String value = taggedValue.getValue();
-                        if(value == "true") {
+                        if("true".equals(value)) {
                             state = true;
                         }
                         break;
