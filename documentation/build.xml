@@ -229,7 +229,7 @@ After these operations the file will still be visible in the GUI.
 		<property name="javahelp.xsl"  value="../docbook-setup/create-javahelp.xsl"/>
 
 		<!-- Copy and change 'antcall' task below for additional DocBook documents -->
-        <antcall target="internal-dispatcher">		
+		<antcall target="internal-dispatcher">		
 			<param name="doc.subdir"  value="cookbook"/>      <!-- sub-dir of 'documentation' with xml file -->
 			<param name="doc.prefix"  value="cookbook"/>  <!-- DocBook filename without xml extension   -->
 		</antcall>
@@ -246,11 +246,13 @@ After these operations the file will still be visible in the GUI.
 			<param name="doc.subdir"  value="manual"/>      <!-- sub-dir of 'documentation' with xml file -->
 			<param name="doc.prefix"  value="argomanual"/>  <!-- DocBook filename without xml extension   -->
 		</antcall>
-       
-        <antcall target="internal-dispatcher">		
-			<param name="doc.subdir"  value="javahelp"/>      <!-- sub-dir of 'documentation' with xml file -->
-			<param name="doc.prefix"  value="javahelp"/>  <!-- DocBook filename without xml extension   -->
+
+		<!-- This document does not exist yet.
+		<antcall target="internal-dispatcher">		
+			<param name="doc.subdir"  value="javahelp"/>
+			<param name="doc.prefix"  value="javahelp"/>
 		</antcall>
+		-->
 	</target>
 	
 	<!-- =================================================================== -->
@@ -300,13 +302,15 @@ After these operations the file will still be visible in the GUI.
 			<param name="target.dir"  value="${pdf.dir}/${doc.subdir}"/>
 			<param name="target.pdf"  value="${doc.prefix}.pdf"/>
 		</antcall>
-        <antcall target="create-javahelp">		
+		<antcall target="create-javahelp">		
 			<param name="source.dir"  value="${documentation.dir}/${doc.subdir}"/>
 			<param name="source.xml"  value="${doc.prefix}.xml"/>
 			<param name="source.xsl"  value="${javahelp.xsl}"/>
 			<param name="source.fo"   value="${doc.prefix}.fo"/>
 			<param name="target.dir"  value="${javahelp.dir}/${doc.subdir}"/>
 			<param name="target.javahelp"  value="${doc.prefix}.jh"/>
+			<param name="target.jar"  value="${doc.subdir}.jar"/>
+			<param name="target.hs"  value="${doc.subdir}.hs"/>
 		</antcall>
 
 		<!-- Delete the redundant images directory from the source directory  -->
@@ -381,6 +385,11 @@ After these operations the file will still be visible in the GUI.
 		<copy todir="${target.dir}">
 			<fileset dir="${source.dir}" includes="jhelp*,*.html,*.css,images/**" /> 
 		</copy>
+		<move file="${target.dir}/jhelpset.hs" tofile="${target.dir}/${target.hs}"/>
+		<jar jarfile="${build.dir}/${target.jar}"
+		     basedir="${target.dir}"
+		     includes="**"
+		     excludes="*.jar"/>
 	</target>
 
 
