@@ -24,7 +24,7 @@
 
 package org.argouml.application;
 
-import java.util.Locale;
+//import java.util.Locale; //never used
 
 import org.apache.log4j.Logger;
 
