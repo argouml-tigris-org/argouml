@@ -95,7 +95,7 @@ public class FigAssociation extends FigEdgeModelElement {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-    public FigAssociation() {
+    private FigAssociation() {
    
     
         // lets use groups to construct the different text sections at the association
@@ -175,12 +175,6 @@ public class FigAssociation extends FigEdgeModelElement {
   public void setOwner(Object own) {
     Object oldOwner = getOwner();
     super.setOwner(own);
-    /* removed next lines because a fig should not be allowed to delete it's owner
-     * otherwise then via the dispose method
-    if (oldOwner != null && !oldOwner.equals(own) && oldOwner instanceof MAssociation) {
-        ((MAssociation)oldOwner).remove();
-    }
-    */
 
     if (own instanceof MAssociation) {
 	MAssociation newAsc = (MAssociation)own;
@@ -561,19 +555,7 @@ public class FigAssociation extends FigEdgeModelElement {
         super.paint(g);
      }
 
-	/**
-	 * @see java.awt.event.MouseListener#mousePressed(MouseEvent)
-	 */
-	public void mousePressed(MouseEvent e) {
-		super.mousePressed(e);
-	}
-
-	/**
-	 * @see org.tigris.gef.presentation.Fig#makeSelection()
-	 */
-	public Selection makeSelection() {
-		return super.makeSelection();
-	}
+	
 
     /**
      * @see org.tigris.gef.presentation.Fig#delete()

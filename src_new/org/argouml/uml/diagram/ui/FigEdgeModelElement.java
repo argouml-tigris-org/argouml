@@ -478,10 +478,18 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     public boolean hit(Rectangle r) {
         if (_fig.hit(r)) return true;
         Polygon polOuter = ((FigPoly)_fig).getPolygon();
-        polOuter.translate(-10, -10);
+        polOuter.translate(-8, -8);
         Polygon polInner = ((FigPoly)_fig).getPolygon();
-        polInner.translate(10, 10);
-        if (polOuter.intersects(r) && !polInner.intersects(r)) return true;
+        polInner.translate(8, 8);
+        Polygon containing = new Polygon();
+        for (int i = 0; i < polOuter.xpoints.length ; i++) {
+            containing.addPoint(polOuter.xpoints[i], polOuter.ypoints[i]);
+        }
+        for (int i = polInner.xpoints.length-1; i >= 0; i--) {
+            containing.addPoint(polInner.xpoints[i], polInner.ypoints[i]);
+        }
+        if (containing.intersects(r)) return true;
+        // if (polOuter.intersects(r) && !polInner.intersects(r)) return true;
             
         int size = _pathItems.size();
         for (int i = 0; i < size; i++) {
