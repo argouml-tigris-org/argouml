@@ -103,7 +103,7 @@ public class GUITestProjectBrowser extends TestCase {
      * Test the existance of public members.
      */
     public void compileTestPublicMembers() {
-	assertNotNull(ProjectBrowser.getInstance().defaultFont);
+	assertNotNull(ProjectBrowser.getInstance().getDefaultFont());
     }
     
 

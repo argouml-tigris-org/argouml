@@ -46,12 +46,16 @@ public class SettingsTabPreferences extends SettingsTabHelper
     implements SettingsTabPanel 
 {
 
-    JCheckBox _splash = null;
-    JCheckBox _preload = null;
-    JCheckBox _edem = null;
-    JCheckBox _profile = null;
-    JCheckBox _reloadRecent = null;
+    private JCheckBox chkSplash = null;
+    private JCheckBox chkPreload = null;
+    private JCheckBox chkEdem = null;
+    private JCheckBox chkProfile = null;
+    private JCheckBox chkReloadRecent = null;
 
+    /**
+     * The constructor.
+     * 
+     */
     public SettingsTabPreferences() {
         super();
         setLayout(new BorderLayout());
@@ -87,61 +91,94 @@ public class SettingsTabPreferences extends SettingsTabHelper
 	checkConstraints.gridy = 0;
 	labelConstraints.gridy = 0;
 	fieldConstraints.gridy = 0;
-        _splash = createCheckBox("label.splash");
-	top.add(_splash, checkConstraints);
+        chkSplash = createCheckBox("label.splash");
+	top.add(chkSplash, checkConstraints);
 	top.add(new JLabel(""), labelConstraints);
 	top.add(new JLabel(""), fieldConstraints);
 
 	checkConstraints.gridy = 1;
-        _preload = createCheckBox("label.preload");
- 	top.add(_preload, checkConstraints);
+        chkPreload = createCheckBox("label.preload");
+ 	top.add(chkPreload, checkConstraints);
 
 	checkConstraints.gridy = 2;
-        _edem = createCheckBox("label.edem");
- 	top.add(_edem, checkConstraints);
+        chkEdem = createCheckBox("label.edem");
+ 	top.add(chkEdem, checkConstraints);
 
 	checkConstraints.gridy = 3;
-        _profile = createCheckBox("label.profile");
- 	top.add(_profile, checkConstraints);
+        chkProfile = createCheckBox("label.profile");
+ 	top.add(chkProfile, checkConstraints);
 
 	checkConstraints.gridy = 4;
-        _reloadRecent = createCheckBox("label.reload-recent");
- 	top.add(_reloadRecent, checkConstraints);
+        chkReloadRecent = createCheckBox("label.reload-recent");
+ 	top.add(chkReloadRecent, checkConstraints);
 
 	add(top, BorderLayout.NORTH);
     }
 
+    /**
+     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabRefresh()
+     */
     public void handleSettingsTabRefresh() {
-        _splash.setSelected(Configuration.getBoolean(Argo.KEY_SPLASH, true));
-        _preload.setSelected(Configuration.getBoolean(Argo.KEY_PRELOAD, true));
-        _edem.setSelected(Configuration.getBoolean(Argo.KEY_EDEM, true));
-        _profile.setSelected(Configuration.getBoolean(Argo.KEY_PROFILE, false));
-        _reloadRecent.setSelected(
+        chkSplash.setSelected(Configuration.getBoolean(Argo.KEY_SPLASH, true));
+        chkPreload.setSelected(Configuration.getBoolean(Argo.KEY_PRELOAD, 
+                true));
+        chkEdem.setSelected(Configuration.getBoolean(Argo.KEY_EDEM, true));
+        chkProfile.setSelected(Configuration.getBoolean(Argo.KEY_PROFILE, 
+                false));
+        chkReloadRecent.setSelected(
 		Configuration.getBoolean(Argo.KEY_RELOAD_RECENT_PROJECT,
 					 false));
     }
 
+    /**
+     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabSave()
+     */
     public void handleSettingsTabSave() {
-        Configuration.setBoolean(Argo.KEY_SPLASH, _splash.isSelected());
-        Configuration.setBoolean(Argo.KEY_PRELOAD, _preload.isSelected());
-        Configuration.setBoolean(Argo.KEY_EDEM, _edem.isSelected());
-        Configuration.setBoolean(Argo.KEY_PROFILE, _profile.isSelected());
+        Configuration.setBoolean(Argo.KEY_SPLASH, chkSplash.isSelected());
+        Configuration.setBoolean(Argo.KEY_PRELOAD, chkPreload.isSelected());
+        Configuration.setBoolean(Argo.KEY_EDEM, chkEdem.isSelected());
+        Configuration.setBoolean(Argo.KEY_PROFILE, chkProfile.isSelected());
         Configuration.setBoolean(Argo.KEY_RELOAD_RECENT_PROJECT,
-				 _reloadRecent.isSelected());
+				 chkReloadRecent.isSelected());
     }
 
+    /**
+     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabCancel()
+     */
     public void handleSettingsTabCancel() {
         handleSettingsTabRefresh();
     }
 
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleName()
+     */
     public String getModuleName() { return "SettingsTabPreferences"; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleDescription()
+     */
     public String getModuleDescription() {
 	return "Settings Tab for Preferences";
     }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
+     */
     public String getModuleAuthor() { return "ArgoUML Core"; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleVersion()
+     */
     public String getModuleVersion() { return ArgoVersion.getVersion(); }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleKey()
+     */
     public String getModuleKey() { return "module.settings.preferences"; }
 
+    /**
+     * @see org.argouml.application.api.SettingsTabPanel#getTabKey()
+     */
     public String getTabKey() { return "tab.preferences"; }
 }
 

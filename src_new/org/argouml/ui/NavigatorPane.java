@@ -47,8 +47,8 @@ import org.argouml.uml.ui.UMLAction;
 import org.tigris.toolbar.ToolBar;
 
 /**
- * The upper-left pane of the main Argo/UML window, contains a tree view
- * of the UML model.
+ * The upper-left pane of the main ArgoUML window, contains a tree view
+ * of the UML model. Currently named "Explorer" instead of "Navigator".
  *
  * <p>The model can be viewed from different tree "Perspectives".
  *
