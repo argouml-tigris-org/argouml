@@ -50,18 +50,18 @@ public class PropPanelGeneralization extends PropPanel {
 
     Class mclass = MGeneralization.class;
 
-    addCaption(new JLabel("Name:"),0,0,0);
+    addCaption("Name:",0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
 
-    addCaption(new JLabel("Stereotype:"),1,0,0);
+    addCaption("Stereotype:",1,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
     addField(stereotypeBox,1,0,0);
 
-    addCaption(new JLabel("Discriminator:"),2,0,0);
+    addCaption("Discriminator:",2,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"discriminator","getDiscriminator","setDiscriminator")),2,0,0);
 
-    addCaption(new JLabel("Namespace:"),3,0,1);
+    addCaption("Namespace:",3,0,1);
     JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
@@ -69,7 +69,7 @@ public class PropPanelGeneralization extends PropPanel {
 
 
 
-    addCaption(new JLabel("Parent:"),0,1,0);
+    addCaption("Parent:",0,1,0);
     //
     //   misuse of classifier, but only temporary
     //
@@ -77,12 +77,12 @@ public class PropPanelGeneralization extends PropPanel {
         "parent","getParentElement","setParentElement",false,MGeneralizableElement.class,true);
     addField(new UMLComboBox(parentModel),0,1,0);
 
-    addCaption(new JLabel("Child:"),1,1,0);
+    addCaption("Child:",1,1,0);
     UMLComboBoxModel childModel = new UMLComboBoxModel(this,"isAcceptibleChild",
         "child","getChild","setChild",false,MGeneralizableElement.class,false);
     addField(new UMLComboBox(childModel),1,1,0);
 
-    addCaption(new JLabel("Powertype:"),2,1,1);
+    addCaption("Powertype:",2,1,1);
     UMLComboBoxModel powerModel = new UMLComboBoxModel(this,"isAcceptiblePowertype",
         "powertype","getPowertype","setPowertype",false,MClassifier.class,true);
     addField(new UMLComboBox(powerModel),2,1,0);
@@ -93,12 +93,12 @@ public class PropPanelGeneralization extends PropPanel {
     add(buttonBorder,BorderLayout.EAST);
 
 
-    new PropPanelButton(this,buttonPanel,_interfaceIcon,"Delete generalization","removeElement",null);
-    new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateUp",null);
-    _newButton = new PropPanelButton(this,buttonPanel,_classIcon,"New class","newModelElement",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon,"Go back","navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_interfaceIcon,localize("Delete generalization"),"removeElement",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
+    _newButton = new PropPanelButton(this,buttonPanel,_classIcon,localize("New class"),"newModelElement",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
     buttonPanel.add(new JPanel());
-    new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
     }
 
 

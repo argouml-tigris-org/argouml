@@ -50,6 +50,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
   private MModelElement _modelElement;
   private static Profile _profile;
   private LinkedList _navListeners = new LinkedList();
+  private ResourceBundle _bundle = null;
 
   private Vector _panels = new Vector();
   private UMLNameEventListener _nameListener;
@@ -107,6 +108,23 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         GridBagLayout layout = (GridBagLayout) pane.getLayout();
         layout.setConstraints(component,gbc);
         pane.add(component);
+    }
+
+    public void addCaption(String label,int row, int panel,double weighty) {
+        addCaption(new JLabel(localize(label)),row,panel,weighty);
+    }
+
+    final public String localize(String key) {
+        String localized = key;
+        if(_bundle == null) {
+            _bundle = getResourceBundle();
+        }
+        if(_bundle != null) localized = _bundle.getString(key);
+        return localized;
+    }
+
+    public ResourceBundle getResourceBundle() {
+        return null;
     }
 
     /**

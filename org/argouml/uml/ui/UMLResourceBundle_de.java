@@ -21,37 +21,12 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui.foundation.core;
-import org.argouml.uml.ui.*;
-import ru.novosoft.uml.foundation.core.*;
-import javax.swing.*;
+package org.argouml.uml.ui;
+import java.util.*;
 
+public class UMLResourceBundle_de extends UMLResourceBundle {
 
-public class PropPanelModelElementImpl extends PropPanel {
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-
-  ////////////////////////////////////////////////////////////////
-  // contructors
-  public PropPanelModelElementImpl() {
-    super("ModelElement Properties",2);
-
-    Class mclass = MModelElement.class;
-
-    addCaption("Name:",0,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
-
-
-    addCaption("Stereotype:",1,0,1);
-    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-    addField(stereotypeBox,1,0,0);
-
-  }
-
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-        return baseClass.equals("ModelElementImpl");
+    public UMLResourceBundle_de() {
+        put("Class:","DE_Class:");
     }
-
-
-
-} /* end class PropPanelModelElementImpl */
+}

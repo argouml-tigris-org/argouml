@@ -47,24 +47,24 @@ public class PropPanelGuard extends PropPanel {
 
         Class mclass = MGuard.class;
 
-        addCaption(new JLabel("Name:"),0,0,0);
+        addCaption("Name:",0,0,0);
         addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-        addCaption(new JLabel("Stereotype:"),1,0,0);
+        addCaption("Stereotype:",1,0,0);
         JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
         addField(stereotypeBox,1,0,0);
 
-        addCaption(new JLabel("Transition:"),2,0,1);
+        addCaption("Transition:",2,0,1);
         JList transitionList = new UMLList(new UMLReflectionListModel(this,"transition",false,"getTransition",null,null,null),true);
         addLinkField(transitionList,2,0,0);
 
         UMLExpressionModel expressionModel = new UMLExpressionModel(this,MGuard.class,"expression",
             MBooleanExpression.class,"getExpression","setExpression");
 
-        addCaption(new JLabel("Expression:"),0,1,1);
+        addCaption("Expression:",0,1,1);
         addField(new UMLExpressionBodyField(expressionModel,true),0,1,1);
 
-        addCaption(new JLabel("Language:"),1,1,0);
+        addCaption("Language:",1,1,0);
         addField(new UMLExpressionLanguageField(expressionModel,false),1,1,0);
 
   }

@@ -21,37 +21,51 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui.foundation.core;
-import org.argouml.uml.ui.*;
-import ru.novosoft.uml.foundation.core.*;
-import javax.swing.*;
 
+package org.argouml.uml.ui;
+import java.util.*;
 
-public class PropPanelModelElementImpl extends PropPanel {
-  ////////////////////////////////////////////////////////////////
-  // instance vars
+/**
+ *   This class is the default member of a resource bundle that
+ *   provides strings for UML related PropPanels.
+ *
+ *   If there is not an explicit entry for a key, handleGetObject
+ *   just returns the key.  This class should not be called directly
+ *   but should be called through the PropPanel.localize() method.
+ *
+ *   Classes named UMLResourceBundle_de, UMLResourceBundle
+ */
+public class UMLResourceBundle extends ResourceBundle {
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
-  public PropPanelModelElementImpl() {
-    super("ModelElement Properties",2);
+    private Hashtable _map = null;
 
-    Class mclass = MModelElement.class;
-
-    addCaption("Name:",0,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
-
-
-    addCaption("Stereotype:",1,0,1);
-    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-    addField(stereotypeBox,1,0,0);
-
-  }
-
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-        return baseClass.equals("ModelElementImpl");
+    public UMLResourceBundle() {
     }
 
+    public Enumeration getKeys() {
+        Enumeration enum = null;
+        if(_map != null) {
+            enum = _map.elements();
+        }
+        return enum;
+    }
 
+    /**
+     * Retrieves the corresponding object.  If no entry, just returns the key
+     */
+    protected Object handleGetObject(String key) throws java.util.MissingResourceException {
+        Object object = key;
+        if(_map != null) {
+            object = _map.get(key);
+            if(object == null) object = key;
+        }
+        return object;
+    }
 
-} /* end class PropPanelModelElementImpl */
+    public void put(String key,Object object) {
+        if(_map == null) {
+            _map = new Hashtable();
+        }
+        _map.put(key,object);
+    }
+}

@@ -56,38 +56,38 @@ public class PropPanelAttribute extends PropPanel {
         setNameEventListening(namesToWatch);
 
 
-        addCaption(new JLabel("Name:"),0,0,0);
+        addCaption("Name:",0,0,0);
         addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-        addCaption(new JLabel("Type:"),1,0,0);
+        addCaption("Type:",1,0,0);
         UMLComboBoxModel typeModel = new UMLComboBoxModel(this,"isAcceptibleType",
             "type","getType","setType",false,MClassifier.class,true);
         addField(new UMLComboBox(typeModel),1,0,0);
 
-        addCaption(new JLabel("Multiplicity:"),2,0,0);
+        addCaption("Multiplicity:",2,0,0);
         addField(new UMLMultiplicityComboBox(this,MAttribute.class),2,0,0);
 
-        addCaption(new JLabel("Stereotype:"),3,0,0);
+        addCaption("Stereotype:",3,0,0);
         JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
         addField(stereotypeBox,3,0,0);
 
-        addCaption(new JLabel("Owner:"),4,0,1);
+        addCaption("Owner:",4,0,1);
         JList ownerList = new UMLList(new UMLReflectionListModel(this,"owner",false,"getOwner",null,null,null),true);
         addLinkField(ownerList,4,0,0);
 
 
-        addCaption(new JLabel("Initial Value:"),0,1,0);
+        addCaption("Initial Value:",0,1,0);
         addField(new UMLInitialValueComboBox(this),0,1,0);
 
-        addCaption(new JLabel("Visibility:"),1,1,0);
+        addCaption("Visibility:",1,1,0);
         addField(new UMLVisibilityPanel(this,mclass,3,false),1,1,0);
 
-        addCaption(new JLabel("Modifiers:"),2,1,1);
+        addCaption("Modifiers:",2,1,1);
         JPanel modPanel = new JPanel(new GridLayout(0,2));
-        modPanel.add(new UMLCheckBox("static",this,new UMLEnumerationBooleanProperty("ownerscope",mclass,"getOwnerScope","setOwnerScope",MScopeKind.class,MScopeKind.CLASSIFIER,MScopeKind.INSTANCE)));
-        modPanel.add(new UMLCheckBox("final",this,new UMLEnumerationBooleanProperty("changeability",mclass,"getChangeability","setChangeability",MChangeableKind.class,MChangeableKind.FROZEN,MChangeableKind.CHANGEABLE)));
-        modPanel.add(new UMLCheckBox("transient",this,new UMLTaggedBooleanProperty("transient")));
-        modPanel.add(new UMLCheckBox("volatile",this,new UMLTaggedBooleanProperty("volatile")));
+        modPanel.add(new UMLCheckBox(localize("static"),this,new UMLEnumerationBooleanProperty("ownerscope",mclass,"getOwnerScope","setOwnerScope",MScopeKind.class,MScopeKind.CLASSIFIER,MScopeKind.INSTANCE)));
+        modPanel.add(new UMLCheckBox(localize("final"),this,new UMLEnumerationBooleanProperty("changeability",mclass,"getChangeability","setChangeability",MChangeableKind.class,MChangeableKind.FROZEN,MChangeableKind.CHANGEABLE)));
+        modPanel.add(new UMLCheckBox(localize("transient"),this,new UMLTaggedBooleanProperty("transient")));
+        modPanel.add(new UMLCheckBox(localize("volatile"),this,new UMLTaggedBooleanProperty("volatile")));
         addField(modPanel,2,1,0);
 
         JPanel buttonBorder = new JPanel(new BorderLayout());
@@ -96,12 +96,12 @@ public class PropPanelAttribute extends PropPanel {
         add(buttonBorder,BorderLayout.EAST);
 
 
-        new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete attribute","removeElement",null);
-        new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateUp",null);
-        new PropPanelButton(this,buttonPanel,_attributeIcon,"New attribute","newAttribute",null);
-        new PropPanelButton(this,buttonPanel,_navBackIcon,"Go back","navigateBackAction","isNavigateBackEnabled");
+        new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete attribute"),"removeElement",null);
+        new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
+        new PropPanelButton(this,buttonPanel,_attributeIcon,localize("New attribute"),"newAttribute",null);
+        new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),localize("navigateBackAction"),"isNavigateBackEnabled");
         buttonPanel.add(new JPanel());
-        new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
+        new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),localize("navigateForwardAction"),"isNavigateForwardEnabled");
     }
 
 

@@ -48,20 +48,20 @@ public class PropPanelUseCase extends PropPanel {
 
     Class mclass = MUseCase.class;
     
-    addCaption(new JLabel("Name:"),0,0,0);
+    addCaption("Name:",0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
     
-    addCaption(new JLabel("Stereotype:"),1,0,0);
+    addCaption("Stereotype:",1,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
     addField(stereotypeBox,1,0,0);
     
-    addCaption(new JLabel("Modifiers:"),2,0,0);
+    addCaption("Modifiers:",2,0,0);
 
     JPanel modifiersPanel = new JPanel(new GridLayout(0,2));
-    modifiersPanel.add(new UMLCheckBox("Abstract",this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-    modifiersPanel.add(new UMLCheckBox("Final",this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-    modifiersPanel.add(new UMLCheckBox("Root",this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+    modifiersPanel.add(new UMLCheckBox(localize("Abstract"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+    modifiersPanel.add(new UMLCheckBox(localize("Final"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+    modifiersPanel.add(new UMLCheckBox(localize("Root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
     addField(modifiersPanel,2,0,0);
 
     
@@ -70,26 +70,26 @@ public class PropPanelUseCase extends PropPanel {
     //     but since extension has a specific meaning in use cases a
     //     different term had to be used
     //
-    addCaption(new JLabel("Generalizations:"),3,0,0);
+    addCaption("Generalizations:",3,0,0);
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
     extendsList.setBackground(getBackground());
     extendsList.setForeground(Color.blue);
     addField(extendsList,3,0,0);
     
-    addCaption(new JLabel("Includes:"),4,0,0);
+    addCaption("Includes:",4,0,0);
     JList includeList = new UMLList(new UMLIncludeListModel(this,"include",true),true);
     includeList.setBackground(getBackground());
     includeList.setForeground(Color.blue);
     addField(includeList,4,0,0);
     
 
-    addCaption(new JLabel("Extends:"),5,0,0);
+    addCaption("Extends:",5,0,0);
     JList extendList = new UMLList(new UMLExtendListModel(this,"extend",true),true);
     extendList.setBackground(getBackground());
     extendList.setForeground(Color.blue);
     addField(extendList,5,0,0);
     
-    addCaption(new JLabel("Namespace:"),6,0,1);
+    addCaption("Namespace:",6,0,1);
     JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
@@ -97,7 +97,7 @@ public class PropPanelUseCase extends PropPanel {
     
     
     
-    addCaption(new JLabel("Associations:"),0,1,0.25);
+    addCaption("Associations:",0,1,0.25);
     JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
     connectList.setForeground(Color.blue);
     connectList.setVisibleRowCount(1);
@@ -105,14 +105,14 @@ public class PropPanelUseCase extends PropPanel {
     
 
     
-    addCaption(new JLabel("Operations:"),1,1,0.25);
+    addCaption("Operations:",1,1,0.25);
     JList opsList = new UMLList(new UMLOperationsListModel(this,"feature",true),true);
     opsList.setForeground(Color.blue);
     opsList.setVisibleRowCount(1);
     JScrollPane opsScroll = new JScrollPane(opsList);
     addField(opsScroll,1,1,0.25);
     
-    addCaption(new JLabel("Attributes:"),2,1,0.25);
+    addCaption("Attributes:",2,1,0.25);
     JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
     attrList.setForeground(Color.blue);
     attrList.setVisibleRowCount(1);
@@ -121,7 +121,7 @@ public class PropPanelUseCase extends PropPanel {
     
     
     
-    addCaption(new JLabel("Extension Points:"),3,1,0.25);
+    addCaption("Extension Points:",3,1,0.25);
     JList extensionPoints = new UMLList(new UMLExtensionPointListModel(this,null,true),true);
     extensionPoints.setForeground(Color.blue);
     extensionPoints.setVisibleRowCount(1);

@@ -59,38 +59,38 @@ public class PropPanelAssociation extends PropPanelModelElement {
     setNameEventListening(namesToWatch);
 
 
-    addCaption(new JLabel("Name:"),0,0,0);
+    addCaption("Name:",0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    addCaption(new JLabel("Stereotype:"),1,0,0);
+    addCaption("Stereotype:",1,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
     addField(stereotypeBox,1,0,0);
 
-    addCaption(new JLabel("Namespace:"),2,0,0);
+    addCaption("Namespace:",2,0,0);
     addLinkField(new UMLList(new UMLNamespaceListModel(this),true),2,0,0);
 
 
-    addCaption(new JLabel("Modifiers:"),3,0,1);
+    addCaption("Modifiers:",3,0,1);
 
     JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
-    modifiersPanel.add(new UMLCheckBox("Abstract",this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-    modifiersPanel.add(new UMLCheckBox("Final",this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-    modifiersPanel.add(new UMLCheckBox("Root",this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+    modifiersPanel.add(new UMLCheckBox(localize("Abstract"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+    modifiersPanel.add(new UMLCheckBox(localize("Final"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+    modifiersPanel.add(new UMLCheckBox(localize("Root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
     addField(modifiersPanel,3,0,0);
 
 
 
-    addCaption(new JLabel("Association Ends:"),0,1,0);
+    addCaption("Association Ends:",0,1,0);
     JList assocEndList = new UMLList(new UMLAssociationEndListModel(this,"connection",true),true);
     assocEndList.setBackground(getBackground());
     assocEndList.setForeground(Color.blue);
     addField(assocEndList,0,1,0);
 
-    addCaption(new JLabel("Extends:"),1,1,0);
+    addCaption("Extends:",1,1,0);
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
     addLinkField(extendsList,1,1,0);
 
-    addCaption(new JLabel("Derived:"),2,1,1);
+    addCaption("Derived:",2,1,1);
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
     //derivedList.setBackground(getBackground());
     derivedList.setForeground(Color.blue);
@@ -103,14 +103,14 @@ public class PropPanelAssociation extends PropPanelModelElement {
     add(buttonBorder,BorderLayout.EAST);
 
 
-    new PropPanelButton(this,buttonPanel,_assocEndIcon,"Add association end","addAssociationEnd",null);
-    new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateNamespace",null);
-    new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete association","removeElement",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon,"Go back","navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_generalizationIcon,"Add generalization","addGeneralization",null);
-    new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
-    new PropPanelButton(this,buttonPanel,_realizationIcon,"Add realization","addRealization",null);
-    new PropPanelButton(this,buttonPanel,_associationIcon,"New association","newAssociation",null);
+    new PropPanelButton(this,buttonPanel,_assocEndIcon,localize("Add association end"),"addAssociationEnd",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
+    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete association"),"removeElement",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),localize("navigateBackAction"),"isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_generalizationIcon,localize("Add generalization"),"addGeneralization",null);
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),localize("navigateForwardAction"),"isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_realizationIcon,localize("Add realization"),"addRealization",null);
+    new PropPanelButton(this,buttonPanel,_associationIcon,localize("New association"),"newAssociation",null);
 
   }
 

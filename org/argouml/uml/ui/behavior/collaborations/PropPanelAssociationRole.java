@@ -45,35 +45,35 @@ public class PropPanelAssociationRole extends PropPanel {
 
     Class mclass = MAssociationRole.class;
 
-    addCaption(new JLabel("Name:"),0,0,0);
+    addCaption("Name:",0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    addCaption(new JLabel("Stereotype:"),1,0,0);
+    addCaption("Stereotype:",1,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
     addField(stereotypeBox,1,0,0);
 
-    addCaption(new JLabel("Namespace:"),2,0,0);
+    addCaption("Namespace:",2,0,0);
     JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
     addField(namespaceList,2,0,0);
 
-    addCaption(new JLabel("Modifiers:"),3,0,0);
+    addCaption("Modifiers:",3,0,0);
 
     JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
-    modifiersPanel.add(new UMLCheckBox("Abstract",this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-    modifiersPanel.add(new UMLCheckBox("Final",this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-    modifiersPanel.add(new UMLCheckBox("Root",this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+    modifiersPanel.add(new UMLCheckBox(localize("Abstract"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+    modifiersPanel.add(new UMLCheckBox(localize("Final"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+    modifiersPanel.add(new UMLCheckBox(localize("Root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
     addField(modifiersPanel,3,0,0);
 
-    addCaption(new JLabel("Extends:"),4,0,0);
+    addCaption("Extends:",4,0,0);
 
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
     extendsList.setBackground(getBackground());
     extendsList.setForeground(Color.blue);
     addField(extendsList,4,0,0);
 
-    addCaption(new JLabel("Derived:"),5,0,1);
+    addCaption("Derived:",5,0,1);
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
     //derivedList.setBackground(getBackground());
     derivedList.setForeground(Color.blue);
@@ -81,7 +81,7 @@ public class PropPanelAssociationRole extends PropPanel {
     addField(new JScrollPane(derivedList),5,0,1);
 
 
-    addCaption(new JLabel("AssociationRole Ends:"),0,1,1);
+    addCaption("AssociationRole Ends:",0,1,1);
     JList assocEndList = new UMLList(new UMLReflectionListModel(this,"connection",true,"getAssociationEnds","setAssociationEnds","addAssociationEnd",null),true);
     assocEndList.setBackground(getBackground());
     assocEndList.setForeground(Color.blue);

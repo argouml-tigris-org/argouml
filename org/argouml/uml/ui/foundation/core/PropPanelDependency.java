@@ -39,28 +39,28 @@ public class PropPanelDependency extends PropPanel {
 
         Class mclass = MDependency.class;
 
-        addCaption(new JLabel("Name:"),0,0,0);
+        addCaption("Name:",0,0,0);
         addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
 
-        addCaption(new JLabel("Stereotype:"),1,0,0);
+        addCaption("Stereotype:",1,0,0);
         JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
         addField(stereotypeBox,1,0,0);
 
 
-        addCaption(new JLabel("Namespace:"),2,0,1);
+        addCaption("Namespace:",2,0,1);
         JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
         namespaceList.setBackground(getBackground());
         namespaceList.setForeground(Color.blue);
         addField(namespaceList,2,0,0);
 
-        addCaption(new JLabel("Suppliers:"),0,1,0.5);
+        addCaption("Suppliers:",0,1,0.5);
         JList suppliersList = new UMLList(new UMLReflectionListModel(this,"supplier",true,"getSuppliers","setSuppliers",null,null),true);
         suppliersList.setForeground(Color.blue);
         suppliersList.setVisibleRowCount(1);
         addField(new JScrollPane(suppliersList),1,1,0.5);
 
-        addCaption(new JLabel("Clients:"),1,1,0.5);
+        addCaption("Clients:",1,1,0.5);
         JList clientsList = new UMLList(new UMLReflectionListModel(this,"client",true,"getClients","setClients",null,null),true);
         clientsList.setForeground(Color.blue);
         clientsList.setVisibleRowCount(1);

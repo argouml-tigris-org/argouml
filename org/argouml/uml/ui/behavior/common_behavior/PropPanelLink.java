@@ -48,22 +48,22 @@ public class PropPanelLink extends PropPanel {
     super("Link Properties",2);
 
     Class mclass = MLink.class;
-    addCaption(new JLabel("Name:"),0,0,0);
+    addCaption("Name:",0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
 
-    addCaption(new JLabel("Stereotype:"),1,0,0);
+    addCaption("Stereotype:",1,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
     addField(stereotypeBox,1,0,0);
 
 
-    addCaption(new JLabel("Namespace:"),2,0,1);
+    addCaption("Namespace:",2,0,1);
     JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
     addField(namespaceList,5,0,0);
 
-    addCaption(new JLabel("Link Ends:"),0,1,1);
+    addCaption("Link Ends:",0,1,1);
   }
 
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {

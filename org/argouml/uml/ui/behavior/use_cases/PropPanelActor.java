@@ -49,45 +49,45 @@ public class PropPanelActor extends PropPanelClassifier {
 
     Class mclass = MActor.class;
 
-    addCaption(new JLabel("Name:"),0,0,0);
+    addCaption("Name:",0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
 
-    addCaption(new JLabel("Stereotype:"),1,0,0);
+    addCaption("Stereotype:",1,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
     addField(stereotypeBox,1,0,0);
 
-    addCaption(new JLabel("Extends:"),2,0,0);
+    addCaption("Extends:",2,0,0);
 
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
     addLinkField(extendsList,2,0,0);
 
-    addCaption(new JLabel("Modifiers:"),3,0,0);
+    addCaption("Modifiers:",3,0,0);
 
     JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
-    modifiersPanel.add(new UMLCheckBox("Abstract",this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-    modifiersPanel.add(new UMLCheckBox("Final",this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-    modifiersPanel.add(new UMLCheckBox("Root",this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+    modifiersPanel.add(new UMLCheckBox(localize("Abstract"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+    modifiersPanel.add(new UMLCheckBox(localize("Final"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+    modifiersPanel.add(new UMLCheckBox(localize("Root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
     addField(modifiersPanel,3,0,0);
 
-    addCaption(new JLabel("Namespace:"),4,0,0);
+    addCaption("Namespace:",4,0,0);
     JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
     addLinkField(namespaceList,4,0,0);
 
-    addCaption(new JLabel("Derived:"),5,0,1);
+    addCaption("Derived:",5,0,1);
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
     //derivedList.setBackground(getBackground());
     derivedList.setForeground(Color.blue);
     derivedList.setVisibleRowCount(1);
     addField(new JScrollPane(derivedList),5,0,1);
 
-    addCaption(new JLabel("Associations:"),0,1,0.5);
+    addCaption("Associations:",0,1,0.5);
     JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
     connectList.setForeground(Color.blue);
     connectList.setVisibleRowCount(1);
     addField(new JScrollPane(connectList),0,1,0.5);
 
-    addCaption(new JLabel("Implements:"),1,1,0.5);
+    addCaption("Implements:",1,1,0.5);
     JList implementsList = new UMLList(new UMLClientDependencyListModel(this,null,true),true);
     implementsList.setBackground(getBackground());
     implementsList.setForeground(Color.blue);
@@ -98,16 +98,16 @@ public class PropPanelActor extends PropPanelClassifier {
     buttonBorder.add(buttonPanel,BorderLayout.NORTH);
     add(buttonBorder,BorderLayout.EAST);
 
-    new PropPanelButton(this,buttonPanel,_addOpIcon,"Add operation","addOperation",null);
-    new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateNamespace",null);
-    new PropPanelButton(this,buttonPanel,_addAttrIcon,"Add attribute","addAttribute",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon,"Go back","navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_addAssocIcon,"Add association","addAssociation",null);
-    new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
-    new PropPanelButton(this,buttonPanel,_generalizationIcon,"Add generalization","addGeneralization",null);
-    new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete actor","removeElement",null);
-    new PropPanelButton(this,buttonPanel,_realizationIcon,"Add realization","addRealization",null);
-    new PropPanelButton(this,buttonPanel,_classIcon,"New actor","newActor",null);
+    new PropPanelButton(this,buttonPanel,_addOpIcon,localize("Add operation"),"addOperation",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
+    new PropPanelButton(this,buttonPanel,_addAttrIcon,localize("Add attribute"),"addAttribute",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),localize("navigateBackAction"),"isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_addAssocIcon,localize("Add association"),"addAssociation",null);
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),localize("navigateForwardAction"),"isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_generalizationIcon,localize("Add generalization"),"addGeneralization",null);
+    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete actor"),"removeElement",null);
+    new PropPanelButton(this,buttonPanel,_realizationIcon,localize("Add realization"),"addRealization",null);
+    new PropPanelButton(this,buttonPanel,_classIcon,localize("New actor"),"newActor",null);
 
 
 

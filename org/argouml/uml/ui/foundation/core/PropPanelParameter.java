@@ -41,24 +41,24 @@ public class PropPanelParameter extends PropPanel {
 
         Class mclass = MParameter.class;
 
-        addCaption(new JLabel("Name:"),0,0,0);
+        addCaption("Name:",0,0,0);
         addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-        addCaption(new JLabel("Stereotype:"),1,0,0);
+        addCaption("Stereotype:",1,0,0);
         JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
         addField(stereotypeBox,1,0,0);
 
-        addCaption(new JLabel("Owner:"),2,0,1);
+        addCaption("Owner:",2,0,1);
         JList namespaceList = new UMLList(new UMLReflectionListModel(this,"behaviorialfeature",false,"getBehavioralFeature",null,null,null),true);
         addLinkField(namespaceList,2,0,0);
 
-        addCaption(new JLabel("Type:"),0,1,0);
+        addCaption("Type:",0,1,0);
         UMLComboBoxModel typeModel = new UMLComboBoxModel(this,"isAcceptibleType",
             "type","getType","setType",false,MClassifier.class,true);
         addField(new UMLComboBox(typeModel),0,1,0);
 
 
-        addCaption(new JLabel("Kind:"),1,1,0);
+        addCaption("Kind:",1,1,0);
         JPanel kindPanel = new JPanel(new GridLayout(0,2));
         ButtonGroup kindGroup = new ButtonGroup();
 
@@ -81,7 +81,7 @@ public class PropPanelParameter extends PropPanel {
         addField(kindPanel,1,1,0);
 
 
-        addCaption(new JLabel("Initial Value:"),2,1,1);
+        addCaption("Initial Value:",2,1,1);
         addField(new UMLInitialValueComboBox(this),2,1,0);
 
     JPanel buttonBorder = new JPanel(new BorderLayout());
@@ -89,12 +89,12 @@ public class PropPanelParameter extends PropPanel {
     buttonBorder.add(buttonPanel,BorderLayout.NORTH);
     add(buttonBorder,BorderLayout.EAST);
 
-    new PropPanelButton(this,buttonPanel,_parameterIcon,"Add parameter","addParameter",null);
-    new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateUp",null);
-    new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete parameter","removeElement",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon,"Go back","navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_parameterIcon,localize("Add parameter"),"addParameter",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
+    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete parameter"),"removeElement",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
     buttonPanel.add(new JPanel());
-    new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
     }
 
     public MClassifier getType() {
