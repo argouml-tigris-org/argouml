@@ -114,9 +114,9 @@ public class ProjectMemberDiagram extends ProjectMember {
      */
     public void load() {
         LOG.debug("Reading " + getURL());
-        PGMLParser.SINGLETON.setOwnerRegistry(getProject().getUUIDRefs());
+        PGMLParser.getSingleton().setOwnerRegistry(getProject().getUUIDRefs());
         ArgoDiagram d =
-	    (ArgoDiagram) PGMLParser.SINGLETON.readDiagram(getURL());
+	    (ArgoDiagram) PGMLParser.getSingleton().readDiagram(getURL());
         setDiagram(d);
         getProject().addDiagram(d);
 

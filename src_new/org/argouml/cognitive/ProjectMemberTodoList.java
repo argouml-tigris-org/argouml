@@ -145,7 +145,7 @@ public class ProjectMemberTodoList extends ProjectMember {
      * @param is an InputStream
      */
     public void load(InputStream is) {
-        TodoParser.SINGLETON.readTodoList(is, true);
+        TodoParser.getSingleton().readTodoList(is, true);
     }
 
     /**

@@ -36,7 +36,6 @@ import ru.novosoft.uml.behavior.activity_graphs.MObjectFlowState;
 import ru.novosoft.uml.behavior.activity_graphs.MPartition;
 import ru.novosoft.uml.behavior.activity_graphs.MSubactivityState;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
-import ru.novosoft.uml.behavior.state_machines.MSimpleState;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MClassifier;

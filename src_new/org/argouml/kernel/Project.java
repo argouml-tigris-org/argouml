@@ -339,7 +339,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
             // now close again, reopen and read the Diagrams.
 
-            PGMLParser.SINGLETON.setOwnerRegistry(uuidRefs);
+            PGMLParser.getSingleton().setOwnerRegistry(uuidRefs);
 
             //zis.close();
             ZipInputStream zis = new ZipInputStream(theUrl.openStream());
@@ -357,7 +357,7 @@ public class Project implements java.io.Serializable, TargetListener {
                     // "false" means the stream shall not be closed,
                     // but it doesn't seem to matter...
                     ArgoDiagram d =
-                        (ArgoDiagram) PGMLParser.SINGLETON.readDiagram(
+                        (ArgoDiagram) PGMLParser.getSingleton().readDiagram(
 								      sub,
 								      false);
                     if (d != null) {                  

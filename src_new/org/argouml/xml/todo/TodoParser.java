@@ -45,54 +45,54 @@ import org.tigris.gef.util.VectorSet;
  * Class that reads a todo list from a todo xml file. This class is a
  * SINGLETON.
  *
- * @see	#SINGLETON
+ * @see	#singleton
  * @author	Michael Stockman
  */
 public class TodoParser extends SAXParserBase {
-    protected static Logger cat = Logger.getLogger(TodoParser.class);
+    private static final Logger LOG = Logger.getLogger(TodoParser.class);
 
     /** The SINGLETON object of this class. */
-    public static TodoParser SINGLETON = new TodoParser();
+    private static TodoParser singleton = new TodoParser();
 
-    private TodoTokenTable _tokens = new TodoTokenTable();
-    private URL _url = null;
+    private TodoTokenTable tokens = new TodoTokenTable();
+    private URL url = null;
 
     /** The headline of the ToDoItem currently being read. */
-    protected String _headline;
+    private String headline;
 
     /** The priority of the ToDoItem currently being read. */
-    protected int    _priority;
+    private int    priority;
 
     /** The moreInfoURL of the ToDoItem currently being read. */
-    protected String _moreinfourl;
+    private String moreinfourl;
 
     /** The description of the ToDoItem currently being read. */
-    protected String _description;
+    private String description;
 
     /** The critic String of the ResolvedCritic currently being read. */
-    protected String _critic;
+    private String critic;
 
     /**
      * The offenders vector of the ResolvedCritic currently being
      * read.
      */
-    protected Vector _offenders;
+    private Vector offenders;
 
     /**
      * Creates a new TodoParser.
      */
-    protected TodoParser()
+    private TodoParser()
     {
     }
 
     /**
      * Reads a todo list from the file named in url.
      *
-     * @param	url	The URL of the file to read from.
+     * @param	u	The URL of the file to read from.
      */
-    public synchronized void readTodoList(URL url)
+    public synchronized void readTodoList(URL u)
     {
-	readTodoList(url, true);
+	readTodoList(u, true);
     }
 
     /**
@@ -100,20 +100,20 @@ public class TodoParser extends SAXParserBase {
      * currently used but included for concistency towards reading
      * XML files in ArgoUML.
      *
-     * @param	url	The URL of the file to read from.
+     * @param	u	The URL of the file to read from.
      * @param	addMembers	Ignored.
      */
-    public synchronized void readTodoList(URL url, boolean addMembers)
+    public synchronized void readTodoList(URL u, boolean addMembers)
     {
-	_url = url;
+	url = u;
 
 	try {
-	    readTodoList(url.openStream(), addMembers);
+	    readTodoList(u.openStream(), addMembers);
 	}
 	catch (IOException e)
 	{
-	    cat.warn("Couldn't open InputStream in " +
-		     "TodoParser.load(" + url + ") ",
+	    LOG.warn("Couldn't open InputStream in " 
+		     + "TodoParser.load(" + u + ") ",
 		     e);
 	    e.printStackTrace();
 	}
@@ -123,12 +123,12 @@ public class TodoParser extends SAXParserBase {
      * Sets the _url instance variable. This is mainly used for providing
      * fancy log messages when reading a todo list from an InputStream.
      *
-     * @param	url	The name of the file the we're eledgedly
+     * @param	u	The name of the file the we're eledgedly
      *			reading from.
      */
-    public void setURL(URL url)
+    public void setURL(URL u)
     {
-	_url = url;
+	url = u;
     }
 
     /**
@@ -144,8 +144,8 @@ public class TodoParser extends SAXParserBase {
     {
 	String errmsg = "Exception reading todo list =============";
 	try {
-	    cat.debug("=======================================");
-	    cat.debug("== READING TODO LIST " + _url);
+	    LOG.debug("=======================================");
+	    LOG.debug("== READING TO DO LIST " + url);
 	    parse(is);
 	}
 	catch (SAXException saxEx)
@@ -159,16 +159,16 @@ public class TodoParser extends SAXParserBase {
 	    Exception ex = saxEx.getException();
 	    if (ex == null)
 	    {
-		cat.error(errmsg, saxEx);
+		LOG.error(errmsg, saxEx);
 	    }
 	    else
 	    {
-		cat.error(errmsg, ex);
+		LOG.error(errmsg, ex);
 	    }
 	}
 	catch (Exception ex)
         {
-	    cat.error(errmsg, ex);
+	    LOG.error(errmsg, ex);
 	}
     }
 
@@ -184,45 +184,45 @@ public class TodoParser extends SAXParserBase {
 
 	try
 	{
-	    switch (_tokens.toToken(e.getName(), true))
+	    switch (tokens.toToken(e.getName(), true))
 	    {
-	    case TodoTokenTable.TOKEN_headline:
-	    case TodoTokenTable.TOKEN_description:
-	    case TodoTokenTable.TOKEN_priority:
-	    case TodoTokenTable.TOKEN_moreinfourl:
-	    case TodoTokenTable.TOKEN_poster:
-	    case TodoTokenTable.TOKEN_offender:
+	    case TodoTokenTable.TOKEN_HEADLINE:
+	    case TodoTokenTable.TOKEN_DESCRIPTION:
+	    case TodoTokenTable.TOKEN_PRIORITY:
+	    case TodoTokenTable.TOKEN_MOREINFOURL:
+	    case TodoTokenTable.TOKEN_POSTER:
+	    case TodoTokenTable.TOKEN_OFFENDER:
 		// NOP
 		break;
 
-	    case TodoTokenTable.TOKEN_todo:
+	    case TodoTokenTable.TOKEN_TO_DO:
 		handleTodo(e);
 		break;
 
-	    case TodoTokenTable.TOKEN_todolist:
+	    case TodoTokenTable.TOKEN_TO_DO_LIST:
 		handleTodoList(e);
 		break;
 
-	    case TodoTokenTable.TOKEN_todoitem:
+	    case TodoTokenTable.TOKEN_TO_DO_ITEM:
 		handleTodoItemStart(e);
 		break;
 
-	    case TodoTokenTable.TOKEN_resolvedcritics:
+	    case TodoTokenTable.TOKEN_RESOLVEDCRITICS:
 		handleResolvedCritics(e);
 		break;
 
-	    case TodoTokenTable.TOKEN_issue:
+	    case TodoTokenTable.TOKEN_ISSUE:
 		handleIssueStart(e);
 		break;
 
 	    default:
-		cat.warn("WARNING: unknown tag:" + e.getName());
+		LOG.warn("WARNING: unknown tag:" + e.getName());
 		break;
 	    }
 	}
 	catch (Exception ex)
         {
-	    cat.error("Exception in startelement", ex);
+	    LOG.error("Exception in startelement", ex);
 	}
     }
 
@@ -238,60 +238,62 @@ public class TodoParser extends SAXParserBase {
 
 	try
 	{
-	    switch (_tokens.toToken(e.getName(), false))
+	    switch (tokens.toToken(e.getName(), false))
 	    {
-	    case TodoTokenTable.TOKEN_todo:
-	    case TodoTokenTable.TOKEN_resolvedcritics:
-	    case TodoTokenTable.TOKEN_todolist:
+	    case TodoTokenTable.TOKEN_TO_DO:
+	    case TodoTokenTable.TOKEN_RESOLVEDCRITICS:
+	    case TodoTokenTable.TOKEN_TO_DO_LIST:
 		// NOP
 		break;
 
-	    case TodoTokenTable.TOKEN_todoitem:
+	    case TodoTokenTable.TOKEN_TO_DO_ITEM:
 		handleTodoItemEnd(e);
 		break;
 
-	    case TodoTokenTable.TOKEN_headline:
+	    case TodoTokenTable.TOKEN_HEADLINE:
 		handleHeadline(e);
 		break;
 
-	    case TodoTokenTable.TOKEN_description:
+	    case TodoTokenTable.TOKEN_DESCRIPTION:
 		handleDescription(e);
 		break;
 
-	    case TodoTokenTable.TOKEN_priority:
+	    case TodoTokenTable.TOKEN_PRIORITY:
 		handlePriority(e);
 		break;
 
-	    case TodoTokenTable.TOKEN_moreinfourl:
+	    case TodoTokenTable.TOKEN_MOREINFOURL:
 		handleMoreInfoURL(e);
 		break;
 
-	    case TodoTokenTable.TOKEN_issue:
+	    case TodoTokenTable.TOKEN_ISSUE:
 		handleIssueEnd(e);
 		break;
 
-	    case TodoTokenTable.TOKEN_poster:
+	    case TodoTokenTable.TOKEN_POSTER:
 		handlePoster(e);
 		break;
 
-	    case TodoTokenTable.TOKEN_offender:
+	    case TodoTokenTable.TOKEN_OFFENDER:
 		handleOffender(e);
 		break;
 
 	    default:
-		cat.warn("WARNING: unknown end tag:"
+		LOG.warn("WARNING: unknown end tag:"
 			 + e.getName());
 		break;
 	    }
 	}
 	catch (Exception ex)
 	{
-	    cat.error("Exception in endelement", ex);
+	    LOG.error("Exception in endelement", ex);
 	}
     }
 
     /**
      * Internal method.
+     *
+     * @param e the element
      */
     protected void handleTodo(XMLElement e)
     {
@@ -300,6 +302,8 @@ public class TodoParser extends SAXParserBase {
 
     /**
      * Internal method.
+     *
+     * @param e the element
      */
     protected void handleTodoList(XMLElement e)
     {
@@ -308,6 +312,8 @@ public class TodoParser extends SAXParserBase {
 
     /**
      * Internal method.
+     *
+     * @param e the element
      */
     protected void handleResolvedCritics(XMLElement e)
     {
@@ -316,17 +322,21 @@ public class TodoParser extends SAXParserBase {
 
     /**
      * Internal method.
+     *
+     * @param e the element
      */
     protected void handleTodoItemStart(XMLElement e)
     {
-	_headline = "";
-	_priority = ToDoItem.HIGH_PRIORITY;
-	_moreinfourl = "";
-	_description = "";
+	headline = "";
+	priority = ToDoItem.HIGH_PRIORITY;
+	moreinfourl = "";
+	description = "";
     }
 
     /**
      * Internal method.
+     *
+     * @param e the element
      */
     protected void handleTodoItemEnd(XMLElement e)
     {
@@ -336,21 +346,26 @@ public class TodoParser extends SAXParserBase {
 	/* This is expected to be safe, don't add a try block here */
 
 	dsgr = Designer.theDesigner();
-	item = new ToDoItem(dsgr, _headline, _priority, _description, _moreinfourl, new VectorSet());
+	item = new ToDoItem(dsgr, headline, priority, description, moreinfourl, 
+	                    new VectorSet());
 	dsgr.getToDoList().addElement(item);
 	//cat.debug("Added ToDoItem: " + _headline);
     }
 
     /**
      * Internal method.
+     *
+     * @param e the element
      */
     protected void handleHeadline(XMLElement e)
     {
-	_headline = decode(e.getText()).trim();
+	headline = decode(e.getText()).trim();
     }
 
     /**
      * Internal method.
+     *
+     * @param e the element
      */
     protected void handlePriority(XMLElement e)
     {
@@ -364,54 +379,62 @@ public class TodoParser extends SAXParserBase {
 	{
 	    np = ToDoItem.HIGH_PRIORITY;
 
-	    if (TodoTokenTable.STRING_prio_high.equalsIgnoreCase(prio))
+	    if (TodoTokenTable.STRING_PRIO_HIGH.equalsIgnoreCase(prio))
 		np = ToDoItem.HIGH_PRIORITY;
-	    else if (TodoTokenTable.STRING_prio_med.equalsIgnoreCase(prio))
+	    else if (TodoTokenTable.STRING_PRIO_MED.equalsIgnoreCase(prio))
 		np = ToDoItem.MED_PRIORITY;
-	    else if (TodoTokenTable.STRING_prio_low.equalsIgnoreCase(prio))
+	    else if (TodoTokenTable.STRING_PRIO_LOW.equalsIgnoreCase(prio))
 		np = ToDoItem.LOW_PRIORITY;
 	}
 
-	_priority = np;
+	priority = np;
     }
 
     /**
      * Internal method.
+     *
+     * @param e the element
      */
     protected void handleMoreInfoURL(XMLElement e)
     {
-	_moreinfourl = decode(e.getText()).trim();
+	moreinfourl = decode(e.getText()).trim();
     }
 
     /**
      * Internal method.
+     *
+     * @param e the element
      */
     protected void handleDescription(XMLElement e)
     {
-	_description = decode(e.getText()).trim();
+	description = decode(e.getText()).trim();
     }
 
     /**
      * Internal method.
+     *
+     * @param e the element
      */
     protected void handleIssueStart(XMLElement e)
     {
-	_critic = null;
-	_offenders = null;
+	critic = null;
+	offenders = null;
     }
 
     /**
      * Internal method.
+     *
+     * @param e the element
      */
     protected void handleIssueEnd(XMLElement e)
     {
 	Designer dsgr;
 	ResolvedCritic item;
 
-	if (_critic == null)
+	if (critic == null)
 	    return;
 
-	item = new ResolvedCritic(_critic, _offenders);
+	item = new ResolvedCritic(critic, offenders);
 	dsgr = Designer.theDesigner();
 	dsgr.getToDoList().getResolvedItems().addElement(item);
 	// cat.debug("Added ResolvedCritic: " + item);
@@ -419,20 +442,24 @@ public class TodoParser extends SAXParserBase {
 
     /**
      * Internal method.
+     *
+     * @param e the element
      */
     protected void handlePoster(XMLElement e)
     {
-	_critic = decode(e.getText()).trim();
+	critic = decode(e.getText()).trim();
     }
 
     /**
      * Internal method.
+     *
+     * @param e the element
      */
     protected void handleOffender(XMLElement e)
     {
-	if (_offenders == null)
-	    _offenders = new Vector();
-	_offenders.add(decode(e.getText()).trim());
+	if (offenders == null)
+	    offenders = new Vector();
+	offenders.add(decode(e.getText()).trim());
     }
 
     /**
@@ -519,10 +546,10 @@ public class TodoParser extends SAXParserBase {
 		sb.append("%proc;");
 		i1 = i2 + 1;
 	    }
-	    else if (c < 0x28 ||
-		     (c >= 0x3C && c <= 0x40 && c != 0x3D && c != 0x3F) ||
-		     (c >= 0x5E && c <= 0x60 && c != 0x5F) ||
-		     c >= 0x7B)
+	    else if (c < 0x28 
+                ||  (c >= 0x3C && c <= 0x40 && c != 0x3D && c != 0x3F) 
+                ||  (c >= 0x5E && c <= 0x60 && c != 0x5F) 
+                ||   c >= 0x7B)
 	    {
 		if (i2 > i1)
 		    sb.append(str.substring(i1, i2));
@@ -535,6 +562,13 @@ public class TodoParser extends SAXParserBase {
 
 	//cat.debug("encode:\n" + str + "\n -> " + sb.toString());
 	return sb.toString();
+    }
+
+    /**
+     * @return Returns the sINGLETON.
+     */
+    public static TodoParser getSingleton() {
+        return singleton;
     }
 }
 

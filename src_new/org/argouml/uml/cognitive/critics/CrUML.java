@@ -33,13 +33,12 @@ import org.apache.log4j.Logger;
 import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ocl.CriticOclEvaluator;
-import org.argouml.ocl.OCLEvaluator;
+import org.argouml.uml.cognitive.UMLToDoItem;
 import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.util.VectorSet;
 

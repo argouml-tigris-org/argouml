@@ -35,19 +35,21 @@ import org.xml.sax.SAXException;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
-import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigNode;
 import org.argouml.cognitive.ItemUID;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
-import org.argouml.uml.diagram.ui.FeaturesCompartmentContainer;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 
+/**
+ * The PGML parser.
+ *
+ */
 public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     
     /**
@@ -68,7 +70,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    public static final PGMLParser SINGLETON = new PGMLParser();
+    private static final PGMLParser SINGLETON = new PGMLParser();
 
     private HashMap translationTable = new HashMap();
 
@@ -77,106 +79,109 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
      */
     protected PGMLParser() {
 	translationTable.put("uci.uml.visual.UMLClassDiagram",
-			     "org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram");
+	    "org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram");
 	translationTable.put("uci.uml.visual.UMLUseCaseDiagram",
-			     "org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram");
+	    "org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram");
 	translationTable.put("uci.uml.visual.UMLActivityDiagram",
-			     "org.argouml.uml.diagram.activity.ui.UMLActivityDiagram");
+	    "org.argouml.uml.diagram.activity.ui.UMLActivityDiagram");
 	translationTable.put("uci.uml.visual.UMLCollaborationDiagram",
-			     "org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram");
+	    "org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram");
 	translationTable.put("uci.uml.visual.UMLDeploymentDiagram",
-			     "org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram");
+	    "org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram");
 	translationTable.put("uci.uml.visual.UMLStateDiagram",
-			     "org.argouml.uml.diagram.state.ui.UMLStateDiagram");
+	    "org.argouml.uml.diagram.state.ui.UMLStateDiagram");
 	translationTable.put("uci.uml.visual.UMLSequenceDiagram",
-			     "org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram");
+	    "org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram");
 	translationTable.put("uci.uml.visual.FigAssociation",
-			     "org.argouml.uml.diagram.ui.FigAssociation");
+	    "org.argouml.uml.diagram.ui.FigAssociation");
 	translationTable.put("uci.uml.visual.FigRealization",
-			     "org.argouml.uml.diagram.ui.FigRealization");
+	    "org.argouml.uml.diagram.ui.FigRealization");
 	translationTable.put("uci.uml.visual.FigGeneralization",
-			     "org.argouml.uml.diagram.ui.FigGeneralization");
+	    "org.argouml.uml.diagram.ui.FigGeneralization");
 	translationTable.put("uci.uml.visual.FigCompartment",
-			     "org.argouml.uml.diagram.ui.FigCompartment");
+	    "org.argouml.uml.diagram.ui.FigCompartment");
 	translationTable.put("uci.uml.visual.FigDependency",
-			     "org.argouml.uml.diagram.ui.FigDependency");
+	    "org.argouml.uml.diagram.ui.FigDependency");
 	translationTable.put("uci.uml.visual.FigEdgeModelElement",
-			     "org.argouml.uml.diagram.ui.FigEdgeModelElement");
+	    "org.argouml.uml.diagram.ui.FigEdgeModelElement");
 	translationTable.put("uci.uml.visual.FigMessage",
-			     "org.argouml.uml.diagram.ui.FigMessage");
+	    "org.argouml.uml.diagram.ui.FigMessage");
 	translationTable.put("uci.uml.visual.FigNodeModelElement",
-			     "org.argouml.uml.diagram.ui.FigNodeModelElement");
+	    "org.argouml.uml.diagram.ui.FigNodeModelElement");
 	translationTable.put("uci.uml.visual.FigNodeWithCompartments",
-			     "org.argouml.uml.diagram.ui.FigNodeWithCompartments");
+	    "org.argouml.uml.diagram.ui.FigNodeWithCompartments");
 	translationTable.put("uci.uml.visual.FigNote",
-			     "org.argouml.uml.diagram.ui.FigNote");
+	    "org.argouml.uml.diagram.ui.FigNote");
 	translationTable.put("uci.uml.visual.FigTrace",
-			     "org.argouml.uml.diagram.ui.FigTrace");
+	    "org.argouml.uml.diagram.ui.FigTrace");
 	translationTable.put("uci.uml.visual.FigClass",
-			     "org.argouml.uml.diagram.static_structure.ui.FigClass");
+	    "org.argouml.uml.diagram.static_structure.ui.FigClass");
 	translationTable.put("uci.uml.visual.FigInterface",
-			     "org.argouml.uml.diagram.static_structure.ui.FigInterface");
+	    "org.argouml.uml.diagram.static_structure.ui.FigInterface");
 	translationTable.put("uci.uml.visual.FigInstance",
-			     "org.argouml.uml.diagram.static_structure.ui.FigInstance");
+	    "org.argouml.uml.diagram.static_structure.ui.FigInstance");
 	translationTable.put("uci.uml.visual.FigLink",
-			     "org.argouml.uml.diagram.static_structure.ui.FigLink");
+	    "org.argouml.uml.diagram.static_structure.ui.FigLink");
 	translationTable.put("uci.uml.visual.FigPackage",
-			     "org.argouml.uml.diagram.static_structure.ui.FigPackage");
+	    "org.argouml.uml.diagram.static_structure.ui.FigPackage");
 	translationTable.put("uci.uml.visual.FigActionState",
-			     "org.argouml.uml.diagram.activity.ui.FigActionState");
+	    "org.argouml.uml.diagram.activity.ui.FigActionState");
 	translationTable.put("uci.uml.visual.FigAssociationRole",
-			     "org.argouml.uml.diagram.collaboration.ui.FigAssociationRole");
+	    "org.argouml.uml.diagram.collaboration.ui.FigAssociationRole");
 	translationTable.put("uci.uml.visual.FigClassifierRole",
-			     "org.argouml.uml.diagram.collaboration.ui.FigClassifierRole");
+	    "org.argouml.uml.diagram.collaboration.ui.FigClassifierRole");
 	translationTable.put("uci.uml.visual.FigComponent",
-			     "org.argouml.uml.diagram.deployment.ui.FigComponent");
+	    "org.argouml.uml.diagram.deployment.ui.FigComponent");
 	translationTable.put("uci.uml.visual.FigComponentInstance",
-			     "org.argouml.uml.diagram.deployment.ui.FigComponentInstance");
+	    "org.argouml.uml.diagram.deployment.ui.FigComponentInstance");
 	translationTable.put("uci.uml.visual.FigMNode",
-			     "org.argouml.uml.diagram.deployment.ui.FigMNode");
+	    "org.argouml.uml.diagram.deployment.ui.FigMNode");
 	translationTable.put("uci.uml.visual.FigMNodeInstance",
-			     "org.argouml.uml.diagram.deployment.ui.FigMNodeInstance");
+	    "org.argouml.uml.diagram.deployment.ui.FigMNodeInstance");
 	translationTable.put("uci.uml.visual.FigObject",
-			     "org.argouml.uml.diagram.deployment.ui.FigObject");
+	    "org.argouml.uml.diagram.deployment.ui.FigObject");
 	translationTable.put("uci.uml.visual.FigBranchState",
-			     "org.argouml.uml.diagram.state.ui.FigBranchState");
+	    "org.argouml.uml.diagram.state.ui.FigBranchState");
 	translationTable.put("uci.uml.visual.FigCompositeState",
-			     "org.argouml.uml.diagram.state.ui.FigCompositeState");
+	    "org.argouml.uml.diagram.state.ui.FigCompositeState");
 	translationTable.put("uci.uml.visual.FigDeepHistoryState",
-			     "org.argouml.uml.diagram.state.ui.FigDeepHistoryState");
+	    "org.argouml.uml.diagram.state.ui.FigDeepHistoryState");
 	translationTable.put("uci.uml.visual.FigFinalState",
-			     "org.argouml.uml.diagram.state.ui.FigFinalState");
+	    "org.argouml.uml.diagram.state.ui.FigFinalState");
 	translationTable.put("uci.uml.visual.FigForkState",
-			     "org.argouml.uml.diagram.state.ui.FigForkState");
+	    "org.argouml.uml.diagram.state.ui.FigForkState");
 	translationTable.put("uci.uml.visual.FigHistoryState",
-			     "org.argouml.uml.diagram.state.ui.FigHistoryState");
+	    "org.argouml.uml.diagram.state.ui.FigHistoryState");
 	translationTable.put("uci.uml.visual.FigInitialState",
-			     "org.argouml.uml.diagram.state.ui.FigInitialState");
+	    "org.argouml.uml.diagram.state.ui.FigInitialState");
 	translationTable.put("uci.uml.visual.FigJoinState",
-			     "org.argouml.uml.diagram.state.ui.FigJoinState");
+	    "org.argouml.uml.diagram.state.ui.FigJoinState");
 	translationTable.put("uci.uml.visual.FigShallowHistoryState",
-			     "org.argouml.uml.diagram.state.ui.FigShallowHistoryState");
+	    "org.argouml.uml.diagram.state.ui.FigShallowHistoryState");
 	translationTable.put("uci.uml.visual.FigSimpleState",
-			     "org.argouml.uml.diagram.state.ui.FigSimpleState");
+	    "org.argouml.uml.diagram.state.ui.FigSimpleState");
 	translationTable.put("uci.uml.visual.FigActionState",
-			     "org.argouml.uml.diagram.activity.ui.FigActionState");
+	    "org.argouml.uml.diagram.activity.ui.FigActionState");
 	translationTable.put("uci.uml.visual.FigStateVertex",
-			     "org.argouml.uml.diagram.state.ui.FigStateVertex");
+	    "org.argouml.uml.diagram.state.ui.FigStateVertex");
 	translationTable.put("uci.uml.visual.FigTransition",
-			     "org.argouml.uml.diagram.state.ui.FigTransition");
+	    "org.argouml.uml.diagram.state.ui.FigTransition");
 	translationTable.put("uci.uml.visual.FigActor",
-			     "org.argouml.uml.diagram.use_case.ui.FigActor");
+	    "org.argouml.uml.diagram.use_case.ui.FigActor");
 	translationTable.put("uci.uml.visual.FigUseCase",
-			     "org.argouml.uml.diagram.use_case.ui.FigUseCase");
+	    "org.argouml.uml.diagram.use_case.ui.FigUseCase");
 	translationTable.put("uci.uml.visual.FigSeqLink",
-			     "org.argouml.uml.diagram.sequence.ui.FigSeqLink");
+	    "org.argouml.uml.diagram.sequence.ui.FigSeqLink");
 	translationTable.put("uci.uml.visual.FigSeqObject",
-			     "org.argouml.uml.diagram.sequence.ui.FigSeqObject");
+	    "org.argouml.uml.diagram.sequence.ui.FigSeqObject");
 	translationTable.put("uci.uml.visual.FigSeqStimulus",
-			     "org.argouml.uml.diagram.sequence.ui.FigSeqStimulus");
+	    "org.argouml.uml.diagram.sequence.ui.FigSeqStimulus");
     }
 
 
+    /**
+     * @see org.tigris.gef.xml.pgml.PGMLParser#translateClassName(java.lang.String)
+     */
     protected String translateClassName(String oldName) {
         if ("org.argouml.uml.diagram.static_structure.ui.FigNote"
             .equals(oldName))
@@ -230,16 +235,19 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
                 && _currentNode instanceof OperationsCompartmentContainer
                 && isOperationsXml(attrList)) {
             if (isHiddenXml(descr)) {
-                ((OperationsCompartmentContainer) _currentNode).setOperationsVisible(false);
+                ((OperationsCompartmentContainer) _currentNode)
+                    .setOperationsVisible(false);
             }
             previousNode = _currentNode;
-        } else if (_elementState == DEFAULT_STATE && elementName.equals("group") 
+        } else if (_elementState 
+                == DEFAULT_STATE && elementName.equals("group") 
                 && previousNode instanceof AttributesCompartmentContainer
                     && isAttributesXml(attrList)) {
             _elementState = NODE_STATE;
             _currentNode = previousNode;
             if (isHiddenXml(descr)) {
-                ((AttributesCompartmentContainer) previousNode).setAttributesVisible(false);
+                ((AttributesCompartmentContainer) previousNode)
+                    .setAttributesVisible(false);
             }
         } else {
             // The following is required only for backwards
@@ -251,38 +259,48 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
                 // compartment of class figure detected
                 if (isHiddenXml(descr)) {
                     // the detected compartment need to be hidden
-                    ((FigNodeModelElement) _currentNode).enableSizeChecking(false);
+                    ((FigNodeModelElement) _currentNode)
+                        .enableSizeChecking(false);
                     if (_currentNode != previousNode) {
                         // it's the first compartment of the class:
                         if (_currentNode instanceof FigClass) {
-                            ((FigClass) _currentNode).setAttributesVisible(false);
+                            ((FigClass) _currentNode)
+                                .setAttributesVisible(false);
                         } else {
-                            ((FigInterface) _currentNode).setOperationsVisible(false);
+                            ((FigInterface) _currentNode)
+                                .setOperationsVisible(false);
                         }
                     } else {
                         // never reached due to bug in GEF (see below)
                         ((FigClass) _currentNode).setOperationsVisible(false);
                     }
-                    ((FigNodeModelElement) _currentNode).enableSizeChecking(true);
+                    ((FigNodeModelElement) _currentNode)
+                        .enableSizeChecking(true);
                 }
                 previousNode = _currentNode; // remember for next compartment
-            } else if (_elementState == DEFAULT_STATE && elementName.equals("group") 
+            } else if (_elementState 
+                        == DEFAULT_STATE && elementName.equals("group") 
                     && previousNode != null && _nestedGroups > 0) { 
-                // The following should not be necessary, but because of a bug in GEF's
-                // PGMLParser, the second FigGroup (which is the operations compartment)
-                // is parsed in the wrong state (DEFAULT_STATE). Result: _currentNode is
-                // lost (set to null). Solution: use saved version in _previousNode and
-                // watch _nestedGroups in order to decide which compartment is parsed.
-                // This code should work even with a fixed PGMLParser of GEF.
-                // (_elementState) DEFAULT_STATE(=0) is private :-(
-                // NODE_STATE = 4
+                /* The following should not be necessary, but because of a bug
+                   in GEF's PGMLParser, the second FigGroup (which is the 
+                   operations compartment) is parsed in the wrong state 
+                   (DEFAULT_STATE). Result: _currentNode is lost (set to null). 
+                   Solution: use saved version in _previousNode and
+                   watch _nestedGroups in order to decide which compartment 
+                   is parsed. This code should work even with a fixed 
+                   PGMLParser of GEF.
+                   (_elementState) DEFAULT_STATE(=0) is private :-(
+                   NODE_STATE = 4 
+                 */
                 
                 _elementState = NODE_STATE;
                 _currentNode = previousNode;
                 if (isHiddenXml(descr) && previousNode instanceof FigClass) {
-            	    ((FigNodeModelElement) previousNode).enableSizeChecking(false);
+            	    ((FigNodeModelElement) previousNode)
+                        .enableSizeChecking(false);
             	    ((FigClass) previousNode).setOperationsVisible(false);
-            	    ((FigNodeModelElement) previousNode).enableSizeChecking(true);
+            	    ((FigNodeModelElement) previousNode)
+            	        .enableSizeChecking(true);
                 }
             }
         }
@@ -341,6 +359,8 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
     /**
      * Sets the ItemUID value of the current element in the file.
+     *
+     * @param id the given id
      */
     protected void setElementItemUID(String id) {
 	switch (_elementState) {
@@ -353,14 +373,16 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
 	case PRIVATE_NODE_STATE:
 	    if (_currentNode instanceof FigNodeModelElement) {
-		((FigNodeModelElement) _currentNode).setItemUID(new ItemUID(id));
+		((FigNodeModelElement) _currentNode)
+		    .setItemUID(new ItemUID(id));
 	    }
 	    //cat.debug("SetUID: node: " + _currentNode);
 	    break;
 
 	case PRIVATE_EDGE_STATE:
 	    if (_currentEdge instanceof FigEdgeModelElement) {
-		((FigEdgeModelElement) _currentEdge).setItemUID(new ItemUID(id));
+		((FigEdgeModelElement) _currentEdge)
+		    .setItemUID(new ItemUID(id));
 	    }
 	    //cat.debug("SetUID: edge: " + _currentEdge);
 	    break;
@@ -512,73 +534,84 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         super.endElement(arg0);
     }
     
-   /**
-    * This is a correct implementation of handleGroup and will add FigGroups to the diagram ONLY if they are
-    * not a FigNode AND if they are not part of a FigNode.
-    * @see org.tigris.gef.xml.pgml.PGMLParser#handleGroup(org.xml.sax.AttributeList)
-    */
- protected Fig handleGroup(AttributeList attrList) {
+    /**
+     * This is a correct implementation of handleGroup and will add 
+     * FigGroups to the diagram ONLY if they are
+     * not a FigNode AND if they are not part of a FigNode.
+     *
+     * @see org.tigris.gef.xml.pgml.PGMLParser#handleGroup(org.xml.sax.AttributeList)
+     */
+    protected Fig handleGroup(AttributeList attrList) {
      //System.out.println("[PGMLParser]: handleGroup: ");
-     Fig f = null;
-     String clsNameBounds = attrList.getValue("description");
-     StringTokenizer st = new StringTokenizer(clsNameBounds, ",;[] ");
-     String clsName = translateClassName(st.nextToken());
-     String xStr = null;
-     String yStr = null;
-     String wStr = null;
-     String hStr = null;
-     if(st.hasMoreElements()) {
-         xStr = st.nextToken();
-         yStr = st.nextToken();
-         wStr = st.nextToken();
-         hStr = st.nextToken();
-     }
-
-     try {
-         Class nodeClass = Class.forName(translateClassName(clsName));
-         f = (Fig)nodeClass.newInstance();
-         if(xStr != null && !xStr.equals("")) {
-             int x = Integer.parseInt(xStr);
-             int y = Integer.parseInt(yStr);
-             int w = Integer.parseInt(wStr);
-             int h = Integer.parseInt(hStr);
-             f.setBounds(x, y, w, h);
-         }
-
-         if(f instanceof FigNode) {
-             FigNode fn = (FigNode)f;
-             _currentNode = fn;
-             _elementState = NODE_STATE;
-             _textBuf = new StringBuffer();             
-         } 
-         if (f instanceof FigNode || f instanceof FigEdge) {
-             _diagram.add(f);
-         }
-         else {
-             // nested group flag is a flag to repair the ^*&(*^*& implementation of GEF's parser
-             nestedGroupFlag = true;
-             figGroup = f;
-             if (_currentNode != null) {
-                 _currentNode.addFig(f);
-             }
-         }
-
-         if(f instanceof FigEdge) {
-             _currentEdge = (FigEdge)f;
-             _elementState = EDGE_STATE;
-         }  
-       
-     } catch(Exception ex) {
-         LOG.debug("Exception in handleGroup", ex);
-         ex.printStackTrace();
-     } catch(NoSuchMethodError ex) {
-         LOG.debug("No constructor() in class " + clsName, ex);
-         ex.printStackTrace();
-     }
-
-     setAttrs(f, attrList);
-     return f;
- }
+        Fig f = null;
+        String clsNameBounds = attrList.getValue("description");
+        StringTokenizer st = new StringTokenizer(clsNameBounds, ",;[] ");
+        String clsName = translateClassName(st.nextToken());
+        String xStr = null;
+        String yStr = null;
+        String wStr = null;
+        String hStr = null;
+        if (st.hasMoreElements()) {
+            xStr = st.nextToken();
+            yStr = st.nextToken();
+            wStr = st.nextToken();
+            hStr = st.nextToken();
+        }
+        
+        try {
+            Class nodeClass = Class.forName(translateClassName(clsName));
+            f = (Fig) nodeClass.newInstance();
+            if (xStr != null && !xStr.equals("")) {
+                int x = Integer.parseInt(xStr);
+                int y = Integer.parseInt(yStr);
+                int w = Integer.parseInt(wStr);
+                int h = Integer.parseInt(hStr);
+                f.setBounds(x, y, w, h);
+            }
+            
+            if (f instanceof FigNode) {
+                FigNode fn = (FigNode) f;
+                _currentNode = fn;
+                _elementState = NODE_STATE;
+                _textBuf = new StringBuffer();             
+            } 
+            if (f instanceof FigNode || f instanceof FigEdge) {
+                _diagram.add(f);
+            }
+            else {
+                // nested group flag is a flag to repair 
+                // the ^*&(*^*& implementation of GEF's parser
+                nestedGroupFlag = true;
+                figGroup = f;
+                if (_currentNode != null) {
+                    _currentNode.addFig(f);
+                }
+            }
+            
+            if (f instanceof FigEdge) {
+                _currentEdge = (FigEdge) f;
+                _elementState = EDGE_STATE;
+            }  
+            
+        } catch (Exception ex) {
+            LOG.debug("Exception in handleGroup", ex);
+            ex.printStackTrace();
+        } catch (NoSuchMethodError ex) {
+            LOG.debug("No constructor() in class " + clsName, ex);
+            ex.printStackTrace();
+        }
+        
+        setAttrs(f, attrList);
+        return f;
+    }
+    
+    
+    /**
+     * @return Returns the sINGLETON.
+     */
+    public static PGMLParser getSingleton() {
+        return SINGLETON;
+    }
  
  
 

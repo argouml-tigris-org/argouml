@@ -38,18 +38,18 @@ import org.argouml.cognitive.ResolvedCritic;
 public class ResolvedCriticXMLHelper
 {
     /** The ResolvedCritic this instance helps. */
-    protected final ResolvedCritic _item;
+    private final ResolvedCritic item;
 
     /**
      * Creates a new ResolvedCriticXMLHelper for helping item.
      *
-     * @param	item	The ResolvedCritic to expose.
+     * @param	rc	The ResolvedCritic to expose.
      */
-    public ResolvedCriticXMLHelper(ResolvedCritic item)
+    public ResolvedCriticXMLHelper(ResolvedCritic rc)
     {
-	if (item == null)
+	if (rc == null)
 	    throw new NullPointerException();
-	_item = item;
+	item = rc;
     }
 
     /**
@@ -62,7 +62,7 @@ public class ResolvedCriticXMLHelper
      */
     public String getCritic()
     {
-	return TodoParser.encode(_item.getCritic());
+	return TodoParser.encode(item.getCritic());
     }
 
     /**
@@ -75,7 +75,7 @@ public class ResolvedCriticXMLHelper
      */
     public Vector getOffenderList()
     {
-	Vector in = _item.getOffenderList();
+	Vector in = item.getOffenderList();
 	Enumeration elems;
 	Vector out;
 

@@ -170,7 +170,8 @@ public class TabTaggedValues extends TabSpawnable
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
      */
     public boolean shouldBeEnabled(Object theTarget) {
-        Object t = (theTarget instanceof Fig) ? ((Fig) theTarget).getOwner() : theTarget;
+        Object t = (theTarget instanceof Fig) 
+            ? ((Fig) theTarget).getOwner() : theTarget;
         if (!(org.argouml.model.ModelFacade.isAModelElement(t))) {
             shouldBeEnabled = false;
             return shouldBeEnabled;

@@ -37,18 +37,18 @@ import org.argouml.cognitive.ToDoItem;
  */
 public class ToDoItemXMLHelper
 {
-    protected final ToDoItem _item;
+    private final ToDoItem item;
 
     /**
      * Creates a new ToDoItemXMLHelper for item.
      *
-     * @param	item	A ToDoItem.
+     * @param	todoItem	A ToDoItem.
      */
-    public ToDoItemXMLHelper(ToDoItem item)
+    public ToDoItemXMLHelper(ToDoItem todoItem)
     {
-	if (item == null)
+	if (todoItem == null)
 	    throw new NullPointerException();
-	_item = item;
+	item = todoItem;
     }
 
     /**
@@ -61,7 +61,7 @@ public class ToDoItemXMLHelper
      */
     public String getHeadline()
     {
-	return TodoParser.encode(_item.getHeadline());
+	return TodoParser.encode(item.getHeadline());
     }
 
     /**
@@ -75,19 +75,19 @@ public class ToDoItemXMLHelper
      */
     public String getPriority()
     {
-	String s = TodoTokenTable.STRING_prio_high;
-	switch (_item.getPriority())
+	String s = TodoTokenTable.STRING_PRIO_HIGH;
+	switch (item.getPriority())
 	{
 	case ToDoItem.HIGH_PRIORITY:
-	    s = TodoTokenTable.STRING_prio_high;
+	    s = TodoTokenTable.STRING_PRIO_HIGH;
 	    break;
 
 	case ToDoItem.MED_PRIORITY:
-	    s = TodoTokenTable.STRING_prio_med;
+	    s = TodoTokenTable.STRING_PRIO_MED;
 	    break;
 
 	case ToDoItem.LOW_PRIORITY:
-	    s = TodoTokenTable.STRING_prio_low;
+	    s = TodoTokenTable.STRING_PRIO_LOW;
 	    break;
 	}
 
@@ -104,7 +104,7 @@ public class ToDoItemXMLHelper
      */
     public String getMoreInfoURL()
     {
-	return TodoParser.encode(_item.getMoreInfoURL());
+	return TodoParser.encode(item.getMoreInfoURL());
     }
 
     /**
@@ -117,7 +117,7 @@ public class ToDoItemXMLHelper
      */
     public String getDescription()
     {
-	return TodoParser.encode(_item.getDescription());
+	return TodoParser.encode(item.getDescription());
     }
 }
 

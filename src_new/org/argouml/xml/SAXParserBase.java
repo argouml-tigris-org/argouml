@@ -111,11 +111,23 @@ public abstract class SAXParserBase extends DefaultHandler {
     ////////////////////////////////////////////////////////////////
     // main parsing method
 
-    public void parse(URL url) throws SAXException, IOException, 
+    /**
+     * @param theUrl the url of the project to read
+     * @throws IOException for a file problem
+     * @throws ParserConfigurationException in case of a parser problem
+     * @throws SAXException when parsing xml
+     */
+    public void parse(URL theUrl) throws SAXException, IOException, 
         ParserConfigurationException {
-	parse(url.openStream());
+	parse(theUrl.openStream());
     }
 
+    /**
+     * @param is the inputstream of the project to read
+     * @throws IOException for a file problem
+     * @throws ParserConfigurationException in case of a parser problem
+     * @throws SAXException when parsing xml
+     */
     public void parse(InputStream is) throws SAXException, IOException, 
         ParserConfigurationException {
 
@@ -157,7 +169,14 @@ public abstract class SAXParserBase extends DefaultHandler {
     ////////////////////////////////////////////////////////////////
     // abstract methods
 
+    /**
+     * @param e the element
+     */
     protected abstract void handleStartElement(XMLElement e);
+    
+    /**
+     * @param e the element
+     */
     protected abstract void handleEndElement(XMLElement e);
 
     ////////////////////////////////////////////////////////////////
@@ -260,6 +279,10 @@ public abstract class SAXParserBase extends DefaultHandler {
 	}
     }
 
+    /**
+     * @param cls the class
+     * @return the jar
+     */
     public String getJarResource(String cls) {
   	//e.g:org.argouml.uml.generator.ui.ClassGenerationDialog -> poseidon.jar
         String jarFile = "";
@@ -281,10 +304,16 @@ public abstract class SAXParserBase extends DefaultHandler {
     ////////////////////////////////////////////////////////////////
     // convenience methods
 
+    /**
+     * @param e the element
+     */
     public void ignoreElement(XMLElement e) {
 	LOG.debug("NOTE: ignoring tag:" + e.getName());
     }
 
+    /**
+     * @param e the element
+     */
     public void notImplemented(XMLElement e) {
 	LOG.debug("NOTE: element not implemented: " + e.getName());
     }

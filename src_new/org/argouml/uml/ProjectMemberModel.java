@@ -24,14 +24,10 @@
 
 package org.argouml.uml;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Reader;
 import java.io.Writer;
 import java.util.Iterator;
 
@@ -39,12 +35,12 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.kernel.SaveException;
-import org.argouml.xml.xmi.XMIParser;
 import org.argouml.model.ModelFacade;
+import org.argouml.xml.xmi.XMIParser;
 
+import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.xmi.IncompleteXMIException;
 import ru.novosoft.uml.xmi.XMIWriter;
-import ru.novosoft.uml.model_management.MModel;
 
 /**
  * @author Piotr Kaminski
