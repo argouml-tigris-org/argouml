@@ -115,7 +115,8 @@ public class CriticBrowserDialog extends ArgoDialog
 	ALWAYS, IF_ONLY_ONE, NEVER 
     };
 
-
+    private static final int INSET_PX = 3;
+    
     ////////////////////////////////////////////////////////////////
     // instance variables
 
@@ -192,7 +193,7 @@ public class CriticBrowserDialog extends ArgoDialog
 	int descWidth = table.getFontMetrics(table.getFont())
 	        .stringWidth(DESC_WIDTH_TEXT);
 	descCol.setMinWidth(descWidth);
-	descCol.setWidth(descWidth);
+	descCol.setWidth(descWidth); // no maximum set, so it will stretch...
 	actCol.setMinWidth(50);
 	actCol.setMaxWidth(50);
 	actCol.setWidth(50);
@@ -264,7 +265,10 @@ public class CriticBrowserDialog extends ArgoDialog
 	labelConstraints.anchor = GridBagConstraints.NORTHEAST;
 	detailsPanel.add(descLabel, labelConstraints);
 	detailsPanel.add(new JScrollPane(desc), fieldConstraints);
-
+	desc.setLineWrap(true);
+	desc.setWrapStyleWord(true);
+	desc.setMargin(new Insets(INSET_PX, INSET_PX, INSET_PX, INSET_PX));
+        
 	labelConstraints.anchor = GridBagConstraints.EAST;
 	labelConstraints.gridy = 5;
 	fieldConstraints.gridy = 5;
@@ -301,9 +305,6 @@ public class CriticBrowserDialog extends ArgoDialog
 	wakeButton.setEnabled(false);
 	networkButton.setEnabled(false);
 	configButton.setEnabled(false);
-
-	desc.setLineWrap(true);
-	desc.setWrapStyleWord(true);
 
 	setResizable(true);
 	setContent(mainContent);
@@ -484,9 +485,15 @@ class TableModelCritics extends AbstractTableModel
 
     ////////////////
     // TableModel implemetation
+    /**
+     * @see javax.swing.table.TableModel#getColumnCount()
+     */
     public int getColumnCount() { return 3; }
 
-    public String  getColumnName(int c) {
+    /**
+     * @see javax.swing.table.TableModel#getColumnName(int)
+     */
+    public String getColumnName(int c) {
 	if (c == 0) 
 	    return Translator.localize("dialog.browse.column-name.active");
 	if (c == 1) 
@@ -496,6 +503,9 @@ class TableModelCritics extends AbstractTableModel
 	return "XXX";
     }
 
+    /**
+     * @see javax.swing.table.TableModel#getColumnClass(int)
+     */
     public Class getColumnClass(int c) {
 	if (c == 0) return Boolean.class;
 	if (c == 1) return String.class;
@@ -503,15 +513,24 @@ class TableModelCritics extends AbstractTableModel
 	return String.class;
     }
 
+    /**
+     * @see javax.swing.table.TableModel#isCellEditable(int, int)
+     */
     public boolean isCellEditable(int row, int col) {
 	return col == 0;
     }
 
+    /**
+     * @see javax.swing.table.TableModel#getRowCount()
+     */
     public int getRowCount() {
 	if (target == null) return 0;
 	return target.size();
     }
 
+    /**
+     * @see javax.swing.table.TableModel#getValueAt(int, int)
+     */
     public Object getValueAt(int row, int col) {
 	Critic cr = (Critic) target.get(row);
 	if (col == 0) return cr.isEnabled() ? Boolean.TRUE : Boolean.FALSE;
@@ -520,6 +539,9 @@ class TableModelCritics extends AbstractTableModel
 	return "CR-" + row * 2 + col; // for debugging
     }
 
+    /**
+     * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
+     */
     public void setValueAt(Object aValue, int rowIndex, int columnIndex)  {
 	LOG.debug("setting table value " + rowIndex + ", " + columnIndex);
 	if (columnIndex != 0) return;
@@ -533,11 +555,17 @@ class TableModelCritics extends AbstractTableModel
     ////////////////
     // event handlers
 
+    /**
+     * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
+     */
     public void vetoableChange(PropertyChangeEvent pce) {
 	DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
 	SwingUtilities.invokeLater(delayedNotify);
     }
 
+    /**
+     * @see org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.beans.PropertyChangeEvent)
+     */
     public void delayedVetoableChange(PropertyChangeEvent pce) {
 	fireTableStructureChanged();
     }
