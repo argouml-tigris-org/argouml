@@ -32,18 +32,14 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.apache.log4j.Category;
-
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.CopyHelper;
-import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.model.uml.foundation.core.CoreFactory;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.model_management.MModel;
-import ru.novosoft.uml.model_management.MPackage;
 import ru.novosoft.uml.model_management.MSubsystem;
 
 /**

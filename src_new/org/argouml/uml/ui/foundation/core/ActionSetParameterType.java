@@ -62,7 +62,7 @@ public class ActionSetParameterType extends UMLChangeAction {
         MClassifier newClassifier = null;
         MParameter para = null;
         if (source instanceof UMLComboBox2) {
-            UMLComboBox2 box = (UMLComboBox2)source;
+            UMLComboBox2 box = ((UMLComboBox2)source);
             Object o = box.getTarget();
             if (o instanceof MParameter) {
                 para = (MParameter)o;
@@ -73,7 +73,7 @@ public class ActionSetParameterType extends UMLChangeAction {
                 newClassifier = (MClassifier)o;
             }
         }
-        if (newClassifier != oldClassifier && para != null) {
+        if (newClassifier!= null && newClassifier != oldClassifier && para != null) {
             ModelManagementHelper.getHelper().moveElement(newClassifier, para.getModel());
             para.setType(newClassifier);
         }
