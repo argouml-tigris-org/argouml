@@ -24,10 +24,16 @@
 
 package org.argouml.uml.ui;
 
+import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.JButton;
+
 import org.apache.log4j.Logger;
-import java.awt.event.*;
-import javax.swing.*;
-import java.lang.reflect.*;
+
 import ru.novosoft.uml.MElementEvent;
 
 /**
@@ -67,100 +73,34 @@ public class PropPanelButton extends JButton
      * @param thePropPanel the property panel to use (usually this)
      * @param icon the icon of this button (choose one 
      *             from PropPanelModelElement)
-     * @param toolTipText
-     * @param theActionMethod string name of the actionMethod, 
-     *                        found by reflection
-     * @param theEnabledMethod string name of the enableMethod, 
-     *                         found by reflection
+     * @param toolTipText the text for the tooltip
      * @param theAction the action to be executed. Must be null 
      *                  if actionMethod is filled.
-     * @param toolTipText the text for the tooltip
      */
-    private PropPanelButton(
+    public PropPanelButton(
             PropPanel thePropPanel,
             Icon icon,
             String toolTipText,
-            String theActionMethod,
-            String theEnabledMethod,
             Action theAction) {
 
         super(icon);
 
         propPanel = thePropPanel;
 
-        //setPreferredSize(new Dimension(icon.getIconWidth()+6,
-        // icon.getIconHeight()+6));
-	//setMaximumSize(new Dimension(icon.getIconWidth()+6,
-        // icon.getIconHeight()+6));
-	//setMinimumSize(new Dimension(icon.getIconWidth()+6,
-        // icon.getIconHeight()+6));
-	//setSize(new Dimension(icon.getIconWidth()+6,
-        // icon.getIconHeight()+6));
         setToolTipText(toolTipText);
 
         Class propPanelClass = thePropPanel.getClass();
         Class[] noClass = {};
-        if (theActionMethod != null) {
-            try {
-                actionMethod = 
-                    propPanelClass.getMethod(theActionMethod, noClass);
-                if (theEnabledMethod != null) {
-                    enabledMethod = 
-                        propPanelClass.getMethod(theEnabledMethod, noClass);
-                }
-            } catch (Exception e) {
-                LOG.error(e.toString() + " in PropPanelButton(" 
-                        +  toolTipText + ")", e);
-            }
+        
+        if (theAction != null) {
+            action = theAction;
         } else
-            if (theAction != null) {
-                action = theAction;
-            } else
-                throw new IllegalArgumentException(
-                    "Either action method or action must be indicated."
-                    + " They are both null now.");
-
+            throw new IllegalArgumentException("Action must be indicated.");
+        
         setEnabled(false);
 
         thePropPanel.addButton(this);
         addActionListener(this);
-    }
-    
-    /**
-     * @deprecated as of 0.17.1. This constructor constructs 
-     * a proppanel button using the old reflection method. 
-     * Replaced by the other public constructor that uses an Action 
-     * instead of reflection. 
-     *
-     * @param pp the properties panel
-     * @param icon the icon
-     * @param toolTipText the tooltip text
-     * @param am the method for the action
-     * @param em the method to see if it should be enabled
-     */
-    public PropPanelButton( PropPanel pp,
-            Icon icon,
-            String toolTipText,
-            String am,
-            String em) { 
-        this (pp, icon, toolTipText, am, em, null);
-        
-    }
-    
-    /**
-     * The constructor.
-     * 
-     * @param pp the properties panel
-     * @param icon the icon
-     * @param toolTipText the tooltip text
-     * @param theAction the action
-     */
-    public PropPanelButton( PropPanel pp,
-            Icon icon,
-            String toolTipText,                        
-            Action theAction) { 
-        this (pp, icon, toolTipText, null, null, theAction);
-        
     }
 
     /**
