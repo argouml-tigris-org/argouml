@@ -893,10 +893,13 @@ public class NavigatorPane
                 if (obj instanceof MPackage || obj instanceof MModel) {
                     popup.add(ActionAddPackage.SINGLETON);
                 }
-                popup.add(
-                    new ActionGoToDetails(menuLocalize("action.properties")));
+                if (obj != null) { 
+                    popup.add(new ActionGoToDetails(menuLocalize("action.properties")));
+                }
             }
-            popup.show(_tree, me.getX(), me.getY());
+            if (popup.getComponentCount()>0) {
+                popup.show(_tree, me.getX(), me.getY());
+            }
         }
 
         /**
