@@ -39,6 +39,7 @@ import javax.swing.SwingConstants;
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.SettingsTabPanel;
 import org.argouml.application.helpers.SettingsTabHelper;
+import org.argouml.swingext.LabelledLayout;
 
 /* This is copied from SettingsTabPreferences */
 /** Action object for handling Argo settings
@@ -49,105 +50,80 @@ import org.argouml.application.helpers.SettingsTabHelper;
  */
 public class SettingsTabFonts extends SettingsTabHelper implements SettingsTabPanel {
 
-	private JComboBox	_lookAndFeel;
-	private JComboBox	_metalTheme;
-	private JLabel		_metalLabel;
-	
+    private JComboBox	_lookAndFeel;
+    private JComboBox	_metalTheme;
+    private JLabel	_metalLabel;
+
     public SettingsTabFonts() {
         super();
-        
+
         setLayout(new BorderLayout());
-        
-        JPanel top = new JPanel(new GridBagLayout());        
-	
-		GridBagConstraints labelConstraints = new GridBagConstraints();
-		labelConstraints.anchor = GridBagConstraints.EAST;
-		labelConstraints.gridy = 0;
-		labelConstraints.gridx = 0;
-		labelConstraints.gridwidth = 1;
-		labelConstraints.gridheight = 1;
-		labelConstraints.insets = new Insets(5, 20, 5, 4);
 
-		GridBagConstraints fieldConstraints = new GridBagConstraints();
-		fieldConstraints.anchor = GridBagConstraints.EAST;
-		fieldConstraints.fill = GridBagConstraints.HORIZONTAL;
-		fieldConstraints.gridy = 0;
-		fieldConstraints.gridx = 1;
-		fieldConstraints.gridwidth = 3;
-		fieldConstraints.gridheight = 1;
-		fieldConstraints.weightx = 1.0;
-		fieldConstraints.insets = new Insets(5, 4, 5, 20);
-	
-		labelConstraints.gridy = 0;
-		fieldConstraints.gridy = 0;
+        int labelGap = 10;
+        int componentGap = 10;
+        JPanel top = new JPanel(new LabelledLayout(labelGap, componentGap));
 
-		JLabel label = createLabel("label.look-and-feel");
-		label.setHorizontalAlignment(SwingConstants.RIGHT);
-		top.add(label, labelConstraints);
-		
-		_lookAndFeel = new JComboBox(LookAndFeelMgr.SINGLETON.getAvailableLookAndFeelNames());
-		_lookAndFeel.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				setMetalThemeState();
-			}
-		});
-		label.setLabelFor(_lookAndFeel);
-		top.add(_lookAndFeel, fieldConstraints);
+        JLabel label = createLabel("label.look-and-feel");
+        _lookAndFeel = new JComboBox(LookAndFeelMgr.SINGLETON.getAvailableLookAndFeelNames());
+        _lookAndFeel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)
+            {
+                setMetalThemeState();
+            }
+        });
+        label.setLabelFor(_lookAndFeel);
+        top.add(label);
+        top.add(_lookAndFeel);
 
-		labelConstraints.gridy = 1;
-		fieldConstraints.gridy = 1;
+        _metalLabel = createLabel("label.metal-theme");
 
-		_metalLabel = createLabel("label.metal-theme");
-		_metalLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		top.add(_metalLabel, labelConstraints);
-		
-		_metalTheme = new JComboBox(LookAndFeelMgr.SINGLETON.getAvailableThemeNames());
-		_metalLabel.setLabelFor(_metalTheme);
-		top.add(_metalTheme, fieldConstraints);
-		
-		add(top, BorderLayout.CENTER);
-		
-		JLabel restart = createLabel("label.restart-application");
-		restart.setHorizontalAlignment(SwingConstants.CENTER);
-		restart.setVerticalAlignment(SwingConstants.CENTER);
-		restart.setBorder(BorderFactory.createEmptyBorder(10, 2, 10, 2));		
-		add(restart, BorderLayout.SOUTH);
-		
-		setMetalThemeState();
+        _metalTheme = new JComboBox(LookAndFeelMgr.SINGLETON.getAvailableThemeNames());
+        _metalLabel.setLabelFor(_metalTheme);
+        top.add(_metalLabel);
+        top.add(_metalTheme);
+
+        top.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));		
+        add(top, BorderLayout.CENTER);
+
+        JLabel restart = createLabel("label.restart-application");
+        restart.setHorizontalAlignment(SwingConstants.CENTER);
+        restart.setVerticalAlignment(SwingConstants.CENTER);
+        restart.setBorder(BorderFactory.createEmptyBorder(10, 2, 10, 2));		
+        add(restart, BorderLayout.SOUTH);
+
+        setMetalThemeState();
     }
     
     /**
      * Enables or disables the metal theme controls depending on whether
      * or not themes are supported by the selected look and feel.
-	**/
-	private void setMetalThemeState()
-	{
-		String lafName = (String) _lookAndFeel.getSelectedItem();
-		boolean enabled = LookAndFeelMgr.SINGLETON.isThemeCompatibleLookAndFeel(
-				LookAndFeelMgr.SINGLETON.getLookAndFeelFromName(lafName));
-		
-		_metalLabel.setEnabled(enabled);
-		_metalTheme.setEnabled(enabled);
-	}
+    **/
+    private void setMetalThemeState()
+    {
+        String lafName = (String) _lookAndFeel.getSelectedItem();
+        boolean enabled = LookAndFeelMgr.SINGLETON.isThemeCompatibleLookAndFeel(
+                        LookAndFeelMgr.SINGLETON.getLookAndFeelFromName(lafName));
+
+        _metalLabel.setEnabled(enabled);
+        _metalTheme.setEnabled(enabled);
+    }
 
     public void handleSettingsTabRefresh() {
-		String laf = LookAndFeelMgr.SINGLETON.getCurrentLookAndFeelName();
+        String laf = LookAndFeelMgr.SINGLETON.getCurrentLookAndFeelName();
     	String theme = LookAndFeelMgr.SINGLETON.getCurrentThemeName();
-    	
-		_lookAndFeel.setSelectedItem(laf);
-		_metalTheme.setSelectedItem(theme);		
+
+        _lookAndFeel.setSelectedItem(laf);
+        _metalTheme.setSelectedItem(theme);		
     }
 
     public void handleSettingsTabSave() {
-		LookAndFeelMgr.SINGLETON.setCurrentLookAndFeel(
-				LookAndFeelMgr.SINGLETON.getLookAndFeelFromName(
-				(String) _lookAndFeel.getSelectedItem()));
+	LookAndFeelMgr.SINGLETON.setCurrentLookAndFeel(
+			LookAndFeelMgr.SINGLETON.getLookAndFeelFromName(
+			(String) _lookAndFeel.getSelectedItem()));
 		
-		LookAndFeelMgr.SINGLETON.setCurrentTheme(
-				LookAndFeelMgr.SINGLETON.getThemeFromName(
-				(String) _metalTheme.getSelectedItem()));
+	LookAndFeelMgr.SINGLETON.setCurrentTheme(
+			LookAndFeelMgr.SINGLETON.getThemeFromName(
+			(String) _metalTheme.getSelectedItem()));
     }
 
     public void handleSettingsTabCancel() {}

@@ -45,27 +45,24 @@ import org.argouml.uml.ui.TabProps;
  *  generate a separate window of the same size and with the same
  *  contents.  This is almost like "tearing off" a tab.
  */
-public class TabSpawnable
-    extends JPanel
-    implements Cloneable, org.argouml.swingext.Orientable  {
+public class TabSpawnable extends JPanel implements Cloneable, org.argouml.swingext.Orientable {
         
-    private Category cat = 
-        Category.getInstance(TabProps.class);
+    private Category cat = Category.getInstance(TabSpawnable.class);
     
-  public final int OVERLAPP = 30;
+    public final int OVERLAPP = 30;
   
     private static final String BUNDLE = "UMLMenu";
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
     
-  String _title = "untitled";
+    String _title = "untitled";
   
-  /**
-   * if true, remove tab from parent JTabbedPane
-   */
-  boolean _tear = false;
-  protected Orientation orientation;
+    /**
+     * if true, remove tab from parent JTabbedPane
+     */
+    boolean _tear = false;
+    protected Orientation orientation;
 
   ////////////////////////////////////////////////////////////////
   // constructor

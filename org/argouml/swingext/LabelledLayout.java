@@ -72,35 +72,32 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
     /**
      * The height of the child component with the largest height
      */
-    protected int _largestHeight;
+    private int _largestHeight;
     /**
      * The width of the child component with the largest width
      */
-    protected int _largestWidth;
+    private int _largestWidth;
     /**
      * The required cell width of the labels column
      */
-    protected int _labelWidth;
+    private int _labelWidth;
 
-    private Orientation _orientation;
+    private boolean _ignoreSplitters;
 
     /**
      * Construct a new LabelledLayout.
      */
     public LabelledLayout() {
-        _orientation = Horizontal.getInstance();
+        _ignoreSplitters = false;
         _hgap = 0;
         _vgap = 0;
     }
 
     /**
-     * Construct a new LabelledLayout with the given orientation.
-     * The orientation determines how panels are layed out. A horizontal orientation
-     * has panels to the right of the previous. Vertical orientation has panels layed
-     * out below the previous
+     * Construct a new LabelledLayout.
      */
-    public LabelledLayout(Orientation orientation) {
-        _orientation = orientation;
+    public LabelledLayout(boolean ignoreSplitters) {
+        _ignoreSplitters = ignoreSplitters;
         _hgap = 0;
         _vgap = 0;
     }
@@ -109,7 +106,7 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
      * Construct a new horizontal LabelledLayout with the specified cell spacing.
      */
     public LabelledLayout(int hgap, int vgap) {
-        _orientation = Horizontal.getInstance();
+        _ignoreSplitters = false;
         _hgap = hgap;
         _vgap = vgap;
     }
@@ -151,7 +148,8 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
             int componentCount = parent.getComponentCount();
             for (int i = 0; i < componentCount; ++i) {
                 Component childComp = parent.getComponent(i);
-                if (childComp.isVisible()) {
+                if (childComp.isVisible() && !(childComp instanceof Seperator)) {
+                    
                     int childHeight = (int) childComp.getPreferredSize().getHeight();
                     if (childComp instanceof JLabel) {
                         JLabel jlabel = (JLabel) childComp;
@@ -210,10 +208,13 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
             int sectionCount = getSectionCount(parent);
             int sectionWidth = getSectionWidth(parent, sectionCount);
             for (int i = 0; i < parent.getComponentCount(); ++i) {
-                if (parent.getComponent(i) instanceof Seperator) {
-                    layoutSection(parent, sectionX, sectionWidth, components);
-                    sectionX += sectionWidth + _hgap;
-                    components.clear();
+                Component childComp = parent.getComponent(i);
+                if (childComp instanceof Seperator) {
+                    if (!_ignoreSplitters) {
+                        layoutSection(parent, sectionX, sectionWidth, components);
+                        sectionX += sectionWidth + _hgap;
+                        components.clear();
+                    }
                 } else {
                     components.add(parent.getComponent(i));
                 }
@@ -230,7 +231,7 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
     private int getSectionCount(Container parent) {
         int sectionCount = 1;
         int componentCount = parent.getComponentCount();
-        if (_orientation.equals(Horizontal.getInstance())) {
+        if (!_ignoreSplitters) {
             for (int i = 0; i < componentCount; ++i) {
                 if (parent.getComponent(i) instanceof Seperator)
                     ++sectionCount;

@@ -234,56 +234,38 @@ public class ProjectBrowser
      */
     protected Component createPanels(boolean doSplash) {
         if (doSplash) {
-            _splash.getStatusBar().showStatus(
-                "Making Project Browser: Navigator Pane");
+            _splash.getStatusBar().showStatus("Making Project Browser: Navigator Pane");
             _splash.getStatusBar().incProgress(5);
         }
         _navPane = new NavigatorPane(doSplash);
         /* Work in progress here to allow multiple details panes with 
-               ** different contents - Bob Tarling
-               */
-        _eastPane =
-            makeDetailsPane(
-                BorderSplitPane.EAST.toLowerCase(),
-                Vertical.getInstance());
-        _southPane =
-            makeDetailsPane(
-                BorderSplitPane.SOUTH.toLowerCase(),
-                Horizontal.getInstance());
-        _southEastPane =
-            makeDetailsPane(
-                BorderSplitPane.SOUTHEAST.toLowerCase(),
-                Horizontal.getInstance());
-        _northWestPane =
-            makeDetailsPane(
-                BorderSplitPane.NORTHWEST.toLowerCase(),
-                Horizontal.getInstance());
-        _northPane =
-            makeDetailsPane(
-                BorderSplitPane.NORTH.toLowerCase(),
-                Horizontal.getInstance());
-        _northEastPane =
-            makeDetailsPane(
-                BorderSplitPane.NORTHEAST.toLowerCase(),
-                Horizontal.getInstance());
-        if (_southPane != null)
+        ** different contents - Bob Tarling
+        */
+        _eastPane  = makeDetailsPane(BorderSplitPane.EAST,  Vertical.getInstance());
+        _southPane = makeDetailsPane(BorderSplitPane.SOUTH, Horizontal.getInstance());
+        _southEastPane = makeDetailsPane(BorderSplitPane.SOUTHEAST, Horizontal.getInstance());
+        _northWestPane = makeDetailsPane(BorderSplitPane.NORTHWEST, Horizontal.getInstance());
+        _northPane = makeDetailsPane(BorderSplitPane.NORTH, Horizontal.getInstance());
+        _northEastPane = makeDetailsPane(BorderSplitPane.NORTHEAST, Horizontal.getInstance());
+        
+        if (_southPane != null) {
             detailsPanesByCompassPoint.put(BorderSplitPane.SOUTH, _southPane);
-        if (_southEastPane != null)
-            detailsPanesByCompassPoint.put(
-                BorderSplitPane.SOUTHEAST,
-                _southEastPane);
-        if (_eastPane != null)
+        }
+        if (_southEastPane != null) {
+            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHEAST, _southEastPane);
+        }
+        if (_eastPane != null) {
             detailsPanesByCompassPoint.put(BorderSplitPane.EAST, _eastPane);
-        if (_northWestPane != null)
-            detailsPanesByCompassPoint.put(
-                BorderSplitPane.NORTHWEST,
-                _northWestPane);
-        if (_northPane != null)
+        }
+        if (_northWestPane != null) {
+            detailsPanesByCompassPoint.put(BorderSplitPane.NORTHWEST, _northWestPane);
+        }
+        if (_northPane != null) {
             detailsPanesByCompassPoint.put(BorderSplitPane.NORTH, _northPane);
-        if (_northEastPane != null)
-            detailsPanesByCompassPoint.put(
-                BorderSplitPane.NORTHEAST,
-                _northEastPane);
+        }
+        if (_northEastPane != null) {
+            detailsPanesByCompassPoint.put(BorderSplitPane.NORTHEAST, _northEastPane);
+        }
                 
         // Set preferred sizes from config file
         if (_southPane != null) {
@@ -301,8 +283,7 @@ public class ProjectBrowser
         _workarea = new BorderSplitPane();
         // create the todopane
         if (doSplash) {
-            _splash.getStatusBar().showStatus(
-                "Making Project Browser: To Do Pane");
+            _splash.getStatusBar().showStatus("Making Project Browser: To Do Pane");
             _splash.getStatusBar().incProgress(5);
         }
         _todoPane = new ToDoPane(doSplash);
@@ -747,10 +728,8 @@ public class ProjectBrowser
      * @return the details pane or null if none is required for the given
      *         compass point.
      */
-    private DetailsPane makeDetailsPane(
-        String compassPoint,
-        Orientation orientation) {
-        DetailsPane detailsPane = new DetailsPane(compassPoint, orientation);
+    private DetailsPane makeDetailsPane(String compassPoint, Orientation orientation) {
+        DetailsPane detailsPane = new DetailsPane(compassPoint.toLowerCase(), orientation);
         if (detailsPane.getTabCount() == 0)
             return null;
         return detailsPane;
