@@ -102,7 +102,7 @@ public class TodoListMemberFilePersister extends MemberFilePersister {
         
         if (indent == null) {
             try {
-                expander.expand(writer, this);
+                expander.expand(writer, member);
             } catch (ExpansionException e) {
                 throw new SaveException(e);
             }
