@@ -24,7 +24,6 @@
 
 package org.argouml.persistence;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
@@ -35,7 +34,6 @@ import org.argouml.kernel.Project;
 import org.argouml.model.Model;
 import org.argouml.model.XmiReader;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * XMI is an XML based exchange format between UML tools.
