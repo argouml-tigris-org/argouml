@@ -133,7 +133,7 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
     gridBagConstraints.anchor = GridBagConstraints.EAST;
     getContentPane().add(_cancelButton, gridBagConstraints);
 
-    _generateButton.setLabel("Generate");
+    _generateButton.setText("Generate");
     gridBagConstraints = new GridBagConstraints();
     gridBagConstraints.gridx = 2;
     gridBagConstraints.gridy = 4;
@@ -269,6 +269,12 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
             if (path != null) {
               String fn = generator.GenerateFile((MClassifier) node, path);
               fileNames[i].add(fn);
+              // save the selected language in the model
+              // TODO 1: no support of multiple checked languages
+              // TODO 2: it's a change in the model -> save needed!
+              String savedLang = ((MClassifier)node).getTaggedValue("src_lang");
+              if (!language.getConfigurationValue().equals(savedLang))
+                ((MClassifier)node).setTaggedValue("src_lang",language.getConfigurationValue());
             }
           }
         }
@@ -342,10 +348,9 @@ class TableModelClassChecks extends AbstractTableModel {
 	  continue;
 
       for (int j = 0; j < getLanguagesCount(); j++) {
-	  // TODO:
-	  // if (cls.isSupposedToBeGeneratedAsLanguage(_languages.index(j)))
-	  //     _checked[j].add(cls);
-	  // else
+	  if (isSupposedToBeGeneratedAsLanguage((NotationName)_languages.get(j),cls))
+	       _checked[j].add(cls);
+	  else
 	  if (((NotationName)_languages.get(j))
 	      .equals(Notation.getDefaultNotation())) {
 	      _checked[j].add(cls);
@@ -353,6 +358,13 @@ class TableModelClassChecks extends AbstractTableModel {
       }
     }
     fireTableStructureChanged();
+  }
+
+  private boolean isSupposedToBeGeneratedAsLanguage(NotationName lang, MClassifier cls) {
+    if (lang == null)
+      return false;
+    String savedLang = cls.getTaggedValue("src_lang");
+    return (lang.getConfigurationValue().equals(savedLang));
   }
 
     private int getLanguagesCount() {
