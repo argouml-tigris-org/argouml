@@ -28,6 +28,8 @@ import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
+import org.apache.log4j.Logger;
+
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.LayerManager;
@@ -46,6 +48,9 @@ import org.tigris.gef.presentation.FigNode;
  * @author jaap.branderhorst@xs4all.nl
  */
 public class ModeCreateLink extends ModeCreate {
+
+    private static final Logger LOG =
+	Logger.getLogger(ModeCreateLink.class);
 
     /** The NetPort where the arc is paintn from */
     private Object _startPort;
@@ -206,7 +211,7 @@ public class ModeCreateLink extends ModeCreate {
                     me.consume();
                     return;
                 } else
-                    System.out.println("connection return null");
+                    LOG.debug("connection return null");
             }
         }
         _sourceFigNode.damage();
