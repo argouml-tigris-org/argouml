@@ -924,8 +924,7 @@ public class Project implements java.io.Serializable, TargetListener {
             // and is now null,
             // don't attempt to delete it!
             if(ModelFacade.getTop(ModelFacade.getStateMachine(statediagram)) != null){
-            ProjectManager.getManager().getCurrentProject()
-		.moveToTrash(statediagram.getStateMachine());
+                this.moveToTrash(statediagram.getStateMachine());
             }
         }
         d.removeChangeRegistryAsListener(_saveRegistry);
