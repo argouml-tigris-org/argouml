@@ -65,7 +65,7 @@ public class ModelManagementFactoryImpl
      *
      * @return an initialized UML Model instance.
      */
-    public MModel createModel() {
+    public Object createModel() {
         MModel modelElement = MFactory.getDefaultFactory().createModel();
 	super.initialize(modelElement);
 	return modelElement;
@@ -76,7 +76,7 @@ public class ModelManagementFactoryImpl
      *
      * @return an initialized UML ElementImport instance.
      */
-    public MElementImport createElementImport() {
+    public Object createElementImport() {
         MElementImport modelElement =
 	    MFactory.getDefaultFactory().createElementImport();
 	super.initialize(modelElement);
@@ -88,7 +88,7 @@ public class ModelManagementFactoryImpl
      *
      * @return an initialized UML Package instance.
      */
-    public MPackage createPackage() {
+    public Object createPackage() {
         MPackage modelElement = MFactory.getDefaultFactory().createPackage();
 	super.initialize(modelElement);
 	return modelElement;
@@ -102,7 +102,7 @@ public class ModelManagementFactoryImpl
      * @param uuid is the UUID.
      * @return an initialized UML Package instance.
      */
-    public MPackage buildPackage(String name, String uuid) {
+    public Object buildPackage(String name, String uuid) {
         MPackage modelElement = MFactory.getDefaultFactory().createPackage();
 	super.initialize(modelElement);
 	modelElement.setName(name);
@@ -117,7 +117,7 @@ public class ModelManagementFactoryImpl
      *
      * @return an initialized UML Subsystem instance.
      */
-    public MSubsystem createSubsystem() {
+    public Object createSubsystem() {
         MSubsystem modelElement =
 	    MFactory.getDefaultFactory().createSubsystem();
 	super.initialize(modelElement);
@@ -127,22 +127,42 @@ public class ModelManagementFactoryImpl
     /**
      * @param elem to be deleted
      */
-    public void deleteElementImport(MElementImport elem) { }
+    public void deleteElementImport(Object elem) {
+        if (!(elem instanceof MElementImport)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * @param elem to be deleted
      */
-    public void deleteModel(MModel elem) { }
+    public void deleteModel(Object elem) {
+        if (!(elem instanceof MModel)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * @param elem to be deleted
      */
-    public void deletePackage(MPackage elem) { }
+    public void deletePackage(Object elem) {
+        if (!(elem instanceof MPackage)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * @param elem to be deleted
      */
-    public void deleteSubsystem(MSubsystem elem) { }
+    public void deleteSubsystem(Object elem) {
+        if (!(elem instanceof MSubsystem)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * Copies a package, but not any elements within it. This does however
@@ -153,10 +173,17 @@ public class ModelManagementFactoryImpl
      * @param ns is the namespace to put the copy in.
      * @return the newly created package.
      */
-    public MPackage copyPackage(MPackage source, MNamespace ns) {
-	MPackage p = createPackage();
-	ns.addOwnedElement(p);
-	doCopyPackage(source, p);
+    public Object copyPackage(Object source, Object ns) {
+        if (!(source instanceof MPackage)) {
+            throw new IllegalArgumentException("source");
+        }
+        if (!(ns instanceof MNamespace)) {
+            throw new IllegalArgumentException("namespace");
+        }
+
+        MPackage p = (MPackage) createPackage();
+	((MNamespace) ns).addOwnedElement(p);
+	doCopyPackage((MPackage) source, p);
 	return p;
     }
 

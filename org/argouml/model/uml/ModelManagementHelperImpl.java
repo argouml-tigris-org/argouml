@@ -80,16 +80,20 @@ class ModelManagementHelperImpl implements ModelManagementHelper {
      * @param ns is the namespace
      * @return Collection
      */
-    public Collection getAllSubSystems(MNamespace ns) {
+    public Collection getAllSubSystems(Object ns) {
         if (ns == null) {
             return new ArrayList();
         }
-        Iterator it = ns.getOwnedElements().iterator();
+        if (!(ns instanceof MNamespace)) {
+            throw new IllegalArgumentException();
+        }
+
+        Iterator it = ((MNamespace) ns).getOwnedElements().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof MNamespace) {
-                list.addAll(getAllSubSystems((MNamespace) o));
+                list.addAll(getAllSubSystems(o));
             }
             if (o instanceof MSubsystem) {
                 list.add(o);
@@ -279,11 +283,16 @@ class ModelManagementHelperImpl implements ModelManagementHelper {
      * @param ns to process
      * @return Collection of surrounding namespaces.
      */
-    public Collection getAllSurroundingNamespaces(MNamespace ns) {
+    public Collection getAllSurroundingNamespaces(Object ns) {
+        if (!(ns instanceof MNamespace)) {
+            throw new IllegalArgumentException();
+        }
+
         Set set = new HashSet();
         set.add(ns);
-        if (ns.getNamespace() != null) {
-            set.addAll(getAllSurroundingNamespaces(ns.getNamespace()));
+        MNamespace namespace = ((MNamespace) ns);
+        if (namespace.getNamespace() != null) {
+            set.addAll(getAllSurroundingNamespaces(namespace.getNamespace()));
         }
         return set;
     }
@@ -327,7 +336,7 @@ class ModelManagementHelperImpl implements ModelManagementHelper {
      * @param theRootNamespace the given namespace to start from
      * @return the modelelement looked for, or null if not found
      */
-    public MModelElement getElement(Vector path, Object theRootNamespace) {
+    public Object getElement(Vector path, Object theRootNamespace) {
         MModelElement root = (MModelElement) theRootNamespace;
         Object name;
         int i;
@@ -478,21 +487,33 @@ class ModelManagementHelperImpl implements ModelManagementHelper {
      * @param obj2 is another object.
      * @return true if obj1 corresponds to obj2, false otherwise.
      */
-    public boolean corresponds(MModelElement obj1, MModelElement obj2) {
+    public boolean corresponds(Object obj1, Object obj2) {
+        if (!(obj1 instanceof MModelElement)) {
+            throw new IllegalArgumentException("obj1");
+        }
+        if (!(obj2 instanceof MModelElement)) {
+            throw new IllegalArgumentException("obj2");
+        }
+
         if (obj1 instanceof MModel && obj2 instanceof MModel) {
             return true;
         }
         if (obj1.getClass() != obj2.getClass()) {
             return false;
         }
-        if (obj1.getName() == null && obj2.getName() != null
-	    || obj1.getName() != null
-	    && !obj1.getName().equals(obj2.getName())) {
+
+        MModelElement modelElement1 = (MModelElement) obj1;
+        MModelElement modelElement2 = (MModelElement) obj2;
+        if ((modelElement1.getName() == null
+             && modelElement2.getName() != null)
+	    || (modelElement1.getName() != null
+	        && !modelElement1.getName().equals(modelElement2.getName()))) {
 
             return false;
 
 	}
-        return corresponds(obj1.getNamespace(), obj2.getNamespace());
+        return corresponds(modelElement1.getNamespace(),
+                	   modelElement2.getNamespace());
     }
 
     /**

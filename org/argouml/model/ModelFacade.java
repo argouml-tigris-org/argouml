@@ -2508,6 +2508,7 @@ public class ModelFacade {
         } else if (handle instanceof MExtend) {
             return ((MExtend) handle).getBase();
         } else if (handle instanceof MInclude) {
+            // See issue 2034
             return ((MInclude) handle).getAddition();
         }
 	return illegalArgumentObject(handle);
@@ -4719,6 +4720,7 @@ public class ModelFacade {
      */
     public static Object getAddition(Object handle) {
         if (handle instanceof MInclude) {
+            // See issue 2034
             return ((MInclude) handle).getBase();
         }
 	return illegalArgumentObject(handle);
@@ -5868,11 +5870,16 @@ public class ModelFacade {
             ((MAssociationEndRole) handle).setBase((MAssociationEnd) base);
             return;
         }
-        if (handle instanceof MExtend && base instanceof MUseCase) {
+        if (handle instanceof MExtend
+                && (base instanceof MUseCase
+                        || base == null)) {
             ((MExtend) handle).setBase((MUseCase) base);
             return;
         }
-        if (handle instanceof MInclude && base instanceof MUseCase) {
+        if (handle instanceof MInclude
+                && (base instanceof MUseCase
+                        || base == null)) {
+            // See issue 2034.
             ((MInclude) handle).setAddition((MUseCase) base);
             return;
         }
@@ -7156,6 +7163,7 @@ public class ModelFacade {
 	checkExists(useCase);
 
         if (handle instanceof MInclude) {
+            // See issue 2034
             ((MInclude) handle).setBase((MUseCase) useCase);
             return;
         }

@@ -24,11 +24,6 @@
 
 package org.argouml.model;
 
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.model_management.MElementImport;
-import ru.novosoft.uml.model_management.MModel;
-import ru.novosoft.uml.model_management.MPackage;
-import ru.novosoft.uml.model_management.MSubsystem;
 
 /**
  * The interface for the factory for ModelManagement.<p>
@@ -41,21 +36,21 @@ public interface ModelManagementFactory {
      *
      * @return an initialized UML Model instance.
      */
-    MModel createModel();
+    Object createModel();
 
     /**
      * Create an empty but initialized instance of a UML ElementImport.
      *
      * @return an initialized UML ElementImport instance.
      */
-    MElementImport createElementImport();
+    Object createElementImport();
 
     /**
      * Create an empty but initialized instance of a UML Package.
      *
      * @return an initialized UML Package instance.
      */
-    MPackage createPackage();
+    Object createPackage();
 
     /**
      * Build an empty but initialized instance of a UML Package
@@ -65,34 +60,34 @@ public interface ModelManagementFactory {
      * @param uuid is the UUID.
      * @return an initialized UML Package instance.
      */
-    MPackage buildPackage(String name, String uuid);
+    Object buildPackage(String name, String uuid);
 
     /**
      * Create an empty but initialized instance of a UML Subsystem.
      *
      * @return an initialized UML Subsystem instance.
      */
-    MSubsystem createSubsystem();
+    Object createSubsystem();
 
     /**
      * @param elem to be deleted
      */
-    void deleteElementImport(MElementImport elem);
+    void deleteElementImport(Object elem);
 
     /**
      * @param elem to be deleted
      */
-    void deleteModel(MModel elem);
+    void deleteModel(Object elem);
 
     /**
      * @param elem to be deleted
      */
-    void deletePackage(MPackage elem);
+    void deletePackage(Object elem);
 
     /**
      * @param elem to be deleted
      */
-    void deleteSubsystem(MSubsystem elem);
+    void deleteSubsystem(Object elem);
 
     /**
      * Copies a package, but not any elements within it. This does however
@@ -103,5 +98,5 @@ public interface ModelManagementFactory {
      * @param ns is the namespace to put the copy in.
      * @return the newly created package.
      */
-    MPackage copyPackage(MPackage source, MNamespace ns);
+    Object copyPackage(Object source, Object ns);
 }
