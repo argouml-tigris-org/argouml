@@ -2122,9 +2122,8 @@ public class ParserDisplay extends Parser {
     public Object parseTransition(Object trans, String s) {
 	// strip any trailing semi-colons
 	s = s.trim();
-        if (s.length() > 0) // otherwise an exception in next line
-	if (s.charAt(s.length() - 1) == ';')
-	    s = s.substring(0, s.length() - 2);
+	while (s.length() > 0 && s.charAt(s.length() - 1) == ';')
+	    s = s.substring(0, s.length() - 1).trim();
 
         // strip off the name, and the ":"
 	String name = "";
