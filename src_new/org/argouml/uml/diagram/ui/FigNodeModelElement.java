@@ -1526,8 +1526,8 @@ public abstract class FigNodeModelElement
         }
         shadowSize = 0;
         
+        // This partly solves issue 3042.
         this.getLayer().remove(this);
-        Globals.curEditor().remove(this);
         
         super.removeFromDiagram();
     }
