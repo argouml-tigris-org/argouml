@@ -34,6 +34,7 @@ import org.apache.log4j.spi.*;
 
 import java.util.*;
 import java.io.*;
+import javax.swing.*;
 
 /** 
  * The <code>Argo</code> class provides static methods and definitions
@@ -209,6 +210,14 @@ public class Argo {
 
    public static String getArgoRoot() {
        return ModuleLoader.getInstance().getArgoRoot();
+   }
+
+   public static Icon lookupIconResource(String arg1) {
+       return org.tigris.gef.util.ResourceLoader.lookupIconResource(arg1);
+   }
+
+   public static Icon lookupIconResource(String arg1, String arg2) {
+       return org.tigris.gef.util.ResourceLoader.lookupIconResource(arg1, arg2);
    }
 
    static {
