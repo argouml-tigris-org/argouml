@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,7 +29,9 @@ package org.argouml.model;
  * Helper class for any metamodel.
  *
  * Current implementation is a placeholder.
- * 
+ *
+ * @deprecated by Linus Tolke as of 0.15.5. The purpose of this class is not
+ *             clear. It has no function. Don't use!
  * @since ARGO0.11.2
  * @author Thierry Lach
  */
