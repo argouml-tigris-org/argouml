@@ -52,7 +52,6 @@ public class PropPanelComponent extends PropPanelClassifier {
 	addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
 	addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
 	addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
-	_modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", "checkbox.active-uc"), this, new UMLReflectionBooleanProperty("isActive", mclass, "isActive", "setActive")));
 	addField(Translator.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
 
 	addSeperator();
