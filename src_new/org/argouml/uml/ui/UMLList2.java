@@ -24,10 +24,7 @@
 // $header$
 package org.argouml.uml.ui;
 
-import java.util.Vector;
-
 import javax.swing.JList;
-import javax.swing.ListModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 

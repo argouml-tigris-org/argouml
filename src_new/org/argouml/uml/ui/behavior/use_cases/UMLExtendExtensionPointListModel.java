@@ -24,15 +24,11 @@
 // $header$
 package org.argouml.uml.ui.behavior.use_cases;
 
-import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
-
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * @since Oct 6, 2002
@@ -47,12 +43,6 @@ public class UMLExtendExtensionPointListModel
      */
     public UMLExtendExtensionPointListModel(UMLUserInterfaceContainer container) {
         super(container, "extensionPoint");
-        /*
-        if (container instanceof PropPanel) {
-            PropPanel panel = (PropPanel)container;
-            panel.addThirdPartyEventListening(new Object[] {MExtend.class, "extensionPoint"});
-        }
-        */
     }
 
     /**

@@ -430,6 +430,7 @@ class InitPanelsLater implements Runnable {
         _panels.put(MCallEventImpl.class,new PropPanelCallEvent());
 	_panels.put(MCallActionImpl.class,new PropPanelCallAction());
         _panels.put(MInteraction.class, new PropPanelInteraction());
+        _panels.put(MStateMachine.class, new PropPanelStateMachine());
     }
     catch(Exception e) {
         cat.error("Exception in InitPanelsLater.run()", e);

@@ -37,22 +37,17 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
-import java.util.Vector;
-
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
-import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLList;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 import org.argouml.util.ConfigLoader;
-import ru.novosoft.uml.behavior.use_cases.MActor;
-import ru.novosoft.uml.foundation.core.MNamespace;
 
 
 /**
@@ -80,7 +75,7 @@ public class PropPanelActor extends PropPanelClassifier {
     	super("Actor", _actorIcon, ConfigLoader.getTabPropsOrientation());
     	addField(Argo.localize("UMLMenu", "label.name"), nameField);
     	addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
-    	addField(Argo.localize("UMLMenu", "label.namespace"),namespaceComboBox);
+    	addField(Argo.localize("UMLMenu", "label.namespace"),namespaceComboBox);        
     	
     	add(LabelledLayout.getSeperator());
     	
