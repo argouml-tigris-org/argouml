@@ -84,7 +84,12 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     /**
      * Builds a stereotype for some kind of modelelement.
      */
-    public MStereotype buildStereotype(MModelElement m, String text, MNamespace ns) {
+    public MStereotype buildStereotype(Object mObj,
+                                       Object textObj,
+                                       Object nsObj) {
+        MModelElement m = (MModelElement)mObj;
+        String text = (String)textObj;
+        MNamespace ns = (MNamespace)nsObj;
     	if (m == null || text == null || ns == null) throw new IllegalArgumentException("In buildStereotype: one of the arguments is null");
     	MStereotype stereo = createStereotype();
     	stereo.setName(text);
