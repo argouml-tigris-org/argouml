@@ -1,4 +1,5 @@
 
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -36,10 +37,10 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.util.osdep.OsUtil;
 
-import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MInterface;
+
+
 import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.model_management.MPackage;
+
 
 /** Action to choose and set source path for model elements
  * @stereotype singleton

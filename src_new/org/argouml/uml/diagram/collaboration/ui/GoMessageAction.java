@@ -1,4 +1,5 @@
 
+
 // $Id$
 // Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -31,7 +32,7 @@ import java.util.Collection;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.AbstractGoRule;
 
-import ru.novosoft.uml.behavior.collaborations.MMessage;
+
 
 /**
  * Go rule to navigate from some message to it's corresponding action

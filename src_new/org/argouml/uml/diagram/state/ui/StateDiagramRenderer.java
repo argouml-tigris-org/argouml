@@ -1,5 +1,6 @@
 
 
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -41,10 +42,10 @@ import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
-import ru.novosoft.uml.behavior.state_machines.MCompositeState;
-import ru.novosoft.uml.behavior.state_machines.MFinalState;
+
+
 import ru.novosoft.uml.behavior.state_machines.MPseudostate;
-import ru.novosoft.uml.behavior.state_machines.MState;
+
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 // could be singleton

@@ -1,3 +1,4 @@
+
 /*
  * RadioAction.java
  *
@@ -9,7 +10,7 @@ package org.argouml.uml.diagram.ui;
 import javax.swing.Action;
 import javax.swing.JButton;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.targetmanager.TargetManager;
+
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;

@@ -1,4 +1,5 @@
 
+
 // $Id$
 // Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -30,7 +31,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
+
 
 /**
  * @since Oct 5, 2002

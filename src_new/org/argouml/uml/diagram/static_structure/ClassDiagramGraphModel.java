@@ -1,6 +1,7 @@
 
 
 
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -43,27 +44,27 @@ import java.util.Vector;
 import org.apache.log4j.Category;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.uml.MMUtil;
+
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 
-import ru.novosoft.uml.behavior.common_behavior.MInstance;
+
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MClass;
+
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 import ru.novosoft.uml.foundation.core.MGeneralization;
-import ru.novosoft.uml.foundation.core.MInterface;
+
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MRelationship;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
+
 import ru.novosoft.uml.model_management.MElementImport;
-import ru.novosoft.uml.model_management.MModel;
-import ru.novosoft.uml.model_management.MPackage;
+
+
 
 /** This class defines a bridge between the UML meta-model
  *  representation of the design and the GraphModel interface used by

@@ -1,3 +1,4 @@
+
 // $ANTLR 2.7.2a2 (20020112-1): "../src_new/org/argouml/uml/reveng/java/java.g" -> "JavaLexer.java"$
 
 package org.argouml.uml.reveng.java;
@@ -10,7 +11,7 @@ import antlr.TokenStreamIOException;
 import antlr.TokenStreamRecognitionException;
 import antlr.CharStreamException;
 import antlr.CharStreamIOException;
-import antlr.ANTLRException;
+
 import java.io.Reader;
 import java.util.Hashtable;
 import antlr.CharScanner;
@@ -18,15 +19,15 @@ import antlr.InputBuffer;
 import antlr.ByteBuffer;
 import antlr.CharBuffer;
 import antlr.Token;
-import antlr.CommonToken;
+
 import antlr.RecognitionException;
 import antlr.NoViableAltForCharException;
-import antlr.MismatchedCharException;
+
 import antlr.TokenStream;
 import antlr.ANTLRHashString;
 import antlr.LexerSharedInputState;
 import antlr.collections.impl.BitSet;
-import antlr.SemanticException;
+
 
 public class JavaLexer extends antlr.CharScanner implements JavaTokenTypes, TokenStream
  {

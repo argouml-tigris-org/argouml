@@ -1,4 +1,5 @@
 
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -45,7 +46,7 @@ import org.argouml.ui.targetmanager.TargetEvent;
 
 import org.tigris.gef.presentation.Fig;
 
-import ru.novosoft.uml.foundation.core.MClassifier;
+
 import ru.novosoft.uml.foundation.core.MConstraint;
 import ru.novosoft.uml.foundation.core.MModelElement;
 

@@ -1,8 +1,9 @@
+
 // $ANTLR 2.7.2a2 (20020112-1): "../src_new/org/argouml/language/java/generator/java.g" -> "JavaLexer.java"$
 
 	package org.argouml.language.java.generator;
 
-	import java.util.Vector;
+	
 
 public interface JavaTokenTypes {
 	int EOF = 1;

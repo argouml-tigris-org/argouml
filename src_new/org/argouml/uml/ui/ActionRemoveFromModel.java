@@ -1,4 +1,5 @@
 
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -46,7 +47,7 @@ import org.tigris.gef.presentation.Fig;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.model_management.MModel;
+
 
 /**
  * Action for removing (moving to trash) objects from the model. Objects can be:
