@@ -7,12 +7,9 @@
   <LINK REL="stylesheet" TYPE="text/css" HREF="http://www.tigris.org/branding/style.css">
 </HEAD>
 <BODY>
-<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="2" WIDTH="100%">
-  <tr>
-    <TD COLSPAN="2" CLASS="InputHeader" VALIGN="top">Access the source code repository for this project in one of the following ways:</TD>
-  </TR>
-  <TR>
-    <TD COLSPAN="2" CLASS="PlainText" VALIGN="top">
+<div id="contents" class="app">
+
+<h3>Access the source code repository for this project in one of the following ways:</H3>
       <UL>
 <P>
         <LI><A HREF="http://argouml.tigris.org/source/browse/argouml/">Browse</A>
@@ -38,9 +35,8 @@ What you can do with source files depends upon your role in this project
 Anyone can access the files for reading using the guest account
 (with password "guest").
 
-<P>
-<h2>CVS Modules</h2> 
-ArgoUML has a few CVS modules.
+<h3>CVS Repository contents</h3>
+ArgoUML has a few CVS directories and modules.
 Their purpose is to simplify the use of cvs by allowing you to check
 out only the necessary part of ArgoUML and not everything.
 Below is a list of all modules and instructions on what module is
@@ -48,28 +44,31 @@ required to do what.
 <P>
 <UL>
 <LI> <strong>argouml</strong>: everything under argouml.
-<LI> <strong>argouml/src_new</strong>: the module containing the src of the <i>current</i> development (aka 0.9.x branch)
-<LI> <strong>argouml/lib</strong>: the module containing the libs
-<LI> <strong>argouml/modules</strong>: the module containing ArgoUML modules.
+<LI> <strong>argouml/src_new</strong>: contains the src
+     of the <i>current</i> development
+<LI> <strong>argouml/tools</strong>: contains tools that constitute
+     most of the development environment for ArgoUML.
+<LI> <strong>argouml/lib</strong>: contains the libs used
+     by ArgoUML.
+<LI> <strong>argouml/tests</strong>: contains the JUnit tests
+     for everything in src_new.
+<LI> <strong>argouml/modules</strong>: contains auxiliary modules.
      ArgoUML can work without them but they add extra features.
-<LI> <strong>argouml/documentation</strong>: the module containing the docsources for the manual, quick-guide, developer FAQ etc.
-<LI> <strong>argouml/src</strong>: the module containing the 
-     <i>old</i> (no longer used) sources.  Starting with release 0.10,
-     these sources have been removed from cvs, but can be retrieved using
-     tags from any of the 0.9.x releases.  
-<LI> <strong>argouml/www</strong>: the module containing the web site
+<LI> <strong>argouml/documentation</strong>: contains
+     the documentation source for the manual, quick-guide and cookbook.
+<LI> <strong>argouml/src</strong>: contains the 
+     <i>old</i> (no longer used) sources. Currently empty.
+<LI> <strong>argouml/www</strong>: contains the web site source
 <LI> <strong>gef</strong>: everything under gef.
 <LI> <strong>gef/src</strong>: the source of the gef library.
 <LI> <strong>gef/lib</strong>: the libraries needed to build gef.
 </UL>
 <p>
-<strong>Required to build ArgoUML
-(see also <a href="/documentation/defaulthtml/cookbook/">developer FAQ</a>
-for reasons of inclusion of GEF):</strong>
+<strong>Required for building ArgoUML:</strong>
 <ul>
 <li> argouml/src_new
 <li> argouml/lib
-<li> argouml/modules (<i>optional</i>)
+<li> argouml/tools
 </ul>
 </p>
 <p>
@@ -77,24 +76,14 @@ for reasons of inclusion of GEF):</strong>
 <ul>
 <li> argouml/documentation
 <li> argouml/lib
+<li> argouml/tools
 <li> argouml/www (<i>needed to install the documentation on the web site</i>)
+<li> (docbook-xsl and fop must be downloaded separately).
 </ul>
-</p>
 <p>
-<strong>For historians only:</strong>
-<ul> 
-<li> argouml/src: this is the 0.8.x release which is not maintained anymore.
-     Starting with release 0.10,
-     these sources have been removed from cvs, but can be retrieved using
-     tags from any of the 0.9.x releases.  
-</ul>
-</UL>
-<P>
-<HR noShade SIZE=1>
 
-<A NAME="commandlinecvs"><SPAN CLASS="InputHeader">CVS command line checkout
-instructions</SPAN></A>&nbsp;&nbsp;&nbsp;(<A HREF="#wincvs">Skip to WinCvs 
-checkout instructions</A>)
+<H3><A NAME="commandlinecvs">CVS command line checkout instructions</A><H3>
+(<A HREF="#wincvs">Skip to WinCvs checkout instructions</A>)
 <P>
 Before you can do a cvs checkout, you must login to that specific cvsroot.
 <OL>
@@ -133,8 +122,7 @@ If you wish to contribute to the project's CVS repository, you must have
 <A HREF="/project/www/docs/ddUsingCVS_command-line.html">CVS how-to guide for this site</A>
 <P>
 
-<HR noShade SIZE=1>
-<A NAME="wincvs"></A><SPAN CLASS="InputHeader">WinCvs checkout instructions</SPAN><BR>
+<h3><A NAME="wincvs">WinCvs checkout instructions</A></H3>
 <P>
 To use WinCvs to check out your own set of source code files, you must first set up the correct cvs root using the following steps.
 <P>
@@ -162,18 +150,5 @@ Cvs Admin - Checkout Module</B>. Select the project folder you created earlier.
 <A HREF="/project/www/docs/ddUsingWinCvs.html">WinCvs how-to guide for this site
 </A>
 
-
-
-  </TD>
-  </TR>
-</TABLE>
-
-<!-- End Servlet-Specific template -->
-
-<!-- Page End --><!-- End Main Window Table -->
-    </TD>
-  </TR>
-</TABLE>
 </BODY>
 </HTML>
-
