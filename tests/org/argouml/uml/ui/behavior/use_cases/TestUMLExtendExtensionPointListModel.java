@@ -78,7 +78,8 @@ public class TestUMLExtendExtensionPointListModel
      */
     protected void removeHalfModel(MBase[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MExtend) elem).removeExtensionPoint((MExtensionPoint) elements[i]);
+            ((MExtend) elem).removeExtensionPoint(
+                    (MExtensionPoint) elements[i]);
         }
     }
 

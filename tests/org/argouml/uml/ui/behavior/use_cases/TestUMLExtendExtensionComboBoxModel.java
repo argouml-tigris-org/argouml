@@ -65,7 +65,8 @@ public class TestUMLExtendExtensionComboBoxModel extends TestCase {
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLExtendExtensionComboBoxModel();
-        model.targetSet(new TargetEvent(this, "set", new Object[0], new Object[] {elem}));
+        model.targetSet(new TargetEvent(this, "set", new Object[0], 
+                new Object[] {elem}));
         extensions = new MUseCase[10];
         MModel m = ModelManagementFactory.getFactory().createModel();
         ProjectManager.getManager().getCurrentProject().setRoot(m);

@@ -60,7 +60,8 @@ public class TestUMLMessageReceiverListModel extends TestCase {
         elem = CollaborationsFactory.getFactory().createMessage();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
+        MockUMLUserInterfaceContainer cont = 
+            new MockUMLUserInterfaceContainer();
         cont.setTarget(elem);
         model = new UMLMessageReceiverListModel();
         elem.addMElementListener(model);
@@ -78,14 +79,16 @@ public class TestUMLMessageReceiverListModel extends TestCase {
     }
     
     public void testSetReceiver() {
-        MClassifierRole role = CollaborationsFactory.getFactory().createClassifierRole();
+        MClassifierRole role = 
+            CollaborationsFactory.getFactory().createClassifierRole();
         elem.setReceiver(role);
         assertEquals(1, model.getSize());
         assertEquals(role, model.getElementAt(0));
     }
     
     public void testRemoveReceiver() {
-        MClassifierRole role = CollaborationsFactory.getFactory().createClassifierRole();
+        MClassifierRole role = 
+            CollaborationsFactory.getFactory().createClassifierRole();
         elem.setReceiver(role);
         elem.setReceiver(null);
         assertEquals(0, model.getSize());

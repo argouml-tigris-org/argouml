@@ -78,7 +78,8 @@ public class TestUMLUseCaseExtensionPointListModel
      */
     protected void removeHalfModel(MBase[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MUseCase) elem).removeExtensionPoint((MExtensionPoint) elements[i]);
+            ((MUseCase) elem).removeExtensionPoint(
+                    (MExtensionPoint) elements[i]);
         }
     }
 

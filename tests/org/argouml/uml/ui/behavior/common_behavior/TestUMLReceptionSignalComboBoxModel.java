@@ -75,7 +75,8 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
             m.addOwnedElement(signals[i]);
         }      
         model = new UMLReceptionSignalComboBoxModel();
-        model.targetSet(new TargetEvent(this, "set", new Object[0], new Object[] {elem}));
+        model.targetSet(new TargetEvent(this, "set", new Object[0], 
+                new Object[] {elem}));
     }
 
     /**

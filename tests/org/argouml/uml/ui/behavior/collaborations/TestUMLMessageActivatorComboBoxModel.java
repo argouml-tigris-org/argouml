@@ -66,8 +66,10 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);    
         activators = new MMessage[10];
         MModel m = ModelManagementFactory.getFactory().createModel();
-        MInteraction inter = CollaborationsFactory.getFactory().createInteraction();
-        MCollaboration col = CollaborationsFactory.getFactory().createCollaboration();
+        MInteraction inter = 
+            CollaborationsFactory.getFactory().createInteraction();
+        MCollaboration col = 
+            CollaborationsFactory.getFactory().createCollaboration();
         inter.setContext(col);
         col.setNamespace(m);
         inter.addMessage(elem);
@@ -76,7 +78,8 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
             inter.addMessage(activators[i]);
         }  
         model = new UMLMessageActivatorComboBoxModel(); 
-        model.targetSet(new TargetEvent(this, "set", new Object[0], new Object[] {elem})); 
+        model.targetSet(new TargetEvent(this, "set", new Object[0], 
+                new Object[] {elem})); 
     }
 
     /**

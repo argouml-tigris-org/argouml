@@ -42,15 +42,20 @@ public class CollaborationsTestSuite {
 			  + (CollaborationsTestSuite.class
 			     .getPackage().getName()));
 	suite.addTestSuite(TestUMLAssociationEndRoleBaseListModel.class);
-	suite.addTestSuite(TestUMLAssociationRoleAssociationEndRoleListModel.class);
+	suite.addTestSuite(TestUMLAssociationRoleAssociationEndRoleListModel
+	                                                            .class);
 	suite.addTestSuite(TestUMLAssociationRoleBaseComboBoxModel.class);
 	suite.addTestSuite(TestUMLAssociationRoleMessageListModel.class);
-	suite.addTestSuite(TestUMLClassifierRoleAvailableContentsListModel.class);
-	suite.addTestSuite(TestUMLClassifierRoleAvailableFeaturesListModel.class);
+	suite.addTestSuite(TestUMLClassifierRoleAvailableContentsListModel
+	                                                            .class);
+	suite.addTestSuite(TestUMLClassifierRoleAvailableFeaturesListModel
+	                                                            .class);
 	suite.addTestSuite(TestUMLClassifierRoleBaseListModel.class);
 	suite.addTestSuite(TestUMLCollaborationConstraintListModel.class);
-	suite.addTestSuite(TestUMLCollaborationRepresentedClassifierListModel.class);
-	suite.addTestSuite(TestUMLCollaborationRepresentedOperationListModel.class);
+	suite.addTestSuite(TestUMLCollaborationRepresentedClassifierListModel
+	                                                            .class);
+	suite.addTestSuite(TestUMLCollaborationRepresentedOperationListModel
+	                                                            .class);
 	suite.addTestSuite(TestUMLInteractionCollaborationListModel.class);
 	suite.addTestSuite(TestUMLInteractionMessagesListModel.class);
 	suite.addTestSuite(TestUMLMessageActionListModel.class);

@@ -37,7 +37,8 @@ public class CommonBehaviorTestSuite {
 	 * @return the junit test suite
 	 */
     public static Test suite() {
-        TestSuite suite = new TestSuite("Tests for " + CommonBehaviorTestSuite.class.getPackage().getName());
+        TestSuite suite = new TestSuite("Tests for " 
+                + CommonBehaviorTestSuite.class.getPackage().getName());
         suite.addTestSuite(TestUMLReceptionSignalComboBoxModel.class);
         return suite;
     }
