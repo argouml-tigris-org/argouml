@@ -79,7 +79,7 @@ public class UMLClassifierRoleAvailableContentsListModel
 							      "ownedElement");
         } else if (
 		   e.getName().equals("ownedElement")
-		   && ((MClassifierRole) getTarget()).getBases().contains(
+		   && ModelFacade.getBases(getTarget()).contains(
 									 e.getSource())) {
             addElement(getChangedElement(e));
         }
@@ -93,7 +93,7 @@ public class UMLClassifierRoleAvailableContentsListModel
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
             if (_target != null) {
-                Collection bases = ((MClassifierRole) getTarget()).getBases();
+                Collection bases = ModelFacade.getBases(getTarget());
                 Iterator it = bases.iterator();
                 while (it.hasNext()) {
                     MBase base = (MBase) it.next();
@@ -109,7 +109,7 @@ public class UMLClassifierRoleAvailableContentsListModel
             }
             _target = target;
             if (_target != null) {
-                Collection bases = ((MClassifierRole) _target).getBases();
+                Collection bases = ModelFacade.getBases(_target);
                 Iterator it = bases.iterator();
                 while (it.hasNext()) {
                     MBase base = (MBase) it.next();
@@ -156,7 +156,7 @@ public class UMLClassifierRoleAvailableContentsListModel
 								 "ownedElement");
         } else if (
 		   e.getName().equals("ownedElement")
-		   && ((MClassifierRole) getTarget()).getBases().contains(
+		   && ModelFacade.getBases(getTarget()).contains(
 									 e.getSource())) {
             removeElement(getChangedElement(e));
         }

@@ -28,6 +28,7 @@ package org.argouml.uml.ui.behavior.collaborations;
 import java.util.Vector;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 
@@ -63,7 +64,7 @@ public class ActionAddClassifierRoleBase extends AbstractActionAddModelElement {
      */
     protected Vector getSelected() {
         Vector vec = new Vector();
-        vec.addAll(((MClassifierRole) getTarget()).getBases());
+        vec.addAll(ModelFacade.getBases(getTarget()));
         return vec;
     }
 
