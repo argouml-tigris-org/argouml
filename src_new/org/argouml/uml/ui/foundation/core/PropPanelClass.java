@@ -41,6 +41,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ProjectBrowser;
@@ -137,7 +138,7 @@ public class PropPanelClass extends PropPanelClassifier {
         Object target = getTarget();
         if(target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
-            MClassifier inner = classifier.getFactory().createClass();
+            MClass inner = CoreFactory.getFactory().buildClass();
             classifier.addOwnedElement(inner);
             navigateTo(inner);
         }
