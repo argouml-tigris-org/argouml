@@ -33,7 +33,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
+import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLCheckBox;
@@ -43,6 +45,7 @@ import org.argouml.uml.ui.UMLMetaclassComboBox;
 import org.argouml.uml.ui.UMLReflectionBooleanProperty;
 import org.argouml.uml.ui.UMLSpecializationListModel;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
@@ -54,38 +57,34 @@ public class PropPanelStereotype extends PropPanelModelElement {
      * @todo convert to use LabelledLayout(Bob Tarling)
      */
     public PropPanelStereotype() {
-        super("Stereotype", _stereotypeIcon ,2);  // Change this to call labelled layout constructor
+        super("Stereotype", _stereotypeIcon, ConfigLoader.getTabPropsOrientation());  // Change this to call labelled layout constructor
 
         Class mclass = MStereotype.class;
 
-        addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-        addField(getNameTextField(),1,0,0);
+        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
 
-        addCaption(Argo.localize("UMLMenu", "label.base-class"),2,0,0);
         JComboBox baseClass = new UMLMetaclassComboBox(this,"baseClass","getBaseClass","setBaseClass");
-        addField(baseClass,2,0,0);
+        addField(Argo.localize("UMLMenu", "label.base-class"), baseClass);
 
-        addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,0);
-        addField(getNamespaceComboBox(),3,0,0);
+        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-        addCaption(Argo.localize("UMLMenu", "label.modifiers"),4,0,1);
         JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
         modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-lc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
         modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-lc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
         modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
-        addField(modifiersPanel,4,0,0);
+        addField(Argo.localize("UMLMenu", "label.modifiers"), modifiersPanel);
 
-        addCaption("Generalizations:",0,1,1);
+        add(LabelledLayout.getSeperator());
+        
         JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
         extendsList.setBackground(getBackground());
         extendsList.setForeground(Color.blue);
-        addField(new JScrollPane(extendsList),0,1,1);
+        addField("Generalizations:", new JScrollPane(extendsList));
 
-        addCaption("Specializations:",1,1,1);
         JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
         derivedList.setForeground(Color.blue);
         derivedList.setVisibleRowCount(1);
-        addField(new JScrollPane(derivedList),1,1,1);
+        addField("Specializations:", new JScrollPane(derivedList));
 
         new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);      
         new PropPanelButton(this,buttonPanel,_stereotypeIcon, Argo.localize("UMLMenu", "button.add-new-stereotype"),"newStereotype",null);

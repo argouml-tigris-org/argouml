@@ -52,7 +52,7 @@ public class PropPanelLink extends PropPanelModelElement {
   ////////////////////////////////////////////////////////////////
   // contructors
     public PropPanelLink() {
-        super("Link Properties",_linkIcon, ConfigLoader.getTabPropsOrientation());
+        super("Link Properties", _linkIcon, ConfigLoader.getTabPropsOrientation());
 
         Class mclass = MLink.class;
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
@@ -81,9 +81,6 @@ public class PropPanelLink extends PropPanelModelElement {
         UmlFactory.getFactory().delete(target);
 	if(newTarget != null) TargetManager.getInstance().setTarget(newTarget);
     }
-
-
-
 } /* end class PropPanelLink */
 
 
