@@ -39,6 +39,7 @@ import java.util.Hashtable;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.event.EventListenerList;
 
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
@@ -50,7 +51,7 @@ import org.argouml.ui.StylePanelFig;
 import org.argouml.ui.TabFigTarget;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.uml.diagram.state.ui.FigSimpleState;
 import org.argouml.uml.diagram.state.ui.FigTransition;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
@@ -83,6 +84,8 @@ public class TabStyle
     protected TabFigTarget _stylePanel = null;
     protected String _panelClassBaseName = "";
     protected String _alternativeBase = "";
+
+    private EventListenerList _listenerList = new EventListenerList();
 
     ////////////////////////////////////////////////////////////////
     // constructor
@@ -134,9 +137,6 @@ public class TabStyle
         _panels.put(c, s);
     }
 
-  
-    
-    
     /**
      * Sets the target of the style tab. 
      * @deprecated will change visibility in the near future
@@ -159,23 +159,24 @@ public class TabStyle
                 } else {
                     t = col.iterator().next();
                 }
-            } else
-                return;
+            } 
+      
         }
 
         _target = (Fig) t;
         if (_target != null)
             _target.addPropertyChangeListener(this);
-        if (_lastPanel != null)
+        if (_lastPanel != null) {
             remove(_lastPanel);
+            if (_lastPanel instanceof TargetListener) {
+                removeTargetListener((TargetListener) _lastPanel);
+            }
+        }
         if (t == null) {
             add(_blankPanel, BorderLayout.NORTH);
             _shouldBeEnabled = false;
             _lastPanel = _blankPanel;
             return;
-        }
-        if (_stylePanel != null) {
-            TargetManager.getInstance().removeTargetListener(_stylePanel);
         }
         _shouldBeEnabled = true;
         _stylePanel = null;
@@ -185,10 +186,12 @@ public class TabStyle
             targetClass = targetClass.getSuperclass();
         }
         if (_stylePanel != null) {
-            // TargetManager now replaces the old functionality of setTarget
-            TargetManager.getInstance().addTargetListener(_stylePanel);
-            // TODO: remove the next line as soon as possible
-            _stylePanel.setTarget(_target);
+            if (_stylePanel instanceof TargetListener) {
+                // TargetManager now replaces the old functionality of setTarget
+                removeTargetListener(_stylePanel);
+                addTargetListener(_stylePanel);
+            } else
+                _stylePanel.setTarget(_target);
             add((JPanel) _stylePanel, BorderLayout.NORTH);
             _shouldBeEnabled = true;
             _lastPanel = (JPanel) _stylePanel;
@@ -307,12 +310,13 @@ public class TabStyle
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
-     */
+         * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+         */
     public void targetAdded(TargetEvent e) {
-        // we can neglect this, the TabStyle allways selects the first target
+        // we can neglect this, the TabProps allways selects the first target
         // in a set of targets. The first target can only be 
         // changed in a targetRemoved or a TargetSet event
+        fireTargetAdded(e);
 
     }
 
@@ -321,8 +325,9 @@ public class TabStyle
      */
     public void targetRemoved(TargetEvent e) {
         // how to handle empty target lists?
-        // probably the TabStyle should only show an empty pane in that case
+        // probably the TabProps should only show an empty pane in that case
         setTarget(e.getNewTargets()[0]);
+        fireTargetRemoved(e);
 
     }
 
@@ -331,8 +336,58 @@ public class TabStyle
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTargets()[0]);
+        fireTargetSet(e);
 
     }
 
+    /**
+     * Adds a listener.
+     * @param listener the listener to add
+     */
+    private void addTargetListener(TargetListener listener) {
+        _listenerList.add(TargetListener.class, listener);
+    }
+
+    /**
+     * Removes a target listener.
+     * @param listener the listener to remove
+     */
+    private void removeTargetListener(TargetListener listener) {
+        _listenerList.remove(TargetListener.class, listener);
+    }
+
+    private void fireTargetSet(TargetEvent targetEvent) {
+        //          Guaranteed to return a non-null array
+        Object[] listeners = _listenerList.getListenerList();
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == TargetListener.class) {
+                // Lazily create the event:                     
+                 ((TargetListener) listeners[i + 1]).targetSet(targetEvent);
+            }
+        }
+    }
+
+    private void fireTargetAdded(TargetEvent targetEvent) {
+        // Guaranteed to return a non-null array
+        Object[] listeners = _listenerList.getListenerList();
+
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == TargetListener.class) {
+                // Lazily create the event:                     
+                 ((TargetListener) listeners[i + 1]).targetAdded(targetEvent);
+            }
+        }
+    }
+
+    private void fireTargetRemoved(TargetEvent targetEvent) {
+        // Guaranteed to return a non-null array
+        Object[] listeners = _listenerList.getListenerList();
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == TargetListener.class) {
+                // Lazily create the event:                     
+                ((TargetListener) listeners[i + 1]).targetRemoved(targetEvent);
+            }
+        }
+    }
 
 } /* end class TabStyle */

@@ -38,12 +38,14 @@ package org.argouml.uml.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.util.EventListener;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.MissingResourceException;
@@ -57,6 +59,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.event.EventListenerList;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
@@ -71,6 +74,7 @@ import org.argouml.ui.NavigationListener;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.Profile;
 import org.argouml.uml.ProfileJava;
@@ -106,6 +110,8 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
     private Vector _panels = new Vector();
 
     private int lastRow;
+    
+    private EventListenerList _listenerList;
 
     /**
      * <p>The metaclass/property pairs for the third party listener (if we have
@@ -428,6 +434,9 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
 
             _target = t;
             _modelElement = null;
+            if (_listenerList == null) {
+                _listenerList = registrateTargetListeners(this); 
+            }
 
             if (_target instanceof MModelElement) {
                 _modelElement = (MModelElement) _target;
@@ -444,18 +453,30 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
         }
         SwingUtilities.invokeLater(dispatch);
         
-        
         // update the titleLabel 
         if (_titleLabel != null) {
             Icon icon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(t);
             if (icon != null)
                 _titleLabel.setIcon(icon);
+        }  
+    }
+    
+    private EventListenerList registrateTargetListeners(Container container) {
+        Component[] components = container.getComponents();
+        EventListenerList list = new EventListenerList();
+        for (int i = 0; i < components.length; i++) {
+            if (components[i] instanceof TargetListener) {
+                list.add(TargetListener.class, (TargetListener)components[i]);
+            } 
+            if (components[i] instanceof Container) {
+                EventListenerList list2 = registrateTargetListeners((Container)components[i]);
+                Object[] objects = list2.getListenerList();
+                for (int j = 1; j < objects.length; j+=2) {
+                    list.add(TargetListener.class, (EventListener)objects[j]);
+                }
+            }
         }
-        
-          
-       
-      
-        
+        return list;
     }
 
     public final Object getTarget() {
@@ -696,32 +717,68 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
         return ((getTarget() != null) && (getTarget() != ProjectManager.getManager().getCurrentProject().getModel()));
     }
 
-    /* (non-Javadoc)
+    /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
         // we can neglect this, the TabProps allways selects the first target
          // in a set of targets. The first target can only be 
          // changed in a targetRemoved or a TargetSet event
-
+        fireTargetAdded(e);
     }
 
-    /* (non-Javadoc)
+    /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         // how to handle empty target lists?
         // probably the TabProps should only show an empty pane in that case
         setTarget(e.getNewTargets()[0]);
+        fireTargetRemoved(e);
 
     }
 
-    /* (non-Javadoc)
+    /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTargets()[0]);
+        fireTargetSet(e);
 
     }
+    
+    private void fireTargetSet(TargetEvent targetEvent) {
+           //          Guaranteed to return a non-null array
+           Object[] listeners = _listenerList.getListenerList();
+           for (int i = listeners.length - 2; i >= 0; i -= 2) {
+               if (listeners[i] == TargetListener.class) {
+                   // Lazily create the event:                     
+                    ((TargetListener) listeners[i + 1]).targetSet(targetEvent);
+               }
+           }
+       }
+
+       private void fireTargetAdded(TargetEvent targetEvent) {
+           // Guaranteed to return a non-null array
+           Object[] listeners = _listenerList.getListenerList();
+
+           for (int i = listeners.length - 2; i >= 0; i -= 2) {
+               if (listeners[i] == TargetListener.class) {
+                   // Lazily create the event:                     
+                    ((TargetListener) listeners[i + 1]).targetAdded(targetEvent);
+               }
+           }
+       }
+
+       private void fireTargetRemoved(TargetEvent targetEvent) {
+           // Guaranteed to return a non-null array
+           Object[] listeners = _listenerList.getListenerList();
+           for (int i = listeners.length - 2; i >= 0; i -= 2) {
+               if (listeners[i] == TargetListener.class) {
+                   // Lazily create the event:                     
+                   ((TargetListener) listeners[i + 1]).targetRemoved(targetEvent);
+               }
+           }
+       }
 
 } /* end class PropPanel */
