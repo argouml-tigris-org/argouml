@@ -106,7 +106,7 @@ public class FigAssociation extends FigEdgeModelElement {
     _srcGroup.addFig(_srcRole);
     _srcGroup.addFig(_srcOrdering);
     _srcGroup.addFig(_srcMult);    
-    addPathItem(_srcGroup, new PathConvPercent(this, 85, 0));
+    addPathItem(_srcGroup, new PathConvPercent(this, 15, 0));
     
     _destMult = new FigText(10, 10, 90, 20);
     _destMult.setFont(LABEL_FONT);
@@ -135,7 +135,7 @@ public class FigAssociation extends FigEdgeModelElement {
     _destGroup.addFig(_destRole);
     _destGroup.addFig(_destMult);
     _destGroup.addFig(_destOrdering);
-      addPathItem(_destGroup, new PathConvPercent(this, 15, 0));
+      addPathItem(_destGroup, new PathConvPercent(this, 85, 0));
     
     setBetweenNearestPoints(true);
   }
@@ -155,8 +155,8 @@ public class FigAssociation extends FigEdgeModelElement {
   public void setOwner(Object own) {
     Object oldOwner = getOwner();
     super.setOwner(own);
-    if (oldOwner instanceof MAssociation && !oldOwner.equals(own)) {
-		((MAssociation)oldOwner).remove();
+    if (!own.equals(oldOwner) && oldOwner instanceof MAssociation) {
+        ((MAssociation)oldOwner).remove();
     }
 
     if (own instanceof MAssociation) {
@@ -164,19 +164,21 @@ public class FigAssociation extends FigEdgeModelElement {
 	for (int i = 0; i < newAsc.getConnections().size(); i++)
 	    ((MAssociationEnd)((Object[]) newAsc.getConnections().toArray())[i]).addMElementListener(this);
 
-      newAsc.addMElementListener(this);
-      MAssociationEnd ae1 =  (MAssociationEnd)((Object[])(newAsc.getConnections()).toArray())[0];
-      MAssociationEnd ae0 =  (MAssociationEnd)((Object[])(newAsc.getConnections()).toArray())[1];
-      FigNode destNode = (FigNode)getLayer().presentationFor(ae0.getType());
-      FigNode srcNode = (FigNode)getLayer().presentationFor(ae1.getType());
-      if (destNode != null) {
-        setDestFigNode((FigNode)getLayer().presentationFor(ae0.getType()));
-        setDestPortFig(getLayer().presentationFor(ae0.getType()));
-      }
-      if (srcNode != null) {
-        setSourceFigNode((FigNode)getLayer().presentationFor(ae1.getType())); 
-        setSourcePortFig(getLayer().presentationFor(ae1.getType()));  
-      }
+        newAsc.addMElementListener(this);
+        MAssociationEnd ae0 = 
+            (MAssociationEnd)((Object[])(newAsc.getConnections()).toArray())[0];
+        MAssociationEnd ae1 =
+            (MAssociationEnd)((Object[])(newAsc.getConnections()).toArray())[1];
+        FigNode destNode = (FigNode)getLayer().presentationFor(ae1.getType());
+        FigNode srcNode = (FigNode)getLayer().presentationFor(ae0.getType());
+        if (destNode != null) {
+            setDestFigNode(destNode);
+            setDestPortFig(destNode);
+        }
+        if (srcNode != null) {
+            setSourceFigNode(srcNode); 
+            setSourcePortFig(srcNode);  
+        }
     }
    
     modelChanged();
@@ -212,23 +214,25 @@ public class FigAssociation extends FigEdgeModelElement {
 
     super.modelChanged();
 
-    MAssociationEnd ae0 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[0];
-    MAssociationEnd ae1 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[1];
+    MAssociationEnd ae0 =
+        (MAssociationEnd)((Object[])(as.getConnections()).toArray())[0];
+    MAssociationEnd ae1 =
+        (MAssociationEnd)((Object[])(as.getConnections()).toArray())[1];
     
     FigNode oldDest = (FigNode)getDestFigNode();
     FigNode oldSource = (FigNode)getSourceFigNode();
     
     FigNode dest = (FigNode)getLayer().presentationFor(ae1.getType());
     FigNode src = (FigNode)getLayer().presentationFor(ae0.getType());
-    boolean dontSetFigs = false;
+    boolean setFigs = true;
     if (oldDest != null && oldDest.equals(dest)) {
         if (oldSource != null && oldSource.equals(src)) {
-            dontSetFigs = true;
+            setFigs = false;
         } 
     } else {
         if (oldDest != null && oldDest.equals(src)) {
             if (oldSource != null && oldSource.equals(dest)) {
-                dontSetFigs = true;
+                setFigs = false;
             } else {
                 FigNode tempSrc = src;
                 src = dest;
@@ -237,7 +241,7 @@ public class FigAssociation extends FigEdgeModelElement {
         }
     }
     
-    if (!dontSetFigs) {
+    if (setFigs) {
         if (dest != null) {
             setDestFigNode((FigNode)getLayer().presentationFor(ae1.getType()));
             setDestPortFig(getLayer().presentationFor(ae1.getType()));
@@ -299,7 +303,7 @@ public class FigAssociation extends FigEdgeModelElement {
     _destGroup.calcBounds();
     _middleGroup.calcBounds();
     /*
-    if (!dontSetFigs) {
+    if (setFigs) {
         computeRoute();
         calcBounds();
         Iterator editors = getLayer().getEditors().iterator();
