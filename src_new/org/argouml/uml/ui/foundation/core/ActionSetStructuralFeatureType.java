@@ -40,8 +40,9 @@ import ru.novosoft.uml.foundation.core.MStructuralFeature;
  */
 public class ActionSetStructuralFeatureType extends UMLChangeAction {
 
-    public static final ActionSetStructuralFeatureType SINGLETON = new ActionSetStructuralFeatureType();
-    
+    public static final ActionSetStructuralFeatureType SINGLETON =
+        new ActionSetStructuralFeatureType();
+
     /**
      * Constructor for ActionSetStructuralFeatureType.
      * @param s
@@ -49,8 +50,6 @@ public class ActionSetStructuralFeatureType extends UMLChangeAction {
     protected ActionSetStructuralFeatureType() {
         super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
     }
-
-    
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -71,13 +70,17 @@ public class ActionSetStructuralFeatureType extends UMLChangeAction {
             o = box.getSelectedItem();
             if (o instanceof MClassifier) {
                 newClassifier = (MClassifier)o;
+                if (newClassifier != oldClassifier && attr != null) {
+                    if (newClassifier != null) {
+                        ModelManagementHelper.getHelper().moveElement(
+                            newClassifier,
+                            attr.getModel());
+                    }
+                    attr.setType(newClassifier);
+                }
             }
         }
-        if (newClassifier != oldClassifier && attr != null) {
-            ModelManagementHelper.getHelper().moveElement(newClassifier, attr.getModel());
-            attr.setType(newClassifier);
-        }
-        
+
     }
 
 }

@@ -50,16 +50,41 @@ public abstract class UMLComboBoxModel2
         
     private static Category log = 
         Category.getInstance("org.argouml.uml.ui.UMLComboBoxModel2");
-        
+    
+    /**
+     * The taget of the comboboxmodel. This is some UML modelelement
+     */    
     private Object _target = null;
     
+    /**
+     * The list with objects that should be shown in the combobox
+     */
     private List _objects = Collections.synchronizedList(new ArrayList());
+    
+    /**
+     * The selected object
+     */
     private Object _selectedObject = null;
     
+    /**
+     * Flag to indicate if the user may select "" as value in the combobox. If
+     * true the attribute that is shown by this combobox may be set to null.
+     * Makes sure that there is allways a "" in the list with objects so the
+     * user has the oportunity to select this to clear the attribute.
+     */
     private boolean _clearable = false;
     
+    /**
+     * The name of the event with which NSUML sets the attribute that is shown
+     * in this comboboxmodel.
+     */
     private String _propertySetName;
 	
+    /**
+     * Flag to indicate wether list events should be fired
+     */
+    private boolean _fireListEvents = true;
+    
     /**
      * Constructs a model for a combobox. The container given is used to retreive
      * the target that is manipulated through this combobox. If clearable is true,
@@ -265,7 +290,9 @@ public abstract class UMLComboBoxModel2
              // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
              UmlModelEventPump.getPump().addModelEventListener(this, (MBase)_target, _propertySetName);
         }
+        _fireListEvents = false;
         removeAllElements();
+        _fireListEvents = true;
         buildModelList();
         if (_target != null) {
             setSelectedItem(getSelectedModelElement());
@@ -400,6 +427,30 @@ public abstract class UMLComboBoxModel2
             }   
         }
         return valid;
+    }
+
+    /**
+     * @see javax.swing.AbstractListModel#fireContentsChanged(java.lang.Object, int, int)
+     */
+    protected void fireContentsChanged(Object source, int index0, int index1) {
+        if (_fireListEvents)
+            super.fireContentsChanged(source, index0, index1);
+    }
+
+    /**
+     * @see javax.swing.AbstractListModel#fireIntervalAdded(java.lang.Object, int, int)
+     */
+    protected void fireIntervalAdded(Object source, int index0, int index1) {
+        if (_fireListEvents)
+            super.fireIntervalAdded(source, index0, index1);
+    }
+
+    /**
+     * @see javax.swing.AbstractListModel#fireIntervalRemoved(java.lang.Object, int, int)
+     */
+    protected void fireIntervalRemoved(Object source, int index0, int index1) {
+        if (_fireListEvents)
+            super.fireIntervalRemoved(source, index0, index1);
     }
 
 }

@@ -52,7 +52,8 @@ public abstract class ActionSetMultiplicity extends UMLChangeAction {
         if (source instanceof UMLComboBox2) {
             Object selected = ((UMLComboBox2)source).getSelectedItem();
             Object target = ((UMLComboBox2)source).getTarget();
-            setSelectedItem(selected, target);
+            if (target != null && selected != null)
+                setSelectedItem(selected, target);
         }
     }
     

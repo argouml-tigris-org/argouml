@@ -34,10 +34,12 @@ import ru.novosoft.uml.foundation.data_types.MMultiplicity;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 6, 2003
  */
-public class ActionSetStructuralFeatureMultiplicity extends ActionSetMultiplicity {
+public class ActionSetStructuralFeatureMultiplicity
+    extends ActionSetMultiplicity {
 
-    public static final ActionSetStructuralFeatureMultiplicity SINGLETON = new ActionSetStructuralFeatureMultiplicity();
-     
+    public static final ActionSetStructuralFeatureMultiplicity SINGLETON =
+        new ActionSetStructuralFeatureMultiplicity();
+
     /**
      * Constructor for ActionSetStructuralFeatureMultiplicity.
      */
@@ -50,7 +52,12 @@ public class ActionSetStructuralFeatureMultiplicity extends ActionSetMultiplicit
      */
     public void setSelectedItem(Object item, Object target) {
         if (target != null && target instanceof MStructuralFeature) {
-            ((MStructuralFeature)target).setMultiplicity((MMultiplicity)item);
+            if (item instanceof MMultiplicity) {
+                ((MStructuralFeature)target).setMultiplicity(
+                    (MMultiplicity)item);
+            } else
+                 ((MStructuralFeature)target).setMultiplicity(null);
+
         }
     }
 
