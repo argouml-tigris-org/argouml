@@ -8,7 +8,7 @@ If you are in a hurry:
 <programlisting>
 C:\Work&gt;set CVSROOT=:pserver:guest@cvs.tigris.org:/cvs
 C:\Work&gt;cvs login   (use guest as password)
-C:\Work&gt;cvs checkout argouml_src
+C:\Work&gt;cvs checkout argouml/src_new argouml/tools argouml/lib
 C:\Work&gt;set JAVA_HOME=<replaceable>C:\Programs\jdkwhatever</replaceable>
 C:\Work&gt;cd argouml\src_new
 C:\Work\argouml\src_new&gt;build run
@@ -268,23 +268,18 @@ remembers this.
 </para>
       <para>
 Then you do the actual checking out.
-<command>cvs checkout <replaceable>modulename</replaceable></command>.
+<command>cvs checkout <replaceable>directory</replaceable></command>.
 </para>
       <para>
-The CVS module you need to check out to build ArgoUML is
-<parameter>argouml_src</parameter>.
-This will check out the directories
+The CVS repository directories you need to check out to work with ArgoUML are
 <filename class="directory">argouml/lib</filename>,
 <filename class="directory">argouml/tools</filename>,
-<filename class="directory">argouml/src</filename>,
 <filename class="directory">argouml/src_new</filename>,
 and
 <filename class="directory">argouml/tests</filename>.
 </para>
       <para>
-If you want to build the documentation you check out the module
-<parameter>argouml_doc</parameter>.
-This will check out the directories
+If you want to build the documentation you check out the directories
 <filename class="directory">argouml/lib</filename>
 <filename class="directory">argouml/tools</filename>
 and
@@ -670,9 +665,6 @@ web site the responsible document release person does the following:
 	      <para>
 He checks out everything needed
 and a copy of the <filename class="directory">argouml/www</filename>.
-</para>
-	      <para>
-The module <parameter>argouml_docs</parameter> is there for this purpose.
 </para>
 	      <para>
 If wanted, the CVS repository could be tagged and then the tag
@@ -1411,9 +1403,7 @@ and run the command
 	    <para>Check out a new copy of the source!</para>
 	    <para>
 This is done by checking out from the tag using the command
-<command>cvs co -r VERSION_<replaceable>X_Y_Z</replaceable>_F argouml_modules</command>
-and
-<command>cvs co -r VERSION_<replaceable>X_Y_Z</replaceable>_F argouml/tests</command>
+<command>cvs co -r VERSION_<replaceable>X_Y_Z</replaceable>_F argouml/src_new argouml/lib argouml/tools argouml/modules</command> argouml/tests</command>
 in a newly created directory.
 </para>
 	    <para>
