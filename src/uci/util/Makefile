@@ -43,9 +43,6 @@ gen: $(GEN)
 
 classes: $(CLASSES)
 
-
-SERIALIZABLE.java: SERIALIZABLE.m4 ../Makefile.config
-
 clean:
 	$(RM) *.class $(GEN)
 
