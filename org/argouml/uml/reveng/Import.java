@@ -691,6 +691,8 @@ public class Import {
                 if (i >= numberOfFiles/2) pass = "2-nd pass";
             }
 	    
+            int fileNumber = i != 1 ? ((i-1)%(numberOfFiles/2)+1) : 1;
+            
             progressLabel.setText("Parsing file " + ((i-1)%(numberOfFiles/2)+1) + " of " + numberOfFiles/2
 				  + ". "+pass);
             pack();
