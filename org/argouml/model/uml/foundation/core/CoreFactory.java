@@ -1104,6 +1104,10 @@ public class CoreFactory extends AbstractUmlModelFactory {
         while (it.hasNext()) {
             UmlFactory.getFactory().delete((MGeneralization)it.next());
         }
+        it = elem.getSpecializations().iterator();
+        while (it.hasNext()) {
+            UmlFactory.getFactory().delete((MGeneralization)it.next());
+        }
     }    
     
     public void deleteGeneralization(MGeneralization elem) {}
