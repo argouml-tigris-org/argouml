@@ -45,9 +45,9 @@ public class TestMyTokenizer extends TestCase {
     }
 
     /**
-     * Test the constructors.
+     * Test the constructor.
      */
-    public void testConstructors() {
+    public void testConstructor1() {
 	Vector seps = new Vector();
 	seps.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
 	seps.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
@@ -57,6 +57,26 @@ public class TestMyTokenizer extends TestCase {
  	String res1[] = {
 	    "A", " ", "String"
 	};
+
+	checkConstr(str1, delim1, res1);
+	checkConstr(str1, delim1, res1, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+	checkConstr(str1, delim1, res1, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+	checkConstr(str1, delim1, res1, MyTokenizer.PAREN_EXPR_SEPARATOR);
+	checkConstr(
+		    str1,
+		    delim1,
+		    res1,
+		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
+	checkConstr(str1, delim1, res1, seps);
+    }
+    
+    /**
+     * Test the constructor.
+     */
+    public void testConstructor2() {
+	Vector seps = new Vector();
+	seps.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+	seps.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
 
 	String str2 = "public newAttr [1..*] : Type = Val {param}";
 	String delim2 = " ,\t,<<,>>,[,],:,=,{,},\\,";
@@ -82,12 +102,52 @@ public class TestMyTokenizer extends TestCase {
 	    "}"
 	};
 
+	checkConstr(str2, delim2, res2);
+	checkConstr(str2, delim2, res2, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+	checkConstr(str2, delim2, res2, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+	checkConstr(str2, delim2, res2, MyTokenizer.PAREN_EXPR_SEPARATOR);
+	checkConstr(
+		    str2,
+		    delim2,
+		    res2,
+		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
+	checkConstr(str2, delim2, res2, seps);
+    }
+    
+    /**
+     * Test the constructor.
+     */
+    public void testConstructor3() {
+	Vector seps = new Vector();
+	seps.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+	seps.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+
 	String str3 = "<< stereo >> newAttr";
 	String delim3 = " ,\t,<<,>>,[,],:,=,{,},\\,";
 	String res3[] = {
 	    "<<", " ", "stereo", " ", ">>", " ", "newAttr"
 	};
 	
+	checkConstr(str3, delim3, res3);
+	checkConstr(str3, delim3, res3, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+	checkConstr(str3, delim3, res3, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+	checkConstr(str3, delim3, res3, MyTokenizer.PAREN_EXPR_SEPARATOR);
+	checkConstr(
+		    str3,
+		    delim3,
+		    res3,
+		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
+	checkConstr(str3, delim3, res3, seps);
+    }
+    
+    /**
+     * Test the constructor.
+     */
+    public void testConstructor4() {
+	Vector seps = new Vector();
+	seps.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+	seps.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+
 	String str4 = " newAttr = \": h\" ";
 	String delim4 = " ,\t,<<,>>,[,],:,=,{,},\\,";
 	String res4dot1[] = {
@@ -96,6 +156,28 @@ public class TestMyTokenizer extends TestCase {
 	String res4dot2[] = {
 	    " ", "newAttr", " ", "=", " ", "\": h\"", " "
 	};
+
+	checkConstr(str4, delim4, res4dot1);
+	checkConstr(str4, delim4, res4dot1, 
+	            MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+	checkConstr(str4, delim4, res4dot2, 
+	            MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+	checkConstr(str4, delim4, res4dot1, MyTokenizer.PAREN_EXPR_SEPARATOR);
+	checkConstr(
+		    str4,
+		    delim4,
+		    res4dot1,
+		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
+	checkConstr(str4, delim4, res4dot2, seps);
+    }
+    
+    /**
+     * Test the constructor.
+     */
+    public void testConstructor5() {
+	Vector seps = new Vector();
+	seps.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+	seps.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
 
 	String str5 = " newAttr = \': h\' ";
 	String delim5 = " ,\t,<<,>>,[,],:,=,{,},\\,";
@@ -106,6 +188,28 @@ public class TestMyTokenizer extends TestCase {
 	    " ", "newAttr", " ", "=", " ", "\': h\'", " "
 	};
 
+	checkConstr(str5, delim5, res5dot1);
+	checkConstr(str5, delim5, res5dot2, 
+	            MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+	checkConstr(str5, delim5, res5dot1, 
+	            MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+	checkConstr(str5, delim5, res5dot1, MyTokenizer.PAREN_EXPR_SEPARATOR);
+	checkConstr(
+		    str5,
+		    delim5,
+		    res5dot1,
+		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
+	checkConstr(str5, delim5, res5dot2, seps);
+    }
+    
+    /**
+     * Test the constructor.
+     */
+    public void testConstructor6() {
+	Vector seps = new Vector();
+	seps.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+	seps.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+
 	String str6 = "newAttr = (: ()h) ";
 	String delim6 = " ,\t,<<,>>,[,],:,=,{,},\\,";
 	String res6dot1[] = {
@@ -114,6 +218,28 @@ public class TestMyTokenizer extends TestCase {
 	String res6dot2[] = {
 	    "newAttr", " ", "=", " ", "(: ()h)", " "
 	};
+
+	checkConstr(str6, delim6, res6dot1);
+	checkConstr(str6, delim6, res6dot1, 
+	            MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+	checkConstr(str6, delim6, res6dot1, 
+	            MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+	checkConstr(str6, delim6, res6dot2, MyTokenizer.PAREN_EXPR_SEPARATOR);
+	checkConstr(
+		    str6,
+		    delim6,
+		    res6dot2,
+		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
+	checkConstr(str6, delim6, res6dot1, seps);
+    }
+    
+    /**
+     * Test the constructor.
+     */
+    public void testConstructor7() {
+	Vector seps = new Vector();
+	seps.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+	seps.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
 
 	String str7 = "newAttr = (\"\\\" )(\" () \'\\\' )(\')";
 	String delim7 = " ,\t,<<,>>,[,],:,=,{,},\\,";
@@ -185,78 +311,6 @@ public class TestMyTokenizer extends TestCase {
 	    "\'\\\' )(\'",
 	    ")" 
 	};
-
-	checkConstr(str1, delim1, res1);
-	checkConstr(str1, delim1, res1, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
-	checkConstr(str1, delim1, res1, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
-	checkConstr(str1, delim1, res1, MyTokenizer.PAREN_EXPR_SEPARATOR);
-	checkConstr(
-		    str1,
-		    delim1,
-		    res1,
-		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
-	checkConstr(str1, delim1, res1, seps);
-
-	checkConstr(str2, delim2, res2);
-	checkConstr(str2, delim2, res2, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
-	checkConstr(str2, delim2, res2, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
-	checkConstr(str2, delim2, res2, MyTokenizer.PAREN_EXPR_SEPARATOR);
-	checkConstr(
-		    str2,
-		    delim2,
-		    res2,
-		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
-	checkConstr(str2, delim2, res2, seps);
-
-	checkConstr(str3, delim3, res3);
-	checkConstr(str3, delim3, res3, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
-	checkConstr(str3, delim3, res3, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
-	checkConstr(str3, delim3, res3, MyTokenizer.PAREN_EXPR_SEPARATOR);
-	checkConstr(
-		    str3,
-		    delim3,
-		    res3,
-		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
-	checkConstr(str3, delim3, res3, seps);
-
-	checkConstr(str4, delim4, res4dot1);
-	checkConstr(str4, delim4, res4dot1, 
-	            MyTokenizer.SINGLE_QUOTED_SEPARATOR);
-	checkConstr(str4, delim4, res4dot2, 
-	            MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
-	checkConstr(str4, delim4, res4dot1, MyTokenizer.PAREN_EXPR_SEPARATOR);
-	checkConstr(
-		    str4,
-		    delim4,
-		    res4dot1,
-		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
-	checkConstr(str4, delim4, res4dot2, seps);
-
-	checkConstr(str5, delim5, res5dot1);
-	checkConstr(str5, delim5, res5dot2, 
-	            MyTokenizer.SINGLE_QUOTED_SEPARATOR);
-	checkConstr(str5, delim5, res5dot1, 
-	            MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
-	checkConstr(str5, delim5, res5dot1, MyTokenizer.PAREN_EXPR_SEPARATOR);
-	checkConstr(
-		    str5,
-		    delim5,
-		    res5dot1,
-		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
-	checkConstr(str5, delim5, res5dot2, seps);
-
-	checkConstr(str6, delim6, res6dot1);
-	checkConstr(str6, delim6, res6dot1, 
-	            MyTokenizer.SINGLE_QUOTED_SEPARATOR);
-	checkConstr(str6, delim6, res6dot1, 
-	            MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
-	checkConstr(str6, delim6, res6dot2, MyTokenizer.PAREN_EXPR_SEPARATOR);
-	checkConstr(
-		    str6,
-		    delim6,
-		    res6dot2,
-		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
-	checkConstr(str6, delim6, res6dot1, seps);
 
 	checkConstr(str7, delim7, res7dot1);
 	checkConstr(str7, delim7, res7dot2, 
