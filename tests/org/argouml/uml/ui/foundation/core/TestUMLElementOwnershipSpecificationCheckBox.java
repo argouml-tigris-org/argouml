@@ -49,12 +49,21 @@ public class TestUMLElementOwnershipSpecificationCheckBox extends TestCase {
         super(arg0);
     }
     
+    /**
+     * Tests the marking/clicking of the checkbox. Simulates the behaviour when 
+     * the users selects the checkbox. Tests if the specification of the model
+     * element really is changed.
+     */
     public void testDoClick() {
         boolean spec = elem.isSpecification();
         box.doClick();
         assert("click did not work!", spec != elem.isSpecification());
     }
     
+    /**
+     * Tests wether a change in the NSUML modelelement is reflected in the 
+     * checkbox
+     */
     public void testPropertySet() {
         boolean selected = box.isSelected();
         elem.setSpecification(!selected);
