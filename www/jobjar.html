@@ -5,7 +5,7 @@
 <link REL="stylesheet" TYPE="text/css" HREF="http://www.tigris.org/branding/style.css">
 <meta name="keywords"
 
-content="ArgoUML, Argo, UML, Unified Modeling Language, modeling, modelling, Gentleware, Poseidon, MDA, model-driven, software architecture, software methods, software engineering, CASE, student projects, coaching, Java, XML, OCL, object, technology">
+content="ArgoUML, Argo, UML, Unified Modeling Language, modeling, modelling, MDA, model-driven, software architecture, software methods, software engineering, CASE, student projects, coaching, Java, XML, XMI, OCL, object, technology">
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
 <TITLE>ArgoUML JobJar</TITLE>
 </HEAD>
@@ -21,18 +21,16 @@ content="ArgoUML, Argo, UML, Unified Modeling Language, modeling, modelling, Gen
 <tr>
 <td valign="top" rowspan="7" width="50%">
 
-<H3>Proposed Contributions</H3>
+<H3>Some Proposed Contributions</H3>
 
 Diagrams
 
 <UL>
 	<LI>Implement a graph layout algorithm that takes into account the
 	conventions of UML diagrams. 
- already a layout algorithm for class diagrams.
+
 	<LI>Implement arc routing that users find flexible and convient.
-	This could be contributed to the GEF project and used in ArgoUml.
-	
-	<LI>Implement the UML artifacts that ArgoUML still does not support.
+	This could be contributed to the GEF project and used in ArgoUML.
 	
 	<LI>Implement diagram types that are part of UML but not supported
 	by ArgoUML yet.
@@ -40,16 +38,23 @@ Diagrams
 	<LI>Swim lanes for statechart and activity diagrams. 
 
 	<LI>Implement printing of wall-sized diagram posters or design booklets.
-te the generic code to the GEF project and use it in ArgoUml.
+	Contribute the generic code to the GEF project and use it in ArgoUML.
 </UL>
 
-Class Diagram
+UML Compliance
 <UL>
-        <li>Implement the 'lollipop' notation for Interfaces.
+	<LI>Sequence diagrams.
+
+	<LI>Add UML Profiles.
+
+	<LI>Implement the UML artifacts that ArgoUML still does not support.
+	
+        <LI>Implement the 'lollipop' notation for Interfaces.
+
+	<LI>Add new UML features.
 </UL>
 
 Code Generation and Reverse Engineering
-
 <UL>
 	<LI>Implement code generation for an additional
 	    programming language like:
@@ -58,17 +63,14 @@ Code Generation and Reverse Engineering
         <LI>Implement support for generating Java code that follows JavaBeans
 	conventions.
 
-	<LI>Implement an extensible and customizable library for code generation
-	in many languages.
-
-	<LI>Implement code generation for UML state machine models, work on this has
-been done in a Masters Thesis.
+	<LI>Implement code generation for UML state machine models.
 
 	<LI>Generate assert() statements to check OCL constraints on a UML
 	model at run-time.
 
 	<LI>Make the code generation work together with the
 	    reverse engineering for working round-trip engineering.
+	    Think MDA!
 
 	<LI>Add java5 grammar, generation and reverse engineering.
 
@@ -76,49 +78,38 @@ been done in a Masters Thesis.
 href="http://www.antlr.org/grammar/cpp/MyReadMe.txt">ANTLR
 C++ grammar</a>.
 
-	<LI>Implement J2EE reverse engineering, can you reverse engineer
-An Enterprise Application (.ear file)? Can you reverse engineer a deployment
-diagram based on configuration files (Apache, App Server)?
+	<LI>Implement J2EE reverse engineering,
+	    from an Enterprise Application (.ear file),
+            from configuration files (Apache, or App Server).
 
 </UL>
 
 User Interface
 <UL>
-        <li>Document the requirements for ArgoUML in terms of use cases
-and in the cookbook.
 	<LI>Implement table views
 	    (as a complement to the tree view and  diagram view).
-	<LI>Implement Undo / redo.
+	<LI>Implement Undo.
 	    Co-ordinate with this for diagrams (GEF project).
 	<LI>Make ArgoUML work within Netbeans and Eclipse as a plugin.
 </UL>
 
-User Documentation
+Documentation
 <UL>
 	<LI>Write additions to the User's manual for ArgoUML, 
 	focus on a specific task or audience.
 
-	<LI>Write answers to the Users FAQ.
-</UL>
-
-Documentation and Instructions for the developers of ArgoUML
-<UL>
-
-      <LI>Write additions to the Developer's Cookbook to help new people contribute 
+	<LI>Write additions to the Developer's Cookbook
+	to help new people contribute 
         to the ArgoUML project. 
-
-      <LI>Write requirements / specification, e.g. how the yet unimplemented features 
-        should work in detail.
 </UL>
 
 Object Constraint Language
 <UL>
 	<LI>Enhance ArgoUML's OCL evaluator.
-	<LI>What features are needed in order to make writing and evaluating
-constraints easier?
+	<LI>Add features to make writing and evaluating constraints easier.
 </UL>
 
-Cognitive Support for Design
+Cognitive Support
 <UL>
 	<LI>Implement some more of the features suggested by Jason Robbins
 	    in his dissertation.
@@ -126,15 +117,11 @@ Cognitive Support for Design
             Cognitive Support for Design.
 </UL>
 
-Quality assurance
+Quality assurance and Performance
 <UL>
 	<LI>Implement test scripts using JUnit.
 	Focus on a specific class or group of classes.
-</UL>
-
-Performance
-<UL>
-	<LI>Measure what are the limits of ArgoUml's performance with large models.
+	<LI>Measure what are the limits of ArgoUML's performance with large models.
 	<LI>Use a Memory profiler, or Tracer to detect inefficient algorithms
 	    and fix them.
 </UL>
@@ -145,6 +132,7 @@ Performance
 
 <UL>
   <LI><B>Sequence Diagrams</B>
+  <LI><B>Replace NSUML with MDR</B>
 </UL>
 
 </td>
@@ -164,6 +152,9 @@ Responsibilities where we currently lack a person to assume them:
 <li>Web master for the Users' site.
 </ul>
 
+Responsibilities are different from the other contributions here in that
+they are not tiny projects that can be completed.
+Instead they go on for ever.
 </td>
 </tr>
 
@@ -192,17 +183,27 @@ over 200,000 lines of Java code that implements a real
 application.
 <p>
 
+If you contribute your work back to the ArgoUML project,
+all ArgoUML users can eventually benefit from it and
+your work could affect the Software Development tools for thousands of
+fellow developers.
+
 </td>
 </tr>
 <tr>
 <td valign="top">
 
+
 <H3>Suggest a new feature!</H3>
 
-<P>
 Contribute a new feature idea by entering it in Issuezilla as a
 <a href="http://argouml.tigris.org/issues/enter_bug.cgi?issue_type=FEATURE&component=argouml">
-feature request
+feature request</a>.
+<P>
+
+You can also help in investigating and detailing your suggested feature 
+or features suggested by others.
+
 </a>.
 
 </td>
@@ -210,25 +211,33 @@ feature request
 <tr>
 <td valign="top">
 
-<H3>Why you should do this?</H3>
+<H3>Why should you do this?</H3>
 
-ArgoUML depends on volunteers to do all shores in the project.
-This page lists possible contributions that you could make to help
-the ArgoUML project.<p>
+ArgoUML depends on volunteers to do everything in the project.
+If there are no volunteers contributing work, nothing happens.
+<p>
+The more work that is contributed, the quicker ArgoUML will be developed
+and the better the end result will be.
 
 </td>
 </tr>
 <tr>
 <td valign="top">
 
+
 <H3>The status of this page</H3>
 
-This page may get out of date quickly.
-If so you can read the feature request list (in IssueZilla)
-that should be up to date.
-You can browse 
+This page is (hopefully but not realistically) getting out of date quickly
+when these contributions are implemented.
+It can also get out of date when new features are suggested.
+<p>
+
+If you don't want to work with any of these contributions
+you can always search through the feature request list (in IssueZilla)
+that may contain a feature that you want to work with.
+Browse 
 <a href="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&issue_status=UNCONFIRMED&issue_status=NEW&issue_status=STARTED&issue_status=REOPENED">
-the full list of requested features
+the full list of issues
 </a> directly in Issuezilla.
 
 </td>
