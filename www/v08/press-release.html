@@ -1,0 +1,17 @@
+<h1>Design your UML Models with ArgoUML 0.8</h1>
+<a href="http://www.ArgoUML.org">ArgoUML</a> is an open-source (BSD-license), Java-written UML-Tool with various features commercial vendors don't offer. Today, 08/08/2000, version 0.8 of ArgoUML is released! Here's a list of some new features:
+<ul>
+<li>UML 1.3 compliant!</li>
+<li>OCL syntax and type checking!</li>
+<li>store your models in a database (JDBC, currently mySQL)!</li>
+<li>deployment/component/object diagram support!</li>
+<li>save your diagrams not only as GIF, but also as Postscript, EPS or SVG!</li>
+</ul>
+Since version 0.7 appeared in early 1999, much work has been done. ArgoUML still has its very user friendly interface, which lets you draw your diagrams at high speed using rapid buttons. It still has its cognitive user support, which tells you about errors in your design while you draw it. It also gives you hints about better design.<br>
+ArgoUML uses <a href="http://www.novosoft.ru">Novosofts</a> LGPL'ed <a href="http://nsuml.sourveforge.net">NSUML</a> metamodel library, which provides a complete UML 1.3 metamodel with so many features Argo is even not ready to use all (see <a href="http://www.argouml.org/v08/drawbacks.html">this list</a> for missing features). ArgoUML's and NSUML's standard saving format is XMI (version 1.0 for UML 1.3), so open standards are supported. To convert ArgoUML 0.7 models (XMI 1.0 for UML1.1) to the new version, Meta Integration provides a free key to their <a href="http://www.metaintegration.net/Products/Downloads">Model Bridge</a>, which can in fact convert any XMI to every other XMI. This lets you convert your Rational Rose models to ArgoUML as well!<br>
+The saving format for the graphical part of the diagrams is still PGML, but you can already export to SVG (Scalable Vector Graphics), which will be standard storing format for future versions of ArgoUML.<br>
+As the first UML-Tool at all (we're not only open source), we provide full OCL syntax and type checking. For this we integrated Frank Fingers <a href="http://dresden-ocl.sourceforge.net">TU-Dresden OCL-Compiler</a>, which also can generate Java-code from OCL-Constraints.<br>
+With the new deployment diagram, we have only one diagram type left not implemented: sequence diagrams. These are on the way, however, and will be in ArgoUML 0.9. They are developed sponsored through a <a href="http://www.sourcexchange.org">SourceXChange</a> project.<br>
+On the same way the JDBC support was developed. You can store your model information (no graphical information yet) from static structure and use case diagrams to a mySQL database running on any computer. Adjusting the DB-schema should enable any JDBC capable database, since ArgoUML contains only JDBC code.<br>
+ArgoUML is developed by a large worldwide community which has its home site and mailing lists at <a href="http://www.argouml.org">www.ArgoUML.org</a>, hosted by Tirgis, which is a home for open source development tools. If you want to contribute in any way, just contact the <a href="mailto:dev@argouml.tirgis.org">developers mailing list</a>.<br>
+To run ArgoUML 0.8, you need Java 2 (JRE 1.2), JRE 1.1 is no more supported, and JRE 1.3 not yet perfectly. Also you need the NSUML library, the OCL-Library, and xml4j. You can get them at our <a href="http://www.ArgoUML.org/v08/download.html">download page</a>. Having all four jars (including argouml08.jar) in one directory, you can start ArgoUML by just typing "java -jar argouml08.jar".
