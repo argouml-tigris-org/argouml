@@ -68,7 +68,7 @@ public class CheckItem implements Serializable {
     protected String _description;
 
     /** URL for background (textbook?) knowledge about the domain. */
-    protected String _moreInfoURL = "http://www.ics.uci.edu/pub/arch/argo/";
+    protected String _moreInfoURL = "http://argouml.tigris.org/";
 
     protected Predicate _pred = PredicateTrue.theInstance();
 
