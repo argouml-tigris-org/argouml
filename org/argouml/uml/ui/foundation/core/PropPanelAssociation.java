@@ -145,6 +145,7 @@ public class PropPanelAssociation extends PropPanelModelElement {
     addField(Argo.localize("UMLMenu", "label.association-ends"),new JScrollPane(assocEndList));
 
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
+    extendsList.setVisibleRowCount(1);
     JScrollPane extendsScroll=new JScrollPane(extendsList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     addLinkField("Generalizations:", extendsScroll);
 

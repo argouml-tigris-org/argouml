@@ -26,6 +26,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.swingext.Orientation;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import java.awt.*;
@@ -44,6 +45,10 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
   // contructors
     public PropPanelNamespace(String panelName, ImageIcon icon, int columns) {
         super(panelName,icon,columns);
+    }
+    
+    public PropPanelNamespace(String title, ImageIcon icon, Orientation orientation) {
+    	super(title, icon, orientation);
     }
 
     public PropPanelNamespace(String panelName,int columns) {
