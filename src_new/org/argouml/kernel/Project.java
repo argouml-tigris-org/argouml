@@ -273,14 +273,17 @@ public class Project implements java.io.Serializable, TargetListener {
      *         the parser fails.
      */
     protected Object loadModelFromXMI(URL url)
-	throws IOException, SAXException, ParserConfigurationException {
+        throws IOException, SAXException, ParserConfigurationException {
         ZipInputStream zis = new ZipInputStream(url.openStream());
 
         String name = zis.getNextEntry().getName();
         while (!name.endsWith(".xmi")) {
             name = zis.getNextEntry().getName();
         }
-        LOG.info("Loading Model from " + url);
+        
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Loading Model from " + url);
+        }
         // 2002-07-18
         // Jaap Branderhorst
         // changed the loading of the projectfiles to solve hanging 
@@ -289,12 +292,12 @@ public class Project implements java.io.Serializable, TargetListener {
         XMIReader xmiReader = null;
         try {
             xmiReader = new XMIReader();
-        } catch (SAXException se) { // duh, this must be catched and handled
-            LOG.error(se);
+        } catch (SAXException se) { // duh, this must be caught and handled
+            LOG.error("SAXException caught", se);
             throw se;
         } catch (ParserConfigurationException pc) { 
-	    // duh, this must be catched and handled
-            LOG.error(pc);
+	        // duh, this must be caught and handled
+            LOG.error("ParserConfigurationException caught", pc);
             throw pc;
         }
         Object mmodel = null;
@@ -334,7 +337,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @throws SAXException if the input is not correctly formatted XML.
      */
     protected void loadZippedProjectMembers(URL url)
-        throws IOException, ParserConfigurationException, SAXException {
+            throws IOException, ParserConfigurationException, SAXException {
 
         loadModelFromXMI(url); // throws a IOException if things go wrong
         // user interface has to handle that one
@@ -387,9 +390,8 @@ public class Project implements java.io.Serializable, TargetListener {
 	} catch (IOException e) {
             ArgoParser.SINGLETON.setLastLoadStatus(false);
             ArgoParser.SINGLETON.setLastLoadMessage(e.toString());
-            LOG.error("Something went wrong in "
-		      + "Project.loadZippedProjectMembers()",
-		      e);
+            LOG.error("Something went wrong in " +
+		              "Project.loadZippedProjectMembers()", e);
             throw e;
         }
     }
@@ -462,8 +464,10 @@ public class Project implements java.io.Serializable, TargetListener {
             url = Util.fixURLExtension(url, FileConstants.COMPRESSED_FILE_EXT);
         }
 
-        LOG.debug("Setting project URL from \"" + _url 
-		  + "\" to \"" + url + "\".");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Setting project URL from \"" + _url +
+                      "\" to \"" + url + "\".");
+        }
 
         _url = url;
     }
@@ -479,12 +483,13 @@ public class Project implements java.io.Serializable, TargetListener {
         try {
             URL url = Util.fileToURL(file);
 
-            LOG.debug(
-		      "Setting project file name from \""
-		      + _url
-		      + "\" to \""
-		      + url
-		      + "\".");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Setting project file name from \"" +
+                          _url +
+                          "\" to \"" +
+                          url +
+                          "\".");
+            }
 
             _url = url;
         } catch (MalformedURLException murle) {
@@ -653,26 +658,32 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     public ProjectMember findMemberByName(String name) {
-        LOG.debug("findMemberByName called for \"" + name + "\".");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("findMemberByName called for \"" + name + "\".");
+        }
         for (int i = 0; i < members.size(); i++) {
             ProjectMember pm = (ProjectMember) members.elementAt(i);
             if (name.equals(pm.getPlainName()))
                 return pm;
         }
-        LOG.debug("Member \"" + name + "\" not found.");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Member \"" + name + "\" not found.");
+        }
         return null;
     }
 
 
     public void loadMembersOfType(String type) {
-        if (type == null)
+        if (type == null) {
             return;
+        }
         java.util.Enumeration enumeration = getMembers().elements();
         try {
             while (enumeration.hasMoreElements()) {
                 ProjectMember pm = (ProjectMember) enumeration.nextElement();
-                if (type.equalsIgnoreCase(pm.getType()))
+                if (type.equalsIgnoreCase(pm.getType())) {
                     pm.load();
+                }
             }
         } catch (IOException ignore) {
             LOG.error("IOException in makeEmptyProject", ignore);
@@ -703,12 +714,12 @@ public class Project implements java.io.Serializable, TargetListener {
      * @throws FileNotFoundException if any of the files cannot be found.
      */
     private File copyFile(File dest, File src)
-        throws FileNotFoundException, IOException {
+            throws FileNotFoundException, IOException {
         
         // first delete dest file
         if (dest.exists()) {
-	    dest.delete();
-	}
+            dest.delete();
+        }
 
         FileInputStream fis  = new FileInputStream(src);
         FileOutputStream fos = new FileOutputStream(dest);
@@ -755,11 +766,11 @@ public class Project implements java.io.Serializable, TargetListener {
         File tempFile = new File( file.getAbsolutePath() + "#");
         File backupFile = new File( file.getAbsolutePath() + "~");
         if (tempFile.exists()) {
-	    tempFile.delete();
-	}
+            tempFile.delete();
+        }
         if (file.exists()) {
-	    copyFile(tempFile, file);
-	}
+            copyFile(tempFile, file);
+        }
         // frank end
 
         ZipOutputStream stream =
@@ -768,14 +779,16 @@ public class Project implements java.io.Serializable, TargetListener {
             new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
 
         ZipEntry zipEntry =
-	    new ZipEntry(getBaseName() + FileConstants.UNCOMPRESSED_FILE_EXT);
+    	    new ZipEntry(getBaseName() + FileConstants.UNCOMPRESSED_FILE_EXT);
         stream.putNextEntry(zipEntry);
         expander.expand(writer, this, "", "");
         writer.flush();
         stream.closeEntry();
 
         String path = file.getParent();
-        LOG.info("Dir ==" + path);
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Dir ==" + path);
+        }
         int size = members.size();
 
         try {
@@ -788,9 +801,11 @@ public class Project implements java.io.Serializable, TargetListener {
             for (int i = 0; i < size; i++) {
                 ProjectMember p = (ProjectMember) members.elementAt(i);
                 if (!(p.getType().equalsIgnoreCase("xmi"))) {
-                    LOG.info("Saving member of type: "
-				  + ((ProjectMember) members.elementAt(i))
-				        .getType());
+                    if (LOG.isInfoEnabled()) {
+                        LOG.info("Saving member of type: "
+                              + ((ProjectMember) members.elementAt(i))
+                                    .getType());
+                    }
                     String name = p.getName();
                     String originalName = name;
                     while (names.contains(name)) {
@@ -807,9 +822,11 @@ public class Project implements java.io.Serializable, TargetListener {
             for (int i = 0; i < size; i++) {
                 ProjectMember p = (ProjectMember) members.elementAt(i);
                 if (p.getType().equalsIgnoreCase("xmi")) {
-                    LOG.info("Saving member of type: "
-				  + ((ProjectMember) members.elementAt(i))
-				        .getType());
+                    if (LOG.isInfoEnabled()) {
+                        LOG.info("Saving member of type: "
+                              + ((ProjectMember) members.elementAt(i))
+                                    .getType());
+                    }
                     stream.putNextEntry(new ZipEntry(p.getName()));
                     p.save(path, overwrite, writer);
                 }
@@ -819,22 +836,16 @@ public class Project implements java.io.Serializable, TargetListener {
             // and name+"#" exists move name+"#" to name+"~"
             // this is the correct backup file
             if (backupFile.exists()) {
-		backupFile.delete();
-	    }
+        		backupFile.delete();
+    	    }
             if (tempFile.exists() && !backupFile.exists()) {
-		tempFile.renameTo(backupFile);
-	    }
+        		tempFile.renameTo(backupFile);
+    	    }
             if (tempFile.exists()) {
-		tempFile.delete();
-	    }
-
+        		tempFile.delete();
+    	    }
         } catch (IOException e) {
-            LOG.debug("hat nicht geklappt: " + e);
-            // frank: deleted it because we are propagating the exception
-            //e.printStackTrace();
-            
-            // frank: close from outside, file have to be closed before
-            // deleting it
+            LOG.debug("hat nicht geklappt: ", e);
             writer.close();
             
             // frank: in case of exception 
@@ -972,8 +983,9 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return the model.
      */
     public Object getModel() {
-        if (_models.size() != 1)
+        if (_models.size() != 1) {
             return null;
+        }
         return _models.elementAt(0);
     }
 
@@ -997,16 +1009,19 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return MClassifier
      */
     public Object findType(String s, boolean defineNew) {
-        if (s != null)
+        if (s != null) {
             s = s.trim();
-        if (s == null || s.length() == 0)
+        }
+        if (s == null || s.length() == 0) {
             return null;
+        }
         Object cls = null;
         int numModels = _models.size();
         for (int i = 0; i < numModels; i++) {
             cls = findTypeInModel(s, _models.elementAt(i));
-            if (cls != null)
+            if (cls != null) {
                 return cls;
+            }
         }
         cls = findTypeInModel(s, _defaultModel);
         // hey, now we should move it to the model the user is working in
@@ -1016,9 +1031,8 @@ public class Project implements java.io.Serializable, TargetListener {
         }
         if (cls == null && defineNew) {
             LOG.debug("new Type defined!");
-            cls =
-                UmlFactory.getFactory().getCore()
-		    .buildClass(getCurrentNamespace());
+            cls = UmlFactory.getFactory().getCore()
+        		  .buildClass(getCurrentNamespace());
             ModelFacade.setName(cls, s);
         }
         return cls;
@@ -1059,7 +1073,7 @@ public class Project implements java.io.Serializable, TargetListener {
         
         if (!ModelFacade.isANamespace(ns)) {
             throw new IllegalArgumentException();
-	}
+    	}
         
         Collection allClassifiers =
             ModelManagementHelper.getHelper()
@@ -1072,7 +1086,7 @@ public class Project implements java.io.Serializable, TargetListener {
             
             classifier = classifiers[i];
             if (ModelFacade.getName(classifier) != null
-		&& ModelFacade.getName(classifier).equals(s)) {
+            		&& ModelFacade.getName(classifier).equals(s)) {
                 return classifier;
             }
         }
@@ -1084,7 +1098,7 @@ public class Project implements java.io.Serializable, TargetListener {
         
         if (m != null && !ModelFacade.isANamespace(m)) {
             throw new IllegalArgumentException();
-	}
+    	}
         
         _currentNamespace = m;
     }
@@ -1107,12 +1121,13 @@ public class Project implements java.io.Serializable, TargetListener {
         Iterator it = diagrams.iterator();
         while (it.hasNext()) {
             ArgoDiagram ad = (ArgoDiagram) it.next();
-            if (ad.getName() != null
-        	&& ad.getName().equals(name))
-        	return ad;
+            if (ad.getName() != null && ad.getName().equals(name)) {
+                return ad;
+            }
             if (ad.getItemUID() != null
-        	&& ad.getItemUID().toString().equals(name))
-        	return ad;
+                    && ad.getItemUID().toString().equals(name)) {
+                return ad;
+            }
         }
         return null;
     } 
@@ -1155,7 +1170,7 @@ public class Project implements java.io.Serializable, TargetListener {
         
         if (!ModelFacade.isAModelElement(me)) {
             throw new IllegalArgumentException();
-	}
+    	}
         
         int presentations = 0;
         int size = diagrams.size();
@@ -1167,16 +1182,19 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     public Object getInitialTarget() {
-        if (diagrams.size() > 0)
+        if (diagrams.size() > 0) {
             return diagrams.elementAt(0);
-        if (_models.size() > 0)
+        }
+        if (_models.size() > 0) {
             return _models.elementAt(0);
+        }
         return null;
     }
 
     public void setGenerationPrefs(GenerationPreferences cgp) {
         cgPrefs = cgp;
     }
+    
     public GenerationPreferences getGenerationPrefs() {
         return cgPrefs;
     }
@@ -1192,21 +1210,24 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     private void preSave() {
-        for (int i = 0; i < diagrams.size(); i++)
-	    ((Diagram) diagrams.elementAt(i)).preSave();
+        for (int i = 0; i < diagrams.size(); i++) {
+            ((Diagram) diagrams.elementAt(i)).preSave();
+        }
         // TODO: is preSave needed for models?
     }
 
     private void postSave() {
-        for (int i = 0; i < diagrams.size(); i++)
-	    ((Diagram) diagrams.elementAt(i)).postSave();
+        for (int i = 0; i < diagrams.size(); i++) {
+            ((Diagram) diagrams.elementAt(i)).postSave();
+        }
         // TODO: is postSave needed for models?
         setNeedsSave(false);
     }
 
     protected void postLoad() {
-        for (int i = 0; i < diagrams.size(); i++)
-	    ((Diagram) diagrams.elementAt(i)).postLoad();
+        for (int i = 0; i < diagrams.size(); i++) {
+            ((Diagram) diagrams.elementAt(i)).postLoad();
+        }
         // issue 1725: the root is not set, which leads to problems
         // with displaying prop panels
         setRoot( getModel());
@@ -1230,8 +1251,9 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     // Attention: whole Trash mechanism should be rethought concerning nsuml
     public void moveToTrash(Object obj) {
-        if (Trash.SINGLETON.contains(obj))
+        if (Trash.SINGLETON.contains(obj)) {
             return;
+        }
         trashInternal(obj);
     }
 
@@ -1285,7 +1307,9 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     public void moveFromTrash(Object obj) {
-        LOG.debug("TODO: not restoring " + obj);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("TODO: not restoring " + obj);
+        }
     }
 
     public boolean isInTrash(Object dm) {
@@ -1299,10 +1323,10 @@ public class Project implements java.io.Serializable, TargetListener {
         
         if (!ModelFacade.isAModel(defaultModel)) {
             throw new IllegalArgumentException();
-	}
+        }
         
         _defaultModel = defaultModel;
-	defaultModelCache = new HashMap();
+        defaultModelCache = new HashMap();
     }
 
     /**
@@ -1320,12 +1344,13 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return the type.
      */
     public Object findTypeInDefaultModel(String name) {
-	if (defaultModelCache.containsKey(name))
-	    return defaultModelCache.get(name);
-
-	Object result = findTypeInModel(name, getDefaultModel());
-	defaultModelCache.put(name, result);
-	return result;
+        if (defaultModelCache.containsKey(name)) {
+            return defaultModelCache.get(name);
+        }
+        
+        Object result = findTypeInModel(name, getDefaultModel());
+        defaultModelCache.put(name, result);
+        return result;
     }
 
     /**
@@ -1344,7 +1369,7 @@ public class Project implements java.io.Serializable, TargetListener {
         
         if (!ModelFacade.isAModel(root)) {
             throw new IllegalArgumentException();
-	}
+        }
         
         if (treeRoot != null) {
             members.remove(treeRoot);
@@ -1515,21 +1540,21 @@ public class Project implements java.io.Serializable, TargetListener {
      * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {       
-	setTarget(e.getNewTarget());
+    	setTarget(e.getNewTarget());
     }
 
     /** 
      * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-	setTarget(e.getNewTarget());
+    	setTarget(e.getNewTarget());
     }
 
     /** 
      * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-	setTarget(e.getNewTarget());
+    	setTarget(e.getNewTarget());
     }
     
     /**
@@ -1539,17 +1564,16 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     private void setTarget(Object target) {
         Object currentNamespace = null;
-	target = TargetManager.getInstance().getModelTarget();
+        target = TargetManager.getInstance().getModelTarget();
         if (target instanceof UMLDiagram) {
             currentNamespace = ((UMLDiagram) target).getNamespace();
-        } else
-	    if (ModelFacade.isANamespace(target))
-		currentNamespace = target;
-	    else 
-		if (ModelFacade.isAModelElement(target))
-		    currentNamespace = ModelFacade.getNamespace(target);
-		else
-		    currentNamespace = getRoot();
+        } else if (ModelFacade.isANamespace(target)) {
+            currentNamespace = target;
+        } else if (ModelFacade.isAModelElement(target)) {
+            currentNamespace = ModelFacade.getNamespace(target);
+        } else {
+            currentNamespace = getRoot();
+        }
         setCurrentNamespace(currentNamespace);
                
         if (target instanceof ArgoDiagram) {
@@ -1565,28 +1589,26 @@ public class Project implements java.io.Serializable, TargetListener {
         if (members != null) {
             Iterator membersIt = members.iterator();
             while (membersIt.hasNext()) {
-                
                 ((ProjectMember) membersIt.next()).remove();
             }
-            
             members.clear();
         }
         
         if (_models != null) {
             _models.clear();
-	}
+        }
         
         if (diagrams != null) {
             diagrams.clear();
-	}
+        }
         
         if (uuidRefs != null) {
             uuidRefs.clear();
-	}
+        }
         
         if (defaultModelCache != null) {
             defaultModelCache.clear();
-	}
+        }
         
         members = null;
         _models = null;
