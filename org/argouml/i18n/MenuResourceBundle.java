@@ -150,6 +150,9 @@ public class MenuResourceBundle extends ListResourceBundle {
         {"TaggedValues", "TaggedValues" },  
         {"Checklist", "Checklist" },  
         {"History", "History" },  
+        {"Layout", "Layout" }, 
+        {"Zoom", "Zoom"},
+        {"Tools", "Tools"},
 
         { "Shortcut_New", KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_MASK) },
         { "Shortcut_Open", KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK) },
