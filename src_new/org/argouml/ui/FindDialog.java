@@ -187,8 +187,9 @@ public class FindDialog extends ArgoDialog
         JLabel locLabel = new JLabel("Find In:");
 
         _location.addItem("Entire Project");
-
-        _typeDetails.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+        /*      MVW: The following panel is not used at all. So let's not show it. 
+                See issue 2502. */
+        // _typeDetails.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
         initTypes();
 
         _typeDetails.setMinimumSize(new Dimension(200, 100));
