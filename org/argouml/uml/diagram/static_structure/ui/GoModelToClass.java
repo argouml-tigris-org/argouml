@@ -57,7 +57,9 @@ public class GoModelToClass extends AbstractGoRule {
   }
 
   public int getIndexOfChild(Object parent, Object child) {
-    Vector children = new Vector(getChildren(parent));
+    Collection col = getChildren(parent);
+    if (col == null) return -1;
+    Vector children = new Vector(col);
     if (children != null) return children.indexOf(child);
     return -1;
   }
