@@ -96,7 +96,7 @@ public class ActionCollaborationDiagram extends UMLChangeAction {
 			
 		} } } } }  
 		if (c != null) {
-			UmlFactory.getFactory().getCollaborations().buildInteraction(c);
+			// UmlFactory.getFactory().getCollaborations().buildInteraction(c);
 	    	UMLCollaborationDiagram d  = new UMLCollaborationDiagram(c);
 	    	p.addMember(d);
 	    	ProjectBrowser.TheInstance.getNavPane().addToHistory(d);

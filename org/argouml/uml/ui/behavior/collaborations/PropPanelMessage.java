@@ -40,6 +40,8 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 import javax.swing.*;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 
@@ -111,6 +113,7 @@ public class PropPanelMessage extends PropPanelModelElement {
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu" ,"button.go-back"),"navigateBackAction","isNavigateBackEnabled");
     new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_actionIcon, Argo.localize("UMLMenu", "button.add-action"),"addAction","isAddActionEnabled");
     new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
  }
 
@@ -159,17 +162,16 @@ public class PropPanelMessage extends PropPanelModelElement {
         return action;
     }
     
-    public MCallAction addAction(Integer index) {
-        MCallAction action = null;
+    public MCallAction addAction() {
+    	MCallAction action = null;
         Object target = getTarget();
         if(target instanceof MMessage) {
-            MFactory factory=((MMessage) target).getFactory();
-            action = factory.createCallAction();
-            action.setName("action");
-            ((MMessage) target).setAction(action);
+            action = (MCallAction)CommonBehaviorFactory.getFactory().buildAction((MMessage)target);
         }
+        ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         return action;
     }
+    	
     
     public void deleteAction(Integer index) {
         Object target = getTarget();
@@ -180,6 +182,10 @@ public class PropPanelMessage extends PropPanelModelElement {
     
    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
         return baseClass.equals("Message");
+    }
+    
+    public boolean isAddActionEnabled() {
+    	return (getTarget() instanceof MMessage) && (((MMessage)getTarget()).getAction() == null);
     }
 
 

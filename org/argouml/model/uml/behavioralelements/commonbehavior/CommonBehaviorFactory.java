@@ -27,6 +27,7 @@ import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.MFactory;
+import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.common_behavior.MActionSequence;
 import ru.novosoft.uml.behavior.common_behavior.MArgument;
@@ -341,6 +342,17 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
 		  link.addConnection(le1);
     	  return link;
     }
+    
+    /**
+     * Builds an action (actually a callaction) for some message
+     */
+    public MAction buildAction(MMessage message) {
+    	MAction action = createCallAction();
+    	action.setName("action"); 
+    	message.setAction(action);
+        return action;
+    }
+    	
         
 
 }
