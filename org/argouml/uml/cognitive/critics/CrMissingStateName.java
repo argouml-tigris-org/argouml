@@ -23,11 +23,9 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 
-
 // File: CrMissingStateName.java
 // Classes: CrMissingStateName
 // Original Author: jrobbins@ics.uci.edu
-// $Id$
 
 package org.argouml.uml.cognitive.critics;
 
@@ -40,7 +38,10 @@ import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
 
 
-/** A critic to detect whether an state has a name.
+/** 
+ * A critic to detect whether a state has a name.
+ * Does not apply to all kinds of states!
+ * E.g. excluded are final state, initial state, action state,...
  **/
 public class CrMissingStateName extends CrUML {
     
@@ -69,6 +70,8 @@ public class CrMissingStateName extends CrUML {
         if (ModelFacade.isAPseudostate(dm))
             return NO_PROBLEM;
         if (ModelFacade.isAActionState(dm))
+            return NO_PROBLEM;
+        if (ModelFacade.isAObjectFlowState(dm))
             return NO_PROBLEM;
         
 	String myName = ModelFacade.getName(dm);
