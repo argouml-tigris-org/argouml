@@ -129,38 +129,38 @@ public class TestMyTokenizer extends TestCase {
 		MyTokenizer st = new MyTokenizer("Hello old friend", " ");
 		int oidx;
 
-		assert("Token 1", "Hello".equals(st.nextToken()));
+		assertTrue("Token 1", "Hello".equals(st.nextToken()));
 
 		oidx = st.getTokenIndex();
 		st.putToken(",");
-		assert("PutToken 1", ",".equals(st.nextToken()));
-		assert("PutTokenIndex 1", oidx == st.getTokenIndex());
+		assertTrue("PutToken 1", ",".equals(st.nextToken()));
+		assertTrue("PutTokenIndex 1", oidx == st.getTokenIndex());
 
-		assert("Token 2", " ".equals(st.nextToken()));
-		assert("Token 3", "old".equals(st.nextToken()));
+		assertTrue("Token 2", " ".equals(st.nextToken()));
+		assertTrue("Token 3", "old".equals(st.nextToken()));
 
 		oidx = st.getTokenIndex();
 		st.putToken(",");
 		st.putToken(";");
-		assert("PutToken 2", ";".equals(st.nextToken()));
-		assert("PutTokenIndex 2", oidx == st.getTokenIndex());
+		assertTrue("PutToken 2", ";".equals(st.nextToken()));
+		assertTrue("PutTokenIndex 2", oidx == st.getTokenIndex());
 
 		st.putToken("?");
-		assert("PutToken 3", "?".equals(st.nextToken()));
-		assert("PutTokenIndex 3", oidx == st.getTokenIndex());
+		assertTrue("PutToken 3", "?".equals(st.nextToken()));
+		assertTrue("PutTokenIndex 3", oidx == st.getTokenIndex());
 
-		assert("Token 4", " ".equals(st.nextToken()));
-		assert("Token 5", "friend".equals(st.nextToken()));
+		assertTrue("Token 4", " ".equals(st.nextToken()));
+		assertTrue("Token 5", "friend".equals(st.nextToken()));
 
-		assert("MoreTokens 1", !st.hasMoreTokens());
+		assertTrue("MoreTokens 1", !st.hasMoreTokens());
 		st.putToken("?");
-		assert("MoreTokens 2", st.hasMoreTokens());
-		assert("PutToken 4", "?".equals(st.nextToken()));
-		assert("MoreTokens 3", !st.hasMoreTokens());
+		assertTrue("MoreTokens 2", st.hasMoreTokens());
+		assertTrue("PutToken 4", "?".equals(st.nextToken()));
+		assertTrue("MoreTokens 3", !st.hasMoreTokens());
 
 		try {
 			st.putToken(null);
-			assert("Allows nulls", false);
+			assertTrue("Allows nulls", false);
 		} catch (NullPointerException npe) {
 		}
 	}
@@ -172,13 +172,13 @@ public class TestMyTokenizer extends TestCase {
 		int idx = 0;
 
 		for (i = 0; i < res.length; i++) {
-			assert("MyTokenizer(\"" + str + "\", \"" + delim + "\") lacks tokens", tokenizer.hasMoreTokens());
+			assertTrue("MyTokenizer(\"" + str + "\", \"" + delim + "\") lacks tokens", tokenizer.hasMoreTokens());
 			tok = tokenizer.nextToken();
-			assert("tokenIndex broken", idx == tokenizer.getTokenIndex());
+			assertTrue("tokenIndex broken", idx == tokenizer.getTokenIndex());
 			idx += tok.length();
-			assert("MyTokenizer(\"" + str + "\", \"" + delim + "\") has wrong token \"" + tok + "\" != \"" + res[i] + "\"", res[i].equals(tok));
+			assertTrue("MyTokenizer(\"" + str + "\", \"" + delim + "\") has wrong token \"" + tok + "\" != \"" + res[i] + "\"", res[i].equals(tok));
 		}
-		assert("MyTokenizer(\"" + str + "\", \"" + delim + "\") has too many tokens", !tokenizer.hasMoreTokens());
+		assertTrue("MyTokenizer(\"" + str + "\", \"" + delim + "\") has too many tokens", !tokenizer.hasMoreTokens());
 	}
 
 	private void checkConstr(String str, String delim, String res[], CustomSeparator sep) {
@@ -188,13 +188,13 @@ public class TestMyTokenizer extends TestCase {
 		int idx = 0;
 
 		for (i = 0; i < res.length; i++) {
-			assert("MyTokenizer(\"" + str + "\", \"" + delim + "\") lacks tokens", tokenizer.hasMoreTokens());
+			assertTrue("MyTokenizer(\"" + str + "\", \"" + delim + "\") lacks tokens", tokenizer.hasMoreTokens());
 			tok = tokenizer.nextToken();
-			assert("tokenIndex broken", idx == tokenizer.getTokenIndex());
+			assertTrue("tokenIndex broken", idx == tokenizer.getTokenIndex());
 			idx += tok.length();
-			assert("MyTokenizer(\"" + str + "\", \"" + delim + "\") has wrong token \"" + tok + "\" != \"" + res[i] + "\"", res[i].equals(tok));
+			assertTrue("MyTokenizer(\"" + str + "\", \"" + delim + "\") has wrong token \"" + tok + "\" != \"" + res[i] + "\"", res[i].equals(tok));
 		}
-		assert("MyTokenizer(\"" + str + "\", \"" + delim + "\") has too many tokens", !tokenizer.hasMoreTokens());
+		assertTrue("MyTokenizer(\"" + str + "\", \"" + delim + "\") has too many tokens", !tokenizer.hasMoreTokens());
 	}
 
 	private void checkConstr(String str, String delim, String res[], Collection seps) {
@@ -204,13 +204,13 @@ public class TestMyTokenizer extends TestCase {
 		int idx = 0;
 
 		for (i = 0; i < res.length; i++) {
-			assert("MyTokenizer(\"" + str + "\", \"" + delim + "\") lacks tokens", tokenizer.hasMoreTokens());
+			assertTrue("MyTokenizer(\"" + str + "\", \"" + delim + "\") lacks tokens", tokenizer.hasMoreTokens());
 			tok = tokenizer.nextToken();
-			assert("tokenIndex broken", idx == tokenizer.getTokenIndex());
+			assertTrue("tokenIndex broken", idx == tokenizer.getTokenIndex());
 			idx += tok.length();
-			assert("MyTokenizer(\"" + str + "\", \"" + delim + "\") has wrong token \"" + tok + "\" != \"" + res[i] + "\"", res[i].equals(tok));
+			assertTrue("MyTokenizer(\"" + str + "\", \"" + delim + "\") has wrong token \"" + tok + "\" != \"" + res[i] + "\"", res[i].equals(tok));
 		}
-		assert("MyTokenizer(\"" + str + "\", \"" + delim + "\") has too many tokens", !tokenizer.hasMoreTokens());
+		assertTrue("MyTokenizer(\"" + str + "\", \"" + delim + "\") has too many tokens", !tokenizer.hasMoreTokens());
 	}
 }
 

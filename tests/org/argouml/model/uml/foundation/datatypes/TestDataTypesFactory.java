@@ -70,7 +70,7 @@ public class TestDataTypesFactory extends TestCase {
 
 	Object o2 = DataTypesFactory.getFactory();
 
-	assert("Different singletons", o1 == o2);
+	assertTrue("Different singletons", o1 == o2);
 
     }
 

@@ -73,7 +73,7 @@ public class TestModelManagementFactory extends TestCase {
 
 	Object o2 = ModelManagementFactory.getFactory();
 
-	assert("Different singletons", o1 == o2);
+	assertTrue("Different singletons", o1 == o2);
 
     }
 

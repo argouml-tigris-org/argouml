@@ -81,7 +81,7 @@ public class TestActivityGraphsFactory extends TestCase {
 
 	Object o2 = ActivityGraphsFactory.getFactory();
 
-	assert("Different singletons", o1 == o2);
+	assertTrue("Different singletons", o1 == o2);
 
     }
 

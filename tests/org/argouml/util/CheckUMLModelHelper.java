@@ -103,7 +103,7 @@ public class CheckUMLModelHelper {
 
 	// something meaningfull.
 
-	tc.assert("toString() corrupt in " + c, 
+	tc.assertTrue("toString() corrupt in " + c, 
 
 		  mo.toString() instanceof String);
 
@@ -115,7 +115,7 @@ public class CheckUMLModelHelper {
 
 	System.gc();
 
-	tc.assert("Could not reclaim " + c, wo.get() == null);
+	tc.assertTrue("Could not reclaim " + c, wo.get() == null);
 
     }
 
@@ -135,17 +135,17 @@ public class CheckUMLModelHelper {
 
 	// something meaningfull.
 
-	tc.assert("toString() corrupt in " + c, 
+	tc.assertTrue("toString() corrupt in " + c, 
 
 		  mo.toString() instanceof String);
 
-	tc.assert("getUMLClassName() corrupt in " + c, 
+	tc.assertTrue("getUMLClassName() corrupt in " + c, 
 
 		  mo.getUMLClassName() instanceof String);
 
 
 
-	tc.assert("getUMLClassName() different from expected in " + c, 
+	tc.assertTrue("getUMLClassName() different from expected in " + c, 
 
 		  name.equals(mo.getUMLClassName()));
 
@@ -157,7 +157,7 @@ public class CheckUMLModelHelper {
 
 	System.gc();
 
-	tc.assert("Could not reclaim " + c, wo.get() == null);
+	tc.assertTrue("Could not reclaim " + c, wo.get() == null);
 
     }
 
@@ -301,7 +301,7 @@ public class CheckUMLModelHelper {
                     Method m = f.getClass().getMethod("create"+names[i], new Class[] {});
                     Object base = m.invoke(f, new Object[] {});
                     if (base instanceof MModelElement) {
-                        tc.assert("not a valid metaModelName " + names[i], ExtensionMechanismsHelper.getHelper().getMetaModelName((MModelElement)base).equals(names[i]));
+                        tc.assertTrue("not a valid metaModelName " + names[i], ExtensionMechanismsHelper.getHelper().getMetaModelName((MModelElement)base).equals(names[i]));
                     }
                 }
                 catch (NoSuchMethodException ns) {}
@@ -325,13 +325,13 @@ public class CheckUMLModelHelper {
                     Object base = m.invoke(f, new Object[] {});
                     if (base instanceof MModelElement) {
                         MStereotype stereo2 = ExtensionMechanismsFactory.getFactory().buildStereotype((MModelElement)base, "test2", ns);
-                        tc.assert("Unexpected invalid stereotype", ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement)base, stereo2));
+                        tc.assertTrue("Unexpected invalid stereotype", ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement)base, stereo2));
                         if (!(base instanceof MClass)) {
-                            tc.assert("Unexpected invalid stereotype", !ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement)base, stereo1));
+                            tc.assertTrue("Unexpected invalid stereotype", !ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement)base, stereo1));
                         } else {
                             MInterface inter = CoreFactory.getFactory().createInterface();
                             MStereotype stereo3 = ExtensionMechanismsFactory.getFactory().buildStereotype(inter, "test3", ns);
-                            tc.assert("Unexpected invalid stereotype", !ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement)base, stereo3));
+                            tc.assertTrue("Unexpected invalid stereotype", !ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement)base, stereo3));
                         }
                     }
                 }
