@@ -395,7 +395,7 @@ public class FigInterface extends FigNodeModelElement {
     // user interaction methods
 
     public void mouseClicked(MouseEvent me) {
-        super.mousePressed(me);
+        super.mouseClicked(me);
         boolean targetIsSet = false;
         int i = 0;
         Editor ce = Globals.curEditor();
