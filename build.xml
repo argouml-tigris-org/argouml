@@ -159,6 +159,9 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <property name="src.dir" value="../src_new"/>
     <property name="lib.dir" value="../lib"/>
+
+    <property name="version.package" value="org/argouml/application"/>
+
     <property name="gef.jar" value="gef-0.9.6.jar"/>
     <property name="classpath" value="${JAVA_HOME}/lib/tools.jar:${lib.dir}/xerces.jar:${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/${gef.jar}:${lib.dir}/antlrall.jar:${lib.dir}/log4j.jar:${lib.dir}/jh.jar"/>
 
@@ -275,8 +278,6 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <mkdir dir="${build.dir}"/>
     <mkdir dir="${build.dir}/ext"/>
     <mkdir dir="${build.dest}"/>
-
-    <property name="version.package" value="org/argouml/application"/>
 
     <uptodate property="version.is.current"
 	    targetfile="${build.src}/${version.package}/ArgoVersion.java">
