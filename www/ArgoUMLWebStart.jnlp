@@ -18,7 +18,7 @@
         </security>
         <resources>
           <j2se version="1.3 1.2"/>
-          <jar href="lib/090/argouml.jar" main="true" download="eager"/>
+          <jar href="lib/090/argouml09.jar" main="true" download="eager"/>
           <jar href="lib/090/xerces.jar"/>
           <jar href="lib/090/gef.jar"/>
           <jar href="lib/090/ocl-argo.jar"/>
