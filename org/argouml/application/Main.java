@@ -189,7 +189,6 @@ public class Main {
 	ResourceLoader.addResourceExtension("gif");
 	ResourceLoader.addResourceLocation("/org/argouml/Images");
 	ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
-	Localizer.initialize();
 	Localizer.addResource("GefBase",
 			      "org.tigris.gef.base.BaseResourceBundle");
 	Localizer.addResource("GefPres",
