@@ -26,6 +26,7 @@ package org.argouml.xml.argo;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -54,10 +55,11 @@ public class XmlInputStream extends BufferedInputStream {
     private boolean childOnly;
     private int instanceRequired;
     private int instanceCount;
+    private byte buffer[];
     
     private static final Logger LOG = 
         Logger.getLogger(XmlInputStream.class);
-    
+
     /**
      * Construct a new XmlInputStream
      * @param in the input stream to wrap.
@@ -134,6 +136,10 @@ public class XmlInputStream extends BufferedInputStream {
         this.attributes = attribs;
         this.childOnly = child;
     }
+
+    public void reopen() {
+        endStream = false;
+    }
     
     /**
      * @see java.io.InputStream#read()
@@ -174,8 +180,12 @@ public class XmlInputStream extends BufferedInputStream {
                 b[i] = -1;
                 read = i;
                 return read;
+            } else {
+                endStream = isLastTag(b[i + off]);
+                if (endStream) {
+                    copyBuffer(b);
+                }
             }
-            endStream = isLastTag(b[i + off]);
         }
         return read;
     }
@@ -209,8 +219,12 @@ public class XmlInputStream extends BufferedInputStream {
                 } else {
                     return i;
                 }
+            } else {
+                endStream = isLastTag(b[i]);
+                if (endStream) {
+                    copyBuffer(b);
+                }
             }
-            endStream = isLastTag(b[i]);
         }
         return read;
     }
@@ -237,6 +251,13 @@ public class XmlInputStream extends BufferedInputStream {
             currentTag.append((char) ch);
         }
         return false;
+    }
+
+    private void copyBuffer(byte b[]) {
+        buffer = new byte[b.length];
+        for (int i=0; i < b.length; ++i) {
+            buffer[i] = b[i];
+        }
     }
     
     /**
@@ -375,7 +396,24 @@ public class XmlInputStream extends BufferedInputStream {
         }
         return attributesFound;
     }
+    
+    
                     
+    /**
+     * The close method is overridden to prevent some class out of
+     * our control from closing the stream (such as a SAX parser).
+     * Use realClose() to finally close the stream for real.
+     */
+    public void close() throws IOException {
+    }
+    
+    /**
+     * Really close the input
+     */
+    public void realClose() throws IOException {
+        super.close();
+    }
+    
     private int realRead() throws IOException {
         int read = super.read();
         if (read == -1) {
