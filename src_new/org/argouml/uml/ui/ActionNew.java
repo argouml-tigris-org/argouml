@@ -26,12 +26,8 @@ package org.argouml.uml.ui;
 
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.text.MessageFormat;
-
-import javax.swing.JOptionPane;
 
 import org.argouml.cognitive.Designer;
-import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.FindDialog;
@@ -68,39 +64,10 @@ public class ActionNew extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-	ProjectBrowser pb = ProjectBrowser.getInstance();
-	Project p = ProjectManager.getManager().getCurrentProject();
-
-	if (p != null && p.needsSave()) {
-	    String t =
-		MessageFormat.format(Translator.localize(
-				"optionpane.new-project-save-changes-to"),
-				new Object[] {p.getName()} );
-	    int response =
-		JOptionPane.showConfirmDialog(pb, t, t,
-					      JOptionPane.YES_NO_CANCEL_OPTION
-		);
-
-	    if (response == JOptionPane.CANCEL_OPTION 
-	        || response == JOptionPane.CLOSED_OPTION) return;
-	    if (response == JOptionPane.YES_OPTION) {
-		boolean safe = false;
-
-		if (ActionSaveProject.SINGLETON.shouldBeEnabled()) {
-		    safe = ActionSaveProject.SINGLETON.trySave (true);
-		}
-		if (!safe) {
-		    safe = ActionSaveProjectAs.SINGLETON.trySave (false);
-		}          
-		if (!safe) {
-		    return;
-		}
-	    }
-	    //TODO: if you cancel the save it should cancel open
-	    //Steffen Zschaler 01/10/2002 - Well, it does, doesn't it?
-	    //trySave will return false in that case...
-	}
-
+        Project p = ProjectManager.getManager().getCurrentProject();
+        
+        if (!(new ActionOpenProject()).askConfirmationAndSave()) return;
+        
 	// we should remove all open dialogs. They have as parent the
 	// ProjectBrowser
 	Window[] windows = ProjectBrowser.getInstance().getOwnedWindows();
