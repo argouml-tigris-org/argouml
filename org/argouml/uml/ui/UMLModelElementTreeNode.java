@@ -22,67 +22,65 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
-import org.argouml.uml.*;
-import javax.swing.*;
 import ru.novosoft.uml.*;
-import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.tree.*;
 import ru.novosoft.uml.foundation.core.*;
+import java.util.*;
 
-public class UMLInitialValueComboBox extends JComboBox implements ActionListener, UMLUserInterfaceComponent {
+/**
+ *  This class implements a tree node that 
+ *  displays one model element
+ *  @author Curt Arnold
+ */
 
-    private UMLUserInterfaceContainer _container;
+public class UMLModelElementTreeNode implements TreeNode {
+    private TreeNode _parent;
+    private String _label;
+    private MModelElement _element;
     
-    /** Creates new BooleanChangeListener */
-    public UMLInitialValueComboBox(UMLUserInterfaceContainer container) {
-        super();
-        _container = container;
-        addActionListener(this);
-        addItem("null");
+    public UMLModelElementTreeNode(TreeNode parent,
+        UMLUserInterfaceContainer container,
+        MModelElement element) {
+         _element = element;
+         _label = container.formatElement(element);
+        _parent = parent;
     }
 
-    public void targetChanged() {
-        update();
+    public TreeNode getChildAt(int childIndex) {
+        return null;
     }
 
-    public void targetReasserted() {
+    public int getChildCount() {
+        return 0;
+    }
+
+    public TreeNode getParent() {
+        return _parent;
+    }
+
+    public int getIndex(TreeNode node) {
+        return -1;
+    }
+
+    public boolean getAllowsChildren() {
+        return false;
+    }
+
+    public boolean isLeaf() {
+        return true;
+    }
+
+    
+    public Enumeration children() {
+        return null;
     }
     
-    public void roleAdded(final MElementEvent p1) {
-    }
-    public void recovered(final MElementEvent p1) {
-    }
-    public void roleRemoved(final MElementEvent p1) {
-    }
-    public void listRoleItemSet(final MElementEvent p1) {
-    }
-    public void removed(final MElementEvent p1) {
-    }
-    public void propertySet(final MElementEvent event) {
-        String eventProp = event.getName();
-        if(eventProp == null) {
-            if(eventProp.equals("initialValue")) {
-                update();
-            }
-            else {
-                if(eventProp.equals("type")) {
-                    updateDefaults();
-                }
-            }
-        }
+    public String toString() {
+        return _label;        
     }
     
-    private void update() {
-    }
-    
-    private void updateDefaults() {
-        Object target = _container.getTarget();
-        if(target instanceof MAttribute) {
-            Profile profile = _container.getProfile();
-            setModel(new DefaultComboBoxModel(profile.getInitialValues(((MAttribute) target).getType())));
-        }
-    }
-    
-    public void actionPerformed(final ActionEvent event) {
-        Object selected = getSelectedItem();
+    public MModelElement getModelElement() {
+        return _element;
     }
 }

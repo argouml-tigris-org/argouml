@@ -65,6 +65,9 @@ public class UMLStereotypeComboBoxListModel extends AbstractListModel implements
             updateStereotypes();
         }
     }
+    
+    public void targetReasserted() {
+    }
 
     private void addStereotypes(MNamespace ns,Class metaclass,Collection stereotypes) {
         Collection ownedElements = ns.getOwnedElements();
@@ -208,6 +211,7 @@ public class UMLStereotypeComboBoxListModel extends AbstractListModel implements
                     else {
                         currentName = currentStereotype.toString();
                     }
+                    if(currentName == null) currentName = "";
                     if(wasDup || prevName.equals(currentName)) {
                         if(prevStereotype instanceof MStereotype) {
                             _comboEntries.add(profile.formatElement((MStereotype) prevStereotype,null));

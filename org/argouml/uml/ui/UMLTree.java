@@ -24,54 +24,75 @@
 package org.argouml.uml.ui;
 import javax.swing.event.*;
 import javax.swing.*;
+import javax.swing.tree.*;
 import java.lang.reflect.*;
 import ru.novosoft.uml.*;
 import java.awt.event.*;
 import java.awt.*;
 import ru.novosoft.uml.foundation.core.*;
 
-public class UMLList extends JList implements UMLUserInterfaceComponent, MouseListener {
+public class UMLTree extends JTree implements UMLUserInterfaceComponent, 
+      MouseListener, TreeSelectionListener {
 
-    private UMLModelElementListModel _umlListModel;
+    private UMLTreeModel _model;
     private boolean _navigate;
+    private UMLUserInterfaceContainer _container;
     
-    public UMLList(UMLModelElementListModel listModel,boolean navigate) {
-        super(listModel);
-        _umlListModel = listModel;
+    public UMLTree(UMLUserInterfaceContainer container,
+        UMLTreeModel model,boolean navigate) {
+        super(model);
+        _model = model;
         _navigate = navigate;
+        _container = container;
+        setRootVisible(false);
+        setEditable(false);
+        getSelectionModel().setSelectionMode
+            (TreeSelectionModel.SINGLE_TREE_SELECTION);
         if(navigate) {
             addMouseListener(this);
+            addTreeSelectionListener(this);
+        }
+    }
+    
+    public void setModel(TreeModel model) {
+        super.setModel(model);
+        if(model instanceof UMLTreeModel) {
+            _model = (UMLTreeModel) model;
+        }
+        else {
+            _model = null;
+            setEnabled(false);
         }
     }
 
     public void targetChanged() {
-        _umlListModel.targetChanged();
+        if(_model != null) _model.targetChanged();
     }
 
     public void targetReasserted() {
     }
     
     public void roleAdded(final MElementEvent event) {
-        _umlListModel.roleAdded(event);
+        if(_model != null) _model.roleAdded(event);
     }
     
     public void recovered(final MElementEvent event) {
-        _umlListModel.recovered(event);
+        if(_model != null) _model.recovered(event);
     }
     
     public void roleRemoved(final MElementEvent event) {
-        _umlListModel.roleRemoved(event);
+        if(_model != null) _model.roleRemoved(event);
     }
     
     public void listRoleItemSet(final MElementEvent event) {
-        _umlListModel.listRoleItemSet(event);
+        if(_model != null) _model.listRoleItemSet(event);
     }
     
     public void removed(final MElementEvent event) {
-        _umlListModel.removed(event);
+        if(_model != null) _model.removed(event);
     }
     public void propertySet(final MElementEvent event) {
-        _umlListModel.propertySet(event);
+        if(_model != null) _model.propertySet(event);
     }
    
     public void mouseReleased(final MouseEvent event) {
@@ -90,13 +111,6 @@ public class UMLList extends JList implements UMLUserInterfaceComponent, MouseLi
         if(event.isPopupTrigger()) {
             showPopup(event);
         }            
-        else {
-            int mods = event.getModifiers();
-            if(mods == InputEvent.BUTTON1_MASK) {
-                int index = locationToIndex(event.getPoint());
-                _umlListModel.open(index);
-            }
-        }        
     }
     
     public void mousePressed(final MouseEvent event) {
@@ -113,10 +127,26 @@ public class UMLList extends JList implements UMLUserInterfaceComponent, MouseLi
     
     private final void showPopup(MouseEvent event) {
         Point point = event.getPoint();
-        int index = locationToIndex(point);
-        JPopupMenu popup = new JPopupMenu();
-        if(_umlListModel.buildPopup(popup,index)) {
-            popup.show(this,point.x,point.y);
+        TreePath path = getPathForLocation(event.getX(),event.getY());
+        if(path != null) {
+            JPopupMenu popup = new JPopupMenu();
+            if(_model != null && _model.buildPopup(popup,path)) {
+                popup.show(this,point.x,point.y);
+            }
         }
     }
+    
+    public void valueChanged(TreeSelectionEvent e)    {
+        TreePath selection = e.getNewLeadSelectionPath();
+        if(selection != null) {
+            Object last = selection.getLastPathComponent();
+            if(last instanceof UMLModelElementTreeNode) {
+                MModelElement element = ((UMLModelElementTreeNode) last).getModelElement();
+                if(element != null) {
+                    _container.navigateTo(element);
+                }
+            }
+        }
+    }
+    
 }

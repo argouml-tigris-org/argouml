@@ -45,6 +45,8 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
   protected static ImageIcon _realizationIcon = Util.loadIconResource("Realization");
   protected JPanel _modifiersPanel;
     protected static ImageIcon _generalizationIcon = Util.loadIconResource("Generalization");
+  protected static ImageIcon _innerClassIcon = Util.loadIconResource("InnerClass");
+    
 
   
   ////////////////////////////////////////////////////////////////

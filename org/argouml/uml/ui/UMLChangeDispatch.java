@@ -57,6 +57,10 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
     {
         _eventType = 0;
     }
+
+    public void targetReasserted() {
+        _eventType = 7;
+    }
     
     /**
      *   configures this instance to dispatch a propertySet event.
@@ -181,6 +185,10 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
                         
                     case 6:
                         uiComp.roleRemoved(_event);
+                        break;
+
+                    case 7:
+                        uiComp.targetReasserted();
                         break;
                 }
             }       

@@ -31,8 +31,16 @@ import javax.swing.*;
 import org.argouml.uml.ui.*;
 import java.awt.*;
 import java.awt.event.*;
+import org.argouml.uml.ui.foundation.core.*;
+import ru.novosoft.uml.foundation.core.*;
 
-public class PropPanelStereotype extends PropPanel implements ItemListener {
+
+import org.tigris.gef.util.Util;
+
+public class PropPanelStereotype extends PropPanelModelElement 
+    implements ItemListener {
+
+  private static ImageIcon _stereotypeIcon = Util.loadIconResource("Stereotype");
 
   private String[] _modelElements =
     { "ModelElement", "Classifier", "Class", "Interface", "DataType", "Exception", "Signal",
@@ -103,6 +111,18 @@ public class PropPanelStereotype extends PropPanel implements ItemListener {
     derivedList.setVisibleRowCount(1);
     addField(new JScrollPane(derivedList),0,1,1);
     
+    JPanel buttonBorder = new JPanel(new BorderLayout());
+    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
+    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
+    add(buttonBorder,BorderLayout.EAST);
+    
+    new PropPanelButton(this,buttonPanel,_stereotypeIcon,"New stereotype","newStereotype",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateNamespace",null);
+    new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete package","removeElement",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,"Go back","navigateBackAction","isNavigateBackEnabled");
+    buttonPanel.add(new JPanel());
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
+    
   }
 
   public void itemStateChanged(ItemEvent event) {
@@ -115,4 +135,16 @@ public class PropPanelStereotype extends PropPanel implements ItemListener {
     }
   }
 
+    public void newStereotype() {
+        Object target = getTarget();
+        if(target instanceof MStereotype) {
+            MNamespace ns = ((MStereotype) target).getNamespace();
+            if(ns != null) {
+                MStereotype newStereo = ns.getFactory().createStereotype();
+                ns.addOwnedElement(newStereo);
+                navigateTo(newStereo);
+            }
+        }
+    }
+                
 } /* end class PropPanelStereotype */

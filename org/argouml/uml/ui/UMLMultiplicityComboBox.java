@@ -63,6 +63,9 @@ public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, 
     public void targetChanged() {
         update();
     }
+
+    public void targetReasserted() {
+    }
     
     public void roleAdded(final MElementEvent p1) {
     }

@@ -37,9 +37,9 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.model_management.*;
+import org.argouml.uml.ui.foundation.core.*;
 
-
-public class PropPanelActor extends PropPanel {
+public class PropPanelActor extends PropPanelClassifier {
 
 
   ////////////////////////////////////////////////////////////////
@@ -92,10 +92,38 @@ public class PropPanelActor extends PropPanel {
     implementsList.setBackground(getBackground());
     implementsList.setForeground(Color.blue);    
     addField(implementsList,1,1,0.5);
+    
+    JPanel buttonBorder = new JPanel(new BorderLayout());
+    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
+    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
+    add(buttonBorder,BorderLayout.EAST);
+    
+    new PropPanelButton(this,buttonPanel,_addOpIcon,"Add operation","addOperation",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateNamespace",null);
+    new PropPanelButton(this,buttonPanel,_addAttrIcon,"Add attribute","addAttribute",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,"Go back","navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_addAssocIcon,"Add association","addAssociation",null);
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_generalizationIcon,"Add generalization","addGeneralization",null);
+    new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete actor","removeElement",null);
+    new PropPanelButton(this,buttonPanel,_realizationIcon,"Add realization","addRealization",null);
+    new PropPanelButton(this,buttonPanel,_classIcon,"New actor","newActor",null);
+    
 
     
     
   }
 
-  
+
+    public void newActor() {
+        Object target = getTarget();
+        if(target instanceof MActor) {
+            MNamespace ns = ((MActor) target).getNamespace();
+            if(ns != null) {
+                MActor actor = ns.getFactory().createActor();
+                ns.addOwnedElement(actor);
+            }
+        }
+    }
+
 } /* end class PropActor */

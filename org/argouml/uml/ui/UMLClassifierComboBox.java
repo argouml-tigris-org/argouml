@@ -51,6 +51,9 @@ public class UMLClassifierComboBox extends JComboBox implements UMLUserInterface
     public void targetChanged() {
         _model.targetChanged();
     }
+
+    public void targetReasserted() {
+    }
     
     public void roleAdded(final MElementEvent event) {
         _model.roleAdded(event);

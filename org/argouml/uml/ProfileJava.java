@@ -30,6 +30,7 @@ import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.behavior.activity_graphs.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 
 import java.util.*;
 
@@ -102,7 +103,8 @@ public class ProfileJava extends Profile {
 
         _metaClasses.add(
             new ProfileMetaclass(MAssociation.class,
-                new String[] {"implicit","communicate","subscribe"}));
+                new String[] {"implicit","communicate","subscribe", 
+                    "primary actor", "supporting actor", "offstage actor","stakeholder"}));
         //_tags.add(new String[] {"persistence","persistent"});
 
         _metaClasses.add(
@@ -147,6 +149,11 @@ public class ProfileJava extends Profile {
         _metaClasses.add(
             new ProfileMetaclass(MDataType.class,
                 new String[] {"enumeration"}));
+        
+        _metaClasses.add(
+            new ProfileMetaclass(MActor.class,
+                new String[] { "organization", "machine", "person" }));
+        
         
         String[] javaLang = {"java","lang" };
         String[] javaUtil = {"java","util" };

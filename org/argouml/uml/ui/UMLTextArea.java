@@ -45,6 +45,9 @@ public class UMLTextArea extends JTextArea implements DocumentListener, UMLUserI
         _property.targetChanged();
         update();
     }
+
+    public void targetReasserted() {
+    }
     
     public void roleAdded(final MElementEvent p1) {
     }

@@ -43,6 +43,9 @@ public class UMLExpressionBodyField extends JTextArea implements DocumentListene
         if(_notifyModel) _model.targetChanged();
         update();
     }
+
+    public void targetReasserted() {
+    }
     
     public void roleAdded(final MElementEvent p1) {
     }

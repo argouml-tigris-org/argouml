@@ -21,34 +21,30 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 package org.argouml.uml.ui;
-import javax.swing.event.*;
-import ru.novosoft.uml.MElementListener;
+import ru.novosoft.uml.*;
+import javax.swing.*;
+import javax.swing.tree.*;
+import ru.novosoft.uml.foundation.core.*;
+import java.util.*;
 
 /**
- *  This interface accepts all notifications signaled by NSUML's MElementListener
- *  interface plus accepts notification that a container's target model element
- *  has been changed (typically due to navigation).  This interface is implemented
- *  by UMLList, UMLTextField, UMLMultiplicityComboBox, etc.
- *
+ *  This class implements the java.util.Enumeration interface
+ *        by delegating to a java.util.Interator
  *  @author Curt Arnold
- *  @see UMLUserInterfaceContainer
- *  @see UMLList
- *  @see UMLTextField
- *  @see UMLMultiplicityComboBox
  */
-public interface UMLUserInterfaceComponent extends MElementListener {
-        /**
-         *  This method is called when the target of a UMLUserInterfaceContainer
-         *  has been changed.
-         */
-	public void targetChanged();
-        
-        /**  This method is called when the navigation history has been changed
-         *     (and navigation buttons may need to be updated).  targetChanged
-         *     implies navigationHistoryChanged, so this method will not
-         *     be called after a targetChange.
-         */
-        public void targetReasserted();
+
+public class EnumerationAdapter implements Enumeration {
+    private Iterator _iter;
+    EnumerationAdapter(Iterator iter) {
+        _iter = iter;
+    }
+
+    public boolean hasMoreElements() {
+        return _iter.hasNext();
+    }
+
+    public Object nextElement() {
+        return _iter.next();
+    }
 }

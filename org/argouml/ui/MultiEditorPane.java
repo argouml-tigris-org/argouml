@@ -111,9 +111,13 @@ implements ChangeListener, MouseListener {
                 nextTab = i;
 	}
     }
-    if (nextTab != -1 && nextTab != currentTab) 
-        _tabs.setSelectedIndex(nextTab);
-    _tabs.setVisible(nextTab != -1);
+//    if this target doesn't match the tabs expectation    
+//        leave the previous tab displayed
+    
+//    
+//    if (nextTab != -1 && nextTab != currentTab) 
+//        _tabs.setSelectedIndex(nextTab);
+//    _tabs.setVisible(nextTab != -1);
   }
 
 

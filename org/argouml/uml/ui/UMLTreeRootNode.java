@@ -22,69 +22,79 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
-import org.argouml.uml.*;
-import javax.swing.*;
 import ru.novosoft.uml.*;
-import java.awt.event.*;
-import java.awt.*;
+import javax.swing.*;
+import javax.swing.tree.*;
+import javax.swing.event.*;
 import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import java.util.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.behavior.use_cases.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 /**
- *   This class implements a combo box for stereotypes.
- *   The class polls the model and profile for appropriate
- *   stereotypes for the target object.  A context popup menu
- *   allows for new stereotypes to be created and existing 
- *   stereotypes to be deleted.
+ *  This class is implements a tree model for ownedElements of a MNamespace
  *
- *   @author Curt Arnold
+ *  @author Curt Arnold
  */
-public class UMLStereotypeComboBox extends JComboBox implements UMLUserInterfaceComponent {
-
-    private UMLUserInterfaceContainer _container;
-    private UMLStereotypeComboBoxListModel _model;
+abstract public class UMLTreeRootNode implements TreeNode, 
+    UMLUserInterfaceComponent  {
     
-    public UMLStereotypeComboBox(UMLUserInterfaceContainer container) {
-        super();
+    protected UMLUserInterfaceContainer _container;
+    protected String _property;
+    protected UMLTreeModel _model;
+
+    /**
+     *   Creates a new tree model
+     *   @param container the container (typically a PropPanelClass or PropPanelInterface)
+     *                    that provides access to the target classifier.
+     *   @param property  a string that specifies the name of an event that should force a refresh
+     *                       of the list model.  A null value will cause all events to trigger a refresh.
+     *   @param showNone  if true, an element labelled "none" will be shown where there are
+     *                        no actual entries in the list.
+     */    
+    public UMLTreeRootNode(UMLUserInterfaceContainer container,
+        String property) {
         _container = container;
-        _model = new UMLStereotypeComboBoxListModel(container);
-        setModel(_model);
+        _property = property;
+    }
+    
+    
+    public void setModel(UMLTreeModel model) {
+        _model = model;
+    }
+    
+    public final UMLTreeModel getModel() {
+        return _model;
     }
 
-    public Object getTarget() {
-        return _container.getTarget();
-    }
-        
-    public void targetChanged() {
-        _model.targetChanged();
+    public TreeNode getParent() {
+        return null;
     }
 
+
+    public boolean getAllowsChildren() {
+        return true;
+    }
+
+    public boolean isLeaf() {
+        return false;
+    }
+
+    
     public void targetReasserted() {
-    }                    
-    
-    public void roleAdded(final MElementEvent event) {
-        _model.roleAdded(event);
     }
     
-    public void recovered(final MElementEvent event) {
-        _model.recovered(event);
+    abstract public boolean buildPopup(TreeModel model,JPopupMenu menu,TreePath path);
+    
+    public final UMLUserInterfaceContainer getContainer() {
+        return _container;
     }
     
-    public void roleRemoved(final MElementEvent event) {
-        _model.roleRemoved(event);
+    public final String getProperty() {
+        return _property;
     }
     
-    public void listRoleItemSet(final MElementEvent event) {
-        _model.listRoleItemSet(event);
-    }
     
-    public void removed(final MElementEvent event) {
-        _model.removed(event);
-    }
-
-    public void propertySet(final MElementEvent event) {
-        _model.propertySet(event);
-    }
-}
+    
+};

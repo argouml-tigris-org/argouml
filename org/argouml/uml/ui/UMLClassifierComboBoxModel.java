@@ -85,6 +85,9 @@ public class UMLClassifierComboBoxModel extends AbstractListModel implements Com
         _classifiers = null;
         _selectedItem = null;
     }
+
+    public void targetReasserted() {
+    }
     
     public void roleAdded(final MElementEvent event) {
         String eventName = event.getName();
@@ -352,7 +355,7 @@ public class UMLClassifierComboBoxModel extends AbstractListModel implements Com
             _selectedItem = null;
             update();
         }
-        if(_selectedItem == null) {
+        if(_selectedItem == null && _comboList != null) {
             if(_getMethod != null) {
                 try {
                     Object classifier = _getMethod.invoke(_container,_getArgs);
@@ -369,6 +372,7 @@ public class UMLClassifierComboBoxModel extends AbstractListModel implements Com
                     }
                 }
                 catch(Exception e) {
+                    e.printStackTrace();
                     System.out.println(e.toString() + " UMLClassiferComboBoxModel.getSelectedItem()");
                 }
             }

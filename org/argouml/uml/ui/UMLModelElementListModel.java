@@ -239,6 +239,9 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
             }
         }
     }
+
+    public void targetReasserted() {
+    }
     
     //      documented in UMLUserInterfaceComponent
     public void roleAdded(final MElementEvent event) {
@@ -446,7 +449,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      */
     static protected MModelElement elementAtUtil(Collection collection,int index,Class requiredClass) {
         Object obj = null;
-        if(collection != null && index < collection.size()) {
+        if(collection != null && index >= 0 && index < collection.size()) {
             if(collection instanceof java.util.List) {
                 obj = ((java.util.List) collection).get(index);
             }
