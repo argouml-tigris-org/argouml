@@ -288,7 +288,7 @@ public class UMLActivityDiagram extends UMLDiagram {
 	    //_actionNewSwimlane,
 	    null,
 	    /*actionCallState,*/ // uncomment these ...
-            actionObjectFlowState,
+            /*actionObjectFlowState,*/
             /*actionSubactivityState,*/
 	    /*getExtendedActions(),
             null, */
