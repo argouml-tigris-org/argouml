@@ -89,9 +89,9 @@ public class Modeller
        @param model The model to work with.
     */
     public Modeller(Object model,
-		    DiagramInterface diagram,
-		    boolean noAssociations,
-		    boolean arraysAsDatatype)
+                  DiagramInterface diagram,
+                  boolean noAssociations,
+                  boolean arraysAsDatatype)
     {
 	this.model = model;
 	this.noAssociations = noAssociations;
@@ -367,19 +367,27 @@ public class Modeller
     {
         // now create diagram if it doesn't exists in project
 		if (Import.isCreateDiagramsChecked()) {
-			if (getDiagram() == null) {
-				if (currentPackageName != null && !currentPackageName.trim().equals("")) {
+                        if (getDiagram() == null) {
+                                _diagram = new DiagramInterface(Globals.curEditor());
+                                if (currentPackageName != null && !currentPackageName.trim().equals("")) {
 					// create new diagram or select existing diagram for package
-					DiagramInterface.createOrSelectClassDiagram(currentPackage, currentPackageName);
+					_diagram.createOrSelectClassDiagram(currentPackage, currentPackageName);
 				} else {
 					// create new diagram in root for classifier without package
-					DiagramInterface.createRootClassDiagram();
+					_diagram.createRootClassDiagram();
 				}
-				_diagram = new DiagramInterface(Globals.curEditor());
+				
 			} else {
 				if (currentPackageName != null) {
 					getDiagram().selectClassDiagram(currentPackage, currentPackageName);
 				}
+                                // the DiagramInterface is instantiated already
+                                // but the class is in a source file
+                                // with no package declaration
+                                else{
+                                    // create new diagram in root for classifier without package
+                                    _diagram.createRootClassDiagram();
+                                }
 			}
 		}
         // add the current classifier to the diagram.
