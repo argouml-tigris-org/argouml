@@ -49,6 +49,9 @@ import ru.novosoft.uml.behavior.state_machines.MTransition;
  * Factory to create UML classes for the UML
  * BehaviorialElements::StateMachines package.
  *
+ * MEvent and MStateVertex do not have create methods
+ * since they are abstract classes in the NSUML model.
+ *
  * @since ARGO0.11.2
  * @author Thierry Lach
  */
@@ -99,8 +102,6 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
 	super.initialize(modelElement);
 	return modelElement;
     }
-
-    // TODO:  add MEvent createEvent()
 
     /** Create an empty but initialized instance of a UML FinalState.
      *  
@@ -171,8 +172,6 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
 	super.initialize(modelElement);
 	return modelElement;
     }
-
-    // TODO: add MStateVertex createVertex()
 
     /** Create an empty but initialized instance of a UML StubState.
      *  

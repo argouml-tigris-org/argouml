@@ -61,6 +61,11 @@ import ru.novosoft.uml.foundation.core.MUsage;
  * Factory to create UML classes for the UML
  * Foundation::Core package.
  *
+ * Feature, StructuralFeature, and PresentationElement
+ * do not have a create methods since
+ * it is called an "abstract metaclass" in the
+ * UML specifications.
+ *
  * @since ARGO0.11.2
  * @author Thierry Lach
  */
@@ -223,8 +228,6 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	return modelElement;
     }
 
-    // TODO:  implement createFeature()
-
     /** Create an empty but initialized instance of a UML Flow.
      *  
      *  @return an initialized UML Flow instance.
@@ -315,7 +318,6 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	return modelElement;
     }
 
-    // TODO:  implement createPresentationElement()
 
     /** Create an empty but initialized instance of a UML Relationship.
      *  
@@ -327,7 +329,6 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	return modelElement;
     }
 
-    // TODO:  implement createStructuralFeature()
 
     /** Create an empty but initialized instance of a UML TemplateParameter.
      *  
