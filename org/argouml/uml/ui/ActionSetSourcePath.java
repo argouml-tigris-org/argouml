@@ -80,7 +80,9 @@ public class ActionSetSourcePath extends UMLAction {
 	String path = null;
 	if (ModelFacade.isAModelElement(obj)) {
 	    name = ModelFacade.getName(obj);
-	    path = (String)ModelFacade.getTaggedValue(obj, "src_path");
+            Object tv = ModelFacade.getTaggedValue(obj, "src_path");
+            if (tv != null)
+                path = ModelFacade.getValueOfTag(tv);
 	    if (ModelFacade.isAPackage(obj))
 		type = "Package";
 	    else if (ModelFacade.isAClass(obj))
