@@ -274,9 +274,10 @@ public abstract class FigNodeModelElement
         if (items != null && items.size() > 0) {
             JMenu critiques = new JMenu("Critiques");
             ToDoItem itemUnderMouse = hitClarifier(me.getX(), me.getY());
-            if (itemUnderMouse != null)
+            if (itemUnderMouse != null) {
                 critiques.add(new ActionGoToCritique(itemUnderMouse));
-            critiques.addSeparator();
+                critiques.addSeparator();
+            }
             int size = items.size();
             for (int i = 0; i < size; i++) {
                 ToDoItem item = (ToDoItem) items.elementAt(i);
