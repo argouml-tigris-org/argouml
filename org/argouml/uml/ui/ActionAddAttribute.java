@@ -59,7 +59,8 @@ public class ActionAddAttribute extends UMLChangeAction {
 
 	if (ModelFacade.isAClassifier(target))
 	    cls = target;
-	else if (ModelFacade.isAFeature(target))
+	else if (ModelFacade.isAFeature(target)
+		 && ModelFacade.isAClass(ModelFacade.getOwner(target)))
 	    cls = ModelFacade.getOwner(target);
 	else
 	    return;
@@ -79,6 +80,7 @@ public class ActionAddAttribute extends UMLChangeAction {
 	*/
 	return super.shouldBeEnabled()
 	       && (ModelFacade.isAClass(target)
-		   || ModelFacade.isAFeature(target));
+		   || (ModelFacade.isAFeature(target)
+		       && ModelFacade.isAClass(ModelFacade.getOwner(target))));
     }
 } /* end class ActionAddAttribute */
