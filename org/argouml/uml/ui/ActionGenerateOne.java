@@ -45,7 +45,7 @@ public class ActionGenerateOne extends UMLAction {
     /**
      * The singleton.
      */
-    public static ActionGenerateOne SINGLETON = new ActionGenerateOne();
+    private static final ActionGenerateOne SINGLETON = new ActionGenerateOne();
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -141,5 +141,12 @@ public class ActionGenerateOne extends UMLAction {
         }
         return foundOne;
         */
+    }
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionGenerateOne getSingleton() {
+        return SINGLETON;
     }
 } /* end class ActionGenerateOne */

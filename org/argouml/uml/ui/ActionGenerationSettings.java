@@ -39,7 +39,7 @@ public class ActionGenerationSettings extends UMLAction {
     /**
      * The singleton.
      */
-    public static ActionGenerationSettings SINGLETON =
+    private static final ActionGenerationSettings SINGLETON =
 	new ActionGenerationSettings();
 
     ////////////////////////////////////////////////////////////////
@@ -71,5 +71,12 @@ public class ActionGenerationSettings extends UMLAction {
 	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
 	return super.shouldBeEnabled() 
 	    && (activeDiagram instanceof UMLDiagram);
+    }
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionGenerationSettings getSingleton() {
+        return SINGLETON;
     }
 } /* end class ActionGenerationSettings */
