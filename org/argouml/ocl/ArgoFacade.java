@@ -94,10 +94,7 @@ public class ArgoFacade implements tudresden.ocl.check.types.ModelFacade {
 }
 
 class ArgoAny implements Any, Type2 {
-    /**
-     * @deprecated by Linus Tolke as of 0.16. Will be private.
-     */
-    protected static Logger cat = Logger.getLogger(ArgoAny.class);
+    private static final Logger LOG = Logger.getLogger(ArgoAny.class);
 
     Object classifier;
 
@@ -267,7 +264,7 @@ class ArgoAny implements Any, Type2 {
 	    UmlHelper.getHelper().getCore().getReturnParameter(foundOp);
 
 	if (rp == null || ModelFacade.getType(rp) == null) {
-	    cat.warn("WARNING: supposing return type void!");
+	    LOG.warn("WARNING: supposing return type void!");
 	    return new ArgoAny(null);
 	}
 	Object returnType = ModelFacade.getType(rp);
@@ -309,7 +306,7 @@ class ArgoAny implements Any, Type2 {
     }
 
     public boolean hasState(String name) {
-	cat.warn("ArgoAny.hasState() has been called, but is "
+	LOG.warn("ArgoAny.hasState() has been called, but is "
 		 + "not implemented yet!");
 	return false;
     }
@@ -364,7 +361,7 @@ class ArgoAny implements Any, Type2 {
 
         Collection operationParameters = ModelFacade.getParameters(operation);
 	if (!ModelFacade.isReturn(operationParameters.iterator().next())) {
-	    cat.warn(
+	    LOG.warn(
                 "ArgoFacade$ArgoAny expects the first operation parameter "
 		+ "to be the return type; this isn't the case"
 	    );

@@ -66,22 +66,6 @@ public class ActionOpenProject
         Logger.getLogger(ActionOpenProject.class);
 
     ////////////////////////////////////////////////////////////////
-    // static variables
-
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use the constructor instead
-     * to build yourself an object of your own.
-     */
-    public static ActionOpenProject SINGLETON = new ActionOpenProject();
-
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. It is not used in this class
-     * and this class is not a file system resource interface so you should
-     * search for another solution.
-     */
-    public static final String separator = System.getProperty("file.separator");
-
-    ////////////////////////////////////////////////////////////////
     // constructors
 
     /**

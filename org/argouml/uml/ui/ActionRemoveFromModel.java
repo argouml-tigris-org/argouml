@@ -29,8 +29,6 @@ import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
-
 import javax.swing.JOptionPane;
 
 import org.argouml.i18n.Translator;
@@ -56,35 +54,21 @@ import org.tigris.gef.presentation.Fig;
  * 
  * @author original author not known.
  * @author jaap.branderhorst@xs4all.nl extensions
- * @stereotype singleton
  */
-
 public class ActionRemoveFromModel extends UMLChangeAction {
 
-    ////////////////////////////////////////////////////////////////
-    // static variables
-
     /**
-     * @deprecated by Linus Tolke as of 0.15.4. Create your own action every
-     * time. This will be removed.
+     * Constructor.
      */
-    public static ActionRemoveFromModel SINGLETON =
-	new ActionRemoveFromModel();
-
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
-     */
-    protected static Logger cat =
-        Logger.getLogger(ActionRemoveFromModel.class);
-    
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     public ActionRemoveFromModel() {
         super(Translator.localize("action.delete-from-model"));
     }
 
+    /**
+     * Constructor.
+     *
+     * @param global <tt>true</tt> if we have an icon.
+     */
     protected ActionRemoveFromModel(boolean global) {
         super(Translator.localize("action.delete-from-model"), global);
     }
