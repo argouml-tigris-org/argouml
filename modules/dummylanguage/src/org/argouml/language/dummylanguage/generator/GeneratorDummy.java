@@ -24,22 +24,19 @@
 
 package org.argouml.language.dummylanguage.generator;
 
-import java.io.*;
 import java.util.*;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.model_management.*;
-import org.argouml.uml.MMUtil;
 
 import org.argouml.application.api.*;
-import org.argouml.uml.DocumentationManager;
 import org.argouml.uml.generator.*;
-import org.argouml.language.java.generator.*;
 
 /** Generator subclass to generate text for display in diagrams in in
  * text fields in the ArgoUML user interface.
@@ -56,16 +53,22 @@ public class GeneratorDummy extends Generator implements PluggableNotation {
 	super(Notation.makeNotation("Dummy"));
     }
 
-    /** Generates a file for this classifier.
-     * Needs-more-work:
-     * This will only work for languages that have each node
-     * in a separate files (one or more).
-     * @returns filename
+    /**
+     * <p>Generate code for an extension point.</p>
+     *
+     * <p>Provided to comply with the interface, but returns null
+     *   since no code will be generated. This should prevent a source tab
+     *   being shown.</p>
+     *
+     * @param ep  The extension point to generate for
+     *
+     * @return    The generated code string. Always null in this
+     *            implementation.
      */
-    public String GenerateFile(MClassifier node, String path) {
-	return "FILENAME";
+    public String generateExtensionPoint(MExtensionPoint ep) {
+        return "ExtensionPoint(" + ep.getName() + ")";
     }
-	   
+
     public String generateOperation(MOperation op, boolean documented) {
 	return "Operation(" + op.getName() + ")";
     }
@@ -123,7 +126,6 @@ public class GeneratorDummy extends Generator implements PluggableNotation {
     public String getModuleKey() { 
 	return "module.language.generator.dummylanguage"; 
     }
-
 
 } /* end class GeneratorJava */
 

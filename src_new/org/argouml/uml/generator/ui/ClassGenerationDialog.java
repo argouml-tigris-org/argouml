@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,6 +40,9 @@ import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.util.osdep.*;
 import org.argouml.language.java.generator.*;
+import org.argouml.application.api.*;
+import org.argouml.application.notation.*;
+import org.argouml.uml.generator.*;
 
 public class ClassGenerationDialog extends JFrame implements ActionListener {
 
@@ -62,6 +65,8 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
   protected JLabel _outputDirectoryLabel;
   protected JScrollPane _tableScrollPane;
   protected JButton _generateButton;
+
+    ArrayList _languages = null;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -134,15 +139,27 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
     _outputDirectoryComboBox.setEditable(true);
     getContentPane().add(_outputDirectoryComboBox, gridBagConstraints);
 
-    _classTableModel.setTarget(nodes);
+    ArrayList ll = Notation.getAvailableNotations(); 
+    _languages = new ArrayList();
+    for (int l = 0; l < ll.size(); l++) {
+	if (NotationProviderFactory.getInstance()
+	    .getProvider((NotationName)ll.get(l)) instanceof FileGenerator) {
+	    _languages.add(ll.get(l));
+	}
+    }
+    ll = null;
+
+    _classTableModel.setTarget(nodes, _languages);
     _classTable.setModel(_classTableModel);
     _classTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
     _classTable.setShowVerticalLines(false);
-    _classTable.setTableHeader(null);
+    if (_languages.size() <= 1)
+	_classTable.setTableHeader(null);
     _classTable.setIntercellSpacing(new Dimension(0, 1));
-    TableColumn checkCol = _classTable.getColumnModel().getColumn(0);
-    checkCol.setMinWidth(20);
-    checkCol.setMaxWidth(30);
+    TableColumn descCol = _classTable.getColumnModel().getColumn(0);
+    descCol.setMinWidth(100);
+    descCol.setMaxWidth(200);
+    descCol = null;
     _tableScrollPane.setViewportView(_classTable);
 
     gridBagConstraints = new GridBagConstraints();
@@ -203,6 +220,8 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
 
   ////////////////////////////////////////////////////////////////
   // event handlers
+  /** Either the Generate or the Cancel buttons is pressed.
+   */
   public void actionPerformed(ActionEvent e) {
       
       // Generate Button --------------------------------------
@@ -212,35 +231,28 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
       ProjectBrowser pb = ProjectBrowser.TheInstance;
       Project p = pb.getProject();
       p.getGenerationPrefs().setOutputDir(path);
-      Vector nodes = _classTableModel.getChecked();
-      int size = nodes.size();
-      String[] compileCmd=new String[size+1];
+      Vector[] fileNames = new Vector[_languages.size()];
+      for (int i = 0; i < _languages.size(); i++) {
+	  fileNames[i] = new Vector();
+	  NotationName language = (NotationName)_languages.get(i);
 
-      for (int i = 0; i <size; i++) {
-	Object node = nodes.elementAt(i);
-	if (node instanceof MClassifier)
-	  compileCmd[i+1] = GeneratorJava.GenerateFile((MClassifier) node, path);
-      }
-      if (_compileCheckBox.isSelected()) {
-	  String compiler=System.getProperty("argo.compiler");
-	  if (compiler==null || compiler.length()==0)
-	      compiler="javac";
-	  compileCmd[0]=compiler;
-	  //compileCmd[0] += " -d "+path+" -classpath "+System.getProperty("java.class.path");
-	  
-	  String compilerOutput=compile(compileCmd);
-	  if (compilerOutput==null) {
-	      System.out.println("Compilation done.");
-	      JOptionPane.showMessageDialog(this, "Compilation done.","Code Generation", JOptionPane.INFORMATION_MESSAGE);
-	  } else {
-	      // todo: should display errors in a window!
-	      System.out.println("Compiler errors -> System.err");
-	      System.err.println(compilerOutput);
-	      JOptionPane.showMessageDialog(this, "Compiler errors -> System.err\n"+compilerOutput, "Code Generation", JOptionPane.ERROR_MESSAGE);
-	      
+	  FileGenerator generator = 
+	      (FileGenerator)Generator.getGenerator(language);
+	  Set nodes = _classTableModel.getChecked(language);
+	  for (Iterator iter = nodes.iterator();
+	       iter.hasNext();
+	       ) {
+	      Object node = iter.next();
+
+	      if (node instanceof MClassifier) {
+		  // Needs-more-work:
+		  // This will only work for languages that have each node
+		  // in a separate files (one or more).
+		  String fn = generator.GenerateFile((MClassifier) node, path);
+		  fileNames[i].add(fn);
+	      }
 	  }
       }
-
       setVisible(false);
       dispose();
     }
@@ -274,53 +286,6 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
           }
       }
   }
-
-  private String compile(String[] compileCmd) {
-      for (int i=0; i<compileCmd.length; ++i)
-	  System.out.print(compileCmd[i]+" ");
-      System.out.println();
-      StringBuffer allOut=new StringBuffer();
-      int exitState=-1;
-      boolean goon=true;
-      try {
-	  Process compileProc=Runtime.getRuntime().exec(compileCmd);
-	  BufferedReader coutRB=new BufferedReader(new InputStreamReader(compileProc.getInputStream()));;
-	  BufferedReader cerrRB=new BufferedReader(new InputStreamReader(compileProc.getErrorStream()));
-	  int co,ce;
-  	  do {
-	      co=coutRB.read();
-  	      if (co != -1) {
-  		  allOut.append((char)co);
-	      }
-	      ce=cerrRB.read();
-  	      if (ce != -1) {
-  		  allOut.append((char)ce);
-	      }
-	      if (co==-1 && ce==-1){
-		  try {
-		      exitState=compileProc.exitValue();
-		      goon=false;
-		  } catch (IllegalThreadStateException e1) {
-		      // wait until next polling:
-		      try {
-			  Thread.yield();
-			  Thread.sleep(500);
-		      } catch (InterruptedException irr) { }
-		  }
-	      }
-  	  } while (goon || co!=-1 || ce!=-1);
-      } catch (IOException e2) {
-	  System.out.println("Exception while reading compiler output:");
-	  e2.printStackTrace();
-      }
-      String outStr=null;
-      if (exitState!=0) {
-	  // Compiler reported errors, messages are suppressed:
-	  outStr=allOut.toString();
-      }
-      return outStr;
-  }
-
 } /* end class ClassGenerationDialog */
 
 
@@ -330,7 +295,8 @@ class TableModelClassChecks extends AbstractTableModel {
   ////////////////
   // instance varables
   Vector _classes;
-  VectorSet _checked = new VectorSet();
+    ArrayList _languages;
+    Set[] _checked;
 
   ////////////////
   // constructor
@@ -339,67 +305,122 @@ class TableModelClassChecks extends AbstractTableModel {
 
   ////////////////
   // accessors
-  public void setTarget(Vector classes) {
+  public void setTarget(Vector classes, ArrayList languages) {
     _classes = classes;
-    _checked.removeAllElements();
+
+    _languages = languages;
+    _checked = new Set[getLanguagesCount()];
+    for (int j = 0; j < getLanguagesCount(); j++)
+	_checked[j] = new HashSet(); // Doesn't really matter what set we use.
+
     int size = _classes.size();
     for (int i = 0; i < size; i++) {
       MClassifier cls = (MClassifier) _classes.elementAt(i);
       String name = cls.getName();
-      if (name.length() > 0) _checked.addElement(cls);
+      if (!(name.length() > 0))
+	  continue;
+      
+      for (int j = 0; j < getLanguagesCount(); j++) {
+	  // Needs-more-work:
+	  // if (cls.isSupposedToBeGeneratedAsLanguage(_languages.index(j)))
+	  //     _checked[j].add(cls);
+	  // else
+	  if (((NotationName)_languages.get(j))
+	      .equals(Notation.getDefaultNotation())) {
+	      _checked[j].add(cls);
+	  }
+      }
     }
     fireTableStructureChanged();
   }
 
-  public Vector getChecked() { return _checked.asVector(); }
-
-  ////////////////
-  // TableModel implemetation
-  public int getColumnCount() { return 2; }
-
-  public String  getColumnName(int c) {
-    if (c == 0) return "X";
-    if (c == 1) return "Class Name";
-    return "XXX";
-  }
-
-  public Class getColumnClass(int c) {
-    if (c == 0) return Boolean.class;
-    if (c == 1) return String.class;
-    return String.class;
-  }
-
-  public boolean isCellEditable(int row, int col) {
-    MClassifier cls = (MClassifier) _classes.elementAt(row);
-    return col == 0 && cls.getName().length() > 0;
-  }
-
-  public int getRowCount() {
-    if (_classes == null) return 0;
-    return _classes.size();
-  }
-
-  public Object getValueAt(int row, int col) {
-    MClassifier cls = (MClassifier) _classes.elementAt(row);
-    if (col == 0) {
-      return (_checked.contains(cls)) ? Boolean.TRUE : Boolean.FALSE;
+    private int getLanguagesCount() {
+	if (_languages == null)
+	    return 0;
+	return _languages.size();
     }
-    else if (col == 1) {
-      String name = cls.getName();
-      return (name.length() > 0) ? name : "(anon)";
+
+    public Set getChecked(NotationName nn) {
+	int index = _languages.indexOf(nn);
+	if (index == -1)
+	    return new HashSet();
+	return _checked[index];
     }
-    else
-      return "CC-" + row*2+col;
-  }
 
-  public void setValueAt(Object aValue, int rowIndex, int columnIndex)  {
-    //System.out.println("setting table value " + rowIndex + ", " + columnIndex);
-    if (columnIndex != 0) return;
-    if (!(aValue instanceof Boolean)) return;
-    boolean val = ((Boolean)aValue).booleanValue();
-    Object cls = _classes.elementAt(rowIndex);
-    if (val) _checked.addElement(cls);
-    else _checked.removeElement(cls);
-  }
+    /** All checked classes. Union of all languages.
+     */
+    public Set getChecked() {
+	Set union = new HashSet();
+	for (int i = 0; i < getLanguagesCount(); i++)
+	    union.addAll(_checked[i]);
+	return union;
+    }
 
+    ////////////////
+    // TableModel implemetation
+    public int getColumnCount() { return 1 + getLanguagesCount(); }
+
+    public String  getColumnName(int c) {
+	if (c == 0) return "Class Name";
+	int langindex = c - 1;
+	if (langindex >= 0 && langindex < getLanguagesCount())
+	    return ((NotationName)_languages.get(langindex)).getConfigurationValue();
+	return "XXX";
+    }
+
+    public Class getColumnClass(int c) {
+	if (c == 0) return String.class;
+	int langindex = c - 1;
+	if (langindex >= 0 && langindex < getLanguagesCount())
+	    return Boolean.class;
+	return String.class;
+    }
+
+    public boolean isCellEditable(int row, int col) {
+	MClassifier cls = (MClassifier) _classes.elementAt(row);
+	if (col == 0)
+	    return false;
+	if (!(cls.getName().length() > 0))
+	    return false;
+	int langindex = col - 1;
+	if (langindex >= 0 && langindex < getLanguagesCount())
+	    return true;
+	return false;
+    }
+
+    public int getRowCount() {
+	if (_classes == null) return 0;
+	return _classes.size();
+    }
+
+    public Object getValueAt(int row, int col) {
+	MClassifier cls = (MClassifier) _classes.elementAt(row);
+	int langindex = col - 1;
+	if (col == 0) {
+	    String name = cls.getName();
+	    return (name.length() > 0) ? name : "(anon)";
+	}
+	else if (langindex >= 0 && langindex < getLanguagesCount()) {
+	    return _checked[langindex].contains(cls) 
+		? Boolean.TRUE 
+		: Boolean.FALSE;
+	}
+	else
+	    return "CC-r:" + row + " c:" + col;
+    }
+
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex)  {
+	//System.out.println("setting table value " + rowIndex + ", " + columnIndex);
+	if (columnIndex == 0) return;
+	if (columnIndex >= getColumnCount()) return;
+	if (!(aValue instanceof Boolean)) return;
+	boolean val = ((Boolean)aValue).booleanValue();
+	Object cls = _classes.elementAt(rowIndex);
+
+	int langindex = columnIndex - 1;
+	if (langindex >= 0 && langindex < getLanguagesCount()) {
+	    if (val) _checked[langindex].add(cls);
+	    else _checked[langindex].remove(cls);
+	}
+    }
 } /* end class TableModelClassChecks */

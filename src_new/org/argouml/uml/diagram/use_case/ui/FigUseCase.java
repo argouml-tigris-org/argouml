@@ -1368,8 +1368,12 @@ public class FigUseCase extends FigNodeModelElement {
                 }
 
                 // Now put the text in
-
-                epFig.setText(Notation.generate(this, ep));
+		// We must handle the case where the text is null
+		String epText = Notation.generate(this, ep);
+		if (epText == null) {
+		    epText = "";
+		}
+                epFig.setText(epText);
                 epFig.setModelElement(ep);
 
                 epCount++;

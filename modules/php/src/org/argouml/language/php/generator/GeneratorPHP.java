@@ -52,7 +52,7 @@ import org.argouml.uml.generator.*;
 // needs-more-work: always check for null!!!
 
 public class GeneratorPHP extends Generator
-implements PluggableNotation {
+implements PluggableNotation, FileGenerator {
   public static boolean VERBOSE = false;
 
   private static Section sect;
@@ -70,10 +70,12 @@ implements PluggableNotation {
     return SINGLETON.generate(o);
   }
 
-  public static String GenerateFile(MClassifier cls, String path) {
-    // GenerateFile now returns the full path name of the
-    // the generated file.
-
+    /** Generates a file for the classifier.
+     * This method could have been static if it where not for the need to
+     * call it through the Generatorinterface.
+     * @returns the full path name of the the generated file.
+     */
+  public String GenerateFile(MClassifier cls, String path) {
     sect = new Section();
 
     String name = cls.getName();
@@ -1264,7 +1266,7 @@ implements PluggableNotation {
         // String s = "";
         // s += INDENT + "// section " + id + " begin\n";
         // s += INDENT + "// section " + id + " end\n";
-        return sect.generate(id, INDENT);
+        return Section.generate(id, INDENT);
     }
 
     public String generateSection(MClassifier cls){
@@ -1277,7 +1279,7 @@ implements PluggableNotation {
         // String s = "";
         // s += INDENT + "// section " + id + " begin\n";
         // s += INDENT + "// section " + id + " end\n";
-        return sect.generate(id, INDENT);
+        return Section.generate(id, INDENT);
     }
     public boolean canParse() {
         return true;
@@ -1292,8 +1294,8 @@ implements PluggableNotation {
     public String getModuleDescription() {
         return "PHP Notation and Code Generator";
     }
-    public String getModuleAuthor() { return "ArgoUML Core"; }
-    public String getModuleVersion() { return "0.9.4"; }
+    public String getModuleAuthor() { return "Marian Heddesheimer"; }
+    public String getModuleVersion() { return "0.9.8"; }
     public String getModuleKey() { return "module.language.php.generator"; }
 
 

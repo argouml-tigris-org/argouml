@@ -25,7 +25,7 @@ public class Section {
         m_ary.clear();
     }
 
-    public String generate(String id, String INDENT){
+    public static String generate(String id, String INDENT){
         String s = "";
         s += INDENT + "// section " + id + " begin\n";
         s += INDENT + "// section " + id + " end\n";

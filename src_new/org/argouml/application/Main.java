@@ -219,6 +219,8 @@ public class Main {
     splash.setVisible(doSplash);
     phase0 = System.currentTimeMillis();
 
+    // Register the default notation.
+    Object dgd = org.argouml.uml.generator.GeneratorDisplay.getInstance();
 
 	MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
     ProjectBrowser pb = new ProjectBrowser("ArgoUML", splash.getStatusBar(),
