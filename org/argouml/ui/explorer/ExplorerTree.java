@@ -311,25 +311,11 @@ extends DisplayTextTree
                 .getLastPathComponent())
                 .getUserObject();
                 if (rowItem == target) {
-                    rowIndexes[rowIndexCounter] = j;
-                    rowIndexCounter++;
-                    if (rowToSelect == 0) {
-                        rowToSelect = j;
-                    }
-                    break;
+                    this.addSelectionRow(j);
                 }
             }
             
         }
-        if (rowIndexCounter < targets.length) {
-            int[] rowIndexestmp = rowIndexes;
-            rowIndexes = new int[rowIndexCounter];
-            for (int i = 0 ; i < rowIndexCounter; i++) {
-                rowIndexes[i] = rowIndexestmp[i];
-            }
-        }
-        setSelectionRows(rowIndexes);
-        scrollRowToVisible(rowToSelect);
     }
     
     /**
@@ -343,9 +329,6 @@ extends DisplayTextTree
          */
         public void valueChanged(TreeSelectionEvent e) {
             
-            if(!updatingSelection){
-                updatingSelection = true;
-                
                 TreePath[] paths = e.getPaths();
                 List targets = new ArrayList();
                 if (paths != null) {
@@ -359,9 +342,6 @@ extends DisplayTextTree
                     }
                 }
                 TargetManager.getInstance().setTargets(targets);
-
-                updatingSelection = false;
-            }
         }
     }
     
@@ -372,17 +352,12 @@ extends DisplayTextTree
          */
         private void setTargets(Object[] targets) {
             
-            if(!updatingSelection){
-                updatingSelection = true;
-                
                 if (targets.length <= 0) {
                     clearSelection();
                 } else {
                     
                     setSelection(targets);
                 }
-                updatingSelection = false;
-            }
         }
         
         /**
