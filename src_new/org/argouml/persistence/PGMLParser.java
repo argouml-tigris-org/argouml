@@ -245,7 +245,8 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
     /**
      * @see org.tigris.gef.xml.pgml.PGMLParser#startElement(
-     *          java.lang.String, org.xml.sax.AttributeList)
+     *          java.lang.String, java.lang.String,
+     *          java.lang.String, org.xml.sax.Attributes)
      *
      * Called by the XML framework when an entity starts.
      */
@@ -526,8 +527,9 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
      * @see org.tigris.gef.xml.pgml.PGMLParser#readDiagram(
      *          java.io.InputStream, boolean)
      */
-    public synchronized Diagram readDiagram(InputStream is,
-            				    boolean closeStream) {
+    public synchronized Diagram readDiagram(
+            InputStream is,
+            boolean closeStream) {
         String errmsg = "Exception in readDiagram";
 
         //initialise parsing attributes:
@@ -580,49 +582,48 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
      *         java.lang.String, java.lang.String, java.lang.String)
      */
     public void endElement(String uri, String localname, String name)
-        throws SAXException {
+            throws SAXException {
 
-	if ("private".equals(name)) {
-	    if (privateTextDepth == 1) {
-		String str = privateText.toString();
-		StringTokenizer st = new StringTokenizer(str, "\n");
-
-		while (st.hasMoreElements()) {
-		    str = st.nextToken();
-		    NameVal nval = splitNameVal(str);
-		    //cat.debug("Private Element: \"" + str + "\"");
-
-		    if (nval != null) {
-			LOG.debug("Private Element: \"" + nval.getName()
-			          + "\" \"" + nval.getValue() + "\"");
-			if ("ItemUID".equals(nval.getName())) {
-			    if (nval.getValue().length() > 0) {
-			        setElementItemUID(nval.getValue());
-			    }
-			}
-		    }
-		}
-	    }
-
-	    privateTextDepth--;
-	    if (privateTextDepth == 0) {
-	        privateText = new StringBuffer();
-	    }
-	}
+        if ("private".equals(name)) {
+            if (privateTextDepth == 1) {
+                String str = privateText.toString();
+                StringTokenizer st = new StringTokenizer(str, "\n");
+                
+                while (st.hasMoreElements()) {
+                    str = st.nextToken();
+                    NameVal nval = splitNameVal(str);
+                
+                    if (nval != null) {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("Private Element: \"" + nval.getName()
+                                      + "\" \"" + nval.getValue() + "\"");
+                        }
+                        if ("ItemUID".equals(nval.getName()) && nval.getValue().length() > 0) {
+                            setElementItemUID(nval.getValue());
+                        }
+                    }
+                }
+            }
+        
+            privateTextDepth--;
+            if (privateTextDepth == 0) {
+                privateText = new StringBuffer();
+            }
+        }
 
         switch (_elementState) {
-	case NODE_STATE:
-	    Object own = _currentNode.getOwner();
-	    if (!_diagram.getNodes(null).contains(own)) {
-		_diagram.getNodes(null).add(own);
-	    }
-	    break;
-	case EDGE_STATE:
-	    own = _currentEdge.getOwner();
-	    if (!_diagram.getEdges(null).contains(own)) {
-		_diagram.getEdges(null).add(own);
-	    }
-	    break;
+        case NODE_STATE:
+            Object own = _currentNode.getOwner();
+            if (!_diagram.getNodes(null).contains(own)) {
+                _diagram.getNodes(null).add(own);
+            }
+            break;
+        case EDGE_STATE:
+            own = _currentEdge.getOwner();
+            if (!_diagram.getEdges(null).contains(own)) {
+                _diagram.getEdges(null).add(own);
+            }
+            break;
         }
 
         super.endElement(uri, localname, name);
@@ -630,15 +631,22 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
     /**
      * @see org.tigris.gef.xml.pgml.PGMLParser#handleGroup(
-     *         org.xml.sax.AttributeList)
+     *         org.xml.sax.Attributes)
      *
      * This is a correct implementation of handleGroup and will add
      * FigGroups to the diagram ONLY if they are
      * not a FigNode AND if they are not part of a FigNode.
      */
     protected Fig handleGroup(Attributes attrList) {
+        
         Fig f = null;
         String clsNameBounds = attrList.getValue("description");
+        if (LOG.isInfoEnabled()) {
+            LOG.info(
+                "Reading pgml group "
+                + attrList.getValue("name")
+                + " for class " + clsNameBounds);
+        }
         StringTokenizer st = new StringTokenizer(clsNameBounds, ",;[] ");
         String clsName = translateClassName(st.nextToken());
         String xStr = null;
@@ -695,5 +703,11 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         setAttrs(f, attrList);
         return f;
     }
+    
+    protected void handlePGML(Attributes attrList) {
+        super.handlePGML(attrList);
+        LOG.info("Diagram name is " + _diagram.getName());
+    }
+
 } /* end class PGMLParser */
 
