@@ -34,8 +34,10 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
 
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.model_management.MSubsystem;
 
 /**
@@ -171,6 +173,26 @@ public class ModelManagementHelper {
 			set.addAll(getAllSurroundingNamespaces(ns.getNamespace()));
 		}
 		return set;
+	}
+	
+	/**
+	 * Move a modelelement to a new namespace. The way this is currently
+	 * implemented this means that ALL modelelements that share the same
+	 * namespace as the element to be moved are moved. 
+	 * TODO: make this into a copy function
+	 * TODO: make this only move/copy the asked element
+	 * @param element
+	 * @param to
+	 */
+	public void moveElement(MModelElement element, MModel to) {
+	    MModel currentModel = element.getModel();
+	    if (currentModel != to) {
+	        if (element.getNamespace() != currentModel) { // handle packages
+	            moveElement(element.getNamespace(), to);
+	        } else {
+	            element.setNamespace(to);
+	        }	        
+	    }
 	}
 		
 }
