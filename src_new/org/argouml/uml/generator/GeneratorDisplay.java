@@ -574,8 +574,7 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
     String predecessors = "";
     int lpn;
 
-    if (m == null)
-	return "";
+    if (m == null) return "";
 
     ptr = new MsgPtr();
     lpn = recCountPredecessors(m, ptr) + 1;
@@ -584,40 +583,40 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
     pre = m.getPredecessors();
     it = pre.iterator();
     if (it.hasNext()) {
-	MsgPtr ptr2 = new MsgPtr();
-	int precnt = 0;
-
-	while (it.hasNext()) {
-	    MMessage msg = (MMessage) it.next();
-	    int mpn = recCountPredecessors(msg, ptr2) + 1;
-
-	    if (mpn == lpn - 1 && rt == msg.getActivator() &&
-		msg.getPredecessors().size() < 2 &&
-		(ptr2.message == null || countSuccessors(ptr2.message) < 2)) {
-		continue;
-	    }
-
-	    if (predecessors.length() > 0)
-		predecessors += ", ";
-	    predecessors += generateMessageNumber(msg, ptr2.message, mpn);
-	    precnt++;
-	}
-
-	if (precnt > 0)
-	    predecessors += " / ";
+		MsgPtr ptr2 = new MsgPtr();
+		int precnt = 0;
+	
+		while (it.hasNext()) {
+		    MMessage msg = (MMessage) it.next();
+		    int mpn = recCountPredecessors(msg, ptr2) + 1;
+	
+		    if (mpn == lpn - 1 && rt == msg.getActivator() &&
+			msg.getPredecessors().size() < 2 &&
+			(ptr2.message == null || countSuccessors(ptr2.message) < 2)) {
+				continue;
+		    }
+	
+		    if (predecessors.length() > 0)
+				predecessors += ", ";
+		    predecessors += generateMessageNumber(msg, ptr2.message, mpn);
+		    precnt++;
+		}
+	
+		if (precnt > 0)
+		    predecessors += " / ";
     }
 
     number = generateMessageNumber(m, ptr.message, lpn);
 
     act = m.getAction();
     if (act != null) {
-	if (act.getRecurrence() != null)
-	    number = generateRecurrence(act.getRecurrence()) + " " + number;
-
-	action = generateAction(act);
+		if (act.getRecurrence() != null)
+		    number = generateRecurrence(act.getRecurrence()) + " " + number;
+	
+		action = generateAction(act);
     }
 
-    return predecessors + number + " : " + action;
+    return predecessors + number + " : " + m.getName() + " " + action;
   }
 
     public String generateAssociationFrom(MAssociation a, MAssociationEnd ae) {
