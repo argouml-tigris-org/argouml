@@ -77,7 +77,8 @@
 	</module>
 
         <module name="LineLength">
-	  <property name="ignorePattern" value="^ *\* [^ ]+$"/>
+	  <property name="ignorePattern"
+	            value="^( *\* @see |import |// \$Id$)[^ ]*$"/>
 	</module>
 
         <module name="LocalFinalVariableName"/>
