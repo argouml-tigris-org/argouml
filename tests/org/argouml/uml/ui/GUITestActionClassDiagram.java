@@ -24,37 +24,50 @@
 
 package org.argouml.uml.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.model_management.MModelImpl;
+import ru.novosoft.uml.model_management.MPackageImpl;
+
 /**
  * Test for ActionClassDiagram.
  * @author JBranderhorst
  */
-public class TestActionClassDiagram extends GUITestActionClassDiagram {
+public class GUITestActionClassDiagram extends AbstractTestActionAddDiagram {
 
     /**
-     * Constructor for TestActionClassDiagram.
-     * @param arg0 name of test case.
+     * Constructor for GUITestActionClassDiagram.
+     * @param arg0 the name of the test case.
      */
-    public TestActionClassDiagram(String arg0) {
+    public GUITestActionClassDiagram(String arg0) {
 	super(arg0);
     }
 
     /**
-     * Disable the test that doesn't work without head.
+     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
      */
-    public void testCreateDiagram() { }
+    protected ActionAddDiagram getAction() {
+	return ActionClassDiagram.SINGLETON;
+    }
 
     /**
-     * Disable the test that doesn't work without head.
+     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
      */
-    public void testDifferentNames() { }
+    protected MNamespace getNamespace() {
+	return new MPackageImpl();
+    }
 
     /**
-     * Disable the test that doesn't work without head.
+     * @see org.argouml.uml.ui.
+     * AbstractTestActionAddDiagram#getValidNamespaceClasses()
      */
-    // public void testValidTestNamespace() { }
+    protected List getValidNamespaceClasses() {
+	List returnList = new ArrayList();
+	returnList.add(MPackageImpl.class);
+	returnList.add(MModelImpl.class);
+	return returnList;
+    }
 
-    /**
-     * Disable the test that doesn't work without head.
-     */
-    // public void testValidNamespaces() { }
 }

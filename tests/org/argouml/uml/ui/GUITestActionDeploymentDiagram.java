@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,37 +24,49 @@
 
 package org.argouml.uml.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.argouml.kernel.ProjectManager;
+
+import ru.novosoft.uml.foundation.core.MNamespace;
+
 /**
- * Test for ActionClassDiagram.
- * @author JBranderhorst
+ * 
+ * @author jaap.branderhorst@xs4all.nl	
+ * @since Jan 9, 2003
  */
-public class TestActionClassDiagram extends GUITestActionClassDiagram {
+public class GUITestActionDeploymentDiagram
+    extends AbstractTestActionAddDiagram 
+{
 
     /**
-     * Constructor for TestActionClassDiagram.
-     * @param arg0 name of test case.
+     * Constructor.
+     * @param arg0 test case name.
      */
-    public TestActionClassDiagram(String arg0) {
-	super(arg0);
+    public GUITestActionDeploymentDiagram(String arg0) {
+        super(arg0);
     }
 
     /**
-     * Disable the test that doesn't work without head.
+     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
      */
-    public void testCreateDiagram() { }
+    protected ActionAddDiagram getAction() {
+        return ActionDeploymentDiagram.SINGLETON;
+    }
 
     /**
-     * Disable the test that doesn't work without head.
+     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
      */
-    public void testDifferentNames() { }
+    protected MNamespace getNamespace() {
+        return ProjectManager.getManager().getCurrentProject().getModel();
+    }
 
     /**
-     * Disable the test that doesn't work without head.
+     * @see AbstractTestActionAddDiagram#getValidNamespaceClasses()
      */
-    // public void testValidTestNamespace() { }
+    protected List getValidNamespaceClasses() {
+        return new ArrayList();
+    }
 
-    /**
-     * Disable the test that doesn't work without head.
-     */
-    // public void testValidNamespaces() { }
 }

@@ -1,3 +1,27 @@
+// $Id$
+// Copyright (c) 2003 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.uml.ui;
 
 import java.util.Iterator;
@@ -33,23 +57,26 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
 
     /**
      * Constructor for AbstractTestActionAddDiagram.
-     * @param arg0
+     * @param arg0 test case name
      */
     public AbstractTestActionAddDiagram(String arg0) {
         super(arg0);
     }
 
+    /**
+     * Preparations for all test cases.
+     */
     protected void setUp() {
-        try {
-            ArgoSecurityManager.getInstance().setAllowExit(true);
-            _action = getAction();
+	ArgoSecurityManager.getInstance().setAllowExit(true);
+	_action = getAction();
 
-            _ns = getNamespace();
-            _validNamespaces = getValidNamespaceClasses();
-        } catch (Exception noHead) {
-        }
+	_ns = getNamespace();
+	_validNamespaces = getValidNamespaceClasses();
     }
 
+    /**
+     * Cleanup after all test cases.
+     */
     protected void tearDown() {
         _action = null;
         _ns = null;
@@ -64,7 +91,9 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
     protected abstract ActionAddDiagram getAction();
 
     /**
-     * Should return a valid namespace for the diagram to be tested
+     * The namespace.
+     *
+     * @return a valid namespace for the diagram to be tested
      */
     protected abstract MNamespace getNamespace();
 
@@ -83,38 +112,31 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
      * - Has a proper name
      */
     public void testCreateDiagram() {
-        try {
-            UMLDiagram diagram = _action.createDiagram(_ns);
-            assertNotNull(
-                "The diagram has no namespace",
-                diagram.getNamespace());
-            // assertEquals("The diagram does not have the correct namespace", _ns, diagram.getNamespace());
-            assertTrue(
-                "The diagram has a non-valid namespace",
-                _action.isValidNamespace(diagram.getNamespace()));
-            assertNotNull(
-                "The diagram has no graphmodel",
-                diagram.getGraphModel());
-            assertTrue(
-                "The graphmodel of the diagram is not a UMLMutableGraphSupport",
-                diagram.getGraphModel() instanceof UMLMutableGraphSupport);
-            assertNotNull("The diagram has no name", diagram.getName());
-        } catch (Exception noHead) {
-        }
+	UMLDiagram diagram = _action.createDiagram(_ns);
+	assertNotNull(
+		      "The diagram has no namespace",
+		      diagram.getNamespace());
+	assertTrue(
+		   "The diagram has a non-valid namespace",
+		   _action.isValidNamespace(diagram.getNamespace()));
+	assertNotNull(
+		      "The diagram has no graphmodel",
+		      diagram.getGraphModel());
+	assertTrue("The graphmodel of the diagram is not a "
+		   + "UMLMutableGraphSupport",
+		   diagram.getGraphModel() instanceof UMLMutableGraphSupport);
+	assertNotNull("The diagram has no name", diagram.getName());
     }
 
     /**
      * Tests if two diagrams created have different names
      */
     public void testDifferentNames() {
-        try {
-            UMLDiagram diagram1 = _action.createDiagram(_ns);
-            UMLDiagram diagram2 = _action.createDiagram(_ns);
-            assertTrue(
-                "The created diagrams have the same name",
-                !(diagram1.getName().equals(diagram2.getName())));
-        } catch (Exception noHead) {
-        }
+	UMLDiagram diagram1 = _action.createDiagram(_ns);
+	UMLDiagram diagram2 = _action.createDiagram(_ns);
+	assertTrue(
+		   "The created diagrams have the same name",
+		   !(diagram1.getName().equals(diagram2.getName())));
     }
 
     /**
@@ -122,35 +144,35 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
      * the diagram.
      */
     public void testValidTestNamespace() {
-        try {
-            assertTrue(
-                "The namespace with this testis not valid for this diagram",
-                _action.isValidNamespace(_ns));
-        } catch (Exception noHead) {
-        }
+	assertTrue(
+		   "The namespace with this testis not valid for this diagram",
+		   _action.isValidNamespace(_ns));
     }
 
     /**
      * Tests if the list with namespaces defined in getValidNamespaceClasses
      * contains only valid namespaces.
+     *
+     * @throws InstantiationException if we cannot create a new object from
+     * 	                              the namespace.
+     *                                @see java.lang.Class#newInstance()
+     * @throws IllegalAccessException if the constructor of the class cannot
+     *                                be called.
+     *                                @see java.lang.Class#newInstance()
      */
-    public void testValidNamespaces() {
-        try {
-            Iterator it = _validNamespaces.iterator();
-            while (it.hasNext()) {
-                Class clazz = (Class) it.next();
-                try {
-                    Object o = clazz.newInstance();
-                    assertTrue(
-                        clazz.getName()
-                            + " is no valid namespace for the diagram",
-                        _action.isValidNamespace((MNamespace) o));
-                } catch (Exception ex) {
-                    fail(ex.getMessage());
-                }
-            }
-        } catch (Exception noHead) {
-        }
+    public void testValidNamespaces() 
+	throws InstantiationException, IllegalAccessException
+    {
+	Iterator it = _validNamespaces.iterator();
+	while (it.hasNext()) {
+	    Class clazz = (Class) it.next();
+
+	    Object o = clazz.newInstance();
+	    assertTrue(
+		       clazz.getName()
+		       + " is no valid namespace for the diagram",
+		       _action.isValidNamespace((MNamespace) o));
+	}
     }
 
 }

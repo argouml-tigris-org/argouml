@@ -1,4 +1,5 @@
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,51 +22,42 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.ui;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import ru.novosoft.uml.behavior.collaborations.MCollaborationImpl;
-import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  * 
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 9, 2003
  */
-public class TestActionCollaborationDiagram extends AbstractTestActionAddDiagram {
+public class TestActionCollaborationDiagram
+    extends GUITestActionCollaborationDiagram
+{
 
     /**
      * Constructor for TestActionCollaborationDiagram.
-     * @param arg0
+     * @param arg0 name of the test case
      */
     public TestActionCollaborationDiagram(String arg0) {
         super(arg0);
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
+     * Disable the test that doesn't work without head.
      */
-    protected ActionAddDiagram getAction() {
-        return ActionCollaborationDiagram.SINGLETON;
-    }
+    public void testCreateDiagram() { }
 
     /**
-     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
+     * Disable the test that doesn't work without head.
      */
-    protected MNamespace getNamespace() {
-        return new MCollaborationImpl();
-    }
+    public void testDifferentNames() { }
 
     /**
-     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getValidNamespaceClasses()
+     * Disable the test that doesn't work without head.
      */
-    protected List getValidNamespaceClasses() {
-        List rl = new ArrayList();
-        rl.add(MCollaborationImpl.class);
-        return rl;
-    }
+    // public void testValidTestNamespace() { }
 
+    /**
+     * Disable the test that doesn't work without head.
+     */
+    // public void testValidNamespaces() { }
 }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -21,53 +22,43 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.ui;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import ru.novosoft.uml.foundation.core.MClassifierImpl;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.model_management.MPackageImpl;
 
 /**
  * Test for actionusecasediagram.
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 9, 2003
  */
-public class TestActionUseCaseDiagram extends AbstractTestActionAddDiagram {
+public class TestActionUseCaseDiagram
+    extends GUITestActionUseCaseDiagram
+{
 
     /**
-     * Constructor for TestActionUseCaseDiagram.
-     * @param arg0
+     * Constructor
+     * @param arg0 test case name.
      */
     public TestActionUseCaseDiagram(String arg0) {
         super(arg0);
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
+     * Disable the test that doesn't work without head.
      */
-    protected ActionAddDiagram getAction() {
-        return ActionUseCaseDiagram.SINGLETON;
-    }
+    public void testCreateDiagram() { }
 
     /**
-     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
+     * Disable the test that doesn't work without head.
      */
-    protected MNamespace getNamespace() {
-        return new MPackageImpl();
-    }
+    public void testDifferentNames() { }
 
     /**
-     * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getValidNamespaceClasses()
+     * Disable the test that doesn't work without head.
      */
-    protected List getValidNamespaceClasses() {
-        List rl = new ArrayList();
-        rl.add(MPackageImpl.class);
-        rl.add(MClassifierImpl.class);
-        return rl;
-    }
+    // public void testValidTestNamespace() { }
+
+    /**
+     * Disable the test that doesn't work without head.
+     */
+    // public void testValidNamespaces() { }
 
 }
