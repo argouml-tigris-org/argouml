@@ -36,8 +36,8 @@ import org.argouml.ui.*;
 /** A simple non-modal wizard step that shows instructions and prompts
  *  the user to enter a string. 
  *
- * @see org.argouml.cognitve.critics.Critic
- * @see org.argounl.kernel.Wizard
+ * @see org.argouml.cognitive.critics.Critic
+ * @see org.argouml.kernel.Wizard
  */
 
 public class WizStepManyTextFields extends WizStep {
