@@ -37,17 +37,15 @@ import org.apache.log4j.Logger;
 import org.argouml.cognitive.ItemUID;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
-import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 import org.tigris.gef.base.Diagram;
-import org.tigris.gef.graph.GraphEdgeRenderer;
-import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigNode;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -713,7 +711,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     /**
      * Return the model element being referred to by interogating
      * the attributes of the XML group node.
-     * @param attributeMap a map of name value pairs
+     * @param attrList a collection of name value pairs
      */
     private Object getModelElement(Attributes attrList) {
         String href = attrList.getValue("href");
@@ -737,7 +735,6 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         Map map = new HashMap();
         String name;
         String value;
-        Boolean bvalue;
         while (st.hasMoreElements()) {
             String namevaluepair = st.nextToken();
             int equalsPos = namevaluepair.indexOf('=');
@@ -761,6 +758,101 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         super.handlePGML(attrList);
         LOG.info("Diagram name is " + _diagram.getName());
     }
+    
+    protected void privateStateEndElement(String tagName) {
+        try {
+            if(_currentNode != null) {
+                if(_currentEdge != null) {
+                    _currentEdge = null;
+                }
 
+                String body = _textBuf.toString();
+                StringTokenizer st2 = new StringTokenizer(body, "=\"' \t\n");
+                while(st2.hasMoreElements()) {
+                    String t = st2.nextToken();
+                    String v = "no such fig";
+                    if(st2.hasMoreElements()) {
+                        v = st2.nextToken();
+                    }
+
+                    if(t.equals("enclosingFig")) {
+                        _currentEncloser = findFig(v);
+                    }
+                }
+            }
+
+            if(_currentEdge != null) {
+                Fig spf = null;
+                Fig dpf = null;
+                FigNode sfn = null;
+                FigNode dfn = null;
+                String body = _textBuf.toString();
+                StringTokenizer st2 = new StringTokenizer(body, "=\"' \t\n");
+                while(st2.hasMoreElements()) {
+                    String t = st2.nextToken();
+                    String v = st2.nextToken();
+                    if(t.equals("sourcePortFig")) {
+                        spf = findFig(v);
+                    }
+
+                    if(t.equals("destPortFig")) {
+                        dpf = findFig(v);
+                    }
+
+                    if(t.equals("sourceFigNode")) {
+                        sfn = (FigNode)_figRegistry.get(v);
+                    }
+
+                    if(t.equals("destFigNode")) {
+                        dfn = (FigNode)_figRegistry.get(v);
+                    }
+                }
+
+                if(spf == null || dpf == null || sfn == null || dfn == null) {
+                    setDetectedFailure(true);
+                }
+                else {
+                    _currentEdge.setSourcePortFig(spf);
+                    _currentEdge.setDestPortFig(dpf);
+                    _currentEdge.setSourceFigNode(sfn);
+                    _currentEdge.setDestFigNode(dfn);
+                }
+            }
+        }
+        catch(Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    protected Fig findFig(String uri) {
+        Fig f = null;
+        if(uri.indexOf(".") == -1) {
+            f = (Fig)_figRegistry.get(uri);
+        }
+        else {
+            StringTokenizer st = new StringTokenizer(uri, ".");
+            String figNum = st.nextToken();
+            f = (Fig)_figRegistry.get(figNum);
+            if(f == null) {
+                return null;
+            }
+
+//            if(f instanceof FigEdge) {
+//                return ((FigEdge)f).getFig();
+//            }
+
+            while(st.hasMoreElements()) {
+                String subIndex = st.nextToken();
+                if(f instanceof FigGroup) {
+                    FigGroup figGroup = (FigGroup)f;
+                    int i = Integer.parseInt(subIndex);
+                    f = (Fig)figGroup.getFigAt(i);
+                }
+            }
+        }
+
+        return f;
+    }
+    
 } /* end class PGMLParser */
 
