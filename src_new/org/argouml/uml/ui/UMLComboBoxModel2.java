@@ -25,7 +25,6 @@
 package org.argouml.uml.ui;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -35,8 +34,6 @@ import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelEventPump;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.targetmanager.TargetEvent;
