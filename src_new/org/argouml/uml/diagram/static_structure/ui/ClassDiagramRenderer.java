@@ -56,43 +56,56 @@ import org.tigris.gef.presentation.FigNode;
  *  UML Object      ---  Fig
  *  ---------------------------------------
  *  Class         ---  FigClass
- *  Interface       ---  FigClass (TODO?)
+ *  Interface       ---  FigClass (TODO: What?)
  *  Generalization  ---  FigGeneralization
- *  Realization     ---  FigDependency (TODO)
+ *  Realization     ---  FigDependency (TODO: What?)
  *  Association     ---  FigAssociation
  *  Dependency      ---  FigDependency
  *  </pre>
  */
-
 public class ClassDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer {
 
-    /**
-     * @deprecated in 0.15.6 use your own logger if you extend this class
-     * Bob Tarling 4 June 2004
-     */
-    protected static Logger cat = 
+    private static final Logger LOG = 
         Logger.getLogger(ClassDiagramRenderer.class);
 
-    /** Return a Fig that can be used to represent the given node */
+    /**
+     * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
+     *         org.tigris.gef.graph.GraphModel, 
+     *         org.tigris.gef.base.Layer, java.lang.Object)
+     *
+     * Return a Fig that can be used to represent the given node.
+     */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
-        if (ModelFacade.isAClass(node)) return new FigClass(gm, node);
-        else if (ModelFacade.isAInterface(node)) return new FigInterface(gm, node);
-        else if (ModelFacade.isAInstance(node)) return new FigInstance(gm, node);
-        else if (ModelFacade.isAModel(node)) return new FigModel(gm, node);
-        else if (ModelFacade.isASubsystem(node)) return new FigSubsystem(gm, node);
-        else if (ModelFacade.isAPackage(node)) return new FigPackage(gm, node);
-        else if (ModelFacade.isAComment(node)) {
+        if (ModelFacade.isAClass(node)) {
+            return new FigClass(gm, node);
+        } else if (ModelFacade.isAInterface(node)) {
+            return new FigInterface(gm, node);
+        } else if (ModelFacade.isAInstance(node)) {
+            return new FigInstance(gm, node);
+        } else if (ModelFacade.isAModel(node)) {
+            return new FigModel(gm, node);
+        } else if (ModelFacade.isASubsystem(node)) {
+            return new FigSubsystem(gm, node);
+        } else if (ModelFacade.isAPackage(node)) {
+            return new FigPackage(gm, node);
+        } else if (ModelFacade.isAComment(node)) {
             return new FigComment(gm, node);
         }
-        cat.error("TODO ClassDiagramRenderer getFigNodeFor " + node);
+        LOG.error("TODO ClassDiagramRenderer getFigNodeFor " + node);
         return null;
     }
 
-    /** Return a Fig that can be used to represent the given edge */
+    /**
+     * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
+     *         org.tigris.gef.graph.GraphModel, 
+     *         org.tigris.gef.base.Layer, java.lang.Object)
+     *
+     * Return a Fig that can be used to represent the given edge.
+     */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
-        if (cat.isDebugEnabled() ) {
-            cat.debug("making figedge for " + edge);
+        if (LOG.isDebugEnabled() ) {
+            LOG.debug("making figedge for " + edge);
         }
         if (ModelFacade.isAAssociation(edge)) {
             FigAssociation ascFig = new FigAssociation(edge, lay);
@@ -134,22 +147,23 @@ public class ClassDiagramRenderer
             if (ModelFacade.getStereotypes(edge).size() > 0) {
                 stereotype = ModelFacade.getStereotypes(edge).iterator().next();
             }
-            if (cat.isDebugEnabled() ) {
+            if (LOG.isDebugEnabled() ) {
             	if (stereotype != null) {
-                    cat.debug("stereotype: " + ModelFacade.getName(stereotype));
+                    LOG.debug("stereotype: " + ModelFacade.getName(stereotype));
                 } else {
-                    cat.debug("stereotype is null");
+                    LOG.debug("stereotype is null");
                 }
             } 
             if (stereotype != null
                     && ExtensionMechanismsHelper.getHelper().isStereotypeInh(
                             stereotype, "realize", "Abstraction")) {
-                if (cat.isDebugEnabled() ) {
-                    cat.debug("is a realisation");
+                if (LOG.isDebugEnabled() ) {
+                    LOG.debug("is a realisation");
                 }
                 FigRealization realFig = new FigRealization(edge);
 
-                Object supplier = ((ModelFacade.getSuppliers(edge).toArray())[0]);
+                Object supplier = 
+                    ((ModelFacade.getSuppliers(edge).toArray())[0]);
                 Object client = ((ModelFacade.getClients(edge).toArray())[0]);
 
                 FigNode supFN = (FigNode) lay.presentationFor(supplier);
@@ -169,7 +183,7 @@ public class ClassDiagramRenderer
             if (edge instanceof CommentEdge) {
                 return new FigEdgeNote(edge, lay);
             }
-        cat.error("TODO ClassDiagramRenderer getFigEdgeFor");
+        LOG.error("TODO ClassDiagramRenderer getFigEdgeFor");
         return null;
     }
 

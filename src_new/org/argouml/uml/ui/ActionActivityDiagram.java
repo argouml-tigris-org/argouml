@@ -36,17 +36,11 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  */
 public class ActionActivityDiagram extends ActionStateDiagram {
 
-    public static ActionActivityDiagram SINGLETON = new ActionActivityDiagram();
+    public static final ActionActivityDiagram SINGLETON = 
+        new ActionActivityDiagram();
 
     /**
-     * @deprecated since V0.15.5. Make your own logger instead.
-     */
-    protected static Logger cat =
-	Logger.getLogger(org.argouml.uml.ui.ActionActivityDiagram.class);
-
-    /**
-     * Constructor
-     *
+     * Constructor.
      */
     private ActionActivityDiagram() {
         super("action.activity-diagram");

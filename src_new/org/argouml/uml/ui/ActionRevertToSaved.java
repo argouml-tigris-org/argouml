@@ -42,17 +42,11 @@ import org.argouml.ui.ProjectBrowser;
 public class ActionRevertToSaved extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
-    // static variables
-
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Create your own action every
-     * time. This will be removed.
-     */
-    public static ActionRevertToSaved SINGLETON = new ActionRevertToSaved();
-
-    ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * Constructor.
+     */
     public ActionRevertToSaved() {
         super("action.revert-to-saved");
     }
@@ -97,11 +91,12 @@ public class ActionRevertToSaved extends UMLAction {
     }
     
     /**
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     *
      * Overridden to return true only if project has pending changes.
      */
     public boolean shouldBeEnabled() {
         super.shouldBeEnabled();
-        ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
         return (p != null && p.needsSave() && p.getURL() != null);
     }
