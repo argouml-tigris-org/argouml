@@ -44,9 +44,9 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.model_management.*;
 
-import org.tigris.gef.graph.*;
-
 import org.apache.log4j.Category;
+
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.MMUtil;
@@ -58,7 +58,7 @@ import org.argouml.uml.MMUtil;
  * <p>This class handles only UML Use Case Diagrams.</p>
  */
 
-public class UseCaseDiagramGraphModel extends MutableGraphSupport
+public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
     implements VetoableChangeListener {
         protected static Category cat = Category.getInstance(UseCaseDiagramGraphModel.class);
 
@@ -68,19 +68,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
     //
     ///////////////////////////////////////////////////////////////////////////
 
-    /**
-     * <p>A vector of all the nodes in the graph (i.e. diagram).</p>
-     */
-
-    protected Vector _nodes = new Vector();
-
-
-    /**
-     * <p>A vector of all the edges in the graph (i.e. diagram).</p>
-     */
-
-    protected Vector _edges = new Vector();
-
+    
 
     /**
      * <p>The "home" UML model of this diagram, not all ModelElements in this
@@ -128,27 +116,6 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
     // Methods that implement the GraphModel itself
     //
     ///////////////////////////////////////////////////////////////////////////
-
-    /**
-     * <p>Accessor to  return all nodes in the graph.</p>
-     *
-     * @return  The vector of all the nodes in the graph.
-     */
-
-    public Vector getNodes() {
-        return _nodes;
-    }
-
-
-    /**
-     * <p>Accessor to  return all edges in the graph.</p>
-     *
-     * @return  The vector of all the edges in the graph.
-     */
-
-    public Vector getEdges() {
-        return _edges;
-    }
 
 
     /**
@@ -463,27 +430,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
         return true;
     }
 
-    /**
-     * <p>Remove the given node from the graph.</p>
-     *
-     * @param node  The node to be removed from the graph.
-     */
-
-    public void removeNode(Object node) {
-
-        // Only remove it if it is actually on the graph!
-
-        if (!(_nodes.contains(node))) {
-            return;
-        }
-
-        // Remove it and tell GEF
-
-        _nodes.removeElement(node);
-        fireNodeRemoved(node);
-    }
-
-
+    
     /** 
      * <p>Add the given node to the graph, if valid.</p>
      *
@@ -697,27 +644,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
     }
 
 
-    /**
-     * <p>Remove the given edge from the graph.</p>
-     *
-     * @param edge  The edge to be removed from the graph.
-     */
-
-    public void removeEdge(Object edge) {
-
-        // Can't remove if it isn't there
-
-        if (!_edges.contains(edge)) {
-            return;
-        }
-
-        // Remove it and tell GEF
-
-        _edges.removeElement(edge);
-        fireEdgeRemoved(edge);
-    }
-
-
+ 
     /**
      * <p>Determine if the two given ports can be connected by a
      *   kind of edge to be determined by the ports.</p>
