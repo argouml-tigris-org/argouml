@@ -120,10 +120,14 @@ import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.model_management.MPackage;
 import ru.novosoft.uml.model_management.MSubsystem;
 
-/** This defines a NavPerspective as a kind of TreeModel that is made
- *  up of rules from the files whose names begin with "Go".
+/**
+ * This class represents 3 concepts, although it should only represent
+ * a navigation perspective, TODO: separate.
  *
- * <p>It also defines several useful navigational perspectives.
+ * This class represents, at the same time:
+ *   - a navigation tree view / perspective (which is a collection of rules)
+ *   - a tree model
+ *   - a collection of perspectives.
  *
  * $Id$
  */
@@ -135,7 +139,9 @@ public class NavPerspective
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** needs documenting */
+    /** re-factor up into a new events support class
+     * eg TreeSupport.
+     */
     protected EventListenerList _listenerList = new EventListenerList();
 
     ////////////////////////////////////////////////////////////////
@@ -144,9 +150,6 @@ public class NavPerspective
     /** needs documenting */
     protected static Vector _registeredPerspectives = new Vector();
     
-    /** needs documenting */
-    protected static Vector _rules = new Vector();
-
     /**
      * statically initialise all perspectives
      */
@@ -463,16 +466,6 @@ public class NavPerspective
         return _registeredPerspectives;
     }
 
-    /** needs documenting */
-    public static void registerRule(AbstractGoRule rule) {
-        _rules.addElement(rule);
-    }
-
-    /** needs documenting */
-    public static Vector getRegisteredRules() {
-        return _rules;
-    }
-
     ////////////////////////////////////////////////////////////////
     // constructor
 
@@ -489,7 +482,9 @@ public class NavPerspective
     ////////////////////////////////////////////////////////////////
     // Some methods from DefaultTreeModel
 
-    /**
+    /** re-factor up into a new events support class
+     * eg TreeSupport.
+     *
      * Notify all listeners that have registered interest for
      * notification on this event type.  The event instance
      * is lazily created using the parameters passed into
@@ -522,7 +517,9 @@ public class NavPerspective
         }
     }
 
-    /*
+    /** re-factor up into a new events support class
+     * eg TreeSupport.
+     *
      * Notify all listeners that have registered interest for
      * notification on this event type.  The event instance
      * is lazily created using the parameters passed into
@@ -555,7 +552,9 @@ public class NavPerspective
         }
     }
 
-    /*
+    /** re-factor up into a new events support class
+     * eg TreeSupport.
+     *
      * Notify all listeners that have registered interest for
      * notification on this event type.  The event instance
      * is lazily created using the parameters passed into
@@ -588,11 +587,16 @@ public class NavPerspective
         }
     }
 
+    /** re-factor up into a new events support class
+     * eg TreeSupport.
+     */
     protected void fireTreeStructureChanged(Object source, Object[] path) {
         fireTreeStructureChanged(source, path, null, null);
     }
 
-    /**
+    /** re-factor up into a new events support class
+     * eg TreeSupport.
+     *
      * Notify all listeners that have registered interest for
      * notification on this event type.  The event instance
      * is lazily created using the parameters passed into
@@ -628,12 +632,16 @@ public class NavPerspective
     ////////////////////////////////////////////////////////////////
     // TreeModel implementation
 
-    /** needs documenting */
+    /** re-factor up into a new events support class
+     * eg TreeSupport.
+     */
     public void addTreeModelListener(TreeModelListener l) {
         _listenerList.add(TreeModelListener.class, l);
     }
 
-    /** needs documenting */
+    /** re-factor up into a new events support class
+     * eg TreeSupport.
+     */
     public void removeTreeModelListener(TreeModelListener l) {
         _listenerList.remove(TreeModelListener.class, l);
     }
@@ -642,8 +650,10 @@ public class NavPerspective
      * Will return the first found child object in the navtree. The child can be 
      * a TreeNode in case the super will be called to handle this. In all other
      * cases we try to handle it in a recursive way.
-     * TODO this does not work yet since the implementation of getChildren of
+     *
+     * <p>TODO this does not work yet since the implementation of getChildren of
      * AbstractGoRule only takes one level into account.
+     *
      * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object, java.lang.Object)
      */
     public int getIndexOfChild(Object parent, Object child) {
@@ -653,27 +663,24 @@ public class NavPerspective
             return super.getIndexOfChild(parent, child);
         else {
             int helperindex = -1;
-            for (int i = 0; i < _subTreeModels.size(); i++) {
-                Object o = _subTreeModels.get(i);
-               
-                    AbstractGoRule rule =
-                        (AbstractGoRule) _subTreeModels.get(i);
-                    // if (!rule.isLeaf(parent)) {
-                        // the given parent turns up to have children
-                        helperindex = rule.getIndexOfChild(parent, child);
-                        if (helperindex > -1) { // we found the correct element
-                            return i + helperindex;
-                        } else {
-                            helperindex = getHelperIndex(rule, parent, child);
-                            if (helperindex > -1) {
-                                return i + helperindex;
-                            }
-                        }
-                    // }
-
+            for (int i = 0; i < _goRules.size(); i++) {
+                
+                AbstractGoRule rule =
+                    (AbstractGoRule) _goRules.get(i);
+                // the given parent turns up to have children
+                helperindex = rule.getIndexOfChild(parent, child);
+                if (helperindex > -1) { // we found the correct element
+                    return i + helperindex;
+                } else {
+                    helperindex = getHelperIndex(rule, parent, child);
+                    if (helperindex > -1) {
+                        return i + helperindex;
+                    }
+                }
+                
             }
         }
-
+        
         return -1;
     }
 
