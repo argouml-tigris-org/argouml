@@ -75,7 +75,7 @@ public class AddToDoItemDialog extends ArgoDialog {
         super(ProjectBrowser.getInstance(), Argo.localize(BUNDLE, "dialog.title.add-todo-item"), true);
     }
 
-    protected void addComponents() {
+    protected JPanel addComponents() {
         _headline = new JTextField(30);
         _priority = new JComboBox(PRIORITIES);
         _moreinfo = new JTextField(30);
@@ -84,11 +84,10 @@ public class AddToDoItemDialog extends ArgoDialog {
         JLabel headlineLabel = new JLabel(Argo.localize(BUNDLE, "label.headline"));
         JLabel priorityLabel = new JLabel(Argo.localize(BUNDLE, "label.priority"));
         JLabel moreInfoLabel = new JLabel(Argo.localize(BUNDLE, "label.more-info-url"));
-    
+   
         _priority.setSelectedItem(PRIORITIES[0]);
     
         JPanel panel = new JPanel(new LabelledLayout(labelGap, componentGap));
-        mainPanel.add(panel);
 
         headlineLabel.setLabelFor(_headline);
         panel.add(headlineLabel);
@@ -106,10 +105,8 @@ public class AddToDoItemDialog extends ArgoDialog {
         JScrollPane descriptionScroller = new JScrollPane(_description);
         descriptionScroller.setPreferredSize(_description.getPreferredSize());
         panel.add(descriptionScroller);
-    }
-    
-    protected void addButtons() {
-        // No special buttons for this dialog
+        
+        return panel;
     }
     
     ////////////////////////////////////////////////////////////////

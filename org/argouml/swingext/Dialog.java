@@ -10,11 +10,11 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import org.workingfrog.i18n.util.Translator;
 
 /**
  * Base class for all dialogs, setting borders and component spacing.
@@ -39,9 +39,7 @@ public abstract class Dialog extends JDialog implements ActionListener {
     protected JButton _yesButton;
     protected JButton _noButton;
     protected JButton _helpButton;
-
-    protected JPanel mainPanel;
-    
+        
     /**
      * Create a new Dialog
      */
@@ -55,25 +53,29 @@ public abstract class Dialog extends JDialog implements ActionListener {
         _noButton = new JButton();
         _helpButton = new JButton();
     
-        mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout(0, bottomBorder));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(topBorder, leftBorder, bottomBorder, rightBorder));
         getContentPane().add(mainPanel);
 
         nameButtons();
         
-        addComponents();
+        JPanel contentPanel = addComponents();
+        mainPanel.add(contentPanel, BorderLayout.CENTER);
         
-        addButtons();
+        JButton[] buttons = addButtons();
+        if (buttons == null || buttons.length == 0) {
+            buttons = new JButton[] { _closeButton };
+        }
         
         JPanel buttonPanel = new JPanel(new SerialLayout(Horizontal.getInstance(), SerialLayout.EAST, SerialLayout.LEFTTORIGHT, SerialLayout.TOP, buttonGap));
-        buttonPanel.add(_okButton);
-        buttonPanel.add(_cancelButton);
+        for (int i = 0; i < buttons.length; ++i) {
+            buttonPanel.add(buttons[i]);
+            buttons[i].addActionListener(this);
+        }        
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        getRootPane().setDefaultButton(_okButton);
-        _okButton.addActionListener(this);
-        _cancelButton.addActionListener(this);
+        getRootPane().setDefaultButton(buttons[0]);
 
         pack();
         
@@ -88,7 +90,28 @@ public abstract class Dialog extends JDialog implements ActionListener {
         setLocation(x, y);
     }
     
-    protected abstract void addComponents();
-    protected abstract void addButtons();
+    /**
+     * Subclasses may override this method to specify the set of buttons
+     * to appear at the botton of the dialog. The first button in the array
+     * will be the default.
+     * 
+     * @return array of JButtons in desired order of appearance (left to right)
+    **/
+    protected JButton[] addButtons() {
+        return new JButton[] { _okButton, _cancelButton };
+    }
+
+    /**
+     * Subclasses should implement this method to construct
+     * a JPanel which contains the dialog's main UI components.
+     * 
+     * @return JPanel containing the dialog's main UI
+    **/
+    protected abstract JPanel addComponents();
+        
+    /**
+     * Subclasses may override this method to change the names of the
+     * various JButtons which may appear at the bottom of the dialog.
+    **/
     protected abstract void nameButtons();
 }
