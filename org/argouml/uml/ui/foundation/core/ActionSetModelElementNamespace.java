@@ -58,7 +58,6 @@ public class ActionSetModelElementNamespace extends UMLChangeAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
         Object source = e.getSource();
         MNamespace oldNamespace = null;
         MNamespace newNamespace = null;
@@ -77,6 +76,7 @@ public class ActionSetModelElementNamespace extends UMLChangeAction {
         }
         if (newNamespace != oldNamespace && m != null && newNamespace != null) {
             m.setNamespace(newNamespace);
+            super.actionPerformed(e);
         }
     }
 

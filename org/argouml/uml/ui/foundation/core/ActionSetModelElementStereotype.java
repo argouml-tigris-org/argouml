@@ -60,7 +60,6 @@ public class ActionSetModelElementStereotype extends UMLChangeAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
         Object source = e.getSource();
         MStereotype oldStereo = null;
         MStereotype newStereo = null;
@@ -84,6 +83,7 @@ public class ActionSetModelElementStereotype extends UMLChangeAction {
 				  target.getModel());
 	    }
             ExtensionMechanismsHelper.getHelper().setStereoType(target, newStereo);
+            super.actionPerformed(e);
         }
     }
             
