@@ -23,6 +23,13 @@
 
 package org.argouml.uml.ui;
 
+import java.awt.event.ActionEvent;
+import java.util.Iterator;
+
+import org.argouml.ui.targetmanager.TargetManager;
+import org.tigris.gef.base.CmdCut;
+import org.tigris.gef.presentation.Fig;
+
 /** @stereotype singleton
  */
 public class ActionCut extends UMLAction {
@@ -39,9 +46,29 @@ public class ActionCut extends UMLAction {
     public ActionCut() { super("action.cut"); }
 
 
-    ////////////////////////////////////////////////////////////////
-    // main methods
+   /**
+    * This action should only be enabled if the only selection are figs.
+    */
 
-    public boolean shouldBeEnabled() { return false; }
+    public boolean shouldBeEnabled() { 
+        Iterator it = TargetManager.getInstance().getTargets().iterator();
+        boolean returnvalue = true;
+        while (it.hasNext()) {
+            if (!(it.next() instanceof Fig)) {
+                 returnvalue = false;
+                 break; 
+            } 
+        }
+        return returnvalue;
+    }
+
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+        CmdCut cmd = new CmdCut();
+        cmd.doIt();
+        super.actionPerformed(e);
+    }
 
 } /* end class ActionCut */
