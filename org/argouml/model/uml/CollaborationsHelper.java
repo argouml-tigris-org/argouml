@@ -31,7 +31,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
@@ -80,19 +79,6 @@ public class CollaborationsHelper {
         return singleton;
     }
     
-    /**
-     * Returns all classifierroles found in the projectbrowser model
-     * 
-     * TODO: The ProjectManager shall not be reference from the model.
-     * 
-     * @return Collection
-     */
-    public Collection getAllClassifierRoles() {
-	MNamespace model =
-	    (MModel) ProjectManager.getManager().getCurrentProject().getModel();
-	return getAllClassifierRoles(model);
-    }
-	
     /**
      * Returns all classifierroles found in this namespace and in its children.
      *
@@ -243,14 +229,14 @@ public class CollaborationsHelper {
      * somewhere as it's activator
      */
     public boolean hasAsActivator(MMessage message, MMessage activator) {
-	if (message.getActivator() == null) return false;
-	if (message.getActivator() == activator
-	    || message.getActivator().getPredecessors().contains(activator))
-	    return true;
-	else 
-	    return hasAsActivator(message.getActivator(), activator);
+    	if (message.getActivator() == null) return false;
+    	if (message.getActivator() == activator
+        	    || message.getActivator().getPredecessors().contains(activator)) {
+    	    return true;
+        }
+        return hasAsActivator(message.getActivator(), activator);
     }
-	
+
     /**
      * Sets the activator of some given message mes. Checks the
      * wellformednessrules as defined in the UML 1.3 spec in section
