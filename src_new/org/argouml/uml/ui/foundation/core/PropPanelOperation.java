@@ -79,8 +79,11 @@ public class PropPanelOperation extends PropPanelModelElement {
         UMLRadioButton sequential = new UMLRadioButton("sequential",this,new UMLEnumerationBooleanProperty("concurrency",mclass,"getConcurrency","setConcurrency",MCallConcurrencyKind.class,MCallConcurrencyKind.SEQUENTIAL,null));
         group.add(sequential);
         concurPanel.add(sequential);
-
-        UMLRadioButton synchd = new UMLRadioButton("synchronized",this,new UMLEnumerationBooleanProperty("concurrency",mclass,"getConcurrency","setConcurrency",MCallConcurrencyKind.class,MCallConcurrencyKind.GUARDED,null));
+        
+        // 2002-07-18
+        // Jaap Branderhorst
+        // patch to issue 930, no java terms but uml terms
+        UMLRadioButton synchd = new UMLRadioButton("guarded",this,new UMLEnumerationBooleanProperty("concurrency",mclass,"getConcurrency","setConcurrency",MCallConcurrencyKind.class,MCallConcurrencyKind.GUARDED,null));
         group.add(synchd);
         concurPanel.add(synchd);
 
