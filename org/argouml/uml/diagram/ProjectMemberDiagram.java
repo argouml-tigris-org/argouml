@@ -107,17 +107,6 @@ public class ProjectMemberDiagram extends ProjectMember {
     }
 
     /**
-     * @deprecated since 0.l5.3 since the function in the
-     * interface is deprecated since 0.13.6.
-     * TODO: This is still used in 0.16.
-     */
-    public void save(String path, boolean overwrite, Writer writer) {
-        if (expander == null)
-            expander = new OCLExpander(TemplateReader.readFile(PGML_TEE));
-        expander.expand(writer, _diagram, "", "");
-    }
-
-    /**
      * Write the diagram to the given writer.
      * @see org.argouml.kernel.ProjectMember#save(java.io.Writer)
      */

@@ -25,26 +25,19 @@
 package org.argouml.kernel;
 
 import java.beans.VetoableChangeSupport;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -80,7 +73,6 @@ import org.argouml.xml.xmi.XMIReader;
 
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ocl.OCLExpander;
-import org.tigris.gef.ocl.TemplateReader;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.util.Util;
 
@@ -503,8 +495,8 @@ public class Project implements java.io.Serializable, TargetListener {
         return searchpath;
     }
 
-    public void addSearchPath(String searchpath) {
-        this.searchpath.addElement(searchpath);
+    public void addSearchPath(String searchPathElement) {
+        this.searchpath.addElement(searchPathElement);
     }
 
     public URL findMemberURLInSearchPath(String name) {
@@ -699,169 +691,6 @@ public class Project implements java.io.Serializable, TargetListener {
         loadMembersOfType("todo");
         loadMembersOfType("text");
         loadMembersOfType("html");
-    }
-
-    // frank: additional helper. Is there already another function doing this?
-
-    /**
-     * Copies one file src to another, raising file exceptions
-     * if there are some problems.
-     * 
-     * @param dest The destination file.
-     * @param src The source file.
-     * @return The destination file after successful copying.
-     * @throws IOException if there is some problems with the files.
-     * @throws FileNotFoundException if any of the files cannot be found.
-     */
-    private File copyFile(File dest, File src)
-            throws FileNotFoundException, IOException {
-        
-        // first delete dest file
-        if (dest.exists()) {
-            dest.delete();
-        }
-
-        FileInputStream fis  = new FileInputStream(src);
-        FileOutputStream fos = new FileOutputStream(dest);
-        byte[] buf = new byte[1024];
-        int i = 0;
-        while ((i = fis.read(buf)) != -1) {
-            fos.write(buf, 0, i);
-        }
-        fis.close();
-        fos.close();
-        
-        dest.setLastModified(src.lastModified());
-        
-        return dest;
-    }
-
-    /**
-     * There are known issues with saving, particularly
-     * losing the xmi at save time. see issue
-     * http://argouml.tigris.org/issues/show_bug.cgi?id=410
-     *
-     * It is also being considered to save out individual
-     * xmi's from individuals diagrams to make
-     * it easier to modularize the output of Argo.
-     * 
-     * @param overwrite <tt>true</tt> if we are allowed to replace a file.
-     * @param file The file to write.
-     * @throws Exception if anything goes wrong.
-     * TODO: Replace the general Exception with specific Exceptions.
-     */
-    public void save(boolean overwrite, File file)
-        throws Exception {
-        setFile(file);
-        setVersion(ArgoVersion.getVersion());
-
-        if (expander == null) {
-            Hashtable templates = TemplateReader.readFile(ARGO_TEE);
-            expander = new OCLExpander(templates);
-        }
-
-        preSave();
-        
-        // frank: first backup the existing file to name+"#"
-        File tempFile = new File( file.getAbsolutePath() + "#");
-        File backupFile = new File( file.getAbsolutePath() + "~");
-        if (tempFile.exists()) {
-            tempFile.delete();
-        }
-        if (file.exists()) {
-            copyFile(tempFile, file);
-        }
-        // frank end
-
-        ZipOutputStream stream =
-            new ZipOutputStream(new FileOutputStream(file));
-        BufferedWriter writer =
-            new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
-
-        ZipEntry zipEntry =
-    	    new ZipEntry(getBaseName() + FileConstants.UNCOMPRESSED_FILE_EXT);
-        stream.putNextEntry(zipEntry);
-        expander.expand(writer, this, "", "");
-        writer.flush();
-        stream.closeEntry();
-
-        String path = file.getParent();
-        if (LOG.isInfoEnabled()) {
-            LOG.info("Dir ==" + path);
-        }
-        int size = members.size();
-
-        try {
-            // First we save all objects that are not XMI objects i.e. the
-            // diagrams (first for loop).
-            // The we save all XMI objects (second for loop).
-            // This is because order is important on saving.
-            Collection names = new ArrayList();
-            int counter = 0;  
-            for (int i = 0; i < size; i++) {
-                ProjectMember p = (ProjectMember) members.elementAt(i);
-                if (!(p.getType().equalsIgnoreCase("xmi"))) {
-                    if (LOG.isInfoEnabled()) {
-                        LOG.info("Saving member of type: "
-                              + ((ProjectMember) members.elementAt(i))
-                                    .getType());
-                    }
-                    String name = p.getName();
-                    String originalName = name;
-                    while (names.contains(name)) {
-                        name = ++counter + originalName;
-                    }
-                    names.add(name);
-                    stream.putNextEntry(new ZipEntry(name));
-                    p.save(path, overwrite, writer);
-                    writer.flush();
-                    stream.closeEntry();
-                }
-            }
-
-            for (int i = 0; i < size; i++) {
-                ProjectMember p = (ProjectMember) members.elementAt(i);
-                if (p.getType().equalsIgnoreCase("xmi")) {
-                    if (LOG.isInfoEnabled()) {
-                        LOG.info("Saving member of type: "
-                              + ((ProjectMember) members.elementAt(i))
-                                    .getType());
-                    }
-                    stream.putNextEntry(new ZipEntry(p.getName()));
-                    p.save(path, overwrite, writer);
-                }
-            }
-            
-            // if save did not raise an exception 
-            // and name+"#" exists move name+"#" to name+"~"
-            // this is the correct backup file
-            if (backupFile.exists()) {
-        		backupFile.delete();
-    	    }
-            if (tempFile.exists() && !backupFile.exists()) {
-        		tempFile.renameTo(backupFile);
-    	    }
-            if (tempFile.exists()) {
-        		tempFile.delete();
-    	    }
-        } catch (IOException e) {
-            LOG.debug("hat nicht geklappt: ", e);
-            writer.close();
-            
-            // frank: in case of exception 
-            // delete name and mv name+"#" back to name if name+"#" exists
-            // this is the "rollback" to old file
-            file.delete();
-            tempFile.renameTo( file);
-            // we have to give a message to user and set the system to unsaved!
-            throw e;
-        }
-
-        
-        //TODO: in future allow independent saving
-        writer.close();
-
-        postSave();
     }
 
     /**
@@ -1209,14 +1038,14 @@ public class Project implements java.io.Serializable, TargetListener {
         return vetoSupport;
     }
 
-    private void preSave() {
+    public void preSave() {
         for (int i = 0; i < diagrams.size(); i++) {
             ((Diagram) diagrams.elementAt(i)).preSave();
         }
         // TODO: is preSave needed for models?
     }
 
-    private void postSave() {
+    public void postSave() {
         for (int i = 0; i < diagrams.size(); i++) {
             ((Diagram) diagrams.elementAt(i)).postSave();
         }

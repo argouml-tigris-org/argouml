@@ -37,8 +37,13 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.AbstractFilePersister;
+import org.argouml.kernel.ArgoFilePersister;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectFilePersister;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.XmiFilePersister;
+import org.argouml.kernel.ZargoFilePersister;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.menubar.GenericArgoMenuBar;
 
@@ -57,15 +62,19 @@ public class ActionSaveProject extends UMLAction {
 
     public static ActionSaveProject SINGLETON = new ActionSaveProject(); 
 
+    protected AbstractFilePersister zargoPersister = new ZargoFilePersister();
+    protected AbstractFilePersister argoPersister  = new ArgoFilePersister();
+    protected AbstractFilePersister xmiPersister  = new XmiFilePersister();
+    
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    public ActionSaveProject() {
-	super("action.save-project");
+    protected ActionSaveProject() {
+        super("action.save-project");
     }
 
-    public ActionSaveProject(String title, boolean icon) {
-	super(title, icon);
+    protected ActionSaveProject(String title, boolean icon) {
+        super(title, icon);
     }
 
 
@@ -73,46 +82,41 @@ public class ActionSaveProject extends UMLAction {
     // main methods
 
     public void actionPerformed(ActionEvent e) {
-	URL url =
-	    ProjectManager.getManager().getCurrentProject() != null
-	    ? ProjectManager.getManager().getCurrentProject().getURL() : null;
-	if (url == null) { 
-	    ActionSaveProjectAs.SINGLETON.actionPerformed(e);
-	} else {
-	    trySave(true);
-	}
+        URL url =
+            ProjectManager.getManager().getCurrentProject() != null
+            ? ProjectManager.getManager().getCurrentProject().getURL() : null;
+        if (url == null) { 
+            ActionSaveProjectAs.SINGLETON.actionPerformed(e);
+        } else {
+            trySave(true);
+        }
     }
 
     public boolean trySave (boolean overwrite) {
-	URL url = ProjectManager.getManager().getCurrentProject().getURL();
-	return url == null
-	    ? false
-	    : trySave(overwrite, new File(url.getFile()));
+        URL url = ProjectManager.getManager().getCurrentProject().getURL();
+        return url != null && trySave(overwrite, new File(url.getFile()));
     }
 
     public boolean trySave(boolean overwrite, File file) {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
-	Project p = ProjectManager.getManager().getCurrentProject();
+	Project project = ProjectManager.getManager().getCurrentProject();
 
 	try {
-
 	    if (file.exists() && !overwrite) {
-		//cat.info ("Are you sure you want to overwrite "
-		//+ fullpath + "?");
-		String sConfirm = 
-		    MessageFormat.format(Translator.localize("Actions",
-			    "optionpane.save-project-confirm-overwrite"),
-					 new Object[] {file} );
-		int nResult = 
-		    JOptionPane.showConfirmDialog(pb, sConfirm,
-		            Translator.localize("Actions", 
-				    "optionpane.save-project-confirm-overwrite-title"),
-						  JOptionPane.YES_NO_OPTION,
-						  JOptionPane.QUESTION_MESSAGE);
-        
-		if (nResult != JOptionPane.YES_OPTION) {
-		    return false;
-		}
+            String sConfirm = 
+                MessageFormat.format(Translator.localize("Actions",
+            	    "optionpane.save-project-confirm-overwrite"),
+            			 new Object[] {file} );
+            int nResult = 
+                JOptionPane.showConfirmDialog(pb, sConfirm,
+                        Translator.localize("Actions", 
+            		    "optionpane.save-project-confirm-overwrite-title"),
+            				  JOptionPane.YES_NO_OPTION,
+            				  JOptionPane.QUESTION_MESSAGE);
+            
+            if (nResult != JOptionPane.YES_OPTION) {
+                return false;
+            }
 	    }
       
 	    String sStatus =
@@ -121,23 +125,34 @@ public class ActionSaveProject extends UMLAction {
 				     new Object[] {file} );
 	    pb.showStatus (sStatus);
 		
+        ProjectFilePersister persister = null;
+        String name = project.getName();
+        if (name.endsWith("." + zargoPersister.getExtension())) {
+            persister = zargoPersister;
+        } else if (name.endsWith("." + argoPersister.getExtension())) {
+            persister = argoPersister;
+        } else {
+            throw new IllegalStateException("Filename " + project.getName() + 
+                                            " is not of a known file type");
+        }
 	  
-	    p.save(overwrite, file);
-      	
+        project.preSave();
+        persister.save(project, file);
+        project.postSave();
 
 	    sStatus =
 		MessageFormat.format(Translator.localize("Actions", 
 			"label.save-project-status-wrote"),
-				     new Object[] {p.getURL()} );
+				     new Object[] {project.getURL()} );
 	    pb.showStatus(sStatus);
-	    cat.debug ("setting most recent project file to "
+	    LOG.debug ("setting most recent project file to "
 		       + file.getCanonicalPath());
             
-            /* 
-             * notification of menu bar
-             */
-            GenericArgoMenuBar menuBar = (GenericArgoMenuBar) pb.getJMenuBar();
-            menuBar.addFileSaved( file.getCanonicalPath());
+        /* 
+         * notification of menu bar
+         */
+        GenericArgoMenuBar menuBar = (GenericArgoMenuBar) pb.getJMenuBar();
+        menuBar.addFileSaved( file.getCanonicalPath());
             
 	    Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE,
 				    file.getCanonicalPath());
@@ -155,7 +170,7 @@ public class ActionSaveProject extends UMLAction {
 			    "optionpane.save-project-file-not-found-title"),
 					  JOptionPane.ERROR_MESSAGE);
       
-	    cat.error(sMessage, fnfe);
+	    LOG.error(sMessage, fnfe);
 	}
 	catch (IOException ioe) {
 	    String sMessage = 
@@ -168,7 +183,7 @@ public class ActionSaveProject extends UMLAction {
 			    "optionpane.save-project-io-exception-title"),
 					  JOptionPane.ERROR_MESSAGE);
       
-	    cat.error(sMessage, ioe);
+	    LOG.error(sMessage, ioe);
 	}
 	catch (Exception ex) {
 	    String sMessage = 
@@ -181,7 +196,7 @@ public class ActionSaveProject extends UMLAction {
 			    "optionpane.save-project-general-exception-title"),
 					  JOptionPane.ERROR_MESSAGE);
       
-	    cat.error(sMessage, ex);
+	    LOG.error(sMessage, ex);
 	}
     
 	return false;

@@ -42,8 +42,6 @@ import org.argouml.ui.ArgoDiagram;
 import org.argouml.util.FileConstants;
 import org.argouml.xml.argo.ArgoParser;
 import org.argouml.xml.xmi.XMIParser;
-import org.argouml.xml.xmi.XMIReader;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -224,127 +222,6 @@ public final class ProjectManager {
         setCurrentProject(p);
         creatingCurrentProject = false;
         return p;
-    }
-
-    /**   
-     * This method creates a project from the specified URL
-     *
-     * Unlike the constructor which forces an .argo extension This
-     * method will attempt to load a raw XMI file
-     * 
-     * This method can fail in several different ways. Either by
-     * throwing an exception or by having the
-     * ArgoParser.SINGLETON.getLastLoadStatus() set to not true.
-     * 
-     * @param url The URL to load the project from.
-     * @return The newly loaded project.
-     * @throws IOException if the file cannot be read.
-     * @throws IllegalFormatException if we don't understand the contents.
-     * @throws SAXException if there is some syntax error in the file.
-     * @throws ParserConfigurationException if the XML parser is not 
-     *         configured properly - shouldn't happen.
-     */
-    public Project loadProject(URL url)
-        throws IOException, IllegalFormatException, SAXException,
-	       ParserConfigurationException 
-    {
-        Project p = null;
-        String urlString = url.toString();
-        int lastDot = urlString.lastIndexOf(".");
-        String suffix = "";
-        if (lastDot >= 0) {
-            suffix = urlString.substring(lastDot).toLowerCase();
-        }
-        if (suffix.equals(".xmi")) {
-            p = loadProjectFromXMI(url);
-        } else if (suffix.equals(FileConstants.COMPRESSED_FILE_EXT)) {
-	    // normal case, .zargo
-            p = loadProjectFromZargo(url);
-        } else if (suffix.equals(FileConstants.UNCOMPRESSED_FILE_EXT)) {
-	    // the old argo format probably
-            p = loadProjectFromZargo(url);
-        } else {
-            throw new IllegalFormatException(
-                "No legal format found for url " + url.toString());
-        }
-        return p;
-    }
-
-    /**
-     * Reads an XMI file.<p>
-     *
-     * This could be used to import models from other tools.
-     *
-     * @param url is the file name of the file
-     * @return Project is a new project containing the read model
-     * @throws IOException is thrown if some error occurs
-     */
-    private Project loadProjectFromXMI(URL url) throws IOException {
-        Project p = new Project();
-        XMIParser.SINGLETON.readModels(p, url);
-        Object model = XMIParser.SINGLETON.getCurModel();
-        UmlHelper.getHelper().addListenersToModel(model);
-        p.setUUIDRefs(XMIParser.SINGLETON.getUUIDRefs());
-        p.addMember(new ProjectMemberTodoList("", p));
-        p.addMember(model);
-        p.setNeedsSave(false);
-        return p;
-    }
-
-    /**
-     * Reads an url of the .zargo format.
-     * 
-     * @param url The URL to load the project from.
-     * @return The newly created Project.
-     * @throws IOException if we cannot read the file.
-     * @throws SAXException if there is a syntax error in the file.
-     * @throws ParserConfigurationException if the parser is incorrectly 
-     *         configured. - Shouldn't happen.
-     */
-    private Project loadProjectFromZargo(URL url)
-            throws IOException, SAXException, ParserConfigurationException {
-        Project p = null;
-        // read the argo 
-        try {
-            // first read the .argo file from Zip
-            ZipInputStream zis = 
-                openZipStreamAt(url, FileConstants.PROJECT_FILE_EXT);
-
-            // the "false" means that members should not be added,
-            // we want to do this by hand from the zipped stream.
-            ArgoParser.SINGLETON.setURL(url);
-            ArgoParser.SINGLETON.readProject(zis, false);
-            p = ArgoParser.SINGLETON.getProject();
-            ArgoParser.SINGLETON.setProject(null); // clear up project refs
-
-            zis.close();
-        } catch (IOException e) {
-            // exception can occur both due to argouml code as to J2SE
-            // code, so lets log it
-            LOG.error(e);
-            throw e;
-        }
-        p.loadZippedProjectMembers(url);
-        p.postLoad();
-        return p;
-    }
-
-    /**
-     * Open a ZipInputStream to the first file found with
-     * a given extension.
-     * @param url The URL of the zip file.
-     * @param ext The required extension.
-     * @return the zip stream positioned at the required location.
-     */
-    private ZipInputStream openZipStreamAt(URL url, String ext)
-            throws IOException{
-        ZipInputStream zis = new ZipInputStream(url.openStream());
-        ZipEntry entry = zis.getNextEntry();
-        while (entry != null
-                && !entry.getName().endsWith(FileConstants.PROJECT_FILE_EXT)) {
-            entry = zis.getNextEntry();
-        }
-        return zis;
     }
     
     /**

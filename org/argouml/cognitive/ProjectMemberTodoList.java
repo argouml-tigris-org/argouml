@@ -49,133 +49,114 @@ import org.tigris.gef.ocl.TemplateReader;
  *
  * @author	Michael Stockman
  */
-public class ProjectMemberTodoList extends ProjectMember
-{
-    protected static Logger cat =
-	Logger.getLogger(ProjectMemberTodoList.class);
+public class ProjectMemberTodoList extends ProjectMember {
+    
+    protected static Logger LOG =
+        Logger.getLogger(ProjectMemberTodoList.class);
 
     public static final String TODO_TEE = "/org/argouml/xml/dtd/todo.tee";
     public static final String TODO_EXT = ".todo";
 
     protected OCLExpander expander = null;
 
-    public ProjectMemberTodoList(String name, Project p)
-    {
-	super(name, p);
+    public ProjectMemberTodoList(String name, Project p) {
+    	super(name, p);
     }
 
     /**
      * @see org.argouml.kernel.ProjectMember#getType()
      */
     public String getType() {
-	return "todo";
+        return "todo";
     }
 
     /**
      * @see org.argouml.kernel.ProjectMember#getFileExtension()
      */
     public String getFileExtension() {
-	return TODO_EXT;
+        return TODO_EXT;
     }
 
-    public Vector getToDoList()
-    {
-	Vector in, out;
-	ToDoItem tdi;
-	Designer dsgr;
-	int i;
-
-	dsgr = Designer.theDesigner();
-	in = dsgr.getToDoList().getToDoItems();
-	out = new Vector();
-	for (i = 0; i < in.size(); i++)
-	{
-	    try
-	    {
-		tdi = (ToDoItem) in.elementAt(i);
-		if (tdi == null)
-		    continue;
-	    }
-	    catch (ClassCastException e)
-	    {
-		continue;
-	    }
-
-	    if (tdi.getPoster() instanceof Designer)
-		out.addElement(new ToDoItemXMLHelper(tdi));
-	}
-	return out;
+    public Vector getToDoList() {
+        Vector in, out;
+        ToDoItem tdi;
+        Designer dsgr;
+        int i;
+        
+        dsgr = Designer.theDesigner();
+        in = dsgr.getToDoList().getToDoItems();
+        out = new Vector();
+        for (i = 0; i < in.size(); i++) {
+            try {
+            	tdi = (ToDoItem) in.elementAt(i);
+            	if (tdi == null) {
+                    continue;
+                }
+            } catch (ClassCastException e) {
+                continue;
+            }
+        
+            if (tdi.getPoster() instanceof Designer) {
+                out.addElement(new ToDoItemXMLHelper(tdi));
+            }
+        }
+        return out;
     }
 
-    public Vector getResolvedCriticsList()
-    {
-	Vector in, out;
-	ResolvedCritic rci;
-	Designer dsgr;
-	int i;
-
-	dsgr = Designer.theDesigner();
-	in = dsgr.getToDoList().getResolvedItems();
-	out = new Vector();
-	for (i = 0; i < in.size(); i++)
-	{
-	    try
-	    {
-		rci = (ResolvedCritic) in.elementAt(i);
-		if (rci == null)
-		    continue;
-	    }
-	    catch (ClassCastException e)
-	    {
-		continue;
-	    }
-	    out.addElement(new ResolvedCriticXMLHelper(rci));
-	}
-	return out;
+    public Vector getResolvedCriticsList() {
+    	Vector in, out;
+    	ResolvedCritic rci;
+    	Designer dsgr;
+    	int i;
+    
+    	dsgr = Designer.theDesigner();
+    	in = dsgr.getToDoList().getResolvedItems();
+    	out = new Vector();
+    	for (i = 0; i < in.size(); i++) {
+    	    try {
+        		rci = (ResolvedCritic) in.elementAt(i);
+        		if (rci == null) {
+        		    continue;
+                }
+    	    }
+    	    catch (ClassCastException e) {
+        		continue;
+    	    }
+    	    out.addElement(new ResolvedCriticXMLHelper(rci));
+    	}
+    	return out;
     }
 
     public void load(InputStream is) {
-	TodoParser.SINGLETON.readTodoList(is, true);
+        TodoParser.SINGLETON.readTodoList(is, true);
     }
 
     /**
      * @see org.argouml.kernel.ProjectMember#load()
      */
-    public void load() throws IOException, SAXException
-    {
-	InputStream is = null;
-	if (getURL() != null)
-	{
-	    is = getURL().openStream();
-	    load(is);
-	}
+    public void load() throws IOException, SAXException {
+    	InputStream is = null;
+    	if (getURL() != null) {
+    	    is = getURL().openStream();
+    	    load(is);
+    	}
     }
 
-    /**
-     * @deprecated since 0.l5.3 since the function in the
-     * interface is deprecated since 0.13.6.
-     * TODO: Still used in 0.16.
-     */
-    public void save(String path, boolean overwrite, Writer writer)
-    {
-	if (writer == null)
-	{
-	    cat.warn("ProjectMemberTodoList.cognitive.argouml.org:"
-		     + " No writer specified");
-	    return;
-	}
-
-	cat.debug("Saving TODO LIST " + path + "/" + getName() + " !!!");
-
-	if (expander == null)
-	{
-	    Hashtable templates = TemplateReader.readFile(TODO_TEE);
-	    expander = new OCLExpander(templates);
-	}
-
-	expander.expand(writer, this, "", "");
-	
-	cat.debug("Done saving TODO LIST!!!");
+    public void save(Writer writer) {
+        if (writer == null) {
+            LOG.warn("ProjectMemberTodoList.cognitive.argouml.org:"
+        	     + " No writer specified");
+            return;
+        }
+        
+        if (expander == null) {
+            Hashtable templates = TemplateReader.readFile(TODO_TEE);
+            expander = new OCLExpander(templates);
+        }
+        
+        expander.expand(writer, this, "", "");
+        
+        LOG.debug("Done saving TODO LIST!!!");
     }
 }
 
