@@ -38,6 +38,10 @@ import org.tigris.gef.util.VectorSet;
 import org.tigris.gef.util.Predicate;
 
 
+/**
+ * Rule for sorting the ToDo list: Offender -> Item.
+ *
+ */
 public class GoListToOffenderToItem implements TreeModel {
   
     ////////////////////////////////////////////////////////////////

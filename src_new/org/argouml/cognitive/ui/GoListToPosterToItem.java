@@ -37,6 +37,10 @@ import org.tigris.gef.util.VectorSet;
 
 
 
+/**
+ * Rule for sorting the ToDo list: Poster -> Item.
+ *
+ */
 public class GoListToPosterToItem implements TreeModel {
   
     ////////////////////////////////////////////////////////////////
