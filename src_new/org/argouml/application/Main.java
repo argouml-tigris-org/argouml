@@ -44,7 +44,6 @@ import javax.swing.ToolTipManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.PropertyConfigurator;
-import org.apache.log4j.Logger;
 import org.apache.log4j.Level;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.CommandLineInterface;
@@ -175,7 +174,7 @@ public class Main {
         for (int i = 0; i < args.length; i++) {
             if (args[i].startsWith("-")) {
                 if ((themeMemory =
-                    LookAndFeelMgr.SINGLETON.getThemeFromArg(args[i]))
+                    LookAndFeelMgr.getInstance().getThemeFromArg(args[i]))
                     != null) {
                     // Remembered!
                 } else if (
@@ -185,7 +184,7 @@ public class Main {
                         || args[i].equalsIgnoreCase("/?")) {
                     System.err.println("Usage: [options] [project-file]");
                     System.err.println("Options include: ");
-                    LookAndFeelMgr.SINGLETON.printThemeArgs();
+                    LookAndFeelMgr.getInstance().printThemeArgs();
                     System.err.println(
                         "  -nosplash       don't display Argo/UML logo");
                     System.err.println(
@@ -561,10 +560,10 @@ public class Main {
     private static void initializeGUI(boolean doSplash, String themeMemory) 
     {
 	// initialize the correct look and feel
-	LookAndFeelMgr.SINGLETON.initializeLookAndFeel();
+	LookAndFeelMgr.getInstance().initializeLookAndFeel();
 	if (themeMemory != null)
 	{
-	    LookAndFeelMgr.SINGLETON.setCurrentTheme(themeMemory);
+	    LookAndFeelMgr.getInstance().setCurrentTheme(themeMemory);
 	}
 
 	// make the projectbrowser

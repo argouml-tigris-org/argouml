@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -39,7 +37,6 @@ import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
@@ -51,6 +48,7 @@ import org.argouml.cognitive.checklist.ChecklistStatus;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.TabModelTarget;
@@ -61,7 +59,7 @@ import ru.novosoft.uml.MElementListener;
 /** Doesn't work, checked the argo.ini and it is not commented out
  */
 public class TabChecklist extends TabSpawnable
-    implements TabModelTarget, ActionListener, ListSelectionListener 
+    implements TabModelTarget, ActionListener, ListSelectionListener
 {
 
     ////////////////////////////////////////////////////////////////
@@ -83,7 +81,7 @@ public class TabChecklist extends TabSpawnable
 	_tableModel = new TableModelChecklist(this);
 	_table.setModel(_tableModel);
 
-	Font labelFont = MetalLookAndFeel.getSubTextFont();
+	Font labelFont = LookAndFeelMgr.getInstance().getSmallFont();
 	_table.setFont(labelFont);
 
 	//_table.setRowSelectionAllowed(false);
@@ -144,7 +142,7 @@ public class TabChecklist extends TabSpawnable
     public void refresh() { setTarget(_target); }
 
     public boolean shouldBeEnabled(Object target) {
-  
+
 	if (!(org.argouml.model.ModelFacade.isAModelElement(target))) {
 	    _shouldBeEnabled = false;
 	    return _shouldBeEnabled;
@@ -155,7 +153,7 @@ public class TabChecklist extends TabSpawnable
 	    _shouldBeEnabled = false;
 	    return _shouldBeEnabled;
 	}
-    
+
 	return _shouldBeEnabled;
     }
 
@@ -178,7 +176,7 @@ public class TabChecklist extends TabSpawnable
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
-    public void targetAdded(TargetEvent e) {        
+    public void targetAdded(TargetEvent e) {
 
     }
 
@@ -204,7 +202,7 @@ public class TabChecklist extends TabSpawnable
 class TableModelChecklist extends AbstractTableModel
     implements VetoableChangeListener, DelayedVChangeListener, MElementListener
 {
-    protected static Logger cat = 
+    protected static Logger cat =
         Logger.getLogger(TableModelChecklist.class);
     ////////////////
     // instance varables

@@ -70,6 +70,7 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.swingext.Orientation;
 import org.argouml.swingext.Vertical;
+import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -95,13 +96,13 @@ import ru.novosoft.uml.foundation.core.MNamespace;
  *   "captions" and matching column of "fields" which are laid out
  *   indepently from the other panels.
  *   </p>
- *  
+ *
  *   <p>The Properties panels for UML Model Elements are structured in an
  *   inheritance hierarchy that matches the UML 1.3 metamodel.
  */
 abstract public class PropPanel
     extends TabSpawnable
-    implements TabModelTarget, MElementListener, UMLUserInterfaceContainer 
+    implements TabModelTarget, MElementListener, UMLUserInterfaceContainer
 {
     ////////////////////////////////////////////////////////////////
     // instance vars
@@ -114,7 +115,7 @@ abstract public class PropPanel
     private Vector _panels = new Vector();
 
     private int lastRow;
-    
+
     private EventListenerList _listenerList;
 
     /**
@@ -136,7 +137,7 @@ abstract public class PropPanel
     protected static ImageIcon _deleteIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("RedDelete");
     protected static ImageIcon _navUpIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("NavigateUp");
 
-    protected Font smallFont = MetalLookAndFeel.getSubTextFont();
+    protected Font smallFont = LookAndFeelMgr.getInstance().getSmallFont();
 
     /**
      * Construct new PropPanel using LabelledLayout
@@ -151,7 +152,7 @@ abstract public class PropPanel
         buttonPanel.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
         buttonPanel.setFloatable(false);
         //buttonPanel.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
-        
+
         setLayout(new LabelledLayout(orientation == Vertical.getInstance()));
 
         if (icon != null) {
@@ -165,7 +166,7 @@ abstract public class PropPanel
         add(_titleLabel);
         add(buttonPanel);
     }
-    
+
     /**
      * Constructs a new Proppanel without an icon. If there is an icon it's
      * updated at runtime via settarget.
@@ -284,9 +285,9 @@ abstract public class PropPanel
     /**
        This method (and addMElementListener) can be overriden if the
        prop panel wants to monitor additional objects.
-    
+
        @param target target of prop panel
-    
+
     */
     protected void removeMElementListener(Object target) {
         UmlModelEventPump.getPump().removeModelEventListener(this, target);
@@ -296,7 +297,7 @@ abstract public class PropPanel
        This method (and removeMElementListener) can be overriden if the
        prop panel wants to monitor additional objects.  This method
        is public only since it is called from a Runnable object.
-    
+
        @param target target of prop panel
     */
     public void addMElementListener(Object target) {
@@ -326,7 +327,7 @@ abstract public class PropPanel
             _target = t;
             _modelElement = null;
             if (_listenerList == null) {
-                _listenerList = registrateTargetListeners(this); 
+                _listenerList = registrateTargetListeners(this);
             }
 
             if (ModelFacade.isAModelElement(_target)) {
@@ -336,22 +337,22 @@ abstract public class PropPanel
             // This will add a new MElement listener after update is complete
 
             dispatch = new UMLChangeDispatch(this, UMLChangeDispatch.TARGET_CHANGED_ADD);
-           
-        } 
+
+        }
         else {
-            dispatch = new UMLChangeDispatch(this, UMLChangeDispatch.TARGET_REASSERTED);  
-                    
+            dispatch = new UMLChangeDispatch(this, UMLChangeDispatch.TARGET_REASSERTED);
+
         }
         SwingUtilities.invokeLater(dispatch);
-        
-        // update the titleLabel 
+
+        // update the titleLabel
         if (_titleLabel != null) {
             Icon icon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(t);
             if (icon != null)
                 _titleLabel.setIcon(icon);
-        }  
+        }
     }
-    
+
     /**
      * Builds a eventlistenerlist of all targetlisteners that are part of this
      * container and its children.
@@ -365,7 +366,7 @@ abstract public class PropPanel
         for (int i = 0; i < components.length; i++) {
             if (components[i] instanceof TargetListener) {
                 list.add(TargetListener.class, (TargetListener) components[i]);
-            } 
+            }
             if (components[i] instanceof TargettableModelView) {
                 list.add(TargetListener.class, ((TargettableModelView) components[i]).getTargettableModel());
             }
@@ -467,8 +468,8 @@ abstract public class PropPanel
     public void navigateTo(Object element) {
         TargetManager.getInstance().setTarget(element);
     }
-    
-   
+
+
 
     /**
      * @deprecated As of ArgoUml version 0.13.5,replaced by
@@ -478,7 +479,7 @@ abstract public class PropPanel
 	TargetManager.getInstance().navigateBackward();
 	return true;
     }
-    
+
     /**
      * @deprecated As of ArgoUml version 0.13.5,replaced by
      *             {@link org.argouml.ui.targetmanager.TargetManager.getInstance().navigateBack();
@@ -512,7 +513,7 @@ abstract public class PropPanel
     public boolean isNavigateForwardEnabled() {
         return TargetManager.getInstance().navigateForwardPossible();
     }
-    
+
     /**
      * @deprecated As of ArgoUml version 0.13.5,replaced by
      *             {@link org.argouml.ui.targetmanager.TargetManager#navigateBackPossible() TargetManager.getInstance().navigateBackPossible()}
@@ -533,13 +534,13 @@ abstract public class PropPanel
      * <p><em>Note</em>. Despite the name, the old implementation tried to
      *   listen for ownedElement and baseClass events as well as name
      *   events. We incorporate all these.</p>
-     * 
-     * <p><em>Note</em> Reworked the implementation to use the new 
-     * UmlModelEventPump mechanism. In the future proppanels should 
+     *
+     * <p><em>Note</em> Reworked the implementation to use the new
+     * UmlModelEventPump mechanism. In the future proppanels should
      * register directly with UmlModelEventPump IF they are really interested
      * in the events themselves. If components on the proppanels are interested,
      * these components should register themselves.</p>
-     * 
+     *
      * @deprecated As of ArgoUml version unknown(earlier than 0.13.5),
      *             replaced by {@link org.argouml.model.uml.UmlModelEventPump#addModelEventListener(Object , Object)}.
      *             since components should register themselves.
@@ -549,26 +550,26 @@ abstract public class PropPanel
 
     public void setNameEventListening(Class[] metaclasses) {
 
-        /* 
+        /*
 	   old implementation
-         
+
 	   // Convert to the third party listening pair list
-        
+
 	   Vector targetList = new Vector (metaclasses.length * 6);
-        
+
 	   for (int i = 0 ; i < metaclasses.length ; i++) {
 	   Class mc = metaclasses[i];
-        
+
 	   targetList.add(mc);
 	   targetList.add("name");
-        
+
 	   targetList.add(mc);
 	   targetList.add("baseClass");
-        
+
 	   targetList.add(mc);
 	   targetList.add("ownedElement");
 	   }
-        
+
 	   addThirdPartyEventListening(targetList.toArray());
         */
         for (int i = 0; i < metaclasses.length; i++) {
@@ -599,7 +600,7 @@ abstract public class PropPanel
         }
     }
 
-    /** check whether this element can be deleted. 
+    /** check whether this element can be deleted.
      *  Currently it only checks whether we delete the main model.
      *  ArgoUML does not like that.
      *  @since 0.13.2
@@ -613,11 +614,11 @@ abstract public class PropPanel
      */
     public void targetAdded(TargetEvent e) {
         // we can neglect this, the TabProps allways selects the first target
-	// in a set of targets. The first target can only be 
+	// in a set of targets. The first target can only be
 	// changed in a targetRemoved or a TargetSet event
         fireTargetAdded(e);
     }
-    
+
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
@@ -637,13 +638,13 @@ abstract public class PropPanel
         fireTargetSet(e);
 
     }
-    
+
     private void fireTargetSet(TargetEvent targetEvent) {
 	//          Guaranteed to return a non-null array
 	Object[] listeners = _listenerList.getListenerList();
 	for (int i = listeners.length - 2; i >= 0; i -= 2) {
 	    if (listeners[i] == TargetListener.class) {
-		// Lazily create the event:                     
+		// Lazily create the event:
 		((TargetListener) listeners[i + 1]).targetSet(targetEvent);
 	    }
 	}
@@ -655,7 +656,7 @@ abstract public class PropPanel
 
 	for (int i = listeners.length - 2; i >= 0; i -= 2) {
 	    if (listeners[i] == TargetListener.class) {
-		// Lazily create the event:                     
+		// Lazily create the event:
 		((TargetListener) listeners[i + 1]).targetAdded(targetEvent);
 	    }
 	}
@@ -666,7 +667,7 @@ abstract public class PropPanel
 	Object[] listeners = _listenerList.getListenerList();
 	for (int i = listeners.length - 2; i >= 0; i -= 2) {
 	    if (listeners[i] == TargetListener.class) {
-		// Lazily create the event:                     
+		// Lazily create the event:
 		((TargetListener) listeners[i + 1]).targetRemoved(targetEvent);
 	    }
 	}
@@ -724,7 +725,7 @@ abstract public class PropPanel
         buttonPanelWithFlowLayout.add(buttonPanel);
         addField(buttonPanelWithFlowLayout, 0, 0, 0);
     }
-    
+
     /**
      *   Adds a component to the captions of the specified panel.
      *   @param component Component to be added (typically a JLabel)

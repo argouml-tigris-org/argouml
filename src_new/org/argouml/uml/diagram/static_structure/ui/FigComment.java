@@ -53,6 +53,7 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
@@ -64,13 +65,13 @@ import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 import ru.novosoft.uml.MElementEvent;
 
-/** 
- * Class to display a UML note in a diagram 
+/**
+ * Class to display a UML note in a diagram
  * Since we don't need stereotypes for the note and an
  * empty stereotype textfield causes problems with the
  * note layout, I subclass FigNode instead of FigNodeModelElement.
  */
-public class FigComment 
+public class FigComment
     extends FigNodeModelElement
     implements VetoableChangeListener,
 	       DelayedVChangeListener,
@@ -97,7 +98,7 @@ public class FigComment
     public final int MARGIN = 2;
 
     static {
-        LABEL_FONT = MetalLookAndFeel.getSubTextFont();
+        LABEL_FONT = LookAndFeelMgr.getInstance().getSmallFont();
         ITALIC_LABEL_FONT = new Font(LABEL_FONT.getFamily(),
 				     Font.ITALIC,
 				     LABEL_FONT.getSize());
@@ -110,7 +111,7 @@ public class FigComment
     private Object _noteOwner = null;
 
     // The figure that holds the text of the note.
-    FigText _text;    
+    FigText _text;
 
     FigPoly _body;
     FigPoly _urCorner;
@@ -146,7 +147,7 @@ public class FigComment
         _text.setTextColor(Color.black);
         _text.setMultiLine(true);
         _text.setAllowsTab(false);
-        // _text.setText(placeString());        
+        // _text.setText(placeString());
         _text.setJustification(FigText.JUSTIFY_LEFT);
         _text.setFilled(false);
         _text.setLineWidth(0);
@@ -184,11 +185,11 @@ public class FigComment
      */
     public FigComment(Object element) {
         this(); // Construct the figure.
-        
+
         if(!ModelFacade.isAModelElement(element)){
             throw new IllegalArgumentException();
         }
-        
+
 	// Create a new Comment node.
         Object comment =
 	    UmlFactory.getFactory().getCore().createComment();
@@ -204,8 +205,8 @@ public class FigComment
 
 	    // If the current target is a state diagram, we have to
 	    // check, if we are editing the diagram.
-            ProjectBrowser pb = ProjectBrowser.getInstance(); 
-            if (pb.getTarget() instanceof UMLStateDiagram) { 
+            ProjectBrowser pb = ProjectBrowser.getInstance();
+            if (pb.getTarget() instanceof UMLStateDiagram) {
                 StateDiagramGraphModel gm =
 		    (StateDiagramGraphModel)
 		    (((UMLStateDiagram) pb.getTarget()).getGraphModel());
@@ -221,8 +222,8 @@ public class FigComment
     }
 
     /**
-     * Get the default text for this figure. 
-     *   
+     * Get the default text for this figure.
+     *
      * @return The default text for this figure.
      */
     public String placeString() {
@@ -490,9 +491,9 @@ public class FigComment
     ///////////////////////////////////////////////////////////////////
     // Internal methods
 
-    /** 
+    /**
      * This is called aftern any part of the UML MModelElement has
-     * changed. This method automatically updates the note FigText. 
+     * changed. This method automatically updates the note FigText.
      */
     protected final void modelChanged(MElementEvent mee) {
         super.modelChanged(mee);

@@ -233,12 +233,12 @@ public class Splitter extends JComponent {
     private void showButtons() {
         if (buttonNorth != null) {
             if (panelHidden) {
-                buttonNorth.setVisible(quickHide == this.SOUTH);
-                buttonSouth.setVisible(quickHide == this.NORTH);
+                buttonNorth.setVisible(quickHide == SOUTH);
+                buttonSouth.setVisible(quickHide == NORTH);
             }
             else {
-                buttonNorth.setVisible(quickHide == this.NORTH);
-                buttonSouth.setVisible(quickHide == this.SOUTH);
+                buttonNorth.setVisible(quickHide == NORTH);
+                buttonSouth.setVisible(quickHide == SOUTH);
             }
         }
     }

@@ -28,7 +28,6 @@
 package org.argouml.swingext;
 
 import java.awt.*;
-import java.util.*;
 
 import org.apache.log4j.Logger;
 

@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.model.uml.AbstractWellformednessRule;
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 

@@ -28,7 +28,6 @@
 package org.argouml.swingext;
 
 import java.awt.*;
-import java.util.*;
 
 /**
  * Abstract class for a layout manager that sets all child components
