@@ -145,6 +145,10 @@ public class ProjectBrowser extends JFrame
      */
     private ToDoPane _todoPane;
 
+    /**
+     * The target the user has selected     
+     */
+    private Object _target;
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -290,6 +294,7 @@ public class ProjectBrowser extends JFrame
     public void setTarget(Object o) {
         _editorPane.setTarget(o);
         setDetailsTarget(o);  
+        _target = o;
         if (o instanceof MNamespace) {
             ProjectManager.getManager().getCurrentProject().setCurrentNamespace((MNamespace)o);
         } else 
@@ -314,8 +319,7 @@ public class ProjectBrowser extends JFrame
 
     /** return the current target in the editor pane */
     public Object getTarget() {
-        if (_editorPane == null) return null;
-        return _editorPane.getTarget();
+        return _target;
     }
 
 
