@@ -1108,7 +1108,7 @@ public abstract class FigNodeModelElement
      * as listening to events fired by the owner itself. But for, for example,
      * FigClass the fig must also register for events fired by the operations
      * and attributes of the owner.
-     * @param newOwner 
+     * @param newOwner the new owner for the listeners
      */
     protected void updateListeners(Object newOwner) {
         Object oldOwner = getOwner();
@@ -1418,22 +1418,6 @@ public abstract class FigNodeModelElement
         return stereo.getText();
     }
     
-    /**
-     * @return FigRect this rectangle marks the whole interface figure; 
-     * everything is inside it
-     */
-    /*protected FigRect getBigPort() {
-        return _bigPort;
-    }*/
-    
-    /**
-     * @param bp FigRect this rectangle marks the whole interface figure; 
-     * everything is inside it
-     */
-    /*protected void setBigPort(FigRect bp) {
-        _bigPort = bp;
-    }*/
-
     /**
      * @return Returns the lABEL_FONT.
      */
