@@ -64,8 +64,11 @@ public class UMLTextProperty  {
         if(_setMethod != null) {
             Object element = container.getTarget();
             if(element != null) {
-                try {
-                    String oldValue = getProperty(container);
+               
+
+					
+                    	String oldValue = getProperty(container);
+					
                     //
                     //  if one or the other is null or they are not equal
                     if(newValue == null || oldValue == null || !newValue.equals(oldValue)) {
@@ -103,10 +106,8 @@ public class UMLTextProperty  {
                             
                         }
                     }
-                }
-                catch(Exception e) {
-                    System.out.println(e.toString() + " in UMLTextProperty.setProperty()");
-                }
+               
+               
             }
         }
     }
