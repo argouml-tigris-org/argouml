@@ -96,7 +96,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
 
         String sChooserTitle =
         Translator.localize("Actions", "filechooser.save-as-project");
-        chooser.setDialogTitle(sChooserTitle + p.getName());
+        chooser.setDialogTitle(sChooserTitle + " " + p.getName());
         chooser.setFileFilter(FileFilters.CompressedFileFilter);
 
         int retval = chooser.showSaveDialog(pb);
