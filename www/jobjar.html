@@ -12,173 +12,288 @@ content="ArgoUML, Argo, UML, Unified Modeling Language, modeling, modelling, Gen
 
 <BODY BGCOLOR="#FFFFFF">
 
-<H2>ArgoUML JobJar</H2>
+<H2>JobJar: Your contribution to ArgoUml's Success</H2>
 
-<H3>Take on a Task</H3>
+<p>ArgoUml depends on the contributions of volunteers to grow and maintain
+itself. This page will explain how to contribute.
 
-A lot of work has gone into developing ArgoUML, but much more still
-remains to be done.
-<P>
+<p>This page may get out of date quickly, so check the change control database,
+issueZilla, 
+in order to find out the <a href="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&issue_status=UNCONFIRMED&issue_status=NEW&issue_status=STARTED&issue_status=REOPENED&resolution=-blank-">latest defects and
+enhancements</a> to complete.
 
-Here is a list of pending tasks that you might be interested in
-doing. Each of these tasks would be a personally satisfying
-contribution toward making the ArgoUML vision a reality.
-Please join the
-<A HREF="/servlets/ProjectMailingListList">developers mailing list (dev)</A> 
-to discuss tasks that you are interested in.
+<p>Prepare yourself:</p>
+<ul>
+    <li>Read about ArgoUml, the <a href="http://argouml.tigris.org/documentation/defaulthtml/manual/">user
+manual</a> and the <a href="http://argouml.tigris.org/dev.html">developer pages</a></li>
+    <LI>Try out ArgoUML and make issues of things that are buggy or awkward.</li>
+    <LI>Try to use it for a small design project. What is useful about
+the tool? What are the <a
+href="http://www.objectsbydesign.com/tools/checklist.html">requirements</a>?</li>
+    <li>Read about UML, get the UML1.3 specification from <a
+href="http://www.omg.org">O.M.G.</a></li>
+    <li>Understand Meta-Modelling, read about UML meta-model 
+implementations (NSUML / <a
+href="http://mdr.netbeans.org">MDR</a>). ArgoUml currently uses NSUML, but it will migrate to MDR for
+version 0.16</li>
+    <li>Understand how diagrams are displayed using the <a
+href="http://gef.tigris.org/">GEF</a> library.</li>
+    <li>Understand the <a
+href="http://argouml.tigris.org/project_schedule.html">status</a> of the
+ArgoUml project, which components are mature
+and which are waiting for a re-design. Look at the <a
+href="http://argouml.tigris.org/source/browse/argouml/src_new/">source code</a> (use cvs), 
+<A HREF="http://argouml.tigris.org/servlets/SummarizeList?listName=dev">developer mailing
+list</A>, and <a href="http://argouml.tigris.org/issues/reports.cgi?state=Open+issues&issue_type=DEFECT&issue_type=ENHANCEMENT&issue_type=FEATURE&issue_type=PATCH&issue_type=TASK&containing=&type=case-insensitive+substring&x=Subcomponent&y=Priority">IssueZilla</a>
+issues.</li>
+    <li>Focus on one part of ArgoUml in the beginning. ArgoUml is a large project,
+specialize in order to understand well one component.</li>
+    <li>Ask questions first then proceed with some concrete work.</li>
+</ul>
+
+<p>ArgoUml is not all about Java or UML development, this project needs a
+<b>wide range of skills</b> including:</p>
+<ul>
+    <li><a
+href="http://argouml.tigris.org/members/project_members.html#developer_role">Developers</a> (obviously...!)
+    <li>Analysts
+    <li>Administrative helpers
+</ul>
 
 <H3>Special Note to Students</H3>
 
-Each task could be made into an undergraduate term project or part of
+<p>Each task could be made into an undergraduate term project or part of
 a masters degree project. 
 Working on a free, open source software project such as ArgoUML can
 make your school project much more impressive, satisfying, and clarify
 potential benefits.
+</p>
 
-Why start with nothing if you could build on the work of over a dozen
-other students?  
+<ul>
+<li>Why start with nothing if you could build on the work of many students and
+professionals?</li>
+<li>Why end your term project with just a grade when you could make a
+visible difference?</li>
+</ul>
 
-Why end your term project with just a grade when you could make a
-visible difference?  
-
-The point of a term project is to get experience working on a
+<p>The point of a term project is to get experience working on a
 &quot;real&quot; project. Using ArgoUML will give you experience with
-over 60,000 lines of Java code that implements a very real
+over 60,000 lines of Java code that implements a real
 application.
-<P>
+</P>
 
-<H3>Tasks</H3>
+<H3>Proposed Contributions:</H3>
 
 <UL>
-	<LI><B>Use ArgoUML</B>
-	<UL>
-		<LI>Try out ArgoUML and make issues of things that are buggy or awkward.
-		<LI>Try to use it for a small design project. What is useful about
-		the tool? What is needed?
-		<LI>Watch others use ArgoUML and report on how they use it.
-	</UL>
-	<LI><B>UML Diagram</B>
+	<LI><B>UML Diagrams (, support for) [ <a
+href="http://argouml.tigris.org/issues/buglist.cgi?subcomponent=Diagrams&issue_status=UNCONFIRMED&issue_status=NEW&issue_status=STARTED&issue_status=REOPENED&issue_type=DEFECT&issue_type=ENHANCEMENT&issue_type=FEATURE&issue_type=PATCH&issue_type=TASK">IssueZilla</a>
+ / <a href="http://argouml.tigris.org/documentation/defaulthtml/cookbook/ch05s03.html">Cookbook</a> ]</B>
 	<UL>
 		<LI>Implement a graph layout algorithm that takes into account the
-		conventions of UML diagrams.
-		<LI>Implement arc routing that users find flexible and convient.
+		conventions of UML diagrams. There is already a layout algorithm for class
+diagrams. see issue <a
+href="http://argouml.tigris.org/issues/show_bug.cgi?id=1954">1954</a>, <a href="http://argouml.tigris.org/issues/show_bug.cgi?id=1898">1898</a>.
+		<LI>Implement arc routing that users find flexible and convient. This could be
+contributed to the GEF project and used in ArgoUml.
 		
 		<LI>Implement the UML artifacts that ArgoUML still does not support, see 
-        <A HREF="documentation/umlsupport">UMLsupport</A>. 
+        <A HREF="documentation/umlsupport">UML support</A>, also look in
+issueZilla. 
 		<LI>Implement diagram types that are part of UML but not supported
 		by ArgoUML yet, see 
-        <A HREF="documentation/umlsupport">UMLsupport</A>.
-		<LI>Enable connection to class names to object names.<!-- Huh? -->
+        <A HREF="documentation/umlsupport">UML support</A>, see issue <a href="http://argouml.tigris.org/issues/show_bug.cgi?id=1377">1377</a>,
+<a href="http://argouml.tigris.org/issues/show_bug.cgi?id=1378">1378</a>.
+                <li>Fix diagram export, issue <a href="http://argouml.tigris.org/issues/show_bug.cgi?id=11">11</a>, <a href="http://argouml.tigris.org/issues/show_bug.cgi?id=207">207</a>.
+                <li>Improve text editing, issue <a
+href="http://argouml.tigris.org/issues/show_bug.cgi?id=1195">1195</a>, <a href="http://argouml.tigris.org/issues/show_bug.cgi?id=373">373</a>, <a href="http://argouml.tigris.org/issues/show_bug.cgi?id=1261">1261</a>, <a href="http://argouml.tigris.org/issues/show_bug.cgi?id=1537">1537</a>
+                <li>It is not possible to have several lines in a UML Note,
+issue <a href="http://argouml.tigris.org/issues/show_bug.cgi?id=504">504</a>.
+		<!-- <LI>Enable connection to class names to object names.
 		Use case: When the user clicks on the
 		properties pane for an object, the user has the option
 		of choosing from a list of UML artifacts: classes,
 		actors, etc.
 		<LI>Include edit commands under right click ...
 		
-		<LI>Swim lanes for statechart and activity diagrams. 
+		<LI>Swim lanes for statechart and activity diagrams, issue 714. 
 		<LI>Implement printing of wall-sized diagram posters or design booklets.
+Contribute the generic code to the GEF project and use it in ArgoUml.
 		<LI>For more ideas on diagram editing enhacements, see the
-		<A HREF="http://gef.tigris.org/">GEF Web Site</A>.
+		<A HREF="http://gef.tigris.org/">GEF Web Site</A>. -->
 	</UL>
-	<LI><B>UML Meta-Model</B>
+        <br> 
+
+	<LI><B>UML Meta-Model [ <a
+href="http://argouml.tigris.org/issues/buglist.cgi?subcomponent=Model&issue_status=UNCONFIRMED&issue_status=NEW&issue_status=STARTED&issue_status=REOPENED&">IssueZilla</a>
+ / <a href="http://argouml.tigris.org/documentation/defaulthtml/cookbook/ch05.html#model">Cookbook</a> ]</B>
+	
+            <p>(18 Oct 2003) <font color="red">ArgoUml is in the process of migrating to a new
+metamodel, MDR. There is a lot of work that needs to be done. However, ask on the
+developer list before attempting any work in this component.</font><p>
+        <UL>
+		<LI>Add an JDBC or EJB interface to the UML meta-model (although
+we still use NSUML, it would be best to add this feature to MDR) so that models can
+		be stored in databases. (Work started on JDBC/NSUML but it was removed from cvs
+because it was not maintained)
+	</UL>
+        <br> 
+
+	<LI><B>Class Diagram [ <a
+href="http://argouml.tigris.org/issues/buglist.cgi?subcomponent=ClassDiagram&issue_status=UNCONFIRMED&issue_status=NEW&issue_status=STARTED&issue_status=REOPENED&">IssueZilla</a>
+ / <a href="http://argouml.tigris.org/documentation/defaulthtml/cookbook/ch05s03.html">Cookbook</a> ]</B>
 	<UL>
-		<LI>Add an JDBC interface to the UML meta-model so that models can
-		be stored in databases. (Work has already started on this.)
-		<LI>Add the ability to save the UML meta-model to a file using Java's
-		ObjectSerialization library.
-		
-		<LI>Add an external file format for compatability with other tools, to enhance 
-        ArgoUML's XMI support. 
-		<LI>Generate an HTML reference web site for a UML model, much like
-		JavaDoc does for Java code.
-		<LI>Recode parts of the meta-model to remove some current simplifying
-		assumptions.
-		<LI>Enable data base modelling.
-		<LI>Enable import interface for XML documents.
-	</UL>
-	<LI><B>Code Generation and Reverse Engineering</B>
+                <LI>Fix Stereotypes, see issue <a href="http://argouml.tigris.org/issues/show_bug.cgi?id=">1873</a>, <a href="http://argouml.tigris.org/issues/show_bug.cgi?id=">2178</a>
+                <li>Implement the 'lollipop' notation for Interfaces, issue
+<a href="http://argouml.tigris.org/issues/show_bug.cgi?id=1401">1401</a>.
+                <li>Fix Class icon presentation, issue <a
+href="http://argouml.tigris.org/issues/show_bug.cgi?id=897">897</a>
+                <li>Improve Copy/ paste support, issues <a
+href="http://argouml.tigris.org/issues/show_bug.cgi?id=1861">1861</a>, <a
+href="http://argouml.tigris.org/issues/show_bug.cgi?id=1897">1897</a>
+        </UL>
+        <br> 
+
+	<LI><B>Forward Engineering [ <a
+href="http://argouml.tigris.org/issues/buglist.cgi?subcomponent=CodeGeneration/ReverseEngineering&issue_status=UNCONFIRMED&issue_status=NEW&issue_status=STARTED&issue_status=REOPENED&">IssueZilla</a>
+ / <a href="http://argouml.tigris.org/documentation/defaulthtml/cookbook/ch05s06.html">Cookbook</a> ]</B>
+
+        <p>Java forward engineering is supplied by default and there are modules
+for other languages. It is also strongly linked with 'Notation's, where there is
+a Java and UML notation for parsing strings.</p>
+
 	<UL>
       <LI>Implement code generation for an additional programming language. 
       <LI>Implement support for generating Java code that follows JavaBeans
 		conventions.
 		<LI>Implement an extensible and customizable library for code generation
 		in many languages.
-		<LI>Implement code generation for UML state machine models.
+		<LI>Implement code generation for UML state machine models, work on this has
+been done in a Masters Thesis.
 		<LI>Generate assert() statements to check OCL constraints on a UML
 		model at run-time.
-		<LI>Integrate a <A HREF="http://www.sun.com/suntest">Java parser</A> into ArgoUML to accept
-		fragments of code entered in diagrams.
-		<LI>Use a Java parser to read code from files and construct a model.
-		<LI>Enable .jar reverse engineering. 
-		Perhaps using the parser that is available in the JDK
-		distribution for generating javadocs from a jar?
-
-		<LI>Java RE to read package.html files in the source tree and
-		add the information to MPackages.
-		Java gereration to create a new package.html.
-
-	</UL>
-	<LI><B>User Interface</B>
-	<UL>
-		<LI>Implement more table views of UML packages, classes, state machines,
-		etc. <!-- table views?-->
-		<LI>Improve any aspect of Argo's user interface and show that it is
-		better.
-		<LI>Implement Undo.
-		<LI>Make ArgoUML work within Netbeans and Eclipse.
-		<LI>Add pop-up menus to several parts of Argo's interface.
-		<LI>Implement a vertically split explorer: lower half to show
-		details of the upper selection.
-		<LI>Set the save as field when user selects File &gt;
-		"save graphics" the "file name" of the project" file
-		of type" automatically i.e. "myproject.svg" for
-		example.
-	</UL>
-	<LI><B>Publishing the result</B>
-	<UL>
-		<LI>Implement a function to publish a complete view of the project
+                <LI>Implement a function to publish a complete view of the project
 		in a set of graphically enhanced HTML file. 
 		This should include a choice of graphical output i.e. SVG, PNG, etc.
 	</UL>
-	<LI><B>User Documentation</B>
+        <br> 
+
+        <LI><B>Reverse Engineering [ <a
+href="http://argouml.tigris.org/issues/buglist.cgi?subcomponent=CodeGeneration/ReverseEngineering&issue_status=UNCONFIRMED&issue_status=NEW&issue_status=STARTED&issue_status=REOPENED&">IssueZilla</a>
+ / <a href="http://argouml.tigris.org/documentation/defaulthtml/cookbook/ch05s05.html">Cookbook</a> ]</B>
+
+        <p>Java reverse engineering is supplied by default and there are modules
+for other languages.</p>
+
+	<UL>
+		<LI>Review and improve the <a href="http://www.antlr.org/">ANTLR</a> <a
+href="http://www.antlr.org/grammar/java">Java grammar</a>.
+		<LI>Improve .jar reverse engineering, this is the Classfile module.
+		<Li>Improve how types are resolved in the model, issue <a
+href="http://argouml.tigris.org/issues/show_bug.cgi?id=1669">1669</a>
+                <li>Implement C++ reverse engineering, possibly using an <a
+href="http://www.antlr.org/grammar/cpp/MyReadMe.txt">ANTLR
+C++ grammar</a>.
+                <li>Implement J2EE reverse engineering, can you reverse engineer
+An Enterprise Application (.ear file)? Can you reverse engineer a deployment
+diagram based on configuration files (Apache, App Server)?
+
+        </UL>
+        <br> 
+
+	<LI><B>User Interface [ <a
+href="http://argouml.tigris.org/issues/buglist.cgi?Submit+query=Submit+query&component=argouml&subcomponent=Details+Tabs&subcomponent=Documentation+and+Help&subcomponent=Explorer&subcomponent=Internationalization&subcomponent=Other&issue_status=NEW&issue_status=STARTED&issue_status=REOPENED&resolution=-blank-&email1=&emailtype1=substring&emailassigned_to1=1&email2=&emailtype2=substring&emailreporter2=1&issueidtype=include&issue_id=&changedin=&votes=&chfieldfrom=&chfieldto=Now&chfieldvalue=&short_desc=&short_desc_type=substring&long_desc=&long_desc_type=substring&issue_file_loc=&issue_file_loc_type=substring&status_whiteboard=&status_whiteboard_type=substring&field0-0-0=noop&type0-0-0=noop&value0-0-0=&cmdtype=doit&order=Reuse+same+sort+as+last+time">IssueZilla</a>
+ / <a href="http://argouml.tigris.org/documentation/defaulthtml/cookbook/ch05s09.html">Cookbook</a> ]</B>
+	<UL>
+                <li>Document the requirements for ArgoUml in terms of use cases
+and in the cookbook and use manual.
+		<LI>Implement table views (instad of a diagram for example) of UML artefacts. These were partly implemented, but
+they have now been removed until someone can work on it until completion.
+		<LI>Implement Undo / redo, issue <a
+href="http://argouml.tigris.org/issues/show_bug.cgi?id=1834">1834</a>. Co-ordinate with this for diagrams (GEF project).
+		<LI>Make ArgoUML work within Netbeans and Eclipse as a plugin, issue <a
+href="http://argouml.tigris.org/issues/show_bug.cgi?id=420">420</a>, <a
+href="http://argouml.tigris.org/issues/show_bug.cgi?id=862">862</a>.
+
+	</UL>
+        <br> 
+
+	<LI><B>User Documentation [ <a
+href="http://argouml.tigris.org/issues/buglist.cgi?subcomponent=Documentation and Help&issue_status=UNCONFIRMED&issue_status=NEW&issue_status=STARTED&issue_status=REOPENED&">IssueZilla</a>
+ / <a href="http://argouml.tigris.org/documentation/defaulthtml/cookbook/ch07.html">Cookbook</a> ]</B>
 	<UL>
 		<LI>Write additions to the User's manual for ArgoUML, 
 		focus on a specific task or audience.
-		<LI>Suggest a new outline for a maintainable
-		User's manual for ArgoUML.
+		<LI>Update the important pages linking to the home page.
 		<LI>Contribute questions and answers to the Users FAQ.
 	</UL>
-	<LI><B>Documenation and Instructions for the developers of ArgoUML</B>
+        <br> 
+
+	<LI><B>Documenation and Instructions for the developers of ArgoUML [ <a
+href="http://argouml.tigris.org/issues/buglist.cgi?subcomponent=Documentation and Help&issue_status=UNCONFIRMED&issue_status=NEW&issue_status=STARTED&issue_status=REOPENED&">IssueZilla</a>
+ / <a href="http://argouml.tigris.org/documentation/defaulthtml/cookbook/ch07.html">Cookbook</a> ]</B>
 	<UL>
       <LI>Write additions to the Developer's Cookbook to help new people contribute 
         to the ArgoUML project. 
       <LI>Write requirements / specification, e.g. how the yet unimplemented features 
         should work in detail.
+      <LI>Improve the source code JavaDoc.
+      <li>Add to the Developer Zones docs.
     </UL>
-	<LI><B>Object Constraint Language</B>
+        <br> 
+
+	<LI><B>Object Constraint Language [ <a
+href="http://argouml.tigris.org/issues/buglist.cgi?subcomponent=OCL/Constraints&issue_status=UNCONFIRMED&issue_status=NEW&issue_status=STARTED&issue_status=REOPENED&">IssueZilla</a>
+ / <a href="http://argouml.tigris.org/documentation/defaulthtml/cookbook/ch05s18.html">Cookbook</a> ]</B>
 	<UL>
-		<LI>Integrate the OCL parser into ArgoUML.
+		<LI>Write an evaluation of the changes required due to the migration to the
+new Metamodel, MDR.
 		<LI>Enhance ArgoUML's OCL evaluator.
+		<LI>What features are needed in order to make writing and evaluating
+constraints easier?
 	</UL>
-	<LI><B>Cognitive Support for Design</B>
+        <br> 
+
+	<LI><B>Cognitive Support for Design [ <a
+href="http://argouml.tigris.org/issues/buglist.cgi?subcomponent=Critics&issue_status=UNCONFIRMED&issue_status=NEW&issue_status=STARTED&issue_status=REOPENED&">IssueZilla</a>
+ / <a href="http://argouml.tigris.org/documentation/defaulthtml/cookbook/ch05s02.html">Cookbook</a> ]</B>
 	<UL>
 		<LI>Implement some critics or checklist items that give advice you
-		think is useful.
-		<LI>Implement critics or checklists based on ideas from books or company
-		policies.
-		<LI>Implement wizards to help fix problems.
+		think is useful, eg issue <a
+href="http://argouml.tigris.org/issues/show_bug.cgi?id=1558">1558</a>.
+		<LI>Implement wizards to help resolve critic items, issue <a
+href="http://argouml.tigris.org/issues/show_bug.cgi?id=1557">1557</a> , <a
+href="http://argouml.tigris.org/issues/show_bug.cgi?id=2108">2108</a>.
+		<LI>Fix critics that fire at the wrong time, issues <a
+href="http://argouml.tigris.org/issues/show_bug.cgi?id=667">667</a>, <a
+href="http://argouml.tigris.org/issues/show_bug.cgi?id=1129">1129</a>, <a
+href="http://argouml.tigris.org/issues/show_bug.cgi?id=1573">1573</a>, ...
+		<LI>Fix the text descriptions of Critics in the ui, issues <a
+href="http://argouml.tigris.org/issues/show_bug.cgi?id=915">915</a>, <a
+href="http://argouml.tigris.org/issues/show_bug.cgi?id=1749">1749</a>, ...
+		<LI>Refactor and clean up the critics source code implementation.
 	</UL>
-	<LI><B>Performance</B>
-	<UL>
-		<LI>Measure what parts of ArgoUML take time or space.
-		<LI>Enhance performace in some measurable way.
-	</UL>
-	<LI><B>Testing</B>
+        <br> 
+
+	<LI><B>Testing [ <a href="http://argouml.tigris.org/documentation/defaulthtml/cookbook/ch02s04.html">Cookbook</a> ]</B>
 	<UL>
 		<LI>Implement test scripts using JUnit.
 		Focus on a specific class or group of classes.
+		<LI>Help VERIFY <a
+href="http://argouml.tigris.org/issues/buglist.cgi?Submit+query=Submit+query&issue_status=RESOLVED&resolution=FIXED&resolution=INVALID&resolution=WONTFIX&resolution=LATER&resolution=REMIND&resolution=DUPLICATE&email1=&emailtype1=substring&emailassigned_to1=1&email2=&emailtype2=substring&emailreporter2=1&issueidtype=include&issue_id=&changedin=&votes=&chfieldfrom=&chfieldto=Now&chfieldvalue=&short_desc=&short_desc_type=substring&long_desc=&long_desc_type=substring&issue_file_loc=&issue_file_loc_type=substring&status_whiteboard=&status_whiteboard_type=substring&field0-0-0=noop&type0-0-0=noop&value0-0-0=&cmdtype=doit&order=Reuse+same+sort+as+last+time">fixed
+issues</a> so that they can be closed. Note that you can
+only verify an issue is fixed once a release has been made with that fix
+included. This is a <b>very useful contribution</b> to help the developers focus
+on developement.
 		
 	</UL>
+        <br> 
+
+	<LI><B>Performance</B>
+	<UL>
+		<LI>Measure what are the limits of ArgoUml's performance with large models.
+		<LI>Use a Memory profiler, or Tracer to detect inefficient algorithms.
+	</UL>
+        <br> 
 </UL>
 
 <P>
