@@ -89,7 +89,7 @@ public class CollaborationsFactoryImpl
      *
      * @return an initialized UML ClassifierRole instance.
      */
-    public MClassifierRole createClassifierRole() {
+    public Object createClassifierRole() {
         MClassifierRole modelElement =
             MFactory.getDefaultFactory().createClassifierRole();
         super.initialize(modelElement);
@@ -101,7 +101,7 @@ public class CollaborationsFactoryImpl
      *
      * @return an initialized UML Collaboration instance.
      */
-    public MCollaboration createCollaboration() {
+    public Object createCollaboration() {
         MCollaboration modelElement =
             MFactory.getDefaultFactory().createCollaboration();
         super.initialize(modelElement);
@@ -113,7 +113,7 @@ public class CollaborationsFactoryImpl
      *
      * @return an initialized UML Interaction instance.
      */
-    public MInteraction createInteraction() {
+    public Object createInteraction() {
         MInteraction modelElement =
             MFactory.getDefaultFactory().createInteraction();
         super.initialize(modelElement);
@@ -156,7 +156,8 @@ public class CollaborationsFactoryImpl
     public MCollaboration buildCollaboration(Object handle) {
         if (ModelFacade.isANamespace(handle)) {
             MNamespace namespace = (MNamespace) handle;
-            MCollaboration modelelement = createCollaboration();
+            MCollaboration modelelement =
+                (MCollaboration) createCollaboration();
             modelelement.setNamespace(namespace);
             modelelement.setName("newCollaboration");
             modelelement.setAbstract(false);
@@ -209,7 +210,7 @@ public class CollaborationsFactoryImpl
     public MInteraction buildInteraction(Object handle) {
         if (ModelFacade.isACollaboration(handle)) {
             MCollaboration collab = (MCollaboration) handle;
-            MInteraction inter = createInteraction();
+            MInteraction inter = (MInteraction) createInteraction();
             inter.setContext(collab);
             inter.setName("newInteraction");
             return inter;
@@ -470,7 +471,7 @@ public class CollaborationsFactoryImpl
             return null;
         }
 
-        MMessage activator = createMessage();
+        MMessage activator = (MMessage) createMessage();
         activator.setInteraction(interaction);
         owner.setActivator(activator);
         return activator;

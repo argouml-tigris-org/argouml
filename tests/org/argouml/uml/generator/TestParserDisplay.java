@@ -31,6 +31,7 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.foundation.core.MAttribute;
@@ -56,7 +57,7 @@ public class TestParserDisplay extends TestCase {
 
     /**
      * The constructor.
-     * 
+     *
      * @param str the name of the test
      */
     public TestParserDisplay(String str) {
@@ -75,29 +76,29 @@ public class TestParserDisplay extends TestCase {
      * Test the name of the ClassifierRole.
      */
     public void testClassifierRoleName() {
-	MClassifierRole cr;
+	Object cr;
 
 	cr = Model.getUmlFactory().getCollaborations().createClassifierRole();
-	checkName(cr, clro01, "roname");
-	checkName(cr, clro02, "roname2");
+	checkNameClassifierRole(cr, clro01, "roname");
+	checkNameClassifierRole(cr, clro02, "roname2");
 
 	cr = Model.getUmlFactory().getCollaborations().createClassifierRole();
-	checkName(cr, clro03, "roname");
+	checkNameClassifierRole(cr, clro03, "roname");
     }
 
     /**
      * Test the Base of the ClassifierRole.
      */
     public void testClassifierRoleBases() {
-	MClassifierRole cr;
-	String res1[] = {
-	    "int"
+	Object cr;
+	String[] res1 = {
+	    "int",
 	};
-	String res2[] = {
-	    "int", "double"
+	String[] res2 = {
+	    "int", "double",
 	};
-	String res3[] = {
-	    "float", "long"
+	String[] res3 = {
+	    "float", "long",
 	};
 
 	cr = Model.getUmlFactory().getCollaborations().createClassifierRole();
@@ -113,16 +114,16 @@ public class TestParserDisplay extends TestCase {
      * Test if parsing a ClassifierRole throws exceptions.
      */
     public void testClassifierRoleThrows() {
-	MClassifierRole cr;
+	Object cr;
 
 	cr = Model.getUmlFactory().getCollaborations().createClassifierRole();
-	checkThrows(cr, nclro01, true, false, false);
-	checkThrows(cr, nclro02, true, false, false);
-	checkThrows(cr, nclro03, true, false, false);
-	checkThrows(cr, nclro04, true, false, false);
+	checkThrowsClassifierRole(cr, nclro01, true, false, false);
+	checkThrowsClassifierRole(cr, nclro02, true, false, false);
+	checkThrowsClassifierRole(cr, nclro03, true, false, false);
+	checkThrowsClassifierRole(cr, nclro04, true, false, false);
     }
 
-    private void checkName(MAttribute attr, String text, String name) {
+    private void checkNameAttribute(MAttribute attr, String text, String name) {
 	try {
 	    ParserDisplay.SINGLETON.parseAttribute(text, attr);
 	    assertTrue(
@@ -133,7 +134,7 @@ public class TestParserDisplay extends TestCase {
 	}
     }
 
-    private void checkName(MOperation op, String text, String name) {
+    private void checkNameOperation(MOperation op, String text, String name) {
 	try {
 	    ParserDisplay.SINGLETON.parseOperation(text, op);
 	    assertTrue(
@@ -145,16 +146,13 @@ public class TestParserDisplay extends TestCase {
 	}
     }
 
-    private void checkName(MClassifierRole ro, String text, String name) {
-	try {
-	    ParserDisplay.SINGLETON.parseClassifierRole(ro, text);
-	    assertTrue(
-		       (text
-			+ " gave wrong name: " + ro.getName() + " != " + name),
-		       name.equals(ro.getName()));
-	} catch (Exception e) {
-	    assertTrue(text + " threw unexpectedly: " + e, false);
-	}
+    private void checkNameClassifierRole(Object ro, String text, String name) {
+        try {
+            ParserDisplay.SINGLETON.parseClassifierRole(ro, text);
+        } catch (ParseException e) {
+            fail("Could not parse expression " + text);
+        }
+        assertEquals(name, ModelFacade.getName(ro));
     }
 
     private void checkType(MAttribute attr, String text, String type) {
@@ -342,7 +340,7 @@ public class TestParserDisplay extends TestCase {
 	}
     }
 
-    private void checkThrows(
+    private void checkThrowsAttribute(
 			     MAttribute attr,
 			     String text,
 			     boolean prsEx,
@@ -358,7 +356,7 @@ public class TestParserDisplay extends TestCase {
 	}
     }
 
-    private void checkThrows(
+    private void checkThrowsOperation(
 			     MOperation op,
 			     String text,
 			     boolean prsEx,
@@ -374,8 +372,8 @@ public class TestParserDisplay extends TestCase {
 	}
     }
 
-    private void checkThrows(
-			     MClassifierRole ro,
+    private void checkThrowsClassifierRole(
+			     Object ro,
 			     String text,
 			     boolean prsEx,
 			     boolean ex2,
@@ -446,7 +444,7 @@ public class TestParserDisplay extends TestCase {
 	}
     }
 
-    private void checkBases(MClassifierRole cr, String text, String bases[]) {
+    private void checkBases(Object cr, String text, String[] bases) {
 	int i;
 	Collection c;
 	Iterator it;
@@ -454,14 +452,16 @@ public class TestParserDisplay extends TestCase {
 
 	try {
 	    ParserDisplay.SINGLETON.parseClassifierRole(cr, text);
-	    c = cr.getBases();
+	    c = ModelFacade.getBases(cr);
 	    it = c.iterator();
 	checkAllValid :
 	    while (it.hasNext()) {
 		cls = (MClassifier) it.next();
-		for (i = 0; i < bases.length; i++)
-		    if (bases[i].equals(cls.getName()))
-			continue checkAllValid;
+		for (i = 0; i < bases.length; i++) {
+		    if (bases[i].equals(cls.getName())) {
+		        continue checkAllValid;
+		    }
+		}
 		assertTrue(
 			   "Base "
 			   + cls.getName()
@@ -476,8 +476,9 @@ public class TestParserDisplay extends TestCase {
 		it = c.iterator();
 		while (it.hasNext()) {
 		    cls = (MClassifier) it.next();
-		    if (bases[i].equals(cls.getName()))
-			continue checkAllExist;
+		    if (bases[i].equals(cls.getName())) {
+		        continue checkAllExist;
+		    }
 		}
 		assertTrue("Base " + bases[i]
 			   + " was not generated by " + text,

@@ -57,21 +57,21 @@ public interface CollaborationsFactory {
      *
      * @return an initialized UML ClassifierRole instance.
      */
-    MClassifierRole createClassifierRole();
+    Object createClassifierRole();
 
     /**
      * Create an empty but initialized instance of a UML Collaboration.
      *
      * @return an initialized UML Collaboration instance.
      */
-    MCollaboration createCollaboration();
+    Object createCollaboration();
 
     /**
      * Create an empty but initialized instance of a UML Interaction.
      *
      * @return an initialized UML Interaction instance.
      */
-    MInteraction createInteraction();
+    Object createInteraction();
 
     /**
      * Create an empty but initialized instance of a UML Message.

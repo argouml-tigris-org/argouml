@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2005 The Regents of the University of California. All
+// Copyright (c) 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.model.uml;
+package org.argouml.model;
 
 import java.lang.ref.WeakReference;
 
@@ -30,17 +30,10 @@ import junit.framework.TestCase;
 
 import org.argouml.util.CheckUMLModelHelper;
 
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.model_management.MModel;
-
 /**
- * Test the collaborations factory in the NSUML implementation.<p>
+ * Test the collaborations factory for all model implementations.<p>
  *
- * No imports from org.argouml.model package!
+ * No imports from org.argouml.model.uml or other subpackage!
  */
 public class TestCollaborationsFactory extends TestCase {
 
@@ -57,8 +50,6 @@ public class TestCollaborationsFactory extends TestCase {
 	"Message",
     };
 
-    private NSUMLModelImplementation nsumlmodel;
-
     /**
      * The constructor.
      *
@@ -66,13 +57,6 @@ public class TestCollaborationsFactory extends TestCase {
      */
     public TestCollaborationsFactory(String n) {
         super(n);
-    }
-
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
-    public void setUp() {
-        nsumlmodel = new NSUMLModelImplementation();
     }
 
     /**
@@ -92,7 +76,7 @@ public class TestCollaborationsFactory extends TestCase {
 
         CheckUMLModelHelper.createAndRelease(
             this,
-            nsumlmodel.getCollaborationsFactory(),
+            Model.getCollaborationsFactory(),
             objs);
 
     }
@@ -103,7 +87,7 @@ public class TestCollaborationsFactory extends TestCase {
     public void testDeleteComplete() {
         CheckUMLModelHelper.deleteComplete(
             this,
-            nsumlmodel.getCollaborationsFactory(),
+            Model.getCollaborationsFactory(),
             allModelElements);
     }
 
@@ -114,30 +98,29 @@ public class TestCollaborationsFactory extends TestCase {
      * AssociationRole.
      */
     public void testDeleteClassifierRole() {
-        MModel model =
-            (MModel) nsumlmodel.getModelManagementFactory().createModel();
 
-        CollaborationsFactoryImpl collabFactory =
-            (CollaborationsFactoryImpl) nsumlmodel.getCollaborationsFactory();
-        MCollaboration collab =
-            (MCollaboration) collabFactory.buildCollaboration(model);
-        MClassifierRole cr1 =
-            (MClassifierRole) collabFactory.createClassifierRole();
-        MClassifierRole cr2 =
-            (MClassifierRole) collabFactory.createClassifierRole();
-        MAssociationRole role =
-            (MAssociationRole) collabFactory.buildAssociationRole(cr1, cr2);
-        MInteraction inter =
-            (MInteraction) collabFactory.buildInteraction(collab);
-        MMessage mes =
-            (MMessage) collabFactory.buildMessage(inter, role);
+        Object model = Model.getModelManagementFactory().createModel();
+        Object collab =
+            Model.getCollaborationsFactory().buildCollaboration(model);
+        Object cr1 =
+            Model.getCollaborationsFactory().createClassifierRole();
+        Object cr2 =
+            Model.getCollaborationsFactory().createClassifierRole();
+        Object role =
+            Model.getCollaborationsFactory().buildAssociationRole(cr1, cr2);
+        Object inter =
+            Model.getCollaborationsFactory().buildInteraction(collab);
+        Object mes =
+            Model.getCollaborationsFactory().buildMessage(
+                inter,
+                role);
 
         WeakReference cr1wr = new WeakReference(cr1);
         WeakReference rolewr = new WeakReference(role);
         WeakReference interwr = new WeakReference(inter);
         WeakReference meswr = new WeakReference(mes);
 
-        nsumlmodel.getUmlFactory().delete(cr1);
+        Model.getUmlFactory().delete(cr1);
         cr1 = null;
         role = null;
         inter = null;

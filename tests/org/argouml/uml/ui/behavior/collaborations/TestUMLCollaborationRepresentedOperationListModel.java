@@ -27,9 +27,9 @@ package org.argouml.uml.ui.behavior.collaborations;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.foundation.core.MOperation;
 
 /**
@@ -40,9 +40,9 @@ public class TestUMLCollaborationRepresentedOperationListModel
     extends TestCase {
 
     private int oldEventPolicy;
-    private MCollaboration elem;
+    private Object elem;
     private UMLCollaborationRepresentedOperationListModel model;
-    
+
     /**
      * Constructor for TestUMLCollaborationRepresentedOperationListModel.
      *
@@ -51,7 +51,7 @@ public class TestUMLCollaborationRepresentedOperationListModel
     public TestUMLCollaborationRepresentedOperationListModel(String arg0) {
         super(arg0);
     }
-    
+
     /**
      * @see junit.framework.TestCase#setUp()
      */
@@ -63,7 +63,7 @@ public class TestUMLCollaborationRepresentedOperationListModel
         model = new UMLCollaborationRepresentedOperationListModel();
         model.setTarget(elem);
     }
-    
+
     /**
      * @see junit.framework.TestCase#tearDown()
      */
@@ -73,24 +73,25 @@ public class TestUMLCollaborationRepresentedOperationListModel
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
-    
+
     /**
      * Test setting the represented operation.
      */
     public void testSetRepresentedOperation() {
         MOperation oper = Model.getCoreFactory().createOperation();
-        elem.setRepresentedOperation(oper);
+        ModelFacade.setRepresentedOperation(elem, oper);
+//        elem.setRepresentedOperation(oper);
         assertEquals(1, model.getSize());
         assertEquals(oper, model.getElementAt(0));
     }
-    
+
     /**
      * Test removing the represented operation.
      */
     public void testRemoveRepresentedOperation() {
         MOperation oper = Model.getCoreFactory().createOperation();
-        elem.setRepresentedOperation(oper);
-        elem.setRepresentedOperation(null);
+        ModelFacade.setRepresentedOperation(elem, oper);
+        ModelFacade.setRepresentedOperation(elem, null);
         assertEquals(0, model.getSize());
         assertTrue(model.isEmpty());
     }

@@ -27,11 +27,10 @@ package org.argouml.uml.ui.behavior.collaborations;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 
 import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.model_management.MModel;
 
@@ -45,7 +44,7 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
     private MMessage[] activators;
     private UMLMessageActivatorComboBoxModel model;
     private MMessage elem;
-    
+
     /**
      * Constructor for TestUMLMessageActivatorComboBoxModel.
      * @param arg0 is the name of the test case.
@@ -61,23 +60,23 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
         super.setUp();
         elem = Model.getCollaborationsFactory().createMessage();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);    
+        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         activators = new MMessage[10];
         MModel m = Model.getModelManagementFactory().createModel();
-        MInteraction inter = 
+        Object inter =
             Model.getCollaborationsFactory().createInteraction();
-        MCollaboration col = 
+        Object col =
             Model.getCollaborationsFactory().createCollaboration();
-        inter.setContext(col);
-        col.setNamespace(m);
-        inter.addMessage(elem);
+        ModelFacade.setContext(inter, col);
+        ModelFacade.setNamespace(col, m);
+        ModelFacade.addMessage(inter, elem);
         for (int i = 0; i < 10; i++) {
             activators[i] = Model.getCollaborationsFactory().createMessage();
-            inter.addMessage(activators[i]);
-        }  
-        model = new UMLMessageActivatorComboBoxModel(); 
-        model.targetSet(new TargetEvent(this, "set", new Object[0], 
-                new Object[] {elem})); 
+            ModelFacade.addMessage(inter, activators[i]);
+        }
+        model = new UMLMessageActivatorComboBoxModel();
+        model.targetSet(new TargetEvent(this, "set", new Object[0],
+                new Object[] {elem}));
     }
 
     /**
@@ -92,7 +91,7 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
-    
+
     /**
      * Test setup.
      */
@@ -102,7 +101,7 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
         assertTrue(model.contains(activators[0]));
         assertTrue(model.contains(activators[9]));
     }
-    
+
     /**
      * Test setActivator().
      */
@@ -110,7 +109,7 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
         elem.setActivator(activators[0]);
         assertTrue(model.getSelectedItem() == activators[0]);
     }
-    
+
     /**
      * Test setActivator() with null argument.
      */
@@ -118,7 +117,7 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
         elem.setActivator(null);
         assertNull(model.getSelectedItem());
     }
-    
+
     /**
      * Test removing.
      */
@@ -126,6 +125,6 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
         Model.getUmlFactory().delete(activators[9]);
         assertEquals(9, model.getSize());
         assertTrue(!model.contains(activators[9]));
-    } 
+    }
 
 }

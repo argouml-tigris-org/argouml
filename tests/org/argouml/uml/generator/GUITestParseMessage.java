@@ -30,10 +30,10 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.UmlFactory;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
@@ -46,7 +46,7 @@ import ru.novosoft.uml.behavior.collaborations.MMessage;
  */
 public class GUITestParseMessage extends TestCase {
     /**
-     * @see junit.framework.TestCase#TestCase()
+     * @see junit.framework.TestCase#TestCase(String)
      */
     public GUITestParseMessage(String str) {
         super(str);
@@ -58,24 +58,21 @@ public class GUITestParseMessage extends TestCase {
      * @throws ParseException if the parsing was in error.
      */
     public void testParseMessage() throws ParseException {
-        MMessage m;
-        Iterator it;
-
         UmlFactory fact = Model.getUmlFactory();
 
-        MCollaboration coll = fact.getCollaborations().createCollaboration();
+        Object coll = fact.getCollaborations().createCollaboration();
         MInteraction inter = fact.getCollaborations().buildInteraction(coll);
 
-        MClassifierRole cl1 = fact.getCollaborations().createClassifierRole();
-        MClassifierRole cl2 = fact.getCollaborations().createClassifierRole();
-        MClassifierRole cl3 = fact.getCollaborations().createClassifierRole();
-        MClassifierRole cl4 = fact.getCollaborations().createClassifierRole();
-        MClassifierRole cl5 = fact.getCollaborations().createClassifierRole();
-        cl1.setNamespace(coll);
-        cl2.setNamespace(coll);
-        cl3.setNamespace(coll);
-        cl4.setNamespace(coll);
-        cl5.setNamespace(coll);
+        Object cl1 = fact.getCollaborations().createClassifierRole();
+        Object cl2 = fact.getCollaborations().createClassifierRole();
+        Object cl3 = fact.getCollaborations().createClassifierRole();
+        Object cl4 = fact.getCollaborations().createClassifierRole();
+        Object cl5 = fact.getCollaborations().createClassifierRole();
+        ModelFacade.setNamespace(cl1, coll);
+        ModelFacade.setNamespace(cl2, coll);
+        ModelFacade.setNamespace(cl3, coll);
+        ModelFacade.setNamespace(cl4, coll);
+        ModelFacade.setNamespace(cl5, coll);
 
         MAssociationRole r1to2 =
             fact.getCollaborations().buildAssociationRole(cl1, cl2);
@@ -197,7 +194,7 @@ public class GUITestParseMessage extends TestCase {
      * @param m7 message to be tested
      * @throws ParseException if the parser found a syntax error
      */
-    private void tryPredecessors(MMessage m1, MMessage m3, MMessage m4, 
+    private void tryPredecessors(MMessage m1, MMessage m3, MMessage m4,
             MMessage m5, MMessage m7) throws ParseException {
         MMessage m;
         Iterator it;
@@ -217,19 +214,21 @@ public class GUITestParseMessage extends TestCase {
         boolean pre2 = false;
         it = m7.getPredecessors().iterator();
         m = (MMessage) it.next();
-        if (m == m4)
+        if (m == m4) {
             pre1 = true;
-        else if (m == m5)
+        } else if (m == m5) {
             pre2 = true;
-        else
+        } else {
             assertTrue("Strange message found", false);
+        }
         m = (MMessage) it.next();
-        if (m == m4)
+        if (m == m4) {
             pre1 = true;
-        else if (m == m5)
+        } else if (m == m5) {
             pre2 = true;
-        else
+        } else {
             assertTrue("Strange message found", false);
+        }
         assertTrue(pre1);
         assertTrue(pre2);
         assertTrue(!it.hasNext());
@@ -334,7 +333,7 @@ public class GUITestParseMessage extends TestCase {
      * @param m3 message to be tested
      * @throws ParseException if the parser found a syntax error
      */
-    private void trySomeMoreComplexMoving(MMessage m1, MMessage m2, 
+    private void trySomeMoreComplexMoving(MMessage m1, MMessage m2,
             MMessage m3) throws ParseException {
         parseMessage(m3, " 1.1.1 : ");
         assertTrue(m3.getActivator() == m2);
@@ -368,7 +367,7 @@ public class GUITestParseMessage extends TestCase {
      * @param m3 message to be tested
      * @throws ParseException if the parser found a syntax error
      */
-    private void trySimpleMoving(MMessage m1, MMessage m2, MMessage m3) 
+    private void trySimpleMoving(MMessage m1, MMessage m2, MMessage m3)
         throws ParseException {
         parseMessage(m3, " \t1.1 : ");
         assertTrue(m3.getActivator() == m1);

@@ -22,10 +22,10 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 import org.argouml.uml.ui.behavior.collaborations.UMLCollaborationInteractionListModel;
 
@@ -65,10 +65,10 @@ public class TestUMLCollaborationInteractionListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#fillModel()
      */
     protected Object[] fillModel() {
-        MInteraction[] inter = new MInteraction[10];
+        Object[] inter = new Object[10];
         for (int i = 0; i < 10; i++) {
             inter[i] = Model.getCollaborationsFactory().createInteraction();
-            inter[i].setContext((MCollaboration) getElem());
+            ModelFacade.setContext(inter[i], getElem());
         }
         return inter;
     }

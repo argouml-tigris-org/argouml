@@ -39,32 +39,32 @@ public class TestModel extends TestCase {
     public TestModel(String arg0) {
         super(arg0);
     }
-    
+
     /**
-     * Test each of the interfaces returned so that they don't contain any 
+     * Test each of the interfaces returned so that they don't contain any
      * NSUML in any of their signatures.
      */
     public void testInterfaces() {
         Method[] modelMethods = Model.class.getDeclaredMethods();
-        
+
         for (int i = 0; i < modelMethods.length; i++) {
             Method modelMethod = modelMethods[i];
-            
+
             if (!Modifier.isPublic(modelMethod.getModifiers())) {
                 // This is a private method in Model.
                 continue;
             }
-            
+
             assertTrue("The method " + modelMethod + "is not static",
                        Modifier.isStatic(modelMethod.getModifiers()));
-            
+
             Class factoryIF = modelMethod.getReturnType();
-            
+
             // Handling methods that doesn't return
             if (factoryIF.isPrimitive() && factoryIF.getName().equals("void")) {
                 continue;
             }
-            
+
             assertTrue("The return type from " + modelMethod
                        + " must be an interface.",
                        factoryIF.isInterface());
@@ -82,18 +82,18 @@ public class TestModel extends TestCase {
      */
     private void checkInterface(Class theInterface) {
         Method[] methods = theInterface.getDeclaredMethods();
-        
+
         for (int i = 0; i < methods.length; i++) {
             Method method = methods[i];
-            
+
             assertTrue("The method " + method + " has invalid return type "
-                       + method.getReturnType(), 
+                       + method.getReturnType(),
                        isValid(method.getReturnType()));
-            
+
             Class[] parameters = method.getParameterTypes();
 
             for (int k = 0; k < parameters.length; k++) {
-                assertTrue("The method " + method 
+                assertTrue("The method " + method
                            + " has invalid parameter type "
                            + parameters[k],
                            isValid(parameters[k]));
@@ -115,15 +115,25 @@ public class TestModel extends TestCase {
      * Tells if a type is valid or not.
      *
      * @param cls The class to test.
-     * @return <tt>true</tt> if it is.
+     * @return <code>true</code> if it is.
      */
     private boolean isValid(Class cls) {
         int length = UML_PATH_PREFIX.length();
         if (cls.getName().length() > length
                 && cls.getName().substring(0, length).equals(UML_PATH_PREFIX)) {
-            return false;            
+            return false;
         }
 
         return true;
+    }
+
+    /**
+     * Test if the CollaborationsFactory is really a singleton.
+     */
+    public void testSingleton() {
+        Object o1 = Model.getCollaborationsFactory();
+        Object o2 = Model.getCollaborationsFactory();
+
+        assertTrue("Different singletons", o1 == o2);
     }
 }

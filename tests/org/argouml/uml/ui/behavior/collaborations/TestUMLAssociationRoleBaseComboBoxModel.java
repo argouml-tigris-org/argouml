@@ -29,11 +29,11 @@ import junit.framework.TestCase;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MClass;
@@ -49,7 +49,7 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
     private MAssociationRole elem;
     private UMLAssociationRoleBaseComboBoxModel model;
     private MAssociation[] bases;
-    
+
     /**
      * Constructor for TestUMLAssociationRoleBaseComboBoxModel.
      *
@@ -58,7 +58,7 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
     public TestUMLAssociationRoleBaseComboBoxModel(String arg0) {
         super(arg0);
     }
-    
+
     /**
      * @see junit.framework.TestCase#setUp()
      */
@@ -77,21 +77,20 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
             bases[i] =
 		Model.getCoreFactory().buildAssociation(class1, class2);
         }
-        MClassifierRole role1 =
+        Object role1 =
 	    Model.getCollaborationsFactory().createClassifierRole();
-        MClassifierRole role2 =
+        Object role2 =
 	    Model.getCollaborationsFactory().createClassifierRole();
-        role1.addBase(class1);
-        role2.addBase(class2);
-        MCollaboration col =
+        ModelFacade.addBase(role1, class1);
+        ModelFacade.addBase(role2, class2);
+        Object col =
 	    Model.getCollaborationsFactory().createCollaboration();
-        role1.setNamespace(col);
-        role2.setNamespace(col);
+        ModelFacade.setNamespace(role1, col);
+        ModelFacade.setNamespace(role2, col);
         elem =
-	    Model.getCollaborationsFactory().buildAssociationRole(role1,
-								    role2);
+	    Model.getCollaborationsFactory().buildAssociationRole(role1, role2);
         oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);   
+        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model.targetSet(new TargetEvent(this,
 					"set",
 					new Object[0],
@@ -99,7 +98,7 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
 					    elem,
 					}));
     }
-    
+
     /**
      * @see junit.framework.TestCase#tearDown()
      */
@@ -109,7 +108,7 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
-    
+
     /**
      * Test setup.
      */
@@ -121,7 +120,7 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
         assertTrue(model.contains(bases[0]));
         assertTrue(model.contains(bases[9]));
     }
-    
+
     /**
      * Test setting the Base.
      */
@@ -129,7 +128,7 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
         elem.setBase(bases[0]);
         assertTrue(model.getSelectedItem() == bases[0]);
     }
-    
+
     /**
      * Test setting the Base to null.
      */
@@ -137,7 +136,7 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
         elem.setBase(null);
         assertNull(model.getSelectedItem());
     }
-    
+
     /**
      * Test removing the Base.
      */
@@ -146,7 +145,6 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
         // there is one extra element since removal of the base is allowed.
         assertEquals(9 + 1, model.getSize());
         assertTrue(!model.contains(bases[9]));
-    } 
-        
+    }
 
 }

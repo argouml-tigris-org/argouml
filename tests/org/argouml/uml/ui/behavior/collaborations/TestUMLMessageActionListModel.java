@@ -30,7 +30,6 @@ import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
 
 /**
  * @since Oct 30, 2002
@@ -38,10 +37,10 @@ import ru.novosoft.uml.behavior.collaborations.MMessage;
  */
 public class TestUMLMessageActionListModel
     extends TestCase {
-        
+
     private int oldEventPolicy;
     private UMLMessageActionListModel model;
-    private MMessage elem;
+    private Object elem;
 
     /**
      * Constructor for TestUMLMessageActionListModel.
@@ -59,11 +58,11 @@ public class TestUMLMessageActionListModel
         super.setUp();
         elem = Model.getCollaborationsFactory().createMessage();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);      
+        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLMessageActionListModel();
         model.setTarget(elem);
     }
-    
+
     /**
      * @see junit.framework.TestCase#tearDown()
      */
@@ -73,7 +72,7 @@ public class TestUMLMessageActionListModel
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
-    
+
     /**
      * Test setAction().
      */
@@ -83,7 +82,7 @@ public class TestUMLMessageActionListModel
         assertEquals(1, model.getSize());
         assertEquals(action, model.getElementAt(0));
     }
-    
+
     /**
      * Test setAction() for removing.
      */
@@ -93,5 +92,5 @@ public class TestUMLMessageActionListModel
         ModelFacade.setAction(elem, null);
         assertEquals(0, model.getSize());
         assertTrue(model.isEmpty());
-    } 
+    }
 }
