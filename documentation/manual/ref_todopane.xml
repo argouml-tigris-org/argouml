@@ -10,8 +10,6 @@ The To-Do Pane. Need to decide if it is To-Do, To Do or ToDo.
 <chapter id="ch.ref.todopane">
   <title>The To-Do Pane</title>
 
-  &notupdatedfor014disclaimer;
-
   <sect1>
     <title>Introduction</title>
 
@@ -77,7 +75,8 @@ The To-Do Pane. Need to decide if it is To-Do, To Do or ToDo.
         toggled by &button1; click on these icons.</para>
 
       <tip><para>It is possible to turn off the display of these icons using
-        the <literal>Flat</literal> button in the explorer.</para></tip>
+        the <literal>Flat</literal> button in the pane.
+      </para></tip>
 
       <para>&Button1; click over the headline of any to-do item will cause its
         details to be shown in the <literal>To&nbsp;Do&nbsp;Item</literal> tab
@@ -141,7 +140,7 @@ The To-Do Pane. Need to decide if it is To-Do, To Do or ToDo.
         <literal>Uncategorized</literal>,
         <literal>Class&nbsp;Selection</literal>, <literal>Naming</literal>,
         <literal>Storage</literal>, <literal>Planned&nbsp;Extensions</literal>,
-        <literal>MState&nbsp;Machines</literal>,
+        <literal>State&nbsp;Machines</literal>,
         <literal>Design&nbsp;Patterns</literal>,
         <literal>Relationships</literal>, <literal>Instantiation</literal>,
         <literal>Modularity</literal>, <literal>Expected&nbsp;Usage</literal>,
@@ -159,33 +158,61 @@ The To-Do Pane. Need to decide if it is To-Do, To Do or ToDo.
         goal, <literal>Unspecified</literal> and all to-do items will appear
         under this heading.</para></caution></listitem>
 
-      <listitem><para><literal>By Offender</literal>. The to-do items are
-        organized into a hierarchy according to the artifact that caused the
-        problem.</para>
+      <listitem>
+        <para><literal>By Offender</literal>. The to-do items are
+          organized into a hierarchy according to the artifact that caused the
+          problem. Todo items that were manually created 
+          with the "New ToDo item" button (i.e. not by a critic),
+          are not listed here.
+        </para>
 
-      <caution><para>In the current release of &argouml; collaboration and
-        sequence diagrams which generate to-do items sometimes appear with
-        internal package reference names, rather than their given
-        name.</para></caution></listitem>
+        <caution>
+          <para>
+            In the V0.12 release of &argouml; collaboration and
+            sequence diagrams which generate to-do items sometimes appear with
+            internal package reference names, rather than their given
+            name.
+            <!-- TODO: Check if this is still true ... -->
+          </para>
+        </caution>
+        
+        <!-- TODO: And they are not inmediately updated 
+        when the name of the offender is changed. See issue ...  -->
+      </listitem>
 
       <listitem><para><literal>By Poster</literal>. The to-do items are
         organized into a hierarchy according to which critic generated the
         to-do item.</para>
 
-      <caution><para>In the current release of &argouml; the fully qualified
-        class name of the critic is given instead of just its headline
-        name.</para></caution></listitem>
+        <caution>
+          <para>
+            In the V0.14 release of &argouml; the fully qualified
+            class name of the critic is given instead of just its headline
+            name.
+            <!-- TODO: See issue .. -->
+          </para>
+        </caution>
+        <!-- TODO: And where the critic name is supposed to be, 
+        for a manually created todo item, 
+        something very looong is shown. And the details pane text is missing. 
+        See issue ... -->
+      </listitem>
 
-      <listitem><para><literal>By Knowledge Type</literal>. &argouml; has the
-        concept that a critic reflects a deficiency in a category of
-        knowledge. This presentation option groups the critics according to
-        their knowledge category: <literal>Designer's</literal>,
-        <literal>Correctness</literal>, <literal>Completeness</literal>,
-        <literal>Consistency</literal>, <literal>Syntax</literal>,
-        <literal>Semantics</literal>, <literal>Optimization</literal>,
-        <literal>Presentational</literal>, <literal>Organizational</literal>,
-        <literal>Experiencial</literal> and
-        <literal>Tool</literal>.</para></listitem>
+      <listitem>
+        <para><literal>By Knowledge Type</literal>. &argouml; has the
+          concept that a critic reflects a deficiency in a category of
+          knowledge. This presentation option groups the critics according to
+          their knowledge category: <literal>Designer's</literal>,
+          <literal>Correctness</literal>, <literal>Completeness</literal>,
+          <literal>Consistency</literal>, <literal>Syntax</literal>,
+          <literal>Semantics</literal>, <literal>Optimization</literal>,
+          <literal>Presentational</literal>, <literal>Organizational</literal>,
+          <literal>Experiencial</literal> and
+          <literal>Tool</literal>. 
+          The former category (Designer's) contains the
+          manually entered todo items.
+        </para>
+      </listitem>
     </itemizedlist>
   </sect1>
 
@@ -223,11 +250,19 @@ The To-Do Pane. Need to decide if it is To-Do, To Do or ToDo.
         <literal>Flat</literal>. The current presentation does not use
         <quote>twisties</quote> to show the hierarchy. &Button1; click will on
         the icon will switch to a representation which has
-        them.</para></listitem>
+        them.
+        <!-- TODO: Is it not better to NOT show the blue folders here, 
+        but only the todo items itself? See issue ...  -->
+        </para></listitem>
     </itemizedlist>
 
-    <caution><para>The current version of &argouml; (as described above) really
-      has the flat/hierarchical icons logically back to front.</para></caution>
+    <caution>
+      <para>
+        The V0.14 version of &argouml; (as described above) really
+        has the flat/hierarchical icons logically back to front.
+        <!-- TODO: See issue ... -->
+      </para>
+    </caution>
   </sect1>
 
   <!-- The item count -->
@@ -236,10 +271,13 @@ The To-Do Pane. Need to decide if it is To-Do, To Do or ToDo.
     <title>Item Count</title>
 
     <para>To the right of the flat/hierarchical button is a count of the number
-      of to-do items currently found, highlighted in yellow. This is followed
+      of to-do items currently found<!--, highlighted in yellow-->.
+      <!-- This is followed
       by <literal>+</literal> to indicate the last change in number was an
       increase or <literal>-</literal> to indicate the last change in number
-      was a decrease.</para>
+      was a decrease.-->
+      <!-- TODO: Apparently, this does not work any more. See issue ... -->
+    </para>
 
     <caution><para>This count will not show if the to-do pane is shrunk too
       small.</para></caution>

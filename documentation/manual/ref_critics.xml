@@ -18,7 +18,8 @@ you change that class at the same time (and think through the deployment).
 <chapter id="ch.ref.critics">
   <title>The Critics</title>
 
-  &notupdatedfor014disclaimer;
+  <!-- TODO: MVW: I did not check if all the critics are present (from the
+  implementation in the manual AND vice versa). -->
 
   <sect1>
     <title>Introduction</title>
@@ -75,8 +76,10 @@ you change that class at the same time (and think through the deployment).
 
     <para>These are critics that do not fit into any other category.</para>
 
-    <para>The current version of &argouml; has no critics in this
-      category.</para>
+    <para>
+      &argouml; has no critics in this category. Maybe some will be added in
+      later versions.
+    </para>
   </sect1>
 
   <!-- Critics about choice & number of classes -->
@@ -87,8 +90,9 @@ you change that class at the same time (and think through the deployment).
     <para>These are critics concerning how classes are chosen and
       used.</para>
 
-    <para>The current version of &argouml; has three critics in this
-      category.</para>
+    <para>
+      &argouml; has the following critics in this category.
+    </para>
 
     <sect2 id="critics.CrNonAggDataType">
       <title>Wrap DataType</title>
@@ -123,7 +127,12 @@ you change that class at the same time (and think through the deployment).
       <title>Reduce Classes in diagram &lt;diagram&gt;</title>
 
       <para>Suggestion to improve readability by having fewer classes on a
-        diagram.</para>
+        diagram.
+        If one class diagram has too many classes it may become very difficult 
+        for humans to understand. 
+        Defining an understandable set of class diagrams is 
+        an important part of your design. 
+      </para>
     </sect2>
 
     <sect2 id="critics.CrNodesOverlap">
@@ -155,12 +164,12 @@ you change that class at the same time (and think through the deployment).
       <para>Suggestion that two attribute names of a class have the same
         name. This is not permitted in UML.</para>
         
-      <note><para>This may be caused by inheritance of an attribute
+      <note><para>The problem may be caused by inheritance of an attribute
         through a generalization relationship.</para></note>
     </sect2>
 
     <sect2 id="critics.CrOperNameConflict">
-      <title>Change Names or Signatures in &lt;artifact&gt;</title>
+      <title>Change Names or Signatures in an Artifact</title>
 
       <para>Two operations in &lt;artifact&gt; have the same signature. This
         means their name is the same, and the list of parameters has the same
@@ -194,7 +203,7 @@ you change that class at the same time (and think through the deployment).
     </sect2>
 
     <sect2 id="critics.CrDupRoleNames">
-      <title>Duplicate End (Role) Names for &lt;Association:&gt;</title>
+      <title>Duplicate End (Role) Names for an Association</title>
 
       <para>The specified association has two (or more) ends (roles) with the
         same name. One of the well-formedness rules in UML 1.3 for
@@ -227,7 +236,7 @@ you change that class at the same time (and think through the deployment).
     </sect2>
 
     <sect2 id="critics.CrDisambigClassName">
-      <title>Choose a Unique Name for &lt;artifact&gt; (Classes and
+      <title>Choose a Unique Name for an Artifact (Classes and
         Interfaces)</title>
 
       <para>Suggestion that the class or interface specified has the same name
@@ -239,7 +248,8 @@ you change that class at the same time (and think through the deployment).
       <title>Choose a Name (Attributes)</title>
 
       <para>The attribute concerned has been given no name (it will appear in
-        the model as <literal>anon</literal>). Suggestion that good design
+        the model as <literal>(anon Attribute)</literal>). 
+        Suggestion that good design
         requires that all attributes are named.</para>
     </sect2>
 
@@ -247,7 +257,8 @@ you change that class at the same time (and think through the deployment).
       <title>Choose a Name (Operations)</title>
 
       <para>The operation concerned has been given no name (it will appear in
-        the model as <literal>anon</literal>). Suggestion that good design
+        the model as <literal>(anon Operation)</literal>). 
+        Suggestion that good design
         requires that all operations are named.</para>
     </sect2>
 
@@ -255,12 +266,13 @@ you change that class at the same time (and think through the deployment).
       <title>Choose a Name (States)</title>
 
       <para>The state concerned has been given no name (it will appear in the
-        model as <literal>anon</literal>). Suggestion that good design requires
+        model as <literal>(anon State)</literal>). 
+        Suggestion that good design requires
         that all states are named.</para>
     </sect2>
 
     <sect2 id="critics.CrDisambigStateName">
-      <title>Choose a Unique Name for &lt;artifact&gt; (States)</title>
+      <title>Choose a Unique Name for a (State related) Artifact</title>
 
       <para>Suggestion that the state specified has the same name as another
         (in the current state diagram), which is bad design and will prevent
@@ -293,7 +305,7 @@ you change that class at the same time (and think through the deployment).
     </sect2>
 
     <sect2 id="critics.CrReservedName">
-      <title>Change &lt;artifact&gt; to a Non-Reserved Word</title>
+      <title>Change an Artifact to a Non-Reserved Word</title>
 
       <para>Suggestion that this artifact's name is the same as a reserved word
         in UML (or within one character of one), which is not
@@ -308,7 +320,7 @@ you change that class at the same time (and think through the deployment).
 
       <caution><para>Following the Java and C++ convention most designers
         give their constructors the same name as the class, which begins
-        with an upper case character. In the current release of &argouml;, this
+        with an upper case character. In V0.14 &argouml;, this
         will trigger this critic, unless the constructor is stereotyped
         <literal>&laquo;create&raquo;</literal>.</para>
 
@@ -326,17 +338,19 @@ you change that class at the same time (and think through the deployment).
     </sect2>
 
     <sect2 id="critics.CrUnconventionalClassName">
-      <title>Capitalize Class Name &lt;class&gt;</title>
+      <title>Capitalize Class Name</title>
 
       <para>Suggestion that a class has not followed the naming convention that
         classes begin with upper case letters.</para>
 
       <note><para>Although not triggering this critic, the same
-        convention should apply to interfaces.</para></note>
+        convention should apply to interfaces.
+        <!-- TODO: See enhancement issue ... -->
+      </para></note>
     </sect2>
 
     <sect2 id="critics.CrUnconventionalPackName">
-      <title>Revise Package Name &lt;artifact&gt;</title>
+      <title>Revise Package Name</title>
 
       <para>Suggestion that a package has not followed the naming convention of
         using lower case letters with periods used to indicated
@@ -351,7 +365,7 @@ you change that class at the same time (and think through the deployment).
 
     <para>Critics concerning attributes of classes.</para>
 
-    <para>The current version of &argouml; has four critics in this
+    <para>The current version of &argouml; has the following critics in this
       category.</para>
 
     <sect2>
@@ -362,25 +376,17 @@ you change that class at the same time (and think through the deployment).
     </sect2>
 
     <sect2 id="critics.CrNoInstanceVariables">
-      <title>Add Instance Variables to &lt;class&gt;</title>
+      <title>Add Instance Variables to a Class</title>
 
       <para>Suggestion that no instance variables have been specified for the
         given class. Such classes may be created to specify static attributes
-        and methods, but by convention should be given the stereotype
+        and methods, but by convention should then be given the stereotype
         <literal>&laquo;utility&raquo;</literal>.</para>
 
-      <warning><para>In the current version of &argouml; this critic
-        triggers for all classes whether or not they have attributes, so
-        should be treated with caution.</para>
-
-      <para>It is important to remember that critics offer guidance, and
-        are not always correct. &argouml; lets you dismiss the resulting
-        to-do items through the to-do pane (see
-        <xref linkend="ch.ref.todopane"/>).</para></warning>
     </sect2>
 
     <sect2 id="critics.CrConstructorNeeded">
-      <title>Add Constructor to &lt;class&gt;</title>
+      <title>Add a Constructor to a Class</title>
 
       <para>You have not yet defined a constructor for class
         <emphasis>class</emphasis>. Constructors initialize new instances such
@@ -413,7 +419,7 @@ you change that class at the same time (and think through the deployment).
     </sect2>
 
     <sect2 id="critics.CrTooManyAttr">
-      <title>Reduce Attributes on &lt;class&gt;</title>
+      <title>Reduce Attributes on a Class</title>
 
       <para>Suggestion that the class has too many attributes for a good
         design, and is at risk of becoming a design
@@ -449,10 +455,12 @@ you change that class at the same time (and think through the deployment).
       <para>Suggestion that an interfaces has attributes defined. The UML
         standard defines interfaces to have operations.</para>
 
-      <caution><para>The current version of &argouml; no longer allows you
-        to add attributes to intefaces, so this should never occur in
+      <caution><para>
+        &argouml; does not allow you
+        to add attributes to interfaces, so this should never occur in the
         &argouml; model. It might trigger if a project has been loaded with
-        XMI created by another tool.</para></caution>
+        XMI created by another tool.
+      </para></caution>
     </sect2>
 
     <sect2 id="critics.CrSubclassReference">
@@ -476,7 +484,7 @@ you change that class at the same time (and think through the deployment).
       <literal>State&nbsp;Machines</literal>. This is raised as an issue to be
       fixed in a future version of &argouml;</para></note-->
 
-    <para>The current version of &argouml; has 14 critics in this
+    <para>The current version of &argouml; has the following critics in this
       category.</para>
 
     <sect2 id="critics.CrTooManyTransitions">
@@ -599,12 +607,13 @@ you change that class at the same time (and think through the deployment).
     <para>These relate to the use of patterns as described by the so called
       <quote>Gang of Four</quote>. &argouml; also uses this category for
       critics associated with deployment and sequence diagrams. The current
-      version of &argouml; has 16 critics in this category.</para>
+      version of &argouml; has the following critics in this category.
+    </para>
 
     <sect2 id="critics.CrConsiderSingleton">
       <title>Consider using Singleton Pattern for &lt;class&gt;</title>
 
-      <para><emphasis>class</emphasis> has no non-static attributes nor any
+      <para>The <emphasis>class</emphasis> has no non-static attributes nor any
         associations that are navigable away from instances of this class.
         This means that every instance of this class will be identical to every
         other instance, since there will be nothing about the instances that
@@ -795,19 +804,20 @@ you change that class at the same time (and think through the deployment).
     <para>Critics concerning
       associations in &argouml;.</para>
 
-    <para>The current version of &argouml; has seven critics in this
+    <para>The current version of &argouml; has the following critics in this
       category.</para>
 
     <sect2 id="critics.CrCircularAssocClass">
       <title>Circular Association</title>
 
-      <para>Suggestion that an association class has roles that refer back
+      <para>Suggestion that an association class has a role that refers back
         directly to itself, which is not permitted.</para>
 
-      <warning><para>This critic is meaningless in the current version of
-        &argouml; which does not support association classes. In addition
+      <warning><para>This critic is meaningless in the V0.14 version of
+        &argouml; which does not support association classes. <!--In addition
         the current code would never trigger, even if an association
-        class were created.</para></warning>
+        class were created.-->
+      </para></warning>
     </sect2>
 
     <sect2 id="critics.CrUnnavigableAssoc">
@@ -839,17 +849,20 @@ you change that class at the same time (and think through the deployment).
       <para>The association should then appear with a stick arrowhead pointed
         towards the interface</para>
 
-      <note><para>In an ideal world, &argouml; would not permit associations to
-        be created that were navigable from interfaces.</para></note>
+      <!--note><para>In an ideal world, &argouml; would not permit associations to
+        be created that were navigable from interfaces.</para></note-->
+        <!-- MVW: No! That's what critics are all about...-->
 
-      <warning><para>The current version of &argouml; has a known defect
-        where it creates an association between a class and interface that
-        is either navigable in both directions, or navigable only from the
-        interface to the class. The fix is to remove the navigation from
-        the class end of the association and if necessary add navigation to
-        the interface end (navigation refers to navigability
-        <emphasis>towards</emphasis> the end) if this critic is
-        triggered.</para></warning>
+      <para>
+        When an association between a class and interface is created 
+        in &argouml;, it is by default 
+        navigable only from the
+        class to the interface.
+        However, &argouml; does not prevent to change the navigability 
+        afterwards into a
+        wrong situation. 
+        Which will cause this critic to be
+        triggered.</para>
     </sect2>
 
     <sect2 id="critics.CrNoAssociations">
@@ -903,7 +916,7 @@ you change that class at the same time (and think through the deployment).
 
     <para>Critics concerning modular development in &argouml;.</para>
 
-    <para>The current version of &argouml; has two critics in this
+    <para>The current version of &argouml; has the following critics in this
       category.</para>
 
     <sect2 id="critics.CrCrossNamespaceAssoc">
@@ -925,7 +938,9 @@ you change that class at the same time (and think through the deployment).
         does not handle hierarchical namespaces. As a consequence it will
         trigger for associations where the immediate namespaces of the attached
         classifiers is different, even though they are part of the same
-        namespace hierarchy.</para></caution>
+        namespace hierarchy.
+        <!-- TODO: Check this out. -->
+      </para></caution>
     </sect2>
 
     <sect2 id="critics.CrEmptyPackage">
@@ -967,7 +982,7 @@ you change that class at the same time (and think through the deployment).
 
     <para>Critics concerning operations in &argouml;.</para>
 
-    <para>The current version of &argouml; has four critics in this
+    <para>The current version of &argouml; has the following critics in this
       category.</para>
 
     <sect2>
@@ -1038,7 +1053,7 @@ you change that class at the same time (and think through the deployment).
     <para>Critics concerning generalization and specialization in
       &argouml;.</para>
 
-    <para>The current version of &argouml; has ten critics in this
+    <para>The current version of &argouml; has the following critics in this
       category.</para>
 
     <sect2>
@@ -1056,7 +1071,9 @@ you change that class at the same time (and think through the deployment).
 
       <caution><para>This critic is marked inactive by default in the
         current release of &argouml; (the only one so marked). It will not
-        trigger unless made active.</para></caution>
+        trigger unless made active.
+        <!-- TODO: Check if this is still true! -->
+      </para></caution>
     </sect2>
 
     <sect2>
@@ -1133,7 +1150,7 @@ you change that class at the same time (and think through the deployment).
     <para>Critics concerning containment in &argouml;, that is where one
       artifact forms a component part of another.</para>
 
-    <para>The current version of &argouml; has six critics in this
+    <para>The current version of &argouml; has the following critics in this
       category.</para>
 
     <sect2 id="critics.CrCircularComposition">

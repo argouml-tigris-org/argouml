@@ -108,15 +108,18 @@ and can be used to draw object diagrams.
       and <literal>GeneralizableElement</literal>.</para>
 
     <note><para>&argouml; also implements the UML <literal>Model</literal>
-      artifact as a sub-class of package (see <xref
-      linkend="s1.ref.package"/>), but <emphasis>not</emphasis> the
-      <literal>Subsystem</literal> artifact.</para></note>
+      artifact as a sub-class of package,
+      but <emphasis>not</emphasis> the
+      <literal>Subsystem</literal> artifact.
+      <!-- TODO: See enhancement issue ... --> 
+    </para></note>
 
-    <caution><para>&argouml; does not fully implement all aspects of UML model
-      management. In particular the only relationship that can be shown between
-      packages is <literal>Dependency</literal>, although UML&nbsp;1.3 defines
+    <para>&argouml; also implements some less common aspects of UML model
+      management. In particular the relationship UML&nbsp;1.3 defines as
       <literal>Generalization</literal> and the sub-class dependency
-      <literal>Permission</literal> for use between packages.</para></caution>
+      <literal>Permission</literal> for use between packages.
+      <!-- TODO: Rephrase & explain -->
+    </para>
 
     <!-- Package details tabs -->
 
