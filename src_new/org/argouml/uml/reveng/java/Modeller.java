@@ -142,11 +142,31 @@ public class Modeller
      * Imports are relationships between components and other classes
      * / packages.
      * <p>See JSR 26.
+     *
+     * <p>Adding components is a little messy since there are 2 cases:
+     *
+     *<ul>
+     * <li>1) source file has package statement, will be added several times
+     *    since lookup in addComponent() only looks in the model since the
+     *    package namespace is not yet known.
+     *
+     * <li>2) source file has not package statement: component is added to the model
+     *    namespace. the is no package statement so the lookup will always work.
+     *
+     *</ul>
+     * <p>Therefore in the case of (1), we need to delete duplicate components
+     * in the addPackage() method.
+     *
+     *<p>in either case we need to add a package since we don't know in advance
+     *   if there will be a package statement.
      */
     public void addComponent() {
         
         // try and find the component in the current package
         // to cope with repeated imports
+        // [this will never work if a package statmeent exists:
+        // because the package statement is parsed after the component is 
+        // identified]
         Object component = ModelFacade.lookupIn(currentPackage, fileName);
         
         if (component == null) {
@@ -210,8 +230,22 @@ public class Modeller
         // Delay diagram creation until any classifier (class or
         // interface) will be found
         
-        // set the namespace of the component
-        ModelFacade.setNamespace(parseState.getComponent(), currentPackage);
+        //set the namespace of the component
+        // check to see if there is already a component defined:
+        Object component = ModelFacade.lookupIn(currentPackage, fileName);
+        
+        if (component == null) {
+            
+            // set the namespace of the component
+            ModelFacade.setNamespace(parseState.getComponent(), currentPackage);
+        }else{
+            
+            // a component already exists,
+            // so delete the latest one(the duplicate)
+            UmlFactory.getFactory().delete(parseState.getComponent());
+        // change the parse state to the existing one.
+            parseState.addComponent(component);
+        }
     }
 
     /**
@@ -222,8 +256,12 @@ public class Modeller
     public void addImport(String name)
     {
         // only do imports on the 2nd pass.
-        if( this.getAttribute("level").equals(new Integer(0)))
-            return;
+        Object level = this.getAttribute("level");
+        if(level != null){
+            if( level.equals(new Integer(0))){
+                return;
+            }
+        }
         
 	String packageName = getPackageName(name);
 	String classifierName = getClassifierName(name);
@@ -336,8 +374,12 @@ public class Modeller
         ModelFacade.setRoot(mClass, false);
 
         // only do generalizations and realizations on the 2nd pass.
-        if( this.getAttribute("level").equals(new Integer(0)))
-            return;
+        Object level = this.getAttribute("level");
+        if(level != null){
+            if( level.equals(new Integer(0))){
+                return;
+            }
+        }
 
 	if (superclassName != null) {
 	    try {
@@ -432,6 +474,15 @@ public class Modeller
 			  name,
 			  modifiers,
 			  javadoc);
+        
+        // only do generalizations and realizations on the 2nd pass.
+        Object level = this.getAttribute("level");
+        if(level != null){
+            if( level.equals(new Integer(0))){
+                return;
+            }
+        }
+        
         for (Iterator i = interfaces.iterator(); i.hasNext(); ) {
             String interfaceName = (String) i.next();
             try {

@@ -250,13 +250,17 @@ public class DiagramInterface {
             currentLayer.add( newClassFig);
             currentGM.addNode(newClass);
             currentLayer.putInPosition(newClassFig);
-            currentGM.addNodeRelatedEdges( newClass);
             
             newClassFig.setAttributeVisible(!minimise);
             newClassFig.setOperationVisible(!minimise);
             
             newClassFig.setSize(newClassFig.getMinimumSize());
         }
+        
+        // add edges
+        // for a 2-pass r.e. process we might have already added the
+        // class but not its edges
+            currentGM.addNodeRelatedEdges( newClass);
     }
 
     /**
@@ -273,12 +277,16 @@ public class DiagramInterface {
             currentLayer.add( newInterfaceFig);
             currentGM.addNode(newInterface);
             currentLayer.putInPosition(newInterfaceFig);
-            currentGM.addNodeRelatedEdges( newInterface);
             
             newInterfaceFig.setOperationVisible(!minimise);
             
             newInterfaceFig.setSize(newInterfaceFig.getMinimumSize());
         }
+        
+        // add edges
+        // for a 2-pass r.e. process we might have already added the
+        // interface but not its edges
+            currentGM.addNodeRelatedEdges( newInterface);
     }
 
     /**
