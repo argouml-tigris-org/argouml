@@ -61,7 +61,7 @@ public class AnonymousClassCodePiece extends NamedCodePiece
     /**
        Return the string representation for this piece of code.
     */
-    public String getText()
+    public StringBuffer getText()
     {
 	return classDef.getText();
     }
@@ -119,6 +119,6 @@ public class AnonymousClassCodePiece extends NamedCodePiece
 
 	parseStateStack.push(new ParseState(mClass));
 
-	writer.write(classDef.getText());
+	writer.write(classDef.getText().toString());
     }
 }

@@ -61,7 +61,7 @@ public class InterfaceCodePiece extends NamedCodePiece
     /**
        Return the string representation for this piece of code.
     */
-    public String getText()
+    public StringBuffer getText()
     {
 	return interfaceDef.getText();
     }
@@ -119,11 +119,11 @@ public class InterfaceCodePiece extends NamedCodePiece
 	parseStateStack.push(new ParseState(mInterface));
 
   StringBuffer sbText = GeneratorJava.getInstance().generateClassifierStart (mInterface);
-  
+
   if (sbText != null) {
     writer.write (sbText.toString());
   }
-  
+
 /*	if((new CodeGenerator()).generateJavadoc(mInterface, writer)) {
 	    for(int k=0; k<column; k++) {
 		writer.write(" ");

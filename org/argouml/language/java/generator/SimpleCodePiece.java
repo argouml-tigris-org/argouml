@@ -35,7 +35,7 @@ package org.argouml.language.java.generator;
 public class SimpleCodePiece extends CodePiece
 {
     /** */
-    private String text;
+    private StringBuffer text;
 
     /** */
     private int line;
@@ -49,7 +49,7 @@ public class SimpleCodePiece extends CodePiece
     /**
        Create a simple piece of code.
     */
-    public SimpleCodePiece(String text,
+    public SimpleCodePiece(StringBuffer text,
                            int line,
                            int startPosition,
                            int endPosition)
@@ -65,7 +65,7 @@ public class SimpleCodePiece extends CodePiece
     */
     public SimpleCodePiece(antlr.Token token)
     {
-	this(token.getText(),
+	this(new StringBuffer(token.getText()),
 	     token.getLine()-1,
 	     token.getColumn()-1,
 	     token.getColumn()+token.getText().length()-1);
@@ -74,7 +74,7 @@ public class SimpleCodePiece extends CodePiece
     /**
        Return the string representation for this piece of code.
     */
-    public String getText()
+    public StringBuffer getText()
     {
 	return text;
     }

@@ -743,7 +743,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
                              (node.getExpression().toString()):
                              (null);
         String sName = (node.getName() != null)?
-                       (node.getName().getText()):
+                       (node.getName().getText().toString()):
                        (m_sConstraintName + "_" + (m_nConstraintID++));
 
         if ((sKind == null) ||

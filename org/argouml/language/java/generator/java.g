@@ -470,7 +470,7 @@ varInitializer returns [CompositeCodePiece cp=null]
 				new SimpleCodePiece(t1));}
 		initializer
 		{cp.add(new SimpleCodePiece(
-			"@", 
+			new StringBuffer("@"), 
 			t1.getLine(),
 			t1.getColumn()+1,
 			t1.getColumn()+2));}

@@ -39,7 +39,7 @@ abstract public class CodePiece
     /**
        Return the string representation for this piece of code.
     */
-    abstract public String getText();
+    abstract public StringBuffer getText();
 
     /**
        Return the start position.
