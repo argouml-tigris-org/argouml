@@ -43,7 +43,7 @@ public class FigUsage extends FigDependency {
     protected ArrowHeadGreater endArrow;
 
     public FigUsage() {
-        super();
+	super();
     }
 
     public FigUsage(Object edge) {
@@ -54,5 +54,15 @@ public class FigUsage extends FigDependency {
         super(edge,lay);
     }
         
+    protected void modelChanged() {
+	super.modelChanged();
+	
+	String stereoTypeStr = _stereo.getText();
+
+	if (stereoTypeStr == null || "".equals(stereoTypeStr)) {
+	    _stereo.setText("<<usage>>");
+	}
+    } 
+
 } /* end class FigUsage */
 
