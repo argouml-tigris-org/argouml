@@ -1,6 +1,3 @@
-
-
-
 // $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -27,9 +24,6 @@
 
 package org.argouml.ocl;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-
 import java.util.*;
 import org.argouml.model.ModelFacade;
 
@@ -38,21 +32,27 @@ import org.argouml.model.ModelFacade;
  *
  * @author Steffen Zschaler
  */
-public final class OCLUtil extends Object {
+public final class OCLUtil{
 
     /** OCLUtil shall not be instantiated! */
     private OCLUtil () { }
 
     /**
      * Get the inner-most enclosing namespace for the model element.
+     *
+     * @return a namespace
      */
-    public static MNamespace getInnerMostEnclosingNamespace (MModelElement me) {
+    public static Object getInnerMostEnclosingNamespace (Object me){
+        
+        if(!ModelFacade.isAModelElement(me))
+            throw new IllegalArgumentException();
+        
 	while ((me != null) &&
-	       (!(org.argouml.model.ModelFacade.isANamespace(me)))) {
-	    me = me.getModelElementContainer();
+	       (!(ModelFacade.isANamespace(me)))) {
+	    me = ModelFacade.getContainer(me);
 	}
 
-	return (MNamespace) me;
+	return me;
     }
 
     /**
@@ -65,13 +65,13 @@ public final class OCLUtil extends Object {
     public static String getContextString (final Object me) {
 	if (me == null || !(org.argouml.model.ModelFacade.isAModelElement(me)))
 	    return "";
-	MNamespace mnsContext =
-	    getInnerMostEnclosingNamespace ((MModelElement) me);
+	Object mnsContext =
+	    getInnerMostEnclosingNamespace ( me);
 
 	if (ModelFacade.isABehavioralFeature(me)) {
 	    StringBuffer sbContext =
 		new StringBuffer ("context ")
-		.append (mnsContext.getName())
+		.append (ModelFacade.getName(mnsContext))
 		.append ("::")
 		.append (ModelFacade.getName(me))
 		.append (" (");
@@ -81,14 +81,12 @@ public final class OCLUtil extends Object {
 	    boolean fFirstParam = true;
 
 	    for (Iterator i = lParams.iterator(); i.hasNext();) {
-		MParameter mp = (MParameter) i.next();
+		Object mp = i.next();//MParameter
 
-		switch (mp.getKind().getValue()) {
-		case MParameterDirectionKind._RETURN:
-		    sReturnType = mp.getType().getName();
-		    break;
+		if(ModelFacade.isReturn(mp)) {
+		    sReturnType = ModelFacade.getName(ModelFacade.getType(mp));
 
-		default:
+                }else{
 		    if (fFirstParam) {
 			fFirstParam = false;
 		    }
@@ -96,9 +94,9 @@ public final class OCLUtil extends Object {
 			sbContext.append ("; ");
 		    }
 
-		    sbContext.append (mp.getName())
+		    sbContext.append (ModelFacade.getType(mp))
 			.append (": ")
-			.append (mp.getType().getName());
+			.append (ModelFacade.getName(ModelFacade.getType(mp)));
 		}
 	    }
 
@@ -112,7 +110,7 @@ public final class OCLUtil extends Object {
 	    return sbContext.toString();
 	}
 	else {
-	    return "context " + mnsContext.getName();
+	    return "context " + ModelFacade.getName(mnsContext);
 	}
     }
 }

@@ -32,36 +32,35 @@ import tudresden.ocl.check.types.Type;
 import tudresden.ocl.check.types.Type2;
 import tudresden.ocl.check.*;
 
-import ru.novosoft.uml.foundation.core.*;
 import org.apache.log4j.Category;
 import org.argouml.kernel.*;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.*;
 
-// Note: 
-// In this file we have two different Collections active:
-// java.util.Collection and tudresden.ocl.check.types.Collection. Be
-// sure to explicitly specify what you mean every time.
-//import java.util.Collection;
-//import tudresden.ocl.check.types.Collection;
-
 /**
  * Provides a facade of the argoUml uml model for the OCL compiler.
+ *
+ * <p>Note: 
+ * In this file we have two different Collections active:
+ * java.util.Collection and tudresden.ocl.check.types.Collection. Be
+ * sure to explicitly specify what you mean every time.
+ * import java.util.Collection;
+ * import tudresden.ocl.check.types.Collection;
  */
 public class ArgoFacade implements tudresden.ocl.check.types.ModelFacade {
 
-    public MClassifier target;
+    public Object target;
 
     public ArgoFacade(Object target) {
 	if (org.argouml.model.ModelFacade.isAClassifier(target))
-	    this.target = (MClassifier) target;
+	    this.target = target;
     }
 
     public Any getClassifier(String name) {
 	Project p = ProjectManager.getManager().getCurrentProject();
 
-	if (target != null && target.getName().equals(name) ) {
+	if (target != null && ModelFacade.getName(target).equals(name) ) {
 	    return new ArgoAny(target);
 	}
 	// else we have a problem: this is not clean!
@@ -75,13 +74,13 @@ public class ArgoFacade implements tudresden.ocl.check.types.ModelFacade {
 	     p.getCurrentNamespace());
 	     *
 	     */
-	    MClassifier classifier = (MClassifier)p.findTypeInModel(name, p.getModel());
+	    Object classifier = p.findTypeInModel(name, p.getModel());
 
 	    if (classifier == null) {
 		/**
 		 * Added search in defined types 2001-10-18 STEFFEN ZSCHALER.
 		 */
-		classifier = (MClassifier) p.findType(name, false);
+		classifier = p.findType(name, false);
 
 		if (classifier == null) {
 		    throw new OclTypeException("cannot find classifier: "
@@ -97,9 +96,9 @@ public class ArgoFacade implements tudresden.ocl.check.types.ModelFacade {
 class ArgoAny implements Any, Type2 {
     protected static Category cat = Category.getInstance(ArgoAny.class);
 
-    MClassifier classifier;
+    Object classifier;
 
-    ArgoAny (MClassifier classifier) {
+    ArgoAny (Object classifier) {
 	this.classifier = classifier;
     }
 
@@ -119,7 +118,7 @@ class ArgoAny implements Any, Type2 {
 	Type type = Basic.navigateAnyQualified(name, this, qualifiers);
 	if (type != null) return type;
 
-	MClassifier foundAssocType = null, foundAttribType = null;
+	Object foundAssocType = null, foundAttribType = null;// MClassifiers
 	boolean isSet = false, isSequence = false; // cannot be Bag
 
 	// first search for appropriate attributes
@@ -127,9 +126,9 @@ class ArgoAny implements Any, Type2 {
 	    UmlHelper.getHelper().getCore().getAttributesInh(classifier);
 	Iterator iter = attributes.iterator();
 	while (iter.hasNext() && foundAttribType == null) {
-	    MAttribute attr = (MAttribute) iter.next();
-	    if (attr.getName().equals(name)) {
-		foundAttribType = attr.getType();
+	    Object attr = iter.next();
+	    if (ModelFacade.getName(attr).equals(name)) {
+		foundAttribType = ModelFacade.getType(attr);
 	    }
 	}
 
@@ -138,29 +137,36 @@ class ArgoAny implements Any, Type2 {
 	    UmlHelper.getHelper().getCore().getAssociateEndsInh(classifier);
 	Iterator asciter = associationEnds.iterator();
 	while (asciter.hasNext() && foundAssocType == null) {
-	    MAssociationEnd ae = (MAssociationEnd) asciter.next();
-	    if (ae.getName() != null && name.equals(ae.getName())) {
-		foundAssocType = ae.getType();
-	    } else if (ae.getName() == null || ae.getName().equals("")) {
-		String oppositeName = ae.getType().getName();
+	    Object ae = asciter.next();//MAssociationEnd
+	    if (ModelFacade.getName(ae) != null &&
+                name.equals(ModelFacade.getName(ae))) {
+                    
+		foundAssocType = ModelFacade.getType(ae);
+	    } else if (ModelFacade.getName(ae) == null || 
+                       ModelFacade.getName(ae).equals("")) {
+                           
+		String oppositeName = ModelFacade.getName(ModelFacade.getType(ae));
 		if (oppositeName != null) {
+                    
 		    String lowerOppositeName =
 			oppositeName.substring(0, 1).toLowerCase();
 		    lowerOppositeName += oppositeName.substring(1);
 		    if (lowerOppositeName.equals(name))
-			foundAssocType = ae.getType();
+			foundAssocType = ModelFacade.getType(ae);
 		}
 	    }
 	    if (foundAssocType != null) {
-		if (ae.getMultiplicity() != null
-		    && (ae.getMultiplicity().getUpper() > 1
-			|| ae.getMultiplicity().getUpper() == -1)) 
+		if (ModelFacade.getMultiplicity(ae) != null
+		    && (ModelFacade.getUpper(ModelFacade.getMultiplicity(ae)) > 1
+			|| ModelFacade.getUpper(ModelFacade.getMultiplicity(ae)) 
+                           == -1)) 
 		{
 		    // to do: think about the condition of this if-statement
 		    // ordered association end -> Sequence; otherwise -> Set
-		    if (ae.getStereotype() != null
-			&& ae.getStereotype().toString() != null
-			&& "ordered".equals(ae.getStereotype().toString()) )
+		    if (ModelFacade.getStereotype(ae) != null
+			&& ModelFacade.getStereotype(ae).toString() != null
+			&& "ordered".equals(ModelFacade.getStereotype(ae)
+                            .toString()) )
 		    {
 			isSequence = true;
 		    } else {
@@ -178,7 +184,7 @@ class ArgoAny implements Any, Type2 {
 				       + "where found");
 	}
 
-	MClassifier foundType =
+	Object foundType =
 	    (foundAssocType == null) ? foundAttribType : foundAssocType;
 
 	if (foundType == null) {
@@ -226,11 +232,11 @@ class ArgoAny implements Any, Type2 {
 	Type type = Basic.navigateAnyParameterized(name, params);
 	if (type != null) return type;
 
-	MOperation foundOp = null;
+	Object foundOp = null;//MOperation
 	java.util.Collection operations = ModelFacade.getOperations(classifier);
 	Iterator iter = operations.iterator();
 	while (iter.hasNext() && foundOp == null) {
-	    MOperation op = (MOperation) iter.next();
+	    Object op = iter.next();
 	    if ( operationMatchesCall(op, name, params) ) {
 		foundOp = op;
 	    }
@@ -244,21 +250,21 @@ class ArgoAny implements Any, Type2 {
 
 	if (fCheckIsQuery) {
 	    /* Query checking added 05/21/01, sz9 */
-	    if (!foundOp.isQuery()) {
+	    if (!ModelFacade.isQuery(foundOp)) {
 		throw new OclTypeException("Non-query operations cannot "
 					   + "be used in OCL expressions. ("
 					   + name + ")");
 	    }
 	}
 
-	MParameter rp =
+	Object rp =
 	    UmlHelper.getHelper().getCore().getReturnParameter(foundOp);
 
-	if (rp == null || rp.getType() == null) {
+	if (rp == null || ModelFacade.getType(rp) == null) {
 	    cat.warn("WARNING: supposing return type void!");
 	    return new ArgoAny(null);
 	}
-	MClassifier returnType = rp.getType();
+	Object returnType = ModelFacade.getType(rp);
 
 	return getOclRepresentation(returnType);
     }
@@ -293,7 +299,7 @@ class ArgoAny implements Any, Type2 {
 
     public String toString() {
 	if (classifier == null) return "Void";
-	return classifier.getName();
+	return ModelFacade.getName(classifier);
     }
 
     public boolean hasState(String name) {
@@ -301,30 +307,30 @@ class ArgoAny implements Any, Type2 {
 	return false;
     }
 
-    protected Type getOclRepresentation(MClassifier foundType)
+    protected Type getOclRepresentation(Object foundType)
     {
 	Type result = null;
 
-	if (foundType.getName().equals("int")
-	    || foundType.getName().equals("Integer"))
+	if (ModelFacade.getName(foundType).equals("int")
+	    || ModelFacade.getName(foundType).equals("Integer"))
 	{
 	    result = Basic.INTEGER;
 	}
 
-	if (foundType.getName().equals("float")
-	    || foundType.getName().equals("double"))
+	if (ModelFacade.getName(foundType).equals("float")
+	    || ModelFacade.getName(foundType).equals("double"))
 	{
 	    result = Basic.REAL;
 	}
 
-	if (foundType.getName().equals("bool")
-	    || foundType.getName().equals("Boolean")
-	    || foundType.getName().equals("boolean"))
+	if (ModelFacade.getName(foundType).equals("bool")
+	    || ModelFacade.getName(foundType).equals("Boolean")
+	    || ModelFacade.getName(foundType).equals("boolean"))
 	{
 	    result = Basic.BOOLEAN;
 	}
 
-	if (foundType.getName().equals("String")) {
+	if (ModelFacade.getName(foundType).equals("String")) {
 	    result = Basic.STRING;
 	}
 
@@ -340,23 +346,23 @@ class ArgoAny implements Any, Type2 {
      *	@return true if the given MOperation names and parameters
      *	match the given name and parameters
      */
-    protected boolean operationMatchesCall(MOperation operation,
+    protected boolean operationMatchesCall(Object operation,
 					   String callName,
 					   Type[] callParams)
     {
-	if ( !callName.equals(operation.getName()) )
+	if ( !callName.equals(ModelFacade.getName(operation)) )
 	{
 	    return false;
 	}
 
-        List operationParameters = operation.getParameters();
-	if (!ModelFacade.isReturn(operationParameters.get(0))) {
+        Collection operationParameters = ModelFacade.getParameters(operation);
+	if (!ModelFacade.isReturn(operationParameters.iterator().next())) {
 	    System.err.println(
                 "ArgoFacade$ArgoAny expects the first operation parameter to be the return type; this isn't the case"
 	    );
 	}
 	if (!
-            (ModelFacade.isReturn(operationParameters.get(0))
+            (ModelFacade.isReturn(operationParameters.iterator().next())
 	      && operationParameters.size() == (callParams.length + 1)
             )
            ) {
@@ -367,8 +373,8 @@ class ArgoAny implements Any, Type2 {
 	int index = 0;
 	while (paramIter.hasNext())
 	{
-	    MParameter nextParam = (MParameter) paramIter.next();
-	    MClassifier paramType = nextParam.getType();
+	    Object nextParam = paramIter.next();
+	    Object paramType = ModelFacade.getType(nextParam);//MClassifier
 	    Type operationParam = getOclRepresentation(paramType);
 	    if ( !callParams[index].conformsTo(operationParam) )
 	    {
