@@ -214,5 +214,19 @@ public class UmlHelper {
         return null;
     }
     
+    /**
+     * Utility method to quickly delete a collection of modelelements. This
+     * method should only be called from within the model component. The only
+     * reason it is public is that the other helpers/factories are in other
+     * packages and therefore cannot see this method if it is not public.
+     * @param col
+     */
+    public void deleteCollection(Collection col) {
+        Iterator it = col.iterator();
+        while (it.hasNext()) {
+            UmlFactory.getFactory().delete((MBase)it.next());
+        }        
+    }
+    
 }
 
