@@ -18,7 +18,6 @@ x\:* {behavior:url(#default#VML);}
 .shape {behavior:url(#default#VML);}
 </style>
 <![endif]-->
-<link rel=Stylesheet href=stylesheet.css>
 <style type="text/css">
 <!--@page
 	{margin:1.0in .75in 1.0in .75in;
@@ -34,7 +33,7 @@ function fnUpdateTabs()
   if (parent.window.g_iIEVer>=4) {
    if (parent.document.readyState=="complete"
     && parent.frames['frTabs'].document.readyState=="complete")
-   parent.fnSetActiveSheet(1);
+   parent.fnSetActiveSheet(2);
   else
    window.setTimeout("fnUpdateTabs();",150);
  }
@@ -48,7 +47,7 @@ else
 </script>
 <![endif]><!--[if gte mso 9]><xml>
  <x:WorksheetOptions>
-  <x:Zoom>72</x:Zoom>
+  <x:Zoom>63</x:Zoom>
   <x:ProtectContents>False</x:ProtectContents>
   <x:ProtectObjects>False</x:ProtectObjects>
  </x:WorksheetOptions>
@@ -125,7 +124,7 @@ else
    <x:Orientation>MinMax</x:Orientation>
   </x:Scaling>
   <x:Chart>
-   <x:Name>Issues</x:Name>
+   <x:Name>Trends</x:Name>
    <x:PageSetup>
     <x:ChartSize>FullPage</x:ChartSize>
    </x:PageSetup>
@@ -144,7 +143,11 @@ else
    <x:Top>0</x:Top>
    <x:Width>14656.79443359375</x:Width>
    <x:Height>9004.7900390625</x:Height>
-   <x:Walls>
+   <x:ChartGrowth>
+    <x:HorzGrowth>1</x:HorzGrowth>
+    <x:VertGrowth>1</x:VertGrowth>
+   </x:ChartGrowth>
+   <x:PlotArea>
     <x:Border>
      <x:ColorIndex>15</x:ColorIndex>
      <x:LineStyle>Solid</x:LineStyle>
@@ -154,36 +157,99 @@ else
      <x:ColorIndex>14</x:ColorIndex>
      <x:BGColorIndex>Neutral</x:BGColorIndex>
     </x:Interior>
-   </x:Walls>
-   <x:ChartGrowth>
-    <x:HorzGrowth>1</x:HorzGrowth>
-    <x:VertGrowth>1</x:VertGrowth>
-   </x:ChartGrowth>
-   <x:PlotArea>
-    <x:Left>146.56794433593751</x:Left>
-    <x:Top>148.57903564453125</x:Top>
-    <x:Width>9706.4621136474616</x:Width>
-    <x:Height>8707.6319677734373</x:Height>
-    <x:Border>
-     <x:ColorIndex>None</x:ColorIndex>
-    </x:Border>
-    <x:Interior>
-     <x:ColorIndex>None</x:ColorIndex>
-    </x:Interior>
     <x:Font>
      <x:FontName>Arial</x:FontName>
      <x:Size>10</x:Size>
      <x:AutoScale/>
     </x:Font>
     <x:Graph>
-     <x:Type>Column</x:Type>
-     <x:SubType>Stacked</x:SubType>
-     <x:SubType>3D</x:SubType>
-     <x:GapDepth>150</x:GapDepth>
+     <x:Type>Line</x:Type>
+     <x:SubType>Standard</x:SubType>
+     <x:SubType>Marker</x:SubType>
      <x:ScaleID>0</x:ScaleID>
      <x:ScaleID>1</x:ScaleID>
      <x:Series>
       <x:Index>0</x:Index>
+      <x:Caption>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$B$1</x:Data>
+      </x:Caption>
+      <x:Name>Open DEFECTs that noone works with</x:Name>
+      <x:Category>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$A$2:$A$26</x:Data>
+      </x:Category>
+      <x:Value>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$B$2:$B$26</x:Data>
+      </x:Value>
+     </x:Series>
+     <x:Series>
+      <x:Index>1</x:Index>
+      <x:Caption>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$C$1</x:Data>
+      </x:Caption>
+      <x:Name>The list of Open DEFECTs that someone works with</x:Name>
+      <x:Category>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$A$2:$A$26</x:Data>
+      </x:Category>
+      <x:Value>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$C$2:$C$26</x:Data>
+      </x:Value>
+     </x:Series>
+     <x:Series>
+      <x:Index>2</x:Index>
+      <x:Caption>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$D$1</x:Data>
+      </x:Caption>
+      <x:Name>Resolved DEFECTS in 0.9.*</x:Name>
+      <x:Category>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$A$2:$A$26</x:Data>
+      </x:Category>
+      <x:Value>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$D$2:$D$26</x:Data>
+      </x:Value>
+     </x:Series>
+     <x:Series>
+      <x:Index>3</x:Index>
+      <x:Caption>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$E$1</x:Data>
+      </x:Caption>
+      <x:Name>Resolved DEFECTS in 0.11.1</x:Name>
+      <x:Category>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$A$2:$A$26</x:Data>
+      </x:Category>
+      <x:Value>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$E$2:$E$26</x:Data>
+      </x:Value>
+     </x:Series>
+     <x:Series>
+      <x:Index>4</x:Index>
+      <x:Caption>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$F$1</x:Data>
+      </x:Caption>
+      <x:Name>Resolved DEFECTS in 0.11.2</x:Name>
+      <x:Category>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$A$2:$A$26</x:Data>
+      </x:Category>
+      <x:Value>
+       <x:DataSource>0</x:DataSource>
+       <x:Data>Data!$F$2:$F$26</x:Data>
+      </x:Value>
+     </x:Series>
+     <x:Series>
+      <x:Index>5</x:Index>
       <x:Caption>
        <x:DataSource>0</x:DataSource>
        <x:Data>Data!$G$1</x:Data>
@@ -199,7 +265,7 @@ else
       </x:Value>
      </x:Series>
      <x:Series>
-      <x:Index>1</x:Index>
+      <x:Index>6</x:Index>
       <x:Caption>
        <x:DataSource>0</x:DataSource>
        <x:Data>Data!$H$1</x:Data>
@@ -215,7 +281,7 @@ else
       </x:Value>
      </x:Series>
      <x:Series>
-      <x:Index>2</x:Index>
+      <x:Index>7</x:Index>
       <x:Caption>
        <x:DataSource>0</x:DataSource>
        <x:Data>Data!$I$1</x:Data>
@@ -231,7 +297,7 @@ else
       </x:Value>
      </x:Series>
      <x:Series>
-      <x:Index>3</x:Index>
+      <x:Index>8</x:Index>
       <x:Caption>
        <x:DataSource>0</x:DataSource>
        <x:Data>Data!$J$1</x:Data>
@@ -247,7 +313,7 @@ else
       </x:Value>
      </x:Series>
      <x:Series>
-      <x:Index>4</x:Index>
+      <x:Index>9</x:Index>
       <x:Caption>
        <x:DataSource>0</x:DataSource>
        <x:Data>Data!$K$1</x:Data>
@@ -263,7 +329,7 @@ else
       </x:Value>
      </x:Series>
      <x:Series>
-      <x:Index>5</x:Index>
+      <x:Index>10</x:Index>
       <x:Caption>
        <x:DataSource>0</x:DataSource>
        <x:Data>Data!$L$1</x:Data>
@@ -279,7 +345,7 @@ else
       </x:Value>
      </x:Series>
      <x:Series>
-      <x:Index>6</x:Index>
+      <x:Index>11</x:Index>
       <x:Caption>
        <x:DataSource>0</x:DataSource>
        <x:Data>Data!$M$1</x:Data>
@@ -295,7 +361,7 @@ else
       </x:Value>
      </x:Series>
      <x:Series>
-      <x:Index>7</x:Index>
+      <x:Index>12</x:Index>
       <x:Caption>
        <x:DataSource>0</x:DataSource>
        <x:Data>Data!$N$1</x:Data>
@@ -326,9 +392,7 @@ else
       <x:SourceLinked/>
       <x:FormatString>yyyy/mm/dd</x:FormatString>
      </x:Number>
-     <x:TickLabelPosition>Low</x:TickLabelPosition>
-     <x:TickMarkSkip>1</x:TickMarkSkip>
-     <x:Type>Category</x:Type>
+     <x:Type>Automatic</x:Type>
     </x:Axis>
     <x:Axis>
      <x:Placement>Left</x:Placement>
@@ -336,7 +400,6 @@ else
      <x:ScaleID>1</x:ScaleID>
      <x:MajorGridlines/>
      <x:CrossingAxis>0</x:CrossingAxis>
-     <x:CrossesAt>Minimum</x:CrossesAt>
      <x:CrossBetween>Between</x:CrossBetween>
      <x:Font>
       <x:FontName>Arial</x:FontName>
@@ -351,41 +414,16 @@ else
     </x:Axis>
    </x:PlotArea>
    <x:Legend>
-    <x:Type>Horizontal</x:Type>
-    <x:Placement>Custom</x:Placement>
-    <x:Left>9101.8693432617183</x:Left>
-    <x:Top>549.29219238281246</x:Top>
-    <x:Width>4920</x:Width>
-    <x:Height>3140</x:Height>
+    <x:Placement>Right</x:Placement>
     <x:Font>
      <x:FontName>Arial</x:FontName>
      <x:Size>10</x:Size>
+     <x:AutoScale/>
     </x:Font>
    </x:Legend>
   </x:Chart>
-  <o:shapelayout v:ext="edit">
-   <o:idmap v:ext="edit" data="1"/>
-  </o:shapelayout><v:shapetype id="_x0000_t202" coordsize="21600,21600" o:spt="202"
-   path="m0,0l0,21600,21600,21600,21600,0xe">
-   <v:stroke joinstyle="miter"/>
-   <v:path gradientshapeok="t" o:connecttype="rect"/>
-  </v:shapetype><v:shape id="_x0000_s1025" type="#_x0000_t202" style='position:absolute;
-   margin-left:4628364emu;margin-top:221.25pt;width:5.62875mm;height:184047emu;
-   z-index:1;mso-wrap-style:tight' filled="f" fillcolor="windowText [64]"
-   stroked="f" strokecolor="window [65]" strokeweight="1emu" o:insetmode="auto">
-   <v:fill color2="window [65]"/>
-   <v:textbox>
-    <div style='text-align:center'><font class=font11>D</font></div>
-   </v:textbox>
-   <x:ClientData ObjectType="Text">
-    <x:AutoFill>False</x:AutoFill>
-    <x:AutoLine>False</x:AutoLine>
-    <x:TextHAlign>Center</x:TextHAlign>
-    <x:TextVAlign>Center</x:TextVAlign>
-    <x:AutoScale/>
-   </x:ClientData>
-  </v:shape></x:WebChart>
-</xml><![endif]--><![if !supportChartImage]><img src=image002.gif alt=Issues><![endif]>
+ </x:WebChart>
+</xml><![endif]--><![if !supportChartImage]><img src=image003.gif alt=Trends><![endif]>
 </body>
 
 </html>
