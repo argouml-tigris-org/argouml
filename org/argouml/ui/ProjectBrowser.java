@@ -210,6 +210,8 @@ implements IStatusBar, NavigationListener {
     JMenuItem saveProjectAsItem = file.add(Actions.SaveProjectAs);
     setMnemonic(saveProjectAsItem,"SaveAs",'A');
     file.addSeparator();
+    JMenuItem importProjectAsItem = file.add(Actions.ImportFromSources);
+    file.addSeparator();    
     JMenuItem loadModelFromDBItem = file.add(Actions.LoadModelFromDB);
     JMenuItem storeModelToDBItem = file.add(Actions.StoreModelToDB);
     file.addSeparator();

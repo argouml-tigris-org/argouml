@@ -66,6 +66,7 @@ import org.tigris.gef.ocl.*;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.generator.ui.*;
+import org.argouml.uml.reveng.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.activity.ui.*;
 import org.argouml.uml.diagram.collaboration.ui.*;
@@ -94,6 +95,7 @@ public class Actions {
   public static UMLAction SaveProjectAs = new ActionSaveProjectAs();
   //public static UMLAction AddToProj = new ActionAddToProj();
   public static UMLAction Print = new ActionPrint();
+  public static UMLAction ImportFromSources = new ActionImportFromSources();
   public static UMLAction SaveGIF = new ActionSaveGIF();
 //   public static UMLAction SavePS = new ActionSavePS();
   public static UMLAction SaveGraphics = new ActionSaveGraphics();
@@ -628,6 +630,62 @@ class ActionStoreModelToDB extends UMLAction {
 	}
 
 } /* end class ActionStoreModelToDB */
+
+/* class ActionImportFromSources */
+class ActionImportFromSources extends UMLAction {
+    public static final String separator = "/"; //System.getProperty("file.separator");
+
+    public ActionImportFromSources() {
+        super("Import sources");
+    }
+
+    public void actionPerformed(ActionEvent event) {
+        ProjectBrowser pb = ProjectBrowser.TheInstance;
+        Project p = pb.getProject();
+
+        try {
+            String directory = Globals.getLastDirectory();
+            JFileChooser chooser = new JFileChooser(directory);
+
+            if (chooser == null) chooser = new JFileChooser();
+
+            chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            chooser.setDialogTitle("Import sources");
+            //      FileFilter filter = FileFilters.ArgoFilter;
+            //chooser.addChoosableFileFilter(filter);
+            //chooser.setFileFilter(filter);
+
+            int retval = chooser.showOpenDialog(pb);
+
+            if (retval == 0) {
+                File theFile = chooser.getSelectedFile();
+                if (theFile != null) {
+                    String path = chooser.getSelectedFile().getParent();
+                    String filename = chooser.getSelectedFile().getName();
+                    filename = path + separator + filename;
+                    //    if (!filename.endsWith(Project.FILE_EXT)) {
+                    //  filename += Project.FILE_EXT;
+                    //  theFile = new File(filename);
+                    //}
+                    Globals.setLastDirectory(path);
+                    if (filename != null) {
+                        pb.showStatus("Parsing " + path + filename + "...");
+                        //p = ArgoParser.SINGLETON.getProject();
+                        Import.doFile(p, theFile);
+                        p.postLoad();
+                        pb.setProject(p);
+                        pb.showStatus("Parsed " + filename);
+                        return;
+                    }
+                }
+            }
+        } catch (Exception exception) {
+            System.out.println("got an Exception in ActionImportFromSources");
+            exception.printStackTrace();
+        }
+    }
+}
+/* end class ActionImportFromSources */   
 
 class ActionPrint extends UMLAction {
   public ActionPrint() { super("Print..."); }

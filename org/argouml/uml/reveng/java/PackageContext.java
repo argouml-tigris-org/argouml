@@ -1,0 +1,192 @@
+// $Id$
+
+/*
+  JavaRE - Code generation and reverse engineering for UML and Java
+  Copyright (C) 2000 Marcus Andersson andersson@users.sourceforge.net
+  
+  This library is free software; you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation; either version 2.1 of the
+  License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+  USA 
+
+*/
+
+package org.argouml.uml.reveng.java;
+
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.model_management.*;
+
+/**
+   This context is a package.
+*/
+class PackageContext extends Context
+{
+    /** The package this context represents. */
+    private MPackage mPackage;
+
+    /** 
+	Create a new context from a package.
+	
+	@param base Based on this context.
+	@param mPackage Represents this package.
+    */
+    public PackageContext(Context base,
+			  MPackage mPackage)
+    {
+	super(base);
+	this.mPackage = mPackage;
+    }
+
+    public MInterface getInterface(String name)
+    {
+        // Search in model
+        MInterface mInterface = (MInterface)mPackage.lookup(name);
+
+        if(mInterface == null) {
+	    // Try to find it via the classpath
+	    try {
+		Class classifier;
+
+		// Special case for model
+		if(mPackage instanceof MModelImpl) {
+		    classifier = Class.forName(name);
+		}
+		else {
+		    classifier = 
+			Class.forName(mPackage.getName() + "." +
+				      name);
+		}		    
+		if(classifier.isInterface()) {
+		    mInterface = new MInterfaceImpl();
+		    mInterface.setName(name);
+		    mInterface.setNamespace(mPackage);
+		}
+	    }
+	    catch(Throwable e) {
+		// We didn't find any interface
+	    }
+	}
+	if(mInterface == null) {
+	    // Continue the search through the rest of the model
+	    if(context != null) {
+		mInterface = context.getInterface(name);
+	    }
+	    else {
+		MPackage unknown = getUnknown(mPackage);
+		MClassifier mClassifier = (MClassifier)unknown.lookup(name);
+		if((mClassifier != null) && (mClassifier instanceof MInterface)) {
+		    mInterface = (MInterface)mClassifier;
+		} 
+		else {
+		    mInterface = new MInterfaceImpl();
+		    mInterface.setName(name);
+		    mInterface.setNamespace(unknown);
+		}
+	    }
+        }
+        return mInterface;
+    }        
+
+    /**
+       Get a classifier from the model. If it is not in the model, try
+       to find it with the CLASSPATH. If found, in the classpath, the
+       classifier is created and added to the model. If not found at
+       all, a datatype is created and added to the model.
+
+       @param classifierName The name of the classifier to find.
+       @returns Found classifier.
+    */
+    public MClassifier get(String name)
+    {
+	// Search in model
+	MClassifier mClassifier = (MClassifier)mPackage.lookup(name);
+	
+	if(mClassifier == null) {
+	    // Try to find it via the classpath
+	    try {
+		Class classifier;
+
+		// Special case for model
+		if(mPackage instanceof MModelImpl) {
+		    classifier = Class.forName(name);
+		}
+		else {
+		    classifier = 
+			Class.forName(mPackage.getName() + "." +
+				      name);
+		}		    
+		if(classifier.isInterface()) {
+		    mClassifier = new MInterfaceImpl();
+		}
+		else {
+		    mClassifier = new MClassImpl();
+		}
+		mClassifier.setName(name);
+		mClassifier.setNamespace(mPackage);
+	    }
+	    catch(Throwable e) {
+		// No class or interface found
+	    }
+	}
+	if(mClassifier == null) {
+	    // Continue the search through the rest of the model
+	    if(context != null) {
+		mClassifier = context.get(name);
+	    }
+	    else {
+		// Check for java data types
+		if(name.equals("int") ||
+		   name.equals("long") ||
+		   name.equals("short") ||
+		   name.equals("byte") ||
+		   name.equals("char") ||
+		   name.equals("float") ||
+		   name.equals("double") ||
+		   name.equals("boolean") ||
+		   name.equals("void") ||
+		   // How do I represent arrays in UML?
+		   name.indexOf("[]") != -1) {
+		    mClassifier = new MDataTypeImpl();
+		    mClassifier.setName(name);
+		    mClassifier.setNamespace(mPackage);
+		}
+		else {
+		    MPackage unknown = getUnknown(mPackage);
+		    mClassifier =
+			(MClassifier)unknown.lookup(name);
+		    if(mClassifier == null) {
+			mClassifier = new MClassImpl();
+			mClassifier.setName(name);
+			mClassifier.setNamespace(unknown);
+		    }         
+		}
+	    }
+	}
+	return mClassifier;
+    }
+
+    private MPackage getUnknown(MPackage parent)
+    {
+        MPackage unknown = (MPackage)mPackage.lookup("*UNKNOWN*");
+        if(unknown == null) {
+            unknown = new MPackageImpl();
+            unknown.setName("*UNKNOWN*");
+            unknown.setNamespace(parent);
+        }
+        if(unknown.getUUID() == null) {
+            unknown.setUUID("*UNKNOWN*");
+        }
+        return unknown;
+    }           
+}
+	
