@@ -138,11 +138,11 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
   <property environment="env"/>
   <property file="build.properties"/>
-  <property file="argouml.build.properties"/>
+  <property file="${user.home}/argouml.build.properties"/>
   <property file="default.properties"/>
   
   <path id="java.tools.classpath">
-    <pathelement path="${JAVA_HOME}/lib/tools.jar" />
+    <pathelement path="${env.JAVA_HOME}/lib/tools.jar" />
   </path>
 
   <path id="argo.classpath">
@@ -162,12 +162,14 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
  <target name="init">
 
-    <tstamp/>
+    <tstamp>
+        <format property="year" pattern="yyyy"/>
+    </tstamp>
+
 
     <property name="Name" value="ArgoUML"/>
     <property name="name" value="argouml"/>
-    <property name="version" value="${thisversion}-${DSTAMP}-${TSTAMP}"/>
-    <property name="year" value="2002"/>
+    <property name="version" value="${argo.core.version}-${DSTAMP}-${TSTAMP}"/>
 
     <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
 
@@ -490,7 +492,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- Creates the whole distribution with adjusted version number         -->
   <!-- =================================================================== -->
   <target name="dist-release">
-  	<property name="version" value="${thisversion}"/>
+  	<property name="version" value="${argo.core.version}"/>
   	<antcall target="dist-all">
   	</antcall>
   </target>

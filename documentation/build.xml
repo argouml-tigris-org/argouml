@@ -151,17 +151,36 @@ After these operations the file will still be visible in the GUI.
 =========================================================================== -->
 
 <project name="ArgoDocs" default="help" basedir="..">
+
+  <property environment="env"/>
+  <property name="argo.tools.dir" value="${basedir}/tools"/>
+  <property name="argo.tools.lib.dir" value="${argo.tools.dir}/lib"/>
+  <property name="argo.lib.dir" value="${basedir}/lib"/>
+  <property file="${basedir}/documentation/build.properties"/>
+  <property file="${user.home}/argouml.build.properties"/>
+  <property file="${basedir}/documentation/default.properties"/>
+  <property name="documentation.dir" value="${basedir}/documentation"/>
+  <property name="extlib.dir"        
+      value="${documentation.dir}/docbook-setup/docbook-xsl-1.49/extensions"/>
+
+  <path id="saxon.classpath">
+    <pathelement location="${saxon.jar.path}" />
+    <pathelement location="${extlib.dir}/saxon65.jar"/>
+  </path>
+
   <target name="init">
-    <tstamp/>
+    <tstamp>
+        <format property="year" pattern="yyyy"/>
+    </tstamp>
+    <!--pathconvert targetos="windows" property="p" refid="saxon.classpath"/-->
+    <!--echo message="p = ${p}"/-->
+    <!--fail/-->
 
     <property name="Name"              value="ArgoUML-docs"/>
     <property name="name"              value="argouml-docs"/>
-    <property name="version"           value="0.9.9"/>
-    <property name="year"              value="2002"/>
 
-    <echo message="------------ ${Name} v${version} [${year}] ------------"/>
+    <echo message="------------ ${Name} v${argo.core.version} [${year}] ------------"/>
 
-    <property name="documentation.dir" value="${basedir}/documentation"/>
     <property name="build.dir"         value="${basedir}/build"/>
     <property name="output.dir"        value="${build.dir}/documentation"/>
     <property name="printablehtml.dir" value="${output.dir}/printablehtml"/>
@@ -170,10 +189,8 @@ After these operations the file will still be visible in the GUI.
     <property name="javahelp.dir"      value="${output.dir}/javahelp"/>
     <property name="dist.dir"          value="${basedir}/dist"/>
     <property name="lib.dir"           value="${basedir}/lib"/>
-    <property name="extlib.dir"        
-      value="${documentation.dir}/docbook-setup/docbook-xsl-1.49/extensions"/>
-    <property name="foplib.dir"        value="/home/jeremy/fop-0.20.3/lib"/>
-    <property name="fopbuild.dir"      value="/home/jeremy/fop-0.20.3/build"/>
+    <property name="fop.lib.dir"        value="${argo.tools.dir}/fop-0.20.3/lib"/>
+    <property name="fop.build.dir"      value="${argo.tools.dir}/fop-0.20.3/build"/>
   </target>
 
   <!-- =================================================================== -->
@@ -181,7 +198,7 @@ After these operations the file will still be visible in the GUI.
   <!-- =================================================================== -->
 
   <target name="help" depends="init">
-    <echo message="${name}-${version} build file, available targets:"/>
+    <echo message="${name}-${argo.core.version} build file, available targets:"/>
     <echo message="-------------------------------------------------------------------"/>
     <echo message="defaulthtml   : Build chunked   HTML docs to ARGO_HOME/build/documentation/ "/>
     <echo message="printablehtml : Build printable HTML docs to ARGO_HOME/build/documentation/ "/>
@@ -378,8 +395,7 @@ After these operations the file will still be visible in the GUI.
           fork="yes"
           dir="${documentation.dir}/${doc.subdir}">
       <classpath>
-        <pathelement location="${lib.dir}/saxon.jar"/>
-        <pathelement location="${extlib.dir}/saxon65.jar"/>
+        <path refid="saxon.classpath"/>
       </classpath>
       <arg value="${doc.prefix}.xml"/>
       <arg value="${imglist.xsl}"/>
@@ -456,8 +472,7 @@ After these operations the file will still be visible in the GUI.
           fork="yes"
           dir="${source.dir}">
       <classpath>
-        <pathelement location="${lib.dir}/saxon.jar"/>
-        <pathelement location="${extlib.dir}/saxon65.jar"/>
+        <path refid="saxon.classpath"/>
       </classpath>
       <arg value="${source.xml}"/>
       <arg value="${source.xsl}"/>
@@ -490,8 +505,7 @@ After these operations the file will still be visible in the GUI.
           fork="yes"
           dir="${source.dir}">
       <classpath>
-        <pathelement location="${lib.dir}/saxon.jar"/>
-        <pathelement location="${extlib.dir}/saxon65.jar"/>
+        <path refid="saxon.classpath"/>
       </classpath>
       <arg line="-o ${target.dir}/${target.html}"/>
       <arg value="${source.xml}"/>
@@ -522,8 +536,7 @@ After these operations the file will still be visible in the GUI.
           fork="yes"
           dir="${source.dir}">
       <classpath>
-        <pathelement location="${lib.dir}/saxon.jar"/>
-        <pathelement location="${extlib.dir}/saxon65.jar"/>
+        <path refid="saxon.classpath"/>
       </classpath>
       <arg line="-o ${source.dir}/${source.fo}"/>
       <arg value="${source.xml}"/>
@@ -567,14 +580,14 @@ After these operations the file will still be visible in the GUI.
           maxmemory="128M"
           dir="${source.dir}">
       <classpath>
-        <pathelement location="${foplib.dir}/jimi-1.0.jar"/>
-        <pathelement location="${fopbuild.dir}/fop.jar"/>
-        <pathelement location="${foplib.dir}/avalon-framework-4.0.jar"/>
-        <pathelement location="${foplib.dir}/batik.jar"/>
-        <pathelement location="${foplib.dir}/logkit-1.0b4.jar"/>
-        <pathelement location="${foplib.dir}/xalan-2.0.0.jar"/>
-        <pathelement location="${foplib.dir}/xalanj1compat.jar"/>
-        <pathelement location="${foplib.dir}/xerces-1.2.3.jar"/>         
+        <pathelement location="${argo.tools.lib.dir}/jimi-1.0.jar"/>
+        <pathelement location="${fop.build.dir}/fop-0.20.3-custom.jar"/>
+        <pathelement location="${fop.lib.dir}/avalon-framework-4.0.jar"/>
+        <pathelement location="${fop.lib.dir}/batik-1.1.jar"/>
+        <pathelement location="${fop.lib.dir}/logkit-1.0.jar"/>
+        <pathelement location="${fop.lib.dir}/xalan-2.0.0.jar"/>
+        <pathelement location="${fop.lib.dir}/xalanj1compat.jar"/>
+        <pathelement location="${argo.lib.dir}/xerces-1.2.3.jar"/>         
       </classpath>
       <arg value="-q"/>
       <arg line="-fo ${source.dir}/${source.fo}"/>
@@ -599,8 +612,7 @@ After these operations the file will still be visible in the GUI.
           fork="yes"
           dir="${source.dir}">
       <classpath>
-        <pathelement location="${lib.dir}/saxon.jar"/>
-        <pathelement location="${extlib.dir}/saxon65.jar"/>
+        <path refid="saxon.classpath"/>
       </classpath>
       <arg value="${source.xml}"/>
       <arg value="${javahelp.xsl}"/>
@@ -640,13 +652,13 @@ After these operations the file will still be visible in the GUI.
 
     <!-- The ZIP file -->
 
-    <zip zipfile="${Name}-${version}.zip" basedir="${defaulthtml.dir}"/>
+    <zip zipfile="${Name}-${argo.core.version}.zip" basedir="${defaulthtml.dir}"/>
 
     <!-- The tar.gz file -->
 
-    <tar tarfile="${Name}-${version}.tar" basedir="${defaulthtml.dir}"/>
-    <gzip zipfile="${Name}-${version}.tar.gz" src="${Name}-${version}.tar"/>
-    <delete file="${Name}-${version}.tar"/>
+    <tar tarfile="${Name}-${argo.core.version}.tar" basedir="${defaulthtml.dir}"/>
+    <gzip zipfile="${Name}-${argo.core.version}.tar.gz" src="${Name}-${argo.core.version}.tar"/>
+    <delete file="${Name}-${argo.core.version}.tar"/>
   </target>
 
 
@@ -664,9 +676,9 @@ After these operations the file will still be visible in the GUI.
   <!-- =================================================================== -->
 
   <target name="total-clean" depends="clean">
-    <delete file="${Name}-${version}.zip"/>
-    <delete file="${Name}-${version}.tar"/>
-    <delete file="${Name}-${version}.tar.gz"/>
+    <delete file="${Name}-${argo.core.version}.zip"/>
+    <delete file="${Name}-${argo.core.version}.tar"/>
+    <delete file="${Name}-${argo.core.version}.tar.gz"/>
   </target>       
 </project>
 

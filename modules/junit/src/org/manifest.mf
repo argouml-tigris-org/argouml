@@ -1,6 +1,6 @@
 Manifest-Version: 2.0
 Class-Path: argouml.jar junit.jar
-Created-By: 1.2 (Sun Microsystems Inc.) 
+Created-By: 1.2 (Sun Microsystems Inc.)
 
 Name: org/argouml/ui/ActionTestJunit.class
 Extension-name: module.test.junit
