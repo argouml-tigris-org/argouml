@@ -24,16 +24,12 @@
 package org.argouml.ui;
 
 import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 import javax.swing.BorderFactory;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import org.argouml.application.ArgoVersion;
@@ -42,7 +38,8 @@ import org.argouml.application.api.ConfigurationKey;
 import org.argouml.application.api.SettingsTabPanel;
 import org.argouml.application.helpers.SettingsTabHelper;
 import org.argouml.cognitive.ui.TabToDo;
-import org.argouml.swingext.LabelledLayout;
+import org.argouml.swingext.Property;
+import org.argouml.swingext.PropertyTable;
 import org.argouml.uml.ui.TabConstraints;
 import org.argouml.uml.ui.TabDocumentation;
 import org.argouml.uml.ui.TabProps;
@@ -57,46 +54,42 @@ import org.argouml.uml.ui.TabTaggedValues;
  */
 public class SettingsTabLayout extends SettingsTabHelper implements SettingsTabPanel {
 
-    private JComboBox	_todo;
-    private JComboBox	_properties;
-    private JComboBox	_documentation;
-    private JComboBox	_style;
-    private JComboBox	_source;
-    private JComboBox	_constraints;
-    private JComboBox	_taggedValues;
+    private Property	_todo;
+    private Property	_properties;
+    private Property	_documentation;
+    private Property	_style;
+    private Property	_source;
+    private Property	_constraints;
+    private Property	_taggedValues;
 
     public SettingsTabLayout() {
         super();
-
-        String positions[] = {"North", "South", "East"};
         setLayout(new BorderLayout());
 
-        int labelGap = 10;
-        int componentGap = 10;
-        JPanel top = new JPanel(new LabelledLayout(labelGap, componentGap));
+        // TODO Localize these
+        final String positions[] = {"North", "South", "East"};        
+        final String paneColumnHeader = "Pane";
+        final String positionColumnHeader = "Position";
 
-        _todo = new JComboBox(positions);
-        addPositionSelector(top, "label.todo-pane", _todo, TabToDo.class);
+        JPanel top = new JPanel(new BorderLayout());
 
-        _properties = new JComboBox(positions);
-        addPositionSelector(top, "label.properties-pane", _properties, TabProps.class);
-
-        _documentation = new JComboBox(positions);
-        addPositionSelector(top, "label.documentation-pane", _documentation, TabDocumentation.class);
-
-        _style = new JComboBox(positions);
-        addPositionSelector(top, "label.style-pane", _style, TabStyle.class);
-
-        _source = new JComboBox(positions);
-        addPositionSelector(top, "label.source-pane", _source, TabSrc.class);
-
-        _constraints = new JComboBox(positions);
-        addPositionSelector(top, "label.constraints-pane", _constraints, TabConstraints.class);
-
-        _taggedValues = new JComboBox(positions);
-        addPositionSelector(top, "label.tagged-values-pane", _taggedValues, TabTaggedValues.class);
-
-        top.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));		
+        _todo = createProperty("label.todo-pane", positions, TabToDo.class);
+        _properties = createProperty("label.properties-pane", positions, TabProps.class);
+        _documentation = createProperty("label.documentation-pane", positions, TabDocumentation.class);
+        _style = createProperty("label.style-pane", positions, TabStyle.class);
+        _source = createProperty("label.source-pane", positions, TabSrc.class);
+        _constraints = createProperty("label.constraints-pane", positions, TabConstraints.class);
+        _taggedValues = createProperty("label.tagged-values-pane", positions, TabTaggedValues.class);
+        
+        Property[] properties = new Property[] {
+            _todo, _properties, _documentation, _style, _source, _constraints, _taggedValues
+        };
+        Arrays.sort(properties);
+        
+        top.add(new JScrollPane(new PropertyTable(
+            properties, paneColumnHeader, positionColumnHeader)), BorderLayout.CENTER);
+       
+        top.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));		
         add(top, BorderLayout.CENTER);
 
         JLabel restart = createLabel("label.restart-application");
@@ -107,42 +100,47 @@ public class SettingsTabLayout extends SettingsTabHelper implements SettingsTabP
     }
 
     /**
-     * Create a label and combo box for the position of the given tab pane, selecting
+     * Create a Property for the position of the given tab pane, selecting
      * the current display value from the user properties file.
      */
-    private void addPositionSelector(JPanel panel, String text, JComboBox combo, Class tab) {
-        JLabel label = createLabel(text);
-        label.setLabelFor(combo);
-        panel.add(label);
-        panel.add(combo);
-        String className = tab.getName();
-        String shortClassName = className.substring(className.lastIndexOf('.')+1).toLowerCase();
-        ConfigurationKey key = Configuration.makeKey("layout", shortClassName);
-        combo.setSelectedItem(Configuration.getString(key, "South"));
+    private Property createProperty(String text, String[] positions, Class tab) {     
+        ConfigurationKey key = makeKey(tab);
+        String currentValue = Configuration.getString(key, "South");        
+        return new Property(localize(text), String.class, currentValue, positions);
     }
-    
-    private void savePosition(JComboBox combo, Class tab) {
+
+    private void loadPosition(Property position, Class tab) {     
+        ConfigurationKey key = makeKey(tab);
+        position.setCurrentValue(Configuration.getString(key, "South"));
+    }
+        
+    private void savePosition(Property position, Class tab) {
+        ConfigurationKey key = makeKey(tab);
+        Configuration.setString(key, position.getCurrentValue().toString());
+    }
+
+    private ConfigurationKey makeKey(Class tab) {
         String className = tab.getName();
         String shortClassName = className.substring(className.lastIndexOf('.')+1).toLowerCase();
         ConfigurationKey key = Configuration.makeKey("layout", shortClassName);
-        Configuration.setString(key, combo.getSelectedItem().toString());
+        return key;
     }
     
     /**
-     * When the apply button is pressed
+     * When the setting values should be reloaded
      */
     public void handleSettingsTabRefresh() {
-        savePosition(_todo, TabToDo.class);
-        savePosition(_properties, TabProps.class);
-        savePosition(_documentation, TabDocumentation.class);
-        savePosition(_style, TabStyle.class);
-        savePosition(_source, TabSrc.class);
-        savePosition(_constraints, TabConstraints.class);
-        savePosition(_taggedValues, TabTaggedValues.class);
+        loadPosition(_todo, TabToDo.class);
+        loadPosition(_properties, TabProps.class);
+        loadPosition(_documentation, TabDocumentation.class);
+        loadPosition(_style, TabStyle.class);
+        loadPosition(_source, TabSrc.class);
+        loadPosition(_constraints, TabConstraints.class);
+        loadPosition(_taggedValues, TabTaggedValues.class);
     }
 
     /**
-     * When the ok button is pressed
+     * When the ok or apply button is pressed
      */
     public void handleSettingsTabSave() {
         savePosition(_todo, TabToDo.class);
