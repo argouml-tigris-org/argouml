@@ -27,69 +27,59 @@ package org.argouml.uml;
 
 import java.util.*;
 import java.beans.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
+import org.argouml.model.ModelFacade;
 
 public class DocumentationManager {
 
     public static String getDocs(Object o, String indent) {
-	/*
-	 * Added 2001-10-05 STEFFEN ZSCHALER
-	 */
-	String sResult = defaultFor(o, indent);
+        return getDocs(o, indent, "/** ", " *  ", " */");
+    }
 
-	if (org.argouml.model.ModelFacade.isAModelElement(o)) {
-	    Collection tValues = ((MModelElement) o).getTaggedValues();
-	    if (!tValues.isEmpty()) {
-		Iterator iter = tValues.iterator();
-		while (iter.hasNext()) {
-		    MTaggedValue tv = (MTaggedValue) iter.next();
-		    String tag = tv.getTag();
-		    if (tag.equals("documentation") || tag.equals("javadocs")) {
-			sResult = tv.getValue();
-			// give priority to "documentation"
-			if (tag.equals("documentation")) break;
-		    }
-		}
-	    }
-	}
+    public static String getDocs(Object o, String indent, String header, String prefix, String footer) {
+        String sResult = defaultFor(o, indent);
 
-	/*
-	 * Removed final return 2001-10-05 STEFFEN ZSCHALER
-	 *
-	 * Was:
-	 *
-	 return defaultFor(o);
-	 *
-	 */
+        if (ModelFacade.isAModelElement(o)) {
+            Iterator iter = ModelFacade.getTaggedValues(o);
+            if (iter != null) {
+                while (iter.hasNext()) {
+                    Object tv = iter.next();
+                    String tag = ModelFacade.getTagOfTag(tv);
+                    if (tag.equals("documentation") || tag.equals("javadocs")) {
+                        sResult = ModelFacade.getValueOfTag(tv);
+                        // give priority to "documentation"
+                        if (tag.equals("documentation")) break;
+                    }
+                }
+            }
+        }
 
-	/*
-	 * Added 2001-10-05 STEFFEN ZSCHALER
-	 *
-	 * Add comment signature.
-	 */
-	if (sResult != null) {
-	    sResult = "/** " + sResult;
+        if (sResult == null)
+            return "(No comment)";
 
-	    for (int nNewLinePos = sResult.indexOf ('\n');
-		 nNewLinePos >= 0;
-		 nNewLinePos = sResult.indexOf ('\n', nNewLinePos + 1)) {
-		sResult = sResult.substring (0, nNewLinePos + 1) +
-		    indent + " *  " + sResult.substring (nNewLinePos + 1);
-	    }
+        StringBuffer result = new StringBuffer();
+        if (header != null)
+            result.append(header).append('\n');
+        result.append(sResult);
 
-	    return sResult + '\n' + indent + " */";
-	}
-	else {
-	    return "(No comment)";
-	}
+        // Let every line start with a prefix.
+        if (prefix != null) {
+            for (int i = 0; i < result.length() - 1; i++) {
+                if (result.charAt(i) == '\n') {
+                    result.insert(i + 1, prefix);
+                    if (indent != null)
+                        result.insert(i + 1, indent);
+                }
+            }
+        }
+
+        if (footer != null) {
+            result.append('\n').append(indent).append(footer);
+        }
+        return result.toString();
     }
 
     public static void setDocs(Object o, String s) {
-	((MModelElement) o).setTaggedValue("documentation", s);
+        ModelFacade.setTaggedValue(o, "documentation", s);
     }
 
     /**
@@ -101,22 +91,22 @@ public class DocumentationManager {
      *
      */
     public static boolean hasDocs (Object o) {
-	if (org.argouml.model.ModelFacade.isAModelElement(o)) {
-	    Collection tValues = ((MModelElement) o).getTaggedValues();
+    if (org.argouml.model.ModelFacade.isAModelElement(o)) {
+        Iterator i = ModelFacade.getTaggedValues(o);
 
-	    if (!tValues.isEmpty()) {
-		for (Iterator i = tValues.iterator(); i.hasNext();) {
-		    MTaggedValue tv = (MTaggedValue) i.next();
-		    String tag = tv.getTag();
-		    String value = tv.getValue();
-		    if ((tag.equals("documentation") || tag.equals("javadocs"))
-			&& value != null && value.trim().length() > 0) {
-			return true;
-		    }
-		}
-	    }
-	}
-	return false;
+        if (i != null) {
+            while (i.hasNext()) {
+                Object tv = i.next();
+                String tag = ModelFacade.getTagOfTag(tv);
+                String value = ModelFacade.getValueOfTag(tv);
+                if ((tag.equals("documentation") || tag.equals("javadocs"))
+                    && value != null && value.trim().length() > 0) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -222,43 +212,60 @@ public class DocumentationManager {
      * Get the comments (the notes in a diagram) for a modelelement.
      */
     public static String getComments(Object o) {
-	StringBuffer result = new StringBuffer();
+        return getComments(o, "/*", " * ", " */");
+    }
 
-	if (org.argouml.model.ModelFacade.isAModelElement(o)) {
-	    Collection comments = ((MModelElement) o).getComments();
-	    if (!comments.isEmpty()) {
-		for (Iterator iter = comments.iterator(); iter.hasNext(); ) {
-		    MComment c = (MComment) iter.next();
-		    String s =
-			(c.getName() != null) ? c.getName().trim() : null;
-		    if (s != null && s.length() > 0) {
-			if (result.length() > 0) {
-			    result.append("\n");
-			}
-			result.append(s);
-		    }
-		}
-	    }
+    /**
+     * Get the comments (the notes in a diagram) for a modelelement.
+     */
+    public static String getComments(Object o, String header, String prefix, String footer) {
+    StringBuffer result = new StringBuffer();
+    if (header != null) {
+        result.append(header).append('\n');
+    }
+    if (prefix != null) {
+        result.append(prefix);
+    }
+
+    if (org.argouml.model.ModelFacade.isAModelElement(o)) {
+        Collection comments = ModelFacade.getComments(o);
+        if (!comments.isEmpty()) {
+            for (Iterator iter = comments.iterator(); iter.hasNext(); ) {
+                Object c = iter.next();
+                String s =(ModelFacade.getName(c) != null) ? ModelFacade.getName(c).trim() : null;
+                if (s != null && s.length() > 0) {
+                    if (result.length() > 0) {
+                        result.append('\n');
+                    }
+                    result.append(s);
+                }
+            }
+        }
+    }
+
+    // If there are no comments, just return an empty string.
+    if (result.length() == 0)
+        return "";
+
+    // Let every line start with a prefix.
+    if (prefix != null) {
+        for (int i = 0; i < result.length() - 1; i++) {
+            if (result.charAt(i) == '\n') {
+                result.insert(i + 1, prefix);
+            }
+        }
+    }
+
+    // I add a CR before the end of the comment, so I remove a CR at the
+    // end of the last note.
+    if (result.charAt(result.length() - 1) != '\n') {
+        result.append('\n');
+    }
+
+    if (footer != null) {
+		result.append(footer).append('\n');
 	}
-
-	// If there are no comments, just return an empty string.
-	if (result.length() == 0)
-	    return "";
-
-	// Let every line start with a '*'.
-	for (int i = 0; i < result.length() - 1; i++) {
-	    if (result.charAt(i) == '\n') {
-		result.insert(i + 1, " * ");
-	    }
-	}
-
-	// I add a CR before the end of the comment, so I remove a CR at the
-	// end of the last note.
-	if (result.charAt(result.length() - 1) == '\n') {
-	    result.deleteCharAt(result.length() - 1);
-	}
-
-	return "/*\n * " + result.toString() + "\n */\n";
+    return result.toString();
     }
 
 } /* end class DocumentationManager */
