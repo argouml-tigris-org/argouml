@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,6 +23,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.events;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -31,16 +32,26 @@ import java.util.ListIterator;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.ArgoEventListener;
 
-/** ArgoEventPump is an eventhandler which handles events regarding 
- *  the loading and unloading of modules.
+/**
+ * ArgoEventPump is an eventhandler which handles events regarding 
+ * the loading and unloading of modules.
  */
-public class ArgoEventPump {
-
-    //Logger LOG = Logger.getLogger(ArgoEventPump.class);
+public final class ArgoEventPump {
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(ArgoEventPump.class);
 
+    /**
+     * <code>listeners</code> contains the list of register listeners.
+     * 
+     * It is a list of {@link Pair}.
+     */
     private ArrayList listeners = null;
 
+    /**
+     * The singleton.
+     */
     static final ArgoEventPump SINGLETON = new ArgoEventPump();
 
     /**
@@ -50,11 +61,14 @@ public class ArgoEventPump {
         return SINGLETON;
     }
 
+    /**
+     * Constructor.
+     */
     private ArgoEventPump() {
     }
 
     /**
-     * @param listener the listener to be added
+     * @param listener The listener to be added.
      */
     public static void addListener(ArgoEventListener listener) {
         SINGLETON.doAddListener(ArgoEventTypes.ANY_EVENT, listener);
@@ -88,8 +102,9 @@ public class ArgoEventPump {
      * @param listener the listener to be added
      */
     protected void doAddListener(int event, ArgoEventListener listener) {
-        if (listeners == null)
+        if (listeners == null) {
             listeners = new ArrayList();
+        }
         listeners.add(new Pair(event, listener));
     }
 
@@ -103,8 +118,9 @@ public class ArgoEventPump {
      * @param listener the listener to be removed
      */
     protected void doRemoveListener(int event, ArgoEventListener listener) {
-        if (listeners == null)
+        if (listeners == null) {
             return;
+        }
         Iterator it = listeners.iterator();
         List removeList = new ArrayList();
         if (event == ArgoEventTypes.ANY_EVENT) {
@@ -120,13 +136,20 @@ public class ArgoEventPump {
             Pair test = new Pair(event, listener);
             while (it.hasNext()) {
                 Pair p = (Pair) it.next();
-                if (p.equals(test))
+                if (p.equals(test)) {
                     removeList.add(p);
+                }
             }
         }
         listeners.removeAll(removeList);
     }
 
+    /**
+     * Handle firing a module event to a given listener.
+     *
+     * @param event The event fired.
+     * @param listener The listener.
+     */
     private void handleFireModuleEvent(
         ArgoModuleEvent event,
         ArgoModuleEventListener listener) {
@@ -153,6 +176,12 @@ public class ArgoEventPump {
         }
     }
 
+    /**
+     * Handle firing a notation event.
+     *
+     * @param event The event to be fired.
+     * @param listener The listener.
+     */
     private void handleFireNotationEvent(
         ArgoNotationEvent event,
         ArgoNotationEventListener listener) {
@@ -195,16 +224,14 @@ public class ArgoEventPump {
             }
         } else {
             if (event.getEventType() >= ArgoEventTypes.ANY_MODULE_EVENT
-                && event.getEventType() 
-                    < ArgoEventTypes.ANY_MODULE_EVENT + 100) {
+                && event.getEventType() < ArgoEventTypes.LAST_MODULE_EVENT) {
                 if (listener instanceof ArgoModuleEventListener) {
                     handleFireModuleEvent((ArgoModuleEvent) event,
 					  (ArgoModuleEventListener) listener);
                 }
             }
             if (event.getEventType() >= ArgoEventTypes.ANY_NOTATION_EVENT
-                && event.getEventType() 
-                    < ArgoEventTypes.ANY_NOTATION_EVENT + 100) {
+                && event.getEventType() < ArgoEventTypes.LAST_NOTATION_EVENT) {
                 if (listener instanceof ArgoNotationEventListener) {
                     handleFireNotationEvent((ArgoNotationEvent) event,
 					(ArgoNotationEventListener) listener);
@@ -243,9 +270,19 @@ public class ArgoEventPump {
 
     }
 
+    /**
+     * Data structure handling listener registrations.
+     */
     class Pair {
         private int eventType;
         private ArgoEventListener listener;
+
+        /**
+         * Constructor.
+         *
+         * @param myEventType The event type.
+         * @param myListener The listener.
+         */
         Pair(int myEventType, ArgoEventListener myListener) {
             eventType = myEventType;
             listener = myListener;
@@ -254,12 +291,27 @@ public class ArgoEventPump {
         int getEventType() {
             return eventType;
         }
+
         ArgoEventListener getListener() {
             return listener;
         }
 
+        /**
+         * @see java.lang.Object#toString()
+         */
         public String toString() {
             return "{Pair(" + eventType + "," + listener + ")}";
+        }
+
+        /**
+         * @see java.lang.Object#hashCode()
+         */
+        public int hashCode() {
+            if (listener != null) {
+                return eventType + listener.hashCode();
+            } else {
+                return eventType;
+            }
         }
 
         /**
@@ -268,8 +320,9 @@ public class ArgoEventPump {
         public boolean equals(Object o) {
             if (o instanceof Pair) {
                 Pair p = (Pair) o;
-                if (p.eventType == eventType && p.listener == listener)
+                if (p.eventType == eventType && p.listener == listener) {
                     return true;
+                }
             }
             return false;
         }
