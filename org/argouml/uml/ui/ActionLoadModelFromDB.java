@@ -23,6 +23,7 @@
 
 package org.argouml.uml.ui;
 
+import org.argouml.cognitive.Designer;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.persistence.*;
@@ -61,8 +62,11 @@ public class ActionLoadModelFromDB extends UMLAction {
 	if ((modelName == null)|| (modelName.equals(""))) return;
 	DBLoader loader = new DBLoader();
 	if (loader.hasConnection()) {
+            Designer.disableCritiquing();
+            Designer.clearCritiquing();
 	    MModel newModel = loader.read(modelName);
             ProjectManager.getManager().setCurrentProject(new Project(newModel));
+            Designer.enableCritiquing();
 	}
     }
 

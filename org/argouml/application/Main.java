@@ -45,6 +45,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
 import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -294,7 +295,10 @@ public class Main {
         // Touch the trash
         Trash.SINGLETON.getSize();
 
+        Designer.disableCritiquing();
+        Designer.clearCritiquing();
         ProjectManager.getManager().setCurrentProject(p);
+        Designer.enableCritiquing();
 
 	st.mark("perspectives");
 

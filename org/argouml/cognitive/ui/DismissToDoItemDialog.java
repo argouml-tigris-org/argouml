@@ -33,7 +33,7 @@ import org.argouml.ui.*;
 import org.apache.log4j.Category;
 import org.argouml.cognitive.*;
 
-public class DismissToDoItemDialog extends JDialog implements ActionListener {
+public class DismissToDoItemDialog extends JDialog {
     protected static Category cat = Category.getInstance(DismissToDoItemDialog.class);
 
   ////////////////////////////////////////////////////////////////
@@ -44,9 +44,12 @@ public class DismissToDoItemDialog extends JDialog implements ActionListener {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
-  protected JButton _badGoalButton = new JButton(BAD_GOAL_LABEL);
-  protected JButton _badDecButton = new JButton(BAD_DECISION_LABEL);
-  protected JButton _explainButton = new JButton(EXPLAIN_LABEL);
+  protected JRadioButton _badGoalButton = new JRadioButton(BAD_GOAL_LABEL);
+  protected JRadioButton _badDecButton = new JRadioButton(BAD_DECISION_LABEL);
+  protected JRadioButton _explainButton = new JRadioButton(EXPLAIN_LABEL);
+  protected ButtonGroup _actionGroup = new ButtonGroup();
+  protected JButton _okButton = new JButton("Ok");
+  protected JButton _cancelButton = new JButton("Cancel");
   protected JTextArea _explaination = new JTextArea();
   protected ToDoItem _target;
 
@@ -54,7 +57,7 @@ public class DismissToDoItemDialog extends JDialog implements ActionListener {
   // constructors
   
   public DismissToDoItemDialog() {
-    super(ProjectBrowser.TheInstance, "Dismiss Feedback Item");
+    super(ProjectBrowser.TheInstance, "Dismiss To Do Item");
     JLabel instrLabel = new JLabel("This item should be removed because");
 
     setLocation(300, 200);
@@ -65,6 +68,7 @@ public class DismissToDoItemDialog extends JDialog implements ActionListener {
     c.fill = GridBagConstraints.BOTH;
     c.weightx = 1.0;
     c.ipadx = 3; c.ipady = 3;
+    c.gridwidth = 2;
 
     content.setLayout(gb);
 
@@ -88,17 +92,44 @@ public class DismissToDoItemDialog extends JDialog implements ActionListener {
     c.weighty = 1.0;
     gb.setConstraints(explain, c);
     content.add(explain);
+    //c.fill = GridBagConstraints.NONE;
+    c.gridwidth = 1;
+    c.gridy = 5;
+    c.gridx = 0;
+    c.weighty = 0.;
+    gb.setConstraints(_okButton, c);
+    content.add(_okButton);
+    c.gridx = 1;
+    c.gridwidth = 1;
+    gb.setConstraints(_cancelButton, c);
+    content.add(_cancelButton);
 
-    _badGoalButton.addActionListener(this);
-    _badDecButton.addActionListener(this);
-    _explainButton.addActionListener(this);
+    _okButton.addActionListener(new ActionListener() {
+	public void actionPerformed(ActionEvent e) {
+	    if (_badGoalButton.getModel().isSelected()) {
+		badGoal(e);
+	    } else if (_badDecButton.getModel().isSelected()) {
+		badDec(e);
+	    } else if (_explainButton.getModel().isSelected()) {
+		explain(e);
+	    } else {
+		cat.warn("DissmissToDoItemDialog: Unknown action: " + e);
+	    }
+	    setVisible(false);
+	    dispose();
+	}});
+    _cancelButton.addActionListener(new ActionListener() {
+	public void actionPerformed(ActionEvent e) {
+	    setVisible(false);
+	    dispose();
+	}});
 
-    _explaination.setText("<Enter Rationale Here>\n" +
-                          "WARNING:\n" +
-                          "AT THE MOMENT DISMISSED TODO ITEMS\n" +
-                          "ARE NOT SAVED IN ARGOUML AND ARE LOST\n" +
-                          "AFTER SAVING THE PROJECT.");
-    //_explaination.requestFocus();
+    _actionGroup.add(_badGoalButton);
+    _actionGroup.add(_badDecButton);
+    _actionGroup.add(_explainButton);
+    _actionGroup.setSelected(_explainButton.getModel(), true);
+
+    _explaination.setText("<Enter Rationale Here>");
   }
 
   public void setTarget(Object t) { _target = (ToDoItem) t; }
@@ -112,36 +143,32 @@ public class DismissToDoItemDialog extends JDialog implements ActionListener {
     }
   }
 
-  
   ////////////////////////////////////////////////////////////////
   // event handlers
-  public void actionPerformed(ActionEvent e) {
-    if (e.getSource() == _badGoalButton) {
-      cat.debug("bad goal");
-      GoalsDialog d = new GoalsDialog(ProjectBrowser.TheInstance);
-      d.setVisible(true);
-      setVisible(false);
-      dispose();
-      return;
-    }
-    if (e.getSource() == _badDecButton) {
-      cat.debug("bad decision");
-      DesignIssuesDialog d = new DesignIssuesDialog(ProjectBrowser.TheInstance);
-      d.setVisible(true);
-      setVisible(false);
-      dispose();
-      return;
-    }
-    if (e.getSource() == _explainButton) {
-      cat.debug("I can explain!");
-      //TODO: make a new history item
-      ToDoList list = Designer.TheDesigner.getToDoList();
-      list.explicitlyResolve(_target, _explaination.getText());
-      setVisible(false);
-      dispose();
-      return;
-    }
-    cat.debug("unknown src in DismissToDoItemDialog: " + e.getSource());
+
+  private void badGoal(ActionEvent e) {
+    //cat.debug("bad goal");
+    GoalsDialog d = new GoalsDialog(ProjectBrowser.TheInstance);
+    d.setVisible(true);
   }
 
+  private void badDec(ActionEvent e) {
+    //cat.debug("bad decision");
+    DesignIssuesDialog d = new DesignIssuesDialog(ProjectBrowser.TheInstance);
+    d.setVisible(true);
+  }
+
+  private void explain(ActionEvent e) {
+    //cat.debug("I can explain!");
+    //TODO: make a new history item
+    ToDoList list = Designer.TheDesigner.getToDoList();
+    try {
+      list.explicitlyResolve(_target, _explaination.getText());
+    } catch (UnresolvableException ure) {
+      cat.error("Resolve failed (ure): " + ure);
+      // TODO: Should be internationalized
+      JOptionPane.showMessageDialog(this, ure.getMessage(), "Dismiss failed", JOptionPane.ERROR_MESSAGE);
+    }
+  }
 } /* end class DismissToDoItemDialog */
+
