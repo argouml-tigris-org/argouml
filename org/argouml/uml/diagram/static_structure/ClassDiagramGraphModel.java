@@ -256,12 +256,6 @@ implements VetoableChangeListener  {
   }
 
     /** Add the given edge to the graph, if valid. */
-    private MModelElement addEdge(MModelElement edge) {
-        addEdge((Object)edge);
-        return edge;
-    }
-
-    /** Add the given edge to the graph, if valid. */
     public void addEdge(Object edge) {
         cat.debug("adding class edge!!!!!!");
         if (!canAddEdge(edge)) return;
@@ -273,7 +267,6 @@ implements VetoableChangeListener  {
         }
         fireEdgeAdded(edge);
     }
-
 
 /**
  * Adds the edges from the given node. For example, this method lets you add
@@ -364,28 +357,32 @@ implements VetoableChangeListener  {
             //    return connectAbstractionImpl((MInterface)fromPort, (MClass)toPort);
             //}
         } catch (ClassCastException ex) {
-            // fail silently
+            // fail silently as we expect users to accidentally drop on to wrong component
         }
-        if (connection != null) return connection;
         
-        cat.debug("Cannot make a "+ edgeClass.getName() +
-                     " between a " + fromPort.getClass().getName() +
-                     " and a " + toPort.getClass().getName());
-        return null;
+        if (connection == null) {
+            cat.debug("Cannot make a "+ edgeClass.getName() +
+                         " between a " + fromPort.getClass().getName() +
+                         " and a " + toPort.getClass().getName());
+            return null;
+        }
+        
+        addEdge(connection);
+        return connection;
     }
 
     /** Contruct and add a new permission and connect to
      * the given ports.
      */
     private Object connectPermission(MModelElement fromPort, MModelElement toPort) {
-        return addEdge(UmlFactory.getFactory().getCore().buildPermission(fromPort, toPort));
+        return UmlFactory.getFactory().getCore().buildPermission(fromPort, toPort);
     }
 
     /** Contruct and add a new usage and connect to
      * the given ports.
      */
     private Object connectUsage(MModelElement fromPort, MModelElement toPort) {
-        return addEdge(UmlFactory.getFactory().getCore().buildUsage(fromPort, toPort));
+        return UmlFactory.getFactory().getCore().buildUsage(fromPort, toPort);
     }
 
     /** Contruct and add a new generalization and connect to
@@ -394,10 +391,10 @@ implements VetoableChangeListener  {
     private Object connectGeneralization(MModelElement fromPort, MModelElement toPort) {
         
         if (fromPort instanceof MClass && toPort instanceof MClass)
-            return addEdge(CoreFactory.getFactory().buildGeneralization((MClass)fromPort, (MClass)toPort));
+            return CoreFactory.getFactory().buildGeneralization((MClass)fromPort, (MClass)toPort);
         
         if (fromPort instanceof MInterface && toPort instanceof MInterface)
-            return addEdge(CoreFactory.getFactory().buildGeneralization((MInterface)fromPort, (MInterface)toPort));
+            return CoreFactory.getFactory().buildGeneralization((MInterface)fromPort, (MInterface)toPort);
         
         return null;
     }
@@ -421,13 +418,13 @@ implements VetoableChangeListener  {
             } else {
                 asc = UmlFactory.getFactory().getCore().buildAssociation(fromCls, toCls);
             }
-            return addEdge(asc);
+            return asc;
         }
         if (fromPort instanceof MClass && toPort instanceof MInterface)
-            return addEdge(UmlFactory.getFactory().getCore().buildAssociation((MClass)fromPort, false, (MInterface)toPort, true));
+            return UmlFactory.getFactory().getCore().buildAssociation((MClass)fromPort, false, (MInterface)toPort, true);
         
         if (fromPort instanceof MInterface && toPort instanceof MClass)
-            return addEdge(UmlFactory.getFactory().getCore().buildAssociation((MInterface)fromPort, true, (MClass)toPort, false));
+            return UmlFactory.getFactory().getCore().buildAssociation((MInterface)fromPort, true, (MClass)toPort, false);
         
         return null;
     }
@@ -441,19 +438,19 @@ implements VetoableChangeListener  {
             // TODO: assumes public, user pref for default visibility?
             //do I have to check the namespace here? (Toby)
             // nsuml: using Usage as default
-            return addEdge(UmlFactory.getFactory().getCore().buildDependency((MPackage)fromPort, (MPackage)toPort));
+            return UmlFactory.getFactory().getCore().buildDependency((MPackage)fromPort, (MPackage)toPort);
         
         if (fromPort instanceof MClass && toPort instanceof MClass)
-            return addEdge(UmlFactory.getFactory().getCore().buildDependency((MClass)fromPort, (MClass)toPort));
+            return UmlFactory.getFactory().getCore().buildDependency((MClass)fromPort, (MClass)toPort);
         
         if (fromPort instanceof MClass && toPort instanceof MInterface)
-            return addEdge(UmlFactory.getFactory().getCore().buildDependency((MClass)fromPort, (MInterface)toPort));
+            return UmlFactory.getFactory().getCore().buildDependency((MClass)fromPort, (MInterface)toPort);
         
         if (fromPort instanceof MInterface && toPort instanceof MClass)
-            return addEdge(UmlFactory.getFactory().getCore().buildDependency((MInterface)fromPort, (MClass)toPort));
+            return UmlFactory.getFactory().getCore().buildDependency((MInterface)fromPort, (MClass)toPort);
         
         if (fromPort instanceof MInterface && toPort instanceof MInterface)
-            return addEdge(UmlFactory.getFactory().getCore().buildDependency((MInterface)fromPort, (MInterface)toPort));
+            return UmlFactory.getFactory().getCore().buildDependency((MInterface)fromPort, (MInterface)toPort);
         
         return null;
     }
@@ -462,14 +459,14 @@ implements VetoableChangeListener  {
      * the given class and interface
      */
     private Object connectAbstraction(MClass fromCls, MInterface toIntf) {
-        return addEdge(UmlFactory.getFactory().getCore().buildRealization(fromCls, toIntf));
+        return UmlFactory.getFactory().getCore().buildRealization(fromCls, toIntf);
     }
 
     /** Contruct and add a new link and connect to
      * the given instances
      */
     private Object connectLink(MInstance fromInst, MInstance toInst) {
-        return addEdge(UmlFactory.getFactory().getCommonBehavior().buildLink(fromInst, toInst));
+        return UmlFactory.getFactory().getCommonBehavior().buildLink(fromInst, toInst);
     }
 
     //public Object connectAbstractionImpl(MInterface fromIntf, MClass toCls) {
