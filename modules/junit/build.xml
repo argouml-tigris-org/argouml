@@ -238,6 +238,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
            optimize="${optimize}">
         <classpath>
             <fileset dir="${argo.build.dir}">
+            	<include name="xerces.jar" />
                 <include name="argouml.jar" />
                 <include name="nsuml.jar" />
                 <include name="ocl-argo.jar" />
