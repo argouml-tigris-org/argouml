@@ -24,6 +24,10 @@
 // 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Changed to use the
 // labels "Generalizes:" and "Specializes:" for inheritance.
 
+// 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Labels corrected to
+// "Generalizations:" and "Specializations". Layout of prop panel better
+// balanced.
+
 
 package org.argouml.uml.ui.foundation.core;
 
@@ -42,7 +46,7 @@ public class PropPanelDataType extends PropPanelClassifier {
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelDataType() {
-    super("DataType", _dataTypeIcon,2);
+    super("DataType", _dataTypeIcon,3);
 
     Class mclass = MDataType.class;
 
@@ -53,30 +57,30 @@ public class PropPanelDataType extends PropPanelClassifier {
     addCaption("Stereotype:",2,0,0);
     addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
 
-    addCaption("Specializes:",3,0,0);
-    addField(extendsScroll,3,0,0);
+    addCaption("Namespace:",3,0,0);
+    addField(namespaceScroll, 3,0,0);
 
-    addCaption("Implements:",4,0,0);
-    addField(implementsScroll,4,0,0);
+    addCaption("Modifiers:",4,0,1);
+    addField(_modifiersPanel,4,0,0);
 
-    addCaption("Modifiers:",5,0,0);
-    addField(_modifiersPanel,5,0,0);
+    addCaption("Generalizations:",0,1,1);
+    addField(extendsScroll,0,1,1);
 
-    addCaption("Namespace:",6,0,0);
-    addField(namespaceScroll,6,0,0);
+    addCaption("Specializations:",1,1,1);
+    addField(derivedScroll,1,1,1);
 
-    addCaption("Generalizes:",7,0,1);
-    addField(derivedScroll,7,0,1);
+    addCaption("Implements:",2,1,1);
+    addField(implementsScroll,2,1,1);
 
-    addCaption("Literals:",1,1,0.5);
+    addCaption("Operations:",0,2,1);
+    addField(opsScroll,0,2,1);
+
+    addCaption("Literals:",1,2,1);
     JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
     attrList.setForeground(Color.blue);
     attrList.setVisibleRowCount(1);
     JScrollPane attrScroll= new JScrollPane(attrList);
-    addField(attrScroll,1,1,0.5);
-
-    addCaption("Operations:",0,1,0.5);
-    addField(opsScroll,0,1,0.5);
+    addField(attrScroll,1,2,1);
 
     new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");

@@ -21,6 +21,13 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Changed to use the
+// labels "Generalizes:" and "Specializes:" for inheritance.
+
+// 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Labels corrected to
+// "Generalizations:" and "Specializations".
+
+
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.*;
@@ -48,7 +55,7 @@ public class PropPanelInterface extends PropPanelClassifier {
     addCaption("Namespace:",3,0,0);
     addField(namespaceScroll,3,0,0);
 
-    addCaption("Specializes:",4,0,0);
+    addCaption("Generalizations:",4,0,0);
     addField(extendsScroll,4,0,0);
 
     addCaption("Modifiers:",5,0,1);
@@ -69,7 +76,7 @@ public class PropPanelInterface extends PropPanelClassifier {
     implementations.setFont(smallFont);
     addField(new JScrollPane(implementations),1,1,0.4);
 
-    addCaption("Generalizes:",2,1,0.3);
+    addCaption("Specializations:",2,1,0.3);
     addField(derivedScroll,2,1,0.3);
 
     addCaption("Operations:",0,2,0.5);

@@ -22,6 +22,13 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 
+// 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Changed to use the
+// labels "Generalizes:" and "Specializes:" for inheritance.
+
+// 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Labels corrected to
+// "Generalizations:" and "Specializations". Layout balance improved.
+
+
 package org.argouml.uml.ui.foundation.extension_mechanisms;
 
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
@@ -53,24 +60,24 @@ public class PropPanelStereotype extends PropPanelModelElement {
     addCaption("Namespace:",3,0,0);
     addField(namespaceScroll,3,0,0);
 
-    addCaption("Specializes:",4,0,0);
-    JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
-    extendsList.setBackground(getBackground());
-    extendsList.setForeground(Color.blue);
-    addField(new JScrollPane(extendsList),4,0,0);
-
-    addCaption("Modifiers:",5,0,1);
+    addCaption("Modifiers:",4,0,1);
     JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
     modifiersPanel.add(new UMLCheckBox(localize("abstract"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
     modifiersPanel.add(new UMLCheckBox(localize("final"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
     modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
-    addField(modifiersPanel,5,0,1);
+    addField(modifiersPanel,4,0,0);
 
-    addCaption("Generalizes:",0,1,1);
+    addCaption("Generalizations:",0,1,1);
+    JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
+    extendsList.setBackground(getBackground());
+    extendsList.setForeground(Color.blue);
+    addField(new JScrollPane(extendsList),0,1,1);
+
+    addCaption("Specializations:",1,1,1);
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
     derivedList.setForeground(Color.blue);
     derivedList.setVisibleRowCount(1);
-    addField(new JScrollPane(derivedList),0,1,1);
+    addField(new JScrollPane(derivedList),1,1,1);
 
     new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
