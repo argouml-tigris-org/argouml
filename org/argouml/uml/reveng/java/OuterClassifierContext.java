@@ -111,7 +111,7 @@ class OuterClassifierContext extends Context
        all, a datatype is created and added to the model.
 
        @param classifierName The name of the classifier to find.
-       @returns Found classifier.
+       @return Found classifier.
     */
     public MClassifier get(String name)
 	throws ClassifierNotFoundException

@@ -884,7 +884,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 
 	/**
 	  * test if the navigator pane is visible
-	  * @returns     true if visible
+	  * @return     true if visible
 	  */
 	public boolean isNavigatorPaneVisible() {
 	  return _navPane.isVisible();
@@ -892,7 +892,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 
 	/**
 	  * test if the details pane is visible
-	  * @returns     true if visible
+	  * @return     true if visible
 	  */
 	public boolean isDetailsPaneVisible() {
 	  return _detailsPane.isVisible();
@@ -900,7 +900,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 
 	/**
 	  * test if the todo pane is visible
-	  * @returns     true if visible
+	  * @return     true if visible
 	  */
 	public boolean isToDoPaneVisible() {
 	  return _toDoPane.isVisible();

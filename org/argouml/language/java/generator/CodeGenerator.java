@@ -519,7 +519,7 @@ class CodeGenerator
 
        @param writer The writer to write to.
 
-       @returns True if comment exists, false otherwise.
+       @return True if comment exists, false otherwise.
 
      *
 
@@ -537,7 +537,7 @@ class CodeGenerator
 
      * @param writer the writer to write to
 
-     * @returns true if comment exists, false otherwise
+     * @return true if comment exists, false otherwise
 
      */
 

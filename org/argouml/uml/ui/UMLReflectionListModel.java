@@ -84,7 +84,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
     /**
      *  This method is called from getModelElementSize
      *    when the list size has been marked as invalid.
-     *  @returns number of "actual" list entries.
+     *  @return number of "actual" list entries.
      *
      */
     protected int recalcModelElementSize() {
@@ -117,7 +117,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
      *  entries for "none" and formatting of elements.
      *
      *  @param index index of model element (zero based).
-     *  @returns corresponding model element
+     *  @return corresponding model element
      */
     protected MModelElement getModelElementAt(int index) {
         MModelElement element = null;
@@ -158,7 +158,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
      *
      *  @param popup popup menu
      *  @param index index of selected list item
-     *  @returns "true" if popup menu should be displayed
+     *  @return "true" if popup menu should be displayed
      */
     public boolean buildPopup(JPopupMenu popup,int index) {
         UMLUserInterfaceContainer container = getContainer();

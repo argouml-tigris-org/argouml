@@ -80,7 +80,7 @@ public class ParseState
        Tell the parse state that an inner classifier is found.
 
        @param name The name of the classifier.
-       @returns The new classifier.
+       @return The new classifier.
      */
     public MClassifier newClassifier(String name)
     {

@@ -552,7 +552,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
      *
      *   @param a metaclass name such as 'Class', 'Association'.
      *       Typically the baseClass attribute for a Stereotype.
-     *   @returns true if target type of the panel is an instance
+     *   @return true if target type of the panel is an instance
      *       of the metaclass or a derived metaclass.
      */
     abstract protected boolean isAcceptibleBaseMetaClass(String baseClass);

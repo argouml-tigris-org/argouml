@@ -116,7 +116,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *  Determines the number of "actual" entries in the list.  May be
      *     overriden in combination with getModelElementAt,
      *     but typically recalcModelElementSize is overriden.
-     *   @returns number of "actual" list entries.
+     *   @return number of "actual" list entries.
      */
     protected final int getModelElementSize()
     {
@@ -133,7 +133,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
     /**
      *  This method is called from getModelElementSize
      *    when the list size has been marked as invalid.
-     *  @returns number of "actual" list entries.
+     *  @return number of "actual" list entries.
      *
      */
     abstract protected int recalcModelElementSize();
@@ -144,7 +144,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *  entries for "none" and formatting of elements.
      *
      *  @param index index of model element (zero based).
-     *  @returns corresponding model element
+     *  @return corresponding model element
      */
     abstract protected MModelElement getModelElementAt(int index);
 
@@ -166,7 +166,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
     /**
      *  This method returns the size of the list (including any
      *     element for none).
-     *  @returns size of list
+     *  @return size of list
      *  @see #getModelElementSize
      */
     public int getSize() {
@@ -183,7 +183,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *  any element for "none").
      *
      *  @param index index for element (zero-based)
-     *  @returns representation of element
+     *  @return representation of element
      *  @see #getModelElementAt
      *  @see #formatElement
      */
@@ -213,7 +213,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *   method may be overriden.
      *
      *  @param @element model element
-     *  @returns rendering of the ModelElement
+     *  @return rendering of the ModelElement
      */
     public Object formatElement(MModelElement element) {
         return _container.formatElement(element);
@@ -343,7 +343,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *
      *  @param popup popup menu
      *  @param index index of selected list item
-     *  @returns "true" if popup menu should be displayed
+     *  @return "true" if popup menu should be displayed
      */
     public boolean buildPopup(JPopupMenu popup,int index) {
         UMLUserInterfaceContainer container = getContainer();
@@ -379,7 +379,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *  @param oldCollection old collection
      *  @param newElement element to add to collection
      *  @param index position of element in new collection
-     *  @returns new collection
+     *  @return new collection
      */
     static protected Collection addAtUtil(Collection oldCollection,MModelElement newItem,int index) {
         int oldSize = oldCollection.size();
@@ -403,7 +403,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *
      *  @param oldCollection old collection
      *  @param index index of element to move up.
-     *  @returns new collection
+     *  @return new collection
      */
     static protected java.util.List moveUpUtil(Collection oldCollection,int index) {
         int size = oldCollection.size();
@@ -433,7 +433,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *
      *  @param oldCollection old collection
      *  @param index index of element to move down.
-     *  @returns new collection
+     *  @return new collection
      */
     static protected java.util.List moveDownUtil(Collection oldCollection,int index) {
         int size = oldCollection.size();
@@ -463,7 +463,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *
      *  @param oldCollection old collection
      *  @param index index of element to move down.
-     *  @returns new collection
+     *  @return new collection
      */
     static protected MModelElement elementAtUtil(Collection collection,int index,Class requiredClass) {
         Object obj = null;

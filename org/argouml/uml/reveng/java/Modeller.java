@@ -581,7 +581,7 @@ public class Modeller
 
        @param javadoc The javadoc comment. null or "" if no comment available.
 
-       @returns The newly created/found classifier.
+       @return The newly created/found classifier.
 
      */
 
@@ -737,7 +737,7 @@ public class Modeller
      *
      * parameter.
      * @param javadoc The javadoc comment. null or "" if no comment available.
-     * @returns The operation.
+     * @return The operation.
      */
 
     public MOperation addOperation (short modifiers,
@@ -1212,7 +1212,7 @@ public class Modeller
 
        @param child The subclass.
 
-       @returns The generalization found or created.
+       @return The generalization found or created.
 
     */
 
@@ -1282,7 +1282,7 @@ public class Modeller
 
        @param child The subclass.
 
-       @returns The abstraction found or created.
+       @return The abstraction found or created.
 
     */
 
@@ -1354,7 +1354,7 @@ public class Modeller
 
        @param name The name of the package.
 
-       @returns The package found or created.
+       @return The package found or created.
 
     */
 
@@ -1448,7 +1448,7 @@ public class Modeller
 
        @param name The name of the operation.
 
-       @returns The operation found or created.
+       @return The operation found or created.
 
     */
 
@@ -1486,7 +1486,7 @@ public class Modeller
 
        @param name The name of the method.
 
-       @returns The method found or created.
+       @return The method found or created.
 
     */
 
@@ -1530,7 +1530,7 @@ public class Modeller
 
                           association.
 
-       @returns The attribute found or created.
+       @return The attribute found or created.
 
     */
 
@@ -1580,7 +1580,7 @@ public class Modeller
 
        @param mClassifier Where the association ends.
 
-       @returns The attribute found or created.
+       @return The attribute found or created.
 
     */
 
@@ -1650,7 +1650,7 @@ public class Modeller
 
        @param name The name of the stereotype.
 
-       @returns The stereotype.
+       @return The stereotype.
 
     */
 
@@ -1690,7 +1690,7 @@ public class Modeller
 
        @param name The tag.
 
-       @returns The found tag. A new is created if not found.
+       @return The found tag. A new is created if not found.
 
      */
 
@@ -1732,7 +1732,7 @@ public class Modeller
 
        @param name A fully specified classifier name.
 
-       @returns The package name.
+       @return The package name.
 
     */
 
@@ -1798,7 +1798,7 @@ public class Modeller
 
        @param name A fully specified classifier name.
 
-       @returns The classifier name.
+       @return The classifier name.
 
     */
 

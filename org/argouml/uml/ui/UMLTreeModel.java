@@ -77,7 +77,7 @@ public class UMLTreeModel extends DefaultTreeModel
      *   method may be overriden.
      *
      *  @param @element model element
-     *  @returns rendering of the ModelElement
+     *  @return rendering of the ModelElement
      */
     public Object formatElement(MModelElement element) {
         return _container.formatElement(element);

@@ -85,8 +85,6 @@ public class CrConsiderSingleton extends CrUML {
      * (PATTERNS), sets a priority for any to-do items (LOW) and adds triggers
      * for metaclasses "stereotype", "structuralFeature" and
      * "associationEnd".</p>
-     *
-     * @return  nothing returned since this is a constructor
      */
 
     public CrConsiderSingleton() {

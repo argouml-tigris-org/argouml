@@ -215,7 +215,7 @@ public class JavaContext extends StyleContext implements ViewFactory {
 	 * @param y the starting Y coordinate
 	 * @param p0 the beginning position in the model
 	 * @param p1 the ending position in the model
-	 * @returns the location of the end of the range
+	 * @return the location of the end of the range
 	 * @exception BadLocationException if the range is invalid
          *
          * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.

@@ -61,7 +61,7 @@ abstract public class UMLBooleanProperty  {
      *   on this property.
      *
      *   @param event NSUML event
-     *   @returns returns true if property may have been affected by change.
+     *   @return returns true if property may have been affected by change.
      */
     public boolean isAffected(MElementEvent event) {
         String propName = event.getName();
