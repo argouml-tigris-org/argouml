@@ -33,6 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JFileChooser;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
@@ -90,48 +91,49 @@ public class SettingsTabEnvironment extends SettingsTabHelper
 
 	labelConstraints.gridy = 0;
 	fieldConstraints.gridy = 0;
-	// TODO: Take this out of i18n. This string is NOT to be translated! See issue 2381.
-  top.add(createLabel("${argo.root}"), labelConstraints);
+	// This string is NOT to be translated! See issue 2381.
+  //top.add(createLabel("${argo.root}"), labelConstraints);
+  top.add(new JLabel("${argo.root}"), labelConstraints);
       _argoRoot = createTextField();
 	_argoRoot.setEnabled(false);
 	top.add(_argoRoot, fieldConstraints);
 
 	labelConstraints.gridy = 1;
 	fieldConstraints.gridy = 1;
-  // TODO: Take this out of i18n. This string is NOT to be translated! See issue 2381.
-  top.add(createLabel("${argo.home}"), labelConstraints);
+  // This string is NOT to be translated! See issue 2381.
+  top.add(new JLabel("${argo.home}"), labelConstraints);
         _argoHome = createTextField();
 	_argoHome.setEnabled(false);
 	top.add(_argoHome, fieldConstraints);
 
 	labelConstraints.gridy = 2;
 	fieldConstraints.gridy = 2;
- 	// TODO: Take this out of i18n. This string is NOT to be translated! See issue 2381.
-  top.add(createLabel("${argo.ext.dir}"), labelConstraints);
+ 	// This string is NOT to be translated! See issue 2381.
+  top.add(new JLabel("${argo.ext.dir}"), labelConstraints);
         _argoExtDir = createTextField();
 	_argoExtDir.setEnabled(false);
 	top.add(_argoExtDir, fieldConstraints);
 
 	labelConstraints.gridy = 3;
 	fieldConstraints.gridy = 3;
-  	// TODO: Take this out of i18n. This string is NOT to be translated! See issue 2381.
-    top.add(createLabel("${java.home}"), labelConstraints);
+  	// This string is NOT to be translated! See issue 2381.
+    top.add(new JLabel("${java.home}"), labelConstraints);
         _javaHome = createTextField();
 	_javaHome.setEnabled(false);
 	top.add(_javaHome, fieldConstraints);
 
 	labelConstraints.gridy = 4;
 	fieldConstraints.gridy = 4;
-  	// TODO: Take this out of i18n. This string is NOT to be translated! See issue 2381.
-    top.add(createLabel("${user.home}"), labelConstraints);
+  	// This string is NOT to be translated! See issue 2381.
+    top.add(new JLabel("${user.home}"), labelConstraints);
         _userHome = createTextField();
 	_userHome.setEnabled(false);
 	top.add(_userHome, fieldConstraints);
 
 	labelConstraints.gridy = 5;
 	fieldConstraints.gridy = 5;
-    // TODO: Take this out of i18n. This string is NOT to be translated! See issue 2381.
-    top.add(createLabel("${user.dir}"), labelConstraints);
+    // This string is NOT to be translated! See issue 2381.
+    top.add(new JLabel("${user.dir}"), labelConstraints);
         _userDir = createTextField();
 	_userDir.setEnabled(false);
 	top.add(_userDir, fieldConstraints);
