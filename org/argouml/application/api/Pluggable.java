@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,23 +24,24 @@
 
 package org.argouml.application.api;
 
-/**  An interface which identifies an ArgoUML plug-in.
+/**
+ *   An interface which identifies an ArgoUML plug-in.
  *
- *   <dfn>Plug-ins</dfn> are specific modules which are replacements
+ *   Plug-ins are specific modules which are replacements
  *   or additions to standard Argo classes.
  *   Argo references the plug-in functionality through interfaces which
- *   define the features of each type of plug-in.
+ *   define the features of each type of plug-in.<p>
  *
  *   This interface must be extended by another interface which is used
  *   to categorize the plugins.  An example of this is the
  *   <code>PluggableNotation</code> interface,
  *   which provides all the required functionality to request
- *   a notation generator of a notation dialect.
+ *   a notation generator of a notation dialect.<p>
  *
  *   Argo will ask the <code>ModuleLoader</code>
  *   for a plug-in of a certain type.
  *   The loader will determine which plug-in to use and return a
- *   concrete class which implements that interface.
+ *   concrete class which implements that interface.<p>
  *
  *   It is the intent of this class that any Argo feature that can be
  *   replaced or extended by this means be callable only by this means.
@@ -50,28 +51,35 @@ package org.argouml.application.api;
  */
 public interface Pluggable extends ArgoModule {
 
-    /** Constant required in plugin manifest. */
+    /**
+     * Constant required in plugin manifest.
+     */
     String PLUGIN_TITLE = "ArgoUML Dynamic Load Module";
 
-    /** Constant required in plugin manifest. */
+    /**
+     * Constant required in plugin manifest.
+     */
     String PLUGIN_VENDOR = "University of California";
 
-    /** Constant required in plugin manifest. */
-    String PLUGIN_PREFIX = 
+    /**
+     * Constant required in plugin manifest.
+     */
+    String PLUGIN_PREFIX =
 	"org.argouml.application.api.Pluggable";
 
-    /** A function which allows a plug-in to decide if it is available
-     *  under a specific context. 
+    /**
+     *  A function which allows a plug-in to decide if it is available
+     *  under a specific context.
      *
      *  One example of a plugin with multiple criteria is the PluggableMenu.
      *  PluggableMenu requires the first context to be a JMenuItem
      *  which wants the PluggableMenu attached to as the context,
      *  so that it can determine that it would attach to a menu.  The
-     *  second context is an internal (non-localized) description 
+     *  second context is an internal (non-localized) description
      *  of the menu such as "File" or "View"
      *  so that the plugin can further decide.
-     *  
-     *  @param context An identification of the context.  
+     *
+     *  @param context An identification of the context.
      *                 The interpretation of criteria is specific to
      *                 the plug-in type, but must be consistent
      *                 across that type.  The plug-in must want
