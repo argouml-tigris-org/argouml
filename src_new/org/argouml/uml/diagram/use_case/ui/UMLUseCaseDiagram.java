@@ -50,9 +50,9 @@ import org.argouml.uml.diagram.use_case.UseCaseDiagramGraphModel;
 import org.argouml.uml.ui.ActionAddExtensionPoint;
 import org.argouml.uml.ui.ActionAddNote;
 import org.tigris.gef.base.CmdSetMode;
-import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
+import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.ui.ToolBar;
 import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
@@ -226,20 +226,17 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
     public void setNamespace(MNamespace m) {
         super.setNamespace(m);
+        if (getGraphModel() == null) {
+            setGraphModel(new UseCaseDiagramGraphModel());
+        }
+        ((UseCaseDiagramGraphModel)getGraphModel()).setNamespace(m);
 
-        UseCaseDiagramGraphModel gm = new UseCaseDiagramGraphModel();
-        gm.setNamespace(m);
-        setGraphModel(gm);
-
-        LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
-        setLayer(lay);
-
-        // The renderer should be a singleton
-
-        UseCaseDiagramRenderer rend = new UseCaseDiagramRenderer();
-
-        lay.setGraphNodeRenderer(rend);
-        lay.setGraphEdgeRenderer(rend);
+        if (getLayer() == null) {
+            setLayer(new LayerPerspectiveMutable(m.getName(), (MutableGraphModel)getGraphModel()));
+            UseCaseDiagramRenderer rend = new UseCaseDiagramRenderer();
+            getLayer().setGraphNodeRenderer(rend);
+            getLayer().setGraphEdgeRenderer(rend);
+        }
     }
 
 
