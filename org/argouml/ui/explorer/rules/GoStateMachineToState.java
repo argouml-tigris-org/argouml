@@ -55,7 +55,8 @@ public class GoStateMachineToState extends AbstractPerspectiveRule {
 
         if (Model.getFacade().isAStateMachine(parent)) {
             if (Model.getFacade().getTop(parent) != null) {
-                return Model.getFacade().getSubvertices(Model.getFacade().getTop(parent));
+                return Model.getFacade().getSubvertices(
+                        Model.getFacade().getTop(parent));
             }
         }
         return null;

@@ -62,8 +62,8 @@ public class GoModelToCollaboration extends AbstractPerspectiveRule {
             while (it.hasNext()) {
                 Object collab = /*(MCollaboration)*/ it.next();
                 if (Model.getFacade().getRepresentedClassifier(collab) == null
-                    && Model.getFacade().getRepresentedOperation(collab) == null) {
-
+                    && Model.getFacade().getRepresentedOperation(collab) 
+                        == null) {
                     returnList.add(collab);
                 }
             }

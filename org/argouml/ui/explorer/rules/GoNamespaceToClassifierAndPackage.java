@@ -57,7 +57,8 @@ public class GoNamespaceToClassifierAndPackage
         if (!Model.getFacade().isANamespace(parent))
             return null;
 
-        Iterator elements = Model.getFacade().getOwnedElements(parent).iterator();
+        Iterator elements = 
+            Model.getFacade().getOwnedElements(parent).iterator();
         List result = new ArrayList();
 
         while (elements.hasNext()) {

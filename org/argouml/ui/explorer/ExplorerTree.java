@@ -220,15 +220,16 @@ public class ExplorerTree
             }
 
             if (name == null || name.equals("")) {
-                name = "(anon " + Model.getFacade().getUMLClassName(value) + ")";
+                name = 
+                    "(anon " + Model.getFacade().getUMLClassName(value) + ")";
             }
 
             // Look for stereotype
             if (showStereotype) {
                 Object stereo = null;
                 if (Model.getFacade().getStereotypes(value).size() > 0) {
-                    stereo =
-			Model.getFacade().getStereotypes(value).iterator().next();
+                    stereo = Model.getFacade().getStereotypes(value)
+                        .iterator().next();
                 }
                 if (stereo != null) {
                     name += " " + GeneratorDisplay.getInstance()
