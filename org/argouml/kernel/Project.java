@@ -54,6 +54,7 @@ import org.argouml.cognitive.ProjectMemberTodoList;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
@@ -1269,7 +1270,9 @@ public class Project implements java.io.Serializable, TargetListener {
         if (ModelFacade.isABase(obj)) { // an object that can be represented
             ProjectBrowser.getInstance().getEditorPane()
 		.removePresentationFor(obj, getDiagrams());
+            UmlModelEventPump.getPump().stopPumpingEvents();
             UmlFactory.getFactory().delete(obj);
+            UmlModelEventPump.getPump().startPumpingEvents();
             if (_members.contains(obj)) {
                 _members.remove(obj);
             }

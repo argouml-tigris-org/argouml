@@ -717,8 +717,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
     public void delete(Object elem) {
         if (elem == null)
             throw new IllegalArgumentException("Element may not be null "
-                + "in delete");
-        UmlModelEventPump.getPump().stopPumpingEvents();
+                + "in delete");        
         if (elem instanceof MElement) {
             getCore().deleteElement((MElement) elem);
             if (elem instanceof MModelElement) {
@@ -812,8 +811,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
         if (elem instanceof MBase) {
             ((MBase) elem).remove();
             UmlModelEventPump.getPump().cleanUp((MBase) elem);
-        }
-        UmlModelEventPump.getPump().startPumpingEvents();
+        }        
     }
 
     /**

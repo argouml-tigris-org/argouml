@@ -69,6 +69,12 @@ import ru.novosoft.uml.MFactoryImpl;
  * @author jaap.branderhorst@xs4all.nl
  */
 public final class UmlModelEventPump implements MElementListener {
+    
+    /**
+     * Indicate wether we pump events to listeners yes or no. There is some fault in the NSUML implementation
+     * but where...
+     */
+    private boolean _pumping = true;
 
     public static final String REMOVE = "remove";
 
@@ -643,6 +649,7 @@ public final class UmlModelEventPump implements MElementListener {
      * @see MElementListener#propertySet(MElementEvent)
      */
     public void propertySet(MElementEvent e) {
+        if (!_pumping) return;
         if (e.getNewValue() == null
             || !(e.getNewValue().equals(e.getOldValue()))) {
             MElementListener[] listeners = getListenerList(e);
@@ -656,6 +663,7 @@ public final class UmlModelEventPump implements MElementListener {
      * @see MElementListener#recovered(MElementEvent)
      */
     public void recovered(MElementEvent e) {
+        if (!_pumping) return;
         MElementListener[] listeners = getListenerList(e);
         for (int i = 0; i < listeners.length; i++) {
             listeners[i].recovered(e);
@@ -666,6 +674,7 @@ public final class UmlModelEventPump implements MElementListener {
      * @see MElementListener#removed(MElementEvent)
      */
     public void removed(MElementEvent e) {
+        if (!_pumping) return;
         MElementListener[] listeners = getListenerList(e);
         for (int i = 0; i < listeners.length; i++) {
             listeners[i].removed(e);
@@ -676,6 +685,7 @@ public final class UmlModelEventPump implements MElementListener {
      * @see MElementListener#roleAdded(MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
+        if (!_pumping) return;
         MElementListener[] listeners = getListenerList(e);
         for (int i = 0; i < listeners.length; i++) {
             listeners[i].roleAdded(e);
@@ -686,6 +696,7 @@ public final class UmlModelEventPump implements MElementListener {
      * @see MElementListener#roleRemoved(MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
+        if (!_pumping) return;
         MElementListener[] listeners = getListenerList(e);
         for (int i = 0; i < listeners.length; i++) {
             listeners[i].roleRemoved(e);
@@ -715,6 +726,7 @@ public final class UmlModelEventPump implements MElementListener {
      * changes the NSUML event policy in order to stop udating the ui.
      */
     public void stopPumpingEvents() {
+        _pumping = false;
 
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_DISABLED);
     }
@@ -723,6 +735,7 @@ public final class UmlModelEventPump implements MElementListener {
      * changes the NSUML event policy in order to start udating the ui.
      */
     public void startPumpingEvents() {
+        _pumping = true;
 
         MFactoryImpl.flushEvents();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
