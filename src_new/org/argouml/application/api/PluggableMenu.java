@@ -36,6 +36,40 @@ import javax.swing.*;
  */
 public interface PluggableMenu extends Pluggable {
 
+    /* NOTE: Don't make the KEY_ strings final since the string
+       gets optimized into referring source code at compile time then.
+       We DO want to use THIS instance of the string in case we want to
+       change it in the future.
+     */
+
+    /** Key looked for in ProjectBrowser for File Import submenu.
+     */
+    public static String KEY_FILE_IMPORT = "File:Import";
+
+    /** Key looked for in ProjectBrowser for View menu.
+     */
+    public static String KEY_VIEW = "View";
+
+    /** Key looked for in ProjectBrowser for Create Diagram menu.
+     */
+    public static String KEY_CREATE_DIAGRAMS = "Create Diagrams";
+
+    /** Key looked for in ProjectBrowser for Arrange menu.
+     */
+    public static String KEY_ARRANGE = "Arrange";
+
+    /** Key looked for in ProjectBrowser for Generate menu.
+     */
+    public static String KEY_GENERATE = "Generate";
+
+    /** Key looked for in ProjectBrowser for Tools menu.
+     */
+    public static String KEY_TOOLS = "Tools";
+
+    /** Key looked for in ProjectBrowser for Help menu.
+     */
+    public static String KEY_HELP = "Help";
+
     /** Return the JMenuItem controlled by the plugin under the specific
      *  context.  One menu plugin may control multiple menu items.
      *

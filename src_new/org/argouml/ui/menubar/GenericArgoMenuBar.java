@@ -247,7 +247,7 @@ public class GenericArgoMenuBar extends JMenuBar
 
         _import = new JMenu(menuLocalize("Import"));
         JMenuItem importProjectAsItem = _import.add(ActionImportFromSources.SINGLETON);
-        appendPluggableMenus(_import, "File:Import");
+        appendPluggableMenus(_import, PluggableMenu.KEY_FILE_IMPORT);
         _file.add(_import);
 
         _file.addSeparator();
@@ -375,7 +375,7 @@ public class GenericArgoMenuBar extends JMenuBar
         _view.addSeparator();
         _view.add(org.argouml.language.ui.ActionNotation.getInstance().getMenu());
 
-        appendPluggableMenus(_view, "View");
+        appendPluggableMenus(_view, PluggableMenu.KEY_VIEW);
 
         //JMenu create = (JMenu) add(new JMenu(menuLocalize("Create")));
         //setMnemonic(create,"Create",'C');
@@ -400,7 +400,7 @@ public class GenericArgoMenuBar extends JMenuBar
         createDiagramToolbar.add(new ToolButton(ActionDeploymentDiagram.SINGLETON));
         _createDiagrams.add(ActionSequenceDiagram.SINGLETON);
         createDiagramToolbar.add(new ToolButton(ActionSequenceDiagram.SINGLETON));
-        appendPluggableMenus(_createDiagrams, "Create Diagrams");
+        appendPluggableMenus(_createDiagrams, PluggableMenu.KEY_CREATE_DIAGRAMS);
 
         //JMenu createModelElements = (JMenu) create.add(new JMenu("Model Elements"));
         //createModelElements.add(Actions.AddTopLevelPackage);
@@ -430,7 +430,7 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenu reorder = (JMenu) _arrange.add(new JMenu(menuLocalize("Reorder")));
         JMenu nudge = (JMenu) _arrange.add(new JMenu(menuLocalize("Nudge")));
         JMenu layout = (JMenu) _arrange.add(new JMenu(menuLocalize("Layout")));
-        appendPluggableMenus(_arrange, "Arrange");
+        appendPluggableMenus(_arrange, PluggableMenu.KEY_ARRANGE);
 
         Runnable initLater = new
             InitMenusLater(align, distribute, reorder, nudge, layout, editTabs, detailsTabs);
@@ -442,7 +442,7 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenuItem genAllItem = _generate.add(ActionGenerateAll.SINGLETON);
         setAccelerator(genAllItem,F7);
         //generate.add(Actions.GenerateWeb);
-        appendPluggableMenus(_generate, "Generate");
+        appendPluggableMenus(_generate, PluggableMenu.KEY_GENERATE);
 
         _critique = (ArgoJMenu) add(new ArgoJMenu(menuLocalize("Critique")));
         setMnemonic(_critique,"Critique",'R');
@@ -455,7 +455,7 @@ public class GenericArgoMenuBar extends JMenuBar
         // Tools Menu
         _tools = new JMenu(menuLocalize("Tools"));
         _tools.setEnabled(false);
-        appendPluggableMenus(_tools, "Tools");
+        appendPluggableMenus(_tools, PluggableMenu.KEY_TOOLS);
         add(_tools);
 
         // tools.add(ActionTest.getInstance());
@@ -463,7 +463,7 @@ public class GenericArgoMenuBar extends JMenuBar
         // Help Menu
         _help = new JMenu(menuLocalize("Help"));
         setMnemonic(_help,"Help",'H');
-        appendPluggableMenus(_help, "Help");
+        appendPluggableMenus(_help, PluggableMenu.KEY_HELP);
         if (_help.getItemCount() > 0) {
             _help.insertSeparator(0);
         }

@@ -138,7 +138,7 @@ implements PluggableMenu {
     public boolean inContext(Object[] o) {
         if (o.length < 2) return false;
 	if ((o[0] instanceof JMenuItem) &&
-	        ("Tools".equals(o[1]))) {
+	        (PluggableMenu.KEY_TOOLS.equals(o[1]))) {
 	    return true;
 	}
         return false;

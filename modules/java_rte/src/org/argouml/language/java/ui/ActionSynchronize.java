@@ -75,7 +75,7 @@ public class ActionSynchronize extends UMLAction implements PluggableMenu
   public boolean inContext(Object[] o) {
     if (o.length < 2) return false;
     // We are in context for any JMenuItem.
-    if (o[0] instanceof JMenuItem && o[1].equals("Tools")) {
+    if (o[0] instanceof JMenuItem && o[1].equals(PluggableMenu.KEY_TOOLS)) {
       return true;
     }
     return false;
