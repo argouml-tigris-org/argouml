@@ -32,8 +32,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
@@ -56,7 +58,13 @@ import org.argouml.kernel.PredNotInstanceOf;
 import org.argouml.kernel.PredOR;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
+import org
+    .argouml
+    .model
+    .uml
+    .behavioralelements
+    .statemachines
+    .StateMachinesHelper;
 import org.argouml.swingext.Toolbar;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.collaboration.ui.GoAssocRoleMessages;
@@ -111,10 +119,7 @@ import ru.novosoft.uml.MElementListener;
  */
 public class NavigatorPane
     extends JPanel
-    implements ItemListener, PropertyChangeListener,
-	       QuadrantPanel,
-	       MElementListener
-{
+    implements ItemListener, PropertyChangeListener, QuadrantPanel, MElementListener {
 
     protected transient Category cat = Category.getInstance(this.getClass());
 
@@ -189,8 +194,8 @@ public class NavigatorPane
         if (doSplash) {
             SplashScreen splash =
                 ProjectBrowser.getInstance().getSplashScreen();
-            splash.getStatusBar().showStatus("Making NavigatorPane: "
-					     + "Setting Perspectives");
+            splash.getStatusBar().showStatus(
+                "Making NavigatorPane: " + "Setting Perspectives");
             splash.getStatusBar().showProgress(25);
         }
 
@@ -237,7 +242,7 @@ public class NavigatorPane
         else if (oldCurPers != null && _perspectives.contains(oldCurPers))
             setCurPerspective(oldCurPers);
         else
-            setCurPerspective((NavPerspective) _perspectives.elementAt(0));
+            setCurPerspective((NavPerspective)_perspectives.elementAt(0));
         updateTree();
     }
 
@@ -377,7 +382,7 @@ public class NavigatorPane
      *   - setPerspectives(Vector pers)
      */
     protected void updateTree() {
-        NavPerspective tm = (NavPerspective) _combo.getSelectedItem();
+        NavPerspective tm = (NavPerspective)_combo.getSelectedItem();
         //if (tm == _curPerspective) return;
         _curPerspective = tm;
         if (_curPerspective == null) {
@@ -403,9 +408,9 @@ public class NavigatorPane
      *  @since ARGO0.11.2
      */
     public void propertyChange(PropertyChangeEvent pce) {
-        if (pce.getPropertyName()
-                .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) 
-	{
+        if (pce
+            .getPropertyName()
+            .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
             setRoot(pce.getNewValue());
             forceUpdate();
             return;
@@ -510,98 +515,99 @@ public class NavigatorPane
         // Subsystem is travsersed via Classifier. Eugenio
         GoFilteredChildren modelToPackages =
             new GoFilteredChildren(
-		    "misc.package.subpackages",
-		    new GoModelToElements(),
-		    new PredAND(new PredInstanceOf(
-					(Class) ModelFacade.PACKAGE),
-				new PredNotInstanceOf(
-					(Class) ModelFacade.SUBSYSTEM)));
+                "misc.package.subpackages",
+                new GoModelToElements(),
+                new PredAND(
+                    new PredInstanceOf((Class)ModelFacade.PACKAGE),
+                    new PredNotInstanceOf((Class)ModelFacade.SUBSYSTEM)));
 
         GoFilteredChildren modelToClassifiers =
             new GoFilteredChildren(
-		    "misc.package.classifiers",
-		    new GoModelToElements(),
-		    new PredInstanceOf((Class) ModelFacade.CLASSIFIER));
+                "misc.package.classifiers",
+                new GoModelToElements(),
+                new PredInstanceOf((Class)ModelFacade.CLASSIFIER));
 
         // AssociationClass is traversed via Classifier. Eugenio
         GoFilteredChildren modelToAssociations =
             new GoFilteredChildren(
-		    "misc.package.associations",
-		    new GoModelToElements(),
-		    new PredAND(
-			    new PredInstanceOf(
-				    (Class) ModelFacade.ASSOCIATION),
-			    new PredNotInstanceOf(
-				    (Class) ModelFacade.ASSOCIATION_CLASS)));
+                "misc.package.associations",
+                new GoModelToElements(),
+                new PredAND(
+                    new PredInstanceOf((Class)ModelFacade.ASSOCIATION),
+                    new PredNotInstanceOf(
+                        (Class)ModelFacade.ASSOCIATION_CLASS)));
 
         GoFilteredChildren modelToGeneralizations =
             new GoFilteredChildren(
-		    "misc.package.generalizations",
-		    new GoModelToElements(),
-		    new PredInstanceOf((Class) ModelFacade.GENERALIZATION));
+                "misc.package.generalizations",
+                new GoModelToElements(),
+                new PredInstanceOf((Class)ModelFacade.GENERALIZATION));
 
         // Extend and include are traversed via use case.
         GoFilteredChildren modelToExtendsAndIncludes =
             new GoFilteredChildren(
-		    "Package->Extends/Includes",
-		    new GoModelToElements(),
-		    new PredOR(new PredInstanceOf((Class) ModelFacade.EXTEND),
-			       new PredInstanceOf(
-				       (Class) ModelFacade.INCLUDE)));
+                "Package->Extends/Includes",
+                new GoModelToElements(),
+                new PredOR(
+                    new PredInstanceOf((Class)ModelFacade.EXTEND),
+                    new PredInstanceOf((Class)ModelFacade.INCLUDE)));
 
         GoFilteredChildren modelToDependencies =
-            new GoFilteredChildren("misc.package.dependencies",
-				   new GoModelToElements(),
-				   new PredInstanceOf(
-					   (Class) ModelFacade.DEPENDENCY));
+            new GoFilteredChildren(
+                "misc.package.dependencies",
+                new GoModelToElements(),
+                new PredInstanceOf((Class)ModelFacade.DEPENDENCY));
 
         GoFilteredChildren modelToInstances =
-            new GoFilteredChildren("misc.package.instances",
-				   new GoModelToElements(),
-				   new PredInstanceOf(
-					   (Class) ModelFacade.OBJECT));
+            new GoFilteredChildren(
+                "misc.package.instances",
+                new GoModelToElements(),
+                new PredInstanceOf((Class)ModelFacade.OBJECT));
         GoFilteredChildren modelToLinks =
-            new GoFilteredChildren("misc.package.links",
-				   new GoModelToElements(),
-				   new PredInstanceOf(
-					   (Class) ModelFacade.LINK));
+            new GoFilteredChildren(
+                "misc.package.links",
+                new GoModelToElements(),
+                new PredInstanceOf((Class)ModelFacade.LINK));
         GoFilteredChildren modelToCollaboration =
-            new GoFilteredChildren("misc.package.collaborations",
-				   new GoModelToElements(),
-				   new PredInstanceOf(
-					   (Class) ModelFacade.COLLABORATION));
+            new GoFilteredChildren(
+                "misc.package.collaborations",
+                new GoModelToElements(),
+                new PredInstanceOf((Class)ModelFacade.COLLABORATION));
 
         GoFilteredChildren modelToComponentInstance =
             new GoFilteredChildren(
-		    "misc.package.componentinstance",
-		    new GoModelToElements(),
-		    new PredInstanceOf(
-			    (Class) ModelFacade.COMPONENT_INSTANCE));
+                "misc.package.componentinstance",
+                new GoModelToElements(),
+                new PredInstanceOf((Class)ModelFacade.COMPONENT_INSTANCE));
 
         GoFilteredChildren modelToNodeInstance =
             new GoFilteredChildren(
-		    "misc.package.nodeinstance",
-		    new GoModelToElements(),
-		    new PredInstanceOf((Class) ModelFacade.NODE_INSTANCE));
+                "misc.package.nodeinstance",
+                new GoModelToElements(),
+                new PredInstanceOf((Class)ModelFacade.NODE_INSTANCE));
 
         GoFilteredChildren machineToFinalState =
-            new GoFilteredChildren("misc.state-machine.final-states",
-				   new GoMachineToState(),
-				   PredIsFinalState.TheInstance);
+            new GoFilteredChildren(
+                "misc.state-machine.final-states",
+                new GoMachineToState(),
+                PredIsFinalState.TheInstance);
         GoFilteredChildren machineToInitialState =
-            new GoFilteredChildren("misc.state-machine.initial-states",
-				   new GoMachineToState(),
-				   PredIsStartState.TheInstance);
+            new GoFilteredChildren(
+                "misc.state-machine.initial-states",
+                new GoMachineToState(),
+                PredIsStartState.TheInstance);
         transitionPaths.addSubTreeModel(machineToInitialState);
 
         GoFilteredChildren compositeToFinalStates =
-            new GoFilteredChildren("misc.state.final-substates",
-				   new GoCompositeStateToSubvertex(),
-				   PredIsFinalState.TheInstance);
+            new GoFilteredChildren(
+                "misc.state.final-substates",
+                new GoCompositeStateToSubvertex(),
+                PredIsFinalState.TheInstance);
         GoFilteredChildren compositeToInitialStates =
-            new GoFilteredChildren("misc.state.initial-substates",
-				   new GoCompositeStateToSubvertex(),
-				   PredIsStartState.TheInstance);
+            new GoFilteredChildren(
+                "misc.state.initial-substates",
+                new GoCompositeStateToSubvertex(),
+                PredIsStartState.TheInstance);
 
         // ---------------- building the perspectives
 
@@ -691,7 +697,7 @@ public class NavigatorPane
         collabCentric.addSubTreeModel(new GoInteractionMessages());
 
         useCaseToExtensionPoint.addSubTreeModel(
-		new GoUseCaseToExtensionPoint());
+            new GoUseCaseToExtensionPoint());
 
         classToBehStr.addSubTreeModel(new GoClassifierToStructuralFeature());
         classToBehStr.addSubTreeModel(new GoClassifierToBeh());
@@ -795,87 +801,87 @@ public class NavigatorPane
             JPopupMenu popup = new JPopupMenu("test");
             Object obj = getSelectedObject();
             if (obj instanceof PopupGenerator) {
-                Vector actions = ((PopupGenerator) obj).getPopUpActions(me);
+                Vector actions = ((PopupGenerator)obj).getPopUpActions(me);
                 for (Enumeration e = actions.elements();
-		     e.hasMoreElements();
-		     )
-		{
-                    popup.add((AbstractAction) e.nextElement());
+                    e.hasMoreElements();
+                    ) {
+                    popup.add((AbstractAction)e.nextElement());
                 }
             } else {
-                if ((ModelFacade.isAClassifier(obj) &&
-                     !(ModelFacade.isADataType(obj)))
+                if ((ModelFacade.isAClassifier(obj)
+                    && !(ModelFacade.isADataType(obj)))
                     || ((ModelFacade.isAPackage(obj))
                         && (obj
                             != ProjectManager
-			    .getManager()
-			    .getCurrentProject()
-			    .getModel()))
+                                .getManager()
+                                .getCurrentProject()
+                                .getModel()))
                     || ((ModelFacade.isAStateVertex(obj))
                         && ((ProjectManager
-			     .getManager()
-			     .getCurrentProject()
-			     .getActiveDiagram()
-			     instanceof UMLStateDiagram)
-                            && (((UMLStateDiagram) ProjectManager
-				 .getManager()
-				 .getCurrentProject()
-				 .getActiveDiagram())
+                            .getManager()
+                            .getCurrentProject()
+                            .getActiveDiagram()
+                            instanceof UMLStateDiagram)
+                            && (((UMLStateDiagram)ProjectManager
+                                .getManager()
+                                .getCurrentProject()
+                                .getActiveDiagram())
                                 .getStateMachine()
                                 == StateMachinesHelper
-				.getHelper()
-				.getStateMachine(
-						 obj))))
+                                    .getHelper()
+                                    .getStateMachine(
+                                    obj))))
                     || (ModelFacade.isAInstance(obj)
                         && !(ModelFacade.isADataValue(obj))
                         && !(ProjectManager
-			     .getManager()
-			     .getCurrentProject()
-			     .getActiveDiagram()
-			     instanceof UMLSequenceDiagram))) {
+                            .getManager()
+                            .getCurrentProject()
+                            .getActiveDiagram()
+                            instanceof UMLSequenceDiagram))) {
                     UMLAction action =
                         new ActionAddExistingNode(
-			        menuLocalize("menu.popup.add-to-diagram"),
-				obj);
+                            menuLocalize("menu.popup.add-to-diagram"),
+                            obj);
                     action.setEnabled(action.shouldBeEnabled());
                     popup.add(action);
                 }
-                if ((ModelFacade.isARelationship(obj) && 
-                     !(ModelFacade.isAFlow(obj)))
+                if ((ModelFacade.isARelationship(obj)
+                    && !(ModelFacade.isAFlow(obj)))
                     || ((ModelFacade.isALink(obj))
                         && !(ProjectManager
-			     .getManager()
-			     .getCurrentProject()
-			     .getActiveDiagram()
-			     instanceof UMLSequenceDiagram))
+                            .getManager()
+                            .getCurrentProject()
+                            .getActiveDiagram()
+                            instanceof UMLSequenceDiagram))
                     || (ModelFacade.isATransition(obj))) {
                     UMLAction action =
                         new ActionAddExistingEdge(
-				menuLocalize("menu.popup.add-to-diagram"),
-				obj);
+                            menuLocalize("menu.popup.add-to-diagram"),
+                            obj);
                     action.setEnabled(action.shouldBeEnabled());
                     popup.add(action);
                 }
 
                 if ((ModelFacade.isAModelElement(obj)
-		     && (obj
-			 != ProjectManager
-			 .getManager()
-			 .getCurrentProject()
-			 .getModel()))
+                    && (obj
+                        != ProjectManager
+                            .getManager()
+                            .getCurrentProject()
+                            .getModel()))
                     || obj instanceof Diagram) {
                     popup.add(ActionRemoveFromModel.SINGLETON);
                 }
-                if (ModelFacade.isAClassifier(obj) || 
-                    ModelFacade.isAPackage(obj)) {
+                if (ModelFacade.isAClassifier(obj)
+                    || ModelFacade.isAPackage(obj)) {
                     popup.add(ActionSetSourcePath.SINGLETON);
                 }
                 if (ModelFacade.isAPackage(obj) || ModelFacade.isAModel(obj)) {
                     popup.add(ActionAddPackage.SINGLETON);
                 }
-                if (obj != null) { 
-                    popup.add(new ActionGoToDetails(
-				      menuLocalize("action.properties")));
+                if (obj != null) {
+                    popup.add(
+                        new ActionGoToDetails(
+                            menuLocalize("action.properties")));
                 }
             }
             if (popup.getComponentCount() > 0) {
@@ -905,14 +911,21 @@ public class NavigatorPane
          * change in nav tree selection -> set target in project browser.
          */
         public void valueChanged(TreeSelectionEvent e) {
-            Object[] selections = getSelectedObjects();
-            TargetManager.getInstance().setTargets(Arrays.asList(selections));
+            TreePath[] paths = e.getPaths();          
+            List targets = new ArrayList();
+            if (paths != null) {                           
+                for (int i = 0; i < paths.length; i++) {
+                    if (e.isAddedPath(paths[i]))
+                        targets.add(paths[i].getLastPathComponent());
+                }
+            } 
+            TargetManager.getInstance().setTargets(targets);
             /*
-	      Object sel = getSelectedObject();
-	      if (sel != null) {
-	      ProjectBrowser.getInstance().setTarget(sel);
-	      }
-	    */
+            Object sel = getSelectedObject();
+            if (sel != null) {
+            ProjectBrowser.getInstance().setTarget(sel);
+            }
+            */
         }
     }
 

@@ -34,11 +34,11 @@ import java.util.Vector;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeModelEvent;
+import javax.swing.plaf.TreeUI;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Category;
-
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.cognitive.ToDoItem;
@@ -49,7 +49,6 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.uml.generator.GeneratorDisplay;
 import org.argouml.uml.ui.UMLTreeCellRenderer;
-
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
@@ -90,7 +89,7 @@ public class DisplayTextTree extends JTree implements TargetListener {
         setRootVisible(false);
         setShowsRootHandles(true);
 
-        this.setRowHeight(18); 
+        this.setRowHeight(18);
 
         showStereotype =
             Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
@@ -122,7 +121,7 @@ public class DisplayTextTree extends JTree implements TargetListener {
             String name = null;
 
             // Jeremy Bennett patch
-            if (ModelFacade.isATransition(value) 
+            if (ModelFacade.isATransition(value)
                 || ModelFacade.isAExtensionPoint(value)) {
                 name = GeneratorDisplay.Generate(value);
             }
@@ -141,13 +140,12 @@ public class DisplayTextTree extends JTree implements TargetListener {
 
             if (name == null || name.equals("")) {
 
-                name =
-                    "(anon " + ModelFacade.getUMLClassName(value) + ")";
+                name = "(anon " + ModelFacade.getUMLClassName(value) + ")";
             }
 
             // Look for stereotype
             if (showStereotype) {
-                Object st =  ModelFacade.getStereoType(value);
+                Object st = ModelFacade.getStereoType(value);
                 if (st != null) {
                     name += " " + GeneratorDisplay.Generate(st);
                 }
@@ -157,7 +155,7 @@ public class DisplayTextTree extends JTree implements TargetListener {
         }
 
         if (value instanceof ToDoItem) {
-            return ((ToDoItem) value).getHeadline();
+            return ((ToDoItem)value).getHeadline();
         }
         if (value instanceof ToDoList) {
             return "ToDoList";
@@ -170,7 +168,7 @@ public class DisplayTextTree extends JTree implements TargetListener {
         }
 
         if (value instanceof Diagram) {
-            return ((Diagram) value).getName();
+            return ((Diagram)value).getName();
         }
         if (value != null)
             return value.toString();
@@ -236,7 +234,7 @@ public class DisplayTextTree extends JTree implements TargetListener {
 
         cat.debug("getExpandedPaths");
         TreeModel tm = getModel();
-        Vector res = (Vector) _expandedPathsInModel.get(tm);
+        Vector res = (Vector)_expandedPathsInModel.get(tm);
         if (res == null) {
             res = new Vector();
             _expandedPathsInModel.put(tm, res);
@@ -281,7 +279,7 @@ public class DisplayTextTree extends JTree implements TargetListener {
      */
     public void forceUpdate(Object changed) {
 
-        NavPerspective model = (NavPerspective) getModel();
+        NavPerspective model = (NavPerspective)getModel();
         if (model instanceof NavPerspective) {
 
             // Special case for the 'top' state of a state machine (it
@@ -289,9 +287,11 @@ public class DisplayTextTree extends JTree implements TargetListener {
             // therefore this method will not work unless we get its
             // statemachine and set that as the 'changed' object.
             if (ModelFacade.isAStateVertex(changed)) {
-                changed = UmlHelper.getHelper().getStateMachines().getStateMachine(changed);
+                changed =
+                    UmlHelper.getHelper().getStateMachines().getStateMachine(
+                        changed);
             }
-            
+
             //if the changed object is added to the model
             //in a path that was previously expanded, but is no longer
             // then we need to clear the cache to prevent a model corruption.
@@ -335,7 +335,7 @@ public class DisplayTextTree extends JTree implements TargetListener {
         treeModelListener.treeStructureChanged(tme);
         TreeModel tm = getModel();
         if (tm instanceof NavPerspective) {
-            NavPerspective np = (NavPerspective) tm;
+            NavPerspective np = (NavPerspective)tm;
             np.fireTreeStructureChanged(this, rootArray, noIndexes, noChildren);
         }
         reexpand();
@@ -357,7 +357,7 @@ public class DisplayTextTree extends JTree implements TargetListener {
 
         java.util.Enumeration enum = getExpandedPaths().elements();
         while (enum.hasMoreElements()) {
-            TreePath path = (TreePath) enum.nextElement();
+            TreePath path = (TreePath)enum.nextElement();
             expandPath(path);
         }
         _reexpanding = false;
@@ -383,7 +383,7 @@ public class DisplayTextTree extends JTree implements TargetListener {
         if (getModel() instanceof NavPerspective) {
 
             if (target instanceof Fig) {
-                target = ((Fig) target).getOwner();
+                target = ((Fig)target).getOwner();
             }
 
         }
@@ -406,25 +406,48 @@ public class DisplayTextTree extends JTree implements TargetListener {
     }
     private void setTargets(Object[] targets) {
         if (getModel() instanceof NavPerspective) {
-            clearSelection();
-            int rowToSelect = 0;
-            for (int i = 0; i < targets.length; i++) {
-                Object target = targets[i];
-                target =
-                    target instanceof Fig ? ((Fig) target).getOwner() : target;
+            // clearSelection();
+            if (targets == null
+                || (targets.length == 1 && targets[0] == null)) {
+                clearSelection();
+            } else {               
+
+                int rowToSelect = 0;
+                int[] rowIndexes = new int[targets.length];
+                int rowIndexCounter = 0;
                 int rows = getRowCount();
-                for (int j = 0; j < rows; j++) {
-                    Object rowItem = getPathForRow(j).getLastPathComponent();
-                    if (rowItem == target) {
-                        addSelectionRow(j);
-                        if (rowToSelect == 0) {
-                            rowToSelect = j;
+                for (int i = 0; i < targets.length; i++) {
+                    Object target = targets[i];
+                    target =
+                        target instanceof Fig
+                            ? ((Fig)target).getOwner()
+                            : target;                    
+                    for (int j = 0; j < rows; j++) {
+                        Object rowItem =
+                            getPathForRow(j).getLastPathComponent();
+                        if (rowItem == target) {
+                            rowIndexes[rowIndexCounter] = j;
+                            rowIndexCounter++;
+                            if (rowToSelect == 0) {
+                                rowToSelect = j;
+                            }
+                            break;
                         }
                     }
+
                 }
-                
+                if (rowIndexCounter < targets.length) {
+                    int[] rowIndexestmp = rowIndexes;
+                    rowIndexes = new int[rowIndexCounter];
+                    // System.arraycopy(rowIndexestmp, 0, rowIndexCounter, rowIndexes, 0, rowIndexes.length);
+                    for (int i = 0 ; i < rowIndexCounter; i++) {
+                        rowIndexes[i] = rowIndexestmp[i];
+                    }
+                }
+                setSelectionRows(rowIndexes);                
+                scrollRowToVisible(rowToSelect);
             }
-            scrollRowToVisible(rowToSelect);
+            repaint();
         }
     }
 
@@ -452,6 +475,7 @@ public class DisplayTextTree extends JTree implements TargetListener {
         setTargets(e.getNewTargets());
 
     }
+    
 
 } /* end class DisplayTextTree */
 
