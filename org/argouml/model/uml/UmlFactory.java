@@ -153,7 +153,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
 
     /**
      * A map of valid connections keyed by the connection type.
-     * The constructor builds this from the data in the validConnections array
+     * The constructor builds this from the data in the VALID_CONNECTIONS array
      */
     private Map validConnectionMap = new HashMap();
 
@@ -187,6 +187,18 @@ public class UmlFactory extends AbstractUmlModelFactory {
         {ModelFacade.DEPENDENCY,       ModelFacade.OBJECT,             ModelFacade.COMPONENT,          null},
         {ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT_INSTANCE, ModelFacade.NODE_INSTANCE,      null},
         {ModelFacade.DEPENDENCY,       ModelFacade.OBJECT,             ModelFacade.COMPONENT_INSTANCE, null},
+        {ModelFacade.USAGE,            ModelFacade.CLASS},
+        {ModelFacade.USAGE,            ModelFacade.INTERFACE},
+        {ModelFacade.USAGE,            ModelFacade.PACKAGE},
+        {ModelFacade.USAGE,            ModelFacade.CLASS,              ModelFacade.PACKAGE},
+        {ModelFacade.USAGE,            ModelFacade.CLASS,              ModelFacade.INTERFACE},
+        {ModelFacade.USAGE,            ModelFacade.INTERFACE,          ModelFacade.PACKAGE},
+        {ModelFacade.PERMISSION,       ModelFacade.CLASS},
+        {ModelFacade.PERMISSION,       ModelFacade.INTERFACE},
+        {ModelFacade.PERMISSION,       ModelFacade.PACKAGE},
+        {ModelFacade.PERMISSION,       ModelFacade.CLASS,              ModelFacade.PACKAGE},
+        {ModelFacade.PERMISSION,       ModelFacade.CLASS,              ModelFacade.INTERFACE},
+        {ModelFacade.PERMISSION,       ModelFacade.INTERFACE,          ModelFacade.PACKAGE},
         {ModelFacade.ABSTRACTION,      ModelFacade.CLASS,              ModelFacade.INTERFACE,          null},
         {ModelFacade.ASSOCIATION,      ModelFacade.CLASS},
         {ModelFacade.ASSOCIATION,      ModelFacade.CLASS,              ModelFacade.INTERFACE},
@@ -211,7 +223,6 @@ public class UmlFactory extends AbstractUmlModelFactory {
     }
 
     /** Don't allow external instantiation.
-     *  Create a logger.
      */
     private UmlFactory() {
         buildValidConnectionMap();
