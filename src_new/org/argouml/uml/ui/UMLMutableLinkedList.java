@@ -29,8 +29,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JPopupMenu;
 
-//import ru.novosoft.uml.foundation.core.MModelElement;
-
 /**
  * <p>
  * This class is the GUI front for a mutable linked list. The user can add,

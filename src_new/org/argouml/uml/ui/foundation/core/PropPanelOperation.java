@@ -51,10 +51,6 @@ import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.uml.ui.UMLVisibilityPanel;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.foundation.core.MOperation;
-import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
-import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
-import ru.novosoft.uml.foundation.data_types.MScopeKind;
 /** A property panel for operations.
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
@@ -162,9 +158,9 @@ public class PropPanelOperation extends PropPanelModelElement {
 								       mclass,
 								       "getOwnerScope",
 								       "setOwnerScope",
-								       MScopeKind.class,
-								       MScopeKind.CLASSIFIER,
-								       MScopeKind.INSTANCE)));
+								       (Class)ModelFacade.SCOPEKIND,
+								       ModelFacade.CLASSIFIER_SCOPEKIND,
+								       ModelFacade.INSTANCE_SCOPEKIND)));
         addField(Argo.localize("UMLMenu", "label.modifiers"), modPanel);
 
         JPanel concurPanel =
@@ -179,8 +175,8 @@ public class PropPanelOperation extends PropPanelModelElement {
 								 mclass,
 								 "getConcurrency",
 								 "setConcurrency",
-								 MCallConcurrencyKind.class,
-								 MCallConcurrencyKind.SEQUENTIAL,
+								 (Class)ModelFacade.CALLCONCURRENCYKIND,
+								 ModelFacade.SEQUENTIAL_CONCURRENCYKIND,
 								 null));
         group.add(sequential);
         concurPanel.add(sequential);
@@ -193,8 +189,8 @@ public class PropPanelOperation extends PropPanelModelElement {
 								 mclass,
 								 "getConcurrency",
 								 "setConcurrency",
-								 MCallConcurrencyKind.class,
-								 MCallConcurrencyKind.GUARDED,
+								 (Class)ModelFacade.CALLCONCURRENCYKIND,
+								 ModelFacade.GUARDED_CONCURRENCYKIND,
 								 null));
         group.add(synchd);
         concurPanel.add(synchd);
@@ -207,8 +203,8 @@ public class PropPanelOperation extends PropPanelModelElement {
 								 mclass,
 								 "getConcurrency",
 								 "setConcurrency",
-								 MCallConcurrencyKind.class,
-								 MCallConcurrencyKind.CONCURRENT,
+								 (Class)ModelFacade.CALLCONCURRENCYKIND,
+								 ModelFacade.CONCURRENT_CONCURRENCYKIND,
 								 null));
         group.add(concur);
         concurPanel.add(concur);
@@ -298,7 +294,7 @@ public class PropPanelOperation extends PropPanelModelElement {
                 Object param;
                 while (iter.hasNext()) {
                     param = /*(MParameter)*/ iter.next();
-                    if (ModelFacade.getKind(param) == MParameterDirectionKind.RETURN) {
+                    if (ModelFacade.getKind(param) == ModelFacade.RETURN_PARAMETERDIRECTIONKIND) {
                         type = ModelFacade.getType(param);
                         break;
                     }
@@ -323,7 +319,7 @@ public class PropPanelOperation extends PropPanelModelElement {
                     while (iter.hasNext()) {
                         param = /*(MParameter)*/ iter.next();
                         if (ModelFacade.getKind(param)
-                            == MParameterDirectionKind.RETURN) {
+                            == ModelFacade.RETURN_PARAMETERDIRECTIONKIND) {
                             ModelFacade.removeParameter(oper, param);
                             break;
                         }
@@ -336,7 +332,7 @@ public class PropPanelOperation extends PropPanelModelElement {
                     while (iter.hasNext()) {
                         param = /*(MParameter)*/ iter.next();
                         if (ModelFacade.getKind(param)
-                            == MParameterDirectionKind.RETURN) {
+                            == ModelFacade.RETURN_PARAMETERDIRECTIONKIND) {
                             retParam = param;
                             break;
                         }
@@ -346,7 +342,7 @@ public class PropPanelOperation extends PropPanelModelElement {
                     retParam =
                         UmlFactory.getFactory().getCore().buildParameter(
 									 oper,
-									 MParameterDirectionKind.RETURN);
+									 ModelFacade.RETURN_PARAMETERDIRECTIONKIND);
                 }
                 ModelFacade.setType(retParam, type);
             }
@@ -402,7 +398,7 @@ public class PropPanelOperation extends PropPanelModelElement {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAOperation(target)) {
             Object oper = /*(MOperation)*/ target;
-            Object newSignal = ((MOperation)oper).getFactory().createSignal();
+            Object newSignal = UmlFactory.getFactory().getCommonBehavior().createSignal();//((MOperation)oper).getFactory().createSignal();
             ModelFacade.addOwnedElement(ModelFacade.getNamespace(ModelFacade.getOwner(oper)), newSignal);
             ModelFacade.addRaisedSignal(oper, newSignal);
             TargetManager.getInstance().setTarget(newSignal);

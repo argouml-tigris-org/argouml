@@ -52,8 +52,6 @@ import org.argouml.uml.ui.UMLEnumerationBooleanProperty;
 import org.argouml.uml.ui.UMLRadioButton;
 import org.argouml.util.ConfigLoader;
 
-//import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
-
 /**
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.

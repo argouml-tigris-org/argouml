@@ -29,8 +29,6 @@ import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLCheckBox2;
 
-import ru.novosoft.uml.foundation.data_types.MOrderingKind;
-
 /**
  * 
  * @author jaap.branderhorst@xs4all.nl	
@@ -55,7 +53,7 @@ public class UMLAssociationEndOrderingCheckBox extends UMLCheckBox2 {
     public void buildModel() {
         if (getTarget() != null) {
             Object associationEnd = /*(MAssociationEnd)*/ getTarget();
-            setSelected(MOrderingKind.ORDERED.equals(ModelFacade.getOrdering(associationEnd)));
+            setSelected(ModelFacade.ORDERED_ORDERINGKIND.equals(ModelFacade.getOrdering(associationEnd)));
         }
     }
 }

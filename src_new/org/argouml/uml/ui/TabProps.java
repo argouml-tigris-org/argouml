@@ -78,10 +78,6 @@ import org.argouml.util.ConfigLoader;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
-import ru.novosoft.uml.behavior.state_machines.MStateImpl;
-import ru.novosoft.uml.behavior.use_cases.MUseCaseImpl;
-import ru.novosoft.uml.foundation.core.MClassImpl;
-
 /**
  * <p>
  * This is the tab on the details panel (DetailsPane) that holds the property
@@ -168,7 +164,7 @@ public class TabProps
      *  few seconds after the tool is launched. */
     protected void initPanels() {
 
-        _panels.put(MClassImpl.class, new PropPanelClass());
+        _panels.put((Class)ModelFacade.CLASS/*MClassImpl.class*/, new PropPanelClass());
         _panels.put(ArgoDiagram.class, new PropPanelDiagram());
 
         // Put all the diagram PropPanels here explicitly. They would eventually
@@ -189,10 +185,10 @@ public class TabProps
         _panels.put(FigText.class, new PropPanelString());
         // now a plugin
         // _panels.put(MModelImpl.class, new PropPanelModel());
-        _panels.put(MUseCaseImpl.class, new PropPanelUseCase());
+        _panels.put((Class)ModelFacade.USE_CASE/*MUseCaseImpl.class*/, new PropPanelUseCase());
         //important: MStateImpl corresponds to PropPanelSimpleState not to PropPanelState!!
         //otherwise, spawing will not ne successful!!
-        _panels.put(MStateImpl.class, new PropPanelSimpleState());       
+        _panels.put((Class)ModelFacade.STATE/*MStateImpl.class*/, new PropPanelSimpleState());       
     }
 
     /** Adds a property panel to the internal list. This allows a plugin to

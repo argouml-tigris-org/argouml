@@ -74,8 +74,6 @@ import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
-
-
 /**
  * <p>A list model for the include relationship on use case property
  *   panels.</p>
@@ -160,7 +158,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
      * @param   the index of the desired element.
      *
      * @return  the element at that index if there is one, otherwise
-     *          <code>null</code>.
+     *          <code>null</code>. a Model Element
      */
 
     protected MModelElement getModelElementAt(int index) {

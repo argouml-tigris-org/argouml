@@ -30,11 +30,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-//import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-//import ru.novosoft.uml.foundation.core.MClassifier;
-//import ru.novosoft.uml.foundation.core.MNamespace;
-//import ru.novosoft.uml.model_management.MModel;
-
 /** Action to trigger creation of new collaboration diagram.
  *  @stereotype singleton
  */
