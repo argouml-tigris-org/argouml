@@ -1,137 +1,36 @@
 <?xml version="1.0"?>
-<!-- ====================================================================== -->
+<!-- $Id$ -->
 <!-- ArgoUML Manuals & Documentation Build file                             -->
 <!-- Author: Kunle Odutola  31-March-2001                                   -->
 <!--                                                                        -->
-<!-- Modified: Jeremy Bennett  30-November-2001. Comments over use of 'ant' -->
-<!--           alone rather than build.sh or build.bath clarified           -->
-<!--                                                                        -->
-<!--           Jeremy Bennett  8-March-2002. Changed to use Saxon for       -->
-<!--           DocBook processing                                           -->
-<!--                                                                        -->
-<!--           Jeremy Bennett  14-March-2002. Changes to Fop classpath      -->
-<!--           suggested by Daniel Faensen's testing.                       -->
-<!--                                                                        -->
-<!--           Thierry Lach    Summer 2002. Changes to use ant 1.4.1.       -->
-<!--                                                                        -->
-<!-- Parts borrowed from the ArgoUML build file                             -->
-<!--                                                                        -->
-<!-- ====================================================================== -->
+<!-- Modified: Jeremy Bennett, Thierry Lach, Linus Tolke                    -->
 <!-- 
 
 About this file
 ===============
 
-This file is the build file for ArgoUML Manuals & Documentation. It contains
-the instructions that are read by a build tool to automate the process of
-creating the various files that constitute the Manual & Documentation. This
-build file is designed to be read by ANT - the 100% Java build tool from the
-Apache guys.  | @SEE http://jakarta.apache.org/ant/
+This file is the build file for ArgoUML Manuals & Documentation. This
+build file is designed to be read by ANT. See http://jakarta.apache.org/ant/
 
+What tools do I need to use this build file?
 
-About ArgoUML
-=============
+  You need the following to be able to build the ArgoUML Manuals and
+  Documentation:
+  - The Java 2 SDK.
+  - The ArgoUML manual's source files. This are available in the ArgoUML
+    source repository in CVS.
+  - Tool "Ant". This is available in the ArgoUML source repository in CVS.
+  - The DocBook system (http://www.docbook.org/). Downloaded from this
+    ant script using the target docbook-xsl-get.
 
-ArgoUML is an Open Source, 100% Pure Java tool for designing and documenting
-software systems using UML. ArgoUML was conceived by Jason Robbins while at UCL
-and was subsequently released as an open source product. ArgoUML is now hosted
-at Tigris by Jason.  | @SEE http://www.argouml.org/
+  If you are going to build pdf versions you also need:
+  - Tool "FOP". This is available in the ArgoUML source repository
+    in CVS.
+  - JIMI (see the fop readme file).
 
+ -->
 
-Frequently Asked Questions
-==========================
-
-1. What tools do I need to use this build file?
-
-        You need the following to be able to build the ArgoUML Manuals and
-        Documentation:
-
-        - The Java 2 SDK installed on your machine. It is recommended that you
-          install JDK version 1.2.2 or later. Note that you need the JDK and
-          not just the JRE. Many tools such as javadoc are only available in
-          the JDK.
-
-        - The ArgoUML manual's source files. This are available in the ArgoUML
-          source distribution and in CVS. Please visit
-          "http://www.argouml.org/" for download information. This file is a
-          part of the ArgoUML source.
-
-        - "Ant" the Java build tool (http://jakarta.apache.org/ant/). The Ant
-          jar file(s) are included in the ArgoUML source distribution and CVS
-          but, you might want to install Ant fully in any case.
-
-        - The DocBook system (http://www.docbook.org/). Included in the ArgoUML
-          source distribution and CVS.
-
-        - "FOP" the XML-to-PDF formatter (http://xml.apache.org/fop/). Included
-          in the ArgoUML source distribution and CVS. Note that there are some
-          issues with the latest version of Fop discussed in the README file in
-          this directory.
-
-2. I have all the tools what next ?
-
-        You need to ensure that you've set up your environment correctly for
-        the build process to work. Please note that environment variables
-        should be setup up in your shell (using AUTOEXEC.BAT on Windows 9x/Me
-        or .login on Linux/Unix) and not in a batch file for it to work. To set
-        up your environment, check the following:
-
-        a) Set an environment variable called JAVA_HOME to your JDK's 
-           installation directory. This needed by the build tool Ant.
-           Examples of what you might do:
-                        On Windows       -  set JAVA_HOME=D:\jdk1.3
-                        On Linux\Unix    -  export JAVA_HOME=/usr/local/jdk1.3
-
-        b) If you've installed Ant yourself (but *NOT* if you'd using Ant
-           delivered with Argo/UML) then you need to: 
-           i) Set the environment variable ANT_HOME to the Ant install
-              directory. 
-                        On Windows       -  set ANT_HOME=D:\Applications\Ant
-                        On Linux\Unix    -  export ANT_HOME=/usr/local/ant
-           ii) Add ANT_HOME/bin to your PATH :-
-                        On Windows           -  set PATH=%PATH%;%ANT_HOME%\bin
-                        On Linux/Unix    -  export PATH=$(PATH);$(ANT_HOME)/bin
-        
-3. What the instructions for building the manual ?
-
-        a) Read and follow the instructions above for the following FAQs:
-                        i)  "What tools do I need to use this build file?"
-                        ii) "I have all the tools, what next?"
- 
-        b) Change your current working directory to the directory where this
-           file is located under the ArgoUML installation directory (or under
-           the ArgoUML checkout directory if you are using CVS)
-
-        c) Type the following command:
-                        On Windows      - build
-                        On Linux/Unix   - ./build.sh
-           Note that under Linux/Unix, you should ensure build.sh is executable
-           by  using 'chmod ugo+x build.sh' if necessary.
-
-           ( alternatively you may type 'ant' without the quotes *only* if    )
-           ( you installed Ant yourself. You should also ensure you have Fop  )
-           ( installed, since this is used to build PDF, and is not picked up )
-           ( from the argouml distribution by plain 'ant'                     )
-        d) This will display a "build usage help page" that describes the
-           different build targets available with this file and how to invoke
-           them.
-        
-
-Property Settings
-=================
-
-You may place a simple text file named ".ant.properties" in your home directory
-with which you can change certain properties. For example, by adding a line to
-.ant.properties you can change the compiler to be used
-
-build.compiler=jikes
-(without a blank after "jikes"!).
-
-This will force Ant to compile with jikes if you have it on your system. Refer to the ant documentation for other settings and options.
-
-=========================================================================== -->
-
-<project name="ArgoDocs" default="help" basedir="..">
+<project name="ArgoDocs" default="defaulthtml" basedir="..">
 
   <property name="argo.root.dir" value="${basedir}"/>
   <property file="${argo.root.dir}/documentation/build.properties"/>
@@ -189,26 +88,6 @@ This will force Ant to compile with jikes if you have it on your system. Refer t
   </target>
 
   <!-- =================================================================== -->
-  <!-- Generate a help screen                                              -->
-  <!-- =================================================================== -->
-
-  <target name="help" depends="init">
-    <echo message="${name}-${argo.core.version} build file, available targets:"/>
-    <echo message="-------------------------------------------------------------------"/>
-    <echo message="defaulthtml   : Build chunked   HTML docs to ARGO_HOME/build/documentation/ "/>
-    <echo message="printablehtml : Build printable HTML docs to ARGO_HOME/build/documentation/ "/>
-    <echo message="pdf           : Build Acrobat   PDF  docs to ARGO_HOME/build/documentation/ "/>
-    <echo message="javahelp      : Build Sun  JAVAHELP  docs to ARGO_HOME/build/documentation/ "/>
-    <echo message="docs          : Build PDF and HTML docs to ARGO_HOME/build/documentation/ "/>
-    <echo message="dist          : Create/Update .zip and .tar.gz archives in ARGO_HOME/ "/>
-    <echo message="clean         : Clean built files. "/>
-    <echo message="total-clean   : Clean built files and distribution. "/>
-    <echo message="                                                        "/>
-    <echo message="-------------------------------------------------------------------"/>
-    <echo message="  USAGE: build &lt;target&gt; "/>
-  </target>
-  
-  <!-- =================================================================== -->
   <!-- Prepares the build directory                                        -->
   <!-- =================================================================== -->
 
@@ -225,7 +104,8 @@ This will force Ant to compile with jikes if you have it on your system. Refer t
   <!-- defaulthtml: Create default HTML documentation                      -->
   <!-- =================================================================== -->
 
-  <target name="defaulthtml" depends="prepare">
+  <target name="defaulthtml" depends="prepare"
+          description="Create documents in .../defaulthtml (chunked).">
     <!-- Set switch for create-defaulthtml target to ensure that it runs -->
     <property name="generate-defaulthtml" value="true" />
     <!-- Call "internal-scheduler" target to start the process -->
@@ -236,7 +116,8 @@ This will force Ant to compile with jikes if you have it on your system. Refer t
   <!-- printablehtml: Create printable HTML documentation                  -->
   <!-- =================================================================== -->
 
-  <target name="printablehtml" depends="prepare">
+  <target name="printablehtml" depends="prepare"
+          description="Create documents in .../printablehtml (one big file).">
     <!-- Set switch for create-printablehtml target to ensure that it runs -->
     <property name="generate-printablehtml" value="true" />
     <!-- Call "internal-scheduler" target to start the process -->
@@ -248,7 +129,8 @@ This will force Ant to compile with jikes if you have it on your system. Refer t
   <!-- javahelp: Create javahelp documentation                             -->
   <!-- =================================================================== -->
 
-  <target name="javahelp" depends="prepare">
+  <target name="javahelp" depends="prepare"
+          description="Create javahelp documentation (currently not working).">
     <!-- Set switch for "create-javahelp" target to ensure that it runs -->
     <property name="generate-javahelp" value="true" />
     <!-- Call "internal-scheduler" target to start the process -->
@@ -313,6 +195,7 @@ To get it, call ant with the docbook-xsl-get target.
   </target>
 
   <target name="docbook-xsl-get" depends="prepare"
+          description="Download the docbook-xsl stylesheets."
  	  unless="docbook-xsl-is-available">
     <get src="${docbook-xsl-source-url}"
          dest="${documentation.dir}/docbook-setup/${docbook-xsl}.zip"
@@ -334,7 +217,8 @@ To get it, call ant with the docbook-xsl-get target.
   <!-- pdf: Create PDF documentation                                       -->
   <!-- =================================================================== -->
 
-  <target name="pdf" depends="prepare">
+  <target name="pdf" depends="prepare"
+          description="Create the pdf version of all documents (in .../pdf).">
     <!-- Set switch for "create-pdf" target to ensure that it runs -->
     <property name="generate-pdf" value="true" />
     <!-- Call "internal-scheduler" target to start the process -->
@@ -345,7 +229,8 @@ To get it, call ant with the docbook-xsl-get target.
   <!-- docs: Generates pdf and html documentation                          -->
   <!-- =================================================================== -->
 
-  <target name="docs" depends="prepare">
+  <target name="docs" depends="prepare"
+          description="Create all versions of all documents.">
     <!-- Set switch for pdf, defaulthtml and printablehtml builders       -->
     <property name="generate-defaulthtml" value="true" />
     <property name="generate-printablehtml" value="true" />
@@ -738,7 +623,8 @@ To get it, call ant with the docbook-xsl-get target.
   <!--       and tar.gz versions                                           -->
   <!-- =================================================================== -->
 
-  <target name="dist" depends="defaulthtml">
+  <target name="dist" depends="defaulthtml"
+          description="Build together a distribution of the chunked html.">
 
     <echo message="Building distribution files from ${defaulthtml.dir}..."/>
 
@@ -758,7 +644,8 @@ To get it, call ant with the docbook-xsl-get target.
   <!-- Cleans up generated stuff                                           -->
   <!-- =================================================================== -->
 
-  <target name="clean" depends="init">
+  <target name="clean" depends="init"
+          description="Remove the generated files.">
     <delete dir="${argo.docs.output.dir}"/>
   </target>
   
