@@ -24,6 +24,7 @@
 package org.argouml.uml.diagram.collaboration.ui;
 
 import org.argouml.uml.diagram.ui.*;
+import org.tigris.gef.base.Layer;
 
 public class FigAssociationRole extends FigAssociation {
   ////////////////////////////////////////////////////////////////
@@ -33,10 +34,15 @@ public class FigAssociationRole extends FigAssociation {
       super();
     }
 
-    public FigAssociationRole(Object edge) {
-        this();
-        setOwner(edge);
-    }
+	/**
+	 * Constructor for FigAssociationRole.
+	 * @param edge
+	 * @param lay
+	 */
+	public FigAssociationRole(Object edge, Layer lay) {
+		super(edge, lay);
+	}
+
 
 } /* end class FigAssociationRole */
 
