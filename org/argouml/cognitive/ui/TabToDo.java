@@ -53,9 +53,9 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
 
     private static UMLAction actionNewToDoItem = Actions.NewToDoItem;
     private static UMLAction actionResolve = Actions.Resolve;
-    private static UMLAction actionEmailExpert = Actions.EmailExpert;
+    private static UMLAction actionEmailExpert = Actions.emailExpert;
     //public static UMLAction _actionMoreInfo = Actions.MoreInfo;
-    private static UMLAction actionSnooze = Actions.Snooze;
+    private static UMLAction actionSnooze = Actions.snooze;
     //public static UMLAction _actionRecordFix = Actions.RecordFix;
     //public static UMLAction _actionReplayFix = Actions.ReplayFix;
     //public static UMLAction _actionFixItNext = Actions.FixItNext;
@@ -77,7 +77,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     private Object target;
 
     /**
-     * increments the _numHushes.
+     * increments the numHushes.
      */
     public static void incrementNumHushes() {
         numHushes++;
@@ -114,7 +114,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     }
 
     /**
-     * 
+     * Show the description of a todo item.
      */
     public void showDescription() {
         if (lastPanel != null) {

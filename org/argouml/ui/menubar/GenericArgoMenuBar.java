@@ -674,10 +674,10 @@ public class GenericArgoMenuBar extends JMenuBar
             help.insertSeparator(0);
         }
 
-        JMenuItem systemInfo = help.add(Actions.SystemInfo);
+        JMenuItem systemInfo = help.add(Actions.systemInfo);
         setMnemonic(systemInfo, "System Information");
         help.addSeparator();
-        JMenuItem aboutArgoUML = help.add(Actions.AboutArgoUML);
+        JMenuItem aboutArgoUML = help.add(Actions.aboutArgoUML);
         setMnemonic(aboutArgoUML, "About ArgoUML");
 
         //setHelpMenu(help);
