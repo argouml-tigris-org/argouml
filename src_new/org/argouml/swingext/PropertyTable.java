@@ -1,5 +1,7 @@
 package org.argouml.swingext;
 
+import java.awt.Dimension;
+
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
@@ -58,6 +60,10 @@ public class PropertyTable extends JTable {
     
         JComboBox heightBox = new JComboBox(new String[] { DETERMINE_HEIGHT_TEXT });
         setRowHeight(heightBox.getPreferredSize().height);
+        
+        int width = Math.min(getPreferredSize().width, getPreferredScrollableViewportSize().width);
+        int height = Math.min(getPreferredSize().height, getPreferredScrollableViewportSize().height);
+        setPreferredScrollableViewportSize(new Dimension(width, height));
     }
 
     /**
