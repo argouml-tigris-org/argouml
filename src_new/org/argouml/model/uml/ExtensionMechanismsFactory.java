@@ -26,8 +26,6 @@ package org.argouml.model.uml;
 
 import java.util.Collection;
 
-import org.argouml.kernel.ProjectManager;
-
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
