@@ -33,6 +33,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.*;
 import org.argouml.kernel.*;
 

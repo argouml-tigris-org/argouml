@@ -38,6 +38,7 @@ import com.icl.saxon.functions.Extensions;
 
 import ru.novosoft.uml.foundation.core.MAbstraction;
 import ru.novosoft.uml.foundation.core.MAbstractionImpl;
+import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClass;
@@ -428,6 +429,7 @@ public class CoreHelper {
 	 * @return Collection
 	 */
 	public Collection getAllInterfaces(MNamespace ns) {
+		if (ns == null) return new ArrayList();
 		Iterator it = ns.getOwnedElements().iterator();
 		List list = new ArrayList();
 		while (it.hasNext()) {
@@ -457,6 +459,7 @@ public class CoreHelper {
 	 * @return Collection
 	 */
 	public Collection getAllClasses(MNamespace ns) {
+		if (ns == null) return new ArrayList();
 		Iterator it = ns.getOwnedElements().iterator();
 		List list = new ArrayList();
 		while (it.hasNext()) {
@@ -598,6 +601,7 @@ public class CoreHelper {
 	 * @return Collection
 	 */
 	public Collection getAllComponents(MNamespace ns) {
+		if (ns == null) return new ArrayList();
 		Iterator it = ns.getOwnedElements().iterator();
 		List list = new ArrayList();
 		while (it.hasNext()) {
@@ -627,6 +631,7 @@ public class CoreHelper {
 	 * @return Collection
 	 */
 	public Collection getAllDataTypes(MNamespace ns) {
+		if (ns == null) return new ArrayList();
 		Iterator it = ns.getOwnedElements().iterator();
 		List list = new ArrayList();
 		while (it.hasNext()) {
@@ -656,6 +661,7 @@ public class CoreHelper {
 	 * @return Collection
 	 */
 	public Collection getAllNodes(MNamespace ns) {
+		if (ns == null) return new ArrayList();
 		Iterator it = ns.getOwnedElements().iterator();
 		List list = new ArrayList();
 		while (it.hasNext()) {
@@ -670,6 +676,56 @@ public class CoreHelper {
 		}
 		return list;
 	}
+	
+	/**
+	 * Gets all classifiers that are associated to the given classifier (have 
+	 * an association relationship with the classifier).
+	 * @param classifier
+	 * @return Collection
+	 */
+	public Collection getAssociatedClassifiers(MClassifier classifier) {
+		if (classifier == null) return new ArrayList();
+		List list = new ArrayList();
+		Iterator it = classifier.getAssociationEnds().iterator();
+		while (it.hasNext()) {
+			MAssociationEnd end = (MAssociationEnd)it.next();
+			MAssociation assoc = end.getAssociation();
+			Iterator it2 = assoc.getConnections().iterator();
+			while (it2.hasNext()) {
+				MAssociationEnd end2 = (MAssociationEnd)it2.next();
+				if (end2 != end) {
+					list.add(end2.getType());
+				}
+			}
+		}
+		return list;
+	}
+	
+	/**
+	 * Gets the association between the classifiers from and to. Returns null
+	 * if from or to is null or if there is no association between them.
+	 * @param from
+	 * @param to
+	 * @return MAssociation
+	 */
+	public MAssociation getAssociation(MClassifier from, MClassifier to) {
+		if (from == null || to == null) return null;
+		Iterator it = from.getAssociationEnds().iterator();
+		while (it.hasNext()) {
+			MAssociationEnd end = (MAssociationEnd)it.next();
+			MAssociation assoc = end.getAssociation();
+			Iterator it2 = assoc.getConnections().iterator();
+			while (it2.hasNext()) {
+				MAssociationEnd end2 = (MAssociationEnd)it2.next();
+				if (end2.getType() == to) {
+					return assoc;
+				}
+			}
+		}
+		return null;
+	}
+		
+		
 	
 }
 

@@ -32,6 +32,7 @@ import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
+import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
@@ -168,6 +169,42 @@ public class UseCasesHelper {
 			MExtend extend = (MExtend)it.next();
 			if (extend.getBase() == base) {
 				return extend;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Returns all usecases this usecase includes
+	 * @param clazz
+	 * @return Collection
+	 */
+	public Collection getIncludedUseCases(MUseCase usecase) {
+		if (usecase == null) return new ArrayList();
+		Iterator it = usecase.getIncludes().iterator();
+		List list = new ArrayList();
+		while (it.hasNext()) {
+			MInclude include = (MInclude)it.next();
+			MUseCase addition = include.getBase();
+			list.add(addition);
+		}
+		return list;
+	}
+	
+	/**
+	 * Returns the include relation between two usecases base and inclusion. If there is none
+	 * null is returned.
+	 * @param base
+	 * @param extension
+	 * @return MExtend
+	 */
+	public MInclude getIncludes(MUseCase base, MUseCase inclusion) {
+		if (base == null || inclusion == null) return null;
+		Iterator it = inclusion.getIncludes().iterator();
+		while (it.hasNext()) {
+			MInclude include = (MInclude)it.next();
+			if (include.getBase() == base) {
+				return include;
 			}
 		}
 		return null;

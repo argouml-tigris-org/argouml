@@ -23,6 +23,15 @@
 
 package org.argouml.model.uml.modelmanagement;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import org.argouml.ui.ProjectBrowser;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.model_management.MSubsystem;
+
 /**
  * Helper class for UML ModelManagement Package.
  *
@@ -49,5 +58,35 @@ public class ModelManagementHelper {
     public static ModelManagementHelper getHelper() {
         return SINGLETON;
     }
+    
+    /**
+	 * Returns all subsystems found in the projectbrowser model
+	 * @return Collection
+	 */
+	public Collection getAllSubSystems() {
+		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		return getAllSubSystems(model);
+	}
+	
+	/**
+	 * Returns all subsystems found in this namespace and in its children
+	 * @return Collection
+	 */
+	public Collection getAllSubSystems(MNamespace ns) {
+		if (ns == null) return new ArrayList();
+		Iterator it = ns.getOwnedElements().iterator();
+		List list = new ArrayList();
+		while (it.hasNext()) {
+			Object o = it.next();
+			if (o instanceof MNamespace) {
+				list.addAll(getAllSubSystems((MNamespace)o));
+			} 
+			if (o instanceof MSubsystem) {
+				list.add(o);
+			}
+			
+		}
+		return list;
+	}
 }
 
