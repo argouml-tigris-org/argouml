@@ -114,7 +114,7 @@ public abstract class FigNodeModelElement
         MouseListener,
         KeyListener,
         PropertyChangeListener,
-        MElementListener,
+        MElementListener, // TODO NSUML interface, how do we rid ourselves of this?
         NotationContext,
         ArgoNotationEventListener {            
 
@@ -188,16 +188,22 @@ public abstract class FigNodeModelElement
      */
     protected FigRect _bigPort;
     /**
-     * @deprecated 0.15.3 visibility will change use getter/setter
-     * TODO: Where is the setter?
+     * @deprecated 0.15.3 visibility will change use
+     * getNameFig() and setNameFig() to access the Figs.
+     * Use getName() and setName() to just change the text.
      */
     public FigText _name; // TODO: - public!! Make private!
     /**
      * @deprecated 0.15.3 visibility will change use getter/setter
-     * TODO: What is the getters name?
-     * TODO: Where is the setter?
+     * getStereotypeFig() and setStereoTypeFig() to access the Figs.
+     * Use getStereotype() and setStereotype() to change stereotype
+     * text.
      */
     public FigText _stereo; // TODO: - public!! Make private!
+    // TODO could somebody please javadoc what _enclosedFigs is.
+    // Is it just a duplicate of the collection in a FigGroup.
+    // Is this anything to do with FigClass inside FigPackage in
+    // a class diagram? Bob Tarling 28 Jan 2004
     protected Vector _enclosedFigs = new Vector();
     protected Fig _encloser = null;
     protected boolean _readyToEdit = true;
@@ -261,6 +267,21 @@ public abstract class FigNodeModelElement
         ArgoEventPump.removeListener(ArgoEvent.ANY_NOTATION_EVENT, this);
     }
 
+// TODO Too close to a release to introduce this now
+// but I think we need this clone method at this level to save
+// duplicated code in ancestors
+// Bob Tarling 28 Jan 2004
+//    public Object clone() {
+//        FigNodeModelElement figClone = (FigNodeModelElement) super.clone();
+//        figClone._bigPort = _bigPort;
+//        figClone._name = _name;
+//        return figClone;
+//    }
+// _enclosedFigs, _encloser and _eventSenders may also need to be cloned
+// must check usage
+//
+
+
     /** Reply text to be shown while placing node in diagram */
     public String placeString() {
         if (org.argouml.model.ModelFacade.isAModelElement(getOwner())) {
@@ -283,8 +304,36 @@ public abstract class FigNodeModelElement
         return _id;
     }
 
+    /**
+     * Get the Fig that displays the model element name
+     * @return the name Fig
+     */
     public FigText getNameFig() {
         return _name;
+    }
+
+    /**
+     * Set the Fig that displays the model element name
+     * @param fig the name Fig
+     */
+    protected void setNameFig(FigText fig) {
+        _name = fig;
+    }
+
+    /**
+     * Get the name of the model element this Fig represents
+     * @return the name of the model element
+     */
+    public String getName() {
+        return _name.getText();
+    }
+
+    /**
+     * Change the name of the model element this Fig represents
+     * @param name the name of the model element
+     */
+    public void setName(String name) {
+        _name.setText(name);
     }
 
     public Vector getPopUpActions(MouseEvent me) {
@@ -460,8 +509,8 @@ public abstract class FigNodeModelElement
      * @see org.argouml.uml.cognitive.critics.ClAttributeCompartment
      */
     public void paintClarifiers(Graphics g) {
-        int iconX = _x;
-        int iconY = _y - 10;
+        int iconX = getX();
+        int iconY = getY() - 10;
         ToDoList list = Designer.theDesigner().getToDoList();
         Vector items = list.elementsForOffender(getOwner());
         int size = items.size();
@@ -494,7 +543,7 @@ public abstract class FigNodeModelElement
     }
 
     public ToDoItem hitClarifier(int x, int y) {
-        int iconX = _x;
+        int iconX = getX();
         ToDoList list = Designer.theDesigner().getToDoList();
         Vector items = list.elementsForOffender(getOwner());
         int size = items.size();
@@ -502,8 +551,8 @@ public abstract class FigNodeModelElement
             ToDoItem item = (ToDoItem) items.elementAt(i);
             Icon icon = item.getClarifier();
             int width = icon.getIconWidth();
-            if (y >= _y - 15
-                && y <= _y + 10
+            if (y >= getY() - 15
+                && y <= getY() + 10
                 && x >= iconX
                 && x <= iconX + width)
                 return item;
@@ -525,8 +574,8 @@ public abstract class FigNodeModelElement
             ToDoItem item = (ToDoItem) items.elementAt(i);
             Icon icon = item.getClarifier();
             int width = icon.getIconWidth();
-            if (y >= _y - 15
-                && y <= _y + 10
+            if (y >= getY() - 15
+                && y <= getY() + 10
                 && x >= iconX
                 && x <= iconX + width)
                 return item;
@@ -579,6 +628,8 @@ public abstract class FigNodeModelElement
 
     public void delayedVetoableChange(PropertyChangeEvent pce) {
         cat.debug("in delayedVetoableChange");
+        // TODO the src variable is never used. Must check if getSource()
+        // has any side effects before removing entire line
         Object src = pce.getSource();
         // update any text, colors, fonts, etc.
         renderingChanged();
@@ -822,16 +873,19 @@ public abstract class FigNodeModelElement
     }
 
     public void setOwner(Object own) {
+        // TODO the oldOwner variable is never used. Must check if getOwner()
+        // has any side effects before removing entire line
         Object oldOwner = getOwner();
         updateListeners(own);
         super.setOwner(own);
-        if (org.argouml.model.ModelFacade.isAModelElement(own)) {
-            if (ModelFacade.getUUID(own) == null)
-                ModelFacade.setUUID(own, UUIDManager.SINGLETON.getNewUUID());
+        if (ModelFacade.isAModelElement(own) &&
+                ModelFacade.getUUID(own) == null) {
+            ModelFacade.setUUID(own, UUIDManager.SINGLETON.getNewUUID());
         }
         _readyToEdit = true;
-        if (own != null)
+        if (own != null) {
             renderingChanged();
+        }
         updateBounds();
         bindPort(own, _bigPort);
     }
@@ -1104,5 +1158,36 @@ public abstract class FigNodeModelElement
         super.addFig(f);
     }
 
+    /**
+     * Set the Fig containing the stereotype
+     * @param fig the stereotype Fig
+     */
+    protected void setStereotypeFig(Fig fig) {
+        _stereo = (FigText)fig;
+    }
+
+    /**
+     * Get the Fig containing the stereotype
+     * @return the stereotype Fig
+     */
+    protected Fig getStereotypeFig() {
+        return _stereo;
+    }
+
+    /**
+     * Set the text describing the stereotype
+     * @param stereotype the stereotype text
+     */
+    public void setStereotype(String stereotype) {
+        _stereo.setText(stereotype);
+    }
+
+    /**
+     * Get the text describing the stereotype
+     * @return the stereotype text
+     */
+    public String getStereotype() {
+        return _stereo.getText();
+    }
 } /* end class FigNodeModelElement */
 
