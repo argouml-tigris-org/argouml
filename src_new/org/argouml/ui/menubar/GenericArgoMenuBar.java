@@ -90,7 +90,10 @@ import org.tigris.gef.util.Localizer;
 public class GenericArgoMenuBar extends JMenuBar
     implements ArgoModuleEventListener {
 
-    private MultiToolbar _multiToolbar;
+    public Toolbar _fileToolbar;
+    public Toolbar _editToolbar;
+    public Toolbar _viewToolbar;
+    public Toolbar _createDiagramToolbar;
 
     protected JMenu _import = null;
 
@@ -131,12 +134,7 @@ public class GenericArgoMenuBar extends JMenuBar
 
 
     public GenericArgoMenuBar() {
-        _multiToolbar = new MultiToolbar();
         initMenus();
-    }
-
-    public MultiToolbar getMultiToolbar() {
-        return _multiToolbar;
     }
 
     static final protected KeyStroke getShortcut(String key) {
@@ -266,24 +264,20 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenu _file = new JMenu(menuLocalize("File"));
         add(_file);
         setMnemonic(_file,"File",'F');
-        Toolbar fileToolbar = new Toolbar("File Toolbar");
-        _multiToolbar.add(fileToolbar);
+        _fileToolbar = new Toolbar("File Toolbar");
         JMenuItem newItem = _file.add(ActionNew.SINGLETON);
         setMnemonic(newItem,"New",'N');
         setAccelerator(newItem,ctrlN);
-        fileToolbar.add((ActionNew.SINGLETON));
+        _fileToolbar.add((ActionNew.SINGLETON));
         JMenuItem openProjectItem = _file.add(ActionOpenProject.SINGLETON);
         setMnemonic(openProjectItem,"Open",'O');
         setAccelerator(openProjectItem,ctrlO);
-        fileToolbar.add((ActionOpenProject.SINGLETON));
+        _fileToolbar.add((ActionOpenProject.SINGLETON));
 
-        //JMenuItem saveItem = _file.add(_actionSave);
-        //file.add(_actionSaveAs);
-        //file.add(_actionSaveAsXMI);
         JMenuItem saveProjectItem = _file.add(ActionSaveProject.SINGLETON);
         setMnemonic(saveProjectItem,"Save",'S');
         setAccelerator(saveProjectItem,ctrlS);
-        fileToolbar.add((ActionSaveProject.SINGLETON));
+        _fileToolbar.add((ActionSaveProject.SINGLETON));
         JMenuItem saveProjectAsItem = _file.add(ActionSaveProjectAs.SINGLETON);
         setMnemonic(saveProjectAsItem,"SaveAs",'A');
         _file.addSeparator();
@@ -292,19 +286,15 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenuItem importProjectAsItem = _import.add(ActionImportFromSources.SINGLETON);
         appendPluggableMenus(_import, PluggableMenu.KEY_FILE_IMPORT);
         _file.add(_import);
-
         _file.addSeparator();
-        // JMenuItem loadModelFromDBItem = _file.add(ActionLoadModelFromDB.SINGLETON);
-        // JMenuItem storeModelToDBItem = _file.add(ActionStoreModelToDB.SINGLETON);
-        // _file.addSeparator();
+        
         JMenuItem printItem = _file.add(Actions.Print);
         setMnemonic(printItem,"Print",'P');
         setAccelerator(printItem,ctrlP);
-        fileToolbar.add((Actions.Print));
+        _fileToolbar.add((Actions.Print));
         JMenuItem pageSetupItem = _file.add(Actions.PageSetup);
         JMenuItem saveGraphicsItem = _file.add(ActionSaveGraphics.SINGLETON);
         setMnemonic(saveGraphicsItem,"SaveGraphics",'G');
-        // JMenuItem savePSItem = _file.add(Actions.SavePS);
         _file.addSeparator();
         _file.add(ActionSaveConfiguration.SINGLETON);
         _file.addSeparator();
@@ -314,8 +304,7 @@ public class GenericArgoMenuBar extends JMenuBar
 
         _edit = (JMenu) add(new JMenu(menuLocalize("Edit")));
         setMnemonic(_edit,"Edit",'E');
-        Toolbar editToolbar = new Toolbar("Edit Toolbar");
-        _multiToolbar.add(editToolbar);
+        _editToolbar = new Toolbar("Edit Toolbar");
 
         _select = new JMenu(menuLocalize("Select"));
         _edit.add(_select);
@@ -327,40 +316,41 @@ public class GenericArgoMenuBar extends JMenuBar
         // shift tab
         _select.add(new CmdSelectInvert());
 
-        //These are not yet implmeneted - Bob Tarling 12 Oct 2002
-        //_edit.add(Actions.Undo);
-        //editToolbar.add((Actions.Undo));
-        //_edit.add(Actions.Redo);
-        //editToolbar.add((Actions.Redo));
+        // TODO These are not yet implmeneted - Bob Tarling 12 Oct 2002
+        // _edit.add(Actions.Undo);
+        // editToolbar.add((Actions.Undo));
+        // _edit.add(Actions.Redo);
+        // editToolbar.add((Actions.Redo));
 
         _edit.addSeparator();
 
         JMenuItem cutItem = _edit.add(ActionCut.SINGLETON);
         setMnemonic(cutItem,"Cut",'X');
         setAccelerator(cutItem,ctrlX);
-        editToolbar.add(ActionCut.SINGLETON);
+        _editToolbar.add(ActionCut.SINGLETON);
 
         JMenuItem copyItem = _edit.add(ActionCopy.SINGLETON);
         setMnemonic(copyItem,"Copy",'C');
         setAccelerator(copyItem,ctrlC);
-        editToolbar.add(ActionCopy.SINGLETON);
+        _editToolbar.add(ActionCopy.SINGLETON);
 
         JMenuItem pasteItem = _edit.add(ActionPaste.SINGLETON);
         setMnemonic(pasteItem,"Paste",'V');
         setAccelerator(pasteItem,ctrlV);
-        editToolbar.add(ActionPaste.SINGLETON);
+        _editToolbar.add(ActionPaste.SINGLETON);
 
         _edit.addSeparator();
 
         JMenuItem removeItem = _edit.add(ActionDeleteFromDiagram.SINGLETON);
         setMnemonic(removeItem,"Remove",'R');
         setAccelerator(removeItem,delKey);
-        editToolbar.add(ActionDeleteFromDiagram.SINGLETON);
+        _editToolbar.add(ActionDeleteFromDiagram.SINGLETON);
 
         JMenuItem deleteItem = _edit.add(ActionRemoveFromModel.SINGLETON);
         setMnemonic(deleteItem,"Delete",'D');
         setAccelerator(deleteItem,ctrlDel);
-        //editToolbar.add(ActionRemoveFromModel.SINGLETON); -- no toolbarbutton till a new one is designed for Erase
+        // TODO Bob Tarling: no toolbarbutton till a new one is designed for Erase
+        //_editToolbar.add(ActionRemoveFromModel.SINGLETON);
 
         JMenuItem emptyItem = _edit.add(ActionEmptyTrash.SINGLETON);
 
@@ -369,25 +359,13 @@ public class GenericArgoMenuBar extends JMenuBar
         _edit.add(ActionSettings.getInstance());
 
         _view = (ArgoJMenu) add(new ArgoJMenu(menuLocalize("View")));
-        // maybe should be Navigate instead of view
         setMnemonic(_view,"View",'V');
-        Toolbar viewToolbar = new Toolbar("View Toolbar");
-        _multiToolbar.add(viewToolbar);
-
-        //     JMenu nav = (JMenu) view.add(new JMenu("Navigate"));
-        //     JMenuItem downItem = nav.add(_actionNavDown);
-        //     downItem.setAccelerator(ctrldown);
-        //     JMenuItem upItem = nav.add(_actionNavUp);
-        //     upItem.setAccelerator(ctrlup);
-        //     JMenuItem backItem = nav.add(_actionNavBack);
-        //     backItem.setAccelerator(ctrlleft);
-        //     JMenuItem forwItem = nav.add(_actionNavForw);
-        //     forwItem.setAccelerator(ctrlright);
+        _viewToolbar = new Toolbar("View Toolbar");
 
         _view.add(Actions.GotoDiagram);
         JMenuItem findItem =  _view.add(Actions.Find);
         setAccelerator(findItem,F3);
-        viewToolbar.add((Actions.Find));
+        _viewToolbar.add((Actions.Find));
 
         _view.addSeparator();
 
@@ -405,9 +383,6 @@ public class GenericArgoMenuBar extends JMenuBar
         _view.addSeparator();
 
         JMenu editTabs = (JMenu) _view.add(new JMenu(menuLocalize("Editor Tabs")));
-
-        //view.addSeparator();
-        //view.add(_actionAddToFavorites);
         JMenu detailsTabs = (JMenu) _view.add(new JMenu(menuLocalize("Details Tabs")));
 
         _view.addSeparator();
@@ -431,22 +406,21 @@ public class GenericArgoMenuBar extends JMenuBar
 
         _createDiagrams = (JMenu) add(new JMenu(menuLocalize("Create Diagram")));
         setMnemonic(_createDiagrams, "Create Diagram",'C');
-        Toolbar createDiagramToolbar = new Toolbar("Create Diagram Toolbar");
-        _multiToolbar.add(createDiagramToolbar);
+        _createDiagramToolbar = new Toolbar("Create Diagram Toolbar");
         _createDiagrams.add(ActionClassDiagram.SINGLETON);
-        createDiagramToolbar.add((ActionClassDiagram.SINGLETON));
+        _createDiagramToolbar.add((ActionClassDiagram.SINGLETON));
         _createDiagrams.add(ActionUseCaseDiagram.SINGLETON);
-        createDiagramToolbar.add((ActionUseCaseDiagram.SINGLETON));
+        _createDiagramToolbar.add((ActionUseCaseDiagram.SINGLETON));
         _createDiagrams.add(ActionStateDiagram.SINGLETON);
-        createDiagramToolbar.add((ActionStateDiagram.SINGLETON));
+        _createDiagramToolbar.add((ActionStateDiagram.SINGLETON));
         _createDiagrams.add(ActionActivityDiagram.SINGLETON);
-        createDiagramToolbar.add((ActionActivityDiagram.SINGLETON));
+        _createDiagramToolbar.add((ActionActivityDiagram.SINGLETON));
         _createDiagrams.add(ActionCollaborationDiagram.SINGLETON);
-        createDiagramToolbar.add((ActionCollaborationDiagram.SINGLETON));
+        _createDiagramToolbar.add((ActionCollaborationDiagram.SINGLETON));
         _createDiagrams.add(ActionDeploymentDiagram.SINGLETON);
-        createDiagramToolbar.add((ActionDeploymentDiagram.SINGLETON));
+        _createDiagramToolbar.add((ActionDeploymentDiagram.SINGLETON));
         _createDiagrams.add(ActionSequenceDiagram.SINGLETON);
-        createDiagramToolbar.add((ActionSequenceDiagram.SINGLETON));
+        _createDiagramToolbar.add((ActionSequenceDiagram.SINGLETON));
         appendPluggableMenus(_createDiagrams, PluggableMenu.KEY_CREATE_DIAGRAMS);
 
         //JMenu createModelElements = (JMenu) create.add(new JMenu("Model Elements"));
@@ -537,4 +511,35 @@ public class GenericArgoMenuBar extends JMenuBar
         ArgoEventPump.addListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
     }
 
+    /** Getter for property _createDiagramToolbar.
+     * @return Value of property _createDiagramToolbar.
+     *
+     */
+    public org.argouml.swingext.Toolbar getCreateDiagramToolbar() {
+        return _createDiagramToolbar;
+    }
+    
+    /** Getter for property _editToolbar.
+     * @return Value of property _editToolbar.
+     *
+     */
+    public org.argouml.swingext.Toolbar getEditToolbar() {
+        return _editToolbar;
+    }
+    
+    /** Getter for property _fileToolbar.
+     * @return Value of property _fileToolbar.
+     *
+     */
+    public org.argouml.swingext.Toolbar getFileToolbar() {
+        return _fileToolbar;
+    }
+    
+    /** Getter for property _viewToolbar.
+     * @return Value of property _viewToolbar.
+     *
+     */
+    public org.argouml.swingext.Toolbar getViewToolbar() {
+        return _viewToolbar;
+    }
 }

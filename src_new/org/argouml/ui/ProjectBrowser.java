@@ -59,6 +59,7 @@ import org.argouml.swingext.BorderSplitPane;
 import org.argouml.swingext.Horizontal;
 import org.argouml.swingext.Orientation;
 import org.argouml.swingext.Vertical;
+import org.argouml.swingext.DockLayout;
 import org.argouml.ui.menubar.GenericArgoMenuBar;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionExit;
@@ -289,8 +290,7 @@ public class ProjectBrowser
         _workarea = new BorderSplitPane();
         // create the todopane
         if (doSplash) {
-            _splash.getStatusBar().showStatus(
-                "Making Project Browser: To Do Pane");
+            _splash.getStatusBar().showStatus("Making Project Browser: To Do Pane");
             _splash.getStatusBar().incProgress(5);
         }
         _todoPane = new ToDoPane(doSplash);
@@ -319,8 +319,12 @@ public class ProjectBrowser
         // Toolbar boundry is the area between the menu and the status bar. It contains
         // the workarea at centre and the toolbar position north, south, east or west.
         JPanel toolbarBoundry = new JPanel();
-        toolbarBoundry.setLayout(new BorderLayout());
-        toolbarBoundry.add(_menuBar.getMultiToolbar(), BorderLayout.NORTH);
+        toolbarBoundry.setLayout(new DockLayout());
+        // TODO - should save and restore the last positions of the toolbars
+        toolbarBoundry.add(_menuBar.getFileToolbar(), BorderLayout.NORTH);
+        toolbarBoundry.add(_menuBar.getEditToolbar(), BorderLayout.NORTH);
+        toolbarBoundry.add(_menuBar.getViewToolbar(), BorderLayout.NORTH);
+        toolbarBoundry.add(_menuBar.getCreateDiagramToolbar(), BorderLayout.NORTH);
         toolbarBoundry.add(_workarea, BorderLayout.CENTER);
 
         return toolbarBoundry;
