@@ -147,8 +147,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             asend.setDestFigNode(classifierFN);
             newEdge = asend;
         } else if (Model.getFacade().isAAssociation(edge)) {
-            FigAssociation ascFig = new FigAssociation(edge, lay);
-            newEdge = ascFig;
+            newEdge = new FigAssociation(edge, lay);
         } else if (Model.getFacade().isALink(edge)) {
             Object lnk = /*(MLink)*/ edge;
             FigLink lnkFig = new FigLink(lnk);
@@ -167,41 +166,29 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             lnkFig.getFig().setLayer(lay);
             newEdge = lnkFig;
         } else if (Model.getFacade().isAGeneralization(edge)) {
-            FigGeneralization genFig = new FigGeneralization(edge, lay);
-            newEdge = genFig;
+            newEdge = new FigGeneralization(edge, lay);
         } else if (Model.getFacade().isAPermission(edge)) {
-            FigPermission perFig = new FigPermission(edge, lay);
-            newEdge = perFig;
+            newEdge = new FigPermission(edge, lay);
         } else if (Model.getFacade().isAUsage(edge)) {
-            FigUsage usageFig = new FigUsage(edge, lay);
-            newEdge = usageFig;
+            newEdge = new FigUsage(edge, lay);
+        } else if (Model.getFacade().isAAbstraction(edge)) {
+            newEdge = new FigRealization(edge);
         } else if (Model.getFacade().isADependency(edge)) {
             Object stereotype = null;
 
             if (Model.getFacade().getStereotypes(edge).size() > 0) {
                 stereotype =
-		    Model.getFacade().getStereotypes(edge).iterator().next();
-            }
-            if (LOG.isDebugEnabled()) {
-            	if (stereotype != null) {
-                    LOG.debug("stereotype: "
-			      + Model.getFacade().getName(stereotype));
-                } else {
-                    LOG.debug("stereotype is null");
-                }
+                    Model.getFacade().getStereotypes(edge).iterator().next();
             }
             if (stereotype != null
                     && Model.getExtensionMechanismsHelper().isStereotypeInh(
                             stereotype, "realize", "Abstraction")) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("is a realisation");
-                }
                 FigRealization realFig = new FigRealization(edge);
 
                 Object supplier =
                     ((Model.getFacade().getSuppliers(edge).toArray())[0]);
                 Object client =
-		    ((Model.getFacade().getClients(edge).toArray())[0]);
+                    ((Model.getFacade().getClients(edge).toArray())[0]);
 
                 FigNode supFN = (FigNode) lay.presentationFor(supplier);
                 FigNode cliFN = (FigNode) lay.presentationFor(client);
