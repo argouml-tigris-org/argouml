@@ -31,6 +31,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 
+import org.argouml.ui.ProjectBrowser;
+
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 
@@ -67,8 +69,8 @@ public class UMLLinkedList extends UMLList2 implements MouseListener {
         if (e.getSource() == this) {
             if (e.getClickCount() >=2 && SwingUtilities.isLeftMouseButton(e)) {
                 Object o = getSelectedValue();
-                if (o instanceof MModelElement) {
-                    ((PropPanel)getParent()).navigateTo(o);
+                if (o instanceof MModelElement) {                    
+                    ProjectBrowser.TheInstance.setTarget(o);
                 }
             }
             e.consume();
