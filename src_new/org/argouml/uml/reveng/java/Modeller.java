@@ -875,6 +875,9 @@ public class Modeller
     private void setVisibility(Object element,
                                short modifiers)
     {
+	if((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
+            ModelFacade.setTaggedValue(element,"src_modifiers", "static");
+	}
 	if((modifiers & JavaRecognizer.ACC_PRIVATE) > 0) {
 	    ModelFacade.setVisibility(element,ModelFacade.ACC_PRIVATE);
 	}
