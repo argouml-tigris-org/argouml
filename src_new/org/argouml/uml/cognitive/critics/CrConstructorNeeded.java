@@ -114,7 +114,7 @@ public class CrConstructorNeeded extends CrUML {
             }
         }
 
-        Iterator attrs = ModelFacade.getAttributes(dm);
+        Iterator attrs = ModelFacade.getAttributes(dm).iterator();
 
         while (attrs.hasNext()) {
             Object attr = attrs.next();

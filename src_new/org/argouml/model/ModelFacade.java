@@ -384,8 +384,8 @@ public class ModelFacade {
      * @returns true if handle has instance scope.
      */
     public static boolean isInstanceScope(Object handle) {
-        if (handle instanceof MAttribute) {
-            MAttribute a = (MAttribute)handle;
+        if (handle instanceof MFeature) {
+            MFeature a = (MFeature)handle;
             return MScopeKind.INSTANCE.equals(a.getOwnerScope());
         }
         // ...
@@ -572,13 +572,11 @@ public class ModelFacade {
      * @param handle classifier to examine.
      * @return iterator with attributes.
      */
-    public static Iterator getAttributes(Object handle) {
+    public static Collection getAttributes(Object handle) {
         if (handle instanceof MClassifier) {
             MClassifier c = (MClassifier)handle;
-
-            // TODO: We are converting back and forth between collections and
-            // iterators. I (Linus) prefer iterators.
-            return CoreHelper.getHelper().getStructuralFeatures(c).iterator();
+            
+            return CoreHelper.getHelper().getStructuralFeatures(c);
         }
 
         // ...
