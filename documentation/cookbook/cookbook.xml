@@ -1885,19 +1885,17 @@ R9: standard multiple discontinuous selection with mouse and keyboard.
 	    </listitem>
 
 	    <listitem>
-	      <para>
-R10: the user can configure the perspectives using a dialog. Perspectives
-can be added and deleted. Perspective rules can be added and deleted from
-a perspective. The changes are saved to the user properties. If there are
-user perspectives when ArgoUML starts, it loads these, otherwise it loads a
-default set of perspectives.
-</para>
+<para> R10: the user can configure the perspectives using a dialog.   Perspectives 
+  can be added, deleted, renamed, reordered and duplicated. Perspective rules 
+  can be added and removed from a perspective. The changes are saved to the 
+  user properties. If there are user perspectives when ArgoUML starts, it loads 
+  these, otherwise it loads a default set of perspectives. </para>
 	    </listitem>
 	  
 </itemizedlist>
 </para>
 	<para>
-Application Events include:
+Application events include
 <itemizedlist continuation="restarts" spacing="compact">
 
 	    <listitem>
@@ -1931,18 +1929,18 @@ The Explorer Subsystem provides/will provide the following APIs:
 	    <listitem>
 	      <para>
 API1: Addition / Removal of a Perspective from the PerspectiveManager.
-Status: under development
+Status: implemented
 </para>
 	    </listitem>
 	    <listitem>
 	      <para>
 API2: Addition / Removal of a Perspective Rule from a Perspective.
-Status: under development
+Status: implemented
 </para>
 	    </listitem>
 	    <listitem>
 	      <para>
-API3: Selection of Perspective to be displayed by the Explorer.
+API3: Selection of the Perspective to be displayed by the Explorer.
 Status: not implemented
 </para>
 	    </listitem>
@@ -2003,7 +2001,7 @@ The Explorer is currently shown in the Explorer Pane
 Except for the Explorer Pane, The Explorer is located in
  org.argouml.ui.explorer.*. The explorer 
 has been refactored since version 0.15.2 so that it has a slightly more 
-standard Java Swing implementation. It is still 'under development'.
+standard Java Swing implementation. 
 </para>
 	
 <para>
@@ -2041,14 +2039,13 @@ user expands nodes, this minimizes the size of the model to those
 </para>
 	    </listitem>
 	    <listitem>
-	      <para>
-The model uses the third part of the Explorer design,
-PerspectiveRules, to add child nodes to the leaves of the tree.
-     The structure of the tree is wholly dependent on the collection of
-PerspectiveRules that together provide a specialized view of the
-     UML model. This is very flexible and extensible. The is a default
-     set of PerspectiveRules in org.argouml.ui.explorer.rules package.
-</para>
+<para> The model uses the third part of the Explorer design, PerspectiveRules,           to 
+          add child nodes to the leaves of the tree. The structure of the tree 
+          is wholly dependent on the collection of PerspectiveRules that 
+          together provide a specialized view of the UML model. This is very 
+          flexible and extensible. The org.argouml.ui.explorer.rules package
+          contains a default set of PerspectiveRules. 
+          </para>
 	    </listitem>
 	  </orderedlist>
 </para>
@@ -2073,19 +2070,15 @@ the <methodname>convertValueToText(...)</methodname> method in
 <itemizedlist>
 		  <listitem>
 		    <para>
-The perspectives can be changed using the 
+The perspectives can be configured using the 
 <classname>org.argouml.ui.explorer.PerspectiveConfigurator</classname> by the
-User. If you want to do this
-as part of an extension to ArgoUML then you could use (see above) APIs 1,2 and
-3, and SPI 2. However, these are under development or not implemented, so should
-be used knowing that significant changes may be made in the future.
-</para>
+User. The changes to the pre-defined built-in defaults are stored in the 
+<filename>argo.user.properties</filename> file.</para>
 		  </listitem>
 		  <listitem>
-		    <para>
-Hard code it by modifying the core of ArgoUML.
-This is the only option currently.
-</para>
+<para> If you want to do this as part of an extension to ArgoUML then you     should 
+    use (see above) APIs 1,2 and 3, and SPI 2. The functions needed are present 
+    in the <classname>PerspectiveManager</classname>. </para>
 		  </listitem>
 		</itemizedlist>
 </para>
@@ -2101,7 +2094,7 @@ You could use SPI1 when it gets implemented.
 	      <para>...extend the Explorer in other ways?</para>
 	      <para>
 The best way is to use the above APIs/SPIs; if they are not implemented then
-It would be best to implement them and feedback your improvements to the
+it would be best to implement them and feedback your improvements to the
 ArgoUML project so that your code works on a recognized public API that will be
 maintained in the future.
 </para>
@@ -2109,17 +2102,17 @@ maintained in the future.
         
         <listitem>
 	      <para>...add new rules for new model elements?</para>
-          <para>
-            You would create a GoRule/PerspectiveRule in org/argouml/ui/explorer/rules. 
-            There are plenty of examples to look at. 
-            The important things to get right is of course that:</para>
+<para> You should create a GoRule/PerspectiveRule in   
+  <address>org/argouml/ui/explorer/rules</address>. 
+  There are plenty of examples to look at. The important things to get right is 
+  of course that:</para>
           <para>
             <itemizedlist>
               <listitem><para> you return the right children</para></listitem>
               <listitem><para> return the objects that the TreeModel must listen to to know when to update the node (and the list of immediate children)
                 After that you must register your GoRule in org/argouml/ui/explorer/PerspectiveManager</para></listitem>
-              <listitem><para> Add it to the list in loadRules()</para></listitem>
-              <listitem><para> Perhaps add it to some of the default perspectives in oldLoadDefaultPerspectives(), I guess
+              <listitem><para> add it to the list in loadRules()</para></listitem>
+              <listitem><para> perhaps add it to some of the default perspectives in oldLoadDefaultPerspectives(), I guess
                 And then I think it should just be a matter of recompiling and possibly switching to the perspective you added your rule to.</para></listitem>
             </itemizedlist>
           </para>

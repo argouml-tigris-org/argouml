@@ -339,9 +339,13 @@ public class PerspectiveManager {
     }
 
     /**
-     * hard coded rules library for now, it is quite a lot of work to 
+     * Get the predefined rules. <p>
+     * 
+     * This is a hard coded rules library for now, 
+     * since it is quite a lot of work to 
      * get all possible rule names in "org.argouml.ui.explorer.rules" from
-     * the classpath.
+     * the classpath 
+     * (which would also not allow adding rules from other locations). 
      */
     public void loadRules() {
         
@@ -409,6 +413,24 @@ public class PerspectiveManager {
 	};
          
 	rules = Arrays.asList(ruleNamesArray);
+    }
+    
+    /**
+     * Add a rule to the list of rules.
+     * 
+     * @param rule the PerspectiveRule to be added
+     */
+    public void addRule(PerspectiveRule rule) {
+        rules.add(rule);
+    }
+    
+    /**
+     * Remove a rule from the list.
+     * 
+     * @param rule the PerspectiveRule to be removed
+     */
+    public void removeRule(PerspectiveRule rule) {
+        rules.remove(rule);
     }
     
     /**
