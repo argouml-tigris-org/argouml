@@ -57,7 +57,6 @@ public class PersistenceException extends Exception {
     }
 
     /**
-     * @param message the message
      * @param c the cause of the exception
      */
     public PersistenceException(Throwable c) {

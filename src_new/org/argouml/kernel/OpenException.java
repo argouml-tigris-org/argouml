@@ -31,14 +31,30 @@ package org.argouml.kernel;
  */
 public class OpenException extends PersistenceException {
 
+    /**
+     * The constructor.
+     *  
+     * @param message the message to show
+     */
     public OpenException(String message) {
         super(message);
     }
     
+    /**
+     * The constructor.
+     * 
+     * @param message the message to show
+     * @param cause the cause for the exception
+     */
     public OpenException(String message, Throwable cause) {
         super(message, cause);
     }
     
+    /**
+     * The constructor.
+     * 
+     * @param cause the cause for the exception
+     */
     public OpenException(Throwable cause) {
         super(cause);
     }
