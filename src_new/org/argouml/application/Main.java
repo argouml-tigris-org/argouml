@@ -441,11 +441,12 @@ public class Main {
         // check if we are using a supported java version
         String javaVersion = System.getProperty("java.version", "");
         // exit if unsupported java version.
-        if (javaVersion.startsWith("1.2")
-	    || javaVersion.startsWith("1.1")) {
+        if (javaVersion.startsWith("1.3")
+            || javaVersion.startsWith("1.2")
+            || javaVersion.startsWith("1.1")) {
 
 	    System.err.println("You are using Java " + javaVersion + ", "
-			       + "Please use Java 1.3 or later with ArgoUml");
+			       + "Please use Java 1.4 or later with ArgoUml");
 	    System.exit(0);
         }
     }
