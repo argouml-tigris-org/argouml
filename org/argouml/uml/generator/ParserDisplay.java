@@ -299,9 +299,8 @@ public class ParserDisplay extends Parser {
 
         MExtensionPoint ep = UmlFactory.getFactory().getUseCases().buildExtensionPoint(null);
 
-        StringTokenizer st        = new StringTokenizer(text.trim(), ":",
-                                                        true);
-        int             numTokens = st.countTokens();
+        StringTokenizer st = new StringTokenizer(text.trim(), ":", true);
+        int numTokens = st.countTokens();
 
         String epLocation;
         String colon;
@@ -395,29 +394,33 @@ public class ParserDisplay extends Parser {
  * @param s
  * @return String
  */
-   protected String parseOutMultiplicity(MAttribute f, String s) {
+protected String parseOutMultiplicity(MAttribute f, String s) {
     s = s.trim();
     String multiString = "";
-    int colonappereance = s.indexOf(':');
-    int equalappereance = s.indexOf('=');
-    int braceappereance = s.indexOf('{');
-    if (colonappereance < 0) { // no type def
-        if (equalappereance < 0) { // no initial value
-            if (braceappereance < 0) { // no property string
-                multiString = s;
-            } else {
-                multiString = s.substring(0, braceappereance-1).trim();
-            }
-        } else {
-            multiString = s.substring(0, equalappereance-1).trim();
-        }
-    } else {
-        multiString = s.substring(0, colonappereance-1).trim();
+    int terminatorIndex = s.indexOf(':');
+    if (terminatorIndex < 0) terminatorIndex = s.indexOf('=');
+    if (terminatorIndex < 0) terminatorIndex = s.indexOf('{');
+    if (terminatorIndex < 0) {
+        multiString = s;
     }
-    f.setMultiplicity(UmlFactory.getFactory().getDataTypes().createMultiplicity(multiString));
- 
-    return s.substring(multiString.length(), s.length());
-   }
+    else {
+        multiString = s.substring(0, terminatorIndex);
+    }
+
+    s = s.substring(multiString.length(), s.length());
+    
+    multiString = multiString.trim();
+    int multiStart = 0;
+    int multiEnd = multiString.length();
+    
+    if (multiEnd > 0 && multiString.charAt(0) == '[') multiStart = 1;
+    if (multiEnd > 0 && multiString.charAt(multiEnd-1) == ']') --multiEnd;
+    multiString = multiString.substring(multiStart, multiEnd).trim();
+    
+    if (multiString.length() > 0) f.setMultiplicity(UmlFactory.getFactory().getDataTypes().createMultiplicity(multiString));
+
+    return s;
+}
    
    /** Parse a line of the form:
     * visibility name [multiplicity] : type-expression = initial-value {property-string}
@@ -729,7 +732,7 @@ public class ParserDisplay extends Parser {
             StringTokenizer tokenizer = new StringTokenizer(s, " ={");
             typeExpr = tokenizer.nextToken();
             Project p = ProjectBrowser.TheInstance.getProject();
-            type = p.findType(typeExpr);
+            type = p.findType(typeExpr); // Should we be getting this from the GUI? BT 11 aug 2002
             if (type == null) { // no type defined yet
                 type = UmlFactory.getFactory().getCore().buildClass(typeExpr);                
             }
