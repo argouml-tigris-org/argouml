@@ -515,6 +515,53 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
+     * <p>Make all event sources described by the given document available to 
+     * the UMLModelEventPump. The document must match the pattern given by the 
+     * following example:
+     * 
+     * <pre>
+     * &lt;eventtree&gt;
+     *   &lt;source classname="fully qualified classname of a model element"&gt;
+     *     &lt;eventtype name="name of event potentially fired by this model element"&gt;
+     *       &lt;type&gt;1&lt;/type&gt;
+     *     &lt;/eventtype&gt;
+     *   &lt;/source&gt;
+     * &lt;/eventtree&gt;
+     * </pre>
+     * 
+     * <p>The type is one of the numbers defined in {@link MElementEvent}. Each 
+     * of the elements can be used multiple times.
+     * 
+     * <p>This operation is particularly provided for use by modules which add 
+     * custom model elements.
+     * 
+     * @param doc the document, the contents of which should be made available.
+     *            This must be preparsed.
+     */
+    public void addEventSourcesFromDocument (Document doc) {
+        _definition.addSourcesFromDocument (doc);
+    }
+
+    /**
+     * <p>Make event types for a single event source available to this 
+     * UMLModelEventPump.
+     * 
+     * <p>This operation is particularly provided for use by modules which add 
+     * custom model elements.
+     * 
+     * @param cSource the source class for which to make event types available.
+     * 
+     * @param mpNameMap a map of the event types to add for the source class.
+     *                  The keys are Strings indicating the names of events, 
+     *                  while the values are int[] which contain all the event
+     *                  types the indicated event represents. The specific int 
+     *                  values used can be found in {@link MElementEvent}.
+     */
+    public void addEventSource (Class cSource, Map mpNameMap) {
+        _definition.addSource (cSource, mpNameMap);
+    }
+
+    /**
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
      */
     public void listRoleItemSet(MElementEvent e) {
@@ -1082,42 +1129,85 @@ class EventTreeDefinition {
     private static final String FILE_NAME = "org/argouml/eventtree.xml";
     private Map _definition = new HashMap();
 
+    /**
+     * Create an instance of EventTreeDefinition, reading org/argouml/eventtree.xml to
+     * obtain the initial configuration.
+     */
     public EventTreeDefinition() {
         Document doc = loadDocument();
-        synchronized (doc) {
-            NodeList sources = doc.getChildNodes().item(0).getChildNodes();
-            for (int i = 0; i < sources.getLength(); i++) {
-                Element source = (Element) sources.item(i);
-                String className = source.getAttribute("classname");
-                Class sourceClass = null;
-                try {
-                    sourceClass = Class.forName(className);
-                } catch (ClassNotFoundException e) {
-                    _log.error(e);
-                }
-                Map nameMap = new HashMap();
-                NodeList eventTypes = source.getChildNodes();
-                for (int j = 0; j < eventTypes.getLength(); j++) {
-                    Element eventType = (Element) eventTypes.item(j);
-                    String name = eventType.getAttribute("name");
-                    NodeList typeNodes = eventType.getChildNodes();
-                    int typeLength = typeNodes.getLength();
-                    int[] types = new int[typeLength];
-                    for (int k = 0; k < typeLength; k++) {
-                        Element typeNode = (Element) typeNodes.item(k);
-                        types[k] =
-                            Integer.parseInt(
-                                typeNode.getFirstChild().getNodeValue());
-                    }
-                    nameMap.put(name, types);
-                }
-                // remove case
-                nameMap.put(UmlModelEventPump.REMOVE, new int[] {
-		    0 
-		});
-                _definition.put(sourceClass, nameMap);
-            }
+        synchronized (doc) { // TODO: Why is this synchronized??
+            addSourcesFromDocument (doc);
         }
+    }
+
+    /**
+     * <p>Add all event sources described by the given document. The document must match 
+     * the pattern given by the following example:
+     * 
+     * <pre>
+     * &lt;eventtree&gt;
+     *   &lt;source classname="fully qualified classname of a model element"&gt;
+     *     &lt;eventtype name="name of event potentially fired by this model element"&gt;
+     *       &lt;type&gt;1&lt;/type&gt;
+     *     &lt;/eventtype&gt;
+     *   &lt;/source&gt;
+     * &lt;/eventtree&gt;
+     * </pre>
+     * 
+     * <p>The type is one of the numbers defined in {@link MElementEvent}. Each 
+     * of the elements can be used multiple times.
+     * 
+     * @param doc the document, the contents of which should be added to this 
+     *            event tree definition. This must be preparsed.
+     */
+    synchronized void addSourcesFromDocument (final Document doc) {
+        NodeList sources = doc.getChildNodes().item(0).getChildNodes();
+        for (int i = 0; i < sources.getLength(); i++) {
+            Element source = (Element) sources.item(i);
+            String className = source.getAttribute("classname");
+            Class sourceClass = null;
+            try {
+                sourceClass = Class.forName(className);
+            } catch (ClassNotFoundException e) {
+                _log.error(e);
+            }
+            Map nameMap = new HashMap();
+            NodeList eventTypes = source.getChildNodes();
+            for (int j = 0; j < eventTypes.getLength(); j++) {
+                Element eventType = (Element) eventTypes.item(j);
+                String name = eventType.getAttribute("name");
+                NodeList typeNodes = eventType.getChildNodes();
+                int typeLength = typeNodes.getLength();
+                int[] types = new int[typeLength];
+                for (int k = 0; k < typeLength; k++) {
+                    Element typeNode = (Element) typeNodes.item(k);
+                    types[k] =
+                        Integer.parseInt(
+                            typeNode.getFirstChild().getNodeValue());
+                }
+                nameMap.put(name, types);
+            }
+            // remove case
+            nameMap.put(UmlModelEventPump.REMOVE, new int[] {
+                0
+            });
+            addSource (sourceClass, nameMap);
+        }
+    }
+
+    /**
+     * Add event types for a single source to this event tree.
+     * 
+     * @param cSource the source class for which to add event types.
+     * 
+     * @param mpNameMap a map of the event types to add for the source class.
+     *                  The keys are Strings indicating the names of events, 
+     *                  while the values are int[] which contain all the event
+     *                  types the indicated event represents. The specific int 
+     *                  values used can be found in {@link MElementEvent}.
+     */
+    synchronized void addSource (Class cSource, Map mpNameMap) {
+        _definition.put (cSource, mpNameMap);
     }
 
     /**
@@ -1126,7 +1216,7 @@ class EventTreeDefinition {
      * @param modelClass
      * @return
      */
-    public EventKey[] getEventTypes(Class modelClass) {
+    public synchronized EventKey[] getEventTypes(Class modelClass) {
         modelClass = formatClass(modelClass);
         Map nameMap = (Map) _definition.get(modelClass);
         Iterator it = nameMap.keySet().iterator();
@@ -1165,7 +1255,7 @@ class EventTreeDefinition {
      * @param name
      * @return
      */
-    public EventKey[] getEventTypes(Class modelClass, String name) {
+    public synchronized EventKey[] getEventTypes(Class modelClass, String name) {
         modelClass = formatClass(modelClass);
         Map nameMap = (Map) _definition.get(modelClass);
         if (nameMap != null) {
