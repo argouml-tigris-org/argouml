@@ -161,9 +161,17 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
         setTarget(_target);
     }
 
-    public boolean shouldBeEnabled() {
-        return _shouldBeEnabled;
+  public boolean shouldBeEnabled(Object target) {
+  
+    if (target instanceof UMLDiagram) {
+      _shouldBeEnabled = true;
     }
+    else {
+      _shouldBeEnabled = false;
+    }
+    
+    return _shouldBeEnabled;
+  }
 
   ////////////////////////////////////////////////////////////////
   // accessors

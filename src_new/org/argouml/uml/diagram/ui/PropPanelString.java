@@ -99,7 +99,7 @@ public class PropPanelString extends TabSpawnable implements TabModelTarget, Pro
 
   public void refresh() { setTarget(_target); }
 
-  public boolean shouldBeEnabled() { return false; }
+  public boolean shouldBeEnabled(Object target) { return false; }
 
 
   protected void setTargetName() {
