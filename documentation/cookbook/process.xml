@@ -20,15 +20,15 @@ them on the
     <sect1>
       <title>The big picture for Issues</title>
       <indexterm>
-	<primary>Issues</primary>
+        <primary>Issues</primary>
       </indexterm>
       <para>
 Here is the big picture of the life of an Issue.
 </para>
       <mediaobject>
-	<imageobject>
-	  <imagedata fileref="images/cookbook/IssueBigPicture.gif" format="GIF"/>
-	</imageobject>
+        <imageobject>
+          <imagedata fileref="images/cookbook/IssueBigPicture.gif" format="GIF"/>
+        </imageobject>
       </mediaobject>
 
     </sect1>
@@ -45,93 +45,93 @@ Tigris definition of the resolutions
 and for that reason it is not a complete list.
 </para>
       <sect2>
-	<title>Priorities</title>
-	<indexterm>
-	  <primary>Priorities</primary>
-	  <secondary>on Issues</secondary>
-	</indexterm>
-	<indexterm>
-	  <primary>Issue</primary>
-	  <secondary>Priority</secondary>
-	</indexterm>
-	<para>
+        <title>Priorities</title>
+        <indexterm>
+          <primary>Priorities</primary>
+          <secondary>on Issues</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>Issue</primary>
+          <secondary>Priority</secondary>
+        </indexterm>
+        <para>
 The priorities are used in the following manner in ArgoUML:
 <itemizedlist>
-	    <listitem>
-	      <para>P1 - Fatal error</para>
-	      <para>
+            <listitem>
+              <para>P1 - Fatal error</para>
+              <para>
 ArgoUML cannot start.
 Crashes program, jvm or computer.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>P2 - Serious error</para>
-	      <para>
+            </listitem>
+            <listitem>
+              <para>P2 - Serious error</para>
+              <para>
 Information lost.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>P3 - Not so serious error</para>
-	      <para>
+            </listitem>
+            <listitem>
+              <para>P3 - Not so serious error</para>
+              <para>
 Functions not working.
 Strange behavior.
 Exceptions logged.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>P4 - Confusing behavior</para>
-	      <para>
+            </listitem>
+            <listitem>
+              <para>P4 - Confusing behavior</para>
+              <para>
 Incorrect help texts and documentation.
 Inconsistant behavior.
 UI not updated.
 Incorrect javadoc.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>P5 - Small problems</para>
-	      <para>
+            </listitem>
+            <listitem>
+              <para>P5 - Small problems</para>
+              <para>
 Spelling errors.
 Ugly icons.
 Excessive logging.
 Missing javadoc.
 </para>
-	    </listitem>
-	  </itemizedlist>
+            </listitem>
+          </itemizedlist>
 </para>
       </sect2>
 
       <sect2>
-	<title>Resolutions</title>
-	<indexterm>
-	  <primary>Resolution</primary>
-	  <secondary>of Issues</secondary>
-	</indexterm>
-	<indexterm>
-	  <primary>Issue</primary>
-	  <secondary>Resolution</secondary>
-	</indexterm>
-	<para>
+        <title>Resolutions</title>
+        <indexterm>
+          <primary>Resolution</primary>
+          <secondary>of Issues</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>Issue</primary>
+          <secondary>Resolution</secondary>
+        </indexterm>
+        <para>
 <itemizedlist>
-	    <listitem>
-	      <para>LATER and REMIND</para>
-	      <para>
+            <listitem>
+              <para>LATER and REMIND</para>
+              <para>
 Not used.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>WORKSFORME</para>
-	      <para>
+            </listitem>
+            <listitem>
+              <para>WORKSFORME</para>
+              <para>
 This means that it works in a released version of ArgoUML.
 State the version in the comment.
 </para>
-	      <para>
+              <para>
 If the version stated by the reporter in the issue is not
 the same as the version in the comment then this probably 
 means that problem was fixed in some release without anyone
 noticing that this problem was fixed.
 </para>
-	    </listitem>
-	  </itemizedlist>
+            </listitem>
+          </itemizedlist>
 </para>
       </sect2>
     </sect1>
@@ -158,22 +158,22 @@ issues to verify.
 
       <sect2 id="rolereporter">
         <title>The Reporter</title>
-	<para>
+        <para>
 The Reporter is the person who enters the issue in Issuezilla.
 </para>
-	<para>
+        <para>
 Skills:
 The reporter is an ArgoUML user, should not need any knowledge of what the
 ArgoUML project is actually doing.
 </para>
-	<para>
+        <para>
 Responsibilities:
           <itemizedlist>
-	    <listitem>
-	      <para>
+            <listitem>
+              <para>
 Report an issue
 </para>
-	<para>
+        <para>
 The address to enter new issues is: 
 <ulink url="http://argouml.tigris.org/issues/enter_bug.cgi">
 http://argouml.tigris.org/issues/enter_bug.cgi
@@ -181,9 +181,9 @@ http://argouml.tigris.org/issues/enter_bug.cgi
 For entering new issues, registering (as described in 1.3) 
 is not required.
 </para>
-	    </listitem>
+            </listitem>
             <listitem>
-	      <para>
+              <para>
 Answer clarification requests
 </para>
               <para>
@@ -193,9 +193,9 @@ Another way of putting it is to say that
 if the issue was reported without some vital information
 the Reporter has some more work to do.
 </para>
-	    </listitem>
+            </listitem>
             <listitem>
-	      <para>
+              <para>
 Close the issue
 </para>
               <para>
@@ -208,9 +208,9 @@ close the issue himself.
 Closing an issue requires at least "observer" role
 in the ArgoUML project.
 </para>
-	    </listitem>
+            </listitem>
             <listitem>
-	      <para>
+              <para>
 Reopen the issue
 </para>
               <para>
@@ -222,8 +222,8 @@ he can reopen the issue himself.
 Reopening an issue requires at least "observer" role
 in the ArgoUML project.
 </para>
-	    </listitem>
-	  </itemizedlist>
+            </listitem>
+          </itemizedlist>
         </para>
       </sect2>
       <sect2 id="roleresolver">
@@ -267,27 +267,27 @@ to solve it he enters his findings as a comment and
 assigns the issue back to anyone (issues@argouml) and
 moves along to work on another issue instead.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>
+            </listitem>
+            <listitem>
+              <para>
 If applicable, program and test a solution
 </para>
-	      <para>
+              <para>
 As this might take considerable time it might be a good idea
 of the Resolver to assign the issue to himself to reserve the issue.
 He can also signal progress by setting the issue to the state Started.
 </para>
             </listitem>
-	    <listitem>
-	      <para>
+            <listitem>
+              <para>
 If applicable, write test cases
 </para>
             </listitem>
-	    <listitem>
-	      <para>
+            <listitem>
+              <para>
 Set the issue in the end on "Resolved".
 </para>
-	      <para>
+              <para>
 When the resolver is finished with the issue, 
 he puts it in "Resolved" status, and indicates the
 "resolution" is Fixed, Worksforme, Invalid, Wontfix, or Duplicate.
@@ -304,7 +304,7 @@ requirements and release plans.
       </sect2>
       <sect2 id="roleverifier">
         <title>The Verifier</title>
-	<para>
+        <para>
 The Verifier may be neither the Reporter, nor the Resolver of the issue.
 The task of the Verifier is to check the quality of the solution by
 confirming that the solution is complete, to the point, bug-free, etc.
@@ -334,8 +334,8 @@ the feature/enhancement is now present
 the issue is marked as verified.
 </para>
             </listitem>
-	    <listitem>
-	      <para>
+            <listitem>
+              <para>
 Reopen the issue if the solution is not fully correct
 </para>
         <para>
@@ -357,8 +357,8 @@ He doesn't need to know how it is actually solved.
     <sect1 id="resolve_issue">
       <title>How to resolve an Issue</title>
       <indexterm>
-	<primary>Issues</primary>
-	<secondary>Resolving</secondary>
+        <primary>Issues</primary>
+        <secondary>Resolving</secondary>
       </indexterm>
       <para>
 This can be performed by any member of the project (any role).
@@ -372,72 +372,72 @@ on the nature of the Issue.
 Do the following:
 </para>
       <orderedlist>
-	<listitem id="resolve_issue_start">
-	  <para>
+        <listitem id="resolve_issue_start">
+          <para>
 Pick any Issue that is NEW or REOPENED
 that you from the description think that you are able to solve.
 Best result if you also find some Issue that you really feel 
 needs to be solved.
 <ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=NEW&amp;issue_status=REOPENED">The list of all of them</ulink>.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 Look at your personal schedule and how much time you have during the
 next couple of weeks and compare that to the amount of time you think
 you will need to spend for solving the issue.
 Compare this to the release plan to see what release your contribution
 will fit in.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 Accept the Issue and reserve it by assigning it to yourself.
 Set the Target Milestone to the release you have chosen.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 Make sure you have a checked out copy of ArgoUML or else check out 
 a new one.
 </para>
-	  <para>
+          <para>
 How this is done is described in
 <xref linkend="buildingandtools"/>.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 Mark the issue as Started (this could be done while assigning also).
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 Change the code to solve the problem.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 Compile and test your new code.
 </para>
-	  <para>
+          <para>
 This should include developing a JUnit test case to
 verify that the problem is solved.
 You could also develop the JUnit test case before actually solving
 the problem.
 </para>
-	  <para>
+          <para>
 If your solution did not work as intended, continue changing it
 until it does.
 </para>
-	  <para>
+          <para>
 If you feel that your estimation of the complexity of the problem
 and your own abilities and time available was incorrect,
 then change the Target Milestone of the Issue to another one
 that fits your new estimation.
 This is just a change of plan.
 </para>
-	  <para>
+          <para>
 If you, at this point, feel that your personal plans have changed
 so that you won't have time to pursue the work,
 change the Issue back to "NEW" with your experiences sofar
@@ -452,55 +452,52 @@ commit your changes (if any) into a work branch and state the name
 of the branch in the issue.
 That will make it possible for someone to make use of your work so far.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 Commit your changes and the JUnit test cases stating
 the number of the Issue in the comment.
 </para>
-	  <para>
+          <para>
 If you don't have a developer role in the project, 
 this involves sending your changes to someone who has 
 and then convincing him to commit them for you.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 "Resolve" the Issue with the resolution "FIXED".
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 Sit back and feel the personal satisfaction of having completed a
 something that will be part of the ArgoUML product.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 If you during this, have discovered other problems,
 create new Issues stating those new problems
 according to the rule for creating Issues.
 </para>
-	</listitem>
+        </listitem>
       </orderedlist>
     </sect1>
 
     <sect1 id="verify_resolved_fixed">
       <title>How to verify an Issue that is FIXED</title>
       <indexterm>
-	<primary>Issues</primary>
-	<secondary>Verifying</secondary>
-	<tertiary>Fixed</tertiary>
+        <primary>Issues</primary>
+        <secondary>Verifying Fixed</secondary>
       </indexterm>
       <indexterm>
-	<primary>Issues</primary>
-	<secondary>Verifying</secondary>
-	<tertiary>WORKSFORME</tertiary>
+        <primary>Issues</primary>
+        <secondary>Verifying WORKSFORME</secondary>
       </indexterm>
       <indexterm>
-	<primary>Issues</primary>
-	<secondary>Verifying</secondary>
-	<tertiary>Works for me</tertiary>
+        <primary>Verifying</primary>
+        <secondary>Works for me Issues</secondary>
       </indexterm>
       <para>
 This can be performed by any member of the project (any role).
@@ -511,84 +508,96 @@ on the nature of the Issue.
 Do the following:
 </para>
       <orderedlist>
-	<listitem id="verify_resolved_fixed_start">
-	  <para>
+        <listitem id="verify_resolved_fixed_start">
+          <para>
 Pick any Issue that is RESOLVED/FIXED or WORKSFORME and that you have
 not raised, nor solved and that is included in a release
 (Target milestone set to a release available on the site).
 <ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=RESOLVED&amp;resolution=FIXED&amp;resolution=WORKSFORME">The list of all RESOLVED/FIXED and RESOLVED/WORKSFORME issues</ulink>.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 Run the specified release of ArgoUML as provided for downloads or 
 through Java Web Start.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 Test the problem in the issue and verify that the problem is no longer
 there or the feature is provided.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 Do one of the following:
 </para>
-	  <itemizedlist>
-	    <listitem>
-	      <para>
+          <itemizedlist>
+            <listitem>
+              <para>
 If the problem is gone, the feature is present put the Issue in
 Status VERIFIED and
 add the version of the ArgoUML used for the test in in the comment.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>
+            </listitem>
+            <listitem>
+              <para>
 If the problem is still there, the feature does not work, put the
 Issue in Status REOPENED with a description of what is still there, is
 still missing.
 Also state what version of ArgoUML used for the test in the comment.
 </para>
-	    </listitem>
-	  </itemizedlist>
-	</listitem>
-	<listitem>
-	  <para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+        <listitem>
+          <para>
 If you during this, have discovered other problems than the one
 stated in the Issue, create new Issues for those new problems
 according to the rule for creating Issues.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 Do this as many times as you like until there are no Issues left.
 </para>
-	</listitem>
+        </listitem>
       </orderedlist>
     </sect1>
 
     <sect1 id="verify_resolved_invalid">
       <title>How to verify an Issue that is rejected</title>
       <indexterm>
-	<primary>Issues</primary>
-	<secondary>Resolving</secondary>
-	<tertiary>Rejected</tertiary>
+        <primary>Issues</primary>
+        <secondary>Resolving Rejected</secondary>
       </indexterm>
       <indexterm>
-	<primary>Issues</primary>
-	<secondary>Resolving</secondary>
-	<tertiary>Invalid</tertiary>
+        <primary>Issues</primary>
+        <secondary>Resolving Invalid</secondary>
       </indexterm>
       <indexterm>
-	<primary>Issues</primary>
-	<secondary>Resolving</secondary>
-	<tertiary>Wontfix</tertiary>
+        <primary>Issues</primary>
+        <secondary>Resolving Wontfix</secondary>
       </indexterm>
       <indexterm>
-	<primary>Issues</primary>
-	<secondary>Resolving</secondary>
-	<tertiary>Duplicate</tertiary>
+        <primary>Issues</primary>
+        <secondary>Resolving Duplicate</secondary>
+      </indexterm>
+      <indexterm>
+        <primary>Resolving</primary>
+        <secondary>Rejected Issues</secondary>
+      </indexterm>
+      <indexterm>
+        <primary>Resolving</primary>
+        <secondary>Invalid Issues</secondary>
+      </indexterm>
+      <indexterm>
+        <primary>Resolving</primary>
+        <secondary>Wontfix Issues</secondary>
+      </indexterm>
+      <indexterm>
+        <primary>Resolving</primary>
+        <secondary>Duplicate Issues</secondary>
       </indexterm>
       <para>
 This can be performed by any member of the project (any role).
@@ -599,52 +608,52 @@ on the nature of the Issue.
 Do the following:
 </para>
       <orderedlist>
-	<listitem id="verify_resolved_invalid_start">
-	  <para>
+        <listitem id="verify_resolved_invalid_start">
+          <para>
 Pick any issue that is RESOLVED/(INVALID, WONTFIX, or DUPLICATE) that
 you have not raised nor solved.
 The chosen issue need not be connected to an available release.
 <ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=RESOLVED&amp;resolution=INVALID&amp;resolution=WONTFIX&amp;resolution=DUPLICATE">The list of all RESOLVED/INVALID, RESOLVED/WONTFIX and RESOLVED/DUPLICATED issues</ulink>.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 Read through the description provided.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 Do one of the following:
 </para>
-	  <itemizedlist>
-	    <listitem>
-	      <para>
+          <itemizedlist>
+            <listitem>
+              <para>
 If you agree with the statement and feel that the rejection 
 is done for correct reasons,
 put the Issue in Status VERIFIED.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>
+            </listitem>
+            <listitem>
+              <para>
 If you don't agree, put the Issue in status REOPENED and give a
 description as to why you don't agree.
 </para>
-	    </listitem>
-	  </itemizedlist>
-	</listitem>
-	<listitem>
-	  <para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+        <listitem>
+          <para>
 Do this as many times as you like until there are no Issues left.
 </para>
-	</listitem>
+        </listitem>
       </orderedlist>
     </sect1>
 
     <sect1 id="close_verified_issue">
       <title>How to Close an Issue</title>
       <indexterm>
-	<primary>Issues</primary>
-	<secondary>Closing</secondary>
+        <primary>Issues</primary>
+        <secondary>Closing</secondary>
       </indexterm>
       <para>
 This is performed by the person that originally raised the Issue
@@ -654,8 +663,8 @@ This can also be done by someone who would raise the issue but
 did not because it was already present in Issuesilla.
 </para>
       <orderedlist>
-	<listitem>
-	  <para>
+        <listitem>
+          <para>
 Pick any Issue that is Verified and that you have raised or that you
 have found and refrained from raising because somebody else already
 had written it. 
@@ -663,40 +672,40 @@ had written it.
 The list of all VERIFIED issues
 </ulink>.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 See that you are satisfied with the solution.
 This could involve reading through the resolution and 
 starting the tool to verify it.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 Do one of the following:
 </para>
-	  <itemizedlist>
-	    <listitem>
-	      <para>
+          <itemizedlist>
+            <listitem>
+              <para>
 If you are satisfied, put the Issue in Status CLOSED.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>
+            </listitem>
+            <listitem>
+              <para>
 If you are not satisfied but the problem is solved as it is written in
 the Issue, put the Issue in Status CLOSED and open a new Issue with
 the rest of the problem.
 </para>
-	    </listitem>
-	    <listitem>
-	      <para>
+            </listitem>
+            <listitem>
+              <para>
 If you are not satisfied and the problem is not solved, put the Issue
 in status REOPENED with a description on what you are not satisfied
 with.
 </para>
-	    </listitem>
-	  </itemizedlist>
-	</listitem>
+            </listitem>
+          </itemizedlist>
+        </listitem>
       </orderedlist>
     </sect1>
 
@@ -734,42 +743,42 @@ Do the following:
 During your examination of an issue you find that the problem
 is in one of the ArgoUML subproducts (GEF, NS-UML, ocl, jre, ...).
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 Make sure that the issue is assigned to you.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 Write a comment in the issue stating which one of the subprojects
 that has the problem (and what the problem is within that subproject).
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 Post a bug report in that subproducts bug reporting tool
 (or find that a bug report already registered).
 </para>
-	  <para>
+          <para>
 I am assuming that there is such a tool for the subproduct in question.
 If there isn't,
 then make the bug report to the person responsible for this product
 so that we are sure that the problem is communicated.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 Accept the issue (set it to STARTED) and
 enter the reference from the subproducts bug reporting tool and
 if possible the URL to the bug reporting tool or to the bug report in question.
 </para>
-	  <para>
+          <para>
 I am assuming that there is a bug reporting tool for the subproducts.
 If there isn't for the product in question,
 then include all communications (both ways) in the issue.
 </para>
-	</listitem>
+        </listitem>
       </orderedlist>
       <para>
 You are now responsible to follow up on 
@@ -781,14 +790,14 @@ assign the issue to "the right person".
 To follow up you should do the following.
 </para>
       <orderedlist>
-	<listitem>
-	  <para>
+        <listitem>
+          <para>
 Look at each new release of that subproduct to see if the bug report
 is in fact stated as fixed in that release.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 If the bug report is fixed, then you weight together 
 the importance of the problem, 
 other bug reports that are also problems in ArgoUML 
@@ -802,9 +811,9 @@ the current release plan of ArgoUML.
 From this you decide wether it is time to do the update of 
 the subproduct within ArgoUML or to wait.
 </para>
-	</listitem>
-	<listitem>
-	  <para>
+        </listitem>
+        <listitem>
+          <para>
 If you decide that it is time to update,
 you assign all issues against that subproduct to you (if not already), 
 then you do the work.
@@ -814,7 +823,7 @@ test and commit everything,
 put the issues indeed fixed in RESOLVED/FIXED,
 and close the bugs registered in the subproducts bug reporting tool.
 </para>
-	</listitem>
+        </listitem>
       </orderedlist>
     </sect1>
 
