@@ -677,6 +677,7 @@ ${Name} Build file
     <gzip zipfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar.gz" src="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar" />
     <delete file="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar"/>
   </target>
+
   <!-- =================================================================== -->
   <!-- Creates the whole distribution                                            -->
   <!-- =================================================================== -->
@@ -938,13 +939,23 @@ ${Name} Build file
 
   </target>
 
+  <!-- Start ArgoUML with JUnit test cases from ../tests. -->
   <target name="run-with-test-panel" depends="compile,junit-setup">
+    <copy file="${argo.tests.src}/org/manifest.mf"
+          todir="${argo.tests.classes}/org"/>
+    <jar jarfile="${argo.build.dir}/argo_junit_tests.jar"
+         basedir="${argo.tests.classes}"
+         includes="org/argouml/**"
+         excludes="*.txt,*.bat,*.xml,*.sh"
+         manifest="${argo.tests.classes}/org/manifest.mf"/>
+
     <echo message="--- Executing ${Name} ---"/>
     <!-- Uncomment the sysproperty and change the value if you want -->
     <java classname="org.argouml.application.Main"
           fork="yes"
           taskname="argouml">
         <classpath>
+	  <pathelement location="${argo.build.dir}/argo_junit_tests.jar"/>
           <pathelement location="${argo.tests.classes}"/>
 	  <pathelement location="${argo.build.classes}"/>
           <pathelement location="${junit.jar.path}" />
