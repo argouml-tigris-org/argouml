@@ -31,10 +31,13 @@ import java.util.Vector;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.ChildGenerator;
 /** Utility class to generate the children of a class.  In this case
- *  the "children" of a class are it's base classes. */
-
-
+ *  the "children" of a class are it's base classes. 
+ */
 public class SuperclassGen implements ChildGenerator {
+    
+    /**
+     * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
+     */
     public Enumeration gen(Object o) {
 	Vector res = new Vector();
 

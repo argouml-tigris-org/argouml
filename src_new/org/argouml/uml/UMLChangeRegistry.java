@@ -33,36 +33,60 @@ import org.argouml.util.ChangeRegistry;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
-/** This class holds the information about the saving state of the current UML project.
- *  The state is changed by every change made either to the model or to its diagrams.
+/** 
+ * This class holds the information about the saving state of 
+ * the current UML project. The state is changed by every change made 
+ * either to the model or to its diagrams.
  *
  * @see org.argouml.kernel.Project
  * @see ChangeRegistry
  */
-
-public class UMLChangeRegistry extends ChangeRegistry implements MElementListener
+public class UMLChangeRegistry extends ChangeRegistry 
+    implements MElementListener
 {
 
+    /**
+     * The constructor.
+     * 
+     */
     public UMLChangeRegistry() { super(); }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     */
     public void propertySet(MElementEvent mee) {
 	setChangeFlag( true );
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
+     */
     public void listRoleItemSet(MElementEvent mee) {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
+     */
     public void recovered(MElementEvent mee) {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     */
     public void removed(MElementEvent mee) {
 	setChangeFlag( true );
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     */
     public void roleAdded(MElementEvent mee) {
 	setChangeFlag( true );
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     */
     public void roleRemoved(MElementEvent mee) {
 	setChangeFlag( true );
     }
