@@ -214,7 +214,7 @@ public class SelectionUseCase extends SelectionWButtons {
      */
     protected Object createEdgeAbove(MutableGraphModel gm, Object newNode) {
         return gm.connect(_content.getOwner(), newNode,
-                // TODO Remove when GEF with this fixed and incorporated
+                // TODO: Remove when GEF with this fixed and incorporated
                 // http://gef.tigris.org/issues/show_bug.cgi?id=203
                (Class) Model.getMetaTypes().getGeneralization());
     }
@@ -225,7 +225,7 @@ public class SelectionUseCase extends SelectionWButtons {
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
         return gm.connect(newNode, _content.getOwner(),
-            // TODO Remove (Class) when GEF with this fixed and incorporated
+            // TODO: Remove (Class) when GEF with this fixed and incorporated
             // http://gef.tigris.org/issues/show_bug.cgi?id=203
             (Class) Model.getMetaTypes().getAssociation());
     }
@@ -236,7 +236,7 @@ public class SelectionUseCase extends SelectionWButtons {
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
         return gm.connect(_content.getOwner(), newNode,
-            // TODO Remove when GEF with this fixed and incorporated
+            // TODO: Remove when GEF with this fixed and incorporated
             // http://gef.tigris.org/issues/show_bug.cgi?id=203
 			  (Class) Model.getMetaTypes().getAssociation());
     }
@@ -247,7 +247,7 @@ public class SelectionUseCase extends SelectionWButtons {
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
         return gm.connect(newNode, _content.getOwner(),
-            // TODO Remove when GEF with this fixed and incorporated
+            // TODO: Remove when GEF with this fixed and incorporated
             // http://gef.tigris.org/issues/show_bug.cgi?id=203
 			  (Class) Model.getMetaTypes().getGeneralization());
     }
