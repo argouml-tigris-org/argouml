@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,59 +22,70 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-/*
- * Section.java
- *
- * Created on 24. Februar 2002, 15:30
- */
-
 /**
- *
- *Reading and writing preserved sections from the code
+ * Reading and writing preserved sections from the code
  *
  * @author  Marian
  */
 package org.argouml.language.csharp.generator;
 
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
-
+/**
+ * This class is used by GeneratorCSharp for handling of code sections.
+ */
 public class Section {
-    private Map m_ary;
-    /** Creates a new instance of Section */
+    private Map mAry;
+
+    private static final String BEGIN = "// section ";
+    private static final String END1 = " begin";
+    private static final String END2 = " end";
+
+    /** 
+     * Creates a new instance of Section.
+     */
     public Section() {
-        m_ary = new HashMap();
-        m_ary.clear();
+        mAry = new HashMap();
+        mAry.clear();
     }
 
-    public static String generate(String id, String INDENT) {
+    public static String generate(String id, String indent) {
         String s = "";
-        s += INDENT + "// section " + id + " begin\n";
-        s += INDENT + "// section " + id + " end\n";
+        s += indent + BEGIN + id + END1 + "\n";
+        s += indent + BEGIN + id + END2 + "\n";
         return s;
     }
 
-    // write todo:
+    /**
+     * @param filename The filename to write to.
+     * @param indent The indent that we use.
+     */
+    // TODO:
     // check if sections are not used within the file and put them as comments
     // at the end of the file.
     // hint: use a second Map to compare with the used keys
     // =======================================================================
-
-    public void write(String filename, String INDENT) {
+    public void write(String filename, String indent) {
         try {
             System.out.println("Start reading");
             FileReader f = new FileReader(filename);
             BufferedReader fr = new BufferedReader(f);
             FileWriter fw = new FileWriter(filename + ".out");
-            System.out.println("Total size of Map: " + m_ary.size());
+            System.out.println("Total size of Map: " + mAry.size());
             String line = "";
             while (line != null) {
                 line = fr.readLine();
                 if (line != null) {
-                    String section_id = get_sect_id(line);
-                    if (section_id != null) {
-                        String content = (String) m_ary.get(section_id);
+                    String sectionId = getSectionId(line);
+                    if (sectionId != null) {
+                        String content = (String) mAry.get(sectionId);
                         fw.write(line + "\n");
                         if (content != null) {
                             fw.write(content);
@@ -82,21 +93,21 @@ public class Section {
                             // System.out.print(content);
                         }
                         line = fr.readLine(); // read end section;
-                        m_ary.remove(section_id);
+                        mAry.remove(sectionId);
                     }
                     fw.write(line + "\n");
                     // System.out.println(line);
                 }
             }
-            if (m_ary.isEmpty() != true) {
+            if (!mAry.isEmpty()) {
                 fw.write("/* lost code following: \n");
-                Set map_entries = m_ary.entrySet();
-                Iterator itr = map_entries.iterator();
+                Set mapEntries = mAry.entrySet();
+                Iterator itr = mapEntries.iterator();
                 while (itr.hasNext()) {
                     Map.Entry entry = (Map.Entry) itr.next();
-                    fw.write(INDENT + "// section " + entry.getKey() + " begin\n");
+                    fw.write(indent + BEGIN + entry.getKey() + END1 + "\n");
                     fw.write((String) entry.getValue());
-                    fw.write(INDENT + "// section " + entry.getKey() + " end\n");
+                    fw.write(indent + BEGIN + entry.getKey() + END2 + "\n");
                 }
             }
 
@@ -115,23 +126,23 @@ public class Section {
 
             String line = "";
             String content = "";
-            boolean in_section = false;
+            boolean inSection = false;
             while (line != null) {
                 line = fr.readLine();
                 if (line != null) {
-                    if (in_section) {
-                        String section_id = get_sect_id(line);
-                        if (section_id != null) {
-                            in_section = false;
-                            m_ary.put(section_id, content);
+                    if (inSection) {
+                        String sectionId = getSectionId(line);
+                        if (sectionId != null) {
+                            inSection = false;
+                            mAry.put(sectionId, content);
                             content = "";
                         } else {
                             content += line + "\n";
                         }
                     } else {
-                        String section_id = get_sect_id(line);
-                        if (section_id != null) {
-                            in_section = true;
+                        String sectionId = getSectionId(line);
+                        if (sectionId != null) {
+                            inSection = true;
                         }
                     }
                 }
@@ -141,23 +152,17 @@ public class Section {
         } catch (IOException e) {
             System.out.println("Error: " + e.toString());
         }
-
-
-
     }
 
-    public static String get_sect_id(String line) {
-        final String BEGIN = "// section ";
-        final String END1 = " begin";
-        final String END2 = " end";
+    private static String getSectionId(String line) {
         int first = line.indexOf(BEGIN);
         int second = line.indexOf(END1);
         if (second < 0) {
             second = line.indexOf(END2);
         }
         String s = null;
-        if ( (first > 0) && (second > 0) ) {
-            first = first + new String(BEGIN).length();
+        if ((first > 0) && (second > 0)) {
+            first = first + BEGIN.length();
             s = line.substring(first, second);
         }
         return s;

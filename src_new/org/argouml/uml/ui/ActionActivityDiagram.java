@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -55,7 +55,7 @@ public class ActionActivityDiagram extends ActionStateDiagram {
         Object target = TargetManager.getInstance().getModelTarget();
         Object/*MActivityGraph*/ graph =
 	    ActivityGraphsFactory.getFactory().buildActivityGraph(target);
-        /*if (org.argouml.model.ModelFacade.isABehavioralFeature(target)) {
+        /*if (ModelFacade.isABehavioralFeature(target)) {
             ns = ModelFacade.getNamespace(target); 
             // this fails always, see issue 1817
         }*/
@@ -68,8 +68,8 @@ public class ActionActivityDiagram extends ActionStateDiagram {
      */
     public boolean shouldBeEnabled() {
         return super.shouldBeEnabled()
-	    || org.argouml.model.ModelFacade.isAPackage(TargetManager
-                .getInstance().getModelTarget());
+	    || ModelFacade.isAPackage(TargetManager.getInstance()
+	            .getModelTarget());
     }
 
     /**

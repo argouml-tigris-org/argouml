@@ -51,19 +51,16 @@ import org.tigris.gef.util.VectorSet;
  */
 public class WizAssocComposite extends Wizard {
     /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
+     * Logger.
      */
-    protected static Logger cat =
+    private static final Logger LOG =
 	Logger.getLogger(WizAssocComposite.class);
-    
 
     /**
      * The initial instructions on the Step 1 screen. May be set to a
-     * different string through the {@link #setInstructions} method.<p>
+     * different string through {@link #setInstructions(String)}.<p>
      */
-
-    private String _instructions =
+    private String instructions =
         "Please select one of the following aggregation options:";
 
 
@@ -71,7 +68,7 @@ public class WizAssocComposite extends Wizard {
      * Contains the {@link WizStepChoice} that is used to get the user's
      * desired options. Not created until we get to that step.<p>
      */
-    private WizStepChoice _step1Choice = null;
+    private WizStepChoice step1Choice = null;
 
 
     /**
@@ -79,7 +76,7 @@ public class WizAssocComposite extends Wizard {
      * MAssociation} {@link WizStepChoice} that triggered the
      * critic. Null until set when it is first needed.<p>
      */
-    private Object _triggerAsc = null;
+    private Object triggerAssociation = null;
 
 
     /**
@@ -107,29 +104,29 @@ public class WizAssocComposite extends Wizard {
      * The first time it is called, it will initialise the trigger
      * from the ToDoItem. If there, it is assumed to be the first
      * trigger of the ToDoItem and to be an association. If found, the
-     * value is stored in the private field {@link #_triggerAsc}.<p>
+     * value is stored in the private field {@link #triggerAssociation}.<p>
      *
      * On all subsequent calls, if a non-null value is found in {@link
-     * #_triggerAsc} that is returned.<p>
+     * #triggerAssociation} that is returned.<p>
      *
      * @return  the {@link ru.novosoft.uml.foundation.core.MAssociation
      *          MAssociation} that triggered the critic, or <code>null</code>
      *          if there was none.
      */
-    private Object _getTriggerAsc() {
+    private Object getTriggerAssociation() {
 
         // If we don't have it, find the trigger. If this fails it will keep
         // its default value of null
 
-        if ((_triggerAsc == null) && (_item != null)) {
+        if ((triggerAssociation == null) && (_item != null)) {
             VectorSet offs = _item.getOffenders();
 
             if (offs.size() >= 1) {
-                _triggerAsc = /*(MAssociation)*/ offs.elementAt(0);
+                triggerAssociation = offs.elementAt(0);
             }
         }
 
-        return _triggerAsc;
+        return triggerAssociation;
     }
 
 
@@ -149,14 +146,14 @@ public class WizAssocComposite extends Wizard {
      * @return  A {@link Vector} of the options or <code>null</code> if the
      *          association that triggered the critic is no longer there.
      */
-    private Vector _buildOptions() {
+    private Vector buildOptions() {
 
         // The association that triggered the critic. Its just possible the
         // association is no longer there, in which case we return null
 
-        Object asc = _getTriggerAsc();
+        Object asc = getTriggerAssociation();
 
-        if ( asc == null ) {
+        if (asc == null) {
             return null;
         }
 
@@ -169,8 +166,8 @@ public class WizAssocComposite extends Wizard {
 
         Iterator iter = ModelFacade.getConnections(asc).iterator();
 
-        Object ae0 = /*(MAssociationEnd)*/ iter.next();
-        Object ae1 = /*(MAssociationEnd)*/ iter.next();
+        Object ae0 = iter.next();
+        Object ae1 = iter.next();
 
         Object cls0 = ModelFacade.getType(ae0);
         Object cls1 = ModelFacade.getType(ae1);
@@ -210,8 +207,12 @@ public class WizAssocComposite extends Wizard {
     /**
      * Set the initial instruction string for the choice. May be
      * called by the creator of the wizard to override the default.<p>
+     * 
+     * @param s The new instructions.
      */
-    public void setInstructions(String s) { _instructions = s; }
+    public void setInstructions(String s) {
+        instructions = s;
+    }
 
 
     /**
@@ -242,17 +243,19 @@ public class WizAssocComposite extends Wizard {
             // First step. Create the panel if not already done and options are
             // available. Otherwise it retains its default value of null.
 
-            if (_step1Choice == null) {
-                Vector opts = _buildOptions();
+            if (step1Choice == null) {
+                Vector opts = buildOptions();
 
                 if (opts != null) {
-                    _step1Choice = new WizStepChoice(this, _instructions,
+                    step1Choice = new WizStepChoice(this, instructions,
                                                      opts);
-                    _step1Choice.setTarget(_item);
+                    step1Choice.setTarget(_item);
                 }
             }
 
-            return _step1Choice;
+            return step1Choice;
+            
+        default:
         }
 
         // Default (any other step) is to return nothing
@@ -294,12 +297,12 @@ public class WizAssocComposite extends Wizard {
 
             int choice = -1;
 
-            if (_step1Choice != null) {
-                choice = _step1Choice.getSelectedIndex();
+            if (step1Choice != null) {
+                choice = step1Choice.getSelectedIndex();
             }
 
             if (choice == -1) {
-                cat.warn("WizAssocComposite: nothing selected, "
+                LOG.warn("WizAssocComposite: nothing selected, "
 			 + "should not get here");
                 return;
             }
@@ -313,10 +316,11 @@ public class WizAssocComposite extends Wizard {
                 // Set the appropriate aggregation on each end
 
                 Iterator iter =
-		    ModelFacade.getConnections(_getTriggerAsc()).iterator();
+		    ModelFacade.getConnections(getTriggerAssociation())
+		    	.iterator();
 
-                Object ae0 = /*(MAssociationEnd)*/ iter.next();
-                Object ae1 = /*(MAssociationEnd)*/ iter.next();
+                Object ae0 = iter.next();
+                Object ae1 = iter.next();
 
                 switch (choice) {
 
@@ -377,15 +381,18 @@ public class WizAssocComposite extends Wizard {
 			    ae1,
 			    ModelFacade.NONE_AGGREGATIONKIND);
                     break;
+
+                default:
                 }
-            }
-            catch (Exception pve) {
+            } catch (Exception pve) {
 
                 // Someone took our association away.
 
-                cat.error("WizAssocComposite: could not set "
+                LOG.error("WizAssocComposite: could not set "
 			  + "aggregation.", pve); 
             }
+
+        default:
         }
     }
 
@@ -421,8 +428,8 @@ public class WizAssocComposite extends Wizard {
         // Can finish if we're on step1 and have actually made a choice
 
         if ((_step == 1)
-	    && (_step1Choice != null)
-	    && (_step1Choice.getSelectedIndex() != -1)) {
+	    && (step1Choice != null)
+	    && (step1Choice.getSelectedIndex() != -1)) {
             return true;
         }
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,7 +41,7 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
     /**
      * The singleton.
      */
-    public static ActionDeploymentDiagram SINGLETON =
+    public static final ActionDeploymentDiagram SINGLETON =
         new ActionDeploymentDiagram();
     
     private static final Logger LOG = 
@@ -50,6 +50,9 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * Constructor.
+     */
     private ActionDeploymentDiagram() {
         super("action.deployment-diagram");
     }
@@ -92,7 +95,7 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
         // may only occur as child of the model or in a package
         return (
 		ns == ProjectManager.getManager().getCurrentProject().getModel()
-                || org.argouml.model.ModelFacade.isAPackage(ns));
+                || ModelFacade.isAPackage(ns));
     }
 
 } /* end class ActionDeploymentDiagram */

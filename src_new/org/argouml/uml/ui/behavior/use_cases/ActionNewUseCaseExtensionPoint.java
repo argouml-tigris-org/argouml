@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,11 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.behavior.use_cases;
 
 import java.awt.event.ActionEvent;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
@@ -38,7 +38,10 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 public class ActionNewUseCaseExtensionPoint
     extends AbstractActionNewModelElement {
 
-    public final static ActionNewUseCaseExtensionPoint SINGLETON = 
+    /**
+     * The singleton.
+     */
+    public static final ActionNewUseCaseExtensionPoint SINGLETON = 
         new ActionNewUseCaseExtensionPoint();
     
     /**
@@ -53,9 +56,8 @@ public class ActionNewUseCaseExtensionPoint
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        if (org.argouml.model.ModelFacade.isAUseCase(getTarget())) {
-            Object point = UseCasesFactory.getFactory().buildExtensionPoint(/*(MUseCase)*/ getTarget());
+        if (ModelFacade.isAUseCase(getTarget())) {
+            UseCasesFactory.getFactory().buildExtensionPoint(getTarget());
         }
     }
-
 }

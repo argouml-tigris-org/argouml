@@ -61,12 +61,16 @@ public class ActionBooleanTaggedValue extends UMLChangeAction {
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        if (!(e.getSource() instanceof UMLCheckBox2)) return;
+        if (!(e.getSource() instanceof UMLCheckBox2)) {
+            return;
+        }
 
         UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
         Object obj = source.getTarget();
 
-        if (!org.argouml.model.ModelFacade.isAModelElement(obj)) return;
+        if (!ModelFacade.isAModelElement(obj)) {
+            return;
+        }
 
         boolean newState = source.isSelected();
 
