@@ -323,6 +323,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     //create.addSeparator();
 
     JMenu createDiagrams = (JMenu) _menuBar.add(new JMenu(menuLocalize("Create Diagram")));
+    setMnemonic(createDiagrams, "Create Diagram",'C');
     createDiagrams.add(ActionClassDiagram.SINGLETON);
     createDiagrams.add(ActionUseCaseDiagram.SINGLETON);
     createDiagrams.add(ActionStateDiagram.SINGLETON);
