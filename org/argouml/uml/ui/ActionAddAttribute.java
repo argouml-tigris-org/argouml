@@ -25,13 +25,12 @@ package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.application.api.Notation;
 import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MInterface;
 
 
 public class ActionAddAttribute extends UMLChangeAction {
@@ -63,17 +62,20 @@ public class ActionAddAttribute extends UMLChangeAction {
 	MClassifier cls = (MClassifier) target;
 
 	MAttribute attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
+	// pb.getNavPane().addToHistory(attr);
 	pb.setTarget(attr);
+	pb.getNavPane().forceUpdate();
 	super.actionPerformed(ae);
     }
 
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Object target = pb.getDetailsTarget();
+	/*
 	if (target instanceof MInterface) {
 		return Notation.getDefaultNotation().getName().equals("Java");
 	}
-	return super.shouldBeEnabled() && 
-		target instanceof MClassifier;		
+	*/
+	return target instanceof MClass;		
     }
 } /* end class ActionAddAttribute */

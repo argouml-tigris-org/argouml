@@ -40,7 +40,7 @@ public class MenuResourceBundle_en_GB extends ListResourceBundle {
 
 
    static final Object[][] _contents = {
-        {"New...", "New..." },
+        {"New", "New" },
         {"Open Project...", "Open Project..." },
         {"Save Project", "Save Project" },
         {"Load model from DB", "Load Model from DB" },
@@ -79,8 +79,8 @@ public class MenuResourceBundle_en_GB extends ListResourceBundle {
         {"Add Operation", "Add Operation" },
         {"Add Message", "Add Message" },
         {"Add Internal Transition", "Add Internal Transition" },
-        {"Generate Selected Classes", "Generate Selected Classes" },
-        {"Generate All Classes", "Generate All Classes" },
+        {"Generate Selected Classes", "Generate Selected Classes..." },
+        {"Generate All Classes", "Generate All Classes..." },
         {"Toggle Auto-Critique", "Toggle Auto-Critique" },
         {"Design Issues...", "Design Issues..." },
         {"Design Goals...", "Design Goals..." },
@@ -91,7 +91,7 @@ public class MenuResourceBundle_en_GB extends ListResourceBundle {
         {"Send Email To Expert...", "Send Email To Expert..." },
         {"More Info...", "More Info..." },
         {"Snooze Critic", "Snooze Critic" },
-        {"About Argo/UML", "About Argo/UML" },
+        {"About Argo/UML", "About ArgoUML..." },
         {"Properties", "Properties" },
         {"1", "1" },
         {"0..1", "0..1" },

@@ -106,11 +106,11 @@ public class PropPanelActor extends PropPanelClassifier {
         Class              mclass = MActor.class;
 
         mPanel.add("isAbstract", mclass, "isAbstract", "setAbstract",
-                   "Abstract", this);
+                   Argo.localize("UMLMenu", "checkbox.abstract-lc"), this);
         mPanel.add("isLeaf", mclass, "isLeaf", "setLeaf",
-                   "Final", this);
+                   Argo.localize("UMLMenu", "checkbox.final-lc"), this);
         mPanel.add("isRoot", mclass, "isRoot", "setRoot",
-                   "Root", this);
+                   localize("root"), this);
 
         addCaption(Argo.localize("UMLMenu", "label.modifiers"), 4, 0, 1);
         addField(mPanel, 4, 0, 0);
