@@ -60,6 +60,9 @@ public class ActionSaveProject extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // static variables
 
+    /**
+     * The singleton.
+     */
     public static ActionSaveProject SINGLETON = new ActionSaveProject(); 
 
     /**

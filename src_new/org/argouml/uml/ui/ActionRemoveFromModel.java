@@ -191,7 +191,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
      * A utility method that asks the user if he is sure to remove the selected
      * target.<p>
      *
-     * @param target
+     * @param target the object that will be removed
      * @return boolean
      */
     public static boolean sureRemove(Object target) {
@@ -243,7 +243,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
      * modelement.<p>
      *
      * @see ActionRemoveFromModel#sureRemove(Object)
-     * @param me
+     * @param me the modelelement that may be removed
      * @return boolean
      */
     public static boolean sureRemoveModelElement(Object/*MModelElement*/ me) {
@@ -303,6 +303,9 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         return (response == JOptionPane.YES_OPTION);
     }
 
+    /**
+     * @return the complete array of targets
+     */
     protected Object[] getTargets() {
         /*
 	  Vector figs = null; try { Editor ce = Globals.curEditor();

@@ -39,6 +39,9 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
     private static final Logger LOG = 
         Logger.getLogger(ActionCollaborationDiagram.class);
 
+    /**
+     * The singleton.
+     */
     public static ActionCollaborationDiagram SINGLETON =
         new ActionCollaborationDiagram();
 
@@ -60,16 +63,16 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
         Object target = TargetManager.getInstance().getTarget();
         Object collaboration = null;
         if (ModelFacade.isAOperation(target)) {
-            collaboration =
-                UmlFactory.getFactory().getCollaborations().buildCollaboration(namespace);
+            collaboration = UmlFactory.getFactory().getCollaborations()
+                            .buildCollaboration(namespace);
             ModelFacade.setRepresentedOperation(collaboration, target);
         } else if (ModelFacade.isAClassifier(target)) {
-            collaboration =
-                UmlFactory.getFactory().getCollaborations().buildCollaboration(target);
+            collaboration = UmlFactory.getFactory().getCollaborations()
+                            .buildCollaboration(target);
             ModelFacade.setRepresentedClassifier(collaboration, target);
         } else if (ModelFacade.isAModel(target)) {
-            collaboration =
-                UmlFactory.getFactory().getCollaborations().buildCollaboration(target);
+            collaboration = UmlFactory.getFactory().getCollaborations()
+                            .buildCollaboration(target);
         } else if (ModelFacade.isAInteraction(target)) {
             collaboration = ModelFacade.getContext(target);
         } else if (target instanceof UMLCollaborationDiagram) {
@@ -90,9 +93,7 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
     }
 
     /**
-     * @see
-     * org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper#isAddingCollaborationAllowed(Object)
-     * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(Object)
+     * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(java.lang.Object)
      */
     public boolean isValidNamespace(Object handle) {
         if (!ModelFacade.isANamespace(handle)) {
@@ -102,7 +103,8 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
                 "The argument " + handle + "is not a namespace.");
         }
         Object/*MNamespace*/ ns = handle;
-        return CollaborationsHelper.getHelper().isAddingCollaborationAllowed(ns);
+        return CollaborationsHelper.getHelper()
+                                    .isAddingCollaborationAllowed(ns);
     }
 
     /**

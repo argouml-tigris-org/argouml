@@ -39,6 +39,9 @@ public class ActionClassDiagram extends ActionAddDiagram {
     ////////////////////////////////////////////////////////////////
     // static variables
 
+    /**
+     * The singleton.
+     */
     public static ActionClassDiagram SINGLETON = new ActionClassDiagram();
 
     ////////////////////////////////////////////////////////////////

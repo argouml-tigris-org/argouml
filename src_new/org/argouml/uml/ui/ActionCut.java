@@ -48,7 +48,7 @@ import org.tigris.gef.base.Globals;
  */
 public class ActionCut extends AbstractAction implements CaretListener {
 
-    private static ActionCut _Instance = new ActionCut();
+    private static ActionCut instance = new ActionCut();
 
     private static final String LOCALIZE_KEY = "action.cut";
 
@@ -70,21 +70,26 @@ public class ActionCut extends AbstractAction implements CaretListener {
 		 Translator.localize(LOCALIZE_KEY) + " ");
     }
 
+    /**
+     * @return the singleton
+     */
     public static ActionCut getInstance() {
-        return _Instance;
+        return instance;
     }
 
-    private JTextComponent _textSource;
+    private JTextComponent textSource;
 
     /**
      * Cuts some text or a fig
+     *
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-        if (_textSource == null) {
+        if (textSource == null) {
             CmdCut cmd = new CmdCut();
             cmd.doIt();
         } else {
-            _textSource.cut();
+            textSource.cut();
         }
         if (isSystemClipBoardEmpty()
             && Globals.clipBoard == null
@@ -102,7 +107,7 @@ public class ActionCut extends AbstractAction implements CaretListener {
     public void caretUpdate(CaretEvent e) {
         if (e.getMark() != e.getDot()) { // there is a selection        
             setEnabled(true);
-            _textSource = (JTextComponent) e.getSource();
+            textSource = (JTextComponent) e.getSource();
         } else {
             Collection figSelection =
                 Globals.curEditor().getSelectionManager().selections();
@@ -110,7 +115,7 @@ public class ActionCut extends AbstractAction implements CaretListener {
                 setEnabled(false);
             } else
                 setEnabled(true);
-            _textSource = null;
+            textSource = null;
         }
 
     }

@@ -40,6 +40,9 @@ public class ActionStateDiagram extends ActionAddDiagram {
     ////////////////////////////////////////////////////////////////
     // static variables
 
+    /**
+     * The singleton.
+     */
     public static ActionStateDiagram SINGLETON = new ActionStateDiagram();
     
     private static final Logger LOG = 
@@ -52,6 +55,11 @@ public class ActionStateDiagram extends ActionAddDiagram {
         super("action.state-diagram");
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param name the name of the action
+     */
     protected ActionStateDiagram(String name) {
         super(name);
     }

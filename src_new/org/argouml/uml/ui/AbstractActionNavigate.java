@@ -41,20 +41,28 @@ import org.argouml.ui.targetmanager.TargetManager;
  */
 public abstract class AbstractActionNavigate extends UMLAction {
 
+    /**
+     * The constructor.
+     */
     public AbstractActionNavigate() {
         this(Translator.localize(
                 "UMLMenu", "button.go-up"), true);
     }
 
     /**
-     * @param name
-     * @param hasIcon
+     * @param name the name of the action
+     * @param hasIcon true if there is an icon for this action
      */
     public AbstractActionNavigate(String name, boolean hasIcon) {
         super(name, true, hasIcon);
-        putValue(Action.SMALL_ICON, ResourceLoaderWrapper.lookupIconResource("NavigateUp"));
+        putValue(Action.SMALL_ICON, ResourceLoaderWrapper
+                .lookupIconResource("NavigateUp"));
     }
     
+    /**
+     * @param newIcon the icon for this action
+     * @return this action
+     */
     public AbstractActionNavigate setIcon(Icon newIcon) {
         putValue(Action.SMALL_ICON, newIcon);        
         return this;
@@ -69,12 +77,18 @@ public abstract class AbstractActionNavigate extends UMLAction {
      */
     protected abstract Object navigateTo(Object source);
     
+    /**
+     * @see javax.swing.Action#isEnabled()
+     */
     public boolean isEnabled() {
         Object target = TargetManager.getInstance().getModelTarget();
         return ((target != null) && (navigateTo(target) != null));
     }
 
-    /** Perform the work the action is supposed to do. */
+    /** Perform the work the action is supposed to do.
+     * 
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent e) {
         Object target = TargetManager.getInstance().getModelTarget();
         if (ModelFacade.isAModelElement(target)) {

@@ -33,8 +33,11 @@ import org.argouml.i18n.Translator;
  */
 public abstract class AbstractActionNewModelElement extends UMLChangeAction {
 
-    private Object/*MModelElement*/ _target;
+    private Object/*MModelElement*/ target;
     
+    /**
+     *  The constructor.
+     */
     protected AbstractActionNewModelElement() {
         super(Translator.localize("action.new"), true, NO_ICON);
     }  
@@ -44,15 +47,15 @@ public abstract class AbstractActionNewModelElement extends UMLChangeAction {
      * @return MModelElement
      */
     public Object/*MModelElement*/ getTarget() {
-        return _target;
+        return target;
     }
 
     /**
      * Sets the target.
-     * @param target The target to set
+     * @param theTarget The target to set
      */
-    public void setTarget(Object target) {
-        _target = target;
+    public void setTarget(Object theTarget) {
+        target = theTarget;
     }
        
 }

@@ -34,6 +34,9 @@ import org.apache.log4j.Logger;
  */
 public class ActionUseCaseDiagram extends ActionAddDiagram {
 
+    /**
+     * The singleton.
+     */
     public static ActionUseCaseDiagram SINGLETON = new ActionUseCaseDiagram();
 
     private static final Logger LOG = 
