@@ -27,6 +27,7 @@ package org.argouml.model;
 import java.util.*;
 
 // NS-UML imports:
+import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
@@ -68,18 +69,18 @@ import org.argouml.uml.*;
  *
  * The purpose of this Facade object is to allow for decoupling other modules
  * from the insides of the model. For this purpose all of the methods in this
- * class give away and accept handles (of type java.lang.Object) to the 
+ * class give away and accept handles (of type java.lang.Object) to the
  * objects within the model.<p>
  *
- * This is just getters and recognizers. This is because the Model 
- * component has an extremely complicated internal data structure 
+ * This is just getters and recognizers. This is because the Model
+ * component has an extremely complicated internal data structure
  * with lots of internal dependencies. To manipulate these there is
  * a whole set of factories and helpers within the Model that is to
  * be used but to use them you need knowledge of the internals of
  * the Model, specifically the NS-UML objects.<p>
  *
  * All methods in this facade are static.<p>
- * 
+ *
  * Signature for all recognizers in this Facade:
  * public static boolean isA<TYPE>(Object handle)
  * public static boolean is<PROPERTY>(Object handle)
@@ -90,7 +91,7 @@ import org.argouml.uml.*;
  * public static Iterator get<TYPES>(Object handle) - 0..*
  * public static String getName(Object handle) - Name
  * <p>
- * 
+ *
  * @stereotype utility
  * @author Linus Tolke
  */
@@ -225,6 +226,24 @@ public class ModelFacade {
         return handle instanceof MInterface;
     }
 
+    /** Recognizer for Method
+     *
+     * @param handle candidate
+     * @returns true if handle is a Method
+     */
+    public static boolean isAMethod(Object handle) {
+        return handle instanceof MMethod;
+    }
+
+    /** Recognizer for Model
+     *
+     * @param handle candidate
+     * @returns true if handle is a Model
+     */
+    public static boolean isAModel(Object handle) {
+        return handle instanceof MModel;
+    }
+
     /** Recognizer for ModelElement
      *
      * @param handle candidate
@@ -243,7 +262,7 @@ public class ModelFacade {
         return handle instanceof MNamespace;
     }
 
-    /** 
+    /**
      * Recognizer for Operation
      *
      * @param handle candidate
@@ -424,7 +443,7 @@ public class ModelFacade {
     }
 
     /** Recognizer for primary objects.
-     * A primary object is an object that is created by the parser or 
+     * A primary object is an object that is created by the parser or
      * by a user.
      * Object that are created when importing some other object are not.
      *
@@ -579,8 +598,11 @@ public class ModelFacade {
     public static Collection getAttributes(Object handle) {
         if (handle instanceof MClassifier) {
             MClassifier c = (MClassifier)handle;
-            
-            return CoreHelper.getHelper().getStructuralFeatures(c);
+            // TODO: We are converting back and forth between collections and
+            // iterators. I (Linus) prefer iterators.
+            //return getStructuralFeatures(c).iterator();
+            //...But I (thn) got CVS conflicts, so:
+            return getStructuralFeatures(c);
         }
 
         // ...
@@ -649,6 +671,17 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /** The list of Features from a Classifier.
+     *
+     * @param handle Classifier to retrieve from.
+     * @return Collection with Features
+     */
+    public static Collection getFeatures(Object handle) {
+        if (handle != null && handle instanceof MClassifier)
+            return ((MClassifier)handle).getFeatures();
+        return new ArrayList();
+    }
+
     /** The list of Generalizations from a GeneralizableElement.
      *
      * @param handle GeneralizableElement to retrieve from.
@@ -710,7 +743,7 @@ public class ModelFacade {
         if (handle instanceof MClassifier) {
             MClassifier c = (MClassifier)handle;
 
-            return CoreHelper.getHelper().getOperations(c);
+            return getOperations(c);
         }
 
         // ...
@@ -737,7 +770,7 @@ public class ModelFacade {
 
     /** Returns the list of Transitions outgoing from the given stateVertex.
      *
-     * @param statevertex 
+     * @param statevertex
      * @return Collection
      */
     public static Collection getOutgoings(Object stateVertex) {
@@ -764,7 +797,7 @@ public class ModelFacade {
             if (allEnds == null)
                 return emptyIterator();
 
-            // TODO: An Iterator filter would be nice here instead of the 
+            // TODO: An Iterator filter would be nice here instead of the
             // mucking around with the Collection.
             allEnds = new ArrayList(allEnds);
             allEnds.remove(handle);
@@ -949,6 +982,74 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /** This method returns all attributes of a given Classifier.
+     *
+     * @param classifier the classifier you want to have the attributes for
+     * @return a collection of the attributes
+     */
+    public static Collection getStructuralFeatures(Object classifier) {
+        Collection result = new ArrayList();
+        if (ModelFacade.isAClassifier(classifier)) {
+            MClassifier mclassifier = (MClassifier)classifier;
+
+            Iterator features = mclassifier.getFeatures().iterator();
+            while (features.hasNext()) {
+                MFeature feature = (MFeature)features.next();
+                if (ModelFacade.isAStructuralFeature(feature))
+                    result.add(feature);
+            }
+        }
+        return result;
+    }
+
+    /** This method returns all operations of a given Classifier
+     *
+     * @param classifier the classifier you want to have the operations for
+     * @return a collection of the operations
+     */
+    public static Collection getOperations(MClassifier mclassifier) {
+        Collection result = new ArrayList();
+        Iterator features = mclassifier.getFeatures().iterator();
+        while (features.hasNext()) {
+            MFeature feature = (MFeature)features.next();
+            if (ModelFacade.isAOperation(feature))
+                result.add(feature);
+        }
+        return result;
+    }
+
+    /**
+     * Returns all associated classes for some given classifier. Returns an
+     * empty collection if the given argument o is not a classifier. The given
+     * parameter is included in the returned collection if it has a self-
+     * referencing association.
+     * @param o
+     * @return Collection
+     */
+    public static Collection getAssociatedClasses(Object o) {
+        Collection col = new ArrayList();
+        if (o instanceof MClassifier) {
+            MClassifier classifier = (MClassifier)o;
+            Collection ends = classifier.getAssociationEnds();
+            Iterator it = ends.iterator();
+            Set associations = new HashSet();
+            while (it.hasNext()) {
+                associations.add(((MAssociationEnd)it.next()).getAssociation());
+            }
+            Collection otherEnds = new ArrayList();
+            it = associations.iterator();
+            while (it.hasNext()) {
+                otherEnds.addAll(((MAssociation)it.next()).getConnections());
+            }
+            otherEnds.removeAll(ends);
+            it = otherEnds.iterator();
+            while (it.hasNext()) {
+                col.add(((MAssociationEnd)it.next()).getType());
+            }
+        }
+        return col;
+    }
+
     ////////////////////////////////////////////////////////////////
     // Common getters
 
@@ -972,6 +1073,53 @@ public class ModelFacade {
 
         // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // Other querying methods
+
+    /**
+     * Returns the named model element in the namespace, null otherwise.
+     * @param namespace
+     * @param name of the model element
+     * @return model element
+     */
+    public static Object lookupNamespaceFor(Object o, String name) {
+        if (o instanceof MNamespace)
+            return ((MNamespace)o).lookup(name);
+        return null;
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // Model modifying methods
+
+    /** This method removes a feature from a classifier.
+     *
+     * @param classifier
+     * @param feature
+     */
+    public static void removeFeature(Object cls, Object feature) {
+        if (cls != null
+            && feature != null
+            && cls instanceof MClassifier
+            && feature instanceof MFeature) {
+            ((MClassifier)cls).removeFeature((MFeature)feature);
+        }
+    }
+
+    /**
+     * Sets a tagged value of some modelelement.
+     * @param model element
+     * @param tag
+     * @param value
+     */
+    public static void setTaggedValue(Object o, String tag, String value) {
+        if (o != null && o instanceof MModelElement) {
+		    MTaggedValue tv = MFactory.getDefaultFactory().createTaggedValue();
+		    tv.setModelElement((MModelElement)o);
+		    tv.setTag(tag);
+		    tv.setValue(value);
+        }
     }
 
     ////////////////////////////////////////////////////////////////

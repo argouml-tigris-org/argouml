@@ -32,7 +32,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
 
-import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
@@ -230,21 +229,6 @@ public class ExtensionMechanismsHelper {
             stereo.setNamespace(m.getModel());
         }
         m.setStereotype(stereo);
-    }
-
-    /**
-     * Sets a tagged value of some modelelement.
-     * @param model element
-     * @param tag
-     * @param value
-     */
-    public void setTaggedValue(Object o, String tag, String value) {
-        if (o != null && o instanceof MModelElement) {
-		    MTaggedValue tv = MFactory.getDefaultFactory().createTaggedValue();
-		    tv.setModelElement((MModelElement)o);
-		    tv.setTag(tag);
-		    tv.setValue(value);
-        }
     }
 }
 

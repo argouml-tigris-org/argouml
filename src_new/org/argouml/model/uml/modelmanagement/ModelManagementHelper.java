@@ -190,43 +190,6 @@ public class ModelManagementHelper {
     }
 
     /**
-     * Returns the name of a namespace.
-     * @param namespace
-     * @return name
-     */
-    public String getNamespaceName(Object o) {
-        String name = null;
-        if (o instanceof MNamespace)
-            name = ((MNamespace)o).getName();
-        return name;
-    }
-
-    /**
-     * Returns the namespace of a model element or another namespace.
-     * @param object
-     * @return namespace
-     */
-    public Object getNamespace(Object o) {
-        if (o instanceof MModelElement)
-            return ((MModelElement)o).getNamespace();
-        if (o instanceof MNamespace)
-            return ((MNamespace)o).getNamespace();
-        return null;
-    }
-
-    /**
-     * Returns the named model element in the namespace, null otherwise.
-     * @param namespace
-     * @param name of the model element
-     * @return model element
-     */
-    public Object lookupNamespaceFor(Object o, String name) {
-        if (o instanceof MNamespace)
-            return ((MNamespace)o).lookup(name);
-        return null;
-    }
-
-    /**
      * Move a modelelement to a new namespace. The way this is currently
      * implemented this means that ALL modelelements that share the same
      * namespace as the element to be moved are moved.
@@ -322,23 +285,5 @@ public class ModelManagementHelper {
 	    return;
 	}
 	ns.addOwnedElement(element);
-    }
-
-    /**
-     * Returns if the object is a model.
-     * @param object
-     * @return boolean
-     */
-    public boolean isModel(Object o) {
-        return (o instanceof MModel);
-    }
-
-    /**
-     * Returns if the object is a model element.
-     * @param object
-     * @return boolean
-     */
-    public boolean isModelElement(Object o) {
-        return (o instanceof MModelElement);
     }
 }

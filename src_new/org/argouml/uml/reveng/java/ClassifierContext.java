@@ -30,8 +30,7 @@
 
 package org.argouml.uml.reveng.java;
 
-import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.model.ModelFacade;
 
 /**
    This context is a specific classifier.
@@ -57,8 +56,7 @@ class ClassifierContext extends Context
 	throws ClassifierNotFoundException
     {
 	// Check if it is this interface
-	if(name.equals(CoreHelper.getHelper().getClassifierName(mClassifier)) &&
-	   CoreHelper.getHelper().isInterface(mClassifier)) {
+	if(name.equals(ModelFacade.getName(mClassifier)) && ModelFacade.isAInterface(mClassifier)) {
 	    return mClassifier;
 	}
 	else {
@@ -82,7 +80,7 @@ class ClassifierContext extends Context
 	throws ClassifierNotFoundException
     {
 	// Check if it is this classifier
-	if(classifierName.equals(CoreHelper.getHelper().getClassifierName(mClassifier))) {
+	if(classifierName.equals(ModelFacade.getName(mClassifier))) {
 	    return mClassifier;
 	}
 	else {

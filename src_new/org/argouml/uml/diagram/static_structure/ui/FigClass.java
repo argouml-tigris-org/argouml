@@ -49,8 +49,8 @@ import javax.swing.JMenu;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Notation;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
@@ -690,7 +690,7 @@ public class FigClass extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(MElementEvent)
      */
     protected void modelChanged(MElementEvent mee) {
-        
+
         if (getOwner() == null)
             return;
         MClass cls = (MClass) getOwner();
@@ -906,7 +906,7 @@ public class FigClass extends FigNodeModelElement {
         firePropChange("bounds", oldBounds, getBounds());
     }
 
-    
+
 
     /**
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
@@ -956,8 +956,8 @@ public class FigClass extends FigNodeModelElement {
     }
 
     /**
-     * Updates the attributes in the fig. Called from modelchanged if there is 
-     * a modelevent effecting the attributes and from renderingChanged in all 
+     * Updates the attributes in the fig. Called from modelchanged if there is
+     * a modelevent effecting the attributes and from renderingChanged in all
      * cases.
      */
     protected void updateAttributes() {
@@ -965,7 +965,7 @@ public class FigClass extends FigNodeModelElement {
         int xpos = _attrBigPort.getX();
         int ypos = _attrBigPort.getY();
         int acounter = 1;
-        Collection strs = UmlHelper.getHelper().getCore().getStructuralFeatures(cls);
+        Collection strs = ModelFacade.getStructuralFeatures(cls);
         if (strs != null) {
             Iterator iter = strs.iterator();
             Vector figs = _attrVec.getFigs();
@@ -1009,8 +1009,8 @@ public class FigClass extends FigNodeModelElement {
     }
 
     /**
-     * Updates the operations box. Called from modelchanged if there is 
-     * a modelevent effecting the attributes and from renderingChanged in all 
+     * Updates the operations box. Called from modelchanged if there is
+     * a modelevent effecting the attributes and from renderingChanged in all
      * cases.
      */
     protected void updateOperations() {
@@ -1018,7 +1018,7 @@ public class FigClass extends FigNodeModelElement {
         int xpos = _operBigPort.getX();
         int ypos = _operBigPort.getY();
         int ocounter = 1;
-        Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);
+        Collection behs = ModelFacade.getOperations(cls);
         if (behs != null) {
             Iterator iter = behs.iterator();
             Vector figs = _operVec.getFigs();
@@ -1119,7 +1119,7 @@ public class FigClass extends FigNodeModelElement {
                     MOperation oper = (MOperation) feat;
                     Iterator it2 = oper.getParameters().iterator();
                     while (it2.hasNext()) {
-                        MParameter param = (MParameter) it2.next();                      
+                        MParameter param = (MParameter) it2.next();
                         UmlModelEventPump.getPump().removeModelEventListener(this, param);
                     }
                 }

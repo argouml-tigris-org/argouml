@@ -27,7 +27,6 @@ import java.util.Collection;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.AbstractGoRule;
 
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -37,13 +36,13 @@ public class GoClassifierToBeh extends AbstractGoRule {
   public String getRuleName() {
     return Argo.localize ("Tree", "misc.class.operation");
   }
-   
-  public Collection getChildren(Object parent) { 
+
+  public Collection getChildren(Object parent) {
       if (ModelFacade.isAClassifier(parent)) {
-          return UmlHelper.getHelper().getCore().getOperations(parent);
+          return ModelFacade.getOperations(parent);
       }
       return null;
-  }   
+  }
 
   public boolean isLeaf(Object node) {
     return !(node instanceof MClassifier && getChildCount(node) > 0);

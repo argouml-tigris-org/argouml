@@ -45,7 +45,7 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+import org.argouml.model.ModelFacade;
 
 /**
  * Instances of this class interface the current diagram.
@@ -172,7 +172,7 @@ public class DiagramInterface {
      * @return The name for the diagram.
      */
     private String getDiagramName(Object p) {
-	return getDiagramName(ModelManagementHelper.getHelper().getNamespaceName(p));
+	return getDiagramName(ModelFacade.getName(p));
     }
 
     /**

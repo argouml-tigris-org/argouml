@@ -30,7 +30,7 @@
 
 package org.argouml.uml.reveng.java;
 
-import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+import org.argouml.model.ModelFacade;
 
 /**
    The context is the current available namespaces via import in the
@@ -76,13 +76,12 @@ abstract class Context
     */
     protected String getJavaName(Object mPackage)
     {
-	Object parent = ModelManagementHelper.getHelper().getNamespace(mPackage);
-	if(ModelManagementHelper.getHelper().isModel(parent)) {
-	    return ModelManagementHelper.getHelper().getNamespaceName(mPackage);
+	Object parent = ModelFacade.getNamespace(mPackage);
+	if(ModelFacade.isAModel(parent)) {
+	    return ModelFacade.getName(mPackage);
 	}
 	else if(parent != null) {
-	    return getJavaName(parent) + "."
-	           + ModelManagementHelper.getHelper().getNamespaceName(mPackage);
+	    return getJavaName(parent) + "." + ModelFacade.getName(mPackage);
 	}
 	else {
 	    return "";

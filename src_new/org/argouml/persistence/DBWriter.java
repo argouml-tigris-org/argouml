@@ -18,8 +18,8 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 
 import org.apache.log4j.Category;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.*;
 
 /**
@@ -51,14 +51,14 @@ public class DBWriter
 	try {
 	    InputStream is = new FileInputStream(configFile);
 	    props.load(is);
-	}	
+	}
 	catch (IOException e) {
         cat.error("Could not load DB properties from " + configFile, e);
 	    errorMessage("Could not load DB properties from " + configFile, e);
 	}
 
 	try {
-	    Class.forName(props.getProperty("driver")).newInstance();	    
+	    Class.forName(props.getProperty("driver")).newInstance();
 	}
 	catch (Exception e) {
             cat.error("Could not load the database driver!", e);
@@ -74,7 +74,7 @@ public class DBWriter
 	String dbConnectFormat = props.getProperty("dbConnectFormat");
 
 
- 
+
 	try {
 	    if (dbConnectFormat.equals("1")) {
 		Conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
@@ -116,7 +116,7 @@ public class DBWriter
 	 * @param model This is the model which will be stored using its name.
 	 */
     public void store(MModel model) {
-	
+
 	Statement stmt = null;
 	// this is TEMP CODE until UUIDs are set when obj is created !!!!!
 	UUIDManager.SINGLETON.createModelUUIDS((MNamespace)model);
@@ -149,7 +149,7 @@ public class DBWriter
 	// and uses the other private store() methods to store these.
 	private void store(MModel model, Statement stmt) throws SQLException {
 
-		// first store the model itself 
+		// first store the model itself
 		stmtString = "REPLACE INTO tModel (uuid) VALUES ('";
 		stmtString += model.getUUID()+ "')";
 		stmt.executeUpdate(stmtString);
@@ -258,7 +258,7 @@ public class DBWriter
 		store((MClassifier)cls, stmt);
     }
 
-	private void store(MClassifier cls, Statement stmt) throws SQLException {		
+	private void store(MClassifier cls, Statement stmt) throws SQLException {
 		stmtString = "REPLACE INTO tClassifier (uuid) VALUES ('";
 		stmtString += cls.getUUID()+ "')";
 		stmt.executeUpdate(stmtString);
@@ -266,10 +266,10 @@ public class DBWriter
 		store((MGeneralizableElement)cls, stmt);
 
 		// in case the Classifier has attributes or operations, store these.
-		Vector attributes = new Vector(UmlHelper.getHelper().getCore().getStructuralFeatures(cls));
+		Vector attributes = new Vector(ModelFacade.getStructuralFeatures(cls));
 		for ( int i = 0; i < attributes.size(); i++) store((MAttribute)attributes.elementAt(i),stmt);
 
-		Vector operations = new Vector(UmlHelper.getHelper().getCore().getOperations(cls));
+		Vector operations = new Vector(ModelFacade.getOperations(cls));
 		for ( int i = 0; i < operations.size(); i++) store((MOperation)operations.elementAt(i),stmt);
     }
 
@@ -302,7 +302,7 @@ public class DBWriter
 			store(me.getConnection(0),stmt);
 			store(me.getConnection(1),stmt);
 		}
-		
+
 		store((MModelElement)me, stmt);
     }
 
@@ -348,7 +348,7 @@ public class DBWriter
 		store((MModelElement)me,stmt);
 	}
 
-	private void store(MInterface me, Statement stmt) throws SQLException {		
+	private void store(MInterface me, Statement stmt) throws SQLException {
 		stmtString = "REPLACE INTO tInterface (uuid) VALUES ('";
 		stmtString += me.getUUID()+ "')";
 		stmt.executeUpdate(stmtString);
@@ -356,7 +356,7 @@ public class DBWriter
 		store((MClassifier)me, stmt);
     }
 
-	private void store(MUseCase me, Statement stmt) throws SQLException {		
+	private void store(MUseCase me, Statement stmt) throws SQLException {
 		stmtString = "REPLACE INTO tUseCase (uuid) VALUES ('";
 		stmtString += me.getUUID()+ "')";
 		stmt.executeUpdate(stmtString);
@@ -364,7 +364,7 @@ public class DBWriter
 		store((MClassifier)me, stmt);
     }
 
-	private void store(MActor me, Statement stmt) throws SQLException {		
+	private void store(MActor me, Statement stmt) throws SQLException {
 		stmtString = "REPLACE INTO tActor (uuid) VALUES ('";
 		stmtString += me.getUUID()+ "')";
 		stmt.executeUpdate(stmtString);
@@ -455,7 +455,7 @@ public class DBWriter
 		if (me.getVisibility() != null) stmtString += me.getVisibility().getValue() + ",'";
 		else stmtString += "-1,'";
 		if (me.getOwner() != null) stmtString += me.getOwner().getUUID() + "')";
-		else stmtString += "')";		
+		else stmtString += "')";
 		stmt.executeUpdate(stmtString);
 
 		store((MModelElement)me,stmt);
@@ -474,7 +474,7 @@ public class DBWriter
 		if (me.isAbstract()) bool = "1"; else bool = "0";
 		stmtString += bool + " ,'";
 		if (me.getSpecification() != null) stmtString += me.getSpecification() + "')";
-		else stmtString += "')";		
+		else stmtString += "')";
 		stmt.executeUpdate(stmtString);
 
 		store((MBehavioralFeature)me,stmt);
@@ -507,7 +507,7 @@ public class DBWriter
 		if (me.getBehavioralFeature() != null) stmtString += me.getBehavioralFeature().getUUID() + "','";
 		else stmtString += "','";
 		if (me.getType() != null) stmtString += me.getType().getUUID() + "')";
-		else stmtString += "')";	
+		else stmtString += "')";
 		stmt.executeUpdate(stmtString);
 
 		MClassifier type = me.getType();
@@ -515,7 +515,7 @@ public class DBWriter
 			store(type, stmt);
 
 		store((MModelElement)me,stmt);
-	}		
+	}
 
 	/**
 	 * only for testing, do not use main!
@@ -523,5 +523,5 @@ public class DBWriter
     public static void main(String[] Args) throws Exception {
 	MModel mymodel = UmlFactory.getFactory().getModelManagement().createModel();
 	DBWriter writer = new DBWriter();
-    } 
+    }
 };
