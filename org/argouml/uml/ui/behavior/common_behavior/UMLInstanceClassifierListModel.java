@@ -27,6 +27,10 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
+/**
+ * The model for instances of a classifier.
+ *
+ */
 public class UMLInstanceClassifierListModel 
     extends UMLModelElementListModel2 {
 
