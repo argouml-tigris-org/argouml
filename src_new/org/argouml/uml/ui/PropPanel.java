@@ -43,6 +43,8 @@ import org.argouml.uml.*;
 import org.argouml.swingext.*;
 import java.util.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import org.argouml.util.ConfigLoader;
@@ -594,6 +596,14 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         Object target = getTarget();
         if(target instanceof MBase) {
             MBase base = (MBase) target;
+            Object projectTarget = ProjectBrowser.TheInstance.getTarget();
+            ProjectBrowser.TheInstance.setTarget(base);
+            ActionEvent event = new ActionEvent(this, 1, "delete");
+	        ActionRemoveFromModel.SINGLETON.actionPerformed(event);
+	       	if (!target.equals(projectTarget)) {
+        		ProjectBrowser.TheInstance.setTarget(projectTarget);
+        	}
+	                    /*
             Object newTarget = null;
             if(base instanceof MFeature) {
                 newTarget = ((MFeature) base).getOwner();
@@ -607,6 +617,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
             if(newTarget != null) {
                 navigateTo(newTarget);
             }
+            */
         }
         // 2002-07-15
             // Jaap Branderhorst

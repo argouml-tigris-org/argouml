@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Vector;
 
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
@@ -45,8 +47,11 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
+import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
+import ru.novosoft.uml.model_management.MModel;
+import sun.security.action.GetBooleanAction;
 
 /**
  * Helper class for UML Foundation::Core Package.
@@ -355,6 +360,39 @@ public class CoreHelper {
 		MStereotype stereo = ExtensionMechanismsFactory.getFactory().buildStereotype(dep, "support", ProjectBrowser.TheInstance.getProject().getModel());
 		return dep;
 	}
+	
+	public Collection getAllBehavioralFeatures(MModelElement element) {
+		Iterator it = element.getModelElementContents().iterator();
+		List list = new ArrayList();
+		while (it.hasNext()) {
+			Object o = it.next();
+			if (o instanceof MClassifier) {
+				list.addAll(getAllBehavioralFeatures((MClassifier)o));
+			} else {
+				list.addAll(getAllBehavioralFeatures((MModelElement)it.next()));
+			}
+			
+		}
+		return list;
+	}
+	
+	public Collection getAllBehavioralFeatures(MClassifier clazz) {
+		List features = clazz.getFeatures();
+		ListIterator it = features.listIterator();
+		while (it.hasNext()) {
+			Object o = it.next();
+			if (o instanceof MStructuralFeature) {
+				it.remove();
+			}
+		}
+		return features;
+	}
+	
+	public Collection getAllBehavioralFeatures() {
+		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		return getAllBehavioralFeatures(model);
+	}
+		
 	
 }
 

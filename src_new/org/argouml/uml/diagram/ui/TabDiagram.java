@@ -64,7 +64,7 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
     //_toolBar = d.getToolBar();
     //_jgraph.setToolBar(_toolBar); //I wish this had worked...
     //add(_toolBar, BorderLayout.NORTH);
-    JPanel p = new JPanel();
+    JPanel p = new JPanel(); 
     p.setLayout(new BorderLayout());
     p.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
     p.add(_jgraph, BorderLayout.CENTER);

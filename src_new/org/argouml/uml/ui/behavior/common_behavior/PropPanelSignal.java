@@ -36,6 +36,7 @@ import javax.swing.*;
 
 import org.argouml.application.api.*;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
@@ -93,7 +94,7 @@ public class PropPanelSignal extends PropPanelModelElement {
 	//new PropPanelButton(this,buttonPanel,_realizationIcon, Argo.localize("UMLMenu", "button.add-realization"),"addRealization",null);
 	new PropPanelButton(this,buttonPanel,_signalIcon, Argo.localize("UMLMenu", "button.add-signal"),"newSignal",null);
 	new PropPanelButton(this,buttonPanel,_receptionIcon, Argo.localize("UMLMenu", "button.add-reception"), "newReception", null);
-
+	new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-signal"),"removeElement",null);
 
     }
 
@@ -146,7 +147,19 @@ public class PropPanelSignal extends PropPanelModelElement {
 	 * @param index
 	 */
     public void addContext(Integer index) {
-    	// this should not create a new one but raise a window to add existing ones
+    	Object target = getTarget();
+    	if (target instanceof MSignal) {
+    		MSignal signal = (MSignal)target;	
+	    	Vector choices = new Vector();
+	    	Vector selected = new Vector();
+	    	choices.addAll(CoreHelper.getHelper().getAllBehavioralFeatures());
+	    	selected.addAll(signal.getContexts());
+	    	UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-contexts"), true, true);
+	    	int returnValue = dialog.showDialog(ProjectBrowser.TheInstance);
+	    	if (returnValue == JOptionPane.OK_OPTION) {
+	    		signal.setContexts(dialog.getSelected());
+	    	}
+    	}
     }
     
 	/**
@@ -196,6 +209,8 @@ public class PropPanelSignal extends PropPanelModelElement {
     		signal.removeReception(reception);
     	}
     }
+    
+    
   
     
 
