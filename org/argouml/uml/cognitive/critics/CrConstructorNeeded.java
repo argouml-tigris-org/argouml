@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,39 +22,19 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-
 // File: CrConstructorNeeded.java
 // Classes: CrConstructorNeeded
 // Original Author: jrobbins@ics.uci.edu
-// $Id$
-
-// 28 Jan 2002: Jeremy Bennett (mail@jeremybennett.com). Bug in detecting
-// constructors with explicit void returns fixed.
-
-// 31 Jan 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to recognise
-// any operation with stereotype <<create>> as constructor.
-
-// 4 Feb 2002: Jeremy Bennett (mail@jeremybennett.com). Code factored by use of
-// static methods in central org.argouml.cognitive.critics.CriticUtils utility
-// class.
-
-// 15 Feb 2002: Jeremy Bennett (mail@jeremybennett.com). Ccomments corrected.
-
 
 package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
+// Uses Model through ModelFacade.
+import org.argouml.model.ModelFacade;
 
 /**
  * <p> A critic to detect when a class can never have instances (of itself or
@@ -61,17 +42,6 @@ import org.argouml.cognitive.critics.*;
  *
  * <p>The critic will trigger whenever a class has instance variables that are
  * uninitialised and there is no constructor.</p>
- *
- * <p>A constructor is any operation with stereotype &laquo;create&raquo;
- * (the UML view of the world, which is preferred). We'll also accept
- * &laquo;Create&raquo;, although it's not strictly UML standard.</p>
- *
- * <p>We also accept a constructor defined as an operation with the same
- * name as the class, which is not static and which returns no result (the
- * Java view of the world).</p>
- *
- * <p>Internally we use some of the static utility methods of the {@link
- * org.argouml.cognitive.critics.CriticUtils CriticUtils} class.</p>
  *
  * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_constructor_needed">ArgoUML User Manual: Constructor Needed</a>
  */
@@ -107,14 +77,6 @@ public class CrConstructorNeeded extends CrUML {
      * initialised. If not there is no problem. If there are any uninitialised
      * instance variables, then look for a constructor.</p>
      *
-     * <p>A constructor is any operation with stereotype &laquo;create&raquo;
-     * (the UML view of the world, which is preferred). We'll also accept
-     * &laquo;Create&raquo;, although it's not strictly UML standard.</p>
-     *
-     * <p>We also accept a constructor defined as an operation with the same
-     * name as the class, which is not static and which returns no result (the
-     * Java view of the world).</p>
-     *
      * @param  dm    the {@link java.lang.Object Object} to be checked against
      *               the critic.
      *
@@ -129,26 +91,38 @@ public class CrConstructorNeeded extends CrUML {
     public boolean predicate2(Object dm, Designer dsgr) {
 
         // Only look at classes
-
-        if (!(dm instanceof MClass)) {
+        if (!(ModelFacade.isAClass(dm))) {
             return NO_PROBLEM;
         }
 
-        // Cast to the class, check for uninitialised instance variables and
-        // constructor as per JavaDoc above.
+        // Check for uninitialised instance variables and
+        // constructor.
 
-        MClass cls = (MClass) dm;
+        Iterator opers = ModelFacade.getOperations(dm);
 
-        if (!(CriticUtils.hasUninitInstanceVariables(cls))) {
-            return NO_PROBLEM;
-        }
+	while (opers.hasNext()) {
+	    if (ModelFacade.isConstructor(opers.next())) {
+		// There is a constructor.
+		return NO_PROBLEM;
+	    }
+	}
 
-        if (CriticUtils.hasConstructor(cls)) {
-            return NO_PROBLEM;
-        }
-        else {
-            return PROBLEM_FOUND;
-        }
+	Iterator attrs = ModelFacade.getAttributes(dm);
+
+	while (attrs.hasNext()) {
+	    Object attr = attrs.next();
+
+	    if (!ModelFacade.isInstanceScope(attr))
+		continue;
+
+	    if (ModelFacade.isInitialized(attr))
+		continue;
+
+	    // We have found one with instance scope that is not initialized.
+	    return PROBLEM_FOUND;
+	}
+
+	return NO_PROBLEM;
     }
 
 } /* end class CrConstructorNeeded */

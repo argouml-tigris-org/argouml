@@ -1,4 +1,5 @@
-// Copyright (c) 1996-02 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,22 +25,19 @@
 // File: CrNoAssociations.javoa
 // Classes: CrNoAssociations
 // Original Author: jrobbins@ics.uci.edu
-// $Id$
 
 package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
-import javax.swing.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
+// Uses Model through ModelFacade
+import org.argouml.model.ModelFacade;
+
 /** A critic to detect when a class can never have instances (of
- *  itself of any subclasses). */
+ *  itself or any subclasses). */
 
 public class CrNoAssociations extends CrUML {
 
@@ -50,41 +48,56 @@ public class CrNoAssociations extends CrUML {
     addTrigger("associationEnd");
   }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MClassifier)) return NO_PROBLEM;
-    MClassifier cls = (MClassifier) dm;
-    if (!(CriticUtils.isPrimaryObject(cls))) return NO_PROBLEM;
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(ModelFacade.isAClassifier(dm)))
+	    return NO_PROBLEM;
+	if (!(ModelFacade.isPrimaryObject(dm)))
+	    return NO_PROBLEM;
 
+	// types can probably have associations, but we should not nag at them
+	// not having any.
+	// utility is a namespace collection - also not strictly required 
+	// to have associations.
+	if (ModelFacade.isType(dm))
+	    return NO_PROBLEM;
+	if (ModelFacade.isUtility(dm))
+	    return NO_PROBLEM;
 
-    // types can probably have associations, but we should not nag at them
-    // not having any.
-    // utility is a namespace collection - also not strictly required to have
-    // associations.
-    if (CriticUtils.hasStereotype(cls, "type") ||
-        CriticUtils.hasStereotype(cls, "utility"))
-        return NO_PROBLEM;
+	//TODO: different critic or special message for classes
+	//that inherit all ops but define none of their own.
 
-    //TODO: different critic or special message for classes
-    //that inherit all ops but define none of their own.
+	if (findAssociation(dm, 0))
+	    return NO_PROBLEM;
+	return PROBLEM_FOUND;
+    }
 
-    Collection asc = getInheritedAssociationEnds(cls,0);
-    if (asc == null || asc.size() == 0) return PROBLEM_FOUND;
-    return NO_PROBLEM;
-  }
+    /**
+     * @param handle the classifier to examine
+     * @param number of levels searched
+     * @returns true if an association can be found in this classifier
+     *		or in any of its generalizations.
+     */
+    private boolean findAssociation(Object dm, int depth) {
+	if (ModelFacade.getAssociationEnds(dm).hasNext())
+	    return true;
 
-  private Collection getInheritedAssociationEnds(MClassifier cls,int depth)
-  {
-     Vector res = new Vector(cls.getAssociationEnds());
-     Collection inh = cls.getGeneralizations();
-     for (Iterator iter = inh.iterator(); iter.hasNext();) {
-        MGeneralization gen = (MGeneralization) iter.next();
-	MGeneralizableElement parent = gen.getParent();
-        if (parent != cls && parent instanceof MClassifier && depth < 50) {
-            Collection superassocs = getInheritedAssociationEnds((MClassifier) parent,depth+1);
-            res.addAll(superassocs);
-        }
-     }
-     return res;
-  };
+	if (depth > 50)
+	    return false;
+
+	Iterator iter = ModelFacade.getGeneralizations(dm);
+
+	while (iter.hasNext()) {
+	    Object parent = ModelFacade.getParent(iter.next());
+
+	    if (parent == dm)
+		continue;
+
+	    if (ModelFacade.isAClassifier(parent))
+		if (findAssociation(parent, depth + 1))
+		    return true;
+	}
+	return false;
+    }
+
 } /* end class CrNoAssociations */
 

@@ -44,9 +44,6 @@ import org.argouml.model.ModelFacade;
  * <p>This is the first well-formedness rule for associations in the UML 1.3
  *   standard (see section 2.5.3 of the standard).</p>
  *
- * <p>Internally we use some of the static utility methods of the {@link
- * org.argouml.cognitive.critics.CriticUtils CriticUtils} class.</p>
- *
  * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_dup_role_names">ArgoUML User Manual: Duplicate end (role) names for &lt;association&gt;</a>
  */
 

@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,28 +22,19 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: CrNavFromInterface.java
 // Classes: CrNavFromInterface.java
 // Original Author: jrobbins@ics.uci.edu
-// $Id$
-
-// 27 Feb 2002: Jeremy Bennett (mail@jeremybennett.com). Fixed to deal with
-// picking up navigation problems at the wrong end! Solution suggested by
-// Chavdar Botev. Tidied up to remove deprecated stuff.
 
 package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
+// Use Model through ModelFacade
+import org.argouml.model.ModelFacade;
 
 /**
  * <p> A critic to detect navigation from an Interface to a Class in an
@@ -50,11 +42,7 @@ import org.argouml.cognitive.critics.*;
  * Interface to hold state to represent the association reference.</p>
  *
  * <p>The critic will trigger whenever an association between an interface and
- * a class is navigable <em>from</em> the interface. In an ideal world, it
- * wouldn't be possible to create this in ArgoUML.</p>
- *
- * <p>Internally we use some of the static utility methods of the {@link
- * org.argouml.cognitive.critics.CriticUtils CriticUtils} class.</p>
+ * a class is navigable <em>from</em> the interface.</p>
  *
  * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_nav_from_interface">ArgoUML User Manual: N</a>
  */
@@ -119,24 +107,19 @@ public class CrNavFromInterface extends CrUML {
 
         // Only look at Associations
 
-        if (!(dm instanceof MAssociation)) {
+        if (!(ModelFacade.isAAssociation(dm))) {
             return NO_PROBLEM;
         }
 
-        if (dm instanceof MAssociationRole) {
+        if (ModelFacade.isAAssociationRole(dm)) {
             return NO_PROBLEM;
         }
-
-        // Get the Association and its connections.
-
-        MAssociation asc = (MAssociation) dm;
-        Collection conns = asc.getConnections();
 
         // Iterate over all the AssociationEnds. We only have a problem if 1)
         // there is an end connected to an Interface and 2) an end other than
         // that end is navigable. 
 
-        Iterator enum = conns.iterator();
+        Iterator enum = ModelFacade.getConnections(dm);
 
         boolean haveInterfaceEnd  = false ;  // End at an Interface?
         boolean otherEndNavigable = false ;  // Navigable other end?
@@ -145,7 +128,7 @@ public class CrNavFromInterface extends CrUML {
 
             // The next AssociationEnd
 
-            MAssociationEnd ae = (MAssociationEnd) enum.next();
+            Object ae = enum.next();
 
             // If its an interface we have an interface end, otherwise its
             // something else and we should see if it is navigable. We don't
@@ -153,10 +136,12 @@ public class CrNavFromInterface extends CrUML {
             // ClassifierRole, since we have effectively eliminated that
             // possiblity in rejecting AssociationRoles above.
 
-            if (ae.getType() instanceof MInterface) {
+	    Object type = ModelFacade.getType(ae);
+
+            if (ModelFacade.isAInterface(type)) {
                 haveInterfaceEnd = true;
             }
-            else if (ae.isNavigable()) {
+	    else if (ModelFacade.isNavigable(ae)) {
                 otherEndNavigable = true;
             }
 
