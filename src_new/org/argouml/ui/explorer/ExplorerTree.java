@@ -26,6 +26,7 @@ package org.argouml.ui.explorer;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.beans.PropertyChangeListener;
@@ -306,6 +307,10 @@ extends DisplayTextTree
                 }
             }
         }
+        
+        if(this.getSelectionCount()>0){
+            scrollRowToVisible(this.getSelectionRows()[0]);
+        }
     }
     
     /**
@@ -315,19 +320,35 @@ extends DisplayTextTree
     class NavigationTreeSelectionListener implements TreeSelectionListener {
         
         /**
-         * change in nav tree selection -> set target in project browser.
+         * change in nav tree selection -> set target in target manager.
          */
         public void valueChanged(TreeSelectionEvent e) {
             
+            if(!updatingSelection){
+                updatingSelection = true;
+                
+                Set targets = new HashSet();
+                
+                //get existing selection
+                for (int i = 0; i < getSelectionCount(); i++) {
+                    Object rowItem = ((DefaultMutableTreeNode)
+                        getPathForRow(getSelectionRows()[i])
+                        .getLastPathComponent())
+                            .getUserObject();
+                    targets.add(rowItem);
+                }
+                
+                // add new selection from event
                 TreePath[] paths = e.getPaths();
-                List targets = new ArrayList();
                 if (paths != null) {
+                    // normally this will only be 1 path
                     for (int i = 0; i < paths.length; i++) {
+                        
                         if (e.isAddedPath(paths[i])){
                             
                             Object element = ((DefaultMutableTreeNode)paths[i]
-                                                .getLastPathComponent())
-                                                    .getUserObject();
+                                .getLastPathComponent())
+                                .getUserObject();
                             
                             // add a new target for notifying the other views
                             targets.add(element);
@@ -337,10 +358,10 @@ extends DisplayTextTree
                             for (int row = 0; row < rows; row++) {
                                 Object rowItem =
                                 ((DefaultMutableTreeNode)getPathForRow(row)
-                                .getLastPathComponent())
-                                .getUserObject();
-                                if (rowItem == element && 
-                                    !(isRowSelected(row)) ) {
+                                    .getLastPathComponent())
+                                    .getUserObject();
+                                if (rowItem == element &&
+                                !(isRowSelected(row)) ) {
                                     addSelectionRow(row);
                                 }
                             }
@@ -348,6 +369,8 @@ extends DisplayTextTree
                     }
                 }
                 TargetManager.getInstance().setTargets(targets);
+                updatingSelection = false;
+            }
         }
     }
     
@@ -358,12 +381,17 @@ extends DisplayTextTree
          */
         private void setTargets(Object[] targets) {
             
+            if(!updatingSelection){
+                updatingSelection = true;
+                
                 if (targets.length <= 0) {
                     clearSelection();
                 } else {
                     
                     setSelection(targets);
                 }
+                updatingSelection = false;
+            }
         }
         
         /**
