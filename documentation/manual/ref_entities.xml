@@ -1930,7 +1930,13 @@ There are no
             conventions for naming diagrams. By default, &argouml; uses
             the (space separated) diagram name and a sequence number,
             thus <literal>Use&nbsp;Case&nbsp;Diagram&nbsp;1</literal>.
-          </para></listitem>
+            </para>
+            
+            <tip><para>
+              This name is used to generate a filename when activating the 
+              <quote>Save Graphics...</quote> menu-item.
+            </para></tip>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>

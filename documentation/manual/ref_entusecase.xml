@@ -76,9 +76,13 @@ Description of all the artifacts associated with use case diagrams within
       <title>&argouml; Limitations Concerning Use Case Diagrams</title>
 
       <para>
-Use case diagrams are now well supported within &argouml;. 
-The only limitation is that extension points cannot be shown in a
-        separate compartment on the use case.</para>
+		Use case diagrams are now well supported within &argouml;. 
+		There still are some minor limitations though.
+		One is that extension points may be shown in a
+        separate compartment on the use case, 
+        but this is not retained after 
+        saving and reloading.
+      </para>
 
       <note>
         <para>
