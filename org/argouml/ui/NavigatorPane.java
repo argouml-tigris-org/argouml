@@ -159,7 +159,7 @@ public class NavigatorPane
         
         combo.addItemListener((ExplorerTreeModel) tree.getModel());
         orderByCombo.addItemListener((ExplorerTreeModel) tree.getModel());
-        PerspectiveManager.getInstance().loadDefaultPerspectives();
+        PerspectiveManager.getInstance().loadUserPerspectives();
     }
 
     ////////////////////////////////////////////////////////////////

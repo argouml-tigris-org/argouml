@@ -36,6 +36,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -105,6 +106,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
     private JButton moveUpButton, moveDownButton;
     private JButton addRuleButton;
     private JButton removeRuleButton;
+    private JButton resetToDefaultButton;
     
     private JList   perspectiveList;
     private JList   perspectiveRulesList;
@@ -186,20 +188,39 @@ public class PerspectiveConfigurator extends ArgoDialog {
     private void makeButtons() {
         newPerspectiveButton = new JButton();
         nameButton(newPerspectiveButton, "button.new");
+        newPerspectiveButton.setToolTipText(
+                Translator.localize("button.new.tooltip"));
+        
         removePerspectiveButton = new JButton();
         nameButton(removePerspectiveButton, "button.remove");
+        removePerspectiveButton.setToolTipText(
+                Translator.localize("button.remove.tooltip"));
+        
         duplicatePerspectiveButton = new JButton();
         nameButton(duplicatePerspectiveButton, "button.duplicate");
+        duplicatePerspectiveButton.setToolTipText(
+                Translator.localize("button.duplicate.tooltip"));
+        
         moveUpButton = new JButton();
         nameButton(moveUpButton, "button.move-up");
+        moveUpButton.setToolTipText(
+                Translator.localize("button.move-up.tooltip"));
+        
         moveDownButton = new JButton();
         nameButton(moveDownButton, "button.move-down");
+        moveDownButton.setToolTipText(
+                Translator.localize("button.move-down.tooltip"));
         
         addRuleButton = new JButton(">>");
         addRuleButton.setToolTipText(Translator.localize("button.add-rule"));
         removeRuleButton = new JButton("<<");
         removeRuleButton.setToolTipText(Translator.localize(
                 "button.remove-rule"));
+        
+        resetToDefaultButton = new JButton();
+        nameButton(resetToDefaultButton, "button.restore-defaults");
+        resetToDefaultButton.setToolTipText(
+                Translator.localize("button.restore-defaults.tooltip"));
         
         //disable the buttons for now, since no selection has been made yet
         removePerspectiveButton.setEnabled(false);
@@ -243,12 +264,13 @@ public class PerspectiveConfigurator extends ArgoDialog {
         gb.setConstraints(persPanel, c);
         configPanelNorth.add(persPanel);
         
-        JPanel persButtons = new JPanel(new GridLayout(5, 1, 0, 5));
+        JPanel persButtons = new JPanel(new GridLayout(6, 1, 0, 5));
         persButtons.add(newPerspectiveButton);
         persButtons.add(removePerspectiveButton);
         persButtons.add(duplicatePerspectiveButton);
         persButtons.add(moveUpButton);
         persButtons.add(moveDownButton);
+        persButtons.add(resetToDefaultButton);
         JPanel persButtonWrapper =
 	    new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
         persButtonWrapper.add(persButtons);
@@ -332,6 +354,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         moveDownButton.addActionListener(new MoveDownListener());
         addRuleButton.addActionListener(new RuleListener());
         removeRuleButton.addActionListener(new RuleListener());
+        resetToDefaultButton.addActionListener(new ResetListener());
         
         perspectiveList.addListSelectionListener(
                 new PerspectiveListSelectionListener());
@@ -475,6 +498,27 @@ public class PerspectiveConfigurator extends ArgoDialog {
             }
             
             PerspectiveManager.getInstance().saveUserPerspectives();
+        }
+    }
+
+    /**
+     * Handles pressing the Reset-To-Default button. <p>
+     * 
+     * Resets all prerspectives to the build-in defaults.
+     */
+    class ResetListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            
+            Collection c = 
+                PerspectiveManager.getInstance().getDefaultPerspectives();
+            if (c.size() > 0) {
+                perspectiveListModel.removeAllElements();
+                Iterator it = c.iterator();
+                while (it.hasNext()) {
+                    perspectiveListModel.addElement(it.next());
+                }
+                updatePersLabel();
+            }
         }
     }
     
