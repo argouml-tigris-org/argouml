@@ -52,9 +52,9 @@ public class UMLAssociationEndTargetScopeCheckbox extends UMLCheckBox2 {
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {
-        if (getTarget() != null)
-            setSelected(((MAssociationEnd)getTarget()).getTargetScope().equals(MScopeKind.CLASSIFIER) ? true : false);
-            
+        if (getTarget() != null) {
+            MAssociationEnd associationEnd = (MAssociationEnd)getTarget();
+            setSelected(MScopeKind.CLASSIFIER.equals(associationEnd.getTargetScope()));
+        }
     }
-
 }

@@ -34,27 +34,31 @@ import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelAssociationEnd;
 import org.argouml.util.ConfigLoader;
 
+import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
+
+
 public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
 
+    /**
+     * Constructs the proppanel and places all scrollpanes etc. on the canvas.
+     * @see java.lang.Object#Object()
+     */
     public PropPanelAssociationEndRole() {
-        super("AssociationEndRole", ConfigLoader.getTabPropsOrientation());
-        
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
+        super("AssociationEndRoleRole", ConfigLoader.getTabPropsOrientation());
+        setAssociationLabel(Argo.localize("UMLMenu", "label.association-role"));
+        createControls(MAssociationEndRole.class);
+        positionStandardControls();
+        positionControls();
+    }
+
+    protected void positionControls() {
         
         JList baseList = new UMLLinkedList(new UMLAssociationEndRoleBaseListModel());
         baseList.setVisibleRowCount(1);
-        addField(Argo.localize("UMLMenu", "label.base"), 
-            new JScrollPane(baseList));
+        addField(Argo.localize("UMLMenu", "label.base"), new JScrollPane(baseList));
         
-        add(LabelledLayout.getSeperator());
-        
-        
-        
-
-        // makeFields(mclass);
+        super.positionControls();
     }
-
     
 } /* end class PropPanelAssociationEndRole */
 
