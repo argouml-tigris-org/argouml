@@ -28,15 +28,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.JButton;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.ListSelectionModel;
+import javax.swing.JOptionPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.ui.ArgoDialog;
@@ -53,9 +55,16 @@ import org.argouml.uml.generator.Generator2;
  */
 public class SourcePathDialog extends ArgoDialog implements ActionListener {
 
-    private SrcPathTableModel srcPathTableModel = new SrcPathTableModel();
+    private SourcePathController srcPathCtrl = new SourcePathControllerImpl();
+    
+    private SourcePathTableModel srcPathTableModel = 
+        srcPathCtrl.getSourcePathSettings();
 
     private JTable srcPathTable;
+    
+    private JButton delButton;
+    
+    private ListSelectionModel rowSM;
 
     /**
      * The constructor.
@@ -71,9 +80,19 @@ public class SourcePathDialog extends ArgoDialog implements ActionListener {
         srcPathTable = new JTable();
         srcPathTable.setModel(srcPathTableModel);
         srcPathTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        // Hack: don't show first column, where the model element object is 
+        // placed.
         TableColumn elemCol = srcPathTable.getColumnModel().getColumn(0);
         elemCol.setMinWidth(0);
         elemCol.setMaxWidth(0);
+        
+        delButton = new JButton(Translator.localize("button.delete"));
+        delButton.setEnabled(false);
+        addButton(delButton, 0);
+        
+        rowSM = srcPathTable.getSelectionModel();
+        rowSM.addListSelectionListener(new SelectionListener());
+        delButton.addActionListener(this);
 
         setContent(new JScrollPane(srcPathTable));
     }
@@ -91,72 +110,86 @@ public class SourcePathDialog extends ArgoDialog implements ActionListener {
         if (e.getSource() == getOkButton()) {
             buttonOkActionPerformed();
         }
+        // Delete Button
+        if (e.getSource() == delButton) {
+            deleteSelectedSettings();
+        }
     }
 
     /**
      * The OK button is pressed. 
      */
-    public void buttonOkActionPerformed() {
-        for (int i = 0; i < srcPathTableModel.getRowCount(); i++) {
-            Object elem = srcPathTableModel.getValueAt(i, 0);
-            String path = (String) srcPathTableModel.getValueAt(i, 3);
-            if (elem != null
-                && path != null
-                && !path.equals(ModelFacade.getTaggedValue(elem, "src_path"))) {
-                ModelFacade.setTaggedValue(elem, "src_path", path);
+    private void buttonOkActionPerformed() {
+        srcPathCtrl.setSourcePath(srcPathTableModel);
+    }
+    
+    /**
+     * Retrieve the selected rows indexes.
+     */
+    private int[] getSelectedIndexes() {
+        int firstSelectedRow = rowSM.getMinSelectionIndex();
+        int lastSelectedRow = rowSM.getMaxSelectionIndex();
+        LinkedList selectedIndexesList = new LinkedList();
+        int numSelectedRows = 0;
+        for (int i = firstSelectedRow; i <= lastSelectedRow; i++) {
+            if (rowSM.isSelectedIndex(i)) {
+                numSelectedRows++;
+                selectedIndexesList.add(new Integer(i));
+            }
+        }
+        int[] indexes = new int[selectedIndexesList.size()];
+        java.util.Iterator it = selectedIndexesList.iterator();
+        for (int i = 0; i < indexes.length && it.hasNext(); i++) {
+            indexes[i] = ((Integer) it.next()).intValue();
+        }
+        return indexes;
+    }
+    
+    /**
+     * Delete the source path settings of the selected table rows.
+     */
+    private void deleteSelectedSettings() {
+        // find selected rows and make a list of the model elements 
+        // that are selected
+        int[] selectedIndexes = getSelectedIndexes();
+        
+        // confirm with the user that he wants to delete, presenting the 
+        // list of settings to delete
+        StringBuffer msg = new StringBuffer();
+        msg.append(Translator.localize("dialog.source-path-del.question"));
+        for (int i = 0; i < selectedIndexes.length; i++) {
+            msg.append("\n");
+            msg.append(srcPathTableModel.getMEName(selectedIndexes[i]));
+            msg.append(" (");
+            msg.append(srcPathTableModel.getMEType(selectedIndexes[i]));
+            msg.append(")");
+        }
+        
+        int res = JOptionPane.showConfirmDialog(this, 
+            msg.toString(), Translator.localize("dialog.title.source-path-del"), 
+            JOptionPane.OK_CANCEL_OPTION);
+        
+        if (res == JOptionPane.OK_OPTION) {
+            // procede with the deletion in the model
+            int firstSel = rowSM.getMinSelectionIndex();
+            for (int i = 0; i < selectedIndexes.length && firstSel != -1; i++) {
+                srcPathCtrl.deleteSourcePath(srcPathTableModel.getModelElement(firstSel));
+                srcPathTableModel.removeRow(firstSel);
+                firstSel = rowSM.getMinSelectionIndex();
+            }
+            // disable the button since no row will be selected now
+            delButton.setEnabled(false);
+        }
+    }
+    
+    /**
+     * Class that listens to selection events.
+     */
+    class SelectionListener implements ListSelectionListener {
+        public void valueChanged(javax.swing.event.ListSelectionEvent e) {
+            if (!delButton.isEnabled()) {
+                delButton.setEnabled(true);
             }
         }
     }
 } /* end class SourcePathDialog */
-
-/**
- * Provides support for setting a "src_path" tagged value used in Java
- * round trip engineering.
- */
-class SrcPathTableModel extends DefaultTableModel {
-
-    /** Creates a new instance of SrcPathTableModel */
-    public SrcPathTableModel() {
-        super(new Object[][] {
-        }, new String[] {
-	    " ", "Name", "Type", "Source path"
-	});
-        Project p = ProjectManager.getManager().getCurrentProject();
-        Collection elems =
-            ModelManagementHelper.getHelper().getAllModelElementsOfKind(
-                (Class) ModelFacade.MODELELEMENT);
-        elems.add(p.getRoot());
-        Iterator iter = elems.iterator();
-        while (iter.hasNext()) {
-            Object me = iter.next();
-            String path = Generator2.getCodePath(me);
-            if (path != null) {
-                String type = "";
-                String name = ModelFacade.getName(me);
-                if (ModelFacade.isAModel(me)) {
-                    type = "Model";
-                } else if (ModelFacade.isAPackage(me)) {
-                    type = "Package";
-                    Object parent = ModelFacade.getNamespace(me);
-                    while (parent != null) {
-                        // ommit root package name; it's the model's root
-                        if (ModelFacade.getNamespace(parent) != null)
-                            name = ModelFacade.getName(parent) + "." + name;
-                        parent = ModelFacade.getNamespace(parent);
-                    }
-                } else if (ModelFacade.isAClass(me)) {
-                    type = "Class";
-                } else if (ModelFacade.isAInterface(me)) {
-                    type = "Interface";
-                }
-                addRow(new Object[] {
-		    me, name, type, path
-		});
-            }
-        }
-    }
-
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columnIndex == 3;
-    }
-}
