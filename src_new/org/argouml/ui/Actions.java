@@ -682,10 +682,10 @@ class ActionAboutArgoUML extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-	JFrame jFrame = (JFrame) ActionUtilities.getActionRoot(ae);
-	AboutBox box = new AboutBox(jFrame, true);
+	JFrame jframe = ((JFrame)(ProjectBrowser.getInstance()));
+	AboutBox box = new AboutBox(jframe, true);
 
-	box.setLocationRelativeTo(jFrame);
+	box.setLocationRelativeTo(jframe);
 	box.show();
     }
 
