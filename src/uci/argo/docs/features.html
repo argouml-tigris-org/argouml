@@ -1,0 +1,220 @@
+<HTML>
+<TITLE>Features of Argo v05</TITLE>
+<BODY BGCOLOR="#FFFFFF">
+
+<H1>Features of Argo v05</H1>
+
+This file prepared on 6/2/97.
+
+<p>This file lists features of Argo. This is useful in seeing what is
+there, and can be a good place to start before diving into the code.
+Also this feature list is useful for informal regression testing: if
+you add something new, check to make sure that all the old features
+still work.
+
+<p>Each feature is named with a unique string (e.g.,
+"hush_critic"). For most features there are comments in
+the source code that indicate where the feature manifests itself.  Also
+there are references in the feature list to bugs in the bug list. You
+can follow the references by using a multi-file search command (e.g.,
+grep) or you can use tags if you use emacs. A tag file with entries
+for bugs and features can be downloaded from the Argo web site.
+
+<p>Some features are planned but not implmented.  These features are
+marked with "Needs-More-Work" here and in the code (if there is a
+marked place where something should be added).
+
+<p>Most of these features are user-visible, meaning that they are
+something that the user can see and use.  Some of them are programmer
+features that only the programmer can see and use.  
+
+<p>My intent was mainly to list features, and to describe them only a
+little bit.  A detailed description of each feature would be useful for
+on-line help, but it would take a very long time to write and it would
+need to be updated as Argo changes.  I have given brief comments only
+where the names of features are not enough to describe them.
+
+
+<p>Feature list overview:
+<OL>
+<LI>	<A HREF="#BasicFeatures">Basic Features</A>
+<LI>	<A HREF="#DesignRepresentation">Design Representation</A>
+<LI>	<A HREF="#Critiquing">Critiquing</A>
+<LI>	<A HREF="#DesignPerspectives">Design Perspectives</A>
+<LI>	<A HREF="#DecisionProcessModeling">Decision Process Modeling</A>
+<LI>	<A HREF="#OtherFeatures">Other Features</A>
+<LI>	<A HREF="#ProgrammerFeatures">Programmer Features</A>
+</OL>
+
+
+<HR>
+<A NAME="BasicFeatures">
+<H2>Basic Features</H2>
+
+<UL>
+
+</UL>
+
+    
+<HR>
+<A NAME="DesignRepresentation">
+<H2>2.	Design Representation</H2>
+<UL>
+
+<LI><A NAME="design_materials">	<TT>FEATURE: design_materials</TT><br>
+  needs-more-work <p>
+
+
+</UL>
+
+
+<HR>
+<A NAME="Critiquing">
+<H2>3.	Critiquing</H2>
+<UL>
+
+<LI><A NAME="critics">	<TT>FEATURE: critics</TT><br>
+ needs-more-work.<p>
+  <UL>
+
+  </UL>
+</UL>
+
+<HR>
+<A NAME="DesignPerspectives">
+<H2>4.	Design Perspectives</H2>
+<UL>
+
+<LI><A NAME="overlapping_views">
+<TT>FEATURE:overlapping_views</TT><br>
+needs-more-work. <p>
+
+</UL>
+
+<HR>
+<A NAME="DecisionProcessModeling">
+<H2>5.	Decision Process Modeling</H2>
+<UL>
+
+<LI><A NAME="decision_model">
+<TT>FEATURE: decision_model</TT><br>
+needs-more-work.<p>
+
+</UL>
+
+<HR>
+<A NAME="OtherFeatures">
+<H2>6.	Other Features</H2>
+<UL>
+
+</UL>
+
+<HR>
+<A NAME="ProgrammerFeatures">
+<H2>7.	Programmer Features</H2>
+This section needs-more-work.
+<UL>
+
+<LI><A NAME="few_basic_concepts">	<TT>FEATURE: few_basic_concepts</TT><br>
+  GEF is implemented with only a few basic concepts that are
+  implemented in clusters of classes. The basic concepts are: Editor,
+  DiagramElement, Layer, Mode, Action, and Selection.<p>
+
+<LI><A NAME="standard_naming_conventions">	<TT>FEATURE: standard_naming_conventions</TT><br>
+  I have tried to use naming conventions that are like that used in
+  java books and the Sun java code. For example, access methods are
+  named getXXX and setXXX.<p>
+
+<LI><A NAME="well_documented_code">	<TT>FEATURE: well_documented_code Needs-More-Work</TT><br>
+  I have tried to write javadoc comments for every class and most
+  variables and functions. This takes a lot of time and is always
+  incomplete. In the future I would like to see more invative uses of
+  comments such as javadoc comments that include images, animated
+  GIFs, or even applets. Also I would like to define better links
+  between the requirements (basically this feature list) and the
+  code. Also I would liket to document (and possibly publish) the
+  design patterns that are used in this framework.<p>
+
+<LI><A NAME="ten_week_learn_and_use">	<TT>FEATURE: ten_week_learn_and_use Needs-More-Work </TT><br>
+  I would like GEF to be small enough and simple enough for college
+  undergraduates to use in a 10 week course (including learning the
+  java language and doing something useful with GEF). This has not
+  been well tested or measureed, although I know of severak university
+  students who have used GEF for class projects. In the future I may
+  decide to split GEF into "GEF Lite" and "GEF Pro".<p>
+
+<LI><A NAME="adaptive_performance">	<TT>FEATURE: adaptive_performance Needs-More-Work</TT><br>
+  Java platforms vary in speed. I would like GEF to be useable on the
+  slowest platforms and make use of the additional power of faster
+  platforms. <p>
+
+<LI><A NAME="extensible_framework">	<TT>FEATURE: extensible_framework</TT><br>
+  I have tired to design GEF so that new features can be added by
+  adding new code in subclasses, rather than having to modify the
+  source code that I distribute.  People who are extending GEF should
+  try to put their code in their own package, and try to minimize
+  modifications to classes in uci.graphedit. <p>
+
+<LI><A NAME="integration_with_exising_code">	<TT>FEATURE: integration_with_exising_code</TT><br>
+  GEF can be used to build a new application starting from scratch, or
+  it can be used to add a graphical interface to an existing
+  application. Using GEF is easiest if you add attributes to
+  subclasses of GEF classes, but if you already have classes in your
+  own class hierarchy, they you must use delegation instead of
+  subclassing. There are places in GEF that are intended for
+  delegation, e.g., the _owner attribute of DiagramElements.<p>
+
+<LI><A NAME="scalable_to_large_documents">	<TT>FEATURE: scalable_to_large_documents Needs-More-Work</TT><br>
+  Ideally GEF will handle large diagrams well. Currently most of the
+  algorithms for picking, drawing, etc.  are linear in the size of the
+  diagram. I know this can be improved by using a spacial data
+  structure (e.g., a quad-tree), but I don't know when I'll get to
+  it. Loading and saving can take a long time. I think customization
+  is key to scalability, and end-user customization is very limited
+  right now. <p>
+
+<LI><A NAME="easy_to_navigate_code">	<TT>FEATURE: easy_to_navigate_code</TT><br>
+  I have tried to make the GEF source code easy to browse by following
+  careful naming conventions, providing cross-references, and
+  examples. <p>
+
+<LI><A NAME="robust_code">	<TT>FEATURE: robust_code Needs-More-Work</TT><br>
+  Error handling in GEF is generally inadequit and needs to be
+  improved. However there are specific areas where exceptions are
+  caught, e.g., when an Action is executed in the editor.  Framework
+  support for robust code is key to allowing contributions from a wide
+  range of people.  Security is also important, GEF may evolve to take
+  on more browser-like features and run Actions, Modes, etc under
+  different security managers.<p>
+
+<LI><A NAME="integrated_debugging_support">	<TT>FEATURE: integrated_debugging_support Needs-More-Work</TT><br>
+  Ideally the framework would help people debug code that they are
+  adding to the framework. There is some support for that in the form
+  of exception handling that prints out diagnostics, code to draw
+  visual indications of how and when redraws are being done, and
+  debugging println's that are guarded by checks for command line args
+  (via the -D option to java).<p>
+
+<LI><A NAME="consistent_style">	<TT>FEATURE: consistent_style Needs-More-Work</TT><br>
+  Consistent coding style makes the code easier to read, work with,
+  and make global changes to. GEF's coding style has changed over the
+  last few releases and is still not entirely consistent.<p>
+
+<LI><A NAME="cross_development_environments">	<TT>FEATURE: cross_development_environments</TT><br>
+  GEF compiles and runs under JDK 1.0.2 and JDK 1.1 on Solaris and
+  Windows95. I compiled it under a few different compilers on the
+  PC. Different Java VM's behaive a little differently, and I have put
+  in some logic to try to work around variations in some cases (e.g.,
+  flicker free redraws don't work under JDK 1.0.2 on a PC, so that
+  option is turned off by default when you run on that
+  platform). Also, some Java 1.1 constructs will not even compile
+  under JDK 1.0.2, so I have made limited use of the unix m4 utility
+  to do conditional compilation. I am distributing two versions
+  of the source, one preprocessed for JDK1.0.2, and one preprocessed
+  for JDK1.1. Each version can generate the other if you have access
+  to the m4 utility.
+</UL>
+
+<HR>
+</BODY>
+</HTML>

@@ -1,0 +1,548 @@
+<HTML>
+<HEAD>
+<TITLE>Argo v05 Cookbook</TITLE>
+<LINK REV="made" HREF="mailto:jrobbins@ics.uci.edu">
+<LINK REV="owner" HREF="mailto:jrobbins@ics.uci.edu">
+</HEAD>
+<BODY>
+
+<BODY BGCOLOR="#FFEEDD" TEXT="#000000">
+
+<H1>Argo v05 Cookbook</H1>
+
+This file prepared on 5/30/97.
+
+<p>This file describes how to do specific tasks in extending Argo and
+applying it to new domains. These descriptions are inteded for
+programmers who have some knowledge of <A
+HREF="http://www.javasoft.com">Java(tm)</a>, and have read the <A
+HREF="overview.html">Argo Overview</a>, are considering making
+modifications to Argo.
+
+
+
+<p>Table of contents:
+<OL>
+<LI> <A HREF="#cookbook_format">How to use this cookbook</A>
+<LI> <A HREF="#define_domain">How to define a new domain</A>
+
+<LI> <A HREF="#define_design_material">How to define a domain-specific
+design material</A>
+
+<LI> <A HREF="#define_design_perspective">How to define a
+domain-specific design perspective</A>
+
+<LI> <A HREF="#define_decision_category">How to define a domain-specific
+decision category</A>
+
+<LI> <A HREF="#define_critic">How to add a domain-specific critic</A>
+
+</OL>
+
+
+
+
+<A NAME="cookbook_format">
+<! RECIPE:cookbook_format>
+<HR>
+
+<H2><FONT COLOR="#006600">How to use this cookbook</FONT></H2>
+
+<P><B><FONT COLOR="#006600">Background</Font></B>: Cookbooks are
+intented to help people accomplish specific structured tasks.  They
+mainly provide process information in the form of a sequence of steps,
+and domain-specific knowledge in the form of brief descriptions and
+links to background materials.  The format of each cookbook entry
+(recipe) is similiar to this one.
+
+<P><B><FONT COLOR="#006600">Applicability</Font></B>: You should use a
+cookbook when there is a specific task you want to accomplish and
+there is a recipe in the cookbook that supports that specific
+task. Also, browse the cookbook to see what tasks are supported.
+
+<P><B><FONT COLOR="#006600">Ingredients</Font></B>: Each recipe lists
+the matierals that you may need to accomplish the task.  Not all
+matierals are needed in all cases.
+
+
+<P><B><FONT COLOR="#006600">Steps</Font></B>:
+<OL>
+
+
+<LI>Find the recipe by scanning the cookbook's table of contents or
+by following a link from javadoc comments in the code or other
+documentation.
+
+<LI>Check the "Background" and "Applicability" sections to make sure
+that the recipe is what you were looking for. Scan the "Steps" to get
+an idea of what you will have to do. Read the "Results" section to see
+what the recipe will produce and how to check that the task was
+successfully completed.
+
+<LI>Prepare to follow the steps by gathering the needed ingredients.
+
+<LI>Perform the actions described in the recipe's steps.
+
+<LI>Optional: Follow steps marked "Optional" to achieve minor variants
+or advanced versions of the task.
+
+</OL>
+
+<P><B><FONT COLOR="#006600">Results</Font></B>: Each recipe lists the
+results that you can expect and how to verify that the task was
+completed successfully.
+
+<!------------------------------------------------>
+
+<A NAME="define_domain">
+<! RECIPE:define_domain>
+<HR>
+
+
+<H2><FONT COLOR="#006600">How to define a new domain</FONT></H2>
+
+<P><B><FONT COLOR="#006600">Background</Font></B>: Argo provides a
+domain-independent infrastructure for building domain-dependent design
+environments. The Argo infrastructure provides general support for
+design representation, critics, the ToDoList, the decision model, and
+domain-independent user interfaces.  It is the task of a domain
+engineer to specialize the Argo infrastructure to a particular domain.
+We have defined domain models for C2 style software architecture, a
+simple design decision process model, and a <I>very</I> simple
+object-oriented design (eventually we may support UML).  We will also
+be applying Argo to a requirements specification domain.
+
+<P><B><FONT COLOR="#006600">Applicability</Font></B>: Use this recipe
+when you want to apply Argo to a new domain.
+
+<P><B><FONT COLOR="#006600">Ingredients</Font></B>: A general
+understanding of the domain and of the Argo infrastructure.  As you
+learn more about the domain you can modify the domain model. You
+should find it easy to start small and add more incrementally.
+
+<P><B><FONT COLOR="#006600">Steps</Font></B>:
+<OL>
+
+<LI>Make a new java package and directory for the code in your domain
+model.
+
+<LI>Create an overview file in that directory and start making notes
+about the assets you will need to model this domain.
+  <ul>
+  <li> <B>Design Materials</B> make up the design in this
+  domain. For example, software components in a software architecture
+  domain, classes in a OOAD domain, or furniture in an office
+  floorplan domain. 
+  <li> <B>Properties</B> are attributes of the design materials. Often a
+  property will be used on multiple design materials, so we factor out
+  their definition to some extent.
+  <li> <B>Relationships</B> between the design materials. For example,
+  communication relationships between software components.
+  <li> <B>Design Perspectives</B> are views of the design that
+  emphasize certain design materials and relationships over
+  others. Designers use multiple design perspectives to address all
+  the diverse issues of design.
+  <li> <B>Decision Categories</B> sketch out decisions that designers
+  must make to complete a design. 
+  <li> <B>Design Critics</B> are agents that check for potential
+  problems in the design and give the designer knowledge about how to
+  make good designs.
+  <li> <B>Manipulations</B> to the design that could be
+  automated. (Needs-More-Work: this is not supported yet.)
+  </ul>
+
+<LI> Define a new class to hold constants and properties specific to
+your domain. Be sure to follow Argo's naming conventions. For example,
+<TT>jargo/process/IDEF.java</TT>.
+
+<LI> <B>Optional</B>: Define abstract subclasses of
+<TT>jargo.kernel.Critic</TT> and
+<TT>jargo.kernel.DesignMaterial</TT>. These will serve as super
+classes for the critics and design materials you will define later.
+
+<LI> <B>Optional</B>: Define a subclass of
+<TT>jargo.kernel.Design</TT> that is specific to your domain.  In Argo
+<TT>Design</TT> objects are containers that hold design materials. You
+should define a new type of design if you need critics that operate on
+an entire design rather than specific design material instances. For
+example, see <TT>jargo.softarch.Architecture</TT>.
+
+<LI> <B>Optional</B>: Define a main program to launch browsers and
+editors and congifure the GEF and Argo frameworks and load assets one
+or more domains. For example, see class
+<TT>jargo.softarch.klax.Main</TT>. The Argo naming convention for main
+programs is that they be defined in classes named "Main". You do not
+need a main program if you already have one and are simply adding a
+new domain for use with that main program.
+
+
+<LI> Define the assets of the domain model by following the
+appropriate recepies:
+  
+  <ul>
+  
+  <li> <A HREF="#define_design_material">Design materials</A> and
+  relationships
+
+  <li> Node perspectives and arc perspectives
+  
+  <li> Properies on your design materials and relationships
+
+  <li> <A HREF="#define_decision_category">Decision categories</A> and
+  a decision process model
+  
+  <li> <A HREF="#define_critic">Critics</A>
+  
+  <li> <A HREF="#define_design_perspective">Design perspectives</A>
+  
+  <li> Design manipulations (Needs-More-Work)
+  
+  </ul>
+
+  
+<LI> Repeat these steps as needed to finish the domain model.  Test
+your code frequently by constructing some simple designs. Typically it
+makes sense to go by design perspectives: choose one perspective and
+define all the design materials that will be shown there, then move on
+to the next design perspective.
+
+</OL>
+
+<P><B><FONT COLOR="#006600">Results</Font></B>: An initial version of
+a domain-modeling extension to Argo's infrastructure.
+
+<!------------------------------------------------>
+
+
+<A NAME="define_design_material">
+<! RECIPE:define_design_material>
+<HR>
+
+
+<H2><FONT COLOR="#006600">How to define a domain-specific design
+material</FONT></H2>
+
+<P><B><FONT COLOR="#006600">Background</Font></B>: Design materials
+are the types of design elements that can be used in a given domain.
+For example, software components in a software architecture domain, or
+funiture in a office floorplan domain.  In Argo design materials are
+objects that are defined in subclasses of class
+<TT>jargo.kernel.DesignMaterial</TT>.
+
+<P><B><FONT COLOR="#006600">Applicability</Font></B>: Add a new
+DesignMaterial when you want to extend the domain model to a new type
+of design element.
+
+<P><B><FONT COLOR="#006600">Ingredients</Font></B>: An understanding
+of the design element to be modeled.
+
+<P><B><FONT COLOR="#006600">Steps</Font></B>:
+<OL>
+
+<LI> Subclass <TT>jargo.kernel.DesignMaterial</TT> or your abstract
+design material class to make a new class.  Make sure you follow
+Argo's naming conventions.  Part of defining a domain model is
+discovering commonalities between design elements and building a
+class hierarchy of design materials in your domain.
+
+<LI> Define attributes and behavior of the design matieral using
+arbitrary Java code.  See numerous examples in package
+<TT>jargo.softarch</TT>. By convention design material classess do not
+define very many instance variables, instead they use the IProps
+interface and code inherited from class <TT>DesignMaterial</TT> to
+store needed values.  Typically the names of these properties are
+coded as constant strings in a single class in the domain package, dor
+example see class <TT>jargo.softarch.C2</TT>. If you want to store
+values in instance variables and have them editable in the Property
+Sheet, you should consult the GEF documentation.
+
+<LI> Define node and node perspectives for your design matierals and
+arcs and arc perspectives for your relationships. Nodes and arcs are
+objects used in GEF's representation of connected graphs. Node
+perspectives and arc perspectives are used to visualize GEF's nodes
+and arcs. Nodes should subclass from <TT>uci.graphedit.NetNode</TT>,
+arcs should subclass from <TT>uci.graphedit.NetArc</TT>. If you want
+to strictly impose simple constraints on what can be connected,
+override <TT>canConnectTo()</TT> from class
+<TT>uci.graphedit.NetNode</TT>.  Multiple perspectives can be defined
+for each node and multiple arc perspectives can be defined for each
+arc. Node perspectives subclass from your abstract node perspective
+class or <TT>uci.graphedit.Perspective</TT> arc perspectives subclass
+from <TT>uci.graphedit.ArcPerspective</TT>.  The method
+<TT>perspectiveFor()</TT> is used to select a perspective for a given
+node or arc and a given design perspective. For examples see the
+following classes is jargo/softarch/: C2Node, C2CompNode, C2ConnNode,
+C2PerzComp1, C2PerzComp2, C2PerzConn1, C2PerzConn2, C2Arc.
+
+</OL>
+
+<p>For more information on developing the binding between an Argo
+model and a GEF diagram, see the GEF documentation.
+
+<P><B><FONT COLOR="#006600">Results</Font></B>: A new kind of
+domain-specific design matieral that can be selected from the palette,
+placed in a design, edited via the property sheet, shown in different
+perspectives, and related to other design materials.
+
+<!------------------------------------------------>
+
+<A NAME="define_design_perspective">
+<! RECIPE:define_design_perspective>
+<HR>
+
+
+<H2><FONT COLOR="#006600">How to define a domain-specific design
+perspective</FONT></H2>
+
+<P><B><FONT COLOR="#006600">Background</Font></B>: Expert designers
+consider a wide range of design issues, and they use multiple mental
+models of the design to address those diverse design issues. Argo
+provides design perspectives to allow designers to visualize the
+design in multiple ways that "match" their multiple mental models.
+Most of Argo's support for design perspectives is actually implemented
+in GEF.
+
+<P><B><FONT COLOR="#006600">Applicability</Font></B>: Define a new
+design perspective when you are ready to extend your domain model to
+address a new set of design issues that need to be visualized
+together.  As a short-cut in defining a domain, design perspectives
+can be made overly broad, causing multiple unrelated issues can be
+visualized together. The need for a new design perspective often
+becomes clear when existing design perspectives become too hard to
+visualize (because they are crowded, large, or too non-planar).
+
+<P><B><FONT COLOR="#006600">Ingredients</Font></B>: Knowledge of the design issues of concern in
+this domain. Knowledge of what design materials and relationships are
+related to the design issues being supported by this perspective.
+Visualizations for design materials and relationships that are
+appropriate for use in this design perspective.
+
+<P><B><FONT COLOR="#006600">Steps</Font></B>:
+<OL>
+
+<LI> Instanciate and configure a new design perspective in your main
+program.  Design perspectives are instances of class
+<TT>uci.graphedit.LayerPerspective</TT>.  Each perspective is named
+and given a perspective type string. For example, see class
+<TT>jargo.softarch.klax.Main</TT>. For more details on defining a
+design perspective see the GEF documentation.
+
+<LI> Implement the <TT>perspectiveFor()</TT> method of your node
+classes to instanciate the proper kind of node perspective. Implement
+the <TT>perspectiveFor()</TT> method of your arc classes to
+instanciate the proper kind of arc perspective.
+
+<LI> <B>Optional</B>: Define spacial regions of the new design
+perspective where various design materials will be automatically
+placed. This is useful if a given design material should appear in
+multiple perspectives. When the designer places a design material in
+one perspective, that adds a node to GEF's connected graph
+representation, and each design perspective is notified. Design
+perspectives automatically add node perspectives for nodes that they
+accept.  The position of these new node perspectives is determined by
+the regions, if define. (Needs-More-Work: move most of this to the GEF
+documentation.)
+
+</OL>
+
+<P><B><FONT COLOR="#006600">Results</Font></B>: A new design
+perspective that the design can use to visualize design elements
+related to specific design issues.
+
+<!------------------------------------------------>
+
+<A NAME="define_decision_category">
+<! RECIPE:define_decision_category>
+<HR>
+
+
+<H2><FONT COLOR="#006600">How to define a domain-specific decision
+category</FONT></H2>
+
+
+<P><B><FONT COLOR="#006600">Background</Font></B>: Decision categories
+make up Argo's decision model. The decision model lists decision
+categories that the designer is currently considering. This
+information is used to enable or disable critics so that they are
+timely to decisions being considered by the designer. When defining a
+new domain the domain engineer must define a decision model and relate
+critics to specific decision types.  Decision categories currently are
+not modeled in great detail, they are simply descriptive strings.
+
+<P><B><FONT COLOR="#006600">Applicability</Font></B>: Use this recipe
+when you are defining or extending a domain and you have a broad
+understanding of the decisions that must be made by designers in that
+domain.
+
+<P><B><FONT COLOR="#006600">Ingredients</Font></B>: A place to put
+code that will be executed before critics will be activated, a name
+for a domain-specific decision category. Since Argo uses only decision
+categories, instead of modeling specific decisions, the domain
+engineer need not know everything about the decisions in great detail.
+
+<P><B><FONT COLOR="#006600">Steps</Font></B>:
+  <OL>
+  
+  <LI>Define a <TT>String</TT> constant with the name of the decision
+  category. Make sure to follow Argo's naming conventions. The string
+  constant can be placed in the domain constant file, or somewhere
+  else where it is accessible to critics.
+  
+  <LI>Find a piece of code that will be run before critics are
+  activated. For example, use the static initalizer of the
+  <TT>DesignMaterial</TT> class that the relevant critics will operate
+  on.
+  
+  <LI>Add a line to that code that calls
+  Designer.defineDecision(). For example see jargo.softarch.C2Critic.
+  
+  <LI>Update your process model so that it has a node for the new
+  decision category.
+  
+</OL>
+
+<P><B><FONT COLOR="#006600">Results</Font></B>: A new decision
+category in the decision process model that can control critics to
+keep them timely.
+
+<!------------------------------------------------>
+
+<A NAME="define_critic">
+<! RECIPE:define_critic>
+<HR>
+<H2><FONT COLOR="#006600">How to define a critic</FONT></H2>
+
+<P><B><FONT COLOR="#006600">Background</Font></B>: Critics
+continuously evaluate the design to identify potential problems and
+opportunities for improvement. Critics can check correctness,
+completeness, consistency, and proper use of notation. They can also
+identify places in the design where good alternatives exist but have
+not been considered, or situations in which the knowledge of other
+people in the design comunity have be useful to the designer. When a
+critic's analysis predicate evaluates to true, it produces a piece of
+design feedback to be presented to the designer.
+
+
+<P><B><FONT COLOR="#006600">Applicability</Font></B>: Use this recipe
+when you want to add a critic.
+
+<P><B><FONT COLOR="#006600">Ingredients</Font></B>: A subclass of
+<TT>DesignMaterial</TT>, a analysis predicate written in terms of
+properties of DesignMaterials, a short piece of text describing the
+issue and possible soultions, the URL of background information
+relevant to the issue, the email address of a person who authored or
+will maintain the critic, knowledge of which design decision category
+this critic supports.
+
+<P><B><FONT COLOR="#006600">Steps</Font></B>:
+<UL>
+<LI>Author a new critic
+  <OL>
+
+  
+  <LI>Make a new subclass of <TT>jargo.kernel.Critic</TT>. Often it is
+  useful to introduce an intermediate abstract class between
+  <TT>jargo.kernel.Critic</TT> and the actual critic, that class holds
+  common behavior for a related set of critics (see
+  <TT>jargo.softarch.C2Critic</TT>). Examples:
+  <TT>jargo.softarch.Cr*</TT>, <TT>jargo.process.Cr*</TT>,
+  <TT>jargo.uml.Cr*</TT>
+
+  <LI>Implement the constructor of that class to fill in the expert
+  email, headline, default description text, critic type, URL to
+  browse for more infomation about the issue, and relevant design
+  decision category.
+
+  <LI>Implement the predicate method to analyze the given design
+  material in the context of the given designer.  Return true if there
+  is a problem or issue that the designer should be made aware of, and
+  false otherwise. Critics may use arbitrary Java code to implement
+  their predicates including calls to library functions, the Argo API,
+  and modification of their own instance or static variables.
+
+  <LI><B>Optional</B>: If you want to have the description customized
+  to the offending design material, then you must override the method
+  <TT>description()</TT>. For example see
+  <TT>jargo.softarch.CrInterfaceMismatch</TT>.
+
+  <LI>If your critic identifies problems involving multiple offending
+  design material, then you must override the method
+  <TT>toDoItem()</TT> to return a new ToDoItem instance with the
+  appropriate offenders. You must also override
+  <TT>stillValid()</TT>. For example see
+  <TT>jargo.softarch.CrDirectConnection</TT>.
+
+  <LI><TT>isRelevantToDecisions</TT>, <TT>isRelevantToGoals</TT>, ...
+  </OL>
+  
+<LI>Install the new critic
+  <OL>
+
+  
+  <LI>Identify the <TT>DesignMaterial</TT> subclass that the critic
+  will operate on. If the critic cannot be associated with a single
+  design material, then it should be associated with some subclass of
+  <TT>Design</TT> and the relevant materials should be elements of
+  that Design.
+
+  <LI>Add a static initalizer to the identified class. Static
+  initializers are blocks of code that are run when a java class is
+  loaded, before any instances are made.  The static initializer
+  should make a call to <TT>Agency.register()</TT> with the full name
+  of the critic class and the full name of the <TT>DesignMaterial</TT>
+  class. For examples see <TT>jargo.softarch.C2Brick</TT>,
+  <TT>jargo.softarch.klax.Clock</TT>.
+  
+  <LI>If you identified a subclass of <TT>Design</TT>, make sure that
+  the relevent <TT>DesignMaterial</TT> objects are made elements of
+  that design. 
+
+  <LI>If you cannot modify the identified class then place the call to
+  <TT>Agency.register()</TT> in some other block of code that you know
+  will be run before the critic is needed. 
+
+  </OL>
+  
+<LI>Test the new critic
+  <OL>
+
+  
+  <LI> Start Argo.
+  
+  <LI> Check the Critics window to see if the critic has been
+  loaded. It might not be loaded until an approriate
+  <TT>DesignMaterial</TT> has been instanciated.
+  
+  <LI> Build a partial design.
+  
+  <LI> Check again to see if the critic has loaded. You must close the
+  Critics window and reopen it to force a refresh.
+  
+  <LI> See if the critic has fired too early, before its predicate
+  should have been met.
+  
+  <LI> Construct a design which satisfies the critics predicate.
+  
+  <LI> Check to make sure that the critic does fire.
+  
+  <LI> Make sure that the descrition and offending
+  <TT>DesignMaterial</TT>s are correct.
+    
+  <LI> Try enabling and disabling the critic via the Decision Model.
+  
+  <LI> Test the email address and more info URL of the critic.
+  
+  </OL>
+</UL>
+
+<P><B><FONT COLOR="#006600">Results</Font></B>: A functioning critic
+that is automatically loaded and applied to <TT>DesignMaterial</TT>s
+as needed.
+
+<HR>
+
+<A HREF="../../">Argo Home Page</A> |
+<A HREF="index.html">Available documentation</A> 
+
+</BODY>
+</HTML>
