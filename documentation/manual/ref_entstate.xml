@@ -8,9 +8,7 @@ Description of all the artifacts associated with State Diagrams within ArgoUML.
 -->
 
 <chapter id="ch.ref.entstate">
-  <title>&argouml; State Diagram Artifact Reference</title>
-
-  &notupdatedfor014disclaimer;
+  <title>State Diagram Artifact Reference</title>
 
   <sect1>
     <title>Introduction</title>
@@ -63,6 +61,25 @@ Also the various kinds of Actions are only supported in the same way.
       <para>
 Code generation from state diagrams is not properly developed yet.
 </para>
+
+      <para>
+In the current version of &argouml;, it is not possible to draw dashed lines 
+which indicate regions within a it composite state. 
+Or, in more formal terms, there is no distinction in the 
+diagram between a CompositeState with the (derived) attribute 
+<literal>isRegion</literal> true or false.
+      </para>
+      
+      <tip><para>
+The advisable work-around is, to draw regions as composite states.
+That way, the diagram would not look like it is supposed to be, 
+but the underlaying model will be correct according the UML standard, 
+an exported XMI file will be usable by all tools, 
+and the project file will be loaded and displayed correctly 
+in future versions of &argouml;.
+      </para></tip>
+
+
     </sect2>
   </sect1>
 
@@ -778,10 +795,13 @@ If this value is true, then the composite state is decomposed into two or more
           </para>
           <note>
             <para>
-Currently, this is the only support in &argouml; for concurrency 
-(regions and swimlanes).
+Currently, the support in &argouml; for concurrency 
+(regions and swimlanes) is weak:
 The actual definition of regions is not yet implemented 
 in the current release of &argouml;.
+It is advised to draw the regions as composite states,
+hence follow the rule: 
+a concurrent state can only contain composite states (i.e. regions).
             </para>
           </note>
         </listitem>
@@ -2545,13 +2565,14 @@ which splits a transition into two or more concurrent
       guards. However the current release of &argouml; will not enforce
       this.</para></caution>
 
-    <para>A fork is represented on the diagram as a solid (black by default)
-      horizontal bar.</para>
+    <para>A fork is represented on the diagram as a solid (black by default) 
+    horizontal bar.</para>
 
-    <para>
-Since &argouml; currently does not support <literal>concurrency</literal>, the
-Fork pseudostate is not useful. Use a branch instead.
-    </para>
+    <tip><para>
+This bar can be made vertical by selecting the fork, 
+and dragging with &button1; one of its corners.
+    </para></tip>      
+
   </sect1>
 
 
@@ -2563,7 +2584,7 @@ Fork pseudostate is not useful. Use a branch instead.
   <sect1 id="s1.ref.join_state">
     <title>Join</title>
 
-    <para>Fork is a pseudostate (see <xref linkend="s1.ref.pseudostate"/>)
+    <para>Join is a pseudostate (see <xref linkend="s1.ref.pseudostate"/>)
       which joins two or more concurrent transitions into a single
       transition.</para>
 
@@ -2574,11 +2595,12 @@ Fork pseudostate is not useful. Use a branch instead.
     <para>A join is represented on the diagram as a solid (black by default)
       horizontal bar.</para>
 
-    <para>
-Since &argouml; currently does not support <literal>concurrency</literal>, the
-Fork pseudostate is not useful. Use a branch instead.
-    </para>
-  </sect1>
+    <tip><para>
+This bar can be made vertical by selecting the join, 
+and dragging  with &button1; one of its corners.
+    </para></tip>      
+
+      </sect1>
 
 
   <!-- Shallow History. This is a pseudo state, which all have the same
