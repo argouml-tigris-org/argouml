@@ -57,12 +57,12 @@ public class ModePopup extends Mode {
   // event handlers
 
   /** Show a popup menu on right-mouse-button up. */
-  public void mousePressed(MouseEvent me) {
+  public void mouseReleased(MouseEvent me) {
     if (me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK) {
       int x = me.getX(), y = me.getY();
       Fig underMouse = _editor.hit(x, y);
       if (!(underMouse instanceof PopupGenerator)) return;
-      System.out.println("PopupGenerator ok");
+      _editor.getSelectionManager().select(underMouse);
       JPopupMenu popup = new JPopupMenu("test");
       Vector actions = ((PopupGenerator)underMouse).getPopUpActions();
       int size = actions.size();
@@ -70,9 +70,7 @@ public class ModePopup extends Mode {
         AbstractAction a = (AbstractAction) actions.elementAt(i);
         popup.add(a);
       }
-      JPopupMenu.setDefaultLightWeightPopupEnabled(false);
       popup.show(_editor.getAwtComponent(), me.getX(), me.getY());
-      System.out.println("popup.show() " + size + " items");
       me.consume();
     }
   }

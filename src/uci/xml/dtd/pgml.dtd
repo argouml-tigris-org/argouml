@@ -25,6 +25,10 @@
           'concat CDATA #IMPLIED
            clippath CDATA #IMPLIED'
 >
+
+<!-- jer 99/03/10: changed stroke default from "0" to "1"  -->
+<!-- this helps with backward compatability to v0.6.0 -->
+
 <!ENTITY % gs_fillstroke_attributes
           'fill (0 | 1)  "1"
            fillrule (nonzero | evenodd)  "nonzero"
@@ -33,7 +37,7 @@
            fillpaintserver CDATA "color"
            fillparams CDATA #IMPLIED
            fillname CDATA #IMPLIED
-           stroke (0 | 1)  "0"
+           stroke (0 | 1)  "1"
            strokecolor CDATA "black"
            strokecolorspace CDATA "sRGB"
            strokepaintserver CDATA "color"

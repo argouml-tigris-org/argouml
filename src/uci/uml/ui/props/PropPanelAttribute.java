@@ -94,7 +94,6 @@ implements DocumentListener, ItemListener {
     _typeField.getEditor().getEditorComponent().setBackground(Color.white);
     _typeField.setRenderer(new UMLListCellRenderer());
 
-    
     c.gridx = 0;
     c.gridwidth = 1;
     c.gridy = 1;
@@ -109,7 +108,6 @@ implements DocumentListener, ItemListener {
     add(_typeLabel);
 
 
-    
     c.weightx = 1.0;
     c.gridx = 1;
     //c.gridwidth = GridBagConstraints.REMAINDER;
@@ -128,7 +126,6 @@ implements DocumentListener, ItemListener {
     c.gridy = 0;
     gb.setConstraints(_spacer, c);
     add(_spacer);
-    
 
     c.weightx = 1.0;
     c.gridwidth = 3;
@@ -167,7 +164,7 @@ implements DocumentListener, ItemListener {
 
     ScopeKind sk = attr.getOwnerScope();
     ChangeableKind ck = attr.getChangeable();
-    
+
     if (ScopeKind.CLASSIFIER.equals(sk) && ChangeableKind.FROZEN.equals(ck))
       _keywordsField.setSelectedItem("static final");
     else if (ScopeKind.CLASSIFIER.equals(sk))
@@ -179,7 +176,7 @@ implements DocumentListener, ItemListener {
 
     Classifier type = attr.getType();
     _typeField.setSelectedItem(type);
-    
+
     Expression expr = attr.getInitialValue();
     if (expr == null) _initText.setText("");
     else _initText.setText(expr.getBody().getBody());
@@ -239,18 +236,18 @@ implements DocumentListener, ItemListener {
     Attribute attr = (Attribute) _target;
     Object sel = _typeField.getSelectedItem();
     Classifier cls;
+    if (sel == null) return;
     //System.out.println("set target type: " + sel);
 
     if (sel instanceof Classifier)
       cls = (Classifier) sel;
     else
       cls = new MMClass(sel.toString());
-    
+
     try { attr.setType(cls); }
     catch (PropertyVetoException pve) {
       System.out.println("could not set type");
     }
-    
   }
 
 
@@ -266,7 +263,7 @@ implements DocumentListener, ItemListener {
 
 
 
-  
+
   ////////////////////////////////////////////////////////////////
   // event handlers
 
@@ -323,38 +320,9 @@ implements DocumentListener, ItemListener {
   // static methods
 
   public static Vector getOfferedTypes() {
-    // needs-more-work: should ask project
-    if (OFFERED_TYPES == null) {
-      OFFERED_TYPES = new Vector();
-
-      OFFERED_TYPES.addElement(JavaUML.STRING_CLASS);
-
-      OFFERED_TYPES.addElement(JavaUML.VOID_TYPE);
-      OFFERED_TYPES.addElement(JavaUML.CHAR_TYPE);
-      OFFERED_TYPES.addElement(JavaUML.INT_TYPE);
-      OFFERED_TYPES.addElement(JavaUML.BOOLEAN_TYPE);
-      OFFERED_TYPES.addElement(JavaUML.BYTE_TYPE);
-      OFFERED_TYPES.addElement(JavaUML.LONG_TYPE);
-      OFFERED_TYPES.addElement(JavaUML.FLOAT_TYPE);
-      OFFERED_TYPES.addElement(JavaUML.DOUBLE_TYPE);
-
-      OFFERED_TYPES.addElement(JavaUML.CHAR_TYPE);
-      OFFERED_TYPES.addElement(JavaUML.INT_TYPE);
-      OFFERED_TYPES.addElement(JavaUML.BOOLEAN_TYPE);
-      OFFERED_TYPES.addElement(JavaUML.BYTE_TYPE);
-      OFFERED_TYPES.addElement(JavaUML.LONG_TYPE);
-      OFFERED_TYPES.addElement(JavaUML.FLOAT_TYPE);
-      OFFERED_TYPES.addElement(JavaUML.DOUBLE_TYPE);
-
-      OFFERED_TYPES.addElement(JavaUML.RECTANGLE_CLASS);
-      OFFERED_TYPES.addElement(JavaUML.POINT_CLASS);
-      OFFERED_TYPES.addElement(JavaUML.COLOR_CLASS);
-
-      OFFERED_TYPES.addElement(JavaUML.VECTOR_CLASS);
-      OFFERED_TYPES.addElement(JavaUML.HASHTABLE_CLASS);
-      OFFERED_TYPES.addElement(JavaUML.STACK_CLASS);
-    }
-    return OFFERED_TYPES;
+    // needs-more-work: should update when project changes
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return p.getDefinedTypesVector();
   }
 
 } /* end class PropPanelAttribute */

@@ -192,6 +192,13 @@ public class ParserDisplay extends Parser {
     s = parseOutKeywords(res, s);
     s = parseOutType(res, s);
     s = parseOutName(res, s);
+    if (res.getName() == Name.UNSPEC && res.getType() != null) {
+      try {
+	res.setName(new Name(res.getType().getName().getBody()));
+	res.setType(null);
+      }
+      catch (PropertyVetoException pve) { }
+    }
     s = parseOutInitValue(res, s);
     if (s.length() > 2)
       System.out.println("leftover in parseAttribute=|" + s + "|");
@@ -303,6 +310,7 @@ public class ParserDisplay extends Parser {
 
   public String parseOutName(ModelElement me, String s) {
     s = s.trim();
+    if (s.equals("") || s.charAt(0) == '=') return s;
     StringTokenizer st = new StringTokenizer(s, " \t()[]=;");
     if (!st.hasMoreTokens()) {
       System.out.println("name not parsed");
@@ -322,6 +330,10 @@ public class ParserDisplay extends Parser {
     s = s.trim();
     int firstSpace = s.indexOf(" ");
     if (firstSpace == -1) return s;
+
+    int firstEq = s.indexOf("=");
+    if (firstEq != -1 && firstEq < firstSpace) firstSpace = firstEq;
+
     String typeStr = s.substring(0, firstSpace);
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();

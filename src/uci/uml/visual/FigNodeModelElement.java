@@ -128,7 +128,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 
   public Vector getPopUpActions() {
     Vector popUpActions = super.getPopUpActions();
-    popUpActions.addElement(new CmdUMLProperties());
+    popUpActions.addElement(CmdUMLProperties.Properties);
     return popUpActions;
   }
 

@@ -175,6 +175,7 @@ public class XMIParser implements ElementHandler, TagHandler {
       InputStream is = url.openStream();
 
       Parser pc = new Parser(url.getFile());
+      pc.setEndBy1stError(false);
       pc.addElementHandler(this);
       pc.setTagHandler(this);
       pc.getEntityHandler().setEntityResolver(DTDEntityResolver.SINGLETON);
@@ -203,6 +204,7 @@ public class XMIParser implements ElementHandler, TagHandler {
       InputStream is = url.openStream();
 
       Parser pc = new Parser(url.getFile());
+      pc.setEndBy1stError(false);
       pc.addElementHandler(this);
       pc.setTagHandler(this);
       pc.getEntityHandler().setEntityResolver(DTDEntityResolver.SINGLETON);

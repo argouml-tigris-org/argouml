@@ -230,7 +230,7 @@ public class GeneratorJava extends Generator {
     String s = "";
     s += DocumentationManager.getDocs(cls) + "\n";
     s += generateVisibility(cls.getElementOwnership());
-    if (cls.getIsAbstract()) s += "abstract ";
+    if (cls.getIsAbstract() && !(cls instanceof Interface)) s += "abstract ";
     if (cls.getIsLeaf()) s += "final ";
     s += classifierKeyword + " " + generatedName + " ";
     String baseClass = generateGeneralzation(cls.getGeneralization());
@@ -287,7 +287,8 @@ public class GeneratorJava extends Generator {
 	String tv = generateTaggedValues(bf);
 	if (tv.length() > 0) s += INDENT + tv;
 	s += generateConstraints(bf);
-	s += generateDefaultReturnStatement(bf.getReturnType());
+	if (!(cls instanceof Interface))
+	  s += generateDefaultReturnStatement(bf.getReturnType());
 	s += terminator2;
       }
     }
@@ -297,16 +298,17 @@ public class GeneratorJava extends Generator {
   }
 
   public String generateDefaultReturnStatement(Classifier cls) {
-    if (cls == null || cls.getName().getBody().equals("void")) return "";
+    if (cls == null) return "";
 
-    if (cls.equals(JavaUML.VOID_TYPE)) return "";
-    if (cls.equals(JavaUML.CHAR_TYPE)) return INDENT + "return 'x';\n";
-    if (cls.equals(JavaUML.INT_TYPE)) return INDENT + "return 0;\n";
-    if (cls.equals(JavaUML.BOOLEAN_TYPE)) return INDENT + "return false;\n";
-    if (cls.equals(JavaUML.BYTE_TYPE)) return INDENT + "return 0;\n";
-    if (cls.equals(JavaUML.LONG_TYPE)) return INDENT + "return 0;\n";
-    if (cls.equals(JavaUML.FLOAT_TYPE)) return INDENT + "return 0.0;\n";
-    if (cls.equals(JavaUML.DOUBLE_TYPE)) return INDENT + "return 0.0;\n";
+    String clsName = cls.getName().getBody();
+    if (clsName.equals("void")) return "";
+    if (clsName.equals("char")) return INDENT + "return 'x';\n";
+    if (clsName.equals("int")) return INDENT + "return 0;\n";
+    if (clsName.equals("boolean")) return INDENT + "return false;\n";
+    if (clsName.equals("byte")) return INDENT + "return 0;\n";
+    if (clsName.equals("long")) return INDENT + "return 0;\n";
+    if (clsName.equals("float")) return INDENT + "return 0.0;\n";
+    if (clsName.equals("double")) return INDENT + "return 0.0;\n";
     return INDENT + "return null;\n";
   }
 

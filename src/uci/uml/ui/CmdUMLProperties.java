@@ -35,6 +35,7 @@ import java.awt.Event;
 
 
 public class CmdUMLProperties extends Cmd {
+  public static CmdUMLProperties Properties = new CmdUMLProperties();
 
   public CmdUMLProperties() { super("Properties"); }
 
