@@ -36,9 +36,11 @@ import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import ru.novosoft.uml.*;
+import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.foundation.data_types.*;
 
 import org.tigris.gef.base.*;
@@ -91,8 +93,12 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   // instance variables
 
   protected FigRect _bigPort;
-  public FigText _name;
-  public FigText _stereo;
+  protected FigText _name;
+  protected FigText _stereo;
+  /**
+   * The figtext that shows the 'from [package blah]'
+   */
+  protected FigText _namespace; 
   protected Vector _enclosedFigs = new Vector();
   protected Fig _encloser = null;
   protected boolean _readyToEdit = true;
@@ -128,6 +134,12 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     // _stereo.setLineWidth(0);
     //_stereo.setLineColor(Color.black);
     _stereo.setEditable(false);
+    
+    _namespace = new FigText(10,10,90,21, true);
+    _namespace.setFont(LABEL_FONT);
+    _namespace.setTextColor(Color.black);
+    _namespace.setFilled(false);
+    _namespace.setText(getNamespaceText());
     _readyToEdit = false;
     ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
   }
@@ -720,5 +732,29 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
         updateEdges();
         super.damage();
     }
+    
+    /**
+     * Returns the text that denotes if the fig is enclosed by a fig representing
+     * the namespace of the owner of this fig. Text like from blah package
+     * 
+     * @return String
+     */
+    protected String getNamespaceText() {
+        if (getOwner() == null) return "";
+        if (getOwner() instanceof MModelElement) {
+            MModelElement m = (MModelElement)getOwner();
+            if (m.getNamespace() instanceof MModel) return "";
+            MNamespace ns = m.getNamespace();
+            Fig namespaceFig = getLayer().presentationFor(ns);
+            if (namespaceFig == null) {
+                return Argo.localize("UMLMenu", "label.from") + Notation.generate(this, ns);
+            }
+            if (getEnclosingFig() != namespaceFig) {
+                return Argo.localize("UMLMenu", "label.from") + Notation.generate(this, ns);
+            }
+        }
+        return "";
+    }
+ 
 
 } /* end class FigNodeModelElement */

@@ -46,22 +46,18 @@ public class PropPanelInteraction extends PropPanelModelElement {
 
     public PropPanelInteraction() {
         super("Interaction", _interactionIcon, ConfigLoader.getTabPropsOrientation());
- //       removeNavigationListener(this);
- //       addNavigationListener(this);
 	
     	addField(Argo.localize("UMLMenu", "label.name"), nameField);  	
     	addField(Argo.localize("UMLMenu", "label.stereotype"), stereotypeBox);
+        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
+        
         JList contextList = new UMLLinkedList(this, new UMLInteractionCollaborationListModel(this));
         contextList.setVisibleRowCount(1);
         JScrollPane contextScroll = new JScrollPane(contextList);
         addField(Argo.localize("UMLMenu", "label.context"), contextScroll);
         
         add(LabelledLayout.getSeperator());
-        /*    
-        JList messagesList = new UMLList(new UMLInteractionMessagesListModel(this,"messages",true),true);
-      	messagesList.setBackground(getBackground());
-      	messagesList.setForeground(Color.blue);
-        */
+       
         JList messagesList = new UMLLinkedList(this, new UMLInteractionMessagesListModel(this));
       	JScrollPane messagesScroll= new JScrollPane(messagesList); 	
         addField(Argo.localize("UMLMenu", "label.messages"), messagesScroll);
@@ -71,27 +67,6 @@ public class PropPanelInteraction extends PropPanelModelElement {
         new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
         new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-attribute"),"removeElement",null);
     	
-    	/*
-    	addCaption("Messages:",0,1,0);
-    	JList messageList = new UMLList(new UMLAssociationRoleMessageListModel(this,"message",true), true);
-    	messageList.setBackground(getBackground());
-    	messageList.setForeground(Color.blue);
-    	addField(new JScrollPane(messageList),0,1,1);
-    	*/
-	
-
-	}
-
-	
-
-	/**
-	 * Used to determine which stereotypes are legal with an interaction. At 
-     * the moment, only the stereotypes of namespace and generlizable elements
-     * are shown.
-	 * @see org.argouml.uml.ui.PropPanel#isAcceptibleBaseMetaClass(String)
-	 */
-	protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-		return (baseClass.equals("Interaction") || baseClass.equals("Modelelement"));
 	}
 	
 	/**

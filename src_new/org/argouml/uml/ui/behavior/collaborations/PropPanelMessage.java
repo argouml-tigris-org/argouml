@@ -70,6 +70,7 @@ public class PropPanelMessage extends PropPanelModelElement {
 
     addField(Argo.localize("UMLMenu", "label.name"), nameField);
     addField(Argo.localize("UMLMenu", "label.stereotype"), stereotypeBox);
+    addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
 
     JList senderList = new UMLLinkedList(this, new UMLMessageSenderListModel(this));
     senderList.setVisibleRowCount(1);
