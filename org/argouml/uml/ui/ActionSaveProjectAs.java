@@ -44,7 +44,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    public static ActionSaveProjectAs SINGLETON = new ActionSaveProjectAs(); 
+    public static ActionSaveProjectAs SINGLETON = new ActionSaveProjectAs();
 
     public static final String separator = "/"; //System.getProperty("file.separator");
 
@@ -64,7 +64,10 @@ public class ActionSaveProjectAs extends ActionSaveProject {
     }
 
   public boolean trySave(boolean overwrite) {
-	boolean success = trySave(overwrite, getNewFile());
+	File f = getNewFile();
+	if (f == null)
+	  return false;
+	boolean success = trySave(overwrite,f);
 	if (success) {
 	    ProjectBrowser.TheInstance.updateTitle();
 	}
@@ -83,13 +86,13 @@ public class ActionSaveProjectAs extends ActionSaveProject {
         if (chooser == null) {
 	    chooser  = OsUtil.getFileChooser ();
         }
-        
+
 	if (url != null) {
 	    chooser.setSelectedFile(new File(url.getFile()));
 	}
 
-	String sChooserTitle = 
-	    Localizer.localize("Actions", 
+	String sChooserTitle =
+	    Localizer.localize("Actions",
 			       "text.save_as_project.chooser_title");
 	chooser.setDialogTitle(sChooserTitle + p.getName());
 	chooser.setFileFilter(FileFilters.CompressedFileFilter);
@@ -100,7 +103,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
 	    if (file != null) {
 		String name = file.getName();
 		if (! name.endsWith(Project.COMPRESSED_FILE_EXT)) {
-		    file = new File(file.getParent(), 
+		    file = new File(file.getParent(),
 				    name + Project.COMPRESSED_FILE_EXT);
 		}
 	    }
