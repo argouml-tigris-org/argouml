@@ -254,6 +254,7 @@ public class TabConstraints extends TabSpawnable
 				c.setName("Constraint "+cs.size());
 				c.setBody(new MBooleanExpression("OCL", result));
 				_target.addConstraint(c);
+				_target.getNamespace().addOwnedElement(c);
 				_table.tableChanged(null);
 				_table.sizeColumnsToFit(1);
 			}
