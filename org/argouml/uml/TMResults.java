@@ -113,7 +113,7 @@ public class TMResults extends AbstractTableModel {
 		else if (d instanceof UMLUseCaseDiagram) {
 		    name = "label.usecase-diagram";
 		} else if (d instanceof UMLStateDiagram) {
-		    name = "label.state-diagram";
+		    name = "label.state-chart-diagram";
 		} else if (d instanceof UMLDeploymentDiagram) {
 		    name = "label.deployment-diagram";
 		} else if (d instanceof UMLCollaborationDiagram) {
