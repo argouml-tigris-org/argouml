@@ -34,7 +34,6 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
 import java.text.ParseException;
-import java.util.Collection;
 import java.util.Iterator;
 
 import org.tigris.gef.graph.GraphModel;
@@ -51,15 +50,21 @@ import org.argouml.uml.generator.ParserDisplay;
 import ru.novosoft.uml.MElementEvent;
 
 
-/** Class to display graphics for a UML ObjectFlowState in a diagram. 
+/** 
+ * Class to display graphics for a UML ObjectFlowState in a diagram.<p> 
  * 
  * The Fig of this modelelement may either contain the Classifier name, or
- * it contains the name of the ClassifierInState AND its state.
- * In the examples in the UML standard, this is written like 
- *      PurchaseOrder
- *       [approved]
+ * it contains the name of the ClassifierInState AND the name of its state.
+ * In the examples in the UML standard, this is written like<br> 
+ *      PurchaseOrder  <br>
+ *       [approved]    <br>
  * i.e. in 2 lines. The first line is underlined, 
- * to indicate that it is an instance (object).
+ * to indicate that it is an instance (object).<p>
+ * 
+ * The fact that the first line is underlined, and the 2nd not, is the 
+ * reason to implement them in 2 seperate Figs.<p>
+ * 
+ * TODO: Allow stereotypes to be shown.
  * 
  * @author mvw
  */
@@ -238,22 +243,15 @@ public class FigObjectFlowState extends FigNodeModelElement {
     
     /**
      * Updates the text of the state FigText.
-     * 
-     * TODO: generate the text with the Notation.generate function.
      */
     private void updateStateText() {
         if (isReadyToEdit()) {
             if (getOwner() == null)
                 return;
             String theNewText = "";
-            if (ModelFacade.isAClassifierInState(
-                    ModelFacade.getType(getOwner()))) {
-                Collection c = 
-                    ModelFacade.getInStates(ModelFacade.getType(getOwner()));
-                Iterator i = c.iterator();
-                if (i.hasNext()) {
-                    theNewText = ModelFacade.getName(i.next());
-                }
+            Object cis = ModelFacade.getType(getOwner());
+            if (ModelFacade.isAClassifierInState(cis)) {
+                theNewText = "[" + Notation.generate(this, cis) + "]";
             } 
             state.setText(theNewText);
         }
@@ -358,7 +356,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
         try {
             if (ft == classifier && this.getOwner() != null) { 
                 ParserDisplay.SINGLETON.parseObjectFlowState1(ft.getText(), 
-                    this.getOwner());
+                    this.getOwner()); 
             } else if (ft == state && this.getOwner() != null) {  
                 ParserDisplay.SINGLETON.parseObjectFlowState2(ft.getText(), 
                         this.getOwner());
