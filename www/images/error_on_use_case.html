@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+       
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+       
+  <meta name="author" content="Dennis Daniels">
+  <title>error on use case</title>
+</head>
+ <body>
+  <br>
+  use case error<br>
+  <br>
+  Note the error window. It says that is legal when in fact it is a new use
+ case. the legal object is in fact behind the newmUseCase object. There is
+ no way for the user to know that.<br>
+  <img src="file:///C:/argo/screengrabs/removeerroronusecase.png" alt="test" width="1024" height="768">
+<br>
+  <br>
+  <img src="file:///C:/WINDOWS/Desktop/removeerroronusecase.png" alt="error screengrab" width="1024" height="768">
+  <br>
+  <br>
+  And then I tried moving the object and one of them; I don't if it was the
+ new one of not, started skitting around the diagram in vague relation to
+where the cursor was trying to position it! It was actually kind of cute,
+kind of like a catch me if you can screen game;<br>
+<img src="file:///C:/argo/screengrabs/funnybehaviorwithnewobjects.png" alt="tsy" width="1024" height="768">
+<br>
+  <br>
+  Here's the output from what looks like a bug to me.<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+  at org.tigris.gef.base.Editor.mouseDragged(Editor.java)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.Component.processMouseMotionEvent(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at javax.swing.JComponent.processMouseMotionEvent(Unknown
+ Source)<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.Component.processEvent(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.Container.processEvent(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.Component.dispatchEventImpl(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.Container.dispatchEventImpl(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.Component.dispatchEvent(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.LightweightDispatcher.retargetMouseEvent(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.LightweightDispatcher.processMouseEvent(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.LightweightDispatcher.dispatchEvent(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.Container.dispatchEventImpl(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.Window.dispatchEventImpl(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.Component.dispatchEvent(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.EventQueue.dispatchEvent(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.EventDispatchThread.pumpOneEventForHierarchy(Unknown
+ Source)<br>
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.EventDispatchThread.pumpEvents(Unknown
+ Source)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.EventDispatchThread.run(Unknown
+ Source)<br>
+  could not parse bounds string<br>
+  <br>
+  and here's the last screen grab<br>
+  notice the cursor is far from the selected object but it is moving the
+object  nonethless;<br>
+<img src="file:///C:/argo/screengrabs/funnybehaviorwithnewobjects.png" alt="tsy" width="1024" height="768">
+<br>
+  <img src="file:///C:/WINDOWS/Desktop/funnybehaviorwithnewobjects.png" alt="moving objects" width="1024" height="768">
+  <br>
+ and check out where the other use case went... all the way to the bottom 
+of the diagram pane far right corner<br>
+ <img src="file:///C:/argo/screengrabs/use%20case%20object%20behavior.jpg" alt="far flier" width="1024" height="768">
+ <br>
+ <br>
+ I'll try to get more info out as it develops<br>
+here's the output after this manip and a <br>
+save<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.AWTEventMulticaster.mouseDragged(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.Component.processMouseMotionEvent(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at javax.swing.JComponent.processMouseMotionEvent(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.Component.processEvent(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.Container.processEvent(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.Component.dispatchEventImpl(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.Container.dispatchEventImpl(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.Component.dispatchEvent(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.LightweightDispatcher.retargetMouseEvent(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.LightweightDispatcher.processMouseEvent(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.LightweightDispatcher.dispatchEvent(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.Container.dispatchEventImpl(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.Window.dispatchEventImpl(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.Component.dispatchEvent(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.EventQueue.dispatchEvent(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.EventDispatchThread.pumpOneEventForHierarchy(Unknown
+Source)<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.EventDispatchThread.pumpEvents(Unknown
+Source)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; at java.awt.EventDispatchThread.run(Unknown
+Source)<br>
+could not parse bounds string<br>
+Dir ==C:/argo/zargo<br>
+Saving member of type: pgml<br>
+Saving member of type: pgml<br>
+Saving member of type: pgml<br>
+Saving member of type: xmi<br>
+could not parse bounds string<br>
+Error: getModel() == null for class ru.novosoft.uml.behavior.use_cases.MUseCaseI<br>
+mpl in UMLComboBoxModel<br>
+Dir ==C:/argo/zargo<br>
+Saving member of type: pgml<br>
+Saving member of type: pgml<br>
+Saving member of type: pgml<br>
+Saving member of type: xmi<br>
+<br>
+<br>
+note that the now deleted object is still there<br>
+<img src="file:///C:/argo/screengrabs/use%20case%20still%20in%20nav%20pane%20after%20deletion.png" alt="object in nav pane after deletion" width="1024" height="768">
+<br>
+ <br>
+ cheers<br>
+ Denny<br>
+   
+</body>
+</html>
