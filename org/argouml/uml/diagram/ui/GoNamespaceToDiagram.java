@@ -35,6 +35,7 @@ import java.util.List;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.AbstractGoRule;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
@@ -64,7 +65,7 @@ public class GoNamespaceToDiagram extends AbstractGoRule {
                 UMLDiagram d = (UMLDiagram) it.next();
                 if (d instanceof UMLStateDiagram) {
                     UMLStateDiagram sd = (UMLStateDiagram) d;
-                    if (org.argouml.model.ModelFacade.isABehavioralFeature(sd.getStateMachine().getContext()))
+                    if (ModelFacade.isABehavioralFeature(ModelFacade.getContext(ModelFacade.getStateMachine(sd))))
                     	continue;
                 }
                 // patch for 0.14 stability to disable SD's

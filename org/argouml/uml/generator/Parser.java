@@ -58,7 +58,7 @@ public abstract class Parser {
     //   public abstract MAssociationEnd parseAssociationEnd(String s);
     public abstract Object parseMultiplicity(String s);
     public abstract Object parseState(String s);
-    public abstract MTransition parseTransition(MTransition trans, String s);
+    public abstract Object parseTransition(Object trans, String s);
     public abstract Object parseAction(String s);
     public abstract MGuard parseGuard(String s);
     public abstract MEvent parseEvent(String s);

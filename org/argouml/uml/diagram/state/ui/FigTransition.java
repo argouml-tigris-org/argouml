@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -39,6 +38,7 @@ import java.beans.PropertyVetoException;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
@@ -49,10 +49,6 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
-import ru.novosoft.uml.behavior.state_machines.MTransition;
-import ru.novosoft.uml.foundation.core.MModelElement;
-
 public class FigTransition extends FigEdgeModelElement {
     protected static Logger cat = Logger.getLogger(FigTransition.class);
 
@@ -70,9 +66,9 @@ public class FigTransition extends FigEdgeModelElement {
     public FigTransition(Object edge, Layer lay) {
 	this();
 	if (org.argouml.model.ModelFacade.isATransition(edge)) {
-	    MTransition tr = (MTransition) edge;
-	    MStateVertex sourceSV = tr.getSource();
-	    MStateVertex destSV = tr.getTarget();
+	    Object tr = /*(MTransition)*/ edge;
+	    Object sourceSV = ModelFacade.getSource(tr);
+	    Object destSV = ModelFacade.getTarget(tr);
 	    FigNode sourceFN = (FigNode) lay.presentationFor(sourceSV);
 	    FigNode destFN = (FigNode) lay.presentationFor(destSV);
 	    setSourcePortFig(sourceFN);
@@ -100,10 +96,10 @@ public class FigTransition extends FigEdgeModelElement {
      *  should override to handle other text elements. */
     protected void textEdited(FigText ft) throws PropertyVetoException {
     
-	MTransition t = (MTransition) getOwner();
+	Object t = /*(MTransition)*/ getOwner();
 	if (t == null) return;
 	String s = ft.getText();
-	ParserDisplay.SINGLETON.parseTransition(t, s);
+	ParserDisplay.SINGLETON.parseTransition(/*(MTransition)*/t, s);
    
     }
 
@@ -112,7 +108,7 @@ public class FigTransition extends FigEdgeModelElement {
      *  Subclasses should override and update other parts. */
     protected void modelChanged(MElementEvent e) {
 	super.modelChanged(e);
-	MModelElement me = (MModelElement) getOwner();
+	Object me = /*(MModelElement)*/ getOwner();
 	if (me == null) return;
 	cat.debug("FigTransition modelChanged: " + me.getClass());
 	String nameStr = Notation.generate(this, me);
@@ -142,7 +138,7 @@ public class FigTransition extends FigEdgeModelElement {
      */
     protected Object getDestination() {
         if (getOwner() != null) {
-            return StateMachinesHelper.getHelper().getDestination((MTransition) getOwner());
+            return StateMachinesHelper.getHelper().getDestination(/*(MTransition)*/ getOwner());
         }
         return null;
     }
@@ -152,7 +148,7 @@ public class FigTransition extends FigEdgeModelElement {
      */
     protected Object getSource() {
         if (getOwner() != null) {
-            return StateMachinesHelper.getHelper().getSource((MTransition) getOwner());
+            return StateMachinesHelper.getHelper().getSource(/*(MTransition)*/ getOwner());
         }
         return null;
     }

@@ -73,8 +73,8 @@ public class StateMachinesHelper {
      * @param trans
      * @return MStateVertex
      */
-    public MStateVertex getSource(MTransition trans) {
-        return trans.getSource();
+    public Object getSource(Object trans) {
+        return ((MTransition)trans).getSource();
     }
 
     /**
@@ -84,8 +84,8 @@ public class StateMachinesHelper {
      * @param trans
      * @return MStateVertex
      */
-    public MStateVertex getDestination(MTransition trans) {
-        return trans.getTarget();
+    public Object getDestination(Object trans) {
+        return ((MTransition)trans).getTarget();
     }
 
     

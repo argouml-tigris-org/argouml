@@ -44,8 +44,6 @@ import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.state_machines.MState;
-
 /** Class to display graphics for a UML MCompositeState in a diagram. */
 
 public class FigCompositeState extends FigState {
@@ -215,7 +213,7 @@ public class FigCompositeState extends FigState {
     public void textEdited(FigText ft) throws PropertyVetoException {
         super.textEdited(ft);
         if (ft == _internal) {
-            MState st = (MState) getOwner();
+            Object st = /*(MState)*/ getOwner();
             if (st == null)
                 return;
             String s = ft.getText();
