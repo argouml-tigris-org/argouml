@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: ChildGenUML.java
-// Classes: ChildGenUML
-// Original Author: jrobbins
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
@@ -43,15 +38,17 @@ import org.tigris.gef.util.EnumerationComposite;
 import org.tigris.gef.util.EnumerationEmpty;
 import org.tigris.gef.util.EnumerationSingle;
 
-/** This class gives critics access to parts of the UML model of the
- *  design.  It defines a gen() function that returns the "children"
- *  of any given part of the UML model.  Basically, it goes from
- *  Project, to Models, to ModelElements.  Argo's critic Agency uses
- *  this to apply critics where appropriate.
+/**
+ * This class gives critics access to parts of the UML model of the
+ * design.  It defines a gen() function that returns the "children"
+ * of any given part of the UML model.  Basically, it goes from
+ * Project, to Models, to ModelElements.  Argo's critic Agency uses
+ * this to apply critics where appropriate.
+ *
  * @see org.argouml.cognitive.critics.Agency 
  * @see org.argouml.cognitive.Designer
+ * @author jrobbins
  */
-
 public class ChildGenUML implements ChildGenerator {
 
     private static final Logger LOG = Logger.getLogger(ChildGenUML.class);

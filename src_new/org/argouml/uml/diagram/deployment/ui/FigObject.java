@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigObject.java
-// Classes: FigObject
-// Original Author: 5eichler@informatik.uni-hamburg.de
-// $Id$
-
 package org.argouml.uml.diagram.deployment.ui;
 
 import java.awt.Color;
@@ -46,8 +41,11 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
-/** Class to display graphics for a UML Object in a diagram. */
-
+/**
+ * Class to display graphics for a UML Object in a diagram.
+ *
+ * @author 5eichler
+ */
 public class FigObject extends FigNodeModelElement {
 
     ////////////////////////////////////////////////////////////////

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,7 +28,6 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.text.MessageFormat;
-import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.JFileChooser;
@@ -209,17 +208,18 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
             
             Project currentProject =
                 ProjectManager.getManager().getCurrentProject();
-            ProjectMember member = currentProject.getMembers().getMember(ProjectMemberModel.class);
-            
+            ProjectMember member =
+                currentProject.getMembers().getMember(ProjectMemberModel.class);
+
             try {
                 member.save(new FileWriter(selectedFile), null);
             } catch (Exception ex) {
                 String sMessage =
                     MessageFormat.format(Translator.localize(
-                      "optionpane.save-project-general-exception"),
-                     new Object[] {
-                         ex.getMessage()
-                    });
+                    	"optionpane.save-project-general-exception"),
+                    	new Object[] {
+                            ex.getMessage()
+                    	});
 
                 String sTitle =
                     Translator.localize(
