@@ -35,6 +35,12 @@ import org.argouml.uml.diagram.state.StateDiagramGraphModel;
  */
 public class ActivityDiagramGraphModel extends StateDiagramGraphModel {
 
+    public boolean canAddNode(Object node) {
+        if (_nodes.contains(node)) return false;
+        if (ModelFacade.isAPartition(node)) return true;
+        else return super.canAddNode(node);
+    }
+
     /**
      * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
      */
