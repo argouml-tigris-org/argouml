@@ -121,6 +121,14 @@ abstract public class PropPanelModelElement extends PropPanel {
 
     private static UMLModelElementNamespaceComboBoxModel namespaceComboBoxModel = new UMLModelElementNamespaceComboBoxModel();
     private static UMLModelElementStereotypeComboBoxModel stereotypeComboBoxModel = new UMLModelElementStereotypeComboBoxModel();
+    private static UMLModelElementNamespaceListModel namespaceListModel = new UMLModelElementNamespaceListModel();
+    private static UMLModelElementClientDependencyListModel clientDependencyListModel = new UMLModelElementClientDependencyListModel();
+    private static UMLModelElementConstraintListModel constraintListModel = new UMLModelElementConstraintListModel();
+    private static UMLModelElementElementResidenceListModel elementResidenceListModel = new UMLModelElementElementResidenceListModel();
+    private static UMLModelElementNameDocument nameDocument = new UMLModelElementNameDocument();
+    private static UMLModelElementSourceFlowListModel sourceFlowListModel = new UMLModelElementSourceFlowListModel();
+    private static UMLModelElementSupplierDependencyListModel supplierDependencyListModel = new UMLModelElementSupplierDependencyListModel();
+    private static UMLModelElementTargetFlowListModel targetFlowListModel = new UMLModelElementTargetFlowListModel();
 
     /**
      *    Constructs the PropPanel.
@@ -219,7 +227,7 @@ abstract public class PropPanelModelElement extends PropPanel {
 
     protected JScrollPane getNamespaceScroll() {
         if (namespaceScroll == null) {
-            JList namespaceList = new UMLLinkedList(new UMLModelElementNamespaceListModel());
+            JList namespaceList = new UMLLinkedList(namespaceListModel);
             namespaceList.setVisibleRowCount(1);
             namespaceScroll = new JScrollPane(namespaceList);
         }
@@ -251,7 +259,7 @@ abstract public class PropPanelModelElement extends PropPanel {
 
     protected JScrollPane getClientDependencyScroll() {
         if (clientDependencyScroll == null) {
-            JList clientDependencyList = new UMLLinkedList(new UMLModelElementClientDependencyListModel());
+            JList clientDependencyList = new UMLLinkedList(clientDependencyListModel);
             clientDependencyScroll = new JScrollPane(clientDependencyList);
         }
         return clientDependencyScroll;
@@ -259,7 +267,7 @@ abstract public class PropPanelModelElement extends PropPanel {
 
     protected JScrollPane getTargetFlowScroll() {
         if (targetFlowScroll == null) {
-            JList targetFlowList = new UMLLinkedList(new UMLModelElementTargetFlowListModel());
+            JList targetFlowList = new UMLLinkedList(targetFlowListModel);
             targetFlowScroll = new JScrollPane(targetFlowList);
         }
         return targetFlowScroll;
@@ -267,7 +275,7 @@ abstract public class PropPanelModelElement extends PropPanel {
 
     protected JScrollPane getSourceFlowScroll() {
         if (sourceFlowScroll == null) {
-            JList sourceFlowList = new UMLLinkedList(new UMLModelElementSourceFlowListModel());
+            JList sourceFlowList = new UMLLinkedList(sourceFlowListModel);
             sourceFlowScroll = new JScrollPane(sourceFlowList);
         }
         return sourceFlowScroll;
@@ -275,7 +283,7 @@ abstract public class PropPanelModelElement extends PropPanel {
 
     protected JScrollPane getConstraintScroll() {
         if (constraintScroll == null) {
-            JList constraintList = new UMLMutableLinkedList(new UMLModelElementConstraintListModel(), null, ActionNewModelElementConstraint.SINGLETON);
+            JList constraintList = new UMLMutableLinkedList(constraintListModel, null, ActionNewModelElementConstraint.SINGLETON);
             constraintScroll = new JScrollPane(constraintList);
         }
         return constraintScroll;
@@ -297,7 +305,7 @@ abstract public class PropPanelModelElement extends PropPanel {
 
     protected JScrollPane getElementResidenceScroll() {
         if (elementResidenceScroll == null) {
-            JList elementResidenceList = new UMLLinkedList(new UMLModelElementElementResidenceListModel());
+            JList elementResidenceList = new UMLLinkedList(elementResidenceListModel);
             elementResidenceScroll = new JScrollPane(elementResidenceList);
         }
         return elementResidenceScroll;
