@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -53,6 +53,7 @@ import org.tigris.gef.graph.*;
 
 import org.argouml.kernel.Project;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.MMUtil;
 import org.argouml.uml.diagram.static_structure.*;
 import org.argouml.uml.diagram.deployment.*;
@@ -344,7 +345,7 @@ public class ParserDisplay extends Parser {
   public MOperation parseOperation(String s) {
     s = s.trim();
     if (s.endsWith(";")) s = s.substring(0, s.length()-1);
-    MOperation res = MFactory.getDefaultFactory().createOperation();
+    MOperation res = UmlFactory.getFactory().getCore().createOperation();
     s = parseOutVisibility(res, s);
     s = parseOutKeywords(res, s);
     s = parseOutName(res, s);
@@ -367,7 +368,7 @@ public class ParserDisplay extends Parser {
       if (s.endsWith(";")) {
           s = s.substring(0, s.length()-1);
       }
-      MAttribute newAttribute = MFactory.getDefaultFactory().createAttribute();
+      MAttribute newAttribute = UmlFactory.getFactory().getCore().createAttribute();
       s = parseOutVisibility(newAttribute, s);
       s = parseOutKeywords(newAttribute, s);
       s = parseOutName(newAttribute, s);
@@ -449,7 +450,7 @@ public class ParserDisplay extends Parser {
     MClassifier rt = p.findType(rtStr);
 
     //System.out.println("setting return type: " + rtStr +" "+rt);
-    MParameter param = MFactory.getDefaultFactory().createParameter();
+    MParameter param = UmlFactory.getFactory().getCore().createParameter();
     param.setType(rt);
     MMUtil.SINGLETON.setReturnParameter(op,param);
     //return s.substring(firstSpace+1);
@@ -515,7 +516,7 @@ public class ParserDisplay extends Parser {
         if (s.trim().length() == 0) return ""; // trim it here...pjs
 
         String initStr = s.substring(1, s.length()); //move past "=" to end of "initvalue"--pjs--
-        MExpression initExpr = new MExpression("Java", initStr);
+        MExpression initExpr = UmlFactory.getFactory().getDataTypes().createExpression("Java", initStr);
         attr.setInitialValue(initExpr);
         return "";
   }
@@ -536,7 +537,7 @@ public class ParserDisplay extends Parser {
     if (st.hasMoreTokens()) typeStr = st.nextToken();
     Project p = ProjectBrowser.TheInstance.getProject();
     MClassifier cls = p.findType(typeStr);
-    MParameter param = MFactory.getDefaultFactory().createParameter();
+    MParameter param = UmlFactory.getFactory().getCore().createParameter();
     param.setType(cls);
     param.setKind(MParameterDirectionKind.IN);
     param.setName(paramNameStr);
@@ -562,7 +563,7 @@ public class ParserDisplay extends Parser {
   /** Parse a string of the form: "range, ...", where range is of the
    *  form "lower..upper", or "integer" */
   public MMultiplicity parseMultiplicity(String s) {
-	  return new MMultiplicity(s);
+	  return UmlFactory.getFactory().getDataTypes().createMultiplicity(s);
   }
 
 
@@ -790,8 +791,8 @@ public class ParserDisplay extends Parser {
   }
 
   public MAction parseAction(String s) {
-	  MCallAction a = MFactory.getDefaultFactory().createCallAction();
-	  a.setScript(new MActionExpression("Java",s));
+	  MCallAction a = UmlFactory.getFactory().getCommonBehavior().createCallAction();
+	  a.setScript(UmlFactory.getFactory().getDataTypes().createActionExpression("Java",s));
 	  return a;
   }
 
@@ -802,13 +803,13 @@ public class ParserDisplay extends Parser {
     }*/
 
   public MGuard parseGuard(String s) {
-	MGuard g = MFactory.getDefaultFactory().createGuard();
-	g.setExpression(new MBooleanExpression("Java",s));
+	MGuard g = UmlFactory.getFactory().getStateMachines().createGuard();
+	g.setExpression(UmlFactory.getFactory().getDataTypes().createBooleanExpression("Java",s));
         return g;
   }
 
   public MEvent parseEvent(String s) {
-	MCallEvent ce = MFactory.getDefaultFactory().createCallEvent();
+	MCallEvent ce = UmlFactory.getFactory().getStateMachines().createCallEvent();
 	ce.setName(s);
 	ce.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
         return ce;

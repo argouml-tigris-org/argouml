@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,6 +31,7 @@ import javax.swing.*;
 import java.util.*;
 import java.awt.*;
 
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.*;
 import org.argouml.kernel.*;
 
@@ -89,15 +90,15 @@ public class UMLConnectionListModel extends UMLModelElementListModel  {
         Object target = getTarget();
         if(target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
-            MAssociationEnd newEnd = MFactory.getDefaultFactory().createAssociationEnd();
+            MAssociationEnd newEnd = UmlFactory.getFactory().getCore().createAssociationEnd();
             newEnd.setType(classifier);
             classifier.addAssociationEnd(newEnd);
 
-            MAssociation newAssoc = MFactory.getDefaultFactory().createAssociation();
+            MAssociation newAssoc = UmlFactory.getFactory().getCore().createAssociation();
             newAssoc.setNamespace(((MClassifier) target).getNamespace());
             newEnd.setAssociation(newAssoc);
             newAssoc.addConnection(newEnd);
-            MAssociationEnd otherEnd = MFactory.getDefaultFactory().createAssociationEnd();
+            MAssociationEnd otherEnd = UmlFactory.getFactory().getCore().createAssociationEnd();
             newAssoc.addConnection(otherEnd);
 
             // Having added an association, mark as needing saving

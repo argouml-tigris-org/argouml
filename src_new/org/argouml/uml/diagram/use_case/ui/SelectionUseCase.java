@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,6 +43,7 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.util.*;
 
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.ui.*;
 
 public class SelectionUseCase extends SelectionWButtons {
@@ -185,9 +186,9 @@ public class SelectionUseCase extends SelectionWButtons {
     super.buttonClicked(buttonCode);
     MClassifier newNode = null;
     if (buttonCode == 10 || buttonCode == 11)
-      newNode = MFactory.getDefaultFactory().createUseCase();
+      newNode = UmlFactory.getFactory().getUseCases().createUseCase();
     else
-      newNode = MFactory.getDefaultFactory().createActor();
+      newNode = UmlFactory.getFactory().getUseCases().createActor();
 
     FigUseCase fc = (FigUseCase) _content;
     MUseCase cls = (MUseCase) fc.getOwner();

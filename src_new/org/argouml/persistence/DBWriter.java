@@ -17,6 +17,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.*;
 
 /**
@@ -521,7 +522,7 @@ public class DBWriter
 	 * only for testing, do not use main!
 	 */
     public static void main(String[] Args) throws Exception {
-	MModel mymodel = MFactory.getDefaultFactory().createModel();
+	MModel mymodel = UmlFactory.getFactory().getModelManagement().createModel();
 	DBWriter writer = new DBWriter();
     } 
 };

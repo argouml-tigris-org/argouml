@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,6 +33,7 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.UmlFactory;
 
 /**
  *   This class implements a list model for the subpackages of a package.
@@ -110,35 +111,35 @@ public class UMLClassifiersListModel extends UMLOwnedElementListModel  {
     }
     
     public void addDatatype(int index) {
-        addElement(MFactory.getDefaultFactory().createDataType(),index);
+        addElement(UmlFactory.getFactory().getCore().createDataType(),index);
     }
     
     public void addClass(int index) {
-        addElement(MFactory.getDefaultFactory().createClass(),index);
+        addElement(UmlFactory.getFactory().getCore().createClass(),index);
     }
     
     public void addInterface(int index) {
-        addElement(MFactory.getDefaultFactory().createInterface(),index);
+        addElement(UmlFactory.getFactory().getCore().createInterface(),index);
     }
     
     public void addException(int index) {
-        addElement(MFactory.getDefaultFactory().createException(),index);
+        addElement(UmlFactory.getFactory().getCommonBehavior().createException(),index);
     }
     
     public void addSignal(int index) {
-        addElement(MFactory.getDefaultFactory().createSignal(),index);
+        addElement(UmlFactory.getFactory().getCommonBehavior().createSignal(),index);
     }
     
     public MModelElement createModelElement() {
-        return MFactory.getDefaultFactory().createClass();
+        return UmlFactory.getFactory().getCore().createClass();
     }
     
     public void addActor(int index) {
-        addElement(MFactory.getDefaultFactory().createActor(),index);
+        addElement(UmlFactory.getFactory().getUseCases().createActor(),index);
     }
     
     public void addUseCase(int index) {
-        addElement(MFactory.getDefaultFactory().createUseCase(),index);
+        addElement(UmlFactory.getFactory().getUseCases().createUseCase(),index);
     }
         
 }

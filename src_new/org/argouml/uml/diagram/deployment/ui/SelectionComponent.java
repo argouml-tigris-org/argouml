@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,6 +42,7 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.util.*;
 
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.ui.*;
 
 public class SelectionComponent extends SelectionWButtons {
@@ -164,7 +165,7 @@ public class SelectionComponent extends SelectionWButtons {
 
   public void buttonClicked(int buttonCode) {
     super.buttonClicked(buttonCode);
-    MComponent newNode = MFactory.getDefaultFactory().createComponent();
+    MComponent newNode = UmlFactory.getFactory().getCore().createComponent();
     FigComponent fc = (FigComponent) _content;
     MComponent cls = (MComponent) fc.getOwner();
 

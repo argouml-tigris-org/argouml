@@ -1,5 +1,7 @@
 package org.argouml.persistence;
 
+import org.argouml.model.uml.UmlFactory;
+
 import java.sql.*;
 import java.io.*;
 import java.util.Properties;
@@ -152,7 +154,7 @@ public class DBLoader
 	private MModel readModel(String modelUUID, String modelName, Statement stmt) throws SQLException {
 		System.out.println("Loading model with uuid: "+ modelUUID);
 
-		MModel model = MFactory.getDefaultFactory().createModel();
+		MModel model = UmlFactory.getFactory().getModelManagement().createModel();
 		model.setName(modelName);
 		model.setUUID(modelUUID);
 
@@ -211,7 +213,7 @@ public class DBLoader
 
 	private void readClass(MModel model, String classUUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
 
-		MClass cls = MFactory.getDefaultFactory().createClass();
+		MClass cls = UmlFactory.getFactory().getCore().createClass();
 		cls.setName(name);
 		cls.setUUID(classUUID);
 		if (ns.equals(model.getUUID()))
@@ -223,7 +225,7 @@ public class DBLoader
 
 	private void readInterface(MModel model, String interfaceUUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
 
-		MInterface me = MFactory.getDefaultFactory().createInterface();
+		MInterface me = UmlFactory.getFactory().getCore().createInterface();
 		me.setName(name);
 		me.setUUID(interfaceUUID);
 		if (ns.equals(model.getUUID()))
@@ -235,7 +237,7 @@ public class DBLoader
 
 	private void readActor(MModel model, String actorUUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
 
-		MActor actor = MFactory.getDefaultFactory().createActor();
+		MActor actor = UmlFactory.getFactory().getUseCases().createActor();
 		actor.setName(name);
 		actor.setUUID(actorUUID);
 		if (ns.equals(model.getUUID()))
@@ -247,7 +249,7 @@ public class DBLoader
 
 	private void readUseCase(MModel model, String ucUUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
 
-		MUseCase usecase = MFactory.getDefaultFactory().createUseCase();
+		MUseCase usecase = UmlFactory.getFactory().getUseCases().createUseCase();
 		usecase.setName(name);
 		usecase.setUUID(ucUUID);
 		if (ns.equals(model.getUUID()))
@@ -259,7 +261,7 @@ public class DBLoader
 
 	private void readDataType(String dtUUID, String name) {
 
-		MDataType me = MFactory.getDefaultFactory().createDataType();
+		MDataType me = UmlFactory.getFactory().getCore().createDataType();
 		me.setName(name);
 		me.setUUID(dtUUID);
 
@@ -278,14 +280,14 @@ public class DBLoader
 		Statement stmtCl = Conn.createStatement();
 		ResultSet attributes = stmtCl.executeQuery(query);
 		while (attributes.next()) {
-			MAttribute attr = MFactory.getDefaultFactory().createAttribute();
+			MAttribute attr = UmlFactory.getFactory().getCore().createAttribute();
 			attr.setUUID(attributes.getString("uuid"));
 			if (! attributes.getString("ownerScope").equals("-1"))
 				attr.setOwnerScope(MScopeKind.forValue(Integer.parseInt(attributes.getString("ownerScope"))));
 			if (! attributes.getString("visibility").equals("-1"))
 				attr.setVisibility(MVisibilityKind.forValue(Integer.parseInt(attributes.getString("visibility"))));
 			if (! attributes.getString("multiplicity").equals("-1"))
-				attr.setMultiplicity(new MMultiplicity(attributes.getString("multiplicity")));
+				attr.setMultiplicity(UmlFactory.getFactory().getDataTypes().createMultiplicity(attributes.getString("multiplicity")));
 			if (! attributes.getString("changeability").equals("-1"))
 				attr.setChangeability(MChangeableKind.forValue(Integer.parseInt(attributes.getString("changeablibity"))));
 			if (! attributes.getString("targetScope").equals("-1"))
@@ -309,7 +311,7 @@ public class DBLoader
 		Statement stmtCl = Conn.createStatement();
 		ResultSet operations = stmtCl.executeQuery(query);
 		while (operations.next()) {
-			MOperation oper = MFactory.getDefaultFactory().createOperation();
+			MOperation oper = UmlFactory.getFactory().getCore().createOperation();
 			oper.setUUID(operations.getString("uuid"));
 			if (! operations.getString("ownerScope").equals("-1"))
 				oper.setOwnerScope(MScopeKind.forValue(Integer.parseInt(operations.getString("ownerScope"))));
@@ -335,10 +337,10 @@ public class DBLoader
 		Statement stmtCl = Conn.createStatement();
 		ResultSet parameters = stmtCl.executeQuery(query);
 		while (parameters.next()) {
-			MParameter param = MFactory.getDefaultFactory().createParameter();
+			MParameter param = UmlFactory.getFactory().getCore().createParameter();
 			param.setUUID(parameters.getString("uuid"));
 			if (! ((parameters.getString("defaultValue") == null) || (parameters.getString("defaultValue").equals(""))))
-				param.setDefaultValue(new MExpression("",parameters.getString("defaultValue")));
+				param.setDefaultValue(UmlFactory.getFactory().getDataTypes().createExpression("",parameters.getString("defaultValue")));
 			if (! parameters.getString("kind").equals("-1"))
 				param.setKind(MParameterDirectionKind.forValue(Integer.parseInt(parameters.getString("kind"))));
 			param.setType((MClassifier)uuid2element.get(parameters.getString("type")));
@@ -359,10 +361,10 @@ public class DBLoader
 		Statement stmtCl = Conn.createStatement();
 		ResultSet constraints = stmtCl.executeQuery(query);
 		while (constraints.next()) {
-			MConstraint constraint = MFactory.getDefaultFactory().createConstraint();
+			MConstraint constraint = UmlFactory.getFactory().getCore().createConstraint();
 			constraint.setUUID(constraints.getString("uuid"));
 			if (! constraints.getString("body").equals(""))
-				constraint.setBody(new MBooleanExpression("OCL", constraints.getString("body")));
+				constraint.setBody(UmlFactory.getFactory().getDataTypes().createBooleanExpression("OCL", constraints.getString("body")));
 			constraint.setName(constraints.getString("name"));
 			constraint.setNamespace((MNamespace)uuid2element.get(constraints.getString("namespace")));
 
@@ -387,7 +389,7 @@ public class DBLoader
 
 	private void readAssociationEnd(MModel model, String UUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
 	
-		MAssociationEnd ae = MFactory.getDefaultFactory().createAssociationEnd();
+		MAssociationEnd ae = UmlFactory.getFactory().getCore().createAssociationEnd();
 		MClassifier type = null;
 		ae.setName(name);
 		ae.setUUID(UUID);
@@ -411,7 +413,7 @@ public class DBLoader
 			if (! rsAE.getString("targetScope").equals("-1"))
 				ae.setTargetScope(MScopeKind.forValue(Integer.parseInt(rsAE.getString("targetScope"))));
 			if (! rsAE.getString("multiplicity").equals("-1"))
-				ae.setMultiplicity(new MMultiplicity(rsAE.getString("multiplicity")));
+				ae.setMultiplicity(UmlFactory.getFactory().getDataTypes().createMultiplicity(rsAE.getString("multiplicity")));
 			if (! rsAE.getString("changeability").equals("-1"))
 				ae.setChangeability(MChangeableKind.forValue(Integer.parseInt(rsAE.getString("changeability"))));
 			if (! rsAE.getString("visibility").equals("-1"))
@@ -427,7 +429,7 @@ public class DBLoader
 
 	private void readAssociation(MModel model, String UUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
 	
-		MAssociation me = MFactory.getDefaultFactory().createAssociation();
+		MAssociation me = UmlFactory.getFactory().getCore().createAssociation();
 		MAssociationEnd ae1 = null;
 		MAssociationEnd ae2 = null;
 
@@ -453,7 +455,7 @@ public class DBLoader
 
 	private void readGeneralization(MModel model, String UUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
 	
-		MGeneralization me = MFactory.getDefaultFactory().createGeneralization();
+		MGeneralization me = UmlFactory.getFactory().getCore().createGeneralization();
 		MGeneralizableElement parent = null;
 		MGeneralizableElement child = null;
 		me.setName(name);
@@ -479,7 +481,7 @@ public class DBLoader
 
 	private void readAbstraction(MModel model, String UUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
 
-		MAbstraction me = MFactory.getDefaultFactory().createAbstraction();
+		MAbstraction me = UmlFactory.getFactory().getCore().createAbstraction();
 		me.setName(name);
 		me.setUUID(UUID);
 		if (ns.equals(model.getUUID()))
@@ -491,7 +493,7 @@ public class DBLoader
 
 	private void readUsage(MModel model, String UUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
 	
-		MUsage me = MFactory.getDefaultFactory().createUsage();
+		MUsage me = UmlFactory.getFactory().getCore().createUsage();
 		me.setName(name);
 		me.setUUID(UUID);
 		if (ns.equals(model.getUUID()))
@@ -521,7 +523,7 @@ public class DBLoader
 
 	/** Don't use main(), it's only for testing! */
     public static void main(String[] Args) throws Exception {
-		MModel mymodel = MFactory.getDefaultFactory().createModel();
+		MModel mymodel = UmlFactory.getFactory().getModelManagement().createModel();
 		DBLoader writer = new DBLoader();
     }
-};
+}

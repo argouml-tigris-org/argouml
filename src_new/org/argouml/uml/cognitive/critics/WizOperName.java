@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,6 +45,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import org.tigris.gef.util.*;
 
 import org.argouml.kernel.*;
+import org.argouml.model.uml.UmlFactory;
 
 /** A wizard to help the user change the name of an operation to a better name.
  * Same as WizMEName expect that it handles the special case where 
@@ -202,7 +203,7 @@ public class WizOperName extends WizMEName {
                     break;
                 }
                 if (theStereotype == null) {
-                    theStereotype = MFactory.getDefaultFactory().createStereotype();
+                    theStereotype = UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
 		    theStereotype.setName("create");
 		    // theStereotype.setStereotype(???);
 		    theStereotype.setBaseClass("BehavioralFeature");

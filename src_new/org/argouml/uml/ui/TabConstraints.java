@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,6 +44,7 @@ import tudresden.ocl.parser.OclParserException;
 import tudresden.ocl.check.OclTypeException;
 
 import org.argouml.kernel.*;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.*;
 import org.argouml.ocl.*;
 
@@ -229,9 +230,9 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
             for (Iterator i = lConstraints.iterator(); i.hasNext();) {
               OclTree ocltCurrent = (OclTree) i.next();
 
-              MConstraint mc = MFactory.getDefaultFactory().createConstraint();
+              MConstraint mc = UmlFactory.getFactory().getCore().createConstraint();
               mc.setName (ocltCurrent.getConstraintName());
-              mc.setBody (new MBooleanExpression ("OCL",
+              mc.setBody (UmlFactory.getFactory().getDataTypes().createBooleanExpression ("OCL",
                   ocltCurrent.getExpression()));
 
               m_mmeiTarget.addConstraint (mc);
@@ -256,10 +257,10 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
         
         if (m_mcConstraint == null) {
           // New constraint, first time setData is called
-          m_mcConstraint = MFactory.getDefaultFactory().createConstraint();
+          m_mcConstraint = UmlFactory.getFactory().getCore().createConstraint();
           
           m_mcConstraint.setName ("newConstraint");
-          m_mcConstraint.setBody (new MBooleanExpression("OCL", sData));
+          m_mcConstraint.setBody (UmlFactory.getFactory().getDataTypes().createBooleanExpression("OCL", sData));
           
           m_mmeiTarget.addConstraint (m_mcConstraint);
           
@@ -273,12 +274,12 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
           m_alConstraints.set (m_nIdx, m_mcConstraint);
         }
         else {
-          mcOld = MFactory.getDefaultFactory().createConstraint();
+          mcOld = UmlFactory.getFactory().getCore().createConstraint();
           mcOld.setName (m_mcConstraint.getName());
-          mcOld.setBody (new MBooleanExpression ("OCL",
+          mcOld.setBody (UmlFactory.getFactory().getDataTypes().createBooleanExpression ("OCL",
                               m_mcConstraint.getBody().getBody()));
           
-          m_mcConstraint.setBody (new MBooleanExpression ("OCL", sData));
+          m_mcConstraint.setBody (UmlFactory.getFactory().getDataTypes().createBooleanExpression ("OCL", sData));
         }
         
         fireConstraintDataChanged (m_nIdx, mcOld, m_mcConstraint);
@@ -297,9 +298,9 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
           }
           
           // Set name
-          MConstraint mcOld = MFactory.getDefaultFactory().createConstraint();
+          MConstraint mcOld = UmlFactory.getFactory().getCore().createConstraint();
           mcOld.setName (m_mcConstraint.getName());
-          mcOld.setBody (new MBooleanExpression ("OCL",
+          mcOld.setBody (UmlFactory.getFactory().getDataTypes().createBooleanExpression ("OCL",
                               m_mcConstraint.getBody().getBody()));
 
           m_mcConstraint.setName (sName);

@@ -24,7 +24,9 @@
 package org.argouml.uml.reveng.java;
 
 import java.util.*;
+
 import org.argouml.ui.*;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.ocl.OCLUtil;
 import org.argouml.uml.*;
 import org.argouml.uml.reveng.*;
@@ -183,7 +185,7 @@ public class Modeller
                          Vector interfaces,
                          String javadoc)
     {
-	MClass mClass = (MClass)addClassifier(MFactory.getDefaultFactory().createClass(),
+	MClass mClass = (MClass)addClassifier(UmlFactory.getFactory().getCore().createClass(),
 					      name, modifiers, javadoc);
 
 	mClass.setAbstract((modifiers & JavaRecognizer.ACC_ABSTRACT) > 0);
@@ -265,7 +267,7 @@ public class Modeller
                              Vector interfaces,
                              String javadoc)
     {
-	MInterface mInterface = (MInterface)addClassifier(MFactory.getDefaultFactory().createInterface(),
+	MInterface mInterface = (MInterface)addClassifier(UmlFactory.getFactory().getCore().createInterface(),
 							  name,
 							  modifiers,
 							  javadoc);
@@ -485,7 +487,7 @@ public class Modeller
 	MMethod method = getMethod(operation.getName());
 	parseState.feature(method);
 
-	method.setBody(new MProcedureExpression("Java", body));
+	method.setBody(UmlFactory.getFactory().getDataTypes().createProcedureExpression("Java", body));
 
 	// Mirror the operation properties to get the method in sync with it.
 	method.setVisibility(operation.getVisibility());
@@ -536,7 +538,7 @@ public class Modeller
 
             // Set the initial value for the attribute.
             if(initializer != null) {
-                mAttribute.setInitialValue(new MExpression("Java",
+                mAttribute.setInitialValue(UmlFactory.getFactory().getDataTypes().createExpression("Java",
                              initializer));
             }
 
@@ -638,7 +640,7 @@ public class Modeller
 	}
 
 	if(mGeneralization == null) {
-	    mGeneralization = MFactory.getDefaultFactory().createGeneralization();
+	    mGeneralization = UmlFactory.getFactory().getCore().createGeneralization();
 	    mGeneralization.setName(name);
 	}
 	return mGeneralization;
@@ -676,7 +678,7 @@ public class Modeller
 	}
 
 	if(mAbstraction == null) {
-	    mAbstraction = MFactory.getDefaultFactory().createAbstraction();
+	    mAbstraction = UmlFactory.getFactory().getCore().createAbstraction();
 	    mAbstraction.setName(name);
 	}
 	return mAbstraction;
@@ -693,7 +695,7 @@ public class Modeller
     {
 	MPackage mPackage = searchPackageInModel(name);
 	if(mPackage == null) {
-	    mPackage = MFactory.getDefaultFactory().createPackage();
+	    mPackage = UmlFactory.getFactory().getModelManagement().createPackage();
 	    mPackage.setName(getRelativePackageName(name));
 	    mPackage.setNamespace(model);
 
@@ -760,7 +762,7 @@ public class Modeller
 	MMethod mMethod = (MMethod)parseState.getMethod(name);
 
 	if(mMethod == null) {
-	    mMethod = MFactory.getDefaultFactory().createMethod();
+	    mMethod = UmlFactory.getFactory().getCore().createMethod();
 	    mMethod.setName(name);
 	    parseState.getClassifier().addFeature(mMethod);
 	}
@@ -815,9 +817,9 @@ public class Modeller
 	}
 
 	if(mAssociationEnd == null && !noAssociations) {
-	    mAssociationEnd = MFactory.getDefaultFactory().createAssociationEnd();
-	    MAssociationEnd mAssociationEnd2 = MFactory.getDefaultFactory().createAssociationEnd();
-	    MAssociation mAssociation = MFactory.getDefaultFactory().createAssociation();
+	    mAssociationEnd = UmlFactory.getFactory().getCore().createAssociationEnd();
+	    MAssociationEnd mAssociationEnd2 = UmlFactory.getFactory().getCore().createAssociationEnd();
+	    MAssociation mAssociation = UmlFactory.getFactory().getCore().createAssociation();
 	    mAssociation.addConnection(mAssociationEnd);
 	    mAssociation.addConnection(mAssociationEnd2);
 	    mAssociation.setNamespace(currentPackage);
@@ -842,7 +844,7 @@ public class Modeller
 	MStereotype mStereotype = (MStereotype)model.lookup(name);
 
 	if(mStereotype == null) {
-	    mStereotype = MFactory.getDefaultFactory().createStereotype();
+	    mStereotype = UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
 	    mStereotype.setName(name);
 	    mStereotype.setNamespace(model);
 	}
@@ -866,7 +868,7 @@ public class Modeller
 		return tv;
 	    }
 	}
-	MTaggedValue tv = MFactory.getDefaultFactory().createTaggedValue();
+	MTaggedValue tv = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
 	tv.setModelElement(element);
 	tv.setTag(name);
 	return tv;
@@ -1015,14 +1017,14 @@ public class Modeller
       // add as OCL constraint
       String sContext = OCLUtil.getContextString (me);
 
-      MConstraint mc = MFactory.getDefaultFactory().createConstraint();
+      MConstraint mc = UmlFactory.getFactory().getCore().createConstraint();
       mc.setName (sTagData.substring (0, sTagData.indexOf (':')));
 
       if (sTagName.equals ("invariant")) {
         // add as invariant constraint
         // Note that no checking of constraint syntax is performed... BAD!
         mc.setBody (
-            new MBooleanExpression (
+            UmlFactory.getFactory().getDataTypes().createBooleanExpression (
               "OCL",
               sContext +
               " inv " + sTagData
@@ -1031,7 +1033,7 @@ public class Modeller
       }
       else if (sTagName.equals ("pre-condition")) {
         mc.setBody (
-            new MBooleanExpression (
+            UmlFactory.getFactory().getDataTypes().createBooleanExpression (
               "OCL",
               sContext +
               " pre " + sTagData
@@ -1040,7 +1042,7 @@ public class Modeller
       }
       else {
         mc.setBody (
-            new MBooleanExpression (
+            UmlFactory.getFactory().getDataTypes().createBooleanExpression (
               "OCL",
               sContext +
               " post " + sTagData
@@ -1235,3 +1237,4 @@ public class Modeller
     }
   }
 }
+

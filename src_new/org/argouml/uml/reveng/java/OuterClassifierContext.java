@@ -23,6 +23,8 @@
 
 package org.argouml.uml.reveng.java;
 
+import org.argouml.model.uml.UmlFactory;
+
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
@@ -86,7 +88,7 @@ class OuterClassifierContext extends Context
 				      namePrefix + name);
 		}		    
 		if(classifier.isInterface()) {
-		    mInterface = MFactory.getDefaultFactory().createInterface();
+		    mInterface = UmlFactory.getFactory().getCore().createInterface();
 		    mInterface.setName(name);
 		    mInterface.setNamespace(mClassifier);
 		}
@@ -136,10 +138,10 @@ class OuterClassifierContext extends Context
 				      namePrefix + name);
 		}		    
 		if(classifier.isInterface()) {
-		    iClassifier = MFactory.getDefaultFactory().createInterface();
+		    iClassifier = UmlFactory.getFactory().getCore().createInterface();
 		}
 		else {
-		    iClassifier = MFactory.getDefaultFactory().createClass();
+		    iClassifier = UmlFactory.getFactory().getCore().createClass();
 		}
 		iClassifier.setName(name);
 		iClassifier.setNamespace(mClassifier);
@@ -154,4 +156,4 @@ class OuterClassifierContext extends Context
 	return iClassifier;
     }
 }
-	
+

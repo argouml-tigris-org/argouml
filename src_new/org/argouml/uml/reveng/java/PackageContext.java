@@ -23,6 +23,8 @@
 
 package org.argouml.uml.reveng.java;
 
+import org.argouml.model.uml.UmlFactory;
+
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
@@ -72,7 +74,7 @@ class PackageContext extends Context
 			Class.forName(javaName + "." + name);
 		}		    
 		if(classifier.isInterface()) {
-		    mInterface = MFactory.getDefaultFactory().createInterface();
+		    mInterface = UmlFactory.getFactory().getCore().createInterface();
 		    mInterface.setName(name);
 		    mInterface.setNamespace(mPackage);
 		}
@@ -121,10 +123,10 @@ class PackageContext extends Context
 			Class.forName(javaName + "." + name);
 		}		    
 		if(classifier.isInterface()) {
-		    mClassifier = MFactory.getDefaultFactory().createInterface();
+		    mClassifier = UmlFactory.getFactory().getCore().createInterface();
 		}
 		else {
-		    mClassifier = MFactory.getDefaultFactory().createClass();
+		    mClassifier = UmlFactory.getFactory().getCore().createClass();
 		}
 		mClassifier.setName(name);
 		mClassifier.setNamespace(mPackage);
@@ -151,7 +153,7 @@ class PackageContext extends Context
 		   name.equals("void") ||
 		   // How do I represent arrays in UML?
 		   name.indexOf("[]") != -1) {
-		    mClassifier = MFactory.getDefaultFactory().createDataType();
+		    mClassifier = UmlFactory.getFactory().getCore().createDataType();
 		    mClassifier.setName(name);
 		    mClassifier.setNamespace(mPackage);
 		}
@@ -164,4 +166,4 @@ class PackageContext extends Context
 	return mClassifier;
     }
 }
-	
+

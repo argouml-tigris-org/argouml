@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,16 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
+
+import org.argouml.model.uml.UmlFactory;
+
+import java.lang.reflect.*;
+import java.awt.event.*;
+
 import javax.swing.event.*;
 import javax.swing.*;
-import java.lang.reflect.*;
+
 import ru.novosoft.uml.*;
-import java.awt.event.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
 public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, UMLUserInterfaceComponent {
@@ -270,7 +275,7 @@ public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, 
 	    MMultiplicity mult = null;
 	    if(lower >= -1) {
 
-		mult = new MMultiplicity(lower,upper);
+		mult = UmlFactory.getFactory().getDataTypes().createMultiplicity(lower,upper);
 
             }
 

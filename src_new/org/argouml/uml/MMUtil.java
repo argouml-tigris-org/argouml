@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -50,9 +50,10 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 
 import java.util.*;
 
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
+import org.argouml.model.uml.UmlFactory;
+import org.argouml.ui.ProjectBrowser;
 
 public class MMUtil {
 
@@ -61,14 +62,14 @@ public class MMUtil {
 	public static MModel STANDARDS;
 
 	static {
-		STANDARDS = new MModelImpl();
+		STANDARDS = UmlFactory.getFactory().getModelManagement().createModel();
 		STANDARDS.setName("standard Elements");
-		MStereotype realizationStereo = new MStereotypeImpl();
+		MStereotype realizationStereo = UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
 		realizationStereo.setName("realize");
 		realizationStereo.setUUID(UUIDManager.SINGLETON.getNewUUID());
 		STANDARDS.addOwnedElement(realizationStereo);
 
-		MStereotype interfaceStereo = new MStereotypeImpl();
+		MStereotype interfaceStereo = UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
 		interfaceStereo.setName("interface");
 		interfaceStereo.setUUID(UUIDManager.SINGLETON.getNewUUID());
 		STANDARDS.addOwnedElement(interfaceStereo);
@@ -221,17 +222,17 @@ public class MMUtil {
     }
 
     public MAssociation buildAssociation(MClassifier c1, boolean nav1, MClassifier c2, boolean nav2) {
-		MAssociationEnd ae1 = new MAssociationEndImpl();
+		MAssociationEnd ae1 = UmlFactory.getFactory().getCore().createAssociationEnd();
 		ae1.setType(c1);
 		ae1.setNavigable(nav1);
 		ae1.setMultiplicity(MMultiplicity.M1_1);
 	
-		MAssociationEnd ae2 = new MAssociationEndImpl();
+		MAssociationEnd ae2 = UmlFactory.getFactory().getCore().createAssociationEnd();
 		ae2.setType(c2);
 		ae2.setNavigable(nav2);
 		ae2.setMultiplicity(MMultiplicity.M1_1);
 
-		MAssociation asc = new MAssociationImpl();
+		MAssociation asc = UmlFactory.getFactory().getCore().createAssociation();
 		asc.addConnection(ae1);
 		asc.addConnection(ae2);
 
@@ -244,7 +245,7 @@ public class MMUtil {
 	public MGeneralization buildGeneralization(MGeneralizableElement child, MGeneralizableElement parent) {
 	    if (parent.getParents().contains(child)) return null;
 
-		MGeneralization gen = new MGeneralizationImpl();
+		MGeneralization gen = UmlFactory.getFactory().getCore().createGeneralization();
 		gen.setParent(parent);
 		gen.setChild(child);
 		if (parent.getNamespace() != null) gen.setNamespace(parent.getNamespace());
@@ -269,7 +270,7 @@ public class MMUtil {
 
      public MExtend buildExtend(MUseCase base, MUseCase extension) {
 
-         MExtend extend = new MExtendImpl();
+         MExtend extend = UmlFactory.getFactory().getUseCases().createExtend();
 
          // Set the ends
 
@@ -304,7 +305,7 @@ public class MMUtil {
 
      public MExtensionPoint buildExtensionPoint(MUseCase useCase) {
 
-         MExtensionPoint extensionPoint = new MExtensionPointImpl();
+         MExtensionPoint extensionPoint = UmlFactory.getFactory().getUseCases().createExtensionPoint();
 
          // Set the owning use case if there is one given.
 
@@ -350,7 +351,7 @@ public class MMUtil {
 
      public MInclude buildInclude(MUseCase base, MUseCase addition) {
 
-         MInclude include = new MIncludeImpl();
+         MInclude include = UmlFactory.getFactory().getUseCases().createInclude();
 
          // Set the ends. Because of the NSUML bug we reverse the accessors
          // here.
@@ -373,7 +374,7 @@ public class MMUtil {
 
 
 	public MDependency buildDependency(MModelElement client, MModelElement supplier) {
-		MDependency dep = new MDependencyImpl();
+		MDependency dep = UmlFactory.getFactory().getCore().createDependency();
 		dep.addSupplier(supplier);
 		dep.addClient(client);
 		if (supplier.getNamespace() != null) dep.setNamespace(supplier.getNamespace());
@@ -382,7 +383,7 @@ public class MMUtil {
 	}
 
 	public MAbstraction buildRealization(MModelElement client, MModelElement supplier) {
-		MAbstraction realization = new MAbstractionImpl();
+		MAbstraction realization = UmlFactory.getFactory().getCore().createAbstraction();
 		// 2002-07-13
 		// Jaap Branderhorst
 		// need a singleton for the stereotype.
@@ -402,7 +403,7 @@ public class MMUtil {
 			
 		}	
 		if (realStereo == null) { // no stereotype yet
-			realStereo = new MStereotypeImpl();
+			realStereo = UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
 			realStereo.setName("realize");
 			realStereo.setUUID(UUIDManager.SINGLETON.getNewUUID());
 		}
@@ -417,7 +418,7 @@ public class MMUtil {
 		// MStereotype realStereo = (MStereotype)STANDARDS.lookup("realize");
     	// System.out.println("real ist: "+realStereo);
     	// commented next two lines out at change 2002-07-13 (Jaap Branderhorst)
-		// MStereotype realStereo = new MStereotypeImpl();
+		// MStereotype realStereo = UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
 		// realStereo.setName("realize");
 		// 2002-07-12
 		// Jaap Branderhorst
@@ -448,7 +449,7 @@ public class MMUtil {
 	}
 
 	public MBinding buildBinding(MModelElement client, MModelElement supplier) {
-		MBinding binding = new MBindingImpl();
+		MBinding binding = UmlFactory.getFactory().getCore().createBinding();
 		binding.addSupplier(supplier);
 		binding.addClient(client);
 		if (supplier.getNamespace() != null) binding.setNamespace(supplier.getNamespace());
@@ -457,7 +458,7 @@ public class MMUtil {
 	}
 
 	public MUsage buildUsage(MModelElement client, MModelElement supplier) {
-	    MUsage usage = new MUsageImpl();
+	    MUsage usage = UmlFactory.getFactory().getCore().createUsage();
 		usage.addSupplier(supplier);
 		usage.addClient(client);
 		if (supplier.getNamespace() != null) usage.setNamespace(supplier.getNamespace());
@@ -477,7 +478,7 @@ public class MMUtil {
 	Project p = pb.getProject();
 	MClassifier voidType = p.findType("void");
 
-	MParameter res = new MParameterImpl();
+	MParameter res = UmlFactory.getFactory().getCore().createParameter();
 	res.setName(null);
 	res.setStereotype(null);
 	res.setType(voidType);
@@ -505,7 +506,7 @@ public class MMUtil {
 
     public MOperation buildOperation() {
 	//build the default operation
-	MOperation oper = new MOperationImpl();
+	MOperation oper = UmlFactory.getFactory().getCore().createOperation();
 	oper.setName("newOperation");
 	oper.setStereotype(null);
 	oper.setOwner(null);
@@ -538,9 +539,9 @@ public class MMUtil {
 	Project p = pb.getProject();
 	MClassifier intType = p.findType("int");
 
-	MAttribute attr = new MAttributeImpl();
+	MAttribute attr = UmlFactory.getFactory().getCore().createAttribute();
 	attr.setName("newAttr");
-	attr.setMultiplicity(new MMultiplicity(1, 1));
+	attr.setMultiplicity(UmlFactory.getFactory().getDataTypes().createMultiplicity(1, 1));
 	attr.setStereotype(null);
 	attr.setOwner(null);
 	attr.setType(intType);
@@ -567,7 +568,7 @@ public class MMUtil {
 
     public MMessage buildMessage(MAssociationRole ar,String sequenceNumber){
 
-	MMessage msg = new MMessageImpl();
+	MMessage msg = UmlFactory.getFactory().getCollaborations().createMessage();
 	msg.setName(sequenceNumber);
 	Collection ascEnds = ar.getConnections();
 
@@ -583,7 +584,7 @@ public class MMUtil {
 	msg.setSender(crSrc);
 	msg.setReceiver(crDst);
 
-	MCallAction action = new MCallActionImpl();
+	MCallAction action = UmlFactory.getFactory().getCommonBehavior().createCallAction();
 	action.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
 	action.setName("action"+sequenceNumber);
 	msg.setAction(action);
