@@ -48,9 +48,11 @@ public class ClassdiagramLayouter implements Layouter {
 	// Create ClassdiagramNodes for all the figures
 	// and add them to the layouter.
 	for(int i=0; i < nodes.size(); i++) {
-	    ClassdiagramNode c = new ClassdiagramNode((FigNode)(nodes.elementAt(i)));
-
-	    add(new ClassdiagramNode((FigNode)(nodes.elementAt(i))));
+	    if(nodes.elementAt(i) instanceof FigNode) {
+		ClassdiagramNode c =
+		    new ClassdiagramNode((FigNode)(nodes.elementAt(i)));
+		add(new ClassdiagramNode((FigNode)(nodes.elementAt(i))));
+	    }
 	}
     }
 
