@@ -8,7 +8,7 @@
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
-// uninterrupted or error-free. The end-user understands that the program       
+// uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
 // exclusively on the program for any reason.  IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
@@ -20,9 +20,9 @@
 // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
-// UPDATES, ENHANCEMENTS, OR MODIFICATIONS. 
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.reveng; 
+package org.argouml.uml.reveng;
 
 import java.beans.PropertyVetoException;
 import java.util.Vector;
@@ -45,24 +45,20 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
-import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MInterface;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.model_management.MPackage;
-
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
 /**
  * Instances of this class interface the current diagram.
  * <p>
- * This class is used by the import mechanism to create packages, 
- * interfaces and classes within the diagrams. 
+ * This class is used by the import mechanism to create packages,
+ * interfaces and classes within the diagrams.
  * It is also used to find the correct diagram to work in.
  *
  * @author Andreas Rueckert
  * @since 0.9
  */
 public class DiagramInterface {
-    
+
     Editor _currentEditor = null;
 
     /** To know what diagrams we have to layout after the import,
@@ -87,7 +83,7 @@ public class DiagramInterface {
     Editor getEditor() {
 	return _currentEditor;
     }
-    
+
     /**
      * Mark a diagram as modified, so we can layout it, after the
      * import is complete.
@@ -122,7 +118,7 @@ public class DiagramInterface {
      *
      * @param newPackage The package to add.
      */
-    public void addPackage(MPackage newPackage) {
+    public void addPackage(Object newPackage) {
 	if(!isInDiagram(newPackage)) {
 	    ClassDiagramGraphModel gm =
 		(ClassDiagramGraphModel)getEditor().getGraphModel();
@@ -146,7 +142,7 @@ public class DiagramInterface {
      * @return true if this package has a figure in the current diagram,
      *         false otherwise.
      */
-    public boolean isInDiagram(MPackage p) {
+    public boolean isInDiagram(Object p) {
 	Object target = ProjectBrowser.TheInstance.getTarget();
 	if(target instanceof Diagram) {
 	    return (((Diagram)target).getNodes()).contains(p);
@@ -175,8 +171,8 @@ public class DiagramInterface {
      * @param p The package.
      * @return The name for the diagram.
      */
-    private String getDiagramName(MPackage p) {
-	return getDiagramName(p.getName());
+    private String getDiagramName(Object p) {
+	return getDiagramName(ModelManagementHelper.getHelper().getNamespaceName(p));
     }
 
     /**
@@ -185,7 +181,7 @@ public class DiagramInterface {
      * @param p The package.
      * @param name The fully qualified name of this package.
      */
-    public void selectClassDiagram(MPackage p, String name) {
+    public void selectClassDiagram(Object p, String name) {
 
 	// Check if this diagram already exists in the project
 	ProjectMember m;
@@ -221,9 +217,9 @@ public class DiagramInterface {
      * @param name The fully qualified name of the package, which is
      *             used to generate the diagram name from.
      */
-    public void addClassDiagram(MPackage target, String name) {
+    public void addClassDiagram(Object ns, String name) {
 	Project p = ProjectManager.getManager().getCurrentProject();
-	MNamespace ns = (MNamespace) target;
+	//MNamespace ns = (MNamespace) target;
 	try {
 	    ArgoDiagram d = new UMLClassDiagram(ns);
 	    d.setName(getDiagramName(name));
@@ -243,7 +239,7 @@ public class DiagramInterface {
      *
      * @param newClass The new class to add to the editor.
      */
-    public void addClass(MClass newClass) {
+    public void addClass(Object newClass) {
 	ClassDiagramGraphModel gm        = (ClassDiagramGraphModel)getEditor().getGraphModel();
 	LayerPerspective lay = (LayerPerspective)getEditor().getLayerManager().getActiveLayer();
 	FigClass newClassFig = new FigClass( gm, newClass);
@@ -261,7 +257,7 @@ public class DiagramInterface {
      *
      * @param newInterface The interface to add.
      */
-    public void addInterface(MInterface newInterface) {
+    public void addInterface(Object newInterface) {
 	ClassDiagramGraphModel gm        = (ClassDiagramGraphModel)getEditor().getGraphModel();
 	LayerPerspective lay             = (LayerPerspective)getEditor().getLayerManager().getActiveLayer();
 	FigInterface     newInterfaceFig = new FigInterface( gm, newInterface);

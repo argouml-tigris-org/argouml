@@ -42,7 +42,7 @@ import ru.novosoft.uml.model_management.MSubsystem;
  * Helper class for UML ModelManagement Package.
  *
  * Current implementation is a placeholder.
- * 
+ *
  * @since ARGO0.11.2
  * @author Thierry Lach
  * @stereotype singleton
@@ -53,19 +53,19 @@ public class ModelManagementHelper {
      */
     private ModelManagementHelper() {
     }
-    
+
      /** Singleton instance.
      */
     private static ModelManagementHelper SINGLETON =
                    new ModelManagementHelper();
 
-    
+
     /** Singleton instance access method.
      */
     public static ModelManagementHelper getHelper() {
         return SINGLETON;
     }
-    
+
     /**
 	 * Returns all subsystems found in the projectbrowser model
 	 * @return Collection
@@ -74,7 +74,7 @@ public class ModelManagementHelper {
 		MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
 		return getAllSubSystems(model);
 	}
-	
+
 	/**
 	 * Returns all subsystems found in this namespace and in its children
 	 * @return Collection
@@ -87,15 +87,15 @@ public class ModelManagementHelper {
 			Object o = it.next();
 			if (o instanceof MNamespace) {
 				list.addAll(getAllSubSystems((MNamespace)o));
-			} 
+			}
 			if (o instanceof MSubsystem) {
 				list.add(o);
 			}
-			
+
 		}
 		return list;
 	}
-	
+
 	/**
 	 * Returns all namespaces found in the projectbrowser model
 	 * @return Collection
@@ -104,7 +104,7 @@ public class ModelManagementHelper {
 		MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
 		return getAllNamespaces(model);
 	}
-	
+
 	/**
 	 * Returns all namespaces found in this namespace and in its children
 	 * @return Collection
@@ -117,14 +117,14 @@ public class ModelManagementHelper {
 			Object o = it.next();
 			if (o instanceof MNamespace) {
 				list.add(o);
-				list.addAll(getAllNamespaces((MNamespace)o));	
-			} 
+				list.addAll(getAllNamespaces((MNamespace)o));
+			}
 		}
 		return list;
 	}
-	
+
 	/**
-	 * Returns all modelelements found in this namespace and its children 
+	 * Returns all modelelements found in this namespace and its children
 	 * that are of some class kind n the projectbrowser model
 	 * @return Collection
 	 */
@@ -134,10 +134,10 @@ public class ModelManagementHelper {
 		MNamespace model = p.getRoot();
 		return getAllModelElementsOfKind(model, kind);
 	}
-	
+
 	/**
-	 * Returns all modelelements found in this namespace and its children 
-	 * that are of some class kind. 
+	 * Returns all modelelements found in this namespace and its children
+	 * that are of some class kind.
 	 * @param ns
 	 * @param kind
 	 * @return Collection
@@ -150,16 +150,16 @@ public class ModelManagementHelper {
 			Object o = it.next();
 			if (o instanceof MNamespace) {
 				list.addAll(getAllModelElementsOfKind((MNamespace)o, kind));
-			} 
+			}
 			if (kind.isAssignableFrom(o.getClass())) {
 				list.add(o);
 			}
 		}
 		return list;
 	}
-	
+
 	/**
-	 * Returns all surrounding namespaces of some namespace ns. See 
+	 * Returns all surrounding namespaces of some namespace ns. See
 	 * section 2.5.3.24 of the UML 1.3 spec for a definition.
 	 * @param ns
 	 * @return Collection
@@ -172,11 +172,48 @@ public class ModelManagementHelper {
 		}
 		return set;
 	}
-	
+
+	/**
+	 * Returns the name of a namespace.
+	 * @param namespace
+	 * @return name
+	 */
+	public String getNamespaceName(Object o) {
+		String name = null;
+		if (o instanceof MNamespace)
+		    name = ((MNamespace)o).getName();
+		return name;
+	}
+
+	/**
+	 * Returns the namespace of a model element or another namespace.
+	 * @param object
+	 * @return namespace
+	 */
+	public Object getNamespace(Object o) {
+		if (o instanceof MModelElement)
+		    return ((MModelElement)o).getNamespace();
+		if (o instanceof MNamespace)
+		    return ((MNamespace)o).getNamespace();
+		return null;
+	}
+
+	/**
+	 * Returns the named model element in the namespace, null otherwise.
+	 * @param namespace
+	 * @param name of the model element
+	 * @return model element
+	 */
+	public Object lookupNamespaceFor(Object o, String name) {
+		if (o instanceof MNamespace)
+		    return ((MNamespace)o).lookup(name);
+		return null;
+	}
+
 	/**
 	 * Move a modelelement to a new namespace. The way this is currently
 	 * implemented this means that ALL modelelements that share the same
-	 * namespace as the element to be moved are moved. 
+	 * namespace as the element to be moved are moved.
 	 * TODO: make this into a copy function
 	 * TODO: make this only move/copy the asked element
 	 * @param element
@@ -189,9 +226,26 @@ public class ModelManagementHelper {
 	            moveElement(element.getNamespace(), to);
 	        } else {
 	            element.setNamespace(to);
-	        }	        
+	        }
 	    }
 	}
-		
+
+	/**
+	 * Returns if the object is a model.
+	 * @param object
+	 * @return boolean
+	 */
+	public boolean isModel(Object o) {
+		return (o instanceof MModel);
+	}
+
+	/**
+	 * Returns if the object is a model element.
+	 * @param object
+	 * @return boolean
+	 */
+	public boolean isModelElement(Object o) {
+		return (o instanceof MModelElement);
+	}
 }
 

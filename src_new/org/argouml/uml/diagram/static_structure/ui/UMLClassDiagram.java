@@ -106,11 +106,11 @@ public class UMLClassDiagram extends UMLDiagram {
         super();
     }
 
-    public UMLClassDiagram(String name, MNamespace m) {
-        super(name, m);
+    public UMLClassDiagram(String name, Object m) {
+        super(name, (MNamespace)m);
     }
 
-    public UMLClassDiagram(MNamespace m) {
+    public UMLClassDiagram(Object m) {
         this(getNewDiagramName(), m);
     }
 

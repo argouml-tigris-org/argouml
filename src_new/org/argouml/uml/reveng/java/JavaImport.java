@@ -7,7 +7,7 @@
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
-// uninterrupted or error-free. The end-user understands that the program       
+// uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
 // exclusively on the program for any reason.  IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
@@ -19,7 +19,7 @@
 // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
-// UPDATES, ENHANCEMENTS, OR MODIFICATIONS. 
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.reveng.java;
 
@@ -30,7 +30,6 @@ import antlr.*;
 import org.argouml.kernel.*;
 import org.argouml.uml.reveng.*;
 import org.argouml.application.api.*;
-import ru.novosoft.uml.model_management.*;
 import org.tigris.gef.base.*;
 
 import javax.swing.*;
@@ -73,7 +72,7 @@ public class JavaImport {
 						   GridBagConstraints.NORTHWEST,
 						   GridBagConstraints.NONE,
 						   new Insets(5, 5, 0, 5),
-						   0, 0));			    
+						   0, 0));
 	    ButtonGroup group1 = new ButtonGroup();
 	    attribute =
 		new JRadioButton("UML attributes.");
@@ -145,24 +144,24 @@ public class JavaImport {
 	throws Exception {
 	// Create a scanner that reads from the input stream passed to us
 	JavaLexer lexer = new JavaLexer(new BufferedInputStream(new FileInputStream( f)));
-	
+
 	// We use a special Argo token, that stores the preceding
 	// whitespaces.
-	lexer.setTokenObjectClass( "org.argouml.uml.reveng.java.ArgoToken");     
-	
+	lexer.setTokenObjectClass( "org.argouml.uml.reveng.java.ArgoToken");
+
 	// Create a parser that reads from the scanner
 	JavaRecognizer parser = new JavaRecognizer( lexer);
-	
+
 	// Create a modeller for the parser
-	Modeller modeller = new Modeller((MModel)p.getModel(),
+	Modeller modeller = new Modeller(p.getModel(),
 					 diagram,
 					 attribute.isSelected(),
-					 datatype.isSelected());   
-	
+					 datatype.isSelected());
+
 	// Print the name of the current file, so we can associate
 	// exceptions to the file.
 	Argo.log.info("Parsing " + f.getAbsolutePath());
-	
+
 	// start parsing at the compilationUnit rule
 	parser.compilationUnit(modeller, lexer);
 

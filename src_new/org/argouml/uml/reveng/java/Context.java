@@ -1,36 +1,42 @@
+// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 // $Id$
 
 /*
   JavaRE - Code generation and reverse engineering for UML and Java
   Copyright (C) 2000 Marcus Andersson andersson@users.sourceforge.net
-  
-  This library is free software; you can redistribute it and/or modify
-  it under the terms of the GNU Lesser General Public License as
-  published by the Free Software Foundation; either version 2.1 of the
-  License, or (at your option) any later version.
-
-  This library is distributed in the hope that it will be useful, but
-  WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  Lesser General Public License for more details.
-
-  You should have received a copy of the GNU Lesser General Public
-  License along with this library; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
-  USA 
-
 */
 
 package org.argouml.uml.reveng.java;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
 /**
    The context is the current available namespaces via import in the
    class that is currently parsed. It is non mutable and a new
    context can be based on the current context with an
-   additional namespace.  
+   additional namespace.
 */
 abstract class Context
 {
@@ -39,7 +45,7 @@ abstract class Context
 
     /**
        Create a new context.
-       
+
        @param base Based on this context, may be null.
     */
     public Context(Context base)
@@ -56,30 +62,31 @@ abstract class Context
        @param className The name of the classifier to find.
        @return Found classifier.
     */
-    abstract public MClassifier get(String name)
+    abstract public Object get(String name)
 	throws ClassifierNotFoundException;
 
-    abstract public MInterface getInterface(String name)
+    abstract public Object getInterface(String name)
 	throws ClassifierNotFoundException;
 
     /**
        Get the complete java name for a package.
-       
+
        @param mPackage The package.
        @return Package name in java format
     */
-    protected String getJavaName(MPackage mPackage)
+    protected String getJavaName(Object mPackage)
     {
-	MNamespace parent = mPackage.getNamespace();
-	if(parent instanceof MModel) {
-	    return mPackage.getName();
+	Object parent = ModelManagementHelper.getHelper().getNamespace(mPackage);
+	if(ModelManagementHelper.getHelper().isModel(parent)) {
+	    return ModelManagementHelper.getHelper().getNamespaceName(mPackage);
 	}
 	else if(parent != null) {
-	    return getJavaName((MPackage)parent) + "." + mPackage.getName();
+	    return getJavaName(parent) + "."
+	           + ModelManagementHelper.getHelper().getNamespaceName(mPackage);
 	}
 	else {
 	    return "";
 	}
     }
 }
-	
+
