@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,7 +44,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
-import org.argouml.ui.explorer.ExplorerTree;
 
 /**
  * This class extends the default Argo JTree with Drag and drop capabilities.
@@ -55,9 +54,8 @@ import org.argouml.ui.explorer.ExplorerTree;
  * @since Created on 16 April 2003
  */
 public class DnDExplorerTree 
-extends ExplorerTree 
-implements DragGestureListener, DragSourceListener
-{
+    extends ExplorerTree 
+    implements DragGestureListener, DragSourceListener {
     
     private static Logger _cat = Logger.getLogger(DnDExplorerTree.class);
     
@@ -100,7 +98,7 @@ implements DragGestureListener, DragSourceListener
         //Get the selected node from the JTree
         _selectedTreePath = getSelectionPath();
         if (_selectedTreePath == null) return;
-        Object dragNode = ((DefaultMutableTreeNode)_selectedTreePath
+        Object dragNode = ((DefaultMutableTreeNode) _selectedTreePath
                                 .getLastPathComponent()).getUserObject();
         if (dragNode != null) {
             
@@ -189,29 +187,29 @@ implements DragGestureListener, DragSourceListener
                 if (msg != null) {
                     dropTargetDropEvent.rejectDrop();
                     
-                    SwingUtilities.invokeLater(new Runnable() 
-			{
-			    public void run() {
-				JOptionPane.showMessageDialog(
-					null,
-					msg,
-					"Error Dialog", 
-					JOptionPane.ERROR_MESSAGE
-					);
-			    }
-			});
+                    SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+			    JOptionPane.showMessageDialog(
+			            null,
+				    msg,
+				    "Error Dialog", 
+				    JOptionPane.ERROR_MESSAGE);
+			}
+		    });
                     // reset the cursor.
                     //dropTargetDropEvent.getDropTargetContext()
                     //  .getComponent().setCursor(Cursor.getDefaultCursor());
                     return;
                 }
                 
-                Object destinationModelElement = ((DefaultMutableTreeNode)destinationPath
-                                .getLastPathComponent()).getUserObject();
+                Object destinationModelElement =
+		    ((DefaultMutableTreeNode) destinationPath
+		             .getLastPathComponent()).getUserObject();
                 
                 //get old parent node
-                Object oldParentME = ((DefaultMutableTreeNode)_selectedTreePath.getParentPath()
-		    .getLastPathComponent()).getUserObject();
+                Object oldParentME =
+		    ((DefaultMutableTreeNode) _selectedTreePath.getParentPath()
+		             .getLastPathComponent()).getUserObject();
                 
                 int action = dropTargetDropEvent.getDropAction();
                 boolean copyAction = (action == DnDConstants.ACTION_COPY);
@@ -258,25 +256,26 @@ implements DragGestureListener, DragSourceListener
         private String isValidDropTarget(TreePath destinationPath,
 					 TreePath sourceTreePath) {
             
-            if (destinationPath == null ||
-		sourceTreePath == null)
-	    {
+            if (destinationPath == null
+		|| sourceTreePath == null) {
                 return null;
             }
             
-            Object dest = ((DefaultMutableTreeNode)destinationPath
-                                .getLastPathComponent()).getUserObject();
-            Object src = ((DefaultMutableTreeNode)sourceTreePath
-                                .getLastPathComponent()).getUserObject();
+            Object dest =
+		((DefaultMutableTreeNode) destinationPath
+		        .getLastPathComponent()).getUserObject();
+            Object src =
+		((DefaultMutableTreeNode) sourceTreePath
+		        .getLastPathComponent()).getUserObject();
             
-            boolean isValid = UmlHelper.getHelper().getCore()
-		.isValidNamespace(src, dest);
+            boolean isValid =
+		UmlHelper.getHelper().getCore().isValidNamespace(src, dest);
             
             if (isValid) {
                 return null;
-            }
-            else
+            } else {
                 return "you can't drag there.";
+	    }
         }
         
         /** empty implementation - not used */

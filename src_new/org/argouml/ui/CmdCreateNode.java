@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -197,7 +197,9 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
                                     .lastIndexOf(classname)).equals("build"))
                             && method.getParameterTypes().length == 0) {
                         LOG.debug("Using method: " + method);
-                        Object[] params = new Object[] { factory, method};
+                        Object[] params = new Object[] {
+			    factory, method,
+			};
                         cache.put(_args.get("className"), params);
                         return method.invoke(factory, emptyParam);
                     }
@@ -207,10 +209,13 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
                     Method method = (Method) it2.next();
                     String methodname = method.getName();
                     if (methodname.endsWith(classname)
-                            && (methodname.substring(0, methodname
-                                    .lastIndexOf(classname)).equals("create"))) {
+                            && (methodname.substring(0,
+			            methodname.lastIndexOf(classname))
+				    .equals("create"))) {
                         LOG.debug("Using method: " + method);
-                        Object[] params = new Object[] { factory, method};
+                        Object[] params = new Object[] {
+			    factory, method,
+			};
                         cache.put(_args.get("className"), params);
                         return method.invoke(factory, emptyParam);
                     }

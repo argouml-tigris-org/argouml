@@ -122,9 +122,10 @@ public class StateMachinesHelper {
             Object sm = ((MTransition) handle).getStateMachine();
             if (sm != null) return sm;
             // the next statement is for internal transitions
-            return getStateMachine(((MTransition)handle).getSource());
+            return getStateMachine(((MTransition) handle).getSource());
         }
-        throw new IllegalArgumentException("null argument to getStateMachine()");
+        throw new IllegalArgumentException("null argument to "
+					   + "getStateMachine()");
     }
 
     /**
@@ -263,17 +264,17 @@ public class StateMachinesHelper {
      * @param opname 
      * @return Object The operation with the given name, or null. 
      */
-    public Object findOperationByName(Object trans, String opname){
+    public Object findOperationByName(Object trans, String opname) {
         if (!(trans instanceof MTransition)) 
             throw new IllegalArgumentException();
         Object sm = getStateMachine(trans);
         Object ns = ModelFacade.getNamespace(sm);
-        if (ModelFacade.isAClassifier(ns)){
+        if (ModelFacade.isAClassifier(ns)) {
             Collection c = ModelFacade.getOperations(ns);
             Iterator i = c.iterator();
             while (i.hasNext()) { 
                 Object op = i.next();
-                String on = ((MModelElement)op).getName();
+                String on = ((MModelElement) op).getName();
                 if (on.equals(opname))
                     return op;
             }

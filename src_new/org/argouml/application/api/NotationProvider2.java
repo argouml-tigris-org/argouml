@@ -27,8 +27,8 @@ package org.argouml.application.api;
 /**
  * Interface provided by classes that provide a notation.<p>
  * 
- * This interface is used by all elements in the Diagrams whenever some UML-object
- * needs to be converted into a text string.<p>
+ * This interface is used by all elements in the Diagrams whenever
+ * some UML-object needs to be converted into a text string.<p>
  * 
  * For UML this interface is implemented by 
  * {@link org.argouml.uml.generator.GeneratorDisplay}. 

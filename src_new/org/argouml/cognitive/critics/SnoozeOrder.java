@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,8 +44,9 @@ import org.apache.log4j.Logger;
  *  mind that is not worth making explicit. */
 
 public class SnoozeOrder implements Serializable {
-	/** logger */
-	private static Logger cat = Logger.getLogger(SnoozeOrder.class);
+    /** logger */
+    private static Logger LOG = Logger.getLogger(SnoozeOrder.class);
+
     ////////////////////////////////////////////////////////////////
     // constants
     /** The initial sleeping time. */
@@ -100,7 +101,7 @@ public class SnoozeOrder implements Serializable {
 	long now = (getNow()).getTime();
 	_snoozeUntil.setTime(now + _interval);
 	_snoozeAgain.setTime(now + _interval + _initialIntervalMS);
-	cat.info("Setting snooze order to: " + _snoozeUntil.toString());
+	LOG.info("Setting snooze order to: " + _snoozeUntil.toString());
     }
 
     public void unsnooze() {

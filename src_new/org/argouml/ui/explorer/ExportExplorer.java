@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,7 +38,7 @@ import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
  * @since 0.15.2, Created on 18 October 2003, 23:31
  */
 public class ExportExplorer
-extends DnDExplorerTree{
+    extends DnDExplorerTree {
     
     public final String DIAGRAM_TO_CLIPBOARD_ACTION = "export Diagram as GIF";
     
@@ -48,12 +48,13 @@ extends DnDExplorerTree{
         createDiagramExportBinding();
     }
     
-    private void createDiagramExportBinding(){
+    private void createDiagramExportBinding() {
         
         KeyStroke ctrlC = KeyStroke.getKeyStroke("control C");
         
         this.getInputMap().put(ctrlC, DIAGRAM_TO_CLIPBOARD_ACTION);
-        this.getActionMap().put(DIAGRAM_TO_CLIPBOARD_ACTION,new ActionSaveDiagramToClipboard());
+        this.getActionMap().put(DIAGRAM_TO_CLIPBOARD_ACTION,
+				new ActionSaveDiagramToClipboard());
     }
 
 }

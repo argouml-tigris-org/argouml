@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -69,7 +69,7 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
     
     private static ImageIcon lookupIconResource(String name) {
         ResourceLoaderWrapper w =
-        ResourceLoaderWrapper.getResourceLoaderWrapper();
+	    ResourceLoaderWrapper.getResourceLoaderWrapper();
         return w.lookupIconResource(name);
     }
     
@@ -83,8 +83,8 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
     boolean hasFocus) {
         
         Component r = super.getTreeCellRendererComponent(tree, value, sel,
-        expanded, leaf,
-        row, hasFocus);
+							 expanded, leaf,
+							 row, hasFocus);
         
         if (r instanceof JLabel) {
             JLabel lab = (JLabel) r;
@@ -125,12 +125,12 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
             }
             else if (org.argouml.model.ModelFacade.isADiagram(value)) {
                 return _navRenderer.getTreeCellRendererComponent(tree,
-                value,
-                sel,
-                expanded,
-                leaf,
-                row,
-                hasFocus);
+								 value,
+								 sel,
+								 expanded,
+								 leaf,
+								 row,
+								 hasFocus);
             }
             else {
                 Object newValue = value;
@@ -138,12 +138,12 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
                     newValue = ((Fig) value).getOwner();
                 if (org.argouml.model.ModelFacade.isAModelElement(newValue)) {
                     return _navRenderer.getTreeCellRendererComponent(tree,
-                    newValue,
-                    sel,
-                    expanded,
-                    leaf,
-                    row,
-                    hasFocus);
+								     newValue,
+								     sel,
+								     expanded,
+								     leaf,
+								     row,
+								     hasFocus);
                 }
             }
             

@@ -1521,8 +1521,9 @@ public class ModelFacade {
             Object state = getState(handle);
             Object end0 = getSource(handle);
             Object end1 = getTarget(handle);
-            if (end0 != null)
-                return ((state == end0) && (state == end1)) ;
+            if (end0 != null) {
+                return ((state == end0) && (state == end1));
+	    }
         }
         return illegalArgumentBoolean(handle);
     }
@@ -2612,10 +2613,11 @@ public class ModelFacade {
      */
     public static Iterator getRanges(Object handle) {
         if ((handle instanceof MMultiplicity)) {
-           Collection c = ((MMultiplicity) handle).getRanges();
-           if (c == null)
-               return null;
-           return c.iterator();
+	    Collection c = ((MMultiplicity) handle).getRanges();
+	    if (c == null) {
+		return null;
+	    }
+	    return c.iterator();
         }
         illegalArgument(handle);
         return null;
@@ -5493,7 +5495,8 @@ public class ModelFacade {
         }
         if (handle instanceof MChangeEvent
             && (value == null || value instanceof MBooleanExpression)) {
-            ((MChangeEvent) handle).setChangeExpression((MBooleanExpression) value);
+	    MChangeEvent ce = (MChangeEvent) handle;
+	    ce.setChangeExpression((MBooleanExpression) value);
             return;
         }
         illegalArgument(handle, value);

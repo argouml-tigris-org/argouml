@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -132,7 +132,8 @@ public class GeneratorJava
         if (!path.endsWith(FILE_SEPARATOR))
             path += FILE_SEPARATOR;
 
-        String packagePath = getPackageName(ModelFacade.getNamespace(classifier));
+        String packagePath =
+	    getPackageName(ModelFacade.getNamespace(classifier));
 
         int lastIndex = -1;
         do {
@@ -181,19 +182,25 @@ public class GeneratorJava
         // TODO: package, project basepath, tagged values to configure
         cat.info("Generating (new) " + f.getPath());
         _isFileGeneration = true;
-        String header = SINGLETON.generateHeader(classifier, pathname, packagePath);
+        String header =
+	    SINGLETON.generateHeader(classifier, pathname, packagePath);
         String src = SINGLETON.generate(classifier);
         BufferedWriter fos = null;
         try {
-        	if ( Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING) == null
-		|| Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING).trim().equals(""))
-            	fos = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f), System.getProperty("file.encoding")));
-		else
-            	fos = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f), Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING)));
+	    if (Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING) == null
+		|| Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING).trim().equals("")) {
+            	fos =
+		    new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f),
+							      System.getProperty("file.encoding")));
+	    } else {
+            	fos =
+		    new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f),
+							      Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING)));
+	    }
             fos.write(header);
             fos.write(src);
         } catch (IOException exp) {
-            cat.error("IO Exception: "+exp+", for file: "+f.getPath());
+            cat.error("IO Exception: " + exp + ", for file: " + f.getPath());
         } finally {
             _isFileGeneration = false;
             try {
@@ -245,27 +252,29 @@ public class GeneratorJava
                     }
                 } else if (ModelFacade.isAOperation(mFeature)) {
                     // check the parameter types
-                    Iterator it = ModelFacade.getParameters(mFeature).iterator();
+                    Iterator it =
+			ModelFacade.getParameters(mFeature).iterator();
                     while (it.hasNext()) {
                         Object parameter = it.next();
-                        if ((ftype =
-                                generateImportType(ModelFacade.getType(parameter), packagePath))
-                                != null) {
+			ftype =
+			    generateImportType(ModelFacade.getType(parameter),
+					       packagePath);
+			if (ftype != null) {
                             importSet.add(ftype);
                         }
                     }
                     // check the return parameter types
                     it =
-                        UmlHelper
-			.getHelper()
-			.getCore()
-			.getReturnParameters(/*(MOperation)*/mFeature)
-			.iterator();
+                        UmlHelper.getHelper()
+			    .getCore()
+			        .getReturnParameters(/*(MOperation)*/mFeature)
+			            .iterator();
                     while (it.hasNext()) {
                         Object parameter = it.next();
-                        if ((ftype =
-                                 generateImportType(ModelFacade.getType(parameter), packagePath))
-                                != null) {
+			ftype =
+			    generateImportType(ModelFacade.getType(parameter),
+					       packagePath);
+                        if (ftype != null) {
                             importSet.add(ftype);
                         }
                     }
@@ -278,23 +287,27 @@ public class GeneratorJava
             for (j = c.iterator(); j.hasNext();) {
                 Object associationEnd = /*(MAssociationEnd)*/ j.next();
                 Object association = ModelFacade.getAssociation(associationEnd);
-                Iterator connEnum = ModelFacade.getConnections(association).iterator();
+                Iterator connEnum =
+		    ModelFacade.getConnections(association).iterator();
                 while (connEnum.hasNext()) {
-                    Object associationEnd2 = /*(MAssociationEnd)*/ connEnum.next();
+                    Object associationEnd2 =
+			/*(MAssociationEnd)*/ connEnum.next();
                     if (associationEnd2 != associationEnd
                             && ModelFacade.isNavigable(associationEnd2)
                             && !ModelFacade.isAbstract(ModelFacade.getAssociation(associationEnd2))) {
                         // association end found
-                        Object multiplicity = ModelFacade.getMultiplicity(associationEnd2);
+                        Object multiplicity =
+			    ModelFacade.getMultiplicity(associationEnd2);
                         if (!ModelFacade.M1_1_MULTIPLICITY.equals(multiplicity)
                                 && !ModelFacade.M0_1_MULTIPLICITY.equals(multiplicity)) {
                             importSet.add("java.util.Vector");
-                        } else if (
-				   (ftype =
-				    generateImportType(ModelFacade.getType(associationEnd2),
-						       packagePath))
-				   != null) {
-                            importSet.add(ftype);
+                        } else {
+			    ftype =
+				generateImportType(ModelFacade.getType(associationEnd2),
+						   packagePath);
+			    if (ftype != null) {
+				importSet.add(ftype);
+			    }
                         }
                     }
                 }
@@ -356,7 +369,8 @@ public class GeneratorJava
         }
         if (stereo != null
                 && ModelFacade.getName(stereo).equals("create")) { // constructor
-            nameStr = generateName(ModelFacade.getName(ModelFacade.getOwner(op)));
+            nameStr =
+		generateName(ModelFacade.getName(ModelFacade.getOwner(op)));
             constructor = true;
         } else {
             nameStr = generateName(ModelFacade.getName(op));
@@ -384,7 +398,8 @@ public class GeneratorJava
         sb.append(generateVisibility(op));
 
         // pick out return type
-        Object/*MParameter*/ rp = UmlHelper.getHelper().getCore().getReturnParameter(op);
+        Object/*MParameter*/ rp =
+	    UmlHelper.getHelper().getCore().getReturnParameter(op);
         if (rp != null) {
             Object/*MClassifier*/ returnType = ModelFacade.getType(rp);
             if (returnType == null && !constructor) {
@@ -481,7 +496,8 @@ public class GeneratorJava
         StringBuffer sb = new StringBuffer(20);
         //TODO: qualifiers (e.g., const)
         //TODO: stereotypes...
-        sb.append(generateClassifierRef(ModelFacade.getType(parameter))).append(' ');
+        sb.append(generateClassifierRef(ModelFacade.getType(parameter)));
+	sb.append(' ');
         sb.append(generateName(ModelFacade.getName(parameter)));
         //TODO: initial value
         return sb.toString();
@@ -550,15 +566,19 @@ public class GeneratorJava
         }
 
         // add additional modifiers
-        if (ModelFacade.getTaggedValue(cls, "src_modifiers") != null)
-            sb.append(" " + ModelFacade.getTaggedValue(cls, "src_modifiers") + " ");
+        if (ModelFacade.getTaggedValue(cls, "src_modifiers") != null) {
+            sb.append(" ");
+	    sb.append(ModelFacade.getTaggedValue(cls, "src_modifiers"));
+	    sb.append(" ");
+	}
 
         // add classifier keyword and classifier name
         sb.append(sClassifierKeyword).append(" ");
 	sb.append(generateName(ModelFacade.getName(cls)));
 
         // add base class/interface
-        String baseClass = generateGeneralization(ModelFacade.getGeneralizations(cls));
+        String baseClass =
+	    generateGeneralization(ModelFacade.getGeneralizations(cls));
         if (!baseClass.equals("")) {
             sb.append(" ").append("extends ").append(baseClass);
         }
@@ -597,7 +617,8 @@ public class GeneratorJava
                 }
                 sb.append(LINE_SEPARATOR);
 		sb.append("//end of ").append(classifierkeyword);
-		sb.append(" ").append(ModelFacade.getName(cls)).append(LINE_SEPARATOR);
+		sb.append(" ").append(ModelFacade.getName(cls));
+		sb.append(LINE_SEPARATOR);
             }
             sb.append("}");
         }
@@ -669,7 +690,8 @@ public class GeneratorJava
     /**
      * Generates code for a classifier. In case of Java code is
      * generated for classes and interfaces only at the moment.
-     * @see org.argouml.application.api.NotationProvider2#generateClassifier(MClassifier)
+     * @see org.argouml.application.api.NotationProvider2#generateClassifier(
+     *         Object)
      */
     public String generateClassifier(Object cls) {
         /*
@@ -857,7 +879,8 @@ public class GeneratorJava
 
                 Iterator strEnum = strs.iterator();
                 while (strEnum.hasNext()) {
-                    Object structuralFeature = /*(MStructuralFeature)*/ strEnum.next();
+                    Object structuralFeature =
+			/*(MStructuralFeature)*/ strEnum.next();
 
                     sb.append(generate(structuralFeature));
 
@@ -885,10 +908,13 @@ public class GeneratorJava
 
                 Iterator endEnum = ends.iterator();
                 while (endEnum.hasNext()) {
-                    Object associationEnd = /*(MAssociationEnd)*/ endEnum.next();
-                    Object association = ModelFacade.getAssociation(associationEnd);
+                    Object associationEnd =
+			/*(MAssociationEnd)*/ endEnum.next();
+                    Object association =
+			ModelFacade.getAssociation(associationEnd);
 
-                    sb.append(generateAssociationFrom(association, associationEnd));
+                    sb.append(generateAssociationFrom(association,
+						      associationEnd));
 
                     tv = generateTaggedValues(association);
                     if (tv != null && tv.length() > 0) {
@@ -901,7 +927,9 @@ public class GeneratorJava
             Collection elements = ModelFacade.getOwnedElements(cls);
             for (Iterator i = elements.iterator(); i.hasNext(); ) {
                 Object element = /*(MModelElement)*/ i.next();
-                if (ModelFacade.isAClass(element) || ModelFacade.isAInterface(element)) {
+                if (ModelFacade.isAClass(element)
+		    || ModelFacade.isAInterface(element)) {
+
                     sb.append(generateClassifier(element));
                 }
             }
@@ -927,7 +955,8 @@ public class GeneratorJava
                 Iterator behEnum = behs.iterator();
 
                 while (behEnum.hasNext()) {
-                    Object behavioralFeature = /*(MBehavioralFeature)*/ behEnum.next();
+                    Object behavioralFeature =
+			/*(MBehavioralFeature)*/ behEnum.next();
 
                     sb.append(generate(behavioralFeature));
 
@@ -947,11 +976,10 @@ public class GeneratorJava
                         }
 
                         // there is no ReturnType in behavioral feature (nsuml)
-                        sb
-                            .append(LINE_SEPARATOR)
-                            .append(generateMethodBody(behavioralFeature))
-                            .append(INDENT)
-                            .append("}").append(LINE_SEPARATOR);
+                        sb.append(LINE_SEPARATOR);
+			sb.append(generateMethodBody(behavioralFeature));
+			sb.append(INDENT);
+			sb.append("}").append(LINE_SEPARATOR);
                     } else {
                         sb.append(";").append(LINE_SEPARATOR);
                         if (tv.length() > 0) {
@@ -983,7 +1011,8 @@ public class GeneratorJava
 
                 if (m != null) {
                     if (ModelFacade.getBody(m) != null) {
-                        String body = (String)ModelFacade.getBody(ModelFacade.getBody(m));
+                        String body =
+			    (String) ModelFacade.getBody(ModelFacade.getBody(m));
                         if (body.equals("\n")) {
                             return LINE_SEPARATOR;
                         }
@@ -1141,7 +1170,8 @@ public class GeneratorJava
         String s = generateConstraintEnrichedDocComment(me, true, INDENT);
 
         Object/*MMultiplicity*/ m = ModelFacade.getMultiplicity(ae);
-        if (!(ModelFacade.M1_1_MULTIPLICITY.equals(m) || ModelFacade.M0_1_MULTIPLICITY.equals(m))) {
+        if (!(ModelFacade.M1_1_MULTIPLICITY.equals(m)
+	      || ModelFacade.M0_1_MULTIPLICITY.equals(m))) {
             // Multiplicity greater 1, that means we will generate some sort of
             // collection, so we need to specify the element type tag
             StringBuffer sDocComment = new StringBuffer(80);
@@ -1151,19 +1181,16 @@ public class GeneratorJava
                 // Just remove closing "*/"
                 sDocComment.append(s.substring(0, s.indexOf("*/") + 1));
             } else {
-                sDocComment
-                    .append(INDENT)
-                    .append("/**").append(LINE_SEPARATOR)
-                    .append(INDENT)
-                    .append(" * ").append(LINE_SEPARATOR)
-                    .append(INDENT)
-                    .append(" *");
+                sDocComment.append(INDENT).append("/**").append(LINE_SEPARATOR);
+		sDocComment.append(INDENT).append(" * ").append(LINE_SEPARATOR);
+		sDocComment.append(INDENT).append(" *");
             }
 
             // Build doccomment
             Object/*MClassifier*/ type = ModelFacade.getType(ae);
             if (type != null) {
-                sDocComment.append(" @element-type ").append(ModelFacade.getName(type));
+                sDocComment.append(" @element-type ");
+		sDocComment.append(ModelFacade.getName(type));
             }
 
 	    // REMOVED: 2002-03-11 STEFFEN ZSCHALER: element type
@@ -1235,13 +1262,9 @@ public class GeneratorJava
             s = sDocComment.toString();
             sDocComment = new StringBuffer(s.substring(0, s.indexOf("*/") + 1));
         } else {
-            sDocComment
-                .append(INDENT)
-                .append("/**").append(LINE_SEPARATOR)
-                .append(INDENT)
-                .append(" * ").append(LINE_SEPARATOR)
-                .append(INDENT)
-                .append(" *");
+            sDocComment.append(INDENT).append("/**").append(LINE_SEPARATOR);
+	    sDocComment.append(INDENT).append(" * ").append(LINE_SEPARATOR);
+	    sDocComment.append(INDENT).append(" *");
         }
 
         // Add each constraint
@@ -1304,10 +1327,13 @@ public class GeneratorJava
             Object constraint = /*(MConstraint)*/ i.next();
 
             try {
+		String body =
+		    (String) ModelFacade.getBody(ModelFacade.getBody(constraint));
                 OclTree otParsed =
-                    OclTree.createTree((String)ModelFacade.getBody(ModelFacade.getBody(constraint)), mf);
+                    OclTree.createTree(body, mf);
 
-                TagExtractor te = new TagExtractor(ModelFacade.getName(constraint));
+                TagExtractor te =
+		    new TagExtractor(ModelFacade.getName(constraint));
                 otParsed.apply(te);
 
                 for (Iterator j = te.getTags(); j.hasNext();) {
@@ -1518,8 +1544,9 @@ public class GeneratorJava
      * @see org.argouml.application.api.NotationProvider2#generateVisibility(java.lang.Object)
      */
     public String generateVisibility(Object o) {
-		if (ModelFacade.isAFeature(o)) {
-            String _tagged = (String)ModelFacade.getTaggedValue(o, "src_visibility");
+	if (ModelFacade.isAFeature(o)) {
+            String _tagged =
+		(String) ModelFacade.getTaggedValue(o, "src_visibility");
             if (_tagged != null) {
                 if (_tagged.trim().equals("")
 		             || _tagged.trim().toLowerCase().equals("package")
@@ -1590,8 +1617,7 @@ public class GeneratorJava
      */
     public String generateConcurrency(Object op) {
         if (ModelFacade.getConcurrency(op) != null
-            && ModelFacade.GUARDED_CONCURRENCYKIND.equals(ModelFacade.getConcurrency(op)))
-	{
+            && ModelFacade.GUARDED_CONCURRENCYKIND.equals(ModelFacade.getConcurrency(op))) {
             return "synchronized ";
         }
         return "";
@@ -1601,8 +1627,9 @@ public class GeneratorJava
         if (m == null) {
             return "";
         }
-        if (ModelFacade.M0_N_MULTIPLICITY.equals(ModelFacade.getMultiplicity(m)))
+        if (ModelFacade.M0_N_MULTIPLICITY.equals(ModelFacade.getMultiplicity(m))) {
             return ANY_RANGE;
+	}
         Iterator rangeEnum = ModelFacade.getRanges(m);
         if (rangeEnum == null)
             return "";
@@ -1724,8 +1751,9 @@ public class GeneratorJava
         if (m != null) {
             Object script = ModelFacade.getScript(m);
             if ((script != null)
-            && (ModelFacade.getBody(script) != null))
+		    && (ModelFacade.getBody(script) != null)) {
                 return ModelFacade.getBody(script).toString();
+	    }
         }
         return "";
     }
@@ -1740,7 +1768,8 @@ public class GeneratorJava
     public String generateMessage(Object m) {
         if (m == null)
             return "";
-        return generateName(ModelFacade.getName(m)) + "::" + generateAction(ModelFacade.getAction(m));
+        return generateName(ModelFacade.getName(m)) + "::"
+	    + generateAction(ModelFacade.getAction(m));
     }
 
     /**
@@ -1763,7 +1792,7 @@ public class GeneratorJava
         if (ModelFacade.isACallEvent(m))
             return generateName(ModelFacade.getName(m));
         return "";
-     }
+    }
 
     public String generateAscEndName(Object ae) {
         String n = ModelFacade.getName(ae);
@@ -1810,16 +1839,18 @@ public class GeneratorJava
     */
     protected static void update(Object mClassifier, File file)
         throws Exception {
+
         cat.info("Parsing " + file.getPath());
-	  String encoding = null;
-        if ( Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING) == null
-	  || Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING).trim().equals(""))
-        	encoding = System.getProperty("file.encoding");
-	  else
-        	encoding = Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING);
+	String encoding = null;
+        if (Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING) == null
+	    || Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING).trim().equals("")) {
+	    encoding = System.getProperty("file.encoding");
+	} else {
+	    encoding = Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING);
+	}
         FileInputStream in = new FileInputStream(file);
-	  JavaLexer lexer =
-		new JavaLexer(new BufferedReader(new InputStreamReader(in, encoding)));
+	JavaLexer lexer =
+	    new JavaLexer(new BufferedReader(new InputStreamReader(in, encoding)));
         JavaRecognizer parser = new JavaRecognizer(lexer);
         CodePieceCollector cpc = new CodePieceCollector();
         parser.compilationUnit(cpc);

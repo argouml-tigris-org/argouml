@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,17 +37,16 @@ import java.beans.PropertyChangeSupport;
  * @author  alexb
  */
 public class ExplorerNSUMLEventAdaptor
-extends PropertyChangeSupport
-implements MElementListener{
+    extends PropertyChangeSupport
+    implements MElementListener {
     
     private static ExplorerNSUMLEventAdaptor instance;
     
-    public static ExplorerNSUMLEventAdaptor getInstance(){
-        
-        if(instance == null)
-            return instance = new ExplorerNSUMLEventAdaptor();
-        else
-            return instance;
+    public static ExplorerNSUMLEventAdaptor getInstance() {
+        if (instance == null) {
+            instance = new ExplorerNSUMLEventAdaptor();
+	}
+	return instance;
     }
     
     /** Creates a new instance of ExplorerUMLEventAdaptor */
@@ -61,8 +60,8 @@ implements MElementListener{
      *
      * If a element changes, this will be catched by this method and reflected
      * in the tree.
-     * @see
-     * ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
+     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(
+     *         ru.novosoft.uml.MElementEvent)
      */
     public void listRoleItemSet(MElementEvent e) {
         if (e.getAddedValue() != null
@@ -75,13 +74,12 @@ implements MElementListener{
     }
 
     /**
-     *
-     * fires a modelElementChanged event.
+     * Fires a modelElementChanged event.
      *
      * If a element changes, this will be catched by this method and reflected
      * in the tree.
-     * @see
-     * ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     * @see ru.novosoft.uml.MElementListener#propertySet(
+     *         ru.novosoft.uml.MElementEvent)
      */
     public void propertySet(MElementEvent e) {
         if (e.getAddedValue() != null
@@ -89,7 +87,7 @@ implements MElementListener{
             || (e.getNewValue() != null
                 && !e.getNewValue().equals(e.getOldValue()))) {
             
-                    firePropertyChanged("modelElementChanged", e.getSource());
+	    firePropertyChanged("modelElementChanged", e.getSource());
         }
 
     }
@@ -117,8 +115,8 @@ implements MElementListener{
      *
      * If a element changes, this will be catched by this method and reflected
      * in the tree.
-     * @see
-     * ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     * @see ru.novosoft.uml.MElementListener#removed(
+     *         ru.novosoft.uml.MElementEvent)
      */
     public void removed(MElementEvent e) {
         if (e.getAddedValue() != null
@@ -154,8 +152,8 @@ implements MElementListener{
      *
      * If a element changes, this will be catched by this method and reflected
      * in the tree.
-     * @see
-     * ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(
+     *         ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
         if (e.getAddedValue() != null

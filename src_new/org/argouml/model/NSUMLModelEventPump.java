@@ -88,7 +88,8 @@ class NSUMLModelEventPump
                   + eventNames + ")");
 
         register(modelEventListeners,
-                 new NSUMLModelEventListener(listener, modelelement, eventNames));
+                 new NSUMLModelEventListener(listener,
+					     modelelement, eventNames));
     }
 
     /**
@@ -146,7 +147,10 @@ class NSUMLModelEventPump
      * @param eventNames
      * @return the found relay.
      */
-    private NSUMLEventListener find(Map listeners, PropertyChangeListener listener, Object modelelement, String[] eventNames) {
+    private NSUMLEventListener find(Map listeners,
+				    PropertyChangeListener listener,
+				    Object modelelement,
+				    String[] eventNames) {
         List list = (List) listeners.get(listener);
         if (list == null) {
             return null;
@@ -197,7 +201,7 @@ class NSUMLModelEventPump
                 return;
             }
         }
-     }
+    }
 
 
     /**
@@ -297,7 +301,8 @@ abstract class NSUMLEventListener implements MElementListener {
     public abstract void delete();
     
     /**
-     * Returns <tt>true</tt> if this event listener matches the object and event names.
+     * Returns <tt>true</tt> if this event listener matches the object
+     * and event names.
      * 
      * @param e The object to match.
      * @param evs The event names to match.
@@ -400,20 +405,26 @@ abstract class NSUMLEventListener implements MElementListener {
  */
 class NSUMLModelEventListener extends NSUMLEventListener {
     /**
-     * @see NSUMLEventListener#NSUMLEventListener(PropertyChangeListener, Object, String[])
+     * @see NSUMLEventListener#NSUMLEventListener(
+     *         PropertyChangeListener, Object, String[])
      */
-    public NSUMLModelEventListener(PropertyChangeListener l, Object e, String[] ev) {
+    public NSUMLModelEventListener(PropertyChangeListener l,
+				   Object e,
+				   String[] ev) {
         super(l, e, ev);
         
         if (getEvents() == null) {
-            UmlModelEventPump.getPump().addModelEventListener(this, getElement());
+            UmlModelEventPump.getPump()
+		.addModelEventListener(this, getElement());
         } else {
-            UmlModelEventPump.getPump().addModelEventListener(this, getElement(), getEvents());
+            UmlModelEventPump.getPump()
+		.addModelEventListener(this, getElement(), getEvents());
         }
     }
 
     /**
-     * @see NSUMLModelEventListener#NSUMLModelEventListener(PropertyChangeListener, Object, String[])
+     * @see NSUMLModelEventListener#NSUMLModelEventListener(
+     *         PropertyChangeListener, Object, String[])
      */
     public NSUMLModelEventListener(PropertyChangeListener l, Object e) {
         this(l, e, null);
@@ -423,7 +434,8 @@ class NSUMLModelEventListener extends NSUMLEventListener {
      * @see org.argouml.model.NSUMLEventListener#delete()
      */
     public void delete() {
-        UmlModelEventPump.getPump().removeModelEventListener(this, getElement());
+        UmlModelEventPump.getPump()
+	    .removeModelEventListener(this, getElement());
     }
 }
 
@@ -436,16 +448,21 @@ class NSUMLClassEventListener extends NSUMLEventListener {
      * @param l
      * @param modelClass
      */
-    public NSUMLClassEventListener(PropertyChangeListener l, Object modelClass, String[] ev) {
+    public NSUMLClassEventListener(PropertyChangeListener l,
+				   Object modelClass,
+				   String[] ev) {
         super(l, modelClass, ev);
 
-        UmlModelEventPump.getPump().addClassModelEventListener(this, (Class) getElement(), getEvents());
+        UmlModelEventPump.getPump()
+	    .addClassModelEventListener(this, (Class) getElement(),
+					getEvents());
     }
 
     /**
      * @see org.argouml.model.NSUMLEventListener#delete()
      */
     public void delete() {
-        UmlModelEventPump.getPump().removeClassModelEventListener(this, (Class) getElement());
+        UmlModelEventPump.getPump()
+	    .removeClassModelEventListener(this, (Class) getElement());
     }
 }

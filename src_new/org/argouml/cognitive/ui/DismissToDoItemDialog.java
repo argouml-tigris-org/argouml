@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -85,12 +85,12 @@ public class DismissToDoItemDialog extends ArgoDialog {
         
         _badGoalButton.setMnemonic(
             Translator.localize(
-                "button.not-relevant-to-my-goals.mnemonic").charAt(
-                0));
+                "button.not-relevant-to-my-goals.mnemonic")
+	        .charAt(0));
         _badDecButton.setMnemonic(
             Translator.localize(
-                "button.not-of-concern-at-moment.mnemonic").charAt(
-                0));
+                "button.not-of-concern-at-moment.mnemonic")
+	        .charAt(0));
         _explainButton.setMnemonic(
             Translator.localize("button.reason-given-below.mnemonic").charAt(
                 0));

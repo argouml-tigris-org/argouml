@@ -493,7 +493,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
             MTransition trans = (MTransition) createTransition();
             trans.setSource((MStateVertex) source);
             trans.setTarget((MStateVertex) target);
-            trans.setStateMachine((MStateMachine)StateMachinesHelper.getHelper()
+            trans.setStateMachine((MStateMachine) StateMachinesHelper.getHelper()
 				  .getStateMachine(source));
             return trans;
         }
@@ -526,7 +526,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
             throw new IllegalArgumentException();
         MCallEvent evt = MFactory.getDefaultFactory().createCallEvent();
         evt.setNamespace((MModel) ProjectManager.getManager()
-           .getCurrentProject().getModel());
+			 .getCurrentProject().getModel());
         ModelFacade.setName(evt, name);
         String operationName = name.substring(0, name.indexOf("(")).trim();
         Object op = StateMachinesHelper.getHelper()

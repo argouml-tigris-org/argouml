@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,7 +32,7 @@ import org.argouml.model.ModelFacade;
  *
  * @author Steffen Zschaler
  */
-public final class OCLUtil{
+public final class OCLUtil {
 
     /** OCLUtil shall not be instantiated! */
     private OCLUtil () { }
@@ -42,13 +42,14 @@ public final class OCLUtil{
      *
      * @return a namespace
      */
-    public static Object getInnerMostEnclosingNamespace (Object me){
+    public static Object getInnerMostEnclosingNamespace (Object me) {
         
-        if(!ModelFacade.isAModelElement(me))
+        if (!ModelFacade.isAModelElement(me)) {
             throw new IllegalArgumentException();
+	}
         
-	while ((me != null) &&
-	       (!(ModelFacade.isANamespace(me)))) {
+	while ((me != null)
+	       && (!(ModelFacade.isANamespace(me)))) {
 	    me = ModelFacade.getModelElementContainer(me);
 	}
 
@@ -69,24 +70,22 @@ public final class OCLUtil{
 	    getInnerMostEnclosingNamespace ( me);
 
 	if (ModelFacade.isABehavioralFeature(me)) {
-	    StringBuffer sbContext =
-		new StringBuffer ("context ")
-		.append (ModelFacade.getName(mnsContext))
-		.append ("::")
-		.append (ModelFacade.getName(me))
-		.append (" (");
+	    StringBuffer sbContext = new StringBuffer ("context ");
+	    sbContext.append (ModelFacade.getName(mnsContext));
+	    sbContext.append ("::");
+	    sbContext.append (ModelFacade.getName(me));
+	    sbContext.append (" (");
 
 	    Collection lParams = ModelFacade.getParameters(me);
 	    String sReturnType = null;
 	    boolean fFirstParam = true;
 
 	    for (Iterator i = lParams.iterator(); i.hasNext();) {
-		Object mp = i.next();//MParameter
+		Object mp = i.next(); //MParameter
 
-		if(ModelFacade.isReturn(mp)) {
+		if (ModelFacade.isReturn(mp)) {
 		    sReturnType = ModelFacade.getName(ModelFacade.getType(mp));
-
-                }else{
+                } else {
 		    if (fFirstParam) {
 			fFirstParam = false;
 		    }
@@ -94,9 +93,8 @@ public final class OCLUtil{
 			sbContext.append ("; ");
 		    }
 
-		    sbContext.append (ModelFacade.getType(mp))
-			.append (": ")
-			.append (ModelFacade.getName(ModelFacade.getType(mp)));
+		    sbContext.append(ModelFacade.getType(mp)).append(": ");
+		    sbContext.append(ModelFacade.getName(ModelFacade.getType(mp)));
 		}
 	    }
 

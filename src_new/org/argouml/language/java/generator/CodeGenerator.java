@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -52,8 +52,10 @@ class CodeGenerator {
     public static void generateClass(Object/*MClass*/ mClass,
 				     BufferedReader reader,
 				     BufferedWriter writer)
-            throws Exception {
-	ClassCodePiece ccp = new ClassCodePiece(null, ModelFacade.getName(mClass));
+	throws Exception {
+
+	ClassCodePiece ccp =
+	    new ClassCodePiece(null, ModelFacade.getName(mClass));
 	Stack parseStateStack = new Stack();
 	parseStateStack.push(new ParseState(ModelFacade.getNamespace(mClass)));
 	ccp.write(reader, writer, parseStateStack);
@@ -65,10 +67,12 @@ class CodeGenerator {
 	for (Iterator i = features.iterator(); i.hasNext(); ) {
 	    Object feature = /*(MFeature)*/ i.next();
 	    if (ModelFacade.isAOperation(feature)) {
-		generateOperation(/*(MOperation)*/ feature, mClass, reader, writer);
+		generateOperation(/*(MOperation)*/ feature, mClass,
+				  reader, writer);
 	    }
 	    if (ModelFacade.isAAttribute(feature)) {
-		generateAttribute(/*(MAttribute)*/ feature, mClass, reader, writer);
+		generateAttribute(/*(MAttribute)*/ feature, mClass,
+				  reader, writer);
 	    }
 	}
 
@@ -77,10 +81,9 @@ class CodeGenerator {
 	for (Iterator i = elements.iterator(); i.hasNext(); ) {
 	    Object element = /*(MModelElement)*/ i.next();
 	    if (ModelFacade.isAClass(element)) {
-            generateClass(element, reader, writer);
-	    }
-	    else if (ModelFacade.isAInterface(element)) {
-            generateInterface(element, reader, writer);
+		generateClass(element, reader, writer);
+	    } else if (ModelFacade.isAInterface(element)) {
+		generateInterface(element, reader, writer);
 	    }
 	}
 
@@ -125,10 +128,10 @@ class CodeGenerator {
 	for (Iterator i = elements.iterator(); i.hasNext(); ) {
 	    Object element = /*(MModelElement)*/ i.next();
 	    if (ModelFacade.isAClass(element)) {
-            generateClass(element, reader, writer);
+		generateClass(element, reader, writer);
 	    }
 	    else if (ModelFacade.isAInterface(element)) {
-            generateInterface(element, reader, writer);
+		generateInterface(element, reader, writer);
 	    }
 	}
 
@@ -146,7 +149,8 @@ class CodeGenerator {
 					 Object mClassifier,
 					 BufferedReader reader,
 					 BufferedWriter writer)
-            throws Exception {
+	throws Exception {
+
 	OperationCodePiece ocp =
 	    new OperationCodePiece(new SimpleCodePiece(new StringBuffer(),
 						       0, 0, 0),
@@ -157,10 +161,11 @@ class CodeGenerator {
 	parseStateStack.push(new ParseState(mClassifier));
 	ocp.write(reader, writer, parseStateStack);
 
-	if (ModelFacade.isAbstract(mOperation) || ModelFacade.isAInterface(mClassifier)) {
+	if (ModelFacade.isAbstract(mOperation)
+	    || ModelFacade.isAInterface(mClassifier)) {
+
 	    writer.write(";\n");
-	}
-	else {
+	} else {
 	    writer.write("{}\n");
 	}
     }
@@ -176,7 +181,8 @@ class CodeGenerator {
 					 Object mClassifier,
 					 BufferedReader reader,
 					 BufferedWriter writer)
-            throws Exception {
+	throws Exception {
+
 	Vector names = new Vector();
 	StringBuffer sbName = new StringBuffer(ModelFacade.getName(mAttribute));
 	names.addElement(new SimpleCodePiece(sbName, 0, 0, 0));

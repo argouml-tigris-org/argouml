@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: Notation.java
-// Classes: Notation
-// Original Author: Thierry Lach
-// $Id$
-
 package org.argouml.application.api;
 
 import java.beans.PropertyChangeEvent;
@@ -275,7 +270,8 @@ public final class Notation implements PropertyChangeListener {
         return getProvider(notation).generateMultiplicity(m);
     }
 
-    protected static String generateState(NotationName notation, Object/*MState*/ m) {
+    protected static String generateState(NotationName notation,
+					  Object/*MState*/ m) {
         return getProvider(notation).generateState(m);
     }
 
@@ -298,7 +294,8 @@ public final class Notation implements PropertyChangeListener {
         return getProvider(notation).generateAction(m);
     }
 
-    protected static String generateGuard(NotationName notation, Object/*MGuard*/ m) {
+    protected static String generateGuard(NotationName notation,
+					  Object/*MGuard*/ m) {
         return getProvider(notation).generateGuard(m);
     }
 

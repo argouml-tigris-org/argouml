@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -54,23 +54,19 @@ public class ExplorerPerspective {
         rules = new ArrayList();
     }
     
-    public void addRule(PerspectiveRule rule){
-        
+    public void addRule(PerspectiveRule rule) {
         rules.add(rule);
     }
     
-    public void removeRule(PerspectiveRule rule){
-        
+    public void removeRule(PerspectiveRule rule) {
         rules.remove(rule);
     }
     
-    public Object[] getRulesArray(){
-        
+    public Object[] getRulesArray() {
         return rules.toArray();
     }
     
-    public String toString(){
-        
+    public String toString() {
         return name;
     }
 }
