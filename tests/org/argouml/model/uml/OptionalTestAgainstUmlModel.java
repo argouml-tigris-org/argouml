@@ -65,12 +65,15 @@ public class OptionalTestAgainstUmlModel extends TestCase {
 	throws SAXException,
 	       IOException,
 	       ParserConfigurationException {
-	DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+	DocumentBuilder builder =
+	    DocumentBuilderFactory.newInstance().newDocumentBuilder();
 	String fileName = System.getProperty("test.model.uml13");
-	if (fileName == null) return;
+	if (fileName == null)
+	    fail("The property test.model.uml13 is not set.");
 	File file = new File(fileName);
-	if (!file.exists()) return;
-	Document doc = builder.parse(new File(System.getProperty("test.model.uml13")));
+	if (!file.exists())
+	    fail("The file " + fileName + " cannot be found.");
+	Document doc = builder.parse(file);
 	NodeList list = doc.getElementsByTagName("Model:Class");
 
 	assertEquals(refs.size(), list.getLength());
@@ -95,7 +98,8 @@ public class OptionalTestAgainstUmlModel extends TestCase {
      *  to be improved.
      */
     private void processClassNode(String indent, Node node) {
-	String umlclass = node.getAttributes().getNamedItem("name").getNodeValue();
+	String umlclass =
+	    node.getAttributes().getNamedItem("name").getNodeValue();
 	Object factory = refs.get(umlclass);
 	assertNotNull("Unable to find factory '" + umlclass + "' in references",
 	              factory);
