@@ -932,6 +932,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @return MUsage
      */
     public MUsage buildUsage(MModelElement client, MModelElement supplier) {
+        if (client == null || supplier == null) {
+            throw new IllegalArgumentException("In buildUsage null arguments.");
+        }
         if (client.getModel() != supplier.getModel()) {
             throw new IllegalArgumentException("To construct a usage, the " +
             "client and the supplier must be part of the same model.");
@@ -961,6 +964,23 @@ public class CoreFactory extends AbstractUmlModelFactory {
         
         return comment;
     }
+    
+    /**
+     * Builds a constraint that constraints the given modelelement. The 
+     * namespace of the constraint will be the same as the namespace of the given
+     * modelelement.
+     * @param constrainedElement
+     * @return MConstraint
+     */
+    public MConstraint buildConstraint(MModelElement constrainedElement) {
+        if (constrainedElement == null) 
+            throw new IllegalArgumentException("In buildConstraint: the constrained element is mandatory and may not be null.");
+        MConstraint con = createConstraint();
+        con.addConstrainedElement(constrainedElement);
+        con.setNamespace(constrainedElement.getNamespace());
+        return con;
+    }
+        
     
     public void deleteAbstraction(MAbstraction elem) {}
     
