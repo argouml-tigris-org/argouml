@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,27 +26,6 @@
 // File: UMLCognitiveResourceBundle.java
 // Classes: UMLCognitiveResourceBundle
 // Original Author: Curt Arnold
-
-// 4 Feb 2002: Jeremy Bennett (mail@jeremybennett.com). Fixed description of
-// CrConstructorNeeded, CrConsiderSingleton and CrSingletonViolated.
-
-// 15 Feb 2002: Jeremy Bennett (mail@jeremybennett.com). Fixed headline and
-// description of CrNavFromInterface.
-
-// 6 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Fixed description for
-// CrOperNameConflict.
-
-// 8 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Further fix to
-// CrOperNameConflict to make clear return parameters are ignored.
-
-// 12 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Description of
-// CrCrossNamespaceAssoc, CrDupRoleName, CrMultipleAgg and CrNWayAgg given in
-// more detail.
-
-// 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Description of
-// CrConsiderSingleton and CrSingletonViolated updated now that <<singleton>>
-// is built in to ArgoUML. Corrected MState Machines to State Machines.
-
 
 package org.argouml.i18n;
 import java.util.*;
@@ -100,7 +79,7 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
         { "CrCircularInheritance_head" ,
                 "Remove <ocl>self</ocl>'s Circular Inheritance" },
         { "CrCircularInheritance_desc" ,
-                "Inheritances relationships cannot have cycles. \n\nA legal class inheritance hierarchy is needed for code generation and the correctness of the design. \n\nTo fix this, use the \"Next>\" button, or manually select one of the  generalization arrows in the cycle and remove it." },
+                "Inheritances relationships cannot have cycles. \n\nA legal class inheritance hierarchy is needed for code generation and the correctness of the design." },
         { "CrCircularComposition_head" ,
                 "Remove Circular Composition" },
         { "CrCircularComposition_desc" ,
