@@ -125,6 +125,14 @@ height="<ocl>self.height.intValue</ocl>"
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
+<template class="org.argouml.uml.diagram.sequence.specification_level.ui.FigSeqClRolePort">
+</template>
+<template class="org.argouml.uml.diagram.sequence.specification_level.ui.FigSeqAsRole">
+</template>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+
 <template class="org.tigris.gef.presentation.FigRect">
 
 <![CDATA[
