@@ -28,15 +28,18 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
-import org.argouml.application.api.Configuration;
 
+import org.argouml.application.api.Configuration;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.kernel.Wizard;
 import org.argouml.swingext.BorderSplitPane;
 import org.argouml.swingext.Horizontal;
 import org.argouml.swingext.Vertical;
-import org.argouml.ui.Actions;
 import org.argouml.ui.TabSpawnable;
+import org.argouml.ui.cmd.ActionEmailExpert;
+import org.argouml.ui.cmd.ActionNewToDoItem;
+import org.argouml.ui.cmd.ActionResolve;
+import org.argouml.ui.cmd.ActionSnooze;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLAction;
@@ -51,11 +54,11 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     // static variables
     private static int numHushes = 0;
 
-    private static UMLAction actionNewToDoItem = Actions.newToDoItem;
-    private static UMLAction actionResolve = Actions.resolve;
-    private static UMLAction actionEmailExpert = Actions.emailExpert;
+    private static UMLAction actionNewToDoItem = new ActionNewToDoItem();
+    private static UMLAction actionResolve = new ActionResolve();
+    private static UMLAction actionEmailExpert = new ActionEmailExpert();
     //public static UMLAction _actionMoreInfo = Actions.MoreInfo;
-    private static UMLAction actionSnooze = Actions.snooze;
+    private static UMLAction actionSnooze = new ActionSnooze();
     //public static UMLAction _actionRecordFix = Actions.RecordFix;
     //public static UMLAction _actionReplayFix = Actions.ReplayFix;
     //public static UMLAction _actionFixItNext = Actions.FixItNext;

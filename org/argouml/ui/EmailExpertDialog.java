@@ -124,7 +124,7 @@ public class EmailExpertDialog extends ArgoDialog {
     /**
      * @param t the target object
      */
-    protected void setTarget(Object t) {
+    public void setTarget(Object t) {
 	target = (ToDoItem) t;
 	Poster p = target.getPoster();
 	emailTo.setText(p.getExpertEmail());
