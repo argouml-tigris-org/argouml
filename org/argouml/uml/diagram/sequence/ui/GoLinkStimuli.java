@@ -39,7 +39,7 @@ import org.tigris.gef.util.Localizer;
 public class GoLinkStimuli implements TreeModelPrereqs {
 
   public String toString() {
-    return Localizer.localize ("Tree", "Link->Stimuli");
+    return Localizer.localize ("Tree", "misc.link.stimuli");
   }
 
   public Object getRoot() {

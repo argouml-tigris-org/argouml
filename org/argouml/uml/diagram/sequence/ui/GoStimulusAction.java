@@ -38,7 +38,7 @@ import org.tigris.gef.util.Localizer;
 public class GoStimulusAction implements TreeModelPrereqs {
 
   public String toString() {
-    return Localizer.localize ("Tree", "Stimulus->Action");
+    return Localizer.localize ("Tree", "misc.stimulus.action");
   }
 
   public Object getRoot() {

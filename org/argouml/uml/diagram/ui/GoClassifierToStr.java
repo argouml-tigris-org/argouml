@@ -38,7 +38,7 @@ import org.argouml.uml.MMUtil;
 public class GoClassifierToStr implements TreeModelPrereqs {
 
   public String toString() {
-    return Localizer.localize ("Tree", "Class->Attribute");
+    return Localizer.localize ("Tree", "misc.class.attribute");
   }
   
   public Object getRoot() {

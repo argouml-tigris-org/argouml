@@ -38,7 +38,7 @@ import org.argouml.uml.MMUtil;
 public class GoClassifierToBeh implements TreeModelPrereqs {
 
   public String toString() {
-    return Localizer.localize ("Tree", "Class->Operation");
+    return Localizer.localize ("Tree", "misc.class.operation");
   }
   
   public Object getRoot() {

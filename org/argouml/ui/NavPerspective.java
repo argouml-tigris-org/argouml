@@ -80,49 +80,49 @@ implements Serializable, TreeModel, Cloneable {
     // this are meant for pane-1 of NavigatorPane, they all have
     // Project as their only prerequiste.  These trees tend to be 3
     // to 5 levels deep and sometimes have recursion.
-    NavPerspective packageCentric = new NavPerspective("Package-centric");
-    NavPerspective diagramCentric = new NavPerspective("Diagram-centric");
-    NavPerspective inheritanceCentric = new NavPerspective("Inheritance-centric");
-    NavPerspective classAssociation = new NavPerspective("Class Associations");
-    NavPerspective navAssociation = new NavPerspective("Navigable Associations");
-    NavPerspective associationCentric = new NavPerspective("Association-centric");
-    NavPerspective aggregateCentric = new NavPerspective("Aggregate-centric");
-    NavPerspective compositeCentric = new NavPerspective("Composite-centric");
-    NavPerspective classStates = new NavPerspective("Class states");
-    NavPerspective stateCentric = new NavPerspective("State-centric");
-    NavPerspective stateTransitions = new NavPerspective("State-transitions");
-    NavPerspective transitionCentric = new NavPerspective("Transitions-centric");
-    NavPerspective transitionPaths = new NavPerspective("Transitions paths");
-//     NavPerspective useCaseCentric = new NavPerspective("UseCase-centric");
-    NavPerspective collabCentric = new NavPerspective("Collaboration-centric");
-    NavPerspective depCentric = new NavPerspective("Dependency-centric");
+    NavPerspective packageCentric = new NavPerspective("combobox.item.package-centric");
+    NavPerspective diagramCentric = new NavPerspective("combobox.item.diagram-centric");
+    NavPerspective inheritanceCentric = new NavPerspective("combobox.item.inheritance-centric");
+    NavPerspective classAssociation = new NavPerspective("combobox.item.class-associations");
+    NavPerspective navAssociation = new NavPerspective("combobox.item.navigable-associations");
+    NavPerspective associationCentric = new NavPerspective("combobox.item.association-centric");
+    NavPerspective aggregateCentric = new NavPerspective("combobox.item.aggregate-centric");
+    NavPerspective compositeCentric = new NavPerspective("combobox.item.composite-centric");
+    NavPerspective classStates = new NavPerspective("combobox.item.class-states");
+    NavPerspective stateCentric = new NavPerspective("combobox.item.state-centric");
+    NavPerspective stateTransitions = new NavPerspective("combobox.item.state-transitions");
+    NavPerspective transitionCentric = new NavPerspective("combobox.item.transitions-centric");
+    NavPerspective transitionPaths = new NavPerspective("combobox.item.transitions-paths");
+//     NavPerspective useCaseCentric = new NavPerspective("combobox.item.usecase-centric");
+    NavPerspective collabCentric = new NavPerspective("combobox.item.collaboration-centric");
+    NavPerspective depCentric = new NavPerspective("combobox.item.dependency-centric");
 
 
     // These are intended for pane-2 of NavigatorPane, the tend to be
     // simple and shallow, and have something in pane-1 as a prerequiste
     NavPerspective useCaseToExtensionPoint =
         new NavPerspective("Extension Points of Use Case");
-    NavPerspective classToBehStr = new NavPerspective("Features of Class");
-    NavPerspective classToBeh = new NavPerspective("Methods of Class");
-    NavPerspective classToStr = new NavPerspective("Attributes of Class");
-    NavPerspective machineToState = new NavPerspective("States of Class");
-    NavPerspective machineToTransition = new NavPerspective("Transitions of Class");
+    NavPerspective classToBehStr = new NavPerspective("misc.features-of-class");
+    NavPerspective classToBeh = new NavPerspective("misc.methods-of-class");
+    NavPerspective classToStr = new NavPerspective("misc.attributes-of-class");
+    NavPerspective machineToState = new NavPerspective("misc.states-of-class");
+    NavPerspective machineToTransition = new NavPerspective("misc.transitions-of-class");
 
     // Subsystem is travsersed via Classifier. Eugenio
     GoFilteredChildren modelToPackages =
-      new GoFilteredChildren("Package->Subpackages",
+      new GoFilteredChildren("misc.package.subpackages",
 			     new GoModelToElements(),
 			     new PredAND(new PredInstanceOf(MPackage.class),
                              new PredNotInstanceOf(MSubsystem.class)));
 
     GoFilteredChildren modelToClassifiers =
-      new GoFilteredChildren("Package->Classifiers",
+      new GoFilteredChildren("misc.package.classifiers",
 			     new GoModelToElements(),
                  new PredInstanceOf(MClassifier.class));
 
     // AssociationClass is traversed via Classifier. Eugenio
     GoFilteredChildren modelToAssociations =
-      new GoFilteredChildren("Package->Associations",
+      new GoFilteredChildren("misc.package.associations",
 			     new GoModelToElements(),
 			     new PredAND(new PredInstanceOf(MAssociation.class),
                              new PredNotInstanceOf(MAssociationClass.class)));
@@ -136,15 +136,15 @@ implements Serializable, TreeModel, Cloneable {
                                         new PredInstanceOf(MInclude.class)));
 
     GoFilteredChildren modelToInstances =
-      new GoFilteredChildren("Package->Instances",
+      new GoFilteredChildren("misc.package.instances",
 			     new GoModelToElements(),
 			     new PredInstanceOf(MObject.class));
     GoFilteredChildren modelToLinks =
-      new GoFilteredChildren("Package->Links",
+      new GoFilteredChildren("misc.package.links",
 			     new GoModelToElements(),
 			     new PredInstanceOf(MLink.class));
     GoFilteredChildren modelToCollaboration =
-      new GoFilteredChildren("Package->Collaborations",
+      new GoFilteredChildren("misc.package.collaborations",
 			     new GoModelToElements(),
 			     new PredInstanceOf(MCollaboration.class));
 
@@ -231,21 +231,21 @@ implements Serializable, TreeModel, Cloneable {
 
     //transitionPaths.addSubTreeModel(new GoMachineToStartState());
     GoFilteredChildren machineToFinalState =
-      new GoFilteredChildren("State Machine->Final States",
+      new GoFilteredChildren("misc.state-machine.final-states",
 			     new GoMachineToState(),
 			     PredIsFinalState.TheInstance);
     GoFilteredChildren machineToInitialState =
-      new GoFilteredChildren("State Machine->Initial States",
+      new GoFilteredChildren("misc.state-machine.initial-states",
 			     new GoMachineToState(),
 			     PredIsStartState.TheInstance);
     transitionPaths.addSubTreeModel(machineToInitialState);
 
     GoFilteredChildren compositeToFinalStates =
-      new GoFilteredChildren("State->Final Substates",
+      new GoFilteredChildren("misc.state.final-substates",
 			     new GoStateToSubstate(),
 			     PredIsFinalState.TheInstance);
     GoFilteredChildren compositeToInitialStates =
-      new GoFilteredChildren("State->Initial Substates",
+      new GoFilteredChildren("misc.state.initial-substates",
 			     new GoStateToSubstate(),
 			     PredIsStartState.TheInstance);
     transitionPaths.addSubTreeModel(compositeToInitialStates);

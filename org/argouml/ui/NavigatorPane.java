@@ -334,7 +334,7 @@ implements ItemListener, TreeSelectionListener, QuadrantPanel {
 		 || obj instanceof MActor || obj instanceof MPackage
 		 || obj instanceof MStateVertex || obj instanceof MInstance) {
 			popup.add(new ActionGoToDetails(menuLocalize("Properties")));
-			popup.add(new ActionAddExistingNode(menuLocalize("Add to Diagram"),obj));
+			popup.add(new ActionAddExistingNode(menuLocalize("menu.popup.add-to-diagram"),obj));
 			popup.add(ActionRemoveFromModel.SINGLETON);
         }
 		else if (obj instanceof MModelElement || obj instanceof Diagram) {
