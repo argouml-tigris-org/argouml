@@ -42,7 +42,7 @@ import org.argouml.model.ModelFacade;
 public class GoClassToSummary extends AbstractPerspectiveRule{
 
     public String getRuleName() {
-	return Translator.localize ("Tree", "misc.class.attribute");
+	return "Class->Summary";
     }
 
 

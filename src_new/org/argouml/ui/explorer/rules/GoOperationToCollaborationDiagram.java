@@ -70,7 +70,7 @@ public class GoOperationToCollaborationDiagram extends AbstractPerspectiveRule{
      * @see org.argouml.ui.AbstractGoRule#getRuleName()
      */
     public String getRuleName() {
-        return null;
+        return "Operation->Collaboration Diagram";
     }
 
 }

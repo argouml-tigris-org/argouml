@@ -36,7 +36,7 @@ import org.argouml.model.ModelFacade;
  */
 public class GoBehavioralFeatureToStateMachine extends AbstractPerspectiveRule{
 
-    public String getRuleName() { return "BehavioralFeature->State Machine"; }
+    public String getRuleName() { return "Behavioral Feature->Statemachine"; }
 
     /**
      * @see org.argouml.ui.AbstractGoRule#getChildren(Object)

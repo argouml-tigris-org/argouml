@@ -40,27 +40,15 @@ import org.argouml.model.uml.UmlHelper;
 public class GoSummaryToAssociation extends AbstractPerspectiveRule{
 
     public String getRuleName() {
-	return Translator.localize ("Tree", "misc.class.attribute");
+	return "Summary->Association";
     }
 
 
     public Collection getChildren(Object parent) {
 	if ( parent instanceof AssociationsNode) {
           
-	    //List list = new ArrayList();
-          
-	    return UmlHelper.getHelper().getCore().getAssociations(((AssociationsNode) parent).getParent());
-	    //ModelFacade.getAssociationEnds(((AssociationsNode)parent).getParent());
-	    /*
-	      Iterator it = col.iterator();
-          
-	      while(it.hasNext()){
-              
-              list.add(it.next());
-	      }
-	      return list;
-	    */
-           
+	    return UmlHelper.getHelper().getCore()
+                .getAssociations(((AssociationsNode) parent).getParent());
 	}
 	return null;
     }

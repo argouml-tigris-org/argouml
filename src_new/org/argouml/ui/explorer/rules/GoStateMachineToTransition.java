@@ -37,7 +37,7 @@ import java.util.Collection;
  */
 public class GoStateMachineToTransition extends AbstractPerspectiveRule{
 
-    public String getRuleName() { return "State Machine->Transition"; }
+    public String getRuleName() { return "Statemachine->Transition"; }
 
     /**
      * @see org.argouml.ui.AbstractGoRule#getChildren(Object)

@@ -31,7 +31,7 @@ import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelpe
 
 public class GoStateToDownstream extends AbstractPerspectiveRule{
 
-    public String getRuleName() { return "State->Following States"; }
+    public String getRuleName() { return "State->Outgoing States"; }
   
     public Collection getChildren(Object parent) { 
 	if (ModelFacade.isAStateVertex(parent)) {

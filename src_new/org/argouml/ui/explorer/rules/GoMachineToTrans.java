@@ -30,7 +30,7 @@ import org.argouml.model.ModelFacade;
 
 public class GoMachineToTrans extends AbstractPerspectiveRule{
 
-    public String getRuleName() { return "State Machine->Transition"; }
+    public String getRuleName() { return "Statemachine->Transition"; }
   
     public Collection getChildren(Object parent) { 
 	if (ModelFacade.isAStateMachine(parent)) {

@@ -48,7 +48,7 @@ public class GoOperationToSequenceDiagram extends AbstractPerspectiveRule{
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return "Operation -> Sequence diagram";
+        return "Operation->Sequence diagram";
     }
 
     /**

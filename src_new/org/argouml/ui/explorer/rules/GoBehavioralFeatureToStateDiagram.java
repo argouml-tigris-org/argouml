@@ -71,7 +71,7 @@ public class GoBehavioralFeatureToStateDiagram extends AbstractPerspectiveRule{
      * @see org.argouml.ui.AbstractGoRule#getRuleName()
      */
     public String getRuleName() {
-        return "Behavioral Feature -> State diagram";
+        return "Behavioral Feature->Statechart diagram";
     }
 
 }

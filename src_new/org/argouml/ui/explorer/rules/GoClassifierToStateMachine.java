@@ -36,7 +36,7 @@ import org.argouml.model.ModelFacade;
  */
 public class GoClassifierToStateMachine extends AbstractPerspectiveRule{
 
-    public String getRuleName() { return "Classifier->State Machine"; }
+    public String getRuleName() { return "Classifier->Statemachine"; }
 
     /**
      * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
