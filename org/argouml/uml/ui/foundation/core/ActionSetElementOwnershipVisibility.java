@@ -26,13 +26,13 @@ package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
+import javax.swing.AbstractAction;
 import javax.swing.JRadioButton;
 
 import org.argouml.application.api.Argo;
+import org.argouml.kernel.Project;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.UMLButtonGroup;
-import org.argouml.uml.ui.UMLChangeAction;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 
@@ -40,35 +40,35 @@ import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class ActionSetElementOwnershipVisibility extends UMLChangeAction {
+public class ActionSetElementOwnershipVisibility extends AbstractAction {
 
+    private UMLButtonGroup _group;
+    
     public final static String PUBLIC_ACTION_COMMAND = "public";
     public final static String PROTECTED_ACTION_COMMAND = "protected";
     public final static String PRIVATE_ACTION_COMMAND = "private";
-
-    public static final ActionSetElementOwnershipVisibility SINGLETON = new ActionSetElementOwnershipVisibility();
 
     /**
      * Constructor for ActionSetElementOwnershipVisibility.
      * @param s
      */
-    protected ActionSetElementOwnershipVisibility() {
-        super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
+    public ActionSetElementOwnershipVisibility(UMLButtonGroup group) {
+        super();
+        _group = group;
     }
     
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        if (e.getSource() instanceof UMLButtonGroup) {
-            UMLButtonGroup group = (UMLButtonGroup)e.getSource();
-            Object target = group.getTarget();
+        if (e.getSource() instanceof JRadioButton) {
+            Object target = _group.getTarget();
             if (target instanceof MModelElement) {
                 MModelElement m = (MModelElement)target;
                 String command = e.getActionCommand();
                 if (command.equals(PUBLIC_ACTION_COMMAND)) {
                     m.setVisibility(MVisibilityKind.PUBLIC);
+                    
                 } else
                 if (command.equals(PRIVATE_ACTION_COMMAND)) {
                     m.setVisibility(MVisibilityKind.PRIVATE);
@@ -79,6 +79,14 @@ public class ActionSetElementOwnershipVisibility extends UMLChangeAction {
                     throw new IllegalArgumentException("Illegal action. Actioncommand was not correct. It was " + command);
             }
         }
+    }
+    
+    private void markAsChanged() {
+        ProjectBrowser pb = ProjectBrowser.TheInstance;
+        if (pb == null) return;
+        Project p = pb.getProject();
+        if (p == null) return;
+        p.setNeedsSave(true);
     }
 
 }

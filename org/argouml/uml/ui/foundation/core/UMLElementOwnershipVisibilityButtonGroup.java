@@ -55,9 +55,9 @@ public class UMLElementOwnershipVisibilityButtonGroup extends UMLButtonGroup {
      */
     public UMLElementOwnershipVisibilityButtonGroup(UMLUserInterfaceContainer container) {
         super(container);
-        add(_publicButton, ActionSetElementOwnershipVisibility.SINGLETON);
-        add(_protectedButton, ActionSetElementOwnershipVisibility.SINGLETON);
-        add(_privateButton, ActionSetElementOwnershipVisibility.SINGLETON);
+        add(_publicButton, new ActionSetElementOwnershipVisibility(this));
+        add(_protectedButton, new ActionSetElementOwnershipVisibility(this));
+        add(_privateButton, new ActionSetElementOwnershipVisibility(this));
         _publicButton.setSelected(true);
         
         _publicButton.setMnemonic(KeyEvent.VK_U);
