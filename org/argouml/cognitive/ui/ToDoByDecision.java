@@ -26,12 +26,11 @@ package org.argouml.cognitive.ui;
 
 import java.util.Enumeration;
 import java.util.Vector;
-import org.apache.log4j.Logger;
 
+import org.apache.log4j.Logger;
 import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.cognitive.ToDoList;
 import org.argouml.cognitive.ToDoListEvent;
 import org.argouml.cognitive.ToDoListListener;
 
@@ -67,7 +66,7 @@ public class ToDoByDecision extends ToDoPerspective
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-	Vector decs = Designer.theDesigner().getDecisions();
+	Vector decs = Designer.theDesigner().getDecisionModel().getDecisions();
 	Enumeration elems = decs.elements();
 	while (elems.hasMoreElements()) {
 	    Decision dec = (Decision) elems.nextElement();
@@ -103,7 +102,7 @@ public class ToDoByDecision extends ToDoPerspective
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-	Vector decs = Designer.theDesigner().getDecisions();
+	Vector decs = Designer.theDesigner().getDecisionModel().getDecisions();
 	Enumeration elems = decs.elements();
 	while (elems.hasMoreElements()) {
 	    Decision dec = (Decision) elems.nextElement();
@@ -139,7 +138,7 @@ public class ToDoByDecision extends ToDoPerspective
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-	Vector decs = Designer.theDesigner().getDecisions();
+	Vector decs = Designer.theDesigner().getDecisionModel().getDecisions();
 	Enumeration elems = decs.elements();
 	while (elems.hasMoreElements()) {
 	    Decision dec = (Decision) elems.nextElement();
