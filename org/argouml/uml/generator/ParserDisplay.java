@@ -454,6 +454,38 @@ public class ParserDisplay extends Parser {
 
   }
 
+  /** Parse a line of the form: "name: action" */
+  public void parseStimulus(MStimulus sti, String s) {
+    // strip any trailing semi-colons
+    s = s.trim();
+    if (s.length() == 0) return;
+    if (s.charAt(s.length()-1) == ';')
+      s = s.substring(0, s.length() - 2);
+
+    //cut trailing string "new Action"
+    s = s.trim();
+    if (s.length() == 0) return;
+    if (s.endsWith("new Action"))
+      s = s.substring(0, s.length() - 10);
+
+    String name = "";
+    String action = "";
+    String actionfirst = "";
+    if (s.indexOf(":", 0) > -1) {
+      name = s.substring(0, s.indexOf(":")).trim();
+      actionfirst = s.substring(s.indexOf(":") + 1).trim();
+      if (actionfirst.indexOf(":", 0) > 1) {
+        action = actionfirst.substring(0, actionfirst.indexOf(":")).trim();
+      }
+      else action = actionfirst;
+    }
+    else name = s;
+
+     MAction act = (MAction) sti.getDispatchAction();
+     act.setName(action);
+     sti.setName(name);
+  }
+
   public MAction parseAction(String s) {
 	  MAction a = new MActionImpl();
 	  a.setScript(new MActionExpression("Java",s));
@@ -483,6 +515,7 @@ public class ParserDisplay extends Parser {
   public void parseObject(MObject obj, String s) {
     // strip any trailing semi-colons
     s = s.trim();
+
     if (s.length() == 0) return;
     if (s.charAt(s.length()-1) == ';')
       s = s.substring(0, s.length() - 2);
@@ -504,11 +537,12 @@ public class ParserDisplay extends Parser {
     obj.setName(name);
     
     obj.setClassifiers(new Vector());
-    
-    while(baseTokens.hasMoreElements()){
-	String typeString = baseTokens.nextToken();
+    if (baseTokens != null) {
+      while(baseTokens.hasMoreElements()){
+  	String typeString = baseTokens.nextToken();
 	MClassifier type = ProjectBrowser.TheInstance.getProject().findType(typeString);
 	obj.addClassifier(type);
+      }
     }
   }
 

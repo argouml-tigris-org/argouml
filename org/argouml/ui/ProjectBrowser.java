@@ -108,6 +108,7 @@ implements IStatusBar, NavigationListener {
   protected static Action _actionActivityDiagram = Actions.ActivityDiagram;
   protected static Action _actionCollaborationDiagram = Actions.CollaborationDiagram;
   protected static Action _actionDeploymentDiagram = Actions.DeploymentDiagram;
+  protected static Action _actionSequenceDiagram = Actions.SequenceDiagram;
 
   // ----- model elements
   //protected static Action _actionModel = Actions.MModel;
@@ -357,6 +358,7 @@ implements IStatusBar, NavigationListener {
     createDiagrams.add(Actions.ActivityDiagram);
     createDiagrams.add(Actions.CollaborationDiagram);
     createDiagrams.add(Actions.DeploymentDiagram);
+    createDiagrams.add(Actions.SequenceDiagram);
 
     //JMenu createModelElements = (JMenu) create.add(new JMenu("Model Elements"));
     //createModelElements.add(Actions.AddTopLevelPackage);

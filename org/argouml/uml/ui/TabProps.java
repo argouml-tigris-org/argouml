@@ -234,6 +234,7 @@ class InitPanelsLater implements Runnable {
         _panels.put(MInstanceImpl.class, new PropPanelInstance());
         _panels.put(MInterfaceImpl.class, new PropPanelInterface());
         _panels.put(MLinkImpl.class, new PropPanelLink());
+        _panels.put(MStimulusImpl.class, new PropPanelStimulus());
         _panels.put(MMessageImpl.class, new PropPanelMessage());
         //_panels.put(MModelImpl.class, new PropPanelModel());
 
