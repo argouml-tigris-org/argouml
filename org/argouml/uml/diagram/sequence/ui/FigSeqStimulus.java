@@ -141,9 +141,6 @@ public class FigSeqStimulus extends FigNodeModelElement {
 
     int ht = 0;
 
-
-   // _name.setBounds(x+20, y, nameMin.width, nameMin.height);
-   // AK
     _name.setBounds(x, y, nameMin.width, nameMin.height);
 
 
@@ -162,7 +159,14 @@ public class FigSeqStimulus extends FigNodeModelElement {
     }
   }
 
+  public String ownerName() {
+    if (getOwner() != null) { return ( (MStimulus)getOwner()).getName(); }
+    else return "null";
+  }
+
   protected void modelChanged() {
+   
+
     super.modelChanged();
 
     MStimulus sti = (MStimulus) getOwner();
@@ -171,18 +175,18 @@ public class FigSeqStimulus extends FigNodeModelElement {
     String nameStr = GeneratorDisplay.Generate(sti.getName()).trim();
 	String actionString = "new Action";
 
-	if (sti.getDispatchAction() != null && sti.getDispatchAction().getName() != null) 
+	if (sti.getDispatchAction() != null && sti.getDispatchAction().getName() != null)
 		actionString = GeneratorDisplay.Generate(((MAction)sti.getDispatchAction()).getName()).trim();
 
     if( nameStr.equals("") && actionString.equals("") )
       _name.setText("");
     else
       _name.setText(nameStr.trim() + " : " + actionString.trim());
- 
+
     if (sti.getCommunicationLink() != null) {
       MLink link = (MLink) sti.getCommunicationLink();
       if (link.getName() != null) {
-        link.setName(link.getName()); 
+        link.setName(link.getName());
       }
       else link.setName("");
     }
@@ -190,27 +194,20 @@ public class FigSeqStimulus extends FigNodeModelElement {
     if (sti.getSender() != null) {
       MInstance inst = (MInstance) sti.getSender();
       if (inst.getName() != null) {
-        inst.setName(inst.getName()); 
+        inst.setName(inst.getName());
       }
       else inst.setName("");
     }
     if (sti.getReceiver() != null) {
       MInstance inst = (MInstance) sti.getReceiver();
       if (inst.getName() != null) {
-        inst.setName(inst.getName()); 
+        inst.setName(inst.getName());
       }
       else inst.setName("");
     }
 
-    Editor _editor = Globals.curEditor();
-    Layer lay = _editor.getLayerManager().getActiveLayer();
-    Vector contents = lay.getContents();
-    for (int i=0; i<contents.size(); i++) {
-      if (contents.elementAt(i) instanceof FigSeqObject) {
-        FigSeqObject fso = (FigSeqObject) contents.elementAt(i);
-        fso.setEnclosingFig(fso);
-      }
-    }
+    if (getLayer() != null) ((SequenceDiagramLayout)getLayer()).placeAllFigures();
+
   }
 
   public void dispose() {
@@ -222,17 +219,7 @@ public class FigSeqStimulus extends FigNodeModelElement {
   }
 
   public void mouseClicked(MouseEvent me) {
-
-    Editor _editor = Globals.curEditor();
-    Layer lay = _editor.getLayerManager().getActiveLayer();
-    Vector contents = lay.getContents();
-    for (int i=0; i<contents.size(); i++) {
-      if (contents.elementAt(i) instanceof FigSeqObject) {
-        FigSeqObject fso = (FigSeqObject) contents.elementAt(i);
-        fso.setEnclosingFig(fso);
-      }
-    }
-    //modelChanged();
+  
    super.mouseClicked(me);
 
   }
@@ -252,14 +239,14 @@ public class FigSeqStimulus extends FigNodeModelElement {
 
      // 15/09/00 AK
     // the new stimulus becomes a pathItem of its link
-    //System.out.println("FigSeqStimulus.addPathItem():");
+   
     MLink mlink = ((MStimulus) getOwner()).getCommunicationLink();
 
     if (mlink != null && lay != null) {
-      //System.out.println("layer!=null");
+      
       FigSeqLink figSeqLink = (FigSeqLink) lay.presentationFor(mlink);
       if (figSeqLink != null) {
-        //System.out.println("figSeqLink!=null");
+        
         Collection stimuli = mlink.getStimuli();
         int size=0;
         if (stimuli != null) {
