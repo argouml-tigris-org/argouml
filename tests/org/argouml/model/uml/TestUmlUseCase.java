@@ -42,6 +42,9 @@ public class TestUmlUseCase extends GenericUmlObjectTestFixture
 	validateTestClassIsGeneric(this);
     }
 
+    /**
+     * Test creating a usecase.
+     */
     public void testUseCaseLegacy() {
 	UmlFactory.getFactory().setJmiProxyCreated(false);
 	Object o = ModelFacade.create(Uml.USE_CASE);
@@ -51,6 +54,9 @@ public class TestUmlUseCase extends GenericUmlObjectTestFixture
 	runTruthTests(o);
     }
 
+    /**
+     * Test creating a usecase.
+     */
     public void testUseCase() {
 	UmlFactory.getFactory().setJmiProxyCreated(true);
 	Object o = ModelFacade.create(Uml.USE_CASE);
@@ -61,6 +67,9 @@ public class TestUmlUseCase extends GenericUmlObjectTestFixture
 	runTruthTests(o);
     }
 
+    /**
+     * @see org.argouml.model.uml.GenericUmlObjectTestFixture#initializeTruth()
+     */
     protected void initializeTruth() {
 	setTruth(Uml.ELEMENT, true);
 	setTruth(Uml.MODEL_ELEMENT, true);

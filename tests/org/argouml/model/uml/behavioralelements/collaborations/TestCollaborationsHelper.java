@@ -44,17 +44,23 @@ public class TestCollaborationsHelper extends TestCase {
 	super(arg0);
     }
 
+    /**
+     * Test for the metamodel name.
+     */
     public void testGetMetaModelName() {
 	CheckUMLModelHelper.metaModelNameCorrect(
 			 this,
 			 CollaborationsFactory.getFactory(),
-			 TestCollaborationsFactory.allModelElements);
+			 TestCollaborationsFactory.getAllModelElements());
     }
 
+    /**
+     * Test if the stereotype is valid.
+     */
     public void testIsValidStereoType() {
 	CheckUMLModelHelper.isValidStereoType(
 		      this,
 		      CollaborationsFactory.getFactory(),
-		      TestCollaborationsFactory.allModelElements);
+		      TestCollaborationsFactory.getAllModelElements());
     }
 }

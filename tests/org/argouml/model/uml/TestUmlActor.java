@@ -42,6 +42,9 @@ public class TestUmlActor extends GenericUmlObjectTestFixture
 	validateTestClassIsGeneric(this);
     }
 
+    /**
+     * The legacy test for an actor.
+     */
     public void testActorLegacy() {
 	UmlFactory.getFactory().setJmiProxyCreated(false);
 	Object o = ModelFacade.create(Uml.ACTOR);
@@ -51,6 +54,9 @@ public class TestUmlActor extends GenericUmlObjectTestFixture
 	runTruthTests(o);
     }
 
+    /**
+     * Test the creation of an actor.
+     */
     public void testActor() {
 	UmlFactory.getFactory().setJmiProxyCreated(true);
 	Object o = ModelFacade.create(Uml.ACTOR);
@@ -61,6 +67,9 @@ public class TestUmlActor extends GenericUmlObjectTestFixture
 	runTruthTests(o);
     }
 
+    /**
+     * @see org.argouml.model.uml.GenericUmlObjectTestFixture#initializeTruth()
+     */
     protected void initializeTruth() {
 	setTruth(Uml.ELEMENT, true);
 	setTruth(Uml.MODEL_ELEMENT, true);

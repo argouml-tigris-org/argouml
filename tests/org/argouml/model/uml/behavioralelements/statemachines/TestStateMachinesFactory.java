@@ -28,9 +28,13 @@ import junit.framework.TestCase;
 
 import org.argouml.util.CheckUMLModelHelper;
 
+/**
+ * Test the StateMachinesFactory class.
+ *
+ */
 public class TestStateMachinesFactory extends TestCase {
 
-    static String[] allModelElements =
+    private static String[] allModelElements =
     {
 	"CallEvent",
 	"ChangeEvent",
@@ -99,5 +103,12 @@ public class TestStateMachinesFactory extends TestCase {
 					   this,
 					   StateMachinesFactory.getFactory(),
 					   allModelElements);
+    }
+
+    /**
+     * @return Returns the allModelElements.
+     */
+    static String[] getAllModelElements() {
+        return allModelElements;
     }
 }

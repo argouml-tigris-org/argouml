@@ -63,12 +63,24 @@ import org.argouml.uml.diagram.use_case.ui.FigUseCase;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 
 
+/**
+ * Test the ItemUID class.
+ *
+ */
 public class TestItemUID extends TestCase {
     
+    /**
+     * The constructor.
+     * 
+     * @param name the name of the test.
+     */
     public TestItemUID(String name) {
 	super(name);
     }
 
+    /**
+     * Test the constructors.
+     */
     public void testConstructors() {
 	String strs[] = {
 	    "a", "b", "c", "d", "e" 
@@ -101,6 +113,9 @@ public class TestItemUID extends TestCase {
 	}
     }
 
+    /**
+     * Test assigning IDs to objects.
+     */
     public void testAssignIDsToObjects() {
         Object testmc = CoreFactory.getFactory().buildClass();
         UMLActivityDiagram actdiag = new UMLActivityDiagram();

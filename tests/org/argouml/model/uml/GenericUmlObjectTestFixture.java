@@ -55,6 +55,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
      * Constructor for GenericObjectFixture.
      *
      * @param arg0 is the name of the test case.
+     * @param ent the model entity
      */
     public GenericUmlObjectTestFixture(String arg0, ModelEntity ent) {
 	super(arg0);
@@ -75,7 +76,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
      */
     protected abstract void initializeTruth();
 
-    /*
+    /**
      * @see TestCase#tearDown()
      */
     protected void tearDown() throws Exception {
@@ -93,6 +94,8 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 
     /**
      * Ensure that the calling class does not reference NSUML in any way
+     *
+     * @param self the testcase
      */
     protected void validateTestClassIsGeneric(TestCase self) {
         // TODO: Use reflection against the test case to ensure that it
@@ -119,7 +122,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
      * Indicate that the class being tested should be a type of the
      * passed class.
      * 
-     * @param class1
+     * @param class1 the class being tested
      */
     protected void setShouldBe(ModelEntity class1) {
 	truths.put(class1, new Boolean(true));
@@ -129,15 +132,17 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
      * Indicate if the class being tested should be a type of the
      * testcase class.
      * 
-     * @param class1
-     * @param b
+     * @param class1 the modelentity
+     * @param b the value
      */
     protected void setTruth(ModelEntity class1, boolean b) {
 	truths.put(class1, new Boolean(b));
     }
 
     /**
-     * Run the standard tests against a RefBaseObject
+     * Run the standard tests against a given RefBaseObject
+     *
+     * @param o the given object
      */
     protected void runTestRefBaseObject(Object o) {
 	assertTrue("Should be a RefBaseObject", o instanceof RefBaseObject);
@@ -151,7 +156,9 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
     }
 
     /**
-     * Run the standard tests against a RefPackage
+     * Run the standard tests against a given RefPackage
+     *
+     * @param o the given object
      */
     protected void runTestRefPackage(Object o) {
 	assertTrue("Should be a RefPackage", o instanceof RefPackage);
@@ -164,6 +171,8 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 
     /**
      * Run the standard tests against a RefClass
+     *
+     * @param o the given object
      */
     protected void runTestRefClass(Object o) {
 	assertTrue("Should be a RefClass", o instanceof RefClass);
@@ -173,6 +182,8 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 
     /**
      * Run the standard tests against a RefObject
+     *
+     * @param o the given object
      */
     protected void runTestRefObject(Object o) {
 	assertTrue("Should be a RefObject", o instanceof RefObject);
@@ -182,6 +193,8 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 
     /**
      * Run the standard tests against a RefEnum
+     *
+     * @param o the given object
      */
     protected void runTestRefEnum(Object o) {
 	assertTrue("Should be a RefEnum", o instanceof RefEnum);
@@ -191,6 +204,8 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 
     /**
      * Run the standard tests against a RefAssociation
+     *
+     * @param o the given object
      */
     protected void runTestRefAssociation(Object o) {
 	assertTrue("Should be a RefAssociation", o instanceof RefAssociation);
@@ -200,6 +215,8 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 
     /**
      * Run the standard tests against a RefFeatured
+     *
+     * @param o the given object
      */
     protected void runTestRefFeatured(Object o) {
 	assertTrue("Should be a RefFeatured", o instanceof RefFeatured);
@@ -207,6 +224,9 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 	// TODO: implement additional method tests
     }
 
+    /**
+     * @param o the given object for the tests
+     */
     protected void runTruthTests(Object o) {
 	runTruthTest(ModelFacade.isABase(o), true, null);
 	runTruthTest(ModelFacade.isAAbstraction(o), Uml.ABSTRACTION);

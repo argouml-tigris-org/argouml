@@ -44,6 +44,9 @@ public class TestProjectManager extends TestCase {
 	super(arg0);
     }
 
+    /**
+     * Test the makeEmptyProject() function.
+     */
     public void testMakeEmptyProject() {
 	Project p = ProjectManager.getManager().makeEmptyProject();
 	assertEquals(2, p.getDiagrams().size());

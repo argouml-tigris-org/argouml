@@ -42,6 +42,9 @@ public class TestUmlNamespace extends GenericUmlObjectTestFixture
 	validateTestClassIsGeneric(this);
     }
 
+    /**
+     * Test creating a Namespace.
+     */
     public void testNamespaceLegacy() {
 	UmlFactory.getFactory().setJmiProxyCreated(false);
 	Object o = ModelFacade.create(Uml.NAMESPACE);
@@ -51,6 +54,9 @@ public class TestUmlNamespace extends GenericUmlObjectTestFixture
 	runTruthTests(o);
     }
 
+    /**
+     * Test creating a Namespace.
+     */
     public void testNamespace() {
 	UmlFactory.getFactory().setJmiProxyCreated(true);
 	Object o = ModelFacade.create(Uml.NAMESPACE);
@@ -61,6 +67,9 @@ public class TestUmlNamespace extends GenericUmlObjectTestFixture
 	runTruthTests(o);
     }
 
+    /**
+     * @see org.argouml.model.uml.GenericUmlObjectTestFixture#initializeTruth()
+     */
     protected void initializeTruth() {
 	setTruth(Uml.ELEMENT, true);
 	setTruth(Uml.MODEL_ELEMENT, true);

@@ -56,6 +56,9 @@ public class TestModelFacade extends TestCase {
 	super(arg0);
     }
 
+    /**
+     * @return the test suite
+     */
     public static Test suite() {
 	TestSuite suite =
 	    new TestSuite("Tests for "

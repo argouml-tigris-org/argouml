@@ -43,8 +43,9 @@ public class TestUml extends TestCase
     }
 
 
-// TODO: Rewrite this test using reflection against Uml class.
-
+    /**
+     * TODO: Rewrite this test using reflection against Uml class. 
+     */
     public void testUmlClassList() {
 //        for (Iterator i = Uml.getUmlClassList().iterator(); i.hasNext();) {
 //            UmlModelEntity type = (UmlModelEntity) i.next();

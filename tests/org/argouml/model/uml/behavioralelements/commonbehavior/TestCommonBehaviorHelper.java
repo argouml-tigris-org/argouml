@@ -44,17 +44,23 @@ public class TestCommonBehaviorHelper extends TestCase {
 	super(arg0);
     }
 
+    /**
+     * Test the metamodel name.
+     */
     public void testGetMetaModelName() {
 	CheckUMLModelHelper.metaModelNameCorrect(
 			 this,
 			 CommonBehaviorFactory.getFactory(),
-			 TestCommonBehaviorFactory.allModelElements);
+			 TestCommonBehaviorFactory.getAllModelElements());
     }
 
+    /**
+     * Test if the steareotype is valid.
+     */
     public void testIsValidStereoType() {
 	CheckUMLModelHelper.isValidStereoType(
 		      this,
 		      CommonBehaviorFactory.getFactory(),
-		      TestCommonBehaviorFactory.allModelElements);
+		      TestCommonBehaviorFactory.getAllModelElements());
     }
 }

@@ -54,6 +54,9 @@ public class TestModelFacade3 extends TestCase {
 	methodToTest = method;
     }
  
+    /**
+     * @return the test suite
+     */
     public static Test suite() {
 	TestSuite suite = 
 	    new TestSuite("Tests for " 

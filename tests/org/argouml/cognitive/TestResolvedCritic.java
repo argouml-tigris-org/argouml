@@ -32,12 +32,24 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.tigris.gef.util.VectorSet;
 
+/**
+ * Test the ResolvedCritic class.
+ *
+ */
 public class TestResolvedCritic extends TestCase {
     
+    /**
+     * The constructor.
+     * 
+     * @param name the name of the test
+     */
     public TestResolvedCritic(String name) {
 	super(name);
     }
 
+    /**
+     * Test the constructors.
+     */
     public void testConstructors() {
         Object testmc = CoreFactory.getFactory().buildClass();
         Critic c = new Critic();
@@ -116,6 +128,9 @@ public class TestResolvedCritic extends TestCase {
         set.remove(testmc);
     }
 
+    /**
+     * Test the equals() method.
+     */
     public void testEquals() {
 	Critic c = new Critic();
 	ResolvedCritic rc1, rc2;

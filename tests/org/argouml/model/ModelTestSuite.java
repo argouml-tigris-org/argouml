@@ -32,6 +32,9 @@ import junit.framework.TestSuite;
  */
 public class ModelTestSuite {
 
+    /**
+     * @return the test suite
+     */
     public static Test suite() {
 	TestSuite suite =
 	    new TestSuite("Tests for "

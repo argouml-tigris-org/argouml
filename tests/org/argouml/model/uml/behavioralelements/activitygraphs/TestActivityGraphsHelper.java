@@ -44,17 +44,23 @@ public class TestActivityGraphsHelper extends TestCase {
 	super(arg0);
     }
 
+    /**
+     * Test if the metamodel name is correct.
+     */
     public void testGetMetaModelName() {
 	CheckUMLModelHelper.metaModelNameCorrect(
 			 this,
 			 ActivityGraphsFactory.getFactory(),
-			 TestActivityGraphsFactory.allModelElements);
+			 TestActivityGraphsFactory.getAllModelElements());
     }
 
+    /**
+     * Test if the stereotype is valid.
+     */
     public void testIsValidStereoType() {
 	CheckUMLModelHelper.isValidStereoType(
 		      this,
 		      ActivityGraphsFactory.getFactory(),
-		      TestActivityGraphsFactory.allModelElements);
+		      TestActivityGraphsFactory.getAllModelElements());
     }
 }

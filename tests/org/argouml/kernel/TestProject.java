@@ -42,6 +42,9 @@ public class TestProject extends TestCase {
         super(arg0);
     }
     
+    /**
+     * Test the makeUntitledProject() function.
+     */
     public void testMakeUntitledProject() {
         Project p = ProjectManager.getManager().getCurrentProject();
         assertEquals(2, p.getDiagrams().size());
