@@ -104,6 +104,8 @@ public class AddToDoItemDialog extends ArgoDialog {
         panel.add(offenderLabel);
         panel.add(_offenderList);
         
+        _description.setLineWrap(true);  //MVW - Issue 2422
+        _description.setWrapStyleWord(true);   //MVW - Issue 2422
         _description.setText(Translator.localize("label.enter-todo-item") + "\n");
         JScrollPane descriptionScroller = new JScrollPane(_description);
         descriptionScroller.setPreferredSize(_description.getPreferredSize());
