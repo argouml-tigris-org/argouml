@@ -35,11 +35,9 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.uml.diagram.deployment.ui.FigComponent;
 import org.argouml.uml.diagram.deployment.ui.FigMNode;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
+import org.argouml.model.ModelFacade;
+
 import org.tigris.gef.util.VectorSet;
-import ru.novosoft.uml.foundation.core.MComponent;
-
-
-
 
 /**
  * A critic to detect when there are components that
@@ -106,11 +104,11 @@ public class CrComponentWithoutNode extends CrUML {
 		offs.addElement(fc);
 	    }
 	    else if (fc.getEnclosingFig() != null
-		     && ((((MComponent) fc.getOwner()).getDeploymentLocations()
+		     && (((ModelFacade.getDeploymentLocations(fc.getOwner())
 			  == null)
-			 || ((((MComponent)
-			       fc.getOwner()).getDeploymentLocations().size())
-			     == 0))) {
+			 || (((ModelFacade
+                                .getDeploymentLocations(fc.getOwner()).size())
+			     == 0))))) {
 		if (offs == null) {
 		    offs = new VectorSet();
 		    offs.addElement(dd);
