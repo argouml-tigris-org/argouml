@@ -458,7 +458,6 @@ public class FigPackage extends FigNodeModelElement {
             return;
         MModelElement me = (MModelElement) getOwner();
         MNamespace m = null;
-        ProjectBrowser pb = ProjectBrowser.getInstance();
         try {
             // If moved into an Package
             if (encloser != null
