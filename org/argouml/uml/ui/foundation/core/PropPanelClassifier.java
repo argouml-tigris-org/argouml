@@ -99,11 +99,13 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
       JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
       extendsList.setBackground(getBackground());
       extendsList.setForeground(Color.blue);
+      extendsList.setVisibleRowCount(3);
       extendsScroll= new JScrollPane(extendsList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
       JList implementsList = new UMLList(new UMLClientDependencyListModel(this,"implements",true),true);
       implementsList.setBackground(getBackground());
       implementsList.setForeground(Color.blue);
+      implementsList.setVisibleRowCount(3);
       implementsScroll= new JScrollPane(implementsList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
       _modifiersPanel = new JPanel(new GridLayout(0,2));
@@ -114,27 +116,27 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
 
       JList derivedList = new UMLList(new UMLSpecializationListModel(this,"specialization",true),true);
       derivedList.setForeground(Color.blue);
-      derivedList.setVisibleRowCount(1);
+      derivedList.setVisibleRowCount(3);
       derivedScroll=new JScrollPane(derivedList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);      
 
       JList opsList = new UMLList(new UMLOperationsListModel(this,"feature",true),true);
       opsList.setForeground(Color.blue);
-      opsList.setVisibleRowCount(1);
+      opsList.setVisibleRowCount(3);
       opsScroll = new JScrollPane(opsList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
       JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
       attrList.setForeground(Color.blue);
-      attrList.setVisibleRowCount(1);
+      attrList.setVisibleRowCount(3);
       attrScroll= new JScrollPane(attrList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
       JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
       connectList.setForeground(Color.blue);
-      connectList.setVisibleRowCount(1);
+      connectList.setVisibleRowCount(3);
       connectScroll= new JScrollPane(connectList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
       JList innerList = new UMLList(new UMLClassifiersListModel(this,"ownedElement",true),true);
       innerList.setForeground(Color.blue);
-      innerList.setVisibleRowCount(1);
+      innerList.setVisibleRowCount(3);
       innerScroll= new JScrollPane(innerList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
   }
