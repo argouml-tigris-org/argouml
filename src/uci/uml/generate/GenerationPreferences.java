@@ -35,10 +35,10 @@ public class GenerationPreferences implements java.io.Serializable {
   protected String _outputDir = "/home/jrobbins/vtmp/";
 
   public GenerationPreferences() {
-    if (System.getProperty("os.name").startsWith("S"))
-      _outputDir = "/tmp";
-    else
-      _outputDir = "c:\\temp";
+      if (System.getProperty("file.separator").equals("/") )
+	  _outputDir = "/tmp";
+      else
+	  _outputDir = "c:\\temp";
   }
 
   ////////////////////////////////////////////////////////////////

@@ -153,15 +153,11 @@ public class GeneratorJava extends Generator {
 	if ( rp != null) {
 		MClassifier returnType = rp.getType();
 		if (returnType == null && !nameStr.equals(clsName)) s += "void ";
-		else if (returnType != null) {
-			if (nameStr.equals(clsName))
-				s+= " "; //this is a constructor!
-			else
-				s += generateClassifierRef(returnType) + " ";
-		}
+		else if (returnType != null) s += generateClassifierRef(returnType) + " ";
 	} else {
 		if (nameStr.equals(clsName)) s += " "; // this is a constructor!
-	}	
+	}
+		
 
     // name and params
     Vector params = new Vector(op.getParameters());
@@ -505,21 +501,16 @@ public class GeneratorJava extends Generator {
     return generateClassList(classes);
   }
 
+    //  public String generateSpecification(Collection realizations) {
 	public String generateSpecification(MClass cls) {
 		Collection realizations = MMUtil.SINGLETON.getSpecifications(cls);
-
 		if (realizations == null) return "";
 		String s = "";
 		Iterator clsEnum = realizations.iterator();
 		while (clsEnum.hasNext()) {
-			MAbstraction abs = (MAbstraction)clsEnum.next();
-			Collection suppliers=abs.getSuppliers();
-			Iterator suppliersEnum=suppliers.iterator();
-			while (suppliersEnum.hasNext()){
-				s+=generateClassifierRef(((MClassifier)suppliersEnum.next()));
-				if (clsEnum.hasNext()) s += ", ";
-			}	
-		
+			MInterface i = (MInterface)clsEnum.next();
+			s += generateClassifierRef(i);
+			if (clsEnum.hasNext()) s += ", ";
 		}
 		return s;
 	}
