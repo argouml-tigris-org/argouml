@@ -23,18 +23,18 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.kernel.*;
-import org.argouml.model.uml.UmlFactory;
-import org.argouml.uml.*;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.tigris.gef.presentation.FigNode;
-import org.argouml.ui.*;
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.behavior.common_behavior.MSignal;
-import ru.novosoft.uml.foundation.core.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
 import java.util.Iterator;
-import java.util.Vector;
+
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.ui.ProjectBrowser;
+import ru.novosoft.uml.MElementListener;
+import ru.novosoft.uml.behavior.common_behavior.MSignal;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MOperation;
 
 /** Action to add an operation to a classifier.
  *  @stereotype singleton
@@ -68,6 +68,12 @@ public class ActionAddOperation extends UMLChangeAction {
 	MOperation oper = UmlFactory.getFactory().getCore().buildOperation(cls);
 	pb.getNavigatorPane().addToHistory(oper);
 	pb.setTarget(oper);
+        Iterator it = pb.getEditorPane().findPresentationsFor(cls, p.getDiagrams()).iterator();
+        while (it.hasNext()) {
+            MElementListener listener = (MElementListener)it.next();
+            UmlModelEventPump.getPump().removeModelEventListener(listener, oper);
+            UmlModelEventPump.getPump().addModelEventListener(listener, oper);
+        }
 	 super.actionPerformed(ae);
 	
     }

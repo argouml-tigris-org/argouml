@@ -24,14 +24,16 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
+import java.util.Iterator;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.ui.NavigatorPane;
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.tigris.gef.presentation.Fig;
 
+import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -61,12 +63,21 @@ public class ActionAddAttribute extends UMLChangeAction {
     public void actionPerformed(ActionEvent ae) {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Project p = ProjectManager.getManager().getCurrentProject();
-	Object target = pb.getDetailsTarget();
+	Object target = pb.getTarget();
+        if (target instanceof Fig) {
+            target = ((Fig)target).getOwner();
+        }
 	if (!(target instanceof MClassifier)) return;
 	MClassifier cls = (MClassifier) target;
 	MAttribute attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
 	pb.getNavigatorPane().addToHistory(attr);
 	pb.setTarget(attr);
+        Iterator it = pb.getEditorPane().findPresentationsFor(cls, p.getDiagrams()).iterator();
+        while (it.hasNext()) {
+            MElementListener listener = (MElementListener)it.next();
+            UmlModelEventPump.getPump().removeModelEventListener(listener, attr);
+            UmlModelEventPump.getPump().addModelEventListener(listener, attr);
+        }
 	super.actionPerformed(ae);
     }
 

@@ -694,6 +694,9 @@ public class FigClass extends FigNodeModelElement {
 	  CompartmentFigText attr;
       while (iter.hasNext()) {
 	    MStructuralFeature sf = (MStructuralFeature) iter.next();
+        // update the listeners
+        UmlModelEventPump.getPump().removeModelEventListener(this, sf);
+        UmlModelEventPump.getPump().addModelEventListener(this, sf);
 	    if (figs.size() <= acounter) {
 	      attr = new CompartmentFigText(xpos+1, ypos+1+(acounter-1)*ROWHEIGHT, 0, ROWHEIGHT-2, _attrBigPort); // bounds not relevant here
           attr.setFilled(false);
@@ -728,6 +731,9 @@ public class FigClass extends FigNodeModelElement {
 	  CompartmentFigText oper;
       while (iter.hasNext()) {
 	    MBehavioralFeature bf = (MBehavioralFeature) iter.next();
+        // update the listeners
+        UmlModelEventPump.getPump().removeModelEventListener(this, bf);
+        UmlModelEventPump.getPump().addModelEventListener(this, bf);
 	    if (figs.size() <= ocounter) {
 	      oper = new CompartmentFigText(xpos+1, ypos+1+(ocounter-1)*ROWHEIGHT, 0, ROWHEIGHT-2, _operBigPort); // bounds not relevant here
           oper.setFilled(false);

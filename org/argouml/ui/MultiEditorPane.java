@@ -27,252 +27,273 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.awt.event.*;
-import java.util.*;
-import java.io.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.graph.presentation.*;
-import org.tigris.gef.presentation.Fig;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Category;
-import org.argouml.application.api.*;
-import org.argouml.util.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.swingext.*;
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.QuadrantPanel;
+import org.argouml.swingext.Horizontal;
+import org.argouml.uml.diagram.ui.TabDiagram;
+import org.argouml.uml.ui.TabModelTarget;
+import org.argouml.uml.ui.TabProps;
+import org.argouml.util.ConfigLoader;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.graph.presentation.JGraph;
+import org.tigris.gef.presentation.Fig;
 
 /** The upper right pane in the Argo/UML user interface.  It has
  *  several tabs with different kinds of "major" editors that allow
  *  the user to edit whatever is selected in the NavigatorPane. */
 
-public class MultiEditorPane extends JPanel
-implements ChangeListener, MouseListener, QuadrantPanel {
+public class MultiEditorPane
+    extends JPanel
+    implements ChangeListener, MouseListener, QuadrantPanel {
     protected static Category cat = Category.getInstance(MultiEditorPane.class);
-	
-	protected class DiagramFigDeleter {
-		Fig fig = null;
-		Diagram diagram = null;
-		public DiagramFigDeleter(Fig fig, Diagram diagram) {
-			this.diagram = diagram;
-			this.fig = fig;
-		}
-		
-	}
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    protected class DiagramFigDeleter {
+        Fig fig = null;
+        Diagram diagram = null;
+        public DiagramFigDeleter(Fig fig, Diagram diagram) {
+            this.diagram = diagram;
+            this.fig = fig;
+        }
 
-  protected Object _target;
-  protected JTabbedPane _tabs = new JTabbedPane(JTabbedPane.BOTTOM);
-  protected Editor _ed;
- // protected ForwardingPanel _awt_comp;
-  protected Vector _tabPanels = new Vector();
-  protected Component _lastTab;
-
-  ////////////////////////////////////////////////////////////////
-  // constructors
-
-  public MultiEditorPane() {
-    Argo.log.info("making MultiEditorPane");
-    ConfigLoader.loadTabs(_tabPanels, "multi", Horizontal.getInstance());
-
-    setLayout(new BorderLayout());
-    add(_tabs, BorderLayout.CENTER);
-
-    // _tabs.addChangeListener(this);
-    for (int i = 0; i < _tabPanels.size(); i++) {
-      String title = "tab";
-      JPanel t = (JPanel) _tabPanels.elementAt(i);
-      if (t instanceof TabSpawnable)
-	title = ((TabSpawnable)t).getTitle();
-      _tabs.addTab("As " + title, t);
-    } /* end for */
-
-    for (int i = 0; i < _tabPanels.size(); i++)
-      _tabs.setEnabledAt(i, false);
-
-
-    _tabs.addChangeListener(this);
-    _tabs.addMouseListener(this);
-    setTarget(null);
-  }
-
-
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  public Dimension getPreferredSize() { return new Dimension(400, 500); }
-  public Dimension getMinimumSize() { return new Dimension(100, 100); }
-
-/**
- * Sets the target of the multieditorpane. The multieditorpane can have several 
- * tabs. If a tab is an instance of tabmodeltarget (that is a tab that displays
- * model elements) that tab should display the target if the target is an 
- * ArgoDiagram.
- * @param target
- */
-  public void setTarget(Object target) {
-    if(_target == target) return;
-    int nextTab = -1;
-    int currentTab = _tabs.getSelectedIndex();
-    int tabCount = _tabs.getTabCount();
-    _target = target;
-    for (int i = 0; i < tabCount; i++) {
-        Component tab = _tabs.getComponentAt(i);
-        if (tab instanceof TabModelTarget) {
-	       TabModelTarget tabMT = (TabModelTarget) tab;
-	       tabMT.setTarget(_target);
-	       boolean shouldEnable = tabMT.shouldBeEnabled();
-	       _tabs.setEnabledAt(i, shouldEnable);
-           if(shouldEnable && (nextTab == -1 || i == currentTab)) 
-                nextTab = i;
-	   }
     }
-    if (target != null)
-        select(target);
-//    if this target doesn't match the tabs expectation    
-//        leave the previous tab displayed
-    
-//    
-//    if (nextTab != -1 && nextTab != currentTab) 
-//        _tabs.setSelectedIndex(nextTab);
-//    _tabs.setVisible(nextTab != -1);
-  }
 
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  public Object getTarget() { return _target; }
+    protected Object _target;
+    protected JTabbedPane _tabs = new JTabbedPane(JTabbedPane.BOTTOM);
+    protected Editor _ed;
+    // protected ForwardingPanel _awt_comp;
+    protected Vector _tabPanels = new Vector();
+    protected Component _lastTab;
 
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  ////////////////////////////////////////////////////////////////
-  // actions
+    public MultiEditorPane() {
+        Argo.log.info("making MultiEditorPane");
+        ConfigLoader.loadTabs(_tabPanels, "multi", Horizontal.getInstance());
 
-  public int getIndexOfNamedTab(String tabName) {
-    for (int i = 0; i < _tabPanels.size(); i++) {
-      String title = _tabs.getTitleAt(i);
-      if (title != null && title.equals(tabName)) return i;
+        setLayout(new BorderLayout());
+        add(_tabs, BorderLayout.CENTER);
+
+        // _tabs.addChangeListener(this);
+        for (int i = 0; i < _tabPanels.size(); i++) {
+            String title = "tab";
+            JPanel t = (JPanel) _tabPanels.elementAt(i);
+            if (t instanceof TabSpawnable)
+                title = ((TabSpawnable) t).getTitle();
+            _tabs.addTab("As " + title, t);
+        } /* end for */
+
+        for (int i = 0; i < _tabPanels.size(); i++)
+            _tabs.setEnabledAt(i, false);
+
+        _tabs.addChangeListener(this);
+        _tabs.addMouseListener(this);
+        setTarget(null);
     }
-    return -1;
-  }
 
-  public void selectTabNamed(String tabName) {
-    int index = getIndexOfNamedTab(tabName);
-    if (index != -1) _tabs.setSelectedIndex(index);
-  }
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public void selectNextTab() {
-    int size = _tabPanels.size();
-    int currentTab = _tabs.getSelectedIndex();
-    for (int i = 1; i < _tabPanels.size(); i++) {
-      int newTab = (currentTab + i) % size;
-      if (_tabs.isEnabledAt(newTab)) {
-	_tabs.setSelectedIndex(newTab);
-	return;
-      }
+    public Dimension getPreferredSize() {
+        return new Dimension(400, 500);
     }
-  }
-
-  public void select(Object o) {
-    Component curTab = _tabs.getSelectedComponent();
-    if (curTab instanceof TabDiagram) {
-      JGraph jg = ((TabDiagram)curTab).getJGraph();
-      jg.selectByOwnerOrFig(o);
+    public Dimension getMinimumSize() {
+        return new Dimension(100, 100);
     }
-    //TODO: handle tables
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // event handlers
+    /**
+     * Sets the target of the multieditorpane. The multieditorpane can have several 
+     * tabs. If a tab is an instance of tabmodeltarget (that is a tab that displays
+     * model elements) that tab should display the target if the target is an 
+     * ArgoDiagram.
+     * @param target
+     */
+    public void setTarget(Object target) {
+        if (_target == target)
+            return;
+        int nextTab = -1;
+        int currentTab = _tabs.getSelectedIndex();
+        int tabCount = _tabs.getTabCount();
+        _target = target;
+        for (int i = 0; i < tabCount; i++) {
+            Component tab = _tabs.getComponentAt(i);
+            if (tab instanceof TabModelTarget) {
+                TabModelTarget tabMT = (TabModelTarget) tab;
+                tabMT.setTarget(_target);
+                boolean shouldEnable = tabMT.shouldBeEnabled();
+                _tabs.setEnabledAt(i, shouldEnable);
+                if (shouldEnable && (nextTab == -1 || i == currentTab))
+                    nextTab = i;
+            }
+        }
+        if (target != null)
+            select(target);
+        //    if this target doesn't match the tabs expectation    
+        //        leave the previous tab displayed
 
-  /** called when the user selects a tab, by clicking or otherwise. */
-  public void stateChanged(ChangeEvent e) {
-    //TODO: should fire its own event and ProjectBrowser
-    //should register a listener
-    if (_lastTab != null) { _lastTab.setVisible(false); }
-    _lastTab = _tabs.getSelectedComponent();
-    cat.debug("MultiEditorPane state changed:" +
-        _lastTab.getClass().getName());
-    _lastTab.setVisible(true);
-    if (_lastTab instanceof TabModelTarget)
-      ((TabModelTarget)_lastTab).refresh();
-  }
-
-  public void mousePressed(MouseEvent me) { }
-  public void mouseReleased(MouseEvent me) { }
-  public void mouseEntered(MouseEvent me) { }
-  public void mouseExited(MouseEvent me) { }
-
-  public void mouseClicked(MouseEvent me) {
-    int tab = _tabs.getSelectedIndex();
-    if (tab != -1) {
-      Rectangle tabBounds = _tabs.getBoundsAt(tab);
-      if (!tabBounds.contains(me.getX(), me.getY())) return;
-      if (me.getClickCount() == 1) mySingleClick(tab);
-      else if (me.getClickCount() >= 2) myDoubleClick(tab);
+        //    
+        //    if (nextTab != -1 && nextTab != currentTab) 
+        //        _tabs.setSelectedIndex(nextTab);
+        //    _tabs.setVisible(nextTab != -1);
     }
-  }
 
+    public Object getTarget() {
+        return _target;
+    }
 
-  /** called when the user clicks once on a tab. */
-  public void mySingleClick(int tab) {
-    //TODO: should fire its own event and ProjectBrowser
-    //should register a listener
-    cat.debug("single: " + _tabs.getComponentAt(tab).toString());
-  }
+    ////////////////////////////////////////////////////////////////
+    // actions
 
-  /** called when the user clicks twice on a tab. */
-  public void myDoubleClick(int tab) {
-    //TODO: should fire its own event and ProjectBrowser
-    //should register a listener
-    cat.debug("double: " + _tabs.getComponentAt(tab).toString());
-    JPanel t = (JPanel) _tabPanels.elementAt(tab);
-    if (t instanceof TabSpawnable) ((TabSpawnable)t).spawn();
-  }
+    public int getIndexOfNamedTab(String tabName) {
+        for (int i = 0; i < _tabPanels.size(); i++) {
+            String title = _tabs.getTitleAt(i);
+            if (title != null && title.equals(tabName))
+                return i;
+        }
+        return -1;
+    }
+
+    public void selectTabNamed(String tabName) {
+        int index = getIndexOfNamedTab(tabName);
+        if (index != -1)
+            _tabs.setSelectedIndex(index);
+    }
+
+    public void selectNextTab() {
+        int size = _tabPanels.size();
+        int currentTab = _tabs.getSelectedIndex();
+        for (int i = 1; i < _tabPanels.size(); i++) {
+            int newTab = (currentTab + i) % size;
+            if (_tabs.isEnabledAt(newTab)) {
+                _tabs.setSelectedIndex(newTab);
+                return;
+            }
+        }
+    }
+
+    public void select(Object o) {
+        Component curTab = _tabs.getSelectedComponent();
+        if (curTab instanceof TabDiagram) {
+            JGraph jg = ((TabDiagram) curTab).getJGraph();
+            jg.selectByOwnerOrFig(o);
+        }
+        //TODO: handle tables
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // event handlers
+
+    /** called when the user selects a tab, by clicking or otherwise. */
+    public void stateChanged(ChangeEvent e) {
+        //TODO: should fire its own event and ProjectBrowser
+        //should register a listener
+        if (_lastTab != null) {
+            _lastTab.setVisible(false);
+        }
+        _lastTab = _tabs.getSelectedComponent();
+        cat.debug(
+            "MultiEditorPane state changed:" + _lastTab.getClass().getName());
+        _lastTab.setVisible(true);
+        if (_lastTab instanceof TabModelTarget)
+             ((TabModelTarget) _lastTab).refresh();
+    }
+
+    public void mousePressed(MouseEvent me) {
+    }
+    public void mouseReleased(MouseEvent me) {
+    }
+    public void mouseEntered(MouseEvent me) {
+    }
+    public void mouseExited(MouseEvent me) {
+    }
+
+    public void mouseClicked(MouseEvent me) {
+        int tab = _tabs.getSelectedIndex();
+        if (tab != -1) {
+            Rectangle tabBounds = _tabs.getBoundsAt(tab);
+            if (!tabBounds.contains(me.getX(), me.getY()))
+                return;
+            if (me.getClickCount() == 1)
+                mySingleClick(tab);
+            else if (me.getClickCount() >= 2)
+                myDoubleClick(tab);
+        }
+    }
+
+    /** called when the user clicks once on a tab. */
+    public void mySingleClick(int tab) {
+        //TODO: should fire its own event and ProjectBrowser
+        //should register a listener
+        cat.debug("single: " + _tabs.getComponentAt(tab).toString());
+    }
+
+    /** called when the user clicks twice on a tab. */
+    public void myDoubleClick(int tab) {
+        //TODO: should fire its own event and ProjectBrowser
+        //should register a listener
+        cat.debug("double: " + _tabs.getComponentAt(tab).toString());
+        JPanel t = (JPanel) _tabPanels.elementAt(tab);
+        if (t instanceof TabSpawnable)
+             ((TabSpawnable) t).spawn();
+    }
 
     public void addNavigationListener(NavigationListener navListener) {
         Iterator iter = _tabPanels.iterator();
         Object panel;
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             panel = iter.next();
-            if(panel instanceof TabProps) {
+            if (panel instanceof TabProps) {
                 ((TabProps) panel).addNavigationListener(navListener);
             }
         }
     }
-    
+
     public void removeNavigationListener(NavigationListener navListener) {
         Iterator iter = _tabPanels.iterator();
         Object panel;
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             panel = iter.next();
-            if(panel instanceof TabProps) {
+            if (panel instanceof TabProps) {
                 ((TabProps) panel).removeNavigationListener(navListener);
             }
         }
     }
 
-    public int getQuadrant() { return Q_TOP_RIGHT; }
-    
+    public int getQuadrant() {
+        return Q_TOP_RIGHT;
+    }
+
     /**
      * Removes all figs from all diagrams for some object obj. Does not remove 
      * the owner of the objects (does not do a call to dispose).
      * @param obj
      */
     public void removePresentationFor(Object obj, Vector diagrams) {
-    	for (int i = 0; i < _tabs.getComponentCount() ; i++) {
-    	   Component comp = _tabs.getComponentAt(i);
-    	   if (comp instanceof TabDiagram) {
-    	       TabDiagram tabDia = (TabDiagram)comp;
-    	       Object oldDia = tabDia.getTarget();
-    	       Iterator it = diagrams.iterator();
-    	       List figsToRemove = new ArrayList();
-    	       while (it.hasNext()) {
-                    Diagram diagram = (Diagram)it.next();
+        for (int i = 0; i < _tabs.getComponentCount(); i++) {
+            Component comp = _tabs.getComponentAt(i);
+            if (comp instanceof TabDiagram) {
+                TabDiagram tabDia = (TabDiagram) comp;
+                Object oldDia = tabDia.getTarget();
+                Iterator it = diagrams.iterator();
+                while (it.hasNext()) {
+                    Diagram diagram = (Diagram) it.next();
                     Fig aFig = diagram.presentationFor(obj);
                     if (aFig != null) {
                         // figsToRemove.add(new DiagramFigDeleter(aFig, diagram));
@@ -281,23 +302,36 @@ implements ChangeListener, MouseListener, QuadrantPanel {
                             aFig.delete();
                         }
                     }
-    	       }
-               /*
-               if (figsToRemove.size() >= 1) {
-                    for (int j = 0; j < figsToRemove.size()-1 ; j++) {
-                        Fig aFig = ((DiagramFigDeleter)figsToRemove.get(j)).fig;
-                        tabDia.getJGraph().setDiagram(((DiagramFigDeleter)figsToRemove.get(j)).diagram);
-                        aFig.delete();
-                    }
-                    tabDia.getJGraph().setDiagram(((DiagramFigDeleter)figsToRemove.get(figsToRemove.size()-1)).diagram);
-                    ((DiagramFigDeleter)figsToRemove.get(figsToRemove.size()-1)).fig.dispose();
-                    tabDia.getJGraph().setDiagram((Diagram)oldDia);
-                    break;
-    	       }  
-               */   	
-    	   }
-       }
+                }
+            }
+        }
     }
-    			
 
-} /* end class MultiEditorPane */
+    /**
+     * Returns a list with all figs for some object o on the given diagrams.
+     * @param o
+     * @param diagrams
+     * @return List
+     */
+    public List findPresentationsFor(Object o, Vector diagrams) {
+        List returnList = new ArrayList();
+        for (int i = 0; i < _tabs.getComponentCount(); i++) {
+            Component comp = _tabs.getComponentAt(i);
+            if (comp instanceof TabDiagram) {
+                TabDiagram tabDia = (TabDiagram) comp;
+                Object oldDia = tabDia.getTarget();
+                Iterator it = diagrams.iterator();
+                while (it.hasNext()) {
+                    Diagram diagram = (Diagram) it.next();
+                    Fig aFig = diagram.presentationFor(o);
+                    if (aFig != null)
+                        returnList.add(aFig);
+                }
+            }
+        }
+        return returnList;
+    }
+
+}
+
+/* end class MultiEditorPane */
