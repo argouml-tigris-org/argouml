@@ -27,7 +27,6 @@ package org.argouml.model.uml;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.MFactory;
@@ -258,13 +257,14 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      */
     public MCompositeState buildCompositeState(MStateMachine statemachine) {
     	if (statemachine != null ) {
-	    MCompositeState state = createCompositeState();
-	    state.setStateMachine(statemachine);
-	    state.setName("top");
-	    return state;
-    	} else
-	    throw new IllegalArgumentException("In buildCompositeState: "
-					       + "statemachine is null");
+            MCompositeState state = createCompositeState();
+            state.setStateMachine(statemachine);
+            state.setName("top");
+            return state;
+    	}
+	    throw new IllegalArgumentException(
+                "In buildCompositeState: "
+		       + "statemachine is null");
     }
     
     /**
@@ -275,25 +275,24 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      */
     public MStateMachine buildStateMachine(Object oContext) {
     	if (oContext != null
-	    && (StateMachinesHelper.getHelper()
-		.isAddingStatemachineAllowed(oContext))) {
+        	    && (StateMachinesHelper.getHelper()
+        		.isAddingStatemachineAllowed(oContext))) {
 
-	    MStateMachine machine = createStateMachine();
-            MModelElement context = (MModelElement) oContext;
-	    machine.setContext(context);
-	    if (context instanceof MClassifier) {
-		machine.setNamespace((MClassifier) context);
-	    } else if (context instanceof MBehavioralFeature) {
-		MBehavioralFeature feature = (MBehavioralFeature) context;
-		machine.setNamespace(feature.getOwner());
+    	    MStateMachine machine = createStateMachine();
+                MModelElement context = (MModelElement) oContext;
+    	    machine.setContext(context);
+    	    if (context instanceof MClassifier) {
+        		machine.setNamespace((MClassifier) context);
+    	    } else if (context instanceof MBehavioralFeature) {
+        		MBehavioralFeature feature = (MBehavioralFeature) context;
+        		machine.setNamespace(feature.getOwner());
     	    }
-	    StateMachinesFactory.getFactory().buildCompositeState(machine);
-	    return machine;
+    	    StateMachinesFactory.getFactory().buildCompositeState(machine);
+    	    return machine;
 
-    	} else {
+    	}
 	    throw new IllegalArgumentException("In buildStateMachine: "
 					       + "context null or not legal");
-	}
     }
     
     /**
@@ -310,19 +309,18 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     public Object buildTransition(MCompositeState owningState, 
 				  MStateVertex source, MStateVertex dest) {
       	if (owningState != null && source != null && dest != null
-	    && owningState.getSubvertices().contains(source)
-	    && owningState.getSubvertices().contains(dest)) {
+        	    && owningState.getSubvertices().contains(source)
+        	    && owningState.getSubvertices().contains(dest)) {
 
-	    MTransition trans = (MTransition) createTransition();
-	    owningState.addInternalTransition(trans);
-	    trans.setSource(source);
-	    trans.setTarget(dest);
-	    return trans;
+    	    MTransition trans = (MTransition) createTransition();
+    	    owningState.addInternalTransition(trans);
+    	    trans.setSource(source);
+    	    trans.setTarget(dest);
+    	    return trans;
 
-      	} else {
+      	}
 	    throw new IllegalArgumentException("In buildTransition: "
 					       + "arguments not legal");
-        }
     }
     
     /**
@@ -503,13 +501,12 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     /**
      * Builds a callevent whose namespace (and therefore the ownership) is the
      * rootmodel.
-     *
+     * @param model the model
      * @return MCallEvent
      */
-    public MCallEvent buildCallEvent() {
+    public MCallEvent buildCallEvent(Object model) {
         MCallEvent event = createCallEvent();
-        event.setNamespace((MModel) ProjectManager.getManager()
-			   .getCurrentProject().getModel());
+        event.setNamespace((MModel) model);
         event.setName("");
         return event;
     }
@@ -521,14 +518,14 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      *  
      * @param trans Object MTransition for which the CallEvent is a trigger
      * @param name String with the trigger name - should not include "()"
+     * @param model the model
      * @return an initialized UML CallEvent instance.
      */
-    public MCallEvent buildCallEvent(Object trans, String name) {
+    public MCallEvent buildCallEvent(Object trans, String name, Object model) {
         if (!(trans instanceof MTransition))
             throw new IllegalArgumentException();
         MCallEvent evt = MFactory.getDefaultFactory().createCallEvent();
-        evt.setNamespace((MModel) ProjectManager.getManager()
-			 .getCurrentProject().getModel());
+        evt.setNamespace((MModel) model);
         
         String operationName = name.indexOf("(") > 0 
             ? name.substring(0, name.indexOf("(")).trim()
@@ -544,13 +541,12 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     /**
      * Builds a signalevent whose namespace (and therefore the
      * ownership) is the rootmodel.<p>
-     *
+     * @param model the model
      * @return MSignalEvent
      */
-    public MSignalEvent buildSignalEvent() {
+    public MSignalEvent buildSignalEvent(Object model) {
         MSignalEvent event = createSignalEvent();
-        event.setNamespace((MModel) ProjectManager.getManager()
-			   .getCurrentProject().getModel());
+        event.setNamespace((MModel) model);
         event.setName("");
         return event;
     }
@@ -558,14 +554,13 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     /**
      * Builds a named signalevent whose namespace (and therefore the
      * ownership) is the rootmodel.<p>
-     *
+     * @param model the model
      * @param name String the name of the SignalEvent
      * @return MSignalEvent
      */
-    public MSignalEvent buildSignalEvent(String name) {
+    public MSignalEvent buildSignalEvent(String name, Object model) {
         MSignalEvent event = createSignalEvent();
-        event.setNamespace((MModel) ProjectManager.getManager()
-               .getCurrentProject().getModel());
+        event.setNamespace((MModel)model);
         event.setName(name);
         return event;
     }
@@ -573,13 +568,12 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     /**
      * Builds a timeevent whose namespace (and therefore the
      * ownership) is the rootmodel.<p>
-     *
+     * @param model the Model
      * @return MTimeEvent
      */
-    public MTimeEvent buildTimeEvent() {
+    public MTimeEvent buildTimeEvent(Object model) {
         MTimeEvent event = createTimeEvent();
-        event.setNamespace((MModel) ProjectManager.getManager()
-               .getCurrentProject().getModel());
+        event.setNamespace((MModel) model);
         event.setName("");
         return event;
     }
@@ -589,12 +583,12 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * ownership) is the rootmodel.<p>
      *
      * @param s String for creating the TimeExpression
+     * @param model the model
      * @return MTimeEvent
      */
-    public MTimeEvent buildTimeEvent(String s) {
+    public MTimeEvent buildTimeEvent(String s, Object model) {
         MTimeEvent event = createTimeEvent();
-        event.setNamespace((MModel) ProjectManager.getManager()
-			   .getCurrentProject().getModel());
+        event.setNamespace((MModel) model);
         event.setName("");
         Object te = UmlFactory.getFactory().getDataTypes()
                         .createTimeExpression("", s);
@@ -605,13 +599,12 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     /**
      * Builds a changeevent whose namespace (and therefore the
      * ownership) is the rootmodel.<p>
-     *
+     * @param model the model
      * @return MChangeEvent
      */
-    public MChangeEvent buildChangeEvent() {
+    public MChangeEvent buildChangeEvent(Object model) {
         MChangeEvent event = createChangeEvent();
-        event.setNamespace((MModel) ProjectManager.getManager()
-               .getCurrentProject().getModel());
+        event.setNamespace((MModel) model);
         event.setName("");
         return event;
     }
@@ -619,14 +612,13 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     /**
      * Builds a changeevent whose namespace (and therefore the
      * ownership) is the rootmodel.<p>
-     *
+     * @param model the model
      * @param s String for creating the BooleanExpression
      * @return MChangeEvent
      */
-    public MChangeEvent buildChangeEvent(String s) {
+    public MChangeEvent buildChangeEvent(String s, Object model) {
         MChangeEvent event = createChangeEvent();
-        event.setNamespace((MModel) ProjectManager.getManager()
-			   .getCurrentProject().getModel());
+        event.setNamespace((MModel) model);
         event.setName("");
         Object ce = UmlFactory.getFactory().getDataTypes()
                             .createBooleanExpression("", s);
