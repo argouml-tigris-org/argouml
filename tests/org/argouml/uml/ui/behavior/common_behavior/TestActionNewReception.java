@@ -39,6 +39,10 @@ import org.argouml.i18n.Translator;
  *
  */
 public class TestActionNewReception extends TestCase {
+    
+    public TestActionNewReception(String arg0) {
+        super(arg0);
+    }
 
     /*
      * @see TestCase#setUp()

@@ -39,6 +39,10 @@ import org.argouml.i18n.Translator;
  */
 public class TestActionAddAttribute extends TestCase {
 
+    
+    public TestActionAddAttribute(String arg0) {
+        super(arg0);
+    }
     /*
      * @see TestCase#setUp()
      */
