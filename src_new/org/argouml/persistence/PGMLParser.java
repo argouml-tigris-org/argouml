@@ -352,7 +352,9 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
      * @return if the XML denotes a hidden Fig.
      */
     private boolean isHiddenXml(String text) {
-        return text.endsWith("[0, 0, 0, 0]") || text.endsWith("[0,0,0,0]");
+        return text.endsWith("[0, 0, 0, 0]")
+               || text.endsWith("[0,0,0,0]")
+               || text.endsWith("[]");
     }
 
     /**
