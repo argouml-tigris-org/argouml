@@ -360,13 +360,7 @@ public class ModelFacade {
      * @returns true if handle is a constructor.
      */
     public static boolean isConstructor(Object handle) {
-        MStereotype createStereoType =
-            ExtensionMechanismsFactory.getFactory().buildStereotype(
-                new MOperationImpl(),
-                "create");
-        return ExtensionMechanismsHelper.getHelper().isValidStereoType(
-            handle,
-            createStereoType);
+        return isStereotype(handle, "create");
     }
 
     /**
