@@ -45,6 +45,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
 import org.argouml.cognitive.UnresolvableException;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
 
 public class DismissToDoItemDialog extends JDialog {
@@ -185,6 +186,7 @@ public class DismissToDoItemDialog extends JDialog {
 	ToDoList list = Designer.TheDesigner.getToDoList();
 	try {
 	    list.explicitlyResolve(_target, _explaination.getText());
+        ProjectManager.getManager().getCurrentProject().setNeedsSave(true);
 	} catch (UnresolvableException ure) {
 	    cat.error("Resolve failed (ure): " + ure);
 	    // TODO: Should be internationalized
