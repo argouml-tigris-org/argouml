@@ -44,7 +44,7 @@ public class GoProjectToStateMachine extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("Tree", "misc.project.state-machine");
+        return Translator.localize ("misc.project.state-machine");
     }
 
     /**

@@ -47,7 +47,7 @@ public class GoSummaryToIncomingDependency extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("Tree", "misc.summary.incoming-dependency");
+        return Translator.localize ("misc.summary.incoming-dependency");
     }
 
     /**

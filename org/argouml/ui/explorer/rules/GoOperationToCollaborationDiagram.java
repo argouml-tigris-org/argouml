@@ -81,8 +81,7 @@ public class GoOperationToCollaborationDiagram extends AbstractPerspectiveRule {
      * @see org.argouml.ui.AbstractGoRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("Tree", 
-                "misc.operation.collaboration-diagram");
+        return Translator.localize ("misc.operation.collaboration-diagram");
     }
 
 }

@@ -47,7 +47,7 @@ public class GoSummaryToInheritance extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("Tree", "misc.summary.inheritance");
+        return Translator.localize ("misc.summary.inheritance");
     }
 
     /**

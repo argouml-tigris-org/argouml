@@ -44,7 +44,7 @@ public class GoClassToNavigableClass extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("Tree", "misc.class.navigable-class");
+        return Translator.localize ("misc.class.navigable-class");
     }
 
     /**

@@ -42,7 +42,7 @@ public class GoStateToDownstream extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("Tree", "misc.state.outgoing-states");
+        return Translator.localize ("misc.state.outgoing-states");
     }
   
     /**

@@ -47,8 +47,7 @@ public class GoNamespaceToClassifierAndPackage
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("Tree", 
-                "misc.namespace.classifer-or-package");
+        return Translator.localize ("misc.namespace.classifer-or-package");
     }
 
     /**

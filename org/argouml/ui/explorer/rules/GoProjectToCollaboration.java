@@ -45,7 +45,7 @@ public class GoProjectToCollaboration extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("Tree", "misc.project.collaboration");
+        return Translator.localize ("misc.project.collaboration");
     }
 
     /**

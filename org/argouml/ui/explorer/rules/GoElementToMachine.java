@@ -41,7 +41,7 @@ public class GoElementToMachine extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("Tree", "misc.class.state-machine");
+	return Translator.localize ("misc.class.state-machine");
     }
 
     /**

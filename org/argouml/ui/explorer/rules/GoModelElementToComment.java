@@ -54,7 +54,7 @@ public class GoModelElementToComment extends AbstractPerspectiveRule {
      * @see org.argouml.ui.AbstractGoRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("Tree", "misc.model-element.comment");
+        return Translator.localize ("misc.model-element.comment");
     }
 
     /**

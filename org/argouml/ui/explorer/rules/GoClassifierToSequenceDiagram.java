@@ -50,7 +50,7 @@ public class GoClassifierToSequenceDiagram extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("Tree", "misc.classifier.sequence-diagram");
+	return Translator.localize ("misc.classifier.sequence-diagram");
     }
 
     /**

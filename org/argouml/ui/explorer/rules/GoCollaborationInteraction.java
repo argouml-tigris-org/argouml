@@ -41,7 +41,7 @@ public class GoCollaborationInteraction extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("Tree", "misc.collaboration.interaction");
+        return Translator.localize ("misc.collaboration.interaction");
     }
 
     /**

@@ -44,7 +44,7 @@ public class GoSummaryToOperation extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("Tree", "misc.summary.operation");
+        return Translator.localize ("misc.summary.operation");
     }
 
     /**

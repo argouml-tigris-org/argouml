@@ -74,7 +74,7 @@ public class GoStateToDoActivity extends AbstractPerspectiveRule {
      * @see org.argouml.ui.AbstractGoRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("Tree", "misc.state.do-activity");
+        return Translator.localize ("misc.state.do-activity");
     }
 
 }
