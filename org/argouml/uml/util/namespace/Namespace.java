@@ -52,7 +52,8 @@ public interface Namespace
     public static final String CPP_NS_TOKEN = "::";
 
     /**
-     * returns the namespace which is common to both namespaces, e.g. <code>org.argouml.model</code>
+     * returns the namespace which is common to both namespaces, e.g. 
+     * <code>org.argouml.model</code>
      * and <code>org.argouml.util</code> have <code>org.argouml</code> in
      * common.
      * 
@@ -63,7 +64,8 @@ public interface Namespace
     Namespace getCommonNamespace(Namespace namespace);
 
     /**
-     * returns the base of a namespace, e.g. the base of <code>org.argouml.util</code>
+     * returns the base of a namespace, e.g. the base of 
+     * <code>org.argouml.util</code>
      * is <code>org.argouml</code>.
      * 
      * @return base namespace
@@ -73,13 +75,15 @@ public interface Namespace
     /**
      * add another element to a namespace.
      * 
-     * @param element
+     * @param element the element to add
      */
     void pushNamespaceElement(NamespaceElement element);
 
     /**
-     * reduces the innermost namespace element, e.g. <code>org.argouml.model</code>
-     * will return <code>model</code>, and change the namespace to <code>org.argouml</code>.
+     * reduces the innermost namespace element, 
+     * e.g. <code>org.argouml.model</code>
+     * will return <code>model</code>, and change the namespace 
+     * to <code>org.argouml</code>.
      * 
      * @return the popped element.
      */
@@ -120,7 +124,7 @@ public interface Namespace
      * The existence of the method implies that classes also must implement
      * toString() in a reasonable manner using the default token.
      * 
-     * @param token
+     * @param token the token to be converted
      * @return a string representation of the namespace
      */
     String toString(String token);
