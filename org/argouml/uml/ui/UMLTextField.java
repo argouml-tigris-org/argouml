@@ -31,6 +31,8 @@
 package org.argouml.uml.ui;
 import java.text.*;
 import java.util.Iterator;
+import java.util.Vector;
+
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 
@@ -109,7 +111,7 @@ public class UMLTextField
         getDocument().addDocumentListener(this);
         // addActionListener(this);
         addFocusListener(this);
-        update();
+        // update();
     }
     public void targetChanged() {
         _property.targetChanged();
@@ -139,13 +141,16 @@ public class UMLTextField
         if (_target == null) {
             return;
         }
-        if (_property.isAffected(event)) {
+        if (_property.isAffected(event)) {      
             //
             //    if event source is unknown or 
             //       the event source is the container's target
             //          then update the field
             if (eventSource == null || eventSource == _target) {
                 update();
+                // TextSetter textSetter = new TextSetter((String)event.getNewValue(), this);
+	            // SwingUtilities.invokeLater(textSetter);
+                
             }
         }
         //        else if(_target instanceof MDataType)
@@ -197,10 +202,20 @@ public class UMLTextField
         // start new code
         Iterator it = p.findFigsForMember(_target).iterator();
         while (it.hasNext()) {
-            Object o = it.next();
-            if (o instanceof MElementListener) {
-                ((MElementListener)o).propertySet(null);
+            Fig o = (Fig)it.next();
+           	
+            
+            Vector figs = o.getEnclosedFigs();
+            if (figs != null) {
+            for (int i = 0; i < figs.size(); i++) {
+            	((Fig)figs.get(i)).damage();
             }
+            }
+            
+             o.damage();
+            
+            
+            
         }
         // end new code
         // commented out rest of update
@@ -299,23 +314,29 @@ public class UMLTextField
         // we must check wether the text is really changed
         if (_viaUserInput) {
             _textChanged =
-                (_oldPropertyValue != null)
-                    && !getText().equals(_oldPropertyValue);
+                // (_oldPropertyValue != null) &&
+                     !getText().equals(_oldPropertyValue);
         }
         handleEvent();
     }
     
     protected void handleEvent() {
         try {
-            if (_viaUserInput && _textChanged) {
-                // next line dirty hack to enable the continuous updating 
-                // of the textfields in the figs and in the navigator
-                _textChanged = false;
-                // _property.setProperty(_container, _oldPropertyValue);
-                _property.setProperty(_container, getText(), true);
+            if (_viaUserInput) {
+            	if (_textChanged) {
+                	// next line dirty hack to enable the continuous updating 
+                	// of the textfields in the figs and in the navigator
+                	_textChanged = false;
+                	// _property.setProperty(_container, _oldPropertyValue);
+                	_property.setProperty(_container, getText(), true);
+            	}
             }
             else {
-                _property.setProperty(_container, getText(), false);
+            	String proptext = _property.getProperty(_container);
+            	String fieldtext = getText();
+            	if (proptext != null && !proptext.equals(fieldtext)) {
+                	_property.setProperty(_container, proptext, false);
+            	}	
             }
         }
         catch (PropertyVetoException pv) {
