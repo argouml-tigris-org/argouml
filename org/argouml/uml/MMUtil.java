@@ -195,8 +195,13 @@ public class MMUtil {
 
 		while (depIterator.hasNext()) {
 			MDependency dep = (MDependency)depIterator.next();
-			if ((dep instanceof MAbstraction) && ((getRealizationStereotype()).equals(dep.getStereotype())))
-				result.add((dep.getSuppliers().toArray())[0]);
+			if ((dep instanceof MAbstraction) && 
+			    dep.getStereotype() != null &&
+			    dep.getStereotype().getName() != null &&
+			    dep.getStereotype().getName().equals("realize")) {
+			    MInterface i = (MInterface)dep.getSuppliers().toArray()[0];
+			    result.add(i);
+			}
 		}
 		return result;
 	}

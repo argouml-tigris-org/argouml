@@ -505,9 +505,8 @@ public class GeneratorJava extends Generator {
 		String s = "";
 		Iterator clsEnum = realizations.iterator();
 		while (clsEnum.hasNext()) {
-			MGeneralization r = (MGeneralization)clsEnum.next();
-			s += generateClassifierRef(r.getPowertype());
-			System.out.println("sup=" + r.getPowertype());
+			MInterface i = (MInterface)clsEnum.next();
+			s += generateClassifierRef(i);
 			if (clsEnum.hasNext()) s += ", ";
 		}
 		return s;
