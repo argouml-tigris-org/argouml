@@ -57,7 +57,7 @@ import ru.novosoft.uml.MElementEvent;
  */
 public class UMLStateDiagram extends UMLDiagram {
     /** logger */
-    private static Logger cat = Logger.getLogger(UMLStateDiagram.class);
+    private static final Logger LOG = Logger.getLogger(UMLStateDiagram.class);
 
     /**
      * this diagram needs to be deleted when its statemachine is deleted.
@@ -151,7 +151,7 @@ public class UMLStateDiagram extends UMLDiagram {
                     ? 0
                     : ModelFacade.getBehaviors(namespace).size();
             name = diag_name + " " + (number++);
-            cat.info("UMLStateDiagram constructor: String name = " + name);
+            LOG.info("UMLStateDiagram constructor: String name = " + name);
             try {
                 setName(name);
             } catch (PropertyVetoException pve) { }
