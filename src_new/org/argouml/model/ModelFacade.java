@@ -320,11 +320,6 @@ public class ModelFacade {
      * @returns true if handle is an Association
      */
     public static boolean isAAssociation(Object handle) {
-	// Suggestion for how to make ModelFacade handle JMI
-	// if (handle instanceof javax.jmi.model.Association)
-	//     return true;
-	// It seems that not all NSUML UML 1.3 objects are JMI interfaces.
-	// This might not be as easy as I thought. /Linus
         return handle instanceof MAssociation;
     }
 
