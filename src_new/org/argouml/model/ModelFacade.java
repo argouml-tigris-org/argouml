@@ -6826,6 +6826,11 @@ public class ModelFacade {
                 ((MLink) handle).setAssociation((MAssociation) association);
                 return;
             }
+        } else if (association instanceof MAssociationRole) {
+            if (handle instanceof MAssociationEndRole) {
+                ((MAssociationEndRole) handle).setAssociation(
+                        (MAssociationRole) association);
+            }
         }
 	illegalArgument(handle, association);
     }

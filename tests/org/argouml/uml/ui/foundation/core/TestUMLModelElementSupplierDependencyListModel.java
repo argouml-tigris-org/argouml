@@ -28,7 +28,6 @@ package org.argouml.uml.ui.foundation.core;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
@@ -55,7 +54,7 @@ public class TestUMLModelElementSupplierDependencyListModel
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel(org.argouml.uml.ui.UMLUserInterfaceContainer)
+     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel()
      */
     protected void buildModel() {
         setModel(new UMLModelElementSupplierDependencyListModel());
@@ -64,7 +63,7 @@ public class TestUMLModelElementSupplierDependencyListModel
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#fillModel()
      */
-    protected MBase[] fillModel() {
+    protected Object[] fillModel() {
         MDependency[] ext = new MDependency[10];
         for (int i = 0; i < 10; i++) {
             ext[i] = Model.getCoreFactory().createDependency();
@@ -74,9 +73,9 @@ public class TestUMLModelElementSupplierDependencyListModel
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(ru.novosoft.uml.MBase)
+     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(Object[])
      */
-    protected void removeHalfModel(MBase[] elements) {
+    protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
             ((MModelElement) getElem()).removeSupplierDependency(
                     (MDependency) elements[i]);

@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 
 /**
@@ -62,7 +61,7 @@ public class TestUMLMessagePredecessorListModel
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#fillModel()
      */
-    protected MBase[] fillModel() {
+    protected Object[] fillModel() {
         MMessage[] pres = new MMessage[10];
         for (int i = 0; i < pres.length; i++) {
             pres[i] = Model.getCollaborationsFactory().createMessage();
@@ -72,9 +71,9 @@ public class TestUMLMessagePredecessorListModel
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(ru.novosoft.uml.MBase[])
+     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(Object[])
      */
-    protected void removeHalfModel(MBase[] elements) {
+    protected void removeHalfModel(Object[] elements) {
 	for (int i = 0; i < 5; i++) {
             ((MMessage) getElem()).removePredecessor((MMessage) elements[i]);
         }

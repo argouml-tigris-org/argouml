@@ -28,7 +28,6 @@ package org.argouml.uml.ui.behavior.use_cases;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 
@@ -55,7 +54,7 @@ public class TestUMLExtendExtensionPointListModel
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel(org.argouml.uml.ui.UMLUserInterfaceContainer)
+     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel()
      */
     protected void buildModel() {
         setModel(new UMLExtendExtensionPointListModel());
@@ -64,7 +63,7 @@ public class TestUMLExtendExtensionPointListModel
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#fillModel()
      */
-    protected MBase[] fillModel() {
+    protected Object[] fillModel() {
         MExtensionPoint[] points = new MExtensionPoint[10];
         for (int i = 0; i < 10; i++) {
             points[i] = Model.getUseCasesFactory().createExtensionPoint();
@@ -74,9 +73,9 @@ public class TestUMLExtendExtensionPointListModel
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(ru.novosoft.uml.MBase)
+     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(Object[])
      */
-    protected void removeHalfModel(MBase[] elements) {
+    protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
             ((MExtend) getElem()).removeExtensionPoint(
                     (MExtensionPoint) elements[i]);

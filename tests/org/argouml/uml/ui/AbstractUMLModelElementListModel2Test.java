@@ -38,9 +38,9 @@ import ru.novosoft.uml.MFactoryImpl;
  * @author jaap.branderhorst@xs4all.nl
  */
 public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
-    
+
     private int oldEventPolicy;
-    private MBase elem;
+    private Object elem;
     private UMLModelElementListModel2 model;
 
     /**
@@ -59,25 +59,25 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
         super.setUp();
         buildElement();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);       
+        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         buildModel();
         model.setTarget(elem);
     }
 
     /**
-     * Developers should build the target element in this method and assing 
+     * Developers should build the target element in this method and assing
      * this to the variable elem. The target
-     * element is the MBase of which the listmodel to be tested shows 
+     * element is the MBase of which the listmodel to be tested shows
      * an attribute
      */
     protected abstract void buildElement();
-    
+
     /**
      * Developers should construct the listmodel to be tested in this method and
      * assign this to the variable model.
      */
     protected abstract void buildModel();
-    
+
     /**
      * @see junit.framework.TestCase#tearDown()
      */
@@ -87,37 +87,37 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
-    
+
     /**
      * Tests the programmatically adding of multiple elements to the list.
      */
-    public void testAddMultiple() {      
-        MBase[] elements = fillModel();
+    public void testAddMultiple() {
+        Object[] elements = fillModel();
         assertEquals(10, model.getSize());
         assertEquals(model.getElementAt(5), elements[5]);
         assertEquals(model.getElementAt(0), elements[0]);
         assertEquals(model.getElementAt(9), elements[9]);
     }
-    
+
     /**
-     * Developers should set the attribute that the listmodel shows in this 
-     * method. They should return the contents of the attribute in the form of 
-     * a MBase[]. The number of elements inside the attribute should be 
+     * Developers should set the attribute that the listmodel shows in this
+     * method. They should return the contents of the attribute in the form of
+     * a MBase[]. The number of elements inside the attribute should be
      * 10.
      * @return MBase[]
      */
-    protected abstract MBase[] fillModel();
-    
+    protected abstract Object[] fillModel();
+
     /**
-     * Test the removal of several elements from the list
+     * Test the removal of several elements from the list.
      */
     public void testRemoveMultiple() {
-        MBase[] elements = fillModel();
+        Object[] elements = fillModel();
         removeHalfModel(elements);
         assertEquals(5, model.getSize());
         assertEquals(elements[5], model.getElementAt(0));
     }
-    
+
     /**
      * Developers should remove half the contents of the attribute in
      * this method That is: they should remove the upper 5 elements of
@@ -125,13 +125,13 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
      *
      * @param elements the element
      */
-    protected abstract void removeHalfModel(MBase[] elements);
+    protected abstract void removeHalfModel(Object[] elements);
 
     /**
      * @param theModel The model to set.
      */
     protected void setModel(UMLModelElementListModel2 theModel) {
-        this.model = theModel;
+        model = theModel;
     }
 
     /**
@@ -144,15 +144,15 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
     /**
      * @param theElement The elem to set.
      */
-    protected void setElem(MBase theElement) {
-        this.elem = theElement;
+    protected void setElem(Object theElement) {
+        elem = theElement;
     }
 
     /**
      * @return Returns the elem.
      */
     protected MBase getElem() {
-        return elem;
+        return (MBase) elem;
     }
 
 }

@@ -29,7 +29,6 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 import org.argouml.uml.ui.behavior.collaborations.UMLCollaborationInteractionListModel;
 
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 
@@ -56,7 +55,7 @@ public class TestUMLCollaborationInteractionListModel
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel(org.argouml.uml.ui.UMLUserInterfaceContainer)
+     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel()
      */
     protected void buildModel() {
         setModel(new UMLCollaborationInteractionListModel());
@@ -65,7 +64,7 @@ public class TestUMLCollaborationInteractionListModel
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#fillModel()
      */
-    protected MBase[] fillModel() {
+    protected Object[] fillModel() {
         MInteraction[] inter = new MInteraction[10];
         for (int i = 0; i < 10; i++) {
             inter[i] = Model.getCollaborationsFactory().createInteraction();
@@ -75,9 +74,9 @@ public class TestUMLCollaborationInteractionListModel
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(ru.novosoft.uml.MBase)
+     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(Object[])
      */
-    protected void removeHalfModel(MBase[] elements) {
+    protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
             ((MCollaboration) getElem()).removeInteraction(
                     (MInteraction) elements[i]);

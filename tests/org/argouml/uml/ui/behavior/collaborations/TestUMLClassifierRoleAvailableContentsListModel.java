@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
@@ -37,7 +36,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  */
 public class TestUMLClassifierRoleAvailableContentsListModel
     extends AbstractUMLModelElementListModel2Test {
-        
+
     private MClassifier base;
 
     /**
@@ -66,7 +65,7 @@ public class TestUMLClassifierRoleAvailableContentsListModel
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#fillModel()
      */
-    protected MBase[] fillModel() {
+    protected Object[] fillModel() {
         MModelElement[] elements = new MModelElement[10];
         for (int i = 0; i < elements.length; i++) {
             elements[i] = Model.getCoreFactory().createClass();
@@ -76,9 +75,9 @@ public class TestUMLClassifierRoleAvailableContentsListModel
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(ru.novosoft.uml.MBase[])
+     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(Object[])
      */
-    protected void removeHalfModel(MBase[] elements) {
+    protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
             base.removeOwnedElement((MModelElement) elements[i]);
         }

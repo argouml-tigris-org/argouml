@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.foundation.core.MClassifier;
 
@@ -64,7 +63,7 @@ public class TestUMLClassifierRoleBaseListModel
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#fillModel()
      */
-    protected MBase[] fillModel() {
+    protected Object[] fillModel() {
         MClassifier[] bases = new MClassifier[10];
         for (int i = 0; i < bases.length; i++) {
             bases[i] = Model.getCoreFactory().createClass();
@@ -74,9 +73,9 @@ public class TestUMLClassifierRoleBaseListModel
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(ru.novosoft.uml.MBase[])
+     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(Object[])
      */
-    protected void removeHalfModel(MBase[] elements) {
+    protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
             ((MClassifierRole) getElem()).removeBase((MClassifier) elements[i]);
         }

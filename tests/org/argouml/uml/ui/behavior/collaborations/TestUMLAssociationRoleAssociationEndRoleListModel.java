@@ -25,10 +25,9 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
-import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 
@@ -65,20 +64,20 @@ public class TestUMLAssociationRoleAssociationEndRoleListModel
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#fillModel()
      */
-    protected MBase[] fillModel() {
-        MAssociationEndRole[] ends = new MAssociationEndRole[10];
+    protected Object[] fillModel() {
+        Object[] ends = new Object[10];
         for (int i = 0; i < ends.length; i++) {
             ends[i] =
 		Model.getCollaborationsFactory().createAssociationEndRole();
-            ends[i].setAssociation((MAssociationRole) getElem());
+            ModelFacade.setAssociation(ends[i], getElem());
         }
         return ends;
     }
 
     /**
-     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(ru.novosoft.uml.MBase[])
+     * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(Object[])
      */
-    protected void removeHalfModel(MBase[] elements) {
+    protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
             ((MAssociationRole) getElem())
 		.removeConnection((MAssociationEnd) elements[i]);
