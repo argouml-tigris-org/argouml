@@ -261,7 +261,7 @@ public class Project implements java.io.Serializable {
 
             Argo.log.info("Loading Model from "+url);
 
-            XMIReader xmiReader = UmlFactory.getFactory().getXMIReader();
+            XMIReader xmiReader = new XMIReader();
             MModel mmodel = xmiReader.parse(new InputSource(zis));
 	    UmlHelper.addListenersToModel(mmodel);
             addMember(mmodel);
@@ -333,7 +333,7 @@ public class Project implements java.io.Serializable {
         p.addSearchPath("PROJECT_DIR");
 
         // 	try {
-        // 		XMIReader reader = UmlFactory.getFactory().getXMIReader();
+        // 		XMIReader reader = new XMIReader();
         // 		MModel model  = reader.parse(new org.xml.sax.InputSource("java.xmi"));
 	//              UmlFactory.getFactory().addListenersToModel(model);
         // 		model.setName("Java standards");

@@ -158,46 +158,4 @@ public class UmlFactory extends AbstractModelFactory {
     public ModelManagementFactory getModelManagement() {
         return ModelManagementFactory.getFactory();
     }
-
-    /** Returns a configured XmiReader instance. 
-     *  
-     *  @return a configured XmiReader.
-     */
-    public XMIReader getXMIReader() 
-    throws SAXException,
-           ParserConfigurationException {
-        XMIReader reader = new XMIReader();
-	return reader;
-    }
-
-    /** Returns a configured XmiWriter instance. 
-     *  
-     *  @return a configured XmiWriter.
-     */
-    public XMIWriter getXMIWriter(MModel model, String filename)
-    throws IOException {
-        XMIWriter xmiWriter = new XMIWriter(model, filename);
-	return xmiWriter;
-    }
-
-    /** Returns a configured XmiWriter instance. 
-     *  
-     *  @return a configured XmiWriter.
-     */
-    public XMIWriter getXMIWriter(MModel model, String filename, String encoding)
-    throws IOException {
-        XMIWriter xmiWriter = new XMIWriter(model, filename, encoding);
-	return xmiWriter;
-    }
-
-    /** Returns a configured XmiWriter instance. 
-     *  
-     *  @return a configured XmiWriter.
-     */
-    public XMIWriter getXMIWriter(MModel model, Writer writer)
-    throws IOException {
-        XMIWriter xmiWriter = new XMIWriter(model, writer);
-	return xmiWriter;
-    }
-
 }

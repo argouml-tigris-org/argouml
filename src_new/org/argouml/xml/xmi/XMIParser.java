@@ -85,7 +85,7 @@ public class XMIParser {
         Argo.log.info("=======================================");
         Argo.log.info("== READING MODEL " + url);
         try {
-            XMIReader reader = UmlFactory.getFactory().getXMIReader();
+            XMIReader reader = new XMIReader();
             InputSource source = new InputSource(url.openStream());
             source.setSystemId(url.toString());
             _curModel = reader.parse(source);

@@ -106,7 +106,7 @@ public class ProfileJava extends Profile {
         }
         if(is != null) {
           try {
-            XMIReader xmiReader = UmlFactory.getFactory().getXMIReader();
+            XMIReader xmiReader = new XMIReader();
             //
             //   would really like to turn validation off to save
             //      a lot of scary messages

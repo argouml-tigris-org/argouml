@@ -117,7 +117,7 @@ public class ProjectMemberModel extends ProjectMember {
       //System.out.println("Writing " + fullpath + "...");
       //pb.showStatus("Writing " + fullpath + "...");
 
-      XMIWriter xmiwriter = UmlFactory.getFactory().getXMIWriter(_model,writer);
+      XMIWriter xmiwriter = new XMIWriter(_model,writer);
       xmiwriter.gen();
 
       //System.out.println("Wrote " + fullpath);
