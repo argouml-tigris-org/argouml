@@ -91,57 +91,30 @@ import org.tigris.gef.presentation.Fig;
 public class TabStyle extends TabSpawnable implements TabFigTarget,
         PropertyChangeListener, DelayedVChangeListener {
 
-    private Logger _cat = Logger.getLogger(this.getClass());
+    private static final Logger LOG = Logger.getLogger(TabStyle.class);
 
-    protected Fig _target;
+    private Fig target;
 
-    protected boolean _shouldBeEnabled = false;
+    private boolean _shouldBeEnabled = false;
 
-    protected JPanel _blankPanel = new JPanel();
+    private JPanel blankPanel = new JPanel();
 
-    protected Hashtable _panels = new Hashtable();
+    private Hashtable panels = new Hashtable();
 
-    protected JPanel _lastPanel = null;
+    private JPanel lastPanel = null;
 
     /**
      * The stylepanel shown by the tab style.
      */
-    protected StylePanel _stylePanel = null;
+    private StylePanel stylePanel = null;
 
-    private String[] _stylePanelNames;
+    private String[] stylePanelNames;
 
-    /**
-     * @deprecated use accessor for getStylePanelBaseNames instead. Remove in
-     *             0.16.0
-     */
-    protected String _panelClassBaseName = "";
-
-    /**
-     * @deprecated use accessor for getStylePanelBaseNames instead. Remove in
-     *             0.16.0
-     */
-    protected String _alternativeBase = "";
-
-    private EventListenerList _listenerList = new EventListenerList();
-
-    /**
-     * @param tabName
-     *            name of the tab (a i18n key)
-     * @param panelClassBase
-     * @param altBase
-     * @deprecated remove in 0.16.0
-     */
-    public TabStyle(String tabName, String panelClassBase, String altBase) {
-        super(tabName);
-        _panelClassBaseName = panelClassBase;
-        _alternativeBase = altBase;
-        setLayout(new BorderLayout());
-        initPanels();
-    }
+    private EventListenerList listenerList = new EventListenerList();
 
     public TabStyle(String tabName, String[] stylePanelNames) {
         super(tabName);
-        _stylePanelNames = stylePanelNames;
+        this.stylePanelNames = stylePanelNames;
         setLayout(new BorderLayout());
         initPanels();
     }
@@ -151,7 +124,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
      * and <code>SP</code>, resulting in the lookup order described above.
      */
     public TabStyle() {
-        this("tab.style", new String[] { "StylePanel", "SP" });
+        this("tab.style", new String[] {"StylePanel", "SP"});
     }
 
     /**
@@ -175,7 +148,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
      *            an instance of the style panel for the metaclass m
      */
     public void addPanel(Class c, StylePanel s) {
-        _panels.put(c, s);
+        panels.put(c, s);
     }
 
     /**
@@ -188,7 +161,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
      *            is the new target
      */
     public void setTarget(Object t) {
-        if (_target != null) _target.removePropertyChangeListener(this);
+        if (target != null) target.removePropertyChangeListener(this);
 
         // the responsibility of determining if the given target is a
         // correct one for this tab has been moved from the
@@ -211,42 +184,43 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
 
         }
 
-        _target = (Fig) t;
-        if (_target != null) _target.addPropertyChangeListener(this);
-        if (_lastPanel != null) {
-            remove(_lastPanel);
-            if (_lastPanel instanceof TargetListener) {
-                removeTargetListener((TargetListener) _lastPanel);
+        target = (Fig) t;
+        if (target != null) target.addPropertyChangeListener(this);
+        if (lastPanel != null) {
+            remove(lastPanel);
+            if (lastPanel instanceof TargetListener) {
+                removeTargetListener((TargetListener) lastPanel);
             }
         }
         if (t == null) {
-            add(_blankPanel, BorderLayout.NORTH);
+            add(blankPanel, BorderLayout.NORTH);
             _shouldBeEnabled = false;
-            _lastPanel = _blankPanel;
+            lastPanel = blankPanel;
             return;
         }
         _shouldBeEnabled = true;
-        _stylePanel = null;
+        stylePanel = null;
         Class targetClass = t.getClass();
 
-        _stylePanel = findPanelFor(targetClass);
+        stylePanel = findPanelFor(targetClass);
 
-        if (_stylePanel != null) {
-            if (_stylePanel instanceof TargetListener) {
+        if (stylePanel != null) {
+            if (stylePanel instanceof TargetListener) {
                 // TargetManager now replaces the old
                 // functionality of
                 // setTarget
-                removeTargetListener(_stylePanel);
-                addTargetListener(_stylePanel);
-            } else
-                _stylePanel.setTarget(_target);
-            add(_stylePanel, BorderLayout.NORTH);
+                removeTargetListener(stylePanel);
+                addTargetListener(stylePanel);
+            } else {
+                stylePanel.setTarget(target);
+            }
+            add(stylePanel, BorderLayout.NORTH);
             _shouldBeEnabled = true;
-            _lastPanel = _stylePanel;
+            lastPanel = stylePanel;
         } else {
-            add(_blankPanel, BorderLayout.NORTH);
+            add(blankPanel, BorderLayout.NORTH);
             _shouldBeEnabled = false;
-            _lastPanel = _blankPanel;
+            lastPanel = blankPanel;
         }
         validate();
         repaint();
@@ -256,7 +230,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
      * @see org.argouml.ui.TabTarget#refresh()
      */
     public void refresh() {
-        setTarget(_target);
+        setTarget(target);
     }
 
     /**
@@ -268,7 +242,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
      */
     public StylePanel findPanelFor(Class targetClass) {
         Class panelClass = null;
-        TabFigTarget p = (TabFigTarget) _panels.get(targetClass);
+        TabFigTarget p = (TabFigTarget) panels.get(targetClass);
         if (p == null) {
             Class newClass = targetClass;
             while (newClass != null && panelClass == null) {
@@ -279,25 +253,26 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
             try {
                 p = (TabFigTarget) panelClass.newInstance();
             } catch (IllegalAccessException ignore) {
-                _cat.error(ignore);
+                LOG.error(ignore);
                 return null;
             } catch (InstantiationException ignore) {
-                _cat.error(ignore);
+                LOG.error(ignore);
                 return null;
             }
-            _panels.put(targetClass, p);
+            panels.put(targetClass, p);
         }
-        _cat.debug("found style for " + targetClass.getName() + "("
+        LOG.debug("found style for " + targetClass.getName() + "("
                 + p.getClass() + ")");
         return (StylePanel) p;
 
     }
 
     /**
-     * return the class for a matching stylepanel
+     * Get the class for the required stylepanel.
      * 
-     * @param targetClass
-     * @return
+     * @param targetClass the class of the current seelcted target.
+     * @return the panel class for the class given or
+     * null if none available.
      */
     public Class panelClassFor(Class targetClass) {
         if (targetClass == null) return null;
@@ -310,10 +285,10 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
         StringNamespace baseNs = (StringNamespace) StringNamespace.parse(
                 "org.argouml.ui.", Namespace.JAVA_NS_TOKEN);
 
-        StringNamespaceElement targetClassElement = (StringNamespaceElement) classNs
-                .peekNamespaceElement();
+        StringNamespaceElement targetClassElement = 
+        	(StringNamespaceElement) classNs.peekNamespaceElement();
 
-        _cat.debug("Attempt to find style panel for: " + classNs);
+        LOG.debug("Attempt to find style panel for: " + classNs);
 
         classNs.popNamespaceElement();
 
@@ -325,7 +300,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
                         + getStylePanelNames()[i] + targetClassElement);
                 return cls;
             } catch (ClassNotFoundException ignore) {
-                _cat.debug("ClassNotFoundException. Could not find class:"
+                LOG.debug("ClassNotFoundException. Could not find class:"
                         + classNs.toString() + "." + getStylePanelNames()[i]
                         + targetClassElement);
             }
@@ -334,7 +309,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
                         + getStylePanelNames()[i] + targetClassElement);
                 return cls;
             } catch (ClassNotFoundException ignore) {
-                _cat.debug("ClassNotFoundException. Could not find class:"
+                LOG.debug("ClassNotFoundException. Could not find class:"
                         + classNs.toString() + "." + getStylePanelNames()[i]
                         + targetClassElement);
             }
@@ -343,7 +318,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
     }
 
     protected String[] getStylePanelNames() {
-        return _stylePanelNames;
+        return stylePanelNames;
     }
 
     /**
@@ -352,21 +327,21 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
      * @see org.argouml.ui.TabTarget#getTarget()
      */
     public Object getTarget() {
-        return _target;
+        return target;
     }
 
     /**
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
      */
-    public boolean shouldBeEnabled(Object target) {
+    public boolean shouldBeEnabled(Object targetItem) {
 
-        if (!(target instanceof Fig)) {
-            if (ModelFacade.isABase(target)) {
+        if (!(targetItem instanceof Fig)) {
+            if (ModelFacade.isABase(targetItem)) {
                 Project p = ProjectManager.getManager().getCurrentProject();
-                Fig f = p.getActiveDiagram().presentationFor(target);
+                Fig f = p.getActiveDiagram().presentationFor(targetItem);
 
                 if (f != null)
-                    target = f;
+                    targetItem = f;
                 else {
                     _shouldBeEnabled = false;
                     return false;
@@ -379,16 +354,51 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
 
         _shouldBeEnabled = true;
 
-        Class targetClass = target.getClass();
-        _stylePanel = findPanelFor(targetClass);
+        Class targetClass = targetItem.getClass();
+        stylePanel = findPanelFor(targetClass);
         targetClass = targetClass.getSuperclass();
 
-        if (_stylePanel == null) {
+        if (stylePanel == null) {
             _shouldBeEnabled = false;
         }
 
         return _shouldBeEnabled;
     }
+
+//    /**
+//     * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
+//     */
+//    public boolean shouldBeEnabled(Object targetItem) {
+//
+//        if (!(targetItem instanceof Fig)) {
+//            if (ModelFacade.isABase(targetItem)) {
+//                Project p = ProjectManager.getManager().getCurrentProject();
+//                Fig f = p.getActiveDiagram().presentationFor(targetItem);
+//
+//                if (f != null)
+//                    targetItem = f;
+//                else {
+//                    _shouldBeEnabled = false;
+//                    return false;
+//                }
+//            } else {
+//                _shouldBeEnabled = false;
+//                return false;
+//            }
+//        }
+//
+//        _shouldBeEnabled = true;
+//
+//        Class targetClass = targetItem.getClass();
+//        stylePanel = findPanelFor(targetClass);
+//        targetClass = targetClass.getSuperclass();
+//
+//        if (stylePanel == null) {
+//            _shouldBeEnabled = false;
+//        }
+//
+//        return _shouldBeEnabled;
+//    }
 
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
@@ -402,7 +412,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
      * @see org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.beans.PropertyChangeEvent)
      */
     public void delayedVetoableChange(PropertyChangeEvent pce) {
-        if (_stylePanel != null) _stylePanel.refresh(pce);
+        if (stylePanel != null) stylePanel.refresh(pce);
     }
 
     /**
@@ -442,7 +452,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
      *            the listener to add
      */
     private void addTargetListener(TargetListener listener) {
-        _listenerList.add(TargetListener.class, listener);
+        listenerList.add(TargetListener.class, listener);
     }
 
     /**
@@ -452,7 +462,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
      *            the listener to remove
      */
     private void removeTargetListener(TargetListener listener) {
-        _listenerList.remove(TargetListener.class, listener);
+        listenerList.remove(TargetListener.class, listener);
     }
 
     /**
@@ -460,7 +470,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
      */
     private void fireTargetSet(TargetEvent targetEvent) {
         //          Guaranteed to return a non-null array
-        Object[] listeners = _listenerList.getListenerList();
+        Object[] listeners = listenerList.getListenerList();
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
                 // Lazily create the event:
@@ -474,7 +484,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
      */
     private void fireTargetAdded(TargetEvent targetEvent) {
         // Guaranteed to return a non-null array
-        Object[] listeners = _listenerList.getListenerList();
+        Object[] listeners = listenerList.getListenerList();
 
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
@@ -489,7 +499,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
      */
     private void fireTargetRemoved(TargetEvent targetEvent) {
         // Guaranteed to return a non-null array
-        Object[] listeners = _listenerList.getListenerList();
+        Object[] listeners = listenerList.getListenerList();
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
                 // Lazily create the event:
