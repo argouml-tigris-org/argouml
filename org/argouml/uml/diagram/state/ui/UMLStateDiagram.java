@@ -102,11 +102,17 @@ public class UMLStateDiagram extends UMLDiagram {
   }
 
   public UMLStateDiagram(MClass m, MStateMachine sm) {
-    this();
+      this();
 	if (m != null && m.getName() != null) {
-		String name = m.getName();
-                Argo.log.info("UMLStateDiagram constructor: String name = " + name);
-		// + " states "+ (m.getBehaviors().size());
+        String name = null, diag_name = m.getName();
+        Object[] args = {name};
+        int number = 
+            ((m.getBehaviors()) == null ? 0 : m.getBehaviors().size());
+        name = diag_name + " " + number;
+        while (TheInstance.vetoCheck("state", args)) {
+            name = diag_name + " " + (number++);
+        }
+        Argo.log.info("UMLStateDiagram constructor: String name = " + name);
 		try { setName(name); }
 		catch (PropertyVetoException pve) { }
     }
