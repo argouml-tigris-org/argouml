@@ -36,10 +36,12 @@ import org.apache.log4j.Logger;
 public class Tools {
 
 	/** logger */
-	private static Logger cat = Logger.getLogger(Tools.class);
+	private static final Logger LOG = Logger.getLogger(Tools.class);
 
 	static String packageList[] = new 
-        String[]{"org.argouml.application", "ru.novosoft.uml", "org.tigris.gef.base", "org.xml.sax", "java.lang", "org.apache.log4j"};
+        String[]{"org.argouml.application", "ru.novosoft.uml", 
+            "org.tigris.gef.base", "org.xml.sax", 
+            "java.lang", "org.apache.log4j"};
 
     private static void getComponentVersionInfo(StringBuffer sb, String pn) 
     {
@@ -59,12 +61,14 @@ public class Tools {
             }
             in = pkg.getImplementationVendor();
             if (in != null) {
-                sb.append(Translator.localize("label","label.by")).append(": ");
+                sb.append(Translator.localize("label","label.by"))
+                  .append(": ");
                 sb.append(in);
             }
             in = pkg.getImplementationVersion();
             if (in != null) {
-                sb.append(", ").append(Translator.localize("label","label.version"))
+                sb.append(", ")
+                  .append(Translator.localize("label","label.version"))
                   .append(" ");
                 sb.append(in);
                 sb.append('\n');
@@ -84,7 +88,8 @@ public class Tools {
 
             StringBuffer sb = new StringBuffer();
 
-            String saxFactory = System.getProperty("javax.xml.parsers.SAXParserFactory");
+            String saxFactory = 
+                System.getProperty("javax.xml.parsers.SAXParserFactory");
             if (saxFactory != null) {
                 Object[] msgArgs = {
                     saxFactory
@@ -104,7 +109,8 @@ public class Tools {
                 sb.append("\n");
             }
             catch (Exception ex) {
-                sb.append(Translator.localize("label", "label.error-sax-factory"));
+                sb.append(Translator.localize("label", 
+                        "label.error-sax-factory"));
             }
 
             for (int i = 0; i < packageList.length; i++) {
@@ -145,13 +151,14 @@ public class Tools {
 
     public static void logVersionInfo()
     {
-        BufferedReader r = new BufferedReader(new StringReader(getVersionInfo()));
+        BufferedReader r = 
+            new BufferedReader(new StringReader(getVersionInfo()));
 
         try {
             while (true) {
                 String s = r.readLine();
                 if (s == null) break;
-                cat.info(s);
+                LOG.info(s);
             }
         }
         catch (IOException ioe) { }
