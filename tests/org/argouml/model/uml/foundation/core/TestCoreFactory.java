@@ -239,7 +239,7 @@ public class TestCoreFactory extends TestCase {
         assertNull("binary association not removed", assocwr.get());
     }
     
-    public void testDeleteClassifier2() {
+    public void testDeleteClassifierAssociation() {
         MModel model = ModelManagementFactory.getFactory().createModel();
         MClass class1 = CoreFactory.getFactory().buildClass(model);
         MClass class2 = CoreFactory.getFactory().buildClass(model);
@@ -255,7 +255,7 @@ public class TestCoreFactory extends TestCase {
         assertNotNull("association removed", assocwr.get());
     }
     
-    public void testDeleteModelelement1() {
+    public void testDeleteModelelementDependency() {
         MModel model = ModelManagementFactory.getFactory().createModel();
         MClass class1 = CoreFactory.getFactory().buildClass(model);
         MClass class2 = CoreFactory.getFactory().buildClass(model);
@@ -270,7 +270,7 @@ public class TestCoreFactory extends TestCase {
         assertNull("binary dependency not removed", depwr.get());
     }
     
-    public void testDeleteModelelement2() {
+    public void testDeleteModelelementDependencyClient() {
         MModel model = ModelManagementFactory.getFactory().createModel();
         MClass class1 = CoreFactory.getFactory().buildClass(model);
         MClass class2 = CoreFactory.getFactory().buildClass(model);
@@ -287,7 +287,7 @@ public class TestCoreFactory extends TestCase {
         assertNotNull("dependency removed", depwr.get());
     }
     
-    public void testDeleteModelelement3() {
+    public void testDeleteModelelementDependencySupplier() {
         MModel model = ModelManagementFactory.getFactory().createModel();
         MClass class1 = CoreFactory.getFactory().buildClass(model);
         MClass class2 = CoreFactory.getFactory().buildClass(model);
@@ -305,7 +305,7 @@ public class TestCoreFactory extends TestCase {
     }
     
     /** construct a class, with two self associations and delete */
-    public void testDeleteModelelement4() {
+    public void testDeleteModelelementClassSelfAssociations() {
         MModel model = ModelManagementFactory.getFactory().createModel();
         MClass class1 = CoreFactory.getFactory().buildClass(model);
         MAssociation assoc1 = 
