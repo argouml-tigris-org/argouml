@@ -54,8 +54,7 @@ import tudresden.ocl.gui.events.ConstraintChangeListener;
 import tudresden.ocl.parser.OclParserException;
 
 /**
-  * Tab for OCL constraint editing, only supports constraints for classes
-  * and Features currently.
+  * Tab for OCL constraint editing.
   *
   * @author v1.0: Falk Finger
   * @author v2.0: Steffen Zschaler
@@ -63,95 +62,11 @@ import tudresden.ocl.parser.OclParserException;
 public class TabConstraints extends TabSpawnable implements TabModelTarget {
 
     private static Category _cat = Category.getInstance(TabConstraints.class);
-  
-  /**
-    * The actual editor pane.
-    */
-  private OCLEditor m_ocleEditor;
-  
-  /**
-    * The current target element.
-    */
-  private MModelElement m_mmeiTarget;
-  
-  public TabConstraints() {
-    super ("tab.constraints");
-    
-    setLayout (new BorderLayout (0, 0));
-    
-    m_ocleEditor = new OCLEditor();
-    m_ocleEditor.setOptionMask (OCLEditor.OPTIONMASK_TYPECHECK /*|  //removed to workaround problems with autosplit
-                                  OCLEditor.OPTIONMASK_AUTOSPLIT*/);
-    m_ocleEditor.setDoAutoSplit (false);
-    setToolbarRollover(true);
-    setToolbarFloatable(false);
 
-    add (m_ocleEditor);
-  }
-
-  /** Set the toolbar rollover style.
-   * @param enable if true then button borders do not become visible until mouse rolls over button
-   */
-  private void setToolbarRollover(boolean enable) {
-    getOclToolbar().putClientProperty("JToolBar.isRollover", Boolean.TRUE);
-  }
-  
-  /** Set the toolbar floating style
-   * @param enable If true then the toolbar can be floated and docked
-   */
-  private void setToolbarFloatable(boolean enable) {
-    getOclToolbar().setFloatable(false);
-  }
-
-  /** Get a reference to the toolbar object contained in the OCLEditor component.
-   * This is currently a nasty hack. We really require an interface method
-   * on OCLEditor (Bob Tarling 8 Feb 2003).
-   * @return The toolbar
-   */
-  private JToolBar getOclToolbar() {
-    return (JToolBar)m_ocleEditor.getComponent(0);
-  }
-  
-  // ------------ TabModelTarget interface methods ---------------
-  
-  /**
-   * Argo only supports constraints for Classes and Features (eg. Attributes
-   *  and Operations) currently.
-   */
-  public boolean shouldBeEnabled(Object target) {
-
-      if ((target instanceof MClass) ||
-          (target instanceof MFeature)) {
-          return true;
-      } 
-      else
-          return false;
-  }
-  
-  /**
-    * Get the target element whose properties this tab presents.
-    */
-  public Object getTarget() {
-    return m_mmeiTarget;
-  }
-  
-  /**
-    * Refresh the tab because the target has changed.
-    */
-  public void refresh() {
-    setTarget(m_mmeiTarget);
-  }
-  
-  /**
-    * Set the target element to be displayed in this tab. Only model elements
-    * will be accepted by the constraint tab.
-    */
-  public void setTarget(Object oTarget) {
-    if (!(oTarget instanceof MModelElement)) {
-      m_mmeiTarget = null;
-      return;
-    }
->>>>>>> 1.17
+    /**
+      * The actual editor pane.
+      */
+    private OCLEditor m_ocleEditor;
 
     /**
       * The current target element.
