@@ -438,17 +438,54 @@ It is provided for use of others.
 	<title>How do I...?</title>
 	<itemizedlist>
 	  <listitem>
+	    <para>...add a new model element?</para>
+	    <para>
+Make a parameterless build method for your NSUML modelelement in one of
+the UML Factories (for instance <classname>CoreFactory</classname>).
+Stick to the UML 1.3 spec to choose the correct Factory.
+The package structure under <classname>org.argouml.model.uml</classname>
+follows the chapters in the UML spec so get it and read it!
+In the buildmethod, create a new modelelement using the appropriate
+create method in the factory.
+The build method e.g. is a wrapper around the create method.
+For all elements there are already create methods (thanks Thierry).
+For some elements there are already build methods.
+If you need one of these elements, use the build method before you
+barge into building new ones.
+Initialize all things you need in the build method as far as they
+don't need other modelelements.
+In the UML spec you can read which elements you need to initialize.
+See for example <methodname>buildAttribute()</methodname> for an example.
+</para>
+	    <para>
+If you need to attach other already existing modelelements to your
+modelelement make a 
+<methodname>buildXXXX(MModelelement toattach1, ...)</methodname> 
+method in the factory where you made the build method. 
+Don't ever call the create methods directly. 
+If we use the build methods we will always have initialized
+modelelements which will make a difference concerning save/load issues
+for example.
+</para>
+            <para>
+Now you probably also need to create 
+a Property Panel
+and
+a Fig object (See <xref linkend="howto_createnewfig_2"></xref>).
+</para>
+          </listitem>
+	  <listitem>
 	    <para>...create a new create method?</para>
 	    <para>
 Create it in the correct factory.
 </para>
-	    </listitem>
+          </listitem>
 	  <listitem>
 	    <para>...create a new utility method?</para>
 	    <para>
 Create it in the correct helper.
 </para>
-	    </listitem>
+	  </listitem>
 	</itemizedlist>
       </sect2>
     </sect1>
