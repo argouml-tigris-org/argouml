@@ -20,7 +20,7 @@
           These are calculated at execution time and may be viewed on the
           <strong>Environment</strong>
           tab under the menu selection
-	  <strong>Edit -&gt; Settings</strong>.
+          <strong>Edit -&gt; Settings</strong>.
         <p/>
         <p>
           <img src="settings.jpg">
@@ -36,32 +36,32 @@
           These are <u>currently</u> defined as follows:
           <ul>
             <li>
-  	      <dfn>argo.root</dfn>
+                <dfn>argo.root</dfn>
               is the location that the Argo code is loaded from.
-  	      This could be either a jar file or a directory.
+                This could be either a jar file or a directory.
             </li>
             <li>
               <dfn>argo.home</dfn>
-  	      is the directory which contains <i>argo.root</i>.
+                is the directory which contains <i>argo.root</i>.
             </li>
             <li>
-  	      <dfn>argo.ext.dir</dfn>
-  	      is a directory named <b>ext</b> in <i>argo.home</i>.
+                <dfn>argo.ext.dir</dfn>
+                is a directory named <b>ext</b> in <i>argo.home</i>.
             </li>
           </ul>
         </p>
         
         <p>
           The following java fragment
-	  from <b>org.argouml.application.modules.ModuleLoader</b>
+          from <b>org.argouml.application.modules.ModuleLoader</b>
           calculates <i>argo.root</i>:
         
           <code>
-	    <pre>
+            <pre>
     String extForm = org.argouml.application.Main.class.getResource(Argo.ARGOINI).toExternalForm();
     argoRoot = extForm.substring(0, extForm.length()-Argo.ARGOINI.length());
             </pre>
-	  </code>
+          </code>
         </p>
 
         <h4>Proposed Configuration</h4>
@@ -78,9 +78,9 @@
           <a href="http://java.sun.com/j2se/1.2/docs/api/java/lang/System.html#getProperty(java.lang.String)"><code>java.lang.System.getProperty(key)</code></a> function.
           These are:
           <ul>
-  	    <li><dfn>java.home</dfn> (Java installation directory)</li>
-  	    <li><dfn>user.dir</dfn> (User's current working directory)</li>
-  	    <li><dfn>user.home</dfn> (User's home directory)</li>
+              <li><dfn>java.home</dfn> (Java installation directory)</li>
+              <li><dfn>user.dir</dfn> (User's current working directory)</li>
+              <li><dfn>user.home</dfn> (User's home directory)</li>
           </ul>
           (Definitions of these properties are found under
           <a href="http://java.sun.com/j2se/1.2/docs/api/java/lang/System.html#getProperties()"><code>java.lang.System.getProperties()</code></a>.)
@@ -96,24 +96,24 @@
         <p>
           The initialization process would then become:
           <ol>
-  	    <li>
-  	      Check if <i>argo.home</i> was provided on the command line.
-  	    </li>
-  	    <li>
-  	      If <i>argo.home</i> has not been set yet,
-  	      attempt to retrieve its value from the property file
-  	      <b>${java.home}/lib/argouml.initialization.properties</b>.
-  	    </li>
-  	    <li>
-  	      If <i>argo.home</i> has not been set yet,
-  	      attempt to retrieve its value from the property file
-  	      <b>${user.home}/lib/argouml.initialization.properties</b>.
-  	    </li>
-  	    <li>
-  	      If <i>argo.home</i> has not been set yet,
-  	      calculate its value as currently being done,
-	      but without exposing <i>argo.root</i>.
-  	    </li> 
+              <li>
+                Check if <i>argo.home</i> was provided on the command line.
+              </li>
+              <li>
+                If <i>argo.home</i> has not been set yet,
+                attempt to retrieve its value from the property file
+                <b>${java.home}/lib/argouml.initialization.properties</b>.
+              </li>
+              <li>
+                If <i>argo.home</i> has not been set yet,
+                attempt to retrieve its value from the property file
+                <b>${user.home}/lib/argouml.initialization.properties</b>.
+              </li>
+              <li>
+                If <i>argo.home</i> has not been set yet,
+                calculate its value as currently being done,
+              but without exposing <i>argo.root</i>.
+              </li> 
           </ol>
           <br/>
           Note: We do not attempt to look in <i>user.dir</i>
@@ -149,7 +149,29 @@
         
         <p>
         </p>
-        
+
+        <h5>Example of proposed installed directory structure</h5>
+        Thus a typical installation on a *nix system
+        might have the following directory structure.
+	The software would be installed
+	in the <code>/usr/share/argouml</code> directory.
+	
+        <p/>
+	<pre>
+         <code>/usr/share/argouml/bin</code>
+	 <code>/usr/share/argouml/lib</code>
+         <code>/usr/share/argouml/lib/ext</code>
+	 </pre>
+	 </p>
+	 <i>argo.home</i> would be <code>/usr/share/argouml</code>.
+	 <br/>
+	 <i>argo.ext.dir</i> would be <code>/usr/share/argouml/lib/ext</code>.
+	 <p/>
+	 The files contained in <i>argo.home</i>/bin would be scripts
+	 specialized for the installation
+	 (with -Dargo.home=/usr/share/argouml on the java command, for example),
+	 and could be copied to any directory
+	 (such as <code>/usr/local/bin</code>) and executed directly.
        </td>
      </tr>
    </table>
