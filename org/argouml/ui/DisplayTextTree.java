@@ -303,19 +303,39 @@ public class DisplayTextTree
      * This methods sets the target of the treemodel to the given object. It's
      * a means to set the target programmatically from within the setTarget
      * method in the ProjectBrowser.
-     * @param target
+     *
+     * <p>If the tree view shows the model element more than once,
+     * all such rows shall be selected.
+     *
+     * <p>This may take some time for a lot of rows... put the work on
+     * a worker thread perhaps?
+     *
+     * @param target a selected Fig or Model element.
      */
     public void setTarget(Object target) {
         
         cat.debug("setTarget");
         if (getModel() instanceof NavPerspective) {
+            
             if (target instanceof Fig) {
                 target = ((Fig)target).getOwner();
             }
-            int index =
-            getModel().getIndexOfChild(getModel().getRoot(), target);
-            if (index > -1)
-                setSelectionRow(index);
+            
+            // clear the tree selection
+            this.clearSelection();
+            
+            // add the any relevant rows
+            int rows = this.getRowCount();
+            for(int row=0; row < rows; row++){
+                
+                TreePath path = this.getPathForRow(row);
+                Object rowItem = path.getLastPathComponent();
+                
+                if(rowItem == target){
+                    this.addSelectionRow(row);
+                }
+            }
+            
         }
     }
     
