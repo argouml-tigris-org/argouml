@@ -38,6 +38,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 /**
  * @since Oct 4, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @stereotype singleton
  */
 public class ActionSetAssociationRoleBase extends UMLChangeAction {
 

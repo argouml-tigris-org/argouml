@@ -39,6 +39,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  * Action to add a predecessor to some message.
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @stereotype singleton
  */
 public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
 

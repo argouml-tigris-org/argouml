@@ -40,6 +40,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  * Action to build a new action to some message.
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @stereotype singleton
  */
 public class ActionNewAction extends AbstractActionNewModelElement {
 

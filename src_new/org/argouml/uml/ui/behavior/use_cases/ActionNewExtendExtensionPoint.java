@@ -34,6 +34,7 @@ import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 /**
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @stereotype singleton
  */
 public class ActionNewExtendExtensionPoint
     extends AbstractActionNewModelElement {

@@ -36,6 +36,7 @@ import ru.novosoft.uml.behavior.use_cases.MUseCase;
 /**
  * @since Oct 7, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @stereotype singleton
  */
 public class ActionSetIncludeAddition extends UMLChangeAction {
 
