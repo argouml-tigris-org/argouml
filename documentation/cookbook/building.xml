@@ -17,7 +17,7 @@ A window from the newly compiled ArgoUML opens after a while!
 </para>
     <para>
 That was the compact version for Windows + JDK.
-(Note: jdk cannot be installed in a directory that contains space in its
+(Note: JDK cannot be installed in a directory that contains space in its
 name.)
 </para>
     <para>
@@ -50,7 +50,7 @@ all work within the ArgoUML project.
 	  <secondary>needed for building</secondary>
 	</indexterm>
 	<para>
-These are the tools not included in the cvs repository that
+These are the tools not included in the CVS repository that
 you need to work with ArgoUML.
 </para>
 	<itemizedlist>
@@ -142,10 +142,10 @@ saxon for building documentation from docbook format.
 	      <primary>Docbook</primary>
 	    </indexterm>
             <indexterm>
-	      <primary>XSL stylesheets</primary>
+	      <primary>XSL style sheets</primary>
             </indexterm>
 	    <para>
-Docbook XSL stylesheets.
+Docbook XSL style sheets.
 </para>
 	  </listitem>
 	  <listitem>
@@ -153,10 +153,10 @@ Docbook XSL stylesheets.
 	      <primary>fop</primary>
 	    </indexterm>
 	    <para>
-fop for generating pdf versions of the docbook format.
+fop for generating PDF versions of the docbook format.
 </para>
 	    <para>
-To build a pdf file with the pictures included you need Jimi.
+To build a PDF file with the pictures included you need Jimi.
 </para>
 	  </listitem>
 	</itemizedlist>
@@ -175,7 +175,7 @@ needed for running ArgoUML and therefore distributed with ArgoUML.
 	      <primary>NSUML</primary>
 	    </indexterm>
 	    <para>
-nsuml, the Novosoft UML library.
+NSUML, the Novosoft UML library.
 </para>
 	    <para>
 ArgoUML project doesn't include the developing of Java classes for 
@@ -203,7 +203,7 @@ GEF graph editing framework, available from
 It is also recommended that you check out GEF at the same time as you
 check out ArgoUML because many things in Argo relate to GEF and it is
 quite handy to have the source code available.
-GEF is also residing at tigris so you can do a simple
+GEF is also residing at Tigris so you can do a simple
 <command>cvs <replaceable>-d :user@cvs.tigris.org:/cvs</replaceable> co gef</command>
 (with the same checkout arguments you had when you checked out ArgoUML)
 to get it.
@@ -212,7 +212,7 @@ to get it.
 
 	  <listitem>
 	    <para>
-The ocl package to parse and run the Object Constraint Language things.
+The OCL package to parse and run the Object Constraint Language things.
 </para>
 	    <para>
 Details about the package are available from sourceforge
@@ -249,7 +249,7 @@ antlrall, the run-time part of the antlr tool.
 	<primary>Checking out from CVS</primary>
       </indexterm>
       <para>
-The CVS repository at Tigris is accessable using the pserver protocol.
+The CVS repository at Tigris is accessible using the pserver protocol.
 The CVS root is <filename>/cvs</filename> at cvs.tigris.org.
 You use your Tigris login and Tigris password.
 </para>
@@ -262,7 +262,7 @@ After that the root will be remembered by the checked out copy.
 </para>
 
       <para>
-        If you use one of the CVS clients with a graphical userinterface,
+        If you use one of the CVS clients with a graphical user interface,
         (like WinCVS, GruntSpud,...)
         then configuration will be done by filling in fields. These fields mean
         the following:
@@ -291,7 +291,7 @@ After that the root will be remembered by the checked out copy.
       </itemizedlist>
       
       <para>
-        If you used the commandline CVS client before, then your Tigris password 
+        If you used the command line CVS client before, then your Tigris password 
         is stored in the file <filename>~/.cvspass</filename>. 
         Some graphical UI CVS clients are
         able to use this password, in others you'll have to enter it again.
@@ -334,7 +334,7 @@ but if you have plenty of both, get it all, and eventually you will
 see how everything is used for a purpose in the project.
 </para>
       <para>
-If you don't want to acquire a tigris login to do this you can use the
+If you don't want to acquire a Tigris login to do this you can use the
 "guest" account with the password "guest".
 Since the checked out copy remembers the login you used to do the
 check out, if you do this, you will have to remember to delete this
@@ -358,7 +358,7 @@ There are people known to build from JBuilder or Netbeans, but always
 make sure that your work compile with the plain vanilla build process.
      </para>
       <para>
-Ant is a tool written in java developed for Apache that reads an xml-file
+Ant is a tool written in java developed for Apache that reads an XML-file
 with rules telling what to compile to what result and what files to include
 in what jar-file.
 </para>
@@ -406,7 +406,7 @@ These two scripts run the equivalence of the above paths.
 </para>
 	<para>
 By setting JAVA_HOME to different values you can at different times
-build with different versions of jdk and java.
+build with different versions of JDK and java.
 </para>
 	<para>
 To use different versions of ANT,
@@ -454,7 +454,7 @@ Change the current directory to the directory you are building
 	    </listitem>
 	    <listitem>
 	      <para>
-Compile and run Argouml using <command>./build.sh run</command>
+Compile and run ArgoUML using <command>./build.sh run</command>
 </para>
 	      <para>
 You can do this over and over again when you have modified something
@@ -493,7 +493,7 @@ Change the current directory to the directory you are building
 	    </listitem>
 	    <listitem>
 	      <para>
-Compile and run Argouml using <command>build run</command>
+Compile and run ArgoUML using <command>build run</command>
 </para>
 	      <para>
 You can do this over and over again when you have modified something
@@ -580,7 +580,7 @@ If you want to run ArgoUML with modules enabled the
                 <para>Test just one module</para>
                 <orderedlist>
                   <listitem>
-                    <para>Build argouml, the package</para>
+                    <para>Build ArgoUML, the package</para>
                     <para>
 This is done with <command>ant package</command>
 in the <filename class="directory">argouml/src_new</filename>-directory.
@@ -602,7 +602,7 @@ argouml/modules/<replaceable>whatever</replaceable>
                 <para>Test several modules together</para>
                 <orderedlist>
                   <listitem>
-                    <para>Build argouml, the package</para>
+                    <para>Build ArgoUML, the package</para>
                     <para>
 This is done with <command>ant package</command>
 in the <filename class="directory">argouml/src_new</filename>-directory.
@@ -619,7 +619,7 @@ argouml/modules/<replaceable>whatever</replaceable>
 </para>
                   </listitem>
                   <listitem>
-                    <para>Start argouml</para>
+                    <para>Start ArgoUML</para>
                     <para>
 This is done with <command>ant run</command>
 in the <filename class="directory">argouml/src_new</filename>-directory.
@@ -648,7 +648,7 @@ This describes how the documentation arrives on the web site.
 	  <para>
 Tigris provides the ArgoUML site to be edited through CVS. Everything
 that is checked in under <filename>argouml/www</filename>
-becomes immediatly available at the url 
+becomes immediately available at the URL 
 <ulink url="http://argouml.tigris.org/">http://argouml.tigris.org/</ulink>
 with some added decorations.
 </para>
@@ -671,14 +671,14 @@ This is the way the site is maintained and updated.
 	    <secondary>documentation</secondary>
 	  </indexterm>
 	  <para>
-For the ArgoUML project the same documenation shall be available in both
-html, pdf and javahelp. To this end the documentation is written in
-docbook xml and generated into two versions of html 
+For the ArgoUML project the same documentation shall be available in both
+HTML, PDF and javahelp. To this end the documentation is written in
+docbook XML and generated into two versions of HTML 
 (one page per chapter and one page for the whole book),
-pdf and javahelp.
+PDF and javahelp.
 </para>
 	  <para>
-We have tools that does the conversion from docbook xml to html and pdf.
+We have tools that does the conversion from docbook XML to HTML and PDF.
 The conversion is done whenever you need to look at the result or when 
 you want to present the final result on the web site.
 </para>
@@ -734,7 +734,7 @@ All the old files are removed from the checked out copy of
 	    </listitem>
 	    <listitem>
 	      <para>
-New files are copied into the checked out copy of www
+New files are copied into the checked out copy of <filename class="directory">www</filename>
 on top of the previous files there replacing them.
 </para>
 	      <para>
@@ -782,7 +782,7 @@ Commit the changes thus publishing it on the web site.
 	    </listitem>
 	    <listitem>
 	      <para>
-The pdf book is uploaded to the download page.
+The PDF book is uploaded to the download page.
 </para>
 	    </listitem>
 	  </orderedlist>
@@ -799,10 +799,10 @@ to generate the documentation (or anyone else interested in this)
 can generate the documentation like described above and examine
 the result in
 <filename class="directory">argouml/build</filename>.
-It is only the last part about checking in and upploading the result
+It is only the last part about checking in and uploading the result
 under
 <filename class="directory">argouml/www/documentation</filename>
-that requires write access in the CVS and synchronisation with the
+that requires write access in the CVS and synchronization with the
 rest of the project.
 </para>
 	  <para>
@@ -824,7 +824,7 @@ The subdirectory
 <filename class="directory">docbook-setup</filename>
 contains two things. 
 It contains the configuration files that control how the generation is done.
-It contains the xsl rules for all the generation.
+It contains the XSL rules for all the generation.
 The subdirectory
 <filename class="directory">images</filename>
 contains all the required pictures for all the books.
@@ -840,7 +840,7 @@ contains all the required pictures for all the books.
 	<sect3>
 	  <title>Compiling failed. Any suggestions?</title>
 	  <para>
-It might be that some other developer has made a misstake in checking
+It might be that some other developer has made a mistake in checking
 in things that contain errors, or forgotten to check in some files
 in a change.
 Look at the last couple of hours on the
@@ -874,7 +874,7 @@ If nothing helps, ask the
 	  <title>Can't commit my changes?</title>
 	  <indexterm>
 	    <primary>Troubleshooting</primary>
-	    <secondary>commiting changes</secondary>
+	    <secondary>committing changes</secondary>
 	  </indexterm>
 	  <para>
 You need to have a developer role in the ArgoUML project.
@@ -885,7 +885,7 @@ Eventually someone will commit it for you.
 </para>
 	  <para>
 Furthermore the checkout of your copy needs to be done with your
-tigris id that has the Developer role.
+Tigris id that has the Developer role.
 If you for some reason have earlier checked out
 a copy as guest and then made modifications, changed the CVSROOT
 variable you still cannot commit changes done in the repository since the
@@ -893,7 +893,7 @@ checked out copy contains information on who checked out.
 For this reason, it is best to apply for an Observer role in 
 the project if you are going to work with the source at all.
 The Observer role is probably granted within a couple of days
-(we welcome everybody!) and then you can check out with your tigris id.
+(we welcome everybody!) and then you can check out with your Tigris id.
 This means that when you eventually are granted a Developer role you
 can continue working with the same checked out copy.
 </para>
@@ -942,7 +942,7 @@ The result is also generated into a set of files that can be found at
 </para>
 
         <para>
-The testcases java source code is located under
+The test cases' java source code is located under
 <filename>argouml/tests/org/argouml</filename>.
 </para>
 
@@ -955,15 +955,15 @@ The testcases java source code is located under
 	    <primary>Testing ArgoUML</primary>
 	  </indexterm>
 	  <indexterm>
-	    <primary>Testcases</primary>
+	    <primary>Test cases</primary>
 	    <secondary>writing</secondary>
 	  </indexterm>
 	  <indexterm>
-	    <primary>Writing testcases</primary>
+	    <primary>Writing test cases</primary>
 	  </indexterm>
 	  <para>
 Now this will make all you java-enthusiasts go nuts!
-We have both classnames and method names with a special syntax.
+We have both class names and method names with a special syntax.
 </para>
 	  <para>
 The name of the test case starts with "Test" (i.e. Capital T, then
@@ -980,7 +980,7 @@ mechanisms so don't do it.
 </para>
 
 	<para>
-Testcases that doesn't require GUI components in place
+Test cases that doesn't require GUI components in place
 have filenames like
 <filename>Test<replaceable>*</replaceable>.java</filename>.
 They must be able to run on a headless system.
@@ -989,7 +989,7 @@ test case with <command>build tests</command> using
 jdk1.4 or later.
 </para>
       <para>
-Testcases that do require GUI components in place
+Test cases that do require GUI components in place
 have filenames like
 <filename>GUITest<replaceable>*</replaceable>.java</filename>.
 </para>
@@ -1049,7 +1049,7 @@ Try to keep the test cases as short as possible.
 There is no need in cluttering them up just to beautify the output.
 Prefer
 <programlisting>
-// Exampel from JUnit FAQ
+// Example from JUnit FAQ
 public void testIndexOutOfBoundsExceptionNotRaised()
         throws IndexOutOfBoundsException {
     ArrayList emptyList = new ArrayList();
@@ -1089,7 +1089,7 @@ guarantee that no features will ever be lost.
 	  <example>
 	    <title>An example without javadoc comments</title>
 	    <indexterm>
-	      <primary>Testcases</primary>
+	      <primary>Test cases</primary>
 	      <secondary>an example</secondary>
 	    </indexterm>
 	    <para>
@@ -1117,7 +1117,7 @@ public class GUITestUMLAction extends TestCase {
     }
 }
 </programlisting>
-and the corresponding no-gui-class:
+and the corresponding no-GUI-class:
 <programlisting>
 package org.argouml.uml.ui;
 import junit.framework.*;
@@ -1264,7 +1264,7 @@ This is Optional. The default is that you have just started ArgoUML.
               <para>
 This is a description in plain English telling the tester
 exactly what to do and what to expect.
-If this description doesn't work or is ambigous in any way the tester
+If this description doesn't work or is ambiguous in any way the tester
 should consider the test to be DEFECT and report it in Issuezilla.
 </para>
               <para>
@@ -1348,11 +1348,11 @@ TEST2 REV1
           <para>
 <emphasis>Do:</emphasis>
 Select the Class Diagram.
-Click the Package symbol on the Edit pane toolbar.
+Click the Package symbol on the Edit pane tool-bar.
 Click on the diagram.
-Click the Class symbol on the Edit pane toolbar.
+Click the Class symbol on the Edit pane tool-bar.
 Click on the diagram.
-Click the Interface symbol on the Edit pane toolbar.
+Click the Interface symbol on the Edit pane tool-bar.
 Click on the diagram.
 </para>
           <para>
@@ -1367,9 +1367,9 @@ one interface.
 Select the class.
 Drag from the four quick-buttons located along the sides of the class
 and release somewhere on the diagram.
-Click on the fifth quick-button (buttom-left of the class).
+Click on the fifth quick-button (bottom-left of the class).
 Select the interface.
-Drag from the quick-button located along the buttom of the interface symbol
+Drag from the quick-button located along the bottom of the interface symbol
 and release somewhere on the diagram.
 </para>
           <para>
@@ -1404,15 +1404,15 @@ It is provided with the hopes of being helpful.
 <!-- If you, the release responsible, finds it unhelpful, please remove it! -->
 </para>
       <para>
-To understand this you need knowledge of how cvs works and 
+To understand this you need knowledge of how CVS works and 
 how you normally build and test ArgoUML.
 </para>
       <para>
 This instruction is supposed to work on a windows system (running build.bat).
 The author (Linus Tolke) has for some time been running it 
-on a cygwin system (running build.sh) 
-assuming that this will be the same as on any unix system.
-How it is actually run on a cygwin/unix system is also noted.
+on a Cygwin system (running build.sh) 
+assuming that this will be the same as on any UNIX system.
+How it is actually run on a Cygwin/UNIX system is also noted.
 </para>
 
       <para>
@@ -1458,7 +1458,7 @@ Build the release!
 This is done in the
 <filename class="directory">argouml/src_new</filename>
 directory of the newly created copy
-by issueing the command <command>build dist-release</command>!
+by issuing the command <command>build dist-release</command>!
 (Linus:
 It takes around 10 minutes on my machine 
 	JDK1.3.1_01/700MHz/256MB (May 2003),
@@ -1507,14 +1507,14 @@ There are two sets of automatic test cases.
 		  <para>
 Run the JUnit test cases in
 <filename class="directory">argouml/tests</filename>
-by issueing the command
+by issuing the command
 <command>build alltests</command>
 in the <filename class="directory">argouml/src_new</filename> directory.
 (Linus
 It takes around 12 minutes on my machine 
 	JDK1.3.1_01/700MHz/256MB (May 2003),
 It takes around three hours on a Lysator machine simultaneously
-doing a lot of other things and the X session over a 50kb/s modem.
+doing a lot of other things and the X session over a 50KB/s modem.
 	JDK1.3.1_06/sun4d/256MB (July 2003).
 )
 </para>
@@ -1541,7 +1541,7 @@ The corresponding <filename>build.sh</filename> is not available for
 a Cygwin/Unix system so you must run the ant command directly.
 First make the <command>ant</command> executable with the command
 <command>chmod +x ../../tools/ant-1.4.1/bin/ant</command>
-if you havn't made it above
+if you haven't made it above
 and then issue the command 
 <command>../../tools/ant-1.4.1/bin/ant run</command> instead of the
 <command>build run</command> command.
@@ -1574,7 +1574,7 @@ Open the repository for commits towards the next version.
 	    <para>
 This is done by setting the <methodname>argo.core.version</methodname>
 in <filename>default.properties</filename> to 
-<replaceable>Number of next release</replaceable>, commiting
+<replaceable>Number of next release</replaceable>, committing
 and telling everyone on the developers mailing list.
 Notice that this cannot be done in the tagged copy but you either need
 to go back to your other working tree or need to check out the file
@@ -1585,18 +1585,18 @@ specifically to do this.
 	  <listitem>
             <para>Build documentation and copy it.</para>
             <para>
-The pdf versions of the documentation shall be copied from the
+The PDF versions of the documentation shall be copied from the
 <filename>build/documentation/pdf/*/*.pdf</filename>
 to
 <filename>argouml-<replaceable>version</replaceable>/basename-<replaceable>version</replaceable></filename>.
 </para>
 	  </listitem>
 	  <listitem>
-	    <para>Upload the files onto the tigris website!</para>
+	    <para>Upload the files onto the Tigris website!</para>
 	    <para>
 A tree with all files is located in 
 <filename>argouml-<replaceable>version</replaceable></filename>.
-This complete tree is uploaded to argouml-uploade on the site.
+This complete tree is uploaded to argouml-upload on the site.
 </para>
 	  </listitem>
 	  <listitem>
@@ -1609,7 +1609,7 @@ Things to check are:
 	    <orderedlist>
 	      <listitem>
 		<para>
-That there is a Version created in issuezilla for the newly created release.
+That there is a Version created in Issuezilla for the newly created release.
 </para>
 		<para>
 The purpose of this is to make it possible for everyone 
@@ -1674,7 +1674,7 @@ technical details on how the release was built, and
 the plan for the following release.
 </para>
 	    <para>
-Freshmeat: currently Thierry Lach does the freshmeat announcements
+Freshmeat: currently Thierry Lach does the Freshmeat announcements
 which require a login so just inform him.
 </para>
 	  </listitem>
