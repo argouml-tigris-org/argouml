@@ -165,6 +165,20 @@ public class StateMachinesHelper {
     }
     
     /**
+     * Returns true is the given state is the top state.
+     * 
+     * @author MVW
+     * @param o CompositeState
+     * @return boolean 
+     */
+    public boolean isTopState(Object o) {
+        if (ModelFacade.isACompositeState(o))
+            if (ModelFacade.getContainer(o) == null)
+                return true;
+        return false;
+    }
+    
+    /**
      * Returns all statemachines that can be the statemachine the given
      * submachinestate represents. To decouple ArgoUML as much as possible from
      * the NSUML model, the parameter of the method is of type Object.
