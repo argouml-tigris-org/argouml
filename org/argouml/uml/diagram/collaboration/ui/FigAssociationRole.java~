@@ -23,11 +23,8 @@
 
 package org.argouml.uml.diagram.collaboration.ui;
 
-import org.argouml.application.api.Notation;
 import org.argouml.uml.diagram.ui.*;
 import org.tigris.gef.base.Layer;
-
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 
 public class FigAssociationRole extends FigAssociation {
   ////////////////////////////////////////////////////////////////

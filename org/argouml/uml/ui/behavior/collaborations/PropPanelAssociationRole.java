@@ -27,6 +27,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.behavior.collaborations.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 import javax.swing.*;
 
@@ -41,25 +42,39 @@ import java.util.*;
 
 public class PropPanelAssociationRole extends PropPanelModelElement {
 
+  ////////////////////////////////////////////////////////////////
+  // attributes
+    protected JComboBox _baseField;
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelAssociationRole() {
     super("Association Role",_associationRoleIcon, 2);
 
+   //
+    //   this will cause the components on this page to be notified
+    //      anytime a stereotype, namespace, operation, etc
+    //      has its name changed or is removed anywhere in the model
+    Class[] namesToWatch = { MStereotype.class,MNamespace.class,MAssociation.class, MMessage.class, MAssociationEndRole.class, MClassifierRole.class, MClassifier.class};
+    setNameEventListening(namesToWatch); 
+    
     Class mclass = MAssociationRole.class;
 
     addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
     addField(nameField,1,0,0);
 
-    addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
-    addField(stereotypeBox,2,0,0);
+    _baseField = new UMLAssociationComboBox(this);
+    addCaption(Argo.localize("UMLMenu", "label.association"), 2, 0, 0);
+    addField(_baseField, 2, 0, 0);
+    
+    addCaption(Argo.localize("UMLMenu", "label.stereotype"),3,0,0);
+    addField(stereotypeBox,3,0,0);
 
-    addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,1);
-    addField(namespaceScroll,3,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.namespace"),4,0,1);
+    addField(namespaceScroll,4,0,0);
 
     addCaption("Messages:",0,1,0);
-    JList messageList = new UMLList(new UMLReflectionListModel(this,"message",true,"getMessages","setMessages",null,null),true);
+    JList messageList = new UMLList(new UMLMessagesListModel(this,"message",true), true);
     messageList.setBackground(getBackground());
     messageList.setForeground(Color.blue);
     addField(new JScrollPane(messageList),0,1,0.75);
@@ -101,46 +116,75 @@ public class PropPanelAssociationRole extends PropPanelModelElement {
         }
     }
 
-   public Collection getMessages() {
-        Collection messages = null;
-        Object target = getTarget();
-        if(target instanceof MAssociationRole) {
-            messages = ((MAssociationRole) target).getMessages();
-        }
-        return messages;
-    }
-
-    public void setMessages(Collection messages) {
-        Object target = getTarget();
-        if(target instanceof MAssociationRole) {
-            java.util.List list = null;
-            if(messages instanceof java.util.List) {
-                list = (java.util.List) messages;
-            }
-            else {
-                messages = new ArrayList(messages);
-            }
-            ((MAssociationRole) target).setMessages(list);
-        }
-    }
-
-/*
-    public Object addMessage(Integer index) {
-	//needs-more-work: a fig must be generated
-
-        Object target = getTarget();
-        MMessage newMessage = null;
-        if(target instanceof MAssociationRole) {
-            return UmlFactory.getFactory().getCollaborations().buildMessage((MAssociationRole)target,"");
-        }
-        return newMessage;
-    }
-*/
-
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {
         return (baseClass.equals("AssociationRole") || 
                 baseClass.equals("Association"));
     }
-
+    
+    /**
+     * <p> sets the base association of the associationRole </p>
+     * @param the association to set as the base
+     **/
+    public void setAssociation(MAssociation association){
+        Object target=getTarget();
+        if(target instanceof MAssociationRole){
+            MAssociationRole role=(MAssociationRole) target;
+            role.setBase(association);
+        }
+    }
+    /**
+     * @return the base association of the association role
+     **/
+    public MAssociation getAssociation(){
+        MAssociation assoc=null;
+        Object target=getTarget();
+        if(target instanceof MAssociationRole){
+            MAssociationRole role=(MAssociationRole) target;
+            assoc=role.getBase();
+        }
+        return assoc;
+    }
+    /**
+     * <p> tests if the association is acceptible in this list: </p>
+     * <p> it tests if all the classifier of the given association are included 
+     * in the list of classifierRoles' classifiers from the current associationRole </p>
+     *
+     * @param element the association to test
+     * @return true if the association can be put in the list
+     **/
+    public boolean isAcceptibleAssociation(MModelElement element){
+        boolean isAcceptible = false;
+        if(element instanceof MAssociation) {
+            MAssociation assoc=(MAssociation) element;
+            Vector classifiers=new Vector();
+            //get the classifiers from the associationEndRoles
+            Object target=getTarget();
+            if(target instanceof MAssociationRole){
+                MAssociationRole role=(MAssociationRole) target;
+                java.util.List list=role.getConnections();
+                Iterator it=list.iterator();
+                while(it.hasNext()){
+                    MAssociationEndRole endRole=(MAssociationEndRole) it.next();
+                    MClassifierRole clRole=(MClassifierRole) endRole.getType();
+                    Collection col=clRole.getBases();
+                    classifiers.addAll(col);
+                }
+                //compare with the base association classifiers
+                Vector assocClassifiers=new Vector();
+                java.util.List list2=assoc.getConnections();
+                if(list2!=null){
+                    Iterator it2=list2.iterator();
+                    while(it2.hasNext()){
+                        MAssociationEnd end=(MAssociationEnd) it2.next();
+                        MClassifier type=end.getType();
+                        assocClassifiers.add(type);
+                        }
+                }
+                if(classifiers.containsAll(assocClassifiers))
+                isAcceptible=true;
+            }
+        }
+        return isAcceptible;
+    }
 
 } /* end class PropPanelAssociationRole */

@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-01 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,46 +21,23 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.collaboration.ui;
+package org.argouml.uml.ui;
 
-import org.argouml.application.api.Notation;
-import org.argouml.uml.diagram.ui.*;
-import org.tigris.gef.base.Layer;
+import ru.novosoft.uml.foundation.core.MAssociation;
 
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-
-public class FigAssociationRole extends FigAssociation {
-  ////////////////////////////////////////////////////////////////
-  // constructors
-
-    public FigAssociationRole() {
-      super();
-    }
-
-	/**
-	 * Constructor for FigAssociationRole.
-	 * @param edge
-	 * @param lay
-	 */
-	public FigAssociationRole(Object edge, Layer lay) {
-		super(edge, lay);
-	}
-
-    ////////////////////////////////////////////////////////////////
-    // event handlers
+public class UMLAssociationComboBox extends UMLComboBox
+{
     /**
-     * calls the method on the "super" (FigAssociation)
-     * and then changes the name to take care of the
-     * "/ name : base association name" form.
-     **/    
-    protected void modelChanged() {
-        super.modelChanged();
-        //change the name
-        MAssociationRole ar = (MAssociationRole) getOwner();
-        if (ar == null) return;
-        String asNameStr = Notation.generate(this, ar);
-        _name.setText(asNameStr);
+     * <p>Constructor for the Association ComboBox</p>
+     *
+     * @param container  The container (invariably a {@link PropPanel}) that
+     *                   contains this box.
+     */
+    public UMLAssociationComboBox(UMLUserInterfaceContainer container) {
+  
+        super(new UMLComboBoxModel(container, "isAcceptibleAssociation",
+                                   "association", "getAssociation",
+                                   "setAssociation", true, MAssociation.class,
+                                   true));
     }
-
-} /* end class FigAssociationRole */
-
+}
