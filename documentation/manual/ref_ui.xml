@@ -126,7 +126,7 @@ own chapters.
         button on a right-handed mouse, and is sometimes referred to as the
         <emphasis>adjust</emphasis> button.</para>
 
-      <para>A single depress and release of a mouse button while the mouse is
+      <para>A single depress and release of a mouse button with the mouse is
         referred to as a <emphasis>click</emphasis>. Two clicks in quick
         succession is referred to as a <emphasis>double
         click</emphasis>. Moving the mouse while holding a button down is
@@ -140,20 +140,18 @@ own chapters.
     <sect2>
       <title>&Button1; Click</title>
 
-      <para>
-        Clicking on an user-interface object or on a diagram artifact 
-        may establish many different things. 
-        Most of the behaviour is experienced quite intuitive by the user, 
-        mainly because the high degree of standardisation, even spanning
-        different computer platforms (Macintosh, PC, UNIX,...). 
-        &argouml; follows the <emphasis>Java Look and Feel Design 
-        Guidelines</emphasis> by Sun.
-        Hence, behaviour of common user-interface components is generally not
-        discussed in this document.
-        <!-- TODO: Add URL to Java Look and Feel Design Guidelines -->
+      <para> Clicking on an user-interface object or on a diagram artifact may 
+        establish many different things. Most of the behaviour is experienced 
+        quite intuitive by the user, mainly because the high degree of 
+        standardisation, even spanning different computer platforms (Macintosh, 
+        PC, UNIX,...). &argouml; follows the <emphasis>Java Look and Feel 
+        Design Guidelines</emphasis> by Sun. 
+        See <ulink url="http://java.sun.com/products/jlf/"/>.
+        Hence, behaviour of common 
+        user-interface components is generally not discussed in this document. 
         </para>
         
-        <para>
+      <para>
         On the other hand, mouse actions in a diagram may not seem so intuitive
         to the user, since it is specific for &argouml;. 
         Hence they are explained here.
