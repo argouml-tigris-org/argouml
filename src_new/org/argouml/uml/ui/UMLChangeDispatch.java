@@ -32,8 +32,12 @@
 
 
 package org.argouml.uml.ui;
+
+import org.argouml.uml.ui.behavior.common_behavior.*;
+
 import javax.swing.event.*;
 import java.awt.*;
+
 import ru.novosoft.uml.*;
 
 /**
@@ -211,7 +215,8 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
         //   if we were doing an object change then
         //      add a listener to our new target
         //
-        if(_eventType == -1 && _container instanceof PropPanel) {
+        if(_eventType == -1 && _container instanceof PropPanel &&
+           !(_container instanceof PropPanelObject)) {
             PropPanel propPanel = (PropPanel) _container;
             Object target = propPanel.getTarget();
             if(target instanceof MBase) {
