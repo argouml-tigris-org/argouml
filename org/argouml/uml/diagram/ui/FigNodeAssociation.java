@@ -148,7 +148,8 @@ public class FigNodeAssociation extends FigNodeModelElement {
                         GraphEdgeRenderer renderer =
                             editor.getGraphEdgeRenderer();
                         Layer lay = editor.getLayerManager().getActiveLayer();
-                        figEdge = renderer.getFigEdgeFor(gm, lay, association, null);
+                        figEdge = 
+                            renderer.getFigEdgeFor(gm, lay, association, null);
                         editor.add(figEdge);
                         if (gm instanceof MutableGraphModel) {
                             MutableGraphModel mutableGraphModel =

@@ -77,8 +77,8 @@ import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigText;
 
 /**
- * Abstract class to display diagram arcs for UML ModelElements that
- * look like arcs and that have editiable names.
+ * Abstract class to display diagram lines (edges) for UML ModelElements that
+ * look like lines and that have editable names.
  */
 public abstract class FigEdgeModelElement
     extends FigEdgePoly
