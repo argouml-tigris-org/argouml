@@ -29,7 +29,7 @@ import org.argouml.model.ModelFacade;
 
 import org.argouml.ui.AbstractGoRule;
 /**
- * Navigation rule for navperspective to navigate from behavioral
+ * PerspectiveRule to navigate from behavioral
  * feature to statemachine.  Causes statemachine to be shown as child
  * of behavioral feature.
  * 

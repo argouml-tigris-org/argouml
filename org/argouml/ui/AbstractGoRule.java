@@ -33,10 +33,10 @@ import org.apache.log4j.Logger;
 
 /**
  * Abstract class to be used as a convenience class for implementing
- * 'go rules'.  Go rules are rules to which the navperspectives comply
- * if they are registred with the navperspectives. This usually
- * happens in the static block of NavPerspective.  If some
- * modelelement is not showing up in a navperspective, in most cases
+ * 'go rules'.  Go rules are rules to which the perspectives comply
+ * if they are registred with the perspectives. This usually
+ * happens in the static block of perspectives.  If some
+ * modelelement is not showing up in a perspectives, in most cases
  * this means that there is no go rule defined or an incorrect
  * one. Via the abstract method getChildren the children of some tree
  * element in a perspective are returned.  Only the returned children

@@ -26,8 +26,6 @@ package org.argouml.ui.explorer;
 
 import javax.swing.JComboBox;
 
-import org.argouml.ui.NavPerspective;
-
 /**
  * Listens to updates from the Perspective manager. This class should be 
  * refactored so that this functionality is done via the combobox model.

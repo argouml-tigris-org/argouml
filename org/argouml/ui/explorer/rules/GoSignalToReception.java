@@ -32,7 +32,7 @@ import org.argouml.ui.AbstractGoRule;
 
 
 /**
- * Navigation rule for navperspective to navigate from signal to reception.
+ * PerspectiveRule to navigate from signal to reception.
  * Causes reception to be shown as child of signal.
  * 
  * @author jaap.branderhorst@xs4all.nl

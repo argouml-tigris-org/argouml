@@ -36,7 +36,7 @@ import org.tigris.gef.util.ChildGenerator;
  *  the "children" of a class are the other classes that are
  *  assocaiated with the parent class, and that MAssociation has a
  *  COMPOSITE end at the parent.  This is used in one of the
- *  NavPerspectives. 
+ *  Perspectives. 
  *  @stereotype singleton
  */
 
