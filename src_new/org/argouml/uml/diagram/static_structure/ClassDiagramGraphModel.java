@@ -169,8 +169,11 @@ implements VetoableChangeListener  {
   /** Return true if the given object is a valid node in this graph */
   public boolean canAddNode(Object node) {
     if (_nodes.contains(node)) return false;
-    return (node instanceof MClass) || (node instanceof MInterface)
-    || (node instanceof MModel)  || (node instanceof MPackage) || (node instanceof MInstance);
+    return (node instanceof MClass) || 
+        (node instanceof MInterface)|| 
+        (node instanceof MModel)    || 
+        (node instanceof MPackage)  || 
+        (node instanceof MInstance);
   }
 
   /** Return true if the given object is a valid edge in this graph */
@@ -265,7 +268,7 @@ implements VetoableChangeListener  {
          MAssociationEnd ae = (MAssociationEnd) iter.next();
          if(canAddEdge(ae.getAssociation())) {
            addEdge(ae.getAssociation());
-           return;
+           // return;
          }
       }
     }
@@ -276,7 +279,7 @@ implements VetoableChangeListener  {
          MGeneralization g = (MGeneralization) iter.next();
          if(canAddEdge(g)) {
            addEdge(g);
-           return;
+           // return;
          }
       }
       Collection sp = ((MGeneralizableElement)node).getSpecializations();
@@ -285,7 +288,7 @@ implements VetoableChangeListener  {
          MGeneralization s = (MGeneralization) iter.next();
          if(canAddEdge(s)) {
            addEdge(s);
-           return;
+           // return;
          }
       }
     }
@@ -297,7 +300,7 @@ implements VetoableChangeListener  {
          MDependency dep = (MDependency) iter.next();
          if(canAddEdge(dep)) {
            addEdge(dep);
-           return;
+           // return;
          }
       }
     }
@@ -325,6 +328,29 @@ implements VetoableChangeListener  {
   public Object connect(Object fromPort, Object toPort,
                         java.lang.Class edgeClass) {
 	  cat.debug("connecting: "+fromPort+toPort+edgeClass);
+
+      if ((fromPort instanceof MModelElement) && 
+               (toPort instanceof MModelElement)) {
+          if (edgeClass == MPermission.class) {
+              MModelElement fromMMElem = (MModelElement) fromPort;
+              MModelElement toMMElem = (MModelElement) toPort;
+              MPermission per = 
+                  UmlFactory.getFactory().getCore().
+                  buildPermission(fromMMElem, toMMElem);
+              addEdge(per);
+              return per;
+          }
+          else if (edgeClass == MUsage.class) {
+              MModelElement fromMMElem = (MModelElement) fromPort;
+              MModelElement toMMElem = (MModelElement) toPort;
+              MUsage usa = 
+                  UmlFactory.getFactory().getCore().
+                  buildUsage(fromMMElem, toMMElem);
+              addEdge(usa);
+              return usa;
+          }
+      }
+
       if ((fromPort instanceof MClass) && (toPort instanceof MClass)) {
           MClass fromCls = (MClass) fromPort;
           MClass toCls = (MClass) toPort;
@@ -474,18 +500,6 @@ implements VetoableChangeListener  {
               MLink link = UmlFactory.getFactory().getCommonBehavior().buildLink(fromInst, toInst);
               addEdge(link);
               return link;
-          }
-      }
-      else if ((fromPort instanceof MModelElement) && 
-               (toPort instanceof MModelElement)) {
-          if (edgeClass == MPermission.class) {
-              MModelElement fromMMElem = (MModelElement) fromPort;
-              MModelElement toMMElem = (MModelElement) toPort;
-              MPermission per = 
-                  UmlFactory.getFactory().getCore().
-                  buildPermission(fromMMElem, toMMElem);
-              addEdge(per);
-              return per;
           }
       }
       throw new UnsupportedOperationException("should not enter here!");
