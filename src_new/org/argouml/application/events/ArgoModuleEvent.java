@@ -32,6 +32,11 @@ import org.argouml.application.api.*;
 
 public class ArgoModuleEvent extends ArgoEvent {
 
+    /** Instantiates a specific module event
+     * 
+     * @param eventType that occurred
+     * @param src the module that caused it to happen
+     */
     public ArgoModuleEvent(int eventType, ArgoModule src) {
         super(eventType, src);
     }

@@ -51,6 +51,9 @@ public abstract class ArgoEvent extends EventObject
 	       : getEventStartRange() + 99);
     }
 
+    /** Provides formatted description of the event
+     * @return the formatted information.
+     */
     public String toString() {
         return "{" + getClass().getName() + ":" + _eventType +
 	       "(" + getEventStartRange() + "-" + getEventEndRange() + ")" +

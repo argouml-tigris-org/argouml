@@ -31,20 +31,33 @@ package org.argouml.application.events;
  */
 public interface ArgoEventTypes {
 
+    /** Id which matches any event */
     public static final int ANY_EVENT                 =  1000;
 		  		 
+    /** Id which matches any module event */
     public static final int ANY_MODULE_EVENT          =  1100;
+    /** Id indicating a module was loaded */
     public static final int MODULE_LOADED             =  1101;
+    /** Id indicating a module was unloaded */
     public static final int MODULE_UNLOADED           =  1102;
+    /** Id indicating a module was enabled */
     public static final int MODULE_ENABLED            =  1103;
+    /** Id indicating a module was disabled */
     public static final int MODULE_DISABLED           =  1104;
 		  		 
+    /** Id indicating any notation event */
     public static final int ANY_NOTATION_EVENT        =  1200;
+    /** Id indicating the default notation was changed */
     public static final int NOTATION_CHANGED          =  1201;
+    /** Id indicating a notation was added */
     public static final int NOTATION_ADDED            =  1202;
+    /** Id indicating a notation was removed */
     public static final int NOTATION_REMOVED          =  1203;
+    /** Id indicating a notation provider was added */
     public static final int NOTATION_PROVIDER_ADDED   =  1204;
+    /** Id indicating a notation provider was removed */
     public static final int NOTATION_PROVIDER_REMOVED =  1205;
 		  		 
+    /** Id marker for the last Argo event */
     public static final int ARGO_EVENT_END            = 99999;
 }
