@@ -25,6 +25,8 @@ Modifications
 
     <glossentry id="gl.activitydiag">
       <glossterm>Activity Diagram</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Activity Diagram</primary>
       </indexterm>
@@ -33,7 +35,6 @@ Modifications
 	<secondary>Activity</secondary>
       </indexterm>
 
-      <glossdef>
         <para>A UML diagram capturing the dynamic behavior of a system or
           sub-system. See 
 
@@ -47,11 +48,12 @@ Modifications
 
     <glossentry id="gl.action">
       <glossterm>Action</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Action</primary>
       </indexterm>
 
-      <glossdef>
         <para>Behavior associated with <emphasis>States</emphasis> or
           <emphasis>Transitions</emphasis> in <emphasis>State
           Diagram</emphasis>. These actions are invocations of
@@ -71,11 +73,12 @@ Modifications
 
     <glossentry id="gl.actor">
       <glossterm>Actor</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Actor</primary>
       </indexterm>
 
-      <glossdef>
         <para>A representation of an agent (animate or inanimate) on a
           <emphasis>Use Case Diagram</emphasis> external to the system being
           designed.</para>
@@ -89,11 +92,12 @@ Modifications
 
     <glossentry id="gl.analysis">
       <glossterm>Analysis</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Analysis</primary>
       </indexterm>
 
-      <glossdef>
         <para>Analysis is the process of taking the <quote>customer</quote>
          requirements and re-casting them in the language of, and from the
          perspective of, a putative solution.</para>
@@ -104,11 +108,12 @@ Modifications
 
     <glossentry id="gl.assocclass">
       <glossterm>Association Class</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Association Class</primary>
       </indexterm>
 
-      <glossdef>
         <para>A class that characterises the association between two other
           clases.</para>
 
@@ -120,11 +125,12 @@ Modifications
 
     <glossentry id="gl.association">
       <glossterm>Association</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Association</primary>
       </indexterm>
 
-      <glossdef>
         <para>A relationship between two classes in a Class Diagram or between
           Use Cases or Use Cases and Actors in a Use Case Diagram.</para>
 
@@ -139,6 +145,8 @@ Modifications
 
     <glossentry id="gl.attribute">
       <glossterm>Attribute (of a Class or Object)</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Attribute</primary>
 	<secondary>of a Class</secondary>
@@ -148,7 +156,6 @@ Modifications
 	<secondary>of an Object</secondary>
       </indexterm>
 
-      <glossdef>
         <para>An attribute of a class or object is a specification of a data
           element encapsulated by that object.</para>
 
@@ -170,11 +177,12 @@ Modifications
 
     <glossentry id="gl.case">
       <glossterm>CASE</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>CASE</primary>
       </indexterm>
 
-      <glossdef>
         <para>Computer Aided Sofware Engineering.</para>
       </glossdef>
     </glossentry>
@@ -183,11 +191,12 @@ Modifications
 
     <glossentry id="gl.class">
       <glossterm>Class</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Class</primary>
       </indexterm>
 
-      <glossdef>
         <para>The encapsulation of the data associated with an artifact (its
           <emphasis>attributes</emphasis>) and the actions associated with the
           artifact (its <emphasis>methods</emphasis>).</para>
@@ -214,7 +223,10 @@ Modifications
     <!-- Class Diagram -->
 
     <glossentry id="gl.classdiag">
+
       <glossterm>Class Diagram</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Class Diagram</primary>
       </indexterm>
@@ -223,7 +235,6 @@ Modifications
 	<secondary>Class</secondary>
       </indexterm>
 
-      <glossdef>
         <para>A UML Diagram showing the structural relationship between
           classes. See
           <xref linkend="s1.umlclassdiags"/> for more information.</para>
@@ -236,6 +247,8 @@ Modifications
 
     <glossentry id="gl.collabdiag">
       <glossterm>Collaboration Diagram</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Collaboration Diagram</primary>
       </indexterm>
@@ -244,7 +257,6 @@ Modifications
 	<secondary>Collaboration</secondary>
       </indexterm>
 
-      <glossdef>
         <para>A UML Diagram showing the dyanamic behavior as messages are
           passed between objects. Equivalent to a <emphasis>Sequence
           Diagram</emphasis>. Which representation is appropriate depends on
@@ -262,6 +274,8 @@ Modifications
 
     <glossentry id="gl.comprehension">
       <glossterm>Comprehension and Problem Solving</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Comprehension</primary>
       </indexterm>
@@ -269,7 +283,6 @@ Modifications
         <primary>Problem Solving</primary>
       </indexterm>
 
-      <glossdef>
         <para>A design visualization theory within cognitive psychology. The
           theory notes that designers must bridge a gap between their mental
           model of the problem or situation and the formal model of a solution
@@ -297,6 +310,8 @@ Modifications
 
     <glossentry id="gl.conceptclassdiag">
       <glossterm>Concept Class Diagram</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Concept Class Diagram</primary>
       </indexterm>
@@ -309,7 +324,6 @@ Modifications
 	<secondary>Concept Class</secondary>
       </indexterm>
 
-      <glossdef>
         <para>A Class Diagram constructed during the Analysis Phase to show the
           main structural components of the problem identified in the
           Requirements Phase. See 
@@ -323,11 +337,12 @@ Modifications
 
     <glossentry id="gl.critic">
       <glossterm>Critic</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Critic</primary>
       </indexterm>
 
-      <glossdef>
         <para>A process within &argouml; that provides suggestions as to how
           the design might be improved. Suggestions are based on principles
           within three theories of cognitive psychology,
@@ -353,6 +368,8 @@ Modifications
 
     <glossentry id="gl.extends">
       <glossterm>Extends Relationship</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Extends Relationship</primary>
       </indexterm>
@@ -361,7 +378,6 @@ Modifications
 	<secondary>Extends</secondary>
       </indexterm>
 
-      <glossdef>
         <para>A relationship between two Use Cases, where the
           <emphasis>extended</emphasis> Use Case describes a special variant
           of the <emphasis>extending</emphasis> Use Case.</para> 
@@ -384,6 +400,8 @@ Modifications
 
     <glossentry id="gl.generalization">
       <glossterm>Generalization Relationship</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Generalization Relationship</primary>
       </indexterm>
@@ -392,7 +410,6 @@ Modifications
 	<secondary>Generalization</secondary>
       </indexterm>
 
-      <glossdef>
         <para>A relationship between one <emphasis>generalising</emphasis>
           Use Cases and one or more <emphasis>generalised</emphasis> Use
           Cases, where the <emphasis>generalised</emphasis> Use Cases are
@@ -409,11 +426,12 @@ Modifications
 
     <glossentry id="gl.gnu">
       <glossterm>GNU</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>GNU</primary>
       </indexterm>
 
-      <glossdef>
         <para>"GNU's Not Unix". One of the first open/free source
           projects. Originally best known for its GNU version of the &emacs;
           editor, it now has many other projects, usually closely allied to
@@ -427,11 +445,12 @@ Modifications
 
     <glossentry id="gl.gui">
       <glossterm>GUI</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>GUI</primary>
       </indexterm>
 
-      <glossdef>
         <para>Graphical User Interface.</para>
       </glossdef>
     </glossentry>
@@ -447,6 +466,8 @@ Modifications
 
     <glossentry id="gl.hierstatediag">
       <glossterm>Hierarchical State Diagram</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Hierarchical State Diagram</primary>
       </indexterm>
@@ -459,7 +480,6 @@ Modifications
 	<secondary>Hierarchical State</secondary>
       </indexterm>
 
-      <glossdef>
         <para>A <emphasis>State Diagram</emphasis> that contains subsidiary
           state diagrams within individual <emphasis>States</emphasis>.</para>
 
@@ -478,6 +498,8 @@ Modifications
 
     <glossentry id="gl.includes">
       <glossterm>Includes Relationship</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Includes Relationship</primary>
       </indexterm>
@@ -486,7 +508,6 @@ Modifications
 	<secondary>Includes</secondary>
       </indexterm>
 
-      <glossdef>
         <para>A relationship between two Use Cases, where the
           <emphasis>included</emphasis> Use Case describes part of the
           functionality of the <emphasis>including</emphasis> Use
@@ -502,6 +523,8 @@ Modifications
 
     <glossentry id="gl.iterative">
       <glossterm>Iterative Design Process</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Iterative Design Process</primary>
       </indexterm>
@@ -511,7 +534,6 @@ Modifications
       </indexterm>
 
 
-      <glossdef>
         <para>A design process where each all phases (requirements, analysis,
           design, build, test) are tackled partially in a series of
           iterations. See <xref linkend="s2.proctypes"/> for more
@@ -531,11 +553,12 @@ Modifications
 
     <glossentry id="gl.java">
       <glossterm>Java</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Java</primary>
       </indexterm>
 
-      <glossdef>
         <para>A fully object oriented programming language introduced by Sun
           Microsystems. More strongly typed than C++, it compiles to an
           interpreted code, the Java Virtual Machine (JVM). The JVM means that
@@ -562,11 +585,12 @@ Modifications
 
     <glossentry id="gl.linux">
       <glossterm>Linux</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Linux</primary>
       </indexterm>
 
-      <glossdef>
         <para>An open source version of the Unix operating system.</para>
 
         <glossseealso otherterm="gl.gnu"/>
@@ -583,11 +607,12 @@ Modifications
 
     <glossentry id="gl.mealy">
       <glossterm>Mealy Machine</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Mealy Machine</primary>
       </indexterm>
 
-      <glossdef>
         <para>A <emphasis>State Diagram</emphasis> where actions are associated
           with <emphasis>States</emphasis>.</para>
 
@@ -603,6 +628,8 @@ Modifications
 
     <glossentry id="gl.method">
       <glossterm>Method (of a Class or Object)</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Method</primary>
 	<secondary>of a Class</secondary>
@@ -618,7 +645,6 @@ Modifications
 	<primary>Object Method</primary>
       </indexterm>
 
-      <glossdef>
         <para>A method of a class or object is a specification of behavior
           encapsulated by that object.</para>
 
@@ -632,11 +658,12 @@ Modifications
 
     <glossentry id="gl.moore">
       <glossterm>Moore Machine</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Moore Machine</primary>
       </indexterm>
 
-      <glossdef>
         <para>A <emphasis>State Diagram</emphasis> where actions are associated
           with <emphasis>Transitions</emphasis>.</para>
 
@@ -660,11 +687,12 @@ Modifications
 
     <glossentry id="gl.object">
       <glossterm>Object</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Object</primary>
       </indexterm>
 
-      <glossdef>
         <para>An instance of a <emphasis>Class</emphasis>.</para>
 
         <para>Classes and objects in UML are represented on <emphasis>Activity
@@ -685,6 +713,8 @@ Modifications
 
     <glossentry id="gl.ocl">
       <glossterm>OCL</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>OCL</primary>
       </indexterm>
@@ -692,7 +722,6 @@ Modifications
 	<primary>Object Constraint Language</primary>
       </indexterm>
 
-      <glossdef>
         <para>Object Constraint Language. A language for describing constraints
           within UML.</para>
         <glossseealso otherterm="gl.uml"/>
@@ -703,6 +732,8 @@ Modifications
 
     <glossentry id="gl.omg">
       <glossterm>OMG</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>OMG</primary>
       </indexterm>
@@ -710,7 +741,6 @@ Modifications
 	<primary>Object Management Group</primary>
       </indexterm>
 
-      <glossdef>
         <para>The Object Management Group. An international industry
           standardisation body. Best known for CORBA and UML.</para>
 
@@ -722,6 +752,8 @@ Modifications
 
     <glossentry id="gl.ooad">
       <glossterm>&ooad;</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>&ooad;</primary>
       </indexterm>
@@ -734,7 +766,6 @@ Modifications
 	<secondary>Object Oriented</secondary>
       </indexterm>
 
-      <glossdef>
         <para>Object Oriented Analysis and Design. An approach to software
           problem analysis and design based on objects, which encapsulate both
           data and code. See See <xref linkend="s2.ooad"/> or any standard
@@ -750,6 +781,8 @@ Modifications
 
     <glossentry id="gl.oppdesign">
       <glossterm>Opportunistic Design</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Opportunistic Design</primary>
       </indexterm>
@@ -758,7 +791,6 @@ Modifications
 	<secondary>Opportunistic</secondary>
       </indexterm>
 
-      <glossdef>
         <para>A theory within cognitive psychology suggesting that although
           designers plan and describe their work in an ordered, hierarchical
           fashion, in actuality, they choose successive tasks based on the
@@ -780,11 +812,12 @@ Modifications
 
     <glossentry id="gl.pane">
       <glossterm>Pane</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Pane</primary>
       </indexterm>
 
-      <glossdef>
         <para>A subwindow within the main window of the &argouml; user
           interface.</para>
       </glossdef>
@@ -802,6 +835,8 @@ Modifications
 
     <glossentry id="gl.relusecase">
       <glossterm>Realisation Use Case</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Realisation Use Case</primary>
       </indexterm>
@@ -810,7 +845,6 @@ Modifications
 	<secondary>Realisation</secondary>
       </indexterm>
 
-      <glossdef>
         <para>A <emphasis>Use Case</emphasis> where the <emphasis>Use Case
         Diagram</emphasis> and <emphasis>Use Case Specification</emphasis> are
         in the language of the solution domain, rather than the problem
@@ -824,11 +858,12 @@ Modifications
 
     <glossentry id="gl.reflection">
       <glossterm>Reflection-in-Action</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Reflection-in-Action</primary>
       </indexterm>
 
-      <glossdef>
         <para>A theory within cognitive psychology which observes that
           designers of complex systems do not conceive a design
           fully-formed. Instead, they must construct a partial design,
@@ -845,11 +880,12 @@ Modifications
 
     <glossentry id="gl.requirements">
       <glossterm>Requirements Capture</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Requirements Capture</primary>
       </indexterm>
 
-      <glossdef>
         <para>Requirements capture is the process of identifying what the
           <quote>customer</quote> wants from the proposed system. See
           <xref linkend="ch.tut.reqs"/> for a fuller description.</para>
@@ -869,6 +905,8 @@ Modifications
 
     <glossentry id="gl.seqdiag">
       <glossterm>Sequence Diagram</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Sequence Diagram</primary>
       </indexterm>
@@ -877,7 +915,6 @@ Modifications
 	<secondary>Sequence</secondary>
       </indexterm>
 
-      <glossdef>
         <para>A UML Diagram showing the dyanamic behavior as messages are
           passed between objects. Equivalent to a <emphasis>Collaboration
           Diagram</emphasis>. Which representation is appropriate depends on
@@ -892,6 +929,8 @@ Modifications
 
     <glossentry id="gl.sgml">
       <glossterm>SGML</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>SGML</primary>
       </indexterm>
@@ -899,7 +938,6 @@ Modifications
 	<primary>Standard Graphical Markup Language</primary>
       </indexterm>
 
-      <glossdef>
         <para>Standard Graphical Markup Language. Defined by ISO
           8879:1986.</para>
 
@@ -911,11 +949,12 @@ Modifications
 
     <glossentry id="gl.simula67">
       <glossterm>Simula&nbsp;67</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Simula&nbsp;67</primary>
       </indexterm>
 
-      <glossdef>
         <para>A procedural programming language intended for simulation. Noted
           for its introduction of <emphasis>objects</emphasis> and
           <emphasis>coroutines</emphasis>.</para>
@@ -926,11 +965,12 @@ Modifications
 
     <glossentry id="gl.state">
       <glossterm>State</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>State</primary>
       </indexterm>
 
-      <glossdef>
         <para>Within a <emphasis>State Diagram</emphasis> a one of the possible
           configurations of the machine.</para>
 
@@ -942,6 +982,8 @@ Modifications
 
     <glossentry id="gl.statediag">
       <glossterm>State Diagram</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>State</primary>
 	<secondary>Diagram</secondary>
@@ -951,7 +993,6 @@ Modifications
 	<secondary>State</secondary>
       </indexterm>
 
-      <glossdef>
         <para>A UML Diagram showing the dyanamic behavior of an active
           <emphasis>Object</emphasis>. See <xref linkend="s1.umlstatediags"/>
           for more information.</para>
@@ -964,6 +1005,8 @@ Modifications
 
     <glossentry id="gl.stereotype">
       <glossterm>Stereotypes and Stereotyping</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Stereotypes</primary>
       </indexterm>
@@ -971,7 +1014,6 @@ Modifications
 	<primary>Stereotyping</primary>
       </indexterm>
 
-      <glossdef>
         <para>Any artifact within UML can be given a
           <emphasis>stereotype</emphasis> to indicate its association with a
           particular role in the design. A stereotype <literal>spqr</literal>
@@ -993,11 +1035,12 @@ Modifications
 
     <glossentry id="gl.supspec">
       <glossterm>Supplementary Specification</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Supplementary Specification</primary>
       </indexterm>
 
-      <glossdef>
         <para>The document capturing non-functional requirements that cannot be
           associated with Use Cases.</para>
 
@@ -1009,11 +1052,12 @@ Modifications
 
     <glossentry id="gl.svg">
       <glossterm>SVG</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>SVG</primary>
       </indexterm>
 
-      <glossdef>
         <para>Standard Vector Graphics format. A standard representation of
           graphics diagrams that use vectors. ArgoUML uses SVG to store its
           diagrams.</para>
@@ -1024,6 +1068,8 @@ Modifications
 
     <glossentry id="gl.sysseqdiag">
       <glossterm>System Sequence Diagram</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>System Sequence Diagram</primary>
       </indexterm>
@@ -1032,7 +1078,6 @@ Modifications
 	<secondary>System Sequence</secondary>
       </indexterm>
 
-      <glossdef>
         <para>A <emphasis>Sequence Diagram</emphasis> used in the
           <emphasis>Analysis</emphasis> Phase showing the dyanamic behavior of
           the overall system. See
@@ -1046,6 +1091,8 @@ Modifications
 
     <glossentry id="gl.sysstatediag">
       <glossterm>System State Diagram</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>System State Diagram</primary>
       </indexterm>
@@ -1054,7 +1101,6 @@ Modifications
 	<secondary>System State</secondary>
       </indexterm>
 
-      <glossdef>
         <para>A <emphasis>State Diagram</emphasis> used in the
           <emphasis>Analysis</emphasis> Phase showing the dyanamic behavior of
           an active top level system objects. See
@@ -1074,11 +1120,12 @@ Modifications
 
     <glossentry id="gl.todo">
       <glossterm>To-Do List</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>To-Do List</primary>
       </indexterm>
 
-      <glossdef>
         <para>A feature of &argouml; allowing the user to record activities
           that are yet to be completed.</para>
       </glossdef>
@@ -1088,11 +1135,12 @@ Modifications
 
     <glossentry id="gl.transition">
       <glossterm>Transition</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Transition</primary>
       </indexterm>
 
-      <glossdef>
         <para>The change between <emphasis>States</emphasis> in a
           <emphasis>State Diagram</emphasis>..</para>
 
@@ -1111,11 +1159,12 @@ Modifications
 
     <glossentry id="gl.uml">
       <glossterm>UML</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>UML</primary>
       </indexterm>
 
-      <glossdef>
         <para>Universal Modelling Language. A graphical notation for &ooad;
           processes, standardised by the OMG. &argouml; follows UML
           v1.3. Version 1.4 was released during 2001, with v2.0 planned for
@@ -1129,11 +1178,12 @@ Modifications
 
     <glossentry id="gl.usecase">
       <glossterm>Use Case</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Use Case</primary>
       </indexterm>
 
-      <glossdef>
         <para>A UML notation for capturing requirements of a system or
           sub-system. See <xref linkend="s1.tut.req_process_output"/> for more
           information.</para>
@@ -1147,6 +1197,8 @@ Modifications
 
     <glossentry id="gl.usecasediag">
       <glossterm>Use Case Diagram</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Use Case</primary>
 	<secondary>Diagram</secondary>
@@ -1156,7 +1208,6 @@ Modifications
 	<secondary>Use Case</secondary>
       </indexterm>
 
-      <glossdef>
         <para>A UML diagram showing the relationships between Actors and Use
           Cases. See <xref linkend="s1.tut.req_process_output"/> for more
           information.</para>
@@ -1170,12 +1221,13 @@ Modifications
 
     <glossentry id="gl.ucspec">
       <glossterm>Use Case Specification</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Use Case</primary>
 	<secondary>Specification</secondary>
       </indexterm>
 
-      <glossdef>
         <para>The document capturing the detailed requirements behind a Use
           Case.</para>
 
@@ -1193,11 +1245,12 @@ Modifications
 
     <glossentry id="gl.vision">
       <glossterm>Vision Document</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Vision Document</primary>
       </indexterm>
 
-      <glossdef>
         <para>The top level document describing what the system being developed
           is to achieve.</para>
       </glossdef>
@@ -1213,11 +1266,12 @@ Modifications
 
     <glossentry id="gl.w3c">
       <glossterm>W3C</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>W3C</primary>
       </indexterm>
 
-      <glossdef>
         <para>The World Wide Web Consortium,
           <ulink url="http://www.w3c.org">www.w3c.org</ulink>. An
           international standardisation body for all things to do with the
@@ -1229,6 +1283,8 @@ Modifications
 
     <glossentry id="gl.waterfall">
       <glossterm>Waterfall Design Process</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>Waterfall Design Process</primary>
       </indexterm>
@@ -1237,7 +1293,6 @@ Modifications
 	<secondary>Waterfall</secondary>
       </indexterm>
 
-      <glossdef>
         <para>A design process where each phase (requirements, analysis,
           design, build, test) is completed before the next starts. See
           <xref linkend="s2.proctypes"/> for more information.</para>
@@ -1256,11 +1311,12 @@ Modifications
 
     <glossentry id="gl.xmi">
       <glossterm>XMI</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>XMI</primary>
       </indexterm>
 
-      <glossdef>
         <para>XML Model Interchange format. A format for file storage of UML
           models. Currently incomplete, since it does not carry all graphical
           layout information, so must be supplemented by files carrying that
@@ -1275,11 +1331,12 @@ Modifications
 
     <glossentry id="gl.xml">
       <glossterm>XML</glossterm>
+
+      <glossdef>
       <indexterm>
         <primary>XML</primary>
       </indexterm>
 
-      <glossdef>
         <para>eXtensible Markup Language. A simplified derivative of SGML
           defined by W3C</para>
 
