@@ -4993,6 +4993,21 @@ public class ModelFacade {
 	return illegalArgumentObject(handle);
     }
 
+    /**
+     * Get the partitions from a container.
+     *
+     * @param container The container.
+     * @return The partitions (a collection).
+     */
+    public static Collection getPartitions(Object container) {
+        if (container instanceof MActivityGraph) {
+            return ((MActivityGraph) container).getPartitions();
+        }
+        //
+	return illegalArgumentCollection(container);
+    }
+
+
     ////////////////////////////////////////////////////////////////
     // Other querying methods
 
