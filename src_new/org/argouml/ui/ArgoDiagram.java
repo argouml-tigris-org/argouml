@@ -208,7 +208,7 @@ public class ArgoDiagram extends Diagram {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        return "Diagram: " + _name;
+        return "Diagram: " + getName();
     }
     
 
