@@ -41,6 +41,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 import javax.swing.JProgressBar;
+import javax.swing.text.JTextComponent;
 import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -257,9 +258,10 @@ public class UmlFilePersister extends AbstractFilePersister {
     }
 
     /**
-     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.net.URL, javax.swing.JProgressBar)
+     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.net.URL,
+     * javax.swing.JProgressBar, javax.swing.text.JTextComponent progressText)
      */
-    public Project doLoad(URL url, JProgressBar progressBar) throws OpenException {
+    public Project doLoad(URL url, JProgressBar progressBar, JTextComponent progressText) throws OpenException {
         try {
             Project p = new Project(url);
 
