@@ -49,7 +49,7 @@ import javax.swing.JMenuItem;
 public class LanguageChooser extends UMLAction implements PluggableMenu {
 
     /** logger */
-    private static Logger cat = Logger.getLogger(LanguageChooser.class);
+    private static final Logger LOG = Logger.getLogger(LanguageChooser.class);
 
     /** A singleton as the only instance of this action. */
     private static LanguageChooser singleton = new LanguageChooser();
@@ -77,20 +77,26 @@ public class LanguageChooser extends UMLAction implements PluggableMenu {
         return singleton;
     }
 
+    /**
+     * @see org.argouml.application.api.ArgoModule#initializeModule()
+     */
     public boolean initializeModule() {
         if (((Locale[]) Translator.getLocales()).length < 1) {
-            cat.error ("Unable to launch LanguageChooser plugin!");
+            LOG.error ("Unable to launch LanguageChooser plugin!");
 
             return false;
         }
 
-        cat.info ("+---------------------------------+");
-        cat.info ("| LanguageChooser plugin enabled! |");
-        cat.info ("+---------------------------------+");
+        LOG.info ("+---------------------------------+");
+        LOG.info ("| LanguageChooser plugin enabled! |");
+        LOG.info ("+---------------------------------+");
 
         return true;
     }
 
+    /**
+     * @see org.argouml.application.api.Pluggable#inContext(java.lang.Object[])
+     */
     public boolean inContext(Object[] o) {
         if (o.length < 2) { return false; }
         if ((o[0] instanceof JMenuItem)
@@ -100,23 +106,67 @@ public class LanguageChooser extends UMLAction implements PluggableMenu {
         return false;
     }
 
+    /**
+     * @see org.argouml.application.api.ArgoModule#setModuleEnabled(boolean)
+     */
     public void setModuleEnabled(boolean v) { /* empty */ }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
+     */
     public boolean isModuleEnabled() { return true; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModulePopUpActions(
+     * java.util.Vector, java.lang.Object)
+     */
     public Vector getModulePopUpActions(Vector v, Object o) { return null; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#shutdownModule()
+     */
     public boolean shutdownModule() { return true; }
 
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleName()
+     */
     public String getModuleName() { return "LanguageChooser"; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleDescription()
+     */
     public String getModuleDescription() {
         return "Menu Item for LanguageChooser";
     }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
+     */
     public String getModuleAuthor() { return "Jean-Hugues de Raigniac"; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleVersion()
+     */
     public String getModuleVersion() { return "0.11.3"; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleKey()
+     */
     public String getModuleKey() { return "module.menu.tools.languages"; }
 
+    /**
+     * @param mi the parent menuitem
+     * @param s the name
+     * @return the new menuitem
+     */
     public JMenuItem getMenuItem(JMenuItem mi, String s) {
         return getMenuItem(buildContext(mi, s));
     }
 
+    /**
+     * @see org.argouml.application.api.PluggableMenu#buildContext(
+     * javax.swing.JMenuItem, java.lang.String)
+     */
     public Object[] buildContext(JMenuItem a, String b) {
         return new Object[] {
 	    a, b 
@@ -163,7 +213,7 @@ public class LanguageChooser extends UMLAction implements PluggableMenu {
 
         Translator.setLocale(locale);
 
-		// TODO Implement this later
+		// TODO: Implement this later
         //LocaleEvent e = new LocaleEvent(this, locale);
         // org.argouml.ui.ProjectBrowser.getInstance().localeChanged(e);
     }
