@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+    "-//Puppy Crawl//DTD Check Configuration 1.0//EN"
+    "http://www.puppycrawl.com/dtds/configuration_1_0.dtd">
+
+<module name="Checker">
+
+    <module name="PackageHtml"/>
+
+    <module name="Translation"/>
+
+    <module name="TreeWalker">
+
+        <property name="tabWidth" value="8" />
+
+        <module name="ConstantName"/>
+        <module name="EmptyBlock">
+          <property name="tokens" value="LITERAL_CATCH"/>
+          <!-- require a comment, change to stmt to require a statement -->
+          <property name="option" value="text"/>
+        </module>
+
+        <module name="EmptyForIteratorPad"/>
+        <module name="EqualsHashCode"/>
+        <module name="FileLength"/>
+        <module name="GenericIllegalRegexp">
+          <property name="format" value="@todo"/>
+        </module>
+        <module name="GenericIllegalRegexp">
+          <property name="format" value="needs?-?more-?work"/>
+        </module>
+ 	<module name="HiddenField"/>
+
+        <module name="IllegalImport"/>
+        <module name="IllegalInstantiation"/>
+	<module name="IndentationCheck"/>
+
+        <module name="InnerAssignment"/>
+        <module name="JavadocType">
+            <property name="scope" value="protected"/>
+        </module>
+        <module name="JavadocMethod">
+            <property name="scope" value="protected"/>
+            <property name="allowUndeclaredRTE" value="true"/>
+        </module>
+        <module name="JavadocVariable">
+            <property name="scope" value="protected"/>
+	</module>
+
+        <module name="LineLength"/>
+        <module name="LocalFinalVariableName"/>
+        <module name="LocalVariableName"/>
+        <module name="MemberName">
+            <property name="format" value="^_[a-zA-Z][a-zA-Z0-9]*$"/>
+        </module>
+        <module name="MethodLength"/>
+        <module name="MethodName"/>
+        <module name="NoWhitespaceAfter"/>
+
+        <module name="NoWhitespaceBefore"/>
+        <module name="NoWhitespaceBefore">
+            <property name="tokens" value="DOT"/>
+            <property name="allowLineBreaks" value="true"/>
+        </module>
+
+        <module name="PackageName"/>
+        <module name="ParameterName"/>
+        <module name="ParameterNumber"/>
+        <module name="RedundantImport"/>
+        <module name="SimplifyBooleanExpression"/>
+        <module name="SimplifyBooleanReturn"/>
+        <module name="TypeName"/>
+        <module name="UnusedImports"/>
+        <module name="UpperEll"/>
+        <module name="VisibilityModifier">
+            <property name="publicMemberPattern" value="^$"/>
+        </module>
+        <module name="WhitespaceAfter"/>
+        <module name="WhitespaceAround"/>
+
+    <!-- To enable later:
+
+        <module name="Header">
+          <property name="headerFile" value="${checkstyle.header.file}"/>
+        </module>
+
+        <module name="LeftCurly">
+            <property name="option" value="nl"/>
+            <property name="tokens" value="CLASS_DEF,INTERFACE_DEF"/>
+        </module>
+        <module name="LeftCurly">
+            <property name="option" value="nlow"/>
+            <property name="tokens" value="METHOD_DEF,CTOR_DEF,LITERAL_CATCH,LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_FOR,LITERAL_IF,LITERAL_SWITCH,LITERAL_SYNCHRONIZED,LITERAL_TRY,LITERAL_WHILE"/>
+        </module>
+        <module name="ModifierOrder"/>
+
+        <module name="RedundantModifier"/>
+        <module name="RightCurly">
+            <property name="option" value="alone"/>
+            <property name="tokens" value="LITERAL_ELSE"/>
+        </module>
+        <module name="RightCurly">
+            <property name="option" value="same"/>
+            <property name="tokens" value="LITERAL_CATCH,LITERAL_TRY"/>
+        </module>
+
+        <module name="StaticVariableName"/>
+        <module name="TodoComment"/>
+    -->
+    </module>
+</module>
