@@ -28,7 +28,8 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
- * A model that shows the extend relationships for some usecase
+ * A model that shows the extend relationships for some usecase.
+ * 
  * @since Oct 7, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
