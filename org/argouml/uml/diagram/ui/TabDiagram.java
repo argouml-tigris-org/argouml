@@ -303,7 +303,6 @@ public class TabDiagram
     }
 
     private void select(Object[] targets) {
-        _jgraph.deselectAll();
         LayerManager manager = _jgraph.getEditor().getLayerManager();
         Vector figList = new Vector();
         for (int i = 0; i < targets.length; i++) {
@@ -318,8 +317,11 @@ public class TabDiagram
                 }
             }
         }
-        _jgraph.select(figList);
 
+	if (!figList.equals(_jgraph.selectedFigs())) {
+            _jgraph.deselectAll();
+            _jgraph.select(figList);
+	}
     }
 
 }
