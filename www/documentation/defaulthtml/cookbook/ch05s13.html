@@ -22,7 +22,7 @@ Logging is currently implemented using log4j.
         default, logging is turned off and only the version
         information of all used libraries are shown on
         the console.
-    </p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6101"></a>5.13.1.&nbsp;What to Log in ArgoUML</h3></div></div><div></div></div><p>
+    </p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6253"></a>5.13.1.&nbsp;What to Log in ArgoUML</h3></div></div><div></div></div><p>
             Logging entries in log4j
             belong to exactly <span class="emphasis"><em>one</em></span> level.
             </p><div class="itemizedlist"><ul type="disc"><li><p>
@@ -61,7 +61,7 @@ For performance reasons, it is advised to do a check before
 frequently passed DEBUG
 and INFO log4j messages (see <a href="ch05s13.html#example.log4j.speed" title="Example&nbsp;5.2.&nbsp;Improving on speed/performance">Example&nbsp;5.2</a>).
 The purpose of this test is to avoid the creation of the argument.
-        </p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6130"></a>5.13.2.&nbsp;How to Create Log Entries...</h3></div></div><div></div></div><a class="indexterm" name="d0e6133"></a><a class="indexterm" name="d0e6136"></a><p>
+        </p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6282"></a>5.13.2.&nbsp;How to Create Log Entries...</h3></div></div><div></div></div><a class="indexterm" name="d0e6285"></a><a class="indexterm" name="d0e6288"></a><p>
                 You should <span class="emphasis"><em>not</em></span> use
                 <tt class="function">System.out.println</tt> in 
                 <span class="application">ArgoUML</span> 
@@ -72,7 +72,7 @@ like to print the usage message in <tt class="filename">Main.java</tt>.
             To make log entries from within your own classes, you just
             need to follow the three steps below:
             </p><div class="orderedlist"><ol type="1"><li><p>Import the org.apache.log4j.Logger class</p></li><li><p>Get a Logger</p></li><li><p>Start Logging...</p></li></ol></div><p>
-        </p><div class="example"><a name="d0e6166"></a><p class="title"><b>Example&nbsp;5.1.&nbsp;For log4j version 1.2.x</b></p><pre class="programlisting">
+        </p><div class="example"><a name="d0e6318"></a><p class="title"><b>Example&nbsp;5.1.&nbsp;For log4j version 1.2.x</b></p><pre class="programlisting">
 import org.apache.log4j.Logger;
 ...
 public class <i class="replaceable"><tt>theClass</tt></i> {
@@ -126,7 +126,7 @@ for every key the user presses).
 </p></td></tr></table></div><p>
             For more information go to the log4j homepage at
             <a href="http://jakarta.apache.org/log4j/" target="_top">http://jakarta.apache.org/log4j</a>.
-        </p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e6194"></a>5.13.2.1.&nbsp;Reasoning around the performance issues</h4></div></div><div></div></div><p>
+        </p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e6346"></a>5.13.2.1.&nbsp;Reasoning around the performance issues</h4></div></div><div></div></div><p>
 Most of the log statements passed in ArgoUML are passed with logging
 turned off.
 This means that the only thing log4j should do is to determine that
@@ -159,12 +159,12 @@ often some action needs to be taken.
 If the toString() methods are simple you are still 
 stuck with the overhead of creating a <tt class="classname">StringBuffer</tt>
 (and a <tt class="classname">String</tt> from the sb.toString()-statement.
-</p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6213"></a>5.13.3.&nbsp;How to Enable Logging...</h3></div></div><div></div></div><p>
+</p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6365"></a>5.13.3.&nbsp;How to Enable Logging...</h3></div></div><div></div></div><p>
             log4j uses the command line parameter
             <i class="parameter"><tt>-Dlog4j.configuration = URL</tt></i>
             to configure itself where URL points to the location of
             your log4j configuration file.
-        </p><div class="example"><a name="d0e6221"></a><p class="title"><b>Example&nbsp;5.3.&nbsp;Various URLs</b></p><pre class="programlisting">
+        </p><div class="example"><a name="d0e6373"></a><p class="title"><b>Example&nbsp;5.3.&nbsp;Various URLs</b></p><pre class="programlisting">
 org/argouml/resource/<span class="emphasis"><em>filename.lcf</em></span>              <a name="ex.url.package"></a><img src="images/callouts/1.png" alt="1" border="0">
 
 http://localhost/shared/argouml/<span class="emphasis"><em>filename.lcf</em></span>   <a name="ex.url.link"></a><img src="images/callouts/2.png" alt="2" border="0">
@@ -176,7 +176,7 @@ file://home/username/<span class="emphasis"><em>filename.lcf</em></span>        
                         Reference to a configuration file <span class="emphasis"><em>filename.lcf</em></span> 
                         on a remote server/localhost.</p></td></tr><tr><td width="5%" valign="top" align="left"><a href="#ex.url.file"><img src="images/callouts/3.png" alt="3" border="0"></a> </td><td valign="top" align="left"><p>
                         Reference to a configuration file <span class="emphasis"><em>filename.lcf</em></span>
-                        on your localmachine.</p></td></tr></table></div><p></p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e6260"></a>5.13.3.1.&nbsp;...when running ArgoUML from the command line</h4></div></div><div></div></div><p>
+                        on your localmachine.</p></td></tr></table></div><p></p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e6412"></a>5.13.3.1.&nbsp;...when running ArgoUML from the command line</h4></div></div><div></div></div><p>
                 There are currently two possibilities of running
                 <span class="application">ArgoUML</span> from the command
                 line:
@@ -193,9 +193,9 @@ file://home/username/<span class="emphasis"><em>filename.lcf</em></span>        
                 needs to be modified).
                 <span class="application">ArgoUML</span> is then started as
                 usual with <b class="command">./build run</b>.
-             </p><div class="example"><a name="d0e6293"></a><p class="title"><b>Example&nbsp;5.4.&nbsp;Command Line for argouml.jar</b></p><pre class="programlisting">
+             </p><div class="example"><a name="d0e6445"></a><p class="title"><b>Example&nbsp;5.4.&nbsp;Command Line for argouml.jar</b></p><pre class="programlisting">
 [localhost:~] billy% java -Dlog4j.configuration=URL -jar argouml.jar                        
-                </pre><p></p></div><div class="example"><a name="d0e6298"></a><p class="title"><b>Example&nbsp;5.5.&nbsp;Modification of build.xml</b></p><pre class="programlisting">
+                </pre><p></p></div><div class="example"><a name="d0e6450"></a><p class="title"><b>Example&nbsp;5.5.&nbsp;Modification of build.xml</b></p><pre class="programlisting">
 &lt;!-- =================================================================== --&gt;
 &lt;!-- Run ArgoUML from compiled sources                                   --&gt;
 &lt;!-- =================================================================== --&gt;
@@ -209,7 +209,7 @@ file://home/username/<span class="emphasis"><em>filename.lcf</em></span>        
                        value="org/argouml/resource/<span class="emphasis"><em>filename.lcf</em></span>"&gt;&lt;/sysproperty&gt;</em></span>
     &lt;/java&gt;
 &lt;/target&gt;
-                </pre><p></p></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e6309"></a>5.13.3.2.&nbsp;...when running ArgoUML from WebStart</h4></div></div><div></div></div><p>
+                </pre><p></p></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e6461"></a>5.13.3.2.&nbsp;...when running ArgoUML from WebStart</h4></div></div><div></div></div><p>
                 To view the console output, the WebStart user has to
                 set <i class="parameter"><tt>Enable Java Console</tt></i> in the
                 Java WebStart preferences.  In the same dialog, there
@@ -220,23 +220,23 @@ file://home/username/<span class="emphasis"><em>filename.lcf</em></span>        
                 WebStart Application from within WebStart,
 it is currently not possible to choose log4j configuration
 when running ArgoUML from Java Web Start.
-            </p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e6319"></a>5.13.3.3.&nbsp;...when running ArgoUML from NetBeans</h4></div></div><div></div></div><p>
+            </p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e6471"></a>5.13.3.3.&nbsp;...when running ArgoUML from NetBeans</h4></div></div><div></div></div><p>
                 At the time of writing this paragraph, it is not possible to 
                 set the logging configuration file on a per project basis in
                 NetBeans.
                 Instead, the Global Options of 
                 [Debbuging and Execution/Execution Types/External 
                 Execution/External Process] need to be changed.
-            </p><div class="example"><a name="d0e6324"></a><p class="title"><b>Example&nbsp;5.6.&nbsp;External Execution Property (Arguments)</b></p><pre class="programlisting">
+            </p><div class="example"><a name="d0e6476"></a><p class="title"><b>Example&nbsp;5.6.&nbsp;External Execution Property (Arguments)</b></p><pre class="programlisting">
 -cp {filesystems}{:}{classpath}{:}{library} <span class="emphasis"><em>-Dlog4j.configuration=URL</em></span>
     {classname} {arguments}
-                </pre><p></p></div></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6332"></a>5.13.4.&nbsp;How to Customize Logging...</h3></div></div><div></div></div><p>
+                </pre><p></p></div></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6484"></a>5.13.4.&nbsp;How to Customize Logging...</h3></div></div><div></div></div><p>
             There are some sample configuration files provided in 
             <i class="parameter"><tt>org.argouml.resource</tt></i>. Modify these according
             to your needs.
             Or alternatively, you can try <a href="http://www.japhy.de/configLog4j" target="_top">
             configLog4j</a> to assist yourself in creating a log4j configuration file.
-        </p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6343"></a>5.13.5.&nbsp;References</h3></div></div><div></div></div><div class="itemizedlist"><ul type="disc"><li><p>
+        </p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6495"></a>5.13.5.&nbsp;References</h3></div></div><div></div></div><div class="itemizedlist"><ul type="disc"><li><p>
                 The log4j project homepage at 
                     <a href="http://jakarta.apache.org/log4j/" target="_top">http://jakarta.apache.org/log4j</a>
             </p></li><li><p>

@@ -5,14 +5,28 @@ The CVS repository at Tigris is accessible using the pserver protocol.
 The CVS root is <tt class="filename">/cvs</tt> at cvs.tigris.org.
 You use your Tigris login and Tigris password.
 </p><p>
-This means that you will set the <tt class="varname">CVSROOT</tt>-variable to
-<i class="parameter"><tt>:pserver:<i class="replaceable"><tt>login</tt></i>@cvs.tigris.org:/cvs</tt></i>
-where <i class="replaceable"><tt>login</tt></i> is your Tigris login.
-This needs to be done for the first checkout.
-After that the root will be remembered by the checked out copy.
-</p><p>
+        The first thing you will need to do, is select the CVS client. 
+        Most of the description below is about the command line CVS tool, 
+        which is available for most operating systems.
+      </p><p>
+        Whatever tool you use, 
+        do not checkout into a directory that contains spaces 
+        in a directory name somewhere in the path!
+        E.g. <tt class="literal">c:\Documents and Settings\...\My Documents\Java Development\</tt> 
+        violates this advise 3 times.
+        Reason: You can not build the documentation.
+        (BTW: Building ArgoUML itself works.)
+      </p><p>
+        In case you use the command-line CVS client, the above
+        means that you will set the <tt class="varname">CVSROOT</tt>-variable to
+        <i class="parameter"><tt>:pserver:<i class="replaceable"><tt>login</tt></i>@cvs.tigris.org:/cvs</tt></i>
+        where <i class="replaceable"><tt>login</tt></i> is your Tigris login.
+        This needs to be done before the first checkout.
+        After that the root will be remembered by the checked out copy.
+      </p><p>
         If you use one of the CVS clients with a graphical user interface,
-        (like WinCVS, GruntSpud,...)
+        (like WinCVS, GruntSpud, ...),
+        or an IDE with a built-in CVS client (like Eclipse, ...)
         then configuration will be done by filling in fields. These fields mean
         the following:
       </p><div class="itemizedlist"><ul type="disc"><li><p>

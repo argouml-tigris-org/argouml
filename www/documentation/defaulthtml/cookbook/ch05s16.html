@@ -8,7 +8,7 @@ The Explorer is located in
 <tt class="classname">org.argouml.ui.explorer</tt> and sub-packages.
 </p><p>
 The Explorer is a Layer 2 subsystem. See <a href="ch04s06.html" title="4.6.&nbsp;Layer 2 - Description of subsystems">Section&nbsp;4.6, &#8220;Layer 2 - Description of subsystems&#8221;</a>.
-</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6404"></a>5.16.1.&nbsp;Requirements</h3></div></div><div></div></div><p>
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6556"></a>5.16.1.&nbsp;Requirements</h3></div></div><div></div></div><p>
 The Explorer must react to user and application events.
 </p><p>
 User events include
@@ -57,7 +57,7 @@ and name changes in the model.
 R13: change of project, the tree must update. the root node should be
      expanded with the default diagram selected.
 </p></li></ul></div><p>
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6456"></a>5.16.2.&nbsp;Public APIs and SPIs</h3></div></div><div></div></div><p>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6608"></a>5.16.2.&nbsp;Public APIs and SPIs</h3></div></div><div></div></div><p>
 The Explorer Subsystem provides/will provide the following APIs:
 </p><div class="itemizedlist"><ul type="disc" compact><li><p>
 API1: Addition / Removal of a Perspective from the PerspectiveManager.
@@ -91,7 +91,7 @@ Status: not implemented
 </p><p>
 The APIs collectively represent the Explorer subsystem facade 
 and the SPIs represent plug-ins.
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6490"></a>5.16.3.&nbsp;Details of the Explorer Implementation</h3></div></div><div></div></div><p>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6642"></a>5.16.3.&nbsp;Details of the Explorer Implementation</h3></div></div><div></div></div><p>
 The Explorer is currently shown in the Explorer Pane 
 (<tt class="classname">org.argouml.ui.NavigatorPane</tt>)
 - the upper left hand pane of ArgoUML.
@@ -140,7 +140,7 @@ This is done using the
 and the text is produced in 
 the <tt class="methodname">convertValueToText(...)</tt> method in 
 <tt class="classname">org.argouml.ui.explorer.ExplorerTree</tt>.
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6526"></a>5.16.4.&nbsp;How do I ...?</h3></div></div><div></div></div><p>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6678"></a>5.16.4.&nbsp;How do I ...?</h3></div></div><div></div></div><p>
 </p><div class="itemizedlist"><ul type="disc"><li><p>...add another perspective?</p><p>
 </p><div class="itemizedlist"><ul type="circle"><li><p>
 The perspectives can be changed using the 
@@ -161,5 +161,32 @@ The best way is to use the above APIs/SPIs; if they are not implemented then
 It would be best to implement them and feedback your improvements to the
 ArgoUML project so that your code works on a recognized public API that will be
 maintained in the future.
-</p></li></ul></div><p>
-</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s15.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch05s17.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5.15.&nbsp;To do items&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;5.17.&nbsp;Module loader</td></tr></table></div></body></html>
+</p></li><li><p>...add new rules for new modelelements?</p><p>
+            You would create a GoRule/PerspectiveRule in org/argouml/ui/explorer/rules. 
+            There are plenty of examples to look at. 
+            The important things to get right is of course that:</p><p>
+            </p><div class="itemizedlist"><ul type="circle"><li><p> you return the right children</p></li><li><p> return the objects that the TreeModel must listen to to know when to update the node (and the list of immediate children)
+                After that you must register your GoRule in org/argouml/ui/explorer/PerspectiveManager</p></li><li><p> Add it to the list in loadRules()</p></li><li><p> Perhaps add it to some of the default perspectives in oldLoadDefaultPerspectives(), I guess
+                And then I think it should just be a matter of recompiling and possibly switching to the perspective you added your rule to.</p></li></ul></div><p>
+          </p></li><li><p>...tell the explorer to refresh?</p><p>
+            You are not supposed to. 
+            The TreeModel is supposed to listen to events and refresh affected parts. 
+            And this is where the lack of events for adding diagrams creates a problem.
+          </p><p>
+            Obviously it would be possible to add an operation somewhere to 
+            revalidate the expanded parts of the Explorer, but I'm not aware
+            of the existance of such an operation today.
+          </p></li><li><p>...navigate programmatically to a certain explorer element so that its path is exploded?</p><p>In general you can't. 
+            The Explorer tree is lazy in that it only explores the parts of the tree that the user has opened. 
+            And since the GoRules are general navigating to them would require a complete tree search. 
+            Which is also complicated by the fact that the answer is not unique and there can be branches with infinite depth.
+          </p><p>
+            In reality it would be possible to create an algorithm 
+            to search out one occurance of an element (since the model only contains
+            finitely many elements and I assume that noone will add 
+            gorules that add branches of infinite length that does not infinitely
+            often contain elements from the model), 
+            but I don't think anyone has don't it. 
+            Obviously finding all occurances cannot be done.
+          </p></li></ul></div><p>
+      </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s15.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch05s17.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5.15.&nbsp;To do items&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;5.17.&nbsp;Module loader</td></tr></table></div></body></html>

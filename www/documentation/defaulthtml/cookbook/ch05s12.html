@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>5.12.&nbsp;Internationalization</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the subsystems"><link rel="previous" href="ch05s11.html" title="5.11.&nbsp;Help System"><link rel="next" href="ch05s13.html" title="5.13.&nbsp;Logging"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.12.&nbsp;Internationalization</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s11.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the subsystems</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s13.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="internationalization"></a>5.12.&nbsp;Internationalization</h2></div></div><div></div></div><a class="indexterm" name="d0e5745"></a><a class="indexterm" name="d0e5748"></a><a class="indexterm" name="d0e5751"></a><a class="indexterm" name="d0e5754"></a><a class="indexterm" name="d0e5757"></a><p>
+   <title>5.12.&nbsp;Internationalization</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the subsystems"><link rel="previous" href="ch05s11.html" title="5.11.&nbsp;Help System"><link rel="next" href="ch05s13.html" title="5.13.&nbsp;Logging"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.12.&nbsp;Internationalization</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s11.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the subsystems</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s13.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="internationalization"></a>5.12.&nbsp;Internationalization</h2></div></div><div></div></div><a class="indexterm" name="d0e5893"></a><a class="indexterm" name="d0e5896"></a><a class="indexterm" name="d0e5899"></a><a class="indexterm" name="d0e5902"></a><a class="indexterm" name="d0e5905"></a><p>
 Purpose - to provide the infrastructure that the other subsystems can
 use to translate strings;
 to provide the infrastructure that makes it possible to plug in
@@ -19,12 +19,12 @@ and partly in
 </p><p>
 The Internationalization is a Layer 0 subsystem. 
 See <a href="ch04s04.html" title="4.4.&nbsp;Layer 0 - Description of subsystems">Section&nbsp;4.4, &#8220;Layer 0 - Description of subsystems&#8221;</a>.
-</p><a class="indexterm" name="d0e5780"></a><a class="indexterm" name="d0e5783"></a><p>
+</p><a class="indexterm" name="d0e5928"></a><a class="indexterm" name="d0e5931"></a><p>
 In ArgoUML internationalization (sometimes called i18n) is done using
 the property files i.e. PropertyResourceBundles.
 We used to have ListResourceBundle classes instead but they
 are all gone by 0.15.3.
-</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5788"></a>5.12.1.&nbsp;Organizing translators</h3></div></div><div></div></div><a class="indexterm" name="d0e5791"></a><a class="indexterm" name="d0e5794"></a><a class="indexterm" name="d0e5797"></a><a class="indexterm" name="d0e5800"></a><p>
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5936"></a>5.12.1.&nbsp;Organizing translators</h3></div></div><div></div></div><a class="indexterm" name="d0e5939"></a><a class="indexterm" name="d0e5942"></a><a class="indexterm" name="d0e5945"></a><a class="indexterm" name="d0e5948"></a><p>
 The problems with internationalization are not so much the technical
 problems as to how it works but more so the problems are with
 getting, keeping and coordinating the correct competences to do
@@ -82,7 +82,7 @@ as to how best to provide the localization for those parts.
 Either by providing localization for that team to include in the
 package or by having ArgoUML overriding that package in that respect.
 </p></li></ol></div><p>
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5852"></a>5.12.2.&nbsp;Ambitions for localization</h3></div></div><div></div></div><p>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6000"></a>5.12.2.&nbsp;Ambitions for localization</h3></div></div><div></div></div><p>
 Let me (Linus Tolke, May 2002) try to define the levels of
 ambition for us to try to make it possible to discuss where
 we are going.
@@ -176,14 +176,20 @@ do a good job.
 ...find the languages internationalization code for the language 
 your instance of ArgoUML is attempting to run with: en, es, en_GB,...
 </p><p>
-The one you are currently using is shown in the log when ArgoUML starts.
-
-You will have to turn on the logging and 
-search for lines looking like:
+The one you are currently using is shown in the Versions information
+in the about box.
+Help Menu =&gt; About ArgoUML Menuitem =&gt; Version tab
+just after the Operating System information.
+Search for the text looking like this:
 </p><pre class="programlisting">
 Language: sh
-Country: unknown
+Country: KR
 </pre><p>
+This example means that you have your computer set to
+Swahili as spoken in Korea (I think).
+Notice that the <i class="replaceable"><tt>Language:</tt></i> and
+<i class="replaceable"><tt>Country:</tt></i> are localized and could
+appear in your language.
 </p></li><li><p>...start the translation work?</p><p>
 This is only applicable for members of the language team.
 </p><p>
