@@ -23,6 +23,7 @@
 
 package org.argouml.uml.ui;
 
+import org.apache.log4j.Category;
 import org.argouml.kernel.*;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
@@ -40,7 +41,8 @@ import java.beans.*;
 import javax.swing.JOptionPane;
 
 
-public class ActionStateDiagram extends UMLChangeAction {
+public class ActionStateDiagram extends ActionAddDiagram {
+    protected static Category cat = Category.getInstance(ActionStateDiagram.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -51,41 +53,15 @@ public class ActionStateDiagram extends UMLChangeAction {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    public ActionStateDiagram() { super("StateDiagram"); }
-
-
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
-    public void actionPerformed(ActionEvent ae) {
-	//_cmdCreateNode.doIt();
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Project p = pb.getProject();
-	try {
-		Object me = pb.getDetailsTarget();
-	    if (me == null) {
-	    	me = pb.getTarget();
-	    }
-	    // don't need to check target, allready done in shouldbeenabled
-	    MStateMachine machine = StateMachinesFactory.getFactory().buildStateMachine((MModelElement)me);
-	    // next line isn't worlds most beautifull constructor but i don't want to change the world atm.
-	    MNamespace ns = null;
-	    if (me instanceof MBehavioralFeature) {
-	    	ns = ((MBehavioralFeature)me).getNamespace();
-	    } else 
-	    	ns = (MNamespace)me;
-		
-	    UMLStateDiagram d = new UMLStateDiagram(ns, machine);
-	    p.addMember(d);
-	    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
-	    pb.setTarget(d);
-	   
-	} catch (PropertyVetoException e) {
-	    System.out.println("PropertyVetoException in ActionStateDiagram");
-	}
-	super.actionPerformed(ae);
-    }
+    private ActionStateDiagram() { super("StateDiagram"); }
     
+    protected ActionStateDiagram(String name) { super(name); }
+
+    /**
+     * Overriden since it should only be possible to add statediagrams and 
+     * activitydiagrams to classifiers and behavioral features.
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
     public boolean shouldBeEnabled() {
     	ProjectBrowser pb = ProjectBrowser.TheInstance;
     	Object target = pb.getDetailsTarget();
@@ -93,10 +69,26 @@ public class ActionStateDiagram extends UMLChangeAction {
     		target = pb.getTarget();
     	}
     	return target instanceof MBehavioralFeature || target instanceof MClassifier;
-//	ProjectBrowser pb = ProjectBrowser.TheInstance;
-//	Project p = pb.getProject();
-//	Object target = pb.getDetailsTarget();
-//	return super.shouldBeEnabled() && p != null &&
-//	    (target instanceof MClass);
     }
+    
+    /**
+     * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace, Object)
+     */
+    public ArgoDiagram createDiagram(MNamespace ns, Object target) {
+        MStateMachine machine = StateMachinesFactory.getFactory().buildStateMachine((MModelElement)target);
+        if (target instanceof MBehavioralFeature) {
+            ns = ((MBehavioralFeature)target).getNamespace();
+        }
+        UMLStateDiagram d = new UMLStateDiagram(ns, machine);
+        return d;
+    }
+
+    /**
+     * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
+     */
+    public boolean isValidNamespace(MNamespace ns) {
+        if (ns instanceof MClassifier) return true;
+        return false;
+    }
+
 } /* end class ActionStateDiagram */

@@ -294,7 +294,6 @@ C:\Work>set CVSROOT=:pserver:guest@cvs.tigris.org:/cvs
 C:\Work>cvs login   (use guest as password)
 C:\Work>cvs checkout argouml_src
 C:\Work>set JAVA_HOME=<replaceable>C:\Programs\jdkwhatever</replaceable>
-C:\Work>set ANT_HOME=C:\Work\argouml
 C:\Work>cd argouml\src_new
 C:\Work\argouml\src_new>build run
 </programlisting>
@@ -419,7 +418,7 @@ nsuml, the Novosoft UML library.
 	    <para>
 ArgoUML project doesn't include the developing of Java classes for 
 the purpose of storing, saving and loading an UML Model.
-That work is done by NS-UML and used by ArgoUML.
+That work is done by NSUML and is used by ArgoUML.
 </para>
 	    <para>
 See <xref linkend="nsuml"/> for some reading tips on how to learn
@@ -455,6 +454,7 @@ The ocl package to parse and run the Object Constraint Language things.
 It would be good to have here some more information on how to download
 or how it is used but I don't know where to find it.
 (Linus Tolke April 2002.)
+<ulink url="http://gef.tigris.org">gef.tigris.org</ulink>.
 </para>
 	  </listitem>
 	</itemizedlist>
@@ -566,7 +566,7 @@ There is one of those in every separately built directory
 	<para>
 For your convenience the ant tool of the correct version is present in the
 CVS repository of ArgoUML in the file 
-<filename class="libraryfile">argouml/lib/ant.jar</filename>.
+<filename class="libraryfile">argouml/tools/ant-1.4.1/lib/ant.jar</filename>.
 </para>
 	<para>
 Normally ant is started with the command
@@ -581,17 +581,22 @@ Windows) that are called <filename>build.sh</filename> and
 <filename>build.bat</filename> respectively present in most
 of the directories that contain a <filename>build.xml</filename> file.
 These contain some definitions of classpath to simplify the setup.
-All you have to do is to set the variables JAVA_HOME and ANT_HOME.
+All you have to do is to set the variable JAVA_HOME.
+These two scripts use the bundled version of ANT. 
 </para>
 	<para>
 By setting JAVA_HOME to different values you can at different times
 build with different versions of jdk and java.
 </para>
 	<para>
-By setting ANT_HOME to different values you can at different times
-build with different versions of ant.
-This does however not work in the Windows case because of
-how <filename>build.bat</filename> is written.
+To use different versions of ANT,
+you are responsible for installing your own version.
+You must set ANT_HOME to the directory contain the ANT version
+you want to use.
+Also, you must execute
+<command>ant <replaceable>target</replaceable></command>
+rather than
+<command>build <replaceable>target</replaceable></command>.
 </para>
 	<sect3>
 	  <title>Compiling for Unix</title>
@@ -628,7 +633,7 @@ Change the current directory to the directory you are building
 	    <listitem>
 	      <para>
 Modify the beginning of the <filename>build.sh</filename> file 
-by setting ARGO_HOME and ANT_HOME to the name
+by setting ARGO_HOME to the name
 <replaceable>/your/checked/out/copy/of/argouml</replaceable>
 </para>
 	    </listitem>
@@ -664,11 +669,6 @@ or want to compile and run again.
 </para>
 	    </listitem>
 	    <listitem>
-	      <para>
-<command>set ANT_HOME=<replaceable>/your/checked/out/copy/of/argouml</replaceable></command>
-</para>
-	    </listitem>
-	    <listitem>
 	      <para>Change the current directory to the directory you are building</para>
 	      <para>
 <command>chdir <replaceable>\your\checked\out\copy\of\argouml\src_new</replaceable></command>
@@ -688,6 +688,29 @@ or want to compile and run again.
 </para>
 	    </listitem>
 	  </orderedlist>
+	</sect3>
+	<sect3>
+	  <title>Customizing and configuring your build</title>
+	  <indexterm>
+	    <primary>Compiling</primary>
+	    <secondary>customized</secondary>
+	  </indexterm>
+	  <indexterm>
+	    <primary>Compiling</primary>
+	    <secondary>build.properties</secondary>
+	  </indexterm>
+	  <indexterm>
+	    <primary>Compiling</primary>
+	    <secondary>argouml.build.properties</secondary>
+	  </indexterm>
+	  <para>
+It is possible to customize your compilation of ArgoUML rather simply.
+
+<filename class="libraryfile">argouml/src_new/default.properties</filename>
+
+<command>build list-property-files</command>
+
+	  </para>
 	</sect3>
 	<sect3>
 	  <title>Building javadoc</title>
@@ -1003,10 +1026,10 @@ What needs to be done when one actually does a release:
       <para>
 	<orderedlist>
 	  <listitem>
-	    <para>Modify <filename>default.properties</filename>!</para>
+	    <para>Modify <filename>default.properties</filename> if necessary!</para>
 	    <para>
 The property to change is 
-<methodname>argo.release.version</methodname>
+<methodname>argo.core.version</methodname>
 where you will set the version number.
 </para>
 	    <para>
@@ -1015,7 +1038,7 @@ For release 0.9.8 it should look like this:
 #
 # Argo version
 #
-argo.release.version=0.9.8
+argo.core.version=0.9.8
 </programlisting>
 </para>
 	  </listitem>
@@ -1087,9 +1110,9 @@ when your are standing in the
 Open the repository for commits towards the next version.
 </para>
 	    <para>
-This is done by setting the <methodname>argo.release.version</methodname>
+This is done by setting the <methodname>argo.core.version</methodname>
 in <filename>default.properties</filename> to 
-PRE-<replaceable>Number of next release</replaceable>
+<replaceable>Number of next release</replaceable>
 and commiting.
 </para>
 	  </listitem>
@@ -1233,7 +1256,7 @@ and from that point on working in the branch instead of at the tag.
 	      </listitem>
 	      <listitem>
 		<para>
-Explain to the culprit what misstakes he has made and how to fix it.
+Explain to the culprit what mistakes he has made and how to fix it.
 </para>
 		<para>
 It is now his responsibility to make sure that the problem will not
@@ -6117,7 +6140,8 @@ Like this:
 // &dollar;Id&dollar;
 // Copyright (c) 2002 The Regents of the University of California. All
 // ...
-
+// $Id$
+// Copyright ...
 // Classes: blabla, blabla (all classes of interest in this file)
 // Original Author: who ever
 </programlisting>

@@ -49,12 +49,14 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.generator.*;
 
 public class FigTransition extends FigEdgeModelElement {
+    protected static Category cat = Category.getInstance(FigTransition.class);
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -107,39 +109,14 @@ public class FigTransition extends FigEdgeModelElement {
    *  changed. This method automatically updates the name FigText.
    *  Subclasses should override and update other parts. */
   protected void modelChanged() {
+    super.modelChanged();
     MModelElement me = (MModelElement) getOwner();
     if (me == null) return;
-    //System.out.println("FigTransition modelChanged: " + me.getClass());
+    cat.debug("FigTransition modelChanged: " + me.getClass());
     String nameStr = Notation.generate(this, me);
     _name.setText(nameStr);
-  }
-  
-/**
- * Returns all transitions existing between the source and the destination 
- * of this FigTransition
- * @return Collection the collection with all the transitions in it
- */
-  protected Vector getTransitions() {  
-    Fig dest = getDestPortFig();
-    Fig source = getSourcePortFig();
-    if (dest != null && source != null) {
-        MStateVertex destOwner = (MStateVertex)dest.getOwner();
-        MStateVertex sourceOwner = (MStateVertex)source.getOwner();
-        Set set = new HashSet();
-        if (destOwner != null) {
-        	set.addAll(destOwner.getOutgoings());
-        	set.addAll(destOwner.getIncomings());
-        }
-        if (sourceOwner != null) {
-        	set.addAll(sourceOwner.getOutgoings());
-        	set.addAll(sourceOwner.getIncomings());
-        }
-        Vector retVector = new Vector();
-        retVector.addAll(set);
-        return retVector;                  
-    }
-    return new Vector(); // return an empty vector to prevent nullpointers.
-    
+    _name.calcBounds();
+    _name.damage();
   }
   
   protected int[] flip(int[] Ps) {
@@ -154,139 +131,6 @@ public class FigTransition extends FigEdgeModelElement {
   	return Math.sqrt(Math.abs(point1.x-point2.x)*Math.abs(point1.x-point2.x)+Math.abs(point1.y-point2.y)*Math.abs(point1.y-point2.y));
   }
   
-  protected void updateRoute() {
-    
-    // first see if there are transitions the other way around.
-    Object owner = getOwner();
-    if (owner != null) {
-    	MTransition trans = (MTransition)owner;
-    	List transitions = new ArrayList();
-    	transitions.addAll(getTransitions());
-    	transitions.remove(trans);
-    	FigPoly poly = (FigPoly)getFig();
-    	Vector points = poly.getPointsVector();
-    	Vector problemList = new Vector();
-    	Iterator it = transitions.iterator();
-    	while (it.hasNext()) {
-    		MTransition trans2 = (MTransition)it.next();
-    		FigTransition figtrans2 = (FigTransition)getLayer().presentationFor(trans2);
-    		FigPoly poly2 = (FigPoly)figtrans2.getFig();
-    		Vector points2 = poly.getPointsVector();
-    		if (points2.equals(points)) {
-    			problemList.add(figtrans2);
-    		}
-    	}
-    	if (!problemList.isEmpty()) {
-    		problemList.add(this);
-    	}
-    	
-    	for (int i = 0; i < problemList.size(); i++) {
-    		FigTransition problemFig = (FigTransition)problemList.get(i);
-    		Fig src = problemFig.getSourceFigNode();
-    		Fig dest = problemFig.getDestFigNode();
-    		
-    		// int distToMove = (i+1)*0.05*calculateLength(src.center(),dest.center());
-    		int dx = (int)((src.center().y-dest.center().y)*(i+1)*0.05);
-    		int dy = (int)(-(src.center().x-dest.center().x)*(i+1)*0.05);
-    		if (Math.round(i/2) == i/2) {
-    			dx = -dx;
-    			dy = -dy;
-    		}
-    		problemFig.startTrans();
-    		problemFig.insertPoint(0, problemFig.center().x, problemFig.center().y);
-    		problemFig.endTrans();
-    		// problemFig.moveVertex(new Handle(2), dx, dy, false);
-    	}
-    }
-    		
-    /*		
-    transitions.remove(getOwner());
-    if (!transitions.isEmpty()) {
-        // we have to find all transitions that have equal points
-        int[] xs = getXs();
-        int[] ys = getYs();
-        for (int i = 0; i < transitions.size(); i++) {
-            FigEdge fig = ((FigEdge)getLayer().presentationFor(transitions.get(i)));
-            // next lines patch for loading old 0.10.1 projects in 0.11.1 and further
-            if (fig == null) {
-            	Iterator it = ProjectBrowser.TheInstance.getProject().findFigsForMember(transitions.get(i)).iterator();
-            	if (it.hasNext()) {
-            		fig = (FigEdge)it.next();
-            	}
-            }
-            if (fig != null) {
-            	if ((xs.equals(fig.getXs()) && ys.equals(fig.getYs())) || (xs.equals(flip(fig.getXs())) && ys.equals(flip(fig.getYs())))) {
-                	Point startPoint = getFirstPoint();
-                	Point endPoint = getLastPoint();
-                 
-	                int x = (int)Math.round(Math.abs((startPoint.getX()-endPoint.getX())/2) + Math.min(startPoint.getX(), endPoint.getX()));
-	                int y = (int)Math.round(Math.abs((startPoint.getY()-endPoint.getY())/2) + Math.min(startPoint.getY(), endPoint.getY()));
-	                insertPoint(1, x, y);
-	            }
-            }
-        }
-    }
-    */
-  }
-
-	
-
-	/**
-	 * @see org.tigris.gef.presentation.FigEdgePoly#layoutEdge()
-	 */
-/*
-	protected void layoutEdge() {
-		Object owner = getOwner();
-    	if (owner != null) {
-    		MTransition trans = (MTransition)owner;
-    		List transitions = new ArrayList();
-    		transitions.addAll(getTransitions());
-    		transitions.remove(trans);
-		
-			
-			int npoints = 0;
-		    int xpoints[] = new int[16];
-		    int ypoints[] = new int[16];
-			//System.out.println("[FigEdgePoly] layoutEdge: " + _sourcePortFig + " / " + _destPortFig);
-		    Point srcPt = _sourcePortFig.center();
-		    Point dstPt = _destPortFig.center();
-		
-		    if (_useNearest) {
-		      int xdiff = (srcPt.x-dstPt.x);
-		      int ydiff = (srcPt.y-dstPt.y);
-		      srcPt.x = (int) (srcPt.x - 0.1*xdiff);
-		      srcPt.y = (int) (srcPt.y - 0.1*ydiff);
-		      dstPt.x = (int) (dstPt.x + 0.1*xdiff);
-		      dstPt.y = (int) (dstPt.y + 0.1*ydiff);
-		      srcPt = _sourcePortFig.connectionPoint(dstPt);
-		      dstPt = _destPortFig.connectionPoint(srcPt);
-		      srcPt = _sourcePortFig.connectionPoint(dstPt);
-		      dstPt = _destPortFig.connectionPoint(srcPt);
-		    }
-		
-		    xpoints[npoints] = srcPt.x; ypoints[npoints++] = srcPt.y;
-		    xpoints[npoints] = dstPt.x; ypoints[npoints++] = dstPt.y;
-		    
-		    // now lets see if those other transitions give us a problem
-		    Vector problemList = new Vector();
-		    for (int i = 0; i<transitions.size();i++) {
-		    	MTransition trans2 = (MTransition)transitions.get(i);
-				FigTransition figtrans2 = (FigTransition)getLayer().presentationFor(trans2);
-				FigPoly poly2 = (FigPoly)figtrans2.getFig();
-				if (poly2.getNumPoints() == 2 
-				// &&
-				// 	(poly2.getFirstPoint().equals(srcPt) || poly2.getFirstPoint().equals(dstPt)) &&
-				// 	(poly2.getLastPoint().equals(srcPt) || poly2.getLastPoint().equals(dstPt))) 
-					) {			
-					xpoints[npoints] = (int)((dstPt.x-srcPt.x)/2 + srcPt.x + calculateLength(srcPt, dstPt) * (i+1) * 0.05);
-					ypoints[npoints++] = (int)((dstPt.y-srcPt.y)/2 + srcPt.y + calculateLength(srcPt, dstPt) * (i+1) * 0.05);
-					break; // in case there are more equal transitions
-				} // TODO we should check for colliding figs drawn by users
-		    }
-		    Polygon routePoly = new Polygon(xpoints, ypoints, npoints);
-		    ((FigPoly)_fig).setPolygon(routePoly);
-    	}			
-	}
-*/
+  
 } /* end class FigTransition */
 

@@ -153,5 +153,14 @@ public class ArgoDiagram extends Diagram implements VetoablePropertyChange {
 		super.initialize(owner);
 		ProjectBrowser.TheInstance.setActiveDiagram(this);
 	}
+    
+    public void damage() {
+        if (_lay != null && _lay.getEditors() != null) {
+            Iterator it = _lay.getEditors().iterator();
+            while (it.hasNext()) {
+                ((Editor)it.next()).damageAll();
+            }
+        }
+    }
 
 } /* end class ArgoDiagram */

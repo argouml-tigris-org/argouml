@@ -74,7 +74,6 @@ public class ActionLoadModelFromDB extends UMLAction {
 
 	java.util.Properties props =  new java.util.Properties();
 	String configFile =  System.getProperty("argo.dbconfig", "/db.ini");
-	// System.out.println("Using: "+configFile);
 	try {
 	    java.io.InputStream is = new java.io.FileInputStream(configFile);
 	    props.load(is);

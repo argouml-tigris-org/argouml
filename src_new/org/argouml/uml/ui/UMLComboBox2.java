@@ -35,14 +35,15 @@ import ru.novosoft.uml.MElementEvent;
  * UMLComboBox. In the future UMLComboBoxModel and UMLComboBox will be
  * replaced with this implementation to improve performance.
  */
-public abstract class UMLComboBox2
+public class UMLComboBox2
     extends JComboBox
     implements UMLUserInterfaceComponent {
 
     protected UMLUserInterfaceContainer container = null;
     
     /**
-     * Constructor for UMLActivatorComboBox.
+     * Constructor for UMLMessageActivatorComboBox.
+     * @deprecated use the constructor with the action
      * @param arg0
      */
     public UMLComboBox2(UMLUserInterfaceContainer container, UMLComboBoxModel2 arg0) {
@@ -50,6 +51,20 @@ public abstract class UMLComboBox2
         setContainer(container);
         addActionListener(this);
     }
+    
+    /**
+     * Constructor for UMLMessageActivatorComboBox. Via the given action, the 
+     * action for this combobox is done.
+     * @param container
+     * @param arg0
+     * @param action
+     */
+    public UMLComboBox2(UMLUserInterfaceContainer container, UMLComboBoxModel2 arg0, UMLAction action) {
+        super(arg0);
+        setContainer(container);
+        addActionListener(action);
+    }
+        
 
     /**
      * Returns the container.
@@ -135,6 +150,20 @@ public abstract class UMLComboBox2
         }
     }
     
-    protected abstract void doIt(ActionEvent event);
+    /**
+     * The 'body' of the actionPerformed method. Is only called if there is
+     * actually a selection made.
+     * @param event
+     */
+    protected void doIt(ActionEvent event) {}
+    
+    /**
+     * Utility method to get the current target
+     * @return Object
+     */
+    public Object getTarget() {
+        if (getContainer() != null) return getContainer().getTarget();
+        return null;
+    }
 
 }

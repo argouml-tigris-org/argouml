@@ -6,6 +6,8 @@ package org.argouml.swingext;
 import java.awt.*;
 import java.util.*;
 
+import org.apache.log4j.Category;
+
 /**
  * Lays out components in a single row or column starting from any side and aligning  components
  * to eachother.<br />
@@ -17,6 +19,10 @@ import java.util.*;
  * @author Bob Tarling
  */
 public class SerialLayout extends LineLayout {
+    
+    protected static Category cat = 
+        Category.getInstance(SerialLayout.class);
+        
     public final static int LEFTTORIGHT = 10;
     public final static int TOPTOBOTTOM = 10;
     public final static int RIGHTTOLEFT = 11;
@@ -85,7 +91,7 @@ public class SerialLayout extends LineLayout {
             for (int i = 0 ; i < nComps ; i++) {
                 Component comp = parent.getComponent(i);
                 if (comp != null && comp.isVisible()) {
-                    if (loc == null) System.out.println("null orientation");
+                    if (loc == null) cat.debug("null orientation");
                     loc = orientation.subtractFromPosition(loc, comp);
                     comp.setSize(comp.getPreferredSize());
                     comp.setLocation(loc);

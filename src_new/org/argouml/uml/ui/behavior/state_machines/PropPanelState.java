@@ -35,6 +35,9 @@ import java.util.*;
 
 import javax.swing.*;
 
+import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 
@@ -120,13 +123,9 @@ public abstract class PropPanelState extends PropPanelStateVertex {
         Object target = getTarget();
         if(target instanceof MState) {
             MFactory factory=((MState) target).getFactory();
-            entryAction = factory.createCallAction();
+            entryAction = CommonBehaviorFactory.getFactory().createCallAction();
             entryAction.setName("anon");
             ((MState) target).setEntry(entryAction);
-             // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
         return entryAction;
     }
@@ -134,11 +133,11 @@ public abstract class PropPanelState extends PropPanelStateVertex {
     public void deleteEntryAction(Integer index) {
         Object target = getTarget();
         if(target instanceof MState) {
-            ((MState) target).setEntry(null);
-             // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
+            MState state = (MState)target;
+            MAction action = state.getEntry();
+            if (action != null) {
+                UmlFactory.getFactory().delete(action);
+            }
         }
     }
 
@@ -155,14 +154,9 @@ public abstract class PropPanelState extends PropPanelStateVertex {
         MCallAction exitAction = null;
         Object target = getTarget();
         if(target instanceof MState) {
-            MFactory factory=((MState) target).getFactory();
-            exitAction = factory.createCallAction();
+            exitAction = CommonBehaviorFactory.getFactory().createCallAction();
             exitAction.setName("anon");
             ((MState) target).setExit(exitAction);
-             // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
         return exitAction;
     }
@@ -170,11 +164,11 @@ public abstract class PropPanelState extends PropPanelStateVertex {
     public void deleteExitAction(Integer index) {
         Object target = getTarget();
         if(target instanceof MState) {
-            ((MState) target).setExit(null);
-             // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
+            MState state = (MState)target;
+            MAction action = state.getExit();
+            if (action != null) {
+                UmlFactory.getFactory().delete(action);
+            }
         }
     }
 
@@ -192,13 +186,9 @@ public abstract class PropPanelState extends PropPanelStateVertex {
         Object target = getTarget();
         if(target instanceof MState) {
             MFactory factory=((MState) target).getFactory();
-            doActivity = factory.createCallAction();
+            doActivity = CommonBehaviorFactory.getFactory().createCallAction();
             doActivity.setName("anon");
             ((MState) target).setDoActivity(doActivity);
-             // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
         return doActivity;
     }
@@ -206,11 +196,11 @@ public abstract class PropPanelState extends PropPanelStateVertex {
     public void deleteDoActivity(Integer index) {
         Object target = getTarget();
         if(target instanceof MState) {
-            ((MState) target).setDoActivity(null);
-             // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
+            MState state = (MState)target;
+            MAction action = state.getDoActivity();
+            if (action != null) {
+                UmlFactory.getFactory().delete(action);
+            }
         }
     }
 
@@ -228,16 +218,11 @@ public abstract class PropPanelState extends PropPanelStateVertex {
         Object target = getTarget();
         if(target instanceof MState) {
             MState state=(MState) target;
-            MFactory factory=((MState) target).getFactory();
-            transition = factory.createTransition();
+            transition = StateMachinesFactory.getFactory().createTransition();
             transition.setName("anon");
             transition.setSource(state);
             transition.setTarget(state);
             ((MState) target).addInternalTransition(transition);
-             // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
         return transition;
     }

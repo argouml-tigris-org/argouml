@@ -33,9 +33,9 @@ import ru.novosoft.uml.foundation.core.*;
 
 import org.argouml.ui.*;
 
-public class GoAssocToTarget implements TreeModel {
+public class GoAssocToTarget extends AbstractGoRule {
 
-  public String toString() { return "Association->Target Class"; }
+  public String getRuleName() { return "Association->Target Class"; }
 
   public Object getRoot() {
       throw
@@ -67,6 +67,11 @@ public class GoAssocToTarget implements TreeModel {
 	return 0;
     }
     return -1;
+  }
+
+  public Collection getChildren(Object parent) { 
+      throw
+          new UnsupportedOperationException("getChildren should not be called");
   }
 
   public boolean isLeaf(Object node) {

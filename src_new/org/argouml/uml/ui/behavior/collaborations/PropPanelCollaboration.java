@@ -24,13 +24,18 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import javax.swing.ImageIcon;
+import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
+import org.argouml.swingext.LabelledLayout;
+import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLTextField;
 import org.argouml.uml.ui.UMLTextProperty;
 import org.argouml.uml.ui.foundation.core.PropPanelNamespace;
+import org.argouml.util.ConfigLoader;
+
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 
 /**
@@ -40,7 +45,7 @@ import ru.novosoft.uml.behavior.collaborations.MCollaboration;
  * implemented correctly speaking in general terms, they are not implemented
  * in this class either.
  * 
- * @author Jaap Branderhorst
+ * @author jaap.branderhorst@xs4all.nl
  */
 public class PropPanelCollaboration extends PropPanelNamespace {
 
@@ -51,30 +56,36 @@ public class PropPanelCollaboration extends PropPanelNamespace {
      * @param panelCount
      */
     public PropPanelCollaboration() {
-        super("Collaboration", _collaborationIcon, 3);
+        super("Collaboration", _collaborationIcon, ConfigLoader.getTabPropsOrientation());
         
-        addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-        addField(nameField,1,0,0);
+        addField(Argo.localize("UMLMenu", "label.name"),nameField);
+        addField(Argo.localize("UMLMenu", "label.stereotype"), 
+            new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+        addField(Argo.localize("UMLMenu", "label.namespace"),namespaceScroll);
         
-        addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
-        addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
-        // next part does not work since the setmethod expects a string...
-        /*
-        addCaption(Argo.localize("UMLMenu", "label.representedClassifier"),3,0,0);
-        addField(new UMLTextField(this, 
-            new UMLTextProperty(MCollaboration.class, "representedClassifier", 
-            "getRepresentedClassifier", "setRepresentedClassifier")),4,0,0);
+        UMLLinkedList classifierList = new UMLLinkedList(this, new UMLCollaborationRepresentedClassifierListModel(this));
+        classifierList.setVisibleRowCount(1);   
+        addField(Argo.localize("UMLMenu", "label.representedClassifier"), 
+            new JScrollPane(classifierList));
         
-        addCaption(Argo.localize("UMLMenu", "label.representedOperation"),5,0,0);
-        addField(new UMLTextField(this, 
-            new UMLTextProperty(MCollaboration.class, "representedOperation", 
-            "getRepresentedOperation", "setRepresentedOperation")),6,0,1);         
-        */
+        UMLLinkedList operationList = new UMLLinkedList(this, new UMLCollaborationRepresentedOperationListModel(this));
+        operationList.setVisibleRowCount(1);
+        addField(Argo.localize("UMLMenu", "label.representedOperation"), 
+            new JScrollPane(operationList));
+         
+        add(LabelledLayout.getSeperator());
         
-        // next part is a trick to fill the rest of the panel:
-        addCaption("",3,0,0);
-        addCaption("",4,0,0);
-        addCaption("",5,0,1);
+        UMLLinkedList interactionList = new UMLLinkedList(this, new UMLCollaborationInteractionListModel(this));
+        interactionList.setVisibleRowCount(1);
+        addField(Argo.localize("UMLMenu", "label.interaction"), 
+            new JScrollPane(interactionList));
+            
+        UMLLinkedList constrainingList = new UMLLinkedList(this, new UMLCollaborationConstraintListModel(this));
+        addField(Argo.localize("UMLMenu", "label.constraining-elements"), 
+            new JScrollPane(constrainingList));
+            
+        // we do not add the ownedelements since they are not of real interest
+            
     }
 
     /**

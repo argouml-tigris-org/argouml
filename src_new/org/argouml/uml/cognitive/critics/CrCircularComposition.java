@@ -36,6 +36,7 @@ import ru.novosoft.uml.foundation.core.*;
 
 import org.tigris.gef.util.*;
 
+import org.apache.log4j.Category;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 import org.argouml.uml.*;
@@ -43,6 +44,7 @@ import org.argouml.uml.*;
 /**  */
 
 public class CrCircularComposition extends CrUML {
+    protected static Category cat = Category.getInstance(CrCircularComposition.class);
 
   public CrCircularComposition() {
     setHeadline("Remove Circular Composition");
@@ -84,9 +86,9 @@ public class CrCircularComposition extends CrUML {
     if (!predicate(dm, dsgr)) return false;
     VectorSet newOffs = computeOffenders(dm);
     boolean res = offs.equals(newOffs);
-//      System.out.println("offs="+ offs.toString() +
-//  		       " newOffs="+ newOffs.toString() +
-//  		       " res = " + res);
+      cat.debug("offs="+ offs.toString() +
+  		       " newOffs="+ newOffs.toString() +
+  		       " res = " + res);
     return res;
   }
 

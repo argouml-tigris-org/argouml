@@ -34,9 +34,9 @@ import ru.novosoft.uml.behavior.use_cases.*;
 
 import org.argouml.ui.*;
 
-public class GoModelToUseCase implements TreeModel {
+public class GoModelToUseCase extends AbstractGoRule {
 
-  public String toString() { return "Package->Use Case"; }
+  public String getRuleName() { return "Package->Use Case"; }
   
   public Object getRoot() {
     throw new UnsupportedOperationException("getRoot should never be called");
@@ -83,6 +83,12 @@ public class GoModelToUseCase implements TreeModel {
     }
     return -1;
   }
+
+  public Collection getChildren(Object parent) { 
+      throw
+          new UnsupportedOperationException("getChildren should not be called");
+  }
+
 
   public boolean isLeaf(Object node) {
     return !(node instanceof MPackage && getChildCount(node) > 0);

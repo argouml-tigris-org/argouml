@@ -34,9 +34,9 @@ import ru.novosoft.uml.foundation.core.*;
 import org.argouml.application.api.Argo;
 import org.argouml.ui.*;
 
-public class GoModelToElements implements TreeModel {
+public class GoModelToElements extends AbstractGoRule {
 
-  public String toString() {
+  public String getRuleName() {
     return Argo.localize ("Tree", "misc.namespace.owned-element");
   }
 
@@ -50,6 +50,12 @@ public class GoModelToElements implements TreeModel {
       return new Vector(((MNamespace)parent).getOwnedElements()).elementAt(index);
     }
     throw new UnsupportedOperationException("getChild should never get here");
+  }
+
+
+  public Collection getChildren(Object parent) { 
+      throw
+          new UnsupportedOperationException("getChildren should not be called");
   }
 
   public int getChildCount(Object parent) {

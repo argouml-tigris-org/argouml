@@ -15,6 +15,7 @@ import java.util.Enumeration;
 import java.awt.Rectangle;
 import java.awt.Color;
 
+import org.apache.log4j.Category;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.Layer;
@@ -30,6 +31,8 @@ import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 
 public class SequenceDiagramLayout extends LayerPerspective {
+    protected static Category cat = 
+        Category.getInstance(SequenceDiagramLayout.class);
 
   static final int MIN_GAP = 80;
   static final int OBJ_WIDTH = 0;
@@ -49,7 +52,7 @@ public class SequenceDiagramLayout extends LayerPerspective {
     Fig oldDE = presentationFor(node);
     // assumes each node can only appear once in a given layer
     if (null == oldDE) {
-      if (!shouldShow(node)) { System.out.println("node rejected"); return; }
+      if (!shouldShow(node)) { cat.debug("node rejected"); return; }
       FigNode newFigNode = _nodeRenderer.getFigNodeFor(_gm, this, node);
       if (newFigNode != null) {
 	putInPosition(newFigNode);
@@ -65,7 +68,7 @@ public class SequenceDiagramLayout extends LayerPerspective {
     Object edge = ge.getArg();
     Fig oldFig = presentationFor(edge);
     if (null == oldFig) {
-      if (!shouldShow(edge)) { System.out.println("edge rejected"); return; }
+      if (!shouldShow(edge)) { cat.debug("edge rejected"); return; }
       FigEdge newFigEdge = _edgeRenderer.getFigEdgeFor(_gm, this, edge);
       if (newFigEdge != null) {
 	add(newFigEdge);
@@ -223,7 +226,7 @@ public class SequenceDiagramLayout extends LayerPerspective {
         sourcePort._ports.addElement(_port1);
         sourcePort.addFig(_port1);
         sourcePort.bindPort(sourcePort.getOwner(), _port1);
-        //System.out.println("SeqDiagramLay.playceAll..: setSourcePortFig->DynPort");
+        cat.debug("SeqDiagramLay.playceAll..: setSourcePortFig->DynPort");
         link.setSourcePortFig(_port1);
 
         // the dynamic Vector has to be updated

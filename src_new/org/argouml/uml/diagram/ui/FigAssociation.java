@@ -35,12 +35,14 @@ import java.util.Vector;
 import javax.swing.JMenu;
 
 import org.argouml.application.api.Notation;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.ActionAggregation;
 import org.argouml.uml.ui.ActionMultiplicity;
 import org.argouml.uml.ui.ActionNavigability;
 import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConv;
 import org.tigris.gef.base.PathConvPercent;
@@ -51,6 +53,7 @@ import org.tigris.gef.presentation.ArrowHeadComposite;
 import org.tigris.gef.presentation.ArrowHeadDiamond;
 import org.tigris.gef.presentation.ArrowHeadGreater;
 import org.tigris.gef.presentation.ArrowHeadNone;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigText;
 import ru.novosoft.uml.foundation.core.MAssociation;
@@ -59,6 +62,7 @@ import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.data_types.MOrderingKind;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 
 public class FigAssociation extends FigEdgeModelElement {
@@ -91,7 +95,7 @@ public class FigAssociation extends FigEdgeModelElement {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-    public FigAssociation() {
+    protected FigAssociation() {
    
     
         // lets use groups to construct the different text sections at the association
@@ -171,15 +175,14 @@ public class FigAssociation extends FigEdgeModelElement {
   public void setOwner(Object own) {
     Object oldOwner = getOwner();
     super.setOwner(own);
-    if (oldOwner != null && !oldOwner.equals(own) && oldOwner instanceof MAssociation) {
-        ((MAssociation)oldOwner).remove();
-    }
 
     if (own instanceof MAssociation) {
 	MAssociation newAsc = (MAssociation)own;
-	for (int i = 0; i < newAsc.getConnections().size(); i++)
+	for (int i = 0; i < newAsc.getConnections().size(); i++) {
+            ((MAssociationEnd)((Object[]) newAsc.getConnections().toArray())[i]).removeMElementListener(this);
 	    ((MAssociationEnd)((Object[]) newAsc.getConnections().toArray())[i]).addMElementListener(this);
-
+        }
+        newAsc.removeMElementListener(this);
         newAsc.addMElementListener(this);
         MAssociationEnd ae0 = 
             (MAssociationEnd)((Object[])(newAsc.getConnections()).toArray())[0];
@@ -221,96 +224,33 @@ public class FigAssociation extends FigEdgeModelElement {
     }
     // needs-more-work: parse multiplicities
   }
-
+  
+  private void updateEnd(FigText multiToUpdate, FigText roleToUpdate, FigText orderingToUpdate, MAssociationEnd end) {
+    MMultiplicity multi = end.getMultiplicity();
+    String name = end.getName();
+    MOrderingKind order = end.getOrdering();
+    MStereotype stereo = end.getStereotype();
+    
+    multiToUpdate.setText(Notation.generate(this, multi));
+    orderingToUpdate.setText(getOrderingName(order));
+    if (stereo != null) {
+        roleToUpdate.setText(Notation.generate(this, stereo) + " " + Notation.generate(this,name));
+    } else
+        roleToUpdate.setText(Notation.generate(this, name));
+  }
 
   protected void modelChanged() {
+    super.modelChanged();
     MAssociation as = (MAssociation) getOwner();
     if (as == null || getLayer() == null) return;
-    String asNameStr = Notation.generate(this, as.getName());
-
-    super.modelChanged();
-
+    
     MAssociationEnd ae0 =
         (MAssociationEnd)((Object[])(as.getConnections()).toArray())[0];
     MAssociationEnd ae1 =
         (MAssociationEnd)((Object[])(as.getConnections()).toArray())[1];
+    updateEnd(_srcMult, _srcRole, _srcOrdering, ae0);
+    updateEnd(_destMult, _destRole, _destOrdering, ae1);
     
-    FigNode oldDest = (FigNode)getDestFigNode();
-    FigNode oldSource = (FigNode)getSourceFigNode();
-    
-    FigNode dest = (FigNode)getLayer().presentationFor(ae1.getType());
-    FigNode src = (FigNode)getLayer().presentationFor(ae0.getType());
-    boolean setFigs = true;
-    if (oldDest != null && oldDest.equals(dest)) {
-        if (oldSource != null && oldSource.equals(src)) {
-            setFigs = false;
-        } 
-    } else {
-        if (oldDest != null && oldDest.equals(src)) {
-            if (oldSource != null && oldSource.equals(dest)) {
-                setFigs = false;
-            } else {
-                FigNode tempSrc = src;
-                src = dest;
-                dest = tempSrc;
-            }
-        }
-    }
-    
-    if (setFigs) {
-        if (dest != null) {
-            setDestFigNode((FigNode)getLayer().presentationFor(ae1.getType()));
-            setDestPortFig(getLayer().presentationFor(ae1.getType()));
-        }
-        if (src != null) {
-            setSourceFigNode((FigNode)getLayer().presentationFor(ae0.getType())); 
-            setSourcePortFig(getLayer().presentationFor(ae0.getType()));  
-        }
-        if (src != null && dest != null) {
-            computeRoute();
-            calcBounds();
-            ArgoDiagram ad = ProjectBrowser.TheInstance.getActiveDiagram();
-            Object obj = ProjectBrowser.TheInstance.getTarget();
-            Iterator editors = getLayer().getEditors().iterator();
-            while (editors.hasNext()) {
-                ((Editor)editors.next()).damaged(this); 
-            }
-            ProjectBrowser.TheInstance.setTarget(obj);
-            ProjectBrowser.TheInstance.setActiveDiagram(ad);
-        }
-    }
-    MMultiplicity mult0 = ae0.getMultiplicity();
-    MMultiplicity mult1 = ae1.getMultiplicity();
-    _srcMult.setText(Notation.generate(this, mult0));
-    _destMult.setText(Notation.generate(this, mult1));
-
-    _srcRole.setText(Notation.generate(this, ae0.getName()));
-    _destRole.setText(Notation.generate(this, ae1.getName()));
-
-    // now add the stereotypes on associatenends if desired
-    // need more work!
-
-    // this should be configurable
-    if (true == true) {
-
-        if (ae0.getStereotype() != null)
-            _srcRole.setText(Notation.generateStereotype(this,
-                                                         ae0.getStereotype()) +
-                             " " + _srcRole.getText());
-        if (ae1.getStereotype() != null)
-            _destRole.setText(Notation.generateStereotype(this,
-                                                         ae1.getStereotype()) +
-                              " " + _destRole.getText());
-    }
-
-    if (true == true ) {
-       _srcOrdering.setText(getOrderingName(ae0.getOrdering()));
-       _destOrdering.setText(getOrderingName(ae1.getOrdering()));
-    }
-    
-    
-    
-
     boolean srcNav = ae0.isNavigable();
     boolean destNav = ae1.isNavigable();
     if (srcNav && destNav && SUPPRESS_BIDIRECTIONAL_ARROWS)
@@ -322,20 +262,7 @@ public class FigAssociation extends FigEdgeModelElement {
     _srcGroup.calcBounds();
     _destGroup.calcBounds();
     _middleGroup.calcBounds();
-    /*
-    if (setFigs) {
-        computeRoute();
-        calcBounds();
-        Iterator editors = getLayer().getEditors().iterator();
-        while (editors.hasNext()) {
-            ((Editor)editors.next()).damageAll(); 
-        }
-    }
-    */
-    
   }
-
-  
 
   static ArrowHead _NAV_AGGREGATE =
   new ArrowHeadComposite(ArrowHeadDiamond.WhiteDiamond,
@@ -468,18 +395,23 @@ public class FigAssociation extends FigEdgeModelElement {
         super.paint(g);
      }
 
-	/**
-	 * @see java.awt.event.MouseListener#mousePressed(MouseEvent)
-	 */
-	public void mousePressed(MouseEvent e) {
-		super.mousePressed(e);
-	}
+	
 
-	/**
-	 * @see org.tigris.gef.presentation.Fig#makeSelection()
-	 */
-	public Selection makeSelection() {
-		return super.makeSelection();
-	}
+    /**
+     * @see org.tigris.gef.presentation.Fig#delete()
+     */
+    public void delete() {
+        // deleting the elementlisteners to this class too
+        Object own = getOwner();
+        if (own instanceof MAssociation) {
+            MAssociation assoc = (MAssociation)own;
+            assoc.removeMElementListener(this);
+            Iterator it = assoc.getConnections().iterator();
+            while (it.hasNext()) {
+                ((MAssociationEnd)it.next()).removeMElementListener(this);
+            }
+        }
+        super.delete();
+    }
 
 } /* end class FigAssociation */

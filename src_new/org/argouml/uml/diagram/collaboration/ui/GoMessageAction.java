@@ -13,6 +13,8 @@ import ru.novosoft.uml.behavior.common_behavior.MAction;
  */
 public class GoMessageAction extends AbstractGoRule {
 
+    public String getRuleName() { return "Message->Action";}
+
 	/**
 	 * @see javax.swing.tree.TreeModel#isLeaf(Object)
 	 */

@@ -26,6 +26,7 @@
 // Original Author:
 // $Id$
 
+
 // 12 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
 // extension points.
 
@@ -48,6 +49,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.model_management.*;
 
@@ -63,6 +65,7 @@ import org.argouml.uml.ProfileJava;
 import org.argouml.uml.diagram.static_structure.*;
 import org.argouml.uml.diagram.deployment.*;
 import org.apache.log4j.Category;
+import org.apache.log4j.Priority;
 import org.argouml.application.api.*;
 import org.argouml.util.MyTokenizer;
 import org.argouml.model.uml.foundation.core.*;
@@ -347,39 +350,6 @@ public class ParserDisplay extends Parser {
         }
     }
 
-/* not used ?
-  public void parseOperationCompartment(MClassifier cls, String s) {
-    java.util.StringTokenizer st = new java.util.StringTokenizer(s, "\n\r");
-    Vector newOps = new Vector();
-    while (st.hasMoreTokens()) {
-      String token = st.nextToken();
-      MOperation op = parseOperation(token);
-      newOps.add(op);
-    }
-    // System.out.println("parsed " + newOps.size() + " operations");
-	Vector features = new Vector(cls.getFeatures());
-	Vector oldOps = new Vector(MMUtil.SINGLETON.getOperations(cls));
-	features.removeAll(oldOps);
-
-	// don't forget to remove old Operations!
-	for (int i = 0; i < oldOps.size(); i++)
-		cls.removeFeature((MOperation)oldOps.elementAt(i));
-
-	// now re-set the attributes
-	cls.setFeatures(features);
-
-	//features.addAll(newOps);
-	//add features with add-Operation, so a role-added-event is generated
-	for (int i=0; i<newOps.size(); i++){
-	    MOperation oper=(MOperation)newOps.elementAt(i);
-	    cls.addFeature(oper);
-        cls.getModel();
-        oper.getModel();
-        MMUtil.SINGLETON.getReturnParameter(oper).getModel();
-        MMUtil.SINGLETON.getReturnParameter(oper).getType().getModel();  
-	}
-  }
-*/
 
   public void parseOperationFig(MClassifier cls, MOperation op, String text)
 		throws ParseException {
@@ -389,39 +359,6 @@ public class ParserDisplay extends Parser {
     parseOperation(text, op);
   }
 
-/*
-  // Seems to be obsolete
-  public void parseAttributeCompartment(MClassifier cls, String s) {
-    java.util.StringTokenizer st = new java.util.StringTokenizer(s, "\n\r");
-    Vector newAttrs = new Vector();
-    while (st.hasMoreTokens()) {
-      String token = st.nextToken();
-      try {
-        MAttribute attr = parseAttribute(token);
-        newAttrs.add(attr);
-      } catch (ParseException pe) {
-      }
-    }
-    // System.out.println("parsed " + newAttrs.size() + " attributes");
-	Vector features = new Vector(cls.getFeatures());
-	Vector oldAttrs = new Vector(MMUtil.SINGLETON.getAttributes(cls));
-	features.removeAll(oldAttrs);
-
-	// don't forget to remove old Attrbutes!
-        oldAttrs.clear();
-
-	// now re-set the operations
-	cls.setFeatures(features);
-
-	//features.addAll(newAttrs);
-	//add features with add-Operation, so a role-added-event is generated
-	for (int i=0; i<newAttrs.size(); i++){
-	    MAttribute attr=(MAttribute)newAttrs.elementAt(i);
-	    cls.addFeature(attr);
-	}
-
-  }
-*/
 
   public void parseAttributeFig(MClassifier cls, MAttribute at, String text) throws ParseException {
     if (cls == null || at == null)
@@ -684,20 +621,9 @@ public class ParserDisplay extends Parser {
     } catch (NoSuchElementException nsee) {
 	throw new ParseException("Unexpected end of operation", s.length());
     } catch (ParseException pre) {
-	// System.out.println(pre);
 	throw pre;
     }
-/*
-    System.out.println("ParseOperation [name: " + name + " visibility: " +
-	    visibility + " type: " + type + " stereo: " + stereotype);
 
-    if (properties != null) {
-	for (int i = 0; i + 1 < properties.size(); i += 2) {
-	    System.out.println("\tProperty [name: " + properties.get(i) +
-		    " = " + properties.get(i+1) + "]");
-	}
-    }
-*/
     if (parameterlist != null) {
 	// parameterlist is guaranteed to contain at least "("
 	if (parameterlist.charAt(parameterlist.length()-1) != ')')
@@ -850,8 +776,8 @@ public class ParserDisplay extends Parser {
 	}
 
 	if (p == null) {
-	    p = CoreFactory.getFactory().buildParameter();
-	    op.addParameter(p);
+	    p = CoreFactory.getFactory().buildParameter(op);
+	    // op.addParameter(p);
 	}
 
 	if (name != null)
@@ -899,8 +825,7 @@ public class ParserDisplay extends Parser {
 	    op.removeParameter(p);
     }
     if (param == null) {
-	param = UmlFactory.getFactory().getCore().buildParameter();
-	op.addParameter(param);
+	param = UmlFactory.getFactory().getCore().buildParameter(op);
     }
     param.setType(type);
   }
@@ -1129,21 +1054,20 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
     } catch (NoSuchElementException nsee) {
 	throw new ParseException("Unexpected end of attribute", s.length());
     } catch (ParseException pre) {
-	// System.out.println(pre);
 	throw pre;
     }
-/*
-    System.out.println("ParseAttribute [name: " + name + " visibility: " +
+
+    _cat.debug("ParseAttribute [name: " + name + " visibility: " +
 	visibility + " type: " + type + " value: " + value + " stereo: " +
 	stereotype + " mult: " + multiplicity);
 
     if (properties != null) {
 	for (int i = 0; i + 1 < properties.size(); i += 2) {
-	    System.out.println("\tProperty [name: " + properties.get(i) +
+	    _cat.debug("\tProperty [name: " + properties.get(i) +
 		" = " + properties.get(i+1) + "]");
 	}
     }
-*/
+
 
     if (visibility != null) {
 	MVisibilityKind vis = getVisibility(visibility.trim());
@@ -1306,10 +1230,9 @@ nextProp:
 
 	if (base == null || i < base.length)
 	    return (MStereotype) root;
-/*
 	else
-	    System.out.println("Missed stereotype " + ((MStereotype)root).getBaseClass());
-*/
+	    _cat.debug("Missed stereotype " + ((MStereotype)root).getBaseClass());
+
     }
 
     if (!(root instanceof MNamespace))
@@ -1608,32 +1531,6 @@ nextProp:
     return s;
   }
 
-/*
- * removed next method since it is obsolete. We now use the standard notation
- * for UML 1.3 as defined in the spec.
-  public String parseOutKeywords(MFeature f, String s) {
-    s = s.trim();
-    int firstSpace = s.indexOf(" ");
-    if (firstSpace == -1) return s;
-    String visStr = s.substring(0, firstSpace);
-
-      if (visStr.equals("static"))
-	f.setOwnerScope(MScopeKind.CLASSIFIER);
-      else if (visStr.equals("synchronized") && (f instanceof MOperation))
-	((MOperation)f).setConcurrency(MCallConcurrencyKind.GUARDED);
-      else if (visStr.equals("transient"))
-	System.out.println("'transient' keyword is currently ignored");
-      else if (visStr.equals("final"))
-	System.out.println("'final' keyword is currently ignored");
-      else if (visStr.equals("abstract"))
-	System.out.println("'abstract' keyword is currently ignored");
-      else {
-	return s;
-      }
-
-    return parseOutKeywords(f, s.substring(firstSpace+1));
-  }
-*/
 
     /**
      * Parses the parameters with an operation. The string containing the 
@@ -1652,10 +1549,20 @@ nextProp:
 			while (st.hasMoreTokens()) {
 				String token = st.nextToken();
 				MParameter p = parseParameter(token);
-				if (p != null) op.addParameter(p);
-			}
+				if (p != null) {
+                                    op.addParameter(p);
+                                    // we set the listeners to the figs here too
+                                    // it would be better to do that in the figs themselves
+                                    Project pr = ProjectBrowser.TheInstance.getProject();
+                                    Iterator it = pr.findFigsForMember(op).iterator();
+                                    while (it.hasNext()) {
+                                        MElementListener listener = (MElementListener)it.next();
+                                        p.addMElementListener(listener);
+                                    }
+			         }
 			leftOver = s.substring(end+1);
-		}
+		      }
+                }
 		return leftOver;
 	}
 
@@ -1679,7 +1586,7 @@ nextProp:
     // any of these indicate that name is to an end.    
     java.util.StringTokenizer st = new java.util.StringTokenizer(s, delim);
     if (!st.hasMoreTokens()) {
-      System.out.println("name not parsed");
+      _cat.debug("name not parsed");
       return s;
     }
     String nameStr = st.nextToken();
@@ -1834,7 +1741,7 @@ nextProp:
  
 
 	      if (t == null) continue;
-	      //System.out.println("just parsed:" + GeneratorDisplay.Generate(t));
+	      _cat.debug("just parsed:" + GeneratorDisplay.Generate(t));
 	      t.setStateMachine(st.getStateMachine());
 	      t.setTarget(st);
 	      t.setSource(st);
@@ -1848,7 +1755,7 @@ nextProp:
 
       // don't forget to remove old internals!
       for (int i = 0; i < oldinternals.size(); i++)
-      ((MTransition)oldinternals.elementAt(i)).remove();
+        UmlFactory.getFactory().delete((MTransition)oldinternals.elementAt(i));
       internals.addAll(trans);
       st.setInternalTransitions(trans);
   }
@@ -1899,11 +1806,11 @@ nextProp:
 
     trigger = s;
 
-    /*     System.out.println("name=|" + name +"|");
-     System.out.println("trigger=|" + trigger +"|");
-     System.out.println("guard=|" + guard +"|");
-     System.out.println("actions=|" + actions +"|");
-    */
+    _cat.debug("name=|" + name +"|");
+    _cat.debug("trigger=|" + trigger +"|");
+    _cat.debug("guard=|" + guard +"|");
+    _cat.debug("actions=|" + actions +"|");
+    
     trans.setName(parseName(name));
 
     if (trigger.length()>0) {
@@ -2019,7 +1926,8 @@ nextProp:
     } catch (NoSuchElementException nsee) {
 	throw new ParseException("Unexpected end of attribute", s.length());
     } catch (ParseException pre) {
-	// System.out.println(pre);
+	_cat.error("parseexception", pre);
+
 	throw pre;
     }
 
@@ -2357,7 +2265,7 @@ addBases:
     } catch (NoSuchElementException nsee) {
 	throw new ParseException("Unexpected end of message", s.length());
     } catch (ParseException pre) {
-	// System.out.println(pre);
+	_cat.error("parseexception" ,pre);
 	throw pre;
     }
 
@@ -2390,30 +2298,33 @@ addBases:
 	args = new Vector();
     }
 
-/*
-System.out.println("ParseMessage: " + s);
-System.out.print("Message: ");
-for (i = 0; seqno != null && i+1 < seqno.size(); i+=2) {
-	if (i > 0)
-		System.out.print(", ");
-	System.out.print(seqno.get(i) + " (" + seqno.get(i+1)  + ")");
-}
-System.out.println();
-System.out.println("predecessors: " + predecessors.size());
-for (i = 0; i < predecessors.size(); i++) {
-	int j;
-	Vector v = (Vector) predecessors.get(i);
-	System.out.print("    Predecessor: ");
-	for (j = 0; v != null && j+1 < v.size(); j+=2) {
-		if (j > 0)
-			System.out.print(", ");
-		System.out.print(v.get(j) + " (" + v.get(j+1)  + ")");
-	}
-	System.out.println();
-}
-System.out.println("guard: " + guard + " it: " + iterative + " pl: " + parallell);
-System.out.println(varname + " := " + fname + " ( " + paramExpr + " )");
-*/
+    if (_cat.getPriority().equals(Priority.DEBUG)) {
+        StringBuffer buf = new StringBuffer();
+        buf.append("ParseMessage: " + s + "\n");
+        buf.append("Message: ");
+        for (i = 0; seqno != null && i+1 < seqno.size(); i+=2) {
+            if (i > 0)
+                buf.append(", ");
+            buf.append(seqno.get(i) + " (" + seqno.get(i+1)  + ")");
+        }
+        buf.append("\n");
+        buf.append("predecessors: " + predecessors.size() + "\n");
+        for (i = 0; i < predecessors.size(); i++) {
+            int j;
+            Vector v = (Vector) predecessors.get(i);
+            buf.append("    Predecessor: ");
+            for (j = 0; v != null && j+1 < v.size(); j+=2) {
+                if (j > 0)
+                    buf.append(", ");
+                buf.append(v.get(j) + " (" + v.get(j+1)  + ")");
+            }
+        }
+        buf.append("guard: " + guard + " it: " + iterative + " pl: " + parallell + "\n");
+        buf.append(varname + " := " + fname + " ( " + paramExpr + " )" + "\n");
+        _cat.debug(buf);
+    }
+        
+
 
     if (mes.getAction() == null) {
 	MCallAction a = UmlFactory.getFactory().getCommonBehavior()
@@ -2994,12 +2905,16 @@ predfor:
 	    expr += "param" + (i+1);
 	}
 	expr += ")";
-	MOperation op = UmlFactory.getFactory().getCore().buildOperation(
-		(MClassifier) it.next());
+        // Jaap Branderhorst 2002-23-09 added next lines to link parameters and
+        // operations to the figs that represent them
+        MClassifier cls = (MClassifier)it.next();
+	MOperation op = UmlFactory.getFactory().getCore().buildOperation(cls);
+        
 	try {
 	    parseOperation(expr, op);
 	} catch (ParseException pe) {
-	    System.out.println("Unexpected ParseException in getOperation: " + pe);
+            _cat.error("Unexpected ParseException in getOperation: " + pe, pe);
+
 	}
 	options.add(op);
     }

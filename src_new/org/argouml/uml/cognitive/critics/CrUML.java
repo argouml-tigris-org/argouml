@@ -33,6 +33,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 
 import org.tigris.gef.util.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
@@ -52,6 +53,8 @@ import java.util.*;
  */
 
 public class CrUML extends Critic {
+    protected static Category cat = Category.getInstance(CrUML.class);
+    
   public static final Decision decINHERITANCE = new
   Decision("decision.inheritance", 5);
 
@@ -138,70 +141,7 @@ public class CrUML extends Critic {
         super.setDescription(desc);
   }
 
-/*
-   the following code was used to build UMLCognitiveResourceBundle
-       from calls made during the construction of critics
 
-
-  static public String makeKey(Class cls,String type) {
-    String className = cls.getName();
-    int lastDot = className.lastIndexOf('.');
-    if(lastDot >= 0) {
-        className = className.substring(lastDot+1);
-    }
-    return className + "_" + type;
-  }
-
-//  private final void log(String s) {}
-  private static boolean _logAppend = false;
-  static public final void log(String s) {
-    if(!_logAppend) {
-        System.out.println("Logging resources to UMLCognitiveResourceBundle.log");
-    }
-    try {
-        PrintWriter writer = new PrintWriter(
-            new FileOutputStream("UMLCognitiveResourceBundle.log",_logAppend));
-        writer.println(s);
-        writer.close();
-    }
-    catch(Exception e) {
-        if(!_logAppend) {
-            e.printStackTrace();
-        }
-    }
-    _logAppend = true;
-  }
-
-  static public String escape(String s,char special,String escape) {
-    int nextQuote = s.indexOf(special);
-    //
-    //   if there was a quote mark within the string
-    //     expand it to a \"
-    if(nextQuote >= 0) {
-        StringBuffer buf = new StringBuffer(s.length() + 20);
-        char[] chars = s.toCharArray();
-        int position = 0;
-        while(nextQuote >= 0) {
-            if(nextQuote > 0) {
-                buf.append(chars,position,nextQuote-position);
-            }
-            buf.append(escape);
-            position = nextQuote + 1;
-            if(position+1 == chars.length) break;
-            nextQuote = s.indexOf(special,position);
-        }
-        //
-        //  append text after last quote
-        //
-        if(position < chars.length) {
-            buf.append(chars,position,chars.length - position);
-        }
-        return buf.toString();
-    }
-    return s;
-  }
-
-*/
 
   /**
    *   Will be deprecated in good time
@@ -219,7 +159,7 @@ public class CrUML extends Critic {
   public boolean predicate(Object dm, Designer dsgr) {
     Project p = ProjectBrowser.TheInstance.getProject();
     if (p.isInTrash(dm)) {
-      //System.out.println("in trash:" + dm);
+      cat.debug("in trash:" + dm);
       return NO_PROBLEM;
     }
     else return predicate2(dm, dsgr);
@@ -249,7 +189,7 @@ public class CrUML extends Critic {
      * No recursive expansion.
      */
   public String expand(String res, VectorSet offs) {
-      //System.out.println("expanding: " + res);
+      cat.debug("expanding: " + res);
     if (offs.size() == 0) return res;
     Object off1 = offs.firstElement();
     if (!(off1 instanceof MElement)) return res;
@@ -265,7 +205,7 @@ public class CrUML extends Critic {
       if (matchPos > 0) beginning.append(res.substring(0, matchPos));
       String expr = res.substring(matchPos + OCL_START.length(), endExpr);
       String evalStr = OCLEvaluator.SINGLETON.evalToString(off1, expr);
-      //System.out.println("expr='" + expr + "' = '" + evalStr + "'");
+      cat.debug("expr='" + expr + "' = '" + evalStr + "'");
       if (expr.endsWith("") && evalStr.equals(""))
 	evalStr = "(anon)";
       beginning.append(evalStr);

@@ -33,11 +33,11 @@ import javax.swing.tree.*;
 import org.tigris.gef.ui.*;
 import org.tigris.gef.util.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.cognitive.*;
-import org.argouml.cognitive.ui.*;
 
 /** Each Critic may provide a Wizard to help fix the problem it
  *  identifies.  The "Next>" button will advance through the steps of
@@ -50,6 +50,7 @@ import org.argouml.cognitive.ui.*;
 
 public class WizStep extends JPanel
 implements TabToDoTarget, ActionListener, DocumentListener {
+    protected static Category cat = Category.getInstance(WizStep.class);
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -183,7 +184,7 @@ implements TabToDoTarget, ActionListener, DocumentListener {
     String urlString = item.getMoreInfoURL();
     TinyHTMLViewer viewer = new TinyHTMLViewer("http://www.argouml.org/documentation/");
     viewer.setVisible(true);
-    //System.out.println("needs-more-work: display critic/wizard help");
+    //needs-more-work: display critic/wizard help;
   }
 
   protected void updateTabToDo() {

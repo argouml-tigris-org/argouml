@@ -24,6 +24,7 @@
 package org.argouml.uml.diagram.static_structure.layout;
 
 import org.tigris.gef.presentation.*;
+import org.apache.log4j.Category;
 import org.argouml.uml.diagram.ui.*;
 
 /** a class to get the proper layouter for a Fig.
@@ -34,6 +35,7 @@ Currently this deals only with Generalizations and Realizations.
 */
 public class ClassdiagramModelElementFactory 
 {
+    protected static Category cat = Category.getInstance(ClassdiagramModelElementFactory.class);
     /** Singleton */
     public static ClassdiagramModelElementFactory SINGLETON = new ClassdiagramModelElementFactory();
     
@@ -52,7 +54,7 @@ public class ClassdiagramModelElementFactory
                     return (new ClassdiagramRealizationEdge((FigRealization) f));
                 if (f instanceof FigAssociation)
                     return (new ClassdiagramAssociationEdge((FigAssociation) f));
-                System.out.println("Do not know how to deal with: " +
+                cat.debug("Do not know how to deal with: " +
                                    f.getClass().getName() +
                                    "\nUsing standard layout");
         }

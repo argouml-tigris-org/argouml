@@ -43,92 +43,14 @@ import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.state.*;
 
 public class PropPanelUMLStateDiagram extends PropPanelDiagram {
-/*
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  JLabel _contextLabel = new JLabel("Context: ");
-  JComboBox _contextField = new JComboBox();
-*/
+
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
   public PropPanelUMLStateDiagram() {
     super();
-/*
-    GridBagLayout gb = (GridBagLayout) getLayout();
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
-    c.ipadx = 3; c.ipady = 3;
 
-    c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 1;
-    gb.setConstraints(_contextLabel, c);
-    add(_contextLabel);
-
-    c.weightx = 1.0;
-    c.gridx = 1;
-    gb.setConstraints(_contextField, c);
-    add(_contextField);
-
-    _contextField.setEditable(true);
-    _contextField.getEditor().getEditorComponent().setBackground(Color.white);
-    Component ed = _contextField.getEditor().getEditorComponent();
-    Document contextDoc = ((JTextField)ed).getDocument();
-    contextDoc.addDocumentListener(this);
-    // needs-more-work: set font?
-*/
   }
 
-  /*
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  protected void setTargetInternal(Object t) {
-    super.setTargetInternal(t);
-    if (!(_target instanceof UMLStateDiagram)) return;
-    UMLStateDiagram d = (UMLStateDiagram) _target;
-	// System.out.println("Trying to cast "+d.getGraphModel()+" to StateDiagramGraphModel");
-    StateDiagramGraphModel sdgm = (StateDiagramGraphModel) d.getGraphModel();
-    _contextField.setSelectedItem(null);
-    if (sdgm != null && sdgm.getMachine() != null)
-      _contextField.setSelectedItem(sdgm.getMachine().getContext());
-  }
-
-  public Object getTarget() { return _target; }
-
-  public void refresh() { setTarget(_target); }
-
-  public boolean shouldBeEnabled() { return _target instanceof Diagram; }
-
-
-  protected void setTargetName() {
-    if (_inChange) return;
-    if (!(_target instanceof Diagram)) return;
-    try {
-      ((Diagram)_target).setName(_nameField.getText());
-    }
-    catch (PropertyVetoException pve) {
-      System.out.println("Could not set diagram name");
-    }
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // event handling
-
-  public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
-    if (e.getDocument() == _nameField.getDocument()) setTargetName();
-  }
-
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-  public void changedUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
-  }
-
-*/
 } /* end class PropPanelDiagram */

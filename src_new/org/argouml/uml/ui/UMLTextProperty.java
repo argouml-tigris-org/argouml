@@ -46,11 +46,13 @@
 
 package org.argouml.uml.ui;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
 
 import org.argouml.ui.*;
 
+import java.awt.event.InvocationEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.lang.reflect.*;
@@ -62,6 +64,8 @@ import ru.novosoft.uml.*;
 
 
 public class UMLTextProperty  {
+    protected static Category cat = Category.getInstance(UMLTextProperty.class);
+           
     private Method _getMethod;
     private Method _setMethod;
     protected String _propertyName;
@@ -72,13 +76,14 @@ public class UMLTextProperty  {
     }
     
     public UMLTextProperty(Class elementClass,String propertyName,String getMethod,String setMethod) {
+        
         _propertyName = propertyName;
         Class[] noClass = {};
         try {
             _getMethod = elementClass.getMethod(getMethod,noClass);
         }
         catch(Exception e) {
-            System.out.println(e.toString() + " in UMLTextProperty: " + getMethod);
+            cat.error(e.toString() + " in UMLTextProperty: " + getMethod, e);
             // 2002-07-20
             // Jaap Branderhorst
             // If it is illegal we should throw an exception
@@ -90,7 +95,7 @@ public class UMLTextProperty  {
             _setMethod = elementClass.getMethod(setMethod,stringClass);
         }
         catch(Exception e) {
-            System.out.println(e.toString() + " in UMLTextProperty: " + setMethod);
+            cat.error(e.toString() + " in UMLTextProperty: " + setMethod, e);
             // 2002-07-20
             // Jaap Branderhorst
             // If it is illegal we should throw an exception
@@ -172,10 +177,14 @@ public class UMLTextProperty  {
                     if(obj != null) value = obj.toString();
 
                 }
+                catch(InvocationTargetException e) {
+                    cat.error(e.getTargetException().toString() + 
+                        " is invocationtargetexception in UMLTextProperty.getMethod()", 
+                        e.getTargetException());
+                }
 
                 catch(Exception e) {
-
-                    System.out.println(e.toString() + " in UMLTextProperty.getMethod()");
+                    cat.error(e.toString() + " in UMLTextProperty.getMethod()", e);
 
                 }
 

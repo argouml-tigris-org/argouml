@@ -92,9 +92,6 @@ public class FigJoinState extends FigStateVertex {
   public void setOwner(Object node) {
     super.setOwner(node);
     bindPort(node, _bigPort);
-    // if it is a UML meta-model object, register interest in any change events
-    if (node instanceof MElement)
-      ((MElement)node).addMElementListener(this);
   }
 
   /** Initial states are fixed size. */

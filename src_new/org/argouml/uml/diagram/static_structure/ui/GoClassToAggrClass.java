@@ -34,9 +34,9 @@ import ru.novosoft.uml.foundation.data_types.*;
 
 import org.argouml.ui.*;
 
-public class GoClassToAggrClass implements TreeModel {
+public class GoClassToAggrClass extends AbstractGoRule {
 
-  public String toString() { return "Class->Aggregate Class"; }
+  public String getRuleName() { return "Class->Aggregate Class"; }
 
   public Object getRoot() {
       throw
@@ -46,7 +46,7 @@ public class GoClassToAggrClass implements TreeModel {
 
   public Object getChild(Object parent, int index) {
     if (parent instanceof MClass) {
-      Vector children = getChildren((MClass)parent);
+      Vector children = new Vector(getChildren((MClass)parent));
       return children.elementAt(index);
     }
     throw
@@ -55,7 +55,7 @@ public class GoClassToAggrClass implements TreeModel {
 
   public int getChildCount(Object parent) {
     if (parent instanceof MClass) {
-      Vector children = getChildren((MClass)parent);
+      Collection children = getChildren((MClass)parent);
       return children.size();
     }
     return 0;
@@ -64,14 +64,15 @@ public class GoClassToAggrClass implements TreeModel {
   public int getIndexOfChild(Object parent, Object child) {
     int res = 0;
     if (parent instanceof MClass) {
-      Vector children = getChildren((MClass)parent);
+      Vector children = new Vector(getChildren((MClass)parent));
       if (children.contains(child))
 	return children.indexOf(child);
     }
     return -1;
   }
 
-  public Vector getChildren(MClass parentClass) {
+  public Collection getChildren(Object pClass) {
+    MClass  parentClass = (MClass) pClass;
     Vector res = new Vector();
     Vector ends = new Vector(parentClass.getAssociationEnds());
     if (ends == null) return res;

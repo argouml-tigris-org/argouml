@@ -39,6 +39,7 @@ import ru.novosoft.uml.behavior.collaborations.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.graph.*;
 
+import org.apache.log4j.Category;
 import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
@@ -184,17 +185,8 @@ class ColumnVisibility extends ColumnDescriptor {
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof MModelElement)) return;
-    if (!(value instanceof MVisibilityKind)) {
-		// System.out.println("asdddd");
-      return;
-    }
-    //    try {
+    if (!(target instanceof MModelElement) || !(value instanceof MVisibilityKind)) return;
       ((MModelElement)target).setVisibility((MVisibilityKind) value);
-      //}
-      //catch (PropertyVetoException pve) {
-      //System.out.println("asdawasdw2easd");
-      //}
   }  
 } /* end class ColumnVisibility */
 
@@ -215,12 +207,6 @@ class ColumnFeatureVis extends ColumnDescriptor {
     if (!(target instanceof MFeature)) return;
     if (!(value instanceof MVisibilityKind)) return;
 	((MFeature)target).setVisibility((MVisibilityKind) value);
-	/* I couldn't help but keep this... Toby!
-	   }
-	   catch (PropertyVetoException pve) {
-	   System.out.println("asdawasdw2easd");
-	   }
-	*/
   }  
 } /* end class ColumnFeatureVis */
 
@@ -712,8 +698,6 @@ class ColumnEntry extends ColumnDescriptor {
     if (!(value instanceof String)) return;
 
 
-    System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXX");
-
     MState st = (MState) target;
     String s = (String) value;
     ParserDisplay pd = ParserDisplay.SINGLETON;
@@ -909,7 +893,7 @@ class ColumnReturn extends ColumnDescriptor {
     Project p = pb.getProject();
     MClassifier rt = p.findType(s);
     ParserDisplay pd = ParserDisplay.SINGLETON;
-	MParameter rp = UmlFactory.getFactory().getCore().buildParameter();
+	MParameter rp = UmlFactory.getFactory().getCore().buildParameter(op);
 	rp.setType(rt);
 	UmlHelper.getHelper().getCore().setReturnParameter(op, rp);
   }
@@ -957,6 +941,7 @@ class ColumnQuery extends ColumnDescriptor {
 
 
 class ColumnType extends ColumnDescriptor {
+    protected static Category cat = Category.getInstance(ColumnType.class);
   ColumnType() {
     super("Type", String.class, true);  //MClassifier.type?
   }
@@ -978,7 +963,7 @@ class ColumnType extends ColumnDescriptor {
     Project p = pb.getProject();
     MClassifier t = p.findType(s);
     if (t == null) {
-      System.out.println("attribute type not found");
+      cat.warn("attribute type not found");
       return;
     }
     ParserDisplay pd = ParserDisplay.SINGLETON;

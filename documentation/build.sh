@@ -10,19 +10,9 @@
 # | Verify and Set Required Environment Variables                           |
 # +-------------------------------------------------------------------------+
 
-# 	+---------------------------------------------------------------------+
-# 	| Check for existence of ANT_HOME environment variable                |
-# 	+---------------------------------------------------------------------+
+# Always use the ant that comes with ArgoUML
 
-if [ "$ANT_HOME" = "" ] ; then
-	#	+---------------------------------------------------------------+
-	# 	| ANT_HOME environment variable not found                       |
-	# 	|                                                               |
-	# 	| We will point ANT_HOME to our private copy of Ant             |
-	# 	+---------------------------------------------------------------+
-
-	ANT_HOME=../lib
-fi
+ANT_HOME=../tools/ant-1.4.1
 
 #	+---------------------------------------------------------------------+
 #	| Check for existence of JAVA_HOME environment variable               |
@@ -57,18 +47,18 @@ fi
 # 	+--------------------------------------------------------------------+
 # 	| Add required .jar files to local classpath string                  |
 # 	+--------------------------------------------------------------------+
-LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/ant.jar
-LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/optional.jar
-LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/NetComponents.jar
-LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/parser.jar
-LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/jaxp.jar
-LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/xalan.jar
-LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/xerces.jar
-LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/bsf.jar
-LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/js.jar
-#LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/fop.jar
-LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/w3c.jar
-LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib
+# LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/ant.jar
+# LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/optional.jar
+# LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/NetComponents.jar
+# LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/parser.jar
+# LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/jaxp.jar
+# LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/xalan.jar
+# LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/xerces.jar
+# LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/bsf.jar
+# LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/js.jar
+# #LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/fop.jar
+# LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib/w3c.jar
+# LOCAL_CLASSPATH=$LOCAL_CLASSPATH:../lib
 
 # Uncomment following line to add current CLASSPATH to end of LOCAL_CLASSPATH
 # LOCAL_CLASSPATH=$LOCAL_CLASSPATH:$CLASSPATH
@@ -85,6 +75,6 @@ echo
 echo Starting Ant...
 echo
 
-$JAVA_HOME/bin/$JAVACMD -classpath $LOCAL_CLASSPATH -Dant.home=$ANT_HOME -Dant.opts=$ANT_OPTS org.apache.tools.ant.Main $*
+$ANT_HOME/bin/$ANT $*
 
 exit

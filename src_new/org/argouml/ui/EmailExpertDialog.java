@@ -29,6 +29,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import org.apache.log4j.Category;
 import org.argouml.cognitive.*;
 
 /** The email expert dialog does not work and is in
@@ -43,6 +44,7 @@ import org.argouml.cognitive.*;
  * within argo.
  */
 public class EmailExpertDialog extends JDialog implements ActionListener {
+    protected static Category cat = Category.getInstance(EmailExpertDialog.class);
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -143,12 +145,12 @@ public class EmailExpertDialog extends JDialog implements ActionListener {
       String to = _to.getText();
       String cc = _cc.getText();
       String subject = _subject.getText();
-      //System.out.println("sending email!");
+      cat.debug("sending email!");
       setVisible(false);
       dispose();
     }
     if (e.getSource() == _cancelButton) {
-      //System.out.println("cancel");
+      cat.debug("cancel");
       setVisible(false);
       dispose();
     }

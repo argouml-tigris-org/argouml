@@ -23,8 +23,17 @@
 
 package org.argouml.model.uml.behavioralelements.statemachines;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
+import org.argouml.kernel.Project;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.state_machines.MCallEvent;
@@ -245,11 +254,11 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
       return trans;
     }
     
-	/**
-	 * Builds a compositestate as top for some statemachine
-	 * @param statemachine
-	 * @return MCompositeState
-	 */
+    /**
+     * Builds a compositestate as top for some statemachine
+     * @param statemachine
+     * @return MCompositeState
+     */
     public MCompositeState buildCompositeState(MStateMachine statemachine) {
     	if (statemachine != null ) {
     		MCompositeState state = createCompositeState();
@@ -260,10 +269,10 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     }
     
     /**
-	 * Builds a state machine owned by the given context
-	 * @param context
-	 * @return MActivityGraph
-	 */
+     * Builds a state machine owned by the given context
+     * @param context
+     * @return MActivityGraph
+     */
     public MStateMachine buildStateMachine(MModelElement context) {
     	if (context != null && (context instanceof MBehavioralFeature || context instanceof MClassifier)) {
     		MStateMachine graph = createStateMachine();
@@ -281,14 +290,14 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     }
     
     /**
-	 * Builds a complete transition including all associations (composite state the
+     * Builds a complete transition including all associations (composite state the
      * transition belongs to, source the transition is coming from, destination
      * the transition is going to). The transition is owned by the compositestate.
-	 * @param owningState
-	 * @param source
-	 * @param dest
-	 * @return MTransition
-	 */
+     * @param owningState
+     * @param source
+     * @param dest
+     * @return MTransition
+     */
     public MTransition buildTransition(MCompositeState owningState, 
         MStateVertex source, MStateVertex dest) {
       	if (owningState != null && source != null && dest != null && 
@@ -302,6 +311,45 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
       	} else 
       		throw new IllegalArgumentException("In buildTransition: arguments not legal");
     }
+    
+    public void deleteCallEvent(MCallEvent elem) {}
+    
+    public void deleteChangeEvent(MChangeEvent elem) {}
+    
+    public void deleteCompositeState(MCompositeState elem) {}
+    
+    public void deleteEvent(MEvent elem) {}
+    
+    public void deleteFinalState(MFinalState elem) {}
+    
+    public void deleteGuard(MGuard elem) {}
+    
+    public void deletePseudostate(MPseudostate elem) {}
+    
+    public void deleteSignalEvent(MSignalEvent elem) {}
+    
+    public void deleteSimpleState(MSimpleState elem) {}
+    
+    public void deleteState(MState elem) {}
+    
+    public void deleteStateMachine(MStateMachine elem) {
+    }    
+                
+    
+    public void deleteStateVertex(MStateVertex elem) {}
+    
+    public void deleteStubState(MStubState elem) {}
+    
+    public void deleteSubmachineState(MSubmachineState elem) {}
+    
+    public void deleteSynchState(MSynchState elem) {}
+    
+    public void deleteTimeEvent(MTimeEvent elem) {}
+    
+    public void deleteTransition(MTransition elem) {}
+    
+    
+    
 
 }
 

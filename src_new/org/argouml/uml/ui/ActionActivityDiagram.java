@@ -23,79 +23,34 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.kernel.*;
-import org.argouml.model.uml.UmlFactory;
+import org.apache.log4j.Category;
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
-import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
-import org.argouml.ui.*;
-import org.argouml.uml.*;
-import org.argouml.uml.diagram.activity.ui.*;
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.behavior.activity_graphs.*;
-import java.awt.event.*;
-import java.beans.*;
-import javax.swing.JOptionPane;
+import org.argouml.ui.ArgoDiagram;
+import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
+import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
+import ru.novosoft.uml.foundation.core.MBehavioralFeature;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 
-public class ActionActivityDiagram extends UMLChangeAction {
-
-    ////////////////////////////////////////////////////////////////
-    // static variables
+public class ActionActivityDiagram extends ActionStateDiagram {
     
     public static ActionActivityDiagram SINGLETON = new ActionActivityDiagram(); 
-
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
-    public ActionActivityDiagram() { super("ActivityDiagram"); }
-
-
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
-    public void actionPerformed(ActionEvent ae) {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Project p = pb.getProject();
-	try {
-	    Object me = pb.getDetailsTarget();
-	    if (me == null) {
-	    	me = pb.getTarget();
-	    }
-	    // don't need to check target, allready done in shouldbeenabled
-	    MActivityGraph activity = ActivityGraphsFactory.getFactory().buildActivityGraph((MModelElement)me);
-	    // next line isn't worlds most beautifull constructor but i don't want to change the world atm.
-	    MNamespace ns = null;
-	    if (me instanceof MBehavioralFeature) {
-	    	ns = ((MBehavioralFeature)me).getNamespace();
-	    } else 
-	    	ns = (MNamespace)me;
-		
-	    UMLActivityDiagram d = new UMLActivityDiagram(ns, activity);
-	    p.addMember(d);
-	    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
-	    pb.setTarget(d);
-	   
-	} catch (PropertyVetoException pve) {
-	    System.out.println("PropertyVetoException in ActionActivityDiagram");
-	}
-	super.actionPerformed(ae);
-    }
     
-    public boolean shouldBeEnabled() {
-    	ProjectBrowser pb = ProjectBrowser.TheInstance;
-    	Object target = pb.getDetailsTarget();
-    	if (target == null) {
-    		target = pb.getTarget();
-    	}
-    	return target instanceof MBehavioralFeature || target instanceof MClassifier;
-//	
-//	
-//	Object target = pb.getDetailsTarget();
-//	return super.shouldBeEnabled() && p != null &&
-//	    ((target instanceof MUseCase)||(target instanceof MClass)); // or MOperation
+    protected static Category cat = Category.getInstance(org.argouml.uml.ui.ActionActivityDiagram.class);
+
+    private ActionActivityDiagram() { super("ActivityDiagram"); }
+   
+    /**
+     * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace, Object)
+     */
+    public ArgoDiagram createDiagram(MNamespace ns, Object target) {
+        MActivityGraph graph = ActivityGraphsFactory.getFactory().buildActivityGraph((MModelElement)target);
+        if (target instanceof MBehavioralFeature) {
+            ns = ((MBehavioralFeature)target).getNamespace();
+        }
+        UMLActivityDiagram d = new UMLActivityDiagram(ns, graph);
+        return d;
     }
+
 } /* end class ActionActivityDiagram */

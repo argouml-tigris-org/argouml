@@ -46,7 +46,9 @@ import ru.novosoft.uml.model_management.*;
 
 import org.tigris.gef.graph.*;
 
+import org.apache.log4j.Category;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.MMUtil;
 
 /**
@@ -58,6 +60,7 @@ import org.argouml.uml.MMUtil;
 
 public class UseCaseDiagramGraphModel extends MutableGraphSupport
     implements MutableGraphModel, VetoableChangeListener, MElementListener {
+        protected static Category cat = Category.getInstance(UseCaseDiagramGraphModel.class);
 
     ///////////////////////////////////////////////////////////////////////////
     //
@@ -295,19 +298,13 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
      */
 
     public Object getSourcePort(Object edge) {
-
-        // Know what to do for an assocation
-
-        if (edge instanceof MAssociation) {
-            MAssociation assoc = (MAssociation) edge;
-            Vector       conns = new Vector(assoc.getConnections());
-
-            return conns.elementAt(0);
-        }
+        
+        if (edge instanceof MRelationship) {
+            return CoreHelper.getHelper().getSource((MRelationship)edge);       }
 
         // Don't know what to do otherwise
 
-        System.out.println(this.getClass().toString() + ": getSourcePort(" +
+        cat.debug(this.getClass().toString() + ": getSourcePort(" +
                            edge.toString() + ") - can't handle");
 
         return null;
@@ -341,7 +338,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
 
         // Don't know what to do otherwise
 
-        System.out.println(this.getClass().toString() + ": getDestPort(" +
+        cat.debug(this.getClass().toString() + ": getDestPort(" +
                            edge.toString() + ") - can't handle");
 
         return null;
@@ -370,6 +367,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
      */
 
     public boolean canAddNode(Object node) {
+        if (_nodes.contains(node)) return false;
         return (node instanceof MActor) || (node instanceof MUseCase);
     }
 
@@ -515,7 +513,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
 
     public void addNode(Object node) {
 
-        // System.out.println("adding usecase node!!");
+        cat.debug("adding usecase node!!");
 
         // Give up if we are already on the graph. This is a bit inconistent
         // with canAddNode above.
@@ -546,8 +544,8 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
          if (((node instanceof MActor) || (node instanceof MUseCase)) && 
          	(((MModelElement)node).getNamespace() == null)) {
          // end NEW CODE
-            // System.out.println("setting namespace " + _model +
-            //                    " to element "+node);
+            cat.debug("setting namespace " + _model +
+                                " to element "+node);
             _model.addOwnedElement((MModelElement) node);
         }
 
@@ -573,7 +571,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
 
     public void addEdge(Object edge) {
 
-        // System.out.println("adding class edge!!!!!!");
+        cat.debug("adding class edge!!!!!!");
         
         // Give up if we are already on the graph.
 
@@ -895,7 +893,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
         // We shouldn't be asked for any other sort of edge
 
         else {
-            System.out.println(this.getClass().toString() + ": connect(" +
+            cat.debug(this.getClass().toString() + ": connect(" +
                                fromPort.toString() + ", " +
                                toPort.toString() + ", " +
                                edgeClass.toString() +
@@ -1026,7 +1024,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
 
             if (oldOwned.contains(eo)) {
 
-                //System.out.println("model removed " + me);
+                cat.debug("model removed " + me);
 
                 // Remove a node
 
@@ -1050,7 +1048,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
 
             // Something was added - nothing for us to worry about
             else {
-                //System.out.println("model added " + me);
+                cat.debug("model added " + me);
             }
         }
     }

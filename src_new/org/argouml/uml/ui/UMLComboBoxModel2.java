@@ -25,10 +25,15 @@ package org.argouml.uml.ui;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
+
+import org.apache.log4j.Category;
 
 
 import ru.novosoft.uml.MElementEvent;
@@ -43,15 +48,17 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 public abstract class UMLComboBoxModel2
     extends DefaultComboBoxModel
     implements UMLUserInterfaceComponent {
-
+        
+       protected static Category cat = 
+        Category.getInstance(UMLComboBoxModel2.class);
+        
     protected UMLUserInterfaceContainer container = null;
     protected int selectedIndex = -1;
-    protected String propertySetName;
     protected List list = new ArrayList();
     
 	
     /**
-     * Constructs a model for a combobox. The container given is usecd to retreive
+     * Constructs a model for a combobox. The container given is used to retreive
      * the target that is manipulated through this combobox. The propertyname
      * must equal the name of the NSUML event thrown when the property is set.
      * @param container
@@ -59,15 +66,14 @@ public abstract class UMLComboBoxModel2
      * @param roleAddedName
      * @throws IllegalArgumentException if one of the arguments is null
      */
-    public UMLComboBoxModel2(UMLUserInterfaceContainer container, String propertySetName) {
+    public UMLComboBoxModel2(UMLUserInterfaceContainer container) {
         super();
-        if (propertySetName == null || container == null) throw new IllegalArgumentException("In UMLComboBoxModel2: one of the arguments is null");
-        setPropertySetName(propertySetName);
+        if (container == null) throw new IllegalArgumentException("In UMLComboBoxModel2: one of the arguments is null");
         // it would be better that we don't need the container to get the target
         // this constructor can be without parameters as soon as we improve
         // targetChanged
         setContainer(container);
-        buildModelList();
+        targetChanged();
     }
     
     
@@ -76,36 +82,56 @@ public abstract class UMLComboBoxModel2
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(MElementEvent)
      */
     public void listRoleItemSet(MElementEvent e) {
-        System.out.println("listRoleItemSet");
+        cat.debug("listRoleItemSet");
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#propertySet(MElementEvent)
      */
     public void propertySet(MElementEvent e) {
-        if (e.getName().equals(getPropertySetName()) && e.getOldValue() != e.getNewValue()) {
-            selectedIndex = getIndexOf(e.getNewValue());
-        }
+        if (isValidPropertySet(e)  && getChangedElement(e) != getSelectedItem()) {
+            Object o = getChangedElement(e);
+            if (o instanceof Collection) {     
+                if (((Collection)o).size() == 1) {
+                    Iterator it = ((Collection)o).iterator();
+                    o = it.next();
+                }
+            }
+            if (getIndexOf(o) >= 0) {
+                setSelectedItem(o);
+            }
+        }   
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#recovered(MElementEvent)
      */
     public void recovered(MElementEvent e) {
+         cat.debug("recovered");
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#removed(MElementEvent)
      */
     public void removed(MElementEvent e) {
+        cat.debug("removed");
+        Object o = getChangedElement(e);
+        if (getIndexOf(o) >= 0) {
+            removeElement(o);
+        }
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#roleAdded(MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
-        if (isValid((MModelElement)e.getAddedValue())) {
-            addElement(e.getAddedValue());
+        if (isValidRoleAdded(e)) {
+            Object o = getChangedElement(e);
+            if (o instanceof Collection) {
+                addAll((Collection)o);
+            } else {
+                addElement(o);
+            }      
         }
     }
 
@@ -113,14 +139,21 @@ public abstract class UMLComboBoxModel2
      * @see ru.novosoft.uml.MElementListener#roleRemoved(MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
-        
+        if (isValidRoleRemoved(e)) {
+            Object o = getChangedElement(e);
+            if (o instanceof Collection) {
+                removeAll((Collection)o);
+            } else {
+                removeElement(o);
+            }      
+        }
     }
 
     /**
      * Returns the container.
      * @return UMLUserInterfaceContainer
      */
-    public UMLUserInterfaceContainer getContainer() {
+    protected UMLUserInterfaceContainer getContainer() {
         return container;
     }
 
@@ -128,7 +161,7 @@ public abstract class UMLComboBoxModel2
      * Sets the container.
      * @param container The container to set
      */
-    public void setContainer(UMLUserInterfaceContainer container) {
+    protected void setContainer(UMLUserInterfaceContainer container) {
         this.container = container;
     }
 
@@ -140,7 +173,8 @@ public abstract class UMLComboBoxModel2
         // the change (the actual old and new target)
         // this must be implemented in the whole of argo one time or another
         // to improve performance and reduce errors
-        Object target = getContainer().getTarget();
+        removeAllElements();
+        addElement("");
         buildModelList();
     }
 
@@ -153,11 +187,36 @@ public abstract class UMLComboBoxModel2
     }
     
     /**
-     * Returns true if the given modelelement m may be added to the model.
+     * Returns true if roleAdded(MElementEvent e) should be executed. Developers
+     * should override this method and not directly override roleAdded.  
      * @param m
      * @return boolean
      */
-    protected abstract boolean isValid(MModelElement m);
+    protected abstract boolean isValidRoleAdded(MElementEvent e);
+    
+    
+    /**
+     * Returns true if roleRemoved(MElementEvent e) should be executed. Standard
+     * behaviour is such that some element that is changed allways may be 
+     * removed.
+     * @param m
+     * @return boolean
+     */
+    protected boolean isValidRoleRemoved(MElementEvent e) {
+        return getIndexOf(getChangedElement(e)) >= 0;
+    }
+    
+    /**
+     * Returns true if propertySet(MElementEvent e) should be executed. Developers
+     * should override this method and not directly override propertySet in order
+     * to let this comboboxmodel and the combobox(es) representing this model 
+     * function properly.  
+     * @param m
+     * @return boolean
+     */
+    protected abstract boolean isValidPropertySet(MElementEvent e);
+    
+    
     
     /**
      * Builds the list of elements and sets the selectedIndex to the currently 
@@ -170,9 +229,12 @@ public abstract class UMLComboBoxModel2
      * @see javax.swing.MutableComboBoxModel#addElement(Object)
      */
     public void addElement(Object arg0) {
-        list.add(arg0);
-        int size = list.size();
-        fireIntervalAdded(this, size-1, size);
+        int index = getIndexOf(arg0);
+        if (index == -1) {
+            list.add(arg0);
+            int size = list.size();
+            fireIntervalAdded(this, size-1, size);
+        }
     }
 
     /**
@@ -252,7 +314,19 @@ public abstract class UMLComboBoxModel2
      * @see javax.swing.ComboBoxModel#setSelectedItem(Object)
      */
     public void setSelectedItem(Object arg0) {
+        if (arg0 instanceof Collection) {
+            Iterator it = ((Collection)arg0).iterator();
+            if (it.hasNext()) {
+                arg0 = it.next();
+            } else
+                return;
+        }
+        int index = getIndexOf(arg0);
+        if (index == -1) {
+            addElement(arg0);
+        }
         selectedIndex = list.indexOf(arg0);
+        fireContentsChanged(this, selectedIndex, selectedIndex);
     }
     
     /**
@@ -260,7 +334,7 @@ public abstract class UMLComboBoxModel2
      * at once.
      * @param elements
      */
-    public void setElements(Collection elements) {
+    protected void setElements(Collection elements) {
         if (elements != null) {
             int size = list.size() > 0 ? list.size()-1 : 0;
             list.clear();
@@ -271,20 +345,50 @@ public abstract class UMLComboBoxModel2
             throw new IllegalArgumentException("In setElements: may not set " +
                 "elements to null collection");
     }
+    
     /**
-     * Returns the propertySetName.
-     * @return String
+     * Utility method to get the target of the container
+     * @return Object
      */
-    public String getPropertySetName() {
-        return propertySetName;
+    public Object getTarget() {
+        if (getContainer() != null) return getContainer().getTarget();
+        return null;
     }
-
+    
     /**
-     * Sets the propertySetName.
-     * @param propertySetName The propertySetName to set
+     * Utility method to remove a collection of elements from the model
+     * @param col
      */
-    public void setPropertySetName(String propertySetName) {
-        this.propertySetName = propertySetName;
+    protected void removeAll(Collection col) {
+        // we don't want to mark to many elements as changed. 
+        // therefore we don't directly call removeall on the list
+        Iterator it = col.iterator();
+        while (it.hasNext()) {
+            removeElement(it.next());
+        }
+    }
+    
+    /**
+     * Utility method to add a collection of elements to the model
+     * @param col
+     */
+    protected void addAll(Collection col) {
+        Iterator it = col.iterator();
+        while (it.hasNext()) {
+            addElement(it.next());
+        }
+    }
+    
+    /**
+     * Utility method to get the changed element from some event e
+     * @param e
+     * @return Object
+     */
+    protected Object getChangedElement(MElementEvent e) {
+        if (e.getAddedValue() != null) return e.getAddedValue();
+        if (e.getRemovedValue() != null) return e.getRemovedValue();
+        if (e.getNewValue() != null) return e.getNewValue();
+        return null;
     }
 
 }

@@ -23,6 +23,7 @@
 
 package org.argouml.uml.ui;
 
+import org.apache.log4j.Category;
 import org.argouml.model.uml.UmlFactory;
 
 import java.lang.reflect.*;
@@ -35,6 +36,7 @@ import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
 public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, UMLUserInterfaceComponent {
+     protected static Category cat = Category.getInstance(UMLMultiplicityComboBox.class);
 
     private UMLUserInterfaceContainer _container;
     private Method _getMethod;
@@ -88,9 +90,9 @@ public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, 
 	    _setMethod = elementClass.getMethod("setMultiplicity",setArgs);
 
         } catch(Exception e) {
+            cat.error(e.toString() + " in UMLMultiplicityComboBox()", e);
 
             setEnabled(false);
-            System.out.println(e.toString() + " in UMLMultiplicityComboBox()");
 
         }
 
@@ -140,8 +142,7 @@ public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, 
             }
 
         } catch(Exception e) {
-
-            System.out.println(e.toString() + " in UMLMultiplicityComboBox.update()");
+            cat.error(e.toString() + " in UMLMultiplicityComboBox.update()", e);
 
         }
 
@@ -284,8 +285,7 @@ public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, 
                 _setMethod.invoke(_container.getTarget(),new Object[] { mult });
 
             } catch(Exception e) {
-
-                System.out.println(e.toString() + " in UMLMultiplicityComboBox.itemStateChanged()");
+                cat.error(e.toString() + " in UMLMultiplicityComboBox.itemStateChanged()", e);
 
             }
 

@@ -89,7 +89,7 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     	MStereotype stereo2 = ExtensionMechanismsHelper.getHelper().getStereotype(ns, stereo);
     	if (stereo2 != null) {
     		stereo2.addExtendedElement(m);
-    		stereo.remove();
+    		UmlFactory.getFactory().delete(stereo);
     		return stereo2;
     	} else {
     		ns.addOwnedElement(stereo);
@@ -106,5 +106,9 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     	}
     	return name;
     }
+    
+    public void deleteStereotype(MStereotype elem) {}
+    
+    public void deleteTaggedValue(MTaggedValue elem) {}
 }
 

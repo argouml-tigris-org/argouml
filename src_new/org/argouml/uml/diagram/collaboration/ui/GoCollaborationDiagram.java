@@ -35,9 +35,9 @@ import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import org.argouml.kernel.Project;
 import org.argouml.ui.*;
 
-public class GoCollaborationDiagram implements TreeModel {
+public class GoCollaborationDiagram extends AbstractGoRule {
 
-  public String toString() { return "Collaboration->Diagram"; }
+  public String getRuleName() { return "Collaboration->Diagram"; }
 
   public Object getRoot() {
       throw new UnsupportedOperationException("getRoot should never be called");
@@ -45,25 +45,25 @@ public class GoCollaborationDiagram implements TreeModel {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    Vector children = getChildren(parent);
+    Vector children = new Vector(getChildren(parent));
     if (children != null) return children.elementAt(index);
     throw new UnsupportedOperationException("getChild should never be get here GoCollaborationDiagram");
   }
 
   public int getChildCount(Object parent) {
-    Vector children = getChildren(parent);
+    Collection children = getChildren(parent);
     if (children != null) return children.size();
     return 0;
   }
 
   public int getIndexOfChild(Object parent, Object child) {
-    Vector children = getChildren(parent);
+    Vector children = new Vector(getChildren(parent));
     if (children != null && children.contains(child))
       return children.indexOf(child);
     return -1;
   }
 
-  public Vector getChildren(Object parent) {
+  public Collection getChildren(Object parent) {
     Project p = ProjectBrowser.TheInstance.getProject();
     if (p == null) return null;
     if (!(parent instanceof MCollaboration)) return null;

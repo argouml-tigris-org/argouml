@@ -36,9 +36,9 @@ import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.*;
 import org.argouml.uml.MMUtil;
 
-public class GoClassifierToBeh implements TreeModel {
+public class GoClassifierToBeh extends AbstractGoRule {
 
-  public String toString() {
+  public String getRuleName() {
     return Argo.localize ("Tree", "misc.class.operation");
   }
   
@@ -57,6 +57,11 @@ public class GoClassifierToBeh implements TreeModel {
     }
     throw 
 	new UnsupportedOperationException("getChild should never be get here");
+  }
+
+  public Collection getChildren(Object parent) { 
+      throw
+          new UnsupportedOperationException("getChildren should not be called");
   }
   
   public int getChildCount(Object parent) {

@@ -40,6 +40,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import org.argouml.language.helpers.*;
 import org.argouml.ui.*;
@@ -53,6 +54,7 @@ import org.argouml.model.uml.UmlHelper;
 /** Class to display graphics for a UML Interface in a diagram. */
 
 public class FigInterface extends FigNodeModelElement {
+    protected static Category cat = Category.getInstance(FigInterface.class);
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -240,7 +242,7 @@ public class FigInterface extends FigNodeModelElement {
 
     modifierMenu.addCheckItem(new ActionModifier("Public", "visibility", "getVisibility", "setVisibility", mclass, MVisibilityKind.class, MVisibilityKind.PUBLIC, null));
     modifierMenu.addCheckItem(new ActionModifier("Abstract", "isAbstract", "isAbstract", "setAbstract", mclass));
-    modifierMenu.addCheckItem(new ActionModifier("Final", "isLeaf", "isLeaf", "setLeaf", mclass));
+    modifierMenu.addCheckItem(new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf", mclass));
     modifierMenu.addCheckItem(new ActionModifier("Root", "isRoot", "isRoot", "setRoot", mclass));
 
     popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 1);
@@ -438,7 +440,7 @@ public class FigInterface extends FigNodeModelElement {
         }
     }
     catch (Exception e) {
-      System.out.println("could not set package due to:"+e + "' at "+encloser);
+        cat.error("could not set package due to:"+e + "' at "+encloser, e);
     }
 
     // The next if-clause is important for the Deployment-diagram

@@ -23,6 +23,7 @@
 
 package org.argouml.uml.ui;
 
+import org.apache.log4j.Category;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.util.*;
@@ -41,6 +42,7 @@ import javax.swing.filechooser.*;
 /** Wraps a CmdSaveGIF to allow selection of an output file. */
 
 public class ActionSaveGIF extends UMLAction {
+    protected static Category cat = Category.getInstance(ActionSaveGIF.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -88,8 +90,7 @@ public class ActionSaveGIF extends UMLAction {
 		    }
 		}
 		catch( Exception ex ) {
-		    System.out.println( "exception in opening JFileChooser" );
-		    ex.printStackTrace();
+                    cat.error("exception in opening JFileChooser", ex);
 		}
 
 		if( chooser == null ) chooser = OsUtil.getFileChooser();
@@ -109,8 +110,7 @@ public class ActionSaveGIF extends UMLAction {
 			String name = theFile.getName();
 			if( !path.endsWith( separator ) ) path += separator;
 			pb.showStatus( "Writing " + path + name + "..." );
-			if( theFile.exists() && !overwrite ) {
-			    System.out.println( "Are you sure you want to overwrite " + name + "?");
+			if( theFile.exists() && !overwrite ) {		    
 			    String t = "Overwrite " + path + name;
 			    int response =
 				JOptionPane.showConfirmDialog(pb, t, t,
@@ -128,12 +128,11 @@ public class ActionSaveGIF extends UMLAction {
 	    }
 	    catch( FileNotFoundException ignore )
 		{
-		    System.out.println( "got a FileNotFoundException" );
+                cat.error("got a FileNotFoundException", ignore);
 		}
 	    catch( IOException ignore )
 		{
-		    System.out.println( "got an IOException" );
-		    ignore.printStackTrace();
+                cat.error("got an IOException", ignore);
 		}
 	}
 

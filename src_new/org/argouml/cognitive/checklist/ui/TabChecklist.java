@@ -41,6 +41,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.uml.ui.*;
+import org.apache.log4j.Category;
 import org.argouml.cognitive.checklist.*;
 
 /** Doesn't work, checked the argo.ini and it is not commented out
@@ -141,13 +142,9 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
   // enable buttons when selection made
 
   public void actionPerformed(ActionEvent ae) {
-    Object src = ae.getSource();
-    //System.out.println("got actionPerformed from " + src);
   }
 
   public void valueChanged(ListSelectionEvent lse) {
-    Object src = lse.getSource();
-    //System.out.println("got valueChanged from " + src);
   }
 
 } /* end class TabChecklist */
@@ -157,6 +154,8 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
 
 class TableModelChecklist extends AbstractTableModel
 implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
+    protected static Category cat = 
+        Category.getInstance(TableModelChecklist.class);
   ////////////////
   // instance varables
   MModelElement _target;
@@ -220,7 +219,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
   }
 
   public void setValueAt(Object aValue, int rowIndex, int columnIndex)  {
-    //System.out.println("setting table value " + rowIndex + ", " + columnIndex);
+    cat.debug("setting table value " + rowIndex + ", " + columnIndex);
     if (columnIndex != 0) return;
     if (!(aValue instanceof Boolean)) return;
     boolean val = ((Boolean)aValue).booleanValue();

@@ -245,7 +245,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
                 <include name="ocl-argo.jar" />
                 <include name="antlrall.jar" />
                 <include name="log4j.jar" />
-                <include name="gef-0.9.6.jar" />
+                <include name="gef.jar" />
             </fileset>
             <fileset dir="${module.lib.dir}">
                 <include name="*.jar" />
@@ -376,6 +376,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="test-model" depends="compile,junit-setup">
     <mkdir dir="${module.reports}/junit/output"/>
+    <mkdir dir="${module.reports}/junit/output/html"/>
     <delete>
         <fileset dir="${module.reports}/junit/output">
            <include name="TEST-*.xml"/>
@@ -397,7 +398,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
            haltonfailure="false"
            errorproperty="junit.failure"
            fork="yes">
-	<sysproperty key="test.model.uml13" value="${011202.xml}"/>
+		<sysproperty key="test.model.uml13" value="${011202.xml}"/>
         <classpath>
             <pathelement location="${module.build.dest}"/>
             <fileset dir="${argo.build.dir}">
@@ -409,10 +410,10 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
                 <include name="gef-0.9.6.jar" />
             </fileset>
         </classpath>
-        <formatter type="plain"/>
+        <formatter type="xml"/>
       <batchtest todir="${module.reports}/junit/output">
         <fileset dir="${module.build.src}">
-          <include name="org/argouml/model/**/Test*.java" />
+          <include name="org/argouml/**/Test*.java" />
         </fileset>
       </batchtest>
       <test name="org.argouml.model.uml.OptionalTestAgainstUmlModel"
@@ -420,6 +421,16 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
             if="011202.xml.available">
       </test>
     </junit>
+ 
+ 
+    <junitreport todir="${module.reports}/junit/output">
+  		<fileset dir="${module.reports}/junit/output">
+    		<include name="TEST-*.xml"/>
+  		</fileset>
+  		<report format="frames" todir="${module.reports}/junit/output/html"/>
+	</junitreport>
+
+
   </target>
 
 </project>

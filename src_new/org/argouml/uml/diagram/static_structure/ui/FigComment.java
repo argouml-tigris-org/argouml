@@ -43,6 +43,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
+import org.apache.log4j.Category;
 import org.argouml.kernel.*;  
 import org.argouml.ui.*;
 import org.argouml.uml.*;
@@ -58,7 +59,9 @@ import org.argouml.model.uml.UmlFactory;
  * empty stereotype textfield causes problems with the
  * note layout, I subclass FigNode instead of FigNodeModelElement.
  */
-public class FigComment extends FigNode implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener, MElementListener {
+public class FigComment extends FigNodeModelElement implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener, MElementListener {
+    protected static Category cat = Category.getInstance(FigComment.class);
+
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -229,7 +232,7 @@ public class FigComment extends FigNode implements VetoableChangeListener, Delay
 		storeNote("");
 		_readyToEdit = true;
 	    } else {
-		System.out.println("not ready to edit note");
+		cat.debug("not ready to edit note");
 		return;
 	    }
 	}
@@ -249,7 +252,7 @@ public class FigComment extends FigNode implements VetoableChangeListener, Delay
 	    DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
 	    SwingUtilities.invokeLater(delayedNotify);
 	}
-	else System.out.println("FigNodeModelElement got vetoableChange"+
+	else cat.debug("FigNodeModelElement got vetoableChange"+
 				" from non-owner:" + src);
     }     
 
@@ -280,7 +283,7 @@ public class FigComment extends FigNode implements VetoableChangeListener, Delay
 		endTrans();
 	    }
 	    catch (PropertyVetoException ex) {
-		System.out.println("could not parse and use the text you entered");
+                cat.error("could not parse and use the text entered in figcomment", ex);
 	    }
 	}
 	else super.propertyChange(pve);
@@ -319,7 +322,7 @@ public class FigComment extends FigNode implements VetoableChangeListener, Delay
 		storeNote("");
 		_readyToEdit = true;
 	    } else {
-		System.out.println("not ready to edit note");
+		cat.debug("not ready to edit note");
 		return;
 	    }
 	}
@@ -459,33 +462,13 @@ public class FigComment extends FigNode implements VetoableChangeListener, Delay
     ///////////////////////////////////////////////////////////////////
     // Internal methods
 
-    /**
-     * Set the owner for this figure.
-     *
-     * @param own The new owner of this figure.
-     */
-    public void setOwner(Object own) {
-	Object oldOwner = getOwner();
-	super.setOwner(own);
-	if (oldOwner instanceof MModelElement)
-	    ((MModelElement)oldOwner).removeMElementListener(this);
-	if (own instanceof MModelElement) {
-	    MModelElement me = (MModelElement)own;
-        me.removeMElementListener(this);
-	    me.addMElementListener(this);
-	    if ( me.getUUID() == null)  // Mark the owner with a unique ID, so we can reference it in a
-		me.setUUID(UUIDManager.SINGLETON.getNewUUID());  // stored file.
-	}
-	modelChanged();
-	_readyToEdit = true;
-	updateBounds();
-    }       
+    
 
     /** 
      * This is called aftern any part of the UML MModelElement has
      * changed. This method automatically updates the note FigText. 
      */
-    private final void modelChanged() {
+    protected final void modelChanged() {
 	if (_readyToEdit) {
 	    String noteStr = retrieveNote();
 	    if(noteStr != null)

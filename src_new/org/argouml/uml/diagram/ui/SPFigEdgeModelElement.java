@@ -37,10 +37,13 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.tigris.gef.ui.*;
 
+import org.apache.log4j.Category;
 import org.argouml.ui.*;
 
 public class SPFigEdgeModelElement extends StylePanel
 implements ItemListener, DocumentListener {
+    protected static Category cat = 
+        Category.getInstance(SPFigEdgeModelElement.class);
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -174,12 +177,9 @@ implements ItemListener, DocumentListener {
       _target.setBounds(x, y, w, h);
     }
     catch (Exception ex) {
-      System.out.println("could not parse bounds string");
+        cat.error("could not parse bounds string", ex);
     }
     _target.endTrans();
-
-    //System.out.println("base = " + base);
-    // needs-more-work: this could involve changes to the graph model
   }
 
   public void setTargetLine() {
@@ -191,21 +191,12 @@ implements ItemListener, DocumentListener {
     _target.endTrans();
   }
 
-  /*public void setTargetDashed() {
-    String dashStr = (String) _dashedField.getSelectedItem();
-    if (_target == null || dashStr == null) return;
-    _target.startTrans();
-    //_target.setDashed(true);
-    //_target.setDashedString(dashStr);
-    _target.endTrans();
-  }*/
-
 
   ////////////////////////////////////////////////////////////////
   // event handling
 
   public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
+    cat.debug(getClass().getName() + " insertUpdate");
     Document bboxDoc = _bboxField.getDocument();
     if (e.getDocument() == bboxDoc) setTargetBBox();
     super.insertUpdate(e);
@@ -214,8 +205,6 @@ implements ItemListener, DocumentListener {
   public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
 
   public void changedUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
   }
 
 

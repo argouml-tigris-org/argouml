@@ -61,10 +61,8 @@ public class ActionAddAttribute extends UMLChangeAction {
 	if (!(target instanceof MClassifier)) return;
 	MClassifier cls = (MClassifier) target;
 	MAttribute attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
-	attr.addMElementListener((FigNodeModelElement)pb.getActiveDiagram().presentationFor(cls));
 	pb.getNavPane().addToHistory(attr);
 	pb.setTarget(attr);
-	pb.getNavPane().forceUpdate();
 	super.actionPerformed(ae);
     }
 

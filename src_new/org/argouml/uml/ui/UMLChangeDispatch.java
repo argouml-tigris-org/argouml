@@ -234,7 +234,7 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
             	// 2002-07-15
             	// Jaap Branderhorst
             	// added next statement to prevent PropPanel getting added again and again to the target's listeners
-      			propPanel.removeMElementListener((MBase) target);
+      		propPanel.removeMElementListener((MBase) target);
                 propPanel.addMElementListener((MBase) target);
             }
         }

@@ -40,6 +40,7 @@ import ru.novosoft.uml.*;
 import org.tigris.gef.util.*;
 
 import org.argouml.kernel.*;
+import org.apache.log4j.Category;
 import org.argouml.cognitive.critics.*;
 
 /** This class models the designer who is building a complex design in
@@ -50,6 +51,8 @@ import org.argouml.cognitive.critics.*;
 
 public class Designer
 implements Poster, Runnable, PropertyChangeListener, MElementListener, java.io.Serializable {
+    
+    protected static Category cat = Category.getInstance(Designer.class);
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -169,43 +172,21 @@ implements Poster, Runnable, PropertyChangeListener, MElementListener, java.io.S
 	synchronized (this) {
 	  _longestHot = Math.max(_longestHot, _hotQueue.size());
           _agency.determineActiveCritics(this);
-	  //_agency.setHot(true);
-          // jer added 970911
-          // now use ChildGenerators instead of elements()
-          //- _CritiquingRoot.critique(this);
-          //alreadyCritiqued.removeAllElements();
-          //_hotQueue.removeAllElements();
-          //_hotQueue.addElement(_CritiquingRoot);
+
           while (_hotQueue.size() > 0) {
-	    //System.currentTimeMillis() < cutoffTime + 1000) {
-	    //System.out.println("hot:"+ _hotQueue.size());
             Object dm = _hotQueue.elementAt(0);
 	    Long reasonCode = (Long) _hotReasonQueue.elementAt(0);
             _hotQueue.removeElementAt(0);
 	    _hotReasonQueue.removeElementAt(0);
 	    Agency.applyAllCritics(dm, theDesigner(), reasonCode.longValue());
-// 	    Enumeration subDMs = _cg.gen(dm);
-// 	    while (subDMs.hasMoreElements()) {
-// 	      Object nextDM = subDMs.nextElement();
-// 	      if (!(_warmQueue.contains(nextDM)))
-// 		_warmQueue.addElement(nextDM);
-// 	    }
           }
-	  //synchronized (_warmQueue) {
-	  //synchronized (_removeQueue) {
 	    int size = _removeQueue.size();
 	    for (int i = 0; i < size; i++)
 	      _warmQueue.removeElement(_removeQueue.elementAt(i));
 	    _removeQueue.removeAllElements();
-	    //}
-	    //}
-
-	    //synchronized (_warmQueue) {
-	    //_agency.setHot(false);
 	    if (_warmQueue.size() == 0)
 	      _warmQueue.addElement(_CritiquingRoot);
 	    while (_warmQueue.size() > 0 && System.currentTimeMillis() < cutoffTime) {
-	      //System.out.println("warm");
 	      Object dm = _warmQueue.elementAt(0);
 	      _warmQueue.removeElementAt(0);
 	      Agency.applyAllCritics(dm, theDesigner());
@@ -223,21 +204,19 @@ implements Poster, Runnable, PropertyChangeListener, MElementListener, java.io.S
       long cycleDuration = (_critiqueDuration * 100) / _critiqueCPUPercent;
       long sleepDuration = Math.min(cycleDuration - _critiqueDuration, 3000);
       sleepDuration = Math.max(sleepDuration, 1000);
-      //System.out.println("sleepDuration= " + sleepDuration);
+      cat.debug("sleepDuration= " + sleepDuration);
       try { _critiquer.sleep(sleepDuration); }
       catch (InterruptedException ignore) {
-        System.out.println("InterruptedException!!!");
+        cat.error("InterruptedException!!!", ignore);
       }
-      //System.gc();
     }
   }
 
   // needs-more-work: what about when objects are first created?
   public synchronized void critiqueASAP(Object dm, String reason) {
     long rCode = Critic.reasonCodeFor(reason);
-    //synchronized (this) {
       if (!_userWorking) return;
-      //System.out.println("critiqueASAP:" + dm);
+      cat.debug("critiqueASAP:" + dm);
       int addQueueIndex = _addQueue.indexOf(dm);
       if (addQueueIndex == -1) {
 	_addQueue.addElement(dm);

@@ -125,13 +125,13 @@ public class Project implements java.io.Serializable {
     public Vector _diagrams = new Vector(); // instances of LayerDiagram
     protected MModel _defaultModel = null;
     public boolean _needsSave = false;
-    public MNamespace _curModel = null;
+    protected MNamespace _curModel = null;
     public Hashtable _definedTypes = new Hashtable(80);
     public HashMap _UUIDRefs = null;
     public GenerationPreferences _cgPrefs = new GenerationPreferences();
     public transient VetoableChangeSupport _vetoSupport = null;
    
-    public static Category cat = 
+    protected static Category cat = 
         Category.getInstance(org.argouml.kernel.Project.class);
     ////////////////////////////////////////////////////////////////
     // constructor
@@ -406,33 +406,15 @@ public class Project implements java.io.Serializable {
         } catch (IOException e) {
             ArgoParser.SINGLETON.setLastLoadStatus(false);
             ArgoParser.SINGLETON.setLastLoadMessage(e.toString());
-            System.out.println("Oops, something went wrong in Project.loadZippedProjectMembers() "+e );
-            e.printStackTrace();
-            // 2002-07-18
-            // Jaap Branderhorst
-            // we should actually propagate the error and show it to the user. And the projectbrowser should know
-            // that something went wrong. Therefore:
+            cat.error("Oops, something went wrong in Project.loadZippedProjectMembers() ", e);
             throw e; 
         }
     }
 
     public static Project makeEmptyProject() {
         Argo.log.info("making empty project");
-        
-
-        // 	try {
-        // 		XMIReader reader = new XMIReader();
-        // 		MModel model  = reader.parse(new org.xml.sax.InputSource("java.xmi"));
-        //              UmlHelper.addListenersToModel(model);
-        // 		model.setName("Java standards");
-        // 		p.addMember(model);
-        // 	} catch (Exception ex) {
-        // 		ex.printStackTrace();
-        // 	}
 
         MModel m1 = UmlFactory.getFactory().getModelManagement().createModel();
-
-        // m1.setUUID(UUIDManager.SINGLETON.getNewUUID());
         m1.setName("untitledModel");
         Project p = new Project(m1);
 
@@ -443,29 +425,6 @@ public class Project implements java.io.Serializable {
 
         return p;
     }
-
-    //   /** This method is currently not called.  It is an example of how to
-    //    *  support loading template files.  However, makeEmptyProject() is
-    //    *  much faster, and that is important since it is done often. */
-    //   public static Project loadEmptyProject() {
-    //     System.out.println("Reading " + TEMPLATES + EMPTY_PROJ + "...");
-    //     URL url = Project.class.getResource(TEMPLATES + EMPTY_PROJ);
-    //     Project p = null;
-    //     //try {
-    //     ArgoParser.SINGLETON.readProject(url);
-    //     //     }
-    //     //     catch (IOException ignore) {
-    //     //       System.out.println("IOException in makeEmptyProject");
-    //     //     }
-    //     //     catch (org.xml.sax.SAXException ignore) {
-    //     //       System.out.println("SAXException in makeEmptyProject");
-    //     //     }
-    //     p = ArgoParser.SINGLETON.getProject();
-    //     //p.initProject();
-    //     p.loadAllMembers();
-    //     p.postLoad();
-    //     return p;
-    //   }
 
     ////////////////////////////////////////////////////////////////
     // accessors
@@ -498,14 +457,8 @@ public class Project implements java.io.Serializable {
         String s = "";
         if (getURL() != null) s = getURL().toString();
         s = s.substring(0, s.lastIndexOf("/") + 1) + n;
-        //JH    System.out.println("s = " + s);
         setURL(new URL(s));
     }
-
-    //   public void setName(String n) throws PropertyVetoException {
-    //     getVetoSupport().fireVetoableChange("Name", _filename, n);
-    //     _filename = n;
-    //   }
 
     public URL getURL() { return _url; }
 
@@ -515,7 +468,7 @@ public class Project implements java.io.Serializable {
         }
         getVetoSupport().fireVetoableChange("url", _url, url);
 
-        System.out.println ("Setting project URL from \"" + _url + "\" to \"" + url + "\".");
+        cat.debug ("Setting project URL from \"" + _url + "\" to \"" + url + "\".");
     
         _url = url;
     }
@@ -533,32 +486,18 @@ public class Project implements java.io.Serializable {
             URL url = Util.fileToURL(file);
             getVetoSupport().fireVetoableChange("url", _url, url);
       
-            System.out.println ("Setting project file name from \"" + _url + "\" to \"" + url + "\".");
+            cat.debug ("Setting project file name from \"" + _url + "\" to \"" + url + "\".");
       
             _url = url;
         }
         catch (MalformedURLException murle) {
-            System.out.println("problem in setFile:" + file);
-            murle.printStackTrace();
+            cat.error("problem in setFile:" + file, murle);
         }
         catch (IOException ex) {
-            System.out.println("problem in setFile:" + file);
-            ex.printStackTrace();
+            cat.error("problem in setFile:" + file, ex);
+            
         }
     }
-
-    //   public String getFilename() { return _filename; }
-    //   public void setFilename(String n) throws PropertyVetoException {
-    //     getVetoSupport().fireVetoableChange("Filename", _filename, n);
-    //     _filename = n;
-    //   }
-
-    //   public String getPathname() { return _pathname; }
-    //   public void setPathname(String n) throws PropertyVetoException {
-    //     if (!n.endsWith(SEPARATOR)) n += SEPARATOR;
-    //     getVetoSupport().fireVetoableChange("Pathname", _pathname, n);
-    //     _pathname = n;
-    //   }
 
     public Vector getSearchPath() { return _searchpath; }
     public void addSearchPath(String searchpath) {
@@ -573,8 +512,7 @@ public class Project implements java.io.Serializable {
         URL url = null;
         try { url = new URL(u + name); }
         catch (MalformedURLException murle) {
-            System.out.println("MalformedURLException in findMemberURLInSearchPath:" + u + name);
-            murle.printStackTrace();
+            cat.error("MalformedURLException in findMemberURLInSearchPath:" + u + name, murle);
         }
         return url;
     }
@@ -585,10 +523,10 @@ public class Project implements java.io.Serializable {
         //try {
         URL memberURL = findMemberURLInSearchPath(name);
         if (memberURL == null) {
-            System.out.println("null memberURL");
+            cat.debug("null memberURL");
             return;
         }
-        else System.out.println("memberURL = " + memberURL);
+        else cat.debug("memberURL = " + memberURL);
         ProjectMember pm = findMemberByName(name);
         if (pm != null) return;
         if ("pgml".equals(type))
@@ -668,12 +606,12 @@ public class Project implements java.io.Serializable {
     }
 
     public ProjectMember findMemberByName(String name) {
-        System.out.println ("findMemberByName called for \"" + name + "\".");
+        cat.debug ("findMemberByName called for \"" + name + "\".");
         for (int i = 0; i < _members.size(); i++) {
             ProjectMember pm = (ProjectMember) _members.elementAt(i);
             if (name.equals(pm.getPlainName())) return pm;
         }
-        System.out.println ("Member \"" + name + "\" not found.");
+        cat.debug ("Member \"" + name + "\" not found.");
         return null;
     }
 
@@ -710,10 +648,10 @@ public class Project implements java.io.Serializable {
             }
         }
         catch (IOException ignore) {
-            System.out.println("IOException in makeEmptyProject");
+            cat.error("IOException in makeEmptyProject", ignore);
         }
         catch (org.xml.sax.SAXException ignore) {
-            System.out.println("SAXException in makeEmptyProject");
+            cat.error("SAXException in makeEmptyProject", ignore);
         }
     }
 
@@ -791,7 +729,7 @@ public class Project implements java.io.Serializable {
             }
 
         } catch (IOException e) {
-            System.out.println("hat nicht geklappt: "+e);
+            cat.debug("hat nicht geklappt: "+e);
             e.printStackTrace();
         }
     
@@ -857,7 +795,7 @@ public class Project implements java.io.Serializable {
         if (cls != null ) return cls;
         cls = (MClassifier) _definedTypes.get(s);
         if (cls == null) {
-            System.out.println("new Type defined!");
+            cat.debug("new Type defined!");
             cls = UmlFactory.getFactory().getCore().buildClass();
             cls.setName(s);
         }
@@ -887,7 +825,6 @@ public class Project implements java.io.Serializable {
     }
     
 	public MClassifier findTypeInModel(String s, MNamespace ns) {
-		// System.out.println("Looking for type "+s+" in Namespace "+ns.getName());
 		// s is short name
 		// will only return first found element
 		Collection allClassifiers = ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MClassifier.class);
@@ -1030,7 +967,7 @@ public class Project implements java.io.Serializable {
     	
     	if (obj instanceof MBase) { // an object that can be represented
     		ProjectBrowser.TheInstance.getEditorPane().removePresentationFor(obj, getDiagrams());
-    		((MBase)obj).remove(); 
+                UmlFactory.getFactory().delete((MBase)obj);
     		if (_members.contains(obj)) {
     			_members.remove(obj);
     		}
@@ -1050,57 +987,10 @@ public class Project implements java.io.Serializable {
     	}
     	
     	setNeedsSave(needSave);	
-    	
-        // If we've trashed anything, we'll need to save the project.
-		/*
-        Project p = ProjectBrowser.TheInstance.getProject();
-        p.setNeedsSave(needSave);
-		*/
-        /* old version
-           if (obj instanceof MModelElement) {
-           MModelElement me = (MModelElement) obj;
-           Vector places = new Vector();
-           java.util.Enumeration diagramEnum = _diagrams.elements();
-           while (diagramEnum.hasMoreElements()) {
-           Diagram d = (Diagram) diagramEnum.nextElement();
-           Fig f = d.getLayer().presentationFor(me);
-           while (f != null) {
-           f.delete();
-           if (!places.contains(f)) places.addElement(f);
-           f = d.getLayer().presentationFor(me);
-           } // end while
-           } // end while
-           Trash.SINGLETON.addItemFrom(obj, places);
-           if (obj instanceof MNamespace) trashDiagramsOn((MNamespace)obj);
-           }
-           // needs-more-work: trash diagrams
-
-           }
-
-           protected void trashDiagramsOn(MNamespace ns) {
-           //System.out.println("trashDiagramsOn: " + ns);
-           int size = _diagrams.size();
-           Vector removes = new Vector();
-           for (int i = 0; i < size; i++) {
-           Object obj = _diagrams.elementAt(i);
-           if (!(obj instanceof UMLDiagram)) continue;
-           if (ns == ((UMLDiagram)obj).getNamespace()) {
-           //System.out.println("found diagram to remove");
-           removes.addElement(obj);
-           }
-           }
-           int numRemoves = removes.size();
-           for (int i = 0; i < numRemoves; i++) {
-           Diagram d = (Diagram) removes.elementAt(i);
-           try { removeMember(d); }
-           catch (PropertyVetoException pve) { }
-           }
-
-        */
     }
 
     public void moveFromTrash(Object obj) {
-        System.out.println("needs-more-work: not restoring " + obj);
+        cat.debug("needs-more-work: not restoring " + obj);
     }
 
     public boolean isInTrash(Object dm) {
@@ -1140,7 +1030,7 @@ public class Project implements java.io.Serializable {
     public static void setStat(String n, int v) {
         //     String n = us.name;
         //     int v = us.value;
-        System.out.println("setStat: " + n + " = " + v);
+        cat.debug("setStat: " + n + " = " + v);
         if (n.equals("clicksInToDoPane"))
             ToDoPane._clicksInToDoPane = v;
         else if (n.equals("dblClicksInToDoPane"))
@@ -1190,7 +1080,7 @@ public class Project implements java.io.Serializable {
             ModeCreateEdgeAndNode.Drags_To_Existing = v;
 
         else {
-            System.out.println("unknown UsageStatistic: " + n);
+            cat.warn("unknown UsageStatistic: " + n);
         }
     }
 

@@ -34,6 +34,7 @@ import java.util.*;
 import java.beans.*;
 import javax.swing.*;
 
+import org.apache.log4j.Category;
 import org.argouml.cognitive.ui.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -48,6 +49,7 @@ import org.argouml.uml.generator.*;
  *  to make non-aggregate. */
 
 public class WizBreakCircularComp extends Wizard {
+    protected static Category cat = Category.getInstance(WizBreakCircularComp.class);
 
   protected String _instructions1 =
   "Please select one of the following classes. "+
@@ -141,7 +143,7 @@ public class WizBreakCircularComp extends Wizard {
    *  they do along, as soon as possible, they should not wait until
    *  the final step. */
   public void doAction(int oldStep) {
-    //System.out.println("doAction " + oldStep);
+    cat.debug("doAction " + oldStep);
     int choice = -1;
     VectorSet offs = _item.getOffenders();
     switch (oldStep) {
@@ -175,7 +177,7 @@ public class WizBreakCircularComp extends Wizard {
 	  ae1.setAggregation(MAggregationKind.NONE);
 	}
 	catch (Exception pve) {
-	  System.out.println("could not set aggregation");
+	  cat.error("could not set aggregation", pve);
 	}
       }
       break;

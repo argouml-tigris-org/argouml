@@ -27,8 +27,10 @@
 // $Id$
 
 package org.argouml.uml.diagram.state;
+import org.apache.log4j.Category;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 
 import java.util.*;
 import java.beans.*;
@@ -48,6 +50,8 @@ import org.tigris.gef.graph.*;
 
 public class StateDiagramGraphModel extends MutableGraphSupport
 implements MutableGraphModel, VetoableChangeListener, MElementListener {
+    protected static Category cat = 
+        Category.getInstance(StateDiagramGraphModel.class);
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected Vector _nodes = new Vector();
@@ -110,7 +114,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     if (port instanceof MStateVertex) {
       return new Vector(((MStateVertex)port).getIncomings());
     }
-    System.out.println("needs-more-work getInEdges of MState");
+    cat.debug("needs-more-work getInEdges of MState");
     return new Vector(); //wasteful!
   }
 
@@ -119,27 +123,25 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     if (port instanceof MStateVertex) {
       return new Vector(((MStateVertex)port).getOutgoings());
     }
-    System.out.println("needs-more-work getOutEdges of MState");
+    cat.debug("needs-more-work getOutEdges of MState");
     return new Vector(); //wasteful!
   }
 
   /** Return one end of an edge */
   public Object getSourcePort(Object edge) {
     if (edge instanceof MTransition) {
-      MTransition tr = (MTransition) edge;
-      return tr.getSource();
+        return StateMachinesHelper.getHelper().getSource((MTransition)edge);
     }
-    System.out.println("needs-more-work getSourcePort of MTransition");
+    cat.debug("needs-more-work getSourcePort of MTransition");
     return null;
   }
 
   /** Return  the other end of an edge */
   public Object getDestPort(Object edge) {
     if (edge instanceof MTransition) {
-      MTransition tr = (MTransition) edge;
-      return tr.getTarget();
+        return StateMachinesHelper.getHelper().getDestination((MTransition)edge);
     }
-    System.out.println("needs-more-work getDestPort of MTransition");
+    cat.debug("needs-more-work getDestPort of MTransition");
     return null;
   }
 
@@ -149,6 +151,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
   /** Return true if the given object is a valid node in this graph */
   public boolean canAddNode(Object node) {
+    if (_nodes.contains(node)) return false;
     return (node instanceof MStateVertex);
   }
 
@@ -177,9 +180,9 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
   /** Add the given node to the graph, if valid. */
   public void addNode(Object node) {
-    //System.out.println("adding state diagram node: " + node);
+    cat.debug("adding state diagram node: " + node);
     if (!(node instanceof MStateVertex)) {
-      System.out.println("internal error: got past canAddNode");
+      cat.error("internal error: got past canAddNode");
       return;
     }
     MStateVertex sv = (MStateVertex) node;
@@ -200,19 +203,10 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
   /** Add the given edge to the graph, if valid. */
   public void addEdge(Object edge) {
-    //System.out.println("adding state diagram edge!!!!!!");
-    if (!(edge instanceof MTransition)) {
-      System.out.println("internal error: got past canAddEdge");
-      return;
-    }
+    cat.debug("adding state diagram edge!!!!!!");
     MTransition tr = (MTransition) edge;
     if (_edges.contains(tr)) return;
     _edges.addElement(tr);
-	// needs-more-work: assumes public
-    //if (tr.getNamespace() == null)
-    //_namespace.addOwnedElement(tr);
-	//_machine.addTransition(tr);
-	// tr.setStateMachine(_machine);
     fireEdgeAdded(edge);
   }
 
@@ -241,11 +235,11 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
    * kind of edge to be determined by the ports. */
   public boolean canConnect(Object fromPort, Object toPort) {
     if (!(fromPort instanceof MStateVertex)) {
-      System.out.println("internal error not from sv");
+      cat.error("internal error not from sv");
       return false;
     }
     if (!(toPort instanceof MStateVertex)) {
-      System.out.println("internal error not to sv");
+      cat.error("internal error not to sv");
       return false;
     }
     MStateVertex fromSV = (MStateVertex) fromPort;
@@ -270,11 +264,11 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 			java.lang.Class edgeClass) {
     //    try {
     if (!(fromPort instanceof MStateVertex)) {
-      System.out.println("internal error not from sv");
+      cat.error("internal error not from sv");
       return null;
     }
     if (!(toPort instanceof MStateVertex)) {
-      System.out.println("internal error not to sv");
+      cat.error("internal error not to sv");
       return null;
     }
     MStateVertex fromSV = (MStateVertex) fromPort;
@@ -288,21 +282,14 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     if (edgeClass == MTransition.class) {
     	MTransition tr = null;
     	MCompositeState comp = fromSV.getContainer();
-    	if (comp != null && comp != _machine.getTop() && comp == toSV.getContainer()) {
-    		tr = StateMachinesFactory.getFactory().buildTransition(comp, fromSV, toSV);
-    	} else
-    		tr = StateMachinesFactory.getFactory().buildTransition(_machine, fromSV, toSV);
+    	tr = StateMachinesFactory.getFactory().buildTransition(_machine, fromSV, toSV);
       addEdge(tr);
       return tr;
     }
     else {
-      System.out.println("wrong kind of edge in StateDiagram connect3 "+edgeClass);
+      cat.debug("wrong kind of edge in StateDiagram connect3 "+edgeClass);
       return null;
     }
-      //}
-//     catch (java.beans.PropertyVetoException ex) { }
-//     System.out.println("should not enter here! StateDiagram connect3");
-//     return null;
   }
 
 
@@ -317,13 +304,13 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
       MElementImport eo = (MElementImport) pce.getNewValue();
       MModelElement me = eo.getModelElement();
       if (oldOwned.contains(eo)) {
-	//System.out.println("model removed " + me);
+	cat.debug("model removed " + me);
 	if (me instanceof MState) removeNode(me);
 	if (me instanceof MPseudostate) removeNode(me);
 	if (me instanceof MTransition) removeEdge(me);
       }
       else {
-	// System.out.println("model added " + me);
+	cat.debug("model added " + me);
       }
     }
   }

@@ -25,6 +25,7 @@ package org.argouml.uml.ui.behavior.collaborations;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 
@@ -33,6 +34,7 @@ import javax.swing.*;
 import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
+import org.argouml.swingext.LabelledLayout;
 import org.argouml.uml.MMUtil;
 import org.argouml.util.*;
 
@@ -44,7 +46,27 @@ public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
     public PropPanelAssociationEndRole() {
         super("AssociationEndRole", _assocEndRoleIcon, ConfigLoader.getTabPropsOrientation());
         Class mclass = MAssociationEndRole.class;
-        makeFields(mclass);
+        
+        //   this will cause the components on this page to be notified
+        //      anytime a stereotype, namespace, operation, etc
+        //      has its name changed or is removed anywhere in the model
+        Class[] namesToWatch = { MStereotype.class, MAssociation.class,MClassifier.class };
+        setNameEventListening(namesToWatch);
+        
+        addField(Argo.localize("UMLMenu", "label.name"), nameField);
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+        
+        JList baseList = new UMLLinkedList(this, new UMLAssociationEndRoleBaseListModel(this));
+        baseList.setVisibleRowCount(1);
+        addField(Argo.localize("UMLMenu", "label.base"), 
+            new JScrollPane(baseList));
+        
+        add(LabelledLayout.getSeperator());
+        
+        
+        
+
+        // makeFields(mclass);
     }
 
     protected void makeFields(Class mclass) {

@@ -126,18 +126,18 @@ public class TestFigClonable extends TestCase {
     }
     */
 
-    /** try to clone FigNote in package diagram.static_structure.ui.
+    /** try to clone FigComment in package diagram.static_structure.ui.
      */
     public void testNoteClonable() {
         try {
-            FigNote fig = new FigNote();
-            FigNote figclone;
+            FigComment fig = new FigComment();
+            FigComment figclone;
              
-            figclone = (FigNote) fig.clone();
-            assert("FigNote cloned", true);
+            figclone = (FigComment) fig.clone();
+            assert("FigComment cloned", true);
         }
         catch(Exception e) {
-            assert("FigNote not clonable", false);
+            assert("FigComment not clonable", false);
         }
     }
 

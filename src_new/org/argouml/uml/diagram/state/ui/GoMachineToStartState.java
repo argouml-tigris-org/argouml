@@ -36,9 +36,9 @@ import org.argouml.ui.*;
 
 // needs-more-work: filter only start states
 
-public class GoMachineToStartState implements TreeModel {
+public class GoMachineToStartState extends AbstractGoRule {
 
-  public String toString() { return "State Machine->Initial States"; }
+  public String getRuleName() { return "State Machine->Initial States"; }
 
   public Object getRoot() {
       throw
@@ -59,6 +59,11 @@ public class GoMachineToStartState implements TreeModel {
     }
     throw
 	new UnsupportedOperationException("getChild should never get here");
+  }
+
+  public Collection getChildren(Object parent) { 
+      throw
+          new UnsupportedOperationException("getChildren should not be called");
   }
 
   public int getChildCount(Object parent) {

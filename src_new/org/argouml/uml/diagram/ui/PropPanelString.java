@@ -103,20 +103,12 @@ public class PropPanelString extends TabSpawnable implements TabModelTarget, Pro
 
 
   protected void setTargetName() {
-//     if (!(_target instanceof Diagram)) return;
-//     try {
-//       ((Diagram)_target).setName(_nameField.getText());
-//     }
-//     catch (PropertyVetoException pve) {
-//       System.out.println("Could not set diagram name");
-//     }
   }
 
   ////////////////////////////////////////////////////////////////
   // event handling
 
   public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
     if (e.getDocument() == _nameField.getDocument() && _target != null) {
     	_target.setText(_nameField.getText());
     	_target.damage();
@@ -126,8 +118,6 @@ public class PropPanelString extends TabSpawnable implements TabModelTarget, Pro
   public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
 
   public void changedUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
   }
 
 	/**

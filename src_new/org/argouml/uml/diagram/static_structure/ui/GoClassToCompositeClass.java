@@ -34,9 +34,9 @@ import ru.novosoft.uml.foundation.data_types.*;
 
 import org.argouml.ui.*;
 
-public class GoClassToCompositeClass implements TreeModel {
+public class GoClassToCompositeClass extends AbstractGoRule {
 
-  public String toString() { return "Class->Composite Class"; }
+  public String getRuleName() { return "Class->Composite Class"; }
   
   public Object getRoot() {
       throw 
@@ -46,7 +46,7 @@ public class GoClassToCompositeClass implements TreeModel {
 
   public Object getChild(Object parent, int index) {
     if (parent instanceof MClass) {
-      Vector children = getChildren((MClass)parent);
+      Vector children = new Vector(getChildren((MClass)parent));
       return (children == null) ? null : children.elementAt(index);
     }
     throw new UnsupportedOperationException("getChild should never get here");
@@ -54,7 +54,7 @@ public class GoClassToCompositeClass implements TreeModel {
 
   public int getChildCount(Object parent) {
     if (parent instanceof MClass) {
-      Vector children = getChildren((MClass)parent);
+      Collection children = getChildren((MClass)parent);
       return (children == null) ? 0 : children.size();
     }
     return 0;
@@ -63,7 +63,7 @@ public class GoClassToCompositeClass implements TreeModel {
   public int getIndexOfChild(Object parent, Object child) {
     int res = 0;
     if (parent instanceof MClass) {
-      Vector children = getChildren((MClass)parent);
+      Vector children = new Vector(getChildren((MClass)parent));
       if (children == null) return -1;
       if (children.contains(child))
 	return children.indexOf(child);
@@ -71,7 +71,8 @@ public class GoClassToCompositeClass implements TreeModel {
     return -1;
   }
 
-  public Vector getChildren(MClass parentClass) {
+  public Collection getChildren(Object pClass) {
+    MClass parentClass = (MClass) pClass;
     Vector res = new Vector();
     Vector ends = new Vector(parentClass.getAssociationEnds());
     if (ends == null) return res;

@@ -33,9 +33,9 @@ import ru.novosoft.uml.foundation.core.*;
 
 import org.argouml.ui.*;
 
-public class GoModelToClass implements TreeModel {
+public class GoModelToClass extends AbstractGoRule {
 
-  public String toString() { return "Package->Class"; }
+  public String getRuleName() { return "Package->Class"; }
   
   public Object getRoot() {
       throw
@@ -44,26 +44,26 @@ public class GoModelToClass implements TreeModel {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    Vector children = getChildren(parent);
+    Vector children = new Vector(getChildren(parent));
     if (children != null) return children.elementAt(index);
     throw
 	new UnsupportedOperationException("getChild should never get here");
   }
 
   public int getChildCount(Object parent) {
-    Vector children = getChildren(parent);
+    Collection children = getChildren(parent);
     if (children != null) return children.size();
     return 0;
   }
 
   public int getIndexOfChild(Object parent, Object child) {
-    Vector children = getChildren(parent);
+    Vector children = new Vector(getChildren(parent));
     if (children != null) return children.indexOf(child);
     return -1;
   }
 
 
-  public Vector getChildren(Object parent) {
+  public Collection getChildren(Object parent) {
     if (!(parent instanceof MPackage)) return null; 
     Vector res = new Vector();
     Vector oes = new Vector(((MPackage)parent).getOwnedElements());

@@ -71,6 +71,9 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         );
     }
     
+    protected ActionRemoveFromModel(boolean global) {
+        super(Argo.localize("CoreMenu", "Delete From Model"),global, NO_ICON);
+    }
     
     /**
      * Returns the selected object. It is possible that the selected target on
@@ -138,7 +141,6 @@ public class ActionRemoveFromModel extends UMLChangeAction {
                     }
                 }
                 ProjectBrowser.TheInstance.getProject().moveToTrash(target); 
-                ProjectBrowser.TheInstance.getNavPane().forceUpdate();
             } 
             		
         }
@@ -151,7 +153,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
      * @param target
      * @return boolean
      */
-    public boolean sureRemove(Object target) {
+    public static boolean sureRemove(Object target) {
     	// usage of other sureRemove method is legacy. They should be integrated.
     	boolean sure = false;
     	if (target instanceof MModelElement) {
@@ -189,7 +191,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
      * @param me
      * @return boolean
      */
-    public boolean sureRemove(MModelElement me) {
+    public static boolean sureRemove(MModelElement me) {
         ProjectBrowser pb = ProjectBrowser.TheInstance;
         Project p = pb.getProject();
         

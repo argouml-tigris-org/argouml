@@ -97,4 +97,22 @@ public abstract class AbstractGoRule implements TreeModel {
 	
 	public abstract Collection getChildren(Object parent);
 
+    /** return the name of the rule as it is displayed in 
+     *  the nav perspective edit pane. Returns for example 
+     *  "State->Substates".
+     *  @see #toString()
+     */   
+    public abstract String getRuleName();
+    
+    /** wrapper around getRuleName()
+     */
+    public String toString() { return getRuleName(); }
+    
+
 }
+
+
+
+
+
+

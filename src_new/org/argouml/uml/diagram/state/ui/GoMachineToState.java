@@ -21,12 +21,16 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// $header$
+
 package org.argouml.uml.diagram.state.ui;
 
 import java.util.Collection;
 import java.util.Vector;
 
 import org.argouml.ui.AbstractGoRule;
+
+import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 
 /**
@@ -35,24 +39,26 @@ import ru.novosoft.uml.behavior.state_machines.MStateMachine;
  * @author jaap.branderhorst@xs4all.nl
  */
 public class GoMachineToState extends AbstractGoRule {
-	
-	/**
-	 * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
-	 */
-	public Collection getChildren(Object parent) {
-		if (parent instanceof MStateMachine) {
-			Vector children = new Vector();
-			children.add(((MStateMachine)parent).getTop());
-			return children;
-		}
-		return null;
-	}
 
-	/**
-	 * @see javax.swing.tree.TreeModel#isLeaf(Object)
-	 */
-	public boolean isLeaf(Object arg0) {
-		return !(arg0 instanceof MStateMachine && getChildCount(arg0) > 0);
-	}
+    public String getRuleName() { return "State Machine->State"; }
+
+    /**
+     * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
+     */
+    public Collection getChildren(Object parent) {
+        if (parent instanceof MStateMachine) {
+            Vector children = new Vector();
+            children.addAll(((MCompositeState)((MStateMachine) parent).getTop()).getSubvertices());
+            return children;
+        }
+        return null;
+    }
+
+    /**
+     * @see javax.swing.tree.TreeModel#isLeaf(Object)
+     */
+    public boolean isLeaf(Object arg0) {
+        return !(arg0 instanceof MStateMachine && getChildCount(arg0) > 0);
+    }
 
 }

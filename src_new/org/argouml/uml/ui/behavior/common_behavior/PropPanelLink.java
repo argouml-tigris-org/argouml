@@ -95,7 +95,7 @@ public class PropPanelLink extends PropPanelModelElement {
 	MLink target = (MLink) getTarget();        
 	MModelElement newTarget = (MModelElement) target.getNamespace();
                 
-        target.remove();
+        UmlFactory.getFactory().delete(target);
 	if(newTarget != null) navigateTo(newTarget);
     }
 

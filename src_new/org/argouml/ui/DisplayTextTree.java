@@ -48,6 +48,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 import org.tigris.gef.base.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.*;
@@ -57,6 +58,8 @@ import org.argouml.uml.ui.*;
 
 public class DisplayTextTree extends JTree
 implements MElementListener, VetoableChangeListener {
+    
+    protected static Category cat = Category.getInstance(DisplayTextTree.class);
 
   Hashtable _expandedPathsInModel = new Hashtable();
   boolean _reexpanding = false;
@@ -147,21 +150,31 @@ implements MElementListener, VetoableChangeListener {
   }
 
   protected void addListenerToNode(Object node) {
-    if (node instanceof MBase)
-      ((MBase)node).addMElementListener(this);
-    if (node instanceof Project)
+    if (node instanceof MBase) {
+        ((MBase)node).removeMElementListener(this);
+        ((MBase)node).addMElementListener(this);
+    }
+    if (node instanceof Project) {
+        ((Project)node).removeVetoableChangeListener(this);  
       ((Project)node).addVetoableChangeListener(this);
-    if (node instanceof Diagram)
-      ((Diagram)node).addVetoableChangeListener(this);
+    }
+    if (node instanceof Diagram) {
+        ((Diagram)node).removeVetoableChangeListener(this);
+        ((Diagram)node).addVetoableChangeListener(this);
+    }
 
     TreeModel tm = getModel();
     int childCount = tm.getChildCount(node);
     for (int i = 0; i < childCount; i++) {
       Object child = tm.getChild(node, i);
-      if (child instanceof MBase)
+      if (child instanceof MBase) {
+        ((MBase)child).removeMElementListener(this);
 	((MBase)child).addMElementListener(this);
-      if (child instanceof Diagram)
+      }
+      if (child instanceof Diagram) {
+        ((Diagram)child).removeVetoableChangeListener(this);
 	((Diagram)child).addVetoableChangeListener(this);
+      }
     }
   }
 
@@ -195,12 +208,12 @@ implements MElementListener, VetoableChangeListener {
   }
 
 	public void vetoableChange(PropertyChangeEvent e) {
-		//System.out.println("DisplayTextTree vetoableChange: " + e.getPropertyName());
+		cat.debug("DisplayTextTree vetoableChange: " + e.getPropertyName());
 		if (!_myUpdateTreeHack.pending) {
 			SwingUtilities.invokeLater(_myUpdateTreeHack);
 			_myUpdateTreeHack.pending = true;
 		}
-		//else System.out.println("update already pending");
+		else cat.debug("update already pending");
 	}
 
 
