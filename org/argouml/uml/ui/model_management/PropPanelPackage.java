@@ -26,6 +26,7 @@
 
 package org.argouml.uml.ui.model_management;
 
+import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -40,14 +41,19 @@ import ru.novosoft.uml.behavior.use_cases.*;
 
 import org.tigris.gef.util.Util;
 
-public class PropPanelPackage extends PropPanelNamespace {
+public class PropPanelPackage extends PropPanelNamespace
+implements PluggablePropertyPanel {
 
     protected PropPanelButton _stereotypeButton;
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelPackage() {
-      super("Package", _packageIcon,2);
+      this("Package", _packageIcon, 2);
+  }
+
+  PropPanelPackage(String name, ImageIcon icon, int columns) {
+    super(name, icon, columns);
 
     Class mclass = MPackage.class;
 
@@ -228,6 +234,16 @@ public class PropPanelPackage extends PropPanelNamespace {
         return baseClass.equals("Package") ||
             baseClass.equals("Namespace");
     }
+
+    public Class getClassForPanel() {
+        return MPackageImpl.class;
+    }
+
+    public String getModuleName() { return "PropPanelPackage"; }
+    public String getModuleDescription() { return "Property Panel for Package"; }
+    public String getModuleAuthor() { return "ArgoUML Core"; }
+    public String getModuleVersion() { return "0.9.4"; }
+    public String getModuleKey() { return "module.propertypanel.package"; }
 
 
 } /* end class PropPanelPackage */

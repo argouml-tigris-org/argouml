@@ -41,6 +41,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
 import org.argouml.application.api.*;
+import org.argouml.application.events.*;
 import org.argouml.ui.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.state.ui.*;
@@ -55,7 +56,7 @@ import org.argouml.uml.ui.model_management.*;
 import org.argouml.uml.ui.foundation.extension_mechanisms.*;
 
 public class TabProps extends TabSpawnable
-implements TabModelTarget, NavigationListener {
+implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected Object    _target;
@@ -73,7 +74,23 @@ implements TabModelTarget, NavigationListener {
     _panelClassBaseName = panelClassBase;
     setLayout(new BorderLayout());
     //setFont(new Font("Dialog", Font.PLAIN, 10));
+
+    ArrayList list = Argo.getPlugins(PluggablePropertyPanel.class);
+    ListIterator iterator = list.listIterator();
+    while (iterator.hasNext()) {
+	Object o = iterator.next();
+	PluggablePropertyPanel ppp = (PluggablePropertyPanel)o;
+        _panels.put(ppp.getClassForPanel(), ppp.getPropertyPanel()); 
+    }
+
+    ArgoEventPump.addListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
+
     initPanels();
+    initPanels();
+  }
+
+  public void finalize() {
+    ArgoEventPump.removeListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
   }
 
   public TabProps() {
@@ -88,7 +105,8 @@ implements TabModelTarget, NavigationListener {
     _panels.put(ArgoDiagram.class, new PropPanelDiagram());
     // FigText has no owner, so we do it directly
     _panels.put(FigText.class, new PropPanelString());
-    _panels.put(MModelImpl.class, new PropPanelModel());
+    // now a plugin
+    // _panels.put(MModelImpl.class, new PropPanelModel());
     _panels.put(MUseCaseImpl.class, new PropPanelUseCase());
     //important: MStateImpl corresponds to PropPanelSimpleState not to PropPanelState!!
     //otherwise, spawing will not ne successful!!
@@ -252,6 +270,20 @@ implements TabModelTarget, NavigationListener {
 
   public boolean shouldBeEnabled() { return _shouldBeEnabled; }
 
+  public void moduleLoaded (ArgoModuleEvent event) { 
+      if (event.getSource() instanceof PluggablePropertyPanel) { 
+          PluggablePropertyPanel p = (PluggablePropertyPanel)event.getSource(); 
+          _panels.put(p.getClassForPanel(), p.getPropertyPanel()); 
+	  if(p.getPropertyPanel() instanceof UMLUserInterfaceContainer) {
+            ((UMLUserInterfaceContainer)p.getPropertyPanel()).addNavigationListener(this);
+	}
+
+      } 
+  } 
+  public void moduleUnloaded (ArgoModuleEvent event) { }
+  public void moduleEnabled (ArgoModuleEvent event) { }
+  public void moduleDisabled (ArgoModuleEvent event) { }
+
 } /* end class TabProps */
 
 
@@ -311,7 +343,8 @@ class InitPanelsLater implements Runnable {
         _panels.put(MSignalImpl.class, new PropPanelSignal());
         _panels.put(MStereotypeImpl.class, new PropPanelStereotype());
         _panels.put(MDataTypeImpl.class, new PropPanelDataType());
-        _panels.put(MPackageImpl.class, new PropPanelPackage());
+	// now a plugin
+        // _panels.put(MPackageImpl.class, new PropPanelPackage());
         _panels.put(MAbstractionImpl.class, new PropPanelAbstraction());
         _panels.put(MGuardImpl.class,new PropPanelGuard());
         _panels.put(MCallEventImpl.class,new PropPanelCallEvent());
