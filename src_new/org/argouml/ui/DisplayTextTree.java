@@ -111,8 +111,8 @@ public class DisplayTextTree
         setShowsRootHandles(true);
         
         // can save a significant amount of rendering time.
-        //this.setLargeModel(true); // produces errors... a pain.
-        //this.setRowHeight(18);
+        this.setLargeModel(true); // works for now.
+        //this.setRowHeight(18); // can't use this yet
         
         showStereotype = Configuration
                             .getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
@@ -278,7 +278,6 @@ public class DisplayTextTree
      * Depending on the queue order in invokeLater() this might result in
      * updates but it is probably far from every file.
      *
-     * @see org.argouml.model.uml.UmlModelListener
      * @see org.argouml.uml.ui.ActionRemoveFromModel
      * @see org.argouml.uml.ui.ActionAddDiagram
      * @see org.argouml.ui.NavigatorPane
@@ -291,6 +290,40 @@ public class DisplayTextTree
         _doit.onceMore();
     }
     
+    /**
+     * Countpart to forceUpdate() that only updates viewable
+     * rows, instead of rebuilding the whole tree; a vast improvement
+     * in performance.
+     *
+     * @see org.argouml.model.uml.UmlModelListener
+     */
+    public void forceUpdate(Object changed){
+        
+        NavPerspective model = (NavPerspective)getModel();
+        if (model instanceof NavPerspective) {
+            
+            //if the changed object is added to the model
+            //in a path that was previously expanded, but is no longer
+            // then we need to clear the cache to prevent a model corruption.
+            this.clearToggledPaths();
+            
+            // update any relevant rows
+            int rows = this.getRowCount();
+            for(int row=0; row < rows; row++){
+                
+                TreePath path = this.getPathForRow(row);
+                Object rowItem = path.getLastPathComponent();
+                
+                if(rowItem == changed){
+
+                    model.fireTreeStructureChanged(changed, path.getPath());
+                }
+            }
+            
+        }
+        reexpand();
+    }
+        
     /**
      * This is the real update function. It won't return until the tree
      * really is updated.
