@@ -67,10 +67,10 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
     super("Generate Classes");
 
     Vector dirs = getClasspathEntries();
-    if (dirs.size() == 0) { 
-	dispose();
-	return;
-    }
+//     if (dirs.size() == 0) { 
+// 	dispose();
+// 	return;
+//     }
     _dir = new JComboBox(Converter.convert(getClasspathEntries()));
     _dir.setEditable(true);
 
