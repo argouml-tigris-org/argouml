@@ -177,10 +177,8 @@ public class Import {
 	    throw new RuntimeException("Internal error. "
 				       + "Default import module not found");
         JComponent chooser = module.getChooser(this);
-        dialog = new JDialog(ProjectBrowser.getInstance(), "Import sources");
-
-        dialog.setModal(true);
-        dialog.getParent().setEnabled(false);
+        dialog = 
+            new JDialog(ProjectBrowser.getInstance(), "Import sources", true);
 
         dialog.getContentPane().add(chooser, BorderLayout.WEST);
         dialog.getContentPane().add(getConfigPanel(this), BorderLayout.EAST);
