@@ -86,6 +86,21 @@ Modifications
 
   <revhistory>
     <revision>
+      <revnumber>0.9.5, draft F</revnumber> <date>28 Jan 2002</date>
+      <revdescription><para>Update by Jeremy Bennett. Chapter 1 (introduction),
+        tutorial chapter 2 (UML based &ooad;) and reference chapters 7 (user
+        interface), 8 (navigation pane), 9 (editing pane), 12 (menu bar), 13
+        (top level artifacts), 14 (use case diagrams) and 15 (class diagrams)
+        are now largely complete.</para>
+
+      <para>Provided explanation of Clarifiers and Edit Network when browsing
+        critics. Moved all description of menu buttons into chapter 7 (user
+        interface reference) to avoid duplication. Completed chapter
+        7, chapter 8 (navigation pane) and chapter 9 (editing
+        pane).</para></revdescription>
+    </revision>
+
+    <revision>
       <revnumber>0.9.5, draft E</revnumber> <date>22 Jan 2002</date>
       <revdescription><para>Update by Jeremy Bennett. Chapter 1
         (introduction), tutorial chapter 2 (UML based &ooad;) and reference

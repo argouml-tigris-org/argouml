@@ -10,6 +10,8 @@ Modifications
  5 Dec 2001:  Jeremy Bennett. Broken out as a separate section from the
               original manual by Alejandro, Phillipe and Andreas.
 
+24 Jan 2002:  Jeremy Bennett. Generic mouse stuff removed, chapter completed.
+
 -->
 
 <chapter id="ch.ref.navpane">
@@ -18,32 +20,31 @@ Modifications
   <sect1>
     <title>Introduction</title>
 
-    <para><xref linkend="fig.ref.navoverview"/> shows the Navigator
-      Pane.</para>
+    <para><xref linkend="fig.ref.navoverview"/> shows the navigator
+      pane.</para>
 
-    <!-- This should be a comprehensive picture. In fact its just the minimum
-         at the moment. It would be good to put some bubbles on this one
-         pointing things out as well. -->
+    <!-- This diagram shows the navigation overview. It is a complete ArgoUML
+         window, but with all except the navigation pane grayed out. This was
+         done using GIMP with selected areas using filter color range 0.5 to
+         0.7.-->
 
     <figure id="fig.ref.navoverview" float="1">
       <title>Overview of the Navigator Pane</title>
 
       <screenshot><mediaobject>
         <imageobject>
-          <imagedata format="GIF" align="center"
-                     fileref="images/reference/navoverview.gif"/>
+          <imagedata format="PNG" align="center"
+                     fileref="images/reference/navigator_pane.png"/>
         </imageobject>
 
         <textobject>
-          <para>The ArgoUML Navigator Pane. A rectangular pane, with a bar at
+          <para>The ArgoUML navigator pane. A rectangular pane, with a bar at
             the top, in which a drop down selection indicates this is a
-            <literal>Package-centric</literal> view. The remainder of the
-            pane shows a hierarchical listing. The first item is
-            <literal>untitledModel</literal>, and beneath it are two
-            children, <literal>class&nbsp;diagram&nbsp;1</literal> and
-            <literal>use&nbsp;case&nbsp;diagram&nbsp;1</literal>. A scrollbar
-            appears on the right should the view be to large for the Pane (not
-            shown in this example).</para>
+            <literal>Package-centric</literal> view. To the right of this are
+            three buttons with icons for <literal>Go Back</literal>,
+            <literal>Go Forward</literal> and <literal>NavConfig</literal>. The
+            remainder of the pane shows a hierarchical listing. A scroll bar
+            appears on the right.</para>
         </textobject>
       </mediaobject></screenshot>
     </figure>
@@ -54,7 +55,103 @@ Modifications
   <sect1>
     <title>Perspective Selection</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>The artifacts in the &argouml; model may be ordered from a number of
+      perspectives. This drop-down allows selection of the perspective to be
+      used in the navigation pane.</para>
+
+    <note><para>Within the hierarchy, there is no particular ordering of
+      artifacts at a particular level. They tend to be in order of
+      creation. This is a known limitation of the current release of
+      &argouml;.</para></note>
+
+    <itemizedlist>
+      <listitem><para><literal>Package-centric</literal> (the default). The
+        navigation hierarchy is organized by package hierarchy. The top level
+        shows the model. Under this are all the top level packages in the model
+        and all the artifacts that are directly in the namespace of the
+        model.</para>
+
+      <para>Beneath each package are all the artifacts that sit within the
+        namespace of that package, including any further sub-packages (which in
+        turn have their own sub-hierarchies).</para></listitem>
+
+      <listitem><para><literal>Diagram-centric</literal>. In this view the top
+        level comprises all the diagrams in the model. Beneath each diagram is
+        a flat listing of all the artifacts on the diagram. Artifacts that have
+        sub-artifacts that do not appear on the diagram have their own
+        hierarchy (for example attributes and operations of
+        classes).</para></listitem>
+
+      <listitem><para><literal>Inheritance-centric</literal>. In this view the
+        top level shows the model. Beneath this are all artifacts that have no
+        generalization in the model. Those artifacts that have specializations
+        have a sub-hierarchy showing the specializations.</para></listitem>
+
+      <listitem><para><literal>Class Associations</literal>. In this view the
+        top level shows the model. Beneath this are all diagrams and all
+        classes. All classes that have associations have a hierarchy tracking
+        through the associated classes.</para></listitem>
+
+      <listitem><para><literal>Navigable Associations</literal>. This is
+        identical to the Class Associations ordering, but includes only
+        navigable associations.</para></listitem>
+
+      <listitem><para><literal>Association-centric</literal>. In this view the
+        top level shows the model. Beneath this are all diagrams and all
+        associations. All associations have then have a sub-hierarchy listing
+        the classes they connect. Where classes have associated state diagrams
+        these are shown beneath the class.</para></listitem>
+
+      <listitem><para><literal>State-centric</literal>. In this view the top
+        level shows all the state machines and all activity graphics associated
+        with classes. The state machine for <emphasis>Class</emphasis> is named
+        <emphasis>Class</emphasis><literal>StateMachine</literal> and the
+        activity graph for <emphasis>Class</emphasis> is named
+        <emphasis>Class</emphasis><literal>ActivityGraph</literal>.</para>
+
+      <para>Beneath each state machine is a hierarchy showing the state
+        diagram and all of the states. Beneath each state is a list of the
+        transitions in and out of the state.</para>
+
+      <para>Beneath each activity graph is a hierarchy showing the activity
+        diagram and all of the action states. Beneath each action state is a
+        list of the transitions in and out of the action
+        state.</para></listitem>
+
+      <listitem><para><literal>Transitions-centric</literal>. This is very
+        similar to <literal>State-centric</literal> view, but under each state
+        machine is listed the diagrams and all transitions on the diagram, with
+        states being shown as sub-hierarchies under their connected
+        transitions.</para>
+
+      <para>Similarly under each activity graph is listed the diagrams and all
+        transitions on the diagram, with action states being shown as
+        sub-hierarchies under their connected transitions.</para></listitem>
+
+      <listitem><para><literal>Transitions-paths</literal>. This is again
+        similar to <literal>State-centric</literal> view. However under each
+        state machine is shown the state diagram and the initial state. Under
+        the initial state is a hierarchy showing the states to which it has
+        transitions, and so on for each of those states. A similar structure is
+        used for activity diagrams.</para></listitem>
+
+      <listitem><para><literal>Collaboration-centric</literal>. This should
+        show all collaborations in the view with artifacts in hierarchies under
+        their collaborations.</para>
+
+      <warning><para>In the current release of &argouml; this view is broken,
+        and will display nothing.</para></warning></listitem>
+
+      <listitem><para><literal>Dependency-centric</literal>. In this view the
+        top level shows the model. Beneath this are all diagrams and top level
+        artifacts. A hierarchy is shown for any dependency beneath any top
+        level artifact.</para>
+
+      <caution><para>Dependencies include realizations, use case includes and
+        extends relationships (which is not strictly correct under UML 1.3) and
+        implicit dependencies such as inner classes and state machines on their
+        owning classes.</para></caution></listitem>
+    </itemizedlist>
   </sect1>
 
   <!-- Navigating around with the buttons -->
@@ -62,7 +159,34 @@ Modifications
   <sect1>
     <title>Navigating Back and Forward</title>
 
-    <remark>To be written&hellip;</remark>
+    <!-- Entry for navigate back button -->
+
+    <sect2>
+      <title><guiicon><inlinemediaobject><imageobject><imagedata
+          format="GIF" align="center"
+          fileref="images/icons/navigate_back.gif"/>
+        </imageobject></inlinemediaobject></guiicon> Navigate Back</title>
+
+      <para>&argouml; keeps a record of the diagrams that you have been viewing
+        whilst navigating the model. This button moves you back to the previous
+        one viewed. If there are no more previous diagrams, the button is
+        grayed out.</para>
+    </sect2>
+
+    <!-- Entry for navigate forward button -->
+
+    <sect2>
+      <title><guiicon><inlinemediaobject><imageobject><imagedata
+          format="GIF" align="center"
+          fileref="images/icons/navigate_forward.gif"/>
+        </imageobject></inlinemediaobject></guiicon> Navigate Forward</title>
+
+      <para>&argouml; keeps a record of the diagrams that you have been viewing
+        whilst navigating the model. This button moves you forward to the next
+        one viewed (after you have used the Navigate Back button to move
+        back). If there are no more next diagrams, the button is grayed
+        out.</para>
+    </sect2>
   </sect1>
 
   <!-- Button for configuring perspectives-->
@@ -70,14 +194,102 @@ Modifications
   <sect1>
     <title>Configuring Perspectives</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>The navigation pane is designed to be user configurable, to allow the
+      designer to view in his or her preferred way.</para>
 
     <!-- The Perspectives -->
 
     <sect2>
       <title>Perspectives Tag</title>
 
-      <remark>To be written&hellip;</remark>
+      <para>&button1; click on the NavConfig icon
+        (<guiicon><inlinemediaobject><imageobject><imagedata 
+          format="GIF" align="center" fileref="images/icons/nav_config.gif"/>
+        </imageobject></inlinemediaobject></guiicon>) brings up the navigation
+        perspectives dialog (see
+        <xref linkend="fig.ref.navigator_pane_perspectives"/>).</para>
+
+      <!-- The navigator pane perspectives dialog. -->
+
+      <figure id="fig.ref.navigator_pane_perspectives" float="1">
+        <title>Navigator pane perspectives dialog box</title>
+
+        <screenshot><mediaobject>
+          <imageobject>
+            <imagedata format="PNG" align="center"
+              fileref="images/reference/navigator_pane_perspectives.png"/>
+          </imageobject>
+
+          <textobject>
+            <para>The ArgoUML navigator pane perspectives dialog. A rectangular
+              pane with two tabs labeled <literal>Perspectives</literal>
+              (currently selected) and <literal>Panes</literal>. The top half
+              contains a text area with a list of all the currently defined
+              perspectives and to the right three buttons stacked vertically,
+              labeled <literal>New</literal>, <literal>Remove</literal> and
+              <literal>Duplicate</literal>. The second half contains two text
+              areas. The one on the left is labeled
+              <literal>Rules&nbsp;Library</literal> and contains a list of
+              possible perspective rules. The one on the right is labeled
+              <literal>Selected&nbsp;Rules</literal> and contains the rule list
+              for the currently selected perspective (empty if no perspective
+              is selected). Between these two areas are two buttons stacked
+              vertically labeled <literal>&gt;&gt;</literal> and
+              <literal>&lt;&lt;</literal>. At the very bottom right is a button
+              labeled <literal>OK</literal>.</para>
+          </textobject>
+        </mediaobject></screenshot>
+      </figure>
+
+      <para>The dialog box has at the top two tabs, labeled
+        <literal>Perspectives</literal> and <literal>Panes</literal>. The first
+        of these is the default, but can be selected explicitly by &button1;
+        click on the tab.</para>
+
+      <para>The top half of the dialog contains a text area with a list of all
+        the currently defined perspectives and to the right three buttons
+        stacked vertically. &Button1; click can be used to select a
+        perspective, with CONTROL and SHIFT keys used for multiple
+        perspectives.</para>
+
+      <itemizedlist>
+        <listitem><para><literal>New</literal>. This creates a new perspective
+          from scratch with no rules selected.</para></listitem>
+
+        <listitem><para><literal>Remove</literal>. This removes the selected
+          perspective(s).</para></listitem>
+
+        <listitem><para><literal>Duplicate</literal>. This should copy the
+          selected perspective(s) so it/they can be used as the basis of a new
+          perspective.</para>
+
+        <warning><para>In the current release of &argouml; this function,
+          although not grayed out, has no effect.</para></warning></listitem>
+      </itemizedlist>
+
+      <para>The lower half of the dialog contains two text areas. The one on
+        the left, labeled <literal>Rules&nbsp;Library</literal>contains
+        possible expansion rules to be expanded in turn to create the
+        hierarchy. The one on the right contains the actual rules chosen for
+        the hierarchy.</para>
+
+      <para>Separating the two areas are buttons labeled
+        <literal>&gt;&gt;</literal> and <literal>&lt;&lt;</literal>. The first
+        of these transfers rules selected on the left to the text area on the
+        right&mdash;i.e. it adds rules to the perspective. The second transfers
+        rules selected on the right to the text area on the left&mdash;i.e. it
+        removes rules from the perspective.</para>
+
+      <para>The rules are applied in turn to the overall project (UML model) to
+        create the top level list. They are then reapplied in turn to each of
+        the elements in the top level list to create the next level hierarchy,
+        and so on until no further expansion is possible.</para>
+
+      <para>At the very bottom right is a button labeled <literal>OK</literal>
+        to indicate that all changes are complete.</para>
+
+      <note><para>There is no <literal>Cancel</literal> button, because all
+        changes take immediate effect.</para></note>
     </sect2>
     
     <!-- The Panes - appears to be a null operation -->
@@ -85,84 +297,187 @@ Modifications
     <sect2>
       <title>Panes Tag</title>
 
-      <remark>To be written&hellip;</remark>
+      <para>This dialog is obtained by using &button1; to select the
+        <literal>Panes</literal> tab after &button1; click on the NavConfig
+        icon (<guiicon><inlinemediaobject><imageobject><imagedata format="GIF"
+        align="center" fileref="images/icons/nav_config.gif"/>
+        </imageobject></inlinemediaobject></guiicon>) has brought up the
+        navigation perspectives dialog (see <xref
+        linkend="fig.ref.navigator_pane_panes"/>).</para>
+
+      <!-- The navigator pane perspectives dialog. -->
+
+      <figure id="fig.ref.navigator_pane_panes" float="1">
+        <title>Navigator panes dialog box</title>
+
+        <screenshot><mediaobject>
+          <imageobject>
+            <imagedata format="PNG" align="center"
+              fileref="images/reference/navigator_pane_panes.png"/>
+          </imageobject>
+
+          <textobject>
+            <para>The ArgoUML navigator pane panes dialog. A rectangular pane
+              with two tabs labeled <literal>Perspectives</literal> and
+              <literal>Panes</literal> (currently selected). The dialog is
+              divided into three boxes stacked vertically. The top box is
+              labeled <literal>Panel&nbsp;One</literal> and is a radio box with
+              options <literal>Not&nbsp;Shown</literal> and
+              <literal>Rooted&nbsp;at&nbsp;Project</literal>. The next box is
+              labeled <literal>Panel&nbsp;Two</literal> and is a radio box with
+              options <literal>Not&nbsp;Shown</literal>,
+              <literal>Most&nbsp;Recently&nbsp;Used</literal> and
+              <literal>Rooted&nbsp;at&nbsp;Pane&nbsp;One&nbsp;Selection</literal>.
+              The final box is labeled <literal>Panel&nbsp;Three</literal> and
+              is a radio box with options <literal>Not&nbsp;Shown</literal>,
+              <literal>Most&nbsp;Recently&nbsp;Used</literal> and
+              <literal>Rooted&nbsp;at&nbsp;Pane&nbsp;Two&nbsp;Selection</literal>.
+              At the very bottom left is a button labeled
+              <literal>OK</literal>.</para>
+          </textobject>
+        </mediaobject></screenshot>
+      </figure>
+
+      <para>The navigator panes was conceived as being able to offer multiple
+        views simultaneously, with up to three panels of hierarchy. This dialog
+        offers control of these panels, with an option to show or not show each
+        panel, and the option of the second and third panels to be rooted at
+        the selection on the previous panel, or to show the previously used
+        hierarchy.</para>
+
+      <caution><para>This functionality is not yet implemented in
+        &argouml;. Only the first panel is every shown, which is always rooted
+        at project. All other options are grayed out and
+        unavailable.</para></caution>
+
+      <para>When using the navigation pane, it is worth bearing in mind that
+        this is a useful visualization of the model, it is not
+        <emphasis>solely</emphasis> for navigation and selection.  It is also
+        useful for users to easily (meaning a few mouse clicks without having
+        to arrange a diagram) visualize the model structured according to some
+        perspective.  For example, show me the state nesting, or show me the
+        class inheritance tree, or show me the package nesting, or show me the
+        list of actors.</para>
+
+      <para>The idea with the second and third nav tree panes, is that
+        sometimes it is easier to explore the tree to a certain level in one
+        tree and then continue expanding in a second tree .  Since
+        each tree will not be so deep, it will look more like a list.</para>
+
+      <para>For example, look at the way javadocs are viewed with frames: the
+        packages are selected from one list, and interfaces, classes, and
+        exceptions in that package are shown in a second pane.  In the case of
+        javadocs, the second pane has a tree with three roots that are always
+        expanded, but it is visually presented as three lists with three
+        headers.</para>
+
+      <para>The other suggested use of a second or third nav panel is to list
+        recently visited model elements.  This is simliar to the recently
+        visited files listed on the <literal>File</literal> menu of most
+        applications, but for model elements rather than files.</para>
+
+      <para>The motivtion is the fact that designers frequently
+        <quote>interrupt</quote> themselves: they are thinking of working on
+        one part of the design, and then they make a decision that needs a
+        change in some other part, and then that has an implication on some
+        other part, and&hellip; and&hellip; and&hellip; the designer forgets
+        what it was they were originally trying to accomplish.  They need to
+        <quote>pop their mental stack</quote> to come back to finish what the
+        started.  If they fail to do that, they leave half-finished fragments
+        all over the design which always seem to come out as soon as it is
+        presented to someone else.</para>
+
+      <para>A recently visited list should be LIFO (stack) ordered, or FIFO
+        (queue) ordered.  The goal would be to help designers come back to
+        finish what they were doing, or simply to help them switch between two
+        or three related parts of the design.  The <literal>Navigate
+        Back</literal> and <literal>Navigate Forward</literal> buttons in the
+        navigation pane serve the same basic purpose and use a lot less screen
+        space.</para>
+
+
+      <para>&argouml;'s tear-off tabs (see <xref linkend="s2.ref.spawn"/> also
+        help with alternating between views, but sometimes users dont want to
+        work with some many separate windows.</para>
+
+      <para>This is the theory that motivates the idea of multiple nav
+        panes. For more information see Jason Robbins' PhD dissertation <ulink
+        url="http://argouml.tigris.org/docs/robbins_dissertation/">
+        http://argouml.tigris.org/docs/robbins_dissertation/</ulink>.  One
+        practical usability concern is available screen space and another is
+        visual complexity. For this reason the multiple panes have yet to be
+        implemented in &argouml; while more pressing issues are
+        addressed.</para>
     </sect2>
   </sect1>
 
-  <!-- What can the mouse do -->
+  <!-- Context Sensitive Menu -->
 
   <sect1>
-    <title>Mouse Actions</title>
+    <title>Context Sensitive Menu</title>
 
-    <!-- Diagram selection -->
+    <para>&Button2; Click over any selected artifact in the main area of the
+      navigation pane will cause a pop-up menu to appear.</para>
+
+     <!-- Properties -->
 
     <sect2>
-      <title>Diagram Selection</title>
+      <title>Properties Pop-Up</title>
 
-      <para>Button 1 Click over a the name of a diagram in the main area of the
-        Navigation Pane will select that diagram in the Editing Pane and its
-        details in the Details Pane.</para>
+      <para>This entry on the pop-up menu causes the properties tab of the
+        selected artifact or diagram to be displayed in the details
+        pane.</para>
     </sect2>
 
-    <!-- Artifact selection -->
+    <!-- Add artifact to diagram -->
 
     <sect2>
-      <title>Artifact Selection</title>
+      <title>Add to Diagram</title>
 
-      <para>Button 1 Click over the name of any artifact other than a diagram in
-        the main area of the Navigation Pane will cause it to be selected, and
-        its details shown in the Details Pane. If the artifact is part of a
-        digram currently displayed in the Editing Pane, it will be highlighted
-        there.</para>
+      <para>This entry on the pop-up menu appears for any artifact that could
+        be added to the diagram currently displayed in the editing
+        pane. The item can be placed in the diagram by moving the cursor to
+        the editing pane (where it will appear as a cross) and clicking
+        &button1;.</para>
 
-      <note><para>If the artifact is part of a diagram other than that currently
-        displayed in the Editing Pane, there will be <emphasis>no</emphasis>
-        change of diagram in the Editing Pane.</para></note>
+      <caution><para>In the current version of &argouml; this menu entry
+        appears and is not grayed out, even for some artifacts that can not be
+        placed on the currently selected diagram.</para>
+
+      <para>Sometimes this is because they are not permitted on the diagram by
+        the UML standard, but sometimes it is because as yet &argouml; does not
+        yet support placing them on the diagram. The only way to find out is to
+        try the operation and see if the item is placed.</para>
+
+      <para>A specific known limitation is that &argouml; will not let you
+        place more than one copy of any particular artifact on a
+        diagram.</para></caution>
     </sect2>
 
-    <!-- Context Sensitive Menu -->
+    <!-- Delete From Model -->
 
     <sect2>
-      <title>Context Sensitive Menu</title>
+      <title>Delete From Model</title>
 
-      <para>Button 2 Click over any selected artifact in the main area of the
-        Navigation Pane will cause a Pop-Up menu to appear.</para>
+      <para>This entry on the pop-up menu appears for any artifact that could
+        be deleted from the model.</para>
 
-       <!-- Properties -->
+      <warning><para>This deletes the artifact from the model completely, not
+        just from the diagram. To remove just from the diagram use the edit
+        menu (see
+        <xref linkend="s2.menu_edit_remove_from_diagram"/>), but note that
+        there are problems in the current version of &argouml; with this
+        function.</para></warning>
 
-      <sect3>
-        <title>Properties Pop-Up</title>
+      <caution><para>You cannot delete a diagram from the model. This function
+        will just delete all the items on the diagram.</para>
 
-        <para>This entry on the Pop-Up menu causes the Properties Tab of the
-          selected artifact or diagram to be displayed in the Details
-          Pane.</para>
-      </sect3>
-
-      <!-- Add artifact to diagram -->
-
-      <sect3>
-        <title>Add to Diagram</title>
-
-        <para>This entry on the Pop-Up menu appears for any artifact that could
-          be added to the diagram currently displayed in the Editing
-          Pane. The item can be placed in the diagram by moving the cursor to
-          the Editing Pane (where it will appear as a cross and clicking
-          Button 1.</para>
-      </sect3>
-
-      <!-- Delete From Model -->
-
-      <sect3>
-        <title>Delete From Model</title>
-
-        <para>This entry on the Pop-Up menu appears for any artifact that could
-          be deleted from the model.</para>
-
-        <warning><para>This deletes the artifact from the model completely, not
-          just from the diagram. To remove just from the diagram use the Edit
-          Menu (see
-          <xref linkend="s2.menu_edit_remove_from_diagram"/>).</para></warning>
-      </sect3>
+      <para>The only way to delete a diagram is to remove it from the saved
+        project file (a project file with the suffix <literal>.zargo</literal>
+        is just a ZIP archive of all the files that describe the project. There
+        is one <literal>.pgml</literal> file for each diagram that must be
+        removed from the archive to delete the diagram. Use this technique with
+        caution!</para></caution>
     </sect2>
   </sect1>
 
