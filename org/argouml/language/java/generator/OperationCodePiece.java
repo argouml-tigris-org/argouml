@@ -126,7 +126,7 @@ public class OperationCodePiece extends NamedCodePiece
 
         for(Iterator j=features.iterator(); j.hasNext() && !found; ) {
             MFeature feature = (MFeature)j.next();
-            if(feature.getName().equals(name)) {
+            if(feature.getName().equals(name) && feature instanceof MOperation) { // fixed issue 1527
                 found = true;
                 parseState.newFeature(feature);
                 MOperation mOperation = (MOperation)feature;

@@ -537,7 +537,7 @@ public class ModelFacade {
         // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-    
+
     public static boolean isTop(Object handle) {
         return isACompositeState(handle) && ((MCompositeState)handle).getStateMachine() != null;
     }
@@ -1014,6 +1014,30 @@ public class ModelFacade {
             MFeature feature = (MFeature)features.next();
             if (ModelFacade.isAOperation(feature))
                 result.add(feature);
+        }
+        return result;
+    }
+
+    /**
+     * Returns all Interfaces of which this class is a realization.
+     * @param cls  the class you want to have the interfaces for
+     * @return a collection of the Interfaces
+     */
+    public static Collection getSpecifications(Object cls) {
+        Collection result = new Vector();
+        if (cls instanceof MClassifier) {
+            Collection deps = ((MClassifier)cls).getClientDependencies();
+            Iterator depIterator = deps.iterator();
+            while (depIterator.hasNext()) {
+                MDependency dep = (MDependency)depIterator.next();
+                if ((dep instanceof MAbstraction)
+                    && dep.getStereotype() != null
+                    && dep.getStereotype().getName() != null
+                    && dep.getStereotype().getName().equals("realize")) {
+                    MInterface i = (MInterface)dep.getSuppliers().toArray()[0];
+                    result.add(i);
+                }
+            }
         }
         return result;
     }
