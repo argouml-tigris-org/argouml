@@ -65,19 +65,22 @@ public class FigPackage extends FigNodeModelElement {
 
   FigText _body;
 
-  /** UML does not really use ports, so just define one big one so
-   *  that users can drag edges to or from any point in the icon. */
-
-  FigRect _bigPort;
-
-
   ////////////////////////////////////////////////////////////////
   // constructors
 
   public FigPackage() {
     Color handleColor = Globals.getPrefs().getHandleColor();
+    _bigPort = new FigRect(x, y, width, height, null, null) {
+      public void paint(Graphics g) {
+        super.paint(g);
+        g.setColor(Color.black);
+        g.fillRect(_body.getX()+_shadowSize,_body.getY()+_body.getHeight(),_body.getWidth()-_shadowSize,_shadowSize);
+        g.fillRect(_body.getX()+_body.getWidth(),_body.getY()+_shadowSize,_shadowSize,_body.getHeight());
+        if (_name.getHeight() > _shadowSize)
+          g.fillRect(_name.getX()+_name.getWidth(),_name.getY()+_shadowSize,_shadowSize,_name.getHeight()-_shadowSize);
+      }
+    };
     _body = new FigText(x, y + textH, width, height - textH);
-    _bigPort = new FigRect(x, y, width, height, null, null);
     _name.setBounds(x, y, width - indentX, textH + 2);
     _name.setJustification(FigText.JUSTIFY_LEFT);
 
@@ -99,14 +102,14 @@ public class FigPackage extends FigNodeModelElement {
     this();
     setOwner(node);
 
-    // If this figure is created for an existing package node in the 
+    // If this figure is created for an existing package node in the
     // metamodel, set the figure's name according to this node. This is
     // used when the user click's on 'add to diagram' in the navpane.
     // Don't know if this should rather be done in one of the super
     // classes, since similar code is used in FigClass.java etc.
     // Andreas Rueckert <a_rueckert@gmx.net>
     if (node instanceof MPackage && (((MPackage)node).getName() != null))
-        _name.setText(((MModelElement)node).getName());         
+        _name.setText(((MModelElement)node).getName());
   }
 
   public String placeString() { return "new Package"; }
@@ -169,7 +172,7 @@ public class FigPackage extends FigNodeModelElement {
         if (encloser.getOwner() instanceof MPackage) {
              me.setNamespace(m);
         }
-        
+
         // If default Namespace is not already set
         if (me.getNamespace() == null) {
           me.setNamespace(m);
@@ -182,11 +185,6 @@ public class FigPackage extends FigNodeModelElement {
 
   ////////////////////////////////////////////////////////////////
   // accessor methods
-
-  public void setOwner(Object node) {
-    super.setOwner(node);
-    bindPort(node, _bigPort);
-  }
 
   public boolean getUseTrapRect() { return true; }
 
@@ -204,10 +202,10 @@ public class FigPackage extends FigNodeModelElement {
     Dimension nameMinimum = _name.getMinimumSize();
 
     _name.setBounds(x, y, w - indentX, nameMinimum.height + 2);
-    _bigPort.setBounds(x+1, y+1,
-		       w-2, h - 2);
     _body.setBounds(x, y+1 + nameMinimum.height,
 		    w, h - 1 - nameMinimum.height);
+    _bigPort.setBounds(x+1, y+1,
+		       w-2, h - 2);
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
     firePropChange("bounds", oldBounds, getBounds());

@@ -50,7 +50,6 @@ public class FigInstance extends FigNodeModelElement {
    *  that users can drag edges to or from any point in the icon. */
 
   FigText _attr;
-  FigRect _bigPort;
 
   // add other Figs here aes needed
 
@@ -61,7 +60,6 @@ public class FigInstance extends FigNodeModelElement {
   public FigInstance() {
     Color handleColor = Globals.getPrefs().getHandleColor();
 
-    _bigPort = new FigRect(8, 8, 92, 62, handleColor, Color.lightGray);
     _name.setUnderline(true);
     _name.setTextFilled(true);
 
@@ -101,11 +99,6 @@ public class FigInstance extends FigNodeModelElement {
     return figClone;
   }
 
-  public void setOwner(Object node) {
-    super.setOwner(node);
-    bindPort(node, _bigPort);
-  }
-
   public Dimension getMinimumSize() {
     Dimension nameMin = _name.getMinimumSize();
     Dimension attrMin = _attr.getMinimumSize();
@@ -115,7 +108,7 @@ public class FigInstance extends FigNodeModelElement {
     return new Dimension(w, h);
   }
 
-  
+
   /* Override setBounds to keep shapes looking right */
   public void setBounds(int x, int y, int w, int h) {
     if (_name == null) return;
@@ -130,7 +123,7 @@ public class FigInstance extends FigNodeModelElement {
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
     updateEdges();
-    firePropChange("bounds", oldBounds, getBounds());    
+    firePropChange("bounds", oldBounds, getBounds());
   }
 
 

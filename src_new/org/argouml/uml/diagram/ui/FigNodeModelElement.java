@@ -82,17 +82,29 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   ////////////////////////////////////////////////////////////////
   // instance variables
 
+  protected FigRect _bigPort;
   protected FigText _name;
   protected FigText _stereo;
   protected Vector _enclosedFigs = new Vector();
   protected Fig _encloser = null;
   protected boolean _readyToEdit = true;
   protected boolean suppressCalcBounds = false;
+  protected int _shadowSize = 1;
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
   public FigNodeModelElement() {
+    // this rectangle marks the whole interface figure; everything is inside it:
+    _bigPort = new FigRect(10, 10, 0, 0, Color.cyan, Color.cyan) {
+      public void paint(Graphics g) {
+        super.paint(g);
+        g.setColor(Color.black);
+        g.fillRect(_x+_shadowSize,_y+_h,_w-_shadowSize,_shadowSize);
+        g.fillRect(_x+_w,_y+_shadowSize,_shadowSize,_h);
+      }
+    };
+
     _name = new FigText(10, 10, 90, 21, true);
     _name.setFont(LABEL_FONT);
     _name.setTextColor(Color.black);
@@ -510,6 +522,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     modelChanged();
     _readyToEdit = true;
     updateBounds();
+    bindPort(own, _bigPort);
   }
 
     // override this method in subclasses if you want to show stereotype information
@@ -540,7 +553,8 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   }
 
   /** returns the new size of the FigGroup (either attributes or operations)
-      after calculation new bounds for all sub-figs, considering their
+
+   after calculation new bounds for all sub-figs, considering their
       minimal sizes; FigGroup need not be displayed; no update event is fired */
   protected Dimension getUpdatedSize(FigGroup fg, int x, int y, int w, int h) {
 	int newW = w;
@@ -565,5 +579,13 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	bigPort.setBounds(x,y,newW,newH); // rectangle containing all following FigText objects
 	fg.calcBounds();
 	return new Dimension(newW,newH);
+  }
+
+  public void setShadowSize(int size) {
+    _shadowSize = size;
+  }
+
+  public int getShadowSize() {
+    return _shadowSize;
   }
 } /* end class FigNodeModelElement */
