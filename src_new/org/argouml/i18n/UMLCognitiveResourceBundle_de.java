@@ -348,7 +348,7 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         { "CrMultipleInheritance_desc" ,
 	        "<ocl>self</ocl> hat mehrere Basisklassen, aber Java unterst\u00fctzt keine Mehrfachvererbung. Sie m\u00fcssen stattdessen Interfaces benutzen. \n\nDiese \u00c4nderung ist erforderlich bevor Sie Java Code generieren k\u00f6nnen.\n\nUm dieses Problem zu beheben benutzen Sie den \"Next\" Button oder entfernen Sie (1) eine der Basisklassen per Hand, definieren Sie (2) optional ein neues Interface mit den selben Methodenk\u00f6pfen, f\u00fcgen Sie es (3) als Interface zu <ocl>self</ocl> hinzu, und bewegen Sie (4) die Methodenr\u00fcmpfe der alten Basisklasse in <ocl>self</ocl>." },
         { "CrIllegalName_head" ,
-	        "W\u00e4hlen Sie einen erlaubten Namen" },
+	        "W\u00e4hlen Sie einen erlaubten Namen f\u00fcr <ocl>self</ocl>" },
         { "CrIllegalName_desc" ,
 	        "Die Namen von Modellelementen m\u00fcssen aus Folgen von Buchstaben, Ziffern und Unterstrichen bestehen. Sie d\u00fcrfen keine Satzzeichen enthalten.\n\nZur Generierung von compilierbarem Code sind g\u00fcltige Namen erforderlich. \n\nUm dieses Problem zu beheben benutzen Sie den \"Next\" Button um das hervorgehobene Element zu selektieren und benutzen Sie die 'Eigenschaften' Registerkarte um einen anderen Namen zu vergeben." },
         { "CrConsiderSingleton_head" ,
