@@ -414,6 +414,7 @@ public class Modeller
             //UmlHelper.getHelper().getCore().setResident(parseState.getComponent(),mClassifier);
         
             // therefore temporarily use a non-standard hack:
+            if (parseState.getComponent() == null) addComponent();
             Object dep = CoreFactory.getFactory().buildDependency(parseState.getComponent(),mClassifier);
             UmlFactory.getFactory().getExtensionMechanisms().buildStereotype(
                     dep,
