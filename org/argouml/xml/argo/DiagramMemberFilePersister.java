@@ -27,7 +27,6 @@ package org.argouml.xml.argo;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -52,17 +51,28 @@ class DiagramMemberFilePersister extends MemberFilePersister {
     private URL url;
     private Map attributes;
     
-    public DiagramMemberFilePersister(URL url, Project theProject)
+    /**
+     * The constructor.
+     * 
+     * @param theUrl the location where the diagram members 
+     *               are stored persistently
+     * @param theProject the project to persist
+     * @throws SAXException when SAX finds a problem
+     */
+    public DiagramMemberFilePersister(URL theUrl, Project theProject)
         throws SAXException {
-        this.url = url;
+        this.url = theUrl;
         this.project = theProject;
     }
         
-    public void load(Map attributes) throws SAXException {
-        this.attributes = attributes;
+    /**
+     * @see org.argouml.xml.argo.MemberFilePersister#load(java.util.Map)
+     */
+    public void load(Map attribs) throws SAXException {
+        this.attributes = attribs;
         try {
             inputStream =
-                new XmlInputStream(url.openStream(), "pgml", attributes);
+                new XmlInputStream(url.openStream(), "pgml", attribs);
             PGMLParser.getInstance().setOwnerRegistry(project.getUUIDRefs());
             ArgoDiagram d =
                     (ArgoDiagram) PGMLParser.getInstance().readDiagram(

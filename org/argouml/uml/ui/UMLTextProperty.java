@@ -103,7 +103,8 @@ public class UMLTextProperty  {
     /**
      * @param container the container of UML user interface components
      * @param newValue the new value 
-     * @throws Exception
+     * @throws Exception @see setProperty(UMLUserInterfaceContainer container,
+     *          String newValue, boolean vetoableCheck)
      */
     public void setProperty(UMLUserInterfaceContainer container,
 			    String newValue)

@@ -45,8 +45,9 @@ import org.argouml.model.ModelFacade;
  * certain stereotyped classes.</p>
  * <p>this critic is part of a compound critic</p>
  *
- * @see <a
- * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_constructor_needed">
+ * @see <a href=
+ * "http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/
+ * #s2.ref.critics_constructor_needed">
  * ArgoUML User Manual: Constructor Needed</a>
  */
 public class CrConstructorNeeded extends CrUML {
@@ -152,7 +153,7 @@ public class CrConstructorNeeded extends CrUML {
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizAddConstructor) {
-	    ToDoItem item = (ToDoItem)w.getToDoItem();
+	    ToDoItem item = (ToDoItem) w.getToDoItem();
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String ins = "Set the name of the new constructor.";
 	    String sug = null;

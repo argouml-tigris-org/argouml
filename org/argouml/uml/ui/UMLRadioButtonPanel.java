@@ -211,7 +211,8 @@ public abstract class UMLRadioButtonPanel
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         UmlModelEventPump eventPump = UmlModelEventPump.getPump();
         if (ModelFacade.isABase(panelTarget)) {
-            eventPump.removeModelEventListener(this, panelTarget, propertySetName);
+            eventPump.removeModelEventListener(this, panelTarget, 
+                    propertySetName);
         }
         panelTarget = target;
         if (ModelFacade.isABase(panelTarget)) {

@@ -59,7 +59,6 @@ public class WizNavigable extends UMLWizard {
      */
     public WizNavigable() { }
 								      
-									  									      
     /**
      * @return the options
      */

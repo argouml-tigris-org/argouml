@@ -36,7 +36,9 @@ public abstract class MemberFilePersister {
     /**
      * Load the member based on instance variables
      * which should have been setup in the constructor.
+     *
      * @throws SAXException on any parsing errors.
+     * @param attributesMap the map (an object that maps keys to values)
      */
     public abstract void load(Map attributesMap) throws SAXException;
 }

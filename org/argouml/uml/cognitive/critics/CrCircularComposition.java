@@ -49,7 +49,7 @@ public class CrCircularComposition extends CrUML {
 	setHeadline("Remove Circular Composition");
 	addSupportedDecision(CrUML.DEC_CONTAINMENT);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
-    setPriority(ToDoItem.LOW_PRIORITY);
+	setPriority(ToDoItem.LOW_PRIORITY);
 	// no good trigger
     }
 							  

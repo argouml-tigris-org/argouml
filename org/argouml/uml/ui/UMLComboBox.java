@@ -27,7 +27,6 @@ import javax.swing.*;
 
 import org.argouml.ui.LookAndFeelMgr;
 
-import java.awt.Color;
 import java.awt.event.*;
 import ru.novosoft.uml.MElementEvent;
 

@@ -1182,7 +1182,8 @@ public class Modeller
 	    }
 	}
         if (mAttribute == null) {
-            mAttribute = UmlFactory.getFactory().getCore().buildAttribute(mClassifier);
+            mAttribute = 
+                UmlFactory.getFactory().getCore().buildAttribute(mClassifier);
             ModelFacade.setName(mAttribute, name);
         }
         return mAttribute;

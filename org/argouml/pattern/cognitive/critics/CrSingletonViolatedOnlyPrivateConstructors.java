@@ -57,8 +57,9 @@ import org.argouml.model.ModelFacade;
  * <p>
  * This version includes an implementation for the second tests above!
  *
- * <p>
- * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_singleton_violated">
+ * <p>@see <a 
+ * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/
+ * #s2.ref.critics_singleton_violated">
  * ArgoUML User Manual: Singleton Violated
  * </a>
  */

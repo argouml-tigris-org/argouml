@@ -29,7 +29,6 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.Vector;
 import org.argouml.cognitive.Designer;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 

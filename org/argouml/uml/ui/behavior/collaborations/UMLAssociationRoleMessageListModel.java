@@ -27,6 +27,11 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
+/**
+ * List model that shows the Messages belonging to some 
+ * AssociationRole.
+ *
+ */
 public class UMLAssociationRoleMessageListModel
     extends UMLModelElementListModel2
 {
