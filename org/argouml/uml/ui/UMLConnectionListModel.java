@@ -112,40 +112,6 @@ public class UMLConnectionListModel extends UMLModelElementListModel  {
         }
     }
 
-    public void delete(int index) {
-    	Object target = getTarget();
-    	if (!(target instanceof MAssociation)) {
-    		ProjectBrowser.TheInstance.setDetailsTarget(getModelElementAt(index));
-    	}
-    	ActionEvent event = new ActionEvent(this, 0, "delete");
-    	ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-    	/*
-        Object target = getTarget();
-        if(target instanceof MClassifier) {
-            MClassifier classifier = (MClassifier) target;
-            MAssociation assoc = (MAssociation) getModelElementAt(index);
-            Collection ends = assoc.getConnections();
-            if(ends != null) {
-              Iterator iter = ends.iterator();
-              while(iter.hasNext()) {
-                MAssociationEnd end = (MAssociationEnd) iter.next();
-                if(end.getType() == target) {
-                  end.setType(null);
-                  classifier.removeAssociationEnd(end);
-                }
-              }
-            }
-
-            // Having removed an association, mark as needing saving
-
-            Project p = ProjectBrowser.TheInstance.getProject();
-            p.setNeedsSave(true);
-
-            fireIntervalRemoved(this,index,index);
-        }
-        */
-    }
-
     public void moveUp(int index) {
         Object target = getTarget();
         if(target instanceof MClassifier) {

@@ -51,8 +51,10 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 import java.util.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 import org.argouml.application.api.*;
+import org.argouml.ui.ProjectBrowser;
 
 
 /**
@@ -562,6 +564,23 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
 
     public NotationName getContextNotation() {
         return null;
+    }
+    
+	/**
+	 * Standard delete method.
+	 * @param index
+	 */
+     public void delete(int index) {
+        MModelElement modElem = getModelElementAt(index);
+        Object target = ProjectBrowser.TheInstance.getTarget();
+        ProjectBrowser.TheInstance.setTarget(modElem);
+        ActionEvent event = new ActionEvent(this, 1, "delete");
+        ActionRemoveFromModel.SINGLETON.actionPerformed(event);
+        fireIntervalRemoved(this,index,index);
+        if (!target.equals(modElem)) {
+        	ProjectBrowser.TheInstance.setTarget(target);
+        }
+
     }
 
 

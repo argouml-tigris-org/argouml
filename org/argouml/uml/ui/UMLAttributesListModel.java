@@ -26,6 +26,8 @@ package org.argouml.uml.ui;
 
 import java.util.Collection;
 
+import javax.swing.JPopupMenu;
+
 import org.argouml.model.uml.UmlFactory;
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -166,6 +168,40 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
             classifier.setFeatures(swap(oldFeatures,index,_attributes.get(index),_attributes.get(index+1)));
             fireContentsChanged(this,index,index+1);
         }
+    }
+    
+    /**
+     *  This method builds a context (pop-up) menu for the list.  
+     *
+     *  @param popup popup menu
+     *  @param index index of selected list item
+     *  @return "true" if popup menu should be displayed
+     */
+    public boolean buildPopup(JPopupMenu popup,int index) {
+        UMLUserInterfaceContainer container = getContainer();
+        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
+        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
+        if(getModelElementSize() <= 0) {
+            open.setEnabled(false);
+            delete.setEnabled(false);
+        }
+
+        popup.add(open);
+        UMLListMenuItem add =new UMLListMenuItem(container.localize("New"),this,"add",index);
+        if(_upper >= 0 && getModelElementSize() >= _upper) {
+            add.setEnabled(false);
+        }
+        popup.add(add);
+        popup.add(delete);
+        /*
+        UMLListMenuItem moveUp = new UMLListMenuItem(container.localize("Move Up"),this,"moveUp",index);
+        if(index == 0) moveUp.setEnabled(false);
+        popup.add(moveUp);
+        UMLListMenuItem moveDown = new UMLListMenuItem(container.localize("Move Down"),this,"moveDown",index);
+        if(index == getSize()-1) moveDown.setEnabled(false);
+        popup.add(moveDown);
+        */
+        return true;
     }
 }
 

@@ -69,27 +69,6 @@ public class UMLActivatorListModel extends UMLModelElementListModel {
 		return true;
 	}
 	
-	/**
-	 * Deletes an element at index
-	 * @param index
-	 */
-	public void delete(int index) {
-		MModelElement modElem = getModelElementAt(index);
-
-        // Only do this for a message
-        if (!(modElem instanceof MMessage)) {
-            return;
-        }
-        Object target = ProjectBrowser.TheInstance.getTarget();
-        ProjectBrowser.TheInstance.setTarget(modElem);
-        ActionEvent event = new ActionEvent(this, 1, "delete");
-        ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-        fireIntervalRemoved(this,index,index);
-        if (!target.equals(modElem)) {
-        	ProjectBrowser.TheInstance.setTarget(target);
-        }
-	}
-	
 	public void add(int index) {
 		Object target = getTarget();
 		if (target instanceof MMessage) {

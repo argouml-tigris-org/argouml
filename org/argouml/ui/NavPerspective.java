@@ -132,6 +132,11 @@ implements Serializable, TreeModel, Cloneable {
 			     new GoModelToElements(),
 			     new PredAND(new PredInstanceOf(MAssociation.class),
                              new PredNotInstanceOf(MAssociationClass.class)));
+                             
+    GoFilteredChildren modelToGeneralizations = 
+    	new GoFilteredChildren("misc.package.generalizations",
+    			new GoModelToElements(),
+    			new PredInstanceOf(MGeneralization.class));
 
     // Extend and include are traversed via use case.
 
@@ -176,6 +181,7 @@ implements Serializable, TreeModel, Cloneable {
     packageCentric.addSubTreeModel(modelToCollaboration);
     packageCentric.addSubTreeModel(modelToComponentInstance);
     packageCentric.addSubTreeModel(modelToNodeInstance);
+    packageCentric.addSubTreeModel(modelToGeneralizations);
     packageCentric.addSubTreeModel(new GoUseCaseToExtensionPoint());
     packageCentric.addSubTreeModel(new GoClassifierToStr());
     packageCentric.addSubTreeModel(new GoClassifierToBeh());
