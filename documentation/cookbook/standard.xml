@@ -121,6 +121,48 @@ This is exactly as it is stated in the Sun Code Conventions.
 It is here just for the emphasis.
 </para>
       </listitem>
+
+      <listitem>
+	<para>
+Use deprecation when removing public methods.
+</para>
+	<para>
+Whenever you have a public method in a class or a public class 
+that you want to 
+remove,
+change the signature in an incompatible way, or 
+make change visibility for
+you shall always deprecate it first.
+After the next stable release you (or someone else) can remove 
+that method.
+</para>
+	<para>
+In the future, when the components are well defined and it is clear
+what public methods and classes that are part of a certain component's
+exported interface 
+we can allow an exception to this rule for public methods and classes 
+that are not.
+(See <xref linkend="components_relationships"></xref>.)
+</para>
+	<para>
+Rationale:
+This is part of the "Do Simple Things"-development approach that we
+use in ArgoUML.
+ArgoUML is a big project with lots of legacy code that we do not know
+exactly how it works.
+Deprecation shows the intent between decision to remove a method and
+the point where it is actually removed 
+and this without breaking anything of the old code.
+There are also modules or plugins that we might know nothing about that
+could be loaded by some user to run within ArgoUML to add functionality.
+It is for the modules and plugins that we always save 
+deprecated methods to the next stable release.
+It makes it possible for the module developers to do work during the 
+unstable releases and release at the same time as ArgoUML releases its
+stable release.
+</para>
+      </listitem>
+
       <listitem>
 	<para>
 For everything else follow
@@ -129,6 +171,7 @@ Code Conventions for the Java Programming Language
 </ulink>!
 </para>
       </listitem>
+
     </itemizedlist>
 
     <para>
