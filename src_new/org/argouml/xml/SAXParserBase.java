@@ -51,7 +51,7 @@ public abstract class SAXParserBase extends DefaultHandler {
     ////////////////////////////////////////////////////////////////
     // constants
 
-    private static final String    RETURNSTRING  = new String("\n      ");
+    private static final String    RETURNSTRING  = "\n      ";
 
     ////////////////////////////////////////////////////////////////
     // constructors
