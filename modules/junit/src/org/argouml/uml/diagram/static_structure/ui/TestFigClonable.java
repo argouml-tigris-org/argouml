@@ -119,6 +119,7 @@ public class TestFigClonable extends TestCase {
             assert("FigModel cloned", true);
         }
         catch(Exception e) {
+            e.printStackTrace(System.err);
             assert("FigModel not clonable", false);
         }
     }
