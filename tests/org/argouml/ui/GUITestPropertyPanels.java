@@ -57,6 +57,7 @@ import org.tigris.gef.util.ChildGenerator;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ZargoFilePersister;
 import org.argouml.model.ModelFacade;
 // import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
@@ -139,7 +140,8 @@ public class GUITestPropertyPanels extends TestCase {
         File testfile =
 	    new File(_projectFile);
         
-        p = ProjectManager.getManager().loadProject(testfile.toURL());
+        ZargoFilePersister persister = new ZargoFilePersister();
+        p = persister.loadProject(testfile.toURL());
         ProjectManager.getManager().setCurrentProject(p);
         
         Collection me = UmlHelper.getHelper().getModelManagement().
