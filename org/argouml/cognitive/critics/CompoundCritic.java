@@ -62,45 +62,90 @@ public class CompoundCritic extends Critic {
     // instance variables
 
     /**  The sub-critics that make up this CompoundCritic. */
-    protected Vector _critics = new Vector();
+    private Vector critics = new Vector();
 
     ////////////////////////////////////////////////////////////////
     // constructor
 
+    /**
+     * The constructor of a compound critic.
+     * 
+     */
     public CompoundCritic() {
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param c1 the first critic that makes up the compound critic
+     * @param c2 the 2nd critic that makes up the compound critic
+     */
     public CompoundCritic(Critic c1, Critic c2) {
 	this();
-	_critics.addElement(c1);
-	_critics.addElement(c2);
+	critics.addElement(c1);
+	critics.addElement(c2);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param c1 the first critic that makes up the compound critic
+     * @param c2 the 2nd critic that makes up the compound critic
+     * @param c3 the 3rd critic that makes up the compound critic
+     */
     public CompoundCritic(Critic c1, Critic c2, Critic c3) {
 	this(c1, c2);
-	_critics.addElement(c3);
+	critics.addElement(c3);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param c1 the first critic that makes up the compound critic
+     * @param c2 the 2nd critic that makes up the compound critic
+     * @param c3 the 3rd critic that makes up the compound critic
+     * @param c4 the 4th critic that makes up the compound critic
+     */
     public CompoundCritic(Critic c1, Critic c2, Critic c3, Critic c4) {
 	this(c1, c2, c3);
-	_critics.addElement(c4);
+	critics.addElement(c4);
     }
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    public void setCritics(Vector critics) { _critics = critics; }
-    public Vector getCritics() { return _critics; }
-    public void addCritic(Critic c) { _critics.addElement(c); }
-    public void removeCritic(Critic c) { _critics.removeElement(c); }
+    /**
+     * @param c the new list of critics that completely 
+     *                replaces the old list
+     */
+    public void setCritics(Vector c) { critics = c; }
+    
+    /**
+     * @return the complete list of critics
+     */
+    public Vector getCritics() { return critics; }
+    
+    /**
+     * @param c the critic to be added at the end of the current list
+     */
+    public void addCritic(Critic c) { critics.addElement(c); }
+    
+    /**
+     * @param c the critic to be removed
+     */
+    public void removeCritic(Critic c) { critics.removeElement(c); }
   
     ////////////////////////////////////////////////////////////////
     // critiquing
 
+    /**
+     * @see org.argouml.cognitive.critics.Critic#critique(java.lang.Object, 
+     * org.argouml.cognitive.Designer)
+     */
     public void critique(Object dm, Designer dsgr) {
-	int size = _critics.size();
+	int size = critics.size();
 	for (int i = 0; i < size; ++i) {
-	    Critic c = (Critic) _critics.elementAt(i);
+	    Critic c = (Critic) critics.elementAt(i);
 	    if (c.isActive() && c.predicate(dm, dsgr)) {
 		ToDoItem item = c.toDoItem(dm, dsgr);
 		postItem(item, dm, dsgr);
@@ -109,66 +154,100 @@ public class CompoundCritic extends Critic {
 	}
     }
 
+    /**
+     * @see org.argouml.cognitive.Poster#supports(org.argouml.cognitive.Decision)
+     */
     public boolean supports(Decision d) {
-	int size = _critics.size();
+	int size = critics.size();
 	for (int i = 0; i < size; ++i) {
-	    Critic c = (Critic) _critics.elementAt(i);
+	    Critic c = (Critic) critics.elementAt(i);
 	    if (c.supports(d)) return true;
 	}
 	return false;
     }
 
+    /**
+     * @see org.argouml.cognitive.Poster#getSupportedDecisions()
+     */
     public Vector getSupportedDecisions() {
 	throw new UnsupportedOperationException();
     }
 
+    /**
+     * @see org.argouml.cognitive.critics.Critic#addSupportedDecision(org.argouml.cognitive.Decision)
+     */
     public void addSupportedDecision(Decision d) {
 	throw new UnsupportedOperationException();
     }
 
+    /**
+     * @see org.argouml.cognitive.Poster#supports(org.argouml.cognitive.Goal)
+     */
     public boolean supports(Goal g) {
-	int size = _critics.size();
+	int size = critics.size();
 	for (int i = 0; i < size; ++i) {
-	    Critic c = (Critic) _critics.elementAt(i);
+	    Critic c = (Critic) critics.elementAt(i);
 	    if (c.supports(g)) return true;
 	}
 	return false;
     }
 
+    /**
+     * @see org.argouml.cognitive.Poster#getSupportedGoals()
+     */
     public Vector getSupportedGoals() {
 	throw new UnsupportedOperationException();
     }
 
+    /**
+     * @see org.argouml.cognitive.critics.Critic#addSupportedGoal(org.argouml.cognitive.Goal)
+     */
     public void addSupportedGoal(Goal g) {
 	throw new UnsupportedOperationException();
     }
 
+    /**
+     * @see org.argouml.cognitive.Poster#containsKnowledgeType(java.lang.String)
+     */
     public boolean containsKnowledgeType(String type) {
-	int size = _critics.size();
+	int size = critics.size();
 	for (int i = 0; i < size; ++i) {
-	    Critic c = (Critic) _critics.elementAt(i);
+	    Critic c = (Critic) critics.elementAt(i);
 	    if (c.containsKnowledgeType(type)) return true;
 	}
 	return false;
     }
 
+    /**
+     * @see org.argouml.cognitive.critics.Critic#addKnowledgeType(java.lang.String)
+     */
     public void addKnowledgeType(String type) {
 	throw new UnsupportedOperationException();
     }
   
+    /**
+     * @see org.argouml.cognitive.Poster#expand(java.lang.String, 
+     * org.tigris.gef.util.VectorSet)
+     */
     public String expand(String desc, VectorSet offs) {
 	throw new UnsupportedOperationException();
     }
 
+    /**
+     * @see org.argouml.cognitive.Poster#getClarifier()
+     */
     public Icon getClarifier() {
 	throw new UnsupportedOperationException();
     }
   
 
+    /**
+     * @see org.argouml.cognitive.critics.Critic#isActive()
+     */
     public boolean isActive() {
-	int size = _critics.size();
+	int size = critics.size();
 	for (int i = 0; i < size; ++i) {
-	    Critic c = (Critic) _critics.elementAt(i);
+	    Critic c = (Critic) critics.elementAt(i);
 	    if (c.isActive()) return true;
 	}
 	return false;
@@ -177,6 +256,9 @@ public class CompoundCritic extends Critic {
     ////////////////////////////////////////////////////////////////
     // criticism control
   
+    /**
+     * @see org.argouml.cognitive.critics.Critic#isEnabled()
+     */
     public boolean isEnabled() {
 	return true;
     }
@@ -184,6 +266,10 @@ public class CompoundCritic extends Critic {
     ////////////////////////////////////////////////////////////////
     // design feedback
 
+    /**
+     * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object, 
+     * org.argouml.cognitive.Designer)
+     */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	throw new UnsupportedOperationException();
     }
