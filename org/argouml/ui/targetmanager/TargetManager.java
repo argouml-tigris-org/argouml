@@ -67,33 +67,54 @@ public final class TargetManager {
         }
 
         private void putInHistory(Object target) {
-            if (target != null && !_navigateBackward) {
-                _currentTarget++;
-                if (_currentTarget == _history.size())
+            if (target != null && !_navigateBackward) {                
+                if (_currentTarget+1 == _history.size()) {                
                     _history.add(new WeakReference(target));
-                else {
+                    _currentTarget++;
+                }
+                else {                
                     WeakReference ref =
                         (WeakReference) _history.get(_currentTarget);
                     if (!ref.get().equals(target)) {
-                        for (int i = _currentTarget;
-                            i < _history.size();
+                        int size = _history.size();
+                        for (int i = _currentTarget+1;
+                            i < size;
                             i++) {
-                            _history.remove(i);
+                            _history.remove(_currentTarget+1);
                         }
-                        _history.add(_currentTarget, new WeakReference(target));
-                    }
+                        _history.add(new WeakReference(target));
+                        _currentTarget++;
+                    }                 
                 }
+                
             }
         }
         
         private void navigateForward() {
+            if (_currentTarget >= _history.size()-1) 
+                throw new IllegalStateException("NavigateForward is not allowed " +
+                    "since the targetpointer is pointing at the upper boundary " +
+                    "of the history");
             setTarget(((WeakReference)_history.get(++_currentTarget)).get());
         }
         
         private void navigateBackward() {
+            if (_currentTarget == 0) {
+                throw new IllegalStateException("NavigateBackward is not allowed " +
+                   "since the targetpointer is pointing at the lower boundary " +
+                   "of the history");
+            }
             _navigateBackward = true;
             setTarget(((WeakReference)_history.get(--_currentTarget)).get());
             _navigateBackward = false;
+        }
+        
+        private boolean navigateBackPossible() {
+            return _currentTarget > 0;
+        }
+        
+        private boolean navigateForwardPossible() {
+            return _currentTarget < _history.size()-1;
         }
 
         /**
@@ -106,7 +127,8 @@ public final class TargetManager {
          * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
          */
         public void targetRemoved(TargetEvent e) {
-            putInHistory(e.getNewTargets()[0]);
+            // comparable to targetReasserted in this respect.
+            // putInHistory(e.getNewTargets()[0]);
 
         }
 
@@ -115,6 +137,11 @@ public final class TargetManager {
          */
         public void targetSet(TargetEvent e) {
             putInHistory(e.getNewTargets()[0]);
+        }
+        
+        private void clean() {
+            _history = new ArrayList();
+            _currentTarget = -1;
         }
 
     }
@@ -433,6 +460,46 @@ public final class TargetManager {
         return target instanceof UMLDiagram
             || ModelFacade.isABase(target) ? target : null;
 
+    }
+    
+    /**
+     * Navigates the target pointer one target forward. This implements together
+     * with navigateBackward browser like functionality.
+     * @throws IllegalStateException If the target pointer is at the end of the 
+     * history.
+     */
+    public void navigateForward() throws IllegalStateException {
+        _historyManager.navigateForward();
+    }
+    
+    /**
+     * Navigates the target pointer one target backward. This implements together
+     * with navigateForward browser like functionality
+     * @throws IllegalStateException If the target pointer is at the beginning of the 
+     * history.
+     */
+    public void navigateBackward() throws IllegalStateException {
+        _historyManager.navigateBackward();
+    }
+    
+    /**
+     * Checks if it's possible to navigate forward.
+     * @return true if it is possible to navigate forward.
+     */
+    public boolean navigateForwardPossible() {
+        return _historyManager.navigateForwardPossible();
+    }
+    
+    /**
+     * Checks if it's possible to navigate backward
+     * @return true if it's possible to navigate backward
+     */
+    public boolean navigateBackPossible() {
+        return _historyManager.navigateBackPossible();
+    }
+    
+    void cleanHistory() {
+        _historyManager.clean();
     }
     
     
