@@ -42,6 +42,6 @@ public interface CommandLineInterface {
      * @param argument a string that is used to send arguments.
      * @return true if the command was performed successfully.
      */
-    public boolean doCommand(String argument);
+    boolean doCommand(String argument);
 }
 

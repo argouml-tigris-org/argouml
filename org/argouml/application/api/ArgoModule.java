@@ -39,55 +39,55 @@ public interface ArgoModule {
      * External modules are supposed to be located at 
      * <code>MODULEFILENAME</code>.
      */
-    public static final String MODULEFILENAME = ".argo.modules";
+    static final String MODULEFILENAME = ".argo.modules";
     
     /**
      * Or, alternatively, external modules may be located at 
      * <code>MODULEFILENAME_ALTERNATE</code>
      */
-    public static final String MODULEFILENAME_ALTERNATE = "argo.modules";
+    static final String MODULEFILENAME_ALTERNATE = "argo.modules";
 
     /** 
      * Method called when Argo is loading a module.
      * 
      * @return true if the module initialized properly.
      */
-    public boolean initializeModule();
+    boolean initializeModule();
     
     /** 
      * Method called when Argo is unloading a module.
      * 
      * @return true if the module terminated properly.
      */
-    public boolean shutdownModule();
+    boolean shutdownModule();
 
     /** 
      * Called to enable or disable a module programmatically.
      * 
      * @param tf true to enable module, false to disable
      */
-    public void setModuleEnabled(boolean tf);
+    void setModuleEnabled(boolean tf);
     
     /** 
      * Allows determination if a module is enabled or disabled
      * 
      * @return true if the module is enabled, otherwise false
      */
-    public boolean isModuleEnabled(); // determines if enabled-disabled
+    boolean isModuleEnabled(); // determines if enabled-disabled
 
     /** 
      * Display name of the module.
      *
      * @return the module name
      */
-    public String getModuleName();
+    String getModuleName();
 
     /** 
      * Textual description of the module.
      * 
      * @return the module description
      */
-    public String getModuleDescription(); 
+    String getModuleDescription(); 
 
     /** 
      * The module version.
@@ -96,14 +96,14 @@ public interface ArgoModule {
      * 
      * @return a string containing the module version
      */
-    public String getModuleVersion(); 
+    String getModuleVersion(); 
     
     /** 
      * The module author.
      * 
      * @return a string containing the module author
      */
-    public String getModuleAuthor(); 
+    String getModuleAuthor(); 
     
     /** 
      * Calls all modules to let them add to a popup menu.
@@ -113,13 +113,13 @@ public interface ArgoModule {
      *
      * @return Vector containing pop-up actions
      */
-    public Vector getModulePopUpActions(Vector popUpActions, Object context);
+    Vector getModulePopUpActions(Vector popUpActions, Object context);
 
     /** 
      * The module identifying key.
      * 
      * @return the string key the module uses to identify itself
      */
-    public String getModuleKey();
+    String getModuleKey();
 }
 

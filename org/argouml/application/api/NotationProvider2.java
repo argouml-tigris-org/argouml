@@ -45,7 +45,7 @@ public interface NotationProvider2 {
     /**
      * @return The name of this notation.
      */
-    public NotationName getNotation();
+    NotationName getNotation();
 
     /**
      * Generate the String representation for an ExtensionPoint.
@@ -53,7 +53,7 @@ public interface NotationProvider2 {
      * @param op Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generateExtensionPoint(Object op);
+    String generateExtensionPoint(Object op);
 
     /**
      * Generate the String representation for an Operation.
@@ -62,7 +62,7 @@ public interface NotationProvider2 {
      * @param documented <tt>true</tt> if documentation shall be generated.
      * @return The String representation of the object.
      */
-    public String generateOperation(Object op, boolean documented);
+    String generateOperation(Object op, boolean documented);
 
     /**
      * Generate the String representation for an Attribute.
@@ -71,7 +71,7 @@ public interface NotationProvider2 {
      * @param documented <tt>true</tt> if documentation shall be generated.
      * @return The String representation of the object.
      */
-    public String generateAttribute(Object attr, boolean documented);
+    String generateAttribute(Object attr, boolean documented);
 
     /**
      * Generate the String representation for a Parameter.
@@ -79,7 +79,7 @@ public interface NotationProvider2 {
      * @param parameter Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generateParameter(Object parameter);
+    String generateParameter(Object parameter);
 
     /**
      * Convert a String to a name.<p>
@@ -89,7 +89,7 @@ public interface NotationProvider2 {
      * @param name The String to be converted.
      * @return The name.
      */
-    public String generateName(String name);
+    String generateName(String name);
 
     /**
      * Generate the String representation for a Package.
@@ -97,7 +97,7 @@ public interface NotationProvider2 {
      * @param pkg Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generatePackage(Object pkg);
+    String generatePackage(Object pkg);
 
     /**
      * Generate the String representation for an Expression.
@@ -105,7 +105,7 @@ public interface NotationProvider2 {
      * @param expr Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generateExpression(Object expr);
+    String generateExpression(Object expr);
 
     /**
      * Generate the String representation for a Classifier.
@@ -113,7 +113,7 @@ public interface NotationProvider2 {
      * @param cls Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generateClassifier(Object cls);
+    String generateClassifier(Object cls);
 
     /**
      * Generate the String representation for a Stereotype.
@@ -121,7 +121,7 @@ public interface NotationProvider2 {
      * @param s Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generateStereotype(Object s);
+    String generateStereotype(Object s);
 
     /**
      * Generate the String representation for a TaggedValue.
@@ -129,7 +129,7 @@ public interface NotationProvider2 {
      * @param s Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generateTaggedValue(Object s);
+    String generateTaggedValue(Object s);
 
     /**
      * Generate the String representation for an Association.
@@ -137,7 +137,7 @@ public interface NotationProvider2 {
      * @param a Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generateAssociation(Object a);
+    String generateAssociation(Object a);
 
     /**
      * Generate the String representation for an AssociationEnd.
@@ -145,7 +145,7 @@ public interface NotationProvider2 {
      * @param ae Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generateAssociationEnd(Object ae);
+    String generateAssociationEnd(Object ae);
 
     /**
      * Generate the String representation for an Multiplicity.
@@ -153,7 +153,7 @@ public interface NotationProvider2 {
      * @param m Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generateMultiplicity(Object m);
+    String generateMultiplicity(Object m);
 
     /**
      * Generate the String representation for a ObjectFlowState.
@@ -161,7 +161,7 @@ public interface NotationProvider2 {
      * @param m Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generateObjectFlowState(Object m);
+    String generateObjectFlowState(Object m);
 
     /**
      * Generate the String representation for a State.
@@ -169,7 +169,7 @@ public interface NotationProvider2 {
      * @param m Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generateState(Object m);
+    String generateState(Object m);
     
     /**
      * Generate the String representation for a StateBody.
@@ -177,7 +177,7 @@ public interface NotationProvider2 {
      * @param stt Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generateStateBody(Object stt);
+    String generateStateBody(Object stt);
 
     /**
      * Generate the String representation for a Transition.
@@ -185,7 +185,7 @@ public interface NotationProvider2 {
      * @param m Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generateTransition(Object m);
+    String generateTransition(Object m);
 
     /**
      * Generate the String representation for a Visibility.
@@ -193,7 +193,7 @@ public interface NotationProvider2 {
      * @param m Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generateVisibility(Object m);
+    String generateVisibility(Object m);
 
     /**
      * Generate the String representation for an Action.
@@ -201,7 +201,7 @@ public interface NotationProvider2 {
      * @param m Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generateAction(Object m);
+    String generateAction(Object m);
     
     /**
      * Generate the String representation for an Action State.
@@ -209,7 +209,7 @@ public interface NotationProvider2 {
      * @param actionState Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generateActionState(Object actionState);
+    String generateActionState(Object actionState);
 
     /**
      * Generate the String representation for a Guard.
@@ -217,7 +217,7 @@ public interface NotationProvider2 {
      * @param m Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generateGuard(Object m);
+    String generateGuard(Object m);
 
     /**
      * Generate the String representation for a Message.
@@ -225,7 +225,7 @@ public interface NotationProvider2 {
      * @param m Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generateMessage(Object m);
+    String generateMessage(Object m);
 
     /**
      * Generate the String representation for an Event.
@@ -233,7 +233,7 @@ public interface NotationProvider2 {
      * @param m Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generateEvent(Object m);
+    String generateEvent(Object m);
 
     /**
      * Generate the String representation for a ClassifierRef.
@@ -241,7 +241,7 @@ public interface NotationProvider2 {
      * @param m Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generateClassifierRef(Object m);
+    String generateClassifierRef(Object m);
 
     /**
      * Generate the String representation for an AssociationRole.
@@ -249,5 +249,5 @@ public interface NotationProvider2 {
      * @param m Object to generate representation for.
      * @return The String representation of the object.
      */
-    public String generateAssociationRole(Object m);
+    String generateAssociationRole(Object m);
 }

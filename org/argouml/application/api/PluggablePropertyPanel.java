@@ -42,11 +42,11 @@ public interface PluggablePropertyPanel extends Pluggable {
     /** Returns the <code>Class</code> that the panel handles.
      * @return the <code>Class</code>.
      */
-    public Class getClassForPanel();
+    Class getClassForPanel();
 
     /** Returns an instance of the property panel.
      * @return the <code>PropPanel</code>.
      */
-    public PropPanel getPropertyPanel();
+    PropPanel getPropertyPanel();
 
 } /* End interface PluggablePropertyPanel */

@@ -35,7 +35,7 @@ public interface PluggableSettingsTab extends Pluggable {
      * This is found under the edit button.
      * @return the setting tab panel.
      */
-    public SettingsTabPanel getSettingsTabPanel();
+    SettingsTabPanel getSettingsTabPanel();
 
 } /* End interface PluggableSettingsTab */
  
