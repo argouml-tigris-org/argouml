@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -35,117 +36,125 @@ import javax.jmi.reflect.RefPackage;
 
 /**
  * @author Thierry
- *
- * To change the template for this generated type comment go to
- * Window>Preferences>Java>Code Generation>Code and Comments
  */
-public class RefBaseObjectProxy
-implements InvocationHandler, RefBaseObject
-{
+public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
 
-	private Object obj;
+    private Object realObject;
 
+    /**
+     * 
+     * @param o proxied object to extract from
+     * @return the realObject behind the proxy
+     */
     public static Object getProxiedObject(RefBaseObjectProxy o)
-	{
-		return o.obj;
+    {
+        return o.realObject;
     }
 
-	public static Object newInstance(Object obj)
-	{
-		Class[] newInterfaces = null;
+    /** Creates a new instance of the proxied object.
+     * 
+     * @param obj to proxy
+     * @return a proxy object if obj does not already implement the interface.
+     */
+    public static Object newInstance(Object obj)
+    {
+        Class[] newInterfaces = null;
         if (obj instanceof RefBaseObject) {
             // We don't need to add the interface
-			return obj;
+            return obj;
         }
-		// Get the set of interfaces of the object
-		Class[] oldInterfaces = obj.getClass().getInterfaces();
-		// Create an array to contain the old set of interfaces plus the one we are adding
-		newInterfaces = new Class[oldInterfaces.length + 1];
-		// Copy the old interfaces into the new array
-		System.arraycopy(oldInterfaces, 0, newInterfaces, 0, oldInterfaces.length);
-		// Add our new interface
-		newInterfaces[oldInterfaces.length] = RefBaseObject.class;
+        // Get the set of interfaces of the object
+        Class[] oldInterfaces = obj.getClass().getInterfaces();
+        /*
+         * Create an array to contain the old set of interfaces
+         * plus the one we are adding
+         */
+        newInterfaces = new Class[oldInterfaces.length + 1];
+        // Copy the old interfaces into the new array
+        System.arraycopy(oldInterfaces, 0,
+                         newInterfaces, 0, oldInterfaces.length);
+        // Add our new interface
+        newInterfaces[oldInterfaces.length] = RefBaseObject.class;
         // Now return the proxy
-		return Proxy.newProxyInstance(obj.getClass().getClassLoader(),
-			                          newInterfaces,
-			                          new RefBaseObjectProxy(obj));
-	}
+        return Proxy.newProxyInstance(obj.getClass().getClassLoader(),
+                                      newInterfaces,
+                                      new RefBaseObjectProxy(obj));
+    }
 
-	/**
-	 * @param obj
-	 */
-	public RefBaseObjectProxy(Object obj)
-	{
-		this.obj = obj;
-	}
+    /**
+     * @param obj The object to proxy
+     */
+    public RefBaseObjectProxy(Object obj)
+    {
+        this.realObject = obj;
+    }
 
-	/**
-	 * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
-	 */
-	public Object invoke(Object proxy, Method method, Object[] args)
-	throws Throwable
-	{
-		 Object result = null;
+    /**
+      * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
+      */
+    public Object invoke(Object proxy, Method method, Object[] args)
+        throws Throwable {
+        Object result = null;
 
-         System.out.println ("method: " + method.getName());
+        System.out.println("method: " + method.getName());
 
-		if (method.getName().equals("refMetaObject")) {
-		   result = refMetaObject();
-		}
-		else if (method.getName().equals("refImmediatePackage")) {
-		   result = refImmediatePackage();
-		}
-		else if (method.getName().equals("refOutermostPackage")) {
-		   result = refOutermostPackage();
-		}
+        if (method.getName().equals("refMetaObject")) {
+            result = refMetaObject();
+        }
+        else if (method.getName().equals("refImmediatePackage")) {
+            result = refImmediatePackage();
+        }
+        else if (method.getName().equals("refOutermostPackage")) {
+            result = refOutermostPackage();
+        }
         else {
-			try {
-				result = method.invoke(this.obj, args);
-			}
-			catch (InvocationTargetException e) {
-				 throw e.getTargetException();
-			}
-         }
-	     return result;
-	 }
+            try {
+                result = method.invoke(this.realObject, args);
+            }
+            catch (InvocationTargetException e) {
+                throw e.getTargetException();
+            }
+        }
+        return result;
+    }
 
-	/**
-	 * @see javax.jmi.reflect.RefBaseObject#refMetaObject()
-	 */
-	public RefObject refMetaObject()
-	{
-		throw new RuntimeException("Not yet implemented");
-	}
+    /**
+     * @see javax.jmi.reflect.RefBaseObject#refMetaObject()
+     */
+    public RefObject refMetaObject()
+    {
+        throw new RuntimeException("Not yet implemented");
+    }
 
-	/**
-	 * @see javax.jmi.reflect.RefBaseObject#refImmediatePackage()
-	 */
-	public RefPackage refImmediatePackage()
-	{
-		throw new RuntimeException("Not yet implemented");
-	}
+    /**
+     * @see javax.jmi.reflect.RefBaseObject#refImmediatePackage()
+     */
+    public RefPackage refImmediatePackage()
+    {
+        throw new RuntimeException("Not yet implemented");
+    }
 
-	/**
-	 * @see javax.jmi.reflect.RefBaseObject#refOutermostPackage()
-	 */
-	public RefPackage refOutermostPackage()
-	{
-		throw new RuntimeException("Not yet implemented");
-	}
+    /**
+     * @see javax.jmi.reflect.RefBaseObject#refOutermostPackage()
+     */
+    public RefPackage refOutermostPackage()
+    {
+        throw new RuntimeException("Not yet implemented");
+    }
 
-	/**
-	 * @see javax.jmi.reflect.RefBaseObject#refMofId()
-	 */
-	public String refMofId()
-	{
-		throw new RuntimeException("Not yet implemented");
-	}
+    /**
+     * @see javax.jmi.reflect.RefBaseObject#refMofId()
+     */
+    public String refMofId()
+    {
+        throw new RuntimeException("Not yet implemented");
+    }
 
-	/**
-	 * @see javax.jmi.reflect.RefBaseObject#refVerifyConstraints(boolean)
-	 */
-	public Collection refVerifyConstraints(boolean arg0)
-	{
-		throw new RuntimeException("Not yet implemented");
-	}
+    /**
+     * @see javax.jmi.reflect.RefBaseObject#refVerifyConstraints(boolean)
+     */
+    public Collection refVerifyConstraints(boolean arg0)
+    {
+        throw new RuntimeException("Not yet implemented");
+    }
 }
