@@ -34,7 +34,7 @@
 package org.argouml.uml.ui;
 
 import java.util.*;
-import java.awt.*;
+
 
 import javax.swing.*;
 
@@ -42,7 +42,13 @@ import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 
 import org.argouml.ui.*;
+import org.tigris.gef.graph.MutableGraphModel;
+import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
+import org.argouml.model.ModelHelper;
+import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
 
 /**
@@ -55,304 +61,80 @@ import org.argouml.kernel.*;
  * <p>Where there is no entry, the default text is "null".</p>
  */
 
-public class UMLSpecializationListModel extends UMLModelElementListModel  {
+public class UMLSpecializationListModel extends UMLBinaryRelationListModel  {
 
-    /**
-     * <p>The default text when there is no entry.</p>
-     */
- 
-    private final static String _nullLabel = "(anon)";
-    
+	/**
+	 * Constructor for UMLSpecializationListModel.
+	 * @param container
+	 * @param property
+	 * @param showNone
+	 */
+	public UMLSpecializationListModel(
+		UMLUserInterfaceContainer container,
+		String property,
+		boolean showNone) {
+		super(container, property, showNone);
+	}
 
-    /**
-     * <p>Create a new specialization list model.</p>
-     *
-     * <p>This implementation just invokes the parent constructor directly.</p>
-     *
-     * @param container  the graphics object containing this list (typically
-     *                   some child of {@link PropPanel}, providing access to
-     *                   the target GeneralizableElement.
-     *
-     * @param property   a string that specifies the name of an event that
-     *                   should force a refresh of the list model.  A
-     *                   <code>null</code> value will cause all events to
-     *                   trigger a refresh.  
-     *
-     * @param showNone   if <code>true</code>, an element labelled "none" will
-     *                   be shown where there are no actual entries in the
-     *                   list.
-     */
+	/**
+	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
+	 */
+	protected void build(MModelElement from, MModelElement to) {
+		CoreFactory.getFactory().buildGeneralization((MGeneralizableElement)to, (MGeneralizableElement)from);
+	}
 
-    public UMLSpecializationListModel(UMLUserInterfaceContainer container,
-                                      String property, boolean showNone) { 
+	/**
+	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, MModelElement, MModelElement)
+	 */
+	protected void connect(
+		MutableGraphModel gm,
+		MModelElement from,
+		MModelElement to) {
+			gm.connect(to, from, MGeneralization.class);
+	}
+	
 
-        super(container,property,showNone);
-    }
-    
+	/**
+	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
+	 */
+	protected String getAddDialogTitle() {
+		return Argo.localize("UMLMenu", "dialog.title.add-specializations");
+	}
 
-    /**
-     * <p>The method to recalculate the number of elements in the list. Must
-     *   be provided to override the abstract method in the parent class.</p>
-     *
-     * @return  the number of elements in the list (zero if empty).
-     */
+	/**
+	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
+	 */
+	protected Collection getChoices() {
+		if (getTarget() instanceof MGeneralizableElement) {
+			MGeneralizableElement target = (MGeneralizableElement)getTarget();
+			if (target.isLeaf()) return new ArrayList();
+			Collection genElem = ModelManagementHelper.getHelper().getAllModelElementsOfKind(getTarget().getClass());
+			List list = new ArrayList();
+			Iterator it = genElem.iterator();
+			while (it.hasNext()) {
+				MGeneralizableElement elem = (MGeneralizableElement)it.next();
+				if (elem == target || !elem.isRoot()) {
+					list.add(elem);
+				}
+			}
+			return list;
+		} else 
+			throw new IllegalStateException("In getChoices: target not instanceof MGeneralizableElement");
+	}
 
-    protected int recalcModelElementSize() {
+	/**
+	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
+	 */
+	protected MModelElement getRelation(MModelElement from, MModelElement to) {
+		return CoreHelper.getHelper().getGeneralization((MGeneralizableElement)to, (MGeneralizableElement)from);
+	}
 
-        int        size            = 0;
-        Collection specializations = getSpecializations();
-
-        if(specializations != null) {
-            size = specializations.size();
-        }
-
-        return size;
-    }
-    
-    /**
-     * <p>The method to get the GeneralizableElement at a particular index in
-     *   the list. Must be provided to override the abstract method in the
-     *   parent class.</p>
-     *
-     * <p>This version is simplified, relying on the {@link #elementAtUtil} to
-     *   pick up all odd cases.</p>
-     *
-     * @param index  the index of the desired element.
-     *
-     * @return       the element at the given index.
-     */
-
-    protected MModelElement getModelElementAt(int index) {
-        return elementAtUtil(getSpecializations(), index,
-                             MGeneralization.class);
-    }
-            
-        
-    /**
-     * <p>A utility to construct the list of specializations to display. This
-     *   is only used within this class.</p>
-     *
-     * <p>Gets the target, which should be a generalizableElement. Picks out
-     *   the specializations from it.</p>
-     *
-     * @return  a {@link Collection} of generlizableElements or
-     *          <code>null</code> if there are none.
-     */
-
-    private Collection getSpecializations() {
-
-        Collection specializations = null;
-        Object     target          = getTarget();
-
-        if(target instanceof MGeneralizableElement) {
-            MGeneralizableElement genElement = (MGeneralizableElement) target;
-
-            specializations = genElement.getSpecializations();
-        }
-
-        return specializations;
-    }
-    
-
-    /**
-     * <p>Format a given model element.</p>
-     *
-     * <p>If there is no element, use the default text ("(anon)"). If there is
-     *   use the parent formatElement on the GeneralizableElement attached as
-     *   child to the Generalization , which will ultimately invoke the format
-     *   element method of {@link PropPanel}.</p>
-     *
-     * <p>In this current implementation, more rigorously checks it is
-     *   formatting a generalization.</p>
-     *
-     * @param element  the model element to format
-     *
-     * @return an object (typically a string) representing the element.
-     */
-
-    public Object formatElement(MModelElement element) {
-
-        Object value = _nullLabel;
-
-        if ((element != null) && (element instanceof MGeneralization)) {
-            MGeneralization       gen    = (MGeneralization) element;
-            MGeneralizableElement target = gen.getChild();
-
-            if(target != null) {
-                value = super.formatElement(target);
-            }
-        }
-        else {
-            if (element != null) {
-                System.out.println("UMLSpecializationListModel." +
-                                   "formatElement(): Can't format " +
-                                   element.getClass().toString());
-            }
-        }
-
-        return value;
-    }
-            
-
-    /**
-     * <p>The action that occurs with the "Add" pop up.</p>
-     *
-     * <p>Create a new generalization after the given index in the list. Set
-     *   the parent to the current target and take the namespace from the
-     *   parent. Then navigate to this new generalization.</p>
-     *
-     * <p>It would be nice to use the routines in MMUtil to do this properly,
-     *   but at present they only work if both child and parent are defined,
-     *   and also do not set the corresponding relationships in the parent and
-     *   child (or does NSUML do this for you anyway...?).</p>
-     *
-     * @param index  the index in the list after which the new generalization
-     *               should be added.
-     */
-
-    public void add(int index) {
-
-        // Give up if the target isn't a use case or if it doesn't have a
-        // namespace.
-
-        Object target = getTarget();
-
-        if (!(target instanceof MGeneralizableElement)) {
-            return;
-        }
-
-        MGeneralizableElement genElem = (MGeneralizableElement) target;
-        MNamespace            ns      = genElem.getNamespace();
-
-        if (ns == null) {
-            return;
-        }
-
-        // Get the new generalization from the factory, add it to the namespace
-        // and link it to the generalizable element. Note that we have nothing
-        // for the other end at present.
-
-        MGeneralization newGen = ns.getFactory().createGeneralization();
-
-        ns.addOwnedElement(newGen);
-
-        // Now place the reference in the correct place list of generalizations
-        // for the parent. NSUML will automatically set the other end for us.
-
-        if(index == getModelElementSize()) {    
-                genElem.addSpecialization(newGen);
-        }
-        else {
-            genElem.setSpecializations(addAtUtil(genElem.getSpecializations(),
-                                                 newGen, index));
-        }
-
-        // Having added a generalization, mark as needing saving
-
-        Project p = ProjectBrowser.TheInstance.getProject();
-        p.setNeedsSave(true);
-
-        // Tell Swing and then navigate there
-
-        fireIntervalAdded(this, index, index);
-        navigateTo(newGen);
-    }
-    
-
- 
-    /**
-     * <p>The action that occurs with the "MoveUp" pop up.</p>
-     *
-     * <p>Move the generalization at the given index in the list up one (unless
-     *   it is already at the top).</p>
-     *
-     * @param index  the index in the list of the generalization to move up.
-     */
-
-    public void moveUp(int index) {
-
-        Object target = getTarget();
-
-        if(target instanceof MGeneralizableElement) {
-            MGeneralizableElement genElem = (MGeneralizableElement) target;
-
-            genElem.setGeneralizations(
-                moveUpUtil(genElem.getGeneralizations(), index));
-
-            // Having moved a generalization, mark as needing saving
-
-            Project p = ProjectBrowser.TheInstance.getProject();
-            p.setNeedsSave(true);
-
-            // Tell Swing
-
-            fireContentsChanged(this,index-1,index);
-        }
-    }
-    
-
-    /**
-     * <p>The action that occurs with the "MoveDown" pop up.</p>
-     *
-     * <p>Move the generalization at the given index in the list down one
-     *   (unless it is already at the bottom).</p>
-     *
-     * @param index  the index in the list of the generalization to move down.
-     */
-
-    public void moveDown(int index) {
-
-        Object target = getTarget();
-
-        if(target instanceof MGeneralizableElement) {
-            MGeneralizableElement genElem = (MGeneralizableElement) target;
-
-            genElem.setGeneralizations(
-                moveDownUtil(genElem.getGeneralizations(), index));
-
-            // Having moved a generalization, mark as needing saving
-
-            Project p = ProjectBrowser.TheInstance.getProject();
-            p.setNeedsSave(true);
-
-            // Tell Swing
-
-            fireContentsChanged(this,index,index+1);
-        }
-    }
-    
-    /**
-     *  This method builds a context (pop-up) menu for the list.  
-     *
-     *  @param popup popup menu
-     *  @param index index of selected list item
-     *  @return "true" if popup menu should be displayed
-     */
-    public boolean buildPopup(JPopupMenu popup,int index) {
-        UMLUserInterfaceContainer container = getContainer();
-        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
-        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
-        if(getModelElementSize() <= 0) {
-            open.setEnabled(false);
-            delete.setEnabled(false);
-        }
-
-        popup.add(open);
-        UMLListMenuItem add =new UMLListMenuItem(container.localize("Add"),this,"add",index);
-        if(_upper >= 0 && getModelElementSize() >= _upper) {
-            add.setEnabled(false);
-        }
-        popup.add(add);
-        popup.add(delete);
-        /*
-        UMLListMenuItem moveUp = new UMLListMenuItem(container.localize("Move Up"),this,"moveUp",index);
-        if(index == 0) moveUp.setEnabled(false);
-        popup.add(moveUp);
-        UMLListMenuItem moveDown = new UMLListMenuItem(container.localize("Move Down"),this,"moveDown",index);
-        if(index == getSize()-1) moveDown.setEnabled(false);
-        popup.add(moveDown);
-        */
-        return true;
-    }
+	/**
+	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getSelected()
+	 */
+	protected Collection getSelected() {
+		MGeneralizableElement target = (MGeneralizableElement)getTarget();
+		return CoreHelper.getHelper().getExtendingElements(target);
+	}
 
 } /* End of class UMLSpecializationListModel */

@@ -40,6 +40,7 @@ import ru.novosoft.uml.model_management.*;
  *   @author Curt Arnold
  *   @see UMLModelElementListModel
  *   @see UMLList
+ * 	 @deprecated
  */
 public class UMLGeneralizationsListModel extends UMLOwnedElementListModel  {
 

@@ -571,11 +571,11 @@ public class CoreHelper {
 	}
 		
 	/**
-	 * Returns all classes that extend some class clazz.
+	 * Returns all elements that extend some class clazz.
 	 * @param clazz
 	 * @return Collection
 	 */
-	public Collection getExtendingClasses(MGeneralizableElement clazz) {
+	public Collection getExtendingElements(MGeneralizableElement clazz) {
 		if (clazz == null) return new ArrayList();
 		Iterator it = clazz.getSpecializations().iterator();
 		List list = new ArrayList();
