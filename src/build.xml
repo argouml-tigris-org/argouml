@@ -100,7 +100,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <tstamp/>
     <property name="Name" value="ArgoUML"/>
     <property name="name" value="argouml"/>
-    <property name="version" value="0.8.0"/>
+    <property name="version" value="0.8.1"/>
     <property name="year" value="1999-2000"/>
 
     <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
@@ -196,8 +196,8 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- Creates the class package                                           -->
   <!-- =================================================================== -->
   <target name="package" depends="compile">
-    <echo message="Creating the jar file ${build.dir}/${name}.jar"/>
-    <jar jarfile="${lib.dir}/${name}.jar"
+    <echo message="Creating the jar file ${build.dir}/${name}-${version}.jar"/>
+    <jar jarfile="${lib.dir}/${name}-${version}.jar"
          basedir="${build.dest}"
          includes="uci/** Acme/**"
          manifest="${manifest}"/>
@@ -213,17 +213,20 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- =================================================================== -->
   <!-- Creates the distribution                                            -->
   <!-- =================================================================== -->
-  <target name="dist" depends="package">
-    <echo message="Building the distribution files (zip,tar)"/>
-    <mkdir dir="${dist.dir}"/>
-    <copydir src="${build.dir}" dest="${dist.dir}" 
-        excludes="**/classes/**, **/${ignore_this}"/>
-    <zip zipfile="${Name}-${version}.zip" basedir="${dist.dir}" includes="**"/>
-    <tar tarfile="${Name}-${version}.tar" basedir="${dist.dir}" includes="**"/>
-    <gzip zipfile="${Name}-${version}.tar.gz" src="${Name}-${version}.tar" />
-    <delete file="${Name}-${version}.tar"/>
-    <deltree dir="${dist.dir}"/>
+  <target name="dist" depends="package, dist-src">
   </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the source distribution                                            -->
+  <!-- =================================================================== -->
+  <target name="dist-src" depends="init">
+    <echo message="Building the source distribution files (zip,tar)"/>
+    <chmod file="${src.dir}/build.sh" perm="ugo+rx" />
+    <zip zipfile="${Name}-${version}_src.zip" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.*"/>
+    <tar tarfile="${Name}-${version}_src.tar" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.*"/>
+    <gzip zipfile="${Name}-${version}_src.tar.gz" src="${Name}-${version}_src.tar" />
+    <delete file="${Name}-${version}_src.tar"/>
+  </target>                                                                                                                                                                    
 
   <!-- =================================================================== -->
   <!-- Clean targets                                                       -->

@@ -54,7 +54,7 @@ public class AboutBox extends JFrame {
   ////////////////////////////////////////////////////////////////
   // constructor
   public AboutBox() {
-    super("About Argo/UML");
+    super("About ArgoUML");
     String iconName = "Splash";
     ImageIcon splashImage = loadIconResource(iconName, iconName);
     int imgWidth = splashImage.getIconWidth();
@@ -75,8 +75,8 @@ public class AboutBox extends JFrame {
 //     _legal.setFont(ctrlFont);
 //     _contact.setFont(ctrlFont);
 
-    _version.setText("ArgoUML Version 0.8\n"+
-		     "Built on 08/08/2000\n"+
+    _version.setText("ArgoUML Version 0.8.1\n"+
+		     "Built on October 13th 2000\n"+
 		     "\n"+
 		     "Includes:\n"+
 		     "  GEF (Graph Editing Framework, soon to be standalone!)\n"+
@@ -86,6 +86,7 @@ public class AboutBox extends JFrame {
 		     "  JDK 1.2 only plus\n"+
 		     "    IBM's XML4J 2.0.15 or higher\n"+
 		     "    Novosoft's NSUML 0.4.8 or higher (nsuml.sourceforge.net)\n"+
+		     "    recommended  NSUML Version is 0.4.11\n"+
 		     "    Frank Finger's (TU-Dresden) OCL-Compiler (dresden-ocl.sourceforge.net)\n"
 		     );
 
