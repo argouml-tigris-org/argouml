@@ -51,6 +51,10 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
   private LinkedList _navListeners = new LinkedList();
 
   private Vector _panels = new Vector();
+  private UMLNameEventListener _nameListener;
+  private Object _eventQueue;
+  private JPanel _buttons;
+
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -146,6 +150,20 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         addField(component,row,panel,weighty);
     }
     
+    /**
+        This method adds a shortcut component (typically a button)
+        to the bottom of the prop panel.
+    
+        @param button Button to add
+    */
+    final public void addButton(Component button) {
+        if(_buttons == null) {
+            _buttons = new JPanel(new GridLayout(1,0));
+            add(_buttons,BorderLayout.SOUTH);
+        }
+        _buttons.add(button);
+    }
+    
 
 
     public Profile getProfile() {
@@ -155,21 +173,58 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         return _profile;
     }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
+    /**
+        This method (and addMElementListener) can be overriden if the 
+        prop panel wants to monitor additional objects.
+    
+        @param target target of prop panel
+    
+    */
+    protected void removeMElementListener(MBase target) {
+        target.removeMElementListener(this);
+    }
+    
+    /**
+        This method (and removeMElementListener) can be overriden if the 
+        prop panel wants to monitor additional objects.  This method
+        is public only since it is called from a Runnable object.
+    
+        @param target target of prop panel
+    */
+    public void addMElementListener(MBase target) {
+        target.addMElementListener(this);
+    }
+    
+    
     public void setTarget(Object t) {
-        if(!t.equals(_target)) {
-            if ( _target instanceof MBase ) {
-                ((MBase)_target).removeMElementListener(this);
+        if(!t.equals(_target)) {            
+            boolean removeOldPromiscuousListener = (_nameListener != null);
+            if(t instanceof MBase && _nameListener != null) {
+//XXX                removeOldPromiscuousListener = 
+//XXX                    ((MBase) t).addPromiscuousListener(_nameListener);
             }
+            
+            //
+            //   if the previous target was a MBase (99.999% of the time)
+            //      remove the listener from it
+            if ( _target instanceof MBase ) {
+                removeMElementListener((MBase) _target);
+                //
+                //  this path shouldn't happen unless t == null
+                //
+                if(removeOldPromiscuousListener) {
+//XXX                    ((MBase) _target).removePromiscuousListener(_nameListener);
+                }
+            }
+            
             _target = t;
             _modelElement = null;
+            
+            
             if(_target instanceof MModelElement) {
                 _modelElement = (MModelElement) _target;
             }
             
-    
             //
             //   this will add listener after update is complete
             //
@@ -270,4 +325,27 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
     public void removeNavigationListener(NavigationListener navListener) {
         _navListeners.remove(navListener);
     }
+
+    /**
+        Calling this method with an array of metaclasses 
+        (for example, MClassifier.class) will result in the prop panel
+        propagating any name changes or removals on any object that
+        on the same event queue as the target that is assignable to one
+        of the metaclasses.
+    */
+    public void setNameEventListening(Class[] metaclasses) {
+        Object target = getTarget();
+        if(target instanceof MBase) {
+            MBase base = (MBase) target;
+            if(_nameListener != null) {
+//XXX                base.removePromiscuousListener(_nameListener);
+            }
+            _nameListener = new UMLNameEventListener(this,metaclasses);
+//XXX            base.addPromiscuousListener(_nameListener);
+        }
+        else {
+            _nameListener = new UMLNameEventListener(this,metaclasses);
+        }
+    }
+
 } /* end class PropPanel */
