@@ -29,13 +29,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Hashtable;
 
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
-import org.tigris.gef.ocl.OCLExpander;
-import org.tigris.gef.ocl.TemplateReader;
 
 /**
  * To persist to and from zargo (zipped file) storage.
@@ -43,14 +40,11 @@ import org.tigris.gef.ocl.TemplateReader;
  * @author Bob Tarling
  */
 public abstract class AbstractFilePersister extends FileFilter 
-    implements ProjectFilePersister {
+        implements ProjectFilePersister {
     
     private static final Logger LOG = 
         Logger.getLogger(AbstractFilePersister.class);
     
-    private static final String ARGO_TEE = "/org/argouml/xml/dtd/argo.tee";
-    private static final String ARGO2_TEE = "/org/argouml/xml/dtd/argo2.tee";
-
     /**
      * The PERSISTENCE_VERSION is increased every time a new version of 
      * ArgoUML is released, which uses an forwards incompatible file format.
@@ -58,11 +52,6 @@ public abstract class AbstractFilePersister extends FileFilter
      * to be converted to the current one.
      */
     protected static final int PERSISTENCE_VERSION = 2;
-    
-    /**
-     * This is used in the save process for PGML.
-     */
-    private static OCLExpander expander;
     
     /**
      * Copies one file src to another, raising file exceptions
@@ -150,30 +139,82 @@ public abstract class AbstractFilePersister extends FileFilter
     }
     
     /**
-     * @param t the hashtable made with the Templatereader
-     *         for a ArgoUML TEE file
-     * @return the expander
+     * Save a project to file.<p>
+     * This first archives the existing file, then calls
+     * doSave(...) to do the actual saving.<p>
+     * Should doSave(...) throw an exception then it is
+     * caught here and any rollback handled before rethrowing
+     * the exception.
+     * 
+     * @param project The project being saved.
+     * @param file The file to which the save is taking place.
+     * @throws SaveException when anything goes wrong
+     *
+     * @see org.argouml.kernel.ProjectFilePersister#save(
+     * org.argouml.kernel.Project, java.io.File)
      */
-    public OCLExpander getExpander(Hashtable t) {
-        if (expander == null) {
-            expander = new OCLExpander(t);
-        }
-        return expander;
+    public final void save(Project project, File file) throws SaveException {
+        preSave(project, file);
+        doSave(project, file);
+        postSave(project, file);
     }
     
     /**
-     * @return the hashtable made with the Templatereader
-     *         for the ArgoUML TEE file
+     * Handle archiving of previous file or any other common 
+     * requirements before saving a model to a file.
+     * 
+     * @param project The project being saved.
+     * @param file The file to which the save is taking place.
+     * @throws SaveException when anything goes wrong
      */
-    protected Hashtable getArgoTeeTemplate() {
-        return TemplateReader.readFile(ARGO_TEE);
+    private void preSave(Project project, File file) throws SaveException {
+        
+    }
+    
+    /**
+     * Handle archiving on completion of a save such as renaming
+     * the temporary save file to the real filename.
+     * 
+     * @param project The project being saved.
+     * @param file The file to which the save is taking place.
+     * @throws SaveException when anything goes wrong
+     */
+    private void postSave(Project project, File file) throws SaveException {
+        
     }
 
     /**
-     * @return the hashtable made with the Templatereader
-     *         for the ArgoUML TEE_2 file
+     * Handle any common requirements on detection of a save error.
+     * Such as restoring the archive. This method is called should
+     * the concrete implementation of doSave(...) throw a
+     * SaveException.
+     * 
+     * @param project The project being saved.
+     * @param file The file to which the save is taking place.
+     * @param e The original exception that triggered a call to
+     *          this method.
+     * @throws SaveException if anything goes wrong in trying to
+     *                       restore the previous archive.
      */
-    protected Hashtable getArgoTee2Template() {
-        return TemplateReader.readFile(ARGO2_TEE);
+    private void postSaveFailure(Project project, File file, SaveException e)
+        throws SaveException {
+        
     }
+
+    /**
+     * Implement in your concrete class to save a project to a
+     * file.<p>
+     * There is no need to worry about archiving or restoring
+     * archive on failure, that is handled by the rest of the
+     * framework.<p>
+     * 
+     * @param project the project to save
+     * @param file The file to write.
+     * @throws SaveException when anything goes wrong
+     *
+     * @see org.argouml.kernel.AbstractFilePersister#save(
+     * org.argouml.kernel.Project, java.io.File)
+     */
+    protected abstract void doSave(Project project, File file)
+        throws SaveException;
 }

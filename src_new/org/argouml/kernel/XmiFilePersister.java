@@ -72,13 +72,8 @@ public class XmiFilePersister extends AbstractFilePersister {
      * @param file The file to write.
      * @throws SaveException if anything goes wrong.
      */
-    public void save(Project project, File file)
+    public void doSave(Project project, File file)
         throws SaveException {
-        
-        project.setFile(file);
-        project.setVersion(ArgoVersion.getVersion());
-
-        getExpander(getArgoTee2Template()); // do we need this?
 
         // frank: first backup the existing file to name+"#"
         File tempFile = new File( file.getAbsolutePath() + "#");
@@ -94,15 +89,12 @@ public class XmiFilePersister extends AbstractFilePersister {
             }
             // frank end
     
+            project.setFile(file);
+            
             writer =
                 new BufferedWriter(new FileWriter(file));
     
-            String path = file.getParent();
-            if (LOG.isInfoEnabled()) {
-                LOG.info("Dir ==" + path);
-            }
             int size = project.getMembers().size();
-
             for (int i = 0; i < size; i++) {
                 ProjectMember projectMember = 
                     (ProjectMember) project.getMembers().elementAt(i);

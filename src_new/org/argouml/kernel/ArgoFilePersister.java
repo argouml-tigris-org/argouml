@@ -31,10 +31,13 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.URL;
+import java.util.Hashtable;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
 import org.tigris.gef.ocl.ExpansionException;
+import org.tigris.gef.ocl.OCLExpander;
+import org.tigris.gef.ocl.TemplateReader;
 
 /**
  * To persist to and from argo (xml file) storage.
@@ -46,6 +49,8 @@ public class ArgoFilePersister extends AbstractFilePersister {
     private static final Logger LOG = 
         Logger.getLogger(ArgoFilePersister.class);
     
+    private static final String ARGO_TEE = "/org/argouml/xml/dtd/argo2.tee";
+
     /**
      * The constructor.
      *  
@@ -79,14 +84,9 @@ public class ArgoFilePersister extends AbstractFilePersister {
      * @see org.argouml.kernel.ProjectFilePersister#save(
      * org.argouml.kernel.Project, java.io.File)
      */
-    public void save(Project project, File file)
+    public void doSave(Project project, File file)
         throws SaveException {
         
-        project.setFile(file);
-        project.setVersion(ArgoVersion.getVersion());
-        project.setPersistenceVersion(PERSISTENCE_VERSION);
-
-
         // frank: first backup the existing file to name+"#"
         File tempFile = new File( file.getAbsolutePath() + "#");
         File backupFile = new File( file.getAbsolutePath() + "~");
@@ -101,13 +101,23 @@ public class ArgoFilePersister extends AbstractFilePersister {
             }
             // frank end
     
+            project.setFile(file);
+            project.setVersion(ArgoVersion.getVersion());
+            project.setPersistenceVersion(PERSISTENCE_VERSION);
+
             FileOutputStream stream =
                 new FileOutputStream(file);
             writer =
                 new PrintWriter(new BufferedWriter(new OutputStreamWriter(
                         stream, "UTF-8")));
     
-            expand(writer, project);
+            try {
+                Hashtable templates = TemplateReader.readFile(ARGO_TEE);
+                OCLExpander expander = new OCLExpander(templates);
+                expander.expand(writer, project, "", "");
+            } catch (ExpansionException e) {
+                throw new SaveException(e);
+            }
             writer.flush();
             
             stream.close();
@@ -150,15 +160,6 @@ public class ArgoFilePersister extends AbstractFilePersister {
             LOG.error("Failed to close save output writer", ex);
         }
     }
-    
-    private void expand(Writer writer, Object project) throws SaveException {
-        try {
-            getExpander(getArgoTee2Template()).expand(writer, project, "", "");
-        } catch (ExpansionException e) {
-            throw new SaveException(e);
-        }
-    }
-    
     
     /**
      * @see org.argouml.kernel.ProjectFilePersister#loadProject(java.net.URL)
