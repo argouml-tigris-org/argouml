@@ -157,7 +157,32 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
   /** Return true if the given object is a valid edge in this graph */
   public boolean canAddEdge(Object edge)  {
-    return (edge instanceof MAssociation) || (edge instanceof MGeneralization);
+    if(_edges.contains(edge)) return false;
+    Object end0 = null, end1 = null;
+    if (edge instanceof MAssociation) {
+      List conns = ((MAssociation)edge).getConnections();
+      if (conns.size() < 2) return false;
+      MAssociationEnd ae0 = (MAssociationEnd) conns.get(0);
+      MAssociationEnd ae1 = (MAssociationEnd) conns.get(1);
+      if (ae0 == null || ae1 == null) return false;
+      end0 = ae0.getType();
+      end1 = ae1.getType();
+    }
+    else if (edge instanceof MGeneralization) {
+      end0 = ((MGeneralization)edge).getChild();
+      end1 = ((MGeneralization)edge).getParent();
+    }
+    else if (edge instanceof MDependency) {
+      Collection clients = ((MDependency)edge).getClients();
+      Collection suppliers = ((MDependency)edge).getSuppliers();
+      if (clients == null || suppliers == null) return false;
+      end0 = ((Object[])clients.toArray())[0];
+      end1 = ((Object[])suppliers.toArray())[0];
+    }
+    if (end0 == null || end1 == null) return false;
+    if (!_nodes.contains(end0)) return false;
+    if (!_nodes.contains(end1)) return false;
+    return true;
   }
 
   /** Remove the given node from the graph. */
@@ -194,7 +219,44 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     fireEdgeAdded(edge);
   }
 
-  public void addNodeRelatedEdges(Object node) { }
+  public void addNodeRelatedEdges(Object node) {
+    if ( node instanceof MClassifier ) {
+      Collection ends = ((MClassifier)node).getAssociationEnds();
+      Iterator iter = ends.iterator();
+      while (iter.hasNext()) {
+         MAssociationEnd ae = (MAssociationEnd) iter.next();
+         if(canAddEdge(ae.getAssociation()))
+           addEdge(ae.getAssociation());
+      }
+    }
+    if ( node instanceof MGeneralizableElement ) {
+      Collection gn = ((MGeneralizableElement)node).getGeneralizations();
+      Iterator iter = gn.iterator();
+      while (iter.hasNext()) {
+         MGeneralization g = (MGeneralization) iter.next();
+         if(canAddEdge(g))
+           addEdge(g);
+      }
+      Collection sp = ((MGeneralizableElement)node).getSpecializations();
+      iter = sp.iterator();
+      while (iter.hasNext()) {
+         MGeneralization s = (MGeneralization) iter.next();
+         if(canAddEdge(s))
+           addEdge(s);
+      }
+    }
+    if ( node instanceof MModelElement ) {
+      Vector specs = new Vector(((MModelElement)node).getClientDependencies());
+      specs.addAll(((MModelElement)node).getSupplierDependencies());
+      Iterator iter = specs.iterator();
+      while (iter.hasNext()) {
+         MDependency dep = (MDependency) iter.next();
+         if(canAddEdge(dep))
+           addEdge(dep);
+      }
+    }
+
+  }
 
 
   /** Remove the given edge from the graph. */

@@ -18,10 +18,11 @@ public class MMUtil {
 
 	static {
 		STANDARDS = new MModelImpl();
-		MStereotype realization = new MStereotypeImpl();
-		realization.setName("realize");
-		realization.setUUID(UUIDManager.SINGLETON.getNewUUID());
-		STANDARDS.addOwnedElement(realization);
+		STANDARDS.setName("standard Elements");
+		MStereotype realizationStereo = new MStereotypeImpl();
+		realizationStereo.setName("realize");
+		realizationStereo.setUUID(UUIDManager.SINGLETON.getNewUUID());
+		STANDARDS.addOwnedElement(realizationStereo);
 	}
     
     // This method takes care about removing all unneeded transitions
@@ -141,11 +142,25 @@ public class MMUtil {
 
 	public MAbstraction buildRealization(MModelElement client, MModelElement supplier) {
 		MAbstraction realization = new MAbstractionImpl();
-		realization.setStereotype((MStereotype)STANDARDS.lookup("realize"));
+// 		MStereotype realStereo = (MStereotype)STANDARDS.lookup("realize");
+// 		System.out.println("real ist: "+realStereo);
+		MStereotype realStereo = new MStereotypeImpl();
+		realStereo.setName("realize");
+		if (supplier.getNamespace() != null) {
+		    MNamespace ns = supplier.getNamespace();
+		    realization.setNamespace(ns);
+		    realStereo.setNamespace(ns);
+		    //		    ns.addOwnedElement(STANDARDS);
+		}
+		else if (client.getNamespace() != null) {
+		    MNamespace ns = client.getNamespace();
+		    realization.setNamespace(ns);
+		    realStereo.setNamespace(ns);
+		    //		    ns.addOwnedElement(STANDARDS);
+		}
+		realization.setStereotype(realStereo);
 		realization.addSupplier(supplier);
 		realization.addClient(client);
-		if (supplier.getNamespace() != null) realization.setNamespace(supplier.getNamespace());
-		else if (client.getNamespace() != null) realization.setNamespace(client.getNamespace());
 		return realization;
 	}
 
@@ -172,7 +187,7 @@ public class MMUtil {
 	 * @return a collection of the Interfaces
 	 */
 
-	public Collection getSpecifications(MClass cls) {
+	public Collection getSpecifications(MClassifier cls) {
 
 		Collection result = new Vector();
 		Collection deps = cls.getClientDependencies();
@@ -181,7 +196,41 @@ public class MMUtil {
 		while (depIterator.hasNext()) {
 			MDependency dep = (MDependency)depIterator.next();
 			if ((dep instanceof MAbstraction) && ((getRealizationStereotype()).equals(dep.getStereotype())))
-				result.add(dep);
+				result.add((dep.getSuppliers().toArray())[0]);
+		}
+		return result;
+	}
+
+	/** This method returns all Classifiers of which this class is a subtype.
+	 * @param cls  the class you want to have the parents for
+	 * @return a collection of the parents
+	 */
+
+	public Collection getSupertypes(MClassifier cls) {
+
+		Collection result = new Vector();
+		Collection gens = cls.getGeneralizations();
+		Iterator genIterator = gens.iterator();
+
+		while (genIterator.hasNext()) {
+			result.add(genIterator.next());
+		}
+		return result;
+	}
+
+	/** This method returns all Classifiers of which this class is a supertype.
+	 * @param cls  the class you want to have the children for
+	 * @return a collection of the children
+	 */
+
+	public Collection getSubtypes(MClassifier cls) {
+
+		Collection result = new Vector();
+		Collection gens = cls.getSpecializations();
+		Iterator genIterator = gens.iterator();
+
+		while (genIterator.hasNext()) {
+			result.add(genIterator.next());
 		}
 		return result;
 	}

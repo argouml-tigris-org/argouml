@@ -33,6 +33,7 @@ import javax.swing.tree.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.use_cases.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.*;
@@ -310,7 +311,8 @@ implements ItemListener, TreeSelectionListener {
 			}
 		}
         else if (obj instanceof MClassifier || obj instanceof MUseCase
-				 || obj instanceof MActor || obj instanceof MPackage) {
+		 || obj instanceof MActor || obj instanceof MPackage 
+		 || obj instanceof MStateVertex) {
 			popup.add(new ActionGoToDetails("Properties"));
 			popup.add(new ActionAddExistingNode("Add to Diagram",obj));
 			popup.add(Actions.RemoveFromModel);
