@@ -30,31 +30,37 @@ import java.util.Vector;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.ChildGenerator;
 /** Utility class to generate the base classes of a class. It
- *  recursively moves up the class hierarchy.  But id does that in a
- *  safe way that will nothang in case of cyclic inheritance. */
-
+ *  recursively moves up the class hierarchy.  But it does that in a
+ *  safe way that will not hang in case of cyclic inheritance. 
+ */
 public class GenAncestorClasses implements ChildGenerator {
-    public static GenAncestorClasses TheInstance = new GenAncestorClasses();
+    //public static GenAncestorClasses TheInstance = new GenAncestorClasses();
 
-    public Enumeration gen(Object o) {
+    /**
+     * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
+     */
+    public Enumeration gen(Object cls) {
 	Vector res = new Vector();
 
-	if (!(ModelFacade.isAGeneralizableElement(o))) return res.elements();
-	Object cls = /*(MGeneralizableElement)*/ o;
+	if (!(ModelFacade.isAGeneralizableElement(cls))) return res.elements();
 	Collection gens = ModelFacade.getGeneralizations(cls);
 	if (gens == null) return res.elements();
-	// Vector res = new Vector();
 	accumulateAncestors(cls, res);
 	return res.elements();
     }
 
-
-    public void accumulateAncestors(Object/*MGeneralizableElement*/ cls, Vector accum) {
+    /**
+     * @param cls the class (in fact any GeneralizableElement will do)
+     * @param accum the accumulated list of generalizations 
+     */
+    public void accumulateAncestors(Object/*MGeneralizableElement*/ cls, 
+            Vector accum) {
 	Vector gens = new Vector(ModelFacade.getGeneralizations(cls));
 	if (gens == null) return;
 	int size = gens.size();
 	for (int i = 0; i < size; i++) {
-	    Object/*MGeneralization*/ g = /*(MGeneralization)*/ (gens).elementAt(i);
+	    Object/*MGeneralization*/ g = /*(MGeneralization)*/ 
+	                                    (gens).elementAt(i);
 	    Object ge = ModelFacade.getParent(g);
 	    if (!accum.contains(ge)) {
 		accum.add(ge);
