@@ -52,37 +52,37 @@ public class LastRecentlyUsedMenuList {
     /**
      * default value for maxcount if there is no configuration
      */
-    private final int _maxCountDefault = 4;
+    private final int maxCountDefault = 4;
 
     /**
      * menu where the list is bound to
      */
-    private JMenu _fileMenu = null;
+    private JMenu fileMenu = null;
 
     /**
      * recent loaded count
      */
-    private int _lruCount = 0;
+    private int lruCount = 0;
 
     /**
      * maxcount read from configuration
      */
-    private int _maxCount = _maxCountDefault;
+    private int maxCount = maxCountDefault;
 
     /**
      * index where the menu entries should be inserted
      * -1 to be sure (adds at end)
      */
-    private int _menuIndex = -1;
+    private int menuIndex = -1;
     
     /**     * menuitems actually created and added to menu
      */
-    private JMenuItem[] _menuItems = new JMenuItem[_maxCount];
+    private JMenuItem[] menuItems = new JMenuItem[maxCount];
 
     /**
      * Array of conf keys for accessing the stored entries
      */
-    private ConfigurationKey[] _confKeys;
+    private ConfigurationKey[] confKeys;
     
     /**
      * Adds the eventhandler to the menu and renames the entry
@@ -91,11 +91,13 @@ public class LastRecentlyUsedMenuList {
         // the text is used by the event handler for opening the project
         File f = new File( filename);
         //JMenuItem item = _fileMenu.add(new ActionReopenProject(filename));
-        JMenuItem item = _fileMenu.insert(new ActionReopenProject(filename), addAt);
+        JMenuItem item = 
+            fileMenu.insert(new ActionReopenProject(filename), addAt);
 
         // set maximum length of menu entry
         String entryName = f.getName();
-        if( entryName.length()>40) entryName = entryName.substring(0, 40) + "...";
+        if (entryName.length() > 40) 
+            entryName = entryName.substring(0, 40) + "...";
 
         // text is short, tooltip is long
         item.setText(entryName);
@@ -116,20 +118,20 @@ public class LastRecentlyUsedMenuList {
         int i;
         
         // holds file menu
-        _fileMenu = filemenu;
-        _lruCount = 0;
-        _menuIndex = filemenu.getItemCount();
+        fileMenu = filemenu;
+        lruCount = 0;
+        menuIndex = filemenu.getItemCount();
         
         // init from config
         // read number, write result as new default and prepare keys
-        _maxCount = Configuration.getInteger(Argo.KEY_NUMBER_LAST_RECENT_USED,
-					     _maxCountDefault);
-        Configuration.setInteger(Argo.KEY_NUMBER_LAST_RECENT_USED, _maxCount);
-        _confKeys = new ConfigurationKey[_maxCount];
+        maxCount = Configuration.getInteger(Argo.KEY_NUMBER_LAST_RECENT_USED,
+					     maxCountDefault);
+        Configuration.setInteger(Argo.KEY_NUMBER_LAST_RECENT_USED, maxCount);
+        confKeys = new ConfigurationKey[maxCount];
         
         // create all nessessary configuration keys for lru
-        for (i = 0; i < _maxCount; i++) {
-            _confKeys[i] = 
+        for (i = 0; i < maxCount; i++) {
+            confKeys[i] = 
 		Configuration.makeKey("project", 
 				      "mostrecent", 
 				      "filelist".concat(Integer.toString(i)));
@@ -138,10 +140,10 @@ public class LastRecentlyUsedMenuList {
         // read existing file names from configuration
         i = 0;
         boolean readOK = true;
-        while (i < _maxCount && readOK) {
-            newName = Configuration.getString(_confKeys[i], "");
+        while (i < maxCount && readOK) {
+            newName = Configuration.getString(confKeys[i], "");
             if (newName.length() > 0) {
-                _menuItems[i] = addEventHandler(newName, _menuIndex+i);
+                menuItems[i] = addEventHandler(newName, menuIndex + i);
                 i++;
             }
             else
@@ -149,7 +151,7 @@ public class LastRecentlyUsedMenuList {
         }
         
         // this is the recent count
-        _lruCount = i;
+        lruCount = i;
     }
     
     /** 
@@ -163,38 +165,40 @@ public class LastRecentlyUsedMenuList {
         // get already existing names from menu actions
         // real file names, not action names !
 
-        String tempNames[] = new String[_maxCount];
-        for (int i = 0; i < _lruCount; i++) {
-            ActionReopenProject action = (ActionReopenProject)_menuItems[i].getAction();
+        String tempNames[] = new String[maxCount];
+        for (int i = 0; i < lruCount; i++) {
+            ActionReopenProject action = 
+                (ActionReopenProject) menuItems[i].getAction();
             tempNames[i] = action.getFilename();
         }
         
         // delete all existing entries
-        for (int i = 0; i < _lruCount; i++)
-            _fileMenu.remove(_menuItems[i]);
+        for (int i = 0; i < lruCount; i++)
+            fileMenu.remove(menuItems[i]);
         
         // add new entry as first entry
-        _menuItems[0] = addEventHandler(filename, _menuIndex);
+        menuItems[0] = addEventHandler(filename, menuIndex);
 
         // add other existing entries, but filter the just added one
         int i, j;
         i = 0; 
 	j = 1;
-        while ( i < _lruCount && j < _maxCount) {
+        while ( i < lruCount && j < maxCount) {
             if ( !(tempNames[i].equals(filename))) {
-                _menuItems[j] = addEventHandler(tempNames[i], _menuIndex+j);
+                menuItems[j] = addEventHandler(tempNames[i], menuIndex + j);
                 j++;
             }
             i++;
         }
         
         // save count
-        _lruCount = j;
+        lruCount = j;
         
         // and store configuration props
-        for ( int k = 0; k < _lruCount; k++) {
-            ActionReopenProject action = (ActionReopenProject)_menuItems[k].getAction();
-            Configuration.setString(_confKeys[k], action.getFilename());
+        for ( int k = 0; k < lruCount; k++) {
+            ActionReopenProject action = 
+                (ActionReopenProject) menuItems[k].getAction();
+            Configuration.setString(confKeys[k], action.getFilename());
         }
     }
 }
