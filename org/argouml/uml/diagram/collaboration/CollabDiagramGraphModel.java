@@ -61,6 +61,8 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     // accessors
 
     /**
+     * This is not the collaboration itself, but its namespace!
+     * 
      * @see org.argouml.uml.diagram.UMLMutableGraphSupport#getNamespace()
      */
     public Object getNamespace() { 
