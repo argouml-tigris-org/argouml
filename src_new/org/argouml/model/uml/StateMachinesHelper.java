@@ -221,8 +221,10 @@ public class StateMachinesHelper {
     }
     
     /**
-     * TODO: (MVW) Since this function is also present in the ModelFacade, 
-     * why is it here?
+     * Get the "top" composite state of a statemachine. <p>
+     * 
+     * The difference with the equally named function in the ModelFacade, 
+     * is that this one swallows null without causing an exception.
      * 
      * @param sm the given statemachine
      * @return the top composite state
