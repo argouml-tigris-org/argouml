@@ -62,7 +62,8 @@ public class TestUMLMessageSenderListModel extends TestCase {
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
         cont.setTarget(elem);
-        model = new UMLMessageSenderListModel(cont);
+        model = new UMLMessageSenderListModel();
+        model.setTarget(elem);
         elem.addMElementListener(model);
     }
     

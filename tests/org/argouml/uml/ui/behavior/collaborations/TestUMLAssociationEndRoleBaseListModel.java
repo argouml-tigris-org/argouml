@@ -24,23 +24,18 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
+import junit.framework.TestCase;
+
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
-import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
-import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
-
-import junit.framework.TestCase;
 
 /**
  * @since Oct 27, 2002
@@ -79,9 +74,8 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
         baseEnd.setAssociation(baseAssoc);
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
-        cont.setTarget(elem);
-        model = new UMLAssociationEndRoleBaseListModel(cont);
+        model = new UMLAssociationEndRoleBaseListModel();
+        model.setTarget(elem);
     }
 
     /**

@@ -24,12 +24,12 @@
 // $Id$
 package org.argouml.uml.ui;
 
+import junit.framework.TestCase;
+
 import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MFactoryImpl;
-
-import junit.framework.TestCase;
 
 /**
  * An abstract class that serves as a basis for testing listmodels. Only works
@@ -58,10 +58,9 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
         super.setUp();
         buildElement();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
-        cont.setTarget(elem);
-        buildModel(cont);
+        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);       
+        buildModel();
+        model.setTarget(elem);
     }
 
     /**
@@ -76,7 +75,7 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
      * Developers should construct the listmodel to be tested in this method and
      * assign this to the variable model.
      */
-    protected abstract void buildModel(UMLUserInterfaceContainer cont);
+    protected abstract void buildModel();
     
     /**
      * @see junit.framework.TestCase#tearDown()

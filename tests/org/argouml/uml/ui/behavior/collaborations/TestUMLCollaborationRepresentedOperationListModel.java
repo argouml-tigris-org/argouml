@@ -62,9 +62,8 @@ public class TestUMLCollaborationRepresentedOperationListModel
         elem = CollaborationsFactory.getFactory().createCollaboration();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
-        cont.setTarget(elem);
-        model = new UMLCollaborationRepresentedOperationListModel(cont);
+        model = new UMLCollaborationRepresentedOperationListModel();
+        model.setTarget(elem);
     }
     
     /**

@@ -65,10 +65,9 @@ public class TestUMLModelElementClientDependencyListModel extends TestCase {
         elem = CoreFactory.getFactory().buildClass(ns);
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
-        cont.setTarget(elem);
-        model = new UMLModelElementClientDependencyListModel(cont);
+        model = new UMLModelElementClientDependencyListModel();
         elem.addMElementListener(model);
+        model.setTarget(elem);
     }
 
     /**

@@ -61,9 +61,8 @@ public class TestUMLExtensionPointUseCaseListModel extends TestCase {
         elem = UseCasesFactory.getFactory().createExtensionPoint();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
-        cont.setTarget(elem);
-        model = new UMLExtensionPointUseCaseListModel(cont);
+        model = new UMLExtensionPointUseCaseListModel();
+        model.setTarget(elem);
     }
     
     /**

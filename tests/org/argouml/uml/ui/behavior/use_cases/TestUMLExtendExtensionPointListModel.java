@@ -26,8 +26,6 @@ package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
-import org.argouml.uml.ui.behavior.use_cases.UMLExtendExtensionPointListModel;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
@@ -58,8 +56,8 @@ public class TestUMLExtendExtensionPointListModel
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel(org.argouml.uml.ui.UMLUserInterfaceContainer)
      */
-    protected void buildModel(UMLUserInterfaceContainer cont) {
-        model = new UMLExtendExtensionPointListModel(cont);
+    protected void buildModel() {
+        model = new UMLExtendExtensionPointListModel();
     }
 
     /**

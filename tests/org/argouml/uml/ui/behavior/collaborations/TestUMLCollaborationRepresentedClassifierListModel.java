@@ -61,10 +61,9 @@ public class TestUMLCollaborationRepresentedClassifierListModel
         super.setUp();
         elem = CollaborationsFactory.getFactory().createCollaboration();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
-        cont.setTarget(elem);
-        model = new UMLCollaborationRepresentedClassifierListModel(cont);
+        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);       
+        model = new UMLCollaborationRepresentedClassifierListModel();
+        model.setTarget(elem);
     }
     
     /**

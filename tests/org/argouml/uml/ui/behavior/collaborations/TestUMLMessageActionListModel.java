@@ -64,10 +64,9 @@ public class TestUMLMessageActionListModel
         super.setUp();
         elem = CollaborationsFactory.getFactory().createMessage();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
-        cont.setTarget(elem);
-        model = new UMLMessageActionListModel(cont);
+        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);      
+        model = new UMLMessageActionListModel();
+        model.setTarget(elem);
     }
     
     /**

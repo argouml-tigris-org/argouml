@@ -29,7 +29,7 @@ import junit.framework.TestCase;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
-import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
+
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MConstraint;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -62,11 +62,10 @@ public class TestUMLModelElementConstraintListModel extends TestCase {
         ns = ModelManagementFactory.getFactory().createModel();
         elem = CoreFactory.getFactory().buildClass(ns);
         oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
-        cont.setTarget(elem);
-        model = new UMLModelElementConstraintListModel(cont);
+        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);        
+        model = new UMLModelElementConstraintListModel();
         elem.addMElementListener(model);
+        model.setTarget(elem);
     }
 
     /**

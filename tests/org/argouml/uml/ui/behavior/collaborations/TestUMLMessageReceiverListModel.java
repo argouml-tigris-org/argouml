@@ -62,8 +62,9 @@ public class TestUMLMessageReceiverListModel extends TestCase {
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
         cont.setTarget(elem);
-        model = new UMLMessageReceiverListModel(cont);
+        model = new UMLMessageReceiverListModel();
         elem.addMElementListener(model);
+        model.setTarget(elem);
     }
     
     /**

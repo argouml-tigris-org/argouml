@@ -26,7 +26,7 @@ package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
@@ -56,8 +56,8 @@ public class TestUMLUseCaseExtendListModel
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel(org.argouml.uml.ui.UMLUserInterfaceContainer)
      */
-    protected void buildModel(UMLUserInterfaceContainer cont) {
-        model = new UMLUseCaseExtendListModel(cont);
+    protected void buildModel() {
+        model = new UMLUseCaseExtendListModel();
     }
 
     /**

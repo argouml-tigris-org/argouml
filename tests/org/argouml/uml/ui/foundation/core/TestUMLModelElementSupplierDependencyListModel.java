@@ -26,7 +26,7 @@ package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -56,8 +56,8 @@ public class TestUMLModelElementSupplierDependencyListModel
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel(org.argouml.uml.ui.UMLUserInterfaceContainer)
      */
-    protected void buildModel(UMLUserInterfaceContainer cont) {
-        model = new UMLModelElementSupplierDependencyListModel(cont);
+    protected void buildModel() {
+        model = new UMLModelElementSupplierDependencyListModel();
     }
 
     /**

@@ -26,7 +26,6 @@ package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
@@ -56,8 +55,8 @@ public class TestUMLMessagePredecessorListModel
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel(org.argouml.uml.ui.UMLUserInterfaceContainer)
      */
-    protected void buildModel(UMLUserInterfaceContainer cont) {
-        model = new UMLMessagePredecessorListModel(cont);
+    protected void buildModel() {
+        model = new UMLMessagePredecessorListModel();
     }
 
     /**

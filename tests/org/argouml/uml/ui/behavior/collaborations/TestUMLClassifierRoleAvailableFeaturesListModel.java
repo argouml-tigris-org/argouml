@@ -62,8 +62,8 @@ public class TestUMLClassifierRoleAvailableFeaturesListModel
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel(org.argouml.uml.ui.UMLUserInterfaceContainer)
      */
-    protected void buildModel(UMLUserInterfaceContainer cont) {
-        model = new UMLClassifierRoleAvailableFeaturesListModel(cont);
+    protected void buildModel() {
+        model = new UMLClassifierRoleAvailableFeaturesListModel();
     }
 
     /**

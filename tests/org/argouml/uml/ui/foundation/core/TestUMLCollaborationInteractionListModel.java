@@ -26,7 +26,6 @@ package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.argouml.uml.ui.behavior.collaborations.UMLCollaborationInteractionListModel;
 
 import ru.novosoft.uml.MBase;
@@ -58,8 +57,8 @@ public class TestUMLCollaborationInteractionListModel
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel(org.argouml.uml.ui.UMLUserInterfaceContainer)
      */
-    protected void buildModel(UMLUserInterfaceContainer cont) {
-        model = new UMLCollaborationInteractionListModel(cont);
+    protected void buildModel() {
+        model = new UMLCollaborationInteractionListModel();
     }
 
     /**

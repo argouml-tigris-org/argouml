@@ -56,11 +56,10 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        elem = new MClassImpl();
-        MockUMLUserInterfaceContainer mockcomp = new MockUMLUserInterfaceContainer();
-        mockcomp.setTarget(elem);
-        list = new UMLModelElementElementResidenceListModel(mockcomp);
+        elem = new MClassImpl();     
+        list = new UMLModelElementElementResidenceListModel();
         elem.addMElementListener(list);
+        list.setTarget(elem);
     }
     
     /**

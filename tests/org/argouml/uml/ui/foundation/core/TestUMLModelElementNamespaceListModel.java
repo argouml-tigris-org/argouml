@@ -27,12 +27,9 @@ package org.argouml.uml.ui.foundation.core;
 import junit.framework.TestCase;
 
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
-import org.argouml.uml.ui.behavior.collaborations.UMLMessageSenderListModel;
+
 import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
@@ -60,10 +57,9 @@ public class TestUMLModelElementNamespaceListModel extends TestCase {
         super.setUp();
         elem = CoreFactory.getFactory().createClass();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
-        cont.setTarget(elem);
-        model = new UMLModelElementNamespaceListModel(cont);
+        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);       
+        model = new UMLModelElementNamespaceListModel();
+        model.setTarget(elem);
         elem.addMElementListener(model);
     }
     
