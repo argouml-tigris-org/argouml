@@ -1034,7 +1034,7 @@ you need to remove the tag you mistakenly put there and start over.
 	    <para>Make sure you have a clean copy of the source!</para>
 	    <para>
 This is done by checking out from the tag using the command
-<command>cvs co -r VERSION_<replaceable>X_Y_Z</replaceable>_F argouml_src</command>
+<command>cvs co -r VERSION_<replaceable>X_Y_Z</replaceable>_F argouml_modules</command>
 </para>
 	  </listitem>
 	  <listitem>
@@ -3828,7 +3828,7 @@ needs to be modified to allow for localization.
 </para>
 	      <para>
 As ArgoUML is originally built without localization we still have a
-big backlog of stuff in the GUI that is not localisable just by
+big backlog of stuff in the GUI that is not localizable just by
 modifying the resource bundles. 
 Each such thing is a Defect and shall be corrected.
 </para>
@@ -3874,7 +3874,7 @@ Swahili, Polish, South African English, ...
 	    <para>
 This is the basic level of ambition that each Language Team should
 aim for.
-It means that in ArgoUML all strings are localised so that ArgoUML
+It means that in ArgoUML all strings are localized so that ArgoUML
 is giving a complete appearance of being a tool for that language.
 </para>
 	    <para>
@@ -3930,7 +3930,9 @@ design documentation of included packages such as GEF, NSUML...
 For translating the javadoc there exists no good tools.
 </para>
 	    <para>
-This is pointless unless we have an extremely large developer base
+This is pointless unless we have identified an extremely large
+developer base willing to take on big parts of of the ArgoUML
+development that is
 speaking one specific language and where most of them does not
 know English.
 </para>
@@ -3943,8 +3945,8 @@ ArgoUML development community.
 </para>
 	    <para>
 Maybe I (Linus Tolke) has gone a little over the top now in trying 
-to define things far of the side of the planet.
-It is probably just med but I find a weird pleasure in encouraging people
+to define things far off the side of the planet.
+It is probably just me but I find a weird pleasure in encouraging people
 to strive for unreachable goals.
 </para>
 	  </listitem>
@@ -4245,7 +4247,7 @@ as the package root.
 &cookbooklogging;
 
     <sect1>
-      <title>The JUnit module</title>
+      <title>The JUnit test cases</title>
       <indexterm>
 	<primary>JUnit testing</primary>
       </indexterm>
@@ -4255,6 +4257,12 @@ as the package root.
       <indexterm>
 	<primary>Testing ArgoUML</primary>
       </indexterm>
+      <para>
+ArgoUML has a set of automatic test caess using JUnit-framework
+for testing the insides of the code.
+The purpose of these are to help in pin-pointing problems with
+code changes already before even starting ArgoUML.
+</para>
       <para>
 The JUnit module is an ArgoUML module that is used to contain all 
 Unit Test Cases.
@@ -4267,6 +4275,9 @@ The module is available from CVS under
 <filename class="directory">modules/junit</filename>
 and the used version of the JUnit framework is also available there
 (under <filename class="directory">modules/junit/lib</filename>).
+</para>
+      <para>
+This location will probably change in the future.
 </para>
       <para>
 The Java package structure under 
@@ -4365,6 +4376,31 @@ all the test cases, give the class name of your test case instead of
 "TestAll" like
 <classname>org.argouml.<replaceable>x.y</replaceable>.Test<replaceable>z</replaceable></classname>.
 </para>
+	<para>
+This will probably change in the future simplifying it to the 
+following even simpler description:
+</para>
+	<orderedlist>
+	  <listitem>
+	    <para>Check out all you need to build ArgoUML</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+Build ArgoUML and run the JUnit test cases using
+<command>build run-all-junit-tests</command>
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+Verify that all the tests are Run and that there are 
+no "Errors" and no "Failures".
+</para>
+	    <para>
+If there are "Errors" or "Failures" they you can hopefully easily
+pinpoint the problem.
+</para>
+	  </listitem>
+	</orderedlist>
       </sect2>
       <sect2>
 	<title>How to write a test case</title>
