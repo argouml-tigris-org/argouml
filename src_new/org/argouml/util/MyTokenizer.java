@@ -44,7 +44,8 @@ class TokenSep {
 		_string = str;
 		_length = str.length();
 		if (_length > 32)
-			throw new IllegalArgumentException("TokenSep " + str + " is " + _length + " (> 32) chars long");
+			throw new IllegalArgumentException("TokenSep " + str
+				+ " is " + _length + " (> 32) chars long");
 		_pattern = 0;
 	}
 
@@ -221,6 +222,12 @@ class QuotedStringSeparator extends CustomSeparator {
  * things like strings in one token. These cannot be used simultaneously by
  * several tokenizers, ie they are not thread safe.
  *
+ * <p>The tokenizer works in a kind of greedy way. When the first separator
+ * token from delim is matched or any CustomSeparator returns true from
+ * addChar, then it is satisfied it has found a token and does NOT check if
+ * it could have found a longer token. Eg: if you have this delim string
+ * "<,<<", then "<<" will never be found.
+ *
  * <p><b>Example</b><br><pre>
  * MyTokenizer tzer = new MyTokenizer("Hello, how are you?", " ,\\,");
  * while (tzer.hasMoreTokens())
@@ -353,7 +360,8 @@ public class MyTokenizer implements Enumeration
 		}
 
 		if (_sIdx >= _eIdx)
-			throw new NoSuchElementException("No more tokens available");
+			throw new NoSuchElementException(
+				"No more tokens available");
 
 		for (sep = _delims; sep != null; sep = sep.next)
 			sep.reset();
@@ -366,29 +374,36 @@ public class MyTokenizer implements Enumeration
 		for (i = _sIdx; i < _eIdx; i++) {
 			char c = _source.charAt(i);
 
-			if (_customSeps != null) {
-				for (j = 0; j < _customSeps.size(); j++)
-					if (((CustomSeparator)_customSeps.get(j)).addChar(c))
-						break;
-				if (j < _customSeps.size()) {
-					csep = (CustomSeparator)_customSeps.get(j);
-					if (csep.hasFreePart()) {
-						for (i++; i < _eIdx; i++)
-							if (csep.endChar(_source.charAt(i)))
-								break;
-					}
+			for (j = 0; _customSeps != null &&
+				    j < _customSeps.size(); j++) {
+				csep = (CustomSeparator)_customSeps.get(j);
 
-					if (i - _sIdx + 1 > csep.tokenLength()) {
-						s = _source.substring(_sIdx, i - csep.tokenLength() + 1);
-						_savedIdx = i - csep.tokenLength() + 1;
-						_savedToken = _source.substring(_savedIdx, Math.min(i+1, _source.length()));
-					} else {
-						s = _source.substring(_sIdx, Math.min(i+1, _source.length()));
-					}
-					_tokIdx = _sIdx;
-					_sIdx = i + 1;
+				if (csep.addChar(c))
 					break;
+			}
+			if (_customSeps != null && j < _customSeps.size()) {
+				csep = (CustomSeparator)_customSeps.get(j);
+
+				while (csep.hasFreePart() && i + 1 < _eIdx)
+					if (csep.endChar(_source.charAt(++i)))
+						break;
+
+				int clen = Math.min(i+1, _source.length());
+
+				if (i - _sIdx + 1 > csep.tokenLength()) {
+					s = _source.substring(_sIdx,
+						i - csep.tokenLength() + 1);
+
+					_savedIdx = i - csep.tokenLength() + 1;
+					_savedToken = _source.substring(
+						_savedIdx, clen);
+				} else {
+					s = _source.substring(_sIdx, clen);
 				}
+
+				_tokIdx = _sIdx;
+				_sIdx = i + 1;
+				break;
 			}
 
 			for (sep = _delims; sep != null; sep = sep.next)
@@ -397,7 +412,8 @@ public class MyTokenizer implements Enumeration
 			if (sep != null)
 			{
 				if (i - _sIdx + 1 > sep.length()) {
-					s = _source.substring(_sIdx, i - sep.length() + 1);
+					s = _source.substring(_sIdx,
+						i - sep.length() + 1);
 					_savedIdx = i - sep.length() + 1;
 					_savedToken = sep.getString();
 				} else {
