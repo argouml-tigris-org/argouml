@@ -24,14 +24,13 @@
 
 package org.argouml.ui;
 
+import junit.framework.TestCase;
+
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.ModelManagementFactory;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 
 import ru.novosoft.uml.MFactoryImpl;
-
-import junit.framework.TestCase;
 
 /**
  * Testing the ProjectBrowser.
