@@ -24,14 +24,6 @@
 
 package org.argouml.model;
 
-import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
-
 /**
  * The interface for the factory of Collaboration.<p>
  *
@@ -78,7 +70,7 @@ public interface CollaborationsFactory {
      *
      * @return an initialized UML Message instance.
      */
-    MMessage createMessage();
+    Object createMessage();
 
     /**
      * Creates a classifierrole and adds it to the given collaboration.
@@ -94,7 +86,7 @@ public interface CollaborationsFactory {
      * @param handle the namespace for the collaboration
      * @return the created collaboration
      */
-    MCollaboration buildCollaboration(Object handle);
+    Object buildCollaboration(Object handle);
 
     /**
      * Builds a collaboration that is owned by a certain namespace and
@@ -114,7 +106,7 @@ public interface CollaborationsFactory {
      * for the new interaction
      * @return the newly build interaction
      */
-    MInteraction buildInteraction(Object handle);
+    Object buildInteraction(Object handle);
 
     /**
      * Builds an associationendrole based on some classifierrole.
@@ -122,7 +114,7 @@ public interface CollaborationsFactory {
      * @param atype the classifierrole
      * @return the associationendrole
      */
-    MAssociationEndRole buildAssociationEndRole(Object atype);
+    Object buildAssociationEndRole(Object atype);
 
     /**
      * Builds a binary associationrole on basis of two classifierroles.
@@ -131,7 +123,7 @@ public interface CollaborationsFactory {
      * @param to the second classifierrole
      * @return the newly build associationrole
      */
-    MAssociationRole buildAssociationRole(Object from, Object to);
+    Object buildAssociationRole(Object from, Object to);
 
     /**
      * Builds a binary associationrole on basis of two classifierroles,
@@ -144,8 +136,8 @@ public interface CollaborationsFactory {
      * @param unidirectional true if unidirectional
      * @return the newly build assoc. role
      */
-    MAssociationRole buildAssociationRole(MClassifierRole from,
-            MAggregationKind agg1, MClassifierRole to, MAggregationKind agg2,
+    Object buildAssociationRole(Object from,
+            Object agg1, Object to, Object agg2,
             Boolean unidirectional);
 
     /**
@@ -176,35 +168,35 @@ public interface CollaborationsFactory {
      * @param interaction the interaction
      * @return the newly build message
      */
-    MMessage buildActivator(MMessage owner, MInteraction interaction);
+    Object buildActivator(Object owner, Object interaction);
 
     /**
      * @param elem the associationendrole
      */
-    void deleteAssociationEndRole(MAssociationEndRole elem);
+    void deleteAssociationEndRole(Object elem);
 
     /**
      * @param elem the associationrole
      */
-    void deleteAssociationRole(MAssociationRole elem);
+    void deleteAssociationRole(Object elem);
 
     /**
      * @param elem the UML element to be deleted
      */
-    void deleteClassifierRole(MClassifierRole elem);
+    void deleteClassifierRole(Object elem);
 
     /**
      * @param elem the UML element to be delete
      */
-    void deleteCollaboration(MCollaboration elem);
+    void deleteCollaboration(Object elem);
 
     /**
      * @param elem the UML element to be delete
      */
-    void deleteInteraction(MInteraction elem);
+    void deleteInteraction(Object elem);
 
     /**
      * @param elem the UML element to be delete
      */
-    void deleteMessage(MMessage elem);
+    void deleteMessage(Object elem);
 }
