@@ -28,6 +28,7 @@ import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 
@@ -78,12 +79,35 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * Builds a stereotype for some kind of modelelement
+     * Builds a stereotype for some kind of modelelement. WARNING: set the namespace
+     * of the returned stereo type by hand. Otherwise the stereo type will not
+     * show in the stereotype box.
      */
     public MStereotype buildStereotype(MModelElement m, String text) {
+    	return buildStereotype(m, text, null);
+    }
+    
+    /**
+     * Builds a stereotype for some kind of modelelement.
+     */
+    public MStereotype buildStereotype(MModelElement m, String text, MNamespace ns) {
     	MStereotype stereo = createStereotype();
     	stereo.setName(text);
+    	stereo.setBaseClass(getMetaModelName(m));
+    	if (ns != null) {
+    		ns.addOwnedElement(stereo);
+    	}
+    	stereo.addExtendedElement(m);
     	return stereo;
+    }
+    
+    private String getMetaModelName(MModelElement m) {
+    	String name = m.getClass().getName();
+    	name = name.substring(name.lastIndexOf('.')+2,name.length());
+    	if (name.endsWith("Impl")) {
+    		name = name.substring(0,name.lastIndexOf("Impl"));
+    	}
+    	return name;
     }
 }
 

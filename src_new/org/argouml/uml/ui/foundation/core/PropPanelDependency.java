@@ -28,6 +28,7 @@ import java.util.*;
 import javax.swing.*;
 
 import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
@@ -36,6 +37,9 @@ public class PropPanelDependency extends PropPanelModelElement {
 
     public PropPanelDependency() {
         super("Dependency",_dependencyIcon, 2);
+        
+        Class[] namesToWatch = { MStereotype.class,MNamespace.class,MDependency.class};
+    	setNameEventListening(namesToWatch);
 
         Class mclass = MDependency.class;
 

@@ -30,6 +30,8 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
+import org.argouml.ui.ProjectBrowser;
+
 import ru.novosoft.uml.foundation.core.MAbstraction;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MAttribute;
@@ -348,8 +350,7 @@ public class CoreHelper {
 	 */
 	public MDependency buildSupportDependency(MModelElement from, MModelElement to) {
 		MDependency dep = CoreFactory.getFactory().buildDependency(from, to);
-		MStereotype stereo = ExtensionMechanismsFactory.getFactory().buildStereotype(dep, "support");
-		dep.setStereotype(stereo);
+		MStereotype stereo = ExtensionMechanismsFactory.getFactory().buildStereotype(dep, "support", ProjectBrowser.TheInstance.getProject().getModel());
 		return dep;
 	}
 	
