@@ -98,13 +98,13 @@ public class ArgoParser extends SAXParserBase {
      */
     public void readProject(URL theUrl) throws IOException,
             ParserConfigurationException, SAXException {
-        
+
         if (theUrl == null) {
             throw new IllegalArgumentException("A URL must be supplied");
         }
-        url = theUrl;
-        addMembers = true;
-        readProject();
+
+        InputStream is = theUrl.openStream();
+        readProject(theUrl, is, true);
     }
 
     /**
@@ -116,13 +116,13 @@ public class ArgoParser extends SAXParserBase {
      */
     public void readProject(URL theUrl, boolean addTheMembers)
         throws IOException, ParserConfigurationException, SAXException {
-        
+
         if (theUrl == null) {
             throw new IllegalArgumentException("A URL must be supplied");
         }
-        url = theUrl;
-        addMembers = addTheMembers;
-        readProject();
+        InputStream is = url.openStream();
+
+        readProject(theUrl, is, addTheMembers);
     }
 
     /**
@@ -130,10 +130,18 @@ public class ArgoParser extends SAXParserBase {
      * @throws ParserConfigurationException in case of a parser problem
      * @throws SAXException when parsing xml
      */
-    private void readProject()
+    public void readProject(URL theUrl, InputStream is, boolean addTheMembers)
         throws IOException, SAXException, ParserConfigurationException {
 
-        InputStream is = url.openStream();
+        if (theUrl == null || is == null) {
+            throw new IllegalArgumentException(
+                    "A URL and an input stream must be supplied");
+        }
+
+        addMembers = addTheMembers;
+
+        url = theUrl;
+
         lastLoadStatus = true;
         lastLoadMessage = "OK";
 
