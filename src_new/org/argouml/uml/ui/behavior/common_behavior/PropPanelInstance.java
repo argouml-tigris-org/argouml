@@ -29,27 +29,19 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
-import org.tigris.swidgets.Orientation;
-import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
-import org.argouml.util.ConfigLoader;
+import org.tigris.swidgets.Orientation;
 
 /**
- * The properties panel for an Instance.
+ * The abstract properties panel for any type of Instance.
  *
  */
-public class PropPanelInstance extends PropPanelModelElement {
+public abstract class PropPanelInstance extends PropPanelModelElement {
 
     private JScrollPane stimuliSenderScroll;
 
@@ -64,23 +56,6 @@ public class PropPanelInstance extends PropPanelModelElement {
     /**
      * The constructor.
      * 
-     */
-    public PropPanelInstance() {
-        super("Instance Properties", lookupIcon("Instance"), 
-                ConfigLoader.getTabPropsOrientation());
-        addField(Translator.localize("label.name"),
-                getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeBox());
-        addField(Translator.localize("label.namespace"),
-                getNamespaceComboBox());
-
-        addButton(new PropPanelButton2(new ActionNavigateNamespace()));
-    }
-
-    /**
-     * The constructor.
-     * 
      * @param name the name for the properties panel
      * @param icon the icon shown next to the name
      * @param orientation the orientation
@@ -88,62 +63,6 @@ public class PropPanelInstance extends PropPanelModelElement {
     public PropPanelInstance(String name, ImageIcon icon,
             Orientation orientation) {
         super(name, icon, orientation);
-    }
-
-    /**
-     * @param me the given object
-     * @return true if the given modelelement is acceptable for this panel, 
-     *         i.e. is a Classifier
-     */
-    public boolean isAcceptibleClassifier(Object/* MModelElement */me) {
-        return org.argouml.model.ModelFacade.isAClassifier(me);
-    }
-
-    /**
-     * @return the classifier that owns this panel
-     */
-    public Object getClassifier() {
-        Object classifier = null;
-        Object target = getTarget();
-        if (ModelFacade.isAInstance(target)) {
-            //    UML 1.3 apparently has this a 0..n multiplicity
-            //    I'll have to figure out what that means
-            //            classifier = ((MInstance) target).getClassifier();
-
-            // at the moment , we only deal with one classifier
-            Collection col = ModelFacade.getClassifiers(target);
-            if (col != null) {
-                Iterator iter = col.iterator();
-                if (iter != null && iter.hasNext()) {
-                    classifier = iter.next();
-                }
-            }
-        }
-        return classifier;
-    }
-
-    /**
-     * @param element the owning UML element
-     */
-    public void setClassifier(Object/* MClassifier */element) {
-        Object target = getTarget();
-
-        if (org.argouml.model.ModelFacade.isAInstance(target)) {
-            Object inst = /* (MInstance) */target;
-            // ((MInstance) target).setClassifier((MClassifier) element);
-
-            // delete all classifiers
-            Collection col = ModelFacade.getClassifiers(inst);
-            if (col != null) {
-                Iterator iter = col.iterator();
-                if (iter != null && iter.hasNext()) {
-                    Object classifier = /* (MClassifier) */iter.next();
-                    ModelFacade.removeClassifier(inst, classifier);
-                }
-            }
-            // add classifier
-            ModelFacade.addClassifier(inst, element);
-        }
     }
 
     /**
