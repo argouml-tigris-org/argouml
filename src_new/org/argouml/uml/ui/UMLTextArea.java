@@ -22,62 +22,72 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
-import org.argouml.uml.*;
+import java.text.*;
 import javax.swing.event.*;
 import javax.swing.*;
 import java.lang.reflect.*;
 import ru.novosoft.uml.*;
-import java.awt.event.*;
-import java.util.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
 
-public class UMLClassifierComboBox extends JComboBox implements UMLUserInterfaceComponent, ItemListener {
+public class UMLTextArea extends JTextArea implements DocumentListener, UMLUserInterfaceComponent {
 
     private UMLUserInterfaceContainer _container;
-    private UMLClassifierComboBoxModel _model;
+    private UMLTextProperty _property;
     
     /** Creates new BooleanChangeListener */
-    public UMLClassifierComboBox(UMLUserInterfaceContainer container,Class itemClass,Class excludeClass,
-        String property,String getMethod,String setMethod,boolean showVoid) {
-        super();
-        _model = new UMLClassifierComboBoxModel(container,itemClass,excludeClass,
-            property,getMethod,setMethod,showVoid);
-        setModel(_model);
-        addItemListener(this);
+    public UMLTextArea(UMLUserInterfaceContainer container,UMLTextProperty property) {
+        _container = container;
+        _property = property;
+        getDocument().addDocumentListener(this);
+        update();
     }
 
     public void targetChanged() {
-        _model.targetChanged();
+        _property.targetChanged();
+        update();
     }
     
-    public void roleAdded(final MElementEvent event) {
-        _model.roleAdded(event);
+    public void roleAdded(final MElementEvent p1) {
     }
-    
-    public void recovered(final MElementEvent event) {
-        _model.recovered(event);
+    public void recovered(final MElementEvent p1) {
     }
-    
-    public void roleRemoved(final MElementEvent event) {
-        _model.roleRemoved(event);
+    public void roleRemoved(final MElementEvent p1) {
     }
-    
-    public void listRoleItemSet(final MElementEvent event) {
-        _model.listRoleItemSet(event);
+    public void listRoleItemSet(final MElementEvent p1) {
     }
-    
-    public void removed(final MElementEvent event) {
-        _model.removed(event);
+    public void removed(final MElementEvent p1) {
     }
-    
     public void propertySet(final MElementEvent event) {
-        _model.propertySet(event);
+        if(_property.isAffected(event)) {
+            //
+            //   check the possibility that this is a promiscuous event
+            Object eventSource = event.getSource();
+            Object target = _container.getTarget();
+            //
+            //    if event source is unknown or 
+            //       the event source is the container's target
+            //          then update the field
+            if(eventSource == null || eventSource == target) {
+                update();
+            }
+        }
     }
     
-
-    public void itemStateChanged(final java.awt.event.ItemEvent event) {
-        
+    private void update() {
+        String oldText = getText();
+        String newText = _property.getProperty(_container);
+        if(oldText == null || newText == null || !oldText.equals(newText)) {
+            if(oldText != newText) {
+                setText(newText);
+            }
+        }
+    }
+    public void changedUpdate(final DocumentEvent p1) {
+        _property.setProperty(_container,getText());
+    }
+    public void removeUpdate(final DocumentEvent p1) {
+        _property.setProperty(_container,getText());
+    }
+    public void insertUpdate(final DocumentEvent p1) {
+        _property.setProperty(_container,getText());
     }
 }

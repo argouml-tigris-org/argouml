@@ -41,17 +41,16 @@ import java.util.*;
  *
  *   @author Curt Arnold
  */
-public class UMLStereotypeComboBox extends JComboBox implements UMLUserInterfaceComponent, ItemListener {
+public class UMLStereotypeComboBox extends JComboBox implements UMLUserInterfaceComponent {
 
     private UMLUserInterfaceContainer _container;
-    private static String _noneStereotype = "";
-    private Set _stereotypes;
-    private static HashMap _metaclasses;
+    private UMLStereotypeComboBoxListModel _model;
     
     public UMLStereotypeComboBox(UMLUserInterfaceContainer container) {
         super();
         _container = container;
-        addItemListener(this);
+        _model = new UMLStereotypeComboBoxListModel(container);
+        setModel(_model);
     }
 
     public Object getTarget() {
@@ -59,282 +58,32 @@ public class UMLStereotypeComboBox extends JComboBox implements UMLUserInterface
     }
         
     public void targetChanged() {
-        Object target = getTarget();
-        if(target instanceof MModelElement) {
-            MModelElement element = (MModelElement) target;
-            MModel model = element.getModel();
-            if(model == null && element instanceof MFeature) {
-                MClassifier owner = ((MFeature) element).getOwner();
-                if(owner != null) {
-                    model = owner.getModel();
-                }
-            }
-            if(model != null) {
-                setModel(updateStereotypes(model));
-                updateSelection();
-            }
-        }
+        _model.targetChanged();
     }
 
-    private void addStereotypes(MNamespace ns,Class metaclass,Collection stereotypes) {
-        Collection ownedElements = ns.getOwnedElements();
-        if(ownedElements != null) {
-            Iterator iter = ownedElements.iterator();
-            Object element;
-            String metaName = metaclass.getName();
-            String currentBase;
-
-            while(iter.hasNext()) {
-                element = iter.next();
-                if(element instanceof MStereotype) {
-                    currentBase = ((MStereotype) element).getBaseClass();
-                    //
-                    //   if base class is not supplied or is most generic
-                    //      then add it to the list
-                    if(currentBase == null || currentBase.length() == 0 || 
-                        currentBase.equals("ModelElement") || 
-                        metaName.endsWith(currentBase)) {
-                        stereotypes.add(element);
-                    }
-                    else {
-                        //
-                        //   see if we can find this class in the map
-                        //
-                        Class currentMetaclass = findMetaclass(currentBase);
-                        if(currentMetaclass.isAssignableFrom(metaclass)) {
-                            stereotypes.add(element);
-                        }
-                    }
-                 }
-            }
-        }
-    }
-    
-    private Class findMetaclass(String name) {
-        Class metaclass = null;
-        if(_metaclasses != null) {
-            metaclass = (Class) _metaclasses.get(name);
-        }
-        if(metaclass == null) {
-            metaclass = findClass("ru.novosoft.uml.foundation.core.M" + name);
-            if(metaclass == null) metaclass = findClass("ru.novosoft.uml.model_management.M"+ name);
-            if(metaclass == null) metaclass = findClass("ru.novosoft.uml.foundation.data_types.M" + name);
-            if(metaclass == null) metaclass = findClass("ru.novosoft.uml.foundation.extension_mechanisms.M" + name);
-            if(metaclass == null) metaclass = findClass("ru.novosoft.uml.foundation.M" + name);
-            if(metaclass == null) metaclass = findClass("ru.novosoft.uml.behavior.activity_graphs.M" + name);
-            if(metaclass == null) metaclass = findClass("ru.novosoft.uml.behavior.collaborations.M" + name);
-            if(metaclass == null) metaclass = findClass("ru.novosoft.uml.behavior.common_behavior.M" + name);
-            if(metaclass == null) metaclass = findClass("ru.novosoft.uml.behavior.state_machines.M" + name);
-            if(metaclass == null) metaclass = findClass("ru.novosoft.uml.behavior.use_cases.M" + name);
-            //
-            //  if a total mismatch, then let it apply to anything
-            if(metaclass == null) metaclass = MModelElement.class;
-            if(_metaclasses == null) {
-                _metaclasses = new HashMap();
-            }
-            _metaclasses.put(name,metaclass);
-        }
-        return metaclass;
-    }
-    
-    private Class findClass(String className) {
-        try {
-            return Class.forName(className);
-        }
-        catch(ClassNotFoundException e) {
-        }
-        return null;
-    }
-        
-    
-    private ComboBoxModel updateStereotypes(MModel model) {
-        //
-        //   create a sorted set of stereotypes
-        //      we will manually place "" at top and "Create New Stereotype"
-        //      at bottom
-        if(_stereotypes == null) {
-            _stereotypes = new TreeSet(new UMLModelElementNameComparator());
-        }
-        else {
-            _stereotypes.clear();
-        }
-        Profile profile = _container.getProfile();
-        MModelElement target = (MModelElement) getTarget();
-        Class targetClass = target.getClass();
-        if(model != null) {
-            addStereotypes(model,targetClass,_stereotypes);
-        }
-        profile.addWellKnownStereotypes(targetClass,_stereotypes);
-        
-                
-        Object[] comboEntries = new Object[_stereotypes.size()+1];
-        int index = 0;
-        comboEntries[index++] = _noneStereotype;
-        if(_stereotypes.size() > 0) {
-            //
-            //  this fairly complex code makes sure that
-            //     identically named stereotypes get unambiguated
-            //     by their package prefixes
-            Iterator iter = _stereotypes.iterator();
-            String prevName = null;
-            String currentName = null;
-            boolean wasDup = false;
-            Object prevStereotype = null;
-            Object currentStereotype = null;
-            if(iter.hasNext()) {
-                currentStereotype = iter.next();
-                if(currentStereotype instanceof MStereotype) {
-                    currentName = ((MStereotype) currentStereotype).getName();
-                }
-                else {
-                    currentName = currentStereotype.toString();
-                }
-            }
-            while(iter.hasNext()) {
-                prevName = currentName;
-                prevStereotype = currentStereotype;
-                currentStereotype = iter.next();
-                if(currentStereotype instanceof MStereotype) {
-                    currentName = ((MStereotype) currentStereotype).getName();
-                }
-                else {
-                    currentName = currentStereotype.toString();
-                }
-                if(wasDup || prevName.equals(currentName)) {
-                    if(prevStereotype instanceof MStereotype) {
-                        comboEntries[index++] = profile.formatElement((MStereotype) prevStereotype,null);
-                    }
-                    else {
-                        comboEntries[index++] = prevStereotype.toString();
-                    }
-                    if(wasDup) {
-                        wasDup = prevName.equals(currentName);
-                    }
-                    else {
-                        wasDup = true;
-                    }
-                }
-                else {
-                    comboEntries[index++] = prevName;
-                }
-            }
-            //
-            //   add the last member in the list
-            //
-            if(prevName != null && currentName.equals(prevName)) {
-                if(currentStereotype instanceof MStereotype) {
-                    comboEntries[index++] = profile.formatElement((MStereotype) currentStereotype,null);
-                }
-                else {
-                    comboEntries[index++] = currentStereotype.toString();
-                }
-            }
-            else {
-                comboEntries[index++] = currentName;
-            }
-        }
-        
-        DefaultComboBoxModel comboModel = new DefaultComboBoxModel(comboEntries);
-        
-        return comboModel;
-    }
                     
     
     public void roleAdded(final MElementEvent event) {
+        _model.roleAdded(event);
     }
     
     public void recovered(final MElementEvent event) {
+        _model.recovered(event);
     }
     
     public void roleRemoved(final MElementEvent event) {
+        _model.roleRemoved(event);
     }
     
     public void listRoleItemSet(final MElementEvent event) {
+        _model.listRoleItemSet(event);
     }
     
     public void removed(final MElementEvent event) {
+        _model.removed(event);
     }
 
     public void propertySet(final MElementEvent event) {
-        String propName = event.getName();
-        if(propName == null || propName.equals("stereotype")) {
-            updateSelection();
-        }
+        _model.propertySet(event);
     }
-   
-    private void updateSelection() {
-        Object target = getTarget();
-        if(target instanceof MModelElement) {
-            MStereotype stereotype = ((MModelElement) target).getStereotype();
-            int index = 0;
-            if(stereotype != null) {
-                Iterator iter = _stereotypes.iterator();
-                Object currentStereotype;
-                for(int i = 0; iter.hasNext(); i++) {
-                    currentStereotype = iter.next();
-                    if(currentStereotype == stereotype) {
-                        index = i+1;
-                        break;
-                    }
-                    else {
-                        if(currentStereotype instanceof ProfileStereotype &&
-                            ((ProfileStereotype) currentStereotype).equals(stereotype)) {
-                                index = i + 1;
-                                break;
-                        }
-                    }
-                }
-            }
-            //
-            //  seems unnecessary, but was throwing exceptions in early testing
-            //
-            if(index < getItemCount()) {
-                setSelectedIndex(index);
-            }
-        }
-    }
-    
-    public void itemStateChanged(final java.awt.event.ItemEvent event) {
-        Object target = getTarget();
-        if(event.getStateChange() == ItemEvent.SELECTED && target instanceof MModelElement) {
-            MModelElement element = (MModelElement) target;
-            
-            int index = getSelectedIndex();
-            MStereotype stereotype = null;
-            Object obj = null;
-            if(index > 0) {
-                index--;
-                if(index < _stereotypes.size()) {
-                    Iterator iter = _stereotypes.iterator();
-                    for(int i = 0; iter.hasNext();i++) {
-                        obj = iter.next();
-                        if(index == i) {
-                            if(obj instanceof MStereotype) {
-                                stereotype = (MStereotype) obj;
-                            }
-                            else {
-                                if(obj instanceof ProfileStereotype) {
-                                    MModel model = element.getModel();
-                                    if(model == null) {
-                                        if(element instanceof MFeature) {
-                                            MClassifier owner = ((MFeature) element).getOwner();
-                                            if(owner != null) {
-                                                model = owner.getModel();
-                                            }
-                                        }
-                                    }
-                                    if(model != null) {
-                                        stereotype = ((ProfileStereotype) obj).createStereotype(model);
-                                    }
-                                }
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-            element.setStereotype(stereotype);
-        }
-    }
-
 }

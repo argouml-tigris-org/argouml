@@ -80,13 +80,8 @@ public class PropPanelClass extends PropPanelClassifier {
 
     addCaption(new JLabel("Modifiers:"),4,0,0);
 
-    JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
-    modifiersPanel.add(new UMLCheckBox("public",this,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null)));
-    modifiersPanel.add(new UMLCheckBox("abstract",this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-    modifiersPanel.add(new UMLCheckBox("final",this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-    modifiersPanel.add(new UMLCheckBox("root",this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
-    modifiersPanel.add(new UMLCheckBox("active",this,new UMLReflectionBooleanProperty("isActive",mclass,"isActive","setActive")));
-    addField(modifiersPanel,4,0,0);
+    _modifiersPanel.add(new UMLCheckBox("active",this,new UMLReflectionBooleanProperty("isActive",mclass,"isActive","setActive")));
+    addField(_modifiersPanel,4,0,0);
 
     addCaption(new JLabel("Namespace:"),5,0,0);
     addLinkField(new UMLList(new UMLNamespaceListModel(this),true),5,0,0);

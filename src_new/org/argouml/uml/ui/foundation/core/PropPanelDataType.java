@@ -25,15 +25,17 @@
 package org.argouml.uml.ui.foundation.core;
 
 import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
 import javax.swing.*;
 import org.argouml.uml.ui.*;
 import java.awt.*;
+import java.util.*;
 
 
 
-public class PropPanelDataType extends PropPanel {
+public class PropPanelDataType extends PropPanelClassifier {
 
 
   ////////////////////////////////////////////////////////////////
@@ -65,13 +67,7 @@ public class PropPanelDataType extends PropPanel {
     addField(implementsList,3,0,0);
 
     addCaption(new JLabel("Modifiers:"),4,0,0);
-
-    JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
-    modifiersPanel.add(new UMLCheckBox("public",this,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null)));
-    modifiersPanel.add(new UMLCheckBox("abstract",this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-    modifiersPanel.add(new UMLCheckBox("final",this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-    modifiersPanel.add(new UMLCheckBox("root",this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
-    addField(modifiersPanel,4,0,0);
+    addField(_modifiersPanel,4,0,0);
 
     addCaption(new JLabel("Namespace:"),5,0,0);
     JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
@@ -87,35 +83,91 @@ public class PropPanelDataType extends PropPanel {
     JScrollPane derivedScroll = new JScrollPane(derivedList);
     addField(derivedScroll,6,0,1);
     
-    addCaption(new JLabel("Operations:"),0,1,0.25);
-    JList opsList = new UMLList(new UMLOperationsListModel(this,"feature",true),true);
-    opsList.setForeground(Color.blue);
-    opsList.setVisibleRowCount(1);
-    JScrollPane opsScroll = new JScrollPane(opsList);
-    addField(opsScroll,0,1,0.25);
-    
-    addCaption(new JLabel("Attributes:"),1,1,0.25);
+    addCaption(new JLabel("Literals:"),1,1,0.5);
     JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
     attrList.setForeground(Color.blue);
     attrList.setVisibleRowCount(1);
     JScrollPane attrScroll= new JScrollPane(attrList);
-    addField(attrScroll,1,1,0.25);
-    
-    addCaption(new JLabel("Associations:"),2,1,0.25);
-    JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
-    connectList.setForeground(Color.blue);
-    connectList.setVisibleRowCount(1);
-    addField(new JScrollPane(connectList),2,1,0.25);
+    addField(attrScroll,1,1,0.5);
     
     
+    addCaption(new JLabel("Operations:"),0,1,0.5);
+    JList opsList = new UMLList(new UMLOperationsListModel(this,"feature",true),true);
+    opsList.setForeground(Color.blue);
+    opsList.setVisibleRowCount(1);
+    JScrollPane opsScroll = new JScrollPane(opsList);
+    addField(opsScroll,0,1,0.5);
     
-    addCaption(new JLabel("Inner Classes:"),3,1,0.25);
-    JList innerList = new UMLList(new UMLClassifierListModel(this,"ownedElement",true,MClass.class,MClassImpl.class),true);
-    innerList.setForeground(Color.blue);
-    innerList.setVisibleRowCount(1);
-    addField(new JScrollPane(innerList),3,1,0.25);
+    JPanel buttonBorder = new JPanel(new BorderLayout());
+    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
+    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
+    add(buttonBorder,BorderLayout.EAST);
     
+    new PropPanelButton(this,buttonPanel,_addOpIcon,"Add operation","addOperation",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateNamespace",null);
+    new PropPanelButton(this,buttonPanel,_addAttrIcon,"Add enumeration literal","addAttribute",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,"Go back","navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_generalizationIcon,"Add generalization","addGeneralization",null);
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete class","removeElement",null);
   }
 
+    public void addOperation() {
+        Object target = getTarget();
+        if(target instanceof MClassifier) {
+            MClassifier classifier = (MClassifier) target;
+            MOperation oper = classifier.getFactory().createOperation();
+            oper.setQuery(true);
+            classifier.addFeature(oper);
+            navigateTo(oper);
+        }
+    }
+    
+    public void addAttribute() {
+        Object target = getTarget();
+        if(target instanceof MClassifier) {
+            MClassifier classifier = (MClassifier) target;
+            MStereotype stereo = classifier.getStereotype();
+            if(stereo == null) {
+                //
+                //  if there is not an enumeration stereotype as
+                //     an immediate child of the model, add one
+                MModel model = classifier.getModel();
+                Object ownedElement;
+                boolean match = false;
+                if(model != null) {
+                    Collection ownedElements = model.getOwnedElements();
+                    if(ownedElements != null) {
+                        Iterator iter = ownedElements.iterator();
+                        while(iter.hasNext()) {
+                            ownedElement = iter.next();
+                            if(ownedElement instanceof MStereotype) {
+                                stereo = (MStereotype) ownedElement;
+                                String stereoName = stereo.getName();
+                                if(stereoName != null && stereoName.equals("enumeration")) {
+                                    match = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if(!match) {
+                            stereo = classifier.getFactory().createStereotype();
+                            stereo.setName("enumeration");
+                            model.addOwnedElement(stereo);
+                        }
+                        classifier.setStereotype(stereo);
+                    }
+                }        
+            }
+            
+            MAttribute attr = classifier.getFactory().createAttribute();
+            attr.setOwnerScope(MScopeKind.CLASSIFIER);
+            attr.setChangeability(MChangeableKind.FROZEN);
+            attr.setVisibility(MVisibilityKind.PUBLIC);
+            attr.setType(classifier);
+            classifier.addFeature(attr);
+            navigateTo(attr);
+        }
+    }
   
-} /* end class PropPanelClass */
+} /* end class PropPanelDataType */

@@ -35,9 +35,14 @@ import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import org.argouml.uml.ui.*;
 
+import org.tigris.gef.util.Util;
 
 public class PropPanelOperation extends PropPanel {
-
+  
+    private static ImageIcon _parameterIcon = Util.loadIconResource("Parameter");
+    private static ImageIcon _operationIcon = Util.loadIconResource("Operation");
+    private static ImageIcon _signalIcon = Util.loadIconResource("SignalSending");
+    
     public PropPanelOperation() {
         super("Operation Properties",2);
 
@@ -85,24 +90,30 @@ public class PropPanelOperation extends PropPanel {
         namespaceList.setForeground(Color.blue);
         addField(namespaceList,5,0,0);
         
-        addCaption(new JLabel("Return type:"),0,1,0);
-        addField(new UMLClassifierComboBox(this,MClassifier.class,null,"type","getReturnType","setReturnType",true),0,1,0);
-
-        
-        
-        addCaption(new JLabel("Parameters:"),1,1,.5);
+        addCaption(new JLabel("Parameters:"),0,1,.5);
         JList paramList = new UMLList(new UMLReflectionListModel(this,"parameter",true,"getParameters","setParameters","addParameter",null),true);
         paramList.setForeground(Color.blue);
         paramList.setVisibleRowCount(1);
-        addField(new JScrollPane(paramList),1,1,0.5);
+        addField(new JScrollPane(paramList),0,1,0.5);
         
-        addCaption(new JLabel("Exceptions:"),2,1,.5);
+        addCaption(new JLabel("Exceptions:"),1,1,.5);
         JList exceptList = new UMLList(new UMLReflectionListModel(this,"signal",true,"getRaisedSignals","setRaisedSignals","addRaisedSignal",null),true);
         exceptList.setForeground(Color.blue);
         exceptList.setVisibleRowCount(1);
-        addField(new JScrollPane(exceptList),2,1,0.5);
+        addField(new JScrollPane(exceptList),1,1,0.5);
         
-        
+    JPanel buttonBorder = new JPanel(new BorderLayout());
+    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
+    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
+    add(buttonBorder,BorderLayout.EAST);
+    
+    new PropPanelButton(this,buttonPanel,_parameterIcon,"Add parameter","buttonAddParameter",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateUp",null);
+    new PropPanelButton(this,buttonPanel,_signalIcon,"Add raised signal","buttonAddRaisedSignal",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,"Go back","navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete operation","removeElement",null);
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_operationIcon,"New operation","buttonAddOperation",null);
     }
 
     public MClassifier getReturnType() {
@@ -265,5 +276,50 @@ public class PropPanelOperation extends PropPanel {
         }
     }
     
+    public void buttonAddParameter() {
+        Object target = getTarget();
+        if(target instanceof MOperation) {
+            MOperation oper = (MOperation) target;
+            MParameter newParam = oper.getFactory().createParameter();
+            newParam.setKind(MParameterDirectionKind.INOUT);
+            oper.addParameter(newParam);
+            navigateTo(newParam);
+        }
+    }
+    
+    public void buttonAddOperation() {
+        Object target = getTarget();
+        if(target instanceof MOperation) {
+            MOperation oper = (MOperation) target;
+            MClassifier owner = oper.getOwner();
+            if(owner != null) {
+                MOperation newOper = owner.getFactory().createOperation();
+                owner.addFeature(newOper);
+                navigateTo(newOper);
+            }
+        }
+    }
+    
+    public void buttonAddRaisedSignal() {
+        Object target = getTarget();
+        if(target instanceof MOperation) {
+            MOperation oper = (MOperation) target;
+            MSignal newSignal = oper.getFactory().createSignal();
+            oper.addRaisedSignal(newSignal);
+            navigateTo(newSignal);
+        }
+    }
+    
+    public void navigateUp() {
+        Object target = getTarget();
+        if(target instanceof MOperation) {
+            MOperation oper = (MOperation) target;
+            MClassifier owner = oper.getOwner();
+            if(owner != null) {
+                navigateTo(owner);
+            }
+        }
+    }
+        
 } /* end class PropPanelOperation */
 

@@ -91,12 +91,13 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
         Object listProperty = getProperty();
         if(listProperty == null || eventProperty == null || 
             listProperty.equals(eventProperty)) {
-            Object source = event.getSource();
-            if(isProperClass(source)) {
+            Object added = event.getAddedValue();
+            if(isProperClass(added)) {
                 int upper = getUpperBound();
                 resetSize();
                 resetCache();
-                fireContentsChanged(this,0,upper+1);
+                if(upper < 0) upper = 0;
+                fireIntervalAdded(this,upper,upper);
             }
         }
     }

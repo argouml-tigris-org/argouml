@@ -29,11 +29,20 @@ import ru.novosoft.uml.model_management.*;
 import javax.swing.*;
 import org.argouml.uml.ui.*;
 import java.awt.*;
+import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
-public class PropPanelAssociation extends PropPanel {
+import org.tigris.gef.util.Util;
+
+public class PropPanelAssociation extends PropPanelModelElement {
 
   ////////////////////////////////////////////////////////////////
   // constants
+  private static ImageIcon _associationIcon = Util.loadIconResource("Association");
+  private static ImageIcon _assocEndIcon = Util.loadIconResource("AssociationEnd");
+  private static ImageIcon _generalizationIcon = Util.loadIconResource("Generalization");
+  private static ImageIcon _realizationIcon = Util.loadIconResource("Realization");
+
   
 
   ////////////////////////////////////////////////////////////////
@@ -42,6 +51,13 @@ public class PropPanelAssociation extends PropPanel {
     super("Association Properties",2);
     
     Class mclass = MAssociation.class;
+    //
+    //   this will cause the components on this page to be notified
+    //      anytime a stereotype, namespace, operation, etc
+    //      has its name changed or is removed anywhere in the model
+    Class[] namesToWatch = { MStereotype.class,MNamespace.class,MClassifier.class };        
+    setNameEventListening(namesToWatch);
+    
 
     addCaption(new JLabel("Name:"),0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
@@ -81,6 +97,65 @@ public class PropPanelAssociation extends PropPanel {
     derivedList.setVisibleRowCount(1);
     addField(new JScrollPane(derivedList),2,1,1);
 
+    JPanel buttonBorder = new JPanel(new BorderLayout());
+    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
+    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
+    add(buttonBorder,BorderLayout.EAST);
+    
+    
+    new PropPanelButton(this,buttonPanel,_assocEndIcon,"Add association end","addAssociationEnd",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateNamespace",null);
+    new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete association","removeElement",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,"Go back","navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_generalizationIcon,"Add generalization","addGeneralization",null);
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_realizationIcon,"Add realization","addRealization",null);
+    new PropPanelButton(this,buttonPanel,_associationIcon,"New association","newAssociation",null);
+    
   }
+
+   public void addAssociationEnd() {
+        Object target = getTarget();
+        if(target instanceof MAssociation) {
+            MAssociation assoc = (MAssociation) target;
+            MAssociationEnd assocEnd = assoc.getFactory().createAssociationEnd();
+            assoc.addConnection(assocEnd);
+            navigateTo(assocEnd);
+        }
+    }
+    
+    public void newAssociation() {
+        Object target = getTarget();
+        if(target instanceof MAssociation) {
+            MAssociation assoc = (MAssociation) target;
+            MNamespace ns = assoc.getNamespace();
+            if(ns != null) {
+                MFactory factory = ns.getFactory();
+                MAssociation newAssoc = factory.createAssociation();
+                newAssoc.addConnection(factory.createAssociationEnd());
+                newAssoc.addConnection(factory.createAssociationEnd());
+                ns.addOwnedElement(newAssoc);
+                navigateTo(newAssoc);
+            }
+        }
+    }   
+    
+    public void addGeneralization() {
+        Object target = getTarget();
+        if(target instanceof MGeneralizableElement) {
+            MGeneralizableElement genElem = (MGeneralizableElement) target;
+            MNamespace ns = genElem.getNamespace();
+            if(ns != null) {
+                MGeneralization newGen = ns.getFactory().createGeneralization();
+                if(newGen != null) {
+                    newGen.setChild(genElem);
+                    ns.addOwnedElement(newGen);
+                    navigateTo(newGen);
+                }
+            }
+        }
+    }
+    
+        
 
 } /* end class PropPanelAssociation */

@@ -188,7 +188,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
     
     
     public void setTarget(Object t) {
-        if(!t.equals(_target)) {            
+        if(t != _target) {            
             boolean removeOldPromiscuousListener = (_nameListener != null);
             if(t instanceof MBase && _nameListener != null) {
 //XXX                removeOldPromiscuousListener = 
@@ -203,9 +203,9 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
                 //
                 //  this path shouldn't happen unless t == null
                 //
-//XXX                if(removeOldPromiscuousListener) {
+                if(removeOldPromiscuousListener) {
 //XXX                    ((MBase) _target).removePromiscuousListener(_nameListener);
-//XXX                }
+                }
             }
             
             _target = t;
@@ -394,7 +394,20 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
     public void removeElement() {
         Object target = getTarget();
         if(target instanceof MBase) {
-            ((MBase) target).remove();
+            MBase base = (MBase) target;
+            Object newTarget = null;
+            if(base instanceof MFeature) {
+                newTarget = ((MFeature) base).getOwner();
+            }
+            else {
+                if(base instanceof MModelElement) {
+                    newTarget = ((MModelElement) base).getNamespace();
+                }
+            }
+            base.remove();
+            if(newTarget != null) {
+                navigateTo(newTarget);
+            }
         }
     }
     

@@ -36,14 +36,25 @@ import javax.swing.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import org.argouml.uml.ui.*;
-
+import org.tigris.gef.util.Util;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 public class PropPanelAttribute extends PropPanel {
 
+    private static ImageIcon _attributeIcon = Util.loadIconResource("AddAttribute");
+    
     public PropPanelAttribute() {
         super("Attribute Properties",2);
 
         Class mclass = MAttribute.class;
+        
+        //
+        //   this will cause the components on this page to be notified
+        //      anytime a stereotype, namespace, operation, etc
+        //      has its name changed or is removed anywhere in the model
+        Class[] namesToWatch = { MStereotype.class,MNamespace.class,MClassifier.class };        
+        setNameEventListening(namesToWatch);
+        
 
         addCaption(new JLabel("Name:"),0,0,0);
         addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
@@ -77,6 +88,18 @@ public class PropPanelAttribute extends PropPanel {
         modPanel.add(new UMLCheckBox("volatile",this,new UMLTaggedBooleanProperty("volatile")));
         addField(modPanel,2,1,0);
         
+        JPanel buttonBorder = new JPanel(new BorderLayout());
+        JPanel buttonPanel = new JPanel(new GridLayout(0,2));
+        buttonBorder.add(buttonPanel,BorderLayout.NORTH);
+        add(buttonBorder,BorderLayout.EAST);
+    
+        
+        new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete attribute","removeElement",null);
+        new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateUp",null);
+        new PropPanelButton(this,buttonPanel,_attributeIcon,"New attribute","newAttribute",null);
+        new PropPanelButton(this,buttonPanel,_navBackIcon,"Go back","navigateBackAction","isNavigateBackEnabled");
+        buttonPanel.add(new JPanel());
+        new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
     }
 
     
@@ -109,5 +132,27 @@ public class PropPanelAttribute extends PropPanel {
             owner = ((MAttribute) target).getOwner();
         }
         return owner;
+    }
+    
+    public void newAttribute() {
+        Object target = getTarget();
+        if(target instanceof MAttribute) {
+            MClassifier owner = ((MAttribute) target).getOwner();
+            if(owner != null) {
+                MAttribute newAttr = owner.getFactory().createAttribute();
+                owner.addFeature(newAttr);
+                navigateTo(newAttr);
+            }
+        }
+    }
+    
+    public void navigateUp() {
+        Object target = getTarget();
+        if(target instanceof MAttribute) {
+            MClassifier owner = ((MAttribute) target).getOwner();
+            if(owner != null) {
+                navigateTo(owner);
+            }
+        }
     }
 } /* end class PropPanelAttribute */
