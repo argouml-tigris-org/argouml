@@ -1378,6 +1378,16 @@ public class ModelFacade {
     }
     
     /**
+     * @deprecated this method is incorrectly named and will be removed in due 
+     * time and be replaced by getModelElementContainer.
+     * @param handle
+     * @return the modelelement container of the handle
+     */
+    public static Object getContainer(Object handle) {
+        return getModelElementContainer(handle);
+    }
+    
+    /**
      * Returns the container for the given modelelement. The container is the
      * owner of the modelelement. It will be null for elements that don't have
      * an owner. All elements except for the root element in a project should

@@ -73,6 +73,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ActionGoToCritique;
 import org.argouml.ui.ArgoDiagram;
@@ -295,7 +296,8 @@ public abstract class FigNodeModelElement
      * the owner of that fignodemodelelement will be the owning modelelement.
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
-     public void setEnclosingFig(Fig encloser) {         
+     public void setEnclosingFig(Fig encloser) {
+         super.setEnclosingFig(encloser);         
          Fig oldEncloser = _encloser;
          if (encloser !=oldEncloser) {
              Object owningModelelement = null;
@@ -314,8 +316,11 @@ public abstract class FigNodeModelElement
                 } 
             }
             if (owningModelelement != null && getOwner() != null && 
-                    !ModelManagementHelper.getHelper().isCyclicOwnership(owningModelelement, 
-                    getOwner())) {                
+                        !ModelManagementHelper.getHelper().
+                        isCyclicOwnership(owningModelelement, getOwner()) 
+                     && 
+                        (ModelFacade.isANamespace(owningModelelement) 
+                        && CoreHelper.getHelper().isValidNamespace(getOwner(), owningModelelement))) {                
                 ModelFacade.setModelElementContainer(getOwner(), owningModelelement);
                 // TODO move the associations to the correct owner (namespace)               
             }

@@ -38,7 +38,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.CopyHelper;
 
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.model_management.MModel;
@@ -375,7 +374,7 @@ public class ModelManagementHelper {
     * @return true if the child is allready in the ownership relationship
     */
     public boolean isCyclicOwnership(Object parent, Object child) {
-        return getOwnerShipPath(child).contains(child);
+        return (getOwnerShipPath(parent).contains(child) || parent == child);
     }
 
     /**
@@ -386,29 +385,34 @@ public class ModelManagementHelper {
     * @return the first modelelement owning both elem1 as elem2. If there is no 
     * such modelelement returns null.
     */
-    public Object getFirstCommonOwner(Object elem1, Object elem2) {
-        if (elem1 instanceof MBase && elem2 instanceof MBase) {
-            List ownersElem1 = getOwnerShipPath(elem1);
-            List ownersElem2 = getOwnerShipPath(elem2);
-            Iterator it = null;
-            if (ownersElem1.size() > ownersElem2.size())
-                it = ownersElem1.iterator();
-            else
-                it = ownersElem2.iterator();
-            while (it.hasNext()) {
-                Object o = it.next();
-                if (ownersElem2.contains(o)) {
-                    return o;
-                }
-            }
-            return null;
-        } else {
-            return null;
-        }
-    }
+//    public Object getFirstCommonOwner(Object elem1, Object elem2) {
+//        if (elem1 instanceof MBase && elem2 instanceof MBase) {
+//            List ownersElem1 = getOwnerShipPath(elem1);
+//            List ownersElem2 = getOwnerShipPath(elem2);
+//            Iterator it = null;
+//            List listToCompare = null;
+//            if (ownersElem1.size() > ownersElem2.size()) {            
+//                it = ownersElem1.iterator();
+//                listToCompare = ownersElem2;
+//            }
+//            else {           
+//                it = ownersElem2.iterator();
+//                listToCompare = ownersElem1;
+//            }
+//            while (it.hasNext()) {
+//                Object o = it.next();
+//                if (listToCompare.contains(o)) {
+//                    return o;
+//                }
+//            }
+//            return null;
+//        } else {
+//            return null;
+//        }
+//    }
 
     private List getOwnerShipPath(Object elem) {
-        if (elem instanceof MBase) {
+        if (ModelFacade.isABase(elem)) {
             List ownershipPath = new ArrayList();
             Object parent = ModelFacade.getModelElementContainer(elem);
             while (parent != null) {
