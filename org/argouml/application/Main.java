@@ -109,6 +109,12 @@ public class Main {
 	sb.append("Operation System Version: ");
 	sb.append(System.getProperty("os.version", "unknown"));
 	sb.append('\n');
+	sb.append("Language: ");
+	sb.append(System.getProperty("user.language", "unknown"));
+	sb.append('\n');
+	sb.append("Region: ");
+	sb.append(System.getProperty("user.region", "unknown"));
+	sb.append('\n');
 
 	return sb.toString();
     }
