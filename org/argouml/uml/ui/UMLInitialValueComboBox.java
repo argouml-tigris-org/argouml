@@ -150,7 +150,9 @@ public class UMLInitialValueComboBox extends JComboBox
  */
     public void propertySet(final MElementEvent event) {
         String eventProp = event.getName();
-//        Argo.log.info(eventProp);
+        Argo.log.info("Event Property = " + eventProp);
+        if(eventProp.equals("owner")) return;
+        
         if(eventProp.equals("type")) {
             updateDefaults();
         }
