@@ -66,6 +66,15 @@ import org.xml.sax.SAXException;
  */
 public class UmlFilePersister extends AbstractFilePersister
         implements ProgressListener {
+    
+    /**
+     * The PERSISTENCE_VERSION is increased every time the persistence format
+     * changes.
+     * This controls conversion of old persistence version files to be
+     * converted to the current one, keeping ArgoUML backwards compatible.
+     */
+    protected static final int PERSISTENCE_VERSION = 2;
+    
     /**
      * Logger.
      */
@@ -289,10 +298,13 @@ public class UmlFilePersister extends AbstractFilePersister
             int fileVersion = getPersistenceVersionFromFile(file);
             
             if (fileVersion > PERSISTENCE_VERSION) {
-                //String Version = getArgoumlVersionFromFile(file);
+                String release = getReleaseVersionFromFile(file);
                 throw new VersionException(
                     "The file selected is from a more up to date version of "
-                    + "ArgoUML. Please install the latest version.");
+                    + "ArgoUML. It has been saved with ArgoUML version "
+                    + release
+                    + ". Please load with that or a more up to date"
+                    + "release of ArgoUML");
             }
             
             // The progress is split into equal sections, 1 for
@@ -420,11 +432,11 @@ public class UmlFilePersister extends AbstractFilePersister
     }
 
     /**
-     * Read an XML file at the given URL and extracts the version number
-     * from the root tag.
+     * Reads an XML file of uml format and extracts the 
+     * persistence version number from the root tag.
      * @param file the XML file
      * @return The version number
-     * @throws IOException
+     * @throws OpenException on any error
      */
     private int getPersistenceVersionFromFile(File file) throws OpenException {
         BufferedInputStream inputStream = null;
@@ -459,6 +471,49 @@ public class UmlFilePersister extends AbstractFilePersister
         }
     }
 
+
+    /**
+     * Reads an XML file of uml format and extracts the 
+     * persistence version number from the root tag.
+     * @param file the XML file
+     * @return The ArgoUML release number
+     * @throws OpenException on any error
+     */
+    private String getReleaseVersionFromFile(File file) throws OpenException {
+        BufferedInputStream inputStream = null;
+        BufferedReader reader = null;
+        try {
+            inputStream = new BufferedInputStream(file.toURL().openStream());
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+            String versionLine = reader.readLine();
+            while (!versionLine.trim().startsWith("<version>")) {
+                versionLine = reader.readLine();
+                if (versionLine == null) {
+                    throw new OpenException(
+                            "Failed to find the release <version> tag");
+                }
+            }
+            versionLine = versionLine.trim();
+            int end = versionLine.lastIndexOf("</version>");
+            return versionLine.trim().substring(9, end);
+        } catch (IOException e) {
+            throw new OpenException(e);
+        } catch (NumberFormatException e) {
+            throw new OpenException(e);
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException e) {
+                // No more we can do here on failure
+            }
+        }
+    }
+    
     /**
      * Get the version attribute value from a string of XML.
      * @param rootLine the line
