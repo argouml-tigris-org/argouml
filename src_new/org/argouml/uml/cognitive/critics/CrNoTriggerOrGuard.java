@@ -32,14 +32,16 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.critics.Critic;
+import org.argouml.model.ModelFacade;
+import ru.novosoft.uml.behavior.state_machines.MEvent;
+import ru.novosoft.uml.behavior.state_machines.MGuard;
+import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.state_machines.*;
 
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
 
 public class CrNoTriggerOrGuard extends CrUML {
 
@@ -52,12 +54,12 @@ public class CrNoTriggerOrGuard extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(org.argouml.model.ModelFacade.isATransition(dm))) return NO_PROBLEM;
+	if (!(ModelFacade.isATransition(dm))) return NO_PROBLEM;
 	MTransition tr = (MTransition) dm;
 	MEvent t = tr.getTrigger();
 	MGuard g = tr.getGuard();
 	MStateVertex sv = tr.getSource();
-	if (!(org.argouml.model.ModelFacade.isAState(sv))) return NO_PROBLEM;
+	if (!(ModelFacade.isAState(sv))) return NO_PROBLEM;
 	if (((MState) sv).getDoActivity() != null) return NO_PROBLEM;
 	boolean hasTrigger =
 	    (t != null && t.getName() != null && t.getName().length() > 0);

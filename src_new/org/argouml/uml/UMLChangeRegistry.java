@@ -29,9 +29,9 @@
 
 package org.argouml.uml;
 
-import ru.novosoft.uml.*;
-
-import org.argouml.util.*;
+import org.argouml.util.ChangeRegistry;
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
 
 /** This class holds the information about the saving state of the current UML project.
  *  The state is changed by every change made either to the model or to its diagrams.

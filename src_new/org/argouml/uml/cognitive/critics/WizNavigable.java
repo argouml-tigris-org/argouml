@@ -31,19 +31,19 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-
+import java.util.Vector;
+import javax.swing.JPanel;
 import org.apache.log4j.Category;
-import org.argouml.cognitive.ui.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
 
-import org.tigris.gef.util.*;
+import org.argouml.cognitive.ui.WizStepChoice;
+import org.argouml.kernel.Wizard;
+import org.tigris.gef.util.VectorSet;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
-import org.argouml.kernel.*;
+
 
 /** A non-modal wizard to help the user change navigability
  *  of an association. */

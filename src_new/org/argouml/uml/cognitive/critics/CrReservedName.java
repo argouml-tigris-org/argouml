@@ -28,14 +28,16 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-import javax.swing.*;
-
+import java.util.Enumeration;
+import java.util.Vector;
+import javax.swing.Icon;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.critics.Critic;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
-
-import org.argouml.kernel.*;
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
 
 /** This critic checks whether a given name in the Model resembles or matches
  * a reserved UML keyword or java keyword.
@@ -206,7 +208,7 @@ public class CrReservedName extends CrUML {
 	if (isBuiltin(nameStr))
 	    return NO_PROBLEM;
 
-        java.util.Enumeration enum = _umlReserved.elements();
+        Enumeration enum = _umlReserved.elements();
         while (enum.hasMoreElements()) {
             String word = (String) enum.nextElement();
             if (word.equalsIgnoreCase(nameStr)) return PROBLEM_FOUND;

@@ -31,16 +31,19 @@
 
 package org.argouml.uml.cognitive;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Vector;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.model_management.*;
+import org.argouml.kernel.Project;
+import org.argouml.model.ModelFacade;
 
 import org.tigris.gef.base.Diagram;
-import org.tigris.gef.util.*;
+import org.tigris.gef.util.ChildGenerator;
 
-import org.argouml.kernel.*;
+import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MClassifier;
 
 /** This class gives critics access to parts of the UML model of the
  *  design.  It defines a gen() function that returns the "children"
@@ -56,7 +59,7 @@ public class ChildGenFind implements ChildGenerator {
     public static ChildGenFind SINGLETON = new ChildGenFind();
 
     /** Reply a Collection of the children of the given Object */
-    public java.util.Enumeration gen(Object o) {
+    public Enumeration gen(Object o) {
 	if (o instanceof Project) {
 	    Project p = (Project) o;
 	    Vector res = new Vector();
@@ -84,7 +87,7 @@ public class ChildGenFind implements ChildGenerator {
 
 	//     // TODO: associationclasses fit both of the next 2 cases
 
-	if (org.argouml.model.ModelFacade.isAClassifier(o)) {
+	if (ModelFacade.isAClassifier(o)) {
 	    MClassifier cls = (MClassifier) o;
 	    //      EnumerationComposite res = new EnumerationComposite();
 	    Vector res = new Vector(cls.getFeatures());
@@ -92,7 +95,7 @@ public class ChildGenFind implements ChildGenerator {
 	    return res.elements();
 	}
 
-	if (org.argouml.model.ModelFacade.isAAssociation(o)) {
+	if (ModelFacade.isAAssociation(o)) {
 	    MAssociation asc = (MAssociation) o;
 	    return new Vector(asc.getConnections()).elements();
 	    //      Vector assocEnds = asc.getConnections();
@@ -132,14 +135,14 @@ public class ChildGenFind implements ChildGenerator {
 	    //d.getGraphModel().getEdges().elements());
 	}
 
-	if (org.argouml.model.ModelFacade.isAState(o)) {
+	if (ModelFacade.isAState(o)) {
 	    MState s = (MState) o;
 	    //Vector interns = s.getInternalTransition();
 	    //if (interns != null) return interns.elements();
 	    return new Vector(s.getInternalTransitions()).elements();
 	}
 
-	if (org.argouml.model.ModelFacade.isATransition(o)) {
+	if (ModelFacade.isATransition(o)) {
 	    MTransition tr = (MTransition) o;
 	    Vector res = new Vector();
 	    res.add(tr.getTrigger());

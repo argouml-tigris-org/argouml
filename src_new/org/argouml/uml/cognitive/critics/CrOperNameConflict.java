@@ -28,14 +28,14 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-import javax.swing.*;
-
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
+import java.util.Iterator;
+import java.util.Vector;
+import javax.swing.Icon;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.critics.Critic;
+import org.argouml.model.ModelFacade;
 
 // Use Model through ModelFacade
-import org.argouml.model.ModelFacade;
 
 /**
  * <p> A critic to detect when a class has operations with two matching

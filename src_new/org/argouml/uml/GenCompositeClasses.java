@@ -26,12 +26,16 @@
 
 package org.argouml.uml;
 
-import java.util.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-
-import org.tigris.gef.util.*;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+import org.argouml.model.ModelFacade;
+import org.tigris.gef.util.ChildGenerator;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 
 /** Utility class to generate the children of a class.  In this case
  *  the "children" of a class are the other classes that are
@@ -46,7 +50,7 @@ public class GenCompositeClasses implements ChildGenerator {
 
     public Enumeration gen(Object o) {
 	Vector res = new Vector();
-	if (!(org.argouml.model.ModelFacade.isAClassifier(o))) return res.elements();
+	if (!(ModelFacade.isAClassifier(o))) return res.elements();
 	MClassifier cls = (MClassifier) o;
 	Vector ends = new Vector(cls.getAssociationEnds());
 	if (ends == null) return res.elements();
@@ -59,7 +63,7 @@ public class GenCompositeClasses implements ChildGenerator {
 		if (conn == null || conn.size() != 2) continue;
 		Object otherEnd = (ae == conn.get(0)) ?
 		    conn.get(1) : conn.get(0);
-		res.add(org.argouml.model.ModelFacade.getType(otherEnd));
+		res.add(ModelFacade.getType(otherEnd));
 	    }
 	}
 	return res.elements();

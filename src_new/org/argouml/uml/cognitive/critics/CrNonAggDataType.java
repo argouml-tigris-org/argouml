@@ -31,12 +31,8 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-
-import ru.novosoft.uml.foundation.core.*;
-
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.critics.Critic;
 
 /** Well-formedness rule [1] for MDataType. See page 28 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */

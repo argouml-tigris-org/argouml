@@ -25,8 +25,8 @@
 
 package org.argouml.uml;
 
-import java.util.*;
-import java.beans.*;
+import java.util.Collection;
+import java.util.Iterator;
 import org.argouml.model.ModelFacade;
 
 public class DocumentationManager {
@@ -91,7 +91,7 @@ public class DocumentationManager {
      *
      */
     public static boolean hasDocs (Object o) {
-    if (org.argouml.model.ModelFacade.isAModelElement(o)) {
+    if (ModelFacade.isAModelElement(o)) {
         Iterator i = ModelFacade.getTaggedValues(o);
 
         if (i != null) {
@@ -113,7 +113,7 @@ public class DocumentationManager {
     // default documentation
 
     public static String defaultFor(Object o, String indent) {
-	if (org.argouml.model.ModelFacade.isAClass(o)) {
+	if (ModelFacade.isAClass(o)) {
 	    /*
 	     * Changed 2001-10-05 STEFFEN ZSCHALER
 	     *
@@ -131,7 +131,7 @@ public class DocumentationManager {
 		indent + " @see OtherClasses\n" +
 		indent + " @author your_name_here";
 	}
-	if (org.argouml.model.ModelFacade.isAAttribute(o)) {
+	if (ModelFacade.isAAttribute(o)) {
 	    /*
 	     * Changed 2001-10-05 STEFFEN ZSCHALER
 	     *
@@ -145,7 +145,7 @@ public class DocumentationManager {
 	    return " An attribute that represents ...";
 	}
 
-	if (org.argouml.model.ModelFacade.isAOperation(o)) {
+	if (ModelFacade.isAOperation(o)) {
 	    /*
 	     * Changed 2001-10-05 STEFFEN ZSCHALER
 	     *
@@ -161,7 +161,7 @@ public class DocumentationManager {
 	    return " An operation that does...\n\n" +
 		indent + " @param firstParam a description of this parameter";
 	}
-	if (org.argouml.model.ModelFacade.isAInterface(o)) {
+	if (ModelFacade.isAInterface(o)) {
 	    /*
 	     * Changed 2001-10-05 STEFFEN ZSCHALER
 	     *
@@ -179,7 +179,7 @@ public class DocumentationManager {
 		indent + " @see OtherClasses\n" +
 		indent + " @author your_name_here";
 	}
-	if (org.argouml.model.ModelFacade.isAModelElement(o)) {
+	if (ModelFacade.isAModelElement(o)) {
 	    /*
 	     * Changed 2001-10-05 STEFFEN ZSCHALER
 	     *
@@ -227,7 +227,7 @@ public class DocumentationManager {
         result.append(prefix);
     }
 
-    if (org.argouml.model.ModelFacade.isAModelElement(o)) {
+    if (ModelFacade.isAModelElement(o)) {
         Collection comments = ModelFacade.getComments(o);
         if (!comments.isEmpty()) {
             for (Iterator iter = comments.iterator(); iter.hasNext(); ) {

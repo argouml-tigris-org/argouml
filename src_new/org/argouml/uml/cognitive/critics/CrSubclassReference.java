@@ -30,15 +30,21 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-
-import ru.novosoft.uml.foundation.core.*;
-
-import org.tigris.gef.util.*;
-
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.critics.Critic;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.GenDescendantClasses;
+
+import org.tigris.gef.util.VectorSet;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MClassifier;
 
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
@@ -55,7 +61,7 @@ public class CrSubclassReference extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(org.argouml.model.ModelFacade.isAClass(dm))) return NO_PROBLEM;
+	if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;
 	MClass cls = (MClass) dm;
 	VectorSet offs = computeOffenders(cls);
 	if (offs != null) return PROBLEM_FOUND;
@@ -82,7 +88,7 @@ public class CrSubclassReference extends CrUML {
 	Collection asc = cls.getAssociationEnds();
 	if (asc == null || asc.size() == 0) return null;
 
-	java.util.Enumeration descendEnum =
+	Enumeration descendEnum =
 	    GenDescendantClasses.SINGLETON.gen(cls);
 	if (!descendEnum.hasMoreElements()) return null;
 	VectorSet descendants = new VectorSet();

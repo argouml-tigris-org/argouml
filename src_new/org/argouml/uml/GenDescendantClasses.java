@@ -25,12 +25,13 @@
 
 package org.argouml.uml;
 
-import java.util.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-
-import org.tigris.gef.util.*;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Vector;
+import org.argouml.model.ModelFacade;
+import org.tigris.gef.util.ChildGenerator;
+import ru.novosoft.uml.foundation.core.MGeneralizableElement;
+import ru.novosoft.uml.foundation.core.MGeneralization;
 
 /** Utility class to generate the subclasses of a class.  It
  *  recursively moves down the class hierarchy.  But it does that in a
@@ -43,7 +44,7 @@ public class GenDescendantClasses implements ChildGenerator {
 
     public Enumeration gen(Object o) {
 	Vector res = new Vector();
-	if (!(org.argouml.model.ModelFacade.isAGeneralizableElement(o))) return res.elements();
+	if (!(ModelFacade.isAGeneralizableElement(o))) return res.elements();
 
 	MGeneralizableElement cls = (MGeneralizableElement) o;
 	Collection gens = cls.getSpecializations();
