@@ -38,6 +38,7 @@ import ru.novosoft.uml.foundation.core.MAbstraction;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MDataType;
 import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.foundation.core.MGeneralizableElement;
@@ -377,12 +378,14 @@ public class CoreHelper {
 	}
 	
 	public Collection getAllBehavioralFeatures(MClassifier clazz) {
-		List features = clazz.getFeatures();
-		ListIterator it = features.listIterator();
-		while (it.hasNext()) {
-			Object o = it.next();
-			if (o instanceof MStructuralFeature) {
-				it.remove();
+		List features = new ArrayList();
+		if (!(clazz instanceof MDataType)) {
+			Iterator it = clazz.getFeatures().iterator();
+			while (it.hasNext()) {
+				Object o = it.next();
+				if (!(o instanceof MStructuralFeature)) {
+					features.add(o);
+				}
 			}
 		}
 		return features;
