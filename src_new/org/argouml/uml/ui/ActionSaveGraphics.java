@@ -94,13 +94,9 @@ public class ActionSaveGraphics extends UMLAction {
 		if( chooser == null ) chooser = OsUtil.getFileChooser();
 
 		chooser.setDialogTitle( "Save Diagram as Graphics: " + defaultName );
-		// 2002-07-17
-		// Jaap Branderhorst
-		// Patch for issue 590
-		// removed support for all files. People can only select some format and save accordingly to that format.
-		// new code:
-		chooser.setAcceptAllFileFilterUsed(false);
-		// end new code patch 590
+		// Only specified format are allowed.
+		chooser.removeChoosableFileFilter(chooser.
+						  getAcceptAllFileFilter());
 		chooser.addChoosableFileFilter( FileFilters.GIFFilter );
 		chooser.addChoosableFileFilter( FileFilters.PSFilter );
 		chooser.addChoosableFileFilter( FileFilters.EPSFilter );
