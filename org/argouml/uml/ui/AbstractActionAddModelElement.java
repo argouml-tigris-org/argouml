@@ -33,8 +33,6 @@ import javax.swing.JOptionPane;
 import org.argouml.application.api.Argo;
 import org.argouml.ui.ProjectBrowser;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
-
 /**
  * Abstract action that is the parent to all add actions that add the
  * modelelements via the UMLAddDialog.
@@ -56,8 +54,8 @@ public abstract class AbstractActionAddModelElement extends UMLChangeAction {
      * Returns the target.
      * @return MModelElement
      */
-    public MModelElement getTarget() {
-        return (MModelElement)_target;
+    protected Object/*MModelElement*/ getTarget() {
+        return _target;
     }
 
     /**

@@ -38,9 +38,6 @@ import java.awt.event.ActionEvent;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
-
-
 /**
  * <p>A class to implement the addition of extension points to use cases.</p>
  *
@@ -138,7 +135,7 @@ public final class ActionAddExtensionPoint extends UMLChangeAction {
         // invoke the superclass action method.
 
 	Object/*MExtensionPoint*/ ep =
-            UmlFactory.getFactory().getUseCases().buildExtensionPoint((MUseCase) target);
+            UmlFactory.getFactory().getUseCases().buildExtensionPoint(/*(MUseCase)*/target);
 
         TargetManager.getInstance().setTarget(ep);
 	super.actionPerformed(ae);

@@ -44,16 +44,6 @@ import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.graph.GraphModel;
 
-import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
-import ru.novosoft.uml.behavior.state_machines.MGuard;
-
-import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MOperation;
-import ru.novosoft.uml.foundation.core.MParameter;
-
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-
 /**
  * @deprecated this class is deprecated since 0.15.1 and should be removed
  *             in 0.15.2, due to the fact that the TableModel classes
@@ -528,12 +518,11 @@ class ColumnSrcLinkType extends ColumnDescriptor {
 	String name = "";
 	Vector conns = new Vector(ModelFacade.getConnections(target));
 	if (conns.size() == 2) {
-	    MLinkEnd le = (MLinkEnd) conns.elementAt(0);
+	    Object/*MLinkEnd*/ le = conns.elementAt(0);
 	    if (le != null
-		&& le.getInstance() != null
-		&& le.getInstance().getName() != null)
-	    {
-		name = le.getInstance().getName();
+                    && ModelFacade.getInstance(le) != null
+                    && ModelFacade.getName(ModelFacade.getInstance(le)) != null) {
+		name = ModelFacade.getName(ModelFacade.getInstance(le));
 	    }
 	}
 	return name;
@@ -551,12 +540,11 @@ class ColumnDstLinkType extends ColumnDescriptor {
 	String name = "";
 	Vector conns = new Vector(ModelFacade.getConnections(target));
 	if (conns.size() == 2) {
-	    MLinkEnd le = (MLinkEnd) conns.elementAt(1);
+	    Object/*MLinkEnd*/ le = conns.elementAt(1);
 	    if (le != null
-		&& le.getInstance() != null
-		&& le.getInstance().getName() != null)
-	    {
-		name = le.getInstance().getName();
+                    && ModelFacade.getInstance(le) != null
+                    && ModelFacade.getName(ModelFacade.getInstance(le)) != null) {
+		name = ModelFacade.getName(ModelFacade.getInstance(le));
 	    }
 	}
 	return name;
@@ -634,7 +622,7 @@ class ColumnClassVisibility extends ColumnDescriptor {
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAClassifier(target))) return null;
 	Object cls = /*(MClassifier)*/ target;
-	return MMClassVisibility.VisibilityFor((MClassifier)cls);
+	return MMClassVisibility.VisibilityFor(cls);
     }
 
     public void setValueFor(Object target, Object value) {
@@ -642,7 +630,7 @@ class ColumnClassVisibility extends ColumnDescriptor {
 	if (!(value instanceof MMClassVisibility)) return;
 	MMClassVisibility cv = (MMClassVisibility) value;
 	Object cls = /*(MClassifier)*/ target;
-	cv.set((MClassifier)cls);
+	cv.set(cls);
     }
 } /* end class ColumnClassVisibility */
 
@@ -655,7 +643,7 @@ class ColumnClassKeyword extends ColumnDescriptor {
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAClassifier(target))) return null;
 	Object cls = /*(MClassifier)*/ target;
-	return MMClassKeyword.KeywordFor((MClassifier)cls);
+	return MMClassKeyword.KeywordFor(cls);
     }
 
     public void setValueFor(Object target, Object value) {
@@ -663,7 +651,7 @@ class ColumnClassKeyword extends ColumnDescriptor {
 	if (!(value instanceof MMClassKeyword)) return;
 	MMClassKeyword ck = (MMClassKeyword) value;
 	Object cls = /*(MClassifier)*/ target;
-	ck.set((MClassifier)cls);
+	ck.set(cls);
     }  
 } /* end class ColumnClassKeyword */
 
@@ -937,7 +925,7 @@ class ColumnReturn extends ColumnDescriptor {
 	ParserDisplay pd = ParserDisplay.SINGLETON;
 	Object rp = UmlFactory.getFactory().getCore().buildParameter(operation);
 	ModelFacade.setType(rp, rt);
-	UmlHelper.getHelper().getCore().setReturnParameter((MOperation)operation, (MParameter)rp);
+	UmlHelper.getHelper().getCore().setReturnParameter(operation, rp);
     }
 } /* end class ColumnReturn */
 
@@ -949,7 +937,7 @@ class ColumnOperKeyword extends ColumnDescriptor {
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAOperation(target))) return null;
 	Object oper = /*(MOperation)*/ target;
-	return org.argouml.uml.OperKeyword.KeywordFor((MOperation)oper);
+	return org.argouml.uml.OperKeyword.KeywordFor(oper);
     }
 
     public void setValueFor(Object target, Object value) {
@@ -957,7 +945,7 @@ class ColumnOperKeyword extends ColumnDescriptor {
 	if (!(value instanceof OperKeyword)) return;
 	OperKeyword ok = (OperKeyword) value;
 	Object oper = /*(MOperation)*/ target;
-	ok.set((MOperation)oper);
+	ok.set(oper);
     }
 } /* end class ColumnOperKeyword */
 
@@ -1020,7 +1008,7 @@ class ColumnAttrKeyword extends ColumnDescriptor {
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAAttribute(target))) return null;
 	Object attr = /*(MAttribute)*/ target;
-	return org.argouml.uml.AttrKeyword.KeywordFor((MAttribute)attr);
+	return org.argouml.uml.AttrKeyword.KeywordFor(attr);
     }
 
     public void setValueFor(Object target, Object value) {
@@ -1028,7 +1016,7 @@ class ColumnAttrKeyword extends ColumnDescriptor {
 	if (!(value instanceof AttrKeyword)) return;
 	AttrKeyword ak = (AttrKeyword) value;
 	Object attr = /*(MAttribute)*/ target;
-	ak.set((MAttribute)attr);
+	ak.set(attr);
     }  
 } /* end class ColumnAttrKeyword */
 

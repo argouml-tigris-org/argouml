@@ -30,8 +30,6 @@ import org.tigris.gef.presentation.*;
 import java.awt.event.*;
 import java.util.*;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
-
 
 public class ActionAggregation extends UMLAction {
     String str = "";

@@ -53,7 +53,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.Actions;
 import org.argouml.ui.LookAndFeelMgr;
-import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
 import org.argouml.ui.targetmanager.TargetManager;

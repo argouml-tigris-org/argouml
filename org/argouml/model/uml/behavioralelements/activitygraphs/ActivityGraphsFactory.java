@@ -147,7 +147,8 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
      * @param context
      * @return MActivityGraph
      */
-    public MActivityGraph buildActivityGraph(MModelElement context) {
+    public MActivityGraph buildActivityGraph(Object/*MModelElement*/ theContext) {
+        MModelElement context = (MModelElement)theContext;
     	if (context != null
 	    && (context instanceof MBehavioralFeature
 		|| context instanceof MClassifier

@@ -25,9 +25,7 @@
 package org.argouml.uml;
 
 import java.io.Serializable;
-import ru.novosoft.uml.foundation.core.MOperation;
-import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
-import ru.novosoft.uml.foundation.data_types.MScopeKind;
+import org.argouml.model.ModelFacade;
 
 /**
  * @deprecated this class is deprecated since 0.15.1 and should be removed
@@ -57,16 +55,16 @@ public class OperKeyword implements Serializable {
   
     private OperKeyword(String label) { _label = label; }
   
-    public static OperKeyword KeywordFor(MOperation op) {
-	MScopeKind sk = op.getOwnerScope();
-	MCallConcurrencyKind ck = op.getConcurrency();
+    public static OperKeyword KeywordFor(Object/*MOperation*/ op) {
+	Object/*MScopeKind*/ sk = ModelFacade.getOwnerScope(op);
+	Object/*MCallConcurrencyKind*/ ck = ModelFacade.getConcurrency(op);
 	// TODO final?
-	if (MCallConcurrencyKind.CONCURRENT.equals(ck)) {
-	    if (MScopeKind.CLASSIFIER.equals(ck)) return STATIC;
+	if (ModelFacade.CONCURRENT_CONCURRENCYKIND.equals(ck)) {
+	    if (ModelFacade.CLASSIFIER_SCOPEKIND.equals(ck)) return STATIC;
 	    return NONE;
 	}
 	else {
-	    if (MScopeKind.CLASSIFIER.equals(ck)) return STSYNC;
+	    if (ModelFacade.CLASSIFIER_SCOPEKIND.equals(ck)) return STSYNC;
 	    return SYNC;
 	}
     }
@@ -81,20 +79,20 @@ public class OperKeyword implements Serializable {
   
     public String toString() { return _label.toString(); }
 
-    public void set(MOperation target) {
-	MCallConcurrencyKind ck = MCallConcurrencyKind.CONCURRENT;
+    public void set(Object/*MOperation*/ target) {
+	Object/*MCallConcurrencyKind*/ ck = ModelFacade.CONCURRENT_CONCURRENCYKIND;
 	if (this == SYNC || this == STSYNC || this == FINSYNC ||
 	    this == SFSYNC)
-	    ck = MCallConcurrencyKind.GUARDED;
+	    ck = ModelFacade.GUARDED_CONCURRENCYKIND;
     
-	MScopeKind sk = MScopeKind.INSTANCE;
+	Object/*MScopeKind*/ sk = ModelFacade.INSTANCE_SCOPEKIND;
 	if (this == STATIC || this == STATFIN || this == STSYNC ||
 	    this == SFSYNC)
-	    sk = MScopeKind.CLASSIFIER;
+	    sk = ModelFacade.CLASSIFIER_SCOPEKIND;
 	//TODO: final
       
-	target.setConcurrency(ck);
-	target.setOwnerScope(sk);
+	ModelFacade.setConcurrency(target, ck);
+	ModelFacade.setOwnerScope(target, sk);
 	// TODO: final
     }
 } /* end class OperKeyword */

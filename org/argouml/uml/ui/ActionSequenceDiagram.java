@@ -31,11 +31,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.model_management.MModel;
-
-
 /** Action to add a new sequence diagram.
  * @stereotype singleton
  */
@@ -65,7 +60,7 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
-        Object/*MNamespace*/ ns = (MNamespace) handle;
+        Object/*MNamespace*/ ns = handle;
         Object collaboration = null;
         Object target = TargetManager.getInstance().getModelTarget();
         if (ModelFacade.isAOperation(target)) {
@@ -80,15 +75,14 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
             ModelFacade.setRepresentedClassifier(collaboration, target);
         } else if (ModelFacade.isAModel(target)) {
             collaboration =
-                UmlFactory.getFactory().getCollaborations().buildCollaboration(
-                    (MModel) target);
+                UmlFactory.getFactory().getCollaborations().buildCollaboration(target);
         } else if (org.argouml.model.ModelFacade.isAInteraction(target)) {
             collaboration = ModelFacade.getContext(target);
         } else if (target instanceof UMLSequenceDiagram) {
             Object owner = ((UMLSequenceDiagram) target).getOwner();
             if (ModelFacade.isACollaboration(owner)) {
                 //preventing backward compat problems
-                collaboration = (MCollaboration) owner;
+                collaboration = owner;
             }
         } else if (ModelFacade.isACollaboration(target)) {
             collaboration = target;
@@ -97,7 +91,7 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(
                     ns);
         }
-        UMLSequenceDiagram d = new UMLSequenceDiagram((MCollaboration)collaboration);
+        UMLSequenceDiagram d = new UMLSequenceDiagram(collaboration);
         return d;
     }
 
@@ -111,13 +105,12 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
-        Object/*MNamespace*/ ns = (MNamespace) handle;
+        Object/*MNamespace*/ ns = handle;
         return (
-            org.argouml.model.ModelFacade.isACollaboration(ns)
-                || org.argouml.model.ModelFacade.isAClassifier(ns)
-                || ns
-                    == ProjectManager.getManager().getCurrentProject().getModel() ||
-                    org.argouml.model.ModelFacade.isAPackage(ns));
+            ModelFacade.isACollaboration(ns)
+                || ModelFacade.isAClassifier(ns)
+                || ns == ProjectManager.getManager().getCurrentProject().getModel()
+                || ModelFacade.isAPackage(ns));
     }
     
     /**

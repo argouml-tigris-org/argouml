@@ -383,8 +383,8 @@ public final class Notation implements PropertyChangeListener {
         return SINGLETON.generateClassifier(Notation.getNotation(ctx), cls);
     }
     public static String generateStereotype(
-        NotationContext ctx,
-        Object/*MStereotype*/ s) {
+            NotationContext ctx,
+            Object/*MStereotype*/ s) {
         return SINGLETON.generateStereotype(Notation.getNotation(ctx), s);
     }
     public static String generateTaggedValue(
@@ -507,7 +507,7 @@ public final class Notation implements PropertyChangeListener {
             return "";
 
         //added to support association roles
-        if (org.argouml.model.ModelFacade.isAAssociationRole(o)) {
+        if (ModelFacade.isAAssociationRole(o)) {
             return SINGLETON.generateAssociationRole(nn, (MAssociationRole) o);
         }
 

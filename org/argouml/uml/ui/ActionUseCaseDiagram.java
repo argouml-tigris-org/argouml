@@ -28,8 +28,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 
-import ru.novosoft.uml.foundation.core.MNamespace;
-
 /** Action to create a new use case diagram.
  *  @stereotype singleton
  */
@@ -51,7 +49,7 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
-        Object/*MNamespace*/ ns = (MNamespace) handle;
+        Object/*MNamespace*/ ns = handle;
         return new UMLUseCaseDiagram(ns);
     }
 

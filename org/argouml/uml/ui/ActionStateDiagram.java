@@ -31,9 +31,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
 /** Action to create a new state diagram.
  * @stereotype singleton
  */
@@ -77,12 +74,11 @@ public class ActionStateDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
-        Object/*MNamespace*/ ns = (MNamespace) handle;
+        Object/*MNamespace*/ ns = handle;
         Object target = TargetManager.getInstance().getModelTarget();
         // TODO: get rid of the parameter ns
         Object/*MStateMachine*/ machine =
-            StateMachinesFactory.getFactory().buildStateMachine(
-                (MModelElement) target);
+            StateMachinesFactory.getFactory().buildStateMachine(target);
         UMLStateDiagram d =
             new UMLStateDiagram(ModelFacade.getNamespace(machine), machine);
         return d;
@@ -98,9 +94,10 @@ public class ActionStateDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
-        Object/*MNamespace*/ ns = (MNamespace) handle;
-        if (org.argouml.model.ModelFacade.isAClassifier(ns))
+        Object/*MNamespace*/ ns = handle;
+        if (ModelFacade.isAClassifier(ns)) {
             return true;
+        }
         return false;
     }
 

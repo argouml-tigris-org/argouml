@@ -29,7 +29,6 @@ import org.tigris.gef.base.Diagram;
 
 import org.tigris.gef.util.Predicate;
 import org.tigris.gef.util.PredicateTrue;
-import ru.novosoft.uml.model_management.MModel;
 
 public class PredicateFind implements Predicate {
 
@@ -57,8 +56,8 @@ public class PredicateFind implements Predicate {
 	return res;
     }
 
-    public boolean matchPackage(MModel m) {
-	boolean res = _packageName.predicate(m.getName());
+    public boolean matchPackage(Object/*MModel*/ m) {
+	boolean res = _packageName.predicate(ModelFacade.getName(m));
 	return res;
     }
 

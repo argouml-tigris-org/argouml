@@ -38,9 +38,6 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.generator.Generator;
 import org.argouml.uml.generator.ui.ClassGenerationDialog;
 
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
 /** Action to trigger code generation for all classes/interfaces in the
  *  project, which have a source code path set in tagged value 'src_path'
  *  @stereotype singleton
@@ -75,7 +72,7 @@ public class ActionGenerateProjectCode extends UMLAction {
 	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
 	if (!(activeDiagram instanceof org.argouml.uml.diagram.ui.UMLDiagram))
 	    return;
-	Object/*MNamespace*/ ns =(MNamespace)
+	Object/*MNamespace*/ ns =
 	    ((org.argouml.uml.diagram.ui.UMLDiagram) activeDiagram).getNamespace();
 	if (ns == null) return;
 	while (ModelFacade.getNamespace(ns) != null) ns = ModelFacade.getNamespace(ns);
@@ -86,7 +83,7 @@ public class ActionGenerateProjectCode extends UMLAction {
 	//ModelManagementHelper.getHelper().getAllModelElementsOfKind(MClassifier.class);
 	Iterator iter = elems.iterator();
 	while (iter.hasNext()) {
-	    Object/*MClassifier*/ cls = (MClassifier) iter.next();
+	    Object/*MClassifier*/ cls = iter.next();
 	    if (isCodeRelevantClassifier(cls)) {
 		classes.addElement(cls);
 	    }
