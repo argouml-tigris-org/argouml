@@ -24,11 +24,10 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-
 /**
  * Shows the constrainingelements for some collaboration. See section 2.10.2.4
  * from the UML 1.3 spec
@@ -50,14 +49,14 @@ public class UMLCollaborationConstrainingElementListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MCollaboration) getTarget()).getConstrainingElements());
+        setAllElements(ModelFacade.getConstrainingElements(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase elem) {
-        return (((MCollaboration) getTarget()).getConstrainingElements().contains(elem));
+        return (ModelFacade.getConstrainingElements(getTarget()).contains(elem));
     }
 
 }

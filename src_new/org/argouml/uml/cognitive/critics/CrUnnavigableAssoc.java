@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -35,7 +34,6 @@ import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 
@@ -56,7 +54,7 @@ public class CrUnnavigableAssoc extends CrUML {
 	MAssociation asc = (MAssociation) dm;
 	Collection conn = asc.getConnections();
 	if (ModelFacade.isAAssociationRole(asc))
-	    conn = ((MAssociationRole) asc).getConnections();
+	    conn = ModelFacade.getConnections(asc);
 	for (Iterator iter = conn.iterator(); iter.hasNext();) {
 	    MAssociationEnd ae = (MAssociationEnd) iter.next();
 	    if (ae.isNavigable()) return NO_PROBLEM;

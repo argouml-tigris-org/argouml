@@ -71,7 +71,7 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
 
             Object owner = null;
             if (ModelFacade.isABase(target)) {
-                owner = ModelFacade.getContainer(target);
+                owner = ModelFacade.getModelElementContainer(target);
                 if (owner != null && ModelFacade.isANamespace(owner)) {
                     ns = owner;
                 }

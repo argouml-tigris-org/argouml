@@ -378,10 +378,10 @@ public class ModelManagementHelper {
     private List getOwnerShipPath(Object elem) {
         if (ModelFacade.isABase(elem)) {
             List ownershipPath = new ArrayList();
-            Object parent = ModelFacade.getContainer(elem);
+            Object parent = ModelFacade.getModelElementContainer(elem);
             while (parent != null) {
                 ownershipPath.add(parent);
-                parent = ModelFacade.getContainer(parent);
+                parent = ModelFacade.getModelElementContainer(parent);
             }
             return ownershipPath;
         } else {

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -100,7 +99,7 @@ public class PropPanelNodeInstance extends PropPanelModelElement {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAInstance(target)) {
             // at the moment , we only deal with one classifier
-            Collection col = ((MInstance) target).getClassifiers();
+            Collection col = ModelFacade.getClassifiers(target);
             if (col != null) {
                 Iterator iter = col.iterator();
                 if (iter != null && iter.hasNext()) {

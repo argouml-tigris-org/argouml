@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -25,12 +24,11 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
-
 /**
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -51,7 +49,7 @@ public class UMLInteractionContextListModel
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(((MInteraction) getTarget()).getContext());
+        addElement(ModelFacade.getContext(getTarget()));
     }
 
     /**

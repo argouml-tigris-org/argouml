@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -26,11 +24,10 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 
 /**
  * List model that shows the AssociationEndRoles belonging to some 
@@ -53,14 +50,14 @@ public class UMLAssociationRoleAssociationEndRoleListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MAssociationRole) getTarget()).getConnections());
+        setAllElements(ModelFacade.getConnections(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase o) {
-        return org.argouml.model.ModelFacade.isAAssociationEndRole(o) && ((MAssociationRole) getTarget()).getConnections().contains(o);
+        return org.argouml.model.ModelFacade.isAAssociationEndRole(o) && ModelFacade.getConnections(getTarget()).contains(o);
     }
 
 }

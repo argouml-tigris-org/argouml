@@ -46,7 +46,6 @@ import org.tigris.gef.graph.GraphModel;
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
 
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
-import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
 import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
@@ -546,7 +545,7 @@ class ColumnSrcLinkType extends ColumnDescriptor {
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isALink(target))) return "N/A";
 	String name = "";
-	Vector conns = new Vector(((MLink) target).getConnections());
+	Vector conns = new Vector(ModelFacade.getConnections(target));
 	if (conns.size() == 2) {
 	    MLinkEnd le = (MLinkEnd) conns.elementAt(0);
 	    if (le != null
@@ -569,7 +568,7 @@ class ColumnDstLinkType extends ColumnDescriptor {
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isALink(target))) return "N/A";
 	String name = "";
-	Vector conns = new Vector(((MLink) target).getConnections());
+	Vector conns = new Vector(ModelFacade.getConnections(target));
 	if (conns.size() == 2) {
 	    MLinkEnd le = (MLinkEnd) conns.elementAt(1);
 	    if (le != null
