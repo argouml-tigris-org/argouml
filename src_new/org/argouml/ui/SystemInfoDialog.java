@@ -29,6 +29,7 @@
 package org.argouml.ui;
 
 import java.awt.Frame;
+import java.awt.Insets;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.StringSelection;
@@ -50,6 +51,9 @@ import org.argouml.i18n.Translator;
  * @author Eugenio Alvarez
  */
 public class SystemInfoDialog extends ArgoDialog {
+
+    /** Insets in pixels  */
+    private static final int INSET_PX = 3;
 
     ////////////////////////////////////////////////////////////////
     // instance varaibles
@@ -89,6 +93,7 @@ public class SystemInfoDialog extends ArgoDialog {
 		ArgoDialog.CLOSE_OPTION, modal);
 
 	info.setEditable(false);
+	info.setMargin(new Insets(INSET_PX, INSET_PX, INSET_PX, INSET_PX));
     
 	runGCButton.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent e) {
