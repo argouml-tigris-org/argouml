@@ -23,6 +23,9 @@
 
 package org.argouml.model.uml.behavioralelements.commonbehavior;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 import ru.novosoft.uml.MFactory;
@@ -431,13 +434,37 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
     public void deleteException(MException elem) {
     }
 
+    /**
+     * when an instance is deleted,
+     * delete its linkend's.
+     * similar to deleting a classifier in the CoreFactory.
+     */
     public void deleteInstance(MInstance elem) {
+        
+        if (elem != null) {
+			Collection col = ((MInstance)elem).getLinkEnds();
+			Iterator it = col.iterator();
+			while (it.hasNext()) {
+				UmlFactory.getFactory().delete((MLinkEnd)it.next());
+			}
+		}
     }
 
     public void deleteLink(MLink elem) {
     }
 
+    /**
+     * when a linkend is deleted,
+     * delete its Links
+     */
     public void deleteLinkEnd(MLinkEnd elem) {
+        
+        MLink link = elem.getLink();
+		if (link != null
+			&& link.getConnections() != null
+			&& link.getConnections().size() == 2) { // binary link
+			UmlFactory.getFactory().delete(link);
+		}
     }
 
     public void deleteLinkObject(MLinkObject elem) {
