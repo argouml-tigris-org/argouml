@@ -25,11 +25,8 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 
 /**
@@ -43,8 +40,8 @@ public class UMLUseCaseExtensionPointListModel
      * Constructor for UMLUseCaseExtensionPointListModel.
      * @param container
      */
-    public UMLUseCaseExtensionPointListModel(UMLUserInterfaceContainer container) {
-        super(container, "extensionPoint");
+    public UMLUseCaseExtensionPointListModel() {
+        super("extensionPoint");
     }
 
     /**

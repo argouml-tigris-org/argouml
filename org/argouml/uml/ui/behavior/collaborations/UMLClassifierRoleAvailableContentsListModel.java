@@ -30,13 +30,11 @@ import java.util.Iterator;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * Binary relation list model for available con between classifierroles
@@ -51,8 +49,8 @@ public class UMLClassifierRoleAvailableContentsListModel
      * Constructor for UMLClassifierRoleAvailableContentsListModel.
      * @param container
      */
-    public UMLClassifierRoleAvailableContentsListModel(UMLUserInterfaceContainer container) {
-        super(container);
+    public UMLClassifierRoleAvailableContentsListModel() {
+        super();
     }
 
     /**
@@ -80,7 +78,7 @@ public class UMLClassifierRoleAvailableContentsListModel
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#setTarget(java.lang.Object)
      */
-    protected void setTarget(Object target) {
+    public void setTarget(Object target) {
         if (_target != null) {
             Collection bases = ((MClassifierRole)getTarget()).getBases();
             Iterator it = bases.iterator();

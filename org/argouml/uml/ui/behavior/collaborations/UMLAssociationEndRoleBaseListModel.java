@@ -25,14 +25,11 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * @since Oct 5, 2002
@@ -45,8 +42,8 @@ public class UMLAssociationEndRoleBaseListModel
      * Constructor for UMLAssociationEndRoleBaseListModel.
      * @param container
      */
-    public UMLAssociationEndRoleBaseListModel(UMLUserInterfaceContainer container) {
-        super(container, "base");
+    public UMLAssociationEndRoleBaseListModel() {
+        super("base");
     }
 
     /**

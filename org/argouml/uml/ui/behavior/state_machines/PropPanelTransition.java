@@ -51,28 +51,28 @@ public class PropPanelTransition extends PropPanelModelElement {
 
         addField(Argo.localize("UMLMenu", "label.name"), nameField);
         addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), stereotypeBox));
-        JList statemachineList = new UMLLinkedList(this, new UMLTransitionStatemachineListModel(this));
+        JList statemachineList = new UMLLinkedList(this, new UMLTransitionStatemachineListModel());
         statemachineList.setVisibleRowCount(1);
         addField(Argo.localize("UMLMenu", "label.statemachine"), new JScrollPane(statemachineList));
-        JList stateList = new UMLLinkedList(this, new UMLTransitionStateListModel(this));
+        JList stateList = new UMLLinkedList(this, new UMLTransitionStateListModel());
         stateList.setVisibleRowCount(1);
         addField(Argo.localize("UMLMenu", "label.state"), new JScrollPane(stateList));
 
         add(LabelledLayout.getSeperator());
 
-        JList sourceList = new UMLLinkedList(this, new UMLTransitionSourceListModel(this));
+        JList sourceList = new UMLLinkedList(this, new UMLTransitionSourceListModel());
         sourceList.setVisibleRowCount(1);
         addField(Argo.localize("UMLMenu", "label.source"), new JScrollPane(sourceList));
-        JList targetList = new UMLLinkedList(this, new UMLTransitionTargetListModel(this));
+        JList targetList = new UMLLinkedList(this, new UMLTransitionTargetListModel());
         targetList.setVisibleRowCount(1);
         addField(Argo.localize("UMLMenu", "label.target"), new JScrollPane(targetList));
-        JList triggerList = new UMLTransitionTriggerList(this, new UMLTransitionTriggerListModel(this));
+        JList triggerList = new UMLTransitionTriggerList(this, new UMLTransitionTriggerListModel());
         triggerList.setVisibleRowCount(1);
         addField(Argo.localize("UMLMenu", "label.trigger"), new JScrollPane(triggerList));
-        JList guardList = new UMLMutableLinkedList(this, new UMLTransitionGuardListModel(this), null, ActionNewGuard.SINGLETON);
+        JList guardList = new UMLMutableLinkedList(this, new UMLTransitionGuardListModel(), null, ActionNewGuard.SINGLETON);
         guardList.setVisibleRowCount(1);
         addField(Argo.localize("UMLMenu", "label.guard"), new JScrollPane(guardList));
-        JList effectList = new UMLTransitionEffectList(this, new UMLTransitionEffectListModel(this));
+        JList effectList = new UMLTransitionEffectList(this, new UMLTransitionEffectListModel());
         effectList.setVisibleRowCount(1);
         addField(Argo.localize("UMLMenu", "label.effect"), new JScrollPane(effectList));
 

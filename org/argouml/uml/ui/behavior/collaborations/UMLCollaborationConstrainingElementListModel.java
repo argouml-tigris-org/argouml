@@ -25,12 +25,9 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * Shows the constrainingelements for some collaboration. See section 2.10.2.4
@@ -45,8 +42,8 @@ public class UMLCollaborationConstrainingElementListModel
      * Constructor for UMLCollaborationConstrainingElementListModel.
      * @param container
      */
-    public UMLCollaborationConstrainingElementListModel(UMLUserInterfaceContainer container) {
-        super(container, "constrainingElement");
+    public UMLCollaborationConstrainingElementListModel() {
+        super("constrainingElement");
     }
 
     /**

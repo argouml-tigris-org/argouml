@@ -25,13 +25,10 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * Shows the bases belonging to some classifierrole.
@@ -44,8 +41,8 @@ public class UMLClassifierRoleBaseListModel extends UMLModelElementListModel2 {
      * Constructor for UMLClassifierRoleBaseListModel.
      * @param container
      */
-    public UMLClassifierRoleBaseListModel(UMLUserInterfaceContainer container) {
-        super(container, "base");
+    public UMLClassifierRoleBaseListModel() {
+        super("base");
     }
 
     /**

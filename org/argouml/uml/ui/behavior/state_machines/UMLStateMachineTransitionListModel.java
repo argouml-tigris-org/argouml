@@ -25,7 +25,7 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 
@@ -41,8 +41,8 @@ public class UMLStateMachineTransitionListModel
      * Constructor for UMLStateMachineTransitionListModel.
      * @param container
      */
-    public UMLStateMachineTransitionListModel(UMLUserInterfaceContainer container) {
-        super(container, "transition");
+    public UMLStateMachineTransitionListModel() {
+        super("transition");
     }
 
     /**

@@ -55,7 +55,7 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
         Orientation orientation) {
         super(name, icon, orientation);
         JList paramList =
-            new UMLLinkedList(this, new UMLEventParameterListModel(this));
+            new UMLLinkedList(this, new UMLEventParameterListModel());
         paramScroll = new JScrollPane(paramList);
         new PropPanelButton(
             this,

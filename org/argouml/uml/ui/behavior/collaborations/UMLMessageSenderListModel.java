@@ -25,12 +25,9 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * Listmodel to show the sender belonging to some message.
@@ -43,8 +40,8 @@ public class UMLMessageSenderListModel extends UMLModelElementListModel2 {
      * Constructor for UMLMessageSenderListModel.
      * @param container
      */
-    public UMLMessageSenderListModel(UMLUserInterfaceContainer container) {
-        super(container, "sender");
+    public UMLMessageSenderListModel() {
+        super("sender");
     }
 
     /**
@@ -52,7 +49,7 @@ public class UMLMessageSenderListModel extends UMLModelElementListModel2 {
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(((MMessage)getContainer().getTarget()).getSender());
+        addElement(((MMessage)getTarget()).getSender());
     }
     
     /**

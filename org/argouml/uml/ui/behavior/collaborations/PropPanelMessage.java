@@ -31,26 +31,23 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.MFactory;
-import ru.novosoft.uml.behavior.common_behavior.*;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 
-import javax.swing.*;
-
-import org.argouml.application.api.*;
+import org.argouml.application.api.Argo;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.swingext.LabelledLayout;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.ui.*;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
-import java.awt.*;
-import java.util.*;
+import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
+import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.common_behavior.MCallAction;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 public class PropPanelMessage extends PropPanelModelElement {
 
@@ -73,12 +70,12 @@ public class PropPanelMessage extends PropPanelModelElement {
     addField(Argo.localize("UMLMenu", "label.stereotype"), stereotypeBox);
     addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
 
-    JList senderList = new UMLLinkedList(this, new UMLMessageSenderListModel(this));
+    JList senderList = new UMLLinkedList(this, new UMLMessageSenderListModel());
     senderList.setVisibleRowCount(1);
     JScrollPane senderScroll = new JScrollPane(senderList);
     addField(Argo.localize("UMLMenu", "label.sender"), senderScroll);
 
-    JList receiverList = new UMLLinkedList(this, new UMLMessageReceiverListModel(this));
+    JList receiverList = new UMLLinkedList(this, new UMLMessageReceiverListModel());
     receiverList.setVisibleRowCount(1);
     JScrollPane receiverScroll = new JScrollPane(receiverList);
     addField(Argo.localize("UMLMenu", "label.receiver"), receiverScroll);
@@ -87,12 +84,12 @@ public class PropPanelMessage extends PropPanelModelElement {
 
     addField(Argo.localize("UMLMenu", "label.activator"), new UMLMessageActivatorComboBox(this, new UMLMessageActivatorComboBoxModel()));
 
-    JList actionList = new UMLMutableLinkedList(this, new UMLMessageActionListModel(this), null, ActionNewAction.SINGLETON);
+    JList actionList = new UMLMutableLinkedList(this, new UMLMessageActionListModel(), null, ActionNewAction.SINGLETON);
     actionList.setVisibleRowCount(1);
     JScrollPane actionScroll = new JScrollPane(actionList);
     addField(Argo.localize("UMLMenu", "label.action"), actionScroll);
     
-    JScrollPane predecessorScroll = new JScrollPane(new UMLMutableLinkedList(this, new UMLMessagePredecessorListModel(this), ActionAddMessagePredecessor.SINGLETON, null));
+    JScrollPane predecessorScroll = new JScrollPane(new UMLMutableLinkedList(this, new UMLMessagePredecessorListModel(), ActionAddMessagePredecessor.SINGLETON, null));
     addField(Argo.localize("UMLMenu", "label.predecessor"), predecessorScroll);
 
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateInteraction",null);

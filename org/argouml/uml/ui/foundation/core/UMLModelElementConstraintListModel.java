@@ -25,10 +25,8 @@
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MConstraint;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
@@ -43,8 +41,8 @@ public class UMLModelElementConstraintListModel
      * Constructor for UMLModelElementConstraintListModel.
      * @param container
      */
-    public UMLModelElementConstraintListModel(UMLUserInterfaceContainer container) {
-        super(container, "constraint");
+    public UMLModelElementConstraintListModel() {
+        super("constraint");
     }
 
     /**

@@ -72,11 +72,11 @@ public class PropPanelAssociationRole extends PropPanelModelElement {
     
     add(LabelledLayout.getSeperator());
        
-    JList assocEndList = new UMLLinkedList(this, new UMLAssociationRoleAssociationEndRoleListModel(this));
+    JList assocEndList = new UMLLinkedList(this, new UMLAssociationRoleAssociationEndRoleListModel());
     assocEndList.setVisibleRowCount(2); // only binary associationroles are allowed
     addField(Argo.localize("UMLMenu", "label.associationrole-ends"), new JScrollPane(assocEndList));
 
-    JList messageList = new UMLLinkedList(this, new UMLAssociationRoleMessageListModel(this));
+    JList messageList = new UMLLinkedList(this, new UMLAssociationRoleMessageListModel());
     addField(Argo.localize("UMLMenu", "label.messages"), 
         new JScrollPane(messageList));
 

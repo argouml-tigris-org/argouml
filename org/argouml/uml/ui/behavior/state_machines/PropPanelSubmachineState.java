@@ -59,7 +59,7 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
 
         add(LabelledLayout.getSeperator());
 
-        addField(Argo.localize("UMLMenu", "label.subvertex"), new JScrollPane(new UMLMutableLinkedList(this, new UMLCompositeStateSubvertexListModel(this), null, ActionNewStubState.SINGLETON)));
+        addField(Argo.localize("UMLMenu", "label.subvertex"), new JScrollPane(new UMLMutableLinkedList(this, new UMLCompositeStateSubvertexListModel(), null, ActionNewStubState.SINGLETON)));
     }
 
 }

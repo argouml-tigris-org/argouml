@@ -25,7 +25,7 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.state_machines.MCallEvent;
 
@@ -43,8 +43,8 @@ public class UMLCallEventOperationListModel extends UMLModelElementListModel2 {
      * Constructor for UMLCallEventOperationListModel.
      * @param container
      */
-    public UMLCallEventOperationListModel(UMLUserInterfaceContainer container) {
-        super(container, "operation");
+    public UMLCallEventOperationListModel() {
+        super("operation");
     }
 
     /**

@@ -25,7 +25,7 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.state_machines.MState;
 
@@ -39,8 +39,8 @@ public class UMLStateExitListModel extends UMLModelElementListModel2 {
      * Constructor for UMLStateExitListModel.
      * @param container
      */
-    public UMLStateExitListModel(UMLUserInterfaceContainer container) {
-        super(container, "exit");
+    public UMLStateExitListModel() {
+        super("exit");
     }
 
     /**

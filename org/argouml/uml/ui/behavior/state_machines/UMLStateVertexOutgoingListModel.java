@@ -25,7 +25,7 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 
@@ -41,8 +41,8 @@ public class UMLStateVertexOutgoingListModel
      * Constructor for UMLStateVertexOutgoingListModel.
      * @param container
      */
-    public UMLStateVertexOutgoingListModel(UMLUserInterfaceContainer container) {
-        super(container, "outgoing");
+    public UMLStateVertexOutgoingListModel() {
+        super("outgoing");
     }
 
     /**

@@ -25,7 +25,7 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
 
@@ -41,8 +41,8 @@ public class UMLGuardTransitionListModel extends UMLModelElementListModel2 {
      * Constructor for UMLGuardTransitionListModel.
      * @param container
      */
-    public UMLGuardTransitionListModel(UMLUserInterfaceContainer container) {
-        super(container, "transition");
+    public UMLGuardTransitionListModel() {
+        super("transition");
     }
 
     /**

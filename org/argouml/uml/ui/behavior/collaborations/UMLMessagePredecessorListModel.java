@@ -24,20 +24,12 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
-import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLMutableLinkedList;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * @since Oct 2, 2002
@@ -50,15 +42,15 @@ public class UMLMessagePredecessorListModel extends UMLModelElementListModel2 {
      * Constructor for UMLMessagePredecessorListModel.
      * @param container
      */
-    public UMLMessagePredecessorListModel(UMLUserInterfaceContainer container) {
-        super(container, "predecessor");
+    public UMLMessagePredecessorListModel() {
+        super("predecessor");
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        MMessage message = (MMessage)getContainer().getTarget();
+        MMessage message = (MMessage)getTarget();
         removeAllElements();       
         Iterator it = message.getPredecessors().iterator();
         while (it.hasNext()) {

@@ -94,7 +94,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
                    localize("root"), this);
 		addField(Argo.localize("UMLMenu", "label.modifiers"),mPanel);
             	
-    JList extensionPoints = new UMLMutableLinkedList(this, new UMLUseCaseExtensionPointListModel(this), null, ActionNewUseCaseExtensionPoint.SINGLETON);
+    JList extensionPoints = new UMLMutableLinkedList(this, new UMLUseCaseExtensionPointListModel(), null, ActionNewUseCaseExtensionPoint.SINGLETON);
     addField(Argo.localize("UMLMenu", "label.extensionpoints"), 
         new JScrollPane(extensionPoints));
 		
@@ -103,11 +103,11 @@ public class PropPanelUseCase extends PropPanelClassifier {
     addField(Argo.localize("UMLMenu", "label.generalizations"), extendsScroll);
     addField(Argo.localize("UMLMenu", "label.specializations"), derivedScroll);
     	
-    JList extendsList = new UMLLinkedList(this, new UMLUseCaseExtendListModel(this));
+    JList extendsList = new UMLLinkedList(this, new UMLUseCaseExtendListModel());
     addField(Argo.localize("UMLMenu", "label.extends"), 
         new JScrollPane(extendsList));
     
-    JList includesList = new UMLLinkedList(this, new UMLUseCaseIncludeListModel(this));
+    JList includesList = new UMLLinkedList(this, new UMLUseCaseIncludeListModel());
     addField(Argo.localize("UMLMenu", "label.includes"), 
         new JScrollPane(includesList));
 

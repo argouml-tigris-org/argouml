@@ -29,12 +29,13 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
 
 /**
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public abstract class UMLList2 extends JList implements UMLUserInterfaceComponent, ListSelectionListener {
+public abstract class UMLList2 extends JList implements TargetChangedListener, MElementListener, ListSelectionListener {
 
     private UMLUserInterfaceContainer _container;
     
@@ -48,20 +49,7 @@ public abstract class UMLList2 extends JList implements UMLUserInterfaceComponen
         getSelectionModel().addListSelectionListener(this);
     }
 
-    /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
-     */
-    public void targetChanged() {
-        ((UMLModelElementListModel2)getModel()).targetChanged();
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
-     */
-    public void targetReasserted() {
-        ((UMLModelElementListModel2)getModel()).targetReasserted();
-    }
-
+    
     /**
      * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
      */
@@ -137,4 +125,18 @@ public abstract class UMLList2 extends JList implements UMLUserInterfaceComponen
     public Object getTarget() {
         return getContainer().getTarget();
     }
+    /**
+     * @see org.argouml.uml.ui.TargetChangedListener#targetChanged(java.lang.Object)
+     */
+    public void targetChanged(Object newTarget) {
+        ((UMLModelElementListModel2)getModel()).targetChanged(newTarget);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.TargetChangedListener#targetReasserted(java.lang.Object)
+     */
+    public void targetReasserted(Object newTarget) {
+        ((UMLModelElementListModel2)getModel()).targetReasserted(newTarget);
+    }
+
 }

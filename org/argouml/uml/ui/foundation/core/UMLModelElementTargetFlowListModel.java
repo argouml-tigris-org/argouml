@@ -25,10 +25,8 @@
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MFlow;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
@@ -43,8 +41,8 @@ public class UMLModelElementTargetFlowListModel
      * Constructor for UMLModelElementTargetFlowListModel.
      * @param container
      */
-    public UMLModelElementTargetFlowListModel(UMLUserInterfaceContainer container) {
-        super(container, "targetFlow");
+    public UMLModelElementTargetFlowListModel() {
+        super("targetFlow");
     }
 
     /**

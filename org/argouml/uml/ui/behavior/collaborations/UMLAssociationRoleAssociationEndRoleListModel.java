@@ -25,13 +25,10 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * List model that shows the AssociationEndRoles belonging to some 
@@ -46,8 +43,8 @@ public class UMLAssociationRoleAssociationEndRoleListModel
      * Constructor for UMLAssociationRoleAssociationEndRoleListModel.
      * @param container
      */
-    public UMLAssociationRoleAssociationEndRoleListModel(UMLUserInterfaceContainer container) {
-        super(container, "connection");
+    public UMLAssociationRoleAssociationEndRoleListModel() {
+        super("connection");
     }
 
     /**

@@ -53,7 +53,7 @@ public class PropPanelCallEvent extends PropPanelEvent {
         add(LabelledLayout.getSeperator());
 
         // TODO: make the next list into a scrollbox
-        JList operationList = new UMLLinkedList(this, new UMLCallEventOperationListModel(this));
+        JList operationList = new UMLLinkedList(this, new UMLCallEventOperationListModel());
         addField(Argo.localize("UMLMenu", "label.operation"), new JScrollPane(operationList));
 	addField(Argo.localize("UMLMenu", "label.parameters"), paramScroll);
 	
