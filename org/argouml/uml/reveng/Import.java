@@ -48,6 +48,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
@@ -73,6 +75,14 @@ import org.tigris.gef.base.Globals;
  * <p>The Import run is started by calling doFile(Project, File)
  *
  * <p>Supports recursive search in folder for all .java classes.
+ *
+ * <p>There are now 3 levels of detail for import:</p>
+ * 
+ * <ol>
+ *   <li> 0 = classifiers only
+ *   <li> 1 = classifiers plus feature specifications
+ *   <li> 2 = full import, feature detail (ie. operations with methods)
+ * </ol>
  *
  * <p>$Id$
  *
@@ -111,6 +121,18 @@ public class Import {
     private JCheckBox minimise_figs;
     
     private JCheckBox layout_diagrams;
+    
+    // level 0 import detail
+    private JRadioButton classOnly;
+            
+    // level 1 import detail
+    private JRadioButton classAndFeatures;
+            
+    // level 2 import detail
+    private JRadioButton fullImport;
+    
+    //import detail level var:
+    private int importLevel;
     
     private JDialog dialog;
     
@@ -268,6 +290,29 @@ public class Import {
 			    layout_diagrams.setSelected(false);
 			}
 		    } });
+                    
+            // select the level of import
+            // 0 = classifiers only
+            // 1 = classifiers plus feature specifications
+            // 2 = full import, feature detail
+            
+	    JLabel importDetailLabel = new JLabel("Level of import detail:");
+            ButtonGroup detailButtonGroup = new ButtonGroup();
+            
+	    classOnly = new JRadioButton("Classfiers only");
+	    detailButtonGroup.add(classOnly);
+            
+	    classAndFeatures = new JRadioButton("Classifiers plus feature specifications");
+	    detailButtonGroup.add(classAndFeatures);
+            
+	    fullImport = new JRadioButton("Full import");
+	    fullImport.setSelected(true);
+	    detailButtonGroup.add(fullImport);
+            
+            general.add(importDetailLabel);
+            general.add(classOnly);
+            general.add(classAndFeatures);
+            general.add(fullImport);
                 
 	    tab.add(general, "General");
 	    tab.add(module.getConfigPanel(), module.getModuleName());
@@ -295,8 +340,24 @@ public class Import {
 //        URLClassLoader loader = new URLClassLoader(urls);
 //        }catch(Exception e){cat.warn("error in class loader: "+e.toString());}
         
+        // determine how many files to process
         Vector files = module.getList(this);
-	files.addAll(files); // for the second pass
+        
+        if(!classOnly.isSelected()){
+            // 2 passes needed
+            files.addAll(files); // for the second pass
+            
+            if(classAndFeatures.isSelected())
+                importLevel = 1;
+            else
+                importLevel = 2;
+        }
+        else
+            importLevel = 0;
+        
+        // we always start with a level 0 import
+	setAttribute("level", new Integer(0));
+        
         _diagram = getCurrentDiagram();
         
         pb.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -459,11 +520,17 @@ public class Import {
             
             if (_filesLeft.size() > 0) {
                 
-	        if (_filesLeft.size() <= _countFiles/2) {
-		    setAttribute("level", new Integer(2));
-		} else {
-		    setAttribute("level", new Integer(0));
-		}
+                // if there ae 2 passes:
+                if(importLevel > 0){
+                    if (_filesLeft.size() <= _countFiles/2) {
+                        
+                        if(importLevel == 1)
+                            setAttribute("level", new Integer(1));
+                        else
+                            setAttribute("level", new Integer(2));
+                    }
+                }
+                
                 Object curFile = _filesLeft.elementAt(0);
                 _filesLeft.removeElementAt(0);
                 
