@@ -48,16 +48,18 @@ public interface PluggableImport extends Pluggable {
      * Create chooser for objects we are to import.
      * Chooser must have a button for object selection
      * and optionally a button for cancel action.
-     * To close dialog window use _import.disposeDialog(). 
-     * @param importElement - current import session
-     * @return the panel to show in import dialog
+     * To close dialog window use importElement.disposeDialog().
+     *
+     * @param importElement The current import session.
+     * @return The panel to show in import dialog.
      */
     public JComponent getChooser(Import  importElement);
     
     /** 
      * Provide pannel added to JTabbedPane after general panel.
-     *@return the panel with configuration info for plugin
-     *or null if no parameters are needed.
+     *
+     * @return the panel with configuration info for plugin
+     *         or null if no parameters are needed.
      */
     public JComponent getConfigPanel();
     
