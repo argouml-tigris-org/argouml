@@ -42,10 +42,15 @@ public abstract class UMLList2 extends JList implements TargetChangedListener, M
      * Constructor for UMLList2.
      * @param dataModel
      */
-    public UMLList2(UMLModelElementListModel2 dataModel) {
+    public UMLList2(UMLModelElementListModel2 dataModel, boolean showIcon) {
         super(dataModel);
         getSelectionModel().addListSelectionListener(this);
+        setCellRenderer(new UMLListCellRenderer2(showIcon));
     }
+    
+    public UMLList2(UMLModelElementListModel2 dataModel) {
+        this(dataModel, false);
+    }    
 
     
     /**

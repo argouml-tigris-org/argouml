@@ -50,10 +50,14 @@ public class UMLLinkedList extends UMLList2 implements MouseListener {
      * @param dataModel
      */
     public UMLLinkedList(
-        UMLModelElementListModel2 dataModel) {
-        super(dataModel);
+        UMLModelElementListModel2 dataModel, boolean showIcon) {
+        super(dataModel, showIcon);
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         addMouseListener(this);
+    }
+    
+    public UMLLinkedList(UMLModelElementListModel2 dataModel) {
+        this(dataModel, false);
     }
 
     /**

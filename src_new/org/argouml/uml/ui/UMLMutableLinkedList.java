@@ -54,36 +54,35 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  * @author jaap.branderhorst@xs4all.nl
  */
 public class UMLMutableLinkedList extends UMLLinkedList {
-    
+
     private boolean _delete = true;
     private boolean _add = false;
     private boolean _new = false;
     private JPopupMenu _popupMenu;
-    
+
     private AbstractActionAddModelElement _addAction = null;
     private AbstractActionNewModelElement _newAction = null;
-    
+
     private class PopupMenu extends JPopupMenu {
         public PopupMenu() {
             super();
             if (isAdd()) {
-                _addAction.setTarget((MModelElement)getTarget());
+                _addAction.setTarget((MModelElement) getTarget());
                 add(_addAction);
             }
             if (isNew()) {
-                _newAction.setTarget((MModelElement)getTarget());
+                _newAction.setTarget((MModelElement) getTarget());
                 add(_newAction);
             }
-            if (isNew() || isAdd()) addSeparator();
+            if (isNew() || isAdd())
+                addSeparator();
             if (isDelete()) {
-                ActionRemoveModelElement.SINGLETON.setElementToDelete((MModelElement)getSelectedValue());
+                ActionRemoveModelElement.SINGLETON.setElementToDelete((MModelElement) getSelectedValue());
                 add(ActionRemoveModelElement.SINGLETON);
             }
-           
+
         }
     }
-    
-
 
     /**
      * Constructor that should be used if the developer wishes the popupmenu to
@@ -92,16 +91,16 @@ public class UMLMutableLinkedList extends UMLLinkedList {
      * @param container
      * @param dataModel
      */
-    public UMLMutableLinkedList(
-        UMLModelElementListModel2 dataModel,
-        AbstractActionAddModelElement addAction,
-        AbstractActionNewModelElement newAction) {
-        super(dataModel);
+    public UMLMutableLinkedList(UMLModelElementListModel2 dataModel, AbstractActionAddModelElement addAction, AbstractActionNewModelElement newAction, boolean showIcon) {
+        super(dataModel, showIcon);
         setAddAction(addAction);
         setNewAction(newAction);
     }
-    
-    
+
+    public UMLMutableLinkedList(UMLModelElementListModel2 dataModel, AbstractActionAddModelElement addAction, AbstractActionNewModelElement newAction) {
+        this(dataModel, addAction, newAction, false);
+    }
+
     /**
      * Constructor that should be used if the developer wishes a customized 
      * popupmenu.
@@ -109,11 +108,15 @@ public class UMLMutableLinkedList extends UMLLinkedList {
      * @param dataModel
      * @param popup
      */
-    public UMLMutableLinkedList(UMLModelElementListModel2 dataModel, JPopupMenu popup) {
-        super(dataModel);
+    public UMLMutableLinkedList(UMLModelElementListModel2 dataModel, JPopupMenu popup, boolean showIcon) {
+        super(dataModel, showIcon);
         setPopupMenu(popup);
     }
     
+    public UMLMutableLinkedList(UMLModelElementListModel2 dataModel, JPopupMenu popup) {
+        this(dataModel, popup, false);
+    }
+
     /**
      * Returns the add.
      * @return boolean
@@ -167,7 +170,8 @@ public class UMLMutableLinkedList extends UMLLinkedList {
      * @param addAction The addAction to set
      */
     public void setAddAction(AbstractActionAddModelElement addAction) {
-        if (addAction != null) _add = true;
+        if (addAction != null)
+            _add = true;
         _addAction = addAction;
     }
 
@@ -176,17 +180,18 @@ public class UMLMutableLinkedList extends UMLLinkedList {
      * @param newAction The newAction to set
      */
     public void setNewAction(AbstractActionNewModelElement newAction) {
-        if (newAction != null) _new = true;
+        if (newAction != null)
+            _new = true;
         _newAction = newAction;
     }
-    
+
     /**
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent e) {
         super.mouseReleased(e);
         if (e.getSource() == this) {
-            if (e.isPopupTrigger()) {                
+            if (e.isPopupTrigger()) {
                 getPopupMenu().show(e.getComponent(), e.getX(), e.getY());
             }
             e.consume();
@@ -210,4 +215,3 @@ public class UMLMutableLinkedList extends UMLLinkedList {
     }
 
 }
-

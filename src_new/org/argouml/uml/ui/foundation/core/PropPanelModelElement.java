@@ -216,7 +216,7 @@ abstract public class PropPanelModelElement extends PropPanel {
     private void initialize() {
         nameField = new UMLTextField2(new UMLModelElementNameDocument());
         stereotypeBox = new UMLComboBox2(stereotypeComboBoxModel, ActionSetModelElementStereotype.SINGLETON);
-        namespaceComboBox = new UMLComboBox2(namespaceComboBoxModel, ActionSetModelElementNamespace.SINGLETON);
+        namespaceComboBox = new UMLComboBox2(namespaceComboBoxModel, ActionSetModelElementNamespace.SINGLETON, true);
         JList namespaceList = new UMLLinkedList(new UMLModelElementNamespaceListModel());
         namespaceList.setVisibleRowCount(1);
         namespaceScroll = new JScrollPane(namespaceList);
