@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  */
 public abstract class AbstractSection
 {
-    private static final Logger LOG = 
+    private static final Logger LOG =
         Logger.getLogger(AbstractSection.class);
 
     private Map mAry;
@@ -64,10 +64,10 @@ public abstract class AbstractSection
     }
 
     /**
-     * write TODO: Check if sections are not used within the file and 
+     * write TODO: Check if sections are not used within the file and
      * put them as comments at the end of the file.
      * Hint: use a second Map to compare with the used keys.
-     * 
+     *
     * @param filename the file name
      * @param indent the current indentation
      * @param outputLostSections true if lost sections are to be written
@@ -75,25 +75,27 @@ public abstract class AbstractSection
     public void write(String filename, String indent,
 		      boolean outputLostSections)
     {
-        try {           
+        try {
             FileReader f = new FileReader(filename);
             BufferedReader fr = new BufferedReader(f);
-            FileWriter fw = new FileWriter(filename + ".out");          
+            FileWriter fw = new FileWriter(filename + ".out");
             String line = "";
+            line = fr.readLine();
             while (line != null) {
+                String sectionId = getSectId(line);
+                if (sectionId != null) {
+                    String content = (String) mAry.get(sectionId);
+                    fw.write(line + "\n");
+                    if (content != null) {
+                        fw.write(content);
+                    }
+                    line = fr.readLine(); // read end section;
+                    mAry.remove(sectionId);
+                }
+                fw.write(line);
                 line = fr.readLine();
                 if (line != null) {
-                    String sectionId = getSectId(line);
-                    if (sectionId != null) {
-                        String content = (String) mAry.get(sectionId);
-                        fw.write(line + "\n");
-                        if (content != null) {
-                            fw.write(content);                        
-                        }
-                        line = fr.readLine(); // read end section;
-                        mAry.remove(sectionId);
-                    }
-                    fw.write(line + "\n");           
+                    fw.write("\n");
                 }
             }
             if ((!mAry.isEmpty()) && (outputLostSections)) {
@@ -108,6 +110,7 @@ public abstract class AbstractSection
                     fw.write(indent + "// section " + entry.getKey()
 			     + " end\n");
                 }
+                fw.write("*/");
             }
             fr.close();
             fw.close();
@@ -120,7 +123,7 @@ public abstract class AbstractSection
      * @param filename the filename to read from
      */
     public void read(String filename) {
-        try {            
+        try {
             FileReader f = new FileReader(filename);
             BufferedReader fr = new BufferedReader(f);
 
