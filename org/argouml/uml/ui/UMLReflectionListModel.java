@@ -32,7 +32,7 @@ import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.NavigatorPane;
+import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -249,7 +249,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 _setMethod.invoke(getContainer(), new Object[] {
 		    newCollection 
 		});
-                NavigatorPane.getInstance().forceUpdate();
+                ExplorerEventAdaptor.getInstance().structureChanged();
             }
 	    catch (InvocationTargetException ex) {
                 cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.moveUp()", ex);
@@ -268,7 +268,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 _setMethod.invoke(getContainer(), new Object[] {
 		    newCollection 
 		});
-                NavigatorPane.getInstance().forceUpdate();
+                ExplorerEventAdaptor.getInstance().structureChanged();
             }
 	    catch (InvocationTargetException ex) {
                 cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.moveDown() ", ex.getTargetException());
@@ -286,7 +286,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 _deleteMethod.invoke(getContainer(), new Object[] {
 		    new Integer(index) 
 		});
-                NavigatorPane.getInstance().forceUpdate();
+                ExplorerEventAdaptor.getInstance().structureChanged();
             }
 	    catch (InvocationTargetException ex) {
                 cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.delete()", ex);
