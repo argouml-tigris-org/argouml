@@ -168,9 +168,11 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 	    getActionClassifierRole(),
 	    null,
 	    getAssociationActions(),
-	    getActionMesage(),
 	    getActionGeneralize(),
-	    getActionDepend()};
+	    getActionDepend(),
+            null,
+            getActionMesage() //this one behaves differently, hence seperated!
+            };
         return actions;
     }
 
