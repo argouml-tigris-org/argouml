@@ -281,8 +281,6 @@ public class ProjectBrowser
             detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHWEST, _southWestPane);
         }
 
-        restorePanelSizes();
-
         // The workarea is all the visible space except the menu, toolbar and status bar.
         // Workarea is layed out as a BorderSplitPane where the various components that make
         // up the argo application can be positioned.
@@ -293,10 +291,8 @@ public class ProjectBrowser
             _splash.getStatusBar().incProgress(5);
         }
         _todoPane = new ToDoPane(doSplash);
-        _workarea.add(_todoPane, BorderSplitPane.SOUTHWEST);
-        // create the navpane
-
-        _workarea.add(_navPane, BorderSplitPane.WEST);
+        
+        restorePanelSizes();
 
         // There are various details panes all of which could hold
         // different tabs pages according to users settings (work
@@ -311,6 +307,8 @@ public class ProjectBrowser
             }
             _workarea.add((Component)entry.getValue(), position);
         }
+        _workarea.add(_navPane, BorderSplitPane.WEST);
+        _workarea.add(_todoPane, BorderSplitPane.SOUTHWEST);
         _workarea.add(_editorPane);
         // Toolbar boundry is the area between the menu and the status bar. It contains
         // the workarea at centre and the toolbar position north, south, east or west.
@@ -342,8 +340,8 @@ public class ProjectBrowser
             _eastPane.setPreferredSize(
                 new Dimension(Configuration.getInteger(Argo.KEY_SCREEN_EAST_WIDTH, DEFAULT_COMPONENTHEIGHT), 0));
         }
-        if (_westPane != null) {
-            _westPane.setPreferredSize(
+        if (_navPane != null) {
+            _navPane.setPreferredSize(
                 new Dimension(Configuration.getInteger(Argo.KEY_SCREEN_WEST_WIDTH, DEFAULT_COMPONENTHEIGHT), 0));
         }
         if (_northWestPane != null) {
@@ -352,8 +350,8 @@ public class ProjectBrowser
                 Configuration.getInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
             ));
         }
-        if (_southWestPane != null) {
-            _southWestPane.setPreferredSize(new Dimension(
+        if (_todoPane != null && _southPane != null) {
+            _todoPane.setPreferredSize(new Dimension(
                 Configuration.getInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
                 Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
             ));
@@ -751,14 +749,14 @@ public class ProjectBrowser
      * in the properties file
      */
     public void saveScreenConfiguration() {
-        Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH, _westPane.getWidth());
-        Configuration.setInteger(Argo.KEY_SCREEN_EAST_WIDTH, _eastPane.getWidth());
-        Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, _southWestPane.getWidth());
-        Configuration.setInteger(Argo.KEY_SCREEN_SOUTHEAST_WIDTH, _southEastPane.getWidth());
-        Configuration.setInteger(Argo.KEY_SCREEN_NORTHWEST_WIDTH, _northWestPane.getWidth());
-        Configuration.setInteger(Argo.KEY_SCREEN_NORTHEAST_WIDTH, _northEastPane.getWidth());
-        Configuration.setInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, _northPane.getHeight());
-        Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, _southPane.getHeight());
+        if (_navPane != null) Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH, _navPane.getWidth());
+        if (_eastPane != null) Configuration.setInteger(Argo.KEY_SCREEN_EAST_WIDTH, _eastPane.getWidth());
+        if (_todoPane != null) Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, _todoPane.getWidth());
+        if (_southEastPane != null) Configuration.setInteger(Argo.KEY_SCREEN_SOUTHEAST_WIDTH, _southEastPane.getWidth());
+        if (_northWestPane != null) Configuration.setInteger(Argo.KEY_SCREEN_NORTHWEST_WIDTH, _northWestPane.getWidth());
+        if (_northEastPane != null) Configuration.setInteger(Argo.KEY_SCREEN_NORTHEAST_WIDTH, _northEastPane.getWidth());
+        if (_northPane != null) Configuration.setInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, _northPane.getHeight());
+        if (_southPane != null) Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, _southPane.getHeight());
         Configuration.setInteger(Argo.KEY_SCREEN_WIDTH, getWidth());
         Configuration.setInteger(Argo.KEY_SCREEN_HEIGHT, getHeight());
         Configuration.setInteger(Argo.KEY_SCREEN_LEFT_X, getX());
