@@ -33,101 +33,111 @@ import java.util.TreeSet;
 
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspectiveMutable;
+import org.tigris.gef.graph.GraphEvent;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 
 public class SequenceDiagramLayout extends LayerPerspectiveMutable {
-	/**
-	 * The distance between two objects on the sequence diagram
-	 */
-	public final static int OBJECT_DISTANCE = 30;
+    /**
+     * The distance between two objects on the sequence diagram
+     */
+    public final static int OBJECT_DISTANCE = 30;
 
-	/**
-	 * The distance between the left side of the diagram and the first FigObject
-	 */
-	public final static int DIAGRAM_LEFT_MARGE = 50;
+    /**
+     * The distance between the left side of the diagram and the first FigObject
+     */
+    public final static int DIAGRAM_LEFT_MARGE = 50;
 
-	/**
-	 * The distance between the top side of the diagram and the top of the highest FigObject
-	 */
-	public final static int DIAGRAM_TOP_MARGE = 50;
+    /**
+     * The distance between the top side of the diagram and the top of the highest FigObject
+     */
+    public final static int DIAGRAM_TOP_MARGE = 50;
+    
+    public SequenceDiagramLayout(String name, MutableGraphModel gm) {
+        super(name, gm);
 
-	public SequenceDiagramLayout(String name, MutableGraphModel gm) {
-		super(name, gm);
+    }
 
-	}
+    /** 
+     * @see org.tigris.gef.base.LayerPerspective#putInPosition(org.tigris.gef.presentation.Fig)
+     */
+    public void putInPosition(Fig f) {
+        if (f instanceof FigObject) {
+            distributeFigObjects();
+        } else
+            super.putInPosition(f);
+    }
 
-	/** 
-	 * @see org.tigris.gef.base.LayerPerspective#putInPosition(org.tigris.gef.presentation.Fig)
-	 */
-	public void putInPosition(Fig f) {
-		if (f instanceof FigObject) {
-			distributeFigObjects();
-		} else
-			super.putInPosition(f);
-	}
+    private void distributeFigObjects() {
+        Layer lay = this;
+        Collection contents = lay.getContentsNoEdges();
+        if (!contents.isEmpty()) {
+            distributeFigObjectsHorizontal(lay.getContentsNoEdges());
+            distributeFigObjectsVertical(lay.getContentsNoEdges());
+        }
+    }
 
-	private void distributeFigObjects() {
-		Layer lay = this;
-		distributeFigObjectsHorizontal(lay.getContentsNoEdges());
-		distributeFigObjectsVertical(lay.getContentsNoEdges());
-	}
+    private void distributeFigObjectsVertical(Collection figObjects) {
+        Iterator it = figObjects.iterator();
+        SortedSet highestSet = new TreeSet();
+        while (it.hasNext()) {
+            Fig fig = (Fig)it.next();
+            if (fig instanceof FigObject) {
+                highestSet.add(new Integer(fig.getHalfHeight()));
+            }
+        }
 
-	private void distributeFigObjectsVertical(Collection figObjects) {
-		Iterator it = figObjects.iterator();
-		SortedSet highestSet = new TreeSet();
-		while (it.hasNext()) {
-			Fig fig = (Fig)it.next();
-			if (fig instanceof FigObject) {
-				highestSet.add(new Integer(fig.getHalfHeight()));
-			}
-		}
-		int heighestHalfHeight = ((Integer)highestSet.last()).intValue();
-		it = figObjects.iterator();
-		while (it.hasNext()) {
-			Fig fig = (Fig)it.next();
-			if (fig instanceof FigObject) {      
-				fig.setY(DIAGRAM_TOP_MARGE + (heighestHalfHeight - fig.getHalfHeight()));
-				fig.damage();
-			}
-		}
-	}
+        if (!highestSet.isEmpty()) {
+            int heighestHalfHeight = ((Integer)highestSet.last()).intValue();
+            it = figObjects.iterator();
+            while (it.hasNext()) {
+                Fig fig = (Fig)it.next();
+                if (fig instanceof FigObject) {
+                    fig.setY(
+                        DIAGRAM_TOP_MARGE
+                            + (heighestHalfHeight - fig.getHalfHeight()));
+                    fig.damage();
+                }
+            }
+        }
 
-	private void distributeFigObjectsHorizontal(Collection figObjects) {
-		Iterator it = figObjects.iterator();
-		SortedMap positionMap = new TreeMap();
-		while (it.hasNext()) {
-			Fig fig = (Fig)it.next();
-			if (fig instanceof FigObject) {
-				positionMap.put(
-					new Integer(fig.getX() + fig.getHalfWidth()),
-					fig);
-			}
-		}
-		int position = DIAGRAM_LEFT_MARGE;
-		int mapSize = positionMap.size();
-		for (int i = 0; i < mapSize; i++) {
-			Object key = positionMap.firstKey();
-			Fig fig = (Fig)positionMap.get(key);
-			if (fig.getX() != position) {
-				// move fig
-				fig.setX(position);
-				fig.damage();
-			}
-			position += (fig.getWidth() + OBJECT_DISTANCE);
-			positionMap.remove(key);
-		}
-	}
+    }
 
-	/** 
-	 * @see org.tigris.gef.base.Layer#presentationFor(java.lang.Object)
-	 */
-	public Fig presentationFor(Object obj) {
-		if (getGraphModel().getNodes().contains(obj)
-			|| getGraphModel().getEdges().contains(obj))
-			return super.presentationFor(obj);
-		else
-			return null;
-	}
+    private void distributeFigObjectsHorizontal(Collection figObjects) {
+        Iterator it = figObjects.iterator();
+        SortedMap positionMap = new TreeMap();
+        while (it.hasNext()) {
+            Fig fig = (Fig)it.next();
+            if (fig instanceof FigObject) {
+                positionMap.put(
+                    new Integer(fig.getX() + fig.getHalfWidth()),
+                    fig);
+            }
+        }
+        int position = DIAGRAM_LEFT_MARGE;
+        int mapSize = positionMap.size();
+        for (int i = 0; i < mapSize; i++) {
+            Object key = positionMap.firstKey();
+            Fig fig = (Fig)positionMap.get(key);
+            if (fig.getX() != position) {
+                // move fig
+                fig.setX(position);
+                fig.damage();
+            }
+            position += (fig.getWidth() + OBJECT_DISTANCE);
+            positionMap.remove(key);
+        }
+    }
+
+    /**
+     * @see org.tigris.gef.graph.GraphListener#nodeAdded(org.tigris.gef.graph.GraphEvent)
+     */
+    public void nodeAdded(GraphEvent ge) {       
+        super.nodeAdded(ge);
+        Fig fig = presentationFor(ge.getArg());
+        if (fig instanceof FigObject) {
+        	((FigObject)fig).renderingChanged();
+        }
+    }
 
 }

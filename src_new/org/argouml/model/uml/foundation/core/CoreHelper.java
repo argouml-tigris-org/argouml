@@ -257,7 +257,7 @@ public class CoreHelper {
             }
         }
         return result;
-    }
+    }    
 
     /** This method returns all attributes of a given Classifier.
      *
