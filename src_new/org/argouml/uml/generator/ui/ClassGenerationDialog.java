@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
@@ -73,15 +74,16 @@ public class ClassGenerationDialog
     extends ArgoDialog
     implements ActionListener {
 
+    /** Logger. */
     private static final Logger LOG =
         Logger.getLogger(ClassGenerationDialog.class);
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    private TableModelClassChecks classTableModel = null;
-    private boolean isPathInModel = false;
-    private ArrayList languages = null;
+    private TableModelClassChecks classTableModel;
+    private boolean isPathInModel;
+    private List languages;
 
     private JTable classTable;
     private JComboBox outputDirectoryComboBox;
@@ -90,7 +92,7 @@ public class ClassGenerationDialog
      * Used to select the next language column in case
      * the "Select All" button is pressed.
      */
-    private int languageHistory = 0;
+    private int languageHistory;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -140,6 +142,9 @@ public class ClassGenerationDialog
         JButton selectAllButton = new JButton();
         nameButton(selectAllButton, "button.select-all");
         selectAllButton.addActionListener(new ActionListener() {
+            /**
+             * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+             */
             public void actionPerformed(ActionEvent e) {
                 classTableModel.setAllChecks(true);
                 classTable.repaint();
@@ -148,6 +153,9 @@ public class ClassGenerationDialog
         JButton selectNoneButton = new JButton();
         nameButton(selectNoneButton, "button.select-none");
         selectNoneButton.addActionListener(new ActionListener() {
+            /**
+             * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+             */
             public void actionPerformed(ActionEvent e) {
                 classTableModel.setAllChecks(false);
                 classTable.repaint();
@@ -177,6 +185,9 @@ public class ClassGenerationDialog
         nameButton(browseButton, "button.browse");
         browseButton.setText(browseButton.getText() + "...");
         browseButton.addActionListener(new ActionListener() {
+            /**
+             * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+             */
             public void actionPerformed(ActionEvent e) {
                 doBrowse();
             }
@@ -251,7 +262,7 @@ public class ClassGenerationDialog
     }
 
     private void buildLanguages() {
-        ArrayList ll = Notation.getAvailableNotations();
+        List ll = Notation.getAvailableNotations();
         languages = new ArrayList();
         for (int l = 0; l < ll.size(); l++) {
             if (NotationProviderFactory
@@ -295,7 +306,7 @@ public class ClassGenerationDialog
 		    .trim();
             Project p = ProjectManager.getManager().getCurrentProject();
             p.getGenerationPrefs().setOutputDir(path);
-            Vector[] fileNames = new Vector[languages.size()];
+            List[] fileNames = new Vector[languages.size()];
             for (int i = 0; i < languages.size(); i++) {
                 fileNames[i] = new Vector();
                 NotationName language = (NotationName) languages.get(i);
@@ -311,8 +322,9 @@ public class ClassGenerationDialog
                                 Object parent = ModelFacade.getNamespace(node);
                                 while (parent != null) {
                                     path = Generator2.getCodePath(parent);
-                                    if (path != null)
+                                    if (path != null) {
                                         break;
+                                    }
                                     parent = ModelFacade.getNamespace(parent);
                                 }
                             }
@@ -359,8 +371,9 @@ public class ClassGenerationDialog
                         .getModel()
                         .getSelectedItem());
 
-            if (chooser == null)
+            if (chooser == null) {
                 chooser = OsUtil.getFileChooser();
+            }
 
             chooser.setFileHidingEnabled(true);
             chooser.setMultiSelectionEnabled(false);
@@ -375,8 +388,8 @@ public class ClassGenerationDialog
                 outputDirectoryComboBox.addItem(path);
                 outputDirectoryComboBox.getModel().setSelectedItem(path);
             } // else ignore
-        }
-        catch (Exception userPressedCancel) {
+        } catch (Exception userPressedCancel) {
+            // TODO: How does the pressed cancel become a java.lang.Exception?
             LOG.info("user pressed cancel");
         }
     }
@@ -384,17 +397,18 @@ public class ClassGenerationDialog
     class TableModelClassChecks extends AbstractTableModel {
         ////////////////
         // instance varables
-        private Vector classes;
+        private List classes;
         private Set[] checked;
 
-        ////////////////
-        // constructor
+        /**
+         * Constructor.
+         */
         public TableModelClassChecks() {
         }
 
         ////////////////
         // accessors
-        public void setTarget(Vector nodes) {
+        public void setTarget(List nodes) {
             classes = nodes;
             checked = new Set[getLanguagesCount()];
             for (int j = 0; j < getLanguagesCount(); j++) {
@@ -404,7 +418,7 @@ public class ClassGenerationDialog
 
             int size = classes.size();
             for (int i = 0; i < size; i++) {
-                Object cls = classes.elementAt(i);
+                Object cls = classes.get(i);
                 String name = ModelFacade.getName(cls);
                 // Jaap B. in older versions of argouml (before
                 // 0.14alpha1) names were not initialized correctly.  this
@@ -420,7 +434,7 @@ public class ClassGenerationDialog
 			    cls)) {
                         checked[j].add(cls);
 		    } else if (
-                        ((NotationName) languages.get(j)).equals(
+                        ((NotationName) languages.get(j)).sameNotationAs(
                             Notation.getDefaultNotation())) {
                         checked[j].add(cls);
                     }
@@ -451,86 +465,116 @@ public class ClassGenerationDialog
         }
 
         private int getLanguagesCount() {
-            if (languages == null)
+            if (languages == null) {
                 return 0;
+            }
             return languages.size();
         }
 
         public Set getChecked(NotationName nn) {
             int index = languages.indexOf(nn);
-            if (index == -1)
+            if (index == -1) {
                 return new HashSet();
+            }
             return checked[index];
         }
 
-        /** All checked classes. Union of all languages.
+        /**
+         * All checked classes.
+         *
+         * @return The union of all languages as a {@link Set}.
          */
         public Set getChecked() {
             Set union = new HashSet();
-            for (int i = 0; i < getLanguagesCount(); i++)
+            for (int i = 0; i < getLanguagesCount(); i++) {
                 union.addAll(checked[i]);
+            }
             return union;
         }
 
         ////////////////
         // TableModel implemetation
+        /**
+         * @see javax.swing.table.TableModel#getColumnCount()
+         */
         public int getColumnCount() {
             return 1 + getLanguagesCount();
         }
 
+        /**
+         * @see javax.swing.table.TableModel#getColumnName(int)
+         */
         public String getColumnName(int c) {
             if (c >= 0 && c < getLanguagesCount()) {
                 return ((NotationName) languages.get(c))
 		    .getConfigurationValue();
-            }
-            else if (c == getLanguagesCount()) {
+            } else if (c == getLanguagesCount()) {
                 return "Class Name";
             }
             return "XXX";
         }
 
+        /**
+         * @see javax.swing.table.TableModel#getColumnClass(int)
+         */
         public Class getColumnClass(int c) {
             if (c >= 0 && c < getLanguagesCount()) {
                 return Boolean.class;
-            }
-            else if (c == getLanguagesCount()) {
+            } else if (c == getLanguagesCount()) {
                 return String.class;
             }
             return String.class;
         }
 
+        /**
+         * @see javax.swing.table.TableModel#isCellEditable(int, int)
+         */
         public boolean isCellEditable(int row, int col) {
-            Object cls = classes.elementAt(row);
-            if (col == getLanguagesCount())
+            Object cls = classes.get(row);
+            if (col == getLanguagesCount()) {
                 return false;
-            if (!(ModelFacade.getName(cls).length() > 0))
+            }
+            if (!(ModelFacade.getName(cls).length() > 0)) {
                 return false;
-            if (col >= 0 && col < getLanguagesCount())
+            }
+            if (col >= 0 && col < getLanguagesCount()) {
                 return true;
+            }
             return false;
         }
 
+        /**
+         * @see javax.swing.table.TableModel#getRowCount()
+         */
         public int getRowCount() {
-            if (classes == null)
+            if (classes == null) {
                 return 0;
+            }
             return classes.size();
         }
 
+        /**
+         * @see javax.swing.table.TableModel#getValueAt(int, int)
+         */
         public Object getValueAt(int row, int col) {
-            Object cls = classes.elementAt(row);
+            Object cls = classes.get(row);
             if (col == getLanguagesCount()) {
                 String name = ModelFacade.getName(cls);
-                return (name.length() > 0) ? name : "(anon)";
-            }
-            else if (col >= 0 && col < getLanguagesCount()) {
-                return checked[col].contains(cls)
-		    ? Boolean.TRUE
-		    : Boolean.FALSE;
-            }
-            else
+                if (name.length() > 0) {
+                    return name;
+                }
+                return "(anon)";
+            } else if (col >= 0 && col < getLanguagesCount()) {
+                return Boolean.valueOf(checked[col].contains(cls));
+            } else {
                 return "CC-r:" + row + " c:" + col;
+            }
         }
 
+        /**
+         * @see javax.swing.table.TableModel#setValueAt(
+         *          java.lang.Object, int, int)
+         */
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             if (columnIndex == getLanguagesCount()) {
                 return;
@@ -542,19 +586,19 @@ public class ClassGenerationDialog
                 return;
 	    }
             boolean val = ((Boolean) aValue).booleanValue();
-            Object cls = classes.elementAt(rowIndex);
+            Object cls = classes.get(rowIndex);
 
             if (columnIndex >= 0 && columnIndex < getLanguagesCount()) {
-                if (val)
+                if (val) {
                     checked[columnIndex].add(cls);
-                else
+                } else {
                     checked[columnIndex].remove(cls);
+                }
             }
 
             if (val && !getOkButton().isEnabled()) {
                 getOkButton().setEnabled(true);
-            }
-            else if (!val && getOkButton().isEnabled()
+            } else if (!val && getOkButton().isEnabled()
                 && getChecked().size() == 0) {
                 getOkButton().setEnabled(false);
             }
@@ -578,13 +622,12 @@ public class ClassGenerationDialog
             }
 
             for (int i = 0; i < rows; ++i) {
-                Object cls = classes.elementAt(i);
+                Object cls = classes.get(i);
 
                 for (int j = 0; j < checks; ++j) {
                     if (value && (j == languageHistory)) {
                         checked[j].add(cls);
-                    }
-                    else {
+                    } else {
                         checked[j].remove(cls);
                     }
                 }

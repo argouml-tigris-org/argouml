@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,6 +23,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.notation;
+
 import java.util.ArrayList;
 import java.util.ListIterator;
 
@@ -37,24 +38,24 @@ import org.argouml.application.events.ArgoModuleEventListener;
 import org.argouml.application.events.ArgoNotationEvent;
 
 /**
- *   This class provides definition and manipulation of notation names.
- *   All notation names will be accessed using the
- *   {@link NotationName} wrapper.
+ * This class provides definition and manipulation of notation names.
+ * All notation names will be accessed using the
+ * {@link NotationName} wrapper.
  *
- *   Not mutable!
+ * Not mutable!
  *
- *   @author Thierry Lach
- *   @since 0.9.4
+ * @author Thierry Lach
+ * @since 0.9.4
  */
 public class NotationNameImpl
-    implements NotationName, ArgoModuleEventListener
-{
-    /** logger */
+    implements NotationName, ArgoModuleEventListener {
+
+    /** Logger. */
     private static final Logger LOG = Logger.getLogger(NotationNameImpl.class);
 
-    private String name = null;
-    private String version = null;
-    private Icon icon = null;
+    private String name;
+    private String version;
+    private Icon icon;
 
     private static ArrayList notations = new ArrayList();
 
@@ -96,7 +97,8 @@ public class NotationNameImpl
         icon = myIcon;
     }
 
-    /** Accessor for the language name
+    /**
+     * Accessor for the language name.
      *
      * @see org.argouml.application.api.NotationName#getName()
      */
@@ -104,7 +106,8 @@ public class NotationNameImpl
         return name;
     }
 
-    /** Accessor for the language version
+    /**
+     * Accessor for the language version.
      *
      * @see org.argouml.application.api.NotationName#getVersion()
      */
@@ -112,8 +115,9 @@ public class NotationNameImpl
         return version;
     }
 
-    /** Gets a textual title for the notation suitable for use
-     *  in a combo box or other such visual location.
+    /**
+     * Gets a textual title for the notation suitable for use
+     * in a combo box or other such visual location.
      *
      * @see org.argouml.application.api.NotationName#getTitle()
      */
@@ -125,8 +129,7 @@ public class NotationNameImpl
 
         if (version == null || version.equals("")) {
             return myName;
-        }
-        else {
+        } else {
             return myName + " " + version;
         }
     }
@@ -164,8 +167,12 @@ public class NotationNameImpl
      * @return the notation name string
      */
     public static String getNotationNameString(String k1, String k2) {
-        if (k2 == null) return k1;
-        if (k2.equals("")) return k1;
+        if (k2 == null) {
+            return k1;
+        }
+        if (k2.equals("")) {
+            return k1;
+        }
 	return k1 + "." + k2;
     }
 
@@ -186,7 +193,7 @@ public class NotationNameImpl
 	NotationName nn = null;
 	nn = findNotation(getNotationNameString(k1, k2));
 	if (nn == null) {
-	    nn = (NotationName) new NotationNameImpl(k1, k2, icon);
+	    nn = new NotationNameImpl(k1, k2, icon);
 	    notations.add(nn);
 	    fireEvent(ArgoEventTypes.NOTATION_ADDED, nn);
 	}
@@ -201,8 +208,9 @@ public class NotationNameImpl
         return notations;
     }
 
-    /** Finds a NotationName matching the configuration string.
-     *  Returns null if no match.
+    /**
+     * Finds a NotationName matching the configuration string.
+     * Returns null if no match.
      *
      * @param s the configuration string
      * @return the name of the notation or null
@@ -215,18 +223,18 @@ public class NotationNameImpl
 		if (s.equals(nn.getConfigurationValue())) {
 		    return nn;
 		}
-	    }
-	    catch (Exception e) {
-	        LOG.error ("Unexpected exception", e);
+	    } catch (Exception e) {
+	        // TODO: Document why we catch this.
+	        LOG.error("Unexpected exception", e);
 	    }
 	}
 	return null;
     }
 
     /**
-     * @see org.argouml.application.api.NotationName#equals(org.argouml.application.api.NotationName)
+     * @see org.argouml.application.api.NotationName#sameNotationAs(org.argouml.application.api.NotationName)
      */
-    public boolean equals(NotationName nn) {
+    public boolean sameNotationAs(NotationName nn) {
         return this.getConfigurationValue().equals(nn.getConfigurationValue());
     }
 
