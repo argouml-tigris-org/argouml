@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -114,7 +115,9 @@ public class LanguageChooser extends UMLAction implements PluggableMenu {
     }
 
     public Object[] buildContext(JMenuItem a, String b) {
-        return new Object[] { a, b };
+        return new Object[] {
+	    a, b 
+	};
     }
 
     /** 

@@ -40,7 +40,8 @@ import javax.swing.*;
  *  @since  0.9.4
  */
 public class ActionTestJunit extends UMLAction
-implements PluggableMenu {
+    implements PluggableMenu 
+{
 
 
     ////////////////////////////////////////////////////////////////
@@ -65,7 +66,7 @@ implements PluggableMenu {
      * singleton pattern).
      */
     protected ActionTestJunit() {
-	super(Argo.localize(Argo.MENU_BUNDLE,"Test Panel..."), false);
+	super(Argo.localize(Argo.MENU_BUNDLE, "Test Panel..."), false);
 	_failed = false;
     }
 
@@ -96,17 +97,21 @@ implements PluggableMenu {
 	try {
 	    Class cls = Class.forName(JUNIT_CLASS);
 	    Object instance = cls.newInstance();
-	    Class[] parmClasses = new Class[] { args.getClass() };
+	    Class[] parmClasses = new Class[] {
+		args.getClass()
+	    };
 	    Method method = cls.getMethod("main", parmClasses);
-	    Object[] passedArgs = new Object[] { args };
+	    Object[] passedArgs = new Object[] {
+		args
+	    };
 	    method.invoke(instance, passedArgs);
 	}
 	catch (Exception e) {
-	    if (! _failed) {
+	    if (!_failed) {
 	        Argo.log.error("Unable to launch Junit", e);
 	    }
 	    _failed = true;
-	    // needs-more-work:  Disable the menu entry on failure.
+	    // TODO:  Disable the menu entry on failure.
 	}
     }
 
@@ -133,13 +138,15 @@ implements PluggableMenu {
         return initialized;
     }
     public Object[] buildContext(JMenuItem a, String b) {
-        return new Object[] { a, b };
+        return new Object[] {
+	    a, b
+	};
     }
 
     public boolean inContext(Object[] o) {
         if (o.length < 2) return false;
 	if ((o[0] instanceof JMenuItem) &&
-	        (PluggableMenu.KEY_TOOLS.equals(o[1]))) {
+	    (PluggableMenu.KEY_TOOLS.equals(o[1]))) {
 	    return true;
 	}
         return false;
@@ -155,7 +162,7 @@ implements PluggableMenu {
     public String getModuleKey() { return "module.menu.tools.junit"; }
 
     public JMenuItem getMenuItem(Object [] context) {
-        if (! inContext(context)) {
+        if (!inContext(context)) {
 	    return null;
 	}
 

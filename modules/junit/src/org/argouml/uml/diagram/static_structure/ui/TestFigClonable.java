@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -36,10 +37,10 @@ public class TestFigClonable extends TestCase {
      */
     public void testClassClonable() {
 
-            FigClass fig = new FigClass();
-            FigClass figclone;
+	FigClass fig = new FigClass();
+	FigClass figclone;
              
-            figclone = (FigClass) fig.clone();
+	figclone = (FigClass) fig.clone();
 
     }
 
@@ -47,10 +48,10 @@ public class TestFigClonable extends TestCase {
      */
     public void testEdgeNoteClonable() {
 
-            FigEdgeNote fig = new FigEdgeNote();
-            FigEdgeNote figclone;
+	FigEdgeNote fig = new FigEdgeNote();
+	FigEdgeNote figclone;
              
-            figclone = (FigEdgeNote) fig.clone();
+	figclone = (FigEdgeNote) fig.clone();
 
     }
 
@@ -58,10 +59,10 @@ public class TestFigClonable extends TestCase {
      */
     public void testInstanceClonable() {
 
-            FigInstance fig = new FigInstance();
-            FigInstance figclone;
+	FigInstance fig = new FigInstance();
+	FigInstance figclone;
              
-            figclone = (FigInstance) fig.clone();
+	figclone = (FigInstance) fig.clone();
 
     }
 
@@ -69,10 +70,10 @@ public class TestFigClonable extends TestCase {
      */
     public void testInterfaceClonable() {
 
-            FigInterface fig = new FigInterface();
-            FigInterface figclone;
+	FigInterface fig = new FigInterface();
+	FigInterface figclone;
              
-            figclone = (FigInterface) fig.clone();
+	figclone = (FigInterface) fig.clone();
 
     }
 
@@ -80,10 +81,10 @@ public class TestFigClonable extends TestCase {
      */
     public void testLinkClonable() {
 
-            FigLink fig = new FigLink();
-            FigLink figclone;
+	FigLink fig = new FigLink();
+	FigLink figclone;
              
-            figclone = (FigLink) fig.clone();
+	figclone = (FigLink) fig.clone();
 
     }
 
@@ -92,10 +93,10 @@ public class TestFigClonable extends TestCase {
      */
     public void testModelClonable() {
 
-            FigModel fig = new FigModel();
-            FigModel figclone;
+	FigModel fig = new FigModel();
+	FigModel figclone;
              
-            figclone = (FigModel) fig.clone();
+	figclone = (FigModel) fig.clone();
 
     }
 
@@ -103,10 +104,10 @@ public class TestFigClonable extends TestCase {
      */
     public void testSubsystemClonable() {
 
-            FigSubsystem fig = new FigSubsystem();
-            FigSubsystem figclone;
+	FigSubsystem fig = new FigSubsystem();
+	FigSubsystem figclone;
              
-            figclone = (FigSubsystem) fig.clone();
+	figclone = (FigSubsystem) fig.clone();
 
     }
     
@@ -116,10 +117,10 @@ public class TestFigClonable extends TestCase {
      */
     public void testNoteClonable() {
 
-            FigComment fig = new FigComment();
-            FigComment figclone;
+	FigComment fig = new FigComment();
+	FigComment figclone;
              
-            figclone = (FigComment) fig.clone();
+	figclone = (FigComment) fig.clone();
 
     }
 
@@ -128,10 +129,10 @@ public class TestFigClonable extends TestCase {
      */
     public void testPackageClonable() {
 
-            FigPackage fig = new FigPackage();
-            FigPackage figclone;
+	FigPackage fig = new FigPackage();
+	FigPackage figclone;
              
-            figclone = (FigPackage) fig.clone();
+	figclone = (FigPackage) fig.clone();
 
     }
 

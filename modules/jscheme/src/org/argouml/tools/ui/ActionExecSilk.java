@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -43,7 +44,8 @@ import silk.*;
 
 /* class ActionExecSilk */
 public class ActionExecSilk extends UMLAction
-implements PluggableMenu {
+    implements PluggableMenu 
+{
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -124,7 +126,9 @@ implements PluggableMenu {
     }
 
     public Object[] buildContext(JMenuItem a, String b) {
-        return new Object[] { a, b };
+        return new Object[] {
+	    a, b
+	};
     }
 
     public void setModuleEnabled(boolean enabled) { }
@@ -142,7 +146,7 @@ implements PluggableMenu {
         if (o.length < 2) return false;
 	// Allow ourselves on the "Tools" menu.
 	if ((o[0] instanceof JMenuItem) &&
-	        (PluggableMenu.KEY_TOOLS.equals(o[1]))) {
+	    (PluggableMenu.KEY_TOOLS.equals(o[1]))) {
 	    return true;
 	}
         return false;
@@ -154,7 +158,7 @@ implements PluggableMenu {
 
     public JMenuItem getMenuItem(Object[]  context) {
 
-        if (! inContext(context)) {
+        if (!inContext(context)) {
 	    return null;
 	}
 

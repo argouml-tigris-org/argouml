@@ -86,7 +86,7 @@ public class ByteToken extends Token {
      * @return The byte value of this token as a masked sort.
      */
     final short getShortValue() {
-	return (short)((short)_val & (short)0xff);
+	return (short) ((short) _val & (short) 0xff);
     }
 
     /**
@@ -95,7 +95,7 @@ public class ByteToken extends Token {
      * @return The byte value of this token as a masked int.
      */
     final int getIntValue() {
-	return (int)_val & 0xff;
+	return (int) _val & 0xff;
     }
 }
 

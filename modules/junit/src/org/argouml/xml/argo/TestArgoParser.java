@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -45,10 +46,10 @@ public class TestArgoParser extends TestCase {
 	    url = new URL(filename);
 	    Project p = ProjectManager.getManager().loadProject(url);
 	    assertTrue("Load Status for " + filename + ".",
-		   ArgoParser.SINGLETON.getLastLoadStatus());
+		       ArgoParser.SINGLETON.getLastLoadStatus());
 	} catch (java.net.MalformedURLException e) {
 	    assertTrue("Incorrect test case, malformed filename: " 
-		   + filename + ".", false);
+		       + filename + ".", false);
 	} catch (Exception io) {
 	    fail("Projectfile corrupted: " + filename);
 	}
@@ -67,7 +68,7 @@ public class TestArgoParser extends TestCase {
 	boolean loaded = true;
 	try {
 	    url = new URL("file:testmodels/Garbage.zargo");
-        Project p = ProjectManager.getManager().loadProject(url);
+	    Project p = ProjectManager.getManager().loadProject(url);
 	    assertTrue("Load Status", !ArgoParser.SINGLETON.getLastLoadStatus());
 	} catch (java.net.MalformedURLException e) {
 	    assertTrue("Incorrect test case.", false);

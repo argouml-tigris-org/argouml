@@ -32,7 +32,7 @@ public class ClassFileFilter extends FileFilter {
     ////////////////////////////////////////////////////////////////
     // instance varaibles
 
-    private final String [] _suffixes = {"class","jar"};
+    private final String [] _suffixes = {"class", "jar"};
     private final String    _desc     = "Java classfiles (*.class, *.jar)";
 
 
@@ -50,7 +50,7 @@ public class ClassFileFilter extends FileFilter {
 	if (f == null) return false;
 	if (f.isDirectory()) return true;
 	String extension = getExtension(f.getName());
-	for(int i=0; i < _suffixes.length; i++) {
+	for (int i = 0; i < _suffixes.length; i++) {
 	    if (_suffixes[i].equalsIgnoreCase(extension)) return true;
 	}
 	return false;
@@ -65,8 +65,8 @@ public class ClassFileFilter extends FileFilter {
      */
     private String getExtension(String filename) {
 	int i = filename.lastIndexOf('.');
-	if (i>0 && i<filename.length()-1) {
-	    return filename.substring(i+1).toLowerCase();
+	if (i > 0 && i < filename.length() - 1) {
+	    return filename.substring(i + 1).toLowerCase();
 	}
 	return null;
     }

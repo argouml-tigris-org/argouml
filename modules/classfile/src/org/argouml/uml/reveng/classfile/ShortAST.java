@@ -36,7 +36,7 @@ class ShortAST extends CommonAST {
     // Instance vars.
 
     // The short buffer.
-    private short _shortValue=0;
+    private short _shortValue = 0;
 
     
     ///////////////

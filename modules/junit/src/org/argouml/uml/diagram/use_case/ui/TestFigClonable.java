@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -33,30 +34,30 @@ public class TestFigClonable extends TestCase {
 
     /** try to clone FigUseCase in package diagram.use_case.ui.
      */
-     public void testUseCaseClonable() {
-         try {
-             FigUseCase usecase = new FigUseCase();
-             FigUseCase usecaseclone;
+    public void testUseCaseClonable() {
+	try {
+	    FigUseCase usecase = new FigUseCase();
+	    FigUseCase usecaseclone;
              
-             usecaseclone = (FigUseCase) usecase.clone();
-             assertTrue("FigUseCase cloned", true);
-         }
-         catch(Exception e) {
-             assertTrue("FigUseCase not clonable", false);
-         }
-     }
+	    usecaseclone = (FigUseCase) usecase.clone();
+	    assertTrue("FigUseCase cloned", true);
+	}
+	catch (Exception e) {
+	    assertTrue("FigUseCase not clonable", false);
+	}
+    }
 
     /** clone FigActor. */
     public void testActorClonable() {
-         try {
-             FigActor actor = new FigActor();
-             FigActor actorclone;
+	try {
+	    FigActor actor = new FigActor();
+	    FigActor actorclone;
              
-             actorclone = (FigActor) actor.clone();
-             assertTrue("FigActor cloned", true);
-         }
-         catch(Exception e) {
-             assertTrue("FigActor not clonable", false);
-         }
-     }
+	    actorclone = (FigActor) actor.clone();
+	    assertTrue("FigActor cloned", true);
+	}
+	catch (Exception e) {
+	    assertTrue("FigActor not clonable", false);
+	}
+    }
 }

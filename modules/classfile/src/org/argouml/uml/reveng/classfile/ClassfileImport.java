@@ -83,12 +83,12 @@ public class ClassfileImport extends FileImportSupport {
 
     public void parseFile( Project p, Object o, DiagramInterface diagram, Import _import)
 	throws Exception {
-		if (o instanceof File ) {
-                    File f = (File)o;
-                    this._diagram = diagram;
-                    this._import = _import;
-                    startImport(p, f);
-                }
+	if (o instanceof File ) {
+	    File f = (File) o;
+	    this._diagram = diagram;
+	    this._import = _import;
+	    startImport(p, f);
+	}
     }
     
     /**
@@ -106,16 +106,16 @@ public class ClassfileImport extends FileImportSupport {
 
 	int secondPassCount = count2ndPassFiles(_secondPassFiles);
 
-        if(secondPassCount > 0) {
+        if (secondPassCount > 0) {
 
 	    // Process all the files, that need a second pass.
-	    for(Iterator i = _secondPassFiles.iterator(); i.hasNext();) {
+	    for (Iterator i = _secondPassFiles.iterator(); i.hasNext();) {
 		Object next = i.next();
 
-		if(next instanceof ArrayList) {
-		    do2ndJarPass((ArrayList)next);
+		if (next instanceof ArrayList) {
+		    do2ndJarPass((ArrayList) next);
 		} else {
-		    File nextFile = (File)next;
+		    File nextFile = (File) next;
                     String fileName = nextFile.getName();
 		    do2ndFilePass(new FileInputStream(nextFile), fileName);
 		}
@@ -123,8 +123,8 @@ public class ClassfileImport extends FileImportSupport {
 	}
 
 	// Layout the modified diagrams.
-	for(Enumeration e = _diagram.getModifiedDiagrams().elements(); e.hasMoreElements(); ) {
-	    ClassdiagramLayouter layouter = new ClassdiagramLayouter((UMLDiagram)e.nextElement());
+	for (Enumeration e = _diagram.getModifiedDiagrams().elements(); e.hasMoreElements(); ) {
+	    ClassdiagramLayouter layouter = new ClassdiagramLayouter((UMLDiagram) e.nextElement());
 	    layouter.layout();
 
 	    // Resize the diagram???
@@ -141,17 +141,17 @@ public class ClassfileImport extends FileImportSupport {
      * @return The number of files to process
      */
     private int countFiles(File f, boolean subdirectories) throws Exception {
-	if( f.isDirectory() && subdirectories) {
+	if ( f.isDirectory() && subdirectories) {
 	    return countDirectory(f);
 	} else {
-	    if(f.getName().endsWith(".class")) {
+	    if (f.getName().endsWith(".class")) {
 		return 1;
 	    } else {
 		int total = 0;
-		if(f.getName().endsWith(".jar")) {
-		    for( Enumeration e=(new JarFile(f)).entries(); e.hasMoreElements(); ) {
-			ZipEntry entry = (ZipEntry)e.nextElement();
-			if( ! entry.isDirectory() && entry.getName().endsWith(".class")) {
+		if (f.getName().endsWith(".jar")) {
+		    for ( Enumeration e = (new JarFile(f)).entries(); e.hasMoreElements(); ) {
+			ZipEntry entry = (ZipEntry) e.nextElement();
+			if ( !entry.isDirectory() && entry.getName().endsWith(".class")) {
 			    total++;
 			}
 		    }
@@ -170,7 +170,7 @@ public class ClassfileImport extends FileImportSupport {
 	int total = 0;
 	String [] files = f.list();  // Get the content of the directory
 
-	for( int i = 0; i < files.length; i++) {
+	for ( int i = 0; i < files.length; i++) {
 	    total += countFiles( new File( f, files[i]), _import.isDiscendDirectoriesRecursively());
             
         }
@@ -186,9 +186,9 @@ public class ClassfileImport extends FileImportSupport {
     private int count2ndPassFiles(ArrayList buffer) {
 	int nfiles = 0;
 
-	for(Iterator i = _secondPassFiles.iterator(); i.hasNext();) {
+	for (Iterator i = _secondPassFiles.iterator(); i.hasNext();) {
 	    Object next = i.next();
-	    nfiles += ((next instanceof ArrayList) ? ((ArrayList)next).size() - 1 : 1);
+	    nfiles += ((next instanceof ArrayList) ? ((ArrayList) next).size() - 1 : 1);
 	}
 	return nfiles;
     }
@@ -207,15 +207,15 @@ public class ClassfileImport extends FileImportSupport {
 	    processDirectory(f);                     // import all the files in this directory
 	} else {
 	    // Is this file a Jarfile?
-	    if( f.getName().endsWith(".jar")) {
+	    if ( f.getName().endsWith(".jar")) {
 		processJarFile(f);
 	    } else {
-		if( f.getName().endsWith(".class")) {
+		if ( f.getName().endsWith(".class")) {
                     String fileName = f.getName();
 		    try {
 			parseFile(new FileInputStream(f), fileName);   // Try to parse this file.
-		    } catch(Exception e1) {
-			 e1.printStackTrace();
+		    } catch (Exception e1) {
+			e1.printStackTrace();
 			_secondPassFiles.add(f);
 		    }
 		}
@@ -236,7 +236,7 @@ public class ClassfileImport extends FileImportSupport {
 
 	String [] files = f.list();  // Get the content of the directory
 
-	for( int i = 0; i < files.length; i++) {
+	for ( int i = 0; i < files.length; i++) {
 	    processFile( new File( f, files[i]), doSubdirs);
 	}
     }
@@ -250,14 +250,14 @@ public class ClassfileImport extends FileImportSupport {
 	JarFile jarfile = new JarFile(f);
 	ArrayList jar_secondPassFiles = new ArrayList();  // A second pass buffer just for this jar.
 
-	for( Enumeration e=jarfile.entries(); e.hasMoreElements(); ) {
-	    ZipEntry entry = (ZipEntry)e.nextElement();
+	for ( Enumeration e = jarfile.entries(); e.hasMoreElements(); ) {
+	    ZipEntry entry = (ZipEntry) e.nextElement();
 	    String entryName = entry.getName();
-	    if( ! entry.isDirectory() && entryName.endsWith(".class")) {
+	    if ( !entry.isDirectory() && entryName.endsWith(".class")) {
 		try {
 		    parseFile(jarfile.getInputStream(entry), entryName);
-		} catch(Exception e1) {
-		    if(jar_secondPassFiles.isEmpty()) {     // If there are no files tagged for a second pass,
+		} catch (Exception e1) {
+		    if (jar_secondPassFiles.isEmpty()) {     // If there are no files tagged for a second pass,
 			jar_secondPassFiles.add(f);   // add the jar files as the 1st element.
 		    }
 		    System.out.println("Exception in " + entryName + " : " + e1.getMessage());
@@ -269,7 +269,7 @@ public class ClassfileImport extends FileImportSupport {
 	}
 
 	// If there are files to parse again, add the jar to the 2nd pass.
-	if( ! jar_secondPassFiles.isEmpty()) {
+	if ( !jar_secondPassFiles.isEmpty()) {
 	    _secondPassFiles.add(jar_secondPassFiles);
         }
 
@@ -283,12 +283,12 @@ public class ClassfileImport extends FileImportSupport {
      *                         the names of the entries to parse again.
      */
     private void do2ndJarPass(ArrayList secondPassBuffer) throws Exception {
-	if( ! secondPassBuffer.isEmpty()) {
+	if ( !secondPassBuffer.isEmpty()) {
 	    Iterator iterator = secondPassBuffer.iterator();
-	    JarFile jarfile = new JarFile( (File)iterator.next());
+	    JarFile jarfile = new JarFile( (File) iterator.next());
 
-	    while(iterator.hasNext()) {
-		String filename = (String)iterator.next();
+	    while (iterator.hasNext()) {
+		String filename = (String) iterator.next();
 		do2ndFilePass(jarfile.getInputStream(jarfile.getEntry(filename)), filename);
 	    }
 	    jarfile.close();
@@ -304,7 +304,7 @@ public class ClassfileImport extends FileImportSupport {
     private void do2ndFilePass(InputStream is, String fileName) {
 	try {                    // Try to parse the file.
 	    parseFile(is, fileName);
-	} catch(Exception e2) {    // If there were errors, show them.
+	} catch (Exception e2) {    // If there were errors, show them.
 	    System.out.println("ERROR: " + e2.getMessage());
 	    e2.printStackTrace();
 	}
@@ -327,7 +327,7 @@ public class ClassfileImport extends FileImportSupport {
         // Create a modeller for the parser
         org.argouml.uml.reveng.java.Modeller modeller = 
             new org.argouml.uml.reveng.java.Modeller(_currentProject.getModel(),
-                                                      _diagram, _import,
+						     _diagram, _import,
                                                      attribute.isSelected(),
                                                      datatype.isSelected(), 
                                                      fileName);
@@ -354,7 +354,7 @@ public class ClassfileImport extends FileImportSupport {
      * @return true, if any diagrams where modified and the project should be saved before exit.
      */
     public boolean needsSave() {
-	return ( ! _diagram.getModifiedDiagrams().isEmpty());
+	return ( !_diagram.getModifiedDiagrams().isEmpty());
     }
     
     /** Textual description of the module.  */
@@ -387,9 +387,11 @@ public class ClassfileImport extends FileImportSupport {
      * @return SuffixFilter[] suffixes for processing
      */
     public SuffixFilter[] getSuffixFilters() {
-		SuffixFilter[] result = 
-                    {FileFilters.JavaClassFilter, FileFilters.JavaJarFilter};
-		return result;
+	SuffixFilter[] result = {
+	    FileFilters.JavaClassFilter,
+	    FileFilters.JavaJarFilter
+	};
+	return result;
     }
     
 }

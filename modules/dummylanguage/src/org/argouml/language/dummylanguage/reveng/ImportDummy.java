@@ -1,3 +1,4 @@
+// $Id$
  // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -39,28 +40,28 @@ import java.io.*;
  */
 public class ImportDummy extends FileImportSupport {
 
-	/**
-	 * Provides an array of suffix filters for the module.
-	 * @return SuffixFilter[] files with these suffixes will be processed.
-	 */
-	public SuffixFilter[] getSuffixFilters() {
-		SuffixFilter[] result = {new SuffixFilter("dummy", "Dummy files")};
-		return result;
-	}
+    /**
+     * Provides an array of suffix filters for the module.
+     * @return SuffixFilter[] files with these suffixes will be processed.
+     */
+    public SuffixFilter[] getSuffixFilters() {
+	SuffixFilter[] result = {new SuffixFilter("dummy", "Dummy files")};
+	return result;
+    }
 
-		/** Display name of the module. */
-		public String getModuleName() {
-			return "Dummy";
-		}
+    /** Display name of the module. */
+    public String getModuleName() {
+	return "Dummy";
+    }
 
-		/** Textual description of the module. */
-		public String getModuleDescription() {
-			return "Dummy import from files";
-		}
+    /** Textual description of the module. */
+    public String getModuleDescription() {
+	return "Dummy import from files";
+    }
 
-		public String getModuleKey() {
-			return "module.import.dummy-files";
-		}
+    public String getModuleKey() {
+	return "module.import.dummy-files";
+    }
 
 }
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -42,80 +43,80 @@ import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
  *
  * @author  thn
  */
-public class ModelTableModel extends DefaultTableModel implements Runnable{
+public class ModelTableModel extends DefaultTableModel implements Runnable {
 
-  Object _root = null;
-  JSplitPane _mainPane;
-  Vector _results = new Vector();
+    Object _root = null;
+    JSplitPane _mainPane;
+    Vector _results = new Vector();
 
-  /** Creates a new instance of ModelTableModel */
-  public ModelTableModel() {
-    super(
-      new Object [][] {},
-      new String [] {"Name", "Type", "Package", "Source path"}
-    );
-    run();
-    //setColumnIdentifiers(new String[] {"Name", "Type", "Package"});
-  }
-
-  public boolean isCellEditable(int rowIndex, int columnIndex) {
-    return false;
-  }
-
-  ////////////////////////////////////////////////////////////////
-
-  public void run() {
-    // The following lines should be substituted by the following 2 commented lines.
-    // (This is because getting the project still does not seem to work...)
-    org.argouml.ui.ProjectBrowser pb = org.argouml.ui.ProjectBrowser.TheInstance;
-    org.argouml.ui.ArgoDiagram activeDiagram = pb.getActiveDiagram();
-    if (!(activeDiagram instanceof org.argouml.uml.diagram.ui.UMLDiagram)) return;
-    ru.novosoft.uml.foundation.core.MNamespace ns = ((org.argouml.uml.diagram.ui.UMLDiagram)activeDiagram).getNamespace();
-    if (ns == null) return;
-    while (ns.getNamespace() != null) ns = ns.getNamespace();
-    Collection elems = ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns,MClassifier.class);
-    //Project p = ProjectManager.getManager().getCurrentProject();
-    //Collection elems = ModelManagementHelper.getHelper().getAllModelElementsOfKind(MClassifier.class);
-    Iterator iter = elems.iterator();
-    while (iter.hasNext()) {
-      Object c = iter.next();
-      Object[] rowdata = getCodeRelevantClassifierData((MClassifier)c);
-      if (rowdata != null) {
-        addRow(rowdata);
-      }
+    /** Creates a new instance of ModelTableModel */
+    public ModelTableModel() {
+	super(
+	      new Object [][] {},
+	      new String [] {"Name", "Type", "Package", "Source path"}
+	      );
+	run();
+	//setColumnIdentifiers(new String[] {"Name", "Type", "Package"});
     }
-  }
+
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+	return false;
+    }
+
+    ////////////////////////////////////////////////////////////////
+
+    public void run() {
+	// The following lines should be substituted by the following 2 commented lines.
+	// (This is because getting the project still does not seem to work...)
+	org.argouml.ui.ProjectBrowser pb = org.argouml.ui.ProjectBrowser.TheInstance;
+	org.argouml.ui.ArgoDiagram activeDiagram = pb.getActiveDiagram();
+	if (!(activeDiagram instanceof org.argouml.uml.diagram.ui.UMLDiagram)) return;
+	ru.novosoft.uml.foundation.core.MNamespace ns = ((org.argouml.uml.diagram.ui.UMLDiagram) activeDiagram).getNamespace();
+	if (ns == null) return;
+	while (ns.getNamespace() != null) ns = ns.getNamespace();
+	Collection elems = ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MClassifier.class);
+	//Project p = ProjectManager.getManager().getCurrentProject();
+	//Collection elems = ModelManagementHelper.getHelper().getAllModelElementsOfKind(MClassifier.class);
+	Iterator iter = elems.iterator();
+	while (iter.hasNext()) {
+	    Object c = iter.next();
+	    Object[] rowdata = getCodeRelevantClassifierData((MClassifier) c);
+	    if (rowdata != null) {
+		addRow(rowdata);
+	    }
+	}
+    }
 
 
-  private static Object[] getCodeRelevantClassifierData(MClassifier cls) {
-    String type = null;
-    if (cls instanceof MClass) {
-      type = "Class";
+    private static Object[] getCodeRelevantClassifierData(MClassifier cls) {
+	String type = null;
+	if (cls instanceof MClass) {
+	    type = "Class";
+	}
+	else if (cls instanceof MInterface) {
+	    type = "Interface";
+	}
+	String codePath = Generator.getCodePath(cls);
+	MNamespace parent = cls.getNamespace();
+	if (codePath == null) {
+	    codePath = Generator.getCodePath(parent);
+	}
+	String packagePath = parent.getName();
+	parent = parent.getNamespace();
+	while (parent != null) {
+	    if (codePath == null) {
+		codePath = Generator.getCodePath(parent);
+	    }
+	    // ommit root package name; it's the model's root
+	    if (parent.getNamespace() != null) {
+		packagePath = parent.getName() + "." + packagePath;
+	    }
+	    parent = parent.getNamespace();
+	}
+	if (codePath != null && codePath.length() > 0) {
+	    return new Object [] {cls.getName(), type, packagePath, codePath};
+	} else {
+	    return null;
+	}
     }
-    else if (cls instanceof MInterface) {
-      type = "Interface";
-    }
-    String codePath = Generator.getCodePath(cls);
-    MNamespace parent = cls.getNamespace();
-    if (codePath == null) {
-      codePath = Generator.getCodePath(parent);
-    }
-    String packagePath = parent.getName();
-    parent = parent.getNamespace();
-    while (parent != null) {
-      if (codePath == null) {
-        codePath = Generator.getCodePath(parent);
-      }
-      // ommit root package name; it's the model's root
-      if (parent.getNamespace() != null) {
-        packagePath = parent.getName() + "." + packagePath;
-      }
-      parent = parent.getNamespace();
-    }
-    if (codePath != null && codePath.length() > 0) {
-      return new Object [] {cls.getName(), type, packagePath, codePath};
-    } else {
-      return null;
-    }
-  }
 }

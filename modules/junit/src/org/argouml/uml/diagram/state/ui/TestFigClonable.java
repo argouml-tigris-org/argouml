@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -41,7 +42,7 @@ public class TestFigClonable extends TestCase {
             figclone = (FigBranchState) fig.clone();
             assertTrue("FigBranchState cloned", true);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             assertTrue("FigBranchState not clonable", false);
         }
     }
@@ -56,7 +57,7 @@ public class TestFigClonable extends TestCase {
             figclone = (FigCompositeState) fig.clone();
             assertTrue("FigCompositeState cloned", true);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             assertTrue("FigCompositeState not clonable", false);
         }
     }
@@ -71,7 +72,7 @@ public class TestFigClonable extends TestCase {
             figclone = (FigDeepHistoryState) fig.clone();
             assertTrue("FigDeepHistoryState cloned", true);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             assertTrue("FigDeepHistoryState not clonable", false);
         }
     }
@@ -86,7 +87,7 @@ public class TestFigClonable extends TestCase {
             figclone = (FigFinalState) fig.clone();
             assertTrue("FigFinalState cloned", true);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             assertTrue("FigFinalState not clonable", false);
         }
     }
@@ -102,7 +103,7 @@ public class TestFigClonable extends TestCase {
             figclone = (FigForkState) fig.clone();
             assertTrue("FigForkState cloned", true);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             assertTrue("FigForkState not clonable", false);
         }
     }
@@ -117,7 +118,7 @@ public class TestFigClonable extends TestCase {
             figclone = (FigHistoryState) fig.clone();
             assertTrue("FigHistoryState cloned", true);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             assertTrue("FigHistoryState not clonable", false);
         }
     }
@@ -132,7 +133,7 @@ public class TestFigClonable extends TestCase {
             figclone = (FigInitialState) fig.clone();
             assertTrue("FigInitialState cloned", true);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             assertTrue("FigInitialState not clonable", false);
         }
     }
@@ -148,7 +149,7 @@ public class TestFigClonable extends TestCase {
             figclone = (FigJoinState) fig.clone();
             assertTrue("FigJoinState cloned", true);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             assertTrue("FigJoinState not clonable", false);
         }
     }
@@ -163,7 +164,7 @@ public class TestFigClonable extends TestCase {
             figclone = (FigShallowHistoryState) fig.clone();
             assertTrue("FigShallowHistoryState cloned", true);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             assertTrue("FigShallowHistoryState not clonable", false);
         }
     }
@@ -178,7 +179,7 @@ public class TestFigClonable extends TestCase {
             figclone = (FigSimpleState) fig.clone();
             assertTrue("FigState cloned", true);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             assertTrue("FigState not clonable", false);
         }
     }
@@ -194,7 +195,7 @@ public class TestFigClonable extends TestCase {
             figclone = (FigTransition) fig.clone();
             assertTrue("FigTransition cloned", true);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             assertTrue("FigTransition not clonable", false);
         }
     }

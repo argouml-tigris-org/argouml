@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -40,66 +41,68 @@ import org.argouml.uml.ui.UMLAction;
  */
 public class ActionSynchronize extends UMLAction implements PluggableMenu
 {
-  /**
-   * Create a new ActionSynchronize (this is not public)
-   */
-  protected ActionSynchronize() {
-    super("Synchronize model/code...", false);
-  }
-
-  /**
-   * Opens the synchronization dialog and fills it with 'differences'
-   */
-  public void actionPerformed(ActionEvent event) {
-    //Argo.log.info("User clicked on '" + event.getActionCommand() + "'");
-    SynchronizeDialog syndia = new SynchronizeDialog(ProjectBrowser.TheInstance,true);
-    syndia.show();
-  }
-
-  public void setModuleEnabled(boolean v) {}
-
-  /**
-   * Initialize module
-   */
-  public boolean initializeModule() {
-    //Argo.log.info ("+--------------------------+");
-    //Argo.log.info ("| Plugin Java RTE enabled! |");
-    //Argo.log.info ("+--------------------------+");
-    return true;
-  }
-
-  public Object[] buildContext(JMenuItem a, String b) {
-    return new Object[] { a, b };
-  }
-
-  public boolean inContext(Object[] o) {
-    if (o.length < 2) return false;
-    // We are in context for any JMenuItem.
-    if (o[0] instanceof JMenuItem && o[1].equals(PluggableMenu.KEY_TOOLS)) {
-      return true;
+    /**
+     * Create a new ActionSynchronize (this is not public)
+     */
+    protected ActionSynchronize() {
+	super("Synchronize model/code...", false);
     }
-    return false;
-  }
 
-  public boolean isModuleEnabled() { return true; }
-  public Vector getModulePopUpActions(Vector v, Object o) { return null; }
-  public boolean shutdownModule() { return true; }
-  public String getModuleName() { return "ActionSynchronize"; }
-  public String getModuleDescription() { return "Menu Item for Synchronizing Model and Java Code"; }
-  public String getModuleAuthor() { return "Thomas Neustupny"; }
-  public String getModuleVersion() { return "0.11.3"; }
-  public String getModuleKey() { return "module.language.java.rte"; }
+    /**
+     * Opens the synchronization dialog and fills it with 'differences'
+     */
+    public void actionPerformed(ActionEvent event) {
+	//Argo.log.info("User clicked on '" + event.getActionCommand() + "'");
+	SynchronizeDialog syndia = new SynchronizeDialog(ProjectBrowser.TheInstance, true);
+	syndia.show();
+    }
 
-  public JMenuItem getMenuItem(JMenuItem mi, String s) {
-    return getMenuItem(buildContext(mi, s));
-  }
+    public void setModuleEnabled(boolean v) { }
 
-  public JMenuItem getMenuItem(Object [] context) {
-    if (!inContext(context)) {
-      return null;
+    /**
+     * Initialize module
+     */
+    public boolean initializeModule() {
+	//Argo.log.info ("+--------------------------+");
+	//Argo.log.info ("| Plugin Java RTE enabled! |");
+	//Argo.log.info ("+--------------------------+");
+	return true;
+    }
+
+    public Object[] buildContext(JMenuItem a, String b) {
+	return new Object[] {
+	    a, b
+	};
+    }
+
+    public boolean inContext(Object[] o) {
+	if (o.length < 2) return false;
+	// We are in context for any JMenuItem.
+	if (o[0] instanceof JMenuItem && o[1].equals(PluggableMenu.KEY_TOOLS)) {
+	    return true;
 	}
-    JMenuItem _menuItem = new JMenuItem("Synchronize model/code...");
+	return false;
+    }
+
+    public boolean isModuleEnabled() { return true; }
+    public Vector getModulePopUpActions(Vector v, Object o) { return null; }
+    public boolean shutdownModule() { return true; }
+    public String getModuleName() { return "ActionSynchronize"; }
+    public String getModuleDescription() { return "Menu Item for Synchronizing Model and Java Code"; }
+    public String getModuleAuthor() { return "Thomas Neustupny"; }
+    public String getModuleVersion() { return "0.11.3"; }
+    public String getModuleKey() { return "module.language.java.rte"; }
+
+    public JMenuItem getMenuItem(JMenuItem mi, String s) {
+	return getMenuItem(buildContext(mi, s));
+    }
+
+    public JMenuItem getMenuItem(Object [] context) {
+	if (!inContext(context)) {
+	    return null;
+	}
+	JMenuItem _menuItem = new JMenuItem("Synchronize model/code...");
 	_menuItem.addActionListener(this);
-    return _menuItem;
-  }
+	return _menuItem;
+    }
 }

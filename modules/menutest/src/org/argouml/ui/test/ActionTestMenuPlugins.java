@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -43,7 +44,8 @@ import javax.swing.*;
  *  @since  0.9.4
  */
 public class ActionTestMenuPlugins extends UMLAction
-implements PluggableMenu {
+    implements PluggableMenu 
+{
     /**
      * This is not publicly creatable.
      */
@@ -70,7 +72,9 @@ implements PluggableMenu {
     }
 
     public Object[] buildContext(JMenuItem a, String b) {
-        return new Object[] { a, b };
+        return new Object[] {
+	    a, b
+	};
     }
 
     public boolean inContext(Object[] o) {
@@ -96,7 +100,7 @@ implements PluggableMenu {
     }
 
     public JMenuItem getMenuItem(Object [] context) {
-        if (! inContext(context)) {
+        if (!inContext(context)) {
 	    return null;
 	}
 
