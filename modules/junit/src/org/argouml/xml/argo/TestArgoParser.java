@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,16 +31,17 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.argouml.kernel.Project;
 import org.argouml.persistence.LastLoadInfo;
 import org.argouml.persistence.OpenException;
 import org.argouml.persistence.ZargoFilePersister;
 
-/** Testcase to load projects without exception. */
+/**
+ * Testcase to load projects without exception.
+ */
 public class TestArgoParser extends TestCase {
     /**
      * The constructor.
-     * 
+     *
      * @param name the name
      */
     public TestArgoParser(String name) {
@@ -67,27 +68,27 @@ public class TestArgoParser extends TestCase {
      * Tests that a project is loadable.
      *
      * @param filename of the project file to load
-     * @throws Exception if something goes wrong.
+     * @throws OpenException if something goes wrong.
      */
     private void loadProject(String filename) throws OpenException {
-        File file= new File(filename);
+        File file = new File(filename);
         ZargoFilePersister persister = new ZargoFilePersister();
-        Project p = persister.doLoad(file);
+        persister.doLoad(file);
         assertTrue("Load Status for " + filename + ".",
                LastLoadInfo.getInstance().getLastLoadStatus());
     }
 
     /**
      * Test loading a zargo.
-     * 
+     *
      * @throws Exception when e.g. the filke is not found
      */
-    public void testLoadProject1() throws Exception { 
+    public void testLoadProject1() throws Exception {
         loadProject("file:testmodels/Empty.zargo");
     }
     /**
      * Test loading a zargo.
-     * 
+     *
      * @throws Exception when e.g. the filke is not found
      */
     public void testLoadProject2() throws Exception {
@@ -103,12 +104,12 @@ public class TestArgoParser extends TestCase {
         try {
             url = new URL("file:testmodels/Garbage.zargo");
             ZargoFilePersister persister = new ZargoFilePersister();
-            Project p = persister.doLoad(url);
-            assertTrue("Load Status", 
+            persister.doLoad(url);
+            assertTrue("Load Status",
                     !LastLoadInfo.getInstance().getLastLoadStatus());
         } catch (java.net.MalformedURLException e) {
             assertTrue("Incorrect test case.", false);
-        } catch (Exception io) {
+        } catch (OpenException io) {
             // This is the normal case.
             loaded = false;
         }

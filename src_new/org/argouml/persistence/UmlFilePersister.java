@@ -31,7 +31,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.List;
@@ -55,42 +54,43 @@ import org.xml.sax.SAXException;
 
 /**
  * To persist to and from argo (xml file) storage.
- * 
+ *
  * @author Bob Tarling
  */
 public class UmlFilePersister extends AbstractFilePersister {
-    
-    private static final Logger LOG = 
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
         Logger.getLogger(UmlFilePersister.class);
-    
+
     private static final String ARGO_TEE = "/org/argouml/persistence/argo2.tee";
 
     /**
      * The constructor.
-     *  
      */
     public UmlFilePersister() {
     }
-    
+
     /**
      * @see org.argouml.persistence.AbstractFilePersister#getExtension()
      */
     public String getExtension() {
         return "uml";
     }
-    
+
     /**
      * @see org.argouml.persistence.AbstractFilePersister#getDesc()
      */
     protected String getDesc() {
         return "ArgoUML project file";
     }
-    
+
     /**
      * It is being considered to save out individual
      * xmi's from individuals diagrams to make
      * it easier to modularize the output of Argo.
-     * 
+     *
      * @param file The file to write.
      * @param project the project to save
      * @throws SaveException when anything goes wrong
@@ -100,21 +100,21 @@ public class UmlFilePersister extends AbstractFilePersister {
      */
     public void doSave(Project project, File file)
         throws SaveException {
-        
+
         // frank: first backup the existing file to name+"#"
-        File tempFile = new File( file.getAbsolutePath() + "#");
-        File backupFile = new File( file.getAbsolutePath() + "~");
+        File tempFile = new File(file.getAbsolutePath() + "#");
+        File backupFile = new File(file.getAbsolutePath() + "~");
         if (tempFile.exists()) {
             tempFile.delete();
         }
-        
+
         PrintWriter writer = null;
         try {
             if (file.exists()) {
                 copyFile(tempFile, file);
             }
             // frank end
-    
+
             project.setFile(file);
             project.setVersion(ArgoVersion.getVersion());
             project.setPersistenceVersion(PERSISTENCE_VERSION);
@@ -125,10 +125,11 @@ public class UmlFilePersister extends AbstractFilePersister {
             writer =
                 new PrintWriter(new BufferedWriter(new OutputStreamWriter(
                         stream, encoding)));
-            
+
             Integer indent = new Integer(4);
-            
-            writer.println("<?xml version = \"1.0\" encoding = \"" + encoding + "\" ?>");
+
+            writer.println("<?xml version = \"1.0\" "
+                    + "encoding = \"" + encoding + "\" ?>");
             writer.println("<uml version=\"" + PERSISTENCE_VERSION + "\">");
             // Write out header section
             try {
@@ -136,7 +137,8 @@ public class UmlFilePersister extends AbstractFilePersister {
                     .read(ARGO_TEE);
                 OCLExpander expander = new OCLExpander(templates);
                 expander.expand(writer, project, "  ", "");
-                //expander.expand(writer, project, "  "); //For next version of GEF
+                // For next version of GEF:
+                // expander.expand(writer, project, "  ");
             } catch (ExpansionException e) {
                 throw new SaveException(e);
             }
@@ -144,7 +146,7 @@ public class UmlFilePersister extends AbstractFilePersister {
             // Write out non xmi sections
             int size = project.getMembers().size();
             for (int i = 0; i < size; i++) {
-                ProjectMember projectMember = 
+                ProjectMember projectMember =
                     (ProjectMember) project.getMembers().elementAt(i);
                 if (projectMember.getType().equalsIgnoreCase("xmi")) {
                     if (LOG.isInfoEnabled()) {
@@ -155,9 +157,9 @@ public class UmlFilePersister extends AbstractFilePersister {
                     projectMember.save(writer, indent);
                 }
             }
-            
+
             for (int i = 0; i < size; i++) {
-                ProjectMember projectMember = 
+                ProjectMember projectMember =
                     (ProjectMember) project.getMembers().elementAt(i);
                 if (!projectMember.getType().equalsIgnoreCase("xmi")) {
                     if (LOG.isInfoEnabled()) {
@@ -168,19 +170,19 @@ public class UmlFilePersister extends AbstractFilePersister {
                     projectMember.save(writer, indent);
                 }
             }
-            
+
             writer.println("</uml>");
-            
+
             writer.flush();
-            
+
             stream.close();
 
             String path = file.getParent();
             if (LOG.isInfoEnabled()) {
                 LOG.info("Dir ==" + path);
             }
-            
-            // if save did not raise an exception 
+
+            // if save did not raise an exception
             // and name+"#" exists move name+"#" to name+"~"
             // this is the correct backup file
             if (backupFile.exists()) {
@@ -195,28 +197,29 @@ public class UmlFilePersister extends AbstractFilePersister {
         } catch (Exception e) {
             LOG.error("Exception occured during save attempt", e);
             writer.close();
-            
-            // frank: in case of exception 
+
+            // frank: in case of exception
             // delete name and mv name+"#" back to name if name+"#" exists
             // this is the "rollback" to old file
             file.delete();
-            tempFile.renameTo( file);
+            tempFile.renameTo(file);
             // we have to give a message to user and set the system to unsaved!
             throw new SaveException(e);
         }
 
         writer.close();
     }
-    
+
     /**
      * @see org.argouml.persistence.ProjectFilePersister#loadProject(java.net.URL)
      */
     public Project doLoad(URL url) throws OpenException {
         try {
             // First scan fist line of real XML to get version number
-            
-            // If version < PERSISTENCE_VERSION call stylesheets and return final url
-            
+
+            // If version < PERSISTENCE_VERSION call stylesheets
+            // and return final url
+
             XmlInputStream inputStream =
                         new XmlInputStream(url.openStream(), "argo");
 
@@ -225,9 +228,9 @@ public class UmlFilePersister extends AbstractFilePersister {
             parser.readProject(p, inputStream);
 
             List memberList = parser.getMemberList();
-            
+
             LOG.info(memberList.size() + " members");
-            
+
             MemberFilePersister persister = null;
             for (int i = 0; i < memberList.size(); ++i) {
                 if (memberList.get(i).equals("pgml")) {
@@ -253,30 +256,34 @@ public class UmlFilePersister extends AbstractFilePersister {
             throw new OpenException(e);
         }
     }
-    
+
     /**
-     * Transform a string of XML data according to the service required
+     * Transform a string of XML data according to the service required.
+     *
      * @param xml The original XML
      * @param xslt the XSLT transformation
      * @return the transformed XML
      * @throws TransformerException on XSLT transformation error
      */
     public static final String transform(String xml, String xslt)
-            throws TransformerException {
+    	throws TransformerException {
 
-        StreamSource xsltStreamSource = new StreamSource(new StringReader(xslt));
+        StreamSource xsltStreamSource =
+            new StreamSource(new StringReader(xslt));
         return transform(xml, xsltStreamSource);
     }
-    
+
     /**
-     * Transform a string of XML data according to the service required
+     * Transform a string of XML data according to the service required.
+     *
      * @param xml The original XML
      * @param xsltStreamSource the transformation stream
      * @return the transformed XML
      * @throws TransformerException on XSLT transformation error
      */
-    public static final String transform(String xml, StreamSource xsltStreamSource)
-            throws TransformerException {
+    public static final String transform(String xml,
+            StreamSource xsltStreamSource)
+    	throws TransformerException {
 
         TransformerFactory factory = TransformerFactory.newInstance();
         Transformer transformer = factory.newTransformer(xsltStreamSource);

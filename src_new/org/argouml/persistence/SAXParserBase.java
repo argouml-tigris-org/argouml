@@ -44,8 +44,9 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 
 public abstract class SAXParserBase extends DefaultHandler {
-    
-    /** logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(SAXParserBase.class);
 
     ////////////////////////////////////////////////////////////////
@@ -58,7 +59,6 @@ public abstract class SAXParserBase extends DefaultHandler {
 
     /**
      * The constructor.
-     * 
      */
     public SAXParserBase() { }
 
@@ -66,30 +66,30 @@ public abstract class SAXParserBase extends DefaultHandler {
     // static variables
 
     /**
-     * Switching this to true gives some extra logging messages. 
+     * Switching this to true gives some extra logging messages.
      */
     protected static final boolean DBG = false;
-    
+
     //protected static  boolean       _verbose       = false;
 
     /**
      * This acts as a stack of elements. startElement places
      * an item on the stack end endElement removes it.
      */
-    private   static  XMLElement    elements[]    = new XMLElement[100];
-    
+    private   static  XMLElement[]  elements      = new XMLElement[100];
+
     /**
      * The number of items actually in use on the elements stack.
      */
     private   static  int           nElements     = 0;
-    
+
     /**
      * This acts as a stack of elements. startElement places
      * an item on the stack end endElement removes it.
      */
-    private   static  XMLElement    freeElements[] = new XMLElement[100];
+    private   static  XMLElement[]  freeElements  = new XMLElement[100];
     private   static  int           nFreeElements = 0;
-    
+
     private   static  boolean       stats         = true;
     private   static  long          parseTime     = 0;
 
@@ -105,12 +105,12 @@ public abstract class SAXParserBase extends DefaultHandler {
      * @param s true if statistics have to be shown
      */
     public void    setStats(boolean s) { stats = s; }
-    
+
     /**
      * @return  true if statistics have to be shown
      */
     public boolean getStats()              { return stats; }
-    
+
     /**
      * @return the parsing time
      */
@@ -121,23 +121,21 @@ public abstract class SAXParserBase extends DefaultHandler {
 
     /**
      * @param is the inputstream of the project to read
-     * @throws IOException for a file problem
-     * @throws ParserConfigurationException in case of a parser problem
      * @throws SAXException when parsing xml
      */
     public void parse(InputStream is) throws SAXException {
 
         long start, end;
-        
+
         SAXParserFactory factory = SAXParserFactory.newInstance();
         factory.setNamespaceAware(false);
         factory.setValidating(false);
-        
+
         try {
             SAXParser parser = factory.newSAXParser();
             InputSource input = new InputSource(is);
             input.setSystemId(getJarResource("org.argouml.kernel.Project"));
-        
+
             start = System.currentTimeMillis();
             parser.parse(input, this);
             end = System.currentTimeMillis();
@@ -161,7 +159,7 @@ public abstract class SAXParserBase extends DefaultHandler {
      * @param e the element.
      * @throws SAXException on any error parsing the element.
      */
-    protected abstract void handleStartElement(XMLElement e) 
+    protected abstract void handleStartElement(XMLElement e)
         throws SAXException;
     /**
      * Implement in the concrete class to handle reaching the end tag of
@@ -169,24 +167,24 @@ public abstract class SAXParserBase extends DefaultHandler {
      * @param e the element.
      * @throws SAXException on any error parsing the element.
      */
-    protected abstract void handleEndElement(XMLElement e) 
+    protected abstract void handleEndElement(XMLElement e)
         throws SAXException;
 
     ////////////////////////////////////////////////////////////////
     // non-abstract methods
 
     /**
-     * @see org.xml.sax.ContentHandler#startElement(java.lang.String, 
-     * java.lang.String, java.lang.String, org.xml.sax.Attributes)
+     * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
+     *         java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     public void startElement(String uri,
-            String localname, 
-            String name, 
+            String localname,
+            String name,
             Attributes atts) throws SAXException {
         if (isElementOfInterest(name)) {
 
             XMLElement element = createXmlElement(name, atts);
-            
+
             if (LOG.isDebugEnabled()) {
                 StringBuffer buf = new StringBuffer();
                 buf.append("START: ").append(name).append(' ').append(element);
@@ -198,7 +196,7 @@ public abstract class SAXParserBase extends DefaultHandler {
                 }
                 LOG.debug(buf.toString());
             }
-            
+
             elements[nElements++] = element;
             handleStartElement(element);
         }
@@ -221,32 +219,33 @@ public abstract class SAXParserBase extends DefaultHandler {
         e.resetText();
         return e;
     }
-    
+
     /**
-     * @see org.xml.sax.ContentHandler#endElement(java.lang.String, 
-     * java.lang.String, java.lang.String)
+     * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
+     *         java.lang.String, java.lang.String)
      */
-    public void endElement(String uri, String localname, String name) 
+    public void endElement(String uri, String localname, String name)
         throws SAXException {
         if (isElementOfInterest(name)) {
             XMLElement e = elements[--nElements];
             if (LOG.isDebugEnabled()) {
                 StringBuffer buf = new StringBuffer();
-                buf.append("END: " + e.getName() + " [" 
+                buf.append("END: " + e.getName() + " ["
             	       + e.getText() + "] " + e + "\n");
                 for (int i = 0; i < e.getNumAttributes(); i++) {
-                    buf.append("   ATT: " + e.getAttributeName(i) + " " 
+                    buf.append("   ATT: " + e.getAttributeName(i) + " "
                     	   + e.getAttributeValue(i) + "\n");
                 }
                 LOG.debug(buf);
-            }     
+            }
             handleEndElement(e);
         }
     }
-    
+
     /**
      * Determine if an element of the given name is of interest to
      * the parser. The base implementation assumes always true.
+     *
      * @param name the element name.
      * @return true if the element name is of interest.
      */
@@ -257,7 +256,7 @@ public abstract class SAXParserBase extends DefaultHandler {
     /**
      * @see org.xml.sax.ContentHandler#characters(char[], int, int)
      */
-    public void characters(char[] ch, int start, int length) 
+    public void characters(char[] ch, int start, int length)
         throws SAXException {
         for (int i = 0; i < nElements; i++) {
             XMLElement e = elements[i];
@@ -271,19 +270,19 @@ public abstract class SAXParserBase extends DefaultHandler {
 
 
     /**
-     * @see org.xml.sax.EntityResolver#resolveEntity(java.lang.String, 
-     * java.lang.String)
+     * @see org.xml.sax.EntityResolver#resolveEntity(java.lang.String,
+     *         java.lang.String)
      */
-    public InputSource resolveEntity (String publicId, String systemId) 
+    public InputSource resolveEntity (String publicId, String systemId)
         throws SAXException {
         try {
 	    URL testIt = new URL(systemId);
             InputSource s = new InputSource(testIt.openStream());
             return s;
         } catch (Exception e) {
-            LOG.info("NOTE: Could not open DTD " + systemId 
+            LOG.info("NOTE: Could not open DTD " + systemId
                     + " due to exception");
-             
+
             String dtdName = systemId.substring(systemId.lastIndexOf('/') + 1);
             String dtdPath = "/org/argouml/persistence/" + dtdName;
             InputStream is = SAXParserBase.class.getResourceAsStream(dtdPath);
@@ -309,12 +308,13 @@ public abstract class SAXParserBase extends DefaultHandler {
         String classFile = cls.replace('.', fileSep.charAt(0)) + ".class";
         ClassLoader thisClassLoader = this.getClass().getClassLoader();
         URL url = thisClassLoader.getResource(classFile);
-        if ( url != null ) {
+        if (url != null) {
             String urlString = url.getFile();
             int idBegin = urlString.indexOf("file:");
             int idEnd = urlString.indexOf("!");
-            if (idBegin > -1 && idEnd > -1 && idEnd > idBegin)
-            jarFile = urlString.substring(idBegin + 5, idEnd);
+            if (idBegin > -1 && idEnd > -1 && idEnd > idBegin) {
+                jarFile = urlString.substring(idBegin + 5, idEnd);
+            }
         }
 
         return jarFile;

@@ -25,9 +25,6 @@
 package org.argouml.persistence;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.net.MalformedURLException;
 
 import junit.framework.TestCase;
 
@@ -35,14 +32,13 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.CoreFactory;
-import org.argouml.persistence.XmiFilePersister;
 
 import ru.novosoft.uml.foundation.core.MOperation;
 
 /**
  * Testclass for the XMIReader. Placeholder for all saving/loading tests
  * concerning XMIReader (like the dreaded ClassCastException issues).
- * @author jaap.branderhorst@xs4all.nl	
+ * @author jaap.branderhorst@xs4all.nl
  * @since Jan 17, 2003
  */
 public class TestXmiFilePersister extends TestCase {
@@ -77,7 +73,7 @@ public class TestXmiFilePersister extends TestCase {
             fail("Save resulted in an exception");
         }
     }
-    
+
     /**
      * This is a regression test for issue 1504. Unfortunately this test does
      * not work since ArgoUML crashes on a classcastexception that is catched by
@@ -88,12 +84,11 @@ public class TestXmiFilePersister extends TestCase {
 
         try {
             File file = new File("test.xmi");
-    
+
             XmiFilePersister persister = new XmiFilePersister();
-          
-            Project p = null;
-            p = ProjectManager.getManager().makeEmptyProject();
-    
+
+            ProjectManager.getManager().makeEmptyProject();
+
             persister.doLoad(file);
         } catch (OpenException e) {
             fail("Load resulted in an exception");
