@@ -55,18 +55,51 @@ import org.tigris.gef.presentation.Fig;
  */
 public final class TargetManager {
 
+    /**
+     * The manager of the history of targets. Everytimes the user (or the program)
+     * selects a new target, this is recorded in the history. Via navigateBack and
+     * navigateForward, the user can browse through the history just like in an 
+     * ordinary internet browser.
+     * @author jaap.branderhorst@xs4all.nl
+     */
     private class HistoryManager implements TargetListener {
+        /**
+         * The history with targets
+         */
         private List _history = new ArrayList();
         
+        /**
+         * Flag to indicate if the current settarget was instantiated by a
+         * navigateBack action.
+         */
         private boolean _navigateBackward;
 
+        /**
+         * The pointer to the current target in the history
+         */
         private int _currentTarget = -1;
 
+        /**
+         * Default constructor that registrates the history manager as target 
+         * listener with the target manager.
+         *
+         */
         private HistoryManager() {
             addTargetListener(this);
         }
 
+        /**
+         * Puts some target into the history (if needed). Updates both the history
+         * as the pointer to indicate the target.
+         * @param target The target to put into the history
+         */
         private void putInHistory(Object target) {
+            // only targets we didn't have allready count
+            target = target instanceof Fig ? ((Fig)target).getOwner() : target;            
+            if (_currentTarget > -1) {
+                Object oldTarget = ((WeakReference) _history.get(_currentTarget)).get();   
+                if (oldTarget == target) return;             
+            }
             if (target != null && !_navigateBackward) {                
                 if (_currentTarget+1 == _history.size()) {                
                     _history.add(new WeakReference(target));
@@ -90,6 +123,11 @@ public final class TargetManager {
             }
         }
         
+        /**
+         * Navigate one target forward in history. Throws an illegalstateException
+         * if not possible.
+         *
+         */
         private void navigateForward() {
             if (_currentTarget >= _history.size()-1) 
                 throw new IllegalStateException("NavigateForward is not allowed " +
@@ -98,6 +136,11 @@ public final class TargetManager {
             setTarget(((WeakReference)_history.get(++_currentTarget)).get());
         }
         
+        /**
+         * Navigate one step back in history. Throws an illegalstateexception if
+         * not possible.
+         *
+         */
         private void navigateBackward() {
             if (_currentTarget == 0) {
                 throw new IllegalStateException("NavigateBackward is not allowed " +
@@ -109,10 +152,18 @@ public final class TargetManager {
             _navigateBackward = false;
         }
         
+        /**
+         * Checks if it's possible to navigate back.
+         * @return true if it's possible to navigate back.
+         */
         private boolean navigateBackPossible() {
             return _currentTarget > 0;
         }
         
+        /**
+         * Checks if it's possible to navigate forward         
+         * @return true if it's possible to navigate forward
+         */
         private boolean navigateForwardPossible() {
             return _currentTarget < _history.size()-1;
         }
@@ -139,6 +190,10 @@ public final class TargetManager {
             putInHistory(e.getNewTargets()[0]);
         }
         
+        /**
+         * Cleans the history in total.
+         *
+         */
         private void clean() {
             _history = new ArrayList();
             _currentTarget = -1;
@@ -422,7 +477,12 @@ public final class TargetManager {
     public Fig getFigTarget() {
         return _figTarget;
     }
-
+    
+    /**
+     * Calculates the most probable 'fig-form' of some target.
+     * @param target the target to calculate the 'fig-form' for.
+     * @return The fig-form.
+     */
     private Fig determineFigTarget(Object target) {
         if (!(target instanceof Fig)) {
 
@@ -450,6 +510,11 @@ public final class TargetManager {
 
     }
 
+    /**
+     * Calculates the modeltarget.
+     * @param target The target to calculate the modeltarget for
+     * @return The modeltarget
+     */
     private Object determineModelTarget(Object target) {
         if (target instanceof Fig) {
             Object owner = ((Fig) target).getOwner();
@@ -498,6 +563,10 @@ public final class TargetManager {
         return _historyManager.navigateBackPossible();
     }
     
+    /**
+     * Cleans the history. Needed for the JUnit tests.
+     *
+     */
     void cleanHistory() {
         _historyManager.clean();
     }

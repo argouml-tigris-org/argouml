@@ -75,6 +75,7 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.ui.targetmanager.TargettableModelView;
 import org.argouml.uml.Profile;
 import org.argouml.uml.ProfileJava;
@@ -592,10 +593,9 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
         }
         return navigated;
     }
-
+    
     public void navigateBackAction() {
-        boolean attempt = true;
-        navigateBack(attempt);
+        TargetManager.getInstance().navigateBackward();
     }
 
     public boolean navigateForward(boolean attempt) {
@@ -610,26 +610,15 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
     }
 
     public void navigateForwardAction() {
-        boolean attempt = true;
-        navigateForward(attempt);
+        TargetManager.getInstance().navigateForward();
     }
 
     public boolean isNavigateForwardEnabled() {
-        boolean enabled = false;
-        Iterator iter = _navListeners.iterator();
-        while (iter.hasNext() && !enabled) {
-            enabled = ((NavigationListener) iter.next()).isNavigateForwardEnabled();
-        }
-        return enabled;
+        return TargetManager.getInstance().navigateForwardPossible();
     }
 
     public boolean isNavigateBackEnabled() {
-        boolean enabled = false;
-        Iterator iter = _navListeners.iterator();
-        while (iter.hasNext() && !enabled) {
-            enabled = ((NavigationListener) iter.next()).isNavigateBackEnabled();
-        }
-        return enabled;
+        return TargetManager.getInstance().navigateBackPossible();
     }
 
     /**    Registers a listener for navigation events.
