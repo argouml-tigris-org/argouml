@@ -255,7 +255,7 @@ public class NsumlObjectFactory implements UmlObjectFactory {
 		}
 		// TODO Figure out how to put in a generic callback to initialize
 		// AbstractUmlModelFactory.initialize(expression);
-		return obj;
+		return RefBaseObjectProxy.newInstance(obj);
 	}
 
 }
