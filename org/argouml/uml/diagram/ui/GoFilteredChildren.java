@@ -36,6 +36,12 @@ import org.argouml.ui.AbstractGoRule;
 import org.tigris.gef.util.Predicate;
 import org.tigris.gef.util.PredicateTrue;
 
+/**
+ * @deprecated any use of this class should be replaced by
+ *             an AbstractGoRule subclass, because the use of the GEF Predicate
+ *             class is not necessary now that we have 
+ *             org.argouml.model.ModelFacade#isA(...) methods.
+ */
 public class GoFilteredChildren extends AbstractGoRule {
 
   ////////////////////////////////////////////////////////////////
