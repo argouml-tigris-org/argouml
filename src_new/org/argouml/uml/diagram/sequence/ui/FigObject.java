@@ -32,6 +32,7 @@ import java.awt.event.MouseListener;
 import java.util.Iterator;
 
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
@@ -40,12 +41,19 @@ import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
+import ru.novosoft.uml.MElementEvent;
+
 /**
  * Fig to show an object on a sequence diagram
  * @author jaap.branderhorst@xs4all.nl
  * Aug 11, 2003
  */
 public class FigObject extends FigNodeModelElement implements MouseListener {
+
+    /**
+     * The margin between the outer box and the name and stereotype text box.
+     */
+    public final static int MARGIN = 10;
 
     /**
      * The distance between two rows in the object rectangle.
@@ -79,6 +87,23 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
      * attached)
      */
     private FigLine _lifeLine;
+
+    /**
+     * The comma seperated list of base names of the classifierRole(s) that this object
+     * represents.
+     */
+    private String _baseNames = "";
+
+    /**
+     * The comma seperated list of names of the classifierRole(s) that this object
+     * represents.
+     */
+    private String _classifierRoleNames = "";
+
+    /**
+     * The name of the object (the owner of this fig).
+     */
+    private String _objectName = "";
 
     /**
      * Default constructor. Constructs the object rectangle, the lifeline, 
@@ -164,39 +189,16 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
 
     /**
      * Constructs the contents of the name text box and upates the name text box
-     * accordingly. 
+     * accordingly. The contents of the name text box itself are NOT updated.
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
-        Object object = this.getOwner();
-        String objectName = getBeautifiedName(object);
-        String classifierRoleName = "";
-        String classifiersName = "";
-        Iterator it = ModelFacade.getClassifiers(object).iterator();
-        // multiple classifier roles shouldn't be the case. If there are multiple
-        // classifier roles, we represent each of them seperated with a ,
-        while (it.hasNext()) {
-            Object classifierRole = it.next();
-            classifierRoleName += getBeautifiedName(classifierRole);
-            String basesName = "";
-            Iterator it2 = ModelFacade.getBases(classifierRole).iterator();
-            while (it2.hasNext()) {
-                basesName += getBeautifiedName(it2.next());
-                if (it2.hasNext()) {
-                    basesName += ", ";
-                }
-            }
-            classifiersName += basesName;
-            if (it.hasNext()) {
-                classifierRoleName += ", ";
-                classifiersName += ", ";
-            }
-        }
         String nameText =
-            (objectName + "/" + classifierRoleName + ":" + classifiersName)
+            (_objectName + "/" + _classifierRoleNames + ":" + _baseNames)
                 .trim();
         _name.setText(nameText);
         center(_name);
+        damage();
     }
 
     /**
@@ -208,19 +210,11 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     }
 
     private void center(FigText figText) {
-        figText.setX(
-            this.getX() + this.getHalfWidth() - figText.getHalfWidth());
-        updateBounds();
-        /*
-        if (figText.getWidth() >= this.getWidth()) {
-            int margin = 10;
-            this.setWidth(figText.getWidth() + 2 * margin);         
-            Layer lay = Globals.curEditor().getLayerManager().getActiveLayer();
-            if (lay instanceof SequenceDiagramLayout) {
-                ((SequenceDiagramLayout)lay).putInPosition(this);
-            }
-        }
-        */
+        int newX = this.getX() + this.getHalfWidth() - figText.getHalfWidth();
+        if (figText.getX() != newX) {
+            figText.setX(newX);
+            updateBounds();
+        }        
     }
 
     /**
@@ -233,10 +227,10 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     public void setBounds(int x, int y, int w, int h) {
         Rectangle oldBounds = getBounds();
         if (_name.getWidth() > w) {
-            w = _name.getWidth() + 2 * 10;
+            w = _name.getWidth() + 2 * MARGIN;
         }
         if (_stereo.getWidth() > w) {
-            w = _stereo.getWidth() + 2 * 10;
+            w = _stereo.getWidth() + 2 * MARGIN;
         }
         _name.setCenter(
             new Point(
@@ -253,7 +247,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
             _outerBox.getY() + _outerBox.getHeight(),
             0,
             h - _outerBox.getHeight());
-        calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+        calcBounds(); //_x = x; _y = y; _w = w; _h = h;		
         firePropChange("bounds", oldBounds, getBounds());
     }
 
@@ -312,12 +306,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
         _y = bounds.y;
         _h = bounds.height;
         _w = bounds.width;
-        if (oldBounds.width != bounds.width) {
-            Layer lay = Globals.curEditor().getLayerManager().getActiveLayer();
-            if (lay instanceof SequenceDiagramLayout) {
-                ((SequenceDiagramLayout)lay).putInPosition(this);
-            }
-        }
+        
     }
 
     /**
@@ -328,7 +317,9 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     protected void updateBounds() {
         Rectangle bounds = getBounds();
         bounds.width =
-            Math.max(_name.getWidth() + 2 * 10, _stereo.getWidth() + 2 * 10);
+            Math.max(
+                _name.getWidth() + 2 * MARGIN,
+                _stereo.getWidth() + 2 * MARGIN);
         setBounds(bounds);
     }
 
@@ -391,6 +382,105 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
      */
     public int getLineWidth() {
         return _outerBox.getLineWidth();
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     */
+    protected void updateListeners(Object newOwner) {
+        if (ModelFacade.isAInstance(newOwner)) {
+            Object oldOwner = getOwner();
+            UmlModelEventPump pump = UmlModelEventPump.getPump();
+            pump.removeModelEventListener(this, oldOwner);
+            pump.addModelEventListener(
+                this,
+                newOwner,
+                new String[] { "name", "stereotype" });
+            Iterator it = ModelFacade.getClassifiers(newOwner).iterator();
+            while (it.hasNext()) {
+                Object classifierRole = it.next();
+                pump.removeModelEventListener(this, classifierRole);
+                pump.addModelEventListener(
+                    this,
+                    classifierRole,
+                    new String[] { "name", "base" });
+                Iterator it2 = ModelFacade.getBases(classifierRole).iterator();
+                while (it2.hasNext()) {
+                    Object base = it2.next();
+                    pump.addModelEventListener(this, base, "name");
+                }
+            }
+        }
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     */
+    protected void modelChanged(MElementEvent mee) {
+        boolean nameChanged = false;
+        if (mee.getSource() == getOwner() && mee.getName().equals("name")) {
+            updateObjectName();
+            nameChanged = true;
+        } else if (
+            ModelFacade.isAClassifierRole(mee.getSource())
+                && mee.getName().equals("name")) {
+            updateClassifierRoleNames();
+            nameChanged = true;
+        } else if (
+            mee.getSource() == getOwner()
+                && mee.getName().equals("stereotype")) {
+            updateStereotypeText();
+        } else if (mee.getName().equals("name")) {
+            updateBaseNames();
+            nameChanged = true;
+        }
+        if (nameChanged) {
+            updateNameText();
+        }
+    }
+
+    private void updateClassifierRoleNames() {
+        String roleNames = "";
+        Iterator it = ModelFacade.getClassifiers(getOwner()).iterator();
+        while (it.hasNext()) {
+            roleNames += getBeautifiedName(it.next());
+            if (it.hasNext()) {
+                roleNames += ", ";
+            }
+        }
+        _classifierRoleNames = roleNames;
+    }
+
+    private void updateBaseNames() {
+        String baseNames = "";
+        Iterator it = ModelFacade.getClassifiers(getOwner()).iterator();
+        while (it.hasNext()) {
+            Iterator it2 = ModelFacade.getBases(it.next()).iterator();
+            while (it2.hasNext()) {
+                baseNames += getBeautifiedName(it2.next());
+                if (it2.hasNext()) {
+                    baseNames += ",";
+                }
+            }
+            if (it.hasNext()) {
+                baseNames += ",";
+            }
+        }
+        _baseNames = baseNames;
+    }
+
+    private void updateObjectName() {
+        _objectName = getBeautifiedName(getOwner());
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
+     */
+    public void renderingChanged() {
+        updateBaseNames();
+        updateClassifierRoleNames();
+        updateObjectName();
+        super.renderingChanged();
     }
 
 }
