@@ -235,7 +235,8 @@ public class ZargoFilePersister extends AbstractFilePersister {
                 // we want to do this by hand from the zipped stream.
                 ArgoParser.getInstance().readProject(url, zis, false);
                 p = ArgoParser.getInstance().getProject();
-                ArgoParser.getInstance().setProject(null); // clear up project refs
+                // clear up project refs:
+                ArgoParser.getInstance().setProject(null); 
                 zis.close();
             } catch (IOException e) {
                 // exception can occur both due to argouml code as to J2SE
