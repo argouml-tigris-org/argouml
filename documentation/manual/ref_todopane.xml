@@ -271,7 +271,9 @@ The To-Do Pane. Need to decide if it is To-Do, To Do or ToDo.
     <title>Item Count</title>
 
     <para>To the right of the flat/hierarchical button is a count of the number
-      of to-do items currently found<!--, highlighted in yellow-->.
+      of to-do items currently found. 
+      It will be highlighted in yellow when the number of to-do items grows 
+      above 50 todo items, and red when above 100.
       <!-- This is followed
       by <literal>+</literal> to indicate the last change in number was an
       increase or <literal>-</literal> to indicate the last change in number
