@@ -37,6 +37,7 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 
 import javax.swing.event.*;
+import javax.swing.text.BadLocationException;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -115,12 +116,19 @@ public class UMLTextField
     }
     
 	/**
-	 * Called when an UMLTextField is entered.
+	 * Called when an UMLTextField is left.
 	 * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
 	 */
     public void targetChanged() {
         _property.targetChanged();
-        update();
+        // update();
+        
+        _target = _container.getTarget();
+        String oldText = getText();
+        String newText = _property.getProperty(_container);
+        TextSetter textSetter = new TextSetter(newText, this);
+        SwingUtilities.invokeLater(textSetter);
+        
     }
     public void targetReasserted() {
     }
@@ -151,7 +159,10 @@ public class UMLTextField
             //    if event source is unknown or 
             //       the event source is the container's target
             //          then update the field
-            if (eventSource == null || eventSource == _target) {
+            if ((eventSource == null || eventSource == _target) && 
+            	((event.getOldValue() == null && event.getNewValue() != null) ||
+            	(event.getNewValue() == null && event.getOldValue() != null) ||
+            	(!event.getOldValue().equals(event.getNewValue())))) {
                 update();
                 // TextSetter textSetter = new TextSetter((String)event.getNewValue(), this);
 	            // SwingUtilities.invokeLater(textSetter);
@@ -182,13 +193,16 @@ public class UMLTextField
         String newText = _property.getProperty(_container);
         // Update the text if we have changed from or to nothing, or if the old
         // and new text are different.
+        
         if ((oldText == null)
             || (newText == null)
             || (!(oldText.equals(newText)))) {
+            
             TextSetter textSetter = new TextSetter(newText, this);
             SwingUtilities.invokeLater(textSetter);
-            
+           
         }
+        
         // Now look at the associated NSUML element and see if we need to do
         // anything special. Discard if we are null. As a start we need to mark
         // this for saving.
@@ -306,10 +320,9 @@ public class UMLTextField
      * @see javax.swing.event.DocumentListener#removeUpdate(DocumentEvent)
      */
     public void removeUpdate(final DocumentEvent p1) {
-        if (_viaUserInput) {
-            _textChanged =
-                (_oldPropertyValue != null)
-                    && !getText().equals(_oldPropertyValue);
+        if (_viaUserInput) {	
+            	_textChanged =
+                	p1.getLength() > 0;
         }
         handleEvent();
     }
@@ -320,7 +333,7 @@ public class UMLTextField
         if (_viaUserInput) {
             _textChanged =
                 // (_oldPropertyValue != null) &&
-                     !getText().equals(_oldPropertyValue);
+                    p1.getLength() > 0;
         }
         handleEvent();
     }

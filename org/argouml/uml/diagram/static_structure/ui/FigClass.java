@@ -1002,4 +1002,18 @@ public class FigClass extends FigNodeModelElement {
     firePropChange("bounds", oldBounds, getBounds());
   }
 
+	/**
+	 * @see org.tigris.gef.presentation.Fig#setOwner(Object)
+	 */
+	public void setOwner(Object own) {
+		super.setOwner(own);
+		MClass cl = (MClass)own;
+		Iterator it = cl.getFeatures().iterator();
+		while (it.hasNext()) {
+			MFeature feat = (MFeature)it.next();
+			feat.removeMElementListener(this);
+			feat.addMElementListener(this);
+		}
+	}
+
 } /* end class FigClass */

@@ -197,6 +197,7 @@ public class Project implements java.io.Serializable {
 
         Runnable resetStatsLater = new ResetStatsLater();
         org.argouml.application.Main.addPostLoadAction(resetStatsLater);
+        setCurrentNamespace(model);
         
     }
 
