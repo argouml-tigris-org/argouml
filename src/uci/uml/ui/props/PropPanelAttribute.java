@@ -73,7 +73,7 @@ implements DocumentListener, ItemListener {
   JLabel _keywordsLabel = new JLabel("Keywords: ");
   JComboBox _keywordsField = new JComboBox(ATTRKEYWORDS);
   JLabel _typeLabel = new JLabel("Type: ");
-  JComboBox _typeField = new JComboBox(getOfferedTypes());
+  JComboBox _typeField = new JComboBox();
   JLabel _initLabel = new JLabel("Initial Value: ");
   JTextArea _initText = new JTextArea();
   SpacerPanel _spacer = new SpacerPanel();
@@ -158,6 +158,10 @@ implements DocumentListener, ItemListener {
   public void setTarget(Object t) {
     super.setTarget(t);
     Attribute attr = (Attribute) t;
+
+    Vector offeredTypes = getOfferedTypes();
+    if (offeredTypes != null)
+      _typeField.setModel(new DefaultComboBoxModel(offeredTypes));
 
     VisibilityKind vk = attr.getVisibility();
     _visField.setSelectedItem(vk);
@@ -287,8 +291,7 @@ implements DocumentListener, ItemListener {
     // Apparently, this method is never called.
   }
 
-  
-  
+
   public void itemStateChanged(ItemEvent e) {
     Object src = e.getSource();
     if (src == _keywordsField) {

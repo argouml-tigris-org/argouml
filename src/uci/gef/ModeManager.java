@@ -93,14 +93,10 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** Add the given Mode to the stack iff another instance
    *  of the same class is not already on the stack. */
   public void push(Mode newMode) {
-    Class newModeClass = newMode.getClass();
-    Enumeration subs = _modes.elements();
-    while (subs.hasMoreElements()) {
-      Mode m = (Mode) subs.nextElement();
-      if (m.getClass() == newModeClass) return;
+    if (!includes(newMode.getClass())) {
+      _modes.addElement(newMode);
+      //fireModeChanged();
     }
-    _modes.addElement(newMode);
-    //fireModeChanged();
   }
 
   /** Remove the topmost Mode iff it can exit. */
@@ -118,6 +114,15 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   public void popAll() {
     while (!_modes.isEmpty() && top().canExit())
       _modes.removeElement(top());
+  }
+
+  public boolean includes(Class modeClass) {
+    Enumeration subs = _modes.elements();
+    while (subs.hasMoreElements()) {
+      Mode m = (Mode) subs.nextElement();
+      if (m.getClass() == modeClass) return true;
+    }
+    return false;
   }
 
   ////////////////////////////////////////////////////////////////

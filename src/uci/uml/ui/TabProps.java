@@ -70,13 +70,15 @@ implements TabModelTarget {
   }
 
   protected void initPanels() {
-    //_panels.put(Diagram.class, new PropPanelDiagram());
+    // preload commonly used property panels
+    System.out.println("called init prop panels");
+    _panels.put(Diagram.class, new PropPanelDiagram());
     //_panels.put(Model.class, new PropPanelModel());
-    //_panels.put(MMClass.class, new PropPanelClass());
-    //_panels.put(Interface.class, new PropPanelInterface());
-    //_panels.put(Attribute.class, new PropPanelAttr());
-    //_panels.put(Operation.class, new PropPanelOper());
-    //_panels.put(Association.class, new PropPanelAssoc());
+    _panels.put(MMClass.class, new PropPanelClass());
+    _panels.put(Interface.class, new PropPanelInterface());
+    //_panels.put(Attribute.class, new PropPanelAttribute());
+    //_panels.put(Operation.class, new PropPanelOperation());
+    //_panels.put(Association.class, new PropPanelAssociation());
     //_panels.put(State.class, new PropPanelState());
     //_panels.put(Transition.class, new PropPanelTransition());
     //_panels.put(Pseudostate.class, new PropPanelPseudostate());
@@ -86,7 +88,9 @@ implements TabModelTarget {
     //_panels.put(Link.class, new PropPanelLink());
     //_panels.put(Generalization.class, new PropPanelGeneralization());
     //_panels.put(Realization.class, new PropPanelRealization());
+    uci.uml.Main.addPostLoadAction(new InitPanelsLater(_panels));
   }
+
 
   ////////////////////////////////////////////////////////////////
   // accessors
@@ -133,6 +137,7 @@ implements TabModelTarget {
       catch (InstantiationException ignore) { return null; }
       _panels.put(targetClass, p);
     }
+    //else System.out.println("found props for " + targetClass.getName());
     return p;
   }
 
@@ -160,3 +165,26 @@ implements TabModelTarget {
 
 
 } /* end class TabProps */
+
+
+class InitPanelsLater implements Runnable {
+  Hashtable _panels = null;
+  public InitPanelsLater(Hashtable p) { _panels = p; }
+  public void run() {
+    // preload commonly used property panels
+    System.out.println("called init prop panels later");
+    _panels.put(Model.class, new PropPanelModel());
+    _panels.put(State.class, new PropPanelState());
+    _panels.put(Pseudostate.class, new PropPanelPseudostate());
+    _panels.put(UseCase.class, new PropPanelUseCase());
+    _panels.put(Actor.class, new PropPanelActor());
+    _panels.put(Realization.class, new PropPanelRealization());
+    _panels.put(Association.class, new PropPanelAssociation());
+    _panels.put(Generalization.class, new PropPanelGeneralization());
+    _panels.put(Transition.class, new PropPanelTransition());
+    _panels.put(Attribute.class, new PropPanelAttribute());
+    _panels.put(Operation.class, new PropPanelOperation());
+    _panels.put(Instance.class, new PropPanelInstance());
+    _panels.put(Link.class, new PropPanelLink());
+  }
+}

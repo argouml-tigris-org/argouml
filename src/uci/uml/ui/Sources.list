@@ -67,5 +67,6 @@ SOURCES= \
 	Trash.java \
 	UMLAction.java \
 	UMLListCellRenderer.java \
-	UMLTreeCellRenderer.java
+	UMLTreeCellRenderer.java \
+	UsageStatistic.java
 

@@ -36,7 +36,7 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
 public class GoStateToSubstate implements TreeModelPrereqs {
 
   public String toString() { return "State->Substates"; }
-  
+
   public Object getRoot() {
     System.out.println("getRoot should never be called: GoStateToSubstate");
     return null;
@@ -82,7 +82,7 @@ public class GoStateToSubstate implements TreeModelPrereqs {
     return children;
   }
 
-  
+
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }

@@ -42,7 +42,7 @@ import java.util.*;
 
 public class CmdGroup extends Cmd {
 
-  public CmdGroup() { super("Group"); }
+  public CmdGroup() { super("Group", NO_ICON); }
 
   public void doIt() {
     Editor ce = Globals.curEditor();

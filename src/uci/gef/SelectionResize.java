@@ -60,7 +60,7 @@ public class SelectionResize extends Selection {
    *   5-------6-------7
    * </pre>
    */
-  public int hitHandle(Rectangle r) {
+  public void hitHandle(Rectangle r, Handle h) {
     int cx = _content.getX();
     int cy = _content.getY();
     int cw = _content.getWidth();
@@ -79,12 +79,23 @@ public class SelectionResize extends Selection {
 		     cw+HAND_SIZE/2, HAND_SIZE);
     boolean bottomEdge = r.intersects(testRect);
     // needs-more-work: midpoints for side handles
-    if (leftEdge && topEdge) return 0;
-    if (rightEdge && topEdge) return 2;
-    if (leftEdge && bottomEdge) return 5;
-    if (rightEdge && bottomEdge) return 7;
+    if (leftEdge && topEdge) {
+      h.index = 0; h.instructions = "Resize top left";
+    }
+    else if (rightEdge && topEdge) {
+      h.index = 2;
+      h.instructions = "Resize top right";
+    }
+    else if (leftEdge && bottomEdge) {
+      h.index = 5;
+      h.instructions = "Resize bottom left";
+    }
+    else if (rightEdge && bottomEdge) {
+      h.index = 7;
+      h.instructions = "Resize bottom right";
+    }
     // needs-more-work: side handles
-    return -1;
+    else { h.index = -1; h.instructions = "Move object(s)"; }
   }
 
   /** Paint the handles at the four corners and midway along each edge

@@ -38,9 +38,6 @@ import uci.argo.kernel.*;
 public class EmailExpertDialog extends JFrame implements ActionListener {
 
   ////////////////////////////////////////////////////////////////
-  // constants
-  
-  ////////////////////////////////////////////////////////////////
   // instance variables
   protected JTextField _to = new JTextField();
   protected JTextField _cc = new JTextField();
@@ -52,7 +49,7 @@ public class EmailExpertDialog extends JFrame implements ActionListener {
 
   ////////////////////////////////////////////////////////////////
   // constructors
-  
+
   public EmailExpertDialog() {
     super("Send Email to an Expert");
     JLabel toLabel = new JLabel("To:");
@@ -70,7 +67,6 @@ public class EmailExpertDialog extends JFrame implements ActionListener {
     c.weightx = 0.0;
     c.ipadx = 3; c.ipady = 3;
 
-    
     c.gridx = 0;
     c.gridwidth = 1;
     c.gridy = 0;
@@ -102,7 +98,7 @@ public class EmailExpertDialog extends JFrame implements ActionListener {
     buttonInner.add(_sendButton);
     buttonInner.add(_cancelButton);
     buttonPanel.add(buttonInner);
-    
+
     getContentPane().add(top, BorderLayout.NORTH);
     getContentPane().add(new JScrollPane(_body), BorderLayout.CENTER);
     getContentPane().add(buttonPanel, BorderLayout.SOUTH);
@@ -128,12 +124,12 @@ public class EmailExpertDialog extends JFrame implements ActionListener {
       String cc = _cc.getText();
       String subject = _subject.getText();
       //System.out.println("sending email!");
-      hide();
+      setVisible(false);
       dispose();
     }
     if (e.getSource() == _cancelButton) {
       //System.out.println("cancel");
-      hide();
+      setVisible(false);
       dispose();
     }
   }

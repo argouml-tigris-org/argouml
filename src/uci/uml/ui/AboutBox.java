@@ -75,8 +75,8 @@ public class AboutBox extends JFrame {
 //     _legal.setFont(ctrlFont);
 //     _contact.setFont(ctrlFont);
 
-    _version.setText("Argo/UML Version 0.6.1\n"+
-		     "Built on March 17, 1999\n"+
+    _version.setText("Argo/UML Version 0.6.2\n"+
+		     "Built on March 25, 1999\n"+
 		     "\n"+
 		     "Includes:\n"+
 		     "  GEF v0.6.2\n"+
@@ -106,6 +106,7 @@ public class AboutBox extends JFrame {
 		     "  Scott Guyer\n"+
 		     "  Piotr Kaminski\n"+
 		     "  Nick Santucci\n"+
+		     "  Eric Lefevre\n"+
 		     "  Sean Chen\n"
 		     );
 
@@ -186,7 +187,7 @@ public class AboutBox extends JFrame {
     int len = s.length();
     for (int i = 0; i < len; i++) {
       char c = s.charAt(i);
-      if (Character.isJavaLetterOrDigit(c)) res += c;
+      if (Character.isJavaIdentifierPart(c)) res += c;
     }
     return res;
   }

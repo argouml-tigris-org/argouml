@@ -179,8 +179,11 @@ public class GeneratorJava extends Generator {
 
     s += slash + generateName(attr.getName());
     Expression init = attr.getInitialValue();
-    if (init != null)
-      s += " = " + generateExpression(init);
+    if (init != null) {
+      String initStr = generateExpression(init).trim();
+      if (initStr.length() > 0)
+	s += " = " + initStr;
+    }
 
     s += ";\n";
     s += generateConstraints(attr);

@@ -32,7 +32,7 @@ import java.util.*;
 // needs-more-work: define subclasses for: modification, criticism
 
 public class HistoryItemCritique extends HistoryItem {
-  
+
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -48,5 +48,5 @@ public class HistoryItemCritique extends HistoryItem {
     if (_desc == null) return "HIC: (null)";
     return "HIC: " + _desc;
   }
-  
+
 } /* end class HistoryItemCritique */

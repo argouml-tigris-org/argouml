@@ -164,7 +164,8 @@ public class Actions {
 
 class UMLChangeAction extends UMLAction {
 
-  public UMLChangeAction(String s) { super(s); }
+  public UMLChangeAction(String s) { super(s, HAS_ICON); }
+  public UMLChangeAction(String s, boolean hasIcon) { super(s, hasIcon); }
 
   public void actionPerformed(ActionEvent e) {
     markNeedsSave();
@@ -247,7 +248,6 @@ class ActionNew extends UMLAction {
 // 	if (fis != null) fis.close();
 //     	pb.showStatus("Read " + pathname);
 // 	pb.setProject(p);
-// 	p.setStats(stats);
 // 	return;
 // 	}
 //       }
@@ -323,7 +323,6 @@ class ActionNew extends UMLAction {
 // 	XMIParserIBM.SINGLETON.readModels("", pathname);
 // 	//p.postLoad();
 //     	pb.showStatus("Read " + pathname);
-// 	//p.setStats(stats);
 // 	return;
 // 	}
 //       }
@@ -376,14 +375,17 @@ class ActionOpenProject extends UMLAction {
       FileFilter filter = FileFilters.ArgoFilter;
       chooser.addChoosableFileFilter(filter);
       chooser.setFileFilter(filter);
-      Hashtable stats = p.getStats();
 
       int retval = chooser.showOpenDialog(pb);
-      if(retval == 0) {
+      if (retval == 0) {
 	File theFile = chooser.getSelectedFile();
 	if (theFile != null) {
 	  String path = chooser.getSelectedFile().getParent() + separator;
 	  String filename = chooser.getSelectedFile().getName();
+	  if (!filename.endsWith(Project.FILE_EXT)) {
+	    filename += Project.FILE_EXT;
+	    theFile = new File(path + filename);
+	  }
 	  Globals.setLastDirectory(path);
 	  if (filename != null) {
 	    pb.showStatus("Reading " + path + filename + "...");
@@ -394,7 +396,6 @@ class ActionOpenProject extends UMLAction {
 	    p.postLoad();
 	    pb.setProject(p);
 	    pb.showStatus("Read " + path + filename);
-	    //p.setStats(stats);
 	    return;
 	  }
 	}
@@ -455,7 +456,6 @@ class ActionOpenProject extends UMLAction {
 //       FileFilter filter = FileFilters.ArgoFilter;
 //       chooser.addChoosableFileFilter(filter);
 //       chooser.setFileFilter(filter);
-//       Hashtable stats = p.getStats();
 
 //       int retval = chooser.showSaveDialog(pb);
 //       if(retval == 0) {
@@ -554,7 +554,6 @@ class ActionOpenProject extends UMLAction {
 //       FileFilter filter = FileFilters.XMIFilter;
 //       chooser.addChoosableFileFilter(filter);
 //       chooser.setFileFilter(filter);
-//       Hashtable stats = p.getStats();
 
 //       int retval = chooser.showSaveDialog(pb);
 //       if(retval == 0) {
@@ -601,7 +600,7 @@ class ActionOpenProject extends UMLAction {
 class ActionSaveProject extends UMLAction {
   protected static OCLExpander expander = null;
   public ActionSaveProject() {
-    super("Save Project");
+    super("Save Project", NO_ICON);
     Hashtable templates = TemplateReader.readFile("/uci/xml/dtd/argo.tee");
     expander = new OCLExpander(templates);
   }
@@ -614,18 +613,19 @@ class ActionSaveProject extends UMLAction {
     try {
       ProjectBrowser pb = ProjectBrowser.TheInstance;
       Project p =  pb.getProject();
-//       String name = p.getFilename();
-//       String path = p.getPathname();
+      //       String name = p.getFilename();
+      //       String path = p.getPathname();
       System.out.println("ActionSaveProject at " + p.getURL());
-      System.out.println("filename is " + p.getURL().getFile());
-//       System.out.println("ActionSaveProject name = " + name);
-      String fullpath = p.getURL().getFile();
+      //       System.out.println("ActionSaveProject name = " + name);
+      String fullpath = "Untitled.argo";
+      if (p.getURL() != null) fullpath = p.getURL().getFile();
+      System.out.println("filename is " + fullpath);
       if (fullpath.charAt(0) == '/' && fullpath.charAt(2) == ':')
 	fullpath = fullpath.substring(1); // for Windows /D: -> D:
       File f = new File(fullpath);
       if (f.exists() && !overwrite) {
 	System.out.println("Are you sure you want to overwrite " +
-			   p.getURL().getFile() + "?");
+			   fullpath + "?");
       }
       FileWriter fw = new FileWriter(f);
       p.preSave();
@@ -651,7 +651,9 @@ class ActionSaveProject extends UMLAction {
   }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
-    return super.shouldBeEnabled() && p != null &&
+    return super.shouldBeEnabled() &&
+      p != null &&
+      p.getURL() != null &&
       p.getURL().toString().indexOf("templates") == -1;
   }
 
@@ -663,7 +665,7 @@ class ActionSaveProjectAs extends UMLAction {
 
   protected static OCLExpander expander = null;
   public ActionSaveProjectAs() {
-    super("Save Project As...");
+    super("Save Project As...", NO_ICON);
     Hashtable templates = TemplateReader.readFile("/uci/xml/dtd/argo.tee");
     expander = new OCLExpander(templates);
   }
@@ -677,7 +679,7 @@ class ActionSaveProjectAs extends UMLAction {
     Project p =  pb.getProject();
     try {
       JFileChooser chooser = null;
-      try { 
+      try {
 	if (p != null && p.getURL() != null &&
 	    p.getURL().getFile().length()>0) {
 	  String filename = p.getURL().getFile();
@@ -695,7 +697,6 @@ class ActionSaveProjectAs extends UMLAction {
       FileFilter filter = FileFilters.ArgoFilter;
       chooser.addChoosableFileFilter(filter);
       chooser.setFileFilter(filter);
-      Hashtable stats = p.getStats();
 
       int retval = chooser.showSaveDialog(pb);
       if(retval == 0) {
@@ -768,7 +769,7 @@ class ActionPrint extends UMLAction {
 // } /* end class ActionAddToProj */
 
 class ActionExit extends UMLAction {
-  public ActionExit() { super("Exit"); }
+  public ActionExit() { super("Exit", NO_ICON); }
 
   public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
@@ -835,7 +836,7 @@ class ActionPaste extends UMLChangeAction {
 
 
 class ActionDeleteFromDiagram extends UMLChangeAction {
-  public ActionDeleteFromDiagram() { super("Remove From Diagram"); }
+  public ActionDeleteFromDiagram() { super("Remove From Diagram", NO_ICON); }
   public boolean shouldBeEnabled() {
     Editor ce = Globals.curEditor();
     Vector figs = ce.getSelectionManager().getFigs();
@@ -850,7 +851,7 @@ class ActionDeleteFromDiagram extends UMLChangeAction {
 
 
 class ActionRemoveFromModel extends UMLChangeAction {
-  public ActionRemoveFromModel() { super("Delete From Model"); }
+  public ActionRemoveFromModel() { super("Delete From Model", NO_ICON); }
   public boolean shouldBeEnabled() {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Object target = pb.getDetailsTarget();
@@ -921,7 +922,7 @@ class ActionRemoveFromModel extends UMLChangeAction {
 } /* end class ActionRemoveFromModel */
 
 class ActionEmptyTrash extends UMLChangeAction {
-  public ActionEmptyTrash() { super("Empty Trash"); }
+  public ActionEmptyTrash() { super("Empty Trash", NO_ICON); }
   public boolean shouldBeEnabled() {
     return Trash.SINGLETON.getSize() > 0;
   }
@@ -968,7 +969,7 @@ class ActionFind extends UMLAction {
 } /* end class ActionFind */
 
 class ActionGotoDiagram extends UMLAction {
-  public ActionGotoDiagram() { super("Goto Diagram..."); }
+  public ActionGotoDiagram() { super("Goto Diagram...", NO_ICON); }
   public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
@@ -1035,7 +1036,7 @@ class ActionNavConfig extends UMLAction {
 } /* end class ActionNavConfig */
 
 class ActionNextEditTab extends UMLAction {
-  public ActionNextEditTab() { super("Next Editing Tab"); }
+  public ActionNextEditTab() { super("Next Editing Tab", NO_ICON); }
   public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     MultiEditorPane mep = pb.getEditorPane();
@@ -1048,7 +1049,7 @@ class ActionNextEditTab extends UMLAction {
 // } /* end class ActionAddToFavs */
 
 class ActionNextDetailsTab extends UMLAction {
-  public ActionNextDetailsTab() { super("Next Details Tab"); }
+  public ActionNextDetailsTab() { super("Next Details Tab", NO_ICON); }
   public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     DetailsPane dp = pb.getDetailsPane();
@@ -1063,7 +1064,7 @@ class ActionNextDetailsTab extends UMLAction {
 ////////////////////////////////////////////////////////////////
 
 class ActionCreateMultiple extends UMLAction {
-  public ActionCreateMultiple() { super("Create Multiple..."); }
+  public ActionCreateMultiple() { super("Create Multiple...", NO_ICON); }
   public boolean shouldBeEnabled() {
     //Project p = ProjectBrowser.TheInstance.getProject();
     //return super.shouldBeEnabled() && p != null;
@@ -1527,7 +1528,9 @@ class ActionAddMessage extends UMLChangeAction {
 // } /* end class ActionModel */
 
 class ActionAddTopLevelPackage extends UMLChangeAction {
-  public ActionAddTopLevelPackage() { super("Add Top-Level Package"); }
+  public ActionAddTopLevelPackage() {
+    super("Add Top-Level Package", NO_ICON);
+  }
 
   public void actionPerformed(ActionEvent ae) {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -1548,7 +1551,9 @@ class ActionAddTopLevelPackage extends UMLChangeAction {
 // generate menu actions
 
 class ActionGenerateOne extends UMLAction {
-  public ActionGenerateOne() { super("Generate Selected Classes"); }
+  public ActionGenerateOne() {
+    super("Generate Selected Classes", NO_ICON);
+  }
 
   public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
@@ -1591,7 +1596,9 @@ class ActionGenerateOne extends UMLAction {
 } /* end class ActionGenerateOne */
 
 class ActionGenerateAll extends UMLAction {
-  public ActionGenerateAll() { super("Generate All Classes"); }
+  public ActionGenerateAll() {
+    super("Generate All Classes", NO_ICON);
+  }
 
   public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
@@ -1622,7 +1629,7 @@ class ActionGenerateAll extends UMLAction {
 } /* end class ActionGenerateAll */
 
 // class ActionGenerateWeb extends UMLAction {
-//   public ActionGenerateWeb() { super("Generate Web Site"); }
+//   public ActionGenerateWeb() { super("Generate Web Site", NO_ICON); }
 
 //   public void actionPerformed(ActionEvent ae) {
 
@@ -1637,7 +1644,9 @@ class ActionGenerateAll extends UMLAction {
 // critiquing related actions
 
 class ActionAutoCritique extends UMLAction {
-  public ActionAutoCritique() { super("Toggle Auto-Critique"); }
+  public ActionAutoCritique() {
+    super("Toggle Auto-Critique", NO_ICON);
+  }
   public void actionPerformed(ActionEvent ae) {
     Designer d = Designer.TheDesigner;
     boolean b = d.getAutoCritique();
@@ -1646,7 +1655,7 @@ class ActionAutoCritique extends UMLAction {
 } /* end class ActionAutoCritique */
 
 class ActionOpenDecisions extends UMLAction {
-  public ActionOpenDecisions() { super("Design Issues..."); }
+  public ActionOpenDecisions() { super("Design Issues...", NO_ICON); }
   public void actionPerformed(ActionEvent ae) {
     DesignIssuesDialog d = new DesignIssuesDialog(ProjectBrowser.TheInstance);
     d.show();
@@ -1654,7 +1663,7 @@ class ActionOpenDecisions extends UMLAction {
 } /* end class ActionOpenDecisions */
 
 class ActionOpenGoals extends UMLAction {
-  public ActionOpenGoals() { super("Design Goals..."); }
+  public ActionOpenGoals() { super("Design Goals...", NO_ICON); }
   public void actionPerformed(ActionEvent ae) {
     GoalsDialog d = new GoalsDialog(ProjectBrowser.TheInstance);
     d.show();
@@ -1662,7 +1671,7 @@ class ActionOpenGoals extends UMLAction {
 } /* end class ActionOpenGoals */
 
 class ActionOpenCritics extends UMLAction {
-  public ActionOpenCritics() { super("Browse Critics..."); }
+  public ActionOpenCritics() { super("Browse Critics...", NO_ICON); }
   public void actionPerformed(ActionEvent ae) {
     CriticBrowserDialog dialog = new CriticBrowserDialog();
     dialog.show();
@@ -1672,7 +1681,7 @@ class ActionOpenCritics extends UMLAction {
 
 
 class ActionFlatToDo extends UMLAction {
-  public ActionFlatToDo() { super("Toggle Flat View"); }
+  public ActionFlatToDo() { super("Toggle Flat View", NO_ICON); }
   public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     ToDoPane pane = pb.getToDoPane();
@@ -1690,7 +1699,10 @@ class ActionNewToDoItem extends UMLAction {
 
 class ToDoItemAction extends UMLAction {
   Object _target = null;
-  public ToDoItemAction(String name) { super(name, false); }
+  public ToDoItemAction(String name) { super(name, false, HAS_ICON); }
+  public ToDoItemAction(String name, boolean hasIcon) {
+    super(name, false, hasIcon);
+  }
 
   public void updateEnabled(Object target) {
     _target = target;
@@ -1741,7 +1753,7 @@ class ActionEmailExpert extends ToDoItemAction {
 } /* end class ActionEmailExpert */
 
 class ActionMoreInfo extends ToDoItemAction {
-  public ActionMoreInfo() { super("More Info..."); }
+  public ActionMoreInfo() { super("More Info...", NO_ICON); }
 } /* end class ActionMoreInfo */
 
 class ActionSnooze extends ToDoItemAction {
@@ -1760,7 +1772,7 @@ class ActionSnooze extends ToDoItemAction {
 // general user interface actions
 
 class ActionAboutArgoUML extends UMLAction {
-  public ActionAboutArgoUML() { super("About Argo/UML"); }
+  public ActionAboutArgoUML() { super("About Argo/UML", NO_ICON); }
 
   public void actionPerformed(ActionEvent ae) {
     AboutBox box = new AboutBox();
@@ -1771,7 +1783,7 @@ class ActionAboutArgoUML extends UMLAction {
 
 
 class ActionProperties extends UMLAction {
-  public ActionProperties() { super("Properties"); }
+  public ActionProperties() { super("Properties", NO_ICON); }
 
   public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;

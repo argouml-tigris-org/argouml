@@ -114,18 +114,21 @@ implements ItemListener, TreeSelectionListener {
   public void setPerspectives(Vector pers) {
     _perspectives = pers;
     NavPerspective oldCurPers = _curPerspective;
-    if(_combo.getItemCount() > 0)
-      _combo.removeAllItems(); // broken in Swing-1.0.3?
+    if(_combo.getItemCount() > 0) _combo.removeAllItems();
     java.util.Enumeration persEnum = _perspectives.elements();
     while (persEnum.hasMoreElements())
       _combo.addItem(persEnum.nextElement());
 
     if (_perspectives == null || _perspectives.isEmpty())
       _curPerspective = null;
-    else if (oldCurPers != null && _perspectives.contains(oldCurPers))
+    else if (oldCurPers != null && _perspectives.contains(oldCurPers)) {
+      System.out.println("case1");
       setCurPerspective(oldCurPers);
-    else
+    }
+    else {
+      System.out.println("case2");
       setCurPerspective((NavPerspective) _perspectives.elementAt(0));
+    }
     updateTree();
   }
 
@@ -134,7 +137,6 @@ implements ItemListener, TreeSelectionListener {
     _curPerspective = per;
     if (_perspectives == null || !_perspectives.contains(per)) return;
     _combo.setSelectedItem(_curPerspective);
-    _navPerspectivesChanged++;
   }
 
   public Object getSelectedObject() {
@@ -166,6 +168,8 @@ implements ItemListener, TreeSelectionListener {
    *  combo. */
   public void itemStateChanged(ItemEvent e) {
     updateTree();
+    _navPerspectivesChanged++;
+    System.out.println("    _navPerspectivesChanged++;");
   }
 
   /** called when the user selects an item in the tree, by clicking or
@@ -262,17 +266,17 @@ implements ItemListener, TreeSelectionListener {
     //System.out.println("updateTree!");
     NavPerspective tm = (NavPerspective) _combo.getSelectedItem();
     //if (tm == _curPerspective) return;
-      _curPerspective = tm;
-      if (_curPerspective == null) {
+    _curPerspective = tm;
+    if (_curPerspective == null) {
 	//System.out.println("null perspective!");
-	_tree.hide();
-      }
-      else {
+      _tree.setVisible(false);
+    }
+    else {
 	//System.out.println("updateTree _curPerspective=" + _curPerspective.toString());
-	_curPerspective.setRoot(_root);
-	_tree.setModel(_curPerspective);
-	_tree.show(); // blinks?
-      }
+      _curPerspective.setRoot(_root);
+      _tree.setModel(_curPerspective);
+      _tree.setVisible(true); // blinks?
+    }
   }
 
 //   /** This tells the listeners the editor has ended editing */

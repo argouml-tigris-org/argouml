@@ -49,6 +49,13 @@ public class Handle {
   /** Index of the handle on some Fig that was clicked on. */
   public int index;
 
+  /** Instructions to be shown when the user's mouse is hovering over
+   *  or is dragging this handle */
+  public String instructions = " ";
+
+  /** Mouse cursor Cursor while hovering or dragging */
+  public Cursor cursor = null;
+
   ////////////////////////////////////////////////////////////////
   // constructors
 

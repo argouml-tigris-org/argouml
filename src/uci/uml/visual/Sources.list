@@ -1,4 +1,9 @@
 SOURCES= \
+	ModeCreateEdgeAndNode.java \
+	SelectionClass.java \
+	SelectionNodeClarifiers.java \
+	SelectionEdgeClarifiers.java \
+	SelectionMoveClarifiers.java \
 	ClassDiagramGraphModel.java \
 	ClassDiagramRenderer.java \
 	CollabDiagramGraphModel.java \

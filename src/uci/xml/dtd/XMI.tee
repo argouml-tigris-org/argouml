@@ -67,7 +67,7 @@
 <macro name="ModelElementCompositions">
 <![CDATA[
 <ocl>self.behavior</ocl>
-<taggedValue> <ocl>self.taggedValue</ocl> </taggedValue>
+<ocl>self.taggedValue</ocl>
 ]]>
 </macro>
 <!-- needs-more-work: ignoring behavior -->
@@ -789,10 +789,12 @@ GeneralizableElementCompositions
 <!-- - - - - - - - UML meta-class: TaggedValue   - - - - - - - - - -->
 <template class="uci.uml.Foundation.Extension_Mechanisms.TaggedValue">
 <![CDATA[
-<TaggedValue XMI.id = "<ocl>self.id</ocl>">
-  <tag><ocl>self.tag</ocl></tag>
-  <value><ocl>self.value</ocl></value>
-</TaggedValue>
+<taggedValue>
+  <TaggedValue>
+    <tag><ocl>self.tag.body</ocl></tag>
+    <value><ocl>self.value.body</ocl></value>
+  </TaggedValue>
+</taggedValue>
 ]]>
 </template>
 

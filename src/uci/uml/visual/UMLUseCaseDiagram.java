@@ -51,12 +51,6 @@ public class UMLUseCaseDiagram extends UMLDiagram {
   // actions for toolbar
 
 
-  protected static Action _actionSelect =
-  new CmdSetMode(ModeSelect.class, "Select");
-
-  protected static Action _actionBroom =
-  new CmdSetMode(ModeBroom.class, "Broom");
-
   protected static Action _actionActor = 
   new CmdCreateNode(Actor.class, "Actor");
 
@@ -72,35 +66,6 @@ public class UMLUseCaseDiagram extends UMLDiagram {
   new CmdSetMode(ModeCreatePolyEdge.class,
 		 "edgeClass", Generalization.class,
 		 "Generalization");
-
-  // other icons?
-
-
-  // edges
-
-  protected static Action _actionRectangle =
-  new CmdSetMode(ModeCreateFigRect.class, "Rectangle");
-
-  protected static Action _actionRRectangle =
-  new CmdSetMode(ModeCreateFigRRect.class, "RRect");
-
-  protected static Action _actionCircle =
-  new CmdSetMode(ModeCreateFigCircle.class, "Circle");
-
-  protected static Action _actionLine =
-  new CmdSetMode(ModeCreateFigLine.class, "Line");
-
-  protected static Action _actionText =
-  new CmdSetMode(ModeCreateFigText.class, "Text");
-
-  protected static Action _actionPoly =
-  new CmdSetMode(ModeCreateFigPoly.class, "Polygon");
-
-  protected static Action _actionSpline =
-  new CmdSetMode(ModeCreateFigSpline.class, "Spline");
-
-  protected static Action _actionInk =
-  new CmdSetMode(ModeCreateFigInk.class, "Ink");
 
 
   ////////////////////////////////////////////////////////////////

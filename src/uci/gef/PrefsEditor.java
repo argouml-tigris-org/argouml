@@ -121,11 +121,11 @@ public class PrefsEditor extends Frame {
       return true;
     }
     if (e.target == _moreRepaints) {
-      RedrawManager.moreRepairs();
+      //RedrawManager.moreRepairs();
       return true;
     }
     if (e.target == _fewerRepaints) {
-      RedrawManager.fewerRepairs();
+      //RedrawManager.fewerRepairs();
       return true;
     }
     else if (e.target == _close) {

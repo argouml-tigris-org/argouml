@@ -75,7 +75,7 @@ public class CmdSetMode extends Cmd {
   }
 
   public CmdSetMode(Class modeClass, String arg, Object value) {
-    super("Set Editor Mode");
+    super("Set Editor Mode", NO_ICON);
     _modeArgs = new Hashtable(1);
     _modeArgs.put(arg, value);
     setArg("desiredModeClass", modeClass);

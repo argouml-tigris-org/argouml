@@ -66,7 +66,7 @@ public class TemplateReader implements com.ibm.xml.parser.ElementHandler {
   ////////////////////////////////////////////////////////////////
   // ElementHandler implementation
   public TXElement handleElement(TXElement e) {
-    if (e.getName().equals("template")) {
+    if (e.getTagName().equals("template")) {
       String body = e.getText().trim();
       String guard = e.getAttribute("guard");
       String className = e.getAttribute("class");
@@ -85,7 +85,7 @@ public class TemplateReader implements com.ibm.xml.parser.ElementHandler {
       //     System.out.println("read template for " + "[" + classObj + "]");
       //     System.out.println("[" + body + "]\n\n");
     }
-    else if (e.getName().equals("macro")) {
+    else if (e.getTagName().equals("macro")) {
       String body = e.getText().trim();
       String name = e.getAttribute("name");
       if (name == null) return null;
@@ -104,7 +104,7 @@ public class TemplateReader implements com.ibm.xml.parser.ElementHandler {
       if (!inserted) _macros.addElement(mr);
     }
     else
-      System.out.println("unknown tag: " + e.getName());
+      System.out.println("unknown tag: " + e.getTagName());
     return null;
   }
 

@@ -40,7 +40,7 @@ public class AddToDoItemDialog extends JFrame implements ActionListener {
   ////////////////////////////////////////////////////////////////
   // constants
   public static final String PRIORITIES[] = { "High", "Medium", "Low" };
-  
+
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected JTextField _headline = new JTextField();
@@ -49,11 +49,10 @@ public class AddToDoItemDialog extends JFrame implements ActionListener {
   protected JTextArea  _description = new JTextArea();
   protected JButton _addButton = new JButton("Add");
   protected JButton _cancelButton = new JButton("Cancel");
-  
 
   ////////////////////////////////////////////////////////////////
   // constructors
-  
+
   public AddToDoItemDialog() {
     super("Add a ToDoItem");
     JLabel headlineLabel = new JLabel("Headline:");
@@ -72,7 +71,6 @@ public class AddToDoItemDialog extends JFrame implements ActionListener {
     c.weightx = 0.0;
     c.ipadx = 3; c.ipady = 3;
 
-    
     c.gridx = 0;
     c.gridwidth = 1;
     c.gridy = 0;
@@ -104,7 +102,7 @@ public class AddToDoItemDialog extends JFrame implements ActionListener {
     buttonInner.add(_addButton);
     buttonInner.add(_cancelButton);
     buttonPanel.add(buttonInner);
-    
+
     getContentPane().add(top, BorderLayout.NORTH);
     getContentPane().add(new JScrollPane(_description), BorderLayout.CENTER);
     getContentPane().add(buttonPanel, BorderLayout.SOUTH);
@@ -133,7 +131,7 @@ public class AddToDoItemDialog extends JFrame implements ActionListener {
       ToDoItem item = new ToDoItem(dsgr, head, pri, desc, more, offs);
       dsgr.getToDoList().addElement(item); //? inform()
       //System.out.println("add an item");
-      hide();
+      setVisible(false);
       dispose();
     }
     if (e.getSource() == _cancelButton) {

@@ -153,13 +153,13 @@ public class ModeCreateEdge extends ModeCreate {
 	  destFigNode.damage();
 	  _newItem = null;
 
-	  FigEdge pers = (FigEdge) ce.getLayerManager().getActiveLayer().
+	  FigEdge fe = (FigEdge) ce.getLayerManager().getActiveLayer().
 	    presentationFor(_newEdge);
-	  pers.setSourcePortFig(_startPortFig);
-	  pers.setSourceFigNode(_sourceFigNode);
-	  pers.setDestPortFig(destPortFig);
-	  pers.setDestFigNode(destFigNode);
-	  if (pers != null) ce.getSelectionManager().select(pers);
+	  fe.setSourcePortFig(_startPortFig);
+	  fe.setSourceFigNode(_sourceFigNode);
+	  fe.setDestPortFig(destPortFig);
+	  fe.setDestFigNode(destFigNode);
+	  if (fe != null) ce.getSelectionManager().select(fe);
 	  done();
 	  me.consume();
 	  return;

@@ -36,6 +36,7 @@ SOURCES= \
 	GoStateToDownstream.java \
 	GoStateToIncomingTrans.java \
 	GoStateToOutgoingTrans.java \
+	GoStateToInternalTrans.java \
 	GoStateToSubstate.java \
 	GoStateToUpstream.java \
 	GoTransToSourceState.java \

@@ -42,7 +42,7 @@ import java.awt.Event;
 
 public class CmdDispose extends Cmd {
 
-  public CmdDispose() { super("Remove From Model"); }
+  public CmdDispose() { super("Remove From Model", NO_ICON); }
 
   public void doIt() {
     Editor ce = Globals.curEditor();

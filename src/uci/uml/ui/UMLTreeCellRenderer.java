@@ -36,6 +36,7 @@ import javax.swing.border.*;
 import javax.swing.plaf.basic.*;
 
 import uci.gef.*;
+import uci.util.Util;
 import uci.uml.visual.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
@@ -49,15 +50,15 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
   ////////////////////////////////////////////////////////////////
   // class variables
 
-  protected ImageIcon _ActionStateIcon = loadIconResource("ActionState");
-  protected ImageIcon _StateIcon = loadIconResource("State");
-  protected ImageIcon _InitialStateIcon = loadIconResource("Initial");
-  protected ImageIcon _DeepIcon = loadIconResource("DeepHistory");
-  protected ImageIcon _ShallowIcon = loadIconResource("ShallowHistory");
-  protected ImageIcon _ForkIcon = loadIconResource("Fork");
-  protected ImageIcon _JoinIcon = loadIconResource("Join");
-  protected ImageIcon _BranchIcon = loadIconResource("Branch");
-  protected ImageIcon _FinalStateIcon = loadIconResource("FinalState");
+  protected ImageIcon _ActionStateIcon = Util.loadIconResource("ActionState");
+  protected ImageIcon _StateIcon = Util.loadIconResource("State");
+  protected ImageIcon _InitialStateIcon = Util.loadIconResource("Initial");
+  protected ImageIcon _DeepIcon = Util.loadIconResource("DeepHistory");
+  protected ImageIcon _ShallowIcon = Util.loadIconResource("ShallowHistory");
+  protected ImageIcon _ForkIcon = Util.loadIconResource("Fork");
+  protected ImageIcon _JoinIcon = Util.loadIconResource("Join");
+  protected ImageIcon _BranchIcon = Util.loadIconResource("Branch");
+  protected ImageIcon _FinalStateIcon = Util.loadIconResource("FinalState");
 
   protected Hashtable _iconCache = new Hashtable();
 
@@ -99,7 +100,7 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
 	if (clsName.startsWith("UML")) clsName = clsName.substring(3);
 	// special case "MM*" e.g. MMClass
 	if (clsName.startsWith("MM")) clsName = clsName.substring(2);
-	icon = loadIconResource(clsName);
+	icon = Util.loadIconResource(clsName);
 	if (icon != null) _iconCache.put(value.getClass(), icon);
       }
 
@@ -116,35 +117,5 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
     return r;
   }
 
-  ////////////////////////////////////////////////////////////////
-  // utility functions
-
-  protected static ImageIcon loadIconResource(String name) {
-    String imgName = imageName(name);
-    ImageIcon res = null;
-    try {
-      java.net.URL imgURL = UMLTreeCellRenderer.class.getResource(imgName);
-      if (imgURL == null) return null;
-      return new ImageIcon(imgURL);
-    }
-    catch (Exception ex) {
-      return new ImageIcon(name);
-    }
-  }
-
-  protected static String imageName(String name) {
-    return "/uci/Images/" + stripJunk(name) + ".gif";
-    //return "/uci/Images/Tree" + stripJunk(name) + ".gif";
-  }
-
-  protected static String stripJunk(String s) {
-    String res = "";
-    int len = s.length();
-    for (int i = 0; i < len; i++) {
-      char c = s.charAt(i);
-      if (Character.isJavaLetterOrDigit(c)) res += c;
-    }
-    return res;
-  }
 
 } /* end class UMLTreeCellRenderer */

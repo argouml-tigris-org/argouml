@@ -132,9 +132,9 @@ uci.gef.event.ModeChangeListener {
   // events
 
   public void selectionChanged(GraphSelectionEvent gse) {
-    //System.out.println("TabDiagram got editor selection event");
     Vector sels = gse.getSelections();
     ProjectBrowser pb = ProjectBrowser.TheInstance;
+
     if (sels.size() == 1) pb.setDetailsTarget(sels.elementAt(0));
     else pb.setDetailsTarget(null);
   }
@@ -151,33 +151,6 @@ uci.gef.event.ModeChangeListener {
 
   public void removeModeChangeListener(ModeChangeListener listener) {
     _jgraph.removeModeChangeListener(listener);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // utility methods
-
-  protected static ImageIcon loadIconResource(String imgName, String desc) {
-    ImageIcon res = null;
-    try {
-      java.net.URL imgURL = TabDiagram.class.getResource(imgName);
-      if (imgURL == null) return null;
-      return new ImageIcon(imgURL, desc);
-    }
-    catch (Exception ex) { return new ImageIcon(desc); }
-  }
-
-  protected static String imageName(String name) {
-    return "/uci/Images/" + stripJunk(name) + ".gif";
-  }
-
-  protected static String stripJunk(String s) {
-    String res = "";
-    int len = s.length();
-    for (int i = 0; i < len; i++) {
-      char c = s.charAt(i);
-      if (Character.isJavaLetterOrDigit(c)) res += c;
-    }
-    return res;
   }
 
 }

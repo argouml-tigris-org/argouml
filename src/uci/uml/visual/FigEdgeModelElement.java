@@ -115,7 +115,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 
   public String getTipString(MouseEvent me) {
     ToDoItem item = hitClarifier(me.getX(), me.getY());
-    if (item != null) return item.getHeadline();
+    if (item != null) return item.getHeadline() + " ";
     if (getOwner() != null) return getOwner().toString();
     return toString();
   }
@@ -123,6 +123,91 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     Vector popUpActions = super.getPopUpActions();
     popUpActions.addElement(Actions.Properties);
     return popUpActions;
+  }
+
+  public void paintClarifiers(Graphics g) {
+    int iconPos = 25, gap = 1, xOff = -4, yOff = -4;
+    Point p = new Point();
+    ToDoList list = Designer.theDesigner().getToDoList();
+    Vector items = list.elementsForOffender(getOwner());
+    int size = items.size();
+    for (int i = 0; i < size; i++) {
+      ToDoItem item = (ToDoItem) items.elementAt(i);
+      Icon icon = item.getClarifier();
+      if (icon instanceof Clarifier) {
+	((Clarifier)icon).setFig(this);
+	((Clarifier)icon).setToDoItem(item);
+      }
+      stuffPointAlongPerimeter(iconPos, p);
+      icon.paintIcon(null, g, p.x + xOff, p.y + yOff);
+      iconPos += icon.getIconWidth() + gap;
+    }
+    items = list.elementsForOffender(this);
+    size = items.size();
+    for (int i = 0; i < size; i++) {
+      ToDoItem item = (ToDoItem) items.elementAt(i);
+      Icon icon = item.getClarifier();
+      if (icon instanceof Clarifier) {
+	((Clarifier)icon).setFig(this);
+	((Clarifier)icon).setToDoItem(item);
+      }
+      stuffPointAlongPerimeter(iconPos, p);
+      icon.paintIcon(null, g, p.x + xOff, p.y + yOff);
+      iconPos += icon.getIconWidth() + gap;
+    }
+  }
+
+  public ToDoItem hitClarifier(int x, int y) {
+    int iconPos = 25, xOff = -4, yOff = -4;
+    Point p = new Point();
+    ToDoList list = Designer.theDesigner().getToDoList();
+    Vector items = list.elementsForOffender(getOwner());
+    int size = items.size();
+    for (int i = 0; i < size; i++) {
+      ToDoItem item = (ToDoItem) items.elementAt(i);
+      Icon icon = item.getClarifier();
+      stuffPointAlongPerimeter(iconPos, p);
+      int width = icon.getIconWidth();
+      int height = icon.getIconHeight();
+      if (y >= p.y + yOff && y <= p.y + height + yOff &&
+	  x >= p.x + xOff && x <= p.x + width + xOff) return item;
+      iconPos += width;
+    }
+    for (int i = 0; i < size; i++) {
+      ToDoItem item = (ToDoItem) items.elementAt(i);
+      Icon icon = item.getClarifier();
+      if (icon instanceof Clarifier) {
+	((Clarifier)icon).setFig(this);
+	((Clarifier)icon).setToDoItem(item);
+	if (((Clarifier)icon).hit(x, y)) return item;
+      }
+    }
+    items = list.elementsForOffender(this);
+    size = items.size();
+    for (int i = 0; i < size; i++) {
+      ToDoItem item = (ToDoItem) items.elementAt(i);
+      Icon icon = item.getClarifier();
+      stuffPointAlongPerimeter(iconPos, p);
+      int width = icon.getIconWidth();
+      int height = icon.getIconHeight();
+      if (y >= p.y + yOff && y <= p.y + height + yOff &&
+	  x >= p.x + xOff && x <= p.x + width + xOff) return item;
+      iconPos += width;
+    }
+    for (int i = 0; i < size; i++) {
+      ToDoItem item = (ToDoItem) items.elementAt(i);
+      Icon icon = item.getClarifier();
+      if (icon instanceof Clarifier) {
+	((Clarifier)icon).setFig(this);
+	((Clarifier)icon).setToDoItem(item);
+	if (((Clarifier)icon).hit(x, y)) return item;
+      }
+    }
+    return null;
+  }
+
+  public Selection makeSelection() {
+    return new SelectionEdgeClarifiers(this);
   }
 
   public FigText getNameFig() { return _name; }

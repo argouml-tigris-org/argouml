@@ -195,7 +195,8 @@ public class ParserDisplay extends Parser {
     if (res.getName() == Name.UNSPEC && res.getType() != null) {
       try {
 	res.setName(new Name(res.getType().getName().getBody()));
-	res.setType(null);
+	Project p = ProjectBrowser.TheInstance.getProject();
+	res.setType(p.findType("int"));
       }
       catch (PropertyVetoException pve) { }
     }
@@ -329,15 +330,17 @@ public class ParserDisplay extends Parser {
   public String parseOutType(Attribute attr, String s) {
     s = s.trim();
     int firstSpace = s.indexOf(" ");
-    if (firstSpace == -1) return s;
 
     int firstEq = s.indexOf("=");
     if (firstEq != -1 && firstEq < firstSpace) firstSpace = firstEq;
 
-    String typeStr = s.substring(0, firstSpace);
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
-    Classifier type = p.findType(typeStr);
+    Project p = ProjectBrowser.TheInstance.getProject();
+    Classifier type = p.findType("int");
+
+    if (firstSpace != -1) {
+      String typeStr = s.substring(0, firstSpace);
+      type = p.findType(typeStr);
+    }
     try {
       //System.out.println("setting return type: " + rtStr);
       attr.setType(type);
@@ -366,8 +369,7 @@ public class ParserDisplay extends Parser {
     String typeStr = "int", paramNameStr = "parameterName?";
     if (st.hasMoreTokens()) typeStr = st.nextToken();
     if (st.hasMoreTokens()) paramNameStr = st.nextToken();
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
+    Project p = ProjectBrowser.TheInstance.getProject();
     Classifier cls = p.findType(typeStr);
     return new Parameter(cls, ParameterDirectionKind.IN, paramNameStr);
   }

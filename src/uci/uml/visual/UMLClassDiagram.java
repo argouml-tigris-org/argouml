@@ -51,23 +51,15 @@ public class UMLClassDiagram extends UMLDiagram {
   // needs-more-work: should these be static?
 
 
-  protected static Action _actionSelect =
-  new CmdSetMode(ModeSelect.class, "Select");
 
-  protected static Action _actionBroom =
-  new CmdSetMode(ModeBroom.class, "Broom");
-
-  protected static Action _actionClass = 
+  protected static Action _actionClass =
   new CmdCreateNode(MMClass.class, "Class");
 
-//   protected static Action _actionObject =
-//   new CmdCreateNode(Instance.class, "Instance");
+   protected static Action _actionObject =
+   new CmdCreateNode(Instance.class, "Instance");
 
   protected static Action _actionInterface =
   new CmdCreateNode(Interface.class, "Interface");
-
-//   protected static Action _actionInterface =
-//   new CmdCreateNode(Interface.class, "Interface");
 
   protected static Action _actionDepend =
   new CmdSetMode(ModeCreatePolyEdge.class,
@@ -79,10 +71,10 @@ public class UMLClassDiagram extends UMLDiagram {
 		 "edgeClass", Association.class,
 		 "Association");
 
-//   protected static Action _actionLink =
-//   new CmdSetMode(ModeCreatePolyEdge.class,
-// 		 "edgeClass", Link.class,
-// 		 "Link");
+  protected static Action _actionLink =
+  new CmdSetMode(ModeCreatePolyEdge.class,
+		 "edgeClass", Link.class,
+		 "Link");
 
   protected static Action _actionGeneralize =
   new CmdSetMode(ModeCreatePolyEdge.class,
@@ -94,32 +86,9 @@ public class UMLClassDiagram extends UMLDiagram {
 		 "edgeClass", Realization.class,
 		 "Realization");
 
-  protected static Action _actionRectangle =
-  new CmdSetMode(ModeCreateFigRect.class, "Rectangle");
-
-  protected static Action _actionRRectangle =
-  new CmdSetMode(ModeCreateFigRRect.class, "RRect");
-
-  protected static Action _actionCircle =
-  new CmdSetMode(ModeCreateFigCircle.class, "Circle");
-
   protected static Action _actionPackage =
   new CmdCreateNode(Model.class, "Package");
 
-  protected static Action _actionLine =
-  new CmdSetMode(ModeCreateFigLine.class, "Line");
-
-  protected static Action _actionText =
-  new CmdSetMode(ModeCreateFigText.class, "Text");
-
-  protected static Action _actionPoly =
-  new CmdSetMode(ModeCreateFigPoly.class, "Polygon");
-
-  protected static Action _actionSpline =
-  new CmdSetMode(ModeCreateFigSpline.class, "Spline");
-
-  protected static Action _actionInk =
-  new CmdSetMode(ModeCreateFigInk.class, "Ink");
 
   ////////////////////////////////////////////////////////////////
   // contructors
@@ -152,7 +121,7 @@ public class UMLClassDiagram extends UMLDiagram {
   protected void initToolBar() {
     _toolBar = new ToolBar();
     _toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-    
+
 //     _toolBar.add(Actions.Cut);
 //     _toolBar.add(Actions.Copy);
 //     _toolBar.add(Actions.Paste);

@@ -121,7 +121,7 @@ public class ModeBroom extends Mode {
     y1 = y2 = _start.y = me.getY();
     _lastX1 = x1;  _lastY1 = y1;
     _lastX2 = x2;  _lastY2 = y2;
-    _selectRect.reshape(x1 - 14, y1 - 14, x2 - x1 + 28, y2 - y1 + 28);
+    _selectRect.setBounds(x1 - 14, y1 - 14, x2 - x1 + 28, y2 - y1 + 28);
     _editor.damaged(_selectRect);
     _editor.getSelectionManager().deselectAll();
     me.consume();
@@ -141,7 +141,7 @@ public class ModeBroom extends Mode {
     int x = snapPt.x;
     int y = snapPt.y;
     int i;
-    _selectRect.reshape(x1 - 4, y1 - 4, x2 - x1 + 8, y2 - y1 + 8);
+    _selectRect.setBounds(x1 - 4, y1 - 4, x2 - x1 + 8, y2 - y1 + 8);
     _bigDamageRect.setLocation(x1 - 200, y1 - 200);
     _editor.damaged(_bigDamageRect);
     _editor.damaged(_selectRect);
@@ -266,7 +266,7 @@ public class ModeBroom extends Mode {
       if (f instanceof FigNode) ((FigNode) f).updateEdges();
     }
     }
-    _selectRect.reshape(x1 - 4, y1 - 4, x2 - x1 + 8, y2 - y1 + 8);
+    _selectRect.setBounds(x1 - 4, y1 - 4, x2 - x1 + 8, y2 - y1 + 8);
     _editor.damaged(_selectRect);
     _hint = null;
     touching();
@@ -276,7 +276,7 @@ public class ModeBroom extends Mode {
    *  mouse or in the selection rectangle. */
   public void mouseReleased(MouseEvent me) {
     if (me.isConsumed()) return;
-    _selectRect.reshape(x1 - 1, y1 - 1, x2 - x1 + 2, y2 - y1 + 20);
+    _selectRect.setBounds(x1 - 1, y1 - 1, x2 - x1 + 2, y2 - y1 + 20);
     _bigDamageRect.setLocation(x1 - 200, y1 - 200);
     _editor.damaged(_bigDamageRect);
     _editor.damaged(_selectRect);
@@ -290,7 +290,8 @@ public class ModeBroom extends Mode {
   public void addNewItems() {
     if (_nTouched >= MAX_TOUCHED) return;
     int i;
-    _addRect.reshape(_lastX1, _lastY1, _lastX2 - _lastX1,  _lastY2 - _lastY1);
+    _addRect.setBounds(_lastX1, _lastY1, _lastX2 - _lastX1,
+		       _lastY2 - _lastY1);
     _addRect.add(_selectRect);
     Enumeration figs = _editor.figs();
     while (figs.hasMoreElements()) {

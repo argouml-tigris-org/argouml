@@ -36,6 +36,7 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 import javax.swing.text.*;
 import javax.swing.table.*;
+import javax.swing.border.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.uml.Foundation.Core.*;
@@ -46,27 +47,31 @@ import uci.uml.Model_Management.*;
 
 public class TabConstraints extends TabSpawnable
 implements TabModelTarget, DocumentListener, ActionListener,
-  ListSelectionListener 
+  ListSelectionListener
 {
   ////////////////////////////////////////////////////////////////
   // instance variables
-  ModelElementImpl _target;
-  boolean _shouldBeEnabled = false;
-  TableModelConstraints _tableModel = new TableModelConstraints();  
-  JTable _table = new JTable(4, 1);
-  JTextArea _expr = new JTextArea();
-  JSplitPane _splitter;
+  private ModelElementImpl _target;
+  private boolean _shouldBeEnabled = false;
+  private boolean _updating = false;
+  private TableModelConstraints _tableModel = new TableModelConstraints();
+  private JTable _table = new JTable(4, 1);
+  private JTextArea _expr = new JTextArea();
+  private JSplitPane _splitter;
 
-  JButton _ltButton = new JButton("<");
-  JButton _leButton = new JButton("<=");
-  JButton _gtButton = new JButton(">");
-  JButton _geButton = new JButton(">=");
-  JButton _eqButton = new JButton("=");
-  JButton _sizeButton = new JButton("->size");
-  JButton _asSetButton = new JButton("->asSet");
-  JButton _forAllButton = new JButton("->forAll");
-  JButton _existsButton = new JButton("->exists");
-  // more...  alow user to select terms from lists
+  private JButton _addButton = new JButton("Add");
+  private JButton _removeButton = new JButton("Remove");
+
+//   private JButton _ltButton = new JButton("<");
+//   private JButton _leButton = new JButton("<=");
+//   private JButton _gtButton = new JButton(">");
+//   private JButton _geButton = new JButton(">=");
+//   private JButton _eqButton = new JButton("=");
+//   private JButton _sizeButton = new JButton("->size");
+//   private JButton _asSetButton = new JButton("->asSet");
+//   private JButton _forAllButton = new JButton("->forAll");
+//   private JButton _existsButton = new JButton("->exists");
+  // more...  allow user to select terms from lists
 
   ////////////////////////////////////////////////////////////////
   // constructor
@@ -80,46 +85,56 @@ implements TabModelTarget, DocumentListener, ActionListener,
     _table.setIntercellSpacing(new Dimension(0, 1));
     _table.setShowVerticalLines(false);
     _table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    _table.getSelectionModel().addListSelectionListener(this);
+    //_table.getSelectionModel().addListSelectionListener(this);
     _table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 
-    TableColumn descCol = _table.getColumnModel().getColumn(0);
-    descCol.setMinWidth(100);
-    descCol.setWidth(190);
-    _table.setTableHeader(null);
+    //TableColumn descCol = _table.getColumnModel().getColumn(0);
+    //descCol.setMinWidth(100);
+    //descCol.setWidth(190);
+    //_table.setTableHeader(null);
+
+    JPanel listButtons = new JPanel();
+    listButtons.setLayout(new GridLayout(1, 2));
+    listButtons.add(_addButton);
+    listButtons.add(_removeButton);
 
     JPanel listPane = new JPanel();
     listPane.setLayout(new BorderLayout());
     listPane.add(new JScrollPane(_table), BorderLayout.CENTER);
+    listPane.add(listButtons, BorderLayout.SOUTH);
     listPane.setMinimumSize(new Dimension(100, 100));
     listPane.setPreferredSize(new Dimension(200, 100));
 
     JPanel exprButtons = new JPanel();
+    exprButtons.setBorder(new EtchedBorder());
     exprButtons.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-    exprButtons.add(_gtButton);
-    _gtButton.setMargin(new Insets(0, 0, 0, 0));
-    exprButtons.add(_geButton);
-    _geButton.setMargin(new Insets(0, 0, 0, 0));
-    exprButtons.add(_ltButton);
-    _ltButton.setMargin(new Insets(0, 0, 0, 0));
-    exprButtons.add(_leButton);
-    _leButton.setMargin(new Insets(0, 0, 0, 0));
-    exprButtons.add(_eqButton);
-    _eqButton.setMargin(new Insets(0, 0, 0, 0));
-    exprButtons.add(new SpacerPanel());
-    exprButtons.add(_sizeButton);
-    _sizeButton.setMargin(new Insets(0, 0, 0, 0));
-    exprButtons.add(_asSetButton);
-    _asSetButton.setMargin(new Insets(0, 0, 0, 0));
-    exprButtons.add(_forAllButton);
-    _forAllButton.setMargin(new Insets(0, 0, 0, 0));
-    exprButtons.add(_existsButton);
-    _existsButton.setMargin(new Insets(0, 0, 0, 0));
+//     exprButtons.add(new JLabel("  Insert: "));
+//     exprButtons.add(_gtButton);
+//     _gtButton.setMargin(new Insets(0, 0, 0, 0));
+//     exprButtons.add(_geButton);
+//     _geButton.setMargin(new Insets(0, 0, 0, 0));
+//     exprButtons.add(_ltButton);
+//     _ltButton.setMargin(new Insets(0, 0, 0, 0));
+//     exprButtons.add(_leButton);
+//     _leButton.setMargin(new Insets(0, 0, 0, 0));
+//     exprButtons.add(_eqButton);
+//     _eqButton.setMargin(new Insets(0, 0, 0, 0));
+//     exprButtons.add(new SpacerPanel());
+//     exprButtons.add(_sizeButton);
+//     _sizeButton.setMargin(new Insets(0, 0, 0, 0));
+//     exprButtons.add(_asSetButton);
+//     _asSetButton.setMargin(new Insets(0, 0, 0, 0));
+//     exprButtons.add(_forAllButton);
+//     _forAllButton.setMargin(new Insets(0, 0, 0, 0));
+//     exprButtons.add(_existsButton);
+//     _existsButton.setMargin(new Insets(0, 0, 0, 0));
 
     JPanel exprPane = new JPanel();
     exprPane.setLayout(new BorderLayout());
     exprPane.add(_expr, BorderLayout.CENTER);
     exprPane.add(exprButtons, BorderLayout.SOUTH);
+    _expr.setLineWrap(true);
+    _expr.setWrapStyleWord(true);
 
     setLayout(new BorderLayout());
     _splitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
@@ -132,15 +147,18 @@ implements TabModelTarget, DocumentListener, ActionListener,
     _table.getSelectionModel().addListSelectionListener(this);
     _expr.getDocument().addDocumentListener(this);
 
-    _gtButton.addActionListener(this);
-    _geButton.addActionListener(this);
-    _ltButton.addActionListener(this);
-    _leButton.addActionListener(this);
-    _eqButton.addActionListener(this);
-    _sizeButton.addActionListener(this);
-    _asSetButton.addActionListener(this);
-    _forAllButton.addActionListener(this);
-    _existsButton.addActionListener(this);
+//     _gtButton.addActionListener(this);
+//     _geButton.addActionListener(this);
+//     _ltButton.addActionListener(this);
+//     _leButton.addActionListener(this);
+//     _eqButton.addActionListener(this);
+//     _sizeButton.addActionListener(this);
+//     _asSetButton.addActionListener(this);
+//     _forAllButton.addActionListener(this);
+//     _existsButton.addActionListener(this);
+
+    _addButton.addActionListener(this);
+    _removeButton.addActionListener(this);
 
     updateEnabled(null);
   }
@@ -158,10 +176,12 @@ implements TabModelTarget, DocumentListener, ActionListener,
 
     Vector constraints = _target.getConstraint();
     _tableModel.setTarget(_target);
-    TableColumn descCol = _table.getColumnModel().getColumn(0);
-    descCol.setMinWidth(100);
-    descCol.setWidth(190);
+    //TableColumn descCol = _table.getColumnModel().getColumn(0);
+    //descCol.setMinWidth(100);
+    //descCol.setWidth(190);
+    _table.sizeColumnsToFit(0);
     _splitter.setDividerLocation(200);
+    updateEnabled(null);
     validate();
   }
   public Object getTarget() { return _target; }
@@ -175,30 +195,37 @@ implements TabModelTarget, DocumentListener, ActionListener,
 
   /** Enable/disable buttons based on the current selection */
   protected void updateEnabled(Constraint selectedConstraint) {
+    _addButton.setEnabled(_target != null);
+    _removeButton.setEnabled(selectedConstraint != null);
+
     _expr.setEnabled(selectedConstraint != null);
 
-    _gtButton.setEnabled(selectedConstraint != null);
-    _geButton.setEnabled(selectedConstraint != null);
-    _ltButton.setEnabled(selectedConstraint != null);
-    _leButton.setEnabled(selectedConstraint != null);
-    _eqButton.setEnabled(selectedConstraint != null);
-    _sizeButton.setEnabled(selectedConstraint != null);
-    _asSetButton.setEnabled(selectedConstraint != null);
-    _forAllButton.setEnabled(selectedConstraint != null);
-    _existsButton.setEnabled(selectedConstraint != null);
+//     _gtButton.setEnabled(selectedConstraint != null);
+//     _geButton.setEnabled(selectedConstraint != null);
+//     _ltButton.setEnabled(selectedConstraint != null);
+//     _leButton.setEnabled(selectedConstraint != null);
+//     _eqButton.setEnabled(selectedConstraint != null);
+//     _sizeButton.setEnabled(selectedConstraint != null);
+//     _asSetButton.setEnabled(selectedConstraint != null);
+//     _forAllButton.setEnabled(selectedConstraint != null);
+//     _existsButton.setEnabled(selectedConstraint != null);
   }
 
   ////////////////////////////////////////////////////////////////
   // event handling
 
   public void insertUpdate(DocumentEvent e) {
+    if (_updating) return;
     //System.out.println(getClass().getName() + " insert");
     if (e.getDocument() == _expr.getDocument()) {
       Vector cs = _target.getConstraint();
-      int row = _table.getSelectionModel().getMinSelectionIndex();
+      //int row = _table.getSelectionModel().getMinSelectionIndex();
+      int row = _table.getSelectedRow();
       if (row != -1 && row < cs.size()) {
+	//System.out.println("setting constraint body: " + row);
 	Constraint c = (Constraint) cs.elementAt(row);
 	c.getBody().getBody().setBody(_expr.getText());
+	//System.out.println("text=" + _expr.getText());
       }
     }
   }
@@ -213,11 +240,31 @@ implements TabModelTarget, DocumentListener, ActionListener,
   /** Called when a button is pressed */
   public void actionPerformed(ActionEvent ae) {
     Object src = ae.getSource();
+    if (src == _addButton) {
+      Vector cs = _target.getConstraint();
+      System.out.println("needs-more-work: add constraint dialog box");
+      cs.addElement(new Constraint("EnterName",
+				   "EnterExpression"));
+      _table.tableChanged(null);
+      _table.sizeColumnsToFit(0);
+      return;
+    }
+    if (src == _removeButton) {
+      int row = _table.getSelectedRow();
+      Vector cs = _target.getConstraint();
+      if (row > -1 && row < cs.size()) {
+	cs.removeElementAt(row);
+	_table.tableChanged(null);
+	_table.sizeColumnsToFit(0);
+      }
+      else System.out.println("invalid row to remove");
+      return;
+    }
     if (src instanceof JButton) {
       String text = ((JButton)src).getText();
       boolean anyLetters = false;
       if (text == null || text.length() == 0) return;
-      for (int i = 0; i < text.length(); i++) 
+      for (int i = 0; i < text.length(); i++)
 	if (Character.isLetter(text.charAt(i)))
 	  anyLetters = true;
       if (!anyLetters) text = " " + text + " ";
@@ -232,14 +279,21 @@ implements TabModelTarget, DocumentListener, ActionListener,
     if (lse.getSource() == _table.getSelectionModel()) {
       Vector cs = _target.getConstraint();
       Constraint c;
-      if (lse.getFirstIndex() != -1 && lse.getFirstIndex() < cs.size())
-	c = (Constraint) cs.elementAt(lse.getFirstIndex());
+      //int row = lse.getFirstIndex();
+      int row = _table.getSelectedRow();
+      if (row != -1 && row < cs.size()) c = (Constraint) cs.elementAt(row);
       else c = null;
-      //System.out.println("user selected " + c);
-      String bodyText = "";
+      //System.out.println("user selected " + row + " = " + c);
+      String bodyText = " ";
       if (c != null && c.getBody() != null)
 	bodyText = c.getBody().getBody().getBody();
-      _expr.setText(bodyText);
+      //System.out.println("bodytext=" + bodyText);
+      _updating = true;
+      try {
+	_expr.setText(bodyText);
+	_expr.setCaretPosition(0);
+      }
+      finally { _updating = false; }
       updateEnabled(c);
     }
   }
@@ -275,7 +329,7 @@ implements VetoableChangeListener, DelayedVChangeListener {
   public int getColumnCount() { return 1; }
 
   public String  getColumnName(int c) {
-    if (c == 0) return "Name";
+    if (c == 0) return "Constraint names";
     return "XXX";
   }
 
@@ -290,14 +344,14 @@ implements VetoableChangeListener, DelayedVChangeListener {
   public int getRowCount() {
     if (_target == null) return 0;
     Vector cs = _target.getConstraint();
-    if (cs == null) return 1;
-    return cs.size() + 1;
+    if (cs == null) return 0;
+    return cs.size();
   }
 
   public Object getValueAt(int row, int col) {
     Vector cs = _target.getConstraint();
     if (cs == null) return "null constraints";
-    if (row == cs.size()) return ""; // blank line allows adding
+    //if (row == cs.size()) return ""; // allows adding new constraint
     Constraint c = (Constraint) cs.elementAt(row);
     if (col == 0) return c.getName().getBody();
     else return "C-" + row+","+col; // for debugging
@@ -309,13 +363,13 @@ implements VetoableChangeListener, DelayedVChangeListener {
     if (!(aValue instanceof String)) return;
     String val = (String) aValue;
     Vector cs = _target.getConstraint();
-    if (rowIndex >= cs.size()) {
-      cs.addElement(new Constraint(val, "expr"));
-      fireTableStructureChanged();//?
-    }
-    else if (val.equals("")) {
+    //     if (rowIndex >= cs.size()) {
+    //       cs.addElement(new Constraint(val, "expr"));
+    //       //fireTableStructureChanged();//?
+    //     } else
+    if (val.equals("")) {
       cs.removeElementAt(rowIndex);
-      fireTableStructureChanged();//?
+      //fireTableStructureChanged();//?
     }
     else {
       Constraint c = (Constraint) cs.elementAt(rowIndex);

@@ -42,7 +42,7 @@ import java.util.*;
 
 public class CmdNull extends Cmd {
 
-  public CmdNull() { super("Do nothing"); }
+  public CmdNull() { super("Do nothing", NO_ICON); }
 
   /** Do nothing */
   public void doIt() { }

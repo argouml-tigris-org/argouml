@@ -93,12 +93,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   public void print(Graphics g) { }
 
   /** Abstract method to display the selection handleds. */
-  public void paint(Graphics g) {
-    if (_content instanceof FigNode)
-      ((FigNode)_content).paintClarifiers(g);
-    if (_content instanceof FigEdge)
-      ((FigEdge)_content).paintClarifiers(g);
-  }
+  public void paint(Graphics g) { }
 
   /** Tell the content to start a transaction that causes damage */
   public void startTrans() { getContent().startTrans(); }
@@ -120,18 +115,25 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   public final boolean contains(Point pnt) { return contains(pnt.x, pnt.y); }
 
   public boolean contains(int x, int y) {
-    return _content.contains(x, y) || hitHandle(x, y, 0, 0) != -1;
+    if (_content.contains(x, y)) return true;
+    Handle h = new Handle(-1);
+    hitHandle(x, y, 0, 0, h);
+    return (h.index != -1);
   }
 
   /** Reply true if the given Rectangle is inside or overlapps me */
   public boolean hit(Rectangle r) {
-    return _content.hit(r) || hitHandle(r) != -1;
+    if (_content.hit(r)) return true;
+    Handle h = new Handle(-1);
+    hitHandle(r, h);
+    return (h.index != -1);
   }
 
   /** Find which handle the user clicked on, or return -1 if none. */
-  public abstract int hitHandle(Rectangle r);
-  public final int hitHandle(int x, int y, int w, int h) {
-    return hitHandle(new Rectangle(x, y, w, h));
+  //public abstract int hitHandle(Rectangle r);
+  public abstract void hitHandle(Rectangle r, Handle h);
+  public final void hitHandle(int x, int y, int w, int h, Handle hdl) {
+    hitHandle(new Rectangle(x, y, w, h), hdl);
   }
 
   /** Tell the selected Fig to move to front or back, etc. */

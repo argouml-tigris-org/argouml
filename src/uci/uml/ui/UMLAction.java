@@ -46,30 +46,23 @@ import uci.uml.visual.*;
 
 public class UMLAction extends AbstractAction {
 
-  public UMLAction(String name) { this(name, true); }
+  public static boolean HAS_ICON = true;
+  public static boolean NO_ICON = false;
 
-  public UMLAction(String name, boolean global) {
+  public UMLAction(String name) { this(name, true, HAS_ICON); }
+  public UMLAction(String name, boolean hasIcon) {
+    this(name, true, hasIcon);
+  }
+
+  public UMLAction(String name, boolean global, boolean hasIcon) {
     super(name);
-    Icon icon = loadIconResource(imageName(name), name);
-    if (icon != null) putValue(Action.SMALL_ICON, icon);
+    if (hasIcon) {
+      Icon icon = Util.loadIconResource(name);
+      if (icon != null) putValue(Action.SMALL_ICON, icon);
+      else { System.out.println("icon not found: " + name); }
+    }
     putValue(Action.SHORT_DESCRIPTION, name);
     if (global) Actions._allActions.addElement(this);
-  }
-
-  protected static ImageIcon loadIconResource(String imgName, String desc) {
-    ImageIcon res = null;
-    try {
-      java.net.URL imgURL = UMLAction.class.getResource(imgName);
-      if (imgURL == null) return null;
-      return new ImageIcon(imgURL, desc);
-    }
-    catch (Exception ex) {
-      return null;
-    }
-  }
-
-  protected static String imageName(String name) {
-    return "/uci/Images/" + stripJunk(name) + ".gif";
   }
 
   /** Perform the work the action is supposed to do. */
@@ -78,7 +71,8 @@ public class UMLAction extends AbstractAction {
     System.out.println("pushed " + getValue(Action.NAME));
     StatusBar sb = ProjectBrowser.TheInstance.getStatusBar();
     sb.doFakeProgress(stripJunk(getValue(Action.NAME).toString()), 100);
-    History.TheHistory.addItem("pushed " + getValue(Action.NAME));
+    History.TheHistory.addItemManipulation("pushed " + getValue(Action.NAME),
+					   "", null, null, null);
     Actions.updateAllEnabled();
   }
 

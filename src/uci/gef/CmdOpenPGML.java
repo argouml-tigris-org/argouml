@@ -44,7 +44,7 @@ import uci.xml.pgml.*;
 public class CmdOpenPGML extends Cmd implements FilenameFilter {
 
   public CmdOpenPGML() {
-    super("Open PGML...");
+    super("Open PGML...", NO_ICON);
     setArg("filterPattern", "*.pgml");
   }
 

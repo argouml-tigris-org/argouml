@@ -31,4 +31,25 @@
     name="enroll_LogInstates.pgml"
   />
   <historyfile name="Empty.hist" />
+  <stats>
+    <stat name="clicksInToDoPane"        value="0" />
+    <stat name="dblClicksInToDoPane"     value="0" />
+    <stat name="longestToDoList"         value="0" />
+    <stat name="longestAdd"              value="0" />
+    <stat name="longestHot"              value="0" />
+    <stat name="numCriticsFired"         value="0" />
+    <stat name="numNotValid"             value="0" />
+    <stat name="numCriticsApplied"       value="0" />
+    <stat name="toDoPerspectivesChanged" value="0" />
+    <stat name="navPerspectivesChanged"  value="0" />
+    <stat name="clicksInNavPane"         value="0" />
+    <stat name="numFinds"                value="0" />
+    <stat name="numJumpToRelated"        value="0" />
+    <stat name="numDecisionModel"        value="0" />
+    <stat name="numGoalsModel"           value="0" />
+    <stat name="numCriticBrowser"        value="0" />
+    <stat name="numNavConfig"            value="0" />
+    <stat name="numHushes"               value="0" />
+    <stat name="numChecks"               value="0" />
+  </stats>
 </argo>

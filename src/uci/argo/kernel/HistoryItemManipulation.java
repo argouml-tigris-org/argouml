@@ -32,17 +32,17 @@ import java.util.*;
 // needs-more-work: define subclasses for: modification, criticism
 
 public class HistoryItemManipulation extends HistoryItem {
-  
+
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public HistoryItemManipulation(String desc) {
-    super(desc);
+  public HistoryItemManipulation(String head, String desc) {
+    super(head, desc);
   }
 
-  public HistoryItemManipulation(String desc, Object target,
+  public HistoryItemManipulation(String head, String desc, Object target,
 		     Object oldValue, Object newValue) {
-    super(desc, target, oldValue, newValue);
+    super(head, desc, target, oldValue, newValue);
   }
 
 
@@ -53,5 +53,5 @@ public class HistoryItemManipulation extends HistoryItem {
     if (_desc == null) return "HIM: (null)";
     return "HIM: " + _desc;
   }
-  
+
 } /* end class HistoryItemManipulation */

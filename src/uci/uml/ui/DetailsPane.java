@@ -74,7 +74,7 @@ implements ChangeListener, MouseListener {
   // constructors
 
   public DetailsPane(StatusBar sb) {
-    System.out.println("making DetailsPane");    
+    System.out.println("making DetailsPane");
     ConfigLoader.loadTabs(_tabPanels, "details", sb);
 
 
@@ -147,6 +147,7 @@ implements ChangeListener, MouseListener {
 
   public void setTarget(Object target) {
     //System.out.println("details target set to:" + target);
+    long start = System.currentTimeMillis();
     if (target == null) {
       _figTarget = null;
       _modelTarget = null;
@@ -161,6 +162,7 @@ implements ChangeListener, MouseListener {
     boolean jumpToPrevEnabled = false;
     int currentTab = _tabs.getSelectedIndex();
     for (int i = 0; i < _tabPanels.size(); i++) {
+      long tabstart = System.currentTimeMillis();
       JPanel tab = (JPanel) _tabPanels.elementAt(i);
       if (tab instanceof TabModelTarget) {
 	TabModelTarget tabMT = (TabModelTarget) tab;
@@ -188,6 +190,8 @@ implements ChangeListener, MouseListener {
 	  jumpToFirstEnabledTab = true;
 	}
       }
+      long tabnow = System.currentTimeMillis();
+      //System.out.println(tab.getClass().getName() + ": " + (tabnow - tabstart));
     }
     if (jumpToPrevEnabled) {
       _tabs.setSelectedIndex(_lastNonNullTab);
@@ -198,6 +202,8 @@ implements ChangeListener, MouseListener {
     if (jumpToFirstEnabledTab && firstEnabled == -1)
       _tabs.setSelectedIndex(0);
     if (target != null) _lastNonNullTab = _tabs.getSelectedIndex();
+    long now = System.currentTimeMillis();
+    Globals.showStatus("[" + (now - start) + "]");
   }
 
   public Object getTarget() { return _modelTarget; }

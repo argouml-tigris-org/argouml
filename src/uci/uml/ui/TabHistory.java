@@ -35,28 +35,35 @@ import javax.swing.event.*;
 import javax.swing.border.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-//import uci.util.*;
+import uci.util.Util;
 import uci.argo.kernel.*;
+
 
 public class TabHistory extends TabSpawnable
 implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
 
   ////////////////////////////////////////////////////////////////
   // class variables
-  protected ImageIcon _CritiqueIcon = loadIconResource("PostIt0");
-  protected ImageIcon _ResolveIcon = loadIconResource("PostIt100");
-  protected ImageIcon _ManipIcon = loadIconResource("PostIt100");
-  protected ImageIcon _HistoryItemIcon = loadIconResource("Rectangle");
+  protected ImageIcon _CritiqueIcon = Util.loadIconResource("PostIt0");
+  protected ImageIcon _ResolveIcon = Util.loadIconResource("PostIt100");
+  protected ImageIcon _ManipIcon = Util.loadIconResource("PostIt100");
+  protected ImageIcon _HistoryItemIcon = Util.loadIconResource("Rectangle");
 
-  
+  protected static String FILTERS[] = { "All History Items",
+					"History of Selection" };
+
   ////////////////////////////////////////////////////////////////
   // instance variables
-  Object _target;
-  Vector _data;
-  JList _list = new JList();
-  JLabel _label = new JLabel();
-  DefaultCellEditor _editor = new DefaultCellEditor(new JTextField());
-  EtchedBorder _border = new EtchedBorder(EtchedBorder.LOWERED);
+  private Object _target;
+  private Vector _data;
+  private JList _list = new JList();
+  private JLabel _label = new JLabel();
+  private JPanel _affected = new JPanel();
+  private JComboBox _filter = new JComboBox(FILTERS);
+
+
+  private JTextArea _description = new JTextArea();
+  private JSplitPane _splitter;
 
   ////////////////////////////////////////////////////////////////
   // constructor
@@ -66,23 +73,50 @@ implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
     //setFont(new Font("Dialog", Font.PLAIN, 10));
     //_label.setFont(new Font("Dialog", Font.PLAIN, 10));
     _label.setOpaque(true);
-    //setUpMockItems();
-    add(new JScrollPane(_list), BorderLayout.CENTER);
+
     _list.addListSelectionListener(this);
     _list.setCellRenderer(this);
     _list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     _list.setEnabled(true);
     _list.addMouseMotionListener(this);
     _list.setModel(new HistoryListModel());
+
+    _affected.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+    _affected.add(new JLabel("Affected: "));
+    _affected.setBorder(new EtchedBorder());
+
+    JPanel descPane = new JPanel();
+    descPane.setLayout(new BorderLayout());
+    descPane.add(new JScrollPane(_description), BorderLayout.CENTER);
+    _description.setLineWrap(true);
+    _description.setWrapStyleWord(true);
+    descPane.add(_affected, BorderLayout.SOUTH);
+
+    // needs-more-work: related design elements
+
+    JPanel listPane = new JPanel();
+    listPane.setLayout(new BorderLayout());
+    listPane.add(new JScrollPane(_list), BorderLayout.CENTER);
+    Box filterPane = Box.createHorizontalBox();
+    filterPane.add(new JLabel(" Show: "));
+    filterPane.add(_filter);
+    listPane.add(filterPane, BorderLayout.NORTH);
+    listPane.setMinimumSize(new Dimension(100, 100));
+    listPane.setPreferredSize(new Dimension(300, 100));
+
+    setLayout(new BorderLayout());
+    _splitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+					 listPane, descPane);
+    _splitter.setDividerSize(2);
+    _splitter.setDividerLocation(300);
+    add(_splitter, BorderLayout.CENTER);
+
   }
 
   //needs-more-work: should be more than just a scrolling list
   // need to examine individual items, filter, sort,...
 
 
-  protected void setUpMockItems() {
-    _list.setListData(_data);
-  }
 
   /** 
    * Called whenever the value of the selection changes.
@@ -91,12 +125,19 @@ implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
   public void valueChanged(ListSelectionEvent e) {
     // needs-more-work: called on each critique!
     //System.out.println("user selected " + _list.getSelectedValue());
+    Object sel = _list.getSelectedValue();
+    if (sel instanceof HistoryItem) {
+      _description.setText(((HistoryItem)sel).toString());
+    }
+    else
+      _description.setText("what?");
+    _description.setCaretPosition(0);
   }
 
 
   // This is the only method defined by ListCellRenderer.  We just
   // reconfigure the Jlabel each time we're called.
-  
+
   public Component getListCellRendererComponent(
          JList list,
          Object value,            // value to display
@@ -104,7 +145,12 @@ implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
          boolean isSelected,      // is the cell selected
          boolean cellHasFocus)    // the list and the cell have the focus
   {
-    String s = value.toString();
+    if (!(value instanceof HistoryItem)) {
+      _label.setText("non HistoryItem");
+      return _label;
+    }
+    HistoryItem hi = (HistoryItem) value;
+    String s = hi.getHeadline();
     _label.setText(s);
     _label.setBackground(isSelected ?
 			 MetalLookAndFeel.getTextHighlightColor() :
@@ -112,16 +158,16 @@ implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
     _label.setForeground(isSelected ?
 			 MetalLookAndFeel.getHighlightedTextColor() :
 			 MetalLookAndFeel.getUserTextColor());
-    if (value instanceof HistoryItemManipulation) {
+    if (hi instanceof HistoryItemManipulation) {
       _label.setIcon(_ManipIcon);
     }
-    else if (value instanceof HistoryItemCritique) {
+    else if (hi instanceof HistoryItemCritique) {
       _label.setIcon(_CritiqueIcon);
     }
-    else if (value instanceof HistoryItemResolve) {
+    else if (hi instanceof HistoryItemResolve) {
       _label.setIcon(_ResolveIcon);
     }
-    else if (value instanceof HistoryItem) {
+    else {
       _label.setIcon(_HistoryItemIcon);
     }
     return _label;
@@ -140,92 +186,9 @@ implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
 
   public void mouseDragged(MouseEvent me) { }
 
-
-  ////////////////////////////////////////////////////////////////
-  // utility functions
-
-  protected static ImageIcon loadIconResource(String name) {
-    String imgName = imageName(name);
-    ImageIcon res = null;
-    try {
-      java.net.URL imgURL = UMLTreeCellRenderer.class.getResource(imgName);
-      if (imgURL == null) return null;
-      return new ImageIcon(imgURL);
-    }
-    catch (Exception ex) {
-      return new ImageIcon(name);
-    }
-  }
-
-  protected static String imageName(String name) {
-    return "/uci/Images/" + stripJunk(name) + ".gif";
-  }
-
-  protected static String stripJunk(String s) {
-    String res = "";
-    int len = s.length();
-    for (int i = 0; i < len; i++) {
-      char c = s.charAt(i);
-      if (Character.isJavaLetterOrDigit(c)) res += c;
-    }
-    return res;
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // inner classes
-
-//   protected Icon _manuipIcon = new ManipIcon();
-
-//   protected Icon _criticFiredIcon = new FiredIcon();
-
-//   protected Icon _criticResolvedIcon = new ResolvedIcon();
-
 } /* end class TabHistory */
 
 
-// class ManipIcon implements Icon {
-//   public void paintIcon(Component c, Graphics g, int x, int y) {
-//     int w = getIconWidth(), h = getIconHeight();
-//     g.setColor(Color.black);
-//     Polygon p = new Polygon();
-//     p.addPoint(x, y + h);
-//     p.addPoint(x + w/2+1, y);
-//     p.addPoint(x + w, y + h);
-//     g.fillPolygon(p);
-//   }
-//   public int getIconWidth() { return 9; }
-//   public int getIconHeight() { return 9; }
-// }
-
-
-// class FiredIcon implements Icon {
-//   public void paintIcon(Component c, Graphics g, int x, int y) {
-//     int w = getIconWidth(), h = getIconHeight();
-//     g.setColor(Color.black);
-//     Polygon p = new Polygon();
-//     p.addPoint(x+1, y + h/2+1);
-//     p.addPoint(x + w, y);
-//     p.addPoint(x + w, y + h);
-//     g.fillPolygon(p);
-//   }
-//   public int getIconWidth() { return 9; }
-//   public int getIconHeight() { return 9; }
-// }
-
-
-// class ResolvedIcon implements Icon {
-//   public void paintIcon(Component c, Graphics g, int x, int y) {
-//     int w = getIconWidth(), h = getIconHeight();
-//     g.setColor(Color.black);
-//     Polygon p = new Polygon();
-//     p.addPoint(x+1, y + h/2+1);
-//     p.addPoint(x + w, y);
-//     p.addPoint(x + w, y + h);
-//     g.fillPolygon(p);
-//   }
-//   public int getIconWidth() { return 9; }
-//   public int getIconHeight() { return 9; }
-// }
 
 class HistoryListModel implements ListModel, HistoryListener {
   ////////////////////////////////////////////////////////////////
@@ -238,7 +201,7 @@ class HistoryListModel implements ListModel, HistoryListener {
   public HistoryListModel() {
     History.TheHistory.addHistoryListener(this);
   }
-			     
+
 
   ////////////////////////////////////////////////////////////////
   // HistoryListener implementation
@@ -266,22 +229,22 @@ class HistoryListModel implements ListModel, HistoryListener {
     return h.getItems().elementAt(index);
   }
 
-  
+
   /**
    * Add a listener to the list that's notified each time a change
    * to the data model occurs.
    * @param l the ListDataListener
-   */  
+   */
   public void addListDataListener(ListDataListener l) {
     listenerList.add(ListDataListener.class, l);
   }
-  
+
 
   /**
    * Remove a listener from the list that's notified each time a 
    * change to the data model occurs.
    * @param l the ListDataListener
-   */  
+   */
   public void removeListDataListener(ListDataListener l) {
     listenerList.remove(ListDataListener.class, l);
   }
@@ -304,17 +267,17 @@ class HistoryListModel implements ListModel, HistoryListener {
   {
     Object[] listeners = listenerList.getListenerList();
     ListDataEvent e = null;
-    
+
     for (int i = listeners.length - 2; i >= 0; i -= 2) {
       if (listeners[i] == ListDataListener.class) {
 	if (e == null) {
 	  e = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, index0, index1);
 	}
 	((ListDataListener)listeners[i+1]).intervalAdded(e);
-      }	       
+      }
     }
   }
 
 
-  
+
 } /* end class HistoryListModel */

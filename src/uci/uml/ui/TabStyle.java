@@ -45,7 +45,8 @@ import uci.uml.Behavioral_Elements.Common_Behavior.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 import uci.uml.Behavioral_Elements.Use_Cases.*;
 import uci.uml.Model_Management.*;
-import uci.uml.ui.props.*;
+import uci.uml.ui.style.*;
+import uci.uml.visual.*;
 
 public class TabStyle extends TabSpawnable
 implements TabFigTarget, PropertyChangeListener, DelayedVChangeListener {
@@ -68,12 +69,31 @@ implements TabFigTarget, PropertyChangeListener, DelayedVChangeListener {
     _alternativeBase = altBase;
     setLayout(new BorderLayout());
     //setFont(new Font("Dialog", Font.PLAIN, 10));
+    initPanels();
   }
 
   public TabStyle() {
     this("Style", "style.StylePanel", "style.SP");
   }
 
+  protected void initPanels() {
+    StylePanelFigClass spfc = new StylePanelFigClass();
+    SPFigEdgeModelElement spfeme = new SPFigEdgeModelElement();
+    StylePanelFig spf = new StylePanelFig();
+    _panels.put(FigClass.class, spfc);
+    _panels.put(FigNodeModelElement.class, spf);
+    _panels.put(FigEdgeModelElement.class, spfeme);
+    _panels.put(FigInterface.class, spf);
+    _panels.put(FigAssociation.class, spfeme);
+    _panels.put(FigState.class, spf);
+    _panels.put(FigTransition.class, spfeme);
+    _panels.put(FigUseCase.class, spf);
+    _panels.put(FigActor.class, spf);
+    _panels.put(FigInstance.class, spf);
+    _panels.put(FigLink.class, spfeme);
+    _panels.put(FigGeneralization.class, spfeme);
+    _panels.put(FigRealization.class, spfeme);
+  }
 
   ////////////////////////////////////////////////////////////////
   // accessors
@@ -122,6 +142,7 @@ implements TabFigTarget, PropertyChangeListener, DelayedVChangeListener {
       catch (InstantiationException ignore) { return null; }
       _panels.put(targetClass, p);
     }
+    //else System.out.println("found style for " + targetClass.getName());
     return p;
   }
 

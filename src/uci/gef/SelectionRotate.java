@@ -63,7 +63,10 @@ public class SelectionRotate extends Selection {
 
   /** Returns -2 to indicate that the user did not click on a handle
    *  or the body of the Fig. Needs-more-work. */
-  public int hitHandle(Rectangle r) { return -2; }
+  public void hitHandle(Rectangle r, Handle h) {
+    h.index = -2;
+    h.instructions = "Object cannot be rotated";
+  }
 
   static final long serialVersionUID = -1661014460931572067L;
 } /* end class SelectionRotate */

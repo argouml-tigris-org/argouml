@@ -60,15 +60,16 @@ public class SelectionLowerRight extends Selection {
    *   5-------6-------7
    * </pre>
    */
-  public int hitHandle(Rectangle r) {
+  public void hitHandle(Rectangle r, Handle h) {
     int cx = _content.getX();
     int cy = _content.getY();
     int cw = _content.getWidth();
     int ch = _content.getHeight();
-    Rectangle testRect =
-      new Rectangle(cx + cw, cy + ch, HAND_SIZE, HAND_SIZE);
-    if (r.intersects(testRect)) return 7;
-    return -1;
+    Rectangle testRect = new Rectangle(cx+cw, cy+ch, HAND_SIZE, HAND_SIZE);
+    if (r.intersects(testRect)) {
+      h.index = 7; h.instructions = "Resize object";
+    }
+    else { h.index = -1; }
   }
 
   /** Paint the handles at the four corners and midway along each edge

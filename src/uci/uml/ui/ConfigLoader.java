@@ -45,14 +45,22 @@ public class ConfigLoader {
 	InputStream is = (InputStream) config;
 	lnr = new LineNumberReader(new InputStreamReader(is));
       }
+      else System.out.println("Could not open argo.ini!");
     }
-    catch (java.io.IOException io) { System.out.println("IOException"); }
-    catch (ClassCastException io) { System.out.println("ClassCastException"); }
+    catch (java.io.IOException io) {
+      System.out.println("IOException on reading argo.ini");
+      io.printStackTrace();
+    }
+    catch (ClassCastException io) {
+      System.out.println("ClassCastException");
+      io.printStackTrace();
+    }
 
     if (lnr != null) {
       try {
 	String line = lnr.readLine();
 	while (line != null) {
+	  //long start = System.currentTimeMillis();
 	  Class tabClass = parseConfigLine(line, panelName, lnr.getLineNumber(),
 					   configFile, sb);
 	  if (tabClass != null) {
@@ -71,6 +79,8 @@ public class ConfigLoader {
 	    }
 	  }
 	  line = lnr.readLine();
+	  //System.out.println("config line: " +
+	  //(System.currentTimeMillis() - start));
 	}
       }
       catch (java.io.IOException io) { System.out.println("IOException"); }

@@ -69,8 +69,10 @@ public class StateMachine extends ModelElementImpl {
     if (_top == x) return;
     fireVetoableChange("top", _top, x);
     _top = x;
-    _top.setStateMachine(this);
-    _top.setNamespace(getNamespace());
+    if (_top != null) {
+      _top.setStateMachine(this);
+      _top.setNamespace(getNamespace());
+    }
   }
 
   public Vector getTransitions() { return _transitions; }

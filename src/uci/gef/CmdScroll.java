@@ -55,7 +55,7 @@ public class CmdScroll extends Cmd {
   // constructor
 
   public CmdScroll(int dir) {
-    super("Scroll " + wordFor(dir));
+    super("Scroll " + wordFor(dir), NO_ICON);
     _direction = dir;
     _magnitude = 16; // Needs-More-Work: prefs
   }

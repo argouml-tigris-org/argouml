@@ -53,10 +53,32 @@
   <member type='text'    name='project_notes.txt'/>
 
   <historyfile         name='thoughts.hist'/>
+
+  <stats>
+    <stat name="clicksInToDoPane"        value="0" >
+    <stat name="dblClicksInToDoPane"     value="0" >
+    <stat name="longestToDoList"         value="0" >
+    <stat name="longestAdd"              value="0" >
+    <stat name="longestHot"              value="0" >
+    <stat name="numCriticsFired"         value="0" >
+    <stat name="numNotValid"             value="0" >
+    <stat name="numCriticsApplied"       value="0" >
+    <stat name="toDoPerspectivesChanged" value="0" >
+    <stat name="navPerspectivesChanged"  value="0" >
+    <stat name="clicksInNavPane"         value="0" >
+    <stat name="numFinds"                value="0" >
+    <stat name="numJumpToRelated"        value="0" >
+    <stat name="numDecisionModel"        value="0" >
+    <stat name="numGoalsModel"           value="0" >
+    <stat name="numCriticBrowser"        value="0" >
+    <stat name="numNavConfig"            value="0" >
+    <stat name="numHushes"               value="0" >
+    <stat name="numChecks"               value="0" >
+  </stats>
 </argo>
 -->
 
-<!ELEMENT argo (documentation, searchpath+, member+, historyfile) >
+<!ELEMENT argo (documentation, searchpath+, member+, historyfile, stats?) >
 
 <!ELEMENT documentation (authorname?, version?, description?) >
 <!ELEMENT authorname (#PCDATA) >
@@ -76,6 +98,16 @@
 <!ATTLIST historyfile
             name CDATA #REQUIRED >
 
+<!ELEMENT stats (stat)* >
+
+<!ELEMENT stat EMPTY >
+<!ATTLIST stat
+            name       ID    #REQUIRED
+	    value      CDATA #REQUIRED >
+
+
+
+
 	    
 <!-- Idea for the future: allow an ALT='desc' attribute that is shown -->
 <!-- in case the specified file cannot be found or loaded. -->
@@ -83,3 +115,5 @@
 <!-- Maybe files need a flag that indicates if they should be loaded -->
 <!-- immediately when the project is loaded or if they should be loaded -->
 <!-- on demand. -->
+
+<!-- needs-more-work: initial diagram to be displayed on open -->

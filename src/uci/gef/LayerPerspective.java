@@ -65,10 +65,6 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
   /** Rectangles of where to place nodes that are automatically added. */
   protected Hashtable _nodeTypeRegions = new Hashtable();
 
-  /** True if the second column of automattically placed node
-   *  FigNodes should be moved down by half the a node height. */
-  protected boolean _stagger = true;
-
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -131,26 +127,39 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
       (Rectangle) _nodeTypeRegions.get(nodeClass);
     if (placementRegion != null) {
       f.setLocation(placementRegion.x, placementRegion.y);
-      bumpOffOtherNodesIn(f, placementRegion);
+      bumpOffOtherNodesIn(f, placementRegion, false, true);
     }
   }
 
-  public void bumpOffOtherNodesIn(Fig newFig, Rectangle bounds) {
+  public void bumpOffOtherNodesIn(Fig newFig, Rectangle bounds,
+				  boolean stagger, boolean vertical) {
     Rectangle bbox = newFig.getBounds();
-    int col = 0;
+    int origX = bbox.x, origY = bbox.y;
+    int col = 0, row = 0, i = 1;
     while (bounds.intersects(bbox)) {
-      Enumeration overlappers = elementsIn(bbox);
+      Enumeration overlappers = nodesIn(bbox);
       if (!overlappers.hasMoreElements()) return;
-      newFig.translate(0, bbox.height + GAP);
-      bbox.y += bbox.height + GAP;
+      int unitOffset = ((i+1)/2) * ((i%2==0) ? -1 : 1);
+      if (vertical) bbox.y = origY + unitOffset * (bbox.height + GAP);
+      else bbox.x = origX + unitOffset * (bbox.width + GAP);
+      newFig.setLocation(bbox.x, bbox.y);
       if (!(bounds.intersects(bbox))) {
-	col++;
-	int x = bbox.x + bbox.width + GAP;
+	int x = bounds.x;
 	int y = bounds.y;
-	if (_stagger) y += (col%2)*(bbox.height+GAP)/2;
+	if (vertical) {
+	  col++;
+	  x = bbox.x + bbox.width + GAP;
+	  if (stagger) y += (col%2)*(bbox.height+GAP)/2;
+	}
+	else {
+	  row++;
+	  y = bbox.y + bbox.height + GAP;
+	  if (stagger) x += (row%2)*(bbox.width+GAP)/2;
+	}
 	newFig.setLocation(x, y);
 	bbox.setLocation(x, y);
       }
+      i++;
     }
   }
 

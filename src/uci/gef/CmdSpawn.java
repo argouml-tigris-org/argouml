@@ -42,7 +42,7 @@ import java.awt.*;
 
 public class CmdSpawn extends Cmd {
 
-  public CmdSpawn() { super("Spawn Editor"); }
+  public CmdSpawn() { super("Spawn Editor", NO_ICON); }
 
   public void doIt() {
     Editor ce = Globals.curEditor();

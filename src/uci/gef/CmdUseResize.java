@@ -44,7 +44,7 @@ import java.util.*;
 
 public class CmdUseResize extends Cmd {
 
-  public CmdUseResize() { super("Use Resize Handles"); }
+  public CmdUseResize() { super("Use Resize Handles", NO_ICON); }
 
   public void doIt() {
     Editor ce = Globals.curEditor();

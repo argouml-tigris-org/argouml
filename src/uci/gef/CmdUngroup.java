@@ -41,7 +41,7 @@ import java.awt.*;
 
 public class CmdUngroup extends Cmd {
 
-  public CmdUngroup() { super("Ungroup"); }
+  public CmdUngroup() { super("Ungroup", NO_ICON); }
 
   public void doIt() {
     Vector ungroupedItems = new Vector();

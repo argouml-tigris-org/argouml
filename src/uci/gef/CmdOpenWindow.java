@@ -44,7 +44,7 @@ import java.util.*;
 public class CmdOpenWindow extends Cmd {
 
   public CmdOpenWindow(String className, String name) {
-    super(name);
+    super(name, NO_ICON);
     setArg("className", className);
   }
 

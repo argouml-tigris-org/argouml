@@ -52,7 +52,7 @@ public class ActionGoToDetails extends UMLAction {
   ////////////////////////////////////////////////////////////////
   // constructor
   public ActionGoToDetails(String tabName) {
-    super(tabName);
+    super(tabName, NO_ICON);
     _tabName = tabName;
   }
 

@@ -54,8 +54,8 @@ implements PropertyEditor { //, MouseListener {
   public ColorEditor() {
     setLayout(null);
     //addNotify();
-    resize(insets().left + insets().right + 20,
-	   insets().top + insets().bottom + 20);
+    setSize(getInsets().left + getInsets().right + 20,
+	    getInsets().top + getInsets().bottom + 20);
     setForeground(Color.lightGray);
   }
 

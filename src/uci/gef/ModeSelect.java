@@ -113,6 +113,14 @@ public class ModeSelect extends Mode {
     Fig underMouse = _editor.hit(_selectAnchor);
     if (underMouse == null && !sm.hit(hitRect)) return;
 
+    Handle h = new Handle(-1);
+    sm.hitHandle(new Rectangle(x-4, y-4, 8, 8), h);
+    if (h.index >= 0) {
+      gotoModifyMode(me);
+      me.consume();
+      return;
+    }
+
     if (underMouse != null) {
       if (_toggleSelection) sm.toggle(underMouse);
       else if (!sm.containsFig(underMouse)) sm.select(underMouse);

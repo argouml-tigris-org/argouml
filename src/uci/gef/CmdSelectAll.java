@@ -39,7 +39,7 @@ import java.util.*;
 
 public class CmdSelectAll extends Cmd {
 
-  public CmdSelectAll() { super("Select All"); }
+  public CmdSelectAll() { super("Select All", NO_ICON); }
 
   public void doIt() {
     Editor ce = Globals.curEditor();

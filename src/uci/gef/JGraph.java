@@ -116,6 +116,7 @@ public class JGraph extends JPanel implements Cloneable {
     int ctrl = KeyEvent.CTRL_MASK;
     int ctrlShift = KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK;
     int alt = KeyEvent.ALT_MASK;
+    int meta = KeyEvent.META_MASK;
 
     bindKey(new CmdSelectNext(true), KeyEvent.VK_TAB, 0);
     bindKey(new CmdSelectNext(false), KeyEvent.VK_TAB, shift);
@@ -140,6 +141,16 @@ public class JGraph extends JPanel implements Cloneable {
     bindKey(new CmdNudge(CmdNudge.RIGHT, 8), KeyEvent.VK_RIGHT, shift);
     bindKey(new CmdNudge(CmdNudge.UP, 8), KeyEvent.VK_UP, shift);
     bindKey(new CmdNudge(CmdNudge.DOWN, 8), KeyEvent.VK_DOWN, shift);
+
+    bindKey(new CmdNudge(CmdNudge.LEFT, 18), KeyEvent.VK_LEFT, alt);
+    bindKey(new CmdNudge(CmdNudge.RIGHT, 18), KeyEvent.VK_RIGHT, alt);
+    bindKey(new CmdNudge(CmdNudge.UP, 18), KeyEvent.VK_UP, alt);
+    bindKey(new CmdNudge(CmdNudge.DOWN, 18), KeyEvent.VK_DOWN, alt);
+
+    bindKey(new CmdSelectNear(CmdSelectNear.LEFT), KeyEvent.VK_LEFT, meta);
+    bindKey(new CmdSelectNear(CmdSelectNear.RIGHT), KeyEvent.VK_RIGHT, meta);
+    bindKey(new CmdSelectNear(CmdSelectNear.UP), KeyEvent.VK_UP, meta);
+    bindKey(new CmdSelectNear(CmdSelectNear.DOWN), KeyEvent.VK_DOWN, meta);
 
   }
 

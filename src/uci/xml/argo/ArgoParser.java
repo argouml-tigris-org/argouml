@@ -85,7 +85,7 @@ public class ArgoParser implements TagHandler {
   public Project getProject() { return _proj; }
 
   public void handleStartTag(TXElement e, boolean empty) {
-    String n = e.getName();
+    String n = e.getTagName();
     try {
       if (n.equals("argo")) handleArgo(e);
       else if (n.equals("documentation")) handleDocumentation(e);
@@ -98,7 +98,7 @@ public class ArgoParser implements TagHandler {
 
 
   public void handleEndTag(TXElement e, boolean empty) {
-    String n = e.getName();
+    String n = e.getTagName();
     try {
       if (n.equals("authorname")) handleAuthorname(e);
       else if (n.equals("version")) handleVersion(e);
@@ -106,6 +106,7 @@ public class ArgoParser implements TagHandler {
       else if (n.equals("searchpath")) handleSearchpath(e);
       else if (n.equals("member")) handleMember(e);
       else if (n.equals("historyfile")) handleHistoryfile(e);
+      else if (n.equals("stat")) handleStat(e);
     }
     catch (Exception ex) {
       System.out.println("Exception!");
@@ -151,6 +152,14 @@ public class ArgoParser implements TagHandler {
   protected void handleHistoryfile(TXElement e) {
     String historyfile = e.getAttribute("name").trim();
     _proj._historyFile = historyfile;
+  }
+
+  protected void handleStat(TXElement e) {
+    String name = e.getAttribute("name").trim();
+    String valueString = e.getAttribute("value").trim();
+    int val = Integer.parseInt(valueString);
+    //UsageStatistic us = new UsageStatistic(name, val);
+    _proj.setStat(name, val);
   }
 
 } /* end class ArgoParser */

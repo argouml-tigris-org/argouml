@@ -39,6 +39,10 @@
 
   <historyfile name="<ocl>self.historyFile</ocl>" />
 
+  <stats>
+    <ocl>self.stats</ocl>
+  </stats>
+
 </argo>
 ]]>
 </template>
@@ -51,6 +55,14 @@
   type="<ocl>self.type</ocl>"
   name="<ocl>self.name</ocl>"
 />
+]]>
+</template>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<template class="uci.uml.ui.UsageStatistic">
+<![CDATA[
+<stat name="<ocl>self.name</ocl>"
+     value="<ocl>self.value</ocl>" />
 ]]>
 </template>
 

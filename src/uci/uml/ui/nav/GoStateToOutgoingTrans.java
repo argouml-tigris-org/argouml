@@ -36,12 +36,14 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
 public class GoStateToOutgoingTrans implements TreeModelPrereqs {
 
   public String toString() { return "State->Outgoing Transitions"; }
-  
+
   public Object getRoot() {
     System.out.println("getRoot should never be called");
     return null;
   }
   public void setRoot(Object r) { }
+
+  //needs-more-work: should not include internal transitions
 
   public Object getChild(Object parent, int index) {
     if (parent instanceof StateVertex) {
@@ -88,4 +90,4 @@ public class GoStateToOutgoingTrans implements TreeModelPrereqs {
   }
 
 
-}
+} /* end class GoStateToOutgoingTrans */

@@ -163,14 +163,14 @@ implements ChangeListener, MouseListener {
   ////////////////////////////////////////////////////////////////
   // event handlers
 
-  /** called when the user selects an item in the tree, by clicking or
-   *  otherwise. */
+  /** called when the user selects a tab, by clicking or otherwise. */
   public void stateChanged(ChangeEvent e) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
     if (_lastTab != null) { _lastTab.setVisible(false); }
-    //System.out.println("MultiEditorPane state changed");
     _lastTab = _tabs.getSelectedComponent();
+    //System.out.println("MultiEditorPane state changed:" +
+    //  _lastTab.getClass().getName());
     _lastTab.setVisible(true);
     if (_lastTab instanceof TabModelTarget)
       ((TabModelTarget)_lastTab).refresh();
@@ -192,14 +192,14 @@ implements ChangeListener, MouseListener {
   }
 
 
-  /** called when the user clicks once on a tab. */ 
+  /** called when the user clicks once on a tab. */
   public void mySingleClick(int tab) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
     //System.out.println("single: " + _tabs.getComponentAt(tab).toString());
   }
 
-  /** called when the user clicks twice on a tab. */ 
+  /** called when the user clicks twice on a tab. */
   public void myDoubleClick(int tab) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener

@@ -110,6 +110,10 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
   // Arguments
 
   public void setArgs(Hashtable args) { _args = args; }
+  public void setArg(String key, Object value) {
+    if (_args == null) _args = new Hashtable();
+    _args.put(key, value);
+  }
   public Hashtable getArgs() { return _args; }
   public Object getArg(String s) {
     if (_args == null) return null;

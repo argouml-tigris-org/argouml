@@ -44,7 +44,7 @@ import java.util.*;
 
 public class CmdUseReshape extends Cmd {
 
-  public CmdUseReshape() { super("Use Reshape Handles"); }
+  public CmdUseReshape() { super("Use Reshape Handles", NO_ICON); }
 
   public void doIt() {
     Editor ce = Globals.curEditor();

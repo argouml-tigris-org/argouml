@@ -36,7 +36,7 @@ import java.util.*;
 /** An Cmd to align 2 or more objects relative to each other. */
 
 public class CmdDistribute extends Cmd {
-  
+
   ////////////////////////////////////////////////////////////////
   // constants
 

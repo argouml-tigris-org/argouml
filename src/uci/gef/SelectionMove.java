@@ -72,7 +72,10 @@ public class SelectionMove extends Selection {
 
   /** Return -1 as a special code to indicate that the user clicked in
    *  the body of the Fig and wants to drag it around. */
-  public int hitHandle(Rectangle r) { return -1; }
+  public void hitHandle(Rectangle r, Handle h) {
+    h.index = -1;
+    h.instructions = "Move Object(s)";
+  }
 
 
   static final long serialVersionUID = -3988412251995936654L;

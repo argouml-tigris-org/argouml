@@ -65,42 +65,42 @@ implements IStatusBar {
   
   // Actions
   // file menu
-  protected static Action _actionNew =  Actions.New;
+  //-protected static Action _actionNew =  Actions.New;
   //protected static Action _actionOpen = Actions.Open;
   //protected static Action _actionOpenXMI = Actions.OpenXMI;
-  protected static Action _actionOpenProject = Actions.OpenProject;
+  //-protected static Action _actionOpenProject = Actions.OpenProject;
   //protected static Action _actionSave = Actions.Save;
   //protected static Action _actionSaveAs = Actions.SaveAs;
   //protected static Action _actionSaveAsXMI = Actions.SaveAsXMI;
-  protected static Action _actionSaveProject = Actions.SaveProject;
-  protected static Action _actionSaveProjectAs = Actions.SaveProjectAs;
+  //-protected static Action _actionSaveProject = Actions.SaveProject;
+  //-protected static Action _actionSaveProjectAs = Actions.SaveProjectAs;
   // -----
   //protected static Action _actionAddToProj = Actions.AddToProj;
   // -----
-  protected static Action _actionPrint = Actions.Print;
+  //-protected static Action _actionPrint = Actions.Print;
   // -----
-  protected static Action _actionExit = Actions.Exit;
+  //-protected static Action _actionExit = Actions.Exit;
 
   // edit menu
-  protected static Action _actionUndo = Actions.Undo;
-  protected static Action _actionRedo = Actions.Redo;
-  protected static Action _actionCut = Actions.Cut;
-  protected static Action _actionCopy = Actions.Copy;
-  protected static Action _actionPaste = Actions.Paste;
-  protected static Action _actionDelete = Actions.DeleteFromDiagram;
-  protected static Action _actionRemove = Actions.RemoveFromModel;
-  protected static Action _actionEmpty = Actions.EmptyTrash;
+  //-protected static Action _actionUndo = Actions.Undo;
+  //-protected static Action _actionRedo = Actions.Redo;
+  //-protected static Action _actionCut = Actions.Cut;
+  //-protected static Action _actionCopy = Actions.Copy;
+  //-protected static Action _actionPaste = Actions.Paste;
+  //-protected static Action _actionDelete = Actions.DeleteFromDiagram;
+  //-protected static Action _actionRemove = Actions.RemoveFromModel;
+  //-protected static Action _actionEmpty = Actions.EmptyTrash;
 
   // view menu
 //   protected static Action _actionNavUp = Actions.NavUp;
 //   protected static Action _actionNavDown = Actions.NavDown;
-  protected static Action _actionNavBack = Actions.NavBack;
-  protected static Action _actionNavForw = Actions.NavForw;
-  protected static Action _actionFind = Actions.Find;
-  protected static Action _actionGotoDiagram = Actions.GotoDiagram;
-  protected static Action _actionNextEditTab = Actions.NextEditTab;
+  //-protected static Action _actionNavBack = Actions.NavBack;
+  //-protected static Action _actionNavForw = Actions.NavForw;
+  //-protected static Action _actionFind = Actions.Find;
+  //-protected static Action _actionGotoDiagram = Actions.GotoDiagram;
+  //-protected static Action _actionNextEditTab = Actions.NextEditTab;
   //protected static Action _actionAddToFavs = Actions.AddToFavs;
-  protected static Action _actionNextDetailsTab = Actions.NextDetailsTab;
+  //-protected static Action _actionNextDetailsTab = Actions.NextDetailsTab;
 
   // create menu
   protected static Action _actionCreateMultiple = Actions.CreateMultiple;
@@ -109,7 +109,7 @@ implements IStatusBar {
   protected static Action _actionUseCaseDiagram = Actions.UseCaseDiagram;
   protected static Action _actionStateDiagram = Actions.StateDiagram;
   protected static Action _actionActivityDiagram = Actions.ActivityDiagram;
-  protected static Action _actionCollabortationDiagram = Actions.CollaborationDiagram;
+  protected static Action _actionCollaborationDiagram = Actions.CollaborationDiagram;
 
   // ----- model elements
   //protected static Action _actionModel = Actions.Model;
@@ -132,19 +132,19 @@ implements IStatusBar {
 //   protected static Action _actionInk = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigInk.class, "Ink");
 
   // actions menu
-  protected static Action _actionGenerateOne = Actions.GenerateOne;
-  protected static Action _actionGenerateAll = Actions.GenerateAll;
+  //-protected static Action _actionGenerateOne = Actions.GenerateOne;
+  //-protected static Action _actionGenerateAll = Actions.GenerateAll;
   //protected static Action _actionGenerateWeb = Actions.GenerateWeb;
 
   // critique menu
-  protected static Action _actionAutoCritique = Actions.AutoCritique;
-  protected static Action _actionOpenDecisions = Actions.OpenDecisions;
-  protected static Action _actionOpenGoals = Actions.OpenGoals;
-  protected static Action _actionOpenCritics = Actions.OpenCritics;
+  //-protected static Action _actionAutoCritique = Actions.AutoCritique;
+  //-protected static Action _actionOpenDecisions = Actions.OpenDecisions;
+  //-protected static Action _actionOpenGoals = Actions.OpenGoals;
+  //-protected static Action _actionOpenCritics = Actions.OpenCritics;
 
 
   // Help menu
-  protected static Action _actionAboutArgoUML = Actions.AboutArgoUML;
+  //-protected static Action _actionAboutArgoUML = Actions.AboutArgoUML;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -222,47 +222,19 @@ implements IStatusBar {
     KeyStroke ctrlX = KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK);
     KeyStroke ctrlR = KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_MASK);
 
-    KeyStroke F1 = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0);
-    KeyStroke F2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
     KeyStroke F3 = KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
-    KeyStroke F4 = KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0);
-    KeyStroke F5 = KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0);
-    KeyStroke F6 = KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0);
     KeyStroke F7 = KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0);
-    KeyStroke F8 = KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0);
-    KeyStroke F9 = KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0);
-    KeyStroke F10 = KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0);
     KeyStroke altF4 = KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_MASK);
 
-    KeyStroke alt1 = KeyStroke.getKeyStroke(KeyEvent.VK_1, KeyEvent.ALT_MASK);
-    KeyStroke alt2 = KeyStroke.getKeyStroke(KeyEvent.VK_2, KeyEvent.ALT_MASK);
-    KeyStroke alt3 = KeyStroke.getKeyStroke(KeyEvent.VK_3, KeyEvent.ALT_MASK);
-    KeyStroke alt4 = KeyStroke.getKeyStroke(KeyEvent.VK_4, KeyEvent.ALT_MASK);
-    KeyStroke alt5 = KeyStroke.getKeyStroke(KeyEvent.VK_5, KeyEvent.ALT_MASK);
-    KeyStroke alt6 = KeyStroke.getKeyStroke(KeyEvent.VK_6, KeyEvent.ALT_MASK);
-    KeyStroke alt7 = KeyStroke.getKeyStroke(KeyEvent.VK_7, KeyEvent.ALT_MASK);
-    KeyStroke alt8 = KeyStroke.getKeyStroke(KeyEvent.VK_8, KeyEvent.ALT_MASK);
-    KeyStroke alt9 = KeyStroke.getKeyStroke(KeyEvent.VK_9, KeyEvent.ALT_MASK);
-    KeyStroke alt0 = KeyStroke.getKeyStroke(KeyEvent.VK_0, KeyEvent.ALT_MASK);
 
-    KeyStroke altshift1 =
-      KeyStroke.getKeyStroke(KeyEvent.VK_1,
-			     KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
-    KeyStroke altshift2 =
-      KeyStroke.getKeyStroke(KeyEvent.VK_2,
-			     KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
-    KeyStroke altshift3 =
-      KeyStroke.getKeyStroke(KeyEvent.VK_3,
-			     KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
-
-    KeyStroke ctrlup =
-      KeyStroke.getKeyStroke(KeyEvent.VK_UP, KeyEvent.CTRL_MASK);
-    KeyStroke ctrldown =
-      KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, KeyEvent.CTRL_MASK);
-    KeyStroke ctrlleft =
-      KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, KeyEvent.CTRL_MASK);
-    KeyStroke ctrlright =
-      KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, KeyEvent.CTRL_MASK);
+//     KeyStroke ctrlup =
+//       KeyStroke.getKeyStroke(KeyEvent.VK_UP, KeyEvent.CTRL_MASK);
+//     KeyStroke ctrldown =
+//       KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, KeyEvent.CTRL_MASK);
+//     KeyStroke ctrlleft =
+//       KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, KeyEvent.CTRL_MASK);
+//     KeyStroke ctrlright =
+//       KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, KeyEvent.CTRL_MASK);
 
     KeyStroke delKey =
       KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
@@ -271,30 +243,30 @@ implements IStatusBar {
     // File Menu
     JMenu file = (JMenu) _menuBar.add(new JMenu("File"));
     file.setMnemonic('F');
-    JMenuItem newItem = file.add(_actionNew);
+    JMenuItem newItem = file.add(Actions.New);
     newItem.setMnemonic('N');
     newItem.setAccelerator(ctrlN);
     //JMenuItem openItem = file.add(_actionOpen);
     //JMenuItem openXMIItem = file.add(_actionOpenXMI);
-    JMenuItem openProjectItem = file.add(_actionOpenProject);
+    JMenuItem openProjectItem = file.add(Actions.OpenProject);
     openProjectItem.setMnemonic('O');
     openProjectItem.setAccelerator(ctrlO);
     //JMenuItem saveItem = file.add(_actionSave);
     //file.add(_actionSaveAs);
     //file.add(_actionSaveAsXMI);
-    JMenuItem saveProjectItem = file.add(_actionSaveProject);
+    JMenuItem saveProjectItem = file.add(Actions.SaveProject);
     saveProjectItem.setMnemonic('S');
     saveProjectItem.setAccelerator(ctrlS);
-    JMenuItem saveProjectAsItem = file.add(_actionSaveProjectAs);
+    JMenuItem saveProjectAsItem = file.add(Actions.SaveProjectAs);
     saveProjectAsItem.setMnemonic('A');
     file.addSeparator();
-    JMenuItem printItem = file.add(_actionPrint);
+    JMenuItem printItem = file.add(Actions.Print);
     printItem.setMnemonic('P');
     printItem.setAccelerator(ctrlP);
     //file.addSeparator();
     //file.add(_actionProjectInfo);
     file.addSeparator();
-    JMenuItem exitItem = file.add(_actionExit);
+    JMenuItem exitItem = file.add(Actions.Exit);
     exitItem.setMnemonic('x');
     exitItem.setAccelerator(altF4);
 
@@ -311,27 +283,27 @@ implements IStatusBar {
     // shift tab
     select.add(new CmdSelectInvert());
 
-    edit.add(_actionUndo);
-    edit.add(_actionRedo);
+    edit.add(Actions.Undo);
+    edit.add(Actions.Redo);
     edit.addSeparator();
-    JMenuItem cutItem = edit.add(_actionCut);
+    JMenuItem cutItem = edit.add(Actions.Cut);
     cutItem.setMnemonic('X');
     cutItem.setAccelerator(ctrlX);
-    JMenuItem copyItem = edit.add(_actionCopy);
+    JMenuItem copyItem = edit.add(Actions.Copy);
     copyItem.setMnemonic('C');
     copyItem.setAccelerator(ctrlC);
-    JMenuItem pasteItem = edit.add(_actionPaste);
+    JMenuItem pasteItem = edit.add(Actions.Paste);
     pasteItem.setMnemonic('V');
     pasteItem.setAccelerator(ctrlV);
     edit.addSeparator();
     // needs-more-work: confusing name change
-    JMenuItem deleteItem = edit.add(_actionDelete);
+    JMenuItem deleteItem = edit.add(Actions.DeleteFromDiagram);
     deleteItem.setMnemonic('R');
     deleteItem.setAccelerator(ctrlR);
-    JMenuItem removeItem = edit.add(_actionRemove);
+    JMenuItem removeItem = edit.add(Actions.RemoveFromModel);
     removeItem.setMnemonic('D');
     removeItem.setAccelerator(delKey);
-    JMenuItem emptyItem = edit.add(_actionEmpty);
+    JMenuItem emptyItem = edit.add(Actions.EmptyTrash);
 
     JMenu view = (JMenu) _menuBar.add(new JMenu("View"));
     // maybe should be Navigate instead of view
@@ -347,50 +319,16 @@ implements IStatusBar {
 //     JMenuItem forwItem = nav.add(_actionNavForw);
 //     forwItem.setAccelerator(ctrlright);
 
-    view.add(_actionGotoDiagram);
-    JMenuItem findItem =  view.add(_actionFind);
+    view.add(Actions.GotoDiagram);
+    JMenuItem findItem =  view.add(Actions.Find);
     findItem.setAccelerator(F3);
     view.addSeparator();
 
     JMenu editTabs = (JMenu) view.add(new JMenu("Editor Tabs"));
-    JMenuItem nextEditItem = editTabs.add(_actionNextEditTab);
-    nextEditItem.setAccelerator(F6);
-    editTabs.addSeparator();
-
-    JMenuItem tabe1Item = editTabs.add(new ActionGoToEdit("As Diagram"));
-    tabe1Item.setAccelerator(altshift1);
-    JMenuItem tabe2Item = editTabs.add(new ActionGoToEdit("As Table"));
-    tabe2Item.setAccelerator(altshift2);
-    JMenuItem tabe3Item = editTabs.add(new ActionGoToEdit("As Metrics"));
-    tabe3Item.setAccelerator(altshift3);
 
     //view.addSeparator();
     //view.add(_actionAddToFavorites);
     JMenu detailsTabs = (JMenu) view.add(new JMenu("Details Tabs"));
-    JMenuItem nextDetailsItem = detailsTabs.add(_actionNextDetailsTab);
-    nextDetailsItem.setAccelerator(F5);
-    detailsTabs.addSeparator();
-
-    JMenuItem tab1Item = detailsTabs.add(new ActionGoToDetails("ToDoItem"));
-    tab1Item.setAccelerator(alt1);
-    JMenuItem tab2Item = detailsTabs.add(new ActionGoToDetails("Properties"));
-    tab2Item.setAccelerator(alt2);
-    JMenuItem tab3Item = detailsTabs.add(new ActionGoToDetails("Javadocs"));
-    tab3Item.setAccelerator(alt3);
-    JMenuItem tab4Item = detailsTabs.add(new ActionGoToDetails("Source"));
-    tab4Item.setAccelerator(alt4);
-    JMenuItem tab5Item = detailsTabs.add(new ActionGoToDetails("Constraints"));
-    tab5Item.setAccelerator(alt5);
-    JMenuItem tab6Item = detailsTabs.add(new ActionGoToDetails("TaggedValues"));
-    tab6Item.setAccelerator(alt6);
-    JMenuItem tab7Item = detailsTabs.add(new ActionGoToDetails("Checklist"));
-    tab7Item.setAccelerator(alt7);
-    JMenuItem tab8Item = detailsTabs.add(new ActionGoToDetails("History"));
-    tab8Item.setAccelerator(alt8);
-    //JMenuItem tab9Item = detailsTabs.add(new ActionGoToDetails(""));
-    //tab9Item.setAccelerator(alt9);
-    //JMenuItem tab0Item = detailsTabs.add(new ActionGoToDetails(""));
-    //tab0Item.setAccelerator(alt0);
 
     view.addSeparator();
     view.add(new CmdAdjustGrid());
@@ -400,18 +338,18 @@ implements IStatusBar {
 
     JMenu create = (JMenu) _menuBar.add(new JMenu("Create"));
     create.setMnemonic('C');
-    create.add(_actionCreateMultiple);
+    create.add(Actions.CreateMultiple);
     create.addSeparator();
 
     JMenu createDiagrams = (JMenu) create.add(new JMenu("Diagrams"));
-    createDiagrams.add(_actionClassDiagram);
-    createDiagrams.add(_actionUseCaseDiagram);
-    createDiagrams.add(_actionStateDiagram);
-    createDiagrams.add(_actionActivityDiagram);
-    createDiagrams.add(_actionCollabortationDiagram);
+    createDiagrams.add(Actions.ClassDiagram);
+    createDiagrams.add(Actions.UseCaseDiagram);
+    createDiagrams.add(Actions.StateDiagram);
+    createDiagrams.add(Actions.ActivityDiagram);
+    createDiagrams.add(Actions.CollaborationDiagram);
 
     JMenu createModelElements = (JMenu) create.add(new JMenu("Model Elements"));
-    createModelElements.add(_actionAddTopLevelPackage);
+    createModelElements.add(Actions.AddTopLevelPackage);
     //createModelElements.add(_actionClass);
     //createModelElements.add(_actionInterface);
     //createModelElements.add(_actionActor);
@@ -434,51 +372,33 @@ implements IStatusBar {
     arrange.setMnemonic('A');
 
     JMenu align = (JMenu) arrange.add(new JMenu("Align"));
-    align.add(new CmdAlign(CmdAlign.ALIGN_TOPS));
-    align.add(new CmdAlign(CmdAlign.ALIGN_BOTTOMS));
-    align.add(new CmdAlign(CmdAlign.ALIGN_LEFTS));
-    align.add(new CmdAlign(CmdAlign.ALIGN_RIGHTS));
-    align.add(new CmdAlign(CmdAlign.ALIGN_H_CENTERS));
-    align.add(new CmdAlign(CmdAlign.ALIGN_V_CENTERS));
-    align.add(new CmdAlign(CmdAlign.ALIGN_TO_GRID));
-
     JMenu distribute = (JMenu) arrange.add(new JMenu("Distribute"));
-    distribute.add(new CmdDistribute(CmdDistribute.H_SPACING));
-    distribute.add(new CmdDistribute(CmdDistribute.H_CENTERS));
-    distribute.add(new CmdDistribute(CmdDistribute.V_SPACING));
-    distribute.add(new CmdDistribute(CmdDistribute.V_CENTERS));
-
     JMenu reorder = (JMenu) arrange.add(new JMenu("Reorder"));
-    reorder.add(new CmdReorder(CmdReorder.SEND_TO_BACK));
-    reorder.add(new CmdReorder(CmdReorder.BRING_TO_FRONT));
-    reorder.add(new CmdReorder(CmdReorder.SEND_BACKWARD));
-    reorder.add(new CmdReorder(CmdReorder.BRING_FORWARD));
-
     JMenu nudge = (JMenu) arrange.add(new JMenu("Nudge"));
-    nudge.add(new CmdNudge(CmdNudge.LEFT));
-    nudge.add(new CmdNudge(CmdNudge.RIGHT));
-    nudge.add(new CmdNudge(CmdNudge.UP));
-    nudge.add(new CmdNudge(CmdNudge.DOWN));
+
+    Runnable initLater = new
+      InitMenusLater(align, distribute, reorder, nudge, editTabs, detailsTabs);
+    uci.uml.Main.addPostLoadAction(initLater);
 
     JMenu generate = (JMenu) _menuBar.add(new JMenu("Generation"));
     generate.setMnemonic('G');
-    generate.add(_actionGenerateOne);
-    JMenuItem genAllItem = generate.add(_actionGenerateAll);
+    generate.add(Actions.GenerateOne);
+    JMenuItem genAllItem = generate.add(Actions.GenerateAll);
     genAllItem.setAccelerator(F7);
-    //generate.add(_actionGenerateWeb);
+    //generate.add(Actions.GenerateWeb);
 
     Menu critique = (Menu) _menuBar.add(new Menu("Critique"));
     critique.setMnemonic('R');
-    critique.addCheckItem(_actionAutoCritique);
+    critique.addCheckItem(Actions.AutoCritique);
     critique.addSeparator();
-    critique.add(_actionOpenDecisions);
-    critique.add(_actionOpenGoals);
-    critique.add(_actionOpenCritics);
+    critique.add(Actions.OpenDecisions);
+    critique.add(Actions.OpenGoals);
+    critique.add(Actions.OpenCritics);
 
     // Help Menu
     JMenu help = new JMenu("Help");
     help.setMnemonic('H');
-    help.add(_actionAboutArgoUML);
+    help.add(Actions.AboutArgoUML);
     //_menuBar.setHelpMenu(help);
     _menuBar.add(help);
   }
@@ -663,5 +583,113 @@ class WindowCloser extends WindowAdapter {
   public void windowClosing(WindowEvent e) {
     Actions.Exit.actionPerformed(null);
   }
-};
+} /* end class WindowCloser */
+
+class InitMenusLater implements Runnable {
+  JMenu align, distribute, reorder, nudge;
+  JMenu editTabs, detailsTabs;
+
+  public InitMenusLater(JMenu a, JMenu d, JMenu r, JMenu n,
+			JMenu et, JMenu dt) {
+    align = a;
+    distribute = d;
+    reorder = r;
+    nudge = n;
+    editTabs = et;
+    detailsTabs = dt;
+  }
+
+  public void run() {
+    KeyStroke F1 = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0);
+    KeyStroke F2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
+    KeyStroke F3 = KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
+    KeyStroke F4 = KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0);
+    KeyStroke F5 = KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0);
+    KeyStroke F6 = KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0);
+    KeyStroke F7 = KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0);
+    KeyStroke F8 = KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0);
+    KeyStroke F9 = KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0);
+    KeyStroke F10 = KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0);
+
+    KeyStroke alt1 = KeyStroke.getKeyStroke(KeyEvent.VK_1, KeyEvent.ALT_MASK);
+    KeyStroke alt2 = KeyStroke.getKeyStroke(KeyEvent.VK_2, KeyEvent.ALT_MASK);
+    KeyStroke alt3 = KeyStroke.getKeyStroke(KeyEvent.VK_3, KeyEvent.ALT_MASK);
+    KeyStroke alt4 = KeyStroke.getKeyStroke(KeyEvent.VK_4, KeyEvent.ALT_MASK);
+    KeyStroke alt5 = KeyStroke.getKeyStroke(KeyEvent.VK_5, KeyEvent.ALT_MASK);
+    KeyStroke alt6 = KeyStroke.getKeyStroke(KeyEvent.VK_6, KeyEvent.ALT_MASK);
+    KeyStroke alt7 = KeyStroke.getKeyStroke(KeyEvent.VK_7, KeyEvent.ALT_MASK);
+    KeyStroke alt8 = KeyStroke.getKeyStroke(KeyEvent.VK_8, KeyEvent.ALT_MASK);
+    KeyStroke alt9 = KeyStroke.getKeyStroke(KeyEvent.VK_9, KeyEvent.ALT_MASK);
+    KeyStroke alt0 = KeyStroke.getKeyStroke(KeyEvent.VK_0, KeyEvent.ALT_MASK);
+
+    KeyStroke altshift1 =
+      KeyStroke.getKeyStroke(KeyEvent.VK_1,
+			     KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
+    KeyStroke altshift2 =
+      KeyStroke.getKeyStroke(KeyEvent.VK_2,
+			     KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
+    KeyStroke altshift3 =
+      KeyStroke.getKeyStroke(KeyEvent.VK_3,
+			     KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
+
+    align.add(new CmdAlign(CmdAlign.ALIGN_TOPS));
+    align.add(new CmdAlign(CmdAlign.ALIGN_BOTTOMS));
+    align.add(new CmdAlign(CmdAlign.ALIGN_LEFTS));
+    align.add(new CmdAlign(CmdAlign.ALIGN_RIGHTS));
+    align.add(new CmdAlign(CmdAlign.ALIGN_H_CENTERS));
+    align.add(new CmdAlign(CmdAlign.ALIGN_V_CENTERS));
+    align.add(new CmdAlign(CmdAlign.ALIGN_TO_GRID));
+
+    distribute.add(new CmdDistribute(CmdDistribute.H_SPACING));
+    distribute.add(new CmdDistribute(CmdDistribute.H_CENTERS));
+    distribute.add(new CmdDistribute(CmdDistribute.V_SPACING));
+    distribute.add(new CmdDistribute(CmdDistribute.V_CENTERS));
+
+    reorder.add(new CmdReorder(CmdReorder.SEND_TO_BACK));
+    reorder.add(new CmdReorder(CmdReorder.BRING_TO_FRONT));
+    reorder.add(new CmdReorder(CmdReorder.SEND_BACKWARD));
+    reorder.add(new CmdReorder(CmdReorder.BRING_FORWARD));
+
+    nudge.add(new CmdNudge(CmdNudge.LEFT));
+    nudge.add(new CmdNudge(CmdNudge.RIGHT));
+    nudge.add(new CmdNudge(CmdNudge.UP));
+    nudge.add(new CmdNudge(CmdNudge.DOWN));
+
+    JMenuItem nextEditItem = editTabs.add(Actions.NextEditTab);
+    nextEditItem.setAccelerator(F6);
+    editTabs.addSeparator();
+
+    JMenuItem tabe1Item = editTabs.add(new ActionGoToEdit("As Diagram"));
+    tabe1Item.setAccelerator(altshift1);
+    JMenuItem tabe2Item = editTabs.add(new ActionGoToEdit("As Table"));
+    tabe2Item.setAccelerator(altshift2);
+    JMenuItem tabe3Item = editTabs.add(new ActionGoToEdit("As Metrics"));
+    tabe3Item.setAccelerator(altshift3);
+
+    JMenuItem nextDetailsItem = detailsTabs.add(Actions.NextDetailsTab);
+    nextDetailsItem.setAccelerator(F5);
+    detailsTabs.addSeparator();
+
+    JMenuItem tab1Item = detailsTabs.add(new ActionGoToDetails("ToDoItem"));
+    tab1Item.setAccelerator(alt1);
+    JMenuItem tab2Item = detailsTabs.add(new ActionGoToDetails("Properties"));
+    tab2Item.setAccelerator(alt2);
+    JMenuItem tab3Item = detailsTabs.add(new ActionGoToDetails("Javadocs"));
+    tab3Item.setAccelerator(alt3);
+    JMenuItem tab4Item = detailsTabs.add(new ActionGoToDetails("Source"));
+    tab4Item.setAccelerator(alt4);
+    JMenuItem tab5Item = detailsTabs.add(new ActionGoToDetails("Constraints"));
+    tab5Item.setAccelerator(alt5);
+    JMenuItem tab6Item = detailsTabs.add(new ActionGoToDetails("TaggedValues"));
+    tab6Item.setAccelerator(alt6);
+    JMenuItem tab7Item = detailsTabs.add(new ActionGoToDetails("Checklist"));
+    tab7Item.setAccelerator(alt7);
+    JMenuItem tab8Item = detailsTabs.add(new ActionGoToDetails("History"));
+    tab8Item.setAccelerator(alt8);
+    //JMenuItem tab9Item = detailsTabs.add(new ActionGoToDetails(""));
+    //tab9Item.setAccelerator(alt9);
+    //JMenuItem tab0Item = detailsTabs.add(new ActionGoToDetails(""));
+    //tab0Item.setAccelerator(alt0);
+  }
+} /* end class InitMenusLater */
 

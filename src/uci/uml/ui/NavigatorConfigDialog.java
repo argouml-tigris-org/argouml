@@ -78,7 +78,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
   protected JRadioButton  _paneOneNotShown = new JRadioButton("Not Shown");
   protected JRadioButton  _paneOneTree = new JRadioButton("Rooted at Project");
   protected ButtonGroup   _paneOneGroup = new ButtonGroup();
-  
+
   protected JPanel  _paneTwoPanel = new JPanel();
   protected JRadioButton  _paneTwoNotShown = new JRadioButton("Not Shown");
   protected JRadioButton  _paneTwoMRU = new JRadioButton("Most Recently Used");
@@ -106,7 +106,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
 
     Container content = getContentPane();
     content.setLayout(new BorderLayout());
-    
+
     initPersPanel();
     initPanesPanel();
 
@@ -114,15 +114,15 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     persTab.add(_persPanel, BorderLayout.CENTER);
     JPanel panesTab = new JPanel(new BorderLayout(3, 3));
     panesTab.add(_panesPanel, BorderLayout.CENTER);
-    
+
     _tabs.addTab("Perspectives", persTab);
     _tabs.addTab("Panes", panesTab);
 
     _mainButtons.add(_okButton);
-    
+
     content.add(_tabs, BorderLayout.CENTER);
     content.add(_mainButtons, BorderLayout.SOUTH);
-    
+
     getRootPane().setDefaultButton(_okButton);
     _numNavConfig++;
   }
@@ -133,7 +133,6 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     _ruleLibList.setListData(NavPerspective.getRegisteredRules());
     _rulesList.setListData(new Vector());
 
-    
     GridBagLayout gb = new GridBagLayout();
     _persPanel.setLayout(gb);
 
@@ -162,7 +161,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     _persPanel.add(persScroll);
 
     c.weighty = 0.0;
-	
+
     _persButtons.setLayout(new GridLayout(3, 1));
     _newPersButton.setMargin(new Insets(0, 0, 0, 0));
     _removePersButton.setMargin(new Insets(0, 0, 0, 0));
@@ -172,7 +171,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     _persButtons.add(_dupPersButton);
     JPanel persButtonWrapper = new JPanel();
     persButtonWrapper.add(_persButtons);
-    
+
     c.gridx = 3; c.gridy = 1;
     c.gridwidth = 1;
     c.weightx = 0.0;
@@ -193,7 +192,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     _xferButtons.add(_addRuleButton);
     _xferButtons.add(new SpacerPanel());
     _xferButtons.add(_removeRuleButton);
-    
+
     c.gridx = 1; c.gridy = 4;
     c.weightx = 0.0;
     gb.setConstraints(_xferButtons, c);
@@ -209,10 +208,10 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
 
     c.weighty = 1.0;
     c.gridheight = 2;
-    
+
     _ruleLibList.setMinimumSize(new Dimension(250, 350));
     _rulesList.setMinimumSize(new Dimension(250, 350));
-    
+
     c.gridx = 0; c.gridy = 4;
     c.gridwidth = 1;
     JScrollPane ruleLibScroll =
@@ -230,11 +229,6 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
 		      JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     gb.setConstraints(rulesScroll, c);
     _persPanel.add(rulesScroll);
-    
-    // this is the default anyway
-//     _persList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//     _ruleLibList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//     _rulesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
     _okButton.addActionListener(this);
     _newPersButton.addActionListener(this);
@@ -267,7 +261,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     _paneOneGroup.add(_paneOneTree);
     _paneOneTree.setSelected(true);
     _paneOneNotShown.setEnabled(false);
-    
+
     _paneTwoPanel.setBorder(BorderFactory.createTitledBorder("Panel Two"));
     _paneTwoPanel.setLayout(new BoxLayout(_paneTwoPanel, BoxLayout.Y_AXIS));
     _paneTwoPanel.add(_paneTwoNotShown);
@@ -280,7 +274,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     _paneTwoNotShown.setSelected(true);
     _paneTwoMRU.setEnabled(false);
     _paneTwoTree.setEnabled(false);
- 
+
     _paneThreePanel.setBorder(BorderFactory.createTitledBorder("Panel Three"));
     _paneThreePanel.setLayout(new BoxLayout(_paneThreePanel, BoxLayout.Y_AXIS));
     _paneThreePanel.add(_paneThreeNotShown);
@@ -302,7 +296,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     innerPanel.add(_paneTwoPanel);
     innerPanel.add(new SpacerPanel());
     innerPanel.add(_paneThreePanel);
-    
+
     _panesPanel.setLayout(new BorderLayout());
     _panesPanel.add(innerPanel, BorderLayout.CENTER);
   }
@@ -395,7 +389,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     if (selPers == null) return;
     NavPerspective np = (NavPerspective) selPers;
     _rulesList.setListData(np.getSubTreeModels());
-    getContentPane().layout();
+    getContentPane().doLayout();
     getContentPane().validate();
     getContentPane().repaint();
     _addRuleButton.setEnabled(selPers != null && selRule != null);
@@ -406,7 +400,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     Object selRule = _ruleLibList.getSelectedValue();
     _addRuleButton.setEnabled(selPers != null && selRule != null);
   }
-  
+
   public void doSelectRule() {
     Object selPers = _persList.getSelectedValue();
     Object selRule = _rulesList.getSelectedValue();
@@ -424,7 +418,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
 
   ////////////////////////////////////////////////////////////////
   // event handlers
-  
+
   public void actionPerformed(ActionEvent e) {
     Object src = e.getSource();
     if (src == _okButton) doOk();
@@ -463,6 +457,6 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     if (src == _ruleLibList && _addRuleButton.isEnabled()) doAddRule();
     if (src == _rulesList && _removeRuleButton.isEnabled()) doRemoveRule();
   }
-  
+
 } /* end class NavigatorConfigDialog */
 

@@ -44,7 +44,7 @@ import java.util.*;
 public class CmdShowProperties extends Cmd {
 
   public CmdShowProperties() {
-    super("Show Properties");
+    super("Show Properties", NO_ICON);
   }
 
   public void doIt() {

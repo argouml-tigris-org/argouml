@@ -78,12 +78,19 @@ public class CompositeState extends State {
     x.setParent(null);
   }
 
+  public Vector alsoTrash() {
+    if (getParent() == null) return getSubstate();
+    else return new Vector();
+  }
+
   public Object prepareForTrash() throws PropertyVetoException {
     CompositeState enclosing = getParent();
-    int size = _substate.size();
-    for (int i = 0; i < size; i++) {
-      StateVertex sv = (StateVertex) _substate.elementAt(i);
-      sv.setParent(enclosing);
+    if (enclosing != null) {
+      int size = _substate.size();
+      for (int i = 0; i < size; i++) {
+	StateVertex sv = (StateVertex) _substate.elementAt(i);
+	sv.setParent(enclosing);
+      }
     }
     super.prepareForTrash();
     return null;

@@ -196,6 +196,12 @@ public abstract class Layer implements java.io.Serializable {
     return new EnumerationPredicate(elements(), new PredFigInRect(r));
   }
 
+  /** Reply an enumeration of all the FigNodes in this Layer that 
+   *  intersect given Rectangle. */
+  public Enumeration nodesIn(Rectangle r) {
+    return new EnumerationPredicate(elements(), new PredFigNodeInRect(r));
+  }
+
   /** Given an object from the net-level model (e.g., NetNode or
    * NetPort), reply the graphical depiction of that object in this
    * layer, if there is one. Otherwise reply null. */

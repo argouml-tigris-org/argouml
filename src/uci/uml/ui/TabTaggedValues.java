@@ -52,7 +52,7 @@ implements TabModelTarget {
   ////////////////////////////////////////////////////////////////
   // instance variables
   Object _target;
-  TableModelTaggedValues _tableModel = new TableModelTaggedValues();
+  TableModelTaggedValues _tableModel = null;
   boolean _shouldBeEnabled = false;
   JTable _table = new JTable(10, 2);
 
@@ -60,27 +60,40 @@ implements TabModelTarget {
   // constructor
   public TabTaggedValues() {
     super("TaggedValues");
-
+    _tableModel = new TableModelTaggedValues(this);
     _table.setModel(_tableModel);
-    //TableColumn keyCol = _table.getColumnModel().getColumn(0);
-    //TableColumn valCol = _table.getColumnModel().getColumn(1);
-    //keyCol.setMinWidth(50);
-    //keyCol.setWidth(150);
-    //keyCol.setPreferredWidth(150);
-    //valCol.setMinWidth(250);
-    //valCol.setWidth(550);
-    //valCol.setPreferredWidth(550);
-    _table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-    _table.sizeColumnsToFit(0);
+    //     TableColumn keyCol = _table.getColumnModel().getColumn(0);
+    //     TableColumn valCol = _table.getColumnModel().getColumn(1);
+    //     keyCol.setMinWidth(50);
+    //     keyCol.setWidth(150);
+    //     keyCol.setPreferredWidth(150);
+    //     valCol.setMinWidth(250);
+    //     valCol.setWidth(550);
+    //     valCol.setPreferredWidth(550);
+    //     //_table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    //     _table.sizeColumnsToFit(-1);
 
     _table.setRowSelectionAllowed(false);
     // _table.getSelectionModel().addListSelectionListener(this);
     JScrollPane sp = new JScrollPane(_table);
     Font labelFont = MetalLookAndFeel.getSubTextFont();
     _table.setFont(labelFont);
-
+    resizeColumns();
     setLayout(new BorderLayout());
     add(sp, BorderLayout.CENTER);
+  }
+
+  public void resizeColumns() {
+    TableColumn keyCol = _table.getColumnModel().getColumn(0);
+    TableColumn valCol = _table.getColumnModel().getColumn(1);
+    keyCol.setMinWidth(50);
+    keyCol.setWidth(150);
+    keyCol.setPreferredWidth(150);
+    valCol.setMinWidth(250);
+    valCol.setWidth(550);
+    valCol.setPreferredWidth(550);
+    //_table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    _table.sizeColumnsToFit(-1);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -127,10 +140,11 @@ implements VetoableChangeListener, DelayedVChangeListener {
   ////////////////
   // instance varables
   ModelElement _target;
+  TabTaggedValues _tab = null;
 
   ////////////////
   // constructor
-  public TableModelTaggedValues() { }
+  public TableModelTaggedValues(TabTaggedValues t) { _tab = t; }
 
   ////////////////
   // accessors
@@ -141,6 +155,7 @@ implements VetoableChangeListener, DelayedVChangeListener {
     if (_target instanceof ElementImpl)
       ((ModelElementImpl)_target).addVetoableChangeListener(this);
     fireTableStructureChanged();
+    _tab.resizeColumns();
   }
 
   ////////////////
@@ -196,10 +211,12 @@ implements VetoableChangeListener, DelayedVChangeListener {
       if (columnIndex == 1) tv.setValue(new Uninterpreted((String) aValue));
       tvs.addElement(tv);
       fireTableStructureChanged(); //?
+      _tab.resizeColumns();
     }
     else if ("".equals(aValue)) {
       tvs.removeElementAt(rowIndex);
       fireTableStructureChanged(); //?
+      _tab.resizeColumns();
     }
     else {
       TaggedValue tv = (TaggedValue) tvs.elementAt(rowIndex);
@@ -218,8 +235,8 @@ implements VetoableChangeListener, DelayedVChangeListener {
 
   public void delayedVetoableChange(PropertyChangeEvent pce) {
     fireTableStructureChanged();
+    _tab.resizeColumns();
   }
 
-  
 } /* end class TableModelTaggedValues */
 

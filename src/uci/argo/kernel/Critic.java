@@ -560,7 +560,7 @@ public class Critic implements Poster, java.io.Serializable {
     int len = s.length();
     for (int i = 0; i < len; i++) {
       char c = s.charAt(i);
-      if (Character.isJavaLetterOrDigit(c)) res += c;
+      if (Character.isJavaIdentifierPart(c)) res += c;
     }
     return res;
   }

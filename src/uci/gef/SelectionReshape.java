@@ -60,26 +60,31 @@ public class SelectionReshape extends Selection
 
   /** Return a handle ID for the handle under the mouse, or -1 if none. 
    */
-  public int hitHandle(Rectangle r) {
+  public void hitHandle(Rectangle r, Handle h) {
     int npoints = _content.getNumPoints();
     int[] xs = _content.getXs();
     int[] ys = _content.getYs();
     for (int i = 0; i < npoints; ++i)
       if (r.contains(xs[i], ys[i])) {
 	_selectedHandle = i;
-	return i;
+	h.index = i;
+	h.instructions = "Move point";
+	return;
       }
     if (_content instanceof FigEdgePoly) {
       for (int i = 0; i < npoints-1; ++i) {
 	if(Geometry.intersects(r,xs[i], ys[i],xs[i+1], ys[i+1])) {
 	  FigEdgePoly p = ((FigEdgePoly)_content);
 	  //System.out.println("hit segment");
-	  return p.getNumPoints();
+	  h.index = p.getNumPoints();
+	  h.instructions = "Add a point";
+	  return;
 	}
       }
     }
     _selectedHandle = -1;
-    return -1;
+    h.index = -1;
+    h.instructions = "Move object(s)";
   }
 
   /** Paint the handles at the four corners and midway along each edge

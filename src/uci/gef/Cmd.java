@@ -58,6 +58,14 @@ import javax.swing.*;
 
 public abstract class Cmd extends AbstractAction
 implements java.io.Serializable {
+
+  ////////////////////////////////////////////////////////////////
+  // constants
+
+  // by default, every command has an icon
+  public static final boolean HAS_ICON = true;
+  public static final boolean NO_ICON = false;
+
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -75,6 +83,19 @@ implements java.io.Serializable {
     _args = args;
   }
 
+  public Cmd(Hashtable args, String name, boolean hasIcon) {
+    super(name);
+    if (hasIcon) {
+      Icon icon = loadIconResource(imageName(name), name);
+      if (icon != null) putValue(Action.SMALL_ICON, icon);
+    }
+    _args = args;
+  }
+
+  public Cmd(String name, boolean hasIcon) {
+    this (null, name, hasIcon);
+  }
+
   public Cmd(Hashtable args, String name, ImageIcon icon) {
     super(name, icon);
     _args = args;
@@ -82,7 +103,6 @@ implements java.io.Serializable {
 
   /** Construct a new Cmd with no arguments */
   public Cmd(String name) { this(null, name); }
-
 
   protected static ImageIcon loadIconResource(String imgName, String desc) {
     ImageIcon res = null;

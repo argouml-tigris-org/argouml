@@ -225,7 +225,7 @@ public class XMIParser implements ElementHandler, TagHandler {
 
   public TXElement handleElement(TXElement e) {
     //System.out.println("XMIParser handleElement:" + e.getName());
-    String n = e.getName();
+    String n = e.getTagName();
     try {
       if (n.equals("name")) handle_name(e);
     }
@@ -237,7 +237,7 @@ public class XMIParser implements ElementHandler, TagHandler {
   }
 
   public void handleStartTag(TXElement e, boolean empty) {
-    String n = e.getName();
+    String n = e.getTagName();
     //System.out.println("XMIParser handleStartTag:" + e.getName());
 
     try {
@@ -420,7 +420,7 @@ public class XMIParser implements ElementHandler, TagHandler {
 
 
   public void handleEndTag(TXElement e, boolean empty) {
-    String n = e.getName();
+    String n = e.getTagName();
     //System.out.println("XMIParser handleEndTag:" + e.getName()+".");
     try {
       if (n.equals("tag")) handle_tag(e);
@@ -1740,7 +1740,7 @@ public class XMIParser implements ElementHandler, TagHandler {
 
   public void notImplementedYet(TXElement e) {
     if (_dbg)
-      System.out.println("no metamodel class for " + e.getName());
+      System.out.println("no metamodel class for " + e.getTagName());
   }
 
 

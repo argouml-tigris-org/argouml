@@ -40,7 +40,7 @@ import java.awt.Event;
 
 public class CmdAdjustGuide extends Cmd {
 
-  public CmdAdjustGuide() { super("Adjust Grid Snap"); }
+  public CmdAdjustGuide() { super("Adjust Grid Snap", NO_ICON); }
 
   public void doIt() {
     Editor ce = Globals.curEditor();

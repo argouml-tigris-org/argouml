@@ -125,8 +125,11 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** The grid to snap points to.   */
   protected Guide _guide = new GuideGrid(8);
 
-  /** The Fig that the mouse is in. */ 
+  /** The Fig that the mouse is in. */
   protected Fig _curFig = null;
+
+  /** The Selection object that the mouse is in. */
+  protected Selection _curSel = null;
 
   /** The AWT window or panel that the Editor draws to. */
   private transient Component _awt_component;
@@ -137,7 +140,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
   /** Each Editor has a RedrawManager that executes in a separate
    *  thread of control to update damaged regions of the display. */
-  protected transient RedrawManager _redrawer = null; //-new RedrawManager(this);
+  //protected transient RedrawManager _redrawer = null; //-new RedrawManager(this);
 
 
   protected transient FigTextEditor _activeTextEditor = null;
@@ -212,6 +215,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   ////////////////////////////////////////////////////////////////
   /// methods related to editor state: graphical attributes, modes, view
 
+  public ModeManager getModeManager() { return _modeManager; }
 
   /** Set the current user interface mode to the given Mode instance. */
   public void mode(Mode m) {
@@ -321,6 +325,13 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 	((MouseListener)f).mouseEntered(me);
     }
     _curFig = f;
+
+    Selection sel = _selectionManager.findSelectionAt(x, y);
+    if (sel != _curSel) {
+	if (_curSel != null) _curSel.mouseExited(me);
+	if (sel != null) sel.mouseEntered(me);
+    }
+    _curSel = sel;
   }
 
   ////////////////////////////////////////////////////////////////
@@ -341,7 +352,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   public Guide getGuide() { return _guide; }
   public void setGuide(Guide g) { _guide = g; }
 
-  
+
   ////////////////////////////////////////////////////////////////
   // recording damage to the display for later repair
 
@@ -349,8 +360,8 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    *  damaged region (rectangle) to this Editor's RedrawManager.   */
   public void damaged(Rectangle r) {
     //- _redrawer.add(r);
-     ((JComponent) getAwtComponent()).repaint(1000, r.x-16, r.y-16,
-     					     r.width+32, r.height+32);
+     ((JComponent) getAwtComponent()).repaint(1000, r.x-32, r.y-32,
+     					     r.width+64, r.height+64);
   }
 
   public void damaged(Fig f) {
@@ -358,8 +369,8 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     // the line above should not be needed, but without it I get
     // NullPointerExceptions...
     //- if (f != null) _redrawer.add(f);
-    ((JComponent) getAwtComponent()).repaint(1000, f.getX()-16, f.getY()-16,
-					     f.getWidth()+32, f.getHeight()+32);
+    ((JComponent) getAwtComponent()).repaint(1000, f.getX()-32, f.getY()-32,
+					     f.getWidth()+64, f.getHeight()+64);
   }
 
   public void damaged(Selection sel) {
@@ -484,7 +495,8 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     if (_awt_component == null) return null;
     if (_peer_component == null) {
       _peer_component = _awt_component;
-      while (_peer_component.getPeer() instanceof java.awt.peer.LightweightPeer)
+      while (_peer_component.getPeer() instanceof
+	     java.awt.peer.LightweightPeer)
 	_peer_component = _peer_component.getParent();
     }
 //     try { if (_awt_component.getPeer() == null) _awt_component.addNotify(); }

@@ -44,7 +44,7 @@ import java.util.*;
 
 public class CmdUseRotate extends Cmd {
 
-  public CmdUseRotate() { super("Use Rotation Handles"); }
+  public CmdUseRotate() { super("Use Rotation Handles", NO_ICON); }
 
   public void doIt() {
     Editor ce = Globals.curEditor();

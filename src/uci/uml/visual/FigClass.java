@@ -115,6 +115,10 @@ public class FigClass extends FigNodeModelElement {
   ////////////////////////////////////////////////////////////////
   // accessors
 
+  public Selection makeSelection() {
+    return new SelectionClass(this);
+  }
+
   public void setOwner(Object node) {
     super.setOwner(node);
     Object onlyPort = node; //this kngl should be in the GraphModel
@@ -235,6 +239,14 @@ public class FigClass extends FigNodeModelElement {
     return new Dimension(w, h);
   }
 
+  public void translate(int dx, int dy) {
+    super.translate(dx, dy);
+    Editor ce = Globals.curEditor();
+    Selection sel = ce.getSelectionManager().findSelectionFor(this);
+    if (sel instanceof SelectionClass)
+      ((SelectionClass)sel).hideButtons();
+  }
+
   /* Override setBounds to keep shapes looking right */
   // modified by Eric Lefevre 13 Mar 1999
   public void setBounds(int x, int y, int w, int h) {
@@ -288,6 +300,14 @@ public class FigClass extends FigNodeModelElement {
 
   ////////////////////////////////////////////////////////////////
   // user interaction methods
+
+  public void mousePressed(MouseEvent me) {
+    super.mousePressed(me);
+    Editor ce = Globals.curEditor();
+    Selection sel = ce.getSelectionManager().findSelectionFor(this);
+    if (sel instanceof SelectionClass)
+      ((SelectionClass)sel).hideButtons();
+  }
 
   public void setEnclosingFig(Fig encloser) {
     super.setEnclosingFig(encloser);
@@ -367,5 +387,3 @@ public class FigClass extends FigNodeModelElement {
   }
 
 } /* end class FigClass */
-
-

@@ -58,7 +58,7 @@ public class Globals {
   protected static Applet _applet;
   protected static MediaTracker _tracker;
 
-  protected static TabPropFrame _tabPropFrame;
+  //protected static TabPropFrame _tabPropFrame;
 
   /** String to display when nothing important is being displayed.  By
    *  default the string " " is used. Some applications may want to
@@ -180,36 +180,43 @@ public class Globals {
 
   /** There is one global property sheet that shows details of the
    *  selected Fig. */
-  public static void setPropertySheet(TabPropFrame tpf) {
-    _tabPropFrame = tpf;
-  }
+  //public static void setPropertySheet(TabPropFrame tpf) {
+  //_tabPropFrame = tpf;
+  //}
 
   /** Open the property sheet. */
-  public static void startPropertySheet() {
-    if (_tabPropFrame == null) _tabPropFrame = new TabPropFrame();
-    if (_tabPropFrame.isVisible()) _tabPropFrame.toFront();
-    else _tabPropFrame.show();
-    if (curEditor() == null) return;
-    Vector selectedFigs = curEditor().getSelectionManager().getFigs();
-    if (selectedFigs.size() == 1)
-      propertySheetSubject((Fig)selectedFigs.elementAt(0));
-  }
+   public static void startPropertySheet() {
+//     if (_tabPropFrame == null) _tabPropFrame = new TabPropFrame();
+//     if (_tabPropFrame.isVisible()) _tabPropFrame.toFront();
+//     else _tabPropFrame.show();
+//     if (curEditor() == null) return;
+//     Vector selectedFigs = curEditor().getSelectionManager().getFigs();
+//     if (selectedFigs.size() == 1)
+//       propertySheetSubject((Fig)selectedFigs.elementAt(0));
+   }
 
   /** Tell the property sheet to display details of the given Fig. */
-  public static void propertySheetSubject(Fig f) {
-    if (_tabPropFrame != null) _tabPropFrame.select(f);
-  }
+//   public static void propertySheetSubject(Fig f) {
+//     if (_tabPropFrame != null) _tabPropFrame.select(f);
+//   }
 
    /** Static initialization: set up the prop sheet. */
-   static {
-     if (_tabPropFrame == null) _tabPropFrame = new TabPropFrame();
-     //_tabPropFrame.show();
-   }
+  //static {
+    //if (_tabPropFrame == null) _tabPropFrame = new TabPropFrame();
+    //_tabPropFrame.show();
+  // }
 
   /** Return an exisiting instance of class Frame.  This is needed to
    *  create off-screen bit-maps. Needs-more-work: I think Swing keeps
    *  its own. */
-  public static Frame someFrame() { return _tabPropFrame; }
+  public static Frame someFrame() {
+    Editor ce = curEditor();
+    if (ce == null) return null;
+    Component c = ce.getAwtComponent();
+    while (c != null && !(c instanceof Frame))
+      c = c.getParent();
+    return (Frame) c;
+  }
 
   ////////////////////////////////////////////////////////////////
   // Editor Modes

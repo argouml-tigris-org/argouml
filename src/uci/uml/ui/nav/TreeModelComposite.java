@@ -207,9 +207,32 @@ implements TreeModel, Cloneable {
     System.out.println("valueForPathChanged TreeModelComposite");
   }
 
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
-  
+
+  public void fireTreeStructureChanged(TreePath path) {
+//     if (_treeListeners == null) return;
+//     TreeModelEvent evt =
+//       new TreeModelEvent(this, path);
+//     System.out.println("fire _treeListeners.size() = " +
+//     _treeListeners.size());
+//     for (int i = 0; i < _treeListeners.size(); i++) {
+//       TreeModelListener target =
+// 	(TreeModelListener) _treeListeners.elementAt(i);
+//       target.treeStructureChanged(evt);
+//     }
+  }
+
+  public void addTreeModelListener(TreeModelListener l) {
+//     System.out.println("adding tree listener to " + toString());
+//     if (_treeListeners == null) _vetoListeners = new Vector();
+//     _treeListeners.removeElement(listener);
+//     _treeListeners.addElement(listener);
+  }
+  public void removeTreeModelListener(TreeModelListener l) {
+//     if (_treeListeners == null) return;
+//     _treeListeners.removeElement(listener);
+//     //System.out.println("rm _treeListeners.size() = " + _treeListeners.size());
+  }
+
 
   ////////////////////////////////////////////////////////////////
   // debugging

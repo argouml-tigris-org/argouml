@@ -32,11 +32,12 @@ import java.util.*;
 // needs-more-work: define subclasses for: modification, criticism
 
 public class HistoryItem {
-  
+
   ////////////////////////////////////////////////////////////////
   // instance variables
   public Date _when;
   public Poster _who;
+  public String _headline;
   public String _desc;
   public Object _target;
   public Object _oldValue;
@@ -46,22 +47,26 @@ public class HistoryItem {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public HistoryItem(String desc) {
+  public HistoryItem(String headline, String desc) {
     _when = new Date(); // right now
     _who = Designer.TheDesigner;
-    _desc = desc;    
+    _headline = headline;
+    _desc = desc;
   }
 
   public HistoryItem(ToDoItem item, String desc) {
     _when = new Date(); // right now
     _who = item.getPoster();
-    _desc = desc + item.getDescription();
+    //_desc = desc + item.getDescription();
+    _headline = item.getHeadline();
+    _desc = item.getDescription();
   }
 
-  public HistoryItem(String desc, Object target,
+  public HistoryItem(String headline, String desc, Object target,
 		     Object oldValue, Object newValue) {
     _when = new Date(); // right now
     _who = Designer.TheDesigner;
+    _headline = headline;
     _desc = desc;
     _target = target;
     _oldValue = oldValue;
@@ -70,6 +75,9 @@ public class HistoryItem {
 
   ////////////////////////////////////////////////////////////////
   // accessors
+
+  public String getDescription() { return _desc; }
+  public String getHeadline() { return _headline; }
 
   public Vector getRelatedItems() { return _relatedItems; }
   public void setRelatedItems(Vector v) { _relatedItems = v; }
@@ -81,5 +89,5 @@ public class HistoryItem {
     if (_desc == null) return "HI: (null)";
     return "HI: " + _desc;
   }
-  
+
 } /* end class HistoryItem */

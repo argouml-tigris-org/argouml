@@ -64,7 +64,7 @@ public class PropPanelUseCase extends PropPanel {
   ////////////////////////////////////////////////////////////////
   // instance vars
   JLabel _extPtsLabel = new JLabel("Extension Points");
-  TableModelExtensions _tableModel = new TableModelExtensions();
+  TableModelExtensions _tableModel = null;
   JTable _extPts = new JTable(4, 1);
   // declare and initialize all widgets
 
@@ -78,6 +78,7 @@ public class PropPanelUseCase extends PropPanel {
     c.weightx = 0.0;
     c.ipadx = 0; c.ipady = 0;
 
+    _tableModel = new TableModelExtensions(this);
     _extPts.setModel(_tableModel);
 
     Font labelFont = MetalLookAndFeel.getSubTextFont();
@@ -149,10 +150,13 @@ public class PropPanelUseCase extends PropPanel {
     _tableModel.setTarget(uc);
 //     TableColumn descCol = _extPts.getColumnModel().getColumn(0);
 //     descCol.setMinWidth(50);
-    _extPts.sizeColumnsToFit(0);
+    resizeColumns();
     validate();
   }
 
+  public void resizeColumns() {
+    _extPts.sizeColumnsToFit(0);
+  }
 
   ////////////////////////////////////////////////////////////////
   // event handlers
@@ -187,10 +191,13 @@ implements VetoableChangeListener, DelayedVChangeListener {
   ////////////////
   // instance varables
   UseCase _target;
+  PropPanelUseCase _panel;
 
   ////////////////
   // constructor
-  public TableModelExtensions() { }
+  public TableModelExtensions(PropPanelUseCase panel) {
+    _panel = panel;
+  }
 
   ////////////////
   // accessors
@@ -245,10 +252,12 @@ implements VetoableChangeListener, DelayedVChangeListener {
     if (rowIndex >= extPts.size()) {
       extPts.addElement(val);
       fireTableStructureChanged();
+      _panel.resizeColumns();
     }
     else if (val.equals("")) {
       extPts.removeElementAt(rowIndex);
       fireTableStructureChanged();
+      _panel.resizeColumns();
     }
     else extPts.setElementAt(val, rowIndex);
   }
@@ -263,6 +272,7 @@ implements VetoableChangeListener, DelayedVChangeListener {
 
   public void delayedVetoableChange(PropertyChangeEvent pce) {
     fireTableStructureChanged();
+    _panel.resizeColumns();
   }
 
 

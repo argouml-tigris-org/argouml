@@ -45,6 +45,7 @@ implements VetoableChangeListener {
 
   Hashtable _expandedPathsInModel = new Hashtable();
   boolean _reexpanding = false;
+  UpdateTreeHack _myUpdateTreeHack = new UpdateTreeHack(this);
 
   public DisplayTextTree() {
     setCellRenderer(new UMLTreeCellRenderer());
@@ -134,30 +135,36 @@ implements VetoableChangeListener {
     expanded.removeElement(path);
   }
 
-  public void setModel(TreeModel newModel) {
-    super.setModel(newModel);
-    if (newModel.getRoot() instanceof ElementImpl)
-      ((ElementImpl)newModel.getRoot()).addVetoableChangeListener(this);
-    if (newModel.getRoot() instanceof Project)
-      ((Project)newModel.getRoot()).addVetoableChangeListener(this);
-    if (newModel.getRoot() instanceof Diagram)
-      ((Diagram)newModel.getRoot()).addVetoableChangeListener(this);
 
-    int childCount = newModel.getChildCount(newModel.getRoot());
+  public void setModel(TreeModel newModel) {
+    System.out.println("entered setModel:" + newModel.getClass().getName());
+    super.setModel(newModel);
+    Object r = newModel.getRoot();
+    if (r instanceof ElementImpl)
+      ((ElementImpl)r).addVetoableChangeListener(this);
+    if (r instanceof Project)
+      ((Project)r).addVetoableChangeListener(this);
+    if (r instanceof Diagram)
+      ((Diagram)r).addVetoableChangeListener(this);
+
+    int childCount = newModel.getChildCount(r);
     for (int i = 0; i < childCount; i++) {
-      Object child = newModel.getChild(newModel.getRoot(), i);
-      if (child instanceof ElementImpl) 
+      Object child = newModel.getChild(r, i);
+      if (child instanceof ElementImpl)
 	((ElementImpl)child).addVetoableChangeListener(this);
-      if (child instanceof Diagram) 
+      if (child instanceof Diagram)
 	((Diagram)child).addVetoableChangeListener(this);
     }
     reexpand();
   }
 
   public void vetoableChange(PropertyChangeEvent e) {
-    Runnable updateTree;
-    updateTree = new UpdateTreeHack(this);
-    SwingUtilities.invokeLater(updateTree);
+    //System.out.println("DisplayTextTree vetoableChange: " + e.getPropertyName());
+    if (!_myUpdateTreeHack.pending) {
+      SwingUtilities.invokeLater(_myUpdateTreeHack);
+      _myUpdateTreeHack.pending = true;
+    }
+    //else System.out.println("update already pending");
   }
 
 
@@ -167,20 +174,35 @@ implements VetoableChangeListener {
   public static final int REMOVE = 3;
   //public static Object path[] = new Object[DEPTH_LIMIT];
 
+  public void forceUpdate_new() {
+     System.out.println("entered forceUpdate");
+     clearToggledPaths();
+     TreeModel tm = getModel();
+     firePropertyChange(TREE_MODEL_PROPERTY, null, tm);
+     setExpandedState(new TreePath(treeModel.getRoot()), true);
+     reexpand();
+     invalidate();
+     setVisible(true);
+
+     //     Object rootArray[] = new Object[1];
+//     rootArray[0] = getModel().getRoot();
+//     TreeModelEvent tme = new TreeModelEvent(this, new TreePath(rootArray));
+//     treeModelListener.treeStructureChanged(tme);
+//     TreeModel tm = getModel();
+//     if (tm instanceof TreeModelComposite) {
+//       ((TreeModelComposite)tm).fireTreeStructureChanged();
+  }
+
   public void forceUpdate() {
     int n = 0;
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    NavPerspective np = pb.getNavPane().getCurPerspective();
     Vector pers = pb.getNavPane().getPerspectives();
     NavPerspective curPerspective = pb.getNavPane().getCurPerspective();
     if (curPerspective == null) return;
-    if (curPerspective.equals(np))
-      n = pers.indexOf(curPerspective) + 1;
-    else
-	n = 0;
-    NavPerspective npX = (NavPerspective) pers.elementAt(n);
-    pb.getNavPane().setCurPerspective(npX);
-    pb.getNavPane().setCurPerspective(np);
+    n = (pers.indexOf(curPerspective) + 1) % pers.size();
+    NavPerspective otherPerspective = (NavPerspective) pers.elementAt(n);
+    pb.getNavPane().setCurPerspective(otherPerspective);
+    pb.getNavPane().setCurPerspective(curPerspective);
   }
 
   public void reexpand() {
@@ -241,9 +263,13 @@ implements VetoableChangeListener {
 
 class UpdateTreeHack implements Runnable {
   DisplayTextTree _tree;
+  boolean pending = false;
 
   public UpdateTreeHack(DisplayTextTree t) { _tree = t; }
 
-  public void run() { _tree.forceUpdate(); }
+  public void run() {
+    _tree.forceUpdate();
+    pending = false;
+  }
 
 } /* end class UpdateTreeHack */

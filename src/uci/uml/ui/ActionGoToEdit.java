@@ -52,7 +52,7 @@ public class ActionGoToEdit extends UMLAction {
   ////////////////////////////////////////////////////////////////
   // constructor
   public ActionGoToEdit(String tabName) {
-    super(tabName);
+    super(tabName, NO_ICON);
     _tabName = tabName;
   }
 

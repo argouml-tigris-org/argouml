@@ -58,7 +58,7 @@ public class CmdSelectNext extends Cmd {
     this(next ? DIR_NEXT : DIR_PREV);
   }
   public CmdSelectNext(String d) {
-    super("Select " + d);
+    super("Select " + d, NO_ICON);
     setArg(DIR, d);
   }
 

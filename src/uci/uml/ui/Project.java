@@ -92,8 +92,59 @@ public class Project implements java.io.Serializable {
     _url = Util.fixURLExtension(url, FILE_EXT);
   }
 
+  public Project() { }
+
 
   public static Project makeEmptyProject() {
+    System.out.println("making empty project");
+    Project p = new Project();
+
+    p.defineType(JavaUML.VOID_TYPE);     //J.101
+    p.defineType(JavaUML.CHAR_TYPE);     //J.102
+    p.defineType(JavaUML.INT_TYPE);      //J.103
+    p.defineType(JavaUML.BOOLEAN_TYPE);  //J.104
+    p.defineType(JavaUML.BYTE_TYPE);     //J.105
+    p.defineType(JavaUML.LONG_TYPE);     //J.106
+    p.defineType(JavaUML.FLOAT_TYPE);    //J.107
+    p.defineType(JavaUML.DOUBLE_TYPE);   //J.108
+    p.defineType(JavaUML.STRING_CLASS);  //J.109
+    p.defineType(JavaUML.CHAR_CLASS);    //J.110
+    p.defineType(JavaUML.INT_CLASS);     //J.111
+    p.defineType(JavaUML.BOOLEAN_CLASS); //J.112
+    p.defineType(JavaUML.BYTE_CLASS);    //J.113
+    p.defineType(JavaUML.LONG_CLASS);    //J.114
+    p.defineType(JavaUML.FLOAT_CLASS);   //J.115
+    p.defineType(JavaUML.DOUBLE_CLASS);  //J.116
+
+    p.defineType(JavaUML.RECTANGLE_CLASS); //J.201
+    p.defineType(JavaUML.POINT_CLASS);     //J.202
+    p.defineType(JavaUML.COLOR_CLASS);     //J.203
+
+    p.defineType(JavaUML.VECTOR_CLASS);    //J.301
+    p.defineType(JavaUML.HASHTABLE_CLASS); //J.302
+    p.defineType(JavaUML.STACK_CLASS);     //J.303
+
+    p.addSearchPath("PROJECT_DIR");
+
+    Model m1 = new Model("untitledpackage");
+    try {
+      p.addMember(new UMLClassDiagram(m1));
+      p.addMember(new UMLUseCaseDiagram(m1));
+      p.addMember(m1);
+      p.setNeedsSave(false);
+    }
+    catch (PropertyVetoException pve) { }
+
+    Runnable resetStatsLater = new ResetStatsLater();
+    uci.uml.Main.addPostLoadAction(resetStatsLater);
+
+    return p;
+  }
+
+  /** This method is currently not called.  It is an example of how to
+   *  support loading template files.  However, makeEmptyProject() is
+   *  much faster, and that is important since it is done often. */
+  public static Project loadEmptyProject() {
     System.out.println("Reading " + TEMPLATES + EMPTY_PROJ + "...");
     URL url = Project.class.getResource(TEMPLATES + EMPTY_PROJ);
     Project p = null;
@@ -113,37 +164,6 @@ public class Project implements java.io.Serializable {
     return p;
   }
 
-  // needs-more-work: project setup wizard?
-//   protected void initProject() {
-//     //_models.addElement(new Model("Object Model"));
-//     //_diagrams.addElement(new LayerDiagram("Untitled Diagram"));
-
-//     defineType(JavaUML.VOID_TYPE);     //J.101
-//     defineType(JavaUML.CHAR_TYPE);     //J.102
-//     defineType(JavaUML.INT_TYPE);      //J.103
-//     defineType(JavaUML.BOOLEAN_TYPE);  //J.104
-//     defineType(JavaUML.BYTE_TYPE);     //J.105
-//     defineType(JavaUML.LONG_TYPE);     //J.106
-//     defineType(JavaUML.FLOAT_TYPE);    //J.107
-//     defineType(JavaUML.DOUBLE_TYPE);   //J.108
-//     defineType(JavaUML.STRING_CLASS);  //J.109
-//     defineType(JavaUML.CHAR_CLASS);    //J.110
-//     defineType(JavaUML.INT_CLASS);     //J.111
-//     defineType(JavaUML.BOOLEAN_CLASS); //J.112
-//     defineType(JavaUML.BYTE_CLASS);    //J.113
-//     defineType(JavaUML.LONG_CLASS);    //J.114
-//     defineType(JavaUML.FLOAT_CLASS);   //J.115
-//     defineType(JavaUML.DOUBLE_CLASS);  //J.116
-
-//     defineType(JavaUML.RECTANGLE_CLASS); //J.201
-//     defineType(JavaUML.POINT_CLASS);     //J.202
-//     defineType(JavaUML.COLOR_CLASS);     //J.203
-
-//     defineType(JavaUML.VECTOR_CLASS);    //J.301
-//     defineType(JavaUML.HASHTABLE_CLASS); //J.302
-//     defineType(JavaUML.STACK_CLASS);     //J.303
-//   }
-
   ////////////////////////////////////////////////////////////////
   // accessors
   // needs-more-work 
@@ -158,13 +178,15 @@ public class Project implements java.io.Serializable {
 
   public String getName() {
     // needs-more-work: maybe separate name
+    if (_url == null) return UNTITLED_FILE;
     String name = _url.getFile();
     int i = name.lastIndexOf('/');
     return name.substring(i+1);
   }
 
   public void setName(String n) throws PropertyVetoException, MalformedURLException {
-    String s = getURL().toString();
+    String s = "";
+    if (getURL() != null) s = getURL().toString();
     s = s.substring(0, s.lastIndexOf("/") + 1) + n;
     System.out.println("s = " + s);
     setURL(new URL(s));
@@ -227,7 +249,8 @@ public class Project implements java.io.Serializable {
 
   public URL findMemberURLInSearchPath(String name) {
     //ignore searchpath, just find it relative to the project file
-    String u = getURL().toString();
+    String u = "";
+    if (getURL() != null) u = getURL().toString();
     u = u.substring(0, u.lastIndexOf("/") + 1);
     URL url = null;
     try { url = new URL(u + name); }
@@ -571,96 +594,110 @@ public class Project implements java.io.Serializable {
     return Trash.SINGLETON.contains(dm);
   }
 
-  public void setStats(Hashtable stats) {
-    System.out.println(stats);
-    Integer clicksInToDoPane = (Integer) stats.get("clicksInToDoPane");
-    Integer dblClicksInToDoPane = (Integer) stats.get("dblClicksInToDoPane");
-    Integer longestToDoList = (Integer) stats.get("longestToDoList");
-    Integer longestAdd = (Integer) stats.get("longestAdd");
-    Integer longestHot = (Integer) stats.get("longestHot");
-    Integer numCriticsFired = (Integer) stats.get("numCriticsFired");
-    Integer numNotValid = (Integer) stats.get("numNotValid");
-    Integer numCriticsApplied = (Integer) stats.get("numCriticsApplied");
-    Integer toDoPerspectivesChanged =
-      (Integer) stats.get("toDoPerspectivesChanged");
+  ////////////////////////////////////////////////////////////////
+  // usage statistics
 
-    Integer navPerspectivesChanged =
-      (Integer) stats.get("navPerspectivesChanged");
-    Integer clicksInNavPane = (Integer) stats.get("clicksInNavPane");
-    Integer numFinds = (Integer) stats.get("numFinds");
-    Integer numJumpToRelated = (Integer) stats.get("numJumpToRelated");
-    Integer numDecisionModel = (Integer) stats.get("numDecisionModel");
-    Integer numGoalsModel = (Integer) stats.get("numGoalsModel");
-    Integer numCriticBrowser = (Integer) stats.get("numCriticBrowser");
-    Integer numNavConfig = (Integer) stats.get("numNavConfig");
-    Integer numHushes = (Integer) stats.get("numHushes");
-    Integer numChecks = (Integer) stats.get("numChecks");
+  public static void resetStats() {
+    ToDoPane._clicksInToDoPane = 0;
+    ToDoPane._dblClicksInToDoPane = 0;
+    ToDoList._longestToDoList = 0;
+    Designer._longestAdd = 0;
+    Designer._longestHot = 0;
+    Critic._numCriticsFired = 0;
+    ToDoList._numNotValid = 0;
+    Agency._numCriticsApplied = 0;
+    ToDoPane._toDoPerspectivesChanged = 0;
 
-    if (clicksInToDoPane != null)
-      ToDoPane._clicksInToDoPane = clicksInToDoPane.intValue();
-    if (dblClicksInToDoPane != null)
-      ToDoPane._dblClicksInToDoPane = dblClicksInToDoPane.intValue();
-    if (longestToDoList != null)
-      ToDoList._longestToDoList = longestToDoList.intValue();
-    if (longestAdd != null)
-      Designer._longestAdd = longestAdd.intValue();
-    if (longestHot != null)
-      Designer._longestHot = longestHot.intValue();
-    if (numCriticsFired != null)
-      Critic._numCriticsFired = numCriticsFired.intValue();
-    if (numNotValid != null)
-      ToDoList._numNotValid = numNotValid.intValue();
-    if (numCriticsApplied != null)
-      Agency._numCriticsApplied = numCriticsApplied.intValue();
-    if (toDoPerspectivesChanged != null)
-      ToDoPane._toDoPerspectivesChanged = toDoPerspectivesChanged.intValue();
+    NavigatorPane._navPerspectivesChanged = 0;
+    NavigatorPane._clicksInNavPane = 0;
+    FindDialog._numFinds = 0;
+    TabResults._numJumpToRelated = 0;
+    DesignIssuesDialog._numDecisionModel = 0;
+    GoalsDialog._numGoalsModel = 0;
 
-    if (navPerspectivesChanged != null)
-      NavigatorPane._navPerspectivesChanged = navPerspectivesChanged.intValue();
-    if (clicksInNavPane != null)
-      NavigatorPane._clicksInNavPane = clicksInNavPane.intValue();
-    if (numFinds != null)
-      FindDialog._numFinds = numFinds.intValue();
-    if (numJumpToRelated != null)
-      TabResults._numJumpToRelated = numJumpToRelated.intValue();
-    if (numDecisionModel != null)
-      DesignIssuesDialog._numDecisionModel = numDecisionModel.intValue();
-    if (numGoalsModel != null)
-      GoalsDialog._numGoalsModel = numGoalsModel.intValue();
-
-    if (numCriticBrowser != null)
-      CriticBrowserDialog._numCriticBrowser = numCriticBrowser.intValue();
-    if (numNavConfig != null)
-      NavigatorConfigDialog._numNavConfig = numNavConfig.intValue();
-    if (numHushes != null)
-      TabToDo._numHushes = numHushes.intValue();
-    if (numChecks != null)
-      ChecklistStatus._numChecks = numChecks.intValue();
+    CriticBrowserDialog._numCriticBrowser = 0;
+    NavigatorConfigDialog._numNavConfig = 0;
+    TabToDo._numHushes = 0;
+    ChecklistStatus._numChecks = 0;
   }
 
-  public Hashtable getStats() {
-    Hashtable stats = new Hashtable();
-    stats.put("clicksInToDoPane", new Integer(ToDoPane._clicksInToDoPane));
-    stats.put("dblClicksInToDoPane", new Integer(ToDoPane._dblClicksInToDoPane));
-    stats.put("longestToDoList", new Integer(ToDoList._longestToDoList));
-    stats.put("longestAdd", new Integer(Designer._longestAdd));
-    stats.put("longestHot", new Integer(Designer._longestHot));
-    stats.put("numCriticsFired", new Integer(Critic._numCriticsFired));
-    stats.put("numNotValid", new Integer(ToDoList._numNotValid));
-    stats.put("numCriticsApplied", new Integer(Agency._numCriticsApplied));
-    stats.put("toDoPerspectivesChanged", new Integer(ToDoPane._toDoPerspectivesChanged));
+  public static void setStat(String n, int v) {
+    //     String n = us.name;
+    //     int v = us.value;
+    System.out.println("setStat: " + n + " = " + v);
+    if (n.equals("clicksInToDoPane"))
+      ToDoPane._clicksInToDoPane = v;
+    else if (n.equals("dblClicksInToDoPane"))
+      ToDoPane._dblClicksInToDoPane = v;
+    else if (n.equals("longestToDoList"))
+      ToDoList._longestToDoList = v;
+    else if (n.equals("longestAdd"))
+      Designer._longestAdd = v;
+    else if (n.equals("longestHot"))
+      Designer._longestHot = v;
+    else if (n.equals("numCriticsFired"))
+      Critic._numCriticsFired = v;
+    else if (n.equals("numNotValid"))
+      ToDoList._numNotValid = v;
+    else if (n.equals("numCriticsApplied"))
+      Agency._numCriticsApplied = v;
+    else if (n.equals("toDoPerspectivesChanged"))
+      ToDoPane._toDoPerspectivesChanged = v;
 
-    stats.put("navPerspectivesChanged", new Integer(NavigatorPane._navPerspectivesChanged));
-    stats.put("clicksInNavPane", new Integer(NavigatorPane._clicksInNavPane));
-    stats.put("numFinds", new Integer(FindDialog._numFinds));
-    stats.put("numJumpToRelated", new Integer(TabResults._numJumpToRelated));
-    stats.put("numDecisionModel", new Integer(DesignIssuesDialog._numDecisionModel));
-    stats.put("numGoalsModel", new Integer(GoalsDialog._numGoalsModel));
-    stats.put("numCriticBrowser", new Integer(CriticBrowserDialog._numCriticBrowser));
-    stats.put("numNavConfig", new Integer(NavigatorConfigDialog._numNavConfig));
-    stats.put("numHushes", new Integer(TabToDo._numHushes));
-    stats.put("numChecks", new Integer(ChecklistStatus._numChecks));
-    return stats;
+    else if (n.equals("navPerspectivesChanged"))
+      NavigatorPane._navPerspectivesChanged = v;
+    else if (n.equals("clicksInNavPane"))
+      NavigatorPane._clicksInNavPane = v;
+    else if (n.equals("numFinds"))
+      FindDialog._numFinds = v;
+    else if (n.equals("numJumpToRelated"))
+      TabResults._numJumpToRelated = v;
+    else if (n.equals("numDecisionModel"))
+      DesignIssuesDialog._numDecisionModel = v;
+    else if (n.equals("numGoalsModel"))
+      GoalsDialog._numGoalsModel = v;
+
+    else if (n.equals("numCriticBrowser"))
+      CriticBrowserDialog._numCriticBrowser = v;
+    else if (n.equals("numNavConfig"))
+      NavigatorConfigDialog._numNavConfig = v;
+    else if (n.equals("numHushes"))
+      TabToDo._numHushes = v;
+    else if (n.equals("numChecks"))
+      ChecklistStatus._numChecks = v;
+    else {
+      System.out.println("unknown UsageStatistic: " + n);
+    }
+  }
+
+  public static Vector getStats() {
+    Vector s = new Vector();
+    addStat(s, "clicksInToDoPane", ToDoPane._clicksInToDoPane);
+    addStat(s, "dblClicksInToDoPane", ToDoPane._dblClicksInToDoPane);
+    addStat(s, "longestToDoList", ToDoList._longestToDoList);
+    addStat(s, "longestAdd", Designer._longestAdd);
+    addStat(s, "longestHot", Designer._longestHot);
+    addStat(s, "numCriticsFired", Critic._numCriticsFired);
+    addStat(s, "numNotValid", ToDoList._numNotValid);
+    addStat(s, "numCriticsApplied", Agency._numCriticsApplied);
+    addStat(s, "toDoPerspectivesChanged", ToDoPane._toDoPerspectivesChanged);
+
+    addStat(s, "navPerspectivesChanged",
+	    NavigatorPane._navPerspectivesChanged);
+    addStat(s, "clicksInNavPane", NavigatorPane._clicksInNavPane);
+    addStat(s, "numFinds", FindDialog._numFinds);
+    addStat(s, "numJumpToRelated", TabResults._numJumpToRelated);
+    addStat(s, "numDecisionModel", DesignIssuesDialog._numDecisionModel);
+    addStat(s, "numGoalsModel", GoalsDialog._numGoalsModel);
+    addStat(s, "numCriticBrowser", CriticBrowserDialog._numCriticBrowser);
+    addStat(s, "numNavConfig", NavigatorConfigDialog._numNavConfig);
+    addStat(s, "numHushes", TabToDo._numHushes);
+    addStat(s, "numChecks", ChecklistStatus._numChecks);
+    return s;
+  }
+
+  public static void addStat(Vector stats, String name, int value) {
+    stats.addElement(new UsageStatistic(name, value));
   }
 
   static final long serialVersionUID = 1399111233978692444L;
@@ -668,5 +705,8 @@ public class Project implements java.io.Serializable {
 } /* end class Project */
 
 
-
-
+class ResetStatsLater implements Runnable {
+  public void run() {
+    Project.resetStats();
+  }
+} /* end class ResetStatsLater */

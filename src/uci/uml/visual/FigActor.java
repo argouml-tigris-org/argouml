@@ -124,6 +124,10 @@ public class FigActor extends FigNodeModelElement {
   /** Returns true if this Fig can be resized by the user. */
   public boolean isResizable() { return false; }
 
+  public Selection makeSelection() {
+    return new SelectionMoveClarifiers(this);
+  }
+
   public void setLineColor(Color col) {
     _head.setLineColor(col);
     _body.setLineColor(col);

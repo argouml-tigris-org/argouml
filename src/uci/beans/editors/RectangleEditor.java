@@ -32,6 +32,7 @@
 package uci.beans.editors;
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 import java.beans.*;
 
@@ -56,8 +57,8 @@ public class RectangleEditor extends JPanel implements PropertyEditor {
   public RectangleEditor() { // //Rectangle r
     setLayout(new GridLayout(1, 4));
     //addNotify();
-    resize(insets().left + insets().right + 20,
-	   insets().top + insets().bottom + 20);
+    setSize(getInsets().left + getInsets().right + 20,
+	    getInsets().top + getInsets().bottom + 20);
     xField = new JTextField("0", 4);
     yField = new JTextField("0", 4);
     hField = new JTextField("0", 4);
@@ -75,9 +76,7 @@ public class RectangleEditor extends JPanel implements PropertyEditor {
     updateWidgets();
   }
 
-  public Object getValue() {
-    return _rect;
-  }
+  public Object getValue() { return _rect; }
 
 
   public String getJavaInitializationString() {
@@ -105,18 +104,11 @@ public class RectangleEditor extends JPanel implements PropertyEditor {
     g.drawString(rectString, box.x + 2, box.x + box.height - 4);
   }
 
-  public void enable() {
-    xField.setEditable(true);
-    yField.setEditable(true);
-    wField.setEditable(true);
-    hField.setEditable(true);
-  }
-
-  public void disable() {
-    xField.setEditable(false);
-    yField.setEditable(false);
-    wField.setEditable(false);
-    hField.setEditable(false);
+  public void setEnable(boolean enabled) {
+    xField.setEditable(enabled);
+    yField.setEditable(enabled);
+    wField.setEditable(enabled);
+    hField.setEditable(enabled);
   }
 
   public void updateWidgets() {
@@ -143,14 +135,22 @@ public class RectangleEditor extends JPanel implements PropertyEditor {
   ////////////////////////////////////////////////////////////////
   // event handlers
 
-  public boolean handleEvent(Event event) {
-    if (event.target != this && event.id == Event.ACTION_EVENT) {
+  public void processEvent(AWTEvent event) {
+    if (event.getSource() != this &&
+	event.getID() == event.ACTION_EVENT_MASK) {
       readFields();
-      // // postEvent(new Event(this, Event.ACTION_EVENT, _rect));
-      return true;
+      return;
     }
-    return super.handleEvent(event);
+    super.processEvent(event);
   }
+//   public boolean handleEvent(Event event) {
+//     if (event.target != this && event.id == Event.ACTION_EVENT) {
+//       readFields();
+//       // // postEvent(new Event(this, Event.ACTION_EVENT, _rect));
+//       return true;
+//     }
+//     return super.handleEvent(event);
+//   }
 
   public synchronized void
   addPropertyChangeListener(PropertyChangeListener listener) {

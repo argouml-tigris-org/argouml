@@ -76,6 +76,10 @@ public class Util {
     return url;
   }
 
+  public static ImageIcon loadIconResource(String imgName) {
+    return loadIconResource(imgName, imgName);
+  }
+
   public static ImageIcon loadIconResource(String imgName, String desc) {
     ImageIcon res = null;
     try {

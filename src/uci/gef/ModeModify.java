@@ -195,7 +195,8 @@ public class ModeModify extends Mode {
     /* needs-more-work: _anchor point sign convention is backwards */
     _anchor.x = x;
     _anchor.y = y;
-    _curHandle.index = sm.hitHandle(new Rectangle(x-4, y-4, 8, 8));
+    sm.hitHandle(new Rectangle(x-4, y-4, 8, 8), _curHandle);
+    Globals.showStatus(_curHandle.instructions);
     sm.endTrans();
     synchronized (snapPt) {
       snapPt.setLocation(x, y);

@@ -109,6 +109,10 @@ public class FigFinalState extends FigStateVertex {
   /** Final states are fixed size. */
   public boolean isResizable() { return false; }
 
+  public Selection makeSelection() {
+    return new SelectionMoveClarifiers(this);
+  }
+
   public void setLineColor(Color col) { _outCircle.setLineColor(col); }
   public Color getLineColor() { return _outCircle.getLineColor(); }
 
@@ -123,7 +127,7 @@ public class FigFinalState extends FigStateVertex {
 
   ////////////////////////////////////////////////////////////////
   // Event handlers
-  
+
   public void mouseClicked(MouseEvent me) { }
   public void keyPressed(KeyEvent ke) { }
 

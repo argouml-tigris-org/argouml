@@ -39,7 +39,7 @@ import java.util.*;
 
 public class CmdExit extends Cmd {
 
-  public CmdExit() { super("Exit"); }
+  public CmdExit() { super("Exit", NO_ICON); }
 
   public void doIt() {
     Globals.quit();

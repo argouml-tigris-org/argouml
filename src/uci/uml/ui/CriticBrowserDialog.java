@@ -54,7 +54,7 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
 
   ////////////////////////////////////////////////////////////////
   // instance variables
-  
+
   protected JLabel _criticsLabel   = new JLabel("Critics");
   protected JLabel _clsNameLabel   = new JLabel("Critic Class: ");
   protected JLabel _headlineLabel  = new JLabel("Headline: ");
@@ -72,18 +72,17 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
   protected JTextArea _desc      = new JTextArea("", 6, 40);
   protected JComboBox _useClar   = new JComboBox(USE_CLAR);
 
-  
   protected JButton _okButton      = new JButton("OK");
   protected JButton _wakeButton    = new JButton("Wake");
   protected JButton _configButton  = new JButton("Configure");
   protected JButton _networkButton = new JButton("Edit Network");
   protected JButton _goButton      = new JButton("Go");
-  
+
   protected Critic _target;
 
   ////////////////////////////////////////////////////////////////
   // constructors
-  
+
   public CriticBrowserDialog() {
     super("Critics");
 
@@ -128,23 +127,6 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
     actCol.setMaxWidth(80);
     actCol.setWidth(80);
 
-//     JPanel westPanel = new JPanel();
-//     westPanel.setLayout(new BorderLayout());
-
-//     westPanel.add(_criticsLabel, BorderLayout.NORTH);
-//     JScrollPane tableSP = new JScrollPane(_table,
-// 					  JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-// 					  JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-//     tableSP.setSize(100, 50);
-//     tableSP.setMinimumSize(new Dimension(100, 50));
-//     tableSP.setMaximumSize(new Dimension(100, 50));
-//     tableSP.setPreferredSize(new Dimension(100, 50));
-//     westPanel.add(tableSP, BorderLayout.CENTER);
-//     mainContent.add(westPanel, BorderLayout.WEST);
-    
-//     c.gridx = 0;
-//     c.gridy = 0;
-//     gb.setConstraints(_criticsLabel, c);
     _criticsLabel.setBounds(2, 2, 300, 25);
     content.add(_criticsLabel);
 //     c.gridy = 1;
@@ -285,7 +267,7 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
     _wakeButton.setEnabled(false);
     _networkButton.setEnabled(false);
     _configButton.setEnabled(false);
-    
+
     _desc.setLineWrap(true);
     _desc.setWrapStyleWord(true);
 
@@ -310,7 +292,7 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
     else if (p == ToDoItem.MED_PRIORITY) _priority.setSelectedItem("Medium");
     else _priority.setSelectedItem("Low");
     _priority.repaint();
-    
+
     _moreInfo.setText(_target.getMoreInfoURL());
     _desc.setText(_target.getDescriptionTemplate());
     _desc.setCaretPosition(0);
@@ -348,15 +330,14 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
   public void setTargetUseClarifiers() {
     System.out.println("setting clarifier usage rule");
   }
-  
-  
+
   ////////////////////////////////////////////////////////////////
   // event handlers
 
 
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == _okButton) {
-      hide();
+      setVisible(false);
       dispose();
       return;
     }
@@ -421,11 +402,9 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
       //_visField.getSelectedItem());
       setTargetUseClarifiers();
     }
-    else 
-      System.out.println("unknown itemStateChanged src: "+ src);
+    else System.out.println("unknown itemStateChanged src: "+ src);
   }
 
-  
 } /* end class CriticBrowserDialog */
 
 

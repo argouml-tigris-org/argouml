@@ -56,14 +56,22 @@ import uci.uml.Foundation.Core.*;
 public class SelectionManager
 implements Serializable, KeyListener, MouseListener, MouseMotionListener {
 
+  ////////////////////////////////////////////////////////////////
+  // instance variables
+
   /** The collection of Selection instances */
   protected Vector _selections = new Vector();
   protected Editor _editor;
 
   protected EventListenerList _listeners = new EventListenerList();
 
-  
+  ////////////////////////////////////////////////////////////////
+  // constructor
+
   public SelectionManager(Editor ed) { _editor = ed; }
+
+  ////////////////////////////////////////////////////////////////
+  // accessors
 
   /** Add a new selection to the collection of selections */
   protected void addSelection(Selection s) {
@@ -149,6 +157,15 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
     while(sels.hasMoreElements()) {
       Selection sel = (Selection) sels.nextElement();
       if (sel.contains(f)) return sel;
+    }
+    return null;
+  }
+
+  public Selection findSelectionAt(int x, int y) {
+    Enumeration sels = ((Vector)_selections.clone()).elements();
+    while(sels.hasMoreElements()) {
+      Selection sel = (Selection) sels.nextElement();
+      if (sel.contains(x, y)) return sel;
     }
     return null;
   }
@@ -355,10 +372,9 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
    * one of its handles, but if Manager things are selected, users
    * can only drag the objects around */
   /* needs-more-work: should take on more of this responsibility */
-  public int hitHandle(Rectangle r) {
-    if (size() != 1) return -1;
-    int hp = ((Selection) _selections.firstElement()).hitHandle(r);
-    return hp;
+  public void hitHandle(Rectangle r, Handle h) {
+    if (size() == 1) ((Selection) _selections.firstElement()).hitHandle(r, h);
+    else h.index = -1;
   }
 
   /** If only one thing is selected, then it is possible to mouse on
@@ -371,7 +387,7 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
   }
 
   public void cleanUp() {
-    Enumeration sels = _selections.elements(); 
+    Enumeration sels = _selections.elements();
     while (sels.hasMoreElements()) {
       Selection sel = (Selection)sels.nextElement();
       Fig f = sel.getContent();
@@ -418,7 +434,7 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
 
   ////////////////////////////////////////////////////////////////
   // input events
-  
+
   /** When an event is passed to a multiple selection, try to pass it
    * off to the first selection that will handle it. */
   public void keyTyped(KeyEvent ke) {
@@ -434,7 +450,7 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
     while (sels.hasMoreElements() && !ke.isConsumed())
       ((Selection) sels.nextElement()).keyPressed(ke);
   }
-  
+
   public void mouseMoved(MouseEvent me) {
     Enumeration sels = _selections.elements();
     while (sels.hasMoreElements() && !me.isConsumed())
@@ -478,10 +494,10 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
   }
 
 
-  
+
   ////////////////////////////////////////////////////////////////
   // graph events
-  
+
   public void addGraphSelectionListener(GraphSelectionListener listener) {
     _listeners.add(GraphSelectionListener.class, listener);
   }
@@ -493,7 +509,7 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
   protected void fireSelectionChanged() {
     Object[] listeners = _listeners.getListenerList();
     GraphSelectionEvent e = null;
-    
+
     for (int i = listeners.length - 2; i >= 0; i -= 2) {
       if (listeners[i] == GraphSelectionListener.class) {
 	if (e == null) e = new GraphSelectionEvent(_editor, getFigs());
@@ -503,25 +519,28 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
     }
     updatePropertySheet();
   }
-  
+
 
   ////////////////////////////////////////////////////////////////
   // property sheet methods
 
   public void updatePropertySheet() {
-    if (_selections.size() != 1) Globals.propertySheetSubject(null);
-    else {
-      Fig f = (Fig) getFigs().elementAt(0);
-      Globals.propertySheetSubject(f);
-    }
+//     if (_selections.size() != 1) Globals.propertySheetSubject(null);
+//     else {
+//       Fig f = (Fig) getFigs().elementAt(0);
+//       Globals.propertySheetSubject(f);
+//     }
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // static methods
 
-  protected static Hashtable _SelectionRegistry = new Hashtable();
+  //protected static Hashtable _SelectionRegistry = new Hashtable();
 
+  // needs-more-work: cache a pool of selection objects?
   public static Selection makeSelectionFor(Fig f) {
+    Selection customSelection = f.makeSelection();
+    if (customSelection != null) return customSelection;
     //if (f.isRotatable()) return new SelectionRotate(f);
     if (f.isReshapable()) return new SelectionReshape(f);
     else if (f.isLowerRightResizable()) return new SelectionLowerRight(f);

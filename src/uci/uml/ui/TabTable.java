@@ -42,4 +42,7 @@ public class TabTable extends TabProps {
     super("Table", "table.TablePanel");
   }
 
+  protected void initPanels() {
+    // dont preload any table panels
+  }
 } /* end class TabTable */

@@ -69,7 +69,10 @@ public class SelectionNoop extends Selection {
   }
 
   /** Returns -2 as a special code to indicate that the Fig cannot be moved. */
-  public int hitHandle(Rectangle r) { return -2; }
+  public void hitHandle(Rectangle r, Handle h) {
+    h.index = -2;
+    h.instructions = "Object cannot be moved or resized";
+  }
 
 
   static final long serialVersionUID = 5762844795338457292L;

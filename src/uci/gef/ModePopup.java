@@ -52,7 +52,7 @@ public class ModePopup extends Mode {
 
 
   public String instructions() { return " "; }
-  
+
   public void showPopup(MouseEvent me) {
     int x = me.getX(), y = me.getY();
     Fig underMouse = _editor.hit(x, y);

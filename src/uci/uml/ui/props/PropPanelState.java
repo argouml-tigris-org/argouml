@@ -71,16 +71,18 @@ implements DocumentListener, ItemListener {
   JTextField _exitField = new JTextField();
 
   JLabel _internalLabel = new JLabel("Internal Transitions");
-  TableModelInternalTrans _tableModel = new TableModelInternalTrans();
+  TableModelInternalTrans _tableModel = null;
   JTable _internalTable = new JTable(4, 1);
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelState() {
     super("State Properties");
+    _tableModel = new TableModelInternalTrans(this);
     GridBagLayout gb = (GridBagLayout) getLayout();
     GridBagConstraints c = new GridBagConstraints();
     c.fill = GridBagConstraints.BOTH;
+    c.weighty = 0.0;
     c.weightx = 0.0;
     c.ipadx = 0; c.ipady = 0;
 
@@ -117,7 +119,6 @@ implements DocumentListener, ItemListener {
 
 //     TableColumn descCol = _internalTable.getColumnModel().getColumn(0);
 //     descCol.setMinWidth(50);
-    _internalTable.sizeColumnsToFit(-1);
 
     SpacerPanel spacer1 = new SpacerPanel();
     c.gridx = 0;
@@ -136,18 +137,20 @@ implements DocumentListener, ItemListener {
     c.gridx = 3;
     c.gridwidth = 1;
     c.gridy = 0;
+    c.weightx = 1.0;
     c.weighty = 0.0;
     gb.setConstraints(_internalLabel, c);
     add(_internalLabel);
 
     c.gridy = 1;
-    c.gridheight = GridBagConstraints.REMAINDER;
-    c.weightx = 0.0;
-    c.weighty = 0.0;
+    c.gridheight = 12; //GridBagConstraints.REMAINDER;
+    c.weightx = 1.0;
+    c.weighty = 1.0;
     JScrollPane scroll =
       new JScrollPane(_internalTable,
 		      JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		      JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    scroll.setPreferredSize(new Dimension(300, 200));
     gb.setConstraints(scroll, c);
     add(scroll);
     _internalTable.setTableHeader(null);
@@ -156,6 +159,8 @@ implements DocumentListener, ItemListener {
     _entryField.setFont(_stereoField.getFont());
     _exitField.getDocument().addDocumentListener(this);
     _exitField.setFont(_stereoField.getFont());
+
+    resizeColumns();
   }
 
   ////////////////////////////////////////////////////////////////
@@ -173,11 +178,15 @@ implements DocumentListener, ItemListener {
     _internalTable.sizeColumnsToFit(-1);
 //     TableColumn descCol = _internalTable.getColumnModel().getColumn(0);
 //     descCol.setMinWidth(50);
+    resizeColumns();
     validate();
   }
 
+  public void resizeColumns() {
+    _internalTable.sizeColumnsToFit(0);
+  }
 
-  
+
   public void setTargetEntry() {
     State s = (State) _target;
     String newText = _entryField.getText();
@@ -233,10 +242,11 @@ implements VetoableChangeListener, DelayedVChangeListener {
   ////////////////
   // instance varables
   State _target;
+  PropPanelState _panel;
 
   ////////////////
   // constructor
-  public TableModelInternalTrans() { }
+  public TableModelInternalTrans(PropPanelState p) { _panel = p; }
 
   ////////////////
   // accessors
@@ -247,6 +257,7 @@ implements VetoableChangeListener, DelayedVChangeListener {
     if (_target instanceof ElementImpl)
       ((ModelElementImpl)_target).addVetoableChangeListener(this);
     fireTableStructureChanged();
+    _panel.resizeColumns();
   }
 
   ////////////////
@@ -304,18 +315,24 @@ implements VetoableChangeListener, DelayedVChangeListener {
 	System.out.println("PropertyVetoException in PropPanelState");
       }
     }
-    if (rowIndex == trans.size()) {
-      trans.addElement(newTrans);
+    else {
+      System.out.println("newTrans is null!");
+      fireTableStructureChanged();
+      _panel.resizeColumns();
+      return;
     }
-    else if (val.equals("")) {
-      trans.removeElementAt(rowIndex);
-    }
+
+    if (rowIndex == trans.size()) trans.addElement(newTrans);
+    else if (val.equals("")) trans.removeElementAt(rowIndex);
     else trans.setElementAt(newTrans, rowIndex);
+
     try { ((State)_target).setInternalTransition(trans); }
     catch (PropertyVetoException pve) {
       System.out.println("could not set internal transitions");
     }
+
     fireTableStructureChanged();
+    _panel.resizeColumns();
   }
 
   ////////////////
@@ -328,6 +345,7 @@ implements VetoableChangeListener, DelayedVChangeListener {
 
   public void delayedVetoableChange(PropertyChangeEvent pce) {
     fireTableStructureChanged();
+    _panel.resizeColumns();
   }
 
 

@@ -53,6 +53,10 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
   public static int HEIGHT = 520;
   public static int INITIAL_WIDTH = 400;
   public static int INITIAL_HEIGHT = 200;
+  public static int WARN_THRESHOLD = 50;
+  public static int ALARM_THRESHOLD = 100;
+  public static Color WARN_COLOR = Color.yellow;
+  public static Color ALARM_COLOR = Color.pink;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -73,6 +77,8 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
   protected JTree _tree = new DisplayTextTree();
   protected boolean _flat = false;
   protected Object _lastSel;
+  protected int _oldSize = 0;
+  protected char _dir = ' ';
 
   public static int _clicksInToDoPane = 0;
   public static int _dblClicksInToDoPane = 0;
@@ -88,8 +94,9 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
     _toolbar.add(_combo);
     _flatButton = _toolbar.addToggle(_flatView, "Flat", "Hierarchical", "Flat");
     _toolbar.add(_countLabel);
-    ImageIcon hierarchicalIcon = loadIconResource("Hierarchical", "Hierarchical");
-    ImageIcon flatIcon = loadIconResource("Flat", "Flat");
+    ImageIcon hierarchicalIcon =
+      Util.loadIconResource("Hierarchical", "Hierarchical");
+    ImageIcon flatIcon = Util.loadIconResource("Flat", "Flat");
     _flatButton.setIcon(hierarchicalIcon);
     _flatButton.setSelectedIcon(flatIcon);
     add(_toolbar, BorderLayout.NORTH);
@@ -266,8 +273,14 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
 
   public void updateCountLabel() {
     int size = Designer.TheDesigner.getToDoList().size();
+    if (size > _oldSize) _dir = '+';
+    if (size < _oldSize) _dir = '-';
+    _oldSize = size;
     if (size == 0) _countLabel.setText(" No Items ");
-    else _countLabel.setText(" " + size + " Items");
+    else _countLabel.setText(" " + size + " Items " + _dir);
+    _countLabel.setOpaque(size > WARN_THRESHOLD);
+    _countLabel.setBackground((size >= ALARM_THRESHOLD) ? ALARM_COLOR
+			                                : WARN_COLOR);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -276,47 +289,15 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
   protected void updateTree() {
     ToDoPerspective tm = (ToDoPerspective) _combo.getSelectedItem();
     _curPerspective = tm;
-    if (_curPerspective == null) _tree.hide();
+    if (_curPerspective == null) _tree.setVisible(false);
     else {
       //System.out.println("ToDoPane setting tree model");
       _curPerspective.setRoot(_root);
       _curPerspective.setFlat(_flat);
       _tree.setModel(_curPerspective);
-      _tree.show(); // blinks?
+      _tree.setVisible(true); // blinks?
     }
   }
 
-  ////////////////////////////////////////////////////////////////
-  // static methods
-
-  protected static ImageIcon loadIconResource(String imgName, String desc) {
-    ImageIcon res = null;
-    try {
-      java.net.URL imgURL = ToDoPane.class.getResource(imageName(imgName));
-      //System.out.println(imgName);
-      //System.out.println(imgURL);
-      return new ImageIcon(imgURL, desc);
-    }
-    catch (Exception ex) {
-      System.out.println("Exception in loadIconResource");
-      ex.printStackTrace();
-      return new ImageIcon(desc);
-    }
-  }
-
-  protected static String imageName(String name) {
-    return "/uci/Images/" + stripJunk(name) + ".gif";
-  }
-
-
-  protected static String stripJunk(String s) {
-    String res = "";
-    int len = s.length();
-    for (int i = 0; i < len; i++) {
-      char c = s.charAt(i);
-      if (Character.isJavaLetterOrDigit(c)) res += c;
-    }
-    return res;
-  }
 
 } /* end class ToDoPane */

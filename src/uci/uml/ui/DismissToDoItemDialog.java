@@ -116,16 +116,16 @@ public class DismissToDoItemDialog extends JFrame implements ActionListener {
     if (e.getSource() == _badGoalButton) {
       //System.out.println("bad goal");
       GoalsDialog d = new GoalsDialog(ProjectBrowser.TheInstance);
-      d.show();
-      hide();
+      d.setVisible(true);
+      setVisible(false);
       dispose();
       return;
     }
     if (e.getSource() == _badDecButton) {
       //System.out.println("bad decision");
       DesignIssuesDialog d = new DesignIssuesDialog(ProjectBrowser.TheInstance);
-      d.show();
-      hide();
+      d.setVisible(true);
+      setVisible(false);
       dispose();
       return;
     }
@@ -134,7 +134,7 @@ public class DismissToDoItemDialog extends JFrame implements ActionListener {
       //needs-more-work: make a new history item
       ToDoList list = Designer.TheDesigner.getToDoList();
       list.explicitlyResolve(_target, _explaination.getText());
-      hide();
+      setVisible(false);
       dispose();
       return;
     }

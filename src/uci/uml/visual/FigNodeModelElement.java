@@ -110,20 +110,9 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     }
     return "";
   }
+
   ////////////////////////////////////////////////////////////////
   // accessors
-
-//   /** Returns true if this Fig can be resized by the user. */
-//   public boolean isResizable() { return false; }
-//   public boolean isLowerRightResizable() { return true; }
-
-  public String getTipString(MouseEvent me) {
-    ToDoItem item = hitClarifier(me.getX(), me.getY());
-    if (item != null) return item.getHeadline();
-    if (getOwner() != null) return getOwner().toString();
-    return toString();
-  }
-
 
   public FigText getNameFig() { return _name; }
 
@@ -148,6 +137,99 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   }
 
   public Vector getEnclosedFigs() { return _enclosedFigs; }
+
+  public Selection makeSelection() {
+    return new SelectionNodeClarifiers(this);
+  }
+
+  /**
+   * Displays visual indications of pending ToDoItems.
+   * Please note that the list of advices (ToDoList) is not the same
+   * as the list of element known by the FigNode (_figs). Therefore,
+   * it is necessary to check if the graphic item exists before drawing
+   * on it. See ClAttributeCompartment for an example.
+   * @see uci.uml.critics.ClAttributeCompartment
+   */
+  public void paintClarifiers(Graphics g) {
+    int iconX = _x;
+    int iconY = _y - 10;
+    ToDoList list = Designer.theDesigner().getToDoList();
+    Vector items = list.elementsForOffender(getOwner());
+    int size = items.size();
+    for (int i = 0; i < size; i++) {
+      ToDoItem item = (ToDoItem) items.elementAt(i);
+      Icon icon = item.getClarifier();
+      if (icon instanceof Clarifier) {
+	((Clarifier)icon).setFig(this);
+	((Clarifier)icon).setToDoItem(item);
+      }
+      icon.paintIcon(null, g, iconX, iconY);
+      iconX += icon.getIconWidth();
+    }
+    items = list.elementsForOffender(this);
+    size = items.size();
+    for (int i = 0; i < size; i++) {
+      ToDoItem item = (ToDoItem) items.elementAt(i);
+      Icon icon = item.getClarifier();
+      if (icon instanceof Clarifier) {
+	((Clarifier)icon).setFig(this);
+	((Clarifier)icon).setToDoItem(item);
+      }
+      icon.paintIcon(null, g, iconX, iconY);
+      iconX += icon.getIconWidth();
+    }
+  }
+
+  public ToDoItem hitClarifier(int x, int y) {
+    int iconX = _x;
+    ToDoList list = Designer.theDesigner().getToDoList();
+    Vector items = list.elementsForOffender(getOwner());
+    int size = items.size();
+    for (int i = 0; i < size; i++) {
+      ToDoItem item = (ToDoItem) items.elementAt(i);
+      Icon icon = item.getClarifier();
+      int width = icon.getIconWidth();
+      if (y >= _y - 15 && y <= _y + 10 &&
+	  x >= iconX && x <= iconX + width) return item;
+      iconX += width;
+    }
+    for (int i = 0; i < size; i++) {
+      ToDoItem item = (ToDoItem) items.elementAt(i);
+      Icon icon = item.getClarifier();
+      if (icon instanceof Clarifier) {
+	((Clarifier)icon).setFig(this);
+	((Clarifier)icon).setToDoItem(item);
+	if (((Clarifier)icon).hit(x, y)) return item;
+      }
+    }
+    items = list.elementsForOffender(this);
+    size = items.size();
+    for (int i = 0; i < size; i++) {
+      ToDoItem item = (ToDoItem) items.elementAt(i);
+      Icon icon = item.getClarifier();
+      int width = icon.getIconWidth();
+      if (y >= _y - 15 && y <= _y + 10 &&
+	  x >= iconX && x <= iconX + width) return item;
+      iconX += width;
+    }
+    for (int i = 0; i < size; i++) {
+      ToDoItem item = (ToDoItem) items.elementAt(i);
+      Icon icon = item.getClarifier();
+      if (icon instanceof Clarifier) {
+	((Clarifier)icon).setFig(this);
+	((Clarifier)icon).setToDoItem(item);
+	if (((Clarifier)icon).hit(x, y)) return item;
+      }
+    }
+    return null;
+  }
+
+  public String getTipString(MouseEvent me) {
+    ToDoItem item = hitClarifier(me.getX(), me.getY());
+    if (item != null) return item.getHeadline() + " ";
+    if (getOwner() != null) return getOwner().toString();
+    return toString();
+  }
 
   ////////////////////////////////////////////////////////////////
   // event handlers

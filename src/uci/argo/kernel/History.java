@@ -41,7 +41,7 @@ public class History {
 
   ////////////////////////////////////////////////////////////////
   // constructor
-  
+
   public History() { }
 
 
@@ -55,14 +55,14 @@ public class History {
     fireHistoryAdded(hi, _items.size()-1);
   }
 
-  public void addItem(String desc, Object target,
+  public void addItem(String head, String desc, Object target,
 		      Object oldValue, Object newValue) {
-    HistoryItem hi = new HistoryItem(desc, target, oldValue, newValue);
+    HistoryItem hi = new HistoryItem(head, desc, target, oldValue, newValue);
     addItem(hi);
   }
 
-  public void addItem(String desc) {
-    HistoryItem hi = new HistoryItem(desc);
+  public void addItem(String head, String desc) {
+    HistoryItem hi = new HistoryItem(head, desc);
     addItem(hi);
   }
 
@@ -76,9 +76,9 @@ public class History {
     addItem(hi);
   }
 
-  public void addItemManipulation(String desc, Object target,
+  public void addItemManipulation(String head, String desc, Object target,
 		     Object oldValue, Object newValue) {
-    HistoryItem hi = new HistoryItemManipulation(desc, target,
+    HistoryItem hi = new HistoryItemManipulation(head, desc, target,
 						 oldValue, newValue);
     addItem(hi);
   }

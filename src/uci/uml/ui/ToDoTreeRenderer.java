@@ -38,6 +38,7 @@ import javax.swing.plaf.basic.*;
 import javax.swing.plaf.metal.*;
 
 import uci.argo.kernel.*;
+import uci.util.Util;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Model_Management.*;
 import uci.uml.ui.todo.PriorityNode;
@@ -46,13 +47,13 @@ import uci.uml.ui.todo.KnowledgeTypeNode;
 public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
   ////////////////////////////////////////////////////////////////
   // class variables
-  public ImageIcon _PostIt0     = loadIconResource("PostIt0");
-  public ImageIcon _PostIt25    = loadIconResource("PostIt25");
-  public ImageIcon _PostIt50    = loadIconResource("PostIt50");
-  public ImageIcon _PostIt75    = loadIconResource("PostIt75");
-  public ImageIcon _PostIt99    = loadIconResource("PostIt99");
-  public ImageIcon _PostIt100   = loadIconResource("PostIt100");
-  public ImageIcon _MultiPostIt = loadIconResource("MultiPostIt");
+  public ImageIcon _PostIt0     = Util.loadIconResource("PostIt0");
+  public ImageIcon _PostIt25    = Util.loadIconResource("PostIt25");
+  public ImageIcon _PostIt50    = Util.loadIconResource("PostIt50");
+  public ImageIcon _PostIt75    = Util.loadIconResource("PostIt75");
+  public ImageIcon _PostIt99    = Util.loadIconResource("PostIt99");
+  public ImageIcon _PostIt100   = Util.loadIconResource("PostIt100");
+  public ImageIcon _MultiPostIt = Util.loadIconResource("MultiPostIt");
 
   protected UMLTreeCellRenderer _navRenderer = new UMLTreeCellRenderer();
 
@@ -116,33 +117,5 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
     return r;
   }
 
-  ////////////////////////////////////////////////////////////////
-  // utility functions
-
-  protected static ImageIcon loadIconResource(String name) {
-    String imgName = imageName(name);
-    ImageIcon res = null;
-    try {
-      java.net.URL imgURL = ToDoTreeRenderer.class.getResource(imgName);
-      return new ImageIcon(imgURL);
-    }
-    catch (Exception ex) {
-      return new ImageIcon(name);
-    }
-  }
-
-  protected static String imageName(String name) {
-    return "/uci/Images/" + stripJunk(name) + ".gif";
-  }
-
-  protected static String stripJunk(String s) {
-    String res = "";
-    int len = s.length();
-    for (int i = 0; i < len; i++) {
-      char c = s.charAt(i);
-      if (Character.isJavaLetterOrDigit(c)) res += c;
-    }
-    return res;
-  }
 
 } /* end class ToDoTreeRenderer */

@@ -27,39 +27,44 @@
 <!-- original author: jrobbins@ics.uci.edu -->
 <!-- $Id$ -->
 
+<!-- NOTE: this file is currently not used, instead I have added a -->
+<!-- stats tag to argo.dtd -->
+
 <!-- Here is an example of an Argo/UML usage log file named argo.log:
 
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE log SYSTEM log.dtd' >
-<log>
-  <stat name='clicksInToDoPane'        value='0' >
-  <stat name='dblClicksInToDoPane'     value='0' >
-  <stat name='longestToDoList'         value='0' >
-  <stat name='longestAdd'              value='0' >
-  <stat name='longestHot'              value='0' >
-  <stat name='numCriticsFired'         value='0' >
-  <stat name='numNotValid'             value='0' >
-  <stat name='numCriticsApplied'       value='0' >
-  <stat name='toDoPerspectivesChanged' value='0' >
-  <stat name='navPerspectivesChanged'  value='0' >
-  <stat name='clicksInNavPane'         value='0' >
-  <stat name='numFinds'                value='0' >
-  <stat name='numJumpToRelated'        value='0' >
-  <stat name='numDecisionModel'        value='0' >
-  <stat name='numGoalsModel'           value='0' >
-  <stat name='numCriticBrowser'        value='0' >
-  <stat name='numNavConfig'            value='0' >
-  <stat name='numHushes'               value='0' >
-  <stat name='numChecks'               value='0' >
+<log username="">
+  <stat name="clicksInToDoPane"        value="0" />
+  <stat name="dblClicksInToDoPane"     value="0" />
+  <stat name="longestToDoList"         value="0" />
+  <stat name="longestAdd"              value="0" />
+  <stat name="longestHot"              value="0" />
+  <stat name="numCriticsFired"         value="0" />
+  <stat name="numNotValid"             value="0" />
+  <stat name="numCriticsApplied"       value="0" />
+  <stat name="toDoPerspectivesChanged" value="0" />
+  <stat name="navPerspectivesChanged"  value="0" />
+  <stat name="clicksInNavPane"         value="0" />
+  <stat name="numFinds"                value="0" />
+  <stat name="numJumpToRelated"        value="0" />
+  <stat name="numDecisionModel"        value="0" />
+  <stat name="numGoalsModel"           value="0" />
+  <stat name="numCriticBrowser"        value="0" />
+  <stat name="numNavConfig"            value="0" />
+  <stat name="numHushes"               value="0" />
+  <stat name="numChecks"               value="0" />
 </log>
 -->
 
 <!ELEMENT log (stat)* >
 <!ATTLIST log
-            installid  ID    #REQUIRED >
+            username  CDATA    "" >
 
 <!ELEMENT stat EMPTY >
 <!ATTLIST stat
             name       ID    #REQUIRED
 	    value      CDATA #REQUIRED >
+
+
 

@@ -53,7 +53,7 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
   new uci.argo.checklist.CheckManager();
 
   Object _target;
-  TableModelChecklist _tableModel = new TableModelChecklist();
+  TableModelChecklist _tableModel = null;
   boolean _shouldBeEnabled = false;
   JTable _table = new JTable(10, 2);
 
@@ -63,6 +63,7 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
   public TabChecklist() {
     super("Checklist");
 
+    _tableModel = new TableModelChecklist(this);
     _table.setModel(_tableModel);
 
     Font labelFont = MetalLookAndFeel.getSubTextFont();
@@ -119,7 +120,7 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
     //descCol.setWidth(900);
     descCol.setPreferredWidth(900);
     _table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-    _table.sizeColumnsToFit(-1);
+    resizeColumns();
     validate();
   }
   public Object getTarget() { return _target; }
@@ -128,6 +129,9 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
 
   public boolean shouldBeEnabled() { return _shouldBeEnabled; }
 
+  public void resizeColumns() {
+    _table.sizeColumnsToFit(0);
+  }
 
   ////////////////////////////////////////////////////////////////
   // event handling
@@ -155,10 +159,11 @@ implements VetoableChangeListener, DelayedVChangeListener {
   ////////////////
   // instance varables
   ModelElement _target;
+  TabChecklist _panel;
 
   ////////////////
   // constructor
-  public TableModelChecklist() { }
+  public TableModelChecklist(TabChecklist tc) { _panel = tc; }
 
   ////////////////
   // accessors
@@ -190,14 +195,14 @@ implements VetoableChangeListener, DelayedVChangeListener {
   public boolean isCellEditable(int row, int col) {
     return col == 0;
   }
-  
+
   public int getRowCount() {
     if (_target == null) return 0;
     Checklist cl = CheckManager.getChecklistFor(_target);
     if (cl == null) return 0;
     return cl.size();
   }
-  
+
   public Object getValueAt(int row, int col) {
     Checklist cl = CheckManager.getChecklistFor(_target);
     if (cl == null) return "no checklist";
@@ -238,6 +243,7 @@ implements VetoableChangeListener, DelayedVChangeListener {
 
   public void delayedVetoableChange(PropertyChangeEvent pce) {
     fireTableStructureChanged();
+    _panel.resizeColumns();
   }
 
 } /* end class TableModelChecklist */

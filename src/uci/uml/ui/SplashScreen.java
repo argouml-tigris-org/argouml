@@ -30,6 +30,7 @@ import java.util.*;
 import javax.swing.*;
 
 import uci.ui.IStatusBar;
+import uci.util.Util;
 
 
 // JWindow? I don't want a frame or close widgets
@@ -41,17 +42,19 @@ implements IStatusBar {
 
   public SplashScreen(String title, String iconName) {
     super(title);
-    ImageIcon splashImage = loadIconResource(iconName, iconName);
-    int imgWidth = splashImage.getIconWidth();
-    int imgHeight = splashImage.getIconHeight();
-    Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
-    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-    setLocation(scrSize.width/2 - imgWidth/2,
-		       scrSize.height/2 - imgHeight/2);
-    getContentPane().setLayout(new BorderLayout(0, 0));
+    ImageIcon splashImage = Util.loadIconResource(iconName);
     JLabel splashButton = new JLabel("");
+    if (splashImage != null) {
+      int imgWidth = splashImage.getIconWidth();
+      int imgHeight = splashImage.getIconHeight();
+      Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
+      setLocation(scrSize.width/2 - imgWidth/2,
+		       scrSize.height/2 - imgHeight/2);
+      splashButton.setIcon(splashImage);
+    }
+    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+    getContentPane().setLayout(new BorderLayout(0, 0));
     //splashButton.setMargin(new Insets(0, 0, 0, 0));
-    splashButton.setIcon(splashImage);
     getContentPane().add(splashButton, BorderLayout.CENTER);
     getContentPane().add(_statusBar, BorderLayout.SOUTH);
     // add preloading progress bar?
@@ -104,7 +107,7 @@ implements IStatusBar {
     int len = s.length();
     for (int i = 0; i < len; i++) {
       char c = s.charAt(i);
-      if (Character.isJavaLetterOrDigit(c)) res += c;
+      if (Character.isJavaIdentifierPart(c)) res += c;
     }
     return res;
   }

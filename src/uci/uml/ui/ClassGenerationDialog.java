@@ -178,12 +178,12 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
 	if (node instanceof Classifier)
 	  GeneratorJava.GenerateFile((Classifier) node, path);
       }
-      hide();
+      setVisible(false);
       dispose();
     }
     if (e.getSource() == _cancelButton) {
       //System.out.println("cancel");
-      hide();
+      setVisible(false);
       dispose();
     }
   }
