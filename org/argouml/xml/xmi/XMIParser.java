@@ -93,7 +93,7 @@ public class XMIParser {
             XMIReader reader = new XMIReader();
             InputSource source = new InputSource(url.openStream());
             source.setSystemId(url.toString());
-            _curModel = reader.parse(source);
+            _curModel = reader.parseToModel(source);
             if (reader.getErrors()) {
             	throw new IOException("XMI file " + url.toString() + " could not be parsed.");
             }

@@ -27,12 +27,15 @@
 
 package org.argouml.xml.xmi;
 
+import java.io.IOException;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.argouml.application.api.Argo;
+import org.apache.log4j.Category;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.model_management.MModel;
 
@@ -46,6 +49,8 @@ import ru.novosoft.uml.model_management.MModel;
  * @see ru.novosoft.uml.xmi.XMIReader
  */
 public class XMIReader extends ru.novosoft.uml.xmi.XMIReader {
+    private Category cat = Category.getInstance(this.getClass());
+    
     private boolean errors = false;
     private org.xml.sax.Parser parser = null;
 
@@ -95,26 +100,39 @@ public class XMIReader extends ru.novosoft.uml.xmi.XMIReader {
      * strange construction.
      * @see ru.novosoft.uml.xmi.XMIReader#parseStream(InputSource)
      */
-    protected void parseStream(InputSource p_is) {
+    protected void parseSourceStream(InputSource p_is) throws SAXException, IOException {
 
         cleanup();
 
         try {
             getParser().parse(p_is);
             performLinking();
-        }
-        catch (Exception ex) {
-            Argo.log.error("The model file loaded is corrupted.");
-            Argo.log.error(ex);
-            setErrors(true);
+        } catch (IOException e) {            
+            cat.error("IOException while trying to read inputsource " + p_is.getSystemId(), e);
+            throw e;
+        } catch (SAXException e) {
+            cat.error("Parsing error while trying to parse inputsource "+ p_is.getSystemId(), e);
+            throw e;
+        } catch (ClassCastException e) {
+            cat.error("Parsing error while trying to parse inputsource "+ p_is.getSystemId(), e);
+            throw new SAXException(e);
         }
 
     }
     
-    public MModel parse(InputSource p_is) 
-    {
-        parseStream(p_is);
-        return getParsedModel();
+    /**
+     * Parses a given inputsource to a model. Does not override the novosoft 
+     * parse method since that does not have the right signature.
+     * @param p_is
+     * @return MModel
+     * @throws SAXException
+     * @throws IOException
+     */
+    public MModel parseToModel(InputSource p_is) throws SAXException, IOException
+    {        
+            parseSourceStream(p_is);
+            return getParsedModel();
+        
     }
 
     public void setErrors(boolean errors) {

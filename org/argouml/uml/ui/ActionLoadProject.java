@@ -30,14 +30,17 @@ import java.net.URL;
 import java.text.MessageFormat;
 
 import javax.swing.JOptionPane;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
 import org.argouml.cognitive.Designer;
+import org.argouml.kernel.IllegalFormatException;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.xml.argo.ArgoParser;
+import org.xml.sax.SAXException;
 
 /**
  * @author jaap.branderhorst@xs4all.nl
@@ -114,6 +117,21 @@ public class ActionLoadProject extends UMLChangeAction {
                         "Actions",
                         "template.open_project.status_read"),
                     new Object[] { url.toString()}));
+        } catch (ParserConfigurationException ex) {
+            showErrorPane(
+                "Could not load the project "
+                    + url.toString()
+                    + " due to configuration errors.\n"
+                    + "Please read the instructions at www.argouml.org on the"
+                    + " requirements of argouml and how to install it.");
+            p = oldProject;
+        } catch (IllegalFormatException ex) {
+            showErrorPane(
+                "Could not load the project "
+                    + url.toString()
+                    + "\n"
+                    + "The format of the file is not supported.");
+            p = oldProject;
         } catch (java.io.FileNotFoundException ex) {
             showErrorPane(
                 "Could not load the project "
@@ -131,14 +149,13 @@ public class ActionLoadProject extends UMLChangeAction {
                     + "Please file a bug report at argouml.tigris.org including"
                     + " the corrupted project file.");
             p = oldProject;
-        } catch (Exception ex) {
+        } catch (SAXException ex) {
             showErrorPane(
                 "Could not load the project "
                     + url.toString()
                     + "\n"
                     + "Project file probably corrupted.\n"
-                    + "Exception message:\n"
-                    + ex);
+                    + "If the problem keeps persisting, please file a bug report at www.argouml.org.\n");
             p = oldProject;
         } finally {
             if (!ArgoParser.SINGLETON.getLastLoadStatus()) {

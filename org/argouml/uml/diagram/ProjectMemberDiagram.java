@@ -27,27 +27,19 @@ package org.argouml.uml.diagram;
  * @author Piotr Kaminski
  */
 
-import java.net.URL;
-import java.util.*;
-import java.beans.*;
-import java.io.*;
-
-import javax.swing.*;
+import java.io.Writer;
 
 import org.apache.log4j.Logger;
-
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectMember;
+import org.argouml.ui.ArgoDiagram;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.xml.pgml.PGMLParser;
+import org.tigris.gef.ocl.OCLExpander;
+import org.tigris.gef.ocl.TemplateReader;
+import org.tigris.gef.util.Util;
 
-import org.tigris.gef.base.*;
-import org.tigris.gef.util.*;
-
-import org.tigris.gef.ocl.*;
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-
-import org.argouml.uml.*;
-import org.argouml.uml.diagram.ui.*;
-import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 public class ProjectMemberDiagram extends ProjectMember {
 
@@ -104,7 +96,7 @@ public class ProjectMemberDiagram extends ProjectMember {
 
   public void load() {
     cat.debug("Reading " + getURL());
-    PGMLParser.SINGLETON.setOwnerRegistry(getProject()._UUIDRefs);
+    PGMLParser.SINGLETON.setOwnerRegistry(getProject().getUUIDRefs());
     ArgoDiagram d = (ArgoDiagram)PGMLParser.SINGLETON.readDiagram(getURL());
     setDiagram(d);
     getProject().addDiagram(d);

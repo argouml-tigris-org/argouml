@@ -40,6 +40,8 @@ import org.argouml.cognitive.ProjectMemberTodoList;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.xml.argo.ArgoParser;
 import org.argouml.xml.xmi.XMIParser;
+import org.argouml.xml.xmi.XMIReader;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import ru.novosoft.uml.model_management.MModel;
@@ -195,7 +197,7 @@ public final class ProjectManager {
         * other types of exceptions to handle errors better
         */
     public Project loadProject(URL url)
-        throws IOException, IllegalFormatException, Exception {
+        throws IOException, IllegalFormatException, SAXException, ParserConfigurationException {
         Project p = null;
         String urlString = url.toString();
         int lastDot = urlString.lastIndexOf(".");
@@ -228,7 +230,7 @@ public final class ProjectManager {
         XMIParser.SINGLETON.readModels(p, url);
         MModel model = XMIParser.SINGLETON.getCurModel();
         UmlHelper.getHelper().addListenersToModel(model);
-        p._UUIDRefs = XMIParser.SINGLETON.getUUIDRefs();
+        p.setUUIDRefs(XMIParser.SINGLETON.getUUIDRefs());
         p.addMember(new ProjectMemberTodoList("", p));
         p.addMember(model);
         p.setNeedsSave(false);
@@ -246,6 +248,7 @@ public final class ProjectManager {
     private Project loadProjectFromZargo(URL url)
         throws IOException, SAXException, ParserConfigurationException {
         Project p = null;
+        // read the argo 
         try {
             ZipInputStream zis = new ZipInputStream(url.openStream());
 
@@ -261,6 +264,60 @@ public final class ProjectManager {
             ArgoParser.SINGLETON.readProject(zis, false);
             p = ArgoParser.SINGLETON.getProject();
 
+            zis.close();
+
+        } catch (IOException e) {
+            // exception can occur both due to argouml code as to J2SE code, so lets log it
+            cat.error(e);
+            throw e;
+        }
+        // read the xmi
+        try {
+            ZipInputStream zis = new ZipInputStream(url.openStream());
+
+            // first read the .argo file from Zip
+            String name = zis.getNextEntry().getName();
+            while (!name.endsWith(".xmi")) {
+                name = zis.getNextEntry().getName();
+            }
+
+            XMIReader xmiReader = null;
+            try {
+                xmiReader = new org.argouml.xml.xmi.XMIReader();
+            } catch (SAXException se) { // duh, this must be catched and handled
+                cat.error(se);
+                throw se;
+            } catch (ParserConfigurationException pc) { // duh, this must be catched and handled
+                cat.error(pc);
+                throw pc;
+            }
+            MModel mmodel = null;
+
+            InputSource source = new InputSource(zis);
+            source.setEncoding("UTF-8");
+            mmodel = xmiReader.parseToModel(new InputSource(zis));
+            // the following strange construction is needed because Novosoft does 
+            // not really know how to handle exceptions...
+            if (xmiReader.getErrors()) {
+                if (xmiReader.getErrors()) {
+                    ArgoParser.SINGLETON.setLastLoadStatus(false);
+                    ArgoParser.SINGLETON.setLastLoadMessage(
+                        "XMI file "
+                            + url.toString()
+                            + " could not be "
+                            + "parsed.");
+                    cat.error(
+                        "XMI file "
+                            + url.toString()
+                            + " could not be "
+                            + "parsed.");
+                    throw new SAXException(
+                        "XMI file "
+                            + url.toString()
+                            + " could not be "
+                            + "parsed.");
+                }
+            }
             zis.close();
 
         } catch (IOException e) {

@@ -285,7 +285,7 @@ public class ProfileJava extends Profile {
 					//
 					//   would really like to turn validation off to save
 					//      a lot of scary messages
-					MModel model = xmiReader.parse(new InputSource(is));
+					MModel model = xmiReader.parseToModel(new InputSource(is));
 					// 2002-07-18
 					// Jaap Branderhorst
 					// changed the loading of the projectfiles to solve hanging 
