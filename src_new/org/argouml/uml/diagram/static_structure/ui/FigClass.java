@@ -830,6 +830,7 @@ public class FigClass extends FigNodeModelElement {
           _stereo.setDisplayed(false);
         rect.y      += STEREOHEIGHT;
         rect.height -= STEREOHEIGHT;
+         setBounds(rect.x, rect.y, rect.width, rect.height);
       }
     }
     else {
@@ -847,7 +848,9 @@ public class FigClass extends FigNodeModelElement {
         if( !_newlyCreated ) {
           rect.y      -= STEREOHEIGHT;
           rect.height += STEREOHEIGHT;
+          setBounds(rect.x, rect.y, rect.width, rect.height);
         }
+         
       }
     }
 
@@ -855,7 +858,8 @@ public class FigClass extends FigNodeModelElement {
     // flag. Then set the bounds for the rectangle we have defined.
 
     _newlyCreated = false;
-    setBounds(rect.x, rect.y, rect.width, rect.height);
+    
+   
   }
 
   /**
