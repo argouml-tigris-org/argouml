@@ -106,6 +106,7 @@ abstract public class PropPanelModelElement extends PropPanel {
         namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
         namespaceList.setBackground(getBackground());
         namespaceList.setForeground(Color.blue);
+        namespaceList.setVisibleRowCount(1);
 
 	namespaceScroll = new JScrollPane(namespaceList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     }
