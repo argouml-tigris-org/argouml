@@ -33,6 +33,7 @@ package org.argouml.uml.cognitive.critics;
 import java.util.Vector;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
@@ -64,7 +65,7 @@ public class CrInterfaceWithoutComponent extends CrUML {
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
 	VectorSet offs = computeOffenders(dd);
-	return new ToDoItem(this, offs, dsgr);
+	return new UMLToDoItem(this, offs, dsgr);
     }
 
     public boolean stillValid(ToDoItem i, Designer dsgr) {

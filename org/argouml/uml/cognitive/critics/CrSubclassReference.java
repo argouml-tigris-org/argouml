@@ -36,6 +36,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.GenDescendantClasses;
@@ -66,7 +67,7 @@ public class CrSubclassReference extends CrUML {
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	Object cls = /*(MClassifier)*/ dm;
 	VectorSet offs = computeOffenders(cls);
-	return new ToDoItem(this, offs, dsgr);
+	return new UMLToDoItem(this, offs, dsgr);
     }
 
     public boolean stillValid(ToDoItem i, Designer dsgr) {

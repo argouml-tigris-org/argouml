@@ -35,6 +35,7 @@ import javax.swing.Icon;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
@@ -86,6 +87,7 @@ public class CrMissingStateName extends CrUML {
 	    ((WizMEName) w).setSuggestion(sug);
 	}
     }
+    
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 								   
 } /* end class CrMissingStateName.java */

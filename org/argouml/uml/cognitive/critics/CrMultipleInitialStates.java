@@ -37,6 +37,7 @@ import org.tigris.gef.util.VectorSet;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.model.ModelFacade;
 
 /** A critic to detect when a state has no outgoing transitions. */
@@ -84,7 +85,7 @@ public class CrMultipleInitialStates extends CrUML {
 
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
         VectorSet offs = computeOffenders(dm);
-        return new ToDoItem(this, offs, dsgr);
+        return new UMLToDoItem(this, offs, dsgr);
     }
 
     protected VectorSet computeOffenders(Object ps) {
