@@ -38,6 +38,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.CopyHelper;
 
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.model_management.MModel;
@@ -54,12 +55,11 @@ import ru.novosoft.uml.model_management.MSubsystem;
  */
 public class ModelManagementHelper {
     protected static Category cat =
-	Category.getInstance(ModelManagementHelper.class);
+        Category.getInstance(ModelManagementHelper.class);
 
     /** Don't allow instantiation.
      */
-    private ModelManagementHelper() {
-    }
+    private ModelManagementHelper() {}
 
     /** Singleton instance.
     */
@@ -94,7 +94,7 @@ public class ModelManagementHelper {
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof MNamespace) {
-                list.addAll(getAllSubSystems((MNamespace) o));
+                list.addAll(getAllSubSystems((MNamespace)o));
             }
             if (o instanceof MSubsystem) {
                 list.add(o);
@@ -127,7 +127,7 @@ public class ModelManagementHelper {
             Object o = it.next();
             if (o instanceof MNamespace) {
                 list.add(o);
-                list.addAll(getAllNamespaces((MNamespace) o));
+                list.addAll(getAllNamespaces((MNamespace)o));
             }
         }
         return list;
@@ -165,7 +165,7 @@ public class ModelManagementHelper {
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof MNamespace) {
-                list.addAll(getAllModelElementsOfKind((MNamespace) o, kind));
+                list.addAll(getAllModelElementsOfKind((MNamespace)o, kind));
             }
             if (kind.isAssignableFrom(o.getClass())) {
                 list.add(o);
@@ -191,28 +191,27 @@ public class ModelManagementHelper {
     }
 
     public MModelElement getElement(Vector path, MModelElement root) {
-	Object name;
-	int i;
+        Object name;
+        int i;
 
-	for (i = 0; i < path.size(); i++) {
-	    if (root == null || !(root instanceof MNamespace))
-		return null;
+        for (i = 0; i < path.size(); i++) {
+            if (root == null || !(root instanceof MNamespace))
+                return null;
 
-	    name = path.get(i);
-	    Iterator it = ((MNamespace) root).getOwnedElements().iterator();
-	    root = null;
-	    while (it.hasNext()) {
-		MModelElement me = (MModelElement) it.next();
-		if (i < path.size() - 1 &&
-		    !(me instanceof MNamespace))
-		    continue;
-		if (name.equals(me.getName())) {
-		    root = me;
-		    break;
-		}
-	    }
-	}
-	return root;
+            name = path.get(i);
+            Iterator it = ((MNamespace)root).getOwnedElements().iterator();
+            root = null;
+            while (it.hasNext()) {
+                MModelElement me = (MModelElement)it.next();
+                if (i < path.size() - 1 && !(me instanceof MNamespace))
+                    continue;
+                if (name.equals(me.getName())) {
+                    root = me;
+                    break;
+                }
+            }
+        }
+        return root;
     }
 
     /**
@@ -239,9 +238,9 @@ public class ModelManagementHelper {
             return new Vector();
 
         path = getPath(ModelFacade.getNamespace(element));
-	path.add(ModelFacade.getName(element));
+        path.add(ModelFacade.getName(element));
 
-	return path;
+        return path;
     }
 
     /**
@@ -282,9 +281,10 @@ public class ModelManagementHelper {
      * @return An element of the same type and at the same position in the
      *  model as elem, or if that would turn out impossible then null.
      */
-    public MModelElement getCorrespondingElement(MModelElement elem,
-						 MModel model) {
-	return getCorrespondingElement(elem, model, true);
+    public MModelElement getCorrespondingElement(
+        MModelElement elem,
+        MModel model) {
+        return getCorrespondingElement(elem, model, true);
     }
 
     /**
@@ -304,43 +304,44 @@ public class ModelManagementHelper {
      * @return An element of the same type and at the same position in the
      *  model as elem, or if that would turn out impossible then null.
      */
-    public MModelElement getCorrespondingElement(MModelElement elem,
-					 MModel model, boolean canCreate) {
-	if (elem == null || model == null)
-	    throw new NullPointerException();
+    public MModelElement getCorrespondingElement(
+        MModelElement elem,
+        MModel model,
+        boolean canCreate) {
+        if (elem == null || model == null)
+            throw new NullPointerException();
 
-	// Trivial case
-	if (elem.getModel() == model)
-	    return elem;
+        // Trivial case
+        if (elem.getModel() == model)
+            return elem;
 
-	// Base case
-	if (elem instanceof MModel)
-	    return model;
+        // Base case
+        if (elem instanceof MModel)
+            return model;
 
-	// The cast is actually safe
-	MNamespace ns = (MNamespace) getCorrespondingElement(
-					elem.getNamespace(),
-					model,
-					canCreate);
-	if (ns == null)
-	    return null;
+        // The cast is actually safe
+        MNamespace ns =
+            (MNamespace)getCorrespondingElement(elem.getNamespace(),
+                model,
+                canCreate);
+        if (ns == null)
+            return null;
 
-	Iterator it = ns.getOwnedElements().iterator();
-	while (it.hasNext()) {
-	    MModelElement e = (MModelElement) it.next();
-	    if (e.getClass() == elem.getClass()
-		&& ((elem.getName() == null && e.getName() == null)
-		    || (elem.getName() != null
-			&& elem.getName().equals(e.getName()))))
-	    {
-		return (MModelElement) e;
-	    }
-	}
+        Iterator it = ns.getOwnedElements().iterator();
+        while (it.hasNext()) {
+            MModelElement e = (MModelElement)it.next();
+            if (e.getClass() == elem.getClass()
+                && ((elem.getName() == null && e.getName() == null)
+                    || (elem.getName() != null
+                        && elem.getName().equals(e.getName())))) {
+                return (MModelElement)e;
+            }
+        }
 
-	if (!canCreate)
-	    return null;
+        if (!canCreate)
+            return null;
 
-	return CopyHelper.getHelper().copy(elem, ns);
+        return CopyHelper.getHelper().copy(elem, ns);
     }
 
     /**
@@ -356,14 +357,70 @@ public class ModelManagementHelper {
      * @return true if obj1 corresponds to obj2, false otherwise.
      */
     public boolean corresponds(MModelElement obj1, MModelElement obj2) {
-	if (obj1 instanceof MModel && obj2 instanceof MModel)
-	    return true;
-	if (obj1.getClass() != obj2.getClass())
-	    return false;
-	if (obj1.getName() == null && obj2.getName() != null ||
-	    obj1.getName() != null && !obj1.getName().equals(obj2.getName()))
-		return false;
-	return corresponds(obj1.getNamespace(), obj2.getNamespace());
+        if (obj1 instanceof MModel && obj2 instanceof MModel)
+            return true;
+        if (obj1.getClass() != obj2.getClass())
+            return false;
+        if (obj1.getName() == null
+            && obj2.getName() != null
+            || obj1.getName() != null
+            && !obj1.getName().equals(obj2.getName()))
+            return false;
+        return corresponds(obj1.getNamespace(), obj2.getNamespace());
+    }
+
+    /**
+     * Checks if a child for some ownershiprelationship (as in a namespace A is owned by
+     * a namespace B) is allready in the ownerhship relation.
+     * @param parent The current leaf for the ownership relation 
+     * @param child The child that should be owned by the parent
+     * @return true if the child is allready in the ownership relationship
+     */
+    public boolean isCyclicOwnership(Object parent, Object child) {
+        return getOwnerShipPath(child).contains(child);
+    }
+
+    /**
+     * Returns the first modelelement that owns both elem1 as elem2. If there is no
+     * such modelelement returns null.
+     * @param elem1 the first modelelement to evaluate the owners of
+     * @param elem2 the second modelelement
+     * @return the first modelelement owning both elem1 as elem2. If there is no 
+     * such modelelement returns null.
+     */
+    public Object getFirstCommonOwner(Object elem1, Object elem2) {
+        if (elem1 instanceof MBase && elem2 instanceof MBase) {
+            List ownersElem1 = getOwnerShipPath(elem1);
+            List ownersElem2 = getOwnerShipPath(elem2);
+            Iterator it = null;
+            if (ownersElem1.size() > ownersElem2.size())
+                it = ownersElem1.iterator();
+            else
+                it = ownersElem2.iterator();
+            while (it.hasNext()) {
+                Object o = it.next();
+                if (ownersElem2.contains(o)) {
+                    return o;
+                }
+            }
+            return null;
+        } else {
+            return null;
+        }
+    }
+
+    private List getOwnerShipPath(Object elem) {
+        if (elem instanceof MBase) {
+            List ownershipPath = new ArrayList();
+            Object parent = ModelFacade.getModelElementContainer(elem);
+            while (parent != null) {
+                ownershipPath.add(parent);
+                parent = ModelFacade.getModelElementContainer(parent);
+            }
+            return ownershipPath;
+        } else {
+            throw new IllegalArgumentException("Not a base");
+        }
+
     }
 }
-
