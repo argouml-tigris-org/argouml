@@ -48,9 +48,6 @@ public class GoModelToCollaboration extends AbstractPerspectiveRule {
         return Translator.localize ("misc.model.collaboration");
     }
 
-    /**
-     * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
-     */
     public Collection getChildren(Object parent) {
 	if (ModelFacade.isAModel(parent)) {
             Object model = /*(MModel)*/ parent;

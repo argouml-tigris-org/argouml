@@ -49,9 +49,6 @@ public class GoInteractionMessage extends AbstractPerspectiveRule {
 	return Translator.localize ("misc.interaction.messages");
     }
 
-    /**
-     * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
-     */
     public Collection getChildren(Object parent) {
 	if (ModelFacade.isAInteraction(parent))
 	    return ModelFacade.getMessages(parent);

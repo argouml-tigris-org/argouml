@@ -43,9 +43,6 @@ import org.argouml.model.ModelFacade;
  */
 public class GoStateToDoActivity extends AbstractPerspectiveRule {
 
-    /**
-     * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
-     */
     public Collection getChildren(Object parent) {
         if (ModelFacade.isAState(parent)
 	    && ModelFacade.getDoActivity(parent) != null)
@@ -70,9 +67,6 @@ public class GoStateToDoActivity extends AbstractPerspectiveRule {
 	return null;
     }
 
-    /**
-     * @see org.argouml.ui.AbstractGoRule#getRuleName()
-     */
     public String getRuleName() {
         return Translator.localize ("misc.state.do-activity");
     }

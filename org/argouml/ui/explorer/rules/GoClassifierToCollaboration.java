@@ -47,9 +47,6 @@ public class GoClassifierToCollaboration extends AbstractPerspectiveRule {
 	return Translator.localize ("misc.classifier.collaboration");
     }
 
-    /**
-     * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
-     */
     public Collection getChildren(Object parent) {
 	if (ModelFacade.isAClassifier(parent)) {
             return ModelFacade.getCollaborations(parent);

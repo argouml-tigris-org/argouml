@@ -46,9 +46,6 @@ public class GoLinkStimuli extends AbstractPerspectiveRule {
 	return ModelFacade.getStimuli(parent);
     }
 
-    /**
-     * @see org.argouml.ui.AbstractGoRule#getRuleName()
-     */
     public String getRuleName() {
         return Translator.localize ("misc.link.stimuli");
     }
