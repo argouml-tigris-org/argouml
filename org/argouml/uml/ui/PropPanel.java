@@ -57,6 +57,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.EventListenerList;
@@ -68,7 +69,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.swingext.Orientation;
-import org.argouml.swingext.Toolbar;
 import org.argouml.swingext.Vertical;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -79,6 +79,7 @@ import org.argouml.uml.Profile;
 import org.argouml.uml.ProfileJava;
 
 import org.tigris.gef.presentation.Fig;
+import org.tigris.toolbar.ToolBar;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
@@ -128,7 +129,7 @@ abstract public class PropPanel
     private Vector _targetList = null;
     private JPanel center;
 
-    protected Toolbar buttonPanel = new Toolbar();
+    protected JToolBar buttonPanel;
     private JPanel buttonPanelWithFlowLayout = new JPanel();
 
     private JLabel _titleLabel;
@@ -149,7 +150,10 @@ abstract public class PropPanel
     public PropPanel(String title, ImageIcon icon, Orientation orientation) {
         super(title);
         setOrientation(orientation);
-
+        buttonPanel = new ToolBar();
+        buttonPanel.setFloatable(false);
+        //buttonPanel.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
+        
         setLayout(new LabelledLayout(orientation == Vertical.getInstance()));
 
         if (icon != null) {
@@ -708,13 +712,15 @@ abstract public class PropPanel
         add(center, BorderLayout.CENTER);
 
         //add caption panel and button panel
-        if (icon != null)
+        if (icon != null) {
             captionPanel.add(new JLabel(icon));
+        }
         captionPanel.add(new JLabel(localize(title)));
         addCaption(captionPanel, 0, 0, 0);
 
-        buttonPanel = new Toolbar();
-        //buttonPanel = new JPanel(new SerialLayout());
+        buttonPanel = new ToolBar();
+        // TODO buttonPanelWithFlowLayout shouldn't exist any more
+        // It's just another useless layer
         buttonPanelWithFlowLayout = new JPanel(new FlowLayout());
         buttonPanelWithFlowLayout.add(buttonPanel);
         addField(buttonPanelWithFlowLayout, 0, 0, 0);
@@ -813,13 +819,13 @@ abstract public class PropPanel
      *      see GridBagConstraint for details on usage.
      *
      * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
-     *         GridBagConstraints is no longer used as a prop panel layout,
-     *             replaced by addLinkField(label, component) - Labelled layout method.
+     *     GridBagConstraints is no longer used as a prop panel layout,
+     *     replaced by addLinkField(label, component) - Labelled layout method.
+     *     The method will be removed in release 0.15
      */
     final public void addLinkField(Component component, int row, int panel, double weighty) {
         component.setBackground(getBackground());
         component.setForeground(Color.blue);
         addField(component, row, panel, weighty);
     }
-
 } /* end class PropPanel */

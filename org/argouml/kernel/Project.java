@@ -1288,7 +1288,8 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * @return
+     * Get the current viewed diagram
+     * @return the current viewed diagram
      */
     public ArgoDiagram getActiveDiagram() {
         return _activeDiagram;

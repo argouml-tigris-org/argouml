@@ -34,10 +34,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.apache.log4j.Category;
-import org.argouml.swingext.Toolbar;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.TabModelTarget;
+import org.tigris.toolbar.ToolBar;
 
 /** A tab that contains textual information.
  */
@@ -53,7 +53,7 @@ public class TabText
     /** The optional toolbar.
      *  Contains null if no toolbar was requested.
      */
-    protected Toolbar _toolbar = null;
+    protected JToolBar _toolbar = null;
     protected Category cat = Category.getInstance(TabText.class);
 
     ////////////////////////////////////////////////////////////////
@@ -78,7 +78,7 @@ public class TabText
 
         // If a toolbar was requested, create an empty one.
         if (withToolbar) {
-            _toolbar = new Toolbar();
+            _toolbar = new ToolBar();
             _toolbar.setOrientation(JToolBar.HORIZONTAL);
             add(_toolbar, BorderLayout.NORTH);
         }

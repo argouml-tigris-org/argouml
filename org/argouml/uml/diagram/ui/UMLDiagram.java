@@ -29,18 +29,20 @@ import java.beans.PropertyVetoException;
 import java.util.Enumeration;
 
 import javax.swing.Action;
+import javax.swing.ButtonModel;
 import javax.swing.JToolBar;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.swingext.PopupToolBoxButton;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.ui.ToolBar;
+import org.tigris.toolbar.ToolBar;
+import org.tigris.toolbar.ToolBarFactory;
+import org.tigris.toolbutton.ToolButton;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
@@ -72,35 +74,37 @@ public abstract class UMLDiagram
     protected static Action _actionBroom =
         new CmdSetMode(ModeBroom.class, "Broom");
 
-    protected static Action _actionRectangle =
-        new CmdSetMode(ModeCreateFigRect.class, "Rectangle");
+    protected static Action _actionRectangle = new RadioAction(
+        new CmdSetMode(ModeCreateFigRect.class, "Rectangle"));
 
-    protected static Action _actionRRectangle =
-        new CmdSetMode(ModeCreateFigRRect.class, "RRect");
+    protected static Action _actionRRectangle = new RadioAction(
+        new CmdSetMode(ModeCreateFigRRect.class, "RRect"));
 
-    protected static Action _actionCircle =
-        new CmdSetMode(ModeCreateFigCircle.class, "Circle");
+    protected static Action _actionCircle = new RadioAction(
+        new CmdSetMode(ModeCreateFigCircle.class, "Circle"));
 
-    protected static Action _actionLine =
-        new CmdSetMode(ModeCreateFigLine.class, "Line");
+    protected static Action _actionLine = new RadioAction(
+        new CmdSetMode(ModeCreateFigLine.class, "Line"));
 
-    protected static Action _actionText =
-        new CmdSetMode(ModeCreateFigText.class, "Text"); 
+    protected static Action _actionText = new RadioAction(
+        new CmdSetMode(ModeCreateFigText.class, "Text"));
 
-    protected static Action _actionPoly =
-        new CmdSetMode(ModeCreateFigPoly.class, "Polygon");
+    protected static Action _actionPoly = new RadioAction(
+        new CmdSetMode(ModeCreateFigPoly.class, "Polygon"));
 
-    protected static Action _actionSpline =
-        new CmdSetMode(ModeCreateFigSpline.class, "Spline");
+    protected static Action _actionSpline = new RadioAction(
+        new CmdSetMode(ModeCreateFigSpline.class, "Spline"));
 
-    protected static Action _actionInk =
-        new CmdSetMode(ModeCreateFigInk.class, "Ink");
-
+    protected static Action _actionInk = new RadioAction(
+        new CmdSetMode(ModeCreateFigInk.class, "Ink"));
+    
     ////////////////////////////////////////////////////////////////
     // instance variables
     protected MNamespace  _namespace;
     protected DiagramInfo _diagramName = new DiagramInfo(this);
 
+    private JToolBar toolBar;
+    
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -180,25 +184,24 @@ public abstract class UMLDiagram
      * Get the toolbar for the diagram
      * @return the diagram toolbar
      */
-    public ToolBar getToolBar() {
-        if (_toolBar == null) {
+    public JToolBar getJToolBar() {
+        if (toolBar == null) {
             initToolBar();
         }
-        return _toolBar;
+        return toolBar;
     }
   
     /**
-     * This is a template method. It sets up the standard toolbar buttons
-     * required for all diagram toolbars calling the abstract method
-     * initToolBar(JToolBar) which should be implemented on the ancestor
-     * to populate the toolbar with diagram specific buttons.
+     * Create the toolbar based on actions for the spcific diagram
+     * subclass.
      * @see org.tigris.gef.base.Diagram#initToolBar()
      */
     public void initToolBar() {
-        _toolBar = new ToolBar();
-        _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
-        addActionsToToolbar(_toolBar, getActions());
+        toolBar = ToolBarFactory.createToolBar(true/*rollover*/,
+                                               getActions(),
+                                               false/*floating*/);
     }
+    
 
     /**
      * Return actions available for building toolbar or similar.
@@ -228,53 +231,6 @@ public abstract class UMLDiagram
     }
     
     /**
-     * <p>Initialize the toolbar with buttons required for a specific
-     * diagram</p>
-     * @param toolBar The toolbar to which to add the buttons.
-     */
-    private void addActionsToToolbar(JToolBar toolBar, Object actions[]) {
-        
-        for (int i = 0; i < actions.length; ++i) {
-            Object o = actions[i];
-            if (o == null) {
-                toolBar.addSeparator();
-            } else if (o instanceof Action) {
-                toolBar.add((Action) o);
-            } else if (o instanceof Object[]) {
-                Object[] subActions = (Object[]) o;
-                toolBar.add(buildPopupToolBoxButton(subActions));
-            } else if (o instanceof Component) {
-                toolBar.add((Component) o);
-            }
-        }
-    }
-
-    private PopupToolBoxButton buildPopupToolBoxButton(Object[] actions) {
-        PopupToolBoxButton toolBox = null;
-        for (int i = 0; i < actions.length; ++i) {
-            if (actions[i] instanceof Action) {
-                Action a = (Action) actions[i];
-                if (toolBox == null) {
-                    toolBox = new PopupToolBoxButton(a, 0, 1);
-                }
-                toolBox.add(a);
-            } else if (actions[i] instanceof Object[]) {
-                Object[] actionRow = (Object[]) actions[i];
-                for (int j = 0; j < actionRow.length; ++j) {
-                    Action a = (Action) actionRow[j];
-                    if (toolBox == null) {
-                        int cols = actionRow.length;
-                        toolBox = new PopupToolBoxButton(a, 0, cols);
-                    }
-                    toolBox.add(a);
-                }
-            }
-        }
-        return toolBox;
-    }
-    
-    
-    /**
      * Implement on the ancestor to get actions to populate toolbar.
      */
     protected abstract Object[] getUmlActions();
@@ -291,7 +247,8 @@ public abstract class UMLDiagram
     private Object[] getShapeActions() {
         Object actions[] = {
             null,
-            getShapePopupActions(), null,
+            getShapePopupActions(),
+            null,
             _diagramName.getJComponent()
         };
         return actions;
@@ -306,21 +263,6 @@ public abstract class UMLDiagram
         };
 
         return actions;
-    }
-    
-    private PopupToolBoxButton buildShapePopup() {
-        PopupToolBoxButton toolBox = new PopupToolBoxButton(_actionRectangle,
-							    0,
-							    2);
-        toolBox.add(_actionRectangle);
-        toolBox.add(_actionRRectangle);
-        toolBox.add(_actionCircle);
-        toolBox.add(_actionLine);
-        toolBox.add(_actionText);
-        toolBox.add(_actionPoly);
-        toolBox.add(_actionSpline);
-        toolBox.add(_actionInk);
-        return toolBox;
     }
     
     
@@ -419,10 +361,69 @@ public abstract class UMLDiagram
 		fig.setOwner(owner);
 	    }
 	}    
-      
     }
 
-
-  
-  
+    /**
+     * Set all toolbar buttons to unselected other then the toolbar button
+     * with the supplied action.
+     */
+    public void deselectOtherTools(Action otherThanAction) {
+        //System.out.println("Looking for action " + otherThanAction);
+        int toolCount=toolBar.getComponentCount();
+        for (int i=0; i<toolCount; ++i) {
+            Component c = toolBar.getComponent(i);
+            if (c instanceof ToolButton) {
+                ToolButton tb = (ToolButton)c;
+                Action action = (Action)tb.getRealAction();
+                if (action instanceof RadioAction) {
+                    action = ((RadioAction)action).getAction();
+                }
+                Action otherAction = otherThanAction;
+                if (otherThanAction instanceof RadioAction) {
+                    otherAction = ((RadioAction)otherThanAction).getAction();
+                }
+                if (!action.equals(otherAction)) {
+                    //System.out.println("Unselecting " + tb);
+                    tb.setSelected(false);
+                    ButtonModel bm = tb.getModel();
+                    bm.setRollover(false);
+                    bm.setSelected(false);
+                    bm.setArmed(false);
+                    bm.setPressed(false);
+                    tb.setBorderPainted(false);
+                } else {
+                    //System.out.println("Selecting " + tb);
+                    tb.setSelected(true);
+                    ButtonModel bm = tb.getModel();
+                    bm.setRollover(true);
+                    tb.setBorderPainted(true);
+                }
+            }
+        }
+    }
+    
+    /**
+     * Set all toolbar buttons to unselected other then the toolbar button
+     * with the supplied action.
+     */
+    public void deselectAllTools() {
+        int toolCount=toolBar.getComponentCount();
+        for (int i=0; i<toolCount; ++i) {
+            Component c = toolBar.getComponent(i);
+            if (c instanceof ToolButton) {
+                ToolButton tb = (ToolButton)c;
+                Action action = (Action)tb.getRealAction();
+                if (action instanceof RadioAction) {
+                    action = ((RadioAction)action).getAction();
+                }
+                tb.setSelected(false);
+                ButtonModel bm = tb.getModel();
+                bm.setRollover(false);
+                bm.setSelected(false);
+                bm.setArmed(false);
+                bm.setPressed(false);
+                tb.setBorderPainted(false);
+            }
+        }
+    }
 } /* end class UMLDiagram */

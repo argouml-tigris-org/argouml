@@ -31,9 +31,11 @@ import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Vector;
+import javax.swing.Action;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.border.EtchedBorder;
 
 import org.apache.log4j.Category;
@@ -58,7 +60,8 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.presentation.DefaultGraphModel;
 import org.tigris.gef.graph.presentation.JGraph;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.ui.ToolBar;
+import org.tigris.toolbar.ToolBarFactory;
+import org.tigris.toolbutton.ToolButton;
 
 /**
  * The TabDiagram is the tab in the multieditorpane that holds a diagram. The 
@@ -91,10 +94,10 @@ public class TabDiagram
     protected boolean _shouldBeEnabled = true;
 
     /**
-     * the GEF toolbar that is positioned just above
-     * the diagram. is added to diagramPanel
+     * The toolbar that is positioned just above
+     * the diagram containing the drawing tools.
      */
-    protected ToolBar _toolBar;
+    protected JToolBar _toolBar;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -134,13 +137,16 @@ public class TabDiagram
     public Object clone() {
         // next statement gives us a clone JGraph but not a cloned Toolbar
         TabDiagram newPanel = new TabDiagram();
-        // next statement moves the toolbar to the newPanel
         if (_target != null) {
             newPanel.setTarget(_target);
         }
-        newPanel.setToolBar(_target.getToolBar());
+        newPanel.setToolBar(ToolBarFactory.createToolBar(true/*rollover*/,
+                                                         _target.getActions(),
+                                                         false/*floating*/));
+        setToolBar(ToolBarFactory.createToolBar(true/*rollover*/,
+                                                _target.getActions(),
+                                                false/*floating*/));
         return newPanel;
-
     }
 
     /**
@@ -169,7 +175,7 @@ public class TabDiagram
         target.setAsTarget();
 
         _shouldBeEnabled = true;
-        setToolBar(target.getToolBar());
+        setToolBar(target.getJToolBar());
         _jgraph.removeGraphSelectionListener(this);
         _jgraph.setDiagram(target);
         _jgraph.addGraphSelectionListener(this);
@@ -180,7 +186,7 @@ public class TabDiagram
         return _target;
     }
 
-    public ToolBar getToolBar() {
+    public JToolBar getToolBar() {
         return _toolBar;
     }
 
@@ -237,11 +243,13 @@ public class TabDiagram
     public void modeChange(ModeChangeEvent mce) {
         cat.debug("TabDiagram got mode change event");
         if (!Globals.getSticky() && Globals.mode() instanceof ModeSelect) {
-            if (_target instanceof UMLDiagram)
-                _target.getToolBar().unpressAllButtons();
+            if (_target instanceof UMLDiagram) {
+                _target.deselectAllTools();
+            }
         }
     }
 
+    
     public void removeModeChangeListener(ModeChangeListener listener) {
         _jgraph.removeModeChangeListener(listener);
     }
@@ -251,13 +259,13 @@ public class TabDiagram
      * the diagram.
      * @param toolbar
      */
-    public void setToolBar(ToolBar toolbar) {
+    public void setToolBar(JToolBar toolbar) {
         if (!Arrays.asList(getComponents()).contains(toolbar)) {
             if (_target != null) {
-                remove(((UMLDiagram) getTarget()).getToolBar());
+                remove(((UMLDiagram) getTarget()).getJToolBar());
             }
             add(toolbar, BorderLayout.NORTH);
-
+            _toolBar = toolbar;
             invalidate();
             validate();
             repaint();
@@ -415,5 +423,4 @@ class ArgoEditor extends Editor {
 	//- RedrawManager.unlock();
 	//- _redrawer.repairDamage();
     }
-
 }

@@ -34,13 +34,13 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.kernel.Wizard;
 import org.argouml.swingext.BorderSplitPane;
 import org.argouml.swingext.Horizontal;
-import org.argouml.swingext.Toolbar;
 import org.argouml.swingext.Vertical;
 import org.argouml.ui.Actions;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLAction;
+import org.tigris.toolbar.ToolBar;
 
 public class TabToDo extends TabSpawnable implements TabToDoTarget {
     ////////////////////////////////////////////////////////////////
@@ -86,54 +86,16 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
              ? Vertical.getInstance() : Horizontal.getInstance());
         
         setLayout(new BorderLayout());
-        //     JPanel buttonPane = new JPanel();
-        //     buttonPane.setFont(new Font("Dialog", Font.PLAIN, 9));
-        //     buttonPane.setLayout(new FlowLayout());
-        //     buttonPane.add(_newButton);
-        //     _newButton.setFont(new Font("Dialog", Font.PLAIN, 9));
-        //     buttonPane.add(_resolveButton);
-        //     _resolveButton.setFont(new Font("Dialog", Font.PLAIN, 9));
-        //     buttonPane.add(_fixItButton);
-        //     _fixItButton.setFont(new Font("Dialog", Font.PLAIN, 9));
-        //     buttonPane.add(_moreInfoButton);
-        //     _moreInfoButton.setFont(new Font("Dialog", Font.PLAIN, 9));
-        //     buttonPane.add(_emailExpertButton);
-        //     _emailExpertButton.setFont(new Font("Dialog", Font.PLAIN, 9));
-        //     buttonPane.add(_snoozeButton);
-        //     _snoozeButton.setFont(new Font("Dialog", Font.PLAIN, 9));
-        //     add(buttonPane, BorderLayout.NORTH);
 
-        Toolbar toolBar = new Toolbar(JToolBar.VERTICAL);
-        //toolBar.setLayout(new BoxLayout(toolBar, BoxLayout.Y_AXIS));
+        JToolBar toolBar = new ToolBar(JToolBar.VERTICAL);
         toolBar.add(_actionNewToDoItem);
         toolBar.add(_actionResolve);
         toolBar.add(_actionEmailExpert);
-        //toolBar.add(_actionMoreInfo);
         toolBar.add(_actionSnooze);
-        toolBar.addSeparator();
-
-        //     toolBar.add(_actionRecordFix);
-        //     toolBar.add(_actionReplayFix);
-
-        //     toolBar.add(_actionFixItNext);
-        //     toolBar.add(_actionFixItBack);
-        //     toolBar.add(_actionFixItFinish);
-
-        //     addTool(toolBar, "New");
-        //     addTool(toolBar, "FixIt");
-        //     addTool(toolBar, "Resolve");
-        //     addTool(toolBar, "EmailExpert");
-        //     addTool(toolBar, "MoreInfo");
-        //     addTool(toolBar, "Snooze");
-        //     //_description.setFont(new Font("Dialog", Font.PLAIN, 9));
+        toolBar.setFloatable(false);
+        
         add(toolBar, BorderLayout.WEST);
-        //     _description.setLineWrap(true);
-        //     _description.setWrapStyleWord(true);
 
-        //Font userFont = MetalLookAndFeel.getUserTextFont();
-        //_description.setFont(userFont);
-        //add(new JScrollPane(_description), BorderLayout.CENTER);
-        //@ add(_description, BorderLayout.CENTER);
         _splitPane = new BorderSplitPane();
         add(_splitPane, BorderLayout.CENTER);
         setTarget(null);
