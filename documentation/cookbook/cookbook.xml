@@ -571,9 +571,9 @@ or a newly generated project (see Project.makeEmptyProject()).
     </sect1>
 
     <sect1 id="bigger_components">
+    <title>The bigger picture, ArgoUML and supporting libraries</title>
 <indexterm><primary>libraries</primary></indexterm>
 <indexterm><primary>components</primary></indexterm>
-    <title>The bigger picture, ArgoUML and supporting libraries</title>
     <para>
 <mediaobject>
 					<imageobject>
@@ -1119,7 +1119,7 @@ The following chapters are moved here from the User FAQ. They need rework.
   <title>Argouml\application\api class diagram screen grab</title> 
  <mediaobject>
  <imageobject>
-  <imagedata format="PNG" fileref="images/screenshots/Argoapi.png"/> 
+  <imagedata format="PNG" fileref="images/screenshots/argoapi.png"/> 
   </imageobject>
   </mediaobject>
     </sect1>
@@ -1127,7 +1127,7 @@ The following chapters are moved here from the User FAQ. They need rework.
   <title>org\Argouml\application\configuration class diagram screen grab</title> 
  <mediaobject>
  <imageobject>
-  <imagedata format="PNG" fileref="images/screenshots/Argoconfig.png"/> 
+  <imagedata format="PNG" fileref="images/screenshots/argoconfig.png"/> 
   </imageobject>
   </mediaobject>
     </sect1>
@@ -1135,7 +1135,7 @@ The following chapters are moved here from the User FAQ. They need rework.
   <title>org\Argouml\application\configuration class diagram screen grab</title> 
  <mediaobject>
  <imageobject>
-  <imagedata format="PNG" fileref="images/screenshots/Argocogchklist.png"/> 
+  <imagedata format="PNG" fileref="images/screenshots/argocogchklist.png"/> 
   </imageobject>
   </mediaobject>
     </sect1>
@@ -1143,7 +1143,7 @@ The following chapters are moved here from the User FAQ. They need rework.
  <title>org\Argouml\cognitive\critics class diagram screen grab</title> 
  <mediaobject>
  <imageobject>
-  <imagedata format="PNG" fileref="images/screenshots/Argocogcritics.png"/> 
+  <imagedata format="PNG" fileref="images/screenshots/argocogcritics.png"/> 
   </imageobject>
   </mediaobject>
     </sect1>
@@ -1157,7 +1157,7 @@ Could anyone add this one?
   <title>src_new\org\Argouml\kernel class diagram screen grab</title> 
  <mediaobject>
  <imageobject>
-  <imagedata format="PNG" fileref="images/screenshots/Argokernel.png"/> 
+  <imagedata format="PNG" fileref="images/screenshots/argokernel.png"/> 
   </imageobject>
   </mediaobject>
     </sect1>
@@ -1165,7 +1165,7 @@ Could anyone add this one?
   <title>src_new\org\Argouml\ocl class diagram screen grab</title> 
 <mediaobject>
 <imageobject>
-  <imagedata format="PNG" fileref="images/screenshots/Argoocl.png"/> 
+  <imagedata format="PNG" fileref="images/screenshots/argoocl.png"/> 
   </imageobject>
   </mediaobject>
     </sect1>
