@@ -39,6 +39,8 @@ import org.tigris.gef.util.*;
 /**
  * The "Configure Perspectives" dialog.
  *
+ * This class will need work done on it after issue 1739.
+ *
  */
 public class NavigatorConfigDialog extends JDialog
 implements ActionListener, ChangeListener, ListSelectionListener, MouseListener {
@@ -131,7 +133,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
    */
   public void initPersPanel() {
     _persList.setListData(Converter.convert(NavPerspective.getRegisteredPerspectives()));
-    _ruleLibList.setListData(Converter.convert(NavPerspective.getRegisteredRules()));
+    _ruleLibList.setListData(new Vector());
     _rulesList.setListData(new Vector());
 
     GridBagLayout gb = new GridBagLayout();
