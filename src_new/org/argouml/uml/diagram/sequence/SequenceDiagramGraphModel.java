@@ -638,6 +638,8 @@ public class SequenceDiagramGraphModel
      * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(java.lang.Object)
      */
     public void addNodeRelatedEdges(Object node) {
+        super.addNodeRelatedEdges(node);
+        
         if (ModelFacade.isAInstance(node)) {
             Collection ends = ModelFacade.getLinkEnds(node);
             Iterator iter = ends.iterator();
@@ -795,8 +797,10 @@ public class SequenceDiagramGraphModel
                     getInteraction(),
                     associationRole);
             Model.getCollaborationsHelper().setAction(message, action);
-            Model.getCollaborationsHelper().setSender(message, classifierRoleFrom);
-            Model.getCommonBehaviorHelper().setReceiver(message, classifierRoleTo);
+            Model.getCollaborationsHelper()
+                .setSender(message, classifierRoleFrom);
+            Model.getCommonBehaviorHelper()
+                .setReceiver(message, classifierRoleTo);
             addEdge(link);
             edge = link;
         }

@@ -24,7 +24,10 @@
 
 package org.argouml.uml.diagram;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Dictionary;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -247,6 +250,30 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
                 Model.getUmlHelper().getDestination(edge));
         }
         return false;
+    }
+
+    /**
+     * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(java.lang.Object)
+     */
+    public void addNodeRelatedEdges(Object node) {
+        // Commentlinks for comments. Iterate over all the comment links
+        // to find the comment and annotated elements.
+
+        Collection cmnt = new ArrayList();
+        if (ModelFacade.isAComment(node)) {
+            cmnt.addAll(ModelFacade.getAnnotatedElements(node));
+        }
+        if (ModelFacade.isAModelElement(node)) {
+            cmnt.addAll(ModelFacade.getComments(node));
+        }
+        Iterator iter = cmnt.iterator();
+        while (iter.hasNext()) {
+            Object ae = iter.next();
+            CommentEdge ce = new CommentEdge(node, ae);
+            if (canAddEdge(ce)) {
+                addEdge(ce);
+            }
+        }
     }
 
     /**

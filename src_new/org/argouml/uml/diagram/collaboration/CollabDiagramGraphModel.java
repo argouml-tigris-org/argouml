@@ -242,7 +242,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	getNodes().add(node);
 	// TODO: assumes public, user pref for default visibility?
 	if (ModelFacade.isAClassifier(node)) {
-	    Model.getCoreHelper().addOwnedElement(collab, /*(MClassifier)*/ node);
+	    Model.getCoreHelper().addOwnedElement(collab, node);
 	    // ((MClassifier)node).setNamespace(_collab.getNamespace());
 	}
 
@@ -261,7 +261,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
         // TODO: assumes public
         if (ModelFacade.isAModelElement(edge)
 	    && ModelFacade.getNamespace(edge) == null) {
-            Model.getCoreHelper().addOwnedElement(collab, /*(MModelElement)*/ edge);
+            Model.getCoreHelper().addOwnedElement(collab, edge);
         }
         fireEdgeAdded(edge);
     }
@@ -270,6 +270,8 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(java.lang.Object)
      */
     public void addNodeRelatedEdges(Object node) {
+        super.addNodeRelatedEdges(node);
+        
 	if (ModelFacade.isAClassifier(node)) {
 	    Collection ends = ModelFacade.getAssociationEnds(node);
 	    Iterator iter = ends.iterator();
