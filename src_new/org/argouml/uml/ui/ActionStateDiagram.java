@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -66,13 +66,6 @@ public class ActionStateDiagram extends ActionAddDiagram {
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(Object)
      */
     public UMLDiagram createDiagram(Object handle) {
-        if (!ModelFacade.isANamespace(handle)) {
-            cat.error("No namespace as argument");
-            cat.error(handle);
-            throw new IllegalArgumentException(
-                "The argument " + handle + "is not a namespace.");
-        }
-        Object/*MNamespace*/ ns = handle;
         Object target = TargetManager.getInstance().getModelTarget();
         // TODO: get rid of the parameter ns
         Object/*MStateMachine*/ machine =
