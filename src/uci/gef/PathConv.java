@@ -74,13 +74,21 @@ public abstract class PathConv implements java.io.Serializable {
     int recipnumerator = (p1.x - p2.x) * -1;
     int recipdenominator = (p1.y - p2.y);
 
+    if (recipdenominator == 0 && recipnumerator == 0) return;
     // find the point offset on the line that gives a 
     // correct offset
 
     double len = Math.sqrt(recipnumerator * recipnumerator +
 			   recipdenominator * recipdenominator);
-    res.x += (int) ((recipdenominator * offset) / len);
-    res.y += (int) ((recipnumerator * offset) / len);
+    int dx = (int) ((recipdenominator * offset) / len);
+    int dy = (int) ((recipnumerator * offset) / len);
+//     if (dx > 10000 || dy > 10000) {
+//       System.out.println("p1=" + p1 + " p2=" + p2);
+//       System.out.println("offset=" + offset);
+//       System.out.println("dx=" + dx + " dy=" + dy);
+//     }
+    res.x += dx;
+    res.y += dy;
 
   }
 } /* end class PathConv */

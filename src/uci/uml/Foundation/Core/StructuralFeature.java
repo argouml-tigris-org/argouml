@@ -75,5 +75,5 @@ public abstract class StructuralFeature extends Feature {
     fireVetoableChange("type", _type, x);
     _type = x;
   }
-
+  static final long serialVersionUID = -4325107555487189539L;
 }

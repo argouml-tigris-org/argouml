@@ -48,8 +48,8 @@ public class CrNoTriggerOrGuard extends CrUML {
        "transition to be taken.  If only a guard is used, the transition "+
        "is taken when the condition becomes true.\n\n" +
        "This problem must be resolved to complete the state machine.\n\n"+
-       "To fix this, select the Transition and use the \"Props\" tab, or "+
-       "select the Transition and type some text of the form:\n"+
+       "To fix this, select the Transition and use the \"Properties\" "+
+       "tab, or select the Transition and type some text of the form:\n"+
        "TRIGGER [GUARD] / ACTION\n"+
        "Where TRIGGER is an event name, GUARD is a boolean expression, "+
        "and ACTION is an action to be performed when the Transition is "+

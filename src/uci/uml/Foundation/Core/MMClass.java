@@ -53,4 +53,5 @@ public class MMClass extends Classifier {
     // to prevent confusion with java.lang.Class
   }
 
+  static final long serialVersionUID = 8412807590870729471L;
 }

@@ -85,6 +85,7 @@ CLASSES = \
 	CrUnconventionalAttrName.class \
 	CrUnconventionalClassName.class \
 	CrUnconventionalOperName.class \
+	CrUnconventionalPackageName.class \
 	CrUtilityViolated.class \
 	CrUselessAbstract.class \
 	CrUselessInterface.class \

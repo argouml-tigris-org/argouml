@@ -26,28 +26,30 @@
 
 // File: FigDependency.java
 // Classes: FigDependency
-// Original Author: your email address here
+// Original Author: ics 125b course, spring 1998
 // $Id$
 
 
 package uci.uml.visual;
 
 import java.awt.*;
+import java.beans.*;
 
 import uci.gef.*;
 import uci.uml.ui.*;
 import uci.uml.Foundation.Core.*;
 
-public class FigDependency extends FigEdgePoly {
+public class FigDependency extends FigEdgeModelElement {
 
   public FigDependency(Object edge) {
-    super();
-    setOwner(edge);
+    super(edge);
+    addPathItem(_stereo, new PathConvPercent(this, 50, 10));
     // set whatever arrow heads and colors are appropriate
     ArrowHeadGreater endArrow = new ArrowHeadGreater();
     endArrow.setFillColor(Color.red);
     setDestArrowHead(endArrow);
     setBetweenNearestPoints(true);
+    modelChanged();
   }
 
   public void setFig(Fig f) {
@@ -55,12 +57,26 @@ public class FigDependency extends FigEdgePoly {
     _fig.setDashed(true);
   }
 
+  protected boolean canEdit(Fig f) { return false; }
+
+  /** This is called aftern any part of the UML ModelElement has
+   *  changed. This method automatically updates the name FigText.
+   *  Subclasses should override and update other parts. */
+  protected void modelChanged() {
+    // do not set _name
+    updateStereotypeText();
+  }
+
   public void dispose() {
-    if (!(getOwner() instanceof Element)) return;
-    Element elmt = (Element) getOwner();
-    if (elmt == null) return;
-    Project p = ProjectBrowser.TheInstance.getProject();
-    p.moveToTrash(elmt);
+    if (!(getOwner() instanceof Dependency)) return;
+    Dependency dep = (Dependency) getOwner();
+    try {
+      dep.setSupplier(null);
+      dep.setClient(null);
+    }
+    catch (PropertyVetoException pve) {
+      System.out.println("could not remove Dependency");
+    }
     super.dispose();
   }
 

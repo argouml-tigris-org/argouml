@@ -47,8 +47,6 @@ public class FigGeneralization extends FigEdgeModelElement {
     super(edge);
     addPathItem(_stereo, new PathConvPercent(this, 50, 10));
 
-    setOwner(edge);
-
     ArrowHeadTriangle endArrow = new ArrowHeadTriangle();
     endArrow.setFillColor(Color.white);
 

@@ -189,5 +189,6 @@ implements IAssociation {
     return s;
   }
 
+  static final long serialVersionUID = 3809974285487832152L;
 }
 

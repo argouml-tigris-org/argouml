@@ -69,9 +69,9 @@ public class Link extends ModelElementImpl {
     _linkRole.addElement(x);
     x.setLink(this);
   }
-  
+
   public Vector getLinkRole() { return _linkRole; }
-  
+
   public void removeLinkRole(LinkEnd x) throws PropertyVetoException {
     if (_linkRole == null) return;
     fireVetoableChange("linkRole", _linkRole, x);

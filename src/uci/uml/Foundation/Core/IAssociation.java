@@ -50,5 +50,7 @@ public interface IAssociation extends ModelElement {
   // utility methods
   boolean hasCompositeEnd();
   boolean hasAggregateEnd();
+
+  static final long serialVersionUID = -5874857904660410605L;
 }
 

@@ -91,4 +91,5 @@ public abstract class Feature extends ModelElementImpl {
 
   public String toString() { return getName().getBody(); }
 
+  static final long serialVersionUID = -8393369732505803655L;
 }

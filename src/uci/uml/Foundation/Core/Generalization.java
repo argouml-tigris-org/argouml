@@ -67,5 +67,5 @@ public class Generalization extends ModelElementImpl {
     _supertype = x;
   }
 
-
+  static final long serialVersionUID = -9116891000303758417L;
 }

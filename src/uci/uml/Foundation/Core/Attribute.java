@@ -80,4 +80,5 @@ public class Attribute extends StructuralFeature {
     return s;
   }
 
+  static final long serialVersionUID = -4237644577808971814L;
 }

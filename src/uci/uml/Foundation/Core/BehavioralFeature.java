@@ -133,4 +133,5 @@ public abstract class BehavioralFeature extends Feature {
     _raisedException.removeElement(x);
   }
 
+  static final long serialVersionUID = 7697916359219415113L;
 }

@@ -55,8 +55,6 @@ implements ChangeListener, MouseListener {
   public static int INITIAL_WIDTH = 400;
   public static int INITIAL_HEIGHT = 200;
 
-  //public static String TAB_LABELS[] = { "ToDoItem", "Docs", "Props", "Src" };
-  
   ////////////////////////////////////////////////////////////////
   // instance variables
 

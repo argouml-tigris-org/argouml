@@ -81,4 +81,5 @@ public class Constraint extends ModelElementImpl {
   //-   _constrainedStereotype = x;
   //- }
 
+  static final long serialVersionUID = -5614209998665105340L;
 }

@@ -35,7 +35,7 @@ public class EmptyProject extends Project {
 
   public EmptyProject() {
     super("Untitled");
-    Model m1 = new Model("UntitledPackage");
+    Model m1 = new Model("untitledpackage");
     try {
       addDiagram(makeDiagram(m1));
       addModel(m1);

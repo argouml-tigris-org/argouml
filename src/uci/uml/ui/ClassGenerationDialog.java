@@ -51,25 +51,20 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
-
-  // JTable of classes
   TableModelClassChecks _tableModel = new TableModelClassChecks();
   protected JTable _table = new JTable(15, 2);
   protected JTextField _dir = new JTextField();
   protected JButton _generateButton = new JButton("Generate");
   protected JButton _cancelButton = new JButton("Cancel");
-  protected UMLClassDiagram _diagram = null;
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public ClassGenerationDialog(UMLClassDiagram d) {
+  public ClassGenerationDialog(Vector nodes) {
     super("Generate Classes");
-    _diagram = d;
     JLabel promptLabel = new JLabel("Generate Classes:");
     JLabel dirLabel = new JLabel("Output Directory:");
 
-    Vector nodes = _diagram.getGraphModel().getNodes();
     _tableModel.setTarget(nodes);
     _table.setModel(_tableModel);
 
@@ -143,7 +138,7 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
 
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
-    _dir.setText(p.getGenerationPrefs().outputDir);
+    _dir.setText(p.getGenerationPrefs().getOutputDir());
 
     Rectangle pbBox = pb.getBounds();
     setLocation(pbBox.x + (pbBox.width - WIDTH)/2,
@@ -173,7 +168,10 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
 	else newPath += t;
       }
       path = newPath;
-      //Vector nodes = _diagram.getGraphModel().getNodes();
+
+      ProjectBrowser pb = ProjectBrowser.TheInstance;
+      Project p = pb.getProject();
+      p.getGenerationPrefs().setOutputDir(path);
       Vector nodes = _tableModel.getChecked();
       int size = nodes.size();
       for (int i = 0; i <size; i++) {

@@ -74,9 +74,13 @@ public interface ModelElement extends Element, java.io.Serializable {
 
   public Vector getProvision();
   public void setProvision(Vector x) throws PropertyVetoException;
+  public void addProvision(Dependency x) throws PropertyVetoException;
+  public void removeProvision(Dependency x) throws PropertyVetoException;
 
   public Vector getRequirement();
   public void setRequirement(Vector x) throws PropertyVetoException;
+  public void addRequirement(Dependency x) throws PropertyVetoException;
+  public void removeRequirement(Dependency x) throws PropertyVetoException;
 
   public Vector getTemplateParameter();
   public void setTemplateParameter(Vector x) throws PropertyVetoException;
@@ -117,4 +121,6 @@ public interface ModelElement extends Element, java.io.Serializable {
   public void removeVetoableChangeListener(VetoableChangeListener listener);
 
   public String getOCLTypeStr();
+
+  static final long serialVersionUID = -4378657388222709582L;
 }

@@ -45,4 +45,6 @@ public interface Namespace extends ModelElement, java.io.Serializable {
        throws PropertyVetoException;
   public void removeOwnedElement(ElementOwnership x)
        throws PropertyVetoException;
+
+  public static final long serialVersionUID = -4295847011515862757L;
 }

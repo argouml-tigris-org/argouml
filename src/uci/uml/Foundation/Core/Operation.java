@@ -138,5 +138,5 @@ public class Operation extends BehavioralFeature {
     return s;
   }
 
-
+  static final long serialVersionUID = -6599260432021893292L;
 }

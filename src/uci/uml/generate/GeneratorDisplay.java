@@ -449,8 +449,7 @@ public class GeneratorDisplay extends Generator {
     String t = generate(m.getTrigger());
     String g = generate(m.getGuard());
     String e = generate(m.getEffect());
-    if (s.length() > 0 && (t.length() > 0 || g.length() > 0 || e.length() > 0))
-      s += ": ";
+    if (s.length() > 0) s += ": ";
     s += t;
     if (g.length() > 0) s += " [" + g + "]";
     if (e.length() > 0) s += " / " + e;

@@ -44,7 +44,7 @@ import uci.uml.Model_Management.*;
 public class CrUnconventionalClassName extends CrUML {
 
   public CrUnconventionalClassName() {
-    setHeadline("Capitalize Class Name");
+    setHeadline("Capitalize Class Name {name}");
     sd("Normally classes begin with a capital letter. The name '{name}' "+
        "is unconventional because it does not begin with a capital.\n\n"+
        "Following good naming conventions help to improve "+

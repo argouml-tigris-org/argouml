@@ -61,5 +61,5 @@ public class Realization extends ModelElementImpl {
     _supertype = x;
   }
 
-
+  static final long serialVersionUID = -7208283564288364361L;
 }

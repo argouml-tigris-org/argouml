@@ -25,33 +25,37 @@
 
 
 
-package uci.uml.Foundation.Core;
+package uci.uml.ui;
 
+//import jargo.kernel.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
 import java.beans.*;
+import com.sun.java.swing.*;
+import com.sun.java.swing.event.*;
+import com.sun.java.swing.tree.*;
+import com.sun.java.swing.text.*;
+//import com.sun.java.swing.border.*;
 
+import uci.util.*;
+import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
+import uci.uml.Foundation.Extension_Mechanisms.*;
+import uci.uml.Model_Management.*;
 
-public class Interface extends Classifier {
-//   public boolean _isActive;
 
-  public Interface() { }
-  public Interface(Name name) { super(name); }
-  public Interface(String nameStr) { super(new Name(nameStr)); }
+public class PropPanelDependency extends PropPanel
+implements TabModelTarget, DocumentListener {
 
-  /** Interfaces are always abstract */
-  public boolean getIsAbstract() { return true; }
-  public void setIsAbstract(boolean x) {  }
+  ////////////////////////////////////////////////////////////////
+  // constructors
 
-//   public boolean getIsActive(){ return _isActive; }
-//   public void setIsActive(boolean x) throws PropertyVetoException {
-//     fireVetoableChange("isActive", _isActive, x);
-//     _isActive = x;
-//   }
+  public PropPanelDependency() {
+    super("Dependency");
 
-  public String getOCLTypeStr() {
-    return "Interface";
+    remove(_nameField);
+    remove(_nameLabel);
   }
 
-  static final long serialVersionUID = -3937436986575605464L;
-}
+} /* end class PropPanelDependency */

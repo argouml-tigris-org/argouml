@@ -630,7 +630,7 @@ class ActionInternalTransition extends UMLAction {
   public ActionInternalTransition() { super("Internal Transition"); }
 
   public void actionPerformed(ActionEvent e) {
-    System.out.println("adding internal transition...");
+    //System.out.println("adding internal transition...");
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Object target = pb.getDetailsTarget();
     if (!(target instanceof State)) return;
@@ -791,19 +791,19 @@ class ActionGenerateOne extends UMLAction {
     Editor ce = uci.gef.Globals.curEditor();
     Vector sels = ce.getSelectionManager().getFigs();
     java.util.Enumeration enum = sels.elements();
+    Vector classes = new Vector();
     while (enum.hasMoreElements()) {
       Fig f = (Fig) enum.nextElement();
       Object owner = f.getOwner();
-      if (!(owner instanceof MMClass) && !(owner instanceof Interface)) continue;
+      if (!(owner instanceof MMClass) && !(owner instanceof Interface))
+	continue;
       Classifier cls = (Classifier) owner;
       String name = cls.getName().getBody();
-      if (name == null || name.length() == 0) return;
-      String path = ".";
-      pb.showStatus("Generating source file for " + name + "...");
-      GeneratorJava.GenerateFile(cls, path);
-      pb.showStatus("Generating source file for " + name + "... done.");
-      //pb.showStatus(" ");
+      if (name == null || name.length() == 0) continue;
+      classes.addElement(cls);
     }
+    ClassGenerationDialog cgd = new ClassGenerationDialog(classes);
+    cgd.show();
   }
 
   public boolean shouldBeEnabled() {
@@ -815,7 +815,8 @@ class ActionGenerateOne extends UMLAction {
     while (enum.hasMoreElements()) {
       Fig f = (Fig) enum.nextElement();
       Object owner = f.getOwner();
-      if (!(owner instanceof Classifier)) continue;
+      if (!(owner instanceof MMClass) && !(owner instanceof Interface))
+	continue;
       Classifier cls = (Classifier) owner;
       String name = cls.getName().getBody();
       if (name == null || name.length() == 0) return false;
@@ -833,7 +834,19 @@ class ActionGenerateAll extends UMLAction {
     Object target = pb.getTarget();
     if (!(target instanceof UMLClassDiagram)) return;
     UMLClassDiagram d = (UMLClassDiagram) target;
-    ClassGenerationDialog cgd = new ClassGenerationDialog(d);
+    Vector classes = new Vector();
+    Vector nodes = d.getGraphModel().getNodes();
+    java.util.Enumeration enum = nodes.elements();
+    while (enum.hasMoreElements()) {
+      Object owner = enum.nextElement();
+      if (!(owner instanceof MMClass) && !(owner instanceof Interface))
+	continue;
+      Classifier cls = (Classifier) owner;
+      String name = cls.getName().getBody();
+      if (name == null || name.length() == 0) continue;
+      classes.addElement(cls);
+    }
+    ClassGenerationDialog cgd = new ClassGenerationDialog(classes);
     cgd.show();
   }
 

@@ -24,8 +24,8 @@
 
 
 
-// File: CrDisambigStateName.java
-// Classes: CrDisambigStateName
+// File: CrUnconventionalPackageName.java
+// Classes: CrUnconventionalPackageName
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -39,46 +39,35 @@ import uci.util.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Model_Management.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
 
-public class CrDisambigStateName extends CrUML {
 
-  public CrDisambigStateName() {
-    setHeadline("Choose a Unique Name for {name}");
-    sd("Every state within a state machine must have a unique "+
-       "name. There are at least two states in this machine named "+
-       "\"{name}\".\n\n"+
-       "Clear and unambiguous naming is key to code generation and "+
+public class CrUnconventionalPackageName extends CrUML {
+
+  public CrUnconventionalPackageName() {
+    setHeadline("Revise Package Name {name}");
+    sd("Normally package names are written in all lower case with "+
+       "periods used to indicate \"nested\" packages.  "+
+       "The name '{name}' "+
+       "is unconventional because it is not all lower case with periods.\n\n"+
+       "Following good naming conventions help to improve "+
        "the understandability and maintainability of the design. \n\n"+
-       "To fix this, use the FixIt button, or manually select one of the "+
-       "conflicting states and use the \"Properties\" tab to change "+
-       "their names.");
+       "To fix this, use the \"Next>\" button, or manually select {name} "+
+       "and use the Properties tab to give it a different name.");
     addSupportedDecision(CrUML.decNAMING);
     setKnowledgeTypes(Critic.KT_SYNTAX);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof State)) return NO_PROBLEM;
-    State s = (State) dm;
-    Name myName = s.getName();
-    // needs-more-work: should define a CompoundCritic
-    if (myName.equals(Name.UNSPEC)) return NO_PROBLEM;
-    String myNameString = myName.getBody();
-    if (myNameString.length() == 0) return NO_PROBLEM;
-    ElementOwnership oe = s.getElementOwnership();
-    if (oe == null) return NO_PROBLEM;
-    Namespace ns = oe.getNamespace();
-    Vector oes = ns.getOwnedElement();
-    if (oes == null) return NO_PROBLEM;
-    java.util.Enumeration enum = oes.elements();
-    while (enum.hasMoreElements()) {
-      ElementOwnership eo = (ElementOwnership) enum.nextElement();
-      ModelElement me = (ModelElement) eo.getModelElement();
-      if (!(me instanceof Classifier)) continue;
-      if (me == s) continue;
-      Name meName = me.getName();
-      if (meName == null || meName.equals(Name.UNSPEC)) continue;
-      if (meName.getBody().equals(myNameString)) return PROBLEM_FOUND;
+    if (!(dm instanceof Model)) return NO_PROBLEM;
+    Model m = (Model) dm;
+    Name myName = m.getName();
+    if (myName == null || myName.equals(Name.UNSPEC)) return NO_PROBLEM;
+    String nameStr = myName.getBody();
+    if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
+    int size = nameStr.length();
+    for (int i = 0; i < size; i++) {
+      char c = nameStr.charAt(i);
+      if (!Character.isLowerCase(c) && c != '.') return PROBLEM_FOUND;
     }
     return NO_PROBLEM;
   }
@@ -87,5 +76,5 @@ public class CrDisambigStateName extends CrUML {
     return ClClassName.TheInstance;
   }
 
-} /* end class CrDisambigStateName */
+} /* end class CrUnconventionalPackageName */
 

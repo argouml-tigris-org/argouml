@@ -54,4 +54,5 @@ public interface Element extends java.io.Serializable {
   public Vector getTaggedValue();
   public void setTaggedValue(Vector x) throws PropertyVetoException;
 
+  static final long serialVersionUID = 1357869313761155649L;
 }

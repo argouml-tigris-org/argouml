@@ -36,4 +36,5 @@ public class DataType extends Classifier {
   public DataType(Name name) { super(name); }
   public DataType(String nameStr) { super(new Name(nameStr)); }
 
+  static final long serialVersionUID = 8935101834320031477L;
 }

@@ -211,4 +211,5 @@ public class AssociationEnd extends ModelElementImpl {
     return s;
   }
 
+  static final long serialVersionUID = -228791821531110999L;
 }

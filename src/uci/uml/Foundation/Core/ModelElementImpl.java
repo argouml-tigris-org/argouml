@@ -94,13 +94,10 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
     ElementOwnership old = _elementOwnership;
     _elementOwnership = x;
 
-    if (old != null && (x == null || old.getNamespace() != x.getNamespace())) {
-      if (old.getNamespace() != null)
-	old.getNamespace().removeOwnedElement(old);
-    }
-    if (x != null && (old == null || old.getNamespace() != x.getNamespace()))
-      if (x.getNamespace() != null)
-	x.getNamespace().addOwnedElement(x);
+    if (old != null && old.getNamespace() != null)
+      old.getNamespace().removeOwnedElement(old);
+    if (x != null && x.getNamespace() != null)
+      x.getNamespace().addOwnedElement(x);
   }
 
   public Vector getConstraint() { return (Vector) _constraint;}
@@ -145,14 +142,18 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   public void addProvision(Dependency x)
   throws PropertyVetoException {
     if (_provision == null) _provision = new Vector();
+    if (_provision.contains(x)) return;
     fireVetoableChange("provision", _provision, x);
     _provision.addElement(x);
+    x.addSupplier(this);
   }
   public void removeProvision(Dependency x)
   throws PropertyVetoException {
     if (_provision == null) return;
+    if (!_provision.contains(x)) return;
     fireVetoableChange("provision", _provision, x);
     _provision.removeElement(x);
+    x.removeSupplier(this);
   }
 
   public Vector getRequirement() { return (Vector) _requirement;}
@@ -165,14 +166,18 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   public void addRequirement(Dependency x)
   throws PropertyVetoException {
     if (_requirement == null) _requirement = new Vector();
+    if (_requirement.contains(x)) return;
     fireVetoableChange("requirement", _requirement, x);
     _requirement.addElement(x);
+    x.addClient(this);
   }
   public void removeRequirement(Dependency x)
   throws PropertyVetoException {
     if (_requirement == null) return;
+    if (!_requirement.contains(x)) return;
     fireVetoableChange("requirement", _requirement, x);
     _requirement.removeElement(x);
+    x.removeClient(this);
   }
 
   public Vector getTemplateParameter() {
@@ -323,4 +328,5 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
     return s;
   }
 
+  static final long serialVersionUID = -7335992986976076953L;
 }

@@ -50,63 +50,121 @@ public class Dependency extends ModelElementImpl {
   public Dependency(String nameStr) { super(new Name(nameStr)); }
 
   public Dependency(ModelElement aSupplier, ModelElement aClient) {
-    super(new Name(aSupplier.getName().getBody() + "-->" +
-		   aClient.getName().getBody()));
-    // needs-more-work
-    //try {
+    super(new Name("-->"));
+    try {
       addSupplier(aSupplier);
       addClient(aClient);
-    //}
-    //catch (PropertyVetoException pve) { }
+    }
+    catch (PropertyVetoException pve) { }
   }
 
+  public Name getName() {
+    Name n = super.getName();
+    if (_supplier == null || _supplier.size() == 0) return n;
+    if (_client == null || _client.size() == 0) return n;
+    ModelElement aSupplier = (ModelElement) _supplier.elementAt(0);
+    ModelElement aClient = (ModelElement) _client.elementAt(0);
+    n.setBody(aSupplier.getName().getBody() +
+	      "-->" +
+	      aClient.getName().getBody());
+    return n;
+  }
 
   public String getDescription() { return _description; }
-  public void setDescription(String x) {
+  public void setDescription(String x) throws PropertyVetoException {
     _description = x;
   }
 
   public Vector getSupplier() { return (Vector) _supplier;}
-  public void setSupplier(Vector x) {
-    _supplier = x;
-  }
-  public void addSupplier(ModelElement x) {
+  public void setSupplier(Vector x) throws PropertyVetoException {
+    if (_supplier != null) {
+      int size = _supplier.size();
+      for (int i = 0; i < size; i++) {
+	ModelElement me = (ModelElement) _supplier.elementAt(i);
+	me.removeProvision(this);
+      }
+    }
     if (_supplier == null) _supplier = new Vector();
+    fireVetoableChangeNoCompare("supplier", _supplier, x);
+    _supplier = x;
+    if (_supplier != null) {
+      int size = _supplier.size();
+      for (int i = 0; i < size; i++) {
+	ModelElement me = (ModelElement) _supplier.elementAt(i);
+	me.addProvision(this);
+      }
+    }
+  }
+  public void addSupplier(ModelElement x) throws PropertyVetoException {
+    if (_supplier == null) _supplier = new Vector();
+    if (_supplier.contains(x)) return;
+    fireVetoableChange("supplier", _supplier, x);
     _supplier.addElement(x);
     //setNamespace(x.getNamespace());
+    x.addProvision(this);
   }
-  public void removeSupplier(ModelElement x) {
+  public void removeSupplier(ModelElement x) throws PropertyVetoException {
+    if (_supplier == null) return;
+    if (!_supplier.contains(x)) return;
     _supplier.removeElement(x);
+    fireVetoableChange("supplier", _supplier, x);
+    x.removeProvision(this);
   }
 
+  // needs-more-work: changed to particapant in UML 1.3
   public Vector getClient() { return (Vector) _client;}
-  public void setClient(Vector x) {
-    _client = x;
-  }
-  public void addClient(ModelElement x) {
+  public void setClient(Vector x) throws PropertyVetoException {
+    if (_client != null) {
+      int size = _client.size();
+      for (int i = 0; i < size; i++) {
+	ModelElement me = (ModelElement) _client.elementAt(i);
+	me.removeRequirement(this);
+      }
+    }
     if (_client == null) _client = new Vector();
-    _client.addElement(x);
+    fireVetoableChange("client", _client, x);
+    _client = x;
+    if (_client != null) {
+      int size = _client.size();
+      for (int i = 0; i < size; i++) {
+	ModelElement me = (ModelElement) _client.elementAt(i);
+	me.addRequirement(this);
+      }
+    }
+    // needs-more-work: set all providers
   }
-  public void removeClient(ModelElement x) {
+  public void addClient(ModelElement x) throws PropertyVetoException {
+    if (_client == null) _client = new Vector();
+    if (_client.contains(x)) return;
+    fireVetoableChange("client", _client, x);
+    _client.addElement(x);
+    x.addRequirement(this);
+  }
+  public void removeClient(ModelElement x) throws PropertyVetoException {
+    if (_client == null) return;
+    if (!_client.contains(x)) return;
+    fireVetoableChange("client", _client, x);
     _client.removeElement(x);
+    x.removeRequirement(this);
   }
 
+  // needs-more-work: subdependencies not handled yet
   public Vector getSubDependency() { return (Vector) _subDependency;}
-  public void setSubDependency(Vector x) {
+  public void setSubDependency(Vector x) throws PropertyVetoException {
     _subDependency = x;
   }
-  public void addSubDependency(Dependency x) {
+  public void addSubDependency(Dependency x) throws PropertyVetoException {
     if (_subDependency == null) _subDependency = new Vector();
     _subDependency.addElement(x);
   }
-  public void removeSubDependency(Dependency x) {
+  public void removeSubDependency(Dependency x) throws PropertyVetoException {
     _subDependency.removeElement(x);
   }
 
   public Dependency getOwningDependency() { return _owningDependency; }
-  public void setOwningDependency(Dependency x) {
+  public void setOwningDependency(Dependency x) throws PropertyVetoException {
     _owningDependency = x;
   }
 
-
+  static final long serialVersionUID = 5158638856882915937L;
 }

@@ -70,6 +70,15 @@ public class SelectionReshape extends Selection
 	_selectedHandle = i;
 	return i;
       }
+    if (_content instanceof FigEdgePoly) {
+      for (int i = 0; i < npoints-1; ++i) {
+	if(Geometry.intersects(r,xs[i], ys[i],xs[i+1], ys[i+1])) {
+	  FigEdgePoly p = ((FigEdgePoly)_content);
+	  //System.out.println("hit segment");
+	  return p.getNumPoints();
+	}
+      }
+    }
     _selectedHandle = -1;
     return -1;
   }
@@ -95,6 +104,24 @@ public class SelectionReshape extends Selection
    *  handles.  */
   public void dragHandle(int mX, int mY, int anX, int anY, Handle h) {
     // check assertions
+    if ( _content instanceof FigEdgePoly) {
+    FigEdgePoly p = ((FigEdgePoly)_content);
+    int npoints = _content.getNumPoints();
+    int[] xs = _content.getXs();
+    int[] ys = _content.getYs();
+    Rectangle r = new Rectangle(anX-4,anY-4,8,8);
+    if(h.index == p.getNumPoints()) {
+      for (int i = 0; i < npoints-1; ++i) {
+        if(Geometry.intersects(r,xs[i], ys[i],xs[i+1], ys[i+1])) {
+          p.insertPoint(i,r.x,r.y);
+          h.index = i+1;
+          break;
+        }
+      }
+    }
+    if (h.index < 0 || h.index >= p.getNumPoints())
+      System.out.println("mistake " + h.index);
+    }
     _content.setPoints(h, mX, mY);
   }
 

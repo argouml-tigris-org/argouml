@@ -52,6 +52,8 @@ public class NamespaceImpl extends ModelElementImpl implements Namespace {
   public void addOwnedElement(ElementOwnership x) throws PropertyVetoException {
     if (_ownedElement == null) _ownedElement = new Vector();
     else if (_ownedElement.contains(x)) return;
+    if (elementOwnershipFor(x.getModelElement(), null) != null) return;
+
     fireVetoableChange("ownedElement", _ownedElement, x);
     _ownedElement.addElement(x);
     x.getModelElement().setElementOwnership(x);
@@ -64,20 +66,24 @@ public class NamespaceImpl extends ModelElementImpl implements Namespace {
     x.getModelElement().setElementOwnership(null);
   }
   public void addPublicOwnedElement(ModelElement x) throws PropertyVetoException {
+    if (elementOwnershipFor(x, null) != null) return;
     ElementOwnership eo = new ElementOwnership(this, VisibilityKind.PUBLIC, x);
     addOwnedElement(eo);
   }
   public void addPrivateOwnedElement(ModelElement x) throws PropertyVetoException {
+    if (elementOwnershipFor(x, null) != null) return;
     ElementOwnership eo = new ElementOwnership(this, VisibilityKind.PRIVATE, x);
     addOwnedElement(eo);
   }
   public void addProtectedOwnedElement(ModelElement x)
        throws PropertyVetoException {
+    if (elementOwnershipFor(x, null) != null) return;
     ElementOwnership eo = new ElementOwnership(this, VisibilityKind.PROTECTED, x);
     addOwnedElement(eo);
   }
   public void addUnspecOwnedElement(ModelElement x)
        throws PropertyVetoException {
+    if (elementOwnershipFor(x, null) != null) return;
     ElementOwnership eo = new ElementOwnership(this, VisibilityKind.UNSPEC, x);
     addOwnedElement(eo);
   }
@@ -105,6 +111,6 @@ public class NamespaceImpl extends ModelElementImpl implements Namespace {
     return elementOwnershipFor(me, VisibilityKind.PUBLIC) != null;
   }
 
-
+  static final long serialVersionUID = -6554474404565654034L;
 }
 

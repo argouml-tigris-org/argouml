@@ -296,4 +296,5 @@ public class ElementImpl implements Element, Highlightable {
     return s;
   }
 
+  static final long serialVersionUID = -2347127736438090568L;
 }

@@ -215,9 +215,13 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
     ModelElement me = (ModelElement) getOwner();
     if (me == null) return;
     Vector stereos = me.getStereotype();
-    if (stereos == null || stereos.size() == 0) return;
+    if (stereos == null || stereos.size() == 0) {
+      _stereo.setText("");
+      return;
+    }
     String stereoStr = ((Stereotype) stereos.elementAt(0)).getName().getBody();
-    _stereo.setText("<<" + stereoStr + ">>");
+    if (stereoStr.length() == 0) _stereo.setText("");
+    else _stereo.setText("<<" + stereoStr + ">>");
   }
 
   /** needs-more-work: When the user deletes a ModelElement, it is

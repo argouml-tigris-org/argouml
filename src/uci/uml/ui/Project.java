@@ -216,7 +216,7 @@ public class Project implements java.io.Serializable {
 	Diagram d = (Diagram) diagramEnum.nextElement();
 	Fig f = d.getLayer().presentationFor(me);
 	if (f != null) {
-	  System.out.println("trashing model element from diagram");
+	  //System.out.println("trashing model element from diagram");
 	  d.getLayer().remove(f);
 	}
       } /* end while */

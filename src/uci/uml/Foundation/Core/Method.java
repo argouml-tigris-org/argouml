@@ -47,4 +47,5 @@ public class Method extends BehavioralFeature {
     _specification = x;
   }
 
+  static final long serialVersionUID = 7697916359219415113L;
 }

@@ -114,6 +114,9 @@ public class Init {
   public static Critic
   crUnconventionalClassName = new CrUnconventionalClassName(); 
 
+  public static Critic
+  crUnconventionalPackageName = new CrUnconventionalPackageName(); 
+
   // Java specific
   public static Critic crClassMustBeAbstract = new CrClassMustBeAbstract();
   public static Critic crReservedName = new CrReservedName();
@@ -250,6 +253,7 @@ public class Init {
       Agency.register(crUnconventionalOperName, operCls);
       Agency.register(crUnconventionalAttrName, attrCls);
       Agency.register(crUnconventionalClassName, classCls);
+      Agency.register(crUnconventionalPackageName, modelCls);
 
       Agency.register(crConsiderSingleton, classCls);
       Agency.register(crSingletonViolated, classCls);

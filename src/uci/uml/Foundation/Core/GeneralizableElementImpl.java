@@ -117,4 +117,5 @@ implements GeneralizableElement {
     _specialization.removeElement(x);
   }
 
+  static final long serialVersionUID = -3189360194197209778L;
 }

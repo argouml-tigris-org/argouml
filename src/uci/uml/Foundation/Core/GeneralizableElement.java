@@ -55,5 +55,5 @@ public interface GeneralizableElement extends Namespace {
   public void setSpecialization(Vector x) throws PropertyVetoException;
   public void addSpecialization(Generalization x) throws PropertyVetoException;
   public void removeSpecialization(Generalization x) throws PropertyVetoException;
-
+  static final long serialVersionUID = -4743108433739796567L;
 }

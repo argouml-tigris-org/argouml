@@ -225,24 +225,25 @@ public abstract class Classifier extends GeneralizableElementImpl {
     if (_associationEnd == null) _associationEnd = new Vector();
     fireVetoableChangeNoCompare("associationEnd", _associationEnd, x);
     _associationEnd = x;
-    java.util.Enumeration enum = _associationEnd.elements();
-    while (enum.hasMoreElements()) {
-      AssociationEnd ae = (AssociationEnd) enum.nextElement();
-      ae.setNamespace(getNamespace());
-    }
+//     java.util.Enumeration enum = _associationEnd.elements();
+//     while (enum.hasMoreElements()) {
+//       AssociationEnd ae = (AssociationEnd) enum.nextElement();
+//       ae.setNamespace(getNamespace());
+//     }
   }
   public void addAssociationEnd(AssociationEnd x)
   throws PropertyVetoException {
     if (_associationEnd == null) _associationEnd = new Vector();
     fireVetoableChange("associationEnd", _associationEnd, x);
     _associationEnd.addElement(x);
-    x.setNamespace(getNamespace());
+    //x.setNamespace(getNamespace());
   }
   public void removeAssociationEnd(AssociationEnd x)
   throws PropertyVetoException {
     if (_associationEnd == null) return;
     fireVetoableChange("associationEnd", _associationEnd, x);
     _associationEnd.removeElement(x);
+    //x.setNamespace(null);
   }
 
   // needs-more-work: what are paricipants?
@@ -386,6 +387,6 @@ public abstract class Classifier extends GeneralizableElementImpl {
     return s;
   }
 
-  
+  static final long serialVersionUID = -2328197185352578916L;
 } /* end class Classifier */
 

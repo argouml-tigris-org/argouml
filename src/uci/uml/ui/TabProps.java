@@ -67,13 +67,14 @@ implements TabModelTarget {
   PropPanelLink linkPane = new PropPanelLink();
   PropPanelGeneralization generalizationPane = new PropPanelGeneralization();
   PropPanelRealization realizationPane = new PropPanelRealization();
+  PropPanelDependency dependencyPane = new PropPanelDependency();
   // more: packages, ...
   JPanel _lastPanel = null;
 
   ////////////////////////////////////////////////////////////////
   // constructor
   public TabProps() {
-    super("Props");
+    super("Properties");
     setLayout(new BorderLayout());
     //setFont(new Font("Dialog", Font.PLAIN, 10));
   }
@@ -178,6 +179,12 @@ implements TabModelTarget {
       realizationPane.setTarget(_target);
       add(realizationPane, BorderLayout.NORTH);
       _lastPanel = realizationPane;
+    }
+    else if (_target instanceof Dependency) {
+      _shouldBeEnabled = true;
+      dependencyPane.setTarget(_target);
+      add(dependencyPane, BorderLayout.NORTH);
+      _lastPanel = dependencyPane;
     }
     //else if ...
     else {

@@ -99,7 +99,7 @@ public class SelectionLowerRight extends Selection {
     int minWidth = minSize.width, minHeight = minSize.height;
     switch (hand.index) {
     case -1:
-      _content.translate(mX + anX, mY + anY);
+      _content.translate(anX - mX, anY - mY);
       return;
     case 0: break;
     case 1: break;

@@ -32,7 +32,23 @@ import java.io.*;
 public class GenerationPreferences implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // instance variables
-  public String headerComments = "Your copyright and other header comments";
-  public String outputDir = "/home/jrobbins/vtmp/";
+  protected String _headerComment = "Your copyright and other header comments";
+  protected String _outputDir = "/home/jrobbins/vtmp/";
+
+  public GenerationPreferences() {
+    if (System.getProperty("os.name").startsWith("S"))
+      _outputDir = "/tmp";
+    else
+      _outputDir = "c:\temp";
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // accessors
+  public String getOutputDir() { return _outputDir; }
+  public void setOutputDir(String od) { _outputDir = od; }
+
+  public String getHeaderComment() { return _headerComment; }
+  public void setHeaderComment(String c) { _headerComment = c; }
 
 } /* end class GenerationPreferences */
+

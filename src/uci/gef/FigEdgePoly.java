@@ -309,6 +309,12 @@ public class FigEdgePoly extends FigEdge {
     calcBounds();
   }
 
+  /** Add a point to this polygon. Fires PropertyChange with "bounds". */
+  public void insertPoint(int i, int x, int y) {
+    FigPoly p = ((FigPoly) _fig);
+    p.insertPoint(i,x,y);
+  }
+
   private static Handle _TempHandle = new Handle(0);
 
   /** Set the end points of this polygon, regardless of the number of

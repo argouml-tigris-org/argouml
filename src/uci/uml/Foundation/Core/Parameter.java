@@ -104,5 +104,5 @@ public class Parameter extends ModelElementImpl {
   public void setM_Signal(Signal x) {
     _signal = x;
   }
-
+  static final long serialVersionUID = -9197114372473714426L;
 }

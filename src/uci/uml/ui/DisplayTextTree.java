@@ -37,6 +37,8 @@ import com.sun.java.swing.plaf.basic.*;
 import uci.argo.kernel.*;
 import uci.gef.*;
 import uci.uml.Foundation.Core.*;
+import uci.uml.Behavioral_Elements.State_Machines.*;
+import uci.uml.generate.*;
 
 public class DisplayTextTree extends JTree
 implements VetoableChangeListener {
@@ -62,8 +64,10 @@ implements VetoableChangeListener {
       if (e instanceof ElementImpl)
 	ocl = ((ElementImpl)e).getOCLTypeStr();
       String name = e.getName().getBody();
-      if (name.equals("")) name = "(anon)";
-      //return ocl + ": " + name;
+      if (e instanceof Transition) {
+	name = GeneratorDisplay.Generate((Transition)e);
+      }
+      if (name.equals("")) name = "(anon " + ocl + ")";
       return name;
     }
     if (value instanceof Diagram) {

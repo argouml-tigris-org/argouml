@@ -62,6 +62,7 @@ implements Serializable, TreeModel, Cloneable {
     NavPerspective diagramCentric = new NavPerspective("Diagram-centric");
     NavPerspective inheritanceCentric = new NavPerspective("Inheritance-centric");
     NavPerspective classAssociation = new NavPerspective("Class Associations");
+    NavPerspective navAssociation = new NavPerspective("Navigable Associations");
     NavPerspective associationCentric = new NavPerspective("Association-centric");
     NavPerspective aggregateCentric = new NavPerspective("Aggregate-centric");
     NavPerspective compositeCentric = new NavPerspective("Composite-centric");
@@ -71,6 +72,7 @@ implements Serializable, TreeModel, Cloneable {
     NavPerspective transitionCentric = new NavPerspective("Transitions-centric");
     NavPerspective transitionPaths = new NavPerspective("Transitions paths");
     NavPerspective useCaseCentric = new NavPerspective("UseCase-centric");
+    NavPerspective depCentric = new NavPerspective("Dependency-centric");
 
 
     // These are intended for pane-2 of NavigatorPane, the tend to be
@@ -103,6 +105,13 @@ implements Serializable, TreeModel, Cloneable {
     //classAssociation.addSubTreeModel(new GoClassifierToBeh());
     //classAssociation.addSubTreeModel(new GoClassifierToStr());
     classAssociation.addSubTreeModel(new GoClassToAssocdClass());
+
+    navAssociation.addSubTreeModel(new GoProjectModel());
+    navAssociation.addSubTreeModel(new GoModelToDiagram());
+    navAssociation.addSubTreeModel(new GoModelToClass());
+    //navAssociation.addSubTreeModel(new GoClassifierToBeh());
+    //navAssociation.addSubTreeModel(new GoClassifierToStr());
+    navAssociation.addSubTreeModel(new GoClassToNavigableClass());
 
     aggregateCentric.addSubTreeModel(new GoProjectModel());
     aggregateCentric.addSubTreeModel(new GoModelToDiagram());
@@ -178,6 +187,11 @@ implements Serializable, TreeModel, Cloneable {
     useCaseCentric.addSubTreeModel(new GoModelToUseCase());
     useCaseCentric.addSubTreeModel(new GoModelToActor());
 
+    depCentric.addSubTreeModel(new GoProjectModel());
+    depCentric.addSubTreeModel(new GoModelToDiagram());
+    depCentric.addSubTreeModel(new GoModelToElements());
+    depCentric.addSubTreeModel(new GoElementToDependentElement());
+
     classToBehStr.addSubTreeModel(new GoClassifierToStr());
     classToBehStr.addSubTreeModel(new GoClassifierToBeh());
 
@@ -193,12 +207,14 @@ implements Serializable, TreeModel, Cloneable {
     registerPerspective(diagramCentric);
     registerPerspective(inheritanceCentric);
     registerPerspective(classAssociation);
+    registerPerspective(navAssociation);
     registerPerspective(associationCentric);
 //     registerPerspective(classStates);
     registerPerspective(stateCentric);
     registerPerspective(transitionCentric);
     registerPerspective(transitionPaths);
     registerPerspective(useCaseCentric);
+    registerPerspective(depCentric);
 
     registerRule(new GoProjectModel());
     registerRule(new GoModelToDiagram());

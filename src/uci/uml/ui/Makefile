@@ -53,12 +53,15 @@ CLASSES = \
 	GoAssocToTarget.class \
 	GoClassToAggrClass.class \
 	GoClassToAssocdClass.class \
+	GoClassToNavigableClass.class \
 	GoClassToCompositeClass.class \
 	GoClassifierToBeh.class \
 	GoClassifierToStr.class \
 	GoDiagramToEdge.class \
 	GoDiagramToNode.class \
 	GoElementToMachine.class \
+	GoElementToReqElement.class \
+	GoElementToDependentElement.class \
 	GoFilteredChildren.class \
 	GoGenElementToDerived.class \
 	GoListToDecisionsToItems.class \
@@ -106,6 +109,7 @@ CLASSES = \
 	PropPanelAttr.class \
 	PropPanelOper.class \
 	PropPanelClass.class \
+	PropPanelDependency.class \
 	PropPanelDiagram.class \
 	PropPanelInterface.class \
 	PropPanelGeneralization.class \
