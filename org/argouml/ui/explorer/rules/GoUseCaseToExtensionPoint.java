@@ -32,6 +32,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
+ * Rule for Use Case->Extension Point.
  * Provides a rule to display extension points in the navigation pane.<p>
  *
  * @author  16 Apr 2002. Jeremy Bennett (mail@jeremybennett.com).

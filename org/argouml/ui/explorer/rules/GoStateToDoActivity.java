@@ -57,6 +57,9 @@ public class GoStateToDoActivity extends AbstractPerspectiveRule {
         return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         if (ModelFacade.isAState(parent)) {
 	    Set set = new HashSet();

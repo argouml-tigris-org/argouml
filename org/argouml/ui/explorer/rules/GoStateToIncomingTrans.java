@@ -30,10 +30,20 @@ import java.util.Set;
 
 import org.argouml.model.ModelFacade;
 
+/**
+ * Rule for State->Incoming Transitions.
+ *
+ */
 public class GoStateToIncomingTrans extends AbstractPerspectiveRule {
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() { return "State->Incoming Transitions"; }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) { 
 	if (ModelFacade.isAStateVertex(parent)) {
 	    return ModelFacade.getIncomings(parent);    
@@ -41,6 +51,9 @@ public class GoStateToIncomingTrans extends AbstractPerspectiveRule {
 	return null;
     }
   
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         if (ModelFacade.isAStateVertex(parent)) {
 	    Set set = new HashSet();

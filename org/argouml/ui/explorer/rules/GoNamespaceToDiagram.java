@@ -40,6 +40,7 @@ import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
 /**
+ * Rule for Package->Diagram.
  * Shows the diagrams as children of their namespace. 
  * 
  * @author jaap.branderhorst@xs4all.nl	
@@ -47,10 +48,16 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  */
 public class GoNamespaceToDiagram extends AbstractPerspectiveRule {
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() {
         return Translator.localize("Tree", "misc.package.diagram");
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
         if (ModelFacade.isANamespace(parent)) {
             List returnList = new ArrayList();
@@ -64,7 +71,9 @@ public class GoNamespaceToDiagram extends AbstractPerspectiveRule {
                 // classifier/operation the collaboration represents
                 // statediagrams and activitydiagrams are shown as children 
                 // of the statemachine of activitygraph they belong to.
-                if (diagram instanceof UMLStateDiagram || diagram instanceof UMLActivityDiagram || diagram instanceof UMLSequenceDiagram) {
+                if (diagram instanceof UMLStateDiagram 
+                        || diagram instanceof UMLActivityDiagram 
+                        || diagram instanceof UMLSequenceDiagram) {
                     continue;
                 }                      
                 if (diagram.getNamespace() == namespace) {
@@ -76,6 +85,9 @@ public class GoNamespaceToDiagram extends AbstractPerspectiveRule {
         return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         // TODO: What?
 	return null;

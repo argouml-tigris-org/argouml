@@ -32,6 +32,7 @@ import java.util.Vector;
 import org.argouml.model.ModelFacade;
 
 /**
+ * Rule for State->Exit.
  * 
  * @author jaap.branderhorst@xs4all.nl	
  * @since Dec 25, 2002
@@ -51,6 +52,9 @@ public class GoStateToExit extends AbstractPerspectiveRule {
         return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         if (ModelFacade.isAState(parent)) {
 	    Set set = new HashSet();

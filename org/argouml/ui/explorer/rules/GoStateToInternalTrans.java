@@ -30,8 +30,15 @@ import java.util.Set;
 
 import org.argouml.model.ModelFacade;
 
+/**
+ * Rule for State->Internal Transitions.
+ *
+ */
 public class GoStateToInternalTrans extends AbstractPerspectiveRule {
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() { return "State->Internal Transitions"; }
 	
     /**
@@ -44,6 +51,9 @@ public class GoStateToInternalTrans extends AbstractPerspectiveRule {
 	return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         if (ModelFacade.isAState(parent)) {
 	    Set set = new HashSet();

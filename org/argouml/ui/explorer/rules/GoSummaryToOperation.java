@@ -31,6 +31,7 @@ import java.util.Set;
 import org.argouml.model.ModelFacade;
 
 /**
+ * Rule for Summary->Operation.
  * This class is a Go Rule for the "Class - centric" Navigation perspective.
  *
  * @author  alexb, d00mst
@@ -38,10 +39,16 @@ import org.argouml.model.ModelFacade;
  */
 public class GoSummaryToOperation extends AbstractPerspectiveRule {
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() {
 	return "Summary->Operation";
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
 	if (parent instanceof OperationsNode) {
 	    return ModelFacade.getOperations(
@@ -50,6 +57,9 @@ public class GoSummaryToOperation extends AbstractPerspectiveRule {
 	return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         if (parent instanceof OperationsNode) {
 	    Set set = new HashSet();

@@ -32,6 +32,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
+ * Rule for Signal->Reception.
  * PerspectiveRule to navigate from signal to reception.
  * Causes reception to be shown as child of signal.
  * 
@@ -39,6 +40,9 @@ import org.argouml.model.ModelFacade;
  */
 public class GoSignalToReception extends AbstractPerspectiveRule {
 	
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() {
     	return Translator.localize ("Tree", "Signal->Reception");
     }
@@ -53,6 +57,9 @@ public class GoSignalToReception extends AbstractPerspectiveRule {
 	return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         if (ModelFacade.isASignal(parent)) {
 	    Set set = new HashSet();

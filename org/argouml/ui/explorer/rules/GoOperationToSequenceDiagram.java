@@ -38,6 +38,7 @@ import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 
 /**
+ * Rule for Operation->Sequence diagram.
  * Go rule from represented operation to sequence diagram representing it
  * @author : jaap.branderhorst@xs4all.nl
  */
@@ -77,6 +78,9 @@ public class GoOperationToSequenceDiagram extends AbstractPerspectiveRule {
         return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         // TODO: What?
 	return null;

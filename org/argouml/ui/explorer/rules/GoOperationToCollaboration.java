@@ -31,6 +31,7 @@ import java.util.Set;
 import org.argouml.model.ModelFacade;
 
 /**
+ * Rule for Operation->Collaboration.
  * Go rule for navigation in the navpane from an operation to the collaboration
  * representing it.
  * @since Oct 1, 2002
@@ -38,6 +39,9 @@ import org.argouml.model.ModelFacade;
  */
 public class GoOperationToCollaboration extends AbstractPerspectiveRule {
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() { return "Operation->Collaboration"; }
 
     /**
@@ -50,6 +54,9 @@ public class GoOperationToCollaboration extends AbstractPerspectiveRule {
         return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         if (ModelFacade.isAOperation(parent)) {
 	    Set set = new HashSet();
