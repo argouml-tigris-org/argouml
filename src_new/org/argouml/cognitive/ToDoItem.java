@@ -262,7 +262,7 @@ public class ToDoItem implements java.io.Serializable {
    *  raised this issue is no longer present. */
   public boolean stillValid(Designer d) {
     if (_poster == null) return true;
-    if (_wizard != null && _wizard.isStarted() && !_wizard.isFinsished())
+    if (_wizard != null && _wizard.isStarted() && !_wizard.isFinished())
       return true;
     return _poster.stillValid(this, d);
   }
