@@ -25,22 +25,27 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
 
+import org.argouml.model.ModelFacade;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
 import org.argouml.cognitive.*;
 
+/** A critic to check whether to classes sharing a 1..1 association can or
+ *  should be combined.
+ */
 public class CrMergeClasses extends CrUML {
 
   public CrMergeClasses() {
     setHeadline("Consider Combining Classes");
-    addSupportedDecision(CrUML.decCLASS_SELECTION); //?
-    //no good trigger, should be applied to association instead
+    setPriority(ToDoItem.LOW_PRIORITY);
+    addSupportedDecision(CrUML.decCLASS_SELECTION); 
+    addTrigger("associationEnd");
   }
 
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MClass)) return NO_PROBLEM;
+    if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;
     MClass cls = (MClass) dm;
     Collection ends = cls.getAssociationEnds();
     if (ends == null || ends.size() != 1) return NO_PROBLEM;
