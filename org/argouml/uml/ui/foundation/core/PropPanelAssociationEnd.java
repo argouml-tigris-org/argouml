@@ -46,8 +46,6 @@ import org.argouml.uml.ui.UMLMultiplicityComboBox;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-
 /**
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
@@ -139,7 +137,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     public PropPanelAssociationEnd() {
         super("AssociationEnd", ConfigLoader.getTabPropsOrientation());
         _associationLabel = Argo.localize("UMLMenu", "label.association");
-        Class mclass = MAssociationEnd.class;
+        Class mclass = (Class)ModelFacade.ASSOCIATION_END;
         createControls(mclass);
         positionStandardControls();
         positionControls();
