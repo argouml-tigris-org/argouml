@@ -967,7 +967,8 @@ public class FigClass extends FigNodeModelElement {
         // compartment
 
         Rectangle oldBounds = getBounds();
-        Dimension aSize = isCheckSize() ? getMinimumSize() : new Dimension(w, h);
+        Dimension aSize = 
+            isCheckSize() ? getMinimumSize() : new Dimension(w, h);
 
         int newW = Math.max(w, aSize.width);
         int newH = h;
