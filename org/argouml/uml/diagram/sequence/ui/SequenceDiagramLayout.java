@@ -226,7 +226,7 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
     }
 
     public void updateActivations() {
-        Iterator it = getContentsNoEdges(null).iterator();
+        Iterator it = getContentsNoEdges().iterator();
         while (it.hasNext()) {
             Fig fig = (Fig) it.next();
             if (fig instanceof FigObject) {
@@ -239,16 +239,16 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
      * Returns a list with all {@link FigLink}s that intersect with
      * the given y coordinate.<p>
      *
-     * @param y
+     * @param y is the given y coordinate.
      * @return the list with {@link FigLink}s.
      */
     public List getFigLinks(int y) {
         if (getContents(null).isEmpty()
-	    || getContentsEdgesOnly(null).isEmpty()) {
+	    || getContentsEdgesOnly().isEmpty()) {
             return Collections.EMPTY_LIST;
         }
         List retList = new ArrayList();
-        Iterator it = getContentsEdgesOnly(null).iterator();
+        Iterator it = getContentsEdgesOnly().iterator();
         while (it.hasNext()) {
             FigEdge fig = (FigEdge) it.next();
             if (fig instanceof FigLink
@@ -262,7 +262,7 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
     }
 
     public void addNode(int position, Node node) {
-        Iterator it = getContentsNoEdges(null).iterator();
+        Iterator it = getContentsNoEdges().iterator();
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof FigObject) {

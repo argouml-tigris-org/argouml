@@ -27,7 +27,6 @@ package org.argouml.uml.reveng;
 import java.beans.PropertyVetoException;
 import java.util.Vector;
 import java.util.List;
-import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
@@ -272,8 +271,7 @@ public class DiagramInterface {
         // find the fig for this class can update its visible state.
         else {
             FigClass existingFig = null;
-            List figs = new ArrayList();
-            currentLayer.getContentsNoEdges(figs);
+            List figs = currentLayer.getContentsNoEdges();
             for (int i = 0; i < figs.size(); i++) {
                 Fig fig = (Fig) figs.get(i);
                 if (newClass == fig.getOwner())
@@ -314,8 +312,7 @@ public class DiagramInterface {
         // find the fig for this class can update its visible state.
         else {
             FigInterface existingFig = null;
-            List figs = new ArrayList();
-            currentLayer.getContentsNoEdges(figs);
+            List figs = currentLayer.getContentsNoEdges();
             for (int i = 0; i < figs.size(); i++) {
                 Fig fig = (Fig) figs.get(i);
                 if (newInterface == fig.getOwner())

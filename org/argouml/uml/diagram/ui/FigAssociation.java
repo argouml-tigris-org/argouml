@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,9 +39,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.uml.diagram.ui.ActionAggregation;
-import org.argouml.uml.diagram.ui.ActionMultiplicity;
-import org.argouml.uml.diagram.ui.ActionNavigability;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.PathConvPercentPlusConst;
@@ -66,10 +63,12 @@ public class FigAssociation extends FigEdgeModelElement {
      * Group for the FigTexts concerning the source association end
      */
     protected FigTextGroup _srcGroup = new FigTextGroup();
+
     /**
      * Group for the FigTexts concerning the dest association end
      */
     protected FigTextGroup _destGroup = new FigTextGroup();
+
     /**
      * Group for the FigTexts concerning the name and stereotype of the 
      * association itself.
@@ -160,7 +159,8 @@ public class FigAssociation extends FigEdgeModelElement {
     
         setBetweenNearestPoints(true);
         // next line necessary for loading
-        setLayer(ProjectManager.getManager().getCurrentProject().getActiveDiagram().getLayer());
+        setLayer(ProjectManager.getManager().getCurrentProject()
+		 .getActiveDiagram().getLayer());
     }
 
     public FigAssociation(Object edge, Layer lay) {
@@ -177,17 +177,23 @@ public class FigAssociation extends FigEdgeModelElement {
 	    Collection connections = ModelFacade.getConnections(association);
 	    for (int i = 0; i < connections.size(); i++) {
 		Object assEnd = (connections.toArray())[i];
-		UmlModelEventPump.getPump().removeModelEventListener(this, assEnd);
-		UmlModelEventPump.getPump().addModelEventListener(this, assEnd);
+		UmlModelEventPump.getPump()
+		    .removeModelEventListener(this, assEnd);
+		UmlModelEventPump.getPump()
+		    .addModelEventListener(this, assEnd);
 	    }
-	    UmlModelEventPump.getPump().removeModelEventListener(this, association);
-	    UmlModelEventPump.getPump().addModelEventListener(this, association);
+	    UmlModelEventPump.getPump()
+		.removeModelEventListener(this, association);
+	    UmlModelEventPump.getPump()
+		.addModelEventListener(this, association);
 	    Object assEnd1 = (connections.toArray())[0];
 	    Object assEnd2 = (connections.toArray())[1];
 	    FigNode destNode =
-		(FigNode) getLayer().presentationFor(ModelFacade.getType(assEnd1));
+		(FigNode) getLayer()
+		    .presentationFor(ModelFacade.getType(assEnd1));
 	    FigNode srcNode =
-		(FigNode) getLayer().presentationFor(ModelFacade.getType(assEnd1));
+		(FigNode) getLayer()
+		    .presentationFor(ModelFacade.getType(assEnd1));
 	    if (destNode != null) {
 		setDestFigNode(destNode);
 		setDestPortFig(destNode);
@@ -227,17 +233,19 @@ public class FigAssociation extends FigEdgeModelElement {
 			   FigText orderingToUpdate,
 			   Object end) {
                                
-        if(!ModelFacade.isAAssociationEnd(end))
+        if (!ModelFacade.isAAssociationEnd(end)) {
             throw new IllegalArgumentException();
+	}
         
 	Object multi = ModelFacade.getMultiplicity(end);
 	String name = ModelFacade.getName(end);
 	Object order = ModelFacade.getOrdering(end);
         String visi = ""; 
         Object stereo = null;
-        if (ModelFacade.isNavigable(end) && (ModelFacade.isAClass(ModelFacade.getType(end)) || 
-            ModelFacade.isAInterface(ModelFacade.getType(end)))) {
-                visi = Notation.generate(this, ModelFacade.getVisibility(end));
+        if (ModelFacade.isNavigable(end)
+	    && (ModelFacade.isAClass(ModelFacade.getType(end))
+		|| ModelFacade.isAInterface(ModelFacade.getType(end)))) {
+	    visi = Notation.generate(this, ModelFacade.getVisibility(end));
         }
         if (ModelFacade.getStereotypes(end).size() > 0) {
             stereo = ModelFacade.getStereotypes(end).iterator().next();
@@ -255,7 +263,7 @@ public class FigAssociation extends FigEdgeModelElement {
 
     protected void modelChanged(MElementEvent e) {
 	super.modelChanged(e);
-	Object associationEnd = getOwner();//MAssociation
+	Object associationEnd = getOwner(); //MAssociation
 	if (associationEnd == null || getLayer() == null) return;
         
         if (e == null || e.getName().equals("isAbstract")) {
@@ -263,19 +271,25 @@ public class FigAssociation extends FigEdgeModelElement {
             damage();
         }
     
+	//MAssociationEnd
 	Object ae0 =
-	    ((ModelFacade.getConnections(associationEnd)).toArray())[0];//MAssociationEnd
+	    ((ModelFacade.getConnections(associationEnd)).toArray())[0];
+	//MAssociationEnd
 	Object ae1 =
-	    ((ModelFacade.getConnections(associationEnd)).toArray())[1];//MAssociationEnd
+	    ((ModelFacade.getConnections(associationEnd)).toArray())[1];
 	updateEnd(_srcMult, _srcRole, _srcOrdering, ae0);
 	updateEnd(_destMult, _destRole, _destOrdering, ae1);
     
 	boolean srcNav = ModelFacade.isNavigable(ae0);
 	boolean destNav = ModelFacade.isNavigable(ae1);
-	if (srcNav && destNav && SUPPRESS_BIDIRECTIONAL_ARROWS)
-	    srcNav = destNav = false;
-	sourceArrowHead = chooseArrowHead(ModelFacade.getAggregation(ae0), srcNav);
-	destArrowHead = chooseArrowHead(ModelFacade.getAggregation(ae1), destNav);
+	if (srcNav && destNav && SUPPRESS_BIDIRECTIONAL_ARROWS) {
+	    srcNav = false;
+	    destNav = false;
+	}
+	sourceArrowHead =
+	    chooseArrowHead(ModelFacade.getAggregation(ae0), srcNav);
+	destArrowHead =
+	    chooseArrowHead(ModelFacade.getAggregation(ae1), destNav);
 	setSourceArrowHead(sourceArrowHead);
 	setDestArrowHead(destArrowHead);
 	_srcGroup.calcBounds();
@@ -286,11 +300,11 @@ public class FigAssociation extends FigEdgeModelElement {
 
     static ArrowHead _NAV_AGGREGATE =
 	new ArrowHeadComposite(ArrowHeadDiamond.WhiteDiamond,
-			       ArrowHeadGreater.TheInstance);
+			       ArrowHeadGreater.getInstance());
 
     static ArrowHead _NAV_COMP =
 	new ArrowHeadComposite(ArrowHeadDiamond.BlackDiamond,
-			       ArrowHeadGreater.TheInstance);
+			       ArrowHeadGreater.getInstance());
 
     protected ArrowHead chooseArrowHead(Object ak, boolean nav) {
         
@@ -298,7 +312,7 @@ public class FigAssociation extends FigEdgeModelElement {
 
 	if (nav) {
 	    if (ModelFacade.NONE_AGGREGATIONKIND.equals(ak) || (ak == null)) {
-		arrow = ArrowHeadGreater.TheInstance;
+		arrow = ArrowHeadGreater.getInstance();
             } else if (ModelFacade.AGGREGATE_AGGREGATIONKIND.equals(ak)) {
 		arrow = _NAV_AGGREGATE;
             } else if (ModelFacade.COMPOSITE_AGGREGATIONKIND.equals(ak)) {
@@ -337,9 +351,11 @@ public class FigAssociation extends FigEdgeModelElement {
 	int destDeterminingFactor =
 	    getSquaredDistance(me.getPoint(), lastPoint);
 
-	if (srcDeterminingFactor < rSquared &&
-                srcDeterminingFactor < destDeterminingFactor) {
-            ArgoJMenu multMenu = new ArgoJMenu(BUNDLE, "menu.popup.multiplicity");
+	if (srcDeterminingFactor < rSquared
+	    && srcDeterminingFactor < destDeterminingFactor) {
+
+            ArgoJMenu multMenu =
+		new ArgoJMenu(BUNDLE, "menu.popup.multiplicity");
 
             multMenu.add(ActionMultiplicity.SrcMultOne);
             multMenu.add(ActionMultiplicity.SrcMultZeroToOne);
@@ -354,27 +370,29 @@ public class FigAssociation extends FigEdgeModelElement {
 	    aggMenu.add(ActionAggregation.SrcAgg);
 	    aggMenu.add(ActionAggregation.SrcAggComposite);
 	    popUpActions.insertElementAt(aggMenu, 
-            popUpActions.size() - POPUP_ADD_OFFSET);
+					 (popUpActions.size()
+					  - POPUP_ADD_OFFSET));
 	}
 	else if (destDeterminingFactor < rSquared) {
-            ArgoJMenu multMenu = new ArgoJMenu(BUNDLE, "menu.popup.multiplicity");
+            ArgoJMenu multMenu =
+		new ArgoJMenu(BUNDLE, "menu.popup.multiplicity");
 	    multMenu.add(ActionMultiplicity.DestMultOne);
 	    multMenu.add(ActionMultiplicity.DestMultZeroToOne);
 	    multMenu.add(ActionMultiplicity.DestMultOneToMany);
 	    multMenu.add(ActionMultiplicity.DestMultZeroToMany);
 	    popUpActions.insertElementAt(multMenu, 
-            popUpActions.size() - POPUP_ADD_OFFSET);
+					 (popUpActions.size()
+					  - POPUP_ADD_OFFSET));
 
             ArgoJMenu aggMenu = new ArgoJMenu(BUNDLE, "menu.popup.aggregation");
 	    aggMenu.add(ActionAggregation.DestAggNone);
 	    aggMenu.add(ActionAggregation.DestAgg);
 	    aggMenu.add(ActionAggregation.DestAggComposite);
 	    popUpActions.insertElementAt(aggMenu, 
-            popUpActions.size() - POPUP_ADD_OFFSET);
+					 (popUpActions.size()
+					  - POPUP_ADD_OFFSET));
 	}
-	else {
-	    // No particular options for right click in middle of line
-	}
+	// else: No particular options for right click in middle of line
 
 	// Options available when right click anywhere on line
 	Object association = getOwner();
@@ -389,7 +407,8 @@ public class FigAssociation extends FigEdgeModelElement {
 
 	    if (ModelFacade.isAClassifier(ModelFacade.getType(ascStart))
                     && ModelFacade.isAClassifier(ModelFacade.getType(ascEnd))) {
-                ArgoJMenu navMenu = new ArgoJMenu(BUNDLE, "menu.popup.navigability");
+                ArgoJMenu navMenu =
+		    new ArgoJMenu(BUNDLE, "menu.popup.navigability");
         
 		navMenu.add(ActionNavigability.newActionNavigability(
                     ascStart,
@@ -405,7 +424,8 @@ public class FigAssociation extends FigEdgeModelElement {
                     ActionNavigability.ENDTOSTART));
 
 		popUpActions.insertElementAt(navMenu, 
-            popUpActions.size() - POPUP_ADD_OFFSET);
+					     (popUpActions.size()
+					      - POPUP_ADD_OFFSET));
 	    }
 	}
 

@@ -1,6 +1,5 @@
-
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -169,8 +168,8 @@ public class TabDiagram
             _shouldBeEnabled = false;
             // This is perfectly normal and happens among other things
             // within the call to setDiagram (below).
-            cat.debug(
-		      "target is null in set target or not an instance of UMLDiagram");
+            cat.debug("target is null in set target or "
+		      + "not an instance of UMLDiagram");
             return;
         }
         if (_target != null) {
@@ -250,7 +249,7 @@ public class TabDiagram
         cat.debug("TabDiagram got mode change event");
         if (!Globals.getSticky() && Globals.mode() instanceof ModeSelect) {
 //            if (_target instanceof UMLDiagram) {
-                _target.deselectAllTools();
+	    _target.deselectAllTools();
 //            }
         }
     }
@@ -261,9 +260,10 @@ public class TabDiagram
     }
 
     /**
-     * Sets the toolbar. Adds the toolbar to the north borderlayout position of
-     * the diagram.
-     * @param toolbar
+     * Sets the toolbar.  Adds the toolbar to the north borderlayout
+     * position of the diagram.<p>
+     *
+     * @param toolbar is the toolbar to be set.
      */
     public void setToolBar(JToolBar toolbar) {
         if (!Arrays.asList(getComponents()).contains(toolbar)) {
@@ -279,8 +279,8 @@ public class TabDiagram
     }
 
     /**
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
+     *          TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
         setTarget(e.getNewTarget());
@@ -288,8 +288,8 @@ public class TabDiagram
     }
 
     /**
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
+     *          TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         // how to handle empty target lists?
@@ -299,8 +299,8 @@ public class TabDiagram
     }
 
     /**
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(
+     *          org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTarget());
@@ -342,7 +342,15 @@ public class TabDiagram
  */
 class ArgoJGraph extends JGraph {
 
-    
+    /**
+     * @see Object#hashCode()
+     */
+    public int hashCode() {
+	return (this._currentDiagramId == null
+		? 0
+		: this._currentDiagramId.hashCode())
+	    + this.getEditor().hashCode();
+    }
 
     public boolean equals(Object o) {
         if (o instanceof ArgoJGraph) {
@@ -396,7 +404,7 @@ class ArgoEditor extends Editor {
      * @deprecated in 0.16 in favour of ArgoEditor(GraphModel gm, JComponent c)
      */
     public ArgoEditor(GraphModel gm, Component c) {
-	super(gm, (JComponent)c);
+	super(gm, (JComponent) c);
         setupRenderingHints();
     }
 
@@ -436,8 +444,8 @@ class ArgoEditor extends Editor {
 	            c.setToolTipText(tip);
 	        }
             }
-	} else if (getJComponent() != null && 
-                getJComponent().getToolTipText() != null) {
+	} else if (getJComponent() != null
+		   && getJComponent().getToolTipText() != null) {
             getJComponent().setToolTipText(null); //was ""
 	}
 
@@ -458,7 +466,8 @@ class ArgoEditor extends Editor {
         if (g instanceof Graphics2D) {
             Graphics2D g2 = (Graphics2D) g;
             g2.setRenderingHints(_argoRenderingHints);
-            g2.scale(_scale, _scale);
+	    double scale = getScale();
+            g2.scale(scale, scale);
         }
         getLayerManager().paint(g);
         //getLayerManager().getActiveLayer().paint(g);
