@@ -46,20 +46,25 @@ public class TabText
     implements TabModelTarget, DocumentListener {
     ////////////////////////////////////////////////////////////////
     // instance variables
-    protected Object _target;
-    protected JTextArea _text = new JTextArea();
-    protected boolean _parseChanges = true;
-    protected boolean _shouldBeEnabled = false;
-    /** The optional toolbar.
-     *  Contains null if no toolbar was requested.
+    private Object target;
+    private JTextArea textArea = new JTextArea();
+    private boolean parseChanges = true;
+    private boolean enabled = false;
+    
+    /** 
+     * The optional toolbar. Contains null if no toolbar was requested.
      */
-    protected JToolBar _toolbar = null;
-    protected Logger cat = Logger.getLogger(TabText.class);
+    private JToolBar toolbar = null;
+    
+    private static final Logger LOG = Logger.getLogger(TabText.class);
 
     ////////////////////////////////////////////////////////////////
     // constructor
 
-    /** Create a text tab without a toolbar.
+    /** 
+     * Create a text tab without a toolbar.
+     * 
+     * @param title the title of the tab
      */
     public TabText(String title) {
         this(title, false);
@@ -67,99 +72,128 @@ public class TabText
 
     /** Create a text tab and optionally request a toolbar.
      *  @since ARGO0.9.4
+     * 
+     * @param title the title
+     * @param withToolbar true if a toolbar is needed
      */
     public TabText(String title, boolean withToolbar) {
         super(title);
         setLayout(new BorderLayout());
-        _text.setFont(new Font("Monospaced", Font.PLAIN, 12));
-        _text.setTabSize(4);
-        add(new JScrollPane(_text), BorderLayout.CENTER);
-        _text.getDocument().addDocumentListener(this);
+        textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        textArea.setTabSize(4);
+        add(new JScrollPane(textArea), BorderLayout.CENTER);
+        textArea.getDocument().addDocumentListener(this);
 
         // If a toolbar was requested, create an empty one.
         if (withToolbar) {
-            _toolbar = new ToolBar();
-            _toolbar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
-            _toolbar.setOrientation(JToolBar.HORIZONTAL);
-            add(_toolbar, BorderLayout.NORTH);
+            toolbar = new ToolBar();
+            toolbar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
+            toolbar.setOrientation(JToolBar.HORIZONTAL);
+            add(toolbar, BorderLayout.NORTH);
         }
     }
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
+     */
     public void setTarget(Object t) {
-        _parseChanges = false;
-        _target = t;
+        parseChanges = false;
+        target = t;
         if (t == null) {
-            _text.setEnabled(false);
-            _text.setText("Nothing selected");
-            _shouldBeEnabled = false;
+            textArea.setEnabled(false);
+            textArea.setText("Nothing selected");
+            enabled = false;
         } else {
-            _text.setEnabled(true);
+            textArea.setEnabled(true);
             String generatedText = genText(t);
             if (generatedText != null) {
-                _text.setText(generatedText);
-                _shouldBeEnabled = true;
-                _text.setCaretPosition(0);
+                textArea.setText(generatedText);
+                enabled = true;
+                textArea.setCaretPosition(0);
             } else {
-                _text.setEnabled(false);
-                _text.setText("N/A");
-                _shouldBeEnabled = false;
+                textArea.setEnabled(false);
+                textArea.setText("N/A");
+                enabled = false;
             }
         }
-        _parseChanges = true;
+        parseChanges = true;
     }
 
     /**
      * Returns the target of this tab.
+     *
+     * @see org.argouml.ui.TabTarget#getTarget()
      */
     public Object getTarget() {
-        return _target;
+        return target;
     }
 
+    /**
+     * @see org.argouml.ui.TabTarget#refresh()
+     */
     public void refresh() {
-        Object target = TargetManager.getInstance().getTarget();
-        setTarget(target);
+        Object t = TargetManager.getInstance().getTarget();
+        setTarget(t);
     }
 
     /**
      * the target must not be null.
+     *
+     * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
      */
-    public boolean shouldBeEnabled(Object target) {
-        return (target != null);
+    public boolean shouldBeEnabled(Object t) {
+        return (t != null);
     }
 
-    protected String genText(Object target) {
-        return target == null ? "Nothing selected" : target.toString();
+    /**
+     * @param t the object to be "generated" = make a string of it
+     * @return the generated text
+     */
+    protected String genText(Object t) {
+        return t == null ? "Nothing selected" : t.toString();
     }
 
+    /**
+     * @param s the string to parse
+     */
     protected void parseText(String s) {
         if (s == null)
             s = "(null)";
-        cat.debug("parsing text:" + s); // THN
+        LOG.debug("parsing text:" + s); // THN
     }
 
     ////////////////////////////////////////////////////////////////
     // event handlers
+    
+    /**
+     * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
+     */
     public void insertUpdate(DocumentEvent e) {
-        if (_parseChanges)
-            parseText(_text.getText());
-    }
-
-    public void removeUpdate(DocumentEvent e) {
-        if (_parseChanges)
-            parseText(_text.getText());
-    }
-
-    public void changedUpdate(DocumentEvent e) {
-        if (_parseChanges)
-            parseText(_text.getText());
+        if (parseChanges)
+            parseText(textArea.getText());
     }
 
     /**
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
+     */
+    public void removeUpdate(DocumentEvent e) {
+        if (parseChanges)
+            parseText(textArea.getText());
+    }
+
+    /**
+     * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
+     */
+    public void changedUpdate(DocumentEvent e) {
+        if (parseChanges)
+            parseText(textArea.getText());
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
         setTarget(e.getNewTarget());
@@ -167,8 +201,7 @@ public class TabText
     }
 
     /**
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         // how to handle empty target lists?
@@ -178,12 +211,32 @@ public class TabText
     }
 
     /**
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTarget());
 
+    }
+
+    /**
+     * @return Returns the _toolbar.
+     */
+    protected JToolBar getToolbar() {
+        return toolbar;
+    }
+
+    /**
+     * @param s The _shouldBeEnabled to set.
+     */
+    protected void setShouldBeEnabled(boolean s) {
+        this.enabled = s;
+    }
+
+    /**
+     * @return Returns the _shouldBeEnabled.
+     */
+    protected boolean shouldBeEnabled() {
+        return enabled;
     }
 
 } /* end class TabText */
