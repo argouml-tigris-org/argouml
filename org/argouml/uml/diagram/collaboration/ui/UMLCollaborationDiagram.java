@@ -71,52 +71,52 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     private static Action actionClassifierRole = new RadioAction(
         new CmdCreateNode(ModelFacade.CLASSIFIER_ROLE, "ClassifierRole"));
 
-    private static Action actionAssoc = new RadioAction(
+    private Action actionAssoc = new RadioAction(
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
             ModelFacade.ASSOCIATION_ROLE,
             "AssociationRole"));
 
-    private static Action actionGeneralize = new RadioAction(
+    private Action actionGeneralize = new RadioAction(
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
             ModelFacade.GENERALIZATION,
             "Generalization"));
 
-    private static Action actionAssociation = new RadioAction(
+    private Action actionAssociation = new RadioAction(
         new ActionAddAssociationRole(
             ModelFacade.NONE_AGGREGATIONKIND,
             false,
             "Association"));
-    private static Action actionAggregation = new RadioAction(
+    private Action actionAggregation = new RadioAction(
         new ActionAddAssociationRole(
             ModelFacade.AGGREGATE_AGGREGATIONKIND,
             false,
             "Aggregation"));
-    private static Action actionComposition = new RadioAction(
+    private Action actionComposition = new RadioAction(
         new ActionAddAssociationRole(
             ModelFacade.COMPOSITE_AGGREGATIONKIND,
             false,
             "Composition"));
-    private static Action actionUniAssociation = new RadioAction(
+    private Action actionUniAssociation = new RadioAction(
         new ActionAddAssociationRole(
             ModelFacade.NONE_AGGREGATIONKIND,
             true,
             "UniAssociation"));
-    private static Action actionUniAggregation = new RadioAction(
+    private Action actionUniAggregation = new RadioAction(
         new ActionAddAssociationRole(
             ModelFacade.AGGREGATE_AGGREGATIONKIND,
             true,
             "UniAggregation"));
-    private static Action actionUniComposition = new RadioAction(
+    private Action actionUniComposition = new RadioAction(
         new ActionAddAssociationRole(
             ModelFacade.COMPOSITE_AGGREGATIONKIND,
             true,
             "UniComposition"));
 
-    private static Action actionDepend = new RadioAction(
+    private Action actionDepend = new RadioAction(
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
