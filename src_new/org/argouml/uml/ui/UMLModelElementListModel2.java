@@ -430,6 +430,7 @@ public abstract class UMLModelElementListModel2
 
     /**
      * Override this if you want a popup menu.
+     * See for an example UMLClassifierParameterListModel.
      * 
      * @param popup the popup menu
      * @param index the selected item in the list at the moment 
