@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.CoreFactory;
 
 import ru.novosoft.uml.MFactory;
@@ -96,6 +97,11 @@ import ru.novosoft.uml.model_management.MModel;
 public class CoreFactoryImpl
 	extends AbstractUmlModelFactory
 	implements CoreFactory {
+
+    /**
+     * Logger.<p>
+     */
+    private static final Logger LOG = Logger.getLogger(CoreFactoryImpl.class);
 
     /**
      * The model implementation.
@@ -1761,7 +1767,7 @@ public class CoreFactoryImpl
         if (!(elem instanceof MFeature)) {
             throw new IllegalArgumentException();
         }
-
+        LOG.warn("deleteOperation called but it is not implemented");
     }
 
     /**
@@ -1904,7 +1910,7 @@ public class CoreFactoryImpl
         if (!(elem instanceof MOperation)) {
             throw new IllegalArgumentException();
         }
-
+        LOG.warn("deleteOperation called but it is not implemented");
     }
 
     /**

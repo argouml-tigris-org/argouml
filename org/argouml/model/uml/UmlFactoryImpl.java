@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.UmlFactory;
 
@@ -136,6 +137,12 @@ import ru.novosoft.uml.model_management.MSubsystem;
 class UmlFactoryImpl
     extends AbstractUmlModelFactory
     implements UmlFactory {
+    
+    /**
+     * Logger.<p>
+     */
+    private static final Logger LOG = Logger.getLogger(UmlFactoryImpl.class);
+    
     /**
      * The model implementation.
      */
@@ -637,6 +644,9 @@ class UmlFactoryImpl
      * @param elem The element to be deleted
      */
     public void delete(Object elem) {
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Deleting " + elem);
+        }
         if (elem == null) {
             throw new IllegalArgumentException("Element may not be null "
                 + "in delete");

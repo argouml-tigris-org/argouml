@@ -270,10 +270,10 @@ class CoreHelperImpl implements CoreHelper {
      * @param feature the feature to be removed
      */
     public void removeFeature(Object cls, Object feature) {
-        if (cls != null
-            && feature != null
-            && cls instanceof MClassifier
-            && feature instanceof MFeature) {
+        if (cls instanceof MClassifier && feature instanceof MFeature) {
+            if (LOG.isInfoEnabled()) {
+                LOG.info("Removing the feature " + feature);
+            }
             ((MClassifier) cls).removeFeature((MFeature) feature);
         }
     }
@@ -418,7 +418,9 @@ class CoreHelperImpl implements CoreHelper {
         Iterator parents = ((MClassifier) classifier).getParents().iterator();
         while (parents.hasNext()) {
             MClassifier parent = (MClassifier) parents.next();
-            LOG.debug("Adding attributes for: " + parent);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Adding attributes for: " + parent);
+            }
             result.addAll(getAttributesInh(parent));
         }
         return result;
@@ -2053,6 +2055,9 @@ class CoreHelperImpl implements CoreHelper {
      */
     public void addFeature(Object handle, int index, Object f) {
         if (handle instanceof MClassifier && f instanceof MFeature) {
+            if (LOG.isInfoEnabled()) {
+                LOG.info("Adding the feature " + f + " at " + index);
+            }
             ((MClassifier) handle).addFeature(index, (MFeature) f);
             return;
         }
@@ -2068,6 +2073,9 @@ class CoreHelperImpl implements CoreHelper {
      */
     public void addFeature(Object handle, Object f) {
         if (handle instanceof MClassifier && f instanceof MFeature) {
+            if (LOG.isInfoEnabled()) {
+                LOG.info("Adding the feature " + f);
+            }
             ((MClassifier) handle).addFeature((MFeature) f);
             return;
         }
@@ -2599,8 +2607,10 @@ class CoreHelperImpl implements CoreHelper {
      * @param impl The feature to set.
      */
     public void setFeature(Object elem, int i, Object impl) {
-        if (elem instanceof MClassifier
-                && impl instanceof MFeature) {
+        if (elem instanceof MClassifier && impl instanceof MFeature) {
+            if (LOG.isInfoEnabled()) {
+                LOG.info("Setting the feature " + impl + " at " + i);
+            }
             ((MClassifier) elem).setFeature(i, (MFeature) impl);
             return;
         }
@@ -2613,12 +2623,18 @@ class CoreHelperImpl implements CoreHelper {
      * Sets the features of some model element.
      *
      * @param handle the model element to set features to
-     * @param features the list of features
+     * @param features the features
      */
     public void setFeatures(Object handle, Collection features) {
-        if (handle instanceof MClassifier
-            && features instanceof List) {
-            ((MClassifier) handle).setFeatures((List) features);
+        if (handle instanceof MClassifier) {
+            LOG.info("Setting the features collection");
+            List featuresList = null;
+            if (features instanceof List) {
+                featuresList = (List) features;
+            } else {
+                featuresList = new ArrayList(features);
+            }
+            ((MClassifier) handle).setFeatures(featuresList);
             return;
         }
         throw new IllegalArgumentException("handle: " + handle);
@@ -3194,11 +3210,13 @@ class CoreHelperImpl implements CoreHelper {
             
             MStereotype existingStereotype = me.getStereotype();
             
-            if (existingStereotype == null) {
-                LOG.info("About to give a stereotype to " + handle);
-            } else {
-                LOG.info("About to change stereotype on " + handle
-                        + " to <<" + existingStereotype.getName() + ">>");
+            if (LOG.isInfoEnabled()) {
+                if (existingStereotype == null) {
+                    LOG.info("About to give a stereotype to " + handle);
+                } else {
+                    LOG.info("About to change stereotype on " + handle
+                            + " to <<" + existingStereotype.getName() + ">>");
+                }
             }
             
             if (existingStereotype == stereotype) {
@@ -3206,24 +3224,28 @@ class CoreHelperImpl implements CoreHelper {
                 return;
             }
             
-            if (stereotype == null) {
-                LOG.info("Removing any stereotype on " + handle);
-            } else {
-                LOG.info("Setting the stereotype on " + handle
-                        + " to <<" + stereotype.getName() + ">>");
+            if (LOG.isInfoEnabled()) {
+                if (stereotype == null) {
+                    LOG.info("Removing any stereotype on " + handle);
+                } else {
+                    LOG.info("Setting the stereotype on " + handle
+                            + " to <<" + stereotype.getName() + ">>");
+                }
             }
             
             // With this block in place save fails with an error
             // With this block removed save appears to work but
             // the save file does not record the stereotype
             if (stereotype != null && me.getModel() != stereotype.getModel()) {
-                LOG.info("Changing the stereotype namespace from "
-                        + stereotype.getModel() + " to " + me.getModel());
+                if (LOG.isInfoEnabled()) {
+                    LOG.info("Changing the stereotype namespace from "
+                            + stereotype.getModel() + " to " + me.getModel());
+                }
                 stereotype.setNamespace(me.getModel());
             }
-            if (existingStereotype != stereotype) {
-                me.setStereotype(stereotype);
-            }
+            
+            me.setStereotype(stereotype);
+                
             return;
         }
         throw new IllegalArgumentException("handle: " + handle

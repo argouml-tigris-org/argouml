@@ -109,22 +109,22 @@ class ParseState {
         
         LOG.info("Parsing the state of " + mClassifier);
         
-	classnamePrefix =
-	    previousState.classnamePrefix
-	    + Model.getFacade().getName(mClassifier)
-	    + "$";
-	obsoleteFeatures =
-	    new Vector(Model.getFacade().getFeatures(mClassifier));
-	obsoleteInnerClasses =
-	    new Vector(Model.getFacade().getOwnedElements(mClassifier));
-	context =
-	    new OuterClassifierContext(
-	            previousState.context,
-	            mClassifier,
-	            currentPackage,
-	            classnamePrefix);
-	classifier = mClassifier;
-	anonymousClassCounter = previousState.anonymousClassCounter;
+        classnamePrefix =
+            previousState.classnamePrefix
+            + Model.getFacade().getName(mClassifier)
+            + "$";
+        obsoleteFeatures =
+            new Vector(Model.getFacade().getFeatures(mClassifier));
+        obsoleteInnerClasses =
+            new Vector(Model.getFacade().getOwnedElements(mClassifier));
+        context =
+            new OuterClassifierContext(
+                    previousState.context,
+                    mClassifier,
+                    currentPackage,
+                    classnamePrefix);
+        classifier = mClassifier;
+        anonymousClassCounter = previousState.anonymousClassCounter;
     }
 
     /**
@@ -222,10 +222,12 @@ class ParseState {
      */
     public void removeObsoleteFeatures() {
     	if (obsoleteFeatures == null) {
-	    return;
-	}
+            return;
+        }
     	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext();) {
-	    Model.getCoreHelper().removeFeature(classifier, i.next());
+            Object feature = i.next();
+            Model.getCoreHelper().removeFeature(classifier, feature);
+            Model.getUmlFactory().delete(feature);
     	}
     }
 
