@@ -1380,7 +1380,9 @@ public class CoreHelper {
                     MDependency dependency = (MDependency)it.next();
                     MStereotype stereo = dependency.getStereotype();
                     if (dependency instanceof MAbstraction
-                        && stereo != null && stereo.getName().equals("realize") && stereo.getBaseClass().equals("Abstraction")) {
+                        && stereo != null && 
+                        "realize".equals(stereo.getName()) && 
+                        "Abstraction".equals(stereo.getBaseClass())) {
                         col.addAll(dependency.getSuppliers());
                     }
                 }
