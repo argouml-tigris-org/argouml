@@ -128,6 +128,7 @@ public class UMLMessagesInteractionListModel extends UMLModelElementListModel {
         ProjectBrowser.TheInstance.setTarget(modElem);
         ActionEvent event = new ActionEvent(this, 1, "delete");
         ActionRemoveFromModel.SINGLETON.actionPerformed(event);
+        fireIntervalRemoved(this, index, index);
         if (!target.equals(modElem)) {
         	ProjectBrowser.TheInstance.setTarget(target);
         }

@@ -96,7 +96,8 @@ public class PropPanelMessage extends PropPanelModelElement {
     addField(predecessorScroll,0,1,0.4);
 
     addCaption("Activator:",1,1,0);
-    UMLModelElementListModel activatorModel=new UMLReflectionListModel(this, "activator",true,"getActivator",null, null,null);
+    // UMLModelElementListModel activatorModel=new UMLReflectionListModel(this, "activator",true,"getActivator",null, "addActivator",null);
+    UMLModelElementListModel activatorModel = new UMLActivatorListModel(this, "activator", false);
     JList activatorList = new UMLList(activatorModel,true);
     activatorList.setForeground(Color.blue);
     activatorList.setFont(smallFont);
@@ -206,10 +207,5 @@ public class PropPanelMessage extends PropPanelModelElement {
             navigateTo(((MMessage)target).getInteraction());
         }
     }
-
-    
-   
-
-
 
 } /* end class PropPanelMessage */
