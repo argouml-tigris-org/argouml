@@ -47,7 +47,7 @@ class PropertyDialog extends JFrame implements ActionListener {
     getContentPane().setLayout(new BorderLayout());
     
     body = pe.getCustomEditor();
-    System.out.println("got custom editor!!");
+    //System.out.println("got custom editor!!");
     getContentPane().add(body, BorderLayout.CENTER);
     
     doneButton = new JButton("Done");
