@@ -36,6 +36,7 @@ import ru.novosoft.uml.foundation.core.*;
 
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.*;
 
 /** Well-formedness rules [1] and [3] for Class. See page 29 of UML 1.1
@@ -56,7 +57,7 @@ public class CrClassMustBeAbstract extends CrUML {
     MClass cls = (MClass) dm;
     if (!cls.isAbstract()) return NO_PROBLEM;
     //    Collection beh = getInheritedBehavioralFeatures(cls);
-    Collection beh = MMUtil.SINGLETON.getOperationsInh(cls);
+    Collection beh = UmlHelper.getHelper().getCore().getOperationsInh(cls);
     Iterator enum = beh.iterator();
     while (enum.hasNext()) {
       MBehavioralFeature bf = (MBehavioralFeature) enum.next();

@@ -32,6 +32,7 @@ import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.*;
 import org.argouml.uml.MMUtil;
 
@@ -49,7 +50,7 @@ public class GoClassifierToStr implements TreeModel {
   public Object getChild(Object parent, int index) {
     if (parent instanceof MClassifier) {
       MClassifier cls = (MClassifier) parent;
-	  Collection behs = MMUtil.SINGLETON.getAttributes(cls);
+	  Collection behs = UmlHelper.getHelper().getCore().getAttributes(cls);
 	  Vector v = new Vector(behs);
       return v.elementAt(index);
 	}
@@ -58,7 +59,7 @@ public class GoClassifierToStr implements TreeModel {
   
   public int getChildCount(Object parent) {
     if (parent instanceof MClassifier) {
-      Collection str = MMUtil.SINGLETON.getAttributes((MClassifier) parent);
+      Collection str = UmlHelper.getHelper().getCore().getAttributes((MClassifier) parent);
       return (str == null) ? 0 : str.size();
     }
     return 0;
@@ -66,7 +67,7 @@ public class GoClassifierToStr implements TreeModel {
   
   public int getIndexOfChild(Object parent, Object child) {
     if (parent instanceof MClassifier) {
-      Vector str = new Vector(MMUtil.SINGLETON.getAttributes((MClassifier)parent));
+      Vector str = new Vector(UmlHelper.getHelper().getCore().getAttributes((MClassifier)parent));
       if (str.contains(child)) return str.indexOf(child);
     }
     return -1;

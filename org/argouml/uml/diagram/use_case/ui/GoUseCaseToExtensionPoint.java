@@ -42,6 +42,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.*;
 import org.argouml.uml.MMUtil;
 
@@ -130,7 +131,7 @@ public class GoUseCaseToExtensionPoint implements TreeModel {
         // for.
 
         MUseCase   useCase = (MUseCase) parent;
-        Collection eps     = MMUtil.SINGLETON.getExtensionPoints(useCase);
+        Collection eps     = UmlHelper.getHelper().getUseCases().getExtensionPoints(useCase);
         Vector     v       = new Vector(eps);
 
         return v.elementAt(index);
@@ -160,7 +161,7 @@ public class GoUseCaseToExtensionPoint implements TreeModel {
         }
 
         MUseCase   useCase = (MUseCase) parent;
-        Collection eps     = MMUtil.SINGLETON.getExtensionPoints(useCase);
+        Collection eps     = UmlHelper.getHelper().getUseCases().getExtensionPoints(useCase);
 
         return (eps == null) ? 0 : eps.size();
     }
@@ -192,7 +193,7 @@ public class GoUseCaseToExtensionPoint implements TreeModel {
         }
 
         MUseCase   useCase = (MUseCase) parent;
-        Collection eps     = MMUtil.SINGLETON.getExtensionPoints(useCase);
+        Collection eps     = UmlHelper.getHelper().getUseCases().getExtensionPoints(useCase);
         Vector     v       = new Vector(eps);
 
         if (v.contains(child)) {

@@ -46,6 +46,7 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.*;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
@@ -1328,7 +1329,7 @@ public class FigUseCase extends FigNodeModelElement {
         // Loop through all the extension points. epCount keeps track of the
         // fig's index as we go through the extension points.
 
-        Collection eps     = MMUtil.SINGLETON.getExtensionPoints(useCase);
+        Collection eps     = UmlHelper.getHelper().getUseCases().getExtensionPoints(useCase);
 	int        epCount = 1;
 
         if (eps != null) {

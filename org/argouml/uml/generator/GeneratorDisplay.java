@@ -54,6 +54,7 @@ import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.model_management.*;
 
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.MMUtil;
 
 
@@ -157,7 +158,7 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
   	String parameterStr = "(" + parameterListBuffer.toString() + ")";
   	
   	// the returnparameters
-  	Collection returnParas = MMUtil.SINGLETON.getReturnParameters(op);
+  	Collection returnParas = UmlHelper.getHelper().getCore().getReturnParameters(op);
   	StringBuffer returnParasSb = new StringBuffer();
   	if (returnParas.size() > 0) {
   		returnParasSb.append(": ");
@@ -397,7 +398,7 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
 //     if (!interfaces.equals("")) s += "implements " + interfaces + " ";
 	s += "{\n";
 
-    Collection strs = MMUtil.SINGLETON.getAttributes(cls);
+    Collection strs = UmlHelper.getHelper().getCore().getAttributes(cls);
     if (strs != null) {
       s += "\n";
       //s += "////////////////////////////////////////////////////////////////\n";
@@ -422,7 +423,7 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
 
     // needs-more-work: constructors
 
-    Collection behs = MMUtil.SINGLETON.getOperations(cls);
+    Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);
     if (behs != null) {
       s += "\n";
       //s += "////////////////////////////////////////////////////////////////\n";

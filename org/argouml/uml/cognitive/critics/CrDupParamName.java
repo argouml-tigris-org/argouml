@@ -37,6 +37,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.*;
 
 /** Well-formedness rule [1] for MBehavioralFeature. See page 28 of UML 1.1
@@ -55,7 +56,7 @@ public class CrDupParamName extends CrUML {
     if (!(dm instanceof MBehavioralFeature)) return NO_PROBLEM;
     MBehavioralFeature bf = (MBehavioralFeature) dm;
     Vector params = new Vector(bf.getParameters());
-	params.remove(MMUtil.SINGLETON.getReturnParameter((MOperation)bf));
+	params.remove(UmlHelper.getHelper().getCore().getReturnParameter((MOperation)bf));
     Vector namesSeen = new Vector();
     Iterator enum = params.iterator();
     while (enum.hasNext()) {

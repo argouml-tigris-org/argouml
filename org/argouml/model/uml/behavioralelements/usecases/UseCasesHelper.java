@@ -23,6 +23,10 @@
 
 package org.argouml.model.uml.behavioralelements.usecases;
 
+import java.util.Collection;
+
+import ru.novosoft.uml.behavior.use_cases.MUseCase;
+
 /**
  * Helper class for UML BehavioralElements::UseCases Package.
  *
@@ -48,6 +52,22 @@ public class UseCasesHelper {
      */
     public static UseCasesHelper getHelper() {
         return SINGLETON;
+    }
+    
+    /** 
+     * <p>This method returns all extension points of a given use case.
+     *
+     * <p>Here for completeness, but actually just a wrapper for the NSUML
+     *   function.</p>
+     *
+     * @param useCase  The use case for which we want the extension points.
+     *
+     * @return         A collection of the extension points.
+     */
+
+    public Collection getExtensionPoints(MUseCase useCase) {
+
+        return useCase.getExtensionPoints();
     }
 }
 

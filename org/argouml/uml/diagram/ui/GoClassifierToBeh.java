@@ -32,6 +32,7 @@ import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.*;
 import org.argouml.uml.MMUtil;
 
@@ -49,7 +50,7 @@ public class GoClassifierToBeh implements TreeModel {
   public Object getChild(Object parent, int index) {
     if (parent instanceof MClassifier) {
       MClassifier cls = (MClassifier) parent;
-	  Collection behs = MMUtil.SINGLETON.getOperations(cls);
+	  Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);
 	  Vector v = new Vector(behs);
       return v.elementAt(index);
     }
@@ -58,7 +59,7 @@ public class GoClassifierToBeh implements TreeModel {
   
   public int getChildCount(Object parent) {
     if (parent instanceof MClassifier) {
-      Collection beh = MMUtil.SINGLETON.getOperations((MClassifier) parent);
+      Collection beh = UmlHelper.getHelper().getCore().getOperations((MClassifier) parent);
       return (beh == null) ? 0 : beh.size();
     }
     return 0;
@@ -67,7 +68,7 @@ public class GoClassifierToBeh implements TreeModel {
   public int getIndexOfChild(Object parent, Object child) {
     if (parent instanceof MClassifier) {
       MClassifier cls = (MClassifier) parent;
-	  Collection behs = MMUtil.SINGLETON.getOperations(cls);
+	  Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);
 	  Vector v = new Vector(behs);
       if (v.contains(child)) return v.indexOf(child);
     }
