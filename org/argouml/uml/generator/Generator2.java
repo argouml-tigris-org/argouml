@@ -278,7 +278,8 @@ public abstract class Generator2
      */
     public String generateExpression(Object expr) {
         if (Model.getFacade().isAExpression(expr))
-            return generateUninterpreted((String) Model.getFacade().getBody(expr));
+            return generateUninterpreted(
+                    (String) Model.getFacade().getBody(expr));
         else if (Model.getFacade().isAConstraint(expr))
             return generateExpression(Model.getFacade().getBody(expr));
         return "";
