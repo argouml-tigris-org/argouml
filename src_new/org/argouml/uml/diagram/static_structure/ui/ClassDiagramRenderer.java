@@ -82,13 +82,15 @@ public class ClassDiagramRenderer
         else if (ModelFacade.isAModel(node)) return new FigModel(gm, node);
         else if (ModelFacade.isASubsystem(node)) return new FigSubsystem(gm, node);
         else if (ModelFacade.isAPackage(node)) return new FigPackage(gm, node);
-        cat.debug("TODO ClassDiagramRenderer getFigNodeFor " + node);
+        cat.error("TODO ClassDiagramRenderer getFigNodeFor " + node);
         return null;
     }
 
     /** Return a Fig that can be used to represent the given edge */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
-        cat.debug("making figedge for " + edge);
+        if (cat.isDebugEnabled() ) {
+            cat.debug("making figedge for " + edge);
+        }
         if (ModelFacade.isAAssociation(edge)) {
             FigAssociation ascFig = new FigAssociation(edge, lay);
             return ascFig;
@@ -129,11 +131,19 @@ public class ClassDiagramRenderer
             if (ModelFacade.getStereotypes(edge).size() > 0) {
                 stereotype = ModelFacade.getStereotypes(edge).iterator().next();
             }
-            cat.debug("stereotype: " + ModelFacade.getName(stereotype));
+            if (cat.isDebugEnabled() ) {
+            	if (stereotype != null) {
+                    cat.debug("stereotype: " + ModelFacade.getName(stereotype));
+                } else {
+                    cat.debug("stereotype is null");
+                }
+            } 
             if (stereotype != null
                     && ExtensionMechanismsHelper.getHelper().isStereotypeInh(
                             stereotype, "realize", "Abstraction")) {
-                cat.debug("is a realisation");
+                if (cat.isDebugEnabled() ) {
+                    cat.debug("is a realisation");
+                }
                 FigRealization realFig = new FigRealization(edge);
 
                 Object supplier = ((ModelFacade.getSuppliers(edge).toArray())[0]);
@@ -153,7 +163,7 @@ public class ClassDiagramRenderer
                 return depFig;
             }
         }
-        cat.debug("TODO ClassDiagramRenderer getFigEdgeFor");
+        cat.error("TODO ClassDiagramRenderer getFigEdgeFor");
         return null;
     }
 
