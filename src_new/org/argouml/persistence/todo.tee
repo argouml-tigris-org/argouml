@@ -58,7 +58,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 </template>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="org.argouml.xml.todo.ToDoItemXMLHelper">
+<template class="org.argouml.persistence.ToDoItemXMLHelper">
 <![CDATA[
 <todoitem>
 	<headline><ocl>self.Headline</ocl></headline>
@@ -70,7 +70,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 </template>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="org.argouml.xml.todo.ResolvedCriticXMLHelper">
+<template class="org.argouml.persistence.ResolvedCriticXMLHelper">
 <![CDATA[
 <issue>
 	<poster><ocl>self.Critic</ocl></poster>
@@ -80,7 +80,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 </template>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="org.argouml.xml.todo.OffenderXMLHelper">
+<template class="org.argouml.persistence.OffenderXMLHelper">
 <![CDATA[
 <offender><ocl>self.Offender</ocl></offender>
 ]]>
