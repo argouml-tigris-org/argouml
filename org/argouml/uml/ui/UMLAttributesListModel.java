@@ -175,6 +175,7 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
             fireContentsChanged(this,index,index+1);
         }
     }
+ 
     
 }
 
