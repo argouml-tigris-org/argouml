@@ -84,7 +84,9 @@ import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateImpl;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.behavior.state_machines.MStubState;
 import ru.novosoft.uml.behavior.state_machines.MSubmachineState;
+import ru.novosoft.uml.behavior.state_machines.MSynchState;
 import ru.novosoft.uml.behavior.state_machines.MTimeEvent;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.behavior.use_cases.MActor;
@@ -477,6 +479,11 @@ public class ModelFacade {
      * Invisible model element: STEREOTYPE.
      */
     public static final Object STEREOTYPE = MStereotype.class;
+
+    /**
+     * Invisible model element: SYNCHSTATE.
+     */
+    public static final Object SYNCHSTATE = MSynchState.class;
 
     /**
      * Invisible model element: PARTITION.
@@ -1766,6 +1773,26 @@ public class ModelFacade {
     }
 
     /**
+     * Recognizer for StubState
+     *
+     * @param handle candidate
+     * @return true if handle is a StubState
+     */
+    public static boolean isAStubState(Object handle) {
+        return handle instanceof MStubState;
+    }
+
+    /**
+     * Recognizer for SubmachineState
+     *
+     * @param handle candidate
+     * @return true if handle is a SubmachineState
+     */
+    public static boolean isASubmachineState(Object handle) {
+        return handle instanceof MSubmachineState;
+    }
+
+    /**
      * Recognizer for Subsystem.
      *
      * @param handle candidate
@@ -1773,6 +1800,15 @@ public class ModelFacade {
      */
     public static boolean isASubsystem(Object handle) {
         return handle instanceof MSubsystem;
+    }
+
+    /** Recognizer for SynchState
+     *
+     * @param handle candidate
+     * @return true if handle is a SynchState
+     */
+    public static boolean isASynchState(Object handle) {
+        return handle instanceof MSynchState;
     }
 
     /**
@@ -2528,6 +2564,18 @@ public class ModelFacade {
             return ((MExpression) handle).getBody();
         }
 	return illegalArgumentObject(handle);
+    }
+
+    /**
+     *  Return the Synch State's bound.
+     *  @param handle the synch State
+     *  @return bound
+     */
+    public static int getBound(Object handle) {
+        if (handle instanceof MSynchState) {
+            return ((MSynchState) handle).getBound();
+        }
+        return illegalArgumentInt(handle);
     }
 
     /**
@@ -5141,6 +5189,18 @@ public class ModelFacade {
     private static Collection illegalArgumentCollection(Object arg) {
         illegalArgument(arg);
         return null;
+    }
+
+    /**
+     * Method that throws an error when a ModelFacade method is called with
+     * an incorrect argument.<p>
+     *
+     * @param arg is the incorrect argument.
+     * @return Int for use in the return statement.
+     */
+    private static int illegalArgumentInt(Object arg) {
+        illegalArgument(arg);
+        return 0;
     }
 
     /**

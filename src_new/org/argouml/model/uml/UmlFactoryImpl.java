@@ -446,6 +446,8 @@ class UmlFactoryImpl
             return getActivityGraphs().createSubactivityState();
         } else if (elementType == ModelFacade.COMPOSITESTATE) {
             return getStateMachines().createCompositeState();
+        } else if (elementType == ModelFacade.SYNCHSTATE) {
+            return getStateMachines().createSynchState();
         } else if (elementType == ModelFacade.STATE) {
             return getStateMachines().createState();
         } else if (elementType == ModelFacade.CLASSIFIER_ROLE) {
