@@ -1392,7 +1392,7 @@ How do I create a generalisation between nodes? See issue ... -->
 
     <para>A key part of any component or deployment diagram is to show
       dependencies. For details see
-      <xref linkend="s1.ref.dependency_use_case"/>.</para>
+      <xref linkend="s1.ref.dependency_class"/>.</para>
 
     <caution><para>UML relies on stereotyping of dependencies on component and
       deployment diagrams to characterize the types of relationship. In the
