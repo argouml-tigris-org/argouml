@@ -559,7 +559,9 @@ public class FigUseCase extends FigNodeModelElement {
 
          Dimension textSize = _getTextSize();
 
-         return _calcEllipse(textSize, _MIN_VERT_PADDING);
+         Dimension _size = _calcEllipse(textSize, _MIN_VERT_PADDING);
+
+         return new Dimension(Math.max(_size.width,100), Math.max(_size.height,60));
      }
 
 
