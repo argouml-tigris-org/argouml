@@ -4477,18 +4477,22 @@ public class ModelFacade {
     }
 
     /**
-     * Sets an initial value of some attribute.
-     * @param attribute
-     * @param expression
+     * Sets an initial value.
+     *
+     * @param at attribute that we set the initial value of
+     * @param expr that is the value to set
      */
     public static void setInitialValue(Object at, Object expr) {
-        if (at instanceof MAttribute
-            && (expr == null || expr instanceof MExpression)) {
-            ((MAttribute)at).setInitialValue((MExpression)expr);
+        if (at instanceof MAttribute) {
+	    if (expr == null || expr instanceof MExpression) {
+		((MAttribute) at).setInitialValue((MExpression) expr);
+		return;
+	    }
+	    throw new IllegalArgumentException("Unrecognized expression "
+					       + getClassNull(expr));
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(at) + " or " + 
-	    getClassNull(expr));
+        throw new IllegalArgumentException("Unrecognized object " 
+					   + getClassNull(at));
     }
 
     public static void setInstance(Object handle, Object inst) {
