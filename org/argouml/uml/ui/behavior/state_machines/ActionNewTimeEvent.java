@@ -37,7 +37,7 @@ public class ActionNewTimeEvent extends ActionNewEvent {
     public static ActionNewTimeEvent SINGLETON = new ActionNewTimeEvent();
 
     /**
-     * Constructor for ActionNewCallEvent.
+     * Constructor for ActionNewTimeEvent.
      */
     protected ActionNewTimeEvent() {
         super();
