@@ -125,7 +125,7 @@ public class UmlFilePersister extends AbstractFilePersister {
             FileOutputStream stream =
                 new FileOutputStream(file);
 
-            generateProject(project, stream);
+            writeProject(project, stream);
 
             stream.close();
 
@@ -160,16 +160,14 @@ public class UmlFilePersister extends AbstractFilePersister {
     }
 
     /**
-     * Generate the output for a project on the given stream.
+     * Write the output for a project on the given stream.
      *
      * @param project The project to output.
      * @param stream The stream to write to.
-     * @throws FileNotFoundException If we cannot find the tempate file to
-     * 				     process.
      * @throws SaveException If something goes wrong.
      */
-    void generateProject(Project project, OutputStream stream)
-    	throws SaveException, FileNotFoundException {
+    void writeProject(Project project, OutputStream stream)
+        	throws SaveException {
         OutputStreamWriter outputStreamWriter;
         try {
             outputStreamWriter = new OutputStreamWriter(stream, "UTF-8");
@@ -193,11 +191,13 @@ public class UmlFilePersister extends AbstractFilePersister {
                 expander.expand(writer, project, "  ", "");
                 // For next version of GEF:
                 // expander.expand(writer, project, "  ");
+            } catch (FileNotFoundException e) {
+                throw new SaveException(e);
             } catch (ExpansionException e) {
                 throw new SaveException(e);
             }
 
-            // Write out non xmi sections
+            // Write out XMI section first
             int size = project.getMembers().size();
             for (int i = 0; i < size; i++) {
                 ProjectMember projectMember =
@@ -212,6 +212,7 @@ public class UmlFilePersister extends AbstractFilePersister {
                 }
             }
 
+            // Write out all non-XMI sections
             for (int i = 0; i < size; i++) {
                 ProjectMember projectMember =
                     (ProjectMember) project.getMembers().elementAt(i);
@@ -240,8 +241,8 @@ public class UmlFilePersister extends AbstractFilePersister {
         try {
             Project p = new Project(url);
 
-            // TODO: Uncomment this code when the mystery
-            // of loading a resource is solved.
+//            // TODO: Uncomment this code when the mystery
+//            // of loading a resource is solved.
 //            int versionFromFile = Integer.parseInt(getVersion(url));
 //
 //            LOG.info("Loading uml file of version " + versionFromFile);
@@ -300,18 +301,12 @@ public class UmlFilePersister extends AbstractFilePersister {
         throws OpenException {
 
         try {
-            String upgradeFilesPath = "/org/argouml/persistence/";
+            String upgradeFilesPath = "/org/argouml/persistence/upgrades";
             String upgradeFile = "upgrade" + version + ".xsl";
 
-            // TODO: This should not access the hard disk file
-            String sourcePath = "D:/CVS/argouml/src_new";
-            String xsltFileName = sourcePath + upgradeFilesPath + upgradeFile;
-            File xsltFile = new File(xsltFileName);
-            URL xsltUrl = xsltFile.toURL();
-
             // TODO: But should instead access a resource inside the jar
-    //        String xsltFileName = upgradeFilesPath + upgradeFile;
-    //        URL xsltUrl = UmlFilePersister.class.getResource(xsltFileName);
+            String xsltFileName = upgradeFilesPath + upgradeFile;
+            URL xsltUrl = UmlFilePersister.class.getResource(xsltFileName);
             LOG.info("Resource is " + xsltUrl);
 
             // Read xsltStream into a temporary file
@@ -345,6 +340,13 @@ public class UmlFilePersister extends AbstractFilePersister {
         }
     }
 
+    /**
+     * Read an XML file at the given URL and extracts the version number
+     * from the root tag.
+     * @param url the URL of the XML file
+     * @return The version number
+     * @throws IOException
+     */
     private String getVersion(URL url) throws IOException {
         BufferedInputStream inputStream =
             new BufferedInputStream(url.openStream());

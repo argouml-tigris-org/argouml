@@ -25,8 +25,8 @@
 package org.argouml.persistence;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -172,11 +172,12 @@ public class PersistenceManager {
     public String getQuickViewDump(Project project) {
         OutputStream stream = new ByteArrayOutputStream();
         try {
-            quickViewDump.generateProject(project, stream);
+            quickViewDump.writeProject(project, stream);
         } catch (SaveException e) {
-            return "Could not save project: " + e;
-        } catch (FileNotFoundException e) {
-            return "Could not save project: " + e;
+            // If anything goes wrong return the stack
+            // trace as a string so that we get some
+            // useful feedback.
+            e.printStackTrace(new PrintStream(stream));
         }
         return stream.toString();
     }
