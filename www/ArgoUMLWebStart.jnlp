@@ -2,8 +2,8 @@
       <!-- JNLP File for launching ArgoUML with WebStart -->
       <jnlp
         spec="1.0+"
-        codebase="http://argouml.tigris.org/files/4/3/"
-        href="http://argouml.tigris.org/files/4/3/ArgoUMLWebStart.jnlp">
+        codebase="http://argouml.tigris.org/v094/"
+        href="http://argouml.tigris.org/v094/ArgoUMLWebStart.jnlp">
         <information>
           <title>ArgoUML</title>
           <vendor>Tigris.org (Open Source)</vendor>
@@ -18,11 +18,11 @@
         </security>
         <resources>
           <j2se version="1.3 1.2"/>
-          <jar href="http://argouml.tigris.org/files/4/3/argouml.jar" main="true" download="eager"/>
-          <jar href="http://argouml.tigris.org/files/4/3/xerces.jar"/>
-          <jar href="http://argouml.tigris.org/files/4/3/gef.jar"/>
-          <jar href="http://argouml.tigris.org/files/4/3/ocl-argo.jar"/>
-          <jar href="http://argouml.tigris.org/files/4/3/nsuml.jar"/>
+          <jar href="http://argouml.tigris.org/v094/argouml.jar" main="true" download="eager"/>
+          <jar href="http://argouml.tigris.org/v094/xerces.jar"/>
+          <jar href="http://argouml.tigris.org/v094/gef.jar"/>
+          <jar href="http://argouml.tigris.org/v094/ocl-argo.jar"/>
+          <jar href="http://argouml.tigris.org/v094/nsuml.jar"/>
         </resources>
         <application-desc main-class="org.argouml.application.Main"/>
       </jnlp>
