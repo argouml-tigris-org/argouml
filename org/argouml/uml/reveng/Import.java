@@ -72,6 +72,7 @@ public class Import {
 	private static String src_path;
 	
 	static private JCheckBox create_diagrams;
+        static private JCheckBox minimise_figs;
 
     // log4j logging
     private static Category cat = Category.getInstance(org.argouml.uml.reveng.Import.class);
@@ -84,32 +85,24 @@ public class Import {
 
 	if(configPanel == null) {
 	    JPanel general = new JPanel();
-	    general.setLayout(new GridBagLayout());
+	    general.setLayout(new GridLayout(3,1));
 
 	    descend = new JCheckBox("Descend directories recursively.");
 	    descend.setSelected(true);
-	    general.add(descend,
-			new GridBagConstraints(GridBagConstraints.RELATIVE,
-					       GridBagConstraints.RELATIVE,
-					       GridBagConstraints.REMAINDER,
-					       1,
-					       0.0, 0.0,
-					       GridBagConstraints.NORTHWEST,
-					       GridBagConstraints.NONE,
-					       new Insets(5, 5, 0, 5),
-					       0, 0));
+	    general.add(descend);
+            
 		create_diagrams = new JCheckBox("Create diagrams from imported code", true);
-		general.add(create_diagrams,
-		  new GridBagConstraints(GridBagConstraints.RELATIVE,
-					 GridBagConstraints.RELATIVE,
-					 GridBagConstraints.REMAINDER,
-					 GridBagConstraints.REMAINDER,
-					 0.0, 1.0,
-					 GridBagConstraints.NORTHWEST,
-					 GridBagConstraints.NONE,
-					 new Insets(0, 5, 0, 5),
-					 0, 0));
+		general.add(create_diagrams);
+                
+                minimise_figs = new JCheckBox("Minimise Class icons in diagrams", true);
+		general.add(minimise_figs);
 
+                // de-selects the fig minimising if we are not creating diagrams
+                create_diagrams.addActionListener(new ActionListener(){
+                    public void actionPerformed(java.awt.event.ActionEvent actionEvent){
+                        if(!create_diagrams.isSelected())
+                            minimise_figs.setSelected(false);}});
+                
 	    JTabbedPane tab = new JTabbedPane();
 	    tab.add(general, "General");
 	    tab.add(JavaImport.getConfigPanel(), "Java");
@@ -333,7 +326,18 @@ public class Import {
             else
                 return true;
 	}
-	
+
+	/**
+	 * Check, if "Minimise Class icons in diagrams" is selected.
+	 * @return true, if "Minimise Class icons in diagrams" is selected
+	 */
+	public static boolean isMinimiseFigsChecked() {
+            if(minimise_figs != null)
+		return minimise_figs.isSelected();
+            else
+                return false;
+	}
+        
     /**
      * Tells if the file is (Java) parseable or not.
      * Must match with files that are actually parseable.
