@@ -2154,11 +2154,11 @@ public class ParserDisplay extends Parser {
         2. The name of the trigger was present, but is altered.
         3. A trigger is not given. None exists yet.
         4. The name of the trigger was present, but is removed.
-        The reaction in these cases is:
+        The reaction in these cases should be:
         1. Create a new trigger, name it, and hook it to the transition.
-        2. The trigger is renamed.
+        2. Rename the trigger.
         3. Nop.
-        4. The existing trigger is unhooked and erased.
+        4. Unhook and erase the existing trigger.
         
         In fact it is even more complicated for case 1:
         If the transition did not have a trigger before, 
@@ -2183,28 +2183,61 @@ public class ParserDisplay extends Parser {
             }
 	} else { 
             // case 3 and 4
-            if (trigger.length() == 0) {
+            if (evt == null) {
+                ;// case 3
+	    } else {
                 // case 4
                 ModelFacade.setTrigger(trans, null); // unhook it
                 // now erase it
                 /* TODO: Erase the event!*/
                 /* This does not work: (and besides, it can be another kind of event) */
                 /* StateMachinesFactory.getFactory().deleteCallEvent((MCallEvent) evt); */
-            } else {
-                ;// case 3
             }
         }
 
+	/* handle the Guard
+	We can distinct between 4 cases:
+        1. A guard is given. None exists yet.
+        2. The expression of the guard was present, but is altered.
+        3. A guard is not given. None exists yet.
+        4. The expression of the guard was present, but is removed.
+        The reaction in these cases should be:
+        1. Create a new guard, set its name, language & expression, 
+	   and hook it to the transition.
+        2. Change the guard's expression. Leave the name & language untouched.
+        3. Nop.
+        4. Unhook and erase the existing guard.
+        */
+	Object g = ModelFacade.getGuard(trans);
 	if (guard.length() > 0) {
-	    Object g = parseGuard(guard);
-	    if (g != null) {
-		ModelFacade.setName(g, "anon");
-		ModelFacade.setTransition(g, trans);
-		ModelFacade.setGuard(trans, g);
+	    if (g == null) {
+                // case 1
+		g = UmlFactory.getFactory().getStateMachines().createGuard();
+		if (g != null) {
+		    ModelFacade.setExpression(g, UmlFactory.getFactory()
+		    	.getDataTypes().createBooleanExpression("Java", guard));
+		    ModelFacade.setName(g, "anon");
+		    ModelFacade.setTransition(g, trans);
+		    ModelFacade.setGuard(trans, g);
+		}
+	    } else {
+                // case 2
+		/* TODO: Creating a new expression here, 
+		which causes the language to be reset to "Java".  
+		Instead we should only change the string! */
+		ModelFacade.setExpression(g, UmlFactory.getFactory()
+		    .getDataTypes().createBooleanExpression("Java", guard));
+	    }
+	} else { 
+	    if (g == null) {
+                ;// case 3
+	    } else {
+                // case 4
+		ModelFacade.setGuard(trans, null); // unhook it
+		// now erase it:
+		/* TODO: Erase the guard and the expression, or shouldn't we? */
 	    }
 	}
-	else
-	    ModelFacade.setGuard(trans, null);
 
 	if (actions.length() > 0) {
 	    Object effect = /*(MCallAction)*/ parseAction(actions);
