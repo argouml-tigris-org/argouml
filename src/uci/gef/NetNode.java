@@ -37,14 +37,12 @@ import java.util.*;
  * @see NetPort
  */
 
-public class NetNode extends NetPrimitive {
+public abstract class NetNode extends NetPrimitive {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
   /** An array of the ports on this node */
-  protected NetPort portList[];
-  /** Number ports on this node */
-  protected int numPorts;
+  protected Vector _ports;
 
   /** Nodes may have a list of predefined FigNode's that give the
    *  node different looks. Needs-More-Work: This code is not fully
@@ -58,13 +56,12 @@ public class NetNode extends NetPrimitive {
    *  ports. The attributes of the default node will be used if they
    *  are not overridden in this node (i.e., nodes have attributes and
    *  there is a virual copy relationship between some nodes). */
-  public NetNode(NetNode deft, int nPorts) {
-    numPorts = nPorts;
-    portList = new NetPort[nPorts];
+  public NetNode(NetNode deft, Vector ports) {
+    _ports = ports;
   }
 
   /** Construct a new NetNode with no default attributes and no ports. */
-  public NetNode() { this(null, 0); }
+  public NetNode() { this(null, new Vector()); }
 
   /** Usually when nodes are created it is deon through newInstance
    *  and there is no chance to supply a default node or to connect
@@ -82,7 +79,12 @@ public class NetNode extends NetPrimitive {
   public Object getAttributes() { return null; }
 
   /** reply my NetPort with the given index. */
-  public NetPort getPort(int i) { return portList[i]; }
+  public NetPort getPort(int i) { return (NetPort) _ports.elementAt(i); }
+
+  /** reply my NetPorts. */
+  public Vector getPorts() { return _ports; }
+  public void setPorts(Vector ports) { _ports = ports; }
+  public void addPort(NetPort p) { _ports.addElement(p); }
 
   /** returns the FigNodeList */
   public Hashtable getPresentations() { return _presentations; }
@@ -93,8 +95,9 @@ public class NetNode extends NetPrimitive {
   /** Remove this node from the underling connected graph model. */
   public void dispose() {
     //System.out.println("disposing: " + toString());
-    for (int i = 0; i < numPorts; ++i) {
-      if (portList[i] != null) portList[i].dispose();
+    Enumeration ps = _ports.elements();
+    while (ps.hasMoreElements()) {
+      ((NetPort)ps.nextElement()).dispose();
     }
     Vector v = new Vector(2);
     v.addElement(Globals.REMOVE);
@@ -123,29 +126,7 @@ public class NetNode extends NetPrimitive {
    *  example, but all subclasses should override this method. NetPorts
    *  of this NetNode should be associated with individual Figs that
    *  make up the FigNode. */
-  public FigNode makePresentation(Layer lay) {
-    Fig obj1 = new FigRect(-25, -25, 50, 50, Color.black, Color.white);
-    Fig obj2 = new FigCircle(-20, -20, 40, 40, Color.red, null);
-    Fig obj3 = new FigCircle( -5, -30, 10, 10, Color.black, Color.blue);
-    Fig obj4 = new FigCircle( -5,  20, 10, 10, Color.black, Color.blue);
-    Fig obj5 = new FigRect(-30,  -5, 10, 10, Color.black, Color.green);
-    Fig obj6 = new FigRect( 20,  -5, 10, 10, Color.black, Color.green);
-    Vector figs = new Vector();
-    figs.addElement(obj1);
-    figs.addElement(obj2);
-    figs.addElement(obj3);
-    figs.addElement(obj4);
-    figs.addElement(obj5);
-    figs.addElement(obj6);
-    FigNode fn = new FigNode(this, figs);
-
-    fn.addPort(portList[0], obj3);
-    fn.addPort(portList[1], obj4);
-    fn.addPort(portList[2], obj5);
-    fn.addPort(portList[3], obj6);
-
-    return fn;
-  }
+  public abstract FigNode makePresentation(Layer lay);
 
   ////////////////////////////////////////////////////////////////
   // event handlers
