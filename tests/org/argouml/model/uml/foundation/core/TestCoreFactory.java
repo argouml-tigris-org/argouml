@@ -232,17 +232,9 @@ public class TestCoreFactory extends TestCase {
 	MModel model = ModelManagementFactory.getFactory().createModel();
 	MClass class1 = CoreFactory.getFactory().buildClass(model);
 	MAssociation assoc1 =
-	    CoreFactory.getFactory().buildAssociation(
-						      class1,
-						      true,
-						      class1,
-						      true);
+        CoreFactory.getFactory().buildAssociation(class1, class1);
 	MAssociation assoc2 =
-	    CoreFactory.getFactory().buildAssociation(
-						      class1,
-						      true,
-						      class1,
-						      true);
+	    CoreFactory.getFactory().buildAssociation(class1, class1);
 	WeakReference class1wr = new WeakReference(class1);
 	WeakReference assoc1wr = new WeakReference(assoc1);
 	WeakReference assoc2wr = new WeakReference(assoc2);
