@@ -116,11 +116,17 @@ html on the &argouml; web site.
 
       <listitem>
 	<para>
-Do not include lists of what changes have been done.
+Do not include lists of what changes have been done to the files.
 This information is kept by CVS, the version control tool.
 This is changed since Jeremy Bennet did the work for 
 the 0.9/0.10 User Manual and there might still exist such lists.
 Remove them while changing the files!
+</para>
+        <para>
+The Cookbook has a Change Log 
+(See <xref linkend="changelog"/>)
+that is updated for every significant
+change but that is for the purpose of making it easier for the readers.
 </para>
       </listitem>
 

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
+
+<preface id="changelog">
+  <title>Change Log</title>
+
+  <table>
+    <title>Changes done</title>
+    <tgroup cols="3">
+      <thead>
+        <row>
+          <entry>When</entry>
+          <entry>What</entry>
+          <entry>Who</entry>
+        </row>
+      </thead>
+      <!--
+      Fill with lines like this. Newest entry first.
+
+      Also add a link to the new text (if any).
+
+      <tbody valign="top">
+        <row>
+          <entry>2004-01-01</entry>
+          <entry>
+Change to XXX.
+(See <xref linkend="xxx"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+      -->
+
+      <tbody valign="top">
+        <row>
+          <!-- When -->
+          <entry>2004-07-25</entry>
+
+          <!-- What -->
+          <entry>
+Added this Change Log.
+(See <xref linkend="changelog"/>).
+<!-- This is a rather stupid reference but it is there more to set the
+     level than anything else.
+ -->
+</entry>
+
+          <!-- Who -->
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+    </tgroup>
+  </table>
+</preface>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "cookbook.xml"
+sgml-parent-document: ("cookbook.xml" "preface" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  cookbook.xml"
+indent-tabs-mode: nil
+End:
+
+-->

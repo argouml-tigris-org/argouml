@@ -2,6 +2,7 @@
 <!DOCTYPE book SYSTEM "../docbook-setup/docbookx/docbookx.dtd" [
 <!-- $Id$ -->
 
+<!ENTITY changelog SYSTEM "changelog.xml">
 <!ENTITY building SYSTEM "building.xml">
 <!ENTITY requirements SYSTEM "require.xml">
 <!ENTITY cvs SYSTEM "cvs.xml">
@@ -87,6 +88,7 @@ This version of the cookbook is loosely connected to the version
      </bookinfo>
      <toc/>
 
+  &changelog;
   <chapter>
     <title>Introduction</title>
     <sect1 id="thanks">
