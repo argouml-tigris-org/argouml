@@ -104,6 +104,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
     Enumeration persEnum = _perspectives.elements();
     while (persEnum.hasMoreElements()) 
       _combo.addItem(persEnum.nextElement());
+    setCurPerspective((TreeModel)_perspectives.elementAt(0));
     updateTree();
   }
 
@@ -207,15 +208,13 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
 
   protected void updateTree() {
     ToDoPerspective tm = (ToDoPerspective) _combo.getSelectedItem();
-    if (tm != _curPerspective) {
-      _curPerspective = tm;
-      if (_curPerspective == null) _tree.hide();
-      else {
-	System.out.println("ToDoPane setting tree model");
-	_curPerspective.setRoot(_root);
-	_tree.setModel(_curPerspective);
-	_tree.show(); // blinks?
-      }
+    _curPerspective = tm;
+    if (_curPerspective == null) _tree.hide();
+    else {
+      System.out.println("ToDoPane setting tree model");
+      _curPerspective.setRoot(_root);
+      _tree.setModel(_curPerspective);
+      _tree.show(); // blinks?
     }
   }
 

@@ -64,7 +64,7 @@ public class ToDoTreeRenderer extends BasicTreeCellRenderer {
     Component r = super.getTreeCellRendererComponent(tree, value, sel,
 						     expanded, leaf,
 						     row, hasFocus);
-    
+
     if (r instanceof JLabel) {
       JLabel lab = (JLabel) r;
       if (value instanceof ToDoItem) {
@@ -84,6 +84,9 @@ public class ToDoTreeRenderer extends BasicTreeCellRenderer {
       if (value instanceof Poster) {
 	lab.setIcon(MetalIconFactory.getTreeFolderIcon());
       }
+      if (value instanceof PriorityNode) {
+	lab.setIcon(MetalIconFactory.getTreeFolderIcon());
+      }
       //       if (value instanceof PriorityNode) {
       //       }
       //       if (value instanceof KnowledgeType) {
@@ -95,7 +98,7 @@ public class ToDoTreeRenderer extends BasicTreeCellRenderer {
 
   ////////////////////////////////////////////////////////////////
   // utility functions
-  
+
   protected static ImageIcon loadIconResource(String name) {
     String imgName = imageName(name);
     ImageIcon res = null;

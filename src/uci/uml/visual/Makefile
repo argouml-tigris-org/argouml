@@ -34,11 +34,29 @@ GEN =
 CLASSES = \
 	ClassDiagramGraphModel.class \
 	ClassDiagramRenderer.class \
+	FigActor.class \
 	FigAssociation.class \
 	FigClass.class \
+	FigDependency.class \
 	FigGeneralization.class \
+	FigInstance.class \
+	FigLink.class \
+	FigMessage.class \
+	FigNote.class \
+	FigPackage.class \
+	FigPseudostate.class \
+	FigState.class \
+	FigTrace.class \
+	FigTransition.class \
+	FigUseCase.class \
+	StateDiagramGraphModel.class \
+	StateDiagramRenderer.class \
 	UMLClassDiagram.class \
-	UMLDiagram.class 
+	UMLDiagram.class \
+	UMLStateDiagram.class \
+	UMLUseCaseDiagram.class \
+	UseCaseDiagramGraphModel.class \
+	UseCaseDiagramRenderer.class
 
 all: $(GEN) $(CLASSES)
 

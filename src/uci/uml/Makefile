@@ -26,91 +26,13 @@
 
 
 
-include ../../Makefile.config
+include ../Makefile.config
 
 # gen is not used now
 GEN = 
 
 CLASSES = \
-	Actions.class \
-	AddToDoItemDialog.class \
-	DelayedChangeNotify.class \
-	DelayedVetoableChangeListener.class \
-	DesignIssuesDialog.class \
-	DetailsPane.class \
-	DismissToDoItemDialog.class \
-	DisplayTextTree.class \
-	DocumentationManager.class \
-	EmailExpertDialog.class \
-	GoClassifierToBeh.class \
-	GoClassifierToStr.class \
-	GoDiagramToEdge.class \
-	GoDiagramToNode.class \
-	GoGenElementToDerived.class \
-	GoListToDecisionsToItems.class \
-	GoListToGoalsToItems.class \
-	GoListToPriorityToItem.class \
-	GoModelToBaseElements.class \
-	GoModelToDiagram.class \
-	GoModelToElements.class \
-	GoProjectDiagram.class \
-	GoProjectModel.class \
-	GoalsDialog.class \
-	JasonsTheme.class \
-	Menu.class \
-	ModelElementRenderer.class \
-	MultiEditorPane.class \
-	NavAssociation.class \
-	NavContainment.class \
-	NavDiagramCentric.class \
-	NavInheritance.class \
-	NavPackageCentric.class \
-	NavPerspective.class \
-	NavStrictContainment.class \
-	NavigatorPane.class \
-	PriorityNode.class \
-	Project.class \
-	ProjectBrowser.class \
-	PropPanel.class \
-	PropPanelAssoc.class \
-	PropPanelAttr.class \
-	PropPanelClass.class \
-	PropPanelInterface.class \
-	PropPanelModel.class \
-	PropPanelActor.class \
-	PropPanelUseCase.class \
-	PropPanelNote.class \
-	PropPanelState.class \
-	PropPanelPseudostate.class \
-	SpacerPanel.class \
-	StatusBar.class \
-	TabDiagram.class \
-	TabDocs.class \
-	TabHash.class \
-	TabHistory.class \
-	TabModelTarget.class \
-	TabProps.class \
-	TabSpawnable.class \
-	TabSrc.class \
-	TabTable.class \
-	TabText.class \
-	TabToDo.class \
-	TabToDoTarget.class \
-	TabUMLDisplay.class \
-	ToDoByDecision.class \
-	ToDoByGoal.class \
-	ToDoByOffender.class \
-	ToDoByPoster.class \
-	ToDoByPriority.class \
-	ToDoByType.class \
-	ToDoPane.class \
-	ToDoPerspective.class \
-	ToDoTreeRenderer.class \
-	Trash.class \
-	TreeModelComposite.class \
-	TreeModelPrereqs.class \
-	UMLTreeCellRenderer.class
-
+	Main.class
 
 all: $(GEN) $(CLASSES)
 

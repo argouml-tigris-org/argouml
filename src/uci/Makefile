@@ -55,6 +55,7 @@ umlClasses:
 	cd Behavioral_Elements/Collaborations; make classes; cd ../.. ; \
 	cd test/omg; make classes; cd ../.. ; \
 	cd generate; make classes; cd .. ; \
+	make classes; \
 	cd .. ; \
 	fi
 
@@ -105,6 +106,7 @@ umlFresh:
 	cd Behavioral_Elements/Collaborations; $(JAVAC) $(JFLAGS) *.java; cd ../.. ; \
 	cd test/omg; $(JAVAC) $(JFLAGS) *.java; cd ../.. ; \
 	cd generate; $(JAVAC) $(JFLAGS) *.java; cd .. ; \
+	$(JAVAC) $(JFLAGS) *.java; \
 	cd .. ; \
 	fi
 
@@ -155,6 +157,7 @@ umlClean:
 	cd Behavioral_Elements/Collaborations; make clean; cd ../.. ; \
 	cd test/omg; make clean; cd ../.. ; \
 	cd generate; make clean; cd .. ; \
+	make clean ; \
 	cd .. ; \
 	fi
 

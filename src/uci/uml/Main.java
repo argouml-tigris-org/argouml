@@ -37,10 +37,10 @@ public class Main {
     UMLPerspectives.addElement(new NavDiagramCentric());
     UMLPerspectives.addElement(new NavInheritance());
 
-    ToDoPerspectives.addElement(new ToDoByOffender());
-    ToDoPerspectives.addElement(new ToDoByDecision());
     ToDoPerspectives.addElement(new ToDoByPriority());
+    ToDoPerspectives.addElement(new ToDoByDecision());
     ToDoPerspectives.addElement(new ToDoByGoal());
+    ToDoPerspectives.addElement(new ToDoByOffender());
     ToDoPerspectives.addElement(new ToDoByType());
     ToDoPerspectives.addElement(new ToDoByPoster());
   }

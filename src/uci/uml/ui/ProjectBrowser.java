@@ -338,6 +338,9 @@ implements IStatusBar {
   public Vector getToDoPerspectives() {
     return _toDoPane.getPerspectives();
   }
+  public void setToDoCurPerspective(TreeModel tm) {
+    _toDoPane.setCurPerspective(tm);
+  }
 
   public void select(Object o) {
     _multiPane.select(o);
