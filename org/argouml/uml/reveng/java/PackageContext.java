@@ -155,7 +155,7 @@ class PackageContext extends Context
 	    }
 	}
 	if(mClassifier == null) {
-	    throw new ClassifierNotFoundException("name");
+	    throw new ClassifierNotFoundException(name);
 	}
 
 	return mClassifier;
