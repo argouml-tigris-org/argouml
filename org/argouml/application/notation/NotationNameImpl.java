@@ -25,6 +25,7 @@ package org.argouml.application.notation;
 import org.argouml.application.api.*;
 import org.argouml.application.events.*;
 import java.util.*;
+import javax.swing.*;
 
 /**
  *   This class provides definition and manipulation of notation names.
@@ -38,20 +39,34 @@ public class NotationNameImpl implements NotationName {
 
     String _name = null;
     String _version = null;
+    Icon _icon = null;
     
     private static ArrayList _notations = null;
 
-    /** A notation without a version.
+    /** A notation without a version or icon.
      */
     protected NotationNameImpl(String name) {
-        this(name, null);
+        this(name, null, null);
     }
 
-    /** A notation with a version.
+    /** A notation without a version and with an icon.
+     */
+    protected NotationNameImpl(String name, Icon icon) {
+        this(name, null, icon);
+    }
+
+    /** A notation with a version and no icon.
      */
     protected NotationNameImpl(String name, String version) {
+        this(name, version, null);
+    }
+
+    /** A notation with a version and an icon.
+     */
+    protected NotationNameImpl(String name, String version, Icon icon) {
         _name = name;
         _version = version;
+        _icon = icon;
     }
 
     /** Accessor for the language name
@@ -76,6 +91,12 @@ public class NotationNameImpl implements NotationName {
         return getNotationNameString(_name, _version);
     }
 
+    /** Returns an icon for the notation, or null if no icon is available.
+     */
+    public Icon getIcon() {
+        return _icon;
+    }
+ 
     public String getConfigurationValue() {
         return getNotationNameString(_name, _version);
     }
