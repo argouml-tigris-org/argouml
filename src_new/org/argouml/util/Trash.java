@@ -28,6 +28,7 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
+import org.argouml.ui.ArgoDiagram;
 
 /** In the future this will be a trash can icon in the project
  * browser.  Deleting an object moves it to the trash.  You can move
@@ -72,6 +73,10 @@ public class Trash {
 	    // me.setNamespace(null);
 	    // me.setNamespace(Trash_Model);
 	    LOG.debug("added " + obj + " to trash");
+	}
+	if (ModelFacade.isADiagram(obj)) {
+	    TrashItem ti = new TrashItem(obj, places);
+	    contents.addElement(ti);
 	}
 	//TODO: trash diagrams
     }
