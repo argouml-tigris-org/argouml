@@ -927,5 +927,15 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
         return null;
     }
 
+    /**
+     * Hack to let the sequence diagrams still do their job. The sequence diagrams
+     * do not update their model correctly and that's why the updating of the
+     * classifiers goes wrong.
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateClassifiers()
+     */
+    protected boolean updateClassifiers() {
+        return true;
+    }
+
 } /* end class FigSeqLink */
 

@@ -607,13 +607,17 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
         currentDestination = (MModelElement)currentDestFig.getOwner();
     }
     if (newSource != currentSource || newDest != currentDestination) {
-        Fig newSourceFig = getLayer().presentationFor(newSource);
-        Fig newDestFig = getLayer().presentationFor(newDest);
-    
+        Fig newSourceFig = null;
+        if (newSource != null) 
+            newSourceFig = getLayer().presentationFor(newSource);
+        Fig newDestFig = null;
+        if (newDest != null)         
+            newDestFig = getLayer().presentationFor(newDest);    
         if (newSourceFig == null || newDestFig == null) {
-            delete();
+            delete(); 
             return false;
         }
+        if (true) {};
         if (newSourceFig != null && newSourceFig != currentSourceFig) {
             setSourceFigNode((FigNode)newSourceFig);
             setSourcePortFig(newSourceFig);
