@@ -604,8 +604,13 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
     Iterator rangeIter = v.iterator();
     while (rangeIter.hasNext()) {
       MMultiplicityRange mr = (MMultiplicityRange) rangeIter.next();
-      s += generateMultiplicityRange(mr);
-      if (rangeIter.hasNext()) s += ",";
+      if (!(mr.getLower() == 1 && mr.getUpper() == 1 && v.size() == 1)) {
+        s += generateMultiplicityRange(mr);
+        s += ",";
+      }
+    }
+    if (s.length() > 0 && s.lastIndexOf(',') == s.length()-1) {
+        s = s.substring(0, s.length()-1);
     }
     return s;
   }
