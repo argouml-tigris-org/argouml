@@ -40,12 +40,16 @@ import org.argouml.language.java.*;
  *
  * @author   Timothy Prinzing
  * @version  1.2 05/04/98
+ *
+ * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
  */
 public class JavaContext extends StyleContext implements ViewFactory {
 
     /**
      * Constructs a set of styles to represent java lexical 
      * tokens.  By default there are no colors or fonts specified.
+     *
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
      */
     public JavaContext() {
 	super();
@@ -72,6 +76,8 @@ public class JavaContext extends StyleContext implements ViewFactory {
      * 
      * @param attr attribute set from a token element
      *  that has a Token in the set.
+     *
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
      */
     public Color getForeground(int code) {
 	if (tokenColors == null) {
@@ -91,6 +97,8 @@ public class JavaContext extends StyleContext implements ViewFactory {
     /**
      * Fetch the font to use for a lexical
      * token with the given scan value.
+     *
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
      */
     public Font getFont(int code) {
 	if (tokenFonts == null) {
@@ -112,6 +120,8 @@ public class JavaContext extends StyleContext implements ViewFactory {
      * scan code.  The set is stored in a table to
      * facilitate relatively fast access to use in 
      * conjunction with the scanner.
+     *
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
      */
     public Style getStyleForScanValue(int code) {
 	if (code < tokenStyles.length) {
@@ -130,17 +140,23 @@ public class JavaContext extends StyleContext implements ViewFactory {
 
     /**
      * The styles representing the actual token types.
+     *
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
      */
     Style[] tokenStyles;
 
     /**
      * Cache of foreground colors to represent the 
      * various tokens.
+     *
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
      */
     transient Color[] tokenColors;
 
     /**
      * Cache of fonts to represent the various tokens.
+     *
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
      */
     transient Font[] tokenFonts;
 
@@ -149,12 +165,16 @@ public class JavaContext extends StyleContext implements ViewFactory {
      * style characteristics of the text that it renders.  This
      * simply colorizes the various tokens and assumes a constant
      * font family and size.
+     *
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
      */
     class JavaView extends WrappedPlainView {
 
 	/**
 	 * Construct a simple colorized view of java
 	 * text.
+         *
+         * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
 	 */
 	JavaView(Element elem) {
 	    super(elem);
@@ -174,6 +194,8 @@ public class JavaContext extends StyleContext implements ViewFactory {
 	 * @param a the allocated region to render into
 	 *
 	 * @see View#paint
+         *
+         * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
 	 */
         public void paint(Graphics g, Shape a) {
 	    super.paint(g, a);
@@ -195,6 +217,8 @@ public class JavaContext extends StyleContext implements ViewFactory {
 	 * @param p1 the ending position in the model
 	 * @returns the location of the end of the range
 	 * @exception BadLocationException if the range is invalid
+         *
+         * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
 	 */
         protected int drawUnselectedText(Graphics g, int x, int y, 
 					 int p0, int p1) throws BadLocationException {
@@ -228,6 +252,8 @@ public class JavaContext extends StyleContext implements ViewFactory {
 	/**
 	 * Update the scanner (if necessary) to point to the appropriate
 	 * token for the given start position needed for rendering.
+         *
+         * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
 	 */
 	void updateScanner(int p) {
 	    try {

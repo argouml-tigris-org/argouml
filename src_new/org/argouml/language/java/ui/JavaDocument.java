@@ -55,7 +55,9 @@ import javax.swing.text.*;
  * 
  * @author  Timothy Prinzing
  * @version 1.2 05/04/98
- */
+ *
+ * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
+*/
 public class JavaDocument extends PlainDocument {
 
     public JavaDocument() {
@@ -64,6 +66,8 @@ public class JavaDocument extends PlainDocument {
 
     /**
      * Create a lexical analyzer for this document.
+     *
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
      */
     public Scanner createScanner() {
 	Scanner s;
@@ -80,6 +84,8 @@ public class JavaDocument extends PlainDocument {
      * given the desired start location.  This allows
      * for adjustments needed to accomodate multiline
      * comments.
+     *
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
      */
     public int getScannerStart(int p) {
 	Element elem = getDefaultRootElement();
@@ -104,6 +110,8 @@ public class JavaDocument extends PlainDocument {
      *
      * @param chng the change event
      * @param attr the set of attributes
+     *
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
      */
     protected void insertUpdate(DefaultDocumentEvent chng, AttributeSet attr) {
 	super.insertUpdate(chng, attr);
@@ -155,6 +163,8 @@ public class JavaDocument extends PlainDocument {
      * update command on the analyzer queue.
      *
      * @param chng the change event
+     *
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
      */
     protected void removeUpdate(DefaultDocumentEvent chng) {
 	super.removeUpdate(chng);
@@ -166,9 +176,14 @@ public class JavaDocument extends PlainDocument {
 
     /**
      * Key to be used in AttributeSet's holding a value of Token.
+     *
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
      */
     static final Object CommentAttribute = new AttributeKey();
 
+    /**
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
+     */
     static class AttributeKey {
 
         public AttributeKey() {
@@ -180,8 +195,9 @@ public class JavaDocument extends PlainDocument {
 
     }
 
-
-    
+    /**
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
+     */
     public class Scanner extends sun.tools.java.Scanner {
 
         Scanner() throws IOException {
@@ -194,6 +210,8 @@ public class JavaDocument extends PlainDocument {
 	 * Sets the range of the scanner.  This should be called
 	 * to reinitialize the scanner to the desired range of
 	 * coverage.
+	 *
+         * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
 	 */
         public void setRange(int p0, int p1) throws IOException {
 	    useInputStream(new DocumentInputStream(p0, p1));
@@ -203,6 +221,8 @@ public class JavaDocument extends PlainDocument {
 	/**
 	 * This fetches the starting location of the current
 	 * token in the document.
+	 *
+         * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
 	 */
         public final int getStartOffset() {
 	    int begOffs = (int) (pos & MAXFILESIZE);
@@ -212,6 +232,8 @@ public class JavaDocument extends PlainDocument {
 	/**
 	 * This fetches the ending location of the current
 	 * token in the document.
+	 *
+         * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
 	 */
         public final int getEndOffset() {
 	    int endOffs = (int) (getEndPos() & MAXFILESIZE);
@@ -225,9 +247,14 @@ public class JavaDocument extends PlainDocument {
      * Class to provide InputStream functionality from a portion of a
      * Document.  This really should be a Reader, but not enough
      * things use it yet.
+     *
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
      */
     class DocumentInputStream extends InputStream {
 
+        /**
+         * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
+         */
         public DocumentInputStream(int p0, int p1) {
 	    this.segment = new Segment();
 	    this.p0 = p0;
@@ -255,6 +282,8 @@ public class JavaDocument extends PlainDocument {
 	 *             stream is reached.
 	 * @exception  IOException  if an I/O error occurs.
 	 * @since      JDK1.0
+	 *
+         * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
 	 */
         public int read() throws IOException {
 	    if (index >= segment.offset + segment.count) {
@@ -267,6 +296,9 @@ public class JavaDocument extends PlainDocument {
 	    return segment.array[index++];
 	}
 
+        /**
+         * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
+         */
 	void loadSegment() throws IOException {
 	    try {
 		int n = Math.min(1024, p1 - pos);
@@ -285,8 +317,14 @@ public class JavaDocument extends PlainDocument {
 	int index; // index into array of the segment
     }
 
+    /**
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
+     */
     static class LocalEnvironment extends sun.tools.java.Environment {
 
+        /**
+         * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
+         */
         public void error(Object source, int where, String err, 
 			  Object arg1, Object arg2, Object arg3) {
 	    // should do something useful... 

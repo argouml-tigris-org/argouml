@@ -52,13 +52,21 @@ import javax.swing.text.*;
  *
  * @author  Timothy Prinzing
  * @version 1.2 05/04/98
+ *
+ * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
  */
 public class JavaEditorKit extends DefaultEditorKit {
 
+    /**
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
+     */
     public JavaEditorKit() {
 	super();
     }
 
+    /**
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
+     */
     public JavaContext getStylePreferences() {
 	if (preferences == null) {
 	    preferences = new JavaContext();
@@ -66,6 +74,9 @@ public class JavaEditorKit extends DefaultEditorKit {
 	return preferences;
     }
 
+    /**
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
+     */
     public void setStylePreferences(JavaContext prefs) {
 	preferences = prefs;
     }
@@ -76,6 +87,8 @@ public class JavaEditorKit extends DefaultEditorKit {
      * Get the MIME type of the data that this
      * kit represents support for.  This kit supports
      * the type <code>text/java</code>.
+     *
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
      */
     public String getContentType() {
 	return "text/java";
@@ -85,6 +98,8 @@ public class JavaEditorKit extends DefaultEditorKit {
      * Create a copy of the editor kit.  This
      * allows an implementation to serve as a prototype
      * for others, so that they can be quickly created.
+     *
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
      */
     public Object clone() {
 	JavaEditorKit kit = new JavaEditorKit();
@@ -97,6 +112,8 @@ public class JavaEditorKit extends DefaultEditorKit {
      * that is appropriate for this type of editor.
      *
      * @return the model
+     *
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
      */
     public Document createDefaultDocument() {
 	return new JavaDocument();
@@ -109,6 +126,8 @@ public class JavaEditorKit extends DefaultEditorKit {
      * factory, so this method has no implementation.
      *
      * @return the view factory
+     *
+     * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
      */
     public final ViewFactory getViewFactory() {
 	return getStylePreferences();
