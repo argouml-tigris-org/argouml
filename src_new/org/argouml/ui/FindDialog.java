@@ -76,7 +76,7 @@ public class FindDialog extends ArgoDialog
     private static int numFinds = 0;
     
     /** Insets in pixels  */
-    private static int insetPx = 3;
+    private static final int INSET_PX = 3;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -298,7 +298,7 @@ public class FindDialog extends ArgoDialog
         JTextArea helpText = new JTextArea();
         helpText.setText(Translator.localize("dialog.find.helptext"));
         helpText.setEditable(false);
-        helpText.setMargin(new Insets(insetPx, insetPx, insetPx, insetPx));
+        helpText.setMargin(new Insets(INSET_PX, INSET_PX, INSET_PX, INSET_PX));
         help.add(new JScrollPane(helpText), BorderLayout.CENTER);
     }
 
