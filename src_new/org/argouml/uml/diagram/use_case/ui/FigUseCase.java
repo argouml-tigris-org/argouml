@@ -203,7 +203,7 @@ public class FigUseCase extends FigNodeModelElement {
         getNameFig().setTextFilled(false);
         getNameFig().setFilled(false);
         getNameFig().setLineWidth(0);
-        getNameFig().setMultiLine(true);
+        getNameFig().setMultiLine(false);
 
         // The separator, again with arbitrary bounds for now.
 
