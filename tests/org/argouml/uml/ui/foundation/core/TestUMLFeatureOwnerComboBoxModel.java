@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,81 +24,55 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
-import javax.swing.JRadioButton;
-
+import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
 import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.foundation.core.MClassImpl;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MFeature;
+import ru.novosoft.uml.model_management.MModel;
 
 import junit.framework.TestCase;
 
 /**
- * @since Oct 12, 2002
+ * @since Nov 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class TestUMLElementOwnershipVisibilityButtonGroup extends TestCase {
+public class TestUMLFeatureOwnerComboBoxModel extends TestCase {
 
-    private UMLVisibilityButtonGroup group;
-    private MModelElement elem;
+    private int oldEventPolicy;
+    private MClassifier[] types;
+    private UMLFeatureOwnerComboBoxModel model;
+    private MFeature elem;
+    
     /**
-     * Constructor for TestUMLElementOwnershipVisibilityButtonGroup.
+     * Constructor for TestUMLFeatureOwnerComboBoxModel.
      * @param arg0
      */
-    public TestUMLElementOwnershipVisibilityButtonGroup(String arg0) {
+    public TestUMLFeatureOwnerComboBoxModel(String arg0) {
         super(arg0);
     }
     
-    public void testDoPublicClick() {
-        JRadioButton button = group.getPublicButton();
-        assertNotNull("public button null!", button);
-        button.doClick();
-        assertEquals(group.getSelection(), button.getModel());
-    }
-    
-    public void testDoProtectedClick() {
-        JRadioButton button = group.getProtectedButton();
-        assertNotNull("public button null!", button);
-        button.doClick();
-        assertEquals(group.getSelection(), button.getModel());
-    }    
-    
-    public void testDoPrivateClick() {
-        JRadioButton button = group.getPrivateButton();
-        assertNotNull("public button null!", button);
-        button.doClick();
-        assertEquals(group.getSelection(), button.getModel());
-    }   
-    
-    public void testVisibilityPublic() {
-        elem.setVisibility(MVisibilityKind.PUBLIC);
-        assertEquals(group.getSelection(), group.getPublicButton().getModel());
-    }
-    
-    public void testVisibilityPrivate() {
-        elem.setVisibility(MVisibilityKind.PRIVATE);
-        assertEquals(group.getSelection(), group.getPrivateButton().getModel());
-    }
-    
-    public void testVisibilityProtected() {
-        elem.setVisibility(MVisibilityKind.PROTECTED);
-        assertEquals(group.getSelection(), group.getProtectedButton().getModel());
-    }
-
-
     /**
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
-        elem = new MClassImpl();
+        elem = CoreFactory.getFactory().createAttribute();
+        oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
         cont.setTarget(elem);
-        group = new UMLElementOwnershipVisibilityButtonGroup(cont);
-        elem.addMElementListener(group);
+        model = new UMLFeatureOwnerComboBoxModel(cont);
+        types = new MClassifier[10];
+        MModel m = ModelManagementFactory.getFactory().createModel();
+        elem.setNamespace(m);
+        for (int i = 0 ; i < 10; i++) {
+            types[i] = CoreFactory.getFactory().createClassifier();
+            m.addOwnedElement(types[i]);
+        }      
     }
 
     /**
@@ -106,9 +80,34 @@ public class TestUMLElementOwnershipVisibilityButtonGroup extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
-        elem.remove();
-        elem = null;
-        group = null;
+        UmlFactory.getFactory().delete(elem);
+        for (int i = 0 ; i < 10; i++) {
+            UmlFactory.getFactory().delete(types[i]);
+        }
+        MFactoryImpl.setEventPolicy(oldEventPolicy);
+        model = null;
     }
-
+    
+    public void testSetUp() {
+        assertEquals(10, model.getSize());
+        assertTrue(model.contains(types[5]));
+        assertTrue(model.contains(types[0]));
+        assertTrue(model.contains(types[9]));
+    }
+    
+    public void testSetPowertype() {
+        elem.setOwner(types[0]);
+        assertTrue(model.getSelectedItem() == types[0]);
+    }
+    
+    public void testSetPowertypeToNull() {
+        elem.setOwner(null);
+        assertNull(model.getSelectedItem());
+    }
+    
+    public void testRemovePowertype() {
+        UmlFactory.getFactory().delete(types[9]);
+        assertEquals(9, model.getSize());
+        assertTrue(!model.contains(types[9]));
+    } 
 }
