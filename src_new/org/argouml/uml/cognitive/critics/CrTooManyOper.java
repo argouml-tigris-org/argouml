@@ -22,24 +22,17 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrTooManyOper.java
-// Classes: CrTooManyOper
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
+
 /** A critic to detect when a classifier has to many operations). 
  *  TODO: exclude getter and setter operations from count
  */
-
-public class CrTooManyOper extends CrUML {
-
-    private static final String THRESHOLD = "Threshold";
+public class CrTooManyOper extends AbstractCrTooMany {
 
     /**
      * The constructor.
@@ -48,7 +41,7 @@ public class CrTooManyOper extends CrUML {
     public CrTooManyOper() {
 	setHeadline("Reduce Operations on <ocl>self</ocl>");
 	addSupportedDecision(CrUML.DEC_METHODS);
-	setArg(THRESHOLD, new Integer(20));
+	setThreshold(20);
 	addTrigger("behavioralFeature");
     }
 
@@ -60,7 +53,7 @@ public class CrTooManyOper extends CrUML {
 	if (!(ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
 	Object cls = /*(MClassifier)*/ dm;
 	// TODO: consider inherited attributes?
-	int threshold = ((Integer) getArg(THRESHOLD)).intValue();
+	int threshold = getThreshold();
 	Collection str = ModelFacade.getFeatures(cls);
 	if (str == null) return NO_PROBLEM;
 	int n = 0;

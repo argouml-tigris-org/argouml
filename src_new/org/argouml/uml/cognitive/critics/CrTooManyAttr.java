@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrTooManyAttr.java
-// Classes: CrTooManyAttr
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
@@ -35,15 +30,10 @@ import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
 /** A critic to detect when a classifier has too many attributes.
  * 
- * 
  * @author mkl
  *
  */
-public class CrTooManyAttr extends CrUML {
-
-    ////////////////////////////////////////////////////////////////
-    // constants
-    private static final String THRESHOLD = "Threshold";
+public class CrTooManyAttr extends AbstractCrTooMany {
 
     /**
      * The constructor.
@@ -52,7 +42,7 @@ public class CrTooManyAttr extends CrUML {
     public CrTooManyAttr() {
 	setHeadline("Reduce Attributes on <ocl>self</ocl>");
 	addSupportedDecision(CrUML.DEC_STORAGE);
-	setArg(THRESHOLD, new Integer(7));
+	setThreshold(7);
 	addTrigger("structuralFeature");
     }
 
@@ -64,7 +54,7 @@ public class CrTooManyAttr extends CrUML {
 	if (!(ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
 	Object cls = /*(MClassifier)*/ dm;
 	// TODO: consider inherited attributes?
-	int threshold = ((Integer) getArg(THRESHOLD)).intValue();
+	int threshold = getThreshold();
 	Collection str = ModelFacade.getFeatures(cls);
 	if (str == null) return NO_PROBLEM;
 	int n = 0;
