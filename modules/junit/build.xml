@@ -2,13 +2,13 @@
 
 <!-- ===========================================================================
 
-!!!!!!!!!!!!!!!!  Now requires ANT 1.2   !!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!  Now requires ANT 1.4.1   !!!!!!!!!!!!!!!!!!!!!
 if you get a message like:
 
 build.xml:162: Could not create task of type: copy because I can't find it in th
 e list of task class definitions
 
-You are running not running ANT 1.2
+You are running not running ANT 1.4.1
 
 
                            * ================== *
@@ -150,17 +150,18 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <property name="module.root" value="${argo.root}/modules/${argo.module.name}"/>
     <property name="argo.src.dir" value="${argo.root}/src_new"/>
     <property name="module.src.dir" value="${module.root}/src"/>
-    <property name="argo.lib.dir" value="${argo.root}/lib"/>
+
+    <property name="argo.build.dir" value="${argo.root}/build"/>
+    <property name="argo.build.src" value="${argo.root}/src_new"/>
+
     <property name="module.lib.dir" value="${module.root}/lib"/>
-    <property name="classpath" value="${argo.lib.dir}/nsuml.jar:${argo.lib.dir}/ocl-argo.jar:${argo.lib.dir}/gef-0.9.6.jar:${argo.lib.dir}/antlrall.jar:${argo.lib.dir}/log4j.jar:${argo.lib.dir}/junit.jar"/> 
+    <property name="classpath" value="${argo.build.dir}/nsuml.jar:${argo.build.dir}/ocl-argo.jar:${argo.build.dir}/gef.jar:${argo.build.dir}/antlrall.jar:${argo.build.dir}/log4j.jar:${argo.build.dir}/junit.jar"/> 
     <property name="ant.xml-libs" value="${ANT_HOME}/lib/jaxp.jar:${ANT_HOME}/lib/parser.jar"/>
 
     <property name="packages" value="org.argouml.*"/>
     <property name="manifest" value="manifest.mf"/>
     <property name="manifest.src" value="${module.src.dir}/org/${manifest}"/>
 
-    <property name="argo.build.dir" value="${argo.root}/build"/>
-    <property name="argo.build.src" value="${argo.root}/src_new"/>
     <property name="module.build.dir" value="${module.root}/build"/>
     <property name="module.build.src" value="${module.src.dir}"/>
     <property name="module.build.dest" value="${module.build.dir}/classes"/>
@@ -285,7 +286,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
                 <include name="ocl-argo.jar" />
                 <include name="antlrall.jar" />
                 <include name="log4j.jar" />
-                <include name="gef-0.9.6.jar" />
+                <include name="gef.jar" />
             </fileset>
             <fileset dir="${module.lib.dir}">
                 <include name="*.jar" />
@@ -407,7 +408,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
                 <include name="ocl-argo.jar" />
                 <include name="antlrall.jar" />
                 <include name="log4j.jar" />
-                <include name="gef-0.9.6.jar" />
+                <include name="gef.jar" />
             </fileset>
         </classpath>
         <formatter type="xml"/>
