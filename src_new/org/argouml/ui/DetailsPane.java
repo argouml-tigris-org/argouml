@@ -447,33 +447,20 @@ public class DetailsPane
      *  otherwise.
      */
     public void stateChanged(ChangeEvent e) {
-        cat.debug("DetailsPane state changed");
-        Component sel = _tabs.getSelectedComponent();
+	cat.debug("DetailsPane state changed");
+	Component sel = _tabs.getSelectedComponent();
+	Object target = TargetManager.getInstance().getTarget();
 
-        // update the tab
-        if (_lastNonNullTab >= 0) {
-	    Object tab = _tabPanels.get(_lastNonNullTab);
-	    if (tab instanceof TargetListener)
-		removeTargetListener((TargetListener) tab);
+	if (sel instanceof TabToDoTarget) {
+	    ((TabToDoTarget) sel).refresh();
+	} else if (sel instanceof TabTarget) {
+	    ((TabTarget) sel).setTarget(target);
 	}
-        Object target = TargetManager.getInstance().getTarget();
-        
-        if (!(sel instanceof TargetListener)) {
-            if (sel instanceof TabToDoTarget)
-		((TabToDoTarget) sel).refresh();
 
-            else if (sel instanceof TabTarget)
-		((TabTarget) sel).setTarget(target);
-        } else {
-            removeTargetListener((TargetListener) sel);
-            addTargetListener((TargetListener) sel);
-        }
-        
-        if (target != null
-            && ModelFacade.isABase(target)
-            && _tabs.getSelectedIndex() > 0)
-            _lastNonNullTab = _tabs.getSelectedIndex();
-
+	if (target != null
+	    && ModelFacade.isABase(target)
+	    && _tabs.getSelectedIndex() > 0)
+	    _lastNonNullTab = _tabs.getSelectedIndex();
     }
 
     /**
