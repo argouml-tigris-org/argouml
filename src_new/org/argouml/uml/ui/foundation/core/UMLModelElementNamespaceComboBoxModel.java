@@ -28,9 +28,17 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.MBase;
+
+import org.tigris.gef.presentation.Fig;
+
+import java.util.Collection;
+import java.util.ArrayList;
+import javax.swing.SwingUtilities;
 
 /**
  * A model for a namespace combo box,
@@ -43,14 +51,32 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
     
     private static UMLModelElementNamespaceComboBoxModel theInstance;
     
+    private NamespaceListBuilderThread theBuilderThread;
     
+    /**
+     * singleton getter method
+     */
+    public static UMLModelElementNamespaceComboBoxModel getInstance() {
+        
+        if (theInstance == null) {
+            
+            theInstance = new UMLModelElementNamespaceComboBoxModel();
+            return theInstance;
+        }
+        else
+            return theInstance;
+    }
     
     /**
      * Constructor for UMLModelElementNamespaceComboBoxModel.
      */
-    public UMLModelElementNamespaceComboBoxModel() {
+    private UMLModelElementNamespaceComboBoxModel() {
         super("namespace", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");               
+        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
+        
+        theBuilderThread =
+	    new NamespaceListBuilderThread("namespace combobox worker");
+        theBuilderThread.start();
     }
     
     /**
@@ -60,11 +86,19 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
         return ModelFacade.isANamespace(o) && CoreHelper.getHelper().isValidNamespace(getTarget(), o);
     }
     
-    /**  
+    /**
+     * this doesn't actually build the list, it only display "please wait..."
+     * in the dropdown list to tell the user the list is being built.
+     *
+     * <p> the list is now built in the worker thread.
+     *
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        setElements(CoreHelper.getHelper().getAllPossibleNamespaces((MModelElement)getTarget()));
+        
+        Collection building = new ArrayList();
+        building.add(new String("please wait ..."));
+        setElements(building);
     }
     
     /**
@@ -76,5 +110,123 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
         }
         return null;
     }
-       
+    
+    /**
+     * overridden setTarget() to maintain consistent model state whilst using
+     * the worker thread.
+     *
+     * if the target has been changed we don't want to continue calculating the
+     * namespaces for the old target!
+     *
+     */
+    protected void setTarget(Object target) {
+        
+        
+        if (theBuilderThread != null && theBuilderThread.isAlive()) {
+            try {
+                theBuilderThread.interrupt();
+            } catch (SecurityException seIgnore) { }
+        }
+        
+        target = target instanceof Fig ? ((Fig) target).getOwner() : target;
+        if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
+            if (_target instanceof MBase) {
+                UmlModelEventPump.getPump().removeModelEventListener(this,
+                (MBase) _target,
+                _propertySetName);
+            }
+            
+            if (target instanceof MBase) {
+                _target = target;
+                UmlModelEventPump.getPump().addModelEventListener(this,
+                (MBase) _target,
+                _propertySetName);
+            } else {
+                _target = null;
+            }
+            _fireListEvents = false;
+            removeAllElements();
+            _fireListEvents = true;
+            if (target != null) {
+                buildModelList();
+                // calculate the new namespaces.
+                theBuilderThread.build();
+            }
+        
+        }
+    }
+    
+    /**
+     * worker thread to free the swing gui whilst namespaces are calculated.
+     * we only ever want one of this thread
+     */
+    class NamespaceListBuilderThread extends Thread {
+        
+        public NamespaceListBuilderThread(String name) {
+            super(name);
+            // let argo exit even if this is still running.
+            setDaemon(true);
+        }
+        
+        public void run() {
+            
+            synchronized (this) {
+                while (true) {
+                    
+                    try {
+                        // wait for the next change of target
+                        wait();
+                        // build the namespace list.
+                        buildList();
+                    }
+                    catch (InterruptedException ie) { /** no action needed */ }
+                }
+            }
+        }
+        
+        /**
+         * notifies this thread that it can build a new list.
+         */
+        public synchronized void build() {
+            
+            notify();
+        }
+        
+        /**
+         * does the time consuming work on this thread,
+         * then updates the gui on the event dispatching thread.
+         *
+         * <p> does not update the gui if the target was changed again..
+         */
+        private void buildList() {
+            
+            Object originalTarget = getTarget();
+            
+            final Collection namespaces =
+		CoreHelper.getHelper().
+		    getAllPossibleNamespaces((MModelElement) originalTarget);
+            
+            // don't update the gui if the target has changed!
+            if (originalTarget != getTarget()) {
+                return;
+            }
+            
+            SwingUtilities.invokeLater(
+              new Runnable() {
+                public void run() {
+                    
+                    setBuildingModel(true);
+                    setElements(namespaces);
+                    setBuildingModel(false);
+                    if (getSize() > 0) {
+                        fireIntervalAdded(this, 0, getSize() - 1);
+                    }
+                    setSelectedItem(getSelectedModelElement());
+                    if (getSelectedItem() != null && isClearable()) {
+                        addElement(""); // makes sure we can select 'none'
+                    }
+                }
+              } );
+        }
+    }
 }

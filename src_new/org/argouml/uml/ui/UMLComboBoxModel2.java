@@ -523,4 +523,17 @@ public abstract class UMLComboBoxModel2
 
     }
 
+    /**
+     * 
+     */
+    protected boolean isClearable() {
+        return _clearable;
+    }
+    
+    /**
+     * 
+     */
+    protected void setBuildingModel(boolean building) {
+        _buildingModel = building;
+    }
 }
