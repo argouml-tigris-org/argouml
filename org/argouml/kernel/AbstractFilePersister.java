@@ -95,7 +95,9 @@ public abstract class AbstractFilePersister extends FileFilter implements Projec
     public boolean accept(File f) {
         if (f == null) return false;
         if (f.isDirectory()) return true;
-        if (getExtension(f).equalsIgnoreCase(extension)) return true;
+        String s = getExtension(f); 
+        if (s != null) // this check for files without extension... 
+            if (s.equalsIgnoreCase(extension)) return true;
         return false;
     }
     
