@@ -795,7 +795,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
         ProjectBrowser pb = ProjectBrowser.TheInstance;
         Project p = pb.getProject();
         MClassifier voidType = p.findType("void");
-    
+        if (voidType.getModel() != p.getModel()) {
+        	p.getModel().addOwnedElement(voidType);
+        }
         MParameter res = UmlFactory.getFactory().getCore().createParameter();
         res.setName(null);
         res.setStereotype(null);
