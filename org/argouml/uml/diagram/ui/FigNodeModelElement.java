@@ -183,6 +183,9 @@ public abstract class FigNodeModelElement
     ////////////////////////////////////////////////////////////////
     // instance variables
 
+    /**
+     * @deprecated 0.15.3 visibility will change use getter/setter
+     */
     protected FigRect _bigPort;
     /**
      * @deprecated 0.15.3 visibility will change use getter/setter
@@ -196,6 +199,9 @@ public abstract class FigNodeModelElement
     protected Fig _encloser = null;
     protected boolean _readyToEdit = true;
     protected boolean suppressCalcBounds = false;
+    /**
+     * @deprecated 0.15.3 visibility will change use getter/setter
+     */
     public int _shadowSize =
         Configuration.getInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH, 1);
     private ItemUID _id;
@@ -646,7 +652,7 @@ public abstract class FigNodeModelElement
      *  initiate direct text editing. */
     public void mouseClicked(MouseEvent me) {
         if (!_readyToEdit) {
-            if (org.argouml.model.ModelFacade.isAModelElement(getOwner())) {
+            if (ModelFacade.isAModelElement(getOwner())) {
                 ModelFacade.setName(getOwner(),"");
                 _readyToEdit = true;
             } else {
@@ -680,7 +686,7 @@ public abstract class FigNodeModelElement
 
     public void keyPressed(KeyEvent ke) {
         if (!_readyToEdit) {
-            if (org.argouml.model.ModelFacade.isAModelElement(getOwner())) {
+            if (ModelFacade.isAModelElement(getOwner())) {
                 ModelFacade.setName(getOwner(),"");
                 _readyToEdit = true;
             } else {
