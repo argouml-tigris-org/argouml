@@ -81,7 +81,7 @@ implements VetoableChangeListener  {
     protected static Category cat = Category.getInstance(ClassDiagramGraphModel.class);
   ////////////////////////////////////////////////////////////////
   // instance variables
- 
+
   /** The "home" UML model of this diagram, not all ModelElements in this
    *  graph are in the home model, but if they are added and don't
    *  already have a model, they are placed in the "home model".
@@ -123,23 +123,23 @@ implements VetoableChangeListener  {
     if (port instanceof MClass) {
       MClass cls = (MClass) port;
       Collection ends = cls.getAssociationEnds();
-      if (ends == null) return res; // empty Vector 
+      if (ends == null) return res; // empty Vector
       //java.util.Enumeration endEnum = ends.elements();
-	  Iterator iter = ends.iterator();
+      Iterator iter = ends.iterator();
       while (iter.hasNext()) {
-		  MAssociationEnd ae = (MAssociationEnd) iter.next();
-		  res.add(ae.getAssociation());
+          MAssociationEnd ae = (MAssociationEnd) iter.next();
+          res.add(ae.getAssociation());
       }
     }
     if (port instanceof MInterface) {
       MInterface Intf = (MInterface) port;
       Collection ends = Intf.getAssociationEnds();
-      if (ends == null) return res; // empty Vector 
+      if (ends == null) return res; // empty Vector
       Iterator endEnum = ends.iterator();
       while (endEnum.hasNext()) {
-	    MAssociationEnd ae = (MAssociationEnd) endEnum.next();
-	    res.addElement(ae.getAssociation());
-	  }
+        MAssociationEnd ae = (MAssociationEnd) endEnum.next();
+        res.addElement(ae.getAssociation());
+      }
     }
     /*if (port instanceof MPackage) {
       MPackage cls = (MPackage) port;
@@ -147,14 +147,14 @@ implements VetoableChangeListener  {
       if (ends == null) return res; // empty Vector
       java.util.Enumeration endEnum = ends.elements();
       while (endEnum.hasMoreElements()) {
-	    MAssociationEnd ae = (MAssociationEnd) endEnum.nextElement();
-	    res.addElement(ae.getAssociation());
+        MAssociationEnd ae = (MAssociationEnd) endEnum.nextElement();
+        res.addElement(ae.getAssociation());
       }
     }*/
     if (port instanceof MInstance) {
       MInstance inst = (MInstance) port;
       Collection ends = inst.getLinkEnds();
-	  res.addAll(ends);
+      res.addAll(ends);
     }
     return res;
   }
@@ -189,10 +189,10 @@ implements VetoableChangeListener  {
   /** Return true if the given object is a valid node in this graph */
   public boolean canAddNode(Object node) {
     if (_nodes.contains(node)) return false;
-    return (node instanceof MClass) || 
-        (node instanceof MInterface)|| 
-        (node instanceof MModel)    || 
-        (node instanceof MPackage)  || 
+    return (node instanceof MClass) ||
+        (node instanceof MInterface)||
+        (node instanceof MModel)    ||
+        (node instanceof MPackage)  ||
         (node instanceof MInstance);
   }
 
@@ -242,31 +242,37 @@ implements VetoableChangeListener  {
     if (!canAddNode(node)) return;
     _nodes.addElement(node);
     if (node instanceof MModelElement &&
-	((MModelElement)node).getNamespace() == null) {
-	_model.addOwnedElement((MModelElement) node);
+    ((MModelElement)node).getNamespace() == null) {
+    _model.addOwnedElement((MModelElement) node);
     }
     if (node instanceof MInterface){
-	cat.debug("Interface stereo: "+MMUtil.STANDARDS.lookup("interface"));
+    cat.debug("Interface stereo: "+MMUtil.STANDARDS.lookup("interface"));
 
-	((MInterface)node).setStereotype((MStereotype)MMUtil.STANDARDS.lookup("interface"));
+    ((MInterface)node).setStereotype((MStereotype)MMUtil.STANDARDS.lookup("interface"));
     }
-    
+
     fireNodeAdded(node);
-    cat.debug("adding "+node+" OK");
+    cat.debug("adding " + node + " OK");
   }
 
-  /** Add the given edge to the graph, if valid. */
-  public void addEdge(Object edge) {
-    cat.debug("adding class edge!!!!!!");
-    if (!canAddEdge(edge)) return;
-    _edges.addElement(edge);
-    // TODO: assumes public
-    if (edge instanceof MModelElement &&
-       ((MModelElement)edge).getNamespace() == null) {
-      _model.addOwnedElement((MModelElement) edge);
+    /** Add the given edge to the graph, if valid. */
+    private MModelElement addEdge(MModelElement edge) {
+        addEdge((Object)edge);
+        return edge;
     }
-    fireEdgeAdded(edge);
-  }
+
+    /** Add the given edge to the graph, if valid. */
+    public void addEdge(Object edge) {
+        cat.debug("adding class edge!!!!!!");
+        if (!canAddEdge(edge)) return;
+        _edges.addElement(edge);
+        // TODO: assumes public
+        if (edge instanceof MModelElement &&
+           ((MModelElement)edge).getNamespace() == null) {
+          _model.addOwnedElement((MModelElement) edge);
+        }
+        fireEdgeAdded(edge);
+    }
 
 
 /**
@@ -321,7 +327,7 @@ implements VetoableChangeListener  {
   }
 
 
-  /** Return true if the two given ports can be connected by a 
+  /** Return true if the two given ports can be connected by a
    * kind of edge to be determined by the ports. */
   public boolean canConnect(Object fromP, Object toP) { return true; }
 
@@ -331,198 +337,152 @@ implements VetoableChangeListener  {
       throw new UnsupportedOperationException("should not enter here!");
   }
 
-  /** Contruct and add a new edge of the given kind */
-  public Object connect(Object fromPort, Object toPort,
-                        java.lang.Class edgeClass) {
-      cat.debug("connecting: " + " " + fromPort + " " + toPort + " " + edgeClass);
+    /** Contruct and add a new edge of the given kind and connect
+     * the given ports.
+     */
+    public Object connect(Object fromPort, Object toPort, java.lang.Class edgeClass) {
+        cat.debug("connecting: " + fromPort + " and " + toPort + " with " + edgeClass);
 
-      if ((fromPort instanceof MModelElement) && 
-               (toPort instanceof MModelElement)) {
-          if (edgeClass == MPermission.class) {
-              MModelElement fromMMElem = (MModelElement) fromPort;
-              MModelElement toMMElem = (MModelElement) toPort;
-              MPermission per = 
-                  UmlFactory.getFactory().getCore().
-                  buildPermission(fromMMElem, toMMElem);
-              addEdge(per);
-              return per;
-          }
-          else if (edgeClass == MUsage.class) {
-              MModelElement fromMMElem = (MModelElement) fromPort;
-              MModelElement toMMElem = (MModelElement) toPort;
-              MUsage usa = 
-                  UmlFactory.getFactory().getCore().
-                  buildUsage(fromMMElem, toMMElem);
-              addEdge(usa);
-              return usa;
-          }
-      }
+        try {
+            if (edgeClass == MPermission.class) {
+                return (connectPermission((MModelElement)fromPort, (MModelElement)toPort));
+            } else if (edgeClass == MUsage.class) {
+                return (connectUsage((MModelElement)fromPort, (MModelElement)toPort));
+            } else if (edgeClass == MGeneralization.class) {
+                return (connectGeneralization((MModelElement)fromPort, (MModelElement)toPort));
+            } else if (edgeClass == MAssociation.class) {
+                return (connectAssociation((MModelElement)fromPort, (MModelElement)toPort));
+            } else if (edgeClass == MDependency.class) {
+                return (connectDependancy((MModelElement)fromPort, (MModelElement)toPort));
+            } else if (edgeClass == MAbstraction.class) {
+                return (connectAbstraction((MClass)fromPort, (MInterface)toPort));
+            } else if (edgeClass == MLink.class) {
+                return (connectLink((MInstance)fromPort, (MInstance)toPort));
+            }
+            // else if (edgeClass == MAbstractionImpl.class) {
+            //    return connectAbstractionImpl((MInterface)fromPort, (MClass)toPort);
+            //}
+        } catch (ClassCastException ex) {
+            // fail silently
+        }
+        cat.debug("Cannot make a "+ edgeClass.getName() +
+                     " between a " + fromPort.getClass().getName() +
+                     " and a " + toPort.getClass().getName());
+        return null;
+    }
 
-      if ((fromPort instanceof MClass) && (toPort instanceof MClass)) {
-          MClass fromCls = (MClass) fromPort;
-          MClass toCls = (MClass) toPort;
+    /** Contruct and add a new permission and connect to
+     * the given ports.
+     */
+    private Object connectPermission(MModelElement fromPort, MModelElement toPort) {
+        return addEdge(UmlFactory.getFactory().getCore().buildPermission(fromPort, toPort));
+    }
 
-          if (edgeClass == MGeneralization.class) {
-              MGeneralization gen = 
-                  UmlFactory.getFactory().getCore().buildGeneralization(fromCls, toCls);
-              if (gen != null) addEdge(gen);
-              return gen;
-          }
-          else if (edgeClass == MAssociation.class) {
-              Editor curEditor = Globals.curEditor();
-              ModeManager modeManager = curEditor.getModeManager();
-              Mode mode = (Mode)modeManager.top();
-              Hashtable args = mode.getArgs();
-              MAggregationKind aggregation = (MAggregationKind)args.get("aggregation");
-              MAssociation asc;
-              if (aggregation != null) {
-                  boolean unidirectional = ((Boolean)args.get("unidirectional")).booleanValue();
-                  asc = UmlFactory.getFactory().getCore().buildAssociation(fromCls, !unidirectional, aggregation, toCls, true, MAggregationKind.NONE);
-              } else {
-                  asc = UmlFactory.getFactory().getCore().buildAssociation(fromCls, toCls);
-              }
-              addEdge(asc);
-              return asc;
-          }
-          else if (edgeClass == MDependency.class) {
-              // nsuml: using Binding as default
-              MDependency dep = 
-                  UmlFactory.getFactory().getCore().buildDependency(fromCls, toCls);
-              addEdge(dep);
-              return dep;
-          }
-          else {
-              cat.debug("connect: Cannot make a "+ edgeClass.getName() +
-                                 " between a " + fromPort.getClass().getName() +
-                                 " and a " + toPort.getClass().getName());
-              return null;
-          }
-      }
-      else if ((fromPort instanceof MPackage) && (toPort instanceof MPackage))
-          {
-              MPackage fromPack = (MPackage) fromPort;
-              MPackage toPack = (MPackage) toPort;
-              // TODO: assumes public, user pref for default visibility?
-              //do I have to check the namespace here? (Toby)
-              if (edgeClass == MDependency.class) {
-                  // nsuml: using Usage as default
-                  MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromPack, toPack);
-                  addEdge(dep);
-                  return dep;
-              }
-          }
+    /** Contruct and add a new usage and connect to
+     * the given ports.
+     */
+    private Object connectUsage(MModelElement fromPort, MModelElement toPort) {
+        return addEdge(UmlFactory.getFactory().getCore().buildUsage(fromPort, toPort));
+    }
 
-      // break
-      else if ((fromPort instanceof MClass) && (toPort instanceof MInterface)) {
-          MClass fromCls = (MClass) fromPort;
-          MInterface toIntf = (MInterface) toPort;
-	 
-          if (edgeClass == MAbstraction.class) {
-              MAbstraction real = 
-                  UmlFactory.getFactory().getCore().buildRealization(fromCls, toIntf);
-              addEdge(real);
-              return real;
-          }
-	
-          else  if (edgeClass == MAssociation.class) {
-              MAssociation asc = 
-                  UmlFactory.getFactory().getCore().buildAssociation(fromCls, false, toIntf, true);
-              addEdge(asc);
-              return asc;
-          }
-          else if (edgeClass == MDependency.class) {
-                  // nsuml: using Binding as default
-                  MDependency dep = 
-                      UmlFactory.getFactory().getCore().buildDependency(fromCls, toIntf);
-                  addEdge(dep);
-                  return dep;
-              }
-          else {
-              cat.debug("Cannot make a "+ edgeClass.getName() +
-                                 " between a " + fromPort.getClass().getName() +
-                                 " and a " + toPort.getClass().getName());
-              return null;
-          }
-      }
+    /** Contruct and add a new generalization and connect to
+     * the given ports.
+     */
+    private Object connectGeneralization(MModelElement fromPort, MModelElement toPort) {
+        
+        if (fromPort instanceof MClass && toPort instanceof MClass)
+            return addEdge(CoreFactory.getFactory().buildGeneralization((MClass)fromPort, (MClass)toPort));
+        
+        if (fromPort instanceof MInterface && toPort instanceof MInterface)
+            return addEdge(CoreFactory.getFactory().buildGeneralization((MInterface)fromPort, (MInterface)toPort));
+        
+        cat.debug("Cannot make a "+ MGeneralization.class.getName() +
+                     " between a " + fromPort.getClass().getName() +
+                     " and a " + toPort.getClass().getName());
+        return null;
+    }
+    
+    /** Contruct and add a new association and connect to
+     * the given ports.
+     */
+    private Object connectAssociation(MModelElement fromPort, MModelElement toPort) {
+        if (fromPort instanceof MClass && toPort instanceof MClass) {
+            Editor curEditor = Globals.curEditor();
+            ModeManager modeManager = curEditor.getModeManager();
+            Mode mode = (Mode)modeManager.top();
+            Hashtable args = mode.getArgs();
+            MAggregationKind aggregation = (MAggregationKind)args.get("aggregation");
+            MAssociation asc;
+            MClass fromCls = (MClass)fromPort;
+            MClass toCls = (MClass)toPort;
+            if (aggregation != null) {
+                boolean unidirectional = ((Boolean)args.get("unidirectional")).booleanValue();
+                asc = UmlFactory.getFactory().getCore().buildAssociation(fromCls, !unidirectional, aggregation, toCls, true, MAggregationKind.NONE);
+            } else {
+                asc = UmlFactory.getFactory().getCore().buildAssociation(fromCls, toCls);
+            }
+            return addEdge(asc);
+        }
+        if (fromPort instanceof MClass && toPort instanceof MInterface)
+            return addEdge(UmlFactory.getFactory().getCore().buildAssociation((MClass)fromPort, false, (MInterface)toPort, true));
+        
+        if (fromPort instanceof MInterface && toPort instanceof MClass)
+            return addEdge(UmlFactory.getFactory().getCore().buildAssociation((MInterface)fromPort, true, (MClass)toPort, false));
+        
+        cat.debug("Cannot make a "+ MAssociation.class.getName() +
+                     " between a " + fromPort.getClass().getName() +
+                     " and a " + toPort.getClass().getName());
+        return null;
+    }
+    
+    /** Contruct and add a new dependancy and connect to
+     * the given ports.
+     */
+    private Object connectDependancy(MModelElement fromPort, MModelElement toPort) {
+        
+        if (fromPort instanceof MPackage && toPort instanceof MPackage)
+            // TODO: assumes public, user pref for default visibility?
+            //do I have to check the namespace here? (Toby)
+            // nsuml: using Usage as default
+            return addEdge(UmlFactory.getFactory().getCore().buildDependency((MPackage)fromPort, (MPackage)toPort));
+        
+        if (fromPort instanceof MClass && toPort instanceof MClass)
+            return addEdge(UmlFactory.getFactory().getCore().buildDependency((MClass)fromPort, (MClass)toPort));
+        
+        if (fromPort instanceof MClass && toPort instanceof MInterface)
+            return addEdge(UmlFactory.getFactory().getCore().buildDependency((MClass)fromPort, (MInterface)toPort));
+        
+        if (fromPort instanceof MInterface && toPort instanceof MClass)
+            return addEdge(UmlFactory.getFactory().getCore().buildDependency((MInterface)fromPort, (MClass)toPort));
+        
+        if (fromPort instanceof MInterface && toPort instanceof MInterface)
+            return addEdge(UmlFactory.getFactory().getCore().buildDependency((MInterface)fromPort, (MInterface)toPort));
+        
+        cat.debug("Cannot make a "+ MDependency.class.getName() +
+                     " between a " + fromPort.getClass().getName() +
+                     " and a " + toPort.getClass().getName());
+        return null;
+    }
 
-      // break
-      else if ((fromPort instanceof MInterface) && (toPort instanceof MClass)) 
-          {
-              MInterface fromIntf = (MInterface) fromPort;
-              MClass toCls = (MClass) toPort;
+    /** Contruct and add a new abstraction and connect to
+     * the given class and interface
+     */
+    private Object connectAbstraction(MClass fromCls, MInterface toIntf) {
+        return addEdge(UmlFactory.getFactory().getCore().buildRealization(fromCls, toIntf));
+    }
 
+    /** Contruct and add a new link and connect to
+     * the given instances
+     */
+    private Object connectLink(MInstance fromInst, MInstance toInst) {
+        return addEdge(UmlFactory.getFactory().getCommonBehavior().buildLink(fromInst, toInst));
+    }
 
-              if (edgeClass == MAssociation.class) {
-                  MAssociation asc = 
-                      UmlFactory.getFactory().getCore().buildAssociation(fromIntf, true, 
-                                                        toCls, false);
-                  addEdge(asc);
-                  return asc;
-              }
-              else if (edgeClass == MDependency.class) {
-                  // nsuml: using Binding as default
-                  MDependency dep = 
-                      UmlFactory.getFactory().getCore().buildDependency(fromIntf, toCls);
-                  addEdge(dep);
-                  return dep;
-              }
-
-              // 	else if (edgeClass == MAbstractionImpl.class) {
-              // 		MAbstraction real = 
-              //            MMUtil.SINGLETON.buildRealization(toCls, fromIntf);
-              // 		addEdge(real);
-              // 		return real;
-              // 	}
-
-              else {
-                  cat.debug("Cannot make a "+ edgeClass.getName() +
-                                     " between a " + fromPort.getClass().getName() +
-                                     " and a " + toPort.getClass().getName());
-                  return null;
-              }
-          }
-
-      // break
-      else if ((fromPort instanceof MInterface) && 
-               (toPort instanceof MInterface)) {
-          MInterface fromIntf = (MInterface) fromPort;
-          MInterface toIntf = (MInterface) toPort;
-
-          if (edgeClass == MGeneralization.class) {
-              MGeneralization gen = CoreFactory.getFactory().buildGeneralization(fromIntf, toIntf);
-              addEdge(gen);
-              return gen;
-          }
-          else if (edgeClass == MDependency.class) {
-              //nsuml: using Binding
-              MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromIntf, toIntf);
-              addEdge(dep);
-              return dep;
-          }
-          else {
-              cat.debug("Cannot make a "+ edgeClass.getName() +
-                                 " between a " + fromPort.getClass().getName() +
-                                 " and a " + toPort.getClass().getName());
-              return null;
-          }
-      }
-
-      // break
-      else if ((fromPort instanceof MInstance) && 
-               (toPort instanceof MInstance)) {
-          MInstance fromInst = (MInstance) fromPort;
-          MInstance toInst = (MInstance) toPort;
-          if (edgeClass == MLink.class) {
-              MLink link = UmlFactory.getFactory().getCommonBehavior().buildLink(fromInst, toInst);
-              addEdge(link);
-              return link;
-          }
-      }
-      // fail silently
-      // throw new UnsupportedOperationException("should not enter here!");
-      return null;
-  }
-
+    //public Object connectAbstractionImpl(MInterface fromIntf, MClass toCls) {
+    //    MAbstraction real = MMUtil.SINGLETON.buildRealization(toCls, fromIntf);
+    //    addEdge(real);
+    //    return real;
+    //}
 
   ////////////////////////////////////////////////////////////////
   // VetoableChangeListener implementation
@@ -535,15 +495,15 @@ implements VetoableChangeListener  {
       MElementImport eo = (MElementImport) pce.getNewValue();
       MModelElement me = eo.getModelElement();
       if (oldOwned.contains(eo)) {
-	cat.debug("model removed " + me);
-	if (me instanceof MClassifier) removeNode(me);	
-	if (me instanceof MPackage) removeNode(me);
-	if (me instanceof MAssociation) removeEdge(me);
-	if (me instanceof MDependency) removeEdge(me);
-	if (me instanceof MGeneralization) removeEdge(me);
+    cat.debug("model removed " + me);
+    if (me instanceof MClassifier) removeNode(me);
+    if (me instanceof MPackage) removeNode(me);
+    if (me instanceof MAssociation) removeEdge(me);
+    if (me instanceof MDependency) removeEdge(me);
+    if (me instanceof MGeneralization) removeEdge(me);
       }
       else {
-	cat.debug("model added " + me);
+    cat.debug("model added " + me);
       }
     }
   }
@@ -566,11 +526,11 @@ implements VetoableChangeListener  {
    * @return whether or not the rerouting is allowed
    */
   public boolean canChangeConnectedNode(Object newNode, Object oldNode, Object edge) {
-           
-    // prevent no changes... 
+
+    // prevent no changes...
     if ( newNode == oldNode)
     return false;
-            
+
     // check parameter types:
     if ( !(newNode instanceof MClass ||
          oldNode instanceof MClass ||
@@ -593,109 +553,108 @@ implements VetoableChangeListener  {
    * @param isSource tells us which end is being rerouted.
    */
   public void changeConnectedNode(Object newNode, Object oldNode, Object edge, boolean isSource) {
-      
+
       if (edge instanceof MAssociation) rerouteAssociation(newNode,  oldNode,  edge,  isSource);
       else if (edge instanceof MGeneralization) rerouteGeneralization(newNode,  oldNode,  edge,  isSource);
       else if (edge instanceof MDependency) rerouteDependency(newNode,  oldNode,  edge,  isSource);
       else if (edge instanceof MLink) rerouteLink(newNode,  oldNode,  edge,  isSource);
   }
-  
+
   /**
    * helper method for changeConnectedNode
    */
   private void rerouteAssociation(Object newNode, Object oldNode, Object edge, boolean isSource) {
-      
+
       // check param types: only some connections are legal uml connections:
-      
+
             if ( !(newNode instanceof MClassifier) ||
                  !(oldNode instanceof MClassifier)
                  )
                 return;
-      
+
             // can't have a connection between 2 interfaces:
             // get the 'other' end type
             MModelElement otherNode=null;
-            
+
             if(isSource){
                 otherNode = CoreHelper.getHelper().getDestination((MRelationship)edge);
             }
             else{
                 otherNode = CoreHelper.getHelper().getSource((MRelationship)edge);
             }
-            
+
             if( (newNode instanceof MInterface) &&
                 (otherNode instanceof MInterface) )
                 return;
-            
+
         // cast the params
             //MClassifier oldClass = (MClassifier)oldNode;
             //MClassifier newClass = (MClassifier)newNode;
             MAssociation edgeAssoc = (MAssociation)edge;
-      
-              MAssociationEnd theEnd = null;
-              MAssociationEnd theOtherEnd = null;
+
+            MAssociationEnd theEnd = null;
+            MAssociationEnd theOtherEnd = null;
         // rerouting the source:
         if(isSource){
-            
+
             theEnd =
             (MAssociationEnd)((Object[])
             (edgeAssoc.getConnections()).toArray())[0];
-           
+
             theOtherEnd =
             (MAssociationEnd)((Object[])
             (edgeAssoc.getConnections()).toArray())[1];
         }
         // rerouting the destination:
         else{
-            
+
             theEnd =
             (MAssociationEnd)((Object[])
             (edgeAssoc.getConnections()).toArray())[1];
-            
+
             theOtherEnd =
             (MAssociationEnd)((Object[])
             (edgeAssoc.getConnections()).toArray())[0];
 
         }
-              
+
         // set the ends navigability see also Class ActionNavigability
         if ( newNode instanceof MInterface)
             theEnd.setNavigable(true);
         else
             theEnd.setNavigable(false);
-              
+
         if ( otherNode instanceof MInterface)
             theOtherEnd.setNavigable(true);
         else
             theOtherEnd.setNavigable(false);
-              
+
         //set the new end type!
         theEnd.setType((MClassifier)newNode);
   }
-  
+
   /**
    * helper method for changeConnectedNode
    * <p>empty at the moment
    */
   private void rerouteGeneralization(Object newNode, Object oldNode, Object edge, boolean isSource) {
-  
+
   }
-  
+
   /**
    * helper method for changeConnectedNode
    * <p>empty at the moment
    */
   private void rerouteDependency(Object newNode, Object oldNode, Object edge, boolean isSource) {
-  
+
   }
-  
+
   /**
    * helper method for changeConnectedNode
    * <p>empty at the moment
    */
   private void rerouteLink(Object newNode, Object oldNode, Object edge, boolean isSource) {
-      
-  }
-  
-} /* end class ClassDiagramGraphModel */
 
+  }
+
+} /* end class ClassDiagramGraphModel */
