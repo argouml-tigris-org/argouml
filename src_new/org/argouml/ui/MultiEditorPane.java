@@ -51,7 +51,6 @@ import org.argouml.uml.ui.TabModelTarget;
 import org.argouml.util.ConfigLoader;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
-import org.tigris.gef.graph.presentation.JGraph;
 import org.tigris.gef.presentation.Fig;
 
 /** 
@@ -64,7 +63,7 @@ public class MultiEditorPane
     implements ChangeListener, MouseListener, QuadrantPanel, TargetListener {
 
     /** logger */
-    private static Logger cat = Logger.getLogger(MultiEditorPane.class);
+    private static final Logger LOG = Logger.getLogger(MultiEditorPane.class);
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -87,7 +86,7 @@ public class MultiEditorPane
      * can be edited.
      */
     public MultiEditorPane() {
-        cat.info("making MultiEditorPane");
+        LOG.info("making MultiEditorPane");
         ConfigLoader.loadTabs(_tabPanels, "multi", Horizontal.getInstance());
 
         setLayout(new BorderLayout());
@@ -113,9 +112,16 @@ public class MultiEditorPane
         setTarget(null);
     }
     
+    /**
+     * @see java.awt.Component#getPreferredSize()
+     */
     public Dimension getPreferredSize() {
         return new Dimension(400, 500);
     }
+
+    /**
+     * @see java.awt.Component#getMinimumSize()
+     */
     public Dimension getMinimumSize() {
         return new Dimension(100, 100);
     }
@@ -217,26 +223,6 @@ public class MultiEditorPane
         }
     }
 
-    /**
-     * Selects a Fig on a TabDiagram if the TabDiagram is currently shown. 
-     * @param o The Fig or the owner of the Fig to select.
-     *
-     * @deprecated As of ArgoUml version 0.13.5,
-     *             The tabdiagram arranges for it's own selection now via 
-     *             it's {@link org.argouml.ui.targetmanager.TargetListener}.
-     */
-    public void select(Object o) {
-        Component curTab = _tabs.getSelectedComponent();
-        if (curTab instanceof TabDiagram) {
-            JGraph jg = ((TabDiagram) curTab).getJGraph();
-            if (jg.getEditor().getLayerManager().getContents(null).contains(o))
-                jg.selectByOwnerOrFig(o);
-        }
-        //TODO: handle tables
-    }
-
-    
-
 
     /**
      * Called when the user selects a tab, by clicking or otherwise. 
@@ -248,19 +234,34 @@ public class MultiEditorPane
             _lastTab.setVisible(false);
         }
         _lastTab = _tabs.getSelectedComponent();
-        cat.debug(
+        LOG.debug(
             "MultiEditorPane state changed:" + _lastTab.getClass().getName());
         _lastTab.setVisible(true);
         if (_lastTab instanceof TabModelTarget)
              ((TabModelTarget) _lastTab).refresh();
     }
 
+    /**
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     */
     public void mousePressed(MouseEvent me) {
     }
+
+    /**
+     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+     */
     public void mouseReleased(MouseEvent me) {
     }
+
+    /**
+     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+     */
     public void mouseEntered(MouseEvent me) {
     }
+
+    /**
+     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+     */
     public void mouseExited(MouseEvent me) {
     }
 
@@ -291,7 +292,7 @@ public class MultiEditorPane
     public void mySingleClick(int tab) {
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
-        cat.debug("single: " + _tabs.getComponentAt(tab).toString());
+        LOG.debug("single: " + _tabs.getComponentAt(tab).toString());
     }
 
     /**
@@ -303,12 +304,15 @@ public class MultiEditorPane
     public void myDoubleClick(int tab) {
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
-        cat.debug("double: " + _tabs.getComponentAt(tab).toString());
+        LOG.debug("double: " + _tabs.getComponentAt(tab).toString());
         JPanel t = (JPanel) _tabPanels.elementAt(tab);
         if (t instanceof TabSpawnable)
              ((TabSpawnable) t).spawn();
     }
 
+    /**
+     * @see org.argouml.application.api.QuadrantPanel#getQuadrant()
+     */
     public int getQuadrant() {
         return Q_TOP_RIGHT;
     }

@@ -61,9 +61,6 @@ public class NavigatorPane
     extends JPanel
     implements QuadrantPanel
 {
-
-    protected transient Logger cat = Logger.getLogger(this.getClass());
-
     private static final String BUNDLE = "statusmsg";
     
     /** for collecting user statistics */
@@ -130,10 +127,8 @@ public class NavigatorPane
      * (back and forward arrows) buttons that are currently disabled,
      * and a configuration dialog to tailor the perspectives (but this
      * is not saved).
-     * @deprecated 0.15 delete in 0.16 use NavigatorPane.getInstance()
-     * instead making this private.
      */
-    public NavigatorPane(boolean doSplash) {
+    private NavigatorPane(boolean doSplash) {
         
         JComboBox combo = new PerspectiveComboBox();
         JComboBox orderByCombo = new JComboBox();
@@ -202,7 +197,9 @@ public class NavigatorPane
         return new Dimension(120, 100);
     }
 
-    /** QuadrantPanel implementation */
+    /**
+     * @see org.argouml.application.api.QuadrantPanel#getQuadrant()
+     */
     public int getQuadrant() {
         return Q_TOP_LEFT;
     }

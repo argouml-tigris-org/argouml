@@ -27,7 +27,6 @@ package org.argouml.ui;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 import org.argouml.cognitive.ItemUID;
 import org.argouml.kernel.ProjectManager;
@@ -54,7 +53,7 @@ public class ArgoDiagram extends Diagram {
         getLayer().getGraphModel().removeGraphEventListener(getLayer());
     }
 
-    public ArgoDiagram(String diagramName ) {
+    public ArgoDiagram(String diagramName) {
   	// next line patch to issue 596 (hopefully)
   	super(diagramName);
 	try { setName(diagramName); }
@@ -64,6 +63,9 @@ public class ArgoDiagram extends Diagram {
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @see org.tigris.gef.base.Diagram#setName(java.lang.String)
+     */
     public void setName(String n) throws PropertyVetoException {
 	super.setName(n);
     }
@@ -126,7 +128,7 @@ public class ArgoDiagram extends Diagram {
 		|| ModelFacade.isAAttribute(obj)) {
 
                 // get all the classes from the diagram
-                Iterator it = getNodes().iterator();
+                Iterator it = getNodes(null).iterator();
                 while (it.hasNext()) {
                     Object o = it.next();
                     if (ModelFacade.isAClassifier(o)) {
@@ -167,16 +169,6 @@ public class ArgoDiagram extends Diagram {
     }
 
     /**
-     * @deprecated 0.15.3 in favour of getNodes(Collection)
-     */
-    public Vector getNodes() {
-        if (getGraphModel() != null) {
-            return getGraphModel().getNodes();
-        }
-        return new Vector (getNodes(null));
-    }
-    
-    /**
      * @see Diagram#getNodes(Collection)
      */
     public Collection getNodes(Collection c) {
@@ -186,6 +178,9 @@ public class ArgoDiagram extends Diagram {
         return super.getNodes(c);
     }
     
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
         return "Diagram: " + _name;
     }

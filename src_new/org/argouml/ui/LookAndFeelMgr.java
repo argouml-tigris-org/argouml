@@ -53,12 +53,9 @@ import org.argouml.application.api.Configuration;
  * @author Jeremy Jones
  */
 public class LookAndFeelMgr {
-    /**
-     * @deprecated in version 0.15.2. Use getInstance() instead.
-     */
-    public static final LookAndFeelMgr	SINGLETON = new LookAndFeelMgr();
+    private static final Logger LOG = Logger.getLogger(LookAndFeelMgr.class);
 
-    private static Logger cat = Logger.getLogger(LookAndFeelMgr.class);
+    private static final LookAndFeelMgr	SINGLETON = new LookAndFeelMgr();
 
     // The Metal look and feel class name
     private static final String                 METAL_LAF =
@@ -87,7 +84,7 @@ public class LookAndFeelMgr {
      * The class name of Swing's default look and feel (will be used if
      * the LookAndFeel property is null).
      **/
-    private String				_defaultLafClass;
+    private String				defaultLafClass;
 
     /**
      * get the single instance of the LookAndFeelMgr
@@ -101,10 +98,10 @@ public class LookAndFeelMgr {
     private LookAndFeelMgr() {
         LookAndFeel laf = UIManager.getLookAndFeel();
         if (laf != null) {
-            _defaultLafClass = laf.getClass().getName();
+            defaultLafClass = laf.getClass().getName();
         }
         else {
-            _defaultLafClass = null;
+            defaultLafClass = null;
         }
     }
 
@@ -381,21 +378,21 @@ public class LookAndFeelMgr {
      **/
     private void setLookAndFeel(String lafClass) {
         try {
-            if (lafClass == null && _defaultLafClass != null) {
+            if (lafClass == null && defaultLafClass != null) {
                 // Set to the default LAF
-                UIManager.setLookAndFeel(_defaultLafClass);
+                UIManager.setLookAndFeel(defaultLafClass);
             } else {
                 // Set a custom LAF
                 UIManager.setLookAndFeel(lafClass);
             }
         } catch (UnsupportedLookAndFeelException e) {
-            cat.error(e);
+            LOG.error(e);
         } catch (ClassNotFoundException e) {
-            cat.error(e);
+            LOG.error(e);
         } catch (InstantiationException e) {
-            cat.error(e);
+            LOG.error(e);
         } catch (IllegalAccessException e) {
-            cat.error(e);
+            LOG.error(e);
         }
     }
 
@@ -410,18 +407,19 @@ public class LookAndFeelMgr {
 
         // If LAF is Metal (either set explicitly, or as the default)
         if ((currentLookAndFeel != null && currentLookAndFeel.equals(METAL_LAF))
-	    || (currentLookAndFeel == null && _defaultLafClass.equals(METAL_LAF))) {
+	    || (currentLookAndFeel == null 
+	        && defaultLafClass.equals(METAL_LAF))) {
             try {
                 MetalLookAndFeel.setCurrentTheme(theme);
                 UIManager.setLookAndFeel(METAL_LAF);
             } catch (UnsupportedLookAndFeelException e) {
-                cat.error(e);
+                LOG.error(e);
             } catch (ClassNotFoundException e) {
-                cat.error(e);
+                LOG.error(e);
             } catch (InstantiationException e) {
-                cat.error(e);
+                LOG.error(e);
             } catch (IllegalAccessException e) {
-                cat.error(e);
+                LOG.error(e);
             }
         }
     }

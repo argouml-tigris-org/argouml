@@ -45,12 +45,7 @@ import org.argouml.uml.ui.UMLTreeCellRenderer;
  * navigation and todo list.
  */
 public class DisplayTextTree extends JTree {
-
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
-     */
-    protected static Logger cat = Logger.getLogger(DisplayTextTree.class);
+    private static final Logger LOG = Logger.getLogger(DisplayTextTree.class);
 
     /**
      * A Map helping the tree maintain a consistent expanded paths state.
@@ -60,9 +55,9 @@ public class DisplayTextTree extends JTree {
      * values = Vector of currently expanded paths.
      *</pre>
      */
-    private Hashtable _expandedPathsInModel;
+    private Hashtable expandedPathsInModel;
 
-    private boolean _reexpanding;
+    private boolean reexpanding;
 
     /** Sets the label renderer, line style angled, enable tooltips,
      *  sets row hieght to 18 pixels.
@@ -79,8 +74,8 @@ public class DisplayTextTree extends JTree {
 
         this.setRowHeight(18); 
 
-        _expandedPathsInModel = new Hashtable();
-        _reexpanding = false;
+        expandedPathsInModel = new Hashtable();
+        reexpanding = false;
     }
 
     // ------------ methods that override JTree methods ---------
@@ -100,9 +95,7 @@ public class DisplayTextTree extends JTree {
         int row,
         boolean hasFocus) {
 
-	String name = null;
-
-        if (value instanceof ToDoItem) {
+	if (value instanceof ToDoItem) {
             return ((ToDoItem) value).getHeadline();
         }
         if (value instanceof ToDoList) {
@@ -123,30 +116,36 @@ public class DisplayTextTree extends JTree {
 
         super.fireTreeExpanded(path);
 
-        cat.debug("fireTreeExpanded");
-        if (_reexpanding)
+        LOG.debug("fireTreeExpanded");
+        if (reexpanding)
             return;
-        if (path == null || _expandedPathsInModel == null)
+        if (path == null || expandedPathsInModel == null)
             return;
         Vector expanded = getExpandedPaths();
         expanded.removeElement(path);
         expanded.addElement(path);
     }
 
+    /**
+     * @see javax.swing.JTree#fireTreeCollapsed(javax.swing.tree.TreePath)
+     */
     public void fireTreeCollapsed(TreePath path) {
 
         super.fireTreeCollapsed(path);
 
-        cat.debug("fireTreeCollapsed");
-        if (path == null || _expandedPathsInModel == null)
+        LOG.debug("fireTreeCollapsed");
+        if (path == null || expandedPathsInModel == null)
             return;
         Vector expanded = getExpandedPaths();
         expanded.removeElement(path);
     }
 
+    /**
+     * @see javax.swing.JTree#setModel(javax.swing.tree.TreeModel)
+     */
     public void setModel(TreeModel newModel) {
 
-        cat.debug("setModel");
+        LOG.debug("setModel");
         Object r = newModel.getRoot();
         if (r != null)
             super.setModel(newModel);
@@ -160,12 +159,12 @@ public class DisplayTextTree extends JTree {
      */
     protected Vector getExpandedPaths() {
 
-        cat.debug("getExpandedPaths");
+        LOG.debug("getExpandedPaths");
         TreeModel tm = getModel();
-        Vector res = (Vector) _expandedPathsInModel.get(tm);
+        Vector res = (Vector) expandedPathsInModel.get(tm);
         if (res == null) {
             res = new Vector();
-            _expandedPathsInModel.put(tm, res);
+            expandedPathsInModel.put(tm, res);
         }
         return res;
     }
@@ -178,18 +177,18 @@ public class DisplayTextTree extends JTree {
      */
     private void reexpand() {
 
-        cat.debug("reexpand");
-        if (_expandedPathsInModel == null)
+        LOG.debug("reexpand");
+        if (expandedPathsInModel == null)
             return;
 
-        _reexpanding = true;
+        reexpanding = true;
 
         Enumeration pathsEnum = getExpandedPaths().elements();
         while (pathsEnum.hasMoreElements()) {
             TreePath path = (TreePath) pathsEnum.nextElement();
             expandPath(path);
         }
-        _reexpanding = false;
+        reexpanding = false;
     }
 
 }

@@ -34,25 +34,27 @@ import org.argouml.ui.explorer.WeakExplorerNode;
  * @since argo 0.13.4, Created on 21 March 2003, 23:18
  */
 public class InheritanceNode implements WeakExplorerNode {
-
-    /**
-     * @deprecated by Linus Tolke as of 0.16. Will be private.
-     */
-    Object parent;
+    private Object parent;
 
     /** Creates a new instance of AssociationsNode */
-    public InheritanceNode(Object parent) {
-        this.parent = parent;
+    public InheritanceNode(Object p) {
+        parent = p;
     }
 
     public Object getParent() {
 	return parent;
     }
 
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
 	return "Inheritance";
     }
 
+    /**
+     * @see org.argouml.ui.explorer.WeakExplorerNode#subsumes(java.lang.Object)
+     */
     public boolean subsumes(Object obj) {
 	return obj instanceof InheritanceNode;
     }

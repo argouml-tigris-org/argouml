@@ -70,12 +70,7 @@ import org.tigris.gef.util.VectorSet;
  * @author Jason Robbins
  */
 public class ToDoList extends Observable implements Runnable, Serializable {
-    
-    /**
-     * @deprecated by Linus Tolke as of 0.15.5. Use your own instance of
-     * Logger. This will become private.
-     */
-    protected static Logger cat = Logger.getLogger(ToDoList.class);
+    private static Logger LOG = Logger.getLogger(ToDoList.class);
     
     protected static Object _RecentOffender;
     protected static Vector _RecentOffenderItems;
@@ -87,9 +82,9 @@ public class ToDoList extends Observable implements Runnable, Serializable {
     protected Vector _items;
     
     /** These are computed when needed. */
-    private VectorSet _allOffenders;
+    private VectorSet allOffenders;
     /** These are computed when needed. */
-    private VectorSet _allPosters;
+    private VectorSet allPosters;
     
     /**
      * ToDoItems that the designer has explicitly indicated that (s)he
@@ -179,7 +174,7 @@ public class ToDoList extends Observable implements Runnable, Serializable {
                     try {
                         this.wait();
                     } catch (InterruptedException ignore) {
-                        cat.error("InterruptedException!!!", ignore);
+                        LOG.error("InterruptedException!!!", ignore);
                     }
                 }
             }
@@ -188,7 +183,7 @@ public class ToDoList extends Observable implements Runnable, Serializable {
             removes.removeAllElements();
             try { Thread.sleep(3000); }
             catch (InterruptedException ignore) {
-                cat.error("InterruptedException!!!", ignore);
+                LOG.error("InterruptedException!!!", ignore);
             }
         }
     }
@@ -220,7 +215,7 @@ public class ToDoList extends Observable implements Runnable, Serializable {
                     new StringBuffer("Exception raised in to do list cleaning");
                 buf.append("\n");
                 buf.append(item.toString());
-                cat.error(buf.toString(), ex);
+                LOG.error(buf.toString(), ex);
             }
             if (!valid) {
                 _numNotValid++;
@@ -304,7 +299,7 @@ public class ToDoList extends Observable implements Runnable, Serializable {
     public VectorSet getOffenders() {
         // Extra care to be taken since _allOffenders can be reset while
         // this method is running.
-        VectorSet all = _allOffenders;
+        VectorSet all = allOffenders;
         if (all == null) {
             int size = _items.size();
             all = new VectorSet(size * 2);
@@ -312,14 +307,14 @@ public class ToDoList extends Observable implements Runnable, Serializable {
                 ToDoItem item = (ToDoItem) _items.elementAt(i);
                 all.addAllElements(item.getOffenders());
             }
-            _allOffenders = all;
+            allOffenders = all;
         }
         return all;
     }
 
     private void addOffenders(VectorSet newoffs) {
-        if (_allOffenders != null) {
-            _allOffenders.addAllElements(newoffs);
+        if (allOffenders != null) {
+            allOffenders.addAllElements(newoffs);
 	}
     }
     
@@ -329,7 +324,7 @@ public class ToDoList extends Observable implements Runnable, Serializable {
     public VectorSet getPosters() {
         // Extra care to be taken since _allPosters can be reset while
         // this method is running.
-        VectorSet all = _allPosters;
+        VectorSet all = allPosters;
         if (all == null) {
             int size = _items.size();
             all = new VectorSet();
@@ -337,14 +332,14 @@ public class ToDoList extends Observable implements Runnable, Serializable {
                 ToDoItem item = (ToDoItem) _items.elementAt(i);
                 all.addElement(item.getPoster());
             }
-            _allPosters = all;
+            allPosters = all;
         }
         return all;
     }
 
     private void addPosters(Poster newp) {
-        if (_allPosters != null) {
-            _allPosters.addElement(newp);
+        if (allPosters != null) {
+            allPosters.addElement(newp);
 	}
     }
     
@@ -368,7 +363,7 @@ public class ToDoList extends Observable implements Runnable, Serializable {
                 //cat.debug("Checking for inhibitors " + rc);
                 while (elems.hasMoreElements()) {
                     if (elems.nextElement().equals(rc)) {
-                        cat.debug("ToDoItem not added because it was resolved");
+                        LOG.debug("ToDoItem not added because it was resolved");
                         return;
                     }
                 }
@@ -456,7 +451,7 @@ public class ToDoList extends Observable implements Runnable, Serializable {
     }
     
     public synchronized void removeAllElements() {
-        cat.debug("removing all todo items");
+        LOG.debug("removing all todo items");
         Vector oldItems = (Vector) _items.clone();
         int size = oldItems.size();
         for (int i = 0; i < size; i++) {
@@ -497,11 +492,11 @@ public class ToDoList extends Observable implements Runnable, Serializable {
     }
     
     protected void recomputeAllOffenders() {
-        _allOffenders = null;
+        allOffenders = null;
     }
     
     protected void recomputeAllPosters() {
-        _allPosters = null;
+        allPosters = null;
     }
     
     
@@ -606,10 +601,13 @@ public class ToDoList extends Observable implements Runnable, Serializable {
             }
         }
     }
-    
+
     ////////////////////////////////////////////////////////////////
     // internal methods
     
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
         StringBuffer res = new StringBuffer(100);
         res.append(getClass().getName()).append(" {\n");
