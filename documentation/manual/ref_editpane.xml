@@ -1457,10 +1457,6 @@ graphic artifacts to diagrams.</para></listitem>
     <para>Earlier versions of &argouml; did implement a tabular representation,
       but the current release only supports a diagram representation, so this
       tab does not function.</para>
-
-    <para>In addition you can use &button1; double click on this tab to spawn a
-      copy of the current diagram (see <xref linkend="s2.ref.spawn"/> for more
-      details).</para>
   </sect1>
 
   <!-- The context sensitive pop-up menus -->

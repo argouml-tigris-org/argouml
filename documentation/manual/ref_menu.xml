@@ -2068,7 +2068,7 @@ saved at all? -->
 
     <!-- Create a New Sequence Diagram -->
 
-    <sect2>
+    <sect2 id="s2.ref.create.diagram.sequence_diagram">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center"
           fileref="images/icons/sequence_diagram.gif"/>

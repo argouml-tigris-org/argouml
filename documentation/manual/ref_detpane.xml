@@ -72,17 +72,6 @@ the chapter on diagrams.
       through <xref linkend="ch.ref.entdeploy"/>).</para>
   </sect1>
   
-  <!-- Point out about spawning tabs -->
-
-  <sect1>
-    <title>Spawning Details Tabs</title>
-
-    <para>Tabs in the details pane may be spawned as separate stand alone
-      windows, by &button1; double click on the tab. See
-      <xref linkend="s2.ref.spawn"/> for more information.
-    </para>
-  </sect1>
-
   <!-- How the mouse behaves in the details pane -->
 
   <!-- I do not see the use of such a chapter: 
@@ -519,8 +508,7 @@ Initially this
       property sheet. If the size of the property tab is too small, it may
       become unusable. The solution is to either enlarge the property tab by
       enlarging the main window, or by
-      moving the dividers to left and top, or to split it off altogether as a
-      separate window (see <xref linkend="s2.ref.spawn"/>).</para></caution>
+      moving the dividers to left and top.</para></caution>
   </sect1>
 
   <!-- The Documentation tab -->
