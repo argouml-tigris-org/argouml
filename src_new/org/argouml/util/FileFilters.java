@@ -26,6 +26,7 @@ package org.argouml.util;
 import javax.swing.filechooser.FileFilter;
 
 import org.argouml.kernel.Project;
+
 /** This class handles the the various file extensions.
  * It's not clear whether all of these are supported
  * for input or output or a mixture of both.
@@ -35,97 +36,103 @@ import org.argouml.kernel.Project;
  */
 public class FileFilters {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
+    ////////////////////////////////////////////////////////////////
+    // constants
 
-  /**
-   * This is a filter for uncompressed project format.
-   */
-  public static final SuffixFilter UncompressedFileFilter = new
-  SuffixFilter(Project.UNCOMPRESSED_FILE_EXT.substring(1), "Argo uncompressed project file");
+    /**
+     * This is a filter for uncompressed project format.
+     */
+    public static final SuffixFilter UncompressedFileFilter = new
+        SuffixFilter(Project.UNCOMPRESSED_FILE_EXT.substring(1), 
+                     "Argo uncompressed project file");
   
-  /**
-   * This is a filter for compressed project format.
-   */
-  public static final SuffixFilter CompressedFileFilter = new
-  SuffixFilter(Project.COMPRESSED_FILE_EXT.substring(1), "Argo compressed project file");
+    /**
+     * This is a filter for compressed project format.
+     */
+    public static final SuffixFilter CompressedFileFilter = new
+        SuffixFilter(Project.COMPRESSED_FILE_EXT.substring(1), 
+                     "Argo compressed project file");
   
-  /**
-   * This is a filter for xmi files.
-   */
-  public static final SuffixFilter XMIFilter = new
-  SuffixFilter("xmi", "XML Metadata Interchange");
+    /**
+     * This is a filter for xmi files.
+     */
+    public static final SuffixFilter XMIFilter = new
+        SuffixFilter("xmi", "XML Metadata Interchange");
   
-  /** This is for Precision Graphics Markup Language
-   * a very old and now mostly dead standard.
-   * see W3C.org for more info
-   */  
-  public static final SuffixFilter PGMLFilter = new
-  SuffixFilter("pgml", "Argo diagram");
+    /** This is for Precision Graphics Markup Language
+     * a very old and now mostly dead standard.
+     * see W3C.org for more info
+     */  
+    public static final SuffixFilter PGMLFilter = new
+        SuffixFilter("pgml", "Argo diagram");
 
-  /** This should read or write a config file
-   * but as yet not fully implemented.
-   */  
-  public static final SuffixFilter ConfigFilter = new
-  SuffixFilter("config", "Argo configutation file");
+    /** This should read or write a config file
+     * but as yet not fully implemented.
+     */  
+    public static final SuffixFilter ConfigFilter = new
+        SuffixFilter("config", "Argo configutation file");
 
-  /** History Filter...Argo has trouble with remembering
-   * things at times. Maybe this filter helps.
-   * status is unknown. last reveiwed 8 months ago.
-   */  
-  public static final SuffixFilter HistFilter = new
-  SuffixFilter("hist", "Argo history file");
+    /** History Filter...Argo has trouble with remembering
+     * things at times. Maybe this filter helps.
+     * status is unknown. last reveiwed 8 months ago.
+     */  
+    public static final SuffixFilter HistFilter = new
+        SuffixFilter("hist", "Argo history file");
 
-  public static final SuffixFilter LogFilter = new
-  SuffixFilter("log", "Argo usage log");
+    public static final SuffixFilter LogFilter = new
+        SuffixFilter("log", "Argo usage log");
 
-  /** This writes the GIF file, known issues
-   * http://argouml.tigris.org/issues/show_bug.cgi?id=396
-   * http://argouml.tigris.org/issues/show_bug.cgi?id=407
-   *
-   */  
-  public static final SuffixFilter GIFFilter = new
-  SuffixFilter("gif", "GIF image");
+    /** Java File Filter */
+    public static final SuffixFilter JavaFilter = new
+        SuffixFilter("java", "Java Source File");
 
-  public static final SuffixFilter PSFilter = new
-  SuffixFilter("ps", "PostScript file");
+    /** This writes the GIF file, known issues
+     * http://argouml.tigris.org/issues/show_bug.cgi?id=396
+     * http://argouml.tigris.org/issues/show_bug.cgi?id=407
+     *
+     */  
+    public static final SuffixFilter GIFFilter = new
+        SuffixFilter("gif", "GIF image");
 
-  public static final SuffixFilter EPSFilter = new
-  SuffixFilter("eps", "Encapsulated PostScript file");
+    public static final SuffixFilter PSFilter = new
+        SuffixFilter("ps", "PostScript file");
 
-  /** SVG is the standard set by the W3C re vector graphics
-   * The current output for SVG goes through GEF.
-   * The output is considered to be 'poor' in
-   * quality and builds multiple duplicate artifacts
-   * in the SVG output.
-   *
-   * SVG is considered very useful for documentation
-   * generation over standard raster images like
-   * gif (a patented format), jpg and png.
-   *
-   * It is possible to embed links within SVG to
-   * other areas in the svg or on the web. This
-   * means that javadocs generated with SVG based
-   * diagrams will have links to the classes from
-   * within the diagram!
-   * Not too mention zooming and animation (animation
-   * is considered very useful for modeling the
-   * behaviors of a class for example in state or
-   * sequence diagrams.
-   */  
-  public static final SuffixFilter SVGFilter = new
-  SuffixFilter("svg", "Scalable Vector Graphics file");
+    public static final SuffixFilter EPSFilter = new
+        SuffixFilter("eps", "Encapsulated PostScript file");
+
+    /** SVG is the standard set by the W3C re vector graphics
+     * The current output for SVG goes through GEF.
+     * The output is considered to be 'poor' in
+     * quality and builds multiple duplicate artifacts
+     * in the SVG output.
+     *
+     * SVG is considered very useful for documentation
+     * generation over standard raster images like
+     * gif (a patented format), jpg and png.
+     *
+     * It is possible to embed links within SVG to
+     * other areas in the svg or on the web. This
+     * means that javadocs generated with SVG based
+     * diagrams will have links to the classes from
+     * within the diagram!
+     * Not too mention zooming and animation (animation
+     * is considered very useful for modeling the
+     * behaviors of a class for example in state or
+     * sequence diagrams.
+     */  
+    public static final SuffixFilter SVGFilter = new
+        SuffixFilter("svg", "Scalable Vector Graphics file");
   
-/**
- * Returns the suffix for which a FileFilter filters. 
- * @param filter The FileFilter from which we want to know the suffix
- * @return String The suffix of the FileFilter. Returns null if the FileFilter is not an instance of SuffixFilter.
- */
-  public static String getSuffix(FileFilter filter) {
-  	if (filter instanceof SuffixFilter) {
-  		return ((SuffixFilter)filter)._suffix;
-  	}
-  	return null;
-  }
+    /**
+     * Returns the suffix for which a FileFilter filters. 
+     * @param filter The FileFilter from which we want to know the suffix
+     * @return String The suffix of the FileFilter. Returns null if the FileFilter is not an instance of SuffixFilter.
+     */
+    public static String getSuffix(FileFilter filter) {
+        if (filter instanceof SuffixFilter) {
+            return ((SuffixFilter)filter)._suffix;
+        }
+        return null;
+    }
 
 } /* end class FileFilters */
