@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,9 +31,9 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 /**
- * Helper class for UML Foundation::DataTypes Package.
+ * Helper class for UML Foundation::DataTypes Package.<p>
  *
- * Current implementation is a placeholder.
+ * Current implementation is a placeholder.<p>
  * 
  * @since ARGO0.11.2
  * @author Thierry Lach
@@ -73,10 +73,7 @@ public class DataTypesHelper {
             throw new IllegalArgumentException();
         }
         
-        if (MPseudostateKind.INITIAL.equals(kind))
-            return true;
-        else
-            return false;
+        return MPseudostateKind.INITIAL.equals(kind);
     }
     
     public boolean equalsDEEP_HISTORYKind(Object kind) {
@@ -85,10 +82,7 @@ public class DataTypesHelper {
             throw new IllegalArgumentException();
         }
         
-        if (MPseudostateKind.DEEP_HISTORY.equals(kind))
-            return true;
-        else
-            return false;
+        return MPseudostateKind.DEEP_HISTORY.equals(kind);
     }
     
     public boolean equalsSHALLOW_HISTORYKind(Object kind) {
@@ -97,10 +91,7 @@ public class DataTypesHelper {
             throw new IllegalArgumentException();
         }
         
-        if (MPseudostateKind.SHALLOW_HISTORY.equals(kind))
-            return true;
-        else
-            return false;
+        return MPseudostateKind.SHALLOW_HISTORY.equals(kind);
     }
     
     public boolean equalsFORKKind(Object kind) {
@@ -109,10 +100,7 @@ public class DataTypesHelper {
             throw new IllegalArgumentException();
         }
         
-        if (MPseudostateKind.FORK.equals(kind))
-            return true;
-        else
-            return false;
+        return MPseudostateKind.FORK.equals(kind);
     }
     
     public boolean equalsJOINKind(Object kind) {
@@ -121,10 +109,7 @@ public class DataTypesHelper {
             throw new IllegalArgumentException();
         }
         
-        if (MPseudostateKind.JOIN.equals(kind))
-            return true;
-        else
-            return false;
+        return MPseudostateKind.JOIN.equals(kind);
     }
     
     public boolean equalsBRANCHKind(Object kind) {
@@ -133,10 +118,7 @@ public class DataTypesHelper {
             throw new IllegalArgumentException();
         }
         
-        if (MPseudostateKind.BRANCH.equals(kind))
-            return true;
-        else
-            return false;
+        return MPseudostateKind.BRANCH.equals(kind);
     }
 }
 

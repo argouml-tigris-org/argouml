@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -59,13 +59,15 @@ public class UseCasesHelper {
     private UseCasesHelper() {
     }
     
-    /** Singleton instance.
+    /**
+     * Singleton instance.
      */
     private static UseCasesHelper SINGLETON =
 	new UseCasesHelper();
 
     
-    /** Singleton instance access method.
+    /**
+     * Singleton instance access method.
      */
     public static UseCasesHelper getHelper() {
         return SINGLETON;
@@ -81,10 +83,9 @@ public class UseCasesHelper {
      *
      * @return         A collection of the extension points.
      */
-
     public Collection getExtensionPoints(Object/*MUseCase*/ useCase) {
 
-        return ((MUseCase)useCase).getExtensionPoints();
+        return ((MUseCase) useCase).getExtensionPoints();
     }
     
     /**
@@ -93,12 +94,15 @@ public class UseCasesHelper {
      */
     public Collection getAllUseCases() {
     	MNamespace model =
-	    (MModel)ProjectManager.getManager().getCurrentProject().getModel();
+	    (MModel) ProjectManager.getManager().getCurrentProject()
+	        .getModel();
 	return getAllUseCases(model);
     }
 	
     /**
      * Returns all usecases in some namespace ns.
+     *
+     * @param ns is the namespace
      * @return Collection
      */
     public Collection getAllUseCases(MNamespace ns) {
@@ -123,12 +127,15 @@ public class UseCasesHelper {
      */
     public Collection getAllActors() {
     	MNamespace model =
-	    (MModel)ProjectManager.getManager().getCurrentProject().getModel();
+	    (MModel) ProjectManager.getManager().getCurrentProject()
+	        .getModel();
 	return getAllActors(model);
     }
 	
     /**
      * Returns all actors in some namespace ns.
+     *
+     * @param ns is the namespace
      * @return Collection
      */
     public Collection getAllActors(MNamespace ns) {
@@ -148,7 +155,8 @@ public class UseCasesHelper {
     }
 	
     /**
-     * Returns all usecases this usecase extends
+     * Returns all usecases this usecase extends.<p>
+     *
      * @param ausecase
      * @return Collection
      */
@@ -167,7 +175,7 @@ public class UseCasesHelper {
     
     public Collection getExtendingUseCases(Object usecase) {
         if (usecase == null) return new ArrayList();
-        Iterator it = ((MUseCase)usecase).getExtends2().iterator();
+        Iterator it = ((MUseCase) usecase).getExtends2().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
             MExtend ext = (MExtend) it.next();
@@ -180,11 +188,13 @@ public class UseCasesHelper {
     /**
      * Returns the extend relation between two usecases base and
      * extension. If there is none null is returned.
-     * @param base
-     * @param extension
+     *
+     * @param abase
+     * @param anextension
      * @return MExtend
      */
-    public Object getExtends(Object/*MUseCase*/ abase, Object/*MUseCase*/ anextension) {
+    public Object getExtends(Object/*MUseCase*/ abase,
+			     Object/*MUseCase*/ anextension) {
         MUseCase base = (MUseCase) abase;
         MUseCase extension = (MUseCase) anextension;
 	if (base == null || extension == null) return null;
@@ -199,8 +209,9 @@ public class UseCasesHelper {
     }
 	
     /**
-     * Returns all usecases this usecase includes
-     * @param clazz
+     * Returns all usecases this usecase includes.
+     *
+     * @param ausecase
      * @return Collection
      */
     public Collection getIncludedUseCases(Object/*MUseCase*/ ausecase) {
@@ -219,13 +230,14 @@ public class UseCasesHelper {
     /**
      * Returns the include relation between two usecases base and
      * inclusion. If there is none null is returned.
-     * @param base
-     * @param extension
+     *
+     * @param abase
+     * @param aninclusion
      * @return MExtend
      */
     public MInclude getIncludes(Object abase, Object aninclusion) {
-        MUseCase base = (MUseCase)abase;
-        MUseCase inclusion = (MUseCase)aninclusion;
+        MUseCase base = (MUseCase) abase;
+        MUseCase inclusion = (MUseCase) aninclusion;
 	if (base == null || inclusion == null) return null;
 	Iterator it = inclusion.getIncludes().iterator();
 	while (it.hasNext()) {
@@ -239,12 +251,13 @@ public class UseCasesHelper {
 	
     /**
      * Returns the specificationpath operation of some usecase. See 
-     * section 2.11.3.5 of the UML 1.3 spec for a definition
-     * @param uc
+     * section 2.11.3.5 of the UML 1.3 spec for a definition.<p>
+     *
+     * @param ausecase
      * @return Collection
      */
     public Collection getSpecificationPath(Object ausecase) {
-        MUseCase uc = (MUseCase)ausecase;
+        MUseCase uc = (MUseCase) ausecase;
 	Set set = new HashSet();
 	set.addAll(ModelManagementHelper.getHelper()
 		   .getAllSurroundingNamespaces(uc));

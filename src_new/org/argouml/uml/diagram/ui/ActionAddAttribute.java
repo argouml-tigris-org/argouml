@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,8 +33,10 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLChangeAction;
 
-/** Action to add an attribute to a classifier.
- *  @stereotype singleton
+/**
+ * Action to add an attribute to a classifier.<p>
+ *
+ * @stereotype singleton
  */
 public class ActionAddAttribute extends UMLChangeAction {
 
@@ -60,7 +62,8 @@ public class ActionAddAttribute extends UMLChangeAction {
 	Object target = TargetManager.getInstance().getModelTarget();
 	if (!(org.argouml.model.ModelFacade.isAClassifier(target))) return;
 	Object/*MClassifier*/ cls = target;
-	Object/*MAttribute*/ attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
+	Object/*MAttribute*/ attr =
+	    UmlFactory.getFactory().getCore().buildAttribute(cls);
 	TargetManager.getInstance().setTarget(attr);
 	super.actionPerformed(ae);
     }

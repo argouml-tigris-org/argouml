@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -56,11 +56,13 @@ public class StateMachinesHelper {
     private StateMachinesHelper() {
     }
 
-    /** Singleton instance.
-    */
+    /**
+     * Singleton instance.
+     */
     private static StateMachinesHelper SINGLETON = new StateMachinesHelper();
 
-    /** Singleton instance access method.
+    /** 
+     * Singleton instance access method.
      */
     public static StateMachinesHelper getHelper() {
         return SINGLETON;
@@ -70,22 +72,24 @@ public class StateMachinesHelper {
      * Returns the source of the given transition. This operation is here to 
      * give a full implementation of all getSource and getDestination methods
      * on the uml helpers.
+     *
      * @param trans
      * @return MStateVertex
      */
     public Object getSource(Object trans) {
-        return ((MTransition)trans).getSource();
+        return ((MTransition) trans).getSource();
     }
 
     /**
      * Returns the destination of the given transition. This operation is here 
      * to give a full implementation of all getSource and getDestination methods
-     * on the uml helpers.
+     * on the uml helpers.<p>
+     *
      * @param trans
      * @return MStateVertex
      */
     public Object getDestination(Object trans) {
-        return ((MTransition)trans).getTarget();
+        return ((MTransition) trans).getTarget();
     }
 
     
@@ -97,8 +101,9 @@ public class StateMachinesHelper {
      * oState. Traverses the state hierarchy of the statemachine
      * untill the statemachine is reached.  To decouple ArgoUML as
      * much as possible from the NSUML model, the parameter of the
-     * method is of type Object.
-     * @param oState The state for which we want to know the
+     * method is of type Object.<p>
+     *
+     * @param oStateVertex The state for which we want to know the
      * statemachine
      * @return MStateMachine The statemachine the state belongs too or
      * null if the given parameter is not a state or null itself.
@@ -117,11 +122,12 @@ public class StateMachinesHelper {
     }
 
     /**
-     * Couples a given event to the given transition as being trigger event. To
-     * decouple ArgoUML as much as possible from the NSUML model, the parameters
-     * of the method are of type Object.
-     * @param state
-     * @param action
+     * Couples a given event to the given transition as being trigger
+     * event. To decouple ArgoUML as much as possible from the NSUML
+     * model, the parameters of the method are of type Object.<p>
+     *
+     * @param transition
+     * @param event
      */
     public void setEventAsTrigger(Object transition, Object event) {
         if (transition == null || !(transition instanceof MTransition)) {
@@ -136,9 +142,10 @@ public class StateMachinesHelper {
     }
     
     /**
-     * Returns true if a statemachine may be added to the given context. To
-     * decouple ArgoUML as much as possible from the NSUML model, the parameter
-     * of the method is of type Object.
+     * Returns true if a statemachine may be added to the given
+     * context. To decouple ArgoUML as much as possible from the NSUML
+     * model, the parameter of the method is of type Object.<p>
+     *
      * @param context
      * @return boolean
      */
@@ -163,7 +170,7 @@ public class StateMachinesHelper {
         if (oSubmachineState instanceof MSubmachineState) {
             Collection statemachines =
 		ModelManagementHelper.getHelper()
-		.getAllModelElementsOfKind(MStateMachine.class);
+		    .getAllModelElementsOfKind(MStateMachine.class);
             statemachines.remove(getStateMachine(oSubmachineState));
             return statemachines;
         }
@@ -192,18 +199,19 @@ public class StateMachinesHelper {
     
     public MState getTop(Object sm) {
         
-        if(!(sm instanceof MStateMachine))
+        if (!(sm instanceof MStateMachine))
             throw new IllegalArgumentException();
         
         if (sm == null)
         	return null;
-        return ((MStateMachine)sm).getTop();
+        return ((MStateMachine) sm).getTop();
     }
     
     /**
-     * Gets all statevertices that are a target to transitions outgoing from the
-     * given statevertex.
-     * @param transition
+     * Gets all statevertices that are a target to transitions
+     * outgoing from the given statevertex.<p>
+     *
+     * @param ostatevertex
      * @return Collection
      */
     public Collection getOutgoingStates(Object ostatevertex) {

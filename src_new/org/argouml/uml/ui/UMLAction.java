@@ -42,6 +42,10 @@ import org.argouml.ui.StatusBar;
 import org.tigris.gef.util.Localizer;
 
 public class UMLAction extends AbstractAction {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat = Logger.getLogger(UMLAction.class);
 
     public static boolean HAS_ICON = true;
@@ -66,7 +70,8 @@ public class UMLAction extends AbstractAction {
 		 Translator.localize(name));
         if (global)
             Actions.addAction(this);
-        // Jaap B. 17-6-2003 added next line to make sure every action is in the right enable condition on creation.
+        // Jaap B. 17-6-2003 added next line to make sure every action
+        // is in the right enable condition on creation.
         setEnabled(shouldBeEnabled());
     }
 
@@ -133,10 +138,14 @@ public class UMLAction extends AbstractAction {
         setEnabled(b);
     }
 
-    /** return true if this action should be available to the user. This
-     *  method should examine the ProjectBrowser that owns it.  Sublass
-     *  implementations of this method should always call
-     *  super.shouldBeEnabled first. */
+    /** 
+     * Return true if this action should be available to the user. This
+     * method should examine the ProjectBrowser that owns it.  Sublass
+     * implementations of this method should always call
+     * super.shouldBeEnabled first.
+     *
+     * @return true if the action should be available.
+     */
     public boolean shouldBeEnabled() {
         return true;
     }

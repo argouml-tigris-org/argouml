@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,13 +37,12 @@ import ru.novosoft.uml.model_management.MSubsystem;
 
 /**
  * Factory to create UML classes for the UML
- * ModelManagement package.
+ * ModelManagement package.<p>
  *
  * @since ARGO0.11.2
  * @author Thierry Lach
  * @stereotype singleton
  */
-
 public class ModelManagementFactory extends AbstractUmlModelFactory {
 
     /** Singleton instance.
@@ -51,7 +50,8 @@ public class ModelManagementFactory extends AbstractUmlModelFactory {
     private static ModelManagementFactory SINGLETON =
                    new ModelManagementFactory();
 
-    /** Singleton instance access method.
+    /**
+     * Singleton instance access method.
      */
     public static ModelManagementFactory getFactory() {
         return SINGLETON;
@@ -93,12 +93,13 @@ public class ModelManagementFactory extends AbstractUmlModelFactory {
 	return modelElement;
     }
 
-    /** Build an empty but initialized instance of a UML Package
-     *  with a given name, and set it's UUID, if it doesn't exist.
+    /**
+     * Build an empty but initialized instance of a UML Package
+     * with a given name, and set it's UUID, if it doesn't exist.
      *
-     * @param name
-     * @param uuid
-     *  @return an initialized UML Package instance.
+     * @param name is the given name
+     * @param uuid is the UUID.
+     * @return an initialized UML Package instance.
      */
     public MPackage buildPackage(String name, String uuid) {
         MPackage modelElement = MFactory.getDefaultFactory().createPackage();
@@ -135,6 +136,7 @@ public class ModelManagementFactory extends AbstractUmlModelFactory {
      *
      * @param source is the package to copy.
      * @param ns is the namespace to put the copy in.
+     * @return the newly created package.
      */
     public MPackage copyPackage(MPackage source, MNamespace ns) {
 	MPackage p = createPackage();
@@ -145,6 +147,10 @@ public class ModelManagementFactory extends AbstractUmlModelFactory {
 
     /**
      * Used by the copy functions. Do not call this function directly.
+     *
+     * @param source is the source package
+     * @param target is the target package.
+     * @deprecated by Linus Tolke as of 0.15.4, will be made private.
      */
     public void doCopyPackage(MPackage source, MPackage target) {
 	CoreFactory.getFactory().doCopyNamespace(source, target);

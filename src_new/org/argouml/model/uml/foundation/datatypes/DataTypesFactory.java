@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,13 +43,12 @@ import ru.novosoft.uml.foundation.data_types.MTypeExpression;
 
 /**
  * Factory to create UML classes for the UML
- * Foundation::DataTypes package.
+ * Foundation::DataTypes package.<p>
  *
  * @since ARGO0.11.2
  * @author Thierry Lach
  * @stereotype singleton
  */
-
 public class DataTypesFactory extends AbstractUmlModelFactory {
 
     /** Singleton instance.
@@ -57,7 +56,8 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
     private static DataTypesFactory SINGLETON =
                    new DataTypesFactory();
 
-    /** Singleton instance access method.
+    /**
+     * Singleton instance access method.
      */
     public static DataTypesFactory getFactory() {
         return SINGLETON;
@@ -68,44 +68,47 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
     private DataTypesFactory() {
     }
 
-    /** Create an empty but initialized instance of a UML ActionExpression.
+    /**
+     * Create an empty but initialized instance of a UML ActionExpression.
      *  
-     *  @return an initialized UML ActionExpression instance.
+     * @return an initialized UML ActionExpression instance.
      */
     public Object/*MActionExpression*/ createActionExpression(String language,
-						    String body) {
+							      String body) {
         MActionExpression expression = new MActionExpression(language, body);
 	super.initialize(expression);
 	return expression;
     }
 
-    /** Create an empty but initialized instance of a UML ArgListsExpression.
+    /**
+     * Create an empty but initialized instance of a UML ArgListsExpression.
      *  
-     *  @return an initialized UML ArgListsExpression instance.
+     * @return an initialized UML ArgListsExpression instance.
      */
     public MArgListsExpression createArgListsExpression(String language,
-							String body)
-    {
+							String body) {
         MArgListsExpression expression =
 	    new MArgListsExpression(language, body);
 	super.initialize(expression);
 	return expression;
     }
 
-    /** Create an empty but initialized instance of a UML BooleanExpression.
+    /**
+     * Create an empty but initialized instance of a UML BooleanExpression.
      *  
-     *  @return an initialized UML BooleanExpression instance.
+     * @return an initialized UML BooleanExpression instance.
      */
-    public Object/*MBooleanExpression*/ createBooleanExpression(String language,
-						      String body) {
+    public Object createBooleanExpression(String language,
+					  String body) {
         MBooleanExpression expression = new MBooleanExpression(language, body);
 	super.initialize(expression);
 	return expression;
     }
     
-    /** Create an UML ExpressionEditor.
+    /**
+     * Create an UML ExpressionEditor.
      *  
-     *  @return an initialized ExpressionEditor instance.
+     * @return an initialized ExpressionEditor instance.
      */
     public Object/*MExpressionEditor */ createExpressionEditor(Object expr) {
         MExpressionEditor editor = new MExpressionEditor();
@@ -116,9 +119,10 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
 	return editor;
     }
 
-    /** Create an empty but initialized instance of a UML Expression.
+    /**
+     * Create an empty but initialized instance of a UML Expression.
      *  
-     *  @return an initialized UML Expression instance.
+     * @return an initialized UML Expression instance.
      */
     public MExpression createExpression(String language, String body) {
         MExpression expression = new MExpression(language, body);
@@ -126,12 +130,13 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
 	return expression;
     }
 
-    /** Create an empty but initialized instance of a UML IterationExpression.
+    /**
+     * Create an empty but initialized instance of a UML IterationExpression.
      *  
-     *  @return an initialized UML IterationExpression instance.
+     * @return an initialized UML IterationExpression instance.
      */
-    public Object/*MIterationExpression*/ createIterationExpression(String language,
-							  String body) {
+    public Object createIterationExpression(String language,
+					    String body) {
         MIterationExpression expression =
 	    new MIterationExpression(language, body);
 	super.initialize(expression);
@@ -149,35 +154,36 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
 	return expression;
     }
 
-    /** Create an empty but initialized instance of a UML ObjectSetExpression.
+    /**
+     * Create an empty but initialized instance of a UML ObjectSetExpression.
      *  
-     *  @return an initialized UML ObjectSetExpression instance.
+     * @return an initialized UML ObjectSetExpression instance.
      */
     public MObjectSetExpression createObjectSetExpression(String language,
-							  String body)
-    {
+							  String body) {
         MObjectSetExpression expression =
 	    new MObjectSetExpression(language, body);
 	super.initialize(expression);
 	return expression;
     }
 
-    /** Create an empty but initialized instance of a UML ProcedureExpression.
+    /**
+     * Create an empty but initialized instance of a UML ProcedureExpression.
      *  
-     *  @return an initialized UML ProcedureExpression instance.
+     * @return an initialized UML ProcedureExpression instance.
      */
     public MProcedureExpression createProcedureExpression(String language,
-							  String body)
-    {
+							  String body) {
         MProcedureExpression expression =
 	    new MProcedureExpression(language, body);
 	super.initialize(expression);
 	return expression;
     }
 
-    /** Create an empty but initialized instance of a UML TimeExpression.
+    /**
+     * Create an empty but initialized instance of a UML TimeExpression.
      *  
-     *  @return an initialized UML TimeExpression instance.
+     * @return an initialized UML TimeExpression instance.
      */
     public MTimeExpression createTimeExpression(String language, String body) {
         MTimeExpression expression = new MTimeExpression(language, body);
@@ -185,9 +191,10 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
 	return expression;
     }
 
-    /** Create an empty but initialized instance of a UML TypeExpression.
+    /**
+     * Create an empty but initialized instance of a UML TypeExpression.
      *  
-     *  @return an initialized UML TypeExpression instance.
+     * @return an initialized UML TypeExpression instance.
      */
     public MTypeExpression createTypeExpression(String language, String body) {
         MTypeExpression expression = new MTypeExpression(language, body);
@@ -195,9 +202,10 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
 	return expression;
     }
 
-    /** Create an empty but initialized instance of a UML Multiplicity.
+    /**
+     * Create an empty but initialized instance of a UML Multiplicity.
      *  
-     *  @return an initialized UML Multiplicity instance.
+     * @return an initialized UML Multiplicity instance.
      */
     public MMultiplicity createMultiplicity(int lower, int upper) {
         MMultiplicity multiplicity = new MMultiplicity(lower, upper);
@@ -205,9 +213,10 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
 	return multiplicity;
     }
 
-    /** Create an empty but initialized instance of a UML Multiplicity.
+    /**
+     * Create an empty but initialized instance of a UML Multiplicity.
      *  
-     *  @return an initialized UML Multiplicity instance.
+     * @return an initialized UML Multiplicity instance.
      */
     public MMultiplicity createMultiplicity(List range) {
         MMultiplicity multiplicity = new MMultiplicity(range);
@@ -215,9 +224,10 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
 	return multiplicity;
     }
 
-    /** Create an empty but initialized instance of a UML Multiplicity.
+    /**
+     * Create an empty but initialized instance of a UML Multiplicity.
      *  
-     *  @return an initialized UML Multiplicity instance.
+     * @return an initialized UML Multiplicity instance.
      */
     public MMultiplicity createMultiplicity(String str) {
         MMultiplicity multiplicity = new MMultiplicity(str);

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 // File: CrNavFromInterface.java
 // Classes: CrNavFromInterface.java
-// Original Author: jrobbins@ics.uci.edu
 
 package org.argouml.uml.cognitive.critics;
 
@@ -37,31 +36,27 @@ import org.argouml.model.ModelFacade;
 // Use Model through ModelFacade
 
 /**
- * <p> A critic to detect navigation from an Interface to a Class in an
- * Association. This is not permitted in UML, since it would require the
- * Interface to hold state to represent the association reference.</p>
+ * A critic to detect navigation from an Interface to a Class in an
+ * Association.  This is not permitted in UML, since it would require
+ * the Interface to hold state to represent the association
+ * reference.<p>
  *
- * <p>The critic will trigger whenever an association between an interface and
- * a class is navigable <em>from</em> the interface.</p>
+ * The critic will trigger whenever an association between an
+ * interface and a class is navigable <em>from</em> the interface.<p>
  *
- * @see <a
- * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_nav_from_interface">ArgoUML
- * User Manual: N</a>
+ * @see <a href="http://argouml.tigris.org/documentation/printablehtml/manual/argouml.html/#s2.ref.critics_nav_from_interface">ArgoUML User Manual: N</a>
+ * @author jrobbins@ics.uci.edu
  */
-
 public class CrNavFromInterface extends CrUML {
 
     /**
-     * <p>Constructor for the critic.</p>
+     * Constructor for the critic.<p>
      *
-     * <p>Sets up the resource name, which will allow headline and description
+     * Sets up the resource name, which will allow headline and description
      * to found for the current locale (replaces deprecated setHeadline and sd
      * methods). Provides a design issue category (RELATIONSHIPS) and knowledge
-     * type (SYNTAX). Adds trigger "end_navigable".</p>
-     *
-     * @return nothing returned since this is a constructor.
+     * type (SYNTAX). Adds trigger "end_navigable".<p>
      */
-
     public CrNavFromInterface() {
 
         // Set the resource label, which will get the headline and description
@@ -81,22 +76,22 @@ public class CrNavFromInterface extends CrUML {
     }
 
     /**
-     * <p>The trigger for the critic.</p>
+     * The trigger for the critic.<p>
      *
-     * <p>Applies to Associations only, not AssociationRoles. The reason is
+     * Applies to Associations only, not AssociationRoles. The reason is
      * that an AssociationRole cannot have greater navigability than the
      * Association it specializes, so if the critic has addressed the
      * Association, the AssociationRole will effectively be addressed. There
      * may of course be a need for a critic to check that Association Roles do
-     * match their parents in this respect!</p>
+     * match their parents in this respect!<p>
      *
-     * <p>As a consequence, we also don't need to check for associations with
-     * ClassifierRoles.</p>
+     * As a consequence, we also don't need to check for associations with
+     * ClassifierRoles.<p>
      * 
-     * <p>Iterate over all the AssociationEnds. We only have a problem if:</p>
+     * Iterate over all the AssociationEnds. We only have a problem if:<p>
      * <ol>
-     *   <li><p>There is an end connected to an Interface; and</p></li>
-     *   <li><p>An end other than that end is navigable.</p></li>
+     *   <li>There is an end connected to an Interface; and
+     *   <li>An end other than that end is navigable.
      * </ol>
      *
      * @param  dm    the object to be checked against the critic

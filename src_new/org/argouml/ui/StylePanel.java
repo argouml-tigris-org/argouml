@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -53,7 +53,13 @@ public class StylePanel
         DocumentListener,
         ListSelectionListener,
         ActionListener {
+
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat = Logger.getLogger(StylePanel.class);
+
     ////////////////////////////////////////////////////////////////
     // instance vars
     protected Fig _target;
@@ -61,9 +67,10 @@ public class StylePanel
     /**
      * This method must be overriden by implementors if they don't
      * want to refresh the whole stylepanel every time a property
-     * change events is fired.
+     * change events is fired.<p>
+     *
      * @since 8 june 2003, 0.13.6
-     * @see org.argouml.ui.TabTarget#refresh(java.beans.PropertyChangeEvent)
+     * @see org.argouml.ui.TabTarget#refresh()
      */
     public void refresh(PropertyChangeEvent e) {
         refresh();
@@ -118,7 +125,7 @@ public class StylePanel
     }
 
     /**
-     * style panels ony apply when a Fig is selected.
+     * Style panels ony apply when a Fig is selected.
      */
     public boolean shouldBeEnabled(Object target) {
         ArgoDiagram diagram =
@@ -166,25 +173,24 @@ public class StylePanel
         //if (src == _config) doConfig();
     }
 
-    /* (non-Javadoc)
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
+     *          TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
     }
 
-    /* (non-Javadoc)
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
+     *          TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         setTarget(e.getNewTarget());
 
     }
 
-    /* (non-Javadoc)
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTarget());

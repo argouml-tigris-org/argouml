@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,10 +30,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
- * This implements all the same methods of the JDK1.4 LinkedHashSet class and is
- * provided to give the same functionality for previous versions of JDK.
- * @see http://java.sun.com/j2se/1.4.2/docs/api/java/util/LinkedHashSet.html
+ * This implements all the same methods of the JDK1.4 LinkedHashSet
+ * class and is provided to give the same functionality for previous
+ * versions of JDK.<p>
  *
+ * @see <a href="http://java.sun.com/j2se/1.4.2/docs/api/java/util/LinkedHashSet.html">LinkedHashSet in JDK1.4</a>
  * @author Bob Tarling
  */
 public class LinkedHashSet extends HashSet {
@@ -98,6 +99,7 @@ public class LinkedHashSet extends HashSet {
         list.clear();
     }
 
+    // TODO: Shouldn't there be a hashCode() function in this class?
     public boolean equals(Object o) {
         if (o == null || !(o instanceof LinkedHashSet)) return false;
         LinkedHashSet rhs = (LinkedHashSet) o;

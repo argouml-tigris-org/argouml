@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,41 +38,46 @@ import org.tigris.gef.presentation.FigLine;
  */
 public class FigLinkPort extends FigLine {
 	
-	/**
-	 * If a figlinkport has this activation status, the activation to which it is attached
-	 * will be cut off at the y coordinate of this figlink.</br>
-	 * The following type of links have this status for their source activation:</br>
-	 * <ul>
-	 * <li>FigReturnActionLink</li>
-	 * </ul>
-	 * The following types of links have this status for their destination status:</br>
-	 * <ul>
-	 * <li>FigCallActionLink</li>
-	 * <li>FigDestroyActionLink</li>
-	 * </ul>
-	 */
-	public final static int ACTIVATION_CUTOFF_STATUS = 1;
+    /**
+     * If a figlinkport has this activation status, the activation to
+     * which it is attached will be cut off at the y coordinate of
+     * this figlink.<p>
+     *
+     * The following type of links have this status for their source
+     * activation:<ul>
+     * <li>FigReturnActionLink
+     * </ul>
+     *
+     * The following types of links have this status for their
+     * destination status:<ul>
+     * <li>FigCallActionLink
+     * <li>FigDestroyActionLink
+     * </ul>
+     */
+    public static final int ACTIVATION_CUTOFF_STATUS = 1;
 	
-	/**
-	 * If a figlinkport has this activation status, the activation to which 
-	 * it is attached will not be cutt off.
-	 * The following type of links have this status for their source activation:</br>
-	 * <ul>
-	 * <li>FigCallActionLink</li>
-	 * <li>FigDestroyActionLink</li>
-	 * <li>FigCreateActionLink</li>
-	 * </ul>
-	 * The following types of links have this status for their destination status:</br>
-	 * <ul>
-	 * <li>FigReturnActionLink</li> 
-	 * </ul>
-	 */
-	public final static int ACTIVATION_CONTINUOUS_STATUS = 2;
+    /**
+     * If a figlinkport has this activation status, the activation to
+     * which it is attached will not be cutt off. The following type
+     * of links have this status for their source activation:<ul>
+     * <li>FigCallActionLink
+     * <li>FigDestroyActionLink
+     * <li>FigCreateActionLink
+     * </ul>
+     *
+     * The following types of links have this status for their
+     * destination status:
+     * <ul>
+     * <li>FigReturnActionLink
+     * </ul>
+     */
+    public static final int ACTIVATION_CONTINUOUS_STATUS = 2;
 	
-	private int _activationStatus;
+    private int _activationStatus;
 
     /**
      * Creates a new horizontal FigLinkPort that's not displayed
+     *
      * @param x
      * @param y
      * @param x2
@@ -95,17 +100,18 @@ public class FigLinkPort extends FigLine {
     }
 
     /**
-     * @return
+     * @return the activation status.
      */
     public int getActivationStatus() {
         return _activationStatus;
     }
 
     /**
-     * Sets the activation status. The activation status is a flag to indicate
-     * if the activation to which this figlinkport is attached should continue
-     * after the y-coordinate of this figlinkport or should be terminated (cut off)
-     * after this y-coordinate.
+     * Sets the activation status. The activation status is a flag to
+     * indicate if the activation to which this figlinkport is
+     * attached should continue after the y-coordinate of this
+     * figlinkport or should be terminated (cut off) after this
+     * y-coordinate.
      * @param i
      */
     public void setActivationStatus(int i) {

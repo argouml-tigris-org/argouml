@@ -152,6 +152,10 @@ import ru.novosoft.uml.model_management.MSubsystem;
  */
 public class UmlFactory extends AbstractUmlModelFactory {
 
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat =
         Logger.getLogger(UmlFactory.class);
     
@@ -179,53 +183,70 @@ public class UmlFactory extends AbstractUmlModelFactory {
      */
     private static final Object[][] VALID_CONNECTIONS = 
     {
-    {ModelFacade.GENERALIZATION,   ModelFacade.CLASSIFIER_ROLE},
-    {ModelFacade.GENERALIZATION,   ModelFacade.CLASS},
-    {ModelFacade.GENERALIZATION,   ModelFacade.INTERFACE},
-    {ModelFacade.GENERALIZATION,   ModelFacade.PACKAGE},
-    {ModelFacade.GENERALIZATION,   ModelFacade.USE_CASE},
-    {ModelFacade.GENERALIZATION,   ModelFacade.ACTOR},
-    {ModelFacade.DEPENDENCY,       ModelFacade.PACKAGE},
-    {ModelFacade.DEPENDENCY,       ModelFacade.CLASS},
-    {ModelFacade.DEPENDENCY,       ModelFacade.INTERFACE},
-    {ModelFacade.DEPENDENCY,       ModelFacade.INTERFACE,          ModelFacade.CLASS},
-    {ModelFacade.DEPENDENCY,       ModelFacade.INTERFACE,          ModelFacade.PACKAGE},
-    {ModelFacade.DEPENDENCY,       ModelFacade.CLASS,              ModelFacade.PACKAGE},
-    {ModelFacade.DEPENDENCY,       ModelFacade.USE_CASE},
-    {ModelFacade.DEPENDENCY,       ModelFacade.ACTOR},
-    {ModelFacade.DEPENDENCY,       ModelFacade.ACTOR,              ModelFacade.USE_CASE},
-    {ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT},
-    {ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT_INSTANCE},
-    {ModelFacade.DEPENDENCY,       ModelFacade.OBJECT},
-    {ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT,          ModelFacade.NODE,               null},
-    {ModelFacade.DEPENDENCY,       ModelFacade.OBJECT,             ModelFacade.COMPONENT,          null},
-    {ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT_INSTANCE, ModelFacade.NODE_INSTANCE,      null},
-    {ModelFacade.DEPENDENCY,       ModelFacade.OBJECT,             ModelFacade.COMPONENT_INSTANCE, null},
-    {ModelFacade.DEPENDENCY,       ModelFacade.CLASSIFIER_ROLE},
-    {ModelFacade.USAGE,            ModelFacade.CLASS},
-    {ModelFacade.USAGE,            ModelFacade.INTERFACE},
-    {ModelFacade.USAGE,            ModelFacade.PACKAGE},
-    {ModelFacade.USAGE,            ModelFacade.CLASS,              ModelFacade.PACKAGE},
-    {ModelFacade.USAGE,            ModelFacade.CLASS,              ModelFacade.INTERFACE},
-    {ModelFacade.USAGE,            ModelFacade.INTERFACE,          ModelFacade.PACKAGE},
-    {ModelFacade.PERMISSION,       ModelFacade.CLASS},
-    {ModelFacade.PERMISSION,       ModelFacade.INTERFACE},
-    {ModelFacade.PERMISSION,       ModelFacade.PACKAGE},
-    {ModelFacade.PERMISSION,       ModelFacade.CLASS,              ModelFacade.PACKAGE},
-    {ModelFacade.PERMISSION,       ModelFacade.CLASS,              ModelFacade.INTERFACE},
-    {ModelFacade.PERMISSION,       ModelFacade.INTERFACE,          ModelFacade.PACKAGE},
-    {ModelFacade.ABSTRACTION,      ModelFacade.CLASS,              ModelFacade.INTERFACE,          null},
-    {ModelFacade.ASSOCIATION,      ModelFacade.CLASS},
-    {ModelFacade.ASSOCIATION,      ModelFacade.CLASS,              ModelFacade.INTERFACE},
-    {ModelFacade.ASSOCIATION,      ModelFacade.ACTOR},
-    {ModelFacade.ASSOCIATION,      ModelFacade.USE_CASE},
-    {ModelFacade.ASSOCIATION,      ModelFacade.ACTOR,              ModelFacade.USE_CASE},
-    {ModelFacade.ASSOCIATION,      ModelFacade.NODE},
-    {ModelFacade.ASSOCIATION_ROLE, ModelFacade.CLASSIFIER_ROLE},
-    {ModelFacade.EXTEND,           ModelFacade.USE_CASE},
-    {ModelFacade.INCLUDE,          ModelFacade.USE_CASE},
-    {ModelFacade.LINK,             ModelFacade.NODE_INSTANCE},
-    {ModelFacade.LINK,             ModelFacade.OBJECT}
+	{ModelFacade.GENERALIZATION,   ModelFacade.CLASSIFIER_ROLE},
+	{ModelFacade.GENERALIZATION,   ModelFacade.CLASS},
+	{ModelFacade.GENERALIZATION,   ModelFacade.INTERFACE},
+	{ModelFacade.GENERALIZATION,   ModelFacade.PACKAGE},
+	{ModelFacade.GENERALIZATION,   ModelFacade.USE_CASE},
+	{ModelFacade.GENERALIZATION,   ModelFacade.ACTOR},
+	{ModelFacade.DEPENDENCY,       ModelFacade.PACKAGE},
+	{ModelFacade.DEPENDENCY,       ModelFacade.CLASS},
+	{ModelFacade.DEPENDENCY,       ModelFacade.INTERFACE},
+	{ModelFacade.DEPENDENCY,       ModelFacade.INTERFACE,
+	 ModelFacade.CLASS},
+	{ModelFacade.DEPENDENCY,       ModelFacade.INTERFACE,
+	 ModelFacade.PACKAGE},
+	{ModelFacade.DEPENDENCY,       ModelFacade.CLASS,
+	 ModelFacade.PACKAGE},
+	{ModelFacade.DEPENDENCY,       ModelFacade.USE_CASE},
+	{ModelFacade.DEPENDENCY,       ModelFacade.ACTOR},
+	{ModelFacade.DEPENDENCY,       ModelFacade.ACTOR,
+	 ModelFacade.USE_CASE},
+	{ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT},
+	{ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT_INSTANCE},
+	{ModelFacade.DEPENDENCY,       ModelFacade.OBJECT},
+	{ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT,
+	 ModelFacade.NODE,               null},
+	{ModelFacade.DEPENDENCY,       ModelFacade.OBJECT,
+	 ModelFacade.COMPONENT,          null},
+	{ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT_INSTANCE,
+	 ModelFacade.NODE_INSTANCE,      null},
+	{ModelFacade.DEPENDENCY,       ModelFacade.OBJECT,
+	 ModelFacade.COMPONENT_INSTANCE, null},
+	{ModelFacade.DEPENDENCY,       ModelFacade.CLASSIFIER_ROLE},
+	{ModelFacade.USAGE,            ModelFacade.CLASS},
+	{ModelFacade.USAGE,            ModelFacade.INTERFACE},
+	{ModelFacade.USAGE,            ModelFacade.PACKAGE},
+	{ModelFacade.USAGE,            ModelFacade.CLASS,
+	 ModelFacade.PACKAGE},
+	{ModelFacade.USAGE,            ModelFacade.CLASS,
+	 ModelFacade.INTERFACE},
+	{ModelFacade.USAGE,            ModelFacade.INTERFACE,
+	 ModelFacade.PACKAGE},
+	{ModelFacade.PERMISSION,       ModelFacade.CLASS},
+	{ModelFacade.PERMISSION,       ModelFacade.INTERFACE},
+	{ModelFacade.PERMISSION,       ModelFacade.PACKAGE},
+	{ModelFacade.PERMISSION,       ModelFacade.CLASS,
+	 ModelFacade.PACKAGE},
+	{ModelFacade.PERMISSION,       ModelFacade.CLASS,
+	 ModelFacade.INTERFACE},
+	{ModelFacade.PERMISSION,       ModelFacade.INTERFACE,
+	 ModelFacade.PACKAGE},
+	{ModelFacade.ABSTRACTION,      ModelFacade.CLASS,
+	 ModelFacade.INTERFACE,          null},
+	{ModelFacade.ASSOCIATION,      ModelFacade.CLASS},
+	{ModelFacade.ASSOCIATION,      ModelFacade.CLASS,
+	 ModelFacade.INTERFACE},
+	{ModelFacade.ASSOCIATION,      ModelFacade.ACTOR},
+	{ModelFacade.ASSOCIATION,      ModelFacade.USE_CASE},
+	{ModelFacade.ASSOCIATION,      ModelFacade.ACTOR,
+	 ModelFacade.USE_CASE},
+	{ModelFacade.ASSOCIATION,      ModelFacade.NODE},
+	{ModelFacade.ASSOCIATION_ROLE, ModelFacade.CLASSIFIER_ROLE},
+	{ModelFacade.EXTEND,           ModelFacade.USE_CASE},
+	{ModelFacade.INCLUDE,          ModelFacade.USE_CASE},
+	{ModelFacade.LINK,             ModelFacade.NODE_INSTANCE},
+	{ModelFacade.LINK,             ModelFacade.OBJECT}
     };
 
     /** Singleton instance.
@@ -448,17 +469,23 @@ public class UmlFactory extends AbstractUmlModelFactory {
         _jmiProxyCreated = arg;
     }
     
-    /** Create a new connection model element (a relationship or link)
-     *  between any existing node model elements.
+    /**
+     * Create a new connection model element (a relationship or link)
+     * between any existing node model elements.
      * 
-     *  @throws IllegalModelElementConnectionException
+     * @return the newly created connection element
+     * @param connectionType is the type of relationship
+     * @param fromElement is an existing model element
+     * @param toElement is another existing model element
+     * @throws IllegalModelElementConnectionException
      */
     public Object buildConnection(Object connectionType, 
-                  Object fromElement, Object toElement)
-        throws IllegalModelElementConnectionException
-    {
+				  Object fromElement, Object toElement)
+        throws IllegalModelElementConnectionException {
+
         return buildConnection(connectionType,
-                   fromElement, null, toElement, null, null);
+			       fromElement, null, toElement, null, null);
+
     }
     
     public Object buildConnection(Object connectionType,
@@ -988,9 +1015,12 @@ public class UmlFactory extends AbstractUmlModelFactory {
     }
 
     /**
-     * Used by the copy functions. Do not call this function directly.
+     * Used by the copy functions. Do not call this function directly.<p>
      *
      * Extensions? I don't think we use them anywhere.
+     *
+     * @deprecated by Linus Tolke as of 0.15.4. Should be made private (if
+     * at all used).
      */
     public void doCopyBase(MBase source, MBase target) {
     }
@@ -1050,7 +1080,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
      * This will allow abstraction of the create mechanism at a single point.
      * 
      * @param entity name to create - must be implemented in 
-     * {@link org.argouml.model.uml.Uml.Entity}
+     * {@link org.argouml.model.uml.Uml}.
      * 
      * @return the entity requested or null if unable to create
      */
@@ -1064,14 +1094,14 @@ public class UmlFactory extends AbstractUmlModelFactory {
      * This will allow abstraction of the create mechanism at a single point.
      * 
      * @param entity Class to create - must implement
-     *        {@link org.argouml.model.uml.Uml.Entity}
+     *        {@link UmlModelEntity}
      * @return the created entity or null if unable to create
      */
     public Object create(UmlModelEntity entity) {
         ObjectCreateInfo oi = (ObjectCreateInfo) elements.get(entity);
         if (oi == null) {
             return null;
-            // TODO decide if we want to throw an exception instead
+            // TODO: decide if we want to throw an exception instead
             // throw new InvalidObjectRequestException
             //("Cannot identify the object type", entity);
         }
@@ -1084,7 +1114,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
         catch (Exception e) {
             cat.error("Failed to invoke create method on factory.", e);
             return null;
-            // TODO decide if we want to throw an exception instead
+            // TODO: decide if we want to throw an exception instead
             // throw new InvalidObjectRequestException
             //("Cannot find creator method", entity, e);
         }
@@ -1094,7 +1124,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
             obj = method.invoke(oi.getFactory(), new Object[] {} );
         }
         catch (Exception e) {
-            // TODO decide if we want to throw an exception instead
+            // TODO: decide if we want to throw an exception instead
             // throw new InvalidObjectRequestException
             //("Cannot execute creator method", entity, e);
             cat.error("Failed to invoke create method on factory.", e);
@@ -1104,7 +1134,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
         
         // Allow for testing of the proxy capability
         if (_jmiProxyCreated) {
-        	// TODO implement RefPackageProxy handling
+        	// TODO: implement RefPackageProxy handling
         	
 			// if (obj instanceof MPackage) {
 			//     return RefPackageProxy.newInstance(obj);

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,21 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: UMLUseCaseDiagram.java
-// Classes: UMLUseCaseDiagram
-// Original Author: your email here
-// $Id$
-
-// 3 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support the
-// Extend and Include relationships. JavaDoc added for clarity. Default
-// constructor made private, since it must never be called directly.
-
-// 11 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Removed dependency
-// relationship and added extension point button
-
-// 3 May 2002: Jeremy Bennett (mail@jeremybennett.com). Replaced dependency
-// relationship following review.
 
 package org.argouml.uml.diagram.use_case.ui;
 
@@ -59,35 +44,36 @@ import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
 /**
- * <p>The base class of the use case diagram.</p>
+ * The base class of the use case diagram.<p>
  *
- * <p>Defines the toolbar, provides for its initialization and provides
- *   constructors for a top level diagram and one within a defined
- *   namespace.</p>
+ * Defines the toolbar, provides for its initialization and provides
+ * constructors for a top level diagram and one within a defined
+ * namespace.<p>
  */
-
 public class UMLUseCaseDiagram extends UMLDiagram {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat = Logger.getLogger(UMLUseCaseDiagram.class);
 
     // Actions specific to the use case diagram toolbar
 
     /**
-     * <p>Tool to add an actor node.</p>
+     * Tool to add an actor node.<p>
      */
     protected static Action _actionActor =
-    new RadioAction(
-        new CmdCreateNode(ModelFacade.ACTOR, "Actor"));
+	new RadioAction(new CmdCreateNode(ModelFacade.ACTOR, "Actor"));
     
     /**
-     * <p>Tool to add a use case node.</p>
+     * Tool to add a use case node.<p>
      */
     protected static Action _actionUseCase =
-    new RadioAction(
-        new CmdCreateNode(ModelFacade.USE_CASE, "UseCase"));
+	new RadioAction(new CmdCreateNode(ModelFacade.USE_CASE, "UseCase"));
 
     /**
-     * <p>Tool to create an association between UML artifacts using a
-     *   polyedge.</p>
+     * Tool to create an association between UML artifacts using a
+     * polyedge.<p>
      */
     //protected static Action _actionAssoc = new
     //CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
@@ -124,8 +110,8 @@ public class UMLUseCaseDiagram extends UMLDiagram {
             "UniComposition"));
 
     /**
-     * <p>Tool to create a generalization between UML artifacts using a
-     *   polyedge.</p>
+     * Tool to create a generalization between UML artifacts using a
+     * polyedge.<p>
      */
     protected static Action _actionGeneralize = new RadioAction(
         new CmdSetMode(
@@ -135,8 +121,8 @@ public class UMLUseCaseDiagram extends UMLDiagram {
             "Generalization"));
 
     /**
-     * <p>Tool to create an extend relationship between UML use cases using a
-     *   polyedge.</p>
+     * Tool to create an extend relationship between UML use cases
+     * using a polyedge.<p>
      */
     protected static Action _actionExtend = new RadioAction(
         new CmdSetMode(
@@ -146,8 +132,8 @@ public class UMLUseCaseDiagram extends UMLDiagram {
             "Extend"));
 
     /**
-     * <p>Tool to create an include relationship between UML use cases using a
-     *   polyedge.</p>
+     * Tool to create an include relationship between UML use cases
+     * using a polyedge.<p>
      */
     protected static Action _actionInclude = new RadioAction(
         new CmdSetMode(
@@ -157,50 +143,50 @@ public class UMLUseCaseDiagram extends UMLDiagram {
             "Include"));
 
     /**
-     * <p>Tool to create a dependency between UML artifacts using a
-     *   polyedge.</p>
+     * Tool to create a dependency between UML artifacts using a
+     * polyedge.<p>
      */
-
     protected static Action _actionDependency = new RadioAction(
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
             ModelFacade.DEPENDENCY,
             "Dependency"));
-    /**
-     * <p>A static counter of the use case index (used in constructing a unique
-     *   name for each new diagram.</p>
-     */
 
+    /**
+     * A static counter of the use case index (used in constructing a
+     * unique name for each new diagram.<p>
+     */
     protected static int _UseCaseDiagramSerial = 1;
 
     // constructors
 
     /**
-     * <p>Construct a new use case diagram with no defined namespace.</p>
+     * Construct a new use case diagram with no defined namespace.<p>
      *
-     * <p>Note we must never call this directly, since defining the namespace
-     *   is what makes everything work. However GEF will call it directly when
-     *   loading a new diagram, so it must remain public.</p>
+     * Note we must never call this directly, since defining the
+     * namespace is what makes everything work. However GEF will call
+     * it directly when loading a new diagram, so it must remain
+     * public.<p>
      *
-     * <p>A unique name is constructed by using the serial index {@link
-     *   _UseCaseDiagramSerial}. We allow for the possibility that setting this
-     *   may fail, in which case no name is set.</p>
+     * A unique name is constructed by using the serial index
+     * {@link #_UseCaseDiagramSerial}. We allow for the possibility
+     * that setting this may fail, in which case no name is set.<p>
      */
-
     public UMLUseCaseDiagram() {
         try {
             setName(getNewDiagramName());
-        } catch (PropertyVetoException pve) {}
+        } catch (PropertyVetoException pve) { }
     }
 
     /**
-     * <p>Construct a new use case diagram with in a defined namespace.</p>
+     * Construct a new use case diagram with in a defined namespace.<p>
      *
-     * <p>Invokes the generic constructor {@link #UMLUseCaseDiagram()}, then
-     *   intialises the namespace (which initializes all the graphics).</p>
+     * Invokes the generic constructor {@link #UMLUseCaseDiagram()},
+     * then intialises the namespace (which initializes all the
+     * graphics).<p>
      *
-     * <p>This is the constructor which should always be used.</p>
+     * This is the constructor which should always be used.<p>
      *
      * @param m  the desired namespace for this diagram.
      */
@@ -222,33 +208,32 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
         try {
             setName(name);
-        } catch (PropertyVetoException v) {}
+        } catch (PropertyVetoException v) { }
     }
 
     /**
-     * <p> perform a number of important initializations of a <em>Use Case
-     *   Diagram</em>.</p>
+     * Perform a number of important initializations of a <em>Use Case
+     * Diagram</em>.<p>
      *
-     * <p>Creates a new graph model for the diagram, settings its namespace to
-     *   that supplied.</p>
+     * Creates a new graph model for the diagram, settings its
+     * namespace to that supplied.<p>
      *
-     * <p>Changed <em>lay</em> from <em>LayerPerspective</em> to
-     *   <em>LayerPerspectiveMutable</em>. This class is a child of
-     *   <em>LayerPerspective</em> and was implemented to correct some
-     *   difficulties in changing the model. <em>lay</em> is used mainly in
-     *   <em>LayerManager</em>(GEF) to control the adding, changing and
-     *   deleting of items in a layer of the diagram.</p>
+     * Changed <em>lay</em> from <em>LayerPerspective</em> to
+     * <em>LayerPerspectiveMutable</em>. This class is a child of
+     * <em>LayerPerspective</em> and was implemented to correct some
+     * difficulties in changing the model. <em>lay</em> is used mainly
+     * in <em>LayerManager</em>(GEF) to control the adding, changing
+     * and deleting of items in a layer of the diagram.<p>
      *
-     * <p>Set a renderer suitable for the use case diagram.</p>
+     * Set a renderer suitable for the use case diagram.<p>
      *
-     * <p><em>Note</em>. This is declared as public. Not clear that other
-     *   classes should be allowed to invoke this method.</p>
+     * <em>Note</em>. This is declared as public. Not clear that other
+     * classes should be allowed to invoke this method.<p>
      *
-     * @param m  Namespace to be used for this diagram.
+     * @param handle Namespace to be used for this diagram.
      *
      * @author   psager@tigris.org  Jan 24, 2002
      */
-
     public void setNamespace(Object handle) {
         if (!ModelFacade.isANamespace(handle)) {
             cat.error(
@@ -256,8 +241,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
             throw new IllegalArgumentException(
                 "Illegal argument. Object " + handle + " is not a namespace");
         }
-        Object m = /*(MNamespace)*/
-        handle;
+        Object m = /*(MNamespace)*/ handle;
         super.setNamespace(m);
 
         UseCaseDiagramGraphModel gm = new UseCaseDiagramGraphModel();
@@ -275,30 +259,32 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
     /**
      * Get the actions from which to create a toolbar or equivilent
-     * graphic triggers
+     * graphic triggers.
      */
     protected Object[] getUmlActions() {
         Object actions[] =
-            {
-                _actionActor,
-                _actionUseCase,
-                null,
-                getAssociationActions(),
-                _actionDependency,
-                _actionGeneralize,
-                _actionExtend,
-                _actionInclude,
-                null,
-                ActionAddExtensionPoint.singleton(),
-                null,
-                ActionAddNote.SINGLETON };
+        {
+	    _actionActor,
+	    _actionUseCase,
+	    null,
+	    getAssociationActions(),
+	    _actionDependency,
+	    _actionGeneralize,
+	    _actionExtend,
+	    _actionInclude,
+	    null,
+	    ActionAddExtensionPoint.singleton(),
+	    null,
+	    ActionAddNote.SINGLETON,
+	};
         return actions;
     }
 
     private Object[] getAssociationActions() {
-        Object actions[][] = { { _actionAssociation, _actionUniAssociation }, {
-                _actionAggregation, _actionUniAggregation }, {
-                _actionComposition, _actionUniComposition }
+        Object actions[][] = {
+	    {_actionAssociation, _actionUniAssociation },
+	    {_actionAggregation, _actionUniAggregation },
+	    {_actionComposition, _actionUniComposition },
         };
 
         return actions;
@@ -308,10 +294,8 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         String name = null;
         name = "Use Case Diagram " + _UseCaseDiagramSerial;
         _UseCaseDiagramSerial++;
-        if (!(ProjectManager
-            .getManager()
-            .getCurrentProject()
-            .isValidDiagramName(name))) {
+        if (!(ProjectManager.getManager().getCurrentProject()
+	          .isValidDiagramName(name))) {
             name = getNewDiagramName();
         }
         return name;

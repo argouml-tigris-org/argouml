@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -47,13 +47,18 @@ import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
-/** Enabling an activity diagram connected to an
- * actor has been requested as a feature.
+/**
+ * Enabling an activity diagram connected to an actor has been
+ * requested as a feature.<p>
  *
- * As well enabling swim lanes in the activity
- * diagram is considered valuable as well.
+ * As well enabling swim lanes in the activity diagram is considered
+ * valuable as well.<p>
  */
 public class UMLActivityDiagram extends UMLDiagram {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat = Logger.getLogger(UMLActivityDiagram.class);
 
     ////////////////
@@ -84,7 +89,7 @@ public class UMLActivityDiagram extends UMLDiagram {
 
         try {
             setName(getNewDiagramName());
-        } catch (PropertyVetoException pve) {}
+        } catch (PropertyVetoException pve) { }
 
 	// start state, end state, forks, joins, etc.
 	_actionStartPseudoState =
@@ -119,7 +124,7 @@ public class UMLActivityDiagram extends UMLDiagram {
             name = ModelFacade.getName(context);
             try {
                 setName(name);
-            } catch (PropertyVetoException pve) {}
+            } catch (PropertyVetoException pve) { }
         }
     }
 
@@ -138,7 +143,7 @@ public class UMLActivityDiagram extends UMLDiagram {
                     + (ModelFacade.getBehaviors(namespace).size());
             try {
                 setName(name);
-            } catch (PropertyVetoException pve) {}
+            } catch (PropertyVetoException pve) { }
         }
         if (namespace != null)
             setup(namespace, agraph);
@@ -157,20 +162,22 @@ public class UMLActivityDiagram extends UMLDiagram {
             cat.debug("ActivityGraph without context not yet possible :-(");
     }
 
-    /** method to perform a number of important initializations of an
-     * <I>Activity Diagram</I>.
+    /**
+     * Method to perform a number of important initializations of an
+     * <I>Activity Diagram</I>.<p>
      * 
-     * each diagram type has a similar <I>UMLxxxDiagram</I> class.
+     * Each diagram type has a similar <I>UMLxxxDiagram</I> class.<p>
      *
-     * @param m  Namespace from the model
-     * @param agraph ActivityGraph from the model
-     * @modified changed <I>lay</I> from <I>LayerPerspective</I> to
+     * Changed <I>lay</I> from <I>LayerPerspective</I> to
      * <I>LayerPerspectiveMutable</I>.  This class is a child of
      * <I>LayerPerspective</I> and was implemented to correct some
      * difficulties in changing the model. <I>lay</I> is used mainly
      * in <I>LayerManager</I>(GEF) to control the adding, changing and
      * deleting layers on the diagram...  psager@tigris.org Jan. 24,
-     * 2oo2
+     * 2002
+
+     * @param m  Namespace from the model
+     * @param agraph ActivityGraph from the model
      */
     public void setup(Object m, Object agraph) {
 
@@ -195,7 +202,7 @@ public class UMLActivityDiagram extends UMLDiagram {
     }
 
     public Object getOwner() {
-        StateDiagramGraphModel gm = (StateDiagramGraphModel)getGraphModel();
+        StateDiagramGraphModel gm = (StateDiagramGraphModel) getGraphModel();
         Object sm = gm.getMachine();
         if (sm != null)
             return sm;
@@ -203,7 +210,7 @@ public class UMLActivityDiagram extends UMLDiagram {
     }
 
     public Object getStateMachine() {
-        return ((StateDiagramGraphModel)getGraphModel()).getMachine();
+        return ((StateDiagramGraphModel) getGraphModel()).getMachine();
     }
 
     public void setStateMachine(Object sm) {
@@ -211,41 +218,41 @@ public class UMLActivityDiagram extends UMLDiagram {
         if (!ModelFacade.isAStateMachine(sm))
             throw new IllegalArgumentException();
 
-        ((StateDiagramGraphModel)getGraphModel()).setMachine(sm);
+        ((StateDiagramGraphModel) getGraphModel()).setMachine(sm);
     }
 
     /**
-     * Get the actions from which to create a toolbar or equivilent
-     * graphic triggers
+     * Get the actions from which to create a toolbar or equivalent
+     * graphic triggers.
      */
     protected Object[] getUmlActions() {
         Object actions[] =
-            {
-                _actionState,
-                _actionTransition,
-                null,
-                _actionStartPseudoState,
-                _actionFinalPseudoState,
-                _actionBranchPseudoState,
-                _actionForkPseudoState,
-                _actionJoinPseudoState,
-                null,
-                ActionAddNote.SINGLETON };
+        {
+	    _actionState,
+	    _actionTransition,
+	    null,
+	    _actionStartPseudoState,
+	    _actionFinalPseudoState,
+	    _actionBranchPseudoState,
+	    _actionForkPseudoState,
+	    _actionJoinPseudoState,
+	    null,
+	    ActionAddNote.SINGLETON,
+	};
         return actions;
     }
 
     /**
-     * Creates a new diagramname.
+     * Creates a new diagram name.<p>
+     *
      * @return String
      */
     protected static String getNewDiagramName() {
         String name = null;
         name = "Activity Diagram " + _ActivityDiagramSerial;
         _ActivityDiagramSerial++;
-        if (!ProjectManager
-            .getManager()
-            .getCurrentProject()
-            .isValidDiagramName(name)) {
+        if (!ProjectManager.getManager().getCurrentProject()
+                 .isValidDiagramName(name)) {
             name = getNewDiagramName();
         }
         return name;

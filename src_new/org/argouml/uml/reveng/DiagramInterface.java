@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -58,33 +58,38 @@ import org.argouml.model.ModelFacade;
  */
 public class DiagramInterface {
 
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat =
         Logger.getLogger(DiagramInterface.class);
     
     Editor _currentEditor = null;
 
-    /** To know what diagrams we have to layout after the import,
+    /**
+     * To know what diagrams we have to layout after the import,
      * we store them in this Vector.
      */
     Vector _modifiedDiagrams = new Vector();
 
     /**
-     * the current GraphModel of the current classdiagram
+     * The current GraphModel of the current classdiagram.
      */
     ClassDiagramGraphModel currentGM;
     
     /**
-     * the current Layer of the current classdiagram
+     * The current Layer of the current classdiagram.
      */
     LayerPerspective currentLayer;
     
     /**
-     * the current diagram for the isInDiagram method
+     * The current diagram for the isInDiagram method.
      */
     ArgoDiagram currentDiagram;
     
     /**
-     * Creates a new DiagramInterface
+     * Creates a new DiagramInterface.
      *
      * @param editor The editor to operate on.
      */
@@ -103,9 +108,9 @@ public class DiagramInterface {
 
     /**
      * Mark a diagram as modified, so we can layout it, after the
-     * import is complete.
+     * import is complete.<p>
      *
-     * If the diagram is not already marked, add it to the list.
+     * If the diagram is not already marked, add it to the list.<p>
      *
      * @param diagram The diagram to mark as modified.
      */
@@ -168,9 +173,10 @@ public class DiagramInterface {
     }
     
     /**
-     *Check if this diagram already exists in the project.
-     *@param diagram name
-     *@return true if diagram exists in project
+     * Check if this diagram already exists in the project.<p>
+     *
+     * @param name diagram name.
+     * @return true if diagram exists in project.
      */
     public boolean isDiagramInProject(String name) {
 	return ((ProjectManager.getManager().getCurrentProject()
@@ -226,7 +232,7 @@ public class DiagramInterface {
     /**
      * Add a new class diagram for a package to the project.
      *
-     * @param target The package to attach the diagram to.
+     * @param ns The package to attach the diagram to.
      * @param name The fully qualified name of the package, which is
      *             used to generate the diagram name from.
      */
@@ -251,7 +257,7 @@ public class DiagramInterface {
         // if the class is not in the current diagram, add it:
         if (currentGM.canAddNode(newClass)) {
             
-        FigClass newClassFig = new FigClass( currentGM, newClass);
+	    FigClass newClassFig = new FigClass( currentGM, newClass);
             currentLayer.add( newClassFig);
             currentGM.addNode(newClass);
             currentLayer.putInPosition(newClassFig);
@@ -264,14 +270,14 @@ public class DiagramInterface {
         // the class is in the diagram
         // so we are on a second pass,
         // find the fig for this class can update its visible state.
-        else{
+        else {
             FigClass existingFig = null;
             List figs = new ArrayList();
             currentLayer.getContentsNoEdges(figs);
-            for(int i=0;i<figs.size();i++){
-                Fig fig = (Fig)figs.get(i);
-                if(newClass == fig.getOwner())
-                    existingFig = (FigClass)fig;
+            for (int i = 0; i < figs.size(); i++) {
+                Fig fig = (Fig) figs.get(i);
+                if (newClass == fig.getOwner())
+                    existingFig = (FigClass) fig;
             }
             existingFig.renderingChanged();
         }
@@ -279,7 +285,7 @@ public class DiagramInterface {
         // add edges
         // for a 2-pass r.e. process we might have already added the
         // class but not its edges
-            currentGM.addNodeRelatedEdges( newClass);
+	currentGM.addNodeRelatedEdges( newClass);
     }
 
     /**
@@ -294,7 +300,7 @@ public class DiagramInterface {
         if (currentGM.canAddNode(newInterface)) {
         
             FigInterface     newInterfaceFig =
-	    new FigInterface( currentGM, newInterface);
+		new FigInterface( currentGM, newInterface);
         
             currentLayer.add( newInterfaceFig);
             currentGM.addNode(newInterface);
@@ -306,14 +312,14 @@ public class DiagramInterface {
         // the class is in the diagram
         // so we are on a second pass,
         // find the fig for this class can update its visible state.
-        else{
+        else {
             FigInterface existingFig = null;
             List figs = new ArrayList();
             currentLayer.getContentsNoEdges(figs);
-            for(int i=0;i<figs.size();i++){
-                Fig fig = (Fig)figs.get(i);
-                if(newInterface == fig.getOwner())
-                    existingFig = (FigInterface)fig;
+            for (int i = 0; i < figs.size(); i++) {
+                Fig fig = (Fig) figs.get(i);
+                if (newInterface == fig.getOwner())
+                    existingFig = (FigInterface) fig;
             }
             existingFig.renderingChanged();
         }
@@ -321,7 +327,7 @@ public class DiagramInterface {
         // add edges
         // for a 2-pass r.e. process we might have already added the
         // interface but not its edges
-            currentGM.addNodeRelatedEdges( newInterface);
+	currentGM.addNodeRelatedEdges( newInterface);
     }
 
     /**

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -101,23 +101,23 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * Adds a listener that listens to all modelevents that are named eventNames
-     * and that occur to instances of a given modelClass.
+     * Adds a listener that listens to all modelevents that are named
+     * eventNames and that occur to instances of a given
+     * modelClass.<p>
      *
-     * <p>
-     * If you want the listener to be registred for remove events (that is: an
-     * instance of the class the listener is listening too is removed), then you
-     * have to register for the eventname "remove"
-     * </p>
-     * @param listener
-     * @param modelClass
-     * @param eventNames
+     * If you want the listener to be registred for remove events
+     * (that is: an instance of the class the listener is listening
+     * too is removed), then you have to register for the eventname
+     * "remove".<p>
+     *
+     * @param listener is the listener to add.
+     * @param modelClass is the given model class
+     * @param eventNames is a array of strings with event names.
      * @throws IllegalArgumentException if one of the arguments is null or if
-     *  the modelClass is not a subclass of MBase.
+     * the modelClass is not a subclass of MBase.
      * @throws IllegalStateException if the listener is allready registred
      */
-    public void addClassModelEventListener(
-					   MElementListener listener,
+    public void addClassModelEventListener(MElementListener listener,
 					   Class modelClass,
 					   String[] eventNames) {
         if (listener == null
@@ -172,9 +172,9 @@ public final class UmlModelEventPump implements MElementListener {
         // the model modelClass = formatClass(modelClass);
         Collection col =
             ModelManagementHelper.getHelper()
-	    .getAllModelElementsOfKind(modelClass);
+	        .getAllModelElementsOfKind(modelClass);
         
-        if(col == Collections.EMPTY_LIST)
+        if (col == Collections.EMPTY_LIST)
             col = new ArrayList();
         
         if (modelClass.isAssignableFrom(MModel.class)) {
@@ -272,14 +272,12 @@ public final class UmlModelEventPump implements MElementListener {
     /**
      * Removes a listener that listens to all modelevents fired by instances of
      * modelClass.
+     *
      * @param listener The listener to remove
      * @param modelClass The class the listener does not want to listen to 
      * instances anymore
-     * @param eventName The eventname the listener does not want to listen to
-     * anymore
      */
-    public void removeClassModelEventListener(
-					      MElementListener listener,
+    public void removeClassModelEventListener(MElementListener listener,
 					      Class modelClass) {
         if (listener == null
             || modelClass == null
@@ -306,10 +304,9 @@ public final class UmlModelEventPump implements MElementListener {
         // modelClass       
         //modelClass = formatClass(modelClass);
         Iterator it =
-            ModelManagementHelper
-	    .getHelper()
-	    .getAllModelElementsOfKind(modelClass)
-	    .iterator();
+            ModelManagementHelper.getHelper()
+	        .getAllModelElementsOfKind(modelClass)
+	            .iterator();
         while (it.hasNext()) {
             MBase base = (MBase) it.next();
             removeModelEventListener(listener, base, eventName);
@@ -367,25 +364,23 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * Convinience method to add a listener that only listens to one specific 
-     * event
-     * @param listener The listener to add
-     * @param modelelement The modelelement the listener should be added too
-     * @param eventNames The array of eventnames the listener should listen 
+     * Convenience method to add a listener that only listens to one specific 
+     * event.<p>
+     *
+     * @param listener The listener to add.
+     * @param modelelement The modelelement the listener should be added to.
+     * @param eventName The eventname the listener should listen to.
      */
-    public void addModelEventListener(
-				      Object listener,
+    public void addModelEventListener(Object listener,
 				      Object modelelement,
 				      String eventName) {        
         EventKey[] keys =
             _definition.getEventTypes(modelelement.getClass(), eventName);
         for (int i = 0; i < keys.length; i++) {
-            _listenerMap.remove(
-				(MBase) modelelement,
+            _listenerMap.remove((MBase) modelelement,
 				keys[i],
 				(MElementListener) listener);
-            _listenerMap.put(
-			     (MBase) modelelement,
+            _listenerMap.put((MBase) modelelement,
 			     keys[i],
 			     (MElementListener) listener);
         }
@@ -394,11 +389,12 @@ public final class UmlModelEventPump implements MElementListener {
     /**
      * Adds a listener to all events fired by some modelelement.
      *
-     * <p><em>Note:</em> Due to the fact that ALL events are pumped for some
-     * modelelement, this is a rather powerfull method but also
+     * <em>Note:</em> Due to the fact that ALL events are pumped for
+     * some modelelement, this is a rather powerfull method but also
      * one that can hog performance. Use this with care!</p>
-     * @param listener
-     * @param modelElement
+     *
+     * @param listener is the listener to add
+     * @param modelelement is the model element
      */
     public void addModelEventListener(Object listener, Object modelelement) {
         if (modelelement == null)
@@ -424,15 +420,15 @@ public final class UmlModelEventPump implements MElementListener {
 
     /**
      * Removes a listener that listens to modelevents with name
-     * eventNames that are fired by the given modelelement.
+     * eventNames that are fired by the given modelelement.<p>
+     *
      * @param listener The listener to remove
-     * @param modelElement The modelelement that fires the events the
+     * @param handle The modelelement that fires the events the
      * listener is listening to
      * @param eventNames The list of event names the listener is
      * interested in
      */
-    public void removeModelEventListener(
-					 Object/*MElementListener*/ listener,
+    public void removeModelEventListener(Object/*MElementListener*/ listener,
 					 Object handle,
 					 String[] eventNames) {
         if (handle == null)
@@ -452,17 +448,19 @@ public final class UmlModelEventPump implements MElementListener {
 					  modelElement.getClass(),
 					  eventNames[i]);
             for (int j = 0; j < keys.length; j++) {
-                _listenerMap.remove(
-				    modelElement, keys[j], (MElementListener) listener);
+                _listenerMap.remove(modelElement,
+				    keys[j],
+				    (MElementListener) listener);
             }
         }
     }
 
     /**
      * Removes a listener that listens to all events fired by the
-     * given modelelement.
-     * @param listener
-     * @param modelElement
+     * given modelelement.<p>
+     *
+     * @param listener is the listener
+     * @param handle is the model element
      */
     public void removeModelEventListener(Object/*MElementListener*/ listener,
 					 Object handle)
@@ -473,8 +471,14 @@ public final class UmlModelEventPump implements MElementListener {
             throw new IllegalArgumentException();
 
 	MBase modelElement = (MBase) handle;
-        if (listener == null || modelElement == null || !(listener instanceof MElementListener))
-            throw new IllegalArgumentException("listener is null or an illegal type");
+        if (listener == null
+	    || modelElement == null
+	    || !(listener instanceof MElementListener)) {
+
+            throw new IllegalArgumentException("listener is null or "
+					       + "an illegal type");
+
+	}
         EventKey[] keys = _definition.getEventTypes(modelElement.getClass());
         for (int i = 0; i < keys.length; i++) {
             _listenerMap.remove(
@@ -485,10 +489,11 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * Convinience method to remove a listener to some event.
-     * @param listener
-     * @param modelElement
-     * @param eventName
+     * Convenience method to remove a listener to some event.<p>
+     *
+     * @param listener is the listener to remove
+     * @param handle is the object
+     * @param eventName is the name of the event
      */
     public void removeModelEventListener(Object/*MElementListener*/ listener,
 					 Object handle,
@@ -499,13 +504,19 @@ public final class UmlModelEventPump implements MElementListener {
         if (!(handle instanceof MBase))
             throw new IllegalArgumentException("Handle is not valid");
         MBase modelElement = (MBase) handle;
-        if (listener == null || modelElement == null || eventName == null || !(listener instanceof MElementListener))
+        if (listener == null
+	    || modelElement == null
+	    || eventName == null
+	    || !(listener instanceof MElementListener)) {
+
             throw new IllegalArgumentException("null listener or illegal type");
+	}
         EventKey[] keys =
             _definition.getEventTypes(modelElement.getClass(), eventName);
         for (int j = 0; j < keys.length; j++) {
-            _listenerMap.remove(
-				modelElement, keys[j], (MElementListener) listener);
+            _listenerMap.remove(modelElement,
+				keys[j],
+				(MElementListener) listener);
         }
 
     }
@@ -520,25 +531,28 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * <p>Make all event sources described by the given document available to 
-     * the UMLModelEventPump. The document must match the pattern given by the 
-     * following example:
+     * Make all event sources described by the given document
+     * available to the UMLModelEventPump. The document must match the
+     * pattern given by the following example:
      * 
      * <pre>
      * &lt;eventtree&gt;
-     *   &lt;source classname="fully qualified classname of a model element"&gt;
-     *     &lt;eventtype name="name of event potentially fired by this model element"&gt;
+     *   &lt;source classname="classname of a model element"&gt;
+     *     &lt;eventtype name="event fired by this model element"&gt;
      *       &lt;type&gt;1&lt;/type&gt;
      *     &lt;/eventtype&gt;
      *   &lt;/source&gt;
      * &lt;/eventtree&gt;
      * </pre>
+     *
+     * The classname is fully qualified.<p>
+     *
+     * The type is one of the numbers defined in {@link
+     * MElementEvent}. Each of the elements can be used multiple
+     * times.
      * 
-     * <p>The type is one of the numbers defined in {@link MElementEvent}. Each 
-     * of the elements can be used multiple times.
-     * 
-     * <p>This operation is particularly provided for use by modules which add 
-     * custom model elements.
+     * This operation is particularly provided for use by modules
+     * which add custom model elements.
      * 
      * @param doc the document, the contents of which should be made available.
      *            This must be preparsed.
@@ -567,7 +581,7 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
+     * @see MElementListener#listRoleItemSet(MElementEvent)
      */
     public void listRoleItemSet(MElementEvent e) {
         MElementListener[] listeners = getListenerList(e);
@@ -584,7 +598,7 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     * @see MElementListener#propertySet(MElementEvent)
      */
     public void propertySet(MElementEvent e) {
         if (e.getNewValue() == null
@@ -597,7 +611,7 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
+     * @see MElementListener#recovered(MElementEvent)
      */
     public void recovered(MElementEvent e) {
         MElementListener[] listeners = getListenerList(e);
@@ -607,7 +621,7 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     * @see MElementListener#removed(MElementEvent)
      */
     public void removed(MElementEvent e) {
         MElementListener[] listeners = getListenerList(e);
@@ -617,7 +631,7 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     * @see MElementListener#roleAdded(MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
         MElementListener[] listeners = getListenerList(e);
@@ -627,7 +641,7 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     * @see MElementListener#roleRemoved(MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
         MElementListener[] listeners = getListenerList(e);
@@ -682,7 +696,9 @@ public final class UmlModelEventPump implements MElementListener {
 }
 
 /**
- * Value object class to find the correct eventlistenerlist in the eventhashmap.
+ * Value object class to find the correct eventlistenerlist in the
+ * eventhashmap.<p>
+ *
  * @author jaap.branderhorst@xs4all.nl
  */
 class EventKey {
@@ -720,13 +736,15 @@ class EventKey {
         return _name;
     }
 
+    // TODO: Write a hashCode() function?
     public boolean equals(Object o) {
         if (o instanceof EventKey) {
             EventKey key = (EventKey) o;
             if ((key.getType() == null && getType() == null)
-                || 
-                (key.getType() != null && key.getType().equals(getType()) &&
-                 key.getName() != null && key.getName().equals(getName())) ){
+                || (key.getType() != null
+		    && key.getType().equals(getType())
+		    && key.getName() != null
+		    && key.getName().equals(getName()))) {
                 return true;
             }
         }
@@ -1018,7 +1036,8 @@ class EventListenerHashMap {
     /**
      * Tests wether there are any listeners registred for any
      * modelelements and eventkeys.
-     * @return
+     *
+     * @return true if empty.
      */
     public boolean isEmpty() {
         return _listenerMap.isEmpty();
@@ -1138,7 +1157,8 @@ class ClassListenerHashMap {
 
     /**
      * Tests if the hashmap is empty.
-     * @return
+     *
+     * @return true if empty.
      */
     public boolean isEmpty() {
         return _listenerMap.isEmpty();
@@ -1159,8 +1179,8 @@ class EventTreeDefinition {
     private Map _definition = new HashMap();
 
     /**
-     * Create an instance of EventTreeDefinition, reading org/argouml/eventtree.xml to
-     * obtain the initial configuration.
+     * Create an instance of EventTreeDefinition, reading
+     * org/argouml/eventtree.xml to obtain the initial configuration.
      */
     public EventTreeDefinition() {
         Document doc = loadDocument();
@@ -1175,13 +1195,15 @@ class EventTreeDefinition {
      * 
      * <pre>
      * &lt;eventtree&gt;
-     *   &lt;source classname="fully qualified classname of a model element"&gt;
-     *     &lt;eventtype name="name of event potentially fired by this model element"&gt;
+     *   &lt;source classname="classname of a model element"&gt;
+     *     &lt;eventtype name="event fired by this model element"&gt;
      *       &lt;type&gt;1&lt;/type&gt;
      *     &lt;/eventtype&gt;
      *   &lt;/source&gt;
      * &lt;/eventtree&gt;
      * </pre>
+     *
+     * The classname is fully qualified.<p>
      * 
      * <p>The type is one of the numbers defined in {@link MElementEvent}. Each 
      * of the elements can be used multiple times.

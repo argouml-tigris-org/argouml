@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrOperNameConflict.java
-// Classes: CrOperNameConflict
-// Original Author: jrobbins@ics.uci.edu
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Iterator;
@@ -38,34 +34,35 @@ import org.argouml.model.ModelFacade;
 // Use Model through ModelFacade
 
 /**
- * <p> A critic to detect when a class has operations with two matching
- *   signatures.</p>
+ * A critic to detect when a class has operations with two matching
+ * signatures.<p>
  *
- * <p>Takes each operation in turn and compares its signature with all earlier
- *   operations. This version corrects and earlier bug, which checked for
- *   matching names as well as types in the parameter list.</p>
+ * Takes each operation in turn and compares its signature with all
+ * earlier operations. This version corrects and earlier bug, which
+ * checked for matching names as well as types in the parameter
+ * list.<p>
  *
- * <p><em>Warning</em>. The algorithm in is quadratic in the
- *   number of operations. It could be computationally demanding on a design
- *   where classes have a lot of operations. See the {@link
- *   #predicate2} method for possible solutions.</p>
+ * <em>Warning</em>. The algorithm in is quadratic in the number of
+ * operations. It could be computationally demanding on a design where
+ * classes have a lot of operations. See the {@link #predicate2}
+ * method for possible solutions.<p>
  *
- * @see <a
- * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.oper_name_conflict">ArgoUML
- * User Manual: Change Names or Signatures in &lt;artifact&gt;</a>
+ * @see <a href="http://argouml.tigris.org/documentation/printablehtml/manual/argouml.html/#s2.ref.oper_name_conflict">
+ * ArgoUML User Manual: Change Names or Signatures in &lt;artifact&gt;
+ * </a>
+ * @author jrobbins@ics.uci.edu
  */
 
 public class CrOperNameConflict extends CrUML {
 
     /**
-     * <p>Constructor for the critic.</p>
+     * Constructor for the critic.<p>
      *
-     * <p>Sets up the resource name, which will allow headline and description
-     *   to found for the current locale. Provides design issue categories
-     *   (METHODS, NAMING), sets a knowledge type (SYNTAX) and adds triggers
-     *   for metaclasses "behaviouralFeature" and feature_name".</p>
-     *
-     * @return  nothing returned since this is a constructor
+     * Sets up the resource name, which will allow headline and
+     * description to found for the current locale. Provides design
+     * issue categories (METHODS, NAMING), sets a knowledge type
+     * (SYNTAX) and adds triggers for metaclasses "behaviouralFeature"
+     * and feature_name".<p>
      */
     public CrOperNameConflict() {
 
@@ -85,35 +82,33 @@ public class CrOperNameConflict extends CrUML {
 
 
     /**
-     * <p>The trigger for the critic.</p>
+     * The trigger for the critic.<p>
      *
-     * <p>Finds all the operations for the given classifier. Takes each
-     *   operation in turn and compares its signature with all earlier
-     *   operations. This version corrects an earlier bug, which checked for
-     *   matching names as well as types in the parameter list.</p>
+     * Finds all the operations for the given classifier. Takes each
+     * operation in turn and compares its signature with all earlier
+     * operations. This version corrects an earlier bug, which checked
+     * for matching names as well as types in the parameter list.<p>
      *
-     * <p><em>Note</em>. The signature ignores any return parameters in looking
-     *   for a match. This is in line with Java/C++.</p>
+     * <em>Note</em>. The signature ignores any return parameters in
+     * looking for a match. This is in line with Java/C++.<p>
      *
-     * <p>We do not need to worry about signature clashes that are inherited
-     *   (overloading). This is something encouraged in many OO environments to
-     *   facilitate polymorphism.</p>
+     * We do not need to worry about signature clashes that are
+     * inherited (overloading). This is something encouraged in many
+     * OO environments to facilitate polymorphism.<p>
      *
-     * <p>This algorithm is quadratic in the number of operations. If this
-     *   became a problem, we would have to consider sorting the operations
-     *   vector and comparing only adjacent pairs (potentially O(n log n)
-     *   performance).</p>
+     * This algorithm is quadratic in the number of operations. If
+     * this became a problem, we would have to consider sorting the
+     * operations vector and comparing only adjacent pairs
+     * (potentially O(n log n) performance).<p>
      *
-     * @param  dm    the {@link java.lang.Object Object} to be checked against
-     *               the critic.
+     * @param  dm    the {@link Object} to be checked against the critic.
      *
-     * @param  dsgr  the {@link org.argouml.cognitive.Designer Designer}
-     *               creating the model. Not used, this is for future
-     *               development of ArgoUML.
+     * @param  dsgr  the {@link Designer} creating the model. Not used,
+     *               this is for future development of ArgoUML.
      *
      * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
-     *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.  */
-    
+     *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 
         // Only do this for classifiers
@@ -158,41 +153,44 @@ public class CrOperNameConflict extends CrUML {
 
 
     /**
-     * <p>Return the icon to be used for the clarifier for this critic.</p>
+     * Return the icon to be used for the clarifier for this critic.<p>
      *
-     * <p>A clarifier is the graphical highlight used to show the presence of a
-     *   critique. For example wavy colored underlines beneath operations.</p>
+     * A clarifier is the graphical highlight used to show the
+     * presence of a critique. For example wavy colored underlines
+     * beneath operations.<p>
      *
-     * <p>In this case it will be a wavy line under the second of the clashing
-     *   operations.</p>
+     * In this case it will be a wavy line under the second of the
+     * clashing operations.<p>
      *
-     * @return       The {@link javax.swing.Icon Icon} to use.  */
-    
+     * @return       The {@link javax.swing.Icon Icon} to use.
+     */
     public Icon getClarifier() {
         return ClOperationCompartment.TheInstance;
     }
 
 
     /**
-     * <p>Sees if the signatures of two Operations are the same.</p>
+     * Sees if the signatures of two Operations are the same.<p>
      *
-     * <p>Checks for matching operation name, and list of parameter
-     *   types. The order of the parameters is significant.
+     * Checks for matching operation name, and list of parameter
+     * types. The order of the parameters is significant.
      *
-     * <p>This version also checks for the parameter kind, since otherwise,
-     *   "op(int a)" and "op():int" appear to have the same signature. Purists
-     *   would probably suggest that the kind should match exactly. However we
-     *   only differentiate the return parameter(s). It is unlikely that any
-     *   practical OO language would be able to distinguish instantiation of in
-     *   from out from inout parameters.</p>
+     * This version also checks for the parameter kind, since
+     * otherwise, "op(int a)" and "op():int" appear to have the same
+     * signature. Purists would probably suggest that the kind should
+     * match exactly. However we only differentiate the return
+     * parameter(s). It is unlikely that any practical OO language
+     * would be able to distinguish instantiation of in from out from
+     * inout parameters.<p>
      *
-     * <p>We ignore return parameters completely. This is in line with Java/C++
-     *   which regard <code>int x(int, int)</code> and <code>double x(int,
-     *   int)</code> as having the same signature.</p>
+     * We ignore return parameters completely. This is in line with
+     * Java/C++ which regard <code>int x(int, int)</code> and
+     * <code>double x(int, int)</code> as having the same
+     * signature.<p>
      *
-     * <p>If you need to modify this method, take care, since there are
-     *   numerous "telegraph pole" problems involved in working through pairs
-     *   of mixed lists.</p>
+     * If you need to modify this method, take care, since there are
+     * numerous "telegraph pole" problems involved in working through
+     * pairs of mixed lists.<p>
      *
      * @param op1 the first operation whose signature is being compared.
      * @param op2 the second operation whose signature is being compared.
@@ -273,11 +271,3 @@ public class CrOperNameConflict extends CrUML {
     }
 
 } /* end class CrOperNameConflict.java */
-
-
-
-
-
-
-
-

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: PropPanelExtend.java
-// Classes: PropPanelExtend
-// Original Author: mail@jeremybennett.com
-
 package org.argouml.uml.ui.behavior.use_cases;
 
 import javax.swing.JList;
@@ -47,16 +43,17 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
 /**
- * <p>Builds the property panel for an Extend relationship.</p>
+ * Builds the property panel for an Extend relationship.<p>
  *
- * <p>This is a type of Relationship, but, since Relationship has no semantic
+ * This is a type of Relationship, but, since Relationship has no semantic
  *   meaning of its own, we derive directly from PropPanelModelElement (as
- *   other children of Relationship do).</p>
+ *   other children of Relationship do).<p>
  *
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
+ *
+ * @author mail@jeremybennett.com
  */
-
 public class PropPanelExtend extends PropPanelModelElement {
 
 
@@ -69,10 +66,16 @@ public class PropPanelExtend extends PropPanelModelElement {
     public PropPanelExtend() {
         super("Extend", ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.name"),
+		 getNameTextField());
         addField(Translator.localize("UMLMenu", "label.stereotype"),
-		 new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
+		 new UMLComboBoxNavigator(this,
+					  Translator.localize(
+					      "UMLMenu",
+					      "tooltip.nav-stereo"),
+					  getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.namespace"),
+		 getNamespaceScroll());
 
         addSeperator();
 
@@ -81,12 +84,17 @@ public class PropPanelExtend extends PropPanelModelElement {
         // base use case.
 
         addField(Translator.localize("UMLMenu", "label.usecase-base"),
-		 new UMLComboBox2(new UMLExtendBaseComboBoxModel(), ActionSetExtendBase.SINGLETON));
+		 new UMLComboBox2(new UMLExtendBaseComboBoxModel(),
+				  ActionSetExtendBase.SINGLETON));
 
         addField(Translator.localize("UMLMenu", "label.extension"),
-		 new UMLComboBox2(new UMLExtendExtensionComboBoxModel(), ActionSetExtendExtension.SINGLETON));
+		 new UMLComboBox2(new UMLExtendExtensionComboBoxModel(),
+				  ActionSetExtendExtension.SINGLETON));
 
-        JList extensionPointList = new UMLMutableLinkedList(new UMLExtendExtensionPointListModel(), ActionAddExtendExtensionPoint.SINGLETON, ActionNewExtendExtensionPoint.SINGLETON);
+        JList extensionPointList =
+	    new UMLMutableLinkedList(new UMLExtendExtensionPointListModel(),
+				     ActionAddExtendExtensionPoint.SINGLETON,
+				     ActionNewExtendExtensionPoint.SINGLETON);
         addField(Translator.localize("UMLMenu", "label.extension-points"),
 		 new JScrollPane(extensionPointList));
 
@@ -94,9 +102,9 @@ public class PropPanelExtend extends PropPanelModelElement {
 
         UMLExpressionModel conditionModel =
             new UMLExpressionModel(this, 
-                                   (Class)ModelFacade.EXTEND,
+                                   (Class) ModelFacade.EXTEND,
                                    "condition",
-				   (Class)ModelFacade.BOOLEAN_EXPRESSION,
+				   (Class) ModelFacade.BOOLEAN_EXPRESSION,
                                    "getCondition", 
                                    "setCondition");
 
@@ -111,7 +119,9 @@ public class PropPanelExtend extends PropPanelModelElement {
         // Add the toolbar.
 
         new PropPanelButton(this, buttonPanel, _navUpIcon,
-                Translator.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
+			    Translator.localize("UMLMenu", "button.go-up"),
+			    "navigateNamespace",
+			    null);
         new PropPanelButton(this, buttonPanel, _extensionPointIcon,
                             localize("New Extension Point"),
                             "newExtensionPoint",
@@ -122,17 +132,18 @@ public class PropPanelExtend extends PropPanelModelElement {
 
 
     /**
-     * <p>Get the condition associated with the extend relationship.</p>
+     * Get the condition associated with the extend relationship.<p>
      *
-     * <p>The condition is actually of type {@link MBooleanExpression}, which
-     *   defines both a language and a body. We are only interested in the
-     *   body, which is just a string.</p>
+     * The condition is actually of type {@link
+     * ru.novosoft.uml.foundation.data_types.MBooleanExpression},
+     * which defines both a language and a body. We are only
+     * interested in the body, which is just a string.<p>
      *
-     * @return  The body of the {@link MBooleanExpression} which is the
-     *          condition associated with this extend relationship, or
-     *          <code>null</code> if there is none.
+     * @return The body of the {@link
+     * ru.novosoft.uml.foundation.data_types.MBooleanExpression} which
+     * is the condition associated with this extend relationship, or
+     * <code>null</code> if there is none.
      */
-
     public String getCondition() {
         String condBody = null;
         Object target   = getTarget();
@@ -141,7 +152,7 @@ public class PropPanelExtend extends PropPanelModelElement {
             Object condition = ModelFacade.getCondition(target);
 
             if (condition != null) {
-                condBody = (String)ModelFacade.getBody(condition);
+                condBody = (String) ModelFacade.getBody(condition);
             }
         }
 
@@ -150,16 +161,16 @@ public class PropPanelExtend extends PropPanelModelElement {
 
 
     /**
-     * <p>Set the condition associated with the extend relationship.</p>
+     * Set the condition associated with the extend relationship.<p>
      *
-     * <p>The condition is actually of type {@link MBooleanExpression}, which
-     *   defines both a language and a body. We are only interested in setting
-     *   the body, which is just a string.</p>
+     * The condition is actually of type {@link
+     * ru.novosoft.uml.foundation.data_types.MBooleanExpression},
+     * which defines both a language and a body. We are only
+     * interested in setting the body, which is just a string.<p>
      *
      * @param condBody  The body of the condition to associate with this
      *                  extend relationship.
      */
-
     public void setCondition(String condBody) {
 
         // Give up if we are not an extend relationship
@@ -172,18 +183,20 @@ public class PropPanelExtend extends PropPanelModelElement {
 
         // Set the condition body.
 
-        ModelFacade.setCondition(target, UmlFactory.getFactory().getDataTypes().createBooleanExpression(null,condBody));
+        ModelFacade.setCondition(target,
+				 UmlFactory.getFactory().getDataTypes()
+				     .createBooleanExpression(null, condBody));
     }
 
 
     /**
-     * <p>Invoked by the "New Extension Point" toolbar button to create a new
+     * Invoked by the "New Extension Point" toolbar button to create a new
      *   extension point for this extend relationship in the same namespace as
-     *   the current extend relationship.</p>
+     *   the current extend relationship.<p>
      *
-     * <p>This code uses getFactory and adds the extension point to
-     *   the current extend relationship.</p> */
-
+     * This code uses getFactory and adds the extension point to
+     *   the current extend relationship.<p>
+     */
     public void newExtensionPoint() {
         Object target = getTarget();
 
@@ -195,7 +208,8 @@ public class PropPanelExtend extends PropPanelModelElement {
                 if (ModelFacade.getBase(extend) != null) {
 
 		    Object extensionPoint =
-			UseCasesFactory.getFactory().buildExtensionPoint(ModelFacade.getBase(extend));
+			UseCasesFactory.getFactory()
+			    .buildExtensionPoint(ModelFacade.getBase(extend));
 
 		    ModelFacade.addExtensionPoint(extend, extensionPoint);
                 }

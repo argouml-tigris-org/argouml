@@ -1,6 +1,5 @@
-
 // $Id$
-// Copyright (c) 2002 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -74,20 +73,21 @@ public abstract class UMLModelElementListModel2
     /**
      * Constructor to be used if the subclass does not depend on the 
      * MELementListener methods and setTarget method implemented in this
-     * class
-     * @param container
+     * class.
      */
     public UMLModelElementListModel2() {
         super();
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
+     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(
+     *          ru.novosoft.uml.MElementEvent)
      */
     public void listRoleItemSet(MElementEvent e) { }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     * @see ru.novosoft.uml.MElementListener#propertySet(
+     *          ru.novosoft.uml.MElementEvent)
      */
     public void propertySet(MElementEvent e) {
         if (isValidEvent(e)) {
@@ -102,17 +102,20 @@ public abstract class UMLModelElementListModel2
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
+     * @see ru.novosoft.uml.MElementListener#recovered(
+     *          ru.novosoft.uml.MElementEvent)
      */
     public void recovered(MElementEvent e) { }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     * @see ru.novosoft.uml.MElementListener#removed(
+     *          ru.novosoft.uml.MElementEvent)
      */
     public void removed(MElementEvent e) { }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     * @see ru.novosoft.uml.MElementListener#roleAdded(
+     *          ru.novosoft.uml.MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
         if (isValidEvent(e)) {
@@ -130,7 +133,8 @@ public abstract class UMLModelElementListModel2
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(
+     *          ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
         boolean valid = false;
@@ -246,20 +250,22 @@ public abstract class UMLModelElementListModel2
     public void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
-            if (org.argouml.model.ModelFacade.isABase(_target)) {
-                UmlModelEventPump.getPump().removeModelEventListener(
-								     this,
-								     /*(MBase)*/_target,
-								     _eventName);
+            if (ModelFacade.isABase(_target)) {
+                UmlModelEventPump.getPump()
+		    .removeModelEventListener(this,
+					      /*(MBase)*/_target,
+					      _eventName);
             }
 
-            if (org.argouml.model.ModelFacade.isABase(target)) {
+            if (ModelFacade.isABase(target)) {
                 _target = target;
-                // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _eventName);
-                UmlModelEventPump.getPump().addModelEventListener(
-								  this,
-								  /*(MBase)*/_target,
-								  _eventName);
+                // UmlModelEventPump.getPump()
+                // .removeModelEventListener(this, (MBase)_target,
+                // _eventName);
+                UmlModelEventPump.getPump()
+		    .addModelEventListener(this,
+					   /*(MBase)*/_target,
+					   _eventName);
 
                 removeAllElements();
                 _buildingModel = true;
@@ -285,10 +291,12 @@ public abstract class UMLModelElementListModel2
     protected abstract boolean isValidElement(Object/*MBase*/ element);
 
     /**
-     * Returns true if some event is valid. An event is valid if the element
-     * changed in the event is valid. This is determined via a call to isValidElement.
-     * This method can be overriden by subclasses if they cannot determine if
-     * it is a valid event just by checking the changed element.
+     * Returns true if some event is valid. An event is valid if the
+     * element changed in the event is valid. This is determined via a
+     * call to isValidElement.  This method can be overriden by
+     * subclasses if they cannot determine if it is a valid event just
+     * by checking the changed element.
+     *
      * @param e
      * @return boolean
      */
@@ -339,11 +347,12 @@ public abstract class UMLModelElementListModel2
     }
 
     /**
-     * Sets the eventName. The eventName is the name of the MElementEvent to
-     * which the list should listen. The list is registred with UMLModelEventPump
-     * and only gets events that have a name like eventName.
-     * This method should be called in the constructor
-     * of every subclass.
+     * Sets the eventName. The eventName is the name of the
+     * MElementEvent to which the list should listen. The list is
+     * registred with UMLModelEventPump and only gets events that have
+     * a name like eventName.  This method should be called in the
+     * constructor of every subclass.
+     *
      * @param eventName The eventName to set
      */
     protected void setEventName(String eventName) {
@@ -351,26 +360,27 @@ public abstract class UMLModelElementListModel2
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) { }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
 
     /**
-     * @see javax.swing.AbstractListModel#fireContentsChanged(java.lang.Object, int, int)
+     * @see javax.swing.AbstractListModel#fireContentsChanged(
+     *          Object, int, int)
      */
     protected void fireContentsChanged(Object source, int index0, int index1) {
         if (_fireListEvents && !_buildingModel)
@@ -378,7 +388,8 @@ public abstract class UMLModelElementListModel2
     }
 
     /**
-     * @see javax.swing.AbstractListModel#fireIntervalAdded(java.lang.Object, int, int)
+     * @see javax.swing.AbstractListModel#fireIntervalAdded(
+     *          Object, int, int)
      */
     protected void fireIntervalAdded(Object source, int index0, int index1) {
         if (_fireListEvents && !_buildingModel)
@@ -386,7 +397,8 @@ public abstract class UMLModelElementListModel2
     }
 
     /**
-     * @see javax.swing.AbstractListModel#fireIntervalRemoved(java.lang.Object, int, int)
+     * @see javax.swing.AbstractListModel#fireIntervalRemoved(
+     *          Object, int, int)
      */
     protected void fireIntervalRemoved(Object source, int index0, int index1) {
         if (_fireListEvents && !_buildingModel)

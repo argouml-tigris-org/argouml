@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -81,25 +81,25 @@ public class Critic implements Poster, Serializable {
     public static String KT_DESIGNERS = 
 	Translator.localize("misc.knowledge.designers");
     public static String KT_CORRECTNESS =
-    Translator.localize("misc.knowledge.correctness");
+	Translator.localize("misc.knowledge.correctness");
     public static String KT_COMPLETENESS =
-    Translator.localize("misc.knowledge.completeness");
+	Translator.localize("misc.knowledge.completeness");
     public static String KT_CONSISTENCY =
-    Translator.localize("misc.knowledge.consistency");
+	Translator.localize("misc.knowledge.consistency");
     public static String KT_SYNTAX = 
-    Translator.localize("misc.knowledge.syntax");
+	Translator.localize("misc.knowledge.syntax");
     public static String KT_SEMANTICS = 
-    Translator.localize("misc.knowledge.semantics");
+	Translator.localize("misc.knowledge.semantics");
     public static String KT_OPTIMIZATION =
-    Translator.localize("misc.knowledge.optimization");
+	Translator.localize("misc.knowledge.optimization");
     public static String KT_PRESENTATION =
-    Translator.localize("misc.knowledge.presentation");
+	Translator.localize("misc.knowledge.presentation");
     public static String KT_ORGANIZATIONAL =
-    Translator.localize("misc.knowledge.organizational");
+	Translator.localize("misc.knowledge.organizational");
     public static String KT_EXPERIENCIAL =
-    Translator.localize("misc.knowledge.experiential");
+	Translator.localize("misc.knowledge.experiential");
     public static String KT_TOOL = 
-    Translator.localize("misc.knowledge.tool");
+	Translator.localize("misc.knowledge.tool");
 
     /** This function calculates the default url to describe this critic.
      * This syntax is synchronized with:
@@ -136,7 +136,8 @@ public class Critic implements Poster, Serializable {
     /** The moreInfoURL of the ToDoItem produced. */
     private String _moreInfoURL;
 
-    /** Arguments used to configure the critic.
+    /**
+     * Arguments used to configure the critic.
      * TODO: Could this be removed from the main critics class?
      */
     private Hashtable _args = new Hashtable();
@@ -145,19 +146,19 @@ public class Critic implements Poster, Serializable {
      */
     public static Icon DEFAULT_CLARIFIER =
 	ResourceLoaderWrapper.getResourceLoaderWrapper()
-	.lookupIconResource("PostIt0");
+	    .lookupIconResource("PostIt0");
     protected Icon _clarifier = DEFAULT_CLARIFIER;
 
-    /** The decision category that this critic is relevant to. The idea
-     *  of each critic being relevant to exactly one type of decision is
-     *  a very simple one.  Subclasses that have more sophisticated
-     *  decision relevance logic should override isRelevantToDecisions.
-     *  You can also define new ControlMech's. <p>
+    /**
+     * The decision category that this critic is relevant to. The idea
+     * of each critic being relevant to exactly one type of decision
+     * is a very simple one.  Subclasses that have more sophisticated
+     * decision relevance logic should override isRelevantToDecisions.
+     * You can also define new ControlMech's. <p>
      *
-     *  Decision categories are defined in the DecisionModel of a
-     *  particular domain.
+     * Decision categories are defined in the DecisionModel of a
+     * particular domain.
      *
-     * @see GoalModel
      * @see ControlMech
      */
     private String _decisionCategory;
@@ -510,7 +511,7 @@ public class Critic implements Poster, Serializable {
 	Enumeration enum = getSupportedDecisions().elements();
 	while (enum.hasMoreElements()) {
 	    Decision d = (Decision) enum.nextElement();
-	    if (d.getPriority() > 0 && d.getPriority() <= getPriority()){
+	    if (d.getPriority() > 0 && d.getPriority() <= getPriority()) {
                 
 //                if(isDebugEnabled) cat.debug(d + " " + d.getPriority());
 		return true;

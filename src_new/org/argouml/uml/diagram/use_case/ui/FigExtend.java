@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,15 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigExtend.java
-// Classes: FigExtend
-// Original Author: mail@jeremybennett.com
-// $Id$
-
-// 3 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Written to support
-// Extend relationships.
-
-
 package org.argouml.uml.diagram.use_case.ui;
 
 import java.awt.Color;
@@ -46,31 +37,30 @@ import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
-/**
- * <p>A fig for use with extend relationships on use case diagrams.</p>
- *
- * <p>Realised as a dotted line with an open arrow head and the label
- *   &laquo;extend&raquo; together with any condition alongside.</p>
- */
 
+/**
+ * A fig for use with extend relationships on use case diagrams.<p>
+ *
+ * Realised as a dotted line with an open arrow head and the label
+ * &laquo;extend&raquo; together with any condition alongside.<p>
+ *
+ * @author mail@jeremybennett.com
+ */
 public class FigExtend extends FigEdgeModelElement {
 
     /**
-     * <p>The &laquo;extend&raquo; label.</p>
+     * The &laquo;extend&raquo; label.<p>
      */
-
     protected FigText _label;
 
     /**
-     * <p>The condition expression.</p>
+     * The condition expression.<p>
      */
-
     protected FigText _condition;
 
     /**
-     * <p>The group of label and condition.</p>
+     * The group of label and condition.<p>
      */
-
     protected FigGroup _fg;
 
 
@@ -83,12 +73,11 @@ public class FigExtend extends FigEdgeModelElement {
     ///////////////////////////////////////////////////////////////////////////
 
     /**
-     * <p>The default constructor, but should never be called directly (use
-     *   {@link #FigExtend(Object)}, since that sets the owner. However we
-     *   can't mark it as private, since GEF expects to be able to call this
-     *   when creating the diagram.</p>
+     * The default constructor, but should never be called directly
+     * (use {@link #FigExtend(Object)}, since that sets the
+     * owner. However we can't mark it as private, since GEF expects
+     * to be able to call this when creating the diagram.<p>
      */
-
     public FigExtend() {
 
         // We need a FigText to hold the <<extend>> label. Details are the
@@ -153,12 +142,11 @@ public class FigExtend extends FigEdgeModelElement {
 
 
     /**
-     * <p>The main constructor. Builds the FigEdge required and makes the given
-     *   edge object its owner.</p>
+     * The main constructor. Builds the FigEdge required and makes the
+     * given edge object its owner.<p>
      *
      * @param edge  The edge that will own the fig
      */
-
     public FigExtend(Object edge) {
         this();
         setOwner(edge);
@@ -172,14 +160,14 @@ public class FigExtend extends FigEdgeModelElement {
     ///////////////////////////////////////////////////////////////////////////
 
     /**
-     * <p>Set a new fig to represent this edge.</p>
+     * Set a new fig to represent this edge.<p>
      *
-     * <p>We invoke the superclass accessor. Then change aspects of the
-     *   new fig that are not as we want. In this case to use dashed lines.</p>
+     * We invoke the superclass accessor. Then change aspects of the
+     * new fig that are not as we want. In this case to use dashed
+     * lines.<p>
      *
      * @param f  The fig to use.
      */
-
     public void setFig(Fig f) {
         super.setFig(f);
 
@@ -189,14 +177,13 @@ public class FigExtend extends FigEdgeModelElement {
     }
 
     /**
-     * <p>Define whether the given fig can be edited (it can't).</p>
+     * Define whether the given fig can be edited (it can't).<p>
      *
      * @param f  The fig about which the enquiry is being made. Ignored in this
      *           implementation.
      *
      * @return   <code>false</code> under all circumstances.
      */
-
     protected boolean canEdit(Fig f) {
         return false;
     }
@@ -209,16 +196,14 @@ public class FigExtend extends FigEdgeModelElement {
     ///////////////////////////////////////////////////////////////////////////
 
     /**
-     * <p>This is called after any part of the UML MModelElement has
-     *   changed. This method automatically updates things specific to this
-     *   fig. Subclasses should override and update other parts.</p>
+     * This is called after any part of the UML MModelElement has
+     * changed. This method automatically updates things specific to
+     * this fig. Subclasses should override and update other parts.<p>
      *
-     * <p>We reset the condition text. We really ought to check that there has
-     *    actually been a change, but for now we do it every time. We do it
-     *    within {@link #startTrans()} and {@link #endTrans()} so GEF will get
-     *    the redrawing right.</p>
+     * We reset the condition text. We really ought to check that
+     * there has actually been a change, but for now we do it every
+     * time.<p>
      */
-
     protected void modelChanged(MElementEvent e) {
 
         // Give up if we have no owner
@@ -238,7 +223,8 @@ public class FigExtend extends FigEdgeModelElement {
         // condition set. We call the main generate method, which will realise
         // this is a MExpression (subclass) and invoke the correct method.
 
-        Object/*MBooleanExpression*/ condition = ModelFacade.getCondition(extend);
+        Object/*MBooleanExpression*/ condition =
+	    ModelFacade.getCondition(extend);
 
         if (condition == null) {
             _condition.setText("");
@@ -246,7 +232,6 @@ public class FigExtend extends FigEdgeModelElement {
         else {
             _condition.setText(Notation.generate(this, condition));
         }
-        
         
 
         // Let the group recalculate its bounds and then tell GEF we've

@@ -147,20 +147,21 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         return res;
     }
 
-    /** method to perform a number of important initializations of a
-     * <I>CollaborationDiagram</I>.
+    /** 
+     * Method to perform a number of important initializations of a
+     * <I>CollaborationDiagram</I>.<p>
      * 
-     * each diagram type has a similar <I>UMLxxxDiagram</I> class.
+     * Each diagram type has a similar <I>UMLxxxDiagram</I> class.<p>
      *
-     * @param m  MNamespace from the model in NSUML...
-     * @modified changed <I>lay</I> from <I>LayerPerspective</I> to
+     * Changed <I>lay</I> from <I>LayerPerspective</I> to
      * <I>LayerPerspectiveMutable</I>.  This class is a child of
      * <I>LayerPerspective</I> and was implemented to correct some
-     * difficulties in changing the model. <I>lay</I> is used mainly
+     * difficulties in changing the model.  <I>Lay</I> is used mainly
      * in <I>LayerManager</I>(GEF) to control the adding, changing and
      * deleting layers on the diagram...
      * 
-     * @author psager@tigris.org Jan. 24, 2oo2
+     * @param handle  MNamespace from the model in NSUML...
+     * @author psager@tigris.org Jan. 24, 2002
      */
     public void setNamespace(Object handle) {
         if (!ModelFacade.isANamespace(handle)) {
@@ -228,13 +229,13 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         Layer lay = getLayer();
         while (oeIterator.hasNext()) {
             Object me = /*(MModelElement)*/
-            oeIterator.next();
+		oeIterator.next();
             if (org.argouml.model.ModelFacade.isAAssociationRole(me)) {
                 messages = ModelFacade.getMessages(me);
                 msgIterator = messages.iterator();
                 while (msgIterator.hasNext()) {
                     Object message = /*(MMessage)*/
-                    msgIterator.next();
+			msgIterator.next();
                     FigMessage figMessage =
                         (FigMessage) lay.presentationFor(message);
                     if (figMessage != null) {

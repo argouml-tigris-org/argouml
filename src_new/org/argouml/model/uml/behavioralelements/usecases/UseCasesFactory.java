@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -49,25 +49,29 @@ import ru.novosoft.uml.model_management.MModel;
  */
 public class UseCasesFactory extends AbstractUmlModelFactory {
 
-    /** Singleton instance.
+    /**
+     * Singleton instance.
      */
     private static UseCasesFactory SINGLETON =
 	new UseCasesFactory();
 
-    /** Singleton instance access method.
+    /**
+     * Singleton instance access method.
      */
     public static UseCasesFactory getFactory() {
         return SINGLETON;
     }
 
-    /** Don't allow instantiation
+    /**
+     * Don't allow instantiation
      */
     private UseCasesFactory() {
     }
 
-    /** Create an empty but initialized instance of a Extend
+    /**
+     * Create an empty but initialized instance of a Extend.
      *  
-     *  @return an initialized Extend instance.
+     * @return an initialized Extend instance.
      */
     public MExtend createExtend() {
         MExtend modelElement = MFactory.getDefaultFactory().createExtend();
@@ -75,9 +79,10 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
 	return modelElement;
     }
 
-    /** Create an empty but initialized instance of a ExtensionPoint
+    /** 
+     * Create an empty but initialized instance of a ExtensionPoint.
      *  
-     *  @return an initialized ExtensionPoint instance.
+     * @return an initialized ExtensionPoint instance.
      */
     public MExtensionPoint createExtensionPoint() {
         MExtensionPoint modelElement =
@@ -86,9 +91,10 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
 	return modelElement;
     }
 
-    /** Create an empty but initialized instance of a Actor
+    /**
+     * Create an empty but initialized instance of a Actor.
      *  
-     *  @return an initialized Actor instance.
+     * @return an initialized Actor instance.
      */
     public MActor createActor() {
         MActor modelElement = MFactory.getDefaultFactory().createActor();
@@ -96,9 +102,10 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
 	return modelElement;
     }
 
-    /** Create an empty but initialized instance of a Include
+    /**
+     * Create an empty but initialized instance of a Include.
      *  
-     *  @return an initialized Include instance.
+     * @return an initialized Include instance.
      */
     public MInclude createInclude() {
         MInclude modelElement = MFactory.getDefaultFactory().createInclude();
@@ -106,9 +113,10 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
 	return modelElement;
     }
 
-    /** Create an empty but initialized instance of a UseCase
-     *  
-     *  @return an initialized UseCase instance.
+    /**
+     * Create an empty but initialized instance of a UseCase.
+     *
+     * @return an initialized UseCase instance.
      */
     public MUseCase createUseCase() {
         MUseCase modelElement = MFactory.getDefaultFactory().createUseCase();
@@ -128,18 +136,18 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * <p>Build an extend relationship.</p>
+     * Build an extend relationship.<p>
      *
-     * <p>Set the namespace to the base (preferred) or else extension's
-     *   namespace. We don't do any checking on base and extension. They should
-     *   be different, but that is someone else's problem.</p>
+     * Set the namespace to the base (preferred) or else extension's
+     * namespace. We don't do any checking on base and extension. They
+     * should be different, but that is someone else's problem.<p>
      *
-     * @param base       The base use case for the relationship
+     * @param abase       The base use case for the relationship
      *
-     * @param extension  The extension use case for the relationship
+     * @param anextension The extension use case for the relationship
      *
-     * @return           The new extend relationship or <code>null</code> if it
-     *                   can't be created.
+     * @return            The new extend relationship or <code>null</code>
+     *                    if it can't be created.
      */
     public MExtend buildExtend(Object abase, Object anextension) {
         MUseCase base = (MUseCase) abase;
@@ -196,9 +204,9 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      
      
     /**
-     * <p>Build an extension point for a use case.</p>
+     * Build an extension point for a use case.<p>
      *
-     * <p>Set the namespace to that of the use case if possible.</p>
+     * Set the namespace to that of the use case if possible.<p>
      *
      * @param modelElement  The owning use case for the extension point. May be
      *                      <code>null</code>.
@@ -242,24 +250,25 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
     }
      
     /**
-     * <p>Build an include relationship.</p>
+     * Build an include relationship.<p>
      *
-     * <p>Set the namespace to the base (preferred) or else extension's
-     *   namespace. We don't do any checking on base and extension. They should
-     *   be different, but that is someone else's problem.</p>
+     * Set the namespace to the base (preferred) or else extension's
+     * namespace. We don't do any checking on base and extension. They
+     * should be different, but that is someone else's problem.<p>
      *
-     * <p><em>Note</em>. There is a bug in NSUML that gets the base and
-     *   addition associations back to front. We reverse the use of their
-     *   accessors in the code to correct this.</p>
+     * <em>Note</em>. There is a bug in NSUML that gets the base and
+     * addition associations back to front. We reverse the use of
+     * their accessors in the code to correct this.<p>
      *
-     * @param base       The base use case for the relationship
+     * @param abase      The base use case for the relationship
      *
-     * @param extension  The extension use case for the relationship
+     * @param anaddition The extension use case for the relationship
      *
      * @return           The new include relationship or <code>null</code> if
      *                   it can't be created.
      */
-    public MInclude buildInclude(Object/*MUseCase*/ abase, Object/*MUseCase*/ anaddition) {
+    public MInclude buildInclude(Object/*MUseCase*/ abase,
+				 Object/*MUseCase*/ anaddition) {
         MUseCase base = (MUseCase) abase;
         MUseCase addition = (MUseCase) anaddition;
 	MInclude include =
@@ -286,16 +295,19 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      
     /**
      * Builds an actor in the project's model namespace.
+     *
      * @return MActor
      */
     public MActor buildActor() {
 	MNamespace ns =
-	    (MModel)ProjectManager.getManager().getCurrentProject().getModel();
+	    (MModel) ProjectManager.getManager().getCurrentProject()
+	        .getModel();
 	return buildActor(ns);
     }
      
     /**
      * Builds an actor in the given namespace.
+     *
      * @param ns
      * @return MActor
      */
@@ -309,9 +321,10 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
     }
      
     /**
-     * Builds an actor in the same namespace of the given actor. If object is no
-     * actor nothing is build. Did not give MActor as an argument but object to 
-     * seperate argouml better from NSUML.
+     * Builds an actor in the same namespace of the given actor. If
+     * object is no actor nothing is build. Did not give MActor as an
+     * argument but object to seperate argouml better from NSUML.<p>
+     *
      * @param actor
      * @return MActor
      */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,18 +22,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: GeneratorDisplay.java
-// Classes: GeneratorDisplay
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
-// 5 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Return text for
-// operations that have no return parameter made "" rather than ": void??"
-
-// 10 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
-// extension points.
-
 package org.argouml.uml.generator;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -71,13 +61,16 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.model_management.MPackage;
 
-/** Generator subclass to generate text for display in diagrams in in
+/**
+ * Generator subclass to generate text for display in diagrams in in
  * text fields in the Argo/UML user interface.  The generated code
  * looks a lot like (invalid) Java.  The idea is that other generators
  * could be written for outher languages.  This code is just a
  * placeholder for future development, I expect it to be totally
  * replaced.
+ *
  * @stereotype singleton
+ * @author jrobbins@ics.uci.edu
  */
 
 // TODO: always check for null!!!
@@ -146,6 +139,7 @@ public class GeneratorDisplay extends Generator {
     public String generateConcurrency(MCallConcurrencyKind concurrency) {
     	concurrency.ge
     */
+
     /**
      * Generates an operation accordin to the UML 1.3 notation:
      * stereotype visibility name (parameter-list) :
@@ -153,16 +147,19 @@ public class GeneratorDisplay extends Generator {
      * return-type-expression: only the types of the return parameters
      * are shown.  Depending on settings in Notation visibility and
      * properties are shown/not shown.
+     *
      * @author jaap.branderhorst@xs4all.nl
-     * @see org.argouml.application.api.NotationProvider#generateOperation(MOperation, boolean)
+     * @see org.argouml.application.api.NotationProvider#generateOperation(
+     *          MOperation, boolean)
      */
     public String generateOperation(MOperation op, boolean documented) {
         Object stereo = null;
         if (ModelFacade.getStereotypes(op).size() > 0) {
             stereo = ModelFacade.getStereotypes(op).iterator().next();
         }
-        String stereoStr = generateStereotype((MStereotype)stereo);
-        String visStr = generateVisibility((MVisibilityKind)ModelFacade.getVisibility(op));
+        String stereoStr = generateStereotype((MStereotype) stereo);
+        String visStr =
+	    generateVisibility((MVisibilityKind) ModelFacade.getVisibility(op));
         String nameStr = generateName(ModelFacade.getName(op));
 
         // the parameters
@@ -175,8 +172,7 @@ public class GeneratorDisplay extends Generator {
             if (!ModelFacade.hasReturnParameterDirectionKind(parameter)) {
                 counter++;
                 parameterListBuffer.append(
-                    generateParameter((MParameter)parameter)).append(
-                    ",");
+                    generateParameter((MParameter) parameter)).append(",");
             }
         }
         if (counter > 0) {
@@ -228,7 +224,7 @@ public class GeneratorDisplay extends Generator {
             Iterator it3 = taggedValues.iterator();
             while (it3.hasNext()) {
                 taggedValuesSb.append(
-                    generateTaggedValue((MTaggedValue)it3.next()));
+                    generateTaggedValue((MTaggedValue) it3.next()));
                 taggedValuesSb.append(",");
             }
             taggedValuesSb.delete(
@@ -276,7 +272,9 @@ public class GeneratorDisplay extends Generator {
      * initial-value {property-string} Depending on settings in
      * Notation visibility, multiplicity, initial value and properties
      * are shown/not shown.
-     * @see org.argouml.application.api.NotationProvider#generateAttribute(MAttribute, boolean)
+     *
+     * @see org.argouml.application.api.NotationProvider#generateAttribute(
+     *          MAttribute, boolean)
      */
     public String generateAttribute(MAttribute attr, boolean documented) {
         String visibility = generateVisibility(attr.getVisibility());
@@ -410,8 +408,6 @@ public class GeneratorDisplay extends Generator {
         Collection strs = ModelFacade.getStructuralFeatures(cls);
         if (strs != null) {
             s += "\n";
-            //s +=
-            //"////////////////////////////////////////////////////////////////\n";
             s += INDENT + "// Attributes\n";
             Iterator strEnum = strs.iterator();
             while (strEnum.hasNext())
@@ -421,14 +417,15 @@ public class GeneratorDisplay extends Generator {
         Collection ends = cls.getAssociationEnds();
         if (ends != null) {
             s += "\n";
-            //s +=
-            //"////////////////////////////////////////////////////////////////\n";
             s += INDENT + "// Associations\n";
             Iterator endEnum = ends.iterator();
             while (endEnum.hasNext()) {
                 Object ae = /*(MAssociationEnd)*/ endEnum.next();
                 Object a = ModelFacade.getAssociation(ae);
-                s += INDENT + generateAssociationFrom((MAssociation)a, (MAssociationEnd)ae);
+                s +=
+		    INDENT
+		    + generateAssociationFrom((MAssociation) a,
+					      (MAssociationEnd) ae);
             }
         }
 
@@ -437,8 +434,6 @@ public class GeneratorDisplay extends Generator {
         Collection behs = ModelFacade.getOperations(cls);
         if (behs != null) {
             s += "\n";
-            //s +=
-            //"////////////////////////////////////////////////////////////////\n";
             s += INDENT + "// Operations\n";
             Iterator behEnum = behs.iterator();
             String terminator = " {\n" + INDENT + "}";
@@ -468,11 +463,11 @@ public class GeneratorDisplay extends Generator {
      * <p>If you plan to modify this number, make sure that
      * ParserDisplay.parseMessage is adapted to the change.
      *
-     * @param m A MMessage to generate the number for.
+     * @param message A MMessage to generate the number for.
      * @return A String with the message number of m.
      */
     public String generateMessageNumber(Object/*MMessage*/ message) {
-        MMessage m = (MMessage)message;
+        MMessage m = (MMessage) message;
         MsgPtr ptr = new MsgPtr();
         int pos = recCountPredecessors(m, ptr) + 1;
         return generateMessageNumber(m, ptr.message, pos);
@@ -644,7 +639,8 @@ public class GeneratorDisplay extends Generator {
         return predecessors + number + " : " + action;
     }
 
-    public String generateAssociationFrom(Object/*MAssociation*/ a, MAssociationEnd ae) {
+    public String generateAssociationFrom(Object/*MAssociation*/ a,
+					  MAssociationEnd ae) {
         // TODO: does not handle n-ary associations
         String s = "";
         Collection connections = ModelFacade.getConnections(a);
@@ -652,7 +648,7 @@ public class GeneratorDisplay extends Generator {
         while (connEnum.hasNext()) {
             Object ae2 = /*(MAssociationEnd)*/ connEnum.next();
             if (ae2 != ae)
-                s += generateAssociationEnd((MAssociationEnd)ae2);
+                s += generateAssociationEnd((MAssociationEnd) ae2);
         }
         return s;
     }
@@ -712,7 +708,7 @@ public class GeneratorDisplay extends Generator {
         String s = "{";
         Iterator conEnum = constr.iterator();
         while (conEnum.hasNext()) {
-            s += generateConstraint((MConstraint)conEnum.next());
+            s += generateConstraint((MConstraint) conEnum.next());
             if (conEnum.hasNext())
                 s += "; ";
         }
@@ -815,8 +811,8 @@ public class GeneratorDisplay extends Generator {
     }
 
     /**
-     * @see
-     * org.argouml.application.api.NotationProvider#generateMultiplicity(MMultiplicity)
+     * @see org.argouml.application.api.NotationProvider#generateMultiplicity(
+     *          MMultiplicity)
      */
     public String generateMultiplicity(MMultiplicity m) {
         if (m == null) {
@@ -921,7 +917,7 @@ public class GeneratorDisplay extends Generator {
                     s.append("\n");
                 Object trans = /*(MTransition)*/ iter.next();
                 s.append(ModelFacade.getName(trans)).append(" /").append(
-                    generateTransition((MTransition)trans));
+                    generateTransition((MTransition) trans));
             }
         }
         return s.toString();
@@ -965,8 +961,11 @@ public class GeneratorDisplay extends Generator {
             if (!first)
                 p += ", ";
 
-            if (ModelFacade.getValue(arg) != null)
-                p += generateExpression((MExpression)ModelFacade.getValue(arg));
+            if (ModelFacade.getValue(arg) != null) {
+                p +=
+		    generateExpression(
+			(MExpression) ModelFacade.getValue(arg));
+	    }
             first = false;
         }
 

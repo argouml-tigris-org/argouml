@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,10 +34,14 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 
 /** 
- * <p>Action to add a new sequence diagram.</p>
- * <p>Fully rebuild starting 1-8-2003</p>
- * <p>This action is subclassed from UMLChangeAction and not ActionAddDiagram since the
- * namespace stuff in ActionAddDiagram should be refactored out</p>
+ * Action to add a new sequence diagram.<p>
+ *
+ * Fully rebuild starting 1-8-2003<p>
+ *
+ * This action is subclassed from UMLChangeAction and not
+ * ActionAddDiagram since the namespace stuff in ActionAddDiagram
+ * should be refactored out.<p>
+ *
  * @author jaap.branderhorst@xs4all.nl
  */
 public class ActionSequenceDiagram extends UMLChangeAction {
@@ -55,7 +59,7 @@ public class ActionSequenceDiagram extends UMLChangeAction {
     }
 
     /**
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
@@ -73,11 +77,11 @@ public class ActionSequenceDiagram extends UMLChangeAction {
         UMLSequenceDiagram diagram = new UMLSequenceDiagram(collaboration);
         ProjectManager.getManager().getCurrentProject().addMember(diagram);
         TargetManager.getInstance().setTarget(diagram);
-		ExplorerEventAdaptor.getInstance().modelElementChanged(owner);
+	ExplorerEventAdaptor.getInstance().modelElementChanged(owner);
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled(java.lang.Object[])
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
         Object target = TargetManager.getInstance().getModelTarget();

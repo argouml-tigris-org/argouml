@@ -1,6 +1,5 @@
-
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -86,17 +85,11 @@ public class SequenceDiagramGraphModel
             } 
 
             _srcFigObject =
-                (FigObject) curEditor
-                    .getLayerManager()
-                    .getActiveLayer()
-                    .presentationFor(
-                    _srcObject);
+                (FigObject) curEditor.getLayerManager().getActiveLayer()
+		    .presentationFor(_srcObject);
             _destFigObject =
-                (FigObject) curEditor
-                    .getLayerManager()
-                    .getActiveLayer()
-                    .presentationFor(
-                    _destObject);
+                (FigObject) curEditor.getLayerManager().getActiveLayer()
+                    .presentationFor(_destObject);
             _srcFigPort = _srcFigObject.getPortFig(_srcPort);
             _destFigPort = _destFigObject.getPortFig(_destPort);            
         }
@@ -218,8 +211,8 @@ public class SequenceDiagramGraphModel
         }
 
         /**
-         * Checks if a certain combination of ports and edgeclass can be connected.
-         *
+         * Checks if a certain combination of ports and edgeclass can
+         * be connected.
          */
         public abstract boolean doit();
 
@@ -232,31 +225,46 @@ public class SequenceDiagramGraphModel
         }
 
         /**
-         * @see org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel.CanConnectCmd#doit()
+         * @see SequenceDiagramGraphModel.CanConnectCmd#doit()
          */
         public boolean doit() {
             if (!(this.getDestPort() instanceof LinkPort)
                 || !(getSrcPort() instanceof LinkPort)) {
                 return false;
             }
-            if (this.getDestPort() instanceof ActivationNode && !getDestFigObject().getActivationNodes((Node)this.getDestPort()).isEmpty()) {
-                // cannot connect a callaction to a destactivation that allready exists
+            if (this.getDestPort() instanceof ActivationNode
+		&& !(getDestFigObject().getActivationNodes(
+			 (Node) this.getDestPort()).isEmpty())) {
+                // cannot connect a callaction to a destactivation
+                // that already exists
                 return false;
             }
            //  if (getSrcFigObject().getPreviousActivation((Node)getSrcPort()).)
-            if (getSrcPort() instanceof LinkNode && ((LinkNode)getSrcPort()).isDestroyed()) {
-                // cannot connect a callaction to a sourceActivation that is allready destroyed.
+            if (getSrcPort() instanceof LinkNode
+		&& ((LinkNode) getSrcPort()).isDestroyed()) {
+                // cannot connect a callaction to a sourceActivation
+                // that is allready destroyed.
                 return false;
             }
             if (getSrcPort() instanceof LinkNode) {
-            	int index = getSrcFigObject().getIndexOf((LinkNode)getSrcPort());
-            	Iterator it = getSrcFigObject().getActivationNodes((Node)getSrcPort()).iterator();
+            	int index =
+		    getSrcFigObject().getIndexOf((LinkNode) getSrcPort());
+            	Iterator it =
+		    getSrcFigObject().getActivationNodes(
+		        (Node) getSrcPort()).iterator();
             	while (it.hasNext()) {
-            		Node node = (Node)it.next();
-            		if (node instanceof LinkPort && getSrcFigObject().getFigLink(((LinkPort)node).getFigLinkPort()) instanceof FigReturnActionLink && index > getSrcFigObject().getIndexOf(node)) {
-//						cannot connect a callaction to a sourceActivation that is allready returned.
-            			return false;
-            		}
+		    Node node = (Node) it.next();
+		    if (node instanceof LinkPort
+			&& (getSrcFigObject().getFigLink(
+				((LinkPort) node).getFigLinkPort())
+			    instanceof FigReturnActionLink)
+			&& index > getSrcFigObject().getIndexOf(node)) {
+
+			// cannot connect a callaction to a
+			// sourceActivation that is allready returned.
+			return false;
+
+		    }
             	}
             }                    
             return true;
@@ -271,18 +279,20 @@ public class SequenceDiagramGraphModel
         }
 
         /**
-         * @see org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel.CanConnectCmd#doit()
+         * @see SequenceDiagramGraphModel.CanConnectCmd#doit()
          */
         public boolean doit() {
             if (!(this.getDestPort() instanceof LinkPort)
                 || !(getSrcPort() instanceof LinkPort)) {
                 return false;
             }
-            if (getDestFigObject().getActivationNodes((Node)this.getDestPort()).isEmpty()) {
+            if (getDestFigObject().getActivationNodes(
+		    (Node) this.getDestPort()).isEmpty()) {
                 // there must be a destination activation.
                 return false;
             }
-            if (this.getDestPort() instanceof ActivationNode && !((ActivationNode)this.getDestPort()).isEnd()) {
+            if (this.getDestPort() instanceof ActivationNode
+		&& !((ActivationNode) this.getDestPort()).isEnd()) {
                 // cannot destroy an object in the middle of an activation.
                 return false;
             }          
@@ -298,33 +308,43 @@ public class SequenceDiagramGraphModel
         }
 
         /**
-         * @see org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel.CanConnectCmd#doit()
+         * @see SequenceDiagramGraphModel.CanConnectCmd#doit()
          */
         public boolean doit() {
             if (!(this.getDestPort() instanceof LinkPort)
                 || !(getSrcPort() instanceof LinkPort)) {
                 return false;
             }
-			if (getDestFigObject().getActivationNodes((Node)this.getDestPort()).isEmpty()) {
-			   // there must be a destination activation.
-			   return false;
-		   }
-		   if (this.getSrcPort() instanceof ActivationNode && !((ActivationNode)this.getSrcPort()).isEnd()) {
-			   // cannot return in the middle of an activation.
-			   return false;
-		   } 
-		   Node startNode = (Node)getSrcFigObject().getActivationNodes((Node)getSrcPort()).get(0);
-		   if (startNode instanceof LinkPort) {
-		   	 LinkPort linkNode = (LinkPort)startNode;
-		   	 FigLink figLink = getSrcFigObject().getFigLink(linkNode.getFigLinkPort());
+	    if (getDestFigObject().getActivationNodes(
+		    (Node) this.getDestPort()).isEmpty()) {
+		// there must be a destination activation.
+		return false;
+	    }
+	    if (this.getSrcPort() instanceof ActivationNode
+		&& !((ActivationNode) this.getSrcPort()).isEnd()) {
+
+		// cannot return in the middle of an activation.
+		return false;
+	    } 
+	    Node startNode =
+		(Node) getSrcFigObject().getActivationNodes(
+		    (Node) getSrcPort()).get(0);
+	    if (startNode instanceof LinkPort) {
+		LinkPort linkNode = (LinkPort) startNode;
+		FigLink figLink =
+		    getSrcFigObject().getFigLink(linkNode.getFigLinkPort());
 		   	 
-		   	 if (!(getDestFigObject().getActivationNodes((Node)((FigLinkPort)figLink.getSourcePortFig()).getOwner()).contains(this.getDestPort()))) {
-				// cannot let a activation return to an activation that did not start the source activation
-		   	 	return false;
-		   	 }
-		   } else {
-		   	return false;
-		   }		
+		if (!(getDestFigObject().getActivationNodes(
+			  (Node) ((FigLinkPort) figLink.getSourcePortFig())
+			             .getOwner())
+		      .contains(this.getDestPort()))) {
+		    // cannot let a activation return to an activation
+		    // that did not start the source activation
+		    return false;
+		}
+	    } else {
+		return false;
+	    }		
             return true;
 
         }
@@ -337,7 +357,7 @@ public class SequenceDiagramGraphModel
         }
 
         /**
-        * @see org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel.CanConnectCmd#doit()
+        * @see SequenceDiagramGraphModel.CanConnectCmd#doit()
         */
         public boolean doit() {
             if (!(ModelFacade.isAObject(this.getDestPort()))
@@ -348,6 +368,10 @@ public class SequenceDiagramGraphModel
         }
     }
 
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat =
         Logger.getLogger(SequenceDiagramGraphModel.class);
     ////////////////////////////////////////////////////////////////
@@ -392,9 +416,8 @@ public class SequenceDiagramGraphModel
     }
 
     /**
-     * Default constructor. Constructs a model and a collaboration in the root of the current
-     * project.
-     *
+     * Default constructor. Constructs a model and a collaboration in
+     * the root of the current project.
      */
     public SequenceDiagramGraphModel(Object collaboration) {
         _collaboration = collaboration;
@@ -528,11 +551,12 @@ public class SequenceDiagramGraphModel
         Object end0 = null;
         Object end1 = null;
         if (org.argouml.model.ModelFacade.isALink(edge)) {
-            end0 = CommonBehaviorHelper.getHelper().getSource(/*(MLink)*/
-            edge);
-            end1 = CommonBehaviorHelper.getHelper().getDestination(
-            /*(MLink)*/
-            edge);
+            end0 =
+		CommonBehaviorHelper.getHelper().getSource(/*(MLink)*/
+							   edge);
+            end1 =
+		CommonBehaviorHelper.getHelper().getDestination(/*(MLink)*/
+								edge);
         }
         if (end0 == null || end1 == null)
             return false;
@@ -561,6 +585,7 @@ public class SequenceDiagramGraphModel
     /**
      * Adds an edge to the model if this is allowed. If the edge is a link, 
      * an associationrole and a stimulus to accompany this link are build. 
+     *
      * @see org.tigris.gef.graph.MutableGraphModel#addEdge(java.lang.Object)
      */
     public void addEdge(Object edge) {
@@ -574,8 +599,7 @@ public class SequenceDiagramGraphModel
             Collection ends = ModelFacade.getLinkEnds(node);
             Iterator iter = ends.iterator();
             while (iter.hasNext()) {
-                Object /*MLinkEnd*/
-                le = iter.next();
+                Object /*MLinkEnd*/ le = iter.next();
                 if (canAddEdge(ModelFacade.getLink(le)))
                     addEdge(ModelFacade.getLink(le));
                 return;
@@ -609,11 +633,14 @@ public class SequenceDiagramGraphModel
     }
 
     /**
-     * Creates a link based on the given from and toPort. The fromPort should allways
-     * point to a LinkCoordinates instance. The toPort can point to a LinkCoordinates instance
-     * or to a Object instance. On a sequence diagram you can only draw Links. So 
+     * Creates a link based on the given from and toPort. The fromPort
+     * should allways point to a LinkCoordinates instance. The toPort
+     * can point to a LinkCoordinates instance or to a Object
+     * instance. On a sequence diagram you can only draw Links. So
      * other edgeClasses then links are not supported.
-     * @see org.tigris.gef.graph.MutableGraphModel#connect(java.lang.Object, java.lang.Object, java.lang.Class)
+     *
+     * @see org.tigris.gef.graph.MutableGraphModel#connect(
+     *          Object, Object, Class)
      */
     public Object connect(Object fromPort, Object toPort, Class edgeClass) {
         if (!canConnect(fromPort, toPort)) {
@@ -636,9 +663,7 @@ public class SequenceDiagramGraphModel
                     toObject = ((LinkPort) toPort).getObject();
 
                     action =
-                        UmlFactory
-                            .getFactory()
-                            .getCommonBehavior()
+                        UmlFactory.getFactory().getCommonBehavior()
                             .createCallAction();
                 }
             } else if (actionClass == ModelFacade.CREATE_ACTION) {
@@ -647,9 +672,7 @@ public class SequenceDiagramGraphModel
                     fromObject = ((LinkPort) fromPort).getObject();
                     toObject = toPort;
                     action =
-                        UmlFactory
-                            .getFactory()
-                            .getCommonBehavior()
+                        UmlFactory.getFactory().getCommonBehavior()
                             .createCreateAction();
                 }
             } else if (actionClass == ModelFacade.RETURN_ACTION) {
@@ -658,9 +681,7 @@ public class SequenceDiagramGraphModel
                     fromObject = ((LinkPort) fromPort).getObject();
                     toObject = ((LinkPort) fromPort).getObject();
                     action =
-                        UmlFactory
-                            .getFactory()
-                            .getCommonBehavior()
+                        UmlFactory.getFactory().getCommonBehavior()
                             .createReturnAction();
 
                 }
@@ -670,9 +691,7 @@ public class SequenceDiagramGraphModel
                     fromObject = ((LinkPort) fromPort).getObject();
                     toObject = ((LinkPort) fromPort).getObject();
                     action =
-                        UmlFactory
-                            .getFactory()
-                            .getCommonBehavior()
+                        UmlFactory.getFactory().getCommonBehavior()
                             .createDestroyAction();
                 }
             } else if (actionClass == ModelFacade.SEND_ACTION) {
@@ -749,8 +768,7 @@ public class SequenceDiagramGraphModel
 
         if ("ownedElement".equals(pce.getPropertyName())) {
             Vector oldOwned = (Vector) pce.getOldValue();
-            Object eo = /*(MElementImport)*/
-            pce.getNewValue();
+            Object eo = /*(MElementImport)*/ pce.getNewValue();
             Object me = ModelFacade.getModelElement(eo);
             if (oldOwned.contains(eo)) {
                 cat.debug("model removed " + me);
@@ -765,15 +783,17 @@ public class SequenceDiagramGraphModel
     }
 
     /**
-     * Gets the collaboration that is shown on the sequence diagram
-     * @return 
+     * Gets the collaboration that is shown on the sequence diagram.<p>
+     *
+     * @return the collaboration of the diagram.
      */
     public Object getCollaboration() {
         return _collaboration;
     }
 
     /**
-     * Sets the collaboration that is shown at the sequence diagram
+     * Sets the collaboration that is shown at the sequence diagram.
+     *
      * @param collaboration
      */
     public void setCollaboration(Object collaboration) {

@@ -46,6 +46,10 @@ import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
 public class UMLDeploymentDiagram extends UMLDiagram {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat = Logger.getLogger(UMLDeploymentDiagram.class);
 
     ////////////////
@@ -140,20 +144,21 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         setNamespace(namespace);
     }
 
-    /** method to perform a number of important initializations of a
-     * <I>Deployment Diagram</I>.
+    /** 
+     * Method to perform a number of important initializations of a
+     * <I>Deployment Diagram</I>.<p>
      * 
-     * each diagram type has a similar <I>UMLxxxDiagram</I> class.
+     * Each diagram type has a similar <I>UMLxxxDiagram</I> class.<p>
      *
-     * @param handle MNamespace from the model in NSUML...
-     * @modified changed <I>lay</I> from <I>LayerPerspective</I> to
+     * Changed <I>lay</I> from <I>LayerPerspective</I> to
      * <I>LayerPerspectiveMutable</I>.  This class is a child of
      * <I>LayerPerspective</I> and was implemented to correct some
      * difficulties in changing the model. <I>lay</I> is used mainly
      * in <I>LayerManager</I>(GEF) to control the adding, changing and
-     * deleting layers on the diagram...
+     * deleting layers on the diagram...<p>
      *
-     * @author psager@tigris.org Jan. 24, 2oo2
+     * @param handle MNamespace from the model in NSUML...
+     * @author psager@tigris.org Jan. 24, 2002
      */
     public void setNamespace(Object handle) {
         if (!ModelFacade.isANamespace(handle)) {

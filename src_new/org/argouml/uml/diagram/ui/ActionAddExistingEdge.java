@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,7 +42,8 @@ public class ActionAddExistingEdge extends UMLAction {
 
     /**
      * Constructor for ActionAddExistingEdge.
-     * @param name
+     *
+     * @param tabName
      */
     public ActionAddExistingEdge(String tabName, Object edge) {
         super(tabName, NO_ICON);
@@ -66,7 +67,7 @@ public class ActionAddExistingEdge extends UMLAction {
         //    has to be added
         // 3. Both of the nodes are not yet on the diagram.
         // For the time being we will only implement situation 1.
-        // TODO implement situation 2 and 3.
+        // TODO: implement situation 2 and 3.
         MutableGraphModel gm = (MutableGraphModel) ProjectManager.getManager().
             getCurrentProject().getActiveDiagram().getGraphModel();
         if (gm.canAddEdge(_edge)) { // situation 1
