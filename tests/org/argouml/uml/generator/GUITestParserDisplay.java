@@ -782,11 +782,11 @@ public class GUITestParserDisplay extends TestCase {
             if (props[i + 1] == null)
         	assertTrue(
         		   "TaggedValue " + props[i] + " exists!",
-        		   ModelFacade.getTaggedValue(attr, props[i]) == null);
+			   ((MAttribute)attr).getTaggedValue(props[i]) == null);
             else
         	assertTrue(
         		   "TaggedValue " + props[i] + " wrong!",
-        		   props[i + 1].equals(ModelFacade.getTaggedValue(attr, props[i])));
+			   props[i + 1].equals(((MAttribute)attr).getTaggedValue(props[i])));
         }
     }
 

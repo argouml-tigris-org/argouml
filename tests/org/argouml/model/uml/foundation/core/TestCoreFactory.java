@@ -180,7 +180,7 @@ public class TestCoreFactory extends TestCase {
         MModel model = ModelManagementFactory.getFactory().createModel();
         Object class1 = CoreFactory.getFactory().buildClass(model);
         Object class2 = CoreFactory.getFactory().buildClass(model);
-        MDependency dep =
+        Object dep =
             CoreFactory.getFactory().buildDependency(class1, class2);
         WeakReference class1wr = new WeakReference(class1);
         WeakReference depwr = new WeakReference(dep);
@@ -196,7 +196,7 @@ public class TestCoreFactory extends TestCase {
         MModel model = ModelManagementFactory.getFactory().createModel();
         Object class1 = CoreFactory.getFactory().buildClass(model);
         Object class2 = CoreFactory.getFactory().buildClass(model);
-        MDependency dep =
+        Object dep =
             CoreFactory.getFactory().buildDependency(class1, class2);
         Object class3 = CoreFactory.getFactory().buildClass(model);
         ModelFacade.addClient(dep, class3);
@@ -214,7 +214,7 @@ public class TestCoreFactory extends TestCase {
         MModel model = ModelManagementFactory.getFactory().createModel();
         Object class1 = CoreFactory.getFactory().buildClass(model);
         Object class2 = CoreFactory.getFactory().buildClass(model);
-        MDependency dep =
+        Object dep =
             CoreFactory.getFactory().buildDependency(class1, class2);
         Object class3 = CoreFactory.getFactory().buildClass(model);
         ModelFacade.addSupplier(dep, class3);
@@ -256,14 +256,14 @@ public class TestCoreFactory extends TestCase {
 	} catch (IllegalArgumentException i) {
 	}
 	MModelElement elem = ModelManagementFactory.getFactory().createModel();
-	MConstraint con = CoreFactory.getFactory().buildConstraint(elem);
-	assertNull("Namespace is unexpectly set", con.getNamespace());
+	Object con = CoreFactory.getFactory().buildConstraint(elem);
+	assertNull("Namespace is unexpectly set", ModelFacade.getNamespace(con));
 	assertTrue(
 		   "Constrained element is not set",
-		   !con.getConstrainedElements().isEmpty());
+		   !ModelFacade.getConstrainedElements(con).isEmpty());
 	assertTrue("Constraint is not set", !elem.getConstraints().isEmpty());
 	elem.setNamespace(CoreFactory.getFactory().createNamespace());
 	con = CoreFactory.getFactory().buildConstraint(elem);
-	assertNotNull("Namespace is not set", con.getNamespace());
+	assertNotNull("Namespace is not set", ModelFacade.getNamespace(con));
     }
 }
