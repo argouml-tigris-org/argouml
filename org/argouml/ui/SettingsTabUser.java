@@ -158,7 +158,7 @@ implements SettingsTabPanel {
 
 	fieldConstraints.gridy = 0;
 
-	top.add(createLabel("label_user"), labelConstraints);
+	top.add(createLabel("label.user"), labelConstraints);
 
         _fullname = createTextField();
 
@@ -170,7 +170,7 @@ implements SettingsTabPanel {
 
 	fieldConstraints.gridy = 1;
 
- 	top.add(createLabel("label_email"), labelConstraints);
+ 	top.add(createLabel("label.email"), labelConstraints);
 
         _email = createTextField();
 
@@ -234,7 +234,7 @@ implements SettingsTabPanel {
 
     public String getModuleKey() { return "module.settings.user"; }
 
-    public String getTabKey() { return "tab_user"; }
+    public String getTabKey() { return "tab.user"; }
 
 }
 
