@@ -37,6 +37,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
@@ -46,6 +47,9 @@ import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.uml.*;
 import org.argouml.uml.diagram.ui.*;
+import org.argouml.uml.diagram.state.*;
+import org.argouml.uml.diagram.state.ui.*;
+
 
 /** 
  * Class to display a UML note in a diagram 
@@ -166,7 +170,22 @@ public class FigNote extends FigNode implements VetoableChangeListener, DelayedV
 	MComment node = new MCommentImpl();         // Create a new MComment node.
 	setOwner(node);                             // Set it as the owner of the figure.
 	element.addComment(node);                   // Tell the annotated element, that it has a comment now.
-	node.setNamespace(element.getNamespace());  // Add the comment to the same namespace as the annotated element.
+
+	// Notes in state diagrams need a special treatment, cause
+	// the nodes in them don't necessary have a namespace, where
+	// we could add the note. So I added this hack... :-(
+	// Andreas Rueckert <a_rueckert@gmx.net>
+	if(element instanceof MStateVertex) { 
+
+	    ProjectBrowser pb = ProjectBrowser.TheInstance;    // If the current target is a state diagram, we have to
+	    if (pb.getTarget() instanceof UMLStateDiagram) {   // check, if we are editing the diagram.
+		StateDiagramGraphModel gm = (StateDiagramGraphModel)(((UMLStateDiagram)pb.getTarget()).getGraphModel());
+		node.setNamespace(gm.getNamespace());  // We are editing, so we set the Namespace directly.
+	    }
+	} else {
+	    node.setNamespace(element.getNamespace());  // Add the comment to the same namespace as the annotated element.
+	}
+
 	storeNote( placeString());                  // Set the default text for this figure type.
     }
 
