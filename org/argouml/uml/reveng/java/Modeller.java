@@ -761,7 +761,12 @@ public class Modeller
             }
         }
         if (mAssociationEnd == null && !noAssociations) {
-            Object mAssociation = CoreFactory.getFactory().buildAssociation(mClassifier, true, parseState.getClassifier(), false, name);
+            Object mAssociation = CoreFactory.getFactory()
+                                             .buildAssociation(mClassifier,
+                                                               true,
+                                                               parseState.getClassifier(),
+                                                               false,
+                                                               ModelFacade.getName(parseState.getClassifier())+" -> "+ModelFacade.getName(mClassifier));
             mAssociationEnd = ModelFacade.getAssociationEnd(mClassifier, mAssociation);
         }
         return mAssociationEnd;
