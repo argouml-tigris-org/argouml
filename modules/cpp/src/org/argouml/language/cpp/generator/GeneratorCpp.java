@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,13 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-
-// File: GeneratorCpp.java
-// Classes: GeneratorCpp
-// Original Author:
-// $Id$
-
 
 package org.argouml.language.cpp.generator;
 
@@ -94,12 +87,14 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.model_management.MPackage;
 
-/** Generator subclass to generate text for display in diagrams in in
+/**
+ * Generator subclass to generate text for display in diagrams in in
  * text fields in the Argo/UML user interface.  The generated code
  * looks a lot like (invalid) Java.  The idea is that other generators
  * could be written for outher languages.  This code is just a
  * placeholder for future development, I expect it to be totally
- * replaced. */
+ * replaced.
+ */
 
 // TODO: always check for null!!!
 
@@ -108,20 +103,16 @@ public class GeneratorCpp extends Generator
 {
 
     /** logger */
-    private static Logger cat = Logger.getLogger(GeneratorCpp.class);
-
-    /*
-     * 2002-06-09
-     * changed visibility of VERBOSE_DOCS and LF_BEFORE_CURLY to public instead of private
-     * Reason: needed for testing
-     * 2002-06-11
-     * removed VERBOSE_DOCS and LF_BEFORE_CURLY and changed them in configurable items (not yet implemented in GUI)
-     */
+    private static final Logger LOG = Logger.getLogger(GeneratorCpp.class);
 
     protected boolean _verboseDocs = false;
-    protected boolean _lfBeforeCurly = false;private static final boolean VERBOSE_DOCS = false; // TODO: make it configurable
+    protected boolean _lfBeforeCurly = false;
+    /**
+     * TODO: make it configurable
+     */
+    private static final boolean VERBOSE_DOCS = false;
 
-    public static boolean VERBOSE = false;
+    public static final boolean VERBOSE = false;
 
     private static Section sect;
 
@@ -129,18 +120,21 @@ public class GeneratorCpp extends Generator
      * 2002-11-21
      * aim: convert package nesting in C++ namespaces
      * store names of namespaces during packagePath parsing, so that
-     * the names of namespaces can be put after closing curly braces for each namespace
+     * the names of namespaces can be put after closing curly braces
+     * for each namespace
      */
     protected Vector _NamespaceNames = new Vector();
+
     /** 2002-12-07 Achim Spangler
      * store actual namespace, to avoid unneeded curley braces
      */
-    private static MNamespace ActualNamespace;
+    private MNamespace actualNamespace;
+
     /** 2002-12-12 Achim Spangler
-     * store extra include dependencies which are generated during generation of
-     * multiplicity to get needed container type
+     * store extra include dependencies which are generated during
+     * generation of multiplicity to get needed container type
      */
-    private static String _ExtraIncludes = "";
+    private String extraIncludes = "";
 
 
     /**
@@ -151,11 +145,35 @@ public class GeneratorCpp extends Generator
      * the appropriate lines: "public:\n", "protected:\n", "private:\n"
      * can be created
      */
-    static public int undefined_part = 0;
-    static public int public_part = 1;
-    static public int protected_part = 2;
-    static public int private_part = 3;
-    private static int VisibilityPart = undefined_part;
+    private static final int PUBLIC_PART = 1;
+    private static final int PROTECTED_PART = 2;
+    private static final int PRIVATE_PART = 3;
+
+    private static final int[] ALL_PARTS = {
+	PUBLIC_PART,
+	PROTECTED_PART,
+	PRIVATE_PART,
+    };
+
+    /**
+     * @deprecated by Linus Tolke as of 0.15.5. Not used.
+     */
+    public static final int undefined_part = 0;
+
+    /**
+     * @deprecated by Linus Tolke as of 0.15.5. Use {@link #PUBLIC_PART}.
+     */
+    public static final int public_part = 1;
+
+    /**
+     * @deprecated by Linus Tolke as of 0.15.5. Use {@link #PROTECTED_PART}.
+     */
+    public static final int protected_part = 2;
+
+    /**
+     * @deprecated by Linus Tolke as of 0.15.5. Use {@link #PRIVATE_PART}.
+     */
+    public static final int private_part = 3;
 
     /**
      * 2002-11-28 Achim Spangler
@@ -163,19 +181,19 @@ public class GeneratorCpp extends Generator
      * and source (.cpp) with methods implementation
      * --> two generation passes are needed
      */
-    static public int none_pass = 1;
-    static public int header_pass = 2;
-    static public int source_pass = 3;
-    private static int GeneratorPass = none_pass;
+    public static final int none_pass = 1;
+    public static final int header_pass = 2;
+    public static final int source_pass = 3;
+    private static int generatorPass = none_pass;
 
     /**
      * 2002-12-05 Achim Spangler
-     * use Tag generation for generation of: doccomment, simlpe tags of
+     * use Tag generation for generation of: doccomment, simple tags of
      * tags which are not used for doccomment or simple tags for all
      */
-    static public int DocCommentTags = 1;
-    static public int AllButDocTags = 2;
-    static public int AllTags = 3;
+    public static final int DocCommentTags = 1;
+    public static final int AllButDocTags = 2;
+    public static final int AllTags = 3;
 
     /**
      * 2002-12-06 Achim Spangler
@@ -183,34 +201,40 @@ public class GeneratorCpp extends Generator
      * pointers or references (especially for class-types)
      * -> a general check function must get the searched tag
      */
-    static public int SearchReferenceTag = 1;
-    static public int SearchPointerTag = 2;
-    static public int SearchReferencePointerTag = 3;
+    public static final int SearchReferenceTag = 1;
+    public static final int SearchPointerTag = 2;
+    public static final int SearchReferencePointerTag = 3;
 
 
 
-    private static GeneratorCpp SINGLETON = new GeneratorCpp();
+    private static final GeneratorCpp SINGLETON = new GeneratorCpp();
 
+    /**
+     * Get the instance.
+     *
+     * @return the singleton of the generator.
+     */
     public static GeneratorCpp getInstance() { return SINGLETON; }
 
+    
     protected GeneratorCpp() {
 	super (Notation.makeNotation ("Cpp",
 				      null,
 				      Argo.lookupIconResource ("CppNotation")));
     }
 
-    public static String Generate (Object o) {
-	return SINGLETON.generate (o);
+    public static String Generate(Object o) {
+	return SINGLETON.generate(o);
     }
 
 
     /** 2002-11-28 Achim Spangler
      * @return file extension for actual generation pass
      */
-    private String GetFileExtension()
+    private String getFileExtension()
     {
 	// for Java simply answer ".java" every time
-	if (GeneratorPass == header_pass) return ".h";
+	if (generatorPass == header_pass) return ".h";
 	else return ".cpp";
     }
 
@@ -218,11 +242,11 @@ public class GeneratorCpp extends Generator
      * create the needed directories for the derived appropriate pathname
      * @return full pathname
      */
-    private String GenerateDirectoriesPathname(MClassifier cls, String path)
+    private String generateDirectoriesPathname(MClassifier cls, String path)
     {
 	String name = cls.getName();
 	if (name == null || name.length() == 0) return null;
-	String filename = name + GetFileExtension();
+	String filename = name + getFileExtension();
 	if (!path.endsWith (FILE_SEPARATOR)) path += FILE_SEPARATOR;
 
 	String packagePath = cls.getNamespace().getName();
@@ -239,7 +263,7 @@ public class GeneratorCpp extends Generator
 	    File f = new File (path);
 	    if (!f.isDirectory()) {
 		if (!f.mkdir()) {
-		    cat.error(" could not make directory " + path);
+		    LOG.error(" could not make directory " + path);
 		    return null;
 		}
 	    }
@@ -251,7 +275,8 @@ public class GeneratorCpp extends Generator
 	    if (index == -1)
 		index = packagePath.length();
 
-	    path += packagePath.substring (lastIndex + 1, index) + FILE_SEPARATOR;
+	    path +=
+		packagePath.substring (lastIndex + 1, index) + FILE_SEPARATOR;
 	    lastIndex = index;
 	} while (true);
 
@@ -260,10 +285,13 @@ public class GeneratorCpp extends Generator
 	return pathname;
     }
 
-    /** Generates a file for the classifier.
+    /**
+     * Generates a file for the classifier.
      * This method could have been static if it where not for the need to
-     * call it through the Generatorinterface.
+     * call it through the Generatorinterface.<p>
+     *
      * @return the full path name of the the generated file.
+     * @see FileGenerator#GenerateFile(Object, String)
      */
     public String GenerateFile(Object o, String path) {
 	MClassifier cls = (MClassifier) o;
@@ -273,21 +301,23 @@ public class GeneratorCpp extends Generator
 	// use unique section for both passes -> allow move of
 	// normal function body to inline and vice versa
    	sect = new Section();
-	/**
+
+	/*
 	 * 2002-11-28 Achim Spangler
 	 * first read header and source file into global/unique section
 	 */
-	for ( GeneratorPass = header_pass; GeneratorPass <= source_pass; GeneratorPass++ )
-	{
-	    pathname = GenerateDirectoriesPathname(cls, path);
+	for (generatorPass = header_pass;
+	     generatorPass <= source_pass;
+	     generatorPass++) {
+	    pathname = generateDirectoriesPathname(cls, path);
 	    //String pathname = path + filename;
 	    // TODO: package, project basepath, tagged values to configure
 	    File f = new File(pathname);
 	    if (f.exists()) {
-		cat.info("Generating (updated) " + f.getPath());
+		LOG.info("Generating (updated) " + f.getPath());
 		sect.read(pathname);
 	    } else {
-		cat.info("Generating (new) " + f.getPath());
+		LOG.info("Generating (new) " + f.getPath());
 	    }
 	}
 
@@ -295,21 +325,24 @@ public class GeneratorCpp extends Generator
 	 * 2002-11-28 Achim Spangler
 	 * run basic generation function two times for header and implementation
 	 */
-	for ( GeneratorPass = header_pass; GeneratorPass <= source_pass; GeneratorPass++ )
-	{
-	    pathname = GenerateDirectoriesPathname(cls, path);
+	for (generatorPass = header_pass;
+	     generatorPass <= source_pass;
+	     generatorPass++) {
+	    pathname = generateDirectoriesPathname(cls, path);
 	    //String pathname = path + filename;
 	    // TODO: package, project basepath, tagged values to configure
 	    File f = new File(pathname);
-	    String header_top = SINGLETON.generateHeaderTop(cls, pathname, packagePath);
-	    String header = SINGLETON.generateHeader (cls, pathname, packagePath);
+	    String headerTop =
+		SINGLETON.generateHeaderTop(cls, pathname, packagePath);
+	    String header =
+		SINGLETON.generateHeader (cls, pathname, packagePath);
 	    String src = SINGLETON.generate (cls);
 	    BufferedWriter fos = null;
 	    try {
 		fos = new BufferedWriter (new FileWriter (f));
-		writeTemplate( cls, path, fos );
-		fos.write( header_top );
-		fos.write( _ExtraIncludes );
+		writeTemplate(cls, path, fos);
+		fos.write(headerTop);
+		fos.write(extraIncludes);
 		fos.write (header);
 		fos.write (src);
 	    }
@@ -319,20 +352,22 @@ public class GeneratorCpp extends Generator
 		    if (fos != null) fos.close();
 		}
 		catch (IOException exp) {
-		    cat.error("FAILED: " + f.getPath());
+		    LOG.error("FAILED: " + f.getPath());
 		}
 	    }
 
 	    // clear extra includes after usage for each pass
-	    _ExtraIncludes = "";
+	    extraIncludes = "";
 
 	    // output lost sections only in the second path
 	    // -> sections which are moved from header(inline) to source
 	    // file are prevented to be outputted in header pass
-	    if ( GeneratorPass == header_pass )	sect.write(pathname, INDENT, false);
+	    if (generatorPass == header_pass)	{
+		sect.write(pathname, INDENT, false);
+	    }
 	    else sect.write(pathname, INDENT, true);
 
-	    cat.info("written: " + pathname);
+	    LOG.info("written: " + pathname);
 
 
 	    File f1 = new File(pathname + ".bak");
@@ -350,7 +385,7 @@ public class GeneratorCpp extends Generator
 		f3.renameTo(new File(pathname));
 	    }
 
-	    cat.info("----- end updating -----");
+	    LOG.info("----- end updating -----");
 	}
    	return pathname;
     }
@@ -384,83 +419,93 @@ public class GeneratorCpp extends Generator
     /** 2002-12-07 Achim Spangler
      * write template content on top of file
      */
-    private void writeTemplate( MClassifier cls, String path, BufferedWriter fos )
+    private void writeTemplate(MClassifier cls, String path, BufferedWriter fos)
     {
-	String TemplatePathName = path + "/templates/";
-	String FileName = cls.getName();
-	String TagTemplatePathName = cls.getTaggedValue( "TemplatePath" );
-	String AuthorTag = cls.getTaggedValue( "author" );
-	String EmailTag = cls.getTaggedValue( "email" );
-	if ( TagTemplatePathName != null && TagTemplatePathName.length() > 0 )
-	    TemplatePathName = TagTemplatePathName;
-	if ( GeneratorPass == header_pass ) {
-	    TemplatePathName = TemplatePathName + "header_template";
-	    FileName = FileName + ".h";
+	String templatePathName = path + "/templates/";
+	String fileName = cls.getName();
+	String tagTemplatePathName = cls.getTaggedValue("TemplatePath");
+	String authorTag = cls.getTaggedValue("author");
+	String emailTag = cls.getTaggedValue("email");
+	if (tagTemplatePathName != null && tagTemplatePathName.length() > 0)
+	    templatePathName = tagTemplatePathName;
+	if (generatorPass == header_pass) {
+	    templatePathName = templatePathName + "header_template";
+	    fileName = fileName + ".h";
 	}
 	else {
-	    TemplatePathName = TemplatePathName + "cpp_template";
-	    FileName = FileName + ".cpp";
+	    templatePathName = templatePathName + "cpp_template";
+	    fileName = fileName + ".cpp";
 	}
-	// cat.info("Try to read Template: " + TemplatePathName);
-	File TemplateFile = new File( TemplatePathName );
-	if ( TemplateFile.exists())
+	// cat.info("Try to read Template: " + templatePathName);
+	File templateFile = new File(templatePathName);
+	if (templateFile.exists())
 	{
 	    boolean eof = false;
-	    BufferedReader TemplateFileReader = null;
+	    BufferedReader templateFileReader = null;
 	    try {
-		TemplateFileReader = new BufferedReader(new FileReader(TemplateFile.getAbsolutePath()));
+		templateFileReader =
+		    new BufferedReader(new FileReader(templateFile.getAbsolutePath()));
 		while (!eof) {
-		    String line_str = TemplateFileReader.readLine();
-		    if (line_str == null) {
+		    String lineStr = templateFileReader.readLine();
+		    if (lineStr == null) {
 			eof = true;
 		    } else {
-			StringBuffer line = new StringBuffer(line_str);
-			int TokenStart = line.toString().indexOf( "|FILENAME|");
-			if ( TokenStart != -1) {
-			    line.replace(TokenStart, (TokenStart + "|FILENAME|".length()), FileName);
-			}
-			TokenStart = line.toString().indexOf( "|DATE|");
-			if ( TokenStart != -1) {
-			    line.replace(TokenStart, (TokenStart + "|DATE|".length()), getDate());
-			}
-			TokenStart = line.toString().indexOf( "|YEAR|");
-			if ( TokenStart != -1) {
-			    line.replace(TokenStart, (TokenStart + "|YEAR|".length()), getYear());
-			}
-			TokenStart = line.toString().indexOf( "|AUTHOR|");
-			if ( ( TokenStart != -1) && ( AuthorTag != null && AuthorTag.length() > 0 )) {
-			    line.replace(TokenStart, (TokenStart + "|AUTHOR|".length()), AuthorTag);
-			}
-			TokenStart = line.toString().indexOf( "|EMAIL|");
-			if ( ( TokenStart != -1) && ( EmailTag != null && EmailTag.length() > 0 )) {
-			    line.replace(TokenStart, (TokenStart + "|EMAIL|".length()), EmailTag);
-			}
+			StringBuffer line = new StringBuffer(lineStr);
+                        replaceToken(line, "|FILENAME|", fileName);
+                        replaceToken(line, "|DATE|", getDate());
+                        replaceToken(line, "|YEAR|", getYear());
+                        replaceToken(line, "|AUTHOR|", authorTag);
+                        replaceToken(line, "|EMAIL|", emailTag);
 
 			fos.write(line + "\n");
 		    }
 		}
-		TemplateFileReader.close();
+		templateFileReader.close();
 	    }
 	    catch (IOException exp) { }
 	    finally {
 		try {
-		    if (TemplateFileReader != null) TemplateFileReader.close();
+		    if (templateFileReader != null) templateFileReader.close();
 		}
 		catch (IOException exp) {
-		    cat.error("FAILED: " + TemplateFile.getPath());
+		    LOG.error("FAILED: " + templateFile.getPath());
 		}
 	    }
+	}
+    }
+
+    /**
+     * Replace the first occurences of tokenName with tokenValue.
+     *
+     * @param line is the line where we do the replacing.
+     * @param tokenName is the string we search for.
+     * @param tokenValue is the value we replace.
+     */
+    private void replaceToken(StringBuffer line,
+			      String tokenName, String tokenValue) {
+        int tokenStart;
+        tokenStart = line.toString().indexOf(tokenName);
+	if ((tokenStart != -1)
+	    && (tokenValue != null && tokenValue.length() > 0)) {
+	    line.replace(tokenStart,
+			 tokenStart + tokenName.length(),
+			 tokenValue);
 	}
     }
 
     /** 2002-11-28 Achim Spangler
      * seperate constant Header Top into function
      */
-    private String generateHeaderTop(MClassifier cls, String pathname, String packagePath)
+    private String generateHeaderTop(MClassifier cls,
+				     String pathname,
+				     String packagePath)
     {
 	StringBuffer sb = new StringBuffer(80);
 	//TODO: add user-defined copyright
-	if (VERBOSE_DOCS) sb.append("// FILE: ").append(pathname.replace('\\', '/')).append("\n\n");
+	if (VERBOSE_DOCS) {
+	    sb.append("// FILE: ").append(pathname.replace('\\', '/'));
+	    sb.append("\n\n");
+	}
 	return sb.toString();
     }
 
@@ -477,19 +522,23 @@ public class GeneratorCpp extends Generator
      * as each language has its own syntax to incorporate other elements
      * the command for this inclusion is created in a seperate function
      */
-    private String generateHeaderImportLine4Item( MModelElement cls_depend )
+    private String generateHeaderImportLine4Item(MModelElement clsDepend)
     {
-	// cat.info("generateHeaderImportLine4Item: fuer Item " + cls_depend.getName() + " in Namespace: " + cls_depend.getNamespace().getName() );
+	// cat.info("generateHeaderImportLine4Item: fuer Item " +
+	// clsDepend.getName() + " in Namespace: " +
+	// clsDepend.getNamespace().getName());
 	StringBuffer sb = new StringBuffer(80);
-	String packagePath = cls_depend.getName();
-	MNamespace parent = cls_depend.getNamespace().getNamespace();
-	if ( parent != null ) {
-	    packagePath = cls_depend.getNamespace().getName() + "/" + packagePath;
+	String packagePath = clsDepend.getName();
+	MNamespace parent = clsDepend.getNamespace().getNamespace();
+	if (parent != null) {
+	    packagePath =
+		clsDepend.getNamespace().getName() + "/" + packagePath;
 	    while (parent != null) {
 		// ommit root package name; it's the model's root
 		if (parent.getNamespace() != null)
 		    packagePath = parent.getName() + "/" + packagePath;
-	    	// cat.info("generateHeaderImportLine4Item: Runde mit Parent" + parent.getName() );
+	    	// cat.info("generateHeaderImportLine4Item: Runde mit
+	    	// Parent" + parent.getName());
     		parent = parent.getNamespace();
 	    }
 	}
@@ -499,86 +548,90 @@ public class GeneratorCpp extends Generator
 	// to access the single elements
 	StringTokenizer st = new StringTokenizer(packagePath, ", ");
 	while (st.hasMoreTokens()) {
-	    sb.append( "#include <" )
-		.append( st.nextToken() )
-		.append( ".h>\n" );
+	    sb.append("#include <").append(st.nextToken()).append(".h>\n");
 	}
 	return sb.toString();
     }
 
-    private boolean checkInclude4UsageIndirection( boolean isIndirect, String usage_tag) {
+    private boolean checkInclude4UsageIndirection(boolean isIndirect,
+						  String usageTag) {
 	boolean result = false;
 	/*
-	  if ( usage_tag.length() > 0 ) cat.info("usage tag " + usage_tag + " gefunden");
-	  if ( isIndirect ) cat.info("indirection tag gefunden");
-	  if ( GeneratorPass == header_pass ) cat.info("Header pass");
+	  if (usageTag.length() > 0)
+	      cat.info("usage tag " + usageTag + " gefunden");
+	  if (isIndirect) cat.info("indirection tag gefunden");
+	  if (generatorPass == header_pass) cat.info("Header pass");
 	*/
 
-	if (( GeneratorPass != header_pass ) && ( usage_tag.indexOf("source") != -1 ))
-	{ // generate include line for source .cpp pass only if
+	if ((generatorPass != header_pass)
+	    && (usageTag.indexOf("source") != -1)) {
+	    // generate include line for source .cpp pass only if
 	    // element has usage tag which specifies exclusive use in
 	    // source file
 	    result = true;
-	}
-	else if (( GeneratorPass == header_pass ) && ( usage_tag.indexOf("source") == -1 ))
-	{ // generate include line for header, if not specified as only accessed from .cpp
+	} else if ((generatorPass == header_pass)
+		   && (usageTag.indexOf("source") == -1)) {
+	    // generate include line for header, if not specified as
+	    // only accessed from .cpp
 	    result = true;
 	}
 
 	// only predeclare candidates can be ignored in include block of header
-	if (( GeneratorPass == header_pass ) && ( !isIndirect ) ) result = true;
+	if ((generatorPass == header_pass) && (!isIndirect)) result = true;
 
 	return result;
     }
 
-    private boolean checkIncludeNeeded4Element( MAssociation cls ) {
-	String usage_tag = "";
-	boolean result = false,
-	    predeclare_candidate = false;
+    private boolean checkIncludeNeeded4Element(MAssociation cls) {
+	String usageTag = "";
+	boolean result = false;
+	boolean predeclareCandidate = false;
 	Collection tValues = cls.getTaggedValues();
 	if (!tValues.isEmpty()) {
 	    Iterator iter = tValues.iterator();
 	    while (iter.hasNext()) {
 		MTaggedValue tv = (MTaggedValue) iter.next();
 		String tag = tv.getTag();
-		if (tag.equals("usage")) usage_tag = tv.getValue();
-		// cat.info("Tag fuer: " + cls.getName() + " mit Tag: " + tag + " mit Wert:" + tv.getValue() + ":");
+		if (tag.equals("usage")) usageTag = tv.getValue();
+		// cat.info("Tag fuer: " + cls.getName() + " mit Tag:
+		// " + tag + " mit Wert:" + tv.getValue() + ":");
 
 		if (tag.indexOf("ref") != -1 || tag.equals("&")
 		    || tag.indexOf("pointer") != -1 || tag.equals("*"))
-		    predeclare_candidate = true;
+		    predeclareCandidate = true;
 	    }
 	}
-	return checkInclude4UsageIndirection(predeclare_candidate, usage_tag);
+	return checkInclude4UsageIndirection(predeclareCandidate, usageTag);
     }
 
-    private boolean checkIncludeNeeded4Element( MDependency cls ) {
-	String usage_tag = "";
-	boolean result = false,
-	    predeclare_candidate = false;
+    private boolean checkIncludeNeeded4Element(MDependency cls) {
+	String usageTag = "";
+	boolean result = false;
+	boolean predeclareCandidate = false;
 	Collection tValues = cls.getTaggedValues();
 	if (!tValues.isEmpty()) {
 	    Iterator iter = tValues.iterator();
 	    while (iter.hasNext()) {
 		MTaggedValue tv = (MTaggedValue) iter.next();
 		String tag = tv.getTag();
-		if (tag.equals("usage")) usage_tag = tv.getValue();
-		// cat.info("Tag fuer: " + cls.getName() + " mit Tag: " + tag + " mit Wert:" + tv.getValue() + ":");
+		if (tag.equals("usage")) usageTag = tv.getValue();
+		// cat.info("Tag fuer: " + cls.getName() + " mit Tag:
+		// " + tag + " mit Wert:" + tv.getValue() + ":");
 
 		if (tag.indexOf("ref") != -1 || tag.equals("&")
 		    || tag.indexOf("pointer") != -1 || tag.equals("*"))
-		    predeclare_candidate = true;
+		    predeclareCandidate = true;
 	    }
 	}
-	return checkInclude4UsageIndirection(predeclare_candidate, usage_tag);
+	return checkInclude4UsageIndirection(predeclareCandidate, usageTag);
     }
-    private boolean checkIncludeNeeded4Element( MAttribute cls ) {
-	// cat.info("checkIncludeNeeded4Element: fuer Item" + cls );
+    private boolean checkIncludeNeeded4Element(MAttribute cls) {
+	// cat.info("checkIncludeNeeded4Element: fuer Item" + cls);
 	if (!(((MAttribute) cls).getType() instanceof MClass)) return false;
 
-	String usage_tag = "";
-	boolean result = false,
-	    predeclare_candidate = false;
+	String usageTag = "";
+	boolean result = false;
+	boolean predeclareCandidate = false;
 
 	Collection tValues = cls.getTaggedValues();
 	if (!tValues.isEmpty()) {
@@ -586,25 +639,26 @@ public class GeneratorCpp extends Generator
 	    while (iter.hasNext()) {
 		MTaggedValue tv = (MTaggedValue) iter.next();
 		String tag = tv.getTag();
-		if (tag.equals("usage")) usage_tag = tv.getValue();
-		// cat.info("Tag fuer: " + cls.getName() + " mit Tag: " + tag + " mit Wert:" + tv.getValue() + ":");
+		if (tag.equals("usage")) usageTag = tv.getValue();
+		// cat.info("Tag fuer: " + cls.getName() + " mit Tag:
+		// " + tag + " mit Wert:" + tv.getValue() + ":");
 
 		if (tag.indexOf("ref") != -1 || tag.equals("&")
 		    || tag.indexOf("pointer") != -1 || tag.equals("*"))
-		    predeclare_candidate = true;
+		    predeclareCandidate = true;
 	    }
 	}
-	return checkInclude4UsageIndirection(predeclare_candidate, usage_tag);
+	return checkInclude4UsageIndirection(predeclareCandidate, usageTag);
     }
 
     private String generateHeaderDependencies(MClassifier cls)
     {
-	StringBuffer sb = new StringBuffer(160),
-	    predeclare_statements = new StringBuffer(60);
+	StringBuffer sb = new StringBuffer(160);
+	StringBuffer predeclareStatements = new StringBuffer(60);
 
-	if ( GeneratorPass != header_pass )
+	if (generatorPass != header_pass)
 	{ // include header in .cpp
-	    sb.append( SINGLETON.generateHeaderImportLine4Item( (MClass) cls ) );
+	    sb.append(SINGLETON.generateHeaderImportLine4Item((MClass) cls));
 
 	    Collection tValues = cls.getTaggedValues();
 	    if (!tValues.isEmpty()) {
@@ -612,15 +666,18 @@ public class GeneratorCpp extends Generator
 		while (iter.hasNext()) {
 		    MTaggedValue tv = (MTaggedValue) iter.next();
 		    String tag = tv.getTag();
-		    if (tag.equals("source_incl") || tag.equals("source_include")) {
-			sb.append( "#include ").append(tv.getValue()).append("\n");
+		    if (tag.equals("source_incl")
+			|| tag.equals("source_include")) {
+			sb.append("#include ").append(tv.getValue());
+			sb.append("\n");
 		    }
 		}
 	    }
 	}
 	else {
-	    Collection baseClassList = getGeneralizationClassList(cls.getGeneralizations());
-	    sb.append( generateHeaderImportLine4ItemList( baseClassList ) );
+	    Collection baseClassList =
+		getGeneralizationClassList(cls.getGeneralizations());
+	    sb.append(generateHeaderImportLine4ItemList(baseClassList));
 
 	    Collection tValues = cls.getTaggedValues();
 	    if (!tValues.isEmpty()) {
@@ -628,8 +685,10 @@ public class GeneratorCpp extends Generator
 		while (iter.hasNext()) {
 		    MTaggedValue tv = (MTaggedValue) iter.next();
 		    String tag = tv.getTag();
-		    if (tag.equals("header_incl") || tag.equals("header_include")) {
-			sb.append( "#include ").append(tv.getValue()).append("\n");
+		    if (tag.equals("header_incl")
+			|| tag.equals("header_include")) {
+			sb.append("#include ").append(tv.getValue());
+			sb.append("\n");
 		    }
 		}
 	    }
@@ -637,7 +696,8 @@ public class GeneratorCpp extends Generator
 
 	// check if the class has dependencies
 	{
-	    Collection col = UmlHelper.getHelper().getCore().getAssociateEnds(cls);
+	    Collection col =
+		UmlHelper.getHelper().getCore().getAssociateEnds(cls);
 	    if (col != null) {
 		Iterator itr = col.iterator();
 		while (itr.hasNext()) {
@@ -647,15 +707,21 @@ public class GeneratorCpp extends Generator
 			String name = cls2.getName();
 			String name2 = cls.getName();
 			if (name != name2) {
-			    if ( checkIncludeNeeded4Element( ae.getAssociation() ) ) {
-				sb.append( SINGLETON.generateHeaderImportLine4Item( (MClass) cls2 ) );
+			    if (checkIncludeNeeded4Element(ae.getAssociation())) {
+				sb.append(SINGLETON.generateHeaderImportLine4Item((MClass) cls2));
 			    }
-			    else if ( GeneratorPass == header_pass ) {
-				// predeclare classes which are not directly used in header
-				// usefull for classes which are only used indirectly as pointer
-				// where no knowledge about internals of class are needed
-				predeclare_statements.append( generateHeaderPackageStart( cls2 ) )
-				    .append( "class " ).append( name ).append(";\n");
+			    else if (generatorPass == header_pass) {
+				// predeclare classes which are not
+				// directly used in header usefull for
+				// classes which are only used
+				// indirectly as pointer where no
+				// knowledge about internals of class
+				// are needed
+				predeclareStatements
+				    .append(generateHeaderPackageStart(cls2));
+				predeclareStatements
+				    .append("class ").append(name);
+				predeclareStatements.append(";\n");
 			    }
 			}
 		    }
@@ -667,21 +733,27 @@ public class GeneratorCpp extends Generator
 	    Collection col = UmlHelper.getHelper().getCore().getAttributes(cls);
 	    if (col != null) {
 		Iterator itr = col.iterator();
-    		// cat.info("Attribut gefunden" );
+    		// cat.info("Attribut gefunden");
 		while (itr.hasNext()) {
 		    MAttribute attr = (MAttribute) itr.next();
-		    // cat.info("untersuche name " + attr.getName() + " mit Typ: " + attr.getType() );
-		    if (attr.getType() instanceof MClass ) {
+		    // cat.info("untersuche name " + attr.getName() +
+		    // " mit Typ: " + attr.getType());
+		    if (attr.getType() instanceof MClass) {
 			String name = attr.getName();
-			if ( checkIncludeNeeded4Element( attr ) ) {
-			    sb.append( SINGLETON.generateHeaderImportLine4Item( (MClass) attr.getType() ) );
+			if (checkIncludeNeeded4Element(attr)) {
+			    sb.append(SINGLETON.generateHeaderImportLine4Item(
+                                          (MClass) attr.getType()));
 			}
-			else if ( GeneratorPass == header_pass ) {
-			    // predeclare classes which are not directly used in header
-			    // usefull for classes which are only used indirectly as pointer
-			    // where no knowledge about internals of class are needed
-			    predeclare_statements.append( generateHeaderPackageStart( attr.getType() ) )
-				.append( "class " ).append( name ).append(";\n");
+			else if (generatorPass == header_pass) {
+			    // predeclare classes which are not
+			    // directly used in header usefull for
+			    // classes which are only used indirectly
+			    // as pointer where no knowledge about
+			    // internals of class are needed
+			    predeclareStatements
+				.append(generateHeaderPackageStart(
+                                     attr.getType()))
+				.append("class ").append(name).append(";\n");
 			}
 		    }
 		}
@@ -695,200 +767,237 @@ public class GeneratorCpp extends Generator
 		Iterator itr = col.iterator();
 		while (itr.hasNext()) {
 		    MDependency dep = (MDependency) itr.next();
-		    if ( dep == null ) break;
-		    Collection clients_col = dep.getSuppliers();
-		    if ( clients_col == null ) break;
-		    Iterator itr2 = clients_col.iterator();
+		    if (dep == null) break;
+		    Collection clientsCol = dep.getSuppliers();
+		    if (clientsCol == null) break;
+		    Iterator itr2 = clientsCol.iterator();
 		    MClassifier temp;
 		    while (itr2.hasNext()) {
 			temp = (MClassifier) itr2.next();
-			if ( checkIncludeNeeded4Element( dep ) ) {
-			    sb.append( SINGLETON.generateHeaderImportLine4Item( temp ) );
+			if (checkIncludeNeeded4Element(dep)) {
+			    sb.append(SINGLETON.generateHeaderImportLine4Item(temp));
 			}
-			else if ( GeneratorPass == header_pass ) {
-			    // predeclare classes which are not directly used in header
-			    // usefull for classes which are only used indirectly as pointer
-			    // where no knowledge about internals of class are needed
-			    predeclare_statements.append( generateHeaderPackageStart( temp ) )
-				.append( "class " ).append( temp.getName() ).append(";\n");
+			else if (generatorPass == header_pass) {
+			    // predeclare classes which are not
+			    // directly used in header usefull for
+			    // classes which are only used indirectly
+			    // as pointer where no knowledge about
+			    // internals of class are needed
+			    predeclareStatements
+				.append(generateHeaderPackageStart(temp));
+			    predeclareStatements.append("class ");
+			    predeclareStatements.append(temp.getName());
+			    predeclareStatements.append(";\n");
 			}
 		    }
 		}
 	    }
 	}
 
-	if ( predeclare_statements.toString().length() > 0 ) {
-	    sb.append("\n\n").append(predeclare_statements.toString());
+	if (predeclareStatements.toString().length() > 0) {
+	    sb.append("\n\n").append(predeclareStatements.toString());
 	}
 	return sb.toString();
     }
 
-    private String generateHeaderPackageStartSingle( MNamespace pkg )
+    private String generateHeaderPackageStartSingle(MNamespace pkg)
     {
-	// cat.info("generateHeaderPackageStartSingle: " + pkg.getName() );
+	// cat.info("generateHeaderPackageStartSingle: " + pkg.getName());
 	StringBuffer sb = new StringBuffer(30);
 	StringTokenizer st = new StringTokenizer(pkg.getName(), ".");
 	String token = "";
 
-	sb.append( generateTaggedValues(pkg, DocCommentTags) );
-	while ( st.hasMoreTokens() ) {
+	sb.append(generateTaggedValues(pkg, DocCommentTags));
+	while (st.hasMoreTokens()) {
 	    token = st.nextToken();
 	    // create line: namespace FOO {"
-	    sb.append( "namespace " )
-		.append( token )
-		.append( " {\n" );
+	    sb.append("namespace ").append(token).append(" {\n");
 	}
 	return sb.toString();
     }
 
-    private String generateHeaderPackageEndSingle( MNamespace pkg )
+    private String generateHeaderPackageEndSingle(MNamespace pkg)
     {
-	// cat.info("generateHeaderPackageEndSingle: " + pkg.getName() );
+	// cat.info("generateHeaderPackageEndSingle: " + pkg.getName());
 	StringBuffer sb = new StringBuffer(30);
 	StringTokenizer st = new StringTokenizer(pkg.getName(), ".");
 	String token = "";
-	while ( st.hasMoreTokens() ) {
+	while (st.hasMoreTokens()) {
 	    token = st.nextToken();
-	    StringBuffer temp_buf = new StringBuffer(20);
-	    String absolute_name = generatePackageAbsoluteName(pkg);
-	    if ( absolute_name.indexOf( token ) != -1 )
+	    StringBuffer tempBuf = new StringBuffer(20);
+	    String absoluteName = generatePackageAbsoluteName(pkg);
+	    if (absoluteName.indexOf(token) != -1)
 	    {
-		absolute_name = absolute_name.substring(0, (absolute_name.indexOf( token ) + token.length() ) );
+		absoluteName =
+		    absoluteName.substring(0,
+					   (absoluteName.indexOf(token)
+					    + token.length()));
 	    }
 
 	    // create line: namespace FOO {"
-	    temp_buf.append( "} /* End of namespace ")
-		.append( absolute_name )
-		.append( " */\n");
-	    sb.insert( 0, temp_buf.toString() );
+	    tempBuf.append("} /* End of namespace ").append(absoluteName);
+	    tempBuf.append(" */\n");
+	    sb.insert(0, tempBuf.toString());
 	}
 	return sb.toString();
     }
 
-    private String generatePackageAbsoluteName( MNamespace pkg )
+    private String generatePackageAbsoluteName(MNamespace pkg)
     {
-	// cat.info("generatePackageAbsoluteName: " + pkg.getName() );
+	// cat.info("generatePackageAbsoluteName: " + pkg.getName());
 	StringBuffer sb = new StringBuffer(30);
 	String token = "";
-	for ( MNamespace actual = pkg; actual != null; actual = actual.getNamespace() )
-	{
+	for (MNamespace actual = pkg;
+	     actual != null;
+	     actual = actual.getNamespace()) {
 	    StringTokenizer st = new StringTokenizer(actual.getName(), ".");
-	    StringBuffer temp_buf = new StringBuffer(20);
-	    while ( st.hasMoreTokens() ) {
+	    StringBuffer tempBuf = new StringBuffer(20);
+	    while (st.hasMoreTokens()) {
 		token = st.nextToken();
-		if ( temp_buf.length() > 0) temp_buf.append( "::" );
-		temp_buf.append( token );
+		if (tempBuf.length() > 0) tempBuf.append("::");
+		tempBuf.append(token);
 	    }
-	    if (( temp_buf.length() > 0) && (sb.length() > 0 )) temp_buf.append( "::" );
-	    sb.insert( 0, temp_buf.toString() );
+	    if ((tempBuf.length() > 0) && (sb.length() > 0)) {
+		tempBuf.append("::");
+	    }
+	    sb.insert(0, tempBuf.toString());
 	}
 	return sb.toString();
     }
 
-    private String generateNameWithPkgSelection( MModelElement item, MNamespace local_pkg ) {
-	if ( item == null ) {
-	    // cat.info("generateNameWithPkgSelection: zu void" );
+    private String generateNameWithPkgSelection(MModelElement item,
+						MNamespace localPkg) {
+	if (item == null) {
+	    // cat.info("generateNameWithPkgSelection: zu void");
 	    return "void ";
 	}
-	// cat.info("generateNameWithPkgSelection: " + item.getName() );
+	// cat.info("generateNameWithPkgSelection: " + item.getName());
 	MNamespace pkg = null;
-	if ( item instanceof MDataType ) return generateName( item.getName() );
-	else if ( item instanceof MParameter ) pkg = ((MParameter) item).getNamespace();
-	else if ( item instanceof MAttribute ) pkg = ((MAttribute) item).getNamespace();
-	else if ( item instanceof MAssociationEnd ) pkg = ((MAssociationEnd) item).getNamespace();
-	else if ( item instanceof MClassifier ) pkg = ((MClassifier) item).getNamespace();
+	if (item instanceof MDataType) {
+	    return generateName(item.getName());
+	} else if (item instanceof MParameter) {
+	    pkg = ((MParameter) item).getNamespace();
+	} else if (item instanceof MAttribute) {
+	    pkg = ((MAttribute) item).getNamespace();
+	} else if (item instanceof MAssociationEnd) {
+	    pkg = ((MAssociationEnd) item).getNamespace();
+	} else if (item instanceof MClassifier) {
+	    pkg = ((MClassifier) item).getNamespace();
+	}
 
-	if ( pkg == null ) return generateName( item.getName() );
-	if (local_pkg == null )
-	    cat.info("LOCAL NAMESPACE IS NULL" );
+	if (pkg == null) {
+	    return generateName(item.getName());
+	}
+	if (localPkg == null) {
+	    LOG.info("LOCAL NAMESPACE IS NULL");
+	}
 
-	String localPkgName = generatePackageAbsoluteName( local_pkg );
-	String targetPkgName = generatePackageAbsoluteName( pkg );
-	// cat.info("targetNamespace:" + targetPkgName + ":" );
-	// cat.info("localNamespace:" + localPkgName + ":" );
+	String localPkgName = generatePackageAbsoluteName(localPkg);
+	String targetPkgName = generatePackageAbsoluteName(pkg);
+	// cat.info("targetNamespace:" + targetPkgName + ":");
+	// cat.info("localNamespace:" + localPkgName + ":");
 	int localPkgNameLen = localPkgName.length();
 	int targetPkgNameLen = targetPkgName.length();
-	if ( localPkgName.equals( targetPkgName ) ) return generateName( item.getName() );
-	else {
-	    if ( targetPkgName.indexOf( localPkgName ) != -1 ) {
+	if (localPkgName.equals(targetPkgName)) {
+	    return generateName(item.getName());
+	} else {
+	    if (targetPkgName.indexOf(localPkgName) != -1) {
 		/*
-		  cat.info("target is subpackage of local with |"
-		  + targetPkgName.substring(localPkgNameLen, localPkgNameLen+2 ) + "|");
+		  cat.info("target is subpackage of local with |" +
+		  targetPkgName.substring(localPkgNameLen,
+		  localPkgNameLen+2) + "|");
 		*/
-		if (targetPkgName.substring(localPkgNameLen, localPkgNameLen + 2 ).equals("::")) {
+		if (targetPkgName.substring(localPkgNameLen,
+					    localPkgNameLen + 2)
+		    .equals("::")) {
 		    // target is in Sub-Package of local class
-		    return (targetPkgName.substring(localPkgNameLen + 2, targetPkgNameLen ) + "::" + generateName( item.getName() ));
+		    return (targetPkgName.substring(localPkgNameLen + 2,
+						    targetPkgNameLen)
+			    + "::"
+			    + generateName(item.getName()));
 		}
 	    }
 	}
-	return ( targetPkgName + "::" + generateName( item.getName() ));
+	return (targetPkgName + "::" + generateName(item.getName()));
     }
 
-    private String generateNameWithPkgSelection( MModelElement item ) {
-	return generateNameWithPkgSelection( item, ActualNamespace );
+    private String generateNameWithPkgSelection(MModelElement item) {
+	return generateNameWithPkgSelection(item, actualNamespace);
     }
 
     private String generateHeaderPackageStart(MClassifier cls)
     {
-	// cat.info("generateHeaderPackageStart: " + cls.getName() + " aus Namespace: " + cls.getNamespace().getName() );
+	// cat.info("generateHeaderPackageStart: " + cls.getName() + "
+	// aus Namespace: " + cls.getNamespace().getName());
 	StringBuffer sb = new StringBuffer(80);
 
-	if ( ActualNamespace != null )
+	if (actualNamespace != null)
 	{
-	    for ( MNamespace FromSearch = ActualNamespace; FromSearch != null; FromSearch = FromSearch.getNamespace() )
+	    for (MNamespace fromSearch = actualNamespace;
+		 fromSearch != null;
+		 fromSearch = fromSearch.getNamespace())
 	    {
-		// cat.info("FromSearch: " + FromSearch.getName() );
-		StringBuffer ContPath = new StringBuffer(80);
-		MNamespace ToSearch = cls.getNamespace();
-		for (; ((ToSearch != null) && (ToSearch != FromSearch)); ToSearch = ToSearch.getNamespace() )
+		// cat.info("fromSearch: " + fromSearch.getName());
+		StringBuffer contPath = new StringBuffer(80);
+		MNamespace toSearch = cls.getNamespace();
+		for (;
+		     (toSearch != null) && (toSearch != fromSearch);
+		     toSearch = toSearch.getNamespace())
 		{
-		    // cat.info("ToSearch: " + ToSearch.getName() );
-		    ContPath.insert(0, generateHeaderPackageStartSingle( ToSearch ));
+		    // cat.info("toSearch: " + toSearch.getName());
+		    contPath.insert(0,
+				    generateHeaderPackageStartSingle(toSearch));
 		}
-		if ( ToSearch == FromSearch)
+		if (toSearch == fromSearch)
 		{
-		    sb.append( ContPath.toString() );
+		    sb.append(contPath.toString());
 		    break;
 		}
 		else {
 		    // close one namespace
-		    sb.append( generateHeaderPackageEndSingle( FromSearch ) );
+		    sb.append(generateHeaderPackageEndSingle(fromSearch));
 		}
 	    }
 	}
 	else { // initial start
-	    for ( MNamespace ToSearch = cls.getNamespace(); (ToSearch != null); ToSearch = ToSearch.getNamespace() )
+	    for (MNamespace toSearch = cls.getNamespace();
+		 toSearch != null;
+		 toSearch = toSearch.getNamespace())
 	    {
-		sb.insert(0, generateHeaderPackageStartSingle( ToSearch ));
+		sb.insert(0, generateHeaderPackageStartSingle(toSearch));
 	    }
 	}
-	if ( sb.length() > 0) sb.insert(0, "\n").append("\n");
-	ActualNamespace = cls.getNamespace();
+	if (sb.length() > 0) sb.insert(0, "\n").append("\n");
+	actualNamespace = cls.getNamespace();
 	return sb.toString();
     }
 
     private String generateHeaderPackageEnd() {
 	StringBuffer sb = new StringBuffer(20);
 
-	for ( MNamespace CloseIt = ActualNamespace; CloseIt != null; CloseIt = CloseIt.getNamespace() )
+	for (MNamespace closeIt = actualNamespace;
+	     closeIt != null;
+	     closeIt = closeIt.getNamespace())
 	{
-	    sb.append( generateHeaderPackageEndSingle( CloseIt ) );
+	    sb.append(generateHeaderPackageEndSingle(closeIt));
 	}
-	ActualNamespace = null;
-	if ( sb.length() > 0) sb.insert(0, "\n").append("\n");
+	actualNamespace = null;
+	if (sb.length() > 0) sb.insert(0, "\n").append("\n");
 	return sb.toString();
     }
 
-    public String generateHeader(MClassifier cls, String pathname, String packagePath) {
+    public String generateHeader(MClassifier cls,
+				 String pathname,
+				 String packagePath) {
 	StringBuffer sb = new StringBuffer(240);
 
 	// check if the class has a base class
-	sb.append( SINGLETON.generateHeaderDependencies( cls ) );
+	sb.append(SINGLETON.generateHeaderDependencies(cls));
 
-	sb.append( "\n" );
+	sb.append("\n");
 
 	if (packagePath.length() > 0) {
-	    sb.append( SINGLETON.generateHeaderPackageStart( cls ) );
+	    sb.append(SINGLETON.generateHeaderPackageStart(cls));
 	}
 
 	return sb.toString();
@@ -921,13 +1030,20 @@ public class GeneratorCpp extends Generator
     private String generateOperationPrefix(MOperation op) {
 	StringBuffer sb = new StringBuffer(80);
 	sb.append(generateConcurrency(op));
-	if ( GeneratorPass == header_pass ) {
+	if (generatorPass == header_pass) {
 	    // make all operations to virtual - as long as they are not "leaf"
 	    MScopeKind scope = op.getOwnerScope();
-	    // generate a function as virtual, if it can be overriden or override another function AND if
-	    // this function is not marked as static, which disallows "virtual"
-	    // alternatively every abstract function is defined as virtual
-	    if ( ( !op.isLeaf() && !op.isRoot() && (!(MScopeKind.CLASSIFIER.equals(scope))) ) || ( op.isAbstract() ) ) sb.append( "virtual " );
+	    // generate a function as virtual, if it can be overriden
+	    // or override another function AND if this function is
+	    // not marked as static, which disallows "virtual"
+	    // alternatively every abstract function is defined as
+	    // virtual
+	    if ((!op.isLeaf()
+		 && !op.isRoot()
+		 && (!(MScopeKind.CLASSIFIER.equals(scope))))
+		|| (op.isAbstract())) {
+		sb.append("virtual ");
+	    }
 	    sb.append(generateScope(op));
 	}
 	return sb.toString();
@@ -949,59 +1065,67 @@ public class GeneratorCpp extends Generator
      * so that generateOperation is language independent
      * -> for C++: if we create .cpp we must prepend Owner name
      */
-    private boolean generateOperationNameAndTestForConstructor(MOperation op, StringBuffer nameStr)
+    private boolean generateOperationNameAndTestForConstructor(MOperation op,
+							       StringBuffer nameStr)
     {
-	// cat.info("generate Operation for File" + GeneratorPass + " fuer Op: " + op.getName() );
-	if ( GeneratorPass != header_pass )
+	// cat.info("generate Operation for File" + generatorPass + "
+	// fuer Op: " + op.getName());
+	if (generatorPass != header_pass)
 	{
 	    // cat.info("generate Operation for CPP File");
-	    nameStr.append( op.getOwner().getName() )
-		.append( "::" );
+	    nameStr.append(op.getOwner().getName())
+		.append("::");
 	}
 	boolean constructor = false;
 	MStereotype stereo = op.getStereotype();
-	if (stereo != null && stereo.getName().equals("create")) { // constructor
-	    nameStr.append( generateName (op.getOwner().getName()) );
+	if (stereo != null && stereo.getName().equals("create")) {
+	    // constructor
+	    nameStr.append(generateName (op.getOwner().getName()));
 	    constructor = true;
 	} else {
-	    // cat.info("generate Operation for File" + GeneratorPass + " fuer Op: " + op.getName() );
-	    nameStr.append( generateName (op.getName()) );
+	    // cat.info("generate Operation for File" + generatorPass
+	    // + " fuer Op: " + op.getName());
+	    nameStr.append(generateName (op.getName()));
 	}
 	return constructor;
     }
 
     /** 2002-11-28 Achim Spangler
      * modified version from Jaap Branderhorst
-     * -> generateOperation is language independent and seperates different tasks
+     * -> generateOperation is language independent and seperates
+     *    different tasks
      */
     public String generateOperation(MOperation op, boolean documented) {
 	// generate nothing for abstract functions, if we generate the
 	// source .cpp file at the moment
-	if ( ( GeneratorPass != header_pass ) && ( op.isAbstract() ) ) return "";
+	if ((generatorPass != header_pass) && (op.isAbstract())) {
+	    return "";
+	}
 	StringBuffer sb = new StringBuffer(80);
 	StringBuffer nameBuffer = new StringBuffer(20);
-	String OperationIndent = (GeneratorPass == header_pass ) ? INDENT : "";
-	// cat.info("generate Operation for File" + GeneratorPass + " fuer Op: " + op.getName() );
-	boolean constructor = SINGLETON.generateOperationNameAndTestForConstructor( op, nameBuffer );
+	String operationIndent = (generatorPass == header_pass) ? INDENT : "";
+	// cat.info("generate Operation for File" + generatorPass + "
+	// fuer Op: " + op.getName());
+	boolean constructor =
+	    SINGLETON.generateOperationNameAndTestForConstructor(op,
+								 nameBuffer);
 
 	sb.append('\n'); // begin with a blank line
 	// generate DocComment from tagged values
 	String tv = generateTaggedValues (op, DocCommentTags);
 	if (tv != null && tv.length() > 0) {
-	    sb.append ("\n")
-		.append (OperationIndent)
-		.append (tv);
+	    sb.append ("\n").append(operationIndent).append (tv);
 	}
 
 	// 2002-07-14
 	// Jaap Branderhorst
 	// missing concurrency generation
-	sb.append(OperationIndent)
-	    .append( SINGLETON.generateOperationPrefix( op ) );
+	sb.append(operationIndent)
+	    .append(SINGLETON.generateOperationPrefix(op));
 
 	// pick out return type
 	MParameter rp = UmlHelper.getHelper().getCore().getReturnParameter(op);
-	if ( rp != null) {
+	if (rp != null) {
 	    MClassifier returnType = rp.getType();
 	    if (returnType == null && !constructor) {
 		sb.append("void ");
@@ -1031,19 +1155,21 @@ public class GeneratorCpp extends Generator
 	}
 
 	sb.append(") ")
-	    .append( SINGLETON.generateOperationSuffix( op ) );
+	    .append(SINGLETON.generateOperationSuffix(op));
 
 	return sb.toString();
 
     }
 
     /** 2002-12-06 Achim Spangler
-     * check if a parameter is tagged as pointer or reference (not part of UML - as far
-     * as author knows - but important for C++ developers)
+     * check if a parameter is tagged as pointer or reference (not
+     * part of UML - as far as author knows - but important for C++
+     * developers)
      * @param elem element to check
      * @param tag_type tag type to check
      */
-    private boolean checkAttributeParameter4Tag(MModelElement elem, int tag_type) {
+    private boolean checkAttributeParameter4Tag(MModelElement elem,
+						int tagType) {
 	// first check whether the parameter shall be a pointer of reference
   	Collection tValues = elem.getTaggedValues();
   	if (!tValues.isEmpty()) {
@@ -1052,9 +1178,12 @@ public class GeneratorCpp extends Generator
 		MTaggedValue tv = (MTaggedValue) iter.next();
 		String tag = tv.getTag();
 		if ((tag.indexOf("ref") != -1 || tag.equals("&"))
-		    && (tag_type != SearchPointerTag)) return true;
-		else if ((tag.indexOf("pointer") != -1 || tag.equals("*"))
-			 && (tag_type != SearchReferenceTag)) return true;
+		    && (tagType != SearchPointerTag)) {
+		    return true;
+		} else if ((tag.indexOf("pointer") != -1 || tag.equals("*"))
+			   && (tagType != SearchReferenceTag)) {
+		    return true;
+		}
 	    }
 	}
 	return false;
@@ -1062,16 +1191,18 @@ public class GeneratorCpp extends Generator
 
 
     private String generateAttributeParameterModifier(MModelElement attr) {
-	boolean isReference = checkAttributeParameter4Tag( attr, SearchReferenceTag),
-	    isPointer = checkAttributeParameter4Tag( attr, SearchPointerTag);
+	boolean isReference =
+	    checkAttributeParameter4Tag(attr, SearchReferenceTag);
+	boolean isPointer = checkAttributeParameter4Tag(attr, SearchPointerTag);
 	StringBuffer sb = new StringBuffer(2);
 
-	if ( isReference ) sb.append("&");
-	else if ( isPointer ) sb.append("*");
-	else if ( attr instanceof MParameter ) {
-	    if ((( ((MParameter) attr).getKind()).equals(MParameterDirectionKind.OUT))
-		|| (( ((MParameter) attr).getKind()).equals(MParameterDirectionKind.INOUT)))
-	    { // out or inout parameters are defaulted to reference if not specified else
+	if (isReference) sb.append("&");
+	else if (isPointer) sb.append("*");
+	else if (attr instanceof MParameter) {
+	    if (((((MParameter) attr).getKind()).equals(MParameterDirectionKind.OUT))
+		|| ((((MParameter) attr).getKind()).equals(MParameterDirectionKind.INOUT)))
+	    { // out or inout parameters are defaulted to reference if
+	      // not specified else
 		sb.append("&");
 	    }
 	}
@@ -1086,9 +1217,7 @@ public class GeneratorCpp extends Generator
 	// list tagged values for documentation
 	String tv = generateTaggedValues (attr, DocCommentTags);
 	if (tv != null && tv.length() > 0) {
-	    sb.append ("\n")
-		.append (INDENT)
-		.append (tv);
+	    sb.append ("\n").append (INDENT).append (tv);
 	}
 
 
@@ -1100,8 +1229,8 @@ public class GeneratorCpp extends Generator
 	/*
          * 2002-07-14
          * Jaap Branderhorst
-         * Generating the multiplicity should not lead to putting the range in the generated code
-         * (no 0..1 as modifier)
+         * Generating the multiplicity should not lead to putting the
+         * range in the generated code (no 0..1 as modifier)
          * Therefore removed the multiplicity generation
          * START OLD CODE
 
@@ -1117,7 +1246,8 @@ public class GeneratorCpp extends Generator
 	  MClassifier type = attr.getType();
 	  MMultiplicity multi = attr.getMultiplicity();
 	  // handle multiplicity here since we need the type
-	  // actually the API of generator is buggy since to generate multiplicity correctly we need the attribute too
+	  // actually the API of generator is buggy since to generate
+	  // multiplicity correctly we need the attribute too
 	  if (type != null && multi != null) {
 	  if (multi.equals(MMultiplicity.M1_1)) {
 	  sb.append(generateClassifierRef(type)).append(' ');
@@ -1128,11 +1258,13 @@ public class GeneratorCpp extends Generator
 	  sb.append("java.util.Vector ");
 	  }
 
-	  sb.append( generateAttributeParameterModifier(attr));
+	  sb.append(generateAttributeParameterModifier(attr));
 	  sb.append(generateName(attr.getName()));
 	*/
-	sb.append( generateMultiplicity(attr, generateName(attr.getName()),
-					attr.getMultiplicity(), generateAttributeParameterModifier(attr)));
+	sb.append(generateMultiplicity(attr,
+				       generateName(attr.getName()),
+				       attr.getMultiplicity(),
+				       generateAttributeParameterModifier(attr)));
 	MExpression init = attr.getInitialValue();
 	if (init != null) {
 	    String initStr = generateExpression(init).trim();
@@ -1152,15 +1284,16 @@ public class GeneratorCpp extends Generator
 	// generate const for references or pointers which are
 	// defined as IN - other qualifiers are not important for
 	// C++ parameters
-	sb.append(generateChangeability( param ));
+	sb.append(generateChangeability(param));
 	//TODO: stereotypes...
 	sb.append(generateNameWithPkgSelection(param.getType())).append(' ');
-	sb.append( generateAttributeParameterModifier(param));
+	sb.append(generateAttributeParameterModifier(param));
 	sb.append(generateName(param.getName()));
 
 	// insert default value, if we are generating the header
-	if (( GeneratorPass == header_pass ) && (param.getDefaultValue() != null)) {
-	    sb.append(" = ").append( param.getDefaultValue() );
+	if ((generatorPass == header_pass)
+	    && (param.getDefaultValue() != null)) {
+	    sb.append(" = ").append(param.getDefaultValue());
 	}
 
 	return sb.toString();
@@ -1203,13 +1336,13 @@ public class GeneratorCpp extends Generator
 	StringBuffer sb = new StringBuffer (80);
 
 	// don't create class-Start for implementation in .cpp
-	if ( GeneratorPass != header_pass ) return sb;
+	if (generatorPass != header_pass) return sb;
 
 	String sClassifierKeyword;
 	if (cls instanceof MClass) sClassifierKeyword = "class";
 	else if (cls instanceof MInterface) sClassifierKeyword = "interface";
 	else return null; // actors, use cases etc.
-	boolean has_bas_class = false;
+	boolean hasBaseClass = false;
 
 	// Add the comments for this classifier first.
 	sb.append ('\n')
@@ -1218,9 +1351,7 @@ public class GeneratorCpp extends Generator
 	// list tagged values for documentation
 	String tv = generateTaggedValues (cls, DocCommentTags);
 	if (tv != null && tv.length() > 0) {
-	    sb.append ("\n")
-		.append (INDENT)
-		.append (tv);
+	    sb.append ("\n").append (INDENT).append (tv);
 	}
 
 	// Now add visibility
@@ -1236,16 +1367,15 @@ public class GeneratorCpp extends Generator
 	}
 
 	// add classifier keyword and classifier name
-	sb.append (sClassifierKeyword)
-	    .append(" ")
-	    .append (generateName (cls.getName()));
+	sb.append(sClassifierKeyword).append(" ");
+	sb.append(generateName (cls.getName()));
 
 	// add base class/interface
 	String baseClass = generateGeneralization (cls.getGeneralizations());
 	if (!baseClass.equals ("")) {
 	    sb.append (" : ")
 		.append (baseClass);
-	    has_bas_class = true;
+	    hasBaseClass = true;
 	}
 
 	// add implemented interfaces, if needed
@@ -1253,8 +1383,8 @@ public class GeneratorCpp extends Generator
 	if (cls instanceof MClass) {
 	    String interfaces = generateSpecification ((MClass) cls);
 	    if (!interfaces.equals ("")) {
-		if ( !has_bas_class ) sb.append (" : ");
-		else sb.append ( ", " );
+		if (!hasBaseClass) sb.append (" : ");
+		else sb.append (", ");
 		sb.append (interfaces);
 	    }
 	}
@@ -1265,19 +1395,17 @@ public class GeneratorCpp extends Generator
 	// list tagged values for documentation
 	tv = generateTaggedValues (cls, AllButDocTags);
 	if (tv != null && tv.length() > 0) {
-	    sb.append ("\n")
-		.append (INDENT)
-		.append (tv);
+	    sb.append("\n").append (INDENT).append (tv);
 	}
 
 	return sb;
     }
-    protected StringBuffer generateClassifierEnd(MClassifier cls)
-    {
+
+    protected StringBuffer generateClassifierEnd(MClassifier cls) {
 	StringBuffer sb = new StringBuffer();
 	if (cls instanceof MClass || cls instanceof MInterface)
 	{
-	    if ( (_verboseDocs) && ( GeneratorPass == header_pass ) )
+	    if ((_verboseDocs) && (generatorPass == header_pass))
 	    {
 		String classifierkeyword = null;
 		if (cls instanceof MClass)
@@ -1295,21 +1423,25 @@ public class GeneratorCpp extends Generator
 			  + cls.getName()
 			  + "\n");
 	    }
-	    if ( GeneratorPass == header_pass ) sb.append("};\n");
-	    sb.append( generateHeaderPackageEnd());
+	    if (generatorPass == header_pass) sb.append("};\n");
+	    sb.append(generateHeaderPackageEnd());
 	}
 	return sb;
     }
+
     /**
-     * Generates code for a classifier. In case of Java code is generated for classes and interfaces only at the moment.
-     * @see org.argouml.application.api.NotationProvider#generateClassifier(MClassifier)
+     * Generates code for a classifier. In case of Java code is
+     * generated for classes and interfaces only at the moment.
+     *
+     * @see org.argouml.application.api.NotationProvider#generateClassifier(
+     *          MClassifier)
      */
     public String generateClassifier(MClassifier cls)
     {
   	StringBuffer returnValue = new StringBuffer();
 	StringBuffer start = generateClassifierStart(cls);
-  	if (((start != null) && (start.length() > 0)) || ( GeneratorPass != header_pass ) )
-	{
+  	if (((start != null) && (start.length() > 0))
+	    || (generatorPass != header_pass)) {
 	    StringBuffer typedefs = generateGlobalTypedefs(cls);
 	    StringBuffer body = generateClassifierBody(cls);
 	    StringBuffer end = generateClassifierEnd(cls);
@@ -1332,26 +1464,40 @@ public class GeneratorCpp extends Generator
     /** 2002-12-12 Achim Spangler
      * generate global typedefs
      */
-    private StringBuffer generateGlobalTypedefs( MClassifier cls ) {
+    private StringBuffer generateGlobalTypedefs(MClassifier cls) {
   	StringBuffer sb = new StringBuffer();
-  	if (cls instanceof MClass || cls instanceof MInterface )
+  	if (cls instanceof MClass || cls instanceof MInterface)
 	{ // add typedefs
-	    if ( GeneratorPass == header_pass ) {
-		sb.append( "// global type definitions for header defined by Tag entries in ArgoUML\n" )
-		    .append( "// Result: typedef <typedef_global_header> <tag_value>;\n" );
-		Collection global_typedef_statements = findTagValues( cls, "typedef_global_header" );
-		if (!global_typedef_statements.isEmpty()) {
-		    Iterator typedef_enum = global_typedef_statements.iterator();
-		    while (typedef_enum.hasNext()) sb.append( "typedef " ).append( typedef_enum.next() ).append( ";\n" );
+	    if (generatorPass == header_pass) {
+		sb.append("// global type definitions for header defined "
+			  + "by Tag entries in ArgoUML\n");
+		sb.append("// Result: typedef <typedef_global_header> "
+			  + "<tag_value>;\n");
+		Collection globalTypedefStatements =
+		    findTagValues(cls, "typedef_global_header");
+		if (!globalTypedefStatements.isEmpty()) {
+		    Iterator typedefEnum =
+			globalTypedefStatements.iterator();
+		    while (typedefEnum.hasNext()) {
+			sb.append("typedef ").append(typedefEnum.next());
+			sb.append(";\n");
+		    }
 		}
 	    }
 	    else {
-		sb.append( "// global type definitions for class implementation in source file defined by Tag entries in ArgoUML\n" )
-		    .append( "// Result: typedef <typedef_global_source> <tag_value>;\n" );
-		Collection global_typedef_statements = findTagValues( cls, "typedef_global_source" );
-		if (!global_typedef_statements.isEmpty()) {
-		    Iterator typedef_enum = global_typedef_statements.iterator();
-		    while (typedef_enum.hasNext()) sb.append( "typedef " ).append( typedef_enum.next() ).append( ";\n" );
+		sb.append("// global type definitions for class implementation "
+			  + "in source file defined "
+			  + "by Tag entries in ArgoUML\n");
+		sb.append("// Result: typedef <typedef_global_source> "
+			  + "<tag_value>;\n");
+		Collection globalTypedefStatements =
+		    findTagValues(cls, "typedef_global_source");
+		if (!globalTypedefStatements.isEmpty()) {
+		    Iterator typedefEnum = globalTypedefStatements.iterator();
+		    while (typedefEnum.hasNext()) {
+			sb.append("typedef ").append(typedefEnum.next());
+			sb.append(";\n");
+		    }
 		}
 	    }
 	}
@@ -1363,10 +1509,11 @@ public class GeneratorCpp extends Generator
      * @param cls
      * @return StringBuffer
      */
-    private void generateClassifierBodyAttributes(MClassifier cls, StringBuffer sb)
+    private void generateClassifierBodyAttributes(MClassifier cls,
+						  StringBuffer sb)
     {
 	Collection strs = UmlHelper.getHelper().getCore().getAttributes(cls);
-	if (strs.isEmpty() || ( GeneratorPass != header_pass ) ) return;
+	if (strs.isEmpty() || (generatorPass != header_pass)) return;
    	String tv = null; // helper for tagged values
 	//
 	// 2002-06-08
@@ -1383,25 +1530,30 @@ public class GeneratorCpp extends Generator
 	}
 
 	// generate attributes in order public, protected, private
-	for ( int public_protected_private = public_part; public_protected_private <= private_part; public_protected_private++)
-	{
+	for (int i = 0; i < ALL_PARTS.length; i++) {
+	    int publicProtectedPrivate = ALL_PARTS[i];
+
 	    Iterator strEnum = strs.iterator();
 	    boolean isVisibilityLinePrinted = false;
 	    while (strEnum.hasNext())
 	    {
 		MStructuralFeature sf = (MStructuralFeature) strEnum.next();
 		MVisibilityKind vis = sf.getVisibility();
-		if ( ( ( public_protected_private == public_part ) && (MVisibilityKind.PUBLIC.equals(vis) ) )
-		     || ( ( public_protected_private == protected_part ) && (MVisibilityKind.PROTECTED.equals(vis) ) )
-		     || ( ( public_protected_private == private_part ) && (MVisibilityKind.PRIVATE.equals(vis) ) )
-		     )
-		{
-		    if ( !isVisibilityLinePrinted )
-		    {
+		if (((publicProtectedPrivate == PUBLIC_PART)
+		     && (MVisibilityKind.PUBLIC.equals(vis)))
+		    || ((publicProtectedPrivate == PROTECTED_PART)
+			&& (MVisibilityKind.PROTECTED.equals(vis)))
+		    || ((publicProtectedPrivate == PRIVATE_PART)
+			&& (MVisibilityKind.PRIVATE.equals(vis)))) {
+		    if (!isVisibilityLinePrinted) {
 			isVisibilityLinePrinted = true;
-			if ( public_protected_private == public_part ) sb.append( "\n public:" );
-			else if ( public_protected_private == protected_part ) sb.append( "\n protected:" );
-			else if ( public_protected_private == private_part ) sb.append( "\n private:" );
+			if (publicProtectedPrivate == PUBLIC_PART) {
+			    sb.append("\n public:");
+			} else if (publicProtectedPrivate == PROTECTED_PART) {
+			    sb.append("\n protected:");
+			} else if (publicProtectedPrivate == PRIVATE_PART) {
+			    sb.append("\n private:");
+			}
 		    }
 		    sb.append(generate((MAttribute) sf));
 
@@ -1420,10 +1572,11 @@ public class GeneratorCpp extends Generator
      * @param cls
      * @return StringBuffer
      */
-    private void generateClassifierBodyAssociations(MClassifier cls, StringBuffer sb)
+    private void generateClassifierBodyAssociations(MClassifier cls,
+						    StringBuffer sb)
     {
 	Collection ends = cls.getAssociationEnds();
-	if (ends.isEmpty() || ( GeneratorPass != header_pass ) ) return;
+	if (ends.isEmpty() || (generatorPass != header_pass)) return;
    	String tv = null; // helper for tagged values
 	// 2002-06-08
 	// Jaap Branderhorst
@@ -1438,8 +1591,8 @@ public class GeneratorCpp extends Generator
 	}
 
 	// generate attributes in order public, protected, private
-	for ( int public_protected_private = public_part; public_protected_private <= private_part; public_protected_private++)	
-	{
+	for (int i = 0; i < ALL_PARTS.length; i++) {
+	    int publicProtectedPrivate = ALL_PARTS[i];
 	    Iterator endEnum = ends.iterator();
 	    boolean isVisibilityLinePrinted = false;
 	    while (endEnum.hasNext())
@@ -1447,17 +1600,21 @@ public class GeneratorCpp extends Generator
 		MAssociationEnd ae = (MAssociationEnd) endEnum.next();
 		MAssociation a = ae.getAssociation();
 		MVisibilityKind vis = ae.getVisibility();
-		if ( ( ( public_protected_private == public_part ) && (MVisibilityKind.PUBLIC.equals(vis) ) )
-		     || ( ( public_protected_private == protected_part ) && (MVisibilityKind.PROTECTED.equals(vis) ) )
-		     || ( ( public_protected_private == private_part ) && (MVisibilityKind.PRIVATE.equals(vis) ) )
-		     )
-		{
-		    if ( !isVisibilityLinePrinted )
-		    {
+		if (((publicProtectedPrivate == PUBLIC_PART)
+		     && (MVisibilityKind.PUBLIC.equals(vis)))
+		    || ((publicProtectedPrivate == PROTECTED_PART)
+			&& (MVisibilityKind.PROTECTED.equals(vis)))
+		    || ((publicProtectedPrivate == PRIVATE_PART)
+			&& (MVisibilityKind.PRIVATE.equals(vis)))) {
+		    if (!isVisibilityLinePrinted) {
 			isVisibilityLinePrinted = true;
-			if ( public_protected_private == public_part ) sb.append( "\n public:" );
-			else if ( public_protected_private == protected_part ) sb.append( "\n protected:" );
-			else if ( public_protected_private == private_part ) sb.append( "\n private:" );
+			if (publicProtectedPrivate == PUBLIC_PART) {
+			    sb.append("\n public:");
+			} else if (publicProtectedPrivate == PROTECTED_PART) {
+			    sb.append("\n protected:");
+			} else if (publicProtectedPrivate == PRIVATE_PART) {
+			    sb.append("\n private:");
+			}
 		    }
 
 		    sb.append(generateAssociationFrom(a, ae));
@@ -1479,11 +1636,13 @@ public class GeneratorCpp extends Generator
      * as inline in header file
      * @return true -> generate body in actual path
      */
-    private boolean checkGenerateOperationBody(MOperation cls )
+    private boolean checkGenerateOperationBody(MOperation cls)
     {
-	boolean result = ( ( GeneratorPass == header_pass ) || (cls.isAbstract() ) ) ? false : true;
+	boolean result =
+	    !((generatorPass == header_pass) || (cls.isAbstract()));
 
-	// if this operation has Tag "inline" the method shall be generated in header
+	// if this operation has Tag "inline" the method shall be
+	// generated in header
 	Collection tValues = cls.getTaggedValues();
 	if (!tValues.isEmpty()) {
 	    Iterator iter = tValues.iterator();
@@ -1491,7 +1650,7 @@ public class GeneratorCpp extends Generator
 		MTaggedValue tv = (MTaggedValue) iter.next();
 		String tag = tv.getTag();
 		if (tag.equals("inline")) {
-		    result = ( GeneratorPass == header_pass ) ? true : false;
+		    result = (generatorPass == header_pass) ? true : false;
 		}
 	    }
 	}
@@ -1501,54 +1660,74 @@ public class GeneratorCpp extends Generator
     /** 2002-12-13 Achim Spangler
      * generate a single set function for a given attribute and StringBuffer
      */
-    private void generateSingleAttributeSet( MAttribute attr, StringBuffer sb ) {
-	if ( attr.getType() == null ) return;
-	// generate for attributes with class-type: "INDENT void set_<name>( const <type> &value ) { <name> = value; };"
-	// generate for other (small) data types: "INDENT void set_<name>( <type> value ) { <name> = value; };"
+    private void generateSingleAttributeSet(MAttribute attr, StringBuffer sb) {
+	if (attr.getType() == null) return;
+	// generate for attributes with class-type:
+	// "INDENT void set_<name>( const <type> &value ) { <name> = value; };"
+	// generate for other (small) data types:
+	// "INDENT void set_<name>( <type> value ) { <name> = value; };"
 	// generate: "INDENT void set_<name>( "
-	sb.append( '\n' ).append( INDENT ).append( "/** simple access function to set the attribute " ).append( attr.getName() )
-	    .append( " by function\n" ).append( INDENT ).append( "  * @param value value to set for the attribute " )
-	    .append( attr.getName() ).append( "\n" ).append( INDENT ).append( "  */\n" )
-	    .append( INDENT ).append( "void set_" ).append( attr.getName() ).append( "( " );
-	String modifier = generateAttributeParameterModifier( attr );
-	if ( modifier != null && modifier.length() > 0 ) // generate: "const <type> <modifier>value"
-	{
-	    if ( modifier.equals( "&" ) ) sb.append( "const " );
-	    sb.append( generateClassifierRef( attr.getType() ) )
-		.append( ' ' ).append( modifier ).append( "value" );
+	sb.append('\n').append(INDENT);
+	sb.append("/** simple access function to set the attribute ");
+	sb.append(attr.getName());
+	sb.append(" by function\n").append(INDENT);
+	sb.append("  * @param value value to set for the attribute ");
+	sb.append(attr.getName()).append("\n").append(INDENT).append("  */\n");
+	sb.append(INDENT);
+	sb.append("void set_").append(attr.getName()).append("( ");
+	String modifier = generateAttributeParameterModifier(attr);
+	if (modifier != null && modifier.length() > 0) {
+	    // generate: "const <type> <modifier>value"
+	    if (modifier.equals("&")) sb.append("const ");
+	    sb.append(generateClassifierRef(attr.getType()))
+		.append(' ').append(modifier).append("value");
 	}
-	else if ( attr.getType() instanceof MClass ) // generate: "const <type> &value"
-	    sb.append( "const " ).append( generateClassifierRef( attr.getType() ) ).append( " &value" );
-	else // generate: "<type> value"
-	    sb.append( generateClassifierRef( attr.getType() ) )
-		.append( " value" );
+	else if (attr.getType() instanceof MClass) {
+	    // generate: "const <type> &value"
+	    sb.append("const ").append(generateClassifierRef(attr.getType()));
+	    sb.append(" &value");
+	} else {
+	    // generate: "<type> value"
+	    sb.append(generateClassifierRef(attr.getType()))
+		.append(" value");
+	}
 	// generate: " ) { <name> = value; };"
-	sb.append( " ) { " ).append( attr.getName() ).append( " = value; };" );
+	sb.append(" ) { ").append(attr.getName()).append(" = value; };");
     }
 
     /** 2002-12-13 Achim Spangler
      * generate a single get function for a given attribute and StringBuffer
      */
-    private void generateSingleAttributeGet( MAttribute attr, StringBuffer sb ) {
-	if ( attr.getType() == null ) return;
-	// generate for attributes with class-type: "const <type>& get_<name>( void ) { return <name>; };"
-	// generate for other (small) data types: "<type> get_<name>( void ) { return <name>; };"
+    private void generateSingleAttributeGet(MAttribute attr, StringBuffer sb) {
+	if (attr.getType() == null) return;
+	// generate for attributes with class-type:
+	// "const <type>& get_<name>( void ) { return <name>; };"
+	// generate for other (small) data types
+	// "<type> get_<name>( void ) { return <name>; };"
 	// generate: "INDENT"
-	sb.append( '\n' ).append( INDENT ).append( "/** simple access function to get the attribute " ).append( attr.getName() )
-	    .append( " by function */\n" )
-	    .append( INDENT );
-	String modifier = generateAttributeParameterModifier( attr );
-	if ( modifier != null && modifier.length() > 0 ) // generate: "const <type><modifier>"
+	sb.append('\n').append(INDENT);
+	sb.append("/** simple access function to get the attribute ");
+	sb.append(attr.getName());
+	sb.append(" by function */\n").append(INDENT);
+	String modifier = generateAttributeParameterModifier(attr);
+	if (modifier != null && modifier.length() > 0)
 	{
-	    sb.append( "const " ).append( generateClassifierRef( attr.getType() ) )
-		.append( modifier );
+	    // generate: "const <type><modifier>"
+	    sb.append("const ").append(generateClassifierRef(attr.getType()));
+	    sb.append(modifier);
 	}
-	else if ( attr.getType() instanceof MClass ) // generate: "const <type>&"
-	    sb.append( "const " ).append( generateClassifierRef( attr.getType() ) ).append( "&" );
-	else // generate: "<type>"
-	    sb.append( generateClassifierRef( attr.getType() ) );
+	else if (attr.getType() instanceof MClass) {
+	    // generate: "const <type>&"
+	    sb.append("const ").append(generateClassifierRef(attr.getType()));
+	    sb.append("&");
+	} else {
+	    // generate: "<type>"
+	    sb.append(generateClassifierRef(attr.getType()));
+	}
 	// generate: " get_<name>( void ) const { return <name>; };"
-	sb.append( " get_" ).append( attr.getName() ).append( "( void ) const { return ").append( attr.getName() ).append( "; };" );
+	sb.append(" get_").append(attr.getName());
+	sb.append("( void ) const { return ").append(attr.getName());
+	sb.append("; };");
     }
 
     /**
@@ -1556,29 +1735,43 @@ public class GeneratorCpp extends Generator
      * @param cls
      * @return StringBuffer
      */
-    private void generateClassifierBodyTaggedAccess4Attributes(MClassifier cls, StringBuffer func_private,
-							       StringBuffer func_protected, StringBuffer func_public)
+    private void generateClassifierBodyTaggedAccess4Attributes(MClassifier cls,
+							       StringBuffer funcPrivate,
+							       StringBuffer funcProtected,
+							       StringBuffer funcPublic)
     {
 	Collection strs = UmlHelper.getHelper().getCore().getAttributes(cls);
-	if (strs.isEmpty() || ( GeneratorPass != header_pass ) ) return;
-	String access_tag = null;
+	if (strs.isEmpty() || (generatorPass != header_pass)) return;
+	String accessTag = null;
 
 	Iterator strEnum = strs.iterator();
 	while (strEnum.hasNext())
 	{
 	    MAttribute attr = (MAttribute) strEnum.next();
-	    access_tag = attr.getTaggedValue( "set" );
-	    if ( access_tag != null && access_tag.length() > 0 ) {
-		if ( access_tag.indexOf( "public" ) != -1 ) generateSingleAttributeSet( attr, func_public );
-		if ( access_tag.indexOf( "protected" ) != -1 ) generateSingleAttributeSet( attr, func_protected );
-		if ( access_tag.indexOf( "private" ) != -1 ) generateSingleAttributeSet( attr, func_private );
+	    accessTag = attr.getTaggedValue("set");
+	    if (accessTag != null && accessTag.length() > 0) {
+		if (accessTag.indexOf("public") != -1) {
+		    generateSingleAttributeSet(attr, funcPublic);
+		}
+		if (accessTag.indexOf("protected") != -1) {
+		    generateSingleAttributeSet(attr, funcProtected);
+		}
+		if (accessTag.indexOf("private") != -1) {
+		    generateSingleAttributeSet(attr, funcPrivate);
+		}
 	    }
 
-	    access_tag = attr.getTaggedValue( "get" );
-	    if ( access_tag != null && access_tag.length() > 0 ) {
-		if ( access_tag.indexOf( "public" ) != -1 ) generateSingleAttributeGet( attr, func_public );
-		if ( access_tag.indexOf( "protected" ) != -1 ) generateSingleAttributeGet( attr, func_protected );
-		if ( access_tag.indexOf( "private" ) != -1 ) generateSingleAttributeGet( attr, func_private );
+	    accessTag = attr.getTaggedValue("get");
+	    if (accessTag != null && accessTag.length() > 0) {
+		if (accessTag.indexOf("public") != -1) {
+		    generateSingleAttributeGet(attr, funcPublic);
+		}
+		if (accessTag.indexOf("protected") != -1) {
+		    generateSingleAttributeGet(attr, funcProtected);
+		}
+		if (accessTag.indexOf("private") != -1) {
+		    generateSingleAttributeGet(attr, funcPrivate);
+		}
 	    }
 	}
     }
@@ -1588,7 +1781,8 @@ public class GeneratorCpp extends Generator
      * @param cls
      * @return StringBuffer
      */
-    private void generateClassifierBodyOperations(MClassifier cls, StringBuffer sb)
+    private void generateClassifierBodyOperations(MClassifier cls,
+						  StringBuffer sb)
     {
 	Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);
 	if (behs.isEmpty()) return;
@@ -1608,27 +1802,33 @@ public class GeneratorCpp extends Generator
 	}
 
 	// generate tag controlled access functions for attributes
-	StringBuffer func_private = new StringBuffer(80),
-	    func_protected = new StringBuffer(80),
-	    func_public = new StringBuffer(80);
-	generateClassifierBodyTaggedAccess4Attributes(cls, func_private, func_protected, func_public);
+	StringBuffer funcPrivate = new StringBuffer(80);
+	StringBuffer funcProtected = new StringBuffer(80);
+	StringBuffer funcPublic = new StringBuffer(80);
+	generateClassifierBodyTaggedAccess4Attributes(cls,
+						      funcPrivate,
+						      funcProtected,
+						      funcPublic);
 
 	// generate attributes in order public, protected, private
-	for ( int public_protected_private = public_part; public_protected_private <= private_part; public_protected_private++)
-	{
+	for (int i = 0; i < ALL_PARTS.length; i++) {
+	    int publicProtectedPrivate = ALL_PARTS[i];
 	    Iterator behEnum = behs.iterator();
 	    boolean isVisibilityLinePrinted = false;
 
-	    if ( ( public_protected_private == private_part ) && ( func_private.length() > 0 ) ) {
-		sb.append( "\n private:" ).append( func_private.toString() );
+	    if ((publicProtectedPrivate == PRIVATE_PART)
+		&& (funcPrivate.length() > 0)) {
+		sb.append("\n private:").append(funcPrivate.toString());
 		isVisibilityLinePrinted = true;
 	    }
-	    if ( ( public_protected_private == protected_part ) && ( func_protected.length() > 0 ) ) {
-		sb.append( "\n protected:" ).append( func_protected.toString() );
+	    if ((publicProtectedPrivate == PROTECTED_PART)
+		&& (funcProtected.length() > 0)) {
+		sb.append("\n protected:").append(funcProtected.toString());
 		isVisibilityLinePrinted = true;
 	    }
-	    if ( ( public_protected_private == public_part ) && ( func_public.length() > 0 ) ) {
-		sb.append( "\n public:" ).append( func_public.toString() );
+	    if ((publicProtectedPrivate == PUBLIC_PART)
+		&& (funcPublic.length() > 0)) {
+		sb.append("\n public:").append(funcPublic.toString());
 		isVisibilityLinePrinted = true;
 	    }
 
@@ -1636,32 +1836,39 @@ public class GeneratorCpp extends Generator
 	    {
 		MBehavioralFeature bf = (MBehavioralFeature) behEnum.next();
 		MVisibilityKind vis = bf.getVisibility();
-		if ( ( ( ( public_protected_private == public_part ) && (MVisibilityKind.PUBLIC.equals(vis) ) )
-		       || ( ( public_protected_private == protected_part ) && (MVisibilityKind.PROTECTED.equals(vis) ) )
-		       || ( ( public_protected_private == private_part ) && (MVisibilityKind.PRIVATE.equals(vis) ) )
-		       )
-		     && (( GeneratorPass == header_pass ) || ( checkGenerateOperationBody((MOperation) bf) ))
-		     )
-		{
-		    if ( ( !isVisibilityLinePrinted ) && ( GeneratorPass == header_pass ) )
-		    {
+		if ((((publicProtectedPrivate == PUBLIC_PART)
+		      && (MVisibilityKind.PUBLIC.equals(vis)))
+		     || ((publicProtectedPrivate == PROTECTED_PART)
+			 && (MVisibilityKind.PROTECTED.equals(vis)))
+		     || ((publicProtectedPrivate == PRIVATE_PART)
+			 && (MVisibilityKind.PRIVATE.equals(vis))))
+		    && ((generatorPass == header_pass)
+			|| (checkGenerateOperationBody((MOperation) bf)))) {
+		    if ((!isVisibilityLinePrinted)
+			&& (generatorPass == header_pass)) {
 			isVisibilityLinePrinted = true;
-			if ( public_protected_private == public_part ) sb.append( "\n public:" );
-			else if ( public_protected_private == protected_part ) sb.append( "\n protected:" );
-			else if ( public_protected_private == private_part ) sb.append( "\n private:" );
+			if (publicProtectedPrivate == PUBLIC_PART) {
+			    sb.append("\n public:");
+			} else if (publicProtectedPrivate == PROTECTED_PART) {
+			    sb.append("\n protected:");
+			} else if (publicProtectedPrivate == PRIVATE_PART) {
+			    sb.append("\n private:");
+			}
 		    }
 
 		    sb.append(generate(bf));
 
-		    tv = generateTaggedValues((MModelElement) bf, AllButDocTags);
+		    tv =
+			generateTaggedValues((MModelElement) bf,
+					     AllButDocTags);
 
 		    if ((cls instanceof MClass)
 			&& (bf instanceof MOperation)
 			&& (!((MOperation) bf).isAbstract())
-			&& ( checkGenerateOperationBody((MOperation) bf) ))
+			&& (checkGenerateOperationBody((MOperation) bf)))
 		    {
 			// there is no ReturnType in behavioral feature (nsuml)
-			sb.append( "\n" )
+			sb.append("\n")
 			    .append(generateMethodBody((MOperation) bf));
 		    }
 		    else
@@ -1682,38 +1889,57 @@ public class GeneratorCpp extends Generator
      * @param cls
      * @return StringBuffer
      */
-    private void generateClassifierBodyTypedefs(MClassifier cls, StringBuffer sb)
+    private void generateClassifierBodyTypedefs(MClassifier cls,
+						StringBuffer sb)
     {
-	if ( GeneratorPass == header_pass ) {
-	    Collection public_typedef_statements = findTagValues( cls, "typedef_public" );
-	    Collection protected_typedef_statements = findTagValues( cls, "typedef_protected" );
-	    Collection private_typedef_statements = findTagValues( cls, "typedef_private" );
-	    if (!public_typedef_statements.isEmpty()) {
-		sb.append( "\n public:\n" )
-		    .append( INDENT ).append( "// public type definitions for header defined by Tag entries in ArgoUML\n" )
-		    .append( INDENT ).append( "// Result: typedef <typedef_public> <tag_value>;\n" );
-    		Iterator typedef_enum = public_typedef_statements.iterator();
+	if (generatorPass == header_pass) {
+	    Collection publicTypedefStatements =
+		findTagValues(cls, "typedef_public");
+	    Collection protectedTypedefStatements =
+		findTagValues(cls, "typedef_protected");
+	    Collection privateTypedefStatements =
+		findTagValues(cls, "typedef_private");
+	    if (!publicTypedefStatements.isEmpty()) {
+		sb.append("\n public:\n").append(INDENT);
+		sb.append("// public type definitions for header defined "
+			  + "by Tag entries in ArgoUML\n");
+		sb.append(INDENT);
+		sb.append("// Result: typedef <typedef_public> "
+			  + "<tag_value>;\n");
+    		Iterator typedefEnum = publicTypedefStatements.iterator();
 
-    		while (typedef_enum.hasNext())
-		    sb.append( INDENT ).append( "typedef " ).append( typedef_enum.next() ).append( ";\n" );
+    		while (typedefEnum.hasNext()) {
+		    sb.append(INDENT).append("typedef ");
+		    sb.append(typedefEnum.next()).append(";\n");
+		}
 	    }
-	    if (!protected_typedef_statements.isEmpty()) {
-		sb.append( "\n protected:\n" )
-		    .append( INDENT ).append( "// protected type definitions for header defined by Tag entries in ArgoUML\n" )
-		    .append( INDENT ).append( "// Result: typedef <typedef_protected> <tag_value>;\n" );
-    		Iterator typedef_enum = protected_typedef_statements.iterator();
+	    if (!protectedTypedefStatements.isEmpty()) {
+		sb.append("\n protected:\n").append(INDENT);
+		sb.append("// protected type definitions for header defined "
+			  + "by Tag entries in ArgoUML\n");
+		sb.append(INDENT);
+		sb.append("// Result: typedef <typedef_protected> "
+			  + "<tag_value>;\n");
+    		Iterator typedefEnum = protectedTypedefStatements.iterator();
 
-    		while (typedef_enum.hasNext())
-		    sb.append( INDENT ).append( "typedef " ).append( typedef_enum.next() ).append( ";\n" );
+    		while (typedefEnum.hasNext()) {
+		    sb.append(INDENT).append("typedef ");
+		    sb.append(typedefEnum.next()).append(";\n");
+		}
 	    }
-	    if (!private_typedef_statements.isEmpty()) {
-		sb.append( "\n private:\n" )
-		    .append( INDENT ).append( "// private type definitions for header defined by Tag entries in ArgoUML\n" )
-		    .append( INDENT ).append( "// Result: typedef <typedef_private> <tag_value>;\n" );
-    		Iterator typedef_enum = private_typedef_statements.iterator();
+	    if (!privateTypedefStatements.isEmpty()) {
+		sb.append("\n private:\n").append(INDENT);
+		sb.append("// private type definitions for header defined "
+			  + "by Tag entries in ArgoUML\n");
+		sb.append(INDENT);
+		sb.append("// Result: typedef <typedef_private> "
+			  + "<tag_value>;\n");
+    		Iterator typedefEnum = privateTypedefStatements.iterator();
 
-    		while (typedef_enum.hasNext())
-		    sb.append( INDENT ).append( "typedef " ).append( typedef_enum.next() ).append( ";\n" );
+    		while (typedefEnum.hasNext()) {
+		    sb.append(INDENT).append("typedef ");
+		    sb.append(typedefEnum.next()).append(";\n");
+		}
 	    }
 	}
     }
@@ -1726,29 +1952,29 @@ public class GeneratorCpp extends Generator
     protected StringBuffer generateClassifierBody(MClassifier cls)
     {
   	StringBuffer sb = new StringBuffer();
-  	if (cls instanceof MClass || cls instanceof MInterface )
+  	if (cls instanceof MClass || cls instanceof MInterface)
 	{ // add operations
 	    // TODO: constructors
-	    generateClassifierBodyOperations( cls, sb );
+	    generateClassifierBodyOperations(cls, sb);
 
 	    // add attributes
-	    generateClassifierBodyAttributes( cls, sb );
+	    generateClassifierBodyAttributes(cls, sb);
 
 	    // add attributes implementing associations
-	    generateClassifierBodyAssociations( cls, sb );
+	    generateClassifierBodyAssociations(cls, sb);
 
 	    // add typedefs
-	    generateClassifierBodyTypedefs( cls, sb );
+	    generateClassifierBodyTypedefs(cls, sb);
 	}
   	return sb;
     }
 
     /**
-     * Generate the body of a method associated with the given operation. This
-     * assumes there's at most one method associated!
+     * Generate the body of a method associated with the given
+     * operation.  This assumes there's at most one method associated!
      *
-     * If no method is associated with the operation, a default method body will
-     * be generated.
+     * If no method is associated with the operation, a default method
+     * body will be generated.
      */
     public String generateMethodBody (MOperation op) {
 	if (op != null) {
@@ -1756,25 +1982,28 @@ public class GeneratorCpp extends Generator
 	    Collection methods = op.getMethods();
 	    Iterator i = methods.iterator();
 	    MMethod m = null;
-	    boolean MethodFound = false;
+	    boolean methodFound = false;
 	    String tv = generateTaggedValues(op, AllButDocTags);
-	    String OperationIndent = ( GeneratorPass == header_pass ) ? INDENT : "";
+	    String operationIndent =
+		(generatorPass == header_pass) ? INDENT : "";
 
 	    // append tags which are not Doc-Comments
 	    if (tv.length() > 0)
 	    {
-		sb.append(OperationIndent).append(tv).append('\n');
+		sb.append(operationIndent).append(tv).append('\n');
 	    }
 
-	    // place the curley braces within the protected area, to allow
-	    // placement of preserved contructor initialisers in this area
-	    // otherwise all possible constructor-attribute initialisers would have
-	    // to be autogenerated with an army of special tags
-	    sb.append( generateSectionTop(op, OperationIndent) )
-		.append( OperationIndent ).append( "{\n" );
+	    // place the curley braces within the protected area, to
+	    // allow placement of preserved contructor initialisers in
+	    // this area otherwise all possible constructor-attribute
+	    // initialisers would have to be autogenerated with an
+	    // army of special tags
+	    sb.append(generateSectionTop(op, operationIndent))
+		.append(operationIndent).append("{\n");
 
 	    // System.out.print(", op!=null, size="+methods.size());
-	    // return INDENT + INDENT + "/* method body for " + op.getName() + " */";
+	    // return INDENT + INDENT
+	    // + "/* method body for " + op.getName() + " */";
 
 	    while (i != null && i.hasNext()) {
 		//System.out.print(", i!= null");
@@ -1783,48 +2012,51 @@ public class GeneratorCpp extends Generator
 		if (m != null) {
 		    //cat.info(", BODY of "+m.getName());
 		    //cat.info("|"+m.getBody().getBody()+"|");
-		    if (( m.getBody() != null) && ( !MethodFound ) ) {
-			sb.append( m.getBody().getBody() );
-			MethodFound = true;
+		    if ((m.getBody() != null) && (!methodFound)) {
+			sb.append(m.getBody().getBody());
+			methodFound = true;
 			break;
 		    }
 		}
 	    }
 
-	    if ( !MethodFound ) {
+	    if (!methodFound) {
 		// pick out return type as default method body
-		MParameter rp = UmlHelper.getHelper().getCore().getReturnParameter(op);
+		MParameter rp =
+		    UmlHelper.getHelper().getCore().getReturnParameter(op);
 		if (rp != null) {
 		    MClassifier returnType = rp.getType();
-		    sb.append( generateDefaultReturnStatement (returnType) );
+		    sb.append(generateDefaultReturnStatement (returnType));
 		}
 	    }
-	    sb.append( OperationIndent ).append( "}\n" )
-		.append( generateSectionBottom(op, OperationIndent) );
+	    sb.append(operationIndent).append("}\n")
+		.append(generateSectionBottom(op, operationIndent));
 	    return sb.toString();
 	}
 	return generateDefaultReturnStatement (null);
     }
 
 
-    public String generateSectionTop(MOperation op, String LocalIndent) {
+    public String generateSectionTop(MOperation op, String localIndent) {
     	String id = op.getUUID();
     	if (id == null) {
 	    id = (new UID().toString());
 	    // id =  op.getName() + "__" + static_count;
 	    op.setUUID(id);
     	}
-    	return Section.generateTop(id, LocalIndent);
+    	return Section.generateTop(id, localIndent);
     }
-    public String generateSectionBottom(MOperation op, String LocalIndent) {
+
+    public String generateSectionBottom(MOperation op, String localIndent) {
     	String id = op.getUUID();
     	if (id == null) {
 	    id = (new UID().toString());
 	    // id =  op.getName() + "__" + static_count;
 	    op.setUUID(id);
     	}
-    	return Section.generateBottom(id, LocalIndent);
+    	return Section.generateBottom(id, localIndent);
     }
+
     public String generateSection(MOperation op) {
     	String id = op.getUUID();
     	if (id == null) {
@@ -1837,8 +2069,6 @@ public class GeneratorCpp extends Generator
     	// s += INDENT + "// section " + id + " end\n";
     	return Section.generate(id, INDENT);
     }
-
-
 
 
     public String generateDefaultReturnStatement(MClassifier cls) {
@@ -1856,8 +2086,9 @@ public class GeneratorCpp extends Generator
 	return INDENT + "return null;\n";
     }
 
-    public String generateTaggedValues(MModelElement e, int tag_selection) {
-	// cat.info("generateTaggedValues for element: "  + e.getName() + " und selection " + tag_selection);
+    public String generateTaggedValues(MModelElement e, int tagSelection) {
+	// cat.info("generateTaggedValues for element: " + e.getName()
+	// + " und selection " + tagSelection);
 
 	Collection tvs = e.getTaggedValues();
 	if (tvs == null || tvs.size() == 0) return "";
@@ -1868,28 +2099,33 @@ public class GeneratorCpp extends Generator
 	String s = null;
 	while (iter.hasNext())
 	{
-	    s = generateTaggedValue((MTaggedValue) iter.next(), tag_selection);
+	    s = generateTaggedValue((MTaggedValue) iter.next(), tagSelection);
 	    if (s != null && s.length() > 0)
 	    {
-		if (first)
+		if (first) {
 		    /*
 		     * Corrected 2001-09-26 STEFFEN ZSCHALER
 		     *
 		     * Was:
 		     buf.append("// {");
 		     *
-		     * which caused problems with new lines characters in tagged values
-		     * (e.g. comments...). The new version still has some problems with
-		     * tagged values containing "*"+"/" as this closes the comment
-		     * prematurely, but comments should be taken out of the tagged values
-		     * list anyway...
+		     * which caused problems with new lines characters
+		     * in tagged values (e.g. comments...). The new
+		     * version still has some problems with tagged
+		     * values containing "*"+"/" as this closes the
+		     * comment prematurely, but comments should be
+		     * taken out of the tagged values list anyway...
 		     */
-		{
-		    if ( tag_selection == DocCommentTags ) {
+
+		    if (tagSelection == DocCommentTags) {
 			// insert main documentation for DocComment at first
-			String doc = (DocumentationManager.hasDocs(e)) ? DocumentationManager.getDocs(e, INDENT) : null;
+			String doc =
+			    (DocumentationManager.hasDocs(e))
+			    ? DocumentationManager.getDocs(e, INDENT)
+			    : null;
 			if (doc != null && doc.trim().length() > 0) {
-			    buf.append(doc.substring(0, doc.indexOf("*/") + 1)).append("  ");
+			    buf.append(doc.substring(0, doc.indexOf("*/") + 1));
+			    buf.append("  ");
 			}
 			else
 			{
@@ -1903,7 +2139,7 @@ public class GeneratorCpp extends Generator
 		} // end first
 		else
 		{
-		    if ( tag_selection == DocCommentTags )
+		    if (tagSelection == DocCommentTags)
 		    {
 			buf.append("\n").append(INDENT).append(" *  ");
 		    }
@@ -1925,7 +2161,7 @@ public class GeneratorCpp extends Generator
 	 */
 	if (!first)
 	{
-	    if ( tag_selection == DocCommentTags )
+	    if (tagSelection == DocCommentTags)
 	    {
 		buf.append("\n").append(INDENT).append(" */\n");
 	    }
@@ -1934,9 +2170,12 @@ public class GeneratorCpp extends Generator
 		buf.append ("}*/\n");
 	    }
 	}
-	else if ( tag_selection == DocCommentTags )
-	{ // create at least main documentation field, if no other tag found
-	    String doc = (DocumentationManager.hasDocs(e)) ? DocumentationManager.getDocs(e, INDENT) : null;
+	else if (tagSelection == DocCommentTags) {
+	    // create at least main documentation field, if no other tag found
+	    String doc =
+		(DocumentationManager.hasDocs(e))
+		? DocumentationManager.getDocs(e, INDENT)
+		: null;
 	    if (doc != null && doc.trim().length() > 0) {
 		buf.append(doc).append('\n');
 	    }
@@ -1945,22 +2184,27 @@ public class GeneratorCpp extends Generator
 	return buf.toString();
     }
 
-    public String generateTaggedValue(MTaggedValue tv, int tag_selection) {
-	// cat.info("generateTaggedValue: "  + generateName(tv.getTag()) + " mit selection: " + tag_selection );
+    public String generateTaggedValue(MTaggedValue tv, int tagSelection) {
+	// cat.info("generateTaggedValue: " +
+	// generateName(tv.getTag()) + " mit selection: " +
+	// tagSelection);
 	if (tv == null) return "";
 	String s = generateUninterpreted(tv.getValue());
 	if (s == null || s.length() == 0 || s.equals("/** */")
-	    || (tv.getTag().indexOf("include") != -1) || (tv.getTag().indexOf("_incl") != -1)) return "";
-	if ( ( tag_selection == DocCommentTags ) && ( isDocCommentTag(tv.getTag())))
+	    || (tv.getTag().indexOf("include") != -1)
+	    || (tv.getTag().indexOf("_incl") != -1)) {
+	    return "";
+	}
+	if ((tagSelection == DocCommentTags) && (isDocCommentTag(tv.getTag())))
 	{
 	    return generateDocComment4Tag(generateName(tv.getTag())) + s;
 	}
-	else if ( ( ( tag_selection == AllButDocTags )
-		    && ( !isDocCommentTag(tv.getTag()))
+	else if (((tagSelection == AllButDocTags)
+		    && (!isDocCommentTag(tv.getTag()))
 		    && (!tv.getTag().equals("documentation"))
 		    && (!tv.getTag().equals("javadocs"))
-		    )
-		  || ( tag_selection == AllTags ) )
+		   )
+		  || (tagSelection == AllTags))
 	{
 	    return generateName(tv.getTag()) + "=" + s;
 	}
@@ -1970,7 +2214,7 @@ public class GeneratorCpp extends Generator
 	}
     }
 
-    private Collection findTagValues( MModelElement item, String searched_name ) {
+    private Collection findTagValues(MModelElement item, String searchedName) {
 	Collection result = new Vector();
 	Collection tvs = item.getTaggedValues();
 	if (tvs == null || tvs.size() == 0) return result;
@@ -1981,72 +2225,73 @@ public class GeneratorCpp extends Generator
 	while (iter.hasNext())
 	{
 	    tag = (MTaggedValue) iter.next();
-	    if ( tag.getTag().equals( searched_name ) ) {
+	    if (tag.getTag().equals(searchedName)) {
 		s = tag.getValue();
-		if (s != null && s.length() != 0 ) result.add(s);
+		if (s != null && s.length() != 0) result.add(s);
 	    }
 	}
 	return result;
     }
 
 
-    private boolean isDocCommentTag( String tag_name ) {
-	// cat.info("isDocCommentTag:"  + tag_name + ":");
+    private boolean isDocCommentTag(String tagName) {
+	// cat.info("isDocCommentTag:"  + tagName + ":");
   	boolean result = false;
-	if (tag_name.equals ("inv")) {
+	if (tagName.equals ("inv")) {
 	    // cat.info("yes it is doc-comment");
 	    result = true;
   	}
-  	else if (tag_name.equals ("post")) {
+  	else if (tagName.equals ("post")) {
 	    // cat.info("yes it is doc-comment");
 	    result = true;
   	}
-  	else if (tag_name.equals ("pre")) {
+  	else if (tagName.equals ("pre")) {
 	    // cat.info("yes it is doc-comment");
 	    result = true;
   	}
-  	else if (tag_name.equals ("author")) {
+  	else if (tagName.equals ("author")) {
 	    // cat.info("yes it is doc-comment");
 	    result = true;
   	}
-  	else if (tag_name.equals ("version")) {
+  	else if (tagName.equals ("version")) {
 	    // cat.info("yes it is doc-comment");
 	    result = true;
   	}
-  	else if (tag_name.equals ("see")) {
+  	else if (tagName.equals ("see")) {
 	    // cat.info("yes it is doc-comment");
 	    result = true;
 	}
-  	else if (tag_name.equals ("param")) {
+  	else if (tagName.equals ("param")) {
 	    // cat.info("yes it is doc-comment");
 	    result = true;
 	}
 	return result;
     }
-    private String generateDocComment4Tag( String tag_name ) {
-	if (tag_name.equals ("inv")) {
+    private String generateDocComment4Tag(String tagName) {
+	if (tagName.equals ("inv")) {
 	    return "@invariant ";
 	}
-	else if (tag_name.equals ("post")) {
+	else if (tagName.equals ("post")) {
 	    return "@postcondition ";
 	}
-	else if (tag_name.equals ("pre")) {
+	else if (tagName.equals ("pre")) {
 	    return "@precondition ";
 	}
-  	else if (tag_name.equals ("author")) {
+  	else if (tagName.equals ("author")) {
 	    return "@author ";
   	}
-  	else if (tag_name.equals ("version")) {
+  	else if (tagName.equals ("version")) {
 	    return "@version ";
   	}
-	else if (tag_name.equals ("see")) {
+	else if (tagName.equals ("see")) {
 	    return "@see ";
 	}
-	else if (tag_name.equals ("param")) {
+	else if (tagName.equals ("param")) {
 	    return "@param ";
 	}
 	else return "";
     }
+
     public String generateTaggedValues(MModelElement e) {
 	Collection tvs = e.getTaggedValues();
 	if (tvs == null || tvs.size() == 0) return "";
@@ -2060,8 +2305,9 @@ public class GeneratorCpp extends Generator
 	     * Jaap Branderhorst
 	     * Was
 	     * s = generateTaggedValue((MTaggedValue) iter.next());
-	     * which caused problems because the test tags (i.e. tags with name <NotationName.getName()>+TEST_SUFFIX)
-	     * were still generated.
+	     * which caused problems because the test tags (i.e. tags
+	     * with name <NotationName.getName()>+TEST_SUFFIX) were
+	     * still generated.
 	     * New code:
 	     */
 	    s = generate((MTaggedValue) iter.next());
@@ -2074,11 +2320,12 @@ public class GeneratorCpp extends Generator
 		     * Was:
 		     buf.append("// {");
 		     *
-		     * which caused problems with new lines characters in tagged values
-		     * (e.g. comments...). The new version still has some problems with
-		     * tagged values containing "*"+"/" as this closes the comment
-		     * prematurely, but comments should be taken out of the tagged values
-		     * list anyway...
+		     * which caused problems with new lines characters
+		     * in tagged values (e.g. comments...). The new
+		     * version still has some problems with tagged
+		     * values containing "*"+"/" as this closes the
+		     * comment prematurely, but comments should be
+		     * taken out of the tagged values list anyway...
 		     */
 		    buf.append ("/* {");
 
@@ -2110,11 +2357,13 @@ public class GeneratorCpp extends Generator
 	if (t.equals("documentation")) return "";
 	return generateName(t) + "=" + s;
     }
+
     /**
-     * Enhance/Create the doccomment for the given model element, including tags
-     * for any OCL constraints connected to the model element. The tags generated
-     * are suitable for use with the ocl injector which is part of the Dresden OCL
-     * Toolkit and are in detail:
+     * Enhance/Create the doccomment for the given model element,
+     * including tags for any OCL constraints connected to the model
+     * element. The tags generated are suitable for use with the ocl
+     * injector which is part of the Dresden OCL Toolkit and are in
+     * detail:
      *
      * &nbsp;@invariant for each invariant specified
      * &nbsp;@precondition for each precondition specified
@@ -2149,9 +2398,9 @@ public class GeneratorCpp extends Generator
 		sDocComment.append(s.substring(0, s.indexOf("*/") + 1));
 	    }
 	    else {
-		sDocComment.append(INDENT).append("/**\n")
-		    .append(INDENT).append(" * \n")
-		    .append(INDENT).append(" *");
+		sDocComment.append(INDENT).append("/**\n");
+		sDocComment.append(INDENT).append(" * \n");
+		sDocComment.append(INDENT).append(" *");
 	    }
 
 	    // Build doccomment
@@ -2159,7 +2408,8 @@ public class GeneratorCpp extends Generator
 	    if (type != null) {
 		sDocComment.append(" @element-type ").append(type.getName());
 	    } else {
-		// REMOVED: 2002-03-11 STEFFEN ZSCHALER: element type unknown is not recognized by the OCL injector...
+		// REMOVED: 2002-03-11 STEFFEN ZSCHALER: element type
+		// unknown is not recognized by the OCL injector...
 		//sDocComment += " @element-type unknown";
 	    }
 	    sDocComment.append('\n').append(INDENT).append(" */\n");
@@ -2171,8 +2421,9 @@ public class GeneratorCpp extends Generator
     }
 
     public String generateConstraints(MModelElement me) {
-
-	// This method just adds comments to the generated java code. This should be code generated by ocl-argo int he future?
+	// This method just adds comments to the generated java
+	// code. This should be code generated by ocl-argo int he
+	// future?
 	Collection cs = me.getConstraints();
 	if (cs == null || cs.size() == 0) return "";
 	String s = INDENT + "// constraints\n";
@@ -2182,7 +2433,7 @@ public class GeneratorCpp extends Generator
 	for (Iterator i = cs.iterator(); i.hasNext();) {
 	    MConstraint c = (MConstraint) i.next();
 	    String constrStr = generateConstraint(c);
-	    java.util.StringTokenizer st = new java.util.StringTokenizer(constrStr, "\n\r");
+	    StringTokenizer st = new StringTokenizer(constrStr, "\n\r");
 	    while (st.hasMoreElements()) {
 		String constrLine = st.nextToken();
 		s += INDENT + "// " + constrLine + "\n";
@@ -2227,7 +2478,7 @@ public class GeneratorCpp extends Generator
 		String comment = generateConstraintEnrichedDocComment(a, ae2);
 		// the comment line ends with simple newline -> place INDENT
 		// after comment, if not empty
-		if ( comment.length() > 0)
+		if (comment.length() > 0)
 		    sb.append(comment).append(INDENT);
 
 		sb.append(generateAssociationEnd(ae2));
@@ -2264,9 +2515,10 @@ public class GeneratorCpp extends Generator
 
 	//    sb.append(INDENT).append(generateVisibility(ae.getVisibility()));
 
-	sb.append( generateScope(ae) );
+	sb.append(generateScope(ae));
 	//     String n = ae.getName();
-	//     if (n != null && !String.UNSPEC.equals(n)) s += generateName(n) + " ";
+	//     if (n != null && !String.UNSPEC.equals(n))
+	//         s += generateName(n) + " ";
 	//     if (ae.isNavigable()) s += "navigable ";
 	//     if (ae.getIsOrdered()) s += "ordered ";
 
@@ -2285,7 +2537,8 @@ public class GeneratorCpp extends Generator
 	    name = "my" + generateClassifierRef(ae.getType());
 	}
 
-	sb.append( generateMultiplicity(ae, name, ae.getMultiplicity(), generateAttributeParameterModifier(asc)));
+	sb.append(generateMultiplicity(ae, name, ae.getMultiplicity(),
+				       generateAttributeParameterModifier(asc)));
 
 	return (sb.append(";\n")).toString();
     }
@@ -2305,9 +2558,9 @@ public class GeneratorCpp extends Generator
 	    MGeneralizableElement ge = g.getParent();
 	    // assert ge != null
 	    if (ge != null) {
-		String visibility_tag = g.getTaggedValue( "visibility" );
-		if ( visibility_tag != null && visibility_tag != "" )
-		    sb.append( visibility_tag ).append( " " );
+		String visibilityTag = g.getTaggedValue("visibility");
+		if (visibilityTag != null && visibilityTag != "")
+		    sb.append(visibilityTag).append(" ");
 		sb.append(generateNameWithPkgSelection(ge));
 		if (enum.hasNext()) sb.append(", ");
 	    }
@@ -2336,16 +2589,18 @@ public class GeneratorCpp extends Generator
 
 	while (depIterator.hasNext()) {
 	    MDependency dep = (MDependency) depIterator.next();
-	    if (ModelFacade.isAAbstraction(dep) &&
-		dep.getStereotype() != null &&
-		dep.getStereotype().getName() != null &&
-		dep.getStereotype().getName().equals("realize")) {
+	    if (ModelFacade.isAAbstraction(dep)
+		&& dep.getStereotype() != null
+		&& dep.getStereotype().getName() != null
+		&& dep.getStereotype().getName().equals("realize")) {
+
 		MInterface i = (MInterface) dep.getSuppliers().toArray()[0];
-		String visibility_tag = dep.getTaggedValue( "visibility" );
-		if ( visibility_tag != null && visibility_tag != "" )
-		    sb.append( visibility_tag ).append( " " );
+		String visibilityTag = dep.getTaggedValue("visibility");
+		if (visibilityTag != null && visibilityTag != "")
+		    sb.append(visibilityTag).append(" ");
 		sb.append(generateNameWithPkgSelection(i));
 		if (depIterator.hasNext()) sb.append(", ");
+
 	    }
 	}
 	return sb.toString();
@@ -2357,9 +2612,9 @@ public class GeneratorCpp extends Generator
 	Iterator clsEnum = classifiers.iterator();
 	while (clsEnum.hasNext()) {
 	    MClassifier cls = (MClassifier) clsEnum.next();
-	    String visibility_tag = cls.getTaggedValue( "visibility" );
-	    if ( visibility_tag != null && visibility_tag != "" )
-		sb.append( visibility_tag ).append( " " );
+	    String visibilityTag = cls.getTaggedValue("visibility");
+	    if (visibilityTag != null && visibilityTag != "")
+		sb.append(visibilityTag).append(" ");
 	    sb.append(generateNameWithPkgSelection(cls));
 	    if (clsEnum.hasNext()) sb.append(", ");
 	}
@@ -2425,8 +2680,8 @@ public class GeneratorCpp extends Generator
      * Generate "const" keyword for const pointer/reference parameters.
      */
     public String generateChangeability (MParameter par) {
-	if ( ( checkAttributeParameter4Tag( par, SearchReferencePointerTag ))
-	     && ((par.getKind()).equals(MParameterDirectionKind.IN)) ) {
+	if ((checkAttributeParameter4Tag(par, SearchReferencePointerTag))
+	     && ((par.getKind()).equals(MParameterDirectionKind.IN))) {
 	    return "const ";
 	}
 	else {
@@ -2445,7 +2700,7 @@ public class GeneratorCpp extends Generator
     /**
      * Generates "synchronized" keyword for guarded operations.
      * @param op The operation
-     * @return String The synchronized keyword if the operation is guarded, else ""
+     * @return The synchronized keyword if the operation is guarded, else ""
      */
     public String generateConcurrency(MOperation op)
     {
@@ -2472,77 +2727,87 @@ public class GeneratorCpp extends Generator
 	return s;
     }
 
-    public String generateMultiplicity(MModelElement item, String name, MMultiplicity m, String modifier) {
-	String type = null,
-	    container_type = null;
-	// cat.info("generateMultiplicity mit item" + item.getName() + ", name: " + name + ", modifier: " + modifier);
+    public String generateMultiplicity(MModelElement item, String name,
+				       MMultiplicity m, String modifier) {
+	String type = null;
+	String containerType = null;
+	// cat.info("generateMultiplicity mit item" + item.getName() +
+	// ", name: " + name + ", modifier: " + modifier);
 
-	MClassifier type_cls = null;
-	if ( item instanceof MAssociationEnd ) type_cls = ((MAssociationEnd) item).getType();
-	else if ( item instanceof MAttribute ) type_cls = ((MAttribute) item).getType();
-	else if ( item instanceof MClassifier ) type = ((MClassifier) item).getName();
-	else type = "";
-	if ( type_cls != null ) type = generateNameWithPkgSelection(type_cls);
-	// cat.info("resolved type_name: " + type );
+	MClassifier typeCls = null;
+	if (item instanceof MAssociationEnd) {
+	    typeCls = ((MAssociationEnd) item).getType();
+	} else if (item instanceof MAttribute) {
+	    typeCls = ((MAttribute) item).getType();
+	} else if (item instanceof MClassifier) {
+	    type = ((MClassifier) item).getName();
+	} else {
+	    type = "";
+	}
+	if (typeCls != null) type = generateNameWithPkgSelection(typeCls);
+	// cat.info("resolved type_name: " + type);
 	if (m == null) { return (type + " " + modifier + name); }
 	StringBuffer sb = new StringBuffer(80);
 	int countUpper = m.getUpper(),
 	    countLower = m.getLower();
-	// cat.info("resolved int upper/lower bounds" );
+	// cat.info("resolved int upper/lower bounds");
 	Integer lower = new Integer(countLower);
 	Integer upper = new Integer(countUpper);
-	// cat.info("resolved Integer upper/lower bounds" );
+	// cat.info("resolved Integer upper/lower bounds");
 
-	if ( countUpper	== 1 ) {
+	if (countUpper	== 1) {
 	    // simple generate identifier for default 0:1, 1:1 association
-	    sb.append( type ).append( ' ' ).append( modifier ).append( name );
+	    sb.append(type).append(' ').append(modifier).append(name);
 	}
-	else if ( countUpper == countLower ) {
+	else if (countUpper == countLower) {
 	    // fixed array -> <type> <name>[<count>];
-	    sb.append( type ).append( ' ' ).append( modifier ).append( name )
-		.append( "[ " ).append( upper.toString() ).append( " ]");
+	    sb.append(type).append(' ').append(modifier).append(name)
+		.append("[ ").append(upper.toString()).append(" ]");
 	}
 	else {
 	    // variable association -> if no tag found use []
-	    // else search for tag: <MultipliciyType> : array|vector|list|slist|map|stack
-	    String MultType = item.getTaggedValue( "MultiplicityType" );
-	    if ( MultType == null ) {
+	    // else search for tag:
+	    // <MultipliciyType> : array|vector|list|slist|map|stack
+	    String multType = item.getTaggedValue("MultiplicityType");
+	    if (multType == null) {
 		// no known container type found
-		sb.append( type ).append( ' ' ).append( modifier ).append( name ).append( "[]" );
+		sb.append(type).append(' ');
+		sb.append(modifier).append(name).append("[]");
 	    }
-	    else if ( MultType.equals( "vector" ) ) {
-		if ( _ExtraIncludes.indexOf( "#include <vector>" ) == -1 )
-		    _ExtraIncludes += "#include <vector>\n";
-		container_type = "vector";
+	    else if (multType.equals("vector")) {
+		if (extraIncludes.indexOf("#include <vector>") == -1)
+		    extraIncludes += "#include <vector>\n";
+		containerType = "vector";
 	    }
-	    else if ( MultType.equals( "list" ) ) {
-		if ( _ExtraIncludes.indexOf( "#include <list>" ) == -1 )
-		    _ExtraIncludes += "#include <list>\n";
-		container_type = "list";
+	    else if (multType.equals("list")) {
+		if (extraIncludes.indexOf("#include <list>") == -1)
+		    extraIncludes += "#include <list>\n";
+		containerType = "list";
 	    }
-	    else if ( MultType.equals( "slist" ) ) {
-		if ( _ExtraIncludes.indexOf( "#include <slist>" ) == -1 )
-		    _ExtraIncludes += "#include <slist>\n";
-		container_type = "slist";
+	    else if (multType.equals("slist")) {
+		if (extraIncludes.indexOf("#include <slist>") == -1)
+		    extraIncludes += "#include <slist>\n";
+		containerType = "slist";
 	    }
-	    else if ( MultType.equals( "map" ) ) {
-		if ( _ExtraIncludes.indexOf( "#include <map>" ) == -1 )
-		    _ExtraIncludes += "#include <map>\n";
-		container_type = "map";
+	    else if (multType.equals("map")) {
+		if (extraIncludes.indexOf("#include <map>") == -1)
+		    extraIncludes += "#include <map>\n";
+		containerType = "map";
 	    }
-	    else if ( MultType.equals( "stack" ) ) {
-		if ( _ExtraIncludes.indexOf( "#include <stack>" ) == -1 )
-		    _ExtraIncludes += "#include <stack>\n";
-		container_type = "stack";
+	    else if (multType.equals("stack")) {
+		if (extraIncludes.indexOf("#include <stack>") == -1)
+		    extraIncludes += "#include <stack>\n";
+		containerType = "stack";
 	    }
 
-	    if ( container_type != null ) {
+	    if (containerType != null) {
 		// known container type
-		String include_line = "#include <" + container_type + ">";
-		if ( _ExtraIncludes.indexOf( include_line ) == -1 )
-		    _ExtraIncludes += include_line + "\n";
-		sb.append( container_type ).append( "< " ).append( type ).append( modifier ).append( " > ")
-		    .append( name );
+		String includeLine = "#include <" + containerType + ">";
+		if (extraIncludes.indexOf(includeLine) == -1)
+		    extraIncludes += includeLine + "\n";
+		sb.append(containerType).append("< ");
+		sb.append(type).append(modifier);
+		sb.append(" > ").append(name);
 	    }
 	}
 	return sb.toString();
@@ -2647,8 +2912,8 @@ public class GeneratorCpp extends Generator
 
     public String generateMessage(MMessage m) {
     	if (m == null) return "";
-	return generateName(m.getName()) + "::" +
-	    generateAction(m.getAction());
+	return generateName(m.getName()) + "::"
+	    + generateAction(m.getAction());
     }
 
 
@@ -2662,7 +2927,7 @@ public class GeneratorCpp extends Generator
 			       File file)
 	throws Exception
     {
-	cat.info("Parsing " + file.getPath());
+	LOG.info("Parsing " + file.getPath());
 
         // read the existing file and store preserved sections
 
@@ -2678,11 +2943,13 @@ public class GeneratorCpp extends Generator
 
 	File origFile = new File(file.getAbsolutePath());
 	File newFile = new File(file.getAbsolutePath() + ".updated");
-	cat.info("Generating " + newFile.getPath());
+	LOG.info("Generating " + newFile.getPath());
 
         boolean eof = false;
-        BufferedReader origFileReader = new BufferedReader(new FileReader(file.getAbsolutePath()));
-        FileWriter newFileWriter = new FileWriter(file.getAbsolutePath() + ".updated");
+        BufferedReader origFileReader =
+	    new BufferedReader(new FileReader(file.getAbsolutePath()));
+        FileWriter newFileWriter =
+	    new FileWriter(file.getAbsolutePath() + ".updated");
         while (!eof) {
             String line = origFileReader.readLine();
             if (line == null) {
@@ -2695,9 +2962,9 @@ public class GeneratorCpp extends Generator
         origFileReader.close();
 
 	// cpc.filter(file, newFile, mClassifier.getNamespace());
-	cat.info("Backing up " + file.getPath());
+	LOG.info("Backing up " + file.getPath());
 	file.renameTo(new File(file.getAbsolutePath() + ".backup"));
-	cat.info("Updating " + file.getPath());
+	LOG.info("Updating " + file.getPath());
 	newFile.renameTo(origFile);
     }
 
@@ -2713,6 +2980,7 @@ public class GeneratorCpp extends Generator
         // s += INDENT + "// section " + id + " end\n";
         return Section.generate(id, INDENT);
     }
+
     public boolean canParse() {
         return true;
     }
@@ -2746,22 +3014,23 @@ public class GeneratorCpp extends Generator
     {
         return _verboseDocs;
     }
+
     /**
      * Sets the _lfBeforeCurly.
-     * @param _lfBeforeCurly The _lfBeforeCurly to set
+     * @param beforeCurly The _lfBeforeCurly to set
      */
-    public void setLfBeforeCurly(boolean _lfBeforeCurly)
+    public void setLfBeforeCurly(boolean beforeCurly)
     {
-        this._lfBeforeCurly = _lfBeforeCurly;
+        this._lfBeforeCurly = beforeCurly;
     }
 
     /**
      * Sets the _verboseDocs.
-     * @param _verboseDocs The _verboseDocs to set
+     * @param verbose The _verboseDocs to set
      */
-    public void setVerboseDocs(boolean _verboseDocs)
+    public void setVerboseDocs(boolean verbose)
     {
-        this._verboseDocs = _verboseDocs;
+        this._verboseDocs = verbose;
     }
 
 
