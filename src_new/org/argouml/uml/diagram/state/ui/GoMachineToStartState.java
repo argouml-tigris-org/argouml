@@ -38,7 +38,7 @@ import org.argouml.ui.*;
 
 public class GoMachineToStartState implements TreeModel {
 
-  public String toString() { return "State Machine->Initial States"; }
+  public String getRuleName() { return "State Machine->Initial States"; }
 
   public Object getRoot() {
       throw

@@ -36,7 +36,7 @@ import org.argouml.ui.*;
 
 public class GoStateToSubstate implements TreeModel {
 
-  public String toString() { return "State->Substates"; }
+  public String getRuleName() { return "State->Substates"; }
 
   public Object getRoot() {
       throw

@@ -17,7 +17,7 @@ import ru.novosoft.uml.behavior.collaborations.MInteraction;
  */
 public class GoInteractionMessage extends AbstractGoRule {
 
-	public String toString() {
+	public String getRuleName() {
     return Argo.localize ("Tree", "misc.interaction.messages");
   }
 

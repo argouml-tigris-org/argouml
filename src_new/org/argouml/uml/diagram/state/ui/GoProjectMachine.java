@@ -37,7 +37,7 @@ import org.argouml.ui.*;
 
 public class GoProjectMachine implements TreeModel {
 
-  public String toString() { return "Project->Machine"; }
+  public String getRuleName() { return "Project->Machine"; }
 
   public Object getRoot() {
       throw

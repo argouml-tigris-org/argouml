@@ -37,6 +37,8 @@ import ru.novosoft.uml.foundation.core.MClassifier;
  */
 public class GoClassifierToCollaboration extends AbstractGoRule {
 
+    public String getRuleName() { return "Classifier->Collaboration";}
+
     /**
      * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
      */

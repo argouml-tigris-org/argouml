@@ -38,7 +38,7 @@ import org.argouml.uml.MMUtil;
 
 public class GoClassifierToStr implements TreeModel {
 
-  public String toString() {
+  public String getRuleName() {
     return Argo.localize ("Tree", "misc.class.attribute");
   }
   

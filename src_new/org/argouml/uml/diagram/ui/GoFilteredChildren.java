@@ -61,7 +61,7 @@ public class GoFilteredChildren implements TreeModel {
   ////////////////////////////////////////////////////////////////
   // TreeModel implementation
   
-  public String toString() { return _name; }
+  public String getRuleName() { return _name; }
   
   public Object getRoot() { return _tm.getRoot(); }
   

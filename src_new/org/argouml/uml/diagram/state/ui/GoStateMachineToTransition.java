@@ -15,6 +15,8 @@ import ru.novosoft.uml.behavior.state_machines.MStateMachine;
  */
 public class GoStateMachineToTransition extends AbstractGoRule {
 
+    public String getRuleName() { return "State Machine->Transition"; }
+
 	/**
 	 * @see javax.swing.tree.TreeModel#isLeaf(Object)
 	 */

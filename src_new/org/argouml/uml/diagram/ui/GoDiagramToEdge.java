@@ -38,7 +38,7 @@ import org.argouml.ui.*;
 
 public class GoDiagramToEdge implements TreeModel {
 
-  public String toString() {
+  public String getRuleName() {
     return Argo.localize ("Tree", "misc.diagram.edge");
   }
 

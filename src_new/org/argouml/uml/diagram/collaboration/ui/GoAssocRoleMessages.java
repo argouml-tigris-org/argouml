@@ -36,7 +36,7 @@ import org.argouml.ui.*;
 
 public class GoAssocRoleMessages implements TreeModel {
 
-  public String toString() { return "AssociationRole->Messages"; }
+  public String getRuleName() { return "AssociationRole->Messages"; }
 
   public Object getRoot() {
       throw new UnsupportedOperationException("getRoot should never be called");

@@ -37,6 +37,8 @@ import ru.novosoft.uml.foundation.core.MOperation;
  */
 public class GoOperationToCollaboration extends AbstractGoRule {
 
+    public String getRuleName() { return "Operation->Collaboration";}
+
     /**
      * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
      */

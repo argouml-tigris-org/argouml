@@ -38,7 +38,7 @@ import org.argouml.uml.diagram.activity.ui.*;
 
 public class GoMachineDiagram implements TreeModel {
 
-  public String toString() { return "Machine->Diagram"; }
+  public String getRuleName() { return "Machine->Diagram"; }
 
   public Object getRoot() {
       throw

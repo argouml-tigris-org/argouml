@@ -41,7 +41,7 @@ public class GoChildGenerator implements TreeModel {
 	_name = name;
     }
 
-    public String toString() {
+    public String getRuleName() {
 	return _name;
     }
 

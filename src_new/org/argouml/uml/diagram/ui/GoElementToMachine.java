@@ -37,7 +37,7 @@ import org.argouml.ui.*;
 
 public class GoElementToMachine implements TreeModel {
 
-  public String toString() {
+  public String getRuleName() {
     return Argo.localize ("Tree", "misc.class.state-machine");
   }
   

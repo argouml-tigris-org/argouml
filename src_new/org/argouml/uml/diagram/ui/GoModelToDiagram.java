@@ -38,7 +38,7 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 
 public class GoModelToDiagram implements TreeModel {
 
-  public String toString() {
+  public String getRuleName() {
     return Argo.localize ("Tree", "misc.package.diagram");
   }
 

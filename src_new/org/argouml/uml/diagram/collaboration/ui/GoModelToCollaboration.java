@@ -41,6 +41,8 @@ import ru.novosoft.uml.model_management.MModel;
  */
 public class GoModelToCollaboration extends AbstractGoRule {
 
+    public String getRuleName() { return "Model->Collaboration"; }
+
     /**
      * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
      */

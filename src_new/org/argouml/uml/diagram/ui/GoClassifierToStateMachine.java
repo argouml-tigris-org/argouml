@@ -36,6 +36,8 @@ import ru.novosoft.uml.foundation.core.MClassifier;
  */
 public class GoClassifierToStateMachine extends AbstractGoRule {
 
+    public String getRuleName() { return "Classifier->State Machine";}
+
 	/**
 	 * @see javax.swing.tree.TreeModel#isLeaf(Object)
 	 */

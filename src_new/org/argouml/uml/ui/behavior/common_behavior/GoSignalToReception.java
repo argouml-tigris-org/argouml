@@ -37,7 +37,7 @@ import ru.novosoft.uml.behavior.common_behavior.MSignal;
  */
 public class GoSignalToReception extends AbstractGoRule {
 	
-	public String toString() {
+	public String getRuleName() {
     	return Argo.localize ("Tree", "misc.interaction.messages");
   	}
 

@@ -36,7 +36,7 @@ import org.argouml.ui.*;
 
 public class GoStateToUpstream implements TreeModel {
 
-  public String toString() { return "State->Preceeding States"; }
+  public String getRuleName() { return "State->Preceeding States"; }
 
   public Object getRoot() {
       throw

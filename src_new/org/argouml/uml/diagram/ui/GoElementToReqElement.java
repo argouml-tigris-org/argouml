@@ -37,7 +37,7 @@ import org.argouml.ui.*;
 
 public class GoElementToReqElement implements TreeModel {
 
-  public String toString() {
+  public String getRuleName() {
     return Argo.localize ("Tree", "misc.element.required-element");
   }
 

@@ -38,7 +38,7 @@ import org.argouml.ui.*;
 public class GoModelToBaseElements implements TreeModel {
     protected static Category cat = Category.getInstance(GoModelToBaseElements.class);
 
-  public String toString() {
+  public String getRuleName() {
     return Argo.localize ("Tree", "misc.package.base-class");
   }
   

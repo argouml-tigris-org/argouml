@@ -42,7 +42,7 @@ public class GoProjectCollaboration implements TreeModel {
   private final static Category cat = 
       Category.getInstance("org.argouml.uml.diagram.collaboration.ui.GoProjectCollaboration");
   
-  public String toString() { return "Project->MCollaboration"; }
+  public String getRuleName() { return "Project->MCollaboration"; }
 
   public Object getRoot() {
       throw 

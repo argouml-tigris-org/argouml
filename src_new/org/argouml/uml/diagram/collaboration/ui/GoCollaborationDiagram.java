@@ -37,7 +37,7 @@ import org.argouml.ui.*;
 
 public class GoCollaborationDiagram implements TreeModel {
 
-  public String toString() { return "Collaboration->Diagram"; }
+  public String getRuleName() { return "Collaboration->Diagram"; }
 
   public Object getRoot() {
       throw new UnsupportedOperationException("getRoot should never be called");

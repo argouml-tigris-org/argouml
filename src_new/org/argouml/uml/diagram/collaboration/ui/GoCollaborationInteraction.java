@@ -36,7 +36,7 @@ import org.argouml.ui.*;
 
 public class GoCollaborationInteraction implements TreeModel {
 
-  public String toString() { return "Collaboration->Interaction"; }
+  public String getRuleName() { return "Collaboration->Interaction"; }
 
   public Object getRoot() {
       throw

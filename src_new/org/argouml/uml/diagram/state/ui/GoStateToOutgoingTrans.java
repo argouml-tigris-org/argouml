@@ -36,7 +36,7 @@ import org.argouml.ui.*;
 
 public class GoStateToOutgoingTrans implements TreeModel {
 
-  public String toString() { return "State->Outgoing Transitions"; }
+  public String getRuleName() { return "State->Outgoing Transitions"; }
 
   public Object getRoot() {
       throw

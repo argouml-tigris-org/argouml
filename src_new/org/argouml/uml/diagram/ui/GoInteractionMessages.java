@@ -37,7 +37,7 @@ import org.argouml.ui.*;
 
 public class GoInteractionMessages implements TreeModel {
 
-  public String toString() {
+  public String getRuleName() {
     return Argo.localize ("Tree", "misc.interaction.messages");
   }
 

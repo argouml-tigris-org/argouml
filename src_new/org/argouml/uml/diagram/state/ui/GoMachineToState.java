@@ -40,6 +40,8 @@ import ru.novosoft.uml.behavior.state_machines.MStateMachine;
  */
 public class GoMachineToState extends AbstractGoRule {
 
+    public String getRuleName() { return "State Machine->State"; }
+
     /**
      * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
      */
