@@ -96,33 +96,57 @@ public class BorderSplitPane extends JComponent {
             add(comp);
         }
         else if (constraints.toString().equals(NORTH)) {
+            if (comp instanceof Orientable) {
+                ((Orientable)comp).setOrientation(Horizontal.getInstance());
+            }
             topSplitPane.add(comp, "100", 1);
             if (topSplitPane.getParent() != outerSplitPane) outerSplitPane.add(topSplitPane, 0);
         }
         else if (constraints.toString().equals(NORTHWEST)) {
+            if (comp instanceof Orientable) {
+                ((Orientable)comp).setOrientation(Horizontal.getInstance());
+            }
             topSplitPane.add(comp, 0);
             if (topSplitPane.getParent() != outerSplitPane) outerSplitPane.add(topSplitPane, 0);
         }
         else if (constraints.toString().equals(NORTHEAST)) {
+            if (comp instanceof Orientable) {
+                ((Orientable)comp).setOrientation(Horizontal.getInstance());
+            }
             topSplitPane.add(comp, 2);
             if (topSplitPane.getParent() != outerSplitPane) outerSplitPane.add(topSplitPane, 0);
         }
         else if (constraints.toString().equals(SOUTH)) {
+            if (comp instanceof Orientable) {
+                ((Orientable)comp).setOrientation(Horizontal.getInstance());
+            }
             bottomSplitPane.add(comp, "100", 1);
             if (bottomSplitPane.getParent() != outerSplitPane) outerSplitPane.add(bottomSplitPane, 2);
         }
         else if (constraints.toString().equals(SOUTHWEST)) {
+            if (comp instanceof Orientable) {
+                ((Orientable)comp).setOrientation(Horizontal.getInstance());
+            }
             bottomSplitPane.add(comp, 0);
             if (bottomSplitPane.getParent() != outerSplitPane) outerSplitPane.add(bottomSplitPane, 2);
         }
         else if (constraints.toString().equals(SOUTHEAST)) {
+            if (comp instanceof Orientable) {
+                ((Orientable)comp).setOrientation(Horizontal.getInstance());
+            }
             bottomSplitPane.add(comp, 2);
             if (bottomSplitPane.getParent() != outerSplitPane) outerSplitPane.add(bottomSplitPane, 2);
         }
         else if (constraints.toString().equals(WEST)) {
+            if (comp instanceof Orientable) {
+                ((Orientable)comp).setOrientation(Vertical.getInstance());
+            }
             middleSplitPane.add(comp, 0);
         }
         else if(constraints.toString().equals(EAST)) {
+            if (comp instanceof Orientable) {
+                ((Orientable)comp).setOrientation(Vertical.getInstance());
+            }
             middleSplitPane.add(comp, 2);
         }
         else {

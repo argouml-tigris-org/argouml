@@ -40,10 +40,12 @@ import org.argouml.application.api.*;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.*;
 import org.argouml.uml.*;
+import org.argouml.swingext.*;
 import java.util.*;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
+import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -74,6 +76,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
   private Vector _panels = new Vector();
   private UMLNameEventListener _nameListener;
 
+    private int lastRow;
     /**
      * <p>The third party listener (if we have set one up. We use this to shut
      *   down listeners when a new listener is set up.</p>
@@ -89,7 +92,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
      */
 
     private Vector _targetList = null;
-
+    private JPanel center;
 
     protected JPanel buttonPanel=new JPanel();
     protected JPanel buttonPanelWithFlowLayout=new JPanel();
@@ -118,8 +121,11 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
     public PropPanel(String title, ImageIcon icon, int panelCount) {
 	super(title);
         setLayout(new BorderLayout());
-
-        JPanel center = new JPanel(new GridLayout(1,0));
+        center = new JPanel();
+        
+        setOrientation(ConfigLoader.getTabPropsOrientation());
+        if (orientation == Vertical.getInstance()) panelCount = 1;
+        
         JPanel panel;
         for(long i = 0; i < panelCount; i++) {
             panel = new JPanel(new GridBagLayout());
@@ -153,6 +159,17 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
 	add(namePanel, BorderLayout.NORTH);*/
     }
 
+    public void setOrientation(Orientation orientation) {
+        super.setOrientation(orientation);
+        if (orientation == Horizontal.getInstance()) {
+            center.setLayout(new GridLayout(1,0));
+        }
+        else {
+            center.setLayout(new GridLayout(0,1));
+        }
+    }
+
+
     /**
      *   Adds a component to the captions of the specified panel.
      *   @param component Component to be added (typically a JLabel)
@@ -163,6 +180,10 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
      */
     public void addCaption(Component component,int row,int panel,double weighty)
     {
+        if (orientation == Vertical.getInstance()) {
+            row = lastRow;
+            panel = 0;
+        }
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridy = row;
         gbc.weighty = weighty;
@@ -214,6 +235,11 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
      */
    public void addField(Component component,int row,int panel,double weighty)
     {
+        if (orientation == Vertical.getInstance()) {
+            row = lastRow;
+            panel = 0;
+            ++lastRow;
+        }
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridy = row;
         gbc.weighty = weighty;

@@ -30,13 +30,14 @@ import javax.swing.*;
 import org.argouml.application.api.*;
 import org.argouml.cognitive.ui.*;
 import org.argouml.uml.ui.*;
+import org.argouml.swingext.*;
 
 /** A subclass of JPanel that can act as a tab in the DetailsPane or
  *  MultiEditorPane.  When the tab is double-clicked, this JPanel will
  *  generate a separate window of the same size and with the same
  *  contents.  This is almost like "tearing off" a tab. */
 
-public class TabSpawnable extends JPanel implements Cloneable {
+public class TabSpawnable extends JPanel implements Cloneable, org.argouml.swingext.Orientable  {
   public final int OVERLAPP = 30;
     private static final String BUNDLE = "UMLMenu";
 
@@ -44,6 +45,7 @@ public class TabSpawnable extends JPanel implements Cloneable {
   // instance variables
   String _title = "untitled";
   boolean _tear = false; // if true, remove tab from parent JTabbedPane
+  protected Orientation orientation;
 
   ////////////////////////////////////////////////////////////////
   // constructor
@@ -76,6 +78,15 @@ public class TabSpawnable extends JPanel implements Cloneable {
     }
     return null;
   }
+  
+    /*
+     * Set the orientation of the property panel
+     * @param orientation the new orientation for this preoprty panel
+     */
+    public void setOrientation(Orientation orientation) {
+        this.orientation = orientation;
+    }
+
 
   ////////////////////////////////////////////////////////////////
   // accessors

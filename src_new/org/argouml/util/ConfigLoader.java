@@ -27,6 +27,7 @@ import java.util.*;
 import java.io.*;
 
 import org.argouml.ui.*;
+import org.argouml.swingext.*;
 
 public class ConfigLoader {
 
@@ -34,9 +35,14 @@ public class ConfigLoader {
 	// static utility functions
 
 	public static String TabPath = "org.argouml";
-
+        private static Orientation tabPropsOrientation;
+        
+        public static Orientation getTabPropsOrientation() {
+            return tabPropsOrientation;
+        }
+        
 	public static void loadTabs(Vector tabs, String panelName,
-			      StatusBar sb) {
+			      StatusBar sb, Orientation orientation) {
           InputStream is = null;
 	  LineNumberReader lnr = null;
 	  String configFile = System.getProperty("argo.config");
@@ -68,10 +74,13 @@ public class ConfigLoader {
                       while (line != null) {
                         //long start = System.currentTimeMillis();
                         Class tabClass = parseConfigLine(line, panelName, lnr.getLineNumber(),
-                                                                                       configFile, sb);
+                                                         configFile, sb);
                         if (tabClass != null) {
-                              //System.out.println("tab=" + tabClass.getName());
                             try {
+                                String className = tabClass.getName();
+                                if (className.equals("org.argouml.uml.ui.TabProps")) {
+                                    tabPropsOrientation = orientation;
+                                }
                                 Object newTab = tabClass.newInstance();
                                 tabs.addElement(newTab);
                             }
@@ -100,8 +109,8 @@ public class ConfigLoader {
 	}
 
 	public static Class parseConfigLine(String line, String panelName,
-										int lineNum, String configFile,
-										StatusBar sb) {
+						int lineNum, String configFile,
+						StatusBar sb) {
 		if (line.startsWith("tabpath")) {
 			String newPath = stripBeforeColon(line).trim();
 			if (newPath.length() > 0) TabPath = newPath;
@@ -115,6 +124,7 @@ public class ConfigLoader {
 				String tabSpec = tabAlternatives.nextToken().trim();
 				String tabName = tabSpec;  //needs-more-work: arguments
 				String tabClassName;
+                                
 				if ( tabName.indexOf('.') > 0 )
 					tabClassName = tabName;
 				else

@@ -69,6 +69,9 @@ import org.argouml.uml.ui.behavior.state_machines.*;
 import org.argouml.uml.ui.behavior.use_cases.*;
 import org.argouml.uml.ui.model_management.*;
 import org.argouml.uml.ui.foundation.extension_mechanisms.*;
+import org.argouml.util.ConfigLoader;
+
+import org.argouml.swingext.*;
 
 public class TabProps extends TabSpawnable
 implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
@@ -84,8 +87,13 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
 
   ////////////////////////////////////////////////////////////////
   // constructor
+  public TabProps() {
+    this("Properties", "ui.PropPanel");
+  }
+
   public TabProps(String tabName, String panelClassBase) {
     super(tabName);
+    setOrientation(ConfigLoader.getTabPropsOrientation());
     _panelClassBaseName = panelClassBase;
     setLayout(new BorderLayout());
     //setFont(new Font("Dialog", Font.PLAIN, 10));
@@ -107,9 +115,21 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
     ArgoEventPump.removeListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
   }
 
-  public TabProps() {
-    this("Properties", "ui.PropPanel");
-  }
+    /*
+     * Set the orientation of the property panel
+     * @param orientation the new orientation for this preoprty panel
+     */
+    public void setOrientation(Orientation orientation) {
+        super.setOrientation(orientation);
+        Enumeration enum = _panels.elements();
+        while (enum.hasMoreElements()) {
+            Object o = enum.nextElement();
+            if (o instanceof Orientable) {
+                Orientable orientable = (Orientable)o;
+                orientable.setOrientation(orientation);
+            }
+        }
+    }
 
   /** Preload property panels that are commonly used within the first
    *  few seconds after the tool is launched. */
@@ -142,7 +162,7 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
     //otherwise, spawing will not ne successful!!
     _panels.put(MStateImpl.class, new PropPanelSimpleState());
 
-    org.argouml.application.Main.addPostLoadAction(new InitPanelsLater(_panels,this));
+    org.argouml.application.Main.addPostLoadAction(new InitPanelsLater(_panels,this,orientation));
   }
 
   /** Adds a property panel to the internal list. This allows a plugin to
@@ -338,9 +358,11 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
 class InitPanelsLater implements Runnable {
     private Hashtable _panels = null;
     private TabProps _tabProps;
-    public InitPanelsLater(Hashtable p,TabProps tabProps) {
+    private Orientation _orientation;
+    public InitPanelsLater(Hashtable p,TabProps tabProps, Orientation orientation) {
         _panels = p;
         _tabProps = tabProps;
+        _orientation = orientation;
     }
 
   /** Load commonly used property panels, but not those that are

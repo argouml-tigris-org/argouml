@@ -40,7 +40,7 @@ import org.argouml.application.api.*;
 import org.argouml.util.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.diagram.ui.*;
-
+import org.argouml.swingext.*;
 
 /** The upper right pane in the Argo/UML user interface.  It has
  *  several tabs with different kinds of "major" editors that allow
@@ -64,7 +64,7 @@ implements ChangeListener, MouseListener, QuadrantPanel {
 
   public MultiEditorPane(StatusBar sb) {
     Argo.log.info("making MultiEditorPane");
-    ConfigLoader.loadTabs(_tabPanels, "multi", sb);
+    ConfigLoader.loadTabs(_tabPanels, "multi", sb, Horizontal.getInstance());
 
     setLayout(new BorderLayout());
     add(_tabs, BorderLayout.CENTER);

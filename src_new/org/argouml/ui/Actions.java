@@ -101,7 +101,7 @@ public class Actions {
   public static UMLAction GotoDiagram = new ActionGotoDiagram();
 
   public static UMLAction NextEditTab = new ActionNextEditTab();
-  public static UMLAction NextDetailsTab = new ActionNextDetailsTab();
+//  public static UMLAction NextDetailsTab = new ActionNextDetailsTab();
   public static UMLAction ShowRapidButtons = new ActionShowRapidButtons();
 
   public static UMLAction CreateMultiple = new ActionCreateMultiple();
@@ -293,14 +293,16 @@ class ActionNextEditTab extends UMLAction {
 //   public ActionAddToFavs() { super("Add To Favorites"); }
 // } /* end class ActionAddToFavs */
 
-class ActionNextDetailsTab extends UMLAction {
-  public ActionNextDetailsTab() { super("Next Details Tab", NO_ICON); }
-  public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    DetailsPane dp = pb.getDetailsPane();
-    dp.selectNextTab();
-  }
-} /* end class ActionNextDetailsTab */
+// This option does not make much sense now that tabpanes can be in different panels.
+// Direct manipulation seems a better option anyway Bob Tarling 18/8/2002
+//class ActionNextDetailsTab extends UMLAction {
+//  public ActionNextDetailsTab() { super("Next Details Tab", NO_ICON); }
+//  public void actionPerformed(ActionEvent ae) {
+//    ProjectBrowser pb = ProjectBrowser.TheInstance;
+//    DetailsPane dp = pb.getDetailsPane();
+//    dp.selectNextTab();
+//  }
+//} /* end class ActionNextDetailsTab */
 
 // class ActionPrevDetailsTab extends UMLAction {
 //   public ActionPrevDetailsTab() { super("Previous Details Tab"); }
