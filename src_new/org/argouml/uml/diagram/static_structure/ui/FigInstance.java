@@ -47,7 +47,7 @@ public class FigInstance extends FigNodeModelElement {
     /** UML does not really use ports, so just define one big one so
      *  that users can drag edges to or from any point in the icon. */
 
-    FigText _attr;
+    private FigText attr;
 
     // add other Figs here aes needed
 
@@ -55,6 +55,9 @@ public class FigInstance extends FigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * Constructor 
+     */
     public FigInstance() {
 	Color handleColor = Globals.getPrefs().getHandleColor();
 
@@ -62,44 +65,58 @@ public class FigInstance extends FigNodeModelElement {
 	getNameFig().setTextFilled(true);
 
 	// initialize any other Figs here
-	_attr = new FigText(10, 30, 90, 40, Color.black, "Times", 10);
-	_attr.setFont(getLabelFont());
-	_attr.setExpandOnly(true);
-	_attr.setTextColor(Color.black);
-	_attr.setAllowsTab(false);
+	attr = new FigText(10, 30, 90, 40, Color.black, "Times", 10);
+	attr.setFont(getLabelFont());
+	attr.setExpandOnly(true);
+	attr.setTextColor(Color.black);
+	attr.setAllowsTab(false);
 
 	//_attr.setExpandOnly(true);
-	_attr.setJustification(FigText.JUSTIFY_LEFT);
+	attr.setJustification(FigText.JUSTIFY_LEFT);
 
 	// add Figs to the FigNode in back-to-front order
 	addFig(getBigPort());
 	addFig(getNameFig());
-	addFig(_attr);
+	addFig(attr);
 
 	setBlinkPorts(true); //make port invisble unless mouse enters
 	Rectangle r = getBounds();
 	setBounds(r.x, r.y, r.width, r.height);
     }
 
+    /**
+     * The constructor that hooks the Fig to the UML modelelement
+     * @param gm ignored
+     * @param node the UML element
+     */
     public FigInstance(GraphModel gm, Object node) {
 	this();
 	setOwner(node);
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
+     */
     public String placeString() { return "new MInstance"; }
 
+    /**
+     * @see java.lang.Object#clone()
+     */
     public Object clone() {
 	FigInstance figClone = (FigInstance) super.clone();
 	Iterator iter = figClone.getFigs(null).iterator();
 	figClone.setBigPort((FigRect) iter.next());
 	figClone.setNameFig((FigText) iter.next());
-	figClone._attr = (FigText) iter.next();
+	figClone.attr = (FigText) iter.next();
 	return figClone;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
+     */
     public Dimension getMinimumSize() {
 	Dimension nameMin = getNameFig().getMinimumSize();
-	Dimension attrMin = _attr.getMinimumSize();
+	Dimension attrMin = attr.getMinimumSize();
 
 	int h = nameMin.height + attrMin.height;
 	int w = Math.max(nameMin.width, attrMin.width);
@@ -107,7 +124,10 @@ public class FigInstance extends FigNodeModelElement {
     }
 
 
-    /* Override setBounds to keep shapes looking right */
+    /** Override setBounds to keep shapes looking right 
+     * 
+     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     */
     public void setBounds(int x, int y, int w, int h) {
 	if (getNameFig() == null) return;
 	Rectangle oldBounds = getBounds();
@@ -115,7 +135,7 @@ public class FigInstance extends FigNodeModelElement {
 	Dimension nameMinimum = getNameFig().getMinimumSize();
 
 	getNameFig().setBounds(x, y, w, nameMinimum.height);
-	_attr.setBounds(x, y + getNameFig().getBounds().height,
+	attr.setBounds(x, y + getNameFig().getBounds().height,
 			w, h - getNameFig().getBounds().height);
 	getBigPort().setBounds(x + 1, y + 1, w - 2, h - 2);
 

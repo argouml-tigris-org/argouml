@@ -1,26 +1,26 @@
-//$Id$
-//Copyright (c) 1996-2004 The Regents of the University of California. All
-//Rights Reserved. Permission to use, copy, modify, and distribute this
-//software and its documentation without fee, and without a written
-//agreement is hereby granted, provided that the above copyright notice
-//and this paragraph appear in all copies.  This software program and
-//documentation are copyrighted by The Regents of the University of
-//California. The software program and documentation are supplied "AS
-//IS", without any accompanying services from The Regents. The Regents
-//does not warrant that the operation of the program will be
-//uninterrupted or error-free. The end-user understands that the program
-//was developed for research purposes and is advised not to rely
-//exclusively on the program for any reason.  IN NO EVENT SHALL THE
-//UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-//SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
-//ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-//THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-//SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
-//WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-//MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-//PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-//CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
-//UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+// $Id$
+// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.diagram.static_structure.ui;
 
@@ -36,47 +36,55 @@ import org.argouml.uml.UUIDManager;
  * @author jaap.branderhorst@xs4all.nl
  */
 public class CommentEdge {
-    private Object _source;
-    private Object _dest;
-    private Object _uuid;
+    private Object source;
+    private Object dest;
+    private Object uuid;
     
-    public CommentEdge(Object source, Object dest) {
-        _source = source;
-        _dest = dest;
-        _uuid = UUIDManager.getInstance().getNewUUID();
+    /**
+     * Constructor
+     * @param s the source
+     * @param d the destination
+     */
+    public CommentEdge(Object s, Object d) {
+        source = s;
+        dest = d;
+        uuid = UUIDManager.getInstance().getNewUUID();
     }
     
     /**
      * The source of this CommentEdge
-     * @return
+     * @return the source
      */
     public Object getSource() {
-        return _source;            
+        return source;            
     }
     
     /**
      * The destination of this CommentEdge
-     * @return
+     * @return the destination
      */
     public Object getDestination() {
-        return _dest;
+        return dest;
     }
     
+    /**
+     * @return the uuid
+     */
     public Object getUUID() {
-        return _uuid;
+        return uuid;
     }
     
     
     /**
-     * @param dest The destination to set.
+     * @param d The destination to set.
      */
-    public void setDestination(Object dest) {
-        _dest = dest;
+    public void setDestination(Object d) {
+        dest = d;
     }
     /**
-     * @param source The source to set.
+     * @param s The source to set.
      */
-    public void setSource(Object source) {
-        _source = source;
+    public void setSource(Object s) {
+        source = s;
     }
 }
