@@ -27,24 +27,57 @@
 
 
 <chapter id="running">
-	<title>&argo; Principles</title>
+	<title>ArgoUML Principles</title>
 	<para>
-    When &argo; starts, then it shows an empty class diagram
-    on which you can add various objects. &argo; works according the following
+    When ArgoUML starts, then it shows an empty class diagram
+    on which you can add various objects. ArgoUML works according the following
     principles:
   </para>
 
   <section>
-    <title>Project and Model</title>
+    <title>Project, Model and Diagram</title>
     <para>
-      The save and open operations handle one <literal>project</literal> at a
+      The file operations save and open handle one 
+      <literal>project</literal> at a
       time. One <literal>project</literal> corresponds to a
-      <literal>model</literal> plus diagram information. 
-      The <literal>model</literal> might contain many
-      objects (ModelElements) which might be present on a diagram, but this is not
-      required. Hence, the <literal>model</literal> that is stored in &argo; is
-      independent of the contents of the diagrams. But everything together is
-      stored in a <literal>project</literal>.
+      <literal>model</literal> plus diagram information, 
+      i.e. everything you can edit within the ArgoUML window. 
+    </para>
+    <para>
+      The <literal>model</literal> may contain many
+      objects (ModelElements) which
+      form the complete UML description 
+      of the system you are describing.
+      All ModelElements might be present on a diagram, 
+      but this is not required. 
+      Hence, the <literal>model</literal> 
+      that is stored in ArgoUML is
+      independent of the contents of the diagrams. 
+      This may be explained by the possibility 
+      to generate programming code from the 
+      <literal>model</literal> - you 
+      do not need any diagrams for this.
+    </para>
+    <para>
+      A ArgoUML <literal>project</literal> also contains 
+      all diagram information, i.e.
+      the shapes (presentation) used 
+      to represent the various UML ModelElements, 
+      their location, color, etc. 
+      Some ModelElements appear on multiple diagrams, 
+      some on one or none.
+    </para>
+    <para>
+      Hence, saving and opening projects 
+      retains all this information. 
+      There is a way to only save the 
+      <literal>model</literal> information
+      though, which is by the menu 
+      "Tools" -> "Export as XMI...". 
+      This may be usefull e.g. 
+      when generating programming code 
+      with an external tool 
+      that understands XMI.
     </para>
   </section>
 
@@ -52,7 +85,7 @@
     <title>Objects</title>
     <para>
       Select objects by left-clicking on them.
-      The functionality of &argo; can be activated in the menu, 
+      The functionality of ArgoUML can be activated in the menu, 
       in toolbars,
       or in pop-up menus when right-clicking above an object.
       Many of these functions work on the selected objects.
@@ -60,6 +93,20 @@
     <para>
       All diagrams have toolbars at the top which are used 
       to create objects on the diagram.
+    </para>
+    <para>
+      Most objects can be added to a diagram and removed from a diagram without
+      deleting it from the <literal>model</literal>! 
+      Select an object on a diagram, and then the menu item 
+      "Edit" -> "Remove from Diagram" clears the object from the diagram, 
+      but the object remains intact in the model, 
+      which may be seen in the explorer, 
+      i.e. the tree structure at the left hand side.
+      Once removed, and item can be added back to the diagram 
+      (or any other diagram for that matter)
+      by selecting it in the explorer 
+      and selecting the item "Add to Diagram" 
+      in the right-click pop-up menu.
     </para>
   </section>
 
@@ -71,14 +118,14 @@
       open another project instead.
     </para>
 		<para>
-      The upper left part of the &argo; window shows a tree model 
+      The upper left part of the ArgoUML window shows a tree model 
       of diagrams and objects. 
       This view can be adapted to your needs 
       by filtering the objects that are shown, 
       and the structure in which they are shown.
     </para>
 		<para>
-      The upper right part of &argo; shows the current diagram (one at a time).
+      The upper right part of ArgoUML shows the current diagram (one at a time).
       You can drag and drop the objects in the diagrams,
       and you can use the quick-links 
       that appear when hovering over a selected object 

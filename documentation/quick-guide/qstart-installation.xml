@@ -36,28 +36,19 @@ Minimum system requirements:
 				<itemizedlist>
 					<listitem>
 						<para>
-              Any Operating System that supports Java2.
-            </para>
+              			  Any Operating System that supports Java.
+            		    </para>
 					</listitem>
-					<!--listitem>
-						<para>200MHz Intel Pentium, AMD K6 or similar processor</para>
-					</listitem>
-					<listitem>
-						<para>64MB (128MB for Windows 2000) RAM</para>
-					</listitem-->
 					<listitem>
 						<para>10MB of free disk storage space on your hard disk.
-            </para>
+                        </para>
 					</listitem>
-					<!--listitem>
-						<para>SVGA video output and monitor</para>
-					</listitem-->
 					<listitem>
 						<para>Mouse (or other pointing device) and a Keyboard.</para>
 					</listitem>
 					<listitem>
 						<para>
-              Java 2 JRE or JDK version 1.3 or 1.4.
+              Java 2 JRE or JDK version 1.4 or higher.
             </para>
 					</listitem>
 				</itemizedlist>
@@ -66,7 +57,7 @@ Minimum system requirements:
 	<sect1>
 		<title>Installation options</title>		
 		<para>
-			Now that you have a computer that can install and run &argo; effectively, you need to decide which 
+			Now that you have a computer that can install and run ArgoUML effectively, you need to decide which 
 			of the installation options available is appropriate for you. You can choose from the following options:
 
 			<itemizedlist>
@@ -76,7 +67,7 @@ Java Web Start
 </para>
 					<para>
 This alternative is good for occasional users and tests.
-It is the easiest and quickest way to start using &argo;.
+It is the easiest and quickest way to start using ArgoUML.
 It requires connection to the &argo-homepage;.
 					</para>
 					<orderedlist>
@@ -117,7 +108,7 @@ Binary distribution
 </para>
 					<para>
 This is good for regular users and guarantees that the
-version of &argo; cannot change during the course of your project.
+version of ArgoUML cannot change during the course of your project.
 </para>
 					<orderedlist>
 						<listitem>
@@ -127,7 +118,7 @@ Make sure that you have a Java 2 JRE installed.
 						</listitem>
 						<listitem>
 							<para>
-Download the &argo; binary distribution from the &argo-homepage;.
+Download the ArgoUML binary distribution from the &argo-homepage;.
 </para>
 							<para>
 This could also include copying it to and from floppy disks or CD's
@@ -137,22 +128,23 @@ available.
 						</listitem>
 						<listitem>
 							<para>
-Create an &argo; installation directory.
+Create an ArgoUML installation directory.
 </para>
 						</listitem>
 						<listitem>
 							<para>
 Change the current directory 
-to the &argo; installation directory and 
-extract the &argo; files to the installation directory:
+to the ArgoUML installation directory and 
+extract the ArgoUML files to the installation directory.
+<!--:
 								<computeroutput>
-jar xvf <replaceable>&argo;-archive-filename</replaceable>
+jar xvf <replaceable>ArgoUML-archive-filename</replaceable>
 								</computeroutput>
 							</para>
 							<para>
 Remember to use <command>jar</command> to do this.
 For some odd reason WinZIP might have problems with the 
-&argo; zip-files.
+ArgoUML zip-files. -->
 							</para>
 
 						</listitem>
@@ -176,14 +168,15 @@ java -jar argouml.jar
   <sect1>
     <title>Installing Auxiliary Modules</title>
     <para>
-      The standard installation of &argo; does not support C++, php and C# code
-      generation. To make this possible, you need to download the auxiliary
-      modules from the download page at the &argo; website.
+      The standard installation of ArgoUML does not support C++, php and C# code
+      generation. To make this possible, you need to download the 
+      <literal>auxiliary modules</literal> 
+      from the download page at the ArgoUML website.
     </para>
     
     <para>
       Unpack the downloaded file in the same directory as 
-      you unpacked &argo; itself.
+      you unpacked ArgoUML itself.
     </para>
     
     <para>
@@ -197,7 +190,8 @@ java -jar argouml.jar
   <sect1>
     <title>Command Line Options</title>
     
-    <para>When starting &argo; from a command line, there are several extra possibilities.
+    <para>When starting ArgoUML from a command line, 
+    there are several extra possibilities.
     Try typing:</para>
 
     <para><command>java -jar argouml.jar -help</command>
