@@ -24,6 +24,7 @@
 package org.argouml.model.uml.behavioralelements.statemachines;
 
 import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.state_machines.MEvent;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
@@ -44,19 +45,17 @@ public class StateMachinesHelper {
      */
     private StateMachinesHelper() {
     }
-    
-     /** Singleton instance.
-     */
-    private static StateMachinesHelper SINGLETON =
-                   new StateMachinesHelper();
 
-    
+    /** Singleton instance.
+    */
+    private static StateMachinesHelper SINGLETON = new StateMachinesHelper();
+
     /** Singleton instance access method.
      */
     public static StateMachinesHelper getHelper() {
         return SINGLETON;
     }
-    
+
     /**
      * Returns the source of the given transition. This operation is here to 
      * give a full implementation of all getSource and getDestination methods
@@ -67,7 +66,7 @@ public class StateMachinesHelper {
     public MStateVertex getSource(MTransition trans) {
         return trans.getSource();
     }
-    
+
     /**
      * Returns the destination of the given transition. This operation is here 
      * to give a full implementation of all getSource and getDestination methods
@@ -78,8 +77,7 @@ public class StateMachinesHelper {
     public MStateVertex getDestination(MTransition trans) {
         return trans.getTarget();
     }
-    
-    
+
     /**
      * Couples a given action to the given state as being the exit action. To 
      * decouple ArgoUML as much as possible from the NSUML model, the parameters
@@ -94,9 +92,9 @@ public class StateMachinesHelper {
         if (action == null || !(action instanceof MAction)) {
             throw new IllegalArgumentException("Action either null or not an instance of MAction");
         }
-        ((MState)state).setExit((MAction)action);
+        ((MState) state).setExit((MAction) action);
     }
-    
+
     /**
      * Couples a given action to the given state as being the entry action. To 
      * decouple ArgoUML as much as possible from the NSUML model, the parameters
@@ -111,9 +109,9 @@ public class StateMachinesHelper {
         if (action == null || !(action instanceof MAction)) {
             throw new IllegalArgumentException("Action either null or not an instance of MAction");
         }
-        ((MState)state).setEntry((MAction)action);
+        ((MState) state).setEntry((MAction) action);
     }
-    
+
     /**
      * Couples a given action to the given state as being the do activity action. To 
      * decouple ArgoUML as much as possible from the NSUML model, the parameters
@@ -128,9 +126,26 @@ public class StateMachinesHelper {
         if (action == null || !(action instanceof MAction)) {
             throw new IllegalArgumentException("Action either null or not an instance of MAction");
         }
-        ((MState)state).setDoActivity((MAction)action);
+        ((MState) state).setDoActivity((MAction) action);
     }
-    
+
+    /**
+     * Couples a given action to the given transition as being the effect
+     * of the transition. To decouple ArgoUML as much as possible from the NSUML
+     * model, the parameters of the method are of type Object.
+     * @param state
+     * @param action
+     */
+    public void setActionAsEffect(Object transition, Object action) {
+        if (transition == null || !(transition instanceof MTransition)) {
+            throw new IllegalArgumentException("Transition either null or not an instance of MTransition");
+        }
+        if (action == null || !(action instanceof MAction)) {
+            throw new IllegalArgumentException("Action either null or not an instance of MAction");
+        }
+        ((MTransition) transition).setEffect((MAction) action);
+    }
+
     /**
      * Gets the statemachine that contains the given parameter oState. Traverses
      * the state hierarchy of the statemachine untill the statemachine is reached.
@@ -142,14 +157,30 @@ public class StateMachinesHelper {
      */
     public MStateMachine getStateMachine(Object oState) {
         if (oState instanceof MState) {
-            MState state = (MState)oState;
+            MState state = (MState) oState;
             if (state.getStateMachine() != null) {
                 return state.getStateMachine();
-            } 
-            else
+            } else
                 return getStateMachine(state.getContainer());
         }
         return null;
     }
-}
 
+    /**
+     * Couples a given event to the given transition as being trigger event. To
+     * decouple ArgoUML as much as possible from the NSUML model, the parameters
+     * of the method are of type Object.
+     * @param state
+     * @param action
+     */
+    public void setEventAsTrigger(Object transition, Object event) {
+        if (transition == null || !(transition instanceof MTransition)) {
+            throw new IllegalArgumentException("Transition either null or not an instance of MTransition");
+        }
+        if (event == null || !(event instanceof MEvent)) {
+            throw new IllegalArgumentException("Event either null or not an instance of MEvent");
+        }
+        ((MTransition) transition).setTrigger((MEvent) event);
+    }
+
+}
