@@ -317,9 +317,12 @@ So, who is right? - the critic, or the description here? -->
       </itemizedlist>
 
       <para>Argo uncompressed project files (*.argo) 
-        were produced by earlier releases of &argouml;,
-        XMI files allow you to use diagrams from other tools (which may not
-        always work!).</para>
+        were produced by earlier releases of &argouml;.
+        XMI files allow you to use diagrams from other tools 
+        (which may not
+        alweays work, 
+        since &argouml; is only compatible with XMI for UML 1.3).
+      </para>
 
       <para>To the right of the file name and filter are two buttons,
         <literal>Open</literal> and <literal>Cancel</literal> to open the
