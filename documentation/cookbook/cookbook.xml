@@ -672,7 +672,7 @@ where you will need to change the
 property names accordingly.
 </para>
 	    <para>
-For release 0.9.6 it should look like this:
+For release 0.9.7 it should look like this:
 <programlisting>
   &lt;target name="setversion"&gt;
     &lt;!-- These cannot be changed in .ant.properties --&gt;
@@ -686,7 +686,7 @@ For release 0.9.6 it should look like this:
 	    <para>Tag the whole cvs directory with the freeze tag!</para>
 	    <para>
 Normally this tag is "VERSION_<replaceable>X_Y_Z</replaceable>_F",
-e.g. VERSION_0_9_6_F.
+e.g. VERSION_0_9_7_F.
 The according command line cvs command is 
 <command>cvs rtag VERSION_<replaceable>X_Y_Z</replaceable>_F argouml</command>.
 In case you make a mistake doing that (you shouldn't really), 
@@ -733,7 +733,7 @@ If the tests did not pass See <xref linkend="release_process_test_failed"/>.
 	    <para>Tag the whole repository with the release tag!</para>
 	    <para>
 This tag is "VERSION_<replaceable>X_Y_Z</replaceable>",
-e.g. VERSION_0_9_6.
+e.g. VERSION_0_9_7.
 The according command line cvs command is 
 <command>cvs tag VERSION_<replaceable>X_Y_Z</replaceable></command>
 when your are standing in the
@@ -3345,7 +3345,8 @@ not raised, nor solved.
 	</listitem>
 	<listitem>
 	  <para>
-Run the 0.9.6 release of ArgoUML as provided for downloads.
+Run the specified release of ArgoUML as provided for downloads or 
+through Java Web Start.
 </para>
 	</listitem>
 	<listitem>
