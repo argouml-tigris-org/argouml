@@ -36,7 +36,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.kernel.SaveException;
 import org.argouml.model.ModelFacade;
-import org.argouml.xml.xmi.XMIParser;
 
 import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.xmi.IncompleteXMIException;
@@ -124,17 +123,6 @@ public class ProjectMemberModel extends ProjectMember {
 
     ////////////////////////////////////////////////////////////////
     // actions
-
-    /**
-     * @see org.argouml.kernel.ProjectMember#load()
-     */
-    public void load() throws java.io.IOException, org.xml.sax.SAXException {
-        LOG.info("Reading " + getURL());
-        XMIParser.getSingleton().readModels(getProject(), getURL());
-        model = XMIParser.getSingleton().getCurModel();
-        getProject().setUUIDRefs(XMIParser.getSingleton().getUUIDRefs());
-        LOG.info("Done reading " + getURL());
-    }
 
     /**
      * Save the project model to XMI.

@@ -31,7 +31,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.net.URL;
 
 public abstract class ProjectMember {
 
@@ -45,8 +44,8 @@ public abstract class ProjectMember {
     // constructors
 
     public ProjectMember(String name, Project theProject) {
-	project = theProject;
-	setName(name);
+        project = theProject;
+        setName(name);
     }
 
 
@@ -64,15 +63,15 @@ public abstract class ProjectMember {
      * @return the member's name without the prepended name of the project
      */
     public String getPlainName() {
-	String s = name;
-    
-	if (s != null) {
-	    if (!s.endsWith (getFileExtension())) {
-		s += getFileExtension();
-	    }
-	}
-    
-	return s;
+        String s = name;
+        
+        if (s != null) {
+            if (!s.endsWith (getFileExtension())) {
+        	s += getFileExtension();
+            }
+        }
+        
+        return s;
     }
 
     /**
@@ -83,40 +82,45 @@ public abstract class ProjectMember {
      * @return the member's name including the project's base name
      */
     public String getName() {
-	if (name == null)
-	    return null;
-
-	String s = project.getBaseName();
-
-	if (name.length() > 0)
-	    s += "_" + name;
-    
-	if (!s.endsWith(getFileExtension()))
-	    s += getFileExtension();
-    
-	return s;
+        if (name == null)
+            return null;
+        
+        String s = project.getBaseName();
+        
+        if (name.length() > 0)
+            s += "_" + name;
+        
+        if (!s.endsWith(getFileExtension()))
+            s += getFileExtension();
+        
+        return s;
     }
   
     public void setName(String s) { 
-	name = s;
-
-	if (name == null)
-	    return;
-
-	if (name.startsWith (project.getBaseName())) {
-	    name = name.substring (project.getBaseName().length());
-	    int i = 0;
-	    for (; i < name.length(); i++)
-		if (name.charAt(i) != '_')
-		    break;
-	    if (i > 0)
-		name = name.substring(i);
-	}
-
-	if (name.endsWith(getFileExtension()))
-	    name =
-		name.substring(0,
-				name.length() - getFileExtension().length());
+        name = s;
+        
+        if (name == null) {
+            return;
+        }
+        
+        if (name.startsWith (project.getBaseName())) {
+            name = name.substring (project.getBaseName().length());
+            int i = 0;
+            for (; i < name.length(); i++) {
+            	if (name.charAt(i) != '_') {
+            	    break;
+                }
+            }
+            if (i > 0) {
+                name = name.substring(i);
+            }
+        }
+        
+        if (name.endsWith(getFileExtension())) {
+            name = 
+                name.substring(0,
+                        name.length() - getFileExtension().length());
+        }
     }
 
     public Project getProject() { return project; }
@@ -124,14 +128,8 @@ public abstract class ProjectMember {
     public abstract String getType();
     public abstract String getFileExtension();
 
-    public URL getURL() {
-	return getProject().findMemberURLInSearchPath(getName());
-    }
-
     ////////////////////////////////////////////////////////////////
     // actions
-
-    public abstract void load() throws IOException, org.xml.sax.SAXException;
 
     /**
      * Save the projectmember as XML to the given writer.
@@ -180,4 +178,3 @@ public abstract class ProjectMember {
         project = null;
     }
 } /* end class ProjectMember */
-
