@@ -98,6 +98,7 @@ import org.tigris.gef.presentation.FigText;
 public class TabProps
     extends TabSpawnable
     implements TabModelTarget, ArgoModuleEventListener {
+    
     private static final Logger LOG = Logger.getLogger(TabProps.class);
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -160,7 +161,7 @@ public class TabProps
 
     /**
      * Set the orientation of the property panel
-     * @param orientation the new orientation for this preoprty panel
+     * @param orientation the new orientation for this property panel
      */
     public void setOrientation(Orientation orientation) {
         super.setOrientation(orientation);
@@ -210,7 +211,7 @@ public class TabProps
         //                 new PropPanelUseCase());
         //important: MStateImpl corresponds to PropPanelSimpleState 
         //               not to PropPanelState!!
-        //otherwise, spawing will not ne successful!!
+        //otherwise, spawing will not be successful!!
         panels.put(ModelFacade.STATEIMPL/*MStateImpl.class*/, 
                 new PropPanelSimpleState());       
     }
@@ -333,6 +334,12 @@ public class TabProps
         return p;
     }
 
+    /**
+     * Locate the panel for the given class.
+     * 
+     * @param targetClass the given class
+     * @return the properties panel for the given class, or null if not found
+     */
     public Class panelClassFor(Class targetClass) {
         String panelClassName = "";
         String pack = "org.argouml.uml";
