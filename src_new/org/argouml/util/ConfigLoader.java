@@ -73,6 +73,7 @@ public class ConfigLoader {
      */
     public static void loadTabs(Vector tabs, String panelName, 
             Orientation orientation) {
+        
         String position = null;
         if (panelName.equals("north") || panelName.equals("south")  
 	    || panelName.equals("west") || panelName.equals("east") 
@@ -81,6 +82,7 @@ public class ConfigLoader {
             position = panelName;
             panelName = "detail";
         }
+        
         InputStream is = null;
 	LineNumberReader lnr = null;
 	String configFile = System.getProperty("argo.config");
@@ -169,12 +171,12 @@ public class ConfigLoader {
      */
     public static Class parseConfigLine(String line, String panelName,
 					int lineNum, String configFile) {
-	if (line.startsWith("tabpath")) {
+	if (line.startsWith("tabpath:")) {
 	    String newPath = stripBeforeColon(line).trim();
 	    if (newPath.length() > 0) tabPath = newPath;
 	    return null;
 	}
-	else if (line.startsWith(panelName)) {
+	else if (line.startsWith(panelName + ":")) {
 	    String tabNames = stripBeforeColon(line).trim();
 	    StringTokenizer tabAlternatives = 
 	        new StringTokenizer(tabNames, "|");
