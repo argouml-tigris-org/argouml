@@ -388,7 +388,12 @@ public final class TargetManager {
     }
 
     /**
-     * Returns the current target.
+     * Returns the current primary target, the first selected object.
+     *
+     * The value will be that of the new primary target during a targetSet/
+     * targetAdded/targetRemoved notification, since they are just that,
+     * notifications that the target(s) has just changed.
+     *
      * @return The current target, or null if no target is selected
      * @throws TargetException isn't thrown, obsolete declaration.
      */
@@ -400,10 +405,16 @@ public final class TargetManager {
      * Sets the given collection to the current targets. If the collection 
      * equals the current targets, then does nothing. When setting
      * the targets, a TargetEvent will be fired to each interested listener.
+     * Note that the first element returned by an Iterator on targetList
+     * will be taken to be the primary target (see getTarget()), and that
+     * an event will be fired also in case that that element would not equal
+     * the element returned by getTarget().
+     * Note also that any nulls within the Collection will be ignored.
      * @param targetsList The new targets list.
      */
     public synchronized void setTargets(Collection targetsList) {
 	RuntimeException exception;
+	Iterator ntarg;
 
 	if (isInTargetTransaction())
 	    return;
@@ -412,18 +423,23 @@ public final class TargetManager {
 	    targetsList = Collections.EMPTY_LIST;
 
 	Object oldTargets[] = null;
-	Iterator ctarg = _targets.iterator();
-	Iterator ntarg = targetsList.iterator();
 
-	while (ctarg.hasNext() && ntarg.hasNext()) {
-	    Object targ = ntarg.next();
-	    if (targ == null ? ctarg.next() != null : !targ.equals(ctarg.next())) {
-		oldTargets = _targets.toArray();
-		break;
+	if (targetsList.size() == _targets.size()) {
+	    boolean first = true;
+	    ntarg = targetsList.iterator();
+
+	    while (ntarg.hasNext()) {
+		Object targ = ntarg.next();
+		if (targ == null)
+		    continue;
+		if (!_targets.contains(targ)
+		    || (first && targ != getTarget())) {
+		    oldTargets = _targets.toArray();
+		    break;
+		} else
+		    first = false;
 	    }
-	}
-
-	if (oldTargets == null && (ctarg.hasNext() || ntarg.hasNext()))
+	} else
 	    oldTargets = _targets.toArray();
 
 	if (oldTargets == null)
@@ -451,7 +467,8 @@ public final class TargetManager {
      * Adds a target to the targets list. If the target is already in
      * the targets list then does nothing. Otherwise the
      * target will be added and an appropriate TargetEvent will be
-     * fired to all interested listeners.
+     * fired to all interested listeners. Since null can never be a target,
+     * adding null will never do anything.
      * @param target the target to be added.
      */
     public synchronized void addTarget(Object target) {
@@ -477,7 +494,8 @@ public final class TargetManager {
     /**
      * Removes the target from the targets list. Does nothing if the target
      * does not exist in the targets list. Fires an appropriate TargetEvent to 
-     * all interested listeners.
+     * all interested listeners. Since null can never be a target, removing
+     * null will never do anything.
      * @param target The target to remove.
      */
     public synchronized void removeTarget(Object target) {
@@ -506,6 +524,10 @@ public final class TargetManager {
      * Object by an Iterator on the returned Collection or the zero'th Object
      * in an array on this Collection is guaranteed to be the object returned
      * by getTarget.
+     *
+     * The value will be that of the new target(s) during a targetSet/
+     * targetAdded/targetRemoved notification, since they are just that,
+     * notifications that the target(s) has just changed.
      *
      * @return A collection with all targets.
      */
