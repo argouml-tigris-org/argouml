@@ -53,9 +53,11 @@ Description of all the artifacts associated with State Diagrams within ArgoUML.
     <sect2 id="s2.ref.state_limitations">
       <title>Limitations Concerning State Diagrams in &argouml;</title>
 
-      <para>The state diagrams is generally well drawn, but only call events
-        are supported, and these are purely textual, with no way to link them
-        back to their associated operations.</para>
+      <para>
+The state diagrams are generally well drawn, but the 4 event types 
+supported (CallEvent, SignalEvent, ChangeEvent and TimeEvent), are purely 
+textual, with no way to link them back to their associated operations.
+</para>
 
       <para>
 Code generation from state diagrams is not properly developed yet.
@@ -69,20 +71,19 @@ Code generation from state diagrams is not properly developed yet.
   <sect1 id="s1.ref.state">
     <title>State</title>
 
-    <para>A state models a condition when some (usually implicit) invariant
-      holds for the parent class. This may be a static situation, or some
-      dynamic activity <quote>in progress</quote>. Within the UML metamodel,
-      <literal>State</literal> is a sub-class of 
-      <literal>StateVertex</literal>.</para>
-
+    <para>
+A state models a situation during which some (usually implicit)
+invariant condition holds for the parent class.
+This invariant may be a static situation such as an object waiting for
+some external event to occur, or some dynamic activity 
+<quote>in progress</quote>.
+</para>
+    
     <para>A state is represented on a state diagram in &argouml; as a
       rectangle with rounded corners, with a horizontal line separating the
       name at the top from the description of the behavior below. The
       description of the behavior includes the entry and exit actions and any
       internal transitions.</para>
-
-    <caution><para>The current release of &argouml; does not record <quote>Do
-      activities</quote> on the diagram.</para></caution>
 
     <!-- State details tabs -->
 
@@ -154,9 +155,12 @@ Code generation from state diagrams is not properly developed yet.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. There are no standard constraints
-            defined for <literal>State</literal> within the UML
-            metamodel.</para></listitem>
+          <listitem>
+            <para>Standard tab.
+This tab is downlighted, since constraints are not defined for 
+<literal>State</literal> within the &argouml; metamodel.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -164,7 +168,15 @@ Code generation from state diagrams is not properly developed yet.
         <varlistentry>
           <term><literal>Tagged Values</literal></term>
 
-          <listitem><para>Standard tab. In the UML metamodel,
+          <listitem><para>Standard tab. 
+	  <!-- MVW: I think there are none defined:
+               I do not see them in ArgoUML, hence this part below 
+               is to be removed...???
+               Linus: I don't think so. What tagged values that could
+               exist on a specific model element is specified in the
+               UML specification.
+            -->
+In the UML metamodel,
             <literal>State</literal> has the following standard
             tagged values defined.</para>
 
@@ -179,14 +191,21 @@ Code generation from state diagrams is not properly developed yet.
               <note><para>Derived states still have their value in
                 analysis and design to introduce useful names or concepts,
                 and in design to avoid
-                re-computation.</para></note></listitem>
-            </itemizedlist>
+re-computation.
+</para>
+              </note>
 
-            <note><para>The UML <literal>Element</literal> metaclass from
-              which all other artifacts are derived includes the tagged
-              element <literal>documentation</literal> which is handled by
-              the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+              <note>
+                <para>
+The UML <literal>Element</literal> metaclass from which all other
+artifacts are derived includes the tagged element
+<literal>documentation</literal> which is handled by the
+<emphasis>documentation tab</emphasis> under
+&argouml;
+</para>
+              </note>
+            </listitem>
+          </itemizedlist>
         </varlistentry>
       </variablelist>
     </sect2>
