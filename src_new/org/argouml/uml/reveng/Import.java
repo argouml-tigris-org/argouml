@@ -31,36 +31,37 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.ListIterator;
-import java.util.List;
 import java.util.Vector;
-import java.util.StringTokenizer;
-import java.net.URLClassLoader;
-import java.net.URL;
-import java.net.MalformedURLException;
-import java.io.File;
 
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
-import javax.swing.JRadioButton;
-import javax.swing.ButtonGroup;
-import javax.swing.JProgressBar;
-import java.awt.EventQueue;
 
 import org.apache.log4j.Logger;
+
 import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
 import org.argouml.application.api.PluggableImport;
 import org.argouml.cognitive.Designer;
 import org.argouml.kernel.Project;
@@ -68,30 +69,11 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
-import org.argouml.ui.StatusBar;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.util.logging.SimpleTimer;
-import org.argouml.application.api.Argo;
-import org.argouml.application.api.Configuration;
-
-import org.argouml.kernel.*;
-import org.argouml.application.api.*;
 import org.argouml.util.osdep.OsUtil;
-import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
-import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.util.SuffixFilter;
-import org.argouml.ui.ProjectBrowser;
-
-import org.tigris.gef.base.Globals;
-
-import java.io.*;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.util.Vector;
 
 import org.tigris.gef.base.Globals;
 
@@ -187,8 +169,8 @@ public class Import {
 	    throw new RuntimeException("Internal error. Default import module not found");
         JComponent chooser = module.getChooser(this);
         dialog = new JDialog(ProjectBrowser.getInstance(), "Import sources");
-        dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
+        dialog.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent evt) {
                 disposeDialog();
             }
         });
@@ -287,7 +269,7 @@ public class Import {
             // if we are not creating diagrams
             create_diagrams.addActionListener(new ActionListener()
 		{
-		    public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
+		    public void actionPerformed(ActionEvent actionEvent) {
 			if (!create_diagrams.isSelected()) {
 			    minimise_figs.setSelected(false);
 			    layout_diagrams.setSelected(false);
@@ -497,7 +479,7 @@ public class Import {
             
             iss.addCancelButtonListener(new ActionListener() 
 		{
-		    public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
+		    public void actionPerformed(ActionEvent actionEvent) {
 			cancel();
 		    }
 		});
