@@ -210,6 +210,9 @@ public class ToDoPane extends JPanel
         
         _oldSize = 0;
         _dir = ' ';
+        Dimension preferredSize = getPreferredSize();
+        preferredSize.height = 30;
+        setPreferredSize(preferredSize);
     }
     
     ////////////////////////////////////////////////////////////////
