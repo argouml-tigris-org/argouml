@@ -31,6 +31,7 @@ import java.net.URL;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -62,7 +63,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
      * The constructor. 
      */
     protected ActionSaveProjectAs() {
-        super("action.save-project-as", true, HAS_ICON);
+        super(Translator.localize("action.save-project-as"));
     }
 
     ////////////////////////////////////////////////////////////////

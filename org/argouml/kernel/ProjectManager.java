@@ -59,6 +59,12 @@ public final class ProjectManager implements PropertyChangeListener {
         "currentProject";
     
     /**
+     * The name of the property that there is no project.
+     */
+    public static final String NO_PROJECT =
+        "noProject";
+    
+    /**
      * The name of the property that defines the save state.
      */
     public static final String SAVE_STATE_PROPERTY_NAME = "saveState";
@@ -189,7 +195,7 @@ public final class ProjectManager implements PropertyChangeListener {
 	    }
         }
         firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME,
-			    oldProject, newProject);
+                oldProject, newProject);
     }
 
     /**

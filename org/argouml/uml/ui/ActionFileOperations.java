@@ -28,6 +28,8 @@ import java.io.File;
 import java.net.URL;
 import java.text.MessageFormat;
 
+import javax.swing.AbstractAction;
+import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
@@ -48,7 +50,7 @@ import org.argouml.ui.ProjectBrowser;
  * @author mvw@tigris.org
  *
  */
-public abstract class ActionFileOperations extends UMLAction {
+public abstract class ActionFileOperations extends AbstractAction {
     private static final Logger LOG =
         Logger.getLogger(ActionFileOperations.class);
 
@@ -58,29 +60,17 @@ public abstract class ActionFileOperations extends UMLAction {
      * @param name the name of the action
      */
     public ActionFileOperations(String name) {
-        super(name, HAS_ICON);
+        super(name);
     }
 
     /**
      * The constructor.
      * 
      * @param name the name of the action
-     * @param hasIcon true if an icon should be shown
+     * @param icon the icon to represent this action graphically
      */
-    public ActionFileOperations(String name, boolean hasIcon) {
-        super(name, hasIcon);
-    }
-
-    /**
-     * The constructor.
-     * 
-     * @param name the name of the action
-     * @param global if this is a global action, then it has to be added 
-     *               to the list of such actions in the class Actions
-     * @param hasIcon true if an icon should be shown
-     */
-    public ActionFileOperations(String name, boolean global, boolean hasIcon) {
-        super(name, hasIcon);
+    public ActionFileOperations(String name, Icon icon) {
+        super(name, icon);
     }
 
     /**
@@ -228,6 +218,4 @@ public abstract class ActionFileOperations extends UMLAction {
                       "Error",
                       JOptionPane.ERROR_MESSAGE);
     }
-
-
 }
