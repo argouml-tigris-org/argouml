@@ -252,6 +252,9 @@ public class ModelFacade {
         MVisibilityKind.PRIVATE;
     public static final Object PROTECTED_VISIBILITYKIND =
         MVisibilityKind.PROTECTED;
+    
+    public static final Object COMPOSITE_AGGREGATIONKIND =
+        MAggregationKind.COMPOSITE;
 
 
     /** Constructor that forbids instantiation.

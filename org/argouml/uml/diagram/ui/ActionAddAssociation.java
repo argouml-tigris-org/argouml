@@ -30,8 +30,7 @@
 package org.argouml.uml.diagram.ui;
 
 
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
+import org.argouml.model.ModelFacade;
 
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.ModeCreatePolyEdge;
@@ -53,9 +52,9 @@ public class ActionAddAssociation extends CmdSetMode {
      *        association
      * @param name the action description
      */
-    public ActionAddAssociation(MAggregationKind aggregation, boolean unidirectional, String name) {
-        super(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, name);
-        _modeArgs.put("aggregation", aggregation);
+    public ActionAddAssociation(Object aggregationKind, boolean unidirectional, String name) {
+        super(ModeCreatePolyEdge.class, "edgeClass", (Class)ModelFacade.ASSOCIATION, name);
+        _modeArgs.put("aggregation", aggregationKind);
         _modeArgs.put("unidirectional", new Boolean(unidirectional));
     }
 }

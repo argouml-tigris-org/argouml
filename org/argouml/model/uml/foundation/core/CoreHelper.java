@@ -973,7 +973,13 @@ public class CoreHelper {
      * @param relation
      * @return MModelElement
      */
-    public MModelElement getSource(MRelationship relation) {
+    public MModelElement getSource(Object relationship) {
+        
+        if(!(relationship instanceof MRelationship))
+            throw new IllegalArgumentException();
+        
+        MRelationship relation = (MRelationship)relationship;
+        
         if (relation instanceof MAssociation) {
             MAssociation assoc = (MAssociation) relation;
             List conns = assoc.getConnections();
@@ -1022,7 +1028,13 @@ public class CoreHelper {
      * @param relation
      * @return MModelElement
      */
-    public MModelElement getDestination(MRelationship relation) {
+    public MModelElement getDestination(Object relationship) {
+        
+        if(!(relationship instanceof MRelationship))
+            throw new IllegalArgumentException();
+        
+        MRelationship relation = (MRelationship)relationship;
+        
         if (relation instanceof MAssociation) {
             MAssociation assoc = (MAssociation) relation;
             List conns = assoc.getConnections();

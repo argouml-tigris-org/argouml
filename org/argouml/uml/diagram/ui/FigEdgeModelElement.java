@@ -54,6 +54,7 @@ import javax.swing.JMenu;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Category;
+
 import org.argouml.application.api.ArgoEventListener;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationContext;
@@ -72,6 +73,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.ActionAutoResize;
 import org.argouml.ui.ActionGoToCritique;
 import org.argouml.ui.ArgoDiagram;
@@ -81,6 +83,7 @@ import org.argouml.uml.UUIDManager;
 import org.argouml.uml.ui.ActionDeleteFromDiagram;
 import org.argouml.uml.ui.ActionProperties;
 import org.argouml.util.Trash;
+
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
@@ -89,11 +92,9 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigText;
 
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MRelationship;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /** Abstract class to display diagram arcs for UML ModelElements that
@@ -174,8 +175,6 @@ public abstract class FigEdgeModelElement
     public FigEdgeModelElement(Object edge) {
         this();
         setOwner(edge);
-        //MModelElement me = (MModelElement) edge;
-        //me.addVetoableChangeListener(this);
         ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
     }
 
@@ -391,10 +390,9 @@ public abstract class FigEdgeModelElement
      *  should override to handle other text elements. */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         if (ft == _name) {
-            MModelElement me = (MModelElement) getOwner();
-            if (me == null)
+            if (getOwner() == null)
                 return;
-            me.setName(ft.getText());
+            ModelFacade.setName(getOwner(), ft.getText());
         }
     }
 
@@ -433,11 +431,6 @@ public abstract class FigEdgeModelElement
             return;
         if (_name != null && canEdit(_name))
             _name.keyPressed(ke);
-        //ke.consume();
-        //     MModelElement me = (MModelElement) getOwner();
-        //     if (me == null) return;
-        //     try { me.setName(new Name(_name.getText())); }
-        //     catch (PropertyVetoException pve) { }
     }
 
     /** not used, do nothing. */
@@ -470,44 +463,40 @@ public abstract class FigEdgeModelElement
     }
 
     private void updateNameText() {
-        MModelElement me = (MModelElement) getOwner();
-        if (me == null)
+        
+        if (getOwner() == null)
             return;
-        String nameStr = Notation.generate(this, me.getName());
+        String nameStr = Notation.generate(this, ModelFacade.getName(getOwner()));
         _name.setText(nameStr);
     }
 
     protected void updateStereotypeText() {
-        MModelElement me = (MModelElement) getOwner();
-        if (me == null)
+        if (getOwner() == null)
             return;
-        MStereotype stereos = me.getStereotype();
+        Object stereos = ModelFacade.getStereotype(getOwner());
         if (stereos == null) {
             _stereo.setText("");
             return;
         }
-        String stereoStr = stereos.getName();
+        String stereoStr = ModelFacade.getName(stereos);
         if (stereoStr.length() == 0)
             _stereo.setText("");
         else {
-            _stereo.setText(Notation.generateStereotype(this, stereos));
+            _stereo.setText(Notation.generateStereotype(this, (MStereotype)stereos));
         }
     }
 
-    public void setOwner(Object own) {
-        super.setOwner(own);
-        if (own != null) {
+    public void setOwner(Object newOwner) {
+        super.setOwner(newOwner);
+        if (newOwner != null) {
             Object oldOwner = getOwner();
 
             if (org.argouml.model.ModelFacade.isAModelElement(oldOwner))
 		((MModelElement) oldOwner).removeMElementListener(this);
-            if (org.argouml.model.ModelFacade.isAModelElement(own)) {
-                MModelElement me = (MModelElement) own;
-                // UmlModelEventPump.getPump().removeModelEventListener(this,
-                // me);
-                UmlModelEventPump.getPump().addModelEventListener(this, me);
-                if (me.getUUID() == null)
-                    me.setUUID(UUIDManager.SINGLETON.getNewUUID());
+            if (org.argouml.model.ModelFacade.isAModelElement(newOwner)) {
+                UmlModelEventPump.getPump().addModelEventListener(this, newOwner);
+                if (ModelFacade.getUUID(newOwner) == null)
+                    ModelFacade.setUUID(newOwner, UUIDManager.SINGLETON.getNewUUID());
             }
             modelChanged(null);
         }
@@ -515,32 +504,23 @@ public abstract class FigEdgeModelElement
     }
 
     public void propertySet(MElementEvent mee) {
-        /*
-        //if (_group != null) _group.propertySet(mee);
-        if (mee.getOldValue() != mee.getNewValue()) {
-	if ("name".equals(mee.getName())) {
-	updateNameText();
-	} else
-	modelChanged(null);
-	damage();
-        }
-        */
+        
         modelChanged(mee);
         damage();
     }
     public void listRoleItemSet(MElementEvent mee) {
-        //if (_group != null) _group.listRoleItemSet(mee);
+        
         modelChanged(mee);
         damage();
     }
     public void recovered(MElementEvent mee) {
-        //if (_group != null) _group.recovered(mee);
+        
         modelChanged(mee);
         damage();
     }
     public void removed(MElementEvent mee) {
+        
         cat.debug("deleting: " + this + mee);
-        //if (_group != null) _group.removed(mee);
         if (mee.getSource() == getOwner())
             this.delete();
         else {
@@ -550,12 +530,12 @@ public abstract class FigEdgeModelElement
 
     }
     public void roleAdded(MElementEvent mee) {
-        //if (_group != null) _group.roleAdded(mee);
+        
         modelChanged(mee);
         damage();
     }
     public void roleRemoved(MElementEvent mee) {
-        //if (_group != null) _group.roleRemoved(mee);
+        
         modelChanged(mee);
         damage();
     }
@@ -568,7 +548,7 @@ public abstract class FigEdgeModelElement
         if (own != null) {
             Trash.SINGLETON.addItemFrom(getOwner(), null);
             if (org.argouml.model.ModelFacade.isAModelElement(own)) {
-                UmlFactory.getFactory().delete((MModelElement) own);
+                UmlFactory.getFactory().delete(own);
             }
         }
         Iterator it = getPathItemFigs().iterator();
@@ -659,9 +639,7 @@ public abstract class FigEdgeModelElement
     public void delete() {
         Object o = getOwner();
         if (org.argouml.model.ModelFacade.isABase(o)) {
-            UmlModelEventPump.getPump().removeModelEventListener(
-								 this,
-								 (MBase) o);
+            UmlModelEventPump.getPump().removeModelEventListener(this, o);
         }
         if (this instanceof ArgoEventListener) {
             ArgoEventPump.removeListener(this);
@@ -709,16 +687,16 @@ public abstract class FigEdgeModelElement
         if (owner == null || getLayer() == null)
             return false;
 
-        MModelElement newSource = (MModelElement) getSource();
-        MModelElement newDest = (MModelElement) getDestination();
+        Object newSource = getSource();
+        Object newDest = getDestination();
 
         Fig currentSourceFig = getSourceFigNode();
         Fig currentDestFig = getDestFigNode();
-        MModelElement currentSource = null;
-        MModelElement currentDestination = null;
+        Object currentSource = null;
+        Object currentDestination = null;
         if (currentSourceFig != null && currentDestFig != null) {
-            currentSource = (MModelElement) currentSourceFig.getOwner();
-            currentDestination = (MModelElement) currentDestFig.getOwner();
+            currentSource = currentSourceFig.getOwner();
+            currentDestination = currentDestFig.getOwner();
         }
         if (newSource != currentSource || newDest != currentDestination) {
             Fig newSourceFig = null;
@@ -802,7 +780,7 @@ public abstract class FigEdgeModelElement
      */
     protected Object getSource() {
         if (getOwner() != null) {
-            return CoreHelper.getHelper().getSource((MRelationship) getOwner());
+            return CoreHelper.getHelper().getSource(getOwner());
         }
         return null;
     }
@@ -816,8 +794,7 @@ public abstract class FigEdgeModelElement
      */
     protected Object getDestination() {
         if (getOwner() != null) {
-            return CoreHelper.getHelper().getDestination(
-							 (MRelationship) getOwner());
+            return CoreHelper.getHelper().getDestination(getOwner());
         }
         return null;
     }

@@ -1,6 +1,3 @@
-
-
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -96,19 +93,14 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MOperation;
-import ru.novosoft.uml.foundation.core.MParameter;
 
 /** Abstract class to display diagram icons for UML ModelElements that
  *  look like nodes and that have editiable names and can be
- *  resized. */
-
+ *  resized.
+ */
 public abstract class FigNodeModelElement
     extends FigNode
     implements
@@ -222,10 +214,9 @@ public abstract class FigNodeModelElement
     /** Reply text to be shown while placing node in diagram */
     public String placeString() {
         if (org.argouml.model.ModelFacade.isAModelElement(getOwner())) {
-            MModelElement me = (MModelElement) getOwner();
-            String placeString = me.getName();
+            String placeString = ModelFacade.getName(getOwner());
             if (placeString == null)
-                placeString = "new " + me.getUMLClassName();
+                placeString = "new " + ModelFacade.getUMLClassName(getOwner());
             return placeString;
         }
         return "";
@@ -522,12 +513,11 @@ public abstract class FigNodeModelElement
      *  should override to handle other text elements. */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         if (ft == _name) {
-            MModelElement me = (MModelElement) getOwner();
-            if (me == null)
+            if (getOwner() == null)
                 return;
             try {
                 ParserDisplay.SINGLETON.parseModelElement(
-							  me,
+							  (MModelElement)getOwner(),
 							  ft.getText().trim());
                 ProjectBrowser.getInstance().getStatusBar().showStatus("");
                 updateNameText();
@@ -537,12 +527,11 @@ public abstract class FigNodeModelElement
                 // if there was a problem parsing,
                 // then reset the text in the fig - because the model was not
                 // updated.
-                if (me.getName() != null)
-                    ft.setText(me.getName());
+                if (ModelFacade.getName(getOwner()) != null)
+                    ft.setText(ModelFacade.getName(getOwner()));
                 else
                     ft.setText("");
             }
-            //me.setName(ft.getText());
         }
     }
 
@@ -555,8 +544,7 @@ public abstract class FigNodeModelElement
     public void mouseClicked(MouseEvent me) {
         if (!_readyToEdit) {
             if (org.argouml.model.ModelFacade.isAModelElement(getOwner())) {
-                MModelElement own = (MModelElement) getOwner();
-                own.setName("");
+                ModelFacade.setName(getOwner(),"");
                 _readyToEdit = true;
             } else {
                 cat.debug("not ready to edit name");
@@ -590,8 +578,7 @@ public abstract class FigNodeModelElement
     public void keyPressed(KeyEvent ke) {
         if (!_readyToEdit) {
             if (org.argouml.model.ModelFacade.isAModelElement(getOwner())) {
-                MModelElement me = (MModelElement) getOwner();
-                me.setName("");
+                ModelFacade.setName(getOwner(),"");
                 _readyToEdit = true;
             } else {
                 cat.debug("not ready to edit name");
@@ -603,25 +590,14 @@ public abstract class FigNodeModelElement
         if (getOwner() == null)
             return;
         _name.keyPressed(ke);
-        //ke.consume();
-        //     MModelElement me = (MModelElement) getOwner();
-        //     if (me == null) return;
-        //     try { me.setName(new Name(_name.getText())); }
-        //     catch (PropertyVetoException pve) { }
     }
 
     /** not used, do nothing. */
     public void keyReleased(KeyEvent ke) {
     }
 
+    /** not used, do nothing. */
     public void keyTyped(KeyEvent ke) {
-        //     if (ke.isConsumed()) return;
-        //     _name.keyTyped(ke);
-        //     //ke.consume();
-        //     MModelElement me = (MModelElement) getOwner();
-        //     if (me == null) return;
-        //     try { me.setName(new Name(_name.getText())); }
-        //     catch (PropertyVetoException pve) { }  
     }
 
     ////////////////////////////////////////////////////////////////
@@ -634,8 +610,7 @@ public abstract class FigNodeModelElement
     protected void modelChanged(MElementEvent mee) {
         if (mee == null)
             throw new IllegalArgumentException("event may never be null with modelchanged");
-        MModelElement me = (MModelElement) getOwner();
-        if (me == null)
+        if (getOwner() == null)
             return;
         if ("name".equals(mee.getName()) && mee.getSource() == getOwner()) {
             updateNameText();
@@ -720,7 +695,7 @@ public abstract class FigNodeModelElement
         if (own != null) {
             Trash.SINGLETON.addItemFrom(own, null);
             if (org.argouml.model.ModelFacade.isAModelElement(own)) {
-                UmlFactory.getFactory().delete((MModelElement) own);
+                UmlFactory.getFactory().delete(own);
             }
         }
         Iterator it = getFigs().iterator();
@@ -735,16 +710,14 @@ public abstract class FigNodeModelElement
         updateListeners(own);
         super.setOwner(own);
         if (org.argouml.model.ModelFacade.isAModelElement(own)) {
-            MModelElement me = (MModelElement) own;
-            if (me.getUUID() == null)
-                me.setUUID(UUIDManager.SINGLETON.getNewUUID());
+            if (ModelFacade.getUUID(own) == null)
+                ModelFacade.setUUID(own, UUIDManager.SINGLETON.getNewUUID());
         }
         _readyToEdit = true;
         if (own != null)
             renderingChanged();
         updateBounds();
         bindPort(own, _bigPort);
-
     }
 
     /**
@@ -767,7 +740,6 @@ public abstract class FigNodeModelElement
         if (_readyToEdit) {
             if (getOwner() == null)
                 return;
-            MModelElement owner = (MModelElement) getOwner();
             String nameStr =
                 Notation.generate(this, org.argouml.model.ModelFacade.getName(getOwner()));
             _name.setText(nameStr);
@@ -786,13 +758,9 @@ public abstract class FigNodeModelElement
     protected void updateListeners(Object newOwner) {
         Object oldOwner = getOwner();
         if (oldOwner != null)
-            UmlModelEventPump.getPump().removeModelEventListener(
-								 this,
-								 (MBase) oldOwner);
+            UmlModelEventPump.getPump().removeModelEventListener(this,oldOwner);
         if (newOwner != null) {
-            UmlModelEventPump.getPump().addModelEventListener(
-							      this,
-							      (MBase) newOwner);
+            UmlModelEventPump.getPump().addModelEventListener(this,newOwner);
         }
 
     }
@@ -913,17 +881,15 @@ public abstract class FigNodeModelElement
 
         Object own = getOwner();
         if (org.argouml.model.ModelFacade.isAClassifier(own)) {
-            MClassifier cls = (MClassifier) own;
-            Iterator it = cls.getFeatures().iterator();
+            Iterator it = ModelFacade.getFeatures(own).iterator();
             while (it.hasNext()) {
-                MFeature feature = (MFeature) it.next();
+                Object feature = it.next();
                 if (org.argouml.model.ModelFacade.isAOperation(feature)) {
-                    MOperation oper = (MOperation) feature;
-                    Iterator it2 = oper.getParameters().iterator();
+                    Iterator it2 = ModelFacade.getParameters(feature).iterator();
                     while (it2.hasNext()) {
                         UmlModelEventPump.getPump().removeModelEventListener(
-									     this,
-									     (MParameter) it2.next());
+                                                        	    this,
+                                                                    it2.next());
                     }
                 }
                 UmlModelEventPump.getPump().removeModelEventListener(
@@ -932,9 +898,7 @@ public abstract class FigNodeModelElement
             }
         }
         if (org.argouml.model.ModelFacade.isABase(own)) {
-            UmlModelEventPump.getPump().removeModelEventListener(
-								 this,
-								 (MBase) own);
+            UmlModelEventPump.getPump().removeModelEventListener(this,own);
         }
         super.delete();
     }
