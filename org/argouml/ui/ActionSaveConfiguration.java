@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,22 +29,26 @@ import org.argouml.i18n.Translator;
 import org.argouml.application.api.Configuration;
 import org.argouml.uml.ui.UMLAction;
 
-/** Action for handling Argo configuration save
-*
-* @author Thierry Lach
-* @since 0.9.4
-*/
+/**
+ * Action for handling Argo configuration save
+ *
+ * @author Thierry Lach
+ * @since 0.9.4
+ */
 public class ActionSaveConfiguration extends UMLAction {
- 
-    /** One and only instance.
+    /**
+     * One and only instance.
+     *
+     * @deprecated by Linus Tolke as of 0.17.1. 
+     *             Create your own instance of this object instead.
      */
-    public static ActionSaveConfiguration SINGLETON =
+    public static final ActionSaveConfiguration SINGLETON =
 	new ActionSaveConfiguration();
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
-    protected ActionSaveConfiguration() {
+    /**
+     * Constructor.
+     */
+    public ActionSaveConfiguration() {
         super(Translator.localize("action.save-configuration"),
 	      false);
     }
@@ -52,10 +56,14 @@ public class ActionSaveConfiguration extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // main methods
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent event) {
         ProjectBrowser.getInstance().saveScreenConfiguration();
-        if (!Configuration.save())
+        if (!Configuration.save()) {
 	    Configuration.save(true);
+        }
     }
 } 
 
