@@ -269,6 +269,8 @@ class TableModelTaggedValues extends AbstractTableModel
 
 	if (columnIndex != 0 && columnIndex != 1) return;
 	if (!(aValue instanceof String)) return;
+        if (aValue == null) aValue = "";
+        
 	Vector tvs = new Vector(ModelFacade.getTaggedValuesCollection(_target));
 	if (tvs.size() <= rowIndex) {
 	    Object tv = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
@@ -291,7 +293,6 @@ class TableModelTaggedValues extends AbstractTableModel
 	    Object tv = tvs.elementAt(rowIndex);
 	    if (columnIndex == 0) ModelFacade.setTag(tv,(String) aValue);
 	    if (columnIndex == 1)  {
-		ModelFacade.setTag(tv,"");
                 ModelFacade.setValue(tv,(String) aValue);
             }
 	    mEvent = new TableModelEvent(this, rowIndex);
