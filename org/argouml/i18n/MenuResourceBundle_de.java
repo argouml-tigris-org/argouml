@@ -155,7 +155,10 @@ public class MenuResourceBundle_de extends ListResourceBundle {
         {"TaggedValues", "TaggedValues" },
         {"Checklist", "Checkliste" },
         {"History", "History" },
-
+    // arrange menu
+        {"Set minimum size", "Gr\u00f6sse an Inhalt anpassen"},
+        {"Toggle Auto Resizing", "Automatisch Gr\u00f6sse an Inhalt anpassen"},
+    // shortcut keys
         { "Shortcut_New", KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_MASK) },
         { "Shortcut_Open", KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK) },
         { "Shortcut_Save", KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK) },
