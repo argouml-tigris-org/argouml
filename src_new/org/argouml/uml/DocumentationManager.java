@@ -34,6 +34,11 @@ import ru.novosoft.uml.model_management.*;
 public class DocumentationManager {
 
   public static String getDocs(Object o) {
+    /*
+     * Added 2001-10-05 STEFFEN ZSCHALER
+     */
+    String sResult = defaultFor (o);
+    
     if (o instanceof MModelElementImpl) {
       Collection tValues = ((MModelElement) o).getTaggedValues();
       if (!tValues.isEmpty()) {
@@ -41,7 +46,14 @@ public class DocumentationManager {
 		  while(iter.hasNext()) {
 			  MTaggedValue tv = (MTaggedValue)iter.next();
         if ("javadocs".equals(tv.getTag())) {
+          /*
+           * Changed 2001-10-05 STEFFEN ZSCHALER
+           *
+           * Was:
 				  return tv.getValue();
+           *
+           */
+          sResult = tv.getValue();
         }
         /*
          * Added else branch 2001-09-26 STEFFEN ZSCHALER
@@ -57,17 +69,89 @@ public class DocumentationManager {
           
           ((MModelElement) o).removeTaggedValue (tv);
           
+          /**
+           * Changed 2001-10-05 STEFFEN ZSCHALER
+           *
+           * Was:
+           *
           return tv.getValue();
+           *
+           */
+          sResult = tv.getValue();
         }
 		  }
       }
-      else return defaultFor(o);
+      /*
+       * Removed else branch 2001-10-05 STEFFEN ZSCHALER as it was a default behaviour, 
+       * that I handled in the start of the method.
+       *
+       * Was:
+       *
+      else {
+        return defaultFor(o);
+      }
+       *
+       */
     }
+    
+    /*
+     * Removed final return 2001-10-05 STEFFEN ZSCHALER
+     *
+     * Was:
+     *
     return defaultFor(o);
+     *
+     */
+    
+    /*
+     * Added 2001-10-05 STEFFEN ZSCHALER
+     *
+     * Add comment signature.
+     */
+    if (sResult != null) {
+      sResult = "/**" + sResult;
+      
+      for (int nNewLinePos = sResult.indexOf ('\n');
+           nNewLinePos >= 0;
+           nNewLinePos = sResult.indexOf ('\n', nNewLinePos + 1)) {
+        sResult = sResult.substring (0, nNewLinePos + 1) +
+                  " *" + sResult.substring (nNewLinePos + 1);
+      }
+      
+      return sResult + "\n */";
+    }
+    else {
+      return "(No comment)";
+    }
   }
 
   public static void setDocs(Object o, String s) {
 	  ((MModelElement)o).setTaggedValue("javadocs", s);
+  }
+  
+  /**
+   * Determine whether documentation is associated with the given element or not.
+   *
+   * Added 2001-10-05 STEFFEN ZSCHALER for use by org.argouml.language.java.generator.CodeGenerator
+   *
+   */
+  public static boolean hasDocs (Object o) {
+    if (o instanceof MModelElement) {
+      Collection tValues = ((MModelElement) o).getTaggedValues();
+      
+      if (! tValues.isEmpty()) {
+        for (Iterator i = tValues.iterator(); i.hasNext();) {
+			    MTaggedValue tv = (MTaggedValue) i.next();
+          
+          if (("javadocs".equals (tv.getTag())) ||
+              ("documentation".equals (tv.getTag()))) {
+            return true;
+          }
+        }
+		  }
+    }
+    
+    return false;
   }
 
   ////////////////////////////////////////////////////////////////
@@ -75,41 +159,97 @@ public class DocumentationManager {
 
   public static String defaultFor(Object o) {
     if (o instanceof MClass) {
+      /*
+       * Changed 2001-10-05 STEFFEN ZSCHALER
+       *
+       * Was (space added below!):
+       *
       return
 	"/** A class that represents ...\n"+
 	" * \n"+
 	" * @see OtherClasses\n"+
 	" * @author your_name_here\n"+
-	" */";
+	" * /";
+       *
+       */
+      return " A class that represents ...\n" +
+             "\n" + 
+             " @see OtherClasses\n" +
+             " @author your_name_here";
     }
     if (o instanceof MAttribute) {
+      /*
+       * Changed 2001-10-05 STEFFEN ZSCHALER
+       *
+       * Was (space added below!):
+       *
       return
 	"/** An attribute that represents ...\n"+
-	" */";
+	" * /";
+       *
+       */
+      return " An attribute that represents ...";
     }
 
     if (o instanceof MOperation) {
+      /*
+       * Changed 2001-10-05 STEFFEN ZSCHALER
+       *
+       * Was (space added below!):
+       *
       return
 	"/** An operation that does ...\n"+
 	" * \n"+
 	" * @param firstParamName  a description of this parameter\n"+
-	" */";
+	" * /";
+       *
+       */
+      return " An operation that does...\n" +
+             "\n" +
+             " @param firstParam a description of this parameter";
     }
     if (o instanceof MInterface) {
+      /*
+       * Changed 2001-10-05 STEFFEN ZSCHALER
+       *
+       * Was (space added below!):
+       *
       return
 	"/** A interface defining operations expected of ...\n"+
 	" * \n"+
 	" * @see OtherClasses\n"+
 	" * @author your_name_here\n"+
-	" */";
+	" * /";
+       *
+       */
+      return " A interface defining operations expected of ...\n" +
+             "\n" +
+             " @see OtherClasses\n" +
+             " @author your_name_here";
     }
     if (o instanceof MModelElement) {
+      /*
+       * Changed 2001-10-05 STEFFEN ZSCHALER
+       *
+       * Was (space added below!):
+       *
       return
 	"/**\n"+
 	" * \n"+
-	" */";
+	" * /";
+       *
+       */
+      return "\n";
     }
+    
+    /*
+     * Changed 2001-10-05 STEFFEN ZSCHALER
+     *
+     * Was:
     return "(No documentation)";
+     *
+     */
+    return null;
   }
 
 
