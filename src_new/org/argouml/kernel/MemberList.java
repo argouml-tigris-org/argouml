@@ -48,19 +48,25 @@ public class MemberList implements List {
     private ArrayList members = new ArrayList(10);
     private ProjectMember todoList;
 
+    /**
+     * The constructor.
+     */
     public MemberList() {
         LOG.info("Creating a member list");
     }
     
+    /**
+     * @see java.util.Collection#add(java.lang.Object)
+     */
     public boolean add(Object member) {
 
         if (member instanceof ProjectMemberModel) {
             // Always put the model at the top
-            model = (ProjectMember)member;
+            model = (ProjectMember) member;
             return true;
         } else if (member instanceof ProjectMemberTodoList) {
             // otherwise add the diagram at the start
-            setTodoList((ProjectMember)member);
+            setTodoList((ProjectMember) member);
             return true;
         } else if (member instanceof ProjectMemberDiagram) {
             // otherwise add the diagram at the start
@@ -69,10 +75,13 @@ public class MemberList implements List {
         return false;
     }
 
+    /**
+     * @see java.util.Collection#remove(java.lang.Object)
+     */
     public boolean remove(Object member) {
         LOG.info("Removing a member");
         if (member instanceof Diagram) {
-            return removeDiagram((Diagram)member);
+            return removeDiagram((Diagram) member);
         }
         ((ProjectMember) member).remove();
         if (model == member) {
@@ -87,6 +96,9 @@ public class MemberList implements List {
         }
     }
     
+    /**
+     * @see java.util.Collection#iterator()
+     */
     public Iterator iterator() {
         ArrayList temp = new ArrayList(size());
         if (model != null) {
@@ -145,6 +157,9 @@ public class MemberList implements List {
 
     
     
+    /**
+     * @see java.util.Collection#size()
+     */
     public int size() {
         int size = members.size();
         if (model != null) ++size;
@@ -165,6 +180,9 @@ public class MemberList implements List {
         return null;
     }
     
+    /**
+     * @see java.util.Collection#contains(java.lang.Object)
+     */
     public boolean contains(Object member) {
         if (todoList == member) {
             return true;
@@ -175,6 +193,9 @@ public class MemberList implements List {
         return members.contains(member);
     }
     
+    /**
+     * @see java.util.Collection#clear()
+     */
     public void clear() {
         LOG.info("Clearing members");
         if (model != null) {
@@ -190,6 +211,10 @@ public class MemberList implements List {
         members.clear();
     }
     
+    /**
+     * @param type the type of the member
+     * @return the member of the project
+     */
     public ProjectMember getMember(Class type) {
         if (type == ProjectMemberModel.class) {
             return model;
@@ -201,6 +226,9 @@ public class MemberList implements List {
             "There is no single instance of a " + type.getName() + " member");
     }
     
+    /**
+     * @see java.util.List#get(int)
+     */
     public Object get(int i) {
         if (model != null) {
             if (i == 0) {
@@ -213,7 +241,7 @@ public class MemberList implements List {
             return todoList;
         }
         
-        return (ProjectMember)members.get(i);
+        return (ProjectMember) members.get(i);
     }
 
     /**

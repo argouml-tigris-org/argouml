@@ -352,10 +352,10 @@ public class Project implements java.io.Serializable, TargetListener {
         
         if (m instanceof ArgoDiagram) {
             LOG.info("Adding diagram member");
-            addDiagramMember((ArgoDiagram)m);
+            addDiagramMember((ArgoDiagram) m);
         } else if (m instanceof ProjectMemberTodoList) {
             LOG.info("Adding todo member");
-            addTodoMember((ProjectMemberTodoList)m);
+            addTodoMember((ProjectMemberTodoList) m);
         } else if (ModelFacade.isAModel(m)) {
             LOG.info("Adding model member");
             addModelMember(m);
@@ -589,8 +589,8 @@ public class Project implements java.io.Serializable, TargetListener {
         cls = findTypeInModel(s, defaultModel);
         // hey, now we should move it to the model the user is working in
         if (cls != null) {
-            cls = Model.
-                getModelManagementHelper().getCorrespondingElement(cls, getRoot());
+            cls = Model.getModelManagementHelper().getCorrespondingElement(cls, 
+                    getRoot());
         }
         if (cls == null && defineNew) {
             LOG.debug("new Type defined!");
