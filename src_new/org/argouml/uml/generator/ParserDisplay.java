@@ -1994,8 +1994,9 @@ public class ParserDisplay extends Parser {
 	return null;
     }
 
-    /** parse user input for state bodies and assign the individual
+    /** Parse user input for state bodies and assign the individual
      *  lines to according actions or transistions.
+     *  The words "entry", "do" and "exit" are case-independent.
      *  @param  st       The State object.
      *  @param  s        The string to parse.
      */
@@ -2010,15 +2011,16 @@ public class ParserDisplay extends Parser {
 	    new java.util.StringTokenizer(s, "\n\r");
 	while (lines.hasMoreTokens()) {
 	    String line = lines.nextToken().trim();
-	    if (line.startsWith("entry")) parseStateEntyAction(st, line);
-	    else if (line.startsWith("exit")) parseStateExitAction(st, line);
-	    else if (line.startsWith("do")) parseStateDoAction(st, line);
+	    if (line.toLowerCase().startsWith("entry")) 
+                                        parseStateEntyAction(st, line);
+	    else if (line.toLowerCase().startsWith("exit")) 
+                                        parseStateExitAction(st, line);
+	    else if (line.toLowerCase().startsWith("do")) 
+                                        parseStateDoAction(st, line);
 	    else {
-		Object t =
-		    parseTransition(UmlFactory.getFactory().
+		Object t = parseTransition(UmlFactory.getFactory().
 				    getStateMachines().createTransition(),
 				    line);
-
 
 		if (t == null) continue;
 		_cat.debug("just parsed:" + GeneratorDisplay.Generate(t));
@@ -2041,24 +2043,39 @@ public class ParserDisplay extends Parser {
 	ModelFacade.setInternalTransitions(st, trans);
     }
 
+    /** Parse a line of the form: "entry /action" and create an action.
+     *  The word "entry" is case-independent.
+     *  @param st       the state object
+     *  @param s        the string to be parsed
+     */
     public void parseStateEntyAction(Object st, String s) {
-	if (s.startsWith("entry") && s.indexOf("/") > -1)
+	if (s.toLowerCase().startsWith("entry") && s.indexOf("/") > -1)
 	    s = s.substring(s.indexOf("/") + 1).trim();
 	Object entryAction = /*(MCallAction)*/ parseAction(s);
 	ModelFacade.setName(entryAction, "anon");
 	ModelFacade.setEntry(st, entryAction);
     }
 
+    /** Parse a line of the form: "exit /action" and create an action.
+     *  The word "exit" is case-independent.
+     *  @param st       the state object
+     *  @param s        the string to be parsed
+     */
     public void parseStateExitAction(Object st, String s) {
-	if (s.startsWith("exit") && s.indexOf("/") > -1)
+	if (s.toLowerCase().startsWith("exit") && s.indexOf("/") > -1)
 	    s = s.substring(s.indexOf("/") + 1).trim();
 	Object exitAction = /*(MCallAction)*/ parseAction(s);
 	ModelFacade.setName(exitAction, "anon");
 	ModelFacade.setExit(st, exitAction);
     }
 
+    /** Parse a line of the form: "do /action" and create an action.
+     *  The word "do" is case-independent.
+     *  @param st       the state object
+     *  @param s        the string to be parsed
+     */
     public void parseStateDoAction(Object st, String s) {
-        if (s.startsWith("do") && s.indexOf("/") > -1)
+        if (s.toLowerCase().startsWith("do") && s.indexOf("/") > -1)
             s = s.substring(s.indexOf("/") + 1).trim();
         Object doAction = /*(MCallAction)*/ parseAction(s);
         ModelFacade.setName(doAction, "anon");
