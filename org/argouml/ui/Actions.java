@@ -78,7 +78,7 @@ public class Actions implements TargetListener {
 
     /**
      * Updates all global actions: check if enabled or not.
-     *
+     * This function used to be deprecated for unclear reasons - see issue 2735.
      */
     public static void updateAllEnabled() {
 	Enumeration actions = allActions.elements();
