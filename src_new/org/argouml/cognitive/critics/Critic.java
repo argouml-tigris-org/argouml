@@ -49,6 +49,7 @@ import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Wizard;
+import org.argouml.kernel.WizardItem;
 import org.tigris.gef.util.VectorSet;
 
 /** "Abstract" base class for design critics.  Each subclass should define
@@ -708,7 +709,7 @@ public class Critic implements Poster, Serializable {
 	if (wizClass != null) {
 	    try {
 		Wizard w = (Wizard) wizClass.newInstance();
-		w.setToDoItem(item);
+		w.setToDoItem((WizardItem)item);
 		initWizard(w);
 		return w;
 	    }
