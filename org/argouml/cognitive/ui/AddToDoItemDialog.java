@@ -36,6 +36,7 @@ import javax.swing.JTextField;
 import org.argouml.application.api.Argo;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
@@ -129,6 +130,7 @@ public class AddToDoItemDialog extends ArgoDialog {
         ToDoItem item =
 	    new ToDoItem(designer, headline, priority, desc, moreInfoURL);
         designer.getToDoList().addElement(item); //? inform()
+        ProjectManager.getManager().getCurrentProject().setNeedsSave(true);
     }
 
 
