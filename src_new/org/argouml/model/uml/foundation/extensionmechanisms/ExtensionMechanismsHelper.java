@@ -92,7 +92,39 @@ public class ExtensionMechanismsHelper {
     	}
     	return null;
     }
-    			
     
+    public String getMetaModelName(MModelElement m) {
+        String name = m.getClass().getName();
+        name = name.substring(name.lastIndexOf('.')+2,name.length());
+        if (name.endsWith("Impl")) {
+            name = name.substring(0,name.lastIndexOf("Impl"));
+        }
+        return name;
+    }
+    
+    /**
+     * Returns all possible stereotypes for some modelelement. Possible stereotypes 
+     * are those stereotypes that are owned by the same namespace the modelelement
+     * is owned by and that have a baseclass that is the same as the metamodelelement
+     * name of the modelelement.
+     * @param m
+     * @return Collection
+     */
+    public Collection getAllPossibleStereotypes(MModelElement m) {
+        List ret = new ArrayList();
+        if (m == null || m.getNamespace() == null) return ret;
+        MNamespace ns = m.getNamespace();
+        Iterator it = getStereotypes(ns).iterator();
+        String baseClass = getMetaModelName(m);
+        while (it.hasNext()) {
+            MStereotype stereo = (MStereotype)it.next();
+            if (stereo.getBaseClass().equals(baseClass)) {
+                ret.add(stereo);
+            }
+        }
+        return ret;
+    }
+    
+   
 }
 

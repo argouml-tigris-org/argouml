@@ -96,7 +96,7 @@ abstract public class PropPanelModelElement extends PropPanel {
 
     protected JList namespaceList;
     protected JScrollPane namespaceScroll;
-    protected UMLTextField nameField;
+    protected JTextField nameField;
     protected JComboBox stereotypeBox;
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -108,8 +108,13 @@ abstract public class PropPanelModelElement extends PropPanel {
         super(name, icon, orientation);
 
         Class mclass = MModelElement.class;
+        
+        nameField = new UMLTextField2(this, new UMLModelElementNameDocument(this));
+        // stereotypeBox = new UMLComboBox2(this, new UMLModelElementStereotypeComboBoxModel(this), ActionSetModelElementStereotype.SINGLETON);
+        
+        
 
-        nameField=new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName"));
+        // nameField=new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName"));
 
         stereotypeBox = new UMLStereotypeComboBox(this);
 
@@ -119,6 +124,7 @@ abstract public class PropPanelModelElement extends PropPanel {
         namespaceList.setVisibleRowCount(1);
 
 	namespaceScroll = new JScrollPane(namespaceList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    
     }
     
     public PropPanelModelElement(String name, ImageIcon icon, int columns) {
