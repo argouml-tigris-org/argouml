@@ -34,47 +34,26 @@ import java.awt.event.*;
 import java.beans.*;
 
 
-public class ActionUseCaseDiagram extends UMLChangeAction {
+public class ActionUseCaseDiagram extends ActionAddDiagram {
 
-    ////////////////////////////////////////////////////////////////
-    // static variables
-    
     public static ActionUseCaseDiagram SINGLETON = new ActionUseCaseDiagram(); 
 
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     public ActionUseCaseDiagram() { super("UseCaseDiagram"); }
-
-
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
-    public void actionPerformed(ActionEvent ae) {
-	//_cmdCreateNode.doIt();
-	Project p = ProjectBrowser.TheInstance.getProject();
-	try {
-		MNamespace ns = p.getCurrentNamespace();
-		Object target = ProjectBrowser.TheInstance.getDetailsTarget();
-		if (target instanceof MPackage && !(target instanceof MCollaboration)) ns = ((MPackage)target);
-		if (ns instanceof MCollaboration) ns = p.getModel(); // no collabs allowed
-	    ArgoDiagram d  = new UMLUseCaseDiagram(ns);
-	    p.addMember(d);
-	    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
-	    ProjectBrowser.TheInstance.setTarget(d);
-	}
-	catch (PropertyVetoException pve) { }
-	super.actionPerformed(ae);
+    
+    /**
+     * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace)
+     */
+    public ArgoDiagram createDiagram(MNamespace ns, Object target) {
+        return new UMLUseCaseDiagram(ns);
     }
-	
 
-	/**
-	 * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
-	 */
-	public boolean shouldBeEnabled() {
-		return ProjectBrowser.TheInstance.getProject() != null &&
-			!(ProjectBrowser.TheInstance.getProject().getCurrentNamespace() instanceof MCollaboration);
-	}
+    /**
+     * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
+     */
+    public boolean isValidNamespace(MNamespace ns) {
+        if (ns instanceof MPackage) return true;
+        if (ns instanceof MClassifier) return true;
+        return false;
+    }
 
 } /* end class ActionUseCaseDiagram */

@@ -30,13 +30,14 @@ import org.argouml.uml.diagram.sequence.ui.*;
 import org.argouml.ui.*;
 
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
+import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
 import java.awt.event.*;
 import java.beans.*;
 
 
-public class ActionSequenceDiagram extends UMLChangeAction {
+public class ActionSequenceDiagram extends ActionAddDiagram {
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -47,12 +48,13 @@ public class ActionSequenceDiagram extends UMLChangeAction {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    public ActionSequenceDiagram() { super("SequenceDiagram"); }
+    private ActionSequenceDiagram() { super("SequenceDiagram"); }
 
 
     ////////////////////////////////////////////////////////////////
     // main methods
 
+/*
     public void actionPerformed(ActionEvent ae) {
 	Project p = ProjectBrowser.TheInstance.getProject();
 	try {
@@ -101,6 +103,48 @@ public class ActionSequenceDiagram extends UMLChangeAction {
 	catch (PropertyVetoException pve) { }
 	super.actionPerformed(ae);
     }
-
+*/
     
+    /**
+     * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace, Object)
+     */
+    public ArgoDiagram createDiagram(MNamespace ns, Object target) {
+        MCollaboration c = null;
+        if (target instanceof MOperation) {
+            c = UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
+            c.setRepresentedOperation((MOperation)target);
+        } else 
+        if (target instanceof MClassifier) {
+            c = UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
+            c.setRepresentedClassifier((MClassifier)target);
+        } else 
+        if (target instanceof MModel) {
+            c = UmlFactory.getFactory().getCollaborations().buildCollaboration((MModel)target);
+        } else 
+        if (target instanceof MInteraction) {
+            c = ((MInteraction)target).getContext();
+        } else
+        if (target instanceof UMLSequenceDiagram) {
+            Object o = ((UMLSequenceDiagram)target).getOwner();
+            if (o instanceof MCollaboration) { //preventing backward compat problems
+                c = (MCollaboration)o;
+            } 
+        } else 
+        if (target instanceof MCollaboration) {
+            c = (MCollaboration)target;
+        } else {
+            c =  UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
+        }   
+        UMLSequenceDiagram d  = new UMLSequenceDiagram(c);
+        return d;
+    }
+
+    /**
+     * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
+     */
+    public boolean isValidNamespace(MNamespace ns) {
+        if (ns instanceof MCollaboration) return true;
+        return false;
+    }
+
 }  /* end class ActionSequenceDiagram */

@@ -25,8 +25,10 @@ package org.argouml.model.uml.foundation.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationName;
@@ -1058,7 +1060,40 @@ public class CoreFactory extends AbstractUmlModelFactory {
     
     public void deleteMethod(MMethod elem) {}
     
-    public void deleteModelElement(MModelElement elem) {}
+    /**
+     * <p>
+     * Does a 'cascading delete' to all modelelements that are associated
+     * with this element that would be in an illegal state after deletion
+     * of the element. Does not do an cascading delete for elements that
+     * are deleted by the NSUML method remove. This method should not be called
+     * directly.
+     * </p>
+     * <p>
+     * In the case of a modelelement these are the following elements:
+     * </p>
+     * <p>
+     * - Dependencies that have the modelelement as supplier or as a client
+     * and are binary. (that is, they only have one supplier and one client)
+     * </p>
+     * @param elem
+     * @see UmlFactory#delete(MBase)
+     */
+    public void deleteModelElement(MModelElement elem) {
+        Collection supplierDep = elem.getSupplierDependencies();
+        Collection clientDep = elem.getClientDependencies();
+        Set deps = new HashSet();
+        deps.addAll(supplierDep);
+        deps.addAll(clientDep);
+        Iterator it = deps.iterator();
+        while (it.hasNext()) {
+            MDependency dep = (MDependency)it.next();
+            Collection clients = dep.getClients();
+            Collection suppliers = dep.getSuppliers();
+            if ((clients.size() + suppliers.size()) == 2) {
+                UmlFactory.getFactory().delete(dep);
+            }
+        }
+    }
     
     public void deleteNamespace(MNamespace elem) {}
     
