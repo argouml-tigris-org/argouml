@@ -1,4 +1,4 @@
-// $ANTLR 2.7.1: "classfile.tree.g" -> "ClassfileTreeParser.java"$
+// $ANTLR 2.7.2a2 (20020112-1): "classfile.tree.g" -> "ClassfileTreeParser.java"$
 
 package org.argouml.uml.reveng.classfile;
 
@@ -138,7 +138,10 @@ public ClassfileTreeParser() {
 			_t = _t.getNextSibling();
 			_t = __t5;
 			_t = _t.getNextSibling();
-			getModeller().addInterface( splitPackageFromClass(class_name), modifiers, interfaces, null);
+			
+			getModeller().addComponent();
+				       getModeller().addInterface( splitPackageFromClass(class_name), modifiers, interfaces, null);
+			
 			break;
 		}
 		case CLASS_DEF:
@@ -173,6 +176,7 @@ public ClassfileTreeParser() {
 				       if( "java.lang.Object".equals(superclass_name)) {
 					   superclass_name=null;  
 				       }
+			getModeller().addComponent();
 				       getModeller().addClass( splitPackageFromClass(class_name), modifiers, superclass_name, interfaces, null);
 				
 			break;

@@ -1,4 +1,4 @@
-// $ANTLR 2.7.1: "classfile.g" -> "ClassfileParser.java"$
+// $ANTLR 2.7.2a2 (20020112-1): "classfile.g" -> "ClassfileParser.java"$
 
 package org.argouml.uml.reveng.classfile;
 

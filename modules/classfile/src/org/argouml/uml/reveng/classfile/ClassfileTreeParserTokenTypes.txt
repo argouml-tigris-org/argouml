@@ -1,4 +1,4 @@
-// $ANTLR 2.7.1: classfile.tree.g -> ClassfileTreeParserTokenTypes.txt$
+// $ANTLR 2.7.2a2 (20020112-1): classfile.tree.g -> ClassfileTreeParserTokenTypes.txt$
 ClassfileTreeParser    // output token vocab name
 ACCESS_MODIFIERS=4
 ATTRIBUTE_CONSTANT=5

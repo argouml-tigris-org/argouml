@@ -1,4 +1,4 @@
-// $ANTLR 2.7.1: "classfile.g" -> "ClassfileParser.java"$
+// $ANTLR 2.7.2a2 (20020112-1): "classfile.g" -> "ClassfileParser.java"$
 
 package org.argouml.uml.reveng.classfile;
 
@@ -1628,5 +1628,10 @@ public ClassfileParser(ParserSharedInputState state) {
 		"BYTE"
 	};
 	
+	private static final long[] mk_tokenSet_0() {
+		long[] data = { 8589934594L, 0L};
+		return data;
+	}
+	public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
 	
 	}
