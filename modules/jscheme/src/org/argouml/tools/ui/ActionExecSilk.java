@@ -70,7 +70,7 @@ public class ActionExecSilk extends UMLAction
     // main methods
 
     public void actionPerformed(ActionEvent event) {
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
+        ProjectBrowser pb = ProjectBrowser.getInstance();
 	Object target = pb.getDetailsTarget();
 	
 	// if (!(target instanceof MClassifier)) return;
