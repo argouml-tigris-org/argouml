@@ -149,6 +149,7 @@ public class FigAssociation extends FigEdgeModelElement {
     MAssociationEnd ae0 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[0];
     MAssociationEnd ae1 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[1];
 
+   
     MMultiplicity mult0 = ae0.getMultiplicity();
     MMultiplicity mult1 = ae1.getMultiplicity();
     _srcMult.setText(Notation.generate(this, mult0));
@@ -159,6 +160,21 @@ public class FigAssociation extends FigEdgeModelElement {
     _srcRole.setText(Notation.generate(this, ae0.getName()));
     _destRole.setText(Notation.generate(this, ae1.getName()));
 
+    // now add the stereotypes on associatenends if desired
+    // need more work!
+
+    // this should be configurable
+    if (true == true) {
+
+        if (ae0.getStereotype() != null)
+            _srcRole.setText(Notation.generateStereotype(this,
+                                                         ae0.getStereotype()) +
+                             " " + _srcRole.getText()); 
+        if (ae1.getStereotype() != null)
+            _destRole.setText(Notation.generateStereotype(this,
+                                                         ae1.getStereotype()) +
+                              " " + _destRole.getText());
+    }
     boolean srcNav = ae0.isNavigable();
     boolean destNav = ae1.isNavigable();
     if (srcNav && destNav && SUPPRESS_BIDIRECTIONAL_ARROWS)
