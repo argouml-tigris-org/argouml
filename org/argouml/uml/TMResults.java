@@ -23,109 +23,141 @@
 
 package org.argouml.uml;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.table.*;
+import java.util.Vector;
 
-import ru.novosoft.uml.foundation.core.*;
+import javax.swing.table.AbstractTableModel;
 
+import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
+import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
+import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
+import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
+import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
+import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.tigris.gef.base.Diagram;
-import org.tigris.gef.graph.GraphModel;
 
-import org.argouml.uml.diagram.state.ui.*;
-import org.argouml.uml.diagram.static_structure.ui.*;
-import org.argouml.uml.diagram.use_case.ui.*;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 public class TMResults extends AbstractTableModel {
-  ////////////////
-  // instance vars
-  Vector _rowObjects;
-  Vector _diagrams;
+    ////////////////
+    // instance vars
+    Vector _rowObjects;
+    Vector _diagrams;
 
-  ////////////////
-  // constructor
-  public TMResults() { }
-
-  ////////////////
-  // accessors
-  public void setTarget(Vector results, Vector diagrams) {
-    _rowObjects = results;
-    _diagrams = diagrams;
-    fireTableStructureChanged();
-  }
-
-  ////////////////
-  // TableModel implemetation
-  public int getColumnCount() { return 4; }
-  public int getRowCount() {
-    if (_rowObjects == null) return 0;
-    return _rowObjects.size();
-  }
-
-  public String  getColumnName(int c) {
-    if (c == 0) return "Type";
-    if (c == 1) return "Name";
-    if (c == 2) return "In Diagram";
-    if (c == 3) return "Description";
-    return "XXX";
-  }
-
-  public Class getColumnClass(int c) {
-    return String.class;
-  }
-
-  public boolean isCellEditable(int row, int col) {
-    return false;
-  }
-
-  public Object getValueAt(int row, int col) {
-    if (row < 0 || row >= _rowObjects.size()) return "bad row!";
-    if (col < 0 || col >= 4) return "bad col!";
-    Object rowObj = _rowObjects.elementAt(row);
-    if (rowObj instanceof Diagram) {
-      Diagram d = (Diagram) rowObj;
-      switch (col) {
-      case 0:
-	if (d instanceof UMLClassDiagram) return "Class Diagram";
-	if (d instanceof UMLStateDiagram) return "State Diagram";
-	if (d instanceof UMLUseCaseDiagram) return "Use Case Diagram";
-	return "Diagram";  //TODO
-      case 1: return d.getName();
-      case 2: return "N/A";
-      case 3:
-	//GraphModel gm = d.getGraphModel();
-	int numNodes = d.getNodes().size();
-	int numEdges = d.getEdges().size();
-	return numNodes + " nodes and "+ numEdges + " edges";
-      }
+    ////////////////
+    // constructor
+    public TMResults() {
     }
-    if (rowObj instanceof MModelElement) {
-      MModelElement me = (MModelElement) rowObj;
-      Diagram d = null;
-      if (_diagrams != null) d = (Diagram) _diagrams.elementAt(row);
-      switch (col) {
-      case 0: return me.getUMLClassName();
-      case 1: return me.getName();
-      case 2: return (d == null) ? "N/A" : d.getName();
-      case 3: return "docs";
-      }
-    }
-    switch (col) {
-    case 0:
-      String clsName = rowObj.getClass().getName();
-      int lastDot = clsName.lastIndexOf(".");
-      return clsName.substring(lastDot+1);
-    case 1: return "";
-    case 2: return "??";
-    case 3: return "docs";
-    }
-    return "unknown!";
-  }
 
-  public void setValueAt(Object aValue, int rowIndex, int columnIndex)  { }
+    ////////////////
+    // accessors
+    public void setTarget(Vector results, Vector diagrams) {
+        _rowObjects = results;
+        _diagrams = diagrams;
+        fireTableStructureChanged();
+    }
+
+    ////////////////
+    // TableModel implemetation
+    public int getColumnCount() {
+        return 4;
+    }
+    public int getRowCount() {
+        if (_rowObjects == null)
+            return 0;
+        return _rowObjects.size();
+    }
+
+    public String getColumnName(int c) {
+        if (c == 0)
+            return "Type";
+        if (c == 1)
+            return "Name";
+        if (c == 2)
+            return "In Diagram";
+        if (c == 3)
+            return "Description";
+        return "XXX";
+    }
+
+    public Class getColumnClass(int c) {
+        return String.class;
+    }
+
+    public boolean isCellEditable(int row, int col) {
+        return false;
+    }
+
+    public Object getValueAt(int row, int col) {
+        if (row < 0 || row >= _rowObjects.size())
+            return "bad row!";
+        if (col < 0 || col >= 4)
+            return "bad col!";
+        Object rowObj = _rowObjects.elementAt(row);
+        if (rowObj instanceof Diagram) {
+            Diagram d = (Diagram)rowObj;
+            switch (col) {
+                case 0 :
+                    String name = null;
+                    if (d instanceof UMLClassDiagram)
+                        name = "Class Diagram";
+                    else if (d instanceof UMLUseCaseDiagram) {
+                        name = "Use Case Diagram";
+                    } else if (d instanceof UMLStateDiagram) {
+                        name = "State Diagram";
+                    } else if (d instanceof UMLDeploymentDiagram) {
+                        name = "Deployment Diagram";
+                    } else if (d instanceof UMLCollaborationDiagram) {
+                        name = "Collaboration Diagram";
+                    } else if (d instanceof UMLActivityDiagram) {
+                        name = "Activity Diagram";
+                    } else if (d instanceof UMLSequenceDiagram) {
+                        name = "Sequence Diagram";
+                    }
+                    return name;
+                case 1 :
+                    return d.getName();
+                case 2 :
+                    return "N/A";
+                case 3 :
+                    //GraphModel gm = d.getGraphModel();
+                    int numNodes = d.getNodes().size();
+                    int numEdges = d.getEdges().size();
+                    return numNodes + " nodes and " + numEdges + " edges";
+            }
+        }
+        if (rowObj instanceof MModelElement) {
+            MModelElement me = (MModelElement)rowObj;
+            Diagram d = null;
+            if (_diagrams != null)
+                d = (Diagram)_diagrams.elementAt(row);
+            switch (col) {
+                case 0 :
+                    return me.getUMLClassName();
+                case 1 :
+                    return me.getName();
+                case 2 :
+                    return (d == null) ? "N/A" : d.getName();
+                case 3 :
+                    return "docs";
+            }
+        }
+        switch (col) {
+            case 0 :
+                String clsName = rowObj.getClass().getName();
+                int lastDot = clsName.lastIndexOf(".");
+                return clsName.substring(lastDot + 1);
+            case 1 :
+                return "";
+            case 2 :
+                return "??";
+            case 3 :
+                return "docs";
+        }
+        return "unknown!";
+    }
+
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+    }
 
 } /* end class TMResults */
-
