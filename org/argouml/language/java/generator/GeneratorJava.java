@@ -281,6 +281,39 @@ public class GeneratorJava
                 }
             }
         }
+
+	c = ModelFacade.getGeneralizations(cls);
+	if (c != null) {
+	    // now check packages of all generalized types
+	    for (j = c.iterator(); j.hasNext();) {
+		Object gen = /*(MGeneralization)*/ j.next();
+		Object parent = ModelFacade.getParent(gen);
+		if (parent == cls) {
+		    continue;
+		}
+
+		ftype = generateImportType(parent,
+					   packagePath);
+		if (ftype != null) {
+		    importSet.add(ftype);
+		}
+	    }
+	}
+
+	c = ModelFacade.getSpecifications(cls);
+	if (c != null) {
+	    // now check packages of the interfaces
+	    for (j = c.iterator(); j.hasNext();) {
+		Object iface = /*(MInterface)*/ j.next();
+
+		ftype = generateImportType(iface,
+					   packagePath);
+		if (ftype != null) {
+		    importSet.add(ftype);
+		}
+	    }
+	}
+
         c = ModelFacade.getAssociationEnds(cls);
         if (!c.isEmpty()) {
             // check association end types
@@ -329,8 +362,13 @@ public class GeneratorJava
         String ret = null;
         if (type != null && ModelFacade.getNamespace(type) != null) {
             String p = getPackageName(ModelFacade.getNamespace(type));
-            if (p.length() > 0 && !p.equals(exclude))
-                ret = p + '.' + ModelFacade.getName(type);
+            if (!p.equals(exclude)) {
+		if (p.length() > 0) {
+		    ret = p + '.' + ModelFacade.getName(type);
+		} else {
+		    ret = ModelFacade.getName(type);
+		}
+	    }
         }
         return ret;
     }
