@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 
 import org.argouml.cognitive.ui.TabToDoTarget;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.TabModelTarget;
 import org.argouml.uml.ui.UMLAction;
 
@@ -61,10 +62,10 @@ public class ActionGoToDetails extends UMLAction {
         if (namedTab instanceof TabToDoTarget) {
             shouldBeEnabled = true;
         } else 
-        if (namedTab instanceof TabModelTarget) {
-            shouldBeEnabled = ((TabModelTarget)namedTab).shouldBeEnabled(pb.getTarget());
+        if (namedTab instanceof TabModelTarget && TargetManager.getInstance().getTarget() != null) {
+            shouldBeEnabled = ((TabModelTarget)namedTab).shouldBeEnabled(TargetManager.getInstance().getTarget());
         } else {
-            shouldBeEnabled = namedTab != null;
+            shouldBeEnabled = (namedTab != null && TargetManager.getInstance().getTarget() != null);
         } 
         
        return shouldBeEnabled;

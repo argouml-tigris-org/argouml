@@ -252,6 +252,25 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
   }
 
 
+/*
+  
+
+    public void setDestPortFig(Fig fig) {
+        if (fig instanceof FigSeqObject) {
+            FigSeqObject o = (FigSeqObject)fig;
+            super.setDestPortFig(o._lifeline);
+        } else
+            super.setDestPortFig(fig);
+    }
+
+    public void setSourcePortFig(Fig fig) {
+        if (fig instanceof FigSeqObject) {
+            FigSeqObject o = (FigSeqObject)fig;
+            super.setSourcePortFig(o._lifeline);
+        } else
+            super.setSourcePortFig(fig);        
+    }
+*/
 
   /** After a new link with a stimulus is added to the model and the figure of the link is created
    *  the figure of the stimulus has to be created and added to the layer

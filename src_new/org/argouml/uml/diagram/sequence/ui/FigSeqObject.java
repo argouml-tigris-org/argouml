@@ -651,8 +651,8 @@ public class FigSeqObject extends FigNodeModelElement
   public void setForDestroy(FigSeqLink linkFig, String connectTo, boolean isTerminate) {
     Vector contents = getContents();
     int portNumber = linkFig.getPortNumber(contents);   
-    FigDynPort fsp = (FigDynPort) linkFig.getSourcePortFig();
-    if (connectTo == "Dest") fsp = (FigDynPort) linkFig.getDestPortFig();
+    FigRect fsp = (FigRect) linkFig.getSourcePortFig();
+    if (connectTo == "Dest") fsp = (FigRect) linkFig.getDestPortFig();
     int lastPos = 0;
     Vector edges = getFigEdges();
 
