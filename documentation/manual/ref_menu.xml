@@ -1724,7 +1724,7 @@ saved at all? -->
         sequence:</para>
       <!-- TODO: How does the user know that this is a toggle? 
       And which are the possibilities?
-      Improve this! See issue ... -->
+      Improve this! See issue 603. -->
 
       <itemizedlist>
         <listitem><para>snap at 8 pixel spacing (the
@@ -1772,11 +1772,11 @@ saved at all? -->
         version of &argouml;, since it 
         should be a tick box toggle<!--labeled
         <literal>Page&nbsp;Breaks&nbsp;Visible</literal-->.</para></warning>
-        <!-- TODO: Change the menuitem into tick box. See issue ... -->
+        <!-- TODO: Change the menuitem into tick box. See issue 604. -->
         
         <!-- TODO: Changing the page size (e.g. from A4 to A5) 
         or orientation (portrait/landscape) 
-        does not move the lines. Why not? See issue ... -->
+        does not move the lines. Why not? See issue 1874. -->
     </sect2>
 
     <!-- This controls whether handles are placed on artifacts -->
@@ -1795,7 +1795,7 @@ saved at all? -->
       <!-- TODO: Why do we have this possibility to switch them off? Is there
       any reason to do so? It is one of our main features!
       I (MVW) propose to remove this menuitem completely, and not allow the user to
-      switch them off. See issue ... -->
+      switch them off. See issue 2492. -->
 
         <figure id="fig.ref.menu_buttons_on_selection" float="1">
         <title>An example of buttons on selection for a Class.</title>
