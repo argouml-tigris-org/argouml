@@ -81,26 +81,22 @@ public class Modeller
     */
     public void addPackage(String name)
     {
-	// Since getPackage will generate the package quietly, I have
-	// to check here if a figure has to be created.
-	//boolean createFigure = (searchPackageInModel(name) == null);
-	
+	// Add a package figure for this package to the owners class diagram, if it's not
+	// in the diagram yet. I do this for all the class diagrams up to the top level,
+	// since I need diagrams for all the packages.
+	String ownerPackageName, currentName = name;
+	while( ! "".equals(ownerPackageName = getPackageName(currentName))) {
+	    getDiagram().selectClassDiagram( getPackage(ownerPackageName), ownerPackageName);
+	    getDiagram().addPackage(getPackage(currentName)); 	    
+	    currentName = ownerPackageName;
+	}
+
+	// Find or create a MPackage NSUML object for this package.
 	MPackage mPackage = getPackage(name);
+
+	// Set the current package for the following source code.
 	currentPackage = mPackage;
 	parseState.addPackageContext(mPackage);
-
-	/*
-	if(createFigure) {
-	    // Add a package figure to the owners class diagram
-	    String ownerPackage = getPackageName(name);
-	    System.out.println("Trying to add package " + name + " with owner " + ownerPackage);
-	    if(! "".equals(ownerPackage)) {
-		getDiagram().selectClassDiagram( searchPackageInModel(ownerPackage),
-						 ownerPackage);
-		getDiagram().addPackage(mPackage);
-	    }
-	}
-	*/
 
 	// Select the class diagram for the current package,
 	// so all succeeding objects are added to it.
@@ -296,6 +292,7 @@ public class Modeller
     {
 	// add the current classifier to the diagram.
 	MClassifier classifier = parseState.getClassifier();
+
 	if(classifier instanceof MInterface) {
 	    getDiagram().addInterface((MInterface)classifier);
 	} else {

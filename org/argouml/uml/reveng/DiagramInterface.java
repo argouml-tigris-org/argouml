@@ -29,6 +29,7 @@ import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
+import org.argouml.uml.diagram.*;
 import org.argouml.uml.diagram.static_structure.ui.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
@@ -64,20 +65,43 @@ public class DiagramInterface {
     }
 
     /**
-     * Add a package to the current diagram.
+     * Add a package to the current diagram. If the package already has
+     * a representation in the current diagram, it is not(!) added.
      *
      * @param newPackage The package to add.
      */
     public void addPackage(MPackage newPackage) {
-	GraphModel gm            = getEditor().getGraphModel();
-	Layer      lay           = getEditor().getLayerManager().getActiveLayer(); 
-	FigPackage newPackageFig = new FigPackage( gm, newPackage); 
+	if(!isInDiagram(newPackage)) {
+	    GraphModel gm            = getEditor().getGraphModel();
+	    LayerPerspective lay     = (LayerPerspective)getEditor().getLayerManager().getActiveLayer(); 
+	    FigPackage newPackageFig = new FigPackage( gm, newPackage); 
 
-	getEditor().add( newPackageFig);
-	getEditor().damaged( newPackageFig);
+	    getEditor().add( newPackageFig);
+	    lay.putInPosition( (Fig)newPackageFig);
+	    getEditor().damaged( newPackageFig);
+	}
     }
 
-
+    /**
+     * Check if a given package has a representation in the current
+     * diagram.
+     *
+     * @param p The package to lookup in the current diagram.
+     * @return true if this package has a figure in the current diagram,
+     *         false otherwise.
+     */
+    public boolean isInDiagram(MPackage p) {
+	if(ProjectBrowser.TheInstance.getTarget() instanceof Diagram) {
+	    return ((Diagram)(ProjectBrowser.TheInstance.getTarget())).getNodes().contains(p); 
+	} else {
+	    if(ProjectBrowser.TheInstance.getTarget() instanceof ProjectMemberDiagram) {
+		return ((ProjectMemberDiagram)ProjectBrowser.TheInstance.getTarget()).getDiagram().getNodes().contains(p); 
+	    } else {
+		return false;
+	    }
+	}
+    }
+    
     /**
      * Create a diagram name from a package name
      *
@@ -109,7 +133,16 @@ public class DiagramInterface {
 	// Check if this diagram already exists in the project
 	ProjectMember m;
 	if((m = ProjectBrowser.TheInstance.getProject().findMemberByName( getDiagramName(name) + ".pgml")) != null) {
-	    ProjectBrowser.TheInstance.setTarget(m);  // Select the existing diagram.
+
+	    // The diagram already exists in this project. Select it as the current target. 
+	    // Andreas: These lines did cost me a few hours of debugging.
+	    // Why is it that findMemberByName sometimes returns a ProjectMemberDiagram, but in other
+	    // cases a UMLDiagram?
+	    if(m instanceof ProjectMemberDiagram)
+		ProjectBrowser.TheInstance.setTarget(((ProjectMemberDiagram)m).getDiagram());
+	    else
+		ProjectBrowser.TheInstance.setTarget(m);
+
 	} else {  // Otherwise
 	    addClassDiagram(p, name);  // create a new classdiagram for the package.
 	}
@@ -141,21 +174,13 @@ public class DiagramInterface {
      * @param newClass The new class to add to the editor.
      */
     public void addClass(MClass newClass) {
-	GraphModel gm = getEditor().getGraphModel();
-
-	if ( !( gm instanceof MutableGraphModel)) {
-	    System.err.println( "DiagramInterface.createClass(): Graphmodel is not mutable!");
-	} else {
-	    MutableGraphModel mgm         = (MutableGraphModel) gm;
-	    LayerPerspective  lay         = (LayerPerspective)getEditor().getLayerManager().getActiveLayer(); 
-	    FigClass          newClassFig = new FigClass( gm, (Object)newClass); 
-	    if ( mgm.canAddNode( newClass)) {
-		getEditor().add( newClassFig);
-		lay.putInPosition( (Fig)newClassFig);
-		getEditor().damaged( newClassFig);
-	    } else
-		System.err.println( "Cannot add fig " + newClass.getName() + " to the current editor");
-	}
+	GraphModel gm        = getEditor().getGraphModel();
+	LayerPerspective lay = (LayerPerspective)getEditor().getLayerManager().getActiveLayer(); 	
+	FigClass newClassFig = new FigClass( gm, newClass); 
+	
+	getEditor().add( newClassFig);
+	lay.putInPosition( (Fig)newClassFig);
+	getEditor().damaged( newClassFig);
     }
 
     /**
@@ -171,6 +196,8 @@ public class DiagramInterface {
 	getEditor().add( newInterfaceFig);
 	lay.putInPosition( (Fig)newInterfaceFig);
 	getEditor().damaged( newInterfaceFig);		
+
+
     }
 }
 
