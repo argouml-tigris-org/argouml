@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,13 +25,6 @@
 // File: Project.java
 // Classes: Project
 // Original Author: not known
-
-// 16 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to remove
-// include and extend relationships when deleting a use case.
-
-// 3 May 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to mark the
-// project as needing saving if any object is trashed.
-
 
 package org.argouml.kernel;
 
@@ -874,7 +868,6 @@ public class Project implements java.io.Serializable {
      * Does not remove the diagram from the project members. This should not be called
      * directly. Use moveToTrash if you want to remove a diagram.
      * @param d
-     * @throws PropertyVetoException
      */
     protected void removeDiagram(ArgoDiagram d) {
         _diagrams.removeElement(d);
