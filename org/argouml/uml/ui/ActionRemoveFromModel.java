@@ -161,7 +161,7 @@ public class ActionRemoveFromModel extends UMLAction {
         }
         if (ModelFacade.isABase(target)) {
             newTarget = ModelFacade.getModelElementContainer(target);
-        } else if (ModelFacade.isADiagram(target)) {
+        } else if (target instanceof Diagram) {
             Diagram firstDiagram = (Diagram) p.getDiagrams().get(0);
             if (target != firstDiagram) {
                 newTarget = firstDiagram;

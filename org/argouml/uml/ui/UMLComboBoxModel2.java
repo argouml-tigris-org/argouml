@@ -40,6 +40,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
+import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
 import ru.novosoft.uml.MElementEvent;
@@ -362,7 +363,7 @@ public abstract class UMLComboBoxModel2
      */
     protected void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
+        if (ModelFacade.isABase(target) || target instanceof Diagram) {
             UmlModelEventPump eventPump = UmlModelEventPump.getPump();
             if (ModelFacade.isABase(comboBoxTarget)) {
                 eventPump.removeModelEventListener(this, comboBoxTarget,

@@ -75,6 +75,7 @@ import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelSimpleState;
 import org.argouml.uml.ui.foundation.core.PropPanelClass;
 import org.argouml.util.ConfigLoader;
+import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
@@ -414,7 +415,7 @@ public class TabProps
      */
     public boolean shouldBeEnabled(Object t) {
         t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
-        if (ModelFacade.isADiagram(t) || ModelFacade.isABase(t)) {
+        if (t instanceof Diagram || ModelFacade.isABase(t)) {
             shouldBeEnabled = true;
         } else {
             shouldBeEnabled = false;

@@ -33,6 +33,7 @@ import javax.swing.JTree;
 import javax.swing.plaf.metal.MetalIconFactory;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.Fig;
 
@@ -130,7 +131,7 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
             else if (value instanceof KnowledgeTypeNode) {
                 lab.setIcon(MetalIconFactory.getTreeFolderIcon());
             }
-            else if (org.argouml.model.ModelFacade.isADiagram(value)) {
+            else if (value instanceof Diagram) {
                 return treeCellRenderer.getTreeCellRendererComponent(tree,
 								 value,
 								 sel,

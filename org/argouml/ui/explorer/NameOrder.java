@@ -28,6 +28,7 @@ import java.util.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.argouml.model.ModelFacade;
+import org.tigris.gef.base.Diagram;
 
 /**
  * Sorts explorer nodes by their user object name.
@@ -68,22 +69,34 @@ public class NameOrder
      *         A positive or negative int if the names differ.
      */
     protected int compareUserObjects(Object obj, Object obj1) {
-        if ((ModelFacade.isADiagram(obj)
-	     || ModelFacade.isABase(obj))
-	    && (ModelFacade.isADiagram(obj1)
-		|| ModelFacade.isABase(obj1))) {
-	    String name =
-		ModelFacade.getName(obj) == null
-		? "" : ModelFacade.getName(obj);
-	    String name1 =
-		ModelFacade.getName(obj1) == null
-		? "" : ModelFacade.getName(obj1);
+        if ((obj instanceof Diagram || ModelFacade.isABase(obj))
+                && (obj1 instanceof Diagram || ModelFacade.isABase(obj1))) {
+	    String name = getName(obj);
+	    String name1 = getName(obj1);
             int ret = name.compareTo(name1);
 
 	    return ret;
 	}
 
 	return 0;
+    }
+    
+    /**
+     * Get the name of the diagram or model element
+     * @param obj the item to fetch name from
+     * @return the name
+     */
+    private String getName(Object obj) {
+        String name;
+        if (obj instanceof Diagram) {
+            name = ((Diagram) obj).getName();
+        } else {
+            name = ModelFacade.getName(obj);
+        }
+        if (name == null) {
+            return "";
+        }
+        return name;
     }
 
     /**
