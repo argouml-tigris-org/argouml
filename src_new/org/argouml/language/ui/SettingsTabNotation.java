@@ -126,7 +126,7 @@ implements SettingsTabPanel {
   public String getModuleVersion() { return "0.9.4"; }
   public String getModuleKey() { return "module.settings.notation"; }
   public String getTabKey() { return "tab.notation"; }
-  public String getTabResourceBundleKey() { return "NotationResourceBundle"; }
+  public String getTabResourceBundleKey() { return "CoreSettings"; }
 
 }
 
