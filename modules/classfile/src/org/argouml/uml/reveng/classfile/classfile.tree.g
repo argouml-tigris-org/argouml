@@ -91,7 +91,10 @@ typeDefinition
              class_name=class_info 
              #(EXTENDS_CLAUSE interface_block[interfaces])
            )
-	     { getModeller().addInterface( splitPackageFromClass(class_name), modifiers, interfaces, null); }
+	     {
+               getModeller().addComponent();
+	       getModeller().addInterface( splitPackageFromClass(class_name), modifiers, interfaces, null);
+             }
 	  | 
           #( CLASS_DEF 
              modifiers=access_modifiers 
@@ -103,6 +106,7 @@ typeDefinition
 	       if( "java.lang.Object".equals(superclass_name)) {
 		   superclass_name=null;  
 	       }
+               getModeller().addComponent();
 	       getModeller().addClass( splitPackageFromClass(class_name), modifiers, superclass_name, interfaces, null);
 	     }
 	;

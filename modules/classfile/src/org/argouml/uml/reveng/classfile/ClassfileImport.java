@@ -319,6 +319,11 @@ public class ClassfileImport extends FileImportSupport {
      */
     public void parseFile(InputStream is, String fileName) throws Exception {
 
+        int lastSlash = fileName.lastIndexOf('/');
+	if(lastSlash != -1) {
+	    fileName = fileName.substring(lastSlash + 1);
+	}
+        
         ClassfileParser parser = new ClassfileParser(new SimpleByteLexer(new BufferedInputStream(is)));
 
         // start parsing at the classfile rule
