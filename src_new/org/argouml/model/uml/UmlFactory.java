@@ -1143,7 +1143,12 @@ public class UmlFactory extends AbstractUmlModelFactory {
         
         // Allow for testing of the proxy capability
         if (this.jmiProxyCreated) {
-            return RefBaseObjectProxy.newInstance(obj);
+        	// TODO implement RefPackageProxy handling
+        	
+			// if (obj instanceof MPackage) {
+			//     return RefPackageProxy.newInstance(obj);
+			// }
+			return RefBaseObjectProxy.newInstance(obj);
         }
         return obj;
     }
