@@ -134,7 +134,7 @@ public class ZargoFilePersister extends AbstractFilePersister {
                         + FileConstants.UNCOMPRESSED_FILE_EXT);
             stream.putNextEntry(zipEntry);
             
-            Hashtable templates = TemplateReader.readFile(ARGO_MINI_TEE);
+            Hashtable templates = TemplateReader.SINGLETON.read(ARGO_MINI_TEE);
             OCLExpander expander = new OCLExpander(templates);
             expander.expand(writer, project, "", "");
                 

@@ -26,6 +26,7 @@ package org.argouml.uml.diagram;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -113,9 +114,12 @@ public class ProjectMemberDiagram extends ProjectMember {
      * @see org.argouml.kernel.ProjectMember#save(java.io.Writer)
      */
     public void save(Writer writer, Integer indent) throws SaveException {
-        OCLExpander expander = 
-            new OCLExpander(TemplateReader.readFile(PGML_TEE));
-        
+        OCLExpander expander;
+        try {
+            expander = new OCLExpander(TemplateReader.SINGLETON.read(PGML_TEE));
+        } catch (FileNotFoundException e) {
+            throw new SaveException(e);
+        }
         if (indent == null) {
             try {
                 expander.expand(writer, diagram, "", "");
