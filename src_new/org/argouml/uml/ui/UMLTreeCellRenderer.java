@@ -68,11 +68,13 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
         boolean leaf,
         int row,
         boolean _hasFocus) {
+            /*
         if (TargetManager.getInstance().getTargets().contains(value)) {
             sel = true;           
         } else {
             sel = false;          
         }
+        */
 
         Component r =
             super.getTreeCellRendererComponent(
