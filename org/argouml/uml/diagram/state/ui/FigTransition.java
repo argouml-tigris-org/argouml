@@ -157,10 +157,6 @@ public class FigTransition extends FigEdgeModelElement {
         // we have to find all transitions that have equal points
         int[] xs = getXs();
         int[] ys = getYs();
-        for (int i = 0; i < xs.length; i++) {
-            System.out.println("Point " + i + " x coor: " + xs[i]);
-            System.out.println("Point " + i + " y coor: " + ys[i]);
-        }
         for (int i = 0; i < transitions.size(); i++) {
             FigEdge fig = ((FigEdge)getLayer().presentationFor(transitions.get(i)));
             // next lines patch for loading old 0.10.1 projects in 0.11.1 and further
