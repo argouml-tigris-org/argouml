@@ -801,6 +801,17 @@ public class ModelFacade {
     }
     
     /**
+     * Returns the stereotype belonging to some given modelelement
+     * @param handle
+     * @return Object
+     */
+    public static Object getStereoType(Object handle) {
+        if (isAModelElement(handle)) {
+            return ((MModelElement)handle).getStereotype();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    /**
      * Returns a collection with all subvertices belonging to the given
      * composite state.
      * @param handle
