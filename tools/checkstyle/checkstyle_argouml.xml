@@ -52,7 +52,10 @@
             <property name="scope" value="protected"/>
 	</module>
 
-        <module name="LineLength"/>
+        <module name="LineLength">
+	  <property name="ignorePattern" value="^ *\* [^ ]+$"/>
+	</module>
+
         <module name="LocalFinalVariableName"/>
         <module name="LocalVariableName">
             <property name="format" value="^[a-z][a-zA-Z0-9_]*$"/>
@@ -62,6 +65,7 @@
         </module>
         <module name="MethodLength"/>
         <module name="MethodName"/>
+        <module name="ModifierOrder"/>
         <module name="NoWhitespaceAfter"/>
 
         <module name="NoWhitespaceBefore"/>
@@ -105,7 +109,6 @@
             <property name="option" value="nlow"/>
             <property name="tokens" value="METHOD_DEF,CTOR_DEF,LITERAL_CATCH,LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_FOR,LITERAL_IF,LITERAL_SWITCH,LITERAL_SYNCHRONIZED,LITERAL_TRY,LITERAL_WHILE"/>
         </module>
-        <module name="ModifierOrder"/>
 
         <module name="RedundantModifier"/>
         <module name="RightCurly">
