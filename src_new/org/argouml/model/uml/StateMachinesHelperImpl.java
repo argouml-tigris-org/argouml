@@ -197,6 +197,26 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
     }
 
     /**
+     * Returns all states that can be recursively contained by the given State.
+     * 
+     * @param oState the Composite state we are searching the states for
+     * 
+     * @return Collection the collection with found states
+     */
+    public Collection getAllPossibleSubvertices(Object oState) {
+        ArrayList v = new ArrayList();
+        ArrayList v2 = new ArrayList();
+        if (oState instanceof MCompositeState) {
+            v.addAll(((MCompositeState) oState).getSubvertices());
+            v2 = (ArrayList) v.clone();
+            Iterator it = v2.iterator();
+            while (it.hasNext())
+                v.addAll(getAllPossibleSubvertices(it.next()));
+        }
+        return v;
+    }
+
+    /**
      * Connects a given statemachine to a submachinestate as being the
      * statemachine the submachinestate represents. To decouple ArgoUML as much
      * as possible from the NSUML model, the parameters of the method are of
@@ -613,7 +633,7 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
             Object o2 = Model.getFacade().getContainer(o1);
             String path = Model.getFacade().getName(o1);
             while ((o2 != null)
-                    &&(!Model.getFacade().isTop(o2))) {
+                    && (!Model.getFacade().isTop(o2))) {
                 path = Model.getFacade().getName(o2) + "::" + path;
                 o1 = o2;
                 o2 = Model.getFacade().getContainer(o1);
@@ -635,7 +655,7 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
                 && Model.getFacade().isACompositeState(container)
                 && path != null) {
 
-            Iterator it =  Model.getFacade().getAllPossibleSubvertices(container).iterator();
+            Iterator it = getAllPossibleSubvertices(container).iterator();
             int index = path.lastIndexOf("::");
             if (index != -1)
                 index += 2;
@@ -660,7 +680,7 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
      */
     public void setReferenceState(Object o, String referenced) {
         if (o instanceof MStubState) {
-            ((MStubState)o).setReferenceState(referenced);
+            ((MStubState) o).setReferenceState(referenced);
             return;
         }
         throw new IllegalArgumentException("handle: " + o);

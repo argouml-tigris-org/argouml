@@ -58,14 +58,15 @@ public class UMLStubStateComboBoxModel extends UMLComboBoxModel2 {
     protected void buildModelList() {
         removeAllElements();
         Object stateMachine = null;
-        if (Model.getFacade()
-                .isASubmachineState(Model.getFacade().getContainer(getTarget()))) {
-            stateMachine =
-                    Model.getFacade().getSubmachine(Model.getFacade().getContainer(getTarget()));
+        if (Model.getFacade().isASubmachineState(
+                Model.getFacade().getContainer(getTarget()))) {
+            stateMachine = Model.getFacade().getSubmachine(
+                    Model.getFacade().getContainer(getTarget()));
         }
         if (stateMachine != null) {
-            ArrayList v =
-                    (ArrayList) Model.getFacade().getAllPossibleSubvertices(Model.getFacade().getTop(stateMachine));
+            ArrayList v = (ArrayList) Model.getStateMachinesHelper()
+                .getAllPossibleSubvertices(
+                        Model.getFacade().getTop(stateMachine));
             ArrayList v2 = (ArrayList) v.clone();
             Iterator it = v2.iterator();
             while (it.hasNext()) {
@@ -93,7 +94,7 @@ public class UMLStubStateComboBoxModel extends UMLComboBoxModel2 {
                 return Model.getStateMachinesHelper()
                         .getStatebyName(objectName,
                                 Model.getFacade().getTop(Model.getFacade()
-                        .getSubmachine(container)));
+                                        .getSubmachine(container)));
         }
         return null;
     }
