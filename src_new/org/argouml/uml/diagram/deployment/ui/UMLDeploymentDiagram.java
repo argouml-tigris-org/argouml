@@ -127,8 +127,6 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     _toolBar.add(_actionMComponent);
     _toolBar.add(_actionMComponentInstance);
     _toolBar.add(_actionMDependency);
-    _toolBar.add(_actionMClass);
-    _toolBar.add(_actionMInterface);
     _toolBar.add(_actionMAssociation);
     _toolBar.add(_actionMObject); 
     _toolBar.add(_actionMLink);
