@@ -32,8 +32,6 @@ import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
-
 /**
  * 
  * @author jaap.branderhorst@xs4all.nl	
@@ -68,13 +66,13 @@ public class UMLAssociationEndAggregationRadioButtonPanel extends UMLRadioButton
         if (getTarget() != null) {
             Object target = /*(MAssociationEnd)*/ getTarget();
             Object/*MAggregationKind*/ kind = ModelFacade.getAggregation(target);
-            if (kind == null || kind.equals(MAggregationKind.NONE)) {
+            if (kind == null || kind.equals(ModelFacade.NONE_AGGREGATIONKIND)) {
                 setSelected(ActionSetAssociationEndAggregation.NONE_COMMAND);
             } else
-		if (kind.equals(MAggregationKind.AGGREGATE)) {
+		if (kind.equals(ModelFacade.AGGREGATE_AGGREGATIONKIND)) {
 		    setSelected(ActionSetAssociationEndAggregation.AGGREGATE_COMMAND); 
 		} else
-		    if (kind.equals(MAggregationKind.COMPOSITE)) {
+		    if (kind.equals(ModelFacade.COMPOSITE_AGGREGATIONKIND)) {
 			setSelected(ActionSetAssociationEndAggregation.COMPOSITE_COMMAND);
 		    } else
 			setSelected(ActionSetAssociationEndAggregation.NONE_COMMAND);

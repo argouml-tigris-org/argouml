@@ -36,8 +36,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.UMLButtonGroup;
 
-import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
-
 /**
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -69,14 +67,14 @@ public class ActionSetElementOwnershipVisibility extends AbstractAction {
                 Object m = /*(MModelElement)*/ target;
                 String command = e.getActionCommand();
                 if (command.equals(PUBLIC_ACTION_COMMAND)) {
-                    ModelFacade.setVisibility(m, MVisibilityKind.PUBLIC);
+                    ModelFacade.setVisibility(m, ModelFacade.PUBLIC_VISIBILITYKIND);
                     
                 } else
 		    if (command.equals(PRIVATE_ACTION_COMMAND)) {
-			ModelFacade.setVisibility(m, MVisibilityKind.PRIVATE);
+			ModelFacade.setVisibility(m, ModelFacade.PRIVATE_VISIBILITYKIND);
 		    } else
 			if (command.equals(PROTECTED_ACTION_COMMAND)) {
-			    ModelFacade.setVisibility(m, MVisibilityKind.PROTECTED);
+			    ModelFacade.setVisibility(m, ModelFacade.PROTECTED_VISIBILITYKIND);
 			} else
 			    throw new IllegalArgumentException("Illegal action. Actioncommand was not correct. It was " + command);
             }

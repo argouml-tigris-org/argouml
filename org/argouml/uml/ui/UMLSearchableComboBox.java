@@ -22,14 +22,10 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.ui;
 
 import javax.swing.ComboBoxModel;
 import org.argouml.model.ModelFacade;
-
-//import ru.novosoft.uml.MBase;
-//import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * A searchable combobox. Searchable means that the user has only to type the

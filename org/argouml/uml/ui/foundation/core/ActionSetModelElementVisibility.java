@@ -33,8 +33,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
-import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
-
 /**
  * 
  * @author jaap.branderhorst@xs4all.nl	
@@ -69,11 +67,11 @@ public class ActionSetModelElementVisibility extends UMLChangeAction {
                 Object m = /*(MModelElement)*/ target;
                 Object kind = null;
                 if (actionCommand.equals(PUBLIC_COMMAND)) {
-                    kind = MVisibilityKind.PUBLIC;
+                    kind = ModelFacade.PUBLIC_VISIBILITYKIND;
                 } else if (actionCommand.equals(PROTECTED_COMMAND)) {
-                    kind = MVisibilityKind.PROTECTED;
+                    kind = ModelFacade.PROTECTED_VISIBILITYKIND;
                 } else {
-                    kind = MVisibilityKind.PRIVATE;
+                    kind = ModelFacade.PRIVATE_VISIBILITYKIND;
                 }
                 ModelFacade.setVisibility(m, kind);
 

@@ -28,8 +28,6 @@ package org.argouml.uml.ui.behavior.state_machines;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
-//import ru.novosoft.uml.behavior.state_machines.MEvent;
-
 /**
  * A list model for the parameters belonging to an event
  * @since Dec 14, 2002

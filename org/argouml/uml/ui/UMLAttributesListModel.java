@@ -31,7 +31,7 @@ import java.util.Collection;
 import javax.swing.JPopupMenu;
 
 import org.argouml.model.uml.UmlFactory;
-//import ru.novosoft.uml.foundation.core.MClassifier;
+
 /**
  *   This class implements a list model for the attributes of a classifier.
  *   Used with a UMLList to display a list of attributes.  Since attributes

@@ -30,8 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.argouml.model.ModelFacade;
 
-//import ru.novosoft.uml.foundation.data_types.MMultiplicity;
-
 /**
  * A model for multiplicities. This model is instantiated with a few default
  * values. 

@@ -31,7 +31,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLCheckBox2;
-import ru.novosoft.uml.foundation.data_types.MScopeKind;
 
 /**
  * @since Nov 6, 2002
@@ -60,9 +59,9 @@ public class ActionSetFeatureOwnerScope extends UMLChangeAction {
             if (org.argouml.model.ModelFacade.isAFeature(target)) {
                 Object m = /*(MFeature)*/ target;
                 if (source.isSelected()) {
-                    ModelFacade.setOwnerScope(m, MScopeKind.CLASSIFIER);
+                    ModelFacade.setOwnerScope(m, ModelFacade.CLASSIFIER_SCOPEKIND);
                 } else {
-                    ModelFacade.setOwnerScope(m, MScopeKind.INSTANCE);
+                    ModelFacade.setOwnerScope(m, ModelFacade.INSTANCE_SCOPEKIND);
                 }
             }
         }

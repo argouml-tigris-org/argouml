@@ -32,8 +32,6 @@ import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
-//import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
-
 /**
  * 
  * @author jaap.branderhorst@xs4all.nl	

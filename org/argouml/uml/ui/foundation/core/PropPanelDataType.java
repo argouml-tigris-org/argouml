@@ -33,6 +33,7 @@ import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 
 import org.argouml.ui.targetmanager.TargetManager;
@@ -41,7 +42,6 @@ import org.argouml.uml.ui.UMLAttributesListModel;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLList;
 import org.argouml.util.ConfigLoader;
-import ru.novosoft.uml.foundation.core.MClassifier;
 
 /**
  * TODO: this property panel needs refactoring to remove dependency on
@@ -115,7 +115,7 @@ public class PropPanelDataType extends PropPanelClassifier {
                             }
                         }
                         if (!match) {
-                            stereo = ((MClassifier)classifier).getFactory().createStereotype();
+                            stereo = UmlFactory.getFactory().getExtensionMechanisms().createStereotype();//((MClassifier)classifier).getFactory().createStereotype();
                             ModelFacade.setName(stereo, "enumeration");
                             ModelFacade.addOwnedElement(model, stereo);
                         }

@@ -35,7 +35,6 @@ import org.argouml.uml.ui.foundation.core.*;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.model_management.MSubsystemImpl;
 
 /** A property panel for UML subsystems. */
 public class PropPanelSubsystem extends PropPanelPackage
@@ -60,7 +59,7 @@ public class PropPanelSubsystem extends PropPanelPackage
 
     public Class getClassForPanel() {
         // TODO Shouldn't refer to NSUML implementation class
-        return MSubsystemImpl.class;
+        return (Class)ModelFacade.SUBSYSTEM;
     }
 
     public String getModuleName() { return "PropPanelSubsystem"; }

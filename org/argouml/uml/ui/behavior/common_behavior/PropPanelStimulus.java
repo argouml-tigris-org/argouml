@@ -22,8 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: PropPanelStimulus.java
 // Classes: PropPanelStimulus
 // Original Author: agauthie@ics.uci.edu
@@ -50,7 +48,6 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 
 /**
  * TODO: this property panel needs refactoring to remove dependency on
@@ -163,7 +160,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
             Object stimulus = /*(MStimulus)*/ target;
             Object link = ModelFacade.getCommunicationLink(stimulus);
             if (link == null) {
-                link = ((MStimulus)stimulus).getFactory().createLink();
+                link = UmlFactory.getFactory().getCommonBehavior().createLink();//((MStimulus)stimulus).getFactory().createLink();
                 if (link != null) {
                     ModelFacade.addStimulus(link, stimulus);
                     ModelFacade.setCommunicationLink(stimulus, /*(MLink)*/link);
