@@ -34,8 +34,8 @@ import org.tigris.gef.util.ChildGenerator;
 /** Utility class to generate a list of the children of a class.  In this case
  *  the "children" of a class are the other classes that are
  *  associated with the parent class, and that MAssociation has a
- *  COMPOSITE end at the parent.  This is used in one of the
- *  Perspectives. 
+ *  COMPOSITE end at the parent.  This is used in one of the critics.
+ *  @see org.argouml.uml.cognitive.critics.CrCircularComposition
  *  @stereotype singleton
  */
 public class GenCompositeClasses implements ChildGenerator {
@@ -71,7 +71,9 @@ public class GenCompositeClasses implements ChildGenerator {
 		if (conn == null || conn.size() != 2) continue;
 		Object otherEnd = (ae == conn.get(0)) 
 		    ? conn.get(1) : conn.get(0);
-		res.add(ModelFacade.getType(otherEnd));
+		if (ModelFacade.getType(ae) != ModelFacade.getType(otherEnd)) {
+		    res.add(ModelFacade.getType(otherEnd));
+		}
 	    }
 	}
 	return res.elements();
