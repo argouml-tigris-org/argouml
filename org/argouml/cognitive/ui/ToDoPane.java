@@ -184,8 +184,6 @@ public class ToDoPane extends JPanel
         
         _combo.addItemListener(this);
         
-        _tree.setRootVisible(false);
-        _tree.setShowsRootHandles(true);
         _tree.addTreeSelectionListener(this);
         _tree.setCellRenderer(new ToDoTreeRenderer());
         _tree.addMouseListener(this);
