@@ -163,7 +163,7 @@ public class XmiFilePersister extends AbstractFilePersister {
      * @return The newly loaded project.
      * @throws OpenException if the file can not be opened
      *
-     * @see org.argouml.persistence.ProjectFilePersister#loadProject(java.net.URL)
+     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.net.URL)
      */
     public Project doLoad(URL url) throws OpenException {
         try {

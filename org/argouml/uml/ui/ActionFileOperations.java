@@ -123,6 +123,7 @@ public abstract class ActionFileOperations extends AbstractAction {
      * @return true if the file was successfully opened
      */
     public boolean loadProject(URL url) {
+        LOG.info("Loading project");
         PersistenceManager pm = new PersistenceManager();
         Project oldProject = ProjectManager.getManager().getCurrentProject();
         boolean success = true;
@@ -190,16 +191,21 @@ public abstract class ActionFileOperations extends AbstractAction {
                             + "These things cannot be restored. "
                             + "You can continue working with what "
                             + "was actually loaded.\n");
-                }
-                else if (oldProject != null) {
+                } else if (oldProject != null) {
                     // if p equals oldProject there was an exception and we do
                     // not have to gc (garbage collect) the old project
                     if (p != null && !p.equals(oldProject)) {
                         //prepare the old project for gc
+                        LOG.info("There are " + oldProject.getMembers().size()
+                                + " members in the old project");
+                        LOG.info("There are " + p.getMembers().size()
+                                + " members in the new project");
                         ProjectManager.getManager().removeProject(oldProject);
                     }
                 }
                 ProjectManager.getManager().setCurrentProject(p);
+                LOG.info("There are " + p.getMembers().size()
+                        + " members in the current project");
                 Designer.enableCritiquing();
             }
         }

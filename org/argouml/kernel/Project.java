@@ -105,7 +105,7 @@ public class Project implements java.io.Serializable, TargetListener {
     
     // TODO: break into 3 main member types
     // model, diagram and other
-    private ArrayList members;
+    private MemberList members;
     
     private String historyFile;
     
@@ -166,7 +166,7 @@ public class Project implements java.io.Serializable, TargetListener {
         version = ArgoVersion.getVersion();
         
         searchpath = new Vector();
-        members = new ArrayList(4);
+        members = new MemberList();
         historyFile = "";
         models = new Vector();
         diagrams = new Vector();
@@ -200,9 +200,10 @@ public class Project implements java.io.Serializable, TargetListener {
         ModelFacade.setName(model, "untitledModel");
         setRoot(model);
         setCurrentNamespace(model);
-        addMember(new ProjectMemberTodoList("", this));
+        addMember(model);
         addMember(new UMLClassDiagram(model));
         addMember(new UMLUseCaseDiagram(model));
+        addMember(new ProjectMemberTodoList("", this));
         ProjectManager.getManager().setNeedsSave(false);       
         setActiveDiagram((ArgoDiagram) getDiagrams().get(0));
     }
@@ -321,43 +322,28 @@ public class Project implements java.io.Serializable, TargetListener {
      * 
      * @return a Vector with all members.
      */
-    public ArrayList getMembers() {
+    public MemberList getMembers() {
+        LOG.info("Getting the members there are " + members.size());
         return members;
     }
 
     /**
      * @param d the diagram
      */
-    public void addMember(ArgoDiagram d) {
+    private void addDiagramMember(ArgoDiagram d) {
         ProjectMember pm = new ProjectMemberDiagram(d, this);
         addDiagram(d);
         // if diagram added successfully, add the member too
-        if (members.size() > 0 
-                && members.get(0) instanceof ProjectMemberModel) {
-            // if the first member is a model then add
-            // this diagram after that
-            members.add(1, pm);
-        } else {
-            // otherwise add the diagram at the start
-            members.add(0, pm);
-        }
+        members.add(pm);
     }
 
     /**
      * @param pm the member to be added
      */
-    public void addMember(ProjectMemberTodoList pm) {
-        Iterator iter = members.iterator();
-        Object currentMember = null;
-        while (iter.hasNext()) {
-            currentMember = iter.next();
-            if (currentMember instanceof ProjectMemberTodoList) {
-                /* No need to have several of these */
-                return;
-            }
-        }
-        // got past the veto, add the member at the end of the list
+    private void addTodoMember(ProjectMemberTodoList pm) {
+        // Adding a todo member removes any existing one.
         members.add(pm);
+        LOG.info("Added todo member, there are now " + members.size());
     }
 
     /**
@@ -365,36 +351,54 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void addMember(Object m) {
         
-        if (!ModelFacade.isAModel(m)) {
+        if (m instanceof ArgoDiagram) {
+            LOG.info("Adding diagram member");
+            addDiagramMember((ArgoDiagram)m);
+        } else if (m instanceof ProjectMemberTodoList) {
+            LOG.info("Adding todo member");
+            addTodoMember((ProjectMemberTodoList)m);
+        } else if (ModelFacade.isAModel(m)) {
+            LOG.info("Adding model member");
+            addModelMember(m);
+        } else {
             throw new IllegalArgumentException(
-                "The member must be a UML model. It is " 
-                    + m.getClass().getName());
+                    "The member must be a UML model todo member or diagram."
+                    + "It is " + m.getClass().getName());
         }
+        LOG.info("There are now " + members.size() + " members");
+    }
+
+    /**
+     * @param m the model
+     */
+    private void addModelMember(Object m) {
         
-        Iterator iter = members.iterator();
-        Object currentMember = null;
         boolean memberFound = false;
-        while (iter.hasNext()) {
-            currentMember = iter.next();
-            if (currentMember instanceof ProjectMemberModel) {
-                Object currentModel =
-                    ((ProjectMemberModel) currentMember).getModel();
-                if (currentModel == m) {
-                    memberFound = true;
-                    break;
-                }
+        Object currentMember =
+            members.getMember(ProjectMemberModel.class);
+        if (currentMember != null) {
+            Object currentModel =
+                ((ProjectMemberModel) currentMember).getModel();
+            if (currentModel == m) {
+                memberFound = true;
             }
         }
+        
         if (!memberFound) {
             if (!models.contains(m)) {
                 addModel(m);
             }
             // got past the veto, add the member
             ProjectMember pm = new ProjectMemberModel(m, this);
-            members.add(0, pm);
+            LOG.info("Adding model member to start of member list");
+            members.add(pm);
+        } else {
+            LOG.info("Attempted to load 2 models");
+            throw new IllegalArgumentException(
+                    "Attempted to load 2 models");
         }
     }
-
+    
     /**
      * @param m a namespace
      */
@@ -405,8 +409,9 @@ public class Project implements java.io.Serializable, TargetListener {
 	}
         
         // fire indeterminate change to avoid copying vector
-        if (!models.contains(m))
+        if (!models.contains(m)) {
             models.addElement(m);
+        }
         setCurrentNamespace(m);
         ProjectManager.getManager().setNeedsSave(true);
     }
@@ -418,24 +423,7 @@ public class Project implements java.io.Serializable, TargetListener {
     protected void removeProjectMemberDiagram(ArgoDiagram d) {
 
         removeDiagram(d);
-
-        // should remove the corresponding ProjectMemberDiagram not
-        // the ArgoDiagram from the members
-
-        // _members.removeElement(d);
-        // ehhh lets remove the diagram really and remove it from its
-        // corresponding projectmember too
-        Iterator it = members.iterator();
-        while (it.hasNext()) {
-            Object obj = it.next();
-            if (obj instanceof ProjectMemberDiagram) {
-                ProjectMemberDiagram pmd = (ProjectMemberDiagram) obj;
-                if (pmd.getDiagram() == d) {
-                    members.remove(pmd);
-                    break;
-                }
-            }
-        }
+        members.remove(d);
         
         /* Issue 2909: if there is no diagram left, then let's add a default
          * new one... */
@@ -455,15 +443,7 @@ public class Project implements java.io.Serializable, TargetListener {
         if (LOG.isDebugEnabled()) {
             LOG.debug("findMemberByName called for \"" + name + "\".");
         }
-        for (int i = 0; i < members.size(); i++) {
-            ProjectMember pm = (ProjectMember) members.get(i);
-            if (name.equals(pm.getPlainName()))
-                return pm;
-        }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Member \"" + name + "\" not found.");
-        }
-        return null;
+        return members.findDiagramMemberByName(name);
     }
 
     /**
@@ -661,7 +641,7 @@ public class Project implements java.io.Serializable, TargetListener {
         
         Collection allClassifiers =
             ModelManagementHelper.getHelper()
-	        .getAllModelElementsOfKind(ns, (Class) ModelFacade.CLASSIFIER);
+	        .getAllModelElementsOfKind(ns, ModelFacade.CLASSIFIER);
         
         Object[] classifiers = allClassifiers.toArray();
         Object classifier = null;
@@ -930,12 +910,15 @@ public class Project implements java.io.Serializable, TargetListener {
 
             UmlFactory.getFactory().delete(obj);
 
-            if (members.contains(obj)) {
+            if (obj instanceof ProjectMember
+                    && members.contains(obj)) {
                 members.remove(obj);
             }
+            
             if (models.contains(obj)) {
                 models.remove(obj);
-            }           
+            }
+            
             needSave = true;
             
             // scan if some diagrams need to be deleted, too
@@ -1047,13 +1030,10 @@ public class Project implements java.io.Serializable, TargetListener {
         }
         
         if (treeRoot != null) {
-            members.remove(treeRoot);
             models.remove(treeRoot);
         }
         treeRoot = root;
-        addMember(root);
         addModel(root);
-
     }
 
     /**
@@ -1214,10 +1194,6 @@ public class Project implements java.io.Serializable, TargetListener {
     public void remove() {
         
         if (members != null) {
-            Iterator membersIt = members.iterator();
-            while (membersIt.hasNext()) {
-                ((ProjectMember) membersIt.next()).remove();
-            }
             members.clear();
         }
         

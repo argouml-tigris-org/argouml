@@ -31,6 +31,7 @@ import java.net.URL;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -47,9 +48,9 @@ import org.argouml.util.osdep.OsUtil;
  */
 public class ActionSaveProjectAs extends ActionSaveProject {
 
-    ////////////////////////////////////////////////////////////////
-    // static variables
-
+    /** logger */
+    private static final Logger LOG = Logger.getLogger(ActionSaveProjectAs.class);
+  
     /**
      * The singleton.
      */
@@ -76,6 +77,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
+        LOG.info("Performing saveas action");
         trySave(false);
     }
 

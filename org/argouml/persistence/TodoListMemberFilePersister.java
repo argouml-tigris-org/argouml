@@ -27,6 +27,9 @@ package org.argouml.persistence;
 import java.io.InputStream;
 
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.uml.cognitive.ProjectMemberTodoList;
+import org.xml.sax.SAXException;
 
 /**
  * The file persister for the Todo members.
@@ -40,14 +43,20 @@ public class TodoListMemberFilePersister extends MemberFilePersister {
      * java.io.InputStream)
      */
     public void load(Project project, InputStream inputStream)
-        throws OpenException {
-        
-        TodoParser parser = new TodoParser();
-        parser.readTodoList(inputStream, true);
+            throws OpenException {
+
+        try {
+            TodoParser parser = new TodoParser();
+            parser.readTodoList(inputStream);
+            ProjectMemberTodoList pm = new ProjectMemberTodoList("", project);
+            project.addMember(pm);
+        } catch (SAXException e) {
+            throw new OpenException(e);
+        }
     }
     
     /**
-     * @see org.argouml.persistence.MemberFilePersister#getTag()
+     * @see org.argouml.persistence.MemberFilePersister#getMainTag()
      */
     public final String getMainTag() {
         return "todo";
