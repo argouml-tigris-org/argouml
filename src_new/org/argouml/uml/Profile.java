@@ -59,9 +59,11 @@ abstract public class Profile {
      *   @param model, classifiers already present in model will not be added.
      *   @param classifierType use MClassifier.class for all built-in classifiers, 
      *            MDataType.class for just built-in primitive types, etc.
+     *   @param excludeType if non-null, typically MDataType.class to not add datatypes
      *   @param classifierSet  set of classifiers
      */
-    abstract public void addBuiltinClassifiers(MModel model,Class classifierType,Set classifierSet,boolean addVoid);
+    abstract public void addBuiltinClassifiers(MModel model,
+        Class classifierType,Class excludeType,Set classifierSet,boolean addVoid);
     
     /**
      *   This method gets the default classifier name for a profile.  For example,

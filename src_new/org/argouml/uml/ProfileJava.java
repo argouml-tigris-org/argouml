@@ -148,11 +148,12 @@ public class ProfileJava extends Profile {
         String[] javaUtil = {"java","util" };
         String[] javaMath = {"java","math" };
         _defaultClassifier = new ProfileClassifier(MClass.class,MClassImpl.class,"Object",javaLang);
-        _classifiers = new ArrayList(27);
+        _classifiers = new ArrayList(29);
         _classifiers.add(_defaultClassifier);
 
         _classifiers.add(new ProfileClassifier(MDataType.class,MDataTypeImpl.class,"char",javaLang));
         _classifiers.add(new ProfileClassifier(MDataType.class,MDataTypeImpl.class,"byte",javaLang));
+        _classifiers.add(new ProfileClassifier(MDataType.class,MDataTypeImpl.class,"boolean",javaLang));        
         _classifiers.add(new ProfileClassifier(MDataType.class,MDataTypeImpl.class,"short",javaLang));
         _classifiers.add(new ProfileClassifier(MDataType.class,MDataTypeImpl.class,"int",javaLang));
         _classifiers.add(new ProfileClassifier(MDataType.class,MDataTypeImpl.class,"long",javaLang));
@@ -161,6 +162,7 @@ public class ProfileJava extends Profile {
 
         _classifiers.add(new ProfileClassifier(MClass.class,MClassImpl.class,"Char",javaLang));
         _classifiers.add(new ProfileClassifier(MClass.class,MClassImpl.class,"Byte",javaLang));
+        _classifiers.add(new ProfileClassifier(MClass.class,MClassImpl.class,"Boolean",javaLang));
         _classifiers.add(new ProfileClassifier(MClass.class,MClassImpl.class,"Short",javaLang));
         _classifiers.add(new ProfileClassifier(MClass.class,MClassImpl.class,"Integer",javaLang));
         _classifiers.add(new ProfileClassifier(MClass.class,MClassImpl.class,"Long",javaLang));
@@ -316,14 +318,18 @@ public class ProfileJava extends Profile {
         return value;
     }
     
-    public void addBuiltinClassifiers(MModel model,Class classifierType,Set classifierSet,boolean addVoid)
+    public void addBuiltinClassifiers(MModel model,Class classifierType,
+        Class excludeType,Set classifierSet,boolean addVoid)
     {
         Iterator iter = _classifiers.iterator();
         while(iter.hasNext()) {
             ProfileClassifier profileClass = (ProfileClassifier) iter.next();
             if(classifierType.isAssignableFrom(profileClass.getClassInterface())) {
                 if(model == null || !profileClass.exists(model)) {
-                    classifierSet.add(profileClass);
+                    if(excludeType == null || 
+                    !excludeType.isAssignableFrom(profileClass.getClassInterface())) {
+                        classifierSet.add(profileClass);
+                    }
                 }
             }
         }
