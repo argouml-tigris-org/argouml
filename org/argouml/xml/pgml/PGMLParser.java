@@ -25,8 +25,10 @@ package org.argouml.xml.pgml;
 import java.util.*;
 import org.xml.sax.AttributeList;
 import org.tigris.gef.presentation.FigNode;
-// the following two ugly package dependency is for restoring compartment visibility
+// the following three ugly package dependency are for restoring compartment visibility
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
+import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 
 public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
@@ -167,20 +169,24 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
   public void startElement(String elementName,AttributeList attrList) {
     //System.out.println("startElement("+elementName+",AttributeList)"+_elementState+";"+_nestedGroups);
     if (_elementState == NODE_STATE && elementName.equals("group") &&
-        _currentNode != null && _currentNode instanceof FigClass && attrList != null) {
+        _currentNode != null && attrList != null &&
+        (_currentNode instanceof FigClass  || _currentNode instanceof FigInterface)) {
       // compartment of class figure detected
       String descr = attrList.getValue("description").trim();
       if (descr.endsWith("[0, 0, 0, 0]") || descr.endsWith("[0,0,0,0]")) {
         // the detected compartment need to be hidden
-        ((FigClass)_currentNode).enableSizeChecking(false);
+        ((FigNodeModelElement)_currentNode).enableSizeChecking(false);
         if (_currentNode != _previousNode) {
-          // it's the first compartment of the class: attributes (in our case!)
-          ((FigClass)_currentNode).setAttributeVisible(false);
+          // it's the first compartment of the class:
+          if (_currentNode instanceof FigClass)
+            ((FigClass)_currentNode).setAttributeVisible(false);
+          else
+            ((FigInterface)_currentNode).setOperationVisible(false);
         } else {
           // never reached due to bug in GEF (see below)
           ((FigClass)_currentNode).setOperationVisible(false);
         }
-        ((FigClass)_currentNode).enableSizeChecking(true);
+        ((FigNodeModelElement)_currentNode).enableSizeChecking(true);
       }
       _previousNode = _currentNode; // remember for next compartment
     }
@@ -194,9 +200,9 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         _previousNode != null && _nestedGroups > 0) { // DEFAULT_STATE is private :-(
       String descr = attrList.getValue("description").trim();
       if (descr.endsWith("[0, 0, 0, 0]") || descr.endsWith("[0,0,0,0]")) {
-        ((FigClass)_previousNode).enableSizeChecking(false);
+        ((FigNodeModelElement)_previousNode).enableSizeChecking(false);
         ((FigClass)_previousNode).setOperationVisible(false);
-        ((FigClass)_previousNode).enableSizeChecking(true);
+        ((FigNodeModelElement)_previousNode).enableSizeChecking(true);
       }
     }
     // OK, that's all with hiding compartments. Now business as usual...
