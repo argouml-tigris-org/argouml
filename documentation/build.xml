@@ -121,6 +121,7 @@ After these operations the file will still be visible in the GUI.
 		<property name="printablehtml.dir" value="${output.dir}/printablehtml"/>
 		<property name="defaulthtml.dir"   value="${output.dir}/defaulthtml"/>
 		<property name="pdf.dir"           value="${output.dir}/pdf"/>
+        <property name="javahelp.dir"      value="${output.dir}/javahelp"/>
 		<property name="dist.dir"          value="${basedir}/dist"/>
 		<taskdef name="fop"                classname="Fop"/>
 	</target>
@@ -133,6 +134,7 @@ After these operations the file will still be visible in the GUI.
 		<echo message="defaulthtml   : Build chunked   HTML docs to ARGO_HOME/build/documentation/ "/>
 		<echo message="printablehtml : Build printable HTML docs to ARGO_HOME/build/documentation/ "/>
 		<echo message="pdf           : Build Acrobat   PDF  docs to ARGO_HOME/build/documentation/ "/>
+        <echo message="javahelp      : Build Sun  JAVAHELP  docs to ARGO_HOME/build/documentation/ "/>
 		<echo message="docs          : Build PDF and HTML docs to ARGO_HOME/build/documentation/ "/>
 		<echo message="dist          : Create/Update .ZIP and .TGZ archives in ARGO_HOME/dist/ "/>
 		<echo message="clean         : Clean deployment and distribution. "/>
@@ -149,6 +151,7 @@ After these operations the file will still be visible in the GUI.
 		<mkdir dir="${output.dir}"/>
 		<mkdir dir="${defaulthtml.dir}"/>
 		<mkdir dir="${printablehtml.dir}"/>
+        <mkdir dir="${javahelp.dir}"/>
 		<mkdir dir="${pdf.dir}"/>
 	</target>
 	
@@ -172,6 +175,19 @@ After these operations the file will still be visible in the GUI.
 		<antcall target="internal-scheduler"/>		
 	</target>
 	
+
+    <!-- =================================================================== -->
+	<!-- javahelp: Create javahelp documentation                             -->
+	<!-- =================================================================== -->
+	<target name="javahelp" depends="prepare">
+		<!-- Set switch for "create-javahelp" target to ensure that it runs -->
+		<property name="generate-javahelp" value="true" />
+		<!-- Call "internal-scheduler" target to start the process -->
+		<antcall target="internal-scheduler"/>		
+	</target>
+	
+
+
 	<!-- =================================================================== -->
 	<!-- pdf: Create PDF documentation                                       -->
 	<!-- =================================================================== -->
@@ -210,7 +226,8 @@ After these operations the file will still be visible in the GUI.
 		<property name="chunked.xsl"   value="../docbook-setup/create-chunked.xsl"/>
 		<property name="printable.xsl" value="../docbook-setup/create-printable.xsl"/>
 		<property name="pdf.xsl"       value="../docbook-setup/create-pdf.xsl"/>
-		
+		<property name="javahelp.xsl"  value="../docbook-setup/create-javahelp.xsl"/>
+
 		<!-- Copy and change 'antcall' task below for additional DocBook documents -->
 		<antcall target="internal-dispatcher">		
 			<param name="doc.subdir"  value="quick-guide"/> <!-- sub-dir of 'documentation' with xml file -->
@@ -223,6 +240,10 @@ After these operations the file will still be visible in the GUI.
 		<antcall target="internal-dispatcher">		
 			<param name="doc.subdir"  value="manual"/>      <!-- sub-dir of 'documentation' with xml file -->
 			<param name="doc.prefix"  value="argomanual"/>  <!-- DocBook filename without xml extension   -->
+		</antcall>
+        <antcall target="internal-dispatcher">		
+			<param name="doc.subdir"  value="javahelp"/>      <!-- sub-dir of 'documentation' with xml file -->
+			<param name="doc.prefix"  value="javahelp"/>  <!-- DocBook filename without xml extension   -->
 		</antcall>
 	</target>
 	
@@ -272,6 +293,14 @@ After these operations the file will still be visible in the GUI.
 			<param name="source.fo"   value="${doc.prefix}.fo"/>
 			<param name="target.dir"  value="${pdf.dir}/${doc.subdir}"/>
 			<param name="target.pdf"  value="${doc.prefix}.pdf"/>
+		</antcall>
+        <antcall target="create-javahelp">		
+			<param name="source.dir"  value="${documentation.dir}/${doc.subdir}"/>
+			<param name="source.xml"  value="${doc.prefix}.xml"/>
+			<param name="source.xsl"  value="${javahelp.xsl}"/>
+			<param name="source.fo"   value="${doc.prefix}.fo"/>
+			<param name="target.dir"  value="${javahelp.dir}/${doc.subdir}"/>
+			<param name="target.javahelp"  value="${doc.prefix}.jh"/>
 		</antcall>
 
 		<!-- Delete the redundant images directory from the source directory  -->
@@ -324,6 +353,31 @@ After these operations the file will still be visible in the GUI.
 		<fop fofile="${source.dir}/${source.fo}" pdffile="${target.dir}/${target.pdf}"/>
 		<delete file="${source.dir}/${source.fo}"/>
 	</target>
+
+    <!-- =================================================================== -->
+	<!-- create-javahelp: Generates the javahelp documentation               -->
+	<!-- =================================================================== -->
+	<target name="create-javahelp" if="generate-javahelp">
+		<echo message="Building javahelp documentation for: ${source.dir}/${source.xml}. Please wait ..."/>
+		<mkdir dir="${target.dir}"/>
+		<style basedir="${source.dir}" style="${javahelp.xsl}" destdir="${target.dir}" includes="${source.xml}"/>
+		<!-- 'destdir' parameter was ignored due to chunking, we need to move
+		     all chunked html files to destdir manually. Chunked HTML files 
+		     are created in current working directory. This is the directory 
+		     that contains the build.xml file for us.                         -->
+		<move todir="${target.dir}">
+			<fileset dir="${documentation.dir}" includes="jhelp*,*.html"/>
+		</move>
+		<!-- Delete empty .html file (with same name as .xml file) created 
+		     in destination directory by style task                           -->
+		<delete file="${target.dir}/${target.html}"/>
+		<!-- Copy remaining stylesheets, images and static HTML also          -->
+		<copy todir="${target.dir}">
+			<fileset dir="${source.dir}" includes="jhelp*,*.html,*.css,images/**" /> 
+		</copy>
+	</target>
+
+
 	
 	<!-- =================================================================== -->
 	<!-- towebsite: ftp to website                                           -->
