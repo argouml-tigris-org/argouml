@@ -583,6 +583,7 @@ public class MMUtil {
 	MOperation oper = buildOperation();
 
 	cls.addFeature(oper);
+	oper.setOwner(cls);
 	return oper;
     }
 
