@@ -95,8 +95,14 @@ implements ChangeListener, MouseListener, QuadrantPanel {
   public Dimension getPreferredSize() { return new Dimension(400, 500); }
   public Dimension getMinimumSize() { return new Dimension(100, 100); }
 
+/**
+ * Sets the target of the multieditorpane. The multieditorpane can have several 
+ * tabs. If a tab is an instance of tabmodeltarget (that is a tab that displays
+ * model elements) that tab should display the target if the target is an 
+ * ArgoDiagram.
+ * @param target
+ */
   public void setTarget(Object target) {
-    //System.out.println("MultiEditorPane setTarget: " + target);
     if(_target == target) return;
     int nextTab = -1;
     int currentTab = _tabs.getSelectedIndex();
@@ -105,13 +111,13 @@ implements ChangeListener, MouseListener, QuadrantPanel {
     for (int i = 0; i < tabCount; i++) {
         Component tab = _tabs.getComponentAt(i);
         if (tab instanceof TabModelTarget) {
-	    TabModelTarget tabMT = (TabModelTarget) tab;
-	    tabMT.setTarget(_target);
-	    boolean shouldEnable = tabMT.shouldBeEnabled();
-	    _tabs.setEnabledAt(i, shouldEnable);
-            if(shouldEnable && (nextTab == -1 || i == currentTab)) 
+	       TabModelTarget tabMT = (TabModelTarget) tab;
+	       tabMT.setTarget(_target);
+	       boolean shouldEnable = tabMT.shouldBeEnabled();
+	       _tabs.setEnabledAt(i, shouldEnable);
+           if(shouldEnable && (nextTab == -1 || i == currentTab)) 
                 nextTab = i;
-	}
+	   }
     }
 //    if this target doesn't match the tabs expectation    
 //        leave the previous tab displayed
