@@ -42,9 +42,10 @@ Modifications
 
   <abstract>
     <para>
-This version of the manual is intended to describe 
-the version &argoversion; of &argouml;.
+This version the manual is intended to describe 
+is the version &argoversion; of &argouml;.
 </para>
+  </abstract>
   <authorgroup>
     <author>
       <firstname>Alejandro</firstname>
