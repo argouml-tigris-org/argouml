@@ -365,7 +365,7 @@ public class ParserDisplay extends Parser {
     if (s.startsWith("entry") && s.indexOf("/") > -1)
 	s = s.substring(s.indexOf("/")+1).trim();
     MCallAction entryAction=(MCallAction)parseAction(s);
-    entryAction.setName("entry");
+    entryAction.setName("anon");
     st.setEntry(entryAction);
   }
 
@@ -373,7 +373,7 @@ public class ParserDisplay extends Parser {
     if (s.startsWith("exit") && s.indexOf("/") > -1)
       s = s.substring(s.indexOf("/")+1).trim();
     MCallAction exitAction=(MCallAction)parseAction(s);
-    exitAction.setName("exit");
+    exitAction.setName("anon");
     st.setExit(exitAction);
   }
 
@@ -414,19 +414,33 @@ public class ParserDisplay extends Parser {
     */   
     trans.setName(parseName(name));
 
-    MEvent evt=parseEvent(trigger);
-    if (evt!=null){
-        trans.setTrigger((MCallEvent)evt);
+    if (trigger.length()>0) {
+	MEvent evt=parseEvent(trigger);
+	if (evt!=null){
+	    trans.setTrigger((MCallEvent)evt);
+	}
     }
-    MGuard g=parseGuard(guard);
-    if (g!=null){
-	g.setName("guard");
-        g.setTransition(trans);
-        trans.setGuard(g);
+    else
+	trans.setTrigger(null);
+
+    if (guard.length()>0){
+	MGuard g=parseGuard(guard);
+	if (g!=null){
+	    g.setName("anon");
+	    g.setTransition(trans);
+	    trans.setGuard(g);
+	}
     }
-    MCallAction effect=(MCallAction)parseAction(actions);
-    effect.setName("effect");
-    trans.setEffect(effect);
+    else
+	trans.setGuard(null);
+    
+    if (actions.length()>0){
+	MCallAction effect=(MCallAction)parseAction(actions);
+	effect.setName("anon");
+	trans.setEffect(effect);
+    }
+    else
+	trans.setEffect(null);
 
     return trans;
   }

@@ -58,6 +58,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
   private UMLNameEventListener _nameListener;
 
     protected JPanel buttonPanel=new JPanel();
+    protected JPanel buttonPanelWithFlowLayout=new JPanel();
     protected JPanel captionPanel=new JPanel();
 
   protected static ImageIcon _navBackIcon = Util.loadIconResource("NavigateBack");
@@ -99,10 +100,23 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
 	addCaption(captionPanel,0,0,0);
 
 	buttonPanel = new JPanel(new GridLayout(1,0));
-	JPanel buttonPanelWithFlowLayout = new JPanel(new FlowLayout());
+	buttonPanelWithFlowLayout = new JPanel(new FlowLayout());
 	buttonPanelWithFlowLayout.add(buttonPanel);
 	addField(buttonPanelWithFlowLayout,0,0,0);
+	
 
+	/*JPanel namePanel=new JPanel(new FlowLayout());
+
+	if (icon!=null) captionPanel.add(new JLabel(icon));
+	captionPanel.add(new JLabel(localize(title)));
+	namePanel.add(captionPanel);
+
+	buttonPanel = new JPanel(new GridLayout(1,0));
+	buttonPanelWithFlowLayout = new JPanel(new FlowLayout());
+	buttonPanelWithFlowLayout.add(buttonPanel);
+	namePanel.add(buttonPanelWithFlowLayout);
+
+	add(namePanel, BorderLayout.NORTH);*/
     }
 
     /**

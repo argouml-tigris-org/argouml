@@ -63,17 +63,28 @@ public class PropPanelTransition extends PropPanelModelElement {
 	addCaption("Source:",0,1,0);
         UMLModelElementListModel sourceModel = new UMLReflectionListModel(this,"source",true,"getTransitionSource",null,null,null);
         sourceModel.setUpperBound(1);
-        addLinkField(new JScrollPane(new UMLList(sourceModel,true),JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),0,1,0);
+       	JList sourceList=new UMLList(sourceModel,true);
+	sourceList.setForeground(Color.blue);
+	sourceList.setVisibleRowCount(1);
+	sourceList.setFont(smallFont);
+	addLinkField(new JScrollPane(sourceList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),0,1,0);
 
 	addCaption("Target:",1,1,1);
         UMLModelElementListModel targetModel = new UMLReflectionListModel(this,"target",true,"getTransitionTarget",null,null,null);
         targetModel.setUpperBound(1);
-        addLinkField(new JScrollPane(new UMLList(targetModel,true),JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),1,1,0);
+	JList targetList=new UMLList(targetModel,true);
+	targetList.setForeground(Color.blue);
+	targetList.setVisibleRowCount(1);
+	targetList.setFont(smallFont);
+        addLinkField(new JScrollPane(targetList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),1,1,0);
 
         addCaption("Trigger:",0,2,0);
         UMLModelElementListModel trigModel = new UMLReflectionListModel(this,"trigger",true,"getTrigger",null,"addTrigger","deleteTrigger");
 	trigModel.setUpperBound(1);
         UMLList trigList=new UMLList(trigModel,true);
+	trigList.setForeground(Color.blue);
+	trigList.setVisibleRowCount(1);
+	trigList.setFont(smallFont);
         JScrollPane trigScroll = new JScrollPane(trigList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         addLinkField(trigScroll,0,2,0);
 
@@ -81,6 +92,9 @@ public class PropPanelTransition extends PropPanelModelElement {
         UMLModelElementListModel guardModel = new UMLReflectionListModel(this,"guard",true,"getGuard",null,"addGuard","deleteGuard");
         guardModel.setUpperBound(1);
         UMLList guardList=new UMLList(guardModel,true);
+	guardList.setForeground(Color.blue);
+	guardList.setVisibleRowCount(1);
+	guardList.setFont(smallFont);
         JScrollPane guardScroll = new JScrollPane(guardList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         addLinkField(guardScroll,1,2,0);
 
@@ -88,6 +102,9 @@ public class PropPanelTransition extends PropPanelModelElement {
         UMLModelElementListModel effectModel = new UMLReflectionListModel(this,"effect",true,"getEffect",null,"addEffect","deleteEffect");
         effectModel.setUpperBound(1);
         UMLList effectList=new UMLList(effectModel,true);
+	effectList.setForeground(Color.blue);
+	effectList.setVisibleRowCount(1);
+	effectList.setFont(smallFont);
         JScrollPane effectScroll = new JScrollPane(effectList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         addLinkField(effectScroll,2,2,0);
 
@@ -153,7 +170,7 @@ public class PropPanelTransition extends PropPanelModelElement {
 	    MTransition trans=(MTransition) target;
 	    MFactory factory=trans.getFactory();
             trigger = factory.createCallEvent();
-	    trigger.setName("trigger");
+	    trigger.setName("anon");
 	    //needs-more-work
 	    trigger.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
             trans.setTrigger(trigger);
@@ -171,10 +188,10 @@ public class PropPanelTransition extends PropPanelModelElement {
 
 
     public MGuard getGuard() {
-        MGuard guard = null;
+	MGuard guard = null;
         Object target = getTarget();
         if(target instanceof MTransition) {
-            guard = ((MTransition) target).getGuard();
+	    guard = ((MTransition)target).getGuard();
         }
         return guard;
     }
@@ -185,7 +202,7 @@ public class PropPanelTransition extends PropPanelModelElement {
         if(target instanceof MTransition) {
             MFactory factory=((MTransition) target).getFactory();
             guard = factory.createGuard();
-            guard.setName("guard");
+            guard.setName("anon");
             ((MTransition) target).setGuard(guard);
         }
         return guard;
@@ -212,7 +229,7 @@ public class PropPanelTransition extends PropPanelModelElement {
         Object target = getTarget();
         if(target instanceof MTransition) {
             effect = new MCallActionImpl();
-            effect.setName("effect");
+            effect.setName("anon");
             ((MTransition) target).setEffect(effect);
         }
         return effect;

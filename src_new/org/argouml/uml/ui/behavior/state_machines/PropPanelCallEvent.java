@@ -51,11 +51,11 @@ public class PropPanelCallEvent extends PropPanelEvent {
 
         Class mclass = MCallEvent.class;
 
-        addCaption("Name:",1,0,1);
+        addCaption("Name:",1,0,0);
         addField(nameField,1,0,0);
 
-	addCaption("Parameters:",0,1,1);
-	addField(paramScroll,0,1,0);
+	addCaption("Parameters:",2,0,1);
+	addField(paramScroll,2,0,1);
 
   }
 
