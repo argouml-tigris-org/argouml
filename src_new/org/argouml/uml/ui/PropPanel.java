@@ -205,7 +205,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
                 //
 //XXX                if(removeOldPromiscuousListener) {
 //XXX                    ((MBase) _target).removePromiscuousListener(_nameListener);
-                }
+//XXX                }
             }
             
             _target = t;
