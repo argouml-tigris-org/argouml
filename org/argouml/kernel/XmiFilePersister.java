@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.ArgoVersion;
 import org.argouml.cognitive.ProjectMemberTodoList;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.xml.xmi.XMIParser;
