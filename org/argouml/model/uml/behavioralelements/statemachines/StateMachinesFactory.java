@@ -44,6 +44,10 @@ import ru.novosoft.uml.behavior.state_machines.MSubmachineState;
 import ru.novosoft.uml.behavior.state_machines.MSynchState;
 import ru.novosoft.uml.behavior.state_machines.MTimeEvent;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.foundation.core.MBehavioralFeature;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  * Factory to create UML classes for the UML
@@ -253,6 +257,27 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     		return state;
     	} else
     		throw new IllegalArgumentException("In buildCompositeState: statemachine is null");
+    }
+    
+    /**
+	 * Builds a state machine owned by the given context
+	 * @param context
+	 * @return MActivityGraph
+	 */
+    public MStateMachine buildStateMachine(MModelElement context) {
+    	if (context != null && (context instanceof MBehavioralFeature || context instanceof MClassifier)) {
+    		MStateMachine graph = createStateMachine();
+    		graph.setContext(context);
+    		if (context instanceof MNamespace) {
+    			graph.setNamespace((MNamespace)context);
+    		} else
+    		if (context instanceof MBehavioralFeature) {
+    			graph.setNamespace(context.getNamespace());
+    		}
+    		StateMachinesFactory.getFactory().buildCompositeState(graph);
+    		return graph;
+    	} else 
+    		throw new IllegalArgumentException("In buildStateMachine: context null or not legal");
     }
 
 }

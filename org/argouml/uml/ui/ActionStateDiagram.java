@@ -25,6 +25,7 @@ package org.argouml.uml.ui;
 
 import org.argouml.kernel.*;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 import org.argouml.ui.*;
 import org.argouml.uml.*;
 import org.argouml.uml.diagram.state.ui.*;
@@ -61,6 +62,24 @@ public class ActionStateDiagram extends UMLChangeAction {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Project p = pb.getProject();
 	try {
+		Object me = pb.getDetailsTarget();
+	    if (me == null) {
+	    	me = pb.getTarget();
+	    }
+	    // don't need to check target, allready done in shouldbeenabled
+	    MStateMachine machine = StateMachinesFactory.getFactory().buildStateMachine((MModelElement)me);
+	    // next line isn't worlds most beautifull constructor but i don't want to change the world atm.
+	    MNamespace ns = null;
+	    if (me instanceof MBehavioralFeature) {
+	    	ns = ((MBehavioralFeature)me).getNamespace();
+	    } else 
+	    	ns = (MNamespace)me;
+		
+	    UMLStateDiagram d = new UMLStateDiagram(ns, machine);
+	    p.addMember(d);
+	    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
+	    pb.setTarget(d);
+	    /*
 	    Object contextObj = pb.getDetailsTarget();
 	    if (!(contextObj instanceof MClass)) {
 	    	JOptionPane.showMessageDialog(null, 
@@ -84,13 +103,20 @@ public class ActionStateDiagram extends UMLChangeAction {
 	    p.addMember(d);
 	    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
 	    pb.setTarget(d);
+	    */
 	} catch (PropertyVetoException e) {
 	    System.out.println("PropertyVetoException in ActionStateDiagram");
 	}
 	super.actionPerformed(ae);
     }
+    
     public boolean shouldBeEnabled() {
-    	return true;
+    	ProjectBrowser pb = ProjectBrowser.TheInstance;
+    	Object target = pb.getDetailsTarget();
+    	if (target == null) {
+    		target = pb.getTarget();
+    	}
+    	return target instanceof MBehavioralFeature || target instanceof MClassifier;
 //	ProjectBrowser pb = ProjectBrowser.TheInstance;
 //	Project p = pb.getProject();
 //	Object target = pb.getDetailsTarget();
