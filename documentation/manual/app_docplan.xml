@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
 
 <!--
 
 An overview of how I think the manual should be written
-
-Modifications
-=============
-
-29 Nov 2001:  Jeremy Bennett. First version.
-
- 3 Dec 2001:  Jeremy Bennett. This version included as appendix to the main
-              manual.
 
 -->
 
@@ -289,6 +282,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "appendix" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->

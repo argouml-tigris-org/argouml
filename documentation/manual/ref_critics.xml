@@ -1,22 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
 
 <!--
 
 A description of ArgoUML critics
-
-Modifications
-=============
-
- 1 Feb 2002:  Jeremy Bennett. Broken out as separate chapter from the menu
-              chapter.
-
-12 Mar 2002:  Jeremy Bennett. Updated naming of critics, in line with some bug
-              fixes.
-
- 4 Apr 2002:  Jeremy Bennett. Updated info relating to singletons, now it is a
-              defined stereotype within ArgoUML for release 0.9.8.
-
-22 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum.
 
 -->
 
@@ -30,6 +17,8 @@ you change that class at the same time (and think through the deployment).
 
 <chapter id="ch.ref.critics">
   <title>The Critics</title>
+
+  &notupdatedfor014disclaimer;
 
   <sect1>
     <title>Introduction</title>
@@ -1244,6 +1233,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "chapter" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
 argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->

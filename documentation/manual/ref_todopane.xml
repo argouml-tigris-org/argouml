@@ -1,23 +1,16 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
 
 <!--
 
 The To-Do Pane. Need to decide if it is To-Do, To Do or ToDo.
 
-
-Modifications
-=============
-
- 5 Dec 2001:  Jeremy Bennett. Broken out as a separate section from the
-              original manual by Alejandro, Phillipe and Andreas.
-
-31 Jan 2002:  Jeremy Bennett. Chapter written.
-
-18 Apr 2002:  Jeremy Bennett. Comments from Bob Marcum incorporated.
 -->
 
 <chapter id="ch.ref.todopane">
   <title>The To-Do Pane</title>
+
+  &notupdatedfor014disclaimer;
 
   <sect1>
     <title>Introduction</title>
@@ -261,6 +254,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "chapter" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
 argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->

@@ -1,37 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
 
 <!--
 
 The frontispiece information about the book.
 
-Modifications
-=============
-
-30 Nov 2001:  Jeremy Bennett. Broken out as a separate section from the
-               original manual by Alejandro, Phillipe and Andreas. Added
-               revision history.
-
-12 Dec 2001:  Jeremy Bennett. Added Kunle Odutola to list of authors (omitted
-              in error from earlier versions).
-
-31 Jan 2002:  Jeremy Bennett. Updated for draft G.
-
-20 Feb 2002:  Jeremy Bennett. Updated for issue 0.9.6.
-
- 5 Mar 2002:  Jeremy Bennett. Updated for first draft (A) after 0.9.6
-
-13 Mar 2002:  Jeremy Bennett. Updated for issue 0.9.7.
-
-14 Mar 2002:  Jeremy Bennett. First draft (A) for 0.9.8.
-
- 4 Apr 2002:  Jeremy Bennett. Updated for issue 0.9.8.
-
-22 Apr 2002:  Jeremy Bennett. Incorporated first three batches of comments from
-              Bob Marcum (draft A for 0.9.9).
-
- 3 May 2002:  Jeremy Bennett. Updated for issue 0.9.9.
-
-17 May 2002:  Jeremy Bennett. Updated for issue 0.10
 -->
 
 <bookinfo>
@@ -129,6 +102,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "bookinfo" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->

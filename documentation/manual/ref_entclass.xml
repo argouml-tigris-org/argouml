@@ -1,38 +1,23 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
 
 <!--
 
 Description of all the artifacts associated with Class Diagrams within
-Argo/UML.
-
-
-Modifications
-=============
-
- 5 Dec 2001:  Jeremy Bennett. Created as a new chapter.
-
-11 Dec 2001:  Jeremy Bennett. Removed wish list. Added section on built in
-              classes.
-
-18 Dec 2001:  Jeremy Bennett. Started to specify all the entities on this
-              diagram
-
-29 Jan 2002:  Jeremy Bennett. Updated to reflect bug fix preventing attributes
-              being added to classes.
-
-19 Mar 2002:  Jeremy Bennett. Changed all tables to variablelists to fix
-              problems with generating PDF.
-
- 4 Apr 2002:  Jeremy Bennett. Updated references to generalizations and
-              specializations.
-
-18 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum,
-              particularly relating to "limitations" section.
+ArgoUML.
 
 -->
 
 <chapter id="ch.ref.entclass">
   <title>&argouml; Class Diagram Artifact Reference</title>
+  <indexterm>
+    <primary>Class Diagram Reference</primary>
+  </indexterm>
+  <indexterm>
+    <primary>Object Diagrams</primary>
+  </indexterm>
+
+  &notupdatedfor014disclaimer;
 
   <sect1>
     <title>Introduction</title>
@@ -100,10 +85,12 @@ Modifications
         class diagrams.</para>
 
       <para>A variant of the class diagram within the UML standard is the
-        <emphasis>object diagram</emphasis>. There is currently no support for
-        objects or links within &argouml;. As a last resort, the &argouml;
-        deployment diagram does have both objects and links, and can be used to
-        draw simple object diagrams.</para>
+<emphasis>object diagram</emphasis>.
+There is currently no support for objects or links 
+within &argouml; Class diagrams;.
+Instead the &argouml; deployment diagram does have both objects and links, 
+and can be used to draw object diagrams.
+</para>
     </sect2>
   </sect1>
 
@@ -112,6 +99,9 @@ Modifications
 
   <sect1 id="s1.ref.package">
     <title>Package</title>
+    <indexterm>
+      <primary>Package</primary>
+    </indexterm>
 
     <para>The package is the main organizational artifact within &argouml;. In
       the UML metamodel it is a sub-class of both <literal>Namespace</literal>
@@ -132,6 +122,14 @@ Modifications
 
     <sect2>
       <title>Package Details Tabs</title>
+      <indexterm>
+        <primary>Package</primary>
+        <secondary>Details Tabs</secondary>
+      </indexterm>
+      <indexterm>
+        <primary>Details Tabs</primary>
+        <secondary>for Package</secondary>
+      </indexterm>
 
       <para>The details tabs that are active for packages are as
         follows.</para>
@@ -162,7 +160,11 @@ Modifications
         <varlistentry>
           <term><literal>Documentation</literal></term>
 
-          <listitem><para>Standard tab.</para></listitem>
+          <listitem>
+            <para>Standard tab.
+See <xref linkend="s2.ref.documentation_tab"/>.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Style tab -->
@@ -218,11 +220,7 @@ Modifications
                 design to avoid re-computation.</para></note></listitem>
             </itemizedlist>
 
-            <note><para>The UML <literal>Element</literal> metaclass from
-              which all other artifacts are derived includes the tagged
-              element <literal>documentation</literal> which is handled by
-              the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+	  </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -247,201 +245,24 @@ Modifications
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Add class button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/class.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add
-            class</literal></term>
-
-          <listitem><para>This creates a new class (see <xref
-              linkend="s1.ref.class_class"/>) within the package (which
-              appears on no diagram), navigating immediately to the
-              properties tab for that class.</para>
-
-          <tip><para>While it can make sense to create classes this way,
-            it can be clearer to create them within diagrams where you want
-            them.</para></tip></listitem>
-        </varlistentry>
-
-        <!-- Entry for Add interface button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/interface.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add
-            interface</literal></term>
-
-          <listitem><para>This creates a new interface (see <xref
-              linkend="s1.ref.interface_class"/>) within the package (which
-              appears on no diagram), navigating immediately to the
-              properties tab for that interface.</para>
-
-          <tip><para>While it can make sense to create interfaces this
-            way, it can be clearer to create them within diagrams where you
-            want them.</para></tip></listitem>
-        </varlistentry>
-
-        <!-- Entry for Add datatype button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/datatype.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add
-            datatype</literal></term>
-
-          <listitem><para>This creates a new datatype (see <xref
-              linkend="s1.ref.datatype_class"/>) within the package (which
-            appears on no diagram), navigating immediately to the
-            properties tab for that datatype.</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Add stereotype button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/stereotype.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add
-            stereotype</literal></term>
-
-          <listitem><para>This creates a new stereotype (see <xref
-              linkend="s1.ref.stereotype_class"/>) within the package,
-              navigating immediately to the properties tab for that
-              stereotype.</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Add actor button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/actor.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add
-            actor</literal></term>
-
-          <listitem><para>This creates a new actor (see <xref
-              linkend="s1.ref.actor"/>) within the package (which appears
-            on no diagram), navigating immediately to the properties tab
-            for that actor.</para>
-
-          <tip><para>While it can make sense to create actors this way, it
-            is can be clearer to create them within diagrams where you want
-            them.</para></tip></listitem>
-        </varlistentry>
-
-        <!-- Entry for Add use case button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/use_case.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add use
-            case</literal></term>
-
-          <listitem><para>This creates a new use case (see <xref
-              linkend="s1.ref.use_case"/>) within the package (which
-            appears on no diagram), navigating immediately to the
-            properties tab for that use case.</para>
-
-          <tip><para>While it can make sense to create use cases this way,
-            it can be clearer to create them within diagrams where you want
-            them.</para></tip></listitem>
-        </varlistentry>
-
-        <!-- Entry for Add subpackage button -->
+        <!-- Entry for Add Package button -->
 
         <varlistentry>
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/package.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add
-            subpackage</literal></term>
+		</imageobject>
+	      </inlinemediaobject>
+</guiicon>
+<literal>Add Package</literal>
+</term>
 
-          <listitem><para>This creates a new sub-package (see <xref
+          <listitem>
+	    <para>
+This creates a new package (see <xref
               linkend="s1.ref.package"/>) within the package (which appears
             on no diagram), navigating immediately to the properties tab
             for that package.</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Add generalization button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/generalization.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add
-            generalization</literal></term>
-
-          <listitem><para>This creates a new generalization (see <xref
-              linkend="s1.ref.generalization_use_case"/> and <xref
-              linkend="s1.ref.generalization_class"/>) within the package
-              (which appears on no diagram), navigating immediately to the
-              properties tab for that generalization.</para>
-
-          <tip><para>While it can make sense to create generalizations
-            this way, it is usually a lot clearer to create them within
-            diagrams where you want them.</para></tip></listitem>
-        </varlistentry>
-
-        <!-- Entry for Add realization button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/realization.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add
-            realization</literal></term>
-
-          <listitem><para>This should create a new realization (i.e. an
-            abstraction with stereotype
-            <literal>realize</literal>&mdash;see <xref
-              linkend="s1.ref.abstraction"/>) within the package (which
-            appears on no diagram).</para>
-
-          <warning><para>This appears to be broken in the current release
-            of &argouml;. Even if it did work, it would be of limited
-            value, since the abstraction property sheet has no mechanism
-            for adding supplier and client
-            artifacts.</para></warning></listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -451,7 +272,8 @@ Modifications
             format="GIF" align="center"
             fileref="images/icons/property_delete.gif"/>
           </imageobject></inlinemediaobject></guiicon>
-            <literal>Delete</literal></term>
+<literal>Delete Package</literal>
+</term>
 
           <listitem><para>Deletes the package from the model.</para>
 
@@ -459,7 +281,10 @@ Modifications
             <emphasis>not</emphasis> just the diagram. To delete a
             package from the diagram, but keep it within the model,
             use the main menu <literal>Edit/Remove From Diagram</literal>
-            (Ctrl-R).</para></warning></listitem>
+(Delete).
+</para>
+	    </warning>
+	  </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -476,7 +301,18 @@ Modifications
         <varlistentry>
           <term><literal>Name</literal></term>
 
-          <listitem><para>Text box. The name of the package. The name of a
+          <listitem>
+            <indexterm>
+              <primary>Package Name</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Name</primary>
+              <secondary>of Package</secondary>
+            </indexterm>
+
+	    <para>Text box.
+The name of the package.
+The name of a
             package, like all packages, is by convention all lower
             case, with periods seperating the components of the package
             hierarchy.</para>
@@ -492,19 +328,26 @@ Modifications
         <varlistentry>
           <term><literal>Stereotype</literal></term>
 
-          <listitem><para>Drop down selector. Package is provided by default
+          <listitem>
+            <indexterm>
+              <primary>Package Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Stereotype</primary>
+              <secondary>of Package</secondary>
+            </indexterm>
+
+	    <para>Drop down selector.
+Package is provided by default
             with the UML standard stereotypes for package
             (<literal>facade</literal>, <literal>framework</literal>,
-            <literal>stub</literal>), as well as the stereotypes for models
-            and packages in the UML standard profiles for
-            <emphasis>software development process</emphasis>
-            (<literal>use&nbsp;case&nbsp;package</literal> and
-            <literal>analysis&nbsp;service&nbsp;package</literal>).
-            &argouml; also provides the additional stereotypes,
-            <literal>machine</literal>, <literal>organization</literal> and
-            <literal>person</literal>.</para>
+<literal>stub</literal>).
+</para>
 
-          <note><para>A number of standard stereotypes are currently
+	    <note>
+	      <!-- Issue: 1596 -->
+	      <para>
+A number of standard stereotypes are currently
             missing from &argouml;: <literal>topLevel</literal> (from
             package), <literal>use&nbsp;case&nbsp;system</literal>,
             <literal>analysis&nbsp;system</literal>,
@@ -512,15 +355,7 @@ Modifications
             <emphasis>software development process</emphasis>
             profile).</para></note>
 
-          <caution><para>&argouml; provides the stereotype
-            <literal>realize</literal> for models and packages. This
-            appears to be an error, since this stereotype properly belongs
-            to the <literal>Abstraction</literal> metaclass.</para>
-
-          <para>In addition the stereotypes <literal>systemModel</literal>
-            and <literal>metamodel</literal> are provided, although they
-            should only be used for models (a sub-class of
-            <literal>Package</literal>).</para></caution></listitem>
+	  </listitem>
         </varlistentry>
 
         <!-- Entry for NavStereo -->
@@ -542,12 +377,20 @@ Modifications
         <varlistentry>
           <term><literal>Namespace</literal></term>
 
-          <listitem><para>Text box. Records the namespace for the
+          <listitem>
+            <indexterm>
+              <primary>Package Namespace</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Namespace</primary>
+              <secondary>of Package</secondary>
+            </indexterm>
+
+	    <para>Text box.
+Records the namespace for the
             package. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will navigate to the package
-            defining this namespace (or the model for the top level
-            namespace).</para></listitem>
+	  </listitem>
         </varlistentry>
 
         <!-- Entry for Modifiers -->
@@ -555,8 +398,21 @@ Modifications
         <varlistentry>
           <term><literal>Modifiers</literal></term>
 
-          <listitem><para>Check box, with entries <literal>abstract</literal>,
-            <literal>final</literal> and <literal>root</literal>.</para>
+          <listitem>
+            <indexterm>
+              <primary>Package Modifiers</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Modifiers</primary>
+              <secondary>of Package</secondary>
+            </indexterm>
+
+	    <para>
+Check box, with entries
+<literal>abstract</literal>,
+<literal>leaf</literal> and
+<literal>root</literal>.
+</para>
 
           <itemizedlist>
             <listitem><para><literal>abstract</literal> is used to declare
@@ -571,7 +427,9 @@ Modifications
               <literal>&laquo;facade&raquo;</literal>).
             </para></tip></listitem>
 
-            <listitem><para><literal>final</literal> indicates that this
+	      <listitem>
+		<para>
+<literal>leaf</literal> indicates that this
               package can have no further subpackages, while
               <literal>root</literal> indicates it is the top level
               package.</para>
@@ -590,7 +448,17 @@ Modifications
         <varlistentry>
           <term><literal>Specializations</literal></term>
 
-          <listitem><para>Text box. Lists any specialized package (i.e. for
+          <listitem>
+            <indexterm>
+              <primary>Package Specializations</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Specializations</primary>
+              <secondary>of Package</secondary>
+            </indexterm>
+
+	    <para>Text box.
+Lists any specialized package (i.e. for
             which this package is a generalization.</para>
 
           <para>&button1; click navigates to the generalization and opens
@@ -637,7 +505,17 @@ Modifications
         <varlistentry>
           <term><literal>Generalizations</literal></term>
 
-          <listitem><para>Text area. Lists any package that
+          <listitem>
+            <indexterm>
+              <primary>Package Generalizations</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Generalizations</primary>
+              <secondary>of Package</secondary>
+            </indexterm>
+
+	    <para>Text area.
+Lists any package that
             <emphasis>generalizes</emphasis> this package.</para>
 
           <para>&Button1; click navigates to the generalization and opens
@@ -680,41 +558,23 @@ Modifications
               one.</para></listitem> </itemizedlist></listitem>
         </varlistentry>
 
-        <!-- Entry for Implements -->
-
-        <varlistentry>
-          <term><literal>Implements</literal></term>
-
-          <listitem><para>Text area. Lists any packages for which this package
-            is the realization.</para>
-
-          <caution><para>&argouml; uses this for any dependent packages,
-            implying that the dependency relationship is one of
-            implementation. However in the absence of a permission
-            relationship, such dependency relationships are also used on
-            diagrams to show import, access and similar relationships. Use
-            of the realize stereotype for true realization relationships is
-            recommended.</para></caution>
-
-          <para>It is possible to add realizations from this menu, although
-            since there is no way to add a package to the other end of the
-            abstraction, it is meaningless. &Button1; click allows you
-            to navigate to them and &button2; click gives a pop up menu
-            with options to <literal>Open</literal>,
-            <literal>Add</literal>, <literal>Delete</literal>,
-            <literal>Move&nbsp;Up</literal> and
-            <literal>Move&nbsp;Down</literal> (see <link
-            linkend="ref.use_case_generalization">Generalizations</link>
-            for examples of how these operations are used).</para></listitem>
-        </varlistentry>
-
         <!-- Entry for Owned Elements -->
 
         <varlistentry>
           <term><literal>Owned Elements
           </literal></term>
 
-          <listitem><para>Text area. A hierarchical listing of the packages,
+          <listitem>
+            <indexterm>
+              <primary>Package Owned Elements</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Owned Elements</primary>
+              <secondary>of Package</secondary>
+            </indexterm>
+
+	    <para>Text area.
+A hierarchical listing of the packages,
             classes, interfaces, datatypes, actors, use cases,
             associations, generalizations and stereotypes within the
             package. For each of these types of artifact, where there is at
@@ -940,40 +800,6 @@ Modifications
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
         <!-- Entry for Add attribute -->
 
         <varlistentry>
@@ -1060,7 +886,10 @@ Modifications
             <emphasis>not</emphasis> just the diagram. To delete a class
             from the diagram, but keep it within the model, use the main
             menu <literal>Edit/Remove From Diagram</literal>
-            (Ctrl-R).</para></warning></listitem>
+(Delete).
+</para>
+	    </warning>
+	  </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -1679,40 +1508,6 @@ Modifications
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
         <!-- Entry for New attribute -->
 
         <varlistentry>
@@ -2142,44 +1937,6 @@ If desired the whole
 
           <listitem><para>Navigate up through the package
             structure.</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
         </varlistentry>
 
         <!-- Entry for New operation -->
@@ -2632,40 +2389,6 @@ If desired the whole
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
         <!-- Entry for Add parameter -->
 
         <varlistentry>
@@ -3024,40 +2747,6 @@ If desired the
 
           <listitem><para>Navigate up through the package
             structure.</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
         </varlistentry>
 
         <!-- Entry for Add operation button -->
@@ -3669,40 +3358,6 @@ If desired the
             the association.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
         <!-- Entry for Delete button -->
 
         <varlistentry>
@@ -3719,7 +3374,10 @@ If desired the
             <emphasis>not</emphasis> just the diagram. To delete an
             association from the diagram, but keep it within the model, use
             the main menu <literal>Edit/Remove From Diagram</literal>
-            (Ctrl-R).</para></warning></listitem>
+(Delete).
+</para>
+	    </warning>
+	  </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -4136,40 +3794,6 @@ If desired the
             belongs.</para></listitem> 
         </varlistentry>
 
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
         <!-- Entry for Go to other end button -->
 
         <varlistentry>
@@ -4577,40 +4201,6 @@ In the UML metamodel it is a sub-class of
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
         <!-- Entry for Add operation button -->
 
         <varlistentry>
@@ -4641,7 +4231,10 @@ In the UML metamodel it is a sub-class of
             <emphasis>not</emphasis> just the diagram. To delete an
             interface from the diagram, but keep it within the model, use
             the main menu <literal>Edit/Remove From Diagram</literal>
-            (Ctrl-R).</para></warning></listitem>
+(Delete).
+</para>
+	    </warning>
+	  </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -5101,40 +4694,6 @@ In the UML metamodel it is a sub-class of
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
         <!-- Entry for Delete button -->
 
         <varlistentry>
@@ -5150,7 +4709,10 @@ In the UML metamodel it is a sub-class of
             <emphasis>not</emphasis> just the diagram. To delete an
             abstraction from the diagram, but keep it within the model, use
             the main menu <literal>Edit/Remove From Diagram</literal>
-            (Ctrl-R).</para></warning></listitem>
+(Delete).
+</para>
+	    </warning>
+	  </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -5291,6 +4853,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "chapter" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->

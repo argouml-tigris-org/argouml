@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
 
 <!--
 
 UML Resources.
-
-Modifications
-=============
-
- 7 Dec 2001:  Jeremy Bennett. First version, based on Andreas Rueckert's
-              material
 
 -->
 
@@ -50,6 +45,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "appendix" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->

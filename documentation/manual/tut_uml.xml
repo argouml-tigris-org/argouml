@@ -1,24 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
 
 <!--
 
 This chapter introduces the user to UML based OOA&D and explains how to get
-Argo/UML up and running.
-
-
-Modifications
-=============
-
-30 Nov 2001:  Jeremy Bennett. Broken out as a separate section from the
-              original manual by Alejandro, Phillipe and Andreas.
-
-10 Dec 2001:  Jeremy Bennett. Introduction, background to UML and UML based
-              processes, introduction to mouse, menus and drawing added for
-              0.9.5, draft B.
-
- 4 Apr 2002:  Jeremy Bennett. Added info about using XMI from Gentleware.
-
-18 Apr 2002:  Jeremy Bennett. Incorporated review comments from Bob Marcum.
+ArgoUML up and running.
 
 -->
 
@@ -2036,6 +2022,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "chapter" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->

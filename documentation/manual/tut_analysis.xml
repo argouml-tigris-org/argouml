@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
 
 <!--
 
 This is the Analysis tutorial chapter of the User Manual.
-
-Modifications
-=============
-
- 4 Dec 2001:  Jeremy Bennett. Broken out as a separate section from the
-              original manual by Alejandro, Phillipe and Andreas.
 
 -->
 
@@ -481,6 +476,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "chapter" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->

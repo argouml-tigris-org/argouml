@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
 
 <!--
 
 A description of the built in datatypes, classes, interfaces and stereotypes
 within ArgoUML
 
-
-Modifications
-=============
-
-11 Dec 2001:  Jeremy Bennett. Created as new chapter.
-
 -->
 
 <chapter id="ch.ref.entbuiltin">
   <title>&argouml; Built In DataTypes, Classes, Interfaces and
     Stereotypes</title>
+
+  &notupdatedfor014disclaimer;
 
   <sect1>
     <title>Introduction</title>
@@ -282,6 +279,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "chapter" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->

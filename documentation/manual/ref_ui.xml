@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
 
 <!--
 
@@ -6,26 +7,12 @@ This is the top level reference to the User Interface. To keep things
 manageable, the description of each of the panes and the menu bar have their
 own chapters.
 
-Modifications
-=============
-
- 5 Dec 2001:  Jeremy Bennett. Broken out as a separate section from the
-              original manual by Alejandro, Phillipe and Andreas.
-
-23 Jan 2002:  Jeremy Bennett. Moved all discussion of mouse buttons in to this
-              section to avoid duplication and completed the chapter.
-
- 1 Feb 2002:  Jeremy Bennett. Realised mouse stuff largely relates to panes or
-              the menu, so most broken back out again.
-
- 4 Apr 2002:  Jeremy Bennett. Updates for release 0.9.8. New pane resizing
-
-18 Apr 2002:  Jeremy Bennett. Added an overview of the diagrams that can be
-              created. Incorporated comments from Bob Marcum.
 -->
 
 <chapter id="ch.ref.ui">
   <title>User Interface Reference</title>
+
+  &notupdatedfor014disclaimer;
 
   <sect1>
     <title>Introduction</title>
@@ -403,6 +390,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "chapter" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
 argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->

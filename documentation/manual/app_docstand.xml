@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
 
 <!--
 
@@ -16,8 +17,9 @@ Documentation standards for the manual.
       <ulink url="http://www.oasis-open.org/docbook"><application>DocBook
         XML&nbsp;V4.1.2</application></ulink>. This section covers some
       conventions for use of DocBook and for the documentation in general. It
-      also includes some information for &emacs; users
-      and the &psgml; package.</para>
+also includes some information for Emacs users
+and the psgml package.
+</para>
   </sect1>
 
   <!-- Conventions for the document in general -->
@@ -99,7 +101,7 @@ so that it is easy to know if this problem has been fixed.
   <!-- Conventions relating to DocBook -->
 
   <sect1>
-    <title>&docbook; Conventions</title>
+    <title>DocBook Conventions</title>
 
     <itemizedlist>
       <listitem>
@@ -242,16 +244,16 @@ Change it while changing the paragraphs.
   <!-- Conventions relating to use of emacs -->
 
   <sect1>
-    <title>For &emacs; Users</title>
+    <title>For Emacs Users</title>
 
     <para>If you use the psgml library within emacs, then editing and
       verifying XML gets easier. Information on using this facility is
-      inluded with &psgml;.</para>
+      inluded with psgml.</para>
 
     <itemizedlist>
       <listitem>
 	<para>
-&emacs; local variables appear in a few lines of 
+Emacs' local variables appear in a few lines of 
 comment at the bottom of each XML file. 
 Please don't delete these!
 </para>
@@ -264,7 +266,7 @@ Please don't delete these!
 
       <listitem><para>Adding
         <literal>(setq&nbsp;sgml-auto-activate-dtd&nbsp;t)</literal> to your
-        <filename>.emacs</filename> file will ensure the &docbook; DTD is
+        <filename>.emacs</filename> file will ensure the DocBook DTD is
         parsed as soon as the file is loaded.</para></listitem>
     </itemizedlist>
   </sect1>
@@ -279,6 +281,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "appendix" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->

@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
 
 <!--
 
 Description of all the artifacts associated with Sequence Diagrams within
 Argo/UML.
 
-
-Modifications
-=============
-
- 5 Dec 2001:  Jeremy Bennett. Created as a new chapter.
-
- 8 Feb 2002:  Jeremy Bennett. Contents written.
-
-19 Mar 2002:  Jeremy Bennett. Changed all tables to variablelists to fix
-              problems with generating PDF.
-
-18 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum,
-              particularly relating to "limitations" section.
-
 -->
 
 <chapter id="ch.ref.entseq">
   <title>&argouml; Sequence Diagram Artifact Reference</title>
+
+  <caution>
+    <para>
+In ArgoUML 0.14 the sequence diagrams are not available.
+They will be replaced by a new and improved version in the upcoming release.
+In the 0.12 release they were not working and in the 0.10 release
+that is described here
+they did not follow the UML specification correctly.
+</para>
+    <para>
+This chapter is left in the manual for those that might
+need it because they are still working with &argouml; 0.10.1.
+</para>
+  </caution>
 
   <sect1>
     <title>Introduction</title>
@@ -1275,6 +1276,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "chapter" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->

@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
 
 <!--
 
 This is the Design tutorial chapter of the User Manual.
-
-Modifications
-=============
-
- 6 Dec 2001:  Jeremy Bennett. Broken out as a separate section from the
-              original manual by Alejandro, Phillipe and Andreas.
 
 -->
 
@@ -405,7 +400,7 @@ you
     <!-- Issue: ??? -->
     <note>
       <para>
-Sequence diagrams does not work in &argoversion;.
+Sequence diagrams does not work in ArgoUML version 0.14.
 </para>
     </note>
 
@@ -699,7 +694,7 @@ Sequence diagrams does not work in &argoversion;.
 
   <!-- Activity Diagrams as a variant of State Diagrams -->
 
-  <sect1>
+  <sect1 id="s1.umlactivitydiags">
     <title>Activity Diagrams (To be written)</title>
 
     <remark>To be written&hellip;</remark>
@@ -935,6 +930,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "chapter" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->

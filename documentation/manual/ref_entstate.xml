@@ -1,29 +1,16 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
 
 <!--
 
 Description of all the artifacts associated with State Diagrams within ArgoUML.
 
-
-Modifications
-=============
-
- 5 Dec 2001:  Jeremy Bennett. Created as a new chapter.
-
-13 Feb 2002:  Jeremy Bennett. Contents written.
-
-19 Mar 2002:  Jeremy Bennett. Changed all tables to variablelists to fix
-              problems with generating PDF.
-
-18 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum,
-              particularly relating to "limitations" section.
-
-17 May 2002:  Jeremy Bennett. Comments from Bob Marcum incorporated.
-
 -->
 
 <chapter id="ch.ref.entstate">
   <title>&argouml; State Diagram Artifact Reference</title>
+
+  &notupdatedfor014disclaimer;
 
   <sect1>
     <title>Introduction</title>
@@ -664,6 +651,7 @@ Code generation from state diagrams is not properly developed yet.
     <sect2 id="s2.ref.action_property_fields">
       <title>Property Fields For Action</title>
 
+<!-- Issue: 2164 -->
       <variablelist>
 
         <!-- Entry for Name -->
@@ -2328,6 +2316,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "chapter" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->

@@ -1,35 +1,17 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
 
 <!--
 
 A description of the Editing Pane. This has been known in the past as the
 Diagram Pane or the Drawing Pane of the Multi-Editor Pane.
 
-Modifications
-=============
-
- 5 Dec 2001:  Jeremy Bennett. Broken out as a separate section from the
-              original manual by Alejandro, Phillipe and Andreas.
-
-25 Jan 2001:  Jeremy Bennett. General mouse behavior moved to User Interface
-              chapter. Chapter completed.
-
-29 Jan 2001:  Jeremy Bennett. Updated info on interfaces to reflect bug fix.
-
- 7 Feb 2002:  Jeremy Bennett. Added pop-up menus for Associations.
-
- 4 Apr 2002:  Jeremy Bennett. Double click on package icons and new icons on
-              use case diagram added for release 0.9.8.
-
-18 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum.
-
- 3 May 2002:  Jeremy Bennett. Documented extension point tool and show menu for
-              use cases.
-
 -->
 
 <chapter id="ch.ref.editpane">
   <title>The Editing Pane</title>
+
+  &notupdatedfor014disclaimer;
 
   <sect1>
     <title>Introduction</title>
@@ -1384,6 +1366,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "chapter" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->

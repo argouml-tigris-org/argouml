@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+
 <!--
 
 The glossary for the user manual. Some cross-references are not available at
 present. Look for comments with "Fix when ready" in them.
-
-Modifications
-=============
-
-30 Nov 2001:  Jeremy Bennett. Created as a top level file including other
-              sections from the original manual by Alejandro, Phillipe and
-              Andreas.
 
 -->
 
@@ -431,7 +426,8 @@ See <xref linkend="s1.umlactivitydiags"/> for more information.
       </indexterm>
 
         <para>"GNU's Not Unix". One of the first open/free source
-          projects. Originally best known for its GNU version of the &emacs;
+projects.
+Originally best known for its GNU version of the Emacs
           editor, it now has many other projects, usually closely allied to
           Linux.</para>
 
@@ -1359,6 +1355,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "glossary" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->

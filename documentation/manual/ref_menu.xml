@@ -1,29 +1,16 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
 
 <!--
 
 A description of all the menu bar entries
 
-Modifications
-=============
-
- 5 Dec 2001:  Jeremy Bennett. Broken out as a separate section from the
-              original manual by Alejandro, Phillipe and Andreas.
-
-10 Jan 2002:  Jeremy Bennett. New material added.
-
-29 Jan 2002:  Jeremy Bennett. Updated to reflect bug fix preventing attributes
-              being added to classes and fix to Remove from Diagram function.
-
-12 Mar 2002:  Jeremy Bennett. Updated to reflect bux fixes to a number of
-              critics.
-
-22 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum.
-
 -->
 
 <chapter id="ch.ref.menu">
   <title>The Menu bar</title>
+
+  &notupdatedfor014disclaimer;
 
   <sect1>
     <title>Introduction</title>
@@ -2890,6 +2877,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "chapter" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
 argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->

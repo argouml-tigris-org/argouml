@@ -1,25 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
 
 <!--
 
 This chapter covers the Explorer.
-
-Modifications
-=============
-
- 5 Dec 2001:  Jeremy Bennett. Broken out as a separate section from the
-              original manual by Alejandro, Phillipe and Andreas.
-
-24 Jan 2002:  Jeremy Bennett. Generic mouse stuff removed, chapter completed.
-
-29 Jan 2002:  Jeremy Bennett. Updated to reflect bug fix to Remove from Diagram
-              function.
-
- 1 Feb 2002:  Jeremy Bennett. Comments from Linus Tolke incorporated.
-
-18 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum.
-
-10 May 2003:  Linus Tolke. Changed name from Navpane to Explorer.
 
 -->
 
@@ -49,6 +33,8 @@ Modifications
     The Explorer was previously called Navigation Pane/Tree or sometimes
     Navigator Pane/Tree.
   </para>  
+
+  &notupdatedfor014disclaimer;
 
   <sect1>
     <title>Introduction</title>
@@ -591,6 +577,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "chapter" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
 argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->

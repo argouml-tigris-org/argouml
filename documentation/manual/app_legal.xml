@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
 
 <!--
 
 The GNU Free Documentation Licence
-
-Modifications
-=============
-
-11 Dec 2001:  Jeremy Bennett. Taken verbatim from the DocBook Definitive Guide
-
-17 Dec 2001:  Jeremy Bennett. Updated to use Open Publication Licence
 
 -->
 
@@ -206,6 +200,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "appendix" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->

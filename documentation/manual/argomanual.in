@@ -1,24 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE book SYSTEM "../docbook-setup/docbookx/docbookx.dtd" [
+<!-- $Id$ -->
 
 <!--
 
 The main file for the User Manual. Includes everything else through ENTITY
 declarations.
-
-Modifications
-=============
-
-30 Nov 2001:  Jeremy Bennett. Created as a top level file including other
-              sections from the original manual by Alejandro, Phillipe and
-              Andreas.
-
-11 Dec 2001:  Jeremy Bennett. Added chapter on built in classes
-
- 1 Feb 2002:  Jeremy Bennett. Broke critics out into separate chapter
-
- 3 May 2002:  Jeremy Bennett. Version numbers placed here. Updated for issue
-              0.9.9.
 
 -->
 
@@ -71,12 +58,17 @@ Modifications
   <!ENTITY Button1          "Button&nbsp;1">
   <!ENTITY button2          "button&nbsp;2">
   <!ENTITY Button2          "Button&nbsp;2">
+  <!ENTITY notupdatedfor014disclaimer
+    "<caution>
+      <para>
+This chapter is not fully gone through and updated to fit the 0.14
+release of &argouml; but describes the version 0.10 instead.
+This means that some of the functions might not work exactly
+as described and icons and screenshots does not look exactly like
+in the 0.14 version.
+</para>
+    </caution>">
 
-  <!-- Application name ENTITIES -->
-
-  <!ENTITY docbook          "<application>DocBook</application>">
-  <!ENTITY emacs            "<application>emacs</application>">
-  <!ENTITY psgml            "<application>psgml</application>">
 ]>
 
 <book>
@@ -160,6 +152,7 @@ Local Variables:
 mode: xml
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->
