@@ -38,7 +38,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
     ComboBoxModel, UMLUserInterfaceComponent, ActionListener {
 
     private UMLUserInterfaceContainer _container;
-    private String _property;fi
+    private String _property;
     //
     //   this method returns a boolean indicating
     //      whether the specific element should be allowed in the combo box
@@ -91,6 +91,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
             catch(Exception e) {
                 _shouldBeEnabled = false;
                 System.out.println(getMethod + " not found in UMLComboBoxModel(): " + e.toString());
+                e.printStackTrace();
             }
         }
 
@@ -102,6 +103,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
             catch(Exception e) {
                 _shouldBeEnabled = false;
                 System.out.println(setMethod + " not found in UMLComboBoxModel(): " + e.toString());
+                e.printStackTrace();
             }
         }
     }

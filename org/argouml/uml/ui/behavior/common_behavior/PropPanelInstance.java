@@ -74,14 +74,31 @@ public class PropPanelInstance extends PropPanel {
     addField(tempTree,0,1,1);
   }
 
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+    public boolean isAcceptibleBaseMetaClass(String baseClass) {
         return baseClass.equals("Instance");
     }
 
-    protected boolean isAcceptibleClassifier(MModelElement classifier) {
+    public boolean isAcceptibleClassifier(MModelElement classifier) {
         return classifier instanceof MClassifier;
     }
 
+    public MClassifier getClassifier() {
+        MClassifier classifier = null;
+        Object target = getTarget();
+        if(target instanceof MInstance) {
+        //    UML 1.3 apparently has this a 0..n multiplicity
+        //    I'll have to figure out what that means
+        //            classifier = ((MInstance) target).getClassifier();
+        }
+        return classifier;
+    }
+
+    public void setClassifier(MClassifier element) {
+        Object target = getTarget();
+        if(target instanceof MInstance) {
+//            ((MInstance) target).setClassifier((MClassifier) element);
+        }
+    }
 
 } /* end class PropPanelInstance */
 
