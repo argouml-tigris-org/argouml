@@ -166,11 +166,32 @@ public abstract class FigEdge extends Fig {
   ////////////////////////////////////////////////////////////////
   // display methods
 
+  PathConvPercent[] labelPos = {
+    new PathConvPercent(this, (float) .2, 0),
+    new PathConvPercent(this, (float) .5, 0),
+    new PathConvPercent(this, (float) .8, 0) };
+  FigText[] labelText = {
+    new FigText(0, 0, 100, 10, Color.black, "TimesRoman", 8),
+    new FigText(0, 0, 100, 10, Color.black, "TimesRoman", 8),
+    new FigText(0, 0, 100, 10, Color.black, "TimesRoman", 8), };
+
   /** Paint this object. */
   public void paint(Graphics g) {
     computeRoute();
     _fig.paint(g);
-  }
+
+    labelText[0].setText("x= " + labelPos[0].getPoint().x + " y= " + labelPos[0].getPoint().y);
+    labelText[1].setText("x= " + labelPos[1].getPoint().x + " y= " + labelPos[1].getPoint().y);
+    labelText[2].setText("x= " + labelPos[2].getPoint().x + " y= " + labelPos[2].getPoint().y);
+
+    labelText[0].setLocation(labelPos[0].getPoint().x, labelPos[0].getPoint().y);
+    labelText[1].setLocation(labelPos[1].getPoint().x, labelPos[1].getPoint().y);
+    labelText[2].setLocation(labelPos[2].getPoint().x, labelPos[2].getPoint().y);
+
+	labelText[0].paint(g);
+	labelText[1].paint(g);
+	labelText[2].paint(g);
+   }
 
   ////////////////////////////////////////////////////////////////
   // notifications and updates

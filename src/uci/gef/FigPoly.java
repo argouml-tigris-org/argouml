@@ -444,7 +444,7 @@ public class FigPoly extends Fig {
 
 	protected void drawArrowHead(Graphics g) {
 		ArrowHeadStart.setFillColor(Color.white);
-		System.out.println("pointalongat0 = " + pointAlongPerimeter(0) + " pointAtEnd = " + getPerimeterLength() + " pointatEnd = " + pointAlongPerimeter(20));
+		//System.out.println("pointalongat0 = " + pointAlongPerimeter(0) + " pointAtEnd = " + getPerimeterLength() + " pointatEnd = " + pointAlongPerimeter(20));
 		ArrowHeadStart.paint(g, pointAlongPerimeter(20), pointAlongPerimeter(0));
 		ArrowHeadEnd.paint(g, pointAlongPerimeter(getPerimeterLength() - 21), pointAlongPerimeter(getPerimeterLength() - 1));
 	}

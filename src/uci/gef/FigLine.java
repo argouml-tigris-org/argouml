@@ -171,7 +171,7 @@ public class FigLine extends Fig {
       g.setColor(_lineColor);
       g.drawLine(_x1, _y1, _x2, _y2);
 	  drawArrowHead(g);
-    }
+   }
   }
 
 

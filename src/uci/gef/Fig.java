@@ -407,7 +407,6 @@ implements Observer, java.io.Serializable  {
   public void insertPoint(int i, int x, int y) { } //@
   public void removePoint(int i) { } //@
 
-
   public int getPerimeterLength() { return _w + _w + _h + _h; }
 
   public Point pointAlongPerimeter(int dist) {
