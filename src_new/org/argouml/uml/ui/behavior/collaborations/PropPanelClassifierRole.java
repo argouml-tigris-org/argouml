@@ -61,11 +61,10 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
     addField(Argo.localize("UMLMenu", "label.name"), nameField);
     addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
     addField(Argo.localize("UMLMenu", "label.namespace"),namespaceScroll);
-  
-    JList baseList = new UMLMutableLinkedList(this, new UMLClassifierRoleBaseListModel(this), ActionAddBase.SINGLETON, null);
     
-     addField(Argo.localize("UMLMenu", "label.multiplicity"),new UMLMultiplicityComboBox(this,mclass));
-    // addField(Argo.localize("UMLMenu", "label.base"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"), new UMLTypeComboBox(this, "base")));
+    addField(Argo.localize("UMLMenu", "label.multiplicity"),new UMLMultiplicityComboBox(this,mclass));
+    
+    JList baseList = new UMLMutableLinkedList(this, new UMLClassifierRoleBaseListModel(this), ActionAddClassifierRoleBase.SINGLETON, null);
     addField(Argo.localize("UMLMenu", "label.base"), new JScrollPane(baseList));
    
 

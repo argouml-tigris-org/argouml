@@ -30,19 +30,24 @@ import java.util.Vector;
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
-import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
+
+import ru.novosoft.uml.behavior.collaborations.MInteraction;
+import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- * @since Oct 3, 2002
+ * Action to add a predecessor to some message.
+ * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class ActionAddBase extends AbstractActionAddModelElement {
+public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
 
-    public final static ActionAddBase SINGLETON = new ActionAddBase();
+    public final static ActionAddMessagePredecessor SINGLETON = new ActionAddMessagePredecessor();
+    
     /**
-     * Constructor for ActionAddBase.
+     * Constructor for ActionAddMessagePredecessor.
      */
-    protected ActionAddBase() {
+    protected ActionAddMessagePredecessor() {
         super();
     }
 
@@ -50,8 +55,9 @@ public class ActionAddBase extends AbstractActionAddModelElement {
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
      */
     protected Vector getChoices() {
+        if (getTarget() == null) return new Vector();
         Vector vec = new Vector();
-        vec.addAll(CollaborationsHelper.getHelper().getAllPossibleBases((MClassifierRole)getTarget()));
+        vec.addAll(CollaborationsHelper.getHelper().getAllPossiblePredecessors((MMessage)getTarget()));
         return vec;
     }
 
@@ -59,8 +65,9 @@ public class ActionAddBase extends AbstractActionAddModelElement {
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
      */
     protected Vector getSelected() {
+        if (getTarget() == null) throw new IllegalStateException("getSelected may not be called with null target");
         Vector vec = new Vector();
-        vec.addAll(((MClassifierRole)getTarget()).getBases());
+        vec.addAll(((MMessage)getTarget()).getPredecessors());
         return vec;
     }
 
@@ -68,16 +75,16 @@ public class ActionAddBase extends AbstractActionAddModelElement {
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
-        return Argo.localize("UMLMenu", "dialog.title.add-bases");
+        return Argo.localize("UMLMenu", "dialog.add-predecessors");
     }
 
     /**
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {
-        MClassifierRole role = (MClassifierRole)getTarget();
-        CollaborationsHelper.getHelper().setBases(role, selected);
+         if (getTarget() == null) throw new IllegalStateException("doIt may not be called with null target");
+         MMessage message = (MMessage)getTarget();
+         message.setPredecessors(selected);
     }
-        
 
 }

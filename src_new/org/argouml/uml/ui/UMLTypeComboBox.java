@@ -56,11 +56,6 @@ public class UMLTypeComboBox extends UMLComboBox2 {
             if (target instanceof MParameter) {
                 ((MParameter)target).setType(type);
             } else
-            if (target instanceof MClassifierRole) {
-                Vector list = new Vector();
-                list.add(type);
-                ((MClassifierRole)target).setBases(list);
-            }
             if (target instanceof MAssociationEnd) {
                 ((MAssociationEnd)target).setType(type);
             }    

@@ -83,14 +83,14 @@ public class PropPanelMessage extends PropPanelModelElement {
    
     add(LabelledLayout.getSeperator());
 
-    addField(Argo.localize("UMLMenu", "label.activator"), new UMLActivatorComboBox(this, new UMLActivatorComboBoxModel(this)));
+    addField(Argo.localize("UMLMenu", "label.activator"), new UMLMessageActivatorComboBox(this, new UMLMessageActivatorComboBoxModel(this)));
 
-    JList actionList = new UMLMutableLinkedList(this, new UMLActionListModel(this), null, ActionNewAction.SINGLETON);
+    JList actionList = new UMLMutableLinkedList(this, new UMLMessageActionListModel(this), null, ActionNewAction.SINGLETON);
     actionList.setVisibleRowCount(1);
     JScrollPane actionScroll = new JScrollPane(actionList);
     addField(Argo.localize("UMLMenu", "label.action"), actionScroll);
     
-    JScrollPane predecessorScroll = new JScrollPane(new UMLMutableLinkedList(this, new UMLMessagePredecessorListModel(this), ActionAddPredecessor.SINGLETON, null));
+    JScrollPane predecessorScroll = new JScrollPane(new UMLMutableLinkedList(this, new UMLMessagePredecessorListModel(this), ActionAddMessagePredecessor.SINGLETON, null));
     addField(Argo.localize("UMLMenu", "label.predecessor"), predecessorScroll);
 
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateInteraction",null);

@@ -284,6 +284,23 @@ public class CollaborationsHelper {
         MNamespace ns = coll.getNamespace();
         Collection returnList = ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MClassifier.class);
         returnList.removeAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MClassifierRole.class));
+        if (role.getName() == null || role.getName().equals("")) {
+            List listToRemove = new ArrayList();
+            Iterator it = returnList.iterator();
+            while (it.hasNext()) {
+                MClassifier clazz = (MClassifier)it.next();
+                if (!clazz.getClassifierRoles().isEmpty()) {
+                    Iterator it2 = clazz.getClassifierRoles().iterator();
+                    while (it2.hasNext()) {
+                        MClassifierRole role2 = (MClassifierRole)it2.next();
+                        if (role2.getNamespace() == coll) {
+                            listToRemove.add(clazz);
+                        }
+                    }
+                }
+            }
+            returnList.removeAll(listToRemove);
+        }                        
         return returnList;
     }
     
@@ -298,9 +315,19 @@ public class CollaborationsHelper {
      */
     public void addBase(MClassifierRole role, MClassifier base) {
         if (role == null || base == null) throw new IllegalArgumentException("In addBase: either the role or the base is null");
+        // wellformednessrule: if the role does not have a name, the role shall
+        // be the only one with the particular base
+        if (role.getName() == null || role.getName().equals("")) {
+            MCollaboration collab = (MCollaboration)role.getNamespace();
+            Collection roles = ModelManagementHelper.getHelper().getAllModelElementsOfKind(collab, MClassifierRole.class);
+            Iterator it = roles.iterator();
+            while (it.hasNext()) {
+                if (((MClassifierRole)it.next()).getBases().contains(base)) 
+                    throw new IllegalArgumentException("In addBase: base is allready part of another role and role does not have a name");
+            }
+        }
         role.addBase(base);
         if (role.getBases().size() == 1) {
-            role.setName(base.getName());
             role.setAvailableContentses(base.getOwnedElements());
             role.setAvailableFeatures(base.getFeatures());
         } else {
@@ -386,6 +413,61 @@ public class CollaborationsHelper {
         }
         return returnList;
     }
+    
+   /**
+    * Sets the bases of the given associationrole to the given base. Takes into 
+    * account the wellformednessrules as defined in section 2.10.3 of the UML 
+    * spec 1.3.
+    * @param role
+    * @param base
+    */
+    public void setBase(MAssociationRole role, MAssociation base) {
+        if (role == null || base == null) throw new IllegalArgumentException("In addBase: either the role or the base is null");
+        // wellformednessrule: if the role does not have a name, the role shall
+        // be the only one with the particular base
+        if (role.getName() == null || role.getName().equals("")) {
+            MCollaboration collab = (MCollaboration)role.getNamespace();
+            Collection roles = ModelManagementHelper.getHelper().getAllModelElementsOfKind(collab, MAssociationRole.class);
+            Iterator it = roles.iterator();
+            while (it.hasNext()) {
+                if (((MAssociationRole)it.next()).getBase() == base) 
+                    throw new IllegalArgumentException("In addBase: base is allready part of another role and role does not have a name");
+            }
+        }
+        role.setBase(base);
+    }
+    
+    /**
+     * Returns all possible bases for some associationrole taking into account the 
+     * wellformednessrules as defined in section 2.10.3 of the UML 1.3 spec.
+     * @param role
+     * @return Collection
+     */
+    public Collection getAllPossibleBases(MAssociationRole role) {
+        if (role == null || role.getNamespace() == null) return new ArrayList();
+        MCollaboration coll = (MCollaboration)role.getNamespace();
+        MNamespace ns = coll.getNamespace();
+        Collection returnList = ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MAssociation.class);
+        returnList.removeAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MAssociationRole.class));
+        if (role.getName() == null || role.getName().equals("")) {
+            List listToRemove = new ArrayList();
+            Iterator it = returnList.iterator();
+            while (it.hasNext()) {
+                MAssociation assoc = (MAssociation)it.next();
+                if (!assoc.getAssociationRoles().isEmpty()) {
+                    Iterator it2 = assoc.getAssociationRoles().iterator();
+                    while (it2.hasNext()) {
+                        MAssociationRole role2 = (MAssociationRole)it2.next();
+                        if (role2.getNamespace() == coll) {
+                            listToRemove.add(assoc);
+                        }
+                    }
+                }
+            }
+            returnList.removeAll(listToRemove);
+        }                        
+        return returnList;   
+    } 
 		
 }
 

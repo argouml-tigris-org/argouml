@@ -91,7 +91,6 @@ public class UMLAction extends AbstractAction {
 
   public void updateEnabled() {
 	  boolean b = shouldBeEnabled();
-	  cat.debug("b is "+b + " in " +this);
 	  setEnabled(b);
   }
 

@@ -34,7 +34,9 @@ import javax.swing.*;
 import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.util.ConfigLoader;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.swingext.LabelledLayout;
 import org.argouml.uml.MMUtil;
 
 import java.awt.*;
@@ -49,7 +51,7 @@ public class PropPanelAssociationRole extends PropPanelModelElement {
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelAssociationRole() {
-    super("Association Role",_associationRoleIcon, 2);
+    super("Association Role",_associationRoleIcon, ConfigLoader.getTabPropsOrientation());
 
    //
     //   this will cause the components on this page to be notified
@@ -60,31 +62,23 @@ public class PropPanelAssociationRole extends PropPanelModelElement {
     
     Class mclass = MAssociationRole.class;
 
-    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-    addField(nameField,1,0,0);
+    addField(Argo.localize("UMLMenu", "label.name"), nameField);
+    addField(Argo.localize("UMLMenu", "label.stereotype"), stereotypeBox);
+    addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
 
-    _baseField = new UMLAssociationComboBox(this);
-    addCaption(Argo.localize("UMLMenu", "label.association"), 2, 0, 0);
-    addField(_baseField, 2, 0, 0);
+    JComboBox baseComboBox = new UMLComboBox2(this, new UMLAssociationRoleBaseComboBoxModel(this), ActionSetAssociationRoleBase.SINGLETON);
+    addField(Argo.localize("UMLMenu", "label.base"), baseComboBox);
     
-    addCaption(Argo.localize("UMLMenu", "label.stereotype"),3,0,0);
-    addField(stereotypeBox,3,0,0);
-
-    addCaption(Argo.localize("UMLMenu", "label.namespace"),4,0,1);
-    addField(namespaceScroll,4,0,0);
-
-    addCaption("Messages:",0,1,0);
+    add(LabelledLayout.getSeperator());
+       
     JList messageList = new UMLList(new UMLMessagesListModel(this,"message",true), true);
-    messageList.setBackground(getBackground());
-    messageList.setForeground(Color.blue);
-    addField(new JScrollPane(messageList),0,1,0.75);
+    addField(Argo.localize("UMLMenu", "label.messages"), 
+        new JScrollPane(messageList));
 
-    addCaption("AssociationRole Ends:",1,1,0);
-    JList assocEndList = new UMLList(new UMLReflectionListModel(this,"connection",true,"getAssociationEnds","setAssociationEnds",null,null),true);
-    assocEndList.setBackground(getBackground());
-    assocEndList.setForeground(Color.blue);
-    addField(new JScrollPane(assocEndList),1,1,0.25);
-
+/*
+    JList assocEndList = new UMLLinkedList(this, new UMLAssociationRoleAssociationEndListModel(this));
+    addField(Argo.localize("UMLMenu", "label.associationrole-ends"), new JScrollPane(assocEndList));
+*/
 
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");

@@ -24,67 +24,46 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
-import java.util.Iterator;
-import java.util.Vector;
+import java.awt.event.ActionEvent;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
-import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLComboBox2;
 
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
+import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- * Action to add a predecessor to some message.
- * @since Oct 2, 2002
+ * @since Oct 4, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class ActionAddPredecessor extends AbstractActionAddModelElement {
+public class ActionSetAssociationRoleBase extends UMLChangeAction {
 
-    public final static ActionAddPredecessor SINGLETON = new ActionAddPredecessor();
+    public static final ActionSetAssociationRoleBase SINGLETON = new ActionSetAssociationRoleBase();
     
     /**
-     * Constructor for ActionAddPredecessor.
+     * Constructor for ActionSetAssociationRoleBase.
+     * @param s
      */
-    protected ActionAddPredecessor() {
-        super();
-    }
+    protected ActionSetAssociationRoleBase() {
+        super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
+    }   
 
     /**
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    protected Vector getChoices() {
-        if (getTarget() == null) return new Vector();
-        Vector vec = new Vector();
-        vec.addAll(CollaborationsHelper.getHelper().getAllPossiblePredecessors((MMessage)getTarget()));
-        return vec;
-    }
-
-    /**
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
-     */
-    protected Vector getSelected() {
-        if (getTarget() == null) throw new IllegalStateException("getSelected may not be called with null target");
-        Vector vec = new Vector();
-        vec.addAll(((MMessage)getTarget()).getPredecessors());
-        return vec;
-    }
-
-    /**
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
-     */
-    protected String getDialogTitle() {
-        return Argo.localize("UMLMenu", "dialog.add-predecessors");
-    }
-
-    /**
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
-     */
-    protected void doIt(Vector selected) {
-         if (getTarget() == null) throw new IllegalStateException("doIt may not be called with null target");
-         MMessage message = (MMessage)getTarget();
-         message.setPredecessors(selected);
+    public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        Object selected = null;
+        if (e.getSource() instanceof UMLComboBox2) {
+            UMLComboBox2 source = (UMLComboBox2)e.getSource();
+            selected = source.getSelectedItem();
+            if (selected instanceof MAssociation && source.getTarget() instanceof MAssociationRole) {
+                CollaborationsHelper.getHelper().setBase((MAssociationRole)source.getTarget(), (MAssociation)selected);
+            }
+        }
     }
 
 }

@@ -315,5 +315,14 @@ public abstract class UMLComboBoxModel2
     public void setPropertySetName(String propertySetName) {
         this.propertySetName = propertySetName;
     }
+    
+    /**
+     * Utility method to get the target of the container
+     * @return Object
+     */
+    public Object getTarget() {
+        if (getContainer() != null) return getContainer().getTarget();
+        return null;
+    }
 
 }

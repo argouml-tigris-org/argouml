@@ -23,43 +23,62 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.swing.DefaultComboBoxModel;
 
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
-import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.UMLComboBoxModel;
 import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.ui.UMLUserInterfaceComponent;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- * The combobox for activators on the message proppanel. The only reason this 
- * combobox implements melementlistener is to conform to UMLChangeDispatch. The 
- * combobox serves as a proxy for the 
- * model (UMLActivatorComboBoxModel). Kind of strange...
+ * The model behind the UMLMessageActivatorComboBox. I don't use the UMLComboBoxModel
+ * since this mixes the GUI and the model too much and is much more maintainance 
+ * intensive then this implementation.
  */
-public class UMLActivatorComboBox extends UMLComboBox2 {
+public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
+		
+
 
     /**
-     * Constructor for UMLActivatorComboBox.
+     * Constructor for UMLMessageActivatorComboBoxModel.
      * @param container
-     * @param arg0
      */
-    public UMLActivatorComboBox(
-        UMLUserInterfaceContainer container,
-        UMLComboBoxModel2 arg0) {
-        super(container, arg0);
+    public UMLMessageActivatorComboBoxModel(UMLUserInterfaceContainer container) {
+        super(container, "activator");
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLComboBox2#doIt(ActionEvent)
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
-    protected void doIt(ActionEvent event) {
-        Object o = getModel().getElementAt(getSelectedIndex());
-        MMessage activator = (MMessage)o;
-        MMessage mes = (MMessage)getContainer().getTarget();
-        if (activator != mes.getActivator()) {
-            CollaborationsHelper.getHelper().setActivator(mes, activator);
+    protected void buildModelList() {
+        Object target = getContainer().getTarget();
+        if (target instanceof MMessage) {
+            MMessage mes = (MMessage)target;
+            removeAllElements();
+            // fill the list with items
+            setElements(CollaborationsHelper.getHelper().getAllPossibleActivators(mes));
+            setSelectedItem(mes.getActivator());
         }
+    }
+    
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValid(MModelElement)
+     */
+    protected boolean isValid(MModelElement m) {
+        return ((m instanceof MMessage)  && 
+            m != getContainer().getTarget() && 
+            !((MMessage)(getContainer().getTarget())).getPredecessors().contains(m) &&
+            ((MMessage)m).getInteraction() == ((MMessage)(getContainer().getTarget())).getInteraction());
     }
 
 }

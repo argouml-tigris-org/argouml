@@ -21,64 +21,44 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.DefaultComboBoxModel;
-
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
-import org.argouml.uml.ui.UMLComboBoxModel;
-import org.argouml.uml.ui.UMLComboBoxModel2;
-import org.argouml.uml.ui.UMLUserInterfaceComponent;
+import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- * The model behind the UMLActivatorComboBox. I don't use the UMLComboBoxModel
- * since this mixes the GUI and the model too much and is much more maintainance 
- * intensive then this implementation.
+ * @since Oct 3, 2002
+ * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLActivatorComboBoxModel extends UMLComboBoxModel2 {
-		
-
+public class UMLMessageActionListModel extends UMLModelElementListModel2 {
 
     /**
-     * Constructor for UMLActivatorComboBoxModel.
+     * Constructor for UMLMessageActionListModel.
      * @param container
      */
-    public UMLActivatorComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container, "activator");
+    public UMLMessageActionListModel(UMLUserInterfaceContainer container) {
+        super(container);
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        Object target = getContainer().getTarget();
-        if (target instanceof MMessage) {
-            MMessage mes = (MMessage)target;
-            removeAllElements();
-            // fill the list with items
-            setElements(CollaborationsHelper.getHelper().getAllPossibleActivators(mes));
-            setSelectedItem(mes.getActivator());
-        }
+        removeAllElements();
+        addElement(((MMessage)getContainer().getTarget()).getAction());
     }
-    
+
     /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValid(MModelElement)
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValid(ru.novosoft.uml.foundation.core.MModelElement)
      */
-    protected boolean isValid(MModelElement m) {
-        return ((m instanceof MMessage)  && 
-            m != getContainer().getTarget() && 
-            !((MMessage)(getContainer().getTarget())).getPredecessors().contains(m) &&
-            ((MMessage)m).getInteraction() == ((MMessage)(getContainer().getTarget())).getInteraction());
+    protected boolean isValid(MModelElement elem) {
+        return (elem instanceof MAction && 
+            (((MMessage)getTarget()).getAction() == elem || contains(elem)));
     }
 
 }
