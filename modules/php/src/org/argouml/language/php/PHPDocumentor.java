@@ -386,11 +386,16 @@ public final class PHPDocumentor {
         objDocBlock.enableTag(DocBlock.TAG_TYPE_PACKAGE);
         objDocBlock.enableTag(DocBlock.TAG_TYPE_SUBPACKAGE);
         objDocBlock.enableTag(DocBlock.TAG_TYPE_STATIC);
+        objDocBlock.enableTag(DocBlock.TAG_TYPE_ABSTRACT);
 
         objDocBlock.setDefaultDescription("Short description of class "
                 + NameGenerator.generateClassifierName(modelElement));
 
         objDocBlock.setTags(ModelFacade.getTaggedValues(modelElement));
+
+        if (ModelFacade.isAbstract(modelElement)) {
+            objDocBlock.setTag(DocBlock.TAG_TYPE_ABSTRACT, "true");
+        }
 
         if (ModelFacade.isPublic(modelElement)) {
             objDocBlock.setTag(DocBlock.TAG_TYPE_ACCESS, "public");
@@ -478,6 +483,7 @@ public final class PHPDocumentor {
         objDocBlock.enableTag(DocBlock.TAG_TYPE_PARAM);
         objDocBlock.enableTag(DocBlock.TAG_TYPE_RETURN);
         objDocBlock.enableTag(DocBlock.TAG_TYPE_STATIC);
+        objDocBlock.enableTag(DocBlock.TAG_TYPE_ABSTRACT);
 
         objDocBlock.setDefaultDescription("Short description of method "
                 + ModelFacade.getName(modelElement));
@@ -491,6 +497,10 @@ public final class PHPDocumentor {
         }
 
         objDocBlock.setTags(ModelFacade.getTaggedValues(modelElement));
+
+        if (ModelFacade.isAbstract(modelElement)) {
+            objDocBlock.setTag(DocBlock.TAG_TYPE_ABSTRACT, "true");
+        }
 
         Collection colParameter = ModelFacade.getParameters(modelElement);
         if (colParameter != null) {
@@ -652,6 +662,7 @@ public final class PHPDocumentor {
         public static final int TAG_TYPE_SUBPACKAGE = 10;
         public static final int TAG_TYPE_VAR = 11;
         public static final int TAG_TYPE_VERSION = 12;
+        public static final int TAG_TYPE_ABSTRACT = 13;
 
         /**
          * Default description of DocBlock
@@ -848,6 +859,9 @@ public final class PHPDocumentor {
             case TAG_TYPE_ACCESS:
                 tmTags.put("access", new AccessTag());
                 break;
+            case TAG_TYPE_ABSTRACT:
+                tmTags.put("abstract", new AbstractTag());
+                break;
             case TAG_TYPE_AUTHOR:
                 tmTags.put("author", new AuthorTag());
                 break;
@@ -1031,6 +1045,9 @@ public final class PHPDocumentor {
             case TAG_TYPE_ACCESS:
                 objTag = (AccessTag) tmTags.get("access");
                 break;
+            case TAG_TYPE_ABSTRACT:
+                objTag = (AbstractTag) tmTags.get("abstract");
+                break;
             case TAG_TYPE_AUTHOR:
                 objTag = (AuthorTag) tmTags.get("author");
                 break;
@@ -1090,6 +1107,8 @@ public final class PHPDocumentor {
                 return setDescription(sTagValue);
             } else if (sTagName.equals("access")) {
                 return setTag(TAG_TYPE_ACCESS, sTagValue);
+            } else if (sTagName.equals("abstract")) {
+                return setTag(TAG_TYPE_ABSTRACT, sTagValue);
             } else if (sTagName.equals("author")) {
                 return setTag(TAG_TYPE_AUTHOR, sTagValue);
             } else if (sTagName.equals("deprecated")) {
@@ -1111,7 +1130,10 @@ public final class PHPDocumentor {
             } else if (sTagName.equals("version")) {
                 return setTag(TAG_TYPE_VERSION, sTagValue);
             } else {
-                if (!sTagName.equals("src_lang")) {
+                /* tags we ignore for PHP */
+                if (!sTagName.equals("src_lang") &&
+                    !sTagName.equals("transient") &&
+                    !sTagName.equals("volatile")) {
                     throw new IllegalArgumentException("Can not set value '"
                             + sTagValue + "' for tag '" + sTagName + "'");
                 } else {
@@ -1526,6 +1548,24 @@ public final class PHPDocumentor {
          */
         public boolean setContent(String sTagContent) {
             return setName(sTagContent);
+        }
+    }
+
+    // -------------------------------------------------------------------------
+
+    /**
+     * This class is the final implementation to generate
+     * PHPDocumentor's @abstract tag
+     *
+     * @author  Kai Schröder, k.schroeder@php.net
+     * @since   ArgoUML 0.15.7
+     */
+    private final class AbstractTag extends BooleanTag {
+        /**
+         * Class constructor
+         */
+        public AbstractTag() {
+            super("abstract");
         }
     }
 
