@@ -50,12 +50,12 @@ public class StringNamespace implements Namespace, Cloneable {
     /**
      * empty namespace with given default token
      * 
-     * @param token
+     * @param theToken
      *            the scope seperator to use
      */
-    public StringNamespace(String token) {
+    public StringNamespace(String theToken) {
         this();
-        this.token = token;
+        this.token = theToken;
     }
 
     /**
@@ -73,11 +73,11 @@ public class StringNamespace implements Namespace, Cloneable {
      * 
      * @param elements
      *            an array of strings which represent the namespace.
-     * @param token
+     * @param theToken
      *            scope token to use
      */
-    public StringNamespace(String[] elements, String token) {
-        this(token);
+    public StringNamespace(String[] elements, String theToken) {
+        this(theToken);
         for (int i = 0; i < elements.length; i++) {
             pushNamespaceElement(new StringNamespaceElement(elements[i]));
         }
@@ -88,11 +88,11 @@ public class StringNamespace implements Namespace, Cloneable {
      * 
      * @param elements
      *            array of NamespaceElements
-     * @param token
+     * @param theToken
      *            scope token
      */
-    public StringNamespace(NamespaceElement[] elements, String token) {
-        this(token);
+    public StringNamespace(NamespaceElement[] elements, String theToken) {
+        this(theToken);
 
         for (int i = 0; i < elements.length; i++) {
             pushNamespaceElement(new StringNamespaceElement(elements[i]
@@ -189,8 +189,8 @@ public class StringNamespace implements Namespace, Cloneable {
     /**
      * @see org.argouml.uml.util.namespace.Namespace#setDefaultScopeToken(java.lang.String)
      */
-    public void setDefaultScopeToken(String token) {
-        this.token = token;
+    public void setDefaultScopeToken(String theToken) {
+        this.token = theToken;
     }
 
     /**
@@ -231,13 +231,16 @@ public class StringNamespace implements Namespace, Cloneable {
      * two namespaces are equal when they are namespaces and have the same
      * string representation
      * 
-     * @param ns
+     * @param namespace
      *            the namespace to compare with
+     * @return true if equal
+     *
+     * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(Object ns) {
-        if (ns instanceof Namespace) {
+    public boolean equals(Object namespace) {
+        if (namespace instanceof Namespace) {
             String ns1 = this.toString(JAVA_NS_TOKEN);
-            String ns2 = ((Namespace) ns).toString(JAVA_NS_TOKEN);
+            String ns2 = ((Namespace) namespace).toString(JAVA_NS_TOKEN);
             return ns1.equals(ns2);
         }
         return false;
@@ -246,19 +249,20 @@ public class StringNamespace implements Namespace, Cloneable {
     /**
      * @see org.argouml.uml.util.namespace.Namespace#toString(java.lang.String)
      */
-    public String toString(String token) {
+    public String toString(String theToken) {
         StringBuffer result = new StringBuffer();
         Iterator i = ns.iterator();
         while (i.hasNext()) {
             result.append((NamespaceElement) i.next());
-            if (i.hasNext()) result.append(token);
+            if (i.hasNext()) result.append(theToken);
         }
         return result.toString();
     }
 
     /**
-     * create a string representation using the default scope token.
-     *  
+     * Create a string representation using the default scope token.
+     *
+     * @see java.lang.Object#toString()
      */
     public String toString() {
         return toString(token);

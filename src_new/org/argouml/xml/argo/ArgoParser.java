@@ -47,13 +47,15 @@ public class ArgoParser extends SAXParserBase {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    public static ArgoParser SINGLETON = new ArgoParser();
+    /**
+     * The singleton for this class.
+     */
+    public static final ArgoParser SINGLETON = new ArgoParser();
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** @deprecated in 0.17.1 by Bob Tarling use getter/setter */
-    protected Project _proj = null;
+    private Project _proj = null;
 
     private ArgoTokenTable tokens = new ArgoTokenTable();
 
@@ -68,6 +70,10 @@ public class ArgoParser extends SAXParserBase {
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The constructor.
+     * 
+     */
     protected ArgoParser() {
         super();
     }
@@ -78,30 +84,31 @@ public class ArgoParser extends SAXParserBase {
     // TODO: should be able to merge an existing project into
     // the current one.
 
-    public synchronized void readProject(URL url) throws IOException,
+    public synchronized void readProject(URL theUrl) throws IOException,
             ParserConfigurationException, SAXException {
-        readProject(url, true);
+        readProject(theUrl, true);
     }
 
-    public synchronized void readProject(URL url, boolean addMembers)
-            throws IOException, ParserConfigurationException, SAXException {
-        this.url = url;
-        readProject(this.url.openStream(), addMembers);
+    public synchronized void readProject(URL theUrl, boolean addTheMembers)
+        throws IOException, ParserConfigurationException, SAXException {
+        this.url = theUrl;
+        readProject(this.url.openStream(), addTheMembers);
     }
 
-    public void setURL(URL url) {
-        this.url = url;
+    public void setURL(URL theUrl) {
+        this.url = theUrl;
     }
 
-    public synchronized void readProject(InputStream is, boolean addMembers)
-            throws IOException, SAXException, ParserConfigurationException {
+    public synchronized void readProject(InputStream is, 
+            boolean addTheMembers)
+        throws IOException, SAXException, ParserConfigurationException {
 
         lastLoadStatus = true;
         lastLoadMessage = "OK";
 
-        this.addMembers = addMembers;
+        this.addMembers = addTheMembers;
 
-        if ((url == null) && addMembers) {
+        if ((url == null) && addTheMembers) {
             LOG.info("URL not set! Won't be able to add members! Aborting...");
             lastLoadMessage = "URL not set!";
             return;
@@ -143,8 +150,11 @@ public class ArgoParser extends SAXParserBase {
         _proj = newProj;
     }
 
+    /**
+     * @see org.argouml.xml.SAXParserBase#handleStartElement(org.argouml.xml.XMLElement)
+     */
     public void handleStartElement(XMLElement e) {
-        if (_dbg)
+        if (dbg)
             LOG.debug("NOTE: ArgoParser handleStartTag:" + e.getName());
         try {
             switch (tokens.toToken(e.getName(), true)) {
@@ -155,7 +165,7 @@ public class ArgoParser extends SAXParserBase {
                 handleDocumentation(e);
                 break;
             default:
-                if (_dbg)
+                if (dbg)
                     LOG.warn("WARNING: unknown tag:" + e.getName());
                 break;
             }
@@ -164,8 +174,11 @@ public class ArgoParser extends SAXParserBase {
         }
     }
 
+    /**
+     * @see org.argouml.xml.SAXParserBase#handleEndElement(org.argouml.xml.XMLElement)
+     */
     public void handleEndElement(XMLElement e) {
-        if (_dbg)
+        if (dbg)
             LOG.debug("NOTE: ArgoParser handleEndTag:" + e.getName() + ".");
         try {
             switch (tokens.toToken(e.getName(), false)) {
@@ -188,7 +201,7 @@ public class ArgoParser extends SAXParserBase {
                 handleHistoryfile(e);
                 break;
             default:
-                if (_dbg)
+                if (dbg)
                     LOG.warn("WARNING: unknown end tag:" + e.getName());
                 break;
             }
@@ -248,21 +261,27 @@ public class ArgoParser extends SAXParserBase {
     }
 
     /**
-     * set the status of the last load attempt. Used for junit tests.
+     * Set the status of the last load attempt. Used for junit tests.
+     *
+     * @param status the status of the last load attempt
      */
     public void setLastLoadStatus(boolean status) {
         lastLoadStatus = status;
     }
 
     /**
-     * get the last message which caused loading to fail. Used for junit tests.
+     * Get the last message which caused loading to fail. Used for junit tests.
+     *
+     * @return the last message which caused loading to fail
      */
     public String getLastLoadMessage() {
         return lastLoadMessage;
     }
 
     /**
-     * set the last load message. Used for junit tests.
+     * Set the last load message. Used for junit tests.
+     *
+     * @param msg the last load message
      */
     public void setLastLoadMessage(String msg) {
         lastLoadMessage = msg;
