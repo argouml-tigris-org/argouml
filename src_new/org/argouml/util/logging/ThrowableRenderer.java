@@ -38,7 +38,10 @@ import java.sql.*;
    * 
    * @deprecated without replacement since log4j provides this functionality now.
    */
+
 public class ThrowableRenderer implements ObjectRenderer {
+
+	//TODO: remove class after release 0.17 because of deprecation.
 
     /** 
 	Constructor does no special processing.
