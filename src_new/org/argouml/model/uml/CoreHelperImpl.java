@@ -3165,34 +3165,29 @@ class CoreHelperImpl implements CoreHelper {
     }
 
     /**
-     * Sets the stereotype of some modelelement. The method also
-     * copies a stereotype that is not a part of the current model to
-     * the current model.<p>
+     * Sets the stereotype of some modelelement.<p>
      *
-     * TODO: Currently does not copy the stereotype, but changes the
-     * namespace to the new model (kidnapping it). That might possibly be
-     * dangerous, especially if more complex profile models are developed.
-     * This documentation should say what is supposed to be done. I think
-     * it would have been better if the caller had been responsible for the
-     * stereotype being in the right model and been adviced of
-     * eg ModelManagementHelper.getCorrespondingElement(...). Or if that had
-     * been used here. This function could possibly assert that the caller had
-     * got it right.
+     * TODO: For moving towards future version of UML we should instead
+     * have addStereotype and removeStereotype.
      *
      * @param handle model element
      * @param stereo stereotype
      */
     public void setStereotype(Object handle, Object stereo) {
-        if (handle instanceof MModelElement) {
+        if (handle instanceof MModelElement && 
+                (stereo instanceof MStereotype || stereo == null)) {
+            
+            MStereotype stereotype = (MStereotype) stereo;
+            if (stereotype == null) {
+                LOG.info("Removing any stereotype on " + handle);
+            } else {
+                LOG.info("Setting the stereotype on " + handle
+                        + " to <<" + stereotype.getName() + ">>");
+            }
+            
             MModelElement me = (MModelElement) handle;
-            if (stereo instanceof MStereotype
-                && me.getModel() != ((MStereotype) stereo).getModel()) {
-                ((MStereotype) stereo).setNamespace(me.getModel());
-            }
-            if (stereo == null || stereo instanceof MStereotype) {
-                me.setStereotype((MStereotype) stereo);
-                return;
-            }
+            me.setStereotype(stereotype);
+            return;
         }
         throw new IllegalArgumentException("handle: " + handle
                 + " or stereo: " + stereo);
