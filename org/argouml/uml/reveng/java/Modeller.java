@@ -536,6 +536,7 @@ public class Modeller
             mAssociationEnd.setMultiplicity(multiplicity);
 
             mAssociationEnd.setType(mClassifier);
+            mAssociationEnd.setName(name);
 
             if((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
                 mAssociationEnd.setChangeability(MChangeableKind.FROZEN);
