@@ -333,15 +333,21 @@ public abstract class FigNodeModelElement
 		&& getOwner() != null
 		&& (!ModelManagementHelper.getHelper()
 		    .isCyclicOwnership(owningModelelement, getOwner()))
-		&& (ModelFacade.isANamespace(owningModelelement)
-		    && (CoreHelper.getHelper()
+		&& (!ModelFacade.isANamespace(owningModelelement)
+		    || CoreHelper.getHelper()
 			.isValidNamespace(getOwner(),
-					  owningModelelement)))) {
+					  owningModelelement))) {
                 ModelFacade.setModelElementContainer(getOwner(), 
 						     owningModelelement);
                 // TODO: move the associations to the correct owner (namespace)
             }
         }
+	if (encloser != _encloser) {
+	    if (_encloser instanceof FigGroup)
+		((FigGroup) _encloser).removeFig(this);
+	    if (encloser instanceof FigGroup)
+		((FigGroup) encloser).addFig(this);
+	}
         _encloser = encloser;
     }
 
@@ -1042,3 +1048,4 @@ public abstract class FigNodeModelElement
     }
 
 } /* end class FigNodeModelElement */
+
