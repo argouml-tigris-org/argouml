@@ -227,6 +227,33 @@ public class FigMessage extends FigNodeModelElement {
     MMessage mes = (MMessage) getOwner();
     if (mes == null) return;
     _name.setText(Notation.generate(this, mes));
+	updateArrow();	
+  }
+  
+/**
+ * Determines the direction of the message arrow.
+ */
+  protected void updateArrow() {
+  	MMessage mes = (MMessage) getOwner();
+    if (mes == null) return;
+    MClassifierRole sender = mes.getSender();
+    MClassifierRole receiver = mes.getReceiver();
+    Fig senderPort = getLayer().presentationFor(sender);
+    Fig receiverPort = getLayer().presentationFor(receiver);
+    int sx = senderPort.getX();
+    int sy = senderPort.getY();
+    int rx = receiverPort.getX();
+    int ry = receiverPort.getY();
+    if (sx < rx && Math.abs(sy-ry) <= Math.abs(sx-rx)) { // east
+    	setArrow(2);
+    } else 
+    if (sx > rx && Math.abs(sy-ry) <= Math.abs(sx-rx)) { // west
+    	setArrow(3);
+    } else 
+    if (sy < ry) { // south
+    	setArrow(1);
+    } else
+    	setArrow(4);
   }
 
   public void dispose() {
@@ -252,13 +279,16 @@ public class FigMessage extends FigNodeModelElement {
   }
 
  
+	
+
+	
+
 	/**
-	 * @see org.tigris.gef.presentation.Fig#delete()
+	 * @see org.tigris.gef.presentation.Fig#paint(Graphics)
 	 */
-	public void delete() {
-		System.out.println("Figmessage delete");
-		super.delete();
-		remove();
+	public void paint(Graphics g) {
+		updateArrow();
+		super.paint(g);
 	}
 
 } /* end class FigMessage */

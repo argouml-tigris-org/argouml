@@ -100,13 +100,6 @@ class FigMessageGroup extends FigGroup {
 		super(figs);
 	}
 
-	/**
-	 * @see org.tigris.gef.presentation.Fig#paint(Graphics)
-	 */
-	public void paint(Graphics g) {
-		super.paint(g);
-		updateFigPositions();
-	}
 	
 	protected void updateFigPositions() {
     	Vector figs = getFigs();
