@@ -36,14 +36,11 @@ import java.util.Iterator;
 import java.util.Stack;
 import java.util.Vector;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.foundation.core.MInterface;
 import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MOperation;
-
 /**
    This code piece represents the end of a class or an interface.
 */

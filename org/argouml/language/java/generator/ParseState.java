@@ -32,10 +32,6 @@ package org.argouml.language.java.generator;
 
 import java.util.Vector;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MFeature;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
 /**
    This class handles information during the replacement of code
    pieces. One parse state for each classifier handled.
