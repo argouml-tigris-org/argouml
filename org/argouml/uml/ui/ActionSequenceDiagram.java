@@ -26,8 +26,12 @@ package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.JOptionPane;
+
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
@@ -43,7 +47,7 @@ import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
  *
  * @author jaap.branderhorst@xs4all.nl
  */
-public class ActionSequenceDiagram extends UMLAction {
+public final class ActionSequenceDiagram extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -57,6 +61,9 @@ public class ActionSequenceDiagram extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * Constructor.
+     */
     private ActionSequenceDiagram() {
         super("action.sequence-diagram", true, true);
     }
@@ -65,6 +72,12 @@ public class ActionSequenceDiagram extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
+        ProjectBrowser pb = ProjectBrowser.getInstance();
+        JOptionPane.showMessageDialog(pb,
+                Translator.localize("action.sequence-diagrams-disabled"));
+        if (true) {
+            return;
+        }
         super.actionPerformed(e);
         Object target = TargetManager.getInstance().getModelTarget();
         Object owner = null;
@@ -87,13 +100,11 @@ public class ActionSequenceDiagram extends UMLAction {
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
-        // TODO: Once the sequence diagrams are working again, they should
-        //       be re-enabled.
-//	        Object target = TargetManager.getInstance().getModelTarget();
-//	        if (Model.getFacade().isAClassifier(target)
-//	            || Model.getFacade().isAOperation(target)) {
-//	            return true;
-//	        }
+        Object target = TargetManager.getInstance().getModelTarget();
+        if (Model.getFacade().isAClassifier(target)
+                || Model.getFacade().isAOperation(target)) {
+            return true;
+        }
 
         return false;
     }
