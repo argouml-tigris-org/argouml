@@ -23,16 +23,22 @@
 
 package org.argouml.ui;
 
-import java.awt.*;
-import java.util.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Point;
+import java.awt.Rectangle;
+
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Category;
-import org.argouml.application.api.*;
-import org.argouml.cognitive.ui.*;
-import org.argouml.uml.ui.*;
-import org.argouml.swingext.*;
+import org.argouml.application.api.Argo;
+import org.argouml.cognitive.ui.TabToDoTarget;
+import org.argouml.swingext.Orientation;
 import org.argouml.uml.diagram.ui.TabDiagram;
+import org.argouml.uml.ui.TabModelTarget;
+import org.argouml.uml.ui.TabProps;
 
 /** A subclass of JPanel that can act as a tab in the DetailsPane or
  *  MultiEditorPane.  When the tab is double-clicked, this JPanel will
@@ -121,7 +127,7 @@ public class TabSpawnable
      */
   public TabSpawnable spawn() {
 
-    JFrame  f = new JFrame();
+    JDialog  f = new JDialog(ProjectBrowser.TheInstance);    
     f.getContentPane().setLayout(new BorderLayout());
     f.setTitle(_title);
     TabSpawnable newPanel = (TabSpawnable) clone();

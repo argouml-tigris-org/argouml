@@ -27,6 +27,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 
+import java.awt.Window;
 import java.awt.event.*;
 import java.text.MessageFormat;
 
@@ -82,7 +83,11 @@ public class ActionNew extends UMLAction {
       // Steffen Zschaler 01/10/2002 - Well, it does, doesn't it? trySave will
       // return false in that case...
     }
-
+    // we should remove all open dialogs. They have as parent the ProjectBrowser
+    Window[] windows = ProjectBrowser.TheInstance.getOwnedWindows();
+    for (int i = 0; i < windows.length; i++) {
+        windows[i].dispose();
+    }
     p = ProjectManager.getManager().makeEmptyProject();
     ProjectBrowser.TheInstance.setTarget(p.getDiagrams().toArray()[0]);
   }
