@@ -36,6 +36,7 @@ import java.util.Enumeration;
 import javax.swing.Icon;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
+import org.argouml.kernel.WizardItem;
 import org.tigris.gef.ui.Highlightable;
 
 import org.tigris.gef.util.VectorSet;
@@ -55,7 +56,7 @@ import org.tigris.gef.util.VectorSet;
  *  Also the run-time system needs to know who posted each ToDoItem so
  *  that it can automatically remove it if it is no longer valid. 
  */
-public class ToDoItem implements Serializable {
+public class ToDoItem implements Serializable, WizardItem {
 
     ////////////////////////////////////////////////////////////////
     // constants
