@@ -29,6 +29,8 @@ import java.util.*;
 import java.io.*;
 import java.net.URL;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.argouml.kernel.Project;
 import org.argouml.xml.SAXParserBase;
 import org.argouml.xml.XMLElement;
@@ -38,7 +40,6 @@ import org.xml.sax.*;
  */
 public class ArgoParser extends SAXParserBase {
     protected static Category cat = Category.getInstance(ArgoParser.class);
-    
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -48,22 +49,24 @@ public class ArgoParser extends SAXParserBase {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    protected Project        _proj   = null;
+    protected Project _proj = null;
 
-    private   ArgoTokenTable _tokens = new ArgoTokenTable();
+    private ArgoTokenTable _tokens = new ArgoTokenTable();
 
     private boolean _addMembers = true;
 
     private URL _url = null;
 
     private boolean lastLoadStatus = true;
-    
+
     private String lastLoadMessage = null;
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    protected ArgoParser() { super(); }
+    protected ArgoParser() {
+        super();
+    }
 
     ////////////////////////////////////////////////////////////////
     // main parsing methods
@@ -71,30 +74,21 @@ public class ArgoParser extends SAXParserBase {
     // TODO: should be able to merge an existing project into
     // the current one.
 
-    public synchronized void readProject(URL url) throws IOException {
+    public synchronized void readProject(URL url) throws IOException, ParserConfigurationException, SAXException {
         readProject(url, true);
     }
 
-    public synchronized void readProject(URL url, boolean addMembers) throws IOException {
-      
+    public synchronized void readProject(URL url, boolean addMembers)
+        throws IOException, ParserConfigurationException, SAXException {
         _url = url;
-
-        try{
-            readProject(url.openStream(), addMembers);
-        } catch (IOException e) {
-            Argo.log.info("Couldn't open InputStream in ArgoParser.load("+url+") "+e);
-            e.printStackTrace();
-            lastLoadMessage = e.toString();
-            // we need to forward this up - mkl
-            throw e;
-        }
+        readProject(url.openStream(), addMembers);
     }
 
     public void setURL(URL url) {
         _url = url;
     }
 
-    public synchronized void readProject(InputStream is, boolean addMembers) {
+    public synchronized void readProject(InputStream is, boolean addMembers) throws IOException, SAXException, ParserConfigurationException {
 
         lastLoadStatus = true;
         lastLoadMessage = "OK";
@@ -102,76 +96,93 @@ public class ArgoParser extends SAXParserBase {
         _addMembers = addMembers;
 
         if ((_url == null) && _addMembers) {
-            Argo.log.info("URL not set! Won't be able to add members! Aborting...");
+            Argo.log.info(
+                "URL not set! Won't be able to add members! Aborting...");
             lastLoadMessage = "URL not set!";
             return;
         }
-	  
 
         try {
-            Argo.log.info("=======================================");
-            Argo.log.info("== READING PROJECT "+_url);
+            cat.info("=======================================");
+            cat.info("== READING PROJECT " + _url);
             _proj = new Project(_url);
             parse(is);
-        }
-        catch(SAXException saxEx) {
+        } catch (SAXException saxEx) {
             lastLoadStatus = false;
-            Argo.log.info("Exception reading project================");
-            //
-            //  a SAX exception could have been generated
-            //    because of another exception.
-            //    Get the initial exception to display the
-            //    location of the true error
-            Exception ex = saxEx.getException();
-            if(ex == null) {
-                lastLoadMessage = saxEx.toString();
-                saxEx.printStackTrace();
-            }
-            else {
-                lastLoadMessage = saxEx.toString();
-                ex.printStackTrace();
-            }
-        }
-        catch (Exception ex) {
-            Argo.log.info("Exception reading project================");
-            ex.printStackTrace();
-            lastLoadMessage = ex.toString();
+            cat.error("Exception reading project================");
+            cat.error(is.toString());
+            lastLoadMessage = saxEx.toString();
+            throw saxEx;
+
+        } catch (IOException e) {
+            lastLoadStatus = false;
+            cat.error("Exception reading project================");
+            cat.error(is.toString());
+            lastLoadMessage = e.toString();
+            throw e;
+        } catch (ParserConfigurationException e) {
+            lastLoadStatus = false;
+            cat.error("Exception reading project================");
+            cat.error(is.toString());
+            lastLoadMessage = e.toString();
+            throw e;
         }        
     }
 
-    public Project getProject() { return _proj; }
+    public Project getProject() {
+        return _proj;
+    }
 
     public void handleStartElement(XMLElement e) {
-        if (_dbg) cat.debug("NOTE: ArgoParser handleStartTag:" + e.getName());
+        if (_dbg)
+            cat.debug("NOTE: ArgoParser handleStartTag:" + e.getName());
         try {
             switch (_tokens.toToken(e.getName(), true)) {
-            case ArgoTokenTable.TOKEN_argo: handleArgo(e); break;
-            case ArgoTokenTable.TOKEN_documentation: handleDocumentation(e); break;
-            default: if (_dbg)
-                cat.warn("WARNING: unknown tag:" + e.getName());  break;
+                case ArgoTokenTable.TOKEN_argo :
+                    handleArgo(e);
+                    break;
+                case ArgoTokenTable.TOKEN_documentation :
+                    handleDocumentation(e);
+                    break;
+                default :
+                    if (_dbg)
+                        cat.warn("WARNING: unknown tag:" + e.getName());
+                    break;
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             cat.error(ex);
         }
     }
 
-
     public void handleEndElement(XMLElement e) {
-        if (_dbg) cat.debug("NOTE: ArgoParser handleEndTag:" + e.getName()+".");
+        if (_dbg)
+            cat.debug("NOTE: ArgoParser handleEndTag:" + e.getName() + ".");
         try {
             switch (_tokens.toToken(e.getName(), false)) {
-            case ArgoTokenTable.TOKEN_authorname : handleAuthorname(e); break;
-            case ArgoTokenTable.TOKEN_version : handleVersion(e); break;
-            case ArgoTokenTable.TOKEN_description : handleDescription(e); break;
-            case ArgoTokenTable.TOKEN_searchpath : handleSearchpath(e); break;
-            case ArgoTokenTable.TOKEN_member : handleMember(e); break;
-            case ArgoTokenTable.TOKEN_historyfile : handleHistoryfile(e); break;
-            default : if (_dbg)
-                cat.warn("WARNING: unknown end tag:" + e.getName()); break;
+                case ArgoTokenTable.TOKEN_authorname :
+                    handleAuthorname(e);
+                    break;
+                case ArgoTokenTable.TOKEN_version :
+                    handleVersion(e);
+                    break;
+                case ArgoTokenTable.TOKEN_description :
+                    handleDescription(e);
+                    break;
+                case ArgoTokenTable.TOKEN_searchpath :
+                    handleSearchpath(e);
+                    break;
+                case ArgoTokenTable.TOKEN_member :
+                    handleMember(e);
+                    break;
+                case ArgoTokenTable.TOKEN_historyfile :
+                    handleHistoryfile(e);
+                    break;
+                default :
+                    if (_dbg)
+                        cat.warn("WARNING: unknown end tag:" + e.getName());
+                    break;
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -183,7 +194,6 @@ public class ArgoParser extends SAXParserBase {
     protected void handleDocumentation(XMLElement e) {
         /* do nothing */
     }
-
 
     protected void handleAuthorname(XMLElement e) {
         String authorname = e.getText().trim();
@@ -206,7 +216,7 @@ public class ArgoParser extends SAXParserBase {
     }
 
     protected void handleMember(XMLElement e) {
-        if(_addMembers) {
+        if (_addMembers) {
             String name = e.getAttribute("name").trim();
             String type = e.getAttribute("type").trim();
             _proj.addMember(name, type);
@@ -214,7 +224,8 @@ public class ArgoParser extends SAXParserBase {
     }
 
     protected void handleHistoryfile(XMLElement e) {
-        if (e.getAttribute("name") == null) return;
+        if (e.getAttribute("name") == null)
+            return;
         String historyfile = e.getAttribute("name").trim();
         _proj._historyFile = historyfile;
     }
@@ -222,21 +233,29 @@ public class ArgoParser extends SAXParserBase {
     /** return the status of the last load attempt.
         Used for junit tests.
      */
-    public boolean getLastLoadStatus() { return lastLoadStatus; }
+    public boolean getLastLoadStatus() {
+        return lastLoadStatus;
+    }
 
     /** set the status of the last load attempt. 
         Used for junit tests.
      */
-    public void setLastLoadStatus(boolean status) { lastLoadStatus = status;}
-    
+    public void setLastLoadStatus(boolean status) {
+        lastLoadStatus = status;
+    }
+
     /** get the last message which caused loading to fail. 
         Used for junit tests.
      */
-    public String getLastLoadMessage() { return lastLoadMessage; }
-    
+    public String getLastLoadMessage() {
+        return lastLoadMessage;
+    }
+
     /** set the last load message.
         Used for junit tests.
     */
-    public void setLastLoadMessage(String msg) { lastLoadMessage = msg; }
+    public void setLastLoadMessage(String msg) {
+        lastLoadMessage = msg;
+    }
 
 } /* end class ArgoParser */
