@@ -239,7 +239,6 @@ public class UmlFilePersister extends AbstractFilePersister {
                         new XmlInputStream(url.openStream(),
                                            "pgml",
                                            instanceCount.getIntValue());
-                    inputStream.reopen();
                     persister = new DiagramMemberFilePersister(p, inputStream);
                 } else if (memberList.get(i).equals("todo")) {
                     inputStream =

@@ -49,6 +49,7 @@ public class XmlInputStream extends BufferedInputStream {
     private boolean inTag;
     private StringBuffer currentTag = new StringBuffer();
     private boolean endStream;
+    private boolean firstReadAfterReopen;
     private String tagName;
     private String endTagName;
     private Map attributes;
@@ -137,8 +138,14 @@ public class XmlInputStream extends BufferedInputStream {
         this.childOnly = child;
     }
 
+    /**
+     * Reopen a stream that has already reached the end
+     * of an XML fragment.
+     */
     public void reopen() {
         endStream = false;
+        xmlStarted = false;
+        inTag = false;
     }
     
     /**
@@ -177,14 +184,12 @@ public class XmlInputStream extends BufferedInputStream {
         }
         for (int i = 0; i < read; ++i) {
             if (endStream) {
-                b[i] = -1;
+                copyBuffer(b, i + off);
+                b[i + off] = -1;
                 read = i;
                 return read;
             } else {
                 endStream = isLastTag(b[i + off]);
-                if (endStream) {
-                    copyBuffer(b);
-                }
             }
         }
         return read;
@@ -214,6 +219,7 @@ public class XmlInputStream extends BufferedInputStream {
             if (endStream) {
                 read = i;
                 b[i] = -1;
+                copyBuffer(b, i);
                 if (i == 0) {
                     return -1;
                 } else {
@@ -221,9 +227,6 @@ public class XmlInputStream extends BufferedInputStream {
                 }
             } else {
                 endStream = isLastTag(b[i]);
-                if (endStream) {
-                    copyBuffer(b);
-                }
             }
         }
         return read;
@@ -253,10 +256,10 @@ public class XmlInputStream extends BufferedInputStream {
         return false;
     }
 
-    private void copyBuffer(byte b[]) {
-        buffer = new byte[b.length];
-        for (int i=0; i < b.length; ++i) {
-            buffer[i] = b[i];
+    private void copyBuffer(byte b[], int offset) {
+        buffer = new byte[b.length - offset];
+        for (int i = 0; i < b.length - offset; ++i) {
+            buffer[i] = b[i + offset];
         }
     }
     
@@ -403,12 +406,14 @@ public class XmlInputStream extends BufferedInputStream {
      * The close method is overridden to prevent some class out of
      * our control from closing the stream (such as a SAX parser).
      * Use realClose() to finally close the stream for real.
+     * @throws IOException to satisfy ancestor but will never happen.
      */
     public void close() throws IOException {
     }
     
     /**
      * Really close the input
+     * @throws IOException if an I/O error occurs.
      */
     public void realClose() throws IOException {
         super.close();
