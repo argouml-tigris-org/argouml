@@ -37,6 +37,7 @@ import com.sun.java.swing.event.*;
 import com.sun.java.swing.tree.*;
 import com.sun.java.swing.text.*;
 import com.sun.java.swing.border.*;
+import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
@@ -93,10 +94,14 @@ implements ItemListener, DocumentListener {
 
 
     //_extendsField.setRenderer(new ModelElementRenderer());
-    
-    _implList.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+
+    //_implList.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+    Font labelFont = MetalLookAndFeel.getSubTextFont();
+    _implList.setFont(labelFont);
+    _implList.setCellRenderer(new UMLListCellRenderer());
+
     //_implList.addList...Listener(this);
-    
+
     c.gridx = 0;
     c.gridwidth = 1;
     c.gridy = 1;
@@ -140,9 +145,10 @@ implements ItemListener, DocumentListener {
     gb.setConstraints(_impleLabel, c);
     add(_impleLabel);
     c.gridy = 1;
-    c.gridheight = GridBagConstraints.REMAINDER;
-    gb.setConstraints(_implList, c);
-    add(_implList);
+    c.gridheight = 5;
+    JScrollPane implSP = new JScrollPane(_implList);
+    gb.setConstraints(implSP, c);
+    add(implSP);
 
   }
 
@@ -175,7 +181,15 @@ implements ItemListener, DocumentListener {
       //System.out.println("base class found");
       _extendsField.setSelectedItem(gen.getSupertype());
     }
-    
+    Vector interfaces = new Vector();
+    Vector specs = cls.getSpecification();
+    int size = specs.size();
+    for (int i = 0; i < size; i++) {
+      Realization r = (Realization) specs.elementAt(i);
+      interfaces.addElement(r.getSupertype());
+    }
+    _implList.setListData(interfaces);
+    _implList.setCellRenderer(new UMLListCellRenderer());
     updateExtendsChoices();
   }
 

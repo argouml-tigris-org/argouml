@@ -24,8 +24,8 @@
 
 
 
-// File: CrCircularInheritance.java.java
-// Classes: CrCircularInheritance.java
+// File: CrCircularInheritance.java
+// Classes: CrCircularInheritance
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -52,6 +52,7 @@ public class CrCircularInheritance extends CrUML {
        "generalization arrows in the cycle and remove it.");
     setPriority(ToDoItem.HIGH_PRIORITY);
     addSupportedDecision(CrUML.decINHERITANCE);
+    setKnowledgeTypes(Critic.KT_SYNTAX);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

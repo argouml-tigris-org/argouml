@@ -24,8 +24,8 @@
 
 
 
-// File: CrMultipleAgg.java.java
-// Classes: CrMultipleAgg.java
+// File: CrMultipleAgg.java
+// Classes: CrMultipleAgg
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -51,6 +51,7 @@ public class CrMultipleAgg extends CrUML {
        "aggregations to None.");
 
     addSupportedDecision(CrUML.decCONTAINMENT);
+    setKnowledgeTypes(Critic.KT_SEMANTICS);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

@@ -80,10 +80,18 @@ public class UMLListCellRenderer extends BasicListCellRenderer {
     JLabel lab;
     lab = (JLabel) super.getListCellRendererComponent(list, value, index,
 					     isSelected, cellHasFocus);
+    if ((value instanceof String) && ((String)value).equals("")) {
+      lab.setText("\"\"");
+      return lab;
+    }
     if (!(value instanceof Element)) return lab;
     Name name = ((Element) value).getName();
-    if (name != null) return lab;
+    if (name == null) {
+      lab.setText("(null anon)");
+      return lab;
+    }
     String nameStr = name.getBody();
+    if (nameStr.length() == 0) nameStr = "(anon)";
     lab.setText(nameStr);
     lab.setToolTipText(nameStr);
     list.setToolTipText(nameStr);

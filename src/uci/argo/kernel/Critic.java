@@ -49,14 +49,27 @@ public class Critic implements Poster, java.io.Serializable {
 
   ////////////////////////////////////////////////////////////////
   // constants
-  
+
   public static final boolean PROBLEM_FOUND = true;
   public static final boolean NO_PROBLEM = false;
 
-  
   /** The keys of some predefined control records. */
   public static final String ENABLED = "enabled";
   public static final String SNOOZE_ORDER = "snoozeOrder";
+
+  /** Types of knowledge that critics can deliver */
+  public static String KT_DESIGNERS = "Designer's";
+  public static String KT_CORRECTNESS = "Correctness";
+  public static String KT_COMPLETENESS = "Completeness";
+  public static String KT_CONSISTENCY = "Consistency";
+  public static String KT_SYNTAX = "Syntax";
+  public static String KT_SEMANTICS = "Semantics";
+  public static String KT_OPTIMIZATION = "Optimization";
+  public static String KT_PRESENTATION = "Presentation";
+  public static String KT_ORGANIZATIONAL = "Organizational";
+  public static String KT_EXPERIENCIAL = "Experiencial";
+  public static String KT_TOOL = "Tool";
+
 
   /** Some priority constants for ToDoItem's. */
   //public static final int LOWEST_PRIORITY = 1;
@@ -248,7 +261,24 @@ public class Critic implements Poster, java.io.Serializable {
     _knowledgeTypes.addElement(type);
   }
   public Set getKnowledgeTypes() { return _knowledgeTypes; }
-  
+
+  public void setKnowledgeTypes(Set kt) { _knowledgeTypes = kt; }
+  public void setKnowledgeTypes(String t1) {
+    _knowledgeTypes = new Set();
+    addKnowledgeType(t1);
+  }
+  public void setKnowledgeTypes(String t1, String t2) {
+    _knowledgeTypes = new Set();
+    addKnowledgeType(t1);
+    addKnowledgeType(t2);
+  }
+  public void setKnowledgeTypes(String t1, String t2, String t3) {
+    _knowledgeTypes = new Set();
+    addKnowledgeType(t1);
+    addKnowledgeType(t2);
+    addKnowledgeType(t3);
+  }
+
   public String expand(String desc, Set offs) { return desc; }
 
   public Icon getClarifier() {

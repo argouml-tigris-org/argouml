@@ -54,6 +54,7 @@ public class CrNoAssociations extends CrUML {
        "from {name} to another node. ");
 
     addSupportedDecision(CrUML.decRELATIONSHIPS);
+    setKnowledgeTypes(Critic.KT_COMPLETENESS);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

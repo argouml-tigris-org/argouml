@@ -33,6 +33,7 @@
 package uci.uml.visual;
 
 import java.awt.*;
+import java.beans.*;
 import java.util.*;
 
 import uci.gef.*;
@@ -56,14 +57,20 @@ public class FigGeneralization extends FigEdgeModelElement {
     modelChanged();
   }
 
-//   public void dispose() {
-//     if (!(getOwner() instanceof Generalization)) return;
-//     Generalization gen = (Generalization) getOwner();
-//     if (gen == null) return;
-//     Project p = ProjectBrowser.TheInstance.getProject();
-//     p.moveToTrash(gen);
-//     super.dispose();
-//   }
+   public void dispose() {
+     Generalization g = (Generalization) getOwner();
+     if (g == null) return;
+     GeneralizableElement sup = g.getSupertype();
+     GeneralizableElement sub = g.getSubtype();
+     try {
+       sup.removeSpecialization(g);
+       sub.removeGeneralization(g);
+     }
+     catch (PropertyVetoException pve) {
+       System.out.println("could not remove Generalization");
+     }
+     super.dispose();
+   }
 
   protected boolean canEdit(Fig f) { return false; }
   

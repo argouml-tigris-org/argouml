@@ -24,8 +24,8 @@
 
 
 
-// File: CrNameConflictAC.java.java
-// Classes: CrNameConflictAC.java
+// File: CrNameConflictAC.java
+// Classes: CrNameConflictAC
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -48,6 +48,7 @@ public class CrNameConflictAC extends CrUML {
        "of the class.\n");
 
     addSupportedDecision(CrUML.decNAMING);
+    setKnowledgeTypes(Critic.KT_SYNTAX);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

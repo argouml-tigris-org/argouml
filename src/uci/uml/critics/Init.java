@@ -57,15 +57,18 @@ public class Init {
   public static Critic crDupRoleNames = new CrDupRoleNames();
   public static Critic crFinalSubclassed = new CrFinalSubclassed();
   public static Critic crIllegalGeneralization = new CrIllegalGeneralization();
+  public static Critic crAlreadyRealizes = new CrAlreadyRealizes();
   public static Critic crInterfaceAllPublic = new CrInterfaceAllPublic();
   public static Critic crInterfaceOperOnly = new CrInterfaceOperOnly();
   public static Critic crMultiComposite = new CrMultiComposite();
   public static Critic crMultipleAgg = new CrMultipleAgg();
   public static Critic crNWayAgg = new CrNWayAgg();
+  public static Critic crNavFromInterface = new CrNavFromInterface();
   public static Critic crUnnavigableAssoc = new CrUnnavigableAssoc();
   public static Critic crNameConflict = new CrNameConflict();
   public static Critic crNameConflictAC = new CrNameConflictAC();
   public static Critic crMissingClassName = new CrMissingClassName();
+  public static Critic crMissingStateName = new CrMissingStateName();
   public static Critic crNoInstanceVariables = new CrNoInstanceVariables();
   public static Critic crNoAssociations = new CrNoAssociations();
   public static Critic crNonAggDataType = new CrNonAggDataType();
@@ -73,7 +76,9 @@ public class Init {
   public static Critic crParamTypeNotImported = new CrParamTypeNotImported();
   public static Critic crSignatureConflict = new CrSignatureConflict();
   public static Critic crUselessAbstract = new CrUselessAbstract();
+  public static Critic crUselessInterface = new CrUselessInterface();
   public static Critic crDisambigClassName = new CrDisambigClassName();
+  public static Critic crDisambigStateName = new CrDisambigStateName();
   public static Critic crConflictingComposites = new CrConflictingComposites();
 
   public static Critic crTooManyAssoc = new CrTooManyAssoc();
@@ -88,6 +93,7 @@ public class Init {
   public static Critic crNoOutgoingTransitions = new CrNoOutgoingTransitions();
   public static Critic crMultipleInitialStates = new CrMultipleInitialStates();
   public static Critic crNoInitialState = new CrNoInitialState();
+  public static Critic crNoTriggerOrGuard = new CrNoTriggerOrGuard();
 
   public static Critic crEmptyPackage = new CrEmptyPackage();
   public static Critic crNoOperations = new CrNoOperations();
@@ -155,6 +161,7 @@ public class Init {
       java.lang.Class stateCls = State.class;
       java.lang.Class compositieStateCls = CompositeState.class;
       java.lang.Class pseudostateCls = Pseudostate.class;
+      java.lang.Class transitionCls = Transition.class;
       //java.lang.Class stateMachineCls = StateMachine.class;
 
       java.lang.Class classDiagramCls   = UMLClassDiagram.class;
@@ -177,12 +184,14 @@ public class Init {
       Agency.register(crDupRoleNames, assocCls);
       Agency.register(crFinalSubclassed, classCls);
       Agency.register(crIllegalGeneralization, genCls);
+      Agency.register(crAlreadyRealizes, classCls);
       Agency.register(crInterfaceAllPublic, interfaceCls);
       Agency.register(crInterfaceOperOnly, interfaceCls);
       Agency.register(crMultiComposite, assocCls);
       Agency.register(crMultipleAgg, assocCls);
       Agency.register(crUnnavigableAssoc, assocCls);
       Agency.register(crNWayAgg, assocCls);
+      Agency.register(crNavFromInterface, assocCls);
       Agency.register(crNameConflict, namespaceCls);
       Agency.register(crNameConflictAC, assocClassCls);
 
@@ -194,10 +203,12 @@ public class Init {
       Agency.register(clsNaming, useCaseCls);
 
       Agency.register(crMissingClassName, modelCls);
-      Agency.register(crMissingClassName, stateCls);
+      Agency.register(crMissingStateName, stateCls);
 
       Agency.register(crNoInstanceVariables, classCls);
-      Agency.register(crNoAssociations, classifierCls);
+      Agency.register(crNoAssociations, classCls);
+      Agency.register(crNoAssociations, actorCls);
+      Agency.register(crNoAssociations, useCaseCls);
       Agency.register(crNoOperations, classCls);
       Agency.register(crConstructorNeeded, classCls); //needs-more-work
       Agency.register(crEmptyPackage, modelCls);
@@ -206,8 +217,10 @@ public class Init {
       Agency.register(crParamTypeNotImported, operCls);
       Agency.register(crSignatureConflict, classifierCls);
       Agency.register(crUselessAbstract, classCls);
-      Agency.register(crDisambigClassName, classifierCls);
+      Agency.register(crUselessInterface, interfaceCls);
+      Agency.register(crDisambigStateName, stateCls);
       Agency.register(crNameConfusion, classifierCls);
+      Agency.register(crNameConfusion, stateCls);
       Agency.register(crMergeClasses, classCls);
       Agency.register(crIllegalName, classCls);
       Agency.register(crIllegalName, operCls);
@@ -215,6 +228,7 @@ public class Init {
       Agency.register(crReservedName, classifierCls);
       Agency.register(crReservedName, operCls);
       Agency.register(crReservedName, attrCls);
+      Agency.register(crReservedName, stateCls);
       Agency.register(crMultiInherit, classCls);
       Agency.register(crConflictingComposites, classifierCls);
       Agency.register(crTooManyAssoc, classCls);
@@ -231,6 +245,7 @@ public class Init {
       Agency.register(noTrans2, stateVertexCls);
       Agency.register(crMultipleInitialStates, pseudostateCls);
       Agency.register(crNoInitialState, compositieStateCls);
+      Agency.register(crNoTriggerOrGuard, transitionCls);
 
       Agency.register(crUnconventionalOperName, operCls);
       Agency.register(crUnconventionalAttrName, attrCls);

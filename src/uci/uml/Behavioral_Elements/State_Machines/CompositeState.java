@@ -37,7 +37,7 @@ import uci.uml.Foundation.Data_Types.*;
 public class CompositeState extends State {
   public boolean _isConcurent;
   //% public StateVertex _substate[];
-  public Vector _substate;
+  public Vector _substate = new Vector();
     
   public CompositeState() { }
   public CompositeState(Name name) { super(name); }

@@ -24,8 +24,8 @@
 
 
 
-// File: CrReservedName.java.java
-// Classes: CrReservedName.java
+// File: CrReservedName.java
+// Classes: CrReservedName
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -102,6 +102,12 @@ public class CrReservedName extends CrUML {
     _umlReserved.addElement("precondition");
     _umlReserved.addElement("topLevelPackage");
     _umlReserved.addElement("subtraction");
+
+//     _umlReserved.addElement("initial");
+//     _umlReserved.addElement("final");
+//     _umlReserved.addElement("fork");
+//     _umlReserved.addElement("join");
+//     _umlReserved.addElement("history");
 
     _javaReserved.addElement("public");
     _javaReserved.addElement("private");
@@ -184,8 +190,9 @@ public class CrReservedName extends CrUML {
        "To fix this, use the \"Next>\" button, or manually select the "+
        "highlighted element and use the Properties tab to give it "+
        "a different name.");
-    addSupportedDecision(CrUML.decNAMING);
     setPriority(ToDoItem.HIGH_PRIORITY);
+    addSupportedDecision(CrUML.decNAMING);
+    setKnowledgeTypes(Critic.KT_SYNTAX);
   }
 
   ////////////////////////////////////////////////////////////////

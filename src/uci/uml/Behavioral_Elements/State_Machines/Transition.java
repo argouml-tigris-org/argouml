@@ -75,7 +75,7 @@ public class Transition extends ModelElementImpl {
     //if (_guard != null) _guard.setGuard(null);
     _guard = x;
     //if (_guard != null) _guard.setGuard(this);
-    x.setNamespace(getNamespace());    
+    if (x != null) x.setNamespace(getNamespace());    
   }
 
   public ActionSequence getEffect() { return _effect; }
@@ -85,7 +85,7 @@ public class Transition extends ModelElementImpl {
     //if (_effect != null) _effect.setTransition(null);
     _effect = x;
     //if (_effect != null) _effect.setTransition(this);
-    x.setNamespace(getNamespace());    
+    if (x != null) x.setNamespace(getNamespace());    
   }
 
   public State getState() { return _state; }

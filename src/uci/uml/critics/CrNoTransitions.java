@@ -51,6 +51,7 @@ public class CrNoTransitions extends CrUML {
        "another state to {name} or from {name} to another state. ");
 
     addSupportedDecision(CrUML.decSTATE_MACHINES);
+    setKnowledgeTypes(Critic.KT_COMPLETENESS);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

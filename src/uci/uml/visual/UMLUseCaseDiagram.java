@@ -61,12 +61,12 @@ public class UMLUseCaseDiagram extends UMLDiagram {
   new CmdCreateNode(UseCase.class, "UseCase");
 
   protected static Action _actionAssoc =
-  new CmdSetMode(ModeCreateEdge.class,
+  new CmdSetMode(ModeCreatePolyEdge.class,
 		 "edgeClass", Association.class,
 		 "Association");
 
   protected static Action _actionGeneralize =
-  new CmdSetMode(ModeCreateEdge.class,
+  new CmdSetMode(ModeCreatePolyEdge.class,
 		 "edgeClass", Generalization.class,
 		 "Generalization");
 
@@ -117,7 +117,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
   /** initialize the toolbar for this diagram type */
   protected void initToolBar() {
-    System.out.println("making usecase toolbar");
+    //System.out.println("making usecase toolbar");
     _toolBar = new ToolBar();
 //     _toolBar.add(Actions.Cut);
 //     _toolBar.add(Actions.Copy);

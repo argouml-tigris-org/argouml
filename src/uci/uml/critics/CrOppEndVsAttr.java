@@ -24,8 +24,8 @@
 
 
 
-// File: CrOppEndVsAttr.java.java
-// Classes: CrOppEndVsAttr.java
+// File: CrOppEndVsAttr.java
+// Classes: CrOppEndVsAttr
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -59,6 +59,7 @@ public class CrOppEndVsAttr extends CrUML {
     addSupportedDecision(CrUML.decINHERITANCE);
     addSupportedDecision(CrUML.decRELATIONSHIPS);
     addSupportedDecision(CrUML.decNAMING);
+    setKnowledgeTypes(Critic.KT_SYNTAX);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

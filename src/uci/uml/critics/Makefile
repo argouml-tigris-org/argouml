@@ -33,6 +33,7 @@ GEN =
 
 CLASSES = \
 	ChildGenUML.class \
+	CrAlreadyRealizes.class \
 	CrAssocNameConflict.class \
 	CrAttrNameConflict.class \
 	CrOperNameConflict.class \
@@ -42,6 +43,7 @@ CLASSES = \
 	CrClassMustBeAbstract.class \
 	CrCrossNamespaceAssoc.class \
 	CrDisambigClassName.class \
+	CrDisambigStateName.class \
 	CrDupParamName.class \
 	CrDupRoleNames.class \
 	CrFinalSubclassed.class \
@@ -51,16 +53,19 @@ CLASSES = \
 	CrMergeClasses.class \
 	CrMissingAttrName.class \
 	CrMissingClassName.class \
+	CrMissingStateName.class \
 	CrMultiComposite.class \
 	CrMultipleAgg.class \
 	CrUnnavigableAssoc.class \
 	CrNWayAgg.class \
 	CrNameConflict.class \
 	CrNameConflictAC.class \
+	CrNavFromInterface.class \
 	CrNoInstanceVariables.class \
 	CrNoOperations.class \
 	CrNoAssociations.class \
 	CrNoTransitions.class \
+	CrNoTriggerOrGuard.class \
 	CrNoIncomingTransitions.class \
 	CrNoOutgoingTransitions.class \
 	CrMultipleInitialStates.class \
@@ -82,6 +87,7 @@ CLASSES = \
 	CrUnconventionalOperName.class \
 	CrUtilityViolated.class \
 	CrUselessAbstract.class \
+	CrUselessInterface.class \
 	CrReservedName.class \
 	CrNoInstanceVariables.class \
 	CrNameConfusion.class \

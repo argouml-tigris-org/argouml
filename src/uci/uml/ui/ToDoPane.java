@@ -115,11 +115,17 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
     _perspectives = pers;
     if (pers.isEmpty()) _curPerspective = null;
     else _curPerspective = (ToDoPerspective) pers.elementAt(0);
-    _combo.removeAllItems();
+
+    //_combo.removeAllItems(); // broken in Swing-1.0.3?
     Enumeration persEnum = _perspectives.elements();
     while (persEnum.hasMoreElements()) 
       _combo.addItem(persEnum.nextElement());
-    setCurPerspective((TreeModel)_perspectives.elementAt(0));
+
+    if (pers.isEmpty()) _curPerspective = null;
+    else if (pers.contains(_curPerspective))
+      setCurPerspective(_curPerspective);
+    else
+      setCurPerspective((ToDoPerspective)_perspectives.elementAt(0));
     updateTree();
   }
 

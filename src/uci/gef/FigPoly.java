@@ -24,8 +24,6 @@
 
 
 
-
-
 // File: FigPoly.java
 // Classes: FigPoly
 // Original Author: jrobbins@ics.uci.edu
@@ -66,6 +64,12 @@ public class FigPoly extends Fig {
 
   /** Flag to control how the polygon is drawn */
   protected boolean _rectilinear = false;
+
+  /** Flag to indicate when the polygon is completed */
+  protected boolean _isComplete = false;
+
+  /** Flag to indicate when the polygon is used as a self-loop for a node */
+  protected boolean _isSelfLoop = false;
 
   /** The number of handles at each end of the polygon that cannot be
    *  dragged by the user. -1 indicates that any point can be
@@ -208,7 +212,10 @@ public class FigPoly extends Fig {
    *  PropertyChange with "bounds".*/
   public void moveVertex(Handle h, int x, int y, boolean ov) {
     int i = h.index;
-    if (!_rectilinear) { _xpoints[i] = x; _ypoints[i] = y; }
+    if (!_rectilinear) { 
+      _xpoints[i] = x; 
+      _ypoints[i] = y; 
+    }
     else {
       if (ov) { _xpoints[i] = x; _ypoints[i] = y; }
       if (i == _fixedHandles) { prependTwoPoints(); h.index += 2; i += 2;}
@@ -345,10 +352,44 @@ public class FigPoly extends Fig {
     }
     if (_lineWidth > 0  && _lineColor != null) {
       g.setColor(_lineColor);
-      g.drawPolyline(_xpoints, _ypoints, _npoints);
+      if (!_dashed) g.drawPolyline(_xpoints, _ypoints, _npoints);
+      else {
+	drawDashedPerimeter(g);
+      }
     }
   }
 
+  /** A faster implementation of drawDashedPerimeter for polygons. */
+  protected void drawDashedPerimeter(Graphics g) {
+    int phase = 0;
+    for (int i = 1; i < _npoints; i++) {
+      phase = drawDashedLine(g, phase, _xpoints[i-1], _ypoints[i-1],
+			     _xpoints[i], _ypoints[i]);
+    }
+  }
+
+  protected int drawDashedLine(Graphics g, int phase,
+				int x1, int y1, int x2, int y2) {
+    int segStartX, segStartY;
+    int segEndX, segEndY;
+    int dxdx = (x2 - x1) * (x2 - x1);
+    int dydy = (y2 - y1) * (y2 - y1);
+    int length = (int) Math.sqrt(dxdx + dydy);
+    for (int i= phase; i < length - DASH_LENGTH; i += DASH_LENGTH) {
+      segStartX = x1 + ((x2 - x1) * i) / length;
+      segStartY = y1 + ((y2 - y1) * i) / length;
+      i += DASH_LENGTH;
+      if (i >= length) { segEndX = x2; segEndY = y2; }
+      else {
+	segEndX = x1 + ((x2 - x1) * i) / length;
+	segEndY = y1 + ((y2 - y1) * i) / length;
+      }
+      g.drawLine(segStartX, segStartY, segEndX, segEndY );
+    }
+    // needs-more-work: phase not taken into account
+    //return length % (DASH_LENGTH + DASH_LENGTH);
+    return 0;
+  }
 
   ////////////////////////////////////////////////////////////////
   // selection methods
@@ -460,6 +501,16 @@ public class FigPoly extends Fig {
     if (p.contains(x, y + h)) cornersHit++;
     if (p.contains(x + w, y + h)) cornersHit++;
     return cornersHit;
+  }
+
+  public boolean hit(Rectangle r) {
+    if (super.hit(r)) return true;
+    for (int i = 1; i < _npoints; i++) {
+      if (Geometry.intersects(r, _xpoints[i-1], _ypoints[i-1],
+			      _xpoints[i], _ypoints[i]))
+	return true;
+    }
+    return false;
   }
 
   /** Update the bounding box. */

@@ -24,8 +24,8 @@
 
 
 
-// File: CrMissingClassName.java.java
-// Classes: CrMissingClassName.java
+// File: CrMissingClassName.java
+// Classes: CrMissingClassName
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -53,6 +53,7 @@ public class CrMissingClassName extends CrUML {
        "To fix this, use the FixIt button, or manually select the "+
        "class and use the Properties tab to give it a name.");
     addSupportedDecision(CrUML.decNAMING);
+    setKnowledgeTypes(Critic.KT_COMPLETENESS, Critic.KT_SYNTAX);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

@@ -32,7 +32,7 @@
 
 package uci.uml.visual;
 
-import java.awt.*;
+import java.awt.Color;
 import java.beans.*;
 
 import uci.gef.*;
@@ -40,6 +40,7 @@ import uci.uml.ui.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
+import uci.uml.Behavioral_Elements.Common_Behavior.*;
 import uci.uml.generate.*;
 
 public class FigTransition extends FigEdgeModelElement {
@@ -61,14 +62,20 @@ public class FigTransition extends FigEdgeModelElement {
   protected void textEdited(FigText ft) throws PropertyVetoException {
     String s = ft.getText();
     Transition newTrans = ParserDisplay.SINGLETON.parseTransition(s);
-    if (newTrans == null) return;
+    if (newTrans == null) System.out.println("null new Transition!!");
+    Name newName     = (newTrans == null) ? Name.UNSPEC : newTrans.getName();
+    Event newTrigger = (newTrans == null) ? null : newTrans.getTrigger();
+    Guard newGuard   = (newTrans == null) ? null : newTrans.getGuard();
+    ActionSequence newEffect = (newTrans == null) ?
+      null : newTrans.getEffect();
+
     Transition t = (Transition) getOwner();
 
     try {
-      t.setName(newTrans.getName());
-      t.setTrigger(newTrans.getTrigger());
-      t.setGuard(newTrans.getGuard());
-      t.setEffect(newTrans.getEffect());
+      t.setName(newName);
+      t.setTrigger(newTrigger);
+      t.setGuard(newGuard);
+      t.setEffect(newEffect);
     }
     catch (PropertyVetoException pve) {
       System.out.println("PropertyVetoException in FigTransition#textEdited");
@@ -80,6 +87,7 @@ public class FigTransition extends FigEdgeModelElement {
    *  Subclasses should override and update other parts. */
   protected void modelChanged() {
     ModelElement me = (ModelElement) getOwner();
+    if (me == null) return;
     //System.out.println("FigTransition modelChanged: " + me.getClass());
     String nameStr = GeneratorDisplay.Generate(me);
     _name.setText(nameStr);
@@ -91,6 +99,8 @@ public class FigTransition extends FigEdgeModelElement {
     Transition tr = (Transition) getOwner();
     if (tr == null) return;
     try {
+      StateMachine sm = tr.getStateMachine();
+      if (sm != null) sm.removeTransition(tr);
       tr.setStateMachine(null);
       tr.setSource(null);
       tr.setTarget(null);

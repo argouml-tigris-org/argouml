@@ -53,9 +53,10 @@ public class ConfigLoader {
       try {
 	String line = lnr.readLine();
 	while (line != null) {
-	  Class tabClass = parseConfigLine(line, panelName);
+	  Class tabClass = parseConfigLine(line, panelName,
+					   lnr.getLineNumber(), configFile);
 	  if (tabClass != null) {
-	    System.out.println("tab=" + tabClass.getName());
+	    //System.out.println("tab=" + tabClass.getName());
 	    try {
 	      Object newTab = tabClass.newInstance();
 	      tabs.addElement(newTab);
@@ -77,7 +78,8 @@ public class ConfigLoader {
     else { System.out.println("lnr is null"); }
   }
 
-  public static Class parseConfigLine(String line, String panelName) {
+  public static Class parseConfigLine(String line, String panelName,
+				      int lineNum, String configFile) {
     if (line.startsWith("tabpath")) {
       String newPath = stripBeforeColon(line).trim();
       if (newPath.length() > 0) TabPath = newPath;
@@ -94,10 +96,14 @@ public class ConfigLoader {
 	try {
 	  res = Class.forName(tabClassName);
 	}
-	catch (ClassNotFoundException cnfe) {
-	  System.out.println("tab class " + tabClassName + " not found");
-	}
+	catch (ClassNotFoundException cnfe) { }
 	if (res != null) return res;
+      }
+      if (Boolean.getBoolean("dbg")) {
+	System.out.println("\nCould not find any of these classes:\n" +
+			   "TabPath=" + TabPath + "\n" +
+			   "Config file=" + configFile + "\n" +
+			   "Config line #" + lineNum + ":" + line);
       }
     }
     return null;

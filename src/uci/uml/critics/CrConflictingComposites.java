@@ -24,8 +24,8 @@
 
 
 
-// File: CrConflictingComposites.java.java
-// Classes: CrConflictingComposites.java
+// File: CrConflictingComposites.java
+// Classes: CrConflictingComposites
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -55,6 +55,7 @@ public class CrConflictingComposites extends CrUML {
        "or remove one of the associations");
 
     addSupportedDecision(CrUML.decCONTAINMENT);
+    setKnowledgeTypes(Critic.KT_SEMANTICS);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

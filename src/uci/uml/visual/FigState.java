@@ -145,8 +145,9 @@ public class FigState extends FigNodeModelElement {
   /** Update the text labels */
   protected void modelChanged() {
     super.modelChanged();
-    System.out.println("FigState modelChanged");
+    //System.out.println("FigState modelChanged");
     State s = (State) getOwner();
+    if (s == null) return;
     String newText = GeneratorDisplay.SINGLETON.generateStateBody(s);
     _internal.setText(newText);
   }

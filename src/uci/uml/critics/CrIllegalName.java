@@ -24,8 +24,8 @@
 
 
 
-// File: CrIllegalName.java.java
-// Classes: CrIllegalName.java
+// File: CrIllegalName.java
+// Classes: CrIllegalName
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 

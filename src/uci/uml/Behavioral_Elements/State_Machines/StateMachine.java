@@ -44,7 +44,7 @@ public class StateMachine extends ModelElementImpl {
   public ModelElement _context;
   public State _top;
   //% public Transition _transitions[];
-  public Vector _transitions;
+  public Vector _transitions = new Vector();
   //% public SubmachineState _submachineState[];
   public Vector _submachineState;
   

@@ -24,8 +24,8 @@
 
 
 
-// File: CrDisambigClassName.java.java
-// Classes: CrDisambigClassName.java
+// File: CrDisambigClassName.java
+// Classes: CrDisambigClassName
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -55,6 +55,7 @@ public class CrDisambigClassName extends CrUML {
        "To fix this, use the FixIt button, or manually select one of the "+
        "conflicting classes and use the Properties tab to change their names.");
     addSupportedDecision(CrUML.decNAMING);
+    setKnowledgeTypes(Critic.KT_SYNTAX);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

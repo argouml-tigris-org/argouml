@@ -37,7 +37,7 @@ CLASSES = \
 	ActionCreatePseudostate.class \
 	AddToDoItemDialog.class \
 	ArgoFileFilter.class \
-	ClassGenerationDiaglog.class \
+	ClassGenerationDialog.class \
 	ConfigLoader.class \
 	CriticBrowserDialog.class \
 	DelayedChangeNotify.class \
@@ -89,6 +89,7 @@ CLASSES = \
 	JasonsHugeTheme.class \
 	JavaDocument.class \
 	JavaEditorKit.class \
+	KnowledgeTypeNode.class \
 	Menu.class \
 	ModelElementRenderer.class \
 	MultiEditorPane.class \

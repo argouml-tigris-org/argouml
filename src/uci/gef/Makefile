@@ -71,6 +71,7 @@ CLASSES = \
 	FigEdgeLine.class \
 	FigEdgeLineDotted.class \
 	FigEdgeRectiline.class \
+	FigEdgePoly.class \
 	FigGroup.class \
 	FigImage.class \
 	FigInk.class \
@@ -99,6 +100,7 @@ CLASSES = \
 	ModeCreate.class \
 	ModeCreateArc.class \
 	ModeCreateEdge.class \
+	ModeCreatePolyEdge.class \
 	ModeCreateFigCircle.class \
 	ModeCreateFigImage.class \
 	ModeCreateFigInk.class \

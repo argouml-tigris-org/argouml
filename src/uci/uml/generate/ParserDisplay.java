@@ -58,7 +58,7 @@ public class ParserDisplay extends Parser {
     if (curOps == null) {
       try { cls.setBehavioralFeature(ops); }
       catch (PropertyVetoException pve) { }
-      System.out.println("set all Behavioral Features");
+      //System.out.println("set all Behavioral Features");
       return;
     }
     int curOpsSize = curOps.size();
@@ -101,8 +101,8 @@ public class ParserDisplay extends Parser {
     while (st.hasMoreTokens()) {
       String token = st.nextToken();
       Attribute attr = parseAttribute(token);
-      if (attr != null)
-	System.out.println("just parsed " + GeneratorDisplay.Generate(attr));
+//       if (attr != null)
+// 	System.out.println("just parsed " + GeneratorDisplay.Generate(attr));
       attrs.addElement(attr);
     }
     System.out.println("parsed " + attrs.size() + " attributes");
@@ -110,7 +110,7 @@ public class ParserDisplay extends Parser {
     if (curAttrs == null) {
       try { cls.setStructuralFeature(attrs); }
       catch (PropertyVetoException pve) { }
-      System.out.println("set all Structural Features");
+      //System.out.println("set all Structural Features");
       return;
     }
     int curAttrsSize = curAttrs.size();
@@ -419,6 +419,7 @@ public class ParserDisplay extends Parser {
   public Transition parseTransition(String s) {
     // strip any trailing semi-colons
     s = s.trim();
+    if (s.length() == 0) return null;
     if (s.charAt(s.length()-1) == ';')
       s = s.substring(0, s.length() - 2);
 
@@ -444,10 +445,10 @@ public class ParserDisplay extends Parser {
 
     trigger = s;
 
-    System.out.println("name=|" + name +"|");
-    System.out.println("trigger=|" + trigger +"|");
-    System.out.println("guard=|" + guard +"|");
-    System.out.println("actions=|" + actions +"|");
+//     System.out.println("name=|" + name +"|");
+//     System.out.println("trigger=|" + trigger +"|");
+//     System.out.println("guard=|" + guard +"|");
+//     System.out.println("actions=|" + actions +"|");
 
     Transition t = new Transition(parseName(name));
     try {

@@ -54,7 +54,7 @@ public class FigEdgeLine extends FigEdge {
     if (_useNearest) {
       //? two iterations of refinement, maybe should be a for-loop
       srcPt = _sourcePortFig.connectionPoint(dstPt);
-      dstPt = _destPortFig.connectionPoint(srcPt);      
+      dstPt = _destPortFig.connectionPoint(srcPt);
       srcPt = _sourcePortFig.connectionPoint(dstPt);
       dstPt = _destPortFig.connectionPoint(srcPt);
     }
@@ -67,31 +67,10 @@ public class FigEdgeLine extends FigEdge {
   public void paint(Graphics g) {
     super.paint(g);
     if (_highlight) {
-      g.setColor(Globals.getPrefs().getHighlightColor()); /* needs-more-work */
       FigLine f = (FigLine) getFig();
-      int x1 = f.getX1();
-      int y1 = f.getY1();
-      int x2 = f.getX2();
-      int y2 = f.getY2();
-
-      double dx = (double)(x2 - x1);
-      double dy = (double)(y2 - y1);
-      double denom = Math.sqrt(dx*dx+dy*dy);
-      if (denom == 0) return;
-      double orthoX =  dy / denom;
-      double orthoY = -dx / denom;
-
-      // needs-more-work: is 0.27 a good stepping rate?
-      for (double i = 2.0; i < 5.0; i += 0.27) {
-	int hx1  = (int)(x1 + i * orthoX);
-	int hy1  = (int)(y1 + i * orthoY);
-	int hx2  = (int)(x2 + i * orthoX);
-	int hy2  = (int)(y2 + i * orthoY);
-	g.drawLine(hx1, hy1, hx2, hy2);
-      }
-
+      paintHighlightLine(g, f.getX1(), f.getY1(), f.getX2(), f.getY2());
     }
   }
-  
+
 } /* end class FigEdgeLine */
 

@@ -105,6 +105,8 @@ implements PropertyChangeListener {
   /** Return the Fig that will be drawn. */
   public Fig getFig() { return _fig; }
 
+  public void setFig(Fig f) { _fig = f; }
+
   /** Get the Fig reprenting this FigEdge's from-port. */ 
   public void sourcePortFig(Fig fig) { _sourcePortFig = fig; }
 
@@ -306,6 +308,15 @@ implements PropertyChangeListener {
   public int[] getYs() { return _fig.getYs(); }
   public void setYs(int[] ys) { _fig.setYs(ys); calcBounds(); }
 
+  public void setLineColor(Color c) { _fig.setLineColor(c); }
+  public Color getLineColor() { return _fig.getLineColor(); }
+
+  public void setLineWidth(int w) { _fig.setLineWidth(w); }
+  public int getLineWidth() { return _fig.getLineWidth(); }
+
+  public void setDashed(boolean d) { _fig.setDashed(d); }
+  public boolean getDashed() { return _fig.getDashed(); }
+
   public boolean isResizable() { return _fig.isResizable(); }
   public boolean isReshapable() { return _fig.isReshapable(); }
   public boolean isRotatable() { return _fig.isRotatable(); }
@@ -338,6 +349,27 @@ implements PropertyChangeListener {
 //       Point loc = path.getPoint();
 //       f.setLocation(loc.x - halfWidth, loc.y - halfHeight);
       f.paint(g);
+    }
+  }
+
+  public void paintHighlightLine(Graphics g, int x1, int y1,
+				 int x2, int y2) {
+    g.setColor(Globals.getPrefs().getHighlightColor()); /* needs-more-work */
+
+    double dx = (double)(x2 - x1);
+    double dy = (double)(y2 - y1);
+    double denom = Math.sqrt(dx*dx+dy*dy);
+    if (denom == 0) return;
+    double orthoX =  dy / denom;
+    double orthoY = -dx / denom;
+
+    // needs-more-work: should fill poly instead
+    for (double i = 2.0; i < 5.0; i += 0.27) {
+      int hx1  = (int)(x1 + i * orthoX);
+      int hy1  = (int)(y1 + i * orthoY);
+      int hx2  = (int)(x2 + i * orthoX);
+      int hy2  = (int)(y2 + i * orthoY);
+      g.drawLine(hx1, hy1, hx2, hy2);
     }
   }
 

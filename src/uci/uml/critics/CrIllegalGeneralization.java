@@ -24,8 +24,8 @@
 
 
 
-// File: CrIllegalGeneralization.java.java
-// Classes: CrIllegalGeneralization.java
+// File: CrIllegalGeneralization.java
+// Classes: CrIllegalGeneralization
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 

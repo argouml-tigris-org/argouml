@@ -92,20 +92,24 @@ implements ItemListener, TreeSelectionListener {
       _curPerspective.setRoot(_root);
       _tree.setModel(_curPerspective); //forces a redraw
     }
-    
   }
   public Object getRoot() { return _root; }
 
   public Vector getPerspectives() { return _perspectives; }
   public void setPerspectives(Vector pers) {
     _perspectives = pers;
-    if (pers.isEmpty()) _curPerspective = null;
-    else setCurPerspective((NavPerspective) pers.elementAt(0));
-    
-    _combo.removeAllItems();
+    NavPerspective oldCurPers = _curPerspective;
+    _combo.removeAllItems(); // broken in Swing-1.0.3?
     java.util.Enumeration persEnum = _perspectives.elements();
-    while (persEnum.hasMoreElements()) 
+    while (persEnum.hasMoreElements())
       _combo.addItem(persEnum.nextElement());
+
+    if (_perspectives == null || _perspectives.isEmpty())
+      _curPerspective = null;
+    else if (oldCurPers != null && _perspectives.contains(oldCurPers))
+      setCurPerspective(oldCurPers);
+    else
+      setCurPerspective((NavPerspective) _perspectives.elementAt(0));
     updateTree();
   }
 

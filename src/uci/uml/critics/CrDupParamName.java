@@ -24,8 +24,8 @@
 
 
 
-// File: CrDupParamName.java.java
-// Classes: CrDupParamName.java
+// File: CrDupParamName.java
+// Classes: CrDupParamName
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -51,6 +51,7 @@ public class CrDupParamName extends CrUML {
        "parameters to this operation.");
 
     addSupportedDecision(CrUML.decCONTAINMENT);
+    setKnowledgeTypes(Critic.KT_SYNTAX);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

@@ -24,8 +24,8 @@
 
 
 
-// File: CrOppEndConflict.java.java
-// Classes: CrOppEndConflict.java
+// File: CrOppEndConflict.java
+// Classes: CrOppEndConflict
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -59,6 +59,7 @@ public class CrOppEndConflict extends CrUML {
     addSupportedDecision(CrUML.decINHERITANCE);
     addSupportedDecision(CrUML.decRELATIONSHIPS);
     addSupportedDecision(CrUML.decNAMING);
+    setKnowledgeTypes(Critic.KT_SYNTAX);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

@@ -39,6 +39,10 @@ public class Interface extends Classifier {
   public Interface(Name name) { super(name); }
   public Interface(String nameStr) { super(new Name(nameStr)); }
 
+  /** Interfaces are always abstract */
+  public boolean getIsAbstract() { return true; }
+  public void setIsAbstract(boolean x) {  }
+
 //   public boolean getIsActive(){ return _isActive; }
 //   public void setIsActive(boolean x) throws PropertyVetoException {
 //     fireVetoableChange("isActive", _isActive, x);

@@ -56,7 +56,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   //% public AssociationEnd _participant[];
   public Vector _participant = new Vector();
   
-  public Vector _specialization = new Vector();
+  //public Vector _specialization = new Vector();
 
   public Classifier() { }
   public Classifier(Name name) { super(name); }
@@ -75,7 +75,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
     while (enum.hasMoreElements()) {
       BehavioralFeature bf = (BehavioralFeature) enum.nextElement();
       bf.setOwner(this);
-      bf.setNamespace(getNamespace());
+      bf.setNamespace(this);
     }
   }
   public void addBehavioralFeature(Feature x)
@@ -84,7 +84,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
     fireVetoableChange("behavioralFeature", _behavioralFeature, x);
     _behavioralFeature.addElement(x);
     x.setOwner(this);
-    x.setNamespace(getNamespace());
+    x.setNamespace(this);
   }
   public void removeBehavioralFeature(Feature x)
   throws PropertyVetoException {
@@ -115,7 +115,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
     while (enum.hasMoreElements()) {
       StructuralFeature sf = (StructuralFeature) enum.nextElement();
       sf.setOwner(this);
-      sf.setNamespace(getNamespace());
+      sf.setNamespace(this);
     }
   }
   public void addStructuralFeature(StructuralFeature x)
@@ -124,7 +124,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
     fireVetoableChange("structuralFeature", _structuralFeature, x);
     _structuralFeature.addElement(x);
     x.setOwner(this);
-    x.setNamespace(getNamespace());
+    x.setNamespace(this);
   }
   public void removeStructuralFeature(StructuralFeature x)
   throws PropertyVetoException {
@@ -143,20 +143,20 @@ public abstract class Classifier extends GeneralizableElementImpl {
     return null;
   }
 
-  public Vector getSpecification() { return (Vector) _specification;}
+  public Vector getSpecification() { return _specification;}
   public void setSpecification(Vector x)
   throws PropertyVetoException {
     if (_specification == null) _specification = new Vector();
     fireVetoableChangeNoCompare("specification", _specification, x);
     _specification = x;
   }
-  public void addSpecification(Classifier x)
+  public void addSpecification(Realization x)
   throws PropertyVetoException {
     if (_specification == null) _specification = new Vector();
     fireVetoableChange("specification", _specification, x);
     _specification.addElement(x);
   }
-  public void removeSpecification(Classifier x)
+  public void removeSpecification(Realization x)
   throws PropertyVetoException {
     if (_specification == null) return;
     fireVetoableChange("specification", _specification, x);
@@ -189,33 +189,33 @@ public abstract class Classifier extends GeneralizableElementImpl {
     _realization.removeElement(x);
   }
   
-  public Vector getSpecialization() {
-    return (Vector) _specialization;
-  }
-  public void setSpecialization(Vector x) throws PropertyVetoException {
-    if (_specialization == null) _specialization = new Vector();
-    fireVetoableChangeNoCompare("specialization", _specialization, x);
-    _specialization = x;
-    java.util.Enumeration enum = _specialization.elements();
-    while (enum.hasMoreElements()) {
-      Realization r = (Realization) enum.nextElement();
-      r.setNamespace(getNamespace());
-    }
-  }
-  public void addSpecialization(Realization x) throws PropertyVetoException {
-    if (_specialization == null) _specialization = new Vector();
-    if (_specialization.contains(x)) return;
-    fireVetoableChange("specialization", _specialization, x);
-     _specialization.addElement(x);
-    x.setNamespace(getNamespace());
-  }
-  public void removeSpecialization(Realization x)
-       throws PropertyVetoException
-  {
-    if (_specialization == null || !_specialization.contains(x)) return;
-    fireVetoableChange("specialization", _specialization, x);
-    _specialization.removeElement(x);
-  }
+//   public Vector getSpecialization() {
+//     return (Vector) _specialization;
+//   }
+//   public void setSpecialization(Vector x) throws PropertyVetoException {
+//     if (_specialization == null) _specialization = new Vector();
+//     fireVetoableChangeNoCompare("specialization", _specialization, x);
+//     _specialization = x;
+//     java.util.Enumeration enum = _specialization.elements();
+//     while (enum.hasMoreElements()) {
+//       Realization r = (Realization) enum.nextElement();
+//       r.setNamespace(getNamespace());
+//     }
+//   }
+//   public void addSpecialization(Realization x) throws PropertyVetoException {
+//     if (_specialization == null) _specialization = new Vector();
+//     if (_specialization.contains(x)) return;
+//     fireVetoableChange("specialization", _specialization, x);
+//      _specialization.addElement(x);
+//     x.setNamespace(getNamespace());
+//   }
+//   public void removeSpecialization(Realization x)
+//        throws PropertyVetoException
+//   {
+//     if (_specialization == null || !_specialization.contains(x)) return;
+//     fireVetoableChange("specialization", _specialization, x);
+//     _specialization.removeElement(x);
+//   }
   
   public Vector getAssociationEnd() {
     return _associationEnd;

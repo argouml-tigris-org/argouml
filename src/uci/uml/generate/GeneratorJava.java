@@ -62,7 +62,38 @@ public class GeneratorJava extends Generator {
     if (name == null || name.length() == 0) return;
     String filename = name + ".java";
     if (!path.endsWith("/")) path += "/";
+    File f = new File(path);
+    if (!f.isDirectory()) {
+      if (!f.mkdir()) {
+	System.out.println(" could not make directory");
+	return;
+      }
+    }
+
+    String packagePath = cls.getNamespace().getName().getBody();
+    int dotIndex = packagePath.indexOf(".");
+    while (dotIndex != -1) {
+      path += packagePath.substring(0, dotIndex) + "/";
+      packagePath = packagePath.substring(dotIndex + 1);
+      dotIndex = packagePath.indexOf(".");
+      f = new File(path);
+      if (!f.isDirectory()) {
+	if (!f.mkdir()) {
+	  System.out.println(" could not make directory");
+	  return;
+	}
+      }
+    }
+    path += packagePath.substring(0) + "/";
+    f = new File(path);
+    if (!f.isDirectory()) {
+      if (!f.mkdir()) {
+	System.out.println(" could not make directory:" + f);
+	return;
+      }
+    }
     String pathname = path + filename;
+    //String pathname = path + filename;
     // needs-more-work: package, project basepath, tagged values to configure
     String header = SINGLETON.generateHeader(cls, pathname);
     String src = SINGLETON.generate(cls);

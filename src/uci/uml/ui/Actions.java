@@ -520,7 +520,12 @@ class ActionStateDiagram extends UMLAction {
       if (contextName != null && !contextName.equals(Name.UNSPEC))
 	contextNameStr = contextName.getBody();
       StateMachine sm = new StateMachine(contextNameStr + "States");
-      sm.setTop(new CompositeState());
+      CompositeState cs = new CompositeState("state_machine_top");
+      if (context instanceof Namespace) {
+	cs.setNamespace((Namespace)context);
+	sm.setNamespace((Namespace)context);
+      }
+      sm.setTop(cs);
       context.addBehavior(sm);
       UMLStateDiagram d = new UMLStateDiagram(p.getCurrentModel(), sm);
       p.addDiagram(d);
@@ -828,7 +833,7 @@ class ActionGenerateAll extends UMLAction {
     Object target = pb.getTarget();
     if (!(target instanceof UMLClassDiagram)) return;
     UMLClassDiagram d = (UMLClassDiagram) target;
-    ClassGenerationDiaglog cgd = new ClassGenerationDiaglog(d);
+    ClassGenerationDialog cgd = new ClassGenerationDialog(d);
     cgd.show();
   }
 

@@ -49,7 +49,7 @@ import uci.uml.Foundation.Extension_Mechanisms.*;
 /** Abstract class to display diagram arcs for UML ModelElements that
  *  look like arcs and that have editiable names. */
 
-public abstract class FigEdgeModelElement extends FigEdgeLine
+public abstract class FigEdgeModelElement extends FigEdgePoly
 implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener, KeyListener, PropertyChangeListener  { 
 
   public static Font LABEL_FONT;
@@ -96,7 +96,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
     _stereo.setAllowsTab(false);
 
     setBetweenNearestPoints(true);
-    //((FigPoly)_fig).setRectilinear(false);
+    ((FigPoly)_fig).setRectilinear(false);
   }
 
 

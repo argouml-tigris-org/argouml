@@ -37,6 +37,14 @@ CLASSES = \
 	ChAttribute.class \
 	ChOperation.class \
 	ChClass.class \
+	ChAssociation.class \
+	ChInterface.class \
+	ChInstance.class \
+	ChLink.class \
+	ChState.class \
+	ChTransition.class \
+	ChUseCase.class \
+	ChActor.class \
 	Init.class
 
 all: $(GEN) $(CLASSES)

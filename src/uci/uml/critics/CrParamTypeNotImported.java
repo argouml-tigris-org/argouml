@@ -24,8 +24,8 @@
 
 
 
-// File: CrParamTypeNotImported.java.java
-// Classes: CrParamTypeNotImported.java
+// File: CrParamTypeNotImported.java
+// Classes: CrParamTypeNotImported
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -51,6 +51,7 @@ public class CrParamTypeNotImported extends CrUML {
        "class that owns this operation.");
 
     addSupportedDecision(CrUML.decCONTAINMENT);
+    setKnowledgeTypes(Critic.KT_SYNTAX);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

@@ -73,7 +73,7 @@ implements TabModelTarget {
   ////////////////////////////////////////////////////////////////
   // constructor
   public TabProps() {
-    super("Properties");
+    super("Props");
     setLayout(new BorderLayout());
     //setFont(new Font("Dialog", Font.PLAIN, 10));
   }

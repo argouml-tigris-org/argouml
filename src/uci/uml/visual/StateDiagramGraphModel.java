@@ -37,6 +37,7 @@ import java.beans.*;
 
 import uci.graph.*;
 import uci.uml.Foundation.Core.*;
+import uci.uml.Foundation.Data_Types.PseudostateKind;
 import uci.uml.Model_Management.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 
@@ -201,7 +202,8 @@ implements MutableGraphModel, VetoableChangeListener {
       // needs-more-work: assumes public
 //       if (tr.getElementOwnership() == null)
 // 	_model.addPublicOwnedElement(tr);
-      _machine.addTransition(tr);
+      //_machine.addTransition(tr);
+      tr.setStateMachine(_machine);
     }
     catch (PropertyVetoException pve) {
       System.out.println("got a PropertyVetoException");
@@ -218,7 +220,27 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Return true if the two given ports can be connected by a 
    * kind of edge to be determined by the ports. */
-  public boolean canConnect(Object fromP, Object toP) { return true; }
+  public boolean canConnect(Object fromPort, Object toPort) {
+    if (!(fromPort instanceof StateVertex)) {
+      System.out.println("internal error not from sv");
+      return false;
+    }
+    if (!(toPort instanceof StateVertex)) {
+      System.out.println("internal error not to sv");
+      return false;
+    }
+    StateVertex fromSV = (StateVertex) fromPort;
+    StateVertex toSV = (StateVertex) toPort;
+
+    if (fromSV instanceof Pseudostate)
+      if (PseudostateKind.FINAL.equals(((Pseudostate)fromSV).getKind()))
+	return false;
+    if (toSV instanceof Pseudostate)
+      if (PseudostateKind.INITIAL.equals(((Pseudostate)toSV).getKind()))
+	  return false;
+
+    return true;
+  }
 
 
   /** Contruct and add a new edge of a kind determined by the ports */
@@ -241,6 +263,13 @@ implements MutableGraphModel, VetoableChangeListener {
     }
     StateVertex fromSV = (StateVertex) fromPort;
     StateVertex toSV = (StateVertex) toPort;
+
+    if (fromSV instanceof Pseudostate)
+      if (PseudostateKind.FINAL.equals(((Pseudostate)fromSV).getKind()))
+	return null;
+    if (toSV instanceof Pseudostate)
+      if (PseudostateKind.INITIAL.equals(((Pseudostate)toSV).getKind()))
+	return null;
 
     if (edgeClass == Transition.class) {
       Transition tr = new Transition(fromSV, toSV);

@@ -24,8 +24,8 @@
 
 
 
-// File: CrUnconventionalAttrName.java.java
-// Classes: CrUnconventionalAttrName.java
+// File: CrUnconventionalAttrName.java
+// Classes: CrUnconventionalAttrName
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -50,6 +50,7 @@ public class CrUnconventionalAttrName extends CrUML {
        "To fix this, use the FixIt button, or manually select {name} "+
        "and use the Properties tab to give it a name.");
     addSupportedDecision(CrUML.decNAMING);
+    setKnowledgeTypes(Critic.KT_SYNTAX);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

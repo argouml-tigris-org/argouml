@@ -24,8 +24,8 @@
 
 
 
-// File: CrAssocNameConflict.java.java
-// Classes: CrAssocNameConflict.java
+// File: CrAssocNameConflict.java
+// Classes: CrAssocNameConflict
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -50,6 +50,7 @@ public class CrAssocNameConflict extends CrUML {
        "To fix this, use the FixIt button, or manually select the elements "+
        "and use the Properties tab to change their names.");
     addSupportedDecision(CrUML.decNAMING);
+    setKnowledgeTypes(Critic.KT_SYNTAX);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

@@ -49,8 +49,6 @@ public class FigLine extends Fig {
   protected int _x2;
   protected int _y2;
 
-  protected boolean _dashed;
-
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -83,16 +81,6 @@ public class FigLine extends Fig {
     _x1 = x1; _y1 = y1; _x2 = x2; _y2 = y2;
     calcBounds();
     firePropChange("bounds", null, null);
-  }
-
-  /** Set line to be dashed or not **/
-  public void setDashed(boolean now_dashed) {
-    _dashed = now_dashed;
-  }
-
-  /** Get the dashed attribute **/
-  public boolean getDashed() {
-    return _dashed;
   }
 
   public int getX1() { return _x1; }
@@ -238,29 +226,16 @@ public class FigLine extends Fig {
   public void paint(Graphics g) {
     if (_lineWidth > 0) {
       if (_dashed) {
-        int i;
-        int length = getPerimeterLength();
-        Point end = new Point(_x2, _y2);
-        Point start = new Point(_x1, _y1);
-        int bottom;
         g.setColor(_lineColor);
-        for (i=0; i < length;)
-        {
-            Point topPoint = pointAlongPerimeter(i);
-            i += 5;
-            Point bottomPoint = pointAlongPerimeter(i);
-            g.drawLine(topPoint.x, topPoint.y, bottomPoint.x, bottomPoint.y );
-            i += 5;
-        }
+	drawDashedPerimeter(g);
       }
       else {
         g.setColor(_lineColor);
         g.drawLine(_x1, _y1, _x2, _y2);
-
-        
       }
    }
  }
+
 /*
  protected Point getOffsetAmount(Point p1, Point p2, int offset) {
    // slope of the line we're finding the normal to

@@ -58,8 +58,9 @@ public class CrNoInstanceVariables extends CrUML {
        "To fix this, press the FixIt icon (to left), or add instance "+
        "variables by dobule clicking on {name} in the navigator pane and "+
        "using the Create menu to make a new attribute. ");
-       
+
     addSupportedDecision(CrUML.decSTORAGE);
+    setKnowledgeTypes(Critic.KT_COMPLETENESS);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

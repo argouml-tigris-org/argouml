@@ -46,11 +46,8 @@ public class Generalization extends ModelElementImpl {
     super();
     setSubtype(sub);
     setSupertype(sup);
-    System.out.println("ppp1");
     sub.addGeneralization(this);
-    System.out.println("ppp2");
     sup.addSpecialization(this);
-    System.out.println("ppp3");
   }
 
   public Name getDiscriminator() { return _discriminator; }

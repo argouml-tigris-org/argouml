@@ -126,7 +126,7 @@ implements DocumentListener, ItemListener {
 
   /** Set the values to be shown in all widgets based on model */
   public void setTarget(Object t) {
-    System.out.println("PropPanelTransition setting target to " + t);
+    //System.out.println("PropPanelTransition setting target to " + t);
     super.setTarget(t);
     Transition tt = (Transition) t;
     _triggerField.setText(GeneratorDisplay.Generate(tt.getTrigger()));

@@ -60,6 +60,7 @@ public class CrNoOperations extends CrUML {
        "using the Create menu to make a new operations. ");
 
     addSupportedDecision(CrUML.decBEHAVIOR);
+    setKnowledgeTypes(Critic.KT_COMPLETENESS);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

@@ -67,9 +67,7 @@ implements GeneralizableElement {
     _isAbstract = x;
   }
 
-  public Vector getGeneralization() {
-    return (Vector) _generalization;
-  }
+  public Vector getGeneralization() { return _generalization; }
   public void setGeneralization(Vector x) throws PropertyVetoException {
     if (_generalization == null) _generalization = new Vector();
     fireVetoableChangeNoCompare("generalization", _generalization, x);
@@ -93,9 +91,7 @@ implements GeneralizableElement {
     _generalization.removeElement(x);
   }
 
-  public Vector getSpecialization() {
-    return (Vector) _specialization;
-  }
+  public Vector getSpecialization() { return _specialization; }
   public void setSpecialization(Vector x) throws PropertyVetoException {
     if (_specialization == null) _specialization = new Vector();
     fireVetoableChangeNoCompare("specalization", _specialization, x);

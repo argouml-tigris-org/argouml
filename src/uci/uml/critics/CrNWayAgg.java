@@ -24,8 +24,8 @@
 
 
 
-// File: CrNWayAgg.java.java
-// Classes: CrNWayAgg.java
+// File: CrNWayAgg.java
+// Classes: CrNWayAgg
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -51,6 +51,7 @@ public class CrNWayAgg extends CrUML {
        "and set all of its role aggregations to None.");
 
     addSupportedDecision(CrUML.decCONTAINMENT);
+    setKnowledgeTypes(Critic.KT_SEMANTICS);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

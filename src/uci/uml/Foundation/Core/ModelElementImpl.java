@@ -98,6 +98,9 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
       if (old.getNamespace() != null)
 	old.getNamespace().removeOwnedElement(old);
     }
+    if (x != null && (old == null || old.getNamespace() != x.getNamespace()))
+      if (x.getNamespace() != null)
+	x.getNamespace().addOwnedElement(x);
   }
 
   public Vector getConstraint() { return (Vector) _constraint;}
@@ -108,7 +111,10 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
     java.util.Enumeration enum = _constraint.elements();
     while (enum.hasMoreElements()) {
       Constraint c = (Constraint) enum.nextElement();
-      c.setNamespace(getNamespace());
+      Namespace ns = getNamespace();
+      ModelElementImpl thisObject = this;
+      if (thisObject instanceof Namespace) ns = (Namespace) thisObject;
+      c.setNamespace(ns);
     }
     _constraint = x;
   }
@@ -117,7 +123,10 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
     if (_constraint == null) _constraint = new Vector();
     fireVetoableChange("constraint", _constraint, x);
     _constraint.addElement(x);
-    x.setNamespace(getNamespace());
+    Namespace ns = getNamespace();
+    ModelElementImpl thisObject = this;
+    if (thisObject instanceof Namespace) ns = (Namespace) thisObject;
+    x.setNamespace(ns);
   }
   public void removeConstraint(Constraint x)
   throws PropertyVetoException {
@@ -258,7 +267,10 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
     java.util.Enumeration enum = _behavior.elements();
     while (enum.hasMoreElements()) {
       StateMachine sm = (StateMachine) enum.nextElement();
-      sm.setNamespace(getNamespace());
+      Namespace ns = getNamespace();
+      ModelElementImpl thisObject = this;
+      if (thisObject instanceof Namespace) ns = (Namespace) thisObject;
+      sm.setNamespace(ns);
     }
   }
   public void addBehavior(StateMachine x) throws PropertyVetoException {
@@ -266,7 +278,10 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
     else if (_behavior.contains(x)) return;
     fireVetoableChange("behavior", _behavior, x);
     _behavior.addElement(x);
-    x.setNamespace(getNamespace());
+    Namespace ns = getNamespace();
+    ModelElementImpl thisObject = this;
+    if (thisObject instanceof Namespace) ns = (Namespace) thisObject;
+    x.setNamespace(ns);
     x.setContext(this);
   }
   public void removeBehavior(StateMachine x)

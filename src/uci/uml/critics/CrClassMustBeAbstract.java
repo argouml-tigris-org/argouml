@@ -24,8 +24,8 @@
 
 
 
-// File: CrClassMustBeAbstract.java.java
-// Classes: CrClassMustBeAbstract.java
+// File: CrClassMustBeAbstract.java
+// Classes: CrClassMustBeAbstract
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -53,6 +53,7 @@ public class CrClassMustBeAbstract extends CrUML {
 
     addSupportedDecision(CrUML.decINHERITANCE);
     addSupportedDecision(CrUML.decMETHODS);
+    setKnowledgeTypes(Critic.KT_SEMANTICS);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

@@ -266,7 +266,9 @@ implements MutableGraphModel, VetoableChangeListener {
 	      return dep;
 	    }
 	    else {
-	      System.out.println("asdwwads");
+	      System.out.println("Cannot make a "+ edgeClass.getName() +
+			     " between a " + fromPort.getClass().getName() +
+			     " and a " + toPort.getClass().getName());
 	      return null;
 	    }
       }
@@ -299,8 +301,15 @@ implements MutableGraphModel, VetoableChangeListener {
 	  addEdge(asc);
 	  return asc;
 	}
+	else if (edgeClass == Dependency.class) {
+	  Dependency dep = new Dependency(fromCls, toIntf);
+	  addEdge(dep);
+	  return dep;
+	}
 	else {
-	  System.out.println("asdwwads");
+	  System.out.println("Cannot make a "+ edgeClass.getName() +
+			     " between a " + fromPort.getClass().getName() +
+			     " and a " + toPort.getClass().getName());
 	  return null;
 	}
       }
@@ -319,8 +328,38 @@ implements MutableGraphModel, VetoableChangeListener {
 	  addEdge(asc);
 	  return asc;
 	}
+	else if (edgeClass == Dependency.class) {
+	  Dependency dep = new Dependency(fromIntf, toCls);
+	  addEdge(dep);
+	  return dep;
+	}
 	else {
-	  System.out.println("asdwwads");
+	  System.out.println("Cannot make a "+ edgeClass.getName() +
+			     " between a " + fromPort.getClass().getName() +
+			     " and a " + toPort.getClass().getName());
+	  return null;
+	}
+      }
+
+      // break
+      else if ((fromPort instanceof Interface) && (toPort instanceof Interface)) {
+	Interface fromIntf = (Interface) fromPort;
+	Interface toIntf = (Interface) toPort;
+
+	if (edgeClass == Generalization.class) {
+	  Generalization gen = new Generalization(fromIntf, toIntf);
+	  addEdge(gen);
+	  return gen;
+	}
+	else if (edgeClass == Dependency.class) {
+	  Dependency dep = new Dependency(fromIntf, toIntf);
+	  addEdge(dep);
+	  return dep;
+	}
+	else {
+	  System.out.println("Cannot make a "+ edgeClass.getName() +
+			     " between a " + fromPort.getClass().getName() +
+			     " and a " + toPort.getClass().getName());
 	  return null;
 	}
       }

@@ -45,11 +45,8 @@ public class Realization extends ModelElementImpl {
     super();
     setSubtype(sub);
     setSupertype(sup);
-    System.out.println("ppp1");
-    sub.addRealization(this);
-    System.out.println("ppp2");
-    sup.addSpecialization(this);
-    System.out.println("ppp3");
+    sub.addSpecification(this);
+    sup.addRealization(this);
   }
 
   public Classifier getSubtype() { return _subtype; }

@@ -74,10 +74,14 @@ public class ChildGenUML implements ChildGenerator {
     // needs-more-work: associationclasses fit both of the next 2 cases
 
     if (o instanceof Classifier) {
-      Classifier c = (Classifier) o;
+      Classifier cls = (Classifier) o;
       EnumerationComposite res = new EnumerationComposite();
-      res.addSub(c.getBehavioralFeature());
-      res.addSub(c.getStructuralFeature());
+      res.addSub(cls.getBehavioralFeature());
+      res.addSub(cls.getStructuralFeature());
+      Vector sms = cls.getBehavior();
+      StateMachine sm = null;
+      if (sms != null && sms.size() > 0) sm = (StateMachine) sms.elementAt(0);
+      if (sm != null) res.addSub(new EnumerationSingle(sm));
       return res;
     }
 

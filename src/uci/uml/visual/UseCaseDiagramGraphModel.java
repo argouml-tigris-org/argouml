@@ -233,7 +233,9 @@ implements MutableGraphModel, VetoableChangeListener {
 	addEdge(asc);
 	return asc;
       }
-      else if (edgeClass == Generalization.class) {
+      else if (edgeClass == Generalization.class &&
+		((fromPort instanceof Actor && toPort instanceof Actor) ||
+		 (fromPort instanceof UseCase && toPort instanceof UseCase))) {
 	Generalization gen = new Generalization((Classifier) fromPort,
 						(Classifier) toPort);
 	gen.addStereotype(Stereotype.EXTENDS);

@@ -145,14 +145,6 @@ public class FigInterface extends FigNodeModelElement {
     }
 
     _oper.setText(operStr);
-
-    if (cls.getIsAbstract()) {
-        _name.setFont(ITALIC_LABEL_FONT);
-    }
-    else {
-        _name.setFont(LABEL_FONT);
-    }
-
   }
 
 } /* end class FigInterface */

@@ -24,8 +24,8 @@
 
 
 
-// File: CrCrossNamespaceAssoc.java.java
-// Classes: CrCrossNamespaceAssoc.java
+// File: CrCrossNamespaceAssoc.java
+// Classes: CrCrossNamespaceAssoc
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -47,6 +47,7 @@ public class CrCrossNamespaceAssoc extends CrUML {
        "the Namespace of the Association.\n");
 
     addSupportedDecision(CrUML.decMODULARITY);
+    setKnowledgeTypes(Critic.KT_SYNTAX);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

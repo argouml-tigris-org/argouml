@@ -24,8 +24,8 @@
 
 
 
-// File: CrUnconventionalOperName.java.java
-// Classes: CrUnconventionalOperName.java
+// File: CrUnconventionalOperName.java
+// Classes: CrUnconventionalOperName
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -50,6 +50,7 @@ public class CrUnconventionalOperName extends CrUML {
        "To fix this, use the FixIt button, or manually select {name} "+
        "and use the Properties tab to give it a new name.");
     addSupportedDecision(CrUML.decNAMING);
+    setKnowledgeTypes(Critic.KT_SYNTAX);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

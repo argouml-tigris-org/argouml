@@ -24,8 +24,8 @@
 
 
 
-// File: CrSignatureConflict.java.java
-// Classes: CrSignatureConflict.java
+// File: CrSignatureConflict.java
+// Classes: CrSignatureConflict
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -53,6 +53,7 @@ public class CrSignatureConflict extends CrUML {
        "Properties tab to change this name or parameters.");
 
     addSupportedDecision(CrUML.decMETHODS);
+    setKnowledgeTypes(Critic.KT_SYNTAX);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

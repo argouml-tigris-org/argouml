@@ -51,12 +51,14 @@ public class NamespaceImpl extends ModelElementImpl implements Namespace {
   }
   public void addOwnedElement(ElementOwnership x) throws PropertyVetoException {
     if (_ownedElement == null) _ownedElement = new Vector();
+    else if (_ownedElement.contains(x)) return;
     fireVetoableChange("ownedElement", _ownedElement, x);
     _ownedElement.addElement(x);
     x.getModelElement().setElementOwnership(x);
   }
   public void removeOwnedElement(ElementOwnership x) throws PropertyVetoException {
     if (_ownedElement == null) return;
+    else if (!_ownedElement.contains(x)) return;
     fireVetoableChange("ownedElement", _ownedElement, x);
     _ownedElement.removeElement(x);
     x.getModelElement().setElementOwnership(null);

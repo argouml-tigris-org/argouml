@@ -414,6 +414,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
   public void doOk() {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     NavigatorPane nav = pb.getNavPane();
+    nav.setPerspectives(NavPerspective.getRegisteredPerspectives());
     nav.updateTree();
     setVisible(false);
     dispose();

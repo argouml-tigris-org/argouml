@@ -168,6 +168,7 @@ public class State extends StateVertex {
   }
   public void addInternalTransition(Transition x) throws PropertyVetoException {
     if (_internalTransition == null) _internalTransition = new Vector();
+    if (_internalTransition.contains(x)) return;
     fireVetoableChange("internalTransition", _internalTransition, x);
     _internalTransition.addElement(x);
     x.setSource(this);

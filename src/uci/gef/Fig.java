@@ -54,6 +54,9 @@ public class Fig implements java.io.Serializable, PropertyChangeListener  {
   /** The smallest size that the user can drag this Fig. */
   public final int MIN_SIZE = 4;
 
+  /** The size of the dashes drawn when the Fig is dashed. */
+  public final int DASH_LENGTH = 5;
+
 
   ////////////////////////////////////////////////////////
   // instance variables
@@ -90,6 +93,8 @@ public class Fig implements java.io.Serializable, PropertyChangeListener  {
 
   /** Thickness of line around object, for now limited to 0 or 1. */
   protected int _lineWidth = 1;
+
+  protected boolean _dashed;
 
   /** True if the object should fill in its area. */
   protected boolean _filled = true;
@@ -256,6 +261,15 @@ public class Fig implements java.io.Serializable, PropertyChangeListener  {
   }
   public int getLineWidth() { return _lineWidth; }
 
+  /** Set line to be dashed or not **/
+  public void setDashed(boolean now_dashed) {
+    _dashed = now_dashed;
+  }
+
+  /** Get the dashed attribute **/
+  public boolean getDashed() {
+    return _dashed;
+  }
 
   public String getTipString(MouseEvent me) {
     return toString();
@@ -279,6 +293,17 @@ public class Fig implements java.io.Serializable, PropertyChangeListener  {
     g.fillRect(_x, _y, _w, _h);
     g.setColor(Color.black);
     g.drawString("(undefined)", _x + _w/2, _y + _h/2);
+  }
+
+  protected void drawDashedPerimeter(Graphics g) {
+    Point segStart = new Point();
+    Point segEnd = new Point();
+    int length = getPerimeterLength();
+    for (int i=0; i < length; i += DASH_LENGTH + DASH_LENGTH) {
+      stuffPointAlongPerimeter(i, segStart);
+      stuffPointAlongPerimeter(i + DASH_LENGTH, segEnd);
+      g.drawLine(segStart.x, segStart.y, segEnd.x, segEnd.y );
+    }
   }
 
   /** Return a Rectangle that completely encloses this Fig. */

@@ -40,17 +40,17 @@ public class KnowledgeTypeNode {
   public static Vector getTypes() {
     if (_TYPES == null) {
       _TYPES = new Vector();
-      _TYPES.addElement(new KnowledgeTypeNode("Designer's"));
-      _TYPES.addElement(new KnowledgeTypeNode("Correctness"));
-      _TYPES.addElement(new KnowledgeTypeNode("Completeness"));
-      _TYPES.addElement(new KnowledgeTypeNode("Consistency"));
-      _TYPES.addElement(new KnowledgeTypeNode("Syntax"));
-      _TYPES.addElement(new KnowledgeTypeNode("Semantic"));
-      _TYPES.addElement(new KnowledgeTypeNode("Optimization"));
-      _TYPES.addElement(new KnowledgeTypeNode("Presentation"));
-      _TYPES.addElement(new KnowledgeTypeNode("Organizational"));
-      _TYPES.addElement(new KnowledgeTypeNode("Experiencial"));
-      _TYPES.addElement(new KnowledgeTypeNode("Tool"));
+      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_DESIGNERS));
+      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_CORRECTNESS));
+      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_COMPLETENESS));
+      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_CONSISTENCY));
+      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_SYNTAX));
+      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_SEMANTICS));
+      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_OPTIMIZATION));
+      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_PRESENTATION));
+      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_ORGANIZATIONAL));
+      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_EXPERIENCIAL));
+      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_TOOL));
     }
     return _TYPES;
   }

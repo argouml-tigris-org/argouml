@@ -24,8 +24,8 @@
 
 
 
-// File: CrCircularAssocClass.java.java
-// Classes: CrCircularAssocClass.java
+// File: CrCircularAssocClass.java
+// Classes: CrCircularAssocClass
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -47,6 +47,7 @@ public class CrCircularAssocClass extends CrUML {
        "back to the AssociationClass.");
 
     addSupportedDecision(CrUML.decRELATIONSHIPS);
+    setKnowledgeTypes(Critic.KT_SEMANTICS);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
