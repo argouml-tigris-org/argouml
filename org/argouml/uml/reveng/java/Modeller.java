@@ -393,10 +393,10 @@ public class Modeller
         // add the current classifier to the diagram.
         Object classifier = parseState.getClassifier();
         if(ModelFacade.isAInterface(classifier)) {
-            if (getDiagram() != null && Import.isCreateDiagramsChecked()) _diagram.addInterface(classifier);
+            if (getDiagram() != null && Import.isCreateDiagramsChecked()) _diagram.addInterface(classifier,Import.isMinimiseFigsChecked());
         } else {
             if(ModelFacade.isAClass(classifier)) {
-                if (getDiagram() != null && Import.isCreateDiagramsChecked()) _diagram.addClass(classifier);
+                if (getDiagram() != null && Import.isCreateDiagramsChecked()) _diagram.addClass(classifier,Import.isMinimiseFigsChecked());
             }
         }
 
