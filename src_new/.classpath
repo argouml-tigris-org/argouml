@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+    <classpathentry exported="true" kind="src" path="/nsuml-model"/>
+    <classpathentry exported="true" kind="src" path="/gef-diagram"/>
+    <classpathentry exported="true" kind="src" path="/api"/>
     <classpathentry
         excluding="bin/|CVS/|templates/|tests/|.classpath|.cvsignore|.project|.project.bak|argouml.LICENSE.txt|argouml.log|build.bat|build.sh|build.xml|default.properties|README_COMPILE.txt|README_database.sql|README.txt|tlach-build.xml|build/"
         kind="src" path=""/>
     <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-    <classpathentry kind="src" path="/api"/>
-    <classpathentry kind="src" path="/gef-diagram"/>
-    <classpathentry kind="src" path="/nsuml-model"/>
     <classpathentry kind="lib" path="/lib/antlrall-2.7.2.jar"/>
     <classpathentry kind="lib" path="/lib/gef-0.9.6.jar"/>
     <classpathentry kind="lib" path="/lib/i18n-0.1.jar"/>

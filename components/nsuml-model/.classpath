@@ -8,5 +8,6 @@
     <classpathentry kind="lib" path="/tools/junit-3.7/junit.jar"/>
     <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
     <classpathentry kind="lib" path="/lib/jmi-1.0.jar"/>
+    <classpathentry exported="true" kind="lib" path="/lib/i18n-0.1.jar"/>
     <classpathentry kind="output" path="build/classes"/>
 </classpath>

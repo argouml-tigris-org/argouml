@@ -39,7 +39,6 @@ import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsH
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.model_management.MModel;
 
 /**
  * Helper class for UML metamodel.
