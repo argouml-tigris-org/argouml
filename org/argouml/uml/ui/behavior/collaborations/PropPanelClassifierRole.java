@@ -57,8 +57,9 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
     addField(Argo.localize("UMLMenu", "label.name"), nameField);
     addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
     addField(Argo.localize("UMLMenu", "label.namespace"),namespaceScroll);
-    UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this,"isAcceptibleBase","classifier","getClassifier","setClassifier",false,MClassifier.class,true);
-    UMLComboBox clsComboBox = new UMLComboBox(classifierModel);
+    // UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this,"isAcceptibleBase","classifier","getClassifier","setClassifier",false,MClassifier.class,true);
+    UMLTypeModel baseModel = new UMLTypeModel(this, "isAcceptibleBase", "base", "getBase", "setBase", false, MClassifier.class, MClassifierRole.class, true);   
+    UMLComboBox clsComboBox = new UMLComboBox(baseModel);
     addField(Argo.localize("UMLMenu", "label.base"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),clsComboBox));
 	addField(Argo.localize("UMLMenu", "label.multiplicity"),new UMLMultiplicityComboBox(this,mclass));
 
@@ -73,7 +74,12 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
     connectList.setForeground(Color.blue);
     connectList.setVisibleRowCount(3);
     connectScroll= new JScrollPane(connectList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-    	
+    
+    JList availableContents = new UMLList(new UMLClassifierRoleAvailableContentsListModel(this,null,true), true);
+    availableContents.setForeground(Color.blue);	
+    JScrollPane availableContentsScroll = new JScrollPane(availableContents,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    
+	addField(Argo.localize("UMLMenu", "label.available-contents"), availableContentsScroll);
 	addField(Argo.localize("UMLMenu", "label.association-roles"), connectScroll);
 	
 	/*
@@ -103,7 +109,7 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 
 
     public boolean isAcceptibleBase(MModelElement classifier) {
-        return classifier instanceof MClassifier;
+        return classifier instanceof MClassifier && !(classifier instanceof MClassifierRole);
     }
 
      public MClassifier getClassifier() {
@@ -144,6 +150,25 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 		Vector choices = new Vector();
 		choices.addAll(CollaborationsHelper.getHelper().getAllClassifierRoles());
 		return choices;
+	}
+	
+	public MClassifier getBase() {
+		if (getTarget() != null) {
+			Vector list = new Vector();
+			list.addAll(((MClassifierRole)getTarget()).getBases());
+			if (list.size() > 0) {
+				return (MClassifier)list.get(0);
+			}
+		}
+		return null;
+	}
+	
+	public void setBase(MClassifier base) {
+		if (getTarget() != null) {
+			Vector list = new Vector();
+			list.add(base);
+			((MClassifierRole)getTarget()).setBases(list);
+		}
 	}
 
 

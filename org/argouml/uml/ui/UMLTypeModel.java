@@ -105,6 +105,7 @@ public class UMLTypeModel extends UMLComboBoxModel {
 	 * @see org.argouml.uml.ui.UMLComboBoxModel#isAcceptible(MModelElement)
 	 */
 	public boolean isAcceptible(MModelElement element) {
+		if (_filter != null) return super.isAcceptible(element);
 		return element instanceof MClassifier;
 	}
 

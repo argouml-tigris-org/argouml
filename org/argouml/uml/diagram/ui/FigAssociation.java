@@ -42,6 +42,7 @@ import org.argouml.uml.ui.ActionMultiplicity;
 import org.argouml.uml.ui.ActionNavigability;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.PathConv;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.ArrowHead;
@@ -126,7 +127,7 @@ public class FigAssociation extends FigEdgeModelElement {
     _srcGroup.addFig(_srcOrdering);
     _srcGroup.addFig(_srcMult);    
     addPathItem(_srcGroup, new PathConvPercent(this, 15, 0));
-    
+   
     _destMult = new FigText(10, 10, 90, 20);
     _destMult.setFont(LABEL_FONT);
     _destMult.setTextColor(Color.black);

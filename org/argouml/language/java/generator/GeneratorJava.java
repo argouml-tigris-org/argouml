@@ -80,7 +80,7 @@ implements PluggableNotation, FileGenerator {
 
   public static GeneratorJava getInstance() { return SINGLETON; }
 
-  private GeneratorJava() {
+  protected GeneratorJava() {
     super (Notation.makeNotation ("Java",
                                   null,
                                   Argo.lookupIconResource ("JavaNotation")));
@@ -1493,7 +1493,7 @@ implements PluggableNotation, FileGenerator {
        @param mClassifier The classifier to update from.
        @param file The file to update.
     */
-    private static void update(MClassifier mClassifier,
+    protected static void update(MClassifier mClassifier,
                         File file)
 	throws Exception
     {

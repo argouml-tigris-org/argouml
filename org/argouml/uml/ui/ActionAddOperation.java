@@ -44,9 +44,7 @@ public class ActionAddOperation extends UMLChangeAction {
 
     public static ActionAddOperation SINGLETON = new ActionAddOperation();
 
-    // needs-more-work: should be part of java binding or common elements
-    //     public static MDataType VOID_TYPE = UmlFactory.getFactory().getCore().createDataType();
-    //     static { VOID_TYPE.setName("void"); }
+    
 
 
     ////////////////////////////////////////////////////////////////

@@ -79,31 +79,7 @@ public class ActionStateDiagram extends UMLChangeAction {
 	    p.addMember(d);
 	    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
 	    pb.setTarget(d);
-	    /*
-	    Object contextObj = pb.getDetailsTarget();
-	    if (!(contextObj instanceof MClass)) {
-	    	JOptionPane.showMessageDialog(null, 
-	    	"You need to have a Class as your target in order to\nspecify for what you want to define a behaviour for.",
-	    	"Warning", JOptionPane.WARNING_MESSAGE);
-	    	return;
-	    }
-	    MClass cls = (MClass) contextObj;
-	    String contextNameStr = cls.getName();
-	    if (contextNameStr == null) contextNameStr = "untitled";
-	    MStateMachine sm = UmlFactory.getFactory().getStateMachines().createStateMachine();
-	    // sm.setUUID(UUIDManager.SINGLETON.getNewUUID());
-	    sm.setName(contextNameStr + "StateMachine");
-	    MCompositeState cs = UmlFactory.getFactory().getStateMachines().createCompositeState();
-	    cs.setName("state_machine_top");
-	    //cs.setNamespace(cls);
-	    sm.setNamespace(cls);
-	    sm.setTop(cs);
-	    cls.addBehavior(sm);
-	    UMLStateDiagram d = new UMLStateDiagram(cls,sm);
-	    p.addMember(d);
-	    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
-	    pb.setTarget(d);
-	    */
+	   
 	} catch (PropertyVetoException e) {
 	    System.out.println("PropertyVetoException in ActionStateDiagram");
 	}

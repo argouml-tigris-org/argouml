@@ -57,6 +57,7 @@ import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
+import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.model_management.MModel;
 import sun.security.action.GetBooleanAction;
@@ -807,7 +808,29 @@ public class CoreHelper {
 		return null;
 	}
 	
-	
+	/**
+	 * Returns the contents (owned elements) of this classifier and all its parents
+	 * as specified in section 2.5.3.8 of the UML 1.3 spec
+	 * @param clazz
+	 * @return Collection
+	 */
+	public Collection getAllContents(MClassifier clazz) {
+		if (clazz == null) return new ArrayList();
+		List list = new ArrayList();
+		Iterator it = clazz.getOwnedElements().iterator();
+		while (it.hasNext()) {
+			MModelElement element = (MModelElement)it.next();
+			if (element.getVisibility().equals(MVisibilityKind.PUBLIC) ||
+				element.getVisibility().equals(MVisibilityKind.PROTECTED)) {
+				list.add(element);
+			}
+		}
+		it = clazz.getGeneralizations().iterator();
+		while (it.hasNext()) {
+			list.addAll(getAllContents((MClassifier)it.next()));
+		}
+		return list;
+	}
 		
 		
 	

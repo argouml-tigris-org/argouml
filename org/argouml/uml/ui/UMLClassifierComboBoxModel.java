@@ -190,4 +190,11 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 
   
 
+	/**
+	 * @see ru.novosoft.uml.MElementListener#propertySet(MElementEvent)
+	 */
+	public void propertySet(MElementEvent e) {
+		super.propertySet(e);
+	}
+
 }
