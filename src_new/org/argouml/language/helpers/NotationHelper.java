@@ -42,17 +42,29 @@ public abstract class NotationHelper
     implements NotationProvider2
 {
 
-    private NotationName _notationName;
+    private NotationName notationName;
 
-    public NotationHelper(NotationName notationName) {
-	_notationName = notationName;
+    /**
+     * The constructor.
+     * 
+     * @param nn the notation name
+     */
+    public NotationHelper(NotationName nn) {
+	notationName = nn;
     }
 
 
+    /**
+     * @see org.argouml.application.api.NotationProvider2#getNotation()
+     */
     public NotationName getNotation() {
-	return _notationName;
+	return notationName;
     }
 
+    /**
+     * @param o the object to be generated
+     * @return the generated string
+     */
     public String generate(Object o) {
 	if (o == null)
 	    return "";
@@ -103,61 +115,161 @@ public abstract class NotationHelper
 	return o.toString();
     }
 
+    /**
+     * @param op the given object
+     * @return the generated string
+     */
     public abstract String generateOperation(Object op);
+
+    /**
+     * @param attr the given object
+     * @return the generated string
+     */
     public abstract String generateAttribute(Object attr);
+
+    /**
+     * @param param the given object
+     * @return the generated string
+     */
     public abstract String generateParameter(Object param);
+
+    /**
+     * @param p the given object
+     * @return the generated string
+     */
     public abstract String generatePackage(Object p);
+
+    /**
+     * @param cls the given object
+     * @return the generated string
+     */
     public abstract String generateClassifier(Object cls);
+    
     // public abstract String generateStereotype(Object s);
+
+    /**
+     * @param s the given object
+     * @return the generated string
+     */
     public abstract String generateTaggedValue(Object s);
+
+    /**
+     * @param a the given object
+     * @return the generated string
+     */
     public abstract String generateAssociation(Object a);
+
+    /**
+     * @param ae the given object
+     * @return the generated string
+     */
     public abstract String generateAssociationEnd(Object ae);
+
+    /**
+     * @param m the given object
+     * @return the generated string
+     */
     public abstract String generateMultiplicity(Object m);
+
+    /**
+     * @param m the given object
+     * @return the generated string
+     */
     public abstract String generateState(Object m);
+
+    /**
+     * @param m the given object
+     * @return the generated string
+     */
     public abstract String generateTransition(Object m);
+
+    /**
+     * @param m the given object
+     * @return the generated string
+     */
     public abstract String generateAction(Object m);
+
+    /**
+     * @param m the given object
+     * @return the generated string
+     */
     public abstract String generateGuard(Object m);
+
+    /**
+     * @param m the given object
+     * @return the generated string
+     */
     public abstract String generateMessage(Object m);
 
+    /**
+     * @return the left pointing guillemot, i.e. << or the one-character symbol
+     */
     public static String getLeftGuillemot() {
-
 	return (Configuration.getBoolean(Notation.KEY_USE_GUILLEMOTS, false))
 	    ? "\u00ab"
 	    : "<<";
 
     }
 
+    /**
+     * @return the right pointing guillemot, i.e. >> or the one-character symbol
+     */
     public static String getRightGuillemot() {
 	return (Configuration.getBoolean(Notation.KEY_USE_GUILLEMOTS, false))
 	    ? "\u00bb"
 	    : ">>";
     }
 
+
+    /**
+     * @param s the given object
+     * @return the generated string
+     */
     public String generateStereotype(Object s) {
 	return getLeftGuillemot()
 	    + generateName(ModelFacade.getName(s))
 	    + getRightGuillemot();
     }
 
+
+    /**
+     * @param expr the given object
+     * @return the generated string
+     */
     public String generateExpression(Object expr) {
 	if (expr == null)
 	    return "";
 	if (ModelFacade.isAExpression(expr))
-	    return generateUninterpreted((String)ModelFacade.getBody(expr));
+	    return generateUninterpreted((String) ModelFacade.getBody(expr));
 	if (ModelFacade.isAConstraint(expr))
 	    return generateExpression(ModelFacade.getBody(expr));
 	return "";
     }
 
+
+    /**
+     * @param n the given object
+     * @return the generated string
+     */
     public String generateName(String n) {
 	return n;
     }
 
+
+    /**
+     * @param un the given object
+     * @return the generated string
+     */
     public String generateUninterpreted(String un) {
 	if (un == null) return "";
 	return un;
     }
 
+
+    /**
+     * @param cls the given object
+     * @return the generated string
+     */
     public String generateClassifierRef(Object cls) {
 	if (cls == null) return "";
 	return ModelFacade.getName(cls);

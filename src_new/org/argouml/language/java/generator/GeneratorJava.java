@@ -119,16 +119,23 @@ public class GeneratorJava
     /**
      * @deprecated by Linus Tolke for 0.17.1. 
      *             Replace by call to {@link #generate(Object)}.
+     *
+     * @param o the object to generate
+     * @return the generated string
      */
     public static String Generate(Object o) {
         return SINGLETON.generate(o);
     }
 
-    /** Generates a file for the classifier.
+    /** 
+     * Generates a file for the classifier.
      * This method could have been static if it where not for the need to
      * call it through the Generatorinterface.
-     * @return the full path name of the the generated file or
-     * 	       null if no file can be generated.
+     * Returns the full path name of the the generated file or
+     * null if no file can be generated.
+     *
+     * @see org.argouml.uml.generator.FileGenerator#GenerateFile(
+     * java.lang.Object, java.lang.String)
      */
     public String GenerateFile(Object modelElement, String path) {
         String name = ModelFacade.getName(modelElement);

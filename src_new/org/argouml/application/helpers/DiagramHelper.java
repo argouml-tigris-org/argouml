@@ -47,22 +47,57 @@ public abstract class DiagramHelper extends ArgoDiagram
 
     /** String naming the resource bundle to use for localization.
      */
-    protected String _bundle = "";
+    private String bundle = "";
 
+    /**
+     * The constructor.
+     * 
+     */
     public DiagramHelper() {
-        _bundle = getDiagramResourceBundleKey();
+        bundle = getDiagramResourceBundleKey();
     }
 
+    /**
+     * @see org.argouml.application.api.ArgoModule#setModuleEnabled(boolean)
+     */
     public void setModuleEnabled(boolean v) { }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#initializeModule()
+     */
     public boolean initializeModule() { return true; }
+    
+    /**
+     * @see org.argouml.application.api.Pluggable#inContext(java.lang.Object[])
+     */
     public boolean inContext(Object[] o) { return true; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
+     */
     public boolean isModuleEnabled() { return true; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModulePopUpActions(
+     * java.util.Vector, java.lang.Object)
+     */
     public Vector getModulePopUpActions(Vector v, Object o) { return null; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#shutdownModule()
+     */
     public boolean shutdownModule() { return true; }
+    
+    /**
+     * @see org.argouml.application.api.PluggableDiagram#getDiagramMenuItem()
+     */
     public JMenuItem getDiagramMenuItem() {
 	return new JMenuItem(Translator.localize("menu.item.diagram-type"));
     } // add icon if desired
 
+    /**
+     * @return the default localization key for diagrams
+     */
     public String getDiagramResourceBundleKey() {
         return DIAGRAM_BUNDLE;
     }

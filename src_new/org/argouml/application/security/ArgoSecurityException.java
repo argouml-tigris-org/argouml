@@ -33,15 +33,27 @@ public class ArgoSecurityException extends SecurityException
 {
     private boolean hidden = false;
 
+    /**
+     * The constructor.
+     * 
+     */
     public ArgoSecurityException() {
         this(false);
     } 
 
+    /**
+     * The constructor.
+     * 
+     * @param h true if the exception is hidden
+     */
     public ArgoSecurityException(boolean h) {
         super();
 	hidden = h;
     }
 
+    /**
+     * @return true if this exception is hidden
+     */
     public boolean isHidden() {
         return hidden;
     }

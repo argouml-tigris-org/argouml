@@ -79,6 +79,8 @@ public final class ArgoSecurityManager extends SecurityManager
 
     /**
      * Accessor for the instance.
+     *
+     * @return the signleton
      */
     public static final ArgoSecurityManager getInstance() {
         return SINGLETON;
@@ -88,6 +90,9 @@ public final class ArgoSecurityManager extends SecurityManager
     private ArgoSecurityManager() {
     }
 
+    /**
+     * @see java.lang.SecurityManager#checkPermission(java.security.Permission)
+     */
     public void checkPermission(Permission perm) {
         // TODO:  
 	// Don't allow write access to <code>sun.awt.exception.handler</code>
@@ -117,10 +122,16 @@ public final class ArgoSecurityManager extends SecurityManager
 	}
     }
 
+    /**
+     * @return true if we may exit
+     */
     public boolean getAllowExit() {
         return allowExit;
     }
 
+    /**
+     * @param myAllowExit true if we may exit
+     */
     public void setAllowExit(boolean myAllowExit) {
         allowExit = myAllowExit;
     }

@@ -35,6 +35,10 @@ package org.argouml.application.security;
  */
 public final class ArgoAwtExceptionHandler {
 
+    /**
+     * The constructor.
+     * 
+     */
     public ArgoAwtExceptionHandler() {
     }
 

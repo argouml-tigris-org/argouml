@@ -36,7 +36,6 @@ import org.argouml.model.uml.UmlFactory;
  * In the end, it would be better to have these in XMI files that are
  * loaded at starting time.
 */
-
 public class JavaUML {
 
     // java.lang
@@ -72,7 +71,8 @@ public class JavaUML {
     public static Object/*MClass*/ HASHTABLE_CLASS = getCore().createClass();
     public static Object/*MClass*/ STACK_CLASS = getCore().createClass();
 
-    /** Get the CoreFactory
+    /** 
+     * Get the CoreFactory.
      *
      * @return CoreFactory
      */
@@ -80,6 +80,9 @@ public class JavaUML {
 	return UmlFactory.getFactory().getCore();
     }
 
+    /**
+     * This UML Model contains the Java standard elements.
+     */
     public static Object/*MModel*/ javastandards =
 	UmlFactory.getFactory().getModelManagement().createModel();
 

@@ -31,7 +31,6 @@ import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.StartCritics;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.foundation.datatypes.DataTypesHelper;
@@ -49,7 +48,8 @@ import org.tigris.gef.util.ResourceLoader;
  */
 public final class ResourceLoaderWrapper {
 
-    private static final Logger LOG = Logger.getLogger(ResourceLoaderWrapper.class);
+    private static final Logger LOG = 
+        Logger.getLogger(ResourceLoaderWrapper.class);
     
     private static ImageIcon actionStateIcon =
         ResourceLoader.lookupIconResource("ActionState");

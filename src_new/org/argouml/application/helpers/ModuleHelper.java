@@ -32,20 +32,34 @@ public abstract class ModuleHelper
     implements ArgoModule
 {
 
-    protected boolean _enabled = false;
+    private boolean enabled = false;
 
+    /**
+     * The constructor.
+     * 
+     */
     public ModuleHelper() {
-        _enabled = false; 
+        enabled = false; 
     }
 
+    /**
+     * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
+     */
     public boolean isModuleEnabled() {
-        return _enabled;
+        return enabled;
     }
 
-    public void setModuleEnabled(boolean enabled) {
-        _enabled = enabled;
+    /**
+     * @see org.argouml.application.api.ArgoModule#setModuleEnabled(boolean)
+     */
+    public void setModuleEnabled(boolean e) {
+        enabled = e;
     }
 
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModulePopUpActions(
+     * java.util.Vector, java.lang.Object)
+     */
     public Vector getModulePopUpActions(Vector v, Object o) {
         return null;
     }
