@@ -1,0 +1,3896 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML EXPERIMENTAL 970324//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" CONTENT="Adobe FrameMaker 5.5/HTML Export Filter">
+<LINK REL="STYLESHEET" HREF="diss6.css">
+<TITLE> CHAPTER 1: Heuristic Evaluation of Cognitive Features			</TITLE></HEAD>
+<BODY BGCOLOR="#ffffff">
+<DIV>
+<H1 CLASS="ChapterHeading">
+<A NAME="pgfId=1113116">
+ </A>
+Heuristic Evaluation of Cognitive Features			</H1>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1111248">
+ </A>
+Heuristic evaluation of user interfaces is a practical approach for identifying potential usability problems (Nielsen, 1993). In such an evaluation, a usability expert reviews the design systematically using a checklist of common usability problems and issues. This chapter presents a heuristic evaluation of Argo/UML's cognitive support features.</P>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1111249">
+ </A>
+ Method and Goals</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1111250">
+ </A>
+Each of the following sections evaluates one proposed cognitive support feature in detail using a variation of the cognitive walkthrough method. A cognitive walkthrough is a theory-based user interface usability evaluation that breaks down an interaction into detailed steps and evaluates each step in terms of the following four criteria (Warton et al., 1994):</P>
+<UL>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1111251">
+ </A>
+Will the user try to achieve the intended effect?</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1111252">
+ </A>
+Will the user notice that the correct action is available?</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1111253">
+ </A>
+Will the user associate the correct action with the desired effect?</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1111254">
+ </A>
+If the correct action is performed, will the user see that progress is being made toward solving the task?</LI>
+</UL>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1111255">
+ </A>
+The programming walkthrough (Bell, Rieman, and Lewis, 1991), a modification of the cognitive walkthrough, considers mental steps performed by the user and refines a model of the knowledge and skills needed by users. This model is called a doctrine. An initial doctrine for Argo/UML is shown in <A HREF="diss6.html#28452" CLASS="XRef">
+See Initial doctrine for Argo/UML</A>
+. It is assumed that typical Argo/UML users will have the knowledge described in the initial doctrine. This doctrine, along with the cognitive theories described in Chapter 2, is used to justify the usability of each step in the user interface tasks below. In cases where the initial doctrine is insufficient to justify a step, a new piece of knowledge is added to the doctrine. Each addition to the doctrine is examined again to see if it poses an unreasonable barrier to usage. The final section of this chapter empirically verifies the reasonableness of some additions with a user survey.</P>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1111258">
+ </A>
+<A NAME="28452">
+ </A>
+Initial doctrine for Argo/UML</H6>
+</CAPTION>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111260">
+ </A>
+Argo/UML users are familiar with UML and have object-oriented design experience, but they lack complete knowledge of either.</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111262">
+ </A>
+Argo/UML users have used other desktop applications and are comfortable using standard user interface elements such as dialogs, forms, menus, popup menus, progress bars, standard wizards, tabbed panes, text editing fields, tool bars, tree widgets, tool tips, scroll bars, and direct-manipulation.</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111264">
+ </A>
+Argo/UML users are familiar with UML modeling tools and their user interface elements, including diagram editors, table-of-contents widgets, search dialogs, and property sheets.</P>
+</TD>
+</TR>
+</TABLE>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1111266">
+ </A>
+I have modified the programming walkthrough method to better suit the evaluation of Argo/UML's cognitive support features. First, the evaluation that follows pays special attention to the knowledge needed to perform each step and the knowledge gained in each step. Second, the steps for each user task, or use case, are presented concisely in a table that describes both the required user actions and the tool's reactions. In those tables, minor task variations are handled as alternative steps, while major variations are addressed in separate use cases. Also, optional steps are marked as such. Third, fairly straightforward steps are addressed briefly; the four questions of the cognitive walkthrough method are used implicitly on each step and only identified problems are discussed. Fourth, the level of detail is chosen to fit the specificity of the proposed cognitive support feature. For example, non-modal wizards are a generic approach to providing procedural support for fixing identified design problems; the evaluation of non-modal wizards will focus on those aspects that differentiate them from standard wizards rather than the specifics of an individual non-modal wizard.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1111268">
+ </A>
+The standard cognitive walkthrough method emphasizes the need for the user to recognize progress on an explicit task. This is needed in part because users often abandon partially completed tasks if they feel that they are on the wrong path. Many of the use cases considered below aid designers in achieving explicit goals. Several of the steps, however, support challenges endemic to the design task without requiring that the designer form an explicit goal before beginning the interaction. Also, many steps are optional because they offer additional support in cases where the normal interaction fails to provide enough to guide the designer. For example, interactions with design critics via clarifiers can help designers to form goals related to improving the design, and when simple cues are not enough to prompt the designer to fix identified problems, additional information can be accessed in optional steps. In fact, mixed initative on the part of the designer and the tool is essential to design support systems that try to augment the designer's own decision-making.</P>
+</DIV>
+<DIV>
+<H3 CLASS="Heading2">
+<A NAME="pgfId=1111270">
+ </A>
+Walkthrough of &quot;To Do&quot; List and Clarifiers</H3>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1111272">
+ </A>
+Argo/UML users can access the feedback provided by critics via clarifiers or via the &quot;to do&quot; list. Tables <A HREF="diss6.html#36532" CLASS="XRef">
+See Steps for using a clarifier and the &quot;to do&quot; item tab</A>
+ and <A HREF="diss6.html#32253" CLASS="XRef">
+See Step for using the &quot;to do&quot; list and the &quot;to do&quot; tab</A>
+ show the steps for each of these two use cases. </P>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1111275">
+ </A>
+<A NAME="36532">
+ </A>
+Steps for using a clarifier and the &quot;to do&quot; item tab</H6>
+</CAPTION>
+<TR>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1111281">
+ </A>
+Step</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1111283">
+ </A>
+User Action</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1111285">
+ </A>
+System Reaction</P>
+</TH>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111287">
+ </A>
+A-1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111289">
+ </A>
+Select a diagram element</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111291">
+ </A>
+Display selection handles and clarifiers</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111293">
+ </A>
+A-2</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111295">
+ </A>
+Form interest in the identified problem</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111297">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111299">
+ </A>
+A-3</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111301">
+ </A>
+Position mouse over clarifier</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111303">
+ </A>
+Display &quot;to do&quot; item headline tool tip</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111305">
+ </A>
+A-4</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111307">
+ </A>
+Read the headline and understand the issue raised</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111309">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111311">
+ </A>
+A-5</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111313">
+ </A>
+Optionally, right-click to access a popup menu</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111315">
+ </A>
+Display pop-up menu</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111317">
+ </A>
+A-6</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111319">
+ </A>
+Optionally, select headline from the popup menu</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111321">
+ </A>
+Show item text in the &quot;to do&quot; item tab</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111323">
+ </A>
+A-7</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111325">
+ </A>
+Read &quot;to do&quot; headline or item text and understand the issue; form the intention and plan to fix the problem</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111327">
+ </A>
+</P>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1111331">
+ </A>
+<A NAME="32253">
+ </A>
+Step for using the &quot;to do&quot; list and the &quot;to do&quot; tab</H6>
+</CAPTION>
+<TR>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1111337">
+ </A>
+Step</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1111339">
+ </A>
+User Action</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1111341">
+ </A>
+System Reaction</P>
+</TH>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111343">
+ </A>
+B-1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111345">
+ </A>
+Form interest in solving an outstanding design problem</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111347">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111349">
+ </A>
+B-2</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111351">
+ </A>
+Browse headlines in the &quot;to do&quot; list</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111353">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111355">
+ </A>
+B-3</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111357">
+ </A>
+Form interest in a particular criticism</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111359">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111361">
+ </A>
+B-4</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111363">
+ </A>
+Select a headline</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111365">
+ </A>
+Show item text in &quot;to do&quot; item tab</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111367">
+ </A>
+B-5</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111369">
+ </A>
+Read the &quot;to do&quot; item text and understand the issue; form the intention and plan to fix the problem</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111371">
+ </A>
+</P>
+</TD>
+</TR>
+</TABLE>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1111374">
+ </A>
+Justification of Steps</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1111375">
+ </A>
+The first use case begins with an action (A-1) that Argo/UML users perform very often during their work. The tool's reaction to this action includes drawing the standard selection handles found in other direct-manipulation diagram editors, but also includes drawing clarifiers. The wavy-red underline is the most common clarifier in Argo/UML, and it is a familiar indication of trouble to users of other recent desktop applications. This leads the user directly to step A-2. If the user has encountered the identified error before, the clarifier may be enough to prompt the designer to fix the problem without further interaction with the clarifier. Otherwise, in step A-3, the designer requests additional information via a tool tip. Tool tips are common user interface elements that users often access when presented with a new user interface element. Even if the user does not suspect the availability of a tool tip at first, he or she is likely to accidentally trigger one while working with the diagram and thus learn of its availability. The designer is next expected to read the critique headline tool tip and understand, to some degree, the issue raised. If the designer understands the issue described in the headline well, he or she may jump to step A-7, resulting in a plan to fix the problem without further interaction. Alternatively, the designer can access the details of the criticism by opening a popup menu (step A-5), selecting the feedback item from the &quot;Critiques&quot; sub-menu (step A-6), and reading the &quot;to do&quot; item text displayed in the &quot;to do&quot; item tab. The expected interaction with clarifiers suggests the following additions to the Argo/UML doctrine:</P>
+<UL>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1111376">
+ </A>
+Users will realize that there is a popup sub-menu with criticisms that can be selected for additional details. It is unlikely that users will realize this initially. In fact, Rieman, Franzke, and Redmiles (1995) observe that &quot;users are reluctant to extend their search beyond the readily available menus and controls.&quot; The &quot;Critiques&quot; sub-menu will, however, be noticed when the popup menu is activated for other purposes. Since the &quot;Critiques&quot; sub-menu is always present on the popup menu and always contains a list of outstanding criticisms for the selected design element, users should be able to learn of its existence and purpose. I also believe this step to be reasonable because it was inspired by observations of Argo/UML users who saw clarifiers and tried to interact with them. In fact, it was an Argo/UML user who suggested that clarifiers should have popup menus. The reasonableness of this addition has been tested with the user survey described in Section 6.12.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1111377">
+ </A>
+Users are able to form an intention and plan to fix the problem identified in &quot;to do&quot; item descriptions. A study of the VDDE system found that negatively phrased criticism was not effective in prompting designers to fix identified problems. In contrast to VDDE, Argo/UML's feedback is phrased positively and includes specific descriptions of why the criticism should be relevant to the designer's goals and how to go about resolving the problem. In the end, the effectiveness of feedback text is up to the author of each critic.</LI>
+</UL>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1111379">
+ </A>
+The second use case begins with the designer taking the initiative to review and resolve identified problems. Step B-2 requires the designer to look at items in the &quot;to do&quot; pane in the lower-left quadrant of the main Argo/UML window. The designer eventually takes an interest in a particular &quot;to do&quot; item (step B-3) and selects it (B-4). This causes the text of the &quot;to do&quot; item to be displayed in the &quot;to do&quot; item tab. From there, the designer must understand the issue and form a plan to fix it. This interaction with the &quot;to do&quot; list suggests two new doctrine additions:</P>
+<UL>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1111380">
+ </A>
+Users will eventually seek to resolve outstanding design problems. This can be safely assumed based on the cognitive theories of reflection-in-action and opportunistic design.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1111381">
+ </A>
+Users know that items in the lower-left pane are &quot;to do&quot; item headlines. Since it is already assumed that users are familiar with standard user interface elements and desktop applications, it is fair to assume that users will know that items in a tree widget can be safely expanded and selected. Once users explore this widget they will see the &quot;to do&quot; item headlines and full descriptions. These headlines and descriptions serve as examples that demonstrate the purpose of the &quot;to do&quot; list and the &quot;to do&quot; item tab. The majority of users surveyed were able to correctly explain the purpose of the &quot;to do&quot; list.</LI>
+</UL>
+</DIV>
+</DIV>
+<DIV>
+<H3 CLASS="Heading2">
+<A NAME="pgfId=1111384">
+ </A>
+Walkthrough of Non-modal Wizards</H3>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1111386">
+ </A>
+<A HREF="diss6.html#32166" CLASS="XRef">
+See Steps for non-modal wizards</A>
+ shows the use case for non-modal wizards. This use case assumes that the &quot;to do&quot; item text has already been accessed and understood, as described above. This starting point is needed because wizards are only presented after a &quot;to do&quot; item description has been presented.</P>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1111389">
+ </A>
+<A NAME="32166">
+ </A>
+Steps for non-modal wizards</H6>
+</CAPTION>
+<TR>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1111395">
+ </A>
+Step</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1111397">
+ </A>
+User Action</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1111399">
+ </A>
+System Reaction</P>
+</TH>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111401">
+ </A>
+C-1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111403">
+ </A>
+Desire support for problem resolution</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111405">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111407">
+ </A>
+C-2</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111409">
+ </A>
+Click &quot;Next&gt;&quot; in the &quot;to do&quot; tab</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111411">
+ </A>
+Display the first wizard panel</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111413">
+ </A>
+C-3</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111415">
+ </A>
+Use widgets in each step of the wizard</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111417">
+ </A>
+Update the design document and wizard progress bar on each step</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111419">
+ </A>
+C-4</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111421">
+ </A>
+Optionally, leave the wizard to work with other features or even other wizards</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111423">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111425">
+ </A>
+C-5</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111427">
+ </A>
+Optionally, return to a partially completed wizard</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111429">
+ </A>
+</P>
+</TD>
+</TR>
+</TABLE>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1111433">
+ </A>
+Justification of Steps</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1111434">
+ </A>
+The first step of using a non-modal wizard is choosing to use it. Then, the designer must click &quot;Next&gt;&quot; to move from the problem description to the first step of the wizard. &quot;Next&gt;&quot; and &quot;&lt;Back&quot; buttons are familiar to anyone who has experience with standard wizards. Indeed, the availability of these two buttons is a strong cue to the user to apply his or her knowledge of standard wizards. In step C-3, the designer interacts with the widgets within a particular wizard, while the tool makes immediate updates to the design. Although the usability of each particular wizard could be evaluated with a separate walkthrough, I am more concerned with the usability of the aspects of the non-modal wizard approach that distinguish it from the standard wizard approach. In particular, the immediate update of the design is unique to non-modal wizards. Immediate updates are part of the direct-manipulation paradigm and are encouraged by the guidelines proposed by Shneiderman (1998) and others.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1111436">
+ </A>
+The last two steps in <A HREF="diss6.html#32166" CLASS="XRef">
+See Steps for non-modal wizards</A>
+ are both optional, and it is expected that the designer will work on other tasks between steps C-4 and C-5. In step C-4, the designer may leave the wizard to use other features of the tool, such as the diagram editor, menu commands, other items in the &quot;to do&quot; list, or even other wizards. At first, designers using Argo/UML may apply their knowledge of standard wizards and assume that they must finish the wizard or cancel it. After a little experience with non-modal wizards, however, designers will encounter a cue card wizard that explicitly directs them to use other tool features. Also, the fact that non-modal wizards do not overlap the main editing window is a strong indicator that other tool features are always available. Designers must desire working with other features and they must feel sure that they will not lose work by leaving a wizard. The cognitive theory of opportunistic design indicates that designers will deviate from prescribed processes, such as the steps of a wizard, when needed information must be looked for elsewhere. Designers who have become familiar with Argo/UML's &quot;to do&quot; list will know that items are never removed without being resolved. This leads to step C-5, where the designer may return to a partially completed wizard. This is done by selecting the &quot;to do&quot; item via a clarifier or the &quot;to do&quot; list as described above. Designers may return to a partially completed wizard simply by investigating the clarifier or &quot;to do&quot; list as they did originally, or they may explicitly seek out a particular &quot;to do&quot; item that they wish to finish. The walkthrough for the former case is presented above. In the latter case, designers should be able to scan down the &quot;to do&quot; list and identify partially completed wizards when they see blue progress bars. This interaction suggests the need for two additions to the Argo/UML doctrine:</P>
+<UL>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1111438">
+ </A>
+Users desire semi-automatic problem correction. The reasonableness of this assumption depends on the specifics of the problem identified, the difficulty of resolving the problem, and the value added by the wizard. Certainly, designers who have previously perceived wizards as providing high value are likely to apply that perception to non-modal wizards in Argo/UML. The further exploration of this assumption with a user survey indicated that about half of all users do desire aid in solving identified problems, especially when the problem is difficult or if the wizard makes fixing the problem very easy.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1111439">
+ </A>
+Users recognize the small blue bars on &quot;to do&quot; item icons as progress bars. There is a strong similarity between Argo/UML's &quot;to do&quot; item progress bars and the standard progress bars found in other applications: both are rectangles that extend from left to right as the user makes progress in a multi-step task. The position of Argo/UML's small progress bars, however, is unusual and may prevent users from realizing that they are progress bars. Surprisingly, a clear majority of surveyed users recognized these progress bars.</LI>
+</UL>
+</DIV>
+</DIV>
+<DIV>
+<H3 CLASS="Heading2">
+<A NAME="pgfId=1111441">
+ </A>
+Walkthrough of Context Sensitive Checklists</H3>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1111442">
+ </A>
+The user interface steps for using context sensitive checklists are much more simple than those needed for accessing criticism via clarifiers or the &quot;to do&quot; list. The mental steps, however, can be more difficult because checklist items can address broader design issues and are less closely linked to the state of the design. <A HREF="diss6.html#10889" CLASS="XRef">
+See Steps for using context sensitive checklists</A>
+ summarizes the steps for using context sensitive checklists.</P>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1111446">
+ </A>
+<A NAME="10889">
+ </A>
+Steps for using context sensitive checklists</H6>
+</CAPTION>
+<TR>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1111452">
+ </A>
+Step</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1111454">
+ </A>
+User Action</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1111456">
+ </A>
+System Reaction</P>
+</TH>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111458">
+ </A>
+D-1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111460">
+ </A>
+Select a design element</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111462">
+ </A>
+Highlight the element; update the checklist tab</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111464">
+ </A>
+D-2</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111466">
+ </A>
+Form interest in addressing common problems related to the selected element</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111468">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111470">
+ </A>
+D-3</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111472">
+ </A>
+Select &quot;Checklist&quot; tab, if not already shown</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111474">
+ </A>
+Display the checklist for the selected design element</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111476">
+ </A>
+D-4</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111478">
+ </A>
+Read checklist items and consider issues </P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111480">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111482">
+ </A>
+D-5</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111484">
+ </A>
+Optionally, request more information</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111486">
+ </A>
+Display a help window</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111488">
+ </A>
+D-6</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111490">
+ </A>
+Optionally, check off the items considered</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1111492">
+ </A>
+Display checkmarks</P>
+</TD>
+</TR>
+</TABLE>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1111495">
+ </A>
+Justification of Steps</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1111496">
+ </A>
+The first step requires the designer to select a design element as he or she normally would do. In addition to drawing selection handles, Argo/UML also fills the checklist tab with a checklist appropriate to the selected design element. If the checklist tab is already showing, this change will be seen immediately; otherwise, the designer will have to select the checklist tab (step D-3). The designer must desire information on common design problems (step D-2) before he or she can be expected to select the checklist tab. This leads to the following addition to the Argo/UML doctrine:</P>
+<UL>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1111497">
+ </A>
+Users desire the guidance provided by design checklists. Designers are expected to need knowledge support because they have limited knowledge and because they may have difficulty in applying the knowledge they possess. The knowledge in checklists, however, may not appeal to designers. The assumption that designers desire checklists has been tested with survey questions. Seven of the twenty users who answered the relevant survey question indicated that they would like to use checklists often, another nine additional users would use checklists occasionally.</LI>
+</UL>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1111498">
+ </A>
+In step D-4, the designer must read a checklist item and consider the design issue it raises. Whether this step is reasonable or not depends on the wording of specific checklist items. Two factors that increase the effectiveness of checklist items are (1) the fact that checklist items are context sensitive and contain specific design terms rather than vague pronouns, and (2) the availability of on-line help for many checklist items. In step D-5, the designer may access additional information that explains the issue raised in more detail. In the final step, the designer may check off items as they are considered. This serves as a reminder of progress and prompts the designer to go through the checklist systematically. The option to check off items suggests that the following should be added to the Argo/UML doctrine:</P>
+<UL>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1111499">
+ </A>
+Users will check off checklist items as reminders to themselves. This assumption may be problematic because users typically do not take actions that are not perceived as making progress toward a goal. Checking off items is not required and users may feel no desire to perform unneeded steps. Experienced designers, however, are well aware of the effectiveness of systematic consideration of common problems and the need for reminders during complex design tasks. This doctrine addition is also tested with user survey questions. Almost all surveyed users were able to guess the purpose of the check boxes and half said that they would use them.</LI>
+</UL>
+</DIV>
+</DIV>
+<DIV>
+<H3 CLASS="Heading2">
+<A NAME="pgfId=1111501">
+ </A>
+Walkthrough of Design History</H3>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1131665">
+ </A>
+Designers can access information about past design decisions using Argo/UML's &quot;History&quot; tab as described in <A HREF="diss6.html#42760" CLASS="XRef">
+See Steps for using design history</A>
+.</P>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1112258">
+ </A>
+<A NAME="42760">
+ </A>
+Steps for using design history</H6>
+</CAPTION>
+<TR>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1112264">
+ </A>
+Step</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1112266">
+ </A>
+User Action</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1112268">
+ </A>
+System Reaction</P>
+</TH>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131675">
+ </A>
+E-1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131677">
+ </A>
+Desire review of design history</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131679">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112270">
+ </A>
+E-2</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112272">
+ </A>
+Select the &quot;History&quot; tab</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112274">
+ </A>
+Display design history tab</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112276">
+ </A>
+E-3a</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112278">
+ </A>
+Select &quot;Global&quot;</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112280">
+ </A>
+Display list of all history items</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112282">
+ </A>
+E-3b</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112284">
+ </A>
+Select &quot;Selected Element&quot;</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112286">
+ </A>
+Display list of history items related to selected design element</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112288">
+ </A>
+E-4</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112290">
+ </A>
+Read and understand history items</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112292">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112294">
+ </A>
+E-5</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112296">
+ </A>
+Optionally, select a history item</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112298">
+ </A>
+Display details of that item and list the design elements involved</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112300">
+ </A>
+E-6</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112302">
+ </A>
+Optionally, select a design element from the related list</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112304">
+ </A>
+Highlight the item in the diagram pane</P>
+</TD>
+</TR>
+</TABLE>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1111512">
+ </A>
+Justification of Steps</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1131700">
+ </A>
+First, the designer must form the desire to review the history of design choices. The cognitive theory of reflection-in-action indicates that designers do reflect on the state of the design, but it is not obvious that they would seek out design history. Once they have formed the desire to review past design decisions, they must recognize the &quot;History&quot; tab as providing that information (step E-2). In steps E-3a or E-3b, the designer selects global history or chooses to view a subset of the history related to the selected design element. This step seems reasonable because the labels are clear and because the designer can safely experiment with these two settings and understand their effects immediately. Step E-4 is a difficult step that requires the designer to read a one line description of a history item and form an understanding of its meaning. Specifically, designers must recognize history items that relate to current design decisions. Once the designer recognizes a relevant history item, he or she can view its details by selecting it (step E-5). These details include the full text of the history item and a list of the design elements that were involved in the criticism or modification. The designer may optionally follow a trail of history items by selecting one of the listed design elements to see its history (step E-6).</P>
+<UL>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1131701">
+ </A>
+Users will eventually want to review design history. This assumption is one of the more serious barriers to usage of this feature. Expert designers can be expected to desire design histories, but the majority of users might never desire them. A potential refinement would be to make the history feature more proactively advertised with a &quot;tip of the day&quot; or a visual indication of relevant history in the design diagram itself.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1131702">
+ </A>
+Users will find the &quot;History&quot; tab when they want to view design history. Identifying the proper tab should be easy for users once they have formed the desire to access history. It is likely, however, that they will initially scan the interface when first learning to use the tool and not realize the meaning of the history tab. One possible improvement would be to supply descriptive help when the history tab is first accessed.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1135057">
+ </A>
+Users will recognize items in the history tab as past criticisms, changes, and resolutions. Some of the items in the history list are &quot;to do&quot; items and have headlines that can be recognized by users familiar with the &quot;to do&quot; list. Once users recognize that some of the items are past criticisms, the inference that the others are also historical items should be straightforward. The meaning of the particular types of history items will probably only be discovered after reading the text of a few items.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1135058">
+ </A>
+Users will recognize if and how history items relate to current design decisions. This is the basic assumption underlying the value of this feature. The tool can help users identify which design elements were involved in a given part of the design history and which history items relate to current design elements. But, the user must ultimately make the connection between the historical facts and present design goals. One possible improvement would be knowledge-based aids for history analysis. For example, &quot;history critics&quot; could be defined as a form of critic that identify problematic patterns in the design history, such as one item being constantly revised over time. Design elements that are revised too often are usually design bottlenecks that will require further attention if not removed.</LI>
+</UL>
+</DIV>
+</DIV>
+<DIV>
+<H3 CLASS="Heading2">
+<A NAME="pgfId=1135059">
+ </A>
+Walkthrough of Opportunistic Search Utility</H3>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1131719">
+ </A>
+<A HREF="diss6.html#12636" CLASS="XRef">
+See Steps for using the opportunistic search utility</A>
+ shows the steps needed to use Argo/UML's opportunistic search utility. This feature is an improvement on the standard search utilities found in many commercial UML tools and other widely used desktop applications. This walkthrough emphasizes the aspects that differ from standard search utilities.</P>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1112313">
+ </A>
+<A NAME="12636">
+ </A>
+Steps for using the opportunistic search utility</H6>
+</CAPTION>
+<TR>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1112319">
+ </A>
+Step</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1112321">
+ </A>
+User Action</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1112323">
+ </A>
+System Reaction</P>
+</TH>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112325">
+ </A>
+F-1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112327">
+ </A>
+Open the Search window</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112329">
+ </A>
+Display Search window; show help tab</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112331">
+ </A>
+F-2</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112333">
+ </A>
+Enter search criteria</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112335">
+ </A>
+Enable &quot;Search&quot; button</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112337">
+ </A>
+F-3</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112339">
+ </A>
+Press &quot;Search&quot; button</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112341">
+ </A>
+Perform search; display search results in new tab</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112343">
+ </A>
+F-4</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112345">
+ </A>
+Review search results</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112347">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112349">
+ </A>
+F-5</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112351">
+ </A>
+Select search result</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112353">
+ </A>
+Display related design elements in lower table</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131729">
+ </A>
+F-6</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131731">
+ </A>
+Optionally, form an interest in related design elements</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131733">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112355">
+ </A>
+F-7</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112357">
+ </A>
+Review related design elements</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112359">
+ </A>
+</P>
+</TD>
+</TR>
+</TABLE>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1111525">
+ </A>
+Justification of Steps</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1131751">
+ </A>
+Designers commonly use search utilities in programming and design tools as a means of navigation and to get an overview of a certain aspect of the design. In step F-1, the designer opens the search window via a menu command or keystroke. Argo/UML makes finding the search command easy by placing it under the Edit menu, which is the same place that it is found in many other tools. As soon as the search window is displayed, the &quot;Help&quot; tab is displayed in the lower half of the window. The help tab explains the non-standard aspects of the search utility. In step F-2, the designer enters search criteria, such as a wild-card expression for the names of design elements to find or the type of element to find. Most search criteria fields are standard and straightforward, but some may be difficult to understand or use. The emphasis here, however, is on the cognitive support provided when the designer reviews the search results. In step F-3, the designer presses the Search button and Argo/UML creates a new tab with the search results. The new tab is labeled with a concise summary of the search criteria. The designer then proceeds to review the search results (step F-4). Results are displayed in a table with one result in each row. A designer familiar with standard desktop tools should have no trouble recognizing or understanding the search results, and he or she will naturally click on a search result to learn more about it (step F-5). When the designer selects a search result, the opportunistic search utility also displays related design elements in a second table in the lower half of the results tab. The fact that the items in the lower table are related to the selected result should be clear since they appear after a selection is made. However, the nature of the relationship could be unclear. Step F-6 in <A HREF="diss6.html#12636" CLASS="XRef">
+See Steps for using the opportunistic search utility</A>
+ requires the designer to form an interest in a related item. Note that the exact nature of the relationship need not be understood, so long as the designer forms an interest. In fact, it is expected that designers may see coincidental relationships in addition to the rules used by Argo/UML to generate these items. Finally, the designer may review a related result in context by double clicking on it. This step should also be natural to designers who have used other search utilities. This use case suggests the following additions to the Argo/UML doctrine:</P>
+<UL>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1131752">
+ </A>
+Users will understand the search window help tab. Even though the help tab is presented on the first use of the search utility, users may not read or understand it. However, it is reasonable to assume that users will successfully access the help tab if they encounter problems later.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1131753">
+ </A>
+Users will associate the label on the result tab with the search criteria. The two key factors that should make the search result tab labels recognizable are (1) that they include search terms entered by the designer and (2) that they include the asterisk (&quot;*&quot;) symbol, which is normally interpreted as a search wild-card character. Only one of the surveyed users failed to understand the meaning of the tab labels.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1131754">
+ </A>
+Users will form their own understandings of the relationship between the selected search result and the related results. The exact meaning of the relationships can be very hard to guess by simply looking at examples. However, users should not need to understand the rules by which related design elements are discovered. Having some obvious relationship rules can help reinforce the fact that the bottom table contains related elements. For example, the attributes, associations, and operations of a class are obviously related to the class itself. If such obvious rules are omitted, the user is likely to question their initial understanding of the meaning of the related elements table. So long as basic rules are in place, advanced rules should not pose a problem. Surprisingly, eight out of eleven surveyed users who were shown a single screenshot were able to form reasonable understanding of the meaning of the related result items.</LI>
+</UL>
+</DIV>
+</DIV>
+<DIV>
+<H3 CLASS="Heading2">
+<A NAME="pgfId=1115373">
+ </A>
+Walkthrough of Opportunistic Table Views</H3>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1131776">
+ </A>
+The walkthrough of Argo/UML's opportunistic table views consists of a single use case with several optional steps. The use case is described in <A HREF="diss6.html#40822" CLASS="XRef">
+See Steps for using opportunistic table views</A>
+.</P>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1115376">
+ </A>
+<A NAME="40822">
+ </A>
+Steps for using opportunistic table views</H6>
+</CAPTION>
+<TR>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1115382">
+ </A>
+Step</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1115384">
+ </A>
+User Action</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1115386">
+ </A>
+System Reaction</P>
+</TH>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131787">
+ </A>
+G-1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131789">
+ </A>
+Form the desire to use a table view</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131791">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1115388">
+ </A>
+G-2</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1115390">
+ </A>
+Select the &quot;As Table&quot; tab</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1115392">
+ </A>
+Display a table view</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1115394">
+ </A>
+G-3</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1115396">
+ </A>
+Optionally, change table perspective</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1115398">
+ </A>
+Display a table perspective</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1115400">
+ </A>
+G-4</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1115402">
+ </A>
+Optionally, select highlighting mode</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1115404">
+ </A>
+Update highlighting</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1115406">
+ </A>
+G-5</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1115408">
+ </A>
+Select and edit table cells</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1115410">
+ </A>
+Display table values and highlighting</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1115412">
+ </A>
+G-6</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1115414">
+ </A>
+Optionally, press replay button</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1115416">
+ </A>
+Re-display recent highlighting</P>
+</TD>
+</TR>
+</TABLE>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1115352">
+ </A>
+Justification of Steps</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1131815">
+ </A>
+A designer using Argo/UML can edit any semantic aspect of the design via either a diagram view and properties tab or via a tabular view. The diagram view is the default and more familiar of the two. Making the choice to use a tabular design view may require meta-cognitive insight on the part of the designer: i.e., the designer must realize when there is an advantage to using the tabular view.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1131816">
+ </A>
+Once the designer has formed the desire to use a table view, he or she selects the &quot;As Table&quot; tab (step G-2). Choosing the &quot;As Table&quot; tab should be easy because the label is clear, it is centrally located, and users know that they can safely explore tabs. The most commonly useful table perspective is shown by default. Designers may optionally switch to an alternative table perspective from a choice widget (step G-3). Next, the designer may adjust the highlighting mode to better fit his or her systematic scanning behavior (step G-4). Thinking of one's scanning behavior in advance definitely requires meta-cognitive awareness that the designer may not have. However, even if step G-4 is not carried out, the default row-by-row highlighting mode is the one most likely to be useful. In step G-5, the designer uses the table as normal. This includes selecting and editing table cells to accomplish some editing task. Since it is assumed that the designer specifically chose the table view instead of the diagram view, it is likely that he or she will perform a task that takes advantage of the tabular nature of the table view. For example, the designer is likely to systematically scan the design or make a series of edits to corresponding parts of the design. While the designer is carrying out that task, he or she may need additional information from some other part of the design. The theory of opportunistic design indicates that designers are likely to switch tasks to work with other parts of the design to gather needed information. Upon returning from such a design excursion, the designer may use the &quot;Instant Replay&quot; button to request a replay of the most recent activity in the table view (step G-6). The intent of the replay feature is to help the designer see where he or she left off and thus re-establish a part of the mental task context. However, the effectiveness of the instant replay animation needs to be verified.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1131817">
+ </A>
+The expected interaction with opportunistic table views suggests the following additions to the Argo/UML doctrine:</P>
+<UL>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1131818">
+ </A>
+Users will understand the advantages of a tabular view and choose it over a diagram when appropriate. This is one of the biggest assumptions of the opportunistic table views feature. As discussed below, a survey of users indicated that they did not form a desire to use tables when systematically checking a design diagram. It seems likely that users could learn the value of tables with experience, but encouragement will be needed for most users to recognize that value. Potential refinements to address this barrier to usage include &quot;tip of the day&quot; dialogs or coaches that watch the user's actions and suggest more effective strategies.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1131819">
+ </A>
+Users will notice the &quot;As Table&quot; is tab. Noticing the &quot;As Table&quot; tab should be easy for users because it is shown in an area of the main window where users access many different Argo/UML features. All but one of the surveyed users were able to access the table view.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1131820">
+ </A>
+Users will notice the choice of alternative table perspectives in the table tab. Finding the table perspective choice is not difficult because it is located above the table, near the column headers. In many desktop applications, table views are customized via the column headers, so that is a natural place to look. All of the surveyed users who responded to the relevant question gave answers that indicated that they would be able to change the table perspective.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1131821">
+ </A>
+Users will plan systematic scans of the design. Expert designers certainly do perform systematic scans of the design and make systematic changes. However, teaching designers this expert behavior will require more support than is currently provided by this feature. A potential refinement would be a task-tool-matching dialog or help file. That service would allow the user to select a task-level goal from a list of supported tasks and then advise the user on which perspectives to scan during that task.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1131823">
+ </A>
+Users will recognize the purpose of the &quot;Instant Replay&quot; button. The majority of users surveyed did not understand the meaning of this button label. A possible refinement would be to relabel this button &quot;Show recent highlights&quot;. However, the majority of surveyed users thought that pressing the &quot;Instant Replay&quot; button was a safe operation, and once they saw the instant replay animation, they understood it's meaning.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1131824">
+ </A>
+Users will see where they left off based on the instant replay animation. Users can be expected to understand the instant replay animation in the context of use because it simply replays actions that the designer recently performed. There was some confusion among surveyed users as to whether the final row highlighted was the row that they should continue to work on or if that row had already been considered. Allowing designers to be off-by-one is acceptable if it results in a row or column being considered twice, but it is not acceptable if it results in a row or column being skipped. For that reason, the animation should stop short and not include the most recent row selected.</LI>
+</UL>
+</DIV>
+</DIV>
+<DIV>
+<H3 CLASS="Heading2">
+<A NAME="pgfId=1111540">
+ </A>
+Walkthrough of Navigational Perspectives</H3>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1111541">
+ </A>
+Designers use Argo/UML's navigational perspectives by performing the steps described in <A HREF="diss6.html#34422" CLASS="XRef">
+See Steps for using navigational perspectives</A>
+.</P>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1112438">
+ </A>
+<A NAME="34422">
+ </A>
+Steps for using navigational perspectives</H6>
+</CAPTION>
+<TR>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1112444">
+ </A>
+Step</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1112446">
+ </A>
+User Action</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1112448">
+ </A>
+System Reaction</P>
+</TH>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112450">
+ </A>
+H-1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112452">
+ </A>
+Form question about a design structure</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112454">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112462">
+ </A>
+H-2</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112464">
+ </A>
+Choose a perspective to help answer question</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112466">
+ </A>
+Update Navigation pane</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112468">
+ </A>
+H-3</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112470">
+ </A>
+Expand tree widget in navigation pane</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112472">
+ </A>
+Show tree according to chosen perspective</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112474">
+ </A>
+H-4</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112476">
+ </A>
+Understand tree and use it to answer questions</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1112478">
+ </A>
+</P>
+</TD>
+</TR>
+</TABLE>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1111549">
+ </A>
+Justification of Steps</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1131886">
+ </A>
+As with several of Argo/UML's cognitive support features, the designer must first realize that he or she needs a certain type of information. In the case of navigational perspectives, the designer must form a question about a design structure (step H-1). The theory of reflection-in-action and other cognitive theories suggest that raising and answering questions about the design is a key part of the design process. In step H-2, the designer must choose a navigational perspective from the choice widget above the navigation tree. To accomplish this step, the designer must first recognize that the choice widget is the proper affordance. Then, the designer must choose a perspective that will help answer the question raised based on the name of the perspective. Some of the perspective names are very clear because they use standard terms like &quot;inheritance,&quot; while others may not be so clear. If this is the first use of the selected perspective, it will be completely collapsed and must be expanded (step H-3). Expanding the tree should be natural because, at this point, the tree has obviously changed, and expanding is the normal operation on a collapsed tree. In step H-4, the designer must understand the design structure that is shown. As with the opportunistic search utility, there is the possibility that the designer will see a different structure than the one intended. This could be useful, or it could be misleading. This use case has identified the following doctrine additions:</P>
+<UL>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1131887">
+ </A>
+Users will form questions about design structures that the navigational perspectives can help answer. Many of the predefined design perspectives are specifically designed to address commonly occurring design questions by making key design structures clearly visible. For example, the inheritance and reachability perspectives are useful in answering many common questions. </LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1131888">
+ </A>
+Users will recognize the perspective choice widget. The position of the perspective choice widget directly above the navigation tree should make it easy for users to find and recognize this widget. One potential refinement would be to label the perspective choice widget with &quot;Perspective:&quot;, as is done in the ObjectDomain tool.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1131889">
+ </A>
+Users will choose an appropriate perspective based on its name. As noted above, some of the perspectives have very clear names than use standard terms for key design structures. Once the user uses one perspective successfully, they can be expected to explore the others. However, if the user does not understand a given perspective, he or she is unlikely to use it when needed. In a survey question related to systematic scanning of all associations in the design, two out of eight surveyed users indicated that they would attempt to use the &quot;association-centric&quot; perspective. Argo/UML, does not provide a predefined &quot;association-centric&quot; perspective, so the users must have understood the naming conventions used by other perspectives to invent a new name fitting the same convention.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1131890">
+ </A>
+Users will understand the design structure being shown in the navigation pane. Some perspectives are clear, others are not. Understanding a perspective that is not clear based on its name alone will require a designer to understand the design structure being shown in the tree widget. This could be a problem, especially if the designer forms an incorrect understanding of the tree structure. It is possible that designers will look at the navigational perspective configuration window to gain an understanding of a perspective, but that is unlikely. One refinement that would help overcome this barrier to usage would be to attach a descriptive comment to each navigational perspective. In cases where a perspective has no comment, a default description could be generated by combining short descriptions of the rules that make up the perspective.</LI>
+</UL>
+</DIV>
+</DIV>
+<DIV>
+<H3 CLASS="Heading2">
+<A NAME="pgfId=1111552">
+ </A>
+Walkthrough of Broom Alignment Tool</H3>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1131913">
+ </A>
+<A HREF="diss6.html#13526" CLASS="XRef">
+See Steps for using the broom alignment tool</A>
+ shows the steps needed to use Argo/UML's broom alignment tool. This walkthrough is specified at a lower level of detail than most of the others because the broom uses a novel interaction that does not make use of standard widgets.</P>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1131926">
+ </A>
+<A NAME="13526">
+ </A>
+Steps for using the broom alignment tool</H6>
+</CAPTION>
+<TR>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1131932">
+ </A>
+Step</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1131934">
+ </A>
+User Action</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1131936">
+ </A>
+System Reaction</P>
+</TH>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131938">
+ </A>
+I-1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131940">
+ </A>
+Mentally visualize diagram elements in semantic groups</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131942">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131944">
+ </A>
+I-2</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131946">
+ </A>
+Form desire to express semantic groups as visual groups</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131948">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131950">
+ </A>
+I-3</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131952">
+ </A>
+Drag diagram elements roughly into desired positions</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131954">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131956">
+ </A>
+I-4a</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131958">
+ </A>
+Enter broom mode via broom toolbar icon</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131960">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131962">
+ </A>
+I-4b</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131964">
+ </A>
+Enter broom mode via control-click in diagram area</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131966">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131968">
+ </A>
+I-5</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131970">
+ </A>
+Drag the mouse in the diagram area</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131972">
+ </A>
+Draw broom</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131974">
+ </A>
+I-6</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131976">
+ </A>
+Push diagram elements into alignment</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131978">
+ </A>
+Move diagram elements</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131980">
+ </A>
+I-7</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131982">
+ </A>
+Optionally, drag backwards to undo unwanted movements</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131984">
+ </A>
+Move diagram elements back toward their original position</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131986">
+ </A>
+I-8</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131988">
+ </A>
+Optionally, press spacebar</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131990">
+ </A>
+Evenly space the elements on the broom</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131992">
+ </A>
+I-9</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131994">
+ </A>
+Release the mouse button</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1131996">
+ </A>
+Exit broom mode, go to selection mode</P>
+</TD>
+</TR>
+</TABLE>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1111566">
+ </A>
+Justification of Steps</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1132003">
+ </A>
+The cognitive theory of secondary notation indicates that designers will desire diagrams that make effective use of visual properties such as alignment and spacing. Based on this theory, steps I-1 and I-2 should occur naturally. Since it is assumed that designers are experienced with diagramming tools, step I-3 should not be a problem. In fact, designers are likely to move diagram elements into rough alignment as a way to quickly evaluate the visual impact of a given layout. In step I-4, the designer can use the toolbar button for the broom mode (step I-4a) or use control-drag (step I-4b). The toolbar button provides a visual affordance to start broom mode, but the designer may have difficulty recognizing the broom mode icon. The control-drag option is less likely to be discovered, but it might be learned from the documentation. Once the designer has changed modes in the diagram editor, he or she is likely to click or drag in the diagram area (step I-5). Furthermore, a message in the status bar of the main Argo/UML window briefly explains the broom and prompts the designer to drag. The status bar message is, &quot;Push objects around. Return toggles pulling. Spacebar distributes.&quot; If the designer merely clicks, a blue plus-sign is shown until the user eventually drags the mouse. Dragging produces an immediate visual effect that indicates that something is happening. The shape of the broom tool provides a pushing affordance that should lead designers to step I-6. Even if the shape of the broom does not immediately suggest its behavior, the designer should naturally discover and understand the broom's push-to-align action. In step I-7, the designer may optionally undo the movement of diagram elements by moving the broom in the opposite direction as the original drag. Again, the existence of this feature is not obvious, but it is likely to be invoked accidentally, and once it has been seen its usefulness will be obvious. Alignment by itself does not completely achieve the goal of forming visual groups; even spacing is also needed. Designers may evenly space the diagram elements on the broom by pressing the spacebar (step I-8). The availability of this action is not obvious, but it is mentioned in the status bar whenever the broom is in use. Once the designer has pressed the space bar, its effect is immediately visible, and the message &quot;space evenly&quot; is shown behind the broom. The final step (I-9) is simply to release the mouse button.</P>
+<UL>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1132017">
+ </A>
+Users will desire alignment and even spacing in UML diagrams. When asked to select the most readable of three diagrams, the majority of surveyed users selected one that used alignment as an effective secondary notation. Even if designers are not aware of their desire for secondary notation, they very often spend time trying to get their diagrams to look neat and orderly by aligning diagram elements.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1132018">
+ </A>
+Users will move diagram elements into rough position while deciding on layout. When asked how they would improve a poor layout to make it more clear, the majority of users indicated that they would move nodes into alignment. Also, the laboratory study of alignment tools showed that most subjects moved nodes into rough alignment. Users who are familiar with standard alignment tools often move nodes into rough alignment so that the effect of standard alignment command, such as &quot;align tops,&quot; will be more predictable.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1132019">
+ </A>
+Users will associate the broom mode icon with the broom. This assumption is very unlikely to be met by first time users since the broom is not related to any commonly used desktop application feature. In a survey of users, very few knew the meaning of the broom icon, and the tool tip &quot;Broom&quot; did not provide much assistance. However, once the functionality of the broom has been discovered and understood, the icon can become familiar because it shows the recognizable shape of the broom. One refinement to this feature would be a more descriptive tool tip such as, &quot;Broom alignment tool.&quot;</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1132020">
+ </A>
+Users will feel safe in experimenting with broom mode. The surveyed users indicated that they thought that the broom icon was a safe button to press. This is implied because of the location of the broom icon next to the selection mode icon on the toolbar. Once users are in broom mode and move some objects around, they will realize that the broom does affect the state of the design, but it does so in a safe and understandable way.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1132021">
+ </A>
+Users will discover that control-drag also starts broom mode. It is very unlikely that users will discover this without being told explicitly. One refinement would be to add a tool tip, &quot;tip of the day,&quot; or status bar tip to explain that the broom can also be accessed via control-drag.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1132022">
+ </A>
+Users will guess that the broom can push objects based on the shape of the broom. Based on the survey results, a majority of users will guess the functionality of the broom when they first see it. Furthermore, in actual usage the fact that the broom is attached to the mouse pointer should lead to immediate experimentation, so it is reasonable to assume that even those who do not understand it immediately will understand it after using it once. The shape of the broom also indicates the direction of alignment and the scope of its interaction with the diagram elements.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1132023">
+ </A>
+Users will understand the push-into-alignment metaphor. The majority of users surveyed understood the functionality of the broom after seeing two screenshots of its use. It seems very reasonable to expect users to understand the push-into-alignment metaphor.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1132024">
+ </A>
+Users will understand that backing up allows objects to return to their initial position. Based on four screenshots of the broom reversing direction, surveyed users were able to understand this aspect of using the broom very clearly. In actual usage, the rate of understanding is expected to be even higher since experimentation and visual feedback will be immediate.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1132025">
+ </A>
+Users will realize that pressing the spacebar will distribute objects. It is unlikely that the user will discover this feature without being told. Argo/UML already includes a status bar message telling the user to press the spacebar, however status bar messages are often ignored, especially when the user is involved in a direct manipulation. It is possible, however, that the user would eventually notice the message and try to use the spacebar. One possible refinement would be to provide help on using the broom when it is first used, or to simply leave a status bar message visible after the broom mode has been exited, if spacing was not performed.</LI>
+</UL>
+</DIV>
+</DIV>
+<DIV>
+<H3 CLASS="Heading2">
+<A NAME="pgfId=1111568">
+ </A>
+Walkthrough of Model-based Layout</H3>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1111569">
+ </A>
+Expected usage of Argo/UML's proposed model-based layout feature consists of the two use cases described in <A HREF="diss6.html#19797" CLASS="XRef">
+See Steps for using grid-based layout</A>
+ and <A HREF="diss6.html#18595" CLASS="XRef">
+See Steps for using region-based layout</A>
+.</P>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1113294">
+ </A>
+<A NAME="19797">
+ </A>
+Steps for using grid-based layout</H6>
+</CAPTION>
+<TR>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1113300">
+ </A>
+Step</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1113302">
+ </A>
+User Action</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1113304">
+ </A>
+System Reaction</P>
+</TH>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113306">
+ </A>
+J-1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113308">
+ </A>
+Form desire to automatically redo diagram layout</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113310">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113312">
+ </A>
+J-2</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113314">
+ </A>
+Issue &quot;Layout Diagram...&quot; command</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113316">
+ </A>
+Open &quot;Model-based Layout&quot; window</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113318">
+ </A>
+J-3</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113320">
+ </A>
+Select &quot;Grid-Based&quot; tab</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113322">
+ </A>
+Show tab, including attribute fields, preview pane, and &quot;Layout Diagram&quot; button</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113324">
+ </A>
+J-4</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113326">
+ </A>
+Choose attributes to be used in layout</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113328">
+ </A>
+Update preview pane</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113330">
+ </A>
+J-5</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113332">
+ </A>
+Divide attribute value ranges</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113334">
+ </A>
+Update preview pane</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113336">
+ </A>
+J-6</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113338">
+ </A>
+Optionally, order attribute value ranges on axes</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113340">
+ </A>
+Update preview pane</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113342">
+ </A>
+J-7</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113344">
+ </A>
+Press &quot;Layout Diagram&quot; button</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113346">
+ </A>
+Layout diagram using grid constraints and simple geometric rules</P>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1135263">
+ </A>
+<A NAME="18595">
+ </A>
+Steps for using region-based layout</H6>
+</CAPTION>
+<TR>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1135269">
+ </A>
+Step</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1135271">
+ </A>
+User Action</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1135273">
+ </A>
+System Reaction</P>
+</TH>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135275">
+ </A>
+K-1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135277">
+ </A>
+Form desire to automatically redo layout</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135279">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135281">
+ </A>
+K-2</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135283">
+ </A>
+Issue &quot;Layout Diagram...&quot; command</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135285">
+ </A>
+Open &quot;Model-based Layout&quot; window</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135287">
+ </A>
+K-3</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135289">
+ </A>
+Select &quot;Region-Based&quot; tab</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135291">
+ </A>
+Show tab, including constraint field, region drawing pane, and &quot;Layout Diagram&quot; button</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135293">
+ </A>
+K-4</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135295">
+ </A>
+Draw regions to be used in layout</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135297">
+ </A>
+Update region drawing pane</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135299">
+ </A>
+K-5</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135301">
+ </A>
+Assign constraints to regions</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135303">
+ </A>
+Update region drawing pane</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135305">
+ </A>
+K-6</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135307">
+ </A>
+Press &quot;Layout Diagram&quot; button</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135309">
+ </A>
+Layout diagram using constrained regions and simple geometric rules</P>
+</TD>
+</TR>
+</TABLE>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1135311">
+ </A>
+Justification of Steps</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1135312">
+ </A>
+ Both use cases begin with the desire to automatically redo the layout of a diagram. This desire occurs naturally during design and is commonly found and used in other CASE tools. Likewise, the second step is also reasonable. The final step in each use case is also very straightforward. Even if all the other steps are skipped, the designer can simply press the &quot;Layout Diagram&quot; button to produce a layout that is as good as that produced by other CASE tools. Even if a designer does not initially desire model-based layout, it is likely that they will discover this cognitive support feature eventually through normal usage. </P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1135318">
+ </A>
+In step J-3, the designer must select the &quot;Grid-Based&quot; tab. Accessing a clearly visible tab should not be a problem because exploring tabs is always a safe operation. Next, the user must choose attributes to control the layout. Since this aspect of Argo/UML's model-based layout is not found in other tools, designers may not understand what is being requested. Furthermore, designers may have difficulty choosing the particular model element attributes needed to achieve the desired layout. Once the attributes are selected, value ranges must be defined. For some attributes, this can be trivial or automatic; for others, determining appropriate value ranges may require trial-and-error. The layout preview pane quickly shows a rough approximation of the layout to help designers explore alternatives. In step J-6, the designer may reorder the rows or columns or move a given attribute from a row to a column or from a column to a row. Reordering should be easy to accomplish via the up and down buttons to the right of the attribute list. The first use case suggests the following addition to the Argo/UML doctrine:</P>
+<UL>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1111590">
+ </A>
+Users will be able to select model element attributes to control model-based layout. Model-based layout uses the attributes of model elements, such as name, visibility, isAbstract, or tagged values. Before the user can pick an attribute to use, he or she must form a question about the design that can be answered by seeing the diagram laid out in a particular way. Designers may have difficulty bridging the gap from questions to layout. One potential refinement to this feature that could reduce this gap would be to offer predefined model-based layouts that help answer common design questions. Another refinement would be to document each predefined layout with a description of its purpose.</LI>
+</UL>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1135364">
+ </A>
+In step K-3, the designer selects the &quot;Region-Based&quot; tab. Then, in steps K-4 and K-5, the designer must define geometric regions for the layout and assign constraints to them. It is expected that steps K-4 and K-5 will be done repeatedly as the designer refines the layout. The following additions to the Argo/UML doctrine are needed for the designer to successfully define and refine the region-based layout:</P>
+<UL>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1135368">
+ </A>
+Users will understand the region-based layout concept. This assumption relies on the users' previous experience with diagram layout in other contexts. Users who have prepared technical charts and diagrams in the past are likely to have encountered this concept. Other users may also be able to use this feature after they have learned the concept from the help tab or from experimenting with the Grid-Based layout specification tab.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1135372">
+ </A>
+Users will be able to specify constraints for regions. Software designers are very familiar with boolean conditions, so the actual constraint expression itself should not be a problem. A bigger problem is the user's need to bridge the gap between visualization goals and constraint choices. One refinement that could help address this problem would be to provide predefined constraints with descriptive comments.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1135373">
+ </A>
+Users will understand the interactions between regions. The rules for interactions between regions may seem complex or unexpected to some users. Users should be able to learn these rules by directly manipulating the regions in the preview pane and seeing the approximate layout immediately. The interaction rules should also be clearly explained in the help tab.</LI>
+</UL>
+</DIV>
+</DIV>
+<DIV>
+<H3 CLASS="Heading2">
+<A NAME="pgfId=1111591">
+ </A>
+Walkthrough of Selection-Action Buttons</H3>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1111592">
+ </A>
+The walkthrough of Argo/UML's selection-action buttons consists of one use case with three alternative conclusions.</P>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1113415">
+ </A>
+Steps for using selection-action buttons</H6>
+</CAPTION>
+<TR>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1113421">
+ </A>
+Step</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1113423">
+ </A>
+User Action</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1113425">
+ </A>
+System Reaction</P>
+</TH>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113427">
+ </A>
+L-1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113429">
+ </A>
+Form desire to expand an existing node</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113431">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113433">
+ </A>
+L-2</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113435">
+ </A>
+Select a diagram node</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113437">
+ </A>
+Show handles and appropriate SABs</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113439">
+ </A>
+L-3a</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113441">
+ </A>
+Click a selection-action button</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113443">
+ </A>
+Create node and edge in the default position</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113445">
+ </A>
+L-3b</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113447">
+ </A>
+Drag from a SAB to empty space</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113449">
+ </A>
+Create node and edge in the position indicated</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113451">
+ </A>
+L-3c</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113453">
+ </A>
+Drag from a SAB to a target node</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1113455">
+ </A>
+Create edge between original and target nodes</P>
+</TD>
+</TR>
+</TABLE>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1111601">
+ </A>
+Justification of Steps</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1132062">
+ </A>
+Designers naturally form the desire to add new nodes and edges to the diagram as part of the diagram construction process. New diagram elements may be the initial elements in new clusters of related elements, or they may elaborate on existing clusters of classes or states. The standard toolbar interface must be used for initial diagram elements. However, if the designer wants to elaborate on existing diagram elements by adding new related elements (step L-1), he or she can use the selection-action buttons.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1132063">
+ </A>
+Selection-action buttons are implemented as an enhancement to normal diagram element selection. As such, the designer will encounter them during the normal course of selecting diagram elements (step L-2). Steps L-1 and L-2 may be reversed if the selection-action buttons serve as a prompt for the designer to consider adding new elements.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1132064">
+ </A>
+The designer can choose three alternatives for the final step. In alternative L-3a, the designer simply clicks the selection-action as he or she would click a toolbar button. This has the immediate effect of producing a new diagram node and edge of the appropriate type in a default position near the originally selected node. In alternative L-3b, the designer drags from the selection-action button to the desired position of the new node. This alternative is not immediately obvious because buttons are usually not dragged. However, once the designer is familiar with alternative L-3a, he or she may be dissatisfied with the default position and seek to specify the position via dragging. Alternative L-3b might also be discovered accidentally if the designer tries to click and quickly move the mouse to select the new node. While the designer is dragging, a rubberband line is drawn to give immediate feedback and the status bar shows the message, &quot;Drag to define an edge (and a new node).&quot; The final alternative, L-3c, requires the designer to drag from a selection-action button to an existing node. This results in a new edge between the two nodes. Designers may attempt the alternative interaction simply because it seems to be an obvious way to accomplish this goal. The status bar message also suggests that it is possible to define a new edge without defining a new node. Furthermore, the rubberband line feedback mechanism is the same one used when adding an edge between nodes in many diagramming tools, so it may prompt the designer to assume that the same functionality is available in this context.</P>
+<UL>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1132065">
+ </A>
+Users will recognize the function of each selection-action button as a variant of the standard toolbar buttons. In fact, it is likely that the meaning of the standard icons is clearer when they are used as selection-action buttons because their position suggests their function. For example, the generalization tool has an icon consisting of a vertical line with a hollow, triangular arrowhead. This shape is the standard shape used in UML, yet it is not very easily distinguished from other types of arrowheads used in UML. When the same icon is shown at the top of a class node, its meaning should be clearer because its position suggests the normal direction of generalization edges, and because only the most commonly used options are offered to the user.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1132066">
+ </A>
+Users will discover the option to drag the selection-action buttons. Users are expected to discover the option to drag because the normal tools for creating edges involve dragging. Surveyed users did not indicate that they would immediately discover this aspect of the selection-action buttons. Instead, most users would always use the single-click aspect and then position the newly created class.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1132067">
+ </A>
+Users will consider dragging from node to node to make a new edge without making a new node. Once users have dragged from selection-action buttons, the option to drag to an existing node seems fairly natural. All but one of the subjects in the selection-action button laboratory study seemed to have no problem with this. Likewise, only two out of fourteen surveyed users had a problem with this aspect of the selection-action buttons.</LI>
+</UL>
+</DIV>
+</DIV>
+<DIV>
+<H3 CLASS="Heading2">
+<A NAME="pgfId=1111603">
+ </A>
+Walkthrough of Create Multiple</H3>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1135661">
+ </A>
+<A HREF="diss6.html#21795" CLASS="XRef">
+See Steps for creating multiple design elements by pattern</A>
+ and <A HREF="diss6.html#24194" CLASS="XRef">
+See Steps for creating multiple design elements by form</A>
+ show the steps needed to use Argo/UML's create multiple feature.</P>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1135665">
+ </A>
+<A NAME="21795">
+ </A>
+Steps for creating multiple design elements by pattern</H6>
+</CAPTION>
+<TR>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1135671">
+ </A>
+Step</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1135673">
+ </A>
+User Action</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1135675">
+ </A>
+System Reaction</P>
+</TH>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135677">
+ </A>
+M-1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135679">
+ </A>
+Form desire add several related design elements quickly</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135681">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135683">
+ </A>
+M-2</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135685">
+ </A>
+Issue &quot;Create Multiple...&quot; command</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135687">
+ </A>
+Open &quot;Create Multiple&quot; window</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135689">
+ </A>
+M-3</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135691">
+ </A>
+Select &quot;By Name&quot; tab</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135693">
+ </A>
+Show a list of available pattern names, description and parameter panes, summary pane, and &quot;Create&quot; button</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135695">
+ </A>
+M-4</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135697">
+ </A>
+Select pattern by name</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135699">
+ </A>
+Display pattern description and parameters</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135701">
+ </A>
+M-5</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135703">
+ </A>
+Optionally, request more information on pattern</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135705">
+ </A>
+Open help window</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135707">
+ </A>
+M-6</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135709">
+ </A>
+Supply element names and any other pattern parameters</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135711">
+ </A>
+Update summary pane</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135713">
+ </A>
+M-7</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135715">
+ </A>
+Press &quot;Create&quot; button</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135717">
+ </A>
+Add specified design elements to current diagram</P>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1135721">
+ </A>
+<A NAME="24194">
+ </A>
+Steps for creating multiple design elements by form</H6>
+</CAPTION>
+<TR>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1135727">
+ </A>
+Step</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1135729">
+ </A>
+User Action</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1135731">
+ </A>
+System Reaction</P>
+</TH>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135733">
+ </A>
+N-1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135735">
+ </A>
+Form desire add several related design elements quickly</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135737">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135739">
+ </A>
+N-2</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135741">
+ </A>
+Issue &quot;Create Multiple...&quot; command</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135743">
+ </A>
+Open &quot;Create Multiple&quot; window</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135745">
+ </A>
+N-3</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135747">
+ </A>
+Select &quot;By Form&quot; tab</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135749">
+ </A>
+Show a list of available forms by name, form pane, summary pane, and &quot;Create&quot; button</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135751">
+ </A>
+N-4</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135753">
+ </A>
+Select form by name</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135755">
+ </A>
+Display selected form with data entry fields and pattern explanation links</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135757">
+ </A>
+N-5</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135759">
+ </A>
+Optionally, click on pattern name link</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135761">
+ </A>
+Open help window</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135763">
+ </A>
+N-6</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135765">
+ </A>
+Supply element names and any other form parameters</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135767">
+ </A>
+Update summary pane and color elements black</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135769">
+ </A>
+N-7</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135771">
+ </A>
+Press &quot;Create&quot; button</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1135773">
+ </A>
+Add specified design elements to current diagram</P>
+</TD>
+</TR>
+</TABLE>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1135774">
+ </A>
+Justification of Steps</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1111626">
+ </A>
+ As with the model-based layout use cases, both of the use cases for create multiple begin with forming a desire, followed by opening a secondary window, and end with pressing a button to confirm the operation. These three steps should not be a problem because they are familiar to users who have experience with other desktop applications. </P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1135778">
+ </A>
+In step M-3, the designer must select the &quot;By Name&quot; tab. This step seems reasonable because the designer cannot do anything in the help tab, and because exploring tabs is always a safe operation. Next, the user must select a pattern by name from a list. This could be a difficult step because the designer may not recognize the meanings of the pattern names. Even if designers do not initially understand every pattern, they can be expected to explore some of the patterns in the list because list selection is always a safe operation. In step M-5, the designer may optionally request more information about the selected pattern. This step should not be difficult because the &quot;More Info&quot; button is clearly visible. In step M-6, the designer supplies names for new design elements to be created and the names of existing elements onto which the new elements will be grafted. The reasonableness of this step depends on the specific prompts provided by each design pattern configuration panel.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1135845">
+ </A>
+Step N-3 in the second use case requires the designer to select the &quot;By Form&quot; tab. Again, this should not be a problem. Next, the designer must select a form by name from a list. It is not expected that the designer will be able to choose the correct form on his or her initial attempt, instead the designer is expected to explore various forms until he or she sees one that looks relevant. A designer must gauge the relevance of a particular form to his or her immediate needs based on the brief description of the form and the design structures that are visually evident in the form. Once a form is selected, the designer may optionally click on one of the design pattern links to access more information on the intent and applicability of that design pattern. Clicking on an underlined link should not be a problem for users that are familiar with web browsers. In step N-6, the designer fills in the form with the names of new design elements and the names of existing elements to graft the new elements onto. The process of entering the names should not be a problem because it only involves using standard text entry widgets. However, choosing which widgets to fill in and which to leave blank requires the designer to understand the grafting rules. These two use cases suggest the following doctrine additions:</P>
+<UL>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1135846">
+ </A>
+Users will recognize pattern names. Much of the object oriented design community has studied design patterns, so some users will definitely be able to recognize and pick design patterns by name. In fact, the Together/J design patterns feature relies on users having this knowledge. Other users may not recognize pattern names and will need to explore the items on the list. The quality of the descriptions and the labels of the pattern parameters is key to this exploration process. Users who have difficulty with the &quot;by pattern&quot; use case may find the &quot;by form&quot; use case easier.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1135815">
+ </A>
+Users will understand grafting rules. The grafting rules are fairly simple, they are explained in the help tab of the create multiple window, and their results are immediately previewed in the summary pane. Together, these three aspects of the create multiple feature should make it possible for users to understand the grafting rules.</LI>
+<LI CLASS="BulletedDraft">
+<A NAME="pgfId=1135831">
+ </A>
+Users will recognize forms that fit their mental image of the design structure they wish to create. Designers often visualize the result they desire before they begin constructing it. The visual presentation of design patterns in the create multiple window should make it easy for designers to match their mental images. Geometric layout differences between the designer's mental image and the offered form might be addressed by refining this feature to include an option to flip the form horizontally or vertically. Also, the forms offered by the create multiple feature can also help shape the designer's desire to create related design elements. Designers are likely to become familiar with the forms offered by the create multiple feature and use it when they recall that a given form is appropriate for their current need.</LI>
+</UL>
+</DIV>
+</DIV>
+<DIV>
+<H3 CLASS="Heading2">
+<A NAME="pgfId=1111629">
+ </A>
+Discussion and Validation</H3>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1132105">
+ </A>
+Performing the cognitive walkthroughs of the proposed features has been a productive step in my feature generation method. Breaking down the user's expected interaction with each feature has forced me to think through all the details and has highlighted several potential problems and refinements. One of the main dangers of user interface design is assuming that the user knows everything that the user interface designer knows. Several of the elements of the Argo/UML doctrine may be barriers to usage. I have conducted a set of user surveys to probe the knowledge of Argo/UML users and determine which elements of the doctrine are, in fact, problematic. Removing these problems will require refining the cognitive support features to eliminate the need for certain knowledge or skills. The surveys and refinements are discussed below.</P>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1132106">
+ </A>
+User surveys</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1132107">
+ </A>
+One straightforward way to determine if Argo/UML users possess a given piece of knowledge is simply to ask them questions that require that knowledge. In August 1999, I conducted an anonymous survey of registered Argo/UML users. The survey consisted of three questionnaires with ten to twelve questions each. Most of the questions presented a screenshot and asked the user for his or her thoughts on the purpose of each particular widget. An example question is shown in <A HREF="diss6.html#32780" CLASS="XRef">
+See A survey question on clarifiers</A>
+. Some questions used three parts to test the degree of knowledge support provided by a feature: the first part asked how the designer would address a given problem, the second part asked the designer to explain the purpose of particular feature, and the third part described the support provided by the feature and asked again how the designer would address the problem in light of that support.</P>
+<DIV>
+<MAP NAME="diss6-1">
+</MAP>
+<IMG SRC="diss6-1.gif" USEMAP="#diss6-1">
+</DIV>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1132108">
+ </A>
+For each questionnaire, I constructed a set of web pages with one question per page. Each page included a text field or multiple choice widget and a &quot;Submit&quot; button. Subjects were instructed give their first thoughts if they did not know the answer, and they were told not to return to previously answered questions. For each questionnaire, an email message with the web page address was sent to a subset of registered Argo/UML users. Approximately one hundred and fifty messages were sent for each questionnaire, and they were sent to users in alphabetical order. This method of validating the cognitive walkthroughs yielded very rapid results: for each questionnaire, I received more than a dozen responses within the first two days.</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1132109">
+ </A>
+Survey results</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1132110">
+ </A>
+The results of particular questions are described above. Tables <A HREF="diss6.html#23345" CLASS="XRef">
+See Questionnaire results for clarifiers, &quot;to do&quot; list, wizards, and checklists</A>
+ through <A HREF="diss6.html#26641" CLASS="XRef">
+See Questionnaire results for broom and selection-action buttons</A>
+ summarize the survey results. The first questionnaire probed the issues raised by the walkthroughs of clarifiers, the &quot;to do&quot; list, non-modal wizards, and checklists. The second questionnaire probed the issues raised by the walkthroughs of Argo/UML's opportunistic search utility and table views. The third questionnaire probed the issues raised by the walkthroughs of the broom alignment tool and selection-action buttons.</P>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1134242">
+ </A>
+<A NAME="23345">
+ </A>
+Questionnaire results for clarifiers, &quot;to do&quot; list, wizards, and checklists</H6>
+</CAPTION>
+<TR>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1134250">
+ </A>
+Question</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1134252">
+ </A>
+Success</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1134254">
+ </A>
+Partial</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1134256">
+ </A>
+Failure</P>
+</TH>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134258">
+ </A>
+Recognize meaning of clarifier</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134260">
+ </A>
+15</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134262">
+ </A>
+0</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134264">
+ </A>
+6</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134266">
+ </A>
+Able to access clarifier tool tip</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134268">
+ </A>
+13</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134270">
+ </A>
+2</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134272">
+ </A>
+5</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134274">
+ </A>
+Tool tip enough information to fix</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134276">
+ </A>
+18</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134278">
+ </A>
+0</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134280">
+ </A>
+3</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134282">
+ </A>
+Able to access &quot;to do&quot; item via pop up menu</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134284">
+ </A>
+13</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134286">
+ </A>
+1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134288">
+ </A>
+5</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134290">
+ </A>
+Meaning of &quot;to do&quot; list</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134292">
+ </A>
+10</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134294">
+ </A>
+5</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134296">
+ </A>
+4</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134298">
+ </A>
+Desire to fix problem identified</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134300">
+ </A>
+19</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134302">
+ </A>
+0</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134304">
+ </A>
+1</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134306">
+ </A>
+Description had enough information to fix</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134308">
+ </A>
+19</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134310">
+ </A>
+0</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134312">
+ </A>
+1</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134314">
+ </A>
+Desire for wizard to fix problem</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="3">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134316">
+ </A>
+9 wizard, 11 manual</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134322">
+ </A>
+Desire for future wizards</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="3">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134324">
+ </A>
+13 wizard, 7 manual</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134330">
+ </A>
+Understand how to use wizard</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134332">
+ </A>
+17</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134334">
+ </A>
+1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134336">
+ </A>
+1</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134338">
+ </A>
+Recognized non-modal wizard progress bar</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134340">
+ </A>
+13</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134342">
+ </A>
+1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134344">
+ </A>
+5</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134346">
+ </A>
+Understood &quot;to do&quot; item count</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134348">
+ </A>
+0</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134350">
+ </A>
+19</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134352">
+ </A>
+1</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134354">
+ </A>
+Expected frequency of attention to feedback</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="3">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134356">
+ </A>
+14 episodic, 3 immediate, 3 end of project</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134362">
+ </A>
+Desire to use checklists</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="3">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134364">
+ </A>
+4 unlikely, 9 a few, 7 a lot</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134370">
+ </A>
+Understood purpose of checkmarks</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134372">
+ </A>
+18</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134374">
+ </A>
+1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134376">
+ </A>
+1</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134378">
+ </A>
+Desire to check off checklist items</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="3">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1134380">
+ </A>
+10 often, 6 rarely, 4 never </P>
+</TD>
+</TR>
+</TABLE>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1136232">
+ </A>
+<A HREF="diss6.html#23345" CLASS="XRef">
+See Questionnaire results for clarifiers, &quot;to do&quot; list, wizards, and checklists</A>
+ shows that the majority of the assumptions added to the Argo/UML doctrine are reasonable or marginal. One possible problem is that a fair fraction of users confused the &quot;to do&quot; list with the checklist tab. Also, the count of items at the top of the &quot;to do&quot; list was clear, but the use of a plus or minus sign to indicate the trend of the size of the &quot;to do&quot; list was not clear to anyone. The non-modal wizard progress bar was recognized much more easily than I would have expected.</P>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1136235">
+ </A>
+<A NAME="15837">
+ </A>
+Questionnaire results for opportunistic search and table views</H6>
+</CAPTION>
+<TR>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1136243">
+ </A>
+Question</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1136245">
+ </A>
+Success</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1136247">
+ </A>
+Partial</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1136249">
+ </A>
+Failure</P>
+</TH>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136259">
+ </A>
+Start search</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136261">
+ </A>
+10</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136263">
+ </A>
+1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136265">
+ </A>
+1</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136275">
+ </A>
+Expected search results</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136277">
+ </A>
+12</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136279">
+ </A>
+0</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136281">
+ </A>
+0</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136291">
+ </A>
+Understood search tabs</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136293">
+ </A>
+9</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136295">
+ </A>
+1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136297">
+ </A>
+1</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136307">
+ </A>
+Understood related results</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136309">
+ </A>
+8</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136311">
+ </A>
+0</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136313">
+ </A>
+3</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136323">
+ </A>
+Use related results</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="3">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136325">
+ </A>
+8 yes, 3 no</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136339">
+ </A>
+Systematic strategy</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="3">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136341">
+ </A>
+4 search utility, 2 nav perspective, 1 table, 1 visual</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136355">
+ </A>
+Access table view</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136357">
+ </A>
+9</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136359">
+ </A>
+1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136361">
+ </A>
+1</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136371">
+ </A>
+Understand table</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136373">
+ </A>
+11</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136375">
+ </A>
+0</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136377">
+ </A>
+0</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136387">
+ </A>
+Find table perspectives</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136389">
+ </A>
+10</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136391">
+ </A>
+0</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136393">
+ </A>
+0</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136403">
+ </A>
+Scanning behavior</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="3">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136405">
+ </A>
+2 visual scan, 9 select each row</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136419">
+ </A>
+Recognize instant replay button</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136421">
+ </A>
+1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136423">
+ </A>
+4</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136425">
+ </A>
+4</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136435">
+ </A>
+Instant replay safety</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="3">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136437">
+ </A>
+4 dangerous, 7 safe</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136451">
+ </A>
+Understand instant replay</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136453">
+ </A>
+5</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136455">
+ </A>
+3</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136457">
+ </A>
+2</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136467">
+ </A>
+Resume from excursion</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136469">
+ </A>
+7</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136471">
+ </A>
+2</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136473">
+ </A>
+1</P>
+</TD>
+</TR>
+</TABLE>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1136530">
+ </A>
+<A HREF="diss6.html#15837" CLASS="XRef">
+See Questionnaire results for opportunistic search and table views</A>
+ shows the results of the questionnaire on the opportunistic search utility and opportunistic table views. The search utility seemed understandable to the majority of users. However, a fair number of users had difficulty with the related results table. When asked how they would systematically scan all the associations in the design, the most common answers were to use the search utility or navigational perspectives. This indicates that many designers will not realize that tables are an effective user interface for systematic design review. However, it may have been biased by the fact that the proceeding questions all dealt with the search utility. When the surveyed users were asked how they would access and use the table views, the majority gave answers indicating that they would be able to use these features. The &quot;Instant Replay&quot; button was not very recognizable, but it was assumed to be safe, and about half of the surveyed users understood its purpose once its animation was seen. The animation question probably would have been answered more positively if an actual animation had been shown in the question rather than a sequence of four small screenshots. In general, the survey results are pessimistic because they ask questions about usage without allowing the users to actually work with the tool.</P>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1136533">
+ </A>
+<A NAME="26641">
+ </A>
+Questionnaire results for broom and selection-action buttons</H6>
+</CAPTION>
+<TR>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1136541">
+ </A>
+Question</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1136543">
+ </A>
+Success</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1136545">
+ </A>
+Partial</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1136547">
+ </A>
+Failure</P>
+</TH>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136557">
+ </A>
+Diagram style choice</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="3">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136559">
+ </A>
+13 aligned, 5 unaligned</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136573">
+ </A>
+Recognize broom icon</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136575">
+ </A>
+2</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136577">
+ </A>
+5</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136579">
+ </A>
+7</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136589">
+ </A>
+Recognize broom safety</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="3">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136591">
+ </A>
+6 dangerous, 10 safe</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136605">
+ </A>
+Recognize &quot;broom&quot; tool tip</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136607">
+ </A>
+2</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136609">
+ </A>
+4</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136611">
+ </A>
+9</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136621">
+ </A>
+Predict broom action</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136623">
+ </A>
+9</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136625">
+ </A>
+1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136627">
+ </A>
+4</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136637">
+ </A>
+Understand broom action</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136639">
+ </A>
+14</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136641">
+ </A>
+0</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136643">
+ </A>
+1</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136653">
+ </A>
+Understand broom reverse</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136655">
+ </A>
+12</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136657">
+ </A>
+0</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136659">
+ </A>
+2</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136669">
+ </A>
+Recognize selection-action buttons</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136671">
+ </A>
+11</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136673">
+ </A>
+1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136675">
+ </A>
+2</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136685">
+ </A>
+Predict selection-action button action</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136687">
+ </A>
+11</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136689">
+ </A>
+2</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136691">
+ </A>
+1</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136701">
+ </A>
+Guess drag option</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136703">
+ </A>
+1</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136705">
+ </A>
+12</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136707">
+ </A>
+1</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136717">
+ </A>
+Connect existing classes</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136719">
+ </A>
+7</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136721">
+ </A>
+5</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1136723">
+ </A>
+2</P>
+</TD>
+</TR>
+</TABLE>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1136501">
+ </A>
+<A HREF="diss6.html#26641" CLASS="XRef">
+See Questionnaire results for broom and selection-action buttons</A>
+ shows the results of the questions on using the broom and the selection-action buttons. First, the surveyed users shows a marked preference for diagrams that used alignment as a secondary notation as opposed to misaligned diagrams. Few users could recognize the broom icon, and the tool tip &quot;broom&quot; did not provide any help. However, once users saw the broom in the diagram pane, almost two-thirds were able to predict its behavior. Once they were shown screenshots of the broom in action, all but one user recognized its usefulness. A second user had trouble understanding that reversing the broom direction served as a kind of undo, otherwise it was clear to all users. Most users recognized the selection-action buttons as variants of the toolbar buttons and could predict that pressing a selection-action button would create new design elements that were related to the current selection. When asked how they would create a new class at a desired position on the diagram, most users said that they would first use a selection-action button to create the class in its default position and then move the class to the desired position. More users were able to guess the possibility of creating a new edge by dragging from the selection-action button of one class to another existing node. However, several users said that they would prefer to use the standard tool bar buttons to create edges between existing classes. Again, the survey is pessimistic in its evaluation because users are asked to explain what they would do rather than actually use the tool. For example, if users were actually using Argo/UML, the difficulty of using the standard tool bar buttons would encourage them to use the selection-action buttons.</P>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</HTML>
