@@ -52,8 +52,8 @@ public class CrClassMustBeAbstract extends CrUML {
     public CrClassMustBeAbstract() {
 	setHeadline("Class Must be Abstract");
 
-	addSupportedDecision(CrUML.decINHERITANCE);
-	addSupportedDecision(CrUML.decMETHODS);
+	addSupportedDecision(CrUML.DEC_INHERITANCE);
+	addSupportedDecision(CrUML.DEC_METHODS);
 	setKnowledgeTypes(Critic.KT_SEMANTICS);
     }
 

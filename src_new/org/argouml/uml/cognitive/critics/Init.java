@@ -259,7 +259,6 @@ public class Init {
 
     /** static initializer, register all appropriate critics */
     public static void init() {
-
 	java.lang.Class modelCls = (Class) ModelFacade.MODEL;
 	java.lang.Class packageCls = (Class) ModelFacade.PACKAGE;
 	java.lang.Class modelElementCls = (Class) ModelFacade.MODELELEMENT;
@@ -277,20 +276,16 @@ public class Init {
 	    (Class) ModelFacade.GENERALAIZABLE_ELEMENT;
 	java.lang.Class genCls = (Class) ModelFacade.GENERALIZATION;
 	java.lang.Class datatypeCls = (Class) ModelFacade.DATATYPE;
-
 	java.lang.Class useCaseCls = (Class) ModelFacade.USE_CASE;
 	java.lang.Class actorCls = (Class) ModelFacade.ACTOR;
-
 	java.lang.Class stateVertexCls = (Class) ModelFacade.STATEVERTEX;
 	java.lang.Class stateCls = (Class) ModelFacade.STATE;
 	java.lang.Class compositieStateCls = (Class) ModelFacade.COMPOSITESTATE;
-        
 	// java.lang.Class stateDiagramCls   = UMLStateDiagram.class;
 	// java.lang.Class useCaseDiagramCls = UMLUseCaseDiagram.class;
 
 	// TODO: Agency should allow registration by interface
 	// useful for MAssociation.
-
 	Agency.register(crAssocNameConflict, namespaceCls);
 	Agency.register(crAttrNameConflict, classifierCls);
 	Agency.register(crOperNameConflict, classifierCls);
@@ -312,7 +307,6 @@ public class Init {
 	Agency.register(crNWayAgg, assocCls);
 	Agency.register(crNavFromInterface, assocCls);
 	Agency.register(crNameConflictAC, assocClassCls);
-
 	Agency.register(clsNaming, classCls);
 	Agency.register(clsNaming, actorCls);
 	Agency.register(clsNaming, useCaseCls);
@@ -323,7 +317,6 @@ public class Init {
 	Agency.register(crMissingAttrName, attrCls);
 	Agency.register(crMissingOperName, operCls);
 	Agency.register(crMissingStateName, stateVertexCls);
-
 	Agency.register(crNoInstanceVariables, classCls);
 	Agency.register(crNoAssociations, classCls);
 	Agency.register(crNoAssociations, actorCls);
@@ -359,10 +352,8 @@ public class Init {
 	Agency.register(crTooManyOper, classCls);
 	Agency.register(crTooManyTransitions, stateVertexCls);
 	Agency.register(crTooManyStates, compositieStateCls);
-
 	java.lang.Class classDiagramCls   = UMLClassDiagram.class;
 	Agency.register(crTooManyClasses, classDiagramCls);
-
 	java.lang.Class pseudostateCls = (Class) ModelFacade.PSEUDOSTATE;
 	java.lang.Class transitionCls = (Class) ModelFacade.TRANSITION;
 	Agency.register(noTrans1, stateVertexCls);
@@ -374,16 +365,13 @@ public class Init {
 	Agency.register(crInvalidFork, pseudostateCls);
 	Agency.register(crInvalidBranch, pseudostateCls);
 	Agency.register(crNoGuard, transitionCls);
-
 	Agency.register(crUnconventionalOperName, operCls);
 	Agency.register(crUnconventionalAttrName, attrCls);
 	Agency.register(crUnconventionalClassName, classCls);
 	Agency.register(crUnconventionalPackName, packageCls);
-
 	Agency.register(crConsiderSingleton, classCls);
 	Agency.register(crSingletonViolatedMSA, classCls);
 	Agency.register(crSingletonViolatedOPC, classCls);
-
 	java.lang.Class deploymentDiagramCls = UMLDeploymentDiagram.class;
 	Agency.register(crNodeInsideElement, deploymentDiagramCls);
 	Agency.register(crNodeInstanceInsideElement, deploymentDiagramCls);
@@ -408,15 +396,12 @@ public class Init {
 	java.lang.Class diagramCls        = UMLDiagram.class;
 	Agency.register(crNodesOverlap, diagramCls);
 	Agency.register(crZeroLengthEdge, edgeCls);
-      
 	Agency.register(crOppEndConflict, assocEndCls);
 	Agency.register(new CrMultiComposite(), assocEndCls);
 	Agency.register(new CrNameConflict(), namespaceCls);
 	Agency.register(crAlreadyRealizes, classCls);
 	Agency.register(new CrUtilityViolated(), classifierCls);
-      
 	Agency.register(new CrOppEndVsAttr(), classifierCls);
-
     }
       
 } /* end class Init */

@@ -57,7 +57,7 @@ public class CrCircularInheritance extends CrUML {
     public CrCircularInheritance() {
 	setHeadline("Remove <ocl>self</ocl>'s Circular Inheritance");
 	setPriority(ToDoItem.HIGH_PRIORITY);
-	addSupportedDecision(CrUML.decINHERITANCE);
+	addSupportedDecision(CrUML.DEC_INHERITANCE);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("generalization");
 	// no need for trigger on "specialization"

@@ -48,7 +48,7 @@ public class CrFinalSubclassed extends CrUML {
      */
     public CrFinalSubclassed() {
 	setHeadline("Remove final keyword or remove subclasses");
-	addSupportedDecision(CrUML.decINHERITANCE);
+	addSupportedDecision(CrUML.DEC_INHERITANCE);
 	setKnowledgeTypes(Critic.KT_SEMANTICS);
 	addTrigger("specialization");
 	addTrigger("isLeaf");

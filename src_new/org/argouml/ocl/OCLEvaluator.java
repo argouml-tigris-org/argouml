@@ -38,11 +38,19 @@ import org.tigris.gef.ocl.ExpansionException;
  */
 public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
 
+    /**
+     * The constructor.
+     * 
+     */
     public OCLEvaluator() {
     }
 
+    /**
+     * @see org.tigris.gef.ocl.OCLEvaluator#evalToString(java.lang.Object, 
+     * java.lang.String)
+     */
     protected synchronized String evalToString(Object self, String expr)
-            throws ExpansionException {
+        throws ExpansionException {
         String res = null;
         if (GET_NAME_EXPR_1.equals(expr) && ModelFacade.isAModelElement(self)) 
         {
@@ -76,6 +84,10 @@ public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
         return res;
     }
 
+    /**
+     * @see org.tigris.gef.ocl.OCLEvaluator#evalToString(java.lang.Object, 
+     * java.lang.String, java.lang.String)
+     */
     protected synchronized String evalToString(
             Object self, 
             String expr, 

@@ -48,9 +48,9 @@ public class CrUtilityViolated extends CrUML {
      */
     public CrUtilityViolated() {
         setHeadline("Remove instance variables from Utility Class");
-        addSupportedDecision(CrUML.decSTORAGE);
-        addSupportedDecision(CrUML.decSTEREOTYPES);
-        addSupportedDecision(CrUML.decCLASS_SELECTION);
+        addSupportedDecision(CrUML.DEC_STORAGE);
+        addSupportedDecision(CrUML.DEC_STEREOTYPES);
+        addSupportedDecision(CrUML.DEC_CLASS_SELECTION);
         addTrigger("stereotype");
         addTrigger("behavioralFeature");
     }

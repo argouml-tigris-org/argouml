@@ -52,7 +52,7 @@ public class CrWrongDepEnds extends CrUML {
      */
     public CrWrongDepEnds() {
 	setHeadline("Wrong location-types");
-	addSupportedDecision(CrUML.decPATTERNS);
+	addSupportedDecision(CrUML.DEC_PATTERNS);
     }
 
     /**

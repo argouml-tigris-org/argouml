@@ -49,7 +49,7 @@ public class CrDisambigStateName extends CrUML {
      */
     public CrDisambigStateName() {
 	setHeadline("Choose a Unique Name for <ocl>self</ocl>");
-	addSupportedDecision(CrUML.decNAMING);
+	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("name");
 	addTrigger("parent");

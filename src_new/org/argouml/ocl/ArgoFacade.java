@@ -55,7 +55,7 @@ public class ArgoFacade implements tudresden.ocl.check.types.ModelFacade {
     /**
      * The target that this instance is connected to.
      */
-    public Object target;
+    private Object target;
 
     /**
      * Construtor.
@@ -114,7 +114,7 @@ class ArgoAny implements Any, Type2 {
      */
     private static final Logger LOG = Logger.getLogger(ArgoAny.class);
 
-    Object classifier;
+    private Object classifier;
 
     /**
      * Constructor.

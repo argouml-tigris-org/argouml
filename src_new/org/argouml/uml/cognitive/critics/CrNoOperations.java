@@ -51,7 +51,7 @@ public class CrNoOperations extends CrUML {
      */
     public CrNoOperations() {
 	setHeadline("Add Operations to <ocl>self</ocl>");
-	addSupportedDecision(CrUML.decBEHAVIOR);
+	addSupportedDecision(CrUML.DEC_BEHAVIOR);
 	setKnowledgeTypes(Critic.KT_COMPLETENESS);
 	addTrigger("behavioralFeature");
     }

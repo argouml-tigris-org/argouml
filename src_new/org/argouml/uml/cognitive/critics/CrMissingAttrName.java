@@ -50,7 +50,7 @@ public class CrMissingAttrName extends CrUML {
      */
     public CrMissingAttrName() {
 	setHeadline("Choose a name");
-	addSupportedDecision(CrUML.decNAMING);
+	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("name");
     }

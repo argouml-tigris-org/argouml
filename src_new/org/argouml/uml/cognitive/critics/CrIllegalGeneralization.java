@@ -48,7 +48,7 @@ public class CrIllegalGeneralization extends CrUML {
     public CrIllegalGeneralization() {
 	setHeadline("Illegal MGeneralization ");
 
-	addSupportedDecision(CrUML.decINHERITANCE);
+	addSupportedDecision(CrUML.DEC_INHERITANCE);
 	addTrigger("supertype");
 	addTrigger("subtype");
     }

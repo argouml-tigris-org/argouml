@@ -45,7 +45,7 @@ public class CrTooManyTransitions extends CrUML {
      */
     public CrTooManyTransitions() {
 	setHeadline("Reduce Transitions on <ocl>self</ocl>");
-	addSupportedDecision(CrUML.decSTATE_MACHINES);
+	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
 	setArg(THRESHOLD, new Integer(10));
 	addTrigger("incoming");
 	addTrigger("outgoing");

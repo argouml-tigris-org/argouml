@@ -40,6 +40,7 @@ public final class OCLUtil {
     /**
      * Get the inner-most enclosing namespace for the model element.
      *
+     * @param me the modelelement
      * @return a namespace
      */
     public static Object getInnerMostEnclosingNamespace (Object me) {
@@ -94,7 +95,8 @@ public final class OCLUtil {
 		    }
 
 		    sbContext.append(ModelFacade.getType(mp)).append(": ");
-		    sbContext.append(ModelFacade.getName(ModelFacade.getType(mp)));
+		    sbContext.append(ModelFacade.getName(
+		            ModelFacade.getType(mp)));
 		}
 	    }
 

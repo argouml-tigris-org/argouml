@@ -243,7 +243,7 @@ public class StylePanelFig extends StylePanel implements ItemListener,
      */
     public void refresh() {
 
-        if (_target instanceof FigEdgeModelElement) {
+        if (getPanelTarget() instanceof FigEdgeModelElement) {
             hasEditableBoundingBox(false);
         } else
             hasEditableBoundingBox(true);
@@ -253,7 +253,7 @@ public class StylePanelFig extends StylePanel implements ItemListener,
         // boundary box style field (null if we don't have anything
         // valid)
 
-        Rectangle figBounds = _target.getBounds();
+        Rectangle figBounds = getPanelTarget().getBounds();
         Rectangle styleBounds = parseBBox();
 
         // Only reset the text if the two are not the same (i.e the fig
@@ -271,8 +271,8 @@ public class StylePanelFig extends StylePanel implements ItemListener,
 
         // Change the fill colour
 
-        if (_target.getFilled()) {
-            Color c = _target.getFillColor();
+        if (getPanelTarget().getFilled()) {
+            Color c = getPanelTarget().getFillColor();
             fillField.setSelectedItem(c);
             if (c != null && !fillField.getSelectedItem().equals(c)) {
                 fillField.insertItemAt(c, fillField.getItemCount() - 1);
@@ -284,8 +284,8 @@ public class StylePanelFig extends StylePanel implements ItemListener,
 
         // Change the line colour
 
-        if (_target.getLineWidth() > 0) {
-            Color c = _target.getLineColor();
+        if (getPanelTarget().getLineWidth() > 0) {
+            Color c = getPanelTarget().getLineColor();
             lineField.setSelectedItem(c);
             if (c != null && !lineField.getSelectedItem().equals(c)) {
                 lineField.insertItemAt(c, lineField.getItemCount() - 1);
@@ -318,7 +318,8 @@ public class StylePanelFig extends StylePanel implements ItemListener,
     protected void setTargetBBox() { // Can't do anything if we don't have
         // a
         // fig.
-        if (_target == null) { return; } // Parse the boundary box text. Null is
+        if (getPanelTarget() == null) { return; } 
+        // Parse the boundary box text. Null is
         // returned if it is empty or
         // invalid, which causes no change. Otherwise we tell
         // GEF we are making
@@ -327,9 +328,10 @@ public class StylePanelFig extends StylePanel implements ItemListener,
         Rectangle bounds = parseBBox();
         if (bounds == null) { return; }
 
-        if (!_target.getBounds().equals(bounds)) {
-            _target.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
-            _target.endTrans();
+        if (!getPanelTarget().getBounds().equals(bounds)) {
+            getPanelTarget().setBounds(bounds.x, bounds.y, bounds.width, 
+                    bounds.height);
+            getPanelTarget().endTrans();
             markNeedsSave();
         }
     }
@@ -368,18 +370,18 @@ public class StylePanelFig extends StylePanel implements ItemListener,
                 ", ");
         try {
             boolean changed = false;
-            if (!st.hasMoreTokens()) return _target.getBounds();
+            if (!st.hasMoreTokens()) return getPanelTarget().getBounds();
             res.x = Integer.parseInt(st.nextToken());
             if (!st.hasMoreTokens()) {
-                res.y = _target.getBounds().y;
-                res.width = _target.getBounds().width;
-                res.height = _target.getBounds().height;
+                res.y = getPanelTarget().getBounds().y;
+                res.width = getPanelTarget().getBounds().width;
+                res.height = getPanelTarget().getBounds().height;
                 return res;
             }
             res.y = Integer.parseInt(st.nextToken());
             if (!st.hasMoreTokens()) {
-                res.width = _target.getBounds().width;
-                res.height = _target.getBounds().height;
+                res.width = getPanelTarget().getBounds().width;
+                res.height = getPanelTarget().getBounds().height;
                 return res;
             }
             res.width = Integer.parseInt(st.nextToken());
@@ -388,7 +390,7 @@ public class StylePanelFig extends StylePanel implements ItemListener,
                 changed = true;
             }
             if (!st.hasMoreTokens()) {
-                res.width = _target.getBounds().width;
+                res.width = getPanelTarget().getBounds().width;
                 return res;
             }
             res.height = Integer.parseInt(st.nextToken());
@@ -429,7 +431,7 @@ public class StylePanelFig extends StylePanel implements ItemListener,
         if (newColor != null) {
             field.insertItemAt(newColor, field.getItemCount() - 1);
             field.setSelectedItem(newColor);
-        } else if (_target != null) {
+        } else if (getPanelTarget() != null) {
             field.setSelectedItem(targetColor);
         }
     }
@@ -439,11 +441,11 @@ public class StylePanelFig extends StylePanel implements ItemListener,
      */
     public void setTargetFill() {
         Object c = fillField.getSelectedItem();
-        if (_target == null || c == null) return;
-        Color oldColor = _target.getFillColor();
-        if (c instanceof Color) _target.setFillColor((Color) c);
-        _target.setFilled(c instanceof Color);
-        _target.endTrans();
+        if (getPanelTarget() == null || c == null) return;
+        Color oldColor = getPanelTarget().getFillColor();
+        if (c instanceof Color) getPanelTarget().setFillColor((Color) c);
+        getPanelTarget().setFilled(c instanceof Color);
+        getPanelTarget().endTrans();
         if (!c.equals(oldColor)) {
             markNeedsSave();
         }
@@ -454,11 +456,11 @@ public class StylePanelFig extends StylePanel implements ItemListener,
      */
     public void setTargetLine() {
         Object c = lineField.getSelectedItem();
-        if (_target == null || c == null) return;
-        Color oldColor = _target.getLineColor();
-        if (c instanceof Color) _target.setLineColor((Color) c);
-        _target.setLineWidth((c instanceof Color) ? 1 : 0);
-        _target.endTrans();
+        if (getPanelTarget() == null || c == null) return;
+        Color oldColor = getPanelTarget().getLineColor();
+        if (c instanceof Color) getPanelTarget().setLineColor((Color) c);
+        getPanelTarget().setLineWidth((c instanceof Color) ? 1 : 0);
+        getPanelTarget().endTrans();
         if (!c.equals(oldColor)) {
             markNeedsSave();
         }
@@ -480,17 +482,18 @@ public class StylePanelFig extends StylePanel implements ItemListener,
      */
     public void itemStateChanged(ItemEvent e) {
         Object src = e.getSource();
-        if (e.getStateChange() == ItemEvent.SELECTED && _target != null) {
+        if (e.getStateChange() == ItemEvent.SELECTED 
+                && getPanelTarget() != null) {
             if (src == fillField) {
                 if (e.getItem() == CUSTOM_ITEM) {
-                    handleCustomColor(fillField, "Custom Fill Color", _target
-                            .getFillColor());
+                    handleCustomColor(fillField, "Custom Fill Color", 
+                            getPanelTarget().getFillColor());
                 }
                 setTargetFill();
             } else if (src == lineField) {
                 if (e.getItem() == CUSTOM_ITEM) {
-                    handleCustomColor(lineField, "Custom Line Color", _target
-                            .getLineColor());
+                    handleCustomColor(lineField, "Custom Line Color", 
+                            getPanelTarget().getLineColor());
                 }
                 setTargetLine();
             }

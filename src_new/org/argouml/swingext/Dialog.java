@@ -51,14 +51,22 @@ import javax.swing.JPanel;
 public abstract class Dialog extends JDialog implements ActionListener {
     
     // The set of available optionTypes
-    public  static final int CLOSE_OPTION              = 0;
-    private static final int YES_NO_OPTION             = 1;
-    private static final int YES_NO_HELP_OPTION        = 2;
-    private static final int YES_NO_CANCEL_OPTION      = 3;
-    private static final int YES_NO_CANCEL_HELP_OPTION = 4;
-    public  static final int OK_CANCEL_OPTION          = 5;
-    private static final int OK_CANCEL_HELP_OPTION     = 6;
-    private static final int DEFAULT_OPTION            = CLOSE_OPTION;
+    /** Option type: CLOSE_OPTION */
+    protected static final int CLOSE_OPTION              = 0;
+    /** Option type: YES_NO_OPTION */
+    protected static final int YES_NO_OPTION             = 1;
+    /** Option type: YES_NO_HELP_OPTION */
+    protected static final int YES_NO_HELP_OPTION        = 2;
+    /** Option type: YES_NO_CANCEL_OPTION */
+    protected static final int YES_NO_CANCEL_OPTION      = 3;
+    /** Option type: YES_NO_CANCEL_HELP_OPTION */
+    protected static final int YES_NO_CANCEL_HELP_OPTION = 4;
+    /** Option type: OK_CANCEL_OPTION */
+    public static final int OK_CANCEL_OPTION             = 5;
+    /** Option type: OK_CANCEL_HELP_OPTION */
+    protected static final int OK_CANCEL_HELP_OPTION     = 6;
+    /** Option type: DEFAULT_OPTION */
+    protected static final int DEFAULT_OPTION            = CLOSE_OPTION;
     
     //TODO: These should be overridden on ArgoDialog to populate from
     //the config file
@@ -66,8 +74,10 @@ public abstract class Dialog extends JDialog implements ActionListener {
     private int rightBorder = 10;
     private int topBorder = 10;
     private int bottomBorder = 10;
-    protected int componentGap = 10;
-    protected int labelGap = 5;
+    /** The gap between components. */
+    private int componentGap = 10;
+    /** The gap between labels. */
+    private int labelGap = 5;
     private int buttonGap = 5;
     
     private JButton okButton = null;
@@ -338,4 +348,18 @@ public abstract class Dialog extends JDialog implements ActionListener {
      * the various JButtons which appear at the bottom of the dialog.
      **/
     protected abstract void nameButtons();
+
+    /**
+     * @return Returns the componentGap.
+     */
+    protected int getComponentGap() {
+        return componentGap;
+    }
+
+    /**
+     * @return Returns the labelGap.
+     */
+    protected int getLabelGap() {
+        return labelGap;
+    }
 }

@@ -72,7 +72,7 @@ public class CrNWayAgg extends CrUML {
 
         setResource("CrNWayAgg");
 
-        addSupportedDecision(CrUML.decCONTAINMENT);
+        addSupportedDecision(CrUML.DEC_CONTAINMENT);
         setKnowledgeTypes(Critic.KT_SEMANTICS);
 
         // These may not actually make any difference at present (the code

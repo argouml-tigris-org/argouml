@@ -54,7 +54,7 @@ public class CrNoInstanceVariables extends CrUML {
      */
     public CrNoInstanceVariables() {
 	setHeadline("Add Instance Variables to <ocl>self</ocl>");
-	addSupportedDecision(CrUML.decSTORAGE);
+	addSupportedDecision(CrUML.DEC_STORAGE);
 	setKnowledgeTypes(Critic.KT_COMPLETENESS);
 	addTrigger("structuralFeature");
     }

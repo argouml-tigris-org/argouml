@@ -78,7 +78,9 @@ public class ProjectBrowser
 
     private static final String BUNDLE = "statusmsg";
 	
+    /** Default width: DEFAULT_COMPONENTWIDTH */
     public static final int DEFAULT_COMPONENTWIDTH = 220;
+    /** Default height: DEFAULT_COMPONENTHEIGHT */
     public static final int DEFAULT_COMPONENTHEIGHT = 200;
 
     ////////////////////////////////////////////////////////////////
@@ -729,21 +731,21 @@ public class ProjectBrowser
     }
 
     /**
-     * @param event
+     * @param event the event
      */
     public void moduleUnloaded(ArgoModuleEvent event) {
         // TODO:  Disable menu
     }
 
     /**
-     * @param event
+     * @param event the event
      */
     public void moduleEnabled(ArgoModuleEvent event) {
         // TODO:  Enable menu
     }
 
     /**
-     * @param event
+     * @param event the event
      */
     public void moduleDisabled(ArgoModuleEvent event) {
         // TODO:  Disable menu

@@ -48,7 +48,7 @@ public class CrMissingClassName extends CrUML {
      */
     public CrMissingClassName() {
 	setHeadline("Choose a Name");
-	addSupportedDecision(CrUML.decNAMING);
+	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_COMPLETENESS, Critic.KT_SYNTAX);
 	addTrigger("name");
     }

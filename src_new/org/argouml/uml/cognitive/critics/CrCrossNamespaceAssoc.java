@@ -68,7 +68,7 @@ public class CrCrossNamespaceAssoc extends CrUML {
      */
     public CrCrossNamespaceAssoc() {
         setResource("CrCrossNamespaceAssoc");
-        addSupportedDecision(CrUML.decMODULARITY);
+        addSupportedDecision(CrUML.DEC_MODULARITY);
         setKnowledgeTypes(Critic.KT_SYNTAX);
     }
 

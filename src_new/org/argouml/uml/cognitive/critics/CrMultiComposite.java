@@ -43,7 +43,7 @@ public class CrMultiComposite extends CrUML {
      */
     public CrMultiComposite() {
         setHeadline("Composite Role with MMultiplicity > 1");
-        addSupportedDecision(CrUML.decCONTAINMENT);
+        addSupportedDecision(CrUML.DEC_CONTAINMENT);
         setKnowledgeTypes(Critic.KT_SEMANTICS);
         addTrigger("aggregation");
         addTrigger("multiplicity");

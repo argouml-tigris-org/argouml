@@ -54,7 +54,7 @@ public class CrCompInstanceWithoutNode extends CrUML {
      */
     public CrCompInstanceWithoutNode() {
 	setHeadline("ComponentInstances normally are inside nodes");
-	addSupportedDecision(CrUML.decPATTERNS);
+	addSupportedDecision(CrUML.DEC_PATTERNS);
     }
 
     /**

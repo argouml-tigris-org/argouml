@@ -44,12 +44,19 @@ public class CriticOclEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
     private CriticOclEvaluator() {
     }
     
+    /**
+     * @return the singleton of CriticOclEvaluator
+     */
     public static final CriticOclEvaluator getInstance() {
         return INSTANCE;
     }
     
+    /**
+     * @see org.tigris.gef.ocl.OCLEvaluator#evalToString(
+     * java.lang.Object, java.lang.String)
+     */
     public synchronized String evalToString(Object self, String expr)
-            throws ExpansionException {
+        throws ExpansionException {
         String res = null;
         if (GET_NAME_EXPR_1.equals(expr) && ModelFacade.isAModelElement(self)) 
         {
@@ -83,6 +90,10 @@ public class CriticOclEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
         return res;
     }
 
+    /**
+     * @see org.tigris.gef.ocl.OCLEvaluator#evalToString(
+     * java.lang.Object, java.lang.String, java.lang.String)
+     */
     public synchronized String evalToString(
             Object self,
             String expr, 

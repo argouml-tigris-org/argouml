@@ -95,7 +95,7 @@ public class StylePanelFigInterface extends StylePanelFigNodeModelElement {
     public void refresh() {
         refreshTransaction = true;
         super.refresh();
-        FigInterface ti = (FigInterface) _target;
+        FigInterface ti = (FigInterface) getPanelTarget();
         operCheckBox.setSelected(ti.isOperationsVisible());
         refreshTransaction = false;
     }
@@ -125,8 +125,8 @@ public class StylePanelFigInterface extends StylePanelFigNodeModelElement {
             Object src = e.getSource();
 
             if (src == operCheckBox) {
-                ((FigInterface) _target).setOperationsVisible(operCheckBox
-                        .isSelected());
+                ((FigInterface) getPanelTarget())
+                    .setOperationsVisible(operCheckBox.isSelected());
                 markNeedsSave();
             } else
                 super.itemStateChanged(e);

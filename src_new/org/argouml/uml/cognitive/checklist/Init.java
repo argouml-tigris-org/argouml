@@ -192,8 +192,8 @@ public class Init {
 	    "checklist.operation.encoding.is-returntype-too-restrictive",
 	    cl);
 	newCheckItem(cat,
-	    "checklist.operation.encoding.does-returntype-allow-impossible-values",
-	     cl);
+	    "checklist.operation.encoding.does-returntype-allow-impossible-"
+            + "values", cl);
 	newCheckItem(cat, 
             "checklist.operation.encoding.combine-with-other", cl);
 	newCheckItem(cat, "checklist.operation.encoding.break-into-parts", cl);
@@ -267,8 +267,8 @@ public class Init {
 	newCheckItem(cat, "checklist.association.location.eliminate-from-model",
 		     cl);
 	newCheckItem(cat,
-	    "checklist.association.location.eliminates-or-affects-something-else",
-	    cl);
+	    "checklist.association.location.eliminates-or-affects-"
+            + "something-else", cl);
 
 	cat = Translator.localize("checklist.association.updates");
 	newCheckItem(cat, "checklist.association.updates.reasons-for-update",
@@ -343,8 +343,8 @@ public class Init {
 	newCheckItem(cat, "checklist.instance.structure.belong", cl);
 	newCheckItem(cat, "checklist.instance.structure.make-internal", cl);
 	newCheckItem(cat,
-	    "checklist.instance.structure.is-state-in-another-machine-exclusive",
-	    cl);
+	    "checklist.instance.structure.is-state-in-another-machine-" 
+            + "exclusive", cl);
 
 	cat = Translator.localize("checklist.instance.actions");
 	newCheckItem(cat, "checklist.instance.actions.list-entry-actions", cl);
@@ -509,8 +509,8 @@ public class Init {
 	newCheckItem(cat, "checklist.transition.actions.is-precondition-met",
 		     cl);
 	newCheckItem(cat,
-	    "checklist.transition.actions.is-postcondition-consistant-with-destination",
-	    cl);
+	    "checklist.transition.actions.is-postcondition-consistant-with-" 
+            + "destination", cl);
 
 	CheckManager.register((Class) ModelFacade.TRANSITION, cl);
 

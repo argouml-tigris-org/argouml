@@ -64,7 +64,7 @@ public class CrDupRoleNames extends CrUML {
 
         setResource("CrDupRoleNames");
 
-        addSupportedDecision(CrUML.decNAMING);
+        addSupportedDecision(CrUML.DEC_NAMING);
 
         // These may not actually make any difference at present (the code
         // behind addTrigger needs more work).

@@ -62,9 +62,9 @@ public class CrAttrNameConflict extends CrUML {
      */
     public CrAttrNameConflict() {
 	setHeadline("Revise MAttribute Names to Avoid Conflict");
-	addSupportedDecision(CrUML.decINHERITANCE);
-	addSupportedDecision(CrUML.decSTORAGE);
-	addSupportedDecision(CrUML.decNAMING);
+	addSupportedDecision(CrUML.DEC_INHERITANCE);
+	addSupportedDecision(CrUML.DEC_STORAGE);
+	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("structuralFeature");
 	addTrigger("feature_name");

@@ -197,7 +197,7 @@ public class StylePanelFigText extends StylePanelFig {
      */
     public void refresh() {
         super.refresh();
-        FigText ft = (FigText) _target;
+        FigText ft = (FigText) getPanelTarget();
         String fontName = ft.getFontFamily();
         int size = ft.getFontSize();
         String styleName = STYLES[0];
@@ -235,11 +235,11 @@ public class StylePanelFigText extends StylePanelFig {
      *  
      */
     protected void setTargetFont() {
-        if (_target == null) return;
+        if (getPanelTarget() == null) return;
         String fontStr = (String) fontField.getSelectedItem();
         if (fontStr.length() == 0) return;
-        ((FigText) _target).setFontFamily(fontStr);
-        _target.endTrans();
+        ((FigText) getPanelTarget()).setFontFamily(fontStr);
+        getPanelTarget().endTrans();
     }
 
     /**
@@ -247,10 +247,10 @@ public class StylePanelFigText extends StylePanelFig {
      *  
      */
     protected void setTargetSize() {
-        if (_target == null) return;
+        if (getPanelTarget() == null) return;
         Integer size = (Integer) sizeField.getSelectedItem();
-        ((FigText) _target).setFontSize(size.intValue());
-        _target.endTrans();
+        ((FigText) getPanelTarget()).setFontSize(size.intValue());
+        getPanelTarget().endTrans();
     }
 
     /**
@@ -259,14 +259,14 @@ public class StylePanelFigText extends StylePanelFig {
      *  
      */
     protected void setTargetStyle() {
-        if (_target == null) return;
+        if (getPanelTarget() == null) return;
         String styleStr = (String) styleField.getSelectedItem();
         if (styleStr == null) return;
         boolean bold = (styleStr.indexOf("Bold") != -1);
         boolean italic = (styleStr.indexOf("Italic") != -1);
-        ((FigText) _target).setBold(bold);
-        ((FigText) _target).setItalic(italic);
-        _target.endTrans();
+        ((FigText) getPanelTarget()).setBold(bold);
+        ((FigText) getPanelTarget()).setItalic(italic);
+        getPanelTarget().endTrans();
     }
 
     /**
@@ -274,11 +274,11 @@ public class StylePanelFigText extends StylePanelFig {
      *  
      */
     protected void setTargetJustification() {
-        if (_target == null) return;
+        if (getPanelTarget() == null) return;
         String justStr = (String) justField.getSelectedItem();
         if (justStr == null) return;
-        ((FigText) _target).setJustificationByName(justStr);
-        _target.endTrans();
+        ((FigText) getPanelTarget()).setJustificationByName(justStr);
+        getPanelTarget().endTrans();
     }
 
     /**
@@ -286,12 +286,12 @@ public class StylePanelFigText extends StylePanelFig {
      *  
      */
     protected void setTargetTextFill() {
-        if (_target == null) return;
+        if (getPanelTarget() == null) return;
         Object c = textFillField.getSelectedItem();
         if (c instanceof Color)
-                ((FigText) _target).setTextFillColor((Color) c);
-        ((FigText) _target).setTextFilled(c instanceof Color);
-        _target.endTrans();
+                ((FigText) getPanelTarget()).setTextFillColor((Color) c);
+        ((FigText) getPanelTarget()).setTextFilled(c instanceof Color);
+        getPanelTarget().endTrans();
     }
 
     /**
@@ -299,10 +299,11 @@ public class StylePanelFigText extends StylePanelFig {
      *  
      */
     protected void setTargetTextColor() {
-        if (_target == null) return;
+        if (getPanelTarget() == null) return;
         Object c = textColorField.getSelectedItem();
-        if (c instanceof Color) ((FigText) _target).setTextColor((Color) c);
-        _target.endTrans();
+        if (c instanceof Color) 
+            ((FigText) getPanelTarget()).setTextColor((Color) c);
+        getPanelTarget().endTrans();
     }
 
     /**

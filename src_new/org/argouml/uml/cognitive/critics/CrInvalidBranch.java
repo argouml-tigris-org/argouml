@@ -58,7 +58,7 @@ public class CrInvalidBranch extends CrUML {
      */
     public CrInvalidBranch() {
 	setHeadline(""); // parameter ignored, so "" suffices.
-	addSupportedDecision(CrUML.decSTATE_MACHINES);
+	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
 	addTrigger("incoming");
     }
 

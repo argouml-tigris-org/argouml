@@ -49,9 +49,9 @@ public class CrOppEndConflict extends CrUML {
      */
     public CrOppEndConflict() {
         setHeadline("Rename MAssociation Roles");
-        addSupportedDecision(CrUML.decINHERITANCE);
-        addSupportedDecision(CrUML.decRELATIONSHIPS);
-        addSupportedDecision(CrUML.decNAMING);
+        addSupportedDecision(CrUML.DEC_INHERITANCE);
+        addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
+        addSupportedDecision(CrUML.DEC_NAMING);
         setKnowledgeTypes(Critic.KT_SYNTAX);
         addTrigger("associationEnd");
     }

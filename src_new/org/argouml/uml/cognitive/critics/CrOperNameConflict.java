@@ -69,8 +69,8 @@ public class CrOperNameConflict extends CrUML {
 
         setResource("CrOperNameConflict");
 
-        addSupportedDecision(CrUML.decMETHODS);
-        addSupportedDecision(CrUML.decNAMING);
+        addSupportedDecision(CrUML.DEC_METHODS);
+        addSupportedDecision(CrUML.DEC_NAMING);
 
         setKnowledgeTypes(Critic.KT_SYNTAX);
 

@@ -32,6 +32,11 @@ import java.util.Map;
  */
 public class OCLExpander extends org.tigris.gef.ocl.OCLExpander {
 
+    /**
+     * The constructor.
+     * 
+     * @param templates the templates
+     */
     public OCLExpander(Map templates) {
         super(templates);
     }

@@ -48,7 +48,7 @@ public class CrUnconventionalClassName extends CrUML {
      */
     public CrUnconventionalClassName() {
 	setHeadline("Capitalize Class Name <ocl>self</ocl>");
-	addSupportedDecision(CrUML.decNAMING);
+	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("name");
     }

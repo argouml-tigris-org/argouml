@@ -58,9 +58,9 @@ public class CrNodesOverlap extends CrUML {
     public CrNodesOverlap() {
 	// TODO: {name} is not expanded for diagram objects
 	setHeadline("Clean Up Diagram");
-	addSupportedDecision(CrUML.decCLASS_SELECTION);
-	addSupportedDecision(CrUML.decEXPECTED_USAGE);
-	addSupportedDecision(CrUML.decSTATE_MACHINES);
+	addSupportedDecision(CrUML.DEC_CLASS_SELECTION);
+	addSupportedDecision(CrUML.DEC_EXPECTED_USAGE);
+	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
 	setKnowledgeTypes(Critic.KT_PRESENTATION);
     }
 

@@ -47,7 +47,7 @@ public class CrInterfaceOperOnly extends CrUML {
      */
     public CrInterfaceOperOnly() {
 	setHeadline("Interfaces may only have operations");
-	addSupportedDecision(CrUML.decPLANNED_EXTENSIONS);
+	addSupportedDecision(CrUML.DEC_PLANNED_EXTENSIONS);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("structuralFeature");
     }

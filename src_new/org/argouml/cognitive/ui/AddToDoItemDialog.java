@@ -100,7 +100,8 @@ public class AddToDoItemDialog extends ArgoDialog {
             new JLabel("Offenders:"/*Translator.localize("label.offenders")*/);
         priorityComboBox.setSelectedItem(PRIORITIES[0]);
 
-        JPanel panel = new JPanel(new LabelledLayout(labelGap, componentGap));
+        JPanel panel = new JPanel(new LabelledLayout(getLabelGap(), 
+                getComponentGap()));
 
         headlineLabel.setLabelFor(headLineTextField);
         panel.add(headlineLabel);

@@ -46,7 +46,7 @@ public class CrInvalidFork extends CrUML {
     public CrInvalidFork() {
 	setHeadline("Change Fork Transitions");
 
-	addSupportedDecision(CrUML.decSTATE_MACHINES);
+	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
 	addTrigger("incoming");
     }
 

@@ -49,7 +49,7 @@ public class CrUnconventionalOperName extends CrUML {
      */
     public CrUnconventionalOperName() {
 	setHeadline("Choose a Better MOperation Name");
-	addSupportedDecision(CrUML.decNAMING);
+	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("feature_name");
     }

@@ -88,7 +88,8 @@ public class StatusBar extends JPanel implements Runnable {
 
     /**
      * @param s the status bar text
-     * @param work 
+     * @param work the work that has to be done, 
+     *        i.e. the maximum value for the progress
      */
     public synchronized void doFakeProgress(String s, int work) {
 	statusText = s;

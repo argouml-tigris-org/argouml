@@ -51,25 +51,43 @@ public class SerialLayout extends LineLayout {
     private static final Logger LOG = 
         Logger.getLogger(SerialLayout.class);
         
+    /** Starting point and direction: LEFTTORIGHT */
     public static final int LEFTTORIGHT = 10;
+    /** Starting point and direction: TOPTOBOTTOM */
     public static final int TOPTOBOTTOM = 10;
+    /** Starting point and direction: RIGHTTOLEFT */
     public static final int RIGHTTOLEFT = 11;
+    /** Starting point and direction: BOTTOMTOTOP */
     public static final int BOTTOMTOTOP = 11;
 		  		 
+    /** Position identification: NORTH */
     public static final String NORTH = "North";
+    /** Position identification: SOUTH */
     public static final String SOUTH = "South";
+    /** Position identification: EAST */
     public static final String EAST = "East";
+    /** Position identification: WEST */
     public static final String WEST = "West";
+    /** Position identification: NORTHEAST */
     public static final String NORTHEAST = "NorthEast";
+    /** Position identification: NORTHWEST */
     public static final String NORTHWEST = "NorthWest";
+    /** Position identification: SOUTHEAST */
     public static final String SOUTHEAST = "SouthEast";
+    /** Position identification: SOUTHWEST */
     public static final String SOUTHWEST = "SouthWest";
 		  		 
+    /** Alignment identification: LEFT */
     public static final int LEFT = 20;
+    /** Alignment identification: RIGHT */
     public static final int RIGHT = 21;
+    /** Alignment identification: TOP */
     public static final int TOP = 20;
+    /** Alignment identification: BOTTOM */
     public static final int BOTTOM = 21;
+    /** Alignment identification: CENTER */
     public static final int CENTER = 22;
+    /** Alignment identification: FILL */
     public static final int FILL = 23;
 
     private String position = WEST;

@@ -63,7 +63,7 @@ public class CrConsiderSingleton extends CrUML {
 
         setResource("CrConsiderSingleton");
 
-        addSupportedDecision(CrUML.decPATTERNS);
+        addSupportedDecision(CrUML.DEC_PATTERNS);
         setPriority(ToDoItem.LOW_PRIORITY);
 
         // These may not actually make any difference at present (the code

@@ -45,8 +45,8 @@ public class CrNonAggDataType extends CrUML {
      */
     public CrNonAggDataType() {
 	setHeadline("Wrap MDataType");
-	addSupportedDecision(CrUML.decCONTAINMENT);
-	addSupportedDecision(CrUML.decCLASS_SELECTION);
+	addSupportedDecision(CrUML.DEC_CONTAINMENT);
+	addSupportedDecision(CrUML.DEC_CLASS_SELECTION);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
     }
 

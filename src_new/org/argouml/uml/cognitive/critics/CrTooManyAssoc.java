@@ -48,7 +48,7 @@ public class CrTooManyAssoc extends CrUML {
     public CrTooManyAssoc() {
 	setHeadline("Reduce Associations on <ocl>self</ocl>");
 
-	addSupportedDecision(CrUML.decRELATIONSHIPS);
+	addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
 	setArg(THRESHOLD, new Integer(7));
 	addTrigger("associationEnd");
     }

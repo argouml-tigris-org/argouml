@@ -64,8 +64,8 @@ public class StartCritics implements Runnable {
         LOG.info("spawned critiquing thread");
 
         // should be in logon wizard?
-        dsgr.startConsidering(CrUML.decINHERITANCE);
-        dsgr.startConsidering(CrUML.decCONTAINMENT);
+        dsgr.startConsidering(CrUML.DEC_INHERITANCE);
+        dsgr.startConsidering(CrUML.DEC_CONTAINMENT);
         Designer.setUserWorking(true);
     }
 

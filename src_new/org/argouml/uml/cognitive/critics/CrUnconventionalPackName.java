@@ -48,7 +48,7 @@ public class CrUnconventionalPackName extends CrUML {
      */
     public CrUnconventionalPackName() {
 	setHeadline("Revise Package Name <ocl>self</ocl>");
-	addSupportedDecision(CrUML.decNAMING);
+	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("name");
     }
