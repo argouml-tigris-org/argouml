@@ -74,6 +74,9 @@ public class XmiReader {
         return nsumlXmiReader.getErrors();
     }
     
+    /**
+     * @return the map
+     */
     public Map getXMIUUIDToObjectMap() {
         return nsumlXmiReader.getXMIUUIDToObjectMap();
     }

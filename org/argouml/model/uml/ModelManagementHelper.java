@@ -199,11 +199,11 @@ public class ModelManagementHelper {
      * possible.<p>
      *
      * @param nsa is the namespace
-     * @param kind is the class kind
+     * @param type is the class kind
      * @return Collection
      */
     public Collection getAllModelElementsOfKind(Object nsa, Object type) {
-        Class kind = (Class)type;
+        Class kind = (Class) type;
         if (nsa == null || kind == null)
             return Collections.EMPTY_LIST;
         

@@ -36,7 +36,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
-import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
@@ -68,12 +67,12 @@ import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.core.MRelationship;
 import ru.novosoft.uml.foundation.core.MStructuralFeature;
+import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-import ru.novosoft.uml.model_management.MPackage;
 import ru.novosoft.uml.model_management.MModel;
+import ru.novosoft.uml.model_management.MPackage;
 
 /**
  * Helper class for UML Foundation::Core Package.<p>
@@ -452,35 +451,36 @@ public class CoreHelper {
      * @param operation is the operation
      * @param newReturnParameter is the return parameter.
      */
-    public void setReturnParameter(Object/*MOperation*/ operation,
-				   Object/*MParameter*/ newReturnParameter) {
-        Iterator params = ModelFacade.getParameters(operation).iterator();
-        String name = "return";
-        while (params.hasNext()) {
-            MParameter parameter = (MParameter) params.next();
-            if ((parameter.getKind()).equals(MParameterDirectionKind.RETURN)) {
-                ModelFacade.removeParameter(operation, parameter);
-                if (parameter.getName() != null || parameter.getName() == "") {
-                    name = parameter.getName();
-                }
-            }
-        }
-        ModelFacade.setName(newReturnParameter, name);
-        ModelFacade.setKind(newReturnParameter, MParameterDirectionKind.RETURN);
-        ModelFacade.addParameter(operation, 0, newReturnParameter);
-        // we set the listeners to the figs here too
-        // it would be better to do that in the figs themselves
-        Project p = ProjectManager.getManager().getCurrentProject();
-        Iterator it = p.findFigsForMember(operation).iterator();
-        while (it.hasNext()) {
-            MElementListener listener = (MElementListener) it.next();
-            // UmlModelEventPump.getPump().removeModelEventListener(listener,
-            // newReturnParameter);
-            UmlModelEventPump.getPump()
-		.addModelEventListener(listener,
-				       newReturnParameter);
-        }
-    }
+//    public void setReturnParameter(Object/*MOperation*/ operation,
+//				   Object/*MParameter*/ newReturnParameter) {
+//        Iterator params = ModelFacade.getParameters(operation).iterator();
+//        String name = "return";
+//        while (params.hasNext()) {
+//            MParameter parameter = (MParameter) params.next();
+//            if ((parameter.getKind()).equals(MParameterDirectionKind.RETURN)){
+//                ModelFacade.removeParameter(operation, parameter);
+//                if (parameter.getName() != null || parameter.getName() == ""){
+//                    name = parameter.getName();
+//                }
+//            }
+//        }
+//        ModelFacade.setName(newReturnParameter, name);
+//        ModelFacade.setKind(newReturnParameter, 
+//                      MParameterDirectionKind.RETURN);
+//        ModelFacade.addParameter(operation, 0, newReturnParameter);
+//        // we set the listeners to the figs here too
+//        // it would be better to do that in the figs themselves
+//        Project p = ProjectManager.getManager().getCurrentProject();
+//        Iterator it = p.findFigsForMember(operation).iterator();
+//        while (it.hasNext()) {
+//            MElementListener listener = (MElementListener) it.next();
+//            // UmlModelEventPump.getPump().removeModelEventListener(listener,
+//            // newReturnParameter);
+//            UmlModelEventPump.getPump()
+//		.addModelEventListener(listener,
+//				       newReturnParameter);
+//        }
+//    }
 
     /**
      * Builds a dependency with stereotype support.
