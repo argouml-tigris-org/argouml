@@ -48,7 +48,6 @@ public class PropPanelButton2 extends JButton
     public PropPanelButton2(UMLUserInterfaceContainer c, Action a) {
         super(a);
         setText(""); // just the icon and possibly a tooltip
-        setBackground(Color.red);
         setContainer(c);
     }
 
