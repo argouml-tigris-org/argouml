@@ -31,6 +31,7 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -41,14 +42,9 @@ import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.cognitive.ui.WizStepConfirm;
 import org.argouml.kernel.Wizard;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.generator.GeneratorDisplay;
 import org.tigris.gef.util.VectorSet;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
-
 /** A non-modal wizard to help the user change select an association
  *  to make non-aggregate. */
 
@@ -73,8 +69,8 @@ public class WizBreakCircularComp extends Wizard {
     protected WizStepChoice _step2 = null;
     protected WizStepConfirm _step3 = null;
 									      
-    protected MClassifier _selectedCls = null;
-    protected MAssociation _selectedAsc = null;
+    protected Object _selectedCls = null;
+    protected Object _selectedAsc = null;
 
     public WizBreakCircularComp() { }
 
@@ -86,8 +82,8 @@ public class WizBreakCircularComp extends Wizard {
 	    VectorSet offs = _item.getOffenders();
 	    int size = offs.size();
 	    for (int i = 0; i < size; i++) {
-		MModelElement me = (MModelElement) offs.elementAt(i);
-		String s = GeneratorDisplay.Generate(me.getName());
+		Object me = /*(MModelElement)*/ offs.elementAt(i);
+		String s = GeneratorDisplay.Generate(ModelFacade.getName(me));
 		res.addElement(s);
 	    }
 	}
@@ -97,20 +93,20 @@ public class WizBreakCircularComp extends Wizard {
     protected Vector getOptions2() {
 	Vector res = new Vector();
 	if (_selectedCls != null) {
-	    Collection aes = _selectedCls.getAssociationEnds();
+	    Collection aes = ModelFacade.getAssociationEnds(_selectedCls);
 	    int size = aes.size();
-	    MClassifier fromType = _selectedCls;
-	    String fromName = GeneratorDisplay.Generate(fromType.getName());
+	    Object fromType = _selectedCls;
+	    String fromName = GeneratorDisplay.Generate(ModelFacade.getName(fromType));
 	    for (Iterator iter = aes.iterator(); iter.hasNext();) {
-		MAssociationEnd fromEnd = (MAssociationEnd) iter.next();
-		MAssociation asc = fromEnd.getAssociation();
-		MAssociationEnd toEnd = (MAssociationEnd)
-		    asc.getConnections().get(0);
+		Object fromEnd = /*(MAssociationEnd)*/ iter.next();
+		Object asc = ModelFacade.getAssociation(fromEnd);
+		Object toEnd = /*(MAssociationEnd)*/
+		    new ArrayList(ModelFacade.getConnections(asc)).get(0);
 		if (toEnd == fromEnd)
-		    toEnd = (MAssociationEnd) asc.getConnections().get(1);
-		MClassifier toType = toEnd.getType();
-		String ascName = GeneratorDisplay.Generate(asc.getName());
-		String toName = GeneratorDisplay.Generate(toType.getName());
+		    toEnd = /*(MAssociationEnd)*/ new ArrayList(ModelFacade.getConnections(asc)).get(1);
+		Object toType = ModelFacade.getType(toEnd);
+		String ascName = GeneratorDisplay.Generate(ModelFacade.getName(asc));
+		String toName = GeneratorDisplay.Generate(ModelFacade.getName(toType));
 		String s = ascName + " from " + fromName + " to " + toName;
 		res.addElement(s);
 	    }
@@ -157,7 +153,7 @@ public class WizBreakCircularComp extends Wizard {
 	    if (choice == -1) {
 		throw new Error("nothing selected, should not get here");
 	    }
-	    _selectedCls = (MClassifier) offs.elementAt(choice);
+	    _selectedCls = /*(MClassifier)*/ offs.elementAt(choice);
 	    break;
 	    ////////////////
 	case 2:
@@ -165,21 +161,21 @@ public class WizBreakCircularComp extends Wizard {
 	    if (choice == -1) {
 		throw new Error("nothing selected, should not get here");
 	    }
-	    MAssociationEnd ae = null;
-	    Iterator iter = _selectedCls.getAssociationEnds().iterator();
+	    Object ae = null;
+	    Iterator iter = ModelFacade.getAssociationEnds(_selectedCls).iterator();
 	    for (int n = 0; n <= choice; n++)
-		ae = (MAssociationEnd) iter.next();
-	    _selectedAsc = ae.getAssociation();
+		ae = /*(MAssociationEnd)*/ iter.next();
+	    _selectedAsc = ModelFacade.getAssociation(ae);
 	    break;
 	    ////////////////
 	case 3:
 	    if (_selectedAsc != null) {
-		List conns = _selectedAsc.getConnections();
-		MAssociationEnd ae0 = (MAssociationEnd) conns.get(0);
-		MAssociationEnd ae1 = (MAssociationEnd) conns.get(1);
+		List conns = new ArrayList(ModelFacade.getConnections(_selectedAsc));
+		Object ae0 = /*(MAssociationEnd)*/ conns.get(0);
+		Object ae1 = /*(MAssociationEnd)*/ conns.get(1);
 		try {
-		    ae0.setAggregation(MAggregationKind.NONE);
-		    ae1.setAggregation(MAggregationKind.NONE);
+		    ModelFacade.setAggregation(ae0, ModelFacade.NONE_AGGREGATIONKIND);
+		    ModelFacade.setAggregation(ae1, ModelFacade.NONE_AGGREGATIONKIND);
 		}
 		catch (Exception pve) {
 		    cat.error("could not set aggregation", pve);

@@ -34,8 +34,6 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
 
 
-import ru.novosoft.uml.behavior.state_machines.MGuard;
-
 public class CrNoGuard extends CrUML {
 
     public CrNoGuard() {
@@ -53,14 +51,12 @@ public class CrNoGuard extends CrUML {
 	    equalsPseudostateKind(ModelFacade.getPseudostateKind(sv),
 				  ModelFacade.BRANCH_PSEUDOSTATEKIND))
 	    return NO_PROBLEM;
-	MGuard g = (MGuard) ModelFacade.getGuard(dm);
-	boolean noGuard = (g == null || g.getExpression() == null ||
-			   g.getExpression().getBody() == null ||
-			   g.getExpression().getBody() == null ||
-			   g.getExpression().getBody().length() == 0);
+	Object g = /*(MGuard)*/ ModelFacade.getGuard(dm);
+	boolean noGuard = (g == null || ModelFacade.getExpression(g) == null ||
+			   ModelFacade.getBody(ModelFacade.getExpression(g)) == null ||
+			   ((String)ModelFacade.getBody(ModelFacade.getExpression(g))).length() == 0);
 	if (noGuard) return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }
 
 } /* end class CrNoGuard */
-

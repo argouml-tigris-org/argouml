@@ -24,15 +24,13 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 
 
@@ -51,24 +49,24 @@ public class CrMergeClasses extends CrUML {
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;
-	MClass cls = (MClass) dm;
-	Collection ends = cls.getAssociationEnds();
+	Object cls = /*(MClass)*/ dm;
+	Collection ends = ModelFacade.getAssociationEnds(cls);
 	if (ends == null || ends.size() != 1) return NO_PROBLEM;
-	MAssociationEnd myEnd = (MAssociationEnd) ends.iterator().next();
-	MAssociation asc = myEnd.getAssociation();
-	List conns = asc.getConnections();
-	MAssociationEnd ae0 = (MAssociationEnd) conns.get(0);
-	MAssociationEnd ae1 = (MAssociationEnd) conns.get(1);
+	Object myEnd = /*(MAssociationEnd)*/ ends.iterator().next();
+	Object asc = ModelFacade.getAssociation(myEnd);
+	List conns = new ArrayList(ModelFacade.getConnections(asc));
+	Object ae0 = /*(MAssociationEnd)*/ conns.get(0);
+	Object ae1 = /*(MAssociationEnd)*/ conns.get(1);
 	// both ends must be classes, otherwise there is nothing to merge
-	if (!(ModelFacade.isAClass(ae0.getType()) && 
-	      ModelFacade.isAClass(ae1.getType()))) 
+	if (!(ModelFacade.isAClass(ModelFacade.getType(ae0)) && 
+	      ModelFacade.isAClass(ModelFacade.getType(ae1)))) 
 	    return NO_PROBLEM;
 	// both ends must be navigable, otherwise there is nothing to merge
 	if (!(ModelFacade.isNavigable(ae0) && 
 	      ModelFacade.isNavigable(ae1)))
 	    return NO_PROBLEM;
-	if (ae0.getMultiplicity().equals(MMultiplicity.M1_1) &&
-	    ae1.getMultiplicity().equals(MMultiplicity.M1_1))
+	if (ModelFacade.getMultiplicity(ae0).equals(MMultiplicity.M1_1) &&
+	    ModelFacade.getMultiplicity(ae1).equals(MMultiplicity.M1_1))
 	    return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }

@@ -32,10 +32,6 @@ package org.argouml.uml.cognitive.critics;
 import java.util.Collection;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
-
-
-
 /** A critic to detect when a state has no outgoing transitions. */
 
 public class CrNoOutgoingTransitions extends CrUML {
@@ -48,12 +44,12 @@ public class CrNoOutgoingTransitions extends CrUML {
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAStateVertex(dm))) return NO_PROBLEM;
-	MStateVertex sv = (MStateVertex) dm;
+	Object sv = /*(MStateVertex)*/ dm;
 	if (ModelFacade.isAState(sv)) {
 	    Object sm = ModelFacade.getStateMachine(sv);
 	    if (sm != null && ModelFacade.getTop(sm) == sv) return NO_PROBLEM;
 	}
-	Collection outgoing = sv.getOutgoings();
+	Collection outgoing = ModelFacade.getOutgoings(sv);
 	boolean needsOutgoing = outgoing == null || outgoing.size() == 0;
 	if (ModelFacade.isAFinalState(sv)) {
 	    needsOutgoing = false;

@@ -33,7 +33,6 @@ package org.argouml.uml.cognitive;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Vector;
 
 import org.argouml.model.ModelFacade;
@@ -41,13 +40,6 @@ import org.argouml.model.ModelFacade;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.util.ChildGenerator;
 
-import ru.novosoft.uml.behavior.state_machines.MCompositeState;
-import ru.novosoft.uml.behavior.state_machines.MState;
-import ru.novosoft.uml.behavior.state_machines.MStateMachine;
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
-import ru.novosoft.uml.behavior.state_machines.MTransition;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MClassifier;
 /** @stereotype singleton
  */
 public class ChildGenRelated implements ChildGenerator {
@@ -68,21 +60,21 @@ public class ChildGenRelated implements ChildGenerator {
 	}
 		
 	if (ModelFacade.isAClassifier(o)) {
-	    MClassifier cls = (MClassifier) o;
-	    Collection assocEnds = cls.getAssociationEnds();
+	    Object cls = /*(MClassifier)*/ o;
+	    Collection assocEnds = ModelFacade.getAssociationEnds(cls);
 	    Iterator assocIterator = assocEnds.iterator();
 	    while (assocIterator.hasNext()) {
 		res.add(ModelFacade.getAssociation(assocIterator.next()));
 	    }
 
-	    res.addAll(cls.getFeatures());
-	    res.addAll(cls.getBehaviors());
+	    res.addAll(ModelFacade.getFeatures(cls));
+	    res.addAll(ModelFacade.getBehaviors(cls));
 	    return res.elements();
 	}
 		
 	if (ModelFacade.isAAssociation(o)) {
-	    MAssociation asc = (MAssociation) o;
-	    List assocEnds = asc.getConnections();
+	    Object asc = /*(MAssociation)*/ o;
+	    Collection assocEnds = ModelFacade.getConnections(asc);
 	    Iterator iter = assocEnds.iterator();
 	    while (iter.hasNext()) {
 		res.add(ModelFacade.getType(iter.next()));
@@ -91,39 +83,39 @@ public class ChildGenRelated implements ChildGenerator {
 	}
 		
 	if (ModelFacade.isAStateMachine(o)) {
-	    MStateMachine sm = (MStateMachine) o;
-	    MState top = sm.getTop();
+	    Object sm = /*(MStateMachine)*/ o;
+	    Object top = ModelFacade.getTop(sm);
 	    if (top != null)
 		res.addAll(ModelFacade.getSubvertices(top));
-	    res.add(sm.getContext()); //wasteful!
-	    res.addAll(sm.getTransitions());
+	    res.add(ModelFacade.getContext(sm)); //wasteful!
+	    res.addAll(ModelFacade.getTransitions(sm));
 	    return res.elements();
 	}
 		
 	if (ModelFacade.isAStateVertex(o)) {
-	    MStateVertex sv = (MStateVertex) o;
-	    res.addAll(sv.getIncomings());
-	    res.addAll(sv.getOutgoings());
+	    Object sv = /*(MStateVertex)*/ o;
+	    res.addAll(ModelFacade.getIncomings(sv));
+	    res.addAll(ModelFacade.getOutgoings(sv));
 			
 	    if (ModelFacade.isAState(o)) {
-		MState s = (MState) o;
-		res.addAll(s.getInternalTransitions());
+		Object s = /*(MState)*/ o;
+		res.addAll(ModelFacade.getInternalTransitions(s));
 	    }
 			
 	    if (ModelFacade.isACompositeState(o)) {
-		MCompositeState cs = (MCompositeState) o;
-		res.addAll(cs.getSubvertices());
+		Object cs = /*(MCompositeState)*/ o;
+		res.addAll(ModelFacade.getSubvertices(cs));
 	    }
 	    return res.elements();
 	}
 		
 	if (ModelFacade.isATransition(o)) {
-	    MTransition tr = (MTransition) o;
-	    res.add(tr.getTrigger());
-	    res.add(tr.getGuard());
-	    res.add(tr.getEffect());
-	    res.add(tr.getSource());
-	    res.add(tr.getTarget());
+	    Object tr = /*(MTransition)*/ o;
+	    res.add(ModelFacade.getTrigger(tr));
+	    res.add(ModelFacade.getGuard(tr));
+	    res.add(ModelFacade.getEffect(tr));
+	    res.add(ModelFacade.getSource(tr));
+	    res.add(ModelFacade.getTarget(tr));
 	    return res.elements();
 	}
 		

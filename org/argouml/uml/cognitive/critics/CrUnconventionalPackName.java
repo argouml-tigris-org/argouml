@@ -37,8 +37,6 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.core.MModelElement;
-
 public class CrUnconventionalPackName extends CrUML {
 
     public CrUnconventionalPackName() {
@@ -70,9 +68,9 @@ public class CrUnconventionalPackName extends CrUML {
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = w.getToDoItem();
-	    MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
+	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String ins = "Change the name of this package.";
-	    String nameStr = me.getName();
+	    String nameStr = ModelFacade.getName(me);
 	    String sug = "";
 	    int size = nameStr.length();
 	    for (int i = 0; i < size; i++) {
@@ -89,4 +87,3 @@ public class CrUnconventionalPackName extends CrUML {
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
 } /* end class CrUnconventionalPackName */
-

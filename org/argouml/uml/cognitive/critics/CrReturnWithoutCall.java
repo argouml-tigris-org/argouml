@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -44,9 +42,6 @@ import org.argouml.uml.diagram.sequence.ui.FigSeqObject;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.tigris.gef.util.VectorSet;
 
-import ru.novosoft.uml.behavior.common_behavior.MLink;
-import ru.novosoft.uml.behavior.common_behavior.MStimulus;
-
 public class CrReturnWithoutCall extends CrUML {
 
 
@@ -89,16 +84,15 @@ public class CrReturnWithoutCall extends CrUML {
 	for (int i = 0; i < size; i++) {
 	    if (figs.elementAt(i) instanceof FigSeqLink) {
 		FigSeqLink fsl = (FigSeqLink) figs.elementAt(i);
-		MLink ml = (MLink) fsl.getOwner();
+		Object ml = /*(MLink)*/ fsl.getOwner();
 		boolean found = false;
-		if (ml.getStimuli() != null) {
-		    Collection col = ml.getStimuli();
+		if (ModelFacade.getStimuli(ml) != null) {
+		    Collection col = ModelFacade.getStimuli(ml);
 		    Iterator it = col.iterator();
 		    while (it.hasNext()) {
-			MStimulus ms = (MStimulus) it.next();
-			if (ms.getDispatchAction() != null
-			    && ModelFacade.isAReturnAction(ms.getDispatchAction()))
-			{
+			Object ms = /*(MStimulus)*/ it.next();
+			if (ModelFacade.getDispatchAction(ms) != null
+                                && ModelFacade.isAReturnAction(ModelFacade.getDispatchAction(ms))) {
 			    found = true;
 			    Vector edges =
 				((FigSeqObject) fsl.getDestFigNode())
@@ -106,19 +100,19 @@ public class CrReturnWithoutCall extends CrUML {
 			    for (int j = 0; j < edges.size(); j++) {
 				FigSeqLink second =
 				    (FigSeqLink) edges.elementAt(j);
-				MLink ml2 = (MLink) second.getOwner();
-				if (ml2.getStimuli() != null) {
-				    Collection col2 = ml2.getStimuli();
+				Object ml2 = /*(MLink)*/ second.getOwner();
+				if (ModelFacade.getStimuli(ml2) != null) {
+				    Collection col2 = ModelFacade.getStimuli(ml2);
 				    Iterator it2 = col2.iterator();
 				    while (it2.hasNext()) {
-					MStimulus ms2 = (MStimulus) it2.next();
-					if (ms2.getDispatchAction() != null
-					    && ((ModelFacade.isACallAction(ms2.getDispatchAction()))
-						|| (ModelFacade.isASendAction(ms2.getDispatchAction())))
+					Object ms2 = /*(MStimulus)*/ it2.next();
+					if (ModelFacade.getDispatchAction(ms2) != null
+                                                && ((ModelFacade.isACallAction(ModelFacade.getDispatchAction(ms2)))
+                                                    || (ModelFacade.isASendAction(ModelFacade.getDispatchAction(ms2))))
 					    && (second.getPortNumber(figs)
 						< fsl.getPortNumber(figs))
-					    && (ms.getSender()
-						== ms2.getReceiver()))
+					    && (ModelFacade.getSender(ms)
+						== ModelFacade.getReceiver(ms2)))
 					{
 					    found = false;
 					}

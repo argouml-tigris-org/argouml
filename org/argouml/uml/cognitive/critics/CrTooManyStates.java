@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -33,8 +32,6 @@ package org.argouml.uml.cognitive.critics;
 import java.util.Collection;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.behavior.state_machines.MCompositeState;
-
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
 
@@ -57,10 +54,10 @@ public class CrTooManyStates extends CrUML {
     // critiquing API
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isACompositeState(dm))) return NO_PROBLEM;
-	MCompositeState cs = (MCompositeState) dm;
+	Object cs = /*(MCompositeState)*/ dm;
 
 	int threshold = ((Integer) getArg(THRESHOLD)).intValue();
-	Collection subs = cs.getSubvertices();
+	Collection subs = ModelFacade.getSubvertices(cs);
 	if (subs.size() <= threshold) return NO_PROBLEM;
 	return PROBLEM_FOUND;
     }

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -38,10 +37,6 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.VectorSet;
-import ru.novosoft.uml.foundation.core.MFeature;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MOperation;
-
 public class CrUnconventionalOperName extends CrUML {
 
     public CrUnconventionalOperName() {
@@ -53,36 +48,41 @@ public class CrUnconventionalOperName extends CrUML {
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAOperation(dm))) return NO_PROBLEM;
-	MOperation oper = (MOperation) dm;
-	String myName = oper.getName();
+	Object oper = /*(MOperation)*/ dm;
+	String myName = ModelFacade.getName(oper);
 	if (myName == null || myName.equals("")) return NO_PROBLEM;
 	String nameStr = myName;
 	if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
 	char initalChar = nameStr.charAt(0);
-	if ((oper.getStereotype() != null) && 
-	    ("create".equals(oper.getStereotype().getName()) ||
-	     "constructor".equals(oper.getStereotype().getName())))
+        Object stereo = null;
+        if (ModelFacade.getStereotypes(oper).size() > 0) {
+            stereo = ModelFacade.getStereotypes(oper).iterator().next();
+        }
+	if ((stereo != null) && 
+                ("create".equals(ModelFacade.getName(stereo)) ||
+                 "constructor".equals(ModelFacade.getName(stereo)))) {
 	    return NO_PROBLEM;
+        }
 	if (!Character.isLowerCase(initalChar)) return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }
 
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
-	MFeature f = (MFeature) dm;
+	Object f = /*(MFeature)*/ dm;
 	VectorSet offs = computeOffenders(f);
 	return new ToDoItem(this, offs, dsgr);
     }
 
-    protected VectorSet computeOffenders(MFeature dm) {
+    protected VectorSet computeOffenders(Object/*MFeature*/ dm) {
 	VectorSet offs = new VectorSet(dm);
-	offs.addElement(dm.getOwner());
+	offs.addElement(ModelFacade.getOwner(dm));
 	return offs;
     }
 
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
 	VectorSet offs = i.getOffenders();
-	MFeature f = (MFeature) offs.firstElement();
+	Object f = /*(MFeature)*/ offs.firstElement();
 	if (!predicate(f, dsgr)) return false;
 	VectorSet newOffs = computeOffenders(f);
 	boolean res = offs.equals(newOffs);
@@ -94,13 +94,13 @@ public class CrUnconventionalOperName extends CrUML {
      * as the class name. If so, an alternative path in the wizard is 
      * possible where we are suggested to make the operation a constructor.
      */
-    protected boolean candidateForConstructor(MModelElement me) {
+    protected boolean candidateForConstructor(Object/*MModelElement*/ me) {
 	if (!(ModelFacade.isAOperation(me))) return false;
-	MOperation oper = (MOperation) me;
-	String myName = oper.getName();
+	Object oper = /*(MOperation)*/ me;
+	String myName = ModelFacade.getName(oper);
 	if (myName == null || myName.equals("")) return false;
-	MModelElement cl = oper.getOwner();
-	String nameCl = cl.getName();
+	Object cl = ModelFacade.getOwner(oper);
+	String nameCl = ModelFacade.getName(cl);
 	if (nameCl == null || nameCl.equals("")) return false;
 	if (myName.equals(nameCl)) return true;
 	return false;
@@ -110,8 +110,8 @@ public class CrUnconventionalOperName extends CrUML {
     public void initWizard(Wizard w) {
 	if (w instanceof WizOperName) {
 	    ToDoItem item = w.getToDoItem();
-	    MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
-	    String sug = me.getName();
+	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
+	    String sug = ModelFacade.getName(me);
 	    sug = sug.substring(0, 1).toLowerCase() + sug.substring(1);
 	    boolean cand = candidateForConstructor(me);
 	    String ins = "Change the operation name to start with a " +

@@ -35,7 +35,6 @@ import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
 
 
-import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 /** A critic to detect whether the Compositestate attached to a 
@@ -52,12 +51,12 @@ public class CrNoInitialState extends CrUML {
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isACompositeState(dm))) return NO_PROBLEM;
-	MCompositeState cs = (MCompositeState) dm;
+	Object cs = /*(MCompositeState)*/ dm;
     
 	// if this composite state is not attached to a statemachine
 	// it is not the toplevel composite state.
-	if (cs.getStateMachine() == null) return NO_PROBLEM;
-	Collection peers = cs.getSubvertices();
+	if (ModelFacade.getStateMachine(cs) == null) return NO_PROBLEM;
+	Collection peers = ModelFacade.getSubvertices(cs);
 	int initialStateCount = 0;
 	if (peers == null) return PROBLEM_FOUND;
 	int size = peers.size();

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -42,12 +41,6 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
-
-
-
 /**
  * <p> A critic to check that only one end of a binary association is an
  *   aggregation.</p>
@@ -131,13 +124,13 @@ public class CrMultipleAgg extends CrUML {
         // critic) if this is not a binary association or is an association
         // role.
 
-        MAssociation asc = (MAssociation) dm;
+        Object asc = /*(MAssociation)*/ dm;
 
         if (ModelFacade.isAAssociationRole(asc)) {
             return NO_PROBLEM;
         }
 
-        Collection   conns = asc.getConnections();
+        Collection   conns = ModelFacade.getConnections(asc);
 
         if ((conns == null) || (conns.size() != 2)) {
             return NO_PROBLEM;
@@ -149,12 +142,8 @@ public class CrMultipleAgg extends CrUML {
         Iterator enum     = conns.iterator();
 
         while (enum.hasNext()) {
-            MAssociationEnd  ae = (MAssociationEnd) enum.next();
-            MAggregationKind ak = ae.getAggregation();
-      
-            if (ak != null &&
-                (MAggregationKind.AGGREGATE.equals(ak) ||
-                 MAggregationKind.COMPOSITE.equals(ak))) {
+            Object  ae = /*(MAssociationEnd)*/ enum.next();
+            if (ModelFacade.isAggregate(ae) || ModelFacade.isComposite(ae)) {
                 aggCount++;
             }
         }

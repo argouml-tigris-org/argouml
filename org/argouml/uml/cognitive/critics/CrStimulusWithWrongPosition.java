@@ -44,9 +44,6 @@ import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.tigris.gef.presentation.FigActivation;
 import org.tigris.gef.util.VectorSet;
 
-import ru.novosoft.uml.behavior.common_behavior.MLink;
-
-
 public class CrStimulusWithWrongPosition extends CrUML {
     
     public CrStimulusWithWrongPosition() {
@@ -87,10 +84,10 @@ public class CrStimulusWithWrongPosition extends CrUML {
 	for (int i = 0; i < size; i++) {
 	    if (figs.elementAt(i) instanceof FigSeqLink) {
 		FigSeqLink fsl = (FigSeqLink) figs.elementAt(i);
-		MLink ml = (MLink) fsl.getOwner();
+		Object ml = /*(MLink)*/ fsl.getOwner();
 		boolean found = false;
-		if (ml.getStimuli() != null) {
-		    Collection col = ml.getStimuli();
+		if (ModelFacade.getStimuli(ml) != null) {
+		    Collection col = ModelFacade.getStimuli(ml);
 		    Iterator it = col.iterator();
 		    while (it.hasNext()) {
 			Object ms = it.next();
@@ -165,4 +162,3 @@ public class CrStimulusWithWrongPosition extends CrUML {
     } 
 									    
 } /* end class CrStimulusWithWrongPosition.java */
-

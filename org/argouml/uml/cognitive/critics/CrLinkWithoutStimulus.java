@@ -35,15 +35,10 @@ import java.util.Collection;
 import java.util.Vector;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.sequence.ui.FigSeqLink;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.tigris.gef.util.VectorSet;
-
-
-
-import ru.novosoft.uml.behavior.common_behavior.MLink;
-
-
 
 
 
@@ -92,10 +87,10 @@ public class CrLinkWithoutStimulus extends CrUML {
 	for (int i = 0; i < size; i++) {
 	    if (figs.elementAt(i) instanceof FigSeqLink) {
 		FigSeqLink fsl = (FigSeqLink) figs.elementAt(i);
-		MLink ml = (MLink) fsl.getOwner();
+		Object ml = /*(MLink)*/ fsl.getOwner();
 		boolean found = false;
-		if (ml.getStimuli() != null) {
-		    Collection col = ml.getStimuli();
+		if (ModelFacade.getStimuli(ml) != null) {
+		    Collection col = ModelFacade.getStimuli(ml);
 		    if (col.size() == 0) found = true;          
 		}
 		else found = true;
@@ -114,4 +109,3 @@ public class CrLinkWithoutStimulus extends CrUML {
     } 
 
 } /* end class CrLinkWithoutStimulus.java */
-

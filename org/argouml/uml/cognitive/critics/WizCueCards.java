@@ -36,10 +36,6 @@ import javax.swing.JPanel;
 import org.argouml.cognitive.ui.WizStepCue;
 import org.argouml.kernel.Wizard;
 import org.tigris.gef.util.VectorSet;
-import ru.novosoft.uml.foundation.core.MModelElement;
-
-
-
 /** A non-modal wizard to help the user change navigability
  *  of an association. */
 
@@ -52,11 +48,11 @@ public class WizCueCards extends Wizard {
 
     public int getNumSteps() { return _cues.size(); }
 
-    public MModelElement getModelElement() {
+    public Object getModelElement() {
 	if (_item != null) {
 	    VectorSet offs = _item.getOffenders();
 	    if (offs.size() >= 1) {
-		MModelElement me = (MModelElement) offs.elementAt(0);
+		Object me = /*(MModelElement)*/ offs.elementAt(0);
 		return me;
 	    }
 	}

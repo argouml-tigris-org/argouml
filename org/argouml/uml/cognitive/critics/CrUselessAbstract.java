@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -40,6 +39,7 @@ import ru.novosoft.uml.foundation.core.*;
 import org.tigris.gef.util.*;
 
 import org.argouml.cognitive.*;
+import org.argouml.model.ModelFacade;
 
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
@@ -55,17 +55,17 @@ public class CrUselessAbstract extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	MClass cls, c;
-	if (!(org.argouml.model.ModelFacade.isAClass(dm))) return false;
-	cls = (MClass) dm;
-	if (!cls.isAbstract())
+	if (!(ModelFacade.isAClass(dm))) return false;
+	Object cls = /*(MClass)*/ dm;
+	if (!ModelFacade.isAbstract(cls))
 	    return false;  // original class was not abstract
 	VectorSet derived =
 	    (new VectorSet(cls)).reachable(new ChildGenDerivedClasses());
 	java.util.Enumeration enum = derived.elements();
+	Object c;
 	while (enum.hasMoreElements()) {
-	    c = (MClass) enum.nextElement();
-	    if (!c.isAbstract())
+	    c = /*(MClass)*/ enum.nextElement();
+	    if (!ModelFacade.isAbstract(c))
 		return false;  // found a concrete subclass
 	}
 	return true; // no concrete subclasses defined, this class is "useless"
@@ -77,8 +77,8 @@ public class CrUselessAbstract extends CrUML {
 
 class ChildGenDerivedClasses implements ChildGenerator {
     public java.util.Enumeration gen(Object o) {
-	MClass c = (MClass) o;
-	Vector specs = new Vector(c.getSpecializations());
+	Object c = /*(MClass)*/ o;
+	Vector specs = new Vector(ModelFacade.getSpecializations(c));
 	if (specs == null) {
 	    return EnumerationEmpty.theInstance();
 	}
@@ -87,8 +87,8 @@ class ChildGenDerivedClasses implements ChildGenerator {
 	Vector specClasses = new Vector(specs.size());
 	java.util.Enumeration enum = specs.elements();
 	while (enum.hasMoreElements()) {
-	    MGeneralization g = (MGeneralization) enum.nextElement();
-	    MGeneralizableElement ge = g.getChild();
+	    Object g = /*(MGeneralization)*/ enum.nextElement();
+	    Object ge = ModelFacade.getChild(g);
 	    // assert: ge != null
 	    if (ge != null) specClasses.addElement(ge);
 	}

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -39,11 +38,6 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.VectorSet;
-import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.core.MFeature;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.data_types.MChangeableKind;
-
 /** Critic to detect whether an attribute name obeys to certain rules.
  *  <p>
  *  Checks for:
@@ -66,8 +60,8 @@ public class CrUnconventionalAttrName extends CrUML {
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAAttribute(dm))) return NO_PROBLEM;
-	MAttribute attr = (MAttribute) dm;
-	String myName = attr.getName();
+	Object attr = /*(MAttribute)*/ dm;
+	String myName = ModelFacade.getName(attr);
 	if (myName == null || myName.equals("")) return NO_PROBLEM;
 	String nameStr = myName;
 	if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
@@ -90,8 +84,8 @@ public class CrUnconventionalAttrName extends CrUML {
 
 	// check whether constant, constants are often weird and thus not a
 	// problem
-	MChangeableKind ck = attr.getChangeability();
-	if (MChangeableKind.FROZEN.equals(ck)) return NO_PROBLEM;
+	Object/*MChangeableKind*/ ck = ModelFacade.getChangeability(attr);
+        if (ModelFacade.isFrozen(ck)) return NO_PROBLEM;
 	if (!Character.isLowerCase(initalChar)) {
 	    return PROBLEM_FOUND;
 	}
@@ -99,14 +93,14 @@ public class CrUnconventionalAttrName extends CrUML {
     }
 
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
-	MFeature f = (MFeature) dm;
+	Object f = /*(MFeature)*/ dm;
 	VectorSet offs = computeOffenders(f);
 	return new ToDoItem(this, offs, dsgr);
     }
 
-    protected VectorSet computeOffenders(MFeature dm) {
+    protected VectorSet computeOffenders(Object /*MFeature*/ dm) {
 	VectorSet offs = new VectorSet(dm);
-	offs.addElement(dm.getOwner());
+	offs.addElement(ModelFacade.getOwner(dm));
 	return offs;
     }
 
@@ -117,7 +111,7 @@ public class CrUnconventionalAttrName extends CrUML {
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
 	VectorSet offs = i.getOffenders();
-	MFeature f = (MFeature) offs.firstElement();
+	Object f = /*(MFeature)*/ offs.firstElement();
 	if (!predicate(f, dsgr)) return false;
 	VectorSet newOffs = computeOffenders(f);
 	boolean res = offs.equals(newOffs);
@@ -128,9 +122,9 @@ public class CrUnconventionalAttrName extends CrUML {
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = w.getToDoItem();
-	    MModelElement me =
-		(MModelElement) item.getOffenders().elementAt(0);
-	    String sug = me.getName();
+	    Object me =
+		/*(MModelElement)*/ item.getOffenders().elementAt(0);
+	    String sug = ModelFacade.getName(me);
 	    if (sug.startsWith("_"))
 		sug =
 		    "_" + sug.substring(1, 2).toLowerCase() + sug.substring(2);

@@ -34,7 +34,6 @@ import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
 
 
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 /** A critic to detect when a state has no outgoing transitions. */
@@ -49,13 +48,13 @@ public class CrNoIncomingTransitions extends CrUML {
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAStateVertex(dm))) return NO_PROBLEM;
-	MStateVertex sv = (MStateVertex) dm;
+	Object sv = /*(MStateVertex)*/ dm;
 	if (ModelFacade.isAState(sv)) {
 	    Object sm = ModelFacade.getStateMachine(sv);
 	    if (sm != null && ModelFacade.getTop(sm) == sv) return NO_PROBLEM;
 	}
 
-	Collection incoming = sv.getIncomings();
+	Collection incoming = ModelFacade.getIncomings(sv);
 
 	boolean needsIncoming = incoming == null || incoming.size() == 0;
 	if (ModelFacade.isAPseudostate(sv)) {

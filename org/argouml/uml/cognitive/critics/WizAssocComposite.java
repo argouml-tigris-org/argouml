@@ -39,12 +39,8 @@ import org.apache.log4j.Logger;
 
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.kernel.Wizard;
+import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.VectorSet;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
-
 /**
  * <p>A non-modal wizard to assist the user in changing aggregation of an
  *   association.</p>
@@ -89,7 +85,7 @@ public class WizAssocComposite extends Wizard {
      *   until set when it is first needed.</p>
      */
 
-    private MAssociation _triggerAsc = null;
+    private Object _triggerAsc = null;
 
 
     /**
@@ -131,7 +127,7 @@ public class WizAssocComposite extends Wizard {
      *          if there was none.
      */
 
-    private MAssociation _getTriggerAsc() {
+    private Object _getTriggerAsc() {
 
         // If we don't have it, find the trigger. If this fails it will keep
         // its default value of null
@@ -140,7 +136,7 @@ public class WizAssocComposite extends Wizard {
             VectorSet offs = _item.getOffenders();
 
             if (offs.size() >= 1) {
-                _triggerAsc = (MAssociation) offs.elementAt(0);
+                _triggerAsc = /*(MAssociation)*/ offs.elementAt(0);
             }
         }
 
@@ -169,7 +165,7 @@ public class WizAssocComposite extends Wizard {
         // The association that triggered the critic. Its just possible the
         // association is no longer there, in which case we return null
 
-        MAssociation asc = _getTriggerAsc();
+        Object asc = _getTriggerAsc();
 
         if ( asc == null ) {
             return null;
@@ -182,13 +178,13 @@ public class WizAssocComposite extends Wizard {
         // Get the ends from the association (we know there are two), and the
         // types associated with them.
 
-        Iterator iter = asc.getConnections().iterator();
+        Iterator iter = ModelFacade.getConnections(asc).iterator();
 
-        MAssociationEnd ae0 = (MAssociationEnd) iter.next();
-        MAssociationEnd ae1 = (MAssociationEnd) iter.next();
+        Object ae0 = /*(MAssociationEnd)*/ iter.next();
+        Object ae1 = /*(MAssociationEnd)*/ iter.next();
 
-        MClassifier cls0 = ae0.getType();
-        MClassifier cls1 = ae1.getType();
+        Object cls0 = ModelFacade.getType(ae0);
+        Object cls1 = ModelFacade.getType(ae1);
 
         // Get the names of the two ends. If there are none (i.e they are
         // currently anonymous), use the ArgoUML convention of "(anon)" for the
@@ -198,17 +194,15 @@ public class WizAssocComposite extends Wizard {
         String end   = "(anon)";
 
         if ((cls0 != null)
-	    && (cls0.getName() != null)
-	    && (!(cls0.getName().equals(""))))
-	{
-            start = cls0.getName();
+                && (ModelFacade.getName(cls0) != null)
+                && (!(ModelFacade.getName(cls0).equals("")))) {
+            start = ModelFacade.getName(cls0);
         }
 
         if ((cls1 != null)
-	    && (cls1.getName() != null)
-	    && (!(cls1.getName().equals(""))))
-	{
-            end = cls1.getName();
+                && (ModelFacade.getName(cls1) != null)
+                && (!(ModelFacade.getName(cls1).equals("")))) {
+            end = ModelFacade.getName(cls1);
         }
 
         // Now create the five options
@@ -330,10 +324,10 @@ public class WizAssocComposite extends Wizard {
 
                 // Set the appropriate aggregation on each end
 
-                Iterator iter = _getTriggerAsc().getConnections().iterator();
+                Iterator iter = ModelFacade.getConnections(_getTriggerAsc()).iterator();
 
-                MAssociationEnd ae0 = (MAssociationEnd) iter.next();
-                MAssociationEnd ae1 = (MAssociationEnd) iter.next();
+                Object ae0 = /*(MAssociationEnd)*/ iter.next();
+                Object ae1 = /*(MAssociationEnd)*/ iter.next();
 
                 switch (choice) {
 
@@ -341,40 +335,38 @@ public class WizAssocComposite extends Wizard {
 
                     // Start is a composite aggregation of end
 
-                    ae0.setAggregation(MAggregationKind.COMPOSITE);
-                    ae1.setAggregation(MAggregationKind.NONE);
+                    ModelFacade.setAggregation(ae0, ModelFacade.COMPOSITE_AGGREGATIONKIND);
+                    ModelFacade.setAggregation(ae1, ModelFacade.NONE_AGGREGATIONKIND);
                     break;
 
                 case 1:
 
                     // Start is a shared aggregation of end
 
-                    ae0.setAggregation(MAggregationKind.AGGREGATE);
-                    ae1.setAggregation(MAggregationKind.NONE);
+                    ModelFacade.setAggregation(ae0, ModelFacade.AGGREGATE_AGGREGATIONKIND);
+                    ModelFacade.setAggregation(ae1, ModelFacade.NONE_AGGREGATIONKIND);
                     break;
 
                 case 2:
 
                     // End is a composite aggregation of start
 
-                    ae0.setAggregation(MAggregationKind.NONE);
-                    ae1.setAggregation(MAggregationKind.COMPOSITE);
+                    ModelFacade.setAggregation(ae0, ModelFacade.NONE_AGGREGATIONKIND);
+                    ModelFacade.setAggregation(ae1, ModelFacade.COMPOSITE_AGGREGATIONKIND);
                     break;
 
                 case 3:
 
                     // End is a shared aggregation of start
-
-                    ae0.setAggregation(MAggregationKind.NONE);
-                    ae1.setAggregation(MAggregationKind.AGGREGATE);
+                    ModelFacade.setAggregation(ae0, ModelFacade.NONE_AGGREGATIONKIND);
+                    ModelFacade.setAggregation(ae1, ModelFacade.AGGREGATE_AGGREGATIONKIND);
                     break;
 
                 case 4:
 
                     // No aggregation
-
-                    ae0.setAggregation(MAggregationKind.NONE);
-                    ae1.setAggregation(MAggregationKind.NONE);
+                    ModelFacade.setAggregation(ae0, ModelFacade.NONE_AGGREGATIONKIND);
+                    ModelFacade.setAggregation(ae1, ModelFacade.NONE_AGGREGATIONKIND);
                     break;
                 }
             }

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -33,8 +32,6 @@ package org.argouml.uml.cognitive.critics;
 import java.util.Collection;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.core.MClassifier;
-
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
 
@@ -58,11 +55,11 @@ public class CrTooManyAssoc extends CrUML {
     // critiquing API
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
-	MClassifier cls = (MClassifier) dm;
+	Object cls = /*(MClassifier)*/ dm;
 	// TODO: consider inherited associations?
 	// TODO: self loops are double counted
 	int threshold = ((Integer) getArg(THRESHOLD)).intValue();
-	Collection aes = cls.getAssociationEnds();
+	Collection aes = ModelFacade.getAssociationEnds(cls);
 	if (aes == null || aes.size() <= threshold) return NO_PROBLEM;
 	return PROBLEM_FOUND;
     }

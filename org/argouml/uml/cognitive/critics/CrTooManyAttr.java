@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -35,8 +33,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.core.MClassifier;
-
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
 
@@ -59,10 +55,10 @@ public class CrTooManyAttr extends CrUML {
     // critiquing API
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
-	MClassifier cls = (MClassifier) dm;
+	Object cls = /*(MClassifier)*/ dm;
 	// TODO: consider inherited attributes?
 	int threshold = ((Integer) getArg(THRESHOLD)).intValue();
-	Collection str = cls.getFeatures();
+	Collection str = ModelFacade.getFeatures(cls);
 	if (str == null) return NO_PROBLEM;
 	int n = 0;
 	for (Iterator iter = str.iterator(); iter.hasNext();) {

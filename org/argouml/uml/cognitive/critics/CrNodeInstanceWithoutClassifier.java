@@ -32,11 +32,10 @@ import java.util.Collection;
 import java.util.Vector;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.tigris.gef.util.VectorSet;
-import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
-
 /**
  * A critic to detect when there are node-instances that
  * are inside another element
@@ -88,9 +87,9 @@ public class CrNodeInstanceWithoutClassifier extends CrUML {
 	    if (!(obj instanceof FigMNodeInstance)) continue;
 	    FigMNodeInstance fn = (FigMNodeInstance) obj;
 	    if (fn != null) {
-		MNodeInstance noi = (MNodeInstance) fn.getOwner();
+		Object noi = /*(MNodeInstance)*/ fn.getOwner();
 		if (noi != null) {
-		    Collection col = noi.getClassifiers();
+		    Collection col = ModelFacade.getClassifiers(noi);
 		    if (col.size() > 0) continue;     
 		}       
 		if (offs == null) {
@@ -105,4 +104,3 @@ public class CrNodeInstanceWithoutClassifier extends CrUML {
 
 
 } /* end class CrNodeInstanceWithoutClassifier.java */
-
