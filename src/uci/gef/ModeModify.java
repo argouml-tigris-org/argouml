@@ -120,10 +120,10 @@ public class ModeModify extends Mode {
    *  handle around the drawing area and the Fig reacts to that.  */
   public void mouseDragged(MouseEvent me) {
     if (me.isConsumed()) return;
-    if ((me.getModifiers() & InputEvent.BUTTON1_MASK) == 0) {
-      //System.out.println("wrong button in ModeModify mouseDragged");
-      return;
-    }
+//     if ((me.getModifiers() & InputEvent.BUTTON1_MASK) == 0) {
+//       //System.out.println("wrong button in ModeModify mouseDragged");
+//       return;
+//     }
     int x = me.getX(), y = me.getY();
     int dx, dy, snapX, snapY;
     if (!checkMinDelta(x, y)) { me.consume(); return; }

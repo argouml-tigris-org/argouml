@@ -30,6 +30,8 @@ import java.net.URL;
 import java.util.*;
 import java.io.*;
 
+import javax.swing.*;
+
 import uci.util.Util;
 import uci.util.Dbg;
 import uci.gef.*;
@@ -101,14 +103,22 @@ public class ProjectMemberModel extends ProjectMember {
     String fullpath = path + getName();
 
     try {
+      ProjectBrowser pb = ProjectBrowser.TheInstance;
       System.out.println("Writing " + fullpath + "...");
-      Globals.showStatus("Writing " + fullpath + "...");
+      pb.showStatus("Writing " + fullpath + "...");
       File f = new File(fullpath);
+      if (f.exists() && !overwrite) {
+	String t = "Overwrite " + fullpath;
+	int response =
+	  JOptionPane.showConfirmDialog(pb, t, t,
+					JOptionPane.YES_NO_OPTION);
+	if (response == JOptionPane.NO_OPTION) return;
+      }
       FileWriter fw = new FileWriter(f);
       expander.expand(fw, _project, "", "");
       fw.close();
       System.out.println("Wrote " + fullpath);
-      Globals.showStatus("Wrote " + fullpath);
+      pb.showStatus("Wrote " + fullpath);
     }
     catch (FileNotFoundException ignore) {
       System.out.println("got an FileNotFoundException");

@@ -195,7 +195,8 @@ class ActionNew extends UMLAction {
     }
     p = Project.makeEmptyProject();
     pb.setProject(p);
-  }  
+    ProjectBrowser.TheInstance.setTitle("Untitled");
+  }
 } /* end class ActionNew */
 
 // class ActionOpen extends UMLAction {
@@ -609,6 +610,7 @@ class ActionSaveProject extends UMLAction {
 //       String name = p.getFilename();
 //       String path = p.getPathname();
       System.out.println("ActionSaveProject at " + p.getURL());
+      System.out.println("filename is " + p.getURL().getFile());
 //       System.out.println("ActionSaveProject name = " + name);
       File f = new File(p.getURL().getFile());
       if (f.exists() && !overwrite) {
@@ -627,6 +629,7 @@ class ActionSaveProject extends UMLAction {
     }
     catch (FileNotFoundException ignore) {
       System.out.println("got an FileNotFoundException in SaveProject");
+      ignore.printStackTrace();
     }
     catch (IOException ignore) {
       System.out.println("got an IOException");
@@ -637,7 +640,7 @@ class ActionSaveProject extends UMLAction {
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
     return super.shouldBeEnabled() && p != null &&
-      p.getName().indexOf("Untitled") == -1;
+      p.getURL().toString().indexOf("templates") == -1;
   }
 
 } /* end class ActionSaveProject */

@@ -151,6 +151,7 @@ public class Main {
       p.postLoad();
     }
     pb.setProject(p);
+    if (urlToOpen == null) pb.setTitle("Untitled");
 
     if (splash != null) {
       splash.getStatusBar().showStatus("Setting Perspectives");

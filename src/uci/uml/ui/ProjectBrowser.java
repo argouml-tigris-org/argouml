@@ -514,8 +514,13 @@ implements IStatusBar {
   public Project getProject() { return _project; }
 
   public void updateTitle() {
-    if (_project == null) setTitle(getAppName());
-    else setTitle(getAppName() + " - " + _project.getName());
+    if (_project == null) setTitle(null);
+    else setTitle(_project.getName());
+  }
+
+  public void setTitle(String title) {
+    if (title == null || "".equals(title)) setTitle(getAppName());
+    else super.setTitle(getAppName() + " - " + title);
   }
 
   public String getAppName() { return _appName; }

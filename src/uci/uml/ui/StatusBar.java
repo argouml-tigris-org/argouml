@@ -59,6 +59,7 @@ public class StatusBar extends JPanel implements Runnable {
 
   public void showStatus(String s) {
     _msg.setText(s);
+    paintImmediately(getBounds());
   }
 
   public void showProgress(int percent) {

@@ -112,10 +112,6 @@ public class Project implements java.io.Serializable {
     p = ArgoParser.SINGLETON.getProject();
     p.loadAllMembers();
     p.postLoad();
-    try { p.setName(UNTITLED_FILE + FILE_EXT); }
-    catch (PropertyVetoException pve) { }
-    catch (MalformedURLException murle) { }
-    System.out.println("Read " + TEMPLATES + EMPTY_PROJ + "...");
     return p;
   }
 
@@ -168,9 +164,11 @@ public class Project implements java.io.Serializable {
     return name.substring(i+1);
   }
 
-  public void setName(String n)
-       throws PropertyVetoException, MalformedURLException {
-    setURL(new URL(getURL(), n));
+  public void setName(String n) throws PropertyVetoException, MalformedURLException {
+    String s = getURL().toString();
+    s = s.substring(0, s.lastIndexOf("/") + 1) + n;
+    System.out.println("s = " + s);
+    setURL(new URL(s));
   }
 
 //   public void setName(String n) throws PropertyVetoException {

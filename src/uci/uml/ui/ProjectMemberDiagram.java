@@ -32,6 +32,8 @@ import java.util.*;
 import java.beans.*;
 import java.io.*;
 
+import javax.swing.*;
+
 import uci.util.Util;
 import uci.util.Dbg;
 import uci.gef.*;
@@ -98,8 +100,12 @@ public class ProjectMemberDiagram extends ProjectMember {
       Globals.showStatus("Writing " + fullpath + "...");
       File f = new File(fullpath);
       if (f.exists() && !overwrite) {
-	System.out.println("Are you sure you want to overwrite " +
-			   fullpath + "?");
+	String t = "Overwrite " + fullpath;
+	ProjectBrowser pb = ProjectBrowser.TheInstance;
+	int response =
+	  JOptionPane.showConfirmDialog(pb, t, t,
+					JOptionPane.YES_NO_OPTION);
+	if (response == JOptionPane.NO_OPTION) return;
       }
       FileWriter fw = new FileWriter(f);
       expander.expand(fw, _diagram, "", "");
