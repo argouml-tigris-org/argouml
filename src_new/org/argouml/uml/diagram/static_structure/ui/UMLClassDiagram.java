@@ -60,6 +60,8 @@ import ru.novosoft.uml.foundation.core.MPermission;
 import ru.novosoft.uml.foundation.core.MUsage;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.model_management.MPackage;
+import ru.novosoft.uml.model_management.MModel;
+import ru.novosoft.uml.model_management.MSubsystem;
 
 public class UMLClassDiagram extends UMLDiagram {
 
@@ -86,6 +88,10 @@ public class UMLClassDiagram extends UMLDiagram {
     protected static Action _actionRealize = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAbstraction.class, "Realization");
 
     protected static Action _actionPackage = new CmdCreateNode(MPackage.class, "Package");
+
+    protected static Action _actionModel = new CmdCreateNode(MModel.class, "Model");
+
+    protected static Action _actionSubsystem = new CmdCreateNode(MSubsystem.class, "Subsystem");
 
     protected static Action _actionAssociation = new ActionAddAssociation(MAggregationKind.NONE, false, "Association");
     protected static Action _actionAggregation = new ActionAddAssociation(MAggregationKind.AGGREGATE, false, "Aggregation");
@@ -132,7 +138,7 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     protected Object[] getUmlActions() {
         Object actions[] = {
-            _actionPackage,
+            getPackageActions(),
             _actionClass,
             getAssociationActions(),
             _actionDepend,
@@ -149,6 +155,21 @@ public class UMLClassDiagram extends UMLDiagram {
         return actions;
     }
     
+    // remove the comment marks to enable models and subsystems.
+    private Object[] getPackageActions() {
+        /* subsystem, model enabled 
+        Object actions[] = 
+            { _actionPackage , 
+              _actionModel,
+              _actionSubsystem };
+        */
+        /* subsystem. model disabled */
+           Object actions[] = 
+            { _actionPackage };
+       
+        return actions;
+    }
+
     private Object[] getAssociationActions() {
         Object actions[][] = {
             {_actionAssociation,_actionUniAssociation},
