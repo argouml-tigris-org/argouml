@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-02 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -49,6 +49,8 @@ import ru.novosoft.uml.behavior.use_cases.*;
 
 import org.tigris.gef.util.Util;
 
+/** PropPanelPackage defines the Property Panel for MPackage elements.
+ */
 public class PropPanelPackage extends PropPanelNamespace
 implements PluggablePropertyPanel {
 
@@ -120,7 +122,7 @@ implements PluggablePropertyPanel {
     new PropPanelButton(this,buttonPanel,_packageIcon, Argo.localize("UMLMenu", "button.add-subpackage"),"addPackage",null);
     // new PropPanelButton(this,buttonPanel,_generalizationIcon, Argo.localize("UMLMenu", "button.add-generalization"),"addGeneralization",null);
     // new PropPanelButton(this,buttonPanel,_realizationIcon, Argo.localize("UMLMenu", "button.add-realization"),"addRealization",null);
-    new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-package"),"removeElement",null);
+    new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-package"),"removeElement","isRemovableElement");
 
   }
 
