@@ -159,15 +159,9 @@ public class Translator extends AbstractCognitiveTranslator {
     /**
      * Helper for those that don't want to give the bundle.<p>
      *
-     * <em>Note:</em> The one argument
-     * {@link org.workingfrog.i18n.util.Translator#localize(String key) 
-     * localize(key)}
-     * function doesn't seem to work for tags that aren't prefixed with the
-     * property file name. We get a NullPointerException. For this reason we
-     * stick to the two argument
-     * {@link org.workingfrog.i18n.util.Translator#localize(String, String)
-     * localize(bundle, key)}
-     * for the time being.
+     * <em>Note:</em> This one argument <code>key</code>
+     * doesn't seem to work for tags that aren't prefixed with the
+     * property file name. We get a NullPointerException. 
      *
      * @param key The key to localize.
      * @return The localized String.
@@ -176,8 +170,11 @@ public class Translator extends AbstractCognitiveTranslator {
         return org.workingfrog.i18n.util.Translator.localize(key, key);
     }
     
+    /**
+     * @see org.argouml.cognitive.AbstractCognitiveTranslator#i18nlocalize(java.lang.String)
+     */
     public String i18nlocalize(String key) {
-        return localize(key,key);
+        return localize(key, key);
     }
     
     /**
@@ -200,6 +197,10 @@ public class Translator extends AbstractCognitiveTranslator {
 	return msgFmt.format(args);
     }
     
+    /**
+     * @see org.argouml.cognitive.AbstractCognitiveTranslator#i18nmessageFormat(
+     * java.lang.String, java.lang.Object[])
+     */
     public String i18nmessageFormat(String key, Object[] args) {
         return messageFormat(key, args);
     }
