@@ -2261,6 +2261,34 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /** The collection of object flow states
+     *
+     * @param handle the classifier
+     * @return collection of object flow states
+     */
+    public static Collection getObjectFlowStates(Object handle) {
+        if (handle instanceof MClassifier) {
+            return ((MClassifier) handle).getObjectFlowStates();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** Get the operation of a Call Action or Call Event.
+     *
+     * @param handle the model element that we are getting the operation of
+     * @returns the Operation
+     */
+    public static Object getOperation(Object handle) {
+        if (handle instanceof MCallAction) {
+            return ((MCallAction) handle).getOperation();
+        }
+        if (handle instanceof MCallEvent) {
+            return ((MCallEvent) handle).getOperation();
+        }
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
     /** The list of operations
      *
      * @param handle classifier to examine.
@@ -2269,7 +2297,6 @@ public class ModelFacade {
     public static Collection getOperations(Object handle) {
         if (handle instanceof MClassifier) {
             MClassifier c = (MClassifier) handle;
-
             return getOperations(c);
         }
 
@@ -2304,6 +2331,19 @@ public class ModelFacade {
         if (handle instanceof MAssociationEnd) {
             return ((MAssociationEnd) handle).getOppositeEnd();
         }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** Get ordering of an association end
+     *
+     * @param handle association end to retrieve from
+     * @return ordering
+     */
+    public static Object getOrdering(Object handle) {
+        if (handle instanceof MAssociationEnd)
+            return ((MAssociationEnd) handle).getOrdering();
+
+        // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
@@ -2358,6 +2398,54 @@ public class ModelFacade {
         }
 
         // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** Get the owner scope of a feature
+     *
+     * @param handle feature
+     * @return owner scope
+     */
+    public static Object getOwnerScope(Object handle) {
+        if (handle instanceof MFeature) {
+            return ((MFeature) handle).getOwnerScope();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** Get the powertype of a generalization
+     *
+     * @param handle generalization
+     * @return powertype
+     */
+    public static Object getPowertype(Object handle) {
+        if (handle instanceof MGeneralization) {
+            return ((MGeneralization) handle).getPowertype();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** Get the powertype ranges of a classifier.
+     *
+     * @param handle classifier to retrieve from
+     * @return collection of poertype ranges
+     */
+    public static Collection getPowertypeRanges(Object handle) {
+        if (handle instanceof MClassifier) {
+            return ((MClassifier) handle).getPowertypeRanges();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** Get the predecessors of a message.
+     *
+     * @param handle message to retrieve from
+     * @return collection of predecessors
+     */
+    public static Collection getPredecessors(Object handle) {
+        if (handle instanceof MMessage) {
+            return ((MMessage) handle).getPredecessors();
+        }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 

@@ -188,11 +188,11 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
 
 
-    public MClassifier getPowertype() {
-        MClassifier ptype = null;
+    public Object getPowertype() {
+        Object ptype = null;
         Object target = getTarget();
         if (ModelFacade.isAGeneralization(target)) {
-            ptype = ((MGeneralization) target).getPowertype();
+            ptype = ModelFacade.getPowertype(target);
         }
         return ptype;
     }

@@ -244,7 +244,7 @@ public class FigAssociation extends FigEdgeModelElement {
         
 	Object multi = ModelFacade.getMultiplicity(end);
 	String name = ModelFacade.getName(end);
-	MOrderingKind order = ((MAssociationEnd)end).getOrdering();
+	Object order = ModelFacade.getOrdering(end);
 	MStereotype stereo = (MStereotype)ModelFacade.getStereotype(end);
     
 	multiToUpdate.setText(Notation.generate(this, multi));
@@ -406,11 +406,13 @@ public class FigAssociation extends FigEdgeModelElement {
     /* returns the name of the OrderingKind.
      * @return "{ordered}", "{sorted}" or "" if null or "unordered"
      */
-    private String getOrderingName(MOrderingKind ok) {
-	if (ok == null || ok.getName() == null || "".equals(ok.getName())) 
-	    return "";
-	if ("unordered".equals(ok.getName())) return "";
-	return "{" + ok.getName() + "}";
+    private String getOrderingName(Object orderingKind) {
+	if (orderingKind == null) return "";
+	if (ModelFacade.getName(orderingKind) == null) return ""; 
+	if ("".equals(ModelFacade.getName(orderingKind))) return "";
+	if ("unordered".equals(ModelFacade.getName(orderingKind))) return "";
+        
+	return "{" + ModelFacade.getName(orderingKind) + "}";
     }
 
     static final long serialVersionUID = 9100125695919853919L;

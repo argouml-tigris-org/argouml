@@ -25,10 +25,10 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.UMLCheckBox2;
 
-import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
 
 /**
@@ -51,7 +51,7 @@ public class UMLFeatureOwnerScopeCheckBox extends UMLCheckBox2 {
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {
-        MScopeKind scope = ((MFeature) getTarget()).getOwnerScope();
+        Object scope = ModelFacade.getOwnerScope(getTarget());
         if (scope != null && scope.equals(MScopeKind.CLASSIFIER)) {
             setSelected(true);
         } else

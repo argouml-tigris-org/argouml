@@ -25,6 +25,7 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
+import org.argouml.model.ModelFacade;
 import java.util.Vector;
 
 import org.argouml.application.api.Argo;
@@ -68,7 +69,7 @@ public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
         if (getTarget() == null)
 	    throw new IllegalStateException("getSelected may not be called with null target");
         Vector vec = new Vector();
-        vec.addAll(((MMessage) getTarget()).getPredecessors());
+        vec.addAll(ModelFacade.getPredecessors(getTarget()));
         return vec;
     }
 

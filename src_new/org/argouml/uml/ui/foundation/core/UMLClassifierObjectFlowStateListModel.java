@@ -25,11 +25,10 @@
 // $Id$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.foundation.core.MClassifier;
-
 /**
  * 
  * @author jaap.branderhorst@xs4all.nl	
@@ -50,7 +49,7 @@ public class UMLClassifierObjectFlowStateListModel
      */
     protected void buildModelList() {
         if (getTarget() != null) {
-            setAllElements(((MClassifier) getTarget()).getObjectFlowStates());
+            setAllElements(ModelFacade.getObjectFlowStates(getTarget()));
         }
     }
 
@@ -58,7 +57,7 @@ public class UMLClassifierObjectFlowStateListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase element) {
-        return ((MClassifier) getTarget()).getObjectFlowStates().contains(element);
+        return ModelFacade.getObjectFlowStates(getTarget()).contains(element);
     }
 
 }

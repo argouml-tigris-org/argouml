@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -31,6 +29,7 @@
 
 package org.argouml.uml.diagram.state.ui;
 
+import org.argouml.model.ModelFacade;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
@@ -44,8 +43,6 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
 
 import ru.novosoft.uml.behavior.state_machines.MPseudostate;
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
-
 /** Class to display graphics for a UML State in a diagram. */
 
 public class FigInitialState extends FigStateVertex {
@@ -107,14 +104,14 @@ public class FigInitialState extends FigStateVertex {
             if (org.argouml.model.ModelFacade.isAActivityGraph(pstate.getContainer().getStateMachine())) {
                 sel = new SelectionActionState(this);
                 ((SelectionActionState) sel).setIncomingButtonEnabled(false);
-                Collection outs = ((MStateVertex) getOwner()).getOutgoings();
+                Collection outs = ModelFacade.getOutgoings(getOwner());
                 ((SelectionActionState) sel).
                     setOutgoingButtonEnabled(outs == null || outs.size() == 0);
             }
             else {
                 sel = new SelectionState(this);
                 ((SelectionState) sel).setIncomingButtonEnabled(false);
-                Collection outs = ((MStateVertex) getOwner()).getOutgoings();
+                Collection outs = ModelFacade.getOutgoings(getOwner());
                 ((SelectionState) sel).
                     setOutgoingButtonEnabled(outs == null || outs.size() == 0);
             }
