@@ -53,10 +53,10 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationName;
 import org.argouml.application.notation.NotationProviderFactory;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
@@ -92,7 +92,7 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
     public ClassGenerationDialog(Vector nodes, boolean isPathInModel) {
         super(
             ProjectBrowser.getInstance(),
-            Argo.localize(BUNDLE, "dialog.title.generate-classes"),
+            Translator.localize(BUNDLE, "dialog.title.generate-classes"),
             ArgoDialog.OK_CANCEL_OPTION,
             true);
         this.isPathInModel = isPathInModel;
@@ -141,7 +141,7 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
         selectPanel.add(selectButtons);
 
         JPanel centerPanel = new JPanel(new BorderLayout(0, 2));
-        centerPanel.add(new JLabel(Argo.localize(BUNDLE, 
+        centerPanel.add(new JLabel(Translator.localize(BUNDLE, 
             "label.available-classes")), BorderLayout.NORTH);
         centerPanel.add(new JScrollPane(_classTable), BorderLayout.CENTER);
         centerPanel.add(selectPanel, BorderLayout.SOUTH);
@@ -169,7 +169,7 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
             outputPanel.setBorder(
                 BorderFactory.createCompoundBorder(
                     BorderFactory.createTitledBorder(
-                    Argo.localize(BUNDLE, "label.output-directory")),
+                    Translator.localize(BUNDLE, "label.output-directory")),
                     BorderFactory.createEmptyBorder(2, 5, 5, 5)));
             outputPanel.add(_outputDirectoryComboBox, BorderLayout.CENTER);
             outputPanel.add(browseButton, BorderLayout.EAST);

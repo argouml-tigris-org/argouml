@@ -28,7 +28,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
 import org.argouml.uml.ui.UMLConnectionListModel;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
@@ -86,7 +86,7 @@ public class UMLUseCaseAssociationListModel
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
      */
     protected String getAddDialogTitle() {
-	return Argo.localize("UMLMenu", "dialog.title.add-associated-usecases");
+	return Translator.localize("UMLMenu", "dialog.title.add-associated-usecases");
     }
 
 }

@@ -69,19 +69,19 @@ public class PropPanelComponent extends PropPanelClassifier {
 	new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-class"), "removeElement", null);
 
 
-	//    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
+	//    addCaption(Translator.localize("UMLMenu", "label.name"),1,0,0);
 	//    addField(getNameTextField(),1,0,0);
 	//
-	//    addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
+	//    addCaption(Translator.localize("UMLMenu", "label.stereotype"),2,0,0);
 	//    addField(getStereotypeBox(),2,0,0);
 	//
-	//    addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,0);
+	//    addCaption(Translator.localize("UMLMenu", "label.namespace"),3,0,0);
 	//    addField(getNamespaceComboBox(),3,0,0);
 	//
-	//    addCaption(Argo.localize("UMLMenu", "label.modifiers"),4,0,1);
+	//    addCaption(Translator.localize("UMLMenu", "label.modifiers"),4,0,1);
 	//    JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
-	//    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-lc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-	//    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-lc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+	//    modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", "checkbox.abstract-lc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+	//    modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", "checkbox.final-lc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
 	//    modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
 	//    addField(modifiersPanel,4,0,0);
 	//
@@ -91,7 +91,7 @@ public class PropPanelComponent extends PropPanelClassifier {
 	//    addCaption("Specializations:",1,1,1);
 	//    addField(getSpecializationScroll(),1,1,1);
 	//
-	//    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
+	//    new PropPanelButton(this,buttonPanel,_navUpIcon, Translator.localize("UMLMenu", "button.go-up"),"navigateUp",null);
 	//    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete component"),"removeElement",null);
     }
 

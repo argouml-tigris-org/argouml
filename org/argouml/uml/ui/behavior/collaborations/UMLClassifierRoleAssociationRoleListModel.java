@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
@@ -86,7 +86,7 @@ public class UMLClassifierRoleAssociationRoleListModel
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
      */
     protected String getAddDialogTitle() {
-	return Argo.localize("UMLMenu",
+	return Translator.localize("UMLMenu",
 			     "dialog.add-associated-classifierroles");
     }
 

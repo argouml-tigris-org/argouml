@@ -32,8 +32,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
 import org.argouml.application.api.QuadrantPanel;
+import org.argouml.i18n.Translator;
 import org.argouml.ui.explorer.ExplorerTree;
 import org.argouml.ui.explorer.ExplorerTreeModel;
 import org.argouml.ui.explorer.ExportExplorer;
@@ -155,7 +155,7 @@ public class NavigatorPane
 
         if (doSplash) {
             SplashScreen splash = SplashScreen.getInstance();
-	    splash.getStatusBar().showStatus(Argo.localize(
+	    splash.getStatusBar().showStatus(Translator.localize(
                     BUNDLE, 
 		    "statusmsg.bar.making-navigator-pane-perspectives"));
             splash.getStatusBar().showProgress(25);

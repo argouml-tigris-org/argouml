@@ -29,7 +29,7 @@ import java.util.*;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.graph.MutableGraphModel;
 
@@ -74,7 +74,7 @@ public class UMLConnectionListModel extends UMLBinaryRelationListModel  {
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
      */
     protected String getAddDialogTitle() {
-	return Argo.localize("UMLMenu", "dialog.add-associations");
+	return Translator.localize("UMLMenu", "dialog.add-associations");
     }
 
     /**
