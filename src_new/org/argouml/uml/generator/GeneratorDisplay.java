@@ -280,13 +280,16 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
     if (attr.getInitialValue() != null) {
         initialValue = attr.getInitialValue().getBody();
     }   
-    String finall = "";
+    String changeableKind = "";
     if (attr.getChangeability() != null) {
-        finall = attr.getChangeability().equals(MChangeableKind.FROZEN) ? "frozen" : "";
+	if (attr.getChangeability().equals(MChangeableKind.FROZEN))
+	    changeableKind = "frozen";
+	else if (attr.getChangeability().equals(MChangeableKind.ADD_ONLY))
+	    changeableKind = "addOnly";
     }
     String properties = "";
-    if (finall.length() > 0) {
-    	properties = "{ " + finall + " }";
+    if (changeableKind.length() > 0) {
+    	properties = "{ " + changeableKind + " }";
     }
    
  

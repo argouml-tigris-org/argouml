@@ -203,12 +203,22 @@ public class ParserDisplay extends Parser {
    * @see SINGLETON
    */
   private ParserDisplay() {
-    _attributeSpecialStrings = new PropertySpecialString[1];
+    _attributeSpecialStrings = new PropertySpecialString[2];
     _attributeSpecialStrings[0] = new PropertySpecialString("frozen",
 	new PropertyOperation() {
 	    public void found(MModelElement element, String value) {
 		MChangeableKind kind = MChangeableKind.FROZEN;
 		if (value != null && value.equalsIgnoreCase("false"))
+		    kind = MChangeableKind.CHANGEABLE;
+		if (element instanceof MStructuralFeature)
+		    ((MStructuralFeature)element).setChangeability(kind);
+	    }
+	});
+    _attributeSpecialStrings[1] = new PropertySpecialString("addonly",
+	new PropertyOperation() {
+	    public void found(MModelElement element, String value) {
+		MChangeableKind kind = MChangeableKind.ADD_ONLY;
+		if ("false".equalsIgnoreCase(value))
 		    kind = MChangeableKind.CHANGEABLE;
 		if (element instanceof MStructuralFeature)
 		    ((MStructuralFeature)element).setChangeability(kind);
