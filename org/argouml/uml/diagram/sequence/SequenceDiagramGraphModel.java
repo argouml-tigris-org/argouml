@@ -155,12 +155,14 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
 
   /** Return true if the given object is a valid node in this graph */
   public boolean canAddNode(Object node) {
+    if (node == null) return false;
     if (_nodes.contains(node)) return false;
     return (node instanceof MObject || node instanceof MStimulus);
   }
 
   /** Return true if the given object is a valid edge in this graph */
   public boolean canAddEdge(Object edge)  {
+    if (edge == null) return false;
     Object end0 = null;
     Object end1 = null;
     if (edge instanceof MLink) {
@@ -183,7 +185,7 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
 
   /** Add the given node to the graph, if valid. */
   public void addNode(Object node) {
-    if (_nodes.contains(node)) return;
+    if (!canAddNode(node)) return;
     _nodes.addElement(node);
     // needs-more-work: assumes public, user pref for default visibility?
       if (node instanceof MModelElement) {
@@ -196,7 +198,7 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
 
   /** Add the given edge to the graph, if valid. */
   public void addEdge(Object edge) {
-    if (_edges.contains(edge)) return;
+    if (!canAddEdge(edge)) return;
     _edges.addElement(edge);
     // needs-more-work: assumes public
      if (edge instanceof MModelElement) {
