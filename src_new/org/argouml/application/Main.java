@@ -22,6 +22,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application;
+import org.argouml.application.api.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -62,9 +63,9 @@ public class Main {
 
   public static void main(String args[]) {
 
-      // first, print out some version info for debuggers...
+    // first, print out some version info for debuggers...
 
-      System.out.println(org.argouml.util.Tools.getVersionInfo());
+    org.argouml.util.Tools.logVersionInfo();
 
     boolean doSplash = true;
     boolean useEDEM = true;
@@ -292,21 +293,20 @@ public class Main {
     now = System.currentTimeMillis();
 
     if (profileLoad) {
-      System.out.println("");
-      System.out.println("");
-      System.out.println("profile of load time ################");
-      System.out.println("phase 0    " + (phase0 - start));
-      System.out.println("phase 1    " + (phase1 - phase0));
-      System.out.println("phase 2    " + (phase2 - phase1));
-      System.out.println("phase 3    " + (phase3 - phase2));
-      System.out.println("phase 4    " + (phase4 - phase3));
-      System.out.println("phase 5    " + (phase5 - phase4));
-      System.out.println("================");
-      System.out.println("total      " + (now - start));
-      System.out.println("time to show " + (phase5 - start));
+      Argo.log.info("");
+      Argo.log.info("profile of load time ################");
+      Argo.log.info("phase 0    " + (phase0 - start));
+      Argo.log.info("phase 1    " + (phase1 - phase0));
+      Argo.log.info("phase 2    " + (phase2 - phase1));
+      Argo.log.info("phase 3    " + (phase3 - phase2));
+      Argo.log.info("phase 4    " + (phase4 - phase3));
+      Argo.log.info("phase 5    " + (phase5 - phase4));
+      Argo.log.info("================");
+      Argo.log.info("total      " + (now - start));
+      Argo.log.info("time to show " + (phase5 - start));
 
-      System.out.println("#######################");
-      System.out.println("");
+      Argo.log.info("#######################");
+      Argo.log.info("");
     }
 
 
@@ -346,7 +346,7 @@ class StartCritics implements Runnable {
 	{
 		((ru.novosoft.uml.model_management.MModel)models.nextElement()).addMElementListener(dsgr);
 	}
-    System.out.println("spawned critiquing thread");
+    Argo.log.info("spawned critiquing thread");
 
     // should be in logon wizard?
     dsgr.startConsidering(org.argouml.uml.cognitive.critics.CrUML.decINHERITANCE);
@@ -384,7 +384,7 @@ class PreloadClasses implements Runnable {
 
 
       Class c = null;
-      System.out.print("preloading...");
+      Argo.log.info("preloading...");
       c = org.tigris.gef.base.CmdSetMode.class;
       c = org.tigris.gef.base.ModePlace.class;
       c = org.tigris.gef.base.ModeModify.class;
@@ -441,6 +441,6 @@ class PreloadClasses implements Runnable {
       c = java.lang.SecurityException.class;
       c = java.lang.NullPointerException.class;
 
-      System.out.println(" done preloading");
+      Argo.log.info(" done preloading");
   }
 } /* end class PreloadClasses */
