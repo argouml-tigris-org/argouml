@@ -794,6 +794,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
         ProjectBrowser pb = ProjectBrowser.TheInstance;
         Project p = pb.getProject();
         MClassifier voidType = p.findType("void");
+        if (voidType.getModel() != p.getModel()) {
+        	voidType.setNamespace(p.getModel());
+        }
         MParameter res = UmlFactory.getFactory().getCore().createParameter();
         res.setName(null);
         res.setStereotype(null);
@@ -815,11 +818,6 @@ public class CoreFactory extends AbstractUmlModelFactory {
     public MParameter buildParameter(MBehavioralFeature oper) {
     	if (oper == null || oper.getOwner() == null) throw new IllegalArgumentException("In buildParameter: operation is null or does not have an owner");
         MParameter res = buildParameter();
-        /*
-        if (!ModelManagementHelper.getHelper().getAllNamespaces(oper.getOwner().getNamespace()).contains(res.getNamespace())) {
-        	res.setNamespace(oper.getOwner().getNamespace());
-        }
-        */
     	String name = "arg";
     	int counter = 1;
        
@@ -911,6 +909,24 @@ public class CoreFactory extends AbstractUmlModelFactory {
         if (supplier.getNamespace() != null) usage.setNamespace(supplier.getNamespace());
         else if (client.getNamespace() != null) usage.setNamespace(client.getNamespace());
         return usage;
+    }
+    
+    /**
+     * Builds a comment inluding a reference to the given modelelement to comment. 
+     * If the element is null, the comment is still build since it is not 
+     * mandatory to have an annotated element in the comment.
+     * @param elementToComment
+     * @return MComment
+     */
+    public MComment buildComment(MModelElement elementToComment) {
+        MComment comment = createComment();
+        if (elementToComment != null) {
+            comment.addAnnotatedElement(elementToComment);
+            comment.setNamespace(elementToComment.getModel());
+        } else
+            comment.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
+        
+        return comment;
     }
 }
 

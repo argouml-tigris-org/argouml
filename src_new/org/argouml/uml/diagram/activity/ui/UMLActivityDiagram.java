@@ -52,7 +52,7 @@ import org.argouml.uml.diagram.state.ui.*;
 
 // get the note from the class diagram
 import org.argouml.uml.ui.*;
-import org.argouml.uml.diagram.static_structure.ui.FigNote;
+import org.argouml.uml.diagram.static_structure.ui.FigComment;
 
 /** Enabling an activity diagram connected to an
  * actor has been requested as a feature.
@@ -139,12 +139,10 @@ public class UMLActivityDiagram extends UMLDiagram {
         
     /** method to perform a number of important initializations of an <I>Activity Diagram</I>. 
      * 
-     * @see      each diagram type has a similar <I>UMLxxxDiagram</I> class.
+     * each diagram type has a similar <I>UMLxxxDiagram</I> class.
      *
      * @param m  MNamespace from the model in NSUML...
-     *
      * @param agraph MActivityGraph from the model in NSUML...
-     *
      * @modified changed <I>lay</I> from <I>LayerPerspective</I> to <I>LayerPerspectiveMutable</I>. 
      *           This class is a child of <I>LayerPerspective</I> and was implemented 
      *           to correct some difficulties in changing the model. <I>lay</I> is used 
@@ -209,7 +207,8 @@ public class UMLActivityDiagram extends UMLDiagram {
     _toolBar.add(_actionBranchPseudoState);
     _toolBar.add(_actionForkPseudoState);
     _toolBar.add(_actionJoinPseudoState);
-    //_toolBar.add(ActionAddNote.SINGLETON); // removed until issue 529 resolved
+    _toolBar.addSeparator();
+    _toolBar.add(ActionAddNote.SINGLETON);
     _toolBar.addSeparator();
 
     _toolBar.add(_actionRectangle);

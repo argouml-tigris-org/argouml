@@ -22,8 +22,16 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.xml.pgml;
+import java.io.InputStream;
 import java.util.*;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.xml.sax.AttributeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.FigNode;
 // the following three ugly package dependency are for restoring compartment visibility
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -210,5 +218,54 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     // OK, that's all with hiding compartments. Now business as usual...
     super.startElement(elementName,attrList);
   }
+  
+  public synchronized Diagram readDiagram(InputStream is, boolean closeStream) {
+        try {
+            System.out.println("=======================================");
+            System.out.println("== READING DIAGRAM");
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            factory.setNamespaceAware(false);
+            factory.setValidating(false);
+            initDiagram("org.tigris.gef.base.Diagram");
+            _figRegistry = new HashMap();
+            SAXParser pc = factory.newSAXParser();
+            InputSource source = new InputSource(is);
+            source.setSystemId(systemId);
+            source.setEncoding("UTF-8");
+            
+            // what is this for?
+            // source.setSystemId(url.toString());
+            pc.parse(source,this);
+            // source = null;
+            if (closeStream) {
+                //System.out.println("closing stream now (in PGMLParser.readDiagram)");
+                is.close();
+            }
+            else {
+                //System.out.println("leaving stream OPEN!");
+            }
+            return _diagram;
+        }
+        catch(SAXException saxEx) {
+            System.err.println("Exception in readDiagram");
+            //
+            //  a SAX exception could have been generated
+            //    because of another exception.
+            //    Get the initial exception to display the
+            //    location of the true error
+            Exception ex = saxEx.getException();
+            if(ex == null) {
+                saxEx.printStackTrace();
+            }
+            else {
+                ex.printStackTrace();
+            }
+        }
+        catch (Exception ex) {
+            System.err.println("Exception in readDiagram");
+            ex.printStackTrace();
+        }
+        return null;
+    }
 } /* end class PGMLParser */
 

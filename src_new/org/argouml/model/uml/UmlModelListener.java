@@ -70,10 +70,7 @@ public class UmlModelListener implements MElementListener {
      *  values differ.
      */
     public void propertySet (MElementEvent mee) {
-        logger.debug("propertySet(" + mee + ")");
-	if (! mee.getNewValue().equals(mee.getOldValue())) {
-	    notifyModelChanged(mee);
-	}
+	notifyModelChanged(mee);
     }
 
     /** Handle the event.
@@ -120,7 +117,7 @@ public class UmlModelListener implements MElementListener {
 	// Should this be a property change event?
 	//
 
-	if (mee.getAddedValue() != null || mee.getRemovedValue() != null || !mee.getOldValue().equals(mee.getNewValue())) {
+	if (mee.getAddedValue() != null || mee.getRemovedValue() != null || !mee.getNewValue().equals(mee.getOldValue())) {
 		ProjectBrowser.TheInstance.getNavPane().forceUpdate();
 		ProjectBrowser.TheInstance.getProject().setNeedsSave(true);
 	}

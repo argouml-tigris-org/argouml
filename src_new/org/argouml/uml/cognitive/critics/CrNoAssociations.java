@@ -55,22 +55,6 @@ public class CrNoAssociations extends CrUML {
     MClassifier cls = (MClassifier) dm;
     if (!(CriticUtils.isPrimaryObject(cls))) return NO_PROBLEM;
     
-    // patch for issue 1129
-	Iterator it = cls.getSupplierDependencies().iterator();
-	while (it.hasNext()) {
-		MDependency dep = (MDependency)it.next();
-		MStereotype stereo = dep.getStereotype();
-		if (stereo != null) {
-			String name = stereo.getName().toLowerCase();
-			if (name.equals("use") ||
-				name.equals("call") ||
-				name.equals("send") ||
-				name.equals("create") ||
-				name.equals("instantiate")) {
-					return NO_PROBLEM;
-			}
-		}
-	}
     //if (cls.containsStereotype(MStereotype.UTILITY)) return NO_PROBLEM;
     // stereotype <<record>>?
     //needs-more-work: different critic or special message for classes

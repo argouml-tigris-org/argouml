@@ -48,7 +48,8 @@ import ru.novosoft.uml.model_management.*;
  *
  * <p>The class is created by the setThirdPartyEventListener() method within
  *   some {@link PropPanel} and then is passed as an argument
- *   to {@link SwingUtilities#invokeLater()} to be run on the user interface
+ *   to {@link SwingUtilities#invokeLater(Runnable)} 
+ *   to be run on the user interface
  *   thread.</p>
  *
  * @author  Jeremy Bennett (mail@jeremybennett.com), 23 Apr 2002.

@@ -382,10 +382,6 @@ ${Name} Build file
     <!-- create directories -->
     <mkdir dir="${build.dest}"/>
 
-    <!-- remove obsolete classes before compiling -->
-    <delete file="${build.dest}/org/argouml/model/uml/ModelListener.class"/>
-    <delete file="${build.dest}/org/argouml/model/uml/AbstractModelFactory.class"/>
-
     <javac srcdir="${build.src}"
            destdir="${build.dest}"
            classpath="${classpath}"
