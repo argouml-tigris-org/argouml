@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,12 +33,15 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
 
-import ru.novosoft.uml.foundation.core.*;
-
 import org.argouml.cognitive.*;
 
+// Use model through ModelFacade
+import org.argouml.model.ModelFacade;
+
 /** Well-formedness rule [2] for MGeneralizableElement. See page 31 of UML 1.1
- *  Semantics. OMG document ad/97-08-04. */
+ *  Semantics. OMG document ad/97-08-04. 
+ *  In UML 1.3 it is rule [2] in section 2.5.3.18 page 2-54.
+ */
 
 import org.argouml.cognitive.critics.*;
 
@@ -52,14 +56,13 @@ public class CrFinalSubclassed extends CrUML {
     addTrigger("isLeaf");
   }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MGeneralizableElement)) return NO_PROBLEM;
-    MGeneralizableElement ge = (MGeneralizableElement) dm;
-    if (!ge.isLeaf()) return NO_PROBLEM;
-    Collection subs = ge.getSpecializations();
-    if (subs == null || subs.size() == 0) return NO_PROBLEM;
-    return PROBLEM_FOUND;
-  }
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(ModelFacade.isAGeneralizableElement(dm))) return NO_PROBLEM;
+	if (!(ModelFacade.isLeaf(dm))) return NO_PROBLEM;
+	Iterator enum = ModelFacade.getSpecializations(dm);
+	if (enum.hasNext()) return PROBLEM_FOUND;
+	return NO_PROBLEM;
+    }
 
 } /* end class CrFinalSubclassed.java */
 
