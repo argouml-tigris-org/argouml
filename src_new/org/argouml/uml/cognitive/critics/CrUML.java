@@ -240,8 +240,8 @@ public class CrUML extends Critic {
 
   ////////////////////////////////////////////////////////////////
   // display related methods
-  private static String OCL_START = "<ocl>";
-  private static String OCL_END = "</ocl>";
+  private static final String OCL_START = "<ocl>";
+  private static final String OCL_END = "</ocl>";
 
 
 
