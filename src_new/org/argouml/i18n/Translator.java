@@ -49,6 +49,13 @@ public class Translator {
     /** Property file containing the bindings. */
     private static String propertiesFile = "images.properties";
 
+    /** 
+     * This class should only be used in a static constant so make
+     * the constructor private. See issue 3111.
+     */
+    private Translator() {
+    }
+
     /**
      * Default Locale is set and resources Bundles are loaded.
      */
