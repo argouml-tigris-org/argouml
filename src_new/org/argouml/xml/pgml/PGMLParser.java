@@ -38,103 +38,103 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
   protected PGMLParser() {
 	  _translateUciToOrg.put("uci.uml.visual.UMLClassDiagram",
-							 "org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram");
+				 "org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram");
 	  _translateUciToOrg.put("uci.uml.visual.UMLUseCaseDiagram",
-							 "org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram");
+				 "org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram");
 	  _translateUciToOrg.put("uci.uml.visual.UMLActivityDiagram",
-							 "org.argouml.uml.diagram.activity.ui.UMLActivityDiagram");
+				 "org.argouml.uml.diagram.activity.ui.UMLActivityDiagram");
 	  _translateUciToOrg.put("uci.uml.visual.UMLCollaborationDiagram",
-							 "org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram");
+				 "org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram");
 	  _translateUciToOrg.put("uci.uml.visual.UMLDeploymentDiagram",
-							 "org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram");
+				 "org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram");
 	  _translateUciToOrg.put("uci.uml.visual.UMLStateDiagram",
-							 "org.argouml.uml.diagram.state.ui.UMLStateDiagram");
+				 "org.argouml.uml.diagram.state.ui.UMLStateDiagram");
            _translateUciToOrg.put("uci.uml.visual.UMLSequenceDiagram",
-							 "org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram");
+				 "org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram");
 	  _translateUciToOrg.put("uci.uml.visual.FigAssociation",
-							 "org.argouml.uml.diagram.ui.FigAssociation");
+				 "org.argouml.uml.diagram.ui.FigAssociation");
 	  _translateUciToOrg.put("uci.uml.visual.FigRealization",
-							 "org.argouml.uml.diagram.ui.FigRealization");
+				 "org.argouml.uml.diagram.ui.FigRealization");
 	  _translateUciToOrg.put("uci.uml.visual.FigGeneralization",
-							 "org.argouml.uml.diagram.ui.FigGeneralization");
+				 "org.argouml.uml.diagram.ui.FigGeneralization");
 	  _translateUciToOrg.put("uci.uml.visual.FigCompartment",
-							 "org.argouml.uml.diagram.ui.FigCompartment");
+				 "org.argouml.uml.diagram.ui.FigCompartment");
 	  _translateUciToOrg.put("uci.uml.visual.FigDependency",
-							 "org.argouml.uml.diagram.ui.FigDependency");
+				 "org.argouml.uml.diagram.ui.FigDependency");
 	  _translateUciToOrg.put("uci.uml.visual.FigEdgeModelElement",
-							 "org.argouml.uml.diagram.ui.FigEdgeModelElement");
+				 "org.argouml.uml.diagram.ui.FigEdgeModelElement");
 	  _translateUciToOrg.put("uci.uml.visual.FigMessage",
-							 "org.argouml.uml.diagram.ui.FigMessage");
+				 "org.argouml.uml.diagram.ui.FigMessage");
 	  _translateUciToOrg.put("uci.uml.visual.FigNodeModelElement",
-							 "org.argouml.uml.diagram.ui.FigNodeModelElement");
+				 "org.argouml.uml.diagram.ui.FigNodeModelElement");
 	  _translateUciToOrg.put("uci.uml.visual.FigNodeWithCompartments",
-							 "org.argouml.uml.diagram.ui.FigNodeWithCompartments");
+				 "org.argouml.uml.diagram.ui.FigNodeWithCompartments");
 	  _translateUciToOrg.put("uci.uml.visual.FigNote",
-							 "org.argouml.uml.diagram.ui.FigNote");
+				 "org.argouml.uml.diagram.ui.FigNote");
 	  _translateUciToOrg.put("uci.uml.visual.FigTrace",
-							 "org.argouml.uml.diagram.ui.FigTrace");
+				 "org.argouml.uml.diagram.ui.FigTrace");
 	  _translateUciToOrg.put("uci.uml.visual.FigClass",
-							 "org.argouml.uml.diagram.static_structure.ui.FigClass");
+				 "org.argouml.uml.diagram.static_structure.ui.FigClass");
 	  _translateUciToOrg.put("uci.uml.visual.FigInterface",
-							 "org.argouml.uml.diagram.static_structure.ui.FigInterface");
+				 "org.argouml.uml.diagram.static_structure.ui.FigInterface");
 	  _translateUciToOrg.put("uci.uml.visual.FigInstance",
-							 "org.argouml.uml.diagram.static_structure.ui.FigInstance");
+				 "org.argouml.uml.diagram.static_structure.ui.FigInstance");
 	  _translateUciToOrg.put("uci.uml.visual.FigLink",
-							 "org.argouml.uml.diagram.static_structure.ui.FigLink");
+				 "org.argouml.uml.diagram.static_structure.ui.FigLink");
 	  _translateUciToOrg.put("uci.uml.visual.FigPackage",
-							 "org.argouml.uml.diagram.static_structure.ui.FigPackage");
+				 "org.argouml.uml.diagram.static_structure.ui.FigPackage");
 	  _translateUciToOrg.put("uci.uml.visual.FigActionState",
-							 "org.argouml.uml.diagram.activity.ui.FigActionState");
+				 "org.argouml.uml.diagram.activity.ui.FigActionState");
 	  _translateUciToOrg.put("uci.uml.visual.FigAssociationRole",
-							 "org.argouml.uml.diagram.collaboration.ui.FigAssociationRole");
+				 "org.argouml.uml.diagram.collaboration.ui.FigAssociationRole");
 	  _translateUciToOrg.put("uci.uml.visual.FigClassifierRole",
-							 "org.argouml.uml.diagram.collaboration.ui.FigClassifierRole");
+				 "org.argouml.uml.diagram.collaboration.ui.FigClassifierRole");
 	  _translateUciToOrg.put("uci.uml.visual.FigComponent",
-							 "org.argouml.uml.diagram.deployment.ui.FigComponent");
+				 "org.argouml.uml.diagram.deployment.ui.FigComponent");
 	  _translateUciToOrg.put("uci.uml.visual.FigComponentInstance",
-							 "org.argouml.uml.diagram.deployment.ui.FigComponentInstance");
+				 "org.argouml.uml.diagram.deployment.ui.FigComponentInstance");
 	  _translateUciToOrg.put("uci.uml.visual.FigMNode",
-							 "org.argouml.uml.diagram.deployment.ui.FigMNode");
+				 "org.argouml.uml.diagram.deployment.ui.FigMNode");
 	  _translateUciToOrg.put("uci.uml.visual.FigMNodeInstance",
-							 "org.argouml.uml.diagram.deployment.ui.FigMNodeInstance");
+				 "org.argouml.uml.diagram.deployment.ui.FigMNodeInstance");
 	  _translateUciToOrg.put("uci.uml.visual.FigObject",
-							 "org.argouml.uml.diagram.deployment.ui.FigObject");
+				 "org.argouml.uml.diagram.deployment.ui.FigObject");
 	  _translateUciToOrg.put("uci.uml.visual.FigBranchState",
-							 "org.argouml.uml.diagram.state.ui.FigBranchState");
+				 "org.argouml.uml.diagram.state.ui.FigBranchState");
 	  _translateUciToOrg.put("uci.uml.visual.FigCompositeState",
-							 "org.argouml.uml.diagram.state.ui.FigCompositeState");
+				 "org.argouml.uml.diagram.state.ui.FigCompositeState");
 	  _translateUciToOrg.put("uci.uml.visual.FigDeepHistoryState",
-							 "org.argouml.uml.diagram.state.ui.FigDeepHistoryState");
+				 "org.argouml.uml.diagram.state.ui.FigDeepHistoryState");
 	  _translateUciToOrg.put("uci.uml.visual.FigFinalState",
-							 "org.argouml.uml.diagram.state.ui.FigFinalState");
+				 "org.argouml.uml.diagram.state.ui.FigFinalState");
 	  _translateUciToOrg.put("uci.uml.visual.FigForkState",
-							 "org.argouml.uml.diagram.state.ui.FigForkState");
+				 "org.argouml.uml.diagram.state.ui.FigForkState");
 	  _translateUciToOrg.put("uci.uml.visual.FigHistoryState",
-							 "org.argouml.uml.diagram.state.ui.FigHistoryState");
+				 "org.argouml.uml.diagram.state.ui.FigHistoryState");
 	  _translateUciToOrg.put("uci.uml.visual.FigInitialState",
-							 "org.argouml.uml.diagram.state.ui.FigInitialState");
+				 "org.argouml.uml.diagram.state.ui.FigInitialState");
 	  _translateUciToOrg.put("uci.uml.visual.FigJoinState",
-							 "org.argouml.uml.diagram.state.ui.FigJoinState");
+				 "org.argouml.uml.diagram.state.ui.FigJoinState");
 	  _translateUciToOrg.put("uci.uml.visual.FigShallowHistoryState",
-							 "org.argouml.uml.diagram.state.ui.FigShallowHistoryState");
+				 "org.argouml.uml.diagram.state.ui.FigShallowHistoryState");
 	  _translateUciToOrg.put("uci.uml.visual.FigState",
-							 "org.argouml.uml.diagram.state.ui.FigState");
+				 "org.argouml.uml.diagram.state.ui.FigState");
 	  _translateUciToOrg.put("uci.uml.visual.FigActionState",
-							 "org.argouml.uml.diagram.activity.ui.FigActionState");
+				 "org.argouml.uml.diagram.activity.ui.FigActionState");
 	  _translateUciToOrg.put("uci.uml.visual.FigStateVertex",
-							 "org.argouml.uml.diagram.state.ui.FigStateVertex");
+                                 "org.argouml.uml.diagram.state.ui.FigStateVertex");
 	  _translateUciToOrg.put("uci.uml.visual.FigTransition",
-							 "org.argouml.uml.diagram.state.ui.FigTransition");
+				 "org.argouml.uml.diagram.state.ui.FigTransition");
 	  _translateUciToOrg.put("uci.uml.visual.FigActor",
-							 "org.argouml.uml.diagram.use_case.ui.FigActor");
+				 "org.argouml.uml.diagram.use_case.ui.FigActor");
 	  _translateUciToOrg.put("uci.uml.visual.FigUseCase",
-							 "org.argouml.uml.diagram.use_case.ui.FigUseCase");
+				 "org.argouml.uml.diagram.use_case.ui.FigUseCase");
           _translateUciToOrg.put("uci.uml.visual.FigSeqLink",
-						 "org.argouml.uml.diagram.sequence.ui.FigSeqLink");
+				 "org.argouml.uml.diagram.sequence.ui.FigSeqLink");
           _translateUciToOrg.put("uci.uml.visual.FigSeqObject",
-							 "org.argouml.uml.diagram.sequence.ui.FigSeqObject");
+				 "org.argouml.uml.diagram.sequence.ui.FigSeqObject");
           _translateUciToOrg.put("uci.uml.visual.FigSeqStimulus",
-							 "org.argouml.uml.diagram.sequence.ui.FigSeqStimulus");
+				 "org.argouml.uml.diagram.sequence.ui.FigSeqStimulus");
   }
 
 

@@ -43,57 +43,74 @@ import org.argouml.uml.diagram.activity.ui.*;
 // could be singleton
 
 
-/** This class defines a renderer object for UML Use Case Diagrams. In a
- *  Class Diagram the following UML objects are displayed with the
+/** This class defines a renderer object for UML State Diagrams. In a
+ *  State Diagram the following UML objects are displayed with the
  *  following Figs: <p>
  * <pre>
- *  UML Object      ---  Fig
+ *  UML Object          ---  Fig
  *  ---------------------------------------
- *  MState           ---  FigState
- *  MCompositeState  ---  FigCompositeState
- *  MActionState     ---  FigActionState
- *  MFinalState      ---  FigFinalState
- *  MPseudostate     ---  FigPseudostate
- *    Inititial     ---  FigInitialState
- *    Branch        ---  FigBranchState
- *    Fork          ---  FigForkState
- *    Join          ---  FigJoinState
+ *  MState              ---  FigState
+ *  MCompositeState     ---  FigCompositeState
+ *  MActionState        ---  FigActionState
+ *  MFinalState         ---  FigFinalState
+ *  MPseudostate        ---  FigPseudostate
+ *    Inititial         ---  FigInitialState
+ *    Branch            ---  FigBranchState
+ *    Fork              ---  FigForkState
+ *    Join              ---  FigJoinState
  *    DeepHistory       ---  FigDeepHistoryState
- *    ShallowHistory       ---  FigShallowistoryState
- *  MTransition      ---  FigTransition
+ *    ShallowHistory    ---  FigShallowistoryState
+ *  MTransition         ---  FigTransition
  *  more...
  *  </pre>
  */
 
-public class StateDiagramRenderer
-implements GraphNodeRenderer, GraphEdgeRenderer {
+public class StateDiagramRenderer implements GraphNodeRenderer, GraphEdgeRenderer {
 
-  /** Return a Fig that can be used to represent the given node */
-  public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
-    if (node instanceof MActionState) return new FigActionState(gm, node);
-	else if (node instanceof MFinalState) return new FigFinalState(gm, node);
-    else if (node instanceof MCompositeState) return new FigCompositeState(gm, node);
-    else if (node instanceof MState) return new FigState(gm, node);
-    else if (node instanceof MPseudostate) {
-      MPseudostate pState = (MPseudostate) node;
-      if (pState.getKind() == null) return null;
-      if (pState.getKind().equals(MPseudostateKind.INITIAL))
-	return new FigInitialState(gm, node);
-      else if (pState.getKind().equals(MPseudostateKind.BRANCH))
-	return new FigBranchState(gm, node);
-      else if (pState.getKind().equals(MPseudostateKind.FORK))
-	return new FigForkState(gm, node);
-      else if (pState.getKind().equals(MPseudostateKind.JOIN))
-	return new FigJoinState(gm, node);
-      else if (pState.getKind().equals(MPseudostateKind.SHALLOW_HISTORY))
-	return new FigShallowHistoryState(gm, node);
-      else if (pState.getKind().equals(MPseudostateKind.DEEP_HISTORY))
-	return new FigDeepHistoryState(gm, node);      else
-	System.out.println("found a type not known");
+    /** Return a Fig that can be used to represent the given node */
+    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
+        if (node instanceof MActionState) {
+            return new FigActionState(gm, node);
+        }
+        else if (node instanceof MFinalState) {
+            return new FigFinalState(gm, node);
+        }
+        else if (node instanceof MCompositeState) {
+            return new FigCompositeState(gm, node);
+        }
+        else if (node instanceof MState) {
+            return new FigState(gm, node);
+        }
+        else if (node instanceof MPseudostate) {
+            MPseudostate pState = (MPseudostate) node;
+            if (pState.getKind() == null) {
+                return null;
+            }
+            if (pState.getKind().equals(MPseudostateKind.INITIAL)){
+                return new FigInitialState(gm, node);
+            }
+            else if (pState.getKind().equals(MPseudostateKind.BRANCH)){
+                return new FigBranchState(gm, node);
+            }
+            else if (pState.getKind().equals(MPseudostateKind.FORK)){
+                return new FigForkState(gm, node);
+            }
+            else if (pState.getKind().equals(MPseudostateKind.JOIN)){
+                return new FigJoinState(gm, node);
+            }
+            else if (pState.getKind().equals(MPseudostateKind.SHALLOW_HISTORY)){
+                return new FigShallowHistoryState(gm, node);
+            }
+            else if (pState.getKind().equals(MPseudostateKind.DEEP_HISTORY)){
+                return new FigDeepHistoryState(gm, node);     
+            }
+            else {
+                System.out.println("found a type not known");
+            }
+        }
+        System.out.println("needs-more-work StateDiagramRenderer getFigNodeFor");
+        return null;
     }
-    System.out.println("needs-more-work StateDiagramRenderer getFigNodeFor");
-    return null;
-  }
 
   /** Return a Fig that can be used to represent the given edge */
   public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
