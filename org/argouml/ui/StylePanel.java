@@ -174,7 +174,8 @@ public class StylePanel
     }
 
     /* (non-Javadoc)
-     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         setTarget(e.getNewTargets()[0]);

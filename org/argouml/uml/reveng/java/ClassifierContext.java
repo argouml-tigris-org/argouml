@@ -57,7 +57,9 @@ class ClassifierContext extends Context
 	throws ClassifierNotFoundException
     {
 	// Check if it is this interface
-	if (name.equals(ModelFacade.getName(mClassifier)) && ModelFacade.isAInterface(mClassifier)) {
+	if (name.equals(ModelFacade.getName(mClassifier))
+	    && ModelFacade.isAInterface(mClassifier))
+	{
 	    return mClassifier;
 	}
 	else {

@@ -83,9 +83,12 @@ class ParseState
                       Object currentPackage)
     {
 	classnamePrefix =
-	    previousState.classnamePrefix + ModelFacade.getName(mClassifier) + "$";
+	    previousState.classnamePrefix
+	    + ModelFacade.getName(mClassifier)
+	    + "$";
 	obsoleteFeatures = new Vector(ModelFacade.getFeatures(mClassifier));
-	obsoleteInnerClasses = new Vector(ModelFacade.getOwnedElements(mClassifier));
+	obsoleteInnerClasses =
+	    new Vector(ModelFacade.getOwnedElements(mClassifier));
 	context = new OuterClassifierContext(previousState.context,
 						     mClassifier,
 						     currentPackage,
@@ -254,7 +257,9 @@ class ParseState
     {
 	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
 	    Object mFeature = i.next();
-	    if (ModelFacade.isAMethod(mFeature) && name.equals(ModelFacade.getName(mFeature))) {
+	    if (ModelFacade.isAMethod(mFeature)
+		&& name.equals(ModelFacade.getName(mFeature)))
+	    {
 		return mFeature;
 	    }
 	}
@@ -271,7 +276,9 @@ class ParseState
     {
 	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
 	    Object mFeature = i.next();
-	    if (ModelFacade.isAOperation(mFeature) && name.equals(ModelFacade.getName(mFeature))) {
+	    if (ModelFacade.isAOperation(mFeature)
+		&& name.equals(ModelFacade.getName(mFeature)))
+	    {
 		return mFeature;
 	    }
 	}

@@ -100,10 +100,12 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
     public void mousePressed(MouseEvent me) {
         
         // calculate the source and dest figs for to self assoc
-        sourceFig = (FigNodeModelElement) ((FigEdge) _content).getSourceFigNode();
+        sourceFig =
+	    (FigNodeModelElement) ((FigEdge) _content).getSourceFigNode();
         destFig = (FigNodeModelElement) ((FigEdge) _content).getDestFigNode();
         
-        Rectangle mousePosition = new Rectangle(me.getX() - 5, me.getY() - 5, 10, 10);
+        Rectangle mousePosition =
+	    new Rectangle(me.getX() - 5, me.getY() - 5, 10, 10);
         //reset the pointIndex
         pointIndex = -1;
         int npoints = _content.getNumPoints();
@@ -181,7 +183,8 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
             return;
         }
         
-        UMLMutableGraphSupport mgm = (UMLMutableGraphSupport) editor.getGraphModel();
+        UMLMutableGraphSupport mgm =
+	    (UMLMutableGraphSupport) editor.getGraphModel();
         FigNodeModelElement oldFig = null;
         boolean isSource = false;
         if (pointIndex == 0) {

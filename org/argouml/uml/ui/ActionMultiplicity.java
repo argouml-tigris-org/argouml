@@ -42,17 +42,25 @@ public class ActionMultiplicity extends UMLAction {
     // static variables
 
     // multiplicity
-    public static UMLAction SrcMultOne = new ActionMultiplicity(MMultiplicity.M1_1, "src");
-    public static UMLAction DestMultOne = new ActionMultiplicity(MMultiplicity.M1_1, "dest");
+    public static UMLAction SrcMultOne =
+	new ActionMultiplicity(MMultiplicity.M1_1, "src");
+    public static UMLAction DestMultOne =
+	new ActionMultiplicity(MMultiplicity.M1_1, "dest");
 
-    public static UMLAction SrcMultZeroToOne = new ActionMultiplicity(MMultiplicity.M0_1, "src");
-    public static UMLAction DestMultZeroToOne = new ActionMultiplicity(MMultiplicity.M0_1, "dest");
+    public static UMLAction SrcMultZeroToOne =
+	new ActionMultiplicity(MMultiplicity.M0_1, "src");
+    public static UMLAction DestMultZeroToOne =
+	new ActionMultiplicity(MMultiplicity.M0_1, "dest");
 
-    public static UMLAction SrcMultZeroToMany = new ActionMultiplicity(MMultiplicity.M0_N, "src");
-    public static UMLAction DestMultZeroToMany = new ActionMultiplicity(MMultiplicity.M0_N, "dest");
+    public static UMLAction SrcMultZeroToMany =
+	new ActionMultiplicity(MMultiplicity.M0_N, "src");
+    public static UMLAction DestMultZeroToMany =
+	new ActionMultiplicity(MMultiplicity.M0_N, "dest");
 
-    public static UMLAction SrcMultOneToMany = new ActionMultiplicity(MMultiplicity.M1_N, "src");
-    public static UMLAction DestMultOneToMany = new ActionMultiplicity(MMultiplicity.M1_N, "dest");
+    public static UMLAction SrcMultOneToMany =
+	new ActionMultiplicity(MMultiplicity.M1_N, "src");
+    public static UMLAction DestMultOneToMany =
+	new ActionMultiplicity(MMultiplicity.M1_N, "dest");
 
 
     ////////////////////////////////////////////////////////////////

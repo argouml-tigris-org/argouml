@@ -52,8 +52,9 @@ public class GoSummaryToInheritance extends AbstractGoRule {
           
 	    List list = new ArrayList();
           
-	    Iterator it = ModelFacade.getSupplierDependencies(
-							      ((InheritanceNode) parent).getParent()).iterator();
+	    Iterator it =
+		ModelFacade.getSupplierDependencies(
+						    ((InheritanceNode) parent).getParent()).iterator();
           
 	    while (it.hasNext()) {
               
@@ -62,8 +63,10 @@ public class GoSummaryToInheritance extends AbstractGoRule {
 		    list.add(next);
 	    }
           
-	    it = ModelFacade.getClientDependencies(
-						   ((InheritanceNode) parent).getParent()).iterator();
+	    it =
+		ModelFacade.getClientDependencies(((InheritanceNode) parent)
+						  .getParent())
+		.iterator();
           
 	    while (it.hasNext()) {
               
@@ -72,10 +75,10 @@ public class GoSummaryToInheritance extends AbstractGoRule {
 		    list.add(next);
 	    }
           
-	    Iterator generalizationsIt = ModelFacade.getGeneralizations(
-									((InheritanceNode) parent).getParent());
-	    Iterator specializationsIt = ModelFacade.getSpecializations(
-									((InheritanceNode) parent).getParent());
+	    Iterator generalizationsIt =
+		ModelFacade.getGeneralizations(((InheritanceNode) parent).getParent());
+	    Iterator specializationsIt =
+		ModelFacade.getSpecializations(((InheritanceNode) parent).getParent());
           
 	    while (generalizationsIt.hasNext())
 		list.add(generalizationsIt.next());

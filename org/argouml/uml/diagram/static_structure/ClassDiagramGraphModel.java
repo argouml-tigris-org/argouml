@@ -560,7 +560,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * helper method for changeConnectedNode
      * <p>empty at the moment
      */
-    private void rerouteDependency(Object newNode, Object oldNode, Object edge, boolean isSource) {
+    private void rerouteDependency(Object newNode, Object oldNode,
+				   Object edge, boolean isSource)
+    {
 
     }
 

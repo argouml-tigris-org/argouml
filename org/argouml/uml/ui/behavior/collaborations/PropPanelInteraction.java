@@ -47,22 +47,32 @@ public class PropPanelInteraction extends PropPanelModelElement {
         super("Interaction", ConfigLoader.getTabPropsOrientation());
 
     	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-    	addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
+    	addField(Argo.localize("UMLMenu", "label.stereotype"),
+		 getStereotypeBox());
+        addField(Argo.localize("UMLMenu", "label.namespace"),
+		 getNamespaceScroll());
 
-        JList contextList = new UMLLinkedList(new UMLInteractionContextListModel());
+        JList contextList =
+	    new UMLLinkedList(new UMLInteractionContextListModel());
         contextList.setVisibleRowCount(1);
         JScrollPane contextScroll = new JScrollPane(contextList);
         addField(Argo.localize("UMLMenu", "label.context"), contextScroll);
 
         addSeperator();
 
-        JList messagesList = new UMLLinkedList(new UMLInteractionMessagesListModel());
+        JList messagesList =
+	    new UMLLinkedList(new UMLInteractionMessagesListModel());
       	JScrollPane messagesScroll = new JScrollPane(messagesList);
         addField(Argo.localize("UMLMenu", "label.messages"), messagesScroll);
 
-    	new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
-        new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-attribute"), "removeElement", null);
+    	new PropPanelButton(this, buttonPanel, _navUpIcon,
+			    Argo.localize("UMLMenu", "button.go-up"),
+			    "navigateUp",
+			    null);
+        new PropPanelButton(this, buttonPanel, _deleteIcon,
+			    Argo.localize("UMLMenu", "button.delete-attribute"),
+			    "removeElement",
+			    null);
 
     }
 

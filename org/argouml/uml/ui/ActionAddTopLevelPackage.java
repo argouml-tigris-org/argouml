@@ -38,7 +38,8 @@ public class ActionAddTopLevelPackage extends UMLChangeAction {
     ////////////////////////////////////////////////////////////////
     // static variables
     
-    public static ActionAddTopLevelPackage SINGLETON = new ActionAddTopLevelPackage(); 
+    public static ActionAddTopLevelPackage SINGLETON =
+	new ActionAddTopLevelPackage(); 
 
 
     ////////////////////////////////////////////////////////////////
@@ -56,7 +57,8 @@ public class ActionAddTopLevelPackage extends UMLChangeAction {
 	Project p = ProjectManager.getManager().getCurrentProject();	
         int numPacks = p.getUserDefinedModels().size();
         String nameStr = "package_" + (numPacks + 1);
-        MModel model = UmlFactory.getFactory().getModelManagement().createModel();
+        MModel model =
+	    UmlFactory.getFactory().getModelManagement().createModel();
         model.setName(nameStr);
         p.addMember(model);
         super.actionPerformed(ae);

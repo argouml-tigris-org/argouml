@@ -90,7 +90,8 @@ public abstract class Generator
     private static Map s_generators = new HashMap();
 
     /**
-     * suffix placed behind the tag defining a testcase for an element to be generated
+     * suffix placed behind the tag defining a testcase for an element
+     * to be generated
      */
     public final static String TEST_SUFFIX = "test";
     public static Generator getGenerator(NotationName n) {
@@ -107,7 +108,8 @@ public abstract class Generator
     }
 
     /**
-     * Generates code for some modelelement. Subclasses should implement this to generate code for different notations.
+     * Generates code for some modelelement. Subclasses should
+     * implement this to generate code for different notations.
      * @param o the element to be generated
      * @return String the generated code
      */
@@ -136,12 +138,14 @@ public abstract class Generator
             return generateStereotype((MStereotype) o);
         if (o instanceof MTaggedValue) {
             /*
-             * 2002-11-07
-             * Jaap Branderhorst
-             * Added the if statement to test for the testtag. Did it here and not in (for example) GeneratorJava
-             * to have a single point of definition instead of all the generators.
-             * If in the generation of an owner of a taggedvalue, the taggedvalue must be generated the method generating
-             * the owner should call generate(sometag) and not generateTaggedValue(sometag)
+             * 2002-11-07 Jaap Branderhorst Added the if statement to
+             * test for the testtag. Did it here and not in (for
+             * example) GeneratorJava to have a single point of
+             * definition instead of all the generators.  If in the
+             * generation of an owner of a taggedvalue, the
+             * taggedvalue must be generated the method generating the
+             * owner should call generate(sometag) and not
+             * generateTaggedValue(sometag)
              */
             if (_testModus
                 && ((MTaggedValue) o).getTag().equals(
@@ -283,7 +287,8 @@ public abstract class Generator
     }
 
     /**   
-     * @deprecated must be added to all leaf classes from this class, these are the modules not this abstract class
+     * @deprecated must be added to all leaf classes from this class,
+     * these are the modules not this abstract class
      * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
      */
     public boolean isModuleEnabled() {

@@ -108,7 +108,8 @@ public class FigGeneralization extends FigEdgeModelElement {
     }
   
     /**
-     * Updates the discriminator text. Called if the model is changed and on construction time.
+     * Updates the discriminator text. Called if the model is changed
+     * and on construction time.
      */
     public void updateDiscriminatorText() {
   	MGeneralization me = (MGeneralization) getOwner();
@@ -136,14 +137,16 @@ public class FigGeneralization extends FigEdgeModelElement {
 	    MGeneralization gen = (MGeneralization) own;
 	    MGeneralizableElement subType = gen.getChild();
 	    MGeneralizableElement superType = gen.getParent();
-	    // due to errors in earlier releases of argouml it can happen that there is a generalization 
-	    // without a child or parent. 
+	    // due to errors in earlier releases of argouml it can
+	    // happen that there is a generalization without a child
+	    // or parent.
 	    if (subType == null || superType == null) {
 		delete();
 		return;
 	    }
 	    FigNode subTypeFN = (FigNode) getLayer().presentationFor(subType);
-	    FigNode superTypeFN = (FigNode) getLayer().presentationFor(superType);
+	    FigNode superTypeFN =
+		(FigNode) getLayer().presentationFor(superType);
 	    setSourcePortFig(subTypeFN);
 	    setSourceFigNode(subTypeFN);
 	    setDestPortFig(superTypeFN);
@@ -173,8 +176,11 @@ public class FigGeneralization extends FigEdgeModelElement {
         Fig destFig = getDestFigNode();
         Object source = sourceFig.getOwner();
         Object dest = destFig.getOwner();
-        if (source instanceof MGeneralizableElement && dest instanceof MGeneralizableElement) {
-            setOwner(CoreFactory.getFactory().buildGeneralization((MGeneralizableElement) source, (MGeneralizableElement) dest));
+        if (source instanceof MGeneralizableElement
+	    && dest instanceof MGeneralizableElement)
+	{
+            setOwner(CoreFactory.getFactory().buildGeneralization((MGeneralizableElement) source,
+								  (MGeneralizableElement) dest));
         }
     }
 } /* end class FigGeneralization */

@@ -37,12 +37,14 @@ import org.argouml.uml.reveng.Import;
  */
 public class ActionImportFromSources extends UMLAction {
     
-    protected static Category cat = Category.getInstance(org.argouml.uml.ui.ActionImportFromSources.class);
+    protected static Category cat =
+	Category.getInstance(org.argouml.uml.ui.ActionImportFromSources.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    public static ActionImportFromSources SINGLETON = new ActionImportFromSources(); 
+    public static ActionImportFromSources SINGLETON =
+	new ActionImportFromSources(); 
 
 
     ////////////////////////////////////////////////////////////////

@@ -50,7 +50,8 @@ import ru.novosoft.uml.behavior.use_cases.MUseCase;
 
 public class GoUseCaseToExtensionPoint extends AbstractGoRule {
     
-    protected static Category cat = Category.getInstance(GoUseCaseToExtensionPoint.class);
+    protected static Category cat =
+	Category.getInstance(GoUseCaseToExtensionPoint.class);
 
     /**
      * <p>Give a name to this rule.</p>

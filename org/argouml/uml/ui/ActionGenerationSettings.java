@@ -36,7 +36,8 @@ public class ActionGenerationSettings extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    public static ActionGenerationSettings SINGLETON = new ActionGenerationSettings();
+    public static ActionGenerationSettings SINGLETON =
+	new ActionGenerationSettings();
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -54,7 +55,8 @@ public class ActionGenerationSettings extends UMLAction {
     }
 
     public boolean shouldBeEnabled() {
-	org.argouml.ui.ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+	org.argouml.ui.ArgoDiagram activeDiagram =
+	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
 	return super.shouldBeEnabled() &&
 	    (activeDiagram instanceof UMLDiagram);
     }

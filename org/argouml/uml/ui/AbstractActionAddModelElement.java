@@ -36,8 +36,8 @@ import org.argouml.ui.ProjectBrowser;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- * Abstract action that is the parent to all add actions that add the modelelements
- * via the UMLAddDialog.
+ * Abstract action that is the parent to all add actions that add the
+ * modelelements via the UMLAddDialog.
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -69,11 +69,15 @@ public abstract class AbstractActionAddModelElement extends UMLChangeAction {
     }
 
     /**
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see
+     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        UMLAddDialog dialog = new UMLAddDialog(getChoices(), getSelected(), getDialogTitle(), isMultiSelect(), isExclusive());
+        UMLAddDialog dialog =
+	    new UMLAddDialog(getChoices(), getSelected(), getDialogTitle(),
+			     isMultiSelect(),
+			     isExclusive());
         int result = dialog.showDialog(ProjectBrowser.getInstance());
         if (result == JOptionPane.OK_OPTION) {
             doIt(dialog.getSelected());

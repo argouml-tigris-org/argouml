@@ -57,7 +57,9 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
     }
 
     /**
-     * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace, Object)
+     * @see
+     * org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace,
+     * Object)
      */
     public UMLDiagram createDiagram(Object handle) {
         if (!ModelFacade.isANamespace(handle)) {

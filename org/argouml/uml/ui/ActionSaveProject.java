@@ -81,7 +81,9 @@ public class ActionSaveProject extends UMLAction {
 
     public boolean trySave (boolean overwrite) {
 	URL url = ProjectManager.getManager().getCurrentProject().getURL();
-	return url == null ? false : trySave(overwrite, new File(url.getFile()));
+	return url == null
+	    ? false
+	    : trySave(overwrite, new File(url.getFile()));
     }
 
     public boolean trySave(boolean overwrite, File file) {
@@ -91,7 +93,8 @@ public class ActionSaveProject extends UMLAction {
 	try {
 
 	    if (file.exists() && !overwrite) {
-		//Argo.log.info ("Are you sure you want to overwrite " + fullpath + "?");
+		//Argo.log.info ("Are you sure you want to overwrite "
+		//+ fullpath + "?");
 		String sConfirm = 
 		    MessageFormat.format(Argo.localize("Actions",
 						       "optionpane.save-project-confirm-overwrite"),

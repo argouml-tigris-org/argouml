@@ -55,27 +55,33 @@ public class PropPanelCollaboration extends PropPanelNamespace {
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField(Argo.localize("UMLMenu", "label.stereotype"),
-            new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+            new UMLComboBoxNavigator(this, Argo.localize("UMLMenu",
+							 "tooltip.nav-stereo"),
+				     getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
 
-        UMLLinkedList classifierList = new UMLLinkedList(new UMLCollaborationRepresentedClassifierListModel());
+        UMLLinkedList classifierList =
+	    new UMLLinkedList(new UMLCollaborationRepresentedClassifierListModel());
         classifierList.setVisibleRowCount(1);
         addField(Argo.localize("UMLMenu", "label.represented-classifier"),
             new JScrollPane(classifierList));
 
-        UMLLinkedList operationList = new UMLLinkedList(new UMLCollaborationRepresentedOperationListModel());
+        UMLLinkedList operationList =
+	    new UMLLinkedList(new UMLCollaborationRepresentedOperationListModel());
         operationList.setVisibleRowCount(1);
         addField(Argo.localize("UMLMenu", "label.represented-operation"),
             new JScrollPane(operationList));
 
         addSeperator();
 
-        UMLLinkedList interactionList = new UMLLinkedList(new UMLCollaborationInteractionListModel());
+        UMLLinkedList interactionList =
+	    new UMLLinkedList(new UMLCollaborationInteractionListModel());
         interactionList.setVisibleRowCount(1);
         addField(Argo.localize("UMLMenu", "label.interaction"),
             new JScrollPane(interactionList));
 
-        UMLLinkedList constrainingList = new UMLLinkedList(new UMLCollaborationConstrainingElementListModel());
+        UMLLinkedList constrainingList =
+	    new UMLLinkedList(new UMLCollaborationConstrainingElementListModel());
         addField(Argo.localize("UMLMenu", "label.constraining-elements"),
             new JScrollPane(constrainingList));
 

@@ -30,8 +30,9 @@ import org.argouml.ui.AbstractGoRule;
 import ru.novosoft.uml.foundation.core.MClassifier;
 
 /**
- * Navigation rule for navperspective to navigate from behavioral feature to statemachine.
- * Causes statemachine to be shown as child of behavioral feature.
+ * Navigation rule for navperspective to navigate from behavioral
+ * feature to statemachine.  Causes statemachine to be shown as child
+ * of behavioral feature.
  * 
  * @author jaap.branderhorst@xs4all.nl
  */

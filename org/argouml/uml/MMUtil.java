@@ -67,11 +67,13 @@ public class MMUtil {
     static {
 	STANDARDS = UmlFactory.getFactory().getModelManagement().createModel();
 	STANDARDS.setName("standard Elements");
-	MStereotype realizationStereo = UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
+	MStereotype realizationStereo =
+	    UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
 	realizationStereo.setName("realize");
 	STANDARDS.addOwnedElement(realizationStereo);
 
-	MStereotype interfaceStereo = UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
+	MStereotype interfaceStereo =
+	    UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
 	interfaceStereo.setName("interface");
 	STANDARDS.addOwnedElement(interfaceStereo);
     }

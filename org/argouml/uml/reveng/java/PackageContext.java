@@ -72,8 +72,10 @@ class PackageContext extends Context
 			Class.forName(javaName + "." + name);
 		}
 		if (classifier.isInterface()) {
-		    mInterface = UmlFactory.getFactory().getCore().buildInterface(name, mPackage);
-		    ModelFacade.setTaggedValue(mInterface, MMUtil.GENERATED_TAG, "yes");
+		    mInterface =
+			UmlFactory.getFactory().getCore().buildInterface(name, mPackage);
+		    ModelFacade.setTaggedValue(mInterface, MMUtil.GENERATED_TAG,
+					       "yes");
 		}
 	    }
 	    catch (ClassNotFoundException e) {
@@ -120,12 +122,18 @@ class PackageContext extends Context
 			Class.forName(javaName + "." + name);
 		}
 		if (classifier.isInterface()) {
-		    mClassifier = UmlFactory.getFactory().getCore().buildInterface(name, mPackage);
+		    mClassifier =
+			UmlFactory.getFactory().getCore()
+			.buildInterface(name, mPackage);
 		}
 		else {
-		    mClassifier = UmlFactory.getFactory().getCore().buildClass(name, mPackage);
+		    mClassifier =
+			UmlFactory.getFactory().getCore()
+			.buildClass(name, mPackage);
 		}
-		ModelFacade.setTaggedValue(mClassifier, MMUtil.GENERATED_TAG, "yes");
+		ModelFacade.setTaggedValue(mClassifier,
+					   MMUtil.GENERATED_TAG,
+					   "yes");
 	    }
 	    catch (ClassNotFoundException e) {
 		// No class or interface found
@@ -150,7 +158,9 @@ class PackageContext extends Context
 		    // How do I represent arrays in UML?
 		    name.indexOf("[]") != -1)
 		{
-		    mClassifier = UmlFactory.getFactory().getCore().buildDataType(name, mPackage);
+		    mClassifier =
+			UmlFactory.getFactory().getCore()
+			.buildDataType(name, mPackage);
 		}
 	    }
 	}

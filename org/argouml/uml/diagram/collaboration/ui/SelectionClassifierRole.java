@@ -207,7 +207,9 @@ public class SelectionClassifierRole extends SelectionWButtons {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeLeft(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     * @see
+     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeLeft(org.tigris.gef.graph.MutableGraphModel,
+     * java.lang.Object)
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
 	return gm.connect(newNode, _content.getOwner(), MAssociationRole.class);

@@ -32,7 +32,9 @@ public interface FileGenerator {
     /**
      * The fileseperation for this operating system.
      */
-    public final static String FILE_SEPARATOR = System.getProperty("file.separator");
+    public final static String FILE_SEPARATOR =
+	System.getProperty("file.separator");
+    
     /** Generates a file for this classifier.
      * TODO:
      * This will only work for languages that have each node

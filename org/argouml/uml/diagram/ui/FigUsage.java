@@ -64,7 +64,8 @@ public class FigUsage extends FigDependency {
 	String stereoTypeStr = _stereo.getText();
 
 	if (stereoTypeStr == null || "".equals(stereoTypeStr)) {
-	    _stereo.setText(NotationHelper.getLeftGuillemot() + "use" + NotationHelper.getRightGuillemot());
+	    _stereo.setText(NotationHelper.getLeftGuillemot() + "use"
+			    + NotationHelper.getRightGuillemot());
 	}
     } 
 

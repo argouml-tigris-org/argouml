@@ -42,7 +42,8 @@ public class StylePanelFigMessage extends StylePanelFig {
     ////////////////////////////////////////////////////////////////
     // instance vars
     JLabel _arrowLabel = new JLabel("Arrow: ");
-    JComboBox _arrowField = new JComboBox(Converter.convert(((FigMessage) _target).ARROW_DIRECTIONS));
+    JComboBox _arrowField =
+	new JComboBox(Converter.convert(((FigMessage) _target).ARROW_DIRECTIONS));
 
     ////////////////////////////////////////////////////////////////
     // contructors
@@ -79,7 +80,8 @@ public class StylePanelFigMessage extends StylePanelFig {
 
     public void setTargetArrow() {
 	String ad = (String) _arrowField.getSelectedItem();
-	int arrowDirection = ((FigMessage) _target).ARROW_DIRECTIONS.indexOf(ad);
+	int arrowDirection =
+	    ((FigMessage) _target).ARROW_DIRECTIONS.indexOf(ad);
 	if (_target == null || arrowDirection == -1) return;
 	_target.startTrans();
 	((FigMessage) _target).setArrow(arrowDirection);

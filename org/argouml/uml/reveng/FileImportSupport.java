@@ -58,7 +58,8 @@ public abstract class FileImportSupport implements PluggableImport {
 
     protected JRadioButton datatype;
 
-    protected static final String separator = "/"; //System.getProperty("file.separator");
+    protected static final String separator = "/";
+    //System.getProperty("file.separator");
 	
     /** Object(s) selected in chooser */
     protected Object theFile;
@@ -152,7 +153,8 @@ public abstract class FileImportSupport implements PluggableImport {
      * @param f The input file for the parser.
      * @exception Exception Parser exception.
      */
-    public void parseFile( Project p, Object o, DiagramInterface diagram, Import _import)
+    public void parseFile( Project p, Object o, DiagramInterface diagram,
+			   Import _import)
 	throws Exception {
     }
 
@@ -181,7 +183,8 @@ public abstract class FileImportSupport implements PluggableImport {
 			theFile = chooser.getSelectedFile();
 			if (theFile != null) {
 			    String path = chooser.getSelectedFile().getParent();
-			    String filename = chooser.getSelectedFile().getName();
+			    String filename =
+				chooser.getSelectedFile().getName();
 			    filename = path + separator + filename;
 			    Globals.setLastDirectory(path);
 			    if (filename != null) {
@@ -239,12 +242,13 @@ public abstract class FileImportSupport implements PluggableImport {
 		for ( int i = 0; i < files.length; i++) {
 		    File curFile = new File(curDir, files[i]);
 
-		    // The following test can cause trouble with links,
-		    // because links are accepted as directories, even if
-		    // they link files.
-		    // Links could also result in infinite loops. For this reason
-		    // we don't do this traversing recursively.
-		    if (curFile.isDirectory()) {   // If this file is a directory
+		    // The following test can cause trouble with
+		    // links, because links are accepted as
+		    // directories, even if they link files.  Links
+		    // could also result in infinite loops. For this
+		    // reason we don't do this traversing recursively.
+		    if (curFile.isDirectory()) {
+			// If this file is a directory
 			if (_import.isDiscendDirectoriesRecursively()) {
 			    if (doneDirectories.indexOf(curFile) >= 0
 				|| toDoDirectories.indexOf(curFile) >= 0) {
@@ -273,7 +277,10 @@ public abstract class FileImportSupport implements PluggableImport {
 	SuffixFilter[] filters = getSuffixFilters();
 	if (filters != null) {
 	    for (int i = 0; i < filters.length; i++) {
-		String fileName = (f != null && f instanceof File ? ((File) f).getName() : "");
+		String fileName =
+		    (f != null && f instanceof File
+		     ? ((File) f).getName()
+		     : "");
 		if (fileName.endsWith(filters[i]._suffix)) return true;
 	    }
 	}

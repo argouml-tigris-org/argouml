@@ -63,7 +63,8 @@ import org.argouml.util.osdep.OsUtil;
 import org.tigris.gef.util.Converter;
 
 public class ClassGenerationDialog extends JDialog implements ActionListener {
-    protected static Category cat = Category.getInstance(ClassGenerationDialog.class);
+    protected static Category cat =
+	Category.getInstance(ClassGenerationDialog.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -73,7 +74,8 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-    private TableModelClassChecks _classTableModel = new TableModelClassChecks();
+    private TableModelClassChecks _classTableModel =
+	new TableModelClassChecks();
     private boolean isPathInModel = false;
 
     protected JCheckBox _compileCheckBox;
@@ -107,7 +109,8 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
 	_browseButton = new JButton();
 	_cancelButton = new JButton();
 	_generateButton = new JButton();
-	_outputDirectoryComboBox = new JComboBox(Converter.convert(getClasspathEntries()));
+	_outputDirectoryComboBox =
+	    new JComboBox(Converter.convert(getClasspathEntries()));
 	_tableScrollPane = new JScrollPane();
 	_classTable = new JTable();
 	_compileCheckBox = new JCheckBox();
@@ -241,9 +244,11 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
 	    }
 	}
 	// if (entries.size() == 0) {
-	// 	  JOptionPane.showMessageDialog(null, "In order to generate Java files, you need to have\nat least one directory in your CLASSPATH environment variable,\nwhere ArgoUML can store and compile the files.", "Code generation", JOptionPane.ERROR_MESSAGE);
-	// 	  return null;
-	//       }
+	// JOptionPane.showMessageDialog(null, "In order to generate
+	// Java files, you need to have\nat least one directory in
+	// your CLASSPATH environment variable,\nwhere ArgoUML can
+	// store and compile the files.", "Code generation",
+	// JOptionPane.ERROR_MESSAGE); return null; }
 	return entries;
     }
 
@@ -256,14 +261,16 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
 
 	// Generate Button --------------------------------------
 	if (e.getSource() == _generateButton) {
-	    String path = ((String) _outputDirectoryComboBox.getModel().getSelectedItem()).trim();
+	    String path =
+		((String) _outputDirectoryComboBox.getModel().getSelectedItem()).trim();
 	    Project p = ProjectManager.getManager().getCurrentProject();
 	    p.getGenerationPrefs().setOutputDir(path);
 	    Vector[] fileNames = new Vector[_languages.size()];
 	    for (int i = 0; i < _languages.size(); i++) {
 		fileNames[i] = new Vector();
 		NotationName language = (NotationName) _languages.get(i);
-		FileGenerator generator = (FileGenerator) Generator.getGenerator(language);
+		FileGenerator generator =
+		    (FileGenerator) Generator.getGenerator(language);
 		Set nodes = _classTableModel.getChecked(language);
 		for (Iterator iter = nodes.iterator(); iter.hasNext(); ) {
 		    Object node = iter.next();
@@ -287,11 +294,16 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
 			    String fn = generator.GenerateFile(node, path);
 			    fileNames[i].add(fn);
 			    // save the selected language in the model
-			    // TODO 1: no support of multiple checked languages
-			    // TODO 2: it's a change in the model -> save needed!
-			    String savedLang = ModelFacade.getValueOfTag(ModelFacade.getTaggedValue(node, "src_lang"));
+			    // TODO 1: no support of multiple checked
+			    // languages 
+			    //
+			    // TODO 2: it's a change in the model ->
+			    // save needed!
+			    String savedLang =
+				ModelFacade.getValueOfTag(ModelFacade.getTaggedValue(node, "src_lang"));
 			    if (!language.getConfigurationValue().equals(savedLang))
-				ModelFacade.setTaggedValue(node, "src_lang", language.getConfigurationValue());
+				ModelFacade.setTaggedValue(node, "src_lang",
+							   language.getConfigurationValue());
 			}
 		    }
 		}
@@ -311,7 +323,8 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
 	if (e.getSource() == _browseButton) {
 	    try {
 		// Show Filechooser to select OuputDirectory
-		JFileChooser chooser = OsUtil.getFileChooser((String) _outputDirectoryComboBox.getModel().getSelectedItem());
+		JFileChooser chooser =
+		    OsUtil.getFileChooser((String) _outputDirectoryComboBox.getModel().getSelectedItem());
 
 		if (chooser == null) chooser = OsUtil.getFileChooser();
 
@@ -335,7 +348,8 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
 
 
 class TableModelClassChecks extends AbstractTableModel {
-    protected static Category cat = Category.getInstance(TableModelClassChecks.class);
+    protected static Category cat =
+	Category.getInstance(TableModelClassChecks.class);
     ////////////////
     // instance varables
     Vector _classes;
@@ -354,15 +368,18 @@ class TableModelClassChecks extends AbstractTableModel {
 
 	_languages = languages;
 	_checked = new Set[getLanguagesCount()];
-	for (int j = 0; j < getLanguagesCount(); j++)
-	    _checked[j] = new HashSet(); // Doesn't really matter what set we use.
+	for (int j = 0; j < getLanguagesCount(); j++) {
+	    // Doesn't really matter what set we use.
+	    _checked[j] = new HashSet();
+	}
 
 	int size = _classes.size();
 	for (int i = 0; i < size; i++) {
 	    Object cls = _classes.elementAt(i);
 	    String name = ModelFacade.getName(cls);
-	    // Jaap B. in older versions of argouml (before 0.14alpha1) names were not initialized correctly.
-	    // this is a patch for that.
+	    // Jaap B. in older versions of argouml (before
+	    // 0.14alpha1) names were not initialized correctly.  this
+	    // is a patch for that.
 	    if (name == null || name.length() == 0) {
 		ModelFacade.setName(cls, "");
 		// continue;
@@ -381,10 +398,13 @@ class TableModelClassChecks extends AbstractTableModel {
 	fireTableStructureChanged();
     }
 
-    private boolean isSupposedToBeGeneratedAsLanguage(NotationName lang, Object cls) {
+    private boolean isSupposedToBeGeneratedAsLanguage(NotationName lang,
+						      Object cls) {
 	if (lang == null)
 	    return false;
-	String savedLang = ModelFacade.getValueOfTag(ModelFacade.getTaggedValue(cls, "src_lang"));
+	String savedLang =
+	    ModelFacade.getValueOfTag(ModelFacade.getTaggedValue(cls,
+								 "src_lang"));
 	return (lang.getConfigurationValue().equals(savedLang));
     }
 

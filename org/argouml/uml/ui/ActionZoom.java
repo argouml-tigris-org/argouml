@@ -33,7 +33,8 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.SelectionManager;
 import org.tigris.gef.presentation.Fig;
 
-/** @deprecated ActionZoom is obsolete, not used in ArgoUML and was replaced by GEF's CmdZoom.
+/** @deprecated ActionZoom is obsolete, not used in ArgoUML and was
+ *  replaced by GEF's CmdZoom.
  *  @since 0.13.5
  */
 public class ActionZoom extends UMLAction {
@@ -72,12 +73,15 @@ public class ActionZoom extends UMLAction {
 	SelectionManager sm = ce.getSelectionManager();         
 
         // Get all the figures from the diagram.
-        Vector nodes = ProjectManager.getManager().getCurrentProject().getActiveDiagram().getLayer().getContents();
+        Vector nodes =
+	    ProjectManager.getManager().getCurrentProject().getActiveDiagram().getLayer().getContents();
         for (int i = 0; i < nodes.size(); i++) {
 	    sm.select((Fig) (nodes.elementAt(i)));  // Select all the figures in the diagram.
         }      
 
-	sm.startTrans();    // Notify the selection manager that selected figures will be moved now.
+	// Notify the selection manager that selected figures will be
+	// moved now.
+	sm.startTrans();
 	ce.setScale(_scale);
 	sm.endTrans();      // Finish the transition.
 	sm.deselectAll();   // Deselect all figures.

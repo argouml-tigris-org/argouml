@@ -38,7 +38,8 @@ public class OperKeyword implements java.io.Serializable {
     public static final OperKeyword SYNC = new OperKeyword("synchronized");
     public static final OperKeyword STSYNC = new OperKeyword("static sync"); 
     public static final OperKeyword FINSYNC = new OperKeyword("final sync"); 
-    public static final OperKeyword SFSYNC = new OperKeyword("static final sync");
+    public static final OperKeyword SFSYNC =
+	new OperKeyword("static final sync");
 
 
     public static final OperKeyword[] POSSIBLES = {

@@ -928,7 +928,8 @@ public class FigSeqObject extends FigNodeModelElement
 	 */
       
 	Fig f = hitFig( new Rectangle(me.getX(), me.getY(), 1, 1) );
-	if ( (f == _lifeline ||  f instanceof FigActivation) && (me.getY() != _yPos)) {
+	if ((f == _lifeline ||  f instanceof FigActivation)
+	    && (me.getY() != _yPos)) {
 	    _yPos = me.getY();
 	    Editor ce = Globals.curEditor();
 	    SelectionManager selManager = ce.getSelectionManager();

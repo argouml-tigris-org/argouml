@@ -51,12 +51,14 @@ public class JavaImport extends FileImportSupport {
      * @param f The input file for the parser.
      * @exception Exception Parser exception.
      */
-    public void parseFile( Project p, Object o, DiagramInterface diagram, Import _import)
+    public void parseFile( Project p, Object o, DiagramInterface diagram,
+			   Import _import)
 	throws Exception {
 	if (o instanceof File ) {
 	    File f = (File) o;
 	    // Create a scanner that reads from the input stream passed to us
-	    JavaLexer lexer = new JavaLexer(new BufferedReader(new FileReader(f)));
+	    JavaLexer lexer =
+		new JavaLexer(new BufferedReader(new FileReader(f)));
 
 	    // We use a special Argo token, that stores the preceding
 	    // whitespaces.

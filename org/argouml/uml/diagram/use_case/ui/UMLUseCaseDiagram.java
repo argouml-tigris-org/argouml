@@ -96,7 +96,9 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * <p>Tool to create an association between UML artifacts using a
      *   polyedge.</p>
      */
-    //protected static Action _actionAssoc = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, "Association");
+    //protected static Action _actionAssoc = new
+    //CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
+    //MAssociation.class, "Association");
     protected static Action _actionAssociation =
         new ActionAddAssociation(MAggregationKind.NONE, false, "Association");
     protected static Action _actionAggregation =
@@ -244,9 +246,12 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     public void setNamespace(Object handle) {
         if (!ModelFacade.isANamespace(handle)) {
             cat.error(
-		      "Illegal argument. Object " + handle + " is not a namespace");
+		      "Illegal argument. Object " + handle
+		      + " is not a namespace");
             throw new IllegalArgumentException(
-					       "Illegal argument. Object " + handle + " is not a namespace");
+					       "Illegal argument. Object "
+					       + handle
+					       + " is not a namespace");
         }
         MNamespace m = (MNamespace) handle;
         super.setNamespace(m);
@@ -267,7 +272,8 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     }
 
     /**
-     * Get the actions from which to create a toolbar or equivilent graphic triggers
+     * Get the actions from which to create a toolbar or equivilent
+     * graphic triggers
      */
     protected Object[] getUmlActions() {
         Object actions[] = {

@@ -33,8 +33,8 @@ import java.awt.event.*;
 import java.util.*;
 
 /**
- * A class to perform the action of changing the unidirectional or bidirectional navigation
- * of an association.
+ * A class to perform the action of changing the unidirectional or
+ * bidirectional navigation of an association.
  *
  * @author  Bob Tarling
  */
@@ -50,21 +50,27 @@ public class ActionNavigability extends UMLAction {
     /**
      * The <code>ActionNavigability</code> constructor.
      *
-     * @param     start  a <code>MAssociationEnd</code> object at the start of an association.
-     * @param     end    a <code>MAssociationEnd</code> object at the end of an association.
-     * @param     nav    the type of navigation required in the association being either
-     * <ul>
-     * <li>BIDIRECTIONAL
-     * <li>STARTTOEND
-     * <li>ENDTOSTART
-     * </ul>
+     * @param start a <code>MAssociationEnd</code> object at the start
+     * of an association.
+     * @param end a <code>MAssociationEnd</code> object at the end of
+     * an association.
+     * @param nav the type of navigation required in the association
+     * being either <ul> <li>BIDIRECTIONAL <li>STARTTOEND
+     * <li>ENDTOSTART </ul>
      */
 
-    static public ActionNavigability newActionNavigability(MAssociationEnd start, MAssociationEnd end, int nav) {
-        return new ActionNavigability(getDescription(start, end, nav), start, end, nav);
+    public static ActionNavigability newActionNavigability(MAssociationEnd start,
+							   MAssociationEnd end,
+							   int nav) {
+        return new ActionNavigability(getDescription(start, end, nav),
+				      start,
+				      end,
+				      nav);
     }
 
-    static private String getDescription(MAssociationEnd start, MAssociationEnd end, int nav) {
+    static private String getDescription(MAssociationEnd start,
+					 MAssociationEnd end,
+					 int nav) {
         String startName = start.getType().getName();
         String endName = end.getType().getName();
 
@@ -82,7 +88,10 @@ public class ActionNavigability extends UMLAction {
         }
     }
 
-    protected ActionNavigability(String label, MAssociationEnd start, MAssociationEnd end, int nav) {
+    protected ActionNavigability(String label,
+				 MAssociationEnd start,
+				 MAssociationEnd end,
+				 int nav) {
         super(label, NO_ICON);
 
         this.nav = nav;

@@ -57,7 +57,8 @@ public class GenCompositeClasses implements ChildGenerator {
 		if (conn == null || conn.size() != 2) continue;
 		Object otherEnd = (ae == conn.get(0)) ?
 		    conn.get(1) : conn.get(0);
-		MClassifier componentClass = ((MAssociationEnd) otherEnd).getType();
+		MClassifier componentClass =
+		    ((MAssociationEnd) otherEnd).getType();
 		res.add(componentClass);
 	    }
 	}

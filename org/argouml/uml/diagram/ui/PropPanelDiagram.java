@@ -45,7 +45,11 @@ public class PropPanelDiagram extends PropPanel {
     protected PropPanelDiagram(String diagramName) {
         super(diagramName, ConfigLoader.getTabPropsOrientation());
         
-        JTextField field = new UMLTextField(this, new UMLTextProperty(ArgoDiagram.class, "name", "getName", "setName"));
+        JTextField field =
+	    new UMLTextField(this, new UMLTextProperty(ArgoDiagram.class,
+						       "name",
+						       "getName",
+						       "setName"));
         
 
         addField(Argo.localize("UMLMenu", "label.name"), field);
@@ -65,7 +69,8 @@ public class PropPanelDiagram extends PropPanel {
         if (target instanceof ArgoDiagram) {
             try {
                 ArgoDiagram diagram = (ArgoDiagram) target;
-                Project project = ProjectManager.getManager().getCurrentProject();
+                Project project =
+		    ProjectManager.getManager().getCurrentProject();
                 //
                 //  can't easily find owner of diagram
                 //    set new target to the model

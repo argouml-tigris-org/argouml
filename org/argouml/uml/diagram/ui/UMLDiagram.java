@@ -148,7 +148,9 @@ public abstract class UMLDiagram
         _namespace = (MNamespace) ns;      
         // add the diagram as a listener to the namspace so
         // that when the namespace is remove()d the diagram is deleted also.
-        UmlModelEventPump.getPump().addModelEventListener(this, _namespace, UmlModelEventPump.REMOVE);
+        UmlModelEventPump.getPump().addModelEventListener(this,
+							  _namespace,
+							  UmlModelEventPump.REMOVE);
     }
   
     public String getClassAndModelID() {
@@ -203,10 +205,16 @@ public abstract class UMLDiagram
         Object umlActions[] = getUmlActions();
         Object shapeActions[] = getShapeActions();
 
-        Object actions[] = new Object[manipulateActions.length + umlActions.length + shapeActions.length];
+        Object actions[] = new Object[manipulateActions.length
+				      + umlActions.length
+				      + shapeActions.length];
 
         int posn = 0;
-        System.arraycopy(manipulateActions, 0, actions, posn, manipulateActions.length);
+        System.arraycopy(manipulateActions,
+			 0,
+			 actions,
+			 posn,
+			 manipulateActions.length);
         posn += manipulateActions.length;
         System.arraycopy(umlActions, 0, actions, posn, umlActions.length);
         posn += umlActions.length;
@@ -216,7 +224,8 @@ public abstract class UMLDiagram
     }
     
     /**
-     * <p>Initialize the toolbar with buttons required for a specific diagram</p>
+     * <p>Initialize the toolbar with buttons required for a specific
+     * diagram</p>
      * @param toolBar The toolbar to which to add the buttons.
      */
     private void addActionsToToolbar(JToolBar toolBar, Object actions[]) {
@@ -296,7 +305,9 @@ public abstract class UMLDiagram
     }
     
     private PopupToolBoxButton buildShapePopup() {
-        PopupToolBoxButton toolBox = new PopupToolBoxButton(_actionRectangle, 0, 2);
+        PopupToolBoxButton toolBox = new PopupToolBoxButton(_actionRectangle,
+							    0,
+							    2);
         toolBox.add(_actionRectangle);
         toolBox.add(_actionRRectangle);
         toolBox.add(_actionCircle);
@@ -311,15 +322,18 @@ public abstract class UMLDiagram
     
     /**
      * This diagram listens to events from is namespace ModelElement;
-     * When the modelelement is removed, we also want to delete this diagram too.
-     * <p>There is also a risk that if this diagram was the one shown in the
-     * diagram panel, then it will remain after it has been deleted. so
-     * we need to deselect this diagram.
+     * When the modelelement is removed, we also want to delete this
+     * diagram too.  <p>There is also a risk that if this diagram was
+     * the one shown in the diagram panel, then it will remain after
+     * it has been deleted. so we need to deselect this diagram.
      */
     public void removed(MElementEvent e) {
-	Object newTarget = ProjectManager.getManager().getCurrentProject().getDiagrams().get(0);
+	Object newTarget =
+	    ProjectManager.getManager().getCurrentProject().getDiagrams().get(0);
 	TargetManager.getInstance().setTarget(newTarget);
-	UmlModelEventPump.getPump().removeModelEventListener(this, _namespace, UmlModelEventPump.REMOVE);
+	UmlModelEventPump.getPump().removeModelEventListener(this,
+							     _namespace,
+							     UmlModelEventPump.REMOVE);
 	ProjectManager.getManager().getCurrentProject().moveToTrash(this);      
       
       
@@ -374,7 +388,8 @@ public abstract class UMLDiagram
 	    if (o instanceof MElementListener) {
 		MElementListener listener = (MElementListener) o;
 		Fig fig = (Fig) o;
-		pump.removeModelEventListener(listener, (MBase) fig.getOwner()); 
+		pump.removeModelEventListener(listener,
+					      (MBase) fig.getOwner()); 
 	    }
 	}
 	pump.removeModelEventListener(this, getNamespace());
@@ -382,8 +397,9 @@ public abstract class UMLDiagram
     }
   
     /**
-     * Adds the UMLDiagram and all the figs on it as listener to UmlModelEventPump.
-     * Together with removeAsModelListener this is a performance improvement. 
+     * Adds the UMLDiagram and all the figs on it as listener to
+     * UmlModelEventPump.  Together with removeAsModelListener this is
+     * a performance improvement.
      *
      */
     public void setAsTarget() {

@@ -171,7 +171,8 @@ public class SPFigEdgeModelElement extends StylePanel
 	String bboxStr = _bboxField.getText();
 	if (bboxStr.length() == 0) return;
 	_target.startTrans();
-	java.util.StringTokenizer st = new java.util.StringTokenizer(bboxStr, ", ");
+	java.util.StringTokenizer st =
+	    new java.util.StringTokenizer(bboxStr, ", ");
 	try {
 	    int x = Integer.parseInt(st.nextToken());
 	    int y = Integer.parseInt(st.nextToken());

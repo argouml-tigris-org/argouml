@@ -98,7 +98,8 @@ public class ActionCopy extends AbstractAction implements CaretListener {
     }
 
     /**
-     * @see javax.swing.event.CaretListener#caretUpdate(javax.swing.event.CaretEvent)
+     * @see
+     * javax.swing.event.CaretListener#caretUpdate(javax.swing.event.CaretEvent)
      */
     public void caretUpdate(CaretEvent e) {
         if (e.getMark() != e.getDot()) { // there is a selection        

@@ -83,11 +83,12 @@ public class ActionNew extends UMLAction {
 		if (!safe) return;
 	    }
 	    //TODO: if you cancel the save it should cancel open
-	    // Steffen Zschaler 01/10/2002 - Well, it does, doesn't it? trySave will
-	    // return false in that case...
+	    //Steffen Zschaler 01/10/2002 - Well, it does, doesn't it?
+	    //trySave will return false in that case...
 	}
 
-	// we should remove all open dialogs. They have as parent the ProjectBrowser
+	// we should remove all open dialogs. They have as parent the
+	// ProjectBrowser
 	Window[] windows = ProjectBrowser.getInstance().getOwnedWindows();
 	for (int i = 0; i < windows.length; i++) {
 	    windows[i].dispose();

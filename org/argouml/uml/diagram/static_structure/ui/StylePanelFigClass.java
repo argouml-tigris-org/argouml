@@ -106,7 +106,8 @@ public class StylePanelFigClass extends StylePanelFig {
     public void refresh() {
 	_refreshTransaction = true;
 	super.refresh();
-	org.argouml.uml.diagram.static_structure.ui.FigClass tc = (org.argouml.uml.diagram.static_structure.ui.FigClass) _target;
+	org.argouml.uml.diagram.static_structure.ui.FigClass tc =
+	    (org.argouml.uml.diagram.static_structure.ui.FigClass) _target;
 	_attrCheckBox.setSelected(tc.isAttributeVisible());
 	_operCheckBox.setSelected(tc.isOperationVisible());
 	_refreshTransaction = false;

@@ -44,7 +44,8 @@ public class ActionActivityDiagram extends ActionStateDiagram {
 
     public static ActionActivityDiagram SINGLETON = new ActionActivityDiagram();
 
-    protected static Category cat = Category.getInstance(org.argouml.uml.ui.ActionActivityDiagram.class);
+    protected static Category cat =
+	Category.getInstance(org.argouml.uml.ui.ActionActivityDiagram.class);
 
     private ActionActivityDiagram() {
         super("action.activity-diagram");
@@ -55,7 +56,8 @@ public class ActionActivityDiagram extends ActionStateDiagram {
      */
     public UMLDiagram createDiagram(Object ns) {
         Object target = TargetManager.getInstance().getModelTarget();
-        MActivityGraph graph = ActivityGraphsFactory.getFactory().buildActivityGraph((MModelElement) target);
+        MActivityGraph graph =
+	    ActivityGraphsFactory.getFactory().buildActivityGraph((MModelElement) target);
         if (target instanceof MBehavioralFeature) {
             ns = ((MBehavioralFeature) target).getNamespace();
         }
@@ -67,7 +69,8 @@ public class ActionActivityDiagram extends ActionStateDiagram {
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
-        return super.shouldBeEnabled() || TargetManager.getInstance().getModelTarget() instanceof MPackage;
+        return super.shouldBeEnabled()
+	    || TargetManager.getInstance().getModelTarget() instanceof MPackage;
     }
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)

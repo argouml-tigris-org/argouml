@@ -55,7 +55,8 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 
 public class CompartmentFigText extends FigText
 {
-    protected static Category cat = Category.getInstance(CompartmentFigText.class);
+    protected static Category cat =
+	Category.getInstance(CompartmentFigText.class);
 
     ///////////////////////////////////////////////////////////////////////////
     //

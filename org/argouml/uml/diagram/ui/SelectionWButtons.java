@@ -225,7 +225,8 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
             return;
         MutableGraphModel mgm = (MutableGraphModel) gm;
 
-        // check if it is possible to add the fig for the new node and create it if possible
+        // check if it is possible to add the fig for the new node and
+        // create it if possible
         if (!mgm.canAddNode(newNode))
             return;
         GraphNodeRenderer renderer = ce.getGraphNodeRenderer();
@@ -282,7 +283,8 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
             Point fcCenter = _content.center();
             Point centerRight =
                 new Point(
-			  (int) (fcCenter.x + _content.getSize().getWidth() / 2),
+			  (int) (fcCenter.x
+				 + _content.getSize().getWidth() / 2),
 			  fcCenter.y);
 
             int yoffset = (int) ((_content.getSize().getHeight() / 2));
@@ -293,7 +295,8 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
             edgeShape.addPoint(centerRight.x, centerRight.y + yoffset);
         }
 
-        // create the new edge (modelelement) between newNode and the owner of _content
+        // create the new edge (modelelement) between newNode and the
+        // owner of _content
         Object newEdge = null;
         if (buttonCode == 10) newEdge = createEdgeAbove(mgm, newNode);
         else if (buttonCode == 11) newEdge = createEdgeUnder(mgm, newNode);
@@ -355,18 +358,20 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     }
 
     /**
-     * Places a fig on the canvas in the correct position. Takes a coordinate pair 
-     * x,y and a rectangle that should be avoided because there can be other 
-     * figures. If the place action results in x.y coordinates for the fig to place
-     * that are not allowed (beyond the borders of the diagram), the operation is
-     * repeated with corrected parameters. If it is not possible to add the fig
-     * because there are allready to many figs, false is returned and the fig is 
-     * not added.
+     * Places a fig on the canvas in the correct position. Takes a
+     * coordinate pair x,y and a rectangle that should be avoided
+     * because there can be other figures. If the place action results
+     * in x.y coordinates for the fig to place that are not allowed
+     * (beyond the borders of the diagram), the operation is repeated
+     * with corrected parameters. If it is not possible to add the fig
+     * because there are allready to many figs, false is returned and
+     * the fig is not added.
      * @param figToPlace The figure one wishes to place on a diagram
      * @param layerToPlaceOn The layer that contains the figs
      * @param x The x coordinate where one wishes to place the fig
      * @param y The y coordinate where one wishes to place the fig
-     * @param bumpRect The rectangle that should be avoided since there can be other figs.
+     * @param bumpRect The rectangle that should be avoided since
+     * there can be other figs.
      * @return boolean false if the fig is not placed.
      */
     protected boolean placeFig(
@@ -425,11 +430,13 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     protected abstract Object getNewNode(int buttonCode);
     
     /**
-     * Subclasses should override this method if they want to provide a quickbutton above
-     * the _content fig. This method returns the edge (modelelement) that should be drawn in the
-     * case such a quickbutton was pressed.
+     * Subclasses should override this method if they want to provide
+     * a quickbutton above the _content fig. This method returns the
+     * edge (modelelement) that should be drawn in the case such a
+     * quickbutton was pressed.
      * @param gm
-     * @param newNode The node (modelelement) created by pressing the quickbutton
+     * @param newNode The node (modelelement) created by pressing the
+     * quickbutton
      * @return Object The new edge
      */
     protected Object createEdgeAbove(MutableGraphModel gm, Object newNode) {
@@ -437,11 +444,13 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     }
     
     /**
-     * Subclasses should override this method if they want to provide a quickbutton at the left
-     * of the _content fig. This method returns the edge (modelelement) that should be drawn in the
+     * Subclasses should override this method if they want to provide
+     * a quickbutton at the left of the _content fig. This method
+     * returns the edge (modelelement) that should be drawn in the
      * case such a quickbutton was pressed.
      * @param gm
-     * @param newNode The node (modelelement) created by pressing the quickbutton
+     * @param newNode The node (modelelement) created by pressing the
+     * quickbutton
      * @return Object The new edge
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
@@ -449,11 +458,13 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     }
     
     /**
-     * Subclasses should override this method if they want to provide a quickbutton at the right
-     * of the _content fig. This method returns the edge (modelelement) that should be drawn in the
+     * Subclasses should override this method if they want to provide
+     * a quickbutton at the right of the _content fig. This method
+     * returns the edge (modelelement) that should be drawn in the
      * case such a quickbutton was pressed.
      * @param gm
-     * @param newNode The node (modelelement) created by pressing the quickbutton
+     * @param newNode The node (modelelement) created by pressing the
+     * quickbutton
      * @return Object The new edge
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
@@ -461,11 +472,13 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     }
     
     /**
-     * Subclasses should override this method if they want to provide a quickbutton under
-     * the _content fig. This method returns the edge (modelelement) that should be drawn in the
-     * case such a quickbutton was pressed.
+     * Subclasses should override this method if they want to provide
+     * a quickbutton under the _content fig. This method returns the
+     * edge (modelelement) that should be drawn in the case such a
+     * quickbutton was pressed.
      * @param gm
-     * @param newNode The node (modelelement) created by pressing the quickbutton
+     * @param newNode The node (modelelement) created by pressing the
+     * quickbutton
      * @return Object The new edge
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
@@ -473,9 +486,10 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     }
     
     /**
-     * Subclasses should override this method if they want to provide a quickbutton for 
-     * selfassociation. This method returns the edge (modelelement) that should be drawn in the
-     * case such a quickbutton was pressed.
+     * Subclasses should override this method if they want to provide
+     * a quickbutton for selfassociation. This method returns the edge
+     * (modelelement) that should be drawn in the case such a
+     * quickbutton was pressed.
      * @param gm
      * @return Object The new edge
      */

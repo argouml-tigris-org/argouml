@@ -84,7 +84,9 @@ class OuterClassifierContext extends Context
 				      namePrefix + name);
 		}
 		if (classifier.isInterface()) {
-		    mInterface = UmlFactory.getFactory().getCore().buildInterface(name, mClassifier);
+		    mInterface =
+			UmlFactory.getFactory().getCore()
+			.buildInterface(name, mClassifier);
 		}
 		else {
 		    // Only interfaces will do
@@ -131,10 +133,13 @@ class OuterClassifierContext extends Context
 				      namePrefix + name);
 		}
 		if (classifier.isInterface()) {
-		    iClassifier = UmlFactory.getFactory().getCore().buildInterface(name, mClassifier);
+		    iClassifier =
+			UmlFactory.getFactory().getCore()
+			.buildInterface(name, mClassifier);
 		}
 		else {
-		    iClassifier = UmlFactory.getFactory().getCore().buildClass(name, mClassifier);
+		    iClassifier =
+			UmlFactory.getFactory().getCore().buildClass(name, mClassifier);
 		}
 	    }
 	    catch (ClassNotFoundException e) {

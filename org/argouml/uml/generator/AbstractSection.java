@@ -62,7 +62,9 @@ abstract public class AbstractSection
     // hint: use a second Map to compare with the used keys
     // =======================================================================
 
-    public void write(String filename, String INDENT, boolean OutputLostSections) {
+    public void write(String filename, String INDENT,
+		      boolean OutputLostSections)
+    {
         try {           
             FileReader f = new FileReader(filename);
             BufferedReader fr = new BufferedReader(f);
@@ -90,9 +92,11 @@ abstract public class AbstractSection
                 Iterator itr = map_entries.iterator();
                 while (itr.hasNext()) {
                     Map.Entry entry = (Map.Entry) itr.next();
-                    fw.write(INDENT + "// section " + entry.getKey() + " begin\n");
+                    fw.write(INDENT + "// section " + entry.getKey()
+			     + " begin\n");
                     fw.write((String) entry.getValue());
-                    fw.write(INDENT + "// section " + entry.getKey() + " end\n");
+                    fw.write(INDENT + "// section " + entry.getKey()
+			     + " end\n");
                 }
             }
             fr.close();
