@@ -262,6 +262,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <!-- create directories -->
     <echo message="Preparing the build directories"/>
     <mkdir dir="${build.dir}"/>
+    <mkdir dir="${build.dir}/ext"/>
+    <mkdir dir="${build.dest}"/>
     <copy todir="${build.dest}/org/argouml/Images">
       <fileset dir="${build.src}/org/argouml/Images" includes="**/**" excludes="CVS/**" />
     </copy>
@@ -475,7 +477,17 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- Clean targets                                                       -->
   <!-- =================================================================== -->
   <target name="clean" depends="init">
-    <delete dir="${build.dir}"/>
+    <delete dir="${build.dir}/src_new"/>
+    <delete dir="${build.dir}/classes"/>
+    <delete dir="${build.dir}/bin"/>
+    <delete>
+        <fileset dir="${build.dir}">
+            <include name="*.jar"/>
+            <include name="Fop.java"/>
+            <include name="Fop.class"/>
+            <include name="README.txt"/>
+        </fileset>
+    </delete>
   </target>
 
   <target name="distclean" depends="clean">
