@@ -44,6 +44,7 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 public abstract class PropPanelEvent extends PropPanelModelElement {
 
     protected JScrollPane paramScroll;
+    protected UMLEventParameterListModel paramListModel;
 
     /**
      * Constructor for PropPanelEvent.
@@ -60,9 +61,10 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
     }
 
     public void initialize() {
+        paramListModel = new UMLEventParameterListModel();
         JList paramList =
-            new UMLLinkedList(new UMLEventParameterListModel());
-        paramScroll = new JScrollPane(paramList);
+            new UMLLinkedList(paramListModel);
+        paramScroll = getParameterScroll();
         new PropPanelButton(
             this,
             buttonPanel,
@@ -81,6 +83,7 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.namespace"),getNamespaceScroll());
+        addField(Argo.localize("UMLMenu", "label.parameters"),getParameterScroll());
 
         addSeperator();
     }
@@ -89,7 +92,18 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
      * Adds a parameter to the event and navigates towards it.
      */
     public void buttonAddParameter() {
-        TargetManager.getInstance().setTarget(CoreFactory.getFactory().buildParameter(getTarget()));
+        System.out.println(getTarget());
+        Object param = CoreFactory.getFactory().buildParameter(getTarget());
+        TargetManager.getInstance().setTarget(param);
+    }
+
+    protected JScrollPane getParameterScroll() {
+        if (paramScroll == null) {
+            JList paramList = new UMLLinkedList(paramListModel);
+            paramList.setVisibleRowCount(3);
+            paramScroll = new JScrollPane(paramList);
+        }
+        return paramScroll;
     }
 
 } /* end class PropPanelEvent */
