@@ -34,27 +34,36 @@ public class ActionGoToEdit extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-    protected String _tabName;
+    private String tabName;
 
-    ////////////////////////////////////////////////////////////////
-    // constructor
-    public ActionGoToEdit(String tabName) {
-	super(tabName, NO_ICON);
-	_tabName = tabName;
+    /**
+     * Constructor.
+     *
+     * @param name The name of the tab.
+     */
+    public ActionGoToEdit(String name) {
+	super(name, NO_ICON);
+	tabName = name;
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project p = ProjectManager.getManager().getCurrentProject();
 	if (!super.shouldBeEnabled() || p == null) return false;
 	MultiEditorPane mep = pb.getEditorPane();
-	return mep.getIndexOfNamedTab(_tabName) != -1;
+	return mep.getIndexOfNamedTab(tabName) != -1;
     }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	MultiEditorPane mep = pb.getEditorPane();
-	mep.selectTabNamed(_tabName);
+	mep.selectTabNamed(tabName);
     }
 
 } /* end class ActionGoToEdit */

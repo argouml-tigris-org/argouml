@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,8 +29,6 @@ import java.util.Iterator;
 
 import javax.swing.tree.TreeModel;
 
-import org.apache.log4j.Logger;
-
 /**
  * Abstract class to be used as a convenience class for implementing
  * 'go rules'.  Go rules are rules to which the perspectives comply
@@ -49,12 +47,6 @@ import org.apache.log4j.Logger;
  * @author jaap.branderhorst@xs4all.nl
  */
 public abstract class AbstractGoRule implements TreeModel {
-
-    private static Logger cat =
-        Logger.getLogger(org.argouml.ui.AbstractGoRule.class);
- 
-
-    // ----------- TreeModel helpers -----------
 
     /**
      * @see javax.swing.tree.TreeModel#getChild(Object, int)
@@ -120,7 +112,10 @@ public abstract class AbstractGoRule implements TreeModel {
     // -------------- other helper methods --------------------
 
     /**
-     * this is the method that should be overridden by GoRules
+     * This is the method that should be overridden by GoRules.
+     *
+     * @param parent The parent that we get the children from.
+     * @return A Collection with objects.
      */
     public abstract Collection getChildren(Object parent);
 
@@ -131,30 +126,44 @@ public abstract class AbstractGoRule implements TreeModel {
      */
     public abstract String getRuleName();
 
-    /** wrapper around getRuleName()
+    /**
+     * @see java.lang.Object#toString()
      */
     public String toString() {
         return getRuleName();
     }
 
    
-
     // ------------- not used TreeModel methods -------------
 
+
+    /**
+     * @see javax.swing.tree.TreeModel#addTreeModelListener(javax.swing.event.TreeModelListener)
+     */
     public void addTreeModelListener(
 	    javax.swing.event.TreeModelListener treeModelListener) 
     {
     }
 
+    /**
+     * @see javax.swing.tree.TreeModel#getRoot()
+     */
     public Object getRoot() {
         return null;
     }
 
+    /**
+     * @see javax.swing.tree.TreeModel#removeTreeModelListener(javax.swing.event.TreeModelListener)
+     */
     public void removeTreeModelListener(
 	   javax.swing.event.TreeModelListener treeModelListener)
     {
     }
 
+    /**
+     * @see javax.swing.tree.TreeModel#valueForPathChanged(
+     *         javax.swing.tree.TreePath, java.lang.Object)
+     */
     public void valueForPathChanged(
 				    javax.swing.tree.TreePath treePath,
 				    Object obj) {

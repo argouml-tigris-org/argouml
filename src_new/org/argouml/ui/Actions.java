@@ -55,17 +55,17 @@ import org.tigris.gef.base.Diagram;
 
 public class Actions implements TargetListener {
 
-    private static Actions _instance = new Actions();
+    private static final Actions INSTANCE = new Actions();
 
     public static Actions getInstance() {
-        return _instance;
+        return INSTANCE;
     }
 
     private Actions() {
         TargetManager.getInstance().addTargetListener(this);
     }
 
-    static Vector _allActions = new Vector(100);
+    private static Vector allActions = new Vector(100);
 
 
     public static UMLAction Print = new ActionPrint();
@@ -109,7 +109,7 @@ public class Actions implements TargetListener {
      *
      */
     public static void updateAllEnabled() {
-	Enumeration actions = _allActions.elements();
+	Enumeration actions = allActions.elements();
 	while (actions.hasMoreElements()) {
 	    UMLAction a = (UMLAction) actions.nextElement();
 	    a.updateEnabled();
@@ -121,7 +121,7 @@ public class Actions implements TargetListener {
      * @param e
      */
     private static void updateAllEnabled(TargetEvent e) {
-	Iterator actions = _allActions.iterator();
+	Iterator actions = allActions.iterator();
 	while (actions.hasNext()) {
 	    UMLAction a = (UMLAction) actions.next();
 	    a.updateEnabled(e.getNewTarget());
@@ -129,15 +129,16 @@ public class Actions implements TargetListener {
     }
 
     public static void addAction(AbstractAction newAction) {
-	_allActions.addElement(newAction);
+	allActions.addElement(newAction);
     }
 
     public static boolean isGlobalAction(AbstractAction action) {
-        return _allActions.contains(action);
+        return allActions.contains(action);
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
+     *         org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
         updateAllEnabled(e);
@@ -145,8 +146,8 @@ public class Actions implements TargetListener {
     }
 
     /**
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
+     *         org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         updateAllEnabled(e);
@@ -154,8 +155,8 @@ public class Actions implements TargetListener {
     }
 
     /**
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(
+     *         org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         updateAllEnabled(e);
@@ -171,10 +172,13 @@ public class Actions implements TargetListener {
  */
 class ActionPrint extends UMLAction {
 
-    CmdPrint cmd = new CmdPrint();
+    private final CmdPrint cmd = new CmdPrint();
 
     public ActionPrint() { super("action.print"); }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
 	Object target =
 	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
@@ -196,6 +200,9 @@ class ActionPageSetup extends UMLAction {
 
     public ActionPageSetup() { super("action.page-setup", HAS_ICON); }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
 	((ActionPrint) Actions.Print).getCmdPrint().doPageSetup();
     }
@@ -209,6 +216,9 @@ class ActionUndo extends UMLAction {
 
     public ActionUndo() { super("action.undo"); }
 
+    /**
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
     public boolean shouldBeEnabled() { return false; }
 } /* end class ActionUndo */
 
@@ -216,6 +226,9 @@ class ActionRedo extends UMLAction {
 
     public ActionRedo() { super("action.redo"); }
 
+    /**
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
     public boolean shouldBeEnabled() { return false; }
 } /* end class ActionRedo */
 
@@ -227,6 +240,9 @@ class ActionFind extends UMLAction {
 
     public ActionFind() { super("action.find"); }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
 	FindDialog.getInstance().setVisible(true);
     }
@@ -236,6 +252,9 @@ class ActionGotoDiagram extends UMLAction {
 
     public ActionGotoDiagram() { super("action.goto-diagram", NO_ICON); }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project p = ProjectManager.getManager().getCurrentProject();
@@ -352,6 +371,9 @@ class ActionNextEditTab extends UMLAction {
 
     public ActionNextEditTab() { super("action.next-editing-tab", NO_ICON); }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	MultiEditorPane mep = pb.getEditorPane();
@@ -383,6 +405,9 @@ class ActionShowRapidButtons extends UMLAction {
 	super("action.buttons-on-selection", NO_ICON);
     }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
 	SelectionWButtons.toggleShowRapidButtons();
     }
@@ -396,6 +421,9 @@ class ActionCreateMultiple extends UMLAction {
 
     public ActionCreateMultiple() { super("action.create-multiple", NO_ICON); }
 
+    /**
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
     public boolean shouldBeEnabled() {
 	//Project p = ProjectBrowser.getInstance().getProject();
 	//return super.shouldBeEnabled() && p != null;
@@ -419,6 +447,9 @@ class ActionCreateMultiple extends UMLAction {
 ////////////////////////////////////////////////////////////////
 // critiquing related actions
 
+/**
+ * Stops critiquing and the TodoList validity checking thread in ToDoList.
+ */
 class ActionAutoCritique extends UMLAction {
 
     public ActionAutoCritique() {
@@ -426,7 +457,7 @@ class ActionAutoCritique extends UMLAction {
     }
 
     /**
-     * Stops critiquing and the TodoList validity checking thread in ToDoList.
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
         
@@ -445,6 +476,9 @@ class ActionOpenDecisions extends UMLAction {
 
     public ActionOpenDecisions() { super("action.design-issues", NO_ICON); }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
 	DesignIssuesDialog d =
 	    new DesignIssuesDialog(ProjectBrowser.getInstance());
@@ -456,6 +490,9 @@ class ActionOpenGoals extends UMLAction {
 
     public ActionOpenGoals() { super("action.design-goals", NO_ICON); }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
 	GoalsDialog d = new GoalsDialog(ProjectBrowser.getInstance());
 	d.show();
@@ -466,6 +503,9 @@ class ActionOpenCritics extends UMLAction {
 
     public ActionOpenCritics() { super("action.browse-critics", NO_ICON); }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
 	CriticBrowserDialog dialog = new CriticBrowserDialog();
 	dialog.show();
@@ -477,6 +517,9 @@ class ActionFlatToDo extends UMLAction {
 
     public ActionFlatToDo() { super("action.toggle-flat-view", NO_ICON); }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
 	ProjectBrowser.getInstance().getTodoPane().toggleFlat();
     }
@@ -488,6 +531,9 @@ class ActionNewToDoItem extends UMLAction {
         super("action.new-todo-item");
     }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {       
         AddToDoItemDialog dialog = new AddToDoItemDialog();
         dialog.show();
@@ -496,21 +542,31 @@ class ActionNewToDoItem extends UMLAction {
 
 class ToDoItemAction extends UMLAction {
 
-    Object _target = null;
+    private Object rememberedTarget = null;
 
     public ToDoItemAction(String name) { super(name, false, HAS_ICON); }
 
     public ToDoItemAction(String name, boolean hasIcon) {
 	super(name, false, hasIcon);
     }
+    
+    /**
+     * @return Returns the rememberedTarget.
+     */
+    protected Object getRememberedTarget() {
+        return rememberedTarget;
+    }    
 
+    /**
+     * @see org.argouml.uml.ui.UMLAction#updateEnabled(java.lang.Object)
+     */
     public void updateEnabled(Object target) {
 	if (target == null) {
 	    setEnabled(false);
 	    return;
 	}
 
-	_target = target;
+	rememberedTarget = target;
 	setEnabled(shouldBeEnabled(target));
     }
 
@@ -523,9 +579,12 @@ class ActionResolve extends ToDoItemAction {
 
     public ActionResolve() { super("action.resolve-item"); }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
 	DismissToDoItemDialog dialog = new DismissToDoItemDialog();
-	dialog.setTarget(_target);
+	dialog.setTarget(getRememberedTarget());
 	dialog.setVisible(true);
     }
 } /* end class ActionResolve */
@@ -534,9 +593,12 @@ class ActionEmailExpert extends ToDoItemAction {
 
     public ActionEmailExpert() { super("action.send-email-to-expert"); }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
 	EmailExpertDialog dialog = new EmailExpertDialog();
-	dialog.setTarget(_target);
+	dialog.setTarget(getRememberedTarget());
 	dialog.show();
     }
 
@@ -544,7 +606,8 @@ class ActionEmailExpert extends ToDoItemAction {
      * @see org.argouml.ui.ToDoItemAction#shouldBeEnabled(java.lang.Object)
      */
     public boolean shouldBeEnabled(Object target) {
-        return _target != null && _target instanceof ToDoItem;
+        return getRememberedTarget() != null 
+            && getRememberedTarget() instanceof ToDoItem;
     }
 
 } /* end class ActionEmailExpert */
@@ -558,10 +621,13 @@ class ActionSnooze extends ToDoItemAction {
 
     public ActionSnooze() { super("action.snooze-critic"); }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
-	if (!(_target instanceof ToDoItem)) return;
+	if (!(getRememberedTarget() instanceof ToDoItem)) return;
 
-	ToDoItem item = (ToDoItem) _target;
+	ToDoItem item = (ToDoItem) getRememberedTarget();
 	Poster p = item.getPoster();
 	p.snooze();
 	TabToDo._numHushes++;
@@ -579,6 +645,9 @@ class ActionSystemInfo extends UMLAction {
 
     public ActionSystemInfo() { super("action.system-information", HAS_ICON); }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
 	JFrame jFrame = (JFrame) ActionUtilities.getActionRoot(ae);
 	SystemInfoDialog sysInfoDialog = new SystemInfoDialog(jFrame, true);
@@ -595,6 +664,9 @@ class ActionSystemInfo extends UMLAction {
 	sysInfoDialog.show();
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
     public boolean shouldBeEnabled() { return true; }
 
 } /* end class ActionSystemInfo */
@@ -606,6 +678,9 @@ class ActionAboutArgoUML extends UMLAction {
 
     public ActionAboutArgoUML() { super("action.about-argouml", HAS_ICON); }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
 	JFrame jFrame = (JFrame) ActionUtilities.getActionRoot(ae);
 	AboutBox box = new AboutBox(jFrame, true);
@@ -614,6 +689,9 @@ class ActionAboutArgoUML extends UMLAction {
 	box.show();
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
     public boolean shouldBeEnabled() { return true; }
 
 } /* end class ActionAboutArgoUML */

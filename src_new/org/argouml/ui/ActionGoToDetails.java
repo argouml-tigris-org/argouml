@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,13 +40,16 @@ public class ActionGoToDetails extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-    protected String _tabName;
+    private String tabName;
 
-    ////////////////////////////////////////////////////////////////
-    // constructor
-    public ActionGoToDetails(String tabName) {
-	super(tabName, NO_ICON);
-	_tabName = tabName;
+    /**
+     * Constructor.
+     *
+     * @param name The name of the tab.
+     */
+    public ActionGoToDetails(String name) {
+	super(name, NO_ICON);
+	tabName = name;
     }
 
     /**
@@ -58,7 +61,7 @@ public class ActionGoToDetails extends UMLAction {
         super.shouldBeEnabled();
         ProjectBrowser pb = ProjectBrowser.getInstance();       
         if (!super.shouldBeEnabled() || pb == null) return false;
-        JPanel namedTab = pb.getNamedTab(_tabName);
+        JPanel namedTab = pb.getNamedTab(tabName);
         boolean shouldBeEnabled = false;
         if (namedTab instanceof TabToDoTarget) {
             shouldBeEnabled = true;
@@ -78,8 +81,11 @@ public class ActionGoToDetails extends UMLAction {
 	return shouldBeEnabled;
     }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
-        ProjectBrowser.getInstance().selectTabNamed(_tabName);
+        ProjectBrowser.getInstance().selectTabNamed(tabName);
     }
 
 } /* end class ActionGoToDetails */

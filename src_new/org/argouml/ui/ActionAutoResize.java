@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,19 +35,20 @@ import org.argouml.uml.ui.UMLAction;
  */
 public class ActionAutoResize extends UMLAction {
 
-    private static boolean _autoResize = false;
+    private static boolean autoResize = false;
   
     public ActionAutoResize() {
         super("action.toggle-auto-resizing",  NO_ICON);
     }
 
     public void actionPerformed(ActionEvent ae) {
-        _autoResize = !_autoResize;
+        autoResize = !autoResize;
     }
 
-    /** Accessor to determine whether the nodes should be resized or not.
-     * @see
-     * org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(MElementEvent)
+    /**
+     * Accessor to determine whether the nodes should be resized or not.
+     *
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(MElementEvent)
      */
-    public static boolean isAutoResizable() { return _autoResize; }
-} /* end class ActionAutoResize */
+    public static boolean isAutoResizable() { return autoResize; }
+}

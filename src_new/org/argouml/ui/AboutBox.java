@@ -48,12 +48,12 @@ public class AboutBox extends JDialog {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    JTabbedPane _tabs = new JTabbedPane();
+    private JTabbedPane tabs = new JTabbedPane();
     /** Insets in pixels  */
     private int insetPx = 3;
 
     /** Shared splash panel */
-    SplashPanel _splashPanel = null;
+    private SplashPanel splashPanel = null;
 
     ////////////////////////////////////////////////////////////////
     // constructor
@@ -101,9 +101,9 @@ public class AboutBox extends JDialog {
 	super(owner, modal);
         // TODO: i18n
 	this.setTitle(localize("aboutbox.aboutbox-title"));
-	_splashPanel = new SplashPanel("Splash");
-	int imgWidth = _splashPanel.getImage().getIconWidth();
-	int imgHeight = _splashPanel.getImage().getIconHeight();
+	splashPanel = new SplashPanel("Splash");
+	int imgWidth = splashPanel.getImage().getIconWidth();
+	int imgHeight = splashPanel.getImage().getIconHeight();
 	Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
 	setLocation(scrSize.width / 2 - imgWidth / 2,
 		    scrSize.height / 2 - imgHeight / 2);
@@ -117,8 +117,8 @@ public class AboutBox extends JDialog {
 	versionBuf.append("* GEF (gef.tigris.org)\n");
 	versionBuf.append("* Xerces-J 1.2.3\n");
 	versionBuf.append("* NSUML 0.4.19 (nsuml.sourceforge.net)\n");
-	versionBuf.append("* TU-Dresden OCL-Compiler " +
-			  "(dresden-ocl.sourceforge.net)\n");
+	versionBuf.append("* TU-Dresden OCL-Compiler " 
+	        	  + "(dresden-ocl.sourceforge.net)\n");
 	versionBuf.append("* ANTLR 2.7.2 (www.antlr.org)\n");
 	// Library maintainers! Add and update information here above!
 
@@ -138,17 +138,17 @@ public class AboutBox extends JDialog {
         imgWidth  += 40 + 40; 
         /* It looks better if the height increases, too */
         imgHeight += 40 + 40; 
-        myInsetPanel.add(_splashPanel); 
-        _tabs.addTab("Splash", myInsetPanel); 
+        myInsetPanel.add(splashPanel); 
+        tabs.addTab("Splash", myInsetPanel); 
 
-	_tabs.addTab("Version", createPane(versionBuf.toString()));
-	_tabs.addTab("Credits", 
+	tabs.addTab("Version", createPane(versionBuf.toString()));
+	tabs.addTab("Credits", 
 		     createPane(localize("aboutbox.credits")));
-	_tabs.addTab("Contact Info", 
+	tabs.addTab("Contact Info", 
 		     createPane(localize("aboutbox.contacts")));
-	_tabs.addTab("Report bugs", 
+	tabs.addTab("Report bugs", 
 		     createPane(localize("aboutbox.bugreport")));
-	_tabs.addTab("Legal", 
+	tabs.addTab("Legal", 
 		     createPane(localize("aboutbox.legal")));
 
 	// Add the About tabs from the modules.
@@ -158,13 +158,13 @@ public class AboutBox extends JDialog {
 	    Object o = iterator.next();
 	    AboutTabPanel atp = ((PluggableAboutTab) o).getAboutTabPanel();
 	
-	    _tabs.addTab(Translator.localize(atp.getTabResourceBundleKey(),
+	    tabs.addTab(Translator.localize(atp.getTabResourceBundleKey(),
 				       atp.getTabKey()),
 			 atp.getTabPanel());
 	}
 
 	getContentPane().setLayout(new BorderLayout(0, 0));
-	getContentPane().add(_tabs, BorderLayout.CENTER);
+	getContentPane().add(tabs, BorderLayout.CENTER);
 
 	// TODO: 10 and 120 were found by trial and error.  Calculate them.
 	setSize(imgWidth + 10, imgHeight + 120);

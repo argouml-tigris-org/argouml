@@ -42,11 +42,12 @@ import org.argouml.application.events.ArgoModuleEvent;
 import org.argouml.application.events.ArgoModuleEventListener;
 import org.argouml.uml.ui.UMLAction;
 
-/** Action object for handling Argo settings
+/**
+ * Action object for handling Argo settings
  *
- *  @author Thomas N
- *  @author Thierry Lach
- *  @since  0.9.4
+ * @author Thomas N
+ * @author Thierry Lach
+ * @since  0.9.4
  */
 public class ActionSettings extends UMLAction
     implements ArgoModuleEventListener 
@@ -57,15 +58,23 @@ public class ActionSettings extends UMLAction
 
     /**
      * Logger.
-     * @deprecated by Linus Tolke as of 0.16. Will be private.
      */
-    private static Logger cat = Logger.getLogger(Translator.class);
+    private static final Logger LOG = Logger.getLogger(Translator.class);
 
-	/** One and only instance.
+    /** 
+     * One and only instance.
+     *
+     * @deprecated by Linus Tolke as of 0.17.1.
+     *             Create your own instance of this action.
      */
-    private static ActionSettings SINGLETON = new ActionSettings();
+    private static final ActionSettings SINGLETON = new ActionSettings();
 
-    /** Get the instance.
+    /**
+     * Get the instance.
+     *
+     * @return The instance.
+     * @deprecated by Linus Tolke as of 0.17.1.
+     *             Create your own instance of this action.
      */
     public static ActionSettings getInstance() {
         return SINGLETON;
@@ -73,15 +82,22 @@ public class ActionSettings extends UMLAction
 
     ////////////////////////////////////////////////////////////////
     // constructors
-    protected JButton buttonApply = null;
-    protected JTabbedPane tabs = null;
-    protected ArgoDialog dlg = null;
+    private JButton applyButton = null;
+    private JTabbedPane tabs = null;
+    private ArgoDialog dialog = null;
 
-    protected ActionSettings() {
+    /**
+     * Constructor.
+     */
+    public ActionSettings() {
         super("action.settings", HAS_ICON);
     }
 
-    /** Helper for localization.
+    /**
+     * Helper for localization.
+     *
+     * @param key The key to localize.
+     * @return The localized String.
      */
     protected String localize(String key) {
         return Translator.localize("CoreSettings", key);
@@ -90,22 +106,25 @@ public class ActionSettings extends UMLAction
     ////////////////////////////////////////////////////////////////
     // main methods
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent event) {
     	Object source = event.getSource();
     
         if (source instanceof JMenuItem) {
             ProjectBrowser pb = ProjectBrowser.getInstance();
-            if (dlg == null) {
+            if (dialog == null) {
                 try {
-                    dlg = new ArgoDialog(pb, localize("dialog.settings"), 
+                    dialog = new ArgoDialog(pb, localize("dialog.settings"), 
 					 ArgoDialog.OK_CANCEL_OPTION, true)
 			{
-			    public void actionPerformed(ActionEvent event) {
-				super.actionPerformed(event);
-				if (event.getSource() == getOkButton()) {
+			    public void actionPerformed(ActionEvent ev) {
+				super.actionPerformed(ev);
+				if (ev.getSource() == getOkButton()) {
 				    handleSave();
 				}
-				else if (event.getSource() == getCancelButton())
+				else if (ev.getSource() == getCancelButton())
 				{
 				    handleCancel();
 				}
@@ -114,17 +133,17 @@ public class ActionSettings extends UMLAction
 
                     tabs = new JTabbedPane();
 
-                    buttonApply = new JButton(localize("button.apply"));
+                    applyButton = new JButton(localize("button.apply"));
                     String mnemonic = localize("button.apply.mnemonic");
                     if (mnemonic != null && mnemonic.length() > 0) {
-                        buttonApply.setMnemonic(mnemonic.charAt(0));
+                        applyButton.setMnemonic(mnemonic.charAt(0));
                     }
-                    buttonApply.addActionListener(new ActionListener() {
+                    applyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			    handleSave();
 			}
 		    });
-                    dlg.addButton(buttonApply);
+                    dialog.addButton(applyButton);
 
                     ArrayList list =
                         Argo.getPlugins(PluggableSettingsTab.class);
@@ -150,28 +169,40 @@ public class ActionSettings extends UMLAction
 						   minimumWidth),
 					  tabs.getPreferredSize().height));
 
-                    dlg.setContent(tabs);        
+                    dialog.setContent(tabs);        
                 }
                 catch (Exception exception) {
-                    cat.error("got an Exception in ActionSettings", exception);
+                    LOG.error("got an Exception in ActionSettings", exception);
                 }
             }
             
             handleRefresh();
-            dlg.toFront();
-            dlg.setVisible(true);
+            dialog.toFront();
+            dialog.setVisible(true);
 	}
     }
 
+    /**
+     * @see org.argouml.application.events.ArgoModuleEventListener#moduleLoaded(org.argouml.application.events.ArgoModuleEvent)
+     */
     public void moduleLoaded(ArgoModuleEvent event) {
     }
 
+    /**
+     * @see org.argouml.application.events.ArgoModuleEventListener#moduleUnloaded(org.argouml.application.events.ArgoModuleEvent)
+     */
     public void moduleUnloaded(ArgoModuleEvent event) {
     }
 
+    /**
+     * @see org.argouml.application.events.ArgoModuleEventListener#moduleEnabled(org.argouml.application.events.ArgoModuleEvent)
+     */
     public void moduleEnabled(ArgoModuleEvent event) {
     }
 
+    /**
+     * @see org.argouml.application.events.ArgoModuleEventListener#moduleDisabled(org.argouml.application.events.ArgoModuleEvent)
+     */
     public void moduleDisabled(ArgoModuleEvent event) {
     }
 
