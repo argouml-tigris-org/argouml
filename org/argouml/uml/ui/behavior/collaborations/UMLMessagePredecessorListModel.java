@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -27,6 +26,7 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import java.util.Iterator;
+import org.argouml.model.ModelFacade;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
@@ -66,7 +66,7 @@ public class UMLMessagePredecessorListModel extends UMLModelElementListModel2 {
     protected boolean isValidElement(MBase elem) {
         return org.argouml.model.ModelFacade.isAMessage(elem) && 
             ((MMessage) elem).getInteraction() == ((MMessage) getTarget()).getInteraction() &&
-            ((MMessage) elem).getActivator() == ((MMessage) getTarget()).getActivator();
+            ModelFacade.getActivator(elem) == ModelFacade.getActivator(getTarget());
     }
 
 }

@@ -49,11 +49,9 @@ import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
-import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 import ru.novosoft.uml.foundation.core.MGeneralization;
@@ -412,7 +410,7 @@ public class UseCaseDiagramGraphModel
             // relationships back to front for include relationships. Solve
             // by reversing their accessors in the code
 
-            end0 = ((MInclude) edge).getAddition();
+            end0 = ModelFacade.getAddition(edge);
             end1 = ModelFacade.getBase(edge);
         }
         else if (org.argouml.model.ModelFacade.isADependency(edge)) {
@@ -582,7 +580,7 @@ public class UseCaseDiagramGraphModel
         // to find the associations.
 
         if (org.argouml.model.ModelFacade.isAClassifier(node)) {
-            Collection ends = ((MClassifier) node).getAssociationEnds();
+            Collection ends = ModelFacade.getAssociationEnds(node);
             Iterator   iter = ends.iterator();
 
             while (iter.hasNext()) {

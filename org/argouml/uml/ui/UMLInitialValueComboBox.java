@@ -200,13 +200,13 @@ public class UMLInitialValueComboBox extends JComboBox
             if (ModelFacade.isACallEvent(target)) {
                 return;
             }
-            MBehavioralFeature feature = ((MParameter) target).getBehavioralFeature();
+            Object feature = ModelFacade.getBehavioralFeature(target);
             if (feature != null) {
-                MClassifier classifier = (MClassifier) feature.getOwner();
+                Object classifier = ModelFacade.getOwner(feature);
                 if (classifier == null) {
                     return;
                 }
-                classifier.setFeatures(classifier.getFeatures());
+                ModelFacade.setFeatures(classifier, ModelFacade.getFeatures(classifier));
             }
         }
     }   // ...end of update() method...

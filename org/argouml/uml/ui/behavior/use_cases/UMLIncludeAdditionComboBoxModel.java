@@ -66,7 +66,7 @@ public class UMLIncludeAdditionComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return ((MInclude) getTarget()).getAddition();
+            return ModelFacade.getAddition(getTarget());
         }
         return null;
     }

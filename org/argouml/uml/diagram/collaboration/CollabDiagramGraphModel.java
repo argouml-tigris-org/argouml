@@ -209,7 +209,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 
     public void addNodeRelatedEdges(Object node) {
 	if ( ModelFacade.isAClassifier(node) ) {
-	    Collection ends = ((MClassifier) node).getAssociationEnds();
+	    Collection ends = ModelFacade.getAssociationEnds(node);
 	    Iterator iter = ends.iterator();
 	    while (iter.hasNext()) {
 		MAssociationEndRole ae = (MAssociationEndRole) iter.next();

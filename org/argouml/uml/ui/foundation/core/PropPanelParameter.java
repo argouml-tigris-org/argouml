@@ -1,6 +1,3 @@
-
-
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -33,6 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 
 import org.argouml.swingext.GridLayout2;
@@ -47,7 +45,6 @@ import org.argouml.uml.ui.UMLRadioButton;
 import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
@@ -139,10 +136,10 @@ public class PropPanelParameter extends PropPanelModelElement {
     }
 
     public Object getBehavioralFeature() {
-        MBehavioralFeature feature = null;
+        Object feature = null;
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAParameter(target)) {
-            feature = ((MParameter) target).getBehavioralFeature();
+        if (ModelFacade.isAParameter(target)) {
+            feature = ModelFacade.getBehavioralFeature(target);
         }
         return feature;
     }
@@ -167,13 +164,12 @@ public class PropPanelParameter extends PropPanelModelElement {
     }
 
     public void addParameter() {
-        MBehavioralFeature feature = null;
+        Object feature = null;
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAParameter(target)) {
-            feature = ((MParameter) target).getBehavioralFeature();
+        if (ModelFacade.isAParameter(target)) {
+            feature = ModelFacade.getBehavioralFeature(target);
             if (feature != null) {
-                MParameter param = CoreFactory.getFactory().buildParameter((MOperation) feature);
-                TargetManager.getInstance().setTarget(param);
+                TargetManager.getInstance().setTarget(CoreFactory.getFactory().buildParameter(feature));
             }
         }
     }

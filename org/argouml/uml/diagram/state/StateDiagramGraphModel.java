@@ -41,7 +41,6 @@ import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 
 import ru.novosoft.uml.behavior.state_machines.MState;
-import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.foundation.core.MModelElement;

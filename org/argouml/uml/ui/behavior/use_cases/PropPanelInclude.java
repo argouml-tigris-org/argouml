@@ -119,17 +119,16 @@ public class PropPanelInclude extends PropPanelModelElement {
      *          type {@link MUseCase} to fit in with the type specified for
      *          the {@link UMLComboBoxModel}.
      */
-    public MUseCase getBase() {
-        MUseCase base   = null;
+    public Object getBase() {
+        Object base   = null;
         Object      target = getTarget();
 
         // Note that because of the NSUML bug, we must use getAddition() rather
         // than getBase() to get the base use case.
 
-        if (org.argouml.model.ModelFacade.isAInclude(target)) {
-            base = ((MInclude) target).getAddition();
+        if (ModelFacade.isAInclude(target)) {
+            base = ModelFacade.getAddition(target);
         }
-
         return base;
     }
 

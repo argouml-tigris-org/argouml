@@ -1,6 +1,3 @@
-
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -50,7 +47,6 @@ import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.model_management.MPackage;
 
@@ -78,8 +74,7 @@ public class ChildGenRelated implements ChildGenerator {
 	    Collection assocEnds = cls.getAssociationEnds();
 	    Iterator assocIterator = assocEnds.iterator();
 	    while (assocIterator.hasNext()) {
-		res.add(((MAssociationEnd) assocIterator.next())
-			.getAssociation());
+		res.add(ModelFacade.getAssociation(assocIterator.next()));
 	    }
 
 	    res.addAll(cls.getFeatures());

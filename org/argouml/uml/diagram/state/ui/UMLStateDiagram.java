@@ -136,9 +136,9 @@ public class UMLStateDiagram extends UMLDiagram {
         if (namespace != null && ModelFacade.getName(namespace) != null) {
             String name = null, diag_name = ModelFacade.getName(namespace);
             Object[] args = {name};
-            int number = (((MNamespace)namespace).getBehaviors()) == null
+            int number = (ModelFacade.getBehaviors(namespace)) == null
                 ? 0 
-                : ((MNamespace)namespace).getBehaviors().size();
+                : ModelFacade.getBehaviors(namespace).size();
             name = diag_name + " " + (number++);
             Argo.log.info("UMLStateDiagram constructor: String name = " + name);
             try {
