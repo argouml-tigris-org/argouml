@@ -80,6 +80,13 @@ public class ExplorerPerspective {
     }
     
     /**
+     * @return the List with all the rules
+     */
+    public List getList() {
+        return rules;
+    }
+    
+    /**
      * @see java.lang.Object#toString()
      */
     public String toString() {
