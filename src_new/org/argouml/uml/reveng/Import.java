@@ -540,9 +540,9 @@ public class Import {
          * 
          * @param f the files left to parse/import
          * @param critic true if the critics thread was on
-         * @param doLayout do a autolayout afterwards
+         * @param layout do a autolayout afterwards
          */
-        public ImportRun(Vector f, boolean critic, boolean doLayout) {
+        public ImportRun(Vector f, boolean critic, boolean layout) {
 
             iss.addCancelButtonListener(new ActionListener()
 	    {
@@ -559,7 +559,7 @@ public class Import {
             st.mark("start");
             cancelled = false;
             criticThreadWasOn = critic;
-            this.doLayout = doLayout;
+            this.doLayout = layout;
         }
 
         /**
@@ -595,7 +595,8 @@ public class Import {
 
                     int tot = countFiles;
                     if (diagramInterface != null) {
-                        tot += diagramInterface.getModifiedDiagrams().size() / 10;
+                        tot += 
+                            diagramInterface.getModifiedDiagrams().size() / 10;
                     }
                     iss.setMaximum(tot);
                     int act =

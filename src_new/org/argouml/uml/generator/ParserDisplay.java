@@ -3323,6 +3323,9 @@ public class ParserDisplay extends Parser {
      *             d00mst.
      *             It is used in {@link #parseTransition(Object, String)}
      *             above.
+     *
+     * @param s the string to parse
+     * @return the created object
      */
     public Object parseAction(String s) {
         Object a = UmlFactory.getFactory().getCommonBehavior()
@@ -3341,6 +3344,9 @@ public class ParserDisplay extends Parser {
      *             ArgoUML. d00mst.
      *             It is used in {@link #parseTransition(Object, String)}
      *             above.
+     *
+     * @param s the string to parse
+     * @return the new guard
      */
     public Object parseGuard(String s) {
         Object g = UmlFactory.getFactory().getStateMachines().createGuard();
