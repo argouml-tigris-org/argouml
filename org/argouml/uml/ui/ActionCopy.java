@@ -26,7 +26,8 @@ package org.argouml.uml.ui;
 import org.tigris.gef.base.*;
 import java.awt.event.*;
 
-
+/** @stereotype singleton
+ */
 public class ActionCopy extends UMLChangeAction {
 
     ////////////////////////////////////////////////////////////////

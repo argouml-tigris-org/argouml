@@ -34,7 +34,9 @@ import java.io.*;
 import javax.swing.*;
 
 
-/* class ActionImportFromSources */
+/** Action to trigger importing from sources.
+ * @stereotype singleton
+ */
 public class ActionImportFromSources extends UMLAction {
     
     protected static Category cat = Category.getInstance(org.argouml.uml.ui.ActionImportFromSources.class);

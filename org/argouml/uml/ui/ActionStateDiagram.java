@@ -40,7 +40,9 @@ import java.beans.*;
 
 import javax.swing.JOptionPane;
 
-
+/** Action to create a new state diagram.
+ * @stereotype singleton
+ */
 public class ActionStateDiagram extends ActionAddDiagram {
     protected static Category cat = Category.getInstance(ActionStateDiagram.class);
 

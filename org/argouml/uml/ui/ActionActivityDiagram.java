@@ -32,7 +32,9 @@ import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
-
+/** Action to trigger creation of a new activity diagram.
+ *  @stereotype singleton
+ */
 public class ActionActivityDiagram extends ActionStateDiagram {
     
     public static ActionActivityDiagram SINGLETON = new ActionActivityDiagram(); 

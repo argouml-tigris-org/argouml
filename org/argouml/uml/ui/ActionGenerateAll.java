@@ -30,7 +30,9 @@ import ru.novosoft.uml.foundation.core.*;
 import java.awt.event.*;
 import java.util.*;
 
-
+/** Action to trigger code generation for one or more classes.
+ *  @stereotype singleton
+ */
 public class ActionGenerateAll extends UMLAction {
 
     ////////////////////////////////////////////////////////////////

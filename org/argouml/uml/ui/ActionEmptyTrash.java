@@ -26,7 +26,9 @@ package org.argouml.uml.ui;
 import org.argouml.util.*;
 import java.awt.event.*;
 
-
+/** Action to empty the trashcan. 
+ *  @stereotype singleton
+ */
 public class ActionEmptyTrash extends UMLChangeAction {
 
     ////////////////////////////////////////////////////////////////

@@ -33,6 +33,9 @@ import java.text.MessageFormat;
 
 import javax.swing.*;
 
+/** Action to exit ArgoUML.
+ * @stereotype singleton
+ */
 public class ActionExit extends UMLAction {
   
   ////////////////////////////////////////////////////////////////

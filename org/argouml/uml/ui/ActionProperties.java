@@ -26,7 +26,9 @@ package org.argouml.uml.ui;
 import org.argouml.ui.*;
 import java.awt.event.*;
 
-
+/** Action to select the properties tab.
+ * @stereotype singleton
+ */
 public class ActionProperties extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
@@ -54,3 +56,4 @@ public class ActionProperties extends UMLAction {
 	return true; 
     }
 } /* end class ActionShowProperties */
+

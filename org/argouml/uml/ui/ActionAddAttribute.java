@@ -34,7 +34,9 @@ import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
 
-
+/** Action to add an attribute to a classifier.
+ *  @stereotype singleton
+ */
 public class ActionAddAttribute extends UMLChangeAction {
 
     ////////////////////////////////////////////////////////////////

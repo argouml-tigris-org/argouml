@@ -36,7 +36,9 @@ import java.awt.event.*;
 import java.util.Iterator;
 import java.util.Vector;
 
-
+/** Action to add an operation to a classifier.
+ *  @stereotype singleton
+ */
 public class ActionAddOperation extends UMLChangeAction {
 
     ////////////////////////////////////////////////////////////////

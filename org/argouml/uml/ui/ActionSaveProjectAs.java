@@ -38,7 +38,9 @@ import java.beans.*;
 import javax.swing.*;
 import javax.swing.filechooser.*;
 
-
+/** Action to save project under name.
+ * @stereotype singleton
+ */
 public class ActionSaveProjectAs extends ActionSaveProject {
 
     ////////////////////////////////////////////////////////////////
