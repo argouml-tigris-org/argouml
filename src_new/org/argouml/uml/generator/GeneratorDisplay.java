@@ -227,26 +227,7 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
   		genStr.append(propertiesStr);
   	}
   	return genStr.toString().trim();	
-  }
-  
-  protected String generateMultiplicity(MAttribute attr) {
-  	MMultiplicity multi = attr.getMultiplicity();
-  	if (multi != null) {
-  		if (multi.equals(MMultiplicity.M1_1)) return " ";
-  		StringBuffer sb = new StringBuffer();
-  		sb.append(" [");
-  		List ranges = multi.getRanges();
-  		Iterator it = ranges.iterator();
-  		while (it.hasNext()) {
-  			MMultiplicityRange range = (MMultiplicityRange)it.next();
-  			sb.append(" ").append(range.getLower()).append("..").append(range.getUpper()).append(" ");
-  		}
-  		sb.append("] ");
-  		return sb.toString();
-  	}
-  	return "";
-  }
-	
+  }	
 	
 /**
  * Generates a string representation for the provided attribute. The string 
@@ -293,7 +274,7 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
   	}
   	if ((multiplicity != null) && (multiplicity.length() > 0) &&
         Configuration.getBoolean(Notation.KEY_SHOW_MULTIPLICITY)) {
-  		sb.append(multiplicity).append(" ");
+  		sb.append("[").append(multiplicity).append("]").append(" ");
   	}
   	if ((type != null) && (type.length() > 0)) {
   		sb.append(": ").append(type).append(" ");
@@ -611,6 +592,9 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
     return "";
   }
 
+/**
+ * @see org.argouml.application.api.NotationProvider#generateMultiplicity(MMultiplicity)
+ */
   public String generateMultiplicity(MMultiplicity m) {
     if (m == null) { return ""; }
     if (MMultiplicity.M0_N.equals(m)) return ANY_RANGE;
@@ -628,10 +612,18 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
 
 
   public static final String ANY_RANGE = "0..*";
+  
+/**
+ * Generates a multiplicity range. The standard getLower and getUpper defined on
+ * MMultiplicityRange give a -1 if the multiplicity is n or *. This method 
+ * circumvents that behaviour.
+ * @param mr
+ * @return String
+ */
   //public static final String ANY_RANGE = "*";
   // needs-more-work: user preference between "*" and "0..*"
 
-  public String generateMultiplicityRange(MMultiplicityRange mr) {
+  protected String generateMultiplicityRange(MMultiplicityRange mr) {
 
 	  // 2002-07-25
 	  // Jaap Branderhorst
