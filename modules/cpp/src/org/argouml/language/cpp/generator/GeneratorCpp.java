@@ -1633,8 +1633,9 @@ public class GeneratorCpp extends Generator2
      */
     private boolean checkGenerateOperationBody(MOperation cls)
     {
-	boolean result =
-	    !((generatorPass == header_pass) || (cls.isAbstract()));
+        boolean result =
+            !((generatorPass == header_pass) || (cls.isAbstract()) || 
+            ModelFacade.isAInterface(cls.getOwner()));
 
 	// if this operation has Tag "inline" the method shall be
 	// generated in header
@@ -1938,6 +1939,22 @@ public class GeneratorCpp extends Generator2
 	    }
 	}
     }
+    
+    /**
+     * Generates a virtual destructor when the classifier is an interface.
+     * @param cls the classifier object
+     * @param sb the buffer to where the generate code goes
+     */
+    private void generateClassifierDestructor(MClassifier cls,
+                                              StringBuffer sb)
+    {
+        if (cls instanceof MInterface && generatorPass == header_pass) {
+            sb.append("\npublic:\n");
+            sb.append(INDENT).append("// virtual destructor for interface \n");
+            sb.append(INDENT).append("virtual ").append('~').append(
+                ModelFacade.getName(cls)).append("() { }\n");
+        }
+    }
 
     /**
      * Generates the body of a class or interface.
@@ -1951,6 +1968,9 @@ public class GeneratorCpp extends Generator2
 	{ // add operations
 	    // TODO: constructors
 	    generateClassifierBodyOperations(cls, sb);
+            
+            // fixing issue #2587 
+            generateClassifierDestructor(cls, sb);
 
 	    // add attributes
 	    generateClassifierBodyAttributes(cls, sb);
