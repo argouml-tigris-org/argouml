@@ -153,7 +153,7 @@ implements PluggableMenu {
 
     public String getModuleName() { return "ActionTestJunit"; }
     public String getModuleDescription() { return "Menu Item for JUnit Testing"; }
-    public String getModuleAuthor() { return "Andreas"; }
+    public String getModuleAuthor() { return "Andreas Rueckert"; }
     public String getModuleVersion() { return "0.9.4"; }
     public String getModuleKey() { return "module.menu.tools.junit"; }
 
