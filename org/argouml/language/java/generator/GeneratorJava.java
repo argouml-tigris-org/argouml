@@ -87,7 +87,7 @@ implements PluggableNotation, FileGenerator {
     return SINGLETON.generate (o);
   }
 
-    /** Generates a file for the classifier.
+    /** Generates a file for the classifier. 
      * This method could have been static if it where not for the need to
      * call it through the Generatorinterface.
      * @returns the full path name of the the generated file.
@@ -644,12 +644,12 @@ implements PluggableNotation, FileGenerator {
          start new code: */
         StringBuffer returnValue = new StringBuffer();
         StringBuffer start = generateClassifierStart(cls);
-        if (start.length() > 0)
+        if ((start != null) && (start.length() > 0))
         {
             StringBuffer body = generateClassifierBody(cls);
             StringBuffer end = generateClassifierEnd(cls);
             returnValue.append(start);
-            if (body.length() > 0)
+            if ((body != null) && (body.length() > 0))
             {
                 returnValue.append("\n");
                 returnValue.append(body);
@@ -658,7 +658,7 @@ implements PluggableNotation, FileGenerator {
                     returnValue.append("\n");
                 }
             }
-            returnValue.append(end);
+            returnValue.append((end!=null)?end.toString():"");
         }
         return returnValue.toString();
     }
