@@ -60,12 +60,13 @@ public abstract class MemberFilePersister {
 
     /**
      * Save the projectmember as XML to the given writer.
+     *
      * @param member The project member to save.
      * @param writer The Writer to which appen the save.
      * @param indent The offset to which to indent the XML
      * @throws SaveException if the save fails
      */
-    abstract public void save(
+    public abstract void save(
             ProjectMember member,
             Writer writer,
             Integer indent) throws SaveException;
@@ -80,8 +81,9 @@ public abstract class MemberFilePersister {
     protected void addXmlFileToWriter(PrintWriter writer, File file, int indent)
         throws SaveException {
         try {
-            String padding = "                                          "
-                .substring(0, indent);
+            String padding =
+                "                                          "
+                	.substring(0, indent);
             BufferedReader reader =
                 new BufferedReader(new FileReader(file));
 

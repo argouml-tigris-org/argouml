@@ -78,7 +78,6 @@ import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.util.logging.SimpleTimer;
-import org.argouml.util.osdep.OsUtil;
 import org.tigris.gef.base.Globals;
 
 /**

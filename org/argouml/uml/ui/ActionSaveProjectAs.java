@@ -40,7 +40,6 @@ import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.FileChooserFactory;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.util.osdep.OsUtil;
 
 /**
  * Action to save project under name.

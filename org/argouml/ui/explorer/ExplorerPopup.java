@@ -161,12 +161,16 @@ public class ExplorerPopup extends JPopupMenu {
                     this.add(action);
                 }
 
-                if ((relationshipSelected && !flowSelected && !nAryAssociationSelected)
-                        || (linkSelected && !sequenceDiagramActive)
-                        || transitionSelected) {
-                    UMLAction action = new ActionAddExistingEdge(
-                        menuLocalize("menu.popup.add-to-diagram"),
-			selectedItem);
+                if ((relationshipSelected
+                        && !flowSelected
+                        && !nAryAssociationSelected)
+                    || (linkSelected && !sequenceDiagramActive)
+                    || transitionSelected) {
+
+                    UMLAction action =
+                        new ActionAddExistingEdge(
+                                menuLocalize("menu.popup.add-to-diagram"),
+                                selectedItem);
                     action.setEnabled(action.shouldBeEnabled());
                     this.add(action);
                 }
@@ -211,7 +215,7 @@ public class ExplorerPopup extends JPopupMenu {
      * @param key The key for the string to localize.
      * @return The localized string.
      */
-    private final String menuLocalize(String key) {
+    private String menuLocalize(String key) {
         return Translator.localize(key);
     }
 

@@ -63,14 +63,17 @@ import ru.novosoft.uml.MFactoryImpl;
  * events to listeners that are registered for a certain object if
  * this object fired the original event.<p>
  *
+ * This class is part of the NSUML-dependant API of the model component.
+ * Use the NSUML-free {@link org.argouml.model.Model#getPump()} and the
+ * {@link org.argouml.model.ModelEventPump} interface everywhere except
+ * within the NSUML-implementation.
+ *
  * Maybe this class should dispatch a thread to handle the incoming
  * event in the future.
  * @since Oct 14, 2002
  * @author jaap.branderhorst@xs4all.nl
- * @deprecated by Linus Tolke as of 0.17.1. This class is part of the
- *             NSUML-dependant API of the model component. Use the NSUML-free
- *             {@link org.argouml.model.Model#getPump()} and the
- *             {@link org.argouml.model.ModelEventPump} interface.
+ *
+ * TODO: Change visibility to package after reflection problem solved.
  */
 public final class UmlModelEventPump implements MElementListener {
 
@@ -1136,11 +1139,12 @@ class EventListenerList {
     }
 
     /**
-    * Returns the total number of listeners of the supplied type
-    * for this listener list.
-    *
-    * @return The number of listeners.
-    */
+     * Returns the total number of listeners of the supplied type
+     * for this listener list.
+     *
+     * @param key The type.
+     * @return The number of listeners.
+     */
     public synchronized int getListenerCount(EventKey key) {
         return getListenerCount(listenerList, key);
     }

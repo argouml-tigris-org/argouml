@@ -47,11 +47,15 @@ import org.tigris.gef.ocl.TemplateReader;
  */
 public class DiagramMemberFilePersister extends MemberFilePersister {
 
-    /** logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(ModelMemberFilePersister.class);
 
-    /** The tee file for persistence */
+    /**
+     * The tee file for persistence.
+     */
     private static final String PGML_TEE = "/org/argouml/persistence/PGML.tee";
 
     /**
@@ -71,8 +75,7 @@ public class DiagramMemberFilePersister extends MemberFilePersister {
             inputStream.close();
             if (d != null) {
                 project.addMember(d);
-            }
-            else {
+            } else {
                 LOG.error("An error occurred while loading PGML");
             }
         } catch (IOException e) {
@@ -81,7 +84,7 @@ public class DiagramMemberFilePersister extends MemberFilePersister {
     }
 
     /**
-     * @see org.argouml.persistence.MemberFilePersister#getTag()
+     * @see org.argouml.persistence.MemberFilePersister#getMainTag()
      */
     public String getMainTag() {
         return "pgml";
@@ -89,9 +92,13 @@ public class DiagramMemberFilePersister extends MemberFilePersister {
 
     /**
      * Write the diagram to the given writer.
-     * @see org.argouml.kernel.ProjectMember#save(java.io.Writer, Integer)
+     *
+     * @see org.argouml.persistence.MemberFilePersister#save(
+     *         org.argouml.kernel.ProjectMember, java.io.Writer,
+     *         java.lang.Integer)
      */
-    public void save(ProjectMember member, Writer writer, Integer indent) throws SaveException {
+    public void save(ProjectMember member, Writer writer, Integer indent)
+    	throws SaveException {
 
         ProjectMemberDiagram diagramMember = (ProjectMemberDiagram) member;
         OCLExpander expander;

@@ -145,9 +145,11 @@ import ru.novosoft.uml.model_management.MSubsystem;
  * @since ARGO0.11.2
  * @author Thierry Lach
  */
-// TODO change back to default visibility when
+// TODO: change back to default visibility when
 // reflection taken out of CmdCreateNode
-public class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
+public class UmlFactoryImpl
+    extends AbstractUmlModelFactory
+    implements UmlFactory {
 
     /**
      * The logger.
@@ -873,11 +875,6 @@ public class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactor
 
         if (elem instanceof MBase) {
             ((MBase) elem).remove();
-            // TODO: (MVW) How do we replace next statement?
-            // Answer (Linus): We don't need to replace it. This file is now
-            // in org.argouml.model.uml and is allowed to use NSUML API:s.
-            // Qustion (Bob): Surely MVW wants to replace this because it is deprecated
-            // So how do we replace it ow do we undeprecate?.
             UmlModelEventPump.getPump().cleanUp((MBase) elem);
             UmlModelListener.getInstance().deleteElement(elem);
         }

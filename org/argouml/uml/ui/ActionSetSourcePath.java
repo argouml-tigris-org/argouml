@@ -36,7 +36,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.ui.FileChooserFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.util.osdep.OsUtil;
 
 
 /** Action to choose and set source path for model elements

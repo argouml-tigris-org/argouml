@@ -25,7 +25,8 @@
 package org.argouml.model;
 
 
-/** An interface which all ArgoUML-recognized model types
+/**
+ * An interface which all ArgoUML-recognized model types
  * must implement.
  *
  * @author Thierry Lach
@@ -41,14 +42,17 @@ public abstract class AbstractModelEntity implements ModelEntity {
         name = string;
     }
 
-    /** Returns the name
+    /**
+     * Returns the name.
+     *
      * @return the name
      */
     public String getName() {
         return name;
     }
 
-    /** @see java.lang.Object#toString()
+    /**
+     * @see java.lang.Object#toString()
      */
     public String toString() {
         return name;

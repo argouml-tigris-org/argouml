@@ -798,7 +798,8 @@ class CoreHelperImpl implements CoreHelper {
             throw new IllegalArgumentException();
         }
 
-        Iterator it = ((MGeneralizableElement) clazz).getSpecializations().iterator();
+        Iterator it =
+            ((MGeneralizableElement) clazz).getSpecializations().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
             MGeneralization gen = (MGeneralization) it.next();

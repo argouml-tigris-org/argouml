@@ -280,17 +280,22 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         return false;
     }
 
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
     public void targetSet(TargetEvent e) {
         super.targetSet(e);
         Object o = e.getNewTarget();
         if (o instanceof Fig)
             o = ((Fig) o).getOwner();
-        if(o != null && ModelFacade.isAAssociationEnd(o)) {
-            Collection ascEnds = ModelFacade.getConnections(ModelFacade.getAssociation(o));
-            if (ascEnds.size() > 2)
+        if (o != null && ModelFacade.isAAssociationEnd(o)) {
+            Collection ascEnds =
+                ModelFacade.getConnections(ModelFacade.getAssociation(o));
+            if (ascEnds.size() > 2) {
                 oppositeEndButton.setEnabled(false);
-            else
+            } else {
                 oppositeEndButton.setEnabled(true);
+            }
         }
     }
 

@@ -61,12 +61,15 @@ public class CrMultipleInitialStates extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-        if (!(ModelFacade.isAPseudostate(dm))) return NO_PROBLEM;
+        if (!(ModelFacade.isAPseudostate(dm))) {
+            return NO_PROBLEM;
+        }
         Object k = ModelFacade.getPseudostateKind(dm);
         if (!ModelFacade.
             equalsPseudostateKind(k,
-				  ModelFacade.INITIAL_PSEUDOSTATEKIND))
+				  ModelFacade.INITIAL_PSEUDOSTATEKIND)) {
 	    return NO_PROBLEM;
+        }
 
         // container state / composite state
         Object cs = ModelFacade.getModelElementContainer(dm);
@@ -81,11 +84,15 @@ public class CrMultipleInitialStates extends CrUML {
             Object sv = iter.next();
             if (ModelFacade.isAPseudostate(sv)
                 && ModelFacade.
-		    equalsPseudostateKind(ModelFacade.getPseudostateKind(sv),
-					  ModelFacade.INITIAL_PSEUDOSTATEKIND))
+                	equalsPseudostateKind(
+                	        ModelFacade.getPseudostateKind(sv),
+                	        ModelFacade.INITIAL_PSEUDOSTATEKIND)) {
                 initialStateCount++;
+            }
         }
-        if (initialStateCount > 1) return PROBLEM_FOUND;
+        if (initialStateCount > 1) {
+            return PROBLEM_FOUND;
+        }
         return NO_PROBLEM;
     }
 
@@ -114,9 +121,9 @@ public class CrMultipleInitialStates extends CrUML {
         for (Iterator iter = peers.iterator(); iter.hasNext();) {
             Object sv = iter.next();
             if (ModelFacade.isAPseudostate(sv)
-                && ModelFacade.
-                    equalsPseudostateKind(ModelFacade.getPseudostateKind(sv),
-					  ModelFacade.INITIAL_PSEUDOSTATEKIND)) {
+                && ModelFacade.equalsPseudostateKind(
+                        ModelFacade.getPseudostateKind(sv),
+                        ModelFacade.INITIAL_PSEUDOSTATEKIND)) {
                 offs.addElement(sv);
 	    }
         }
@@ -129,7 +136,9 @@ public class CrMultipleInitialStates extends CrUML {
      * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
-        if (!isActive()) return false;
+        if (!isActive()) {
+            return false;
+        }
         VectorSet offs = i.getOffenders();
         Object dm = offs.firstElement();
         VectorSet newOffs = computeOffenders(dm);
