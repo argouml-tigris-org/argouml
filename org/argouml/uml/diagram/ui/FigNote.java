@@ -37,7 +37,14 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 
-/** Class to display graphics for a UML MState in a diagram. */
+/** Renders a Comment in a diagram.
+ *
+ * @deprecated as of 0.15.1, but don't remove becuase it is need for loading
+ *             'old' .zargo project files, replaced by 
+ *             {@link org.argouml.uml.diagram.static_structure.ui.FigComment 
+ *             FigComment}
+ *
+ */
 
 public class FigNote extends FigNodeModelElement {
 
