@@ -58,20 +58,20 @@ import org.apache.log4j.*;
 public class Main {
     ////////////////////////////////////////////////////////////////
     // constants
-    
+
     ////////////////////////////////////////////////////////////////
     // static variables
-    
+
     private static Vector postLoadActions = new Vector();
-    
+
     ////////////////////////////////////////////////////////////////
     // main
-    
+
     public static void main(String args[]) {
-        
+
         // Force the configuration to load
         Configuration.load();
-        
+
         // Synchronize the startup directory
         //
         // needs-more-work:  This is a temporary hack.  The real change must
@@ -80,40 +80,40 @@ public class Main {
         //                   use Argo.getDirectory and Argo.setDirectory.
         String directory = Argo.getDirectory();
         org.tigris.gef.base.Globals.setLastDirectory(directory);
-        
+
         // then, print out some version info for debuggers...
-        
+
         org.argouml.util.Tools.logVersionInfo();
-        
+
         boolean doSplash = Configuration.getBoolean(Argo.KEY_SPLASH, true);
         boolean useEDEM = Configuration.getBoolean(Argo.KEY_EDEM, true);
         boolean preload = Configuration.getBoolean(Argo.KEY_PRELOAD, true);
         boolean profileLoad = Configuration.getBoolean(Argo.KEY_PROFILE, false);
         boolean reloadRecent = Configuration.getBoolean(Argo.KEY_RELOAD_RECENT_PROJECT, false);
-        
+
         File projectFile = null;
         Project p = null;
         String projectName = null;
         URL urlToOpen = null;
-        
+
 	    SimpleTimer st = new SimpleTimer();
         st.mark("arguments");
 
         /* set properties for application behaviour */
         System.setProperty("gef.imageLocation","/org/argouml/Images");
-        
+
         /* FIX: disable apple menu bar to enable proper running of Mac OS X java web start */
         System.setProperty("com.apple.macos.useScreenMenuBar","false");
-        
+
         /* FIX: set the application name for Mac OS X */
         System.setProperty("com.apple.mrj.application.apple.menu.about.name","ArgoUML");
-        
+
         //--------------------------------------------
         // Parse command line args:
         // The assumption is that all options precede
         // the name of a project file to load.
         //--------------------------------------------
-        
+
         int themeMemory = 0;
         for (int i=0; i < args.length; i++) {
             if (args[i].startsWith("-")) {
@@ -154,7 +154,7 @@ public class Main {
                 }
             }
         }
-        
+
         if (reloadRecent && projectName == null) {
             // If no project was entered on the command line,
             // try to reload the most recent project if that option is true
@@ -172,7 +172,7 @@ public class Main {
                 }
             }
         }
-        
+
         if (projectName != null) {
             if (!projectName.endsWith(Project.COMPRESSED_FILE_EXT))
                 projectName += Project.COMPRESSED_FILE_EXT;
@@ -189,18 +189,18 @@ public class Main {
                 }
             }
         }
-        
+
         //  do some initialization work before anything is drawn
         //  sets locale for menus
         //
 	st.mark("locales");
-        
+
         Locale.setDefault(new Locale(System.getProperty("user.language","en"),
         System.getProperty("user.country","CA")));
         ResourceLoader.addResourceExtension("gif");
         ResourceLoader.addResourceLocation("/org/argouml/Images");
         ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
-        
+
         Localizer.addResource("GefBase",
         "org.tigris.gef.base.BaseResourceBundle");
         Localizer.addResource("GefPres",
@@ -218,53 +218,53 @@ public class Main {
         Localizer.addResource("Tree", "org.argouml.i18n.TreeResourceBundle");
         Localizer.addResource("Actions",
         "org.argouml.i18n.ActionResourceBundle");
-        
+
 	st.mark("splash");
         SplashScreen splash = new SplashScreen("Loading ArgoUML...", "Splash");
         splash.getStatusBar().showStatus("Making Project Browser");
         splash.getStatusBar().showProgress(10);
-        
+
         splash.setVisible(doSplash);
 
 	st.mark("projectbrowser");
-        
+
         // Register the default notation.
         Object dgd = org.argouml.uml.generator.GeneratorDisplay.getInstance();
-        
+
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         ProjectBrowser pb = new ProjectBrowser("ArgoUML", splash.getStatusBar(),
         themeMemory);
-        
+
         JOptionPane.setRootFrame(pb);
-        
+
         // Set the screen layout to what the user left it before, or
         // to reasonable defaults.
         Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
         pb.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        
+
         int w = Math.min(Configuration.getInteger(Argo.KEY_SCREEN_WIDTH, (int)(0.95 * scrSize.width)), scrSize.width);
         int h = Math.min(Configuration.getInteger(Argo.KEY_SCREEN_HEIGHT, (int)(0.95 * scrSize.height)), scrSize.height);
         int x = Configuration.getInteger(Argo.KEY_SCREEN_LEFT_X, 0);
         int y = Configuration.getInteger(Argo.KEY_SCREEN_TOP_Y, 0);
         pb.setLocation(x, y);
         pb.setSize(w, h);
-        
+
         if (splash != null) {
             if (urlToOpen == null)
                 splash.getStatusBar().showStatus("Making Default Project");
             else
                 splash.getStatusBar().showStatus("Reading " + projectName);
-            
+
             splash.getStatusBar().showProgress(40);
         }
-        
+
 	st.mark("make empty project");
-        
+
         if (urlToOpen == null) p = Project.makeEmptyProject();
         else {
         	// 2002-07-18
         	// Jaap Branderhorst
-        	// changed the loading of the projectfiles to solve hanging 
+        	// changed the loading of the projectfiles to solve hanging
         	// of argouml if a project is corrupted. Issue 913
         	// try catch block added
         	try {
@@ -278,29 +278,29 @@ public class Main {
         		p = Project.makeEmptyProject();
         	}
         }
-        
+
 	st.mark("set project");
-        
+
         pb.setProject(p);
 
 	st.mark("perspectives");
-        
+
         if (urlToOpen == null) pb.setTitle("Untitled");
-        
+
         if (splash != null) {
             splash.getStatusBar().showStatus("Setting Perspectives");
             splash.getStatusBar().showProgress(50);
         }
-        
-        
+
+
         pb.setPerspectives(NavPerspective.getRegisteredPerspectives());
         pb.setToDoPerspectives(ToDoPerspective.getRegisteredPerspectives());
-        
+
         pb.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         //pb.validate();
         //pb.repaint();
         //pb.requestDefaultFocus();
-        
+
         if (splash != null) {
             splash.getStatusBar().showStatus("Loading modules");
             splash.getStatusBar().showProgress(75);
@@ -309,14 +309,14 @@ public class Main {
         // Initialize the module loader.
 	st.mark("modules");
         Argo.initializeModules();
-        
+
 	st.mark("open window");
-        
+
         if (splash != null) {
             splash.getStatusBar().showStatus("Opening Project Browser");
             splash.getStatusBar().showProgress(95);
         }
-        
+
         pb.setVisible(true);
         Object model = p.getModels().elementAt(0);
         Object diag = p.getDiagrams().elementAt(0);
@@ -329,7 +329,7 @@ public class Main {
             splash.dispose();
             splash = null;
         }
-        
+
         Class c = null;
         c = org.tigris.gef.base.ModePlace.class;
         c = org.tigris.gef.base.ModeModify.class;
@@ -338,15 +338,15 @@ public class Main {
         c = org.tigris.gef.base.PathConvPercentPlusConst.class;
         c = org.tigris.gef.presentation.ArrowHeadNone.class;
         c = org.tigris.gef.base.Geometry.class;
-        
+
         c = org.tigris.gef.ui.ColorRenderer.class;
-        
+
         c = org.tigris.gef.util.EnumerationEmpty.class;
         c = org.tigris.gef.util.EnumerationSingle.class;
-        
+
         c = ru.novosoft.uml.foundation.data_types.MScopeKind.class;
         c = ru.novosoft.uml.foundation.data_types.MChangeableKind.class;
-        
+
         c = org.argouml.uml.diagram.static_structure.ui.FigClass.class;
         c = org.argouml.uml.diagram.ui.SelectionNodeClarifiers.class;
         c = org.argouml.uml.diagram.ui.SelectionWButtons.class;
@@ -354,68 +354,68 @@ public class Main {
         c = org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode.class;
         c = org.argouml.uml.diagram.static_structure.ui.FigPackage.class;
         c = org.argouml.uml.diagram.static_structure.ui.FigInterface.class;
-        
+
         c = java.lang.ClassNotFoundException.class;
         c = org.argouml.kernel.DelayedChangeNotify.class;
         c = org.tigris.gef.graph.GraphEvent.class;
         c = org.tigris.gef.graph.presentation.NetEdge.class;
         c = org.tigris.gef.graph.GraphEdgeHooks.class;
-        
+
         c = org.argouml.uml.cognitive.critics.WizMEName.class;
         c = org.argouml.kernel.Wizard.class;
-        
-        
+
+
         //if (splash != null) {
         //  splash.getStatusBar().showStatus("Setting up critics");
         //  splash.getStatusBar().showProgress(70);
         //}
-        
+
 	st.mark("start critics");
 
         Runnable startCritics = new StartCritics();
         Main.addPostLoadAction(startCritics);
-        
-        
+
+
 	st.mark("start preloader");
         if (preload) {
             Runnable preloader = new PreloadClasses();
             Main.addPostLoadAction(preloader);
         }
-        
+
         PostLoad pl = new PostLoad(postLoadActions);
         Thread postLoadThead = new Thread(pl);
         pl.setThread(postLoadThead);
         postLoadThead.start();
-        
+
         if (profileLoad) {
             Argo.log.info("");
             Argo.log.info("profile of load time ############");
 	    for(Enumeration i = st.result(); i.hasMoreElements();) {
 		Argo.log.info(i.nextElement());
 	    }
-            
+
             Argo.log.info("#################################");
             Argo.log.info("");
         }
-        
-        
+
+
         //ToolTipManager.sharedInstance().setInitialDelay(500);
         ToolTipManager.sharedInstance().setDismissDelay(50000000);
     }
-    
-    
+
+
     //   private static void defineMockHistory() {
     //     History h = History.TheHistory;
     //     h.addItem("In the beginning there was Argo");
     //     h.addItem("And then I wrote a bunch of papers");
     //     h.addItem("Now there is ArgoUML!");
     //   }
-    
-    
+
+
     public static void  addPostLoadAction(Runnable r) {
         postLoadActions.addElement(r);
     }
-    
+
     /** Install our security handlers,
      *  and do basic initialization of log4j.
      *
@@ -428,18 +428,18 @@ public class Main {
      *  Refer to {@link java.awt.EventDispatchThread} for details.
      */
     static {
-        
+
        /*  Install the trap to "eat" SecurityExceptions.
         */
         System.setProperty("sun.awt.exception.handler",
         ArgoAwtExceptionHandler.class.getName());
-        
+
        /*  Install our own security manager.
         *  Once this is done, no one else
         *  can change "sun.awt.exception.handler".
         */
         System.setSecurityManager(ArgoSecurityManager.getInstance());
-        
+
        /*  The string <code>log4j.configuration</code> is the
         *  same string found in
         *  {@link org.apache.log4j.Configuration.DEFAULT_CONFIGURATION_FILE}
@@ -455,8 +455,8 @@ public class Main {
             Category.getRoot().getHierarchy().disableAll();
         }
     }
-    
-    
+
+
 } /* end Class Main */
 
 
@@ -475,13 +475,13 @@ class StartCritics implements Runnable {
             ((ru.novosoft.uml.model_management.MModel)models.nextElement()).addMElementListener(dsgr);
         }
         Argo.log.info("spawned critiquing thread");
-        
+
         // should be in logon wizard?
         dsgr.startConsidering(org.argouml.uml.cognitive.critics.CrUML.decINHERITANCE);
         dsgr.startConsidering(org.argouml.uml.cognitive.critics.CrUML.decCONTAINMENT);
         Designer._userWorking = true;
     }
-    
+
 } /* end class StartCritics */
 
 class PostLoad implements Runnable {
@@ -513,8 +513,8 @@ class PreloadClasses implements Runnable {
         //splash.getStatusBar().showStatus("Preloading classes");
         //splash.getStatusBar().showProgress(90);
         //}
-        
-        
+
+
         Class c = null;
         Argo.log.info("preloading...");
         c = org.tigris.gef.base.CmdSetMode.class;
@@ -537,18 +537,19 @@ class PreloadClasses implements Runnable {
         c = org.argouml.uml.ui.foundation.core.PropPanelAssociation.class;
         c = org.argouml.ui.StylePanelFig.class;
         c = org.argouml.uml.diagram.static_structure.ui.StylePanelFigClass.class;
+        c = org.argouml.uml.diagram.static_structure.ui.StylePanelFigInterface.class;
         c = org.argouml.uml.diagram.ui.SPFigEdgeModelElement.class;
-        
+
         c = java.lang.ClassNotFoundException.class;
         c = org.argouml.ui.UpdateTreeHack.class;
         c = org.argouml.kernel.DelayedChangeNotify.class;
         c = org.tigris.gef.graph.GraphEvent.class;
         c = org.tigris.gef.graph.presentation.NetEdge.class;
         c = org.tigris.gef.graph.GraphEdgeHooks.class;
-        
+
         c = org.argouml.uml.cognitive.critics.WizMEName.class;
         c = org.argouml.kernel.Wizard.class;
-        
+
         c = java.beans.Introspector.class;
         c = java.beans.BeanInfo.class;
         c = java.beans.BeanDescriptor.class;
@@ -572,8 +573,8 @@ class PreloadClasses implements Runnable {
         c = org.argouml.uml.cognitive.critics.ClOperationCompartment.class;
         c = java.lang.SecurityException.class;
         c = java.lang.NullPointerException.class;
-        
+
         Argo.log.info(" done preloading");
     }
-    
+
 } /* end class PreloadClasses */
