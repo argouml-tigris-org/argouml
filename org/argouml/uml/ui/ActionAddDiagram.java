@@ -27,6 +27,7 @@ package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
 
+import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
@@ -41,6 +42,7 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  * @author jaap.branderhorst@xs4all.nl
  */
 public abstract class ActionAddDiagram extends UMLChangeAction {
+    private Logger log = Logger.getLogger(this.getClass());
 
     /**
      * Constructor for ActionAddDiagram.
@@ -59,29 +61,32 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
         // find the right namespace for the diagram
         Object target = pb.getTarget();
         Object ns = null;
-        if (target == null) {
+        if (target == null || !ModelFacade.isABase(target)) {
             target = p.getRoot();
             ns = target;
         }
         if (ModelFacade.isANamespace(target)) {
             ns = target;
         } else {
-        
-        Object owner = null;
-        if (ModelFacade.isABase(target)) {        
-            owner = ModelFacade.getContainer(target);
-            if (owner != null && ModelFacade.isANamespace(owner)) {
-                ns = owner;
+
+            Object owner = null;
+            if (ModelFacade.isABase(target)) {
+                owner = ModelFacade.getContainer(target);
+                if (owner != null && ModelFacade.isANamespace(owner)) {
+                    ns = owner;
+                }
             }
         }
-        }
-        if (isValidNamespace(ns)) {
+        if (ns!= null && isValidNamespace(ns)) {
             UMLDiagram diagram = createDiagram(ns);
             p.addMember(diagram);
             ProjectBrowser.TheInstance.getNavigatorPane().addToHistory(diagram);
             ProjectBrowser.TheInstance.setTarget(diagram);
             ProjectBrowser.TheInstance.getNavigatorPane().forceUpdate();
             super.actionPerformed(e);
+        } else {
+            log.error("No valid namespace found");
+            throw new IllegalStateException("No valid namespace found");
         }
         // Issue 1722
         // Removed following code so we allways get the correct namespace of the 
