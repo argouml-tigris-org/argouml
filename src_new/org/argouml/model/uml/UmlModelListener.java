@@ -27,7 +27,6 @@ package org.argouml.model.uml;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -41,11 +40,6 @@ import org.argouml.model.Model;
  * @stereotype singleton
  */
 public class UmlModelListener implements PropertyChangeListener {
-
-    /**
-     * Log4j logging category.
-     */
-    private static final Logger LOG = Logger.getLogger(UmlModelListener.class);
 
     /**
      * Singleton instance.
@@ -83,8 +77,18 @@ public class UmlModelListener implements PropertyChangeListener {
         {
             Project cp = ProjectManager.getManager().getCurrentProject();
 
-            if (cp != null)
+            if (cp != null) {
+                // TODO: We should not be calling the project here.
+                // We have 2 alternatives.
+                // 1. Instead the project should be listening for
+                // change events from the model and should change
+                // its own needsSave flag.
+                // 2. ArgoUML should register its save action with
+                // the model component. The model component can
+                // then enable that save action whenever it chooses.
+                // Bob Tarling 27 Dec 2004
                 cp.setNeedsSave(true);
+            }
         }
     
     }
