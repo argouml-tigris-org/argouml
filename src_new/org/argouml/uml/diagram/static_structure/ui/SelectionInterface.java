@@ -162,6 +162,9 @@ public class SelectionInterface extends SelectionWButtons {
     }
 
     /**
+     * TODO: This is never used by anybody. What is it for? 
+     * Document it, or remove!
+     *
      * @param mgm
      * @param interf4ce
      * @param cl4ss

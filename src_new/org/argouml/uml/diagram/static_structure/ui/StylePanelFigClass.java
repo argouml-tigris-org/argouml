@@ -46,20 +46,24 @@ import org.argouml.ui.StylePanelFigNodeModelElement;
  */
 public class StylePanelFigClass extends StylePanelFigNodeModelElement {
 
-    protected JCheckBox _attrCheckBox = new JCheckBox("Attributes");
+    private JCheckBox attrCheckBox = new JCheckBox("Attributes");
 
-    protected JCheckBox _operCheckBox = new JCheckBox("Operations");
+    private JCheckBox operCheckBox = new JCheckBox("Operations");
 
-    protected JLabel _displayLabel = new JLabel("Display: ");
+    private JLabel displayLabel = new JLabel("Display: ");
 
     /**
      * Flag to indicate that a refresh is going on.
      */
-    private boolean _refreshTransaction = false;
+    private boolean refreshTransaction = false;
 
     ////////////////////////////////////////////////////////////////
     // contructors
 
+    /**
+     * The constructor.
+     * 
+     */
     public StylePanelFigClass() {
         super();
         GridBagLayout gb = (GridBagLayout) getLayout();
@@ -72,8 +76,8 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
         c.gridwidth = 1;
         c.gridy = 0;
         c.weightx = 0.0;
-        gb.setConstraints(_displayLabel, c);
-        add(_displayLabel);
+        gb.setConstraints(displayLabel, c);
+        add(displayLabel);
 
         c.gridx = 1;
         c.gridwidth = 1;
@@ -81,15 +85,15 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
         c.weightx = 0.0;
         JPanel pane = new JPanel();
         pane.setLayout(new FlowLayout(FlowLayout.LEFT));
-        pane.add(_attrCheckBox);
-        pane.add(_operCheckBox);
+        pane.add(attrCheckBox);
+        pane.add(operCheckBox);
         gb.setConstraints(pane, c);
         add(pane);
 
-        _attrCheckBox.setSelected(false);
-        _operCheckBox.setSelected(false);
-        _attrCheckBox.addItemListener(this);
-        _operCheckBox.addItemListener(this);
+        attrCheckBox.setSelected(false);
+        operCheckBox.setSelected(false);
+        attrCheckBox.addItemListener(this);
+        operCheckBox.addItemListener(this);
     }
 
     /**
@@ -107,36 +111,48 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @see org.argouml.ui.TabTarget#refresh()
+     */
     public void refresh() {
-        _refreshTransaction = true;
+        refreshTransaction = true;
         super.refresh();
         FigClass tc = (FigClass) _target;
-        _attrCheckBox.setSelected(tc.isAttributesVisible());
-        _operCheckBox.setSelected(tc.isOperationsVisible());
-        _refreshTransaction = false;
+        attrCheckBox.setSelected(tc.isAttributesVisible());
+        operCheckBox.setSelected(tc.isOperationsVisible());
+        refreshTransaction = false;
     }
 
     ////////////////////////////////////////////////////////////////
     // event handling
 
+    /**
+     * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
+     */
     public void insertUpdate(DocumentEvent e) {
         super.insertUpdate(e);
     }
 
+    /**
+     * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
+     */
     public void removeUpdate(DocumentEvent e) {
         insertUpdate(e);
     }
 
+    /**
+     * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+     */
     public void itemStateChanged(ItemEvent e) {
-        if (!_refreshTransaction) {
+        if (!refreshTransaction) {
             Object src = e.getSource();
 
-            if (src == _attrCheckBox) {
-                ((FigClass) _target).setAttributesVisible(_attrCheckBox
+            if (src == attrCheckBox) {
+                ((FigClass) _target).setAttributesVisible(attrCheckBox
                         .isSelected());
                 markNeedsSave();
-            } else if (src == _operCheckBox) {
-                ((FigClass) _target).setOperationsVisible(_operCheckBox
+            } else if (src == operCheckBox) {
+                ((FigClass) _target).setOperationsVisible(operCheckBox
                         .isSelected());
                 markNeedsSave();
             } else
