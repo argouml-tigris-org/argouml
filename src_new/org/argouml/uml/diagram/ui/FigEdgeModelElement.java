@@ -382,10 +382,11 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
       _stereo.setText("");
       return;
     }
-    // String stereoStr = stereos.getName();
-    // if (stereoStr.length() == 0) _stereo.setText("");
-    // else _stereo.setText("<<" + stereoStr + ">>");
-    _stereo.setText(Notation.generateStereotype(this, me.getStereotype()));
+    String stereoStr = stereos.getName();
+    if (stereoStr.length() == 0) _stereo.setText("");
+    else {
+        _stereo.setText(Notation.generateStereotype(this, stereos));
+    }
   }
 
   public void setOwner(Object own) {
