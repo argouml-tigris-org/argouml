@@ -67,6 +67,7 @@ public abstract class UMLComboBoxModel2
         // this constructor can be without parameters as soon as we improve
         // targetChanged
         setContainer(container);
+        buildModelList();
     }
     
     
@@ -261,8 +262,11 @@ public abstract class UMLComboBoxModel2
      */
     public void setElements(Collection elements) {
         if (elements != null) {
+            int size = list.size() > 0 ? list.size()-1 : 0;
             list.clear();
+            fireIntervalRemoved(this, 0, size);
             list.addAll(elements);
+            fireIntervalAdded(this, 0, elements.size());
         } else
             throw new IllegalArgumentException("In setElements: may not set " +
                 "elements to null collection");
