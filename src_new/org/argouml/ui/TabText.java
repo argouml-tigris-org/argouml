@@ -34,6 +34,8 @@ import javax.swing.text.*;
 import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 
+import org.argouml.swingext.Toolbar;
+
 import org.apache.log4j.*;
 
 /** A tab that contains textual information.

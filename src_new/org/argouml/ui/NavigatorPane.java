@@ -46,17 +46,20 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Category;
+
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.QuadrantPanel;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.swingext.Toolbar;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.ui.ActionAddExistingEdge;
 import org.argouml.uml.diagram.ui.ActionAddExistingNode;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.ActionSetSourcePath;
 import org.argouml.uml.ui.UMLAction;
+
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.PopupGenerator;
 
