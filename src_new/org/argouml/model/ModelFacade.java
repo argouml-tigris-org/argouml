@@ -5491,11 +5491,11 @@ public class ModelFacade {
      * @param name to set
      */
     public static void setName(Object handle, String name) {
-        if (handle instanceof MModelElement) {
+        if ((handle instanceof MModelElement) && (name != null)) {
             ((MModelElement) handle).setName(name);
             return;
         }
-	illegalArgument(handle);
+	illegalArgument(handle, name);
     }
 
     /**
