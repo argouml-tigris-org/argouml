@@ -165,6 +165,7 @@ public class NavigatorPane
         _tree = new DnDNavigatorTree();
         TargetManager.getInstance().addTargetListener(_tree);
         _toolbar = new ToolBar();
+        _toolbar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
         _toolbar.setFloatable(false);
 
         setLayout(new BorderLayout());

@@ -153,6 +153,7 @@ abstract public class PropPanel
         super(title);
         setOrientation(orientation);
         buttonPanel = new ToolBar();
+        buttonPanel.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
         buttonPanel.setFloatable(false);
         //buttonPanel.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
         
@@ -721,6 +722,7 @@ abstract public class PropPanel
         addCaption(captionPanel, 0, 0, 0);
 
         buttonPanel = new ToolBar();
+        buttonPanel.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
         // TODO buttonPanelWithFlowLayout shouldn't exist any more
         // It's just another useless layer
         buttonPanelWithFlowLayout = new JPanel(new FlowLayout());
