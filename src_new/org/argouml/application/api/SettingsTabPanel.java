@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,48 +23,57 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.api;
-import javax.swing.*;
+import javax.swing.JPanel;
 
-/**  An interface which must be implemented as the UI for 
- *   tabs used on the settings panel.
+/** 
+ * An interface which must be implemented as the UI for 
+ * tabs used on the settings panel.
  *
- *   Tabs will only need to load data during {@link #handleSettingsTabRefresh}
- *   and should only save data during {@link #handleSettingsTabSave}.
- *   Changes can be made during editing of the tabs, but the tab must
- *   be able to undo any change if requested
- *   through {@link #handleSettingsTabCancel}.
+ * Tabs will only need to load data during {@link #handleSettingsTabRefresh}
+ * and should only save data during {@link #handleSettingsTabSave}.
+ * Changes can be made during editing of the tabs, but the tab must
+ * be able to undo any change if requested
+ * through {@link #handleSettingsTabCancel}.
  *
- *   @author Thierry Lach
- *   @since 0.9.4
+ * @author Thierry Lach
+ * @since 0.9.4
  */
 public interface SettingsTabPanel {
 
-    /** Save any fields changed.
+    /** 
+     * Save any fields changed.
      */
     public void handleSettingsTabSave();
 
-    /** Cancel any changes.
+    /** 
+     * Cancel any changes.
      */
     public void handleSettingsTabCancel();
 
-    /** Load or reload field settings.
+    /** 
+     * Load or reload field settings.
      */
     public void handleSettingsTabRefresh();
 
-    /** Gets the unlocalized settings tab name.
-     *  @return the unlocalized settings tab name
+    /** 
+     * Gets the unlocalized settings tab name.
+     *
+     * @return the unlocalized settings tab name
      */
     public String getTabKey();
 
-    /** Gets the name of the resource bundle to use.
-     *  @return the name of the resource bundle to use.
+    /** 
+     * Gets the name of the resource bundle to use.
+     *
+     * @return the name of the resource bundle to use.
      */
     public String getTabResourceBundleKey();
 
-    /** Gets the JPanel which implements the tab.
-     *  @return the JPanel which implements the tab
+    /** 
+     * Gets the JPanel which implements the tab.
+     *
+     * @return the JPanel which implements the tab
      */
     public JPanel getTabPanel();
 
 } /* End interface SettingsTabPanel */
-

@@ -43,14 +43,14 @@ import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.UMLAction;
 
 /**
- * Action object for handling Argo settings
+ * Action for starting the Argo settings window.
  * 
  * @author Thomas N
  * @author Thierry Lach
  * @since 0.9.4
  */
-public class ActionSettings extends UMLAction implements
-        ArgoModuleEventListener {
+public class ActionSettings extends UMLAction 
+	implements ArgoModuleEventListener {
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -97,8 +97,7 @@ public class ActionSettings extends UMLAction implements
     /**
      * Helper for localization.
      * 
-     * @param key
-     *            The key to localize.
+     * @param key The key to localize.
      * @return The localized String.
      */
     protected String localize(String key) {
@@ -109,14 +108,16 @@ public class ActionSettings extends UMLAction implements
     // main methods
 
     /**
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see java.awt.event.ActionListener#actionPerformed(
+     *         java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent event) {
 
         ProjectBrowser pb = ProjectBrowser.getInstance();
         if (dialog == null) {
             try {
-                dialog = new ArgoDialog(pb, localize("dialog.settings"),
+                dialog =
+                    new ArgoDialog(pb, localize("dialog.settings"),
                         ArgoDialog.OK_CANCEL_OPTION, true) {
 
                     public void actionPerformed(ActionEvent ev) {
@@ -137,7 +138,6 @@ public class ActionSettings extends UMLAction implements
                     applyButton.setMnemonic(mnemonic.charAt(0));
                 }
                 applyButton.addActionListener(new ActionListener() {
-
                     public void actionPerformed(ActionEvent e) {
                         handleSave();
                     }
@@ -148,20 +148,22 @@ public class ActionSettings extends UMLAction implements
                 ListIterator iterator = list.listIterator();
                 while (iterator.hasNext()) {
                     Object o = iterator.next();
-                    SettingsTabPanel stp = ((PluggableSettingsTab) o)
-                            .getSettingsTabPanel();
+                    SettingsTabPanel stp = 
+                        ((PluggableSettingsTab) o).getSettingsTabPanel();
 
-                    tabs.addTab(Translator.localize(stp
-                            .getTabResourceBundleKey(), stp.getTabKey()), stp
-                            .getTabPanel());
+                    tabs.addTab(
+                            Translator.localize(stp.getTabResourceBundleKey(), 
+                                    		stp.getTabKey()), 
+                            stp.getTabPanel());
                 }
 
                 // Increase width to accommodate all tabs on one row.
                 // (temporary solution until tabs are replaced with tree)
                 final int minimumWidth = 465;
-                tabs.setPreferredSize(new Dimension(Math.max(tabs
-                        .getPreferredSize().width, minimumWidth), tabs
-                        .getPreferredSize().height));
+                tabs.setPreferredSize(
+                        new Dimension(Math.max(tabs.getPreferredSize().width, 
+                                	       minimumWidth), 
+                                      tabs.getPreferredSize().height));
 
                 dialog.setContent(tabs);
             } catch (Exception exception) {
@@ -172,7 +174,6 @@ public class ActionSettings extends UMLAction implements
         handleRefresh();
         dialog.toFront();
         dialog.setVisible(true);
-
     }
 
     /**
@@ -199,6 +200,9 @@ public class ActionSettings extends UMLAction implements
     public void moduleDisabled(ArgoModuleEvent event) {
     }
 
+    /**
+     * Called when the user has pressed Save. Performs "Save" in all Tabs.
+     */
     private void handleSave() {
         for (int i = 0; i < tabs.getComponentCount(); i++) {
             Object o = tabs.getComponent(i);
@@ -208,6 +212,9 @@ public class ActionSettings extends UMLAction implements
         }
     }
 
+    /**
+     * Called when the user has pressed Cancel. Performs "Cancel" in all Tabs.
+     */
     private void handleCancel() {
         for (int i = 0; i < tabs.getComponentCount(); i++) {
             Object o = tabs.getComponent(i);
@@ -217,6 +224,9 @@ public class ActionSettings extends UMLAction implements
         }
     }
 
+    /**
+     * Called when the user has pressed Refresh. Performs "Refresh" in all Tabs.
+     */
     private void handleRefresh() {
         for (int i = 0; i < tabs.getComponentCount(); i++) {
             Object o = tabs.getComponent(i);
