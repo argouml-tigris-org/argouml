@@ -28,10 +28,21 @@ import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.state_machines.MCallEvent;
+import ru.novosoft.uml.behavior.state_machines.MChangeEvent;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.behavior.state_machines.MEvent;
+import ru.novosoft.uml.behavior.state_machines.MFinalState;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
+import ru.novosoft.uml.behavior.state_machines.MPseudostate;
+import ru.novosoft.uml.behavior.state_machines.MSignalEvent;
+import ru.novosoft.uml.behavior.state_machines.MSimpleState;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.behavior.state_machines.MStubState;
+import ru.novosoft.uml.behavior.state_machines.MSubmachineState;
+import ru.novosoft.uml.behavior.state_machines.MSynchState;
+import ru.novosoft.uml.behavior.state_machines.MTimeEvent;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 
 /**
@@ -69,6 +80,16 @@ public class StateMachinesFactory extends AbstractModelFactory {
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML ChangeEvent.
+     *  
+     *  @return an initialized UML ChangeEvent instance.
+     */
+    public MChangeEvent createChangeEvent() {
+        MChangeEvent modelElement = MFactory.getDefaultFactory().createChangeEvent();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
     /** Create an empty but initialized instance of a UML CompositeState.
      *  
      *  @return an initialized UML CompositeState instance.
@@ -79,12 +100,54 @@ public class StateMachinesFactory extends AbstractModelFactory {
 	return modelElement;
     }
 
+    // TODO:  add MEvent createEvent()
+
+    /** Create an empty but initialized instance of a UML FinalState.
+     *  
+     *  @return an initialized UML FinalState instance.
+     */
+    public MFinalState createFinalState() {
+        MFinalState modelElement = MFactory.getDefaultFactory().createFinalState();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
     /** Create an empty but initialized instance of a UML Guard.
      *  
      *  @return an initialized UML Guard instance.
      */
     public MGuard createGuard() {
         MGuard modelElement = MFactory.getDefaultFactory().createGuard();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML Pseudostate.
+     *  
+     *  @return an initialized UML Pseudostate instance.
+     */
+    public MPseudostate createPseudostate() {
+        MPseudostate modelElement = MFactory.getDefaultFactory().createPseudostate();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML SignalEvent.
+     *  
+     *  @return an initialized UML SignalEvent instance.
+     */
+    public MSignalEvent createSignalEvent() {
+        MSignalEvent modelElement = MFactory.getDefaultFactory().createSignalEvent();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML SimpleState.
+     *  
+     *  @return an initialized UML SimpleState instance.
+     */
+    public MSimpleState createSimpleState() {
+        MSimpleState modelElement = MFactory.getDefaultFactory().createSimpleState();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -105,6 +168,48 @@ public class StateMachinesFactory extends AbstractModelFactory {
      */
     public MStateMachine createStateMachine() {
         MStateMachine modelElement = MFactory.getDefaultFactory().createStateMachine();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    // TODO: add MStateVertex createVertex()
+
+    /** Create an empty but initialized instance of a UML StubState.
+     *  
+     *  @return an initialized UML StubState instance.
+     */
+    public MStubState createStubState() {
+        MStubState modelElement = MFactory.getDefaultFactory().createStubState();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML SubmachineState.
+     *  
+     *  @return an initialized UML SubmachineState instance.
+     */
+    public MSubmachineState createSubmachineState() {
+        MSubmachineState modelElement = MFactory.getDefaultFactory().createSubmachineState();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML SynchState.
+     *  
+     *  @return an initialized UML SynchState instance.
+     */
+    public MSynchState createSynchState() {
+        MSynchState modelElement = MFactory.getDefaultFactory().createSynchState();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML TimeEvent.
+     *  
+     *  @return an initialized UML TimeEvent instance.
+     */
+    public MTimeEvent createTimeEvent() {
+        MTimeEvent modelElement = MFactory.getDefaultFactory().createTimeEvent();
 	super.initialize(modelElement);
 	return modelElement;
     }

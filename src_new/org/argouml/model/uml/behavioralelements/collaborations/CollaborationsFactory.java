@@ -29,8 +29,9 @@ import org.argouml.model.uml.UmlFactory;
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
+import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
+import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 
 /**
@@ -74,6 +75,16 @@ public class CollaborationsFactory extends AbstractModelFactory {
      */
     public MAssociationRole createAssociationRole() {
         MAssociationRole modelElement = MFactory.getDefaultFactory().createAssociationRole();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML ClassifierRole.
+     *  
+     *  @return an initialized UML ClassifierRole instance.
+     */
+    public MClassifierRole createClassifierRole() {
+        MClassifierRole modelElement = MFactory.getDefaultFactory().createClassifierRole();
 	super.initialize(modelElement);
 	return modelElement;
     }

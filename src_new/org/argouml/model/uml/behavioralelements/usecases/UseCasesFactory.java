@@ -32,6 +32,7 @@ import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
+import ru.novosoft.uml.behavior.use_cases.MUseCaseInstance;
 
 /**
  * Factory to create UML classes for the UML
@@ -104,6 +105,16 @@ public class UseCasesFactory extends AbstractModelFactory {
      */
     public MUseCase createUseCase() {
         MUseCase modelElement = MFactory.getDefaultFactory().createUseCase();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UseCaseInstance
+     *  
+     *  @return an initialized UseCaseInstance instance.
+     */
+    public MUseCaseInstance createUseCaseInstance() {
+        MUseCaseInstance modelElement = MFactory.getDefaultFactory().createUseCaseInstance();
 	super.initialize(modelElement);
 	return modelElement;
     }

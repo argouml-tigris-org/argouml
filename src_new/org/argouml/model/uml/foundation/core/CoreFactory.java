@@ -29,22 +29,32 @@ import org.argouml.model.uml.UmlFactory;
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.foundation.core.MAbstraction;
 import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationClass;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MBinding;
 import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MComment;
 import ru.novosoft.uml.foundation.core.MComponent;
 import ru.novosoft.uml.foundation.core.MConstraint;
 import ru.novosoft.uml.foundation.core.MDataType;
 import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MElementResidence;
+import ru.novosoft.uml.foundation.core.MFeature;
+import ru.novosoft.uml.foundation.core.MFlow;
 import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.foundation.core.MInterface;
 import ru.novosoft.uml.foundation.core.MMethod;
+import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MNode;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
+import ru.novosoft.uml.foundation.core.MPermission;
+import ru.novosoft.uml.foundation.core.MPresentationElement;
+import ru.novosoft.uml.foundation.core.MRelationship;
+import ru.novosoft.uml.foundation.core.MStructuralFeature;
+import ru.novosoft.uml.foundation.core.MTemplateParameter;
 import ru.novosoft.uml.foundation.core.MUsage;
 
 /**
@@ -93,6 +103,16 @@ public class CoreFactory extends AbstractModelFactory {
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML AssociationClass.
+     *  
+     *  @return an initialized UML AssociationClass instance.
+     */
+    public MAssociationClass createAssociationClass() {
+        MAssociationClass modelElement = MFactory.getDefaultFactory().createAssociationClass();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
     /** Create an empty but initialized instance of a UML AssociationEnd.
      *  
      *  @return an initialized UML AssociationEnd instance.
@@ -129,6 +149,16 @@ public class CoreFactory extends AbstractModelFactory {
      */
     public MClass createClass() {
         MClass modelElement = MFactory.getDefaultFactory().createClass();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML Classifier.
+     *  
+     *  @return an initialized UML Classifier instance.
+     */
+    public MClassifier createClassifier() {
+        MClassifier modelElement = MFactory.getDefaultFactory().createClassifier();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -193,6 +223,18 @@ public class CoreFactory extends AbstractModelFactory {
 	return modelElement;
     }
 
+    // TODO:  implement createFeature()
+
+    /** Create an empty but initialized instance of a UML Flow.
+     *  
+     *  @return an initialized UML Flow instance.
+     */
+    public MFlow createFlow() {
+        MFlow modelElement = MFactory.getDefaultFactory().createFlow();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
     /** Create an empty but initialized instance of a UML Generalization.
      *  
      *  @return an initialized UML Generalization instance.
@@ -219,6 +261,16 @@ public class CoreFactory extends AbstractModelFactory {
      */
     public MMethod createMethod() {
         MMethod modelElement = MFactory.getDefaultFactory().createMethod();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML Namespace.
+     *  
+     *  @return an initialized UML Namespace instance.
+     */
+    public MNamespace createNamespace() {
+        MNamespace modelElement = MFactory.getDefaultFactory().createNamespace();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -253,6 +305,40 @@ public class CoreFactory extends AbstractModelFactory {
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML Permission.
+     *  
+     *  @return an initialized UML Permission instance.
+     */
+    public MPermission createPermission() {
+        MPermission modelElement = MFactory.getDefaultFactory().createPermission();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    // TODO:  implement createPresentationElement()
+
+    /** Create an empty but initialized instance of a UML Relationship.
+     *  
+     *  @return an initialized UML Relationship instance.
+     */
+    public MRelationship createRelationship() {
+        MRelationship modelElement = MFactory.getDefaultFactory().createRelationship();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    // TODO:  implement createStructuralFeature()
+
+    /** Create an empty but initialized instance of a UML TemplateParameter.
+     *  
+     *  @return an initialized UML TemplateParameter instance.
+     */
+    public MTemplateParameter createTemplateParameter() {
+        MTemplateParameter modelElement = MFactory.getDefaultFactory().createTemplateParameter();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
     /** Create an empty but initialized instance of a UML Usage.
      *  
      *  @return an initialized UML Usage instance.
@@ -262,6 +348,5 @@ public class CoreFactory extends AbstractModelFactory {
 	super.initialize(modelElement);
 	return modelElement;
     }
-
 }
 

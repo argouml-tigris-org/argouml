@@ -27,15 +27,28 @@ import org.argouml.model.uml.AbstractModelFactory;
 import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.MFactory;
+import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.common_behavior.MActionSequence;
+import ru.novosoft.uml.behavior.common_behavior.MArgument;
+import ru.novosoft.uml.behavior.common_behavior.MAttributeLink;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
+import ru.novosoft.uml.behavior.common_behavior.MCreateAction;
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
+import ru.novosoft.uml.behavior.common_behavior.MDataValue;
+import ru.novosoft.uml.behavior.common_behavior.MDestroyAction;
 import ru.novosoft.uml.behavior.common_behavior.MException;
+import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
 import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
+import ru.novosoft.uml.behavior.common_behavior.MReception;
+import ru.novosoft.uml.behavior.common_behavior.MReturnAction;
+import ru.novosoft.uml.behavior.common_behavior.MSendAction;
 import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
+import ru.novosoft.uml.behavior.common_behavior.MTerminateAction;
+import ru.novosoft.uml.behavior.common_behavior.MUninterpretedAction;
 
 /**
  * Factory to create UML classes for the UML
@@ -62,6 +75,46 @@ public class CommonBehaviorFactory extends AbstractModelFactory {
     private CommonBehaviorFactory() {
     }
 
+    /** Create an empty but initialized instance of a UML Action.
+     *  
+     *  @return an initialized UML Action instance.
+     */
+    public MAction createAction() {
+        MAction modelElement = MFactory.getDefaultFactory().createAction();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML ActionSequence.
+     *  
+     *  @return an initialized UML ActionSequence instance.
+     */
+    public MActionSequence createActionSequence() {
+        MActionSequence modelElement = MFactory.getDefaultFactory().createActionSequence();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML Argument.
+     *  
+     *  @return an initialized UML Argument instance.
+     */
+    public MArgument createArgument() {
+        MArgument modelElement = MFactory.getDefaultFactory().createArgument();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML AttributeLink.
+     *  
+     *  @return an initialized UML AttributeLink instance.
+     */
+    public MAttributeLink createAttributeLink() {
+        MAttributeLink modelElement = MFactory.getDefaultFactory().createAttributeLink();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
     /** Create an empty but initialized instance of a UML CallAction.
      *  
      *  @return an initialized UML CallAction instance.
@@ -82,12 +135,52 @@ public class CommonBehaviorFactory extends AbstractModelFactory {
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML CreateAction.
+     *  
+     *  @return an initialized UML CreateAction instance.
+     */
+    public MCreateAction createCreateAction() {
+        MCreateAction modelElement = MFactory.getDefaultFactory().createCreateAction();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML DataValue.
+     *  
+     *  @return an initialized UML DataValue instance.
+     */
+    public MDataValue createDataValue() {
+        MDataValue modelElement = MFactory.getDefaultFactory().createDataValue();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML DestroyAction.
+     *  
+     *  @return an initialized UML DestroyAction instance.
+     */
+    public MDestroyAction createDestroyAction() {
+        MDestroyAction modelElement = MFactory.getDefaultFactory().createDestroyAction();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
     /** Create an empty but initialized instance of a UML Exception.
      *  
      *  @return an initialized UML Exception instance.
      */
     public MException createException() {
         MException modelElement = MFactory.getDefaultFactory().createException();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML Instance.
+     *  
+     *  @return an initialized UML Instance instance.
+     */
+    public MInstance createInstance() {
+        MInstance modelElement = MFactory.getDefaultFactory().createInstance();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -132,6 +225,36 @@ public class CommonBehaviorFactory extends AbstractModelFactory {
 	return modelElement;
     }
 
+    /** Create an empty but initialized instance of a UML Reception.
+     *  
+     *  @return an initialized UML Reception instance.
+     */
+    public MReception createReception() {
+        MReception modelElement = MFactory.getDefaultFactory().createReception();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML ReturnAction.
+     *  
+     *  @return an initialized UML ReturnAction instance.
+     */
+    public MReturnAction createReturnAction() {
+        MReturnAction modelElement = MFactory.getDefaultFactory().createReturnAction();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML SendAction.
+     *  
+     *  @return an initialized UML SendAction instance.
+     */
+    public MSendAction createSendAction() {
+        MSendAction modelElement = MFactory.getDefaultFactory().createSendAction();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
     /** Create an empty but initialized instance of a UML Signal.
      *  
      *  @return an initialized UML Signal instance.
@@ -148,6 +271,26 @@ public class CommonBehaviorFactory extends AbstractModelFactory {
      */
     public MStimulus createStimulus() {
         MStimulus modelElement = MFactory.getDefaultFactory().createStimulus();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML TerminateAction.
+     *  
+     *  @return an initialized UML TerminateAction instance.
+     */
+    public MTerminateAction createTerminateAction() {
+        MTerminateAction modelElement = MFactory.getDefaultFactory().createTerminateAction();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML UninterpretedAction.
+     *  
+     *  @return an initialized UML UninterpretedAction instance.
+     */
+    public MUninterpretedAction createUninterpretedAction() {
+        MUninterpretedAction modelElement = MFactory.getDefaultFactory().createUninterpretedAction();
 	super.initialize(modelElement);
 	return modelElement;
     }

@@ -29,6 +29,11 @@ import org.argouml.model.uml.UmlFactory;
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.activity_graphs.MActionState;
 import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
+import ru.novosoft.uml.behavior.activity_graphs.MCallState;
+import ru.novosoft.uml.behavior.activity_graphs.MClassifierInState;
+import ru.novosoft.uml.behavior.activity_graphs.MObjectFlowState;
+import ru.novosoft.uml.behavior.activity_graphs.MPartition;
+import ru.novosoft.uml.behavior.activity_graphs.MSubactivityState;
 
 /**
  * Factory to create UML classes for the UML
@@ -71,6 +76,56 @@ public class ActivityGraphsFactory extends AbstractModelFactory {
      */
     public MActivityGraph createActivityGraph() {
         MActivityGraph modelElement = MFactory.getDefaultFactory().createActivityGraph();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML CallState.
+     *  
+     *  @return an initialized UML CallState instance.
+     */
+    public MCallState createCallState() {
+        MCallState modelElement = MFactory.getDefaultFactory().createCallState();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML ClassifierInState.
+     *  
+     *  @return an initialized UML ClassifierInState instance.
+     */
+    public MClassifierInState createClassifierInState() {
+        MClassifierInState modelElement = MFactory.getDefaultFactory().createClassifierInState();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML ObjectFlowState.
+     *  
+     *  @return an initialized UML ObjectFlowState instance.
+     */
+    public MObjectFlowState createObjectFlowState() {
+        MObjectFlowState modelElement = MFactory.getDefaultFactory().createObjectFlowState();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML Partition.
+     *  
+     *  @return an initialized UML Partition instance.
+     */
+    public MPartition createPartition() {
+        MPartition modelElement = MFactory.getDefaultFactory().createPartition();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML SubactivityState.
+     *  
+     *  @return an initialized UML SubactivityState instance.
+     */
+    public MSubactivityState createSubactivityState() {
+        MSubactivityState modelElement = MFactory.getDefaultFactory().createSubactivityState();
 	super.initialize(modelElement);
 	return modelElement;
     }
