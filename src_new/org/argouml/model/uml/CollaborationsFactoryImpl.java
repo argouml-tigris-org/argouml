@@ -125,7 +125,7 @@ public class CollaborationsFactoryImpl
      *
      * @return an initialized UML Message instance.
      */
-    public MMessage createMessage() {
+    public Object createMessage() {
         MMessage modelElement = MFactory.getDefaultFactory().createMessage();
         super.initialize(modelElement);
         return modelElement;
@@ -153,7 +153,7 @@ public class CollaborationsFactoryImpl
      * @param handle the namespace for the collaboration
      * @return the created collaboration
      */
-    public MCollaboration buildCollaboration(Object handle) {
+    public Object buildCollaboration(Object handle) {
         if (ModelFacade.isANamespace(handle)) {
             MNamespace namespace = (MNamespace) handle;
             MCollaboration modelelement =
@@ -207,7 +207,7 @@ public class CollaborationsFactoryImpl
      * for the new interaction
      * @return the newly build interaction
      */
-    public MInteraction buildInteraction(Object handle) {
+    public Object buildInteraction(Object handle) {
         if (ModelFacade.isACollaboration(handle)) {
             MCollaboration collab = (MCollaboration) handle;
             MInteraction inter = (MInteraction) createInteraction();
@@ -224,7 +224,7 @@ public class CollaborationsFactoryImpl
      * @param atype the classifierrole
      * @return the associationendrole
      */
-    public MAssociationEndRole buildAssociationEndRole(Object atype) {
+    public Object buildAssociationEndRole(Object atype) {
         MClassifierRole type = (MClassifierRole) atype;
         Object end = createAssociationEndRole();
         ((MAssociationEndRole) end).setType(type);
@@ -238,7 +238,7 @@ public class CollaborationsFactoryImpl
      * @param to the second classifierrole
      * @return the newly build associationrole
      */
-    public MAssociationRole buildAssociationRole(Object /*MClassifierRole*/
+    public Object buildAssociationRole(Object /*MClassifierRole*/
     from, Object
     /*MClassifierRole*/
     to) {
@@ -249,8 +249,10 @@ public class CollaborationsFactoryImpl
             MAssociationRole role = (MAssociationRole) createAssociationRole();
             // we do not create on basis of associations between the
             // bases of the classifierroles
-            role.addConnection(buildAssociationEndRole(from));
-            role.addConnection(buildAssociationEndRole(to));
+            role.addConnection(
+                    (MAssociationEndRole) buildAssociationEndRole(from));
+            role.addConnection(
+                    (MAssociationEndRole) buildAssociationEndRole(to));
             colFrom.addOwnedElement(role);
             return role;
         }
@@ -268,34 +270,53 @@ public class CollaborationsFactoryImpl
      * @param unidirectional true if unidirectional
      * @return the newly build assoc. role
      */
-    public MAssociationRole buildAssociationRole(
-        MClassifierRole from,
-        MAggregationKind agg1,
-        MClassifierRole to,
-        MAggregationKind agg2,
+    public Object buildAssociationRole(
+        Object from,
+        Object agg1,
+        Object to,
+        Object agg2,
         Boolean unidirectional) {
-        MCollaboration colFrom = (MCollaboration) from.getNamespace();
-        MCollaboration colTo = (MCollaboration) to.getNamespace();
+        if (!(from instanceof MClassifierRole)) {
+            throw new IllegalArgumentException();
+        }
+        if (!(to instanceof MClassifierRole)) {
+            throw new IllegalArgumentException();
+        }
+        MCollaboration colFrom =
+            (MCollaboration) ((MClassifierRole) from).getNamespace();
+        MCollaboration colTo =
+            (MCollaboration) ((MClassifierRole) to).getNamespace();
+
         if (agg1 == null) {
             agg1 = MAggregationKind.NONE;
+        }
+        if (!(agg1 instanceof MAggregationKind)) {
+            throw new IllegalArgumentException();
+        }
+
+        if (!(agg2 instanceof MAggregationKind)) {
+            throw new IllegalArgumentException();
         }
         if (agg2 == null) {
             agg2 = MAggregationKind.NONE;
         }
+
         if (colFrom != null && colFrom.equals(colTo)) {
             boolean nav1 = Boolean.FALSE.equals(unidirectional);
             boolean nav2 = true;
             MAssociationRole role = (MAssociationRole) createAssociationRole();
             // we do not create on basis of associations between the
             // bases of the classifierroles
-            MAssociationEndRole fromEnd = buildAssociationEndRole(from);
+            MAssociationEndRole fromEnd =
+                (MAssociationEndRole) buildAssociationEndRole(from);
             fromEnd.setNavigable(nav1);
-            fromEnd.setAggregation(agg1);
+            fromEnd.setAggregation((MAggregationKind) agg1);
             role.addConnection(fromEnd);
 
-            MAssociationEndRole toEnd = buildAssociationEndRole(to);
+            MAssociationEndRole toEnd =
+                (MAssociationEndRole) buildAssociationEndRole(to);
             toEnd.setNavigable(nav2);
-            toEnd.setAggregation(agg2);
+            toEnd.setAggregation((MAggregationKind) agg2);
             role.addConnection(toEnd);
 
             colFrom.addOwnedElement(role);
@@ -353,7 +374,7 @@ public class CollaborationsFactoryImpl
             return null;
         }
 
-        MMessage message = createMessage();
+        MMessage message = (MMessage) createMessage();
 
         inter.addMessage(message);
 
@@ -446,7 +467,7 @@ public class CollaborationsFactoryImpl
         MAssociationRole role = (MAssociationRole) arole;
         MInteraction inter = null;
         if (collab.getInteractions().size() == 0) {
-            inter = buildInteraction(collab);
+            inter = (MInteraction) buildInteraction(collab);
         } else {
             inter = (MInteraction) (collab.getInteractions().toArray())[0];
         }
@@ -460,34 +481,49 @@ public class CollaborationsFactoryImpl
      * @param interaction the interaction
      * @return the newly build message
      */
-    public MMessage buildActivator(MMessage owner, MInteraction interaction) {
+    public Object buildActivator(Object owner, Object interaction) {
         if (owner == null) {
             return null;
         }
+        if (!(owner instanceof MMessage)) {
+            throw new IllegalArgumentException();
+        }
+
         if (interaction == null) {
-            interaction = owner.getInteraction();
+            interaction = ((MMessage) owner).getInteraction();
         }
         if (interaction == null) {
             return null;
         }
+        if (!(interaction instanceof MInteraction)) {
+            throw new IllegalArgumentException();
+        }
 
         MMessage activator = (MMessage) createMessage();
-        activator.setInteraction(interaction);
-        owner.setActivator(activator);
+        activator.setInteraction((MInteraction) interaction);
+        ((MMessage) owner).setActivator(activator);
         return activator;
     }
 
     /**
      * @param elem the associationendrole
      */
-    public void deleteAssociationEndRole(MAssociationEndRole elem) {
+    public void deleteAssociationEndRole(Object elem) {
+        if (!(elem instanceof MAssociationEndRole)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the associationrole
      */
-    public void deleteAssociationRole(MAssociationRole elem) {
-        Iterator it = elem.getMessages().iterator();
+    public void deleteAssociationRole(Object elem) {
+        if (!(elem instanceof MAssociationRole)) {
+            throw new IllegalArgumentException();
+        }
+
+        Iterator it = ((MAssociationRole) elem).getMessages().iterator();
         while (it.hasNext()) {
             Model.getUmlFactory().delete(it.next());
         }
@@ -496,25 +532,41 @@ public class CollaborationsFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteClassifierRole(MClassifierRole elem) {
+    public void deleteClassifierRole(Object elem) {
+        if (!(elem instanceof MClassifierRole)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the UML element to be delete
      */
-    public void deleteCollaboration(MCollaboration elem) {
+    public void deleteCollaboration(Object elem) {
+        if (!(elem instanceof MCollaboration)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the UML element to be delete
      */
-    public void deleteInteraction(MInteraction elem) {
+    public void deleteInteraction(Object elem) {
+        if (!(elem instanceof MInteraction)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the UML element to be delete
      */
-    public void deleteMessage(MMessage elem) {
+    public void deleteMessage(Object elem) {
+        if (!(elem instanceof MMessage)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
 }

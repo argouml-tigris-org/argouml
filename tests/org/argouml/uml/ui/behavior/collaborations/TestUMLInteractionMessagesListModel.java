@@ -25,10 +25,8 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
-
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
 
 /**
  * @since Oct 30, 2002
@@ -64,10 +62,10 @@ public class TestUMLInteractionMessagesListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#fillModel()
      */
     protected Object[] fillModel() {
-        MMessage[] messages = new MMessage[10];
+        Object[] messages = new Object[10];
         for (int i = 0; i < messages.length; i++) {
             messages[i] = Model.getCollaborationsFactory().createMessage();
-            ((MInteraction) getElem()).addMessage(messages[i]);
+            ModelFacade.addMessage(getElem(), messages[i]);
         }
         return messages;
     }
@@ -77,7 +75,7 @@ public class TestUMLInteractionMessagesListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MInteraction) getElem()).removeMessage((MMessage) elements[i]);
+            ModelFacade.removeMessage(getElem(), elements[i]);
         }
     }
 

@@ -30,20 +30,15 @@ import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 
-import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.model_management.MModel;
-
 /**
  * @since Nov 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public class TestUMLMessageActivatorComboBoxModel extends TestCase {
 
-    private int oldEventPolicy;
-    private MMessage[] activators;
+    private Object[] activators;
     private UMLMessageActivatorComboBoxModel model;
-    private MMessage elem;
+    private Object elem;
 
     /**
      * Constructor for TestUMLMessageActivatorComboBoxModel.
@@ -59,10 +54,8 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         elem = Model.getCollaborationsFactory().createMessage();
-        oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        activators = new MMessage[10];
-        MModel m = Model.getModelManagementFactory().createModel();
+        activators = new Object[10];
+        Object m = Model.getModelManagementFactory().createModel();
         Object inter =
             Model.getCollaborationsFactory().createInteraction();
         Object col =
@@ -88,7 +81,6 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
         for (int i = 0; i < 10; i++) {
             Model.getUmlFactory().delete(activators[i]);
         }
-        MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
 
@@ -106,7 +98,7 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
      * Test setActivator().
      */
     public void testSetActivator() {
-        elem.setActivator(activators[0]);
+        ModelFacade.setActivator(elem, activators[0]);
         assertTrue(model.getSelectedItem() == activators[0]);
     }
 
@@ -114,7 +106,7 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
      * Test setActivator() with null argument.
      */
     public void testSetActivatorToNull() {
-        elem.setActivator(null);
+        ModelFacade.setActivator(elem, null);
         assertNull(model.getSelectedItem());
     }
 

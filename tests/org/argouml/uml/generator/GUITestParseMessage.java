@@ -33,9 +33,6 @@ import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.UmlFactory;
 
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 
 /**
@@ -61,7 +58,7 @@ public class GUITestParseMessage extends TestCase {
         UmlFactory fact = Model.getUmlFactory();
 
         Object coll = fact.getCollaborations().createCollaboration();
-        MInteraction inter = fact.getCollaborations().buildInteraction(coll);
+        Object inter = fact.getCollaborations().buildInteraction(coll);
 
         Object cl1 = fact.getCollaborations().createClassifierRole();
         Object cl2 = fact.getCollaborations().createClassifierRole();
@@ -74,17 +71,17 @@ public class GUITestParseMessage extends TestCase {
         ModelFacade.setNamespace(cl4, coll);
         ModelFacade.setNamespace(cl5, coll);
 
-        MAssociationRole r1to2 =
+        Object r1to2 =
             fact.getCollaborations().buildAssociationRole(cl1, cl2);
-        MAssociationRole r2to3 =
+        Object r2to3 =
             fact.getCollaborations().buildAssociationRole(cl2, cl3);
-        MAssociationRole r3to4 =
+        Object r3to4 =
             fact.getCollaborations().buildAssociationRole(cl3, cl4);
-        MAssociationRole r4to5 =
+        Object r4to5 =
             fact.getCollaborations().buildAssociationRole(cl4, cl5);
-        MAssociationRole r3to1 =
+        Object r3to1 =
             fact.getCollaborations().buildAssociationRole(cl3, cl1);
-        MAssociationRole r5to3 =
+        Object r5to3 =
             fact.getCollaborations().buildAssociationRole(cl5, cl3);
 
         /* START TESTING STUFF */

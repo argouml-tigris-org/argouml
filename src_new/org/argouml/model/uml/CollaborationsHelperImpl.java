@@ -73,13 +73,17 @@ public class CollaborationsHelperImpl implements CollaborationsHelper {
      * @return Collection collection of all classifierroles
      * @param ns the namespace
      */
-    public Collection getAllClassifierRoles(MNamespace ns) {
-	Iterator it = ns.getOwnedElements().iterator();
+    public Collection getAllClassifierRoles(Object ns) {
+        if (!(ns instanceof MNamespace)) {
+            throw new IllegalArgumentException();
+        }
+
+        Iterator it = ((MNamespace) ns).getOwnedElements().iterator();
 	List list = new ArrayList();
 	while (it.hasNext()) {
 	    Object o = it.next();
 	    if (o instanceof MNamespace) {
-		list.addAll(getAllClassifierRoles((MNamespace) o));
+		list.addAll(getAllClassifierRoles(o));
 	    }
 	    if (o instanceof MClassifierRole) {
 		list.add(o);
@@ -94,11 +98,17 @@ public class CollaborationsHelperImpl implements CollaborationsHelper {
      * thereby forming the set of associationroles the classifierrole
      * can use. UML Spec 1.3 section 2.10.3.3.
      *
-     * @param role the classifierrole
+     * @param roleArg the classifierrole
      * @return Collection the set of associationroles the classifierrole
      * can use
      */
-    public Collection getAllPossibleAssociationRoles(MClassifierRole role) {
+    public Collection getAllPossibleAssociationRoles(Object roleArg) {
+        if (!(roleArg instanceof MClassifierRole)) {
+            throw new IllegalArgumentException();
+        }
+
+        MClassifierRole role = (MClassifierRole) roleArg;
+
 	if (role == null || role.getBases().isEmpty()) {
 	    return new ArrayList();
 	}
@@ -119,12 +129,17 @@ public class CollaborationsHelperImpl implements CollaborationsHelper {
      * @return Collection all classifierroles associated via associationroles
      * to the given classifierrole role
      */
-    public Collection getClassifierRoles(MClassifierRole role) {
+    public Collection getClassifierRoles(Object role) {
 	if (role == null) {
 	    return new ArrayList();
 	}
+
+        if (!(role instanceof MClassifierRole)) {
+            throw new IllegalArgumentException();
+        }
+
 	List roles = new ArrayList();
-	Iterator it = role.getAssociationEnds().iterator();
+	Iterator it = ((MClassifierRole) role).getAssociationEnds().iterator();
 	while (it.hasNext()) {
 	    MAssociationEnd end = (MAssociationEnd) it.next();
 	    if (end instanceof MAssociationEndRole) {
@@ -200,7 +215,7 @@ public class CollaborationsHelperImpl implements CollaborationsHelper {
 	    Object o = it.next();
 	    if (!predecessors.contains(o)
 		&& mes != o
-		&& !hasAsActivator((MMessage) o, mes)
+		&& !hasAsActivator(o, mes)
 		&& !((MMessage) o).getPredecessors().contains(mes)) {
 		list.add(o);
 	    }
@@ -222,15 +237,23 @@ public class CollaborationsHelperImpl implements CollaborationsHelper {
      * @return boolean true if the given message has the message activator
      * somewhere as it's activator
      */
-    public boolean hasAsActivator(MMessage message, MMessage activator) {
-    	if (message.getActivator() == null) {
+    public boolean hasAsActivator(Object message, Object activator) {
+        if (!(message instanceof MMessage)) {
+            throw new IllegalArgumentException();
+        }
+        if (!(activator instanceof MMessage)) {
+            throw new IllegalArgumentException();
+        }
+
+        MMessage messActivator = ((MMessage) message).getActivator();
+        if (messActivator == null) {
     	    return false;
     	}
-    	if (message.getActivator() == activator
-            || message.getActivator().getPredecessors().contains(activator)) {
+    	if (messActivator == activator
+            || messActivator.getPredecessors().contains(activator)) {
     	    return true;
         }
-        return hasAsActivator(message.getActivator(), activator);
+        return hasAsActivator(messActivator, activator);
     }
 
     /**
@@ -489,7 +512,7 @@ public class CollaborationsHelperImpl implements CollaborationsHelper {
      * @param role the given associationrole
      * @return Collection all possible bases
      */
-    public Collection getAllPossibleBases(MAssociationRole role) {
+    private Collection getAllPossibleBases(MAssociationRole role) {
         Set ret = new HashSet();
         if (role == null || role.getNamespace() == null) {
             return ret;
@@ -558,7 +581,7 @@ public class CollaborationsHelperImpl implements CollaborationsHelper {
      * @param role the given classifierrole
      * @return Collection all possible bases
      */
-    public Collection getAllPossibleBases(MClassifierRole role) {
+    private Collection getAllPossibleBases(MClassifierRole role) {
         if (role == null || ModelFacade.getNamespace(role) == null) {
             return new ArrayList();
         }
@@ -642,15 +665,16 @@ public class CollaborationsHelperImpl implements CollaborationsHelper {
      * Returns true if a collaboration may be added to the given context. To
      * decouple ArgoUML as much as possible from the NSUML model, the parameter
      * of the method is of type Object.<p>
-     * 
-     * TODO: MVW: Removed the MCollaboration and MModel. Why were they 
-     * included in the test below?
-     * <p>
+     *
+     * TODO: MVW: Removed the MCollaboration and MModel. Why were they
+     * included in the test below?<p>
+     *
      * - MCollaboration: this allows a 2nd diagram for the same collaboration.
-     * According to my interpretation of the UML spec, this is not alowed; 
-     * a collaboration diagram  maps on a collaboration. <p>
-     * - MModel: this allowed a collaboration diagram without a 
-     * represented classifier/operation. But there is no way 
+     * According to my interpretation of the UML spec, this is not alowed;
+     * a collaboration diagram  maps on a collaboration.<p>
+     *
+     * - MModel: this allowed a collaboration diagram without a
+     * represented classifier/operation. But there is no way
      * to correct this later...
      *
      * @param context the given context

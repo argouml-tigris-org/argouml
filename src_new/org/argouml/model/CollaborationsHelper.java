@@ -26,11 +26,6 @@ package org.argouml.model;
 
 import java.util.Collection;
 
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
 /**
  * The interface for the helper to Collaborations.<p>
  *
@@ -43,7 +38,7 @@ public interface CollaborationsHelper {
      * @return Collection collection of all classifierroles
      * @param ns the namespace
      */
-    Collection getAllClassifierRoles(MNamespace ns);
+    Collection getAllClassifierRoles(Object ns);
 
     /**
      * Returns all associations the bases of the classifierrole has,
@@ -54,8 +49,7 @@ public interface CollaborationsHelper {
      * @return Collection the set of associationroles the classifierrole
      * can use
      */
-    Collection getAllPossibleAssociationRoles(
-            MClassifierRole role);
+    Collection getAllPossibleAssociationRoles(Object role);
 
     /**
      * Returns all classifierroles associated via associationroles to some
@@ -65,7 +59,7 @@ public interface CollaborationsHelper {
      * @return Collection all classifierroles associated via associationroles
      * to the given classifierrole role
      */
-    Collection getClassifierRoles(MClassifierRole role);
+    Collection getClassifierRoles(Object role);
 
     /**
      * Returns the first found associationrole between two
@@ -75,8 +69,7 @@ public interface CollaborationsHelper {
      * @param ato the second classifierrole
      * @return MAssociationRole the association between them, or null if none
      */
-    Object/*MAssociationRole*/getAssocationRole(Object afrom,
-            Object ato);
+    Object getAssocationRole(Object afrom, Object ato);
 
     /**
      * Returns all possible activators for some message mes. The
@@ -99,11 +92,11 @@ public interface CollaborationsHelper {
      * given message (recursive too).
      *
      * @param message the given message
-     * @param activator the given activator
+     * @param activator the given activator (a message).
      * @return boolean true if the given message has the message activator
      * somewhere as it's activator
      */
-    boolean hasAsActivator(MMessage message, MMessage activator);
+    boolean hasAsActivator(Object message, Object activator);
 
     /**
      * Sets the activator of some given message mes. Checks the
@@ -177,26 +170,6 @@ public interface CollaborationsHelper {
      * @return all available bases
      */
     Collection getAllPossibleBases(Object role);
-
-    /**
-     * Returns all possible bases for some associationrole taking into
-     * account the wellformednessrules as defined in section 2.10.3 of
-     * the UML 1.3 spec.<p>
-     *
-     * @param role the given associationrole
-     * @return Collection all possible bases
-     */
-    Collection getAllPossibleBases(MAssociationRole role);
-
-    /**
-     * Returns all possible bases for some classifierrole taking into
-     * account the wellformednessrules as defined in section 2.10.3 of
-     * the UML 1.3 spec.<p>
-     *
-     * @param role the given classifierrole
-     * @return Collection all possible bases
-     */
-    Collection getAllPossibleBases(MClassifierRole role);
 
     /**
      * Sets the base of some associationrole, including the attached

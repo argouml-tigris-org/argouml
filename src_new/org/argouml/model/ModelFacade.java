@@ -5108,15 +5108,20 @@ public class ModelFacade {
     }
 
     /**
-     * Add a message to an interaction.
+     * Add a message to an interaction or association role.
      *
-     * @param handle The interaction.
+     * @param handle The interaction or association role.
      * @param elem The message.
      */
     public static void addMessage(Object handle, Object elem) {
         if (handle instanceof MInteraction
                 && elem instanceof MMessage) {
             ((MInteraction) handle).addMessage((MMessage) elem);
+            return;
+        }
+        if (handle instanceof MAssociationRole
+                && elem instanceof MMessage) {
+            ((MAssociationRole) handle).addMessage((MMessage) elem);
             return;
         }
         illegalArgument(handle, elem);
@@ -5571,6 +5576,27 @@ public class ModelFacade {
     }
 
     /**
+     * Removes a message from the interaction or association role.
+     *
+     * @param handle The interaction or association role to remove the
+     *               message from.
+     * @param message The message to remove.
+     */
+    public static void removeMessage(Object handle, Object message) {
+        if (handle instanceof MInteraction
+                && message instanceof MMessage) {
+            ((MInteraction) handle).removeMessage((MMessage) message);
+            return;
+        }
+        if (handle instanceof MAssociationRole
+                && message instanceof MMessage) {
+            ((MAssociationRole) handle).removeMessage((MMessage) message);
+            return;
+        }
+        illegalArgument(handle, message);
+    }
+
+    /**
      * Removes a successor message.
      *
      * @param handle the Message that needs to loose a successor
@@ -5688,12 +5714,14 @@ public class ModelFacade {
 	checkExists(base);
 
         if (handle instanceof MAssociationRole
-            && base instanceof MAssociation) {
+            && (base instanceof MAssociation
+                    || base == null)) {
             ((MAssociationRole) handle).setBase((MAssociation) base);
             return;
         }
         if (handle instanceof MAssociationEndRole
-            && base instanceof MAssociationEnd) {
+            && (base instanceof MAssociationEnd
+                    || base == null)) {
             ((MAssociationEndRole) handle).setBase((MAssociationEnd) base);
             return;
         }
@@ -5776,9 +5804,10 @@ public class ModelFacade {
      */
     public static void setLanguage(Object handle, String language) {
         if (handle instanceof MExpression) {
-            MExpressionEditor expressionEditor = (MExpressionEditor)
-                Model.getUmlFactory().getDataTypes().
-                    createExpressionEditor(handle);
+            MExpressionEditor expressionEditor =
+                (MExpressionEditor)
+                	Model.getUmlFactory().getDataTypes().
+                		createExpressionEditor(handle);
             expressionEditor.setLanguage(language);
             handle = expressionEditor.toExpression();
 
@@ -7077,7 +7106,8 @@ public class ModelFacade {
      */
     public static void setReceiver(Object handle, Object receiver) {
         if (handle instanceof MMessage
-            && receiver instanceof MClassifierRole) {
+            && (receiver instanceof MClassifierRole
+                    || receiver == null)) {
             ((MMessage) handle).setReceiver((MClassifierRole) receiver);
             return;
         }
@@ -7218,7 +7248,9 @@ public class ModelFacade {
      * @param sender the sender
      */
     public static void setSender(Object handle, Object sender) {
-        if (handle instanceof MMessage && sender instanceof MClassifierRole) {
+        if (handle instanceof MMessage
+                && (sender instanceof MClassifierRole
+                        || sender == null)) {
             ((MMessage) handle).setSender((MClassifierRole) sender);
             return;
         }

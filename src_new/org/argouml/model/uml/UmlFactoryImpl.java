@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -257,7 +258,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
         {ModelFacade.ASSOCIATION_CLASS, ModelFacade.CLASS, },
     };
 
-    private static Hashtable elements;
+    private static Map elements;
 
     /**
      * Don't allow external instantiation.
@@ -274,7 +275,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
         Object connection = null;
         for (int i = 0; i < VALID_CONNECTIONS.length; ++i) {
             connection = VALID_CONNECTIONS[i][0];
-            ArrayList validItems =
+            List validItems =
                 (ArrayList) validConnectionMap.get(connection);
             if (validItems == null) {
                 validItems = new ArrayList();
@@ -490,41 +491,44 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
         Object connection = null;
 
         if (connectionType == ModelFacade.ASSOCIATION) {
-            connection = getCore().buildAssociation(
+            connection =
+                getCore().buildAssociation(
                        (MClassifier) fromElement,
                        (MAggregationKind) fromStyle,
                        (MClassifier) toElement,
                        (MAggregationKind) toStyle,
                        (Boolean) unidirectional);
         } else if (connectionType == ModelFacade.ASSOCIATION_CLASS) {
-            connection = getCore().buildAssociationClass(
+            connection =
+                getCore().buildAssociationClass(
                        (MClassifier) fromElement,
                        (MClassifier) toElement);
         } else if (connectionType == ModelFacade.ASSOCIATION_ROLE) {
-            connection = getCollaborations()
-                .buildAssociationRole((MClassifierRole) fromElement,
-                      (MAggregationKind) fromStyle,
-                      (MClassifierRole) toElement,
-                      (MAggregationKind) toStyle,
-                      (Boolean) unidirectional);
+            connection =
+                getCollaborations()
+                	.buildAssociationRole(fromElement, fromStyle,
+                	        toElement, toStyle,
+                	        (Boolean) unidirectional);
         } else if (connectionType == ModelFacade.GENERALIZATION) {
-            connection = getCore()
-                .buildGeneralization(fromElement, toElement);
+            connection =
+                getCore().buildGeneralization(fromElement, toElement);
         } else if (connectionType == ModelFacade.PERMISSION) {
             connection = getCore().buildPermission(fromElement, toElement);
         } else if (connectionType == ModelFacade.USAGE) {
-            connection = getCore().buildUsage((MModelElement) fromElement,
+            connection =
+                getCore().buildUsage((MModelElement) fromElement,
                      (MModelElement) toElement);
         } else if (connectionType == ModelFacade.GENERALIZATION) {
-            connection = getCore()
-                .buildGeneralization(fromElement, toElement);
+            connection =
+                getCore().buildGeneralization(fromElement, toElement);
         } else if (connectionType == ModelFacade.DEPENDENCY) {
             connection = getCore().buildDependency(fromElement, toElement);
         } else if (connectionType == ModelFacade.ABSTRACTION) {
-            connection = getCore().buildRealization(
-                fromElement,
-                toElement,
-                namespace);
+            connection =
+                getCore().buildRealization(
+                        fromElement,
+                        toElement,
+                        namespace);
         } else if (connectionType == ModelFacade.LINK) {
             connection = getCommonBehavior().buildLink(fromElement, toElement);
         } else if (connectionType == ModelFacade.EXTEND) {
@@ -560,7 +564,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
     public boolean isConnectionValid(Object connectionType,
                      Object fromElement, Object toElement) {
         // Get the list of valid model item pairs for the given connection type
-        ArrayList validItems =
+        List validItems =
             (ArrayList) validConnectionMap.get(connectionType);
         if (validItems == null) {
             return false;
@@ -739,9 +743,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
                 } else if (elem instanceof MAssociationEnd) {
                     getCore().deleteAssociationEnd((MAssociationEnd) elem);
                     if (elem instanceof MAssociationEndRole) {
-                        getCollaborations()
-                            .deleteAssociationEndRole(
-                                 (MAssociationEndRole) elem);
+                        getCollaborations().deleteAssociationEndRole(elem);
                     }
                 } else if (elem instanceof MComment) {
                     getCore().deleteComment((MComment) elem);
@@ -759,9 +761,9 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
                 } else if (elem instanceof MLinkEnd) {
                     getCommonBehavior().deleteLinkEnd((MLinkEnd) elem);
                 } else if (elem instanceof MInteraction) {
-                    getCollaborations().deleteInteraction((MInteraction) elem);
+                    getCollaborations().deleteInteraction(elem);
                 } else if (elem instanceof MMessage) {
-                    getCollaborations().deleteMessage((MMessage) elem);
+                    getCollaborations().deleteMessage(elem);
                 } else if (elem instanceof MExtensionPoint) {
                     getUseCases().deleteExtensionPoint((MExtensionPoint) elem);
                 } else if (elem instanceof MStateVertex) {
@@ -869,8 +871,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
                     getCommonBehavior().deleteException((MException) elem);
                 }
             } else if (elem instanceof MClassifierRole) {
-                getCollaborations().deleteClassifierRole(
-                    (MClassifierRole) elem);
+                getCollaborations().deleteClassifierRole(elem);
             } else if (elem instanceof MUseCase) {
                 getUseCases().deleteUseCase((MUseCase) elem);
             } else if (elem instanceof MActor) {
@@ -879,7 +880,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
                 getActivityGraphs().deleteClassifierInState(elem);
             }
         } else if (elem instanceof MCollaboration) {
-            getCollaborations().deleteCollaboration((MCollaboration) elem);
+            getCollaborations().deleteCollaboration(elem);
         } else if (elem instanceof MPackage) {
             getModelManagement().deletePackage((MPackage) elem);
             if (elem instanceof MModel) {
@@ -905,8 +906,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
         } else if (elem instanceof MAssociation) {
             getCore().deleteAssociation((MAssociation) elem);
             if (elem instanceof MAssociationRole) {
-                getCollaborations().deleteAssociationRole(
-                    (MAssociationRole) elem);
+                getCollaborations().deleteAssociationRole(elem);
             }
         } else if (elem instanceof MDependency) {
             getCore().deleteDependency((MDependency) elem);
@@ -1107,8 +1107,9 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
         }
         Method method = null;
         try {
-            method = oi.getFactory().getClass().getMethod(oi.getCreateMethod(),
-                                                          new Class[] {});
+            method =
+                oi.getFactory().getClass().getMethod(oi.getCreateMethod(),
+                                                     new Class[] {});
         } catch (Exception e) {
             LOG.error("Failed to invoke create method on factory.", e);
             return null;

@@ -30,18 +30,14 @@ import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
 
-import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-
 /**
  * @since Oct 30, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public class TestUMLMessageSenderListModel extends TestCase {
 
-    private int oldEventPolicy;
     private UMLMessageSenderListModel model;
-    private MMessage elem;
+    private Object elem;
 
     /**
      * Constructor for TestUMLMessageSenderListModel.
@@ -58,14 +54,11 @@ public class TestUMLMessageSenderListModel extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         elem = Model.getCollaborationsFactory().createMessage();
-        oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         MockUMLUserInterfaceContainer cont =
             new MockUMLUserInterfaceContainer();
         cont.setTarget(elem);
         model = new UMLMessageSenderListModel();
         model.setTarget(elem);
-        elem.addMElementListener(model);
     }
 
     /**
@@ -74,7 +67,6 @@ public class TestUMLMessageSenderListModel extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
-        MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
 
@@ -96,8 +88,7 @@ public class TestUMLMessageSenderListModel extends TestCase {
         Object role =
             Model.getCollaborationsFactory().createClassifierRole();
         ModelFacade.setSender(elem, role);
-        // TODO: Is there a way to do this throug the ModelFacade?
-        elem.setSender(null);
+        ModelFacade.setSender(elem, null);
         assertEquals(0, model.getSize());
         assertTrue(model.isEmpty());
     }
