@@ -34,6 +34,11 @@ import org.tigris.gef.graph.GraphEvent;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 
+/**
+ * The layer on which the figs in a sequence diagram are placed. Also responsible for
+ * distributing figs on the diagram if a fig is added or removed.
+ * @author : jaap.branderhorst@xs4all.nl
+ */
 public class SequenceDiagramLayout extends LayerPerspectiveMutable {
     /**
      * The distance between two objects on the sequence diagram
@@ -49,6 +54,11 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
      * The distance between the top side of the diagram and the top of the highest FigObject
      */
     public final static int DIAGRAM_TOP_MARGE = 50;
+
+    /**
+     * The vertical distance between two links 
+     */
+    public final static int LINK_DISTANCE = 60;
 
     /**
      * Linked list with all fig objects sorted by x coordinate in it
@@ -71,6 +81,7 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
     public void putInPosition(Fig f) {
         if (f instanceof FigObject) {
             distributeFigObjects(f);
+            ((FigObject) f).updateEdges();
         } else
             super.putInPosition(f);
     }
@@ -82,13 +93,13 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
     private void distributeFigObjects(Fig f) {
         int listPosition = _figObjectsX.indexOf(f);
         if (listPosition < _figObjectsX.size() - 1) {
-            Fig next = (Fig)_figObjectsX.get(listPosition + 1);
+            Fig next = (Fig) _figObjectsX.get(listPosition + 1);
             if (next.getX() < f.getX()) {
                 reshuffelFigObjectsX(f);
                 listPosition = _figObjectsX.indexOf(f);
             }
         } else if (listPosition > 0) {
-            Fig previous = (Fig)_figObjectsX.get(listPosition - 1);
+            Fig previous = (Fig) _figObjectsX.get(listPosition - 1);
             if (previous.getX() > f.getX()) {
                 reshuffelFigObjectsX(f);
                 listPosition = _figObjectsX.indexOf(f);
@@ -99,11 +110,11 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
         int positionX =
             listPosition == 0
                 ? DIAGRAM_LEFT_MARGE
-                : (((Fig)_figObjectsX.get(listPosition - 1)).getX()
-                    + ((Fig)_figObjectsX.get(listPosition - 1)).getWidth()
+                : (((Fig) _figObjectsX.get(listPosition - 1)).getX()
+                    + ((Fig) _figObjectsX.get(listPosition - 1)).getWidth()
                     + OBJECT_DISTANCE);
         while (it.hasNext()) {
-            Fig fig = (Fig)it.next();
+            Fig fig = (Fig) it.next();
             if (fig.getX() == positionX) {
                 break;
             }
@@ -114,7 +125,7 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
             _heighestObjectHeight = f.getHeight();
             it = _figObjectsX.iterator();
             while (it.hasNext()) {
-                Fig fig = (Fig)it.next();
+                Fig fig = (Fig) it.next();
                 fig.setY(
                     DIAGRAM_TOP_MARGE + _heighestObjectHeight - f.getHeight());
                 fig.damage();
@@ -132,7 +143,7 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
         super.nodeAdded(ge);
         Fig fig = presentationFor(ge.getArg());
         if (fig instanceof FigObject) {
-            ((FigObject)fig).renderingChanged();
+            ((FigObject) fig).renderingChanged();
         }
     }
 
@@ -146,7 +157,7 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
             if (!_figObjectsX.isEmpty()) {
                 Iterator it = _figObjectsX.iterator();
                 while (it.hasNext()) {
-                    Fig fig = (Fig)it.next();
+                    Fig fig = (Fig) it.next();
                     x.put(new Integer(fig.getX()), fig);
                 }
                 Object o = x.get(x.headMap(new Integer(f.getX())).lastKey());
@@ -163,10 +174,10 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
         int x = f.getX();
         int newPosition = 0;
         for (int i = 0; i < _figObjectsX.size(); i++) {
-            Fig fig = (Fig)_figObjectsX.get(i);
+            Fig fig = (Fig) _figObjectsX.get(i);
             if (fig.getX() < x) {
                 if (i != (_figObjectsX.size() - 1)
-                    && ((Fig)_figObjectsX.get(i + 1)).getX() > x) {
+                    && ((Fig) _figObjectsX.get(i + 1)).getX() > x) {
                     newPosition = i + 1;
                     break;
                 }
@@ -182,14 +193,30 @@ public class SequenceDiagramLayout extends LayerPerspectiveMutable {
     /**
      * @see org.tigris.gef.base.Layer#deleted(org.tigris.gef.presentation.Fig)
      */
-    public void deleted(Fig f) {       
+    public void deleted(Fig f) {
         super.deleted(f);
         _figObjectsX.remove(f);
         if (f.getHeight() == _heighestObjectHeight) {
-        	Iterator it = _figObjectsX.iterator();
-        	while (it.hasNext()) {
-        		_heighestObjectHeight = Math.max(_heighestObjectHeight, ((Fig)it.next()).getHeight());
-        	}
+            Iterator it = _figObjectsX.iterator();
+            while (it.hasNext()) {
+                _heighestObjectHeight =
+                    Math.max(
+                        _heighestObjectHeight,
+                        ((Fig) it.next()).getHeight());
+            }
+        }
+        if (!_figObjectsX.isEmpty()) {
+            putInPosition((Fig) _figObjectsX.get(0));
+        }
+    }
+
+    public void updateActivations() {
+        Iterator it = getContentsNoEdges().iterator();
+        while (it.hasNext()) {
+            Fig fig = (Fig) it.next();
+            if (fig instanceof FigObject) {
+                ((FigObject) fig).updateActivations();
+            }
         }
     }
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,6 +30,7 @@
 package org.argouml.uml.diagram.sequence.ui;
 
 import java.beans.PropertyVetoException;
+import java.util.Hashtable;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
@@ -37,8 +38,11 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.ui.CmdCreateNode;
+import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
+import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.tigris.gef.base.ModeCreateEdge;
 
 /**
  * The diagram for sequence diagrams. 
@@ -75,7 +79,8 @@ public class UMLSequenceDiagram extends UMLDiagram {
         super();
         try {
             setName(getNewDiagramName());
-        } catch (PropertyVetoException pve) {}
+        } catch (PropertyVetoException pve) {
+        }
         // Dirty hack to remove the trash the Diagram constructor leaves
         SequenceDiagramGraphModel gm =
             new SequenceDiagramGraphModel(collaboration);
@@ -133,9 +138,29 @@ public class UMLSequenceDiagram extends UMLDiagram {
      */
     protected Object[] getUmlActions() {
         if (_actions == null) {
-            _actions = new Object[1];
+            _actions = new Object[5];
             _actions[0] =
-                new CmdCreateNode(ModelFacade.OBJECT, false, "Object");
+                new CmdCreateNode((Class)ModelFacade.OBJECT, "Object");            
+            Hashtable args = new Hashtable();
+            args.put("edgeClass", (Class)ModelFacade.LINK);
+            args.put("action", ModelFacade.CALL_ACTION);
+            _actions[1] =
+                new RadioAction(new CmdSetMode(ModeCreateLink.class, args, "CallAction"));
+            args = new Hashtable();
+			args.put("edgeClass", (Class)ModelFacade.LINK);
+            args.put("action", ModelFacade.RETURN_ACTION);
+            _actions[2] =
+                new RadioAction(new CmdSetMode(ModeCreateLink.class, args, "ReturnAction"));
+			args = new Hashtable();
+		    args.put("edgeClass", (Class)ModelFacade.LINK);
+            args.put("action", ModelFacade.CREATE_ACTION);
+            _actions[3] =
+                new RadioAction(new CmdSetMode(ModeCreateLink.class, args, "CreateAction"));
+			args = new Hashtable();
+			args.put("edgeClass", (Class)ModelFacade.LINK);
+            args.put("action", ModelFacade.DESTROY_ACTION);
+            _actions[4] =
+                new RadioAction(new CmdSetMode(ModeCreateLink.class, args, "DestroyAction"));
         }
         return _actions;
     }

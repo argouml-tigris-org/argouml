@@ -977,21 +977,27 @@ public class CoreHelper {
      * include classifiers that are types to associationends, usecases
      * that are bases to extend and include relations and so on. A
      * source is allways the start from the arrow in the fig, the
-     * destination the end.
+     * destination the end.</br>
+     * This method also works to get the source of a Link.
      * @param relation
-     * @return MModelElement
+     * @return Object
      */
-    public MModelElement getSource(Object relationship) {
-        
-        if(!(relationship instanceof MRelationship))
-            throw new IllegalArgumentException();
-        
+    public Object getSource(Object relationship) {        
+        if(!(relationship instanceof MRelationship) && !(ModelFacade.isALink(relationship)))
+            throw new IllegalArgumentException("Argument is not a relationship");
+        if (ModelFacade.isALink(relationship)) {
+        	Iterator it = ModelFacade.getConnections(relationship).iterator();
+        	if (it.hasNext()) {
+        		return ModelFacade.getInstance(it.next());        		
+        	} else
+        		return null;        
+        }
         MRelationship relation = (MRelationship)relationship;
         
         if (relation instanceof MAssociation) {
             MAssociation assoc = (MAssociation) relation;
             List conns = assoc.getConnections();
-            if (conns.isEmpty())
+            if (conns == null || conns.isEmpty())
                 return null;
             return ((MAssociationEnd) conns.get(0)).getType();
         }
@@ -1032,14 +1038,27 @@ public class CoreHelper {
      * types to associationends, usecases that are bases to extend and
      * include relations and so on. In the case of an association, the
      * destination is defined as the type of the second element in the
-     * connections list.
+     * connections list.</br>
+     * This method also works for links.
      * @param relation
-     * @return MModelElement
+     * @return object
      */
-    public MModelElement getDestination(Object relationship) {
+    public Object getDestination(Object relationship) {
         
-        if(!(relationship instanceof MRelationship))
-            throw new IllegalArgumentException();
+		if(!(relationship instanceof MRelationship) && !(ModelFacade.isALink(relationship)))
+			 throw new IllegalArgumentException("Argument is not a relationship");
+		 if (ModelFacade.isALink(relationship)) {
+			 Iterator it = ModelFacade.getConnections(relationship).iterator();			 
+			 if (it.hasNext()) {
+			 	it.next();
+			 	if (it.hasNext()) {
+					return ModelFacade.getInstance(it.next());
+			 	} else {
+			 		return null;
+			 	}				
+			 } else
+				 return null;        
+		 }
         
         MRelationship relation = (MRelationship)relationship;
         

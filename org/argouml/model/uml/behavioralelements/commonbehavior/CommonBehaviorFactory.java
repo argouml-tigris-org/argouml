@@ -30,6 +30,7 @@ import java.util.Iterator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.UmlHelper;
 
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.common_behavior.MArgument;
@@ -79,8 +80,7 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
 
     /** Don't allow instantiation
      */
-    private CommonBehaviorFactory() {
-    }
+    private CommonBehaviorFactory() {}
 
     /** Create an empty but initialized instance of a UML Action.
      *  
@@ -337,10 +337,11 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
      * @param name
      * @return MCallAction
      */
-    public Object/*MCallAction*/ buildCallAction(MOperation oper, String name) {
+    public Object /*MCallAction*/
+    buildCallAction(MOperation oper, String name) {
         if (oper == null) {
-            throw new IllegalArgumentException("There should be an operation"
-					       + " with a callaction.");
+            throw new IllegalArgumentException(
+                "There should be an operation" + " with a callaction.");
         }
         Object action = createCallAction();
         ModelFacade.setName(action, name);
@@ -351,13 +352,13 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
     /** 
      * Builds a Link between two Instances
      */
-    public Object buildLink(Object fromInstance, Object toInstance) {    
+    public Object buildLink(Object fromInstance, Object toInstance) {
         Object link = UmlFactory.getFactory().getCommonBehavior().createLink();
-        Object/*MLinkEnd*/ le0 =
-            UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
+        Object /*MLinkEnd*/
+        le0 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
         ModelFacade.setInstance(le0, fromInstance);
-        Object/*MLinkEnd*/ le1 =
-            UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
+        Object /*MLinkEnd*/
+        le1 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
         ModelFacade.setInstance(le1, toInstance);
         ModelFacade.addConnection(link, le0);
         ModelFacade.addConnection(link, le1);
@@ -371,16 +372,18 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
         Object action = createCallAction();
         ModelFacade.setName(action, "action");
         ModelFacade.setAction(message, action);
-        Object interaction = ModelFacade.getInteraction(message);  
+        Object interaction = ModelFacade.getInteraction(message);
         if (interaction != null
             && ModelFacade.getContext(interaction) != null) {
-	    ModelFacade.setNamespace(action,
-				     ModelFacade.getContext(interaction));
+            ModelFacade.setNamespace(
+                action,
+                ModelFacade.getContext(interaction));
         } else
-            throw new IllegalStateException("In buildaction: message does not "
-					    + "have an interaction or the "
-					    + "interaction does not have "
-					    + "a context");
+            throw new IllegalStateException(
+                "In buildaction: message does not "
+                    + "have an interaction or the "
+                    + "interaction does not have "
+                    + "a context");
         return action;
     }
 
@@ -393,13 +396,38 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
         MSignal signal = createSignal();
         signal.addContext(feature);
         return signal;
-    }        
+    }
+
+    /**
+     * Builds a stimulus based on a given link. The link must have two linkends that 
+     * are connected to an instance. These instances are used as sender and receiver
+     * of the stimulus. The source will become the sender, the destination the 
+     * receiver.
+     * @param link the link
+     * @return the stimulus
+     */
+    public Object buildStimulus(Object link) {
+        if (ModelFacade.isALink(link)
+            && UmlHelper.getHelper().getCore().getSource(link) != null
+            && UmlHelper.getHelper().getCore().getDestination(link) != null) {
+            Object stimulus = createStimulus();
+            Object sender = UmlHelper.getHelper().getCore().getSource(link);
+            Object receiver =
+                UmlHelper.getHelper().getCore().getDestination(link);
+            ModelFacade.setReceiver(stimulus, receiver);
+            ModelFacade.setSender(stimulus, sender);
+            ModelFacade.setCommunicationLink(stimulus, link);
+            return stimulus;
+        }
+        throw new IllegalArgumentException("Argument is not a link or does not has a source or destination instance");
+
+    }
 
     /**
      * Builds a reception belonging to some signal
      */
     public MReception buildReception(Object asignal) {
-        MSignal signal = (MSignal)asignal;
+        MSignal signal = (MSignal) asignal;
         if (signal == null)
             return null;
         MReception reception = createReception();
@@ -410,35 +438,25 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
         return reception;
     }
 
-    public void deleteAction(Object elem) {
-    }
+    public void deleteAction(Object elem) {}
 
-    public void deleteActionSequence(Object elem) {
-    }
+    public void deleteActionSequence(Object elem) {}
 
-    public void deleteArgument(MArgument elem) {
-    }
+    public void deleteArgument(MArgument elem) {}
 
-    public void deleteAttributeLink(MAttributeLink elem) {
-    }
+    public void deleteAttributeLink(MAttributeLink elem) {}
 
-    public void deleteCallAction(MCallAction elem) {
-    }
+    public void deleteCallAction(MCallAction elem) {}
 
-    public void deleteComponentInstance(MComponentInstance elem) {
-    }
+    public void deleteComponentInstance(MComponentInstance elem) {}
 
-    public void deleteCreateAction(MCreateAction elem) {
-    }
+    public void deleteCreateAction(MCreateAction elem) {}
 
-    public void deleteDataValue(MDataValue elem) {
-    }
+    public void deleteDataValue(MDataValue elem) {}
 
-    public void deleteDestroyAction(MDestroyAction elem) {
-    }
+    public void deleteDestroyAction(MDestroyAction elem) {}
 
-    public void deleteException(MException elem) {
-    }
+    public void deleteException(MException elem) {}
 
     /**
      * when an instance is deleted,
@@ -446,60 +464,49 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
      * similar to deleting a classifier in the CoreFactory.
      */
     public void deleteInstance(MInstance elem) {
-        
+
         if (elem != null) {
-	    Collection col = ((MInstance) elem).getLinkEnds();
-	    Iterator it = col.iterator();
-	    while (it.hasNext()) {
-		UmlFactory.getFactory().delete(it.next());
-	    }
-	}
+            Collection col = ((MInstance) elem).getLinkEnds();
+            Iterator it = col.iterator();
+            while (it.hasNext()) {
+                UmlFactory.getFactory().delete(it.next());
+            }
+        }
     }
 
-    public void deleteLink(MLink elem) {
-    }
+    public void deleteLink(MLink elem) {}
 
     /**
      * when a linkend is deleted,
      * delete its Links
      */
     public void deleteLinkEnd(MLinkEnd elem) {
-        
+
         MLink link = elem.getLink();
-	if (link != null
-	    && link.getConnections() != null
-	    && link.getConnections().size() == 2) { // binary link
-	    UmlFactory.getFactory().delete(link);
-	}
+        if (link != null
+            && link.getConnections() != null
+            && link.getConnections().size() == 2) { // binary link
+            UmlFactory.getFactory().delete(link);
+        }
     }
 
-    public void deleteLinkObject(MLinkObject elem) {
-    }
+    public void deleteLinkObject(MLinkObject elem) {}
 
-    public void deleteNodeInstance(MNodeInstance elem) {
-    }
+    public void deleteNodeInstance(MNodeInstance elem) {}
 
-    public void deleteObject(MObject elem) {
-    }
+    public void deleteObject(MObject elem) {}
 
-    public void deleteReception(MReception elem) {
-    }
+    public void deleteReception(MReception elem) {}
 
-    public void deleteReturnAction(MReturnAction elem) {
-    }
+    public void deleteReturnAction(MReturnAction elem) {}
 
-    public void deleteSendAction(MSendAction elem) {
-    }
+    public void deleteSendAction(MSendAction elem) {}
 
-    public void deleteSignal(MSignal elem) {
-    }
+    public void deleteSignal(MSignal elem) {}
 
-    public void deleteStimulus(MStimulus elem) {
-    }
+    public void deleteStimulus(MStimulus elem) {}
 
-    public void deleteTerminateAction(MTerminateAction elem) {
-    }
+    public void deleteTerminateAction(MTerminateAction elem) {}
 
-    public void deleteUninterpretedAction(MUninterpretedAction elem) {
-    }
+    public void deleteUninterpretedAction(MUninterpretedAction elem) {}
 }

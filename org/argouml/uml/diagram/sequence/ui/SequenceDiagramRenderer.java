@@ -32,7 +32,7 @@
 
 package org.argouml.uml.diagram.sequence.ui;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphEdgeRenderer;
@@ -43,49 +43,37 @@ import org.tigris.gef.presentation.FigNode;
 
 public class SequenceDiagramRenderer
 	implements GraphNodeRenderer, GraphEdgeRenderer {
-	protected static Category cat =
-		Category.getInstance(SequenceDiagramRenderer.class);
+	protected static Logger log =
+		Logger.getLogger(SequenceDiagramRenderer.class);
 
 	/** Return a Fig that can be used to represent the given node */
 	public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
 		if (ModelFacade.isAObject(node))
 			return new FigObject(node);
 		// if (node instanceof MStimulus) return new FigSeqStimulus(gm, node);
-		cat.debug("TODO SequenceDiagramRenderer getFigNodeFor");
+		log.debug("TODO SequenceDiagramRenderer getFigNodeFor");
 		return null;
 	}
 
-	/** Return a Fig that can be used to represent the given edge */
-	/** Generally the same code as for the ClassDiagram, since its
-	very related to it. */
+	/** Return a Fig that can be used to represent the given edge */	
 	public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
 		if (ModelFacade.isALink(edge)) {
-
-		}
-		/*
-		if (edge instanceof MLink) {
-		MLink ml = (MLink) edge;
-		FigSeqLink mlFig = new FigSeqLink(ml);
-		Collection connections = ml.getConnections();
-		if (connections == null) {
-		cat.debug("null connections....");
-		return null;
-		}
-		MLinkEnd fromEnd = (MLinkEnd) ((Object[]) connections.toArray())[0];
-		MInstance fromInst = (MInstance) fromEnd.getInstance();
-		MLinkEnd toEnd = (MLinkEnd) ((Object[]) connections.toArray())[1];
-		MInstance toInst = (MInstance) toEnd.getInstance();
-		FigNode fromFN = (FigNode) lay.presentationFor(fromInst);
-		FigNode toFN = (FigNode) lay.presentationFor(toInst);
-		mlFig.setSourcePortFig(fromFN);
-		mlFig.setSourceFigNode(fromFN);
-		mlFig.setDestPortFig(toFN);
-		mlFig.setDestFigNode(toFN);
-		return mlFig;
-		}
-		*/
-
-		cat.debug("TODO SequenceDiagramRenderer getFigEdgeFor");
+			Object stimulus = ModelFacade.getStimuli(edge).iterator().next();
+			Object action = ModelFacade.getDispatchAction(stimulus);
+			if (ModelFacade.isACallAction(action)) {
+				return new FigCallActionLink(edge);
+			} else
+			if (ModelFacade.isAReturnAction(action)) {
+				return new FigReturnActionLink(edge);
+			} else
+			if (ModelFacade.isADestroyAction(edge)) {
+				return new FigDestroyActionLink(edge);
+			} else
+			if (ModelFacade.isACreateAction(edge)) {
+				return new FigCreateActionLink(edge);
+			}
+		}		
+		log.debug("TODO SequenceDiagramRenderer getFigEdgeFor");
 		return null;
 	}
 

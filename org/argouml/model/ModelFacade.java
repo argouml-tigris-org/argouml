@@ -35,20 +35,13 @@ import java.util.Vector;
 
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
-import org
-    .argouml
-    .model
-    .uml
-    .foundation
-    .extensionmechanisms
-    .ExtensionMechanismsHelper;
+import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.uml.MMUtil;
 import org.tigris.gef.base.Diagram;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MExtension;
-import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.activity_graphs.MActionState;
 import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
 import ru.novosoft.uml.behavior.activity_graphs.MClassifierInState;
@@ -79,6 +72,7 @@ import ru.novosoft.uml.behavior.common_behavior.MReturnAction;
 import ru.novosoft.uml.behavior.common_behavior.MSendAction;
 import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
+import ru.novosoft.uml.behavior.common_behavior.MTerminateAction;
 import ru.novosoft.uml.behavior.state_machines.MCallEvent;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
@@ -250,6 +244,7 @@ public class ModelFacade {
     public static final Object CALLCONCURRENCYKIND = MCallConcurrencyKind.class;
     public static final Object CREATE_ACTION = MCreateAction.class;
     public static final Object DESTROY_ACTION = MDestroyAction.class;
+	public static final Object TERMINATE_ACTION = MTerminateAction.class;   
     public static final Object NAMESPACE = MNamespace.class;
     public static final Object RECEPTION = MReception.class;
     public static final Object RETURN_ACTION = MReturnAction.class;
@@ -1632,7 +1627,8 @@ public class ModelFacade {
     // Getters for the UML model (in alphabetic order)
 
     /**
-     * Returns the association end between some classifier and some associaton.
+     * Returns the association end between some classifier and some associaton or
+     * the association belonging to the given link.
      * @param type
      * @param assoc
      * @return association end
@@ -1642,8 +1638,10 @@ public class ModelFacade {
         if (end instanceof MAssociationEnd) {
             return ((MAssociationEnd)end).getAssociation();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(end));
+        if (end instanceof MLink) {
+        	return ((MLink)end).getAssociation();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + end);
     }
 
     /**
@@ -2499,6 +2497,7 @@ public class ModelFacade {
     public static void addComment(Object element, Object comment) {
         if (element instanceof MModelElement && comment instanceof MComment) {
             ((MModelElement)element).addComment((MComment)comment);
+            return;
         }
         throw new IllegalArgumentException("Unrecognized object " + 
 					   getClassNull(element));
@@ -3736,7 +3735,7 @@ public class ModelFacade {
        @return classifier
     */
     public static Object getOwner(Object f) {
-        if (f != null && f instanceof MFeature) {
+        if (f instanceof MFeature) {
             return ((MFeature)f).getOwner();
         }
         throw new IllegalArgumentException("Unrecognized object " + 
@@ -3969,8 +3968,15 @@ public class ModelFacade {
             ((MClassifier)cls).addFeature(index, (MFeature)f);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(cls) + " or " + getClassNull(f));
+        throw new IllegalArgumentException("Unrecognized object " + cls + " or " + f);
+    }
+    
+    public static void addLink(Object association, Object link) {
+		if (association instanceof MAssociation && link instanceof MLink) {
+			((MAssociation)association).addLink((MLink)link);
+			return;
+		}
+		throw new IllegalArgumentException("Unrecognized object " + association + " or " + link);
     }
 
     public static void addMessage3(Object handle, Object mess) {
@@ -3989,9 +3995,7 @@ public class ModelFacade {
      * @param method
      */
     public static void addMethod(Object o, Object m) {
-        if (o != null
-            && m != null
-            && o instanceof MOperation
+        if (o instanceof MOperation
             && m instanceof MMethod) {
             ((MMethod)m).setVisibility(((MOperation)o).getVisibility());
             ((MMethod)m).setOwnerScope(((MOperation)o).getOwnerScope());
@@ -4573,16 +4577,13 @@ public class ModelFacade {
      * @param expr that is the value to set
      */
     public static void setInitialValue(Object at, Object expr) {
-        if (at instanceof MAttribute) {
-	    if (expr == null || expr instanceof MExpression) {
+        if (at instanceof MAttribute
+            && (expr == null || expr instanceof MExpression)) {
 		((MAttribute) at).setInitialValue((MExpression) expr);
 		return;
 	    }
-	    throw new IllegalArgumentException("Unrecognized expression "
-					       + getClassNull(expr));
-        }
-        throw new IllegalArgumentException("Unrecognized object " 
-					   + getClassNull(at));
+		throw new IllegalArgumentException(
+					"Unrecognized object " + at + " or " + expr);
     }
 
     public static void setInstance(Object handle, Object inst) {
@@ -5057,8 +5058,10 @@ public class ModelFacade {
         if (ae != null && ae instanceof MAssociationEnd) {
             if (ts == CLASSIFIER_SCOPE) {
                 ((MAssociationEnd)ae).setTargetScope(MScopeKind.CLASSIFIER);
+                return;
             } else if (ts == INSTANCE_SCOPE) {
                 ((MAssociationEnd)ae).setTargetScope(MScopeKind.INSTANCE);
+                return;
             }
             return;
         }
@@ -5074,7 +5077,12 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object : " + 
             getClassNull(o) + " or " + getClassNull(c));
     }
-
+    
+    /**
+     * Sets the communicationLink between a link c and a stimulus o.
+     * @param o the stimulus
+     * @param c the link
+     */
     public static void setCommunicationLink(Object o, Object c) {
         if (o instanceof MStimulus && c instanceof MLink) {
             ((MStimulus)o).setCommunicationLink((MLink)c);
@@ -5094,6 +5102,7 @@ public class ModelFacade {
             MOperation oper = (MOperation)o;
             if (c == GUARDED) {
                 oper.setConcurrency(MCallConcurrencyKind.GUARDED);
+                return;
             } else if (c == SEQUENTIAL) {
                 oper.setConcurrency(MCallConcurrencyKind.SEQUENTIAL);
             }
@@ -5176,8 +5185,8 @@ public class ModelFacade {
 
     /**
      * Sets the dispatch action for some stimulus
-     * @param handle
-     * @param value
+     * @param handle the stimulus
+     * @param value the action
      */
     public static void setDispatchAction(Object handle, Object value) {
         if (handle instanceof MStimulus
@@ -5368,17 +5377,18 @@ public class ModelFacade {
      * @param changeability flag
      */
     public static void setChangeable(Object o, boolean flag) {
-        // FIXME: the implementation is ugly, because I have no spec at hand...
-        if (o == null)
-            return;
+        // FIXME: the implementation is ugly, because I have no spec at hand...        
         if (o instanceof MStructuralFeature) {
-            if (flag)
+            if (flag) {
                 ((MStructuralFeature)o).setChangeability(
                     MChangeableKind.CHANGEABLE);
-            else
+                    return;
+            }
+            else {
                 ((MStructuralFeature)o).setChangeability(
                     MChangeableKind.FROZEN);
             return;
+            }
         } else if (o instanceof MAssociationEnd) {
             MAssociationEnd ae = (MAssociationEnd)o;
             if (flag)
@@ -5873,7 +5883,7 @@ public class ModelFacade {
      * @param type
      */
     public static void setType(Object handle, Object type) {
-        if (handle != null && (type == null || type instanceof MClassifier)) {
+        if (type instanceof MClassifier) {
             if (handle instanceof MObjectFlowState) {
                  ((MObjectFlowState)handle).setType((MClassifier)type);
 		 return;
@@ -5960,7 +5970,7 @@ public class ModelFacade {
      * @param value
      */
     public static void setValueOfTag(Object tv, String value) {
-        if (tv != null && tv instanceof MTaggedValue) {
+        if (tv instanceof MTaggedValue) {
             ((MTaggedValue)tv).setValue(value);
             return;
         }
@@ -5993,8 +6003,7 @@ public class ModelFacade {
     public static void setStereotype(Object m, Object stereo) {
         if (m != null && m instanceof MModelElement) {
             MModelElement me = (MModelElement)m;
-            if (stereo != null
-                && stereo instanceof MStereotype
+            if (stereo instanceof MStereotype
                 && me.getModel() != ((MStereotype)stereo).getModel()) {
                 ((MStereotype)stereo).setNamespace(me.getModel());
                 return;
@@ -6014,8 +6023,8 @@ public class ModelFacade {
             ((MAssociation)handle).addConnection((MAssociationEnd)connection);
             return;
         }
-        if (handle instanceof MAssociation
-            && connection instanceof MAssociationEnd) {
+        if (handle instanceof MLink
+            && connection instanceof MLinkEnd) {
             ((MLink)handle).addConnection((MLinkEnd)connection);
             return;
         }

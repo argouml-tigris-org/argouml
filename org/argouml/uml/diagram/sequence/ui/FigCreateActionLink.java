@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,26 +22,32 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-/* 
- * The ActionAddLink class is for creating a dummy link with a stimulus and 
- * a given action type. This is done in one step when a new edge between
- * two nodes is instanciated
- */
-
-// file: ActionAddLink.java 
-// author: 5kanzler@informatik.uni-hamburg.de
- 
+// Original author: jaap.branderhorst@xs4all.nl
 
 package org.argouml.uml.diagram.sequence.ui;
 
-import org.argouml.model.ModelFacade;
-import org.argouml.ui.CmdSetMode;
-import org.tigris.gef.base.ModeCreatePolyEdge;
+/**
+ * @author Jaap
+ *
+ * To change the template for this generated type comment go to
+ * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
+ */
+public class FigCreateActionLink extends FigLink {
 
-public class ActionAddLink extends CmdSetMode {
-    public ActionAddLink(Class actionClass, String name) {
-	super(ModeCreatePolyEdge.class, "edgeClass", ModelFacade.LINK, name);
-	_modeArgs.put("action", actionClass);
+    /**
+     * @param owner
+     */
+    public FigCreateActionLink(Object owner) {
+        super(owner);
+        // TODO Auto-generated constructor stub
     }
-}
 
+    /**
+     * 
+     */
+    public FigCreateActionLink() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+}
