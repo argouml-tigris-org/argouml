@@ -162,7 +162,7 @@ public class LanguageChooser extends UMLAction implements PluggableMenu {
         Translator.setLocale(locale);
 
         LocaleEvent e = new LocaleEvent(this, locale);
-        org.argouml.ui.ProjectBrowser.TheInstance.localeChanged(e);
-            
+		// TODO Implement this later
+        // org.argouml.ui.ProjectBrowser.getInstance().localeChanged(e);
     }
 }
