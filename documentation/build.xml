@@ -607,7 +607,7 @@ directory for further information.
       <arg line="-pdf ${target.dir}/${target.pdf}"/>
     </java>
 
-<!--    <delete file="${source.dir}/${source.fo}"/> -->
+    <delete file="${source.dir}/${source.fo}"/>
     <antcall target="jimi-check"/>
 
   </target>
