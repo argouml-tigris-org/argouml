@@ -118,7 +118,7 @@ public class ActionRemoveFromModel extends UMLAction {
     public void actionPerformed(ActionEvent ae) {
         Project p = ProjectManager.getManager().getCurrentProject();
         Object[] targets = null;
-        if (ae.getSource() instanceof PropPanel) {
+        if (ae.getSource() instanceof PropPanelButton2) {
             targets =
                 new Object[] {
 		    TargetManager.getInstance().getModelTarget(),
