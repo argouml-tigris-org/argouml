@@ -3897,8 +3897,9 @@ public class ModelFacade {
         if (isABase(base)) {
             ((MBase) base).setUUID(uuid);
         }
-        //
-        throw new IllegalArgumentException("Unrecognized object " + base);
+        else {
+            throw new IllegalArgumentException("Unrecognized object " + base);
+        }
     }
     
     /**
