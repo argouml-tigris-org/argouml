@@ -29,7 +29,7 @@
 <td bgcolor="#000099" valign="Top"><font color="#ffffff" size="+3"><b><font face="Helvetica, Arial, sans-serif">ArgoUML</font></b></font></td>
 </tr>
 <tr valign="Top">
-<td bgcolor="#3366ff" valign="Top"><b><font color="#ffffff" face="Helvetica, Arial, sans-serif"><a class="header" href="%0A%20%20%20%20index.html%0A%20%20">home</a> | <a class="header" href="%0A%20%20%20%20resources/index.html%0A%20%20">resources</a></font></b></td>
+<td bgcolor="#3366ff" valign="Top"><b><font color="#ffffff" face="Helvetica, Arial, sans-serif"><a href="index.html" class="header">home</a> | <a href="resources/index.html" class="header">resources</a></font></b></td>
 </tr>
 <tr valign="Top">
 <td valign="Top">
@@ -45,8 +45,8 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tbody>
 <tr valign="Top">
-<td valign="Top"><a name="1"></a>
-<h1>1. Developer FAQ</h1>
+<td valign="Top"><a name="N14"></a>
+<h1>1 Developer FAQ</h1>
 
   
 <p>
@@ -64,12 +64,12 @@
   </p>
 
  
-<a name="4"></a>
-<h2>1. Prerequisite stuff</h2>
+<a name="N1E"></a>
+<h2>1.1 Prerequisite stuff</h2>
 
   
-<a name="2"></a>
-<h3>1. Which tools do I need to build ArgoUML?</h3>
+<a name="N21"></a>
+<h3>1.1.1 Which tools do I need to build ArgoUML?</h3>
    
 <ul>
      
@@ -92,8 +92,8 @@
    </p>
   
   
-<a name="4"></a>
-<h3>2. Compiling failed. Any suggestions?</h3>
+<a name="N37"></a>
+<h3>1.1.2 Compiling failed. Any suggestions?</h3>
    
 <p>
    Most compiling problems arise from wrong versions: maybe ANT
@@ -110,12 +110,12 @@
  
 
  
-<a name="6"></a>
-<h2>2. Argo Initialization</h2>
+<a name="N43"></a>
+<h2>1.2 Argo Initialization</h2>
 
   
-<a name="2"></a>
-<h3>1. Which sources are involved?</h3>
+<a name="N46"></a>
+<h3>1.2.1 Which sources are involved?</h3>
   
 <p>
   Relative to the directory org/argouml, they are mainly:
@@ -134,8 +134,8 @@
 </ul>
   
   
-<a name="4"></a>
-<h3>2. What is loaded/initialized?</h3>
+<a name="N5C"></a>
+<h3>1.2.2 What is loaded/initialized?</h3>
   
 <p>
   It all begins in org.argouml.application.Main: set up
@@ -162,28 +162,28 @@
  
 
  
-<a name="8"></a>
-<h2>3. Runtime Issues</h2>
+<a name="N67"></a>
+<h2>1.3 Runtime Issues</h2>
 
   
-<a name="2"></a>
-<h3>1. Which Objects live during a typical session?</h3>
+<a name="N6A"></a>
+<h3>1.3.1 Which Objects live during a typical session?</h3>
   
 <p>
   (Project, Designer, Globals, NavPane, ToDoPane, ...)
   </p>
   
   
-<a name="4"></a>
-<h3>2. What is their task?</h3>
+<a name="N71"></a>
+<h3>1.3.2 What is their task?</h3>
   
 <p>
   (visual component, model, controller, ...)
   </p>
   
   
-<a name="6"></a>
-<h3>3. How about memory organization, e.g. cleanup?</h3>
+<a name="N78"></a>
+<h3>1.3.3 How about memory organization, e.g. cleanup?</h3>
   
 <p>
   
@@ -193,28 +193,28 @@
  
 
  
-<a name="10"></a>
-<h2>4. Working with Projects</h2>
+<a name="N80"></a>
+<h2>1.4 Working with Projects</h2>
 
   
-<a name="2"></a>
-<h3>1. How is a project represented/stored/loaded?</h3>
+<a name="N83"></a>
+<h3>1.4.1 How is a project represented/stored/loaded?</h3>
   
 <p>
   
 </p>
   
   
-<a name="4"></a>
-<h3>2. Which sources are involved?</h3>
+<a name="N8A"></a>
+<h3>1.4.2 Which sources are involved?</h3>
   
 <p>
   
 </p>
   
   
-<a name="6"></a>
-<h3>3. What happens when something is added/removed/modified?</h3>
+<a name="N91"></a>
+<h3>1.4.3 What happens when something is added/removed/modified?</h3>
   
 <p>
   (in the model and/or the diagram)
@@ -224,75 +224,36 @@
  
 
  
-<a name="12"></a>
-<h2>5. Cognitive Support</h2>
+<a name="N99"></a>
+<h2>1.5 Cognitive Support</h2>
 
   
-<a name="2"></a>
-<h3>1. Which sources are involved?</h3>
+<a name="N9C"></a>
+<h3>1.5.1 Which sources are involved?</h3>
   
 <p>
   
 </p>
   
   
-<a name="4"></a>
-<h3>2. How do Critics/Checklists work?</h3>
+<a name="NA3"></a>
+<h3>1.5.2 How do Critics/Checklists work?</h3>
   
 <p>
   
 </p>
   
   
-<a name="6"></a>
-<h3>3. How are changes recognized?</h3>
+<a name="NAA"></a>
+<h3>1.5.3 How are changes recognized?</h3>
   
 <p>
   
 </p>
   
   
-<a name="8"></a>
-<h3>4. How is the connection to the model/diagrams?</h3>
-  
-<p>
-  
-</p>
-  
-
- 
-
- 
-<a name="14"></a>
-<h2>6. Code Generation</h2>
-
-  
-<a name="2"></a>
-<h3>1. Which sources are involved?</h3>
-  
-<p>
-  
-</p>
-  
-  
-<a name="4"></a>
-<h3>2. How does it work?</h3>
-  
-<p>
-  
-</p>
-  
-  
-<a name="6"></a>
-<h3>3. What in the model is (not) considered?</h3>
-  
-<p>
-  
-</p>
-  
-  
-<a name="8"></a>
-<h3>4. How is Java/C++ specific stuff handled?</h3>
+<a name="NB1"></a>
+<h3>1.5.4 How is the connection to the model/diagrams?</h3>
   
 <p>
   
@@ -302,12 +263,51 @@
  
 
  
-<a name="16"></a>
-<h2>7. Reverse Engineering</h2>
+<a name="NB9"></a>
+<h2>1.6 Code Generation</h2>
 
   
-<a name="2"></a>
-<h3>1. Which sources are involved?</h3>
+<a name="NBC"></a>
+<h3>1.6.1 Which sources are involved?</h3>
+  
+<p>
+  
+</p>
+  
+  
+<a name="NC3"></a>
+<h3>1.6.2 How does it work?</h3>
+  
+<p>
+  
+</p>
+  
+  
+<a name="NCA"></a>
+<h3>1.6.3 What in the model is (not) considered?</h3>
+  
+<p>
+  
+</p>
+  
+  
+<a name="ND1"></a>
+<h3>1.6.4 How is Java/C++ specific stuff handled?</h3>
+  
+<p>
+  
+</p>
+  
+
+ 
+
+ 
+<a name="ND9"></a>
+<h2>1.7 Reverse Engineering</h2>
+
+  
+<a name="NDC"></a>
+<h3>1.7.1 Which sources are involved?</h3>
   
 <p>
   The package org.argouml.uml.reveng is supposed to hold those classes
@@ -327,8 +327,8 @@
   </p>
   
   
-<a name="4"></a>
-<h3>2. How is the grammar of the target language implemented?</h3>
+<a name="NE6"></a>
+<h3>1.7.2 How is the grammar of the target language implemented?</h3>
   
 <p>
   It's a Antlr (<a href="http://www.antlr.org" target="_blank">
@@ -342,8 +342,8 @@
   </p>
   
   
-<a name="6"></a>
-<h3>3. Which model/diagramm elements are generated?</h3>
+<a name="NF2"></a>
+<h3>1.7.3 Which model/diagramm elements are generated?</h3>
   
 <p>
   The *context classes hold the current context for a package, class
@@ -353,8 +353,8 @@
   </p>
   
   
-<a name="8"></a>
-<h3>4. Which layout algorithm is used?</h3>
+<a name="NF9"></a>
+<h3>1.7.4 Which layout algorithm is used?</h3>
   
 <p>
   The classes in org.argouml.uml.diagram.static_structure.layout.* hold
@@ -472,12 +472,12 @@
  
 
  
-<a name="18"></a>
-<h2>8. Graphics Environment (GEF)</h2>
+<a name="N15E"></a>
+<h2>1.8 Graphics Environment (GEF)</h2>
 
   
-<a name="2"></a>
-<h3>1. What are the basics of GEF (short intro)?</h3>
+<a name="N161"></a>
+<h3>1.8.1 What are the basics of GEF (short intro)?</h3>
   
 <p>
   The basic element in GEF is a figure. There are five different kinds
@@ -493,8 +493,8 @@
   </p>
   
   
-<a name="4"></a>
-<h3>2. How and where is the GEF API used for UML?</h3>
+<a name="N16F"></a>
+<h3>1.8.2 How and where is the GEF API used for UML?</h3>
   At the moment there only exists old documentation: about
   <a href="http://argouml.tigris.org/nonav/v07/docs/cookbook/figure/">
   UML figures</a> and their associated
@@ -511,28 +511,28 @@
  
 
  
-<a name="20"></a>
-<h2>9. UML Meta Model (NSUML)</h2>
+<a name="N17F"></a>
+<h2>1.9 UML Meta Model (NSUML)</h2>
 
   
-<a name="2"></a>
-<h3>1. What are the basics of the used meta model (short intro)?</h3>
+<a name="N182"></a>
+<h3>1.9.1 What are the basics of the used meta model (short intro)?</h3>
   
 <p>
   
 </p>
   
   
-<a name="4"></a>
-<h3>2. How and where is the Novosoft API used?</h3>
+<a name="N189"></a>
+<h3>1.9.2 How and where is the Novosoft API used?</h3>
   
 <p>
   
 </p>
   
   
-<a name="6"></a>
-<h3>3. How is the model and its representation (e.g. in diagrams) synchronized?</h3>
+<a name="N190"></a>
+<h3>1.9.3 How is the model and its representation (e.g. in diagrams) synchronized?</h3>
   
 <p>
   All changes immediately modify the model that the prop panels, diagrams
@@ -558,44 +558,81 @@
 </tr>
 <tr valign="Top">
 <td bgcolor="#ffffff" valign="Top"><font face="Helvetica, Arial, sans-serif"><font size="-1">
-   <font size="-2"><a href="#1">Developer FAQ<br>
-</a><a href="#2">Prerequisite stuff<br>
-</a><a href="#3">Which tools do I need to build ArgoUML?<br>
-</a><a href="#4">Compiling failed. Any suggestions?<br>
-</a><a href="#5">Argo Initialization<br>
-</a><a href="#6">Which sources are involved?<br>
-</a><a href="#7">What is loaded/initialized?<br>
-</a><a href="#8">Runtime Issues<br>
-</a><a href="#9">Which Objects live during a typical session?<br>
-</a><a href="#10">What is their task?<br>
-</a><a href="#11">How about memory organization, e.g. cleanup?<br>
-</a><a href="#12">Working with Projects<br>
-</a><a href="#13">How is a project represented/stored/loaded?<br>
-</a><a href="#14">Which sources are involved?<br>
-</a><a href="#15">What happens when something is added/removed/modified?<br>
-</a><a href="#16">Cognitive Support<br>
-</a><a href="#17">Which sources are involved?<br>
-</a><a href="#18">How do Critics/Checklists work?<br>
-</a><a href="#19">How are changes recognized?<br>
-</a><a href="#20">How is the connection to the model/diagrams?<br>
-</a><a href="#21">Code Generation<br>
-</a><a href="#22">Which sources are involved?<br>
-</a><a href="#23">How does it work?<br>
-</a><a href="#24">What in the model is (not) considered?<br>
-</a><a href="#25">How is Java/C++ specific stuff handled?<br>
-</a><a href="#26">Reverse Engineering<br>
-</a><a href="#27">Which sources are involved?<br>
-</a><a href="#28">How is the grammar of the target language implemented?<br>
-</a><a href="#29">Which model/diagramm elements are generated?<br>
-</a><a href="#30">Which layout algorithm is used?<br>
-</a><a href="#31">Graphics Environment (GEF)<br>
-</a><a href="#32">What are the basics of GEF (short intro)?<br>
-</a><a href="#33">How and where is the GEF API used for UML?<br>
-</a><a href="#34">UML Meta Model (NSUML)<br>
-</a><a href="#35">What are the basics of the used meta model (short intro)?<br>
-</a><a href="#36">How and where is the Novosoft API used?<br>
-</a><a href="#37">How is the model and its representation (e.g. in diagrams) synchronized?<br>
-</a></font>
+   <font size="-2"><a href="#N14">Developer FAQ</a>
+<br>
+<a href="#N1E">Prerequisite stuff</a>
+<br>
+<a href="#N21">Which tools do I need to build ArgoUML?</a>
+<br>
+<a href="#N37">Compiling failed. Any suggestions?</a>
+<br>
+<a href="#N43">Argo Initialization</a>
+<br>
+<a href="#N46">Which sources are involved?</a>
+<br>
+<a href="#N5C">What is loaded/initialized?</a>
+<br>
+<a href="#N67">Runtime Issues</a>
+<br>
+<a href="#N6A">Which Objects live during a typical session?</a>
+<br>
+<a href="#N71">What is their task?</a>
+<br>
+<a href="#N78">How about memory organization, e.g. cleanup?</a>
+<br>
+<a href="#N80">Working with Projects</a>
+<br>
+<a href="#N83">How is a project represented/stored/loaded?</a>
+<br>
+<a href="#N8A">Which sources are involved?</a>
+<br>
+<a href="#N91">What happens when something is added/removed/modified?</a>
+<br>
+<a href="#N99">Cognitive Support</a>
+<br>
+<a href="#N9C">Which sources are involved?</a>
+<br>
+<a href="#NA3">How do Critics/Checklists work?</a>
+<br>
+<a href="#NAA">How are changes recognized?</a>
+<br>
+<a href="#NB1">How is the connection to the model/diagrams?</a>
+<br>
+<a href="#NB9">Code Generation</a>
+<br>
+<a href="#NBC">Which sources are involved?</a>
+<br>
+<a href="#NC3">How does it work?</a>
+<br>
+<a href="#NCA">What in the model is (not) considered?</a>
+<br>
+<a href="#ND1">How is Java/C++ specific stuff handled?</a>
+<br>
+<a href="#ND9">Reverse Engineering</a>
+<br>
+<a href="#NDC">Which sources are involved?</a>
+<br>
+<a href="#NE6">How is the grammar of the target language implemented?</a>
+<br>
+<a href="#NF2">Which model/diagramm elements are generated?</a>
+<br>
+<a href="#NF9">Which layout algorithm is used?</a>
+<br>
+<a href="#N15E">Graphics Environment (GEF)</a>
+<br>
+<a href="#N161">What are the basics of GEF (short intro)?</a>
+<br>
+<a href="#N16F">How and where is the GEF API used for UML?</a>
+<br>
+<a href="#N17F">UML Meta Model (NSUML)</a>
+<br>
+<a href="#N182">What are the basics of the used meta model (short intro)?</a>
+<br>
+<a href="#N189">How and where is the Novosoft API used?</a>
+<br>
+<a href="#N190">How is the model and its representation (e.g. in diagrams) synchronized?</a>
+<br>
+</font>
    </font></font></td>
 </tr>
 </tbody>

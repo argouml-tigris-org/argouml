@@ -46,43 +46,43 @@
 
 <xsl:template match="content">
     <font size="-2">
-     <xsl:for-each select="//section|//subsection|//subsubsection">
-      <xsl:element name="a">
-        <xsl:attribute name="href"><xsl:text>#</xsl:text><xsl:value-of select="position()"/></xsl:attribute>
-       <xsl:value-of select="@title"/><br />
-      </xsl:element>
+	 <!--  this would be really poor performing on long
+	          documents as it does three fairly expensive
+			  queries.   It would be more efficient and better style
+			  to do an apply-templates with mode="content"   -->
+     <!-- xsl:for-each select="//section|//subsection|//subsubsection" -->
+	 <xsl:for-each select="//*[contains(local-name(),'section')]">
+	   <a href="#{generate-id(.)}">
+       		<xsl:value-of select="@title"/>
+	   </a><br/>
      </xsl:for-each>
      </font>
 </xsl:template>
 
 
 <xsl:template match="section">
-    <xsl:element name="a">
-     <xsl:attribute name="name">
-       <xsl:value-of select="position()"/>
-     </xsl:attribute>
-    </xsl:element>
-    <h1><xsl:number level="single"/>. <xsl:value-of select="@title"/></h1>
+	<a name="{generate-id(.)}"/>
+    <h1><xsl:number level="multiple"
+                 count="section"
+                 format="1 "/> <xsl:value-of select="@title"/></h1>
     <xsl:apply-templates/>
 </xsl:template>
 
 <xsl:template match="subsection">
-    <xsl:element name="a">
-     <xsl:attribute name="name">
-       <xsl:value-of select="position()"/>
-     </xsl:attribute>
-    </xsl:element>
-    <h2><xsl:number level="single"/>. <xsl:value-of select="@title"/></h2>
+    <a name="{generate-id(.)}"/>
+    <h2>
+<xsl:number level="multiple"
+                 count="section|subsection"
+                 format="1.1 "/>
+    <xsl:value-of select="@title"/></h2>
     <xsl:apply-templates/>
 </xsl:template>
 
 <xsl:template match="subsubsection">
-  <xsl:element name="a">
-     <xsl:attribute name="name">
-       <xsl:value-of select="position()"/>
-     </xsl:attribute>
-    </xsl:element>
-  <h3><xsl:number level="single"/>. <xsl:value-of select="@title"/></h3> 
+  <a name="{generate-id(.)}"/>
+  <h3><xsl:number level="multiple"
+                 count="section|subsection|subsubsection"
+                 format="1.1.1 "/><xsl:value-of select="@title"/></h3> 
   <xsl:apply-templates/> 
 </xsl:template>
 
@@ -166,8 +166,7 @@ home | documentation | people | download | screenshots| news | uml resources
 
 <xsl:template match="topnavbar">
     <xsl:for-each select="navbaritem">
-     <a class="header">
-       <xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>
+     <a class="header" href="{normalize-space(.)}">
        <xsl:value-of select="@name"/>
      </a>
      <xsl:choose>
