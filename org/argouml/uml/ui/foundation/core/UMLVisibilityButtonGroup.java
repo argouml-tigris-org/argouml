@@ -28,11 +28,9 @@ import java.awt.event.KeyEvent;
 import javax.swing.JRadioButton;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLButtonGroup;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
-
 /**
  * Model for namespace visibility.
  * @since Oct 12, 2002
@@ -70,16 +68,15 @@ public abstract class UMLVisibilityButtonGroup extends UMLButtonGroup {
      * @see org.argouml.uml.ui.UMLButtonGroup#buildModel()
      */
     public void buildModel() {
-        MVisibilityKind vis = ((MModelElement) getTarget()).getVisibility();
-        
-        if (vis == MVisibilityKind.PRIVATE) {
+        if (ModelFacade.isPrivate(getTarget())) {
             _privateButton.setSelected(true);
-        } else
-	    if (vis == MVisibilityKind.PROTECTED) {
+        } else {
+	    if (ModelFacade.isProtected(getTarget())) {
 		_protectedButton.setSelected(true);
-	    } else
+	    } else {
 		_publicButton.setSelected(true);
-            
+            }
+        }
     }
 
     /**

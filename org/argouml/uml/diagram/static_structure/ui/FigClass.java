@@ -79,7 +79,16 @@ import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MBehavioralFeature;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MElementResidence;
+import ru.novosoft.uml.foundation.core.MFeature;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.foundation.core.MParameter;
+import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
@@ -352,7 +361,6 @@ public class FigClass extends FigNodeModelElement {
 
         popUpActions.insertElementAt(showMenu, popUpActions.size() - 1);
 
-        // Block added by BobTarling 7-Jan-2001
         MClass mclass = (MClass) getOwner();
         ArgoJMenu modifierMenu = new ArgoJMenu("Modifiers");
 
