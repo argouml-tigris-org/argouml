@@ -109,7 +109,7 @@ public class FigHistoryState extends FigStateVertex {
 
   public void setOwner(Object node) {
     super.setOwner(node);
-    bindPort(node, _bigPort);
+    // bindPort(node, _bigPort);
   }
 
   /** History states are fixed size. */

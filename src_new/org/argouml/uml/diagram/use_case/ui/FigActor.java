@@ -30,6 +30,7 @@ package org.argouml.uml.diagram.use_case.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Vector;
 
@@ -44,155 +45,188 @@ import org.tigris.gef.presentation.FigText;
 
 public class FigActor extends FigNodeModelElement {
 
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    /** UML does not really use ports, so just define one big one so
+     *  that users can drag edges to or from any point in the icon. */
+    FigCircle _bigPort;
 
-  /** UML does not really use ports, so just define one big one so
-   *  that users can drag edges to or from any point in the icon. */
-  FigCircle _bigPort;
+    /* Put in the things for the "person" in the FigActor */
+    FigCircle _head;
+    FigLine _body;
+    FigLine _arms;
+    FigLine _leftLeg;
+    FigLine _rightLeg;
 
-  /* Put in the things for the "person" in the FigActor */
-  FigCircle _head;
-  FigLine _body;
-  FigLine _arms;
-  FigLine _leftLeg;
-  FigLine _rightLeg;
+    // add other Figs here aes needed
 
-  // add other Figs here aes needed
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
+    public FigActor() {
+        // Put this rectangle behind the rest, so it goes first
+        _bigPort = new FigCircle(10, 30, 15, 15, Color.gray, Color.gray);
+        _head = new FigCircle(10, 30, 15, 15, Color.black, Color.white);
+        _body = new FigLine(20, 45, 20, 60, Color.black);
+        _arms = new FigLine(10, 50, 30, 50, Color.black);
+        _leftLeg = new FigLine(20, 60, 15, 75, Color.black);
+        _rightLeg = new FigLine(20, 60, 25, 75, Color.black);
+        _name.setBounds(5, 75, 35, 20);
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+        _name.setTextFilled(false);
+        _name.setFilled(false);
+        _name.setLineWidth(0);
+        // initialize any other Figs here
 
-  public FigActor() {
-    // Put this rectangle behind the rest, so it goes first
-    _bigPort = new FigCircle(10, 30, 15, 15, Color.gray, Color.gray);
-    _head = new FigCircle(10, 30, 15, 15, Color.black, Color.white);
-    _body = new FigLine(20, 45, 20, 60, Color.black);
-    _arms = new FigLine(10, 50, 30, 50, Color.black);
-    _leftLeg = new FigLine(20, 60, 15, 75, Color.black );
-    _rightLeg = new FigLine(20, 60, 25, 75, Color.black );
-    _name.setBounds(5, 75, 35, 20);
+        // add Figs to the FigNode in back-to-front order
+        addFig(_bigPort);
+        addFig(_head);
+        addFig(_body);
+        addFig(_arms);
+        addFig(_leftLeg);
+        addFig(_rightLeg);
+        addFig(_name);
 
-    _name.setTextFilled(false);
-    _name.setFilled(false);
-    _name.setLineWidth(0);
-    // initialize any other Figs here
+    }
 
-    // add Figs to the FigNode in back-to-front order
-    addFig(_bigPort);
-    addFig(_head);
-    addFig(_body);
-    addFig(_arms);
-    addFig(_leftLeg);
-    addFig(_rightLeg);
-    addFig(_name);
+    public FigActor(GraphModel gm, Object node) {
+        this();
+        setOwner(node);
+    }
 
-  }
+    public String placeString() {
+        return "new MActor";
+    }
 
-  public FigActor(GraphModel gm, Object node) {
-    this();
-    setOwner(node);
-  }
+    public Object clone() {
+        FigActor figClone = (FigActor) super.clone();
+        Vector v = figClone.getFigs();
+        figClone._bigPort = (FigCircle) v.elementAt(0);
+        figClone._head = (FigCircle) v.elementAt(1);
+        figClone._body = (FigLine) v.elementAt(2);
+        figClone._arms = (FigLine) v.elementAt(3);
+        figClone._leftLeg = (FigLine) v.elementAt(4);
+        figClone._rightLeg = (FigLine) v.elementAt(5);
+        figClone._name = (FigText) v.elementAt(6);
+        return figClone;
+    }
 
-  public String placeString() { return "new MActor"; }
+    ////////////////////////////////////////////////////////////////
+    // Fig accessors
 
-  public Object clone() {
-    FigActor figClone = (FigActor) super.clone();
-    Vector v = figClone.getFigs();
-    figClone._bigPort = (FigCircle) v.elementAt(0);
-    figClone._head = (FigCircle) v.elementAt(1);
-    figClone._body = (FigLine) v.elementAt(2);
-    figClone._arms = (FigLine) v.elementAt(3);
-    figClone._leftLeg = (FigLine) v.elementAt(4);
-    figClone._rightLeg = (FigLine) v.elementAt(5);
-    figClone._name = (FigText) v.elementAt(6);
-    return figClone;
-  }
+    public Selection makeSelection() {
+        return new SelectionActor(this);
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // Fig accessors
+    public void setOwner(Object node) {
+        super.setOwner(node);
+        bindPort(node, _bigPort);
+    }
 
-  public Selection makeSelection() {
-    return new SelectionActor(this);
-  }
+    /** Returns true if this Fig can be resized by the user. */
+    public boolean isResizable() {
+        return false;
+    }
 
-  public void setOwner(Object node) {  
-    super.setOwner(node);
-    bindPort(node, _bigPort);
-  }
+    //   public Selection makeSelection() {
+    //     return new SelectionMoveClarifiers(this);
+    //   }
 
-  /** Returns true if this Fig can be resized by the user. */
-  public boolean isResizable() { return false; }
+    public void setLineColor(Color col) {
+        _head.setLineColor(col);
+        _body.setLineColor(col);
+        _arms.setLineColor(col);
+        _leftLeg.setLineColor(col);
+        _rightLeg.setLineColor(col);
+    }
+    public Color getLineColor() {
+        return _head.getLineColor();
+    }
 
-//   public Selection makeSelection() {
-//     return new SelectionMoveClarifiers(this);
-//   }
+    public void setFillColor(Color col) {
+        _head.setFillColor(col);
+    }
+    public Color getFillColor() {
+        return _head.getFillColor();
+    }
 
-  public void setLineColor(Color col) {
-    _head.setLineColor(col);
-    _body.setLineColor(col);
-    _arms.setLineColor(col);
-    _leftLeg.setLineColor(col);
-    _rightLeg.setLineColor(col);
-  }
-  public Color getLineColor() { return _head.getLineColor(); }
+    public void setFilled(boolean f) {
+        _head.setFilled(f);
+    }
+    public boolean getFilled() {
+        return _head.getFilled();
+    }
 
-  public void setFillColor(Color col) { _head.setFillColor(col); }
-  public Color getFillColor() { return _head.getFillColor(); }
+    public void setLineWidth(int w) {
+        _head.setLineWidth(w);
+        _body.setLineWidth(w);
+        _arms.setLineWidth(w);
+        _leftLeg.setLineWidth(w);
+        _rightLeg.setLineWidth(w);
+    }
+    public int getLineWidth() {
+        return _head.getLineWidth();
+    }
 
-  public void setFilled(boolean f) { _head.setFilled(f); }
-  public boolean getFilled() { return _head.getFilled(); }
+    public Dimension getMinimumSize() {
+        Dimension nameDim = _name.getMinimumSize();
+        int w = nameDim.width;
+        int h = nameDim.height + 65;
+        return new Dimension(w, h);
+    }
 
-  public void setLineWidth(int w) {
-    _head.setLineWidth(w);
-    _body.setLineWidth(w);
-    _arms.setLineWidth(w);
-    _leftLeg.setLineWidth(w);
-    _rightLeg.setLineWidth(w);
-  }
-  public int getLineWidth() { return _head.getLineWidth(); }
+    public void setBounds(int x, int y, int w, int h) {
+        int middle = w / 2;
+        h = _h;
+        Rectangle oldBounds = getBounds();
+        _bigPort.setLocation(x + middle - _bigPort.getWidth() / 2, y + h - 65);
+        _head.setLocation(x + middle - _head.getWidth() / 2, y + h - 65);
+        _body.setLocation(x + middle, y + h - 50);
+        _arms.setLocation(x + middle - _arms.getWidth() / 2, y + h - 45);
+        _leftLeg.setLocation(x + middle - _leftLeg.getWidth(), y + h - 35);
+        _rightLeg.setLocation(x + middle, y + h - 35);
 
-  public Dimension getMinimumSize() {
-    Dimension nameDim = _name.getMinimumSize();
-    int w = nameDim.width;
-    int h = nameDim.height + 65;
-    return new Dimension(w, h);
-  }
+        Dimension minTextSize = _name.getMinimumSize();
+        _name.setBounds(x + middle - minTextSize.width / 2, y + h - minTextSize.height, minTextSize.width, minTextSize.height);
 
-  public void setBounds(int x, int y, int w, int h) {
-    int middle = w/2;
-    h = _h;
-    Rectangle oldBounds = getBounds();
-    _bigPort.setLocation(x + middle - _bigPort.getWidth()/2, y + h - 65);
-    _head.setLocation(x + middle - _head.getWidth()/2, y + h - 65);
-    _body.setLocation(x + middle, y + h - 50);
-    _arms.setLocation(x + middle - _arms.getWidth()/2, y + h - 45);
-    _leftLeg.setLocation(x + middle - _leftLeg.getWidth(), y + h - 35);
-    _rightLeg.setLocation(x + middle,  y + h - 35);
+        updateEdges();
+        _x = x;
+        _y = y;
+        _w = w;
+        // do not set height
+        firePropChange("bounds", oldBounds, getBounds());
+    }
 
-    Dimension minTextSize = _name.getMinimumSize();
-    _name.setBounds(x + middle - minTextSize.width/2,
-		    y + h - minTextSize.height,
-		    minTextSize.width, minTextSize.height);
-
-    updateEdges();
-    _x = x;
-    _y = y;
-    _w = w;
-    // do not set height
-    firePropChange("bounds", oldBounds, getBounds());
-  }
+    /**
+     * @see org.tigris.gef.presentation.FigNode#deepHitPort(int, int)
+     */
+    public Object deepHitPort(int x, int y) {
+        Object o = super.deepHitPort(x, y);
+        if (o != null)
+            return o;
+        if (hit(new Rectangle(new Dimension(x, y))))
+            return getOwner();
+        return null;
+    }
 
 	/**
-	 * @see org.tigris.gef.presentation.FigNode#deepHitPort(int, int)
-	 */
-	public Object deepHitPort(int x, int y) {
-		Object o = super.deepHitPort(x, y);
-		if (o != null) return o;
-		if (hit(new Rectangle(new Dimension(x,y)))) return getOwner();
-		return null;
-	}
+     * Makes sure that the edges stick to the elipse fig of the usecase.
+     * @see org.tigris.gef.presentation.Fig#getGravityPoints()
+     */
+    public Vector getGravityPoints() {
+        Vector ret = new Vector();
+        int cx = _head.center().x;
+        int cy = _head.center().y;
+        int radiusx = Math.round(_head.getWidth() / 2) + 1;
+        int radiusy = Math.round(_head.getHeight() / 2) + 1;
+        int MAXPOINTS = 20;
+        Point point = null;
+        for (int i = 0; i < MAXPOINTS; i++) {
+            point = new Point((int) (cx + Math.cos(2 * Math.PI / MAXPOINTS * i) * radiusx), (int) (cy + Math.sin(2 * Math.PI / MAXPOINTS * i) * radiusy));
+            ret.add(point);
+        }
+        return ret;
+    }
 
 } /* end class FigActor */
