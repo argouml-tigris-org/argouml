@@ -32,7 +32,8 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 2, 2003
  */
-public class UMLNamespaceOwnedElementListModel extends UMLModelElementListModel2 {
+public class UMLNamespaceOwnedElementListModel 
+    extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLNamespaceOwnedElementListModel.
@@ -45,7 +46,7 @@ public class UMLNamespaceOwnedElementListModel extends UMLModelElementListModel2
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (_target != null) {
+        if (getTarget() != null) {
             setAllElements(ModelFacade.getOwnedElements(getTarget()));
         }
     }

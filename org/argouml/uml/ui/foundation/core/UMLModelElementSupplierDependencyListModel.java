@@ -45,7 +45,7 @@ public class UMLModelElementSupplierDependencyListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (_target != null) {
+        if (getTarget() != null) {
             setAllElements(ModelFacade.getSupplierDependencies(getTarget()));
         }
     }
@@ -54,7 +54,8 @@ public class UMLModelElementSupplierDependencyListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
-        return ModelFacade.isADependency(o) && ModelFacade.getSupplierDependencies(getTarget()).contains(o);
+        return ModelFacade.isADependency(o) 
+            && ModelFacade.getSupplierDependencies(getTarget()).contains(o);
     }
 
 }

@@ -46,8 +46,8 @@ public class UMLModelElementNamespaceListModel
      */
     protected void buildModelList() {
         removeAllElements();
-        if (_target != null) {
-            addElement(ModelFacade.getNamespace(_target));
+        if (getTarget() != null) {
+            addElement(ModelFacade.getNamespace(getTarget()));
         }
     }
 

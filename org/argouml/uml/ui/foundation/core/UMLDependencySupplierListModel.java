@@ -46,7 +46,7 @@ public class UMLDependencySupplierListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (_target != null) 
+        if (getTarget() != null) 
             setAllElements(ModelFacade.getSuppliers(getTarget()));
     }
 
@@ -54,7 +54,8 @@ public class UMLDependencySupplierListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {  
-        return org.argouml.model.ModelFacade.isAModelElement(o) && ModelFacade.getSuppliers(getTarget()).contains(o);
+        return org.argouml.model.ModelFacade.isAModelElement(o) 
+            && ModelFacade.getSuppliers(getTarget()).contains(o);
     }
 
 }

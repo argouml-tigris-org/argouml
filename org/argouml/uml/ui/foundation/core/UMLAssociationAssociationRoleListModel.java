@@ -32,7 +32,8 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 4, 2003
  */
-public class UMLAssociationAssociationRoleListModel extends UMLModelElementListModel2 {
+public class UMLAssociationAssociationRoleListModel 
+    extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLAssociationAssociationRoleListModel.
@@ -45,7 +46,7 @@ public class UMLAssociationAssociationRoleListModel extends UMLModelElementListM
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (_target != null) 
+        if (getTarget() != null) 
             setAllElements(ModelFacade.getAssociationRoles(getTarget()));
     }
 
@@ -53,6 +54,7 @@ public class UMLAssociationAssociationRoleListModel extends UMLModelElementListM
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {  
-        return org.argouml.model.ModelFacade.isAAssociationRole(o) && ModelFacade.getAssociationRoles(getTarget()).contains(o);
+        return org.argouml.model.ModelFacade.isAAssociationRole(o) 
+            && ModelFacade.getAssociationRoles(getTarget()).contains(o);
     }
 }

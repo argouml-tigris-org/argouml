@@ -31,7 +31,8 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @since Jan 29, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLParameterBehavioralFeatListModel extends UMLModelElementListModel2 {
+public class UMLParameterBehavioralFeatListModel 
+    extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLParameterBehavioralFeatListModel
@@ -44,7 +45,7 @@ public class UMLParameterBehavioralFeatListModel extends UMLModelElementListMode
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-	if (_target != null) {
+	if (getTarget() != null) {
 	    removeAllElements();
 	    addElement(ModelFacade.getBehavioralFeature(getTarget()));
 	}

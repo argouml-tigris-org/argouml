@@ -45,7 +45,7 @@ public class UMLAttributeInitialValueListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-	if (_target != null) {
+	if (getTarget() != null) {
 	    removeAllElements();
 	    addElement(ModelFacade.getInitialValue(getTarget()));
 	}

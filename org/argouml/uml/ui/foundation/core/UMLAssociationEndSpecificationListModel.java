@@ -32,7 +32,8 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 4, 2003
  */
-public class UMLAssociationEndSpecificationListModel extends UMLModelElementListModel2 {
+public class UMLAssociationEndSpecificationListModel 
+    extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLAssociationEndSpecificationListModel.
@@ -45,15 +46,16 @@ public class UMLAssociationEndSpecificationListModel extends UMLModelElementList
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (_target != null) 
-            setAllElements(ModelFacade.getSpecifications(_target));
+        if (getTarget() != null) 
+            setAllElements(ModelFacade.getSpecifications(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {  
-        return org.argouml.model.ModelFacade.isAClassifier(o) && ModelFacade.getSpecifications(getTarget()).contains(o);
+        return org.argouml.model.ModelFacade.isAClassifier(o) 
+            && ModelFacade.getSpecifications(getTarget()).contains(o);
     }
 
 }

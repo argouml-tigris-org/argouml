@@ -45,7 +45,7 @@ public class UMLModelElementSourceFlowListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (_target != null) {
+        if (getTarget() != null) {
 	    setAllElements(ModelFacade.getSourceFlows(getTarget()));
         }
     }
@@ -54,7 +54,8 @@ public class UMLModelElementSourceFlowListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
-        return ModelFacade.isAFlow(o) && ModelFacade.getSourceFlows(getTarget()).contains(o);
+        return ModelFacade.isAFlow(o) 
+            && ModelFacade.getSourceFlows(getTarget()).contains(o);
     }
 
 }
