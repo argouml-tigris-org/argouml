@@ -29,6 +29,7 @@ import java.beans.*;
 import java.util.*;
 import java.net.*;
 import org.apache.log4j.*;
+import org.argouml.application.configuration.ConfigurationKeyImpl;
 
 /**
  *   This class provides the core user configuration implementation
@@ -79,7 +80,8 @@ public class Configuration {
     /** Private constructor so it cannot be instantiated.
      */
     private Configuration() {
-	_config = ConfigurationFactory.getInstance().getConfigurationHandler();
+	ConfigurationFactory factory = ConfigurationFactory.getInstance();
+	_config = factory.getConfigurationHandler();
     }
 
     /** Returns the instance of the configuration singleton.
