@@ -26,10 +26,7 @@ package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Point;
-import java.beans.PropertyVetoException;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
@@ -37,6 +34,7 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
+
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.ArrowHeadGreater;
@@ -46,11 +44,6 @@ import org.tigris.gef.presentation.FigText;
 import ru.novosoft.uml.MElementEvent;
 
 public class FigTransition extends FigEdgeModelElement {
-    /**
-     * @deprecated by Linus Tolke as of 0.16. Will be private.
-     */
-    protected static Logger cat = Logger.getLogger(FigTransition.class);
-
     private ArrowHeadGreater endArrow = new ArrowHeadGreater();
 
     ////////////////////////////////////////////////////////////////
@@ -94,14 +87,12 @@ public class FigTransition extends FigEdgeModelElement {
      * model. This class handles the name, subclasses should override to handle
      * other text elements.
      */
-    protected void textEdited(FigText ft) throws PropertyVetoException {
-
+    protected void textEdited(FigText ft) {
         Object t = /* (MTransition) */getOwner();
         if (t == null)
             return;
         String s = ft.getText();
         ParserDisplay.SINGLETON.parseTransition(/* (MTransition) */t, s);
-
     }
 
     /**
@@ -112,59 +103,62 @@ public class FigTransition extends FigEdgeModelElement {
     protected void modelChanged(MElementEvent e) {
         super.modelChanged(e);
         if (e == null) {
-            // do nothing but catch the nullpointer
-        } else
+            return;
+        }
+
         // register the guard condition
         if (ModelFacade.isATransition(e.getSource())
-                && (e.getSource() == getOwner() && e.getName().equals("guard"))) {
+                && (e.getSource() == getOwner() 
+                        && e.getName().equals("guard"))) {
             UmlModelEventPump.getPump().addModelEventListener(this,
                     e.getNewValue(), "expression");
             updateNameText();
             damage();
-        } else
-        // register the event (or trigger)
-        if (ModelFacade.isATransition(e.getSource())
-                && e.getSource() == getOwner() && e.getName().equals("trigger")) {
+        } else if (ModelFacade.isATransition(e.getSource())
+                && e.getSource() == getOwner()
+                && e.getName().equals("trigger")) {
+            // register the event (or trigger)
             UmlModelEventPump.getPump().addModelEventListener(this,
-                    e.getNewValue(), new String[] { "parameter", "name" });
+                    e.getNewValue(), new String[] {
+                    	"parameter", "name",
+            	    });
             updateNameText();
             damage();
-        } else
-        // register the action
-        if (ModelFacade.isATransition(e.getSource())
-                && e.getSource() == getOwner() && e.getName().equals("effect")) {
+        } else if (ModelFacade.isATransition(e.getSource())
+                && e.getSource() == getOwner() 
+                && e.getName().equals("effect")) {
+            // register the action
             UmlModelEventPump.getPump().addModelEventListener(this,
                     e.getNewValue(), "script");
             updateNameText();
             damage();
-        } else
-        // handle events send by the event
-        if (ModelFacade.isAEvent(e.getSource())
+        } else if (ModelFacade.isAEvent(e.getSource())
                 && ModelFacade.getTransitions(e.getSource()).contains(
                         getOwner())) {
+            // handle events send by the event
             if (e.getName().equals("parameter")) {
-               if (e.getAddedValue() != null) {
-                   UmlModelEventPump.getPump().addModelEventListener(this, e.getAddedValue());
-               } else
-               if (e.getRemovedValue() != null) {
-                   UmlModelEventPump.getPump().removeModelEventListener(this, e.getRemovedValue());
-               }
+                if (e.getAddedValue() != null) {
+                    UmlModelEventPump.getPump().addModelEventListener(
+                            this, 
+                            e.getAddedValue());
+                } else if (e.getRemovedValue() != null) {
+                    UmlModelEventPump.getPump().removeModelEventListener(
+                            this, 
+                            e.getRemovedValue());
+                }
             }
             updateNameText();
             damage();
-        }
-        // handle events send by the guard
-        else if (ModelFacade.isAGuard(e.getSource())) {
+        } else if (ModelFacade.isAGuard(e.getSource())) {
+            // handle events send by the guard
             updateNameText();
             damage();
-        }
-        // handle events send by the action-effect
-        else if (ModelFacade.isAAction(e.getSource())) {
+        } else if (ModelFacade.isAAction(e.getSource())) {
+            // handle events send by the action-effect
             updateNameText();
             damage();
-        }
-        // handle events send by the parameters of the event
-        else if (ModelFacade.isAParameter(e.getSource())) {
+        } else if (ModelFacade.isAParameter(e.getSource())) {
+            // handle events send by the parameters of the event
             updateNameText();
             damage();
         }
@@ -176,13 +170,6 @@ public class FigTransition extends FigEdgeModelElement {
             r[Ps.length - i] = Ps[i];
         }
         return r;
-    }
-
-    private double calculateLength(Point point1, Point point2) {
-        return Math.sqrt((Math.abs(point1.x - point2.x) * Math.abs(point1.x
-                - point2.x))
-                + (Math.abs(point1.y - point2.y) * Math
-                        .abs(point1.y - point2.y)));
     }
 
     /**
@@ -207,6 +194,9 @@ public class FigTransition extends FigEdgeModelElement {
         return null;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
+     */
     public void paint(Graphics g) {
         endArrow.setLineColor(getLineColor());
         super.paint(g);

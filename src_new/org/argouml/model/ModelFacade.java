@@ -2174,24 +2174,6 @@ public class ModelFacade {
     }
 
     /**
-     * Count the number of Connections or AssociationEnds to an Association.
-     *
-     * @param handle to the association.
-     * @return an Iterator with all connections.
-     * @deprecated by Linus Tolke as of 0.15.5. Use
-     * {@link #getConnections(Object)}.size() instead.
-     */
-    public static int getConnectionCount(Object handle) {
-        if (handle instanceof MAssociation) {
-            return ((MAssociation) handle).getConnections().size();
-        }
-
-        // ...
-	illegalArgument(handle);
-	return 0;
-    }
-
-    /**
      * Returns the effect of some transition
      *
      * @param handle is the transition

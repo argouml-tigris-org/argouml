@@ -29,7 +29,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyVetoException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
@@ -176,8 +175,10 @@ public class FigAssociation extends FigEdgeModelElement {
 	setOwner(edge);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     */
     public void setOwner(Object association) {
-	Object oldOwner = getOwner();
 	super.setOwner(association);
 
 	if (org.argouml.model.ModelFacade.isAAssociation(association)) {
@@ -194,7 +195,6 @@ public class FigAssociation extends FigEdgeModelElement {
 	    UmlModelEventPump.getPump()
 		.addModelEventListener(this, association);
 	    Object assEnd1 = (connections.toArray())[0];
-	    Object assEnd2 = (connections.toArray())[1];
 	    FigNode destNode =
 		(FigNode) getLayer()
 		    .presentationFor(ModelFacade.getType(assEnd1));
@@ -217,7 +217,10 @@ public class FigAssociation extends FigEdgeModelElement {
     ////////////////////////////////////////////////////////////////
     // event handlers
 
-    protected void textEdited(FigText ft) throws PropertyVetoException {
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEdited(org.tigris.gef.presentation.FigText)
+     */
+    protected void textEdited(FigText ft) {
 	
         if (getOwner() == null) return;
 	super.textEdited(ft);
@@ -276,6 +279,9 @@ public class FigAssociation extends FigEdgeModelElement {
 	    roleToUpdate.setText(visi + Notation.generate(this, name));
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     */
     protected void modelChanged(MElementEvent e) {
 	super.modelChanged(e);
 	Object associationEnd = getOwner(); //MAssociation
@@ -313,11 +319,11 @@ public class FigAssociation extends FigEdgeModelElement {
 	this.computeRoute();
     }
 
-    static ArrowHead _NAV_AGGREGATE =
+    static final ArrowHead _NAV_AGGREGATE =
 	new ArrowHeadComposite(ArrowHeadDiamond.WhiteDiamond,
 			       new ArrowHeadGreater());
 
-    static ArrowHead _NAV_COMP =
+    static final ArrowHead _NAV_COMP =
 	new ArrowHeadComposite(ArrowHeadDiamond.BlackDiamond,
 			       new ArrowHeadGreater());
 
@@ -345,6 +351,9 @@ public class FigAssociation extends FigEdgeModelElement {
 	return arrow;
     }
 
+    /**
+     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
+     */
     public Vector getPopUpActions(MouseEvent me) {
 	Vector popUpActions = super.getPopUpActions(me);
 	// x^2 + y^2 = r^2  (equation of a circle)
@@ -477,6 +486,9 @@ public class FigAssociation extends FigEdgeModelElement {
     
     static final long serialVersionUID = 9100125695919853919L;
   
+    /**
+     * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
+     */
     public void paint(Graphics g) {
         if (sourceArrowHead == null || destArrowHead == null) {
 	    modelChanged(null);

@@ -67,12 +67,6 @@ import ru.novosoft.uml.MElementEvent;
 /** Class to display graphics for a UML Interface in a diagram. */
 
 public class FigInterface extends FigNodeModelElement {
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
-     */
-    protected static Logger cat = Logger.getLogger(FigInterface.class);
-
     private static final Logger LOG = Logger.getLogger(FigInterface.class);
 
     ////////////////////////////////////////////////////////////////
@@ -226,10 +220,16 @@ public class FigInterface extends FigNodeModelElement {
 	}
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
+     */
     public String placeString() {
         return "new Interface";
     }
 
+    /**
+     * @see java.lang.Object#clone()
+     */
     public Object clone() {
         FigInterface figClone = (FigInterface) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
@@ -244,6 +244,9 @@ public class FigInterface extends FigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#makeSelection()
+     */
     public Selection makeSelection() {
         return new SelectionInterface(this);
     }
@@ -359,12 +362,6 @@ public class FigInterface extends FigNodeModelElement {
         // name compartment and build up.
 
         Dimension aSize = getNameFig().getMinimumSize();
-        int h = aSize.height;
-        int w = aSize.width;
-
-        // Ensure that the minimum height of the name compartment is at least
-        // 21 pixels (hardcoded).
-
         if (aSize.height < 21) {
             aSize.height = 21;
         }
@@ -406,16 +403,25 @@ public class FigInterface extends FigNodeModelElement {
         return aSize;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
+     */
     public void setFillColor(Color lColor) {
         super.setFillColor(lColor);
         _stereoLineBlinder.setLineColor(lColor);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
+     */
     public void setLineColor(Color lColor) {
         super.setLineColor(lColor);
         _stereoLineBlinder.setLineColor(_stereoLineBlinder.getFillColor());
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#translate(int, int)
+     */
     public void translate(int dx, int dy) {
         super.translate(dx, dy);
         Editor ce = Globals.curEditor();
@@ -428,6 +434,9 @@ public class FigInterface extends FigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // user interaction methods
 
+    /**
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     */
     public void mouseClicked(MouseEvent me) {
         super.mouseClicked(me);
 	if (me.isShiftDown()
@@ -460,11 +469,17 @@ public class FigInterface extends FigNodeModelElement {
         }
     }
 
+    /**
+     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+     */
     public void mouseExited(MouseEvent me) {
         super.mouseExited(me);
         unhighlight();
     }
 
+    /**
+     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+     */
     public void keyPressed(KeyEvent ke) {
         int key = ke.getKeyCode();
         if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN) {
@@ -497,6 +512,9 @@ public class FigInterface extends FigNodeModelElement {
         super.keyPressed(ke);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
+     */
     public void setEnclosingFig(Fig encloser) {
         Fig oldEncloser = getEnclosingFig();
         super.setEnclosingFig(encloser);
@@ -504,7 +522,6 @@ public class FigInterface extends FigNodeModelElement {
             return;
         Object me = /*(MModelElement)*/ getOwner();
         Object m = null;
-        ProjectBrowser pb = ProjectBrowser.getInstance();
 
         try {
             // If moved into an Package
@@ -547,6 +564,9 @@ public class FigInterface extends FigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // internal methods
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
+     */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         super.textEdited(ft);
         Object cls = /*(MClassifier)*/ getOwner();
@@ -617,6 +637,10 @@ public class FigInterface extends FigNodeModelElement {
         return ft2;
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#createFeatureIn(
+     *         org.tigris.gef.presentation.FigGroup, java.awt.event.InputEvent)
+     */
     protected void createFeatureIn(FigGroup fg, InputEvent ie) {
         Object cls = /*(MClassifier)*/ getOwner();
         if (cls == null) {
@@ -650,6 +674,9 @@ public class FigInterface extends FigNodeModelElement {
         return null;
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     */
     protected void modelChanged(MElementEvent mee) {
         if (getOwner() == null) {
             return;
@@ -668,6 +695,9 @@ public class FigInterface extends FigNodeModelElement {
 
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
+     */
     public void renderingChanged() {
         super.renderingChanged();
 

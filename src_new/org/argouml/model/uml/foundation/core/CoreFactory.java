@@ -112,7 +112,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
     /** Singleton instance.
      */
-    private static CoreFactory SINGLETON = new CoreFactory();
+    private static final CoreFactory SINGLETON = new CoreFactory();
 
     /**
      * Singleton instance access method.
@@ -141,7 +141,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * Build an empty but initialized instance of a UML Abstraction
      * with a given name.
      *
-     * @param name
+     * @param name The name.
      * @return an initialized UML Abstraction instance.
      */
     public Object buildAbstraction(String name) {
@@ -1546,8 +1546,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
     public MComment buildComment() {
         MComment comment = createComment();
         Object ns = null;
-        ArgoDiagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-        ns = ((UMLMutableGraphSupport)diagram.getGraphModel()).getNamespace();
+        ArgoDiagram diagram = 
+            ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+        ns = ((UMLMutableGraphSupport) diagram.getGraphModel()).getNamespace();
         if (ns == null || !ModelFacade.isANamespace(ns)) {
             ns = ProjectManager.getManager().getCurrentProject().getModel();
         }
@@ -1556,14 +1557,18 @@ public class CoreFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * Builds the model behind a connection between a comment and the annotated modelelement.
-     * @param from the comment or annotated element
-     * @param to the comment or annotated element
-     * @return a commentEdge representing the model behind the connection between a comment and an annotated modelelement
+     * Builds the model behind a connection between a comment and 
+     * the annotated modelelement.
+     *
+     * @param from The comment or annotated element.
+     * @param to The comment or annotated element.
+     * @return A commentEdge representing the model behind the connection 
+     *         between a comment and an annotated modelelement.
      */
     public CommentEdge buildCommentConnection(Object from, Object to) {
         if (from == null || to == null) {
-            throw new IllegalArgumentException("Either fromNode == null or toNode == null");
+            throw new IllegalArgumentException("Either fromNode == null "
+                    			       + "or toNode == null");
         }
         Object comment = null;
         Object annotatedElement = null;
@@ -1870,11 +1875,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
     /**
      * Used by the copy functions. Do not call this function directly.
-     * TODO: Shouldn't this be private then? Linus thinks so.
-     * @deprecated by Linus Tolke as of 0.15.4. Will be made private.
      */
-    public void doCopyElement(MElement source, MElement target) {
-	UmlFactory.getFactory().doCopyBase(source, target);
+    private void doCopyElement(MElement source, MElement target) {
 	// Nothing more to do.
     }
 

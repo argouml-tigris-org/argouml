@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigPackage.java
-// Classes: FigPackage
-// Original Author: agauthie@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
@@ -52,7 +47,6 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.ui.ActionModifier;
 import org.argouml.uml.ui.UMLAction;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
@@ -60,12 +54,6 @@ import org.tigris.gef.presentation.FigText;
 /** Class to display graphics for a UML package in a class diagram. */
 
 public class FigPackage extends FigNodeModelElement {
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
-     */
-    protected static Logger cat = Logger.getLogger(FigPackage.class);
-
     private static final Logger LOG = Logger.getLogger(FigPackage.class);
 
     ////////////////////////////////////////////////////////////////
@@ -96,22 +84,9 @@ public class FigPackage extends FigNodeModelElement {
      * <p>A rectangle to blank out the line that would otherwise appear at the
      *   bottom of the stereotype text box.</p>
      */
-
     protected FigRect _stereoLineBlinder;
 
-    /**
-     * <p>Flag to indicate that we have just been created. This is to fix the
-     *   problem with loading classes that have stereotypes already
-     *   defined.</p>
-     */
-
-    private boolean _newlyCreated = false;
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     public FigPackage() {
-        Color handleColor = Globals.getPrefs().getHandleColor();
         _bigPort = new FigRect(x, y, width, height, null, null);
 
         //
@@ -157,8 +132,6 @@ public class FigPackage extends FigNodeModelElement {
         // ought to address how class objects with stereotypes are saved. But
         // that will be hard work.
 
-        _newlyCreated = true;
-
         // add Figs to the FigNode in back-to-front order
         addFig(_bigPort);
         addFig(getStereotypeFig());
@@ -188,10 +161,16 @@ public class FigPackage extends FigNodeModelElement {
 	}
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
+     */
     public String placeString() {
         return "new Package";
     }
 
+    /**
+     * @see java.lang.Object#clone()
+     */
     public Object clone() {
         FigPackage figClone = (FigPackage) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
@@ -206,6 +185,9 @@ public class FigPackage extends FigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
+     */
     public void setLineColor(Color col) {
         super.setLineColor(col);
         getStereotypeFig().setLineColor(col);
@@ -213,10 +195,17 @@ public class FigPackage extends FigNodeModelElement {
         _body.setLineColor(col);
         _stereoLineBlinder.setLineColor(_stereoLineBlinder.getFillColor());
     }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#getLineColor()
+     */
     public Color getLineColor() {
         return _body.getLineColor();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
+     */
     public void setFillColor(Color col) {
         super.setFillColor(col);
         getStereotypeFig().setFillColor(col);
@@ -224,24 +213,42 @@ public class FigPackage extends FigNodeModelElement {
         _body.setFillColor(col);
         _stereoLineBlinder.setLineColor(col);
     }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#getFillColor()
+     */
     public Color getFillColor() {
         return _body.getFillColor();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
+     */
     public void setFilled(boolean f) {
         getStereotypeFig().setFilled(f);
         getNameFig().setFilled(f);
         _body.setFilled(f);
     }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#getFilled()
+     */
     public boolean getFilled() {
         return _body.getFilled();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
     public void setLineWidth(int w) {
         getStereotypeFig().setLineWidth(w);
         getNameFig().setLineWidth(w);
         _body.setLineWidth(w);
     }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#getLineWidth()
+     */
     public int getLineWidth() {
         return _body.getLineWidth();
     }
@@ -249,6 +256,8 @@ public class FigPackage extends FigNodeModelElement {
     ////////////////////////////////////////////////////////////////
 
     /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
+     *
      * Called to update the graphics.
      */
     public void renderingChanged() {
@@ -256,6 +265,9 @@ public class FigPackage extends FigNodeModelElement {
         updateStereotypeText();
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
+     */
     protected void updateStereotypeText() {
         Object me = /*(MModelElement)*/ getOwner();
 
@@ -298,10 +310,10 @@ public class FigPackage extends FigNodeModelElement {
                     // have the height already including the
                     // stereotype.
 
-                    if (!_newlyCreated) {
+                    // if (!newlyCreated) {
                         // rect.y -= STEREOHEIGHT; rect.height +=
                         // STEREOHEIGHT;
-                    }
+                    // }
                 }
             }
         }
@@ -309,7 +321,6 @@ public class FigPackage extends FigNodeModelElement {
         // Whatever happened we are no longer newly created, so clear the
         // flag. Then set the bounds for the rectangle we have defined.
 
-        _newlyCreated = false;
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 
@@ -320,10 +331,16 @@ public class FigPackage extends FigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // accessor methods
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
+     */
     public boolean getUseTrapRect() {
         return true;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
+     */
     public Dimension getMinimumSize() {
         // Use "aSize" to build up the minimum size. Start with the size of the
         // name compartment and build up.
@@ -331,11 +348,6 @@ public class FigPackage extends FigNodeModelElement {
         Dimension aSize = getNameFig().getMinimumSize();
 
         int w = aSize.width + indentX;
-        int h = aSize.height + height - textH;
-
-        // Ensure that the minimum height of the name compartment is at least
-        // 21 pixels (hardcoded).
-
         if (aSize.height < 21) {
             aSize.height = 21;
         }
@@ -372,15 +384,15 @@ public class FigPackage extends FigNodeModelElement {
      *   a knowledge that the minimum height of a name compartment is 21
      *   pixels.</p>
      *
-     * @param x  Desired X coordinate of upper left corner
+     * @param xa  Desired X coordinate of upper left corner
      *
-     * @param y  Desired Y coordinate of upper left corner
+     * @param ya  Desired Y coordinate of upper left corner
      *
      * @param w  Desired width of the FigClass
      *
      * @param h  Desired height of the FigClass
      */
-    public void setBounds(int x, int y, int w, int h) {
+    public void setBounds(int xa, int ya, int w, int h) {
         // Save our old boundaries (needed later), and get minimum size
         // info. "aSize will be used to maintain a running calculation of our
         // size at various points.
@@ -404,10 +416,10 @@ public class FigPackage extends FigNodeModelElement {
         // pixels hardcoded!). Add in the shared extra, plus in this case the
         // correction.
 
-        int height = getNameFig().getMinimumSize().height;
+        int minHeight = getNameFig().getMinimumSize().height;
 
-        if (height < 21) {
-            height = 21;
+        if (minHeight < 21) {
+            minHeight = 21;
         }
 
         // Now sort out the stereotype display. If the stereotype is displayed,
@@ -415,17 +427,17 @@ public class FigPackage extends FigNodeModelElement {
         // bounds for the name and the stereotype compatments and the
         // stereoLineBlinder that blanks out the line between the two
 
-        int currentY = y;
+        int currentY = ya;
 
         if (getStereotypeFig().isVisible()) {
             currentY += STEREOHEIGHT;
         }
 
-        getNameFig().setBounds(x, currentY, newW - indentX, height);
-        getStereotypeFig().setBounds(x, y, newW - indentX, STEREOHEIGHT + 1);
+        getNameFig().setBounds(xa, currentY, newW - indentX, minHeight);
+        getStereotypeFig().setBounds(xa, ya, newW - indentX, STEREOHEIGHT + 1);
         _stereoLineBlinder.setBounds(
-				     x + 1,
-				     y + STEREOHEIGHT,
+				     xa + 1,
+				     ya + STEREOHEIGHT,
 				     newW - 2 - indentX,
 				     2);
 
@@ -434,12 +446,12 @@ public class FigPackage extends FigNodeModelElement {
         // size of the attribute box, and update the Y pointer past it if it is
         // displayed.
 
-        currentY += height - 1; // -1 for 1 pixel overlap
-        _body.setBounds(x, currentY, newW, newH + y - currentY);
+        currentY += minHeight - 1; // -1 for 1 pixel overlap
+        _body.setBounds(xa, currentY, newW, newH + ya - currentY);
 
         // set bounds of big box
 
-        _bigPort.setBounds(x, y, newW, newH);
+        _bigPort.setBounds(xa, ya, newW, newH);
 
         // Now force calculation of the bounds of the figure, update the edges
         // and trigger anyone who's listening to see if the "bounds" property
@@ -483,6 +495,10 @@ public class FigPackage extends FigNodeModelElement {
         if (!_showStereotype) {
             showMenu.add(new UMLAction("Show Stereotype", UMLAction.NO_ICON)
 	    {
+		/**
+		 * @see java.awt.event.ActionListener#actionPerformed(
+		 *         java.awt.event.ActionEvent)
+		 */
 		public void actionPerformed(ActionEvent ae) {
 		    _showStereotype = true;
 		    renderingChanged();
@@ -492,6 +508,10 @@ public class FigPackage extends FigNodeModelElement {
         } else {
             showMenu.add(new UMLAction("Hide Stereotype", UMLAction.NO_ICON)
 	    {
+		/**
+		 * @see java.awt.event.ActionListener#actionPerformed(
+		 *         java.awt.event.ActionEvent)
+		 */
 		public void actionPerformed(ActionEvent ae) {
 		    _showStereotype = false;
 		    renderingChanged();
@@ -508,8 +528,8 @@ public class FigPackage extends FigNodeModelElement {
 
 
     class FigPackageFigText extends FigText {
-	public FigPackageFigText(int x, int y, int w, int h) {
-	    super(x, y, w, h);
+	public FigPackageFigText(int xa, int ya, int w, int h) {
+	    super(xa, ya, w, h);
 	}
 
 	public void mouseClicked(MouseEvent me) {
@@ -603,6 +623,5 @@ public class FigPackage extends FigNodeModelElement {
 	    } /* if doubleclicks */
 	    super.mouseClicked(me);
 	}
-    };
-
+    }
 } /* end class FigPackage */

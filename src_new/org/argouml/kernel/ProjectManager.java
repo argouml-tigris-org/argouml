@@ -36,7 +36,6 @@ import javax.swing.event.EventListenerList;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.Main;
 import org.argouml.cognitive.ProjectMemberTodoList;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.ArgoDiagram;
@@ -73,22 +72,22 @@ public final class ProjectManager {
     /**
      * The singleton instance of this class
      */
-    private static ProjectManager _instance;
+    private static ProjectManager instance;
 
     /**
      * The project that is visible in the projectbrowser
      */
-    private static Project _currentProject;
+    private static Project currentProject;
 
     /**
      * Flag to indicate we are creating a new current project
      */
-    private boolean _creatingCurrentProject;
+    private boolean creatingCurrentProject;
 
     /**
      * The listener list
      */
-    private EventListenerList _listenerList = new EventListenerList();
+    private EventListenerList listenerList = new EventListenerList();
 
     /**
      * The event to fire.
@@ -98,7 +97,7 @@ public final class ProjectManager {
      * event again if the previous invocation resulted in an exception?
      * If so, please document why. If not, fix it.
      */
-    private PropertyChangeEvent _event;
+    private PropertyChangeEvent event;
 
     /**
      * The singleton accessor method of this class.
@@ -106,10 +105,10 @@ public final class ProjectManager {
      * @return The singleton.
      */
     public static ProjectManager getManager() {
-        if (_instance == null) {
-            _instance = new ProjectManager();
+        if (instance == null) {
+            instance = new ProjectManager();
         }
-        return _instance;
+        return instance;
     }
 
     /**
@@ -125,7 +124,7 @@ public final class ProjectManager {
      * @param listener The listener to add.
      */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
-        _listenerList.add(PropertyChangeListener.class, listener);
+        listenerList.add(PropertyChangeListener.class, listener);
     }
 
     /**
@@ -134,7 +133,7 @@ public final class ProjectManager {
      * @param listener The listener to remove.
      */
     public void removePropertyChangeListener(PropertyChangeListener listener) {
-        _listenerList.remove(PropertyChangeListener.class, listener);
+        listenerList.remove(PropertyChangeListener.class, listener);
     }
 
     /**
@@ -148,24 +147,24 @@ public final class ProjectManager {
 				     Object oldValue, Object newValue) 
     {
         // Guaranteed to return a non-null array
-        Object[] listeners = _listenerList.getListenerList();
+        Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == PropertyChangeListener.class) {
                 // Lazily create the event:
-                if (_event == null)
-                    _event =
+                if (event == null)
+                    event =
                         new PropertyChangeEvent(
                             this,
                             propertyName,
                             oldValue,
                             newValue);
                 ((PropertyChangeListener) listeners[i + 1]).propertyChange(
-                    _event);
+                    event);
             }
         }
-        _event = null;
+        event = null;
     }
 
     /**
@@ -179,15 +178,15 @@ public final class ProjectManager {
      * @param newProject The new project.
      */
     public void setCurrentProject(Project newProject) {
-        Project oldProject = _currentProject;        
-        _currentProject = newProject;
-        if (_currentProject != null
-	    && _currentProject.getActiveDiagram() == null) {
-            Vector diagrams = _currentProject.getDiagrams();
+        Project oldProject = currentProject;        
+        currentProject = newProject;
+        if (currentProject != null
+	    && currentProject.getActiveDiagram() == null) {
+            Vector diagrams = currentProject.getDiagrams();
             if (diagrams != null && !diagrams.isEmpty()) {
 		ArgoDiagram activeDiagram =
-		    (ArgoDiagram) _currentProject.getDiagrams().get(0);
-                _currentProject.setActiveDiagram(activeDiagram);
+		    (ArgoDiagram) currentProject.getDiagrams().get(0);
+                currentProject.setActiveDiagram(activeDiagram);
 	    }
         }
         firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME,
@@ -202,10 +201,10 @@ public final class ProjectManager {
      * @return Project The current project.
      */
     public Project getCurrentProject() {
-        if (_currentProject == null && !_creatingCurrentProject) {
-            _currentProject = makeEmptyProject();
+        if (currentProject == null && !creatingCurrentProject) {
+            currentProject = makeEmptyProject();
         }
-        return _currentProject;
+        return currentProject;
     }
 
     /**
@@ -213,7 +212,7 @@ public final class ProjectManager {
      * @return Project
      */
     public Project makeEmptyProject() {
-        _creatingCurrentProject = true;
+        creatingCurrentProject = true;
         LOG.info("making empty project");
         Project p = new Project();
         // the following line should not normally be here,
@@ -222,7 +221,7 @@ public final class ProjectManager {
         p.makeUntitledProject();
         // set the current project after making it!
         setCurrentProject(p);
-        _creatingCurrentProject = false;
+        creatingCurrentProject = false;
         return p;
     }
 
@@ -288,7 +287,6 @@ public final class ProjectManager {
         p.addMember(new ProjectMemberTodoList("", p));
         p.addMember(model);
         p.setNeedsSave(false);
-        Main.addPostLoadAction(new ResetStatsLater());
         return p;
     }
 
@@ -418,19 +416,10 @@ public final class ProjectManager {
      */
     public void removeProject(Project oldProject) {
         
-        if (_currentProject == oldProject) {
-            _currentProject = null;
+        if (currentProject == oldProject) {
+            currentProject = null;
         }
         
         oldProject.remove();
     }
 }
-
-
-/**
- * @deprecated since 0.15.1. TODO: What is this replaced by?
- */
-class ResetStatsLater implements Runnable {
-    public void run() {
-    }
-} /* end class ResetStatsLater */

@@ -148,11 +148,10 @@ public class ModelManagementFactory extends AbstractUmlModelFactory {
     /**
      * Used by the copy functions. Do not call this function directly.
      *
-     * @param source is the source package
-     * @param target is the target package.
-     * @deprecated by Linus Tolke as of 0.15.4, will be made private.
+     * @param source The source package.
+     * @param target The target package.
      */
-    public void doCopyPackage(MPackage source, MPackage target) {
+    private void doCopyPackage(MPackage source, MPackage target) {
 	CoreFactory.getFactory().doCopyNamespace(source, target);
     }
 }

@@ -54,7 +54,6 @@ import org.argouml.cognitive.ProjectMemberTodoList;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
@@ -99,23 +98,13 @@ public class Project implements java.io.Serializable, TargetListener {
     
     ////////////////////////////////////////////////////////////////
     // constants
-    
-    /**
-     * @deprecated by Linus Tolke as of 0.15.6. Will be removed.
-     *             Not currently used.
-     */
-    public static final String TEMPLATES = "/org/argouml/templates/";
-    
-    /**
-     * @deprecated by Linus Tolke as of 0.15.6. Will become private.
-     */
-    public static String ARGO_TEE = "/org/argouml/xml/dtd/argo.tee";
+
+    private static final String ARGO_TEE = "/org/argouml/xml/dtd/argo.tee";
 
     /**
      * Default name for a project.
-     * @deprecated by Linus Tolke as of 0.15.6. Will become private.
      */
-    public static final String UNTITLED_FILE = "Untitled";
+    private static final String UNTITLED_FILE = "Untitled";
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -135,26 +124,27 @@ public class Project implements java.io.Serializable, TargetListener {
     private URL _url;
     protected ChangeRegistry _saveRegistry;
 
-    private String _authorname;
-    private String _description;
-    private String _version;
+    private String authorname;
+    private String description;
+    private String version;
 
     private Vector _searchpath;
     private Vector _members;
-    private String _historyFile;
+    private String historyFile;
 
     /**
      * Instances of the uml model.
      */
     private Vector _models;
+
     /**
      * Instances of the uml diagrams.
      */
     private Vector _diagrams;
     protected Object _defaultModel;
-    private boolean _needsSave;
+    private boolean needsSave;
     protected Object _currentNamespace;
-    private HashMap _UUIDRefs;
+    private HashMap uuidRefs;
     private GenerationPreferences _cgPrefs;
     private transient VetoableChangeSupport _vetoSupport;
 
@@ -162,16 +152,16 @@ public class Project implements java.io.Serializable, TargetListener {
      * The root of the modeltree the user is working on. (The untitled_model in
      * the navpane).
      */
-    private Object _root;
+    private Object treeRoot;
     
     /**
      * The active diagram, pointer to a diagram in the list with diagrams.
      */
-    private ArgoDiagram _activeDiagram;
+    private ArgoDiagram activeDiagram;
 
     /** Cache for the default model.
      */
-    private HashMap _defaultModelCache;
+    private HashMap defaultModelCache;
 
     /**
      * Constructor.
@@ -201,18 +191,18 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public Project() {
         
-        _authorname = "";
-        _description = "";
+        authorname = "";
+        description = "";
         // this should be moved to a ui action.
-        _version = ArgoVersion.getVersion();
+        version = ArgoVersion.getVersion();
         
         _searchpath = new Vector();
         _members = new Vector();
-        _historyFile = "";
+        historyFile = "";
         _models = new Vector();
         _diagrams = new Vector();
         _cgPrefs = new GenerationPreferences();
-        _defaultModelCache = new HashMap();
+        defaultModelCache = new HashMap();
         
         _saveRegistry = new UMLChangeRegistry();
         LOG.info("making empty project with empty model");
@@ -330,7 +320,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
         addMember(mmodel);
 
-        _UUIDRefs = new HashMap(xmiReader.getXMIUUIDToObjectMap());
+        uuidRefs = new HashMap(xmiReader.getXMIUUIDToObjectMap());
         return mmodel;
     }
 
@@ -352,7 +342,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
             // now close again, reopen and read the Diagrams.
 
-            PGMLParser.SINGLETON.setOwnerRegistry(_UUIDRefs);
+            PGMLParser.SINGLETON.setOwnerRegistry(uuidRefs);
 
             //zis.close();
             ZipInputStream zis = new ZipInputStream(url.openStream());
@@ -385,11 +375,7 @@ public class Project implements java.io.Serializable, TargetListener {
                 if (currentEntry.getName().endsWith(".todo")) {
                     ProjectMemberTodoList pm =
                         new ProjectMemberTodoList(currentEntry.getName(), this);
-                    try {
-                        pm.load(sub);
-                    } catch (IOException ioe) {
-                    } catch (org.xml.sax.SAXException se) {
-                    }
+                    pm.load(sub);
                     addMember(pm);
                 }
             }
@@ -508,6 +494,7 @@ public class Project implements java.io.Serializable, TargetListener {
     public Vector getSearchPath() {
         return _searchpath;
     }
+
     public void addSearchPath(String searchpath) {
         _searchpath.addElement(searchpath);
     }
@@ -869,7 +856,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return The author name.
      */
     public String getAuthorname() {
-        return _authorname;
+        return authorname;
     }
     
     /**
@@ -878,7 +865,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param s The new author name.
      */
     public void setAuthorname(String s) {
-        _authorname = s;
+        authorname = s;
     }
 
     /**
@@ -887,7 +874,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return the version.
      */
     public String getVersion() {
-        return _version;
+        return version;
     }
     
     /**
@@ -895,7 +882,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param s The new version.
      */
     public void setVersion(String s) {
-        _version = s;
+        version = s;
     }
 
     /**
@@ -904,7 +891,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return the description.
      */
     public String getDescription() {
-        return _description;
+        return description;
     }
 
     /**
@@ -913,7 +900,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param s The new description.
      */
     public void setDescription(String s) {
-        _description = s;
+        description = s;
     }
 
     /**
@@ -922,7 +909,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return The history file.
      */
     public String getHistoryFile() {
-        return _historyFile;
+        return historyFile;
     }
 
     /**
@@ -931,7 +918,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param s The new history file.
      */
     public void setHistoryFile(String s) {
-        _historyFile = s;
+        historyFile = s;
     }
 
     /**
@@ -1213,12 +1200,7 @@ public class Project implements java.io.Serializable, TargetListener {
         setNeedsSave(false);
     }
 
-    /**
-     * @deprecated As of 28 Apr 2003 (ArgoUml version 0.13.5).
-     *             Will be protected in future.
-     * TODO: Replace by?
-     */
-    public void postLoad() {
+    protected void postLoad() {
         for (int i = 0; i < _diagrams.size(); i++)
 	    ((Diagram) _diagrams.elementAt(i)).postLoad();
         // issue 1725: the root is not set, which leads to problems
@@ -1227,8 +1209,11 @@ public class Project implements java.io.Serializable, TargetListener {
         
         setNeedsSave(false);
         // we don't need this HashMap anymore so free up the memory
-        _UUIDRefs = null;
+        uuidRefs = null;
     }
+
+    ////////////////////////////////////////////////////////////////
+    // trash related methods
 
     /**
      * Moves some object to trash. 
@@ -1239,9 +1224,6 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param obj The object to be deleted
      * @see org.argouml.kernel.Project#trashInternal(Object)
      */
-    ////////////////////////////////////////////////////////////////
-    // trash related methos
-
     // Attention: whole Trash mechanism should be rethought concerning nsuml
     public void moveToTrash(Object obj) {
         if (Trash.SINGLETON.contains(obj))
@@ -1306,34 +1288,6 @@ public class Project implements java.io.Serializable, TargetListener {
         return Trash.SINGLETON.contains(dm);
     }
 
-    ////////////////////////////////////////////////////////////////
-    // usage statistics (deprecated)
-
-    /**
-     * @deprecated since 0.15.1.
-     */
-    public static void resetStats() { }
-
-    /**
-     * @deprecated since 0.15.1.
-     */
-    public static void setStat(String n, int v) { }
-
-    /**
-     * @deprecated since 0.15.1.
-     */
-    public static Vector getStats() {
-        
-        Vector s = new Vector();
-        return s;
-    }
-
-    /**
-     * @deprecated since 0.15.1.
-     */
-    public static void addStat(Vector stats, String name, int value) {
-    }
-
     /**
      * @param defaultModel a uml model
      */
@@ -1344,7 +1298,7 @@ public class Project implements java.io.Serializable, TargetListener {
 	}
         
         _defaultModel = defaultModel;
-	_defaultModelCache = new HashMap();
+	defaultModelCache = new HashMap();
     }
 
     /**
@@ -1362,11 +1316,11 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return the type.
      */
     public Object findTypeInDefaultModel(String name) {
-	if (_defaultModelCache.containsKey(name))
-	    return _defaultModelCache.get(name);
+	if (defaultModelCache.containsKey(name))
+	    return defaultModelCache.get(name);
 
 	Object result = findTypeInModel(name, getDefaultModel());
-	_defaultModelCache.put(name, result);
+	defaultModelCache.put(name, result);
 	return result;
     }
 
@@ -1375,7 +1329,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return MModel
      */
     public Object getRoot() {
-        return _root;
+        return treeRoot;
     }
 
     /**
@@ -1388,11 +1342,11 @@ public class Project implements java.io.Serializable, TargetListener {
             throw new IllegalArgumentException();
 	}
         
-        if (_root != null) {
-            _members.remove(_root);
-            _models.remove(_root);
+        if (treeRoot != null) {
+            _members.remove(treeRoot);
+            _models.remove(treeRoot);
         }
-        _root = root;
+        treeRoot = root;
         addMember(root);
         addModel(root);
 
@@ -1431,7 +1385,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return boolean
      */
     public boolean isNeedsSave() {
-        return _needsSave;
+        return needsSave;
     }
 
     /**
@@ -1463,7 +1417,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return HashMap
      */
     public HashMap getUUIDRefs() {
-        return _UUIDRefs;
+        return uuidRefs;
     }
 
     /**
@@ -1527,7 +1481,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param uUIDRefs The uUIDRefs to set
      */
     public void setUUIDRefs(HashMap uUIDRefs) {
-        _UUIDRefs = uUIDRefs;
+        uuidRefs = uUIDRefs;
     }
 
     /**
@@ -1543,14 +1497,14 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return the current viewed diagram
      */
     public ArgoDiagram getActiveDiagram() {
-        return _activeDiagram;
+        return activeDiagram;
     }
 
     /**
      * @param diagram
      */
     public void setActiveDiagram(ArgoDiagram diagram) {
-        _activeDiagram = diagram;
+        activeDiagram = diagram;
     }
 
     /** 
@@ -1622,35 +1576,35 @@ public class Project implements java.io.Serializable, TargetListener {
             _diagrams.clear();
 	}
         
-        if (_UUIDRefs != null) {
-            _UUIDRefs.clear();
+        if (uuidRefs != null) {
+            uuidRefs.clear();
 	}
         
-        if (_defaultModelCache != null) {
-            _defaultModelCache.clear();
+        if (defaultModelCache != null) {
+            defaultModelCache.clear();
 	}
         
         _members = null;
         _models = null;
         _diagrams = null;
-        _UUIDRefs = null;
-        _defaultModelCache = null;
+        uuidRefs = null;
+        defaultModelCache = null;
         
         expander = null;
         _url = null;
         _saveRegistry = null;
-        _authorname = null;
-        _description = null;
-        _version = null;
+        authorname = null;
+        description = null;
+        version = null;
         _searchpath = null;
-        _historyFile = null;
+        historyFile = null;
         _defaultModel = null;
         _currentNamespace = null;
         _cgPrefs = null;
         _vetoSupport = null;
-        _root = null;
-        _activeDiagram = null;
-        _defaultModelCache = null;
+        treeRoot = null;
+        activeDiagram = null;
+        defaultModelCache = null;
         
         TargetManager.getInstance().removeTargetListener(this);
     }

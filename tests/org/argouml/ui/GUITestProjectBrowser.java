@@ -68,7 +68,6 @@ public class GUITestProjectBrowser extends TestCase {
 	assertNotNull(pb.getNamedTab("tab.properties"));
 	assertNotNull(pb.getNamedTab("tab.source"));
 	assertNotNull(pb.getTodoPane());
-	assertNotNull(pb.getNavigatorPane());
     }
 
     /**
@@ -91,8 +90,6 @@ public class GUITestProjectBrowser extends TestCase {
      */
     public void compileTestSplashScreen() {
 	ProjectBrowser.setSplash(true);
-	ProjectBrowser inst = ProjectBrowser.getInstance();
-	inst.setSplashScreen(inst.getSplashScreen());
     }
 
     /** Test the existance of public static members.
@@ -151,7 +148,5 @@ public class GUITestProjectBrowser extends TestCase {
     {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	pb.getTarget();
-	pb.getActiveDiagram();
-	pb.getDetailsTarget();
     }
 }
