@@ -55,8 +55,9 @@ public class PropPanelParameter extends PropPanelModelElement {
         addLinkField(new JScrollPane(namespaceList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),3,0,0);
 
         addCaption(Argo.localize("UMLMenu", "label.type"),0,1,0);
-        UMLComboBoxModel typeModel = new UMLComboBoxModel(this,"isAcceptibleType",
-            "type","getType","setType",true,MClassifier.class,true);
+        UMLComboBoxModel typeModel = new UMLTypeModel(this,"isAcceptibleType",
+            "type","getType","setType",true,MClassifier.class,
+	    MParameter.class,true);
 	UMLComboBox typeComboBox=new UMLComboBox(typeModel);
         addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),typeComboBox),0,1,0);
 
