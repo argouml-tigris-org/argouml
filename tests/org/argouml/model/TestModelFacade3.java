@@ -25,12 +25,14 @@
 
 package org.argouml.model;
 
-import junit.framework.*;
-
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 
 /**
@@ -60,7 +62,7 @@ public class TestModelFacade3 extends TestCase {
     public static Test suite() {
 	TestSuite suite =
 	    new TestSuite("Tests for "
-			  + TestModelFacade.class.getPackage().getName());
+			  + TestModelFacade3.class.getPackage().getName());
 
         Method methods[] = ModelFacade.class.getDeclaredMethods();
 
@@ -88,7 +90,7 @@ public class TestModelFacade3 extends TestCase {
         if (!methodForbidden()) {
             if (methodToTest.getParameterTypes() != null
 		&& methodToTest.getParameterTypes().length >= 1
-		&& Modifier.isPublic(methodToTest.getModifiers()) ) {
+		&& Modifier.isPublic(methodToTest.getModifiers())) {
                 testOneOrMoreParameters();
             }
         }

@@ -31,51 +31,34 @@ import org.argouml.model.ModelFacade;
 /**
  * @author Thierry Lach
  */
-public class TestUmlModelElement extends GenericUmlObjectTestFixture
-{
+public class TestUmlModelElement extends GenericUmlObjectTestFixture {
     /**
      * Constructor for FakeUmlModelFacadeTest.
      * @param arg0 test name
      */
-    public TestUmlModelElement(String arg0)
-    {
-	super(arg0, Uml.MODEL_ELEMENT);
+    public TestUmlModelElement(String arg0) {
+	super(arg0, ModelFacade.MODELELEMENT);
 	validateTestClassIsGeneric(this);
-    }
-
-    /**
-     * Legacy test for ModelElement creation.
-     */
-    public void testModelElementLegacy() {
-	Model.getUmlFactory().setJmiProxyCreated(false);
-	Object me = ModelFacade.create(Uml.OBJECT);
-	assertNotNull("Didn't create object", me);
-	assertTrue("Should be a base", ModelFacade.isABase(me));
-	assertTrue("Should be a model element",
-		   ModelFacade.isAModelElement(me));
-	runTruthTests(me);
     }
 
     /**
      * Test the creation of a ModelElement.
      */
     public void testModelElement() {
-	Model.getUmlFactory().setJmiProxyCreated(true);
-	Object me = ModelFacade.create(Uml.OBJECT);
+	Object me = Model.getUmlFactory().buildNode(ModelFacade.OBJECT);
 	assertNotNull("Didn't create object", me);
 	assertTrue("Should be a base", ModelFacade.isABase(me));
 	assertTrue("Should be a model element",
 		   ModelFacade.isAModelElement(me));
-	runTestRefBaseObject(me);
 	runTruthTests(me);
     }
 
     /**
-     * @see org.argouml.model.uml.GenericUmlObjectTestFixture#initializeTruth()
+     * @see junit.framework.TestCase#setUp()
      */
-    protected void initializeTruth() {
-	setShouldBe(Uml.ELEMENT);
-	setShouldBe(Uml.MODEL_ELEMENT);
+    protected void setUp() throws Exception {
+        super.setUp();
+        setTruth(ModelFacade.MODELELEMENT, true);
     }
 
 }

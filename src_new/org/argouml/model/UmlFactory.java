@@ -32,17 +32,6 @@ package org.argouml.model;
  */
 public interface UmlFactory {
     /**
-     * @return boolean to indicate if the JMI Reflective Proxy
-     * over NSUML is created.
-     */
-    boolean isJmiProxyCreated();
-
-    /**
-     * @param arg true to cause the JMI Reflective proxy over NSUML to be used.
-     */
-    void setJmiProxyCreated(boolean arg);
-
-    /**
      * Creates a UML model element of the given type and uses
      * this to connect two other existing UML model elements.
      * This only works for UML elements. If a diagram contains
@@ -75,12 +64,12 @@ public interface UmlFactory {
      * of the diagram manage those items and not call this
      * method. It also only works for UML model elements that
      * are represented in diagrams by a node.
-     * 
+     *
      * @param elementType the type of model element to build
      * @return the model element
      */
     Object buildNode(Object elementType);
-    
+
     /**
      * Checks if some type of UML model element is valid to
      * connect two other existing UML model elements.
@@ -148,29 +137,6 @@ public interface UmlFactory {
      * @return an initialized UML ActionExpression instance.
      */
     Object createActionExpression();
-
-    /**
-     * Create a UML object from the implementation name.
-     *
-     * This will allow abstraction of the create mechanism at a single point.
-     *
-     * @param entity name to create - must be implemented in
-     * {@link org.argouml.model.uml.Uml}.
-     *
-     * @return the entity requested or null if unable to create
-     */
-    Object create(String entity);
-
-    /**
-     * Create a UML object from the implementation.
-     *
-     * This will allow abstraction of the create mechanism at a single point.
-     *
-     * @param entity Class to create - must implement
-     *        {@link UmlModelEntity}
-     * @return the created entity or null if unable to create
-     */
-    Object create(UmlModelEntity entity);
 
     /**
      * Adds all interested (and centralized) listeners to the given

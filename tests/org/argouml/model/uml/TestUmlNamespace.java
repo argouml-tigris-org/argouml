@@ -31,50 +31,34 @@ import org.argouml.model.ModelFacade;
 /**
  * @author Thierry Lach
  */
-public class TestUmlNamespace extends GenericUmlObjectTestFixture
-{
+public class TestUmlNamespace extends GenericUmlObjectTestFixture {
     /**
      * Constructor for FakeUmlModelFacadeTest.
      * @param arg0 test name
      */
-    public TestUmlNamespace(String arg0)
-    {
-	super(arg0, Uml.NAMESPACE);
+    public TestUmlNamespace(String arg0) {
+	super(arg0, ModelFacade.NAMESPACE);
 	validateTestClassIsGeneric(this);
     }
 
     /**
      * Test creating a Namespace.
      */
-    public void testNamespaceLegacy() {
-	Model.getUmlFactory().setJmiProxyCreated(false);
-	Object o = ModelFacade.create(Uml.NAMESPACE);
-	assertNotNull("Didn't create object", o);
-	assertTrue("Should be a base", ModelFacade.isABase(o));
-	assertTrue("Should be a namespace", ModelFacade.isANamespace(o));
-	runTruthTests(o);
-    }
-
-    /**
-     * Test creating a Namespace.
-     */
     public void testNamespace() {
-	Model.getUmlFactory().setJmiProxyCreated(true);
-	Object o = ModelFacade.create(Uml.NAMESPACE);
+	Object o = Model.getUmlFactory().buildNode(ModelFacade.NAMESPACE);
 	assertNotNull("Didn't create object", o);
 	assertTrue("Should be a base", ModelFacade.isABase(o));
 	assertTrue("Should be a namespace", ModelFacade.isANamespace(o));
-	runTestRefBaseObject(o);
 	runTruthTests(o);
     }
 
     /**
-     * @see org.argouml.model.uml.GenericUmlObjectTestFixture#initializeTruth()
+     * @see junit.framework.TestCase#setUp()
      */
-    protected void initializeTruth() {
-	setTruth(Uml.ELEMENT, true);
-	setTruth(Uml.MODEL_ELEMENT, true);
-	setTruth(Uml.NAMESPACE, true);
+    protected void setUp() throws Exception {
+        super.setUp();
+        setTruth(ModelFacade.MODELELEMENT, true);
+        setTruth(ModelFacade.NAMESPACE, true);
     }
 
 }

@@ -24,15 +24,12 @@
 
 package org.argouml.model.uml;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.ActivityGraphsFactory;
 import org.argouml.model.CollaborationsFactory;
 import org.argouml.model.CommonBehaviorFactory;
@@ -43,11 +40,9 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.ModelManagementFactory;
 import org.argouml.model.StateMachinesFactory;
 import org.argouml.model.UmlFactory;
-import org.argouml.model.UmlModelEntity;
 import org.argouml.model.UseCasesFactory;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
 import ru.novosoft.uml.behavior.activity_graphs.MCallState;
 import ru.novosoft.uml.behavior.activity_graphs.MClassifierInState;
@@ -60,7 +55,6 @@ import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.common_behavior.MAttributeLink;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
@@ -98,7 +92,6 @@ import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.behavior.use_cases.MUseCaseInstance;
-import ru.novosoft.uml.foundation.core.MAbstraction;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationClass;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
@@ -150,13 +143,6 @@ import ru.novosoft.uml.model_management.MSubsystem;
 public class UmlFactoryImpl
     extends AbstractUmlModelFactory
     implements UmlFactory {
-
-    /**
-     * The logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(UmlFactoryImpl.class);
-
     /**
      * The model implementation.
      */
@@ -167,10 +153,6 @@ public class UmlFactoryImpl
      * The constructor builds this from the data in the VALID_CONNECTIONS array
      */
     private Map validConnectionMap = new HashMap();
-
-    // TODO: The purpose of the jmiProxy is not understood (Linus January
-    // 2005). Instead we go for two completely separate implementations.
-    private boolean jmiProxyCreated = false;
 
     /**
      * An array of valid connections, the combination of connecting class
@@ -264,8 +246,6 @@ public class UmlFactoryImpl
          ModelFacade.ASSOCIATION, },
     };
 
-    private static Map elements;
-
     /**
      * Don't allow external instantiation.
      *
@@ -275,7 +255,6 @@ public class UmlFactoryImpl
         nsmodel = implementation;
 
         buildValidConnectionMap();
-        initializeFactoryMethods();
     }
 
     private void buildValidConnectionMap() {
@@ -317,157 +296,6 @@ public class UmlFactoryImpl
         }
     }
 
-    /**
-     * Initialization for the "create(UmlModelEntity)" function.
-     */
-    private void initializeFactoryMethods() {
-        MFactory factory = MFactory.getDefaultFactory();
-        elements = new Hashtable(80);
-
-        elements.put(Uml.ABSTRACTION,
-            new ObjectCreateInfo(MAbstraction.class,
-                factory, "createAbstraction"));
-        elements.put(Uml.ASSOCIATION,
-            new ObjectCreateInfo(MAssociation.class,
-                factory, "createAssociation"));
-        elements.put(Uml.ASSOCIATION_CLASS,
-            new ObjectCreateInfo(MAssociationClass.class,
-                factory, "createAssociationClass"));
-        elements.put(Uml.ASSOCIATION_ROLE,
-            new ObjectCreateInfo(MAssociationRole.class,
-                factory, "createAssociationRole"));
-        elements.put(Uml.DEPENDENCY,
-            new ObjectCreateInfo(MDependency.class,
-                factory, "createDependency"));
-        elements.put(Uml.EXTEND,
-            new ObjectCreateInfo(MExtend.class, factory, "createExtend"));
-        elements.put(Uml.GENERALIZATION,
-            new ObjectCreateInfo(MGeneralization.class,
-                factory, "createGeneralization"));
-        elements.put(Uml.INCLUDE,
-            new ObjectCreateInfo(MInclude.class, factory, "createInclude"));
-        elements.put(Uml.LINK,
-            new ObjectCreateInfo(MLink.class, factory, "createLink"));
-        elements.put(Uml.LINK_END,
-            new ObjectCreateInfo(MLinkEnd.class, factory, "createLinkEnd"));
-        elements.put(Uml.PERMISSION,
-            new ObjectCreateInfo(MPermission.class,
-                factory, "createPermission"));
-        elements.put(Uml.USAGE,
-            new ObjectCreateInfo(MUsage.class, factory, "createUsage"));
-        elements.put(Uml.TRANSITION,
-            new ObjectCreateInfo(MTransition.class,
-                factory, "createTransition"));
-        elements.put(Uml.ACTOR,
-            new ObjectCreateInfo(MActor.class, factory, "createActor"));
-        elements.put(Uml.CLASS,
-            new ObjectCreateInfo(MClass.class, factory, "createClass"));
-        elements.put(Uml.EXCEPTION,
-            new ObjectCreateInfo(MException.class,
-                factory, "createException"));
-        elements.put(Uml.CLASSIFIER,
-            new ObjectCreateInfo(MClassifier.class,
-                factory, "createClassifier"));
-        elements.put(Uml.CLASSIFIER_ROLE,
-            new ObjectCreateInfo(MClassifierRole.class,
-                factory, "createClassifierRole"));
-        elements.put(Uml.COMPONENT,
-            new ObjectCreateInfo(MComponent.class, factory, "createComponent"));
-        elements.put(Uml.COMPONENT_INSTANCE,
-            new ObjectCreateInfo(MComponentInstance.class,
-                getCommonBehavior(),
-                "createComponentInstance"));
-        elements.put(Uml.INSTANCE,
-            new ObjectCreateInfo(MInstance.class, factory, "createInstance"));
-        elements.put(Uml.INTERFACE,
-            new ObjectCreateInfo(MInterface.class, factory, "createInterface"));
-        elements.put(Uml.NODE,
-            new ObjectCreateInfo(MNode.class, factory, "createNode"));
-        elements.put(Uml.NODE_INSTANCE,
-            new ObjectCreateInfo(MNodeInstance.class,
-                factory, "createNodeInstance"));
-        elements.put(Uml.OBJECT,
-            new ObjectCreateInfo(MObject.class, factory, "createObject"));
-        elements.put(Uml.PACKAGE,
-            new ObjectCreateInfo(MPackage.class, factory, "createPackage"));
-	elements.put(Uml.PARTITION,
-	    new ObjectCreateInfo(MPartition.class, factory, "createPartition"));
-        elements.put(Uml.STATE,
-            new ObjectCreateInfo(MState.class, factory, "createState"));
-        elements.put(Uml.CALL_STATE,
-            new ObjectCreateInfo(MCallState.class,
-                factory,  "createCallState"));
-        elements.put(Uml.COMPOSITE_STATE,
-            new ObjectCreateInfo(MCompositeState.class,
-                factory, "createCompositeState"));
-        elements.put(Uml.PSEUDOSTATE,
-            new ObjectCreateInfo(MPseudostate.class,
-                factory, "createPseudostate"));
-        elements.put(Uml.OBJECT_FLOW_STATE,
-            new ObjectCreateInfo(MObjectFlowState.class,
-                factory, "createObjectFlowState"));
-        elements.put(Uml.CLASSIFIER_IN_STATE,
-            new ObjectCreateInfo(MClassifierInState.class,
-                factory, "createClassifierInState"));
-        elements.put(Uml.SUBACTIVITY_STATE,
-            new ObjectCreateInfo(MSubactivityState.class,
-                factory, "createSubactivityState"));
-        elements.put(Uml.USE_CASE,
-            new ObjectCreateInfo(MUseCase.class, factory, "createUseCase"));
-        elements.put(Uml.ACTION,
-            new ObjectCreateInfo(MAction.class, factory, "createAction"));
-        elements.put(Uml.ASSOCIATION_END,
-            new ObjectCreateInfo(MAssociationEnd.class,
-                factory, "createAssociationEnd"));
-        elements.put(Uml.CALL_ACTION,
-            new ObjectCreateInfo(MCallAction.class,
-                factory, "createCallAction"));
-        elements.put(Uml.NAMESPACE,
-            new ObjectCreateInfo(MNamespace.class, factory, "createNamespace"));
-        elements.put(Uml.RECEPTION,
-            new ObjectCreateInfo(MReception.class, factory, "createReception"));
-        elements.put(Uml.STEREOTYPE,
-            new ObjectCreateInfo(MStereotype.class,
-                factory, "createStereotype"));
-        elements.put(Uml.ATTRIBUTE,
-            new ObjectCreateInfo(MAttribute.class, factory, "createAttribute"));
-        elements.put(Uml.OPERATION,
-            new ObjectCreateInfo(MOperation.class, factory, "createOperation"));
-        elements.put(Uml.MODEL,
-            new ObjectCreateInfo(MModel.class, factory, "createModel"));
-        elements.put(Uml.DATATYPE,
-            new ObjectCreateInfo(MDataType.class, factory, "createDataType"));
-
-        // NSUML does not have a factory method for this
-        elements.put(Uml.ACTION_EXPRESSION,
-            new ObjectCreateInfo(MActionExpression.class,
-                this,
-                "createActionExpression"));
-
-        // NSUML cannot instantiate an Event object
-        // elements.put(Uml.EVENT,
-        //     new NsumlObjectInfo(factory,MEvent.class, "createEvent"));
-
-        // NSUML cannot instantiate a State Vertex object
-        // elements.put(Uml.STATE_VERTEX,
-        //     new NsumlObjectInfo(factory, MStateVertex.class,
-        //         "createStateVertex"));
-    }
-
-    /**
-     * @return boolean to indicate if the JMI Reflective Proxy
-     * over NSUML is created.
-     */
-    public boolean isJmiProxyCreated() {
-        return jmiProxyCreated;
-    }
-
-    /**
-     * @param arg true to cause the JMI Reflective proxy over NSUML to be used.
-     */
-    public void setJmiProxyCreated(boolean arg) {
-        jmiProxyCreated = arg;
-    }
 
     /**
      * Creates a UML model element of the given type and uses
@@ -573,7 +401,7 @@ public class UmlFactoryImpl
 
         return connection;
     }
-    
+
     /**
      * Creates a UML model element of the given type.
      * This only works for UML elements. If a diagram contains
@@ -581,14 +409,14 @@ public class UmlFactoryImpl
      * of the diagram manage those items and not call this
      * method. It also only works for UML model elements that
      * are represented in diagrams by a node. <p>
-     * 
-     * The parameter "elementType" stands for the type of 
+     *
+     * The parameter "elementType" stands for the type of
      * model element to build.
      *
      * @see org.argouml.model.UmlFactory#buildNode(java.lang.Object)
      */
     public Object buildNode(Object elementType) {
-        
+
         Object modelElement = null;
         if (elementType == ModelFacade.ACTOR) {
             return getUseCases().createActor();
@@ -636,6 +464,8 @@ public class UmlFactoryImpl
             return getCommonBehavior().createObject();
         } else if (elementType == ModelFacade.COMMENT) {
             return getCore().createComment();
+        } else if (elementType == ModelFacade.NAMESPACE) {
+            return getCore().createNamespace();
         }
         return modelElement;
     }
@@ -1148,75 +978,5 @@ public class UmlFactoryImpl
         initialize(expression);
         return expression;
     }
-
-    /**
-     * Create a UML object from the implementation name.
-     *
-     * This will allow abstraction of the create mechanism at a single point.
-     *
-     * @param entity name to create - must be implemented in
-     * {@link org.argouml.model.uml.Uml}.
-     *
-     * @return the entity requested or null if unable to create
-     */
-    public Object create(String entity) {
-        throw new RuntimeException("Not yet implemented");
-        // return create((Class) Uml.getUmlClassList().get(entity));
-    }
-
-    /**
-     * Create a UML object from the implementation.
-     *
-     * This will allow abstraction of the create mechanism at a single point.
-     *
-     * @param entity Class to create - must implement
-     *        {@link UmlModelEntity}
-     * @return the created entity or null if unable to create
-     */
-    public Object create(UmlModelEntity entity) {
-        ObjectCreateInfo oi = (ObjectCreateInfo) elements.get(entity);
-        if (oi == null) {
-            return null;
-            // TODO: decide if we want to throw an exception instead
-            // throw new InvalidObjectRequestException
-            //("Cannot identify the object type", entity);
-        }
-        Method method = null;
-        try {
-            method =
-                oi.getFactory().getClass().getMethod(oi.getCreateMethod(),
-                                                     new Class[] {});
-        } catch (Exception e) {
-            LOG.error("Failed to invoke create method on factory.", e);
-            return null;
-            // TODO: decide if we want to throw an exception instead
-            // throw new InvalidObjectRequestException
-            //("Cannot find creator method", entity, e);
-        }
-
-        Object obj = null;
-        try {
-            obj = method.invoke(oi.getFactory(), new Object[] {});
-        } catch (Exception e) {
-            // TODO: decide if we want to throw an exception instead
-            // throw new InvalidObjectRequestException
-            //("Cannot execute creator method", entity, e);
-            LOG.error("Failed to invoke create method on factory.", e);
-            return null;
-        }
-        initialize(obj);
-
-        // Allow for testing of the proxy capability
-        if (jmiProxyCreated) {
-        	// TODO: implement RefPackageProxy handling
-
-			// if (obj instanceof MPackage) {
-			//     return RefPackageProxy.newInstance(obj);
-			// }
-			return RefBaseObjectProxy.newInstance(obj);
-        }
-        return obj;
-    }
-
 }
 

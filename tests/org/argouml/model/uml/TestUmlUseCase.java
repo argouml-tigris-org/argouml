@@ -31,53 +31,37 @@ import org.argouml.model.ModelFacade;
 /**
  * @author Thierry Lach
  */
-public class TestUmlUseCase extends GenericUmlObjectTestFixture
-{
+public class TestUmlUseCase extends GenericUmlObjectTestFixture {
     /**
      * Constructor for FakeUmlModelFacadeTest.
      * @param arg0 test name
      */
-    public TestUmlUseCase(String arg0)
-    {
-	super(arg0, Uml.USE_CASE);
+    public TestUmlUseCase(String arg0) {
+	super(arg0, ModelFacade.USE_CASE);
 	validateTestClassIsGeneric(this);
     }
 
     /**
      * Test creating a usecase.
      */
-    public void testUseCaseLegacy() {
-	Model.getUmlFactory().setJmiProxyCreated(false);
-	Object o = ModelFacade.create(Uml.USE_CASE);
-	assertNotNull("Didn't create object", o);
-	assertTrue("Should be a base", ModelFacade.isABase(o));
-	assertTrue("Should be a use case", ModelFacade.isAUseCase(o));
-	runTruthTests(o);
-    }
-
-    /**
-     * Test creating a usecase.
-     */
     public void testUseCase() {
-	Model.getUmlFactory().setJmiProxyCreated(true);
-	Object o = ModelFacade.create(Uml.USE_CASE);
+	Object o = Model.getUmlFactory().buildNode(ModelFacade.USE_CASE);
 	assertNotNull("Didn't create object", o);
 	assertTrue("Should be a base", ModelFacade.isABase(o));
 	assertTrue("Should be a use case", ModelFacade.isAUseCase(o));
-	runTestRefBaseObject(o);
 	runTruthTests(o);
     }
 
     /**
-     * @see org.argouml.model.uml.GenericUmlObjectTestFixture#initializeTruth()
+     * @see junit.framework.TestCase#setUp()
      */
-    protected void initializeTruth() {
-	setTruth(Uml.ELEMENT, true);
-	setTruth(Uml.MODEL_ELEMENT, true);
-	setTruth(Uml.GENERALIZABLE_ELEMENT, true);
-	setTruth(Uml.NAMESPACE, true);
-	setTruth(Uml.CLASSIFIER, true);
-	setTruth(Uml.USE_CASE, true);
+    protected void setUp() throws Exception {
+        super.setUp();
+        setTruth(ModelFacade.MODELELEMENT, true);
+        setTruth(ModelFacade.GENERALIZABLE_ELEMENT, true);
+        setTruth(ModelFacade.NAMESPACE, true);
+        setTruth(ModelFacade.CLASSIFIER, true);
+        setTruth(ModelFacade.USE_CASE, true);
     }
 
 }

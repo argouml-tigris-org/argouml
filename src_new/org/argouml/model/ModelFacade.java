@@ -532,9 +532,9 @@ public class ModelFacade {
         MParameterDirectionKind.class;
 
     /**
-     * Invisible model element: GENERALAIZABLE_ELEMENT.
+     * Invisible model element: GENERALIZABLE_ELEMENT.
      */
-    public static final Object GENERALAIZABLE_ELEMENT =
+    public static final Object GENERALIZABLE_ELEMENT =
         MGeneralizableElement.class;
 
     /**
@@ -789,28 +789,6 @@ public class ModelFacade {
 
 
     ////////////////////////////////////////////////////////////////
-    // Object Creation methods
-
-    /**
-     * Create a model object from the implementation.<p>
-     *
-     * This will allow abstraction of the create mechanism at a single point.
-     *
-     * TODO: Document the intention of this function.
-     * It is not used anywhere in ArgoUML.
-     * BTW: Does it work? I (MVW) once did a test, and it didn't.
-     *
-     * @param entity Class to create -
-     * must implement {@link org.argouml.model.UmlModelEntity}
-     * @return the created object or null if it cannot create the class.
-     */
-    public static Object create(ModelEntity entity) {
-        if (entity instanceof UmlModelEntity) {
-            return Model.getUmlFactory().create((UmlModelEntity) entity);
-        }
-        return null;
-    }
-
     ////////////////////////////////////////////////////////////////
     // Recognizer methods for the UML model (in alphabetic order)
 
@@ -6682,7 +6660,7 @@ public class ModelFacade {
     }
 
     /**
-     * Sets the qualified attributes of an association end
+     * Sets the qualified attributes of an association end.
      *
      * @param handle the association end
      * @param elems is a Collection of qualifiers

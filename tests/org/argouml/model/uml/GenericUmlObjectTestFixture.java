@@ -26,19 +26,10 @@ package org.argouml.model.uml;
 
 import java.util.HashMap;
 
-import javax.jmi.reflect.RefAssociation;
-import javax.jmi.reflect.RefBaseObject;
-import javax.jmi.reflect.RefClass;
-import javax.jmi.reflect.RefEnum;
-import javax.jmi.reflect.RefFeatured;
-import javax.jmi.reflect.RefObject;
-import javax.jmi.reflect.RefPackage;
+import junit.framework.TestCase;
 
-import org.argouml.model.ModelEntity;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.NavigatorPane;
-
-import junit.framework.TestCase;
 
 /**
  * @author Thierry Lach
@@ -49,7 +40,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 
     private boolean validated = false;
 
-    private ModelEntity entity;
+    private Object entity;
 
     /**
      * Constructor for GenericObjectFixture.
@@ -57,7 +48,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
      * @param arg0 is the name of the test case.
      * @param ent the model entity
      */
-    public GenericUmlObjectTestFixture(String arg0, ModelEntity ent) {
+    public GenericUmlObjectTestFixture(String arg0, Object ent) {
 	super(arg0);
 	entity = ent;
     }
@@ -68,13 +59,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
     protected void setUp() throws Exception {
 	super.setUp();
 	NavigatorPane.setInstance(null);
-	initializeTruth();
     }
-
-    /**
-     * Called to set up the truth table.
-     */
-    protected abstract void initializeTruth();
 
     /**
      * @see TestCase#tearDown()
@@ -93,7 +78,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
     }
 
     /**
-     * Ensure that the calling class does not reference NSUML in any way
+     * Ensure that the calling class does not reference NSUML in any way.
      *
      * @param self the testcase
      */
@@ -119,109 +104,14 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
     }
 
     /**
-     * Indicate that the class being tested should be a type of the
-     * passed class.
-     *
-     * @param class1 the class being tested
-     */
-    protected void setShouldBe(ModelEntity class1) {
-	truths.put(class1, new Boolean(true));
-    }
-
-    /**
      * Indicate if the class being tested should be a type of the
      * testcase class.
      *
-     * @param class1 the modelentity
+     * @param class1 the model element
      * @param b the value
      */
-    protected void setTruth(ModelEntity class1, boolean b) {
+    protected void setTruth(Object class1, boolean b) {
 	truths.put(class1, new Boolean(b));
-    }
-
-    /**
-     * Run the standard tests against a given RefBaseObject
-     *
-     * @param o the given object
-     */
-    protected void runTestRefBaseObject(Object o) {
-	assertTrue("Should be a RefBaseObject", o instanceof RefBaseObject);
-	RefBaseObject rbo = (RefBaseObject) o;
-	// TODO: test method refMofId());
-	// TODO: test method refImmediatePackage()
-	// TODO: test method refMetaObject()
-	// TODO: test method refOutermostPackage()
-	// TODO: test method refVerifyConstraints(true));
-	// TODO: test method refVerifyConstraints(false));
-    }
-
-    /**
-     * Run the standard tests against a given RefPackage
-     *
-     * @param o the given object
-     */
-    protected void runTestRefPackage(Object o) {
-	assertTrue("Should be a RefPackage", o instanceof RefPackage);
-	RefPackage rp = (RefPackage) o;
-	// TODO: test method refAllAssociations()
-	// TODO: test method refAllClasses()
-	// TODO: test method refAllPackages()
-	// TODO: implement additional method tests
-    }
-
-    /**
-     * Run the standard tests against a RefClass
-     *
-     * @param o the given object
-     */
-    protected void runTestRefClass(Object o) {
-	assertTrue("Should be a RefClass", o instanceof RefClass);
-	RefClass rc = (RefClass) o;
-	// TODO: implement additional method tests
-    }
-
-    /**
-     * Run the standard tests against a RefObject
-     *
-     * @param o the given object
-     */
-    protected void runTestRefObject(Object o) {
-	assertTrue("Should be a RefObject", o instanceof RefObject);
-	RefObject ro = (RefObject) o;
-	// TODO: implement additional method tests
-    }
-
-    /**
-     * Run the standard tests against a RefEnum
-     *
-     * @param o the given object
-     */
-    protected void runTestRefEnum(Object o) {
-	assertTrue("Should be a RefEnum", o instanceof RefEnum);
-	RefEnum ro = (RefEnum) o;
-	// TODO: implement additional method tests
-    }
-
-    /**
-     * Run the standard tests against a RefAssociation
-     *
-     * @param o the given object
-     */
-    protected void runTestRefAssociation(Object o) {
-	assertTrue("Should be a RefAssociation", o instanceof RefAssociation);
-	RefAssociation ro = (RefAssociation) o;
-	// TODO: implement additional method tests
-    }
-
-    /**
-     * Run the standard tests against a RefFeatured
-     *
-     * @param o the given object
-     */
-    protected void runTestRefFeatured(Object o) {
-	assertTrue("Should be a RefFeatured", o instanceof RefFeatured);
-	RefFeatured ro = (RefFeatured) o;
-	// TODO: implement additional method tests
     }
 
     /**
@@ -229,59 +119,70 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
      */
     protected void runTruthTests(Object o) {
 	runTruthTest(ModelFacade.isABase(o), true, null);
-	runTruthTest(ModelFacade.isAAbstraction(o), Uml.ABSTRACTION);
-	runTruthTest(ModelFacade.isAAssociation(o), Uml.ASSOCIATION);
-	runTruthTest(ModelFacade.isAAssociationEnd(o), Uml.ASSOCIATION_END);
-	runTruthTest(ModelFacade.isAAssociationRole(o), Uml.ASSOCIATION_ROLE);
-	runTruthTest(ModelFacade.isAClass(o), Uml.CLASS);
-	runTruthTest(ModelFacade.isAClassifier(o), Uml.CLASSIFIER);
-	runTruthTest(ModelFacade.isAComment(o), Uml.COMMENT);
-	runTruthTest(ModelFacade.isAComponent(o), Uml.COMPONENT);
+	runTruthTest(ModelFacade.isAAbstraction(o), ModelFacade.ABSTRACTION);
+	runTruthTest(ModelFacade.isAAssociation(o), ModelFacade.ASSOCIATION);
+	runTruthTest(ModelFacade.isAAssociationEnd(o),
+	        ModelFacade.ASSOCIATION_END);
+	runTruthTest(ModelFacade.isAAssociationRole(o),
+	        ModelFacade.ASSOCIATION_ROLE);
+	runTruthTest(ModelFacade.isAClass(o), ModelFacade.CLASS);
+	runTruthTest(ModelFacade.isAClassifier(o), ModelFacade.CLASSIFIER);
+	runTruthTest(ModelFacade.isAComment(o), ModelFacade.COMMENT);
+	runTruthTest(ModelFacade.isAComponent(o), ModelFacade.COMPONENT);
 	runTruthTest(ModelFacade.isAComponentInstance(o),
-            Uml.COMPONENT_INSTANCE);
-	runTruthTest(ModelFacade.isADataType(o), Uml.DATATYPE);
-	runTruthTest(ModelFacade.isADependency(o), Uml.DEPENDENCY);
-	runTruthTest(ModelFacade.isACompositeState(o), Uml.COMPOSITE_STATE);
-	runTruthTest(ModelFacade.isAElement(o), Uml.ELEMENT);
-	runTruthTest(ModelFacade.isAExpression(o), Uml.EXPRESSION);
-	runTruthTest(ModelFacade.isAExtensionPoint(o), Uml.EXTENSION_POINT);
-	runTruthTest(ModelFacade.isAFeature(o), Uml.FEATURE);
+            ModelFacade.COMPONENT_INSTANCE);
+	runTruthTest(ModelFacade.isADataType(o), ModelFacade.DATATYPE);
+	runTruthTest(ModelFacade.isADependency(o), ModelFacade.DEPENDENCY);
+	runTruthTest(ModelFacade.isACompositeState(o),
+	        ModelFacade.COMPOSITESTATE);
+
+	// Not currently present as token in ModelFacade.
+	// NIF: runTruthTest(ModelFacade.isAElement(o), ModelFacade.ELEMENT);
+	// NIF: runTruthTest(ModelFacade.isAExpression(o),
+	//           ModelFacade.EXPRESSION);
+	// NIF: runTruthTest(ModelFacade.isAExtensionPoint(o),
+	//           ModelFacade.EXTENSION_POINT);
+	// NIF: runTruthTest(ModelFacade.isAFeature(o), ModelFacade.FEATURE);
 	runTruthTest(ModelFacade.isAGeneralizableElement(o),
-            Uml.GENERALIZABLE_ELEMENT);
-	runTruthTest(ModelFacade.isAGeneralization(o), Uml.GENERALIZATION);
+	        ModelFacade.GENERALIZABLE_ELEMENT);
+	runTruthTest(ModelFacade.isAGeneralization(o),
+	        ModelFacade.GENERALIZATION);
 
 	// TODO: this fails on ModelElement - why?
-	// runTruthTest(ModelFacade.isAInstance(o), Uml.INSTANCE);
-	runTruthTest(ModelFacade.isAInteraction(o), Uml.INTERACTION);
+	// runTruthTest(ModelFacade.isAInstance(o), ModelFacade.INSTANCE);
+	// NIF: runTruthTest(ModelFacade.isAInteraction(o),
+	//           ModelFacade.INTERACTION);
 
-	runTruthTest(ModelFacade.isAInterface(o), Uml.INTERFACE);
-	runTruthTest(ModelFacade.isALink(o), Uml.LINK);
-	runTruthTest(ModelFacade.isAMethod(o), Uml.METHOD);
-	runTruthTest(ModelFacade.isAModel(o), Uml.MODEL);
-	runTruthTest(ModelFacade.isAModelElement(o), Uml.MODEL_ELEMENT);
-	runTruthTest(ModelFacade.isANamespace(o), Uml.NAMESPACE);
-	runTruthTest(ModelFacade.isANode(o), Uml.NODE);
-	runTruthTest(ModelFacade.isANodeInstance(o), Uml.NODE_INSTANCE);
-
-	// TODO: this fails on ModelElement - why?
-	// runTruthTest(ModelFacade.isAOperation(o), Uml.OPERATION);
+	runTruthTest(ModelFacade.isAInterface(o), ModelFacade.INTERFACE);
+	runTruthTest(ModelFacade.isALink(o), ModelFacade.LINK);
+	// NIF: runTruthTest(ModelFacade.isAMethod(o), ModelFacade.METHOD);
+	runTruthTest(ModelFacade.isAModel(o), ModelFacade.MODEL);
+	runTruthTest(ModelFacade.isAModelElement(o), ModelFacade.MODELELEMENT);
+	runTruthTest(ModelFacade.isANamespace(o), ModelFacade.NAMESPACE);
+	runTruthTest(ModelFacade.isANode(o), ModelFacade.NODE);
+	runTruthTest(ModelFacade.isANodeInstance(o), ModelFacade.NODE_INSTANCE);
 
 	// TODO: this fails on ModelElement - why?
-	// runTruthTest(ModelFacade.isAObject(o), Uml.OBJECT);
+	// runTruthTest(ModelFacade.isAOperation(o), ModelFacade.OPERATION);
 
-	runTruthTest(ModelFacade.isAPermission(o), Uml.PERMISSION);
-	runTruthTest(ModelFacade.isAPackage(o), Uml.PACKAGE);
-	runTruthTest(ModelFacade.isAReception(o), Uml.RECEPTION);
-	runTruthTest(ModelFacade.isARelationship(o), Uml.RELATIONSHIP);
-	runTruthTest(ModelFacade.isAStateMachine(o), Uml.STATE_MACHINE);
-	runTruthTest(ModelFacade.isAStateVertex(o), Uml.STATE_VERTEX);
-	runTruthTest(ModelFacade.isAStereotype(o), Uml.STEREOTYPE);
-	runTruthTest(ModelFacade.isAStructuralFeature(o),
-            Uml.STRUCTURAL_FEATURE);
-	runTruthTest(ModelFacade.isATaggedValue(o), Uml.TAGGED_VALUE);
-	runTruthTest(ModelFacade.isATransition(o), Uml.TRANSITION);
-	runTruthTest(ModelFacade.isAUseCase(o), Uml.USE_CASE);
-	runTruthTest(ModelFacade.isAActor(o), Uml.ACTOR);
+	// TODO: this fails on ModelElement - why?
+	// runTruthTest(ModelFacade.isAObject(o), ModelFacade.OBJECT);
+
+	runTruthTest(ModelFacade.isAPermission(o), ModelFacade.PERMISSION);
+	runTruthTest(ModelFacade.isAPackage(o), ModelFacade.PACKAGE);
+	runTruthTest(ModelFacade.isAReception(o), ModelFacade.RECEPTION);
+	// NIF: runTruthTest(ModelFacade.isARelationship(o),
+	//           ModelFacade.RELATIONSHIP);
+	runTruthTest(ModelFacade.isAStateMachine(o), ModelFacade.STATEMACHINE);
+	runTruthTest(ModelFacade.isAStateVertex(o), ModelFacade.STATEVERTEX);
+	runTruthTest(ModelFacade.isAStereotype(o), ModelFacade.STEREOTYPE);
+	// NIF: runTruthTest(ModelFacade.isAStructuralFeature(o),
+        //     ModelFacade.STRUCTURAL_FEATURE);
+	// NIF: runTruthTest(ModelFacade.isATaggedValue(o),
+	//           ModelFacade.TAGGED_VALUE);
+	runTruthTest(ModelFacade.isATransition(o), ModelFacade.TRANSITION);
+	runTruthTest(ModelFacade.isAUseCase(o), ModelFacade.USE_CASE);
+	runTruthTest(ModelFacade.isAActor(o), ModelFacade.ACTOR);
     }
 
     /**
@@ -289,9 +190,8 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
      * @param c
      */
     private void runTruthTest(boolean result, boolean expected,
-            ModelEntity class1) {
-	assertEquals("Failure testing "
-		     + (class1 == null ? "MBase" : class1.getName()),
+            Object class1) {
+	assertEquals("Failure testing " + class1,
 		     expected,
 		     result);
     }
@@ -299,7 +199,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
     /**
      * @param class1
      */
-    private void runTruthTest(boolean result, ModelEntity class1) {
+    private void runTruthTest(boolean result, Object class1) {
         // TODO: Look up class in truth table
         Boolean truth = (Boolean) truths.get(class1);
         if (truth == null) {
@@ -307,12 +207,4 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
         }
         runTruthTest(result, truth.booleanValue(), class1);
     }
-
-    /**
-     * @return the model entity
-     */
-    public ModelEntity getEntity() {
-	return entity;
-    }
-
 }
