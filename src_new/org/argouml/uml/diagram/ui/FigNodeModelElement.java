@@ -75,6 +75,7 @@ import org.argouml.ui.cmd.CmdSetPreferredSize;
 import org.argouml.uml.UUIDManager;
 import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.ui.ActionProperties;
+import org.argouml.uml.ui.ActionDeleteFromDiagram;
 import org.argouml.util.Trash;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -238,6 +239,7 @@ public abstract class FigNodeModelElement
             popUpActions.insertElementAt(critiques, 0);
         }
         popUpActions.addElement(ActionProperties.SINGLETON);
+        popUpActions.addElement(ActionDeleteFromDiagram.SINGLETON);
         return popUpActions;
     }
 
