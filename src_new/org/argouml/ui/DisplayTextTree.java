@@ -270,6 +270,13 @@ public class DisplayTextTree
      * in priority by not running until the second invokeLater().
      * Depending on the queue order in invokeLater() this might result in
      * updates but it is probably far from every file.
+     *
+     * @see org.argouml.model.uml.UmlModelListener
+     * @see org.argouml.uml.ui.ActionRemoveFromModel
+     * @see org.argouml.uml.ui.ActionAddDiagram
+     * @see org.argouml.ui.NavigatorPane
+     * @see org.argouml.uml.ui.foundation.core.PropPanelGeneralization
+     * @see org.argouml.uml.ui.UMLReflectionListModel
      */
     public void forceUpdate() {
         

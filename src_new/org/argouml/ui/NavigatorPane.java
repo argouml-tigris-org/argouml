@@ -253,7 +253,16 @@ public class NavigatorPane
         return _tree.getLastSelectedPathComponent();
     }
     
-    /** needs documenting */
+    /**
+     * Notification from Argo that the model has changed and
+     * the Tree view needs updating.
+     *
+     * @see org.argouml.model.uml.UmlModelListener
+     * @see org.argouml.uml.ui.ActionRemoveFromModel
+     * @see org.argouml.uml.ui.ActionAddDiagram
+     * @see org.argouml.uml.ui.foundation.core.PropPanelGeneralization
+     * @see org.argouml.uml.ui.UMLReflectionListModel
+     */
     public void forceUpdate() {
         _tree.forceUpdate();
     }
