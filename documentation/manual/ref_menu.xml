@@ -2391,45 +2391,58 @@ saved at all? -->
 
       <!-- Describe how to use the dialog box -->
 
-      <para>Below a label <literal>Generate&nbsp;Classes&nbsp;&hellip;</literal> 
+      <para>Below a label <literal>Available Classes</literal> 
         the dialog
         box lists each of the selected classes by name with a check box to the
-        right, for each language installed. 
+        left, for each language installed. 
         All the checkboxes are initially unchecked. 
+        <!-- TODO: When the dialog box appears, none of the checkmarks are set. 
+        Shouldn't it be by default set for all selected classes? See issue ... -->
         Checking any of these boxes will
         cause code generation for that class.
         Checking multiple languages for a class causes it to be generated in
         all these languages.
       </para>
+      
+      <para>
+        The buttons <literal>Select All</literal> and 
+        <literal>Select&nbsp;None</literal> may help 
+        when a lot of items have to be selected or deselected.
+        <!-- TODO: The "Select All" button selects all languages. Should it not
+        be better to let it select only 1 language? Only, how to choose the
+        language? -->
+      </para>
 
-      <para>In the lower portion of the dialog box is a text box labeled
-        <literal>Output&nbsp;Directory:</literal> to specify the directory in
+      <para>In the lower portion of the dialog box is 
+        an editable combo box labeled
+        <literal>Output&nbsp;Directory</literal> to specify the directory in
         which code is generated. Within this directory, a top level directory
         will be created with the name of the model. Further sub-directories
         will be created to reflect the package/namespace hierarchy of the
         model. A drop down selector gives access to previously selected output
         directories.</para>
 
-      <para>Beneath this a check box labeled <literal>compile generated
-        source</literal> (clear by default) controls whether the generated code
-        should be compiled.</para>
+      <!--para>Beneath this a check box labeled <literal>Compile Generated
+        Source</literal> (clear by default) controls whether the generated code
+        should be compiled.</para-->
       <!-- TODO: How do you tell ArgoUML how to do this? Without 
-      that explained here, the function is useless. -->
+      that explained here, the function is useless. 
+      Currently the feature is not implemented. 
+      Maybe we better remove it for now... See issue ... -->
 
       <para>Finally, at the bottom of the dialog box are two buttons, labeled
         <literal>Generate</literal> and <literal>Cancel</literal>. &Button1; click on
         the former will cause the code to be generated, &button1; click on the latter
         will cancel code generation.</para>
+      <!-- TODO: There is no warning if the writing of files fails, 
+      e.g. due to the path name which is invalid 
+      (e.g. enter "z:\temp" if you do not have a z: drive).
+      See issue ... -->
+      <!-- TODO: It is completely unclear to me 
+      when existing files are overwritten, and when not. 
+      And are backups made? 
+      Describe this!-->
 
-        <!-- TODO: The dialog box should have the window title bar title set 
-        to the same as the menu entry. See issue ... -->
-        <!-- TODO: Sizing the dialog window causes some strange behaviour 
-        for the width of the contents. E.g. reducing heigt little by little,
-        causes a jump in the width of the contents. See issue ... -->
-        <!-- TODO: When the dialog box appears, none of the checkmarks are set. 
-        Shouldn't it be by default set for all selected classes? See issue ... -->
-        <!-- TODO: Enhancement: add a "Select all", and "unselect all" 
-        button to each column. See issue ... -->
     </sect2>
 
     <!-- Generate code for all classes -->
@@ -2449,7 +2462,9 @@ saved at all? -->
       <para>This function behaves as
         <literal>Generate&nbsp;Selected&nbsp;Classes&hellip;</literal> (see
         <xref linkend="s2.ref.menu_generate_selected_classes"/>) would with all
-        classes in the model selected.</para>
+        classes in the <!-- model -->
+        current diagram
+        selected.</para>
     </sect2>
 
     <!-- Generate code for project -->
@@ -2457,7 +2472,7 @@ saved at all? -->
     <sect2>
       <title>Generate Code for Project&hellip; (To be Written)</title>
       <para></para>
-      <!-- TODO: I only see the same dialog box again, but empty this time. -->
+      <!-- TODO: I only see a similar dialog box again, but empty this time. -->
     </sect2>
 
     <!-- Settings for Generate for Project -->
@@ -2480,7 +2495,7 @@ saved at all? -->
       url="http://argouml.tigris.org/docs/robbins_dissertation/">
       http://argouml.tigris.org/docs/robbins_dissertation/</ulink>.</para>
 
-    <note><para>A word about terminology. The <emphasis>critics</emphasis> are
+    <note><para>A word about terminology: The <emphasis>critics</emphasis> are
       background processes, which evaluate the current model according to
       various <quote>good</quote> design criteria. There is one critic for
       every design criterion.</para>
@@ -2501,6 +2516,14 @@ saved at all? -->
 
     <sect2>
       <title>Toggle Auto-Critique</title>
+      <!-- TODO: In the light of the above explanation, 
+      should this menuitem not better be named "Snooze Critics"? 
+      Rationale: 
+      1. The word "Toggle" is not needed, because you can see from the
+      checkbox that this is a toggle item.
+      2. The user needs only know the word "critics", not "critique". This
+      because the former is used all over the program, the latter is not.
+      See issue ... -->
 
       <para>This is a check box, controlling whether the critics are
         running. By default it is checked. If unchecked, then all critics are
@@ -2537,87 +2560,89 @@ saved at all? -->
       category are discussed in detail in the chapter on critics
       (<xref linkend="ch.ref.critics"/>).</para>
 
-      <itemizedlist>
+      <!-- There is no added benefit in mentioning all the categories here. 
+      The reference above must suffice! -->
+      <!--itemizedlist>
         <listitem><para><literal>Uncategorized</literal>.
           Unused (see
-          <xref linkend="s1.ref.design_issues_uncategorized"/>.
+          <xref linkend="s1.ref.design_issues_uncategorized"/>).
         </para></listitem>
 
         <listitem><para><literal>Class Selection</literal>. Three
           critics (see
-          <xref linkend="s1.ref.design_issues_class_selection"/>.
+          <xref linkend="s1.ref.design_issues_class_selection"/>).
         </para></listitem>
 
         <listitem><para><literal>Naming</literal>. Nineteen
           critics (see
-          <xref linkend="s1.ref.design_issues_naming"/>.
+          <xref linkend="s1.ref.design_issues_naming"/>).
         </para></listitem>
 
         <listitem><para><literal>Storage</literal>. Four
           critics (see
-          <xref linkend="s1.ref.design_issues_storage"/>.
+          <xref linkend="s1.ref.design_issues_storage"/>).
         </para></listitem>
 
         <listitem><para><literal>Planned Extensions</literal>. Three
           critics (see
-          <xref linkend="s1.ref.design_issues_planned_extensions"/>.
+          <xref linkend="s1.ref.design_issues_planned_extensions"/>).
         </para></listitem>
 
         <listitem><para><literal>State Machines</literal>. Fourteen
           critics (see
-          <xref linkend="s1.ref.design_issues_state_machines"/>.
+          <xref linkend="s1.ref.design_issues_state_machines"/>).
         </para></listitem>
 
         <listitem><para><literal>Design Patterns</literal>. Sixteen
           critics (see
-          <xref linkend="s1.ref.design_issues_design_patterns"/>.
+          <xref linkend="s1.ref.design_issues_design_patterns"/>).
         </para></listitem>
 
         <listitem><para><literal>Relationships</literal>. Seven
           critics (see
-          <xref linkend="s1.ref.design_issues_relationships"/>.
+          <xref linkend="s1.ref.design_issues_relationships"/>).
         </para></listitem>
 
         <listitem><para><literal>Instantiation</literal>.
           Unused (see
-          <xref linkend="s1.ref.design_issues_instantiation"/>.
+          <xref linkend="s1.ref.design_issues_instantiation"/>).
         </para></listitem>
 
         <listitem><para><literal>Modularity</literal>. Two
           critics (see
-          <xref linkend="s1.ref.design_issues_modularity"/>.
+          <xref linkend="s1.ref.design_issues_modularity"/>).
         </para></listitem>
 
         <listitem><para><literal>Expected Usage</literal>.One
           critic (see
-          <xref linkend="s1.ref.design_issues_expected_usage"/>.
+          <xref linkend="s1.ref.design_issues_expected_usage"/>).
         </para></listitem>
 
         <listitem><para><literal>Methods</literal>. Four
           critics (see
-          <xref linkend="s1.ref.design_issues_methods"/>.
+          <xref linkend="s1.ref.design_issues_methods"/>).
         </para></listitem>
 
         <listitem><para><literal>Code Generation</literal>. One
           critic (see
-          <xref linkend="s1.ref.design_issues_code_generation"/>.
+          <xref linkend="s1.ref.design_issues_code_generation"/>).
         </para></listitem>
 
         <listitem><para><literal>Stereotypes</literal>.
           Unused (see
-          <xref linkend="s1.ref.design_issues_stereotypes"/>.
+          <xref linkend="s1.ref.design_issues_stereotypes"/>).
         </para></listitem>
 
         <listitem><para><literal>Inheritance</literal>. Ten
           critics (see
-          <xref linkend="s1.ref.design_issues_inheritance"/>.
+          <xref linkend="s1.ref.design_issues_inheritance"/>).
         </para></listitem>
 
         <listitem><para><literal>Containment</literal>. Six
           critics (see
-          <xref linkend="s1.ref.design_issues_containment"/>.
+          <xref linkend="s1.ref.design_issues_containment"/>).
         </para></listitem>
-      </itemizedlist>
+      </itemizedlist-->
 
       <para>The sliders may be set for each category to control the critics
         that trigger for that category. Setting a slider to 
@@ -2627,21 +2652,19 @@ saved at all? -->
 
       <para>Setting a slider to a higher priority 
         value will enable all critics at or
-        above that priority level within the design issue category (1 being the
-        highest priority and 4 or Off the lowest).</para>
+        above that priority level within the design issue category 
+        (<literal>Off</literal> being the
+        lowest priority).</para>
 
       <note><para>The sliders are set by default to <literal>High</literal>
-        for all design
-        categories<!-- except <literal>Uncategorized</literal> which is set to
-        1-->.
-        <!-- TODO: See if that is still true. -->
+        for all design categories.
         </para></note>
 
-      <warning><para>In the V0.14 release of &argouml; all critics trigger at
+      <!--warning><para>In the V0.14 release of &argouml; all critics trigger at
         priority 1, so any higher values of the slider make no
         difference.
-        <!-- TODO: See if that is still true. -->
-      </para></warning>
+      </para></warning-->
+      <!-- TODO: See if that is still true. -->
     </sect2>
 
     <!-- Critics for design goals -->
