@@ -61,10 +61,9 @@ public class CrUselessAbstract extends CrUML {
 	    return false;  // original class was not abstract
 	VectorSet derived =
 	    (new VectorSet(cls)).reachable(new ChildGenDerivedClasses());
-	Enumeration enum = derived.elements();
-	Object c;
-	while (enum.hasMoreElements()) {
-	    c = /*(MClass)*/ enum.nextElement();
+	Enumeration subclasses = derived.elements();
+	while (subclasses.hasMoreElements()) {
+	    Object c = /*(MClass)*/ subclasses.nextElement();
 	    if (!ModelFacade.isAbstract(c))
 		return false;  // found a concrete subclass
 	}
@@ -85,12 +84,13 @@ class ChildGenDerivedClasses implements ChildGenerator {
 	// TODO: it would be nice to have a EnumerationXform
 	// and a Functor object in uci.util
 	Vector specClasses = new Vector(specs.size());
-	Enumeration enum = specs.elements();
-	while (enum.hasMoreElements()) {
-	    Object g = /*(MGeneralization)*/ enum.nextElement();
+	Enumeration elems = specs.elements();
+	while (elems.hasMoreElements()) {
+	    Object g = /*(MGeneralization)*/ elems.nextElement();
 	    Object ge = ModelFacade.getChild(g);
-	    // assert: ge != null
-	    if (ge != null) specClasses.addElement(ge);
+	    if (ge != null) {
+		specClasses.addElement(ge);
+	    }
 	}
 	return specClasses.elements();
     }
