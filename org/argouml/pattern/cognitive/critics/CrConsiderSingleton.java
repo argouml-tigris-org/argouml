@@ -28,6 +28,12 @@
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
+// 5 Feb 2002: Jeremy Bennett (mail@jeremybennett.com). Code factored by use of
+// static methods in central org.argouml.cognitive.critics.CriticUtils utility
+// class. <<singleton>> allowed as well as <<Singleton>> for consistency with
+// CrSingletonViolated.
+
+
 package org.argouml.pattern.cognitive.critics;
 
 import java.util.*;
@@ -37,70 +43,127 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 import org.argouml.cognitive.*;
+import org.argouml.cognitive.critics.*;
 import org.argouml.uml.*;
 import org.argouml.uml.cognitive.critics.*;
 
-/** A critic to detect when a class can never have instances (of
- *  itself of any subclasses). */
+/**
+ * <p>A critic to detect when a class can never have more than one instance (of
+ * itself of any subclasses), and thus whether it is suitable for declaration
+ * as a Singleton (with stereotype &laquo;Singleton&raquo;.<p>
+ *
+ * <p>This stereotype is used to indicate a class which only ever has a single
+ * instance. The critic will trigger whenever a class has stereotype
+ * &laquo;Singleton&raquo; (or &laquo;singleton&raquo;), but does not meet the
+ * requirements of a Singleton class. These are:</p>
+ *
+ * <ol>
+ *   <li>An static variable to hold the sole instance of the class;</li>
+ *
+ *   <li>only private constructors to create the sole instance; and</li>
+ *
+ *   <li>At least one constructor to override the default constructor.</li>
+ * </ol>
+ *
+ * <p>The original version would always trigger for any class with stereotype
+ * &laquo;Singleton&raquo;. This version includes an implementation for the
+ * three tests above!</p>
+ *
+ * <p>Internally we use some of the static utility methods of the {@link
+ * org.argouml.cognitive.critics.CriticUtils CriticUtils} class.</p>
+ *
+ * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_singleton_violated">ArgoUML User Manual: Singleton Violated</a>
+ */
 
 public class CrConsiderSingleton extends CrUML {
 
-  public CrConsiderSingleton() {
-    addSupportedDecision(CrUML.decPATTERNS);
-    setPriority(ToDoItem.LOW_PRIORITY);
-    addTrigger("stereotype");
-    addTrigger("structuralFeature");
-    addTrigger("associationEnd");
-    setResource("CrConsiderSingleton");
-  }
+    /**
+     * <p>Constructor for the critic.</p>
+     *
+     * <p>Sets up the resource name, which will allow headline and description
+     * to be found for the current locale. Provides a design issue category
+     * (PATTERNS), sets a priority for any to-do items (LOW) and adds triggers
+     * for metaclasses "stereotype", "structuralFeature" and
+     * "associationEnd".</p>
+     *
+     * @return  nothing returned since this is a constructor
+     */
 
-  protected void sd(String s) { setDescription(s); }
+    public CrConsiderSingleton() {
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MClass)) return NO_PROBLEM;
-    MClass cls = (MClass) dm;
-    Collection str = MMUtil.SINGLETON.getAttributes(cls);
-    Collection ends = cls.getAssociationEnds();
+        setResource("CrConsiderSingleton");
 
-    //if it is already a Singleton, nevermind
-    MStereotype st = cls.getStereotype();
-    if (st != null) {
- 	if (st.getName().equals("Singleton")) return NO_PROBLEM;
+        addSupportedDecision(CrUML.decPATTERNS);
+        setPriority(ToDoItem.LOW_PRIORITY);
 
+        // These may not actually make any difference at present (the code
+        // behind addTrigger needs more work).
+
+        addTrigger("stereotype");
+        addTrigger("structuralFeature");
+        addTrigger("associationEnd");
     }
 
-    // if it has instance vars, no specific reason for Singleton
-    if (str != null) {
-        Iterator strEnum = str.iterator();
-        while (strEnum.hasNext()) {
-	    MStructuralFeature sf = (MStructuralFeature) strEnum.next();
-	    if (MScopeKind.INSTANCE.equals(sf.getTargetScope())) return NO_PROBLEM;
+
+    /**
+     * <p>The trigger for the critic.</p>
+     *
+     * <p>First check we are actually stereotyped "Singleton" (or we will
+     * accept "singleton").</p>
+     *
+     * <p>Otherwise plausible candidates for the Singleton design pattern are
+     * classes with no instance variables (i.e. non-static attributes) and no
+     * outgoing associations.<p>
+     *
+     * @param  dm    the {@link java.lang.Object Object} to be checked against
+     *               the critic.
+     *
+     * @param  dsgr  the {@link org.argouml.cognitive.Designer Designer}
+     *               creating the model. Not used, this is for future
+     *               development of ArgoUML.
+     *
+     * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
+     *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.  
+     */
+
+    public boolean predicate2(Object dm, Designer dsgr) {
+
+        // Only look at classes
+
+        if (!(dm instanceof MClass)) {
+            return NO_PROBLEM;
         }
-    }
 
-    // if it has outgoing assocs, no specific reason for Singleton
-    if (ends != null) {
-        Iterator endEnum = ends.iterator();
-        while (endEnum.hasNext()) {
-	    MAssociationEnd ae = (MAssociationEnd) endEnum.next();
-	    MAssociation a = ae.getAssociation();
-            if(a != null) {
-              Collection connections = a.getConnections();
-              if(connections != null) {
-                  Iterator iter = connections.iterator();
-                  Object end = null;
-                  while(iter.hasNext()) {
-                      end = iter.next();
-                      if(end == ae) continue;
-                      if(((MAssociationEnd) end).isNavigable()) return NO_PROBLEM;
-                  }
-              }
-            }
+        // Now we know it is a class, handle the object as a class
+
+        MClass cls = (MClass) dm;
+
+        // Check if it is already stereotyped as Singleton. Although
+        // "Singleton" is the usual naming, we'll accept "singleton". If so we
+        // have no problem
+
+        if (CriticUtils.hasStereotype(cls,"Singleton") ||
+            CriticUtils.hasStereotype(cls,"singleton")) {
+            return NO_PROBLEM;
         }
+
+        // if it has instance vars, no specific reason for Singleton
+
+        if (CriticUtils.hasInstanceVariables(cls)) {
+            return NO_PROBLEM;
+        }
+
+        // if it has outgoing associatons, no specific reason for Singleton
+
+        if (CriticUtils.hasOutgoingAssociations(cls)) {
+            return NO_PROBLEM;
+        }
+
+        // We have a class with no instance variables and no outgoing
+        // associations. This looks a good candidate for a singleton.
+
+        return PROBLEM_FOUND;
     }
-    // if it has no ivars, suggest the designer consider the Singleton Pattern
-    return PROBLEM_FOUND;
-  }
 
 } /* end class CrConsiderSingleton */
 
