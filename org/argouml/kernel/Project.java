@@ -1198,7 +1198,7 @@ public class Project implements java.io.Serializable, TargetListener {
     /** Find a type by name in the default model.
      *
      * @param name the name.
-     * @returns the type.
+     * @return the type.
      */
     public Object findTypeInDefaultModel(String name) {
 	if (_defaultModelCache.containsKey(name))

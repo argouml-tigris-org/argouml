@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -281,12 +281,14 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     }
 
     /**
-     * Builds an associationrole based on a given link. The link must have a source 
-     * and a destination instance that both have a classifierrole as classifier. 
-     * The classifierroles must have the same collaboration as owner. This collaboration
-     * will be the new owner of the associationrole.
+     * Builds an associationrole based on a given link. The link must
+     * have a source and a destination instance that both have a
+     * classifierrole as classifier.  The classifierroles must have
+     * the same collaboration as owner. This collaboration will be the
+     * new owner of the associationrole.
+     *
      * @param link
-     * @return
+     * @return the newly created association role (an Object)
      */
     public Object buildAssociationRole(Object link) {
         if (ModelFacade.isALink(link)) {

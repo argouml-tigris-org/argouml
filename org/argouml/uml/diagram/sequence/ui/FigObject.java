@@ -766,10 +766,13 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     }
 
     /**
-     * Returns a list with all nodes that belong to the same activation as the given 
-     * node. Does not work for EmptyNode atm.
-     * @param node
-     * @return
+     * Returns a list with all nodes that belong to the same
+     * activation as the given node.<p>
+     *
+     * TODO: Does not work for EmptyNode atm.
+     *
+     * @param node is the given node
+     * @return a List
      */
     public List getActivationNodes(Node node) {
         int start = -1;
@@ -840,8 +843,9 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
 
     /**
      * Returns the index of a given node.
-     * @param node
-     * @return
+     *
+     * @param node is the given node
+     * @return the index
      */
     public int getIndexOf(Node node) {
         return _linkPositions.indexOf(node);
@@ -879,8 +883,9 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
 
     /**
      * Returns the node that's next to the given node.
-     * @param node
-     * @return
+     *
+     * @param node is the given node
+     * @return the Node
      */
     public Node nextNode(Node node) {
         if (getIndexOf(node) < _linkPositions.size())
@@ -891,8 +896,9 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
 
     /**
      * Returns the node that's before the given node in the nodes list.
-     * @param node
-     * @return
+     *
+     * @param node is the given node
+     * @return the node
      */
     public Node previousNode(Node node) {
         if (getIndexOf(node) > 0) {
@@ -938,8 +944,10 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     }
 
     /**
-     * Returns the ObjectNode. This is the port that represents the object Figrect.
-     * @return
+     * Returns the ObjectNode. This is the port that represents the
+     * object Figrect.
+     *
+     * @return the ObjectNode.
      */
     public ObjectNode getObjectNode() {
         for (int i = 0; i < _linkPositions.size(); i++) {
@@ -962,11 +970,13 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     }
 
     /**
-     * Returns a list with the start, end and all nodes in between them of the activation that is prior to the
-     * given node. If the node is part of an activation, that activation is returned. If the node is null
-     * an empty list is returned. 
-     * @param node
-     * @return
+     * Returns a list with the start, end and all nodes in between
+     * them of the activation that is prior to the given node. If the
+     * node is part of an activation, that activation is returned. If
+     * the node is null an empty list is returned.
+     *
+     * @param node is the given node
+     * @return a List
      */
     public List getPreviousActivation(Node node) {
         List retList = getActivationNodes(node);

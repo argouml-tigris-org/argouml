@@ -345,12 +345,13 @@ public class ModelFacade {
     ////////////////////////////////////////////////////////////////
     // Object Creation methods
 
-    /** Create a model object from the implementation.
+    /**
+     * Create a model object from the implementation.<P>
      * 
      * This will allow abstraction of the create mechanism at a single point.
      * 
      * @param entity Class to create - 
-     * must implement {@link org.argouml.model.uml.Uml.Entity}
+     * must implement {@link org.argouml.model.UmlModelEntity}
      * @return the created object or null if it cannot create the class.
      */
     public static Object create(ModelEntity entity) {
@@ -515,7 +516,7 @@ public class ModelFacade {
      *  an element in the model. MBase in Novosoft terms.
      *
      * @param handle candidate
-     * @returns true if handle is a base.
+     * @return true if handle is a base.
      */
     public static boolean isABase(Object handle) {
         return handle instanceof MBase;
@@ -525,7 +526,7 @@ public class ModelFacade {
     /** Recognizer for behavioral features. 
     *
     * @param handle candidate
-    * @returns true if handle is a behavioral feature
+    * @return true if handle is a behavioral feature
     */
     public static boolean isABehavioralFeature(Object handle) {
         return handle instanceof MBehavioralFeature;
@@ -1625,8 +1626,8 @@ public class ModelFacade {
     /**
      * Returns the association end between some classifier and some associaton or
      * the association belonging to the given link.
-     * @param type
-     * @param assoc
+     *
+     * @param end is the link
      * @return association end
      */
     public static Object getAssociation(Object end) {
@@ -1961,9 +1962,11 @@ public class ModelFacade {
 					   getClassNull(handle));
     }
 
-    /** Determine if a model element contains a connection
+    /**
+     * Determine if a model element contains a connection.
      *
-     * @param handle to the association.
+     * @param element is the model element
+     * @param connection is the connection that is searched for.
      * @return true if the model element contains a connection
      */
     public boolean containsConnection(Object element, Object connection) {
@@ -3549,7 +3552,7 @@ public class ModelFacade {
 
     /** This method returns all operations of a given Classifier
      *
-     * @param classifier the classifier you want to have the operations for
+     * @param mclassifier the classifier you want to have the operations for
      * @return a collection of the operations
      */
     protected static Collection getOperations(MClassifier mclassifier) {
@@ -3594,7 +3597,8 @@ public class ModelFacade {
 
     /**
      * Returns the suppliers of a dependency.
-     * @param dependency
+     *
+     * @param handle is the dependency
      * @return a collection of the suppliers
      */
     public static Collection getSuppliers(Object handle) {
@@ -3726,10 +3730,11 @@ public class ModelFacade {
     }
 
     /**
-       Return the owner of a feature.
-       @param feature
-       @return classifier
-    */
+     * Return the owner of a feature.
+     *
+     * @param f is the feature
+     * @return classifier
+     */
     public static Object getOwner(Object f) {
         if (f instanceof MFeature) {
             return ((MFeature)f).getOwner();
@@ -3739,11 +3744,10 @@ public class ModelFacade {
     }
 
     /**
-     *  Return the tag of a tagged value
+     * Return the tag of a tagged value
      *
-     *  @param handle The tagged value belongs to this.
-     *  @param name The tag.
-     *   @return The found tag, null if not found
+     * @param handle The tagged value belongs to this.
+     * @return The found tag, null if not found
      */
     public static Object getTag(Object handle) {
         if (handle instanceof MTaggedValue) {
@@ -3754,11 +3758,11 @@ public class ModelFacade {
     }
 
     /**
-       Return the tagged values iterator of a model element.
-    
-       @param element The tagged values belong to this.
-       @return The tagged values iterator
-    */
+     * Return the tagged values iterator of a model element.
+     *
+     * @param modelElement The tagged values belong to this.
+     * @return The tagged values iterator
+     */
     public static Iterator getTaggedValues(Object modelElement) {
         if (modelElement != null && modelElement instanceof MModelElement) {
             return ((MModelElement)modelElement).getTaggedValues().iterator();
@@ -3776,11 +3780,11 @@ public class ModelFacade {
     }
 
     /**
-     *  Return the tagged value with a specific tag.
+     * Return the tagged value with a specific tag.
      *
-     *  @param element The tagged value belongs to this.
-     *  @param name The tag.
-     *   @return The found tag, null if not found
+     * @param modelElement The tagged value belongs to this.
+     * @param name The tag.
+     * @return The found tag, null if not found
      */
     public static Object getTaggedValue(Object modelElement, String name) {
         if (modelElement != null && modelElement instanceof MModelElement) {
@@ -3906,7 +3910,8 @@ public class ModelFacade {
 
     /**
      * Returns a named object in the given object by calling it's lookup method.
-     * @param namespace
+     *
+     * @param o the object that we search through
      * @param name of the model element
      * @return found object, null otherwise
      */
@@ -3987,8 +3992,9 @@ public class ModelFacade {
     /**
      * Adds a method to some operation and copies the op's attributes
      * to the method.
-     * @param operation
-     * @param method
+     *
+     * @param o is the operation
+     * @param m is the method
      */
     public static void addMethod(Object o, Object m) {
         if (o instanceof MOperation
@@ -4175,8 +4181,8 @@ public class ModelFacade {
 
     /** This method adds a classifier to a classifier role.
      *
-     * @param classifier role
-     * @param classifier
+     * @param o is the classifier role
+     * @param c is the classifier
      */
     public static void addBase(Object o, Object c) {
         if (o != null
@@ -4255,8 +4261,8 @@ public class ModelFacade {
 
     /** This method removes a classifier from a classifier role.
      *
-     * @param classifier role
-     * @param classifier
+     * @param o is the classifier role
+     * @param c is the classifier
      */
     public static void removeBase(Object o, Object c) {
         if (o != null
@@ -4272,8 +4278,8 @@ public class ModelFacade {
 
     /** This method removes a dependency from a model element.
      *
-     * @param model element
-     * @param dependency
+     * @param o is the model element
+     * @param dep is the dependency
      */
     public static void removeClientDependency(Object o, Object dep) {
         if (o != null
@@ -4323,8 +4329,8 @@ public class ModelFacade {
 
     /** This method removes a feature from a classifier.
      *
-     * @param classifier
-     * @param feature
+     * @param cls is the classifier
+     * @param feature to remove
      */
     public static void removeFeature(Object cls, Object feature) {
         if (cls != null
@@ -4340,8 +4346,8 @@ public class ModelFacade {
 
     /** This method removes an extension point from a use case.
      *
-     * @param use case
-     * @param extension point
+     * @param uc is the use case
+     * @param ep is the extension point
      */
     public static void removeExtensionPoint(Object uc, Object ep) {
         if (uc != null
@@ -4384,8 +4390,8 @@ public class ModelFacade {
 
     /** This method removes a parameter from an operation.
      *
-     * @param operation
-     * @param parameter
+     * @param o is the operation
+     * @param p is the parameter
      */
     public static void removeParameter(Object o, Object p) {
         if (o != null
@@ -4474,8 +4480,9 @@ public class ModelFacade {
 
     /**
      * Sets a body of some method or expression.
-     * @param method, expression
-     * @param body
+     *
+     * @param m is the method, expression
+     * @param expr body
      */
     public static void setBody(Object m, Object expr) {
         if (m != null
@@ -4498,8 +4505,11 @@ public class ModelFacade {
 
     /**
      * Sets the language of an expression.
-     * @param expression
-     * @param lang
+     *
+     * @param m is the expression
+     * @param expr is the lang
+     *
+     * TODO: Rename the expr parameter to something a little less error-prone.
      */
     public static void setLanguage(Object m, String expr) {
         if (m instanceof MExpression) {
@@ -4526,8 +4536,9 @@ public class ModelFacade {
     
     /**
      * Sets a default value of some parameter.
-     * @param parameter
-     * @param expression
+     *
+     * @param p is the parameter
+     * @param expr is the expression
      */
     public static void setDefaultValue(Object p, Object expr) {
         if (p instanceof MParameter && expr instanceof MExpression) {
@@ -4674,8 +4685,9 @@ public class ModelFacade {
 
     /**
      * Sets a location of some extension point.
-     * @param extension point
-     * @param location
+     *
+     * @param ep is the extension point
+     * @param loc is the location
      */
     public static void setLocation(Object ep, String loc) {
         if (ep != null && ep instanceof MExtensionPoint) {
@@ -4827,8 +4839,9 @@ public class ModelFacade {
 
     /**
      * Sets the classifiers of some instance.
-     * @param instance
-     * @param classifier vector
+     *
+     * @param o is the instance
+     * @param v is the classifier vector
      */
     public static void setClassifiers(Object o, Vector v) {
         if (o instanceof MInstance) {
@@ -4841,8 +4854,9 @@ public class ModelFacade {
 
     /**
      * Sets a name of some modelelement.
-     * @param model element
-     * @param name
+     *
+     * @param o is the model element
+     * @param name to set
      */
     public static void setName(Object o, String name) {
         if (o instanceof MModelElement) {
