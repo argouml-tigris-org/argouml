@@ -1781,8 +1781,11 @@ for this release to ---.
 	      </listitem>
 	      <listitem>
 		<para>
-Change the target milestones of any fixed issue with target milestone
---- to that of the current release.
+Change the target milestones of
+any fixed issue
+in component argouml or modules
+with target milestone ---
+to that of the current release.
 </para>
                 <para>
 This is probably some developer that has fixed an issue by forgot to
