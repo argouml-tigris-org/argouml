@@ -1269,40 +1269,183 @@ These things might not be implemented yet and the solutions
 might not even be clear but it is a definition of the goal.
 </para>
     <para>
-If it is not implemented that can could be registered as a bug
+The fact that it is not implemented or doesn't work as stated here
+should be registered as a bug 
 in the bug registering tool.
 </para>
 
     <sect1>
-      <title>Look and feel</title>
+      <title>Requirements for Look and feel</title>
       <para>
-This describes how the ArgoUML look and feel should behave.
+This describes how the ArgoUML look and feel shall behave.
 </para>
       <para>
-Discussions on how this is supposed to be are not completed.
+<orderedlist>
+	  <listitem>
+	    <para>
+When multiple visual components are showing the same model element
+they shall be updated in a consistent manner throught the application.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+As soon as the model element changes then all views shall update.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+For text fields the update of model element shall not
+take place until the field has looses focus.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+Pressing escape in a field that is edited shall 
+restore the value in the text field to that value when the field got
+focus, the field should then lose focus without updating the model
+element.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+If a text field requires parsing to extract particular values or
+confirm its validity then it shall
+appear in red while the field remains invalid.
+</para>
+	    <para>
+As soon as it becomes valid it should revert to the normal field colour.
+</para>
+	    <para>
+A consequence of this is that the field must be parsed and checked to
+be valid on each keystroke without updating any model element.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+When the field loses focus and the text is valid then the model
+element should be updated.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+If the field loses focus while it is invalid then the field should be
+returned to its original state as if the escape key was pressed. 
+There
+should be an audible warning and a user friendly error message
+displayed in red in the status bar followed by the text that the user
+attempted to parse.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+There shall be no indication of an exception on the screen or in the
+log if it has occured merely because of a user mistyping or not being
+aware of UML syntax.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+All text fields shall have context sensitive help.
+</para>
+	    <para>
+As follows:
+<orderedlist>
+		<listitem>
+		  <para>
+A tooltip that explains the data and format expected by the
+particular field.
+</para>
+		  <para>
+This can be omitted when there is a header stating the data of
+the field and the format is obvious.
+</para>
+		</listitem>
+		<listitem>
+		  <para>
+Pressing F1 or choosing help from the menu shall display a popup
+window explaining for data and format required by the current input
+field. 
+Input focus shall be left on the field during any user
+interaction with the popup (dragging, scrolling or closing).
+</para>
+		</listitem>
+	      </orderedlist>
+</para>
+
+	  </listitem>
+	</orderedlist>
+ 
 </para>
     </sect1>
 
     <sect1>
-      <title>UML</title>
+      <title>Requirements for UML</title>
       <para>
+<orderedlist>
+	  <listitem>
+	    <para>
 ArgoUML shall be a correct implementation of the UML 1.3 model.
 </para>
-      <para>
+	  </listitem>
+	  <listitem>
+	    <para>
 ArgoUML shall implement everything in the UML 1.3 model.
+</para>
+	  </listitem>
+	</orderedlist>
 </para>
     </sect1>
 
     <sect1>
-      <title>Logging and console output</title>
+      <title>Requirements on java and jvm</title>
       <para>
-The code shall contain entries logging important information
-for the purpose of helping developers to find problems.
+<orderedlist>
+	  <listitem>
+	    <para>Choice of JRE</para>
+	    <para>
+It shall be possible to run ArgoUML with any Java2 compliant JRE.
 </para>
+	  </listitem>
+
+	  <listitem>
+	    <para>Download and start</para>
+	    <para>
+It shall be possible to install ArgoUML locally on the machine
+and use without Internet connection.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>Console output</para>
+	    <para>
+Logging or tracing information shall not be written to the console
+or to any file unless explicitly turned on by the user.
+</para>
+	  </listitem>
+	</orderedlist>
+</para>
+    </sect1>
+
+    <sect1>
+      <title>Requirements set up for the benefit of the development of ArgoUML</title>
       <para>
-All logging and console output shall be turned off by default
-so normally there shouldn't be anything written to the console
-or to any file.
+<orderedlist>
+	  <listitem>
+	    <para>Logging</para>
+	    <para>
+The code shall contain entries logging important information
+for the purpose of helping Developers of ArgoUML in finding problems
+in ArgoUML itself.
+</para>
+	  </listitem>
+	</orderedlist>
 </para>
     </sect1>
 
