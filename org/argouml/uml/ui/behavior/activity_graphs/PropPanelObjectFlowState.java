@@ -49,7 +49,7 @@ public class PropPanelObjectFlowState extends PropPanelState {
      * Constructor
      */
     public PropPanelObjectFlowState() {
-        this("ObjectFlowState", objectFlowStateIcon, ConfigLoader
+        this("ObjectFlowState", lookupIcon("ObjectFlowState"), ConfigLoader
                 .getTabPropsOrientation());    
     }
     
@@ -62,7 +62,7 @@ public class PropPanelObjectFlowState extends PropPanelState {
      */
     public PropPanelObjectFlowState(String name, ImageIcon icon,
             Orientation orientation) {
-        super(name, objectFlowStateIcon, ConfigLoader.getTabPropsOrientation());
+        super(name, icon, ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("UMLMenu", "label.name"),
                 getNameTextField());

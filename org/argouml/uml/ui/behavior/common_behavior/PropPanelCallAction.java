@@ -37,7 +37,7 @@ public class PropPanelCallAction extends PropPanelAction {
      * 
      */
     public PropPanelCallAction() {
-        super("CallAction", callActionIcon);
+        super("CallAction", lookupIcon("CallAction"));
     }
 
 } /* end class PropPanelCallAction */

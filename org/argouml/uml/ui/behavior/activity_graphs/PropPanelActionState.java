@@ -47,7 +47,7 @@ public class PropPanelActionState extends PropPanelState {
      * 
      */
     public PropPanelActionState() {
-        this("Action State", actionStateIcon, ConfigLoader
+        this("Action State", lookupIcon("ActionState"), ConfigLoader
                 .getTabPropsOrientation());
     }
 
@@ -61,7 +61,7 @@ public class PropPanelActionState extends PropPanelState {
     public PropPanelActionState(String name, ImageIcon icon,
             Orientation orientation) {
 
-        super(name, actionStateIcon, orientation);
+        super(name, icon, orientation);
 
         addField(Translator.localize("UMLMenu", "label.name"),
                 getNameTextField());
@@ -73,7 +73,8 @@ public class PropPanelActionState extends PropPanelState {
         addField(Translator.localize("UMLMenu", "label.stereotype"),
                 getStereotypeBox());
 
-        addField(Translator.localize("UMLMenu", "label.entry"), getEntryScroll());
+        addField(Translator.localize("UMLMenu", "label.entry"), 
+                getEntryScroll());
         addSeperator();
 
         addField(Translator.localize("UMLMenu", "label.incoming"),

@@ -56,8 +56,8 @@ public class PropPanelComponentInstance extends PropPanelInstance {
      * Contructor.
      */
     public PropPanelComponentInstance() {
-        super("Component Instance", componentInstanceIcon, ConfigLoader
-                .getTabPropsOrientation());
+        super("Component Instance", lookupIcon("ComponentInstance"), 
+                ConfigLoader.getTabPropsOrientation());
 
         Class mclass = (Class) ModelFacade.COMPONENT_INSTANCE;
 

@@ -66,7 +66,7 @@ public class PropPanelOperation extends PropPanelFeature {
      * The constructor.
      */
     public PropPanelOperation() {
-        super("Operation", operationIcon, ConfigLoader
+        super("Operation", lookupIcon("Operation"), ConfigLoader
                 .getTabPropsOrientation());
 
         Class mclass = (Class) ModelFacade.OPERATION;
@@ -122,7 +122,7 @@ public class PropPanelOperation extends PropPanelFeature {
         addButton(new PropPanelButton2(this, 
                         ActionAddOperation.getSingleton()));
         addButton(new PropPanelButton2(this, ActionNewParameter.getInstance()));
-        new PropPanelButton(this, getButtonPanel(), signalIcon,
+        new PropPanelButton(this, getButtonPanel(), lookupIcon("SignalSending"),
                 localize("New Raised Signal"), "buttonAddRaisedSignal", null);
         addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
 

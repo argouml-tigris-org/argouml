@@ -45,7 +45,7 @@ public class PropPanelFinalState extends PropPanelState {
      * 
      */
     public PropPanelFinalState() {
-        super("Final State", finalStateIcon, 
+        super("Final State", lookupIcon("FinalState"), 
                 ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("UMLMenu", "label.name"), 

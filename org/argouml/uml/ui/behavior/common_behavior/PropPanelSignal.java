@@ -62,7 +62,8 @@ public class PropPanelSignal extends PropPanelModelElement {
      * 
      */
     public PropPanelSignal() {
-        super("Signal", signalIcon, ConfigLoader.getTabPropsOrientation());
+        super("Signal", lookupIcon("SignalSending"), 
+                ConfigLoader.getTabPropsOrientation());
 
         Class mclass = (Class) ModelFacade.SIGNAL;
 
@@ -88,7 +89,8 @@ public class PropPanelSignal extends PropPanelModelElement {
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateNamespace()));
-        new PropPanelButton(this, getButtonPanel(), signalIcon, 
+        new PropPanelButton(this, getButtonPanel(), 
+                lookupIcon("SignalSending"), 
                 Translator.localize("UMLMenu", "button.new-signal"), 
                 "newSignal", null);
         addButton(new PropPanelButton2(this, 

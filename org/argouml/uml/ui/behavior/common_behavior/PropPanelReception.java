@@ -50,7 +50,7 @@ public class PropPanelReception extends PropPanelModelElement {
      * 
      */
     public PropPanelReception() {
-        super("Reception", receptionIcon, ConfigLoader
+        super("Reception", lookupIcon("Reception"), ConfigLoader
                 .getTabPropsOrientation());
 
         Class mclass = (Class) ModelFacade.RECEPTION;

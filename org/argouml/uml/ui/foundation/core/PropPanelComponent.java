@@ -79,7 +79,7 @@ public class PropPanelComponent extends PropPanelClassifier {
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateNamespace()));
-	new PropPanelButton(this, getButtonPanel(), receptionIcon, 
+	new PropPanelButton(this, getButtonPanel(), lookupIcon("Reception"), 
             Translator.localize("UMLMenu", "button.new-reception"), 
             getActionNewReception());
 	addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));

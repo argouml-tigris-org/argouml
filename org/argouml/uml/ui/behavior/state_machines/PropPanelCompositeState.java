@@ -64,7 +64,7 @@ public class PropPanelCompositeState extends PropPanelState {
      * 
      */
     public PropPanelCompositeState() {
-        super("Composite State", compositeStateIcon, 
+        super("Composite State", lookupIcon("CompositeState"), 
                 ConfigLoader.getTabPropsOrientation());
         initialize();
 
@@ -79,9 +79,12 @@ public class PropPanelCompositeState extends PropPanelState {
                 getContainerScroll());
         addField(Translator.localize("UMLMenu", "label.modifiers"), 
                 new UMLCompositeStateConcurentCheckBox());
-        addField(Translator.localize("UMLMenu", "label.entry"), getEntryScroll());
-        addField(Translator.localize("UMLMenu", "label.exit"), getExitScroll());
-        addField(Translator.localize("UMLMenu", "label.do-activity"), getDoScroll());
+        addField(Translator.localize("UMLMenu", "label.entry"), 
+                getEntryScroll());
+        addField(Translator.localize("UMLMenu", "label.exit"), 
+                getExitScroll());
+        addField(Translator.localize("UMLMenu", "label.do-activity"), 
+                getDoScroll());
 
         addSeperator();
 

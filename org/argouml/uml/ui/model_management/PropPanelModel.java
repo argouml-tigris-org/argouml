@@ -36,7 +36,8 @@ public class PropPanelModel extends PropPanelPackage  {
      * 
      */
     public PropPanelModel() {
-        super("Model", modelIcon, ConfigLoader.getTabPropsOrientation());
+        super("Model", lookupIcon("Model"), 
+                ConfigLoader.getTabPropsOrientation());
     }
 
 } /* end class PropPanelModel */

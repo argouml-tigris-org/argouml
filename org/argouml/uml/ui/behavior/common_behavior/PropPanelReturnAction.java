@@ -38,7 +38,7 @@ public class PropPanelReturnAction extends PropPanelAction {
      * 
      */
     public PropPanelReturnAction() {
-        super("ReturnAction", callActionIcon);
+        super("ReturnAction", lookupIcon("ReturnAction"));
     }
 
 } 

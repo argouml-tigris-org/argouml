@@ -62,7 +62,8 @@ public class PropPanelNode extends PropPanelClassifier {
      * 
      */
     public PropPanelNode() {
-        super("Node", nodeIcon, ConfigLoader.getTabPropsOrientation());
+        super("Node", lookupIcon("Node"), 
+                ConfigLoader.getTabPropsOrientation());
 
         Class mclass = (Class) ModelFacade.NODE;
 
@@ -94,7 +95,7 @@ public class PropPanelNode extends PropPanelClassifier {
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateContainerElement()));
-        new PropPanelButton(this, getButtonPanel(), receptionIcon, 
+        new PropPanelButton(this, getButtonPanel(), lookupIcon("Reception"), 
                 Translator.localize("UMLMenu", "button.new-reception"), 
                 getActionNewReception());
         addButton(new PropPanelButton2(this, 

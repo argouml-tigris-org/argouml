@@ -56,7 +56,7 @@ public class PropPanelParameter extends PropPanelModelElement {
     public PropPanelParameter() {
         super(
 	      "Parameter",
-	      parameterIcon,
+	      lookupIcon("Parameter"),
 	      ConfigLoader.getTabPropsOrientation());
         Class mclass = (Class) ModelFacade.PARAMETER;
 
@@ -91,7 +91,7 @@ public class PropPanelParameter extends PropPanelModelElement {
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateContainerElement()));
-        new PropPanelButton(this, getButtonPanel(), parameterIcon, 
+        new PropPanelButton(this, getButtonPanel(), lookupIcon("Parameter"), 
                 Translator.localize("UMLMenu", "button.new-parameter"), 
                 "addParameter", null);
         addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));

@@ -37,7 +37,7 @@ public class PropPanelUninterpretedAction extends PropPanelAction {
      * 
      */
     public PropPanelUninterpretedAction() {
-        super("UninterpretedAction", callActionIcon);
+        super("UninterpretedAction", lookupIcon("UninterpretedAction"));
     }
 
 } 

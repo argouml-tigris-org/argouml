@@ -77,8 +77,8 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
         addButton(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));
 
-        new PropPanelButton(this, getButtonPanel(), parameterIcon, Translator
-                .localize("UMLMenu", "button.new-parameter"),
+        new PropPanelButton(this, getButtonPanel(), lookupIcon("Parameter"), 
+                Translator.localize("UMLMenu", "button.new-parameter"),
                 "buttonAddParameter", null);
 
         addField(Translator.localize("UMLMenu", "label.name"),

@@ -38,7 +38,7 @@ public class PropPanelDestroyAction extends PropPanelAction {
      * 
      */
     public PropPanelDestroyAction() {
-        super("DestroyAction", callActionIcon);
+        super("DestroyAction", lookupIcon("DestroyAction"));
     }
 
 } 

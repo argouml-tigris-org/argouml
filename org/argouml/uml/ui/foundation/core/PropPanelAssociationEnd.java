@@ -137,8 +137,6 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     private String associationLabel;
 
-    protected Icon assocEndorRoleIcon = assocEndIcon;
-
     /**
      * Constructs the proppanel and places all scrollpanes etc. on the canvas.
      * 
@@ -227,11 +225,14 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
                 new ActionNavigateAssociation()));
         addButton(new PropPanelButton2(this,
                 new ActionNavigateOppositeAssocEnd()
-                        .setIcon(assocEndorRoleIcon)));
+                        .setIcon(lookupIcon("AssociationEnd"))));
         addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
 
     }
 
+    /**
+     * @param label the label
+     */
     protected void setAssociationLabel(String label) {
     }
 

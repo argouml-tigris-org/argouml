@@ -71,7 +71,8 @@ public class PropPanelPackage extends PropPanelNamespace  {
      * 
      */
     public PropPanelPackage() {
-        this("Package", packageIcon, ConfigLoader.getTabPropsOrientation());
+        this("Package", lookupIcon("Package"), 
+                ConfigLoader.getTabPropsOrientation());
     }
 
     /**
@@ -130,7 +131,7 @@ public class PropPanelPackage extends PropPanelNamespace  {
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateNamespace()));
-        new PropPanelButton(this, getButtonPanel(), packageIcon, 
+        new PropPanelButton(this, getButtonPanel(), lookupIcon("Package"), 
                 Translator.localize("UMLMenu", "button.new-package"), 
                 "addPackage", null);
         addButton(new PropPanelButton2(this, 

@@ -46,63 +46,6 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
  */
 public abstract class PropPanelStateVertex extends PropPanelModelElement {
 
-    /*
-     * TODO: (MVW) What is the use of having these icons here? Since we are in 
-     * an abstract class, why should we prepare for all siblings? 
-     * Let e.g. a CompositeState take care of its own icon, by writing  
-     *      lookupIcon("CompositeState")
-     * instead of 
-     *      compositeStateIcon
-     * The former is not less convenient, and much simpeler.  
-     */
-    
-    protected static ImageIcon stateIcon = 
-        lookupIcon("State");
-
-    protected static ImageIcon actionStateIcon = 
-        lookupIcon("ActionState");
-
-    protected static ImageIcon compositeStateIcon = 
-        lookupIcon("CompositeState");
-
-    protected static ImageIcon submachineStateIcon = 
-        lookupIcon("SubmachineState");
-
-    protected static ImageIcon simpleStateIcon = 
-        lookupIcon("SimpleState");
-
-    protected static ImageIcon shallowHistoryIcon = 
-        lookupIcon("ShallowHistory");
-
-    protected static ImageIcon deepHistoryIcon = 
-        lookupIcon("DeepHistory");
-
-    protected static ImageIcon finalStateIcon = 
-        lookupIcon("FinalState");
-
-    protected static ImageIcon initialIcon = 
-        lookupIcon("Initial");
-
-    protected static ImageIcon forkIcon = 
-        lookupIcon("Fork");
-
-    protected static ImageIcon joinIcon = 
-        lookupIcon("Join");
-    
-    protected static ImageIcon callStateIcon = 
-        lookupIcon("CallState");
-    
-    protected static ImageIcon objectFlowStateIcon = 
-        lookupIcon("ObjectFlowState");
-    
-    protected static ImageIcon subactivityStateIcon = 
-        lookupIcon("SubactivityState");
-
-    protected static ImageIcon transitionIcon = 
-        lookupIcon("Transition");
-
-    ////////////////////////////////////////////////////////////////
-
     private JScrollPane incomingScroll;
 
     private JScrollPane outgoingScroll;

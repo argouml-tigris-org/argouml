@@ -131,15 +131,14 @@ public abstract class PropPanel
         setLayout(new LabelledLayout(orientation == Vertical.getInstance()));
 
         if (icon != null) {
-            setTitleLabel(new JLabel(localize(title), icon, 
-                    SwingConstants.LEFT));
-        }
-        else {
-            setTitleLabel(new JLabel(localize(title)));
+            titleLabel = new JLabel(localize(title), icon, 
+                    SwingConstants.LEFT);
+        } else {
+            titleLabel = new JLabel(localize(title));
         }
         //buttonPanel = new JPanel(new SerialLayout());
-        getTitleLabel().setLabelFor(buttonPanel);
-        add(getTitleLabel());
+        titleLabel.setLabelFor(buttonPanel);
+        add(titleLabel);
         add(buttonPanel);
     }
 
@@ -370,11 +369,12 @@ public abstract class PropPanel
         SwingUtilities.invokeLater(dispatch);
 
         // update the titleLabel
-        if (getTitleLabel() != null) {
+        //MVW: This overrules the icon set initiallly... Why do we need this?
+        if (titleLabel != null) {
             Icon icon =
 		ResourceLoaderWrapper.getInstance().lookupIcon(t);
             if (icon != null)
-                getTitleLabel().setIcon(icon);
+                titleLabel.setIcon(icon);
         }
     }
 

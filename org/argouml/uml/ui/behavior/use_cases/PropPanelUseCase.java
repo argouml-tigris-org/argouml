@@ -118,14 +118,15 @@ public class PropPanelUseCase extends PropPanelClassifier {
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateNamespace()));
-        new PropPanelButton(this, getButtonPanel(), useCaseIcon,
+        new PropPanelButton(this, getButtonPanel(), lookupIcon("UseCase"),
                 Translator.localize("UMLMenu", "button.new-usecase"), 
                 "newUseCase", null);
-        new PropPanelButton(this, getButtonPanel(), extensionPointIcon,
+        new PropPanelButton(this, getButtonPanel(), 
+                lookupIcon("ExtensionPoint"),
                 localize("New Extension Point"),
                 "newExtensionPoint",
                 null);
-        new PropPanelButton(this, getButtonPanel(), receptionIcon, 
+        new PropPanelButton(this, getButtonPanel(), lookupIcon("Reception"), 
                 Translator.localize("UMLMenu", "button.new-reception"), 
                 getActionNewReception());
         addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));

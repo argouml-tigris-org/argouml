@@ -51,7 +51,7 @@ public abstract class PropPanelAction extends PropPanelModelElement {
      * 
      */
     public PropPanelAction() {
-        this("Action", callActionIcon);
+        this("Action", null);
     }
 
     /**

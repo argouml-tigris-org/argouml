@@ -83,12 +83,12 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
             getMultiplicityComboBox()); 
 	JList baseList =
 	    new UMLMutableLinkedList(new UMLClassifierRoleBaseListModel(),
-				     ActionAddClassifierRoleBase.SINGLETON,
-				     null,
-				     ActionRemoveClassifierRoleBase.getInstance(),
-				     false);
+		ActionAddClassifierRoleBase.SINGLETON,
+		null,
+		ActionRemoveClassifierRoleBase.getInstance(),
+		false);
 	addField(Translator.localize("UMLMenu", "label.base"),
-		 new JScrollPane(baseList));
+		new JScrollPane(baseList));
 
 
 	addSeperator();
@@ -122,7 +122,7 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 
 	addButton(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));
-	new PropPanelButton(this, getButtonPanel(), receptionIcon, 
+	new PropPanelButton(this, getButtonPanel(), lookupIcon("Reception"), 
             Translator.localize("UMLMenu", "button.new-reception"), 
             getActionNewReception());
 	addButton(new PropPanelButton2(this, 

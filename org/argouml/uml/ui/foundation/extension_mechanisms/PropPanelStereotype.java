@@ -71,8 +71,8 @@ public class PropPanelStereotype extends PropPanelModelElement {
      * Construct new stereotype properties tab
      */
     public PropPanelStereotype() {
-        super("Stereotype", stereotypeIcon, ConfigLoader
-                .getTabPropsOrientation());
+        super("Stereotype", lookupIcon("Stereotype"), 
+                ConfigLoader.getTabPropsOrientation());
 
         Class mclass = (Class) ModelFacade.STEREOTYPE;
 
@@ -106,9 +106,9 @@ public class PropPanelStereotype extends PropPanelModelElement {
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateNamespace()));
-        new PropPanelButton(this, getButtonPanel(), stereotypeIcon, Translator
-                .localize("UMLMenu", "button.new-stereotype"), "newStereotype",
-                null);
+        new PropPanelButton(this, getButtonPanel(), lookupIcon("Stereotype"), 
+                Translator.localize("UMLMenu", "button.new-stereotype"), 
+                "newStereotype", null);
         addButton(new PropPanelButton2(this, 
             new ActionRemoveFromModel()));
     }

@@ -62,10 +62,8 @@ public abstract class PropPanelState extends PropPanelStateVertex {
      * @param icon the icon to be shown next to the name
      * @param orientation the orientation of the panel
      */
-    public PropPanelState(
-        String name,
-        ImageIcon icon,
-        Orientation orientation) {
+    public PropPanelState(String name, ImageIcon icon, Orientation orientation) 
+    {
         super(name, icon, orientation);
         
         JList deferrableList = new UMLLinkedList(
