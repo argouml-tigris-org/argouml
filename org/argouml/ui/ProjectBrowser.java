@@ -110,6 +110,13 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   protected MultiEditorPane _multiPane;
   protected DetailsPane _detailsPane;
   protected JMenuBar _menuBar = new JMenuBar();
+
+  /** Submenu of file for importing sources and other things.
+   */
+  protected JMenu _import = null;
+
+  /** Edit menu
+   */
   protected JMenu _edit = null;
   /** unknown where this appears in the UI
    */  
@@ -298,7 +305,12 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     JMenuItem saveProjectAsItem = file.add(ActionSaveProjectAs.SINGLETON);
     setMnemonic(saveProjectAsItem,"SaveAs",'A');
     file.addSeparator();
-    JMenuItem importProjectAsItem = file.add(ActionImportFromSources.SINGLETON);
+
+    _import = new JMenu(menuLocalize("Import..."));
+    JMenuItem importProjectAsItem = _import.add(ActionImportFromSources.SINGLETON);
+    appendPluggableMenus(_import, "File:Import");
+    file.add(_import);
+
     file.addSeparator();    
     JMenuItem loadModelFromDBItem = file.add(ActionLoadModelFromDB.SINGLETON);
     JMenuItem storeModelToDBItem = file.add(ActionStoreModelToDB.SINGLETON);
@@ -751,6 +763,9 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 	    if (module.inContext(module.buildContext(_tools, "Tools"))) {
 		_tools.add(module.getMenuItem(_tools, "Tools"));
 	        _tools.setEnabled(true);
+	    }
+	    if (module.inContext(module.buildContext(_import, "File:Import"))) {
+		_import.add(module.getMenuItem(_import, "File:Import"));
 	    }
 	    if (module.inContext(module.buildContext(_generate, "Generate"))) {
 		_generate.add(module.getMenuItem(_generate, "Generate"));

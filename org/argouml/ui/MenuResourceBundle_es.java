@@ -100,6 +100,8 @@ public class MenuResourceBundle_es extends ListResourceBundle {
 
         {"Import sources...", "Importar fuentes..." },
 
+        {"Import...", "Importar..." },
+
         {"Print...", "Imprimir..." },
 
         {"Save GIF...", "Guardar GIF..." },
