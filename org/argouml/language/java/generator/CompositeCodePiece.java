@@ -55,8 +55,10 @@ public class CompositeCodePiece extends CodePiece
     }
 
     /**
-       Append a code piece to the end.
-    */
+     * Append a code piece to the end.
+     * 
+     * @param codePiece the given codepiece
+     */
     public void add(CodePiece codePiece)
     {
 	if (codePiece != null) {
@@ -65,8 +67,8 @@ public class CompositeCodePiece extends CodePiece
     }
 
     /**
-       Return the string representation for this piece of code.
-    */
+     *  @return the string representation for this piece of code
+     */
     public StringBuffer getText()
     {
 	Iterator i = codePieces.iterator();
@@ -93,8 +95,10 @@ public class CompositeCodePiece extends CodePiece
     }
 
     /**
-       Return the start position.
-    */
+     * Return the start position.
+     * 
+     * @see org.argouml.language.java.generator.CodePiece#getStartPosition()
+     */
     public int getStartPosition()
     {
 	if (codePieces.size() > 0)
@@ -104,8 +108,10 @@ public class CompositeCodePiece extends CodePiece
     }
 
     /**
-       Return the end position.
-    */
+     * Return the end position.
+     * 
+     * @see org.argouml.language.java.generator.CodePiece#getEndPosition()
+     */
     public int getEndPosition()
     {
 	if (codePieces.size() > 0)
@@ -115,8 +121,10 @@ public class CompositeCodePiece extends CodePiece
     }
 
     /**
-	Return the start line
-    */
+     * Return the start line.
+     * 
+     * @see org.argouml.language.java.generator.CodePiece#getStartLine()
+     */
     public int getStartLine()
     {
 	if (codePieces.size() > 0)
@@ -126,8 +134,10 @@ public class CompositeCodePiece extends CodePiece
     }
 
     /**
-	Return the end line
-    */
+     * Return the end line.
+     * 
+     * @see org.argouml.language.java.generator.CodePiece#getEndLine()
+     */
     public int getEndLine()
     {
 	if (codePieces.size() > 0)

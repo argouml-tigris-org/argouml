@@ -48,18 +48,21 @@ public class ArgoJarClassLoader extends URLClassLoader {
     /**
      * Creates a new ClassLoader for the specified url.
      *
-     * @param url the url of the jar file
+     * @param u the url of the jar file
      */
-    public ArgoJarClassLoader(URL url) {
+    public ArgoJarClassLoader(URL u) {
 	super(new URL[] {
-	    url 
+	    u 
 	});
-	this.url = url;
+	this.url = u;
     }
 
     /**
      * Returns the name of the jar file main class, or null if
      * no "Main-Class" manifest attributes was defined.
+     *
+     * @return the name of the main class
+     * @throws IOException if we can not access the file
      */
     public String getMainClassName() throws IOException {
 	URL u = new URL("jar", "", url + "!/");
@@ -94,8 +97,8 @@ public class ArgoJarClassLoader extends URLClassLoader {
 	});
 	m.setAccessible(true);
 	int mods = m.getModifiers();
-	if (m.getReturnType() != void.class || !Modifier.isStatic(mods) ||
-	    !Modifier.isPublic(mods)) {
+	if (m.getReturnType() != void.class || !Modifier.isStatic(mods) 
+            || !Modifier.isPublic(mods)) {
 	    throw new NoSuchMethodException("main");
 	}
 	try {

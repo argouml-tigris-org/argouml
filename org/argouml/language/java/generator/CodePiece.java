@@ -38,27 +38,27 @@ package org.argouml.language.java.generator;
 public abstract class CodePiece
 {
     /**
-       Return the string representation for this piece of code.
-    */
+     * @return the string representation for this piece of code
+     */
     public abstract StringBuffer getText();
 
     /**
-       Return the start position.
-    */
+     *  @return the start position
+     */
     public abstract int getStartPosition();
 
     /**
-       Return the end position.
-    */
+     * @return the end position
+     */
     public abstract int getEndPosition();
 
     /**
-	Return the start line
-    */
+     * @return the start line
+     */
     public abstract int getStartLine();
 
     /**
-	Return the end line
-    */
+     * @return the end line
+     */
     public abstract int getEndLine();
 }

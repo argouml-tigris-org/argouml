@@ -60,7 +60,8 @@ public class ParseState
             this.mClassifier = handle;
             namespace = handle;
             newFeatures = new Vector(ModelFacade.getFeatures(mClassifier));
-            newInnerClasses = new Vector(ModelFacade.getOwnedElements(mClassifier));
+            newInnerClasses = 
+                new Vector(ModelFacade.getOwnedElements(mClassifier));
         } else {
             this.mClassifier = null;
             namespace = handle;
@@ -77,11 +78,11 @@ public class ParseState
      */
     public Object newClassifier(String name)
     {
-	Object mClassifier = ModelFacade.lookupIn(namespace, name);
-	if (mClassifier != null) {
-	    newInnerClasses.remove(mClassifier);
+	Object mc = ModelFacade.lookupIn(namespace, name);
+	if (mc != null) {
+	    newInnerClasses.remove(mc);
 	}
-	return mClassifier;
+	return mc;
     }
 
     /**
@@ -95,14 +96,18 @@ public class ParseState
     }
 
     /**
-       Get the current classifier.
+     * Get the current classifier.
+     *
+     * @return the current classifier
      */
     public Object getClassifier() {
 	return mClassifier;
     }
 
     /**
-       Get all features not in the source.
+     * Get all features not in the source.
+     *
+     * @return all features not in the source
      */
     public Vector getNewFeatures()
     {
@@ -110,7 +115,9 @@ public class ParseState
     }
 
     /**
-       Get all inner classes not in the source.
+     * Get all inner classes not in the source.
+     *
+     * @return all inner classes not in the source
      */
     public Vector getNewInnerClasses()
     {
@@ -118,14 +125,18 @@ public class ParseState
     }
 
     /**
-       Get the current namespace.
+     * Get the current namespace.
+     *
+     * @return the current namespace
      */
     public Object getNamespace() {
 	return namespace;
     }
 
     /**
-       Get the association ends.
+     * Get the association ends.
+     *
+     * @return the association ends
      */
     public Vector getAssociationEnds()
     {

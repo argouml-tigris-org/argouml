@@ -35,14 +35,38 @@ import org.tigris.gef.util.*;
 public abstract class ResourceBundleHelper extends ListResourceBundle
     implements PluggableResourceBundle 
 {
+    /**
+     * @see org.argouml.application.api.ArgoModule#setModuleEnabled(boolean)
+     */
     public void setModuleEnabled(boolean v) { }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#initializeModule()
+     */
     public boolean initializeModule() {
        	Localizer.addResource(getModuleName(), getClass().getName()); 
 	return true;
     }
+    
+    /**
+     * @see org.argouml.application.api.Pluggable#inContext(java.lang.Object[])
+     */
     public boolean inContext(Object[] o) { return true; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
+     */
     public boolean isModuleEnabled() { return true; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModulePopUpActions(
+     * java.util.Vector, java.lang.Object)
+     */
     public Vector getModulePopUpActions(Vector v, Object o) { return null; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#shutdownModule()
+     */
     public boolean shutdownModule() { return true; }
 }
 

@@ -75,20 +75,20 @@ public class ModuleLoader {
     public static final String CLASS_SUFFIX = ".class";
 
     // String mModulePropertyFile=null;
-    private static ModuleLoader SINGLETON = null;
+    private static ModuleLoader singleton = null;
 
-    private ArrayList _moduleClasses = null;
-    private Vector _menuActionList = null;
-    private static Hashtable _singletons = null;
+    private ArrayList moduleClasses = null;
+    private Vector menuActionList = null;
+    private static Hashtable singletons = null;
     private static String argoRoot = null;
     private static String argoHome = null;
 
     /** Make sure the module loader cannot be instantiated from outside.
      */
     private ModuleLoader() {
-        _singletons = new Hashtable();
-        _moduleClasses = new ArrayList();
-        _menuActionList = new Vector();
+        singletons = new Hashtable();
+        moduleClasses = new ArrayList();
+        menuActionList = new Vector();
 
 	// Use a little trick to find out where Argo is being loaded from.
         String extForm = 
@@ -133,10 +133,10 @@ public class ModuleLoader {
      * @return the module loader singleton
      */
     public static ModuleLoader getInstance() {
-        if (SINGLETON == null) {
-            SINGLETON = new ModuleLoader();
+        if (singleton == null) {
+            singleton = new ModuleLoader();
         }
-        return SINGLETON;
+        return singleton;
     }
 
     /** Load the internal modules.
@@ -246,7 +246,7 @@ public class ModuleLoader {
                         && cname.endsWith(CLASS_SUFFIX)) {
                     int classNamelen = cname.length() - CLASS_SUFFIX.length();
                     String className = cname.substring(0, classNamelen);
-                    className = className.replace('/','.');
+                    className = className.replace('/', '.');
                     // This load is not secure.
                     loadClassFromLoader(classloader, key, className, false);
                 }
@@ -368,7 +368,7 @@ public class ModuleLoader {
     }
 
     private boolean keyAlreadyLoaded(String key) {
-        ListIterator iterator = _moduleClasses.listIterator();
+        ListIterator iterator = moduleClasses.listIterator();
         while (iterator.hasNext()) {
             Object obj = iterator.next();
             if (obj instanceof ArgoModule)
@@ -408,14 +408,14 @@ public class ModuleLoader {
 	    if (aModule.getModuleKey().equals(key) || (!secure)) {
                 if (aModule.initializeModule()) {
                     LOG.info("Loaded Module: " + aModule.getModuleName());
-                    _moduleClasses.add(aModule);
+                    moduleClasses.add(aModule);
 		    fireEvent(ArgoModuleEvent.MODULE_LOADED, aModule);
 		    if (aModule instanceof ArgoSingletonModule) {
 			ArgoSingletonModule sModule =
 			    (ArgoSingletonModule) aModule;
 		        try {
 			    Class moduleType = sModule.getSingletonType();
-		            if (!(_singletons.containsKey(moduleType))) {
+		            if (!(singletons.containsKey(moduleType))) {
 			        requestNewSingleton(moduleType, sModule);
 		            }
 		        }
@@ -458,7 +458,8 @@ public class ModuleLoader {
 		try {
 		    int equalPos = line.indexOf("=");
 		    sKey = line.substring(0, equalPos).trim();
-		    sClassName = line.substring(equalPos + 1).trim().replace('/','.');
+		    sClassName = line.substring(equalPos + 1).trim()
+		            .replace('/', '.');
 		}
 		catch (Exception e) {
 		    LOG.warn ("Unable to process " + filename
@@ -491,7 +492,7 @@ public class ModuleLoader {
     /** Shut down all modules */
     public void shutdown() {
         try {
-            ListIterator iterator = _moduleClasses.listIterator();
+            ListIterator iterator = moduleClasses.listIterator();
             while (iterator.hasNext()) {
                 Object obj = iterator.next();
                 if (obj instanceof ArgoModule) {
@@ -516,7 +517,7 @@ public class ModuleLoader {
      */
     public void addModuleAction(Vector popUpActions, Object context) {
         try {
-            ListIterator iterator = _moduleClasses.listIterator();
+            ListIterator iterator = moduleClasses.listIterator();
             while (iterator.hasNext()) {
                 Object obj = iterator.next();
                 if (obj instanceof ArgoModule) {
@@ -538,7 +539,7 @@ public class ModuleLoader {
      */
     public ArrayList getModules() {
         // TODO: change signature to return Collection
-	return _moduleClasses;
+	return moduleClasses;
     }
 
     /** Locates a module by key.
@@ -547,7 +548,7 @@ public class ModuleLoader {
      * @return a module object or null if not found.
      */
     public Object getModule(String key) {
-        ListIterator iterator = _moduleClasses.listIterator();
+        ListIterator iterator = moduleClasses.listIterator();
         while (iterator.hasNext()) {
             Object obj = iterator.next();
             if (obj instanceof ArgoModule)
@@ -573,7 +574,7 @@ public class ModuleLoader {
      */
     public static ArgoModule getCurrentSingleton(Class moduleClass) {
 	try {
-	    return (ArgoModule) _singletons.get(moduleClass);
+	    return (ArgoModule) singletons.get(moduleClass);
 	}
 	catch (Exception e) {
 	    return null;
@@ -603,7 +604,7 @@ public class ModuleLoader {
 		(ArgoSingletonModule) getCurrentSingleton(modClass);
 	    if (currentSingleton.canDeactivateSingleton()) {
 		currentSingleton.deactivateSingleton();
-		_singletons.remove(modClass);
+		singletons.remove(modClass);
 	    }
 	    else {
 		// The current singleton refused to relinquish control.
@@ -613,7 +614,7 @@ public class ModuleLoader {
 	catch (Exception e) {
 	    currentSingleton = moduleInstance;
 	}
-	_singletons.put(modClass, currentSingleton);
+	singletons.put(modClass, currentSingleton);
 	currentSingleton.activateSingleton();
 	return true;
     }
