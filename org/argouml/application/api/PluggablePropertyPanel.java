@@ -39,8 +39,14 @@ import org.argouml.uml.ui.*;
  */
 public interface PluggablePropertyPanel extends Pluggable {
 
+    /** Returns the <code>Class</code> that the panel handles.
+     * @return the <code>Class</code>.
+     */
     public Class getClassForPanel();
 
+    /** Returns an instance of the property panel.
+     * @return the <code>PropPanel</code>.
+     */
     public PropPanel getPropertyPanel();
 
 } /* End interface PluggablePropertyPanel */

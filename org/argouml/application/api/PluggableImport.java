@@ -49,10 +49,10 @@ public interface PluggableImport extends Pluggable {
      * Chooser must have a button for object selection
      * and optionally a button for cancel action.
      * To close dialog window use _import.disposeDialog(). 
-     * @param _import - current import session
+     * @param importElement - current import session
      * @return the panel to show in import dialog
      */
-    public JComponent getChooser(Import  _import);
+    public JComponent getChooser(Import  importElement);
     
     /** 
      * Provide pannel added to JTabbedPane after general panel.
@@ -65,10 +65,10 @@ public interface PluggableImport extends Pluggable {
      * This method returns a Vector with objects to import.
      * These objects are selected with chooser and may be
      * rearranged in arbitrary order.
-     * @param _import - current import session
+     * @param importElement - current import session
      * @return vector of objects, selected by chooser
      */
-    public Vector getList(Import _import);
+    public Vector getList(Import importElement);
 
     /**
      * Tells if the object is parseable or not.
@@ -83,15 +83,18 @@ public interface PluggableImport extends Pluggable {
      * @param p - the current project
      * @param o - object to be parsed
      * @param diagram - current class diagram when Import was invoked
-     * @param _import - current import session. Use this object to get
+     * @param importElement - current import session. Use this object to get
      * common settings.
+     * @throws Exception (all kinds)
      */
     public void parseFile(Project p, Object o, 
-			  DiagramInterface diagram, Import _import) 
+			  DiagramInterface diagram, Import importElement) 
 	throws Exception;
 
     /**
      * Provide layout for modified or created class diagram.
+     * @param diagram to layout.
+     * @return the layouter.
      */
     public ClassdiagramLayouter getLayout(UMLDiagram diagram);
 
