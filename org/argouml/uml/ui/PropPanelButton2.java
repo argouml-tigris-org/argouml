@@ -85,14 +85,8 @@ public class PropPanelButton2 extends JButton implements UMLUserInterfaceCompone
             if (i != null)
                 setMnemonic(i.intValue());
         }
-        if (getIcon() != null) {
-            setPreferredSize(new Dimension(getIcon().getIconWidth()+6,getIcon().getIconHeight()+6));
-            setMaximumSize(new Dimension(getIcon().getIconWidth()+6,getIcon().getIconHeight()+6));
-            setMinimumSize(new Dimension(getIcon().getIconWidth()+6,getIcon().getIconHeight()+6));
-            setSize(new Dimension(getIcon().getIconWidth()+6,getIcon().getIconHeight()+6));
-        } else
-          setSize(new Dimension(20, 20));  
     }
+    
     /**
      * Returns the action.
      * @return Action
@@ -190,5 +184,4 @@ public class PropPanelButton2 extends JButton implements UMLUserInterfaceCompone
     public void setContainer(UMLUserInterfaceContainer container) {
         _container = container;
     }
-
 }
