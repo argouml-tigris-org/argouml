@@ -148,11 +148,14 @@ implements ActionListener, ChangeListener {
     while (enum.hasMoreElements()) {
       Decision d = (Decision) enum.nextElement();
       JLabel decLabel = new JLabel(d.getName());
-      JLabel valueLabel = new JLabel("   " + d.getPriority());
+      JLabel valueLabel = new JLabel(getValueText(d.getPriority()));
       JSlider decSlide = new JSlider(SwingConstants.HORIZONTAL,
-				     0, 5, d.getPriority());
+				     0, 3, d.getPriority());
+      decSlide.setInverted(true);
+      decSlide.setMajorTickSpacing(1);
       decSlide.setPaintTicks(true);
-      decSlide.setPaintLabels(true);
+      decSlide.setSnapToTicks(true);
+      // decSlide.setPaintLabels(true);
       decSlide.addChangeListener(this);
       Dimension origSize = decSlide.getPreferredSize();
       Dimension smallSize = new Dimension(origSize.width/2, origSize.height);
@@ -203,10 +206,20 @@ implements ActionListener, ChangeListener {
     JLabel valLab = (JLabel) _slidersToDigits.get(srcSlider);
     int pri = srcSlider.getValue();
     d.setPriority(pri);
-    if (pri == 0) valLab.setText(" off");
-    else valLab.setText("   " + pri);
+    valLab.setText(getValueText(pri));
   }
-  
+
+    protected String getValueText(int priority) {
+        String label = "";
+        switch(priority) {
+        case 0: label = " off"; break;
+        case 1: label = "   1"; break;
+        case 2: label = "   2"; break;
+        case 3: label = "   3";
+        }
+        return label;
+    }
+ 
 } /* end class DesignIssuesDialog */
 
 
