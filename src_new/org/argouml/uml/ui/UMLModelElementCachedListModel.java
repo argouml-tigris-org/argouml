@@ -68,71 +68,64 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
         super.targetChanged();
     }
     
-    public void roleAdded(final MElementEvent event) {
-        String eventName = event.getName();
-        String property = getProperty();
-        if(eventName == null || property == null || eventName.equals(property)) {
-            Object addedValue = event.getAddedValue();
-            if(isProperClass(addedValue)) {
-                boolean found = false;
-                //
-                //   see if attribute is already in our list
-                //
-                java.util.List cache = getCache();
-                if(cache != null) {
-                    Iterator iter = cache.iterator();
-                    for(int i = 0;iter.hasNext();i++) {
-                        if(iter.next() == addedValue) {
-                            found = true;
-                            break;
-                        }
-                    }
-                }
-                //
-                //  if the attribute wasn't found then
-                //     reset the cache and our attributes list
-                if(!found) {
-                    resetCache();
-                    resetSize();
-                    fireContentsChanged(this,0,getSize());
-                }
+    public void roleRemoved(final MElementEvent event) {
+        Object eventProperty = event.getName();
+        Object listProperty = getProperty();
+        if(listProperty == null || eventProperty == null || 
+            listProperty.equals(eventProperty)) {
+            Object source = event.getSource();
+            //
+            //   if the thing removed was in our list
+            //
+            int index = getCache().indexOf(source);
+            if(index >= 0) {
+                resetSize();
+                resetCache();
+                fireIntervalRemoved(this,index,index);
             }
         }
     }
     
-
-    public void roleRemoved(final MElementEvent event) {
-        String eventName = event.getName();
-        String property = getProperty();
-        if(eventName == null || property == null || eventName.equals(property)) {
-            Object removedValue = event.getRemovedValue();
-            if(isProperClass(removedValue)) {
-                //
-                //   see if attribute is already in our list
-                //
-                java.util.List cache = getCache();
-                if(cache != null) {
-                    Iterator iter = cache.iterator();
-                    for(int i = 0;iter.hasNext();i++) {
-                        if(iter.next() == removedValue) {
-                            resetSize();
-                            resetCache();
-                            fireIntervalRemoved(this,i,i);
-                            break;
-                        }
-                    }
-                }
+    public void roleAdded(final MElementEvent event) {
+        Object eventProperty = event.getName();
+        Object listProperty = getProperty();
+        if(listProperty == null || eventProperty == null || 
+            listProperty.equals(eventProperty)) {
+            Object source = event.getSource();
+            if(isProperClass(source)) {
+                int upper = getUpperBound();
+                resetSize();
+                resetCache();
+                fireContentsChanged(this,0,upper+1);
             }
         }
     }
+    
+    
     
     public void recovered(final MElementEvent p1) {
     }
+    
     public void listRoleItemSet(final MElementEvent p1) {
     }
-    public void removed(final MElementEvent p1) {
+    
+    public void removed(final MElementEvent event) {
     }
-    public void propertySet(final MElementEvent p1) {
+    
+
+    //
+    //   this needs to be overriden if the derived class
+    //      wants to resort based on the name change
+    public void propertySet(final MElementEvent event) {
+        Object source = event.getSource();
+        int index = getCache().indexOf(source);
+        //
+        //   we should only see promiscuous name changes 
+        //      so checking that the property is named 'name'
+        //      is unnecessary
+        if(index >= 0) {
+            fireContentsChanged(this,index,index);
+        }
     }
     
     protected java.util.List swap(Collection source,int lowIndex,Object before,Object after) {
@@ -236,6 +229,8 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
         }
         return cache;
     }
+    
+    
 }
 
 
