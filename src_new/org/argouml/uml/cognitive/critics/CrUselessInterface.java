@@ -48,7 +48,7 @@ public class CrUselessInterface extends CrUML {
     public CrUselessInterface() {
 	setHeadline("Define Class to Implement <ocl>self</ocl>");
 	addSupportedDecision(CrUML.decINHERITANCE);
-	addSupportedGoal(Goal.UNSPEC);
+	addSupportedGoal(Goal.getUnspecifiedGoal());
 	setKnowledgeTypes(Critic.KT_COMPLETENESS);
 	addTrigger("realization");
     }

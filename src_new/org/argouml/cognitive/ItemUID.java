@@ -30,8 +30,8 @@ import java.lang.reflect.Method;
 import org.apache.log4j.Logger;
 
 /**
- * Instances of this class is supposed to be attached to other instances
- * of other classes to uniquely identify them. It is intended that such
+ * An instances of this class is supposed to be attached to an instance
+ * of another class to uniquely identify it. It is intended that such
  * a tagging should be persistent over saving and loading, if applicable.
  *
  * <P>The class also harbors the
@@ -40,7 +40,7 @@ import org.apache.log4j.Logger;
  * <code>ItemUID getItemUID()</code>
  * and creating new ItemUIDs for any object with a method
  * <code>setItemUID(ItemUID)</code>
- * using reflection in java.
+ * using reflection in java.<p>
  *
  * A class intended to be tagged must at least provide a
  * <code>ItemUID getItemUID()</code>
@@ -50,7 +50,7 @@ import org.apache.log4j.Logger;
  * and which is stored persistently should the tagged object be stored.
  * This allows this class to automatically tag an object when necessary,
  * but it is allowed to tag classes by other means and only provide the
- * getItemUID() call.
+ * getItemUID() call.<p>
  *
  * A critical requirement for this class is that the cognitive component
  * is supposed to work with general objects. This class is a wrapper around
@@ -60,7 +60,7 @@ import org.apache.log4j.Logger;
  * mind). It is for this reason that some perhaps ugly looking exceptions in
  * this code must be considered perfectly normal conditions. Failure of some
  * object to work with tagging must be handled by the cognitive component
- * programmer and it is (see eg ResolvedCritic).
+ * programmer and it is (see eg ResolvedCritic).<p>
  *
  * A possible future change would be to allow tag handlers to be registered
  * with this class to handle other preexisting tagging mechanisms, which
@@ -76,10 +76,10 @@ public class ItemUID
     private static final Logger LOG = Logger.getLogger(ItemUID.class);
 
     /** Keeps a reference to the Class object of this class */
-    protected static final Class myClass = (new ItemUID()).getClass();
+    private static final Class MYCLASS = (new ItemUID()).getClass();
 
     /** This actual ID of this instance. */
-    protected String id;
+    private String id;
 
     /**
      * Constructs a new ItemUID and creates a new ID for it.
@@ -243,7 +243,7 @@ public class ItemUID
 
 	Class params[] = new Class[1];
 	Object mparam[];
-	params[0] = myClass;
+	params[0] = MYCLASS;
 	try {
 	    Method m = obj.getClass().getMethod("setItemUID", params);
 	    mparam = new Object[1];

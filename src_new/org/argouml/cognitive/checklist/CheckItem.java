@@ -122,7 +122,7 @@ public class CheckItem implements Serializable {
     public String getDescription() { return description; }
     
     /**
-     * @param dm 
+     * @param dm the design material
      * @return the description
      */
     public String getDescription(Object dm) {
@@ -170,10 +170,12 @@ public class CheckItem implements Serializable {
     public String toString() { return getDescription(); }
 
     /**
-     * TODO: Document the purpose of this function.
+     * Customize/expand the description string just before it is displayed.
+     * I.e. add offender specific information to the description string 
+     * (e.g. its name). 
      * 
      * @param desc       the description
-     * @param dm         ignored
+     * @param dm         the design material
      * @return           the description
      */
     public String expand(String desc, Object dm) { return desc; }

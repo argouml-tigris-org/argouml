@@ -39,28 +39,56 @@ public class Decision {
   
     ////////////////////////////////////////////////////////////////
     // instance variables
-    protected String _name;
-    protected int _priority;
+    /**
+     * The localized name.
+     */
+    private String name;
+    private int priority;
   
-    ////////////////////////////////////////////////////////////////
-    // constructor
+    /**
+     * The constructor.
+     * 
+     * @param n the (not yet localized) name
+     * @param p the priority
+     */
     public Decision(String n, int p) {
-	setName(Translator.localize(n));
-	setPriority(p);
+	name = Translator.localize(n);
+	priority = p;
     }
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     public boolean equals(Object d2) {
 	if (!(d2 instanceof Decision)) return false;
 	return ((Decision) d2).getName().equals(getName());
     }
 
-    public String getName() { return _name; }
-    public void setName(String n) { _name = n; }
-    public int getPriority() { return _priority; }
-    public void setPriority(int p) { _priority = p; }
+    /**
+     * @return the localized name
+     */
+    public String getName() { return name; }
+    
+    /**
+     * @param n the localized name 
+     */
+    public void setName(String n) { name = n; }
+    
+    /**
+     * @return the priority
+     */
+    public int getPriority() { return priority; }
+    
+    /**
+     * @param p the priority
+     */
+    public void setPriority(int p) { priority = p; }
 
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString() { return getName(); }
 } /* end class Decision */

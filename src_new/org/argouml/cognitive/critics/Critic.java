@@ -943,11 +943,12 @@ public class Critic implements Poster, Serializable {
     }
 
     /** TODO: Not implemented yet. If the given ToDoItem can
-     *  be fixed automaically, and the user wants that to happen, then do
+     *  be fixed automatically, and the user wants that to happen, then do
      *  it. Obviously, this depends on the specific Critic and
      *  problem. By default this method does nothing.
      *
-     * @see Critic#canFixIt */
+     * @see Critic#canFixIt 
+     */
     public void fixIt(ToDoItem item, Object arg) { }
 
     /** 

@@ -52,25 +52,30 @@ import java.util.Vector;
 
 public class DecisionModel extends Observable implements Serializable 
 {
+    private Vector decisions = new Vector();
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
-    private Vector _decisions = new Vector();
-
-    ////////////////////////////////////////////////////////////////
-    // constructor
-
+    /**
+     * The constructor.
+     * 
+     */
     public DecisionModel() {
-	_decisions.addElement(Decision.UNSPEC);
+	decisions.addElement(Decision.UNSPEC);
     }
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    public Vector getDecisions() { return _decisions; }
+    /**
+     * @return the list of decisions
+     */
+    public Vector getDecisions() { return decisions; }
 
-    /** Reply true iff the Designer is considering the given decision. */
+    /** 
+     * Reply true iff the Designer is considering the given decision.
+     * 
+     * @param decision the given decision
+     * @return true if considered
+     */
     public boolean isConsidering(String decision) {
 	Decision d = findDecision(decision);
 	if 	(null == d) return false;
@@ -78,13 +83,20 @@ public class DecisionModel extends Observable implements Serializable
     }
 
 
+    /**
+     * This function sets the priority of an existing decision, or
+     * if the decision does not exist yet, it creates a new one.
+     * 
+     * @param decision the given decision
+     * @param priority the new priority
+     */
     public synchronized void setDecisionPriority(String decision,
 						 int priority)
     {
 	Decision d = findDecision(decision);
 	if 	(null == d) {
 	    d = new Decision(decision, priority);
-	    _decisions.addElement(d);
+	    decisions.addElement(d);
 	    return;
 	}
 	d.setPriority(priority);
@@ -93,40 +105,67 @@ public class DecisionModel extends Observable implements Serializable
 	//decision model listener
     }
 
-    /** If the given decision is already defined, do nothing. If it is
-     * not already defined, set it to the given initial priority. */
+    /** 
+     * If the given decision is already defined, do nothing. If it is
+     * not already defined, set it to the given initial priority. 
+     * 
+     * @param decision the existing decision
+     * @param priority the priority
+     */
     public void defineDecision(String decision, int priority) {
 	Decision d = findDecision(decision);
 	if (d == null) setDecisionPriority(decision, priority);
     }
 
-    /** The Designer has indicated that he is now interested in the
-     * given decision. */
+    /** 
+     * The Designer has indicated that he is now interested in the
+     * given decision. 
+     * 
+     * @param decision the interesting decision
+     */
     public void startConsidering(String decision) {
 	setDecisionPriority(decision, 1);
     }
 
+    /**
+     * The Designer has indicated that he is now interested in the
+     * given decision. 
+     * 
+     * @param d the interesting decision
+     */
     public void startConsidering(Decision d) {
-	_decisions.removeElement(d);
-	_decisions.addElement(d);
+	decisions.removeElement(d);
+	decisions.addElement(d);
     }
 
-    /** The Designer has indicated that he is not interested in the
-     * given decision right now. */
+    /** 
+     * The Designer has indicated that he is not interested in the
+     * given decision right now.
+     * 
+     * @param decision the uninteresting decision
+     */
     public void stopConsidering(String decision) {
 	setDecisionPriority(decision, 0);
     }
 
+    /**
+     * The Designer has indicated that he is not interested in the
+     * given decision right now.
+     * 
+     * @param d the uninteresting decision
+     */
     public void stopConsidering(Decision d) {
-	_decisions.removeElement(d);
+	decisions.removeElement(d);
     }
 
-    /** Finds a decision with a specific name.
+    /** 
+     * Finds a decision with a specific name.
      *
+     * @param decName the decision name
      * @return a decision or null if not found.
      */
     protected Decision findDecision(String decName) {
-	Enumeration elems = _decisions.elements();
+	Enumeration elems = decisions.elements();
 	while (elems.hasMoreElements()) {
 	    Decision d = (Decision) elems.nextElement();
 	    if (decName.equals(d.getName())) return d;

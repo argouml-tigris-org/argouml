@@ -61,8 +61,8 @@ import ru.novosoft.uml.MElementListener;
  * implements the Poster interface.
  *
  * <p>TODO: implement as singleton?? There are comments that suggest this
- * should be done.
- *
+ * should be done. 
+ * 
  * @author Jason Robbins
  */
 public class Designer
@@ -72,7 +72,7 @@ public class Designer
          MElementListener, // TODO: remove.
          java.io.Serializable
 {
-    private static Logger LOG = Logger.getLogger(Designer.class);
+    private static final Logger LOG = Logger.getLogger(Designer.class);
     
     /** the singleton of this class: TODO: needs to be made private.*/
     public static Designer TheDesigner = new Designer();
@@ -91,7 +91,7 @@ public class Designer
         UNSPEC_DECISION_VECTOR = new Vector();
         UNSPEC_DECISION_VECTOR.addElement(Decision.UNSPEC);
         UNSPEC_GOAL_VECTOR = new Vector();
-        UNSPEC_GOAL_VECTOR.addElement(Goal.UNSPEC);
+        UNSPEC_GOAL_VECTOR.addElement(Goal.getUnspecifiedGoal());
     }
     
     ////////////////////////////////////////////////////////////////
@@ -124,7 +124,7 @@ public class Designer
     private GoalModel goals;
     
     /** Each designer has their own Agency instance that is responsible
-     *  for selecting and executing critics that are relevant to thid
+     *  for selecting and executing critics that are relevant to this
      *  designer on an on going basis. */
     private Agency agency;
     
