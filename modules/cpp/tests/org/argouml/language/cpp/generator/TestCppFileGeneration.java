@@ -119,10 +119,11 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
     /**
      * Test for file generation of a classifier, checking if in the second time 
      * the empty method implementation is generated correctly (no extra curly 
-     * braces each time the class is generated - issue 2828).
+     * braces each time the class is generated - issue 2828) and the added 
+     * code is preserved.
      * @throws IOException some unexpected file access problem occurred
      */
-    public void testIssue2828() throws IOException {
+    public void testGenerateAfterModifyAndIssue2828() throws IOException {
         genDir = setUpDirectory4Test("testIssue2828");
         // generate the classifier for the first time in temp dir
         String filePath = getGenerator().generateFile2(
@@ -156,6 +157,37 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
         // modified file
         String secondGenerated = FileUtils.readFileToString(genFile, encoding);
         assertEquals(modified.toString(), secondGenerated);
+    }
+    
+    /**
+     * Test that the model isn't used as a namespace - issue #2963.
+     * @throws IOException
+     */
+    public void testModelIsNotNamespace() throws IOException {
+        final String testName = "testModelIsNotNamespace";
+        genDir = setUpDirectory4Test(testName);
+        ModelFacade.setName(getModel(), testName);
+        ModelFacade.setNamespace(getPack(), getModel());
+        
+        String filePath = getGenerator().generateFile2(
+                getAClass(), genDir.getPath());
+        assertNotNull(filePath);
+        File genFile = new File(filePath);
+        
+        String encoding = getEncoding(genFile);
+        String generated = FileUtils.readFileToString(
+            genFile, encoding);
+        String modelNs = "namespace " + ModelFacade.getName(getModel()) + " {";
+        assertTrue(generated.indexOf(modelNs) == -1);
+        String packNs = "namespace " + ModelFacade.getName(getPack()) + " {";
+        assertTrue(generated.indexOf(packNs) != -1);
+    }
+
+    /**
+     * @return the package pack
+     */
+    private Object getPack() {
+        return ModelFacade.getModelElementContainer(getAClass());
     }
 
     /**

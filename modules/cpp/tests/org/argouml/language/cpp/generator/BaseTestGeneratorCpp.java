@@ -71,12 +71,17 @@ class BaseTestGeneratorCpp extends TestCase {
         Object me = getAClass();
         Collection propertyChangeListeners = ProjectManager.getManager()
             .getCurrentProject().findFigsForMember(me);
-        Object model = ProjectManager.getManager().getCurrentProject()
-            .getModel();
         Object voidType = ProjectManager.getManager().getCurrentProject()
             .findType("void");
-        setFooMethod(Model.getUmlFactory().getCore().buildOperation(me, 
-                model, voidType, "foo", propertyChangeListeners));
+        setFooMethod(Model.getUmlFactory().getCore().buildOperation(me,
+                getModel(), voidType, "foo", propertyChangeListeners));
+    }
+    
+    /**
+     * @return the model
+     */
+    protected Object getModel() {
+        return ProjectManager.getManager().getCurrentProject().getModel();
     }
 
     /**

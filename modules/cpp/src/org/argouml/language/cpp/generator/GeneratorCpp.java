@@ -690,11 +690,22 @@ public class GeneratorCpp extends Generator2
         }
         return sb.toString();
     }
+    
+    private String removeModelFromPackage(String packageName) {
+        int firstDot = packageName.indexOf('.');
+        if (firstDot == -1) {
+            packageName = "";
+        } else {
+            packageName = packageName.substring(firstDot);
+        }
+        return packageName;
+    }
 
     private String generateHeaderPackageStartSingle(Object pkg) {
-        // cat.info("generateHeaderPackageStartSingle: " + pkg.getName());
         StringBuffer sb = new StringBuffer(30);
-        StringTokenizer st = new StringTokenizer(ModelFacade.getName(pkg), ".");
+//        String packageName = removeModelFromPackage(ModelFacade.getName(pkg));
+        String packageName = ModelFacade.getName(pkg);
+        StringTokenizer st = new StringTokenizer(packageName, ".");
         String token = "";
 
         sb.append(generateTaggedValues(pkg, DOC_COMMENT_TAGS));
@@ -707,10 +718,10 @@ public class GeneratorCpp extends Generator2
     }
 
     private String generateHeaderPackageEndSingle(Object pkg) {
-        // cat.info("generateHeaderPackageEndSingle: " + pkg.getName());
         StringBuffer sb = new StringBuffer(30);
-        StringTokenizer st = 
-            new StringTokenizer(ModelFacade.getName(pkg), ".");
+//        String packageName = removeModelFromPackage(ModelFacade.getName(pkg));
+        String packageName = ModelFacade.getName(pkg);
+        StringTokenizer st = new StringTokenizer(packageName, ".");
         String token = "";
         while (st.hasMoreTokens()) {
             token = st.nextToken();
@@ -818,12 +829,12 @@ public class GeneratorCpp extends Generator2
         if (actualNamespace != null) {
             for (Object fromSearch = actualNamespace;
                     fromSearch != null;
-                    fromSearch = ModelFacade.getNamespace(fromSearch)) {
+                    fromSearch = getNamespaceWithoutModel(fromSearch)) {
                 // cat.info("fromSearch: " + fromSearch.getName());
                 StringBuffer contPath = new StringBuffer(80);
-                Object toSearch = ModelFacade.getNamespace(cls);
+                Object toSearch = getNamespaceWithoutModel(cls);
                 for (; (toSearch != null) && (toSearch != fromSearch);
-                        toSearch = ModelFacade.getNamespace(toSearch)) {
+                        toSearch = getNamespaceWithoutModel(toSearch)) {
                     // cat.info("toSearch: " + toSearch.getName());
                     contPath.insert(0,
                             generateHeaderPackageStartSingle(toSearch));
@@ -839,17 +850,30 @@ public class GeneratorCpp extends Generator2
             }
         }
         else { // initial start
-            for (Object toSearch = ModelFacade.getNamespace(cls);
+            for (Object toSearch = getNamespaceWithoutModel(cls);
                     toSearch != null;
-                    toSearch = ModelFacade.getNamespace(toSearch)) {
+                    toSearch = getNamespaceWithoutModel(toSearch)) {
                 sb.insert(0, generateHeaderPackageStartSingle(toSearch));
             }
         }
         if (sb.length() > 0) {
             sb.insert(0, "\n").append("\n");
         }
-        actualNamespace = ModelFacade.getNamespace(cls);
+        actualNamespace = getNamespaceWithoutModel(cls);
         return sb.toString();
+    }
+    
+    /**
+     * Retrieve the namespace of the given model element, excluding the model, 
+     * which shouldn't be considered a namespace.
+     * @param me the model element for which to get the namespace
+     * @return the namespace if it exists or null if the model is the 
+     * containing namespace for <code>me</code> 
+     */
+    private Object getNamespaceWithoutModel(Object me) {
+        Object parent = ModelFacade.getNamespace(me);
+        if (ModelFacade.getNamespace(parent) != null) return parent;
+        return null;
     }
 
     private String generateHeaderPackageEnd() {
@@ -857,7 +881,8 @@ public class GeneratorCpp extends Generator2
 
         for (Object closeIt = actualNamespace;
                 closeIt != null;
-                closeIt = ModelFacade.getNamespace(closeIt)) {
+//                closeIt = ModelFacade.getNamespace(closeIt)) {
+                closeIt = getNamespaceWithoutModel(closeIt)) {
             sb.append(generateHeaderPackageEndSingle(closeIt));
         }
         actualNamespace = null;
