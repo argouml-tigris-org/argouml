@@ -21,7 +21,19 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// File: UMLClassifierComboBoxModel.java
+// Classes: UMLClassifierComboBoxModel
+// Original Author: 
+// $Id$
+
+// 23 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Layout tidied up and
+// mods made following bug fixing in UMLComboBoxModel. getModel() and
+// setModel() are no longer available in the parent. _noArgs made a local
+// variable.
+
+
 package org.argouml.uml.ui;
+
 import org.argouml.uml.*;
 import javax.swing.event.*;
 import javax.swing.*;
@@ -66,14 +78,13 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 
 
     private void makeSelection(MModel model, MClassifier selClass) {
-	setModel(model);
 	getSet().clear();
 	Profile profile = getContainer().getProfile();
 	if(allowVoid()) {
 	    getSet().add(new UMLComboBoxEntry(null,profile,false));
 	}
-	if(getModel() != null) {
-	    collectElements(getModel(),profile,false);
+	if(model != null) {
+	    collectElements(model,profile,false);
 	}
                  
 	if(addElementsFromProfileModel()) {
@@ -86,7 +97,7 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 	//
 	//   scan for name collisions
 	//
-	if (model != getModel()) {
+
 	    Iterator iter = getSet().iterator();
 	    String before = null;
 	    UMLComboBoxEntry currentEntry = null;
@@ -106,7 +117,7 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 	    if(afterEntry != null) afterEntry.checkCollision(currentStr,null);		   
 	    
 	    fireContentsChanged(this,0,getSet().size());		  
-	}
+
 	//
 	//   get current value
 	//                          
@@ -158,6 +169,7 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
             MModelElement element = (MModelElement) target;	 	   
             MModel model = element.getModel();
 	    try {		
+                Object[] _noArgs = {};
                 Object current = getGetMethod().invoke(getContainer(),_noArgs);
 		makeSelection( model , (MClassifier) current);
 		

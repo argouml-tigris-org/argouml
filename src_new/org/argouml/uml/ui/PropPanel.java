@@ -21,7 +21,21 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// File: PropPanel.java
+// Classes: PropPanel
+// Original Author:
+// $Id$
+
+// 23 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Added the third party
+// event listener.
+
+// 25 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Reworked
+// setNameEventListener to use third party event listeners, and removed the
+// promiscuous listener stuff.
+
+
 package org.argouml.uml.ui;
+
 import org.argouml.application.api.*;
 import org.argouml.ui.*;
 import org.argouml.uml.*;
@@ -33,6 +47,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 import java.lang.reflect.*;
 
 import org.tigris.gef.util.*;
@@ -57,6 +72,23 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
 
   private Vector _panels = new Vector();
   private UMLNameEventListener _nameListener;
+
+    /**
+     * <p>The third party listener (if we have set one up. We use this to shut
+     *   down listeners when a new listener is set up.</p>
+     */
+
+    private UMLThirdPartyEventListener _thirdPartyListener = null;
+
+
+    /**
+     * <p>The metaclass/property pairs for the third party listener (if we have
+     *   set one up. We use this when creating a new listener on target
+     *   change.</p>
+     */
+
+    private Vector _targetList = null;
+
 
     protected JPanel buttonPanel=new JPanel();
     protected JPanel buttonPanelWithFlowLayout=new JPanel();
@@ -248,89 +280,54 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         target.addMElementListener(this);
     }
 
-    private static Method _removePromisc = null;
-    private static Method _addPromisc = null;
-    private static boolean _loadPromisc = true;
-
-    private static final void loadPromiscMethods() {
-      if(_loadPromisc) {
-        try {
-          _removePromisc = MBase.class.getMethod("removePromiscuousListener",
-            new Class[] { MElementListener.class });
-          _addPromisc = MBase.class.getMethod("addPromiscuousListener",
-            new Class[] { MElementListener.class });
-        }
-        catch(Exception e) {
-          Argo.log.info("NSUML promiscuous listener hack not detected.");
-        }
-        _loadPromisc = false;
-      }
-    }
-
-    public static final void removePromiscuousListener(MBase base,MElementListener listener) {
-      loadPromiscMethods();
-      if(_removePromisc != null) {
-        try {
-          _removePromisc.invoke(base,
-            new Object[] { listener });
-        }
-        catch(Exception e) {
-          e.printStackTrace();
-        }
-      }
-    }
-
-    public static boolean addPromiscuousListener(MBase base,MElementListener listener) {
-      loadPromiscMethods();
-      boolean value = false;
-      if(_removePromisc != null) {
-        try {
-          value = ((Boolean) _removePromisc.invoke(base,
-            new Object[] { listener })).booleanValue();
-        }
-        catch(Exception e) {
-          e.printStackTrace();
-        }
-      }
-      return value;
-    }
+    /**
+     * <p>Set the target to be associated with a particular property panel.</p>
+     *
+     * <p>This involves resetting the third party listeners.</p>
+     *
+     * @param t  The object to be set as a target.
+     */
 
     public void setTarget(Object t) {
-        if(t != _target) {
-            boolean removeOldPromiscuousListener = (_nameListener != null);
-            if(t instanceof MBase && _nameListener != null) {
-                removeOldPromiscuousListener =
-                  addPromiscuousListener((MBase) t,_nameListener);
-            }
 
-            //
-            //   if the previous target was a MBase (99.999% of the time)
-            //      remove the listener from it
-            if ( _target instanceof MBase ) {
-                removeMElementListener((MBase) _target);
-                //
-                //  this path shouldn't happen unless t == null
-                //
-                if(removeOldPromiscuousListener) {
-                    removePromiscuousListener((MBase) _target,_nameListener);
-                }
-            }
+        // If the target has changed reset the third party listeners and
+        // dispatch a new NSUML element listener to ourself. Otherwise dispatch
+        // a target reasserted to ourself.
+
+        if(t != _target) {
+
+            // Set up the target and its model element variant.
 
             _target = t;
             _modelElement = null;
-
 
             if(_target instanceof MModelElement) {
                 _modelElement = (MModelElement) _target;
             }
 
-            //
-            //   this will add listener after update is complete
-            //
-            SwingUtilities.invokeLater(new UMLChangeDispatch(this,-1));
+            // Remove the third party listeners if they exist
+
+            if (_thirdPartyListener != null) {
+                _thirdPartyListener.removeAllListeners();
+            }
+
+            // Create a new third party listener if we have a target list
+
+            if (_targetList != null) {
+                _thirdPartyListener =
+                    new UMLThirdPartyEventListener(this, _targetList);
+            }
+
+            // This will add a new MElement listener after update is complete
+
+            SwingUtilities.invokeLater(
+                new UMLChangeDispatch(this,
+                                      UMLChangeDispatch.TARGET_CHANGED_ADD));
         }
         else {
-            UMLChangeDispatch dispatch = new UMLChangeDispatch(this,-1);
+            UMLChangeDispatch dispatch =
+                new UMLChangeDispatch(this,
+                                      UMLChangeDispatch.TARGET_REASSERTED);
             dispatch.targetReasserted();
             SwingUtilities.invokeLater(dispatch);
         }
@@ -490,26 +487,88 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
     }
 
     /**
-        Calling this method with an array of metaclasses
-        (for example, MClassifier.class) will result in the prop panel
-        propagating any name changes or removals on any object that
-        on the same event queue as the target that is assignable to one
-        of the metaclasses.
-    */
+     * <p>Calling this method with an array of metaclasses (for example,
+     *   MClassifier.class) will result in the prop panel propagating any name
+     *   changes or removals on any object that on the same event queue as the
+     *   target that is assignable to one of the metaclasses.</p>
+     *
+     * <p>Reworked to use {@link #AddThirdPartyEventListening(Object[])}, so
+     *   removing the need for NSUML promiscuous listeners.</p>
+     *
+     * <p><em>Note</em>. Despite the name, the old implementation tried to
+     *   listen for ownedElement and baseClass events as well as name
+     *   events. We incorporate all these.</p>
+     *
+     * @param metaclasses  The metaclass array we wish to listen to.
+     */
+
     public void setNameEventListening(Class[] metaclasses) {
-        Object target = getTarget();
-        if(target instanceof MBase) {
-            MBase base = (MBase) target;
-            if(_nameListener != null) {
-//XXX                base.removePromiscuousListener(_nameListener);
-            }
-            _nameListener = new UMLNameEventListener(this,metaclasses);
-//XXX            base.addPromiscuousListener(_nameListener);
+
+        // Convert to the third party listening pair list
+
+        Vector targetList = new Vector (metaclasses.length * 6);
+
+        for (int i = 0 ; i < metaclasses.length ; i++) {
+            Class mc = metaclasses[i];
+
+            targetList.add(mc);
+            targetList.add("name");
+
+            targetList.add(mc);
+            targetList.add("baseClass");
+
+            targetList.add(mc);
+            targetList.add("ownedElement");
+        }
+
+        addThirdPartyEventListening(targetList.toArray());
+    }
+
+
+    /**
+     * <p>Enable this prop panel to listen to further NSUML events raised by
+     *   third party objects (i.e. objects other than the target).</p>
+     *
+     * <p>Supplied with an array of pairs; {metaclass, property, ...} and will
+     *   listen to NSUML events on that metaclass affecting that property, and
+     *   propagate to this prop panel.</p>
+     *
+     * <p>Implemented by listening to all relevant objects in the current
+     *   model, and adding a listener to all the namespaces in the model, so we
+     *   can add new listeners when necessary.</p>
+     *
+     * <p><em>Note</em>. We can only do this with objects within an NSUML
+     *   model&mdash;that is {@link MModelElement} and its children.</p>
+     *
+     * @param  targetList  A list of pairs, {metaclass, property, ...} to which
+     *                     we are listening.  */
+
+    protected void addThirdPartyEventListening(Object[] targetArray) {
+
+        // Create a target list if we don't have one
+
+        if (_targetList == null) {
+            _targetList = new Vector(targetArray.length);
+        }
+
+        // Add the supplied pairs to the target list.
+
+        for (int i = 0 ; i < targetArray.length ; i++) {
+            _targetList.add(targetArray[i]);
+        }
+
+        // If we don't have a third party listener at present, create one with
+        // this target list, otherwise tell the one we have about the new list.
+
+        if (_thirdPartyListener == null) {
+            _thirdPartyListener =
+                new UMLThirdPartyEventListener(this, _targetList);
         }
         else {
-            _nameListener = new UMLNameEventListener(this,metaclasses);
+            _thirdPartyListener.setPairList(_targetList);
         }
     }
+
 
     public void removeElement() {
         Object target = getTarget();
