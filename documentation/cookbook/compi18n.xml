@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
+
+  <sect1 id="internationalization">
+    <title>Internationalization</title>
+      <indexterm>
+	<primary>Internationalization</primary>
+      </indexterm>
+      <indexterm>
+	<primary>i18n</primary>
+      </indexterm>
+      <indexterm>
+	<primary>Localization</primary>
+      </indexterm>
+      <indexterm>
+	<primary>l10n</primary>
+      </indexterm>
+      <indexterm>
+	<primary>ResourceBundles</primary>
+      </indexterm>
+      <para>
+Purpose - to provide the infrastructure that the other components can
+use to translate strings;
+to provide the infrastructure that makes it possible to plug in
+new languages;
+to administer the default (English U.S.) language;
+to administer all supported languages.
+</para>
+      <para>
+The Internationalization is located in <classname>org.argouml.i18n</classname>.
+</para>
+      <para>
+The Internationalization is a Layer 0 component. 
+See <xref linkend="layer0"></xref>.
+</para>
+
+      <para>
+The internationalization is currently changing from ListResourceBundles
+to Property files. This chapter is not updated to fit the change.
+Please read carefully.
+</para>
+      <para>
+In ArgoUML internationalization (sometimes called i18n) is done using
+the ListResourceBundle-classes and parts of it is handled by the 
+GEF infrastructure.
+</para>
+      <para>
+There are several sets of Bundle files for different domains within ArgoUML.
+Each domain has a name and is handled by a file.
+This is set up in <classname>org.argouml.application.Main</classname>.
+</para>
+      <sect2>
+	<title>Organizing translators</title>
+	<indexterm>
+	  <primary>Language</primary>
+	  <secondary>teams</secondary>
+	</indexterm>
+	<indexterm>
+	  <primary>Translators</primary>
+	</indexterm>
+	<para>
+The problems with internationalization are not so much the technical
+problems as to how it works but more so the problems are with
+getting, keeping and coordinating the correct competences to do
+the job.
+This comes from the fact that by necessity the different
+persons working with internationalization have different native languages
+and that complicates the communications.
+</para>
+	<para>
+To handle this problem for GNU applications 
+there is a community set up around gettext with one language team
+per language working with all gettext applications.
+There are also tools to help the translator do his job
+delivered with gettext that are the same for all the applications.
+In each of these language teams discussions are held that ensure a
+consistant use of words over all these applications.
+</para>
+	<para>
+It is for me (Linus Tolke, May 2002) unclear if and how such a
+community exists for Open Source Java tools and ArgoUML cannot
+simply benefit from the gettext communities since we don't use
+gettext and cannot use the same tools.
+</para>
+	<para>
+To get things done, we organize our own Language Teams with ArgoUML.
+Each language teams are actually just one or several persons that
+know that language and are eager to work with translating ArgoUML.
+</para>
+	<para>
+The language team has the following responsibilities:
+<orderedlist>
+	    <listitem>
+	      <para>
+All localized strings and resources shall be tranlated into the language.
+</para>
+	      <para>
+This is a constant work with keeping up with the changes that
+will be made to the ArgoUML code since ArgoUML 
+is under fast development.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+The terminology used shall be correct.
+</para>
+	      <para>
+This requires work in keeping up with the current literature in the
+domain of ArgoUML.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Help with the improvements on ArgoUML by pin-pointing where ArgoUML
+needs to be modified to allow for localization.
+</para>
+	      <para>
+As ArgoUML is originally built without localization we still have a
+big backlog of stuff in the GUI that is not localizable just by
+modifying the resource bundles. 
+Each such thing is a Defect and shall be corrected.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+See that the used libraries also provide their part in that language.
+</para>
+	      <para>
+This is mostly GEF since GEF is central both when it comes to 
+the fact that it has localized strings of its own but also
+because it handles parts of the localization.
+</para>
+	      <para>
+This means discussing with the teams developing the underlaying package
+as to how best to provide the localization for those parts. 
+Either by providing localization for that team to include in the
+package or by having ArgoUML overriding that package in that respect.
+</para>
+	    </listitem>
+
+	  </orderedlist>
+</para>
+      </sect2>
+      <sect2>
+	<title>Ambitions for localization</title>
+	<para>
+Let me (Linus Tolke, May 2002) try to define the levels of
+ambition for us to try to make it possible to discuss where
+we are going.
+</para>
+	<orderedlist>
+	  <listitem>
+	    <para>No translation</para>
+	    <para>
+This is the lowest level of ambition that is a "do nothing"-level.
+This goes for all languages where we have not done anything like
+Swahili, Polish, South African English, ...
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>Tool translation</para>
+	    <para>
+This is the basic level of ambition that each Language Team should
+aim for.
+It means that in ArgoUML all strings are localized so that ArgoUML
+is giving a complete appearance of being a tool for that language.
+</para>
+	    <para>
+Setting this level of ambition for a language
+(or creating a team for the language) is pointless
+if there is no window system available for the language in questions.
+I mean, if neither the people working with 
+Windows, Linux (KDE or Gnome) or java has collected enough interest
+to do a translation of the basic infrastructure there is no point
+in doing so for ArgoUML.
+(My Windows 2k has 80 supported languages so I would think that this
+is a no-issue.)
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>User environment translation</para>
+	    <para>
+This is the next level of ambition that can be set out by a 
+Language Team that works really well and has plenty of translation
+resources left.
+</para>
+	    <para>
+It means that not only the ArgoUML tool should be translated but also
+everything around it that the user sees 
+i.e. the User Manual, the Quick Guide, the FAQ, 
+the Users' part of the ArgoUML Web site.
+</para>
+	    <para>
+Setting this level of ambition for a language is pointless
+if the problem domain does not exist in that language.
+I mean, if the professionals that use UML or other 
+Software Engineering tools, in their every day work don't use 
+their native language to discuss UML concepts,
+then there is no use in translating these concepts to their language,
+they will not use the translation because they are more
+comfortable with the English concepts.
+Note that the UML Specification does only exist in English.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>Development environment translation</para>
+	    <para>
+Here I mean that everything that the developer of ArgoUML sees
+shall be translated.
+</para>
+	    <para>
+This begins with this Cookbook, then the Developers' part of the
+ArgoUML web site and 
+also includes the javadoc comments in the code of ArgoUML and
+design documentation of included packages such as GEF, NSUML...
+</para>
+	    <para>
+For translating the javadoc there exist no good tools.
+</para>
+	    <para>
+This is pointless unless we have identified an extremely large
+developer base willing to take on big parts of of the ArgoUML
+development that is
+speaking one specific language and where most of them do not
+know English.
+</para>
+	    <para>
+If any Language Team would consider this, 
+probably after several years of extremely good work on the 
+User environment translation ambition level
+it is a decision not only concerning that language team but the whole
+ArgoUML development community.
+</para>
+	    <para>
+Maybe I (Linus Tolke) have gone a little over the top now in trying 
+to define things far off the side of the planet.
+It is probably just me but I find a weird pleasure in encouraging people
+to strive for unreachable goals.
+</para>
+	  </listitem>
+	</orderedlist>
+      </sect2>
+<sect2 id="howdoi_internationalization">
+<title>How do I ...?</title>
+	<para>
+<itemizedlist>
+	    <listitem>
+	      <para>...verify that all translations are up to date?</para>
+	      <para>
+Run the JUnit test cases.
+See <xref linkend="run_junit_testcases"/>.
+This will verify that all tags are in sync between different
+translations.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>...start a new Language Team?</para>
+	      <para>
+The Language Teams are loosely defined by
+the web page of language teams on the Tigris site.
+As soon as the language code and names (at least one) are in place
+the team is created.
+</para>
+	      <para>
+From that point it is the Language Teams responsibility to 
+do a good job.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+...find the languages internationalization code for the language you 
+will add: en, es, en_GB,...
+</para>
+	      <para>
+The one you are currently using is shown in the log when ArgoUML starts.
+Search for lines looking like:
+<computeroutput>
+Language: sh
+Country: unknown
+</computeroutput>
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>...start the work?</para>
+	      <para>
+Look at the files in
+<filename class="directory">org/argouml/i18n</filename>,
+under <filename class="directory">argouml/src_new</filename>.
+</para>
+	      <para>
+Translate all the texts in each of these classes of files.
+</para>
+	      <para>
+This is a lot of extremely qualified work including searching well-known
+litterature on UML and Software Engineering in order to get the correct
+terms for the domain.
+Discuss with other UML and Software Engineering professionals with the
+same native language to get it right.
+</para>
+	      <para>
+Create the files with the translations and store them in
+<filename class="directory">argouml/src_new/org/argouml/i18n</filename>.
+They will have the names:
+<filename>UMLResourceBundle_<replaceable>language code</replaceable>.java</filename>,
+<filename>UMLCognitiveResourceBundle_<replaceable>language code</replaceable>.java</filename>,
+<filename>ActionResourceBundle_<replaceable>language code</replaceable>.java</filename>,
+<filename>SettingsResourceBundle_<replaceable>language code</replaceable>.java</filename>,
+<filename>MenuResourceBundle_<replaceable>language code</replaceable>.java</filename>,
+<filename>DiagramResourceBundle_<replaceable>language code</replaceable>.java</filename>,
+<filename>TreeResourceBundle_<replaceable>language code</replaceable>.java</filename>, and
+<filename>NotationResourceBundle_<replaceable>language code</replaceable>.java</filename>.
+</para>
+	      <para>
+Add the language to the JUnit list of tested languages and run the JUnit tests.
+</para>
+	      <para>
+The purpose of this is for you to get the simple JUnit tests to work for
+your language also.
+</para>
+	      <para>
+This is in the file
+<filename>argouml/modules/junit/src/org/argouml/util/CheckResourceBundle.java</filename>.
+Search for the supportedLanguages-array.
+</para>
+	      <para>
+Now you have completed the first iteration of the Tool translation
+ambition.
+The work will probably be more maintenance-like from here on.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>...join an existing Language Team</para>
+	      <para>
+Discuss with the Language Team on where the team is in its work
+and what you can do.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>...add or modify code with localized things?</para>
+	      <orderedlist>
+		<listitem>
+		  <para>
+Write your code using the same way of handling strings as the surrounding code.
+</para>
+		  <para>
+This means that strings are denoted by "labels" or "tags" and then
+the resolution of the "tag" is in a 
+<filename><replaceable>Domain</replaceable>ResourceBundle.java</filename>-file.
+</para>
+		  <para>
+The name for the domain is most often specified in a variable like
+<programlisting>
+    protected static final String BUNDLE = <replaceable>Domain</replaceable>;
+</programlisting>
+or
+<programlisting>
+    protected static final String RESOURCE_BUNDLE = <replaceable>Domain</replaceable>;
+</programlisting>
+in a base class to what you are doing and there is 
+a convenience method in the class
+<classname>org.argouml.application.api.Argo</classname>
+so normal strings are written
+<programlisting>
+import org.argouml.application.api.*;
+...
+    String localized = Argo.localize(BUNDLE, <replaceable>tag</replaceable>);
+</programlisting>
+</para>
+		</listitem>
+		<listitem>
+		  <para>
+Add your "tag" and resolution in English in the non-localized 
+<filename><replaceable>Domain</replaceable>ResourceBundle.java</filename>-file.
+</para>
+		  <para>
+How do I choose the tag?
+Jean-Hugues de Raigniac has made a small investigation as to how this
+is done in the java world and found that there is no real consensus on
+how to do this.
+He suggests a hierarchical choice of tags like this:
+<programlisting>
+   {"docpane.label.since", "Since"},
+   {"docpane.label.deprecated", "Deprecated"},
+   {"docpane.label.see", "See"},
+
+   {"stylepane.label.bounds", "Bounds"},
+   {"stylepane.label.fill", "Fill"},
+   {"stylepane.label.no-fill", "No Fill"},
+</programlisting>
+</para>
+		</listitem>
+		<listitem>
+		  <para>
+Contact all the language-teams so that they can update their files.
+</para>
+		</listitem>
+	      </orderedlist>
+	      <para>
+Notice that if you somewhere change the meaning of a specific
+localized thing it would be a good idea to use a new "tag" for the
+new meaning.
+This will make it easier for the translation team to
+spot the modification.
+</para>
+	      <para>
+There eledgedly are tools in the java world to spot this kind of changes.
+Until we have the tools and processes in place to handle them
+it is better to rely on this simpler mechanism to guarantee correctness.
+</para>
+	    </listitem>
+	  </itemizedlist>
+</para>
+      </sect2>
+</sect1>
+
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "cookbook.xml"
+sgml-parent-document: ("cookbook.xml" "sect1" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  cookbook.xml"
+End:
+
+-->

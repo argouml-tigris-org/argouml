@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
+
+    <sect1 id="model">
+      <title>Model</title>
+      <para id="comp-model-purpose">
+Purpose - to provide the data structures that keep track of the model
+and the diagrams. 
+This comes with a complete set of methods to modify the model
+and register interest in changes to the model.
+</para>
+      <para>
+The Model is located in <classname>org.argouml.model</classname>.
+</para>
+      <para>
+The Model is a Layer 1 component. See <xref linkend="layer1"></xref>.
+</para>
+      <para>
+This is implemented using NSUML to implement the UML model.
+</para>
+      <para>
+ArgoUML uses several factories and helperclasses to manipulate the NSUML
+model. 
+The NSUML model itself does not define enough 'business' logic
+to be directly used and the factories and helperclasses provide a
+centralized place for accessing this 'business' logic.
+Per section of chapter 2 of the UML 1.3 specification there is one factory
+and one helper. They are placed in their own packages. The package name
+convention is:
+<classname>org.argouml.model.uml.SECTIONNAME</classname>
+where sectionname is one of the following:
+<itemizedlist>
+	  <listitem>
+	    <para>foundation</para>
+	  </listitem>
+	  <listitem>
+	    <para>foundation.core</para>
+	  </listitem>
+	  <listitem>
+	    <para>foundation.extensionmechanisms</para>
+	  </listitem>
+	  <listitem>
+	    <para>foundation.datatypes</para>
+	  </listitem>
+	  <listitem>
+	    <para>behavioralelements</para>
+	  </listitem>
+	  <listitem>
+	    <para>behavioralelements.commonbehavior</para>
+	  </listitem>
+	  <listitem>
+	    <para>behavioralelements.statemachines</para>
+	  </listitem>
+	  <listitem>
+	    <para>behavioralelements.usecases</para>
+	  </listitem>
+	  <listitem>
+	    <para>behavioralelements.collaborations</para>
+	  </listitem>
+	  <listitem>
+	    <para>behavioralelements.activitygraphs</para>
+	  </listitem>
+	  <listitem>
+	    <para>modelmanagement</para>
+	  </listitem>
+	</itemizedlist>
+</para>
+      <para>
+Each package has at least a helper and a factory in it.
+The factories contain all methods that deal with
+creating and building modelelements.
+The helpers contain all utility methods needed to manipulate
+the modelelements.
+</para>
+      <para>
+Both helpers and factories are singletons.
+The static method to access them is
+<methodname>getFactory</methodname> for the factory
+and <methodname>getHelper</methodname> for the helper.
+</para>
+      <sect2>
+	<title>Factories</title>
+	<para>
+The factories contain at least for each modelelement a create method.
+Example: <methodname>createClass</methodname>
+resides in <classname>CoreFactory</classname> in the package
+<classname>org.argouml.model.uml.foundation.core</classname>.
+Besides that, there are several buildmethods to build classes.
+The build methods have a signature like
+<methodsynopsis>
+	    <modifier>public</modifier>
+	    <type><replaceable>MODELELEMENT</replaceable></type>
+	    <methodname>build<replaceable>MODELELEMENTNAME</replaceable></methodname>
+	    <methodparam>
+	      <parameter><replaceable>params</replaceable></parameter>
+	    </methodparam>
+	  </methodsynopsis>.
+</para>
+	<para>
+Each build method verifies the wellformednessrules
+as defined in the UML spec 1.3.
+The reason for this is that NS-UML does not enforce
+the wellformedness rules even though non-wellformed UML can lead to
+non-wellformed XMI which leads to saving/loading issues and
+all kinds of illegal states of argouml.
+</para>
+	<para>
+If you want to create an element you shall use the create methods
+in the factories.
+You are strongly advised to use a build method or, if there is
+none that suits your needs, to build one thereby reusing the allready
+existing build methods and utility methods in the helpers.
+One reason for this is that the eventlisteners for
+the newly created modelelement are setup correctly.
+</para>
+        <para>
+TODO: Am I allowed to call the factories from any thread?
+</para>
+      </sect2>
+      <sect2>
+	<title>Helpers</title>
+	<para>
+The helpers contain all utility methods for manipulating modelelements.
+For example, they contain methods to get all modelelements
+of a certain class out of the model
+(see <methodname>getAllModelelementsOfKind</methodname> in 
+<classname>ModelmanagementHelper</classname>).
+</para>
+	<para>
+To find a utility method you need to know where it is.
+As a rule of thumb, a utility method for some modelelement 
+is defined in the helper that corresponds with the section
+in the UML specification.
+For example, all utility methods for manipulating classes 
+are defined in <classname>CoreHelper</classname>.
+</para>
+	<para>
+There are a few exceptions to this rule, mainly if 
+the utility method deals with two modelelements 
+that correspond to different sections in the UML
+specification.
+Then you have to look in both corresponding helpers and you
+will probably find what you are searching for.
+</para>
+        <para>
+TODO: Am I allowed to call the helpers from any thread?
+</para>
+      </sect2>
+
+
+      <sect2>
+	<title>The model event pump</title>
+	<sect3>
+	  <title>Introduction</title>
+	  <para>
+Late 2002, the ArgoUML community decided for the introduction of a clean
+interface between the NSUML model and the rest of ArgoUML.
+This interface consists of three parts:
+<orderedlist>
+	      <listitem>
+		<para>
+The model factories, responsible for creation and deletion of modelelements
+</para>
+	      </listitem>
+	      <listitem>
+		<para>
+The model helpers, responsible for utility functions to manipulate the
+modelelements and
+</para>
+	      </listitem>
+	      <listitem>
+		<para>
+The model event pump, responsible for sending model events to the rest
+of ArgoUML.
+</para>
+	      </listitem>
+	    </orderedlist>
+</para>
+	  <para>
+In other paragraphs the model factories and the model helpers are
+already introduced.
+Therefore we won't discuss them here again.
+</para>
+	  <para>
+The model event pump is the gateway between the model elements and the
+rest of ArgoUML.
+Events fired by the modelelements are catched by the pump and then
+'pumped' to those listeners interested in them.
+The main advantage of this model is that the registration of listeners
+is concentrated in one place (see picture *).
+This makes it easier to change the interface between the model and the
+rest of argouml.
+</para>
+	  <para>
+Besides this, there are some improvements to the performance of the
+pump made in comparision to the situation without the pump.
+The main improvement is that you can register for just one type of
+event and not for all events fired by some modelelement.
+</para>
+	  <para>
+<mediaobject>
+	      <imageobject>
+		<imagedata fileref="images/cookbook/eventsbeforepump.gif" format="gif"/>
+	      </imageobject>
+	    </mediaobject>
+</para>
+	  <para>
+<mediaobject>
+	      <imageobject>
+		<imagedata fileref="images/cookbook/eventsafterpump.gif" format="gif"/>
+	      </imageobject>
+	    </mediaobject>
+</para>
+
+	  <para>
+The model event pump will replace all other event mechanisms for model
+events in the future.
+These mechanisms (like UMLChangeDispatch and ThirdPartyEventlisteners
+for those who are interested) are DEPRECATED.
+Do not use them therefore and do not use classes that use them.
+</para>
+	</sect3>
+	<sect3>
+	  <title>Public API</title>
+	  <para>
+You might wonder: how does this all work?
+Well, very simple in fact.
+</para>
+	  <para>
+A modelevent (from now on a MEvent) has a name that uniquely
+identifies the type of the event.
+
+In most cases the name of the MEvent is equal to the name of the
+property that was changed in the model.
+
+In fact, there is even a 1-1 relationship between the type of MEvent
+and the property changed in the model.
+
+Therefore most listeners that need MEvents are only interested in one
+type of MEvent since they are only interested in the status of 1
+property.
+</para>
+        <para>
+TODO: What thread will I receive my event in? 
+What locks will be held by the Model while I receive my event i.e.
+is there something I cannot do from the event thread?
+</para>
+	  <para>
+In the case described above (the most common one) you only have to
+subscribe with the pump for that type of event.
+This is explained in section <xref linkend="pump-register-listener-for-type"/>
+and <xref linkend="pump-remove-listener-for-event"/>
+</para>
+	  <para>
+Besides the case that you are interested in only one type of event (or
+a set of types), there are occasions that you are interested in all
+events fired by a certain modelelement or even for all events fired by
+a certain type of modelelement.
+
+For these cases, the pump has functionality too.
+
+This is described in section 
+<xref linkend="pump-methods-for-adding-and-removing"/>.
+</para>
+	  <sect4 id="pump-register-listener-for-type">
+	    <title>
+How do I register a listener for a certain type event
+</title>
+	    <para>
+This is really very simple. Use the model
+<programlisting>
+addModelEventListener(MElementListener listener, MBase modelelement, String eventName)
+</programlisting>
+like this:
+<programlisting>
+UmlModelEventPump.getPump().addModelEventListener(this, modelelementIAmInterestedIn, "IamInterestedInThisEventnameType");
+</programlisting>
+Now your object this gets only the <classname>MEvents</classname>
+fired by modelElementIAmInterestedIn that have the name
+"IamInterestedInThisEventnameType".
+</para>
+	  </sect4>
+	  <sect4 id="pump-remove-listener-for-event">
+	    <title>How do I remove a listener for a certain event</title>
+	    <para>
+This is the opposite of registering a listener. It all works with the
+method
+<programlisting>
+removeModelEventListener(MElementListener listener, MBase modelElement, String eventName)
+</programlisting>
+on <classname>UmlModelEventPump</classname> like this:
+<programlisting>
+UmlModelEventPump.getPump().removeModelEventListener(this, modelelementIAmInterestedIn, "IamInterestedInThisEventnameType");
+</programlisting>
+Now your object is not registered any more for this event type. 
+</para>
+	  </sect4>
+	  <sect4 id="pump-methods-for-adding-and-removing">
+	    <title>
+Hey, I saw some other methods for adding and removing?
+</title>
+	    <para>
+Yes there are some other method for adding and removing. 
+
+You can add a listener that is interested in ALL events fired by a
+certain modelelements.
+
+This works with the method:
+<programlisting>
+addModelEventListener(MElementListener listener, MBase modelelement)
+</programlisting>
+As you can see no names of events you can register for here.
+</para>
+	    <para>
+Furthermore, you can add a listener that is interested in several
+types of events but coming from 1 modelelement.
+
+This is a convenience method for not having to call the methods
+explained in section
+<xref linkend="pump-register-listener-for-type"/>
+more than once.
+
+It works via:
+<programlisting>
+addModelEventListener(MElementListener listener, MBase modelelement, String[] eventNames)
+</programlisting>
+</para>
+	    <para>
+You can pass the method an array of strings with eventnames in which
+your listener is interested.
+</para>
+	    <para>
+Thirdly there is a very powerfull method to register your listener to
+ALL events fired by a ALL modelelements of a certain class.
+
+You can understand that using this method can have severe performance
+impacts.
+Therefore use it with care. 
+
+The method is:
+<programlisting>
+addClassModelEventListener(MElementListener listener, Class modelClass)
+</programlisting>
+There are also methods that allow you to register only for one type of
+event fired by all modelelements of a certain class and to register
+for a set of types of events fired by all modelements of a certain
+class.
+</para>
+	    <para>
+Of course you can remove your listeners from the event pump. 
+This works with methods starting with remove instead of add.
+</para>
+	  </sect4>
+	</sect3>
+	<sect3>
+	  <title>Tips</title>
+	  <orderedlist>
+	    <listitem>
+	      <para>
+Don't forget to remove your listener from the eventpump if it's not
+interested in some event any more.
+</para>
+	      <para>
+If you do not remove it, that's gonna cost performance and it will
+give you a hard time to debug all the logical bugs you see in your
+listener.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+When you implement your listener, it is wise to NOT DO the following:
+<programlisting>
+propertyChanged(MElementEvent event) {
+      // do my thing for event type 1
+      // do my thing for event type 2
+      // etc.
+}
+</programlisting>
+</para>
+	    <para>
+This will cause the things that need to be done for event type 1 to be
+fired when event type 2 do arrive.
+</para>
+	      <para>
+This still happens at a lot of places in the code of ArgoUML, most
+notably in the modelChanged method of the children of
+FigEdgeModelElement.
+</para>
+	    </listitem>
+	  </orderedlist>
+	</sect3>
+	<sect3>
+	  <title>The future</title>
+	  <para>
+Some people might wonder if we cannot make a better interface between
+the model and the rest of ArgoUML if we use our own event types.
+
+These people are right. 
+
+There are plans to replace the MElementListener with
+PropertyChangeListeners and using the PropertyChangeEvents instead of
+the MElementEvent.
+
+This has not been done yet since this involves a lot of work and
+testing.
+</para>
+	    <para>
+Next to this, it is likely that the implementation of the Event pump
+itself is going to change.
+
+Not the API but the implementation! At the moment the event pump does
+not use the AWT Event Thread for dispatching events.
+
+This can make argouml slow (in the perception of the user). 
+</para>
+	    <para>
+Besides that, the current implementation does not use the standard
+data structure that Swing uses for event registriation
+(i.e. <classname>javax.swing.EventListenerList</classname>).
+
+We are in the process of researching if it is a good thing to use this
+standard instead of our own implementation.
+</para>
+	</sect3>
+      </sect2>
+
+<!--
+      <sect2>
+	<title>Collaborations for Model</title>
+	<para>
+The Model does not use much of the other parts of ArgoUML.
+It is provided for use of others.
+</para>
+      </sect2>
+-->
+
+      <sect2 id="howdoi_model">
+	<title>How do I...?</title>
+	<itemizedlist>
+	  <listitem>
+	    <para>...create a new create method?</para>
+	    <para>
+Create it in the correct factory.
+</para>
+	    </listitem>
+	  <listitem>
+	    <para>...create a new utility method?</para>
+	    <para>
+Create it in the correct helper.
+</para>
+	    </listitem>
+	</itemizedlist>
+      </sect2>
+    </sect1>
+
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "cookbook.xml"
+sgml-parent-document: ("cookbook.xml" "sect1" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  cookbook.xml"
+End:
+
+-->

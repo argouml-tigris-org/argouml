@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
+
+  <chapter id="requirements">
+    <chapterinfo>
+      <authorgroup>
+	<author>
+	  <firstname>Linus</firstname>
+	  <surname>Tolke</surname>
+	</author>
+      </authorgroup>
+    </chapterinfo>
+    <title>ArgoUML requirements</title>
+
+    <para>
+This chapter contains a description on how ArgoUML should work
+and behave for the users.
+</para>
+
+    <para>
+These things might not be implemented yet and the solutions
+might not even be clear but it is a definition of the goal.
+</para>
+    <para>
+The fact that it is not implemented or doesn't work as stated here
+should be registered as a bug 
+in the bug registering tool.
+</para>
+
+    <sect1>
+      <title>Requirements for Look and feel</title>
+      <para>
+This describes how the ArgoUML look and feel shall behave.
+</para>
+      <para>
+<orderedlist>
+	  <listitem>
+	    <para>
+When multiple visual components are showing the same model element
+they shall be updated in a consistent manner throughout the application.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+As soon as the model element changes then all views shall update.
+For text fields, this can be at every key stroke.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+There shall be no indication of an exception on the screen or in the
+log if it has occured merely because of a user mistyping or not being
+aware of UML syntax.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+All text fields shall have context sensitive help.
+</para>
+	    <para>
+As follows:
+<orderedlist>
+		<listitem>
+		  <para>
+A tooltip that explains the data and format expected by the
+particular field.
+</para>
+		  <para>
+This can be omitted when there is a header stating the data of
+the field and the format is obvious.
+</para>
+		</listitem>
+		<listitem>
+		  <para>
+Pressing F1 or choosing help from the menu shall display a popup
+window explaining for data and format required by the current input
+field. 
+Input focus shall be left on the field during any user
+interaction with the popup (dragging, scrolling or closing).
+</para>
+		</listitem>
+	      </orderedlist>
+</para>
+
+	  </listitem>
+	</orderedlist>
+ 
+</para>
+    </sect1>
+
+    <sect1>
+      <title>Requirements for UML</title>
+      <para>
+<orderedlist>
+	  <listitem>
+	    <para>
+ArgoUML shall be a correct implementation of the UML 1.3 model.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+ArgoUML shall implement everything in the UML 1.3 model.
+</para>
+	  </listitem>
+	</orderedlist>
+</para>
+    </sect1>
+
+    <sect1>
+      <title>Requirements on java and jvm</title>
+      <para>
+<orderedlist>
+	  <listitem>
+	    <para>Choice of JRE</para>
+	    <para>
+It shall be possible to run ArgoUML with any Java2 compliant JRE.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>Download and start</para>
+	    <para>
+It shall be possible to install ArgoUML locally on the machine
+and use without Internet connection.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>Console output</para>
+	    <para>
+Logging or tracing information shall not be written to the console
+or to any file unless explicitly turned on by the user.
+</para>
+	  </listitem>
+	</orderedlist>
+</para>
+    </sect1>
+
+    <sect1>
+      <title>Requirements set up for the benefit of the development of ArgoUML</title>
+      <para>
+<orderedlist>
+	  <listitem>
+	    <para>Logging</para>
+	    <para>
+The code shall contain entries logging important information
+for the purpose of helping Developers of ArgoUML in finding problems
+in ArgoUML itself.
+</para>
+	  </listitem>
+	</orderedlist>
+</para>
+    </sect1>
+
+  </chapter>
+
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "cookbook.xml"
+sgml-parent-document: ("cookbook.xml" "chapter" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  cookbook.xml"
+End:
+
+-->

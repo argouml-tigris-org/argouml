@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
+
+  <chapter id="standards">
+    <title>Standards for coding in ArgoUML</title>
+    <indexterm>
+      <primary>Coding</primary>
+      <secondary>Standards</secondary>
+    </indexterm>
+    <indexterm>
+      <primary>Standards</primary>
+      <secondary>Coding</secondary>
+    </indexterm>
+    <para>
+The coding style for ArgoUML is the following
+</para>
+    <itemizedlist>
+      <listitem>
+	<para>
+Each file starts with some header info: 
+file, 
+version info, 
+copyright notice,
+classes in this file (if more than one),
+original author (if you want).
+Like this:
+<programlisting>
+// &dollar;Id&dollar;
+// Copyright (c) 2003 The Regents of the University of California. All
+// ...
+
+// Classes: blabla, blabla (all classes of interest in this file)
+// Original Author: who ever
+</programlisting>
+</para>
+      </listitem>
+      <listitem>
+	<para>
+All instance variables are private and their names begin with an underscore.
+If the variable should be accessible then add public or protected
+accessor methods with the same name as the variable without the
+underscore with "get" or "set" prepended.
+For example:
+<varname>_lineWidth</varname>, 
+<methodname>setLineWidth()</methodname>, and 
+<methodname>getLineWidth()</methodname>.
+</para>
+      </listitem>
+      <listitem>
+	<para>
+In general, write short code.
+If a method will fit comfortably on one line, then put it on one line.
+</para>
+      </listitem>
+      <listitem>
+	<para>
+Use javadoc for each class, instance variable, and method. 
+In general do not put comments in the body of a method. 
+If you are doing something complex enough to need a comment, consider
+breaking it out into its own private commented method.
+</para>
+      </listitem>
+      <listitem>
+	<para>
+Indicate places of future modifications with 
+<programlisting>
+// TODO: reason
+</programlisting>
+</para>
+      </listitem>
+      <listitem>
+	<para>
+Name all classes with an initial uppercase letter, and all variables
+and methods with a lowercase one. 
+I use the <varname>allTogetherWithCaps</varname> naming style.
+Name static variables with an underscore and an inital capital letter,
+e.g., <varname>_PossibleLanguages</varname>.
+Name constants with all upper case and underscores, e.g., 
+<constant>GRIP_MARGIN</constant>.
+</para>
+      </listitem>
+      <listitem>
+	<para>
+To emphasize clusters of classes we are using what we call the binomial
+naming style (I am sure others have thought of this also): 
+The root class of the cluster has a short name (e.g., Layer), 
+other members of the cluster use that name as a prefix (e.g., LayerGrid).
+This makes many of the class name longer than they might be normally (e.g., Grid would be shorter).
+But this provides a lot of context without
+having to look at a class inheritance diagram.
+It is also very nice when you have to look at an alphabetical list
+of classes. I try to name class clusters so that they are not lexigraphically close others (e.g., the Net cluster
+used to be named Model, but that lexigraphically overlapped the Mode cluster).
+</para>
+      </listitem>
+      <listitem>
+	<para>
+Four spaces should be used as the unit of indentation.
+Tabs must be set exactly every 8 spaces (not 4) and represent 2 indents.
+</para>
+	<para>
+This is exactly as it is stated in the Sun Code Conventions.
+It is here just for the emphasis.
+</para>
+      </listitem>
+      <listitem>
+	<para>
+If possible use lines shorter than 80 charaters wide.
+</para>
+	<para>
+This is exactly as it is stated in the Sun Code Conventions.
+It is here just for the emphasis.
+</para>
+      </listitem>
+      <listitem>
+	<para>
+Open brace on same line (at end).
+Both for if/while/for and for class and functions definitions.
+</para>
+	<para>
+This is exactly as it is stated in the Sun Code Conventions.
+It is here just for the emphasis.
+</para>
+      </listitem>
+      <listitem>
+	<para>
+For everything else follow
+<ulink url="http://java.sun.com/docs/codeconv/html/CodeConvTOC.doc.html">
+Code Conventions for the Java Programming Language
+</ulink>!
+</para>
+      </listitem>
+    </itemizedlist>
+  </chapter>
+
+
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "cookbook.xml"
+sgml-parent-document: ("cookbook.xml" "chapter" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  cookbook.xml"
+End:
+
+-->
