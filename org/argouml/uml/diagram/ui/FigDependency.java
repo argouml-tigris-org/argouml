@@ -127,6 +127,9 @@ public class FigDependency extends FigEdgeModelElement {
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
+     */
     public void setFig(Fig f) {
         super.setFig(f);
         _fig.setDashed(true);
@@ -134,6 +137,9 @@ public class FigDependency extends FigEdgeModelElement {
         // this recomputes the route if you reload the diagram.
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#canEdit(org.tigris.gef.presentation.Fig)
+     */
     protected boolean canEdit(Fig f) {
         return false;
     }
@@ -141,14 +147,21 @@ public class FigDependency extends FigEdgeModelElement {
     ////////////////////////////////////////////////////////////////
     // event handlers
 
-    /** This is called aftern any part of the UML MModelElement has
-     *  changed. This method automatically updates the name FigText.
-     *  Subclasses should override and update other parts. */
+    /** 
+     * This is called aftern any part of the UML MModelElement has
+     * changed. This method automatically updates the name FigText.
+     * Subclasses should override and update other parts.
+     * 
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     */
     protected void modelChanged(MElementEvent e) {
         // do not set _name
         updateStereotypeText();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
+     */
     public void paint(Graphics g) {
         endArrow.setLineColor(getLineColor());
         super.paint(g);

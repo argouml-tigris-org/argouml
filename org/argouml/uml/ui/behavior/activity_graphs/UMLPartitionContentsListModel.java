@@ -42,7 +42,7 @@ public class UMLPartitionContentsListModel extends UMLModelElementListModel2 {
      */
     public UMLPartitionContentsListModel() {
         super("contents");
-        // TODO Auto-generated constructor stub
+        // TODO: Auto-generated constructor stub
     }
 
     /**
@@ -51,7 +51,7 @@ public class UMLPartitionContentsListModel extends UMLModelElementListModel2 {
     protected void buildModelList() {
         removeAllElements();
         addElement(ModelFacade.getContents(getTarget()));
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
 
     }
 
@@ -59,7 +59,7 @@ public class UMLPartitionContentsListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
      */
     protected boolean isValidElement(Object element) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return false;
     }
 

@@ -124,7 +124,7 @@ public class UMLActivityDiagram extends UMLDiagram {
                     "Transition"));
 
 
-	//_actionNewSwimlane = new CmdCreateNode(ModelFacade.PARTITION, 
+	// actionNewSwimlane = new CmdCreateNode(ModelFacade.PARTITION, 
 	// "Create a new swimlane");
 
         actionCallState = new RadioAction(
@@ -285,13 +285,13 @@ public class UMLActivityDiagram extends UMLDiagram {
 	    actionJunctionPseudoState,
 	    actionForkPseudoState,
 	    actionJoinPseudoState,
-	    //_actionNewSwimlane,
+	    //actionNewSwimlane,
 	    null,
 	    /*actionCallState,*/ // uncomment these ...
             actionObjectFlowState,
             /*actionSubactivityState,*/
-	    /*getExtendedActions(),
-            null, */
+	    /*getExtendedActions(),*/
+            null,
 	    _actionComment,
             _actionCommentLink
 	};
