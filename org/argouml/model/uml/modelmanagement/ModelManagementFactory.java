@@ -47,14 +47,16 @@ public class ModelManagementFactory extends AbstractUmlModelFactory {
 
     /** Singleton instance.
      */
-    private static ModelManagementFactory SINGLETON =
+    private static ModelManagementFactory singleton =
                    new ModelManagementFactory();
 
     /**
      * Singleton instance access method.
+     *
+     * @return the singleton
      */
     public static ModelManagementFactory getFactory() {
-        return SINGLETON;
+        return singleton;
     }
 
     /** Don't allow instantiation
@@ -121,12 +123,24 @@ public class ModelManagementFactory extends AbstractUmlModelFactory {
 	return modelElement;
     }
 
+    /**
+     * @param elem to be deleted
+     */
     public void deleteElementImport(MElementImport elem) { }
 
+    /**
+     * @param elem to be deleted
+     */
     public void deleteModel(MModel elem) { }
 
+    /**
+     * @param elem to be deleted
+     */
     public void deletePackage(MPackage elem) { }
 
+    /**
+     * @param elem to be deleted
+     */
     public void deleteSubsystem(MSubsystem elem) { }
 
     /**
