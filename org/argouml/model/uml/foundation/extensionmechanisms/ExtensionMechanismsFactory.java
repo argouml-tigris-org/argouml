@@ -48,7 +48,7 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
 
     /** Singleton instance.
      */
-    private static ExtensionMechanismsFactory SINGLETON =
+    private static final ExtensionMechanismsFactory SINGLETON =
 	new ExtensionMechanismsFactory();
 
     /**
@@ -189,10 +189,8 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
 
     /**
      * Used by the copy functions. Do not call this function directly.
-     * TODO: Why is this public? I think it shouldn't be.
-     * @deprecated by Linus Tolke as of 0.15.4. Will be private.
      */
-    public void doCopyStereotype(MStereotype source, MStereotype target) {
+    private void doCopyStereotype(MStereotype source, MStereotype target) {
 	CoreFactory.getFactory().doCopyGeneralizableElement(source, target);
 	target.setBaseClass(source.getBaseClass());
 	target.setIcon(source.getIcon());

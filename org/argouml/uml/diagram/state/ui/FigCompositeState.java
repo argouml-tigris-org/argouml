@@ -30,7 +30,6 @@ import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
@@ -46,15 +45,6 @@ import ru.novosoft.uml.MElementEvent;
  * @author jrobbins@ics.uci.edu
  */
 public class FigCompositeState extends FigState {
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
-     */
-    protected static Logger cat =
-	Logger.getLogger(FigCompositeState.class);
-
-    ////////////////////////////////////////////////////////////////
-    // constants
 
     public final int MARGIN = 2;
 
@@ -112,10 +102,16 @@ public class FigCompositeState extends FigState {
         setOwner(node);
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
+     */
     public String placeString() {
         return "new MCompositeState";
     }
 
+    /**
+     * @see java.lang.Object#clone()
+     */
     public Object clone() {
         FigCompositeState figClone = (FigCompositeState) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
@@ -130,6 +126,9 @@ public class FigCompositeState extends FigState {
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
+     */
     public Dimension getMinimumSize() {
         Dimension nameDim = getNameFig().getMinimumSize();
         Dimension internalDim = _internal.getMinimumSize();
@@ -139,11 +138,18 @@ public class FigCompositeState extends FigState {
         return new Dimension(w, h);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
+     */
     public boolean getUseTrapRect() {
         return true;
     }
 
-    /* Override setBounds to keep shapes looking right */
+    /**
+     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     *
+     * Override setBounds to keep shapes looking right.
+     */
     public void setBounds(int x, int y, int w, int h) {
         if (getNameFig() == null) {
             return;
@@ -169,33 +175,60 @@ public class FigCompositeState extends FigState {
     ////////////////////////////////////////////////////////////////
     // fig accessors
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
+     */
     public void setLineColor(Color col) {
         _cover.setLineColor(col);
         _divider.setLineColor(col);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getLineColor()
+     */
     public Color getLineColor() {
         return _cover.getLineColor();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
+     */
     public void setFillColor(Color col) {
         _cover.setFillColor(col);
     }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#getFillColor()
+     */
     public Color getFillColor() {
         return _cover.getFillColor();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
+     */
     public void setFilled(boolean f) {
         _cover.setFilled(f);
     }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#getFilled()
+     */
     public boolean getFilled() {
         return _cover.getFilled();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
     public void setLineWidth(int w) {
         _cover.setLineWidth(w);
         _divider.setLineWidth(w);
     }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#getLineWidth()
+     */
     public int getLineWidth() {
         return _cover.getLineWidth();
     }
@@ -203,7 +236,11 @@ public class FigCompositeState extends FigState {
     ////////////////////////////////////////////////////////////////
     // event processing
 
-    /** Update the text labels */
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     *
+     * Update the text labels.
+     */
     protected void modelChanged(MElementEvent mee) {
         super.modelChanged(mee);
 
@@ -215,6 +252,9 @@ public class FigCompositeState extends FigState {
 
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
+     */
     public void textEdited(FigText ft) throws PropertyVetoException {
         super.textEdited(ft);
         if (ft == _internal) {

@@ -36,7 +36,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
@@ -50,12 +49,6 @@ import org.tigris.gef.presentation.FigText;
 /** Class to display graphics for a UML Component in a diagram. */
 
 public class FigComponent extends FigNodeModelElement {
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
-     */
-    protected static Logger cat = Logger.getLogger(FigComponent.class);
-
     /** The distance between the left edge of the fig and the left edge of the
 	main rectangle. */
     private static final int BIGPORT_X = 10;
@@ -70,6 +63,9 @@ public class FigComponent extends FigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * Constructor.
+     */
     public FigComponent() {
 	_cover = new FigRect(BIGPORT_X, 10, 120, 80, Color.black, Color.white);
 	_upperRect = new FigRect(0, 20, 20, 10, Color.black, Color.white);
@@ -98,10 +94,16 @@ public class FigComponent extends FigNodeModelElement {
 	updateBounds();
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
+     */
     public String placeString() {
 	return "new Component";
     }
 
+    /**
+     * @see java.lang.Object#clone()
+     */
     public Object clone() {
 	FigComponent figClone = (FigComponent) super.clone();
 	Iterator it = figClone.getFigs(null).iterator();
@@ -122,6 +124,9 @@ public class FigComponent extends FigNodeModelElement {
 	getNameFig().setUnderline(b);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
+     */
     public void setLineColor(Color c) {
 	//super.setLineColor(c);
 	_cover.setLineColor(c);
@@ -134,10 +139,16 @@ public class FigComponent extends FigNodeModelElement {
     }
 
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#makeSelection()
+     */
     public Selection makeSelection() {
 	return new SelectionComponent(this);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
+     */
     public Dimension getMinimumSize() {
 	Dimension stereoDim = getStereotypeFig().getMinimumSize();
 	Dimension nameDim = getNameFig().getMinimumSize();
@@ -148,6 +159,9 @@ public class FigComponent extends FigNodeModelElement {
 	return new Dimension(w, h);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     */
     public void setBounds(int x, int y, int w, int h) {
 
 	Rectangle oldBounds = getBounds();
@@ -198,6 +212,9 @@ public class FigComponent extends FigNodeModelElement {
       }
     */
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
+     */
     public void setEnclosingFig(Fig encloser) {
     
 	if (encloser != null
@@ -211,14 +228,10 @@ public class FigComponent extends FigNodeModelElement {
 	    }
 	    super.setEnclosingFig(encloser);
         
-
-	    Vector figures = getEnclosedFigs();
-    
 	    if (getLayer() != null) {
 		// elementOrdering(figures);
 		Collection contents = getLayer().getContents(null);
                 Iterator it = contents.iterator();
-		int contentsSize = contents.size();
 		while (it.hasNext()) {
 		    Object o = it.next();
 		    if (o instanceof FigEdgeModelElement) {
@@ -289,12 +302,18 @@ public class FigComponent extends FigNodeModelElement {
 	}
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
+     */
     public boolean getUseTrapRect() { return true; }
 
 
     ////////////////////////////////////////////////////////////////
     // internal methods
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
+     */
     protected void updateStereotypeText() {
 	Object me = /*(MModelElement)*/ getOwner();
 	if (me == null) return;
@@ -317,8 +336,11 @@ public class FigComponent extends FigNodeModelElement {
 
 
 
-    /** Get the rectangle on whose corners the dragging handles are to
-     *  be drawn.  Used by Selection Resize.
+    /**
+     * @see org.tigris.gef.presentation.Fig#getHandleBox()
+     *
+     * Get the rectangle on whose corners the dragging handles are to
+     * be drawn.  Used by Selection Resize.
      */
     public Rectangle getHandleBox() {
 
@@ -328,6 +350,9 @@ public class FigComponent extends FigNodeModelElement {
 
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setHandleBox(int, int, int, int)
+     */
     public void setHandleBox( int x, int y, int w, int h ) {
 
   	setBounds( x - BIGPORT_X, y, w + BIGPORT_X, h );
