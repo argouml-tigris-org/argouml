@@ -31,6 +31,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.argouml.kernel.Project;
 import org.argouml.persistence.LastLoadInfo;
 import org.argouml.persistence.OpenException;
 import org.argouml.persistence.ZargoFilePersister;
@@ -38,13 +39,13 @@ import org.argouml.persistence.ZargoFilePersister;
 /**
  * Testcase to load projects without exception.
  */
-public class TestArgoParser extends TestCase {
+public class TestZargoFilePersister extends TestCase {
     /**
      * The constructor.
      *
      * @param name the name
      */
-    public TestArgoParser(String name) {
+    public TestZargoFilePersister(String name) {
         super(name);
     }
 
@@ -59,7 +60,7 @@ public class TestArgoParser extends TestCase {
      * @return the test suite
      */
     public static Test suite() {
-        TestSuite suite = new TestSuite(TestArgoParser.class);
+        TestSuite suite = new TestSuite(TestZargoFilePersister.class);
 
         return suite;
     }
@@ -70,12 +71,13 @@ public class TestArgoParser extends TestCase {
      * @param filename of the project file to load
      * @throws OpenException if something goes wrong.
      */
-    private void loadProject(String filename) throws OpenException {
-        URL url = TestArgoParser.class.getResource(filename);
+    private Project doLoad(String filename) throws OpenException {
+        URL url = TestZargoFilePersister.class.getResource(filename);
         ZargoFilePersister persister = new ZargoFilePersister();
-        persister.doLoad(url);
+        Project p = persister.doLoad(url);
         assertTrue("Load Status for " + filename + ".",
                LastLoadInfo.getInstance().getLastLoadStatus());
+        return p;
     }
 
     /**
@@ -83,16 +85,28 @@ public class TestArgoParser extends TestCase {
      *
      * @throws Exception when e.g. the filke is not found
      */
-    public void testLoadProject1() throws Exception {
-        loadProject("/testmodels/Empty.zargo");
+    public void testDoLoad1() throws Exception {
+        doLoad("/testmodels/Empty.zargo");
     }
+    
     /**
      * Test loading a zargo.
      *
      * @throws Exception when e.g. the filke is not found
      */
-    public void testLoadProject2() throws Exception {
-        loadProject("/testmodels/Alittlebitofeverything.zargo");
+    public void testDoLoad2() throws Exception {
+        doLoad("/testmodels/Alittlebitofeverything.zargo");
+    }
+
+    /**
+     * Test saving a zargo.
+     *
+     * @throws Exception when e.g. the filke is not found
+     */
+    public void testSave() throws Exception {
+        Project p = doLoad("/testmodels/Alittlebitofeverything.zargo");
+        ZargoFilePersister persister = new ZargoFilePersister();
+        persister.save(p, new File("Alittlebitofeverything2.zargo"));
     }
 
     /**
