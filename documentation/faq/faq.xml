@@ -736,6 +736,48 @@ Also include what version of ArgoUML you are running and on what platform
 	<title>CVS</title>
 				<qandaentry>
 					<question>
+						<para>I'm having problems with WinCVS, can you help?</para>
+					</question>
+					<answer>
+						<para>Hi all,</para>
+
+<para>after realizing that others who are authorized also have problems
+to commit to CVS, I will write how I solved this (thanks to Toby).</para>
+
+<para>CVS stores in each directory the user id of the last access, and
+this is in most cases 'guest'. If one gets a user id with commit
+rights (in my case 'thn'), then a 'cvs commit' without explicitely
+saying for which user (I think it's the '-d' option) will look for
+that stored id and use this. Since 'guest' has no commit rights,
+this will of course fail.</para>
+<para>
+
+Deleting the whole source tree will solve the problem, sure, but
+this is like we germans say: shooting blackbirds with cannons...
+You would need to download all sources again, and that's not
+necessary.</para>
+<para>The most effective way is to change all CVS stored
+'guest@cvs.tigris.org' in the source tree. Just substitute all
+'guest@' by e.g. 'thn@' (be sure to use your own user id!),
+which can surely be done in one command on Unix systems,
+and the problem is solved.</para>
+<para>
+I am using WinXX, so I did this by performing a recursive find
+in Win Explorer (searching for files containing 'guest@', marking
+all with ctrl+a, loading them into a multifile text editor like
+Textpad and do the substitution on all opened files.</para>
+<para>
+
+And then I had the overwhelming experience of my first
+commit with WinCVS... :-)</para>
+<para>
+Good luck,
+Thomas
+</para>
+					</answer>
+				</qandaentry>
+                                <qandaentry>
+					<question>
 						<para>I've got a bunch of people working on the same diagrams. How do I track who is doing what on the diagram? How do I use Argo for CVS?</para>
 					</question>
 					<answer>
