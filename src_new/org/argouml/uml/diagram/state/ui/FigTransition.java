@@ -109,11 +109,14 @@ public class FigTransition extends FigEdgeModelElement {
    *  changed. This method automatically updates the name FigText.
    *  Subclasses should override and update other parts. */
   protected void modelChanged() {
+    super.modelChanged();
     MModelElement me = (MModelElement) getOwner();
     if (me == null) return;
     cat.debug("FigTransition modelChanged: " + me.getClass());
     String nameStr = Notation.generate(this, me);
     _name.setText(nameStr);
+    _name.calcBounds();
+    _name.damage();
   }
   
   protected int[] flip(int[] Ps) {
