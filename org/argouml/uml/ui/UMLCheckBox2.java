@@ -180,6 +180,7 @@ public abstract class UMLCheckBox2
      * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
+        setTarget(e.getNewTarget());
     }
 
     /**

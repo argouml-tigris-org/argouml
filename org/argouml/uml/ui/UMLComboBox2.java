@@ -111,7 +111,9 @@ public class UMLComboBox2
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        // we stay on the first target, so no need to do anything
+        if (e.getNewTarget() != getTarget()) {
+            removeActionListener(this);
+        }
     }
     
     /**

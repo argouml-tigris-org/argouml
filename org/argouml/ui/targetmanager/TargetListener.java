@@ -26,10 +26,9 @@ package org.argouml.ui.targetmanager;
 import java.util.EventListener;
 
 /**
- * @author gebruiker
- *
- * To change the template for this generated type comment go to
- * Window>Preferences>Java>Code Generation>Code and Comments
+ * Listener for target events. 
+ * 
+ * @author jaap.branderhorst@xs4all.nl
  */
 public interface TargetListener extends EventListener {
     

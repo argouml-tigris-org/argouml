@@ -120,7 +120,8 @@ public abstract class UMLComboBoxModel2
     /**
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(MElementEvent)
      */
-    public void listRoleItemSet(MElementEvent e) { }
+    public void listRoleItemSet(MElementEvent e) { 
+        }
 
     /**
      * If the property that this comboboxmodel depicts is changed by the NSUML
@@ -143,7 +144,8 @@ public abstract class UMLComboBoxModel2
     /**
      * @see ru.novosoft.uml.MElementListener#recovered(MElementEvent)
      */
-    public void recovered(MElementEvent e) { }
+    public void recovered(MElementEvent e) { 
+        }
 
     /**
      * @see ru.novosoft.uml.MElementListener#removed(MElementEvent)
@@ -517,7 +519,9 @@ public abstract class UMLComboBoxModel2
     /**
      * @see TargetListener#targetAdded(TargetEvent)
      */
-    public void targetAdded(TargetEvent e) { }
+    public void targetAdded(TargetEvent e) {
+        setTarget(e.getNewTarget());
+    }
 
     /**
      * @see TargetListener#targetRemoved(TargetEvent)

@@ -25,6 +25,7 @@
 package org.argouml.model.uml.modelmanagement;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -174,8 +175,7 @@ public class ModelManagementHelper {
     }
 
     /**
-     * Returns all modelelements found in this namespace and its children
-     * that are of some class kind the projectbrowser model
+     * Returns all modelelements of the given kind
      *
      * @param kind is the class kind
      * @return Collection
@@ -185,7 +185,12 @@ public class ModelManagementHelper {
             return Collections.EMPTY_LIST;
         Project p = ProjectManager.getManager().getCurrentProject();
         MNamespace model = (MModel) p.getRoot();
-        return getAllModelElementsOfKind(model, kind);
+        Collection ret = getAllModelElementsOfKind(model, kind);
+        if (kind.isAssignableFrom(model.getClass())) {
+            ret = new ArrayList(ret);
+            ret.add(model);
+        }
+        return ret;
     }
 
     /**
