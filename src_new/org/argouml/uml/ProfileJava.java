@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.util.Iterator;
 
 import org.apache.log4j.Category;
+import org.argouml.model.ModelFacade;
 import org.argouml.xml.xmi.XMIReader;
 import org.xml.sax.InputSource;
 
@@ -66,7 +67,7 @@ public class ProfileJava extends Profile {
 	getProfileModel();
     }
 
-    public String formatElement(MModelElement element, MNamespace namespace) {
+    public String formatElement(MModelElement element, Object namespace) {
 	String value = null;
 	if (element == null) {
 	    value = "";
@@ -76,7 +77,7 @@ public class ProfileJava extends Profile {
 	    //   if element is an AssociationEnd use
 	    //      the namespace of containing association
 	    //
-	    if (org.argouml.model.ModelFacade.isAAssociationEnd(element)) {
+	    if (ModelFacade.isAAssociationEnd(element)) {
 		MAssociation assoc =
 		    ((MAssociationEnd) element).getAssociation();
 		if (assoc != null) {
@@ -98,9 +99,8 @@ public class ProfileJava extends Profile {
 	return value;
     }
 
-    protected String defaultAssocEndName(
-					 MAssociationEnd assocEnd,
-					 MNamespace namespace) {
+    protected String defaultAssocEndName(MAssociationEnd assocEnd,
+					 Object namespace) {
 	String name = null;
 	MClassifier type = assocEnd.getType();
 	if (type != null) {
@@ -126,7 +126,7 @@ public class ProfileJava extends Profile {
 	return name;
     }
 
-    protected String defaultAssocName(MAssociation assoc, MNamespace ns) {
+    protected String defaultAssocName(MAssociation assoc, Object ns) {
 	StringBuffer buf = new StringBuffer();
 	Iterator iter = assoc.getConnections().iterator();
 	for (int i = 0; iter.hasNext(); i++) {
@@ -140,25 +140,25 @@ public class ProfileJava extends Profile {
 
     protected String defaultGeneralizationName(
 					       MGeneralization gen,
-					       MNamespace ns) {
+					       Object namespace) {
 	MGeneralizableElement child = gen.getChild();
 	MGeneralizableElement parent = gen.getParent();
 	StringBuffer buf = new StringBuffer();
-	buf.append(formatElement(child, ns));
+	buf.append(formatElement(child, namespace));
 	buf.append(" extends ");
-	buf.append(formatElement(parent, ns));
+	buf.append(formatElement(parent, namespace));
 	return buf.toString();
     }
 
-    protected String defaultName(MModelElement element, MNamespace namespace) {
+    protected String defaultName(MModelElement element, Object namespace) {
 	String name = null;
-	if (org.argouml.model.ModelFacade.isAAssociationEnd(element)) {
+	if (ModelFacade.isAAssociationEnd(element)) {
 	    name = defaultAssocEndName((MAssociationEnd) element, namespace);
 	} else {
-	    if (org.argouml.model.ModelFacade.isAAssociation(element)) {
+	    if (ModelFacade.isAAssociation(element)) {
 		name = defaultAssocName((MAssociation) element, namespace);
 	    }
-	    if (org.argouml.model.ModelFacade.isAGeneralization(element)) {
+	    if (ModelFacade.isAGeneralization(element)) {
 		name =
 		    defaultGeneralizationName(
 					      (MGeneralization) element,
@@ -200,7 +200,7 @@ public class ProfileJava extends Profile {
 	return "[empty]";
     }
 
-    public String formatCollection(Iterator iter, MNamespace namespace) {
+    public String formatCollection(Iterator iter, Object namespace) {
 	String value = null;
 	if (iter.hasNext()) {
 	    StringBuffer buffer = new StringBuffer();
@@ -211,9 +211,8 @@ public class ProfileJava extends Profile {
 		    buffer.append(elementSep);
 		}
 		obj = iter.next();
-		if (org.argouml.model.ModelFacade.isAModelElement(obj)) {
-		    buffer.append(
-				  formatElement((MModelElement) obj,
+		if (ModelFacade.isAModelElement(obj)) {
+		    buffer.append(formatElement((MModelElement) obj,
 						namespace));
 		} else {
 		    buffer.append(obj.toString());

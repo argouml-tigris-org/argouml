@@ -304,7 +304,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	if (!canAddNode(node)) return;
 	_nodes.addElement(node);
 	if (org.argouml.model.ModelFacade.isAModelElement(node) &&
-	    ((MModelElement) node).getNamespace() == null) {
+	    ModelFacade.getNamespace(node) == null) {
 	    _model.addOwnedElement((MModelElement) node);
 	}
 
@@ -319,7 +319,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         _edges.addElement(edge);
         // TODO: assumes public
         if (org.argouml.model.ModelFacade.isAModelElement(edge)
-	    && ((MModelElement) edge).getNamespace() == null)
+	    && ModelFacade.getNamespace(edge) == null)
 	{
 	    _model.addOwnedElement((MModelElement) edge);
         }

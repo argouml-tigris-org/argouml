@@ -200,7 +200,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
         _edges.addElement(edge);
         // TODO: assumes public
         if (ModelFacade.isAModelElement(edge)
-	    && ((MModelElement) edge).getNamespace() == null)
+	    && ModelFacade.getNamespace(edge) == null)
 	{
             _collab.addOwnedElement((MModelElement) edge);
         }
