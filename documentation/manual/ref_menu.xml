@@ -286,6 +286,7 @@ So, who is right? - the critic, or the description here? -->
         </mediaobject></screenshot>
       </figure>
 
+	  <!--
       <para>At the top of the dialog is a drop down selector labeled
         <literal>Look&nbsp;in:</literal>, specifying the currently selected
         directory preceded by the folder icon,
@@ -311,16 +312,16 @@ So, who is right? - the critic, or the description here? -->
           fileref="images/icons/details_files.gif"/>
         </imageobject></inlinemediaobject></guiicon> 
         that shows details of all files.</para>
-
+      -->
       <para>The main body of the dialog is a text area with a listing of all
         directories and
         files in the currently selected directory which match the current
-        filter (see below). If these will not all fit on the display,
-        scroll bars are provided to browse through the list.</para>
+        filter (see below). </para>
       
-      <para>Hence, navigating up a directory tree is possible by selecting 
+      <para>Navigating in the directory tree is possible by selecting 
         a directory in the drop down selector at the top of this dialog.
-        Navigating deeper in the tree happens by double clicking &button1; on
+        Navigating deeper in the tree may be done
+        by double clicking &button1; on
         the directory shown in the main text area.
       </para>
 
@@ -333,29 +334,12 @@ So, who is right? - the critic, or the description here? -->
         <literal>Files&nbsp;of&nbsp;type:</literal> to specify a filter on the
         files to be shown in the directory listing. Only files that match the
         filter are listed. The available filters are listed below. 
-        The default filter is the second one (.zargo).</para>
+        The default filter is the first one (.zargo).</para>
 
       <itemizedlist>
-        <listitem><para>All Files</para></listitem>
-        <listitem><para>Argo compressed project files (*.zargo)</para></listitem>
-        <listitem><para>Argo uncompressed project file (*.argo)</para></listitem>
-        <listitem><para>XMI Metadata Interchange (*.xmi)</para></listitem>
+        <listitem><para>ArgoUML compressed project file (*.zargo)</para></listitem>
+        <listitem><para>ArgoUML project file (*.uml)</para></listitem>
       </itemizedlist>
-
-      <para>Argo uncompressed project files (*.argo) 
-        were produced by earlier releases of &argouml;.
-        XMI files allow you to use diagrams from other tools 
-        (which may not
-        alweays work, 
-        since &argouml; is only compatible with XMI for UML 1.3).
-      </para>
-
-      <para>To the right of the file name and filter are two buttons,
-        <literal>Open</literal> and <literal>Cancel</literal> to open the
-        selected project or cancel the operation.</para>
-
-      <note><para>Open will only succeed if a valid filename is
-        provided.</para></note>
     </sect2>
 
     <!-- Save project -->
@@ -407,9 +391,7 @@ So, who is right? - the critic, or the description here? -->
       <para>The dialog box is almost identical to that for
         <literal>Open&nbsp;Project</literal> (see 
         <xref linkend="fig.ref.menu_open_project"/>). 
-        The  <literal>Files&nbsp;of&nbsp;type:</literal> drop down selector 
-        also specifies the file type used for saving, 
-        but only the <literal>.zargo</literal> format is available.
+        
         The extension of the filename is automatically set.</para>
 
       <!--tip><para>Zipped Argo Project files, ending in <literal>.zargo</literal>
@@ -474,7 +456,7 @@ Selecting <literal>Yes</literal> reloads the last saved file.
           diagram. This sub-menu entry specifies Java code to be imported for
           reverse engineering.</para>
 
-        <para>The dialog box is very similar to that for
+        <para>The dialog box is similar to that for
           <literal>Open&nbsp;Project</literal> (see
           <xref linkend="fig.ref.menu_open_project"/>), but with two extra tabs
           placed alongside the directory listing, as shown in
@@ -498,15 +480,15 @@ Selecting <literal>Yes</literal> reloads the last saved file.
           <literal>Open&nbsp;Project</literal> behave in the same way (see
           <xref linkend="s2.ref.menu_open_project"/>).</para>
 
-        <para>Next to the "All Files" file filter, there is only the default
+        <para>Next to the "All Files" file filter, there is the default
           filter "Java Source File (*.java)".
         </para>
 
         <para>The first of the two tabs is labeled <literal>General</literal>
           and is selected by &button1; click on its tab. 
           It provides a combo box for the language selection 
-          (in V0.14 of &argouml; only Java can be chosen), 
-          and the following check boxes:
+          (in V0.18 of &argouml; only Java can be chosen), 
+          and the following check boxes and radio buttons:
         </para>
         
         <itemizedlist>
@@ -520,7 +502,9 @@ Selecting <literal>Yes</literal> reloads the last saved file.
           </listitem>
           <listitem>
             <para>
-              <literal>Create diagrams from imported code</literal>
+              <literal>Create diagrams from imported code</literal>. 
+              If you unselect this, then no diagrams are created, i.e. 
+              all data will only be visible in the explorer.
             </para>
           </listitem>
           <listitem>
@@ -528,17 +512,27 @@ Selecting <literal>Yes</literal> reloads the last saved file.
               <literal>Minimise Class icons in diagrams</literal>. If enabled,
               then the attributes and operations compartiments 
               will not be shown in the classes on the 
-              generated class diagrams.
+              generated class diagrams. 
+              Note: 
+              This item is checked by default, and is overseen by many users, 
+              which are then surprised by the result.
             </para>
           </listitem>
           <listitem>
             <para>
-              <literal>Perform Automatic Diagram Layout</literal>
+              <literal>Perform Automatic Diagram Layout</literal>. 
+              If selected, then &argouml; will do its best to 
+              layout the generated diagrams automatically. 
+              If not, then all items will be placed 
+              at the top left corner of the diagram.
             </para>
           </listitem>
+          <listitem>
+            <para>
+              <literal>Level of import detail: Classifiers only / 
+              Classifiers plus feature specifications /
+              Full import</literal>. The latter is the default.
         </itemizedlist>
-          
-        <!-- TODO: Describe the new radio buttons in VPRE0.15.3 -->
         
         <para>The second of the two tabs is labeled <literal>Java</literal>
           and is selected by &button1; click on its tab. It provides two pairs
@@ -567,27 +561,7 @@ Selecting <literal>Yes</literal> reloads the last saved file.
         </itemizedlist>
     </sect2>
 
-    <!-- Load model from DB (grayed out) -->
-
-    <!--sect2>
-      <title>Load Model From DB</title>
-
-      <para>ArgoUML has the ability to save models to and from an SQL
-        database. However the code for this is quite old, and at present this
-        menu option is grayed out.</para>
-    </sect2-->
-
-    <!-- Save model to DB (grayed out) -->
-
-    <!--sect2>
-      <title>Save Model To DB</title>
-
-      <para>ArgoUML has the ability to save models to and from an SQL
-        database. However the code for this is quite old, and at present this
-        menu option is grayed out.</para>
-    </sect2-->
-
-    <!-- Printer setup -->
+    <!-- Page setup -->
 
     <sect2>
       <title><guiicon><inlinemediaobject><imageobject><imagedata
@@ -702,22 +676,22 @@ it should match the invoking command, in casu: "Print".  See issue 2465. -->
       <para>The available graphics types are:</para>
 
       <itemizedlist>
+	    <listitem><para>PNG image (*.png)</para></listitem>
         <listitem><para>GIF image (*.gif)</para></listitem>
 
         <listitem><para>Postscript file (*.ps)</para></listitem>
-
         <listitem><para>Encapsulated Postscript file (*.eps)</para></listitem>
 
         <listitem><para>Scalable Vector Graphics file (*.svg)</para></listitem>
       </itemizedlist>
 
-      <para>The GIF format is the default.</para>
+      <para>The PNG format is the default.</para>
       
-      <caution><para>You should be aware that there are patent issues
-        <!-- TODO: Deal with it! -->
-        surrounding GIF files and act accordingly. There are
-        <emphasis>currently</emphasis> no such concerns about
-        SVG.</para></caution>
+      <caution><para>The PNG graphics does not support shadows very well, 
+      so maybe it is better to switch shadows off before saving graphics 
+      in PNG format.
+      <!-- See issue 3109.  -->
+      </para></caution>
     </sect2>
 
     <!-- Save configuration data -->
@@ -726,10 +700,14 @@ it should match the invoking command, in casu: "Print".  See issue 2465. -->
       <title>Save Configuration</title>
 
       <para>&argouml; has various user specific configurations that can be set,
-        both through the <literal>Settings&hellip;</literal> entry on the
+        through the <literal>Settings&hellip;</literal> entry on the
         <literal>Edit</literal> menu (see
-        <xref linkend="s2.ref.menu_settings"/>) and directly on the various
-        panes. This menu entry saves the information in the file
+        <xref linkend="s2.ref.menu_settings"/>) 
+        or directly on the various
+        panes. 
+        Also the main window size and location are such settings.
+        Activating this menu entry causes the information to be saved 
+        in the file
         <literal>argo.user.properties</literal>.
         The location of this file is in the "users home directory", 
         which is defined as <literal>${user.home}</literal>,
@@ -742,12 +720,13 @@ it should match the invoking command, in casu: "Print".  See issue 2465. -->
     </sect2>
     
     <!-- MRUs: Most Recent Used files. -->
+    
     <sect2>
       <title>Most Recent Used Files</title>
       
       <para>
         &argouml; remembers a few of the most recently saved files, and lists
-        then here, to enable loading then in the most simple way.
+        them here, to enable loading then in the most simple way.
       </para>
       
       <para>
