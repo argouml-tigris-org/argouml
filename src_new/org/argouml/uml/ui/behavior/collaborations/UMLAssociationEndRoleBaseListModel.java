@@ -27,6 +27,7 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
@@ -61,17 +62,9 @@ public class UMLAssociationEndRoleBaseListModel
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
      */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        MModelElement m = (MModelElement)getChangedElement(e);
+    protected boolean isValidElement(MBase m) {
         return m instanceof MAssociationEnd && 
             ((MAssociationRole)((MAssociationEndRole)getTarget()).getAssociation()).getBase().getConnections().contains(m);
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidPropertySet(ru.novosoft.uml.MElementEvent)
-     */
-    protected boolean isValidPropertySet(MElementEvent e) {
-        return isValidRoleAdded(e) || contains(e.getOldValue());
     }
 
 }

@@ -57,8 +57,7 @@ public class UMLAssociationRoleMessageListModel extends UMLModelElementListModel
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
      */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        Object o = getChangedElement(e);
+    protected boolean isValidElement(MBase o) {
         return o instanceof MMessage &&
             ((MAssociationRole)getTarget()).getMessages().contains(o);
     }

@@ -80,7 +80,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
      */
     public void propertySet(MElementEvent e) {
-        if (isValidPropertySet(e)) {
+        if (isValidEvent(e)) {
             removeAllElements();
             buildModelList();
         }
@@ -102,7 +102,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
-        if (isValidRoleAdded(e)) {
+        if (isValidEvent(e)) {
             Object o = getChangedElement(e);
             if (o instanceof Collection) {
                 Iterator it = ((Collection)o).iterator();
@@ -221,44 +221,6 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
         if (e.getNewValue() != null) return e.getNewValue();
         return null;
     }
-    
-    /**
-     * Returns true if roleAdded(MElementEvent e) should be executed. Developers
-     * should override this method and not directly override roleAdded.  
-     * @param m
-     * @return boolean
-     */
-    protected abstract boolean isValidRoleAdded(MElementEvent e);
-    
-    
-    /**
-     * Returns true if roleRemoved(MElementEvent e) should be executed. Standard
-     * behaviour is that it is allways valid to remove an element that's in the
-     * list.
-     * @param m
-     * @return boolean
-     */
-    protected boolean isValidRoleRemoved(MElementEvent e) {
-        return indexOf(getChangedElement(e)) >= 0;
-    }
-    
-    /**
-     * Returns true if propertySet(MElementEvent e) should be executed. Developers
-     * should override this method and not directly override propertySet in order
-     * to let this listmodel and the component(s) representing this model 
-     * function properly.  
-     * @param m
-     * @return boolean
-     */
-    protected boolean isValidPropertySet(MElementEvent e) {
-        Object o = getChangedElement(e);
-        if (contains(o)) return true;
-        o = e.getSource();
-        if (contains(o)) return true;
-        return false;
-    } 
-            
-
 
     /**
      * @see javax.swing.DefaultListModel#contains(java.lang.Object)
@@ -292,6 +254,49 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
         }
         removeAllElements();
         buildModelList();
+    }
+    
+    /**
+     * Returns true if the given element is valid, i.e. it may be added to the 
+     * list of elements.
+     * @param element
+     */
+    protected abstract boolean isValidElement(MBase element);
+    
+    /**
+     * Returns true if some event is valid. An event is valid if the element
+     * changed in the event is valid. This is determined via a call to isValidElement.
+     * This method can be overriden by subclasses if they cannot determine if
+     * it is a valid event just by checking the changed element.
+     * @param e
+     * @return boolean
+     */
+    protected boolean isValidEvent(MElementEvent e) {
+        boolean valid = false;
+        if (!(getChangedElement(e) instanceof Collection)) {
+            valid = isValidElement((MBase)getChangedElement(e));
+            if (!valid && e.getNewValue() == null && e.getOldValue() != null) {
+                valid = true; // we tried to remove a value
+            }
+        } else {
+            Collection col = (Collection)getChangedElement(e);
+            Iterator it = col.iterator();
+            if (!col.isEmpty()) {
+                valid = true;
+                while (it.hasNext()) {
+                    Object o = it.next();
+                    if (!isValidElement((MBase)o)) {
+                        valid = false;
+                        break;
+                    }
+                }
+            } else {
+                if (e.getOldValue() instanceof Collection && !((Collection)e.getOldValue()).isEmpty()) {
+                    valid = true;
+                }
+            }   
+        }
+        return valid;
     }
     
 

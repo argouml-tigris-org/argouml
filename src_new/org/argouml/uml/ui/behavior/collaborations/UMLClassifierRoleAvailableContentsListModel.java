@@ -79,8 +79,32 @@ public class UMLClassifierRoleAvailableContentsListModel
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
      */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        return ((MClassifierRole)getTarget()).getBases().contains(e.getSource()) && e.getName().equals("ownedElement") && !contains(getChangedElement(e));
+    protected boolean isValidElement(MBase element) {
+        return false;
+    }
+    
+    
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidEvent(ru.novosoft.uml.MElementEvent)
+     */
+    protected boolean isValidEvent(MElementEvent e) {
+        if (e.getName().equals("ownedElement")) {
+            Object o = getChangedElement(e);
+            if (o instanceof Collection) {
+                Collection col = (Collection)o;
+                Iterator it = col.iterator();
+                while (it.hasNext()) {
+                    if (!((MClassifierRole)getTarget()).getBases().contains(((MModelElement)it.next()).getNamespace())) {
+                        return false;
+                    }
+                }
+                return true;
+            } else
+                return ((MClassifierRole)getTarget()).getBases().contains(((MModelElement)o).getNamespace());
+        } else
+            return false;        
+        
     }
 
 }

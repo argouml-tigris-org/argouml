@@ -36,6 +36,7 @@ import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MFeature;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * @since Oct 4, 2002
@@ -100,8 +101,30 @@ public class UMLClassifierRoleAvailableFeaturesListModel
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
      */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        return ((MClassifierRole)getTarget()).getBases().contains(e.getSource()) && e.getName().equals("feature") && !contains(getChangedElement(e));
+    protected boolean isValidElement(MBase element) {
+        return false;
+    }   
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidEvent(ru.novosoft.uml.MElementEvent)
+     */
+    protected boolean isValidEvent(MElementEvent e) {
+        if (e.getName().equals("feature")) {
+            Object o = getChangedElement(e);
+            if (o instanceof Collection) {
+                Collection col = (Collection)o;
+                Iterator it = col.iterator();
+                while (it.hasNext()) {
+                    if (!((MClassifierRole)getTarget()).getBases().contains(((MFeature)it.next()).getOwner())) {
+                        return false;
+                    }
+                }
+                return true;
+            } else
+                return ((MClassifierRole)getTarget()).getBases().contains(((MFeature)o).getOwner());
+        } else
+            return false;        
+        
     }
 
 }

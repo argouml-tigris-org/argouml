@@ -27,11 +27,14 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
+ * Shows the constrainingelements for some collaboration. See section 2.10.2.4
+ * from the UML 1.3 spec
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -56,9 +59,8 @@ public class UMLCollaborationConstraintListModel
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
      */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        MModelElement elem = (MModelElement)getChangedElement(e);
-        return elem.getCollaborations1().contains(getTarget());
+    protected boolean isValidElement(MBase elem) {
+        return ((MModelElement)elem).getCollaborations1().contains(getTarget());
     }
 
 }
