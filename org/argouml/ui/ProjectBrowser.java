@@ -565,7 +565,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   }
   public Project getProject() {
 	  // only for testing...
-	  if (_project == null) _project = Project.makeEmptyProject();
+	  // if (_project == null) _project = Project.makeEmptyProject();
 	  return _project;
   }
 
