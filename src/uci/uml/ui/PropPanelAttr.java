@@ -46,6 +46,7 @@ import uci.util.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Model_Management.*;
+import uci.uml.generate.*;
 
 /** User interface panel shown at the bottom of the screen that allows
  *  the user to edit the properties of the selected UML model
@@ -63,6 +64,8 @@ implements DocumentListener, ItemListener {
     "None", "transient", "static", "final", "static final"};
 
 
+  public static Vector OFFERED_TYPES = null;
+  
   ////////////////////////////////////////////////////////////////
   // instance vars
   JLabel _visLabel = new JLabel("Visibility: ");
@@ -70,7 +73,7 @@ implements DocumentListener, ItemListener {
   JLabel _keywordsLabel = new JLabel("Keywords: ");
   JComboBox _keywordsField = new JComboBox(ATTRKEYWORDS);
   JLabel _typeLabel = new JLabel("Type: ");
-  JComboBox _typeField = new JComboBox();
+  JComboBox _typeField = new JComboBox(getOfferedTypes());
   JLabel _initLabel = new JLabel("Initial Value: ");
   JTextArea _initText = new JTextArea();
   SpacerPanel _spacer = new SpacerPanel();
@@ -90,7 +93,9 @@ implements DocumentListener, ItemListener {
     //_keywordsField.getEditor().getEditorComponent().setBackground(Color.white);
     _typeField.setEditable(true);
     _typeField.getEditor().getEditorComponent().setBackground(Color.white);
+    _typeField.setRenderer(new UMLListCellRenderer());
 
+    
     c.gridx = 0;
     c.gridwidth = 1;
     c.gridy = 1;
@@ -196,7 +201,7 @@ implements DocumentListener, ItemListener {
     if (_target == null) return;
     String keys = (String) _keywordsField.getSelectedItem();
     if (keys == null) {
-      System.out.println("keywords are null");
+      //System.out.println("keywords are null");
       return;
     }
     Attribute attr = (Attribute) _target;
@@ -229,8 +234,22 @@ implements DocumentListener, ItemListener {
   }
 
   public void setTargetType() {
-    if (_target == null) return;
-    System.out.println("needs-more-work: set target type");
+    if (!(_target instanceof Attribute)) return;
+    Attribute attr = (Attribute) _target;
+    Object sel = _typeField.getSelectedItem();
+    Classifier cls;
+    System.out.println("set target type: " + sel);
+
+    if (sel instanceof Classifier)
+      cls = (Classifier) sel;
+    else
+      cls = new MMClass(sel.toString());
+    
+    try { attr.setType(cls); }
+    catch (PropertyVetoException pve) {
+      System.out.println("could not set type");
+    }
+    
   }
 
 
@@ -252,7 +271,7 @@ implements DocumentListener, ItemListener {
 
 
   public void insertUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " insert");
+    //System.out.println(getClass().getName() + " insert");
     Component ed = _typeField.getEditor().getEditorComponent();
     Document typeDoc = ((JTextField)ed).getDocument();
 
@@ -275,13 +294,13 @@ implements DocumentListener, ItemListener {
   public void itemStateChanged(ItemEvent e) {
     Object src = e.getSource();
     if (src == _keywordsField) {
-      System.out.println("attr keywords now is " +
-			 _keywordsField.getSelectedItem());
+      //System.out.println("attr keywords now is " +
+      //_keywordsField.getSelectedItem());
       setTargetKeywords();
     }
     else if (src == _visField) {
-      System.out.println("attr VisibilityKind now is " +
-			 _visField.getSelectedItem());
+      //System.out.println("attr VisibilityKind now is " +
+      //_visField.getSelectedItem());
       setTargetVisibility();
     }
     else if (src == _typeField) {
@@ -290,14 +309,50 @@ implements DocumentListener, ItemListener {
       setTargetType();
     }
     else if (src == _initText) {
-      // for now this cannot be called, but I might want to have
-      // a history of useful expressions or something
-      System.out.println("attr init now is " +
-			 _initText.getText());
+      // needs-more-work: I might want to have an expression builder
+      // or a history of useful expressions 
+      //System.out.println("attr init now is " +
+      //_initText.getText());
       setTargetInit();
     }
     
   }
 
 
+  ////////////////////////////////////////////////////////////////
+  // static methods
+
+  public static Vector getOfferedTypes() {
+    if (OFFERED_TYPES == null) {
+      OFFERED_TYPES = new Vector();
+
+      OFFERED_TYPES.addElement(JavaUML.STRING_CLASS);
+
+      OFFERED_TYPES.addElement(JavaUML.CHAR_TYPE);
+      OFFERED_TYPES.addElement(JavaUML.INT_TYPE);
+      OFFERED_TYPES.addElement(JavaUML.BOOLEAN_TYPE);
+      OFFERED_TYPES.addElement(JavaUML.BYTE_TYPE);
+      OFFERED_TYPES.addElement(JavaUML.LONG_TYPE);
+      OFFERED_TYPES.addElement(JavaUML.FLOAT_TYPE);
+      OFFERED_TYPES.addElement(JavaUML.DOUBLE_TYPE);
+
+      OFFERED_TYPES.addElement(JavaUML.CHAR_TYPE);
+      OFFERED_TYPES.addElement(JavaUML.INT_TYPE);
+      OFFERED_TYPES.addElement(JavaUML.BOOLEAN_TYPE);
+      OFFERED_TYPES.addElement(JavaUML.BYTE_TYPE);
+      OFFERED_TYPES.addElement(JavaUML.LONG_TYPE);
+      OFFERED_TYPES.addElement(JavaUML.FLOAT_TYPE);
+      OFFERED_TYPES.addElement(JavaUML.DOUBLE_TYPE);
+
+      OFFERED_TYPES.addElement(JavaUML.RECTANGLE_CLASS);
+      OFFERED_TYPES.addElement(JavaUML.POINT_CLASS);
+      OFFERED_TYPES.addElement(JavaUML.COLOR_CLASS);
+
+      OFFERED_TYPES.addElement(JavaUML.VECTOR_CLASS);
+      OFFERED_TYPES.addElement(JavaUML.HASHTABLE_CLASS);
+      OFFERED_TYPES.addElement(JavaUML.STACK_CLASS);
+    }
+    return OFFERED_TYPES;
+  }
+  
 } /* end class PropPanelAttr */

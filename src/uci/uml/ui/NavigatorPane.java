@@ -184,12 +184,14 @@ implements ItemListener, TreeSelectionListener {
   // inner classes
 
   class NavigatorMouseListener extends MouseAdapter {
-    public void mouseClicked(MouseEvent e) {
-      int row = _tree.getRowForLocation(e.getX(), e.getY());
-      TreePath path = _tree.getPathForLocation(e.getX(), e.getY());
+    public void mouseClicked(MouseEvent me) {
+      //if (me.isConsumed()) return;
+      int row = _tree.getRowForLocation(me.getX(), me.getY());
+      TreePath path = _tree.getPathForLocation(me.getX(), me.getY());
       if (row != -1) {
-	if (e.getClickCount() == 1) mySingleClick(row, path);
-	  else if (e.getClickCount() >= 2) myDoubleClick(row, path);
+	      if (me.getClickCount() == 1) mySingleClick(row, path);
+	      else if (me.getClickCount() >= 2) myDoubleClick(row, path);
+	      //me.consume();
       }
     }
   }

@@ -2,6 +2,7 @@ package uci.uml.critics;
 
 import uci.argo.kernel.*;
 import uci.uml.critics.patterns.*;
+import uci.uml.critics.java.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Model_Management.*;
 
@@ -60,6 +61,7 @@ public class Init {
   // Java specific
   public static Critic crClassMustBeAbstract = new CrClassMustBeAbstract();
   public static Critic crReservedName = new CrReservedName();
+  public static Critic crMultiInherit = new CrMultipleInheritance();
 
   // code generation
   public static Critic crIllegalName = new CrIllegalName();
@@ -122,6 +124,7 @@ public class Init {
       Agency.register(crMergeClasses, classCls);
       Agency.register(crIllegalName, classifierCls);
       Agency.register(crReservedName, modelElementCls);
+      Agency.register(crMultiInherit, classifierCls);
       Agency.register(crConflictingComposites, classifierCls);
 
       Agency.register(crUnconventionalOperName, operCls);

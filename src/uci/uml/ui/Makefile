@@ -32,6 +32,7 @@ include ../../Makefile.config
 GEN = 
 
 CLASSES = \
+	AboutBox.class \
 	Actions.class \
 	AddToDoItemDialog.class \
 	DelayedChangeNotify.class \
@@ -81,14 +82,8 @@ CLASSES = \
 	Menu.class \
 	ModelElementRenderer.class \
 	MultiEditorPane.class \
-	NavAssociation.class \
 	NavigatorConfigDialog.class \
-	NavContainment.class \
-	NavDiagramCentric.class \
-	NavInheritance.class \
-	NavPackageCentric.class \
 	NavPerspective.class \
-	NavStrictContainment.class \
 	NavigatorPane.class \
 	PriorityNode.class \
 	Project.class \
@@ -96,6 +91,7 @@ CLASSES = \
 	PropPanel.class \
 	PropPanelAssoc.class \
 	PropPanelAttr.class \
+	PropPanelOper.class \
 	PropPanelClass.class \
 	PropPanelDiagram.class \
 	PropPanelInterface.class \
@@ -135,6 +131,7 @@ CLASSES = \
 	Trash.class \
 	TreeModelComposite.class \
 	TreeModelPrereqs.class \
+	UMLListCellRenderer.class \
 	UMLTreeCellRenderer.class
 
 

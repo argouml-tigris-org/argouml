@@ -358,7 +358,7 @@ implements DocumentListener, ItemListener, ChangeListener {
 
 
   public void insertUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " insert");
+    //System.out.println(getClass().getName() + " insert");
 //     Component ed = _typeField.getEditor().getEditorComponent();
 //     Document typeDoc = ((JTextField)ed).getDocument();
 
@@ -374,14 +374,14 @@ implements DocumentListener, ItemListener, ChangeListener {
   public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
 
   public void changedUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " changed");
+    //System.out.println(getClass().getName() + " changed");
     // Apparently, this method is never called.
   }
 
   
   
   public void stateChanged(ChangeEvent e) {
-    System.out.println("got stateChanged");
+    //System.out.println("got stateChanged");
     Object src = e.getSource();
     if (src == _navAField || src == _navBField) setNav();
   }
@@ -399,23 +399,23 @@ implements DocumentListener, ItemListener, ChangeListener {
 //       //setTargetKeywords();
 //     }
     if (src == _multAField) {
-      System.out.println("assoc mult A now is " +
-			 _multAField.getSelectedItem());
+      //System.out.println("assoc mult A now is " +
+      //_multAField.getSelectedItem());
       setMult();
     }
     else if (src == _multBField) {
-      System.out.println("assoc mult B now is " +
-			 _multBField.getSelectedItem());
+      //System.out.println("assoc mult B now is " +
+      //_multBField.getSelectedItem());
       setMult();
     }
     if (src == _aggAField) {
-      System.out.println("assoc agg A now is " +
-			 _aggAField.getSelectedItem());
+      //System.out.println("assoc agg A now is " +
+      //_aggAField.getSelectedItem());
       setAgg();
     }
     else if (src == _aggBField) {
-      System.out.println("assoc agg B now is " +
-			 _aggBField.getSelectedItem());
+      //System.out.println("assoc agg B now is " +
+      //_aggBField.getSelectedItem());
       setAgg();
     }
     

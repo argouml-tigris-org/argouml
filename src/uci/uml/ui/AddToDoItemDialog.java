@@ -133,12 +133,12 @@ public class AddToDoItemDialog extends JFrame implements ActionListener {
       Set offs = new Set();  //? null
       ToDoItem item = new ToDoItem(dsgr, head, pri, desc, more, offs);
       dsgr.getToDoList().addElement(item); //? inform()
-      System.out.println("add an item");
+      //System.out.println("add an item");
       hide();
       dispose();
     }
     if (e.getSource() == _cancelButton) {
-      System.out.println("cancel");
+      //System.out.println("cancel");
       hide();
       dispose();
     }

@@ -418,7 +418,11 @@ public class FigText extends Fig implements KeyListener, MouseListener {
   // event handlers: KeyListener implemtation
 
   public void mouseClicked(MouseEvent me) {
-    if (me.getClickCount() >= 2) startTextEditor();
+    if (me.isConsumed()) return;
+    if (me.getClickCount() >= 2) {
+        startTextEditor();
+        me.consume();
+    }
   }
   
   public void mousePressed(MouseEvent me) { }

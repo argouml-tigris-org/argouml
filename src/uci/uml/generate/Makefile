@@ -31,7 +31,7 @@ include ../../Makefile.config
 # gen is not used now
 GEN = 
 
-CLASSES = Generator.class GeneratorDisplay.class
+CLASSES = Generator.class GeneratorDisplay.class JavaUML.class
 
 all: $(GEN) $(CLASSES)
 

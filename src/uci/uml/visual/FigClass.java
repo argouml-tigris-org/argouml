@@ -49,7 +49,7 @@ import uci.uml.Foundation.Data_Types.*;
 
 public class FigClass extends FigNode
 implements VetoableChangeListener, DelayedVetoableChangeListener,
-  MouseListener, PropertyChangeListener  {
+  MouseListener, KeyListener, PropertyChangeListener  {
 
   public final int MARGIN = 2;
   
@@ -132,7 +132,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener,
  
   public void vetoableChange(PropertyChangeEvent pce) {
     // throws PropertyVetoException 
-    System.out.println("FigClass got a change notification!");
+    //System.out.println("FigClass got a change notification!");
     Object src = pce.getSource();
     if (src == getOwner()) {
       DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
@@ -142,7 +142,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener,
 
   public void delayedVetoableChange(PropertyChangeEvent pce) {
     // throws PropertyVetoException 
-    System.out.println("FigClass got a delayed change notification!");
+    //System.out.println("FigClass got a delayed change notification!");
     Object src = pce.getSource();
     updateText();
   }
@@ -151,7 +151,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener,
     Object src = pve.getSource();
     String pName = pve.getPropertyName();
     if (pName.equals("editing") && Boolean.FALSE.equals(pve.getNewValue())) {
-      System.out.println("finished editing");
+      //System.out.println("finished editing");
       Classifier cls = (Classifier) getOwner();
       try {
 	if (src == _clss) { cls.setName(new Name(_clss.getText())); }
@@ -178,8 +178,21 @@ implements VetoableChangeListener, DelayedVetoableChangeListener,
     me.consume();
   }
 
-  // needs-more-work: catch keyTyped and start editing class name if
-  // the name is not set to anything other than a default
+  public void keyPressed(KeyEvent ke) { }
+
+  public void keyReleased(KeyEvent ke) { }
+
+  public void keyTyped(KeyEvent ke) {
+    if (!ke.isConsumed()) {
+      _clss.keyTyped(ke);
+      ke.consume();
+      Classifier cls = (Classifier) getOwner();
+      try {
+	cls.setName(new Name(_clss.getText()));
+      }
+      catch (PropertyVetoException pve) { }
+    }
+  }
     
   ////////////////////////////////////////////////////////////////
   // internal methods
@@ -241,62 +254,6 @@ implements VetoableChangeListener, DelayedVetoableChangeListener,
     super.dispose();
   }
 
-  /*
-  public NetPort hitPort(int x, int y) {
-    return (NetPort) getPortFigs().firstElement().getOwner();
-  }
-  */
-
-
-  ////////////////////////////////////////////////////////////////
-  // notifications and updates
-
-//   public void update(Observable o, Object arg) {
-//     super.update(o, arg);
-//     Boolean abs = (Boolean) ((NodeUML)getOwner()).get(UML.pABSTRACT);
-//     String attrs = (String) ((NodeUML)getOwner()).get(UML.pATTRS);
-//     boolean showAttrs = (attrs.length() > 0 && _showAttrs);
-//     startTrans();
-//     if (arg.equals(UML.pABSTRACT)) {
-//       _nameFig.setItalic(abs.booleanValue());
-//     }
-//     if (arg.equals(UML.pATTRS) || arg.equals(UML.pSHOW_ATTRS)) {
-//       _attrsFig.setText(attrs);
-//       Vector figs = getFigs();
-//       if (!showAttrs) figs.removeElement(_attrsFig);
-//       else if (!figs.contains(_attrsFig))
-// 	figs.insertElementAt(_attrsFig, 1);
-//     }
-//     //GEF v06: _nameFig.measure();
-//     //GEF v06: _attrsFig.measure();
-
-//     Rectangle nameBBox = _nameFig.getBounds();
-//     int origX = nameBBox.x;
-//     int origY = nameBBox.y;
-//     int nameWidth = nameBBox.width;
-//     int nameHeight = nameBBox.height;
-//     int attrsWidth = _attrsFig.getBounds().width;
-//     int maxWidth = Math.max(nameWidth, attrsWidth);
-//     if (showAttrs) {
-//       _nameFig.setWidth(maxWidth);
-//       _nameFig.setLocation(origX, origY);
-//       _attrsFig.setWidth(maxWidth);
-//       _attrsFig.setLocation(origX, origY + nameHeight);
-//     }
-//     Rectangle attrBBox = null;
-//     if (showAttrs) attrBBox = _attrsFig.getBounds();
-//     else attrBBox = _nameFig.getBounds();
-//     Rectangle botArrowBBox = _botArrow.getBounds();
-//     Rectangle topArrowBBox = _topArrow.getBounds();
-//     _botArrow.translate(attrBBox.x + (attrBBox.width -
-// 			 botArrowBBox.width) / 2 - botArrowBBox.x,
-// 			attrBBox.y + attrBBox.height - botArrowBBox.y-
-// 			botArrowBBox.height + 4);
-//     _topArrow.translate(attrBBox.x + (attrBBox.width -
-// 			 topArrowBBox.width) / 2 - topArrowBBox.x,
-// 			0);
-//     endTrans();
-//   }
 
   
 } /* end class FigClass */

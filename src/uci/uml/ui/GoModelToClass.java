@@ -46,55 +46,21 @@ public class GoModelToClass implements TreeModelPrereqs {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-//     if (parent instanceof Package) {
     Vector children = getChildren(parent);
     if (children != null) return children.elementAt(index);
-    //       Vector eos = ((Package)parent).getOwnedElement();
-//       for (int i = 0; i < eos.size(); i++) {
-// 	ElementOwnership eo = (ElementOwnership) eos.elementAt(i);
-// 	ModelElement me = eo.getModelElement();
-// 	if (me instanceof MMClass) index--;
-// 	if (index == 0) return me;
-//       }
-//     }
     System.out.println("getChild should never get here GoModelToClass");
     return null;
   }
 
   public int getChildCount(Object parent) {
-//     int res = 0;
-//     if (parent instanceof Package) {
     Vector children = getChildren(parent);
     if (children != null) return children.size();
-      
-//       Vector oes = ((Package) parent).getOwnedElement();
-//       if (oes == null) return 0;
-//       java.util.Enumeration enum = oes.elements();
-//       while (enum.hasMoreElements()) {
-// 	ElementOwnership eo = (ElementOwnership) enum.nextElement();
-// 	ModelElement me = eo.getModelElement();
-// 	if (me instanceof MMClass) res++;
-//       }
-//     }
-//     return res;
     return 0;
   }
 
   public int getIndexOfChild(Object parent, Object child) {
-//     int res = 0;
-//     if (parent instanceof Package) {
-      Vector children = getChildren(parent);
-      if (children != null) return children.indexOf(child);
-//       Vector oes = ((Package)parent).getOwnedElement();
-//       if (oes == null) return -1;
-//       java.util.Enumeration enum = oes.elements();
-//       while (enum.hasMoreElements()) {
-// 	ElementOwnership eo = (ElementOwnership) enum.nextElement();
-// 	ModelElement me = eo.getModelElement();
-// 	if (me == child) return res;
-// 	if (me instanceof MMClass) res++;
-//       }
-//     }
+    Vector children = getChildren(parent);
+    if (children != null) return children.indexOf(child);
     return -1;
   }
 

@@ -103,19 +103,19 @@ public class DismissToDoItemDialog extends JFrame implements ActionListener {
   // event handlers
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == _badGoalButton) {
-      System.out.println("bad goal");
+      //System.out.println("bad goal");
       //needs-more-work: pop up goal model dialog
       hide();
       dispose();
     }
     if (e.getSource() == _badDecButton) {
-      System.out.println("bad decision");
+      //System.out.println("bad decision");
       // needs-more-work: pop up decision model dialog
       hide();
       dispose();
     }
     if (e.getSource() == _explainButton) {
-      System.out.println("I can explain!");
+      //System.out.println("I can explain!");
       //needs-more-work: make a new history item
       ToDoList list = Designer.TheDesigner.getToDoList();
       list.explicitlyResolve(_target, _explaination.getText());

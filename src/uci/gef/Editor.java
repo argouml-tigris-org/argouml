@@ -503,6 +503,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
   /** Invoked when a mouse button has been pressed. */
   public void mousePressed(MouseEvent me) {
+    if (me.isConsumed()) return;
     setActiveTextEditor(null);
     //if (getAwtComponent() != null) getAwtComponent().requestFocus();
     RedrawManager.lock();
@@ -531,7 +532,8 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
   /** Invoked when the mouse enters the Editor. */
   public void mouseEntered(MouseEvent me) {
-    if (_awt_component != null) _awt_component.requestFocus();
+    if (_activeTextEditor != null) _activeTextEditor.requestFocus();
+    else if (_awt_component != null) _awt_component.requestFocus();
     RedrawManager.lock();
     Globals.curEditor(this);
     mode(Globals.mode());

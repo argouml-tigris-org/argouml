@@ -204,17 +204,47 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener {
   /** Update my bounding box */
   protected void calcBounds() {
     _fig.calcBounds();
-    _x = _fig.getX();
-    _y = _fig.getY();
-    _w = _fig.getWidth();
-    _h = _fig.getHeight();
+    Rectangle res = _fig.getBounds();
+    Enumeration enum = _pathItems.elements();
+    while (enum.hasMoreElements()) {
+      Fig f = ((PathItem) enum.nextElement()).getFig();
+      res = res.union(f.getBounds());
+    }    
+    _x = res.x;
+    _y = res.y;
+    _w = res.width;
+    _h = res.height;
   }
 
-  public boolean contains(int x, int y) { return _fig.contains(x, y); }
+  public boolean contains(int x, int y) {
+    if (_fig.contains(x, y)) return true;
+    Enumeration enum = _pathItems.elements();
+    while (enum.hasMoreElements()) {
+      Fig f = ((PathItem) enum.nextElement()).getFig();
+      if (f.contains(x, y)) return true;
+    }
+    return false;
+  }
 
-  public boolean intersects(Rectangle r) { return _fig.intersects(r); }
+  public boolean intersects(Rectangle r) {
+    if (_fig.intersects(r)) return true;
+    Enumeration enum = _pathItems.elements();
+    while (enum.hasMoreElements()) {
+      Fig f = ((PathItem) enum.nextElement()).getFig();
+      if (f.intersects(r)) return true;
+    }
+    return false;
+  }
 
-  public boolean hit(Rectangle r) { return _fig.hit(r); }
+  public boolean hit(Rectangle r) {
+    if (_fig.hit(r)) return true;
+    Enumeration enum = _pathItems.elements();
+    while (enum.hasMoreElements()) {
+      Fig f = ((PathItem) enum.nextElement()).getFig();
+      if (f.hit(r)) return true;
+    }
+    return false;
+  }
 
   public int getPerimeterLength() { return _fig.getPerimeterLength(); }
 
@@ -288,7 +318,7 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener {
   // notifications and updates
 
   public void propertyChange(PropertyChangeEvent pce) {
-    System.out.println("FigEdge got a PropertyChangeEvent");
+    //System.out.println("FigEdge got a PropertyChangeEvent");
     String pName = pce.getPropertyName();
     Object src = pce.getSource();
     if (pName.equals("dispose") && src == getOwner()) { delete(); }

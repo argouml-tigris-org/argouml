@@ -76,6 +76,8 @@ criticsClasses:
 	cd checklist; make classes; cd .. ; \
 	cd critics; make classes; cd .. ; \
 	cd critics/patterns; make classes; cd ../.. ; \
+	cd critics/java; make classes; cd ../.. ; \
+	cd checklist; make classes; cd ../.. ; \
 	cd .. ; \
 	fi
 
@@ -157,6 +159,7 @@ umlClean:
 	cd Behavioral_Elements/State_Machines; make clean; cd ../.. ; \
 	cd Behavioral_Elements/Use_Cases; make clean; cd ../.. ; \
 	cd Behavioral_Elements/Collaborations; make clean; cd ../.. ; \
+	cd util; make clean; cd ../.. ; \
 	cd test/omg; make clean; cd ../.. ; \
 	cd generate; make clean; cd .. ; \
 	make clean ; \
@@ -178,6 +181,8 @@ criticsClean:
 	cd uml ; \
 	cd critics; make clean; cd .. ; \
 	cd critics/patterns; make clean; cd ../.. ; \
+	cd critics/java; make clean; cd ../.. ; \
+	cd checklist; make clean; cd ../.. ; \
 	cd .. ; \
 	fi
 

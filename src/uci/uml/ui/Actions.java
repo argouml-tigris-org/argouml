@@ -232,7 +232,7 @@ class ActionNavDown extends UMLAction {
 } /* end class ActionNavDown */
 
 class ActionNavBack extends UMLAction {
-  public ActionNavBack() { super("Back"); }
+  public ActionNavBack() { super("Navigate Back"); }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
     return super.shouldBeEnabled() && p != null;
@@ -240,7 +240,7 @@ class ActionNavBack extends UMLAction {
 } /* end class ActionNavBack */
 
 class ActionNavForw extends UMLAction {
-  public ActionNavForw() { super("Forward"); }
+  public ActionNavForw() { super("Navigate Forward"); }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
     return super.shouldBeEnabled() && p != null;
@@ -359,7 +359,7 @@ class ActionClassDiagram extends UMLAction {
   public ActionClassDiagram() { super("ClassDiagram"); }
 
   public void actionPerformed(ActionEvent e) {
-    System.out.println("making class diagram...");
+    //System.out.println("making class diagram...");
     //_cmdCreateNode.doIt();
     Project p = ProjectBrowser.TheInstance.getProject();
     try {
@@ -377,7 +377,7 @@ class ActionUseCaseDiagram extends UMLAction {
   public ActionUseCaseDiagram() { super("UseCaseDiagram"); }
 
   public void actionPerformed(ActionEvent e) {
-    System.out.println("making use case diagram...");
+    //System.out.println("making use case diagram...");
     //_cmdCreateNode.doIt();
     Project p = ProjectBrowser.TheInstance.getProject();
     try {
@@ -395,7 +395,7 @@ class ActionStateDiagram extends UMLAction {
   public ActionStateDiagram() { super("StateDiagram"); }
 
   public void actionPerformed(ActionEvent e) {
-    System.out.println("making state diagram...");
+    //System.out.println("making state diagram...");
     //_cmdCreateNode.doIt();
     Project p = ProjectBrowser.TheInstance.getProject();
     try {
@@ -420,7 +420,7 @@ class ActionClass extends UMLAction {
   public ActionClass() { super("Class"); }
 
   public void actionPerformed(ActionEvent e) {
-    System.out.println("making class...");
+    //System.out.println("making class...");
     _cmdCreateNode.doIt();
   }
   public boolean shouldBeEnabled() {
@@ -452,7 +452,7 @@ class ActionActor extends UMLAction {
   public ActionActor() { super("Actor"); }
 
   public void actionPerformed(ActionEvent e) {
-    System.out.println("making actor...");
+    //System.out.println("making actor...");
     _cmdCreateNode.doIt();
   }
   public boolean shouldBeEnabled() {
@@ -468,7 +468,7 @@ class ActionUseCase extends UMLAction {
   public ActionUseCase() { super("UseCase"); }
 
   public void actionPerformed(ActionEvent e) {
-    System.out.println("making Use Case...");
+    //System.out.println("making Use Case...");
     _cmdCreateNode.doIt();
   }
   public boolean shouldBeEnabled() {
@@ -484,7 +484,7 @@ class ActionState extends UMLAction {
   public ActionState() { super("State"); }
 
   public void actionPerformed(ActionEvent e) {
-    System.out.println("making state...");
+    //System.out.println("making state...");
     _cmdCreateNode.doIt();
   }
   public boolean shouldBeEnabled() {
@@ -500,7 +500,7 @@ class ActionPseudostate extends UMLAction {
   public ActionPseudostate() { super("Pseudostate"); }
 
   public void actionPerformed(ActionEvent e) {
-    System.out.println("making Pseudostate...");
+    //System.out.println("making Pseudostate...");
     _cmdCreateNode.doIt();
   }
   public boolean shouldBeEnabled() {
@@ -516,7 +516,7 @@ class ActionPackage extends UMLAction {
   public ActionPackage() { super("Package"); }
 
   public void actionPerformed(ActionEvent e) {
-    System.out.println("making Package...");
+    //System.out.println("making Package...");
     _cmdCreateNode.doIt();
   }
   public boolean shouldBeEnabled() {
@@ -643,7 +643,7 @@ class ActionAutoCritique extends UMLAction {
     Designer d = Designer.TheDesigner;
     boolean b = d.getAutoCritique();
     d.setAutoCritique(!b);
-    System.out.println("setting autoCritique to " + !b);
+    //System.out.println("setting autoCritique to " + !b);
   }
 } /* end class ActionAutoCritique */
 

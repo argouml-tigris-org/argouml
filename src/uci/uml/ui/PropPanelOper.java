@@ -242,7 +242,7 @@ implements ItemListener {
 
 
   public void insertUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " insert");
+    //System.out.println(getClass().getName() + " insert");
     Component ed = _typeField.getEditor().getEditorComponent();
     Document typeDoc = ((JTextField)ed).getDocument();
 

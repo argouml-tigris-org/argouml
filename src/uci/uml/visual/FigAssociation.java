@@ -28,7 +28,9 @@
 package uci.uml.visual;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.beans.*;
+import java.util.*;
 import com.sun.java.swing.*;
 import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
 
@@ -39,7 +41,8 @@ import uci.uml.Foundation.Data_Types.*;
 import uci.uml.generate.*;
 
 public class FigAssociation extends FigEdgeLine
-implements VetoableChangeListener, DelayedVetoableChangeListener {
+implements VetoableChangeListener, DelayedVetoableChangeListener,
+  KeyListener, MouseListener {
 
   protected FigText _name;
   protected FigText _srcMult, _srcRole;
@@ -101,6 +104,11 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
 		new PathConvPercentPlusConst(this, (float)1.00, -35, -15));
     setBetweenNearestPoints(true);
     updateText();
+
+    _name.addPropertyChangeListener(this);
+    _srcRole.addPropertyChangeListener(this);
+    _destRole.addPropertyChangeListener(this);
+
   }
 
 
@@ -115,7 +123,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
 
   public void vetoableChange(PropertyChangeEvent pce) {
     // throws PropertyVetoException 
-    System.out.println("FigAssociation got a change notification!");
+    //System.out.println("FigAssociation got a change notification!");
     Object src = pce.getSource();
     if (src == getOwner()) {
       DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
@@ -125,10 +133,76 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
 
   public void delayedVetoableChange(PropertyChangeEvent pce) {
     // throws PropertyVetoException 
-    System.out.println("FigAssociation got a delayed change notification!");
+    //System.out.println("FigAssociation got a delayed change notification!");
     Object src = pce.getSource();
     updateText();
   }
+
+  public void propertyChange(PropertyChangeEvent pve) {
+    Object src = pve.getSource();
+    String pName = pve.getPropertyName();
+    if (pName.equals("editing") && Boolean.FALSE.equals(pve.getNewValue())) {
+      //System.out.println("finished editing");
+      IAssociation asc = (IAssociation) getOwner();
+      try {
+	if (src == _name) { asc.setName(new Name(_name.getText())); }
+	Vector conn = asc.getConnection();
+	if (conn == null || conn.size() == 0) return;
+
+	if (src == _srcRole) {
+	  AssociationEnd srcAE = (AssociationEnd) conn.elementAt(0);
+	  srcAE.setName(new Name(_srcRole.getText()));
+	}
+	if (src == _destRole) {
+	  AssociationEnd destAE = (AssociationEnd) conn.elementAt(1);
+	  destAE.setName(new Name(_destRole.getText()));
+	}
+      }
+      catch (PropertyVetoException ex) {
+	System.out.println("could not parse and use the text you entered");
+      }
+    }
+    else super.propertyChange(pve);
+  }
+
+    
+  ////////////////////////////////////////////////////////////////
+  // event handlers
+
+  public void mousePressed(MouseEvent me) { }
+  public void mouseReleased(MouseEvent me) { }
+  public void mouseEntered(MouseEvent me) { }
+  public void mouseExited(MouseEvent me) { }
+
+  public void mouseClicked(MouseEvent me) {
+    if (me.isConsumed()) return;
+    if (me.getClickCount() >= 2) {
+      if (_name.contains(me.getX(), me.getY())) _name.mouseClicked(me);
+      if (_destRole.contains(me.getX(), me.getY())) _destRole.mouseClicked(me);
+      if (_srcRole.contains(me.getX(), me.getY())) _srcRole.mouseClicked(me);
+    }
+    me.consume();
+  }
+
+
+  public void keyPressed(KeyEvent ke) { }
+
+  public void keyReleased(KeyEvent ke) { }
+
+  public void keyTyped(KeyEvent ke) {
+    if (!ke.isConsumed()) {
+      _name.keyTyped(ke);
+      ke.consume();
+      IAssociation asc = (IAssociation) getOwner();
+      try {
+	asc.setName(new Name(_name.getText()));
+      }
+      catch (PropertyVetoException pve) {
+	System.out.println("could not set association name");
+      }
+    }
+  }
+
 
   protected void updateText() {
     Association as = (Association) getOwner();
@@ -163,18 +237,8 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
       return ArrowHeadNone.TheInstance;
     if (AggregationKind.AGG.equals(ak))
       return ArrowHeadDiamond.WhiteDiamond;
-//     {
-//       ArrowHeadDiamond res = new ArrowHeadDiamond();
-//       res.setFillColor(Color.white);
-//       return res;
-//     }
     if (AggregationKind.COMPOSITE.equals(ak))
       return ArrowHeadDiamond.BlackDiamond;
-//       {
-//       ArrowHeadDiamond res = new ArrowHeadDiamond();
-//       res.setFillColor(Color.black);
-//       return res;
-//     }
     System.out.println("unknown case in drawing arrowhead");
     return ArrowHeadNone.TheInstance;
   }

@@ -207,7 +207,7 @@ implements TabModelTarget, ListSelectionListener, DocumentListener, ActionListen
   // event handling
 
   public void insertUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " insert");
+    //System.out.println(getClass().getName() + " insert");
     if (e.getDocument() == _expr.getDocument()) {
       //setTargetName();
       System.out.println("changed constraint expression text");

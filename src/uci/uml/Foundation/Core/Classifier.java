@@ -59,7 +59,10 @@ public abstract class Classifier extends GeneralizableElementImpl {
   public Classifier(Name name) { super(name); }
   public Classifier(String nameStr) { super(new Name(nameStr)); }
   
-  public Vector getBehavioralFeature() { return _behavioralFeature; }
+  public Vector getBehavioralFeature() {
+    if (_behavioralFeature == null) return null;
+    return (Vector) _behavioralFeature.clone();
+  }
   public void setBehavioralFeature(Vector x)
   throws PropertyVetoException {
     if (_behavioralFeature == null) _behavioralFeature = new Vector();

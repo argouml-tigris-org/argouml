@@ -47,7 +47,8 @@ public class GoClassifierToBeh implements TreeModelPrereqs {
 
   public Object getChild(Object parent, int index) {
     if (parent instanceof Classifier) {
-      return ((Classifier)parent).getBehavioralFeature().elementAt(index);
+      Classifier cls = (Classifier) parent;
+      return cls.getBehavioralFeature().elementAt(index);
     }
     System.out.println("getChild should never be get here GoClassifierToBeh");
     return null;

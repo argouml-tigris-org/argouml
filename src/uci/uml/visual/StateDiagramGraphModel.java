@@ -152,7 +152,7 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Add the given node to the graph, if valid. */
   public void addNode(Object node) {
-    System.out.println("adding class node!!");
+    System.out.println("adding state diagram node!!");
     if (_nodes.contains(node)) return;
     _nodes.addElement(node);
     // needs-more-work: assumes public, user pref for default visibility?
@@ -172,7 +172,7 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Add the given edge to the graph, if valid. */
   public void addEdge(Object edge) {
-    System.out.println("adding class edge!!!!!!");
+    System.out.println("adding state diagram edge!!!!!!");
     if (_edges.contains(edge)) return;
     _edges.addElement(edge);
     // needs-more-work: assumes public

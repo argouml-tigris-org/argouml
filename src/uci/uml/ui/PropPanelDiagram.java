@@ -112,7 +112,7 @@ implements TabModelTarget, DocumentListener {
   // event handling
 
   public void insertUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " insert");
+    //System.out.println(getClass().getName() + " insert");
     if (e.getDocument() == _nameField.getDocument()) setTargetName();
   }
 

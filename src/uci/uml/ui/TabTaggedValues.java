@@ -225,11 +225,11 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
   }
 
   public void valueChanged(ListSelectionEvent e) {
-    System.out.println("valueChanged");
+    //System.out.println("valueChanged");
     Object src = e.getSource();
     if (src == _table.getSelectionModel()) {
       int selectedRow = e.getFirstIndex();
-      System.out.println("selection changed: " + selectedRow);
+      //System.out.println("selection changed: " + selectedRow);
       if (selectedRow >= 0) {
 	_removeButton.setEnabled(true);
 	_duplicateButton.setEnabled(true);

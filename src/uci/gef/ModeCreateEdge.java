@@ -96,6 +96,10 @@ public class ModeCreateEdge extends ModeCreate {
     int x = me.getX(), y = me.getY();
     Editor _editor = Globals.curEditor();
     Fig underMouse = _editor.hit(x, y);
+    if (underMouse == null) { 
+        System.out.println("bighit");
+        underMouse = _editor.hit(x-16, y-16, 32, 32); 
+    }
     if (underMouse == null) { done(); me.consume(); return; }
     if (!(underMouse instanceof FigNode)) { done(); me.consume(); return; }
     _sourceFigNode = (FigNode) underMouse;
@@ -115,8 +119,8 @@ public class ModeCreateEdge extends ModeCreate {
     int x = me.getX(), y = me.getY();
     Class arcClass;
     Editor _editor = Globals.curEditor();
-
     Fig f = _editor.hit(x, y);
+    if (f == null) { f = _editor.hit(x-16, y-16, 32, 32); }
     GraphModel gm = _editor.getGraphModel();
     if (!(gm instanceof MutableGraphModel)) f = null;
     MutableGraphModel mgm = (MutableGraphModel) gm;
@@ -127,7 +131,7 @@ public class ModeCreateEdge extends ModeCreate {
       // If its a FigNode, then check within the  
       // FigNode to see if a port exists 
       Object foundPort = destFigNode.deepHitPort(x, y);
-      
+
       if (foundPort != null && foundPort != _startPort) {
 	Fig destPortFig = destFigNode.getPortFig(foundPort);
 	Class edgeClass = (Class) getArg("edgeClass");

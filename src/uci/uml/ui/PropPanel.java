@@ -142,7 +142,7 @@ implements TabModelTarget, DocumentListener {
     Stereotype s = new Stereotype(stereoName);
     Vector stereos = new Vector();
     stereos.addElement(s);
-    System.out.println("setting stereotype");
+    //System.out.println("setting stereotype");
     me.setStereotype(stereos);
     }
     catch (PropertyVetoException pve) { } 
@@ -152,7 +152,7 @@ implements TabModelTarget, DocumentListener {
   // event handling
 
   public void insertUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " insert");
+    //System.out.println(getClass().getName() + " insert");
     if (e.getDocument() == _nameField.getDocument()) setTargetName();
     Component ed = _stereoField.getEditor().getEditorComponent();
     Document stereoDoc = ((JTextField)ed).getDocument();
@@ -162,7 +162,7 @@ implements TabModelTarget, DocumentListener {
   public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
 
   public void changedUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " changed");
+    //System.out.println(getClass().getName() + " changed");
     // Apparently, this method is never called.
   }
   

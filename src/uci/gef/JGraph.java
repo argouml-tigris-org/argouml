@@ -184,6 +184,7 @@ public class JGraph extends JPanel implements Cloneable {
   public void setVisible(boolean b) {
     super.setVisible(b);
     _drawingPane.setVisible(b);
+    _editor.setActiveTextEditor(null);
   }
   
   /** Tell Swing/AWT that JGraph handles tab-order itself. */
@@ -271,12 +272,14 @@ public class JGraph extends JPanel implements Cloneable {
 
 
 class JGraphInternalPane extends JPanel {
+//implements FocusListener 
   protected Editor _editor;
   
   public JGraphInternalPane(Editor e) {
     _editor = e;
     setLayout(null);
     // setAutoscrolls(true); // needs-more-work: no effect...
+    //addFocusListener(this);
   }
  
   public void paint(Graphics g) { _editor.paint(g); }
@@ -300,6 +303,6 @@ class JGraphInternalPane extends JPanel {
   public boolean isManagingFocus() { return true; }
 
   /** Tell Swing/AWT that JGraph can be tabbed into. */
-  public boolean isFocusTraversable() { return true; }
+  public boolean isFocusTraversable() { return true; }  
   
 }

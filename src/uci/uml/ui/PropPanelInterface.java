@@ -144,7 +144,7 @@ implements DocumentListener, ItemListener {
   // event handling
 
   public void insertUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " insert");
+    //System.out.println(getClass().getName() + " insert");
     Component ed = _extendsField.getEditor().getEditorComponent();
     Document extendsDoc = ((JTextField)ed).getDocument();
     if (e.getDocument() == extendsDoc) setTargetExtends();

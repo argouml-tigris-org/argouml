@@ -36,6 +36,7 @@ CLASSES = \
 	CrAssocNameConflict.class \
 	CrAttrNameConflict.class \
 	CrCircularAssocClass.class \
+	CrCircularComposition.class \
 	CrCircularInheritance.class \
 	CrClassMustBeAbstract.class \
 	CrCrossNamespaceAssoc.class \
@@ -63,7 +64,14 @@ CLASSES = \
 	CrUnconventionalAttrName.class \
 	CrUnconventionalClassName.class \
 	CrUnconventionalOperName.class \
+	CrUtilityViolated.class \
 	CrUselessAbstract.class \
+	CrReservedName.class \
+	CrNoInstanceVariables.class \
+	CrNameConfusion.class \
+	CrInterfaceOperOnly.class \
+	CrEmptyPackage.class \
+	CrConflictingComposites.class \
 	Init.class
 
 all: $(GEN) $(CLASSES)

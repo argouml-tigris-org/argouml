@@ -46,7 +46,7 @@ public class TabUMLDisplay extends TabText {
   ////////////////////////////////////////////////////////////////
   // constructor
   public TabUMLDisplay() {
-    setTitle("Pseudocode");
+    setTitle("English");
     System.out.println("making TabUMLDisplay");
   }
 
@@ -55,7 +55,8 @@ public class TabUMLDisplay extends TabText {
 
   protected String genText() {
     if (!(_target instanceof ModelElement)) return "nothing selected";
-    return GeneratorDisplay.Generate(_target);
+    return "This feature is not yet implemented";
+    //return GeneratorExplanation.Generate(_target);
   }
 
   protected void parseText(String s) {

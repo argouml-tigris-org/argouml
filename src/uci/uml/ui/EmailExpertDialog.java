@@ -123,12 +123,12 @@ public class EmailExpertDialog extends JFrame implements ActionListener {
       String to = _to.getText();
       String cc = _cc.getText();
       String subject = _subject.getText();
-      System.out.println("sending email!");
+      //System.out.println("sending email!");
       hide();
       dispose();
     }
     if (e.getSource() == _cancelButton) {
-      System.out.println("cancel");
+      //System.out.println("cancel");
       hide();
       dispose();
     }

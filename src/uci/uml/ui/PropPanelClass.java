@@ -168,11 +168,11 @@ implements ItemListener, DocumentListener {
     if (gens != null && gens.size() == 1)
       gen = (Generalization) gens.firstElement();
     if (gen == null) {
-      System.out.println("null base class");
+      //System.out.println("null base class");
       _extendsField.setSelectedItem(null);
     }
     else {
-      System.out.println("base class found");
+      //System.out.println("base class found");
       _extendsField.setSelectedItem(gen.getSupertype());
     }
     
@@ -183,7 +183,7 @@ implements ItemListener, DocumentListener {
   public void setTargetExtends() {
     if (_target == null) return;
     Object base = _extendsField.getSelectedItem();
-    System.out.println("base = " + base);
+    //System.out.println("base = " + base);
     // needs-more-work: this could involve changes to the graph model
   }
 
@@ -198,7 +198,7 @@ implements ItemListener, DocumentListener {
     if (_target == null) return;
     String keys = (String) _keywordsField.getSelectedItem();
     if (keys == null) {
-      System.out.println("keywords are null");
+      //System.out.println("keywords are null");
       return;
     }
     MMClass cls = (MMClass) _target;
@@ -233,7 +233,7 @@ implements ItemListener, DocumentListener {
   // event handling
 
   public void insertUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " insert");
+    //System.out.println(getClass().getName() + " insert");
     Component ed = _extendsField.getEditor().getEditorComponent();
     Document extendsDoc = ((JTextField)ed).getDocument();
     if (e.getDocument() == extendsDoc) setTargetExtends();
@@ -251,18 +251,18 @@ implements ItemListener, DocumentListener {
   public void itemStateChanged(ItemEvent e) {
     Object src = e.getSource();
     if (src == _keywordsField) {
-      System.out.println("class keywords now is " +
-			 _keywordsField.getSelectedItem());
+      //System.out.println("class keywords now is " +
+      //_keywordsField.getSelectedItem());
       setTargetKeywords();
     }
     else if (src == _visField) {
-      System.out.println("class VisibilityKind now is " +
-			 _visField.getSelectedItem());
+      //System.out.println("class VisibilityKind now is " +
+      //_visField.getSelectedItem());
       setTargetVisibility();
     }
     else if (src == _extendsField) {
-      System.out.println("class extends now is " +
-			 _extendsField.getSelectedItem());
+      //System.out.println("class extends now is " +
+      //_extendsField.getSelectedItem());
       setTargetExtends();
     }
     

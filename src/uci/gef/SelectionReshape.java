@@ -33,7 +33,7 @@
 package uci.gef;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.util.*;
 
 /** A Selection that allows the user to reshape the selected Fig.
@@ -45,7 +45,8 @@ import java.util.*;
  * @see FigInk
  */
 
-public class SelectionReshape extends Selection {
+public class SelectionReshape extends Selection
+  implements KeyListener {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -101,6 +102,10 @@ public class SelectionReshape extends Selection {
   ////////////////////////////////////////////////////////////////
   // event handlers
 
+  public void keyPressed(KeyEvent ke) { }
+    
+  public void keyReleased(KeyEvent ke) { }
+    
   /** If the user presses delete or backaspace while a handle is
    *  selected, remove that point from the polygon. The 'n' and 'p'
    *  keys select the next and previous points. The 'i' key inserts a
@@ -109,6 +114,11 @@ public class SelectionReshape extends Selection {
     Editor ce = Globals.curEditor();
     char key = ke.getKeyChar();
     int npoints = _content.getNumPoints();
+    if (ke.isConsumed()) return;
+    if (_content instanceof KeyListener)
+      ((KeyListener)_content).keyTyped(ke);
+    if (ke.isConsumed()) return;    
+
     if (_selectedHandle != -1 && (key == 127 || key == 8)) {
       ce.executeCmd(new CmdRemovePoint(_selectedHandle), ke);
       ke.consume();

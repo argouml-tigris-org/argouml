@@ -190,7 +190,7 @@ implements ChangeListener, MouseListener {
   /** called when the user selects an item in the tree, by clicking or
    *  otherwise. */
   public void stateChanged(ChangeEvent e) {
-    System.out.println("DetailsPane state changed");
+    //System.out.println("DetailsPane state changed");
     Component sel = _tabs.getSelectedComponent();
     if (sel instanceof TabToDoTarget) {
       ((TabToDoTarget)sel).setTarget(null);
