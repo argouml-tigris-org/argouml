@@ -76,7 +76,8 @@ public class ActionExit extends UMLAction
 		JOptionPane.showConfirmDialog(pb, t, t, 
 					      JOptionPane.YES_NO_CANCEL_OPTION);
       
-	    if (response == JOptionPane.CANCEL_OPTION) {
+	    if (response == JOptionPane.CANCEL_OPTION 
+            	|| response == JOptionPane.CLOSED_OPTION) {
 		active = false;
 		return;
 	    }
