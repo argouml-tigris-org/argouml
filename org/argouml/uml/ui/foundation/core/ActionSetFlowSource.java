@@ -24,26 +24,52 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
-import javax.swing.ImageIcon;
+import java.awt.event.ActionEvent;
+import java.util.Vector;
 
-import org.argouml.swingext.Orientation;
-import org.argouml.util.ConfigLoader;
+import org.argouml.application.api.Argo;
+import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLComboBox2;
+import ru.novosoft.uml.foundation.core.MFlow;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- * Added this class to give as much information to the user as possible
- * if the lookup mechanisme for proppanels fails.
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class PropPanelRelationship extends PropPanelModelElement {
+public class ActionSetFlowSource extends UMLChangeAction {
+
+    public static final ActionSetFlowSource SINGLETON = new ActionSetFlowSource();
 
     /**
-     * Constructor for PropPanelRelationship.
+     * Constructor for ActionSetElementOwnershipSpecification.
+     * @param s
      */
-    public PropPanelRelationship() {
-        super("Relationship",null, ConfigLoader.getTabPropsOrientation());
+    protected ActionSetFlowSource() {
+        super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
+    }   
+
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        if (e.getSource() instanceof UMLComboBox2) {
+            UMLComboBox2 source = (UMLComboBox2)e.getSource();
+            Object target = source.getTarget();
+            if (target instanceof MFlow) {
+                MFlow flow = (MFlow)target;
+                MModelElement old = null;
+                if (!flow.getSources().isEmpty()) {
+                    old = (MModelElement)flow.getSources().toArray()[0];
+                }
+                if (old != source.getSelectedItem()) {
+                    flow.setSources(new Vector());
+                    if (source.getSelectedItem() != null)
+                        flow.addSource((MModelElement)source.getSelectedItem());
+                }
+            }
+        }
     }
-    
-    public PropPanelRelationship(String name, ImageIcon icon, Orientation orientation) {}
 
 }

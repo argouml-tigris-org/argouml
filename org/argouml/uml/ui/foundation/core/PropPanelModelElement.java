@@ -93,20 +93,20 @@ abstract public class PropPanelModelElement extends PropPanel {
     protected static ImageIcon _receptionIcon = ResourceLoader.lookupIconResource("Reception");
     protected static ImageIcon _commentIcon = ResourceLoader.lookupIconResource("Note");
     protected static ImageIcon _messageIcon = ResourceLoader.lookupIconResource("Message");
+    protected static ImageIcon _flowIcon = ResourceLoader.lookupIconResource("Flow");
 
-    protected JList namespaceList;
     protected JScrollPane namespaceScroll;
     protected JComboBox namespaceComboBox;
     protected JTextField nameField;
     protected JComboBox stereotypeBox;    
-    protected JList supplierDependencyList;
-    protected JList clientDependencyList;
-    protected JList targetFlowList;
-    protected JList sourceFlowList;
-    protected JList constraintList;
+    protected JScrollPane supplierDependencyScroll;
+    protected JScrollPane clientDependencyScroll;
+    protected JScrollPane targetFlowScroll;
+    protected JScrollPane sourceFlowScroll;
+    protected JScrollPane constraintScroll;
     protected JPanel namespaceVisibilityPanel;
     protected JCheckBox specializationCheckBox;
-    protected JList elementResidenceList;
+    protected JScrollPane elementResidenceScroll;
     
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -133,18 +133,18 @@ abstract public class PropPanelModelElement extends PropPanel {
         this("ModelElement", null, ConfigLoader.getTabPropsOrientation());
         addField(Argo.localize("UMLMenu", "label.name"), nameField);
         addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
-        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceList);
+        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
         
         add(LabelledLayout.getSeperator());
         
-        addField(Argo.localize("UMLMenu", "label.supplier-dependencies"), supplierDependencyList);
-        addField(Argo.localize("UMLMenu", "label.client-dependencies"), clientDependencyList);
-        addField(Argo.localize("UMLMenu", "label.source-flows"), sourceFlowList);
-        addField(Argo.localize("UMLMenu", "label.target-flows"), targetFlowList);
+        addField(Argo.localize("UMLMenu", "label.supplier-dependencies"), supplierDependencyScroll);
+        addField(Argo.localize("UMLMenu", "label.client-dependencies"), clientDependencyScroll);
+        addField(Argo.localize("UMLMenu", "label.source-flows"), sourceFlowScroll);
+        addField(Argo.localize("UMLMenu", "label.target-flows"), targetFlowScroll);
         
         add(LabelledLayout.getSeperator());
         
-        addField(Argo.localize("UMLMenu", "label.constraints"), constraintList);
+        addField(Argo.localize("UMLMenu", "label.constraints"), constraintScroll);
         addField(Argo.localize("UMLMenu", "label.namespace-visibility"), namespaceVisibilityPanel);
     }
 
@@ -196,31 +196,37 @@ abstract public class PropPanelModelElement extends PropPanel {
         nameField = new UMLTextField2(this, new UMLModelElementNameDocument(this));
         stereotypeBox = new UMLComboBox2(this, new UMLModelElementStereotypeComboBoxModel(this), ActionSetModelElementStereotype.SINGLETON);
         namespaceComboBox = new UMLComboBox2(this, new UMLModelElementNamespaceComboBoxModel(this), ActionSetModelElementNamespace.SINGLETON);
-        namespaceList = new UMLLinkedList(this, new UMLModelElementNamespaceListModel(this));
+        JList namespaceList = new UMLLinkedList(this, new UMLModelElementNamespaceListModel(this));
         namespaceList.setVisibleRowCount(1);
         namespaceScroll = new JScrollPane(namespaceList);
         
         // supplierDependencyList and clientDependencyList are not mutable atm
         // reason for this is that users would have an enormous choice if they 
         // are implemented as mutable
-        supplierDependencyList = new UMLLinkedList(this, new UMLModelElementSupplierDependencyListModel(this));
-        clientDependencyList = new UMLLinkedList(this, new UMLModelElementClientDependencyListModel(this));
+        JList supplierDependencyList = new UMLLinkedList(this, new UMLModelElementSupplierDependencyListModel(this));
+        supplierDependencyScroll = new JScrollPane(supplierDependencyList);
+        JList clientDependencyList = new UMLLinkedList(this, new UMLModelElementClientDependencyListModel(this));
+        clientDependencyScroll = new JScrollPane(clientDependencyList);
         
         // 2002-11-10 flows are not supported yet by the rest of argouml but 
         // included here for future compliance. For the same reason as
         // supplierDependency not mutable
-        sourceFlowList = new UMLLinkedList(this, new UMLModelElementSourceFlowListModel(this));
-        targetFlowList = new UMLLinkedList(this, new UMLModelElementTargetFlowListModel(this));
-        
-        constraintList = new UMLMutableLinkedList(this, new UMLModelElementConstraintListModel(this), null, ActionNewModelElementConstraint.SINGLETON);
-        
+        JList sourceFlowList = new UMLLinkedList(this, new UMLModelElementSourceFlowListModel(this));
+        sourceFlowScroll = new JScrollPane(sourceFlowList);
+        JList targetFlowList = new UMLLinkedList(this, new UMLModelElementTargetFlowListModel(this));
+        targetFlowScroll = new JScrollPane(targetFlowList);
+        JList constraintList = new UMLMutableLinkedList(this, new UMLModelElementConstraintListModel(this), null, ActionNewModelElementConstraint.SINGLETON);
+        constraintScroll = new JScrollPane(constraintList);
         namespaceVisibilityPanel = new UMLButtonPanel(new UMLElementOwnershipVisibilityButtonGroup(this));
         
         specializationCheckBox = new UMLElementOwnershipSpecificationCheckBox(this);
         
         // NSUML implements the association class element residence as a connecting class 
         // between a component and the modelelement
-        elementResidenceList = new UMLLinkedList(this, new UMLModelElementElementResidenceListModel(this));
+        JList elementResidenceList = new UMLLinkedList(this, new UMLModelElementElementResidenceListModel(this));
+        elementResidenceScroll = new JScrollPane(elementResidenceList);
+        // no support yet for templateParameters
+        // TODO support templateparameters
     }
         
 }
