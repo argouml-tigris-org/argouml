@@ -54,111 +54,103 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 
 /**
- *Table view of a Model Element's Tagged Values.
+ * Table view of a Model Element's Tagged Values.
  */
 public class TabTaggedValues extends TabSpawnable
-implements TabModelTarget {
-  ////////////////////////////////////////////////////////////////
-  // constants
-  public final static String DEFAULT_NAME = "tag";
-  public final static String DEFAULT_VALUE = "value";
+    implements TabModelTarget {
+    ////////////////////////////////////////////////////////////////
+    // constants
+    public final static String DEFAULT_NAME = "tag";
+    public final static String DEFAULT_VALUE = "value";
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  Object _target;
-  TableModelTaggedValues _tableModel = null;
-  boolean _shouldBeEnabled = false;
-  JTable _table = new JTable(10, 2);
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    Object _target;
+    TableModelTaggedValues _tableModel = null;
+    boolean _shouldBeEnabled = false;
+    JTable _table = new JTable(10, 2);
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
-  public TabTaggedValues() {
-    super("tab.tagged-values");
-    _tableModel = new TableModelTaggedValues(this);
-    _table.setModel(_tableModel);
-    //     TableColumn keyCol = _table.getColumnModel().getColumn(0);
-    //     TableColumn valCol = _table.getColumnModel().getColumn(1);
-    //     keyCol.setMinWidth(50);
-    //     keyCol.setWidth(150);
-    //     keyCol.setPreferredWidth(150);
-    //     valCol.setMinWidth(250);
-    //     valCol.setWidth(550);
-    //     valCol.setPreferredWidth(550);
-    //     //_table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-    //     _table.sizeColumnsToFit(-1);
+    ////////////////////////////////////////////////////////////////
+    // constructor
+    public TabTaggedValues() {
+        super("tab.tagged-values");
+        _tableModel = new TableModelTaggedValues(this);
+        _table.setModel(_tableModel);
 
-    _table.setRowSelectionAllowed(false);
-    // _table.getSelectionModel().addListSelectionListener(this);
-    JScrollPane sp = new JScrollPane(_table);
-    Font labelFont = MetalLookAndFeel.getSubTextFont();
-    _table.setFont(labelFont);
-    resizeColumns();
-    setLayout(new BorderLayout());
-    add(sp, BorderLayout.CENTER);
-  }
-
-  public void resizeColumns() {
-    TableColumn keyCol = _table.getColumnModel().getColumn(0);
-    TableColumn valCol = _table.getColumnModel().getColumn(1);
-    keyCol.setMinWidth(50);
-    keyCol.setWidth(150);
-    keyCol.setPreferredWidth(150);
-    valCol.setMinWidth(250);
-    valCol.setWidth(550);
-    valCol.setPreferredWidth(550);
-    //_table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-    _table.sizeColumnsToFit(-1);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  public void setTarget(Object t) {
-    if (_table.isEditing()) {
-      TableCellEditor ce = _table.getCellEditor();
-      if (ce != null && !ce.stopCellEditing())
-	ce.cancelCellEditing();
+        _table.setRowSelectionAllowed(false);
+        // _table.getSelectionModel().addListSelectionListener(this);
+        JScrollPane sp = new JScrollPane(_table);
+        Font labelFont = MetalLookAndFeel.getSubTextFont();
+        _table.setFont(labelFont);
+        resizeColumns();
+        setLayout(new BorderLayout());
+        add(sp, BorderLayout.CENTER);
     }
 
-    if (!(t instanceof MModelElement)) {
-      _target = null;
-      _shouldBeEnabled = false;
-      return;
+    public void resizeColumns() {
+        TableColumn keyCol = _table.getColumnModel().getColumn(0);
+        TableColumn valCol = _table.getColumnModel().getColumn(1);
+        keyCol.setMinWidth(50);
+        keyCol.setWidth(150);
+        keyCol.setPreferredWidth(150);
+        valCol.setMinWidth(250);
+        valCol.setWidth(550);
+        valCol.setPreferredWidth(550);
+        //_table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        _table.sizeColumnsToFit(-1);
     }
-    _target = t;
-    _shouldBeEnabled = true;
 
-    //TableColumn keyCol = _table.getColumnModel().getColumn(0);
-    //TableColumn valCol = _table.getColumnModel().getColumn(1);
-    //keyCol.setMinWidth(50);
-    //keyCol.setWidth(150);
-    //keyCol.setPreferredWidth(150);
-    //valCol.setMinWidth(250);
-    //valCol.setWidth(550);
-    //valCol.setPreferredWidth(550);
-    _table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-    _table.sizeColumnsToFit(0);
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-    MModelElement me = (MModelElement) _target;
-    Vector tvs = new Vector(me.getTaggedValues());
-    _tableModel.setTarget(me);
-    validate();
-  }
-  public Object getTarget() { return _target; }
+    public void setTarget(Object target) {
+        if (_table.isEditing()) {
+            TableCellEditor ce = _table.getCellEditor();
+            if (ce != null && !ce.stopCellEditing())
+                ce.cancelCellEditing();
+        }
 
-  public void refresh() { setTarget(_target); }
-
-  public boolean shouldBeEnabled(Object target) {
-      target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
-    if (!(target instanceof MModelElement)) {
-      _shouldBeEnabled = false;
-      return _shouldBeEnabled;
-    }
-    else{
+        Object t = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
+        if (!(t instanceof MModelElement)) {
+            _target = null;
+            _shouldBeEnabled = false;
+            return;
+        }
+        _target = t;
         _shouldBeEnabled = true;
-        return true;
+
+        //TableColumn keyCol = _table.getColumnModel().getColumn(0);
+        //TableColumn valCol = _table.getColumnModel().getColumn(1);
+        //keyCol.setMinWidth(50);
+        //keyCol.setWidth(150);
+        //keyCol.setPreferredWidth(150);
+        //valCol.setMinWidth(250);
+        //valCol.setWidth(550);
+        //valCol.setPreferredWidth(550);
+        _table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        _table.sizeColumnsToFit(0);
+
+        MModelElement me = (MModelElement) _target;
+        Vector tvs = new Vector(me.getTaggedValues());
+        _tableModel.setTarget(me);
+        validate();
     }
-  }
+
+    public Object getTarget() { return _target; }
+
+    public void refresh() { setTarget(_target); }
+
+    public boolean shouldBeEnabled(Object target) {
+        Object t = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
+        if (!(t instanceof MModelElement)) {
+            _shouldBeEnabled = false;
+            return _shouldBeEnabled;
+        }
+        else{
+            _shouldBeEnabled = true;
+            return true;
+        }
+    }
 
     /* (non-Javadoc)
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
