@@ -67,7 +67,7 @@ public class UseCasesFactoryImpl
      *
      * @return an initialized Extend instance.
      */
-    public MExtend createExtend() {
+    public Object createExtend() {
         MExtend modelElement = MFactory.getDefaultFactory().createExtend();
 	super.initialize(modelElement);
 	return modelElement;
@@ -78,7 +78,7 @@ public class UseCasesFactoryImpl
      *
      * @return an initialized ExtensionPoint instance.
      */
-    public MExtensionPoint createExtensionPoint() {
+    public Object createExtensionPoint() {
         MExtensionPoint modelElement =
 	    MFactory.getDefaultFactory().createExtensionPoint();
 	super.initialize(modelElement);
@@ -90,7 +90,7 @@ public class UseCasesFactoryImpl
      *
      * @return an initialized Actor instance.
      */
-    public MActor createActor() {
+    public Object createActor() {
         MActor modelElement = MFactory.getDefaultFactory().createActor();
 	super.initialize(modelElement);
 	return modelElement;
@@ -101,7 +101,7 @@ public class UseCasesFactoryImpl
      *
      * @return an initialized Include instance.
      */
-    public MInclude createInclude() {
+    public Object createInclude() {
         MInclude modelElement = MFactory.getDefaultFactory().createInclude();
 	super.initialize(modelElement);
 	return modelElement;
@@ -112,7 +112,7 @@ public class UseCasesFactoryImpl
      *
      * @return an initialized UseCase instance.
      */
-    public MUseCase createUseCase() {
+    public Object createUseCase() {
         MUseCase modelElement = MFactory.getDefaultFactory().createUseCase();
 	super.initialize(modelElement);
 	return modelElement;
@@ -123,7 +123,7 @@ public class UseCasesFactoryImpl
      *
      * @return an initialized UseCaseInstance instance.
      */
-    public MUseCaseInstance createUseCaseInstance() {
+    public Object createUseCaseInstance() {
         MUseCaseInstance modelElement =
 	    MFactory.getDefaultFactory().createUseCaseInstance();
 	super.initialize(modelElement);
@@ -144,11 +144,12 @@ public class UseCasesFactoryImpl
      * @return            The new extend relationship or <code>null</code>
      *                    if it can't be created.
      */
-    public MExtend buildExtend(Object abase, Object anextension) {
+    public Object buildExtend(Object abase, Object anextension) {
         MUseCase base = (MUseCase) abase;
         MUseCase extension = (MUseCase) anextension;
 
-	MExtend extend = nsmodel.getUmlFactory().getUseCases().createExtend();
+	MExtend extend =
+	    (MExtend) nsmodel.getUmlFactory().getUseCases().createExtend();
 	// Set the ends
 
 	extend.setBase(base);
@@ -164,7 +165,7 @@ public class UseCasesFactoryImpl
 	}
 
 	// build an extensionpoint in the base
-	MExtensionPoint point = buildExtensionPoint(base);
+	MExtensionPoint point = (MExtensionPoint) buildExtensionPoint(base);
 	extend.addExtensionPoint(point);
 
 	return extend;
@@ -179,7 +180,7 @@ public class UseCasesFactoryImpl
      * @return            The new extend relationship or <code>null</code>
      *                    if it can't be created.
      */
-    public MExtend buildExtend(Object abase,
+    public Object buildExtend(Object abase,
 			       Object anextension,
 			       Object apoint) {
         MUseCase base = (MUseCase) abase;
@@ -197,9 +198,9 @@ public class UseCasesFactoryImpl
 						   + "usecase");
             }
         } else {
-            point = buildExtensionPoint(base);
+            point = (MExtensionPoint) buildExtensionPoint(base);
         }
-        MExtend extend = createExtend();
+        MExtend extend = (MExtend) createExtend();
         extend.setBase(base);
         extend.setExtension(extension);
         extend.addExtensionPoint(point);
@@ -215,7 +216,7 @@ public class UseCasesFactoryImpl
      * @return The new extension point.
      * @throws IllegalArgumentException if modelElement isn't a use-case.
      */
-    public MExtensionPoint buildExtensionPoint(Object modelElement) {
+    public Object buildExtensionPoint(Object modelElement) {
         if (!(modelElement instanceof MUseCase)) {
             throw new IllegalArgumentException("An extension point can only "
 					       + "be built on a use case");
@@ -223,7 +224,8 @@ public class UseCasesFactoryImpl
 
         MUseCase useCase = (MUseCase) modelElement;
         MExtensionPoint extensionPoint =
-	    nsmodel.getUmlFactory().getUseCases().createExtensionPoint();
+	    (MExtensionPoint) nsmodel.getUmlFactory().getUseCases()
+	    	.createExtensionPoint();
 
         // Set the owning use case if there is one given.
 
@@ -266,12 +268,12 @@ public class UseCasesFactoryImpl
      * @return           The new include relationship or <code>null</code> if
      *                   it can't be created.
      */
-    public MInclude buildInclude(Object/*MUseCase*/ abase,
+    public Object buildInclude(Object/*MUseCase*/ abase,
 				 Object/*MUseCase*/ anaddition) {
         MUseCase base = (MUseCase) abase;
         MUseCase addition = (MUseCase) anaddition;
 	MInclude include =
-	    nsmodel.getUmlFactory().getUseCases().createInclude();
+	    (MInclude) nsmodel.getUmlFactory().getUseCases().createInclude();
 
 	// Set the ends. Because of the NSUML bug we reverse the accessors
 	// here.
@@ -293,15 +295,16 @@ public class UseCasesFactoryImpl
 
     /**
      * Builds an actor in the given namespace.
-     * @param model
+     *
      * @param ns the given namespace
-     * @return MActor the newly build actor
+     * @param model TODO: What is this? Why is this argument needed?
+     * @return The newly build Actor.
      */
     private MActor buildActor(MNamespace ns, Object model) {
      	if (ns == null) {
      	    ns = (MNamespace) model;
      	}
-     	MActor actor = createActor();
+     	MActor actor = (MActor) createActor();
      	actor.setNamespace(ns);
      	actor.setLeaf(false);
      	actor.setRoot(false);
@@ -310,16 +313,17 @@ public class UseCasesFactoryImpl
 
     /**
      * Builds an actor in the same namespace of the given actor. If
-     * object is no actor nothing is build. Did not give MActor as an
+     * object is no actor nothing is built. Did not give MActor as an
      * argument but object to seperate argouml better from NSUML.<p>
-     * @param model the model
-     * @param actor the given actor
-     * @return MActor the newly build actor
+     *
+     * @param model The current model.
+     * @param actor the given Actor
+     * @return The newly build Actor
      *
      * @see org.argouml.model.UseCasesFactory#buildActor(java.lang.Object,
      *         java.lang.Object)
      */
-    public MActor buildActor(Object actor, Object model) {
+    public Object buildActor(Object actor, Object model) {
         if (actor instanceof MActor) {
             return buildActor(((MActor) actor).getNamespace(), model);
         }
@@ -329,41 +333,69 @@ public class UseCasesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteActor(MActor elem) { }
-
-    /**
-     * @param elem the UML element to be deleted
-     */
-    public void deleteExtend(MExtend elem) {
-	nsmodel.getUmlHelper().deleteCollection(elem.getExtensionPoints());
-    }
-
-    /**
-     * @param elem the UML element to be deleted
-     */
-    public void deleteExtensionPoint(MExtensionPoint elem) {
+    public void deleteActor(Object elem) {
+        if (!(elem instanceof MActor)) {
+            throw new IllegalArgumentException();
+        }
 
     }
 
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteInclude(MInclude elem) { }
+    public void deleteExtend(Object elem) {
+        if (!(elem instanceof MExtend)) {
+            throw new IllegalArgumentException();
+        }
 
-    /**
-     * @param elem the UML element to be deleted
-     */
-    public void deleteUseCase(MUseCase elem) {
-	nsmodel.getUmlHelper().deleteCollection(elem.getExtends());
-	nsmodel.getUmlHelper().deleteCollection(elem.getExtends2());
-	nsmodel.getUmlHelper().deleteCollection(elem.getIncludes());
-	nsmodel.getUmlHelper().deleteCollection(elem.getIncludes2());
+	nsmodel.getUmlHelper()
+		.deleteCollection(((MExtend) elem).getExtensionPoints());
     }
 
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteUseCaseInstance(MUseCaseInstance elem) { }
+    public void deleteExtensionPoint(Object elem) {
+        if (!(elem instanceof MExtensionPoint)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
+
+    /**
+     * @param elem the UML element to be deleted
+     */
+    public void deleteInclude(Object elem) {
+        if (!(elem instanceof MInclude)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
+
+    /**
+     * @param elem the UML element to be deleted
+     */
+    public void deleteUseCase(Object elem) {
+        if (!(elem instanceof MUseCase)) {
+            throw new IllegalArgumentException();
+        }
+
+	MUseCase useCase = ((MUseCase) elem);
+	nsmodel.getUmlHelper().deleteCollection(useCase.getExtends());
+	nsmodel.getUmlHelper().deleteCollection(useCase.getExtends2());
+	nsmodel.getUmlHelper().deleteCollection(useCase.getIncludes());
+	nsmodel.getUmlHelper().deleteCollection(useCase.getIncludes2());
+    }
+
+    /**
+     * @param elem the UML element to be deleted
+     */
+    public void deleteUseCaseInstance(Object elem) {
+        if (!(elem instanceof MUseCaseInstance)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
 }
 
