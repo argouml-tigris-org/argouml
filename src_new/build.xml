@@ -188,6 +188,9 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <available classname="antlr.ANTLRException"
 	       classpath="${classpath}"
                property="has.antlr" />
+    <available classname="javax.help.HelpSet"
+	       classpath="${classpath}"
+               property="has.javahelp" />
 
     <!-- ===============================================================  -->
     <!-- Load user properties.                                            -->
@@ -314,7 +317,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 	           check.gef.localizer,
 		   check.gef,
 		   check.log4j,
-		   check.antlr">
+		   check.antlr,
+		   check.javahelp">
   </target>
 
   <target name="check.gef"
@@ -339,6 +343,12 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
           depends="prepare"
 	  unless="has.antlr">
     <fail message="antlrall library does not appear to be in the classpath."/>
+  </target>
+
+  <target name="check.javahelp"
+          depends="prepare"
+	  unless="has.javahelp">
+    <fail message="javahelp library does not appear to be in the classpath."/>
   </target>
 
   <!-- =================================================================== -->
@@ -517,6 +527,22 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="developer_snapshot" depends="package">
     <copy file="${build.dir}/${name}.jar" todir="${developer.lib.dir}"/>
+
+    <copy todir="${developer.lib.dir}">
+      <fileset dir="${build.dir}">
+        <include name="antlrall.jar"/>
+        <include name="argouml.jar"/>
+        <include name="gef.jar"/>
+        <include name="log4j.jar"/>
+        <include name="nsuml.jar"/>
+        <include name="ocl-argo.jar"/>
+        <include name="xerces.jar"/>
+        <include name="jh.jar"/>
+        <include name="faq.jar"/>
+        <include name="quick-guide.jar"/>
+        <include name="manual.jar"/>
+      </fileset>
+    </copy>
 
     <filter token="argojarfile" value="${developer.lib.dir}/${name}.jar"/>
     <copy todir="${argo.bin.dir}" filtering="on" >
