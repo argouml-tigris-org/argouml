@@ -57,7 +57,7 @@ Modifications
   <!ENTITY appcasestudy  SYSTEM "app_casestudy.xml">
   <!ENTITY appumlres     SYSTEM "app_umlres.xml">
   <!ENTITY appumlcase    SYSTEM "app_umlcase.xml">
-  <!ENTITY appumlcase    SYSTEM "app_hardlimits.xml">
+  <!ENTITY apphardlimits SYSTEM "app_hardlimits.xml">
   <!ENTITY appdocplan    SYSTEM "app_docplan.xml">
   <!ENTITY appdocstand   SYSTEM "app_docstand.xml">
   <!ENTITY applegal      SYSTEM "app_legal.xml">
@@ -139,6 +139,7 @@ Modifications
   &appcasestudy;
   &appumlres;
   &appumlcase;
+  &apphardlimits;
   &appdocplan;
   &appdocstand;
   &applegal;
