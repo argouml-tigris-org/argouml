@@ -39,7 +39,7 @@ import org.argouml.uml.ui.UMLComboBox2;
  */
 public class ActionSetExtendBase extends UMLChangeAction {
 
-    public static final ActionSetExtendBase SINGLETON =
+    private static final ActionSetExtendBase SINGLETON =
         new ActionSetExtendBase();
 
     /**
@@ -80,5 +80,12 @@ public class ActionSetExtendBase extends UMLChangeAction {
             }
 
         }
+    }
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionSetExtendBase getInstance() {
+        return SINGLETON;
     }
 }

@@ -37,7 +37,7 @@ import org.argouml.uml.ui.UMLCheckBox2;
  */
 public class ActionSetCompositeStateConcurrent extends UMLChangeAction {
 
-    public static final ActionSetCompositeStateConcurrent SINGLETON =
+    private static final ActionSetCompositeStateConcurrent SINGLETON =
 	new ActionSetCompositeStateConcurrent();
 
     /**
@@ -60,6 +60,13 @@ public class ActionSetCompositeStateConcurrent extends UMLChangeAction {
                 ModelFacade.setConcurent(m, !ModelFacade.isConcurent(m));
             }
         }
+    }
+
+    /**
+     * @return Returns the sINGLETON.
+     */
+    public static ActionSetCompositeStateConcurrent getInstance() {
+        return SINGLETON;
     }
 
 }

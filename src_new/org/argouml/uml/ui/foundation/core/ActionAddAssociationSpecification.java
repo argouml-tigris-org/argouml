@@ -37,9 +37,11 @@ import org.argouml.uml.ui.AbstractActionAddModelElement;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 4, 2003
  */
-public class ActionAddAssociationSpecification extends AbstractActionAddModelElement {
+public class ActionAddAssociationSpecification 
+    extends AbstractActionAddModelElement {
 
-    public final static ActionAddAssociationSpecification SINGLETON = new ActionAddAssociationSpecification();
+    private static final ActionAddAssociationSpecification SINGLETON = 
+        new ActionAddAssociationSpecification();
     /**
      * Constructor for ActionAddExtendExtensionPoint.
      */
@@ -60,7 +62,8 @@ public class ActionAddAssociationSpecification extends AbstractActionAddModelEle
     protected Vector getChoices() {
         Vector ret = new Vector();
         if (getTarget() != null) {
-            ret.addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind((Class)ModelFacade.CLASSIFIER));
+            ret.addAll(ModelManagementHelper.getHelper()
+                .getAllModelElementsOfKind((Class) ModelFacade.CLASSIFIER));
         }
         return ret;
     }
@@ -69,7 +72,8 @@ public class ActionAddAssociationSpecification extends AbstractActionAddModelEle
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
-        return Translator.localize("UMLMenu", "dialog.title.add-specifications");
+        return Translator.localize("UMLMenu", 
+                "dialog.title.add-specifications");
     }
 
     /**
@@ -79,5 +83,12 @@ public class ActionAddAssociationSpecification extends AbstractActionAddModelEle
         Vector ret = new Vector();
         ret.addAll(ModelFacade.getSpecifications(getTarget()));
         return ret;
+    }
+
+    /**
+     * @return Returns the sINGLETON.
+     */
+    public static ActionAddAssociationSpecification getInstance() {
+        return SINGLETON;
     }
 }

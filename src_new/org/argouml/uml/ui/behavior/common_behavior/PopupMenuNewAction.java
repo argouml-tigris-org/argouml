@@ -53,30 +53,32 @@ public class PopupMenuNewAction extends JPopupMenu {
 
         JMenu newMenu = new JMenu();
         newMenu.setText(Translator.localize("action.new"));
-        newMenu.add(ActionNewCallAction.SINGLETON);
-        ActionNewCallAction.SINGLETON.setTarget(list.getTarget());
-        ActionNewCallAction.SINGLETON.putValue(ActionNewAction.ROLE, role);
-        newMenu.add(ActionNewCreateAction.SINGLETON);
-        ActionNewCreateAction.SINGLETON.setTarget(list.getTarget());
-        ActionNewCreateAction.SINGLETON.putValue(ActionNewAction.ROLE, role);
-        newMenu.add(ActionNewDestroyAction.SINGLETON);
-        ActionNewDestroyAction.SINGLETON.setTarget(list.getTarget());
-        ActionNewDestroyAction.SINGLETON.putValue(ActionNewAction.ROLE, role);
+        newMenu.add(ActionNewCallAction.getInstance());
+        ActionNewCallAction.getInstance().setTarget(list.getTarget());
+        ActionNewCallAction.getInstance().putValue(ActionNewAction.ROLE, role);
+        newMenu.add(ActionNewCreateAction.getInstance());
+        ActionNewCreateAction.getInstance().setTarget(list.getTarget());
+        ActionNewCreateAction.getInstance()
+            .putValue(ActionNewAction.ROLE, role);
+        newMenu.add(ActionNewDestroyAction.getiNSTANCE());
+        ActionNewDestroyAction.getiNSTANCE().setTarget(list.getTarget());
+        ActionNewDestroyAction.getiNSTANCE()
+            .putValue(ActionNewAction.ROLE, role);
         newMenu.add(ActionNewReturnAction.getInstance());
         ActionNewReturnAction.getInstance().setTarget(list.getTarget());
         ActionNewReturnAction.getInstance()
             .putValue(ActionNewAction.ROLE, role);
-        newMenu.add(ActionNewSendAction.SINGLETON);
-        ActionNewSendAction.SINGLETON.setTarget(list.getTarget());
-        ActionNewSendAction.SINGLETON.putValue(ActionNewAction.ROLE, role);
-        newMenu.add(ActionNewTerminateAction.SINGLETON);
-        ActionNewTerminateAction.SINGLETON.setTarget(list.getTarget());
-        ActionNewTerminateAction.SINGLETON.putValue(ActionNewAction.ROLE, role);
-        newMenu.add(ActionNewUninterpretedAction.SINGLETON);
-        ActionNewUninterpretedAction.SINGLETON.setTarget(list.getTarget());
-        ActionNewUninterpretedAction.SINGLETON.putValue(
-							ActionNewAction.ROLE,
-							role);
+        newMenu.add(ActionNewSendAction.getInstance());
+        ActionNewSendAction.getInstance().setTarget(list.getTarget());
+        ActionNewSendAction.getInstance().putValue(ActionNewAction.ROLE, role);
+        newMenu.add(ActionNewTerminateAction.getInstance());
+        ActionNewTerminateAction.getInstance().setTarget(list.getTarget());
+        ActionNewTerminateAction.getInstance()
+            .putValue(ActionNewAction.ROLE, role);
+        newMenu.add(ActionNewUninterpretedAction.getInstance());
+        ActionNewUninterpretedAction.getInstance().setTarget(list.getTarget());
+        ActionNewUninterpretedAction.getInstance()
+            .putValue(ActionNewAction.ROLE, role);
         add(newMenu);
 
         addSeparator();

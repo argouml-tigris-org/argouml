@@ -39,14 +39,16 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
  */
 public class ActionNewSynchState extends AbstractActionNewModelElement {
 
-    public static ActionNewSynchState SINGLETON = new ActionNewSynchState();
+    private static final ActionNewSynchState SINGLETON = 
+        new ActionNewSynchState();
     
     /**
      * Constructor for ActionNewPseudoState.
      */
     protected ActionNewSynchState() {
         super();
-        putValue(Action.NAME, Translator.localize("UMLMenu", "button.new-synchstate"));
+        putValue(Action.NAME, Translator.localize("UMLMenu", 
+                "button.new-synchstate"));
     }
     
     /**
@@ -55,5 +57,12 @@ public class ActionNewSynchState extends AbstractActionNewModelElement {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         StateMachinesFactory.getFactory().buildSynchState(getTarget());
+    }
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionNewSynchState getInstance() {
+        return SINGLETON;
     }
 }

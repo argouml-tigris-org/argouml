@@ -38,7 +38,7 @@ import org.argouml.uml.ui.AbstractActionRemoveElement;
 public class ActionRemoveClassifierRoleBase
     extends AbstractActionRemoveElement {
 
-    public static ActionRemoveClassifierRoleBase SINGLETON =
+    private static final ActionRemoveClassifierRoleBase SINGLETON =
 	new ActionRemoveClassifierRoleBase();
     
     /**
@@ -57,6 +57,15 @@ public class ActionRemoveClassifierRoleBase
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         ModelFacade.removeBase(getTarget(), getObjectToRemove());
+    }
+
+
+
+    /**
+     * @return Returns the sINGLETON.
+     */
+    public static ActionRemoveClassifierRoleBase getInstance() {
+        return SINGLETON;
     }
 
 }

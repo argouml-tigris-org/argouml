@@ -61,7 +61,7 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
 
         JComboBox baseComboBox =
 	    new UMLComboBox2(new UMLAssociationRoleBaseComboBoxModel(), 
-                ActionSetAssociationRoleBase.SINGLETON);
+                ActionSetAssociationRoleBase.getInstance());
         addField(Translator.localize("UMLMenu", "label.base"), baseComboBox);
 
         addSeperator();

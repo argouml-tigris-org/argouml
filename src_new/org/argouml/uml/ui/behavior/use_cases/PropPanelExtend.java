@@ -89,15 +89,15 @@ public class PropPanelExtend extends PropPanelModelElement {
 
         addField(Translator.localize("UMLMenu", "label.usecase-base"),
 		 new UMLComboBox2(new UMLExtendBaseComboBoxModel(),
-				  ActionSetExtendBase.SINGLETON));
+				  ActionSetExtendBase.getInstance()));
 
         addField(Translator.localize("UMLMenu", "label.extension"),
 		 new UMLComboBox2(new UMLExtendExtensionComboBoxModel(),
-				  ActionSetExtendExtension.SINGLETON));
+				  ActionSetExtendExtension.getInstance()));
 
         JList extensionPointList =
 	    new UMLMutableLinkedList(new UMLExtendExtensionPointListModel(),
-				     ActionAddExtendExtensionPoint.SINGLETON,
+				     ActionAddExtendExtensionPoint.getInstance(),
 				     ActionNewExtendExtensionPoint.SINGLETON);
         addField(Translator.localize("UMLMenu", "label.extension-points"),
 		 new JScrollPane(extensionPointList));

@@ -36,14 +36,16 @@ import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFac
  */
 public class ActionNewSendAction extends ActionNewAction {
 
-    public static ActionNewSendAction SINGLETON = new ActionNewSendAction();
+    private static final ActionNewSendAction SINGLETON = 
+        new ActionNewSendAction();
     
     /**
      * Constructor for ActionNewSendAction.
      */
     protected ActionNewSendAction() {
         super();
-        putValue(Action.NAME, Translator.localize("UMLMenu", "button.new-sendaction"));
+        putValue(Action.NAME, Translator.localize("UMLMenu", 
+                "button.new-sendaction"));
     }
     
     
@@ -52,6 +54,14 @@ public class ActionNewSendAction extends ActionNewAction {
      */
     protected Object createAction() {
         return CommonBehaviorFactory.getFactory().createSendAction();
+    }
+
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionNewSendAction getInstance() {
+        return SINGLETON;
     }
 
 }

@@ -72,7 +72,7 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
                 getContainerScroll());
         JComboBox submachineBox = new UMLComboBox2(
                 new UMLSubmachineStateComboBoxModel(), 
-                ActionSetSubmachineStateSubmachine.SINGLETON);
+                ActionSetSubmachineStateSubmachine.getInstance());
         addField(Translator.localize("UMLMenu", "label.submachine"), 
                 new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", 
                         "tooltip.nav-submachine"), submachineBox));
@@ -89,7 +89,7 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
         addField(Translator.localize("UMLMenu", "label.subvertex"), 
                 new JScrollPane(new UMLMutableLinkedList(
                         new UMLCompositeStateSubvertexListModel(), null, 
-                        ActionNewStubState.SINGLETON)));
+                        ActionNewStubState.getInstance())));
     }
 
 }

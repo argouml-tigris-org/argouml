@@ -36,14 +36,16 @@ import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFac
  */
 public class ActionNewDestroyAction extends ActionNewAction {
 
-    public static ActionNewDestroyAction SINGLETON = new ActionNewDestroyAction();
+    private static final ActionNewDestroyAction SINGLETON = 
+        new ActionNewDestroyAction();
     
     /**
      * Constructor for ActionNewDestroyAction.
      */
     protected ActionNewDestroyAction() {
         super();
-        putValue(Action.NAME, Translator.localize("UMLMenu", "button.new-destroyaction"));
+        putValue(Action.NAME, Translator.localize("UMLMenu", 
+                "button.new-destroyaction"));
     }
     
     
@@ -52,6 +54,14 @@ public class ActionNewDestroyAction extends ActionNewAction {
      */
     protected Object createAction() {
         return CommonBehaviorFactory.getFactory().createDestroyAction();
+    }
+
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionNewDestroyAction getiNSTANCE() {
+        return SINGLETON;
     }
 
 }

@@ -79,7 +79,7 @@ public abstract class PropPanelState extends PropPanelStateVertex {
         exitScroll = new JScrollPane(exitList);
         internalTransitionList = new UMLMutableLinkedList(
                 new UMLStateInternalTransition(), null, 
-                ActionNewTransition.SINGLETON);
+                ActionNewTransition.getInstance());
         internalTransitionsScroll = new JScrollPane(internalTransitionList);
         doList = new UMLStateDoActivityList(
                 new UMLStateDoActivityListModel());

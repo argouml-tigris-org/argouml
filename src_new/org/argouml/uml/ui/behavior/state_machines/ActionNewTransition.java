@@ -31,7 +31,8 @@ import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFacto
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
- * Action to create a new transition, either an internal transition or a transition
+ * Action to create a new transition, either 
+ * an internal transition or a transition
  * between two states.
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -39,19 +40,22 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 public class ActionNewTransition extends AbstractActionNewModelElement {
     
     /**
-     * Key used for storing the source of the transition. If this value is not set,
+     * Key used for storing the source of the transition. 
+     * If this value is not set,
      * the action assumes that an internal transition should be constructed.
      */
-    public final static String SOURCE = "source";
+    public static final String SOURCE = "source";
     
      /**
-     * Key used for storing the destination of the transition. If this value is not set,
+     * Key used for storing the destination of the transition. 
+     * If this value is not set,
      * the action assumes that an internal transition should be constructed.
      */
-    public final static String DESTINATION = "destination";
+    public static final String DESTINATION = "destination";
     
 
-    public static ActionNewTransition SINGLETON = new ActionNewTransition();
+    private static final ActionNewTransition SINGLETON = 
+        new ActionNewTransition();
     
     /**
      * Constructor for ActionNewTransition.
@@ -66,10 +70,19 @@ public class ActionNewTransition extends AbstractActionNewModelElement {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         if (getValue(SOURCE) == null || getValue(DESTINATION) == null) {
-            StateMachinesFactory.getFactory().buildInternalTransition(getTarget());
+            StateMachinesFactory.getFactory()
+                .buildInternalTransition(getTarget());
         } else {
-            StateMachinesFactory.getFactory().buildTransition(getValue(SOURCE), getValue(DESTINATION));
+            StateMachinesFactory.getFactory()
+                .buildTransition(getValue(SOURCE), getValue(DESTINATION));
         }            
+    }
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionNewTransition getInstance() {
+        return SINGLETON;
     }
 
 }

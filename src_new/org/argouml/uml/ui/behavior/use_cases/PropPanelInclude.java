@@ -72,13 +72,13 @@ public class PropPanelInclude extends PropPanelModelElement {
 
         JComboBox baseBox =
 	    new UMLComboBox2(new UMLIncludeBaseComboBoxModel(),
-			     ActionSetIncludeBase.SINGLETON);
+			     ActionSetIncludeBase.getInstance());
         addField(Translator.localize("UMLMenu", "label.usecase-base"),
 		 baseBox);
 
         JComboBox additionBox =
 	    new UMLComboBox2(new UMLIncludeAdditionComboBoxModel(),
-			     ActionSetIncludeAddition.SINGLETON);
+			     ActionSetIncludeAddition.getInstance());
         addField(Translator.localize("UMLMenu", "label.addition"),
 		 additionBox);
 
