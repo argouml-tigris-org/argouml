@@ -143,7 +143,7 @@ public class JavaImport {
     public static void parseFile( Project p, File f, DiagramInterface diagram)
 	throws Exception {
 	// Create a scanner that reads from the input stream passed to us
-	JavaLexer lexer = new JavaLexer(new BufferedInputStream(new FileInputStream( f)));
+	JavaLexer lexer = new JavaLexer(new BufferedReader(new FileReader(f)));
 
 	// We use a special Argo token, that stores the preceding
 	// whitespaces.
