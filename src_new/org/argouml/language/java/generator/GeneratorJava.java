@@ -25,7 +25,6 @@
 // File: GeneratorJava.java
 // Classes: GeneratorJava
 // Original Author:
-// $Id$
 
 // 12 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
 // extension points.
@@ -62,10 +61,10 @@ import tudresden.ocl.parser.node.AConstraintBody;
 
 import org.argouml.application.api.Configuration;
 
-/** Generator2 subclass to generate text for display in diagrams in in
+/** Generator2 subclass to generate text for display in diagrams and in
  * text fields in the Argo/UML user interface.  The generated code
  * looks a lot like (invalid) Java.  The idea is that other generators
- * could be written for outher languages.  This code is just a
+ * could be written for other languages.  This code is just a
  * placeholder for future development, I expect it to be totally
  * replaced. */
 
@@ -1745,15 +1744,26 @@ public class GeneratorJava
     }
 
     /**
-     * TODO: This is a dummy implementation. 
-     * Please, if you know what this function should do, implement it!
+     * Generates the text for a (trigger) event. 
+     * 
      * @author MVW
+     * @param m Object of any MEvent kind
      */
     public String generateEvent(Object m) {
-        if (m == null)
-            return "";
-        return generateName(ModelFacade.getName(m));
-    }
+        if (ModelFacade.isAChangeEvent(m))
+            return "when(" 
+                + generateExpression(ModelFacade.getExpression(m)) 
+                + ")";
+        if (ModelFacade.isATimeEvent(m))
+            return "after(" 
+                + generateExpression(ModelFacade.getExpression(m)) 
+                + ")";
+        if (ModelFacade.isASignalEvent(m))
+            return generateName(ModelFacade.getName(m));
+        if (ModelFacade.isACallEvent(m))
+            return generateName(ModelFacade.getName(m));
+        return "";
+     }
 
     public String generateAscEndName(Object ae) {
         String n = ModelFacade.getName(ae);
