@@ -421,13 +421,14 @@ public class ParserDisplay extends Parser {
 			stereotype += token;
 		    }
 		} else if ("::".equals(token) || ".".equals(token)) {
-		    if (name == null)
+		    if (name == null && path != null)
 			throw new ParseException("Element cannot have " +
 			    "anonymous qualifiers", st.getTokenIndex());
 
 		    if (path == null)
 			path = new Vector();
-		    path.add(name);
+		    if (name != null)
+			path.add(name);
 		    name = null;
 		} else {
 		    if (name != null)
