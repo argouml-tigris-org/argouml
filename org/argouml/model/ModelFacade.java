@@ -268,6 +268,15 @@ public class ModelFacade {
     public static final Object BOOLEAN_EXPRESSION = MBooleanExpression.class;
     public static final Object GUARD = MGuard.class;
 
+    public static final Object CONCURRENT_CONCURRENCYKIND = 
+        MCallConcurrencyKind.CONCURRENT;
+    
+    public static final Object GUARDED_CONCURRENCYKIND = 
+        MCallConcurrencyKind.GUARDED;
+    
+    public static final Object SEQUENTIAL_CONCURRENCYKIND = 
+        MCallConcurrencyKind.SEQUENTIAL;
+    
     public static final Object INITIAL_PSEUDOSTATEKIND =
         MPseudostateKind.INITIAL;
     public static final Object DEEPHISTORY_PSEUDOSTATEKIND =

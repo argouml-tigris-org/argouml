@@ -61,10 +61,6 @@ import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ProfileJava;
 import org.argouml.util.MyTokenizer;
 
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.foundation.core.MOperation;
-import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
-import ru.novosoft.uml.foundation.data_types.MIterationExpression;
 /**
  * Interface specifying the operation to take when a PropertySpecialString
  * is matched.
@@ -211,56 +207,48 @@ public class ParserDisplay extends Parser {
 
 	_operationSpecialStrings = new PropertySpecialString[8];
 	_operationSpecialStrings[0] =
-	    new PropertySpecialString("sequential",
-		    new PropertyOperation() {
-			public void found(Object element, String value)
-			{
-			    MCallConcurrencyKind kind =
-				MCallConcurrencyKind.SEQUENTIAL;
-			    if (ModelFacade.isAOperation(element))
-				ModelFacade.setConcurrency(element, kind);
-			}
-		    });
+	    new PropertySpecialString("sequential", new PropertyOperation() {
+                public void found(Object element, String value)
+                {
+                    if (ModelFacade.isAOperation(element)) {
+                        ModelFacade.setConcurrency(element, ModelFacade.SEQUENTIAL_CONCURRENCYKIND);
+                    }
+                }
+            });
 	_operationSpecialStrings[1] =
-	    new PropertySpecialString("guarded",
-		    new PropertyOperation() {
-			public void found(Object element, String value)
-			{
-			    MCallConcurrencyKind kind =
-				MCallConcurrencyKind.GUARDED;
-			    if (value != null && value.equalsIgnoreCase("false"))
-				kind = MCallConcurrencyKind.SEQUENTIAL;
-			    if (ModelFacade.isAOperation(element))
-				ModelFacade.setConcurrency(element, kind);
-			}
-		    });
+	    new PropertySpecialString("guarded", new PropertyOperation() {
+                public void found(Object element, String value)
+                {
+                    Object kind = ModelFacade.GUARDED_CONCURRENCYKIND;
+                    if (value != null && value.equalsIgnoreCase("false"))
+                        kind = ModelFacade.SEQUENTIAL_CONCURRENCYKIND;
+                    if (ModelFacade.isAOperation(element))
+                        ModelFacade.setConcurrency(element, kind);
+                }
+            });
 	_operationSpecialStrings[2] =
-	    new PropertySpecialString("concurrent",
-		    new PropertyOperation() {
-			public void found(Object element, String value)
-			{
-			    MCallConcurrencyKind kind =
-				MCallConcurrencyKind.CONCURRENT;
-			    if (value != null && value.equalsIgnoreCase("false"))
-				kind = MCallConcurrencyKind.SEQUENTIAL;
-			    if (ModelFacade.isAOperation(element))
-				ModelFacade.setConcurrency(element, kind);
-			}
-		    });
+	    new PropertySpecialString("concurrent", new PropertyOperation() {
+                public void found(Object element, String value) {
+                    Object kind = ModelFacade.CONCURRENT_CONCURRENCYKIND;
+                    if (value != null && value.equalsIgnoreCase("false"))
+                        kind = ModelFacade.SEQUENTIAL_CONCURRENCYKIND;
+                    if (ModelFacade.isAOperation(element))
+                        ModelFacade.setConcurrency(element, kind);
+                }
+            });
 	_operationSpecialStrings[3] =
-	    new PropertySpecialString("concurrency",
-		    new PropertyOperation() {
-			public void found(Object element, String value) {
-			    MCallConcurrencyKind kind =
-				MCallConcurrencyKind.SEQUENTIAL;
-			    if ("guarded".equalsIgnoreCase(value))
-				kind = MCallConcurrencyKind.GUARDED;
-			    else if ("concurrent".equalsIgnoreCase(value))
-				kind = MCallConcurrencyKind.CONCURRENT;
-			    if (ModelFacade.isAOperation(element))
-				ModelFacade.setConcurrency(element, kind);
-			}
-		    });
+	    new PropertySpecialString("concurrency", new PropertyOperation() {
+                public void found(Object element, String value) {
+                    Object kind =
+                        ModelFacade.SEQUENTIAL_CONCURRENCYKIND;
+                    if ("guarded".equalsIgnoreCase(value))
+                        kind = ModelFacade.GUARDED_CONCURRENCYKIND;
+                    else if ("concurrent".equalsIgnoreCase(value))
+                        kind = ModelFacade.CONCURRENT_CONCURRENCYKIND;
+                    if (ModelFacade.isAOperation(element))
+                        ModelFacade.setConcurrency(element, kind);
+                }
+            });
 	_operationSpecialStrings[4] =
 	    new PropertySpecialString("abstract",
 		    new PropertyOperation() {
@@ -1573,6 +1561,14 @@ public class ParserDisplay extends Parser {
 	return stereo;
     }
 
+    protected String parseOutProperties(Object handle, String s) {
+        if (ModelFacade.isAAttribute(handle)) {
+            return parseOutAttributeProperties(handle, s);
+        } else if (ModelFacade.isAOperation(handle)) {
+            return parseOutOperationProperties(handle, s);
+        }
+        throw new IllegalArgumentException("Can't get properties of " + handle);
+    }
     /**
      * Parses the properties for some attribute a out of a string
      * s. The properties are all keywords between the braces at the
@@ -1581,93 +1577,75 @@ public class ParserDisplay extends Parser {
      * @param s
      * @return String
      */
-    protected String parseOutProperties(Object/*MAttribute*/ a, String s) {
+    private String parseOutAttributeProperties(Object/*MAttribute*/ a, String s) {
 	s = s.trim();
-	if (s.indexOf("{") >= 0) {
-	    StringTokenizer tokenizer =
-		new StringTokenizer(s.substring(s.indexOf("{") + 1,
-						s.indexOf("}")),
-				    ",");
-	    List properties = new ArrayList();
-	    while (tokenizer.hasMoreElements()) {
-		properties.add(tokenizer.nextToken().trim());
-	    }
-	    for (int i = 0; i < properties.size(); i++) {
-		if (properties.get(i).equals("frozen")) {
-		    ModelFacade.setChangeable(a, false);
-		} else {
-		    String propertyStr = (String) properties.get(i);
-		    String tagStr = "";
-		    String valueStr = "";
-		    if (propertyStr.indexOf("=") >= 0) {
-			tagStr =
-			    propertyStr.substring(0,
-						  propertyStr.indexOf("=") - 1);
-			valueStr =
-			    propertyStr.substring(propertyStr.indexOf("=" + 1,
-								      propertyStr.length()));
-		    }
-		    Object tag =
-			UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
-
-		    ModelFacade.setTag(tag, tagStr);
-		    ModelFacade.setValue(tag, valueStr);
-		    ModelFacade.addTaggedValue(a, tag);
-		}
-	    }
-	    return s.substring(s.indexOf("}"), s.length());
-	}
-	return s;
+	if (s.indexOf("{") < 0) return s;
+        
+        StringTokenizer tokenizer =
+            new StringTokenizer(s.substring(s.indexOf("{") + 1,
+                                            s.indexOf("}")), ",");
+        List properties = new ArrayList();
+        while (tokenizer.hasMoreElements()) {
+            properties.add(tokenizer.nextToken().trim());
+        }
+        for (int i = 0; i < properties.size(); i++) {
+            String property = (String) properties.get(i);
+            if (property.equals("frozen")) {
+                ModelFacade.setChangeable(a, false);
+            } else {
+                addTaggedValue(a, property);
+            }
+        }
+        return s.substring(s.indexOf("}"), s.length());
     }
 
-    protected String parseOutProperties(MOperation op, String s) {
+    private String parseOutOperationProperties(Object op, String s) {
 	s = s.trim();
-	if (s.indexOf("{") >= 0) {
-	    StringTokenizer tokenizer =
-		new StringTokenizer(s.substring(s.indexOf("{") + 1,
-						s.indexOf("}")), ",");
-	    List properties = new ArrayList();
-	    while (tokenizer.hasMoreElements()) {
-		properties.add(tokenizer.nextToken().trim());
-	    }
-	    for (int i = 0; i < properties.size(); i++) {
-		if (properties.get(i).equals("query")) {
-		    ModelFacade.setQuery(op, true);
-		} else {
-		    if (properties.get(i).equals("sequential") ||
-			properties.get(i).equals("concurrency=sequential")) {
-                        ModelFacade.setConcurrency(op, MCallConcurrencyKind.SEQUENTIAL);
-		    } else {
-			if (properties.get(i).equals("guarded") ||
-			    properties.get(i).equals("concurrency=guarded")) {
-			    ModelFacade.setConcurrency(op, MCallConcurrencyKind.GUARDED);
-			} else {
-			    if (properties.get(i).equals("concurrent") ||
-				properties.get(i).equals("concurrency=concurrent")) {
-                                ModelFacade.setConcurrency(op, MCallConcurrencyKind.CONCURRENT);
-			    } else {
-				String propertyStr = (String) properties.get(i);
-				String tagStr = "";
-				String valueStr = "";
-				if (propertyStr.indexOf("=") >= 0) {
-				    tagStr =
-					propertyStr.substring(0, propertyStr.indexOf("=") - 1);
-				    valueStr =
-					propertyStr.substring(propertyStr.indexOf("=" + 1, propertyStr.length()));
-				}
-				Object tag =
-				    UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
-				ModelFacade.setTag(tag, tagStr);
-				ModelFacade.setValue(tag, valueStr);
-				ModelFacade.addTaggedValue(op, tag);
-			    }
-			}
-		    }
-		}
-	    }
-	    return s.substring(s.indexOf("}"), s.length());
-	}
-	return s;
+	if (s.indexOf("{") < 0) return s;
+        
+        StringTokenizer tokenizer =
+            new StringTokenizer(s.substring(s.indexOf("{") + 1,
+                                            s.indexOf("}")), ",");
+        List properties = new ArrayList();
+        while (tokenizer.hasMoreElements()) {
+            properties.add(tokenizer.nextToken().trim());
+        }
+        for (int i = 0; i < properties.size(); i++) {
+            String property = (String) properties.get(i);
+            if (property.equals("query")) {
+                ModelFacade.setQuery(op, true);
+            } else if (property.equals("sequential") || property.equals("concurrency=sequential")) {
+                ModelFacade.setConcurrency(op, ModelFacade.SEQUENTIAL_CONCURRENCYKIND);
+            } else if (property.equals("guarded") || property.equals("concurrency=guarded")) {
+                ModelFacade.setConcurrency(op, ModelFacade.GUARDED_CONCURRENCYKIND);
+            } else if (property.equals("concurrent") || property.equals("concurrency=concurrent")) {
+                ModelFacade.setConcurrency(op, ModelFacade.CONCURRENT_CONCURRENCYKIND);
+            } else {
+                addTaggedValue(op, property);
+            }
+        }
+        return s.substring(s.indexOf("}"), s.length());
+    }
+
+    /**
+     * Create a new tagged value and add it to the target element.
+     * @param target the element on which to place the tagged value
+     * @param property the tag value pair in the form "tag=value"
+     */
+    private void addTaggedValue(Object target, String property) {
+        String tagStr = "";
+        String valueStr = "";
+        if (property.indexOf("=") >= 0) {
+            tagStr =
+                property.substring(0, property.indexOf("=") - 1);
+            valueStr =
+                property.substring(property.indexOf("=" + 1, property.length()));
+        }
+        Object tag =
+            UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
+        ModelFacade.setTag(tag, tagStr);
+        ModelFacade.setValue(tag, valueStr);
+        ModelFacade.addTaggedValue(target, tag);
     }
     /*
       public String parseOutMultiplicity(MFeature f, String s) {
@@ -2631,7 +2609,7 @@ public class ParserDisplay extends Parser {
 		else
 		    guard = "*" + guard;
 	    }
-	    MIterationExpression expr = UmlFactory.getFactory().getDataTypes()
+	    Object/*MIterationExpression*/ expr = UmlFactory.getFactory().getDataTypes()
 		.createIterationExpression(
 					   Notation.getDefaultNotation().toString(),
 					   guard);
@@ -2724,7 +2702,7 @@ public class ParserDisplay extends Parser {
 	    String pname = "";
 	    String mname = "";
 	    String gname = GeneratorDisplay.getInstance()
-		.generateMessageNumber((MMessage)mes);
+		.generateMessageNumber(mes);
 	    boolean swapRoles = false;
 	    int majval =
 		(seqno.get(seqno.size() - 2) != null
@@ -3086,7 +3064,7 @@ public class ParserDisplay extends Parser {
 	while (it.hasNext()) {
 	    Object msg = /*(MMessage)*/ it.next();
 	    String gname =
-		GeneratorDisplay.getInstance().generateMessageNumber((MMessage)msg);
+		GeneratorDisplay.getInstance().generateMessageNumber(msg);
 	    if (compareMsgNumbers(gname, n))
 		return msg;
 	}
