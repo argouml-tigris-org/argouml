@@ -69,8 +69,8 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     //JTextArea _description = new JTextArea();
     WizDescription _description = new WizDescription();
     JPanel _lastPanel = null;
-    private BorderSplitPane _splitPane;
-    private Object _target;
+    private BorderSplitPane splitPane;
+    private Object target;
 
     ////////////////////////////////////////////////////////////////
     // constructor
@@ -79,9 +79,9 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
         String position =
 	    Configuration.getString(Configuration.makeKey("layout",
 							  "tabtodo"));
-        orientation = 
+        setOrientation( 
             ((position.equals("West") || position.equals("East"))
-             ? Vertical.getInstance() : Horizontal.getInstance());
+             ? Vertical.getInstance() : Horizontal.getInstance()));
         
         setLayout(new BorderLayout());
 
@@ -95,38 +95,38 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
         
         add(toolBar, BorderLayout.WEST);
 
-        _splitPane = new BorderSplitPane();
-        add(_splitPane, BorderLayout.CENTER);
+        splitPane = new BorderSplitPane();
+        add(splitPane, BorderLayout.CENTER);
         setTarget(null);
     }
 
     public void showDescription() {
         if (_lastPanel != null) {
-            _splitPane.remove(_lastPanel);
+            splitPane.remove(_lastPanel);
         }
-        _splitPane.add(_description, BorderSplitPane.CENTER);
+        splitPane.add(_description, BorderSplitPane.CENTER);
         _lastPanel = _description;
         validate();
         repaint();
     }
     
     public void setTree(ToDoPane tdp) {
-        if (orientation.equals(Horizontal.getInstance())) {
-            _splitPane.add(tdp, BorderSplitPane.WEST);
+        if (getOrientation().equals(Horizontal.getInstance())) {
+            splitPane.add(tdp, BorderSplitPane.WEST);
         } else {
-            _splitPane.add(tdp, BorderSplitPane.NORTH);
+            splitPane.add(tdp, BorderSplitPane.NORTH);
         }
     }
 
     public void showStep(JPanel ws) {
         if (_lastPanel != null) {
-            _splitPane.remove(_lastPanel);
+            splitPane.remove(_lastPanel);
 	}
         if (ws != null) {
-            _splitPane.add(ws, BorderSplitPane.CENTER);
+            splitPane.add(ws, BorderSplitPane.CENTER);
             _lastPanel = ws;
         } else {
-            _splitPane.add(_description, BorderSplitPane.CENTER);
+            splitPane.add(_description, BorderSplitPane.CENTER);
             _lastPanel = _description;
         }
         validate();
@@ -142,13 +142,13 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
      * @param item the new target
      */
     public void setTarget(Object item) {
-        Object target = item;
-        _target = target;
+        Object t = item;
+        target = t;
         // the target of description will allways be set directly by tabtodo
-        _description.setTarget(target);
+        _description.setTarget(t);
         Wizard w = null;
-        if (target instanceof ToDoItem) {
-            w = ((ToDoItem) target).getWizard();
+        if (t instanceof ToDoItem) {
+            w = ((ToDoItem) t).getWizard();
 	}
         if (w != null) {
             showStep(w.getCurrentPanel());
@@ -163,9 +163,12 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     * @return The current target of the TabToDo
     */
     public Object getTarget() {
-        return _target;
+        return target;
     }
 
+    /**
+     * @see org.argouml.cognitive.ui.TabToDoTarget#refresh()
+     */
     public void refresh() {
         setTarget(TargetManager.getInstance().getTarget());
     }
