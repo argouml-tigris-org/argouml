@@ -31,7 +31,7 @@ package org.argouml.cognitive;
  * designer is interested in making particular decisions, whereas a critic can
  * support relevant information which help making a particular decision (aka a
  * decision which lies in the domain specified by this class).
- * 
+ *  
  */
 public class Decision {
     ////////////////////////////////////////////////////////////////
@@ -81,7 +81,8 @@ public class Decision {
     }
 
     /**
-     * @see java.lang.Object#equals(java.lang.Object)
+     * Two decisions are considered to be equal if their names are equal. The
+     * priority is not considered.
      */
     public boolean equals(Object d2) {
         if (!(d2 instanceof Decision)) {
