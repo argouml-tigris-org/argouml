@@ -42,6 +42,7 @@ import org.argouml.application.api.PluggableNotation;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.DocumentationManager;
+import org.argouml.uml.UUIDManager;
 import org.argouml.uml.generator.FileGenerator;
 import org.argouml.uml.generator.Generator2;
 
@@ -1511,7 +1512,7 @@ public class GeneratorCSharp extends Generator2
     }
 
     private String generateSection(Object cls) {
-	String id = ModelFacade.getUUID(cls);
+        String id = UUIDManager.getInstance().getUUID(cls);
 	if (id == null) {
 	    id = (new UID().toString());
 	    // id = cls.getName() + "__" + static_count;

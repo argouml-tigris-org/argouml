@@ -47,6 +47,7 @@ import org.argouml.application.api.PluggableNotation;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.DocumentationManager;
+import org.argouml.uml.UUIDManager;
 import org.argouml.uml.generator.FileGenerator;
 import org.argouml.uml.generator.Generator2;
 
@@ -1928,7 +1929,7 @@ public class GeneratorCpp extends Generator2
 
 
     private String generateSectionTop(Object op, String localIndent) {
-        String id = ModelFacade.getUUID(op);
+        String id = UUIDManager.getInstance().getUUID(op);
         if (id == null) {
             id = (new UID().toString());
             // id =  op.getName() + "__" + static_count;
@@ -1938,7 +1939,7 @@ public class GeneratorCpp extends Generator2
     }
 
     private String generateSectionBottom(Object op, String localIndent) {
-        String id = ModelFacade.getUUID(op);
+        String id = UUIDManager.getInstance().getUUID(op);
         if (id == null) {
             id = (new UID().toString());
             // id =  op.getName() + "__" + static_count;
