@@ -142,10 +142,10 @@ public class GeneratorJava extends Generator {
     s += generateScope(op);
 
     // pick out return type
-    //??? how to be done with nsuml?
-    //MClassImpl returnType = op.getReturnType();
-    //if (returnType == null && !nameStr.equals(clsName)) s += "void?? ";
-    //else if (returnType != null) s += generateClassifierRef(returnType) + " ";
+    MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
+    MClassifier returnType = rp.getType();
+    if (returnType == null && !nameStr.equals(clsName)) s += "void ";
+    else if (returnType != null) s += generateClassifierRef(returnType) + " ";
 
 
     // name and params
