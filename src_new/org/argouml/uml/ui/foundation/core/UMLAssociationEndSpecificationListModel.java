@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,15 +45,17 @@ public class UMLAssociationEndSpecificationListModel extends UMLModelElementList
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (_target != null) 
-            setAllElements(ModelFacade.getSpecifications(_target));
+	if (ModelFacade.isAAssociationEnd(_target)) {
+	    setAllElements(ModelFacade.getSpecifications(_target));
+	}
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {  
-        return org.argouml.model.ModelFacade.isAClassifier(o) && ModelFacade.getSpecifications(getTarget()).contains(o);
+        return ModelFacade.isAAssociationEnd(getTarget())
+		&& ModelFacade.isAClassifier(o)
+		&& ModelFacade.getSpecifications(getTarget()).contains(o);
     }
-
 }

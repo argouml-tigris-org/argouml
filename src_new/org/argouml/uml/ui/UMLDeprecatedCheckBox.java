@@ -49,10 +49,16 @@ public class UMLDeprecatedCheckBox extends UMLCheckBox2 {
         String _tagName = "deprecated";
         setSelected(false);
 
+	if (!ModelFacade.isAModelElement(getTarget())) {
+	    return;
+	}
+
         Object tv = ModelFacade.getTaggedValue(getTarget(), _tagName);
         if (tv != null) {
             String tag = ModelFacade.getValueOfTag(tv);
-            if ("true".equals(tag)) setSelected(true);
+            if ("true".equals(tag)) {
+		setSelected(true);
+	    }
         }
     }
 }

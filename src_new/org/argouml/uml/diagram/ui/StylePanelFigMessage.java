@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -75,15 +75,20 @@ public class StylePanelFigMessage extends StylePanelFigNodeModelElement {
 
     public void refresh() {
         super.refresh();
-        int direction = ((FigMessage) _target).getArrow();
-        _arrowField.setSelectedItem(FigMessage.ARROW_DIRECTIONS
-                .elementAt(direction));
+	if (_target instanceof FigMessage) {
+	    int direction = ((FigMessage) _target).getArrow();
+	    _arrowField.setSelectedItem(FigMessage.ARROW_DIRECTIONS
+		.elementAt(direction));
+	}
     }
 
     public void setTargetArrow() {
         String ad = (String) _arrowField.getSelectedItem();
         int arrowDirection = FigMessage.ARROW_DIRECTIONS.indexOf(ad);
-        if (_target == null || arrowDirection == -1) return;
+        if (!(_target instanceof FigMessage) || arrowDirection == -1) {
+	    return;
+	}
+
         ((FigMessage) _target).setArrow(arrowDirection);
         _target.endTrans();
     }

@@ -409,6 +409,8 @@ public class UmlFactory extends AbstractUmlModelFactory {
                 MPseudostate.class,
                 factory,
                 "createPseudostate"));
+        elements.put(Uml.SUBMACHINE_STATE,
+            new ObjectCreateInfo(MSubmachineState.class, factory, "createSubmachineState"));
         elements.put(Uml.USE_CASE,
             new ObjectCreateInfo(MUseCase.class, factory, "createUseCase"));
         elements.put(Uml.ACTION,

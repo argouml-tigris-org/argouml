@@ -78,6 +78,11 @@ public class StylePanelFigRRect extends StylePanelFig {
      */
     public void refresh() {
         super.refresh();
+
+	if (!(_target instanceof FigRRect)) {
+	    return;
+	}
+
         String roundingStr = ((FigRRect) _target).getCornerRadius() + "";
         _roundingField.setText(roundingStr);
     }

@@ -50,6 +50,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.EventListenerList;
 
+import org.apache.log4j.Logger;
+
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
@@ -102,6 +104,8 @@ public abstract class PropPanel
     private int lastRow;
 
     private EventListenerList _listenerList;
+
+    private static final Logger LOG = Logger.getLogger(PropPanel.class);
 
     /**
      * The metaclass/property pairs for the third party listener (if we have
@@ -629,30 +633,36 @@ public abstract class PropPanel
      * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        // we can neglect this, the TabProps allways selects the first target
-	// in a set of targets. The first target can only be
-	// changed in a targetRemoved or a TargetSet event
-        fireTargetAdded(e);
+	targetSet(e);
     }
 
     /**
      * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        // how to handle empty target lists?
-        // probably the TabProps should only show an empty pane in that case
-        setTarget(e.getNewTarget());
-        fireTargetRemoved(e);
-
+	targetSet(e);
     }
 
     /**
      * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {
+        // how to handle empty target lists?
+        // probably the TabProps should only show an empty pane in that case
         setTarget(e.getNewTarget());
-        fireTargetSet(e);
+        fireTargetEvent(e);
+    }
 
+    private void fireTargetEvent(TargetEvent e) {
+	if (TargetEvent.TARGET_SET.equals(e.getName())) {
+	    fireTargetSet(e);
+	} else if (TargetEvent.TARGET_ADDED.equals(e.getName())) {
+	    fireTargetAdded(e);
+	} else if (TargetEvent.TARGET_REMOVED.equals(e.getName())) {
+	    fireTargetRemoved(e);
+	} else {
+	    LOG.warn("fireTargetEvent didn't recognize target event name: " + e.getName());
+	}
     }
 
     private void fireTargetSet(TargetEvent targetEvent) {

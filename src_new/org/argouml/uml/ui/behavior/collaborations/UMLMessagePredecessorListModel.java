@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -48,21 +48,23 @@ public class UMLMessagePredecessorListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        Object message = /*(MMessage)*/ getTarget();
-        removeAllElements();       
-        Iterator it = ModelFacade.getPredecessors(message).iterator();
-        while (it.hasNext()) {
-            addElement(it.next());
-        }       
+	Object message = /*(MMessage)*/ getTarget();
+	removeAllElements();
+	if (ModelFacade.isAMessage(message)) {
+	    Iterator it = ModelFacade.getPredecessors(message).iterator();
+	    while (it.hasNext()) {
+		addElement(it.next());
+	    }
+	}
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ elem) {
-        return org.argouml.model.ModelFacade.isAMessage(elem) && 
-            ModelFacade.getInteraction(elem) == ModelFacade.getInteraction(getTarget()) &&
-            ModelFacade.getActivator(elem) == ModelFacade.getActivator(getTarget());
+	return ModelFacade.isAMessage(getTarget())
+		&& ModelFacade.isAMessage(elem)
+		&& ModelFacade.getInteraction(elem) == ModelFacade.getInteraction(getTarget())
+		&& ModelFacade.getActivator(elem) == ModelFacade.getActivator(getTarget());
     }
-
 }

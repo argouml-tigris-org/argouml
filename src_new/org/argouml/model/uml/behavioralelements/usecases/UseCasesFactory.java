@@ -340,7 +340,9 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      
     public void deleteUseCase(MUseCase elem) {
 	UmlHelper.getHelper().deleteCollection(elem.getExtends());
-	UmlHelper.getHelper().deleteCollection(elem.getIncludes());       
+	UmlHelper.getHelper().deleteCollection(elem.getExtends2());
+	UmlHelper.getHelper().deleteCollection(elem.getIncludes());
+	UmlHelper.getHelper().deleteCollection(elem.getIncludes2());
     }
      
     public void deleteUseCaseInstance(MUseCaseInstance elem) { }

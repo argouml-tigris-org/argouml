@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2003 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,16 +45,20 @@ public class UMLAssociationEndRoleBaseListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (_target != null && ModelFacade.getBase(getTarget()) != null) {
-            addElement(ModelFacade.getBase(getTarget()));
-        }
+        if (ModelFacade.isAAssociationEnd(getTarget())
+		&& ModelFacade.getBase(getTarget()) != null) {
+	    addElement(ModelFacade.getBase(getTarget()));
+	}
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ base) {
-        if (!ModelFacade.isAAssociationEnd(base)) return false;
+        if (!ModelFacade.isAAssociationEnd(getTarget())
+		|| !ModelFacade.isAAssociationEnd(base)) {
+	    return false;
+	}
         
         Object assocEndRole = /*(MAssociationEndRole)*/ getTarget();
         Object assocRole = /*(MAssociationRole)*/ ModelFacade.getAssociation(assocEndRole);

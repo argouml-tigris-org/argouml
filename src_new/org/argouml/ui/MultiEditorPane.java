@@ -137,7 +137,7 @@ public class MultiEditorPane
                 _tabs.setSelectedComponent(tab);
                 break;
             }
-        }       
+        }
     }
     
     /**
@@ -392,6 +392,8 @@ public class MultiEditorPane
      *         org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
+	// how to handle empty target lists?  probably the
+	// MultiEditorPane should only show an empty pane in that case
 	setTarget(e.getNewTarget());
     }
 

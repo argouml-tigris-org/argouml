@@ -165,7 +165,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
         Collection includes = null;
         Object     target   = getTarget();
 
-        if (org.argouml.model.ModelFacade.isAUseCase(target)) {
+        if (ModelFacade.isAUseCase(target)) {
             Object useCase = /*(MUseCase)*/ target;
 
             includes = ModelFacade.getIncludes(useCase);
@@ -245,7 +245,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
      */
     public void add(int index) {
     	Object target = getTarget();
-    	if (org.argouml.model.ModelFacade.isAUseCase(target)) {
+    	if (ModelFacade.isAUseCase(target)) {
 	    Object usecase = /*(MUseCase)*/ target;
 	    Vector choices = new Vector();
 	    Vector selected = new Vector();
@@ -335,7 +335,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 
     public void delete(int index) {
     	Object target = getTarget();
-    	if (org.argouml.model.ModelFacade.isAUseCase(target)) {
+    	if (ModelFacade.isAUseCase(target)) {
 	    Object usecase = /*(MUseCase)*/ target;
 	    Object includedusecase =
 		UMLModelElementListModel
@@ -439,7 +439,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 
         Object target = getTarget();
 
-        if (!(org.argouml.model.ModelFacade.isAUseCase(target))) {
+        if (!ModelFacade.isAUseCase(target)) {
             return;
         }
 
@@ -483,7 +483,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 
         Object target = getTarget();
 
-        if (!(org.argouml.model.ModelFacade.isAUseCase(target))) {
+        if (!ModelFacade.isAUseCase(target)) {
             return;
         }
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,16 +45,17 @@ public class UMLAssociationConnectionListModel extends UMLModelElementListModel2
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (_target != null) 
-            setAllElements(ModelFacade.getConnections(getTarget()));
+	if (ModelFacade.isAAssociation(getTarget())) {
+	    setAllElements(ModelFacade.getConnections(getTarget()));
+	}
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {  
-        return org.argouml.model.ModelFacade.isAAssociationEnd(o) && ModelFacade.getConnections(getTarget()).contains(o);
+        return ModelFacade.isAAssociation(getTarget())
+		&& ModelFacade.isAAssociationEnd(o)
+		&& ModelFacade.getConnections(getTarget()).contains(o);
     }
-
-
 }

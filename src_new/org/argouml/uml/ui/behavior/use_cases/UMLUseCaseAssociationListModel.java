@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
 import org.argouml.uml.ui.UMLConnectionListModel;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
@@ -65,19 +66,23 @@ public class UMLUseCaseAssociationListModel
 	Vector choices = new Vector();	
 	choices.addAll(super.getChoices());
 	Vector choices2 = new Vector();
-	Collection specpath = UseCasesHelper.getHelper().getSpecificationPath(/*(MUseCase)*/ getTarget());
-	if (!specpath.isEmpty()) {
-	    Iterator it = choices.iterator();
-	    while (it.hasNext()) {
-		Object choice = /*(MClassifier)*/ it.next();
-		if (org.argouml.model.ModelFacade.isAUseCase(choice)) {
-		    Collection specpath2 = UseCasesHelper.getHelper().getSpecificationPath(/*(MUseCase)*/ choice);
-		    if (!specpath.equals(specpath2)) choices2.add(choice);
-		} else
-		    choices2.add(choice);
+	if (ModelFacade.isAUseCase(getTarget())) {
+	    Collection specpath = UseCasesHelper.getHelper().getSpecificationPath(/*(MUseCase)*/ getTarget());
+	    if (!specpath.isEmpty()) {
+		Iterator it = choices.iterator();
+		while (it.hasNext()) {
+		    Object choice = /*(MClassifier)*/ it.next();
+		    if (ModelFacade.isAUseCase(choice)) {
+			Collection specpath2 = UseCasesHelper.getHelper().getSpecificationPath(/*(MUseCase)*/ choice);
+			if (!specpath.equals(specpath2))
+			    choices2.add(choice);
+		    } else {
+			choices2.add(choice);
+		    }
+		}
+	    } else {
+		choices2 = choices;
 	    }
-	} else {
-	    choices2 = choices;
 	}
 	return choices2;
     }	
@@ -88,5 +93,4 @@ public class UMLUseCaseAssociationListModel
     protected String getAddDialogTitle() {
 	return Translator.localize("UMLMenu", "dialog.title.add-associated-usecases");
     }
-
 }

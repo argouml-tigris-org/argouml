@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,21 +41,21 @@ public class UMLElementOwnershipVisibilityButtonGroup extends UMLVisibilityButto
     public UMLElementOwnershipVisibilityButtonGroup(UMLUserInterfaceContainer container) {
         super(container);
     }
-    
-    
 
     /**
      * @see org.argouml.uml.ui.UMLButtonGroup#buildModel()
      */
     public void buildModel() {
+	if (!ModelFacade.isAModelElement(getTarget())) {
+	    return;
+	}
+
         if (ModelFacade.isPrivate(getTarget())) {
             getPrivateButton().setSelected(true);
-        } else {
-	    if (ModelFacade.isProtected(getTarget())) {
-		getProtectedButton().setSelected(true);
-	    } else {
-		getPublicButton().setSelected(true);
-            }
+        } else if (ModelFacade.isProtected(getTarget())) {
+	    getProtectedButton().setSelected(true);
+	} else {
+	    getPublicButton().setSelected(true);
         }
     }
 
@@ -71,5 +71,4 @@ public class UMLElementOwnershipVisibilityButtonGroup extends UMLVisibilityButto
         getProtectedButton().setActionCommand(ActionSetElementOwnershipVisibility.PROTECTED_ACTION_COMMAND);
         getPrivateButton().setActionCommand(ActionSetElementOwnershipVisibility.PRIVATE_ACTION_COMMAND);
     }
-
 }

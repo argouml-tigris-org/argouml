@@ -39,22 +39,28 @@ public class UMLTextProperty  {
 
     /** logger */
     private static Logger cat = Logger.getLogger(UMLTextProperty.class);
-           
+
     private Method _getMethod;
     private Method _setMethod;
     protected String _propertyName;
-    private static Object[] _noArg = {};    
+    private static Object[] _noArg = {};
+    private Class _objectClass;
 
+    /**
+     * This constructor seems completely useless. And indeed noone uses it.
+     * Neither should you.
+     */
     public UMLTextProperty(String propertyName) {
         _propertyName = propertyName;
     }
     
     public UMLTextProperty(Class elementClass, String propertyName,
 			   String getMethod, String setMethod) {
-        
+	_objectClass = elementClass;
         _propertyName = propertyName;
         Class[] noClass = {};
-        try {
+
+	try {
             _getMethod = elementClass.getMethod(getMethod, noClass);
         }
         catch (Exception e) {
@@ -68,9 +74,9 @@ public class UMLTextProperty  {
 					       + "get the property "
 					       + propertyName);
         }
-        Class[] stringClass = {
-	    String.class
-	};
+
+        Class[] stringClass = { String.class };
+
         try {
             _setMethod = elementClass.getMethod(setMethod, stringClass);
         }
@@ -101,25 +107,23 @@ public class UMLTextProperty  {
 	
         if (_setMethod != null) {
             Object element = container.getTarget();
-            if (element != null) {					
+
+            if (element != null) {
 		String oldValue = getProperty(container);
-		//
+
 		//  if one or the other is null or they are not equal
 		if (newValue == null
 		    || oldValue == null
 		    || !newValue.equals(oldValue)) {
 
-		    //
 		    //  as long as they aren't both null 
 		    //   (or a really rare identical string pointer)
 		    if (newValue != oldValue) {
-			Object[] args = {
-			    newValue 
-			};
 			try {
-                            	
-                            		
+			    Object[] args = { newValue };
+
 			    _setMethod.invoke(element, args);
+
 			    // Mark the project as having been changed 
 			    Project p =
 				ProjectManager.getManager().getCurrentProject();
@@ -146,7 +150,8 @@ public class UMLTextProperty  {
         String value = null;
         if (_getMethod != null) {
             Object element = container.getTarget();
-            if (element != null) {
+            if (element != null
+		&& _objectClass.isAssignableFrom(element.getClass())) {
                 try {
                     Object obj =  _getMethod.invoke(element, _noArg);
                     if (obj != null) value = obj.toString();

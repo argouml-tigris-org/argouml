@@ -57,7 +57,7 @@ public class ActionSetCompositeStateConcurrent extends UMLChangeAction {
             Object target = source.getTarget();
             if (org.argouml.model.ModelFacade.isACompositeState(target)) {
                 Object m = /*(MCompositeState)*/ target;
-                ModelFacade.setConcurent(m, !ModelFacade.isConcurent(m));
+                ModelFacade.setConcurent(m, source.isSelected());
             }
         }
     }
