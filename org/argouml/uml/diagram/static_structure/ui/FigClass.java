@@ -865,7 +865,7 @@ public class FigClass extends FigNodeModelElement {
 
   /**
    * <p>Sets the bounds, but the size will be at least the one returned by
-   *   {@link #getMinimunSize()}, unless checking of size is disabled.</p>
+   *   {@link #getMinimumSize()}, unless checking of size is disabled.</p>
    *
    * <p>If the required height is bigger, then the additional height is
    *   equally distributed among all figs (i.e. compartments), such that the

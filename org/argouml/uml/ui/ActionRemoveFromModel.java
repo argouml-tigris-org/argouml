@@ -91,7 +91,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
      * Only disabled when nothing is selected. Necessary to use since this 
      * option works via the menu too. A user cannot delete the last diagram. 
      * A user cannot delete the root model.
-     * @see org.argouml.uml.ui.UMLAction#shouldifBeEnabled()
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */	
     public boolean shouldBeEnabled() {
         if (getTarget() instanceof Diagram) { // we cannot delete the last diagram

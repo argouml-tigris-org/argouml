@@ -150,9 +150,9 @@ public class PropPanelInterface extends PropPanelClassifier {
     }
 
 
-	/**
-	 * @see org.argouml.uml.ui.foundation.core.PropPanelClassifier#getGeneralizationChoices()
-	 */
+    /**
+     * @see org.argouml.model.uml.foundation.core.CoreHelper#getAllInterfaces()
+     */
 	protected Vector getGeneralizationChoices() {
 		Vector choices = new Vector();
 		choices.addAll(CoreHelper.getHelper().getAllInterfaces());

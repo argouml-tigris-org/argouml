@@ -8,7 +8,7 @@ package org.argouml.uml.ui;
  * @author jaap.branderhorst@xs4all.nl
  * @since ArgoUML 0.11.1
  * @see UMLTextProperty#setProperty for an example of its use in setting properties
- * @see ArgoDiagram for an example implementing this interface
+ * @see org.argouml.ui.ArgoDiagram for an example implementing this interface
  */
 public interface VetoablePropertyChange {
     /**
