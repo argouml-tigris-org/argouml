@@ -31,12 +31,35 @@ import java.awt.event.*;
 
 public class UMLChangeAction extends UMLAction {
 
+    /**
+     * The constructor.
+     * 
+     * @param s the to be localized description string
+     */
     public UMLChangeAction(String s) { super(s, HAS_ICON); }
+    
+    /**
+     * The constructor.
+     * 
+     * @param s the to be localized description string
+     * @param hasIcon true if an icon is to be shown
+     */
     public UMLChangeAction(String s, boolean hasIcon) { super(s, hasIcon); }
+    
+    /**
+     * The constructor.
+     * 
+     * @param s the to be localized description string
+     * @param global
+     * @param hasIcon true if an icon is to be shown
+     */
     protected UMLChangeAction(String s, boolean global, boolean hasIcon) { 
         super(s, global, hasIcon);
     }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent e) {
 	Project p = ProjectManager.getManager().getCurrentProject();
 	if (p != null) {      

@@ -46,13 +46,13 @@ import ru.novosoft.uml.MElementEvent;
  * mechanism.<p>
  */
 public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
-    private MElementEvent _event;
-    private int _eventType;
-    private Container _container;
+    private MElementEvent event;
+    private int eventType;
+    private Container container;
     /**
      * The target of the proppanel that constructs this umlchangedispatch
      */
-    private Object _target;
+    private Object target;
 
     /**
      * <p>Dispatch a target changed event <em>and</em> add a NSUML listener to
@@ -129,18 +129,18 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
      * Creates a UMLChangeDispatch.  eventType is overriden if a call to 
      * one of the event functions is called.
      *
-     * @param container user interface container to which changes are
+     * @param uic user interface container to which changes are
      *                  dispatched.
-     * @param eventType -1 will add event listener to new target, 0
+     * @param et -1 will add event listener to new target, 0
      *                  for default.
      *     
      */
-    public UMLChangeDispatch(Container container, int eventType) {
-        synchronized (container) {
-	    _container = container;
-	    _eventType = eventType;
-	    if (container instanceof PropPanel) {
-		_target = ((PropPanel) container).getTarget();              
+    public UMLChangeDispatch(Container uic, int et) {
+        synchronized (uic) {
+	    container = uic;
+	    eventType = et;
+	    if (uic instanceof PropPanel) {
+		target = ((PropPanel) uic).getTarget();              
 	    }
         
 	}
@@ -151,11 +151,14 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
      */
     public void targetChanged()
     {
-        _eventType = 0;
+        eventType = 0;
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
+     */
     public void targetReasserted() {
-        _eventType = 7;
+        eventType = 7;
     }
     
     /**
@@ -163,8 +166,8 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
      *   @param mee NSUML event
      */
     public void propertySet(MElementEvent mee) {
-        _event = mee;
-        _eventType = 1;
+        event = mee;
+        eventType = 1;
     }
            
     /**
@@ -172,8 +175,8 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
      *   @param mee NSUML event
      */
     public void listRoleItemSet(MElementEvent mee) {
-        _event = mee;
-        _eventType = 2;
+        event = mee;
+        eventType = 2;
     }
 
     /**
@@ -181,8 +184,8 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
      *   @param mee NSUML event.
      */
     public void recovered(MElementEvent mee) {
-        _event = mee;
-        _eventType = 3;
+        event = mee;
+        eventType = 3;
     }
     
     /**  
@@ -190,8 +193,8 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
      *    @param mee NSUML event.
      */
     public void removed(MElementEvent mee) {
-        _event = mee;
-        _eventType = 4;
+        event = mee;
+        eventType = 4;
     }
 	
     /**
@@ -199,8 +202,8 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
      *    @param mee NSUML event.
      */
     public void roleAdded(MElementEvent mee) {
-        _event = mee;
-        _eventType = 5;
+        event = mee;
+        eventType = 5;
     }
 	
     /**
@@ -208,8 +211,8 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
      *    @param mee NSUML event
      */
     public void roleRemoved(MElementEvent mee) {
-        _event = mee;
-        _eventType = 6;
+        event = mee;
+        eventType = 6;
     }
     
     
@@ -220,31 +223,30 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
      *    new target on completion of dispatch.
      */
     public void run() {
-        if (_target != null) {
-            synchronizedDispatch(_container);
+        if (target != null) {
+            synchronizedDispatch(container);
         } else
-	    dispatch(_container); 
+	    dispatch(container); 
         //
         //   now that we have finished all the UI updating
         //
         //   if we were doing an object change then
         //      add a listener to our new target
         //
-        if (_eventType == -1 && _container instanceof PropPanel 
-	    && !((_container instanceof PropPanelObject) 
-		 || (_container instanceof PropPanelNodeInstance) 
-		 || (_container instanceof PropPanelComponentInstance))) {
-	    PropPanel propPanel = (PropPanel) _container;
-            Object target = propPanel.getTarget();
+        if (eventType == -1 && container instanceof PropPanel 
+	    && !((container instanceof PropPanelObject) 
+		 || (container instanceof PropPanelNodeInstance) 
+		 || (container instanceof PropPanelComponentInstance))) {
+	    PropPanel propPanel = (PropPanel) container;
+            Object t = propPanel.getTarget();
 
-            if (org.argouml.model.ModelFacade.isABase(target)) {
+            if (org.argouml.model.ModelFacade.isABase(t)) {
             	
             	// 2002-07-15
             	// Jaap Branderhorst
             	// added next statement to prevent PropPanel getting
             	// added again and again to the target's listeners
-		UmlModelEventPump.getPump().addModelEventListener(propPanel,
-								  target);
+		UmlModelEventPump.getPump().addModelEventListener(propPanel,t);
             }
             
         }
@@ -255,49 +257,49 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
      *    is another container then calls dispatch iteratively, if
      *    a child supports UMLUserInterfaceComponent then calls the
      *    appropriate method.
-     *    @param container AWT container
+     *    @param theAWTContainer AWT container
      */
-    private void dispatch(Container container) {
+    private void dispatch(Container theAWTContainer) {
        
-        int count = container.getComponentCount();
+        int count = theAWTContainer.getComponentCount();
         Component component;
         UMLUserInterfaceComponent uiComp;
         for (int i = 0; i < count; i++) {
-            component = container.getComponent(i);
+            component = theAWTContainer.getComponent(i);
             if (component instanceof Container)
                 dispatch((Container) component);
             if (component instanceof UMLUserInterfaceComponent) {
                 uiComp = (UMLUserInterfaceComponent) component;
                 if (uiComp instanceof Component
 		        && ((Component) uiComp).isVisible()) {
-		    switch(_eventType) {
+		    switch(eventType) {
                     case -1:
                     case 0:
                         uiComp.targetChanged();
                         break;
                     
                     case 1:
-                        uiComp.propertySet(_event);
+                        uiComp.propertySet(event);
                         break;
                     
                     case 2:
-                        uiComp.listRoleItemSet(_event);
+                        uiComp.listRoleItemSet(event);
                         break;
                     
                     case 3:
-                        uiComp.recovered(_event);
+                        uiComp.recovered(event);
                         break;
                     
                     case 4:
-                        uiComp.removed(_event);
+                        uiComp.removed(event);
                         break;
                         
                     case 5:
-                        uiComp.roleAdded(_event);
+                        uiComp.roleAdded(event);
                         break;
                         
                     case 6:
-                        uiComp.roleRemoved(_event);
+                        uiComp.roleRemoved(event);
                         break;
 
                     case 7:
@@ -311,11 +313,11 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
     }
     
     private void synchronizedDispatch(Container cont) {
-        if (_target == null) {
+        if (target == null) {
 	    throw new IllegalStateException("Target may not be null in "
 					    + "synchronized dispatch");
 	}
-        synchronized (_target) {
+        synchronized (target) {
             dispatch(cont);
         }
     }

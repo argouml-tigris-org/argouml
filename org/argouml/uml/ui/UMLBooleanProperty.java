@@ -40,24 +40,20 @@ import ru.novosoft.uml.MElementEvent;
  * TODO: What is it replaced by?
  */
 public abstract class UMLBooleanProperty  {
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
-     */
-    protected static Logger cat = 
-        Logger.getLogger(UMLBooleanProperty.class);
 
     private static final Logger LOG =
 	Logger.getLogger(UMLBooleanProperty.class);
 
-    private String _propertyName;
+    private String propertyName;
     
-    /** Creates new UMLBooleanProperty
-     * @param propertyName name of property monitored, null will cause 
-             component to be updated on any change to monitored model element.
-    */
-    public UMLBooleanProperty(String propertyName) {
-        _propertyName = propertyName;
+    /** 
+     * Creates new UMLBooleanProperty.
+     * 
+     * @param name name of property monitored, null will cause 
+     *        component to be updated on any change to monitored model element
+     */
+    public UMLBooleanProperty(String name) {
+        propertyName = name;
     }
     
     /**
@@ -85,9 +81,9 @@ public abstract class UMLBooleanProperty  {
     public boolean isAffected(MElementEvent event) {
         String propName = event.getName();
 	LOG.debug("eventName: " + propName);
-        if (_propertyName == null
+        if (propertyName == null
 	    || propName == null
-	    || propName.equals(_propertyName)) {
+	    || propName.equals(propertyName)) {
 
             return true;
 
@@ -95,8 +91,11 @@ public abstract class UMLBooleanProperty  {
         return false;
     }
     
+    /**
+     * @return the property name
+     */
     public String getPropertyName() {
-        return _propertyName;
+        return propertyName;
     }
 }
 

@@ -45,12 +45,6 @@ import ru.novosoft.uml.MElementEvent;
  * that used reflection a lot.
  */
 public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
-     */
-    protected static Logger cat = 
-        Logger.getLogger(UMLClassifierComboBoxModel.class);
 
     private static final Logger LOG = 
         Logger.getLogger(UMLClassifierComboBoxModel.class);
@@ -69,6 +63,9 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
      * @param setMethod name of method on container to set value
      * @param allowVoid allows an entry in the list
      * @param elementType base type for all elements
+     * @param addElementsFromProfileModel flag to indicate that the drop down 
+     *                                    should include elements from the model
+     *                                    included within the profile
      */
     public UMLClassifierComboBoxModel(UMLUserInterfaceContainer container,
 				      String filter, String property,
@@ -153,6 +150,9 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 
 
    
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     */
     public void roleAdded(final MElementEvent event) {
 	Iterator it = null;
         String eventName = event.getName();
@@ -176,6 +176,9 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
      
    
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
+     */
     public void targetChanged() {
         Object target = getContainer().getTarget();	
         if (ModelFacade.isAModelElement(target)) {
@@ -183,8 +186,8 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
             Object/*MModelElement*/ element = target;	 	   
             Object/*MModel*/ model = ModelFacade.getModel(element);
 	    try {		
-                Object[] _noArgs = {};
-                Object current = getGetMethod().invoke(getContainer(), _noArgs);
+                Object[] noArgs = {};
+                Object current = getGetMethod().invoke(getContainer(), noArgs);
 		makeSelection( model , current);
 		
 	    }

@@ -46,8 +46,8 @@ import org.tigris.gef.presentation.Fig;
  * The base class for models behind scrollpanes for binary relations like the
  * association pane on PropPanelUsecase
  *
- * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
- *             replaced by {@link org.argouml.uml.ui.foundation.core.PropPanelClassifier#getAssociationEndScroll()},
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003), replaced by 
+ *             {@link org.argouml.uml.ui.foundation.core.PropPanelClassifier#getAssociationEndScroll()},
  *             this class is part of the 'old'(pre 0.13.*) implementation
  *             of proppanels that used reflection a lot.
  */
@@ -56,9 +56,10 @@ public abstract class UMLBinaryRelationListModel
 
     /**
      * Constructor for UMLBinaryConnectionListModel.
-     * @param container
-     * @param property
-     * @param showNone
+     * @param container the ui element that contains this list
+     * @param property 
+     * @param showNone true if a "none" has to be shown when there 
+     *                 is no name to show
      */
     public UMLBinaryRelationListModel(
         UMLUserInterfaceContainer container,
@@ -175,8 +176,9 @@ public abstract class UMLBinaryRelationListModel
      * method is only abstract since in some cases gm.connect(to,
      * from) may be necessary.
      *
-     * @param from
-     * @param to
+     * @param gm the graph model
+     * @param from the source of the connection
+     * @param to the destination of the connection
      */
     protected abstract void connect(
         MutableGraphModel gm,
@@ -188,8 +190,8 @@ public abstract class UMLBinaryRelationListModel
      * example an association or a generalization relationship. Only
      * builds the modelelement, not the graphics.
      *
-     * @param from
-     * @param to
+     * @param from the source of the relation
+     * @param to the destination of the relation
      */
     protected abstract void build(Object/*MModelElement*/ from,
 				  Object/*MModelElement*/ to);
@@ -197,8 +199,8 @@ public abstract class UMLBinaryRelationListModel
     /**
      * Gets the relation between two modelelements. Implementations should
      * delegate to utility methods provided in the helpers like CoreHelper
-     * @param from
-     * @param to
+     * @param from the source of the relation
+     * @param to the destination of the relation
      * @return MModelElement
      */
     protected abstract Object getRelation(

@@ -380,7 +380,7 @@ public class GenericArgoMenuBar extends JMenuBar
         //appendPluggableMenus(_import,
         //PluggableMenu.KEY_FILE_IMPORT);
         JMenuItem importFromSources =
-	    file.add(ActionImportFromSources.SINGLETON);
+	    file.add(ActionImportFromSources.getSingleton());
         setMnemonic(importFromSources, "Import");
         file.addSeparator();
     

@@ -30,6 +30,7 @@ package org.argouml.uml.ui;
 
 import java.lang.reflect.Method;
 
+import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 
@@ -40,6 +41,9 @@ import org.argouml.kernel.ProjectManager;
  * that used reflection a lot.
  */
 public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
+    private static final Logger LOG =
+        Logger.getLogger(UMLReflectionBooleanProperty.class);
+    
     private Method theGetMethod;
     private Method theSetMethod;
     private static final Object[] NOARG = {};
@@ -68,11 +72,11 @@ public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
             theGetMethod = elementClass.getMethod(gm, noClass);
         }
         catch (Exception e) {
-            cat.error(e.toString()
+            LOG.error(e.toString()
 		      + " in UMLReflectionBooleanProperty(): "
 		      + gm,
 		      e);
-            cat.error("Going to rethrow as RuntimeException");
+            LOG.error("Going to rethrow as RuntimeException");
 	    // need to throw exception again for unit testing!
 	    throw new RuntimeException(e.toString());
         }
@@ -83,11 +87,11 @@ public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
             theSetMethod = elementClass.getMethod(sm, boolClass);
         }
         catch (Exception e) {
-            cat.error(e.toString()
+            LOG.error(e.toString()
 		      + " in UMLReflectionBooleanProperty(): "
 		      + sm,
 		      e);
-	    cat.error("Going to rethrow as RuntimeException");
+	    LOG.error("Going to rethrow as RuntimeException");
 	    // need to throw exception again for unit testing!
 	    throw new RuntimeException(e.toString());
         }
@@ -121,7 +125,7 @@ public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
                 }
             }
             catch (Exception e) {
-                cat.error(e.toString()
+                LOG.error(e.toString()
 			  + " in UMLReflectionBooleanProperty.setMethod()",
 			  e);
             }
@@ -141,7 +145,7 @@ public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
                 }
             }
             catch (Exception e) {
-                cat.error(e.toString()
+                LOG.error(e.toString()
 			  + " in UMLReflectionBooleanProperty.getMethod()",
 			  e);
             }
