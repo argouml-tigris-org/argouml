@@ -48,7 +48,7 @@ cd src_new
 
 echo "$BUILD build the documentation in pdf."
 ( cd ../documentation && ../tools/ant-1.4.1/bin/ant docbook-xsl-get )
-if test ! -d ../documentation/docbook-setup/docbook-xsl-1.60.1
+if test ! -d ../documentation/docbook-setup/docbook-xsl-1.66.1
 then
     echo "docbook-xsl download failed. Fix it and press return."
     read garbage
