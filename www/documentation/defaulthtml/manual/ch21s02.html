@@ -1,16 +1,13 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>21.2. Node</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch21.html" title="Chapter 21. ArgoUML Deployment Diagram Artifact Reference"><link rel="previous" href="ch21.html" title="Chapter 21. ArgoUML Deployment Diagram Artifact Reference"><link rel="next" href="ch21s03.html" title="21.3. Node Instance"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">21.2. Node</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch21.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 21. ArgoUML Deployment Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch21s03.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="d0e28035"></a>21.2. Node</h2></div></div><p>A node is a run-time physical object on which components may be
+   <title>21.2. Node</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch21.html" title="Chapter 21. ArgoUML Deployment Diagram Artifact Reference"><link rel="previous" href="ch21.html" title="Chapter 21. ArgoUML Deployment Diagram Artifact Reference"><link rel="next" href="ch21s03.html" title="21.3. Node Instance"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">21.2. Node</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch21.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 21. ArgoUML Deployment Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch21s03.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="d0e28381"></a>21.2. Node</h2></div></div><p>A node is a run-time physical object on which components may be
       deployed. In the UML metamodel it is a sub-class of
-      <tt>Classifier</tt>.</p><p>A node is represented on a class diagram as a 3-D box, labeled with
-      its name.</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e28046"></a>21.2.1. Node Details Tabs</h3></div></div><p>The details tabs that are active for nodes  are as follows.</p><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch21s02.html#s2.ref.node_property_toolbar" title="21.2.2. Node Property Toolbar">Section 21.2.2</a> and <a href="ch21s02.html#s2.ref.node_property_fields" title="21.2.3. Property Fields For Node">Section 21.2.3</a>
+      <tt>Classifier</tt>.</p><p>A node is represented on a class diagram as a three dimensional box, labeled with
+      its name.</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e28392"></a>21.2.1. Node Details Tabs</h3></div></div><p>The details tabs that are active for nodes  are as follows.</p><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch21s02.html#s2.ref.node_property_toolbar" title="21.2.2. Node Property Toolbar">Section 21.2.2</a> and <a href="ch21s02.html#s2.ref.node_property_fields" title="21.2.3. Property Fields For Node">Section 21.2.3</a>
             below.</p></dd><dt><span class="term"><tt>Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Style</tt></span></dt><dd><p>Standard tab. The <tt>Bounds:</tt> field
-            defines the bounding box for the node on the diagram.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>There are some bugs remaining in entering data in
-            the <tt>Bounds:</tt> field. Take care when typing
-            that you do get the values you want in
-            place.</p><p>Beware that in the current release of ArgoUML, the
+            defines the bounding box for the node on the diagram.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>Beware that in the current release of ArgoUML, the
             bounding box just refers to the front face of the cube. This
-            means that the 3-D top and side may be ignored, for example
+            means that the three dimensional top and side may be ignored, for example
             when determining the limits of a diagram for saving
             graphics.</p><p>Altering the <tt>Shadow</tt> entry has no
             effect.</p></td></tr></table></div></dd><dt><span class="term"><tt>Source</tt></span></dt><dd><p>Standard tab, but with no contents.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>A node should not generate any code, so having
@@ -95,7 +92,7 @@
               italics on the diagram.</p></li><li><p><tt>final</tt> indicates that this
               node cannot be further specialized.</p></li><li><p><tt>root</tt> indicates the node can
               have no generalization.</p></li></ul></div></dd><dt><span class="term"><tt>Namespace</tt></span></dt><dd><p>Text box. Records the namespace for the
-            node. This is the package hierarchy.</p><p>Button&nbsp;1 click on the entry will take you to the package
+            node. This is the package hierarchy.</p><p>Button&nbsp;1 click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</p></dd><dt><span class="term"><tt>Specializations</tt></span></dt><dd><p>Text box. Lists any specialized node (i.e. for which
             this node is a generalization.</p><p>button&nbsp;1 click navigates to the generalization and opens
@@ -119,7 +116,7 @@
               specialization selected is not at the bottom. It is moved down
               one.</p></li></ul></div></dd><dt><span class="term"><tt>Components</tt></span></dt><dd><p>Text box. Lists any components (see
             <a href="ch21s04.html" title="21.4. Component">Section 21.4</a>) designed to be deployed on
-            this type of node.</p><p>Button&nbsp;1 click takes you to the selected entry, button&nbsp;2
+            this type of node.</p><p>Button&nbsp;1 click navigates to the selected entry, button&nbsp;2
             gives a pop up menu with three entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
               selected component.</p></li><li><p><tt>Move Up</tt>. Only available where
               there are two or more components, and the component selected is

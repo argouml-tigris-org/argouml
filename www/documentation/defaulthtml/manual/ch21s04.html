@@ -4,14 +4,11 @@
       code, database, library, documentation) that realizes a set of
       interfaces. In the UML metamodel it is a sub-class of
       <tt>Classifier</tt>.</p><p>A component is represented on a class diagram as a box with two small
-      rectangles protruding from its left side, labeled with its name.</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e28845"></a>21.4.1. Component Details Tabs</h3></div></div><p>The details tabs that are active for components are as
+      rectangles protruding from its left side, labeled with its name.</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e29181"></a>21.4.1. Component Details Tabs</h3></div></div><p>The details tabs that are active for components are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch21s04.html#s2.ref.component_property_toolbar" title="21.4.2. Component Property Toolbar">Section 21.4.2</a> and <a href="ch21s04.html#s2.ref.component_property_fields" title="21.4.3. Property Fields For Component">Section 21.4.3</a>
             below.</p></dd><dt><span class="term"><tt>Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Style</tt></span></dt><dd><p>Standard tab. The <tt>Bounds:</tt> field
             defines the bounding box for the component on the
-            diagram.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>There are some bugs remaining in entering data in
-            the <tt>Bounds:</tt> field. Take care when typing
-            that you do get the values you want in
-            place.</p><p>In addition when typing or making any other change to a
+            diagram.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>When typing or making any other change to a
             component on the diagram, its left edge will jump to the
             left.</p></td></tr></table></div></dd><dt><span class="term"><tt>Source</tt></span></dt><dd><p>Standard tab, but with no contents.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>A component should not generate any code, so
             having this tab active is probably a
@@ -73,12 +70,12 @@
             ArgoUML.</p></td></tr></table></div></dd><dt><span class="term"><tt>Navigate Stereotype</tt></span></dt><dd><p><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="center"></span> icon. If a
               stereotype has been selected, this will navigate to the
               stereotype property panel (see <a href="ch16s04.html" title="16.4. Stereotype">Section 16.4</a>).</p></dd><dt><span class="term"><tt>Namespace</tt></span></dt><dd><p>Text box. Records the namespace for the
-            component. This is the package hierarchy.</p><p>Button&nbsp;1 click on the entry will take you to the package
+            component. This is the package hierarchy.</p><p>Button&nbsp;1 click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</p></dd><dt><span class="term"><tt>Extends</tt></span></dt><dd><p>Text box. Lists any component that generalizes this
             component.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML is incorrect in using the designation
             &#8220;Extends&#8221; for this field. It should correctly be
-            called &#8220;Generalizations&#8221;.</p></td></tr></table></div><p>Button&nbsp;1 click takes you to the selected entry, button&nbsp;2
+            called &#8220;Generalizations&#8221;.</p></td></tr></table></div><p>Button&nbsp;1 click navigates to the selected entry, button&nbsp;2
             gives a pop up menu with five entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
               selected generalization.</p></li><li><p><tt>Add</tt>. Add a new
               generalization.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>In the current release of ArgoUML
@@ -100,7 +97,7 @@
               have no generalization.</p></li></ul></div></dd><dt><span class="term"><tt>Derived</tt></span></dt><dd><p>Text area. Lists any derived components, i.e those
             for which this component is a generalization.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML is incorrect in using the designation
             &#8220;Derived&#8221; for this field. It should correctly be
-            called &#8220;Specializations&#8221;.</p></td></tr></table></div><p>Button&nbsp;1 click takes you to the selected entry, button&nbsp;2
+            called &#8220;Specializations&#8221;.</p></td></tr></table></div><p>Button&nbsp;1 click navigates to the selected entry, button&nbsp;2
             gives a pop up menu with one entry.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
               selected specialization.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>In the current release of ArgoUML
               generalizations of components are not properly implemented,

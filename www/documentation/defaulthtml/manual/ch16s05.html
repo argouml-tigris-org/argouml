@@ -5,16 +5,13 @@
       and <tt>GeneralizableElement</tt>.</p><p>A class is represented on a class diagram as a rectangle with three
       horizontal compartments. The top compartment displays the class name (and
       stereotype), the second compartment any attributes and the third any
-      operations. The last two compartments may optionally be hidden.</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e17707"></a>16.5.1. Class Details Tabs</h3></div></div><p>The details tabs that are active for classes are as
+      operations. The last two compartments may optionally be hidden.</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e17714"></a>16.5.1. Class Details Tabs</h3></div></div><p>The details tabs that are active for classes are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch16s05.html#s2.ref.class_property_toolbar" title="16.5.2. Class Property Toolbar">Section 16.5.2</a> and <a href="ch16s05.html#s2.ref.class_property_fields" title="16.5.3. Property Fields For Class">Section 16.5.3</a>
             below.</p></dd><dt><span class="term"><tt>Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Style</tt></span></dt><dd><p>Standard tab. The tick boxes,
             <tt>Attributes</tt> and <tt>Operations</tt>
-            allow the attributes and operations compartments to be shown
-            (the default) or hidden. The <tt>Bounds:</tt> field
-            defines the bounding box for the package on the diagram.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>There are some bugs remaining in entering data in
-            the <tt>Bounds:</tt> field. Take care when typing
-            that you do get the values you want in
-            place.</p></td></tr></table></div></dd><dt><span class="term"><tt>Source</tt></span></dt><dd><p>Standard tab. This contains a template for the class
+            allow the attributes and operations compartments to be shown (the
+            default) or hidden. The <tt>Bounds:</tt> field defines
+            the bounding box for the package on the diagram.</p></dd><dt><span class="term"><tt>Source</tt></span></dt><dd><p>Standard tab. This contains a template for the class
             declaration (with JavaDoc header) and declarations of
             associated classes.</p></dd><dt><span class="term"><tt>Constraints</tt></span></dt><dd><p>Standard tab. There are no standard constraints
             defined for <tt>Class</tt> within the UML
@@ -107,7 +104,7 @@
             useful to create this stereotype for yourself (see <a href="ch14s04.html" title="14.4. Stereotypes">Section 14.4</a>).</p></td></tr></table></div></dd><dt><span class="term"><tt>Navigate Stereotype</tt></span></dt><dd><p><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="center"></span> icon. If a
               stereotype has been selected, this will navigate to the
               stereotype property panel (see <a href="ch16s04.html" title="16.4. Stereotype">Section 16.4</a>).</p></dd><dt><span class="term"><tt>Namespace</tt></span></dt><dd><p>Text box. Records the namespace for the
-            class. This is the package hierarchy.</p><p>Button&nbsp;1 click on the entry will take you to the package
+            class. This is the package hierarchy.</p><p>Button&nbsp;1 click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</p></dd><dt><span class="term"><tt>Generalizations</tt></span></dt><dd><p>Text area. Lists any class that
             <span class="emphasis"><i>generalizes</i></span> this class.</p><p>Button&nbsp;1 click navigates to the generalization and opens
@@ -150,7 +147,7 @@
               referenced.</p></li><li><p><tt>active</tt> indicates that this
               class exhibits dynamic behavior (and is thus associated with
               a state or activity diagram).</p></li></ul></div></dd><dt><span class="term"><tt>Associations</tt></span></dt><dd><p>Text box. Lists any associations (see <a href="ch16s10.html" title="16.10. Association">Section 16.10</a>) connected to this
-            class.</p><p>Button&nbsp;1 click takes you to the selected entry, button&nbsp;2
+            class.</p><p>Button&nbsp;1 click navigates to the selected entry, button&nbsp;2
             gives a pop up menu with five entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
               selected association.</p></li><li><p><tt>Add</tt>. Add a new
               association.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>New associations can usually more easily be added
@@ -165,7 +162,7 @@
               selected is not at the bottom. It is moved down
               one.</p></li></ul></div></dd><dt><span class="term"><tt>Implements</tt></span></dt><dd><p>Text box. Lists any classes or interfaces (see <a href="ch16s10.html" title="16.10. Association">Section 16.10</a>) which are an
               abstraction of this class (i.e. which this class
-              realizes).</p><p>Button&nbsp;1 click takes you to the abstraction for the
+              realizes).</p><p>Button&nbsp;1 click navigates to the abstraction for the
             selected entry, button&nbsp;2 
             gives a pop up menu with five entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
               selected abstraction.</p></li><li><p><tt>Add</tt>. Add a new
@@ -200,13 +197,13 @@
               there are two or more specializations listed, and the
               specialization selected is not at the bottom. It is moved down
               one.</p></li></ul></div></dd><dt><span class="term"><tt>Derived</tt></span></dt><dd><p>Text area. Lists any derived classes, i.e those for
-            which this class is a generalization.</p><p>Button&nbsp;1 click takes you to the generalization for the
+            which this class is a generalization.</p><p>Button&nbsp;1 click navigates to the generalization for the
             selected entry, button&nbsp;2 gives a pop up menu with a single
-            entry, which also takes you to the generalization.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>You may potentially have a large number of entries
+            entry, which also navigates to the generalization.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>You may potentially have a large number of entries
             here, and the pop up menu makes access very difficult. The work
             around is to go to the parent classes on the diagram or the
             navigation pane.</p></td></tr></table></div></dd><dt><span class="term"><tt>Operations</tt></span></dt><dd><p>Text area. Lists all the operations (see <a href="ch16s07.html" title="16.7. Operation">Section 16.7</a>) defined on this
-              class. Button&nbsp;1 click takes you to the selected operation,
+              class. Button&nbsp;1 click navigates to the selected operation,
               button&nbsp;2 click brings up a pop up menu with five
               entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
               selected operation.</p></li><li><p><tt>Add</tt>. Add a new
@@ -217,7 +214,7 @@
               there are two or more operations listed, and the operation
               selected is not at the bottom. It is moved down
               one.</p></li></ul></div></dd><dt><span class="term"><tt>Attributes</tt></span></dt><dd><p>Text area. Lists all the attributes (see <a href="ch16s06.html" title="16.6. Attribute">Section 16.6</a>) defined for this
-            class. Button&nbsp;1 click takes you to the selected attribute,
+            class. Button&nbsp;1 click navigates to the selected attribute,
             button&nbsp;2 click brings up a pop up menu with five
             entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
               selected attribute.</p></li><li><p><tt>Add</tt>. Add a new

@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>19.3. Association Role</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch19.html" title="Chapter 19. ArgoUML Collaboration Diagram Artifact Reference"><link rel="previous" href="ch19s02.html" title="19.2. Classifier Role"><link rel="next" href="ch19s04.html" title="19.4. Association End Role"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">19.3. Association Role</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch19s02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 19. ArgoUML Collaboration Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch19s04.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="d0e26730"></a>19.3. Association Role</h2></div></div><p>An association role is a specialization of an association, used to
+   <title>19.3. Association Role</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch19.html" title="Chapter 19. ArgoUML Collaboration Diagram Artifact Reference"><link rel="previous" href="ch19s02.html" title="19.2. Classifier Role"><link rel="next" href="ch19s04.html" title="19.4. Association End Role"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">19.3. Association Role</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch19s02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 19. ArgoUML Collaboration Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch19s04.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="s1.ref.association_role"></a>19.3. Association Role</h2></div></div><p>An association role is a specialization of an association, used to
       describe an associations behavior in a particular context. In the UML
       metamodel <tt>Association Role</tt> is a sub-class of
       <tt>Association</tt>.</p><p>An association role is represented on a sequence diagram in ArgoUML
@@ -14,10 +14,7 @@
       a classifier role. This allows association roles in a specification
       level diagram to be distinguished from links in an instance level
       diagram.</p><p>This distinction is not implemented in the current release of
-      ArgoUML.</p></td></tr></table></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>Association roles should show the same navigability,
-      aggregation and multiplicity features as their parent
-      association. However these features are no implemented in the current
-      release of ArgoUML.</p></td></tr></table></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e26762"></a>19.3.1. Association Role Details Tabs</h3></div></div><p>The details tabs that are active for association roles are as
+      ArgoUML.</p></td></tr></table></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e26703"></a>19.3.1. Association Role Details Tabs</h3></div></div><p>The details tabs that are active for association roles are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch19s03.html#s2.ref.association_role_property_toolbar" title="19.3.2. Association Role Property Toolbar">Section 19.3.2</a> and <a href="ch19s03.html#s2.ref.association_role_property_fields" title="19.3.3. Property Fields For Association Role">Section 19.3.3</a>
             below.</p></dd><dt><span class="term"><tt>Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Style</tt></span></dt><dd><p>Standard tab. The values for the bounds of the
             association role notionally define the bounding box of the
@@ -84,10 +81,10 @@
             metaclass.</p></td></tr></table></div></dd><dt><span class="term"><tt>Navigate Stereotype</tt></span></dt><dd><p><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="center"></span> icon. If a
               stereotype has been selected, this will navigate to the
               stereotype property panel (see <a href="ch16s04.html" title="16.4. Stereotype">Section 16.4</a>).</p></dd><dt><span class="term"><tt>Namespace</tt></span></dt><dd><p>Text box. Records the namespace for the
-            association role. This is the package hierarchy.</p><p>Button&nbsp;1 click on the entry will take you to the package
+            association role. This is the package hierarchy.</p><p>Button&nbsp;1 click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</p></dd><dt><span class="term"><tt>Messages</tt></span></dt><dd><p>Text area. Lists the messages that are associated
-            with this association role.</p><p>Button&nbsp;1 click takes you to the selected entry, button&nbsp;2
+            with this association role.</p><p>Button&nbsp;1 click navigates to the selected entry, button&nbsp;2
             gives a pop up menu with three entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
               selected message.</p></li><li><p><tt>Move Up</tt>. Only available where
               there are two or more messages, and the message selected is not
@@ -98,10 +95,7 @@
             is generally the only useful number (link objects can led to a
             third end on instance level diagrams, but this is not supported
             by ArgoUML). For more on association end roles see <a href="ch19s04.html" title="19.4. Association End Role">Section 19.4</a>.</p><p>The names are listed, unless the association end role has
-            no name, when it is shown as <tt>anon</tt>.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>Association end roles are not implemented in the
-            current release of ArgoUML. Instead an association end (see
-            <a href="ch15s06.html" title="15.6. Association End">Section 15.6</a>) is
-            used. This causes some confusion.</p></td></tr></table></div><p>Button&nbsp;1 click on an association end role will navigate to
+            no name, when it is shown as <tt>anon</tt>.</p><p>Button&nbsp;1 click on an association end role will navigate to
             that end. Button&nbsp;2 click gives a pop up menu with three
             options.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Where an association
               end exists, navigate to it.</p></li><li><p><tt>Move Up</tt>. Only available where

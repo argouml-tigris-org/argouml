@@ -2,7 +2,7 @@
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
    <title>3.3. Output of the Requirements Capture Process</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch03.html" title="Chapter 3. Requirements Capture"><link rel="previous" href="ch03s02.html" title="3.2. The Requirements Capture Process"><link rel="next" href="ch03s04.html" title="3.4. Using Use Cases in ArgoUML"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">3.3. Output of the Requirements Capture Process</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 3. Requirements Capture</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch03s04.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="s1.tut.req_process_output"></a>3.3. Output of the Requirements Capture Process</h2></div></div><p>Almost all the output of the requirements capture process is
       documentary. The only diagram is the use case diagram, showing the
-      relationships between use cases and actors.</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e2306"></a>3.3.1. Vision Document</h3></div></div><p>Typical sections of this document would be as follows.</p><div class="itemizedlist"><ul type="disc"><li><p><span class="emphasis"><i>Summary</i></span>. A statement of the
+      relationships between use cases and actors.</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e2317"></a>3.3.1. Vision Document</h3></div></div><p>Typical sections of this document would be as follows.</p><div class="itemizedlist"><ul type="disc"><li><p><span class="emphasis"><i>Summary</i></span>. A statement of the
           context, problem and solution goals.</p></li><li><p><span class="emphasis"><i>Goals</i></span>. What are we trying to
           achieve (and how do we wish to achieve it).</p></li><li><p><span class="emphasis"><i>Market Context</i></span> or
           <span class="emphasis"><i>Contractual Arrangements</i></span>. For a market led
@@ -22,7 +22,7 @@
           specification.</p></li><li><p><span class="emphasis"><i>Appendix</i></span>. A listing of the
           actors and use cases that will be needed to meet this vision. It is
           useful to link to these from the earlier sections to ensure
-          comprehensive coverage.</p></li></ul></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e2350"></a>3.3.2. Use Case Diagram</h3></div></div><p>The vision document has identified the use cases and actors. The
+          comprehensive coverage.</p></li></ul></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e2361"></a>3.3.2. Use Case Diagram</h3></div></div><p>The vision document has identified the use cases and actors. The
         use case diagram captures how they interact. In our ATM example we
         have identified &#8220;customer uses machine&#8221;, &#8220;maintain
         machine&#8221; and &#8220;audit&#8221; as the three main use
@@ -37,7 +37,7 @@
         (defined by the use cases) and the actors who are external.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Not all analysts like to use a box around the use cases. It
         is a matter of personal choice.</p></td></tr></table></div><div class="figure"><p><a name="fig.tut.atm_use_case_diagram_basic"></a><b>Figure 3.1. Basic use case diagram for an ATM system.</b></p><div class="screenshot"><div class="mediaobject"><img src="images/tutorial/atm_use_case_diagram_basic.gif" align="center"></div></div></div><p>The following sections show how the basic use case diagram can be
         extended to show additional information about the system being
-        designed.</p><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="d0e2395"></a>3.3.2.1. Active and Passive Actors</h4></div></div><p><span class="emphasis"><i>Active</i></span> actors initiate interaction with
+        designed.</p><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="d0e2406"></a>3.3.2.1. Active and Passive Actors</h4></div></div><p><span class="emphasis"><i>Active</i></span> actors initiate interaction with
           the system. This can be shown by placing an arrow on the
           association from the actor pointing toward the use case. In the
           ATM example, the customer is an active actor.</p><p>Interaction with <span class="emphasis"><i>passive</i></span> actors is
@@ -55,7 +55,7 @@
           <span class="emphasis"><i>navigation</i></span> of the association. We shall see
           this used elsewhere in UML later on.</p><p><a href="ch03s03.html#fig.tut.atm_use_case_diagram_navigation" title="Figure 3.2. Use case diagram for an ATM system showing&#xA;            navigation.">Figure 3.2</a> shows
           the ATM use case diagram with navigation displayed.</p><div class="figure"><p><a name="fig.tut.atm_use_case_diagram_navigation"></a><b>Figure 3.2. Use case diagram for an ATM system showing
-            navigation.</b></p><div class="screenshot"><div class="mediaobject"><img src="images/tutorial/atm_use_case_diagram_navigation.gif" align="center"></div></div></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="d0e2428"></a>3.3.2.2. Multiplicity</h4></div></div><p>It can be useful to show the <span class="emphasis"><i>multiplicity</i></span> of
+            navigation.</b></p><div class="screenshot"><div class="mediaobject"><img src="images/tutorial/atm_use_case_diagram_navigation.gif" align="center"></div></div></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="d0e2439"></a>3.3.2.2. Multiplicity</h4></div></div><p>It can be useful to show the <span class="emphasis"><i>multiplicity</i></span> of
           associations between actors and use cases. By this we mean how many
           instances of an actor interact with how many instances of the use
           case.</p><p>By default we assume one instance of an actor interacts with one
@@ -80,7 +80,7 @@
             multiplicity.</b></p><div class="screenshot"><div class="mediaobject"><img src="images/tutorial/atm_use_case_diagram_multiplicity.gif" align="center"></div></div></div><p>Multiplicity can clutter a diagram, and is often not shown,
           except where it is critical to understanding. In the ATM example we
           would only choose to show <tt>1..3</tt> against the local
-          bank official, since all others are obvious from the context.</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="d0e2490"></a>3.3.2.3. Hierarchies of Use Cases</h4></div></div><p>In our ATM example so far we have just three use cases to
+          bank official, since all others are obvious from the context.</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="d0e2501"></a>3.3.2.3. Hierarchies of Use Cases</h4></div></div><p>In our ATM example so far we have just three use cases to
           describe all the behavior of the system. While use cases should
           always describe a significant chunk of system behavior, if they are
           too general they can be difficult to describe.</p><p>We could for example define the behavior of the use case
@@ -131,7 +131,7 @@
           behavior of the main use case at a large number of positions and
           under a wide range of circumstances.</p><p>However the lack of any restriction makes generalization very
           hard to specify precisely. In general use an extend relationship
-          instead.</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e2595"></a>3.3.3. The Use Case Specification</h3></div></div><p>Each use case must be documented to explain in detail the
+          instead.</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e2606"></a>3.3.3. The Use Case Specification</h3></div></div><p>Each use case must be documented to explain in detail the
         behavior it is specifying. This document is known by different names
         in different processes: <span class="emphasis"><i>use case
         specification</i></span>,<span class="emphasis"><i> use case scenario</i></span> or
@@ -228,12 +228,12 @@
                 and step 5 is not used.</p></li></ol></div></li></ol></div></li></ol></div><p>The convention is to number the various alternate flows as A.1,
           A.2, A.3, etc. The steps within an alternate flow are then numbered
           from this. So the steps of the first alternate flow would be A.1.1,
-          A.1.2, A.1.3, etc.</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="d0e2769"></a>3.3.3.3. Iterative Development of Use Case Specifications</h4></div></div><p>Iterative development will prioritize the use cases, and the
+          A.1.2, A.1.3, etc.</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="d0e2780"></a>3.3.3.3. Iterative Development of Use Case Specifications</h4></div></div><p>Iterative development will prioritize the use cases, and the
           first iterations will address the most important.</p><p>Early iterations will capture the basic flows of the most
           important use cases with only essential detail and list the
           headings of the main alternate flows.</p><p>Later iterations will address the remaining use cases, flesh
           out the steps on individual alternate flows and possibly provide
-          more detail on individual steps.</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e2778"></a>3.3.4. Supplementary Requirement Specification</h3></div></div><p>This captures the non-functional requirements or constraints placed
+          more detail on individual steps.</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e2789"></a>3.3.4. Supplementary Requirement Specification</h3></div></div><p>This captures the non-functional requirements or constraints placed
         on the system. Since use cases are inherently functional in nature,
         they cannot capture this sort of information.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Some analysts like to place non-functional requirements in a
         section at the end of each use case specification, containing the

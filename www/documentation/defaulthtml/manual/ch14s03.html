@@ -20,7 +20,7 @@
       package), as well as the properties tab for datatype..</p><p>You can navigate to existing property types via the
       <tt>NavClass</tt> button on any property sheet that has a Type
       drop-down (for example attribute or parameter).</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>UML&nbsp;1.3 allows user defined datatypes to be placed on
-      class diagrams. This is not permitted in ArgoUML.</p></td></tr></table></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e12619"></a>14.3.1. Datatype Details Tabs</h3></div></div><p>The details tabs that are active for datatypes are as
+      class diagrams. This is not permitted in ArgoUML.</p></td></tr></table></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e12630"></a>14.3.1. Datatype Details Tabs</h3></div></div><p>The details tabs that are active for datatypes are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch14s03.html#s2.ref.datatype_property_toolbar" title="14.3.2. Datatype Property Toolbar">Section 14.3.2</a> and <a href="ch14s03.html#s2.ref.datatype_property_fields" title="14.3.3. Property Fields For Datatype">Section 14.3.3</a>
             below.</p></dd><dt><span class="term"><tt>Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Source</tt></span></dt><dd><p>Standard tab, but with no effect. In a future
             version of ArgoUML the <tt>Attributes</tt> and
@@ -73,7 +73,7 @@
             literal</tt></span></dt><dd><p>This creates a new enumeration literal within the
             datatype, navigating immediately to the properties tab for that
             literal.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML does not actually have a separate
-            concept of a literal. The navigation will take you to the
+            concept of a literal. The navigation will navigate to the
             property sheet for an attribute of a class (see <a href="ch16s06.html" title="16.6. Attribute">Section 16.6</a>). When defining a literal, all
             that matters is its name. Other parts of the attribute property
             sheet should be ignored.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/property_delete.gif" align="center"></span>
@@ -101,7 +101,7 @@
             enumeration.</p></td></tr></table></div></dd><dt><span class="term"><tt>Navigate Stereotype</tt></span></dt><dd><p><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="center"></span> icon. If a
               stereotype has been selected, this will navigate to the
               stereotype property panel (see <a href="ch14s04.html" title="14.4. Stereotypes">Section 14.4</a>).</p></dd><dt><span class="term"><tt>Namespace</tt></span></dt><dd><p>Text box. Records the namespace for the
-            datatype. This is the package hierarchy.</p><p>Button&nbsp;1 click on the entry will take you to the package
+            datatype. This is the package hierarchy.</p><p>Button&nbsp;1 click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</p></dd><dt><span class="term"><tt>Modifiers</tt></span></dt><dd><p>Check box, with entries <tt>public</tt>,
             <tt>abstract</tt>, <tt>final</tt> and
@@ -164,7 +164,7 @@
               specialization selected is not at the bottom. It is moved down
               one.</p></li></ul></div></dd><dt><span class="term"><tt>Implements</tt></span></dt><dd><p>Text box. Lists any abstract classes or interfaces
             realized by this datatype. By default shows the entry
-            <tt>none</tt>.</p><p>Button&nbsp;1 click takes you to any entry (but see the warning
+            <tt>none</tt>.</p><p>Button&nbsp;1 click navigates to any entry (but see the warning
             below), button&nbsp;2 gives a pop up menu with five entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Where an abstraction
               dependency exists, navigate to it (but see warning
               below).</p></li><li><p><tt>Add</tt>. Add a new abstraction
@@ -185,7 +185,7 @@
             avoided.</p></td></tr></table></div><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>Button&nbsp;1 click on the default entry navigates to
             the most recently selected to-do item in the to-do pane. This
             seems to be a bug in ArgoUML.</p></td></tr></table></div></dd><dt><span class="term"><tt>Operations</tt></span></dt><dd><p>Text area. Lists all the operations defined on this
-            datatype. Button&nbsp;1 click takes you to the selected operation,
+            datatype. Button&nbsp;1 click navigates to the selected operation,
             button&nbsp;2 click brings up a pop up menu with five
             entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
               selected operation.</p></li><li><p><tt>Add</tt>. Add a new
@@ -202,7 +202,7 @@
             must have no side effects (they are read-only). This means the
             <tt>query</tt> modifier <span class="emphasis"><i>must</i></span> be
             checked for all operations.</p></td></tr></table></div></dd><dt><span class="term"><tt>Literals</tt></span></dt><dd><p>Text area. Lists all the literals defined for this
-            datatype. Button&nbsp;1 click takes you to the selected literal,
+            datatype. Button&nbsp;1 click navigates to the selected literal,
             button&nbsp;2 click brings up a pop up menu with five
             entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
               selected literal.</p></li><li><p><tt>Add</tt>. Add a new
@@ -213,7 +213,7 @@
               there are two or more literals listed, and the literal selected
               is not at the bottom. It is moved down one.</p></li></ul></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML does not actually have a separate
             concept of a literal. The navigations listed above will all
-            take you to the property sheet for an attribute of a class (see
+            navigate to the property sheet for an attribute of a class (see
             <a href="ch16s06.html" title="16.6. Attribute">Section 16.6</a>). When defining a literal,
             all that matters is its name. Other parts of the attribute
             property sheet should be ignored.</p></td></tr></table></div></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch14s02.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch14.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch14s04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">14.2. The Model&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;14.4. Stereotypes</td></tr></table></div></body></html>
