@@ -4085,9 +4085,15 @@ public class ModelFacade {
     }
 
     public static void addRaisedSignal(Object target, Object sig) {
-        if (target instanceof MMessage && sig instanceof MSignal) {
-            ((MBehavioralFeature)target).addRaisedSignal((MSignal)sig);
-            return;
+        if (sig instanceof MSignal) {
+            if (target instanceof MMessage) {
+                ((MBehavioralFeature)target).addRaisedSignal((MSignal)sig);  
+                return;
+            }
+            if (target instanceof MOperation) {
+                ((MOperation)target).addRaisedSignal((MSignal)sig);
+                return;
+            }
         }
         throw new IllegalArgumentException(
             "Unrecognized object " + getClassNull(target) + " or " + 
