@@ -135,6 +135,17 @@ public class PropPanelParameter extends PropPanelModelElement {
         }
         return feature;
     }
+    
+     public void addDataType() {
+        Object target = getTarget();
+        if(target instanceof MNamespace) {
+            MNamespace ns = (MNamespace) target;
+            MModelElement ownedElem = CoreFactory.getFactory().createDataType();
+            ns.addOwnedElement(ownedElem);
+            navigateTo(ownedElem);
+        }
+    }
+
 
 
     public void navigateUp() {

@@ -33,6 +33,7 @@ package org.argouml.uml.ui.model_management;
 import org.argouml.application.api.*;
 import org.argouml.application.ArgoVersion;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import java.awt.*;
@@ -190,6 +191,17 @@ implements PluggablePropertyPanel {
     public void addStereotype(MModelElement element) {
         addStereotype();
     }
+    
+    public void addDataType() {
+        Object target = getTarget();
+        if(target instanceof MNamespace) {
+            MNamespace ns = (MNamespace) target;
+            MModelElement ownedElem = CoreFactory.getFactory().createDataType();
+            ns.addOwnedElement(ownedElem);
+            navigateTo(ownedElem);
+        }
+    }
+
 
     public void openElement(MModelElement element) {
     }
