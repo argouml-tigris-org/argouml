@@ -21,7 +21,6 @@ and the property panels for the other object are in
 <classname>org.argouml.uml.ui.<replaceable>NS-UML path</replaceable></classname>.
 </para>
 
-
       <sect2 id="addingapropertypanel">
 	<title>Adding the property panel</title>
 

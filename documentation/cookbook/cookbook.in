@@ -864,10 +864,23 @@ The Module Loader Component is described in detail in
 	  </listitem>
 	</itemizedlist>
 </para>
-    <para>
+      <para>
         <mediaobject>
 	  <imageobject>
 	    <imagedata fileref="images/cookbook/Layer2.gif" format="gif"/>
+	  </imageobject>
+	</mediaobject>
+</para>
+      <para>
+The components are all started and initiated from the Application component.
+The Application component starts the ball rolling.
+The Application component is  described in detail in
+<xref linkend="application"></xref>.
+</para>
+      <para>
+        <mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/cookbook/Application.gif" format="gif"/>
 	  </imageobject>
 	</mediaobject>
 </para>
@@ -984,28 +997,6 @@ cognitive/{Designer.java,ui/ToDoPane.java}.
 </para>
 	  </listitem>
 	</itemizedlist>
-      </sect2>
-      <sect2>
-	<title>What is loaded/initialized?</title>
-	<para>
-It all begins in org.argouml.application.Main: set up
-main application frame (org.argouml.ui.ProjectBrowser), the
-project (org.argouml.kernel.Project), numerous classes, and
-finally as a background thread: cognitive support
-(org.argouml.cognitive.Designer) and some more classes.
-</para>
-	<para>
-The ProjectBrowser initializes the menu, toolbar, status bar
-and the four main areas:
-navigation pane (org.argouml.ui.NavigatorPane),
-editor pane (org.argouml.ui.MultiEditorPane),
-to do pane (org.argouml.cognitive.ui.ToDoPane), and
-details pane (org.argouml.ui.DetailsPane). Then, the actual
-project is set to either a read from file project
-(see ArgoParser.SINGLETON.readProject(URL) and
-ArgoParser.SINGLETON.getProject() in org.argouml.xml.argo.ArgoParser)
-or a newly generated project (see Project.makeEmptyProject()).
-</para>
       </sect2>
     </sect1>
 -->
@@ -1456,99 +1447,70 @@ The GUI Framework is a Layer 1 component. See <xref linkend="layer1"></xref>.
 This is implemented directly on top of Swing and Java2.
 </para>
       <para>
-The GUI has (currently) the following main parts
+The GUI framework provides the following options
 <itemizedlist>
           <listitem>
-	    <para>The menu</para>
+	    <para>The menu with actions</para>
           </listitem>
           <listitem>
-	    <para>The toolbar</para>
+	    <para>The toolbar with actions</para>
 	  </listitem>
 	  <listitem>
-	    <para>Explorer pane (Navigator pane)</para>
-	    <para>Upper left.</para>
-	    <para>Contains a tree of the model.</para>
-	  </listitem>
-	  <listitem>
-	    <para>Multi editor pane</para>
-	    <para>Upper right.</para>
+	    <para>Explorer (Navigator)</para>
 	    <para>
-Contains the diagrams (could eventually be something else).
+Contains trees with configurable perspectives.
 </para>
 	  </listitem>
 	  <listitem>
-	    <para>To do pane</para>
-	    <para>Lower left.</para>
-	    <para>To do items, different views.</para>
-	  </listitem>
-	  <listitem>
-	    <para>Details pane</para>
-	    <para>Lower right.</para>
+	    <para>Tabbed pane</para>
 	    <para>
-Contains a wizard from a To do item, 
-a property panel of the current object,
-some other view of the current object.
+Could contain several different panes.
 </para>
 	  </listitem>
 	</itemizedlist>
 </para>
+    </sect1>
+
+    <sect1 id="application">
+      <title>Application</title>
+      <para>
+Purpose - to provide the entry point when starting ArgoUML.
+Responsibility to start the ball rolling.
+</para>
+      <para>
+The Application is located in <classname>org.argouml.application</classname>.
+</para>
+      <para>
+The Application is a Layer 3 component. 
+It is however not loaded from the Module loader 
+as all other Layer 3 components.
+</para>
+      <para>
+The entry point is called
+<classname>org.argouml.application.Main</classname>.
+</para>
 
       <sect2>
-	<title>Multi editor pane</title>
+	<title>What is loaded/initialized?</title>
 	<para>
-The multieditorpane is the pane with the diagram editor in it.
-Normally it is placed in the upper right corner of the application.
-One of the feature requests is to make the pane dockable so maybe 
-it won't be there in the future.
-</para>
-	<para>
-The multieditorpane consists of tabs that hold editors as you can see
-in the classdiagram.
-        <mediaobject>
-	  <imageobject>
-	    <imagedata fileref="images/cookbook/multieditorpane.gif" 
-		       format="gif"/>
-	  </imageobject>
-        </mediaobject>
+It all begins in org.argouml.application.Main: set up
+main application frame (org.argouml.ui.ProjectBrowser), the
+project (org.argouml.kernel.Project), numerous classes, and
+finally as a background thread: cognitive support
+(org.argouml.cognitive.Designer) and some more classes.
 </para>
 	<para>
-At the moment there is only one editor tab in place.
-This is the TabDiagram that shows an UMLDiagram, the target.
+The ProjectBrowser initializes the menu, toolbar, status bar
+and the four main areas:
+navigation pane (org.argouml.ui.NavigatorPane),
+editor pane (org.argouml.ui.MultiEditorPane),
+to do pane (org.argouml.cognitive.ui.ToDoPane), and
+details pane (org.argouml.ui.DetailsPane). Then, the actual
+project is set to either a read from file project
+(see ArgoParser.SINGLETON.readProject(URL) and
+ArgoParser.SINGLETON.getProject() in org.argouml.xml.argo.ArgoParser)
+or a newly generated project (see Project.makeEmptyProject()).
 </para>
-	<para>
-The TabDiagram is spawnable.
-This means that the user can double click the tab and the diagram will
-spawn as a separate window.
-</para>
-	<para>
-The target of the MultiEditorPane is set via the setTarget method 
-of the pane.
-This method is called by the setTarget method of the ProjectBrowser.
-The pane's setTarget method will call each setTarget method of each
-tab that is an instance of TabModelTarget.
-Besides setting the target of the tabs, the setTarget method also
-calls MultiEditorPane.select(Object o).
-This selects the new target on a tab. This probably belongs in 
-the setTarget method of the individual tabs and diagrams but 
-that's how it's implemented at the moment.
-</para>
-	<sect3>
-	  <title>How do I ...?</title>
-	  <para>
-<itemizedlist>
-	      <listitem>
-		<para>...add a new tab to the MultiEditorPane?</para>
-		<para>
-Create a new class that's a child of JPanel and put the following 
-line in argo.ini:
-<programlisting>
-multi:	<replaceable>fully classified name of new tab class</replaceable>
-</programlisting>
-</para>
-	      </listitem>
-	    </itemizedlist>
-</para>
-	</sect3>
       </sect2>
 
       <sect2>
