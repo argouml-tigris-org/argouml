@@ -445,24 +445,159 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
       generateUninterpreted(tv.getValue());
   }
 
+  /**
+   * Generates the textual number of MMessage m. The number is a string
+   * of numbers separated by points which describes the message's order
+   * and level in a collaboration.
+   *
+   * <p>If you plan to modify this number, make sure that
+   * ParserDisplay.parseMessage is adapted to the change.
+   *
+   * @param m A MMessage to generate the number for.
+   * @return A String with the message number of m.
+   */
+  public String generateMessageNumber(MMessage m) {
+    MsgPtr ptr = new MsgPtr();
+    int pos = recCountPredecessors(m, ptr) + 1;
+    return generateMessageNumber(m, ptr.message, pos);
+  }
 
-    public String generateMessage(MMessage m) {
-	if (m == null) return "";
-	String number = "";
-	if (m.getPredecessors() != null) {
-		number = "" + (m.getPredecessors().size() + 1);
-	}
-	String name = "";
-	if (m.getName() != null) {
-		name = m.getName();
-	}
-	name = generateName(name);
-	String action = "";
-	if (m.getAction() != null) {
-		action = generateAction(m.getAction());
-	}
-	return number + " " + name + " :: " + action;
+  private String generateMessageNumber(MMessage m, MMessage pre, int position) {
+    Collection c;
+    Iterator it;
+    String mname = "";
+    MMessage act;
+    int subpos = 0, submax = 1;
+
+    if (m == null)
+	return null;
+
+    act = m.getActivator();
+    if (act != null)
+	mname = generateMessageNumber(act);
+
+    if (pre != null) {
+	c = pre.getMessages3();
+	submax = c.size();
+	it = c.iterator();
+	while (it.hasNext() && it.next() != m)
+	    subpos++;
     }
+
+    if (mname.length() > 0) {
+	if (submax > 1)
+	    return mname + "." + position + (char)('a' + subpos);
+	return mname + "." + position;
+    }
+
+    if (submax > 1)
+	return Integer.toString(position) + (char)('a' + subpos);
+    return Integer.toString(position);
+  }
+
+  private class MsgPtr {
+    public MMessage message;
+  }
+
+  private int recCountPredecessors(MMessage m, MsgPtr ptr) {
+    Collection c;
+    Iterator it;
+    int pre = 0;
+    int local = 0;
+    MMessage maxmsg = null;
+
+    if (m == null)
+	return 0;
+
+    c = m.getPredecessors();
+    it = c.iterator();
+    while (it.hasNext()) {
+	MMessage msg = (MMessage) it.next();
+	int p = recCountPredecessors(msg, null) + 1;
+	if (p > pre) {
+	    pre = p;
+	    maxmsg = msg;
+	}
+	local++;
+    }
+
+    if (ptr != null)
+	ptr.message = maxmsg;
+
+    return Math.max(pre, local);
+  }
+
+  /**
+   * Generates a textual description of a MIterationExpression.
+   */
+  public String generateRecurrence(MIterationExpression expr) {
+    if (expr == null)
+	return "";
+
+    return expr.getBody();
+  }
+
+  /**
+   * Generates a textual description for a MMessage m.
+   *
+   * @param m A MMessage to generate a description for.
+   * @return A String suitable to show in a collaboration diagram.
+   */
+  public String generateMessage(MMessage m) {
+    Iterator it;
+    Collection pre;
+    MAction act;
+    MMessage rt;
+    MsgPtr ptr;
+
+    String action = "";
+    String number;
+    String predecessors = "";
+    int lpn;
+
+    if (m == null)
+	return "";
+
+    ptr = new MsgPtr();
+    lpn = recCountPredecessors(m, ptr) + 1;
+    rt = m.getActivator();
+
+    pre = m.getPredecessors();
+    it = pre.iterator();
+    if (it.hasNext()) {
+	MsgPtr ptr2 = new MsgPtr();
+	int precnt = 0;
+
+	while (it.hasNext()) {
+	    MMessage msg = (MMessage) it.next();
+	    int mpn = recCountPredecessors(msg, ptr2) + 1;
+
+	    if (mpn == lpn - 1 && rt == msg.getActivator() &&
+		msg.getPredecessors().size() < 2)
+		continue;
+
+	    if (predecessors.length() > 0)
+		predecessors += ", ";
+	    predecessors += generateMessageNumber(msg, ptr2.message, mpn);
+	    precnt++;
+	}
+
+	if (precnt > 0)
+	    predecessors += " / ";
+    }
+
+    number = generateMessageNumber(m, ptr.message, lpn);
+
+    act = m.getAction();
+    if (act != null) {
+	if (act.getRecurrence() != null)
+	    number = generateRecurrence(act.getRecurrence()) + " " + number;
+
+	action = generateAction(act);
+    }
+
+    return predecessors + number + " : " + action;
+  }
 
     public String generateAssociationFrom(MAssociation a, MAssociationEnd ae) {
     // needs-more-work: does not handle n-ary associations
@@ -734,9 +869,35 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
   }
 
   public String generateAction(MAction m) {
+      Collection c;
+      Iterator it;
+      String s;
+      String p;
+      boolean first;
+
       if ((m.getScript() != null) && (m.getScript().getBody() != null))
-	  return m.getScript().getBody();
-      return "";
+	  s = m.getScript().getBody();
+      else
+	  s = "";
+
+      p = "";
+      c = m.getActualArguments();
+      it = c.iterator();
+      first = true;
+      while (it.hasNext()) {
+	  MArgument arg = (MArgument) it.next();
+	  if (!first)
+	      p += ", ";
+
+	  if (arg.getValue() != null)
+	      p += generateExpression(arg.getValue());
+	  first = false;
+      }
+
+      if (s.length() == 0 && p.length() == 0)
+	  return "";
+
+      return s + " (" + p + ")";
   }
 
   public String generateGuard(MGuard m) {

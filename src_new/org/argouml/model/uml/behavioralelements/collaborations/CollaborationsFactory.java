@@ -210,21 +210,72 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
      * is added as the last in the interaction sequence.
      */
     public MMessage buildMessage(MInteraction inter, MAssociationRole role) {
-    	MMessage message = createMessage();
-    	if (inter != null && role != null) {
-    		Collection messages = inter.getMessages();
-    		inter.addMessage(message);
-    		message.setPredecessors(messages);
-    		message.setCommunicationConnection(role);
-    		if (role.getConnections().size() == 2) {
-    			message.setSender((MClassifierRole)role.getConnection(0).getType());
-    			message.setReceiver((MClassifierRole)role.getConnection(1).getType());
-    		}
-    		return message;
-    	}
-    	return null;
+	if (inter == null || role == null)
+		return null;
+
+	MMessage message = createMessage();
+
+	inter.addMessage(message);
+	message.setCommunicationConnection(role);
+
+	if (role.getConnections().size() == 2) {
+	    message.setSender((MClassifierRole)role.getConnection(0).getType());
+	    message.setReceiver((MClassifierRole)role.getConnection(1).getType());
+
+	    Collection messages = message.getSender().getMessages1();
+	    MMessage lastMsg = lastMessage(messages, message);
+
+	    if (lastMsg != null) {
+		message.setActivator(lastMsg);
+		messages = lastMsg.getMessages4();
+	    } else {
+		messages = message.getSender().getMessages2();
+	    }
+
+	    lastMsg = lastMessage(messages, message);
+	    if (lastMsg != null)
+		message.addPredecessor(findEnd(lastMsg));
+	}
+
+	return message;
     }
-    			
+
+    /**
+     * Finds the last message in the collection not equal to null and not
+     * equal to m.
+     *
+     * @param c A collection containing exclusively MMessages.
+     * @param m A MMessage.
+     * @return The last message in the collection, or null.
+     */
+    private MMessage lastMessage(Collection c, MMessage m) {
+	MMessage last = null;
+	Iterator it = c.iterator();
+	while (it.hasNext()) {
+	    MMessage msg = (MMessage) it.next();
+	    if (msg != null && msg != m)
+		last = msg;
+	}
+	return last;
+    }
+
+    /**
+     * Walks the tree of successors to m rooted until a leaf is found. The
+     * leaf is the returned. If m is itself a leaf, then m is returned.
+     *
+     * @param m A MMessage.
+     * @return The last message in one branch of the tree rooted at m.
+     */
+    private MMessage findEnd(MMessage m) {
+	while (true) {
+	    Collection c = m.getMessages3();
+	    Iterator it = c.iterator();
+	    if (!it.hasNext())
+		return m;
+	    m = (MMessage) it.next();
+	}
+    }
+
     /**
      * Builds a message within some collaboration. The message is added to the first interaction inside
      * the collaboration. If there is no interaction yet, one is build.
