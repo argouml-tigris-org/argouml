@@ -23,6 +23,11 @@
 
 package org.argouml.model.uml;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
+
+import javax.jmi.reflect.RefBaseObject;
+
 import junit.framework.TestCase;
 
 import org.argouml.api.InvalidObjectRequestException;
@@ -65,7 +70,22 @@ public class NsumlObjectFactoryTest extends TestCase {
 			fail("Cannot generate " + c.getName());
    		}
         assertNotNull("Did not get an element for " + c.getName(), o);
-        assertEquals("Did not get the right element", o.getClass(), expected);
+		assertTrue("Did not get a RefBaseObject", RefBaseObject.class.isAssignableFrom(o.getClass()));
+		if (Proxy.isProxyClass(o.getClass())) {
+			InvocationHandler ih = Proxy.getInvocationHandler(o);
+			if (ih instanceof RefBaseObjectProxy) {
+				Object ns = RefBaseObjectProxy.getProxiedObject((RefBaseObjectProxy)ih);
+				assertTrue("Did not get the expected class", expected.equals(ns.getClass()));
+			}
+            else {
+				fail("Did not get the expected proxy");
+            }
+		}
+        else {
+			assertTrue("Did not get the expected class", expected.equals(o.getClass()));
+        }
+        RefBaseObject rbo = (RefBaseObject)o;
+        // TODO Test the different methods of RefBaseObject
     }
 
     public void testObjectFactory() {
