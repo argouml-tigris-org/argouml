@@ -29,6 +29,7 @@ import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.model.uml.UmlFactory;
 
 import junit.framework.TestCase;
+import org.argouml.model.ModelFacade;
 
 /**
  * @since Nov 17, 2002
@@ -47,7 +48,7 @@ public class TestProject extends TestCase {
     public void testMakeUntitledProject() {
         Project p = ProjectManager.getManager().getCurrentProject();
         assertEquals(2, p.getDiagrams().size());
-        assertEquals("untitledModel", p.getModel().getName());
+        assertEquals("untitledModel", ModelFacade.getName(p.getModel()));
         // maybe next test is going to change in future
         assertEquals(p.getRoot(), p.getModel());
     }

@@ -59,7 +59,7 @@ public class GUITestActionDeploymentDiagram
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
      */
     protected MNamespace getNamespace() {
-        return ProjectManager.getManager().getCurrentProject().getModel();
+        return (MNamespace)(ProjectManager.getManager().getCurrentProject().getModel());
     }
 
     /**

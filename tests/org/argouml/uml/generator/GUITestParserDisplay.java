@@ -126,7 +126,7 @@ public class GUITestParserDisplay extends TestCase {
     {
 	MAttribute attr;
 
-	MNamespace ns = 
+	MNamespace ns = (MNamespace)
 	    ProjectManager.getManager().getCurrentProject().getModel();
 
 	attr = UmlFactory.getFactory().getCore().buildAttribute();
@@ -171,7 +171,7 @@ public class GUITestParserDisplay extends TestCase {
     {
 	MAttribute attr;
 
-	MNamespace ns = 
+	MNamespace ns =  (MNamespace)
 	    ProjectManager.getManager().getCurrentProject().getModel();
 
 	attr = UmlFactory.getFactory().getCore().buildAttribute();
@@ -205,7 +205,7 @@ public class GUITestParserDisplay extends TestCase {
     {
 	MAttribute attr;
 
-	MNamespace ns = 
+	MNamespace ns =  (MNamespace)
 	    ProjectManager.getManager().getCurrentProject().getModel();
 
 	attr = UmlFactory.getFactory().getCore().buildAttribute();
@@ -265,7 +265,7 @@ public class GUITestParserDisplay extends TestCase {
 	    "a", "b", "c", "d", "frozen", null 
 	};
 
-	MNamespace ns = 
+	MNamespace ns =  (MNamespace)
 	    ProjectManager.getManager().getCurrentProject().getModel();
 
 	attr = UmlFactory.getFactory().getCore().buildAttribute();
@@ -294,7 +294,7 @@ public class GUITestParserDisplay extends TestCase {
     {
 	MAttribute attr;
 
-	MNamespace ns = 
+	MNamespace ns =  (MNamespace)
 	    ProjectManager.getManager().getCurrentProject().getModel();
 
 	attr = UmlFactory.getFactory().getCore().buildAttribute();
@@ -323,7 +323,7 @@ public class GUITestParserDisplay extends TestCase {
     {
 	MAttribute attr;
 
-	MNamespace ns = 
+	MNamespace ns =  (MNamespace)
 	    ProjectManager.getManager().getCurrentProject().getModel();
 
 	attr = UmlFactory.getFactory().getCore().buildAttribute();
@@ -354,7 +354,7 @@ public class GUITestParserDisplay extends TestCase {
     {
 	MAttribute attr;
 
-	MNamespace ns = 
+	MNamespace ns =  (MNamespace)
 	    ProjectManager.getManager().getCurrentProject().getModel();
 
 	attr = UmlFactory.getFactory().getCore().buildAttribute();
@@ -398,7 +398,7 @@ public class GUITestParserDisplay extends TestCase {
     private void softAddStereotype(String name, MModelElement elem)
 	throws ParseException
     {
-	MNamespace ns = 
+	MNamespace ns =  (MNamespace)
 	    ProjectManager.getManager().getCurrentProject().getModel();
 
 	Iterator it =
@@ -427,7 +427,7 @@ public class GUITestParserDisplay extends TestCase {
     {
 	MAttribute attr;
 
-	MNamespace ns = 
+	MNamespace ns =  (MNamespace)
 	    ProjectManager.getManager().getCurrentProject().getModel();
 
 	attr = UmlFactory.getFactory().getCore().buildAttribute();
@@ -464,7 +464,7 @@ public class GUITestParserDisplay extends TestCase {
 	MOperation op;
 	MClass cl = UmlFactory.getFactory().getCore().buildClass();
 
-	MNamespace ns = 
+	MNamespace ns =  (MNamespace)
 	    ProjectManager.getManager().getCurrentProject().getModel();
 
 	cl.setNamespace(ns);
@@ -490,7 +490,7 @@ public class GUITestParserDisplay extends TestCase {
 	MOperation op;
 	MClass cl = UmlFactory.getFactory().getCore().buildClass();
 
-	MNamespace ns = 
+	MNamespace ns =  (MNamespace)
 	    ProjectManager.getManager().getCurrentProject().getModel();
 
 	cl.setNamespace(ns);
@@ -516,7 +516,7 @@ public class GUITestParserDisplay extends TestCase {
     {
 	MOperation op;
 	MClass cl = UmlFactory.getFactory().getCore().buildClass();
-	MNamespace ns = 
+	MNamespace ns =  (MNamespace)
 	    ProjectManager.getManager().getCurrentProject().getModel();
 
 	cl.setNamespace(ns);
@@ -546,7 +546,7 @@ public class GUITestParserDisplay extends TestCase {
     {
 	MOperation op;
 	MClass cl = UmlFactory.getFactory().getCore().buildClass();
-	MNamespace ns = 
+	MNamespace ns =  (MNamespace)
 	    ProjectManager.getManager().getCurrentProject().getModel();
 
 	cl.setNamespace(ns);
@@ -589,7 +589,7 @@ public class GUITestParserDisplay extends TestCase {
     {
 	MOperation op;
 	MClass cl = UmlFactory.getFactory().getCore().buildClass();
-	MNamespace ns = 
+	MNamespace ns =  (MNamespace)
 	    ProjectManager.getManager().getCurrentProject().getModel();
 
 	cl.setNamespace(ns);
@@ -625,7 +625,7 @@ public class GUITestParserDisplay extends TestCase {
     {
 	MOperation op;
 	MClass cl = UmlFactory.getFactory().getCore().buildClass();
-	MNamespace ns = 
+	MNamespace ns =  (MNamespace)
 	    ProjectManager.getManager().getCurrentProject().getModel();
 
 	cl.setNamespace(ns);
@@ -652,7 +652,7 @@ public class GUITestParserDisplay extends TestCase {
     public void testOperationParseExceptions() {
 	MOperation op;
 	MClass cl = UmlFactory.getFactory().getCore().buildClass();
-	MNamespace ns = 
+	MNamespace ns =  (MNamespace)
 	    ProjectManager.getManager().getCurrentProject().getModel();
 
 	cl.setNamespace(ns);

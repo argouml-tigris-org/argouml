@@ -28,6 +28,7 @@ package org.argouml.kernel;
 import junit.framework.TestCase;
 
 import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 
 /**
@@ -47,7 +48,7 @@ public class TestProjectManager extends TestCase {
     public void testMakeEmptyProject() {
 	Project p = ProjectManager.getManager().makeEmptyProject();
 	assertEquals(2, p.getDiagrams().size());
-	assertEquals("untitledModel", p.getModel().getName());
+        assertEquals("untitledModel", ModelFacade.getName(p.getModel()));
     }
     /* (non-Javadoc)
      * @see junit.framework.TestCase#setUp()
