@@ -289,11 +289,11 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    *  the given point. This is used in determining what the user
    *  clicked on, among other uses. */
   public final Fig hit(Point p) {
-    _hitRect.move(p.x - GRIP_SIZE/2, p.y - GRIP_SIZE/2);
+    _hitRect.setLocation(p.x - GRIP_SIZE/2, p.y - GRIP_SIZE/2);
     return hit(_hitRect);
   }
   public final Fig hit(int x, int y) {
-    _hitRect.move(x - GRIP_SIZE/2, y - GRIP_SIZE/2);
+    _hitRect.setLocation(x - GRIP_SIZE/2, y - GRIP_SIZE/2);
     return hit(_hitRect);
   }
   public final Fig hit(int x, int y, int w, int h) {
@@ -360,7 +360,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    *  area is expected to change anyway. */
   public void damageAll() {
     if (_redrawer == null) _redrawer = new RedrawManager(this);
-    Dimension size = getAwtComponent().size();
+    Dimension size = getAwtComponent().getSize();
     _redrawer.add(new Rectangle(0, 0, size.width, size.height));
   }
 

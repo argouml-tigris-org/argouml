@@ -150,7 +150,7 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
 	int y = bounds.y;
 	if (_stagger) y += (col%2)*(bbox.height+GAP)/2;
 	newFig.setLocation(x, y);
-	bbox.move(x, y);
+	bbox.setLocation(x, y);
       }
     }
   }

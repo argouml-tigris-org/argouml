@@ -143,7 +143,7 @@ public class LayerGrid extends Layer {
       }
     }
 
-    Rectangle clip = g.getClipRect();
+    Rectangle clip = g.getClipBounds();
     int x = clip.x / _spacing * _spacing;
     int y = clip.y / _spacing * _spacing;
     int bot = clip.y + clip.height;
@@ -176,7 +176,7 @@ public class LayerGrid extends Layer {
 
   /** Paint lines on the given Graphics. */
   private void paintLines(Graphics g, boolean paintBackground) {
-    Rectangle clip = g.getClipRect();
+    Rectangle clip = g.getClipBounds();
     if (paintBackground) {
       g.setColor(_bgColor);
       g.fillRect(clip.x, clip.y, clip.width, clip.height);
@@ -203,7 +203,7 @@ public class LayerGrid extends Layer {
 
   /** Paint dots on the given Graphics. */
   protected void paintDots(Graphics g, boolean paintBackground) {
-    Rectangle clip = g.getClipRect();
+    Rectangle clip = g.getClipBounds();
     if (paintBackground) {
       g.setColor(_bgColor);
       g.fillRect(clip.x, clip.y, clip.width, clip.height);

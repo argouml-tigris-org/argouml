@@ -99,7 +99,7 @@ implements IStatusBar, Cloneable {
     _mainPanel.add(_graphPanel, BorderLayout.CENTER);
     content.add(_mainPanel, BorderLayout.CENTER);
     content.add(_statusbar, BorderLayout.SOUTH);
-    resize(300, 250);
+    setSize(300, 250);
   }
 
   /** Set up the menus and keystrokes for menu items. Subclasses can
@@ -278,16 +278,19 @@ implements IStatusBar, Cloneable {
 
   public void setJMenuBar(JMenuBar mb) {
     _menubar = mb;
-    getContentPane().add(_menubar, BorderLayout.NORTH);    
+    getContentPane().add(_menubar, BorderLayout.NORTH);
   }
   public JMenuBar getJMenuBar() { return _menubar; }
 
-  
+
   ////////////////////////////////////////////////////////////////
   // display related methods
 
-  public void show() { super.show(); Globals.setStatusBar(this); }
-  
+  public void setVisible(boolean b) {
+    super.setVisible(b);
+    if (b) Globals.setStatusBar(this);
+  }
+
   ////////////////////////////////////////////////////////////////
   // Cloneable implementation
 

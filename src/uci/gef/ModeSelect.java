@@ -98,7 +98,7 @@ public class ModeSelect extends Mode {
     int x = me.getX(), y = me.getY();
 
     _selectAnchor = new Point(x, y);
-    _selectRect.reshape(x, y, 0, 0);
+    _selectRect.setBounds(x, y, 0, 0);
     _toggleSelection = me.isShiftDown();
     SelectionManager sm = _editor.getSelectionManager();
     Rectangle hitRect = new Rectangle(x - 4, y - 4, 8, 8);
@@ -126,7 +126,7 @@ public class ModeSelect extends Mode {
     int bound_h = Math.max(_selectAnchor.y, y) - bound_y;
 
     _editor.damaged(_selectRect);
-    _selectRect.reshape(bound_x, bound_y, bound_w, bound_h);
+    _selectRect.setBounds(bound_x, bound_y, bound_w, bound_h);
     _editor.damaged(_selectRect);
     me.consume();
   }

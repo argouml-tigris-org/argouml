@@ -186,7 +186,7 @@ public class LayerDiagram extends Layer {
 
   /** Paint all the Fig's that belong to this layer. */
   public void paintContents(Graphics g) {
-    Rectangle clip = g.getClipRect();
+    Rectangle clip = g.getClipBounds();
     Enumeration figs = elements();
     while (figs.hasMoreElements()) {
       Fig f = (Fig) figs.nextElement();

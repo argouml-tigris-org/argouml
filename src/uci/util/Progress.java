@@ -34,6 +34,7 @@ package uci.util;
 
 import java.util.*;
 import java.awt.*;
+import java.awt.event.*;
 
 /** A general purpose progress bar dialog box that shows percentage
  *  completion of some long running operation, and allows the user to
@@ -46,7 +47,7 @@ import java.awt.*;
  * @see Preloader
  * @see uci.gef.Example */
 
-public class Progress extends Frame {
+public class Progress extends Frame implements ActionListener {
 
   /** Total work to be done. */
   private int _total;
@@ -128,7 +129,7 @@ public class Progress extends Frame {
 
     setLayout(new GridLayout(4, 1, 10, 0));
     _barCanvas = new Canvas();
-    _barCanvas.resize(BAR_WIDTH + 2*BORDER, BAR_HEIGHT +2*BORDER );
+    _barCanvas.setSize(BAR_WIDTH + 2*BORDER, BAR_HEIGHT +2*BORDER );
     add(_barCanvas);
 
     _message = new TextField("Working...");
@@ -137,6 +138,7 @@ public class Progress extends Frame {
 
     Panel buttonPanel = new Panel();
     _cancelButton = new Button("Cancel");
+    _cancelButton.addActionListener(this);
     buttonPanel.add(_cancelButton);
     add(buttonPanel);
 
@@ -150,23 +152,21 @@ public class Progress extends Frame {
    *  client class's responsibility to check the canceled flag and
    *  hide and dispose of this window when the operation in progress
    *  is canceled. */
-  public boolean action(Event e, Object what) {
-    if (e.target == _cancelButton) {
+  public void actionPerformed(ActionEvent ae) {
+    if (ae.getSource() == _cancelButton) {
       _canceled = true;
       _cancelButton.setBackground(Color.darkGray);
-      return true;
     }
-    return false;
   }
 
-  public boolean handleEvent(Event e) {
-    if (e.id == Event.WINDOW_DESTROY) {
-      hide();
-      dispose();
-      return true;
-    }
-    return super.handleEvent(e);
-  }
+//   public boolean handleEvent(Event e) {
+//     if (e.id == Event.WINDOW_DESTROY) {
+//       setVisible(false);
+//       dispose();
+//       return true;
+//     }
+//     return super.handleEvent(e);
+//   }
 
   /** Paint the progress bar and percent complete text. */
   protected void paintBar() {
@@ -206,7 +206,7 @@ public class Progress extends Frame {
       try { Thread.sleep(100); }
       catch (java.lang.InterruptedException ignore) { }
     }
-    _p.hide();
+    _p.setVisible(false);
     _p.dispose();
   }
 

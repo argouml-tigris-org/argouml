@@ -148,7 +148,7 @@ public class RedrawManager implements Runnable {
   public void add(Rectangle r) {
     if (r.isEmpty()) return;
     synchronized (LOCK) {
-      if (!merge(r)) _rects[_nRects++].reshape(r.x, r.y, r.width, r.height);
+      if (!merge(r)) _rects[_nRects++].setBounds(r.x, r.y, r.width, r.height);
       if (_nRects == MAX_NUM_RECTS) forceMerge();
       if (deadline == 0) deadline = System.currentTimeMillis() + _timeDelay;
     }
@@ -274,7 +274,7 @@ public class RedrawManager implements Runnable {
     if (ed == null || g == null) return;
     for (int i = 0; i < _nRects; ++i) {
       Rectangle r = _rects[i];
-      r.reshape(r.x-F, r.y-F, r.width+F*2, r.height+F*2);
+      r.setBounds(r.x-F, r.y-F, r.width+F*2, r.height+F*2);
       offscreen = findReusedImage(r.width, r.height, ed);
       r.width = offscreen.getWidth(null);
       r.height = offscreen.getHeight(null);

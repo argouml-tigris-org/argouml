@@ -67,16 +67,16 @@ public class SelectionResize extends Selection {
     int cw = _content.getWidth();
     int ch = _content.getHeight();
     Rectangle testRect = new Rectangle(0, 0, 0, 0);
-    testRect.reshape(cx-HAND_SIZE/2, cy-HAND_SIZE/2,
+    testRect.setBounds(cx-HAND_SIZE/2, cy-HAND_SIZE/2,
 		     HAND_SIZE, ch+HAND_SIZE/2);
     boolean leftEdge = r.intersects(testRect);
-    testRect.reshape(cx+cw-HAND_SIZE/2, cy-HAND_SIZE/2,
+    testRect.setBounds(cx+cw-HAND_SIZE/2, cy-HAND_SIZE/2,
 		     HAND_SIZE, ch+HAND_SIZE/2);
     boolean rightEdge = r.intersects(testRect);
-    testRect.reshape(cx-HAND_SIZE/2, cy-HAND_SIZE/2,
+    testRect.setBounds(cx-HAND_SIZE/2, cy-HAND_SIZE/2,
 		     cw+HAND_SIZE/2, HAND_SIZE);
     boolean topEdge = r.intersects(testRect);
-    testRect.reshape(cx-HAND_SIZE/2, cy+ch-HAND_SIZE/2,
+    testRect.setBounds(cx-HAND_SIZE/2, cy+ch-HAND_SIZE/2,
 		     cw+HAND_SIZE/2, HAND_SIZE);
     boolean bottomEdge = r.intersects(testRect);
     // needs-more-work: midpoints for side handles

@@ -273,7 +273,7 @@ public class Fig implements java.io.Serializable  {
   public Rectangle getBounds() { return new Rectangle(_x, _y, _w, _h); }
 
   /** Reshape the given rectangle to be my bounding box. */
-  public void stuffBounds(Rectangle r) { r.reshape(_x, _y, _w, _h); }
+  public void stuffBounds(Rectangle r) { r.setBounds(_x, _y, _w, _h); }
 
   /** Change my bounding box to the given Rectangle. Just calls
    *  setBounds(x, y, w, h). */

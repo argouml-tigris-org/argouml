@@ -23,14 +23,17 @@ CLASSES = \
 	DefaultGraphEdgeRenderer.class \
 	DefaultGraphModel.class \
 	DefaultGraphNodeRenderer.class \
+	GraphEdgeHooks.class \
 	GraphEdgeRenderer.class \
 	GraphEvent.class \
 	GraphListener.class \
 	GraphModel.class \
+	GraphNodeHooks.class \
 	GraphNodeRenderer.class \
+	GraphPortHooks.class \
 	MutableGraphEvent.class \
 	MutableGraphModel.class \
-	MutableGraphSupport.class \
+	MutableGraphSupport.class
 
 
 all: $(GEN) $(CLASSES)

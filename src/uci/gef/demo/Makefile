@@ -22,29 +22,29 @@
 
 include ../../Makefile.config
 
+# gen is not used now that GEF does not need a preprocessor
 GEN =
 
 CLASSES = \
 	BasicApplication.class \
-	FlexibleApplet.class \
+	EdgeData.class \
+	EdgePower.class \
 	EquipmentApplet.class \
-	SampleEdge.class \
-	SampleEdge2.class \
-	SampleNode.class \
-	SampleNode2.class \
-	SamplePort.class \
-	SamplePort2.class \
-	SamplePalette.class \
 	EquipmentPalette.class \
+	FlexibleApplet.class \
 	NodeCPU.class \
 	NodePrinter.class \
 	NodeWall.class \
 	PortData.class \
 	PortPower.class \
-	EdgeData.class \
-	EdgePower.class
-
-
+	SampleEdge.class \
+	SampleEdge2.class \
+	SampleNode.class \
+	SampleNode2.class \
+	SamplePalette.class \
+	SamplePort.class \
+	SamplePort2.class \
+	ScrollingApplet.class
 
 all: $(GEN) $(CLASSES)
 

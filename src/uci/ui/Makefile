@@ -18,7 +18,8 @@
 
 include ../Makefile.config
 
-#GEN = TabPropFrame.java 
+# gen is not used now that GEF does not use a preprocessor
+GEN = 
 
 CLASSES = TabPropFrame.class \
 	PropsGridLayout.class \
@@ -35,8 +36,6 @@ all: $(GEN) $(CLASSES)
 gen: $(GEN)
 
 classes: $(CLASSES)
-
-#TabPropFrame.java: TabPropFrame.m4 ../Makefile.config
 
 clean:
 	$(RM) *.class $(GEN)

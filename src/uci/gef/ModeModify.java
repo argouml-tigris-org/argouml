@@ -130,7 +130,7 @@ public class ModeModify extends Mode {
       return;
     }
     synchronized (snapPt) {
-      snapPt.move(x, y);
+      snapPt.setLocation(x, y);
       getEditor().snap(snapPt);
       snapX = snapPt.x;
       snapY = snapPt.y;
@@ -188,7 +188,7 @@ public class ModeModify extends Mode {
     _curHandle.index = sm.hitHandle(new Rectangle(x-4, y-4, 8, 8));
     sm.endTrans();
     synchronized (snapPt) {
-      snapPt.move(x, y);
+      snapPt.setLocation(x, y);
       getEditor().snap(snapPt);
       _startX = _lastX = snapPt.x;
       _startY = _lastY = snapPt.y;

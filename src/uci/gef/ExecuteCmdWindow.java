@@ -75,13 +75,13 @@ public class ExecuteCmdWindow extends Frame {
     buttons.setLayout(new FlowLayout());
     buttons.add(_execute);
     buttons.add(_about);
-    _execute.disable();
-    _about.disable();
+    _execute.setEnabled(false);
+    _about.setEnabled(false);
     buttons.add(_close);
     add("South", buttons);
     pack();
-    Dimension d = size();
-    resize(d.width, Math.min(d.height * 2, 350));
+    Dimension d = getSize();
+    setSize(d.width, Math.min(d.height * 2, 350));
   }
 
   ////////////////////////////////////////////////////////////////
@@ -96,12 +96,12 @@ public class ExecuteCmdWindow extends Frame {
       }
       break;
     case Event.LIST_SELECT:
-      _execute.enable();
-      _about.enable();
+      _execute.setEnabled(true);
+      _about.setEnabled(true);
       return true;
     case Event.LIST_DESELECT:
-      _execute.disable();
-      _about.disable();
+      _execute.setEnabled(false);
+      _about.setEnabled(false);
       return true;
     }
     return super.handleEvent(e);

@@ -77,7 +77,7 @@ public class LayerPageBreaks extends Layer {
     if (g instanceof PrintGraphics) return; // for printing under Java 1.1
     if (!_paintLines) return;
     if (_pageSize == null) return;
-    Rectangle clip = g.getClipRect();
+    Rectangle clip = g.getClipBounds();
     int x = clip.x / _pageSize.width * _pageSize.width - _pageSize.width;
     int y = clip.y / _pageSize.height * _pageSize.height - _pageSize.height;
     int right = clip.x + clip.width;

@@ -102,7 +102,7 @@ public abstract class ModeCreate extends Mode {
     if (me.getModifiers() == InputEvent.BUTTON3_MASK) return;
     start();
     synchronized (snapPt) {
-      snapPt.move(me.getX(), me.getY());
+      snapPt.setLocation(me.getX(), me.getY());
       _editor.snap(snapPt);
       anchorX = snapPt.x;
       anchorY = snapPt.y;
@@ -151,7 +151,7 @@ public abstract class ModeCreate extends Mode {
   protected void creationDrag(int x, int y) {
     int snapX, snapY;
     synchronized (snapPt) {
-      snapPt.move(x, y);
+      snapPt.setLocation(x, y);
       _editor.snap(snapPt);
       snapX = snapPt.x;
       snapY = snapPt.y;

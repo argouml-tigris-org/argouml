@@ -156,7 +156,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** Returns my bounding box in the given Rectangle.  This avoids
    *  memory allocation. */
   public void stuffBounds(Rectangle r) {
-    r.reshape(_content.getX() - HAND_SIZE/2,
+    r.setBounds(_content.getX() - HAND_SIZE/2,
 	      _content.getY() - HAND_SIZE/2,
 	      _content.getWidth() + HAND_SIZE,
 	      _content.getHeight() + HAND_SIZE);

@@ -59,7 +59,7 @@ public class BasicApplication {
     // make the delete key remove elements from the underlying GraphModel
     _jgf.getGraph().bindKey(new CmdDispose(), KeyEvent.VK_DELETE, 0);
 
-    _jgf.reshape(10, 10, 300, 200);
+    _jgf.setBounds(10, 10, 300, 200);
     _jgf.show();
   }
 

@@ -16,24 +16,13 @@
 # IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
 # WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 
-include ../Makefile.config
+include ../../Makefile.config
 
-# gen is not used now that GEF does not use a preprocessor
-GEN = 	
-
-CLASSES =	Dbg.class \
-		Set.class \
-		ChildGenerator.class \
-		Progress.class \
-		Predicate.class \
-		PredicateTrue.class \
-		EnumerationComposite.class \
-		EnumerationPredicate.class \
-		EnumerationEmpty.class \
-		Enum.class \
-		Functor.class \
-		FunctorIdentity.class
-
+CLASSES = \
+	ColorEditor.class \
+	ColorPickerGrid.class \
+	ColorTilePanel.class \
+	RectangleEditor.class
 
 
 all: $(GEN) $(CLASSES)

@@ -87,7 +87,7 @@ implements PropertyEditor { //, MouseListener {
   }
 
   public void paint(java.awt.Graphics g) {
-    System.out.println("painting!");
+    //System.out.println("painting!");
     paintValue(g, getBounds());
   }
 
@@ -108,9 +108,9 @@ implements PropertyEditor { //, MouseListener {
 
   public java.awt.Component getCustomEditor() {
     ColorPickerGrid cpg = new ColorPickerGrid(Color.white);
-    System.out.println("made ColorPickerGrid");
+    //System.out.println("made ColorPickerGrid");
     cpg.setPEColor(this);
-    System.out.println("set ColorPickerGrid editor");
+    //System.out.println("set ColorPickerGrid editor");
     return cpg;
   }
 

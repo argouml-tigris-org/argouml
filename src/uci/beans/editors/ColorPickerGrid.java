@@ -62,13 +62,13 @@ implements ActionListener {
 
   public ColorPickerGrid(Color orig) {
     super();
-    System.out.println("making a ColorPickerGrid");
+    //System.out.println("making a ColorPickerGrid");
     setLayout(new BorderLayout());
     _statusLabel.setFont(new Font("Courier", Font.PLAIN, 10));
     setBackground(new Color(12632256));
     add(_tiles, BorderLayout.CENTER);
     add(_statusLabel, BorderLayout.SOUTH);
-    System.out.println("setting color1");
+    //System.out.println("setting color1");
     _tiles.setColor(orig);
     _tiles.addActionListener(this);
   }
@@ -78,11 +78,8 @@ implements ActionListener {
 
   public void setPEColor(ColorEditor pec) {
     _peColor = pec;
-    System.out.println("111");
     if (_peColor != null) {
-      System.out.println("222");
       _tiles.allowSelection(true);
-      System.out.println("333");
       setColor((Color)_peColor.getValue());
     }
     else {
@@ -106,7 +103,6 @@ implements ActionListener {
   }
 
   public void updateStatusLabel() {
-    System.out.println("updateStatusLabel");
     if (_peColor == null) {
       _statusLabel.setText("No color selected");
       return;

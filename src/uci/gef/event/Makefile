@@ -16,24 +16,18 @@
 # IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
 # WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 
-include ../Makefile.config
+# File: Makefile in uci/graphedit/demo
+# Oringinal Author: jrobbins@ics.uci.edu
+# $Id$
 
-# gen is not used now that GEF does not use a preprocessor
-GEN = 	
+include ../../Makefile.config
 
-CLASSES =	Dbg.class \
-		Set.class \
-		ChildGenerator.class \
-		Progress.class \
-		Predicate.class \
-		PredicateTrue.class \
-		EnumerationComposite.class \
-		EnumerationPredicate.class \
-		EnumerationEmpty.class \
-		Enum.class \
-		Functor.class \
-		FunctorIdentity.class
+# gen is not used now that GEF does not need a preprocessor
+GEN =
 
+CLASSES = \
+	GraphSelectionEvent.class \
+	GraphSelectionListener.class
 
 
 all: $(GEN) $(CLASSES)

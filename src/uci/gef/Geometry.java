@@ -187,7 +187,7 @@ public class Geometry {
    *  that it is needed now that I use hit rectangles instead. */
   public static synchronized
   boolean nearSegment(int x1, int y1, int x2, int y2, int x, int y, int grip) {
-    tempRect1.reshape(x - grip, y - grip, 2 * grip, 2 * grip);
+    tempRect1.setBounds(x - grip, y - grip, 2 * grip, 2 * grip);
     return intersects(tempRect1, x1, y1, x2, y2);
   }
 
@@ -197,7 +197,7 @@ public class Geometry {
    *  segment. */
   public static synchronized
   boolean intersects(Rectangle r, int x1, int y1, int x2, int y2) {
-    tempRect2.reshape(Math.min(x1, x2), Math.min(y1, y2),
+    tempRect2.setBounds(Math.min(x1, x2), Math.min(y1, y2),
 		      Math.abs(x2 - x1), Math.abs(y2 - y1));
     if (! r.intersects(tempRect2)) return false;
 

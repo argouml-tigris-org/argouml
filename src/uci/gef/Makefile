@@ -18,126 +18,119 @@
 
 include ../Makefile.config
 
+# gen is not used now that GEF does not need a preprocessor
+GEN =
+
 CLASSES = \
-	Action.class \
-	ActionAdjustGrid.class \
-	ActionAdjustGuide.class \
-	ActionAlign.class \
-	ActionCreateNode.class \
-	ActionDelete.class \
-	ActionDispose.class \
-	ActionEditNode.class \
-	ActionGroup.class \
-	ActionInsertPoint.class \
-	ActionNudge.class \
-	ActionNull.class \
-	ActionOpenWindow.class \
-	ActionPrint.class \
-	ActionRemovePoint.class \
-	ActionReorder.class \
-	ActionScroll.class \
-	ActionSequence.class \
-	ActionSelectNext.class \
-	ActionSelectAll.class \
-	ActionSelectInvert.class \
-	ActionSetAttr.class \
-	ActionSetMode.class \
-	ActionShowURL.class \
-	ActionSpawn.class \
-	ActionUngroup.class \
-	ActionQuit.class \
-	ActiveComponent.class \
-	ActiveButton.class \
-	ActiveChoice.class \
-	ActiveList.class \
 	ArrowHead.class \
-	ArrowHeadTriangle.class \
+	ArrowHeadDiamond.class \
 	ArrowHeadNone.class \
-	FigEdgeRectiline.class \
-	FigEdgeLine.class \
+	ArrowHeadTriangle.class \
+	Cmd.class \
+	CmdAdjustGrid.class \
+	CmdAdjustGuide.class \
+	CmdAdjustPageBreaks.class \
+	CmdAlign.class \
+	CmdCreateNode.class \
+	CmdDelete.class \
+	CmdDispose.class \
+	CmdExit.class \
+	CmdGroup.class \
+	CmdInsertPoint.class \
+	CmdNudge.class \
+	CmdNull.class \
+	CmdOpen.class \
+	CmdOpenWindow.class \
+	CmdPrint.class \
+	CmdRemovePoint.class \
+	CmdReorder.class \
+	CmdSave.class \
+	CmdScroll.class \
+	CmdSelectAll.class \
+	CmdSelectInvert.class \
+	CmdSelectNext.class \
+	CmdSequence.class \
+	CmdSetMode.class \
+	CmdShowProperties.class \
+	CmdShowURL.class \
+	CmdSpawn.class \
+	CmdUngroup.class \
+	CmdUseReshape.class \
+	CmdUseResize.class \
+	CmdUseRotate.class \
+	Diagram.class \
 	Editor.class \
-	MenuManager.class \
-	EditorFrame.class \
-	ExecuteActionWindow.class \
+	ExecuteCmdWindow.class \
 	Fig.class \
 	FigCircle.class \
 	FigEdge.class \
-	FigInk.class \
-	FigImage.class \
-	FigLine.class \
+	FigEdgeLine.class \
+	FigEdgeRectiline.class \
 	FigGroup.class \
-	FigPoly.class \
-	FigRect.class \
-	FigRRect.class \
-	FigText.class \
+	FigImage.class \
+	FigInk.class \
+	FigLine.class \
 	FigNode.class \
-	ForwardingPanel.class \
-	ForwardingFrame.class \
-	ForwardingComponent.class \
+	FigPoly.class \
+	FigRRect.class \
+	FigRect.class \
+	FigText.class \
 	Geometry.class \
 	Globals.class \
 	Guide.class \
 	GuideGrid.class \
 	Handle.class \
+	JGraph.class \
+	JGraphFrame.class \
 	Layer.class \
-	LayerManager.class \
 	LayerDiagram.class \
 	LayerGrid.class \
+	LayerManager.class \
 	LayerPageBreaks.class \
 	LayerPerspective.class \
 	LayerPolar.class \
 	Mode.class \
 	ModeCreate.class \
 	ModeCreateArc.class \
+	ModeCreateEdge.class \
 	ModeCreateFigCircle.class \
-	ModeCreateFigInk.class \
 	ModeCreateFigImage.class \
+	ModeCreateFigInk.class \
 	ModeCreateFigLine.class \
 	ModeCreateFigPoly.class \
-	ModeCreateFigRect.class \
 	ModeCreateFigRRect.class \
+	ModeCreateFigRect.class \
 	ModeCreateFigText.class \
-	ModeExampleKeys.class \
+	ModeManager.class \
 	ModeModify.class \
 	ModePlace.class \
+	ModePopup.class \
 	ModeSelect.class \
-	ModeManager.class \
 	NetEdge.class \
 	NetList.class \
 	NetNode.class \
 	NetPort.class \
 	NetPrimitive.class \
-	Palette.class \
-	PaletteAttr.class \
-	PaletteCompound.class \
-	PaletteDecorator.class \
 	PaletteFig.class \
-	PaletteSticky.class \
-	PaletteTop.class \
+	PathConv.class \
+	PathConvPercent.class \
+	PredFigInRect.class \
 	Prefs.class \
 	PrefsEditor.class \
-	PredFigInRect.class \
 	RedrawManager.class \
-	SelectionManager.class \
 	Selection.class \
-	SelectionResize.class \
+	SelectionManager.class \
+	SelectionMove.class \
+	SelectionNoop.class \
 	SelectionReshape.class \
-	SelectionRotate.class \
-	ActionSave.class \
-	ActionLoad.class 
+	SelectionResize.class \
+	SelectionRotate.class
 
 all: $(GEN) $(CLASSES)
 
 gen: $(GEN)
 
 classes: $(CLASSES)
-
-
-#GEF.java: GEF.m4 ../Makefile.config
-#Compat.java: Compat.m4 ../Makefile.config
-#ActionLoad.java: ActionLoad.m4 ../Makefile.config
-#ActionSave.java: ActionSave.m4 ../Makefile.config
-#ActionPrint.java: ActionPrint.m4 ../Makefile.config
 
 
 clean:

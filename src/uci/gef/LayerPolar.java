@@ -107,7 +107,7 @@ public class LayerPolar extends Layer {
   /** Paint concentric circles around the origin with each circle a
    *  certain spacing from the previous one */
   public void paintContents(Graphics g) {
-    Rectangle clip = g.getClipRect();
+    Rectangle clip = g.getClipBounds();
     int clipBot = clip.y + clip.height;
     int clipRight = clip.x + clip.width;
 
@@ -160,7 +160,7 @@ public class LayerPolar extends Layer {
       setHidden(false);
       Editor ce = Globals.curEditor();
       if (ce != null) {
-	Dimension d = ce.getAwtComponent().size();
+	Dimension d = ce.getAwtComponent().getSize();
 	origin(d.width / 2, d.height / 2);
       }
       else origin(100,100);

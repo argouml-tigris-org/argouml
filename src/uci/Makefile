@@ -25,26 +25,39 @@ include Makefile.config
 
 all: classes
 
+
+# gen is not used now that GEF does not use a preprocessor
 gen:
 	cd util; make gen; cd ..
 	cd gef; make gen; cd ..
+	cd gef/event; make gen; cd ../..
+	cd graph; make gen; cd ..
+	cd beans/editors; make gen; cd ../..
 	cd ui; make gen; cd ..
 	cd gef/demo; make gen; cd ../..
 
 classes:
 	cd util; make classes; cd ..
 	cd gef; make classes; cd ..
+	cd gef/event; make classes; cd ../..
+	cd graph; make classes; cd ..
+	cd beans/editors; make classes; cd ../..
 	cd ui; make classes; cd ..
 	cd gef/demo; make classes; cd ../..
 
+
 clean:
 	cd util; make clean; cd ..
-	cd ui; make clean; cd ..
 	cd gef; make clean; cd ..
+	cd gef/event; make clean; cd ../..
+	cd graph; make clean; cd ..
+	cd beans/editors; make clean; cd ../..
+	cd ui; make clean; cd ..
 	cd gef/demo; make clean; cd ../..
 
 javadocs:
-	$(JAVADOC) uci.gef uci.ui uci.util uci.gef.demo 
-checkout:
-	cd util; co RCS/* ; cd ..
-	cd gef; co RCS/* ; cd ..
+	$(JAVADOC) -d api \
+	uci.gef uci.ui uci.util uci.gef.demo uci.gef.event \
+	uci.graph uci.beans.editors
+
+
