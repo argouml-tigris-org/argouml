@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 
 /**
  *
- * @author  Administrator
+ * @author Bob Tarling
  */
 public class DropDownIcon extends DecoratedIcon {
 
@@ -35,14 +35,8 @@ public class DropDownIcon extends DecoratedIcon {
 
 
     /** Creates a new instance of DropDownIcon */
-    public DropDownIcon(ImageIcon imageIcon) {
+    DropDownIcon(ImageIcon imageIcon) {
         super(imageIcon);
-        init(standardBuffer);
-    }
-
-    /** Creates a new instance of DropDownIcon */
-    public DropDownIcon(ImageIcon imageIcon, boolean showSplitter) {
-        super(imageIcon, showSplitter);
         init(standardBuffer);
     }
 }

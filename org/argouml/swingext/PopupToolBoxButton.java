@@ -15,9 +15,11 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.LayoutManager2;
 import java.awt.GridLayout;
@@ -32,6 +34,8 @@ import java.util.Iterator;
 
 import java.io.Serializable;
 
+import javax.swing.plaf.metal.MetalLookAndFeel;
+
 /** An extension of JButton to which alternative actions can be added.
  * The button to trigger these actions become available when a
  * dropdown icon is pressed on this button.
@@ -39,12 +43,12 @@ import java.io.Serializable;
  */
 public class PopupToolBoxButton extends JButton {
 
-    //private JLabel _arrowLabel;
     private JButton _button;
     private PopupToolBox _popupToolBox;
     private DecoratedIcon _standardIcon;
-    private DecoratedIcon _rolloverIcon;
-    private int _division;
+    private String tooltip;
+    private PopupToolBoxButton _this;
+    private boolean _showSplitter;
     
     /** Creates a new instance of PopupToolboxButton
      * @param a The default action when pressing this button
@@ -53,6 +57,7 @@ public class PopupToolBoxButton extends JButton {
      */
     public PopupToolBoxButton(Action a, int rows, int cols) {
         super(a);
+        _this = this;
         setAction(a);
         
         _popupToolBox = new PopupToolBox(rows, cols);
@@ -71,17 +76,13 @@ public class PopupToolBoxButton extends JButton {
         // current plaf (eg preferred button size) so we can emulate
         // whatever plaf the user is set to.
         _button = new JButton(a);
-        String tooltip = _button.getToolTipText();
-        if (tooltip == null || tooltip.trim().length() == 0) {
-            tooltip = _button.getName();
-        }
+        tooltip = _button.getToolTipText();
         if (tooltip == null || tooltip.trim().length() == 0) {
             tooltip = _button.getText();
         }
         _button.setText(null);
         
         _standardIcon = new DropDownIcon((ImageIcon)_button.getIcon());
-        _rolloverIcon = new DropDownIcon((ImageIcon)_button.getIcon(), true);
         
         // Remove any knowledge of the action to perform from the ancestor
         // we take control of performing the action and displaying the icon.
@@ -90,11 +91,6 @@ public class PopupToolBoxButton extends JButton {
         setToolTipText(tooltip);
     }
     
-    //private DecoratedIcon createIcon(int style) {
-    //    DecoratedIcon dropDownIcon = new DecoratedIcon((ImageIcon)_button.getIcon(), style);
-    //    return dropDownIcon;
-    //}
-
     private void popup() {
         final JPopupMenu popup = new JPopupMenu();
         
@@ -124,8 +120,50 @@ public class PopupToolBoxButton extends JButton {
         return _popupToolBox.add(a);
     }
     
-    void setDivision(int division) {
-        _division = division;
+    private int getSplitterPosn() {
+        return getIconPosn() + _button.getIcon().getIconWidth() + 3;
+    }
+    
+    /**
+     * Get the xy position of the icon.
+     * FIXME
+     * For the moment this assumes that the button has the icon centered.
+     */
+    private int getIconPosn() {
+        int x = (this.getWidth() - _standardIcon.getIconWidth()) / 2;
+        return x;
+    }
+    
+
+    public void paint(Graphics g) {
+        super.paint(g);
+        Color[] colors = {
+        getBackground(),
+        MetalLookAndFeel.getPrimaryControlDarkShadow(),
+        MetalLookAndFeel.getPrimaryControlInfo(),
+        MetalLookAndFeel.getPrimaryControlHighlight()};
+
+        if (_showSplitter) {
+            showSplitter(colors[1], g, getSplitterPosn(),     1, getHeight()-4);
+            showSplitter(colors[3], g, getSplitterPosn() + 1, 1, getHeight()-4);
+        }
+    }
+    
+    public void showSplitter(Color c, Graphics g, int x, int y, int height) {
+        g.setColor(c);
+        g.drawLine(x, y + 0, x, y + height);
+    }
+    
+    public void showSplitter(boolean show) {
+        if (show && !_showSplitter) {
+            _showSplitter = true;
+            repaint();
+            setToolTipText("Select Tool");
+        } else if (!show && _showSplitter) {
+            _showSplitter = false;
+            repaint();
+            setToolTipText(tooltip);
+        }
     }
 
     /**
@@ -145,12 +183,7 @@ public class PopupToolBoxButton extends JButton {
          * then change the icon.
          */
         public void mouseMoved(MouseEvent me) {
-            if (me.getX() >= _division + getMargin().left) {
-                setIcon(_rolloverIcon);
-            } else {
-                // Then we we move off take it away.
-                setIcon(_standardIcon);
-            }
+            showSplitter(me.getX() >= getSplitterPosn());
         }
 
         /**
@@ -166,11 +199,12 @@ public class PopupToolBoxButton extends JButton {
          * button.
          */
         public void mouseExited(MouseEvent me) {
-            setIcon(_standardIcon);
+            showSplitter(false);
+            //setIcon(_standardIcon);
         }
         
         public void mouseClicked(MouseEvent me) {
-            if (me.getX() >= _division + getMargin().left) {
+            if (me.getX() >= getSplitterPosn()) {
                 // If the dropdown area was clicked then do the dropdown action instead of the
                 // current button action
                 popup();
