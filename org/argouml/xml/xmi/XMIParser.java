@@ -25,18 +25,16 @@ package org.argouml.xml.xmi;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
-import java.beans.PropertyVetoException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 
-import org.xml.sax.*;
-
-import ru.novosoft.uml.xmi.*;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-
-import org.argouml.model.uml.UmlFactory;
-import org.argouml.application.api.*;
+import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.model_management.MModel;
 
 /** XMI is an XML based exchange format between UML tools. 
  *ArgoUML uses this as standard saving mechanism so that easy interchange 

@@ -30,31 +30,22 @@ package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.awt.Polygon;
-import java.beans.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.Vector;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
+import java.beans.PropertyVetoException;
 
 import org.apache.log4j.Category;
-import org.argouml.application.api.*;
+import org.argouml.application.api.Notation;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.generator.*;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.generator.ParserDisplay;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.PathConvPercent;
+import org.tigris.gef.presentation.ArrowHeadGreater;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.FigText;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 public class FigTransition extends FigEdgeModelElement {
     protected static Category cat = Category.getInstance(FigTransition.class);
@@ -136,7 +127,7 @@ public class FigTransition extends FigEdgeModelElement {
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getDestination()
      */
-    protected MModelElement getDestination() {
+    protected Object getDestination() {
         if (getOwner() != null) {
             return StateMachinesHelper.getHelper().getDestination((MTransition)getOwner());
         }
@@ -146,7 +137,7 @@ public class FigTransition extends FigEdgeModelElement {
     /**
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getSource()
      */
-    protected MModelElement getSource() {
+    protected Object getSource() {
         if (getOwner() != null) {
             return StateMachinesHelper.getHelper().getSource((MTransition)getOwner());
         }

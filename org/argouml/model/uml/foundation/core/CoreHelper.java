@@ -37,7 +37,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
-import org.argouml.ui.ProjectBrowser;
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;

@@ -29,14 +29,12 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.*;
+import java.awt.Color;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-
-import org.tigris.gef.presentation.*;
-
-import org.argouml.uml.diagram.ui.*;
+import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.tigris.gef.presentation.Fig;
+import ru.novosoft.uml.behavior.common_behavior.MLink;
 
 public class FigLink extends FigEdgeModelElement {
 
@@ -56,6 +54,26 @@ public class FigLink extends FigEdgeModelElement {
   // TODO: should edit something...
   protected boolean canEdit(Fig f) { return false; }
 
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getDestination()
+     */
+    protected Object getDestination() {
+        if (getOwner() != null) {
+            return CommonBehaviorHelper.getHelper().getDestination((MLink)getOwner());
+        }
+        return null;
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getSource()
+     */
+    protected Object getSource() {
+        if (getOwner() != null) {
+            return CommonBehaviorHelper.getHelper().getSource((MLink)getOwner());
+        }
+        return null;
+    }
 
 } /* end class FigLink */
 
