@@ -65,12 +65,8 @@ public class PropPanelUseCase extends PropPanelClassifier {
     	addField(Translator.localize("label.namespace"), 
                 getNamespaceComboBox());
 
-	
-	// Modifiers - an abstract use case does not really make any sense
-        getModifiersPanel().remove(0);
         add(getModifiersPanel());
         
-
 	JList extensionPoints = new UMLMutableLinkedList(
             new UMLUseCaseExtensionPointListModel(), null, 
             ActionNewUseCaseExtensionPoint.SINGLETON);
