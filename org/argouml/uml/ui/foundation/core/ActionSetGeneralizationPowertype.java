@@ -43,7 +43,6 @@ public class ActionSetGeneralizationPowertype extends UMLChangeAction {
     
     /**
      * Constructor for ActionSetStructuralFeatureType.
-     * @param s
      */
     protected ActionSetGeneralizationPowertype() {
         super(Translator.localize("Set"), true, NO_ICON);

@@ -36,7 +36,6 @@ public class UMLAttributeInitialValueListModel
 
     /**
      * Constructor for UMLDependencySupplierListModel.
-     * @param container
      */
     public UMLAttributeInitialValueListModel() {
 	super("initialValue");

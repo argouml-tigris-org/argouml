@@ -42,7 +42,6 @@ public class ActionSetGeneralizableElementAbstract extends UMLChangeAction {
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
-     * @param s
      */
     protected ActionSetGeneralizableElementAbstract() {
         super(Translator.localize("Set"), true, NO_ICON);

@@ -48,7 +48,6 @@ public class PropPanelFeature extends PropPanelModelElement {
     /**
      * Constructor for PropPanelFeature.
      * @param name
-     * @param icon
      * @param orientation
      */
     protected PropPanelFeature(

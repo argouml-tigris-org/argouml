@@ -38,7 +38,6 @@ public class UMLAssociationRoleAssociationEndRoleListModel
 
     /**
      * Constructor for UMLAssociationRoleAssociationEndRoleListModel.
-     * @param container
      */
     public UMLAssociationRoleAssociationEndRoleListModel() {
         super("connection");

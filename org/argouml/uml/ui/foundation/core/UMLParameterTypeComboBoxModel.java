@@ -34,7 +34,6 @@ public class UMLParameterTypeComboBoxModel
 
     /**
      * Constructor for UMLParameterTypeComboBoxModel.
-     * @param container
      */
     public UMLParameterTypeComboBoxModel() {
         super();

@@ -33,11 +33,8 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  */
 public class UMLStateMachineTopListModel extends UMLModelElementListModel2 {
 
-    
-
     /**
      * Constructor for UMLStateMachineTopListModel.
-     * @param container
      */
     public UMLStateMachineTopListModel() {
         super("top");

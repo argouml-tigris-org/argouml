@@ -484,8 +484,8 @@ public class ParserDisplay extends Parser {
      * The case that a String or char contains a ';' (e.g. in an initializer)
      * is handled, but not other occurences of ';'.
      *
-     * @param text  The classifier the operation(s) belong to
-     * @param text  The operation on which the editing happened
+     * @param cls  The classifier the operation(s) belong to
+     * @param op  The operation on which the editing happened
      * @param text  The string to parse
      */
     public void parseOperationFig(Object/*MClassifier*/ cls, Object/*MOperation*/ op, String text)
@@ -548,8 +548,8 @@ public class ParserDisplay extends Parser {
      * The case that a String or char contains a ';' (e.g. in an initializer)
      * is handled, but not other occurences of ';'.
      *
-     * @param text  The classifier the attribute(s) belong to
-     * @param text  The attribute on which the editing happened
+     * @param cls  The classifier the attribute(s) belong to
+     * @param at  The attribute on which the editing happened
      * @param text  The string to parse
      */
     public void parseAttributeFig(Object/*MClassifier*/ cls, Object/*MAttribute*/ at, String text)

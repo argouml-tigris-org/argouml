@@ -36,7 +36,6 @@ public class UMLStateMachineSubmachineStateListModel
 
     /**
      * Constructor for UMLStateMachineSubmachineStateListModel.
-     * @param container
      */
     public UMLStateMachineSubmachineStateListModel() {
         super("submachineState");

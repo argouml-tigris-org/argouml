@@ -33,7 +33,6 @@ public class UMLAssociationRoleMessageListModel
 
     /**
      * Constructor for UMLAssociationRoleMessageListModel.
-     * @param container
      */
     public UMLAssociationRoleMessageListModel() {
         super("message");

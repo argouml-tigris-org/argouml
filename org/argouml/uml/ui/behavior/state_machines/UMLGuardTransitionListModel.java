@@ -37,7 +37,6 @@ public class UMLGuardTransitionListModel extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLGuardTransitionListModel.
-     * @param container
      */
     public UMLGuardTransitionListModel() {
         super("transition");

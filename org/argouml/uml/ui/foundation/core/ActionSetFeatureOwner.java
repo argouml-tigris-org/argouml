@@ -42,7 +42,6 @@ public class ActionSetFeatureOwner extends UMLChangeAction {
     
     /**
      * Constructor for ActionSetStructuralFeatureType.
-     * @param s
      */
     protected ActionSetFeatureOwner() {
         super(Translator.localize("Set"), true, NO_ICON);

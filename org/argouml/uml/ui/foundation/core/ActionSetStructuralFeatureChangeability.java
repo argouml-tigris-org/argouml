@@ -50,7 +50,6 @@ public class ActionSetStructuralFeatureChangeability extends UMLChangeAction {
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
-     * @param s
      */
     protected ActionSetStructuralFeatureChangeability() {
 	super(Translator.localize("Set"), true, NO_ICON);

@@ -41,9 +41,7 @@ public class UMLStateEntryList extends UMLMutableLinkedList {
 
     /**
      * Constructor for UMLStateEntryList.
-     * @param container
      * @param dataModel
-     * @param popup
      */
     public UMLStateEntryList(
         UMLModelElementListModel2 dataModel) {

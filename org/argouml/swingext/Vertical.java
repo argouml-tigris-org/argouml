@@ -76,7 +76,7 @@ public class Vertical extends Orientation {
     /**
      * Get an instance of an <code>Orientation</code> object.
      *
-     * @parameter orientation value representing the type of
+     * @param orientation value representing the type of
      * orientation required, HORIZONTAL or VERTICAL.
      * @return An instance of <code>Orientation</code>.
      */
@@ -103,7 +103,7 @@ public class Vertical extends Orientation {
     /**
      * Get the length of a <code>Dimension</code>.
      *
-     * @parameter dim The <code>Dimension</code> of which to determine
+     * @param dim The <code>Dimension</code> of which to determine
      * the length
      * @return The length of the <code>Dimension</code>.
      */
@@ -114,7 +114,7 @@ public class Vertical extends Orientation {
     /**
      * Get the length of a <code>Component</code>.
      *
-     * @parameter comp The <code>Component</code> of which to
+     * @param comp The <code>Component</code> of which to
      * determine the length
      * @return The length of the <code>Component</code>.
      */
@@ -126,7 +126,7 @@ public class Vertical extends Orientation {
      * Get the usable length of a <code>Container</code> minus its
      * <code>insets</code>.
      *
-     * @parameter cont The <code>Container</code> of which to
+     * @param cont The <code>Container</code> of which to
      * determine the length
      * @return The length of the <code>Component</code>.
      */
@@ -138,7 +138,7 @@ public class Vertical extends Orientation {
     /**
      * Get the breadth of a <code>Dimension</code>.
      *
-     * @parameter dim The <code>Dimension</code> of which to determine
+     * @param dim The <code>Dimension</code> of which to determine
      * the breadth
      * @return The breadth of the <code>Dimension</code>.
      */
@@ -149,7 +149,7 @@ public class Vertical extends Orientation {
     /**
      * Get the breadth of a <code>Component</code>.
      *
-     * @parameter comp The <code>Component</code> of which to
+     * @param comp The <code>Component</code> of which to
      * determine the breadth
      * @return The breadth of the <code>Component</code>.
      */
@@ -160,7 +160,7 @@ public class Vertical extends Orientation {
     /**
      * Get the position of a <code>Point</code>.
      *
-     * @parameter point The <code>Point</code> of which to determine
+     * @param point The <code>Point</code> of which to determine
      * the position
      * @return The position of the <code>Point</code>.
      */
@@ -171,7 +171,7 @@ public class Vertical extends Orientation {
     /**
      * Get the offset of a <code>Point</code>.
      *
-     * @parameter point The <code>Point</code> of which to determine the offset.
+     * @param point The <code>Point</code> of which to determine the offset.
      * @return The position of the <code>Point</code>.
      */
     public int getOffset(Point point) {
@@ -183,7 +183,7 @@ public class Vertical extends Orientation {
      * <code>Container</code>. This takes into account the
      * <code>Insets</code> of the <code>Container</code>.
      *
-     * @parameter cont the <code>Container</code> from which to
+     * @param cont the <code>Container</code> from which to
      * determine the last usable position.
      * @return The offset of the <code>Container</code>.
      */
@@ -196,7 +196,7 @@ public class Vertical extends Orientation {
      * <code>Container</code>. This takes into account the
      * <code>Insets</code> of the <code>Container</code>.
      *
-     * @parameter cont the <code>Container</code> from which to
+     * @param cont the <code>Container</code> from which to
      * determine the first usable position.
      * @return The offset of the <code>Container</code>.
      */
@@ -208,8 +208,8 @@ public class Vertical extends Orientation {
     /**
      * Generate a new <code>Point</code> object from position and offset values.
      *
-     * @parameter position the required position of the new <code>Point</code>.
-     * @parameter offset the required offset of the new <code>Point</code>.
+     * @param position the required position of the new <code>Point</code>.
+     * @param offset the required offset of the new <code>Point</code>.
      * @return The newly created <code>Point</code> object.
      */
     public Point newPoint(int position, int offset) {
@@ -220,7 +220,7 @@ public class Vertical extends Orientation {
     /**
      * Get the position of a <code>Component</code>.
      *
-     * @parameter comp The <code>Component</code> of which to
+     * @param comp The <code>Component</code> of which to
      * determine the position
      * @return The position of the <code>Component</code>.
      */
@@ -231,7 +231,7 @@ public class Vertical extends Orientation {
     /**
      * Get the position of a <code>MouseEvent</code>.
      *
-     * @parameter me The <code>MouseEvent</code> of which to determine
+     * @param me The <code>MouseEvent</code> of which to determine
      * the position
      * @return The position of the <code>MouseEvent</code>.
      */
@@ -244,8 +244,8 @@ public class Vertical extends Orientation {
      * <code>Dimension</code> with its length increased by a given
      * value.
      *
-     * @parameter original The <code>Dimension</code> to be added to.
-     * @parameter add The amount to add to the <code>Dimension</code>.
+     * @param original The <code>Dimension</code> to be added to.
+     * @param add The amount to add to the <code>Dimension</code>.
      * @return The resulting <code>Dimension</code>.
      */
     public Dimension addLength(Dimension original, int add) {
@@ -259,8 +259,8 @@ public class Vertical extends Orientation {
      * <code>Point</code> with its position increased by a given
      * value.
      *
-     * @parameter original The <code>Point</code> to be added to.
-     * @parameter add The amount to add to the <code>Point</code>.
+     * @param original The <code>Point</code> to be added to.
+     * @param add The amount to add to the <code>Point</code>.
      * @return The resulting <code>Point</code>.
      */
     public Point addToPosition(Point original, int add) {
@@ -274,8 +274,8 @@ public class Vertical extends Orientation {
      * <code>Dimension</code> with its length changed to a given
      * value.
      *
-     * @parameter original The <code>Dimension</code> to be added to.
-     * @parameter length The length to assign to the new
+     * @param original The <code>Dimension</code> to be added to.
+     * @param length The length to assign to the new
      * <code>Dimension</code>.
      * @return             The resulting <code>Dimension</code>.
      */
@@ -288,8 +288,8 @@ public class Vertical extends Orientation {
      * <code>Dimension</code> with its length changed to the length of
      * another given <code>Dimension</code>.
      *
-     * @parameter original The <code>Dimension</code> to be added to.
-     * @parameter length The <code>Dimension</code> whose length is to
+     * @param original The <code>Dimension</code> to be added to.
+     * @param length The <code>Dimension</code> whose length is to
      * be assigned to the new <code>Dimension</code>.
      * @return             The resulting <code>Dimension</code>.
      */
@@ -303,8 +303,8 @@ public class Vertical extends Orientation {
      * <code>Dimension</code> with its breadth changed to a given
      * value.
      *
-     * @parameter original The <code>Dimension</code> to be added to.
-     * @parameter breadth The breadth to assign to the new
+     * @param original The <code>Dimension</code> to be added to.
+     * @param breadth The breadth to assign to the new
      * <code>Dimension</code>.
      * @return             The resulting <code>Dimension</code>.
      */
@@ -317,8 +317,8 @@ public class Vertical extends Orientation {
      * <code>Dimension</code> with its breadth changed to the breadth
      * of another given <code>Dimension</code>.
      *
-     * @parameter original The <code>Dimension</code> to be added to.
-     * @parameter breadth The <code>Dimension</code> whose breadth is
+     * @param original The <code>Dimension</code> to be added to.
+     * @param breadth The <code>Dimension</code> whose breadth is
      * to be assigned to the new <code>Dimension</code>.
      * @return             The resulting <code>Dimension</code>.
      */
@@ -331,9 +331,9 @@ public class Vertical extends Orientation {
      * Create a new <code>Point</code> from an existing
      * <code>Point</code> with its position changed to a given value.
      *
-     * @parameter original The <code>Point</code> whose position is to
+     * @param original The <code>Point</code> whose position is to
      * be modified.
-     * @parameter position The value to assign as the new position.
+     * @param position The value to assign as the new position.
      * @return             The resulting <code>Point</code>.
      */
     public Point setPosition(Point original, int position) {

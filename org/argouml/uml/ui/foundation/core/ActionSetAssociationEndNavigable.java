@@ -43,7 +43,6 @@ public class ActionSetAssociationEndNavigable extends UMLChangeAction {
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
-     * @param s
      */
     protected ActionSetAssociationEndNavigable() {
         super(Translator.localize("action.set"), true, NO_ICON);

@@ -35,7 +35,6 @@ public class UMLStateVertexContainerListModel extends UMLModelElementListModel2 
 
     /**
      * Constructor for UMLStateVertexIncomingListModel.
-     * @param container
      */
     public UMLStateVertexContainerListModel() {
         super("container");

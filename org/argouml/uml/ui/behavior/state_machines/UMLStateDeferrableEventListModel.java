@@ -36,7 +36,6 @@ public class UMLStateDeferrableEventListModel
 
     /**
      * Constructor for UMLStateDeferrableEventListModel.
-     * @param container
      */
     public UMLStateDeferrableEventListModel() {
         super("deferrableEvent");

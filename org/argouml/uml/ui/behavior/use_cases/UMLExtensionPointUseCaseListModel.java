@@ -35,7 +35,6 @@ public class UMLExtensionPointUseCaseListModel extends UMLModelElementListModel2
 
     /**
      * Constructor for UMLExtensionPointUseCaseListModel.
-     * @param container
      */
     public UMLExtensionPointUseCaseListModel() {
         super("useCase");

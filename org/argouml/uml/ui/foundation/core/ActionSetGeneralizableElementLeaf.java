@@ -43,7 +43,6 @@ public class ActionSetGeneralizableElementLeaf extends UMLChangeAction {
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
-     * @param s
      */
     protected ActionSetGeneralizableElementLeaf() {
         super(Translator.localize("Set"), true, NO_ICON);

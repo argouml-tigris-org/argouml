@@ -50,9 +50,6 @@ public class UMLStructuralFeatureChangeabilityRadioButtonPanel
     /**
      * Constructor for UMLAssociationEndChangeabilityRadioButtonPanel.
      * @param title
-     * @param labeltexts
-     * @param propertySetName
-     * @param setAction
      * @param horizontal
      */
     public UMLStructuralFeatureChangeabilityRadioButtonPanel(String title, boolean horizontal) {

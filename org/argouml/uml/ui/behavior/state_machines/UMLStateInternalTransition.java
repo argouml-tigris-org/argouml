@@ -35,7 +35,6 @@ public class UMLStateInternalTransition extends UMLModelElementListModel2 {
     
     /**
      * Constructor for UMLStateInternalTransition.
-     * @param container
      */
     public UMLStateInternalTransition() {
         super("internalTransition");

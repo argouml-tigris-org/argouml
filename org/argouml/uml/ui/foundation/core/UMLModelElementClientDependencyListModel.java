@@ -37,7 +37,6 @@ public class UMLModelElementClientDependencyListModel
 
     /**
      * Constructor for UMLModelElementClientDependencyListModel.
-     * @param container
      */
     public UMLModelElementClientDependencyListModel() {
         super("clientDependency");

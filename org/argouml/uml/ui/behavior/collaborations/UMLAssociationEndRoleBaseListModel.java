@@ -36,7 +36,6 @@ public class UMLAssociationEndRoleBaseListModel
 
     /**
      * Constructor for UMLAssociationEndRoleBaseListModel.
-     * @param container
      */
     public UMLAssociationEndRoleBaseListModel() {
         super("base");

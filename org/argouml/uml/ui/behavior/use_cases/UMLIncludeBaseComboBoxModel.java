@@ -40,7 +40,6 @@ public class UMLIncludeBaseComboBoxModel extends UMLComboBoxModel2 {
 
     /**
      * Constructor for UMLIncludeBaseComboBoxModel.
-     * @param container
      */
     public UMLIncludeBaseComboBoxModel() {
         super("base", false);

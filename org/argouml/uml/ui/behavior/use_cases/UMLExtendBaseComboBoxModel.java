@@ -41,7 +41,6 @@ public class UMLExtendBaseComboBoxModel extends UMLComboBoxModel2 {
 
     /**
      * Constructor for UMLExtendBaseComboBoxModel.
-     * @param container
      */
     public UMLExtendBaseComboBoxModel() {
         super("base", false);

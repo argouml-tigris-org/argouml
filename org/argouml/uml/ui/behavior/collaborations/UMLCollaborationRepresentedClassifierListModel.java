@@ -38,8 +38,6 @@ public class UMLCollaborationRepresentedClassifierListModel
 
     /**
      * Constructor for UMLCollaborationRepresentedClassifierListModel.
-     * @param container
-     * @param propertyToSet
      */
     public UMLCollaborationRepresentedClassifierListModel() {
         super("representedClassifier");

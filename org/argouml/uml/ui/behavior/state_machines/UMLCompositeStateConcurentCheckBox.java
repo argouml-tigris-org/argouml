@@ -37,10 +37,6 @@ public class UMLCompositeStateConcurentCheckBox extends UMLCheckBox2 {
 
     /**
      * Constructor for UMLCompositeStateConcurentCheckBox.
-     * @param container
-     * @param text
-     * @param a
-     * @param propertySetName
      */
     public UMLCompositeStateConcurentCheckBox() {
          super(Translator.localize("UMLMenu", "label.concurrent"), 

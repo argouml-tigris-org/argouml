@@ -40,9 +40,6 @@ public class PropPanelComment extends PropPanelModelElement {
 
     /**
      * Constructor for PropPanelComment.
-     * @param name
-     * @param icon
-     * @param orientation
      */
     public PropPanelComment() {
         super("Comment", ConfigLoader.getTabPropsOrientation());

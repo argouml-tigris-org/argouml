@@ -37,7 +37,6 @@ public class UMLStateVertexIncomingListModel
 
     /**
      * Constructor for UMLStateVertexIncomingListModel.
-     * @param container
      */
     public UMLStateVertexIncomingListModel() {
         super("incoming");

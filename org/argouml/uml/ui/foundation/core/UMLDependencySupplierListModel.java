@@ -37,7 +37,6 @@ public class UMLDependencySupplierListModel extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLDependencySupplierListModel.
-     * @param container
      */
     public UMLDependencySupplierListModel() {
         super("supplier");

@@ -37,7 +37,6 @@ public class UMLElementOwnershipVisibilityButtonGroup extends UMLVisibilityButto
         
     /**
      * Constructor for UMLVisibilityButtonGroup.
-     * @param container
      */
     public UMLElementOwnershipVisibilityButtonGroup(UMLUserInterfaceContainer container) {
         super(container);

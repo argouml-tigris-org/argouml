@@ -36,7 +36,6 @@ public class UMLAssociationAssociationRoleListModel extends UMLModelElementListM
 
     /**
      * Constructor for UMLAssociationAssociationRoleListModel.
-     * @param container
      */
     public UMLAssociationAssociationRoleListModel() {
         super("associationRole");

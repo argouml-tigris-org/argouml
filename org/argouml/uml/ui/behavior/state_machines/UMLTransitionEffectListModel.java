@@ -35,7 +35,6 @@ public class UMLTransitionEffectListModel extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLStateMachineTopListModel.
-     * @param container
      */
     public UMLTransitionEffectListModel() {
         super("effect");

@@ -36,7 +36,6 @@ public class UMLAssociationLinkListModel extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLAssociationLinkListModel.
-     * @param container
      */
     public UMLAssociationLinkListModel() {
         super("link");

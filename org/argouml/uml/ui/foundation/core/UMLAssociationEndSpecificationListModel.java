@@ -36,7 +36,6 @@ public class UMLAssociationEndSpecificationListModel extends UMLModelElementList
 
     /**
      * Constructor for UMLAssociationEndSpecificationListModel.
-     * @param container
      */
     public UMLAssociationEndSpecificationListModel() {
         super("specification");

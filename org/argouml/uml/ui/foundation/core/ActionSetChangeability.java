@@ -46,7 +46,6 @@ public class ActionSetChangeability extends UMLChangeAction {
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
-     * @param s
      */
     protected ActionSetChangeability() {
         super(Translator.localize("Set"), true, NO_ICON);

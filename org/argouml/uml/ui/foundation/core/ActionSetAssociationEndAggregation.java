@@ -49,7 +49,6 @@ public class ActionSetAssociationEndAggregation extends UMLChangeAction {
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
-     * @param s
      */
     protected ActionSetAssociationEndAggregation() {
         super(Translator.localize("action.set"), true, NO_ICON);

@@ -35,7 +35,6 @@ public class UMLTransitionStateListModel extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLStateVertexIncomingListModel.
-     * @param container
      */
     public UMLTransitionStateListModel() {
         super("state");

@@ -38,7 +38,6 @@ public class UMLInteractionMessagesListModel extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLInteractionMessagesListModel.
-     * @param container
      */
     public UMLInteractionMessagesListModel() {
         super("message");

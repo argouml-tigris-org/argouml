@@ -46,9 +46,6 @@ public class PropPanelCollaboration extends PropPanelNamespace {
 
     /**
      * Constructor for PropPanelCollaboration.
-     * @param title
-     * @param icon
-     * @param panelCount
      */
     public PropPanelCollaboration() {
         super("Collaboration", ConfigLoader.getTabPropsOrientation());

@@ -44,7 +44,6 @@ public class ActionSetModelElementStereotype extends UMLChangeAction {
 
     /**
      * Constructor for ActionSetModelElementStereotype.
-     * @param s
      */
     protected ActionSetModelElementStereotype() {
         super(Translator.localize("Set"), true, NO_ICON);

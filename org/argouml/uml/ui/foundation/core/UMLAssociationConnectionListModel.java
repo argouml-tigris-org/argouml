@@ -36,7 +36,6 @@ public class UMLAssociationConnectionListModel extends UMLModelElementListModel2
 
     /**
      * Constructor for UMLModelElementClientDependencyListModel.
-     * @param container
      */
     public UMLAssociationConnectionListModel() {
         super("connection");

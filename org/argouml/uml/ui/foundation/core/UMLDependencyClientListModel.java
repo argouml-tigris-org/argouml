@@ -36,7 +36,6 @@ public class UMLDependencyClientListModel extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLModelElementClientDependencyListModel.
-     * @param container
      */
     public UMLDependencyClientListModel() {
         super("client");

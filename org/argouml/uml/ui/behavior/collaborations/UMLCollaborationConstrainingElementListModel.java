@@ -38,7 +38,6 @@ public class UMLCollaborationConstrainingElementListModel
 
     /**
      * Constructor for UMLCollaborationConstrainingElementListModel.
-     * @param container
      */
     public UMLCollaborationConstrainingElementListModel() {
         super("constrainingElement");

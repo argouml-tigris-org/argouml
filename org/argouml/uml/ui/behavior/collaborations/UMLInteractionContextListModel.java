@@ -36,7 +36,6 @@ public class UMLInteractionContextListModel
 
     /**
      * Constructor for UMLInteractionContextListModel.
-     * @param container
      */
     public UMLInteractionContextListModel() {
         super("context");

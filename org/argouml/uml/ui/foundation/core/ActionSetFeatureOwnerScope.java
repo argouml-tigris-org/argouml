@@ -42,7 +42,6 @@ public class ActionSetFeatureOwnerScope extends UMLChangeAction {
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
-     * @param s
      */
     protected ActionSetFeatureOwnerScope() {
         super(Translator.localize("Set"), true, NO_ICON);

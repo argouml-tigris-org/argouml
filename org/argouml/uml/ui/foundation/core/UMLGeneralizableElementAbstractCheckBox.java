@@ -38,9 +38,6 @@ public class UMLGeneralizableElementAbstractCheckBox extends UMLCheckBox2 {
 
     /**
      * Constructor for UMLGeneralizableElementRootCheckBox.
-     * @param text
-     * @param a
-     * @param propertySetName
      */
     public UMLGeneralizableElementAbstractCheckBox() {
         super(Translator.localize("UMLMenu", "label.abstract"), ActionSetGeneralizableElementAbstract.SINGLETON, "isAbstract");

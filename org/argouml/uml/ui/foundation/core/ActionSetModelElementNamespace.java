@@ -42,7 +42,6 @@ public class ActionSetModelElementNamespace extends UMLChangeAction {
 
     /**
      * Constructor for ActionSetModelElementNamespace.
-     * @param s
      */
     protected ActionSetModelElementNamespace() {
         super(Translator.localize("Set"), true, NO_ICON);

@@ -37,9 +37,6 @@ public class UMLFeatureOwnerComboBoxModel extends UMLComboBoxModel2 {
 
     /**
      * Constructor for UMLFeatureOwnerComboBoxModel.
-     * @param container
-     * @param propertySetName
-     * @param clearable
      */
     public UMLFeatureOwnerComboBoxModel() {
         super("owner", false);

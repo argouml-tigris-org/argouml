@@ -36,7 +36,6 @@ public class UMLMessageActionListModel extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLMessageActionListModel.
-     * @param container
      */
     public UMLMessageActionListModel() {
         super("action");

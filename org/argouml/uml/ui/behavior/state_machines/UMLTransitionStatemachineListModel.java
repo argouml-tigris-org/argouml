@@ -35,7 +35,6 @@ public class UMLTransitionStatemachineListModel extends UMLModelElementListModel
 
     /**
      * Constructor for UMLStateVertexIncomingListModel.
-     * @param container
      */
     public UMLTransitionStatemachineListModel() {
         super("statemachine");

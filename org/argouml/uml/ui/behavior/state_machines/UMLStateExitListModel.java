@@ -35,7 +35,6 @@ public class UMLStateExitListModel extends UMLModelElementListModel2 {
     
     /**
      * Constructor for UMLStateExitListModel.
-     * @param container
      */
     public UMLStateExitListModel() {
         super("exit");

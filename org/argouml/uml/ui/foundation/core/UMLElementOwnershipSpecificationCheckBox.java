@@ -37,9 +37,6 @@ public class UMLElementOwnershipSpecificationCheckBox extends UMLCheckBox2 {
 
     /**
      * Constructor for UMLElementOwnershipSpecificationCheckBox.
-     * @param container
-     * @param text
-     * @param a
      */
     public UMLElementOwnershipSpecificationCheckBox() {
         super(Translator.localize("UMLMenu", "label.specialization"), 

@@ -36,7 +36,6 @@ public class UMLMessageSenderListModel extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLMessageSenderListModel.
-     * @param container
      */
     public UMLMessageSenderListModel() {
         super("sender");

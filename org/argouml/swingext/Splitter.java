@@ -125,7 +125,7 @@ public class Splitter extends JComponent {
     /**
      * The constructor
      *
-     * @parameter orientation A Horizontal or Vertical object to
+     * @param orientation A Horizontal or Vertical object to
      * indicate whether this splitter is designed to seperate
      * components laid out horizontally or vertically.
      */ 
@@ -172,7 +172,7 @@ public class Splitter extends JComponent {
     /**
      * Register a component to be resized by this splitter.
      *
-     * @parameter side the side of the splitter to place the component
+     * @param side the side of the splitter to place the component
      * being one of the constants NORTH, SOUTH, EAST or WEST
      */
     public void registerComponent(int side, Component comp)
@@ -185,7 +185,7 @@ public class Splitter extends JComponent {
     /**
      * Get a registered component.
      *
-     * @parameter side the side of the splitter of the component to
+     * @param side the side of the splitter of the component to
      * return, being one of the constants NORTH, SOUTH, EAST or WEST
      * @return the registered component
      */
@@ -200,7 +200,7 @@ public class Splitter extends JComponent {
      * instantly reposition the splitter to hide one of the
      * components.
      *
-     * @parameter side the side of the splitter of the component to be
+     * @param side the side of the splitter of the component to be
      * hidden on a quick hide action. This being one of the constants
      * NORTH, SOUTH, EAST, WEST or NONE.
      */
@@ -312,7 +312,7 @@ public class Splitter extends JComponent {
      * may result in one of the components having a negative size or
      * breaking it min/max size.
      *
-     * @parameter movement the distance in pixels to move the splitter
+     * @param movement the distance in pixels to move the splitter
      * from its current position.
      *
      * @return the actual number of pixels the splitter was moved.
@@ -349,7 +349,7 @@ public class Splitter extends JComponent {
      * Resize and reposition the components according to the movement
      * of the splitter
      *
-     * @parameter movement the distance the splitter has moved.
+     * @param movement the distance the splitter has moved.
      */
     private void resizeComponents(int movement) {
         sideComponent[NORTH]
@@ -370,12 +370,12 @@ public class Splitter extends JComponent {
      * calculates any restriction of movement based on the min/max values of the
      * registered components.
      *
-     * @parameter growingComponent The component that is expanding as
+     * @param growingComponent The component that is expanding as
      * the result of a splitter move.
-     * @parameter shrinkingComponent The component that is shrinking
+     * @param shrinkingComponent The component that is shrinking
      * as the result of a splitter move.
-     * @parameter movement           The number of pixels of the attempted move
-     * @parameter sign The direction of the move -ve or +ve (-1 or +1)
+     * @param movement           The number of pixels of the attempted move
+     * @param sign The direction of the move -ve or +ve (-1 or +1)
      */
     private int restrictMovement(Component growingComponent,
 				 Component shrinkingComponent,

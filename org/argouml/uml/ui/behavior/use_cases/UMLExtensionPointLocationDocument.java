@@ -36,8 +36,6 @@ public class UMLExtensionPointLocationDocument extends UMLPlainTextDocument {
 
     /**
      * Constructor for UMLExtensionPointLocationDocument.
-     * @param panel
-     * @param propertyList
      */
     public UMLExtensionPointLocationDocument() {   
         super("location");

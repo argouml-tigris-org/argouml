@@ -45,7 +45,6 @@ public class UMLGeneralizationPowertypeComboBoxModel
 
     /**
      * Constructor for UMLGeneralizationPowertypeComboBoxModel.
-     * @param container
      */
     public UMLGeneralizationPowertypeComboBoxModel() {
         super("powertype", true);

@@ -36,7 +36,6 @@ public class UMLModelElementElementResidenceListModel
 
     /**
      * Constructor for UMLModelElementElementResidenceListModel.
-     * @param container
      */
     public UMLModelElementElementResidenceListModel() {
         super("elementResidence");
