@@ -116,7 +116,7 @@ Please feel free to send more questions and/or answers to the
 </para>
     </sect1>
 
-    <sect1>
+    <sect1 id="contributing">
       <title>How to contribute</title>
       <para>
 You can help, there are big tasks and small tasks waiting for you.
@@ -128,25 +128,44 @@ This could be perceived as a ladder to climb but remember
 that if so it is firstly a ladder of levels of commitment
 and time spent by you.
 You get no price for climbing higher, you just get more
-responsibility in the project and more work.
+responsibility in the project.
 </para>
       <para>
-	  <orderedlist numeration="arabic">
-	    <listitem>
-	      <para>Use ArgoUML.</para>
-	    </listitem>
-	    <listitem>
-	      <para>Subscribe to the dev list.</para>
-	      <para>
-Monitor the discussions and as soon as you see something discussed
-where you have an opinion, jump right in!
+	<orderedlist numeration="arabic">
+          <listitem>
+            <para>Use ArgoUML.</para>
+          </listitem>
+          <listitem>
+            <para>
+Report found bugs.
 </para>
-	    </listitem>
+            <para>
+There are bugs in ArgoUML.
+When you use ArgoUML you might encounter them where you least expect it.
+To help, make sure they are known about i.e. that there exists an issue
+in Issuezilla describing the problem.
+You need to be a registered user at Tigris to report bugs 
+but notice that to add further comments to the issue you also need to
+have gotten a Role in the ArgoUML project.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+Subscribe to the users' mailing list.
+</para>
+            <para>
+Discuss how you use ArgoUML in your project and how you promote
+ArgoUML in your organization.
+You can also help other users with their ArgoUML-related problems.
+</para>
+          </listitem>
+
 	    <listitem>
 	      <para>Apply for an Observer role.</para>
 	      <para>
 This shows that you are committed to the project and also
-allows you to enter and comment on issues etc.
+allows you to comment on issues.
 </para>
 	    </listitem>
 	    <listitem>
@@ -168,8 +187,8 @@ the latest version of ArgoUML.
 You will get updates on all issues so you can monitor what
 we are doing in the project.
 (It could be a lot of mails.
-If it turns out you don't like watching issues in this way
-just unsubscribe again.)
+If it turns out you don't like watching issues in this way,
+you unsubscribe!)
 </para>
 		  </listitem>
 		  <listitem>
@@ -177,10 +196,10 @@ just unsubscribe again.)
 		    <para>
 You will get updates on all changes that are done 
 to code, documentation, and the web site.
-(It could be a lot of mails.
+(It could be a lot of large mails.
 If it turns out you don't like watching 
 what is going on in the project in this way
-just unsubscribe again.)
+you unsubscribe.)
 </para>
 		  </listitem>
 		  <listitem>
@@ -191,7 +210,7 @@ Read the process part of the Developers Cookbook at
 		    <para>
 This will give you the idea of how the ArgoUML project
 attempts to release with good quality and especially
-how Issuezilla works.
+how we use Issuezilla.
 </para>
 		  </listitem>
 		  <listitem>
@@ -199,7 +218,7 @@ how Issuezilla works.
 		  </listitem>
 		  <listitem>
 		    <para>
-From this on you can report bugs yourself directly in Issuezilla.
+From this on you can comment on bugs yourself directly in Issuezilla.
 </para>
 		    <para>
 You can also verify issues according to the
@@ -229,10 +248,21 @@ for your understanding of the project and the code.
 		</orderedlist>
 </para>
 
-
-
-
 	    </listitem>
+
+          <listitem>
+            <para>Subscribe to the dev list.</para>
+            <para>
+The purpose of this is to see what the developers are discussing
+in the project.
+</para>
+            <para>
+Monitor the discussions and as soon as you see something discussed
+where you have an opinion, jump right in!
+</para>
+          </listitem>
+
+
 	    <listitem>
 	      <para>Familiarize yourself with the code.</para>
 	      <para>
@@ -255,16 +285,22 @@ Solve issues registered in Issuezilla.
 		    <para>
 Convince someone to commit your changes.
 </para>
+                  <para>
+Establish a relationship with one developer that has volunteered
+to help you with the commits.
+That developer will check that your code reaches the quality level
+that we strive for in the project and obeys the design.
+</para>
 		  </listitem>
 		  <listitem>
 		    <para>
 Repeat.
 </para>
 		    <para>
-This can go on until you find that your main problem is the to get
-someone to actually commit your changes, not because they are hard to
-convince but because they don't have time to do commits to keep up with
-your pace.
+This can go on until the developer helping you knows that you have
+good knowledge of the project quality and design and
+the main problem for you two is that
+the sending, waiting, committing, updating et.c. is extra work.
 </para>
 		  </listitem>
 		</orderedlist>
@@ -274,41 +310,40 @@ your pace.
 	      <para>Apply for a Developer role.</para>
 	      <para>
 This allows you to do commits on your own and you can now increase
-the pace in which you are working.
+the pace in which you are working while also increasing your
+responsibilities in the project.
 </para>
 	    <para>
-There are a lot of special requirements on you to get this granted.
+This role is granted by the Project leader after he is convinced that
+you have learned the enough about the project w.r.t.:
 </para>
-	    <para>
-Noted here for Linus to keep track on what to verify.
-		<itemizedlist>
-		  <listitem>
-		    <para>
+            <itemizedlist>
+              <listitem>
+                <para>
 Understanding and accepting the goals.
 </para>
-		  </listitem>
-		  <listitem>
-		    <para>
+              </listitem>
+              <listitem>
+                <para>
 Understanding where we are in the development process.
 </para>
-		  </listitem>
-		  <listitem>
-		    <para>
+              </listitem>
+              <listitem>
+                <para>
 Understanding the terminology used in the project.
 </para>
-		  </listitem>
-		  <listitem>
-		    <para>
-Good knowledge of CVS.
+              </listitem>
+              <listitem>
+                <para>
+Understanding how we use CVS in the project.
 </para>
-		  </listitem>
-		  <listitem>
-		    <para>
+              </listitem>
+              <listitem>
+                <para>
 Understanding the set of tools (ant, JUnit) and how to use them.
 </para>
-		  </listitem>
-	      </itemizedlist>
-</para>
+              </listitem>
+            </itemizedlist>
 	  </listitem>
 	    <listitem>
 	      <para>Focus your work in a specific area.</para>
@@ -325,7 +360,7 @@ your taste.
 With this you are part of the core team developing ArgoUML.
 </para>
 	    </listitem>
-	  </orderedlist>
+        </orderedlist>
 </para>
     </sect1>
 
@@ -463,7 +498,7 @@ Each subsystem has:
 	    <para>A name</para>
 	  </listitem>
 	  <listitem>
-	    <para>A single directory/java package where it resides</para>
+	    <para>A single directory/Java package where it resides</para>
 	    <para>
 Subparts of the subsystem can reside in subdirectories of this directory.
 Auxiliary parts, implemented in other products, of the subsystems
@@ -531,7 +566,7 @@ to modify or augment the behavior of that subsystem.
             <para>
 The plug-in interfaces are also all located in the subsystem package
 and called
-<classname><replaceable>SubsystemName</replaceable>Plugin<replaceable>Plug-inType</replaceable></classname>.
+<classname><replaceable>SubsystemName</replaceable>Plugin<replaceable>PluginType</replaceable></classname>.
 Example: 
 <classname>ModelPluginDiagram</classname>, 
 <classname>ModelPluginType</classname>.
@@ -544,7 +579,7 @@ Example:
 If the subsystem uses a callback-technique
 the callback is always made to an interface defined by the subsystem.
 The interface is also in the subsystem package and it is called
-<classname><replaceable>SubsystemName</replaceable><replaceable>Plug-inType</replaceable>Interface</classname>.
+<classname><replaceable>SubsystemName</replaceable><replaceable>PluginType</replaceable>Interface</classname>.
 Example:
 <classname>ModelDiagramInterface</classname>,
 <classname>ModelTypeInterface</classname>.
@@ -601,7 +636,7 @@ Traditionally, the subsystems in ArgoUML
 communicate through public methods and
 public variables and
 the subsystems, as defined by the responsibilities,
-are spread over several packages setting aside the java visibility rules.
+are spread over several packages setting aside the Java visibility rules.
 For this reason it is not well-known or documented
 what public methods form part of a subsystem's API and
 what public methods are internal to a subsystem.
@@ -971,7 +1006,7 @@ Note: The module loader does not really have this possibility currently
 	      <primary>Java</primary>
 	    </indexterm>
 	    <para>
-This is the ArgoUML connection to the java language.
+This is the ArgoUML connection to the Java language.
 </para>
 	    <para>
 The Java Subsystem is described in detail in 
@@ -1191,7 +1226,7 @@ ArgoUML itself breaks down into several components. The graphic does not reflect
 <listitem><para>Notation (see <xref linkend="notation"/>)</para></listitem>
 <listitem><para>Code Generation</para></listitem>
 <listitem><para>Reverse Engineering (see <xref linkend="java"/>)</para></listitem>
-<listitem><para>ocl</para></listitem>
+<listitem><para>OCL</para></listitem>
 <listitem><para>Help System (see <xref linkend="help"/>)</para></listitem>
 <listitem><para>Internationalization (see <xref linkend="internationalization"/>)</para></listitem>
 <listitem><para>Critics and other cognitive tools (see <xref linkend="critics"/>)</para></listitem>
@@ -1289,7 +1324,7 @@ This is my (Linus Tolke) suggested way of how it is going to work:
       <para>
     The different languages or notations 
     supplied with ArgoUML are found 
-    in subpackages of {@link org.argouml.language}.
+    in sub-packages of {@link org.argouml.language}.
 </para>
 
       <para>
@@ -1385,7 +1420,7 @@ content and parse every known source file in them. These are only java
 files at the moment, but there might be other languages like C++ in
 the future. With this concept you could mix several languages within
 a project. The DiagramInterface is used to visualize generated NSUML
-metamodel objects then.
+meta-model objects then.
 </para>
 	<para>
 The package org.argouml.uml.reveng.java holds the Java specific parts
@@ -1648,7 +1683,7 @@ Critics explanations and wizards (belonging to the Critics subsystem)
 Documentation,
 Style,
 Source,
-Constraints (an ocl constraints of the current object)
+Constraints (an OCL constraints of the current object)
 (See <xref linkend="ocl"></xref>), 
 and
 Tagged values.
@@ -1845,7 +1880,7 @@ R8: tool-tip showing node name and type.
 
 	    <listitem>
 	      <para>
-R9: standard multiple discontiguous selection with mouse and keyboard.
+R9: standard multiple discontinuous selection with mouse and keyboard.
 </para>
 	    </listitem>
 
@@ -2073,7 +2108,7 @@ maintained in the future.
 	    </listitem>
         
         <listitem>
-	      <para>...add new rules for new modelelements?</para>
+	      <para>...add new rules for new model elements?</para>
           <para>
             You would create a GoRule/PerspectiveRule in org/argouml/ui/explorer/rules. 
             There are plenty of examples to look at. 
@@ -2100,7 +2135,7 @@ maintained in the future.
           <para>
             Obviously it would be possible to add an operation somewhere to 
             revalidate the expanded parts of the Explorer, but I'm not aware
-            of the existance of such an operation today.
+            of the existence of such an operation today.
           </para>
         </listitem>
         
@@ -2113,12 +2148,12 @@ maintained in the future.
           </para>
           <para>
             In reality it would be possible to create an algorithm 
-            to search out one occurance of an element (since the model only contains
-            finitely many elements and I assume that noone will add 
-            gorules that add branches of infinite length that does not infinitely
+            to search out one occurrence of an element (since the model only contains
+            finitely many elements and I assume that no-one will add 
+            go rules that add branches of infinite length that does not infinitely
             often contain elements from the model), 
             but I don't think anyone has don't it. 
-            Obviously finding all occurances cannot be done.
+            Obviously finding all occurrences cannot be done.
           </para>
 	    </listitem>
 	  </itemizedlist>
@@ -2157,7 +2192,7 @@ see <xref linkend="modules_and_plugins"></xref>.
         <title>What the ModuleLoader does</title>
         <para>
 The ModuleLoader is looking for module jars.
-It actually scans through all jars available in the ext dir directory.
+It actually scans through all jars available in the ext directory.
 See Edit Settings Environment tab.
 If you turn on logging on the debug level while running ArgoUML
 you should be able to see what jar files it finds and what it does with them.
@@ -2189,7 +2224,7 @@ We use a Loadable Proxy Pattern(?) for the modules.
             <listitem>
               <para>
 Each module can be enabled and disabled individually.
-Dependencies between modules is allowed allthough not yet handled gracefully.
+Dependencies between modules is allowed although not yet handled gracefully.
 </para>
             </listitem>
 
@@ -2198,7 +2233,7 @@ Dependencies between modules is allowed allthough not yet handled gracefully.
 Each module is required to have one (1) class that implements
 <classname>ModuleInterface</classname>.
 That class (and all other classes that constitute the module)
-needs to be made available for some classloader, either by including
+needs to be made available for some class loader, either by including
 it in the classpath or by letting the module loader hunt for it.
 </para>
 </listitem>
@@ -2402,8 +2437,8 @@ This is so because we have made a change of the design used for
 this in order to simplify the writing of modules.
 </para>
       <para>
-Eventually "the old moduleloader" will be removed so for all
-new additions, the new moduleloader shall be used.
+Eventually "the old module loader" will be removed so for all
+new additions, the new module loader shall be used.
 </para>
     </warning>
 
@@ -2520,7 +2555,7 @@ in
 </para>
               <note>
                 <para>
-This description is for the old moduleloader.
+This description is for the old module loader.
 </para>
               </note>
               <para>
@@ -2691,3 +2726,6 @@ indent-tabs-mode: nil
 End:
 
 -->
+
+<!--  LocalWords:  ModuleLoader
+ -->
