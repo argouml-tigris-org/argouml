@@ -37,11 +37,10 @@ import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.static_structure.ui.FigComment;
-import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Diagram;
-import org.tigris.gef.base.Layer;
+import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 
@@ -95,20 +94,23 @@ public class ActionAddNote extends UMLAction {
                     && (d.presentationFor(obj) instanceof FigNode)
                     && (!(ModelFacade.isAComment(obj)))) {
                 if (firstTarget == null) firstTarget = obj;
-                Model.getCoreHelper().addAnnotatedElement(comment, obj);
+                /* Prevent e.g. AssociationClasses from being added trice: */
+                if (!ModelFacade.getAnnotatedElements(comment).contains(obj))
+                    Model.getCoreHelper().addAnnotatedElement(comment, obj);
             }
         }
 
-        //Create the Fig for the comment itself
-        FigComment fig = new FigComment(d.getGraphModel(), comment);
+        //Create the Node Fig for the comment itself and draw it
+        ((MutableGraphModel) d.getGraphModel()).addNode(comment);
+        Fig fig = d.presentationFor(comment); // remember the fig for later
         
-        /* The line below is necessary to prevent an exception in the 
-         * following testcase:
-         * 1. Create a class.
-         * 2. Click the comment tool.
-         * 3. Create a second class.
-         * 4. Attempt to link the 2nd class to the comment. */
-        d.getGraphModel().getNodes().add(comment); 
+        //Create the comment links and draw them
+        i = ModelFacade.getAnnotatedElements(comment).iterator();
+        while (i.hasNext()) {
+            Object obj = i.next();
+            ((MutableGraphModel) d.getGraphModel())
+                .addEdge(new CommentEdge(comment, obj));
+        }
 
         //Calculate the position of the comment, based on the 1st target only
         int x = 20;
@@ -148,30 +150,12 @@ public class ActionAddNote extends UMLAction {
             }
         }
         
-        //Place the comment Fig on the diagram
+        //Place the comment Fig on the nicest spot on the diagram
         fig.setLocation(x, y);
-        Layer lay = d.getLayer();
-        lay.add(fig);
-        
-        //Now create the edges to the comment
-        i = ModelFacade.getAnnotatedElements(comment).iterator();
-        while (i.hasNext()) {
-            Object obj = i.next();
-            FigEdgeNote edge = new FigEdgeNote(obj, comment);
-            // TODO: MVW: do we need this next line ???
-            //edge.setOwner(new CommentEdge(comment, obj)); 
-            lay.add(edge);
-            lay.sendToBack(edge);
-            edge.damage();
-        }
-        i = ModelFacade.getAnnotatedElements(comment).iterator();
-        while (i.hasNext()) {
-            d.presentationFor(i.next()).damage();
-        }
-        fig.damage();
 
+        //Select the new comment as target
         TargetManager.getInstance().setTarget(fig.getOwner());
-        super.actionPerformed(ae);
+        super.actionPerformed(ae); //update all tools' enabled status
     }
 
 } /* end class ActionAddNote */
