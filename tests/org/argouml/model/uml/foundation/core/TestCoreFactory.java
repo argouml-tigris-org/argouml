@@ -37,9 +37,13 @@ import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.model_management.MModel;
 
+/**
+ * Test the CoreFactory class.
+ *
+ */
 public class TestCoreFactory extends TestCase {
 
-    static String[] allModelElements =
+    private static String[] allModelElements =
     {
 	"Abstraction",
 	"Association",
@@ -263,5 +267,12 @@ public class TestCoreFactory extends TestCase {
 	elem.setNamespace(CoreFactory.getFactory().createNamespace());
 	con = CoreFactory.getFactory().buildConstraint(elem);
 	assertNotNull("Namespace is not set", ModelFacade.getNamespace(con));
+    }
+
+    /**
+     * @return Returns the allModelElements.
+     */
+    static String[] getAllModelElements() {
+        return allModelElements;
     }
 }

@@ -34,9 +34,13 @@ import ru.novosoft.uml.behavior.use_cases.MUseCase;
 
 
 
+/**
+ * Test the UseCasesFactory class.
+ *
+ */
 public class TestUseCasesFactory extends TestCase {
     
-    static String[] allModelElements = {
+    private static String[] allModelElements = {
         "Actor",
         "Extend",
         "ExtensionPoint",
@@ -92,6 +96,15 @@ public class TestUseCasesFactory extends TestCase {
         assertTrue("extend not added to correct extensionpoint", 
 		   (extend.getExtensionPoints().contains(point)
 		    && extend.getExtensionPoints().size() == 1));
+    }
+
+
+
+    /**
+     * @return Returns the allModelElements.
+     */
+    static String[] getAllModelElements() {
+        return allModelElements;
     }
 }
 

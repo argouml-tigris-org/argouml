@@ -76,6 +76,9 @@ public class TestUMLMessageActionListModel
         model = null;
     }
     
+    /**
+     * Test setAction().
+     */
     public void testSetAction() {
         Object action = CommonBehaviorFactory.getFactory().createAction();
         ModelFacade.setAction(elem, action);
@@ -83,6 +86,9 @@ public class TestUMLMessageActionListModel
         assertEquals(action, model.getElementAt(0));
     }
     
+    /**
+     * Test setAction() for removing.
+     */
     public void testRemoveAction() {
         Object action = CommonBehaviorFactory.getFactory().createAction();
         ModelFacade.setAction(elem, action);

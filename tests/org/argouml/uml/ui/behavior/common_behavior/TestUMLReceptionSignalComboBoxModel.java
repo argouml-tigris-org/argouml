@@ -99,17 +99,26 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
         assertTrue(model.contains(signals[9]));
     }
     
+    /**
+     * Test setSignal().
+     */
     public void testSetSignal() {
         elem.setSignal(signals[0]);
         assertTrue(model.getSelectedItem() == signals[0]);
     }
     
+    /**
+     * Test setSignal() with null argument.
+     */
     public void testSetSignalToNull() {
         elem.setSignal(null);
         assertNull(model.getSelectedItem());
     }
     
 
+    /**
+     * Test removing signals.
+     */
     public void testRemoveSignal() {
         UmlFactory.getFactory().delete(signals[9]);
         assertEquals(9, model.getSize());

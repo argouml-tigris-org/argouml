@@ -52,10 +52,18 @@ import org.argouml.uml.diagram.use_case.ui.StylePanelFigUseCase;
  */
 public class TestTabStyle extends TestCase {
 
+    /**
+     * The constructor.
+     * 
+     * @param arg the name
+     */
     public TestTabStyle(String arg) {
         super(arg);
     }
 
+    /**
+     * Test findPanelFor().
+     */
     public void testFindPanelFor() {
 
         TabStyle tabStyle = new TabStyle();

@@ -53,6 +53,9 @@ public class GUITestDetailsPane extends TestCase {
         super(arg0);
     }
 
+    /**
+     * Test setting a target.
+     */
     public void testTargetSet() {
         Object o = new Object();
         TargetEvent e =

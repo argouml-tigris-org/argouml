@@ -124,6 +124,10 @@ public class GUITestPropertyPanels extends TestCase {
     }
 
 
+    /**
+     * @return the test suite
+     * @throws Exception 
+     */
     public static Test suite() throws Exception {
 
         // constains instances of each modelelement
@@ -187,11 +191,17 @@ public class GUITestPropertyPanels extends TestCase {
     }
     
     
+    /**
+     * @see junit.framework.TestCase#runTest()
+     */
     protected void runTest() throws Throwable {
 	System.out.println("runTest called in " + this + ":" + this.hashCode());
         testPropertyTab();
     }
     
+    /**
+     * @throws Throwable
+     */
     public void testPropertyTab() throws Throwable {
 	System.out.println("testPropertyTab called in "
 			   + this + ":" + this.hashCode());

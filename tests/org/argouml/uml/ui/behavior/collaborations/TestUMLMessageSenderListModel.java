@@ -79,6 +79,9 @@ public class TestUMLMessageSenderListModel extends TestCase {
         model = null;
     }
     
+    /**
+     * Test setSender().
+     */
     public void testSetSender() {
         MClassifierRole role = 
             CollaborationsFactory.getFactory().createClassifierRole();
@@ -87,6 +90,9 @@ public class TestUMLMessageSenderListModel extends TestCase {
         assertEquals(role, model.getElementAt(0));
     }
     
+    /**
+     * Test setSender() with null argument.
+     */
     public void testRemoveReceiver() {
         MClassifierRole role = 
             CollaborationsFactory.getFactory().createClassifierRole();

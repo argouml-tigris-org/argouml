@@ -64,10 +64,17 @@ public class TestParserDisplay extends TestCase {
 	super(str);
     }
 
+    /**
+     * Test ClassifierRoleObjectName.
+     * TODO: Implement this test.
+     */
     public void TestClassifierRoleObjectName() {
 	/* Not implemented in ParserDisplay */
     }
 
+    /**
+     * Test the name of the ClassifierRole.
+     */
     public void TestClassifierRoleName() {
 	MClassifierRole cr;
 
@@ -79,6 +86,9 @@ public class TestParserDisplay extends TestCase {
 	checkName(cr, clro03, "roname");
     }
 
+    /**
+     * Test the Base of the ClassifierRole.
+     */
     public void TestClassifierRoleBases() {
 	MClassifierRole cr;
 	String res1[] = {
@@ -100,6 +110,9 @@ public class TestParserDisplay extends TestCase {
 	checkBases(cr, clro03, res3);
     }
 
+    /**
+     * Test if parsing a ClassifierRole throws exceptions.
+     */
     public void TestClassifierRoleThrows() {
 	MClassifierRole cr;
 

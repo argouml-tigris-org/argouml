@@ -43,6 +43,9 @@ public class TestStateMachinesHelper extends TestCase {
 	super(arg0);
     }
 
+    /**
+     * Check if the metamodel name is correct.
+     */
     public void testGetMetaModelName() {
 	CheckUMLModelHelper.metaModelNameCorrect(
 			 this,
@@ -50,6 +53,9 @@ public class TestStateMachinesHelper extends TestCase {
 			 TestStateMachinesFactory.getAllModelElements());
     }
 
+    /**
+     * Test creating a stereotype.
+     */
     public void testIsValidStereoType() {
 	CheckUMLModelHelper.isValidStereoType(
 		      this,

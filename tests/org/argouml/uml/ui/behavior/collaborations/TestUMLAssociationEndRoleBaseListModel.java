@@ -92,6 +92,9 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
         model = null;
     }
     
+    /**
+     * Test setting the Base.
+     */
     public void testAdd() {
         elem.setBase(baseEnd);
         assertEquals(1, model.getSize());
@@ -107,6 +110,9 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
         catch (Exception ex) { };
     }
     
+    /**
+     * Test removing.
+     */
     public void testRemove() {
         elem.setBase(baseEnd);
         elem.setBase(null);

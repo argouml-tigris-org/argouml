@@ -55,10 +55,18 @@ public class TestStateMachinesFactory extends TestCase {
 	"Transition",
     };
 
+    /**
+     * The constructor.
+     * 
+     * @param n the name of the test
+     */
     public TestStateMachinesFactory(String n) {
 	super(n);
     }
 
+    /**
+     * Test if this class is really a singleton.
+     */
     public void testSingleton() {
 
 	Object o1 = StateMachinesFactory.getFactory();
@@ -69,6 +77,9 @@ public class TestStateMachinesFactory extends TestCase {
 
     }
 
+    /**
+     * Test creation.
+     */
     public void testCreates() {
 	// Do not test Event or StateVertex.
 	// These are abstract.
@@ -98,6 +109,9 @@ public class TestStateMachinesFactory extends TestCase {
 					     objs);
     }
 
+    /**
+     * Test deletion.
+     */
     public void testDeleteComplete() {
 	CheckUMLModelHelper.deleteComplete(
 					   this,

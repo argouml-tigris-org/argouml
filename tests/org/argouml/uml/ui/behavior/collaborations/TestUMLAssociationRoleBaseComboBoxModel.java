@@ -113,6 +113,9 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
         model = null;
     }
     
+    /**
+     * Test setup.
+     */
     public void testSetUp() {
         // there is one extra element due to the empty element that
         // the user can select
@@ -122,16 +125,25 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
         assertTrue(model.contains(bases[9]));
     }
     
+    /**
+     * Test setting the Base.
+     */
     public void testSetBase() {
         elem.setBase(bases[0]);
         assertTrue(model.getSelectedItem() == bases[0]);
     }
     
+    /**
+     * Test setting the Base to null.
+     */
     public void testSetBaseToNull() {
         elem.setBase(null);
         assertNull(model.getSelectedItem());
     }
     
+    /**
+     * Test removing the Base.
+     */
     public void testRemoveBase() {
         UmlFactory.getFactory().delete(bases[9]);
         // there is one extra element since removal of the base is allowed.

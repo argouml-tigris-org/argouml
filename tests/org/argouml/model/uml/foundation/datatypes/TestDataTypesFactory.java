@@ -30,12 +30,24 @@ import junit.framework.TestCase;
 
 import org.argouml.util.CheckUMLModelHelper;
 
+/**
+ * Test the DataTypesFactory class.
+ *
+ */
 public class TestDataTypesFactory extends TestCase {
 
+    /**
+     * The constructor.
+     * 
+     * @param n the name
+     */
     public TestDataTypesFactory(String n) {
 	super(n);
     }
 
+    /**
+     * Test if this class is really a singleton.
+     */
     public void testSingleton() {
 
 	Object o1 = DataTypesFactory.getFactory();
@@ -46,6 +58,9 @@ public class TestDataTypesFactory extends TestCase {
 
     }
 
+    /**
+     * Test creation.
+     */
     public void testCreates() {
 
 	Object[] args = {

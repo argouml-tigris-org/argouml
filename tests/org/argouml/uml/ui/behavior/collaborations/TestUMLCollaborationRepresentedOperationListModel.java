@@ -76,6 +76,9 @@ public class TestUMLCollaborationRepresentedOperationListModel
         model = null;
     }
     
+    /**
+     * Test setting the represented operation.
+     */
     public void testSetRepresentedOperation() {
         MOperation oper = CoreFactory.getFactory().createOperation();
         elem.setRepresentedOperation(oper);
@@ -83,6 +86,9 @@ public class TestUMLCollaborationRepresentedOperationListModel
         assertEquals(oper, model.getElementAt(0));
     }
     
+    /**
+     * Test removing the represented operation.
+     */
     public void testRemoveRepresentedOperation() {
         MOperation oper = CoreFactory.getFactory().createOperation();
         elem.setRepresentedOperation(oper);

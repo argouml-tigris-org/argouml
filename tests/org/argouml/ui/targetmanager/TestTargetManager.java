@@ -108,6 +108,9 @@ public class TestTargetManager extends TestCase {
 	super(arg0);
     }
 
+    /**
+     * Test getInstance().
+     */
     public void testGetInstance() {
 
 	Runnable[] runnables = new Runnable[50];
@@ -135,6 +138,9 @@ public class TestTargetManager extends TestCase {
 	assertTrue(TargetManager.getInstance() != null);
     }
 
+    /**
+     * Test setTarget().
+     */
     public void testSetTarget() {
 	Object test = new Object();
 	assertEquals(null, TargetManager.getInstance().getTarget());
@@ -157,6 +163,9 @@ public class TestTargetManager extends TestCase {
 	TargetManager.getInstance().removeTargetListener(listener);
     }
 
+    /**
+     * Test getTarget().
+     */
     public void testGetTarget() {
 	TargetListener listener = new TestTargetListener();
 	assertEquals(null, TargetManager.getInstance().getTarget());
@@ -185,6 +194,9 @@ public class TestTargetManager extends TestCase {
 	TargetManager.getInstance().removeTargetListener(listener);
     }
 
+    /**
+     * Test getTargets().
+     */
     public void testGetTargets() {
 	Collection coll, coll2;
 	Object test =  new Object();
@@ -246,6 +258,9 @@ public class TestTargetManager extends TestCase {
 	assertTrue(TargetManager.getInstance().getTargets().isEmpty());
     }
 
+    /**
+     * Test setTargets().
+     */
     public void testSetTargets() {
 	List test2 = new ArrayList();
 	test2.add(new Object());
@@ -315,6 +330,9 @@ public class TestTargetManager extends TestCase {
 	TargetManager.getInstance().removeTargetListener(listener);
     }
 
+    /**
+     * Test addTarget().
+     */
     public void testAddTarget() {
 	List testList = new ArrayList();
 	for (int i = 0; i < 10; i++) {
@@ -356,6 +374,9 @@ public class TestTargetManager extends TestCase {
 	TargetManager.getInstance().removeTargetListener(listener);
     }
 
+    /**
+     * Test removeTarget().
+     */
     public void testRemoveTarget() {
 	List testList = new ArrayList();
 	for (int i = 0; i < 10; i++) {
@@ -417,6 +438,9 @@ public class TestTargetManager extends TestCase {
 	TargetManager.getInstance().removeTargetListener(listener);
     }
 
+    /**
+     * Test getFigTarget().
+     */
     public void testGetFigTarget() {
 	final Object owner = new Object();
 	final Fig fig = new Fig(); fig.setOwner(owner);
@@ -513,6 +537,9 @@ public class TestTargetManager extends TestCase {
 	TargetManager.getInstance().removeTargetListener(listener);
     }
 
+    /**
+     * Test getModelTarget().
+     */
     public void testGetModelTarget() {
 	Object owner = CoreFactory.getFactory().buildClass();
 	Fig fig = new Fig(); fig.setOwner(owner);
@@ -682,6 +709,9 @@ public class TestTargetManager extends TestCase {
 	assertEquals(1, listener.counter);
     }
     
+    /**
+     * Test navigate().
+     */
     public void testNavigate() {
         TargetManager.getInstance().cleanHistory();
         int numtargets = 10;

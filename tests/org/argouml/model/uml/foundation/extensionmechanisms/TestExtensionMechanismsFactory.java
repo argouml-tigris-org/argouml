@@ -28,9 +28,13 @@ import junit.framework.TestCase;
 
 import org.argouml.util.CheckUMLModelHelper;
 
+/**
+ * Test the ExtensionMechanismsFactory class.
+ *
+ */
 public class TestExtensionMechanismsFactory extends TestCase {
 
-    static String[] allModelElements = {
+    private static String[] allModelElements = {
 	"Stereotype",
 	"TaggedValue",
     };
@@ -63,5 +67,12 @@ public class TestExtensionMechanismsFactory extends TestCase {
 		   this,
 		   ExtensionMechanismsFactory.getFactory(),
 		   allModelElements);
+    }
+
+    /**
+     * @return Returns the allModelElements.
+     */
+    static String[] getAllModelElements() {
+        return allModelElements;
     }
 }

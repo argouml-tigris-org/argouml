@@ -28,9 +28,13 @@ import junit.framework.TestCase;
 
 import org.argouml.util.CheckUMLModelHelper;
 
+/**
+ * Test the ModelManagementFactory class.
+ *
+ */
 public class TestModelManagementFactory extends TestCase {
 
-    protected static String[] allModelElements = {
+    private static String[] allModelElements = {
 	"ElementImport", "Model", "Package", "Subsystem" 
     };
 
@@ -43,6 +47,9 @@ public class TestModelManagementFactory extends TestCase {
 	super(n);
     }
 
+    /**
+     * Test if this class is really a singleton.
+     */
     public void testSingleton() {
 
 	Object o1 = ModelManagementFactory.getFactory();
@@ -53,6 +60,9 @@ public class TestModelManagementFactory extends TestCase {
 
     }
 
+    /**
+     * Test creation.
+     */
     public void testCreates() {
 
 	String[] objs = {
@@ -67,10 +77,20 @@ public class TestModelManagementFactory extends TestCase {
 
     }
 
+    /**
+     * Test deletion.
+     */
     public void testDeleteComplete() {
 	CheckUMLModelHelper.deleteComplete(
 		   this,
 		   ModelManagementFactory.getFactory(),
 		   allModelElements);
+    }
+
+    /**
+     * @return Returns the allModelElements.
+     */
+    protected static String[] getAllModelElements() {
+        return allModelElements;
     }
 }

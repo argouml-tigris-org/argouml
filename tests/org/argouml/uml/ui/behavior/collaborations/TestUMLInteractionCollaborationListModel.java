@@ -74,6 +74,9 @@ public class TestUMLInteractionCollaborationListModel extends TestCase {
         model = null;
     }
     
+    /**
+     * Test setContext().
+     */
     public void testSetContext() {
         MCollaboration col =
 	    CollaborationsFactory.getFactory().createCollaboration();
@@ -82,6 +85,9 @@ public class TestUMLInteractionCollaborationListModel extends TestCase {
         assertEquals(col, model.getElementAt(0));
     }
     
+    /**
+     * Test setContext(null).
+     */
     public void testRemoveContext() {
         MCollaboration col =
 	    CollaborationsFactory.getFactory().createCollaboration();

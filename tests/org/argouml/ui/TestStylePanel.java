@@ -62,6 +62,9 @@ public class TestStylePanel extends TestCase {
         super(arg0);       
     }
 
+    /**
+     * Test setting a target.
+     */
     public void testTargetSet() {
 
         StylePanel pane = new MockStylePanel();

@@ -120,6 +120,10 @@ public class GUITestActionGoToDetails extends TestCase {
         action = new ActionGoToDetails("");
     }
 
+    /**
+     * Test the todo tab.
+     * TODO: Write this test.
+     */
     public void testToDoTab() {    
     }
 

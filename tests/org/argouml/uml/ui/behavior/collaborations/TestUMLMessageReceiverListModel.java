@@ -78,6 +78,9 @@ public class TestUMLMessageReceiverListModel extends TestCase {
         model = null;
     }
     
+    /**
+     * Test setReceiver().
+     */
     public void testSetReceiver() {
         MClassifierRole role = 
             CollaborationsFactory.getFactory().createClassifierRole();
@@ -86,6 +89,9 @@ public class TestUMLMessageReceiverListModel extends TestCase {
         assertEquals(role, model.getElementAt(0));
     }
     
+    /**
+     * Test setReceiver() with null argument.
+     */
     public void testRemoveReceiver() {
         MClassifierRole role = 
             CollaborationsFactory.getFactory().createClassifierRole();

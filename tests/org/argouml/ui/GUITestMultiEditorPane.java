@@ -65,6 +65,9 @@ public class GUITestMultiEditorPane extends TestCase {
         }
     }
 
+    /**
+     * Test setting a target.
+     */
     public void testTargetSet() {
         try {
             MultiEditorPane pane = new MultiEditorPane();

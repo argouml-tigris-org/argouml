@@ -79,6 +79,9 @@ public class TestTabDiagram extends TestCase {
 
     }
 
+    /**
+     * Test diagram tab construction.
+     */
     public void testConstruction() {
         try {
             TabDiagram tabDiagram = new TabDiagram();

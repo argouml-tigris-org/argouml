@@ -76,6 +76,9 @@ public class TestUMLCollaborationRepresentedClassifierListModel
         model = null;
     }
     
+    /**
+     * Test setRepresentedClassifier().
+     */
     public void testSetRepresentedOperation() {
         MClassifier oper = CoreFactory.getFactory().createClassifier();
         elem.setRepresentedClassifier(oper);
@@ -83,6 +86,9 @@ public class TestUMLCollaborationRepresentedClassifierListModel
         assertEquals(oper, model.getElementAt(0));
     }
     
+    /**
+     * Test removing the represented operation.
+     */
     public void testRemoveRepresentedOperation() {
 	MClassifier oper = CoreFactory.getFactory().createClassifier();
         elem.setRepresentedClassifier(oper);
