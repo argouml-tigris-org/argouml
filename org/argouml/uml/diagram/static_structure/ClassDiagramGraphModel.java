@@ -238,7 +238,11 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * Return one end of an edge.
      */
     public Object getSourcePort(Object edge) {
-        return Model.getUmlHelper().getSource(edge);
+        if (edge instanceof CommentEdge) {
+            return ((CommentEdge)edge).getSource();
+        } else {
+            return Model.getUmlHelper().getSource(edge);
+        }
     }
 
     /**
@@ -247,7 +251,11 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * Return the other end of an edge.
      */
     public Object getDestPort(Object edge) {
-        return Model.getUmlHelper().getDestination(edge);
+        if (edge instanceof CommentEdge) {
+            return ((CommentEdge)edge).getDestination();
+        } else {
+            return Model.getUmlHelper().getDestination(edge);
+        }
     }
 
 
