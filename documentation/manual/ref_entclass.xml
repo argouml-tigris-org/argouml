@@ -3807,13 +3807,9 @@ Modifications
 
     <para>Associations are permitted between interfaces and classes, but
       UML&nbsp;1.3 specifies they must only be navigable toward the
-      interface&mdash;in other words the interface cannot see the class.</para>
-
-    <caution><para>The current release of &argouml; does not enforce this. In
-      particular if an association is created where the class end is selected
-      before the interface end, &argouml; will create an association that is
-      navigable in both directions. A critic will trigger to complain about
-      this.</para></caution>
+      interface&mdash;in other words the interface cannot see the
+      class. &argouml; will draw such associations with the appropriate
+      navigation.</para>
 
     <para>As with use case diagrams, associations with the tag
       <literal>derived</literal> have their value in analysis to introduce
@@ -4320,17 +4316,11 @@ Modifications
                   linkend="s1.ref.association_class"/>) connected to this
                 interface.</para>
 
-              <warning><para>Associations between classes and interfaces
+              <note><para>Associations between classes and interfaces
                 <emphasis>must</emphasis> be navigable
-                <emphasis>only</emphasis> from the class to the interface. The
-                current version of &argouml; has a known defect where it
-                creates an association between a class and interface that is
-                either navigable in both directions, or navigable only from the
-                interface to the class. The fix is to remove the navigation
-                from the class end of the association and if necessary add
-                navigation to the interface end (navigation refers to
-                navigability <emphasis>towards</emphasis> the
-                end).</para></warning>
+                <emphasis>only</emphasis> from the class to the
+                interface. &argouml; will create associations between classes
+                and interfaces with the correct navigability.</para></note>
 
               <para>&Button1; click takes you to the selected entry, &button2;
                 gives a pop up menu with five entries.</para>

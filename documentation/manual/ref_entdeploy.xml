@@ -2,7 +2,7 @@
 
 <!--
 
-Description of all the artifacts associated with Deplopyment Diagrams within
+Description of all the artifacts associated with Deployment Diagrams within
 Argo/UML.
 
 
@@ -165,6 +165,12 @@ Modifications
                 that you do get the values you want in
                 place.</para>
 
+              <para>Beware that in the current release of &argouml;, the
+                bounding box just refers to the front face of the cube. This
+                means that the 3-D top and side may be ignored, for example
+                when determining the limits of a diagram for saving
+                graphics.</para>
+
               <para>Altering the <literal>Shadow</literal> entry has no
                 effect.</para></warning></entry>
             </row>
@@ -201,19 +207,19 @@ Modifications
 
                 <itemizedlist>
                   <listitem><para><literal>persistence</literal> (from the
-                    supernode, <literal>Classifier</literal>). Values
+                    superclass, <literal>Classifier</literal>). Values
                     <literal>transitory</literal>, indicating state is
                     destroyed when an instance is destroyed or
                     <literal>persistent</literal>, marking state is
                     preserved when an instance is destroyed.</para></listitem>
 
                   <listitem><para><literal>semantics</literal> (from the
-                    supernode, <literal>Classifier</literal>). The value is a
+                    superclass, <literal>Classifier</literal>). The value is a
                     specification of the semantics of the
                     node.</para></listitem>
 
                   <listitem><para><literal>derived</literal> (from the
-                    supernode, <literal>ModelElement</literal>). Values
+                    superclass, <literal>ModelElement</literal>). Values
                     <literal>true</literal>, meaning the node is
                     redundant&mdash;it can be formally derived from other
                     elements, or <literal>false</literal> meaning it
@@ -224,7 +230,7 @@ Modifications
                     design to avoid re-computation.</para></note></listitem>
                 </itemizedlist>
 
-                <note><para>The UML <literal>Element</literal> metanode from
+                <note><para>The UML <literal>Element</literal> metaclass from
                   which all other artifacts are derived includes the tagged
                   element <literal>documentation</literal> which is handled by
                   the <emphasis>documentation tab</emphasis> under
@@ -365,8 +371,8 @@ Modifications
                 has a leading capital letter, with words separated by
                 <quote>bumpy caps</quote>.</para>
 
-              <note><para>The &argouml; critics will complain about node names
-                that do not have an initial capital.</para></note></entry>
+              <note><para>&argouml; does not enforce this naming
+                convention.</para></note></entry>
             </row>
 
             <!-- Entry for Extends -->
@@ -443,7 +449,7 @@ Modifications
                 <listitem><para><literal>final</literal> indicates that this
                   node cannot be further specialized.</para></listitem>
 
-                <listitem><para><literal>root</literal> indicates the ndoe can
+                <listitem><para><literal>root</literal> indicates the node can
                   have no generalization.</para></listitem>
               </itemizedlist></entry>
             </row>
@@ -521,10 +527,387 @@ Modifications
 
   <!-- Node Instance artifact -->
 
-  <sect1>
+  <sect1 id="s1.ref.node_instance">
     <title>Node Instance</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>A node instance is an instance of a node where component instances
+      (see <xref linkend="s1.ref.component_instance"/>) may reside. In the UML
+      metamodel <literal>NodeInstance</literal> is a sub-class of
+      <literal>Instance</literal> and is specifically an instance that is
+      derived from a node.</para>
+
+    <para>A node instance is represented on a sequence diagram in &argouml; as
+      a 3-D box labeled with the node instance name (if any) and node type,
+      separated by a colon (<literal>:</literal>).</para>
+
+    <tip><para>It is the presence of the colon (<literal>:</literal> that
+      distinguishes a node instance from a node.</para></tip>
+
+    <caution><para>The current release of &argouml; there is no way of
+      specifying the node type, so it must be done in the name. This leads to
+      the representation having two colons, one at the very
+      end.</para></caution>
+
+    <!-- Node Instance details tabs -->
+
+    <sect2>
+      <title>Node Instance Details Tabs</title>
+
+      <para>The details tabs that are active for node instances are described
+        in <xref linkend="tab.ref.node_instance_details_tabs"/>.</para>
+
+      <table id="tab.ref.node_instance_details_tabs" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Details tabs for node instance</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Tab</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for ToDoItem tab -->
+
+            <row>
+              <entry>ToDoItem</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Properties tab -->
+
+            <row>
+              <entry>Properties</entry>
+
+              <entry><para>See <xref
+                  linkend="tab.ref.node_instance_property_toolbar"/> and <xref
+                  linkend="tab.ref.node_instance_property_fields"/>
+                below.</para></entry>
+            </row>
+
+            <!-- Entry for Documentation tab -->
+
+            <row>
+              <entry>Documentation</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Style tab -->
+
+            <row>
+              <entry>Style</entry>
+
+              <entry><para>Standard tab. The <literal>Bounds:</literal> field
+                defines the bounding box for the node instance on the
+                diagram.</para>
+
+              <warning><para>There are some bugs remaining in entering data in
+                the <literal>Bounds:</literal> field. Take care when typing
+                that you do get the values you want in place.</para>
+
+              <para>Beware that in the current release of &argouml;, the
+                bounding box just refers to the front face of the cube. This
+                means that the 3-D top and side may be ignored, for example
+                when determining the limits of a diagram for saving
+                graphics.</para>
+
+              <para>Altering the <literal>Shadow</literal> entry has no
+                effect.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Source tab -->
+
+            <row>
+              <entry>Source</entry>
+
+              <entry><para>Standard tab, containing just the name of the
+                node instance.</para>
+
+              <caution><para>A node instance should not generate any code, so
+                having this tab active is probably a
+                mistake.</para></caution></entry>
+            </row>
+
+            <!-- Entry for Constraints tab -->
+
+            <row>
+              <entry>Constraints</entry>
+
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>NodeInstance</literal> has the following standard
+                constraints defined (through its parent,
+                <literal>Instance</literal>).</para>
+
+                <itemizedlist>
+                  <listitem><para><literal>destroyed</literal>. Applied to a
+                    node instance that is destroyed during the
+                    execution.</para>
+
+                  <caution><para>It is conceivable this could apply to some
+                    robotic systems, or where UML is being used to describe
+                    systems with human behavior. However it is unlikely to be
+                    of widespread use.</para></caution></listitem>
+
+                  <listitem><para><literal>new</literal>. Applied to a node
+                    instance that is created during the
+                    execution.</para>
+
+                  <caution><para>It is conceivable this could apply to some
+                    robotic systems, or where UML is being used to describe
+                    systems with human behavior. However it is unlikely to be
+                    of widespread use.</para></caution></listitem>
+
+                  <listitem><para><literal>transient</literal>. Applied to an
+                    node instance that is both created and destroyed during the
+                    execution.</para>
+
+                  <caution><para>It is conceivable this could apply to some
+                    robotic systems, or where UML is being used to describe
+                    systems with human behavior. However it is unlikely to be
+                    of widespread use.</para></caution></listitem>
+                </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Tagged Values tab -->
+
+            <row>
+              <entry>Tagged Values</entry>
+
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>NodeInstance</literal> has the following standard
+                tagged values defined.</para>
+
+                <itemizedlist>
+                  <listitem><para><literal>persistence</literal> (from the
+                    superclass, <literal>Instance</literal>. Showing the
+                    permanence of the state information associated with the
+                    node instance. Values <literal>transitory</literal> (state
+                    is destroyed when the node instance is destroyed) and
+                    <literal>persistent</literal> (state is preserved when the
+                    node instance is destroyed).</para>
+
+                  <caution><para>It is conceivable this could apply to some
+                    robotic systems, or where UML is being used to describe
+                    systems with human behavior. However it is unlikely to be
+                    of widespread use.</para></caution></listitem>
+
+                  <listitem><para><literal>derived</literal> (from the
+                    superclass, <literal>ModelElement</literal>). Values
+                    <literal>true</literal>, meaning the node instance is
+                    redundant&mdash;it can be formally derived from other
+                    elements, or <literal>false</literal> meaning it
+                    cannot.</para>
+
+                  <caution><para>It is not clear that this tagged value has any
+                    great use when applied to a node
+                    instance.</para></caution></listitem>
+                </itemizedlist>
+
+                <note><para>The UML <literal>Element</literal> metaclass from
+                  which all other artifacts are derived includes the tagged
+                  element <literal>documentation</literal> which is handled by
+                  the <emphasis>documentation tab</emphasis> under
+                  &argouml;</para></note></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+
+    <!-- Node Instance properties -->
+
+    <sect2>
+      <title>Node Instance Properties</title>
+
+      <!-- The properties tool bar -->
+
+      <para>The property tab tool bar for node instances is described in <xref
+        linkend="tab.ref.node_instance_property_toolbar"/>.</para>
+
+      <table id="tab.ref.node_instance_property_toolbar" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property tool bar for node instance</title>
+
+        <tgroup cols='3' colsep='0' rowsep='0'>
+          <colspec align="left"   colwidth="*2"/>
+          <colspec align="center" colwidth="*1"/>
+          <colspec align="left"   colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Button</entry>
+              <entry align="center">Icon</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Go up button -->
+
+            <row>
+              <entry>Go up</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_up.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate up through the package
+                structure.</para></entry>
+            </row>
+
+            <!-- Entry for Go back button -->
+
+            <row>
+              <entry>Go back</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_back.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate back to the previous
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Go forward button -->
+
+            <row>
+              <entry>Go forward</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_forward.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate forward to the next
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Delete button -->
+
+            <row>
+              <entry>Delete</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/property_delete.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This deletes the node instance from the model</para>
+
+              <warning><para>This is a deletion from the model
+                <emphasis>not</emphasis> just the diagram. To delete an node
+                instance from the diagram, but keep it within the model, use
+                the main menu <literal>Edit/Remove From Diagram</literal>
+                (Ctrl-R).</para></warning></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+  
+      <!-- Fields in the properties tab -->
+
+      <para>The fields on the property tab for node instances are described in
+        <xref linkend="tab.ref.node_instance_property_fields"/>.</para>
+
+      <table id="tab.ref.node_instance_property_fields" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property fields for node instance</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Field</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Name -->
+
+            <row>
+              <entry>Name</entry>
+
+              <entry><para>Text box. The name of the node instance. By
+                convention node instance names start with a lower case letter
+                and use bumpy caps to divide words within the name.</para>
+
+              <note><para>&argouml; does not enforce this naming
+                convention.</para></note>
+
+              <caution><para>The current release of &argouml; there is no way
+                of specifying the node type, so it must be done in the
+                name. This leads to the representation having two colons, one
+                at the very end.</para></caution></entry>
+            </row>
+
+            <!-- Entry for Stereotype -->
+
+            <row>
+              <entry>Stereotype</entry>
+
+              <entry><para>Drop down selector. Node instance has no stereotypes
+                by default in the UML standard, but &argouml; provides the
+                stereotypes, <literal>machine</literal>,
+                <literal>organization</literal> and
+                <literal>person</literal>.</para>
+
+              <caution><para>&argouml; also provides the stereotype
+                <literal>realize</literal> for node instances. This appears to
+                be an error, since this stereotype properly belongs to the
+                <literal>Abstraction</literal>
+                metaclass.</para></caution></entry>
+            </row>
+
+            <!-- Entry for NavStereo -->
+
+            <row>
+              <entry>Navigate Stereotype</entry>
+
+              <entry><para><guiicon><inlinemediaobject><imageobject><imagedata
+                  format="GIF" align="center"
+                  fileref="images/icons/navigate_stereotype.gif"/>
+                </imageobject></inlinemediaobject></guiicon> icon. If a
+                  stereotype has been selected, this will navigate you to the
+                  stereotype property panel (see <xref
+                    linkend="s1.ref.stereotype_class"/>).</para></entry>
+            </row>
+
+            <!-- Entry for Namespace -->
+
+            <row>
+              <entry>Namespace</entry>
+
+              <entry><para>Text box. Records the namespace for the
+                node instance. This is the package hierarchy.</para>
+
+              <para>&Button1; click on the entry will take you to the package
+                defining this namespace (or the model for the top level
+                namespace).</para></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
   </sect1>
 
   <!-- Component artifact -->
@@ -532,15 +915,797 @@ Modifications
   <sect1 id="s1.ref.component">
     <title>Component</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>A component is a physical part of the system (source code, object
+      code, database, library, documentation) that realizes a set of
+      interfaces. In the UML metamodel it is a sub-class of
+      <literal>Classifier</literal>.</para>
+
+    <para>A component is represented on a class diagram as a box with two small
+      rectangles protruding from its left side, labeled with its name.</para>
+
+    <!-- Component details tabs -->
+
+    <sect2>
+      <title>Component Details Tabs</title>
+
+      <para>The details tabs that are active for components  are described in
+        <xref linkend="tab.ref.component_details_tabs"/>.</para>
+
+      <table id="tab.ref.component_details_tabs" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Details tabs for component</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Tab</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for ToDoItem tab -->
+
+            <row>
+              <entry>ToDoItem</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Properties tab -->
+
+            <row>
+              <entry>Properties</entry>
+
+              <entry><para>See <xref
+                  linkend="tab.ref.component_property_toolbar"/> and <xref
+                  linkend="tab.ref.component_property_fields"/>
+                below.</para></entry>
+            </row>
+
+            <!-- Entry for Documentation tab -->
+
+            <row>
+              <entry>Documentation</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Style tab -->
+
+            <row>
+              <entry>Style</entry>
+
+              <entry><para>Standard tab. The <literal>Bounds:</literal> field
+                defines the bounding box for the component on the
+                diagram.</para>
+
+              <warning><para>There are some bugs remaining in entering data in
+                the <literal>Bounds:</literal> field. Take care when typing
+                that you do get the values you want in
+                place.</para>
+
+              <para>In addition when typing or making any other change to a
+                component on the diagram, its left edge will jump to the
+                left.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Source tab -->
+
+            <row>
+              <entry>Source</entry>
+
+              <entry><para>Standard tab, but with no contents.</para>
+
+              <caution><para>A component should not generate any code, so
+                having this tab active is probably a
+                mistake.</para></caution></entry>
+            </row>
+
+            <!-- Entry for Constraints tab -->
+
+            <row>
+              <entry>Constraints</entry>
+
+              <entry><para>Standard tab. There are no standard constraints
+                defined for <literal>Component</literal> within the UML
+                metamodel.</para></entry>
+            </row>
+
+            <!-- Entry for Tagged Values tab -->
+
+            <row>
+              <entry>Tagged Values</entry>
+
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>Component</literal> has the following standard tagged
+                values defined.</para>
+
+                <itemizedlist>
+                  <listitem><para><literal>persistence</literal> (from the
+                    superclass, <literal>Classifier</literal>). Values
+                    <literal>transitory</literal>, indicating state is
+                    destroyed when an instance is destroyed or
+                    <literal>persistent</literal>, marking state is
+                    preserved when an instance is destroyed.</para></listitem>
+
+                  <listitem><para><literal>semantics</literal> (from the
+                    superclass, <literal>Classifier</literal>). The value is a
+                    specification of the semantics of the
+                    component.</para></listitem>
+
+                  <listitem><para><literal>derived</literal> (from the
+                    superclass, <literal>ModelElement</literal>). Values
+                    <literal>true</literal>, meaning the component is
+                    redundant&mdash;it can be formally derived from other
+                    elements, or <literal>false</literal> meaning it
+                    cannot.</para>
+
+                  <note><para>Derived components may have value to indicate
+                    that the component represents an
+                    optimization.</para></note></listitem>
+                </itemizedlist>
+
+                <note><para>The UML <literal>Element</literal> metaclass from
+                  which all other artifacts are derived includes the tagged
+                  element <literal>documentation</literal> which is handled by
+                  the <emphasis>documentation tab</emphasis> under
+                  &argouml;</para></note></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+
+    <!-- Component properties -->
+
+    <sect2>
+      <title>Component Properties</title>
+
+      <!-- The properties tool bar -->
+
+      <para>The property tab tool bar for components is described in <xref
+        linkend="tab.ref.component_property_toolbar"/>.</para>
+
+      <table id="tab.ref.component_property_toolbar" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property tool bar for component</title>
+
+        <tgroup cols='3' colsep='0' rowsep='0'>
+          <colspec align="left"   colwidth="*2"/>
+          <colspec align="center" colwidth="*1"/>
+          <colspec align="left"   colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Button</entry>
+              <entry align="center">Icon</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Go up button -->
+
+            <row>
+              <entry>Go up</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_up.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate up through the package
+                structure.</para></entry>
+            </row>
+
+            <!-- Entry for Go back button -->
+
+            <row>
+              <entry>Go back</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_back.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate back to the previous
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Go forward button -->
+
+            <row>
+              <entry>Go forward</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_forward.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate forward to the next
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Delete button -->
+
+            <row>
+              <entry>Delete</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/property_delete.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This deletes the component from the model</para>
+
+              <warning><para>This is a deletion from the model
+                <emphasis>not</emphasis> just the diagram. To delete a
+                component from the diagram, but keep it within the model, use
+                the main menu <literal>Edit/Remove From Diagram</literal>
+                (Ctrl-R).</para></warning></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+  
+      <!-- Fields in the properties tab -->
+
+      <para>The fields on the property tab for components are described in
+        <xref linkend="tab.ref.component_property_fields"/>.</para>
+
+      <table id="tab.ref.component_property_fields" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property fields for component</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Field</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Name -->
+
+            <row>
+              <entry>Name</entry>
+
+              <entry><para>Text box. The name of the component. The name of a
+                component has a leading capital letter, with words separated by
+                <quote>bumpy caps</quote>.</para>
+
+              <note><para>&argouml; does not enforce this naming
+                convention.</para></note></entry>
+            </row>
+
+            <!-- Entry for Stereotype -->
+
+            <row>
+              <entry>Stereotype</entry>
+
+              <entry><para>Drop down selector. Package is provided by default
+                with the UML standard stereotypes for component
+                (<literal>document</literal>, <literal>executable</literal>,
+                <literal>file</literal>, <literal>library</literal> and
+                <literal>table</literal>). &argouml; also provides the
+                stereotypes, <literal>machine</literal>,
+                <literal>organization</literal> and
+                <literal>person</literal>.</para>
+
+              <caution><para>&argouml; also provides the stereotype
+                <literal>realize</literal> for components. This appears to
+                be an error, since this stereotype properly belongs to the
+                <literal>Abstraction</literal>
+                metaclass.</para></caution></entry>
+            </row>
+
+            <!-- Entry for NavStereo -->
+
+            <row>
+              <entry>Navigate Stereotype</entry>
+
+              <entry><para><guiicon><inlinemediaobject><imageobject><imagedata
+                  format="GIF" align="center"
+                  fileref="images/icons/navigate_stereotype.gif"/>
+                </imageobject></inlinemediaobject></guiicon> icon. If a
+                  stereotype has been selected, this will navigate you to the
+                  stereotype property panel (see <xref
+                    linkend="s1.ref.stereotype_class"/>).</para></entry>
+            </row>
+
+            <!-- Entry for Namespace -->
+
+            <row>
+              <entry>Namespace</entry>
+
+              <entry><para>Text box. Records the namespace for the
+                component. This is the package hierarchy.</para>
+
+              <para>&Button1; click on the entry will take you to the package
+                defining this namespace (or the model for the top level
+                namespace).</para></entry>
+            </row>
+
+            <!-- Entry for Extends -->
+
+            <row>
+              <entry>Extends</entry>
+
+              <entry><para>Text box. Lists any component that generalizes this
+                component.</para>
+
+              <caution><para>&argouml; is incorrect in using the designation
+                <quote>Extends</quote> for this field. It should correctly be
+                called <quote>Generalizations</quote>.</para></caution>
+
+              <para>&Button1; click takes you to the selected entry, &button2;
+                gives a pop up menu with five entries.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Navigate to the
+                  selected generalization.</para></listitem>
+
+                <listitem><para><literal>Add</literal>. Add a new
+                  generalization.</para>
+
+                <caution><para>In the current release of &argouml;
+                  generalizations of components are not properly
+                  implemented. This button will add a generalization, named
+                  null with no parent, that can not be added to the
+                  diagram. Its value is somewhat
+                  limited!</para></caution></listitem>
+
+                <listitem><para><literal>Delete</literal>. Removes the link to
+                  the selected generalization.</para></listitem>
+
+                <listitem><para><literal>Move Up</literal>. Only available
+                  where there are two or more generalizations, and the
+                  generalization selected is not at the top. It is moved one up
+                  the list.</para></listitem>
+
+                <listitem><para><literal>Move Down</literal>. Only available
+                  where there are two or more generalizations listed, and the
+                  generalization selected is not at the bottom. It is moved
+                  one down the list.</para></listitem>
+              </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Modifiers -->
+
+            <row>
+              <entry>Modifiers</entry>
+
+              <entry><para>Check box, with entries <literal>abstract</literal>,
+                <literal>final</literal> and <literal>root</literal>.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>abstract</literal> is used to declare
+                  that this component cannot be instantiated, but must always
+                  be specialized.</para></listitem>
+
+                <listitem><para><literal>final</literal> indicates that this
+                  component cannot be further specialized.</para></listitem>
+
+                <listitem><para><literal>root</literal> indicates the node can
+                  have no generalization.</para></listitem>
+              </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Derived -->
+
+            <row>
+              <entry>Derived</entry>
+
+              <entry><para>Text area. Lists any derived components, i.e those
+                for which this component is a generalization.</para>
+
+              <caution><para>&argouml; is incorrect in using the designation
+                <quote>Derived</quote> for this field. It should correctly be
+                called <quote>Specializations</quote>.</para></caution>
+
+              <para>&Button1; click takes you to the selected entry, &button2;
+                gives a pop up menu with one entry.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Navigate to the
+                  selected specialization.</para>
+
+                <caution><para>In the current release of &argouml;
+                  generalizations of components are not properly implemented,
+                  and this button is always grayed
+                  out.</para></caution></listitem> </itemizedlist></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
   </sect1>
 
   <!-- Component Instance artifact -->
 
-  <sect1>
+  <sect1 id="s1.ref.component_instance">
     <title>Component Instance</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>A component instance is an instance of a component (see <xref
+      linkend="s1.ref.component"/>) which may reside on a node instance (see
+      <xref linkend="s1.ref.node_instance"/>). In the UML metamodel
+      <literal>ComponentInstance</literal> is a sub-class of
+      <literal>Instance</literal> and is specifically an instance that is
+      derived from a component.</para>
+
+    <para>A component is represented on a class diagram as a box with two small
+      rectangles protruding from its left side, labeled with its name.</para>
+
+    <para>A component instance is represented on a sequence diagram in
+      &argouml; as a box with two small rectangles protruding from its left
+      side labeled with the component instance name (if any) and component
+      type, separated by a colon (<literal>:</literal>).</para>
+
+    <tip><para>It is the presence of the colon (<literal>:</literal> that
+      distinguishes a component instance from a component.</para></tip>
+
+    <caution><para>The current release of &argouml; there is no way of
+      specifying the component type, so it must be done in the name. This leads
+      to the representation having two colons, one at the very
+      end.</para></caution>
+
+    <!-- Component Instance details tabs -->
+
+    <sect2>
+      <title>Component Instance Details Tabs</title>
+
+      <para>The details tabs that are active for component instances are
+        described in <xref
+        linkend="tab.ref.component_instance_details_tabs"/>.</para>
+
+      <table id="tab.ref.component_instance_details_tabs" frame="all"
+             colsep="1" rowsep="1" pgwide="1">
+        <title>Details tabs for component instance</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Tab</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for ToDoItem tab -->
+
+            <row>
+              <entry>ToDoItem</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Properties tab -->
+
+            <row>
+              <entry>Properties</entry>
+
+              <entry><para>See <xref
+                  linkend="tab.ref.component_instance_property_toolbar"/> and
+                  <xref linkend="tab.ref.component_instance_property_fields"/>
+                  below.</para></entry>
+            </row>
+
+            <!-- Entry for Documentation tab -->
+
+            <row>
+              <entry>Documentation</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Style tab -->
+
+            <row>
+              <entry>Style</entry>
+
+              <entry><para>Standard tab. The <literal>Bounds:</literal> field
+                defines the bounding box for the component on the
+                diagram.</para>
+
+              <warning><para>There are some bugs remaining in entering data in
+                the <literal>Bounds:</literal> field. Take care when typing
+                that you do get the values you want in
+                place.</para>
+
+              <para>In addition when typing or making any other change to a
+                component on the diagram, its left edge will jump to the
+                left.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Source tab -->
+
+            <row>
+              <entry>Source</entry>
+
+              <entry><para>Standard tab, containing just the name of the
+                component instance.</para>
+
+              <caution><para>A component instance should not generate any code,
+                so having this tab active is probably a
+                mistake.</para></caution></entry>
+            </row>
+
+            <!-- Entry for Constraints tab -->
+
+            <row>
+              <entry>Constraints</entry>
+
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>ComponentInstance</literal> has the following standard
+                constraints defined (through its parent,
+                <literal>Instance</literal>).</para>
+
+                <itemizedlist>
+                  <listitem><para><literal>destroyed</literal>. Applied to a
+                    component instance that is destroyed during the
+                    execution.</para></listitem>
+
+                  <listitem><para><literal>new</literal>. Applied to a
+                    component instance that is created during the
+                    execution.</para></listitem>
+
+                  <listitem><para><literal>transient</literal>. Applied to an
+                    component instance that is both created and destroyed
+                    during the execution.</para></listitem>
+                </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Tagged Values tab -->
+
+            <row>
+              <entry>Tagged Values</entry>
+
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>ComponentInstance</literal> has the following standard
+                tagged values defined.</para>
+
+                <itemizedlist>
+                  <listitem><para><literal>persistence</literal> (from the
+                    superclass, <literal>Instance</literal>. Showing the
+                    permanence of the state information associated with the
+                    component instance. Values <literal>transitory</literal>
+                    (state is destroyed when the component instance is
+                    destroyed) and <literal>persistent</literal> (state is
+                    preserved when the component instance is
+                    destroyed).</para></listitem>
+
+                  <listitem><para><literal>derived</literal> (from the
+                    superclass, <literal>ModelElement</literal>). Values
+                    <literal>true</literal>, meaning the component instance is
+                    redundant&mdash;it can be formally derived from other
+                    elements, or <literal>false</literal> meaning it
+                    cannot.</para>
+
+                  <caution><para>It is not clear that this tagged value has any
+                    great use when applied to a component
+                    instance.</para></caution></listitem>
+                </itemizedlist>
+
+                <note><para>The UML <literal>Element</literal> metaclass from
+                  which all other artifacts are derived includes the tagged
+                  element <literal>documentation</literal> which is handled by
+                  the <emphasis>documentation tab</emphasis> under
+                  &argouml;</para></note></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+
+    <!-- Component Instance properties -->
+
+    <sect2>
+      <title>Component Instance Properties</title>
+
+      <!-- The properties tool bar -->
+
+      <para>The property tab tool bar for component instances is described in
+        <xref linkend="tab.ref.component_instance_property_toolbar"/>.</para>
+
+      <table id="tab.ref.component_instance_property_toolbar" frame="all"
+             colsep="1" rowsep="1" pgwide="1">
+        <title>Property tool bar for component instance</title>
+
+        <tgroup cols='3' colsep='0' rowsep='0'>
+          <colspec align="left"   colwidth="*2"/>
+          <colspec align="center" colwidth="*1"/>
+          <colspec align="left"   colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Button</entry>
+              <entry align="center">Icon</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Go up button -->
+
+            <row>
+              <entry>Go up</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_up.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate up through the package
+                structure.</para></entry>
+            </row>
+
+            <!-- Entry for Go back button -->
+
+            <row>
+              <entry>Go back</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_back.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate back to the previous
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Go forward button -->
+
+            <row>
+              <entry>Go forward</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_forward.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate forward to the next
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Delete button -->
+
+            <row>
+              <entry>Delete</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/property_delete.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This deletes the component instance from the
+                model</para>
+
+              <warning><para>This is a deletion from the model
+                <emphasis>not</emphasis> just the diagram. To delete a
+                component instance from the diagram, but keep it within the
+                model, use the main menu <literal>Edit/Remove From
+                Diagram</literal> (Ctrl-R).</para></warning></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+  
+      <!-- Fields in the properties tab -->
+
+      <para>The fields on the property tab for component instances are
+        described in <xref
+        linkend="tab.ref.component_instance_property_fields"/>.</para>
+
+      <table id="tab.ref.component_instance_property_fields" frame="all"
+             colsep="1" rowsep="1" pgwide="1">
+        <title>Property fields for component instance</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Field</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Name -->
+
+            <row>
+              <entry>Name</entry>
+
+              <entry><para>Text box. The name of the component instance. By
+                convention component instance names start with a lower case
+                letter and use bumpy caps to divide words within the
+                name.</para>
+
+              <note><para>&argouml; does not enforce this naming
+                convention.</para></note>
+
+              <caution><para>The current release of &argouml; there is no way
+                of specifying the component type, so it must be done in the
+                name. This leads to the representation having two colons, one
+                at the very end.</para></caution></entry>
+            </row>
+
+            <!-- Entry for Stereotype -->
+
+            <row>
+              <entry>Stereotype</entry>
+
+              <entry><para>Drop down selector. Component instance has no
+                stereotypes by default in the UML standard, but &argouml;
+                provides the stereotypes, <literal>machine</literal>,
+                <literal>organization</literal> and
+                <literal>person</literal>.</para>
+
+              <caution><para>&argouml; also provides the stereotype
+                <literal>realize</literal> for component instances. This
+                appears to be an error, since this stereotype properly belongs
+                to the <literal>Abstraction</literal>
+                metaclass.</para></caution></entry>
+            </row>
+
+            <!-- Entry for NavStereo -->
+
+            <row>
+              <entry>Navigate Stereotype</entry>
+
+              <entry><para><guiicon><inlinemediaobject><imageobject><imagedata
+                  format="GIF" align="center"
+                  fileref="images/icons/navigate_stereotype.gif"/>
+                </imageobject></inlinemediaobject></guiicon> icon. If a
+                  stereotype has been selected, this will navigate you to the
+                  stereotype property panel (see <xref
+                    linkend="s1.ref.stereotype_class"/>).</para></entry>
+            </row>
+
+            <!-- Entry for Namespace -->
+
+            <row>
+              <entry>Namespace</entry>
+
+              <entry><para>Text box. Records the namespace for the
+                component instance. This is the package hierarchy.</para>
+
+              <para>&Button1; click on the entry will take you to the package
+                defining this namespace (or the model for the top level
+                namespace).</para></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
   </sect1>
 
   <!-- Dependency artifact -->
@@ -553,7 +1718,7 @@ Modifications
       <xref linkend="s1.ref.dependency_use_case"/>.</para>
 
     <caution><para>UML relies on stereotyping of dependencies on component and
-      deployment diagrams to characterise the types of relationship. In the
+      deployment diagrams to characterize the types of relationship. In the
       current release of &argouml; there are limitations in the implementation
       of dependencies which limit this functionality.</para></caution>
   </sect1>

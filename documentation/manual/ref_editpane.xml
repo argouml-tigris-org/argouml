@@ -1052,7 +1052,7 @@ Modifications
     <!-- Tool Bar selection -->
 
     <para>Within the editing pane, &button2; click over an artifact will bring
-      up a pop-up menu with up to five main entries, each with a
+      up a pop-up menu with up to six main entries, each with a
       sub-menu.</para>
 
     <!-- Critiques sub-menu -->
@@ -1182,6 +1182,35 @@ Modifications
       </itemizedlist>
     </sect2>
 
+    <!-- Modifiers sub-menu -->
+
+    <sect2>
+      <title>Modifiers</title>
+
+      <para>This sub-menu only appears with class artifacts. It is used to set
+        or clear the values of the various modifiers available.</para>
+
+      <itemizedlist>
+        <listitem><para><literal>Public</literal>. Set if this class is
+          visible outside its package.</para></listitem>
+
+        <listitem><para><literal>Abstract</literal>. Set for an abstract
+        class.</para></listitem>
+
+        <listitem><para><literal>Final</literal>. Set for a final class,
+          i.e. one with no subclasses.</para></listitem>
+
+        <listitem><para><literal>Root</literal>. Set for a root class, i.e. one
+          with no superclasses.</para></listitem>
+
+        <listitem><para><literal>Active</literal>. Set for a class with dynamic
+          behavior.</para>
+
+        <note><para>This really ought to be set automatically for classes with
+          state machines or activity diagrams.</para></note></listitem>
+      </itemizedlist>
+    </sect2>
+
     <!-- Multiplicity sub-menu -->
 
     <sect2>
@@ -1276,9 +1305,9 @@ Modifications
       <para>This is considered bad design practice (it will trigger a critic in
         &argouml;), so is only of theorertical interest.</para></note>
 
-      <caution><para>UML does not permit navigability from an interface to a
-        class. However this drop down will allow you to set this up (and then
-        trigger a critic to complain).</para></caution>
+      <note><para>UML does not permit navigability from an interface to a
+        class. This drop down is disabled for associations between interfaces
+        and classes.</para></note>
     </sect2>
 
     <!-- Properties sub-menu -->

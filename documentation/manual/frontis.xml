@@ -17,6 +17,9 @@ Modifications
 31 Jan 2002:  Jeremy Bennett. Updated for draft G.
 
 20 Feb 2002:  Jeremy Bennett. Updated for issue 0.9.6.
+
+20 Feb 2002:  Jeremy Bennett. Updated for first draft (A) after 0.9.6
+
 -->
 
 <bookinfo>
@@ -89,6 +92,25 @@ Modifications
   </legalnotice>
 
   <revhistory>
+    <revision>
+      <revnumber>0.9.7, draft A</revnumber> <date>5 Mar 2002</date>
+      <revdescription><para>Update to correct things left unfinished in the
+        0.9.6 release of &argouml;. The reference part of the manual (chapters
+        7 through 22) is now completed. In addition chapter 1 (introduction),
+        tutorial chapter 2 (UML based &ooad;) are now largely complete.</para>
+
+      <para>The comments on the 0.9.6 issue should have referred to chapter 21
+        as covering deployment diagrams (partially completed) and chapter 22 as
+        covering built in datatypes, classes, interfaces and stereotypes. The
+        comments should also have indicated that chapter 20 (activity diagrams)
+        was complete.</para>
+
+      <para>Updated to complete chapter 21 (deployment
+        diagrams). Bug fixes of navigation between interfaces and classes and
+        extensions to the pop-up menu for classes have been noted, and the
+        documentation revised accordingly.</para></revdescription>
+    </revision>
+
     <revision>
       <revnumber>0.9.6</revnumber> <date>20 Feb 2002</date>
       <revdescription><para>Full issue to support the release of &argouml;

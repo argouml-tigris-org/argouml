@@ -262,7 +262,9 @@ Modifications
 
       <caution><para>Following the Java and C++ convention most designers
         give their constructors the same name as the class, which begins
-        with an upper case character and so triggers this critic.</para>
+        with an upper case character. In the current release of &argouml;, this
+        will trigger this critic, unless the constructor is stereotyped
+        <literal>&laquo;create&raquo;</literal>.</para>
 
       <para>It is important to remember that critics offer guidance, and
         are not always correct. &argouml; lets you dismiss the resulting
