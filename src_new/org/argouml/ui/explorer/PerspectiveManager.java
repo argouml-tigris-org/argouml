@@ -136,13 +136,15 @@ public class PerspectiveManager {
         packagePerspective.addRule(new GoMachineToState());
         packagePerspective.addRule(new GoCompositeStateToSubvertex());
         packagePerspective.addRule(new GoStateToInternalTrans());
-        packagePerspective.addRule(new GoStateMachineToTransition());
         packagePerspective.addRule(new GoStateToDoActivity());
         packagePerspective.addRule(new GoStateToEntry());
         packagePerspective.addRule(new GoStateToExit());
 		packagePerspective.addRule(new GoClassifierToSequenceDiagram());
 		packagePerspective.addRule(new GoOperationToSequenceDiagram());
 		packagePerspective.addRule(new GoClassifierToInstance());
+                packagePerspective.addRule(new GoStateMachineToTop());
+                packagePerspective.addRule(new GoStateToIncomingTrans());
+                packagePerspective.addRule(new GoStateToOutgoingTrans());
         
         ExplorerPerspective diagramPerspective = 
             new ExplorerPerspective("combobox.item.diagram-centric");
