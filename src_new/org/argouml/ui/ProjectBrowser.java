@@ -150,6 +150,13 @@ public class ProjectBrowser
      * The target the user has selected     
      */
     private Object _target;
+    
+    /**
+     * flag to prevent the ProjectBrowser and the GEF SelectionManager
+     * from creating cycles of setTarget(..)
+     */
+    private boolean isDoingSelection;
+
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -246,6 +253,8 @@ public class ProjectBrowser
         // adds this as listener to projectmanager so it gets updated when the 
         // project changes
         ProjectManager.getManager().addPropertyChangeListener(this);
+        
+        isDoingSelection=false;
     }
 
     public Locale getLocale() {
@@ -346,9 +355,52 @@ public class ProjectBrowser
     public void setAppName(String n) {
         _appName = n;
     }
-
+     
+     /**
+      * avoids cyclic events between ProjectBrowser and the GEF SelectionManager.
+      */
+     private void startSelectionTransaction(){
+         isDoingSelection = true;
+     }
+     
+     /**
+      * avoids cyclic events between ProjectBrowser and the GEF SelectionManager.
+      */
+     private boolean isInSelectionTransaction(){
+         return isDoingSelection;
+     }
+     
+     /**
+      * avoids cyclic events between ProjectBrowser and the GEF SelectionManager.
+      */
+     private void selectionTransactionEnded(){
+         isDoingSelection = false;
+     }
+     
+    /**
+     * The method used by the NavigatorPane, MultiEditor and DetailsPane
+     * to set the target of the application.
+     *
+     * <p>the target is either a Model Element (usually selected in the Navigation pane
+     * or Properties panel) or a Fig (selected in a diagram).
+     *
+     * <p>The concept of a selection transaction is used to prevent a change
+     * of target in one view creating a call back to this method, which 
+     * would then change the target in all views again...
+     */
     public void setTarget(Object o) {
+        
+         if(isInSelectionTransaction()){
+             return;
+         }
+         else
+             startSelectionTransaction();
+         
+        
         if (getTarget() != o) {
+            
+            cat.debug("setting project target = "+o);
+            
             _editorPane.setTarget(o);
 
             setDetailsTarget(o);
@@ -392,6 +444,8 @@ public class ProjectBrowser
             getNavigatorPane().getTree().setTarget(o);
             Actions.updateAllEnabled();
         }
+
+        selectionTransactionEnded();
     }
 
     /** return the current target in the editor pane */
