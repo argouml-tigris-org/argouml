@@ -28,6 +28,7 @@ import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
@@ -37,7 +38,6 @@ import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.tigris.gef.base.Diagram;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /** TMResults implements a default table model which is used by
  *  Find and Goto Operations in order to display search results.
@@ -134,16 +134,15 @@ public class TMResults extends AbstractTableModel {
                     return numNodes + " nodes and " + numEdges + " edges";
             }
         }
-        if (rowObj instanceof MModelElement) {
-            MModelElement me = (MModelElement)rowObj;
+        if (ModelFacade.isAModelElement(rowObj)) {
             Diagram d = null;
             if (_diagrams != null)
                 d = (Diagram)_diagrams.elementAt(row);
             switch (col) {
                 case 0 :
-                    return me.getUMLClassName();
+                    return ModelFacade.getUMLClassName(rowObj);
                 case 1 :
-                    return me.getName();
+                    return ModelFacade.getName(rowObj);
                 case 2 :
                     return (d == null) ? "N/A" : d.getName();
                 case 3 :
