@@ -32,9 +32,6 @@ import java.util.*;
 import java.beans.*;
 import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-
 import org.argouml.uml.*;
 import org.argouml.uml.diagram.deployment.ui.*;
 

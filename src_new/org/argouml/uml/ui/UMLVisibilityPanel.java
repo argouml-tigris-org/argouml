@@ -29,8 +29,6 @@ import javax.swing.*;
 import javax.swing.border.*;
 import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.foundation.data_types.*;
-
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
  *             replaced by {@link org.argouml.uml.ui.foundation.core.UMLModelElementVisibilityRadioButtonPanel},

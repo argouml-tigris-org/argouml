@@ -27,8 +27,6 @@ package org.argouml.uml.ui;
 import org.argouml.uml.diagram.ui.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
 import java.awt.event.*;
 import java.util.*;
 import org.argouml.model.ModelFacade;

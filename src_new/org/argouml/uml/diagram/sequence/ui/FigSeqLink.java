@@ -54,7 +54,6 @@ import org.tigris.gef.presentation.*;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
-import ru.novosoft.uml.behavior.common_behavior.*;
 public class FigSeqLink
     extends FigEdgeModelElement
     implements MElementListener

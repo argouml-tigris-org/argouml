@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -27,8 +26,6 @@ package org.argouml.uml.diagram.static_structure;
 
 import java.util.*;
 import java.beans.*;
-
-import ru.novosoft.uml.foundation.core.*;
 
 import org.argouml.uml.*;
 import org.argouml.uml.diagram.static_structure.ui.*;

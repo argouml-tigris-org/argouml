@@ -27,16 +27,15 @@ package org.argouml.uml.ui;
 import org.argouml.uml.diagram.ui.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
 import java.awt.event.*;
 import java.util.*;
 import org.argouml.model.ModelFacade;
+import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 
 
 public class ActionAggregation extends UMLAction {
     String str = "";
-    MAggregationKind agg = null;
+    Object/*MAggregationKind*/ agg = null;
 
 
     ////////////////////////////////////////////////////////////////
@@ -44,26 +43,26 @@ public class ActionAggregation extends UMLAction {
 
     // aggregation
     public static UMLAction SrcAgg =
-	new ActionAggregation(MAggregationKind.AGGREGATE, "src");
+	new ActionAggregation(ModelFacade.AGGREGATE_AGGREGATIONKIND, "src");
     public static UMLAction DestAgg =
-	new ActionAggregation(MAggregationKind.AGGREGATE, "dest");
+	new ActionAggregation(ModelFacade.AGGREGATE_AGGREGATIONKIND, "dest");
 
     public static UMLAction SrcAggComposite =
-	new ActionAggregation(MAggregationKind.COMPOSITE, "src");
+	new ActionAggregation(ModelFacade.COMPOSITE_AGGREGATIONKIND, "src");
     public static UMLAction DestAggComposite =
-	new ActionAggregation(MAggregationKind.COMPOSITE, "dest");
+	new ActionAggregation(ModelFacade.COMPOSITE_AGGREGATIONKIND, "dest");
 
     public static UMLAction SrcAggNone =
-	new ActionAggregation(MAggregationKind.NONE, "src");
+	new ActionAggregation(ModelFacade.NONE_AGGREGATIONKIND, "src");
     public static UMLAction DestAggNone =
-	new ActionAggregation(MAggregationKind.NONE, "dest");
+	new ActionAggregation(ModelFacade.NONE_AGGREGATIONKIND, "dest");
 
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    protected ActionAggregation(MAggregationKind a, String s) {
-	super(a.getName(), NO_ICON);
+    protected ActionAggregation(Object/*MAggregationKind*/ a, String s) {
+	super(ModelFacade.getName(a), NO_ICON);
 	str = s;
 	agg = a;
     }

@@ -289,7 +289,7 @@ public class ModelFacade {
         MVisibilityKind.PROTECTED;
     
     public static final Object AGGREGATE_AGGREGATIONKIND =
-        MAggregationKind.COMPOSITE;
+        MAggregationKind.AGGREGATE;
     public static final Object COMPOSITE_AGGREGATIONKIND =
         MAggregationKind.COMPOSITE;
     public static final Object NONE_AGGREGATIONKIND =
@@ -297,6 +297,15 @@ public class ModelFacade {
 
     public static final Object M1_1_MULTIPLICITY =
         MMultiplicity.M1_1;
+    
+    public static final Object M0_1_MULTIPLICITY =
+        MMultiplicity.M0_1;
+    
+    public static final Object M0_N_MULTIPLICITY =
+        MMultiplicity.M0_N;
+    
+    public static final Object M1_N_MULTIPLICITY =
+        MMultiplicity.M1_N;
     
     public static final Object CLASSIFIER_SCOPEKIND =
         MScopeKind.CLASSIFIER;

@@ -29,8 +29,6 @@ import java.beans.*;
 
 import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.foundation.core.*;
-
 /**
  * @deprecated this class is deprecated since 0.15.1 and should be removed
  *             in 0.15.2, due to the fact that the TableModel classes

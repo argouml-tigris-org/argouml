@@ -28,7 +28,6 @@ import javax.swing.*;
 import java.lang.reflect.*;
 import java.awt.event.*;
 import java.awt.*;
-import ru.novosoft.uml.foundation.core.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import ru.novosoft.uml.MElementEvent;
 
