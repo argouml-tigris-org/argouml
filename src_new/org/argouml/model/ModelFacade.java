@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -1555,17 +1555,12 @@ public class ModelFacade {
         return isStereotype(handle, "singleton");
     }
 
-    /** Recognizer for a specific stereotype.
+    /**
+     * Recognizer for model elements with a given stereotype.
      *
-     * @param handle candidate
+     * @param handle candidate model element
      * @param stereotypename a string that is the stereotype name.
-     * @return true if handle is a singleton.
-     * @deprecated As of ArgoUml version 0.13.5, {@link
-     * org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper#isStereotype(Object,String,String)}
-     *             should be used instead. Since this should only ever
-     *             be used together with predefined stereotypes the
-     *             base class can *be found in the UML 1.3
-     *             specification.
+     * @return true if handle is an object that has the given stereotype.
      */
     public static boolean isStereotype(Object handle, String stereotypename) {
         if (handle instanceof MModelElement) {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,7 +29,8 @@ import java.io.PrintWriter;
 import org.apache.log4j.Logger;
 
 /**
- * @deprecated Having Exceptions that are RuntimeException is a violation
+ * @deprecated in 0.15.3. To be removed.
+ * Having Exceptions that are RuntimeException is a violation
  * against the "code-to-find-errors-earlier"-rule because it makes it 
  * impossible for the compiler to find omissions.
  */
