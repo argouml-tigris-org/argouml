@@ -43,6 +43,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
+import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionModifier;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -612,6 +613,7 @@ public class FigPackage extends FigNodeModelElement {
 				TargetManager.getInstance().setTarget(lNew);
 				/* change prefix */
 				lNew.setName(diagramName);
+				ExplorerEventAdaptor.getInstance().structureChanged();
 			    }
 			} catch (Exception ex) {
 			    LOG.error(ex);
