@@ -109,12 +109,12 @@ public class ClassCodePiece extends NamedCodePiece
                       Stack parseStateStack) throws Exception
     {
 	ParseState parseState = (ParseState) parseStateStack.peek();
-	MClass mClass = (MClass) parseState.newClassifier(name);
+	Object mClass = /*(MClass)*/ parseState.newClassifier(name);
 
 	if (mClass != null) {
 	    parseStateStack.push(new ParseState(mClass));
 	    StringBuffer sbText =
-		GeneratorJava.getInstance().generateClassifierStart(mClass);
+		GeneratorJava.getInstance().generateClassifierStart((MClass)mClass);
 	    if (sbText != null) {
 		writer.write (sbText.toString());
 	    }

@@ -36,12 +36,9 @@ import java.util.Collection;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.kernel.Wizard;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.cognitive.critics.CrUML;
 import org.argouml.uml.cognitive.critics.WizCueCards;
-import ru.novosoft.uml.foundation.core.MModelElement;
-
-import ru.novosoft.uml.foundation.core.MClassifier;
-
 /** Well-formedness rule [2] for MAssociationEnd. See page 28 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
@@ -54,10 +51,11 @@ public class CrMultipleInheritance extends CrUML {
 	addTrigger("generalization");
     }
 
+    // TODO - I hate short variable names - what is dm?
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(org.argouml.model.ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
-	MClassifier cls = (MClassifier) dm;
-	Collection gen = cls.getGeneralizations();
+	if (!(ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
+	Object cls = /*(MClassifier)*/ dm;
+	Collection gen = ModelFacade.getGeneralizations(cls);
 	if (gen != null && gen.size() > 1)
 	    return PROBLEM_FOUND;
 	else
@@ -68,8 +66,8 @@ public class CrMultipleInheritance extends CrUML {
 	if (w instanceof WizCueCards) {
 	    WizCueCards wcc = (WizCueCards) w;
 	    ToDoItem item = w.getToDoItem();
-	    MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
-	    String nameStr = me.getName();
+	    Object modelElement = /*(MModelElement)*/ item.getOffenders().elementAt(0);
+	    String nameStr = ModelFacade.getName(modelElement);
 	    wcc.addCue("Remove the generalization arrow to one of the base " +
 		       "classes of {name}.");
 	    wcc.addCue("Optionally, use the MInterface tool to create a new " +

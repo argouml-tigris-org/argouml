@@ -33,8 +33,7 @@ package org.argouml.language.java.generator;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.util.Stack;
-
-import ru.novosoft.uml.foundation.core.MInterface;
+import ru.novosoft.uml.foundation.core.MClassifier;
 
 /**
    This code piece represents an interface declaration.
@@ -106,15 +105,14 @@ public class InterfaceCodePiece extends NamedCodePiece
     */
     public void write(BufferedReader reader,
                       BufferedWriter writer,
-                      Stack parseStateStack) throws Exception
-    {
+                      Stack parseStateStack) throws Exception {
         ParseState parseState = (ParseState) parseStateStack.peek();
-        MInterface mInterface = (MInterface) parseState.newClassifier(name);
+        Object mInterface = /*(MInterface)*/ parseState.newClassifier(name);
 
 	if (mInterface != null) {
 	    parseStateStack.push(new ParseState(mInterface));
 	    StringBuffer sbText =
-		GeneratorJava.getInstance().generateClassifierStart(mInterface);
+		GeneratorJava.getInstance().generateClassifierStart((MClassifier)mInterface);
 	    if (sbText != null) {
 		writer.write (sbText.toString());
 	    }
