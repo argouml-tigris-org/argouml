@@ -61,16 +61,12 @@ import org.argouml.swingext.Orientation;
 import org.argouml.swingext.Vertical;
 import org.argouml.ui.menubar.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionExit;
 import org.argouml.uml.ui.TabProps;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.IStatusBar;
 import org.tigris.gef.util.VectorSet;
 import org.workingfrog.i18n.swing.I18NJFrame;
-
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
 
 /** The main window of the ArgoUML application. */
 

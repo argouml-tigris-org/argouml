@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Collection;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -36,7 +37,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.apache.log4j.Category;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.tigris.gef.presentation.Fig;
 
@@ -69,6 +72,18 @@ implements TabFigTarget, ItemListener, DocumentListener, ListSelectionListener, 
   // accessors
 
   public void setTarget(Object t) {
+      if (!(t instanceof Fig)) {
+                  if (ModelFacade.isABase(t)) {
+                      Project p = ProjectManager.getManager().getCurrentProject();
+                      Collection col = p.findFigsForMember(t);
+                      if (col == null || col.isEmpty()) {
+                          return;
+                      } else {
+                          t = col.iterator().next();
+                      }
+                  } 
+                
+              }
     _target = (Fig)t;
     refresh();
   }
@@ -133,15 +148,13 @@ implements TabFigTarget, ItemListener, DocumentListener, ListSelectionListener, 
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        // TODO Auto-generated method stub
-
     }
 
     /* (non-Javadoc)
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        // TODO Auto-generated method stub
+        setTarget(e.getNewTargets()[0]);
 
     }
 
@@ -149,7 +162,7 @@ implements TabFigTarget, ItemListener, DocumentListener, ListSelectionListener, 
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        // TODO Auto-generated method stub
+        setTarget(e.getNewTargets()[0]);
 
     }
 
