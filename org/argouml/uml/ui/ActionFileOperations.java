@@ -31,6 +31,7 @@ import java.text.MessageFormat;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
@@ -42,6 +43,8 @@ import org.argouml.persistence.LastLoadInfo;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.persistence.ProjectFilePersister;
 import org.argouml.persistence.VersionException;
+import org.argouml.ui.ArgoDialog;
+import org.argouml.ui.ExceptionDialog;
 import org.argouml.ui.ProjectBrowser;
 
 /**
@@ -254,13 +257,27 @@ public abstract class ActionFileOperations extends AbstractAction {
      *               false if run in commandline mode
      */
     private void reportError(String message, boolean showUI, Throwable ex) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        ex.printStackTrace(pw);
-        String exception = sw.toString();
-        
-        message += "\n\n" + exception;
-        
-        reportError(message, showUI);
+        if (showUI) {
+            JDialog dialog =
+                new ExceptionDialog(
+                        ProjectBrowser.getInstance(),
+                        "An error occured attempting to load the project.",
+                        ex);
+            dialog.setVisible(true);
+//            JOptionPane.showMessageDialog(
+//                      ProjectBrowser.getInstance(),
+//                      message,
+//                      "Error",
+//                      JOptionPane.ERROR_MESSAGE);
+        } else {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            ex.printStackTrace(pw);
+            String exception = sw.toString();
+            
+            message += "\n\n" + exception;
+            
+            reportError(message, showUI);
+        }
     }
 }
