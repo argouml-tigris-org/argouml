@@ -25,26 +25,14 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
-import java.text.MessageFormat;
 
 import javax.swing.Icon;
-import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
-import org.argouml.application.api.Configuration;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.persistence.PersistenceManager;
-import org.argouml.persistence.ProjectFilePersister;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.cmd.GenericArgoMenuBar;
 
 /**
  * Action that saves the project.
@@ -52,7 +40,7 @@ import org.argouml.ui.cmd.GenericArgoMenuBar;
  * @see ActionOpenProject
  * @stereotype singleton
  */
-public class ActionSaveProject extends ActionFileOperations {
+public class ActionSaveProject extends AbstractActionSaveProject {
     /** logger */
     private static final Logger LOG = Logger.getLogger(ActionSaveProject.class);
 
@@ -91,10 +79,7 @@ public class ActionSaveProject extends ActionFileOperations {
     protected ActionSaveProject(String name, Icon icon) {
         super(name, icon);
     }
-
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
+    
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -108,124 +93,6 @@ public class ActionSaveProject extends ActionFileOperations {
         } else {
             trySave(true);
         }
-    }
-
-    /**
-     * Try to save the project.
-     * @param overwrite if true, then we overwrite without asking
-     * @return true if successful
-     */
-    public boolean trySave (boolean overwrite) {
-        URL url = ProjectManager.getManager().getCurrentProject().getURL();
-        return url != null && trySave(overwrite, new File(url.getFile()));
-    }
-
-    /**
-     * Try to save the project.
-     * @param overwrite if true, then we overwrite without asking
-     * @param file the File to save to
-     * @return true if successful
-     */
-    public boolean trySave(boolean overwrite, File file) {
-        LOG.info("Saving the project");
-	ProjectBrowser pb = ProjectBrowser.getInstance();
-	Project project = ProjectManager.getManager().getCurrentProject();
-	PersistenceManager pm = PersistenceManager.getInstance();
-
-	try {
-	    if (file.exists() && !overwrite) {
-	        String sConfirm =
-	            MessageFormat.format(Translator.localize(
-	                "optionpane.save-project-confirm-overwrite"),
-	                new Object[] {file});
-	        int nResult =
-	            JOptionPane.showConfirmDialog(pb, sConfirm,
-                        Translator.localize(
-            		    "optionpane.save-project-confirm-overwrite-title"),
-            				  JOptionPane.YES_NO_OPTION,
-            				  JOptionPane.QUESTION_MESSAGE);
-
-	        if (nResult != JOptionPane.YES_OPTION) {
-	            return false;
-	        }
-	    }
-
-	    String sStatus =
-		MessageFormat.format(Translator.localize(
-			"label.save-project-status-writing"),
-				     new Object[] {file});
-	    pb.showStatus (sStatus);
-
-            ProjectFilePersister persister =
-                pm.getPersisterFromFileName(file.getName());
-            if (persister == null)
-                throw new IllegalStateException("Filename " + project.getName()
-                        + " is not of a known file type");
-
-	    project.preSave();
-	    persister.save(project, file);
-	    project.postSave();
-
-	    sStatus =
-		MessageFormat.format(Translator.localize(
-			"label.save-project-status-wrote"),
-				     new Object[] {project.getURL()});
-	    pb.showStatus(sStatus);
-	    LOG.debug ("setting most recent project file to "
-		       + file.getCanonicalPath());
-
-	    /*
-	     * notification of menu bar
-	     */
-	    GenericArgoMenuBar menuBar = (GenericArgoMenuBar) pb.getJMenuBar();
-	    menuBar.addFileSaved(file.getCanonicalPath());
-
-	    Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE,
-				    file.getCanonicalPath());
-
-	    return true;
-	}
-	catch (FileNotFoundException fnfe) {
-	    String sMessage =
-		MessageFormat.format(Translator.localize(
-		        "optionpane.save-project-file-not-found"),
-				     new Object[] {fnfe.getMessage()});
-
-	    JOptionPane.showMessageDialog(pb, sMessage,
-	            Translator.localize(
-			    "optionpane.save-project-file-not-found-title"),
-					  JOptionPane.ERROR_MESSAGE);
-
-	    LOG.error(sMessage, fnfe);
-	}
-	catch (IOException ioe) {
-	    String sMessage =
-		MessageFormat.format(Translator.localize(
-			"optionpane.save-project-io-exception"),
-				     new Object[] {ioe.getMessage()});
-
-	    JOptionPane.showMessageDialog(pb, sMessage,
-	            Translator.localize(
-			    "optionpane.save-project-io-exception-title"),
-					  JOptionPane.ERROR_MESSAGE);
-
-	    LOG.error(sMessage, ioe);
-	}
-	catch (Exception ex) {
-	    String sMessage =
-		MessageFormat.format(Translator.localize(
-			"optionpane.save-project-general-exception"),
-				     new Object[] {ex.getMessage()});
-
-	    JOptionPane.showMessageDialog(pb, sMessage,
-	            Translator.localize(
-			    "optionpane.save-project-general-exception-title"),
-					  JOptionPane.ERROR_MESSAGE);
-
-	    LOG.error(sMessage, ex);
-	}
-
-	return false;
     }
 
 } /* end class ActionSaveProject */

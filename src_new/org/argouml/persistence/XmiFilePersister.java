@@ -24,7 +24,6 @@
 package org.argouml.persistence;
 
 import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -94,7 +93,7 @@ public class XmiFilePersister extends AbstractFilePersister {
 
         OutputStreamWriter writer = null;
         try {
-            project.setFile(file);
+            //project.setFile(file);
 
             OutputStream stream = new FileOutputStream(file);
             OutputStream bout = new BufferedOutputStream(stream);
