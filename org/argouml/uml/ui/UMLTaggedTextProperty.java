@@ -33,7 +33,16 @@ public class UMLTaggedTextProperty extends UMLTextProperty  {
         _propertyName = propertyName;
     }
     
-
+	/**
+     * Hack to circumvent problems with the validating property. This method never
+     * validates.
+	 * @see org.argouml.uml.ui.UMLTextProperty#setProperty(UMLUserInterfaceContainer, String, boolean)
+     * @author jaap.branderhorst@xs4all.nl
+	 */
+    public void setProperty(UMLUserInterfaceContainer container,String newValue, boolean validating) {
+        setProperty(container, newValue);
+    }
+        
     public void setProperty(UMLUserInterfaceContainer container,String newValue) {
         Object element = container.getTarget();
         if(element instanceof MModelElement) {
