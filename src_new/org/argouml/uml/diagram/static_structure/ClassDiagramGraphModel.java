@@ -270,8 +270,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	return Model.getFacade().isAClass(node)
 		|| Model.getFacade().isAInterface(node)
 		|| Model.getFacade().isAModel(node)
-		|| Model.getFacade().isAPackage(node)
-		|| Model.getFacade().isAInstance(node);
+		|| Model.getFacade().isAPackage(node);
     }
 
     /**
