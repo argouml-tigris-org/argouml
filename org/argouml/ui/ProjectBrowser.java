@@ -156,8 +156,6 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   protected StatusBar _statusBar = new StatusBar();
   //protected JToolBar _toolBar = new JToolBar();
 
-  protected ComponentResizer _componentResizer = null;
-
   /** this needs work so that users can set the font
    * size through a gui preference window
    */
