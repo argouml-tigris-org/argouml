@@ -35,11 +35,9 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
 import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
+import org.argouml.model.ModelFacade;
+
 import org.tigris.gef.util.VectorSet;
-import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
-
-
-
 
 /**
  * A critic to detect when there are component-instances that
@@ -105,8 +103,7 @@ public class CrCompInstanceWithoutNode extends CrUML {
 		offs.addElement(fc);
 	    }
 	    else if (fc.getEnclosingFig() != null
-		     && ((((MComponentInstance) fc.getOwner())
-			  .getNodeInstance())
+		     && ((ModelFacade.getNodeInstance(fc.getOwner()))
 			 == null))
 	    {
 		if (offs == null) {
