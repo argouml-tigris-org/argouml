@@ -89,7 +89,6 @@ public class FigActor extends FigNodeModelElement {
         addFig(_leftLeg);
         addFig(_rightLeg);
         addFig(getNameFig());
-
     }
 
     public FigActor(GraphModel gm, Object node) {
@@ -131,10 +130,6 @@ public class FigActor extends FigNodeModelElement {
         return false;
     }
 
-    //   public Selection makeSelection() {
-    //     return new SelectionMoveClarifiers(this);
-    //   }
-
     public void setLineColor(Color col) {
         _head.setLineColor(col);
         _body.setLineColor(col);
@@ -142,6 +137,7 @@ public class FigActor extends FigNodeModelElement {
         _leftLeg.setLineColor(col);
         _rightLeg.setLineColor(col);
     }
+    
     public Color getLineColor() {
         return _head.getLineColor();
     }
@@ -156,6 +152,7 @@ public class FigActor extends FigNodeModelElement {
     public void setFilled(boolean f) {
         _head.setFilled(f);
     }
+    
     public boolean getFilled() {
         return _head.getFilled();
     }
@@ -167,6 +164,7 @@ public class FigActor extends FigNodeModelElement {
         _leftLeg.setLineWidth(w);
         _rightLeg.setLineWidth(w);
     }
+    
     public int getLineWidth() {
         return _head.getLineWidth();
     }
