@@ -86,67 +86,67 @@ public class Critic implements Poster, Serializable {
     private static final String SNOOZE_ORDER = "snoozeOrder";
 
     /**
-     * Type of knowledge that critics can deliver
+     * Type of knowledge that critics can deliver.
      */
     public static final String KT_DESIGNERS =
 	Translator.localize("misc.knowledge.designers");
 
     /**
-     * Type of knowledge that critics can deliver
+     * Type of knowledge that critics can deliver.
      */
     public static final String KT_CORRECTNESS =
 	Translator.localize("misc.knowledge.correctness");
 
     /**
-     * Type of knowledge that critics can deliver
+     * Type of knowledge that critics can deliver.
      */
     public static final String KT_COMPLETENESS =
 	Translator.localize("misc.knowledge.completeness");
 
     /**
-     * Type of knowledge that critics can deliver
+     * Type of knowledge that critics can deliver.
      */
     public static final String KT_CONSISTENCY =
 	Translator.localize("misc.knowledge.consistency");
 
     /**
-     * Type of knowledge that critics can deliver
+     * Type of knowledge that critics can deliver.
      */
     public static final String KT_SYNTAX =
 	Translator.localize("misc.knowledge.syntax");
 
     /**
-     * Type of knowledge that critics can deliver
+     * Type of knowledge that critics can deliver.
      */
     public static final String KT_SEMANTICS =
 	Translator.localize("misc.knowledge.semantics");
 
     /**
-     * Type of knowledge that critics can deliver
+     * Type of knowledge that critics can deliver.
      */
     public static final String KT_OPTIMIZATION =
 	Translator.localize("misc.knowledge.optimization");
 
     /**
-     * Type of knowledge that critics can deliver
+     * Type of knowledge that critics can deliver.
      */
     public static final String KT_PRESENTATION =
 	Translator.localize("misc.knowledge.presentation");
 
     /**
-     * Type of knowledge that critics can deliver
+     * Type of knowledge that critics can deliver.
      */
     public static final String KT_ORGANIZATIONAL =
 	Translator.localize("misc.knowledge.organizational");
 
     /**
-     * Type of knowledge that critics can deliver
+     * Type of knowledge that critics can deliver.
      */
     public static final String KT_EXPERIENCIAL =
 	Translator.localize("misc.knowledge.experiential");
 
     /**
-     * Type of knowledge that critics can deliver
+     * Type of knowledge that critics can deliver.
      */
     public static final String KT_TOOL =
 	Translator.localize("misc.knowledge.tool");
@@ -154,11 +154,11 @@ public class Critic implements Poster, Serializable {
     /**
      * This function calculates the default url to describe this critic.
      * This syntax is synchronized with:
-     * <OL>
-     * <LI>Tags in the manual.
-     * <LI>Name of the ArgoUML site.
-     * <LI>How the manual is deployed on the site.
-     * </OL>
+     * <ol>
+     * <li>Tags in the manual.
+     * <li>Name of the ArgoUML site.
+     * <li>How the manual is deployed on the site.
+     * </ol>
      * so this must be updated when any of these change.
      *
      * @return the url in string format
@@ -264,7 +264,7 @@ public class Critic implements Poster, Serializable {
      * each critic class is created and stored in a static variable, as
      * per the Singleton pattern.  Each domain extension should define
      * a static initializer block to make one instance of each critic and
-     * call {@link Agency#register} with that instance.
+     * call {@link Agency#register(Critic, Object)} with that instance.
      */
     public Critic() {
 	/* TODO:  THIS IS A HACK.
@@ -274,8 +274,7 @@ public class Critic implements Poster, Serializable {
 	if (Configuration.getBoolean(getCriticKey(), true)) {
 	    addControlRec(ENABLED, Boolean.TRUE);
 	    isActive = true;
-	}
-	else {
+	} else {
 	    addControlRec(ENABLED, Boolean.FALSE);
 	    isActive = false;
 	}
@@ -314,7 +313,8 @@ public class Critic implements Poster, Serializable {
      * <li>argo.critic.idl.ReservedWord
      * </ul>
      *
-     * @see org.argouml.application.api.Configuration#makeKey
+     * @see org.argouml.application.api.Configuration#makeKey(String,
+     *         String, String)
      * @see #getCriticCategory
      * @see #getCriticName
      *
@@ -404,7 +404,9 @@ public class Critic implements Poster, Serializable {
      * @param dsgr the designer
      */
     public void postItem(ToDoItem item, Object dm, Designer dsgr) {
-	if (dm instanceof DesignMaterial) ((DesignMaterial) dm).inform(item);
+	if (dm instanceof DesignMaterial) {
+	    ((DesignMaterial) dm).inform(item);
+	}
 	dsgr.inform(item);
     }
 
@@ -455,7 +457,9 @@ public class Critic implements Poster, Serializable {
 	    LOG.warn("got to stillvalid while not active");
 	    return false;
 	}
-	if (i.getOffenders().size() != 1) return true;
+	if (i.getOffenders().size() != 1) {
+	    return true;
+	}
 	if (predicate(i.getOffenders().firstElement(), dsgr)) {
 	    // Now we know that this critic is still valid. What we need to
 	    // figure out is if the corresponding to-do item is still valid.
@@ -604,10 +608,11 @@ public class Critic implements Poster, Serializable {
     }
 
     /**
-     * @see org.argouml.cognitive.Poster#expand(java.lang.String,
-     * org.tigris.gef.util.VectorSet)
+     * @see org.argouml.cognitive.Poster#expand(java.lang.String, ListSet)
      */
-    public String expand(String desc, ListSet offs) { return desc; }
+    public String expand(String desc, ListSet offs) {
+        return desc;
+    }
 
     /**
      * @see org.argouml.cognitive.Poster#getClarifier()
