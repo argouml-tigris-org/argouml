@@ -234,6 +234,13 @@ public class ActionSaveGraphics
     /**
      * Execute this action from the command line.
      *
+     * TODO: The underlying GEF library relies on Acme that doesn't allow 
+     * us to create these files unless there is a window showing. For this
+     * reason I have had to split the performing of commands in 
+     * {@link org.argouml.application.Main#main(String[])} so that we can,
+     * by not supplying the -batch option, run these commands
+     * with the window showing. Hopefully this can eventually be fixed. 
+     *
      * @see org.argouml.application.api.CommandLineInterface#doCommand(String)
      * @param argument is the file name that we save to.
      * @return true if it is OK.
