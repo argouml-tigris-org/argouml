@@ -737,6 +737,7 @@ or a newly generated project (see Project.makeEmptyProject()).
 </itemizedlist>
 </para>
 </sect1>
+<!--
 <sect1 id="nsuml">
 <title>NS-UML</title>
 <para>
@@ -754,6 +755,7 @@ or a newly generated project (see Project.makeEmptyProject()).
 </mediaobject>
 </para>
 </sect1>
+-->
 
 <sect1 id="small">
 <title>The smaller components, inside ArgoUML</title>
@@ -765,15 +767,17 @@ ArgoUML itself breaks down into several components. The graphic does not reflect
 					</imageobject>
 				</mediaobject>
 <itemizedlist>
-<listitem><para>Critics</para></listitem>
-<listitem><para>Diagrams</para></listitem>
-<listitem><para>Notation</para></listitem>
+<listitem><para>Critics and other cognitive tools (see <xref linkend="critics"/>)</para></listitem>
+<listitem><para>Diagrams (see <xref linkend="diagrams"/>)</para></listitem>
+<listitem><para>Model</para></listitem>
+<listitem><para>Saving/Loading</para></listitem>
+<listitem><para>Notation (see <xref linkend="notation"/>)</para></listitem>
 <listitem><para>Code Generation</para></listitem>
-<listitem><para>Reverse Engineering</para></listitem>
-<listitem><para>Help System</para></listitem>
-<listitem><para>Internationalization</para></listitem>
-<listitem><para>Plugin-Module API</para></listitem>
-<listitem><para>Logging</para></listitem>
+<listitem><para>Reverse Engineering (see <xref linkend="reverse"/>)</para></listitem>
+<listitem><para>Help System (see <xref linkend="help"/>)</para></listitem>
+<listitem><para>Internationalization (see <xref linkend="internationalization"/>)</para></listitem>
+<listitem><para>Plugin-Module API (see <xref linkend="plugins"/>)</para></listitem>
+<listitem><para>Logging (see <xref linkend="logging"/>)</para></listitem>
 </itemizedlist>
 </para>
 </sect1>
@@ -806,8 +810,107 @@ programming in Argo/UML.
 
 
 <sect1 id="critics">
-<title>Critics</title>
-<para>Here is a small illustration</para>
+<title>Critics and other cognitive tools</title>
+      <para>
+Purpose - to provide help for the User.
+</para>
+      <para>
+This module contains the following main class types:
+</para>
+      <itemizedlist>
+	<listitem>
+	  <para>
+Critics provide help to find artifacts in
+the model that do not obey simple design "rules" or 
+"best practises".
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+Checklists provide help for the user to suggest and
+keep track of considerations that the user should make
+for each design element.
+Checklists are currently (0.9.5 and 0.9.6) turned off.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+ToDoItems provide a way for the Critics to communicate
+its knowledge to the User and let the User start Wizards.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+Wizards are step by step instructions that fixes problems
+found by the Critics.
+</para>
+	</listitem>
+      </itemizedlist>
+      <para>
+The module communicates with/uses the other parts of ArgoUML like this:
+</para>
+      <itemizedlist>
+	<listitem><para>Diagrams</para>
+	  <para>
+Stepping through the model and examining it using get-calls.
+Wizard could modify the model the using set-calls to Fig-objects.
+</para>
+	</listitem>
+	<listitem><para>Model</para>
+	  <para>
+Stepping through the model and examining it using get-calls.
+Wizard could modify the model the using set-calls to Fig-objects.
+</para>
+</listitem>
+	<listitem><para>Saving/Loading - not at all</para>
+	  <para>
+Eventually the user created To Do Items needs to be saved as well as
+information on what Critiques that have been snoozed.
+</para>
+	</listitem>
+	<listitem><para>Notation - not at all</para></listitem>
+	<listitem><para>Code Generation and Reverse Engineering - not at all</para></listitem>
+	<listitem><para>Help System</para>
+	  <para>
+The help system is fired by the ToDoItems and Wizards when
+a longer explanation is required.
+</para>
+	</listitem>
+	<listitem><para>Internationalization - 
+<classname>org.argouml.uml.cognitive.UMLCognitiveResourceBundle<replaceable>_ll_RR</replaceable></classname></para>
+	  <para>
+Since the whole module contains a lot of texts describing
+things for the user there should be a lot of issues here.
+This area is however not clear to the author of 
+this part of the Cookbook at this time (Linus Tolke in January 2002).
+</para>
+	  <para>
+From the file above I would guess that the intentions are that
+each package org.argouml.<replaceable>x</replaceable>.cognitive
+including all subpackages should have the set of classes
+<classname>org.argouml.<replaceable>x</replaceable>.cognitive.<replaceable>same x but capitalized</replaceable>CognitiveResourceBundle<replaceable>_ll_RR</replaceable></classname>.
+If so I would expect
+<classname>org.argouml.cognitive.CognitiveResourceBundle</classname>,
+<classname>org.argouml.language.java.cognitive.LanguageJavaCognitiveResourceBundled</classname>,
+and
+<classname>org.argouml.pattern.cognitive.PatternCognitiveResourceBundled</classname>
+with friends to be created futher down the road.
+</para>
+</listitem>
+	<listitem><para>Plugin-Module API - currently not</para>
+	  <para>
+There is a <classname>PluggableCritic</classname> 
+the purpose of which is to add new Critics
+but that is not yet used.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+Logging - logging is made using instance org.argouml.cognitive.critics
+</para>
+	</listitem>
+      </itemizedlist>
+<para>Here is an illustration of the main classes implementing critics</para>
 <mediaobject>
 					<imageobject>
 						<imagedata format="GIF" fileref="images/cookbook/critics.gif"/>
@@ -816,9 +919,26 @@ programming in Argo/UML.
 <para>Critics are currently located in:
 <itemizedlist>
 <listitem><para>org.argouml.cognitive.critics</para>
-<para>These are basic critics, which are very general in nature. For example ArgoUML keeps nagging when Modelelements overlap, which makes the Diagram hard to read.</para></listitem>
+	    <para>
+These are basic critics, which are very general in nature. For example
+ArgoUML keeps nagging when Modelelements overlap, which makes the
+Diagram hard to read.
+</para>
+	    <para>
+This package also contain the base classes for the handling.
+</para>
+</listitem>
 <listitem><para>org.argouml.uml.cognitive.critics</para>
-<para>These are Critics which are directly related to UML issues (well, more or less). For example, it will nag when a class has two many operations, because that makes it hard to maintain the particular class.</para></listitem>
+	    <para>
+These are Critics which are directly related to UML issues (well, more
+or less). For example, it will nag when a class has two many
+operations, because that makes it hard to maintain the particular
+class.
+</para>
+	    <para>
+This package also contains Wizards used by these Critiques.
+</para>
+</listitem>
 <listitem><para>org.argouml.pattern.cognitive.critics</para>
 <para>These are critics related to patterns. Currently they deal only with the Singleton pattern</para>
 </listitem>
@@ -827,6 +947,17 @@ programming in Argo/UML.
 </listitem>
 </itemizedlist>
 </para>
+      <para>
+Base classes for Wizards is <classname>org.argouml.kernel.Wizard</classname>.
+</para>
+      <para>
+Checklists are located in the package org.argouml.cognitive.checklist.
+</para>
+      <para>
+Helper classes for To Do Items, To Do Pane, Wizards and the Knowledge Types
+is located in the package org.argouml.cognitive.ui.
+</para>
+
 <sect2 id="howdoi_critics">
 <title>How do I ...?</title>
 <para>
@@ -838,13 +969,43 @@ programming in Argo/UML.
 <listitem><para>...fix a critique?</para>
 <para>Locate the critique and insert some logging code. You should make sure that you understand all the implications of changes, therefore it is a good idea to see what makes the critic nag in the first place. But rest assured: some of the critics haven't been updated to reflect the latest changes in ArgoUML, so this is a procedure which is well worth digging into, since it gives you also some exposure to related NSUML elements.</para>
 </listitem>
+	    <listitem>
+	      <para>...write the test in a critique?</para>
+	      <para>
+This is an idea for refactoring!
+</para>
+	      <para>
+The critiques tests are essentially a combination of conditions 
+that are to be fulfilled.
+The conditions are often simple tests on simple model elements.
+Collect the simple tests as static methods in the class
+<classname>CriticsHelper</classname> inte the same package 
+as the critique.
+Do this moving to <classname>CriticsHelper</classname> at the latest
+when you have used the same test in two different Critics.
+</para>
+	    </listitem>
 <listitem><para>...change the text of a critique?</para>
-<para>The texts of the critics should be in the according localization files and resource bundles. Be careful: in some critics the text is still in the critic, but if yo change that, you will notice that it doesn't have any effect.</para>
+<para>
+The texts of the critics should be in the according localization files
+and resource bundles. Be careful: in some critics the text is still in
+the critic, but if you change that, you will notice that it doesn't
+have any effect.
+</para>
 </listitem>
 </itemizedlist>
 </para> 
 </sect2>
+      <sect2>
+	<title>org.argouml.cognitive.critics.* class diagram</title> 
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata format="PNG" fileref="images/screenshots/argocogcritics.png"/> 
+	    </imageobject>
+	</mediaobject>
+      </sect2>
 </sect1>
+
 <sect1 id="notation">
 <title>Notation</title>
 <sect2 id="howdoi_notation">
@@ -1743,20 +1904,6 @@ The following chapters are moved here from the User FAQ. They need rework.
   <imagedata format="PNG" fileref="images/screenshots/argocogchklist.png"/> 
   </imageobject>
   </mediaobject>
-    </sect1>
-    <sect1>
- <title>org\Argouml\cognitive\critics class diagram screen grab</title> 
- <mediaobject>
- <imageobject>
-  <imagedata format="PNG" fileref="images/screenshots/argocogcritics.png"/> 
-  </imageobject>
-  </mediaobject>
-    </sect1>
-    <sect1>
-  <title>org\Argouml\cognitive\critics\ui class diagram screen grab</title> 
-      <para>
-Could anyone add this one?
-</para>
     </sect1>
     <sect1>
   <title>src_new\org\Argouml\kernel class diagram screen grab</title> 
