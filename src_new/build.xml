@@ -548,25 +548,12 @@ ${Name} Build file
     <echo message="Compiling the sources"/>
 
     <!-- create directories -->
-    <mkdir dir="${argo.build.classes}/org/argouml/model"/>
+    <mkdir dir="${argo.build.classes}"/>
 
     <!-- remove obsolete classes before compiling -->
     <delete file="${argo.build.classes}/org/argouml/model/uml/ModelListener.class"/>
     <delete file="${argo.build.classes}/org/argouml/model/uml/AbstractModelFactory.class"/>
 
-    <echo message="building model"/>
-    <javac srcdir="${argo.src.dir}/org/argouml/model"
-           destdir="${argo.build.classes}/org/argouml/model"
-	   includes="**/*.java"
-           debug="${debug}"
-           deprecation="${deprecation}"
-           optimize="${optimize}">
-       <classpath>
-	  <path refid="argo.compile.classpath"/>
-       </classpath>
-    </javac>
-
-    <echo message="building the rest of ArgoUML"/>
     <javac srcdir="${argo.src.dir}"
            destdir="${argo.build.classes}"
 	   includes="org/argouml/**/*.java"
