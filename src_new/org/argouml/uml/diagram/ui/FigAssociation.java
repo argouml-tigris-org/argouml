@@ -76,7 +76,7 @@ public class FigAssociation extends FigEdgeModelElement {
      * association itself.
      * TODO: provide getter instead and maybe setter if needed
      */
-    protected FigTextGroup middleGroup = new FigTextGroup();
+    private FigTextGroup middleGroup = new FigTextGroup();
     
     private FigText srcMult, srcRole;
     private FigText destMult, destRole;
@@ -513,6 +513,13 @@ public class FigAssociation extends FigEdgeModelElement {
 	    destArrowHead.setLineColor(getLineColor());   
         }
         super.paint(g);
+    }
+
+    /**
+     * @return Returns the middleGroup.
+     */
+    protected FigTextGroup getMiddleGroup() {
+        return middleGroup;
     }
 
 } /* end class FigAssociation */
