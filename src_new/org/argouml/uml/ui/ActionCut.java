@@ -58,7 +58,7 @@ public class ActionCut extends AbstractAction implements CaretListener {
     private ActionCut() {
         super(Translator.localize(LOCALIZE_KEY));
         Icon icon =
-            ResourceLoaderWrapper.getResourceLoaderWrapper()
+            ResourceLoaderWrapper
 	        .lookupIconResource(
 				    Translator.getImageBinding(LOCALIZE_KEY),
 				    Translator.localize(LOCALIZE_KEY));
