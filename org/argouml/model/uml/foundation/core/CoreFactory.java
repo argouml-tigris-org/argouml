@@ -99,6 +99,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
  * @since ARGO0.11.2
  * @author Thierry Lach
  * @author Jaap Branderhorst
+ * @stereotype singleton
  */
 
 public class CoreFactory extends AbstractUmlModelFactory {
