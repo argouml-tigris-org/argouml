@@ -449,7 +449,7 @@ public abstract class FigNodeModelElement
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
-            ModelFacade.setVisibility(owner,
+            Model.getCoreHelper().setVisibility(owner,
                     ModelFacade.PUBLIC_VISIBILITYKIND);
         }
     }
@@ -473,7 +473,7 @@ public abstract class FigNodeModelElement
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
-            ModelFacade.setVisibility(owner,
+            Model.getCoreHelper().setVisibility(owner,
                     ModelFacade.PROTECTED_VISIBILITYKIND);
         }
     }
@@ -497,7 +497,7 @@ public abstract class FigNodeModelElement
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
-            ModelFacade.setVisibility(owner,
+            Model.getCoreHelper().setVisibility(owner,
                     ModelFacade.PRIVATE_VISIBILITYKIND);
         }
     }
@@ -547,7 +547,7 @@ public abstract class FigNodeModelElement
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
-            ModelFacade.setAbstract(owner, !ModelFacade.isAbstract(owner));
+            Model.getCoreHelper().setAbstract(owner, !ModelFacade.isAbstract(owner));
         }
     }
 
@@ -568,7 +568,7 @@ public abstract class FigNodeModelElement
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
-            ModelFacade.setLeaf(owner, !ModelFacade.isLeaf(owner));
+            Model.getCoreHelper().setLeaf(owner, !ModelFacade.isLeaf(owner));
         }
     }
 
@@ -589,7 +589,7 @@ public abstract class FigNodeModelElement
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
-            ModelFacade.setRoot(owner, !ModelFacade.isRoot(owner));
+            Model.getCoreHelper().setRoot(owner, !ModelFacade.isRoot(owner));
         }
     }
 
@@ -610,7 +610,7 @@ public abstract class FigNodeModelElement
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
-            ModelFacade.setActive(owner, !ModelFacade.isActive(owner));
+            Model.getCoreHelper().setActive(owner, !ModelFacade.isActive(owner));
         }
     }
 
@@ -662,7 +662,7 @@ public abstract class FigNodeModelElement
 		&& ((Model.getCoreHelper()
 			.isValidNamespace(getOwner(),
 					  owningModelelement)))) {
-                ModelFacade.setModelElementContainer(getOwner(),
+                Model.getCoreHelper().setModelElementContainer(getOwner(),
 						     owningModelelement);
                 // TODO: move the associations to the correct owner (namespace)
             }
@@ -1033,7 +1033,7 @@ public abstract class FigNodeModelElement
     public void mouseClicked(MouseEvent me) {
         if (!readyToEdit) {
             if (ModelFacade.isAModelElement(getOwner())) {
-                ModelFacade.setName(getOwner(), "");
+                Model.getCoreHelper().setName(getOwner(), "");
                 readyToEdit = true;
             } else {
                 LOG.debug("not ready to edit name");
@@ -1072,7 +1072,7 @@ public abstract class FigNodeModelElement
     public void keyPressed(KeyEvent ke) {
         if (!readyToEdit) {
             if (ModelFacade.isAModelElement(getOwner())) {
-                ModelFacade.setName(getOwner(), "");
+                Model.getCoreHelper().setName(getOwner(), "");
                 readyToEdit = true;
             } else {
                 LOG.debug("not ready to edit name");
@@ -1223,7 +1223,7 @@ public abstract class FigNodeModelElement
         super.setOwner(own);
         if (ModelFacade.isAModelElement(own)
                 && UUIDHelper.getInstance().getUUID(own) == null) {
-            ModelFacade.setUUID(own, UUIDHelper.getInstance().getNewUUID());
+            Model.getCoreHelper().setUUID(own, UUIDHelper.getInstance().getNewUUID());
         }
         readyToEdit = true;
         if (own != null) {

@@ -56,7 +56,8 @@ public class UMLScriptExpressionModel extends UMLExpressionModel2 {
      * @see org.argouml.uml.ui.UMLExpressionModel2#setExpression(java.lang.Object)
      */
     public void setExpression(Object expression) {
-        ModelFacade.setScript(getContainer().getTarget(), expression);
+        Model.getCommonBehaviorHelper()
+        	.setScript(getContainer().getTarget(), expression);
     }
 
     /**

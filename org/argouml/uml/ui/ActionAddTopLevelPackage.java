@@ -29,8 +29,9 @@ import java.awt.event.ActionEvent;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
-/** @stereotype singleton
+
+/**
+ * @stereotype singleton
  */
 public class ActionAddTopLevelPackage extends UMLAction {
 
@@ -67,7 +68,7 @@ public class ActionAddTopLevelPackage extends UMLAction {
         String nameStr = "package_" + (numPacks + 1);
         Object/*MModel*/ model =
 	    Model.getModelManagementFactory().createModel();
-        ModelFacade.setName(model, nameStr);
+        Model.getCoreHelper().setName(model, nameStr);
         p.addMember(model);
         super.actionPerformed(ae);
         ActionClassDiagram.SINGLETON.actionPerformed(ae);

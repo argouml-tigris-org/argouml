@@ -25,6 +25,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.ActionSetMultiplicity;
 
@@ -54,10 +55,11 @@ public class ActionSetAssociationEndMultiplicity extends ActionSetMultiplicity {
     public void setSelectedItem(Object item, Object target) {
         if (target != null
                 && ModelFacade.isAAssociationEnd(target)) {
-            if (org.argouml.model.ModelFacade.isAMultiplicity(item)) {
-                ModelFacade.setMultiplicity(target, item);
-            } else
-                ModelFacade.setMultiplicity(target, null);
+            if (ModelFacade.isAMultiplicity(item)) {
+                Model.getCoreHelper().setMultiplicity(target, item);
+            } else {
+                Model.getCoreHelper().setMultiplicity(target, null);
+            }
 
         }
 

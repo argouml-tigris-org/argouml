@@ -165,7 +165,7 @@ public class WizOperName extends WizMEName {
             Object oper = getModelElement();
 
             if (oldStereotypeIsSet) {
-                ModelFacade.setStereotype(oper, oldStereotype);
+                Model.getCoreHelper().setStereotype(oper, oldStereotype);
             }
         }
     }
@@ -235,18 +235,18 @@ public class WizOperName extends WizMEName {
                     theStereotype =
                         Model.getExtensionMechanismsFactory()
                         	.createStereotype();
-                    ModelFacade.setName(theStereotype, "create");
+                    Model.getCoreHelper().setName(theStereotype, "create");
                     // theStereotype.setStereotype(???);
-                    ModelFacade
+                    Model.getExtensionMechanismsHelper()
                             .setBaseClass(theStereotype, "BehavioralFeature");
                     Object targetNS =
                         findNamespace(ModelFacade.getNamespace(oper),
                                       ModelFacade.getModel(oper));
-                    ModelFacade.addOwnedElement(targetNS, theStereotype);
+                    Model.getCoreHelper().addOwnedElement(targetNS, theStereotype);
                 }
 
                 try {
-                    ModelFacade.setStereotype(oper, theStereotype);
+                    Model.getCoreHelper().setStereotype(oper, theStereotype);
                 } catch (Exception pve) {
                     LOG.error("could not set stereotype", pve);
                 }
@@ -308,8 +308,8 @@ public class WizOperName extends WizMEName {
             }
             if (ns == null) {
                 ns = Model.getCoreFactory().createNamespace();
-                ModelFacade.setName(ns, phantomName);
-                ModelFacade.addOwnedElement(targetParentNS, ns);
+                Model.getCoreHelper().setName(ns, phantomName);
+                Model.getCoreHelper().addOwnedElement(targetParentNS, ns);
             }
         }
         return ns;

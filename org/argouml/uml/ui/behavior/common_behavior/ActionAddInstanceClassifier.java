@@ -68,7 +68,7 @@ public class ActionAddInstanceClassifier extends AbstractActionAddModelElement {
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {
-        ModelFacade.setClassifiers(getTarget(), selected);
+        Model.getCommonBehaviorHelper().setClassifiers(getTarget(), selected);
     }
 
     /**

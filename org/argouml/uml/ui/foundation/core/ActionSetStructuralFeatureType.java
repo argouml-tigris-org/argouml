@@ -59,12 +59,12 @@ public class ActionSetStructuralFeatureType extends UMLAction {
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 box = (UMLComboBox2) source;
             Object o = box.getTarget();
-            if (org.argouml.model.ModelFacade.isAStructuralFeature(o)) {
+            if (ModelFacade.isAStructuralFeature(o)) {
                 attr = /*(MAttribute)*/ o;
                 oldClassifier = ModelFacade.getType(attr);
             }
             o = box.getSelectedItem();
-            if (org.argouml.model.ModelFacade.isAClassifier(o)) {
+            if (ModelFacade.isAClassifier(o)) {
                 newClassifier = /*(MClassifier)*/ o;
             }
         }
@@ -76,7 +76,7 @@ public class ActionSetStructuralFeatureType extends UMLAction {
                                     ModelFacade.getModel(attr));
             }
 
-            ModelFacade.setType(attr, newClassifier);
+            Model.getCoreHelper().setType(attr, newClassifier);
         }
     }
 

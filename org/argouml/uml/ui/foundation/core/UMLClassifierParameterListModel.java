@@ -27,6 +27,7 @@ package org.argouml.uml.ui.foundation.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
@@ -82,13 +83,13 @@ public class UMLClassifierParameterListModel
         List cc = new ArrayList(c);
         cc.remove(mem1);
         cc.remove(mem2);
-        ModelFacade.setParameters(classifier, cc);
+        Model.getCoreHelper().setParameters(classifier, cc);
         // TODO: If we stop supporting java 1.3 ...
         // the next line will replace the following 2
         // Collections.swap(c, index1, index2);
         c.set(index1, mem2);
         c.set(index2, mem1);
-        ModelFacade.setParameters(classifier, c);
+        Model.getCoreHelper().setParameters(classifier, c);
         buildModelList();
     }
 

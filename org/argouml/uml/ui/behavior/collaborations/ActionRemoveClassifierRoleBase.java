@@ -24,10 +24,10 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
 import java.awt.event.ActionEvent;
 
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
 
 /**
@@ -56,7 +56,8 @@ public class ActionRemoveClassifierRoleBase
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        ModelFacade.removeBase(getTarget(), getObjectToRemove());
+        Model.getCollaborationsHelper()
+        	.removeBase(getTarget(), getObjectToRemove());
     }
 
 

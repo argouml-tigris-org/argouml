@@ -27,6 +27,7 @@ package org.argouml.uml.ui.foundation.core;
 import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLCheckBox2;
@@ -57,13 +58,13 @@ public class ActionSetAssociationEndOrdering extends UMLAction {
         if (e.getSource() instanceof UMLCheckBox2) {
             UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
             Object target = source.getTarget();
-            if (org.argouml.model.ModelFacade.isAAssociationEnd(target)) {
+            if (ModelFacade.isAAssociationEnd(target)) {
                 Object m = /*(MAssociationEnd)*/ target;
                 if (source.isSelected()) {
-                    ModelFacade.setOrdering(m,
+                    Model.getCoreHelper().setOrdering(m,
                             ModelFacade.ORDERED_ORDERINGKIND);
                 } else {
-                    ModelFacade.setOrdering(m,
+                    Model.getCoreHelper().setOrdering(m,
                             ModelFacade.UNORDERED_ORDERINGKIND);
                 }
             }

@@ -27,7 +27,6 @@ package org.argouml.language.java.generator;
 
 import org.argouml.model.CoreFactory;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * A file of information about the Java language.  This is used to
@@ -88,29 +87,29 @@ public class JavaUML {
 	Model.getModelManagementFactory().createModel();
 
     static {
-        ModelFacade.setName(STRING_CLASS, "String");
-        ModelFacade.setName(CHAR_CLASS, "Character");
-        ModelFacade.setName(INT_CLASS, "Integer");
-        ModelFacade.setName(BOOLEAN_CLASS, "Boolean");
-        ModelFacade.setName(BYTE_CLASS, "Byte");
-        ModelFacade.setName(LONG_CLASS, "Long");
-        ModelFacade.setName(FLOAT_CLASS, "Float");
-        ModelFacade.setName(DOUBLE_CLASS, "Double");
-        ModelFacade.setName(RECTANGLE_CLASS, "Rectangle");
-        ModelFacade.setName(POINT_CLASS, "Point");
-        ModelFacade.setName(COLOR_CLASS, "Color");
-        ModelFacade.setName(VECTOR_CLASS, "Vector");
-        ModelFacade.setName(HASHTABLE_CLASS, "Hashtable");
-        ModelFacade.setName(STACK_CLASS, "Stack");
+        Model.getCoreHelper().setName(STRING_CLASS, "String");
+        Model.getCoreHelper().setName(CHAR_CLASS, "Character");
+        Model.getCoreHelper().setName(INT_CLASS, "Integer");
+        Model.getCoreHelper().setName(BOOLEAN_CLASS, "Boolean");
+        Model.getCoreHelper().setName(BYTE_CLASS, "Byte");
+        Model.getCoreHelper().setName(LONG_CLASS, "Long");
+        Model.getCoreHelper().setName(FLOAT_CLASS, "Float");
+        Model.getCoreHelper().setName(DOUBLE_CLASS, "Double");
+        Model.getCoreHelper().setName(RECTANGLE_CLASS, "Rectangle");
+        Model.getCoreHelper().setName(POINT_CLASS, "Point");
+        Model.getCoreHelper().setName(COLOR_CLASS, "Color");
+        Model.getCoreHelper().setName(VECTOR_CLASS, "Vector");
+        Model.getCoreHelper().setName(HASHTABLE_CLASS, "Hashtable");
+        Model.getCoreHelper().setName(STACK_CLASS, "Stack");
 
-        ModelFacade.setName(VOID_TYPE, "void");
-        ModelFacade.setName(CHAR_TYPE, "char");
-        ModelFacade.setName(INT_TYPE, "int");
-        ModelFacade.setName(BOOLEAN_TYPE, "boolean");
-        ModelFacade.setName(BYTE_TYPE, "byte");
-        ModelFacade.setName(LONG_TYPE, "long");
-        ModelFacade.setName(FLOAT_TYPE, "float");
-        ModelFacade.setName(DOUBLE_TYPE, "double");
+        Model.getCoreHelper().setName(VOID_TYPE, "void");
+        Model.getCoreHelper().setName(CHAR_TYPE, "char");
+        Model.getCoreHelper().setName(INT_TYPE, "int");
+        Model.getCoreHelper().setName(BOOLEAN_TYPE, "boolean");
+        Model.getCoreHelper().setName(BYTE_TYPE, "byte");
+        Model.getCoreHelper().setName(LONG_TYPE, "long");
+        Model.getCoreHelper().setName(FLOAT_TYPE, "float");
+        Model.getCoreHelper().setName(DOUBLE_TYPE, "double");
 
 	//    javastandards.addOwnedElement(STRING_CLASS);
 	//    javastandards.addOwnedElement(CHAR_CLASS);

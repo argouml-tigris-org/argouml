@@ -157,4 +157,138 @@ public interface StateMachinesHelper {
      * @return all substates
      */
     Collection getAllSubStates(Object compState);
+
+    /**
+     * Remove a given subvertex from a given composite state.
+     *
+     * @param handle the composite state
+     * @param subvertex the StateVertex
+     */
+    void removeSubvertex(Object handle, Object subvertex);
+
+    /**
+     * Add a subvertex to a composite state.
+     *
+     * @param handle the CompositeState
+     * @param subvertex the StateVertex
+     */
+    void addSubvertex(Object handle, Object subvertex);
+
+    /**
+     * Makes a Composite State concurrent.
+     *
+     * @param handle the CompositState
+     * @param concurrent boolean
+     */
+    void setConcurrent(Object handle, boolean concurrent);
+
+    /**
+     * Set the container of a statevertex.
+     *
+     * @param handle is the stateVertex
+     * @param compositeState is the container. Can be <code>null</code>.
+     */
+    void setContainer(Object handle, Object compositeState);
+
+    /**
+     * Sets the do activity of a state.
+     *
+     * @param handle is the state
+     * @param value the activity. Can be <code>null</code>.
+     */
+    void setDoActivity(Object handle, Object value);
+
+    /**
+     * Sets the effect of some transition.
+     *
+     * @param handle is the transition
+     * @param value is the effect. Can be <code>null</code>.
+     */
+    void setEffect(Object handle, Object value);
+
+    /**
+     * Sets the entry action of some state.
+     *
+     * @param handle is the state
+     * @param value is the action. Can be <code>null</code>.
+     */
+    void setEntry(Object handle, Object value);
+
+    /**
+     * Sets the exit action of some state.
+     *
+     * @param handle is the state
+     * @param value is the action. Can be <code>null</code>.
+     */
+    void setExit(Object handle, Object value);
+
+    /**
+     * Set the Expression of a Guard or ChangeEvent.
+     *
+     * @param handle Guard or ChangeEvent
+     * @param value BooleanExpression or null
+     */
+    void setExpression(Object handle, Object value);
+
+    /**
+     * Sets the guard of a transition.
+     *
+     * @param handle to the transition
+     * @param guard to be set. Can be null.
+     */
+    void setGuard(Object handle, Object guard);
+
+    /**
+     * @param handle is the target.
+     * @param intTrans is a collection of transitions.
+     */
+    void setInternalTransitions(Object handle, Collection intTrans);
+
+    /**
+     * Sets the source state of some message.
+     *
+     * @param handle the message
+     * @param state the source state
+     */
+    void setSource(Object handle, Object state);
+
+    /**
+     * Sets the state of an internal transition.
+     *
+     * @param handle the internal transition
+     * @param element the state that contains this transition
+     */
+    void setState(Object handle, Object element);
+
+    /**
+     * Sets a state machine of some state or transition.
+     *
+     * @param handle is the state or transition
+     * @param stm is the state machine
+     */
+    void setStateMachine(Object handle, Object stm);
+
+    /**
+     * Set the collection of substates for a CompositeState.
+     *
+     * @param handle CompositeState
+     * @param subvertices collection of sub-StateVertexes
+     */
+    void setSubvertices(Object handle, Collection subvertices);
+
+    /**
+     * Sets the trigger event of a transition.
+     *
+     * @param handle is the transition
+     * @param event is the trigger event
+     */
+    void setTrigger(Object handle, Object event);
+
+    /**
+     * Sets the time-expression for a TimeEvent.
+     *
+     * @param handle Object (MTimeEvent)
+     * @param value Object (MTimeExpression)
+     */
+    void setWhen(Object handle, Object value);
 }

@@ -198,7 +198,7 @@ class ParseState {
 	    return;
 	}
     	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext();) {
-	    ModelFacade.removeFeature(classifier, i.next());
+	    Model.getCoreHelper().removeFeature(classifier, i.next());
     	}
     }
 

@@ -144,4 +144,44 @@ public interface ExtensionMechanismsHelper {
      *	desired characteristics.
      */
     boolean isStereotypeInh(Object object, String name, String base);
+
+    /**
+     * Add an extended element to a stereotype.
+     *
+     * @param handle Stereotype
+     * @param extendedElement ExtensionPoint
+     */
+    void addExtendedElement(Object handle, Object extendedElement);
+
+    /**
+     * Set the baseclass of some stereotype.
+     *
+     * @param handle the stereotype
+     * @param baseClass the baseclass
+     */
+    void setBaseClass(Object handle, Object baseClass);
+
+    /**
+     * Set the icon for a stereotype.
+     *
+     * @param handle Stereotype
+     * @param icon String
+     */
+    void setIcon(Object handle, Object icon);
+
+    /**
+     * Set the Tag of a TaggedValue.
+     *
+     * @param handle TaggedValue
+     * @param tag String
+     */
+    void setTag(Object handle, Object tag);
+
+    /**
+     * Sets a value of some taggedValue.
+     *
+     * @param handle is the tagged value
+     * @param value is the value
+     */
+    void setValueOfTag(Object handle, String value);
 }

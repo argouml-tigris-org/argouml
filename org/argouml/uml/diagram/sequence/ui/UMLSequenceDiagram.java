@@ -201,7 +201,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
             lay.setGraphNodeRenderer(rend);
             setLayer(lay);
         }
-        ModelFacade.setNamespace(
+        Model.getCoreHelper().setNamespace(
             ((SequenceDiagramGraphModel) getLayer().getGraphModel())
                 .getCollaboration(),
             ns);

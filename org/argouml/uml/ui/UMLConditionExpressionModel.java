@@ -63,7 +63,8 @@ public class UMLConditionExpressionModel extends UMLExpressionModel2 {
     public void setExpression(Object expression) {
         LOG.debug("setting condidtion");
         LOG.debug(expression);
-        ModelFacade.setCondition(getContainer().getTarget(), expression);
+        Model.getUseCasesHelper()
+        	.setCondition(getContainer().getTarget(), expression);
     }
 
     /**

@@ -231,7 +231,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	getNodes().add(node);
 	// TODO: assumes public, user pref for default visibility?
 	if (ModelFacade.isAClassifier(node)) {
-	    ModelFacade.addOwnedElement(collab, /*(MClassifier)*/ node);
+	    Model.getCoreHelper().addOwnedElement(collab, /*(MClassifier)*/ node);
 	    // ((MClassifier)node).setNamespace(_collab.getNamespace());
 	}
 
@@ -250,7 +250,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
         // TODO: assumes public
         if (ModelFacade.isAModelElement(edge)
 	    && ModelFacade.getNamespace(edge) == null) {
-            ModelFacade.addOwnedElement(collab, /*(MModelElement)*/ edge);
+            Model.getCoreHelper().addOwnedElement(collab, /*(MModelElement)*/ edge);
         }
         fireEdgeAdded(edge);
     }

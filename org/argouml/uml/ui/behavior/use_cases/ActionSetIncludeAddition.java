@@ -28,6 +28,7 @@ package org.argouml.uml.ui.behavior.use_cases;
 import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -69,11 +70,11 @@ public class ActionSetIncludeAddition extends UMLAction {
                     newAddition = /*(MUseCase)*/ o;
                     oldBase = ModelFacade.getAddition(include);
                     if (newAddition != oldBase) {
-                        ModelFacade.setAddition(include, newAddition);
+                        Model.getUseCasesHelper().setAddition(include, newAddition);
                     }
                 } else {
                     if (o != null && o.equals("")) {
-                        ModelFacade.setAddition(include, null);
+                        Model.getUseCasesHelper().setAddition(include, null);
                     }
                 }
 

@@ -24,7 +24,9 @@
 
 package org.argouml.uml.ui;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
+
 /**
  * This class provides a text field that can be used to access
  * tagged values of a MModelElement object;
@@ -54,7 +56,7 @@ public class UMLModelElementTaggedValueDocument extends UMLPlainTextDocument {
      */
     protected void setProperty(String text) {
         if (getTarget() != null)
-            ModelFacade.setTaggedValue(getTarget(), getEventName(), text);
+            Model.getCoreHelper().setTaggedValue(getTarget(), getEventName(), text);
     }
 
     /**

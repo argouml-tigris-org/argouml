@@ -56,11 +56,11 @@ class ActionNewInterface extends AbstractActionNewModelElement {
      */
     public void actionPerformed(ActionEvent e) {
         Object target = TargetManager.getInstance().getModelTarget();
-        if (org.argouml.model.ModelFacade.isAInterface(target)) {
+        if (ModelFacade.isAInterface(target)) {
             Object iface = /*(MInterface)*/ target;
             Object newInterface = Model.getCoreFactory()
                 .createInterface();
-            ModelFacade.addOwnedElement(ModelFacade.getNamespace(iface),
+            Model.getCoreHelper().addOwnedElement(ModelFacade.getNamespace(iface),
                     newInterface);
             TargetManager.getInstance().setTarget(newInterface);
             super.actionPerformed(e);

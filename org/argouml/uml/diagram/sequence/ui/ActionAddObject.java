@@ -59,7 +59,7 @@ public class ActionAddObject extends CmdCreateNode {
             Object clasrole =
                 Model.getCollaborationsFactory().buildClassifierRole(
                     sgm.getCollaboration());
-            ModelFacade.addInstance(clasrole, node);
+            Model.getCollaborationsHelper().addInstance(clasrole, node);
         } else {
             throw new IllegalStateException("Graphmodel is not a "
 					    + "sequence diagram graph model");

@@ -27,6 +27,7 @@ package org.argouml.uml.ui.foundation.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
@@ -72,10 +73,10 @@ public class UMLClassifierFeatureListModel
         List cc = new ArrayList(c);
         cc.remove(mem1);
         cc.remove(mem2);
-        ModelFacade.setFeatures(clss, cc);
+        Model.getCoreHelper().setFeatures(clss, cc);
         c.set(index1, mem2);
         c.set(index2, mem1);
-        ModelFacade.setFeatures(clss, c);
+        Model.getCoreHelper().setFeatures(clss, c);
         buildModelList();
     }
 }

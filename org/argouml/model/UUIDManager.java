@@ -25,10 +25,10 @@
 package org.argouml.model;
 
 import java.net.InetAddress;
-import java.util.Collection;
-import java.util.Iterator;
 import java.net.UnknownHostException;
 import java.rmi.server.UID;
+import java.util.Collection;
+import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
@@ -126,7 +126,7 @@ public class UUIDManager {
 
         String uuid = ModelFacade.getUUID(model);
         if (uuid == null) {
-	    ModelFacade.setUUID(model, getNewUUID());
+	    Model.getCoreHelper().setUUID(model, getNewUUID());
 	}
 
 	while (oeIterator.hasNext()) {
@@ -148,7 +148,7 @@ public class UUIDManager {
 
                 uuid = ModelFacade.getUUID(me);
                 if (uuid == null) {
-                    ModelFacade.setUUID(me, getNewUUID());
+                    Model.getCoreHelper().setUUID(me, getNewUUID());
                 }
 
             }

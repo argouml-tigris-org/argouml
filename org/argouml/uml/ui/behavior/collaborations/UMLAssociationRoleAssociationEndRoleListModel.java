@@ -27,6 +27,7 @@ package org.argouml.uml.ui.behavior.collaborations;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
@@ -71,7 +72,7 @@ public class UMLAssociationRoleAssociationEndRoleListModel
         Object mem2 = c.get(index2);
         c.set(index1, mem2);
         c.set(index2, mem1);
-        ModelFacade.setConnections(assocrole, c);
+        Model.getCoreHelper().setConnections(assocrole, c);
         buildModelList();
     }
 }

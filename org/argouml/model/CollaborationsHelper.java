@@ -189,4 +189,139 @@ public interface CollaborationsHelper {
      * @return boolean true if a collaboration may be added
      */
     boolean isAddingCollaborationAllowed(Object context);
+
+    /**
+     * This method removes a classifier from a classifier role.
+     *
+     * @param handle is the classifier role
+     * @param c is the classifier
+     */
+    void removeBase(Object handle, Object c);
+
+    /**
+     * Remove a constraining element.
+     *
+     * @param handle The collaboration to remove a constraint to.
+     * @param constraint The constraint to remove.
+     */
+    void removeConstrainingElement(Object handle, Object constraint);
+
+    /**
+     * Removes a message from the interaction or association role.
+     *
+     * @param handle The interaction or association role to remove the
+     *               message from.
+     * @param message The message to remove.
+     */
+    void removeMessage(Object handle, Object message);
+
+    /**
+     * Removes a successor message.
+     *
+     * @param handle the Message that needs to loose a successor
+     * @param mess the Message that is removed
+     */
+    void removeMessage3(Object handle, Object mess);
+
+    /**
+     * Removes a predecessor message.
+     *
+     * @param handle the Message that needs to loose a predecessor
+     * @param message the Message that is removed
+     */
+    void removePredecessor(Object handle, Object message);
+
+    /**
+     * Add a constraining element.
+     *
+     * @param handle The collaboration to add a constraint to.
+     * @param constraint The constraint to add.
+     */
+    void addConstrainingElement(Object handle, Object constraint);
+
+    /**
+     * Adds an instance to a classifier role.
+     *
+     * @param classifierRole is the classifier role
+     * @param instance is the instance to add
+     */
+    void addInstance(Object classifierRole, Object instance);
+
+    /**
+     * Add a message to an interaction or association role.
+     *
+     * @param handle The interaction or association role.
+     * @param elem The message.
+     */
+    void addMessage(Object handle, Object elem);
+
+    /**
+     * Add Message to a predecessor Message.
+     *
+     * @param handle predecessor Message
+     * @param mess Message to be added
+     */
+    void addMessage3(Object handle, Object mess);
+
+    /**
+     * Adds a predecessor to a message.
+     *
+     * @param handle the message
+     * @param predecessor is the predecessor
+     */
+    void addPredecessor(Object handle, Object predecessor);
+
+    /**
+     * Sets the action to a message.
+     *
+     * @param handle is the message
+     * @param action is the action
+     */
+    void setAction(Object handle, Object action);
+
+    /**
+     * Set the context of an interaction.
+     *
+     * @param handle The element.
+     * @param col The context to set.
+     */
+    void setContext(Object handle, Object col);
+
+    /**
+     * @param handle Message
+     * @param messages Collection of predecessor messages
+     */
+    void setMessages3(Object handle, Collection messages);
+
+    /**
+     * Set the collection of predecessing messages.
+     *
+     * @param handle Message
+     * @param predecessors Collection of Messages
+     */
+    void setPredecessors(Object handle, Collection predecessors);
+
+    /**
+     * Sets the represented classifier of some collaboration.
+     *
+     * @param handle the collaboration
+     * @param classifier is the classifier or null
+     */
+    void setRepresentedClassifier(Object handle, Object classifier);
+
+    /**
+     * Sets the represented operation of some collaboration.
+     *
+     * @param handle the collaboration
+     * @param operation is the operation or null
+     */
+    void setRepresentedOperation(Object handle, Object operation);
+
+    /**
+     * Sets the sender of some model element.<p>
+     *
+     * @param handle model element
+     * @param sender the sender
+     */
+    void setSender(Object handle, Object sender);
 }

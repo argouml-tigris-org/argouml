@@ -36,6 +36,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.application.api.Notation;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -227,7 +228,7 @@ public class FigComponentInstance extends FigNodeModelElement {
             Object node = /*(MNodeInstance)*/ encloser.getOwner();
             Object comp = /*(MComponentInstance)*/ getOwner();
             if (ModelFacade.getNodeInstance(comp) != node) {
-                ModelFacade.setNodeInstance(comp, node);
+                Model.getCommonBehaviorHelper().setNodeInstance(comp, node);
             }
             super.setEnclosingFig(encloser);
 

@@ -30,6 +30,7 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepManyTextFields;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 /**
@@ -106,7 +107,7 @@ public class WizManyNames extends UMLWizard {
 		int size = mes.size();
 		for (int i = 0; i < size; i++) {
 		    Object me = /*(MModelElement)*/ mes.elementAt(i);
-		    ModelFacade.setName(me, (String) newNames.elementAt(i));
+		    Model.getCoreHelper().setName(me, (String) newNames.elementAt(i));
 		}
 	    }
 	    catch (Exception pve) {

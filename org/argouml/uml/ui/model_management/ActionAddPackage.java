@@ -58,7 +58,7 @@ class ActionAddPackage extends AbstractActionNewModelElement {
         if (ModelFacade.isAPackage(target)) {
             Object newPackage =
                 Model.getModelManagementFactory().createPackage();
-            ModelFacade.addOwnedElement(target, newPackage);
+            Model.getCoreHelper().addOwnedElement(target, newPackage);
             TargetManager.getInstance().setTarget(newPackage);
             super.actionPerformed(e);
         }

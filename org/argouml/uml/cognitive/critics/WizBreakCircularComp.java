@@ -36,6 +36,7 @@ import org.apache.log4j.Logger;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.cognitive.ui.WizStepConfirm;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.generator.GeneratorDisplay;
 import org.tigris.gef.util.VectorSet;
@@ -205,9 +206,9 @@ public class WizBreakCircularComp extends UMLWizard {
 		Object ae0 = /*(MAssociationEnd)*/ conns.get(0);
 		Object ae1 = /*(MAssociationEnd)*/ conns.get(1);
 		try {
-		    ModelFacade.setAggregation(ae0,
+		    Model.getCoreHelper().setAggregation(ae0,
 		                        ModelFacade.NONE_AGGREGATIONKIND);
-		    ModelFacade.setAggregation(ae1,
+		    Model.getCoreHelper().setAggregation(ae1,
 		                        ModelFacade.NONE_AGGREGATIONKIND);
 		} catch (Exception pve) {
 		    LOG.error("could not set aggregation", pve);

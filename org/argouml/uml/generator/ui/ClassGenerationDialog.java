@@ -59,6 +59,7 @@ import org.argouml.application.notation.NotationProviderFactory;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.FileChooserFactory;
@@ -348,7 +349,7 @@ public class ClassGenerationDialog
                             if (taggedValue == null || !language
                                 .getConfigurationValue()
                                 .equals(savedLang)) {
-                                ModelFacade.setTaggedValue(
+                                Model.getCoreHelper().setTaggedValue(
                                     node,
                                     "src_lang",
                                     language.getConfigurationValue());
@@ -424,7 +425,7 @@ public class ClassGenerationDialog
                 // 0.14alpha1) names were not initialized correctly.  this
                 // is a patch for that.
                 if (name == null || name.length() == 0) {
-                    ModelFacade.setName(cls, "");
+                    Model.getCoreHelper().setName(cls, "");
                     // continue;
                 }
 

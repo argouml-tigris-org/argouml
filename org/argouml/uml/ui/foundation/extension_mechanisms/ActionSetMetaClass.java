@@ -26,6 +26,7 @@ package org.argouml.uml.ui.foundation.extension_mechanisms;
 
 import java.awt.event.ActionEvent;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -70,10 +71,10 @@ public class ActionSetMetaClass extends UMLAction {
                 newBase = /* (MUseCase) */o;
                 oldBase = ModelFacade.getBaseClass(stereo);
                 if (newBase != oldBase) {
-                    ModelFacade.setBaseClass(stereo, newBase);
+                    Model.getExtensionMechanismsHelper().setBaseClass(stereo, newBase);
                 } else {
                     if (o != null && o.equals("")) {
-                        ModelFacade.setBaseClass(stereo, "ModelElement");
+                        Model.getExtensionMechanismsHelper().setBaseClass(stereo, "ModelElement");
                     }
                 }
             }

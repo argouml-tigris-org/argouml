@@ -207,10 +207,10 @@ public class ParserDisplay extends Parser {
                 public void found(Object element, String value) {
                     if (ModelFacade.isAStructuralFeature(element)) {
                         if ("false".equalsIgnoreCase(value)) {
-                            ModelFacade.setChangeability(element,
+                            Model.getCoreHelper().setChangeability(element,
                                         ModelFacade.CHANGEABLE_CHANGEABLEKIND);
                         } else {
-                            ModelFacade.setChangeability(element,
+                            Model.getCoreHelper().setChangeability(element,
                                         ModelFacade.FROZEN_CHANGEABLEKIND);
                         }
                     }
@@ -222,10 +222,10 @@ public class ParserDisplay extends Parser {
                 public void found(Object element, String value) {
                     if (ModelFacade.isAStructuralFeature(element)) {
                         if ("false".equalsIgnoreCase(value)) {
-                            ModelFacade.setChangeability(element,
+                            Model.getCoreHelper().setChangeability(element,
                                         ModelFacade.CHANGEABLE_CHANGEABLEKIND);
                         } else {
-                            ModelFacade.setChangeability(element,
+                            Model.getCoreHelper().setChangeability(element,
                                         ModelFacade.ADD_ONLY_CHANGEABLEKIND);
                         }
                     }
@@ -242,7 +242,7 @@ public class ParserDisplay extends Parser {
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     if (ModelFacade.isAOperation(element)) {
-                        ModelFacade.setConcurrency(element,
+                        Model.getCoreHelper().setConcurrency(element,
                                     ModelFacade.SEQUENTIAL_CONCURRENCYKIND);
                     }
                 }
@@ -255,7 +255,7 @@ public class ParserDisplay extends Parser {
                     if (value != null && value.equalsIgnoreCase("false"))
                             kind = ModelFacade.SEQUENTIAL_CONCURRENCYKIND;
                     if (ModelFacade.isAOperation(element))
-                            ModelFacade.setConcurrency(element, kind);
+                            Model.getCoreHelper().setConcurrency(element, kind);
                 }
             });
         operationSpecialStrings[2] =
@@ -267,7 +267,7 @@ public class ParserDisplay extends Parser {
                         kind = ModelFacade.SEQUENTIAL_CONCURRENCYKIND;
                     }
                     if (ModelFacade.isAOperation(element)) {
-                        ModelFacade.setConcurrency(element, kind);
+                        Model.getCoreHelper().setConcurrency(element, kind);
                     }
                 }
             });
@@ -281,7 +281,7 @@ public class ParserDisplay extends Parser {
                     else if ("concurrent".equalsIgnoreCase(value))
                             kind = ModelFacade.CONCURRENT_CONCURRENCYKIND;
                     if (ModelFacade.isAOperation(element))
-                            ModelFacade.setConcurrency(element, kind);
+                            Model.getCoreHelper().setConcurrency(element, kind);
                 }
             });
         operationSpecialStrings[4] =
@@ -293,7 +293,7 @@ public class ParserDisplay extends Parser {
                         isAbstract = false;
                     }
                     if (ModelFacade.isAOperation(element)) {
-                        ModelFacade.setAbstract(element, isAbstract);
+                        Model.getCoreHelper().setAbstract(element, isAbstract);
                     }
                 }
             });
@@ -306,7 +306,7 @@ public class ParserDisplay extends Parser {
                         isLeaf = false;
                     }
                     if (ModelFacade.isAOperation(element)) {
-                        ModelFacade.setLeaf(element, isLeaf);
+                        Model.getCoreHelper().setLeaf(element, isLeaf);
                     }
                 }
             });
@@ -318,7 +318,7 @@ public class ParserDisplay extends Parser {
                     if (value != null && value.equalsIgnoreCase("false"))
                             isQuery = false;
                     if (ModelFacade.isABehavioralFeature(element))
-                            ModelFacade.setQuery(element, isQuery);
+                            Model.getCoreHelper().setQuery(element, isQuery);
                 }
             });
         operationSpecialStrings[7] =
@@ -329,7 +329,7 @@ public class ParserDisplay extends Parser {
                     if (value != null && value.equalsIgnoreCase("false"))
                             isRoot = false;
                     if (ModelFacade.isAOperation(element))
-                            ModelFacade.setRoot(element, isRoot);
+                            Model.getCoreHelper().setRoot(element, isRoot);
                 }
             });
         operationCustomSep = new Vector();
@@ -374,8 +374,8 @@ public class ParserDisplay extends Parser {
             ProjectManager.getManager().getCurrentProject().moveToTrash(ep);
             TargetManager.getInstance().setTarget(useCase);
         } else {
-            ModelFacade.setName(ep, ModelFacade.getName(newEp));
-            ModelFacade.setLocation(ep, ModelFacade.getLocation(newEp));
+            Model.getCoreHelper().setName(ep, ModelFacade.getName(newEp));
+            Model.getUseCasesHelper().setLocation(ep, ModelFacade.getLocation(newEp));
         }
     }
 
@@ -461,7 +461,7 @@ public class ParserDisplay extends Parser {
         }
 
         if (name != null) {
-            ModelFacade.setName(me, name);
+            Model.getCoreHelper().setName(me, name);
         }
 
         if (stereotype != null) {
@@ -469,10 +469,10 @@ public class ParserDisplay extends Parser {
             Object stereo = getStereotype(me, stereotype);
 
             if (stereo != null) {
-                ModelFacade.setStereotype(me, stereo);
+                Model.getCoreHelper().setStereotype(me, stereo);
             }
             else if ("".equals(stereotype))
-                ModelFacade.setStereotype(me, null);
+                Model.getCoreHelper().setStereotype(me, null);
         }
 
         if (path != null) {
@@ -487,7 +487,7 @@ public class ParserDisplay extends Parser {
                         .contains(nspe))
                 throw new ParseException("Invalid namespace for element", 0);
 
-            ModelFacade.addOwnedElement(nspe, me);
+            Model.getCoreHelper().addOwnedElement(nspe, me);
         }
     }
 
@@ -571,9 +571,9 @@ public class ParserDisplay extends Parser {
                         //newOp.setOwnerScope(op.getOwnerScope()); //
                         //not needed in case of operation
                         if (i != -1) {
-                            ModelFacade.addFeature(cls, ++i, newOp);
+                            Model.getCoreHelper().addFeature(cls, ++i, newOp);
                         } else {
-                            ModelFacade.addFeature(cls, newOp);
+                            Model.getCoreHelper().addFeature(cls, newOp);
                         }
                     } catch (ParseException ex) {
                         if (pex == null)
@@ -637,12 +637,12 @@ public class ParserDisplay extends Parser {
                 if (newAt != null) {
                     try {
                         parseAttribute(s, newAt);
-                        ModelFacade.setOwnerScope(newAt, ModelFacade
+                        Model.getCoreHelper().setOwnerScope(newAt, ModelFacade
                                 .getOwnerScope(at));
                         if (i != -1) {
-                            ModelFacade.addFeature(cls, ++i, newAt);
+                            Model.getCoreHelper().addFeature(cls, ++i, newAt);
                         } else {
-                            ModelFacade.addFeature(cls, newAt);
+                            Model.getCoreHelper().addFeature(cls, newAt);
                         }
                     } catch (ParseException ex) {
                         if (pex == null)
@@ -723,11 +723,11 @@ public class ParserDisplay extends Parser {
             epLocation = st.nextToken().trim();
 
             if (epLocation.equals(":")) {
-                ModelFacade.setName(ep, null);
-                ModelFacade.setLocation(ep, null);
+                Model.getCoreHelper().setName(ep, null);
+                Model.getUseCasesHelper().setLocation(ep, null);
             } else {
-                ModelFacade.setName(ep, null);
-                ModelFacade.setLocation(ep, epLocation);
+                Model.getCoreHelper().setName(ep, null);
+                Model.getUseCasesHelper().setLocation(ep, epLocation);
             }
 
             break;
@@ -738,8 +738,8 @@ public class ParserDisplay extends Parser {
 
             epName = st.nextToken().trim();
 
-            ModelFacade.setName(ep, epName);
-            ModelFacade.setLocation(ep, null);
+            Model.getCoreHelper().setName(ep, epName);
+            Model.getUseCasesHelper().setLocation(ep, null);
 
             break;
 
@@ -752,8 +752,8 @@ public class ParserDisplay extends Parser {
             st.nextToken(); // Read past the colon.
             epLocation = st.nextToken().trim();
 
-            ModelFacade.setName(ep, epName);
-            ModelFacade.setLocation(ep, epLocation);
+            Model.getCoreHelper().setName(ep, epName);
+            Model.getUseCasesHelper().setLocation(ep, epLocation);
 
             break;
         }
@@ -948,14 +948,14 @@ public class ParserDisplay extends Parser {
         }
 
         if (visibility != null) {
-            ModelFacade.setVisibility(op, getVisibility(visibility.trim()));
+            Model.getCoreHelper().setVisibility(op, getVisibility(visibility.trim()));
         }
 
         if (name != null)
-            ModelFacade.setName(op, name.trim());
+            Model.getCoreHelper().setName(op, name.trim());
         else if (ModelFacade.getName(op) == null
                 || "".equals(ModelFacade.getName(op)))
-            ModelFacade.setName(op, "anonymous");
+            Model.getCoreHelper().setName(op, "anonymous");
 
         if (type != null) {
             Object ow = ModelFacade.getOwner(op);
@@ -975,9 +975,9 @@ public class ParserDisplay extends Parser {
             stereotype = stereotype.trim();
             Object stereo = getStereotype(op, stereotype);
             if (stereo != null)
-                ModelFacade.setStereotype(op, stereo);
+                Model.getCoreHelper().setStereotype(op, stereo);
             else if ("".equals(stereotype))
-                ModelFacade.setStereotype(op, null);
+                Model.getCoreHelper().setStereotype(op, null);
         }
     }
 
@@ -1113,13 +1113,13 @@ public class ParserDisplay extends Parser {
             }
 
             if (name != null)
-                ModelFacade.setName(p, name.trim());
+                Model.getCoreHelper().setName(p, name.trim());
 
             if (kind != null)
                 setParamKind(p, kind.trim());
 
             if (type != null)
-                ModelFacade.setType(p, getType(type.trim(), ns));
+                Model.getCoreHelper().setType(p, getType(type.trim(), ns));
 
             if (value != null) {
                 Object initExpr =
@@ -1127,14 +1127,14 @@ public class ParserDisplay extends Parser {
                         .createExpression(
                                 Notation.getDefaultNotation().toString(),
                                 value.trim());
-                ModelFacade.setDefaultValue(p, initExpr);
+                Model.getCoreHelper().setDefaultValue(p, initExpr);
             }
         }
 
         while (it.hasNext()) {
             Object p = it.next();
             if (!ModelFacade.isReturn(p))
-                ModelFacade.removeParameter(op, p);
+                Model.getCoreHelper().removeParameter(op, p);
         }
     }
 
@@ -1167,16 +1167,16 @@ public class ParserDisplay extends Parser {
             param = Model.getCoreFactory()
                 .buildParameter(op, model, voidType, propertyChangeListeners);
         }
-        ModelFacade.setType(param, type);
+        Model.getCoreHelper().setType(param, type);
     }
 
     private void setParamKind(Object p, String s) {
         if ("out".equalsIgnoreCase(s))
-            ModelFacade.setKindToOut(p);
+            Model.getCoreHelper().setKindToOut(p);
         else if ("inout".equalsIgnoreCase(s))
-            ModelFacade.setKindToInOut(p);
+            Model.getCoreHelper().setKindToInOut(p);
         else
-            ModelFacade.setKindToIn(p);
+            Model.getCoreHelper().setKindToIn(p);
     }
 
 
@@ -1395,14 +1395,14 @@ public class ParserDisplay extends Parser {
         }
 
         if (visibility != null) {
-            ModelFacade.setVisibility(attr, getVisibility(visibility.trim()));
+            Model.getCoreHelper().setVisibility(attr, getVisibility(visibility.trim()));
         }
 
         if (name != null)
-            ModelFacade.setName(attr, name.trim());
+            Model.getCoreHelper().setName(attr, name.trim());
         else if (ModelFacade.getName(attr) == null
                 || "".equals(ModelFacade.getName(attr)))
-            ModelFacade.setName(attr, "anonymous");
+            Model.getCoreHelper().setName(attr, "anonymous");
 
         if (type != null) {
             Object ow = ModelFacade.getOwner(attr);
@@ -1411,7 +1411,7 @@ public class ParserDisplay extends Parser {
                 ns = ModelFacade.getNamespace(ow);
             else
                 ns = ModelFacade.getModel(attr);
-            ModelFacade.setType(attr, getType(type.trim(), ns));
+            Model.getCoreHelper().setType(attr, getType(type.trim(), ns));
         }
 
         if (value != null) {
@@ -1419,12 +1419,12 @@ public class ParserDisplay extends Parser {
                 Model.getDataTypesFactory()
                     .createExpression(Notation.getDefaultNotation().toString(),
                             value.trim());
-            ModelFacade.setInitialValue(attr, initExpr);
+            Model.getCoreHelper().setInitialValue(attr, initExpr);
         }
 
         if (multiplicity != null) {
             try {
-                ModelFacade.setMultiplicity(attr,
+                Model.getCoreHelper().setMultiplicity(attr,
                         Model.getDataTypesFactory()
                         	.createMultiplicity(multiplicity.trim()));
             } catch (IllegalArgumentException iae) {
@@ -1440,9 +1440,9 @@ public class ParserDisplay extends Parser {
             stereotype = stereotype.trim();
             Object stereo = getStereotype(attr, stereotype);
             if (stereo != null)
-                ModelFacade.setStereotype(attr, stereo);
+                Model.getCoreHelper().setStereotype(attr, stereo);
             else if ("".equals(stereotype))
-                ModelFacade.setStereotype(attr, null);
+                Model.getCoreHelper().setStereotype(attr, null);
         }
     }
 
@@ -1534,7 +1534,7 @@ public class ParserDisplay extends Parser {
                         continue nextProp;
             }
 
-            ModelFacade.setTaggedValue(elem, name, value);
+            Model.getCoreHelper().setTaggedValue(elem, name, value);
         }
     }
 
@@ -1700,7 +1700,7 @@ public class ParserDisplay extends Parser {
 
         /* Process the final list of internal transitions,
          * and hook it to the state: */
-        ModelFacade.setInternalTransitions(st, internalsInfo.finalisedList());
+        Model.getStateMachinesHelper().setInternalTransitions(st, internalsInfo.finalisedList());
     }
 
     /**
@@ -1849,7 +1849,7 @@ public class ParserDisplay extends Parser {
         }
         Object oldEntry = ModelFacade.getEntry(st);
         if (oldEntry == null) {
-            ModelFacade.setEntry(st, buildNewCallAction(s));
+            Model.getStateMachinesHelper().setEntry(st, buildNewCallAction(s));
         } else {
             updateAction(oldEntry, s);
         }
@@ -1871,7 +1871,7 @@ public class ParserDisplay extends Parser {
         }
         Object oldExit = ModelFacade.getExit(st);
         if (oldExit == null) {
-            ModelFacade.setExit(st, buildNewCallAction(s));
+            Model.getStateMachinesHelper().setExit(st, buildNewCallAction(s));
         } else {
             updateAction(oldExit, s);
         }
@@ -1890,7 +1890,7 @@ public class ParserDisplay extends Parser {
             s = s.substring(s.indexOf("/") + 1).trim();
         Object oldDo = ModelFacade.getDoActivity(st);
         if (oldDo == null) {
-            ModelFacade.setDoActivity(st, buildNewCallAction(s));
+            Model.getStateMachinesHelper().setDoActivity(st, buildNewCallAction(s));
         } else {
             updateAction(oldDo, s);
         }
@@ -2078,7 +2078,7 @@ public class ParserDisplay extends Parser {
             } else {
                 // case 2
                 if (!ModelFacade.getName(evt).equals(trigger)) {
-                    ModelFacade.setName(evt, trigger);
+                    Model.getCoreHelper().setName(evt, trigger);
                     if (timeEvent && !ModelFacade.isATimeEvent(evt)) {
                         Object model = ProjectManager.getManager()
                             .getCurrentProject().getModel();
@@ -2134,7 +2134,7 @@ public class ParserDisplay extends Parser {
                     enclosing = ModelFacade.getNamespace(enclosing);
                 }
                 if (enclosing != null) {
-                    ModelFacade.setNamespace(evt, enclosing);
+                    Model.getCoreHelper().setNamespace(evt, enclosing);
                 }
             }
         } else {
@@ -2178,11 +2178,11 @@ public class ParserDisplay extends Parser {
                  * Why? (MVW)*/
                 g = Model.getStateMachinesFactory().createGuard();
                 if (g != null) {
-                    ModelFacade.setExpression(g,
+                    Model.getStateMachinesHelper().setExpression(g,
                             Model.getDataTypesFactory()
                             	.createBooleanExpression("", guard));
-                    ModelFacade.setName(g, "anon");
-                    ModelFacade.setTransition(g, trans);
+                    Model.getCoreHelper().setName(g, "anon");
+                    Model.getCommonBehaviorHelper().setTransition(g, trans);
                     //ModelFacade.setGuard(trans, g); //NSUML does this (?)
                 }
             } else {
@@ -2197,7 +2197,7 @@ public class ParserDisplay extends Parser {
                 //hence a less elegant workaround that works:
                 if (expr != null)
                     language = ModelFacade.getLanguage(expr);
-                ModelFacade.setExpression(g,
+                Model.getStateMachinesHelper().setExpression(g,
                         Model.getDataTypesFactory()
                         	.createBooleanExpression(language, guard));
                 /* TODO: In this case, the properties panel
@@ -2239,16 +2239,16 @@ public class ParserDisplay extends Parser {
             if (effect == null) { // case 1
                 effect = Model.getCommonBehaviorFactory()
                     .createCallAction();
-                ModelFacade.setScript(effect,
+                Model.getCommonBehaviorHelper().setScript(effect,
                         Model.getDataTypesFactory()
                         	.createActionExpression(""/*language*/,
                         	        		actions));
-                ModelFacade.setName(effect, "anon");
-                ModelFacade.setEffect(trans, effect);
+                Model.getCoreHelper().setName(effect, "anon");
+                Model.getStateMachinesHelper().setEffect(trans, effect);
             } else { // case 2
                 String language = ModelFacade.getLanguage(ModelFacade
                         .getScript(effect));
-                ModelFacade.setScript(effect,
+                Model.getCommonBehaviorHelper().setScript(effect,
                         Model.getDataTypesFactory()
                         	.createActionExpression(language, actions));
             }
@@ -2365,7 +2365,7 @@ public class ParserDisplay extends Parser {
         //	;
 
         if (role != null)
-            ModelFacade.setName(cls, role.trim());
+            Model.getCoreHelper().setName(cls, role.trim());
 
         if (bases != null) {
             // Remove bases that aren't there anymore
@@ -2382,7 +2382,7 @@ public class ParserDisplay extends Parser {
             while (it.hasNext()) {
                 c = it.next();
                 if (!bases.contains(ModelFacade.getName(c))) {
-                    ModelFacade.removeBase(cls, c);
+                    Model.getCollaborationsHelper().removeBase(cls, c);
                 }
             }
 
@@ -2400,9 +2400,9 @@ public class ParserDisplay extends Parser {
                 }
                 c = getType(d, ns);
                 if (ModelFacade.isACollaboration(ModelFacade.getNamespace(c))) {
-                    ModelFacade.setNamespace(c, ns);
+                    Model.getCoreHelper().setNamespace(c, ns);
                 }
-                ModelFacade.addBase(cls, c);
+                Model.getCollaborationsHelper().addBase(cls, c);
             }
         }
     }
@@ -2763,9 +2763,9 @@ public class ParserDisplay extends Parser {
         if (ModelFacade.getAction(mes) == null) {
             Object a = Model.getCommonBehaviorFactory()
                     .createCallAction();
-            ModelFacade.addOwnedElement(ModelFacade.getContext(ModelFacade
+            Model.getCoreHelper().addOwnedElement(ModelFacade.getContext(ModelFacade
                     .getInteraction(mes)), a);
-            ModelFacade.setAction(mes, a);
+            Model.getCollaborationsHelper().setAction(mes, a);
         }
 
         if (guard != null) {
@@ -2779,7 +2779,7 @@ public class ParserDisplay extends Parser {
             Object expr =
                 Model.getDataTypesFactory().createIterationExpression(
                         Notation.getDefaultNotation().toString(), guard);
-            ModelFacade.setRecurrence(ModelFacade.getAction(mes), expr);
+            Model.getCommonBehaviorHelper().setRecurrence(ModelFacade.getAction(mes), expr);
         }
 
         if (fname == null) {
@@ -2834,7 +2834,7 @@ public class ParserDisplay extends Parser {
                         .createActionExpression(
                                 Notation.getDefaultNotation().toString(),
                                 expr.trim());
-                ModelFacade.setScript(ModelFacade.getAction(mes), e);
+                Model.getCommonBehaviorHelper().setScript(ModelFacade.getAction(mes), e);
                 refindOperation = true;
             }
         }
@@ -2848,7 +2848,7 @@ public class ParserDisplay extends Parser {
                 if (arg == null) {
                     arg = Model.getCommonBehaviorFactory()
                             .createArgument();
-                    ModelFacade.addActualArgument(ModelFacade.getAction(mes),
+                    Model.getCommonBehaviorHelper().addActualArgument(ModelFacade.getAction(mes),
                             arg);
                     refindOperation = true;
                 }
@@ -2862,13 +2862,14 @@ public class ParserDisplay extends Parser {
                             .createExpression(
                                     Notation.getDefaultNotation().toString(),
                                     value.trim());
-                    ModelFacade.setValue(arg, e);
+                    Model.getCommonBehaviorHelper().setValue(arg, e);
                 }
             }
 
             while (it.hasNext()) {
-                ModelFacade.removeActualArgument(ModelFacade.getAction(mes),
-                /* (MArgument) */it.next());
+                Model.getCommonBehaviorHelper()
+                	.removeActualArgument(ModelFacade.getAction(mes),
+                	        it.next());
                 refindOperation = true;
             }
         }
@@ -2944,25 +2945,25 @@ public class ParserDisplay extends Parser {
 
                 it = c2.iterator();
                 while (it.hasNext()) {
-                    ModelFacade.removeMessage3(mes, /* (MMessage) */it.next());
+                    Model.getCollaborationsHelper().removeMessage3(mes, /* (MMessage) */it.next());
                 }
 
                 it = c.iterator();
                 while (it.hasNext()) {
                     Iterator it2 = c2.iterator();
                     Object pre = /* (MMessage) */it.next();
-                    ModelFacade.removePredecessor(mes, pre);
+                    Model.getCollaborationsHelper().removePredecessor(mes, pre);
                     while (it2.hasNext()) {
-                        ModelFacade.addPredecessor(it2.next(), pre);
+                        Model.getCollaborationsHelper().addPredecessor(it2.next(), pre);
                     }
                 }
 
                 // Connect the message at a new spot
-                ModelFacade.setActivator(mes, root);
+                Model.getCollaborationsHelper().setActivator(mes, root);
                 if (swapRoles) {
                     Object/* MClassifierRole */r = ModelFacade.getSender(mes);
-                    ModelFacade.setSender(mes, ModelFacade.getReceiver(mes));
-                    ModelFacade.setReceiver(mes, r);
+                    Model.getCollaborationsHelper().setSender(mes, ModelFacade.getReceiver(mes));
+                    Model.getCommonBehaviorHelper().setReceiver(mes, r);
                 }
 
                 if (root == null) {
@@ -2979,14 +2980,14 @@ public class ParserDisplay extends Parser {
                 // crappy, but we'll just use one of them anyway
                 if (majval <= 0) {
                     while (it.hasNext())
-                        ModelFacade.addMessage3(mes, /* (MMessage) */it.next());
+                        Model.getCollaborationsHelper().addMessage3(mes, /* (MMessage) */it.next());
                 } else if (it.hasNext()) {
                     Object/* MMessage */pre = walk(/* (MMessage) */it.next(),
                             majval - 1, false);
                     Object/* MMessage */post = successor(pre, minval);
                     if (post != null) {
-                        ModelFacade.removePredecessor(post, pre);
-                        ModelFacade.addPredecessor(post, mes);
+                        Model.getCollaborationsHelper().removePredecessor(post, pre);
+                        Model.getCollaborationsHelper().addPredecessor(post, mes);
                     }
                     insertSuccessor(pre, mes, minval);
                 }
@@ -3005,9 +3006,9 @@ public class ParserDisplay extends Parser {
             if (ModelFacade.isACallAction(ModelFacade.getAction(mes))) {
                 Object a = /* (MCallAction) */ModelFacade.getAction(mes);
                 if (ops.size() > 0)
-                    ModelFacade.setOperation(a, /* (MOperation) */ops.get(0));
+                    Model.getCommonBehaviorHelper().setOperation(a, /* (MOperation) */ops.get(0));
                 else
-                    ModelFacade.setOperation(a, null);
+                    Model.getCommonBehaviorHelper().setOperation(a, null);
             }
         }
 
@@ -3047,7 +3048,7 @@ public class ParserDisplay extends Parser {
             if (ptr.message != null && !pre.contains(ptr.message)) {
                 pre.add(ptr.message);
             }
-            ModelFacade.setPredecessors(mes, pre);
+            Model.getCollaborationsHelper().setPredecessors(mes, pre);
         }
     }
 
@@ -3170,7 +3171,7 @@ public class ParserDisplay extends Parser {
         } else {
             v.add(s);
         }
-        ModelFacade.setMessages3(m, v);
+        Model.getCollaborationsHelper().setMessages3(m, v);
     }
 
     /**
@@ -3544,8 +3545,8 @@ public class ParserDisplay extends Parser {
         }
 
         Object act = ModelFacade.getDispatchAction(sti);
-        ModelFacade.setName(act, action);
-        ModelFacade.setName(sti, name);
+        Model.getCoreHelper().setName(act, action);
+        Model.getCoreHelper().setName(sti, name);
     }
 
     /**
@@ -3582,18 +3583,18 @@ public class ParserDisplay extends Parser {
             name = s;
         }
 
-        ModelFacade.setClassifiers(obj, new Vector());
+        Model.getCommonBehaviorHelper().setClassifiers(obj, new Vector());
         if (baseTokens != null) {
             while (baseTokens.hasMoreElements()) {
                 String typeString = baseTokens.nextToken();
                 Object type =
                 /* (MClassifier) */ProjectManager.getManager()
                         .getCurrentProject().findType(typeString);
-                ModelFacade.addClassifier(obj, type);
+                Model.getCommonBehaviorHelper().addClassifier(obj, type);
             }
         }
         /* This updates the diagram - hence as last statement: */
-        ModelFacade.setName(obj, name); 
+        Model.getCoreHelper().setName(obj, name); 
     }
 
     /**
@@ -3639,8 +3640,8 @@ public class ParserDisplay extends Parser {
             }
         }
 
-        ModelFacade.setClassifiers(noi, v);
-        ModelFacade.setName(noi, new String(name));
+        Model.getCommonBehaviorHelper().setClassifiers(noi, v);
+        Model.getCoreHelper().setName(noi, new String(name));
 
     }
 
@@ -3687,8 +3688,8 @@ public class ParserDisplay extends Parser {
             }
         }
 
-        ModelFacade.setClassifiers(coi, v);
-        ModelFacade.setName(coi, new String(name));
+        Model.getCommonBehaviorHelper().setClassifiers(coi, v);
+        Model.getCoreHelper().setName(coi, new String(name));
 
     }
 
@@ -3704,8 +3705,8 @@ public class ParserDisplay extends Parser {
             Model.getCommonBehaviorFactory().createCallAction();
         Object ae =
             Model.getDataTypesFactory().createActionExpression("Java", s);
-        ModelFacade.setScript(a, ae);
-        ModelFacade.setName(a, "anon");
+        Model.getCommonBehaviorHelper().setScript(a, ae);
+        Model.getCoreHelper().setName(a, "anon");
         return a;
     }
 
@@ -3727,7 +3728,7 @@ public class ParserDisplay extends Parser {
             }
         }
         ae = Model.getDataTypesFactory().createActionExpression(language, s);
-        ModelFacade.setScript(old, ae);
+        Model.getCommonBehaviorHelper().setScript(old, ae);
     }
 
     /**
@@ -3762,7 +3763,7 @@ public class ParserDisplay extends Parser {
         }
         Object actionExpression =
             Model.getDataTypesFactory().createActionExpression(language, s);
-        ModelFacade.setScript(entry, actionExpression);
+        Model.getCommonBehaviorHelper().setScript(entry, actionExpression);
        return actionState;
     }
 
@@ -3784,7 +3785,7 @@ public class ParserDisplay extends Parser {
             Model.getActivityGraphsHelper()
                     .findClassifierByName(objectFlowState, s);
         if (c != null) {
-            ModelFacade.setType(objectFlowState, c);
+            Model.getCoreHelper().setType(objectFlowState, c);
         } else {
             throw new ParseException("Classifier not found", 0);
         }
@@ -3810,7 +3811,7 @@ public class ParserDisplay extends Parser {
                 if ((s == "") || (s == null)) {
                     // the State of a ClassifierInState is removed,
                     // so let's reduce it to a Classifier.
-                    ModelFacade.setType(objectFlowState,
+                    Model.getCoreHelper().setType(objectFlowState,
                             ModelFacade.getType(c));
                     Model.getUmlFactory().delete(c);
                     return; // the model is changed - our job is done
@@ -3829,7 +3830,7 @@ public class ParserDisplay extends Parser {
                 Object state =
                     Model.getActivityGraphsHelper().findStateByName(c, s);
                 if (state != null) {
-                    ModelFacade.addInState(c, state);
+                    Model.getActivityGraphsHelper().addInState(c, state);
                     // the model is changed - our job is done
                 } else {
                     // no state named s is found, so we have to

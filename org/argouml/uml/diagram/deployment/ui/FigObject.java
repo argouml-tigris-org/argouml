@@ -232,23 +232,23 @@ public class FigObject extends FigNodeModelElement {
 		&& (ModelFacade.isAComponentInstance(encloser.getOwner()))) {
 
 		mcompInst = /*(MComponentInstance)*/ encloser.getOwner();
-		ModelFacade.setComponentInstance(me, mcompInst);
+		Model.getCommonBehaviorHelper().setComponentInstance(me, mcompInst);
 
 	    } else if (ModelFacade.getComponentInstance(me) != null) {
-                ModelFacade.setComponentInstance(me, null);
+                Model.getCommonBehaviorHelper().setComponentInstance(me, null);
 	    }
 	    if (encloser != null
 		&& (ModelFacade.isAComponent(encloser.getOwner()))) {
 
 		mcomp = /*(MComponent)*/ encloser.getOwner();
 		Object obj = /*(MObject)*/ getOwner();
-		ModelFacade.setImplementationLocation(resident, mcomp);
-		ModelFacade.setResident(resident, obj);
+		Model.getCoreHelper().setImplementationLocation(resident, mcomp);
+		Model.getCoreHelper().setResident(resident, obj);
 
 	    } else {
 		if (ModelFacade.getImplementationLocation(resident) != null) {
-		    ModelFacade.setImplementationLocation(resident, null);
-		    ModelFacade.setResident(resident, null);
+		    Model.getCoreHelper().setImplementationLocation(resident, null);
+		    Model.getCoreHelper().setResident(resident, null);
 		}
 	    }
 	}

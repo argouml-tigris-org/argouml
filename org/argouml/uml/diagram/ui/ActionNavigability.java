@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 
@@ -133,9 +134,9 @@ public class ActionNavigability extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-	ModelFacade.setNavigable(assocStart,
+	Model.getCoreHelper().setNavigable(assocStart,
 	        (nav == BIDIRECTIONAL || nav == ENDTOSTART));
-        ModelFacade.setNavigable(assocEnd,
+        Model.getCoreHelper().setNavigable(assocEnd,
                 (nav == BIDIRECTIONAL || nav == STARTTOEND));
     }
 

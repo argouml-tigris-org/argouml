@@ -76,7 +76,7 @@ class PackageContext extends Context {
 		    mInterface =
 			Model.getCoreFactory()
 			    .buildInterface(name, mPackage);
-		    ModelFacade.setTaggedValue(mInterface,
+		    Model.getCoreHelper().setTaggedValue(mInterface,
 					       ModelFacade.GENERATED_TAG,
 					       "yes");
 		}
@@ -100,7 +100,7 @@ class PackageContext extends Context {
 			mInterface =
 			    Model.getCoreFactory()
 			        .buildInterface(name, mPackage);
-			ModelFacade.setTaggedValue(mInterface,
+			Model.getCoreHelper().setTaggedValue(mInterface,
 						   ModelFacade.GENERATED_TAG,
 						   "yes");
 		    }
@@ -159,7 +159,7 @@ class PackageContext extends Context {
 			Model.getCoreFactory()
 			    .buildClass(name, mPackage);
 		}
-		ModelFacade.setTaggedValue(mClassifier,
+		Model.getCoreHelper().setTaggedValue(mClassifier,
 					   ModelFacade.GENERATED_TAG,
 					   "yes");
 	    }
@@ -188,7 +188,7 @@ class PackageContext extends Context {
 			    Model.getCoreFactory()
 			        .buildClass(name, mPackage);
 		    }
-		    ModelFacade.setTaggedValue(mClassifier,
+		    Model.getCoreHelper().setTaggedValue(mClassifier,
 					       ModelFacade.GENERATED_TAG,
 					       "yes");
                 }

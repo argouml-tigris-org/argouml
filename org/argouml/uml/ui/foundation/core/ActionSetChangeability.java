@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
@@ -84,7 +85,7 @@ public class ActionSetChangeability extends UMLAction {
                 } else {
                     kind = ModelFacade.FROZEN_CHANGEABLEKIND;
                 }
-                ModelFacade.setChangeability(m, kind);
+                Model.getCoreHelper().setChangeability(m, kind);
             }
         }
     }

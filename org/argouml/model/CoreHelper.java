@@ -528,4 +528,662 @@ public interface CoreHelper {
      * @return true if the aggregation kinds are the same.
      */
     boolean equalsAggregationKind(Object associationEnd, String kindType);
+
+    /**
+     * Remove the given modelelement from a given comment.
+     *
+     * @param handle MComment
+     * @param me MModelElement
+     */
+    void removeAnnotatedElement(Object handle, Object me);
+
+    /**
+     * This method removes a dependency from a model element.
+     *
+     * @param handle is the model element
+     * @param dep is the dependency
+     */
+    void removeClientDependency(Object handle, Object dep);
+
+    /**
+     * Remove the given constraint from a given ModelElement.
+     *
+     * @param handle ModelElement
+     * @param cons Constraint
+     */
+    void removeConstraint(Object handle, Object cons);
+
+    /**
+     * Removes a owned model element from a namespace.
+     *
+     * @param handle is the name space
+     * @param value is the model element
+     */
+    void removeOwnedElement(Object handle, Object value);
+
+    /**
+     * This method removes a parameter from an operation.
+     *
+     * @param handle The operation.
+     * @param parameter The parameter.
+     */
+    void removeParameter(Object handle, Object parameter);
+
+    /**
+     * Remove a source flow from a model element.
+     *
+     * @param handle The model element.
+     * @param flow The flow.
+     */
+    void removeSourceFlow(Object handle, Object flow);
+
+    /**
+     * Adds a supplier dependency to some modelelement.
+     *
+     * @param supplier the supplier
+     * @param dependency the dependency
+     */
+    void removeSupplierDependency(Object supplier, Object dependency);
+
+    /**
+     * Removes a named tagged value from a model element, ie subsequent calls
+     * to getTaggedValue will return null for name, at least until a tagged
+     * value with that name has been added again.
+     *
+     * @param handle the model element to remove the tagged value from
+     * @param name the name of the tagged value
+     * @throws IllegalArgumentException if handle isn't a model element
+     */
+    void removeTaggedValue(Object handle, String name);
+
+    /**
+     * Add a target flow to a model element.
+     *
+     * @param handle The model element.
+     * @param flow The flow to add.
+     */
+    void removeTargetFlow(Object handle, Object flow);
+
+    /**
+     * Adds an annotated element to a comment.
+     *
+     * @param comment The comment to which the element is annotated
+     * @param annotatedElement The element to annotate
+     */
+    void addAnnotatedElement(Object comment, Object annotatedElement);
+
+    /**
+     * Adds a client model element to some dependency.
+     *
+     * @param handle dependency.
+     * @param element The model element.
+     * @throws IllegalArgumentException if the handle is not a dependency
+     * or the element is not a model element.
+     */
+    void addClient(Object handle, Object element);
+
+    /**
+     * Adds a client dependency to some modelelement.
+     *
+     * @param handle the modelelement
+     * @param dependency the dependency
+     */
+    void addClientDependency(Object handle, Object dependency);
+
+    /**
+     * Add a new comment to a model element.
+     *
+     * @param element the element to which the comment is to be added
+     * @param comment the comment for the model element
+     */
+    void addComment(Object element, Object comment);
+
+    /**
+     * Add an End to a connection.
+     *
+     * @param handle Association or Link
+     * @param connection AssociationEnd or LinkEnd
+     */
+    void addConnection(Object handle, Object connection);
+
+    /**
+     * Adds a constraint to some model element.
+     *
+     * @param handle model element
+     * @param mc constraint
+     */
+    void addConstraint(Object handle, Object mc);
+
+    /**
+     * @param handle Component
+     * @param node Node
+     */
+    void addDeploymentLocation(Object handle, Object node);
+
+    /**
+     * Adds a feature to some classifier.
+     *
+     * @param handle classifier
+     * @param index position
+     * @param f feature
+     */
+    void addFeature(Object handle, int index, Object f);
+
+    /**
+     * Adds a feature to some classifier.
+     *
+     * @param handle classifier
+     * @param f feature
+     */
+    void addFeature(Object handle, Object f);
+
+    /**
+     * Add the given Link to the given Link or Association.
+     *
+     * @param handle the Link or Association
+     * @param link Link
+     */
+    void addLink(Object handle, Object link);
+
+    /**
+     * Adds a method to some operation and copies the op's attributes
+     * to the method.
+     *
+     * @param handle is the operation
+     * @param m is the method
+     */
+    void addMethod(Object handle, Object m);
+
+    /**
+     * Adds a model element to some namespace.
+     *
+     * @param handle namespace
+     * @param me model element
+     */
+    void addOwnedElement(Object handle, Object me);
+
+    /**
+     * Add a Parameter to the given object at given location.
+     *
+     * @param handle The object that will get the Parameter:
+     *               MEvent, MBehavioralFeature.
+     * @param index the location
+     * @param parameter Object that will be added
+     */
+    void addParameter(Object handle, int index, Object parameter);
+
+    /**
+     * Add a Parameter to the given object.
+     *
+     * @param handle The object that will get the Parameter:
+     *               MObjectFlowState, MEvent, MBehavioralFeature, MClassifier.
+     * @param parameter Object that will be added
+     */
+    void addParameter(Object handle, Object parameter);
+
+    /**
+     * Add a raised Signal to a Message or Operation.
+     *
+     * @param handle the Message or Operation
+     * @param sig the Signal that is raised
+     */
+    void addRaisedSignal(Object handle, Object sig);
+
+    /**
+     * Add a source flow to a model element.
+     *
+     * @param handle The model element.
+     * @param flow The flow.
+     */
+    void addSourceFlow(Object handle, Object flow);
+
+    /**
+     * Adds a supplier classifier to some abstraction.
+     *
+     * @param handle abstraction
+     * @param element supplier model element
+     */
+    void addSupplier(Object handle, Object element);
+
+    /**
+     * Adds a supplier dependency to some modelelement.
+     *
+     * @param supplier the supplier
+     * @param dependency the dependency
+     */
+    void addSupplierDependency(Object supplier, Object dependency);
+
+    /**
+     * Adds a TaggedValue to a ModelElement.
+     *
+     * @param handle ModelElement
+     * @param taggedValue TaggedValue
+     */
+    void addTaggedValue(Object handle, Object taggedValue);
+
+    /**
+     * Add a target flow to a model element.
+     *
+     * @param handle The model element.
+     * @param flow The flow to add.
+     */
+    void addTargetFlow(Object handle, Object flow);
+
+    /**
+     * Sets if of some model element is abstract.
+     *
+     * @param handle is the classifier
+     * @param flag is true if it should be abstract
+     */
+    void setAbstract(Object handle, boolean flag);
+
+    /**
+     * Makes a Class active.
+     *
+     * @param handle Class
+     * @param active boolean
+     */
+    void setActive(Object handle, boolean active);
+
+    /**
+     * Sets the aggregation of some model element.
+     *
+     * @param handle the model element to set aggregation
+     * @param aggregationKind the aggregation kind
+     */
+    void setAggregation(Object handle, Object aggregationKind);
+
+    /**
+     * Sets the list of annotated elements of the given comment.
+     *
+     * @param handle the given comment
+     * @param elems the list of annotated modelelements
+     */
+    void setAnnotatedElements(Object handle, Collection elems);
+
+    /**
+     * Sets the association of some model element.
+     *
+     * @param handle the model element to set association
+     * @param association is the association
+     */
+    void setAssociation(Object handle, Object association);
+
+    /**
+     * Sets if some model element is a leaf.
+     *
+     * @param handle model element
+     * @param flag is true if it is a leaf.
+     */
+    void setLeaf(Object handle, boolean flag);
+
+    /**
+     * Sets the raised signals of some behavioural feature.
+     *
+     * @param handle the behavioural feature
+     * @param raisedSignals the raised signals
+     */
+    void setRaisedSignals(Object handle, Collection raisedSignals);
+
+    /**
+     * Sets a body of a given Method, Constraint or Expression.
+     *
+     * @param handle is the method, expression
+     * @param expr is the body string for the expression
+     */
+    void setBody(Object handle, Object expr);
+
+    /**
+     * Set the Changeability of a StructuralFeature or AssociationEnd.
+     *
+     * @param handle StructuralFeature or AssociationEnd
+     * @param ck ChangeableKind
+     */
+    void setChangeability(Object handle, Object ck);
+
+    /**
+     * Set the changeability of some feature.
+     *
+     * @param handle is the feature
+     * @param flag is the changeability flag
+     */
+    void setChangeable(Object handle, boolean flag);
+
+    /**
+     * Set the child for a generalization.
+     *
+     * @param handle Generalization
+     * @param child GeneralizableElement
+     */
+    void setChild(Object handle, Object child);
+
+    /**
+     * Set the concurrency of some operation.
+     *
+     * @param handle is the operation
+     * @param concurrencyKind is the concurrency
+     */
+    void setConcurrency(Object handle, Object concurrencyKind);
+
+    /**
+     * Sets the list of connections of the given association or link.
+     *
+     * @param handle the given association or link
+     * @param elems the list of association-ends or link-ends
+     */
+    void setConnections(Object handle, Collection elems);
+
+    /**
+     * Sets a default value of some parameter.
+     *
+     * @param handle is the parameter
+     * @param expr is the expression
+     */
+    void setDefaultValue(Object handle, Object expr);
+
+    /**
+     * @param handle a generalization
+     * @param discriminator the discriminator to set
+     */
+    void setDiscriminator(Object handle, String discriminator);
+
+    /**
+     * Set the feature at the given position.
+     *
+     * @param elem The classifier to set.
+     * @param i The position. Start with 0.
+     * @param impl The feature to set.
+     */
+    void setFeature(Object elem, int i, Object impl);
+
+    /**
+     * Sets the features of some model element.
+     *
+     * @param handle the model element to set features to
+     * @param features the list of features
+     */
+    void setFeatures(Object handle, Collection features);
+
+    /**
+     * Set the ImplementationLocation of the given ElementResidence
+     * to the given Component.
+     *
+     * @param handle the ElementResidence
+     * @param component the Component
+     */
+    void setImplementationLocation(Object handle, Object component);
+
+    /**
+     * Sets an initial value.
+     *
+     * @param at attribute that we set the initial value of
+     * @param expr that is the value to set. Can be <code>null</code>.
+     */
+    void setInitialValue(Object at, Object expr);
+
+    /**
+     * Set some parameters kind.
+     *
+     * @param handle is the parameter
+     * @param kind is the directionkind
+     */
+    void setKind(Object handle, Object kind);
+
+    /**
+     * Set some parameters kind to 'in'.
+     *
+     * @param handle is the parameter
+     */
+    void setKindToIn(Object handle);
+
+    /**
+     * Set some parameters kind to 'in/out'.
+     *
+     * @param handle is the parameter
+     */
+    void setKindToInOut(Object handle);
+
+    /**
+     * Set some parameters kind to 'out'.
+     *
+     * @param handle is the parameter
+     */
+    void setKindToOut(Object handle);
+
+    /**
+     * Set some parameters kind to 'return'.
+     *
+     * @param handle is the parameter
+     */
+    void setKindToReturn(Object handle);
+
+    /**
+     * Sets the container that owns the handle. This must be set
+     * correctly so every modelelement except the root model does have
+     * an owner. Otherwise the saving/loading will fail.<p>
+     *
+     * <em>Warning: when changing the implementation of this method
+     * be warned that the sequence of the if then else tree DOES
+     * matter.</em> Most notabely, do not move the setNamespace method
+     * any level up in the tree.<p>
+     *
+     * <em>Warning: the implementation does not support setting the
+     * owner of actions.</em> Use setState1 etc. on action for that
+     * goal<p>
+     *
+     * @param handle The modelelement that must be added to the container
+     * @param container The owning modelelement
+     * @exception IllegalArgumentException when the handle or
+     * container is null or if the handle cannot be added to the
+     * container.
+     */
+    void setModelElementContainer(Object handle, Object container);
+
+    /**
+     * Sets a multiplicity of some model element.
+     *
+     * @param handle model element
+     * @param arg multiplicity as string OR multiplicity object
+     */
+    void setMultiplicity(Object handle, Object arg);
+
+    /**
+     * Sets a name of some modelelement.
+     *
+     * @param handle is the model element
+     * @param name to set
+     */
+    void setName(Object handle, String name);
+
+    /**
+     * Sets a namespace of some modelelement.
+     *
+     * @param handle is the model element
+     * @param ns is the namespace. Can be <code>null</code>.
+     */
+    void setNamespace(Object handle, Object ns);
+
+    /**
+     * Sets the navigability of some association end.
+     *
+     * @param handle is the association end
+     * @param flag is the navigability flag
+     */
+    void setNavigable(Object handle, boolean flag);
+
+    /**
+     * Set the OrderingKind of a given AssociationEnd.
+     *
+     * @param handle AssociationEnd
+     * @param ok OrderingKind
+     */
+    void setOrdering(Object handle, Object ok);
+
+    /**
+     * Set the owner of a Feature.
+     *
+     * @param handle Feature
+     * @param owner Classifier or null
+     */
+    void setOwner(Object handle, Object owner);
+
+    /**
+     * @param handle Feature
+     * @param os ScopeKind
+     */
+    void setOwnerScope(Object handle, Object os);
+
+    /**
+     * Sets the parameters of a classifier, event, objectflowstate or
+     * behavioralfeature.
+     *
+     * @param handle the classifier, event, objectflowstate or
+     * behavioralfeature
+     * @param parameters is a Collection of parameters
+     */
+    void setParameters(Object handle, Collection parameters);
+
+    /**
+     * Sets the parent of a generalization.
+     *
+     * @param handle generalization
+     * @param parent generalizable element (parent)
+     */
+    void setParent(Object handle, Object parent);
+
+    /**
+     * Set the PowerType of a Generalization.
+     * @param handle Generalization
+     * @param pt Classifier
+     */
+    void setPowertype(Object handle, Object pt);
+
+    /**
+     * Sets the qualified attributes of an association end.
+     *
+     * @param handle the association end
+     * @param elems is a Collection of qualifiers
+     */
+    void setQualifiers(Object handle, Collection elems);
+
+    /**
+     * Sets the query flag of a behavioral feature.
+     *
+     * @param handle is the behavioral feature
+     * @param flag is the query flag
+     */
+    void setQuery(Object handle, boolean flag);
+
+    /**
+     * @param handle ElementResidence
+     * @param resident ModelElement or null
+     */
+    void setResident(Object handle, Object resident);
+
+    /**
+     * Sets the residents of some model element.
+     *
+     * @param handle the model element
+     * @param residents collection
+     */
+    void setResidents(Object handle, Collection residents);
+
+    /**
+     * Sets if some model element is a root.
+     *
+     * @param handle model element
+     * @param flag is true if it is a root
+     */
+    void setRoot(Object handle, boolean flag);
+
+    /**
+     * @param handle Flow
+     * @param specifications the collection of ModelEvents (sourceFlow)
+     */
+    void setSources(Object handle, Collection specifications);
+
+    /**
+     * Set the Specification flag for a ModelElement.
+     *
+     * @param handle ModelElement
+     * @param specification boolean
+     */
+    void setSpecification(Object handle, boolean specification);
+
+    /**
+     * Sets the specifications of some association end.
+     *
+     * @param handle the association end
+     * @param specifications collection
+     */
+    void setSpecifications(Object handle, Collection specifications);
+
+    /**
+     * Sets the stereotype of some modelelement. The method also
+     * copies a stereotype that is not a part of the current model to
+     * the current model.<p>
+     *
+     * TODO: Currently does not copy the stereotype, but changes the
+     * namespace to the new model (kidnapping it). That might possibly be
+     * dangerous, especially if more complex profile models are developed.
+     * This documentation should say what is supposed to be done. I think
+     * it would have been better if the caller had been responsible for the
+     * stereotype being in the right model and been adviced of
+     * eg ModelManagementHelper.getCorrespondingElement(...). Or if that had
+     * been used here. This function could possibly assert that the caller had
+     * got it right.
+     *
+     * @param handle model element
+     * @param stereo stereotype
+     */
+    void setStereotype(Object handle, Object stereo);
+
+    /**
+     * Sets a tagged value of some modelelement.
+     *
+     * @param handle is the model element
+     * @param tag is the tag name (a string)
+     * @param value is the value
+     */
+    void setTaggedValue(Object handle, String tag, String value);
+
+    /**
+     * Set the TaggedValues of a ModelElement.
+     *
+     * @param handle ModelElement
+     * @param taggedValues Collection of TaggedValues
+     */
+    void setTaggedValues(Object handle, Collection taggedValues);
+
+    /**
+     * Set the target scope of some association end or structural feature.
+     *
+     * @param handle the model element
+     * @param scopeKind the target scope
+     */
+    void setTargetScope(Object handle, Object scopeKind);
+
+    /**
+     * Sets the type of some parameter.
+     *
+     * @param handle is the model element
+     * @param type is the type (a classifier)
+     */
+    void setType(Object handle, Object type);
+
+    /**
+     * Set the UUID of this element.
+     *
+     * @param handle base element (MBase type)
+     * @param uuid is the UUID
+     */
+    void setUUID(Object handle, String uuid);
+
+    /**
+     * Set the visibility of some modelelement.
+     *
+     * @param handle element
+     * @param visibility is the visibility
+     */
+    void setVisibility(Object handle, Object visibility);
 }

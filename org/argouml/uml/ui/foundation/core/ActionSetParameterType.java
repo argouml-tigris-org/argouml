@@ -77,7 +77,7 @@ public class ActionSetParameterType extends UMLAction {
                 .getCorrespondingElement(
 				      newClassifier,
 				      ModelFacade.getModel(para));
-            ModelFacade.setType(para, newClassifier);
+            Model.getCoreHelper().setType(para, newClassifier);
             super.actionPerformed(e);
         }
 

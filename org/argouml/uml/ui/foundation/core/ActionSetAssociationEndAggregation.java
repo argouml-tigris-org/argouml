@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
@@ -75,7 +76,7 @@ public class ActionSetAssociationEndAggregation extends UMLAction {
             String actionCommand = source.getActionCommand();
             Object target = ((UMLRadioButtonPanel) source.getParent())
                 .getTarget();
-            if (org.argouml.model.ModelFacade.isAAssociationEnd(target)) {
+            if (ModelFacade.isAAssociationEnd(target)) {
                 Object m = /*(MAssociationEnd)*/ target;
                 Object/*MAggregationKind*/ kind = null;
                 if (actionCommand.equals(AGGREGATE_COMMAND)) {
@@ -85,7 +86,7 @@ public class ActionSetAssociationEndAggregation extends UMLAction {
                 } else {
                     kind = ModelFacade.NONE_AGGREGATIONKIND;
                 }
-                ModelFacade.setAggregation(m, kind);
+                Model.getCoreHelper().setAggregation(m, kind);
             }
         }
     }

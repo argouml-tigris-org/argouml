@@ -29,7 +29,7 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepTextField;
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * A non-modal wizard to help the user change the name of a
@@ -124,7 +124,7 @@ public class WizMEName extends UMLWizard {
 	    if (step1 != null) newName = step1.getText();
 	    try {
 		Object me = getModelElement();
-		ModelFacade.setName(me, newName);
+		Model.getCoreHelper().setName(me, newName);
 	    }
 	    catch (Exception pve) {
 		LOG.error("could not set name", pve);

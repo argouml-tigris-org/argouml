@@ -27,6 +27,7 @@ package org.argouml.uml.ui.behavior.use_cases;
 import javax.swing.JComboBox;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
@@ -137,7 +138,7 @@ public class PropPanelInclude extends PropPanelModelElement {
         // than setBase() to set the base use case.
 
         if (ModelFacade.isAInclude(target)) {
-            ModelFacade.setAddition(target, base);
+            Model.getUseCasesHelper().setAddition(target, base);
         }
     }
 
@@ -180,7 +181,7 @@ public class PropPanelInclude extends PropPanelModelElement {
         // than setAddition() to set the addition use case.
 
         if (ModelFacade.isAInclude(target)) {
-            ModelFacade.setAddition(target, addition);
+            Model.getUseCasesHelper().setAddition(target, addition);
         }
     }
 

@@ -87,4 +87,20 @@ public interface DataTypesHelper {
      * @throws IllegalArgumentException if multiplicity is not a Multiplicity.
      */
     String multiplicityToString(Object multiplicity);
+
+    /**
+     * Sets the language of an expression.
+     *
+     * TODO: This operation is fooling the user
+     * in thinking that the body of the object is changed.
+     * Instead, a new object is created and as a side-effect the body is lost.
+     * There is no other way: a MExpression can not be altered,
+     * once created!
+     * So, this operation should return the created object instead!
+     * Or should it simply copy the body?
+     *
+     * @param handle is the expression
+     * @param language is the lang
+     */
+    void setLanguage(Object handle, String language);
 }

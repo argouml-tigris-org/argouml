@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.util.Collection;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -62,7 +63,7 @@ class ActionSetClassifierInStateInState extends UMLAction {
                 Object state = box.getSelectedItem();
                 if (ModelFacade.isAState(state)) {
                     if (!c.contains(state)) {
-                        ModelFacade.addInState(cis, state);
+                        Model.getActivityGraphsHelper().addInState(cis, state);
 
                         super.actionPerformed(e);
                     }

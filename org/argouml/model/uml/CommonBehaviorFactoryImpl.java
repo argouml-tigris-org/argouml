@@ -366,8 +366,8 @@ public class CommonBehaviorFactoryImpl
                 "There should be an operation" + " with a callaction.");
         }
         Object action = createCallAction();
-        ModelFacade.setName(action, name);
-        ModelFacade.setOperation(action, oper);
+        nsmodel.getCoreHelper().setName(action, name);
+        nsmodel.getCommonBehaviorHelper().setOperation(action, oper);
         return action;
     }
 
@@ -381,7 +381,7 @@ public class CommonBehaviorFactoryImpl
     public Object buildUninterpretedAction(Object actionState) {
         Object action = createUninterpretedAction();
         if (ModelFacade.isAActionState(actionState)) {
-            ModelFacade.setEntry(actionState, action);
+            nsmodel.getStateMachinesHelper().setEntry(actionState, action);
         }
         return action;
     }
@@ -397,12 +397,12 @@ public class CommonBehaviorFactoryImpl
         Object link = nsmodel.getCommonBehaviorFactory().createLink();
         Object /*MLinkEnd*/ le0 =
 	    nsmodel.getCommonBehaviorFactory().createLinkEnd();
-        ModelFacade.setInstance(le0, fromInstance);
+        nsmodel.getCommonBehaviorHelper().setInstance(le0, fromInstance);
         Object /*MLinkEnd*/ le1 =
 	    nsmodel.getCommonBehaviorFactory().createLinkEnd();
-        ModelFacade.setInstance(le1, toInstance);
-        ModelFacade.addConnection(link, le0);
-        ModelFacade.addConnection(link, le1);
+        nsmodel.getCommonBehaviorHelper().setInstance(le1, toInstance);
+        nsmodel.getCoreHelper().addConnection(link, le0);
+        nsmodel.getCoreHelper().addConnection(link, le1);
         return link;
     }
 
@@ -414,12 +414,12 @@ public class CommonBehaviorFactoryImpl
      */
     public Object buildAction(Object message) {
         Object action = createCallAction();
-        ModelFacade.setName(action, "action");
-        ModelFacade.setAction(message, action);
+        nsmodel.getCoreHelper().setName(action, "action");
+        nsmodel.getCollaborationsHelper().setAction(message, action);
         Object interaction = ModelFacade.getInteraction(message);
         if (interaction != null
             && ModelFacade.getContext(interaction) != null) {
-            ModelFacade.setNamespace(
+            nsmodel.getCoreHelper().setNamespace(
                 action,
                 ModelFacade.getContext(interaction));
         } else {
@@ -464,9 +464,10 @@ public class CommonBehaviorFactoryImpl
             Object sender = nsmodel.getUmlHelper().getCore().getSource(link);
             Object receiver =
                 nsmodel.getUmlHelper().getCore().getDestination(link);
-            ModelFacade.setReceiver(stimulus, receiver);
-            ModelFacade.setSender(stimulus, sender);
-            ModelFacade.setCommunicationLink(stimulus, link);
+            nsmodel.getCommonBehaviorHelper().setReceiver(stimulus, receiver);
+            nsmodel.getCollaborationsHelper().setSender(stimulus, sender);
+            nsmodel.getCommonBehaviorHelper()
+            	.setCommunicationLink(stimulus, link);
             return stimulus;
         }
         throw new IllegalArgumentException("Argument is not a link or "
@@ -485,7 +486,7 @@ public class CommonBehaviorFactoryImpl
     public Object buildReception(Object aClassifier) {
         Object reception = createReception();
         if (ModelFacade.isAClassifier(aClassifier)) {
-            ModelFacade.setOwner(reception, aClassifier);
+            nsmodel.getCoreHelper().setOwner(reception, aClassifier);
         }
         return reception;
     }

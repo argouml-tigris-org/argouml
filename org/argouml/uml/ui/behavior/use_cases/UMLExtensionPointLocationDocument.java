@@ -25,6 +25,7 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 
@@ -47,7 +48,7 @@ public class UMLExtensionPointLocationDocument extends UMLPlainTextDocument {
      * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
      */
     protected void setProperty(String text) {
-        ModelFacade.setLocation(getTarget(), text);
+        Model.getUseCasesHelper().setLocation(getTarget(), text);
     }
 
     /**

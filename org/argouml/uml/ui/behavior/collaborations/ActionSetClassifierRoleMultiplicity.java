@@ -25,6 +25,7 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.ActionSetMultiplicity;
 
@@ -54,9 +55,10 @@ public class ActionSetClassifierRoleMultiplicity extends ActionSetMultiplicity {
         if (target != null
                 && ModelFacade.isAClassifierRole(target)) {
             if (org.argouml.model.ModelFacade.isAMultiplicity(item)) {
-                ModelFacade.setMultiplicity(target, item);
-            } else
-                ModelFacade.setMultiplicity(target, null);
+                Model.getCoreHelper().setMultiplicity(target, item);
+            } else {
+                Model.getCoreHelper().setMultiplicity(target, null);
+            }
 
         }
     }

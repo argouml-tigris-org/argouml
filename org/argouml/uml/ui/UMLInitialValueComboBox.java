@@ -103,13 +103,13 @@ public class UMLInitialValueComboBox extends JComboBox
                     Object itemExpr =
 			Model.getDataTypesFactory()
 			    .createExpression("Java", item);
-                    ModelFacade.setInitialValue(target, itemExpr);
+                    Model.getCoreHelper().setInitialValue(target, itemExpr);
                     update();
                 } else if (ModelFacade.isAParameter(target)) {
                     Object itemExpr =
 			Model.getDataTypesFactory()
 			    .createExpression("Java", item);
-                    ModelFacade.setDefaultValue(target, itemExpr);
+                    Model.getCoreHelper().setDefaultValue(target, itemExpr);
                     update();
                 }
             }
@@ -230,7 +230,7 @@ public class UMLInitialValueComboBox extends JComboBox
             if (classifier == null) {
                 return;
             }
-            ModelFacade.setFeatures(classifier,
+            Model.getCoreHelper().setFeatures(classifier,
 				    ModelFacade.getFeatures(classifier));
         } else if (ModelFacade.isAParameter(target)) {
             if (ModelFacade.isACallEvent(target)) {
@@ -242,7 +242,7 @@ public class UMLInitialValueComboBox extends JComboBox
                 if (classifier == null) {
                     return;
                 }
-                ModelFacade.setFeatures(classifier,
+                Model.getCoreHelper().setFeatures(classifier,
 					ModelFacade.getFeatures(classifier));
             }
         }

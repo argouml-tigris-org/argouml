@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,6 +27,7 @@ package org.argouml.uml.ui.behavior.use_cases;
 import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -69,11 +70,11 @@ public class ActionSetExtendBase extends UMLAction {
                     newBase = /*(MUseCase)*/ o;
                     oldBase = ModelFacade.getBase(extend);
                     if (newBase != oldBase) {
-                        ModelFacade.setBase(extend, newBase);
+                        Model.getUseCasesHelper().setBase(extend, newBase);
                     }
                 } else {
                     if (o != null && o.equals("")) {
-                        ModelFacade.setBase(extend, null);
+                        Model.getUseCasesHelper().setBase(extend, null);
                     }
                 }
 

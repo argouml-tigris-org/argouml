@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 
@@ -46,7 +47,7 @@ public class UMLDiscriminatorNameDocument extends UMLPlainTextDocument {
      * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
      */
     protected void setProperty(String text) {
-        ModelFacade.setDiscriminator(getTarget(), text);
+        Model.getCoreHelper().setDiscriminator(getTarget(), text);
     }
 
     /**

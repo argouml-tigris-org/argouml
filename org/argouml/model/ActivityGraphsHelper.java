@@ -73,4 +73,11 @@ public interface ActivityGraphsHelper {
      * @return boolean true if an activitygraph may be added
      */
     boolean isAddingActivityGraphAllowed(Object context);
+
+    /**
+     * @author mvw
+     * @param classifierInState the classifierInState
+     * @param state the state that will be linked
+     */
+    void addInState(Object classifierInState, Object state);
 }

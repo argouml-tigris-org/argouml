@@ -86,7 +86,7 @@ public class SourcePathControllerImpl implements SourcePathController {
      * java.lang.Object, java.io.File)
      */
     public void setSourcePath(Object modelElement, File sourcePath) {
-        ModelFacade.setTaggedValue(modelElement, SRC_PATH_TAG,
+        Model.getCoreHelper().setTaggedValue(modelElement, SRC_PATH_TAG,
             sourcePath.toString());
     }
 
@@ -101,7 +101,7 @@ public class SourcePathControllerImpl implements SourcePathController {
      * @see org.argouml.uml.ui.SourcePathController#deleteSourcePath(java.lang.Object)
      */
     public void deleteSourcePath(Object modelElement) {
-        ModelFacade.removeTaggedValue(modelElement, SRC_PATH_TAG);
+        Model.getCoreHelper().removeTaggedValue(modelElement, SRC_PATH_TAG);
     }
 
     /**

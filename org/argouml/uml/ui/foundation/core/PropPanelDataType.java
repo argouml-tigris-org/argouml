@@ -140,7 +140,7 @@ public class PropPanelDataType extends PropPanelClassifier {
                     	.buildOperation(target, model, voidType,
                     	        propertyChangeListeners);
                 // due to Well Defined rule [2.5.3.12/1]
-                ModelFacade.setQuery(newOper, true);
+                Model.getCoreHelper().setQuery(newOper, true);
                 TargetManager.getInstance().setTarget(newOper);
                 super.actionPerformed(e);
             }
@@ -164,7 +164,7 @@ public class PropPanelDataType extends PropPanelClassifier {
          */
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
-            if (org.argouml.model.ModelFacade.isAClassifier(target)) {
+            if (ModelFacade.isAClassifier(target)) {
                 Object stereo = null;
                 if (ModelFacade.getStereotypes(target).size() > 0) {
                     stereo =
@@ -198,10 +198,10 @@ public class PropPanelDataType extends PropPanelClassifier {
                                 stereo =
                                     Model.getExtensionMechanismsFactory()
                                         .createStereotype();
-                                ModelFacade.setName(stereo, "enumeration");
-                                ModelFacade.addOwnedElement(model, stereo);
+                                Model.getCoreHelper().setName(stereo, "enumeration");
+                                Model.getCoreHelper().addOwnedElement(model, stereo);
                             }
-                            ModelFacade.setStereotype(target, stereo);
+                            Model.getCoreHelper().setStereotype(target, stereo);
                         }
                     }
                 }
@@ -218,7 +218,7 @@ public class PropPanelDataType extends PropPanelClassifier {
                 Object attr =
                     Model.getCoreFactory().buildAttribute(target,
                             model, intType, propertyChangeListeners);
-                ModelFacade.setChangeable(attr, false);
+                Model.getCoreHelper().setChangeable(attr, false);
                 TargetManager.getInstance().setTarget(attr);
                 super.actionPerformed(e);
             }

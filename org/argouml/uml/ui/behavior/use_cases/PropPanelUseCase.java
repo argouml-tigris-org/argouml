@@ -139,7 +139,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
                 if (ns != null) {
                     Object useCase = Model.getUseCasesFactory()
                         .createUseCase();
-                    ModelFacade.addOwnedElement(ns, useCase);
+                    Model.getCoreHelper().addOwnedElement(ns, useCase);
                     TargetManager.getInstance().setTarget(useCase);
                     super.actionPerformed(e);
                 }
