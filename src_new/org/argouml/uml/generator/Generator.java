@@ -48,6 +48,21 @@ import java.util.*;
 public abstract class Generator
 implements NotationProvider {
 
+  private NotationName _notationName = null;
+
+  /** Two spaces used for indenting code in classes. */
+  public static String INDENT = "  ";
+
+  public final static String fileSep=System.getProperty("file.separator");
+
+  public Generator(NotationName notationName) {
+      _notationName = notationName;
+  }
+
+  public NotationName getNotation() {
+        return _notationName;
+  }
+
   public String generate(Object o) {
     if (o == null)
       return "";
@@ -144,5 +159,12 @@ implements NotationProvider {
            generateName(st.getName()) +
 	   NotationHelper.getRightGuillemot();
   }
+
+  public boolean isModuleEnabled() { return true; }
+  public Vector getModulePopUpActions(Vector v, Object o) { return null; }
+  public boolean shutdownModule() { return true; }
+  public boolean initializeModule() { return true; }
+  public void setModuleEnabled(boolean enabled) { }
+  public boolean inContext(Object[] o) { return false; }
 
 } /* end class Generator */
