@@ -155,7 +155,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <property name="argo.build.src" value="${argo.root}/src_new"/>
 
     <property name="module.lib.dir" value="${module.root}/lib"/>
-    <property name="classpath" value="${argo.build.dir}/nsuml.jar:${argo.build.dir}/ocl-argo.jar:${argo.build.dir}/gef.jar:${argo.build.dir}/antlrall.jar:${argo.build.dir}/log4j.jar:${argo.build.dir}/junit.jar"/> 
+    <property name="classpath" value="${argo.build.dir}/nsuml.jar:${argo.build.dir}/ocl-argo.jar:${argo.build.dir}/gef.jar:${argo.build.dir}/antlrall.jar:${argo.build.dir}/log4j.jar:${argo.build.dir}/i18n.jar:${argo.build.dir}/junit.jar"/> 
     <property name="ant.xml-libs" value="${ANT_HOME}/lib/jaxp.jar:${ANT_HOME}/lib/parser.jar"/>
 
     <property name="packages" value="org.argouml.*"/>
@@ -247,6 +247,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
                 <include name="antlrall.jar" />
                 <include name="log4j.jar" />
                 <include name="gef.jar" />
+                <include name="i18n.jar" />
             </fileset>
             <fileset dir="${module.lib.dir}">
                 <include name="*.jar" />
@@ -287,6 +288,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
                 <include name="antlrall.jar" />
                 <include name="log4j.jar" />
                 <include name="gef.jar" />
+                <include name="i18n.jar" />
             </fileset>
             <fileset dir="${module.lib.dir}">
                 <include name="*.jar" />
