@@ -23,7 +23,6 @@
 
 package org.argouml.uml.ui;
 
-import org.apache.log4j.Category;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
@@ -40,8 +39,6 @@ import ru.novosoft.uml.foundation.core.MNamespace;
  * @stereotype singleton
  */
 public class ActionStateDiagram extends ActionAddDiagram {
-    protected static Category cat =
-        Category.getInstance(ActionStateDiagram.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables

@@ -977,6 +977,19 @@ public class ModelFacade {
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
+    
+    /**
+     * Returns the context of some given statemachine
+     * @param handle the statemachine
+     * @return the context of the statemachine or null if the statemachine doesn't 
+     * have a context.
+     */
+    public static Object getContext(Object handle) {
+        if (handle instanceof MStateMachine) {
+            return ((MStateMachine)handle).getContext();            
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
 
     /** Get the namespace of an element.
      *
@@ -1278,7 +1291,7 @@ public class ModelFacade {
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-
+    
     /** This method returns all attributes of a given Classifier.
      *
      * @param classifier the classifier you want to have the attributes for
