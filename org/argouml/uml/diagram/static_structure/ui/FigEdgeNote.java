@@ -75,8 +75,8 @@ public class FigEdgeNote
     }      
     
     /**
-     * Constructor that hooks the Fig to a UML element
-     * @param theOwner the UML element
+     * Constructor that hooks the Fig to a CommentEdge
+     * @param theOwner the CommentEdge
      * @param theLayer the layer (ignored)
      */
     public FigEdgeNote(Object theOwner, Layer theLayer) {
