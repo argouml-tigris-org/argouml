@@ -24,22 +24,16 @@
 package org.argouml.uml.ui;
 
 import java.awt.Component;
-import java.util.Hashtable;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.apache.log4j.Category;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
-import ru.novosoft.uml.behavior.common_behavior.MSignal;
-import ru.novosoft.uml.behavior.state_machines.MPseudostate;
-import ru.novosoft.uml.foundation.core.MAbstraction;
-import ru.novosoft.uml.foundation.core.MComment;
+
 import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 /** UMTreeCellRenderer determines how the entries in the Navigationpane will be
  *  represented graphically. In particular it makes decisions about the icons
@@ -47,101 +41,33 @@ import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
  *  of object to be displayed.
  */
 public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
-            protected static Category cat = Category.getInstance(UMLTreeCellRenderer.class);
-  ////////////////////////////////////////////////////////////////
-  // class variables
+    protected static Category cat = Category.getInstance(UMLTreeCellRenderer.class);
 
-  protected ImageIcon _ActionStateIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("ActionState");
-  protected ImageIcon _StateIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("State");
-  protected ImageIcon _InitialStateIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Initial");
-  protected ImageIcon _DeepIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("DeepHistory");
-  protected ImageIcon _ShallowIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("ShallowHistory");
-  protected ImageIcon _ForkIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Fork");
-  protected ImageIcon _JoinIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Join");
-  protected ImageIcon _BranchIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Branch");
-  protected ImageIcon _FinalStateIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("FinalState");
+    ////////////////////////////////////////////////////////////////
+    // TreeCellRenderer implementation
 
-  protected ImageIcon _RealizeIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Realization");
+    public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 
-  protected ImageIcon _SignalIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("SignalSending");
+        Component r = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 
-  protected ImageIcon _CommentIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Note");
-  
-  protected Hashtable _iconCache = new Hashtable();
+        if (r instanceof JLabel) {
+            JLabel lab = (JLabel) r;
+            Icon icon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(value);
+            if (icon != null)
+                lab.setIcon(icon);
+            else
+                cat.warn("UMLTreeCellRenderer: using default Icon");
 
+            String tip;
+            if (value instanceof MModelElement)
+                tip = ((MModelElement) value).getUMLClassName() + ": " + ((MModelElement) value).getName() + " ";
+            else
+                tip = (value == null) ? "null " : value.toString() + " ";
+            lab.setToolTipText(tip);
+            tree.setToolTipText(tip);
 
-
-  ////////////////////////////////////////////////////////////////
-  // TreeCellRenderer implementation
-
-  public Component getTreeCellRendererComponent(JTree tree, Object value,
-						boolean sel,
-						boolean expanded,
-						boolean leaf, int row,
-                                                boolean hasFocus) {
-
-      Component r = super.getTreeCellRendererComponent(tree, value, sel,
-                                                       expanded, leaf,
-                                                       row, hasFocus);
-
-      if (r instanceof JLabel) {
-          JLabel lab = (JLabel) r;
-          Icon icon = (Icon) _iconCache.get(value.getClass());
-
-          if (value instanceof MPseudostate) {
-              MPseudostate ps = (MPseudostate) value;
-              MPseudostateKind kind = ps.getKind();
-              if (MPseudostateKind.INITIAL.equals(kind)) icon = _InitialStateIcon;
-              if (MPseudostateKind.DEEP_HISTORY.equals(kind)) icon = _DeepIcon;
-              if (MPseudostateKind.SHALLOW_HISTORY.equals(kind)) icon = _ShallowIcon;
-              if (MPseudostateKind.FORK.equals(kind)) icon = _ForkIcon;
-              if (MPseudostateKind.JOIN.equals(kind)) icon = _JoinIcon;
-              if (MPseudostateKind.BRANCH.equals(kind)) icon = _BranchIcon;
-              //if (MPseudostateKind.FINAL.equals(kind)) icon = _FinalStateIcon;
-          }
-          if (value instanceof MAbstraction) {
-                  icon = _RealizeIcon;
-          }
-          // needs more work: sending and receiving icons
-          if (value instanceof MSignal) {
-              icon = _SignalIcon;
-          }
-          
-          if (value instanceof MComment) {
-              icon = _CommentIcon;
-          }
-
-          if (icon == null) {
-              String clsPackName = value.getClass().getName();
-              if (clsPackName.startsWith("org") || clsPackName.startsWith("ru")) {
-                  String cName =
-                      clsPackName.substring(clsPackName.lastIndexOf(".")+1);
-                  // special case "UML*" e.g. UMLClassDiagram
-                  if (cName.startsWith("UML")) cName = cName.substring(3);
-                  if (cName.startsWith("M"))
-                      cName = cName.substring(1);
-                  if (cName.endsWith("Impl"))
-                      cName = cName.substring(0,cName.length() -4 );
-                  icon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(cName);
-                  if (icon != null) _iconCache.put(value.getClass(), icon);
-                  if (icon == null) cat.warn("UMLTreeCellRenderer: using default Icon for " + cName);
-              }
-          }
-
-          if (icon != null) lab.setIcon(icon);
-
-          String tip;
-          if (value instanceof MModelElement)
-              tip = ((MModelElement)value).getUMLClassName() + ": " +
-                  ((MModelElement)value).getName() + " ";
-	  else 
-	      tip = (value == null) ? "null " : value.toString() + " ";
-          lab.setToolTipText(tip);
-          tree.setToolTipText(tip);
-
-      }
-      return r;
-  }
-
+        }
+        return r;
+    }
 
 } /* end class UMLTreeCellRenderer */

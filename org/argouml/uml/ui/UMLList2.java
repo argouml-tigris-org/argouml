@@ -25,70 +25,44 @@
 package org.argouml.uml.ui;
 
 import javax.swing.JList;
+import javax.swing.ListCellRenderer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
 
 /**
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public abstract class UMLList2 extends JList implements TargetChangedListener, MElementListener, ListSelectionListener {
-    
-   
+public abstract class UMLList2 extends JList implements TargetChangedListener, ListSelectionListener {
+
     /**
      * Constructor for UMLList2.
      * @param dataModel
+     * @param showIcon true if an icon should be shown representing the
+     * modelelement in each cell.
      */
     public UMLList2(UMLModelElementListModel2 dataModel, boolean showIcon) {
         super(dataModel);
         getSelectionModel().addListSelectionListener(this);
         setCellRenderer(new UMLListCellRenderer2(showIcon));
     }
-    
+
     public UMLList2(UMLModelElementListModel2 dataModel) {
         this(dataModel, false);
+    }
+
+	/**
+	 * Constructor for UMLList2. Used by subclasses that want to add their own
+	 * renderer to the list.
+	 * @param dataModel
+	 * @param renderer
+	 */
+    protected UMLList2(UMLModelElementListModel2 dataModel, ListCellRenderer renderer) {
+        super(dataModel);
+        getSelectionModel().addListSelectionListener(this);
+        if (renderer != null)
+            setCellRenderer(renderer);
     }    
-
-    
-    /**
-     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
-     */
-    public void propertySet(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleAdded(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleRemoved(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
-     */
-    public void listRoleItemSet(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
-     */
-    public void removed(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
-     */
-    public void recovered(MElementEvent e) {
-    }
-
 
     /**
      * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
@@ -98,7 +72,7 @@ public abstract class UMLList2 extends JList implements TargetChangedListener, M
             doIt(e);
         }
     }
-    
+
     /**
      * The 'body' of the valueChanged method. Is only called if there is
      * actually a selection made.
@@ -111,21 +85,21 @@ public abstract class UMLList2 extends JList implements TargetChangedListener, M
      * @return Object
      */
     public Object getTarget() {
-        return ((UMLModelElementListModel2)getModel()).getTarget();
+        return ((UMLModelElementListModel2) getModel()).getTarget();
     }
-    
+
     /**
      * @see org.argouml.uml.ui.TargetChangedListener#targetChanged(java.lang.Object)
      */
     public void targetChanged(Object newTarget) {
-        ((UMLModelElementListModel2)getModel()).targetChanged(newTarget);
+        ((UMLModelElementListModel2) getModel()).targetChanged(newTarget);
     }
 
     /**
      * @see org.argouml.uml.ui.TargetChangedListener#targetReasserted(java.lang.Object)
      */
     public void targetReasserted(Object newTarget) {
-        ((UMLModelElementListModel2)getModel()).targetReasserted(newTarget);
+        ((UMLModelElementListModel2) getModel()).targetReasserted(newTarget);
     }
 
 }
