@@ -1198,12 +1198,32 @@ public class Project implements java.io.Serializable, TargetListener {
         stats.addElement(new UsageStatistic(name, value));
     }
 
+
+    /** Cache for the default model.
+     */
+    private HashMap _defaultModelCache = new HashMap();
+
     public void setDefaultModel(MModel defaultModel) {
         _defaultModel = defaultModel;
+	_defaultModelCache = new HashMap();
     }
 
     public MModel getDefaultModel() {
         return _defaultModel;
+    }
+
+    /** Find a type by name in the default model.
+     *
+     * @param the name.
+     * @returns the type.
+     */
+    public Object findTypeInDefaultModel(String name) {
+	if (_defaultModelCache.containsKey(name))
+	    return _defaultModelCache.get(name);
+
+	Object result = findTypeInModel(name, getDefaultModel());
+	_defaultModelCache.put(name, result);
+	return result;
     }
 
     static final long serialVersionUID = 1399111233978692444L;
