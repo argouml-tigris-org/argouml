@@ -31,6 +31,8 @@ import org.xml.sax.helpers.*;
 import java.util.Stack;
 import java.net.URL;
 import java.io.*;
+
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
 
@@ -82,11 +84,11 @@ public abstract class SAXParserBase extends HandlerBase {
   ////////////////////////////////////////////////////////////////
   // main parsing method
 
-  public void parse(URL url) throws Exception {
+  public void parse(URL url) throws SAXException, IOException, ParserConfigurationException {
       parse(url.openStream());
   }
 
-  public void parse(InputStream is) throws Exception {
+  public void parse(InputStream is) throws SAXException, IOException, ParserConfigurationException {
 
     long start, end;
 
@@ -108,22 +110,18 @@ public abstract class SAXParserBase extends HandlerBase {
 	Argo.log.info("Elapsed time: " + (end - start) + " ms");
       }
     }
-    catch(SAXException saxEx) {
-        //
-        //  a SAX exception could have been generated
-        //    because of another exception.
-        //    Get the initial exception to display the
-        //    location of the true error
-        Exception ex = saxEx.getException();
-        if(ex == null) {
-            saxEx.printStackTrace();
-        }
-        else {
-            ex.printStackTrace();
-        }
+    catch (ParserConfigurationException e) {
+        cat.error("Parser not configured correctly.");
+        cat.error(e);
+        throw e;
     }
-    catch (Exception se) {
-      se.printStackTrace();
+    catch(SAXException saxEx) {
+        cat.error(saxEx);
+        throw saxEx;
+    }
+    catch (IOException e) {
+        cat.error(e);
+        throw e;
     }
   }
 

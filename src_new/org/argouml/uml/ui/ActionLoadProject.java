@@ -106,7 +106,7 @@ public class ActionLoadProject extends UMLChangeAction {
         // try catch block added
         Project p = null;
         try {
-            p = Project.loadProject(url);
+            p = ProjectManager.getManager().loadProject(url);
 
             ProjectBrowser.TheInstance.showStatus(
                 MessageFormat.format(

@@ -27,10 +27,22 @@ package org.argouml.kernel;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.net.URL;
+import java.util.zip.ZipInputStream;
 
 import javax.swing.event.EventListenerList;
+import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
+import org.argouml.cognitive.ProjectMemberTodoList;
+import org.argouml.model.uml.UmlHelper;
+import org.argouml.xml.argo.ArgoParser;
+import org.argouml.xml.xmi.XMIParser;
+import org.xml.sax.SAXException;
+
+import ru.novosoft.uml.model_management.MModel;
 
 /**
  * This class manages the projects loaded in argouml. It is a singleton. Classes
@@ -43,14 +55,20 @@ import org.argouml.application.api.Argo;
  * @author jaap.branderhorst@xs4all.nl
  */
 public final class ProjectManager {
-    
-    public final static String CURRENT_PROJECT_PROPERTY_NAME ="currentProject";
+
+    public final static String COMPRESSED_FILE_EXT = ".zargo";
+    public final static String UNCOMPRESSED_FILE_EXT = ".argo";
+    public final static String PROJECT_FILE_EXT = ".argo";
+
+    public final static String CURRENT_PROJECT_PROPERTY_NAME = "currentProject";
+
+    private Category cat = Category.getInstance(this.getClass());
 
     /**
      * The singleton instance of this class
      */
     private static ProjectManager _instance;
-    
+
     /**
      * The project that is visible in the projectbrowser
      */
@@ -60,7 +78,7 @@ public final class ProjectManager {
      * Flag to indicate we are creating a new current project
      */
     private boolean _creatingCurrentProject;
-    
+
     /**
      * The listener list
      */
@@ -70,7 +88,7 @@ public final class ProjectManager {
      * The event to fire
      */
     private PropertyChangeEvent _event;
-    
+
     /**
      * The singleton accessor method of this class
      */
@@ -119,9 +137,9 @@ public final class ProjectManager {
                             CURRENT_PROJECT_PROPERTY_NAME,
                             oldProject,
                             newProject);
-                ((PropertyChangeListener) listeners[i + 1]).propertyChange(
+                ((PropertyChangeListener)listeners[i + 1]).propertyChange(
                     _event);
-            }            
+            }
         }
         _event = null;
 
@@ -148,7 +166,7 @@ public final class ProjectManager {
         }
         return _currentProject;
     }
-    
+
     /**
      * Makes an empty project with two standard diagrams.
      * @return Project
@@ -158,10 +176,116 @@ public final class ProjectManager {
         Argo.log.info("making empty project");
         Project p = new Project();
         setCurrentProject(p);
-        p.makeUntitledProject();        
+        p.makeUntitledProject();
         _creatingCurrentProject = false;
         return p;
     }
 
+    /**   
+        * This method creates a project from the specified URL
+        *
+        * Unlike    the constructor which forces an .argo extension    This method
+        * will attempt to load a raw XMI file
+        * <P>
+        * This method can fail in several different ways. Either by throwing
+        * an exception or by having the ArgoParser.SINGLETON.getLastLoadStatus()
+        * set to not true.
+        * <P>
+        * TODO: The exception in the throws clause should be splitted in several
+        * other types of exceptions to handle errors better
+        */
+    public Project loadProject(URL url)
+        throws IOException, IllegalFormatException, Exception {
+        Project p = null;
+        String urlString = url.toString();
+        int lastDot = urlString.lastIndexOf(".");
+        String suffix = "";
+        if (lastDot >= 0) {
+            suffix = urlString.substring(lastDot).toLowerCase();
+        }
+        if (suffix.equals(".xmi")) {
+            p = loadProjectFromXMI(url);
+        } else if (suffix.equals(COMPRESSED_FILE_EXT)) { // normal case, .zargo
+            p = loadProjectFromZargo(url);
+        } else if (suffix.equals(".argo")) { // the old argo format probably
+            p = loadProjectFromZargo(url);
+        } else {
+            throw new IllegalFormatException(
+                "No legal format found for url " + url.toString());
+        }
+        return p;
+    }
+
+    /**
+     * Reads an old format XMI file. This format is no longer actively supported
+     * but for legacy reasons still present.
+     * @param url
+     * @return Project
+     * @throws IOException
+     */
+    private Project loadProjectFromXMI(URL url) throws IOException {
+        Project p = new Project();
+        XMIParser.SINGLETON.readModels(p, url);
+        MModel model = XMIParser.SINGLETON.getCurModel();
+        UmlHelper.getHelper().addListenersToModel(model);
+        p._UUIDRefs = XMIParser.SINGLETON.getUUIDRefs();
+        p.addMember(new ProjectMemberTodoList("", p));
+        p.addMember(model);
+        p.setNeedsSave(false);
+        org.argouml.application.Main.addPostLoadAction(new ResetStatsLater());
+        return p;
+    }
+
+    /**
+     * Reads an url of the .zargo format.
+     * @param url
+     * @return Project
+     * @throws Exception if there is an exception during load. Should be handled
+     * by the GUI.
+     */
+    private Project loadProjectFromZargo(URL url)
+        throws IOException, SAXException, ParserConfigurationException {
+        Project p = null;
+        try {
+            ZipInputStream zis = new ZipInputStream(url.openStream());
+
+            // first read the .argo file from Zip
+            String name = zis.getNextEntry().getName();
+            while (!name.endsWith(PROJECT_FILE_EXT)) {
+                name = zis.getNextEntry().getName();
+            }
+
+            // the "false" means that members should not be added,
+            // we want to do this by hand from the zipped stream.
+            ArgoParser.SINGLETON.setURL(url);
+            ArgoParser.SINGLETON.readProject(zis, false);
+            p = ArgoParser.SINGLETON.getProject();
+
+            zis.close();
+
+        } catch (IOException e) {
+            // exception can occur both due to argouml code as to J2SE code, so lets log it
+            cat.error(e);
+            throw e;
+        }
+        p.loadZippedProjectMembers(url);
+        p.postLoad();
+        return p;
+    }
+
+    /**
+     * Loads a project from an url of the argo format.
+     * @param url
+     * @return Project
+     * @throws IOException
+     */
+    private Project loadProjectFromArgo(URL url)
+        throws IOException, ParserConfigurationException, SAXException {
+        ArgoParser.SINGLETON.readProject(url);
+        Project p = ArgoParser.SINGLETON.getProject();
+        p.loadAllMembers();
+        p.postLoad();
+        return p;
+    }
 
 }
