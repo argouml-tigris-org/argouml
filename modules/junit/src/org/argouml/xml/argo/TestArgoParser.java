@@ -26,15 +26,35 @@ package org.argouml.xml.argo;
 
 import java.net.URL;
 
+import junit.framework.Test;
 import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ZargoFilePersister;
+import org.argouml.uml.util.namespace.TestStringNamespace;
 
 /** Testcase to load projects without exception. */
 public class TestArgoParser extends TestCase {
     public TestArgoParser(String name) {
         super(name);
+    }
+
+    /**
+     * @param args the arguments given on the commandline
+     */
+    public static void main(java.lang.String[] args) {
+        junit.textui.TestRunner.run(suite());
+    }
+
+    /**
+     * @return the test suite
+     */
+    public static Test suite() {
+        TestSuite suite = new TestSuite(TestArgoParser.class);
+
+        return suite;
     }
 
     /**
@@ -44,39 +64,41 @@ public class TestArgoParser extends TestCase {
      * @throws Exception if something goes wrong.
      */
     private void loadProject(String filename) throws Exception {
-	URL url;
-	try {
-	    url = new URL(filename);
-	    Project p = ProjectManager.getManager().loadProject(url);
-	    assertTrue("Load Status for " + filename + ".",
-		       ArgoParser.SINGLETON.getLastLoadStatus());
-	} catch (java.net.MalformedURLException e) {
-	    assertTrue("Incorrect test case, malformed filename: " 
-		       + filename + ".", false);
-	}	
+        URL url;
+        try {
+            url = new URL(filename);
+            ZargoFilePersister persister = new ZargoFilePersister();
+            Project p = persister.loadProject(url);
+            assertTrue("Load Status for " + filename + ".",
+                   ArgoParser.SINGLETON.getLastLoadStatus());
+        } catch (java.net.MalformedURLException e) {
+            assertTrue("Incorrect test case, malformed filename: " 
+                   + filename + ".", false);
+        }	
     }
 
     public void testLoadProject1() throws Exception { 
-	loadProject("file:testmodels/Empty.zargo");
+        loadProject("file:testmodels/Empty.zargo");
     }
     public void testLoadProject2() throws Exception {
-	loadProject("file:testmodels/Alittlebitofeverything.zargo");
+        loadProject("file:testmodels/Alittlebitofeverything.zargo");
     }
 
     public void testLoadGarbage() {
-	URL url = null;
-	boolean loaded = true;
-	try {
-	    url = new URL("file:testmodels/Garbage.zargo");
-	    Project p = ProjectManager.getManager().loadProject(url);
-	    assertTrue("Load Status", !ArgoParser.SINGLETON.getLastLoadStatus());
-	} catch (java.net.MalformedURLException e) {
-	    assertTrue("Incorrect test case.", false);
-	} catch (Exception io) {
-	    // This is the normal case.
-	    loaded = false;
-	}
-	assertTrue("No exception was thrown.", !loaded);
+        URL url = null;
+        boolean loaded = true;
+        try {
+            url = new URL("file:testmodels/Garbage.zargo");
+            ZargoFilePersister persister = new ZargoFilePersister();
+            Project p = persister.loadProject(url);
+            assertTrue("Load Status", !ArgoParser.SINGLETON.getLastLoadStatus());
+        } catch (java.net.MalformedURLException e) {
+            assertTrue("Incorrect test case.", false);
+        } catch (Exception io) {
+            // This is the normal case.
+            loaded = false;
+        }
+        assertTrue("No exception was thrown.", !loaded);
     }
 }
 
