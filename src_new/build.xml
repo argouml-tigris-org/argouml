@@ -419,7 +419,8 @@ Property files to be searched:
         <include name="JavaTokenTypes.txt"/>
       </fileset>
     </delete>
-    <java classname="antlr.Tool" classpath="${classpath}" fork="yes">
+    <java classname="antlr.Tool" classpath="${classpath}" fork="yes"
+          maxmemory="32M">
           <arg line="-o ${argo.src.dir}/org/argouml/uml/reveng/java  ${argo.src.dir}/org/argouml/uml/reveng/java/java.g"/>
           <classpath>
 	          <path refid="antlr.runtime.classpath"/>
@@ -433,7 +434,8 @@ Property files to be searched:
         <include name="JavaTokenTypes.txt"/>
       </fileset>
     </delete>
-    <java classname="antlr.Tool" classpath="${classpath}" fork="yes">
+    <java classname="antlr.Tool" classpath="${classpath}" fork="yes"
+          maxmemory="32M">
           <arg line="-o ${argo.src.dir}/org/argouml/language/java/generator  ${argo.src.dir}/org/argouml/language/java/generator/java.g"/>
           <classpath>
 	          <path refid="antlr.runtime.classpath"/>
@@ -1049,7 +1051,7 @@ For details see http://www.clarkware.com/software/JDepend.html.
   <!-- =================================================================== -->
   <!-- Runs checkstyle to find style problems in ArgoUML.                  -->
   <!-- =================================================================== -->
-  <target name="checkstyle" depends="init"
+  <target name="checkstyle" depends="init,cleanparser"
           description="Run checkstyle on all source.">
     <java classname="com.puppycrawl.tools.checkstyle.Main" failonerror="false" fork="true" maxmemory="32M">
       <sysproperty key="checkstyle.header.file" value="${argo.tools.dir}/checkstyle/java.header"/>
