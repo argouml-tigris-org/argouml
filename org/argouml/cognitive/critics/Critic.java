@@ -268,7 +268,15 @@ public class Critic implements Poster, Serializable {
    * @see Critic#predicate
    # @see Critic#toDoItem */
   public void critique(Object dm, Designer dsgr) {
-    cat.debug("applying critic: " + _headline);
+      // The following debug line is now the single most memory consuming
+      // line in the whole of ArgoUML. It allocates approximately 18% of
+      // all memory allocated.
+      // Suggestions for solutions:
+      // Check if there is a cat.debug(String, String) method that can 
+      // be used instead. 
+      // Use two calls.
+      // For now I (Linus) just comment it out.
+      // cat.debug("applying critic: " + _headline);
     if (predicate(dm, dsgr)) {
       cat.debug("predicate() detected error");
       _numCriticsFired++;
@@ -320,6 +328,14 @@ public class Critic implements Poster, Serializable {
     }
     if (i.getOffenders().size() != 1) return true;
     if (predicate(i.getOffenders().firstElement(), dsgr)) {
+	// Now we know that this critic is still valid. What we need to
+	// figure out is if the corresponding to-do item is still valid.
+	// The to-do item is to be replaced if the name of some offender
+	// has changed that affects its description or if the contents 
+	// of the list of offenders has changed.
+	// We check that by creating a new ToDoItem and then verifying
+	// that it looks exactly the same.
+	// This really creates a lot of to-do items that goes to waste.
       ToDoItem item = toDoItem(i.getOffenders().firstElement(), dsgr);
       return (item.equals(i));
     }
