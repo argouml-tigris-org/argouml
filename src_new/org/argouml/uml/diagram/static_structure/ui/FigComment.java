@@ -198,13 +198,13 @@ public class FigComment
 	// Tell the annotated element, that it has a comment now.
         ModelFacade.addComment(element, comment);
 
-        // Notes in state diagrams need a special treatment, cause
+        // Notes in statechart diagrams need a special treatment, cause
         // the nodes in them don't necessary have a namespace, where
         // we could add the note. So I added this hack... :-(
         // Andreas Rueckert <a_rueckert@gmx.net>
         if (ModelFacade.isAStateVertex(element)) {
 
-	    // If the current target is a state diagram, we have to
+	    // If the current target is a statechart diagram, we have to
 	    // check, if we are editing the diagram.
             ProjectBrowser pb = ProjectBrowser.getInstance(); 
             if (TargetManager.getInstance().getTarget() instanceof UMLStateDiagram) { 
