@@ -98,7 +98,22 @@ public abstract class SAXParserBase extends HandlerBase {
       if (_stats) {
 	System.out.println("Elapsed time: " + (end - start) + " ms");
       }
-    } catch (Exception se) {
+    } 
+    catch(SAXException saxEx) {
+        //
+        //  a SAX exception could have been generated
+        //    because of another exception.
+        //    Get the initial exception to display the 
+        //    location of the true error
+        Exception ex = saxEx.getException();
+        if(ex == null) {
+            saxEx.printStackTrace();
+        }
+        else {
+            ex.printStackTrace();
+        }
+    }
+    catch (Exception se) {
       se.printStackTrace();
     }
   }

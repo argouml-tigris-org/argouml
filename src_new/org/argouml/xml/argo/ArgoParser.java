@@ -63,6 +63,21 @@ public class ArgoParser extends SAXParserBase {
       _proj = new Project(url);
       parse(url);
     }
+    catch(SAXException saxEx) {
+        System.out.println("Exception reading project================");
+        //
+        //  a SAX exception could have been generated
+        //    because of another exception.
+        //    Get the initial exception to display the 
+        //    location of the true error
+        Exception ex = saxEx.getException();
+        if(ex == null) {
+            saxEx.printStackTrace();
+        }
+        else {
+            ex.printStackTrace();
+        }
+    }
     catch (Exception ex) {
       System.out.println("Exception reading project================");
       ex.printStackTrace();
