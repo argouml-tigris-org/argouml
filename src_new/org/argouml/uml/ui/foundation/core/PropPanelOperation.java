@@ -40,6 +40,7 @@ import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
+import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.MMUtil;
 
@@ -254,11 +255,14 @@ public class PropPanelOperation extends PropPanelModelElement {
     public void buttonAddParameter() {
         Object target = getTarget();
         if(target instanceof MOperation) {
+        	navigateTo(CoreFactory.getFactory().buildParameter((MOperation)target));
+        	/*
             MOperation oper = (MOperation) target;
             MParameter newParam = oper.getFactory().createParameter();
             newParam.setKind(MParameterDirectionKind.INOUT);
             oper.addParameter(newParam);
             navigateTo(newParam);
+            */
         }
     }
 

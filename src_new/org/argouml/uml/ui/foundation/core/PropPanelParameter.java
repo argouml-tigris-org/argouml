@@ -32,6 +32,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
@@ -55,7 +56,7 @@ public class PropPanelParameter extends PropPanelModelElement {
 
         addCaption(Argo.localize("UMLMenu", "label.type"),0,1,0);
         UMLComboBoxModel typeModel = new UMLComboBoxModel(this,"isAcceptibleType",
-            "type","getType","setType",false,MClassifier.class,true);
+            "type","getType","setType",true,MClassifier.class,true);
 	UMLComboBox typeComboBox=new UMLComboBox(typeModel);
         addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),typeComboBox),0,1,0);
 
@@ -135,14 +136,7 @@ public class PropPanelParameter extends PropPanelModelElement {
         if(target instanceof MParameter) {
             feature = ((MParameter) target).getBehavioralFeature();
             if(feature != null) {
-                MParameter newParam = feature.getFactory().createParameter();
-                newParam.setKind(MParameterDirectionKind.INOUT);
-                feature.addParameter(newParam);
-                navigateTo(newParam);
-                 // 2002-07-15
-            	// Jaap Branderhorst
-            	// Force an update of the navigation pane to solve issue 323
-            	ProjectBrowser.TheInstance.getNavPane().forceUpdate();
+                navigateTo(CoreFactory.getFactory().buildParameter(feature));
             }
         }
     }

@@ -806,7 +806,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * Constructs a default parameter and adds it to oper.
+     * Constructs a default parameter and adds it to oper. The name is unique in the operation so 
+     * no code generation problems will exist.
      *
      * @param oper  The operation where it is added to. 
      *          If null, it is not added.
@@ -814,9 +815,19 @@ public class CoreFactory extends AbstractUmlModelFactory {
      */
     public MParameter buildParameter(MBehavioralFeature oper) {
         MParameter res = buildParameter();
-    
-        if (oper != null)
+    	String name = "arg";
+    	int counter = 1;
+        if (oper != null) {
+        	Iterator it = oper.getParameters().iterator();
+        	while (it.hasNext()) {
+        		MParameter para = (MParameter)it.next();
+        		if ((name + counter).equals(para.getName())) {
+        			counter++;
+        		} 
+        	}
             oper.addParameter(res);
+        }
+        res.setName(name + counter);
         return res;
     }
     
