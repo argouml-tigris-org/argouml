@@ -353,7 +353,13 @@ public class Project implements java.io.Serializable, TargetListener {
                     try {
                         pm.load(sub);
                     } catch (IOException ioe) {
+                        cat.error("exception whilst loading todo"+
+                        " list project member",
+                        ioe);
                     } catch (org.xml.sax.SAXException se) {
+                        cat.error("exception whilst loading todo"+
+                        " list project member",
+                        se);
                     }
                     addMember(pm);
                 }

@@ -147,10 +147,16 @@ public class ItemUID
 	}
 	catch (NoSuchMethodException nsme)
 	{
+	    cat.error("getItemUID for " + obj.getClass() +
+		      " threw: ",
+		      nsme);
 	    return null;
 	}
 	catch (SecurityException se)
 	{
+	    cat.error("getItemUID for " + obj.getClass() +
+		      " threw: ",
+		      se);
 	    return null;
 	}
 	catch (InvocationTargetException tie)
@@ -162,6 +168,9 @@ public class ItemUID
 	}
 	catch (IllegalAccessException iace)
 	{
+	    cat.error("getItemUID for " + obj.getClass() +
+		      " threw: ",
+		      iace);
 	    return null;
 	}
 	catch (IllegalArgumentException iare)
@@ -173,6 +182,9 @@ public class ItemUID
 	}
 	catch (ExceptionInInitializerError eiie)
 	{
+	    cat.error("getItemUID for " + obj.getClass() +
+		      " exception: ",
+		      eiie);
 	    return null;
 	}
 
@@ -229,10 +241,16 @@ public class ItemUID
 	}
 	catch (NoSuchMethodException nsme)
 	{
+	    cat.error("setItemUID for " + obj.getClass() +
+		      " threw",
+		      nsme);
 	    return null;
 	}
 	catch (SecurityException se)
 	{
+	    cat.error("setItemUID for " + obj.getClass() +
+		      " threw",
+		      se);
 	    return null;
 	}
 	catch (InvocationTargetException tie)
@@ -244,6 +262,9 @@ public class ItemUID
 	}
 	catch (IllegalAccessException iace)
 	{
+	    cat.error("setItemUID for " + obj.getClass() +
+		      " threw",
+		      iace);
 	    return null;
 	}
 	catch (IllegalArgumentException iare)
@@ -255,6 +276,9 @@ public class ItemUID
 	}
 	catch (ExceptionInInitializerError eiie)
 	{
+	    cat.error("setItemUID for " + obj.getClass() +
+		      " threw",
+		      eiie);
 	    return null;
 	}
 

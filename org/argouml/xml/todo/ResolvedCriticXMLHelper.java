@@ -28,6 +28,8 @@ import java.util.Vector;
 import java.util.Enumeration;
 import org.argouml.cognitive.ResolvedCritic;
 
+import org.apache.log4j.Logger;
+
 /**
  * A helper class to provide a view of a ResolvedCritic that is particularly
  * suited for saving to an XML file.
@@ -37,6 +39,9 @@ import org.argouml.cognitive.ResolvedCritic;
  */
 public class ResolvedCriticXMLHelper
 {
+    
+	private static Logger cat = Logger.getLogger(ResolvedCriticXMLHelper.class);
+    
     /** The ResolvedCritic this instance helps. */
     protected final ResolvedCritic _item;
 

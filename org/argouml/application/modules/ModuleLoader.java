@@ -118,7 +118,9 @@ public class ModuleLoader {
 		 */
 	        argoHome = java.net.URLDecoder.decode(argoHome);
 	    }
-	    catch (Exception e) { }
+	    catch (Exception e) {
+             cat.warn(e);
+            }
 
 	    ArgoModule.cat.info("argoHome is " + argoHome);
 	}

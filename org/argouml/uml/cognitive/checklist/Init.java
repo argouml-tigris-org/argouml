@@ -24,6 +24,8 @@
 
 package org.argouml.uml.cognitive.checklist;
 
+import org.apache.log4j.Logger;
+
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -37,6 +39,8 @@ import org.argouml.model.ModelFacade;
 
 public class Init {
 
+    protected static Logger cat =
+	Logger.getLogger(Init.class);
 
     /** static initializer, register all appropriate critics */
     public static void init(Locale locale) {
@@ -63,6 +67,7 @@ public class Init {
             CheckManager.register(cls, checklist);
         }
         catch (MissingResourceException e) {
+            cat.error(e);
             e.printStackTrace();
         }
     }

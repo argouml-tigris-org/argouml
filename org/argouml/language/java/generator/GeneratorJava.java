@@ -214,6 +214,7 @@ public class GeneratorJava
             fos.write(header);
             fos.write(src);
         } catch (IOException exp) {
+            cat.error("IO Exception: "+exp+", for file: "+f.getPath());
         } finally {
             _isFileGeneration = false;
             try {

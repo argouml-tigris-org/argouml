@@ -235,8 +235,10 @@ public class TabStyle
             try {
                 p = (TabFigTarget) panelClass.newInstance();
             } catch (IllegalAccessException ignore) {
+                _cat.error(ignore);
                 return null;
             } catch (InstantiationException ignore) {
+                _cat.error(ignore);
                 return null;
             }
             _panels.put(targetClass, p);

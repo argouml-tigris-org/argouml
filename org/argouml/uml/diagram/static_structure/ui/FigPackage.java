@@ -191,6 +191,7 @@ public class FigPackage extends FigNodeModelElement {
 					lNew.setName(diagramName);
 				    }
 				} catch (Exception ex) {
+                                    cat.error(ex);
 				}
 
 				return;

@@ -74,6 +74,7 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
             Vector figs = ce.getSelectionManager().getFigs();
             size = figs.size();
         } catch (Exception e) {
+            cat.error("could not determine number of figs",e);
         }
         return size > 0;
     }

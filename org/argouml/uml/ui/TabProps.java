@@ -276,8 +276,10 @@ public class TabProps
             }
             // doubtfull if the next ones must be ignored.
             catch (IllegalAccessException ignore) {
+                cat.error(ignore);
                 return null;
             } catch (InstantiationException ignore) {
+                cat.error(ignore);
                 return null;
             }
 
