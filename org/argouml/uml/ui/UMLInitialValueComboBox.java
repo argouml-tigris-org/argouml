@@ -93,12 +93,12 @@ public class UMLInitialValueComboBox extends JComboBox
                 Object target = _container.getTarget();
                 if (org.argouml.model.ModelFacade.isAAttribute(target)) {
                     MExpression itemExpr = UmlFactory.getFactory().getDataTypes().createExpression("Java", item);
-                    ((MAttribute) target).setInitialValue(itemExpr);
+                    ModelFacade.setInitialValue(target, itemExpr);
                     update();
                 }
                 else if (org.argouml.model.ModelFacade.isAParameter(target)) {
                     MExpression itemExpr = UmlFactory.getFactory().getDataTypes().createExpression("Java", item);
-                    ((MParameter) target).setDefaultValue(itemExpr);
+                    ModelFacade.setDefaultValue(target, itemExpr);
                     update();
                 }
             }

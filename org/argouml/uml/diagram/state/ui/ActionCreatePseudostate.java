@@ -34,7 +34,6 @@ import java.util.Hashtable;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.behavior.state_machines.MPseudostate;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 /**  */
@@ -64,7 +63,7 @@ public class ActionCreatePseudostate extends CmdCreateNode {
     public Object makeNode() {
 	Object newNode = super.makeNode();
 	MPseudostateKind kind = (MPseudostateKind) _args.get("kind");
-	((MPseudostate) newNode).setKind(kind);
+	ModelFacade.setKind(newNode, kind);
     
 	return newNode;
     }

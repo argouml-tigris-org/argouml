@@ -413,7 +413,7 @@ public class FigComment
      */
     public final void storeNote(String note) {
         if (getOwner() != null)
-             ((MModelElement) getOwner()).setName(note);
+             ModelFacade.setName(getOwner(), note);
     }
 
     /**

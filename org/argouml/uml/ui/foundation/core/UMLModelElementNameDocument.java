@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -26,9 +25,8 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLPlainTextDocument;
-
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * @since Oct 10, 2002
@@ -49,7 +47,7 @@ public class UMLModelElementNameDocument extends UMLPlainTextDocument {
      * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
      */
     protected void setProperty(String text) {
-        ((MModelElement) getTarget()).setName(text);
+        ModelFacade.setName(getTarget(), text);
     }
 
     /**

@@ -28,8 +28,6 @@ package org.argouml.uml.ui.behavior.use_cases;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 
-import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
-
 /**
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -49,7 +47,7 @@ public class UMLExtensionPointLocationDocument extends UMLPlainTextDocument {
      * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
      */
     protected void setProperty(String text) {
-        ((MExtensionPoint) getTarget()).setLocation(text);
+        ModelFacade.setLocation(getTarget(), text);
     }
 
     /**
