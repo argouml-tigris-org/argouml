@@ -139,7 +139,8 @@ public class ActionRemoveFromModel extends UMLChangeAction {
                 }
                 ProjectBrowser.TheInstance.getProject().moveToTrash(target); 
                 ProjectBrowser.TheInstance.getNavPane().forceUpdate();
-            }
+            } 
+            		
         }
         super.actionPerformed(ae);
     }
@@ -153,7 +154,9 @@ public class ActionRemoveFromModel extends UMLChangeAction {
     public boolean sureRemove(Object target) {
     	// usage of other sureRemove method is legacy. They should be integrated.
     	boolean sure = false;
-    	if (target instanceof MModelElement) sure = sureRemove((MModelElement)target); 
+    	if (target instanceof MModelElement) {
+    		sure = sureRemove((MModelElement)target); 
+    	} else 
     	if (target instanceof UMLDiagram) {
     		// lets see if this diagram has some figs on it
     		UMLDiagram diagram = (UMLDiagram)target;
@@ -172,6 +175,9 @@ public class ActionRemoveFromModel extends UMLChangeAction {
     		} else { // no content of diagram
     			sure = true;
     		}
+    	} else
+    	if (target instanceof Fig) { // we can delete figs like figrects now too
+    		sure = true;
     	}
     	return sure;
     }
