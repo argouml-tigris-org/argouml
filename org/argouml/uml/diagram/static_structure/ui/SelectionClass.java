@@ -77,10 +77,14 @@ public class SelectionClass extends SelectionWButtons {
 
     public static Icon selfassoc =
         ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("SelfAssociation");
+        
+
 
     ////////////////////////////////////////////////////////////////
     // instance variables
     protected boolean _useComposite = false;
+    
+
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -251,30 +255,34 @@ public class SelectionClass extends SelectionWButtons {
 
         Rectangle outputRect = new Rectangle(Math.max(0, fc.getX() - 200),
                                              Math.max(0, fc.getY() - 200),
-                                             fc.getWidth() + 400,
+                                             fc.getWidth() + 400,                              
                                              fc.getHeight() + 400);
-        if (buttonCode == 10) {
-            newFC.setLocation(fc.getX(), Math.max(0, fc.getY() - 200));
-            outputRect.height = 200;
-            lay.bumpOffOtherNodesIn(newFC, outputRect, false, false);
-        }
-        else if (buttonCode == 11) {
-            newFC.setLocation(fc.getX(), fc.getY() + fc.getHeight() + 100);
-            outputRect.y = fc.getY() + fc.getHeight() + 100;
-            outputRect.height = 200;
-            lay.bumpOffOtherNodesIn(newFC, outputRect, false, false);
-        }
-        else if (buttonCode == 12) {
-            newFC.setLocation(fc.getX() + fc.getWidth() + 100, fc.getY());
-            outputRect.x = fc.getX()+ fc.getWidth() + 100 ;
-            outputRect.width = 200;
-            lay.bumpOffOtherNodesIn(newFC, outputRect, false, true);
-        }
-        else if (buttonCode == 13) {
-            newFC.setLocation(Math.max(0, fc.getX() - 200), fc.getY());
-            outputRect.x = fc.getX() - 200;
-            outputRect.width = 200;
-            lay.bumpOffOtherNodesIn(newFC, outputRect, false, true);
+                                             
+        
+        // handle the case that it is not a self association
+        if (buttonCode >=10 && buttonCode <= 13) {
+            int x = 0;
+            int y = 0; 
+            if (buttonCode == 10) {
+                // superclass
+                x = fc.getX();
+                y = Math.max(0, fc.getY() - 200);
+            }
+            else if (buttonCode == 11) {
+                x = fc.getX();
+                y = fc.getY() + fc.getHeight() + 100;
+            }
+            else if (buttonCode == 12) {
+                x = fc.getX() + fc.getWidth() + 100;
+                y = fc.getY();
+            }
+            else if (buttonCode == 13) {
+                x = Math.max(0, fc.getX() - 200);
+                y = fc.getY();
+                
+            }        
+            // place the fig if it is not a selfassociation       
+            if (!placeFig(newFC, lay, x, y, outputRect)) return;
         }
         
         // add the new node only if required, e.g. not when we add a 
@@ -349,5 +357,8 @@ public class SelectionClass extends SelectionWButtons {
         super.mouseEntered(me);
         _useComposite = me.isShiftDown();
     }
+    
+    
+        
 
 } /* end class SelectionClass */
