@@ -1,31 +1,36 @@
 // $Id$
-//Copyright (c) 2003 The Regents of the University of California. All
-//Rights Reserved. Permission to use, copy, modify, and distribute this
-//software and its documentation without fee, and without a written
-//agreement is hereby granted, provided that the above copyright notice
-//and this paragraph appear in all copies.  This software program and
-//documentation are copyrighted by The Regents of the University of
-//California. The software program and documentation are supplied "AS
-//IS", without any accompanying services from The Regents. The Regents
-//does not warrant that the operation of the program will be
-//uninterrupted or error-free. The end-user understands that the program
-//was developed for research purposes and is advised not to rely
-//exclusively on the program for any reason.  IN NO EVENT SHALL THE
-//UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-//SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
-//ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-//THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-//SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
-//WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-//MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-//PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-//CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
-//UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+// Copyright (c) 2003 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.model.uml;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+
+import org.argouml.model.UmlModelEntity;
 
 /**
  * This class contains identifiers for all of the different
@@ -35,502 +40,426 @@ import java.util.Map;
  */
 public final class Uml {
 
-    private static Map umlClassList;
+    private static HashSet umlClassList;
 
-	/** Get a map containing entries for all the name/identifier pairs
+    private static Map xref;
+
+    /** Get a map containing entries for all the name/identifier pairs
      * identified by Argo
+     * 
+     * @return a collection of all recognized Uml class types
      */
-    public static Map getUmlClassList() {
+    public static Collection getUmlClassList() {
         return umlClassList;
     }
 
-	public static final UmlEntity ABSTRACTION;
-	public static final UmlEntity ACTION;
-	public static final UmlEntity ACTION_EXPRESSION;
-	public static final UmlEntity ACTION_SEQUENCE;
-	public static final UmlEntity ACTION_STATE;
-	public static final UmlEntity ACTIVITY_GRAPH;
-	public static final UmlEntity ACTOR;
-	public static final UmlEntity ARG_LISTS_EXPRESSION;
-	public static final UmlEntity ARGUMENT;
-	public static final UmlEntity ASSOCIATION;
-	public static final UmlEntity ASSOCIATION_CLASS;
-	public static final UmlEntity ASSOCIATION_END;
-	public static final UmlEntity ASSOCIATION_END_ROLE;
-	public static final UmlEntity ASSOCIATION_ROLE;
-	public static final UmlEntity ATTRIBUTE;
-	public static final UmlEntity ATTRIBUTE_LINK;
-	public static final UmlEntity BEHAVIORAL_FEATURE;
-	public static final UmlEntity BINDING;
-	public static final UmlEntity BOOLEAN_EXPRESSION;
-	public static final UmlEntity CALL_ACTION;
-	public static final UmlEntity CALL_EVENT;
-	public static final UmlEntity CALL_STATE;
-	public static final UmlEntity CHANGE_EVENT;
-	public static final UmlEntity CLASS;
-	public static final UmlEntity CLASSIFIER;
-	public static final UmlEntity CLASSIFIER_IN_STATE;
-	public static final UmlEntity CLASSIFIER_ROLE;
-	public static final UmlEntity COLLABORATION;
-	public static final UmlEntity COMMENT;
-	public static final UmlEntity COMPONENT;
-	public static final UmlEntity COMPONENT_INSTANCE;
-	public static final UmlEntity COMPOSITE_STATE;
-	public static final UmlEntity CONSTRAINT;
-	public static final UmlEntity CREATE_ACTION;
-	public static final UmlEntity DATA_VALUE;
-	public static final UmlEntity DATATYPE;
-	public static final UmlEntity DEPENDENCY;
-	public static final UmlEntity DESTROY_ACTION;
-	public static final UmlEntity ELEMENT;
-	public static final UmlEntity ELEMENT_IMPORT;
-	public static final UmlEntity ELEMENT_RESIDENCE;
-	public static final UmlEntity EVENT;
-	public static final UmlEntity EXCEPTION;
-	public static final UmlEntity EXPRESSION;
-	public static final UmlEntity EXTEND;
-	public static final UmlEntity EXTENSION_POINT;
-	public static final UmlEntity FEATURE;
-	public static final UmlEntity FINAL_STATE;
-	public static final UmlEntity FLOW;
-	public static final UmlEntity GENERALIZABLE_ELEMENT   ;
-	public static final UmlEntity GENERALIZATION;
-	public static final UmlEntity GUARD;
-	public static final UmlEntity INCLUDE;
-	public static final UmlEntity INSTANCE;
-	public static final UmlEntity INTERACTION;
-	public static final UmlEntity INTERFACE;
-	public static final UmlEntity ITERATION_EXPRESSION;
-	public static final UmlEntity LINK;
-	public static final UmlEntity LINK_END;
-	public static final UmlEntity LINK_OBJECT;
-	public static final UmlEntity MAPPING_EXPRESSION;
-	public static final UmlEntity MESSAGE;
-	public static final UmlEntity METHOD;
-	public static final UmlEntity MODEL;
-	public static final UmlEntity MODEL_ELEMENT;
-	public static final UmlEntity MULTIPLICITY;
-	public static final UmlEntity MULTIPLICITY_RANGE;
-	public static final UmlEntity NAMESPACE;
-	public static final UmlEntity NODE;
-	public static final UmlEntity NODE_INSTANCE;
-	public static final UmlEntity OBJECT;
-	public static final UmlEntity OBJECT_FLOW_STATE;
-	public static final UmlEntity OBJECT_SET_EXPRESSION   ;
-	public static final UmlEntity OPERATION;
-	public static final UmlEntity PACKAGE;
-	public static final UmlEntity PARAMETER;
-	public static final UmlEntity PARTITION;
-	public static final UmlEntity PERMISSION;
-	public static final UmlEntity PRESENTATION_ELEMENT;
-	public static final UmlEntity PROCEDURE_EXPRESSION;
-	public static final UmlEntity PSEUDOSTATE;
-	public static final UmlEntity RECEPTION;
-	public static final UmlEntity RELATIONSHIP;
-	public static final UmlEntity RETURN_ACTION;
-	public static final UmlEntity SEND_ACTION;
-	public static final UmlEntity SIGNAL;
-	public static final UmlEntity SIGNAL_EVENT;
-	public static final UmlEntity SIMPLE_STATE;
-	public static final UmlEntity STATE;
-	public static final UmlEntity STATE_MACHINE;
-	public static final UmlEntity STATE_VERTEX;
-	public static final UmlEntity STEREOTYPE;
-	public static final UmlEntity STIMULUS;
-	public static final UmlEntity STRUCTURAL_FEATURE;
-	public static final UmlEntity STUB_STATE;
-	public static final UmlEntity SUBACTIVITY_STATE;
-	public static final UmlEntity SUBMACHINE_STATE;
-	public static final UmlEntity SUBSYSTEM;
-	public static final UmlEntity SYNCH_STATE;
-	public static final UmlEntity TAGGED_VALUE;
-	public static final UmlEntity TEMPLATE_PARAMETER;
-	public static final UmlEntity TERMINATE_ACTION;
-	public static final UmlEntity TIME_EVENT;
-	public static final UmlEntity TIME_EXPRESSION;
-	public static final UmlEntity TRANSITION;
-	public static final UmlEntity TYPE_EXPRESSION;
-	public static final UmlEntity UNINTERPRETED_ACTION;
-	public static final UmlEntity USAGE;
-	public static final UmlEntity USE_CASE;
-	public static final UmlEntity USE_CASE_INSTANCE;
+    /** Abstraction identifier */
+    public static final UmlModelEntity ABSTRACTION;
+    /** Action identifier */
+    public static final UmlModelEntity ACTION;
+    /** ActionExpression identifier */
+    public static final UmlModelEntity ACTION_EXPRESSION;
+    /** ActionSequence identifier */
+    public static final UmlModelEntity ACTION_SEQUENCE;
+    /** ActionState identifier */
+    public static final UmlModelEntity ACTION_STATE;
+    /** ActivityGraph identifier */
+    public static final UmlModelEntity ACTIVITY_GRAPH;
+    /** Actor identifier */
+    public static final UmlModelEntity ACTOR;
+    /** ArgListsExpression identifier */
+    public static final UmlModelEntity ARG_LISTS_EXPRESSION;
+    /** Argument identifier */
+    public static final UmlModelEntity ARGUMENT;
+    // TODO Add more javadocs
+    public static final UmlModelEntity ASSOCIATION;
+    public static final UmlModelEntity ASSOCIATION_CLASS;
+    public static final UmlModelEntity ASSOCIATION_END;
+    public static final UmlModelEntity ASSOCIATION_END_ROLE;
+    public static final UmlModelEntity ASSOCIATION_ROLE;
+    public static final UmlModelEntity ATTRIBUTE;
+    public static final UmlModelEntity ATTRIBUTE_LINK;
+    public static final UmlModelEntity BEHAVIORAL_FEATURE;
+    public static final UmlModelEntity BINDING;
+    public static final UmlModelEntity BOOLEAN_EXPRESSION;
+    public static final UmlModelEntity CALL_ACTION;
+    public static final UmlModelEntity CALL_EVENT;
+    public static final UmlModelEntity CALL_STATE;
+    public static final UmlModelEntity CHANGE_EVENT;
+    public static final UmlModelEntity CLASS;
+    public static final UmlModelEntity CLASSIFIER;
+    public static final UmlModelEntity CLASSIFIER_IN_STATE;
+    public static final UmlModelEntity CLASSIFIER_ROLE;
+    public static final UmlModelEntity COLLABORATION;
+    public static final UmlModelEntity COMMENT;
+    public static final UmlModelEntity COMPONENT;
+    public static final UmlModelEntity COMPONENT_INSTANCE;
+    public static final UmlModelEntity COMPOSITE_STATE;
+    public static final UmlModelEntity CONSTRAINT;
+    public static final UmlModelEntity CREATE_ACTION;
+    public static final UmlModelEntity DATA_VALUE;
+    public static final UmlModelEntity DATATYPE;
+    public static final UmlModelEntity DEPENDENCY;
+    public static final UmlModelEntity DESTROY_ACTION;
+    public static final UmlModelEntity ELEMENT;
+    public static final UmlModelEntity ELEMENT_IMPORT;
+    public static final UmlModelEntity ELEMENT_RESIDENCE;
+    public static final UmlModelEntity EVENT;
+    public static final UmlModelEntity EXCEPTION;
+    public static final UmlModelEntity EXPRESSION;
+    public static final UmlModelEntity EXTEND;
+    public static final UmlModelEntity EXTENSION_POINT;
+    public static final UmlModelEntity FEATURE;
+    public static final UmlModelEntity FINAL_STATE;
+    public static final UmlModelEntity FLOW;
+    public static final UmlModelEntity GENERALIZABLE_ELEMENT;
+    public static final UmlModelEntity GENERALIZATION;
+    public static final UmlModelEntity GUARD;
+    public static final UmlModelEntity INCLUDE;
+    public static final UmlModelEntity INSTANCE;
+    public static final UmlModelEntity INTERACTION;
+    public static final UmlModelEntity INTERFACE;
+    public static final UmlModelEntity ITERATION_EXPRESSION;
+    public static final UmlModelEntity LINK;
+    public static final UmlModelEntity LINK_END;
+    public static final UmlModelEntity LINK_OBJECT;
+    public static final UmlModelEntity MAPPING_EXPRESSION;
+    public static final UmlModelEntity MESSAGE;
+    public static final UmlModelEntity METHOD;
+    public static final UmlModelEntity MODEL;
+    public static final UmlModelEntity MODEL_ELEMENT;
+    public static final UmlModelEntity MULTIPLICITY;
+    public static final UmlModelEntity MULTIPLICITY_RANGE;
+    public static final UmlModelEntity NAMESPACE;
+    public static final UmlModelEntity NODE;
+    public static final UmlModelEntity NODE_INSTANCE;
+    public static final UmlModelEntity OBJECT;
+    public static final UmlModelEntity OBJECT_FLOW_STATE;
+    public static final UmlModelEntity OBJECT_SET_EXPRESSION;
+    public static final UmlModelEntity OPERATION;
+    public static final UmlModelEntity PACKAGE;
+    public static final UmlModelEntity PARAMETER;
+    public static final UmlModelEntity PARTITION;
+    public static final UmlModelEntity PERMISSION;
+    public static final UmlModelEntity PRESENTATION_ELEMENT;
+    public static final UmlModelEntity PROCEDURE_EXPRESSION;
+    public static final UmlModelEntity PSEUDOSTATE;
+    public static final UmlModelEntity RECEPTION;
+    public static final UmlModelEntity RELATIONSHIP;
+    public static final UmlModelEntity RETURN_ACTION;
+    public static final UmlModelEntity SEND_ACTION;
+    public static final UmlModelEntity SIGNAL;
+    public static final UmlModelEntity SIGNAL_EVENT;
+    public static final UmlModelEntity SIMPLE_STATE;
+    public static final UmlModelEntity STATE;
+    public static final UmlModelEntity STATE_MACHINE;
+    public static final UmlModelEntity STATE_VERTEX;
+    public static final UmlModelEntity STEREOTYPE;
+    public static final UmlModelEntity STIMULUS;
+    public static final UmlModelEntity STRUCTURAL_FEATURE;
+    public static final UmlModelEntity STUB_STATE;
+    public static final UmlModelEntity SUBACTIVITY_STATE;
+    public static final UmlModelEntity SUBMACHINE_STATE;
+    public static final UmlModelEntity SUBSYSTEM;
+    public static final UmlModelEntity SYNCH_STATE;
+    public static final UmlModelEntity TAGGED_VALUE;
+    public static final UmlModelEntity TEMPLATE_PARAMETER;
+    public static final UmlModelEntity TERMINATE_ACTION;
+    public static final UmlModelEntity TIME_EVENT;
+    public static final UmlModelEntity TIME_EXPRESSION;
+    public static final UmlModelEntity TRANSITION;
+    public static final UmlModelEntity TYPE_EXPRESSION;
+    public static final UmlModelEntity UNINTERPRETED_ACTION;
+    public static final UmlModelEntity USAGE;
+    public static final UmlModelEntity USE_CASE;
+    public static final UmlModelEntity USE_CASE_INSTANCE;
 
-	/** Initialize the marker classes and the list of valid Uml classes */
+    /** Initialize the marker classes and the list of valid Uml classes */
 
-	static {
+    static {
 
-		Uml uml = new Uml();
-		// Initialize all of the marker classes.
+        Uml uml = new Uml();
+        // Initialize all of the marker classes.
 
-		ABSTRACTION             = uml.new TypeAbstraction();
-		ACTION                  = uml.new TypeAction();
-		ACTION_EXPRESSION       = uml.new TypeActionExpression();
-		ACTION_SEQUENCE         = uml.new TypeActionSequence();
-		ACTION_STATE            = uml.new TypeActionState();
-		ACTIVITY_GRAPH          = uml.new TypeActivityGraph();
-		ACTOR                   = uml.new TypeActor();
-		ARG_LISTS_EXPRESSION    = uml.new TypeArgListsExpression();
-		ARGUMENT                = uml.new TypeArgument();
-		ASSOCIATION             = uml.new TypeAssociation();
-		ASSOCIATION_CLASS       = uml.new TypeAssociationClass();
-		ASSOCIATION_END         = uml.new TypeAssociationEnd();
-		ASSOCIATION_END_ROLE    = uml.new TypeAssociationEndRole();
-		ASSOCIATION_ROLE        = uml.new TypeAssociationRole();
-		ATTRIBUTE               = uml.new TypeAttribute();
-		ATTRIBUTE_LINK          = uml.new TypeAttributeLink();
-		BEHAVIORAL_FEATURE      = uml.new TypeBehavioralFeature();
-		BINDING                 = uml.new TypeBinding();
-		BOOLEAN_EXPRESSION      = uml.new TypeBooleanExpression();
-		CALL_ACTION             = uml.new TypeCallAction();
-		CALL_EVENT              = uml.new TypeCallEvent();
-		CALL_STATE              = uml.new TypeCallState();
-		CHANGE_EVENT            = uml.new TypeChangeEvent();
-		CLASS                   = uml.new TypeClass();
-		CLASSIFIER              = uml.new TypeClassifier();
-		CLASSIFIER_IN_STATE     = uml.new TypeClassifierInState();
-		CLASSIFIER_ROLE         = uml.new TypeClassifierRole();
-		COLLABORATION           = uml.new TypeCollaboration();
-		COMMENT                 = uml.new TypeComment();
-		COMPONENT               = uml.new TypeComponent();
-		COMPONENT_INSTANCE      = uml.new TypeComponentInstance();
-		COMPOSITE_STATE         = uml.new TypeCompositeState();
-		CONSTRAINT              = uml.new TypeConstraint();
-		CREATE_ACTION           = uml.new TypeCreateAction();
-		DATA_VALUE              = uml.new TypeDataValue();
-		DATATYPE                = uml.new TypeDataType();
-		DEPENDENCY              = uml.new TypeDependency();
-		DESTROY_ACTION          = uml.new TypeDestroyAction();
-		ELEMENT                 = uml.new TypeElement();
-		ELEMENT_IMPORT          = uml.new TypeElementImport();
-		ELEMENT_RESIDENCE       = uml.new TypeElementResidence();
-		EVENT                   = uml.new TypeEvent();
-		EXCEPTION               = uml.new TypeException();
-		EXPRESSION              = uml.new TypeExpression();
-		EXTEND                  = uml.new TypeExtend();
-		EXTENSION_POINT         = uml.new TypeExtensionPoint();
-		FEATURE                 = uml.new TypeFeature();
-		FINAL_STATE             = uml.new TypeFinalState();
-		FLOW                    = uml.new TypeFlow();
-		GENERALIZABLE_ELEMENT   = uml.new TypeGeneralizableElement();
-		GENERALIZATION          = uml.new TypeGeneralization();
-		GUARD                   = uml.new TypeGuard();
-		INCLUDE                 = uml.new TypeInclude();
-		INSTANCE                = uml.new TypeInstance();
-		INTERACTION             = uml.new TypeInteraction();
-		INTERFACE               = uml.new TypeInterface();
-		ITERATION_EXPRESSION    = uml.new TypeIterationExpression();
-		LINK                    = uml.new TypeLink();
-		LINK_END                = uml.new TypeLinkEnd();
-		LINK_OBJECT             = uml.new TypeLinkObject();
-		MAPPING_EXPRESSION      = uml.new TypeMappingExpression();
-		MESSAGE                 = uml.new TypeMessage();
-		METHOD                  = uml.new TypeMethod();
-		MODEL                   = uml.new TypeModel();
-		MODEL_ELEMENT           = uml.new TypeModelElement();
-		MULTIPLICITY            = uml.new TypeMultiplicity();
-		MULTIPLICITY_RANGE      = uml.new TypeMultiplicityRange();
-		NAMESPACE               = uml.new TypeNamespace();
-		NODE                    = uml.new TypeNode();
-		NODE_INSTANCE           = uml.new TypeNodeInstance();
-		OBJECT                  = uml.new TypeObject();
-		OBJECT_FLOW_STATE       = uml.new TypeObjectFlowState();
-		OBJECT_SET_EXPRESSION   = uml.new TypeObjectSetExpression();
-		OPERATION               = uml.new TypeOperation();
-		PACKAGE                 = uml.new TypePackage();
-		PARAMETER               = uml.new TypeParameter();
-		PARTITION               = uml.new TypePartition();
-		PERMISSION              = uml.new TypePermission();
-		PRESENTATION_ELEMENT    = uml.new TypePresentationElement();
-		PROCEDURE_EXPRESSION    = uml.new TypeProcedureExpression();
-		PSEUDOSTATE             = uml.new TypePseudostate();
-		RECEPTION               = uml.new TypeReception();
-		RELATIONSHIP            = uml.new TypeRelationship();
-		RETURN_ACTION           = uml.new TypeReturnAction();
-		SEND_ACTION             = uml.new TypeSendAction();
-		SIGNAL                  = uml.new TypeSignal();
-		SIGNAL_EVENT            = uml.new TypeSignalEvent();
-		SIMPLE_STATE            = uml.new TypeSimpleState();
-		STATE                   = uml.new TypeState();
-		STATE_MACHINE           = uml.new TypeStateMachine();
-		STATE_VERTEX            = uml.new TypeStateVertex();
-		STEREOTYPE              = uml.new TypeStereotype();
-		STIMULUS                = uml.new TypeStimulus();
-		STRUCTURAL_FEATURE      = uml.new TypeStructuralFeature();
-		STUB_STATE              = uml.new TypeStubState();
-		SUBACTIVITY_STATE       = uml.new TypeSubactivityState();
-		SUBMACHINE_STATE        = uml.new TypeSubmachineState();
-		SUBSYSTEM               = uml.new TypeSubsystem();
-		SYNCH_STATE             = uml.new TypeSynchState();
-		TAGGED_VALUE            = uml.new TypeTaggedValue();
-		TEMPLATE_PARAMETER      = uml.new TypeTemplateParameter();
-		TERMINATE_ACTION        = uml.new TypeTerminateAction();
-		TIME_EVENT              = uml.new TypeTimeEvent();
-		TIME_EXPRESSION         = uml.new TypeTimeExpression();
-		TRANSITION              = uml.new TypeTransition();
-		TYPE_EXPRESSION         = uml.new TypeTypeExpression();
-		UNINTERPRETED_ACTION    = uml.new TypeUninterpretedAction();
-		USAGE                   = uml.new TypeUsage();
-		USE_CASE                = uml.new TypeUseCase();
-		USE_CASE_INSTANCE       = uml.new TypeUseCaseInstance();
+        ABSTRACTION             = new UmlModelEntity("Abstraction");
+        ACTION                  = new UmlModelEntity("Action");
+        ACTION_EXPRESSION       = new UmlModelEntity("ActionExpression");
+        ACTION_SEQUENCE         = new UmlModelEntity("ActionSequence",
+                                                      false, true);
+        ACTION_STATE            = new UmlModelEntity("ActionState",
+                                                     false, true);
+        ACTIVITY_GRAPH          = new UmlModelEntity("ActivityGraph",
+                                                     false, true);
+        ACTOR                   = new UmlModelEntity("Actor");
+        ARG_LISTS_EXPRESSION    = new UmlModelEntity("ArgListsExpression");
+        ARGUMENT                = new UmlModelEntity("Argument");
+        ASSOCIATION             = new UmlModelEntity("Association");
+        ASSOCIATION_CLASS       = new UmlModelEntity("AssociationClass");
+        ASSOCIATION_END         = new UmlModelEntity("AssociationEnd");
+        ASSOCIATION_END_ROLE    = new UmlModelEntity("AssociationEndRole",
+                                                     false, true);
+        ASSOCIATION_ROLE        = new UmlModelEntity("AssociationRole");
+        ATTRIBUTE               = new UmlModelEntity("Attribute");
+        ATTRIBUTE_LINK          = new UmlModelEntity("AttributeLink");
+        BEHAVIORAL_FEATURE      = new UmlModelEntity("BehavioralFeature",
+                                                     false, true);
+        BINDING                 = new UmlModelEntity("Binding");
+        BOOLEAN_EXPRESSION      = new UmlModelEntity("BooleanExpression");
+        CALL_ACTION             = new UmlModelEntity("CallAction");
+        CALL_EVENT              = new UmlModelEntity("CallEvent",
+                                                     false, true);
+        CALL_STATE              = new UmlModelEntity("CallState");
+        CHANGE_EVENT            = new UmlModelEntity("ChangeEvent");
+        CLASS                   = new UmlModelEntity("Class");
+        CLASSIFIER              = new UmlModelEntity("Classifier");
+        CLASSIFIER_IN_STATE     = new UmlModelEntity("ClassifierInState");
+        CLASSIFIER_ROLE         = new UmlModelEntity("ClassifierRole");
+        COLLABORATION           = new UmlModelEntity("Collaboration",
+                                                     false, true);
+        COMMENT                 = new UmlModelEntity("Comment",
+                                                     false, true);
+        COMPONENT               = new UmlModelEntity("Component");
+        COMPONENT_INSTANCE      = new UmlModelEntity("ComponentInstance");
+        COMPOSITE_STATE         = new UmlModelEntity("CompositeState");
+        CONSTRAINT              = new UmlModelEntity("Constraint",
+                                                     false, true);
+        CREATE_ACTION           = new UmlModelEntity("CreateAction",
+                                                     false, true);
+        DATA_VALUE              = new UmlModelEntity("DataValue",
+                                                     false, true);
+        DATATYPE                = new UmlModelEntity("DataType");
+        DEPENDENCY              = new UmlModelEntity("Dependency");
+        DESTROY_ACTION          = new UmlModelEntity("DestroyAction",
+                                                     false, true);
+        ELEMENT                 = new UmlModelEntity("Element",
+                                                     false, true);
+        ELEMENT_IMPORT          = new UmlModelEntity("ElementImport",
+                                                     false, true);
+        ELEMENT_RESIDENCE       = new UmlModelEntity("ElementResidence",
+                                                     false, true);
+        EVENT                   = new UmlModelEntity("Event");
+        EXCEPTION               = new UmlModelEntity("Exception");
+        EXPRESSION              = new UmlModelEntity("Expression",
+                                                     false, true);
+        EXTEND                  = new UmlModelEntity("Extend");
+        EXTENSION_POINT         = new UmlModelEntity("ExtensionPoint",
+                                                     false, true);
+        FEATURE                 = new UmlModelEntity("Feature",
+                                                     false, true);
+        FINAL_STATE             = new UmlModelEntity("FinalState",
+                                                     false, true);
+        FLOW                    = new UmlModelEntity("Flow",
+                                                     false, true);
+        GENERALIZABLE_ELEMENT   = new UmlModelEntity("GeneralizableElement",
+                                                     false, true);
+        GENERALIZATION          = new UmlModelEntity("Generalization");
+        GUARD                   = new UmlModelEntity("Guard",
+                                                     false, true);
+        INCLUDE                 = new UmlModelEntity("Include");
+        INSTANCE                = new UmlModelEntity("Instance");
+        INTERACTION             = new UmlModelEntity("Interaction",
+                                                     false, true);
+        INTERFACE               = new UmlModelEntity("Interface");
+        ITERATION_EXPRESSION    = new UmlModelEntity("IterationExpression");
+        LINK                    = new UmlModelEntity("Link");
+        LINK_END                = new UmlModelEntity("LinkEnd");
+        LINK_OBJECT             = new UmlModelEntity("LinkObject");
+        MAPPING_EXPRESSION      = new UmlModelEntity("MappingExpression");
+        MESSAGE                 = new UmlModelEntity("Message",
+                                                     false, true);
+        METHOD                  = new UmlModelEntity("Method",
+                                                     false, true);
+        MODEL                   = new UmlModelEntity("Model");
+        MODEL_ELEMENT           = new UmlModelEntity("ModelElement",
+                                                     false, true);
+        MULTIPLICITY            = new UmlModelEntity("Multiplicity",
+                                                     false, true);
+        MULTIPLICITY_RANGE      = new UmlModelEntity("MultiplicityRange");
+        NAMESPACE               = new UmlModelEntity("Namespace");
+        NODE                    = new UmlModelEntity("Node");
+        NODE_INSTANCE           = new UmlModelEntity("NodeInstance");
+        OBJECT                  = new UmlModelEntity("Object");
+        OBJECT_FLOW_STATE       = new UmlModelEntity("ObjectFlowState");
+        OBJECT_SET_EXPRESSION   = new UmlModelEntity("ObjectSetExpression");
+        OPERATION               = new UmlModelEntity("Operation");
+        PACKAGE                 = new UmlModelEntity("Package");
+        PARAMETER               = new UmlModelEntity("Parameter",
+                                                     false, true);
+        PARTITION               = new UmlModelEntity("Partition");
+        PERMISSION              = new UmlModelEntity("Permission");
+        PRESENTATION_ELEMENT    = new UmlModelEntity("PresentationElement");
+        PROCEDURE_EXPRESSION    = new UmlModelEntity("ProcedureExpression");
+        PSEUDOSTATE             = new UmlModelEntity("Pseudostate");
+        RECEPTION               = new UmlModelEntity("Reception");
+        RELATIONSHIP            = new UmlModelEntity("Relationship",
+                                                     false, true);
+        RETURN_ACTION           = new UmlModelEntity("ReturnAction",
+                                                     false, true);
+        SEND_ACTION             = new UmlModelEntity("SendAction",
+                                                     false, true);
+        SIGNAL                  = new UmlModelEntity("Signal",
+                                                     false, true);
+        SIGNAL_EVENT            = new UmlModelEntity("SignalEvent");
+        SIMPLE_STATE            = new UmlModelEntity("SimpleState");
+        STATE                   = new UmlModelEntity("State");
+        STATE_MACHINE           = new UmlModelEntity("StateMachine",
+                                                     false, true);
+        STATE_VERTEX            = new UmlModelEntity("StateVertex",
+                                                     false, true);
+        STEREOTYPE              = new UmlModelEntity("Stereotype");
+        STIMULUS                = new UmlModelEntity("Stimulus",
+                                                     false, true);
+        STRUCTURAL_FEATURE      = new UmlModelEntity("StructuralFeature",
+                                                     false, true);
+        STUB_STATE              = new UmlModelEntity("StubState");
+        SUBACTIVITY_STATE       = new UmlModelEntity("SubactivityState");
+        SUBMACHINE_STATE        = new UmlModelEntity("SubmachineState");
+        SUBSYSTEM               = new UmlModelEntity("Subsystem",
+                                                     false, true);
+        SYNCH_STATE             = new UmlModelEntity("SynchState");
+        TAGGED_VALUE            = new UmlModelEntity("TaggedValue",
+                                                     false, true);
+        TEMPLATE_PARAMETER      = new UmlModelEntity("TemplateParameter");
+        TERMINATE_ACTION        = new UmlModelEntity("TerminateAction");
+        TIME_EVENT              = new UmlModelEntity("TimeEvent");
+        TIME_EXPRESSION         = new UmlModelEntity("TimeExpression");
+        TRANSITION              = new UmlModelEntity("Transition");
+        TYPE_EXPRESSION         = new UmlModelEntity("TypeExpression");
+        UNINTERPRETED_ACTION    = new UmlModelEntity("UninterpretedAction");
+        USAGE                   = new UmlModelEntity("Usage");
+        USE_CASE                = new UmlModelEntity("UseCase");
+        USE_CASE_INSTANCE       = new UmlModelEntity("UseCaseInstance");
 
-		// Add the marker classes to the list
-		umlClassList = new HashMap(110);
+        // Add the marker classes to the list
+        umlClassList = new HashSet(110);
 
-		umlClassList.put("Abstraction", Uml.ABSTRACTION);
-		umlClassList.put("Action", Uml.ACTION);
-		umlClassList.put("ActionExpression", Uml.ACTION_EXPRESSION);
-		umlClassList.put("ActionSequence", Uml.ACTION_SEQUENCE);
-		umlClassList.put("ActionState", Uml.ACTION_STATE);
-		umlClassList.put("ActivityGraph", Uml.ACTIVITY_GRAPH);
-		umlClassList.put("Actor", Uml.ACTOR);
-		umlClassList.put("Actor", Uml.ACTOR);
-		umlClassList.put("ArgListsExpression", Uml.ARG_LISTS_EXPRESSION);
-		umlClassList.put("Argument", Uml.ARGUMENT);
-		umlClassList.put("Association", Uml.ASSOCIATION);
-		umlClassList.put("AssociationClass", Uml.ASSOCIATION_CLASS);
-		umlClassList.put("AssociationEnd", Uml.ASSOCIATION_END);
-		umlClassList.put("AssociationEndRole", Uml.ASSOCIATION_END_ROLE);
-		umlClassList.put("AssociationRole", Uml.ASSOCIATION_ROLE);
-		umlClassList.put("Attribute", Uml.ATTRIBUTE);
-		umlClassList.put("AttributeLink", Uml.ATTRIBUTE_LINK);
-		umlClassList.put("BehavioralFeature", Uml.BEHAVIORAL_FEATURE);
-		umlClassList.put("Binding", Uml.BINDING);
-		umlClassList.put("BooleanExpression", Uml.BOOLEAN_EXPRESSION);
-		umlClassList.put("CallAction", Uml.CALL_ACTION);
-		umlClassList.put("CallEvent", Uml.CALL_EVENT);
-		umlClassList.put("CallState", Uml.CALL_STATE);
-		umlClassList.put("ChangeEvent", Uml.CHANGE_EVENT);
-		umlClassList.put("Class", Uml.CLASS);
-		umlClassList.put("Classifier", Uml.CLASSIFIER);
-		umlClassList.put("ClassifierInState", Uml.CLASSIFIER_IN_STATE);
-		umlClassList.put("ClassifierRole", Uml.CLASSIFIER_ROLE);
-		umlClassList.put("Collaboration", Uml.COLLABORATION);
-		umlClassList.put("Comment", Uml.COMMENT);
-		umlClassList.put("Component", Uml.COMPONENT);
-		umlClassList.put("ComponentInstance", Uml.COMPONENT_INSTANCE);
-		umlClassList.put("CompositeState", Uml.COMPOSITE_STATE);
-		umlClassList.put("Constraint", Uml.CONSTRAINT);
-		umlClassList.put("CreateAction", Uml.CREATE_ACTION);
-		umlClassList.put("DataType", Uml.DATATYPE);
-		umlClassList.put("DataValue", Uml.DATA_VALUE);
-		umlClassList.put("Dependency", Uml.DEPENDENCY);
-		umlClassList.put("DestroyAction", Uml.DESTROY_ACTION);
-		umlClassList.put("Element", Uml.ELEMENT);
-		umlClassList.put("ElementImport", Uml.ELEMENT_IMPORT);
-		umlClassList.put("ElementResidence", Uml.ELEMENT_RESIDENCE);
-		umlClassList.put("Event", Uml.EVENT);
-		umlClassList.put("Exception", Uml.EXCEPTION);
-		umlClassList.put("Expression", Uml.EXPRESSION);
-		umlClassList.put("Extend", Uml.EXTEND);
-		umlClassList.put("ExtensionPoint", Uml.EXTENSION_POINT);
-		umlClassList.put("Feature", Uml.FEATURE);
-		umlClassList.put("FinalState", Uml.FINAL_STATE);
-		umlClassList.put("Flow", Uml.FLOW);
-		umlClassList.put("GeneralizableElement", Uml.GENERALIZABLE_ELEMENT);
-		umlClassList.put("Generalization", Uml.GENERALIZATION);
-		umlClassList.put("Guard", Uml.GUARD);
-		umlClassList.put("Include", Uml.INCLUDE);
-		umlClassList.put("Instance", Uml.INSTANCE);
-		umlClassList.put("Interaction", Uml.INTERACTION);
-		umlClassList.put("Interface", Uml.INTERFACE);
-		umlClassList.put("IterationExpression", Uml.ITERATION_EXPRESSION);
-		umlClassList.put("Link", Uml.LINK);
-		umlClassList.put("LinkEnd", Uml.LINK_END);
-		umlClassList.put("LinkObject", Uml.LINK_OBJECT);
-		umlClassList.put("MappingExpression", Uml.MAPPING_EXPRESSION);
-		umlClassList.put("Message", Uml.MESSAGE);
-		umlClassList.put("Method", Uml.METHOD);
-		umlClassList.put("Model", Uml.MODEL);
-		umlClassList.put("ModelElement", Uml.MODEL_ELEMENT);
-		umlClassList.put("Multiplicity", Uml.MULTIPLICITY);
-		umlClassList.put("MultiplicityRange", Uml.MULTIPLICITY_RANGE);
-		umlClassList.put("Namespace", Uml.NAMESPACE);
-		umlClassList.put("Node", Uml.NODE);
-		umlClassList.put("NodeInstance", Uml.NODE_INSTANCE);
-		umlClassList.put("Object", Uml.OBJECT);
-		umlClassList.put("ObjectFlowState", Uml.OBJECT_FLOW_STATE);
-		umlClassList.put("ObjectSetExpression", Uml.OBJECT_SET_EXPRESSION);
-		umlClassList.put("Operation", Uml.OPERATION);
-		umlClassList.put("Package", Uml.PACKAGE);
-		umlClassList.put("Parameter", Uml.PARAMETER);
-		umlClassList.put("Partition", Uml.PARTITION);
-		umlClassList.put("Permission", Uml.PERMISSION);
-		umlClassList.put("PresentationElement", Uml.PRESENTATION_ELEMENT);
-		umlClassList.put("ProcedureExpression", Uml.PROCEDURE_EXPRESSION);
-		umlClassList.put("Pseudostate", Uml.PSEUDOSTATE);
-		umlClassList.put("Reception", Uml.RECEPTION);
-		umlClassList.put("Relationship", Uml.RELATIONSHIP);
-		umlClassList.put("ReturnAction", Uml.RETURN_ACTION);
-		umlClassList.put("SendAction", Uml.SEND_ACTION);
-		umlClassList.put("Signal", Uml.SIGNAL);
-		umlClassList.put("SignalEvent", Uml.SIGNAL_EVENT);
-		umlClassList.put("SimpleState", Uml.SIMPLE_STATE);
-		umlClassList.put("State", Uml.STATE);
-		umlClassList.put("StateMachine", Uml.STATE_MACHINE);
-		umlClassList.put("StateVertex", Uml.STATE_VERTEX);
-		umlClassList.put("Stereotype", Uml.STEREOTYPE);
-		umlClassList.put("Stimulus", Uml.STIMULUS);
-		umlClassList.put("StructuralFeature", Uml.STRUCTURAL_FEATURE);
-		umlClassList.put("StubState", Uml.STUB_STATE);
-		umlClassList.put("SubactivityState", Uml.SUBACTIVITY_STATE);
-		umlClassList.put("SubmachineState", Uml.SUBMACHINE_STATE);
-		umlClassList.put("Subsystem", Uml.SUBSYSTEM);
-		umlClassList.put("SynchState", Uml.SYNCH_STATE);
-		umlClassList.put("TaggedValue", Uml.TAGGED_VALUE);
-		umlClassList.put("TemplateParameter", Uml.TEMPLATE_PARAMETER);
-		umlClassList.put("TerminateAction", Uml.TERMINATE_ACTION);
-		umlClassList.put("TimeEvent", Uml.TIME_EVENT);
-		umlClassList.put("TimeExpression", Uml.TIME_EXPRESSION);
-		umlClassList.put("Transition", Uml.TRANSITION);
-		umlClassList.put("TypeExpression", Uml.TYPE_EXPRESSION);
-		umlClassList.put("UninterpretedAction", Uml.UNINTERPRETED_ACTION);
-		umlClassList.put("Usage", Uml.USAGE);
-		umlClassList.put("UseCase", Uml.USE_CASE);
-		umlClassList.put("UseCaseInstance", Uml.USE_CASE_INSTANCE);
-	}
+        umlClassList.add(Uml.ABSTRACTION);
+        umlClassList.add(Uml.ACTION);
+        umlClassList.add(Uml.ACTION_EXPRESSION);
+        umlClassList.add(Uml.ACTION_SEQUENCE);
+        umlClassList.add(Uml.ACTION_STATE);
+        umlClassList.add(Uml.ACTIVITY_GRAPH);
+        umlClassList.add(Uml.ACTOR);
+        umlClassList.add(Uml.ACTOR);
+        umlClassList.add(Uml.ARG_LISTS_EXPRESSION);
+        umlClassList.add(Uml.ARGUMENT);
+        umlClassList.add(Uml.ASSOCIATION);
+        umlClassList.add(Uml.ASSOCIATION_CLASS);
+        umlClassList.add(Uml.ASSOCIATION_END);
+        umlClassList.add(Uml.ASSOCIATION_END_ROLE);
+        umlClassList.add(Uml.ASSOCIATION_ROLE);
+        umlClassList.add(Uml.ATTRIBUTE);
+        umlClassList.add(Uml.ATTRIBUTE_LINK);
+        umlClassList.add(Uml.BEHAVIORAL_FEATURE);
+        umlClassList.add(Uml.BINDING);
+        umlClassList.add(Uml.BOOLEAN_EXPRESSION);
+        umlClassList.add(Uml.CALL_ACTION);
+        umlClassList.add(Uml.CALL_EVENT);
+        umlClassList.add(Uml.CALL_STATE);
+        umlClassList.add(Uml.CHANGE_EVENT);
+        umlClassList.add(Uml.CLASS);
+        umlClassList.add(Uml.CLASSIFIER);
+        umlClassList.add(Uml.CLASSIFIER_IN_STATE);
+        umlClassList.add(Uml.CLASSIFIER_ROLE);
+        umlClassList.add(Uml.COLLABORATION);
+        umlClassList.add(Uml.COMMENT);
+        umlClassList.add(Uml.COMPONENT);
+        umlClassList.add(Uml.COMPONENT_INSTANCE);
+        umlClassList.add(Uml.COMPOSITE_STATE);
+        umlClassList.add(Uml.CONSTRAINT);
+        umlClassList.add(Uml.CREATE_ACTION);
+        umlClassList.add(Uml.DATATYPE);
+        umlClassList.add(Uml.DATA_VALUE);
+        umlClassList.add(Uml.DEPENDENCY);
+        umlClassList.add(Uml.DESTROY_ACTION);
+        umlClassList.add(Uml.ELEMENT);
+        umlClassList.add(Uml.ELEMENT_IMPORT);
+        umlClassList.add(Uml.ELEMENT_RESIDENCE);
+        umlClassList.add(Uml.EVENT);
+        umlClassList.add(Uml.EXCEPTION);
+        umlClassList.add(Uml.EXPRESSION);
+        umlClassList.add(Uml.EXTEND);
+        umlClassList.add(Uml.EXTENSION_POINT);
+        umlClassList.add(Uml.FEATURE);
+        umlClassList.add(Uml.FINAL_STATE);
+        umlClassList.add(Uml.FLOW);
+        umlClassList.add(Uml.GENERALIZABLE_ELEMENT);
+        umlClassList.add(Uml.GENERALIZATION);
+        umlClassList.add(Uml.GUARD);
+        umlClassList.add(Uml.INCLUDE);
+        umlClassList.add(Uml.INSTANCE);
+        umlClassList.add(Uml.INTERACTION);
+        umlClassList.add(Uml.INTERFACE);
+        umlClassList.add(Uml.ITERATION_EXPRESSION);
+        umlClassList.add(Uml.LINK);
+        umlClassList.add(Uml.LINK_END);
+        umlClassList.add(Uml.LINK_OBJECT);
+        umlClassList.add(Uml.MAPPING_EXPRESSION);
+        umlClassList.add(Uml.MESSAGE);
+        umlClassList.add(Uml.METHOD);
+        umlClassList.add(Uml.MODEL);
+        umlClassList.add(Uml.MODEL_ELEMENT);
+        umlClassList.add(Uml.MULTIPLICITY);
+        umlClassList.add(Uml.MULTIPLICITY_RANGE);
+        umlClassList.add(Uml.NAMESPACE);
+        umlClassList.add(Uml.NODE);
+        umlClassList.add(Uml.NODE_INSTANCE);
+        umlClassList.add(Uml.OBJECT);
+        umlClassList.add(Uml.OBJECT_FLOW_STATE);
+        umlClassList.add(Uml.OBJECT_SET_EXPRESSION);
+        umlClassList.add(Uml.OPERATION);
+        umlClassList.add(Uml.PACKAGE);
+        umlClassList.add(Uml.PARAMETER);
+        umlClassList.add(Uml.PARTITION);
+        umlClassList.add(Uml.PERMISSION);
+        umlClassList.add(Uml.PRESENTATION_ELEMENT);
+        umlClassList.add(Uml.PROCEDURE_EXPRESSION);
+        umlClassList.add(Uml.PSEUDOSTATE);
+        umlClassList.add(Uml.RECEPTION);
+        umlClassList.add(Uml.RELATIONSHIP);
+        umlClassList.add(Uml.RETURN_ACTION);
+        umlClassList.add(Uml.SEND_ACTION);
+        umlClassList.add(Uml.SIGNAL);
+        umlClassList.add(Uml.SIGNAL_EVENT);
+        umlClassList.add(Uml.SIMPLE_STATE);
+        umlClassList.add(Uml.STATE);
+        umlClassList.add(Uml.STATE_MACHINE);
+        umlClassList.add(Uml.STATE_VERTEX);
+        umlClassList.add(Uml.STEREOTYPE);
+        umlClassList.add(Uml.STIMULUS);
+        umlClassList.add(Uml.STRUCTURAL_FEATURE);
+        umlClassList.add(Uml.STUB_STATE);
+        umlClassList.add(Uml.SUBACTIVITY_STATE);
+        umlClassList.add(Uml.SUBMACHINE_STATE);
+        umlClassList.add(Uml.SUBSYSTEM);
+        umlClassList.add(Uml.SYNCH_STATE);
+        umlClassList.add(Uml.TAGGED_VALUE);
+        umlClassList.add(Uml.TEMPLATE_PARAMETER);
+        umlClassList.add(Uml.TERMINATE_ACTION);
+        umlClassList.add(Uml.TIME_EVENT);
+        umlClassList.add(Uml.TIME_EXPRESSION);
+        umlClassList.add(Uml.TRANSITION);
+        umlClassList.add(Uml.TYPE_EXPRESSION);
+        umlClassList.add(Uml.UNINTERPRETED_ACTION);
+        umlClassList.add(Uml.USAGE);
+        umlClassList.add(Uml.USE_CASE);
+        umlClassList.add(Uml.USE_CASE_INSTANCE);
 
-	/** An abstract which all ArgoUML-recognized model types
-	 * must extend.
-	 * 
-	 * Private so that no classes outside of Uml can instantiate it.
-	 * 
-	 * @author Thierry Lach
-	 */
-	private abstract class AbstractUmlEntity implements UmlEntity {
-		AbstractUmlEntity() {
-		}		
-	}
+        // Create a name to entity map
+        xref = new HashMap(110);
+        Iterator i = umlClassList.iterator();
+        while (i.hasNext()) {
+            UmlModelEntity e = (UmlModelEntity) i.next();
+            xref.put(e.getName(), e);
+        }
+    }
 
-	/** An interface which all ArgoUML-recognized model types
-	 * must implement.
-	 * 
-	 * @author Thierry Lach
-	 */
-	public interface UmlEntity {
-
-	}
-
-	/** An interface which all ArgoUML-recognized model types
-	 * must implement.
-	 * 
-	 * @author Thierry Lach
-	 * @deprecated without replacement after the facade handles everything.
-	 */
-	public interface UmlFacadeEntity {
-
-	}
-
-	private class TypeAbstraction extends AbstractUmlEntity { }
-	private class TypeAction extends AbstractUmlEntity { }
-	private class TypeActionExpression extends AbstractUmlEntity { }
-	private class TypeActionSequence extends AbstractUmlEntity { }
-	private class TypeActionState extends AbstractUmlEntity { }
-	private class TypeActivityGraph extends AbstractUmlEntity { }
-	private class TypeActor extends AbstractUmlEntity { }
-	private class TypeArgListsExpression extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeArgument extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeAssociation extends AbstractUmlEntity { }
-	private class TypeAssociationClass extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeAssociationEnd extends AbstractUmlEntity { }
-	private class TypeAssociationEndRole extends AbstractUmlEntity { }
-	private class TypeAssociationRole extends AbstractUmlEntity { }
-	private class TypeAttribute extends AbstractUmlEntity { }
-	private class TypeAttributeLink extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeBehavioralFeature extends AbstractUmlEntity { }
-	private class TypeBinding extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeBooleanExpression extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeCallAction extends AbstractUmlEntity { }
-	private class TypeCallEvent extends AbstractUmlEntity  { }
-	private class TypeCallState extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeChangeEvent extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeClass extends AbstractUmlEntity { }
-	private class TypeClassifier extends AbstractUmlEntity { }
-	private class TypeClassifierInState extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeClassifierRole extends AbstractUmlEntity { }
-	private class TypeCollaboration extends AbstractUmlEntity { }
-	private class TypeComment extends AbstractUmlEntity { }
-	private class TypeComponent extends AbstractUmlEntity { }
-	private class TypeComponentInstance extends AbstractUmlEntity { }
-	private class TypeCompositeState extends AbstractUmlEntity { }
-	private class TypeConstraint extends AbstractUmlEntity { }
-	private class TypeCreateAction extends AbstractUmlEntity { }
-	private class TypeDataType extends AbstractUmlEntity { }
-	private class TypeDataValue extends AbstractUmlEntity { }
-	private class TypeDependency extends AbstractUmlEntity { }
-	private class TypeDestroyAction extends AbstractUmlEntity { }
-	private class TypeElement extends AbstractUmlEntity { }
-	private class TypeElementImport extends AbstractUmlEntity { }
-	private class TypeElementResidence extends AbstractUmlEntity { }
-	private class TypeEvent extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeException extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeExpression extends AbstractUmlEntity { }
-	private class TypeExtend extends AbstractUmlEntity { }
-	private class TypeExtensionPoint extends AbstractUmlEntity { }
-	private class TypeFeature extends AbstractUmlEntity { }
-	private class TypeFinalState extends AbstractUmlEntity { }
-	private class TypeFlow extends AbstractUmlEntity { }
-	private class TypeGeneralizableElement extends AbstractUmlEntity { }
-	private class TypeGeneralization extends AbstractUmlEntity { }
-	private class TypeGuard extends AbstractUmlEntity { }
-	private class TypeInclude extends AbstractUmlEntity { }
-	private class TypeInstance extends AbstractUmlEntity { }
-	private class TypeInteraction extends AbstractUmlEntity { }
-	private class TypeInterface extends AbstractUmlEntity { }
-	private class TypeIterationExpression extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeLink extends AbstractUmlEntity{ }
-	private class TypeLinkEnd extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeLinkObject extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeMappingExpression extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeMessage extends AbstractUmlEntity { }
-	private class TypeMethod extends AbstractUmlEntity { }
-	private class TypeModel extends AbstractUmlEntity  { }
-	private class TypeModelElement extends AbstractUmlEntity { }
-	private class TypeMultiplicity extends AbstractUmlEntity { }
-	private class TypeMultiplicityRange extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeNamespace extends AbstractUmlEntity { }
-	private class TypeNode extends AbstractUmlEntity { }
-	private class TypeNodeInstance extends AbstractUmlEntity { }
-	private class TypeObject extends AbstractUmlEntity { }
-	private class TypeObjectFlowState extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeObjectSetExpression extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeOperation extends AbstractUmlEntity { }
-	private class TypePackage extends AbstractUmlEntity { }
-	private class TypeParameter extends AbstractUmlEntity { }
-	private class TypePartition extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypePermission extends AbstractUmlEntity { }
-	private class TypePresentationElement extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeProcedureExpression extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypePseudostate extends AbstractUmlEntity { }
-	private class TypeReception extends AbstractUmlEntity { }
-	private class TypeRelationship extends AbstractUmlEntity { }
-	private class TypeReturnAction extends AbstractUmlEntity { }
-	private class TypeSendAction extends AbstractUmlEntity { }
-	private class TypeSignal extends AbstractUmlEntity { }
-	private class TypeSignalAction extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeSignalEvent extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeSimpleState extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeState extends AbstractUmlEntity { }
-	private class TypeStateMachine extends AbstractUmlEntity { }
-	private class TypeStateVertex extends AbstractUmlEntity { }
-	private class TypeStereotype extends AbstractUmlEntity { }
-	private class TypeStimulus extends AbstractUmlEntity { }
-	private class TypeStructuralFeature extends AbstractUmlEntity { }
-	private class TypeStubState extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeSubactivityState extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeSubmachineState extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeSubsystem extends AbstractUmlEntity { }
-	private class TypeSynchState extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeTaggedValue extends AbstractUmlEntity { }
-	private class TypeTemplateParameter extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeTerminateAction extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeTimeEvent extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeTimeExpression extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeTransition extends AbstractUmlEntity { }
-	private class TypeTypeExpression extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeUninterpretedAction extends AbstractUmlEntity implements UmlFacadeEntity  { }
-	private class TypeUsage extends AbstractUmlEntity { }
-	private class TypeUseCase extends AbstractUmlEntity { }
-	private class TypeUseCaseInstance extends AbstractUmlEntity implements UmlFacadeEntity  { }
-
+    /**
+     * @param name of the object
+     * @return the ModelEntity or null
+     */
+    public static UmlModelEntity getDeclaredType(String name) {
+        return (UmlModelEntity) xref.get(name);
+    }
 
 }
