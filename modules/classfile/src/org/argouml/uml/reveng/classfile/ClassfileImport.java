@@ -435,8 +435,8 @@ public class ClassfileImport extends FileImportSupport {
      */
     public SuffixFilter[] getSuffixFilters() {
 	SuffixFilter[] result = {
-	    FileFilters.JavaClassFilter,
-	    FileFilters.JavaJarFilter
+	    FileFilters.JAVA_CLASS_FILTER,
+	    FileFilters.JAVA_JAR_FILTER
 	};
 	return result;
     }

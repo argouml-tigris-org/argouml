@@ -311,7 +311,7 @@ public class IDLFileImport extends FileImportSupport {
      */
     public SuffixFilter[] getSuffixFilters() {
 	SuffixFilter[] result = {
-	    FileFilters.IDLFilter,
+	    FileFilters.IDL_FILTER,
 	};
 	return result;
     }

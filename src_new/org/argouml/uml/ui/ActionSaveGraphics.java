@@ -131,14 +131,14 @@ public class ActionSaveGraphics
 	    // Only specified format are allowed.
 	    chooser.removeChoosableFileFilter(chooser.
 					      getAcceptAllFileFilter());
-	    chooser.addChoosableFileFilter(FileFilters.GIFFilter);
-	    chooser.addChoosableFileFilter(FileFilters.PSFilter);
-	    chooser.addChoosableFileFilter(FileFilters.EPSFilter);
-	    chooser.addChoosableFileFilter(FileFilters.SVGFilter);
+	    chooser.addChoosableFileFilter(FileFilters.GIF_FILTER);
+	    chooser.addChoosableFileFilter(FileFilters.PS_FILTER);
+	    chooser.addChoosableFileFilter(FileFilters.EPS_FILTER);
+	    chooser.addChoosableFileFilter(FileFilters.SVG_FILTER);
 	    // concerning the following lines: is .GIF preferred?
-	    chooser.setFileFilter(FileFilters.GIFFilter);
+	    chooser.setFileFilter(FileFilters.GIF_FILTER);
 	    File def = new File(defaultName + "."
-				+ FileFilters.GIFFilter.getSuffix());
+				+ FileFilters.GIF_FILTER.getSuffix());
 	    chooser.setSelectedFile(def);
 
 	    int retval = chooser.showSaveDialog(pb);
@@ -153,10 +153,10 @@ public class ActionSaveGraphics
 		    // filter.  start new code
 			
 		    if (suffix == null
-			|| !(suffix.equals(FileFilters.PSFilter.getSuffix())
-			     || suffix.equals(FileFilters.EPSFilter.getSuffix())
-			     || suffix.equals(FileFilters.GIFFilter.getSuffix())
-			     || suffix.equals(FileFilters.SVGFilter
+			|| !(suffix.equals(FileFilters.PS_FILTER.getSuffix())
+			|| suffix.equals(FileFilters.EPS_FILTER.getSuffix())
+			|| suffix.equals(FileFilters.GIF_FILTER.getSuffix())
+			|| suffix.equals(FileFilters.SVG_FILTER
 			                                     .getSuffix()))) {
 			// add the selected filter suffix
 			FileFilter filter = chooser.getFileFilter();
@@ -198,13 +198,13 @@ public class ActionSaveGraphics
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 
 	CmdSaveGraphics cmd = null;
-	if (FileFilters.PSFilter.getSuffix().equals(suffix)) {
+	if (FileFilters.PS_FILTER.getSuffix().equals(suffix)) {
 	    cmd = new CmdSavePS();
-	} else if (FileFilters.EPSFilter.getSuffix().equals(suffix)) {
+	} else if (FileFilters.EPS_FILTER.getSuffix().equals(suffix)) {
 	    cmd = new ActionSaveGraphicsCmdSaveEPS();
-	} else if (FileFilters.GIFFilter.getSuffix().equals(suffix)) {
+	} else if (FileFilters.GIF_FILTER.getSuffix().equals(suffix)) {
 	    cmd = new CmdSaveGIF();
-	} else if (FileFilters.SVGFilter.getSuffix().equals(suffix)) {
+	} else if (FileFilters.SVG_FILTER.getSuffix().equals(suffix)) {
 	    cmd = new CmdSaveSVG();
 	} else {
 	    pb.showStatus("Unknown graphics file type with suffix "

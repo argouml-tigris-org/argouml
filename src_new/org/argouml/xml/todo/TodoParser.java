@@ -479,7 +479,7 @@ public class TodoParser extends SAXParserBase {
 	if (str == null)
 	    return null;
 	sb = new StringBuffer();
-	for (i1 = i2 = 0; i2 < str.length(); i2++)
+	for (i1 = 0, i2 = 0; i2 < str.length(); i2++)
 	{
 	    c = str.charAt(i2);
 	    if (c == '%')
@@ -536,7 +536,7 @@ public class TodoParser extends SAXParserBase {
 	if (str == null)
 	    return null;
 	sb = new StringBuffer();
-	for (i1 = i2 = 0; i2 < str.length(); i2++)
+	for (i1 = 0, i2 = 0; i2 < str.length(); i2++)
 	{
 	    c = str.charAt(i2);
 	    if (c == '%')
