@@ -23,17 +23,11 @@
 
 package org.argouml.model.uml.behavioralelements.statemachines;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
-import org.argouml.kernel.Project;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.ui.ArgoDiagram;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.state_machines.MCallEvent;
@@ -57,6 +51,7 @@ import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 /**
  * Factory to create UML classes for the UML
@@ -313,6 +308,131 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
       		throw new IllegalArgumentException("In buildTransition: arguments not legal");
     }
     
+    /**
+     * Builds a pseudostate initialized as a branch pseudostate. The pseudostate
+     * will be a subvertix of the given compositestate. The parameter compositeState
+     * is of type Object to decouple the factory and NSUML as much as possible from
+     * the rest of ArgoUML.
+     * @param compositeState
+     * @return MPseudostate
+     */
+    public MPseudostate buildPseudoState(Object compositeState) {
+        if (compositeState instanceof MCompositeState) {
+            MPseudostate state = createPseudostate();
+            state.setKind(MPseudostateKind.BRANCH);
+            state.setContainer((MCompositeState)compositeState);
+            ((MCompositeState)compositeState).addSubvertex(state);
+            return state;
+        }
+        return null;
+    }
+    
+    /**
+     * Builds a synchstate initalized with bound 0. The synchstate will be a 
+     * subvertix of the given compositestate. The parameter compositeState
+     * is of type Object to decouple the factory and NSUML as much as possible from
+     * the rest of ArgoUML.
+     * @param compositeState
+     * @return MSynchState
+     */
+    public MSynchState buildSynchState(Object compositeState) {
+        if (compositeState instanceof MCompositeState) {
+            MSynchState state = createSynchState();
+            state.setBound(0);
+            state.setContainer((MCompositeState)compositeState);
+            return state;
+        }
+        return null;
+    }
+    
+    /**
+     * Builds a stubstate initalized with an empty referenced state. The stubstate will be a 
+     * subvertix of the given compositestate. The parameter compositeState
+     * is of type Object to decouple the factory and NSUML as much as possible from
+     * the rest of ArgoUML.
+     * @param compositeState
+     * @return MSynchState
+     */
+    public MStubState buildStubState(Object compositeState) {
+        if (compositeState instanceof MCompositeState) {
+            MStubState state = createStubState();
+            state.setReferenceState("");
+            state.setContainer((MCompositeState)compositeState);
+            return state;
+        }
+        return null;
+    }
+    
+    /**
+     * Builds a compositestate initalized as a non-concurrent composite state. 
+     * The compositestate will be a subvertix of the given compositestate. The parameter 
+     * compositeState is of type Object to decouple the factory and NSUML as much as possible 
+     * from the rest of ArgoUML.
+     * @param compositeState
+     * @return MSynchState
+     */
+    public MCompositeState buildCompositeState(Object compositeState) {
+        if (compositeState instanceof MCompositeState) {
+            MCompositeState state = createCompositeState();
+            state.setConcurent(false);
+            state.setContainer((MCompositeState)compositeState);
+            return state;
+        }
+        return null;
+    }
+    
+    /**
+     * Builds a simplestate. The simplestate will be a subvertix of the given 
+     * compositestate. The parameter compositeState is of type Object to decouple 
+     * the factory and NSUML as much as possible. 
+     * from the rest of ArgoUML.
+     * @param compositeState
+     * @return MSynchState
+     */
+    public MSimpleState buildSimpleState(Object compositeState) {
+        if (compositeState instanceof MCompositeState) {
+            MSimpleState state = createSimpleState();           
+            state.setContainer((MCompositeState)compositeState);
+            return state;
+        }
+        return null;
+    }
+    
+    /**
+     * Builds a finalstate. The finalstate will be a subvertix of the given 
+     * compositestate. The parameter compositeState is of type Object to decouple 
+     * the factory and NSUML as much as possible. 
+     * from the rest of ArgoUML.
+     * @param compositeState
+     * @return MSynchState
+     */
+    public MFinalState buildFinalState(Object compositeState) {
+        if (compositeState instanceof MCompositeState) {
+            MFinalState state = createFinalState();           
+            state.setContainer((MCompositeState)compositeState);
+            return state;
+        }
+        return null;
+    }
+    
+    /**
+     * Builds a submachinestate. The submachinestate will be a subvertix of the given 
+     * compositestate. The parameter compositeState is of type Object to decouple 
+     * the factory and NSUML as much as possible. 
+     * from the rest of ArgoUML.
+     * @param compositeState
+     * @return MSynchState
+     */
+    public MSubmachineState buildSubmachineState(Object compositeState) {
+        if (compositeState instanceof MCompositeState) {
+            MSubmachineState state = createSubmachineState();    
+            state.setStateMachine(null);       
+            state.setContainer((MCompositeState)compositeState);
+            return state;
+        }
+        return null;
+    }
+     
     public void deleteCallEvent(MCallEvent elem) {}
     
     public void deleteChangeEvent(MChangeEvent elem) {}
@@ -337,7 +457,22 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     }    
                 
     
-    public void deleteStateVertex(MStateVertex elem) {}
+    /**
+     * Deletes the outgoing and incoming transitions of a statevertex.
+     * @param elem
+     */
+    public void deleteStateVertex(MStateVertex elem) {
+        Collection col = elem.getIncomings();
+        Iterator it = col.iterator();
+        while (it.hasNext()) {
+            UmlFactory.getFactory().delete((MTransition)it.next());
+        }
+        col = elem.getOutgoings();
+        it = col.iterator();
+        while (it.hasNext()) {
+            UmlFactory.getFactory().delete((MTransition)it.next());
+        }
+    }
     
     public void deleteStubState(MStubState elem) {}
     
