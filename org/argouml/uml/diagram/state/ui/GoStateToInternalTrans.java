@@ -43,11 +43,4 @@ public class GoStateToInternalTrans extends AbstractGoRule {
 		return null;
 	}
 
-	/**
-	 * @see javax.swing.tree.TreeModel#isLeaf(Object)
-	 */
-	public boolean isLeaf(Object arg0) {
-		return !(arg0 instanceof MState && getChildCount(arg0)>0);
-	}
-
 } /* end class GoStateToInternalTrans */

@@ -36,11 +36,7 @@ public class GoAssocRoleMessages extends AbstractGoRule {
 
   public Collection getChildren(Object parent) {
     if (!(parent instanceof MAssociationRole)) return null;
-    return new Vector(((MAssociationRole)parent).getMessages());
-  }
-
-  public boolean isLeaf(Object node) {
-    return !(node instanceof MAssociationRole && getChildCount(node) > 0);
+    return ((MAssociationRole)parent).getMessages();
   }
 
 }

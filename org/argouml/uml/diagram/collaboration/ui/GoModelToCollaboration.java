@@ -44,24 +44,20 @@ public class GoModelToCollaboration extends AbstractGoRule {
     public String getRuleName() { return "Model->Collaboration"; }
 
     /**
-     * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
-     */
-    public boolean isLeaf(Object node) {
-        return !(node instanceof MModel && getChildCount(node)>0);
-    }
-
-    /**
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
          if (parent instanceof MModel) {
             MModel model = (MModel)parent;
-            Collection col = ModelManagementHelper.getHelper().getAllModelElementsOfKind(model, MCollaboration.class);
+            Collection col = ModelManagementHelper.getHelper()
+                    .getAllModelElementsOfKind(model, MCollaboration.class);
             List returnList = new ArrayList();
             Iterator it = col.iterator();
             while (it.hasNext()) {
                 MCollaboration collab = (MCollaboration)it.next();
-                if (collab.getRepresentedClassifier() == null && collab.getRepresentedOperation() == null) {
+                if (collab.getRepresentedClassifier() == null && 
+                    collab.getRepresentedOperation() == null) {
+                        
                     returnList.add(collab);
                 }
             }

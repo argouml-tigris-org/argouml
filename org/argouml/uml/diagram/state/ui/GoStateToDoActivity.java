@@ -43,13 +43,6 @@ import ru.novosoft.uml.behavior.state_machines.MState;
 public class GoStateToDoActivity extends AbstractGoRule {
 
     /**
-     * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
-     */
-    public boolean isLeaf(Object node) {
-        return !(node instanceof MState && getChildCount(node) > 0);
-    }
-
-    /**
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {

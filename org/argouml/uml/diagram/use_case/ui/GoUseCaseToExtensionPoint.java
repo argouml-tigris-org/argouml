@@ -49,8 +49,8 @@ import ru.novosoft.uml.foundation.core.MClassifier;
  */
 
 public class GoUseCaseToExtensionPoint extends AbstractGoRule {
+    
     protected static Category cat = Category.getInstance(GoUseCaseToExtensionPoint.class);
-
 
     /**
      * <p>Give a name to this rule.</p>
@@ -68,21 +68,6 @@ public class GoUseCaseToExtensionPoint extends AbstractGoRule {
             return ((MUseCase)parent).getExtensionPoints();
         }
         return null;
-    }
-
-
-
-    /**
-     * <p>Test if the given object is a leaf from a use case.</p>
-     *
-     * @param node  The node to test.
-     *
-     * @return      <code>false</code> if node is a use case and has
-     *              children, <code>true</code> otherwise.
-     */
-
-    public boolean isLeaf(Object node) {
-        return !((node instanceof MClassifier) && (getChildCount(node) > 0));
     }
 
 }  /* End of class GoUseCaseToExtensionPoint */

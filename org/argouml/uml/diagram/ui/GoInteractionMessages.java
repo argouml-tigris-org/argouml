@@ -37,18 +37,11 @@ public class GoInteractionMessages extends AbstractGoRule {
         return Argo.localize("Tree", "misc.interaction.messages");
     }
 
-   
-   
-
     public Collection getChildren(Object parent) {
         if (ModelFacade.isAInteraction(parent)) {
             return ModelFacade.getMessages(parent);
         }
         return null;
-    }
-
-    public boolean isLeaf(Object node) {
-        return !(node instanceof MInteraction && getChildCount(node) > 0);
     }
 
 }

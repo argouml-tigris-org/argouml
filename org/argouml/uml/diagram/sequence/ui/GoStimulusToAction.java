@@ -47,11 +47,6 @@ public class GoStimulusToAction extends AbstractGoRule {
 
     }
 
-    public boolean isLeaf(Object node) {
-        return !(node instanceof MStimulus && getChildCount(node) > 0);
-
-    }
-
     /**
      * @see org.argouml.ui.AbstractGoRule#getRuleName()
      */

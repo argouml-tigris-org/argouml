@@ -47,34 +47,11 @@ public class GoSummaryToOperation extends AbstractGoRule {
     return Argo.localize ("Tree", "misc.class.operation");
   }
 
-
   public Collection getChildren(Object parent) {
       if ( parent instanceof OperationsNode) {
-          
-          //List list = new ArrayList();
-          
           return ModelFacade.getOperations(((OperationsNode)parent).getParent());
-          //ModelFacade.getAssociationEnds(((AssociationsNode)parent).getParent());
-          /*
-          Iterator it = col.iterator();
-          
-          while(it.hasNext()){
-              
-              list.add(it.next());
-          }
-          return list;
-           */
-           
       }
       return null;
   }
-
-
-
-  public boolean isLeaf(Object node) {
-    return ( getChildCount(node) < 1);
-  }
-
-
 
 }

@@ -35,23 +35,18 @@ import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 
 public class GoProjectToCollaboration extends AbstractGoRule {
 
-  
   public String getRuleName() { return "Project->MCollaboration"; }
-
 
   public Collection getChildren(Object parent) {
       Collection col = new ArrayList();
       if (parent instanceof Project) {
           Iterator it = ((Project)parent).getUserDefinedModels().iterator();
           while (it.hasNext()) {
-              col.addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(it.next(), MCollaboration.class));
+              col.addAll(ModelManagementHelper.getHelper()
+                    .getAllModelElementsOfKind(it.next(), MCollaboration.class));
           }
       }
       return col;
-  }
-  
-  public boolean isLeaf(Object node) {
-    return !(node instanceof Project && getChildCount(node) > 0);
   }
 
 }

@@ -42,13 +42,6 @@ public class GoSignalToReception extends AbstractGoRule {
   	}
 
 	/**
-	 * @see javax.swing.tree.TreeModel#isLeaf(Object)
-	 */
-	public boolean isLeaf(Object node) {
-		return !((node instanceof MSignal) && (getChildCount(node) > 0));
-	}
-
-	/**
 	 * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
 	 */
 	public Collection getChildren(Object parent) {
