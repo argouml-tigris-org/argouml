@@ -69,6 +69,7 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.ActionGoToCritique;
+import org.argouml.ui.ActionAutoResize;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.cmd.CmdSetPreferredSize;
@@ -584,10 +585,13 @@ public abstract class FigNodeModelElement
         }
         // TODO: remove the damage, as soon as we migrated to a structure that takes
         // the modelevents into account
-         CmdSetPreferredSize cmdSPS = 
-            new CmdSetPreferredSize(CmdSetPreferredSize.MINIMUM_SIZE);
-        cmdSPS.setFigToResize(this);
-        cmdSPS.doIt();
+
+        if (ActionAutoResize.isAutoResizable()) {
+            CmdSetPreferredSize cmdSPS = 
+                new CmdSetPreferredSize(CmdSetPreferredSize.MINIMUM_SIZE);
+            cmdSPS.setFigToResize(this);
+            cmdSPS.doIt();
+        }
         damage();
     }
 
