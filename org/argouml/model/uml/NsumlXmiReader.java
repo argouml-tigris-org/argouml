@@ -26,7 +26,7 @@
 // Classes: XMIReader
 // Original Author: jaap.branderhorst@xs4all.nl
 
-package org.argouml.xml.xmi;
+package org.argouml.model.uml;
 
 import java.io.IOException;
 
@@ -49,8 +49,8 @@ import ru.novosoft.uml.model_management.MModel;
  * @author Jaap Branderhorst
  * @see ru.novosoft.uml.xmi.XMIReader
  */
-public class XMIReader extends ru.novosoft.uml.xmi.XMIReader {
-    private static final Logger LOG = Logger.getLogger(XMIReader.class);
+class NsumlXmiReader extends ru.novosoft.uml.xmi.XMIReader {
+    private static final Logger LOG = Logger.getLogger(NsumlXmiReader.class);
     
     private boolean errors = false;
     private org.xml.sax.Parser theParser = null;
@@ -61,7 +61,7 @@ public class XMIReader extends ru.novosoft.uml.xmi.XMIReader {
      * @throws ParserConfigurationException if a parser cannot
      * be created which satisfies the requested configuration
      */
-    public XMIReader() throws SAXException, ParserConfigurationException {
+    public NsumlXmiReader() throws SAXException, ParserConfigurationException {
         super();
         SAXParserFactory saxpf = SAXParserFactory.newInstance();
         saxpf.setValidating(false);
@@ -82,7 +82,7 @@ public class XMIReader extends ru.novosoft.uml.xmi.XMIReader {
      * @throws ParserConfigurationException if a parser cannot
      * be created which satisfies the requested configuration
      */
-    public XMIReader(MFactory pFactory)
+    public NsumlXmiReader(MFactory pFactory)
         throws SAXException, ParserConfigurationException {
         super(pFactory);
         SAXParserFactory saxpf = SAXParserFactory.newInstance();

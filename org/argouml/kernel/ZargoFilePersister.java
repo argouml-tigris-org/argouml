@@ -42,13 +42,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
 import org.argouml.model.uml.UmlHelper;
+import org.argouml.model.uml.XmiReader;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.util.FileConstants;
 import org.argouml.util.SubInputStream;
 import org.argouml.xml.argo.ArgoParser;
 import org.argouml.xml.pgml.PGMLParser;
-import org.argouml.xml.xmi.XMIReader;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
 import org.xml.sax.InputSource;
@@ -395,9 +395,9 @@ public class ZargoFilePersister extends AbstractFilePersister {
         // changed the loading of the projectfiles to solve hanging 
         // of argouml if a project is corrupted. Issue 913
         // Created xmireader with method getErrors to check if parsing went well
-        XMIReader xmiReader = null;
+        XmiReader xmiReader = null;
         try {
-            xmiReader = new XMIReader();
+            xmiReader = new XmiReader();
         } catch (SAXException se) { // duh, this must be caught and handled
             LOG.error("SAXException caught", se);
             throw se;
