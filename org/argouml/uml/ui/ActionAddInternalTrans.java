@@ -29,7 +29,7 @@ import java.awt.event.*;
 
 
 class ActionAddInternalTrans extends UMLChangeAction {
-  public ActionAddInternalTrans() { super("Add Internal Transition"); }
+  public ActionAddInternalTrans() { super("action.add-internal-transition"); }
 
   public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;

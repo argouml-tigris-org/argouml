@@ -283,7 +283,7 @@ public class GenericArgoMenuBar extends JMenuBar
         setMnemonic(saveProjectAsItem,"SaveAs",'A');
         _file.addSeparator();
 
-        //_import = new JMenu(menuLocalize("Import"));
+        //_import = new JMenu(menuLocalize("action.import"));
         //JMenuItem importProjectAsItem = _import.add(ActionImportFromSources.SINGLETON);
         //appendPluggableMenus(_import, PluggableMenu.KEY_FILE_IMPORT);
         _file.add(ActionImportFromSources.SINGLETON);

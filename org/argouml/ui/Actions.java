@@ -258,7 +258,7 @@ class ActionNextEditTab extends UMLAction {
 // This option does not make much sense now that tabpanes can be in different panels.
 // Direct manipulation seems a better option anyway Bob Tarling 18/8/2002
 //class ActionNextDetailsTab extends UMLAction {
-//  public ActionNextDetailsTab() { super("Next Details Tab", NO_ICON); }
+//  public ActionNextDetailsTab() { super("action.next-details-tab", NO_ICON); }
 //  public void actionPerformed(ActionEvent ae) {
 //    ProjectBrowser pb = ProjectBrowser.TheInstance;
 //    DetailsPane dp = pb.getDetailsPane();
