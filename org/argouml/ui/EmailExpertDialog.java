@@ -34,7 +34,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
-import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.i18n.Translator;
@@ -139,7 +138,6 @@ public class EmailExpertDialog extends ArgoDialog {
     public void actionPerformed(ActionEvent e) {
 	super.actionPerformed(e);   
 	if (e.getSource() == getOkButton()) {
-	    Designer dsgr = Designer.theDesigner();
 	    String to = emailTo.getText();
 	    String cc = emailCc.getText();
 	    String subject = emailSubject.getText();
