@@ -94,8 +94,10 @@ public class ActionAddNote extends UMLAction {
                     && (!(Model.getFacade().isAComment(obj)))) {
                 if (firstTarget == null) firstTarget = obj;
                 /* Prevent e.g. AssociationClasses from being added trice: */
-                if (!Model.getFacade().getAnnotatedElements(comment).contains(obj))
+                if (!Model.getFacade().getAnnotatedElements(comment)
+                        .contains(obj)) {
                     Model.getCoreHelper().addAnnotatedElement(comment, obj);
+                }
             }
         }
 
