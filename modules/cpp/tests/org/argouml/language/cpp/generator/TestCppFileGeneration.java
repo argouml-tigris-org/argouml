@@ -33,9 +33,8 @@ import junit.framework.TestSuite;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-
-import org.argouml.uml.UUIDManager;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.UUIDManager;
 import org.argouml.model.uml.ModelManagementFactory;
 
 /**
