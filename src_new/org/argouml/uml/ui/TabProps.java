@@ -486,14 +486,10 @@ public class TabProps
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        // how to handle empty target lists?
-        // probably the TabProps should only show an empty pane in that case
         setTarget(e.getNewTargets()[0]);
         fireTargetRemoved(e);
-        if (_listenerList.getListenerCount() > 0) {
-            validate();
-            repaint();
-        }
+        validate();
+        repaint(); 
     }
 
     /**
@@ -501,12 +497,9 @@ public class TabProps
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTargets()[0]);
-        fireTargetSet(e);
-        if (_listenerList.getListenerCount() > 0) {
-            validate();
-            repaint();
-        }
-
+        fireTargetSet(e);        
+        validate();
+        repaint();        
     }
 
     /**
