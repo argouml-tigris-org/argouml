@@ -519,7 +519,7 @@ class ActionSnooze extends ToDoItemAction {
  * System information dialog. 
  */
 class ActionSystemInfo extends UMLAction {
-    public ActionSystemInfo() { super("System Information", HAS_ICON); }
+    public ActionSystemInfo() { super("action.system-information", HAS_ICON); }
 
     public void actionPerformed(ActionEvent ae) {
 	JFrame jFrame = (JFrame) ActionUtilities.getActionRoot(ae);

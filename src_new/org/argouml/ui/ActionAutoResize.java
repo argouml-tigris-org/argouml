@@ -39,7 +39,7 @@ public class ActionAutoResize extends UMLAction {
     private static boolean _autoResize = false;
   
     public ActionAutoResize() {
-        super(Argo.localize(Argo.MENU_BUNDLE, "Toggle Auto Resizing"), 
+        super(Argo.localize("action", "action.toggle-auto-resizing"), 
               NO_ICON);
     }
 

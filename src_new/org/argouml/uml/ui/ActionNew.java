@@ -51,7 +51,7 @@ public class ActionNew extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    protected ActionNew() { super("New"); }
+    protected ActionNew() { super("action.new"); }
 
     ////////////////////////////////////////////////////////////////
     // main methods
