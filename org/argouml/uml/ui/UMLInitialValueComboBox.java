@@ -22,8 +22,11 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
+
 import org.argouml.uml.*;
 import org.argouml.uml.generator.*;
+import org.argouml.application.api.*;
+
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import ru.novosoft.uml.*;
@@ -147,8 +150,10 @@ public class UMLInitialValueComboBox extends JComboBox
  */
     public void propertySet(final MElementEvent event) {
         String eventProp = event.getName();
+//      Argo.log.info("UMLInitialValueComboBox: " + eventProp);     //--pjs--        
         if(eventProp.equals("type")) {
-            updateDefaults();
+//            updateDefaults();
+            update();
         }
         // update for the name field is handled in UMLTextField.java
         else if(!eventProp.equals("name")){
@@ -162,6 +167,7 @@ public class UMLInitialValueComboBox extends JComboBox
  */    
     private void update() {
         Object target = _container.getTarget();
+        if (target == null) return;
         if (target instanceof MAttribute){
             MClassifier classifier = (MClassifier) ((MAttribute)target).getOwner();
             classifier.setFeatures(classifier.getFeatures());
@@ -173,7 +179,6 @@ public class UMLInitialValueComboBox extends JComboBox
         Object target = _container.getTarget();
         if(target instanceof MAttribute) {
             Profile profile = _container.getProfile();
-            update();
         }
     }
 
