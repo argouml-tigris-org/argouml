@@ -35,8 +35,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
-
 /**
  *  This class is an implements a list model using reflection.
  *
@@ -79,12 +77,12 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
             _getMethod = container.getClass().getMethod(getMethod, noArgs);
             if (setMethod != null) {
                 Class[] collectionArg = {
-		    Collection.class 
+		    Collection.class
 		};
                 _setMethod = container.getClass().getMethod(setMethod, collectionArg);
             }
             Class[] indexArg = {
-		Integer.class 
+		Integer.class
 	    };
             if (addMethod != null) {
                 _addMethod = container.getClass().getMethod(addMethod, indexArg);
@@ -137,7 +135,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
      *  @param index index of model element (zero based).
      *  @return corresponding model element
      */
-    protected MModelElement getModelElementAt(int index) {
+    protected Object getModelElementAt(int index) {
         Object/*MModelElement*/ element = null;
         if (_getMethod != null) {
             try {
@@ -165,7 +163,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 cat.error(e.toString() + " in UMLReflectionListModel.getElementAt()", e);
             }
         }
-        return (MModelElement)element;
+        return /*(MModelElement)*/ element;
     }
 
 
@@ -198,7 +196,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
         if (_addMethod != null) {
             UMLListMenuItem add = new UMLListMenuItem(container.localize("Add"), this, "add", index);
             int upper = getUpperBound();
-	    
+
 	    cat.debug("upper " + upper);
 	    cat.debug("size " + size);
 
@@ -223,7 +221,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
     public void add(int index) {
         try {
             Object[] indexArg = {
-		new Integer(index) 
+		new Integer(index)
 	    };
             Object newTarget = _addMethod.invoke(getContainer(), indexArg);
             if (newTarget != null) {
@@ -247,7 +245,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 Collection oldCollection = (Collection) _getMethod.invoke(getContainer(), _noArgs);
                 Collection newCollection = moveUpUtil(oldCollection, index);
                 _setMethod.invoke(getContainer(), new Object[] {
-		    newCollection 
+		    newCollection
 		});
                 ExplorerEventAdaptor.getInstance().structureChanged();
             }
@@ -266,7 +264,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 Collection oldCollection = (Collection) _getMethod.invoke(getContainer(), _noArgs);
                 Collection newCollection = moveDownUtil(oldCollection, index);
                 _setMethod.invoke(getContainer(), new Object[] {
-		    newCollection 
+		    newCollection
 		});
                 ExplorerEventAdaptor.getInstance().structureChanged();
             }
@@ -284,7 +282,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
         if (_deleteMethod != null) {
             try {
                 _deleteMethod.invoke(getContainer(), new Object[] {
-		    new Integer(index) 
+		    new Integer(index)
 		});
                 ExplorerEventAdaptor.getInstance().structureChanged();
             }

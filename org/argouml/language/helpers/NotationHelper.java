@@ -29,24 +29,6 @@ import org.argouml.application.api.NotationName;
 import org.argouml.application.api.NotationProvider2;
 import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-
-import ru.novosoft.uml.behavior.state_machines.MGuard;
-import ru.novosoft.uml.behavior.state_machines.MState;
-import ru.novosoft.uml.behavior.state_machines.MTransition;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MConstraint;
-import ru.novosoft.uml.foundation.core.MOperation;
-import ru.novosoft.uml.foundation.core.MParameter;
-import ru.novosoft.uml.foundation.data_types.MExpression;
-import ru.novosoft.uml.foundation.data_types.MMultiplicity;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
-import ru.novosoft.uml.model_management.MPackage;
-
 /** This class is the abstract super class that defines a code
  * generation framework.  It is basically a depth-first traversal of
  * the UML model that generates strings as it goes.  This framework
@@ -74,68 +56,68 @@ public abstract class NotationHelper
     public String generate(Object o) {
 	if (o == null)
 	    return "";
-	if (org.argouml.model.ModelFacade.isAOperation(o))
-	    return generateOperation((MOperation) o);
-	if (org.argouml.model.ModelFacade.isAAttribute(o))
-	    return generateAttribute((MAttribute) o);
-	if (org.argouml.model.ModelFacade.isAParameter(o))
-	    return generateParameter((MParameter) o);
-	if (org.argouml.model.ModelFacade.isAPackage(o))
-	    return generatePackage((MPackage) o);
-	if (org.argouml.model.ModelFacade.isAClassifier(o))
-	    return generateClassifier((MClassifier) o);
-	if (org.argouml.model.ModelFacade.isAExpression(o))
-	    return generateExpression((MExpression) o);
+	if (ModelFacade.isAOperation(o))
+	    return generateOperation(o);
+	if (ModelFacade.isAAttribute(o))
+	    return generateAttribute(o);
+	if (ModelFacade.isAParameter(o))
+	    return generateParameter(o);
+	if (ModelFacade.isAPackage(o))
+	    return generatePackage(o);
+	if (ModelFacade.isAClassifier(o))
+	    return generateClassifier(o);
+	if (ModelFacade.isAExpression(o))
+	    return generateExpression(o);
 	if (o instanceof String)
 	    return generateName((String) o);
 	if (o instanceof String)
 	    return generateUninterpreted((String) o);
-	if (org.argouml.model.ModelFacade.isAStereotype(o))
-	    return generateStereotype((MStereotype) o);
-	if (org.argouml.model.ModelFacade.isATaggedValue(o))
-	    return generateTaggedValue((MTaggedValue) o);
-	if (org.argouml.model.ModelFacade.isAAssociation(o))
-	    return generateAssociation((MAssociation) o);
-	if (org.argouml.model.ModelFacade.isAAssociationEnd(o))
-	    return generateAssociationEnd((MAssociationEnd) o);
-	if (org.argouml.model.ModelFacade.isAMultiplicity(o))
-	    return generateMultiplicity((MMultiplicity) o);
-	if (org.argouml.model.ModelFacade.isAState(o))
-	    return generateState((MState) o);
-	if (org.argouml.model.ModelFacade.isATransition(o))
-	    return generateTransition((MTransition) o);
+	if (ModelFacade.isAStereotype(o))
+	    return generateStereotype(o);
+	if (ModelFacade.isATaggedValue(o))
+	    return generateTaggedValue(o);
+	if (ModelFacade.isAAssociation(o))
+	    return generateAssociation(o);
+	if (ModelFacade.isAAssociationEnd(o))
+	    return generateAssociationEnd(o);
+	if (ModelFacade.isAMultiplicity(o))
+	    return generateMultiplicity(o);
+	if (ModelFacade.isAState(o))
+	    return generateState(o);
+	if (ModelFacade.isATransition(o))
+	    return generateTransition(o);
 	if (ModelFacade.isAAction(o))
 	    return generateAction(o);
-	if (org.argouml.model.ModelFacade.isACallAction(o))
+	if (ModelFacade.isACallAction(o))
 	    return generateAction(o);
-	if (org.argouml.model.ModelFacade.isAGuard(o))
-	    return generateGuard((MGuard) o);
-	if (org.argouml.model.ModelFacade.isAMessage(o))
-	    return generateMessage((MMessage) o);
+	if (ModelFacade.isAGuard(o))
+	    return generateGuard(o);
+	if (ModelFacade.isAMessage(o))
+	    return generateMessage(o);
 
-	if (org.argouml.model.ModelFacade.isAModelElement(o))
-	    return generateName(org.argouml.model.ModelFacade.getName(o));
+	if (ModelFacade.isAModelElement(o))
+	    return generateName(ModelFacade.getName(o));
 
 	if (o == null) return "";
 
 	return o.toString();
     }
 
-    public abstract String generateOperation(MOperation op);
-    public abstract String generateAttribute(MAttribute attr);
-    public abstract String generateParameter(MParameter param);
-    public abstract String generatePackage(MPackage p);
-    public abstract String generateClassifier(MClassifier cls);
-    // public abstract String generateStereotype(MStereotype s);
-    public abstract String generateTaggedValue(MTaggedValue s);
-    public abstract String generateAssociation(MAssociation a);
-    public abstract String generateAssociationEnd(MAssociationEnd ae);
-    public abstract String generateMultiplicity(MMultiplicity m);
-    public abstract String generateState(MState m);
-    public abstract String generateTransition(MTransition m);
+    public abstract String generateOperation(Object op);
+    public abstract String generateAttribute(Object attr);
+    public abstract String generateParameter(Object param);
+    public abstract String generatePackage(Object p);
+    public abstract String generateClassifier(Object cls);
+    // public abstract String generateStereotype(Object s);
+    public abstract String generateTaggedValue(Object s);
+    public abstract String generateAssociation(Object a);
+    public abstract String generateAssociationEnd(Object ae);
+    public abstract String generateMultiplicity(Object m);
+    public abstract String generateState(Object m);
+    public abstract String generateTransition(Object m);
     public abstract String generateAction(Object m);
-    public abstract String generateGuard(MGuard m);
-    public abstract String generateMessage(MMessage m);
+    public abstract String generateGuard(Object m);
+    public abstract String generateMessage(Object m);
 
     public static String getLeftGuillemot() {
 
@@ -151,20 +133,20 @@ public abstract class NotationHelper
 	    : ">>";
     }
 
-    public String generateStereotype(MStereotype s) {
+    public String generateStereotype(Object s) {
 	return getLeftGuillemot()
-	    + generateName(s.getName())
+	    + generateName(ModelFacade.getName(s))
 	    + getRightGuillemot();
     }
 
-    public String generateExpression(MExpression expr) {
-	if (expr == null) return "";
-	return generateUninterpreted(expr.getBody());
-    }
-
-    public String generateExpression(MConstraint expr) {
-	if (expr == null) return "";
-	return generateExpression(expr.getBody());
+    public String generateExpression(Object expr) {
+	if (expr == null)
+	    return "";
+	if (ModelFacade.isAExpression(expr))
+	    return generateUninterpreted((String)ModelFacade.getBody(expr));
+	if (ModelFacade.isAConstraint(expr))
+	    return generateExpression(ModelFacade.getBody(expr));
+	return "";
     }
 
     public String generateName(String n) {
@@ -176,9 +158,9 @@ public abstract class NotationHelper
 	return un;
     }
 
-    public String generateClassifierRef(MClassifier cls) {
+    public String generateClassifierRef(Object cls) {
 	if (cls == null) return "";
-	return cls.getName();
+	return ModelFacade.getName(cls);
     }
 
 } /* end class NotationHelper */

@@ -71,8 +71,6 @@ import org.tigris.toolbar.ToolBar;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  * This abstract class provides the basic layout and event dispatching
@@ -94,7 +92,7 @@ public abstract class PropPanel
     ////////////////////////////////////////////////////////////////
     // instance vars
     private Object _target;
-    private MModelElement _modelElement;
+    private Object _modelElement;
     private static Profile _profile;
 
     private ResourceBundle _bundle = null;
@@ -329,7 +327,7 @@ public abstract class PropPanel
             }
 
             if (ModelFacade.isAModelElement(_target)) {
-                _modelElement = (MModelElement) _target;
+                _modelElement = _target;
             }
 
             // This will add a new MElement listener after update is complete
@@ -392,7 +390,7 @@ public abstract class PropPanel
         return _target;
     }
 
-    public final MModelElement getModelElement() {
+    public final Object getModelElement() {
         return _modelElement;
     }
 
@@ -455,11 +453,11 @@ public abstract class PropPanel
         return ns;
     }
 
-    public String formatElement(MModelElement element) {
+    public String formatElement(/*MModelElement*/Object element) {
         return getProfile().formatElement(element, getDisplayNamespace());
     }
 
-    public String formatNamespace(MNamespace namespace) {
+    public String formatNamespace(/*MNamespace*/Object namespace) {
         return getProfile().formatElement(namespace, null);
     }
 

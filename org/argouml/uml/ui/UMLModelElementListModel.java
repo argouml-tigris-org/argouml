@@ -59,7 +59,6 @@ import org.argouml.application.api.NotationName;
 import org.argouml.ui.targetmanager.TargetManager;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * This class is an abstract superclass for classes that provide a list
@@ -195,7 +194,7 @@ public abstract class UMLModelElementListModel
      *  @param index index of model element (zero based).
      *  @return corresponding model element
      */
-    protected abstract MModelElement getModelElementAt(int index);
+    protected abstract Object getModelElementAt(int index);
 
     /**
      * This method returns the current "target" of the container.
@@ -265,7 +264,7 @@ public abstract class UMLModelElementListModel
      * @return rendering of the ModelElement
      */
     public Object formatElement(Object/*MModelElement*/ element) {
-        return _container.formatElement((MModelElement) element);
+        return _container.formatElement(/*(MModelElement)*/ element);
     }
 
     /**
@@ -381,7 +380,7 @@ public abstract class UMLModelElementListModel
     public void navigateTo(Object/*MModelElement*/ modelElement) {
         TargetManager.getInstance().setTarget(modelElement);
     }
-    
+
     /**
      *   This method is called in response to selecting "Open" from
      *   a context (pop-up) menu on this list.
@@ -576,7 +575,7 @@ public abstract class UMLModelElementListModel
      * @param index index of element to move down.
      * @return new collection
      */
-    public static MModelElement elementAtUtil(Collection collection,
+    public static Object/*MModelElement*/ elementAtUtil(Collection collection,
 					      int index,
 					      Class requiredClass) {
         Object obj = null;
@@ -595,7 +594,7 @@ public abstract class UMLModelElementListModel
                 }
             }
         }
-        return (MModelElement) obj;
+        return /*(MModelElement)*/ obj;
     }
 
     /**

@@ -41,8 +41,6 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
-
 /**
  * The base class for models behind scrollpanes for binary relations like the
  * association pane on PropPanelUsecase
@@ -188,7 +186,7 @@ abstract public class UMLBinaryRelationListModel
     abstract protected void build(Object/*MModelElement*/ from, Object/*MModelElement*/ to);
 
     /**
-     * Gets the relation between two modelelements. Implementations should 
+     * Gets the relation between two modelelements. Implementations should
      * delegate to utility methods provided in the helpers like CoreHelper
      * @param from
      * @param to
@@ -238,7 +236,7 @@ abstract public class UMLBinaryRelationListModel
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel#getModelElementAt(int)
      */
-    protected MModelElement getModelElementAt(int index) {
+    protected Object getModelElementAt(int index) {
         return elementAtUtil(getSelected(), index, (Class)ModelFacade.MODELELEMENT);
     }
 

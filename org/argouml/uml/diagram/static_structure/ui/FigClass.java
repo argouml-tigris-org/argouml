@@ -66,7 +66,6 @@ import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.core.MClass;
 
 /**
  * <p>Class to display graphics for a UML Class in a diagram.</p>
@@ -353,7 +352,7 @@ public class FigClass extends FigNodeModelElement {
 		new ActionModifier("Public",
 				   "visibility", "getVisibility",
 				   "setVisibility",
-				   (MClass) mclass,
+				   /*(MClass)*/ mclass,
 				   (Class) ModelFacade.VISIBILITYKIND,
 				   ModelFacade.PUBLIC_VISIBILITYKIND,
 				   null));

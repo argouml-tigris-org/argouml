@@ -63,7 +63,6 @@ import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.core.MInterface;
 
 /** Class to display graphics for a UML Interface in a diagram. */
 
@@ -281,7 +280,7 @@ public class FigInterface extends FigNodeModelElement {
 		new ActionModifier("Public",
 				   "visibility", "getVisibility",
 				   "setVisibility",
-				   (MInterface) minterface,
+				   /*(MInterface)*/ minterface,
 				   (Class) ModelFacade.VISIBILITYKIND,
 				   ModelFacade.PUBLIC_VISIBILITYKIND,
 				   null));

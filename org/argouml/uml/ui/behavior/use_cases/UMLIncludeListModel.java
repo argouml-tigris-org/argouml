@@ -51,8 +51,6 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
-
 /**
  * A list model for the include relationship on use case property
  * panels.<p>
@@ -88,7 +86,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
      * include relationship.<p>
      */
     private static final String _nullLabel = "(anon)";
-    
+
 
     /**
      * Create a new list model.<p>
@@ -110,7 +108,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
                                String property, boolean showNone) {
         super(container, property, showNone);
     }
-    
+
     /**
      * Compute the size of the list model. This method must be provided to
      *   override the abstract method in the parent.<p>
@@ -128,7 +126,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 
         return size;
     }
-    
+
     /**
      * Get the element at a given offset in the model This method must
      * be provided to override the abstract method in the parent.<p>
@@ -141,13 +139,13 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
      * @return  the element at that index if there is one, otherwise
      *          <code>null</code>. a Model Element
      */
-    protected MModelElement getModelElementAt(int index) {
+    protected Object getModelElementAt(int index) {
         return elementAtUtil(getIncludes(),
 			     index,
 			     (Class) ModelFacade.INCLUDE);
     }
-            
-        
+
+
     /**
      * A private utility to get the list of extends relationships for
      * this use case.<p>
@@ -175,8 +173,8 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 
         return includes;
     }
-    
-    
+
+
     /**
      * Format a given model element.<p>
      *
@@ -231,7 +229,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
     /**
      * Implement the "add" function of the pop up menu.<p>
      *
-     * Pops up the UMLAddDialog. The user can include existing usecases to 
+     * Pops up the UMLAddDialog. The user can include existing usecases to
      * this model's target.
      *
      * <em>Note</em>. There is a bug in NSUML, where the "include" and
@@ -248,7 +246,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
     public void add(int index) {
     	Object target = getTarget();
     	if (org.argouml.model.ModelFacade.isAUseCase(target)) {
-	    Object usecase = /*(MUseCase)*/ target;	
+	    Object usecase = /*(MUseCase)*/ target;
 	    Vector choices = new Vector();
 	    Vector selected = new Vector();
 	    choices.addAll(UseCasesHelper.getHelper().getAllUseCases());
@@ -309,7 +307,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
     	}
 
     }
-    
+
     /**
      * Implement the "delete" function of the pop up menu. Delete the
      * element at the given index.<p>
@@ -411,7 +409,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
         p.setNeedsSave(true);
 
         // Tell Swing this entry has gone
-        
+
         fireIntervalRemoved(this,index,index);
         */
     }
@@ -458,7 +456,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 
         fireContentsChanged(this, index - 1, index);
     }
-    
+
 
     /**
      * The action that occurs with the "MoveDown" pop up.<p>
@@ -503,7 +501,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 
         fireContentsChanged(this, index, index + 1);
     }
-    
+
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(
      *          JPopupMenu, int)
