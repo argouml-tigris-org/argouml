@@ -48,7 +48,7 @@ public class CmdSetPreferredSize extends Cmd {
      * @param mode one of the defined constants
      */
     public CmdSetPreferredSize(int mode) {
-        super("Set " + wordFor(r) + " size");
+        super("Set " + wordFor(mode) + " size");
         _mode = mode;
     }
 
