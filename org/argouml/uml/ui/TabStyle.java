@@ -95,7 +95,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
 
     private Fig target;
 
-    private boolean _shouldBeEnabled = false;
+    private boolean shouldBeEnabled = false;
 
     private JPanel blankPanel = new JPanel();
 
@@ -112,6 +112,12 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
 
     private EventListenerList listenerList = new EventListenerList();
 
+    /**
+     * The constructor.
+     * 
+     * @param tabName the name of the tab
+     * @param stylePanelNames
+     */
     public TabStyle(String tabName, String[] stylePanelNames) {
         super(tabName);
         this.stylePanelNames = stylePanelNames;
@@ -194,11 +200,11 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
         }
         if (t == null) {
             add(blankPanel, BorderLayout.NORTH);
-            _shouldBeEnabled = false;
+            shouldBeEnabled = false;
             lastPanel = blankPanel;
             return;
         }
-        _shouldBeEnabled = true;
+        shouldBeEnabled = true;
         stylePanel = null;
         Class targetClass = t.getClass();
 
@@ -215,11 +221,11 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
                 stylePanel.setTarget(target);
             }
             add(stylePanel, BorderLayout.NORTH);
-            _shouldBeEnabled = true;
+            shouldBeEnabled = true;
             lastPanel = stylePanel;
         } else {
             add(blankPanel, BorderLayout.NORTH);
-            _shouldBeEnabled = false;
+            shouldBeEnabled = false;
             lastPanel = blankPanel;
         }
         validate();
@@ -294,23 +300,23 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
 
         Class cls;
 
-        for (int i = 0; i < getStylePanelNames().length; i++) {
+        for (int i = 0; i < stylePanelNames.length; i++) {
             try {
                 cls = Class.forName(classNs.toString() + "."
-                        + getStylePanelNames()[i] + targetClassElement);
+                        + stylePanelNames[i] + targetClassElement);
                 return cls;
             } catch (ClassNotFoundException ignore) {
                 LOG.debug("ClassNotFoundException. Could not find class:"
-                        + classNs.toString() + "." + getStylePanelNames()[i]
+                        + classNs.toString() + "." + stylePanelNames[i]
                         + targetClassElement);
             }
             try {
                 cls = Class.forName(baseNs.toString() + "."
-                        + getStylePanelNames()[i] + targetClassElement);
+                        + stylePanelNames[i] + targetClassElement);
                 return cls;
             } catch (ClassNotFoundException ignore) {
                 LOG.debug("ClassNotFoundException. Could not find class:"
-                        + classNs.toString() + "." + getStylePanelNames()[i]
+                        + classNs.toString() + "." + stylePanelNames[i]
                         + targetClassElement);
             }
         }
@@ -343,26 +349,26 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
                 if (f != null)
                     targetItem = f;
                 else {
-                    _shouldBeEnabled = false;
+                    shouldBeEnabled = false;
                     return false;
                 }
             } else {
-                _shouldBeEnabled = false;
+                shouldBeEnabled = false;
                 return false;
             }
         }
 
-        _shouldBeEnabled = true;
+        shouldBeEnabled = true;
 
         Class targetClass = targetItem.getClass();
         stylePanel = findPanelFor(targetClass);
         targetClass = targetClass.getSuperclass();
 
         if (stylePanel == null) {
-            _shouldBeEnabled = false;
+            shouldBeEnabled = false;
         }
 
-        return _shouldBeEnabled;
+        return shouldBeEnabled;
     }
 
 //    /**

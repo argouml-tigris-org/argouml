@@ -49,15 +49,14 @@ import org.argouml.uml.generator.Generator2;
  */
 public class SourcePathDialog extends ArgoDialog implements ActionListener {
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-    private SrcPathTableModel _srcPathTableModel = new SrcPathTableModel();
+    private SrcPathTableModel srcPathTableModel = new SrcPathTableModel();
 
-    protected JTable _srcPathTable;
+    private JTable srcPathTable;
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
+    /**
+     * The constructor.
+     * 
+     */
     public SourcePathDialog() {
         super(
             ProjectBrowser.getInstance(),
@@ -65,19 +64,22 @@ public class SourcePathDialog extends ArgoDialog implements ActionListener {
             ArgoDialog.OK_CANCEL_OPTION,
             true);
 
-        _srcPathTable = new JTable();
-        _srcPathTable.setModel(_srcPathTableModel);
-        _srcPathTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-        TableColumn elemCol = _srcPathTable.getColumnModel().getColumn(0);
+        srcPathTable = new JTable();
+        srcPathTable.setModel(srcPathTableModel);
+        srcPathTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        TableColumn elemCol = srcPathTable.getColumnModel().getColumn(0);
         elemCol.setMinWidth(0);
         elemCol.setMaxWidth(0);
 
-        setContent(new JScrollPane(_srcPathTable));
+        setContent(new JScrollPane(srcPathTable));
     }
 
     ////////////////////////////////////////////////////////////////
     // event handlers
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
 
@@ -87,10 +89,13 @@ public class SourcePathDialog extends ArgoDialog implements ActionListener {
         }
     }
 
+    /**
+     * The OK button is pressed. 
+     */
     public void buttonOkActionPerformed() {
-        for (int i = 0; i < _srcPathTableModel.getRowCount(); i++) {
-            Object elem = _srcPathTableModel.getValueAt(i, 0);
-            String path = (String) _srcPathTableModel.getValueAt(i, 3);
+        for (int i = 0; i < srcPathTableModel.getRowCount(); i++) {
+            Object elem = srcPathTableModel.getValueAt(i, 0);
+            String path = (String) srcPathTableModel.getValueAt(i, 3);
             if (elem != null
                 && path != null
                 && !path.equals(ModelFacade.getTaggedValue(elem, "src_path"))) {
