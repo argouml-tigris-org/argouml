@@ -57,6 +57,7 @@ Description of all the artifacts associated with State Diagrams within ArgoUML.
 The state diagrams are generally well drawn, but the 4 event types 
 supported (CallEvent, SignalEvent, ChangeEvent and TimeEvent), are purely 
 textual, with no way to link them back to their associated operations.
+Also the various kinds of Actions are only supported in the same way.
 </para>
 
       <para>
@@ -169,13 +170,6 @@ This tab is downlighted, since constraints are not defined for
           <term><literal>Tagged Values</literal></term>
 
           <listitem><para>Standard tab. 
-	  <!-- MVW: I think there are none defined:
-               I do not see them in ArgoUML, hence this part below 
-               is to be removed...???
-               Linus: I don't think so. What tagged values that could
-               exist on a specific model element is specified in the
-               UML specification.
-            -->
 In the UML metamodel,
             <literal>State</literal> has the following standard
             tagged values defined.</para>
@@ -188,10 +182,9 @@ In the UML metamodel,
                 elements, or <literal>false</literal> meaning it
                 cannot.</para>
 
-              <note><para>Derived states still have their value in
-                analysis and design to introduce useful names or concepts,
-                and in design to avoid
-re-computation.
+              <note><para>
+Derived states still have their value in analysis to introduce useful
+names or concepts, and in design to avoid re-computation. 
 </para>
               </note>
 
@@ -230,40 +223,6 @@ artifacts are derived includes the tagged element
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon>
-            <literal>Go back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon>
-            <literal>Go forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
         <!-- Entry for Delete button -->
 
         <varlistentry>
@@ -275,11 +234,17 @@ artifacts are derived includes the tagged element
 
           <listitem><para>This deletes the state from the model</para>
 
-          <warning><para>This is a deletion from the model
-            <emphasis>not</emphasis> just the diagram. To delete an
+            <warning>
+              <para>
+This is a deletion from the model,
+<emphasis>not</emphasis> just the diagram.
+To delete a
             state from the diagram, but keep it within the model, use
             the main menu <literal>Edit/Remove From Diagram</literal>
-            (Ctrl-R).</para></warning></listitem>
+(Delete).
+</para>
+            </warning>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -310,7 +275,8 @@ artifacts are derived includes the tagged element
           <term><literal>Stereotype</literal></term>
 
           <listitem><para>Drop down selector. State has no stereotypes by
-            default in the UML standard, but &argouml; provides the
+default in the UML standard.
+<!--, but &argouml; provides the
             stereotypes, <literal>machine</literal>,
             <literal>organization</literal> and
             <literal>person</literal>.</para>
@@ -319,7 +285,9 @@ artifacts are derived includes the tagged element
             <literal>realize</literal> for states. This appears to be an
             error, since this stereotype properly belongs to the
             <literal>Abstraction</literal>
-            metaclass.</para></caution></listitem>
+            metaclass.</para></caution>
+ -->
+	  </listitem>
         </varlistentry>
 
         <!-- Entry for NavStereo -->
@@ -332,57 +300,29 @@ artifacts are derived includes the tagged element
               fileref="images/icons/navigate_stereotype.gif"/>
             </imageobject></inlinemediaobject></guiicon> icon. If a
               stereotype has been selected, this will navigate to the
-              stereotype property panel (see <xref
-                linkend="s1.ref.stereotype_class"/>).</para></listitem>
+stereotype property panel (see <!-- MVW: this reference is wrong, 
+should not link to chapter 16.4, but 14.4:--> 
+<xref linkend="s1.ref.stereotype_class"/>).
+</para>
+          </listitem>
         </varlistentry>
 
-        <!-- Entry for Namespace -->
+        <!-- Entry for Container -->
 
         <varlistentry>
-          <term><literal>Namespace</literal></term>
+          <term><literal>Container</literal></term>
 
-          <listitem><para>Text box. Records the namespace for the
-            state. This is the package hierarchy.</para>
+          <listitem>
+	    <para>
+Text box. Shows the container of the state. This is the state hierarchy.
+</para>
 
-          <para>&Button1; click on the entry will navigate to the package
-            defining this namespace (or the model for the top level
-            namespace).</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Incoming -->
-
-        <varlistentry>
-          <term><literal>Incoming</literal></term>
-
-          <listitem><para>Text area. Lists the transitions that enter this
-            state, including any internal transitions within the state
-            (described below).</para>
-
-          <para>&Button1; click navigates to the selected entry, &button2;
-            gives a pop up menu with one entry.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected transition.</para></listitem>
-          </itemizedlist></listitem>
-        </varlistentry>
-
-        <!-- Entry for Outgoing -->
-
-        <varlistentry>
-          <term><literal>Outgoing</literal></term>
-
-          <listitem><para>Text area. Lists the transitions that leave this
-            state, including any internal transitions within the state
-            (described below).</para>
-
-          <para>&Button1; click navigates to the selected action, &button2;
-            gives a pop up menu with one entry.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected transition.</para></listitem>
-          </itemizedlist></listitem>
+            <para>
+&Button1; double click on the entry will navigate to the composite state
+that contains this state (or the top-level state that is the root of the state
+containment hierarchy).
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Entry Action -->
@@ -390,22 +330,25 @@ artifacts are derived includes the tagged element
         <varlistentry>
           <term><literal>Entry-Action</literal></term>
 
-          <listitem><para>Text box. Lists the action (if any) to be invoked on
-            entry to this state.</para>
+          <listitem>
+	    <para>Text box. Shows the name of the action (if any) to be executed 
+	    on entry to this state.</para>
 
-          <para>&Button1; click navigates to the selected entry, &button2;
-            gives a pop up menu with three entries.</para>
+            <para>&Button1; click navigates to the selected entry, &button2;
+              gives a pop up menu with two entries:</para>
 
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected action.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              action.</para></listitem>
-
-            <listitem><para><literal>Delete</literal>. Delete the selected
-              action.</para></listitem>
-          </itemizedlist></listitem>
+            <itemizedlist>
+              <listitem><para><literal>New</literal>. Add a new Entry
+                action of a certain kind. This menu has the following submenus 
+	        to select the kind of action: Call Action, Create Action, 
+		Destroy Action, Return Action, Send Action, Terminate Action, 
+		Uninterpreted Action.</para>
+	      </listitem>
+              <listitem><para><literal>Delete From Model</literal>. Delete the 
+	      Entry-Action.</para></listitem>
+            </itemizedlist>
+	    
+	  </listitem>
         </varlistentry>
 
         <!-- Entry for Exit Action -->
@@ -413,22 +356,25 @@ artifacts are derived includes the tagged element
         <varlistentry>
           <term><literal>Exit-Action</literal></term>
 
-          <listitem><para>Text box. Lists the action (if any) to be invoked on
-            exit from this state.</para>
+          <listitem>
+	    <para>Text box. Shows the action (if any) to be executed on
+              exit from this state.</para>
 
-          <para>&Button1; click navigates to the selected action, &button2;
-            gives a pop up menu with three entries.</para>
+            <para>&Button1; click navigates to the selected action, &button2;
+              gives a pop up menu with two entries.</para>
 
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected action.</para></listitem>
+            <itemizedlist>
+              <listitem><para><literal>New</literal>. Add a new Exit
+                action of a certain kind. This menu has the following submenus 
+                to select the kind of action: Call Action, Create Action, 
+                Destroy Action, Return Action, Send Action, Terminate Action, 
+                Uninterpreted Action.</para>
+	      </listitem>
+              <listitem><para><literal>Delete From Model</literal>. Delete the 
+	      Exit-Action.</para></listitem>
+            </itemizedlist>
+          </listitem>
 
-            <listitem><para><literal>Add</literal>. Add a new
-              action.</para></listitem>
-
-            <listitem><para><literal>Delete</literal>. Delete the selected
-              action.</para></listitem>
-          </itemizedlist></listitem>
         </varlistentry>
 
         <!-- Entry for Do-Activity -->
@@ -436,45 +382,82 @@ artifacts are derived includes the tagged element
         <varlistentry>
           <term><literal>Do-Activity</literal></term>
 
-          <listitem><para>Text box. Lists the action (if any) to be invoked
-            while in this state.</para>
+          <listitem>
+            <para>Text box. Shows the action (if any) to be executed
+              while being in this state.</para>
 
-          <para>&Button1; click navigates to the selected action, &button2;
-            gives a pop up menu with three entries.</para>
+            <para>&Button1; click navigates to the selected action, &button2;
+              gives a pop up menu with two entries.</para>
 
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected action.</para></listitem>
+            <itemizedlist>
+              <listitem><para><literal>New</literal>. Add a new Do-Activity
+                (action) of a certain kind. This menu has the following submenus 
+	        to select the kind of action: Call Action, Create Action, 
+		Destroy Action, Return Action, Send Action, Terminate Action, 
+		Uninterpreted Action.</para>
+	      </listitem>
+              <listitem><para><literal>Delete From Model</literal>. Delete the 
+	      Do-Activity.</para></listitem>
+            </itemizedlist>
+          </listitem>
 
-            <listitem><para><literal>Add</literal>. Add a new
-              action.</para></listitem>
-
-            <listitem><para><literal>Delete</literal>. Delete the selected
-              action.</para></listitem>
-          </itemizedlist></listitem>
         </varlistentry>
 
+        <!-- Entry for Incoming -->
+
+        <varlistentry>
+          <term><literal>Incoming</literal></term>
+
+          <listitem>
+            <para>Text area. Lists all the transitions that enter this
+              state, including any internal transitions within the state
+              (described below).</para>
+
+            <para>&Button1; click navigates to the selected entry.</para>
+
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for Outgoing -->
+
+        <varlistentry>
+          <term><literal>Outgoing</literal></term>
+
+          <listitem>
+            <para>Text area. Lists all the transitions that leave this
+              state, including any internal transitions within the state
+              (described below).</para>
+
+            <para>&Button1; click navigates to the selected action.</para>
+
+          </listitem>
+        </varlistentry>
+	
         <!-- Entry for Internal Transitions -->
 
         <varlistentry>
           <term><literal>Internal Transitions</literal></term>
 
-          <listitem><para>Text area. Lists the internal transitions of the
-            state. Such transitions neither exit nor enter the state, so
-            only the <literal>Do-Activity</literal> (see above) will be
-            executed if such a transition is taken.</para>
+          <listitem>
+            <para>
+Text area. Lists all the internal transitions of the
+state. Such transitions neither exit nor enter the state, so they 
+do not cause a state change. Which 
+means that the Entry and Exit actions are not invoked.
+</para>
 
-          <para>&Button1; click navigates to the selected transition,
-            &button2; gives a pop up menu with two entries.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected transition.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new internal
-              transition.</para></listitem>
-          </itemizedlist></listitem>
+            <para>&Button1; click navigates to the selected transition,
+              &button2; gives a pop up menu with one entry.</para>
+  
+            <itemizedlist>
+              <listitem>
+                <para><literal>New</literal>. Add a new internal
+                transition.</para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
         </varlistentry>
+
       </variablelist>
     </sect2>
   </sect1>
@@ -485,11 +468,13 @@ artifacts are derived includes the tagged element
     <title>Action</title>
 
     <para>An action specifies an executable statement and is an abstraction of
-      a computational procedure that can change the state of the model. In the
-      UML metamodel it is a child of both <literal>Model</literal> and
-      <literal>ActionSequence</literal>. Since in the metamodel an action
-      sequence is itself an action that is an aggregation of other actions, an
-      action sequence may be used anywhere an action may be.</para>
+a computational procedure that can change the state of the model. In the
+UML metamodel it is a child of <!--both--> 
+<literal>ModelElement</literal> 
+<!--and <literal>ActionSequence</literal>-->. 
+Since in the metamodel an ActionSequence is itself an Action that is an 
+aggregation of other actions, an ActionSequence may be used anywhere an 
+action may be.</para>
 
     <para>There are a number of different types of action that are children of
       action within the UML metamodel.</para>
@@ -503,8 +488,17 @@ artifacts are derived includes the tagged element
         operation of a class, this action calls the given
         operation.</para></listitem>
 
-      <listitem><para><literal>ReturnAction</literal>. An action used to return
-        a result to an earlier caller.</para></listitem>
+      <listitem>
+        <para><literal>AssignmentAction</literal>.
+An action used to assign a new value to a link or an attribute link.
+</para>
+      </listitem>
+
+      <listitem>
+        <para><literal>ReturnAction</literal>.
+An action used to return a result to an earlier caller.
+</para>
+      </listitem>
 
       <listitem><para><literal>SendAction</literal>. Associated with a signal,
         this action causes the signal to be raised.</para></listitem>
@@ -512,14 +506,21 @@ artifacts are derived includes the tagged element
       <listitem><para><literal>TerminateAction</literal>. Causes the invoking
         object to self-destruct.</para></listitem>
 
+      <listitem>
+        <para><literal>UninterpretedAction</literal>.
+An action used to specify language-specific actions
+that do not classify under the other types of actions.
+</para>
+      </listitem>
+
       <listitem><para><literal>DestroyAction</literal>. Destroys the specified
         target object.</para></listitem>
     </itemizedlist>
 
-    <para>An action is represented by the text of its expression.</para>
+    <para>
+An action is represented on the diagram by the text of its expression.
+</para>
 
-    <caution><para>The current release of &argouml; does not show<quote>Do
-      activities</quote> on states, or effects on transitions.</para></caution>
 
     <!-- Action details tabs -->
 
