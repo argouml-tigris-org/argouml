@@ -67,24 +67,25 @@ public class PropPanelMessage extends PropPanelModelElement {
     addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
     addField(stereotypeBox,2,0,0);
 
-    addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,0);
-    addField(namespaceScroll,3,0,0);
+	// no namespace since this class belongs to an interaction and namespace is therefore not of any interest
+    // addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,0);
+    // addField(namespaceScroll,3,0,0);
 
-    addCaption("Sender:",4,0,0);
+    addCaption("Sender:",3,0,0);
     UMLModelElementListModel senderModel=new UMLReflectionListModel(this, "sender",true,"getSender",null, null,null);
     JList senderList = new UMLList(senderModel,true);
     senderList.setForeground(Color.blue);
     senderList.setFont(smallFont);
     JScrollPane senderScroll = new JScrollPane(senderList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    addField(senderScroll,4,0,0);
+    addField(senderScroll,3,0,0);
 
-    addCaption(Argo.localize("UMLMenu", "label.receiver"),5,0,1);
+    addCaption(Argo.localize("UMLMenu", "label.receiver"),4,0,1);
     UMLModelElementListModel receiverModel=new UMLReflectionListModel(this, "receiver",true,"getReceiver",null, null,null);
     JList receiverList = new UMLList(receiverModel,true);
     receiverList.setForeground(Color.blue);
     receiverList.setFont(smallFont);
     JScrollPane receiverScroll = new JScrollPane(receiverList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    addField(receiverScroll,5,0,0);
+    addField(receiverScroll,4,0,0);
 
     addCaption("Predecessor:",0,1,0);
     UMLModelElementListModel predecessorModel=new UMLReflectionListModel(this, "predecessor",true,"getPredecessor",null, null,null);
@@ -110,7 +111,7 @@ public class PropPanelMessage extends PropPanelModelElement {
     JScrollPane actionScroll = new JScrollPane(actionList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     addField(actionScroll,2,1,0);
 
-    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateInteraction",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu" ,"button.go-back"),"navigateBackAction","isNavigateBackEnabled");
     new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
     new PropPanelButton(this,buttonPanel,_actionIcon, Argo.localize("UMLMenu", "button.add-action"),"addAction","isAddActionEnabled");
@@ -171,6 +172,16 @@ public class PropPanelMessage extends PropPanelModelElement {
         ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         return action;
     }
+    
+     public MCallAction addAction(int integer) {
+    	MCallAction action = null;
+        Object target = getTarget();
+        if(target instanceof MMessage) {
+            action = (MCallAction)CommonBehaviorFactory.getFactory().buildAction((MMessage)target);
+        }
+        ProjectBrowser.TheInstance.getNavPane().forceUpdate();
+        return action;
+    }
     	
     
     public void deleteAction(Integer index) {
@@ -187,6 +198,16 @@ public class PropPanelMessage extends PropPanelModelElement {
     public boolean isAddActionEnabled() {
     	return (getTarget() instanceof MMessage) && (((MMessage)getTarget()).getAction() == null);
     }
+    
+    public void navigateInteraction() {
+    	Object target = getTarget();
+        if(target instanceof MMessage) {
+            navigateTo(((MMessage)target).getInteraction());
+        }
+    }
+
+    
+   
 
 
 

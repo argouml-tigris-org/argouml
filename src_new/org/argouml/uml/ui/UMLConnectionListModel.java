@@ -30,6 +30,7 @@ package org.argouml.uml.ui;
 import javax.swing.*;
 import java.util.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.*;
@@ -112,6 +113,13 @@ public class UMLConnectionListModel extends UMLModelElementListModel  {
     }
 
     public void delete(int index) {
+    	Object target = getTarget();
+    	if (!(target instanceof MAssociation)) {
+    		ProjectBrowser.TheInstance.setDetailsTarget(getModelElementAt(index));
+    	}
+    	ActionEvent event = new ActionEvent(this, 0, "delete");
+    	ActionRemoveFromModel.SINGLETON.actionPerformed(event);
+    	/*
         Object target = getTarget();
         if(target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
@@ -135,6 +143,7 @@ public class UMLConnectionListModel extends UMLModelElementListModel  {
 
             fireIntervalRemoved(this,index,index);
         }
+        */
     }
 
     public void moveUp(int index) {
@@ -171,6 +180,24 @@ public class UMLConnectionListModel extends UMLModelElementListModel  {
         super.roleAdded(event);
     }
 
+
+	/**
+	 * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(JPopupMenu, int)
+	 */
+	public boolean buildPopup(JPopupMenu popup, int index) {
+		UMLUserInterfaceContainer container = getContainer();
+        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
+        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
+        if(getModelElementSize() <= 0) {
+            open.setEnabled(false);
+            delete.setEnabled(false);
+        }
+
+        popup.add(open);
+        popup.add(delete);
+        
+		return true;
+	}
 
 }
 
