@@ -26,6 +26,8 @@ package org.argouml.uml;
 import java.util.*;
 import java.beans.*;
 
+import org.argouml.model.uml.UmlHelper;
+
 import ru.novosoft.uml.foundation.core.*;
 
 public class TableModelOper extends TableModelComposite {
@@ -45,7 +47,7 @@ public class TableModelOper extends TableModelComposite {
   public Vector rowObjectsFor(Object t) {
     if (!(t instanceof MClassifier)) return new Vector();
     MClassifier cls = (MClassifier) t;
-    Collection oper = MMUtil.SINGLETON.getOperations(cls);
+    Collection oper = UmlHelper.getHelper().getCore().getOperations(cls);
     return new Vector(oper);
   }
 

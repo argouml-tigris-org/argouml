@@ -56,6 +56,7 @@ import org.tigris.gef.graph.*;
 
 import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.MMUtil;
 import org.argouml.uml.diagram.static_structure.*;
@@ -203,7 +204,7 @@ public class ParserDisplay extends Parser {
     if (s != null && s.length() > 0) {
       MOperation newOp = parseOperation(s);
       if (newOp != null) {
-        if (MMUtil.SINGLETON.getReturnParameter(newOp).getType().getModel() == null) {
+        if (UmlHelper.getHelper().getCore().getReturnParameter(newOp).getType().getModel() == null) {
             MNamespace model = null;
             if (cls.getModel() != null) {
                 model = cls.getModel();
@@ -215,7 +216,7 @@ public class ParserDisplay extends Parser {
                 // but better tell the developer (and maybe the user if he watches)
                 _cat.error("The MClass " + cls.toString() + " returned null on getModel!");
             }
-            model.addOwnedElement(MMUtil.SINGLETON.getReturnParameter(newOp).getType()); 
+            model.addOwnedElement(UmlHelper.getHelper().getCore().getReturnParameter(newOp).getType()); 
         }   
         newOp.setAbstract(op.isAbstract());
         newOp.setOwnerScope(op.getOwnerScope());
@@ -1014,7 +1015,7 @@ nextProp:
 		    // but in the method that calls parseOperation(String s)               
 		}
 		MParameter param = UmlFactory.getFactory().getCore().buildParameter();
-		MMUtil.SINGLETON.setReturnParameter(op,param);
+		UmlHelper.getHelper().getCore().setReturnParameter(op,param);
 		param.setType(type);
 		s = s.substring(typeExpr.length(), s.length());
 	    }

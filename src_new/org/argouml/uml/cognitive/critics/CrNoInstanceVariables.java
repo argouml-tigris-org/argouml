@@ -41,6 +41,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.*;
 
 /** A critic to detect if a class has instance variables.
@@ -98,7 +99,7 @@ public class CrNoInstanceVariables extends CrUML {
   private Collection getInheritedStructuralFeatures(MClassifier cls,int depth)
   {
      Collection res = new Vector();
-	 res.addAll(MMUtil.SINGLETON.getAttributes(cls));
+	 res.addAll(UmlHelper.getHelper().getCore().getAttributes(cls));
 
      Collection inh = cls.getGeneralizations();
      for (Iterator iter = inh.iterator(); iter.hasNext();) {

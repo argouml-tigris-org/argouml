@@ -44,6 +44,8 @@ import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.model_management.*;
+
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.MMUtil;
 
 import org.argouml.application.ArgoVersion;
@@ -232,7 +234,7 @@ implements PluggableNotation, FileGenerator {
     sb.append(generateVisibility(op));
 
     // pick out return type
-    MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
+    MParameter rp = UmlHelper.getHelper().getCore().getReturnParameter(op);
 	  if ( rp != null) {
       MClassifier returnType = rp.getType();
       if (returnType == null && !constructor) {
@@ -685,7 +687,7 @@ implements PluggableNotation, FileGenerator {
             String tv = null; // helper for tagged values
 
             // add attributes
-            Collection strs = MMUtil.SINGLETON.getAttributes(cls);
+            Collection strs = UmlHelper.getHelper().getCore().getAttributes(cls);
             // 
             // 2002-06-08
             // Jaap Branderhorst
@@ -751,7 +753,7 @@ implements PluggableNotation, FileGenerator {
 
             // add operations
             // needs-more-work: constructors
-            Collection behs = MMUtil.SINGLETON.getOperations(cls);
+            Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);
             // 
             // 2002-06-08
             // Jaap Branderhorst
@@ -838,7 +840,7 @@ implements PluggableNotation, FileGenerator {
       }
 
       // pick out return type
-      MParameter rp = MMUtil.SINGLETON.getReturnParameter (op);
+      MParameter rp = UmlHelper.getHelper().getCore().getReturnParameter(op);
       if (rp != null) {
         MClassifier returnType = rp.getType();
         return generateDefaultReturnStatement (returnType);
@@ -1270,7 +1272,7 @@ implements PluggableNotation, FileGenerator {
 
     //  public String generateSpecification(Collection realizations) {
 	public String generateSpecification(MClass cls) {
-		Collection realizations = MMUtil.SINGLETON.getSpecifications(cls);
+		Collection realizations = UmlHelper.getHelper().getCore().getSpecifications(cls);
 		if (realizations == null) return "";
 		StringBuffer sb = new StringBuffer(80);
 		Iterator clsEnum = realizations.iterator();

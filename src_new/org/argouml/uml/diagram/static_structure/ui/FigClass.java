@@ -57,6 +57,7 @@ import org.argouml.uml.generator.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.ui.*;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.UmlHelper;
 
 /**
  * <p>Class to display graphics for a UML Class in a diagram.</p>
@@ -719,7 +720,7 @@ public class FigClass extends FigNodeModelElement {
     if (cls == null)
       return;
 	int acounter = 1;
-    Collection strs = MMUtil.SINGLETON.getAttributes(cls);
+    Collection strs = UmlHelper.getHelper().getCore().getAttributes(cls);
     if (strs != null) {
 	  Iterator iter = strs.iterator();
       Vector figs = _attrVec.getFigs();
@@ -751,7 +752,7 @@ public class FigClass extends FigNodeModelElement {
 	  }
 	}
 	int ocounter = 1;
-    Collection behs = MMUtil.SINGLETON.getOperations(cls);
+    Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);
     if (behs != null) {
       behs.removeAll(strs);
 	  Iterator iter = behs.iterator();

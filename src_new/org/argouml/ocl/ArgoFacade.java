@@ -84,7 +84,7 @@ class ArgoAny implements Any, Type2 {
       boolean isSet=false, isSequence=false; // cannot be Bag
 
       // first search for appropriate attributes
-      java.util.Collection attributes = MMUtil.SINGLETON.getAttributesInh(classifier);
+      java.util.Collection attributes = UmlHelper.getHelper().getCore().getAttributesInh(classifier);
       Iterator iter = attributes.iterator();
       while (iter.hasNext() && foundAttribType == null) {
         MAttribute attr = (MAttribute)iter.next();
@@ -94,7 +94,7 @@ class ArgoAny implements Any, Type2 {
       }
 
       // look for associations
-      java.util.Collection associationEnds = MMUtil.SINGLETON.getAssociateEndsInh(classifier);
+      java.util.Collection associationEnds = UmlHelper.getHelper().getCore().getAssociateEndsInh(classifier);
       Iterator asciter = associationEnds.iterator();
       while (asciter.hasNext() && foundAssocType == null) {
         MAssociationEnd ae = (MAssociationEnd)asciter.next();
@@ -176,7 +176,7 @@ class ArgoAny implements Any, Type2 {
       if (type != null) return type;
 
       MOperation foundOp = null;
-      java.util.Collection operations = MMUtil.SINGLETON.getOperations(classifier);
+      java.util.Collection operations = UmlHelper.getHelper().getCore().getOperations(classifier);
       Iterator iter = operations.iterator();
       while (iter.hasNext() && foundOp == null){
           MOperation op = (MOperation)iter.next();
@@ -194,7 +194,7 @@ class ArgoAny implements Any, Type2 {
         }
       }
       
-      MParameter rp = MMUtil.SINGLETON.getReturnParameter(foundOp);
+      MParameter rp = UmlHelper.getHelper().getCore().getReturnParameter(foundOp);
 
       if (rp == null || rp.getType() == null) {
           System.out.println("WARNING: supposing return type void!");

@@ -41,6 +41,7 @@ import org.tigris.gef.graph.*;
 
 import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.generator.*;
 import org.argouml.uml.diagram.static_structure.*;
@@ -892,7 +893,7 @@ class ColumnReturn extends ColumnDescriptor {
   public Object getValueFor(Object target) {
     if (!(target instanceof MOperation)) return "";
     MOperation op = (MOperation) target;
-	MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
+	MParameter rp = UmlHelper.getHelper().getCore().getReturnParameter(op);
 	if (rp != null && rp.getType() != null) {
 		MClassifier returnType = rp.getType();
 		GeneratorDisplay gd = GeneratorDisplay.getInstance();
@@ -912,7 +913,7 @@ class ColumnReturn extends ColumnDescriptor {
     ParserDisplay pd = ParserDisplay.SINGLETON;
 	MParameter rp = UmlFactory.getFactory().getCore().createParameter();
 	rp.setType(rt);
-	MMUtil.SINGLETON.setReturnParameter(op, rp);
+	UmlHelper.getHelper().getCore().setReturnParameter(op, rp);
   }
 } /* end class ColumnReturn */
 

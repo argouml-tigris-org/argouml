@@ -18,6 +18,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.*;
 
 /**
@@ -267,10 +268,10 @@ public class DBWriter
 		store((MGeneralizableElement)cls, stmt);
 
 		// in case the Classifier has attributes or operations, store these.
-		Vector attributes = new Vector(MMUtil.SINGLETON.getAttributes(cls));
+		Vector attributes = new Vector(UmlHelper.getHelper().getCore().getAttributes(cls));
 		for ( int i = 0; i < attributes.size(); i++) store((MAttribute)attributes.elementAt(i),stmt);
 
-		Vector operations = new Vector(MMUtil.SINGLETON.getOperations(cls));
+		Vector operations = new Vector(UmlHelper.getHelper().getCore().getOperations(cls));
 		for ( int i = 0; i < operations.size(); i++) store((MOperation)operations.elementAt(i),stmt);
     }
 

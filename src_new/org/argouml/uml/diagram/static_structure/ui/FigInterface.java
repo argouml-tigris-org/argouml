@@ -47,6 +47,7 @@ import org.argouml.uml.ui.*;
 import org.argouml.uml.generator.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.UmlHelper;
 
 /** Class to display graphics for a UML Interface in a diagram. */
 
@@ -535,7 +536,7 @@ public class FigInterface extends FigNodeModelElement {
     if (cls == null)
       return;
 	int ocounter = 1;
-    Collection behs = MMUtil.SINGLETON.getOperations(cls);
+    Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);
     if (behs != null) {
 	  Iterator iter = behs.iterator();
       Vector figs = _operVec.getFigs();

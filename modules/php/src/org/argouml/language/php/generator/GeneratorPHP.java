@@ -36,6 +36,8 @@ import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.model_management.*;
+
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.MMUtil;
 
 import org.argouml.application.api.*;
@@ -260,7 +262,7 @@ implements PluggableNotation, FileGenerator {
     s += generateVisibility (op);
 
     // pick out return type
-    MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
+    MParameter rp = UmlHelper.getHelper().getCore().getReturnParameter(op);
     if ( rp != null) {
       MClassifier returnType = rp.getType();
 
@@ -484,7 +486,7 @@ implements PluggableNotation, FileGenerator {
     }
 
 
-    Collection strs = MMUtil.SINGLETON.getAttributes(cls);
+    Collection strs = UmlHelper.getHelper().getCore().getAttributes(cls);
     if (strs != null) {
       sb.append('\n');
 
@@ -515,7 +517,7 @@ implements PluggableNotation, FileGenerator {
     }
 
     // needs-more-work: constructors
-    Collection behs = MMUtil.SINGLETON.getOperations(cls);
+    Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);
     if (behs != null) {
       sb.append ('\n');
       sb.append (INDENT).append ("// Operations\n");
@@ -1010,7 +1012,7 @@ implements PluggableNotation, FileGenerator {
 
     //  public String generateSpecification(Collection realizations) {
 	public String generateSpecification(MClass cls) {
-		Collection realizations = MMUtil.SINGLETON.getSpecifications(cls);
+		Collection realizations = UmlHelper.getHelper().getCore().getSpecifications(cls);
 		if (realizations == null) return "";
 		String s = "";
 		Iterator clsEnum = realizations.iterator();

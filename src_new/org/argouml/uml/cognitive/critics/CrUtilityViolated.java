@@ -35,6 +35,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 import org.argouml.cognitive.*;
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.*;
 
 /** A critic to detect when a class can never have instances (of
@@ -72,7 +73,7 @@ public class CrUtilityViolated extends CrUML {
 	private Collection getInheritedStructuralFeatures(MClassifier cls,int depth)
 	{     
 		Collection res = new Vector();
-		res.addAll(MMUtil.SINGLETON.getAttributes(cls));
+		res.addAll(UmlHelper.getHelper().getCore().getAttributes(cls));
 
 		Collection inh = cls.getGeneralizations();
 		for (Iterator iter = inh.iterator(); iter.hasNext();) {
