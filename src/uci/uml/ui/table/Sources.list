@@ -15,7 +15,7 @@ SOURCES= \
 	TableModelAssoc_in_DeplByProps.java \
 	TableModelDependency_in_DeplByProps.java \
 	TableModelInterface_in_DeplByProps.java \
-	TableModelLinksByProps.java \
+	TableModelLinkByProps.java \
 	TableModelNodeByProps.java \
 	TableModelNodeInstanceByProps.java \
 	TableModelComposite.java \
