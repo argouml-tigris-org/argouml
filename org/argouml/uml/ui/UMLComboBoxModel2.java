@@ -341,10 +341,11 @@ public abstract class UMLComboBoxModel2
                 _buildingModel = true;
                 buildModelList();
                 _buildingModel = false;
+                setSelectedItem(getSelectedModelElement());
                 if (getSize() > 0) {
                     fireIntervalAdded(this, 0, getSize() - 1);
                 }
-                setSelectedItem(getSelectedModelElement());
+               
             }
             if (getSelectedItem() != null && _clearable) {
                 addElement(""); // makes sure we can select 'none'

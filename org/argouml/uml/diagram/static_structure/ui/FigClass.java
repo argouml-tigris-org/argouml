@@ -42,6 +42,7 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
+import org.argouml.model.ModelEventPump;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ArgoJMenu;
@@ -790,6 +791,14 @@ public class FigClass extends FigNodeModelElement {
             updateOperations();
             damage();
         }
+        if (mee != null && mee.getName().equals("parameter") && ModelFacade.isAOperation(mee.getSource())) {
+            if (mee.getAddedValue() != null) {
+                UmlModelEventPump.getPump().addModelEventListener(this, mee.getAddedValue(), new String[] {"name", "kind", "type", "defaultValue"});
+            }
+            if (mee.getRemovedValue() != null) {
+                UmlModelEventPump.getPump().addModelEventListener(this, mee.getRemovedValue());
+            }
+        }
         if (mee == null || mee.getName().equals("isAbstract")) {
             updateAbstract();
             damage();
@@ -1173,6 +1182,7 @@ public class FigClass extends FigNodeModelElement {
                 } else {
                     oper.setFont(LABEL_FONT);
                 }
+                oper.damage();
                 ocounter++;
             }
             if (figs.size() > ocounter) {
