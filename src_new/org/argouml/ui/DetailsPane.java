@@ -563,16 +563,17 @@ public class DetailsPane
      * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        // we can neglect this, the detailspane allways selects the
-        // first target in a set of targets. The first target can only
-        // be changed in a targetRemoved or a TargetSet event
+        Object target = e.getNewTarget();
+        setTarget(target);
         fireTargetAdded(e);
     }
 
     /**
      * @see TargetListener#targetRemoved(TargetEvent)
      */
-    public void targetRemoved(TargetEvent e) {        
+    public void targetRemoved(TargetEvent e) {
+        Object target = e.getNewTarget();
+        setTarget(target);
         fireTargetRemoved(e);
     }
 

@@ -30,7 +30,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 
@@ -90,6 +94,11 @@ public class TabDiagram
      * The GEF JGraph in where the figs are painted
      */
     protected JGraph _jgraph;
+    
+    /**
+     * prevents target event cycles between this and the TargetManager.
+     */
+    private boolean updatingSelection = false;
 
     /**
      * used but there doesn't appear to be a purpose.
@@ -228,14 +237,45 @@ public class TabDiagram
      * diagram is set but also the selection in the projectbrowser.
      */
     public void selectionChanged(GraphSelectionEvent gse) {
-        Vector sels = gse.getSelections();
-        ActionCut.getInstance().setEnabled(sels != null && !sels.isEmpty());
-        ActionCopy.getInstance().setEnabled(sels != null && !sels.isEmpty());
-        /*
-	  ActionPaste.getInstance().setEnabled(
-	  Globals.clipBoard != null && !Globals.clipBoard.isEmpty());
-	*/
-        TargetManager.getInstance().setTargets(sels);
+        if (!updatingSelection) {
+            updatingSelection = true;
+            Vector sels = gse.getSelections();
+            ActionCut.getInstance().setEnabled(sels != null && !sels.isEmpty());
+            ActionCopy.getInstance()
+                    .setEnabled(sels != null && !sels.isEmpty());
+            /*
+             * ActionPaste.getInstance().setEnabled( Globals.clipBoard != null &&
+             * !Globals.clipBoard.isEmpty());
+             */
+            Collection currentSelection = TargetManager.getInstance()
+                    .getTargets();
+            if (currentSelection.size() == 0)
+                TargetManager.getInstance().setTargets(sels);
+            else {
+                if (currentSelection.size() < sels.size()) {
+                    // there are targets added
+                    List addedTargets = new ArrayList(sels);
+                    addedTargets.removeAll(currentSelection);
+                    Iterator it = addedTargets.iterator();
+                    while (it.hasNext()) {
+                        TargetManager.getInstance().addTarget(it.next());
+                    }
+                } else {
+                    if (currentSelection.size() > sels.size()) {
+                        // there are targets removed
+                        List removedTargets = new ArrayList(currentSelection);
+                        removedTargets.removeAll(sels);
+                        Iterator it = removedTargets.iterator();
+                        while (it.hasNext()) {
+                            TargetManager.getInstance().removeTarget(it.next());
+                        }
+                    } else {                        
+                        TargetManager.getInstance().setTargets(sels);
+                    }
+                }
+            }
+            updatingSelection = false;
+        }
 
     }
 

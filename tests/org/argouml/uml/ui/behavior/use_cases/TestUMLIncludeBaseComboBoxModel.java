@@ -27,6 +27,7 @@ package org.argouml.uml.ui.behavior.use_cases;
 import junit.framework.TestCase;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
@@ -99,7 +100,8 @@ public class TestUMLIncludeBaseComboBoxModel extends TestCase {
     }
     
     public void testSetBase() {
-        elem.setBase(bases[0]);
+        ModelFacade.setBase(elem, bases[0]);
+        //elem.setBase(bases[0]);
         assertTrue(model.getSelectedItem() == bases[0]);
     }
     

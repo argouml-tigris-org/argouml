@@ -759,12 +759,24 @@ public class ProjectBrowser
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
+        Object target = e.getNewTarget();
+        if (target instanceof ArgoDiagram) {
+	    // ProjectManager.getManager().getCurrentProject().
+	    // setActiveDiagram((ArgoDiagram) target);
+            updateTitle();
+        }
     }
 
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
+        Object target = e.getNewTarget();
+        if (target instanceof ArgoDiagram) {
+	    // ProjectManager.getManager().getCurrentProject().
+	    // setActiveDiagram((ArgoDiagram) target);
+            updateTitle();
+        }
     }
 
     /**
@@ -773,8 +785,8 @@ public class ProjectBrowser
     public void targetSet(TargetEvent e) {
         Object target = e.getNewTarget();
         if (target instanceof ArgoDiagram) {
-	    ProjectManager.getManager().getCurrentProject().
-		setActiveDiagram((ArgoDiagram) target);
+	    // ProjectManager.getManager().getCurrentProject().
+	    // setActiveDiagram((ArgoDiagram) target);
             updateTitle();
         }
     }    

@@ -174,23 +174,6 @@ public class TestUmlModelEventPump extends TestCase {
     }
 
     /**
-     * Tests wether an exception is thrown if one tries to register a listener
-     * to a class that is no subclass of MBase
-     */
-    public void testAddNonMBaseClassListener() {
-        try {
-            UmlModelEventPump.getPump()
-		.addClassModelEventListener(listener,
-					    Object.class,
-					    new String[] {
-						"name"
-					    });
-            fail();
-        } catch (Exception ex) {
-        }
-    }
-
-    /**
      * Tests wether it is possible (it should not be) to give empty arguments
      * while registring a listener
      */

@@ -172,6 +172,7 @@ public class StylePanel extends TabSpawnable implements TabFigTarget,
      *      TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
+        setTarget(e.getNewTarget());
     }
 
     /**
