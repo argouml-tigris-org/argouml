@@ -63,7 +63,7 @@ public class ActionImportFromSources extends UMLAction {
             String directory = Globals.getLastDirectory();
             JFileChooser chooser = OsUtil.getFileChooser(directory);
 
-            if (chooser == null) chooser = new JFileChooser();
+            if (chooser == null) chooser = OsUtil.getFileChooser();
 
             chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
             chooser.setDialogTitle("Import sources");

@@ -90,7 +90,7 @@ public class ActionOpenProject extends UMLAction {
       String directory = Globals.getLastDirectory();
       JFileChooser chooser = OsUtil.getFileChooser (directory);
       
-      if (chooser == null) chooser = new JFileChooser();
+      if (chooser == null) chooser = OsUtil.getFileChooser();
       
       chooser.setDialogTitle (Localizer.localize ("Actions", "text.open_project.chooser_title"));
       SuffixFilter filter = FileFilters.CompressedFileFilter;
