@@ -149,7 +149,7 @@ public class FigEdgeNote
             newOwner = new CommentEdge(getSourceFigNode(), getDestFigNode());
         }
         owner = newOwner;
-        if (ModelFacade.getUUID(newOwner) == null) {
+        if (UUIDManager.getInstance().getUUID(newOwner) == null) {
             ModelFacade.setUUID(newOwner,
 				UUIDManager.getInstance().getNewUUID());
 	}

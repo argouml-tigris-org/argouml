@@ -38,7 +38,6 @@ import org.argouml.model.uml.CoreHelper;
 import org.argouml.model.uml.ExtensionMechanismsHelper;
 import org.argouml.model.uml.UmlException;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.tigris.gef.base.Diagram;
 
 import ru.novosoft.uml.MBase;
@@ -4985,10 +4984,6 @@ public class ModelFacade {
         if (isABase(base)) {
             return ((MBase) base).getUUID();
         }
-        if (base instanceof CommentEdge) {
-            return (String) ((CommentEdge) base).getUUID();
-        }
-        //
 	illegalArgument(base);
 	return "";
     }
