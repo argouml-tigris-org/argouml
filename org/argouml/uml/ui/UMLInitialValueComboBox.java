@@ -49,6 +49,9 @@ public class UMLInitialValueComboBox extends JComboBox
              implements ActionListener, UMLUserInterfaceComponent {
 
     private UMLUserInterfaceContainer _container;
+
+    /** Prevent event storms through not generating unnecessary events */
+    private boolean _isUpdating = false;
     
 /** items in the initial value combobox that are available for selection.*/    
     String[] listItems = {"","0", "1", "2","null"};
@@ -75,6 +78,10 @@ public class UMLInitialValueComboBox extends JComboBox
  */
         addActionListener(new ActionListener(){
             public void actionPerformed(final ActionEvent event) {
+		if (_isUpdating) {
+		    return;
+		}
+
                 String item = (String) getSelectedItem();
                 Object target = _container.getTarget();
                 if (target instanceof MAttribute){
@@ -103,12 +110,13 @@ public class UMLInitialValueComboBox extends JComboBox
  */ 
     public void targetChanged() {
         Object target = _container.getTarget();
+	_isUpdating = true;
         if (target instanceof MAttribute){
             MExpression initExpr = (MExpression)((MAttribute)target).getInitialValue();
             if (initExpr != null){
                 String init = initExpr.getBody();
                 setSelectedItem(init);
-                update();
+                //update();
             }
             else if (initExpr == null){
                 setSelectedItem(null);// clear residual junk from the combo box.
@@ -119,12 +127,13 @@ public class UMLInitialValueComboBox extends JComboBox
             if (initExpr != null){
                 String init = initExpr.getBody();
                 setSelectedItem(init);
-                update();
+                //update();
             }
             else if (initExpr == null){
                 setSelectedItem(null); // clear the previous value from the combo box.
             }
         }
+	_isUpdating = false;
     }
     
 
@@ -150,6 +159,7 @@ public class UMLInitialValueComboBox extends JComboBox
  *   eventProp "type" and "initValue" are handled here.
   *          modified Aug. 29, 2001 psager@tigris.org
  *          modified Dec. 13, 2001 psager@tigris.org cleaned up the code.
+ *          modified Aug. 21, 2002 d00mst@tigris.org catch changes to the initial value
  *   @param  MElementEvent event the event object that identifies the event
  */
     public void propertySet(final MElementEvent event) {
@@ -158,7 +168,10 @@ public class UMLInitialValueComboBox extends JComboBox
         if(eventProp.equals("owner") || eventProp.equals("name")) {
             return;
         }
-        update();
+	if("initialValue".equals(eventProp))
+	    targetChanged();
+//	else
+//	    update();
     } 
     
 /** updates the diagram. It first has to locate it's target element and then
