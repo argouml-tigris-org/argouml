@@ -12,15 +12,6 @@ The overall introduction to the book. Sections are:
 
 4. Assumptions
 
-Modifications
-=============
-
-30 Nov 2001:  Jeremy Bennett. Broken out as a separate section from the
-              original manual by Alejandro, Phillipe and Andreas. Material
-              incorporated from various documents to provide the text.
-
- 7 Dec 2001:  Jeremy Bennett. 0.9.5, draft B. Loose ends tidied up.
-
 -->
  
 <chapter>
@@ -125,12 +116,22 @@ Modifications
     <!-- A bit more on the status of the project. Taken from Andreas. -->
 
     <sect2>
-      <title>Finding Out More About the Argo Project</title>
+      <title>Finding Out More About the &argouml; Project</title>
 
       <!-- The Argo/UML process and infrastructure -->
 
       <sect3>
         <title>How &argouml; is Developed</title> 
+
+	<indexterm>
+	  <primary>Jason Robbins</primary>
+	</indexterm>
+	<indexterm>
+	  <primary>Robbins, Jason</primary>
+	</indexterm>
+	<indexterm>
+	  <primary>Mailing lists</primary>
+	</indexterm>
 
         <para>Jason Elliot Robbins founded the Argo Project and provided early
           project leadership.  While Jason remains active in the project, he
@@ -146,8 +147,30 @@ Modifications
           takes place, and developers discuss the directions the project should
           take. Although controversial at times, these discussions are always
           kept nice and friendly (no flame-wars and such), so newbies should
-          not hesitate and participate in them. They'll always get a warm
+          not hesitate and participate in them. You'll always get a warm
           welcome there.</para>
+
+	<indexterm>
+	  <primary>Contributing</primary>
+	  <secondary>to &argouml;</secondary>
+	</indexterm>
+	<indexterm>
+	  <primary>Cookbook</primary>
+	</indexterm>
+	<indexterm>
+	  <primary>Developers' Cookbook, The</primary>
+	</indexterm>
+	<indexterm>
+	  <primary>Developer Zone</primary>
+	</indexterm>
+	<para>
+If you want to learn some details about how the project is run and
+how you should go about to contribute go the the 
+<ulink url="http://argouml.tigris.org/dev.html">&argouml;
+Web Site Developer Zone</ulink>
+and read through the documentation there.
+The Cookbook is an important document.
+</para>
       </sect3>
 
       <!-- More on the infrastructure -->
@@ -155,52 +178,35 @@ Modifications
       <sect3>
         <title>More on Infrastructure</title>
 
-        <para>Besides the developer mailing list, there's also a mailing for
-          users (see <ulink
-            url="http://argouml.tigris.org/servlets/ProjectMailingListList">
-            http://argouml.tigris.org/servlets/ProjectMailingListList</ulink>),
-          where they can discuss problems from a user perspective. Some
-          developers also read this list, so there's a good chance to get
-          qualified help.</para>
+	<indexterm>
+	  <primary>Mailing lists</primary>
+	</indexterm>
 
+        <para>
+Besides the developer mailing list, there's also a mailing for users
+(see <ulink url="http://argouml.tigris.org/servlets/ProjectMailingListList">
+The &argouml; Mailing List List</ulink>),
+where we can discuss problems from a user perspective.
+Developers also read this list, so there's a good chance to get
+qualified help.
+</para>
+
+	<indexterm>
+	  <primary>FAQ</primary>
+	</indexterm>
         <para>Before posting to this list, you should take a look at the
           <ulink url="http://argouml.tigris.org/faqs/users.html">
             user FAQ</ulink> maintained by Ewan R. Grantham.</para>
 
-        <para>More information on ArgoUML and other UML related topics is also
-          available on the <ulink url="http://www.argouml.org">ArgoUML
-            website</ulink>, maintained by Markus Klink.</para>
+        <para>
+More information on ArgoUML and other UML related topics is also
+available on the 
+<ulink url="http://argouml.tigris.org">ArgoUML website</ulink>,
+maintained by Linus Tolke.
+</para>
       </sect3>
 
-      <!-- A bit about development tools -->
-
-      <sect3>
-        <title>Development Tools Used</title>
-
-        <note><para>As a user you don't need to know this, but it's here for
-          interest to explain a little about how &argouml; is
-          built.</para></note>
-
-        <para>ArgoUML uses <ulink
-            url="http://jakarta.apache.org/ant/index.html">Ant</ulink> as it's
-          main build tool. The whole build process is controlled by the
-          <filename>build.xml</filename> file in the main source
-          directory.</para>
-
-        <para>The parser for Java reverse engineering is generated with
-          <ulink url="http://www.antlr.org">Antlr</ulink> from a customized
-          Java grammar.</para>
-
-        <para>Instead of using a self-implemented UML meta-model, &argouml; for
-          all versions after 0.8 uses a <ulink
-            url="http://nsuml.sourceforge.net">meta-model implementation</ulink>
-          provided by NovoSoft.</para>
-
-        <para>OCL is handled by Frank Finger's <ulink
-            url="http://dresden-ocl.sourceforge.net">OCL compiler</ulink>,
-          developed at the TU Dresden.</para>
-      </sect3>
-  </sect2>
+    </sect2>
 
   </sect1>
 
@@ -259,15 +265,14 @@ Modifications
           &argouml;.</para></listitem>
       </itemizedlist>
 
-      <!-- Note these are full URLs. We allow for the manual being other than
-           on the argouml part of the tigris server -->
-
-      <para>These are covered in the
-        <ulink url="http://argouml.tigris.org/faqs/users.html">FAQ</ulink>, 
-        <ulink url="http://argouml.tigris.org/documentation/defaulthtml/quickguide/">
-          Quick Guide</ulink> and
-        <ulink url="http://argouml.tigris.org/documentation/defaulthtml/cookbook/">
-          Developers Cookbook</ulink>.</para>
+      <para>These are covered in 
+<ulink url="http://argouml.tigris.org/documentation/defaulthtml/cookbook/">
+the Developers Cookbook</ulink>,
+<ulink url="http://argouml.tigris.org/faqs/users.html">the FAQ</ulink>, 
+and
+<ulink url="http://argouml.tigris.org/documentation/defaulthtml/quickguide/">
+the Quick Guide</ulink>.
+</para>
     </sect2>
   </sect1>
 
@@ -339,10 +344,29 @@ Modifications
     <sect2>
       <title>User Feedback</title>
 
+      <indexterm>
+	<primary>Feedback</primary>
+      </indexterm>
+      <indexterm>
+	<primary>User Feedback</primary>
+      </indexterm>
+      <indexterm>
+	<primary>Contributing</primary>
+	<secondary>to the User Manual</secondary>
+      </indexterm>
+
       <para>Please tell us what you think about this User Manual. Your
         comments will help us make improvements. Email your thoughts to the
         <ulink url="mailto:users@argouml.tigris.org">&argouml; Users Mailing
-          List</ulink>. In case you would like to add to the missing chapters you should contact the <ulink url="mailto:dev@argouml.tigris.org">&argouml; Developer Mailing List</ulink> to check whether noone else is working on this part. You can subscribe to either of the mailinglists via the <ulink url="http://argouml.tigris.org">&argouml; web site</ulink>.</para>
+          List</ulink>.
+In case you would like to add to the missing chapters 
+you should contact the 
+<ulink url="mailto:dev@argouml.tigris.org">&argouml; 
+Developer Mailing List</ulink> 
+to check whether noone else is working on this part. 
+You can subscribe to either of the mailinglists via 
+the <ulink url="http://argouml.tigris.org">&argouml; web site</ulink>.
+</para>
     </sect2>
   </sect1>
 
