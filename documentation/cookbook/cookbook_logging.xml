@@ -94,6 +94,12 @@ The purpose of this test is to avoid the creation of the argument.
     
     <sect2>
         <title>How to Create Log Entries...</title>
+    <indexterm>
+      <primary>LOG</primary>
+    </indexterm>
+    <indexterm>
+      <primary>Logger</primary>
+    </indexterm>
             <para>
                 You should <emphasis>not</emphasis> use
                 <function>System.out.println</function> in 
@@ -125,14 +131,32 @@ public class <replaceable>theClass</replaceable> {
 ...
 
     public void anExample() {
-        _Log.debug("This is a debug message.");
-        _Log.info("This is a info message.");
-        _Log.warn("This is a warning.");
-        _Log.error("This is an error.");
-        _Log.fatal("This is fatal. The program stops now working...");
+        LOG.debug("This is a debug message.");
+        LOG.info("This is a info message.");
+        LOG.warn("This is a warning.");
+        LOG.error("This is an error.");
+        LOG.fatal("This is fatal. The program stops now working...");
     }
             </programlisting>
         </example>
+    <para>
+Notice that we in the ArgoUML project have decided to have all loggers
+private static final with a static initializer.
+The reason for making them private is that this reduces the coupling between
+classes i.e. there is no risk that one class uses some other class' Logger
+to do logging.
+The reason for making them static is that our classes are more or less
+all either lightweight, like a representation of an object in the
+model, or a singleton.
+For the lightweight classes, having a reference to a logger object per
+object is a burden and for the singleton objects it doesn't care if
+the logger is static or not.
+The reason for making this final is that it shall never be modified by
+the class.
+The reason for having a static initializer is that then all classes can
+do this in the same way and we don't ever risk to forgot to create the
+Logger.
+</para>
         <para>
         For performance reasons, a check before the actual logging statement 
         saves the overhead of all the concatenations, data conversions and
@@ -142,11 +166,11 @@ public class <replaceable>theClass</replaceable> {
         <example id="example.log4j.speed">
             <title>Improving on speed/performance</title>
             <programlisting>
-    if (_Log.isDebugEnabled()) {
-        _Log.debug("Entry number: " + i + " is " + entry[i]);
+    if (LOG.isDebugEnabled()) {
+        LOG.debug("Entry number: " + i + " is " + entry[i]);
     }
-    if (_Log.isInfoEnabled()) {
-        _Log.info("Entry number: " + i + " is " + entry[i]);
+    if (LOG.isInfoEnabled()) {
+        LOG.info("Entry number: " + i + " is " + entry[i]);
     }
             </programlisting>
         </example>
@@ -179,7 +203,7 @@ the following log statement:
 	    <programlisting>
         int i;
 ...
-        _Log.debug("Entry number: " + i + " is " + entry[i]);
+        LOG.debug("Entry number: " + i + " is " + entry[i]);
 	    </programlisting>
 It is quite innocent looking isn't it?
 Well that is because the java compiler is very helpful 
@@ -191,7 +215,7 @@ and will convert it to the equivalent of:
 	sb.append(i);
 	sb.append(" is ");
 	sb.append(entry[i].toString());
-        _Log.debug(sb.toString());
+        LOG.debug(sb.toString());
 	    </programlisting>
 If the entry[i] is some object with a lot of calculations 
 when toString() is called and the logging statement is passed
