@@ -35,17 +35,21 @@ import org.argouml.ui.SpacerPanel;
 import org.argouml.ui.StylePanelFig;
 import org.tigris.gef.ui.ColorRenderer;
 
+/**
+ * The style Panel for FigEdgeModelElement.
+ *
+ */
 public class SPFigEdgeModelElement extends StylePanelFig implements
         ItemListener {
 
     private static final Logger LOG = 
         Logger.getLogger(SPFigEdgeModelElement.class);
 
-    SpacerPanel _spacer = new SpacerPanel();
+    private SpacerPanel spacer = new SpacerPanel();
 
-    SpacerPanel _spacer2 = new SpacerPanel();
+    private SpacerPanel spacer2 = new SpacerPanel();
 
-    SpacerPanel _spacer3 = new SpacerPanel();
+    private SpacerPanel spacer3 = new SpacerPanel();
 
     /**
      * The constructor.
@@ -97,19 +101,19 @@ public class SPFigEdgeModelElement extends StylePanelFig implements
         c.weightx = 0.0;
         c.gridx = 2;
         c.gridy = 1;
-        gb.setConstraints(_spacer, c);
-        add(_spacer);
+        gb.setConstraints(spacer, c);
+        add(spacer);
 
         c.gridx = 3;
         c.gridy = 10;
-        gb.setConstraints(_spacer2, c);
-        add(_spacer2);
+        gb.setConstraints(spacer2, c);
+        add(spacer2);
 
         c.weightx = 1.0;
         c.gridx = 4;
         c.gridy = 10;
-        gb.setConstraints(_spacer3, c);
-        add(_spacer3);
+        gb.setConstraints(spacer3, c);
+        add(spacer3);
     }
 
 } /* end class SPFigEdgeModelElement */

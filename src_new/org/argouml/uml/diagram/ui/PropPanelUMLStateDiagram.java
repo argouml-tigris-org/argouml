@@ -25,14 +25,17 @@
 package org.argouml.uml.diagram.ui;
 
 import org.argouml.i18n.Translator;
-import org.argouml.uml.diagram.ui.PropPanelDiagram;
 
+/**
+ * The properties panel for a Statechart diagram.
+ *
+ */
 public class PropPanelUMLStateDiagram extends PropPanelDiagram {
 
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelUMLStateDiagram() {
 	super(Translator.localize("UMLMenu", "label.state-chart-diagram"));
 
