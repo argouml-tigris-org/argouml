@@ -1,7 +1,0 @@
-This module has been provided by Andreas Rueckert.
-
-It enables ArgoUML to read jar and/or class files and reverse engineer the 
-information contained in it.
-
-The module is in a pre-ALPHA stage. Please report any bugs in it to our
-issuezilla bug tracking system.
