@@ -154,21 +154,20 @@ import ru.novosoft.uml.model_management.MSubsystem;
 public class UmlFactory extends AbstractUmlModelFactory {
 
     /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
+     * The logger
      */
-    protected static Logger cat =
+    private static final Logger LOG =
         Logger.getLogger(UmlFactory.class);
     
     /**
      * A map of valid connections keyed by the connection type.
      * The constructor builds this from the data in the VALID_CONNECTIONS array
      */
-    private Map _validConnectionMap = new HashMap();
+    private Map validConnectionMap = new HashMap();
 
-    private boolean _jmiProxyCreated = false;
+    private boolean jmiProxyCreated = false;
 
-    /*
+    /**
      * An array of valid connections, the combination of connecting class
      * and node classes must exist as a row in this list to be considered
      * valid.
@@ -284,10 +283,10 @@ public class UmlFactory extends AbstractUmlModelFactory {
         for (int i = 0; i < VALID_CONNECTIONS.length; ++i) {
             connection = VALID_CONNECTIONS[i][0];
             ArrayList validItems =
-                (ArrayList) _validConnectionMap.get(connection);
+                (ArrayList) validConnectionMap.get(connection);
             if (validItems == null) {
                 validItems = new ArrayList();
-                _validConnectionMap.put(connection, validItems);
+                validConnectionMap.put(connection, validItems);
             }
             if (VALID_CONNECTIONS[i].length < 3) {
                 // If there isn't a 3rd column then this represents a connection
@@ -471,14 +470,14 @@ public class UmlFactory extends AbstractUmlModelFactory {
      * over NSUML is created.
      */
     public boolean isJmiProxyCreated() {
-        return _jmiProxyCreated;
+        return jmiProxyCreated;
     }
 
     /**
      * @param arg true to cause the JMI Reflective proxy over NSUML to be used.
      */
     public void setJmiProxyCreated(boolean arg) {
-        _jmiProxyCreated = arg;
+        jmiProxyCreated = arg;
     }
     
     /**
@@ -489,7 +488,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
      * @param connectionType is the type of relationship
      * @param fromElement is an existing model element
      * @param toElement is another existing model element
-     * @throws IllegalModelElementConnectionException
+     * @throws IllegalModelElementConnectionException 
      */
     public Object buildConnection(Object connectionType, 
 				  Object fromElement, Object toElement)
@@ -500,6 +499,16 @@ public class UmlFactory extends AbstractUmlModelFactory {
 
     }
     
+    /**
+     * @param connectionType
+     * @param fromElement
+     * @param fromStyle
+     * @param toElement
+     * @param toStyle
+     * @param unidirectional
+     * @return
+     * @throws IllegalModelElementConnectionException
+     */
     public Object buildConnection(Object connectionType,
                   Object fromElement, Object fromStyle,
                   Object toElement, Object toStyle,
@@ -555,7 +564,8 @@ public class UmlFactory extends AbstractUmlModelFactory {
         } else if (connectionType == ModelFacade.INCLUDE) {
             connection = getUseCases().buildInclude(fromElement, toElement);
         } else if (connectionType == CommentEdge.class) {
-            connection = getCore().buildCommentConnection(fromElement, toElement);
+            connection = 
+                getCore().buildCommentConnection(fromElement, toElement);
         }
     
         if (connection == null) {
@@ -581,7 +591,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
     {
         // Get the list of valid model item pairs for the given connection type
         ArrayList validItems =
-            (ArrayList) _validConnectionMap.get(connectionType);
+            (ArrayList) validConnectionMap.get(connectionType);
         if (validItems == null) {
             return false;
         }
@@ -1042,6 +1052,8 @@ public class UmlFactory extends AbstractUmlModelFactory {
      *
      * @deprecated by Linus Tolke as of 0.15.4. Should be made private (if
      * at all used).
+     * @param source MBase
+     * @param target MBase
      */
     public void doCopyBase(MBase source, MBase target) {
     }
@@ -1133,7 +1145,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
                                                           new Class[] {} );
         }
         catch (Exception e) {
-            cat.error("Failed to invoke create method on factory.", e);
+            LOG.error("Failed to invoke create method on factory.", e);
             return null;
             // TODO: decide if we want to throw an exception instead
             // throw new InvalidObjectRequestException
@@ -1148,13 +1160,13 @@ public class UmlFactory extends AbstractUmlModelFactory {
             // TODO: decide if we want to throw an exception instead
             // throw new InvalidObjectRequestException
             //("Cannot execute creator method", entity, e);
-            cat.error("Failed to invoke create method on factory.", e);
+            LOG.error("Failed to invoke create method on factory.", e);
             return null;
         }
         UmlFactory.getFactory().initialize(obj);
         
         // Allow for testing of the proxy capability
-        if (_jmiProxyCreated) {
+        if (jmiProxyCreated) {
         	// TODO: implement RefPackageProxy handling
         	
 			// if (obj instanceof MPackage) {
