@@ -68,7 +68,7 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener {
         theComboBox = box;
         theButton.setPreferredSize(
             new Dimension(icon.getIconWidth() + 6, icon.getIconHeight() + 6));
-        theButton.setToolTipText(container.localize(tooltip));
+        theButton.setToolTipText(tooltip);
         theButton.addActionListener(this);
         box.addActionListener(this);
         add(theComboBox, BorderLayout.CENTER);

@@ -87,13 +87,6 @@ public class MockUMLUserInterfaceContainer
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceContainer#localize(java.lang.String)
-     */
-    public String localize(String key) {
-        return null;
-    }
-
-    /**
      * @see org.argouml.ui.NavigationListener#navigateTo(java.lang.Object)
      */
     public void navigateTo(Object element) {
