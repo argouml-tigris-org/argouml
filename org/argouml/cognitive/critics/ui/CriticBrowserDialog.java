@@ -295,7 +295,7 @@ public class CriticBrowserDialog extends ArgoDialog
 	    _target.setPriority(ToDoItem.HIGH_PRIORITY);
 	if (p.equals(PRIORITIES[1]))
 	    _target.setPriority(ToDoItem.MED_PRIORITY);
-	if (p.equals(PRIORITIES[2])
+	if (p.equals(PRIORITIES[2]))
 	    _target.setPriority(ToDoItem.LOW_PRIORITY);
     }
 
