@@ -27,6 +27,7 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import junit.framework.TestCase;
 
 import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
@@ -60,11 +61,13 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         ArgoSecurityManager.getInstance().setAllowExit(true);
+        Project p = Project.getCurrentProject();
         elem = CommonBehaviorFactory.getFactory().createReception();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         signals = new MSignal[10];
         MModel m = ModelManagementFactory.getFactory().createModel();
+        p.setRoot(m);
         elem.setNamespace(m);
         for (int i = 0 ; i < 10; i++) {
             signals[i] = CommonBehaviorFactory.getFactory().createSignal();
