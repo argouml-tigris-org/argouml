@@ -81,16 +81,23 @@ public class DisplayTextTree
     /** needs documenting */
     public static final int REMOVE = 3;
     
-    /** needs documenting */
-    Hashtable _expandedPathsInModel;
+    /**
+     * A Map helping the tree maintain a consistent expanded paths state.
+     *
+     *<pre>
+     * keys = the current TreeModel of this Tree
+     * values = Vector of currently expanded paths.
+     *</pre>
+     */
+    private Hashtable _expandedPathsInModel;
     
     /** needs documenting */
-    boolean _reexpanding;
+    private boolean _reexpanding;
     
-    /** needs documenting */
+    /** holds state info about whether to display stereotypes in the nav pane.*/
     private boolean showStereotype;
     
-    /** needs documenting */
+    /** Runnable to help avoid too many tree updates. */
     private DisplayTextTreeRun _doit;
     
     /** needs documenting */
