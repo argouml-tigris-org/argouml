@@ -674,14 +674,6 @@ public class ProjectBrowser
         statusBar.showStatus(s);
     }
 
-    /**
-     * @param percentage the percentage of the progress bar to be 
-     *                   shown - set to 0 to switch off
-     */
-    public void showProgress(int percentage) {
-        statusBar.showProgress(percentage);
-    }
-    
     /**    
      * Called by a user interface element when a request to
      * navigate to a model element has been received.
