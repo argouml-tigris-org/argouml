@@ -94,6 +94,15 @@ public class FigInstance extends FigNodeModelElement {
     setBounds(r.x, r.y, r.width, r.height);
   }
 
+  public Object clone() {
+    FigInstance figClone = (FigInstance) super.clone();
+    Vector v = figClone.getFigs();
+    figClone._bigPort = (FigRect) v.elementAt(0);
+    figClone._name = (FigText) v.elementAt(1);
+    figClone._attr = (FigText) v.elementAt(2);
+    return figClone;
+  }
+
   public Dimension getMinimumSize() {
     Dimension nameMin = _name.getMinimumSize();
     Dimension attrMin = _attr.getMinimumSize();

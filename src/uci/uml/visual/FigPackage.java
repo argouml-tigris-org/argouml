@@ -49,7 +49,7 @@ public class FigPackage extends FigNodeModelElement {
 
   ////////////////////////////////////////////////////////////////
   // constants
-  
+
   public final int MARGIN = 2;
   public int x = 10;
   public int y = 10;
@@ -58,8 +58,6 @@ public class FigPackage extends FigNodeModelElement {
   public int indentX = 30;
   public int indentY = 20;
   public int textH = 20;
-  public Point pos;
-  public Dimension dim;
   protected int _radius = 20;
 
   ////////////////////////////////////////////////////////////////
@@ -103,6 +101,15 @@ public class FigPackage extends FigNodeModelElement {
     Rectangle r = getBounds();
     setBounds(r.x, r.y, r.width, r.height);
     updateEdges();
+  }
+
+  public Object clone() {
+    FigPackage figClone = (FigPackage) super.clone();
+    Vector v = figClone.getFigs();
+    figClone._bigPort = (FigRect) v.elementAt(0);
+    figClone._name = (FigText) v.elementAt(1);
+    figClone._body = (FigText) v.elementAt(2);
+    return figClone;
   }
 
   public Dimension getMinimumSize() {

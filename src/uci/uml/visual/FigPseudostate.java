@@ -94,7 +94,17 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     Rectangle r = getBounds();
   }
 
+  public Object clone() {
+    FigClass figClone = (FigClass) super.clone();
+    // error: cloning twice!
+    Vector v = figClone.getFigs();
+    figClone._bigPort = (FigRect) v.elementAt(0);
+    figClone._name = (FigText) v.elementAt(1);
+    return figClone;
+  }
 
+
+  
   /** If the UML meta-model object changes state. Update the Fig.  But
    *  we need to do it as a "DelayedVetoableChangeListener", so that
    *  model changes complete before we update the screen. */

@@ -69,7 +69,7 @@ implements IStatusBar {
   protected static Action _actionOpen = Actions.Open;
   protected static Action _actionSave = Actions.Save;
   protected static Action _actionSaveAs = Actions.SaveAs;
-  //protected static Action _actionSaveAsXMI = Actions.SaveAsXMI;
+  protected static Action _actionSaveAsXMI = Actions.SaveAsXMI;
   // -----
   protected static Action _actionAddToProj = Actions.AddToProj;
   // -----
@@ -210,6 +210,11 @@ implements IStatusBar {
     KeyStroke ctrlS = KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK);
     KeyStroke ctrlP = KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_MASK);
     KeyStroke ctrlA = KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_MASK);
+    KeyStroke ctrlC = KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_MASK);
+    KeyStroke ctrlV = KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_MASK);
+    KeyStroke ctrlX = KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK);
+
+
     KeyStroke F1 = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0);
     KeyStroke F2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
     KeyStroke F3 = KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
@@ -266,7 +271,7 @@ implements IStatusBar {
     saveItem.setMnemonic('S');
     saveItem.setAccelerator(ctrlS);
     file.add(_actionSaveAs);
-    //file.add(_actionSaveAsXMI);
+    file.add(_actionSaveAsXMI);
     file.addSeparator();
     JMenuItem printItem = file.add(_actionPrint);
     printItem.setMnemonic('P');
@@ -294,9 +299,15 @@ implements IStatusBar {
     edit.add(_actionUndo);
     edit.add(_actionRedo);
     edit.addSeparator();
-    edit.add(_actionCut);
-    edit.add(_actionCopy);
-    edit.add(_actionPaste);
+    JMenuItem cutItem = edit.add(_actionCut);
+    cutItem.setMnemonic('X');
+    cutItem.setAccelerator(ctrlX);
+    JMenuItem copyItem = edit.add(_actionCopy);
+    copyItem.setMnemonic('C');
+    copyItem.setAccelerator(ctrlC);
+    JMenuItem pasteItem = edit.add(_actionPaste);
+    pasteItem.setMnemonic('V');
+    pasteItem.setAccelerator(ctrlV);
     edit.addSeparator();
     edit.add(_actionDelete);
     edit.add(_actionDispose);

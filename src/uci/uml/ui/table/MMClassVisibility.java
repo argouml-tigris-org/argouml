@@ -46,7 +46,9 @@ public class MMClassVisibility implements java.io.Serializable {
 
   public static MMClassVisibility VisibilityFor(Classifier cls) {
     ElementOwnership eo = cls.getElementOwnership();
+    if (eo == null) return PUBLIC;
     VisibilityKind vk = eo.getVisibility();
+    if (vk == null) return PUBLIC;
     if (vk.equals(VisibilityKind.PACKAGE)) return PACKAGE;
     return PUBLIC;
   }
@@ -63,10 +65,11 @@ public class MMClassVisibility implements java.io.Serializable {
 
   public void set(Classifier target) {
 //     try {
-      if (this == PUBLIC) 
-	target.getElementOwnership().setVisibility(VisibilityKind.PUBLIC);
-      if (this == PACKAGE) 
-	target.getElementOwnership().setVisibility(VisibilityKind.PACKAGE);
+    if (target.getElementOwnership() == null) return;
+    if (this == PUBLIC)
+      target.getElementOwnership().setVisibility(VisibilityKind.PUBLIC);
+    if (this == PACKAGE)
+      target.getElementOwnership().setVisibility(VisibilityKind.PACKAGE);
 //     }
 //     catch (PropertyVetoException pve) {
 //       System.out.println("could not set class visibility");

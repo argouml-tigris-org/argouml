@@ -78,19 +78,31 @@ public class JGraph extends JPanel implements Cloneable {
     _scroll.setBorder(null);
     _scroll.getHorizontalScrollBar().setUnitIncrement(25);
     _scroll.getVerticalScrollBar().setUnitIncrement(25);
-    
+
     _editor.setAwtComponent(_drawingPane);
     setLayout(new BorderLayout());
     add(_scroll, BorderLayout.CENTER);
-    _drawingPane.addMouseListener(_editor);
-    _drawingPane.addMouseMotionListener(_editor);
-    _drawingPane.addKeyListener(_editor);
+    addMouseListener(_editor);
+    addMouseMotionListener(_editor);
+    addKeyListener(_editor);
 
     initKeys();
 
     //invalidate();
     validate();
     //revalidate();
+  }
+
+  public void addMouseListener(MouseListener listener) {
+    _drawingPane.addMouseListener(listener);
+  }
+
+  public void addMouseMotionListener(MouseMotionListener listener) {
+    _drawingPane.addMouseMotionListener(listener);
+  }
+
+  public void addKeyListener(KeyListener listener) {
+    _drawingPane.addKeyListener(listener);
   }
 
   /** Make a copy of this JGraph so that it can be shown in another window.*/
@@ -109,7 +121,8 @@ public class JGraph extends JPanel implements Cloneable {
     bindKey(new CmdSelectNext(true), KeyEvent.VK_TAB, 0);
     bindKey(new CmdSelectNext(false), KeyEvent.VK_TAB, shift);
 
-    bindKey(new CmdDispose(), KeyEvent.VK_DELETE, 0);
+    bindKey(new CmdDelete(), KeyEvent.VK_DELETE, 0);
+    bindKey(new CmdDispose(), KeyEvent.VK_D, ctrl);
 
     bindKey(new CmdGroup(), KeyEvent.VK_G, ctrl);
     bindKey(new CmdUngroup(), KeyEvent.VK_U, ctrl);

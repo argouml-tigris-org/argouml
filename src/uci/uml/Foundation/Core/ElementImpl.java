@@ -97,6 +97,9 @@ public class ElementImpl implements Element, Highlightable {
     return returnVector;
   } 
 
+  public Vector getVetoListeners() { return _vetoListeners; }
+
+
   public String getId() { return "argo" + elementID; }
 
   public Vector getCharacteristic() { return (Vector) _characteristic;}

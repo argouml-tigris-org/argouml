@@ -142,9 +142,18 @@ public class Actions {
     }
   }
 
-  
 }  /* end class Actions */
 
+
+class UMLChangeAction extends UMLAction {
+
+  public UMLChangeAction(String s) { super(s); }
+
+  public void actionPerformed(ActionEvent e) {
+    markNeedsSave();
+    Actions.updateAllEnabled();
+  }
+} /* end class UMLChangeAction */
 
 
 ////////////////////////////////////////////////////////////////
@@ -439,14 +448,32 @@ class ActionCut extends UMLAction {
   public boolean shouldBeEnabled() { return false; }
 } /* end class ActionCut */
 
-class ActionCopy extends UMLAction {
+class ActionCopy extends UMLChangeAction {
   public ActionCopy() { super("Copy"); }
-  public boolean shouldBeEnabled() { return false; }
+  public boolean shouldBeEnabled() {
+    int size = Globals.curEditor().getSelectionManager().selections().size();
+    return (size > 0);
+  }
+  public void actionPerformed(ActionEvent ae) {
+    CmdCopy cmd = new CmdCopy();
+    cmd.doIt();
+    super.actionPerformed(ae);
+  }
 } /* end class ActionCopy */
 
-class ActionPaste extends UMLAction {
+class ActionPaste extends UMLChangeAction {
   public ActionPaste() { super("Paste"); }
-  public boolean shouldBeEnabled() { return false; }
+  public boolean shouldBeEnabled() {
+    if (Globals.clipBoard != null)
+      return true;
+    return false;
+  }
+  public void actionPerformed(ActionEvent ae) {
+    CmdPaste cmd = new CmdPaste();
+    cmd.doIt();
+    super.actionPerformed(ae);
+  }
+
 } /* end class ActionPaste */
 
 
@@ -623,10 +650,10 @@ class ActionClassWizard extends UMLAction {
 ////////////////////////////////////////////////////////////////
 // diagram creation actions
 
-class ActionClassDiagram extends UMLAction {
+class ActionClassDiagram extends UMLChangeAction {
   public ActionClassDiagram() { super("ClassDiagram"); }
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     //System.out.println("making class diagram...");
     //_cmdCreateNode.doIt();
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -637,6 +664,7 @@ class ActionClassDiagram extends UMLAction {
       ProjectBrowser.TheInstance.setTarget(d);
     }
     catch (PropertyVetoException pve) { }
+    super.actionPerformed(ae);
   }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -644,10 +672,10 @@ class ActionClassDiagram extends UMLAction {
   }
 } /* end class ActionClassDiagram */
 
-class ActionUseCaseDiagram extends UMLAction {
+class ActionUseCaseDiagram extends UMLChangeAction {
   public ActionUseCaseDiagram() { super("UseCaseDiagram"); }
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     //System.out.println("making use case diagram...");
     //_cmdCreateNode.doIt();
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -658,6 +686,7 @@ class ActionUseCaseDiagram extends UMLAction {
       ProjectBrowser.TheInstance.setTarget(d);
     }
     catch (PropertyVetoException pve) { }
+    super.actionPerformed(ae);
   }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -665,10 +694,10 @@ class ActionUseCaseDiagram extends UMLAction {
   }
 } /* end class ActionUseCaseDiagram */
 
-class ActionStateDiagram extends UMLAction {
+class ActionStateDiagram extends UMLChangeAction {
   public ActionStateDiagram() { super("StateDiagram"); }
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     //System.out.println("making state diagram...");
     //_cmdCreateNode.doIt();
     ProjectBrowser pb = ProjectBrowser.TheInstance;
@@ -696,6 +725,7 @@ class ActionStateDiagram extends UMLAction {
     catch (PropertyVetoException pve) {
       System.out.println("PropertyVetoException in ActionStateDiagram");
     }
+    super.actionPerformed(ae);
   }
   public boolean shouldBeEnabled() {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
@@ -705,10 +735,10 @@ class ActionStateDiagram extends UMLAction {
   }
 } /* end class ActionStateDiagram */
 
-class ActionActivityDiagram extends UMLAction {
+class ActionActivityDiagram extends UMLChangeAction {
   public ActionActivityDiagram() { super("ActivityDiagram"); }
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     //System.out.println("making state diagram...");
     //_cmdCreateNode.doIt();
     ProjectBrowser pb = ProjectBrowser.TheInstance;
@@ -736,6 +766,7 @@ class ActionActivityDiagram extends UMLAction {
     catch (PropertyVetoException pve) {
       System.out.println("PropertyVetoException in ActionActivityDiagram");
     }
+    super.actionPerformed(ae);
   }
   public boolean shouldBeEnabled() {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
@@ -750,16 +781,16 @@ class ActionActivityDiagram extends UMLAction {
 ////////////////////////////////////////////////////////////////
 // model element creation actions
 
-class ActionClass extends UMLAction {
+class ActionClass extends UMLChangeAction {
   uci.gef.Cmd _cmdCreateNode = new
   uci.gef.CmdCreateNode(MMClass.class, "Class");
   
   public ActionClass() { super("Class"); }
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     //System.out.println("making class...");
     _cmdCreateNode.doIt();
-    markNeedsSave();
+    super.actionPerformed(ae);
   }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -767,16 +798,16 @@ class ActionClass extends UMLAction {
   }
 } /* end class ActionClass */
 
-class ActionInterface extends UMLAction {
+class ActionInterface extends UMLChangeAction {
   uci.gef.Cmd _cmdCreateNode = new
   uci.gef.CmdCreateNode(Interface.class, "Interface");
 
   public ActionInterface() { super("Interface"); }
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     System.out.println("making interface...");
     _cmdCreateNode.doIt();
-    markNeedsSave();
+    super.actionPerformed(ae);
   }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -784,16 +815,16 @@ class ActionInterface extends UMLAction {
   }
 } /* end class ActionInterface */
 
-class ActionActor extends UMLAction {
+class ActionActor extends UMLChangeAction {
   uci.gef.Cmd _cmdCreateNode = new
   uci.gef.CmdCreateNode(Actor.class, "Actor");
 
   public ActionActor() { super("Actor"); }
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     //System.out.println("making actor...");
     _cmdCreateNode.doIt();
-    markNeedsSave();
+    super.actionPerformed(ae);
   }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -801,16 +832,16 @@ class ActionActor extends UMLAction {
   }
 } /* end class ActionActor */
 
-class ActionUseCase extends UMLAction {
+class ActionUseCase extends UMLChangeAction {
   uci.gef.Cmd _cmdCreateNode = new
   uci.gef.CmdCreateNode(UseCase.class, "UseCase");
 
   public ActionUseCase() { super("UseCase"); }
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     //System.out.println("making Use Case...");
     _cmdCreateNode.doIt();
-    markNeedsSave();
+    super.actionPerformed(ae);
   }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -818,16 +849,16 @@ class ActionUseCase extends UMLAction {
   }
 } /* end class ActionUseCase */
 
-class ActionState extends UMLAction {
+class ActionState extends UMLChangeAction {
   uci.gef.Cmd _cmdCreateNode = new
   uci.gef.CmdCreateNode(State.class, "State");
 
   public ActionState() { super("State"); }
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     //System.out.println("making state...");
     _cmdCreateNode.doIt();
-    markNeedsSave();
+    super.actionPerformed(ae);
   }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -835,10 +866,10 @@ class ActionState extends UMLAction {
   }
 } /* end class ActionState */
 
-class ActionInternalTransition extends UMLAction {
+class ActionInternalTransition extends UMLChangeAction {
   public ActionInternalTransition() { super("Internal Transition"); }
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     //System.out.println("adding internal transition...");
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Object target = pb.getDetailsTarget();
@@ -851,7 +882,7 @@ class ActionInternalTransition extends UMLAction {
       t.setGuard(new Guard("condition"));
       t.setEffect(new ActionSequence(new Name("actions")));
       t.setState(st);
-      markNeedsSave();
+      super.actionPerformed(ae);
     }
     catch (PropertyVetoException pve) {
       System.out.println("PropertyVetoException in ActionInternalTransition");
@@ -864,16 +895,16 @@ class ActionInternalTransition extends UMLAction {
   }
 } /* end class ActionState */
 
-class ActionPseudostate extends UMLAction {
+class ActionPseudostate extends UMLChangeAction {
   uci.gef.Cmd _cmdCreateNode = new
   uci.gef.CmdCreateNode(Pseudostate.class, "Pseudostate");
 
   public ActionPseudostate() { super("Pseudostate"); }
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     //System.out.println("making Pseudostate...");
     _cmdCreateNode.doIt();
-    markNeedsSave();
+    super.actionPerformed(ae);
   }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -881,16 +912,16 @@ class ActionPseudostate extends UMLAction {
   }
 } /* end class ActionPseudostate */
 
-class ActionPackage extends UMLAction {
+class ActionPackage extends UMLChangeAction {
   uci.gef.Cmd _cmdCreateNode = new
   uci.gef.CmdCreateNode(Subsystem.class, "Package");
 
   public ActionPackage() { super("Package"); }
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     //System.out.println("making Package...");
     _cmdCreateNode.doIt();
-    markNeedsSave();
+    super.actionPerformed(ae);
   }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -898,16 +929,16 @@ class ActionPackage extends UMLAction {
   }
 } /* end class ActionPackage */
 
-class ActionInstance extends UMLAction {
+class ActionInstance extends UMLChangeAction {
   uci.gef.Cmd _cmdCreateNode = new
   uci.gef.CmdCreateNode(Instance.class, "Instance");
 
   public ActionInstance() { super("Instance"); }
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     System.out.println("making Instance...");
     _cmdCreateNode.doIt();
-    markNeedsSave();
+    super.actionPerformed(ae);
   }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -915,13 +946,13 @@ class ActionInstance extends UMLAction {
   }
 } /* end class ActionInstance */
 
-class ActionAttr extends UMLAction {
+class ActionAttr extends UMLChangeAction {
   // needs-more-work: should be part of java binding or common elements
   public static DataType INT_TYPE = new DataType("int");
 
   public ActionAttr() { super("Attribute"); }
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Object target = pb.getDetailsTarget();
     if (!(target instanceof Classifier)) return;
@@ -930,7 +961,7 @@ class ActionAttr extends UMLAction {
       Attribute attr = new Attribute("newAttr", INT_TYPE, "0");
       attr.setVisibility(VisibilityKind.PUBLIC);
       cls.addStructuralFeature(attr);
-      markNeedsSave();
+      super.actionPerformed(ae);
     }
     catch (PropertyVetoException pve) {
       System.out.println("PropertyVetoException in ActionOper");
@@ -944,13 +975,13 @@ class ActionAttr extends UMLAction {
   }
 } /* end class ActionAttr */
 
-class ActionOper extends UMLAction {
+class ActionOper extends UMLChangeAction {
   // needs-more-work: should be part of java binding or common elements
   public static DataType VOID_TYPE = new DataType("void");
 
   public ActionOper() { super("Operation"); }
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Object target = pb.getDetailsTarget();
     if (!(target instanceof Classifier)) return;
@@ -959,7 +990,7 @@ class ActionOper extends UMLAction {
       Operation oper = new Operation(VOID_TYPE, "newOperation");
       oper.setVisibility(VisibilityKind.PUBLIC);
       cls.addBehavioralFeature(oper);
-      markNeedsSave();
+      super.actionPerformed(ae);
     }
     catch (PropertyVetoException pve) {
       System.out.println("PropertyVetoException in ActionOper");
@@ -973,19 +1004,19 @@ class ActionOper extends UMLAction {
 } /* end class ActionOper */
 
 
-class ActionModel extends UMLAction {
+class ActionModel extends UMLChangeAction {
   //uci.gef.Cmd _cmdCreateNode = new
   //uci.gef.CmdCreateNode(uci.uml.Model_Management.Model.class, "Model");
   // needs-more-work: need FigModel and UMLPackageDiagram
   public ActionModel() { super("Model"); }
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     System.out.println("making model...");
     //_cmdCreateNode.doIt();
     Project p = ProjectBrowser.TheInstance.getProject();
     try {
       p.addModel(new Model());
-      markNeedsSave();
+      super.actionPerformed(ae);
     }
     catch (PropertyVetoException pve) { }
   }
@@ -1002,7 +1033,7 @@ class ActionModel extends UMLAction {
 class ActionGenerateOne extends UMLAction {
   public ActionGenerateOne() { super("Generate Selected Classes"); }
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Editor ce = uci.gef.Globals.curEditor();
     Vector sels = ce.getSelectionManager().getFigs();
@@ -1045,7 +1076,7 @@ class ActionGenerateOne extends UMLAction {
 class ActionGenerateAll extends UMLAction {
   public ActionGenerateAll() { super("Generate All Classes"); }
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Object target = pb.getTarget();
     if (!(target instanceof UMLClassDiagram)) return;
@@ -1076,7 +1107,7 @@ class ActionGenerateAll extends UMLAction {
 class ActionGenerateWeb extends UMLAction {
   public ActionGenerateWeb() { super("Generate Web Site"); }
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
 
   }
 
@@ -1090,7 +1121,7 @@ class ActionGenerateWeb extends UMLAction {
 
 class ActionAutoCritique extends UMLAction {
   public ActionAutoCritique() { super("Toggle Auto-Critique"); }
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     Designer d = Designer.TheDesigner;
     boolean b = d.getAutoCritique();
     d.setAutoCritique(!b);
@@ -1100,7 +1131,7 @@ class ActionAutoCritique extends UMLAction {
 
 class ActionOpenDecisions extends UMLAction {
   public ActionOpenDecisions() { super("Design Issues..."); }
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     DesignIssuesDialog d = new DesignIssuesDialog(ProjectBrowser.TheInstance);
     d.show();
   }
@@ -1108,7 +1139,7 @@ class ActionOpenDecisions extends UMLAction {
 
 class ActionOpenGoals extends UMLAction {
   public ActionOpenGoals() { super("Design Goals..."); }
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     GoalsDialog d = new GoalsDialog(ProjectBrowser.TheInstance);
     d.show();
   }  
@@ -1116,7 +1147,7 @@ class ActionOpenGoals extends UMLAction {
 
 class ActionOpenCritics extends UMLAction {
   public ActionOpenCritics() { super("Browse Critics..."); }
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     CriticBrowserDialog dialog = new CriticBrowserDialog();
     dialog.show();
   }
@@ -1126,7 +1157,7 @@ class ActionOpenCritics extends UMLAction {
 
 class ActionFlatToDo extends UMLAction {
   public ActionFlatToDo() { super("Toggle Flat View"); }
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     ToDoPane pane = pb.getToDoPane();
     pane.toggleFlat();
@@ -1135,7 +1166,7 @@ class ActionFlatToDo extends UMLAction {
 
 class ActionNewToDoItem extends UMLAction {
   public ActionNewToDoItem() { super("New To Do Item..."); }
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     AddToDoItemDialog dialog = new AddToDoItemDialog();
     dialog.show();
   }
@@ -1177,7 +1208,7 @@ class ActionReplayFix extends ToDoItemAction {
 
 class ActionResolve extends ToDoItemAction {
   public ActionResolve() { super("Resolve Item..."); }
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     DismissToDoItemDialog dialog = new DismissToDoItemDialog();
     dialog.setTarget(_target);
     dialog.setVisible(true);
@@ -1186,7 +1217,7 @@ class ActionResolve extends ToDoItemAction {
 
 class ActionEmailExpert extends ToDoItemAction {
   public ActionEmailExpert() { super("Send Email To Expert..."); }
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     EmailExpertDialog dialog = new EmailExpertDialog();
     dialog.setTarget(_target);
     dialog.show();
@@ -1199,7 +1230,7 @@ class ActionMoreInfo extends ToDoItemAction {
 
 class ActionSnooze extends ToDoItemAction {
   public ActionSnooze() { super("Snooze Critic"); }
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     if (!(_target instanceof ToDoItem)) return;
     ToDoItem item = (ToDoItem) _target;
     Poster p = item.getPoster();
@@ -1215,7 +1246,7 @@ class ActionSnooze extends ToDoItemAction {
 class ActionAboutArgoUML extends UMLAction {
   public ActionAboutArgoUML() { super("About Argo/UML"); }
 
-  public void actionPerformed(ActionEvent e) {
+  public void actionPerformed(ActionEvent ae) {
     AboutBox box = new AboutBox();
     box.show();
   }

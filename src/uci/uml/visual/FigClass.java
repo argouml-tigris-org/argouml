@@ -87,6 +87,17 @@ public class FigClass extends FigNodeModelElement  {
 //     _oper.addPropertyChangeListener(this);
   }
 
+  public Object clone() {
+    FigClass figClone = (FigClass) super.clone();
+    // error: cloning twice!
+    Vector v = figClone.getFigs();
+    figClone._bigPort = (FigRect) v.elementAt(0);
+    figClone._name = (FigText) v.elementAt(1);
+    figClone._attr = (FigText) v.elementAt(2);
+    figClone._oper = (FigText) v.elementAt(3);
+    return figClone;
+  }
+
   public FigText getOperationFig() { return _oper; }
   public FigText getAttributeFig() { return _attr; }
 
@@ -98,20 +109,15 @@ public class FigClass extends FigNodeModelElement  {
     int w = Math.max(Math.max(nameMin.width, attrMin.width), operMin.width);
     return new Dimension(w, h);
   }
-  
+
   /* Override setBounds to keep shapes looking right */
   public void setBounds(int x, int y, int w, int h) {
     if (_name == null) return;
-//     int leftSide = x;
-//     int widthP = w;
-//     int topSide = y;
-//     int heightP = h;
-
     Dimension nameMin = _name.getMinimumSize();
     Dimension attrMin = _attr.getMinimumSize();
     Dimension operMin = _oper.getMinimumSize();
 
-    int extra_each = (h - nameMin.height - attrMin.height - operMin.height) / 2;
+    int extra_each = (h - nameMin.height - attrMin.height - operMin.height)/2;
 
     _name.setBounds(x, y, w, nameMin.height);
     _attr.setBounds(x, y + _name.getBounds().height,
@@ -141,8 +147,6 @@ public class FigClass extends FigNodeModelElement  {
     }
   }
 
-  
-  
   protected void modelChanged() {
     super.modelChanged();
     Classifier cls = (Classifier) getOwner();
@@ -174,27 +178,11 @@ public class FigClass extends FigNodeModelElement  {
     _attr.setText(attrStr);
     _oper.setText(operStr);
 
-    if (cls.getIsAbstract()) {
-        _name.setFont(ITALIC_LABEL_FONT);
-    }
-    else {
-        _name.setFont(LABEL_FONT);
-    }
+    if (cls.getIsAbstract()) _name.setFont(ITALIC_LABEL_FONT);
+    else _name.setFont(LABEL_FONT);
 
   }
 
-
-
-//   public void dispose() {
-//     if (!(getOwner() instanceof Classifier)) return;
-//     Classifier cls = (Classifier) getOwner();
-//     Project p = ProjectBrowser.TheInstance.getProject();
-//     p.moveToTrash(cls);
-//     super.dispose();
-//   }
-
-
-  
 
 } /* end class FigClass */
 

@@ -90,6 +90,14 @@ public class FigUseCase extends FigNodeModelElement {
     setBounds(r.x, r.y, r.width, r.height);
   }
 
+  public Object clone() {
+    FigUseCase figClone = (FigUseCase) super.clone();
+    Vector v = figClone.getFigs();
+    figClone._bigPort = (FigCircle) v.elementAt(0);
+    figClone._cover = (FigCircle) v.elementAt(1);
+    figClone._name = (FigText) v.elementAt(2);
+    return figClone;
+  }
 
 
 

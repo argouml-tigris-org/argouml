@@ -61,6 +61,16 @@ public class BasicApplication {
 
     _jgf.setBounds(10, 10, 300, 200);
     _jgf.setVisible(true);
+    LayerManager lm =  _jgf.getGraph().getEditor().getLayerManager();
+    LayerPerspective lay = (LayerPerspective) lm.getActiveLayer();
+    lay.addNodeTypeRegion(SampleNode.class, new Rectangle(10, 10, 200, 200));
+    lay.addNodeTypeRegion(SampleNode2.class, new Rectangle(250, 10, 200, 200));
+    DefaultGraphModel dgm = (DefaultGraphModel) _jgf.getGraphModel();
+    for (int i = 0; i < 6; i++) {
+      dgm.addNode(new SampleNode());
+      dgm.addNode(new SampleNode2());
+    }
+    System.out.println("finished adding nodes");
   }
 
   ////////////////////////////////////////////////////////////////

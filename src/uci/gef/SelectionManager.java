@@ -40,6 +40,7 @@ import com.sun.java.swing.event.EventListenerList;
 
 import uci.util.*;
 import uci.gef.event.*;
+import uci.uml.Foundation.Core.*;
 
 
 /** This class handles Manager selections. It is basically a
@@ -295,7 +296,8 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
 	int feSize = figEdges.size();
 	for (int j = 0; j < feSize; j++) {
 	  Object fe = figEdges.elementAt(j);
-	  if (nonMovingEdges.contains(fe)) movingEdges.addElement(fe);
+	  if (nonMovingEdges.contains(fe) && !movingEdges.contains(fe))
+	    movingEdges.addElement(fe);
 	  else nonMovingEdges.addElement(fe);
 	}
       }
@@ -350,7 +352,30 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
   /** When a multiple selection are deleted, each selection is deleted */
   public void dispose() {
     Enumeration ss = ((Vector)_selections.clone()).elements();
-    while (ss.hasMoreElements()) ((Selection)ss.nextElement()).dispose();
+    while (ss.hasMoreElements()) {
+      Selection s = (Selection)ss.nextElement();
+      Fig f = (Fig) s.getContent();
+      Object o = f.getOwner();
+      if (o instanceof ElementImpl) {
+        Vector v =  (Vector) ((ElementImpl)o).getVetoListeners().clone();
+	Enumeration vv = v.elements();
+	vv = v.elements();
+	Object firstElem = null;
+        boolean firstIteration = true;
+	while (vv.hasMoreElements()) {
+	  Object elem = vv.nextElement();
+	  if ( elem instanceof Fig) {
+            if (firstIteration) {
+	      firstElem = elem;
+	      firstIteration = false;
+	      continue;
+	    }
+	    ((Fig)elem).delete();
+	  }
+	}
+	((Fig)firstElem).dispose();
+      }
+    }
   }
 
 

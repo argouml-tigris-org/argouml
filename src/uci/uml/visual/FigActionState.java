@@ -87,6 +87,15 @@ public class FigActionState extends FigNodeModelElement {
     setBounds(r.x, r.y, r.width, r.height);
   }
 
+  public Object clone() {
+    FigActionState figClone = (FigActionState) super.clone();
+    Vector v = figClone.getFigs();
+    figClone._bigPort = (FigRRect) v.elementAt(0);
+    figClone._cover = (FigRRect) v.elementAt(1);
+    figClone._name = (FigText) v.elementAt(2);
+    return figClone;
+  }
+
   public Dimension getMinimumSize() {
     return new Dimension(90, 25);
   }

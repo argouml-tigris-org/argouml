@@ -47,9 +47,9 @@ public class FigInterface extends FigNodeModelElement {
   public static int OVERLAP = 4;
 
   protected FigRect _bigPort;
-  protected FigRect _outline; 
-  protected FigText _stereo; 
-  protected FigText _oper; 
+  protected FigRect _outline;
+  protected FigText _stereo;
+  protected FigText _oper;
 
   public FigInterface(GraphModel gm, Object node) {
     super(gm, node);
@@ -92,6 +92,17 @@ public class FigInterface extends FigNodeModelElement {
     setBounds(r.x, r.y, r.width, r.height);
   }
 
+  public Object clone() {
+    FigInterface figClone = (FigInterface) super.clone();
+    Vector v = figClone.getFigs();
+    figClone._bigPort = (FigRect) v.elementAt(0);
+    figClone._outline = (FigRect) v.elementAt(1);
+    figClone._stereo = (FigText) v.elementAt(2);
+    figClone._name = (FigText) v.elementAt(3);
+    figClone._oper = (FigText) v.elementAt(4);
+    return figClone;
+  }
+
   public Dimension getMinimumSize() {
     Dimension stereoMin = _stereo.getMinimumSize();
     Dimension nameMin = _name.getMinimumSize();
@@ -101,7 +112,7 @@ public class FigInterface extends FigNodeModelElement {
     int w = Math.max(stereoMin.width, Math.max(nameMin.width, operMin.width));
     return new Dimension(w, h);
   }
-  
+
   /* Override setBounds to keep shapes looking right */
   public void setBounds(int x, int y, int w, int h) {
     if (_name == null) return;

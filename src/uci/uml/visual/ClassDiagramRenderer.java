@@ -84,10 +84,11 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       Classifier toCls = (Classifier) toEnd.getType();
       FigNode fromFN = (FigNode) lay.presentationFor(fromCls);
       FigNode toFN = (FigNode) lay.presentationFor(toCls);
-      ascFig.sourcePortFig(fromFN);
-      ascFig.sourceFigNode(fromFN);
-      ascFig.destPortFig(toFN);
-      ascFig.destFigNode(toFN);
+      System.out.println("seting sopurce and dest");
+      ascFig.setSourcePortFig(fromFN);
+      ascFig.setSourceFigNode(fromFN);
+      ascFig.setDestPortFig(toFN);
+      ascFig.setDestFigNode(toFN);
       return ascFig;
     }
     if (edge instanceof Link) {
@@ -101,10 +102,10 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       Instance toInst = toEnd.getInstance();
       FigNode fromFN = (FigNode) lay.presentationFor(fromInst);
       FigNode toFN = (FigNode) lay.presentationFor(toInst);
-      lnkFig.sourcePortFig(fromFN);
-      lnkFig.sourceFigNode(fromFN);
-      lnkFig.destPortFig(toFN);
-      lnkFig.destFigNode(toFN);
+      lnkFig.setSourcePortFig(fromFN);
+      lnkFig.setSourceFigNode(fromFN);
+      lnkFig.setDestPortFig(toFN);
+      lnkFig.setDestFigNode(toFN);
       return lnkFig;
     }
     if (edge instanceof Generalization) {
@@ -114,10 +115,10 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       GeneralizableElement superType = gen.getSupertype();
       FigNode subTypeFN = (FigNode) lay.presentationFor(subType);
       FigNode superTypeFN = (FigNode) lay.presentationFor(superType);
-      genFig.sourcePortFig(subTypeFN);
-      genFig.sourceFigNode(subTypeFN);
-      genFig.destPortFig(superTypeFN);
-      genFig.destFigNode(superTypeFN);
+      genFig.setSourcePortFig(subTypeFN);
+      genFig.setSourceFigNode(subTypeFN);
+      genFig.setDestPortFig(superTypeFN);
+      genFig.setDestFigNode(superTypeFN);
       return genFig;
     }
     if (edge instanceof Realization) {
@@ -127,10 +128,10 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       GeneralizableElement superType = real.getSupertype();
       FigNode subTypeFN = (FigNode) lay.presentationFor(subType);
       FigNode superTypeFN = (FigNode) lay.presentationFor(superType);
-      realFig.sourcePortFig(subTypeFN);
-      realFig.sourceFigNode(subTypeFN);
-      realFig.destPortFig(superTypeFN);
-      realFig.destFigNode(superTypeFN);
+      realFig.setSourcePortFig(subTypeFN);
+      realFig.setSourceFigNode(subTypeFN);
+      realFig.setDestPortFig(superTypeFN);
+      realFig.setDestFigNode(superTypeFN);
       return realFig;
     }
     if (edge instanceof Dependency) {
@@ -143,10 +144,10 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       FigNode supFN = (FigNode) lay.presentationFor(supplier);
       FigNode cliFN = (FigNode) lay.presentationFor(client);
 
-      depFig.sourcePortFig(supFN);
-      depFig.sourceFigNode(supFN);
-      depFig.destPortFig(cliFN);
-      depFig.destFigNode(cliFN);
+      depFig.setSourcePortFig(supFN);
+      depFig.setSourceFigNode(supFN);
+      depFig.setDestPortFig(cliFN);
+      depFig.setDestFigNode(cliFN);
       return depFig;
     }
     // what about realizations? They are not distince objects in my UML model

@@ -56,8 +56,6 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   public int y = 0;
   public int width = 20;
   public int height = 20;
-  public Point pos;
-  public Dimension dim;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -99,6 +97,16 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     Rectangle r = getBounds();
   }
 
+  public Object clone() {
+    FigFinalState figClone = (FigFinalState) super.clone();
+    Vector v = figClone.getFigs();
+    figClone._bigPort = (FigCircle) v.elementAt(0);
+    figClone._outCircle = (FigCircle) v.elementAt(1);
+    figClone._inCircle = (FigCircle) v.elementAt(2);
+    return figClone;
+  }
+
+  
   /** Final states are fixed size. */
   public boolean isResizable() { return false; }
 

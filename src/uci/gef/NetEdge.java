@@ -146,10 +146,10 @@ implements GraphEdgeHooks, java.io.Serializable {
     Fig sourcePortFig = sourceFigNode.getPortFig(_sourcePort);
     Fig destPortFig = destFigNode.getPortFig(_destPort);
     fe = makePresentation(lay);
-    fe.sourcePortFig(sourcePortFig);
-    fe.destPortFig(destPortFig);
-    fe.sourceFigNode(sourceFigNode);
-    fe.destFigNode(destFigNode);
+    fe.setSourcePortFig(sourcePortFig);
+    fe.setDestPortFig(destPortFig);
+    fe.setSourceFigNode(sourceFigNode);
+    fe.setDestFigNode(destFigNode);
     fe.setOwner(this);
     return fe;
   }

@@ -303,7 +303,7 @@ public class ModeBroom extends Mode {
     super.keyPressed(ke);
     if (ke.isConsumed()) return;
     if (KeyEvent.VK_SPACE == ke.getKeyCode()) {
-      doDistibute(!ke.isShiftDown());
+      doDistibute(false, ke.isShiftDown());
       ke.consume();
       _bigDamageRect.setLocation(x1 - 200, y1 - 200);
       _editor.damaged(_bigDamageRect);
@@ -314,7 +314,7 @@ public class ModeBroom extends Mode {
   ////////////////////////////////////////////////////////////////
   // actions
 
-  public void doDistibute(boolean alignToGrid) {
+  public void doDistibute(boolean alignToGrid, boolean doCentering) {
     Vector figs = touching();
     int request = 0;
     if (_distributeMode == EVEN_SPACE || _distributeMode == SPREAD) {
@@ -335,6 +335,15 @@ public class ModeBroom extends Mode {
       d.setArg("bbox", _origBBox);
     d.doIt();
 
+    if (doCentering) {
+      int centerRequest = CmdAlign.ALIGN_H_CENTERS;
+      if (_dir == UPWARD || _dir == DOWNWARD)
+	centerRequest = CmdAlign.ALIGN_H_CENTERS;
+      CmdAlign a = new CmdAlign(centerRequest);
+      a.setArg("figs", figs);
+      a.doIt();
+    }
+
     if (alignToGrid) {
       CmdAlign a = new CmdAlign(CmdAlign.ALIGN_TO_GRID);
       a.setArg("figs", figs);
@@ -347,6 +356,7 @@ public class ModeBroom extends Mode {
     else if (_distributeMode == PACK) _hint =   "Pack tightly";
     else if (_distributeMode == SPREAD) _hint = "Spread out";
     else _hint = "(internal prog error)";
+    if (doCentering) _hint += " + center";
     if (alignToGrid) _hint += " + snap";
     _distributeMode = (_distributeMode + 1) % 3;
 

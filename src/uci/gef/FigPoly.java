@@ -109,6 +109,13 @@ public class FigPoly extends Fig {
     addPoint(x, y);
   }
 
+  public Object clone() {
+    FigPoly figClone = (FigPoly) super.clone();
+    figClone._xpoints = (int[]) _xpoints.clone();
+    figClone._ypoints = (int[]) _ypoints.clone();
+    return figClone;
+  }
+
   ////////////////////////////////////////////////////////////////
   // invariant
 

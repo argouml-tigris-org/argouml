@@ -160,7 +160,9 @@ implements ItemListener, DocumentListener {
     super.setTarget(t);
     MMClass cls = (MMClass) t;
 
-    VisibilityKind vk = cls.getElementOwnership().getVisibility();
+    VisibilityKind vk = VisibilityKind.PUBLIC;
+    ElementOwnership oe = cls.getElementOwnership();
+    if (oe != null) vk = oe.getVisibility();
     _visField.setSelectedItem(vk);
 
     if (cls.getIsAbstract())
@@ -206,7 +208,8 @@ implements ItemListener, DocumentListener {
     if (_target == null) return;
     VisibilityKind vk = (VisibilityKind) _visField.getSelectedItem();
     MMClass cls = (MMClass) _target;
-    cls.getElementOwnership().setVisibility(vk);
+    ElementOwnership oe = cls.getElementOwnership();
+    if (oe != null) oe.setVisibility(vk);
   }
 
   public void setTargetKeywords() {

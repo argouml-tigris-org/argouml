@@ -105,10 +105,10 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       StateVertex destSV = tr.getTarget();
       FigNode sourceFN = (FigNode) lay.presentationFor(sourceSV);
       FigNode destFN = (FigNode) lay.presentationFor(destSV);
-      trFig.sourcePortFig(sourceFN);
-      trFig.sourceFigNode(sourceFN);
-      trFig.destPortFig(destFN);
-      trFig.destFigNode(destFN);
+      trFig.setSourcePortFig(sourceFN);
+      trFig.setSourceFigNode(sourceFN);
+      trFig.setDestPortFig(destFN);
+      trFig.setDestFigNode(destFN);
       return trFig;
     }
 

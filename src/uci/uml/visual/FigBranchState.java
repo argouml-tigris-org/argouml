@@ -103,6 +103,14 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     Rectangle r = getBounds();
   }
 
+  public Object clone() {
+    FigBranchState figClone = (FigBranchState) super.clone();
+    Vector v = figClone.getFigs();
+    figClone._bigPort = (FigPoly) v.elementAt(0);
+    figClone._head = (FigPoly) v.elementAt(1);
+    return figClone;
+  }
+
   /** Initial states are fixed size. */
   public boolean isResizable() { return false; }
 

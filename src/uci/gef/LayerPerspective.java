@@ -172,12 +172,12 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
       //else System.out.println("added node de is null");
     }
   }
-  
+
   public void edgeAdded(GraphEvent ge) {
     //System.out.println("LayerPerspective got edgeAdded");
     Object edge = ge.getArg();
-    Fig oldDE = presentationFor(edge);
-    if (null == oldDE) {
+    Fig oldFig = presentationFor(edge);
+    if (null == oldFig) {
       if (!shouldShow(edge)) { System.out.println("edge rejected"); return; }
       FigEdge newFigEdge = _edgeRenderer.getFigEdgeFor(_gm, this, edge);
       if (newFigEdge != null) {
@@ -189,19 +189,19 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
       //else System.out.println("added arc fig is null!!!!!!!!!!!!!!!!");
     }
   }
-  
+
   public void nodeRemoved(GraphEvent ge) {
     // handled through NetNode subclasses
   }
-  
+
   public void edgeRemoved(GraphEvent ge) {
     // handled through NetEdge subclasses
   }
-  
+
   public void graphChanged(GraphEvent ge) {
     // needs-more-work 
   }
-  
+
 
   /** Test to determine if a given NetNode should have a FigNode
    *  in this layer.  Normally checks NetNode class against a list of

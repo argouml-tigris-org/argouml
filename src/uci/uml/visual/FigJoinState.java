@@ -92,6 +92,14 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     Rectangle r = getBounds();
   }
 
+  public Object clone() {
+    FigJoinState figClone = (FigJoinState) super.clone();
+    Vector v = figClone.getFigs();
+    figClone._bigPort = (FigRect) v.elementAt(0);
+    figClone._head = (FigRect) v.elementAt(1);
+    return figClone;
+  }
+
   /** Initial states are fixed size. */
   //public boolean isResizable() { return false; }
 

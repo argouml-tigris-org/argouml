@@ -187,6 +187,11 @@ public class ModeCreatePolyEdge extends ModeCreate {
 	  FigEdge fe = (FigEdge) lay.presentationFor(_newEdge);
 	  _newItem.setLineColor(Color.black);
 	  fe.setFig(_newItem);
+	  fe.setSourcePortFig(_startPortFig);
+	  fe.setSourceFigNode(_sourceFigNode);
+	  fe.setDestPortFig(destPortFig);
+	  fe.setDestFigNode(destFigNode);
+
 	  if (fe != null) _editor.getSelectionManager().select(fe);
 	  _editor.damaged(fe);
 	}

@@ -51,7 +51,6 @@ CLASSES = \
 	FigMessage.class \
 	FigNote.class \
 	FigPackage.class \
-	FigPseudostate.class \
 	FigState.class \
 	FigJoinState.class \
 	FigForkState.class \

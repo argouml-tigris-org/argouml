@@ -75,7 +75,7 @@ public class CmdAlign extends Cmd {
     switch (d) {
     case ALIGN_TOPS: return "Tops";
     case ALIGN_BOTTOMS: return "Bottoms";
-    case ALIGN_LEFTS: return "Left";
+    case ALIGN_LEFTS: return "Lefts";
     case ALIGN_RIGHTS: return "Rights";
 
     case ALIGN_CENTERS: return "Centers";

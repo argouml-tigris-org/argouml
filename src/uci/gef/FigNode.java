@@ -89,6 +89,12 @@ implements MouseListener, PropertyChangeListener, Highlightable {
     setFigs(figs);
   }
 
+  public Object clone() {
+    FigNode figClone = (FigNode) super.clone();
+    figClone._figEdges = (Vector) _figEdges.clone();
+    return figClone;
+  }
+
   ////////////////////////////////////////////////////////////////
   // accessors
 
@@ -103,11 +109,16 @@ implements MouseListener, PropertyChangeListener, Highlightable {
 
   /** Adds a FigEdge to the list of them that need to be rerouted when
    *  this FigNode moves. */
-  public void addFigEdge(FigEdge fe) { _figEdges.addElement(fe); }
+  public void addFigEdge(FigEdge fe) {
+    _figEdges.addElement(fe);
+  }
 
   /** removes a FigEdge from the list of them that need to be rerouted when
    *  this FigNode moves. */
-  public void removeFigEdge(FigEdge fe) { _figEdges.removeElement(fe); }
+  public void removeFigEdge(FigEdge fe) {
+    _figEdges.removeElement(fe);
+  }
+
 
   public Vector getFigEdges() { return _figEdges; }
 
@@ -516,5 +527,5 @@ implements MouseListener, PropertyChangeListener, Highlightable {
     }
   }
   static final long serialVersionUID = -6733563667370736365L;
-  
 } /* end class FigNode */
+

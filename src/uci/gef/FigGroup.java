@@ -63,6 +63,21 @@ public class FigGroup extends Fig {
     calcBounds();
   }
 
+   public Object clone() {
+     FigGroup figClone = (FigGroup) super.clone();
+     Vector figsClone = new Vector(_figs.size());
+     Enumeration fc = _figs.elements();
+     while (fc.hasMoreElements()) {
+       Fig tempFig = (Fig) fc.nextElement();
+       Fig tempFigClone = (Fig) tempFig.clone();
+       figsClone.addElement(tempFigClone);
+       tempFigClone.setGroup(figClone);
+     }
+     figClone._figs = figsClone;
+     return figClone;
+   }
+
+
   ////////////////////////////////////////////////////////////////
   // accessors
 

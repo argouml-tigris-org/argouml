@@ -36,6 +36,7 @@ CLASSES = \
 	CmdAdjustPageBreaks.class \
 	CmdAlign.class \
 	CmdCreateNode.class \
+	CmdCopy.class \
 	CmdDelete.class \
 	CmdDispose.class \
 	CmdDistribute.class \
@@ -46,6 +47,7 @@ CLASSES = \
 	CmdNull.class \
 	CmdOpen.class \
 	CmdOpenWindow.class \
+	CmdPaste.class \
 	CmdPrint.class \
 	CmdRemovePoint.class \
 	CmdReorder.class \
@@ -101,7 +103,6 @@ CLASSES = \
 	Mode.class \
 	ModeBroom.class \
 	ModeCreate.class \
-	ModeCreateArc.class \
 	ModeCreateEdge.class \
 	ModeCreatePolyEdge.class \
 	ModeCreateFigCircle.class \

@@ -122,7 +122,7 @@ implements TabModelTarget {
   }
 
   public void refresh() { setTarget(_target); }
-  
+
   public TabModelTarget findPanelFor(Class targetClass) {
     TabModelTarget p = (TabModelTarget) _panels.get(targetClass);
     if (p == null) {
@@ -136,7 +136,6 @@ implements TabModelTarget {
     return p;
   }
 
-  
   public Class panelClassFor(Class targetClass) {
     String pack = "uci.uml.ui";
     String base = getClassBaseName();
@@ -154,7 +153,7 @@ implements TabModelTarget {
   }
 
   protected String getClassBaseName() { return _panelClassBaseName; }
-  
+
   public Object getTarget() { return _target; }
 
   public boolean shouldBeEnabled() { return _shouldBeEnabled; }

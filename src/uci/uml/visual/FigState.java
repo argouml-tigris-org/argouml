@@ -108,8 +108,17 @@ public class FigState extends FigNodeModelElement {
     //setBlinkPorts(false); //make port invisble unless mouse enters
     Rectangle r = getBounds();
     setBounds(r.x, r.y, r.width, r.height);
+  }
 
-
+  public Object clone() {
+    FigState figClone = (FigState) super.clone();
+    Vector v = figClone.getFigs();
+    figClone._bigPort = (FigRect) v.elementAt(0);
+    figClone._cover = (FigRect) v.elementAt(1);
+    figClone._name = (FigText) v.elementAt(2);
+    figClone._divider = (FigLine) v.elementAt(3);
+    figClone._internal = (FigText) v.elementAt(4);
+    return figClone;
   }
 
   public Dimension getMinimumSize() {

@@ -80,6 +80,10 @@ public class Globals {
   public static AppletContext getAppletContext() { return _appletContext; }
   public static Applet getApplet() { return _applet; }
 
+  /** Until jdk 1.2, this will be our clipboard */
+  public static Vector clipBoard;
+
+
   /** The place where status messages will be written. */
   public static IStatusBar _StatusBar = null;
 

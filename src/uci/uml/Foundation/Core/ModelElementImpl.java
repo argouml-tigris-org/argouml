@@ -87,6 +87,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
     catch (PropertyVetoException pve) { }
   }
 
+  // there was a bug with null ElementOwnership in enroll.argo
   public ElementOwnership getElementOwnership() { return _elementOwnership; }
   public void setElementOwnership(ElementOwnership x)
   throws PropertyVetoException {

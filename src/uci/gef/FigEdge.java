@@ -85,10 +85,10 @@ implements PropertyChangeListener, Highlightable {
    *  port figs and FigNodes.  The new FigEdge will represent the
    *  given edge (an object from some underlying model). */
   public FigEdge(Fig s, Fig d, FigNode sfn, FigNode dfn, Object edge) {
-    _sourcePortFig = s;
-    _destPortFig = d;
-    sourceFigNode(sfn);
-    destFigNode(dfn);
+    setSourcePortFig(s);
+    setDestPortFig(d);
+    setSourceFigNode(sfn);
+    setDestFigNode(dfn);
     setOwner(edge);
     _fig = makeEdgeFig();
     _fig.setGroup(this);
@@ -111,13 +111,13 @@ implements PropertyChangeListener, Highlightable {
   public void setFig(Fig f) { _fig = f; }
 
   /** Get the Fig reprenting this FigEdge's from-port. */ 
-  public void sourcePortFig(Fig fig) { _sourcePortFig = fig; }
+  public void setSourcePortFig(Fig fig) { _sourcePortFig = fig; }
 
   /** Get the Fig reprenting this FigEdge's to-port. */ 
-  public void destPortFig(Fig fig) { _destPortFig = fig; }
+  public void setDestPortFig(Fig fig) { _destPortFig = fig; }
 
   /** Set the FigNode reprenting this FigEdge's from-node. */ 
-  public void sourceFigNode(FigNode fn) {
+  public void setSourceFigNode(FigNode fn) {
     // assert fn != null
     if (_sourceFigNode != null) _sourceFigNode.removeFigEdge(this);
     _sourceFigNode = fn;
@@ -125,7 +125,7 @@ implements PropertyChangeListener, Highlightable {
   }
 
   /** Set the FigNode reprenting this FigEdge's to-node. */ 
-  public void destFigNode(FigNode fn) {
+  public void setDestFigNode(FigNode fn) {
     // assert fn != null
     if (_destFigNode != null) _destFigNode.removeFigEdge(this);
     _destFigNode = fn;
@@ -505,6 +505,12 @@ implements PropertyChangeListener, Highlightable {
   public void postLoad() { setOwner(getOwner()); }
 
   public void cleanUp() { _fig.cleanUp(); }
+
+  public void delete() {
+    if (_sourceFigNode != null) _sourceFigNode.removeFigEdge(this);
+    if (_destFigNode != null) _destFigNode.removeFigEdge(this);
+    super.delete();
+  }
 
   ////////////////////////////////////////////////////////////////
   // inner classes

@@ -98,6 +98,18 @@ public class FigActor extends FigNodeModelElement {
     Rectangle r = getBounds();
   }
 
+  public Object clone() {
+    FigActor figClone = (FigActor) super.clone();
+    Vector v = figClone.getFigs();
+    figClone._bigPort = (FigRect) v.elementAt(0);
+    figClone._head = (FigCircle) v.elementAt(1);
+    figClone._body = (FigLine) v.elementAt(2);
+    figClone._arms = (FigLine) v.elementAt(3);
+    figClone._leftLeg = (FigLine) v.elementAt(4);
+    figClone._rightLeg = (FigLine) v.elementAt(5);
+    figClone._name = (FigText) v.elementAt(6);
+    return figClone;
+  }
 
   /** Returns true if this Fig can be resized by the user. */
   public boolean isResizable() { return false; }

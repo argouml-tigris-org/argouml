@@ -44,7 +44,7 @@ import uci.graph.*;
  *  be placed in any LayerDiagram. Fig's are also used to define the
  *  look of FigNodes on NetNodes. */
 
-public class Fig implements java.io.Serializable, PropertyChangeListener  {
+public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListener  {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -143,6 +143,12 @@ public class Fig implements java.io.Serializable, PropertyChangeListener  {
    *  for subclasses that redefine most of the infrastructure provided
    *  by class Fig. */
   public Fig() { }
+
+
+  public Object clone() {
+    try { return super.clone(); }
+    catch (CloneNotSupportedException e) { return null; }
+  }
 
   ////////////////////////////////////////////////////////////////
   // invariant
