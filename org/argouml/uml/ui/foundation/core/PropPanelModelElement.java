@@ -106,6 +106,8 @@ abstract public class PropPanelModelElement extends PropPanel {
     protected JList targetFlowList;
     protected JList sourceFlowList;
     
+    protected JList constraintList;
+    
     ////////////////////////////////////////////////////////////////
     // constructors
     public PropPanelModelElement(String name, int columns) {
@@ -208,6 +210,7 @@ abstract public class PropPanelModelElement extends PropPanel {
         sourceFlowList = new UMLLinkedList(this, new UMLModelElementSourceFlowListModel(this));
         targetFlowList = new UMLLinkedList(this, new UMLModelElementTargetFlowListModel(this));
         
+        constraintList = new UMLMutableLinkedList(this, new UMLModelElementConstraintListModel(this), null, ActionNewModelElementConstraint.SINGLETON);
     }
         
 }
