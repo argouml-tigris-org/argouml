@@ -49,7 +49,8 @@ import org.tigris.gef.ui.Highlightable;
 import org.tigris.gef.util.VectorSet;
 
 
-/** UMLToDoItem is the preferred class for newly created ToDoItems within
+/** 
+ * UMLToDoItem is the preferred class for newly created ToDoItems within
  * ArgoUML. It knows more about possible designmaterial and can for example
  * highlight offenders when they are ModelElements by finding the according Fig
  * in the current diagram for them.
@@ -77,6 +78,11 @@ public class UMLToDoItem extends ToDoItem {
         super(c, offs, dsgr);
     }
     
+    /**
+     * The constructor.
+     * 
+     * @param c the critic that created this todoitem
+     */
     public UMLToDoItem(Critic c) {
         super(c);
     }
@@ -102,6 +108,9 @@ public class UMLToDoItem extends ToDoItem {
         select();
     }
     
+    /**
+     * @see org.argouml.cognitive.ToDoItem#deselect()
+     */
     public void deselect() {
         Enumeration offs = getOffenders().elements();
         Project p = ProjectManager.getManager().getCurrentProject();
@@ -121,6 +130,9 @@ public class UMLToDoItem extends ToDoItem {
         }
     }
     
+    /**
+     * @see org.argouml.cognitive.ToDoItem#select()
+     */
     public void select() {
         Enumeration offs = getOffenders().elements();
         Project p = ProjectManager.getManager().getCurrentProject();
