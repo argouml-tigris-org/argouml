@@ -2270,6 +2270,10 @@ This is the set of files that is a repository of localized strings.
 Every other module uses these strings in all communcations with
 the user.
 </para>
+      <para>
+The Internationalization Component is described in detail in
+<xref linkend="internationalization"></xref>.
+</para>
 	</listitem>
 
 	<listitem>
@@ -2330,10 +2334,14 @@ The Model is described in detail in
 	  <listitem>
 	    <para>To do items</para>
 	    <indexterm>
-	      <primary>To do items</primary>
+	      <primary>To Do Items</primary>
 	    </indexterm>
 	    <para>
 This is the To do items. They can be created, deleted and saved.
+</para>
+	    <para>
+The To Do Items Component is described in detail in 
+<xref linkend="todoitems"></xref>.
 </para>
 	  </listitem>
 
@@ -2346,6 +2354,10 @@ This is the To do items. They can be created, deleted and saved.
 This is the framework with menus, tabs, and panes
 available for the other
 components to fill with actions and contents.
+</para>
+	    <para>
+The GUI Framework Component is described in detail in 
+<xref linkend="guiframework"></xref>.
 </para>
 	  </listitem>
 
@@ -2360,6 +2372,10 @@ Not yet implemented.
 	    <para>
 This is the component that the other components can call
 to present some help for the user.
+</para>
+	    <para>
+The Help System Component is described in detail in 
+<xref linkend="help"></xref>.
 </para>
 	  </listitem>
 
@@ -2388,8 +2404,18 @@ work.
 	    <indexterm>
 	      <primary>Diagrams</primary>
 	    </indexterm>
+	    <indexterm>
+	      <primary>Notation</primary>
+	    </indexterm>
 	    <para>
 This is the diagram view of the model.
+The notation is a property that belongs in the Diagrams
+so the different language register their provided notation 
+in the Diagrams component.
+</para>
+	    <para>
+The Diagrams Component is described in detail in 
+<xref linkend="diagrams"></xref>.
 </para>
 	  </listitem>
 
@@ -2401,6 +2427,10 @@ This is the diagram view of the model.
 	    <para>
 This is the prop panel view of the model.
 </para>
+	    <para>
+The Property Panels Component is described in detail in 
+<xref linkend="propertypanels"></xref>.
+</para>
 	  </listitem>
 
 	  <listitem>
@@ -2410,6 +2440,42 @@ This is the prop panel view of the model.
 	    </indexterm>
 	    <para>
 This is the navigator pane view of the model.
+</para>
+	    <para>
+The Navigator Pane Component is described in detail in 
+<xref linkend="navigatorpane"></xref>.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>Code Generation</para>
+	    <indexterm>
+	      <primary>Code Generation</primary>
+	    </indexterm>
+	    <para>
+This is the common code for 
+and the point where each language 
+with Code Generation possibility registers.
+</para>
+	    <para>
+The Code Generation Component is described in detail in 
+<xref linkend="codegeneration"></xref>.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>Reverse Engineering</para>
+	    <indexterm>
+	      <primary>Reverse Engineering</primary>
+	    </indexterm>
+	    <para>
+This is the common code for 
+and the point where each language 
+with Reverse Engineering possibility registers.
+</para>
+	    <para>
+The Reverse Engineering Component is described in detail in 
+<xref linkend="reverseengineering"></xref>.
 </para>
 	  </listitem>
 
@@ -2422,8 +2488,12 @@ This is the navigator pane view of the model.
 	      <primary>Pluggable interface</primary>
 	    </indexterm>
 	    <para>
-This is the load mechanism for loading all Layer 3 and 
+This is the load mechanism for loading all Layer 3 components and
 other modules into ArgoUML.
+</para>
+	    <para>
+The Module Loader Component is described in detail in 
+<xref linkend="moduleloader"></xref>.
 </para>
 	  </listitem>
 	</itemizedlist>
@@ -2449,29 +2519,29 @@ individually disabled using the module loader.
 	<itemizedlist>
 
 	  <listitem>
-	    <para>Code generation, Reverse engineering - Java</para>
-	    <indexterm>
-	      <primary>Code generation</primary>
-	    </indexterm>
-	    <indexterm>
-	      <primary>Reverse engineering</primary>
-	    </indexterm>
+	    <para>Java Code generation, Reverse engineering</para>
 	    <indexterm>
 	      <primary>Java</primary>
-	      <secondary>reverse engineering</secondary>
 	    </indexterm>
 	    <para>
 This is the ArgoUML connection to the java language.
 </para>
+	    <para>
+The Java Component is described in detail in 
+<xref linkend="java"></xref>.
+</para>
 	  </listitem>
 
 	  <listitem>
-	    <para>Code generation, Reverse engineering - Other languages</para>
+	    <para>Other languages - Code generation, Reverse engineering</para>
 	    <para>
 Languages are plugged into 
 the notation,
-the import, 
+the import (reverse engineering), 
 and code generation.
+</para>
+	    <para>
+See <xref linkend="otherlanguages"></xref>.
 </para>
 	  </listitem>
 
@@ -2486,6 +2556,10 @@ and code generation.
 	    <para>
 This is the critics.
 </para>
+	    <para>
+The Critics Component is described in detail in 
+<xref linkend="critics"></xref>.
+</para>
 	  </listitem>
 
 	  <listitem>
@@ -2495,6 +2569,10 @@ This is the critics.
 	    </indexterm>
 	    <para>
 This is the editing of the OCL strings.
+</para>
+	    <para>
+The OCL Component is described in detail in 
+<xref linkend="ocl"></xref>.
 </para>
 	  </listitem>
 
@@ -2699,370 +2777,6 @@ ArgoUML itself breaks down into several components. The graphic does not reflect
 </sect1>
 -->
 
-<!-- This will be totally different.
-    <sect1>
-      <title>Collaboration table between components</title>
-      <para>
-Here is a table that lists all components within ArgoUML against each other
-so that you easily can find where that specific collaboration is described
-(if at all) in this cookbook.
--->
-<!--
-For the document maintainer:
-Please stick to the component names as they are written 
-in the entry tags in the header row for links within this document.
-They all start with comp-.
-Every component has a section describing it at componentname.
-Every component has a purpose at componentname-purpose.
-Every interface has a description at componentname-to-componentname
-(origin-to-destination). Example comp-critics-to-comp-model.
--->
-<!--
-</para>
-      <table>
-	<title>Collaboration table</title>
-	<tgroup cols="12">
-	  <thead>
-	    <row>
-	      <entry>       </entry>
-	      <entry id="comp-ui">User Interface</entry>
-	      <entry id="comp-diagrams">Diagram</entry>
-	      <entry id="comp-gef">GEF</entry>
-	      <entry id="comp-model">Model</entry>
-	      <entry id="comp-saveload">Saving and Loading</entry>
-	      <entry id="comp-notation">Notation</entry>
-	      <entry id="comp-codegenreveng">Code Generation and Reverse Engineering</entry>
-	      <entry id="comp-ocl">OCL-constraints</entry>
-	      <entry id="comp-critics">Cognitive</entry>
-	      <entry id="comp-help">Help system</entry>
-	      <entry id="comp-internationalization">I18n</entry>
-	      <entry id="comp-logging">Logging</entry>
-	      <entry id="comp-plugins">Plug in and Module API</entry>
-	    </row>
-	  </thead>
-	  <tbody>
-	    <row>
-	      <entry>User Interface</entry>
-	      <entry> - </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	    </row>
-	    <row>
-	      <entry>Diagram</entry>
-	      <entry>       </entry>
-	      <entry> - </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	    </row>
-	    <row>
-	      <entry>GEF</entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry> - </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	    </row>
-	    <row>
-	      <entry>Model</entry>
-	      <entry>No</entry>
-	      <entry>No</entry>
-	      <entry>No</entry>
-	      <entry> - </entry>
-	      <entry>No</entry>
-	      <entry>No</entry>
-	      <entry>No</entry>
-	      <entry>No</entry>
-	      <entry>No</entry>
-	      <entry>No</entry>
-	      <entry>No</entry>
-	      <entry><xref linkend="comp-model-to-comp-logging"/></entry>
-	      <entry>No</entry>
-	    </row>
-	    <row>
-	      <entry>Saving and Loading</entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry> - </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	    </row>
-	    <row>
-	      <entry>Notation</entry>
-	      <entry>       </entry>
-	      <entry>No</entry>
-	      <entry>       </entry>
-	      <entry>No</entry>
-	      <entry>No</entry>
-	      <entry> - </entry>
-	      <entry><xref linkend="comp-notation-to-comp-codegenreveng"/></entry>
-	      <entry>       </entry>
-	      <entry>No</entry>
-	      <entry>No</entry>
-	      <entry>No</entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	    </row>
-	    <row>
-	      <entry>Code Generation and Reverse Engineering</entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry> - </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	    </row>
-	    <row>
-	      <entry>OCL-constraints</entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry> - </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	    </row>
-	    <row>
-	      <entry>Cognitive</entry>
-	      <entry>       </entry>
-	      <entry><xref linkend="comp-critics-to-comp-diagrams"/></entry>
-	      <entry>       </entry>
-	      <entry><xref linkend="comp-critics-to-comp-model"/></entry>
-	      <entry><xref linkend="comp-critics-to-comp-saveload"/></entry>
-	      <entry>No</entry>
-	      <entry>No</entry>
-	      <entry>       </entry>
-	      <entry> - </entry>
-	      <entry><xref linkend="comp-critics-to-comp-help"/></entry>
-	      <entry><xref linkend="comp-critics-to-comp-internationalization"/></entry>
-	      <entry><xref linkend="comp-critics-to-comp-logging"/></entry>
-	      <entry><xref linkend="comp-critics-to-comp-plugins"/></entry>
-	    </row>
-	    <row>
-	      <entry>Help system</entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry> - </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	    </row>
-	    <row>
-	      <entry>Internationalization</entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry> - </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	    </row>
-	    <row>
-	      <entry>Logging</entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry> - </entry>
-	      <entry>       </entry>
-	    </row>
-	    <row>
-	      <entry>Plug in and Module API</entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry> - </entry>
-	    </row>
-	  </tbody>
-	</tgroup>
-      </table>
-    </sect1>
--->
-<!--
-
-Empty chapter that would be written for every component.
-
-In this template XXX need to be replaced by the generic name for the
-component, XXDESCXX, some beautiful version of the name and YYY with 
-something else.
-
-    <sect1 id="XXX">
-      <title>XXDESCXX</title>
-      <para id="comp-XXX-purpose">
-Purpose - to provide YYY
-</para>
-      <para>
-This module contains the following main class types:
-</para>
-      <itemizedlist>
-	<listitem>
-	<para>
-YYY
-</para>
-	</listitem>
-      </itemizedlist>
-      <sect2>
-	<title>Collaborations for XXDESCXX</title>
-	<para>
-YYY
-</para>
-	<sect3 id="comp-XXX-to-comp-diagrams">
-	  <title>XXDESCXX uses Diagrams</title>
-	  <para>
-YYY
-</para>
-	</sect3>
-	<sect3 id="comp-XXX-to-comp-model">
-	  <title>XXDESCXX uses the Model</title>
-	  <para>
-YYY
-</para>
-	</sect3>
-	<sect3 id="comp-XXX-to-comp-saveload">
-	  <title>XXDESCXX uses Saving/Loading</title>
-	  <para>Not at all!</para>
-	</sect3>
-	<sect3 id="comp-XXX-to-comp-notation">
-	  <title>XXDESCXX uses Notation</title>
-	  <para>Not at all!</para>
-	</sect3>
-	<sect3 id="comp-XXX-to-comp-codegenreveng">
-	  <title>XXDESCXX uses Code Generation and Reverse Engineering</title>
-	  <para>Not at all!</para>
-	</sect3>
-	<sect3 id="comp-XXX-to-comp-critics">
-	  <title>XXDESCXX uses the Cognitive stuff</title>
-	  <para>Not at all!</para>
-	</sect3>
-	<sect3 id="comp-XXX-to-comp-help">
-	  <title>XXDESCXX uses Help System</title>
-	  <para>
-YYY
-</para>
-	</sect3>
-	<sect3 id="comp-XXX-to-comp-internationalization">
-	  <title>XXDESCXX uses Internationalization</title>
-	</sect3>
-	<sect3 id="comp-XXX-to-comp-plugins">
-	  <title>XXDESCXX uses Plugin-Module API</title>
-	  <para>
-Currently not!
-</para>
-	</sect3>
-	<sect3 id="comp-XXX-to-comp-logging">
-	  <title>XXDESCXX uses Logging</title>
-	  <para>
-YYY
-</para>
-	</sect3>
-      </sect2>
-      <sect2>
-	<title>Main classes</title>
-	<para>
-XXDESCXX are currently located in:
-	  <itemizedlist>
-	    <listitem>
-	      <para>
-YYY
-</para>
-	    </listitem>
-	  </itemizedlist>
-</para>
-      </sect2>
-
-      <sect2 id="howdoi_YYY">
-	<title>How do I YYY...?</title>
-	<itemizedlist>
-	  <listitem>
-	    <para>...YYY?</para>
-	    <para>
-YYY
-</para>
-	    </listitem>
-	</itemizedlist>
-      </sect2>
-    </sect1>
-
-
-
-
--->
 
 </chapter>
 
@@ -3840,6 +3554,7 @@ have any effect.
 Purpose - to generate a graphical view of the diagrams in the model with
 tools.
 The contents of the diagrams and model is modifyable.
+TODO: Notation!
 </para>
       <para>
 The Diagrams will be located in <classname>org.argouml.???</classname>.
@@ -5249,8 +4964,52 @@ advice that the model has changed.
       </sect2>
     </sect1>
 
+    <sect1 id="reverseengineering">
+      <title>Reverse Engineering Component</title>
+      <indexterm>
+	<primary>Reverse Engineering</primary>
+      </indexterm>
+      <para>
+Purpose:
+Point where the different languages register that they know how to 
+do reverse engineering
+and common reverse engineering functions for all languages.
+</para>
+      <para>
+The Reverse Engineering is located in
+<classname>org.argouml.uml.reveng</classname>.
+</para>
+      <para>
+The Reverse Engineering Component is a Layer 2 component.
+See <xref linkend="layer2"></xref>.
+</para>
+    </sect1>
+
+    <sect1 id="codegeneration">
+      <title>Code Generation Component</title>
+      <indexterm>
+	<primary>Code Generation</primary>
+      </indexterm>
+      <para>
+Purpose:
+Point where the different languages register that they know how to 
+do code generation
+and common functions for all languages.
+</para>
+      <para>
+The Code Generation is located in
+<classname>org.argouml.language</classname>.
+</para>
+      <para>
+The Code Generation component is a Layer 2 component.
+See <xref linkend="layer2"></xref>.
+</para>
+    </sect1>
+
+
+
     <sect1 id="java">
-      <title>Code generations and Reverse Engineering - Java</title>
+      <title>Java - Code generations and Reverse Engineering</title>
       <indexterm>
 	<primary>Reverse Engineering</primary>
 	<secondary>Java</secondary>
@@ -5265,15 +5024,6 @@ advice that the model has changed.
       </indexterm>
       <indexterm>
 	<primary>Java</primary>
-	<secondary>Reverse Engineering</secondary>
-      </indexterm>
-      <indexterm>
-	<primary>Java</primary>
-	<secondary>Code generation</secondary>
-      </indexterm>
-      <indexterm>
-	<primary>Java</primary>
-	<secondary>Round-trip Engineering</secondary>
       </indexterm>
       <para>
 Purpose - two purposes:
@@ -5448,6 +5198,29 @@ F E D
 
 
 </sect1>
+
+
+    <sect1 id="otherlanguages">
+      <title>Other languages</title>
+      <para>
+Each other language supported by ArgoUML has its own component.
+They are each different in level of support and implementation
+language.
+</para>
+      <para>
+Currently C++ has no reverse engineering but only code generation 
+(and a very simple one at that).
+Java class files has only reverse engineering.
+</para>
+    <para>
+        <mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/cookbook/Languages.gif" format="gif"/>
+	  </imageobject>
+	</mediaobject>
+</para>
+
+    </sect1>
 
     <sect1 id="guiframework">
       <title>The GUI Framework</title>
@@ -5970,7 +5743,7 @@ reflection.
     <sect1 id="todoitems">
       <title>To do items</title>
       <indexterm>
-	<primary>To do items</primary>
+	<primary>To Do Items</primary>
       </indexterm>
       <para>
 Purpose - To keep track of the To do items.
