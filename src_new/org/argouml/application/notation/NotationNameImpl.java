@@ -37,13 +37,13 @@ import javax.swing.*;
  *   @author Thierry Lach
  *   @since 0.9.4
  */
-public class NotationNameImpl 
+public class NotationNameImpl
 implements NotationName, ArgoModuleEventListener {
 
     String _name = null;
     String _version = null;
     Icon _icon = null;
-    
+
     private static ArrayList _notations = new ArrayList();
 
     /** A notation without a version or icon.
@@ -99,10 +99,19 @@ implements NotationName, ArgoModuleEventListener {
     public Icon getIcon() {
         return _icon;
     }
- 
+
     public String getConfigurationValue() {
         return getNotationNameString(_name, _version);
     }
+
+    public String toString() {
+        return getNotationNameString(_name, _version);
+    }
+
+    /*public String toString() {
+        if (_version == null) return "{NotationNameImpl:" + _name + "}";
+        return "{NotationNameImpl:" + _name + " version " + _version + "}";
+    }*/
 
     public static String getNotationNameString(String k1, String k2) {
         if (k2 == null) return k1;
@@ -170,12 +179,6 @@ implements NotationName, ArgoModuleEventListener {
      */
     public static NotationName getNotation(String k1, String k2) {
         return findNotation(getNotationNameString(k1, k2));
-    }
-
-
-    public String toString() {
-        if (_version == null) return "{NotationNameImpl:" + _name + "}";
-        return "{NotationNameImpl:" + _name + " version " + _version + "}";
     }
 
     public void moduleLoaded(ArgoModuleEvent event) {
