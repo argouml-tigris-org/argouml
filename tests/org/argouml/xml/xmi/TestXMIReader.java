@@ -37,7 +37,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.IllegalFormatException;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MOperation;

@@ -32,8 +32,6 @@
 package org.argouml.util;
 
 import junit.framework.*;
-import java.util.HashSet;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Arrays;
