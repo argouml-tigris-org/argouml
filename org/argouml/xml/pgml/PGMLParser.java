@@ -220,8 +220,11 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 	// lost (set to null). Solution: use saved version in _previousNode and
 	// watch _nestedGroups in order to decide which compartment is parsed.
 	// This code should work even with a fixed PGMLParser of GEF.
+        // (_elementState) DEFAULT_STATE(=0) is private :-(
+        // NODE_STATE = 4
+        
 	if (_elementState == 0 && elementName.equals("group") &&
-	    _previousNode != null && _nestedGroups > 0) { // DEFAULT_STATE is private :-(
+	    _previousNode != null && _nestedGroups > 0) { 
 	    String descr = attrList.getValue("description").trim();
 	    _elementState = NODE_STATE;
 	    _currentNode = _previousNode;
@@ -231,9 +234,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 		    ((FigNodeModelElement) _previousNode).enableSizeChecking(false);
 		    ((FigClass) _previousNode).setOperationVisible(false);
 		    ((FigNodeModelElement) _previousNode).enableSizeChecking(true);
-		    return;           
 		} 
-        
 	    }
 	}
 
@@ -325,6 +326,12 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
   
     public synchronized Diagram readDiagram(InputStream is, boolean closeStream) {
         String errmsg = "Exception in readDiagram";
+        
+        //initialise parsing attributes:
+        _figRegistry = new HashMap();
+        InputSource source = new InputSource(is);
+        _nestedGroups = 0;//issue 2452
+            
         try {
             cat.info("=======================================");
             cat.info("== READING DIAGRAM");
@@ -332,9 +339,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             factory.setNamespaceAware(false);
             factory.setValidating(false);
             initDiagram("org.tigris.gef.base.Diagram");
-            _figRegistry = new HashMap();
             SAXParser pc = factory.newSAXParser();
-            InputSource source = new InputSource(is);
             source.setSystemId(systemId);
             source.setEncoding("UTF-8");
             
