@@ -169,6 +169,7 @@ Property files to be searched:
       <pathelement location="${i18n.jar.path}"/>
       <pathelement location="${log4j.jar.path}"/>
       <pathelement location="${toolbar.jar.path}"/>
+      <pathelement location="${commons-logging.jar.path}"/>
       <path refid="antlr.runtime.classpath"/>
     </path>
 
@@ -180,6 +181,7 @@ Property files to be searched:
       <pathelement location="${i18n.jar.path}"/>
       <pathelement location="${log4j.jar.path}"/>
       <pathelement location="${toolbar.jar.path}"/>
+      <pathelement location="${commons-logging.jar.path}"/>
       <path refid="antlr.runtime.classpath"/>
     </path>
 
@@ -218,6 +220,9 @@ Property files to be searched:
     <available classname="org.apache.log4j.Category"
                classpathref="argo.compile.classpath"
                property="has.log4j"/>
+    <available classname="org.apache.commons.logging.LogFactory"
+               classpathref="argo.compile.classpath"
+               property="has.commons-logging"/>
     <available classname="org.tigris.toolbar.ToolBar"
                classpathref="argo.compile.classpath"
                property="has.toolbar"/>
@@ -477,8 +482,12 @@ Property files to be searched:
     <fail message="gef library does not appear to be in the classpath."/>
   </target>
 
-  <target depends="prepare" name="check.log4j" unless="has.log4j">
+  <target depends="prepare, check.commons-logging" name="check.log4j" unless="has.log4j">
     <fail message="log4j library does not appear to be in the classpath."/>
+  </target>
+
+  <target depends="prepare" name="check.commons-logging" unless="has.commons-logging">
+    <fail message="commons-logging library does not appear to be in the classpath."/>
   </target>
 
   <target depends="prepare, check.gef" name="check.gef.localizer" unless="has.gef.localizer">
@@ -575,6 +584,7 @@ Property files to be searched:
     <copy file="${gef.jar.path}" tofile="${argo.build.dir}/gef.jar"/>
     <copy file="${i18n.jar.path}" tofile="${argo.build.dir}/i18n.jar"/>
     <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar"/>
+    <copy file="${commons-logging.jar.path}" tofile="${argo.build.dir}/commons-logging.jar"/>
     <copy file="${nsuml.jar.path}" tofile="${argo.build.dir}/nsuml.jar"/>
     <copy file="${jmi.jar.path}" tofile="${argo.build.dir}/jmi.jar"/>
     <copy file="${toolbar.jar.path}" tofile="${argo.build.dir}/toolbar.jar"/>
@@ -619,6 +629,8 @@ Property files to be searched:
             packagelistLoc="${jdk.javadoc.packagelist}"/>
       <link href="${log4j.javadoc.link}" offline="true"
             packagelistLoc="${log4j.javadoc.packagelist}"/>
+      <link href="${commons-logging.javadoc.link}" offline="true"
+            packagelistLoc="${commons-logging.javadoc.packagelist}"/>
       <link href="${xerces.javadoc.link}" offline="true"
             packagelistLoc="${xerces.javadoc.packagelist}"/>
       <link href="${jmi.javadoc.link}" offline="true"
@@ -1311,16 +1323,17 @@ you will have to resurrect them using cvs update.
     <!-- For this to work you need to have created a key in the default  -->
     <!-- keystore on your machine. This is done with the command:        -->
     <!--   keytool -genkey -alias argouml -storepass secret              -->
-    <signjar jar="${jwsdir}/argouml.jar"   alias="argouml" storepass="secret"/>
-    <signjar jar="${jwsdir}/antlrall.jar"  alias="argouml" storepass="secret"/>
-    <signjar jar="${jwsdir}/gef.jar"       alias="argouml" storepass="secret"/>
-    <signjar jar="${jwsdir}/i18n.jar"      alias="argouml" storepass="secret"/>
-    <signjar jar="${jwsdir}/jmi.jar"       alias="argouml" storepass="secret"/>
-    <signjar jar="${jwsdir}/log4j.jar"     alias="argouml" storepass="secret"/>
-    <signjar jar="${jwsdir}/nsuml.jar"     alias="argouml" storepass="secret"/>
-    <signjar jar="${jwsdir}/ocl-argo.jar"  alias="argouml" storepass="secret"/>
-    <signjar jar="${jwsdir}/toolbar.jar"   alias="argouml" storepass="secret"/>
-    <signjar jar="${jwsdir}/xerces.jar"    alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/argouml.jar"         alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/antlrall.jar"        alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/gef.jar"             alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/i18n.jar"            alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/jmi.jar"             alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/log4j.jar"           alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/commons-logging.jar" alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/nsuml.jar"           alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/ocl-argo.jar"        alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/toolbar.jar"         alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/xerces.jar"          alias="argouml" storepass="secret"/>
 
     <copy todir="${argo.dist.dir}/jws/">
       <fileset dir="${argo.src.dir}/templates/jnlp"/>
