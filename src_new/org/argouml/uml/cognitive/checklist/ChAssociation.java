@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,7 +31,14 @@ import ru.novosoft.uml.model_management.*;
 /** Defines a checklist to help designers design better associations.
  *  Basically, propmts them to think about various aspects of the
  *  design. Needs-More-Work: the checklist items are categorized, but
- *  those categories are not shown yet in the user interface. */
+ *  those categories are not shown yet in the user interface. 
+ *  @deprecated Now created by loading strings from 
+ *     UMLCognitiveResourceBundle into a generic UMLChecklist instance
+ *           
+ *  @see UMLCognitiveResouceBundle
+ *  @see UMLChecklist
+ * 
+ */
 
 public class ChAssociation extends UMLChecklist {
 

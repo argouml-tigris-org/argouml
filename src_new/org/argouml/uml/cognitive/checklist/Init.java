@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,6 +30,7 @@ import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.model_management.*;
 
 import org.argouml.cognitive.checklist.*;
+import java.util.*;
 
 /** Registers Checklists for different kinds of model elements. If you
  *  add a new checklist, a line must be added here.
@@ -37,57 +38,32 @@ import org.argouml.cognitive.checklist.*;
  *  @see org.argouml.cognitive.checklist.CheckManager */
 
 public class Init {
-  // domain independent
-  //public static Critic crTooManyDisabled = new CrTooManyDisabled();
-  //public static Critic crTooMuchFeedback = new CrTooMuchFeedback();
-
-  // UML specific
-  public static Checklist chClass        = new ChClass();
-  public static Checklist chAttribute    = new ChAttribute();
-  public static Checklist chOperation    = new ChOperation();
-  public static Checklist chAssociation  = new ChAssociation();
-  public static Checklist chInterface    = new ChInterface();
-  public static Checklist chInstance     = new ChInstance();
-  public static Checklist chLink         = new ChLink();
-  public static Checklist chState        = new ChState();
-  public static Checklist chTransition   = new ChTransition();
-  public static Checklist chUseCase      = new ChUseCase();
-  public static Checklist chActor        = new ChActor();
 
 
   /** static initializer, register all appropriate critics */
-  public static void init() {
-    java.lang.Class modelCls       = MModel.class;
-    java.lang.Class classCls       = MClass.class;
-    java.lang.Class classifierCls  = MClassifier.class;
-    java.lang.Class interfaceCls   = MInterface.class;
-    java.lang.Class attrCls        = MAttribute.class;
-    java.lang.Class operCls        = MOperation.class;
-    java.lang.Class iassocCls      = MAssociation.class;
-    java.lang.Class assocCls       = MAssociation.class;
-    java.lang.Class assocClassCls  = MAssociationClass.class;
-    java.lang.Class namespaceCls   = MNamespace.class;
-    java.lang.Class instanceCls    = MInstance.class;
-    java.lang.Class linkCls        = MLink.class;
-    java.lang.Class stateCls       = MState.class;
-    java.lang.Class transitionCls  = MTransition.class;
-    java.lang.Class useCaseCls     = MUseCase.class;
-    java.lang.Class actorCls       = MActor.class;
-    java.lang.Class genElementCls  = MGeneralizableElement.class;
-    java.lang.Class genCls         = MGeneralization.class;
-    java.lang.Class datatypeCls    = MDataType.class;
-
-    CheckManager.register(operCls, chOperation);
-    CheckManager.register(attrCls, chAttribute);
-    CheckManager.register(classCls, chClass);
-    CheckManager.register(assocCls, chAssociation);
-    CheckManager.register(assocClassCls, chAssociation);
-    CheckManager.register(interfaceCls, chInterface);
-    CheckManager.register(stateCls, chState);
-    CheckManager.register(transitionCls, chTransition);
-    CheckManager.register(useCaseCls, chUseCase);
-    CheckManager.register(actorCls, chActor);
+  public static void init(Locale locale) {
+    ResourceBundle bundle = ResourceBundle.getBundle("org.argouml.uml.cognitive.UMLCognitiveResourceBundle",locale);
+    addChecklist(bundle,  MClass.class, "ChClass");
+    addChecklist(bundle,  MInterface.class, "ChInterface");
+    addChecklist(bundle,  MAttribute.class, "ChAttribute");
+    addChecklist(bundle,  MOperation.class, "ChOperation");
+    addChecklist(bundle,  MAssociation.class, "ChAssociation");
+    addChecklist(bundle,  MAssociationClass.class, "ChAssociation");
+    addChecklist(bundle,  MState.class, "ChState");
+    addChecklist(bundle,  MTransition.class, "ChTransition");
+    addChecklist(bundle,  MUseCase.class, "ChUseCase");
+    addChecklist(bundle,  MActor.class, "ChActor");
   }
 
+  private static void addChecklist(ResourceBundle bundle,
+        Class cls, String key) {
+        try {
+            UMLChecklist checklist = new UMLChecklist((String[][]) bundle.getObject(key));
+            CheckManager.register(cls, checklist);
+        }
+        catch(MissingResourceException e) {
+            e.printStackTrace();
+        }
+    }
 
 } /* end class Init */
