@@ -58,7 +58,7 @@ public class XmlInputStream extends BufferedInputStream {
     private int instanceCount;
     private byte[] buffer;
     private EventListenerList listenerList = new EventListenerList();
-    
+
     /**
      * The number of bytes to be read between each progress
      * event.
@@ -66,20 +66,24 @@ public class XmlInputStream extends BufferedInputStream {
     private long eventSpacing;
 
     /**
-     * The number of characters read so far
+     * The number of characters read so far.
      */
     private long readCount = 0;
-    
+
     /**
-     * The expected stream length
+     * The expected stream length.
      */
     private long length;
-    
+
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(XmlInputStream.class);
 
     /**
-     * Construct a new XmlInputStream
+     * Construct a new XmlInputStream.
+     *
      * @param in the input stream to wrap.
      * @param theTag the tag name from which to start reading
      * @param theLength the expected length of the input stream
@@ -87,9 +91,9 @@ public class XmlInputStream extends BufferedInputStream {
      *        firing a progress event.
      */
     public XmlInputStream(
-            InputStream in, 
-            String theTag, 
-            long theLength, 
+            InputStream in,
+            String theTag,
+            long theLength,
             long theEventSpacing) {
         super(in);
         this.tagName = theTag;
@@ -171,7 +175,9 @@ public class XmlInputStream extends BufferedInputStream {
         int count;
         for (count = 0; count < len; ++count) {
             int read = read();
-            if (read == -1) break;
+            if (read == -1) {
+		break;
+	    }
             b[count + off] = (byte) read;
         }
 
@@ -212,7 +218,7 @@ public class XmlInputStream extends BufferedInputStream {
      * Keep on reading an input stream until a specific
      * sequence of characters has ben read.
      * This method assumes there is at least one match.
-     * @param search the characters to search for.
+     *
      * @throws IOException
      */
     private void skipToTag() throws IOException {
@@ -220,10 +226,14 @@ public class XmlInputStream extends BufferedInputStream {
         int i;
         boolean found;
         while (true) {
-            if (!childOnly) mark(1000);
+            if (!childOnly) {
+		mark(1000);
+	    }
             // Keep reading till we get the left bracket of an opening tag
             while (realRead() != '<') {
-                if (!childOnly) mark(1000);
+                if (!childOnly) {
+		    mark(1000);
+		}
             }
             found = true;
             // Compare each following character to see
@@ -276,7 +286,8 @@ public class XmlInputStream extends BufferedInputStream {
                     // and then reset read position
                     // back to that child tag.
                     mark(1000);
-                    while (realRead() != '<');
+                    while (realRead() != '<') {
+		    }
                     tagName = "";
                     char ch;
                     while (!isNameTerminator(ch = (char) realRead())) {
@@ -357,7 +368,8 @@ public class XmlInputStream extends BufferedInputStream {
     }
 
     /**
-     * Really close the input
+     * Really close the input.
+     *
      * @throws IOException if an I/O error occurs.
      */
     public void realClose() throws IOException {
@@ -380,7 +392,7 @@ public class XmlInputStream extends BufferedInputStream {
         }
         return read;
     }
-    
+
     private void fireProgressEvent() {
         LOG.info("firing sub-progress event " + readCount + " of " + length);
         ProgressEvent event = null;
@@ -398,14 +410,14 @@ public class XmlInputStream extends BufferedInputStream {
             }
         }
     }
-    
+
     /**
      * @param listener the progress listener
      */
     public void addProgressListener(ProgressListener listener) {
         listenerList.add(ProgressListener.class, listener);
     }
-    
+
     /**
      * @param listener the progress listener
      */

@@ -32,8 +32,6 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.HashMap;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
@@ -43,7 +41,6 @@ import org.argouml.model.XmiReader;
 import org.argouml.model.XmiWriter;
 import org.argouml.uml.ProjectMemberModel;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * The file persister for the UML model.
@@ -105,7 +102,7 @@ public class ModelMemberFilePersister extends MemberFilePersister {
     }
 
     /**
-     * @see org.argouml.persistence.MemberFilePersister#getTag()
+     * @see org.argouml.persistence.MemberFilePersister#getMainTag()
      */
     public String getMainTag() {
         return "XMI";

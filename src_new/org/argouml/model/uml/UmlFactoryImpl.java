@@ -961,27 +961,27 @@ class UmlFactoryImpl
             factory = fact;
             createMethod = meth;
         }
+
         /**
-         * @return
+         * @return The class.
          */
         public Class getJavaClass() {
             return javaClass;
         }
 
         /**
-         * @return
+         * @return The create method.
          */
         public String getCreateMethod() {
             return createMethod;
         }
 
         /**
-         * @return
+         * @return The factory.
          */
         public Object getFactory() {
             return factory;
         }
-
     }
 
     /**
@@ -996,4 +996,3 @@ class UmlFactoryImpl
         return expression;
     }
 }
-

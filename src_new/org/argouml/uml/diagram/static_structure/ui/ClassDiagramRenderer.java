@@ -74,18 +74,21 @@ import org.tigris.gef.presentation.FigNode;
  * @author jrobbins
  */
 public class ClassDiagramRenderer extends UmlDiagramRenderer {
-
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(ClassDiagramRenderer.class);
 
     /**
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
      *         org.tigris.gef.graph.GraphModel,
-     *         org.tigris.gef.base.Layer, java.lang.Object)
+     *         org.tigris.gef.base.Layer, java.lang.Object, java.util.Map)
      *
      * Return a Fig that can be used to represent the given node.
      */
-    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node, Map styleAttributes) {
+    public FigNode getFigNodeFor(GraphModel gm, Layer lay,
+				 Object node, Map styleAttributes) {
         if (Model.getFacade().isAClass(node)) {
             return new FigClass(gm, node);
         } else if (Model.getFacade().isAInterface(node)) {
@@ -114,10 +117,11 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
      *                               or dest port.
      *
      * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
-     * java.lang.Object)
+     *         org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
+     *         java.lang.Object, java.util.Map)
      */
-    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge, Map styleAttribute) {
+    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay,
+				 Object edge, Map styleAttribute) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("making figedge for " + edge);
         }
@@ -131,9 +135,10 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         } else if (Model.getFacade().isAAssociationEnd(edge)) {
             FigAssociationEnd asend = new FigAssociationEnd(edge, lay);
             Model.getFacade().getAssociation(edge);
-            FigNode associationFN = 
-                (FigNode) lay.presentationFor(Model.getFacade().getAssociation(edge));
-            FigNode classifierFN = 
+            FigNode associationFN =
+                (FigNode) lay.presentationFor(
+			Model.getFacade().getAssociation(edge));
+            FigNode classifierFN =
                 (FigNode) lay.presentationFor(Model.getFacade().getType(edge));
 
             asend.setSourcePortFig(associationFN);
@@ -174,11 +179,13 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             Object stereotype = null;
 
             if (Model.getFacade().getStereotypes(edge).size() > 0) {
-                stereotype = Model.getFacade().getStereotypes(edge).iterator().next();
+                stereotype =
+		    Model.getFacade().getStereotypes(edge).iterator().next();
             }
             if (LOG.isDebugEnabled()) {
             	if (stereotype != null) {
-                    LOG.debug("stereotype: " + Model.getFacade().getName(stereotype));
+                    LOG.debug("stereotype: "
+			      + Model.getFacade().getName(stereotype));
                 } else {
                     LOG.debug("stereotype is null");
                 }
@@ -193,7 +200,8 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
 
                 Object supplier =
                     ((Model.getFacade().getSuppliers(edge).toArray())[0]);
-                Object client = ((Model.getFacade().getClients(edge).toArray())[0]);
+                Object client =
+		    ((Model.getFacade().getClients(edge).toArray())[0]);
 
                 FigNode supFN = (FigNode) lay.presentationFor(supplier);
                 FigNode cliFN = (FigNode) lay.presentationFor(client);
@@ -211,7 +219,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         } else if (edge instanceof CommentEdge) {
             newEdge = new FigEdgeNote(edge, lay);
         }
-        
+
         if (newEdge == null) {
             throw new IllegalArgumentException(
                     "Don't know how to create FigEdge for model type "

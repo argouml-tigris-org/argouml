@@ -108,6 +108,9 @@ public abstract class FigNodeModelElement
         NotationContext,
         ArgoNotationEventListener {
 
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(FigNodeModelElement.class);
 
@@ -305,7 +308,7 @@ public abstract class FigNodeModelElement
 
     /**
      * USED BY PGML.tee.
-     * @see org.tigris.gef.presentation.Fig#getNameAndBounds()
+     * @see org.tigris.gef.presentation.Fig#classNameAndBounds()
      */
     public String classNameAndBounds() {
         if (isVisible()) {
@@ -356,7 +359,7 @@ public abstract class FigNodeModelElement
         if (Model.getFacade().isAModelElement(getOwner())) {
             String placeString = Model.getFacade().getName(getOwner());
             if (placeString == null) {
-                placeString = 
+                placeString =
                     "new " + Model.getFacade().getUMLClassName(getOwner());
             }
             return placeString;
@@ -573,7 +576,7 @@ public abstract class FigNodeModelElement
         public ActionModifierAbstract(Object o) {
             super("checkbox.abstract-uc", NO_ICON);
             owner = o;
-            putValue("SELECTED", 
+            putValue("SELECTED",
                     new Boolean(Model.getFacade().isAbstract(owner)));
         }
 
@@ -581,13 +584,14 @@ public abstract class FigNodeModelElement
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
-            Model.getCoreHelper().setAbstract(owner, 
+            Model.getCoreHelper().setAbstract(owner,
                     !Model.getFacade().isAbstract(owner));
         }
     }
 
     class ActionModifierLeaf extends UMLAction {
         private Object owner;
+
         /**
          * The constructor.
          *
@@ -603,13 +607,14 @@ public abstract class FigNodeModelElement
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
-            Model.getCoreHelper().setLeaf(owner, 
+            Model.getCoreHelper().setLeaf(owner,
                     !Model.getFacade().isLeaf(owner));
         }
     }
 
     class ActionModifierRoot extends UMLAction {
         private Object owner;
+
         /**
          * The constructor.
          *
@@ -625,13 +630,14 @@ public abstract class FigNodeModelElement
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
-            Model.getCoreHelper().setRoot(owner, 
+            Model.getCoreHelper().setRoot(owner,
                     !Model.getFacade().isRoot(owner));
         }
     }
 
     class ActionModifierActive extends UMLAction {
         private Object owner;
+
         /**
          * The constructor.
          *
@@ -640,7 +646,7 @@ public abstract class FigNodeModelElement
         public ActionModifierActive(Object o) {
             super("checkbox.active-uc", NO_ICON);
             owner = o;
-            putValue("SELECTED", 
+            putValue("SELECTED",
                     new Boolean(Model.getFacade().isActive(owner)));
         }
 
@@ -648,7 +654,7 @@ public abstract class FigNodeModelElement
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
-            Model.getCoreHelper().setActive(owner, 
+            Model.getCoreHelper().setActive(owner,
                     !Model.getFacade().isActive(owner));
         }
     }
@@ -739,10 +745,10 @@ public abstract class FigNodeModelElement
         return enclosedFigs;
     }
 
-    /** 
+    /**
      * Update the order of this fig and the order of the
      * figs that are inside of this fig.
-     * 
+     *
      * @param figures in the new order
      */
     public void elementOrdering(Vector figures) {
@@ -792,10 +798,10 @@ public abstract class FigNodeModelElement
                 cachedWidth = width;
                 cachedHeight = height;
 
-                BufferedImage img = new BufferedImage(
-                    width + 100,
-                    height + 100,
-                    BufferedImage.TYPE_INT_ARGB);
+                BufferedImage img =
+		    new BufferedImage(width + 100,
+				      height + 100,
+				      BufferedImage.TYPE_INT_ARGB);
 
                 // Paint figure onto offscreen image
                 Graphics ig = img.getGraphics();
@@ -807,8 +813,9 @@ public abstract class FigNodeModelElement
                 //    figure to the same shadow color.
                 // 2. Apply ConvolveOp which creates blurred effect around
                 //    the edges of the shadow.
-                shadowImage = SHADOW_CONVOLVE_OP.filter(
-                    SHADOW_LOOKUP_OP.filter(img, null), null);
+                shadowImage =
+		    SHADOW_CONVOLVE_OP.filter(
+			    SHADOW_LOOKUP_OP.filter(img, null), null);
             }
 
             // Paint shadow image onto canvas
@@ -1367,7 +1374,7 @@ public abstract class FigNodeModelElement
         PropertyChangeEvent changeEvent =
 	    (PropertyChangeEvent) event.getSource();
         if (changeEvent.getPropertyName().equals("argo.notation.only.uml")) {
-            if (changeEvent.getNewValue().equals("true")) { 
+            if (changeEvent.getNewValue().equals("true")) {
                 setContextNotation(Notation.getDefaultNotation());
             }
         } else {
@@ -1423,7 +1430,9 @@ public abstract class FigNodeModelElement
         super.calcBounds();
     }
 
-    /** The setter for checkSize.
+    /**
+     * The setter for checkSize.
+     *
      * @param flag the new value
      */
     public void enableSizeChecking(boolean flag) {
@@ -1501,10 +1510,11 @@ public abstract class FigNodeModelElement
      */
     public boolean hit(Rectangle r) {
         int cornersHit = countCornersContained(r.x, r.y, r.width, r.height);
-        if (_filled)
+        if (_filled) {
             return cornersHit > 0 || intersects(r);
-        else
+        } else {
             return (cornersHit > 0 && cornersHit < 4) || intersects(r);
+	}
     }
 
     /**
@@ -1534,11 +1544,11 @@ public abstract class FigNodeModelElement
             Model.getPump().removeModelEventListener(this, own);
         }
         shadowSize = 0;
-        
+
         // This partly solves issue 3042.
 //        Layer l = this.getLayer();
 //        if (l != null) l.remove(this);
-        
+
         super.removeFromDiagram();
     }
 

@@ -66,7 +66,7 @@ import org.xml.sax.SAXException;
  */
 public class UmlFilePersister extends AbstractFilePersister
         implements ProgressListener {
-    
+
     /**
      * The PERSISTENCE_VERSION is increased every time the persistence format
      * changes.
@@ -74,7 +74,7 @@ public class UmlFilePersister extends AbstractFilePersister
      * converted to the current one, keeping ArgoUML backwards compatible.
      */
     protected static final int PERSISTENCE_VERSION = 3;
-    
+
     /**
      * Logger.
      */
@@ -86,7 +86,7 @@ public class UmlFilePersister extends AbstractFilePersister
      * Does not include part-completed phases.
      */
     private int percentPhasesComplete = 0;
-    
+
     /**
      * The sections complete of a load or save.
      */
@@ -99,9 +99,9 @@ public class UmlFilePersister extends AbstractFilePersister
      * version and one pahse for the final load.
      */
     private int progressPhaseCount = 0;
-    
-    private static final String ARGO_TEE
-        = "/org/argouml/persistence/argo2.tee";
+
+    private static final String ARGO_TEE =
+	"/org/argouml/persistence/argo2.tee";
 
     /**
      * The constructor.
@@ -140,7 +140,7 @@ public class UmlFilePersister extends AbstractFilePersister
 
         File lastArchiveFile = new File(file.getAbsolutePath() + "~");
         File tempFile = null;
-        
+
         try {
             tempFile = createTempFile(file);
         } catch (FileNotFoundException e) {
@@ -150,7 +150,7 @@ public class UmlFilePersister extends AbstractFilePersister
             throw new SaveException(
                     "Failed to archive the previous file version", e);
         }
-        
+
         try {
 
             project.setFile(file);
@@ -272,27 +272,25 @@ public class UmlFilePersister extends AbstractFilePersister
     }
 
     /**
-     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File,
-     * javax.swing.JProgressBar, org.argouml.persistence.ProgressListener)
+     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
      */
     public Project doLoad(File file) throws OpenException {
         return doLoad(file, file);
     }
-        
+
     /**
-     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File,
-     * javax.swing.JProgressBar, org.argouml.persistence.ProgressListener)
+     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
      */
     public Project doLoad(File originalFile, File file)
         throws OpenException {
-        
+
         XmlInputStream inputStream = null;
         try {
             Project p = new Project(file.toURL());
 
             // Run through any stylesheet upgrades
             int fileVersion = getPersistenceVersionFromFile(file);
-            
+
             // If we're trying to load a file from a future version
             // complain and refuse.
             if (fileVersion > PERSISTENCE_VERSION) {
@@ -313,21 +311,21 @@ public class UmlFilePersister extends AbstractFilePersister
                     originalFile,
                     new File(originalFile.getAbsolutePath() + '~' + release));
             }
-            
+
             // The progress is split into equal sections, 1 for
             // the load of the .uml file plus one for each
             // version upgrade file
             progressPhaseCount = (PERSISTENCE_VERSION - fileVersion) + 1;
             phasesCompleted = 0;
-            
+
             LOG.info("Loading uml file of version " + fileVersion);
             while (fileVersion < PERSISTENCE_VERSION) {
                 ++fileVersion;
                 LOG.info("Upgrading to version " + fileVersion);
                 file = transform(file, fileVersion);
                 ++phasesCompleted;
-                percentPhasesComplete = (phasesCompleted * 100)
-                                        / progressPhaseCount;
+                percentPhasesComplete =
+		    (phasesCompleted * 100) / progressPhaseCount;
                 fireProgressEvent(percentPhasesComplete);
             }
 
@@ -416,8 +414,8 @@ public class UmlFilePersister extends AbstractFilePersister
             String encoding = "UTF-8";
             FileOutputStream stream =
                 new FileOutputStream(transformedFile);
-            Writer writer = new BufferedWriter(new OutputStreamWriter(
-                    stream, encoding));
+            Writer writer =
+		new BufferedWriter(new OutputStreamWriter(stream, encoding));
             Result result = new StreamResult(writer);
 
             StreamSource inputStreamSource = new StreamSource(file);
@@ -433,8 +431,9 @@ public class UmlFilePersister extends AbstractFilePersister
     }
 
     /**
-     * Reads an XML file of uml format and extracts the 
+     * Reads an XML file of uml format and extracts the
      * persistence version number from the root tag.
+     *
      * @param file the XML file
      * @return The version number
      * @throws OpenException on any error
@@ -474,8 +473,9 @@ public class UmlFilePersister extends AbstractFilePersister
 
 
     /**
-     * Reads an XML file of uml format and extracts the 
+     * Reads an XML file of uml format and extracts the
      * persistence version number from the root tag.
+     *
      * @param file the XML file
      * @return The ArgoUML release number
      * @throws OpenException on any error
@@ -514,7 +514,7 @@ public class UmlFilePersister extends AbstractFilePersister
             }
         }
     }
-    
+
     /**
      * Get the version attribute value from a string of XML.
      * @param rootLine the line
@@ -545,15 +545,17 @@ public class UmlFilePersister extends AbstractFilePersister
     }
 
     /**
-     * Get a MemberFilePersister based on a given ProjectMember
+     * Get a MemberFilePersister based on a given ProjectMember.
+     *
      * @param pm the project member
      * @return the persister
      */
     protected MemberFilePersister getMemberFilePersister(ProjectMember pm) {
         MemberFilePersister persister = null;
         if (pm instanceof ProjectMemberDiagram) {
-            persister = PersistenceManager.getInstance()
-                .getDiagramMemberFilePersister();
+            persister =
+		PersistenceManager.getInstance()
+		        .getDiagramMemberFilePersister();
         } else if (pm instanceof ProjectMemberTodoList) {
             persister = new TodoListMemberFilePersister();
         } else if (pm instanceof ProjectMemberModel) {
@@ -561,17 +563,19 @@ public class UmlFilePersister extends AbstractFilePersister
         }
         return persister;
     }
-    
+
     /**
-     * Get a MemberFilePersister based on a given ProjectMember
-     * @param pm the project member
+     * Get a MemberFilePersister based on a given ProjectMember.
+     *
+     * @param tag The tag.
      * @return the persister
      */
     private MemberFilePersister getMemberFilePersister(String tag) {
         MemberFilePersister persister = null;
         if (tag.equals("pgml")) {
-            persister = PersistenceManager.getInstance()
-                .getDiagramMemberFilePersister();
+            persister =
+		PersistenceManager.getInstance()
+                        .getDiagramMemberFilePersister();
         } else if (tag.equals("todo")) {
             persister = new TodoListMemberFilePersister();
         } else if (tag.equals("xmi")) {
