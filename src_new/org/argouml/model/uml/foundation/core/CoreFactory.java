@@ -1416,6 +1416,12 @@ public class CoreFactory extends AbstractUmlModelFactory {
 				UmlFactory.getFactory().delete(dep);
 			}
 		}
+        it = elem.getComments().iterator();
+        while (it.hasNext()) {
+            MComment comment = (MComment)it.next();
+            if (comment.getAnnotatedElements().size() == 1)
+                UmlFactory.getFactory().delete(comment);
+        }
 	}
 
         /**
