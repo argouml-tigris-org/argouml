@@ -269,7 +269,7 @@ public class FigClass extends FigNodeModelElement
 
     /**
      * Build a collection of menu items relevant for a right-click
-     * popup menu on a Package.
+     * popup menu on a Class.
      *
      * @param     me     a mouse event
      * @return           a collection of menu items
@@ -278,8 +278,8 @@ public class FigClass extends FigNodeModelElement
         Vector popUpActions = super.getPopUpActions(me);
 
         ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
-        addMenu.add(ActionAddAttribute.getSingleton());
-        addMenu.add(ActionAddOperation.getSingleton());
+        addMenu.add(new ActionAddAttribute());
+        addMenu.add(new ActionAddOperation());
         addMenu.add(ActionAddNote.getSingleton());
         popUpActions.insertElementAt(addMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
