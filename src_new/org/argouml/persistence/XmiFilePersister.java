@@ -23,11 +23,13 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 package org.argouml.persistence;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
 import org.apache.log4j.Logger;
@@ -90,16 +92,13 @@ public class XmiFilePersister extends AbstractFilePersister {
                     "Failed to archive the previous file version", e);
         }
 
-        BufferedWriter writer = null;
+        OutputStreamWriter writer = null;
         try {
             project.setFile(file);
 
-            String encoding = "UTF-8";
-            FileOutputStream stream =
-                new FileOutputStream(file);
-            writer =
-                new BufferedWriter(new OutputStreamWriter(
-                        stream, encoding));
+            OutputStream stream = new FileOutputStream(file);
+            OutputStream bout = new BufferedOutputStream(stream);
+            writer = new OutputStreamWriter(bout, getEncoding());
 
             int size = project.getMembers().size();
             for (int i = 0; i < size; i++) {
