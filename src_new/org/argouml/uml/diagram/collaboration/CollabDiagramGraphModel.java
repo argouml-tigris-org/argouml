@@ -243,13 +243,7 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
     //try {
       if (edgeClass == MAssociationRole.class &&
 		(fromPort instanceof MClassifierRole && toPort instanceof MClassifierRole)) {
-	    MAssociationRole asr = UmlFactory.getFactory().getCollaborations().createAssociationRole();
-		MAssociationEndRole aer0 = UmlFactory.getFactory().getCollaborations().createAssociationEndRole();
-		aer0.setType((MClassifierRole) fromPort);
-		MAssociationEndRole aer1 = UmlFactory.getFactory().getCollaborations().createAssociationEndRole();
-		aer1.setType((MClassifierRole) toPort);
-		asr.addConnection(aer0);
-		asr.addConnection(aer1);
+	    MAssociationRole asr = UmlFactory.getFactory().getCollaborations().buildAssociationRole((MClassifierRole)fromPort, (MClassifierRole)toPort);
 	    addEdge(asr);
 	    return asr;
       }

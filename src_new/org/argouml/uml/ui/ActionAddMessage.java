@@ -58,9 +58,14 @@ public class ActionAddMessage extends UMLChangeAction {
 	Object target = pb.getDetailsTarget();
 	Object d = pb.getTarget();
 	
-	if (!(target instanceof MAssociationRole)) return;
+	if (!(target instanceof MAssociationRole) && ((MAssociationRole)target).getNamespace() instanceof MCollaboration) return;
 	MAssociationRole ar = (MAssociationRole) target;
-
+	MCollaboration collab = (MCollaboration)ar.getNamespace();
+	// TODO find out how collabs and several interactions collaborate together
+	MMessage msg = UmlFactory.getFactory().getCollaborations().buildMessage(collab, ar);
+	String nextStr = "" + ((MInteraction)(collab.getInteractions().toArray())[0]).getMessages().size();
+	
+/*
 	String nextStr="";
 	if (d instanceof UMLCollaborationDiagram){
 	    UMLCollaborationDiagram cd = (UMLCollaborationDiagram) d;
@@ -68,7 +73,7 @@ public class ActionAddMessage extends UMLChangeAction {
 	}
 	    
 	MMessage msg=UmlFactory.getFactory().getCollaborations().buildMessage(ar,nextStr);
-
+*/
 	Editor ce = Globals.curEditor();
 	GraphModel gm = ce.getGraphModel();
 	GraphNodeRenderer renderer = ce.getGraphNodeRenderer();

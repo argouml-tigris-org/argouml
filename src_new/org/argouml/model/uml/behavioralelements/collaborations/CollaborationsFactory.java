@@ -38,6 +38,8 @@ import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
@@ -193,7 +195,7 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     }
     
     /** 
-     * Builds a default collaborationa representing some classifier
+     * Builds a default collaboration representing some classifier
      */
     public MCollaboration buildCollaboration(MClassifier classifier) {
     	MCollaboration modelelement = buildCollaboration(classifier.getNamespace());
@@ -209,6 +211,85 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     	inter.setContext(collab);
     	inter.setName("newInteraction");
     	return inter;
+    }
+    
+    /**
+     * Builds an associationrole with some association as base and with some collaboration as owner
+     */
+    public MAssociationRole buildAssociationRole(MAssociation base, MCollaboration owner) {
+    	MAssociationRole role = createAssociationRole();
+    	Iterator it = base.getConnections().iterator();
+    	while (it.hasNext()) {
+    		role.addConnection(buildAssociationEndRole((MAssociationEnd)it.next()));
+    	}
+    	role.setBase(base);
+    	return role;
+    }
+    
+    /**
+     * Builds an associationendrole based on some associationend
+     */
+    public MAssociationEndRole buildAssociationEndRole(MAssociationEnd base) {
+    	MAssociationEndRole end = createAssociationEndRole();
+    	end.setBase(base);
+    	return end;
+    }
+    
+    /**
+     * Builds an associationendrole based on some classifierrole
+     */
+    public MAssociationEndRole buildAssociationEndRole(MClassifierRole type) {
+    	MAssociationEndRole end = createAssociationEndRole();
+    	end.setType(type);
+    	return end;
+    }
+    
+    /**
+     * Builds a binary associationrole on basis of two classifierroles
+     */
+    public MAssociationRole buildAssociationRole(MClassifierRole from, MClassifierRole to) {
+    	MCollaboration colFrom = (MCollaboration)from.getNamespace();
+    	MCollaboration colTo = (MCollaboration)to.getNamespace();
+    	if (colFrom != null && colFrom.equals(colTo)) {
+    		MAssociationRole role = createAssociationRole();
+    		// we do not create on basis of associations between the bases of the classifierroles
+    		role.addConnection(buildAssociationEndRole(from));
+    		role.addConnection(buildAssociationEndRole(to));
+    		return role;
+    	}
+    	return null;
+    }
+    
+    /**
+     * Builds a message within some interaction related to some assocationrole. The message
+     * is added as the last in the interaction sequence.
+     */
+    public MMessage buildMessage(MInteraction inter, MAssociationRole role) {
+    	MMessage message = createMessage();
+    	if (inter != null && role != null) {
+    		Collection messages = inter.getMessages();
+    		inter.addMessage(message);
+    		message.setPredecessors(messages);
+    		message.setCommunicationConnection(role);
+    		if (role.getConnections().size() == 2) {
+    			message.setSender((MClassifierRole)role.getConnection(0).getType());
+    			message.setReceiver((MClassifierRole)role.getConnection(1).getType());
+    		}
+    		return message;
+    	}
+    	return null;
+    }
+    			
+    /**
+     * Builds a message within some collaboration. The message is added to the first interaction inside
+     * the collaboration. If there is no interaction yet, one is build.
+     */
+    public MMessage buildMessage(MCollaboration collab, MAssociationRole role) {
+    	MInteraction inter = null;
+    	if (collab.getInteractions().size() == 0) {
+    		inter = buildInteraction(collab);
+    	}
+    	return buildMessage(inter, role);
     }
 
 
