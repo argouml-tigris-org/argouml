@@ -42,13 +42,14 @@ public class UmlModelListener implements MElementListener {
 
     /** Log4j logging category.
      */
-    Logger logger = null;
+    private Logger _logger = null;
 
     /** Singleton instance.
      */
     private static UmlModelListener SINGLETON = new UmlModelListener();
 
     /** Singleton instance access method.
+     * @return the singleton instance.
      */
     public static UmlModelListener getInstance() {
         return SINGLETON;
@@ -58,14 +59,14 @@ public class UmlModelListener implements MElementListener {
      * Create the logger.
      */
     private UmlModelListener() {
-        logger = Logger.getLogger("org.argouml.model.uml.listener");
+        _logger = Logger.getLogger("org.argouml.model.uml.listener");
     }
 
     /** Handle the event.
      */
     public void listRoleItemSet (MElementEvent mee) {
-        logger.debug("listRoleItemSet(" + mee + ")");
-	// TODO:  Do we need to model change notify here?
+        _logger.debug("listRoleItemSet(" + mee + ")");
+    // TODO:  Do we need to model change notify here?
     }
 
     /** Handle the event.
@@ -73,65 +74,64 @@ public class UmlModelListener implements MElementListener {
      *  values differ.
      */
     public void propertySet (MElementEvent mee) {
-	notifyModelChanged(mee);
+    notifyModelChanged(mee);
     }
 
     /** Handle the event.
      */
     public void recovered (MElementEvent mee) {
-        logger.debug("recovered(" + mee + ")");
-	// TODO:  Do we need to model change notify here?
+        _logger.debug("recovered(" + mee + ")");
+    // TODO:  Do we need to model change notify here?
     }
 
     /** Handle the event.
      */
     public void removed (MElementEvent mee) {
-        logger.debug("removed(" + mee + ")");
-	// TODO:  Do we need to model change notify here?
-	// yes since we need to update the GUI
-	notifyModelChanged(mee);
+        _logger.debug("removed(" + mee + ")");
+    // TODO:  Do we need to model change notify here?
+    // yes since we need to update the GUI
+    notifyModelChanged(mee);
     }
 
     /** Handle the event.
      *  Provides a model change notification.
      */
     public void roleAdded (MElementEvent mee) {
-        logger.debug("roleAdded(" + mee + ")");
-	notifyModelChanged(mee);
+        _logger.debug("roleAdded(" + mee + ")");
+    notifyModelChanged(mee);
     }
 
     /** Handle the event.
      *  Provides a model change notification.
      */
     public void roleRemoved (MElementEvent mee) {
-        logger.debug("roleRemoved(" + mee + ")");
+        _logger.debug("roleRemoved(" + mee + ")");
         
-	notifyModelChanged(mee);
+    notifyModelChanged(mee);
     }
 
     /** Common model change notification process.
      */
     protected void notifyModelChanged(MElementEvent mee) {
-	// TODO: Change the project dirty flag outside this package
-	//       using an event listener.
+        // TODO: Change the project dirty flag outside this package
+        //       using an event listener.
 
-	// TODO: post an event of some type.
-	//
-	// Should this be a property change event?
-	//
+        // TODO: post an event of some type.
+        //
+        // Should this be a property change event?
+        //
 
-	if (mee.getAddedValue() != null
-	    || mee.getRemovedValue() != null
-	    || (mee.getNewValue() != null
-		&& !mee.getNewValue().equals(mee.getOldValue())))
-	{
-	    Project cp = ProjectManager.getManager().getCurrentProject();
+        if (mee.getAddedValue() != null
+            || mee.getRemovedValue() != null
+            || (mee.getNewValue() != null
+            && !mee.getNewValue().equals(mee.getOldValue())))
+        {
+            Project cp = ProjectManager.getManager().getCurrentProject();
 
-	    if (cp != null)
-		cp.setNeedsSave(true);
-	}
-	
-	
+            if (cp != null)
+                cp.setNeedsSave(true);
+        }
+    
     }
 }
 
