@@ -24,12 +24,10 @@
 
 package org.argouml.uml.ui;
 
-import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.Iterator;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import org.argouml.model.ModelFacade;
@@ -55,12 +53,6 @@ public abstract class UMLModelElementListModel2
     private String eventName = null;
     private Object listTarget = null;
     
-    /**
-     * Flag to indicate that the list is ordered, 
-     * and supports reordering functionality.
-     */
-    private boolean ordered = false;
-
     /**
      * Flag to indicate wether list events should be fired
      */
@@ -89,19 +81,6 @@ public abstract class UMLModelElementListModel2
     public UMLModelElementListModel2(String name) {
         super();
         setEventName(name);
-    }
-
-    /**
-     * Constructor for UMLModelElementListModel2.
-     *
-     * @param name the event name
-     * @param isOrdered true if the list is an ordered list 
-     *                  (and hence supports reordering functions)
-     */
-    public UMLModelElementListModel2(String name, boolean isOrdered) {
-        super();
-        setEventName(name);
-        ordered = isOrdered;
     }
 
     /**
@@ -226,19 +205,20 @@ public abstract class UMLModelElementListModel2
      * @param col the given collection
      */
     protected void addAll(Collection col) {
+        if (col.size() == 0) return;
         Iterator it = col.iterator();
         fireListEvents = false;
-        int oldSize = getSize();
+        int intervalStart = getSize() == 0 ? 0 : getSize() - 1;
         while (it.hasNext()) {
             Object o = it.next();
             addElement(o);
         }
         fireListEvents = true;
-        fireIntervalAdded(this, oldSize - 1, getSize() - 1);
+        fireIntervalAdded(this, intervalStart, getSize() - 1);
     }
 
     /**
-     * Utility method to get the target. Sets the _target if the _target is null
+     * Utility method to get the target. Sets the target if the target is null
      * via the method setTarget().
      * @return MModelElement
      */
@@ -451,7 +431,7 @@ public abstract class UMLModelElementListModel2
 
     /**
      * Override this if you want a popup menu.
-     * See for an example UMLClassifierParameterListModel.
+     * See for an example UMLModelElementOrderedListModel2.
      * 
      * @param popup the popup menu
      * @param index the selected item in the list at the moment 
@@ -459,88 +439,7 @@ public abstract class UMLModelElementListModel2
      * @return true if a popup menu is created, and needs to be shown
      */
     public boolean buildPopup(JPopupMenu popup, int index) {
-        if (!ordered) return false;
-        
-        JMenuItem moveUp = new JMenuItem(
-                new MoveUpAction(this, index));
-        JMenuItem moveDown = new JMenuItem(
-                new MoveDownAction(this, index));
-        popup.add(moveUp);
-        popup.add(moveDown);
-        return true;
+        return false;
     }
-}
 
-/**
- * TODO: Once finished, this class should be extracted in a seperate file, 
- * for use in other places.
- * 
- * @author Michiel
- */
-class MoveUpAction extends UMLAction {
-    private UMLModelElementListModel2 model;
-    private int index;
-    
-    /**
-     * The constructor.
-     * 
-     * @param name the (to be localized) description of the action
-     */
-    public MoveUpAction(UMLModelElementListModel2 theModel, 
-            int theIndex) {
-        super("menu.popup.moveup", false, false);
-        model = theModel;
-        index = theIndex;
-    }
-    
-    /**
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent e) {
-        // TODO: Auto-generated method stub
-        super.actionPerformed(e);
-    }
-    /**
-     * @see javax.swing.Action#isEnabled()
-     */
-    public boolean isEnabled() {
-        return index > 0;
-    }
-}
-
-/**
- * TODO: Once finished, this class should be extracted in a seperate file, 
- * for use in other places.
- * 
- * @author Michiel
- */
-class MoveDownAction extends UMLAction {
-    private UMLModelElementListModel2 model;
-    private int index;
-    
-    /**
-     * The constructor.
-     * 
-     * @param name the (to be localized) description of the action
-     */
-    public MoveDownAction(UMLModelElementListModel2 theModel, 
-            int theIndex) {
-        super("menu.popup.movedown", false, false);
-        model = theModel;
-        index = theIndex;
-    }
-    
-    /**
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent e) {
-        // TODO: Auto-generated method stub
-        super.actionPerformed(e);
-    }
-    /**
-     * @see javax.swing.Action#isEnabled()
-     */
-    public boolean isEnabled() {
-        return model.getSize() > index + 1;
-    }
 }
