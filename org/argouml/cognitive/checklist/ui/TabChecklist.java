@@ -43,6 +43,8 @@ import org.argouml.ui.*;
 import org.argouml.uml.ui.*;
 import org.argouml.cognitive.checklist.*;
 
+/** Doesn't work, checked the argo.ini and it is not commented out
+ */
 public class TabChecklist extends TabSpawnable
 implements TabModelTarget, ActionListener, ListSelectionListener {
 
