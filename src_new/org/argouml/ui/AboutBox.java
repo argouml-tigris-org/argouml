@@ -161,6 +161,16 @@ public class AboutBox extends JDialog {
         Argo.log.error("Unable to read 'legal.about'", e);
     }
 
+    // Add the about tabs from the modules.
+    ArrayList list = Argo.getPlugins( PluggableAboutTab.class);
+    ListIterator iterator = list.listIterator();
+    while (iterator.hasNext()) {
+	Object o = iterator.next();
+	AboutTabPanel atp = ((PluggableAboutTab)o).getAboutTabPanel();
+	
+	_tabs.addTab(Argo.localize( atp.getTabResourceBundleKey(), atp.getTabKey()), atp.getTabPanel());
+    }
+
     getContentPane().setLayout(new BorderLayout(0, 0));
     getContentPane().add(_tabs, BorderLayout.CENTER);
 
