@@ -170,7 +170,7 @@ public class GeneratorJava
             } catch (Exception exp) {
                 _isInUpdateMode = false;
                 _isFileGeneration = false;
-                cat.error("FAILED: " + f.getPath());
+                cat.error("FAILED: " + f.getPath(), exp);
             }
 
             //cat.info("----- end generating -----");
@@ -384,7 +384,7 @@ public class GeneratorJava
                 generateConstraintEnrichedDocComment(op, documented, INDENT);
             if (s != null && s.trim().length() > 0)
 		// should starts as the code piece
-                sb.append(s).append(LINE_SEPARATOR);
+                sb.append(s).append(INDENT);
         }
 
         // 2002-07-14
@@ -438,7 +438,7 @@ public class GeneratorJava
             String s =
                 generateConstraintEnrichedDocComment(attr, documented, INDENT);
             if (s != null && s.trim().length() > 0)
-                sb.append(s).append(LINE_SEPARATOR);
+                sb.append(s).append(INDENT);
         }
         //sb.append(INDENT); fixed issue 1505
         sb.append(generateCoreAttribute(attr));
@@ -879,16 +879,21 @@ public class GeneratorJava
                 }
 
                 Iterator strEnum = strs.iterator();
+		boolean first = true;
                 while (strEnum.hasNext()) {
                     Object structuralFeature =
 			/*(MStructuralFeature)*/ strEnum.next();
 
+		    if (!first)
+			sb.append(LINE_SEPARATOR);
+		    sb.append(INDENT);
                     sb.append(generate(structuralFeature));
 
                     tv = generateTaggedValues(structuralFeature);
                     if (tv != null && tv.length() > 0) {
                         sb.append(INDENT).append(tv);
                     }
+		    first = false;
                 }
             }
 
@@ -953,12 +958,16 @@ public class GeneratorJava
                     sb.append(INDENT).append("// Operations");
 		    sb.append(LINE_SEPARATOR);
                 }
-                Iterator behEnum = behs.iterator();
 
+                Iterator behEnum = behs.iterator();
+		boolean first = true;
                 while (behEnum.hasNext()) {
                     Object behavioralFeature =
 			/*(MBehavioralFeature)*/ behEnum.next();
 
+		    if (!first)
+			sb.append(LINE_SEPARATOR);
+		    sb.append(INDENT);
                     sb.append(generate(behavioralFeature));
 
                     tv = generateTaggedValues(behavioralFeature);
@@ -987,6 +996,8 @@ public class GeneratorJava
                             sb.append(INDENT).append(tv).append(LINE_SEPARATOR);
                         }
                     }
+
+		    first = false;
                 }
             }
         }
@@ -1014,23 +1025,24 @@ public class GeneratorJava
                     if (ModelFacade.getBody(m) != null) {
                         String body =
 			    (String) ModelFacade.getBody(ModelFacade.getBody(m));
-                        if (body.equals("\n")) {
-                            return LINE_SEPARATOR;
-                        }
+			// Note that this will not preserve empty lines
+			// in the body
                         StringTokenizer tokenizer =
-			    new StringTokenizer(body, "\n");
+			    new StringTokenizer(body, "\r\n");
                         StringBuffer bsb = new StringBuffer();
-                        while (tokenizer.hasMoreTokens()) {
-                            String token = tokenizer.nextToken();
-                            bsb.append(token);
-                            if (tokenizer.hasMoreTokens()) {
-                                bsb.append(LINE_SEPARATOR);
-                            }
+			while (tokenizer.hasMoreTokens()) {
+			    String token = tokenizer.nextToken();
+			    if (token.length() > 0) {
+				bsb.append(token);
+				bsb.append(LINE_SEPARATOR);
+			    }
                         }
-                        if (bsb.length() > 0) {
-                            body = bsb.toString();
+                        if (bsb.length() <= 0) {
+			    // generateClassifierBody relies on the string
+			    // ending with a new-line
+			    bsb.append(LINE_SEPARATOR);
                         }
-                        return body;
+                        return bsb.toString();
                     } else
                         return "";
                 }
