@@ -50,6 +50,10 @@ public class ActionAddExistingNode extends UMLAction
 
     ////////////////////////////////////////////////////////////////
     // instance variables
+    
+    /**
+     * The UML object to be added to the diagram.
+     */
     private Object object;
 
     ////////////////////////////////////////////////////////////////
@@ -62,7 +66,7 @@ public class ActionAddExistingNode extends UMLAction
      * @param o the node object to be added
      */
     public ActionAddExistingNode(String name, Object o) {
-        super(name, true, NO_ICON);
+        super(name, false, NO_ICON);
         object = o;
     }
 
