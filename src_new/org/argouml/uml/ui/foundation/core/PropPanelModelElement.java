@@ -30,6 +30,8 @@ package org.argouml.uml.ui.foundation.core;
 
 import java.awt.*;
 import javax.swing.*;
+// import javax.swing.text.html.ResourceLoader;
+
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
@@ -83,7 +85,9 @@ abstract public class PropPanelModelElement extends PropPanel {
     protected static ImageIcon _classifierRoleIcon = ResourceLoader.lookupIconResource("ClassifierRole");
     protected static ImageIcon _associationRoleIcon = ResourceLoader.lookupIconResource("AssociationRole");
     protected static ImageIcon _callActionIcon = ResourceLoader.lookupIconResource("CallAction");
-     protected static ImageIcon _interactionIcon = ResourceLoader.lookupIconResource("Interaction");
+    protected static ImageIcon _interactionIcon = ResourceLoader.lookupIconResource("Interaction");
+    // added next one so someone can change the icon independant of callaction
+    protected static ImageIcon _actionIcon = ResourceLoader.lookupIconResource("CallAction");
 
     protected JList namespaceList;
     protected JScrollPane namespaceScroll;

@@ -168,6 +168,7 @@ implements Serializable, TreeModel, Cloneable {
     // packageCentric.addSubTreeModel(new GoAssocRoleMessages());
     packageCentric.addSubTreeModel(new GoCollaborationInteraction());
     packageCentric.addSubTreeModel(new GoInteractionMessage());
+    packageCentric.addSubTreeModel(new GoMessageAction());
 
     packageCentric.addSubTreeModel(new GoLinkStimuli());
     packageCentric.addSubTreeModel(new GoStimulusAction());
