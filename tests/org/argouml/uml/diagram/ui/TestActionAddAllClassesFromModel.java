@@ -52,7 +52,7 @@ public class TestActionAddAllClassesFromModel extends TestCase {
         super.setUp();
         diagram = new UMLClassDiagram();
 	action = new ActionAddAllClassesFromModel("Add all classes from model",
-						   diagram);
+						  diagram);
     }
     
     /**
@@ -60,12 +60,8 @@ public class TestActionAddAllClassesFromModel extends TestCase {
      * @since November 3, 2003
      */
     public void testConstruction() {
-        try {
-            ActionAddAllClassesFromModel a = 
-		new ActionAddAllClassesFromModel("Add all classes from model",
-						 diagram);
-        } catch (Exception noHead) {
-        }
+	new ActionAddAllClassesFromModel("Add all classes from model",
+					 diagram);
     }
     
     /**
