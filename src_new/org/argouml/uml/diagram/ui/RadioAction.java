@@ -45,20 +45,28 @@ import org.tigris.toolbar.toolbutton.AbstractButtonAction;
  */
 public class RadioAction extends AbstractButtonAction {
 
-    Action realAction;
+    private Action realAction;
 
+    /**
+     * @param action the action
+     */
     public RadioAction(Action action) {
-        super((String)action.getValue(Action.NAME),
-		(Icon)action.getValue(Action.SMALL_ICON));
-        putValue(Action.SHORT_DESCRIPTION, action.getValue(Action.SHORT_DESCRIPTION));
+        super((String) action.getValue(Action.NAME),
+		(Icon) action.getValue(Action.SMALL_ICON));
+        putValue(Action.SHORT_DESCRIPTION, 
+                action.getValue(Action.SHORT_DESCRIPTION));
         realAction = action;
     }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
         super.actionPerformed(actionEvent);
         realAction.actionPerformed(actionEvent);
-        // TODO Change this to ArgoDiagram
-        UMLDiagram diagram = (UMLDiagram)ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+        // TODO: Change this to ArgoDiagram
+        UMLDiagram diagram = (UMLDiagram) 
+            ProjectManager.getManager().getCurrentProject().getActiveDiagram();
         diagram.deselectOtherTools(this);
         Globals.setSticky(isDoubleClick());
         if (!isDoubleClick()) {
@@ -69,6 +77,9 @@ public class RadioAction extends AbstractButtonAction {
         }
     }
 
+    /**
+     * @return the action
+     */
     public Action getAction() {
         return realAction;
     }
