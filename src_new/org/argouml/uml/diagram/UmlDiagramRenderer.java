@@ -24,15 +24,18 @@
 
 package org.argouml.uml.diagram;
 
+import java.util.Collection;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
 import org.argouml.uml.diagram.activity.ui.FigCallState;
 import org.argouml.uml.diagram.activity.ui.FigObjectFlowState;
 import org.argouml.uml.diagram.activity.ui.FigPartition;
 import org.argouml.uml.diagram.activity.ui.FigSubactivityState;
+import org.argouml.uml.diagram.collaboration.ui.FigAssociationRole;
 import org.argouml.uml.diagram.collaboration.ui.FigClassifierRole;
 import org.argouml.uml.diagram.deployment.ui.FigComponent;
 import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
@@ -49,16 +52,30 @@ import org.argouml.uml.diagram.state.ui.FigJoinState;
 import org.argouml.uml.diagram.state.ui.FigJunctionState;
 import org.argouml.uml.diagram.state.ui.FigShallowHistoryState;
 import org.argouml.uml.diagram.state.ui.FigSimpleState;
+import org.argouml.uml.diagram.state.ui.FigTransition;
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
+import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.static_structure.ui.FigInstance;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
+import org.argouml.uml.diagram.static_structure.ui.FigLink;
 import org.argouml.uml.diagram.static_structure.ui.FigModel;
 import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 import org.argouml.uml.diagram.static_structure.ui.FigSubsystem;
+import org.argouml.uml.diagram.ui.FigAssociation;
+import org.argouml.uml.diagram.ui.FigAssociationClass;
+import org.argouml.uml.diagram.ui.FigAssociationEnd;
+import org.argouml.uml.diagram.ui.FigDependency;
+import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.argouml.uml.diagram.ui.FigMessage;
 import org.argouml.uml.diagram.ui.FigNodeAssociation;
+import org.argouml.uml.diagram.ui.FigPermission;
+import org.argouml.uml.diagram.ui.FigRealization;
+import org.argouml.uml.diagram.ui.FigUsage;
 import org.argouml.uml.diagram.use_case.ui.FigActor;
+import org.argouml.uml.diagram.use_case.ui.FigExtend;
+import org.argouml.uml.diagram.use_case.ui.FigInclude;
 import org.argouml.uml.diagram.use_case.ui.FigUseCase;
 
 import org.tigris.gef.graph.GraphEdgeRenderer;
@@ -67,15 +84,8 @@ import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
 /**
- * <p>This defines a renderer object for UML Diagrams.
- *   The following UML objects are displayed with the
- *   following Figs:</p>
- *
- * <pre>
- *   UML Object       ---  Fig
- *   ---------------------------------------
- *   TODO
- * </pre>
+ * Factory methods to create Figs based an model elements with supplementary 
+ * data provided by a map of name value pairs.
  *
  * <p>Provides {@link #getFigNodeFor} to implement the {@link
  *   GraphNodeRenderer} interface and {@link #getFigEdgeFor} to implement the
@@ -94,6 +104,9 @@ public abstract class UmlDiagramRenderer
      * java.lang.Object)
      */
     public FigNode getFigNodeFor(Object node, Map styleAttributes) {
+        if (node == null) {
+            throw new IllegalArgumentException("A model element must be supplied");
+        }
         FigNode figNode = null;
         if (ModelFacade.isAComment(node)) {
             figNode = new FigComment();
@@ -168,7 +181,7 @@ public abstract class UmlDiagramRenderer
         }
         
         if (figNode == null) {
-            LOG.error("Failed to construct a FigNode for " + node);
+            throw new IllegalArgumentException("Failed to construct a FigNode for " + node);
         }
         
         return figNode;
@@ -182,7 +195,53 @@ public abstract class UmlDiagramRenderer
      * org.tigris.gef.base.Layer, java.lang.Object)
      */
     public FigEdge getFigEdgeFor(Object edge, Map styleAttributes) {
-        return null;
+        if (edge == null) {
+            throw new IllegalArgumentException("A model edge must be supplied");
+        }
+        FigEdge newEdge = null;
+        if (ModelFacade.isAAssociationClass(edge)) {
+            newEdge = new FigAssociationClass();
+        } else if (ModelFacade.isAAssociationEnd(edge)) {
+            newEdge = new FigAssociationEnd();
+        } else if (ModelFacade.isAAssociation(edge)) {
+            newEdge = new FigAssociation();
+        } else if (ModelFacade.isALink(edge)) {
+            newEdge = new FigLink();
+        } else if (ModelFacade.isAGeneralization(edge)) {
+            newEdge = new FigGeneralization();
+        } else if (ModelFacade.isAPermission(edge)) {
+            newEdge = new FigPermission();
+        } else if (ModelFacade.isAUsage(edge)) {
+            newEdge = new FigUsage();
+        } else if (ModelFacade.isADependency(edge)) {
+            Object stereotype = null;
+
+            if (ModelFacade.getStereotypes(edge).size() > 0) {
+                stereotype = ModelFacade.getStereotypes(edge).get(0);
+            }
+            if (Model.getExtensionMechanismsHelper().isStereotypeInh(
+                            stereotype, "realize", "Abstraction")) {
+                newEdge = new FigRealization();
+            } else {
+                newEdge = new FigDependency();
+            }
+        } else if (edge instanceof CommentEdge) {
+            newEdge = new FigEdgeNote();
+        } else if (ModelFacade.isAAssociationRole(edge)) {
+            newEdge = new FigAssociationRole();
+        } else if (ModelFacade.isATransition(edge)) {
+            newEdge = new FigTransition();
+        } else if (ModelFacade.isAExtend(edge)) {
+            newEdge = new FigExtend();
+        } else if (ModelFacade.isAInclude(edge)) {
+            newEdge = new FigInclude();
+        }
+        
+        if (newEdge == null) {
+            throw new IllegalArgumentException("Failed to construct a FigEdge for " + edge);
+        }
+            
+        return newEdge;
     }
 
 } /* end class CollabDiagramRenderer */

@@ -78,21 +78,45 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
             Object stimulus = ModelFacade.getStimuli(edge).iterator().next();
             Object action = ModelFacade.getDispatchAction(stimulus);
             if (ModelFacade.isACallAction(action)) {
-        	return new FigCallActionLink(edge);
-            } else
-        	if (ModelFacade.isAReturnAction(action)) {
+                return new FigCallActionLink(edge);
+            } else if (ModelFacade.isAReturnAction(action)) {
         	    return new FigReturnActionLink(edge);
-        	} else
-        	    if (ModelFacade.isADestroyAction(edge)) {
+        	} else if (ModelFacade.isADestroyAction(edge)) {
         		return new FigDestroyActionLink(edge);
-        	    } else
-        		if (ModelFacade.isACreateAction(edge)) {
-        		    return new FigCreateActionLink(edge);
-        		}
+            } else if (ModelFacade.isACreateAction(edge)) {
+                return new FigCreateActionLink(edge);
+            }
         }
         // TODO: Something here.
         LOG.debug("SequenceDiagramRenderer getFigEdgeFor");
         return null;
+    }
+
+    /**
+     * Return a Fig that can be used to represent the given edge.
+     *
+     * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
+     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
+     * java.lang.Object)
+     */
+    public FigEdge getFigEdgeFor(Object edge, Map styleAttributes) {
+        if (edge == null) {
+            throw new IllegalArgumentException("A model edge must be supplied");
+        }
+        if (ModelFacade.isALink(edge)) {
+            Object stimulus = ModelFacade.getStimuli(edge).iterator().next();
+            Object action = ModelFacade.getDispatchAction(stimulus);
+            if (ModelFacade.isACallAction(action)) {
+                return new FigCallActionLink();
+            } else if (ModelFacade.isAReturnAction(action)) {
+                return new FigReturnActionLink();
+            } else if (ModelFacade.isADestroyAction(edge)) {
+                return new FigDestroyActionLink();
+            } else if (ModelFacade.isACreateAction(edge)) {
+                return new FigCreateActionLink();
+            }
+        }
+        throw new IllegalArgumentException("Failed to construct a FigEdge for " + edge);
     }
 
 
