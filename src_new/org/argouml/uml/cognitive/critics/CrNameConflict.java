@@ -33,12 +33,14 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
+import org.tigris.gef.util.VectorSet;
 
 
 /** Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
@@ -54,31 +56,58 @@ public class CrNameConflict extends CrUML {
         addTrigger("feature_name");
     }
 
-    public boolean predicate2(Object dm, Designer dsgr) {      
-        boolean problem = NO_PROBLEM;
+    public boolean predicate2(Object dm, Designer dsgr) {
+        return computeOffenders(dm).size()>1;
+    }
+    
+    public ToDoItem toDoItem(Object dm, Designer dsgr) {
+	VectorSet offs = computeOffenders(dm);
+	return new ToDoItem(this, offs, dsgr);
+    }
+
+    protected VectorSet computeOffenders(Object dm) {
+        VectorSet offs = new VectorSet();
         if (ModelFacade.isANamespace(dm)) {
             Iterator it = ModelFacade.getOwnedElements(dm).iterator();
-            Collection names = new ArrayList(); 
-            while (it.hasNext()) {  
-                String name = ModelFacade.getName(it.next());
+            HashMap names = new HashMap(); 
+            while (it.hasNext()) { 
+                Object name1Object = it.next();
+                String name = ModelFacade.getName(name1Object);
 		if (name == null)
 		    continue;
 		if ("".equals(name))
 		    continue;
-                if (names.contains(name)) {  
-                    problem = PROBLEM_FOUND; 
-                    break;   
+                if (names.containsKey(name)) {
+                    Object off = names.get(name);
+                    offs.addElement(off);
+                    offs.addElement(name1Object);
+                    break;
                 }
-                names.add(name); 
+                names.put(name,name1Object); 
             } 
         } 
-        return problem; 
+        return offs;
     }
 
+    
+    public boolean stillValid(ToDoItem i, Designer dsgr) {
+	if (!isActive()) return false;
+	VectorSet offs = i.getOffenders();
+        
+        // first element is e.g. the class, but we need to have its namespace
+        // to recompute the offenders.
+	Object f = offs.firstElement();
+        Object ns = ModelFacade.getNamespace(f);
+	if (!predicate(ns, dsgr)) return false;
+	VectorSet newOffs = computeOffenders(ns);
+	boolean res = offs.equals(newOffs);
+	return res;
+    }
+ 
     public void initWizard(Wizard w) {
         if (w instanceof WizMEName) {
             ToDoItem item = w.getToDoItem();
-            Object me = item.getOffenders().elementAt(0);
+            Object me = item.getOffenders().firstElement();
             String sug = ModelFacade.getName(me);
             String ins = "Change the name to something different.";
             ((WizMEName) w).setInstructions(ins);
