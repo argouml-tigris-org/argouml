@@ -27,8 +27,6 @@ package org.argouml.util;
 
 import javax.swing.filechooser.FileFilter;
 
-import org.argouml.kernel.Project;
-
 /** This class handles the the various file extensions.
  * It's not clear whether all of these are supported
  * for input or output or a mixture of both.
@@ -45,14 +43,14 @@ public class FileFilters {
      * This is a filter for uncompressed project format.
      */
     public static final SuffixFilter UncompressedFileFilter = new
-        SuffixFilter(Project.UNCOMPRESSED_FILE_EXT.substring(1), 
+        SuffixFilter(FileConstants.UNCOMPRESSED_FILE_EXT.substring(1), 
                      "Argo uncompressed project file");
   
     /**
      * This is a filter for compressed project format.
      */
     public static final SuffixFilter CompressedFileFilter = new
-        SuffixFilter(Project.COMPRESSED_FILE_EXT.substring(1), 
+        SuffixFilter(FileConstants.COMPRESSED_FILE_EXT.substring(1), 
                      "Argo compressed project file");
   
     /**
