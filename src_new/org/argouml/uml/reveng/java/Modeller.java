@@ -38,7 +38,6 @@ import org.argouml.ocl.OCLUtil;
 import org.argouml.uml.*;
 import org.argouml.uml.reveng.*;
 
-import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.model_management.*;
@@ -309,28 +308,28 @@ public class Modeller
        @param javadoc The javadoc comment. null or "" if no comment available.
        @return The newly created/found classifier.
      */
-    private MClassifier addClassifier(MClassifier newClassifier,
-				      String name,
-                                      short modifiers,
-                                      String javadoc)
+    private Object addClassifier(Object newClassifier,
+                                 String name,
+                                 short modifiers,
+                                 String javadoc)
     {
-	MClassifier mClassifier;
-	MNamespace mNamespace;
+	Object mClassifier;
+	Object mNamespace;
 
 	if(parseState.getClassifier() != null) {
 	    // Inner classes
-	    mClassifier = (MClassifier)((MClassifier)parseState.getClassifier()).lookup(name);
-	    mNamespace = (MClassifier)parseState.getClassifier();
+	    mClassifier = ModelFacade.lookupIn(parseState.getClassifier(),name);
+	    mNamespace = parseState.getClassifier();
 	}
 	else {
 	    parseState.outerClassifier();
-	    mClassifier = (MClassifier)((MPackage)currentPackage).lookup(name);
+	    mClassifier = ModelFacade.lookupIn(currentPackage,name);
 	    mNamespace = currentPackage;
 	}
 	if(mClassifier == null) {
 	    mClassifier = newClassifier;
-	    mClassifier.setName(name);
-	    mClassifier.setNamespace(mNamespace);
+	    ModelFacade.setName(mClassifier,name);
+	    ModelFacade.setNamespace(mClassifier,mNamespace);
 	}
 	else {
 	    cleanModelElement(mClassifier);
@@ -394,11 +393,11 @@ public class Modeller
      * @param javadoc The javadoc comment. null or "" if no comment available.
      * @return The operation.
      */
-    public MOperation addOperation (short modifiers,
-                                    String returnType,
-                                    String name,
-                                    Vector parameters,
-                                    String javadoc) {
+    public Object addOperation (short modifiers,
+                                String returnType,
+                                String name,
+                                Vector parameters,
+                                String javadoc) {
       MOperation mOperation = getOperation(name);
       parseState.feature(mOperation);
 
@@ -748,7 +747,7 @@ public class Modeller
 	    mOperation.setName(name);
             Iterator it2 = ProjectManager.getManager().getCurrentProject().findFigsForMember(parseState.getClassifier()).iterator();
             while (it2.hasNext()) {
-                MElementListener listener = (MElementListener)it2.next();
+                Object listener = it2.next();
                 // UmlModelEventPump.getPump().removeModelEventListener(listener, mOperation);
                 UmlModelEventPump.getPump().addModelEventListener(listener, mOperation);
                 // UmlModelEventPump.getPump().removeModelEventListener(listener, mOperation.getParameter(0));
@@ -871,13 +870,13 @@ public class Modeller
      *
      * @param element that they are removed from
      */
-    private void cleanModelElement(MModelElement element) {
-	for(Iterator i = element.getTaggedValues().iterator(); i.hasNext(); ) {
-	    MTaggedValue tv = (MTaggedValue)i.next();
-	    if (tv.getTag().equals(MMUtil.GENERATED_TAG)) {
-		UmlFactory.getFactory().delete(tv);
-	    }
-	}
+    private void cleanModelElement(Object element) {
+        for(Iterator i = ModelFacade.getTaggedValues(element); i.hasNext(); ) {
+            Object tv = (MTaggedValue)i.next();
+            if (ModelFacade.getValueOfTag(tv).equals(MMUtil.GENERATED_TAG)) {
+                UmlFactory.getFactory().delete(tv);
+            }
+        }
     }
 
     /**
@@ -937,19 +936,19 @@ public class Modeller
        @param modifiers A sequence of modifiers which may contain
                         'private', 'protected' or 'public'.
     */
-    private void setVisibility(MModelElement element,
+    private void setVisibility(Object element,
                                short modifiers)
     {
 	if((modifiers & JavaRecognizer.ACC_PRIVATE) > 0) {
-	    element.setVisibility(MVisibilityKind.PRIVATE);
+	    ModelFacade.setVisibility(element,ModelFacade.ACC_PRIVATE);
 	}
 	else if((modifiers & JavaRecognizer.ACC_PROTECTED) > 0) {
-	    element.setVisibility(MVisibilityKind.PROTECTED);
+	    ModelFacade.setVisibility(element,ModelFacade.ACC_PROTECTED);
 	}
 	else if((modifiers & JavaRecognizer.ACC_PUBLIC) > 0) {
-	    element.setVisibility(MVisibilityKind.PUBLIC);
+	    ModelFacade.setVisibility(element,ModelFacade.ACC_PUBLIC);
 	} else {
-            element.setTaggedValue("src_visibility", "default");
+            ModelFacade.setTaggedValue(element,"src_visibility", "default");
 	}
     }
 

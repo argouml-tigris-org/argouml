@@ -163,7 +163,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
 
     /** Returns the package factory for the UML
      *  package Foundation::ExtensionMechanisms.
-     *  
+     *
      *  @return the ExtensionMechanisms factory instance.
      */
     public ExtensionMechanismsFactory getExtensionMechanisms() {
@@ -172,7 +172,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
 
     /** Returns the package factory for the UML
      *  package Foundation::DataTypes.
-     *  
+     *
      *  @return the DataTypes factory instance.
      */
     public DataTypesFactory getDataTypes() {
@@ -181,7 +181,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
 
     /** Returns the package factory for the UML
      *  package Foundation::Core.
-     *  
+     *
      *  @return the Core factory instance.
      */
     public CoreFactory getCore() {
@@ -190,7 +190,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
 
     /** Returns the package factory for the UML
      *  package BehavioralElements::CommonBehavior.
-     *  
+     *
      *  @return the CommonBehavior factory instance.
      */
     public CommonBehaviorFactory getCommonBehavior() {
@@ -199,7 +199,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
 
     /** Returns the package factory for the UML
      *  package BehavioralElements::UseCases.
-     *  
+     *
      *  @return the UseCases factory instance.
      */
     public UseCasesFactory getUseCases() {
@@ -208,7 +208,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
 
     /** Returns the package factory for the UML
      *  package BehavioralElements::StateMachines.
-     *  
+     *
      *  @return the StateMachines factory instance.
      */
     public StateMachinesFactory getStateMachines() {
@@ -217,7 +217,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
 
     /** Returns the package factory for the UML
      *  package BehavioralElements::Collaborations.
-     *  
+     *
      *  @return the Collaborations factory instance.
      */
     public CollaborationsFactory getCollaborations() {
@@ -226,7 +226,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
 
     /** Returns the package factory for the UML
      *  package BehavioralElements::ActivityGraphs.
-     *  
+     *
      *  @return the ActivityGraphs factory instance.
      */
     public ActivityGraphsFactory getActivityGraphs() {
@@ -235,24 +235,24 @@ public class UmlFactory extends AbstractUmlModelFactory {
 
     /** Returns the package factory for the UML
      *  package ModelManagement.
-     *  
+     *
      *  @return the ModelManagement factory instance.
      */
     public ModelManagementFactory getModelManagement() {
         return ModelManagementFactory.getFactory();
     }
-    
+
     /**
      * <p>
      * Deletes a modelelement. It calls the remove method of the modelelement
-     * but also does 'cascading deletes' that are not provided for in the 
+     * but also does 'cascading deletes' that are not provided for in the
      * remove method of the modelelement itself. For example: this delete method
-     * also removes the binary associations that a class has if the class is 
+     * also removes the binary associations that a class has if the class is
      * deleted. In this way, it is not longer possible that illegal states exist
      * in the model.
      * </p>
      * <p>
-     * The actual deletion is delegated to delete methods in the rest of the 
+     * The actual deletion is delegated to delete methods in the rest of the
      * factories. For example: a method deleteClass exists on CoreHelper.
      * Delete methods as deleteClass should only do those extra actions that are
      * necessary for the deletion of the modelelement itself. I.e. deleteClass
@@ -260,26 +260,26 @@ public class UmlFactory extends AbstractUmlModelFactory {
      * <p>
      * The delete methods in the UML Factories should not be called directly
      * throughout the code! Calls should allways refer to this method and never
-     * call the deleteXXX method on XXXFactory directly. The reason that it is 
-     * possible to call the deleteXXX methods directly is a pure implementation 
-     * detail. 
+     * call the deleteXXX method on XXXFactory directly. The reason that it is
+     * possible to call the deleteXXX methods directly is a pure implementation
+     * detail.
      * </p>
      * <p>
-     * The implementation of this method uses a quite complicate if then else 
+     * The implementation of this method uses a quite complicate if then else
      * tree. This is done to provide optimal performance and full compliance to
-     * the UML 1.3 model. The last remark refers to the fact that the UML 1.3 
+     * the UML 1.3 model. The last remark refers to the fact that the UML 1.3
      * model knows multiple inheritance in several places. This has to be taken
      * into account.
      * </p>
      * <p>
      * Extensions and its children are not taken into account here. They do not
-     * require extra cleanup actions. Not in the form of a call to the remove 
+     * require extra cleanup actions. Not in the form of a call to the remove
      * method as is normal for all children of MBase and not in the form of other
      * behaviour we want to implement via this operation.
      * </p>
      * @param elem The element to be deleted
      */
-    public void delete(MBase elem) {
+    public void delete(Object elem) {
         if (elem == null) throw new IllegalArgumentException("Element may not be null in delete");
         if (elem instanceof MElement) {
             getCore().deleteElement((MElement)elem);
@@ -327,7 +327,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
                 } // no else to handle multiple inheritance of linkobject
                 if (elem instanceof MLink) {
                     getCommonBehavior().deleteLink((MLink)elem);
-                } else 
+                } else
                 if (elem instanceof MLinkEnd) {
                     getCommonBehavior().deleteLinkEnd((MLinkEnd)elem);
                 } else
@@ -342,7 +342,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
                 } else
                 if (elem instanceof MStateVertex) {
                     deleteStateVertex((MStateVertex)elem);
-                }        
+                }
                 if (elem instanceof MStateMachine) {
                     getStateMachines().deleteStateMachine((MStateMachine)elem);
                     if (elem instanceof MActivityGraph) {
@@ -356,7 +356,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
                     getStateMachines().deleteGuard((MGuard)elem);
                 } else
                 if (elem instanceof MEvent) {
-                    
+
                 }
             } else
             if (elem instanceof MPresentationElement) {
@@ -368,17 +368,19 @@ public class UmlFactory extends AbstractUmlModelFactory {
         } else
         if (elem instanceof MTaggedValue) {
             getExtensionMechanisms().deleteTaggedValue((MTaggedValue)elem);
-        } 
+        }
         if (elem instanceof MPartition) {
             getActivityGraphs().deletePartition((MPartition)elem);
         } else
         if (elem instanceof MElementImport) {
             getModelManagement().deleteElementImport((MElementImport)elem);
-        }       
-       elem.remove();
-       UmlModelEventPump.getPump().cleanUp(elem);
+        }
+        if (elem instanceof MBase) {
+            ((MBase)elem).remove();
+            UmlModelEventPump.getPump().cleanUp((MBase)elem);
+		}
     }
-     
+
     /**
      * Factored this method out of delete to simplify the design of the delete
      * operation
@@ -403,9 +405,9 @@ public class UmlFactory extends AbstractUmlModelFactory {
             if (elem instanceof MAttribute) {
                 getCore().deleteAttribute((MAttribute)elem);
             }
-        } 
-    }  
-    
+        }
+    }
+
     /**
      * Factored this method out of delete to simplify the design of the delete
      * operation
@@ -441,7 +443,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
             } else
             if (elem instanceof MClassifierRole) {
                 getCollaborations().deleteClassifierRole((MClassifierRole)elem);
-            } else  
+            } else
             if (elem instanceof MUseCase) {
                 getUseCases().deleteUseCase((MUseCase)elem);
             } else
@@ -462,10 +464,10 @@ public class UmlFactory extends AbstractUmlModelFactory {
             } else
             if (elem instanceof MSubsystem) {
                 getModelManagement().deleteSubsystem((MSubsystem)elem);
-            }  
-        }   
-    }       
-    
+            }
+        }
+    }
+
     /**
      * Factored this method out of delete to simplify the design of the delete
      * operation
@@ -505,9 +507,9 @@ public class UmlFactory extends AbstractUmlModelFactory {
         } else
         if (elem instanceof MExtend) {
             getUseCases().deleteExtend((MExtend)elem);
-        }  
+        }
     }
-    
+
     /**
      * Factored this method out of delete to simplify the design of the delete
      * operation
@@ -517,7 +519,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
         getCommonBehavior().deleteAction(elem);
         if (elem instanceof MActionSequence) {
             getCommonBehavior().deleteActionSequence((MActionSequence)elem);
-        } else 
+        } else
         if (elem instanceof MCreateAction) {
             getCommonBehavior().deleteCreateAction((MCreateAction)elem);
         } else
@@ -540,7 +542,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
             getCommonBehavior().deleteDestroyAction((MDestroyAction)elem);
         }
     }
-    
+
     /**
      * Factored this method out of delete to simplify the design of the delete
      * operation
@@ -562,12 +564,12 @@ public class UmlFactory extends AbstractUmlModelFactory {
             if (elem instanceof MLinkObject) {
                 getCommonBehavior().deleteLinkObject((MLinkObject)elem);
             }
-        } 
+        }
         if (elem instanceof MUseCaseInstance) {
             getUseCases().deleteUseCaseInstance((MUseCaseInstance)elem);
         }
     }
-    
+
     /**
      * Factored this method out of delete to simplify the design of the delete
      * operation
@@ -593,7 +595,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
                     if (elem instanceof MSubactivityState) {
                         getActivityGraphs().deleteSubactivityState((MSubactivityState)elem);
                     }
-                }                            
+                }
             } else
             if (elem instanceof MSimpleState) {
                 getStateMachines().deleteSimpleState((MSimpleState)elem);
@@ -612,7 +614,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
             }
         }
     }
-    
+
     /**
      * Factored this method out of delete to simplify the design of the delete
      * operation
@@ -625,15 +627,15 @@ public class UmlFactory extends AbstractUmlModelFactory {
         } else
         if (elem instanceof MCallEvent) {
             getStateMachines().deleteCallEvent((MCallEvent)elem);
-        } else 
+        } else
         if (elem instanceof MTimeEvent) {
             getStateMachines().deleteTimeEvent((MTimeEvent)elem);
         } else
         if (elem instanceof MChangeEvent) {
             getStateMachines().deleteChangeEvent((MChangeEvent)elem);
         }
-    }   
-    
+    }
+
     /**
      * Used by the copy functions. Do not call this function directly.
      *
