@@ -33,14 +33,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.ToolTipManager;
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.log4j.Category;
+import org.apache.log4j.PropertyConfigurator;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
@@ -59,19 +59,25 @@ import org.tigris.gef.util.Util;
 import ru.novosoft.uml.MFactoryImpl;
 
 public class Main {
+
+    // instantiation is done in main
+    private static Category cat = null;
+
     ////////////////////////////////////////////////////////////////
     // constants
+
+    public final static String DEFAULT_LOGGING_CONFIGURATION =
+        "org/argouml/resource/default.lcf";
 
     ////////////////////////////////////////////////////////////////
     // static variables
 
     private static Vector postLoadActions = new Vector();
 
-    
     ////////////////////////////////////////////////////////////////
     // main
 
-    public static void main(String args[]) {
+    public static void main(String args[]) {        
 
         // Force the configuration to load
         Configuration.load();
@@ -84,13 +90,14 @@ public class Main {
         //                   use Argo.getDirectory and Argo.setDirectory.
         String directory = Argo.getDirectory();
         org.tigris.gef.base.Globals.setLastDirectory(directory);
-        
+
         // Set default locale
         Locale.setDefault(
-	    new Locale(System.getProperty("user.language","en"),
-		       System.getProperty("user.country",
-					  System.getProperty("user.region",
-							     "CA"))));
+            new Locale(
+                System.getProperty("user.language", "en"),
+                System.getProperty(
+                    "user.country",
+                    System.getProperty("user.region", "CA"))));
 
         // then, print out some version info for debuggers...
 
@@ -100,24 +107,27 @@ public class Main {
         boolean useEDEM = Configuration.getBoolean(Argo.KEY_EDEM, true);
         boolean preload = Configuration.getBoolean(Argo.KEY_PRELOAD, true);
         boolean profileLoad = Configuration.getBoolean(Argo.KEY_PROFILE, false);
-        boolean reloadRecent = Configuration.getBoolean(Argo.KEY_RELOAD_RECENT_PROJECT, false);
+        boolean reloadRecent =
+            Configuration.getBoolean(Argo.KEY_RELOAD_RECENT_PROJECT, false);
 
         File projectFile = null;
         Project p = null;
         String projectName = null;
         URL urlToOpen = null;
 
-	SimpleTimer st = new SimpleTimer("Main.main");
+        SimpleTimer st = new SimpleTimer("Main.main");
         st.mark("arguments");
 
         /* set properties for application behaviour */
-        System.setProperty("gef.imageLocation","/org/argouml/Images");
+        System.setProperty("gef.imageLocation", "/org/argouml/Images");
 
         /* FIX: disable apple menu bar to enable proper running of Mac OS X java web start */
-        System.setProperty("com.apple.macos.useScreenMenuBar","false");
+        System.setProperty("com.apple.macos.useScreenMenuBar", "false");
 
         /* FIX: set the application name for Mac OS X */
-        System.setProperty("com.apple.mrj.application.apple.menu.about.name","ArgoUML");
+        System.setProperty(
+            "com.apple.mrj.application.apple.menu.about.name",
+            "ArgoUML");
 
         //--------------------------------------------
         // Parse command line args:
@@ -126,27 +136,37 @@ public class Main {
         //--------------------------------------------
 
         int themeMemory = 0;
-        for (int i=0; i < args.length; i++) {
+        for (int i = 0; i < args.length; i++) {
             if (args[i].startsWith("-")) {
-                if ((themeMemory = LookAndFeelMgr.SINGLETON.getThemeFromArg(args[i])) != 0) {
+                if ((themeMemory =
+                    LookAndFeelMgr.SINGLETON.getThemeFromArg(args[i]))
+                    != 0) {
                     // Remembered!
-                } else if (args[i].equalsIgnoreCase("-help") ||
-                           args[i].equalsIgnoreCase("-h") ||
-                           args[i].equalsIgnoreCase("--help") ||
-                           args[i].equalsIgnoreCase("/?")) {
+                } else if (
+                    args[i].equalsIgnoreCase("-help")
+                        || args[i].equalsIgnoreCase("-h")
+                        || args[i].equalsIgnoreCase("--help")
+                        || args[i].equalsIgnoreCase("/?")) {
                     System.err.println("Usage: [options] [project-file]");
                     System.err.println("Options include: ");
                     LookAndFeelMgr.SINGLETON.printThemeArgs();
-                    System.err.println("  -nosplash       don't display Argo/UML logo");
-                    System.err.println("  -noedem         don't report usage statistics");
-                    System.err.println("  -nopreload      don't preload common classes");
-                    System.err.println("  -profileload    report on load times");
-                    System.err.println("  -norecentfile   don't reload last saved file");
+                    System.err.println(
+                        "  -nosplash       don't display Argo/UML logo");
+                    System.err.println(
+                        "  -noedem         don't report usage statistics");
+                    System.err.println(
+                        "  -nopreload      don't preload common classes");
+                    System.err.println(
+                        "  -profileload    report on load times");
+                    System.err.println(
+                        "  -norecentfile   don't reload last saved file");
                     System.err.println("");
-                    System.err.println("You can also set java settings which influence the behaviour of ArgoUML:");
+                    System.err.println(
+                        "You can also set java settings which influence the behaviour of ArgoUML:");
                     System.err.println("  -Duser.language    [e.g. en]");
                     System.err.println("  -Duser.region      [e.g. US]");
-                    System.err.println("  -Dforce.nativelaf  [force ArgoUML to use the native look and feel. UNSUPPORTED]");
+                    System.err.println(
+                        "  -Dforce.nativelaf  [force ArgoUML to use the native look and feel. UNSUPPORTED]");
                     System.err.println("\n\n");
                     ArgoSecurityManager.getInstance().setAllowExit(true);
                     System.exit(0);
@@ -161,11 +181,13 @@ public class Main {
                 } else if (args[i].equalsIgnoreCase("-norecentfile")) {
                     reloadRecent = false;
                 } else {
-                    System.err.println("Ignoring unknown option '" + args[i] + "'");
+                    System.err.println(
+                        "Ignoring unknown option '" + args[i] + "'");
                 }
             } else {
                 if (projectName == null) {
-                    System.out.println("Setting projectName to '" + args[i] + "'");
+                    System.out.println(
+                        "Setting projectName to '" + args[i] + "'");
                     projectName = args[i];
                 }
             }
@@ -174,16 +196,16 @@ public class Main {
         if (reloadRecent && projectName == null) {
             // If no project was entered on the command line,
             // try to reload the most recent project if that option is true
-            String s = Configuration.getString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
-            if ( ! ("".equals(s) ) ) {
+            String s =
+                Configuration.getString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
+            if (!("".equals(s))) {
                 File file = new File(s);
                 if (file.exists()) {
                     Argo.log.info("Re-opening project " + s);
                     projectName = s;
-                }
-                else {
-                    Argo.log.warn("Cannot re-open " + s +
-                    " because it does not exist");
+                } else {
+                    Argo.log.warn(
+                        "Cannot re-open " + s + " because it does not exist");
                 }
             }
         }
@@ -193,13 +215,14 @@ public class Main {
                 projectName += Project.COMPRESSED_FILE_EXT;
             projectFile = new File(projectName);
             if (!projectFile.exists()) {
-                System.err.println("Project file '" + projectFile +
-                "' does not exist.");
+                System.err.println(
+                    "Project file '" + projectFile + "' does not exist.");
                 /* this will cause an empty project to be created */
                 p = null;
             } else {
-                try { urlToOpen = Util.fileToURL(projectFile); }
-                catch (Exception e) {
+                try {
+                    urlToOpen = Util.fileToURL(projectFile);
+                } catch (Exception e) {
                     Argo.log.error("Exception opening project in main()", e);
                 }
             }
@@ -207,19 +230,19 @@ public class Main {
 
         Translator.init();
 
-	st.mark("projectbrowser");
+        st.mark("projectbrowser");
 
         // Register the default notation.
         Object dgd = org.argouml.uml.generator.GeneratorDisplay.getInstance();
 
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        
+
         // initialize the correct theme
         LookAndFeelMgr.SINGLETON.setCurrentTheme(themeMemory);
-        
+
         // make the projectbrowser
         ProjectBrowser pb = new ProjectBrowser("ArgoUML", doSplash);
-                 
+
         JOptionPane.setRootFrame(pb);
 
         // Set the screen layout to what the user left it before, or
@@ -227,8 +250,18 @@ public class Main {
         Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
         pb.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-        int w = Math.min(Configuration.getInteger(Argo.KEY_SCREEN_WIDTH, (int)(0.95 * scrSize.width)), scrSize.width);
-        int h = Math.min(Configuration.getInteger(Argo.KEY_SCREEN_HEIGHT, (int)(0.95 * scrSize.height)), scrSize.height);
+        int w =
+            Math.min(
+                Configuration.getInteger(
+                    Argo.KEY_SCREEN_WIDTH,
+                    (int) (0.95 * scrSize.width)),
+                scrSize.width);
+        int h =
+            Math.min(
+                Configuration.getInteger(
+                    Argo.KEY_SCREEN_HEIGHT,
+                    (int) (0.95 * scrSize.height)),
+                scrSize.height);
         int x = Configuration.getInteger(Argo.KEY_SCREEN_LEFT_X, 0);
         int y = Configuration.getInteger(Argo.KEY_SCREEN_TOP_Y, 0);
         pb.setLocation(x, y);
@@ -244,45 +277,50 @@ public class Main {
             splash.getStatusBar().showProgress(40);
         }
 
-	st.mark("make empty project");
+        st.mark("make empty project");
 
         if (urlToOpen == null) {
             p = ProjectManager.getManager().getCurrentProject();
-        }
-        else {
+        } else {
             try {
                 p = Project.loadProject(urlToOpen);
-            }
-            catch (FileNotFoundException fn) {
-                JOptionPane.showMessageDialog(pb,
-                        "Could not find the project file " + urlToOpen.toString() + "\n",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
-                Argo.log.error("Could not load most recent project file: " + 
-                        urlToOpen.toString());
+            } catch (FileNotFoundException fn) {
+                JOptionPane.showMessageDialog(
+                    pb,
+                    "Could not find the project file "
+                        + urlToOpen.toString()
+                        + "\n",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+                Argo.log.error(
+                    "Could not load most recent project file: "
+                        + urlToOpen.toString());
                 Argo.log.error(fn);
                 Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
                 urlToOpen = null;
                 p = ProjectManager.getManager().makeEmptyProject();
-            }
-            catch (IOException io) {
-                JOptionPane.showMessageDialog(pb,
-                        "Could not load the project " + urlToOpen.toString() + "\n" +
-                        "Project file probably corrupted.\n" +
-                        "Please file a bug report at argouml.tigris.org including" +
-                        " the corrupted project file.",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
-                Argo.log.error("Could not load most recent project file: " + 
-                        urlToOpen.toString());
+            } catch (IOException io) {
+                JOptionPane.showMessageDialog(
+                    pb,
+                    "Could not load the project "
+                        + urlToOpen.toString()
+                        + "\n"
+                        + "Project file probably corrupted.\n"
+                        + "Please file a bug report at argouml.tigris.org including"
+                        + " the corrupted project file.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+                Argo.log.error(
+                    "Could not load most recent project file: "
+                        + urlToOpen.toString());
                 Argo.log.error(io);
                 Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
                 urlToOpen = null;
                 p = ProjectManager.getManager().makeEmptyProject();
-            }   
-            catch (Exception ex) {
-                Argo.log.error("Could not load most recent project file: " + 
-                urlToOpen.toString());
+            } catch (Exception ex) {
+                Argo.log.error(
+                    "Could not load most recent project file: "
+                        + urlToOpen.toString());
                 Argo.log.error(ex);
                 Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
                 urlToOpen = null;
@@ -300,11 +338,11 @@ public class Main {
         ProjectManager.getManager().setCurrentProject(p);
         Designer.enableCritiquing();
 
-	st.mark("perspectives");
+        st.mark("perspectives");
 
-        if (urlToOpen == null) pb.setTitle("Untitled");
+        if (urlToOpen == null)
+            pb.setTitle("Untitled");
 
-        
         //pb.validate();
         //pb.repaint();
         //pb.requestDefaultFocus();
@@ -316,10 +354,10 @@ public class Main {
         }
 
         // Initialize the module loader.
-	st.mark("modules");
+        st.mark("modules");
         Argo.initializeModules();
 
-	st.mark("open window");
+        st.mark("open window");
 
         if (doSplash) {
             SplashScreen splash = pb.getSplashScreen();
@@ -333,7 +371,7 @@ public class Main {
         //pb.setTarget(diag);
         pb.getNavigatorPane().setSelection(model, diag);
 
-	st.mark("close splash");
+        st.mark("close splash");
         if (doSplash) {
             SplashScreen splash = pb.getSplashScreen();
             splash.setVisible(false);
@@ -375,19 +413,17 @@ public class Main {
         c = org.argouml.uml.cognitive.critics.WizMEName.class;
         c = org.argouml.kernel.Wizard.class;
 
-
         //if (splash != null) {
         //  splash.getStatusBar().showStatus("Setting up critics");
         //  splash.getStatusBar().showProgress(70);
         //}
 
-	st.mark("start critics");
+        st.mark("start critics");
 
         Runnable startCritics = new StartCritics();
         Main.addPostLoadAction(startCritics);
 
-
-	st.mark("start preloader");
+        st.mark("start preloader");
         if (preload) {
             Runnable preloader = new PreloadClasses();
             Main.addPostLoadAction(preloader);
@@ -401,26 +437,21 @@ public class Main {
         if (profileLoad) {
             Argo.log.info("");
             Argo.log.info("profile of load time ############");
-	    for(Enumeration i = st.result(); i.hasMoreElements();) {
-		Argo.log.info(i.nextElement());
-	    }
+            for (Enumeration i = st.result(); i.hasMoreElements();) {
+                Argo.log.info(i.nextElement());
+            }
 
             Argo.log.info("#################################");
             Argo.log.info("");
         }
-	st = null;
+        st = null;
         pb.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
         //ToolTipManager.sharedInstance().setInitialDelay(500);
         ToolTipManager.sharedInstance().setDismissDelay(50000000);
     }
 
-
-    
-
-
-    
-    public static void  addPostLoadAction(Runnable r) {
+    public static void addPostLoadAction(Runnable r) {
         postLoadActions.addElement(r);
     }
 
@@ -437,37 +468,52 @@ public class Main {
      */
     static {
 
-       /*  Install the trap to "eat" SecurityExceptions.
-        */
-        System.setProperty("sun.awt.exception.handler",
-        ArgoAwtExceptionHandler.class.getName());
+        /*  Install the trap to "eat" SecurityExceptions.
+         */
+        System.setProperty(
+            "sun.awt.exception.handler",
+            ArgoAwtExceptionHandler.class.getName());
 
-       /*  Install our own security manager.
-        *  Once this is done, no one else
-        *  can change "sun.awt.exception.handler".
-        */
+        /*  Install our own security manager.
+         *  Once this is done, no one else
+         *  can change "sun.awt.exception.handler".
+         */
         System.setSecurityManager(ArgoSecurityManager.getInstance());
 
-       /*  The string <code>log4j.configuration</code> is the
-        *  same string found in
-        *  {@link org.apache.log4j.Configuration.DEFAULT_CONFIGURATION_FILE}
-        *  but if we use the reference, then log4j configures itself
-        *  and clears the system property and we never know if it was
-        *  set.
-        *
-        *  If it is set, then we let the static initializer in
-        * {@link Argo} perform the initialization.
-        */
-        if(System.getProperty("log4j.configuration") == null) {
-            BasicConfigurator.configure();
-            Logger.getRootLogger().getLoggerRepository().setThreshold(Level.OFF);
+        /*  The string <code>log4j.configuration</code> is the
+         *  same string found in
+         *  {@link org.apache.log4j.Configuration.DEFAULT_CONFIGURATION_FILE}
+         *  but if we use the reference, then log4j configures itself
+         *  and clears the system property and we never know if it was
+         *  set.
+         *
+         *  If it is set, then we let the static initializer in
+         * {@link Argo} perform the initialization.
+         */
+         
+        if (System.getProperty("log4j.configuration") == null) {
+            Properties props = new Properties();
+            try {            
+                props.load(ClassLoader.getSystemResourceAsStream(DEFAULT_LOGGING_CONFIGURATION));
+            }
+            catch (IOException io) {
+                io.printStackTrace();
+                System.exit(-1);
+            }
+            PropertyConfigurator.configure(props);
+            // BasicConfigurator.configure();
+            /*
+            Logger.getRootLogger().getLoggerRepository().setThreshold(
+                Level.WARN);
+                */
         }
+        
+        // initLogging();
     }
 
+    
 
 } /* end Class Main */
-
-
 
 class PostLoad implements Runnable {
     Vector postLoadActions = null;
@@ -479,18 +525,23 @@ class PostLoad implements Runnable {
         myThread = t;
     }
     public void run() {
-        try { Thread.sleep(1000); }
-        catch (Exception ex) { Argo.log.error("post load no sleep", ex); }
+        try {
+            Thread.sleep(1000);
+        } catch (Exception ex) {
+            Argo.log.error("post load no sleep", ex);
+        }
         int size = postLoadActions.size();
         for (int i = 0; i < size; i++) {
-            Runnable r = (Runnable) postLoadActions.elementAt(i);
+            Runnable r = (Runnable)postLoadActions.elementAt(i);
             r.run();
-            try { Thread.sleep(100); }
-            catch (Exception ex) { Argo.log.error("post load no sleep2", ex); }
+            try {
+                Thread.sleep(100);
+            } catch (Exception ex) {
+                Argo.log.error("post load no sleep2", ex);
+            }
         }
     }
 } /* end class PostLoad */
-
 
 class PreloadClasses implements Runnable {
     public void run() {
@@ -498,7 +549,6 @@ class PreloadClasses implements Runnable {
         //splash.getStatusBar().showStatus("Preloading classes");
         //splash.getStatusBar().showProgress(90);
         //}
-
 
         Class c = null;
         Argo.log.info("preloading...");
@@ -521,8 +571,24 @@ class PreloadClasses implements Runnable {
         c = org.argouml.uml.ui.foundation.core.PropPanelInterface.class;
         c = org.argouml.uml.ui.foundation.core.PropPanelAssociation.class;
         c = org.argouml.ui.StylePanelFig.class;
-        c = org.argouml.uml.diagram.static_structure.ui.StylePanelFigClass.class;
-        c = org.argouml.uml.diagram.static_structure.ui.StylePanelFigInterface.class;
+        c =
+            org
+                .argouml
+                .uml
+                .diagram
+                .static_structure
+                .ui
+                .StylePanelFigClass
+                .class;
+        c =
+            org
+                .argouml
+                .uml
+                .diagram
+                .static_structure
+                .ui
+                .StylePanelFigInterface
+                .class;
         c = org.argouml.uml.diagram.ui.SPFigEdgeModelElement.class;
 
         c = java.lang.ClassNotFoundException.class;
