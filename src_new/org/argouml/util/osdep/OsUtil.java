@@ -24,9 +24,8 @@
 
 package org.argouml.util.osdep;
 
-import java.io.*;
-import javax.swing.*;
-import org.argouml.util.osdep.win32.*;
+import javax.swing.JFileChooser;
+import org.argouml.util.osdep.win32.Win32FileSystemView;
 
 /** Utility class providing hooks to
  *  operating-system-specific functionality.

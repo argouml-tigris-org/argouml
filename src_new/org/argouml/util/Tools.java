@@ -24,9 +24,13 @@
 
 package org.argouml.util;
 
-import org.argouml.application.api.*;
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.Locale;
+import javax.xml.parsers.SAXParserFactory;
+import org.argouml.application.api.Argo;
 
 public class Tools {
 
@@ -83,7 +87,7 @@ public class Tools {
 
             Object saxObject = null;
             try {
-                saxObject = javax.xml.parsers.SAXParserFactory.newInstance();
+                saxObject = SAXParserFactory.newInstance();
                 sb.append("SAX Parser Factory " +
                           saxObject.getClass().getName() + " will be used.\n");
                 sb.append("\n");

@@ -24,10 +24,10 @@
 
 package org.argouml.util.osdep;
 
-import java.io.*;
-import java.lang.reflect.*;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import org.argouml.application.api.Argo;
 
-import org.argouml.application.api.*;
 
 /**
  * @stereotype utility

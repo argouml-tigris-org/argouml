@@ -26,9 +26,11 @@ package org.argouml.util;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
@@ -116,7 +118,7 @@ public class ConfigLoader {
                         line = lnr.readLine();                     
                     }
                 }
-                catch (java.io.IOException io) {
+                catch (IOException io) {
                     _Log.error(io);
                 }
             }
@@ -135,7 +137,7 @@ public class ConfigLoader {
 	}
 	else if (line.startsWith(panelName)) {
 	    String tabNames = stripBeforeColon(line).trim();
-	    java.util.StringTokenizer tabAlternatives = new java.util.StringTokenizer(tabNames, "|");
+	    StringTokenizer tabAlternatives = new StringTokenizer(tabNames, "|");
 	    Class res = null;
 	    while (tabAlternatives.hasMoreElements()) {
 		String tabSpec = tabAlternatives.nextToken().trim();
