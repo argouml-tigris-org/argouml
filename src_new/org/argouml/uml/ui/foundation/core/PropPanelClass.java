@@ -109,22 +109,19 @@ public class PropPanelClass extends PropPanelClassifier {
         addField(Translator.localize("UMLMenu", "label.owned-elements"),
                 getOwnedElementsScroll());
 
-        buttonPanel.add(new PropPanelButton2(this,
+        addButton(new PropPanelButton2(this,
                 new ActionNavigateNamespace()));
-        buttonPanel
-                .add(new PropPanelButton2(this, 
+        addButton(new PropPanelButton2(this, 
                         ActionAddAttribute.getSingleton()));
-        buttonPanel
-                .add(new PropPanelButton2(this, 
+        addButton(new PropPanelButton2(this, 
                         ActionAddOperation.getSingleton()));
-        buttonPanel.add(new PropPanelButton2(this, new ActionNewReception()));
-        new PropPanelButton(this, buttonPanel, innerClassIcon, Translator
+        addButton(new PropPanelButton2(this, new ActionNewReception()));
+        new PropPanelButton(this, getButtonPanel(), innerClassIcon, Translator
                 .localize("UMLMenu", "button.new-inner-class"),
                 "addInnerClass", null);
-        new PropPanelButton(this, buttonPanel, classIcon, Translator.localize(
+        new PropPanelButton(this, getButtonPanel(), classIcon, Translator.localize(
                 "UMLMenu", "button.new-class"), "newClass", null);
-        buttonPanel
-                .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
     /**

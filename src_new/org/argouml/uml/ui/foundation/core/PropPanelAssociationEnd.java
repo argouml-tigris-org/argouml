@@ -222,13 +222,12 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         add(changeabilityRadioButtonpanel);
         add(visibilityRadioButtonPanel);
 
-        buttonPanel.add(new PropPanelButton2(this,
+        addButton(new PropPanelButton2(this,
                 new ActionNavigateAssociation()));
-        buttonPanel.add(new PropPanelButton2(this,
+        addButton(new PropPanelButton2(this,
                 new ActionNavigateOppositeAssocEnd()
                         .setIcon(assocEndorRoleIcon)));
-        buttonPanel
-                .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
 
     }
 

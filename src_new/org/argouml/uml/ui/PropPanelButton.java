@@ -128,23 +128,39 @@ public class PropPanelButton extends JButton
     /**
      * @deprecated as of 0.17.1. This constructor constructs 
      *             a proppanel button using the old reflection method. 
+     *
+     * @param pp the properties panel
+     * @param buttonPanel the buttons panel
+     * @param icon the icon
+     * @param toolTipText the tooltip text
+     * @param am the method for the action
+     * @param em the method to see if it should be enabled
      */
-    public PropPanelButton( PropPanel propPanel,
+    public PropPanelButton( PropPanel pp,
             JComponent buttonPanel,
             Icon icon,
             String toolTipText,
-            String actionMethod,
-            String enabledMethod) { 
-        this (propPanel, buttonPanel, icon, toolTipText, actionMethod, enabledMethod, null);
+            String am,
+            String em) { 
+        this (pp, buttonPanel, icon, toolTipText, am, em, null);
         
     }
     
-    public PropPanelButton( PropPanel propPanel,
+    /**
+     * The constructor.
+     * 
+     * @param pp the properties panel
+     * @param buttonPanel the buttons panel
+     * @param icon the icon
+     * @param toolTipText the tooltip text
+     * @param theAction the action
+     */
+    public PropPanelButton( PropPanel pp,
             JComponent buttonPanel,
             Icon icon,
             String toolTipText,                        
             Action theAction) { 
-        this (propPanel, buttonPanel, icon, toolTipText, null, null, theAction);
+        this (pp, buttonPanel, icon, toolTipText, null, null, theAction);
         
     }
 

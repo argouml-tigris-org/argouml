@@ -104,9 +104,8 @@ public class PropPanelInclude extends PropPanelModelElement {
 */
         // Add the toolbar. Just the four basic buttons for now.
 
-        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateNamespace()));
-        buttonPanel
-        .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        addButton(new PropPanelButton2(this, new ActionNavigateNamespace()));
+        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
 

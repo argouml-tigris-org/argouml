@@ -117,16 +117,13 @@ public class PropPanelOperation extends PropPanelFeature {
         addField(Translator.localize("UMLMenu", "label.raisedsignals"),
                 new JScrollPane(exceptList));
 
-        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateOwner()));
-        buttonPanel
-                .add(new PropPanelButton2(this, 
+        addButton(new PropPanelButton2(this, new ActionNavigateOwner()));
+        addButton(new PropPanelButton2(this, 
                         ActionAddOperation.getSingleton()));
-        buttonPanel
-                .add(new PropPanelButton2(this, ActionNewParameter.SINGLETON));
-        new PropPanelButton(this, buttonPanel, signalIcon,
+        addButton(new PropPanelButton2(this, ActionNewParameter.SINGLETON));
+        new PropPanelButton(this, getButtonPanel(), signalIcon,
                 localize("New Raised Signal"), "buttonAddRaisedSignal", null);
-        buttonPanel
-                .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
 
     }
 

@@ -102,10 +102,9 @@ public class PropPanelGeneralization extends PropPanelModelElement {
                 new UMLComboBox2(new UMLGeneralizationPowertypeComboBoxModel(),
                         ActionSetGeneralizationPowertype.SINGLETON));
 
-        buttonPanel.add(new PropPanelButton2(this,
+        addButton(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));
-        buttonPanel
-                .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
     /**

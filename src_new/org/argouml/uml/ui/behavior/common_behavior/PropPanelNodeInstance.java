@@ -91,10 +91,9 @@ public class PropPanelNodeInstance extends PropPanelInstance {
                     classifierScroll);
 
 
-        buttonPanel.add(new PropPanelButton2(this,
+        addButton(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));
-        buttonPanel
-                .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
     /**

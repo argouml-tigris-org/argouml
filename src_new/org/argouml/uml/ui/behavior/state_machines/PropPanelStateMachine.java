@@ -105,10 +105,9 @@ public class PropPanelStateMachine extends PropPanelModelElement {
         addField(Translator.localize("UMLMenu", "label.submachinestate"),
                 new JScrollPane(submachineStateList));
 
-        buttonPanel.add(new PropPanelButton2(this,
+        addButton(new PropPanelButton2(this,
                 new ActionNavigateNamespace()));
-        buttonPanel
-                .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
 }

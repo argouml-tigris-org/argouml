@@ -86,12 +86,12 @@ public class PropPanelSignal extends PropPanelModelElement {
         addField(Translator.localize("UMLMenu", "label.contexts"), 
                 contextScroll);        
 
-        buttonPanel.add(new PropPanelButton2(this, 
+        addButton(new PropPanelButton2(this, 
                 new ActionNavigateNamespace()));
-        new PropPanelButton(this, buttonPanel, signalIcon, 
+        new PropPanelButton(this, getButtonPanel(), signalIcon, 
                 Translator.localize("UMLMenu", "button.new-signal"), 
                 "newSignal", null);
-        buttonPanel.add(new PropPanelButton2(this, 
+        addButton(new PropPanelButton2(this, 
                 new ActionRemoveFromModel()));   
     }
 

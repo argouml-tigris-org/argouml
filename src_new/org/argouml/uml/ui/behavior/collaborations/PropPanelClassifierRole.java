@@ -120,12 +120,12 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 	addField(Translator.localize("UMLMenu", "label.available-features"),
 		 new JScrollPane(availableFeaturesList));
 
-	buttonPanel.add(new PropPanelButton2(this,
+	addButton(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));
-	new PropPanelButton(this, buttonPanel, receptionIcon, 
+	new PropPanelButton(this, getButtonPanel(), receptionIcon, 
             Translator.localize("UMLMenu", "button.new-reception"), 
             getActionNewReception());
-	buttonPanel.add(new PropPanelButton2(this, 
+	addButton(new PropPanelButton2(this, 
             new ActionRemoveFromModel()));
     }
 

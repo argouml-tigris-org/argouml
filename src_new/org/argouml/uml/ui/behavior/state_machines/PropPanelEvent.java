@@ -74,10 +74,10 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
     protected void initialize() {
 
         paramScroll = getParameterScroll();
-        buttonPanel.add(new PropPanelButton2(this,
+        addButton(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));
 
-        new PropPanelButton(this, buttonPanel, parameterIcon, Translator
+        new PropPanelButton(this, getButtonPanel(), parameterIcon, Translator
                 .localize("UMLMenu", "button.new-parameter"),
                 "buttonAddParameter", null);
 
@@ -95,8 +95,7 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
 
         addSeperator();
 
-        buttonPanel
-                .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
     /**

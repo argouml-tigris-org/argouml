@@ -77,10 +77,9 @@ public class PropPanelDependency extends PropPanelRelationship {
         addField(Translator.localize("UMLMenu", "label.clients"), 
                 clientScroll);
 
-        buttonPanel.add(new PropPanelButton2(this, 
+        addButton(new PropPanelButton2(this, 
                 new ActionNavigateNamespace()));
-        buttonPanel
-        .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
     /**

@@ -115,16 +115,16 @@ public class PropPanelMessage extends PropPanelModelElement {
 	addField(Translator.localize("UMLMenu", "label.predecessor"),
 		 predecessorScroll);
 
-        buttonPanel.add(new PropPanelButton2(this, 
+        addButton(new PropPanelButton2(this, 
                 new ActionNavigateContainerElement()));
-        new PropPanelButton(this, buttonPanel, actionIcon,
+        new PropPanelButton(this, getButtonPanel(), actionIcon,
 	    Translator.localize("UMLMenu", "button.new-action"),
 	    "addAction",
 	    "isAddActionEnabled");
 	// ActionNewAction.SINGLETON.setTarget((MModelElement)getTarget());
 	// buttonPanel.add(new PropPanelButton2(this,
 	//     ActionNewAction.SINGLETON));
-	buttonPanel.add(new PropPanelButton2(this, 
+        addButton(new PropPanelButton2(this, 
             new ActionRemoveFromModel()));    
     }
 

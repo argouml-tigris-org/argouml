@@ -103,7 +103,7 @@ public abstract class PropPanel
      */
     private JPanel center;
 
-    protected JToolBar buttonPanel;
+    private JToolBar buttonPanel;
     private JPanel buttonPanelWithFlowLayout = new JPanel();
 
     private JLabel titleLabel;
@@ -170,6 +170,13 @@ public abstract class PropPanel
         super.setOrientation(orientation);
     }
 
+    /**
+     * @param button the button to be added to the button panel
+     */
+    protected void addButton(Component button) {
+        buttonPanel.add(button);
+    }
+    
     /**
      * Add a component with the specified label.<p>
      *
@@ -710,5 +717,16 @@ public abstract class PropPanel
      */
     protected JLabel getTitleLabel() {
         return titleLabel;
+    }
+
+    /**
+     * @return Returns the buttonPanel.
+     * 
+     * @deprecated As of V0.17.1. Reason: Nobody has any business 
+     * poking around in my Panels. 
+     * Use {@link addButton(Component)} instead.
+     */
+    protected JToolBar getButtonPanel() {
+        return buttonPanel;
     }
 } /* end class PropPanel */
