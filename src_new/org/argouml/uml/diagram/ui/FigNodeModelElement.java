@@ -289,17 +289,19 @@ public abstract class FigNodeModelElement
     /**
      * After the base clone method has been called determine which child
      * figs of the clone represent the name, stereotype and port.
+     *
+     * @see java.lang.Object#clone()
      */
     public Object clone() {
-        FigNodeModelElement clone = (FigNodeModelElement)super.clone();
+        FigNodeModelElement clone = (FigNodeModelElement) super.clone();
         Iterator thisIter = this.getFigs(null).iterator();
         Iterator cloneIter = clone.getFigs(null).iterator();
         while (thisIter.hasNext()) {
-            Fig thisFig = (Fig)thisIter.next();
-            Fig cloneFig = (Fig)cloneIter.next();
+            Fig thisFig = (Fig) thisIter.next();
+            Fig cloneFig = (Fig) cloneIter.next();
             if (thisFig == getBigPort()) clone.setBigPort(cloneFig);
-            if (thisFig == name) clone.name = (FigText)cloneFig;
-            if (thisFig == stereo) clone.stereo = (FigText)cloneFig;
+            if (thisFig == name) clone.name = (FigText) cloneFig;
+            if (thisFig == stereo) clone.stereo = (FigText) cloneFig;
         }
         return clone;
     }
@@ -1480,6 +1482,13 @@ public abstract class FigNodeModelElement
         return readyToEdit;
     }
 
+    /**
+     * @param v if ready to edit
+     */
+    protected void setReadyToEdit(boolean v) {
+        readyToEdit = v;
+    }
+    
     /**
      * @param scb The suppressCalcBounds to set.
      */
