@@ -31,7 +31,9 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -39,6 +41,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
 import org.argouml.xml.argo.ArgoParser;
 import org.argouml.xml.argo.DiagramMemberFilePersister;
+import org.argouml.xml.argo.MemberFilePersister;
 import org.argouml.xml.argo.ModelMemberFilePersister;
 import org.argouml.xml.argo.TodoListMemberFilePersister;
 import org.argouml.xml.argo.XmlInputStream;
@@ -209,25 +212,38 @@ public class UmlFilePersister extends AbstractFilePersister {
 
             ArgoParser parser = new ArgoParser();
             parser.readProject(url, inputStream, false);
-            int diagramCount = parser.getDiagramCount();
+            List memberList = parser.getMemberList();
             Project p = parser.getProject();
             
             parser.setProject(null); // clear up project refs
 
-            LOG.info(diagramCount + " diagram models in argo section");
-            ModelMemberFilePersister modelPersister
-                = new ModelMemberFilePersister(url, p);
-            modelPersister.load(0);
+            LOG.info(memberList.size() + " members");
             
-            for (int i = 0; i < diagramCount; ++i) {
-                DiagramMemberFilePersister diagramPersister
-                    = new DiagramMemberFilePersister(url, p);
-                diagramPersister.load(i);
+            int diagramNumber = 0;
+            
+            HashMap instanceCountByType = new HashMap();
+            
+            for (int i = 0; i < memberList.size(); ++i) {
+                String type = (String) memberList.get(i);
+                IntWrapper instanceCount =
+                    (IntWrapper) instanceCountByType.get(type);
+                if (instanceCount == null) {
+                    instanceCount = new IntWrapper();
+                }
+                
+                MemberFilePersister persister = null;
+                if (memberList.get(i).equals("pgml")) {
+                    persister = new DiagramMemberFilePersister(url, p);
+                } else if (memberList.get(i).equals("todo")) {
+                    persister = new TodoListMemberFilePersister(url, p);
+                } else if (memberList.get(i).equals("xmi")) {
+                    persister = new ModelMemberFilePersister(url, p);
+                }
+                persister.load(instanceCount.getIntValue());
+                instanceCount.increment();
+                instanceCountByType.put(type, instanceCount);
             }
             
-            TodoListMemberFilePersister todoPersister
-                = new TodoListMemberFilePersister(url, p);
-            todoPersister.load(0);
         
             p.postLoad();
             return p;
@@ -240,6 +256,18 @@ public class UmlFilePersister extends AbstractFilePersister {
         } catch (ParserConfigurationException e) {
             LOG.error("ParserConfigurationException", e);
             throw new OpenException(e);
+        }
+    }
+    
+    private class IntWrapper {
+        private int intValue = 0;
+        
+        public void increment() {
+            ++intValue;
+        }
+        
+        public int getIntValue() {
+            return intValue;
         }
     }
 }

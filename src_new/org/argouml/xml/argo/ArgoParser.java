@@ -27,6 +27,8 @@ package org.argouml.xml.argo;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -46,14 +48,6 @@ public class ArgoParser extends SAXParserBase {
     private static final Logger LOG = Logger.getLogger(ArgoParser.class);
 
     ////////////////////////////////////////////////////////////////
-    // static variables
-
-//    /**
-//     * The singleton for this class.
-//     */
-//    private static final ArgoParser INSTANCE = new ArgoParser();
-//
-    ////////////////////////////////////////////////////////////////
     // instance variables
 
     private Project project;
@@ -63,15 +57,8 @@ public class ArgoParser extends SAXParserBase {
     private boolean addMembers = true;
 
     private URL url;
-    private int diagramCount;
+    private ArrayList memberList = new ArrayList();
 
-//    /**
-//     * @return the singleton
-//     */
-//    public static final ArgoParser getInstance() {
-//        return INSTANCE;   
-//    }
-    
     /**
      * The constructor.
      * 
@@ -297,9 +284,7 @@ public class ArgoParser extends SAXParserBase {
      */
     protected void handleMember(XMLElement e) throws SAXException {
         LOG.info("Handle member");
-        if (e.getAttribute("type").equals("pgml")) {
-            ++diagramCount;
-        }
+        memberList.add(e.getAttribute("type"));
         if (addMembers) {
             loadProjectMember(e);
         }
@@ -347,7 +332,7 @@ public class ArgoParser extends SAXParserBase {
      * Get the numer of diagram members read.
      * @return the numer of diagram members read.
      */
-    public int getDiagramCount() {
-        return diagramCount;
+    public List getMemberList() {
+        return memberList;
     }
 } /* end class ArgoParser */
