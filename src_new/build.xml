@@ -656,7 +656,7 @@ Property files to be searched:
 
     <!-- We want debug, optimize, deprecation to be non-modifiable here -->
     <javac debug="true" 
-           deprecation="true"
+           deprecation="${deprecation}"
            optimize="false" 
            destdir="${argo.tests.classes}"
            srcdir="${argo.tests.src}">
