@@ -34,7 +34,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.Project;
 import org.argouml.model.uml.CoreHelper;
 import org.argouml.model.uml.ExtensionMechanismsHelper;
 import org.argouml.model.uml.UmlException;
@@ -5330,7 +5329,6 @@ public class ModelFacade {
      */
     public static void setLanguage(Object handle, String language) {
         if (handle instanceof MExpression) {
-            MExpression expression = (MExpression) handle;
             MExpressionEditor expressionEditor = (MExpressionEditor)
                 UmlFactory.getFactory().getDataTypes().
                     createExpressionEditor(handle);
