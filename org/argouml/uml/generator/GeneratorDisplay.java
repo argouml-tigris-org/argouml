@@ -23,7 +23,6 @@
 
 
 
-
 package org.argouml.uml.generator;
 
 //import java.util.*;
@@ -78,15 +77,7 @@ public class GeneratorDisplay extends Generator {
 
     // pick out return type
     MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
-    if (!isConstructor) {
-	if (rp != null && rp.getType() != null) {
-	    s += generateClassifierRef(rp.getType()) + " ";
-	}
-	else {
-	    s += "void?? ";
-	}
-    }
-    
+
     // name and params
     Vector params = new Vector(op.getParameters());
     params.remove(rp);
@@ -101,6 +92,16 @@ public class GeneratorDisplay extends Generator {
 		}
     }
     s += ")";
+
+    // append return type
+    if (!isConstructor) {
+	if (rp != null && rp.getType() != null) {
+	    s += ": " + generateClassifierRef(rp.getType());
+	}
+	else {
+	    s += ": void??";
+	}
+    }
     return s;
   }
 
@@ -113,8 +114,6 @@ public class GeneratorDisplay extends Generator {
 		if (!MMultiplicity.M1_1.equals(attr.getMultiplicity()))
  			s += generateMultiplicity(attr.getMultiplicity()) + " ";
 			}*/
-    MClassifier type = attr.getType();
-    if (type != null) s += generateClassifierRef(type) + " ";
 
     String slash = "";
     // not in nsuml: if (attr.containsStereotype(MStereotype.DERIVED)) slash = "/";
@@ -126,6 +125,8 @@ public class GeneratorDisplay extends Generator {
       if (initStr.length() > 0)
 		  s += " = " + initStr;
     }
+    MClassifier type = attr.getType();
+    if (type != null) s += ": " + generateClassifierRef(type);
 
 //     String constraintStr = generateConstraints(attr);
 //     if (constraintStr.length() > 0)
@@ -140,8 +141,8 @@ public class GeneratorDisplay extends Generator {
     String s = "";
     //needs-more-work: qualifiers (e.g., const)
     //needs-more-work: stereotypes...
-    s += generateClassifierRef(param.getType()) + " ";
-    s += generateName(param.getName());
+    s += generateName(param.getName()) + ": ";
+    s += generateClassifierRef(param.getType());
     //needs-more-work: initial value
     return s;
   }
@@ -376,18 +377,18 @@ public class GeneratorDisplay extends Generator {
   public String generateVisibility(MVisibilityKind vis) {
     if (vis == null) return "";
     //if (vis == null) return "";
-    if (MVisibilityKind.PUBLIC.equals(vis)) return "public ";
-    if (MVisibilityKind.PRIVATE.equals(vis)) return "private ";
-    if (MVisibilityKind.PROTECTED.equals(vis)) return "protected ";
+    if (MVisibilityKind.PUBLIC.equals(vis)) return "+";
+    if (MVisibilityKind.PRIVATE.equals(vis)) return "-";
+    if (MVisibilityKind.PROTECTED.equals(vis)) return "#";
     return "";
   }
 
   public String generateVisibility(MFeature f) {
     MVisibilityKind vis = f.getVisibility();
     //if (vis == null) return "";
-    if (MVisibilityKind.PUBLIC.equals(vis)) return "public ";
-    if (MVisibilityKind.PRIVATE.equals(vis)) return "private ";
-    if (MVisibilityKind.PROTECTED.equals(vis)) return "protected ";
+    if (MVisibilityKind.PUBLIC.equals(vis)) return "+";
+    if (MVisibilityKind.PRIVATE.equals(vis)) return "-";
+    if (MVisibilityKind.PROTECTED.equals(vis)) return "#";
     return "";
   }
 
@@ -444,7 +445,7 @@ public class GeneratorDisplay extends Generator {
 
   public String generateStateBody(MState m) {
       String s = "";
-	  
+
       MAction entry = m.getEntry();
       MAction exit = m.getExit();
       if (entry != null) {

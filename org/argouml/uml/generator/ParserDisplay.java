@@ -98,7 +98,7 @@ public class ParserDisplay extends Parser {
 	// don't forget to remove old Attrbutes!
 	for (int i = 0; i < oldAttrs.size(); i++)
 		((MAttribute)oldAttrs.elementAt(i)).remove();
-	
+
 	// now re-set the operations
 	cls.setFeatures(features);
 
@@ -112,16 +112,18 @@ public class ParserDisplay extends Parser {
   }
 
   /** Parse a line of the form:
-   *  [visibility] [keywords] returntype name(params)[;] */
+   *  [visibility] [keywords] name(params) ": " returntype[;] */
+   /* (formerly: [visibility] [keywords] returntype name(params)[;] ) */
   public MOperation parseOperation(String s) {
     s = s.trim();
     if (s.endsWith(";")) s = s.substring(0, s.length()-1);
     MOperation res = new MOperationImpl();
     s = parseOutVisibility(res, s);
     s = parseOutKeywords(res, s);
-    s = parseOutReturnType(res, s);
     s = parseOutName(res, s);
     s = parseOutParams(res, s);
+    s = parseOutColon(s);
+    s = parseOutReturnType(res, s);
     s = s.trim();
     if (s.length() > 2)
       System.out.println("leftover in parseOperation=|" + s + "|");
@@ -130,15 +132,17 @@ public class ParserDisplay extends Parser {
 
 
   /** Parse a line of the form:
-   *  [visibility] [keywords] type name [= init] [;] */
+   *  [visibility] [keywords] name ": " type [= init] [;] */
+   /* (formerly: [visibility] [keywords] type name [= init] [;] ) */
   public MAttribute parseAttribute(String s) {
     s = s.trim();
     if (s.endsWith(";")) s = s.substring(0, s.length()-1);
     MAttribute newAttribute = new MAttributeImpl();
     s = parseOutVisibility(newAttribute, s);
     s = parseOutKeywords(newAttribute, s);
-    s = parseOutType(newAttribute, s);
     s = parseOutName(newAttribute, s);
+    s = parseOutColon(s);
+    s = parseOutType(newAttribute, s);
 //     if (newAttribute.getName() == null && newAttribute.getType() != null) {
 // 		newAttribute.setName(newAttribute.getType().getName());
 // 		Project p = ProjectBrowser.TheInstance.getProject();
@@ -205,14 +209,15 @@ public class ParserDisplay extends Parser {
 
   public String parseOutReturnType(MOperation op, String s) {
     s = s.trim();
-    int firstSpace = s.indexOf(" ");
-    if (firstSpace == -1) return s;
-    String rtStr = s.substring(0, firstSpace);
-    if (rtStr.indexOf("(") > 0) {
-		// must be CONSTRUCTOR, must be included in nsuml later on!
-       op.setStereotype(new MStereotypeImpl());
-      return s;
-    }
+    //int firstSpace = s.indexOf(" ");
+    //if (firstSpace == -1) return s;
+    //String rtStr = s.substring(0, firstSpace);
+    String rtStr = (s.length()>0) ? s : "void";
+    //if (rtStr.indexOf("(") > 0) {
+	//	// must be CONSTRUCTOR, must be included in nsuml later on!
+    //   op.setStereotype(new MStereotypeImpl());
+    //  return s;
+    //}
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
     MClassifier rt = p.findType(rtStr);
@@ -221,30 +226,30 @@ public class ParserDisplay extends Parser {
     MParameter param = new MParameterImpl();
     param.setType(rt);
     MMUtil.SINGLETON.setReturnParameter(op,param);
-    return s.substring(firstSpace+1);
+    //return s.substring(firstSpace+1);
+    return "";
   }
 
 	public String parseOutParams(MOperation op, String s) {
 		s = s.trim();
 		String leftOver = s;
-		java.util.StringTokenizer st = new java.util.StringTokenizer(s, "(),");
-		// List params = new ArrayList();
-		while (st.hasMoreTokens()) {
-			String token = st.nextToken();
-			MParameter p = parseParameter(token);
-			if (p != null) op.addParameter(p);
-			if (!st.hasMoreTokens())
-				leftOver = s.substring(s.indexOf(token) + token.length());
+		int end = s.lastIndexOf(")");
+		if (end != -1) {
+			java.util.StringTokenizer st = new java.util.StringTokenizer(s.substring(1,end), ",");
+			while (st.hasMoreTokens()) {
+				String token = st.nextToken();
+				MParameter p = parseParameter(token);
+				if (p != null) op.addParameter(p);
+			}
+			leftOver = s.substring(end+1);
 		}
-		// op.setParameters(params);
-
 		return leftOver;
 	}
 
   public String parseOutName(MModelElement me, String s) {
     s = s.trim();
     if (s.equals("") || s.charAt(0) == '=') return s;
-    java.util.StringTokenizer st = new java.util.StringTokenizer(s, " \t()[]=;");
+    java.util.StringTokenizer st = new java.util.StringTokenizer(s, ": \t()[]=;");
     if (!st.hasMoreTokens()) {
       System.out.println("name not parsed");
       return s;
@@ -260,23 +265,33 @@ public class ParserDisplay extends Parser {
 
 	public String parseOutType(MAttribute attr, String s) {
 		s = s.trim();
-		int firstSpace = s.indexOf(" ");
-
-		int firstEq = s.indexOf("=");
-		if (firstEq != -1 && firstEq < firstSpace) firstSpace = firstEq;
+		int i, len = s.length();
+		for (i=0; i<len; i++) {
+			if (" \t,;()".indexOf(s.charAt(i)) != -1)
+				break;
+		}
+		String typeStr = (i>0) ? s.substring(0,i) : "";
+		String retStr = (i<len) ? s.substring(i) : "";
 
 		Project p = ProjectBrowser.TheInstance.getProject();
 		MClassifier type=null; // = p.findType("int");
-
+		/*
+		int firstSpace = s.indexOf(" ");
+		int firstEq = s.indexOf("=");
+		if (firstEq != -1 && firstEq < firstSpace) firstSpace = firstEq;
 		if (firstSpace != -1) {
 			String typeStr = s.substring(0, firstSpace);
 			// System.out.println("Trying to find "+typeStr+" in project...");
 			type = p.findType(typeStr);
 		}
-
+		*/
+		// System.out.println("Trying to find "+typeStr+" in project...");
+		type = p.findType(typeStr);
 		// System.out.println("setting attribute type: " + type.getName());
 		attr.setType(type);
-		return s.substring(firstSpace+1);
+
+		return retStr;
+		//return s.substring(firstSpace+1);
 	}
 
   public String parseOutInitValue(MAttribute attr, String s) {
@@ -292,11 +307,18 @@ public class ParserDisplay extends Parser {
     return "";
   }
 
+  private String parseOutColon(String s) {
+	s = s.trim();
+	if (s.length()>0 && s.charAt(0) == ':')
+		return s.substring(1);
+	return "";
+  }
+
   public MParameter parseParameter(String s) {
-    java.util.StringTokenizer st = new java.util.StringTokenizer(s, " \t");
+    java.util.StringTokenizer st = new java.util.StringTokenizer(s, ": \t");
     String typeStr = "int", paramNameStr = "parameterName?";
-    if (st.hasMoreTokens()) typeStr = st.nextToken();
     if (st.hasMoreTokens()) paramNameStr = st.nextToken();
+    if (st.hasMoreTokens()) typeStr = st.nextToken();
     Project p = ProjectBrowser.TheInstance.getProject();
     MClassifier cls = p.findType(typeStr);
     MParameter param = new MParameterImpl();
@@ -335,7 +357,7 @@ public class ParserDisplay extends Parser {
   public void parseStateBody(MState st, String s) {
       //remove all old transitions; needs-more-work: this should be done better!!
       st.setEntry(null);
-      st.setExit(null);   
+      st.setExit(null);
 
       Collection trans = new ArrayList();
       java.util.StringTokenizer lines = new java.util.StringTokenizer(s, "\n\r");
@@ -345,7 +367,7 @@ public class ParserDisplay extends Parser {
 	  else if (line.startsWith("exit")) parseStateExitAction(st, line);
 	  else {
 	      MTransition t = parseTransition(new MTransitionImpl(), line);
-	      
+
 	      if (t == null) continue;
 	      //System.out.println("just parsed:" + GeneratorDisplay.Generate(t));
 	      t.setStateMachine(st.getStateMachine());
@@ -354,19 +376,19 @@ public class ParserDisplay extends Parser {
 	      trans.add(t);
 	  }
       }
-      
+
       Vector internals = new Vector(st.getInternalTransitions());
       Vector oldinternals = new Vector(st.getInternalTransitions());
       internals.removeAll(oldinternals); //now the vector is empty
-      
+
       // don't forget to remove old internals!
       for (int i = 0; i < oldinternals.size(); i++)
 	  ((MTransition)oldinternals.elementAt(i)).remove();
       internals.addAll(trans);
-      
+
       st.setInternalTransitions(trans);
   }
-    
+
     public void parseStateEntyAction(MState st, String s) {
     if (s.startsWith("entry") && s.indexOf("/") > -1)
 	s = s.substring(s.indexOf("/")+1).trim();
@@ -417,7 +439,7 @@ public class ParserDisplay extends Parser {
      System.out.println("trigger=|" + trigger +"|");
      System.out.println("guard=|" + guard +"|");
      System.out.println("actions=|" + actions +"|");
-    */   
+    */
     trans.setName(parseName(name));
 
     if (trigger.length()>0) {
@@ -439,7 +461,7 @@ public class ParserDisplay extends Parser {
     }
     else
 	trans.setGuard(null);
-    
+
     if (actions.length()>0){
 	MCallAction effect=(MCallAction)parseAction(actions);
 	effect.setName("anon");
