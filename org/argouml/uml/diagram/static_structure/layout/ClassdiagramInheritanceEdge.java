@@ -43,8 +43,8 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
         ClassdiagramLayouter.cat.debug("sourceFigNode: " + sourceFigNode.classNameAndBounds());
         ClassdiagramLayouter.cat.debug("destFigNode: " + destFigNode.classNameAndBounds());
         if (sourceFigNode.getLocation().getY()<=destFigNode.getLocation().getY()) {
-            high = sourceFigNode;
-            low = destFigNode;
+            high = destFigNode;
+            low = sourceFigNode;
             ClassdiagramLayouter.cat.debug("high is sourcenode, is low destnode");
         }
         else {
