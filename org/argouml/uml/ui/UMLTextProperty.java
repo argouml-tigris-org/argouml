@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,6 +22,8 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
+import org.argouml.kernel.*;
+import org.argouml.ui.*;
 import java.lang.reflect.*;
 import ru.novosoft.uml.*;
 
@@ -68,6 +70,10 @@ public class UMLTextProperty  {
                         if(newValue != oldValue) {
                             Object[] args = { newValue };
                             _setMethod.invoke(element,args);
+                            // Mark the project as having been changed 
+                            Project p = ProjectBrowser.TheInstance.getProject(); 
+                            if (p != null) p.setNeedsSave(true); 
+
                         }
                     }
                 }
