@@ -98,17 +98,14 @@ abstract public class PropPanelModelElement extends PropPanel {
     protected JScrollPane namespaceScroll;
     protected JComboBox namespaceComboBox;
     protected JTextField nameField;
-    protected JComboBox stereotypeBox;
-    
+    protected JComboBox stereotypeBox;    
     protected JList supplierDependencyList;
     protected JList clientDependencyList;
-    
     protected JList targetFlowList;
     protected JList sourceFlowList;
-    
     protected JList constraintList;
-    
-    protected JPanel namespaceVisibilitypanel;
+    protected JPanel namespaceVisibilityPanel;
+    protected JCheckBox specializationCheckBox;
     
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -147,7 +144,7 @@ abstract public class PropPanelModelElement extends PropPanel {
         add(LabelledLayout.getSeperator());
         
         addField(Argo.localize("UMLMenu", "label.constraints"), constraintList);
-        addField(Argo.localize("UMLMenu", "label.namespace-visibility"), namespaceVisibilitypanel);
+        addField(Argo.localize("UMLMenu", "label.namespace-visibility"), namespaceVisibilityPanel);
     }
 
     public void navigateUp() {
@@ -216,8 +213,9 @@ abstract public class PropPanelModelElement extends PropPanel {
         
         constraintList = new UMLMutableLinkedList(this, new UMLModelElementConstraintListModel(this), null, ActionNewModelElementConstraint.SINGLETON);
         
-        namespaceVisibilitypanel = new UMLButtonPanel(new UMLElementOwnershipVisibilityButtonGroup(this));
+        namespaceVisibilityPanel = new UMLButtonPanel(new UMLElementOwnershipVisibilityButtonGroup(this));
         
+        specializationCheckBox = new UMLElementOwnershipSpecificationCheckBox(this);
     }
         
 }
