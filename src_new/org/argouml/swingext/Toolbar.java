@@ -29,55 +29,123 @@
 
 package org.argouml.swingext;
 
-import javax.swing.*;
-import javax.swing.border.*;
+import java.awt.Color;
 import java.awt.Insets;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.Action;
+import javax.swing.JButton;
+import javax.swing.JToolBar;
 
 /**
+ * A toolbar class which assumes rollover effects and automatically gives tooltip
+ * to any buttons created by adding an action.
  *
- * @author  administrator
+ * @author  Bob Tarling
  */
-public class Toolbar extends JToolBar {
+public class Toolbar extends JToolBar implements MouseListener {
     
-    /** Creates a new instance of Toolbar */
-    public Toolbar(String title) {
-        super(title);
-        this.setFloatable(true);
-        this.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
-        this.setMargin(new Insets(0,0,0,0));
-    }
+    private static final Color selectedBack = new Color(153,153,153);
+    private static final Color buttonBack = new Color(204,204,204);
+    private static Color normalBack;
+
+    private boolean _rollover;
     
-    /** Creates a new instance of Toolbar */
+    /** Creates a new instance of Toolbar
+     */
     public Toolbar() {
         super();
         this.setFloatable(false);
-        this.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
+        this.setRollover(true);
         this.setMargin(new Insets(0,0,0,0));
     }
     
+    /** Creates a new instance of Toolbar
+     * @param title The title to display in the titlebar when toolbar is floating
+     */
+    public Toolbar(String title) {
+        this(title, false);
+    }
+
+    /** Creates a new instance of Toolbar
+     * @param title The title to display in the titlebar when toolbar is floating
+     * @param floatable true if the toolbar can be dragged to a floating position
+     */
+    public Toolbar(String title, boolean floatable) {
+        super(title);
+        this.setFloatable(floatable);
+        this.setRollover(true);
+        this.setMargin(new Insets(0,0,0,0));
+    }
+    
+    /** Creates a new instance of Toolbar with the given orientation
+     * @param orientation HORIZONTAL or VERTICAL
+     */
     public Toolbar(int orientation) {
         super(orientation);
         this.setFloatable(false);
-        this.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
+        this.setRollover(true);
         this.setMargin(new Insets(0,0,0,0));
     }
 
+    public void setRollover(boolean rollover) {
+        super.setRollover(rollover);
+        this._rollover = rollover;
+        this.putClientProperty("JToolBar.isRollover", Boolean.valueOf(rollover));
+    }
+    
     public JButton add(Action action) {
-        JButton button = new JButton(action);
+        JButton button;
 
-        String tooltip = button.getToolTipText();
-        if (tooltip == null || tooltip.trim().length() == 0) {
-            tooltip = button.getName();
+        if (action instanceof ButtonAction) {
+            button = new JButton(action);
+            String tooltip = button.getToolTipText();
+            if (tooltip == null || tooltip.trim().length() == 0) {
+                tooltip = button.getText();
+            }
+            button = super.add(action);
+            button.setToolTipText(tooltip);
+        } else {
+            button = super.add(action);
         }
-        if (tooltip == null || tooltip.trim().length() == 0) {
-            tooltip = button.getText();
-        }
+        button.setFocusPainted(false);
+        button.addMouseListener(this);
 
-        button = super.add(action);
-        button.setToolTipText(tooltip);
-        
         return button;
     }
     
-    
+    ////////////////////////////////////////////////////////////////
+    // MouseListener implementation
+
+    public void mouseEntered(MouseEvent me) { }
+    public void mouseExited(MouseEvent me) { }
+    public void mousePressed(MouseEvent me) { }
+    public void mouseReleased(MouseEvent me) { }
+    public void mouseClicked(MouseEvent me) {
+        Object src = me.getSource();
+        if (src instanceof JButton && ((JButton)src).getAction() instanceof ButtonAction) {
+            JButton button = (JButton)src;
+            ButtonAction action = (ButtonAction)button.getAction();
+            if (action.isModal()) {
+                Color currentBack = button.getBackground();
+                if (currentBack.equals(selectedBack)) {
+                    button.setBackground(normalBack);
+                    button.setRolloverEnabled(_rollover);
+                } else {
+                    button.setBackground(selectedBack);
+                    button.setRolloverEnabled(false);
+                    normalBack = currentBack;
+                }
+                if (me.getClickCount() >= 2 && action.getLockMethod() == AbstractButtonAction.NONE) {
+                    // FIXME Here I need to lock the button in place.
+                    // The button should stay in place until it is pressed again (when
+                    // it is released but not acted on) or any other key in its group
+                    // is pressed.
+                }
+                else if (me.getClickCount() == 1) {
+                }
+            }
+        }
+    }
 }

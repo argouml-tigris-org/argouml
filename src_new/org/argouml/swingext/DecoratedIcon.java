@@ -37,19 +37,12 @@ abstract public class DecoratedIcon extends ImageIcon {
     private int _popupIconOffset = 5;
 
     private ImageIcon _imageIcon;
-
-    private boolean _showSplitter;
     
     /** Construct an dropdown icon pointing in the given direction
      * @param direction the direction the arrow will point, this being one of the constants NORTH, SOUTH, EAST, WEST
      */        
-    public DecoratedIcon(ImageIcon imageIcon) {
+    DecoratedIcon(ImageIcon imageIcon) {
         _imageIcon = imageIcon;
-    }
-    
-    public DecoratedIcon(ImageIcon imageIcon, boolean showSplitter) {
-        _imageIcon = imageIcon;
-        _showSplitter = showSplitter;
     }
     
     protected void init(int[][] buffer) {
@@ -82,16 +75,6 @@ abstract public class DecoratedIcon extends ImageIcon {
                 MetalLookAndFeel.getPrimaryControlInfo(),
                 MetalLookAndFeel.getPrimaryControlHighlight()};
 
-        if (_showSplitter) {
-            showSplitter(colors[1], g, x + _imageIcon.getIconWidth() + 2, 0, c.getHeight());
-            showSplitter(colors[3], g, x + _imageIcon.getIconWidth() + 3, 0, c.getHeight());
-        }
-                
-        if (c instanceof PopupToolBoxButton) {
-            PopupToolBoxButton popupToolBoxButton = (PopupToolBoxButton)c;
-            popupToolBoxButton.setDivision(_imageIcon.getIconWidth() + 3);
-        }
-                
         for (int i=0; i < _popupIconWidth; i++) {
             for (int j=0; j < _popupIconHeight; j++) {
                 if (_buffer[j][i] != 0) {
@@ -100,10 +83,5 @@ abstract public class DecoratedIcon extends ImageIcon {
                 }
             }
         }
-    }
-    
-    public void showSplitter(Color c, Graphics g, int x, int y, int height) {
-        g.setColor(c);
-        g.drawLine(x, y + 0, x, y + height);
     }
 }
