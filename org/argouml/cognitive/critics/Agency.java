@@ -296,7 +296,6 @@ public class Agency extends Observable { //implements java.io.Serialization
 	//Dbg.log("debugActivation","Deactivated: " + c.toString());
 	c.beInactive();
       }
-	Thread.yield();
     }
     //}
   }
