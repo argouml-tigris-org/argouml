@@ -93,6 +93,10 @@ public class CrConstructorNeeded extends CrUML {
             return NO_PROBLEM;
         }
 
+	// We don't consider secondary stuff.
+	if (!(ModelFacade.isPrimaryObject(dm))) 
+	    return NO_PROBLEM;
+
         // Types don't need a constructor.
         if (ModelFacade.isType(dm)) {
             return NO_PROBLEM;
