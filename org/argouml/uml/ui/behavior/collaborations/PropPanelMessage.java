@@ -100,8 +100,9 @@ public class PropPanelMessage extends PropPanelModelElement {
     JList activatorList = new UMLList(activatorModel,true);
     activatorList.setForeground(Color.blue);
     activatorList.setFont(smallFont);
-    JScrollPane activatorScroll = new JScrollPane(activatorList);
-    addField(activatorScroll,1,1,0.4);
+    activatorList.setVisibleRowCount(1);
+    JScrollPane activatorScroll = new JScrollPane(activatorList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    addField(activatorScroll,1,1,0);
 
     addCaption("Action:",2,1,1);
     UMLModelElementListModel actionModel=new UMLReflectionListModel(this, "action",true,"getAction",null,"addAction","deleteAction");
