@@ -99,11 +99,11 @@ public abstract class FigState extends FigStateVertex {
         } else if (
             ((MState) getOwner()).getInternalTransitions().contains(mee.getSource())
             || // the internal transitions
-         ((MState) getOwner()).getEntry().equals(mee.getSource())
+         (mee.getSource() == ((MState) getOwner()).getEntry())
             || // the entry
-         ((MState) getOwner()).getExit().equals(mee.getSource())
+         (mee.getSource() == ((MState) getOwner()).getExit())
             || // the exit
-         ((MState) getOwner()).getDoActivity().equals(mee.getSource())
+         (mee.getSource() == ((MState) getOwner()).getDoActivity())
             || // the doacitivity
          ((MState) getOwner()).getDeferrableEvents().contains(mee.getSource())) { // the defered events
             updateInternal();
