@@ -322,11 +322,34 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   </target>
 
   <!-- =================================================================== -->
+  <!-- Check dependencies.                                                 -->
+  <!--                                                                     -->
+  <!-- This process can be bypassed by setting the property                -->
+  <!-- "skip.dependency.check" to any value.                               -->
+  <!-- =================================================================== -->
+    <!-- check dependencies -->
+  <target name="check-dependencies" depends="prepare,prerequisites"
+          unless="skip.dependency.check">
+
+    <!-- create directories -->
+    <mkdir dir="${argo.build.classes}"/>
+
+    <depend srcdir="${argo.src.dir}"
+            destdir="${argo.build.classes}"
+	    dump="true"
+	    closure="true">
+       <classpath>
+	  <path refid="argo.classpath"/>
+       </classpath>
+    </depend>
+  </target>
+
+  <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
   <!-- <target name="compile" depends="generateparser,prepare"> -->
 
-  <target name="compile" depends="prepare, prerequisites">
+  <target name="compile" depends="prepare, prerequisites, check-dependencies">
 
     <echo message="Compiling the sources"/>
 
