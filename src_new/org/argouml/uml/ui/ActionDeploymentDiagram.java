@@ -27,7 +27,6 @@ import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.uml.diagram.deployment.ui.*;
 import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.gen.mmm.MPackage;
 import ru.novosoft.uml.model_management.*;
 import java.awt.event.*;
 import java.beans.*;
