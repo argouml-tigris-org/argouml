@@ -55,9 +55,9 @@ public class ActionSetGeneralizableElementRoot extends UMLChangeAction {
         if (e.getSource() instanceof UMLCheckBox2) {
             UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
             Object target = source.getTarget();
-            if (org.argouml.model.ModelFacade.isAGeneralizableElement(target)) {
-                Object m = /*(MGeneralizableElement)*/ target;
-                ModelFacade.setRoot(m, source.isSelected());                
+            if (org.argouml.model.ModelFacade.isAGeneralizableElement(target) ||
+                    ModelFacade.isAOperation(target)) {
+                ModelFacade.setRoot(target, source.isSelected());                
             }
         }
     }
