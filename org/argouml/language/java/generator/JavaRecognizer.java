@@ -1,4 +1,4 @@
-// $ANTLR 2.7.1: "../src_new/org/argouml/language/java/generator/java.g" -> "JavaRecognizer.java"$
+// $ANTLR 2.7.1: "java.g" -> "JavaRecognizer.java"$
 
 	package org.argouml.language.java.generator;
 
@@ -100,6 +100,10 @@ public class JavaRecognizer extends antlr.LLkParser
 	private CodePieceCollector cpc;
 
 	private int anonymousNumber;
+	
+	// A flag to indicate if we are inside a compoundStatement
+	private boolean      _inCompoundStatement  = false;
+
 
 protected JavaRecognizer(TokenBuffer tokenBuf, int k) {
   super(tokenBuf,k);
@@ -415,12 +419,12 @@ public JavaRecognizer(ParserSharedInputState state) {
 		t1 = LT(1);
 		match(LITERAL_class);
 		if ( inputState.guessing==0 ) {
-			codePiece.add(new SimpleCodePiece(t1));
+			if(!_inCompoundStatement) {codePiece.add(new SimpleCodePiece(t1));}
 		}
 		t2 = LT(1);
 		match(IDENT);
 		if ( inputState.guessing==0 ) {
-			codePiece.add(new SimpleCodePiece(t2));
+			if(!_inCompoundStatement) {codePiece.add(new SimpleCodePiece(t2));}
 		}
 		sc=superClassClause();
 		if ( inputState.guessing==0 ) {
@@ -428,8 +432,8 @@ public JavaRecognizer(ParserSharedInputState state) {
 		}
 		ic=implementsClause();
 		if ( inputState.guessing==0 ) {
-			codePiece.add(ic);
-					 cpc.add(new ClassCodePiece(codePiece, t2.getText().toString()));
+			if(!_inCompoundStatement) {codePiece.add(ic);
+					 cpc.add(new ClassCodePiece(codePiece, t2.getText().toString()));}
 		}
 		classBlock(codePiece);
 	}
@@ -1030,7 +1034,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		t1 = LT(1);
 		match(RCURLY);
 		if ( inputState.guessing==0 ) {
-			cpc.add(new ClassifierEndCodePiece(new SimpleCodePiece(t1)));
+			if(!_inCompoundStatement) {cpc.add(new ClassifierEndCodePiece(new SimpleCodePiece(t1)));}
 		}
 	}
 	
@@ -1284,6 +1288,9 @@ public JavaRecognizer(ParserSharedInputState state) {
 		
 		
 		match(LCURLY);
+		if ( inputState.guessing==0 ) {
+			_inCompoundStatement = true;
+		}
 		{
 		_loop102:
 		do {
@@ -1295,6 +1302,9 @@ public JavaRecognizer(ParserSharedInputState state) {
 			}
 			
 		} while (true);
+		}
+		if ( inputState.guessing==0 ) {
+			_inCompoundStatement = false;
 		}
 		match(RCURLY);
 	}

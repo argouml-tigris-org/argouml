@@ -102,6 +102,10 @@ tokens {
 	private CodePieceCollector cpc;
 
 	private int anonymousNumber;
+	
+	// A flag to indicate if we are inside a compoundStatement
+	private boolean      _inCompoundStatement  = false;
+
 }
 
 // Compilation Unit: In Java, this is a single file.  This is the start
@@ -268,14 +272,14 @@ modifier returns [CodePiece codePiece=null]
 classDefinition[CodePiece preCode] 
 	{CodePiece sc=null, ic=null; 
 	 CompositeCodePiece codePiece = new CompositeCodePiece(preCode);}
-	:	t1:"class" {codePiece.add(new SimpleCodePiece(t1));}
-		t2:IDENT {codePiece.add(new SimpleCodePiece(t2));}
+	:	t1:"class" {if(!_inCompoundStatement) {codePiece.add(new SimpleCodePiece(t1));}}
+		t2:IDENT {if(!_inCompoundStatement) {codePiece.add(new SimpleCodePiece(t2));}}
 		// it _might_ have a superclass...
 		sc=superClassClause {codePiece.add(sc);}
 		// it might implement some interfaces...
-		ic=implementsClause 
-		{codePiece.add(ic);
-		 cpc.add(new ClassCodePiece(codePiece, t2.getText().toString()));}
+		ic=implementsClause
+		{if(!_inCompoundStatement) {codePiece.add(ic);
+		 cpc.add(new ClassCodePiece(codePiece, t2.getText().toString()));}}
 		// now parse the body of the class
 		classBlock[codePiece]
 	;
@@ -312,8 +316,8 @@ interfaceDefinition[CodePiece preCode]
 classBlock[CompositeCodePiece header]
 	:	t0:LCURLY {if (header != null) {header.add (new SimpleCodePiece (t0));}}
 			( field | SEMI )*
-		t1:RCURLY 
-		{cpc.add(new ClassifierEndCodePiece(new SimpleCodePiece(t1)));}
+		t1:RCURLY
+		{if(!_inCompoundStatement) {cpc.add(new ClassifierEndCodePiece(new SimpleCodePiece(t1)));}}
 	;
 
 // An interface can extend several other interfaces...
@@ -569,7 +573,9 @@ parameterModifier
 compoundStatement
 	:	LCURLY
 			// include the (possibly-empty) list of statements
+			{_inCompoundStatement = true;}
 			(statement)*
+			{_inCompoundStatement = false;}
 		RCURLY
 	;
 
