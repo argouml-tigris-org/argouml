@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,7 +26,6 @@ package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -53,8 +52,6 @@ import org.argouml.util.ConfigLoader;
  * components.
  */
 public class PropPanelAssociationEnd extends PropPanelModelElement {
-
-    private JLabel associationsLabel;
 
     /**
      * The combobox that shows the type of this association end.
@@ -143,7 +140,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      */
     public PropPanelAssociationEnd() {
         super("AssociationEnd", ConfigLoader.getTabPropsOrientation());
-        associationLabel = Translator.localize("UMLMenu", "label.association");
+        associationLabel = Translator.localize("label.association");
         Class mclass = (Class) ModelFacade.ASSOCIATION_END;
         createControls(mclass);
         positionStandardControls();
@@ -166,13 +163,13 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         targetScopeCheckBox = new UMLAssociationEndTargetScopeCheckbox();
         aggregationRadioButtonpanel = 
             new UMLAssociationEndAggregationRadioButtonPanel(
-                Translator.localize("UMLMenu", "label.aggregation"), true);
+                Translator.localize("label.aggregation"), true);
         changeabilityRadioButtonpanel = 
             new UMLAssociationEndChangeabilityRadioButtonPanel(
-                Translator.localize("UMLMenu", "label.changeability"), true);
+                Translator.localize("label.changeability"), true);
         visibilityRadioButtonPanel = 
             new UMLModelElementVisibilityRadioButtonPanel(
-                Translator.localize("UMLMenu", "label.visibility"), true);
+                Translator.localize("label.visibility"), true);
         specificationScroll = new JScrollPane(new UMLMutableLinkedList(
                 new UMLAssociationEndSpecificationListModel(),
                 ActionAddAssociationSpecification.getInstance(), 
@@ -183,12 +180,12 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      * Add the standard controls to the panel.
      */
     protected void positionStandardControls() {
-        addField(Translator.localize("UMLMenu", "label.name"),
+        addField(Translator.localize("label.name"),
                 getNameTextField());
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), new
+        // addField(Translator.localize("label.stereotype"), new
         // UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
         // "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"),
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
     }
 
@@ -197,8 +194,8 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      */
     protected void positionControls() {
         addField(associationLabel, associationScroll);
-        addField(Translator.localize("UMLMenu", "label.type"), typeCombobox);
-        addField(Translator.localize("UMLMenu", "label.multiplicity"),
+        addField(Translator.localize("label.type"), typeCombobox);
+        addField(Translator.localize("label.multiplicity"),
                 getMultiplicityComboBox());
 
         addSeperator();
@@ -207,11 +204,11 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         panel.add(navigabilityCheckBox);
         panel.add(orderingCheckBox);
         panel.add(targetScopeCheckBox);
-        panel.setBorder(new TitledBorder(Translator.localize("UMLMenu",
+        panel.setBorder(new TitledBorder(Translator.localize(
                 "label.modifiers")));
         panel.setVisible(true);
         add(panel);
-        addField(Translator.localize("UMLMenu", "label.specification"),
+        addField(Translator.localize("label.specification"),
                 specificationScroll);
 
         addSeperator();

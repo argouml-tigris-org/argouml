@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: PropPanelExtensionPoint.java
-// Classes: PropPanelExtensionPoint
-// Original Author: mail@jeremybennett.com
-
 package org.argouml.uml.ui.behavior.use_cases;
 
 import javax.swing.JList;
@@ -44,21 +40,17 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
 /**
- * <p>
- * Builds the property panel for an extension point.
- * </p>
+ * Builds the property panel for an extension point.<p>
  * 
- * <p>
- * This is a child of PropPanelModelElement.
- * </p>
+ * This is a child of PropPanelModelElement.<p>
+ *
+ * @author Jeremy Bennett
  */
-
 public class PropPanelExtensionPoint extends PropPanelModelElement {
 
     /**
      * Constructor. Builds up the various fields required.
      */
-
     public PropPanelExtensionPoint() {
 
         // Invoke the ModelElement constructor, but passing in our name and
@@ -72,12 +64,12 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         // nameField, stereotypeBox and namespaceScroll are all set up by
         // PropPanelModelElement.
 
-        addField(Translator.localize("UMLMenu", "label.name"),
+        addField(Translator.localize("label.name"),
                 getNameTextField());
-        //      addField(Translator.localize("UMLMenu", "label.stereotype"),
-        //        new UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
+        //      addField(Translator.localize("label.stereotype"),
+        //        new UMLComboBoxNavigator(this, Translator.localize(
         // "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"),
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
 
         // Our location (a String). We can pass in the get and set methods from
@@ -86,7 +78,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
 
         JTextField locationField = new UMLTextField2(
                 new UMLExtensionPointLocationDocument());
-        addField(Translator.localize("UMLMenu", "label.location"),
+        addField(Translator.localize("label.location"),
                 locationField);
 
         addSeperator();
@@ -94,12 +86,12 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         JList usecaseList = new UMLLinkedList(
                 new UMLExtensionPointUseCaseListModel());
         usecaseList.setVisibleRowCount(1);
-        addField(Translator.localize("UMLMenu", "label.usecase-base"),
+        addField(Translator.localize("label.usecase-base"),
                 new JScrollPane(usecaseList));
 
         JList extendList = new UMLLinkedList(
                 new UMLExtensionPointExtendListModel());
-        addField(Translator.localize("UMLMenu", "label.extend"),
+        addField(Translator.localize("label.extend"),
                 new JScrollPane(extendList));
 
         addButton(new PropPanelButton2(this,
@@ -108,17 +100,12 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
     }
 
     /**
-     * <p>
      * The method for the navigate up button, which takes us to the owning use
-     * case.
-     * </p>
+     * case.<p>
      * 
-     * <p>
      * This is a change from the norm, which is to navigate to the parent
-     * namespace.
-     * </p>
+     * namespace.<p>
      */
-
     public void navigateUp() {
         Object target = getTarget();
 

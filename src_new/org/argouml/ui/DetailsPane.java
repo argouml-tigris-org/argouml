@@ -159,7 +159,7 @@ public class DetailsPane
             JPanel t = (JPanel) tabPanelList.elementAt(i);
             if (t instanceof TabSpawnable)
                 title = ((TabSpawnable) t).getTitle();
-            title = Translator.localize("UMLMenu", title);
+            title = Translator.localize(title);
             if (t instanceof TabToDoTarget) {
                 topLevelTabbedPane.addTab(title, leftArrowIcon, t);
             } else if (t instanceof TabModelTarget) {

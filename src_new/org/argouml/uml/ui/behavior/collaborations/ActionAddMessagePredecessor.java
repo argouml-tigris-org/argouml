@@ -77,7 +77,7 @@ public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
-        return Translator.localize("UMLMenu", "dialog.add-predecessors");
+        return Translator.localize("dialog.add-predecessors");
     }
 
     /**

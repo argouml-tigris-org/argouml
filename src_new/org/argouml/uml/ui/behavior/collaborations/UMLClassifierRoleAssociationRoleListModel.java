@@ -88,8 +88,7 @@ public class UMLClassifierRoleAssociationRoleListModel
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
      */
     protected String getAddDialogTitle() {
-	return Translator.localize("UMLMenu",
-			     "dialog.add-associated-classifierroles");
+	return Translator.localize("dialog.add-associated-classifierroles");
     }
 
     /**

@@ -45,7 +45,7 @@ public class ActionRemoveClassifierRoleBase
      * Constructor for ActionRemoveClassifierRoleBase.
      */
     protected ActionRemoveClassifierRoleBase() {
-        super(Translator.localize("UMLMenu", "menu.popup.remove"));
+        super(Translator.localize("menu.popup.remove"));
     }
 
     

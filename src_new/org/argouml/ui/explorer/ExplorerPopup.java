@@ -207,7 +207,7 @@ public class ExplorerPopup extends JPopupMenu {
      * @return The localized string.
      */
     private final String menuLocalize(String key) {
-        return Translator.localize("Tree", key);
+        return Translator.localize(key);
     }
     
 }

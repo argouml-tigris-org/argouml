@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.ImageIcon;
@@ -127,7 +126,7 @@ public abstract class PropPanelFeature extends PropPanelModelElement {
     protected JPanel getVisibilityPanel() {
         if (visibilityPanel == null) {
             visibilityPanel = new UMLModelElementVisibilityRadioButtonPanel(
-                    Translator.localize("UMLMenu", "label.visibility"), true);
+                    Translator.localize("label.visibility"), true);
         }
         return visibilityPanel;
     }

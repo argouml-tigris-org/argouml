@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,17 +22,11 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: PropPanelTransition.java
-// Classes: PropPanelTransition
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.ui.behavior.state_machines;
 
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
@@ -45,11 +39,9 @@ import org.argouml.util.ConfigLoader;
 /**
  * The properties panel for a Transition.
  *
+ * @author jrobbins
  */
 public class PropPanelTransition extends PropPanelModelElement {
-
-    private static final Logger LOG = 
-        Logger.getLogger(PropPanelTransition.class);
 
     /**
      * The constructor.
@@ -58,21 +50,21 @@ public class PropPanelTransition extends PropPanelModelElement {
     public PropPanelTransition() {
         super("Transition", ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("UMLMenu", "label.name"),
+        addField(Translator.localize("label.name"),
                 getNameTextField());
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), new
+        // addField(Translator.localize("label.stereotype"), new
         // UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
         // "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"),
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
         JList statemachineList = new UMLLinkedList(
                 new UMLTransitionStatemachineListModel());
         statemachineList.setVisibleRowCount(1);
-        addField(Translator.localize("UMLMenu", "label.statemachine"),
+        addField(Translator.localize("label.statemachine"),
                 new JScrollPane(statemachineList));
         JList stateList = new UMLLinkedList(new UMLTransitionStateListModel());
         stateList.setVisibleRowCount(1);
-        addField(Translator.localize("UMLMenu", "label.state"),
+        addField(Translator.localize("label.state"),
                 new JScrollPane(stateList));
 
         addSeperator();
@@ -80,28 +72,28 @@ public class PropPanelTransition extends PropPanelModelElement {
         JList sourceList = 
             new UMLLinkedList(new UMLTransitionSourceListModel());
         sourceList.setVisibleRowCount(1);
-        addField(Translator.localize("UMLMenu", "label.source"),
+        addField(Translator.localize("label.source"),
                 new JScrollPane(sourceList));
         JList targetList = 
             new UMLLinkedList(new UMLTransitionTargetListModel());
         targetList.setVisibleRowCount(1);
-        addField(Translator.localize("UMLMenu", "label.target"),
+        addField(Translator.localize("label.target"),
                 new JScrollPane(targetList));
         JList triggerList = new UMLTransitionTriggerList(
                 new UMLTransitionTriggerListModel());
         triggerList.setVisibleRowCount(1);
-        addField(Translator.localize("UMLMenu", "label.trigger"),
+        addField(Translator.localize("label.trigger"),
                 new JScrollPane(triggerList));
         JList guardList = new UMLMutableLinkedList(
                 new UMLTransitionGuardListModel(), null,
                 ActionNewGuard.getSingleton());
         guardList.setVisibleRowCount(1);
-        addField(Translator.localize("UMLMenu", "label.guard"),
+        addField(Translator.localize("label.guard"),
                 new JScrollPane(guardList));
         JList effectList = new UMLTransitionEffectList(
                 new UMLTransitionEffectListModel());
         effectList.setVisibleRowCount(1);
-        addField(Translator.localize("UMLMenu", "label.effect"),
+        addField(Translator.localize("label.effect"),
                 new JScrollPane(effectList));
 
         addButton(new PropPanelButton2(this,

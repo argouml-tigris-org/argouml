@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,21 +29,14 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Logger;
-
 /**
- * Helper class for tree models that provides tree event handling.
- *
- * <p>$Id$
+ * Helper class for tree models that provides tree event handling.<p>
  *
  * @author  alexb
  * @since 0.13.5, Created on 15 April 2003
  */
 public class TreeModelSupport extends PerspectiveSupport {
 
-    private static final Logger LOG =
-        Logger.getLogger(TreeModelSupport.class);
-                
     /** tree model listener list. */
     private EventListenerList listenerList = new EventListenerList();
 
@@ -53,7 +46,6 @@ public class TreeModelSupport extends PerspectiveSupport {
      * @param name the name that will be localized
      */
     public TreeModelSupport(String name) {
-        
         super(name);
     }
     

@@ -29,6 +29,7 @@ import java.util.ArrayList;
 
 import org.argouml.ui.explorer.rules.PerspectiveRule;
 import org.argouml.i18n.Translator;
+
 /**
  * Represents a perspective (or view) of the uml model for display in the
  * explorer.
@@ -53,8 +54,7 @@ public class ExplorerPerspective {
      * @param newName the name for the perspective
      */
     public ExplorerPerspective(String newName) {
-        
-        name = Translator.localize("Tree", newName);
+        name = Translator.localize(newName);
         rules = new ArrayList();
     }
     

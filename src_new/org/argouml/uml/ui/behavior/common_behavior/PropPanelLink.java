@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,21 +22,12 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: PropPanelLink.java
-// Classes: PropPanelLink
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.ui.behavior.common_behavior;
-
 
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton2;
@@ -58,19 +49,18 @@ public class PropPanelLink extends PropPanelModelElement {
         super("Link", lookupIcon("Link"), 
                 ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = (Class) ModelFacade.LINK;
-        addField(Translator.localize("UMLMenu", "label.name"), 
+        addField(Translator.localize("label.name"), 
                 getNameTextField());
-        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        addField(Translator.localize("label.stereotype"), 
                 getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"), 
+        addField(Translator.localize("label.namespace"), 
                 getNamespaceComboBox());
         addSeperator();
         
-        JList connectionList = new UMLLinkedList(
-                new UMLLinkConnectionListModel());
+        JList connectionList =
+            new UMLLinkedList(new UMLLinkConnectionListModel());
         JScrollPane connectionScroll = new JScrollPane(connectionList);
-        addField(Translator.localize("UMLMenu", "label.connections"), 
+        addField(Translator.localize("label.connections"), 
                 connectionScroll);
 
         addButton(new PropPanelButton2(this, 

@@ -22,9 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: PropPanelLinkEnd.java
-// Classes: PropPanelLinkEnd
-
 package org.argouml.uml.ui.behavior.common_behavior;
 
 import org.argouml.i18n.Translator;
@@ -48,13 +45,13 @@ public class PropPanelLinkEnd extends PropPanelModelElement {
     public PropPanelLinkEnd() {
         super("Linkend", lookupIcon("AssociationEnd"), 
                 ConfigLoader.getTabPropsOrientation());
-        addField(Translator.localize("UMLMenu", "label.name"),
+        addField(Translator.localize("label.name"),
                 getNameTextField());
         
-        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        addField(Translator.localize("label.stereotype"), 
                 getStereotypeBox());
                 
-        addField(Translator.localize("UMLMenu", "label.namespace"),
+        addField(Translator.localize("label.namespace"),
                 getNamespaceScroll());
         addSeperator();
     }

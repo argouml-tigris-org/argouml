@@ -68,7 +68,8 @@ import org.tigris.gef.ui.IStatusBar;
 import org.tigris.gef.util.VectorSet;
 import org.tigris.toolbar.layouts.DockBorderLayout;
 
-/** The main window of the ArgoUML application.
+/**
+ * The main window of the ArgoUML application.
  *
  * @stereotype singleton
  */
@@ -76,8 +77,6 @@ public class ProjectBrowser
     extends JFrame
     implements IStatusBar, PropertyChangeListener, TargetListener {
 
-    private static final String BUNDLE = "statusmsg";
-	
     /** Default width: DEFAULT_COMPONENTWIDTH */
     public static final int DEFAULT_COMPONENTWIDTH = 220;
     /** Default height: DEFAULT_COMPONENTHEIGHT */
@@ -169,8 +168,8 @@ public class ProjectBrowser
         if (doSplash) {
             splashScreen = SplashScreen.getInstance();
 	    splashScreen.getStatusBar().showStatus(
-	            Translator.localize(BUNDLE,
-				   "statusmsg.bar.making-project-browser"));
+	            Translator.localize(
+	                    "statusmsg.bar.making-project-browser"));
             splashScreen.getStatusBar().showProgress(10);
             splashScreen.setVisible(true);
         }
@@ -224,8 +223,8 @@ public class ProjectBrowser
     protected Component createPanels(boolean doSplash) {
         if (doSplash) {
 	    splashScreen.getStatusBar().showStatus(
-	            Translator.localize(BUNDLE, 
-			     "statusmsg.bar.making-project-browser-explorer"));
+	            Translator.localize(
+	                    "statusmsg.bar.making-project-browser-explorer"));
             splashScreen.getStatusBar().incProgress(5);
         }
         //_navPane = new NavigatorPane(doSplash);
@@ -570,8 +569,7 @@ public class ProjectBrowser
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         while (it.hasNext()) {
             DetailsPane detailsPane = (DetailsPane) it.next();
-            if (detailsPane.selectTabNamed(Translator.localize("UMLMenu",
-							       tabName))) {
+            if (detailsPane.selectTabNamed(Translator.localize(tabName))) {
                 return;
             }
         }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,20 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: PropPanelActor.java
-// Classes: PropPanelActor
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
-// 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Changed to use the
-// labels "Generalizes:" and "Specializes:" for inheritance.
-
-// 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Labels corrected to
-// "Generalizations:" and "Specializations". Problems with these two fields
-// fixed. Display of dependencies dropped (why show for actors and not other
-// classifiers). Tool tip changed to "Add actor"
-
-
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.i18n.Translator;
@@ -50,11 +36,13 @@ import org.argouml.util.ConfigLoader;
 
 
 /**
- * <p>Builds the property panel for a actor.</p>
+ * Builds the property panel for a actor.<p>
  *
- * <p>This is a type of Classifier, and like other Classifiers can have
- *   attributes and operations (some processes use these to define
- *   requirements). <em>Note</em>. ArgoUML has no way to display these.</p>
+ * This is a type of Classifier, and like other Classifiers can have
+ * attributes and operations (some processes use these to define
+ * requirements). <em>Note</em>. ArgoUML has no way to display these.<p>
+ *
+ * @author jrobbins
  */
 
 public class PropPanelActor extends PropPanelClassifier {
@@ -74,39 +62,39 @@ public class PropPanelActor extends PropPanelClassifier {
     	super("Actor", ConfigLoader.getTabPropsOrientation());
 
 
-    	addField(Translator.localize("UMLMenu", "label.name"), 
+    	addField(Translator.localize("label.name"), 
                 getNameTextField());
-    	// addField(Translator.localize("UMLMenu", "label.stereotype"), 
-        //     new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", 
+    	// addField(Translator.localize("label.stereotype"), 
+        //     new UMLComboBoxNavigator(this, Translator.localize(
         //     "tooltip.nav-stereo"), getStereotypeBox()));
-    	addField(Translator.localize("UMLMenu", "label.stereotype"), 
+    	addField(Translator.localize("label.stereotype"), 
                 getStereotypeBox());
 
         add(getModifiersPanel());
 
-    	addField(Translator.localize("UMLMenu", "label.namespace"), 
+    	addField(Translator.localize("label.namespace"), 
                 getNamespaceComboBox());
 
     	addSeperator();
 
-    	addField(Translator.localize("UMLMenu", "label.generalizations"), 
+    	addField(Translator.localize("label.generalizations"), 
                 getGeneralizationScroll());
-    	addField(Translator.localize("UMLMenu", "label.specializations"), 
+    	addField(Translator.localize("label.specializations"), 
                 getSpecializationScroll());
 
     	addSeperator();
 
-    	addField(Translator.localize("UMLMenu", "label.association-ends"),
+    	addField(Translator.localize("label.association-ends"),
             getAssociationEndScroll());
         // The toolbar buttons that go at the top.
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateContainerElement()));
         new PropPanelButton(this, getButtonPanel(), lookupIcon("Actor"),
-                Translator.localize("UMLMenu", "button.new-actor"), "newActor",
+                Translator.localize("button.new-actor"), "newActor",
                             null);
         new PropPanelButton(this, getButtonPanel(), lookupIcon("Reception"), 
-                Translator.localize("UMLMenu", "button.new-reception"), 
+                Translator.localize("button.new-reception"), 
                 getActionNewReception());
         addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }

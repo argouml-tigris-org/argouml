@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -58,8 +58,6 @@ public class PropPanelParameter extends PropPanelModelElement {
 	      "Parameter",
 	      lookupIcon("Parameter"),
 	      ConfigLoader.getTabPropsOrientation());
-        Class mclass = (Class) ModelFacade.PARAMETER;
-
         Class[] namesToWatch = {
 	    (Class) ModelFacade.STEREOTYPE,
 	    (Class) ModelFacade.OPERATION,
@@ -68,18 +66,18 @@ public class PropPanelParameter extends PropPanelModelElement {
 	};
         setNameEventListening(namesToWatch);
 
-        addField(Translator.localize("UMLMenu", "label.name"), 
+        addField(Translator.localize("label.name"), 
                 getNameTextField());
  
-        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        addField(Translator.localize("label.stereotype"), 
                 getStereotypeBox());
 
-        addField(Translator.localize("UMLMenu", "label.owner"), 
+        addField(Translator.localize("label.owner"), 
                 getBehavioralFeatureScroll());
         
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.type"), 
+        addField(Translator.localize("label.type"), 
                 new UMLComboBox2(new UMLParameterTypeComboBoxModel(), 
                         ActionSetParameterType.getInstance()));
 
@@ -92,7 +90,7 @@ public class PropPanelParameter extends PropPanelModelElement {
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateContainerElement()));
         new PropPanelButton(this, getButtonPanel(), lookupIcon("Parameter"), 
-                Translator.localize("UMLMenu", "button.new-parameter"), 
+                Translator.localize("button.new-parameter"), 
                 "addParameter", null);
         addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }

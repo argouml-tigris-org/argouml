@@ -63,23 +63,23 @@ public class PropPanelActionState extends PropPanelState {
 
         super(name, icon, orientation);
 
-        addField(Translator.localize("UMLMenu", "label.name"),
+        addField(Translator.localize("label.name"),
                 getNameTextField());
-        //        addField(Translator.localize("UMLMenu", "label.stereotype"),
+        //        addField(Translator.localize("label.stereotype"),
         //		 new UMLComboBoxNavigator(this,
-        //					  Translator.localize("UMLMenu",
+        //					  Translator.localize(
         //						"tooltip.nav-stereo"),
         //					  getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"),
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
 
-        addField(Translator.localize("UMLMenu", "label.entry"), 
+        addField(Translator.localize("label.entry"), 
                 getEntryScroll());
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.incoming"),
+        addField(Translator.localize("label.incoming"),
                 getIncomingScroll());
-        addField(Translator.localize("UMLMenu", "label.outgoing"),
+        addField(Translator.localize("label.outgoing"),
                 getOutgoingScroll());
 
     }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.ui.behavior.use_cases;
 
 import java.util.Collection;
@@ -31,6 +30,7 @@ import java.util.Vector;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
+
 /**
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -73,7 +73,7 @@ public class ActionAddExtendExtensionPoint
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
-        return Translator.localize("UMLMenu", 
+        return Translator.localize(
                 "dialog.title.add-extensionpoints");
     }
 

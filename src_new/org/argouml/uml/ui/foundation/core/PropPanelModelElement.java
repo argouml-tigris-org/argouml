@@ -118,9 +118,9 @@ public abstract class PropPanelModelElement extends PropPanel {
     private static UMLModelElementSourceFlowListModel sourceFlowListModel =
 	new UMLModelElementSourceFlowListModel();
 
-    private static UMLModelElementSupplierDependencyListModel 
-        supplierDependencyListModel =
-	new UMLModelElementSupplierDependencyListModel();
+    // private static UMLModelElementSupplierDependencyListModel 
+    //    supplierDependencyListModel =
+    //        new UMLModelElementSupplierDependencyListModel();
 
     private static UMLModelElementTargetFlowListModel targetFlowListModel =
 	new UMLModelElementTargetFlowListModel();
@@ -153,28 +153,28 @@ public abstract class PropPanelModelElement extends PropPanel {
      */
     public PropPanelModelElement() {
         this("ModelElement", null, ConfigLoader.getTabPropsOrientation());
-        addField(Translator.localize("UMLMenu", "label.name"),
+        addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("UMLMenu", "label.stereotype"),
+        addField(Translator.localize("label.stereotype"),
 		 getStereotypeBox());
 
-        addField(Translator.localize("UMLMenu", "label.namespace"),
+        addField(Translator.localize("label.namespace"),
                 getNamespaceScroll());
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.supplier-dependencies"),
+        addField(Translator.localize("label.supplier-dependencies"),
                 getSupplierDependencyScroll());
-        addField(Translator.localize("UMLMenu", "label.client-dependencies"),
+        addField(Translator.localize("label.client-dependencies"),
                 getClientDependencyScroll());
-        addField(Translator.localize("UMLMenu", "label.source-flows"),
+        addField(Translator.localize("label.source-flows"),
                 getSourceFlowScroll());
-        addField(Translator.localize("UMLMenu", "label.target-flows"),
+        addField(Translator.localize("label.target-flows"),
                 getTargetFlowScroll());
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.constraints"),
+        addField(Translator.localize("label.constraints"),
                 getConstraintScroll());
         add(getNamespaceVisibilityPanel());
     }
@@ -293,7 +293,7 @@ public abstract class PropPanelModelElement extends PropPanel {
         if (stereotypeBox == null) {
             stereotypeBox = new Box(BoxLayout.X_AXIS);
             stereotypeBox.add(new UMLComboBoxNavigator(this, Translator
-                    .localize("UMLMenu", "tooltip.nav-stereo"),
+                    .localize("tooltip.nav-stereo"),
                     getStereotypeComboBox()));
             JButton stereoTypeButton = new JButton(new AbstractAction(null,
                     lookupIcon("Stereotype")) {
@@ -385,7 +385,7 @@ public abstract class PropPanelModelElement extends PropPanel {
         if (namespaceVisibilityPanel == null) {
             namespaceVisibilityPanel =
 		new UMLModelElementVisibilityRadioButtonPanel(
-                    Translator.localize("UMLMenu", "label.visibility"), true);
+                    Translator.localize("label.visibility"), true);
         }
         return namespaceVisibilityPanel;
     }

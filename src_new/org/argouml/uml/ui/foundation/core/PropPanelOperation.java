@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,6 +37,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.swingext.GridLayout2;
+import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddOperation;
 import org.argouml.uml.ui.ActionNavigateOwner;
@@ -47,7 +48,6 @@ import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLList;
 import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.util.ConfigLoader;
-import org.argouml.ui.LookAndFeelMgr;
 
 /**
  * A property panel for operations. TODO: this property panel needs refactoring
@@ -69,7 +69,6 @@ public class PropPanelOperation extends PropPanelFeature {
         super("Operation", lookupIcon("Operation"), ConfigLoader
                 .getTabPropsOrientation());
 
-        Class mclass = (Class) ModelFacade.OPERATION;
         //
         //   this will cause the components on this page to be notified
         //      anytime a stereotype, namespace, operation, etc
@@ -78,13 +77,13 @@ public class PropPanelOperation extends PropPanelFeature {
             (Class) ModelFacade.NAMESPACE, (Class) ModelFacade.CLASSIFIER };
         setNameEventListening(namesToWatch);
 
-        addField(Translator.localize("UMLMenu", "label.name"),
+        addField(Translator.localize("label.name"),
                 getNameTextField());
 
-        addField(Translator.localize("UMLMenu", "label.stereotype"),
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
 
-        addField(Translator.localize("UMLMenu", "label.owner"),
+        addField(Translator.localize("label.owner"),
                 getOwnerScroll());
 
         addSeperator();    
@@ -94,7 +93,7 @@ public class PropPanelOperation extends PropPanelFeature {
         JPanel modifiersPanel = new JPanel(new GridLayout2(0, 3,
                 GridLayout2.ROWCOLPREFERRED));
         modifiersPanel.setBorder(new TitledBorder(Translator.localize(
-                "UMLMenu", "label.modifiers")));
+                "label.modifiers")));
         modifiersPanel.add(new UMLGeneralizableElementAbstractCheckBox());
         modifiersPanel.add(new UMLGeneralizableElementLeafCheckBox());
         modifiersPanel.add(new UMLGeneralizableElementRootCheckBox());
@@ -107,7 +106,7 @@ public class PropPanelOperation extends PropPanelFeature {
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.parameters"),
+        addField(Translator.localize("label.parameters"),
                 getParameterScroll());
 
         JList exceptList = new UMLList(new UMLReflectionListModel(this,
@@ -115,7 +114,7 @@ public class PropPanelOperation extends PropPanelFeature {
                 "addRaisedSignal", null), true);
         exceptList.setForeground(Color.blue);
         exceptList.setFont(LookAndFeelMgr.getInstance().getSmallFont());
-        addField(Translator.localize("UMLMenu", "label.raisedsignals"),
+        addField(Translator.localize("label.raisedsignals"),
                 new JScrollPane(exceptList));
 
         addButton(new PropPanelButton2(this, new ActionNavigateOwner()));

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: PropPanelEvent.java
-// Classes: PropPanelEvent
-// Original Author: oliver.heyden@gentleware.de
-// $Id:
-
 package org.argouml.uml.ui.behavior.state_machines;
 
 import javax.swing.ImageIcon;
@@ -48,6 +43,7 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 /**
  * The properties panel for an Event.
  *
+ * @author oliver.heyden
  */
 public abstract class PropPanelEvent extends PropPanelModelElement {
 
@@ -78,19 +74,19 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
                 new ActionNavigateContainerElement()));
 
         new PropPanelButton(this, getButtonPanel(), lookupIcon("Parameter"), 
-                Translator.localize("UMLMenu", "button.new-parameter"),
+                Translator.localize("button.new-parameter"),
                 "buttonAddParameter", null);
 
-        addField(Translator.localize("UMLMenu", "label.name"),
+        addField(Translator.localize("label.name"),
                 getNameTextField());
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), new
+        // addField(Translator.localize("label.stereotype"), new
         // UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
         // "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"),
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"),
+        addField(Translator.localize("label.namespace"),
                 getNamespaceScroll());
-        addField(Translator.localize("UMLMenu", "label.parameters"),
+        addField(Translator.localize("label.parameters"),
                 getParameterScroll());
 
         addSeperator();

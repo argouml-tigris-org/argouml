@@ -140,7 +140,9 @@ public class Translator {
 
     /** 
      * Helper for localization to eliminate the need to import
-     * the gef util library. 
+     * the gef util library.<p>
+     *
+     * This is only used when retrieving the strings localized in GEF.
      *
      * @param bundle a binding to a bundle of i18n resources
      * @param key the key to loacalize

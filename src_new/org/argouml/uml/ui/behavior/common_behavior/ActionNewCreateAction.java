@@ -44,8 +44,7 @@ public class ActionNewCreateAction extends ActionNewAction {
      */
     protected ActionNewCreateAction() {
         super();
-        putValue(Action.NAME, Translator.localize("UMLMenu", 
-                "button.new-createaction"));
+        putValue(Action.NAME, Translator.localize("button.new-createaction"));
     }
     
     

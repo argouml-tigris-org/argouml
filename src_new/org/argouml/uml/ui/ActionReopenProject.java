@@ -24,14 +24,17 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.ui.*;
-import org.argouml.i18n.Translator;
-import org.argouml.kernel.*;
-import org.apache.log4j.Logger;
-import java.awt.event.*;
-import java.io.*;
-import javax.swing.JOptionPane;
+import java.awt.event.ActionEvent;
+import java.io.File;
 import java.text.MessageFormat;
+
+import javax.swing.JOptionPane;
+
+import org.apache.log4j.Logger;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.ProjectBrowser;
 
 /**
  * Reopens a project with respect of the calling event handler - should be 
@@ -40,7 +43,6 @@ import java.text.MessageFormat;
  * @author  Frank Jelinek
  * @since 10. November 2003 (0.15.2)
  */
-
 public class ActionReopenProject extends UMLAction {
     private static final Logger LOG =
 	Logger.getLogger(ActionReopenProject.class);
@@ -90,8 +92,7 @@ public class ActionReopenProject extends UMLAction {
             String t =
                 MessageFormat.format(
                         Translator.localize(
-				"Actions",
-				"optionpane.open-project-save-changes-to"),
+                                "optionpane.open-project-save-changes-to"),
 			new Object[] {
 			    p.getName()
 			});

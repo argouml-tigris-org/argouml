@@ -71,7 +71,6 @@ import ru.novosoft.uml.MElementEvent;
 /**
  * <p>Class to display graphics for a UML Class in a diagram.</p>
  */
-
 public class FigClass extends FigNodeModelElement 
         implements AttributesCompartmentContainer, 
         OperationsCompartmentContainer {
@@ -469,12 +468,6 @@ public class FigClass extends FigNodeModelElement
         // name compartment and build up.
 
         Dimension aSize = getNameFig().getMinimumSize();
-        int h = aSize.height;
-        int w = aSize.width;
-
-        // Ensure that the minimum height of the name compartment is at least
-        // 21 pixels (hardcoded).
-
         if (aSize.height < 21) {
             aSize.height = 21;
         }
@@ -802,7 +795,7 @@ public class FigClass extends FigNodeModelElement
         if (getOwner() == null) {
             return;
         }
-        Object cls = /*(MClass)*/ getOwner();
+
         // attributes
         if (mee == null
                 || ModelFacade.isAAttribute(mee.getSource())
@@ -842,8 +835,9 @@ public class FigClass extends FigNodeModelElement
             updateOperations();
             damage();
         }
-        if (mee != null && mee.getSource()
-                .equals(ModelFacade.getStereoType(getOwner()))) {
+        if (mee != null 
+                && mee.getSource().equals(
+                        ModelFacade.getStereoType(getOwner()))) {
             updateStereotypeText();
             damage();
         }

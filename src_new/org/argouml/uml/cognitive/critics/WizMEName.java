@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,13 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: WzMEName.java
-// Classes: WzMEName
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import javax.swing.JPanel;
@@ -40,15 +33,18 @@ import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.VectorSet;
 
-/** A non-modal wizard to help the user change the name of a
- *  MModelElement to a better name. */
-
+/**
+ * A non-modal wizard to help the user change the name of a
+ * MModelElement to a better name.
+ * 
+ * @author jrobbins
+ */
 public class WizMEName extends Wizard {
     private static final Logger LOG = Logger.getLogger(WizMEName.class);
 					   
     private String instructions =
 	"Please change the name of the offending model element.";
-    private String label = Translator.localize("UMLMenu", "label.name");
+    private String label = Translator.localize("label.name");
     private String suggestion = "suggestion";
     private String origSuggest = "suggestion";
     private boolean mustEdit = false;

@@ -51,7 +51,6 @@ public class ActionAddExistingNode extends UMLAction
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-    private String tabName;
     private Object object;
 
     ////////////////////////////////////////////////////////////////
@@ -62,7 +61,6 @@ public class ActionAddExistingNode extends UMLAction
      */
     public ActionAddExistingNode(String myTabName) {
         super(myTabName, NO_ICON);
-        tabName = myTabName;
     }
 
     /**
@@ -73,7 +71,6 @@ public class ActionAddExistingNode extends UMLAction
      */
     public ActionAddExistingNode(String myTabName, Object o) {
         super(myTabName, NO_ICON);
-        tabName = myTabName;
         object = o;
     }
 
@@ -100,8 +97,7 @@ public class ActionAddExistingNode extends UMLAction
         String instructions = null;
         if (object != null) {
             instructions =
-		Translator.localize ("Tree", 
-                    "misc.message.click-on-diagram-to-add") 
+		Translator.localize("misc.message.click-on-diagram-to-add") 
                     + object.toString();
             Globals.showStatus(instructions);
         }

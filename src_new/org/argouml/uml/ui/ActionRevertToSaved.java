@@ -70,7 +70,6 @@ public class ActionRevertToSaved extends UMLAction {
         String message =
             MessageFormat.format(
                     Translator.localize(
-                       "Actions",
                        "optionpane.revert-to-saved-confirm"),
 		    new Object[] {
 			p.getName()
@@ -80,8 +79,7 @@ public class ActionRevertToSaved extends UMLAction {
             JOptionPane.showConfirmDialog(
                   pb,
                   message,
-				  Translator.localize(
-                      "Actions", 
+                  Translator.localize(
                       "optionpane.revert-to-saved-confirm-title"),
                   JOptionPane.YES_NO_OPTION);
 

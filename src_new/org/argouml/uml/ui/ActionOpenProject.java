@@ -95,7 +95,6 @@ public class ActionOpenProject
             String t =
                 MessageFormat.format(
                         Translator.localize(
-			        "Actions",
 				"optionpane.open-project-save-changes-to"),
 			new Object[] {
 			    p.getName()
@@ -147,8 +146,7 @@ public class ActionOpenProject
             }
 
             chooser.setDialogTitle(
-                    Translator.localize("Actions",
-						 "filechooser.open-project"));
+                    Translator.localize("filechooser.open-project"));
             
             FileFilter allFiles = chooser.getFileFilter();
             chooser.removeChoosableFileFilter(allFiles);
@@ -226,7 +224,6 @@ public class ActionOpenProject
 
             ProjectBrowser.getInstance().showStatus(
 		    MessageFormat.format(Translator.localize(
-			    "Actions",
 			    "label.open-project-status-read"),
 					 new Object[] {
 					     url.toString()

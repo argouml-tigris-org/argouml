@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -71,7 +71,7 @@ public abstract class PropPanelAction extends PropPanelModelElement {
      */
     public void initialize() {
         
-        addField(Translator.localize("UMLMenu", "label.name"), 
+        addField(Translator.localize("label.name"), 
                 getNameTextField());
 
 //        UMLExpressionModel expressionModel =
@@ -84,11 +84,11 @@ public abstract class PropPanelAction extends PropPanelModelElement {
 //                "setScript");
         UMLExpressionModel2 expressionModel = 
             new UMLScriptExpressionModel(this, "script");
-        addField(Translator.localize("UMLMenu", "label.expression"), 
+        addField(Translator.localize("label.expression"), 
                 new JScrollPane(
                         new UMLExpressionBodyField(expressionModel, true)));
 
-        addField(Translator.localize("UMLMenu", "label.language"), 
+        addField(Translator.localize("label.language"), 
                 new UMLExpressionLanguageField(expressionModel, true));
 
         addButton(new PropPanelButton2(this,

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,11 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: PropPanelStimulus.java
-// Classes: PropPanelStimulus
-// Original Author: agauthie@ics.uci.edu
-// $Id$
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
@@ -51,6 +46,8 @@ import ru.novosoft.uml.MElementEvent;
  * 
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
+ *
+ * @author agauthie
  */
 public class PropPanelStimulus extends PropPanelModelElement {
 
@@ -67,28 +64,26 @@ public class PropPanelStimulus extends PropPanelModelElement {
 	};
         setNameEventListening(namesToWatch);
 
-        Class mclass = (Class) ModelFacade.STIMULUS;
-
-        addField(Translator.localize("UMLMenu", "label.name"), 
+        addField(Translator.localize("label.name"), 
                 getNameTextField());
         addField("Action:", new UMLStimulusActionTextField(this, 
                 new UMLStimulusActionTextProperty("name")));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        addField(Translator.localize("label.stereotype"), 
                 getStereotypeBox());
 
         JList senderList = new UMLLinkedList(new UMLStimulusSenderListModel());
 	senderList.setVisibleRowCount(1);
 	JScrollPane senderScroll = new JScrollPane(senderList);
-	addField(Translator.localize("UMLMenu", "label.sender"), senderScroll);
+	addField(Translator.localize("label.sender"), senderScroll);
 
         JList receiverList =
 	    new UMLLinkedList(new UMLStimulusReceiverListModel());
 	receiverList.setVisibleRowCount(1);
 	JScrollPane receiverScroll = new JScrollPane(receiverList);
-	addField(Translator.localize("UMLMenu", "label.receiver"), 
+	addField(Translator.localize("label.receiver"), 
             receiverScroll);
         
-        addField(Translator.localize("UMLMenu", "label.namespace"), 
+        addField(Translator.localize("label.namespace"), 
                 getNamespaceComboBox());
 
         addButton(new PropPanelButton2(this, 

@@ -49,18 +49,18 @@ public class PropPanelInteraction extends PropPanelModelElement {
     public PropPanelInteraction() {
         super("Interaction", ConfigLoader.getTabPropsOrientation());
 
-    	addField(Translator.localize("UMLMenu", "label.name"), 
+    	addField(Translator.localize("label.name"), 
                 getNameTextField());
-    	addField(Translator.localize("UMLMenu", "label.stereotype"),
+    	addField(Translator.localize("label.stereotype"),
 		 getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"),
+        addField(Translator.localize("label.namespace"),
 		 getNamespaceScroll());
 
         JList contextList =
 	    new UMLLinkedList(new UMLInteractionContextListModel());
         contextList.setVisibleRowCount(1);
         JScrollPane contextScroll = new JScrollPane(contextList);
-        addField(Translator.localize("UMLMenu", "label.context"), 
+        addField(Translator.localize("label.context"), 
                 contextScroll);
 
         addSeperator();
@@ -68,7 +68,7 @@ public class PropPanelInteraction extends PropPanelModelElement {
         JList messagesList =
 	    new UMLLinkedList(new UMLInteractionMessagesListModel());
       	JScrollPane messagesScroll = new JScrollPane(messagesList);
-        addField(Translator.localize("UMLMenu", "label.messages"), 
+        addField(Translator.localize("label.messages"), 
                 messagesScroll);
 
         addButton(new PropPanelButton2(this, 

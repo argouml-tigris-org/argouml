@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.i18n.Translator;
@@ -102,7 +101,7 @@ public class PropPanelStructuralFeature extends PropPanelFeature {
         if (changeabilityRadioButtonPanel == null) {
             changeabilityRadioButtonPanel = 
                 new UMLStructuralFeatureChangeabilityRadioButtonPanel(
-                    Translator.localize("UMLMenu", "label.changeability"), 
+                        Translator.localize("label.changeability"), 
                         true);
         }
 	return changeabilityRadioButtonPanel;        

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,15 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: ActionModifier.java
-// Classes: ActionModifier
-// Original Author: Bob Tarling
-// $Id$
-
-// 9 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
-// use cases
-
-
 package org.argouml.uml.diagram.ui;
 
 import org.argouml.uml.ui.*;
@@ -39,23 +30,17 @@ import java.beans.PropertyVetoException;
 import org.argouml.model.ModelFacade;
 
 /**
- * <p>A class to perform the action of changing value of the modifiers on a
- *   package, use case, interface or class. </p>
+ * A class to perform the action of changing value of the modifiers on a
+ * package, use case, interface or class.<p>
  *
  * @author  Bob Tarling
  *
  * @author  Jeremy Bennett (mail@jeremybennett.com)&mdash; use case extensions.
  */
-
 public class ActionModifier extends UMLAction {
     private UMLBooleanProperty property;
     private Object object;
     private Class mclassClass = (Class) ModelFacade.CLASS;
-    private Class mpackageClass = (Class) ModelFacade.PACKAGE;
-    private Class minterfaceClass = (Class) ModelFacade.INTERFACE;
-    private Class museCaseClass = (Class) ModelFacade.USE_CASE; //Jeremy Bennett
-    private Object trueValue = null;
-    private Object falseValue = null;
 
     /**
      * Defines an Action object with the specified description which

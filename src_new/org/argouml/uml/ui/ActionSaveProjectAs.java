@@ -38,7 +38,9 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.util.osdep.OsUtil;
 
-/** Action to save project under name.
+/**
+ * Action to save project under name.
+ *
  * @stereotype singleton
  */
 public class ActionSaveProjectAs extends ActionSaveProject {
@@ -111,7 +113,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
         }
 
         String sChooserTitle =
-	    Translator.localize("Actions", "filechooser.save-as-project");
+	    Translator.localize("filechooser.save-as-project");
         chooser.setDialogTitle(sChooserTitle + " " + p.getName());
 
         FileFilter allFiles = chooser.getFileFilter();

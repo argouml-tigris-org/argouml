@@ -44,7 +44,7 @@ public class ActionNewTerminateAction extends ActionNewAction {
      */
     protected ActionNewTerminateAction() {
         super();
-        putValue(Action.NAME, Translator.localize("UMLMenu", 
+        putValue(Action.NAME, Translator.localize(
                 "button.new-terminateaction"));
     }
     

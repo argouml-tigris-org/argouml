@@ -43,8 +43,6 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelAssociationRole extends PropPanelAssociation {
 
-    private JComboBox baseField;
-
     /**
      * The constructor.
      * 
@@ -52,17 +50,17 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
     public PropPanelAssociationRole() {
         super("Association Role", ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("UMLMenu", "label.name"), 
+        addField(Translator.localize("label.name"), 
                 getNameTextField());
-        addField(Translator.localize("UMLMenu", "label.stereotype"),
+        addField(Translator.localize("label.stereotype"),
 		 getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"),
+        addField(Translator.localize("label.namespace"),
 		 getNamespaceScroll());
 
         JComboBox baseComboBox =
 	    new UMLComboBox2(new UMLAssociationRoleBaseComboBoxModel(), 
                 ActionSetAssociationRoleBase.getInstance());
-        addField(Translator.localize("UMLMenu", "label.base"), baseComboBox);
+        addField(Translator.localize("label.base"), baseComboBox);
 
         addSeperator();
 
@@ -70,12 +68,12 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
                 new UMLAssociationRoleAssociationEndRoleListModel());
 	// only binary associationroles are allowed
         assocEndList.setVisibleRowCount(2);
-        addField(Translator.localize("UMLMenu", "label.associationrole-ends"),
+        addField(Translator.localize("label.associationrole-ends"),
 		 new JScrollPane(assocEndList));
 
         JList messageList =
 	    new UMLLinkedList(new UMLAssociationRoleMessageListModel());
-        addField(Translator.localize("UMLMenu", "label.messages"),
+        addField(Translator.localize("label.messages"),
 		 new JScrollPane(messageList));
 
         addButton(new PropPanelButton2(this,

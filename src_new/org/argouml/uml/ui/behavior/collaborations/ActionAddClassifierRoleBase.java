@@ -74,7 +74,7 @@ public class ActionAddClassifierRoleBase extends AbstractActionAddModelElement {
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
-        return Translator.localize("UMLMenu", "dialog.title.add-bases");
+        return Translator.localize("dialog.title.add-bases");
     }
 
     /**
