@@ -100,7 +100,11 @@ public class Project implements java.io.Serializable, TargetListener {
     private String version;
 
     private Vector searchpath;
-    private Vector members;
+    
+    // TODO break into 3 main member types
+    // model, diagram and other
+    private ArrayList members;
+    
     private String historyFile;
     
     /**
@@ -160,7 +164,7 @@ public class Project implements java.io.Serializable, TargetListener {
         version = ArgoVersion.getVersion();
         
         searchpath = new Vector();
-        members = new Vector();
+        members = new ArrayList(4);
         historyFile = "";
         models = new Vector();
         diagrams = new Vector();
@@ -315,7 +319,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * 
      * @return a Vector with all members.
      */
-    public Vector getMembers() {
+    public ArrayList getMembers() {
         return members;
     }
 
@@ -326,7 +330,14 @@ public class Project implements java.io.Serializable, TargetListener {
         ProjectMember pm = new ProjectMemberDiagram(d, this);
         addDiagram(d);
         // if diagram added successfully, add the member too
-        members.addElement(pm);
+        if (members.size() > 0 && members.get(0) instanceof ProjectMemberModel) {
+            // if the first member is a model then add
+            // this diagram after that
+            members.add(1, pm);
+        } else {
+            // otherwise add the diagram at the start
+            members.add(0, pm);
+        }
     }
 
     /**
@@ -342,8 +353,8 @@ public class Project implements java.io.Serializable, TargetListener {
                 return;
             }
         }
-        // got past the veto, add the member
-        members.addElement(pm);
+        // got past the veto, add the member at the end of the list
+        members.add(pm);
     }
 
     /**
@@ -377,7 +388,7 @@ public class Project implements java.io.Serializable, TargetListener {
             }
             // got past the veto, add the member
             ProjectMember pm = new ProjectMemberModel(m, this);
-            members.addElement(pm);
+            members.add(0,pm);
         }
     }
 
@@ -417,7 +428,7 @@ public class Project implements java.io.Serializable, TargetListener {
             if (obj instanceof ProjectMemberDiagram) {
                 ProjectMemberDiagram pmd = (ProjectMemberDiagram) obj;
                 if (pmd.getDiagram() == d) {
-                    members.removeElement(pmd);
+                    members.remove(pmd);
                     break;
                 }
             }
@@ -442,7 +453,7 @@ public class Project implements java.io.Serializable, TargetListener {
             LOG.debug("findMemberByName called for \"" + name + "\".");
         }
         for (int i = 0; i < members.size(); i++) {
-            ProjectMember pm = (ProjectMember) members.elementAt(i);
+            ProjectMember pm = (ProjectMember) members.get(i);
             if (name.equals(pm.getPlainName()))
                 return pm;
         }
@@ -1107,22 +1118,6 @@ public class Project implements java.io.Serializable, TargetListener {
     public void setCgPrefs(GenerationPreferences theCgPrefs) {
         this.cgPrefs = theCgPrefs;
     }
-
-    /**
-     * Sets the members.
-     * @param theMembers The members to set
-     */
-    public void setMembers(Vector theMembers) {
-        this.members = theMembers;
-    }
-
-    /**
-     * Sets the saveRegistry.
-     * @param theSaveRegistry The saveRegistry to set
-     */
-//    public void setSaveRegistry(ChangeRegistry theSaveRegistry) {
-//        saveRegistry = theSaveRegistry;
-//    }
 
     /**
      * Sets the searchpath.

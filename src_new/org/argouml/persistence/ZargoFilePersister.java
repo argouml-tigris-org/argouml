@@ -150,12 +150,12 @@ public class ZargoFilePersister extends UmlFilePersister {
             int size = project.getMembers().size();
             for (int i = 0; i < size; i++) {
                 ProjectMember projectMember = (ProjectMember) project
-                        .getMembers().elementAt(i);
+                        .getMembers().get(i);
                 if (!(projectMember.getType().equalsIgnoreCase("xmi"))) {
                     if (LOG.isInfoEnabled()) {
                         LOG.info("Saving member: "
                                 + ((ProjectMember) project.getMembers()
-                                        .elementAt(i)).getName());
+                                        .get(i)).getName());
                     }
                     String name = projectMember.getName();
                     String originalName = name;
@@ -172,12 +172,12 @@ public class ZargoFilePersister extends UmlFilePersister {
 
             for (int i = 0; i < size; i++) {
                 ProjectMember projectMember = (ProjectMember) project
-                        .getMembers().elementAt(i);
+                        .getMembers().get(i);
                 if (projectMember.getType().equalsIgnoreCase("xmi")) {
                     if (LOG.isInfoEnabled()) {
                         LOG.info("Saving member of type: "
                                 + ((ProjectMember) project.getMembers()
-                                        .elementAt(i)).getType());
+                                        .get(i)).getType());
                     }
                     stream.putNextEntry(new ZipEntry(projectMember.getName()));
                     projectMember.save(writer, null);

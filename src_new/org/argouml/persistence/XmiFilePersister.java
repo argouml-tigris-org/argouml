@@ -102,12 +102,12 @@ public class XmiFilePersister extends AbstractFilePersister {
             int size = project.getMembers().size();
             for (int i = 0; i < size; i++) {
                 ProjectMember projectMember = 
-                    (ProjectMember) project.getMembers().elementAt(i);
+                    (ProjectMember) project.getMembers().get(i);
                 if (projectMember.getType().equalsIgnoreCase("xmi")) {
                     if (LOG.isInfoEnabled()) {
                         LOG.info("Saving member of type: "
                               + ((ProjectMember) project.getMembers()
-                                    .elementAt(i)).getType());
+                                    .get(i)).getType());
                     }
                     projectMember.save(writer, null);
                 }
