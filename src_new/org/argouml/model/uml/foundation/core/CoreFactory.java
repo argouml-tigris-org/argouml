@@ -1418,8 +1418,18 @@ public class CoreFactory extends AbstractUmlModelFactory {
 		}
 	}
 
+        /**
+         * A namespace deletes its owned elements.
+         */
 	public void deleteNamespace(MNamespace elem) {
-	}
+            
+            List ownedElements = new ArrayList();
+            ownedElements.addAll(elem.getOwnedElements());
+            Iterator it = ownedElements.iterator();
+            while (it.hasNext()) {
+                UmlFactory.getFactory().delete((MModelElement)it.next());
+            }
+        }
 
 	public void deleteNode(MNode elem) {
 	}
