@@ -70,7 +70,6 @@ xml\dtd\registry.xsd">
 		<Critique class="CrOperNameConflict"/>
 		<Critique class="CrOppEndConflict"/>
 		<Critique class="CrOppEndVsAttr"/>
-		<Critique class="CrParamTypeNotImported"/>
 		<Critique class="CrReservedName"/>
 		<Critique class="CrReturnWithoutCall"/>
 		<Critique class="CrSeqInstanceWithoutClassifier"/>
