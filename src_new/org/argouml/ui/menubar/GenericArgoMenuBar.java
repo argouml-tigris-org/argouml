@@ -388,7 +388,7 @@ public class GenericArgoMenuBar extends JMenuBar
         _view.addSeparator();
 
         JMenu editTabs = (JMenu) _view.add(new JMenu(menuLocalize("Editor Tabs")));
-        JMenu detailsTabs = (JMenu) _view.add(new JMenu(menuLocalize("Details Tabs")));
+        // JMenu detailsTabs = (JMenu) _view.add(new JMenu(menuLocalize("Details Tabs")));
 
         _view.addSeparator();
         _view.add(new CmdAdjustGrid());
@@ -468,7 +468,7 @@ public class GenericArgoMenuBar extends JMenuBar
         Runnable initLater = new InitMenusLater(align, distribute,
                                                 reorder, nudge,
                                                 layout,
-                                                editTabs, detailsTabs);
+                                                editTabs);
 
         org.argouml.application.Main.addPostLoadAction(initLater);
 
