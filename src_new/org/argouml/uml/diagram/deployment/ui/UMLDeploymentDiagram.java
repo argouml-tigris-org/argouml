@@ -199,7 +199,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (actionAggregation == null) {
             actionAggregation = new RadioAction(
                     new ActionAddAssociation(
-                        ModelFacade.getAggregateAggregationKindToken(),
+                        Model.getAggregationKind().getAggregate(),
                         false,
                         "Aggregation"));
         }
@@ -213,7 +213,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (actionAssociation == null) {
             actionAssociation = new RadioAction(
                     new ActionAddAssociation(
-                        ModelFacade.getNoneAggregationKindToken(),
+                        Model.getAggregationKind().getNone(),
                         false,
                         "Association"));
         }
@@ -227,7 +227,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (actionComposition == null) {
             actionComposition = new RadioAction(
                     new ActionAddAssociation(
-                        ModelFacade.getCompositeAggregationKindToken(),
+                        Model.getAggregationKind().getComposite(),
                         false,
                         "Composition"));
         }
@@ -366,7 +366,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (actionUniAggregation == null) {
             actionUniAggregation = new RadioAction(
                     new ActionAddAssociation(
-                        ModelFacade.getAggregateAggregationKindToken(),
+                        Model.getAggregationKind().getAggregate(),
                         true, "UniAggregation"));
         }
         return actionUniAggregation;
@@ -379,7 +379,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (actionUniAssociation == null) {
             actionUniAssociation = new RadioAction(
                     new ActionAddAssociation(
-                        ModelFacade.getNoneAggregationKindToken(),
+                        Model.getAggregationKind().getNone(),
                         true, "UniAssociation"));
         }
         return actionUniAssociation;
@@ -392,7 +392,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (actionUniComposition == null) {
             actionUniComposition = new RadioAction(
                     new ActionAddAssociation(
-                        ModelFacade.getCompositeAggregationKindToken(),
+                        Model.getAggregationKind().getComposite(),
                         true, "UniComposition"));
         }
         return actionUniComposition;

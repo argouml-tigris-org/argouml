@@ -408,7 +408,7 @@ public class GeneratorCSharp extends Generator2
 
 	s += generateScope(attr);
 	s += generateChangability(attr);
-	if (!ModelFacade.getM11MultiplicityToken().equals(
+	if (!Model.getMultiplicities().get11().equals(
 	        ModelFacade.getMultiplicity(attr))) {
 	    String temp =
 	        generateMultiplicity(ModelFacade.getMultiplicity(attr));
@@ -430,7 +430,7 @@ public class GeneratorCSharp extends Generator2
 	// if (ModelFacade.PUBLIC_VISIBILITYKIND.equals(vis)) {
 	    // use original attribute name, no change
 	// }
-	if (ModelFacade.getPrivateVisibilityKindToken().equals(vis)) {
+	if (Model.getVisibilityKind().getPrivate().equals(vis)) {
 	    attrName =
 	        ModelFacade.getName(ModelFacade.getOwner(attr))
 	        + "_" + attrName;
@@ -496,9 +496,9 @@ public class GeneratorCSharp extends Generator2
 	// TODO: stereotypes...
 	s +=  generateClassifierRef(ModelFacade.getType(param)) + " ";
 	if ((ModelFacade.getKind(param).equals(
-	        ModelFacade.getInOutParameterDirectionKindToken()))
+	        Model.getDirectionKind().getInOutParameter()))
 	    || (ModelFacade.getKind(param).equals(
-	            ModelFacade.getOutParameterDirectionKindToken()))) {
+	            Model.getDirectionKind().getOutParameter()))) {
 	    // if OUT or INOUT, then pass by Reference
 	    temp = "ref " + s;
             s = temp;
@@ -852,8 +852,8 @@ public class GeneratorCSharp extends Generator2
 	String sDocComment = generateConstraintEnrichedDocComment(me);
 
 	Object m = ModelFacade.getMultiplicity(ae);
-	if (!(ModelFacade.getM11MultiplicityToken().equals(m)
-	        || ModelFacade.getM01MultiplicityToken().equals (m))) {
+	if (!(Model.getMultiplicities().get11().equals(m)
+	        || Model.getMultiplicities().get01().equals (m))) {
 	    // Multiplicity greater 1, that means we will generate some sort of
 	    // collection, so we need to specify the element type tag
 
@@ -1113,7 +1113,7 @@ public class GeneratorCSharp extends Generator2
 	}
 	// must be public or generate public navigation method!
 
-	if (ModelFacade.getClassifierScopeKindToken().equals(
+	if (Model.getScopeKind().getClassifier().equals(
 	        ModelFacade.getTargetScope(associationEnd))) {
 	    if (VERBOSE) {
 	        tempS += "static ";
@@ -1146,12 +1146,12 @@ public class GeneratorCSharp extends Generator2
 	String name = ModelFacade.getName(associationEnd);
 	Object association = ModelFacade.getAssociation(associationEnd);
         Object multi = ModelFacade.getMultiplicity(associationEnd);
-        if ((multi.equals(ModelFacade.getM11MultiplicityToken()))
-                || multi.equals(ModelFacade.getM01MultiplicityToken())) {
+        if ((multi.equals(Model.getMultiplicities().get11()))
+                || multi.equals(Model.getMultiplicities().get01())) {
             s += generateClassifierRef(ModelFacade.getType(associationEnd))
                 + " ";
-        } else if ((multi.equals(ModelFacade.getM1NMultiplicityToken()))
-                || multi.equals(ModelFacade.getM0NMultiplicityToken())) {
+        } else if ((multi.equals(Model.getMultiplicities().get1N()))
+                || multi.equals(Model.getMultiplicities().get0N())) {
             s += "ArrayList ";
         }
 	String associationName = ModelFacade.getName(association);
@@ -1262,11 +1262,11 @@ public class GeneratorCSharp extends Generator2
 	}
 
 	//if (vis == null) return "";
-	if (ModelFacade.getPublicVisibilityKindToken().equals(visibility)) {
+	if (Model.getVisibilityKind().getPublic().equals(visibility)) {
 	    return "public ";
-	} else if (ModelFacade.getPrivateVisibilityKindToken().equals(visibility)) {
+	} else if (Model.getVisibilityKind().getPrivate().equals(visibility)) {
 	    return  "private ";
-	} else if (ModelFacade.getProtectedVisibilityKindToken().equals(visibility)) {
+	} else if (Model.getVisibilityKind().getProtected().equals(visibility)) {
 	    return  "protected ";
 	} else {
 	    return "";
@@ -1276,7 +1276,7 @@ public class GeneratorCSharp extends Generator2
     private String generateScope(Object feature) {
 	Object scope = ModelFacade.getOwnerScope(feature);
 	//if (scope == null) return "";
-	if (ModelFacade.getClassifierScopeKindToken().equals(scope)) {
+	if (Model.getScopeKind().getClassifier().equals(scope)) {
 	    if (VERBOSE) {
 	        return "/* static */ ";
 	    } else {
@@ -1316,7 +1316,7 @@ public class GeneratorCSharp extends Generator2
     private String generateChangability(Object sf) {
 	Object ck = ModelFacade.getChangeability(sf);
 	//if (ck == null) return "";
-	if (ModelFacade.getFrozenChangeableKindToken().equals(ck)) {
+	if (Model.getChangeableKind().getFrozen().equals(ck)) {
 	    return " sealed ";
 	}
 	//if (MChangeableKind.ADDONLY.equals(ck)) return "final ";
@@ -1330,7 +1330,7 @@ public class GeneratorCSharp extends Generator2
 	if (multiplicity == null) {
 	    return "";
 	}
-	if (ModelFacade.getM0NMultiplicityToken().equals(multiplicity)) {
+	if (Model.getMultiplicities().get0N().equals(multiplicity)) {
 	    return ANY_RANGE;
 	}
 	String s = "";
@@ -1671,8 +1671,8 @@ public class GeneratorCSharp extends Generator2
                         // association end found
                         Object multiplicity =
 			    ModelFacade.getMultiplicity(associationEnd2);
-                        if (!ModelFacade.getM11MultiplicityToken().equals(multiplicity)
-                                && !ModelFacade.getM01MultiplicityToken().equals(
+                        if (!Model.getMultiplicities().get11().equals(multiplicity)
+                                && !Model.getMultiplicities().get01().equals(
                                         multiplicity)) {
                             importSet.add("System.Collections");
                         } else {

@@ -194,7 +194,7 @@ public class GeneratorPHP4
         if (iLanguageMajorVersion > 4) {
             /* scope */
             Object ownerScope = ModelFacade.getOwnerScope(modelElement);
-            if (ModelFacade.getClassifierScopeKindToken().equals(ownerScope)) {
+            if (Model.getScopeKind().getClassifier().equals(ownerScope)) {
                 sOperation += "static ";
             }
 
@@ -296,7 +296,7 @@ public class GeneratorPHP4
         if (iLanguageMajorVersion > 4) {
             /* scope */
             Object ownerScope = ModelFacade.getOwnerScope(modelElement);
-            if (ModelFacade.getClassifierScopeKindToken().equals(ownerScope)) {
+            if (Model.getScopeKind().getClassifier().equals(ownerScope)) {
                 sAttribute += "static ";
             }
         } else {
@@ -371,9 +371,9 @@ public class GeneratorPHP4
                 // TODO: Implent this in ModelFacade
                 /* if OUT or INOUT, then pass by reference */
                 if (ModelFacade.getKind(modelElement).equals(
-                        ModelFacade.getInOutParameterDirectionKindToken())
+                        Model.getDirectionKind().getInOutParameter())
                         || ModelFacade.getKind(modelElement).equals(
-                            ModelFacade.getOutParameterDirectionKindToken())) {
+                            Model.getDirectionKind().getOutParameter())) {
                     sParameter += "&";
                 }
             }
@@ -738,12 +738,12 @@ public class GeneratorPHP4
         }
 
         if (iLanguageMajorVersion > 4) {
-            if (ModelFacade.getPublicVisibilityKindToken().equals(modelElement)) {
+            if (Model.getVisibilityKind().getPublic().equals(modelElement)) {
                 return "public";
-            } else if (ModelFacade.getProtectedVisibilityKindToken()
+            } else if (Model.getVisibilityKind().getProtected()
                     .equals(modelElement)) {
                 return "protected";
-            } else if (ModelFacade.getPrivateVisibilityKindToken()
+            } else if (Model.getVisibilityKind().getPrivate()
                     .equals(modelElement)) {
                 return "private";
             }

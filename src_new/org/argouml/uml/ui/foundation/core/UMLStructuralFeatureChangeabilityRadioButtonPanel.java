@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
@@ -73,13 +74,13 @@ public class UMLStructuralFeatureChangeabilityRadioButtonPanel
                 ModelFacade.getChangeability(target);
             if (kind == null
                     || kind.equals(
-                            ModelFacade.getAddOnlyChangeableKindToken())) {
+                            Model.getChangeableKind().getAddOnly())) {
                 setSelected(ActionSetChangeability.ADDONLY_COMMAND);
             } else if (kind.equals(
-                    ModelFacade.getChangeableChangeableKindToken())) {
+                    Model.getChangeableKind().getChangeable())) {
                 setSelected(ActionSetChangeability.CHANGEABLE_COMMAND);
             } else if (kind.equals(
-                    ModelFacade.getFrozenChangeableKindToken())) {
+                    Model.getChangeableKind().getFrozen())) {
                 setSelected(ActionSetChangeability.FROZEN_COMMAND);
             } else {
                 setSelected(ActionSetChangeability.CHANGEABLE_COMMAND);

@@ -1,16 +1,16 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -22,36 +22,24 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui.foundation.core;
-
-import org.argouml.i18n.Translator;
-import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
-import org.argouml.uml.ui.UMLCheckBox2;
+package org.argouml.model;
 
 /**
- *
- * @author jaap.branderhorst@xs4all.nl
- * @since Jan 4, 2003
+ * The different ChangeableKinds.
  */
-public class UMLAssociationEndTargetScopeCheckbox extends UMLCheckBox2 {
+public interface ChangeableKind {
+    /**
+     * @return Returns the AddOnly ChangeableKind.
+     */
+    Object getAddOnly();
 
     /**
-     * Constructor for UMLAssociationEndTargetScopeCheckbox.
+     * @return Returns the Changeable ChangeableKind.
      */
-    public UMLAssociationEndTargetScopeCheckbox() {
-        super(Translator.localize("label.targetscope-classifier"),
-                ActionSetAssociationEndTargetScope.getInstance(), "ordering");
-    }
+    Object getChangeable();
 
     /**
-     * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
+     * @return Returns the Frozen ChangeableKind.
      */
-    public void buildModel() {
-        if (getTarget() != null) {
-            Object associationEnd = /*(MAssociationEnd)*/ getTarget();
-            setSelected(Model.getScopeKind().getClassifier()
-                           .equals(ModelFacade.getTargetScope(associationEnd)));
-        }
-    }
+    Object getFrozen();
 }

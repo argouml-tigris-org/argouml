@@ -25,7 +25,9 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
+
 import org.argouml.cognitive.Designer;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 /**
@@ -57,9 +59,9 @@ public class CrInvalidFork extends CrUML {
 	    return NO_PROBLEM;
 	}
 	Object k = ModelFacade.getPseudostateKind(dm);
-	if (!ModelFacade.
-	    equalsPseudostateKind(k,
-				  ModelFacade.getForkPseudostateKindToken())) {
+	if (!ModelFacade.equalsPseudostateKind(
+	        k,
+	        Model.getPseudostateKind().getFork())) {
 	    return NO_PROBLEM;
 	}
 	Collection outgoing = ModelFacade.getOutgoings(dm);

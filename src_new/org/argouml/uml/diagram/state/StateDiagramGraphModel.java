@@ -337,7 +337,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
             return false;
         }
         if (ModelFacade.isAPseudostate(toPort)) {
-            if ((ModelFacade.getInitialPseudostateKindToken()).equals(
+            if ((Model.getPseudostateKind().getInitial()).equals(
                     ModelFacade.getKind(toPort))) {
                 return false;
             }
@@ -359,7 +359,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
 	}
 
         if (ModelFacade.isAPseudostate(toPort)
-                && ModelFacade.getInitialPseudostateKindToken().equals(
+                && Model.getPseudostateKind().getInitial().equals(
 			ModelFacade.getKind(toPort))) {
             return null;
 	}

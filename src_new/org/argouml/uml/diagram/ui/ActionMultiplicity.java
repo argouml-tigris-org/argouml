@@ -51,24 +51,24 @@ public class ActionMultiplicity extends UMLAction {
 
     // multiplicity
     private static UMLAction srcMultOne =
-	new ActionMultiplicity(ModelFacade.getM11MultiplicityToken(), "src");
+	new ActionMultiplicity(Model.getMultiplicities().get11(), "src");
     private static UMLAction destMultOne =
-	new ActionMultiplicity(ModelFacade.getM11MultiplicityToken(), "dest");
+	new ActionMultiplicity(Model.getMultiplicities().get11(), "dest");
 
     private static UMLAction srcMultZeroToOne =
-	new ActionMultiplicity(ModelFacade.getM01MultiplicityToken(), "src");
+	new ActionMultiplicity(Model.getMultiplicities().get01(), "src");
     private static UMLAction destMultZeroToOne =
-	new ActionMultiplicity(ModelFacade.getM01MultiplicityToken(), "dest");
+	new ActionMultiplicity(Model.getMultiplicities().get01(), "dest");
 
     private static UMLAction srcMultZeroToMany =
-	new ActionMultiplicity(ModelFacade.getM0NMultiplicityToken(), "src");
+	new ActionMultiplicity(Model.getMultiplicities().get0N(), "src");
     private static UMLAction destMultZeroToMany =
-	new ActionMultiplicity(ModelFacade.getM0NMultiplicityToken(), "dest");
+	new ActionMultiplicity(Model.getMultiplicities().get0N(), "dest");
 
     private static UMLAction srcMultOneToMany =
-	new ActionMultiplicity(ModelFacade.getM1NMultiplicityToken(), "src");
+	new ActionMultiplicity(Model.getMultiplicities().get1N(), "src");
     private static UMLAction destMultOneToMany =
-	new ActionMultiplicity(ModelFacade.getM1NMultiplicityToken(), "dest");
+	new ActionMultiplicity(Model.getMultiplicities().get1N(), "dest");
 
 
     ////////////////////////////////////////////////////////////////

@@ -52,9 +52,9 @@ public class UMLStructuralFeatureTargetScopeCheckBox extends UMLCheckBox2 {
         // repair action for possible NP after load
         if (ModelFacade.getTargetScope(getTarget()) == null) {
             Model.getCoreHelper().setTargetScope(getTarget(),
-                    ModelFacade.getInstanceScopeKindToken());
+                    Model.getScopeKind().getInstance());
         }
         setSelected(ModelFacade.getTargetScope(getTarget()).equals(
-                ModelFacade.getClassifierScopeKindToken()));
+                Model.getScopeKind().getClassifier()));
     }
 }

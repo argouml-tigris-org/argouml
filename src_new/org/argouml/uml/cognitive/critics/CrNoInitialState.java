@@ -26,7 +26,9 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 /**
@@ -72,7 +74,7 @@ public class CrNoInitialState extends CrUML {
 	    Object sv = iter.next();
 	    if (ModelFacade.isAPseudostate(sv)
 		&& (ModelFacade.getKind(sv).equals(
-                        ModelFacade.getInitialPseudostateKindToken()))) {
+                        Model.getPseudostateKind().getInitial()))) {
 	        initialStateCount++;
 	    }
 	}

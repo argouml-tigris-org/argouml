@@ -747,11 +747,11 @@ public class Modeller {
 	setVisibility(mOperation, modifiers);
 	if ((modifiers & JavaRecognizer.ACC_SYNCHRONIZED) > 0) {
 	    Model.getCoreHelper().setConcurrency(mOperation,
-	            ModelFacade.getGuardedConcurrencyKindToken());
+	            Model.getConcurrencyKind().getGuarded());
 	} else if (ModelFacade.getConcurrency(mOperation)
-		   == ModelFacade.getGuardedConcurrencyKindToken()) {
+		   == Model.getConcurrencyKind().getGuarded()) {
 	    Model.getCoreHelper().setConcurrency(mOperation,
-	            ModelFacade.getSequentialConcurrencyKindToken());
+	            Model.getConcurrencyKind().getSequential());
 	}
 
 	for (Iterator i = ModelFacade.getParameters(mOperation).iterator();
@@ -1407,15 +1407,15 @@ public class Modeller {
 	if ((modifiers & JavaRecognizer.ACC_PRIVATE) > 0) {
 	    Model.getCoreHelper().setVisibility(
 	            element,
-	            ModelFacade.getPrivateVisibilityKindToken());
+	            Model.getVisibilityKind().getPrivate());
 	} else if ((modifiers & JavaRecognizer.ACC_PROTECTED) > 0) {
 	    Model.getCoreHelper().setVisibility(
 	            element,
-	            ModelFacade.getProtectedVisibilityKindToken());
+	            Model.getVisibilityKind().getProtected());
 	} else if ((modifiers & JavaRecognizer.ACC_PUBLIC) > 0) {
 	    Model.getCoreHelper().setVisibility(
 	            element,
-	            ModelFacade.getPublicVisibilityKindToken());
+	            Model.getVisibilityKind().getPublic());
 	} else {
             Model.getCoreHelper().setTaggedValue(
                     element,
@@ -1434,10 +1434,10 @@ public class Modeller {
     private void setOwnerScope(Object feature, short modifiers) {
         if ((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
             Model.getCoreHelper().setOwnerScope(feature,
-                    ModelFacade.getClassifierScopeKindToken());
+                    Model.getScopeKind().getClassifier());
         } else {
             Model.getCoreHelper().setOwnerScope(feature,
-                    ModelFacade.getInstanceScopeKindToken());
+                    Model.getScopeKind().getInstance());
         }
     }
 
@@ -1452,11 +1452,11 @@ public class Modeller {
         if ((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
             Model.getCoreHelper().setTargetScope(
                     mAssociationEnd,
-                    ModelFacade.getClassifierScopeKindToken());
+                    Model.getScopeKind().getClassifier());
         } else {
             Model.getCoreHelper().setTargetScope(
                     mAssociationEnd,
-                    ModelFacade.getInstanceScopeKindToken());
+                    Model.getScopeKind().getInstance());
         }
     }
 

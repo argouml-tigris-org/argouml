@@ -25,7 +25,9 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
+
 import org.argouml.cognitive.Designer;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 
@@ -59,7 +61,7 @@ public class CrInvalidJoin extends CrUML {
 	Object k = ModelFacade.getPseudostateKind(dm);
 	if (!ModelFacade.
 	    equalsPseudostateKind(k,
-				  ModelFacade.getJoinPseudostateKindToken())) {
+				  Model.getPseudostateKind().getJoin())) {
 	    return NO_PROBLEM;
 	}
 	Collection outgoing = ModelFacade.getOutgoings(dm);

@@ -26,6 +26,7 @@ package org.argouml.uml.cognitive.critics;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 
@@ -62,11 +63,12 @@ public class CrNoGuard extends CrUML {
 	}
 	if (!ModelFacade.equalsPseudostateKind(
 	        ModelFacade.getPseudostateKind(sv),
-	        ModelFacade.getBranchPseudostateKindToken())) {
+	        Model.getPseudostateKind().getBranch())) {
 	    return NO_PROBLEM;
 	}
 	Object g = /*(MGuard)*/ ModelFacade.getGuard(dm);
-	boolean noGuard = (g == null
+	boolean noGuard =
+	    (g == null
             || ModelFacade.getExpression(g) == null
             || ModelFacade.getBody(ModelFacade.getExpression(g)) == null
             || ((String) ModelFacade.getBody(ModelFacade.getExpression(g)))

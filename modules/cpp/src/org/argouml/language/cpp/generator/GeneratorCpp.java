@@ -380,8 +380,7 @@ public class GeneratorCpp extends Generator2
         }
         
         File templateFile = new File(templatePathName);
-        if (templateFile.exists())
-        {
+        if (templateFile.exists()) {
             boolean eof = false;
             BufferedReader templateFileReader = null;
             try {
@@ -546,8 +545,7 @@ public class GeneratorCpp extends Generator2
         StringBuffer sb = new StringBuffer(160);
         StringBuffer predeclare = new StringBuffer(60);
 
-        if (generatorPass != HEADER_PASS)
-        { // include header in .cpp
+        if (generatorPass != HEADER_PASS) { // include header in .cpp
             sb.append(generateHeaderImportLine4Item(cls));
 
             Iterator iter = ModelFacade.getTaggedValues(cls);
@@ -926,7 +924,7 @@ public class GeneratorCpp extends Generator2
             // alternatively every abstract function is defined as
             // virtual
             if ((!ModelFacade.isLeaf(op) && !ModelFacade.isRoot(op)
-                    && (!(ModelFacade.getClassifierScopeKindToken().equals(scope))))
+                    && (!(Model.getScopeKind().getClassifier().equals(scope))))
                     || (ModelFacade.isAbstract(op))) {
                 sb.append("virtual ");
             }
@@ -1084,9 +1082,9 @@ public class GeneratorCpp extends Generator2
             sb.append("*");
         } else if (ModelFacade.isAParameter(attr)) {
             if (ModelFacade.getKind(attr).equals(
-                        ModelFacade.getOutParameterDirectionKindToken())
+                        Model.getDirectionKind().getOutParameter())
                     || ModelFacade.getKind(attr).equals(
-                        ModelFacade.getInOutParameterDirectionKindToken())) {
+                        Model.getDirectionKind().getInOutParameter())) {
                 // out or inout parameters are defaulted to reference if
                 // not specified else
                 sb.append("&");
@@ -1502,8 +1500,7 @@ public class GeneratorCpp extends Generator2
             if (modifier.equals("&")) sb.append("const ");
             sb.append(generateClassifierRef(ModelFacade.getType(attr)))
                 .append(' ').append(modifier).append("value");
-        }
-        else if (ModelFacade.isAClass(ModelFacade.getType(attr))) {
+        } else if (ModelFacade.isAClass(ModelFacade.getType(attr))) {
             // generate: "const <type> &value"
             sb.append("const ");
             sb.append(generateClassifierRef(ModelFacade.getType(attr)));
@@ -1538,8 +1535,7 @@ public class GeneratorCpp extends Generator2
             sb.append("const ");
             sb.append(generateClassifierRef(ModelFacade.getType(attr)));
             sb.append(modifier);
-        }
-        else if (ModelFacade.isAClass(ModelFacade.getType(attr))) {
+        } else if (ModelFacade.isAClass(ModelFacade.getType(attr))) {
             // generate: "const <type>&"
             sb.append("const ");
             sb.append(generateClassifierRef(ModelFacade.getType(attr)));
@@ -1679,8 +1675,7 @@ public class GeneratorCpp extends Generator2
                         // there is no ReturnType in behavioral feature (nsuml)
                         sb.append("\n")
                             .append(generateMethodBody(bf));
-                    }
-                    else {
+                    } else {
                         sb.append(";\n");
                         if (tv.length() > 0) {
                             sb.append(INDENT).append(tv).append('\n');
@@ -2100,8 +2095,8 @@ public class GeneratorCpp extends Generator2
         String s = generateTaggedValues (me, DOC_COMMENT_TAGS);
 
         Object multiplicity = ModelFacade.getMultiplicity(ae);
-        if (!(ModelFacade.getM11MultiplicityToken().equals(multiplicity)
-                || ModelFacade.getM01MultiplicityToken().equals (multiplicity))) {
+        if (!(Model.getMultiplicities().get11().equals(multiplicity)
+                || Model.getMultiplicities().get01().equals (multiplicity))) {
             // Multiplicity greater 1, that means we will generate some sort of
             // collection, so we need to specify the element type tag
             StringBuffer sDocComment = new StringBuffer(80);
@@ -2318,7 +2313,7 @@ public class GeneratorCpp extends Generator2
      * @return The generated text representing the scope.
      */
     private String generateScope(Object scope) {
-        if (ModelFacade.getClassifierScopeKindToken().equals(scope)) {
+        if (Model.getScopeKind().getClassifier().equals(scope)) {
             return "static ";
         }
         return "";
@@ -2359,7 +2354,7 @@ public class GeneratorCpp extends Generator2
     private String generateParameterChangeability(Object par) {
         if (checkAttributeParameter4Tag(par, SEARCH_REFERENCE_POINTER_TAG)
                 && (ModelFacade.getKind(par)).equals(
-                        ModelFacade.getInParameterDirectionKindToken())) {
+                        Model.getDirectionKind().getInParameter())) {
             return "const ";
         } else {
             return "";
@@ -2368,7 +2363,7 @@ public class GeneratorCpp extends Generator2
 
     private String generateStructuralFeatureChangability(Object sf) {
         Object changeableKind = ModelFacade.getChangeability(sf);
-        if (ModelFacade.getFrozenChangeableKindToken().equals(changeableKind)) {
+        if (Model.getChangeableKind().getFrozen().equals(changeableKind)) {
             return "final ";
         }
         return "";
@@ -2383,7 +2378,7 @@ public class GeneratorCpp extends Generator2
         Object concurrency = ModelFacade.getConcurrency(op);
         if (concurrency != null
                 && (ModelFacade.getValue(concurrency)
-                    == ModelFacade.getGuardedConcurrencyKindToken())) {
+                    == Model.getConcurrencyKind().getGuarded())) {
             return "synchronized ";
         }
         return "";
@@ -2396,7 +2391,7 @@ public class GeneratorCpp extends Generator2
         if (multiplicity == null) {
             return "";
         }
-        if (ModelFacade.getM0NMultiplicityToken().equals(multiplicity)) {
+        if (Model.getMultiplicities().get0N().equals(multiplicity)) {
             return ANY_RANGE;
         }
         String s = "";

@@ -286,7 +286,7 @@ public class UMLStateDiagram extends UMLDiagram {
         if (actionBranchPseudoState == null) {
             actionBranchPseudoState = new RadioAction(
                     new ActionCreatePseudostate(
-                        ModelFacade.getBranchPseudostateKindToken(), "Choice"));
+                        Model.getPseudostateKind().getBranch(), "Choice"));
         }
         return actionBranchPseudoState;
     }
@@ -309,7 +309,7 @@ public class UMLStateDiagram extends UMLDiagram {
         if (actionDeepHistoryPseudoState == null) {
             actionDeepHistoryPseudoState = new RadioAction(
                     new ActionCreatePseudostate(
-                        ModelFacade.getDeepHistoryPseudostateKindToken(),
+                        Model.getPseudostateKind().getDeepHistory(),
                         "DeepHistory"));
         }
         return actionDeepHistoryPseudoState;
@@ -334,7 +334,7 @@ public class UMLStateDiagram extends UMLDiagram {
         if (actionForkPseudoState == null) {
             actionForkPseudoState = new RadioAction(
                     new ActionCreatePseudostate(
-                            ModelFacade.getForkPseudostateKindToken(), "Fork"));
+                            Model.getPseudostateKind().getFork(), "Fork"));
         }
         return actionForkPseudoState;
     }
@@ -344,7 +344,7 @@ public class UMLStateDiagram extends UMLDiagram {
     protected Action getActionJoinPseudoState() {
         if (actionJoinPseudoState == null) {
             actionJoinPseudoState = new RadioAction(new ActionCreatePseudostate(
-                    ModelFacade.getJoinPseudostateKindToken(), "Join"));
+                    Model.getPseudostateKind().getJoin(), "Join"));
         }
         return actionJoinPseudoState;
     }
@@ -355,7 +355,7 @@ public class UMLStateDiagram extends UMLDiagram {
         if (actionJunctionPseudoState == null) {
             actionJunctionPseudoState = new RadioAction(
                     new ActionCreatePseudostate(
-                        ModelFacade.getJunctionPseudostateKindToken(),
+                        Model.getPseudostateKind().getJunction(),
                         "Junction"));
         }
         return actionJunctionPseudoState;
@@ -367,7 +367,7 @@ public class UMLStateDiagram extends UMLDiagram {
         if (actionShallowHistoryPseudoState == null) {
             actionShallowHistoryPseudoState = new RadioAction(
                     new ActionCreatePseudostate(
-                        ModelFacade.getShallowHistoryPseudostateKindToken(),
+                        Model.getPseudostateKind().getShallowHistory(),
                         "ShallowHistory"));
         }
         return actionShallowHistoryPseudoState;
@@ -379,7 +379,7 @@ public class UMLStateDiagram extends UMLDiagram {
         if (actionStartPseudoState == null) {
             actionStartPseudoState = new RadioAction(
                     new ActionCreatePseudostate(
-                        ModelFacade.getInitialPseudostateKindToken(),
+                        Model.getPseudostateKind().getInitial(),
                         "Initial"));
         }
         return actionStartPseudoState;

@@ -279,7 +279,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         if (actionAggregation == null) {
             actionAggregation = new RadioAction(
                     new ActionAddAssociation(
-                        ModelFacade.getAggregateAggregationKindToken(),
+                        Model.getAggregationKind().getAggregate(),
                         false,
                         "Aggregation"));
         }
@@ -292,7 +292,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         if (actionAssociation == null) {
             actionAssociation = new RadioAction(
                     new ActionAddAssociation(
-                        ModelFacade.getNoneAggregationKindToken(),
+                        Model.getAggregationKind().getNone(),
                         false,
                         "Association"));
         }
@@ -305,7 +305,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         if (actionComposition == null) {
             actionComposition = new RadioAction(
                     new ActionAddAssociation(
-                        ModelFacade.getCompositeAggregationKindToken(),
+                        Model.getAggregationKind().getComposite(),
                         false,
                         "Composition"));
         }
@@ -374,7 +374,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         if (actionUniAggregation == null) {
             actionUniAggregation  = new RadioAction(
                     new ActionAddAssociation(
-                            ModelFacade.getAggregateAggregationKindToken(),
+                            Model.getAggregationKind().getAggregate(),
                             true,
                             "UniAggregation"));
         }
@@ -387,7 +387,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         if (actionUniAssociation == null) {
             actionUniAssociation  = new RadioAction(
                     new ActionAddAssociation(
-                            ModelFacade.getNoneAggregationKindToken(),
+                            Model.getAggregationKind().getNone(),
                             true,
                             "UniAssociation"));
         }
@@ -400,7 +400,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         if (actionUniComposition == null) {
             actionUniComposition  = new RadioAction(
                     new ActionAddAssociation(
-                            ModelFacade.getCompositeAggregationKindToken(),
+                            Model.getAggregationKind().getComposite(),
                             true,
                             "UniComposition"));
         }

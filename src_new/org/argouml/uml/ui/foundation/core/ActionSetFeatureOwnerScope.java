@@ -60,10 +60,10 @@ public class ActionSetFeatureOwnerScope extends UMLAction {
                 Object m = /*(MFeature)*/ target;
                 if (source.isSelected()) {
                     Model.getCoreHelper().setOwnerScope(m,
-                            ModelFacade.getClassifierScopeKindToken());
+                            Model.getScopeKind().getClassifier());
                 } else {
                     Model.getCoreHelper().setOwnerScope(m,
-                            ModelFacade.getInstanceScopeKindToken());
+                            Model.getScopeKind().getInstance());
                 }
             }
         }

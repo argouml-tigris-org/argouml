@@ -262,10 +262,10 @@ public class GeneratorDisplay extends Generator2 {
         }
         String changeableKind = "";
         if (ModelFacade.getChangeability(attr) != null) {
-            if (ModelFacade.getFrozenChangeableKindToken().equals(
+            if (Model.getChangeableKind().getFrozen().equals(
 	            ModelFacade.getChangeability(attr))) {
                 changeableKind = "frozen";
-	    } else if (ModelFacade.getAddOnlyChangeableKindToken().equals(
+	    } else if (Model.getChangeableKind().getAddOnly().equals(
 		    ModelFacade.getChangeability(attr))) {
                 changeableKind = "addOnly";
 	    }
@@ -481,13 +481,13 @@ public class GeneratorDisplay extends Generator2 {
     private String generateKind(Object /*Parameter etc.*/ kind) {
         StringBuffer s = new StringBuffer();
         if (kind == null
-                || kind == ModelFacade.getInParameterDirectionKindToken()) {
+                || kind == Model.getDirectionKind().getInParameter()) {
             s.append("in");
-        } else if (kind == ModelFacade.getInOutParameterDirectionKindToken()) {
+        } else if (kind == Model.getDirectionKind().getInOutParameter()) {
             s.append("inout");
-        } else if (kind == ModelFacade.getReturnParameterDirectionKindToken()) {
+        } else if (kind == Model.getDirectionKind().getReturnParameter()) {
             ;// return nothing
-        } else if (kind == ModelFacade.getOutParameterDirectionKindToken()) {
+        } else if (kind == Model.getDirectionKind().getOutParameter()) {
             s.append("out");
         }
         return s.toString();
@@ -726,7 +726,7 @@ public class GeneratorDisplay extends Generator2 {
             return "";
         }
         String s = "protected ";
-        if (ModelFacade.getClassifierScopeKindToken().equals(
+        if (Model.getScopeKind().getClassifier().equals(
 		ModelFacade.getTargetScope(ae))) {
             s += "static ";
 	}
@@ -736,8 +736,8 @@ public class GeneratorDisplay extends Generator2 {
         //     if (ModelFacade.isNavigable(ae)) s += "navigable "; if
         //     (ae.getIsOrdered()) s += "ordered ";
         Object m = ModelFacade.getMultiplicity(ae);
-        if (ModelFacade.getM11MultiplicityToken().equals(m)
-	        || ModelFacade.getM01MultiplicityToken().equals(m)) {
+        if (Model.getMultiplicities().get11().equals(m)
+	        || Model.getMultiplicities().get01().equals(m)) {
             s += generateClassifierRef(ModelFacade.getType(ae));
 	} else {
             s += "Vector "; //generateMultiplicity(m) + " ";
@@ -882,13 +882,13 @@ public class GeneratorDisplay extends Generator2 {
             }
         }
         if (ModelFacade.isAVisibilityKind(o)) {
-            if (ModelFacade.getPublicVisibilityKindToken().equals(o)) {
+            if (Model.getVisibilityKind().getPublic().equals(o)) {
                 return "+";
             }
-            if (ModelFacade.getPrivateVisibilityKindToken().equals(o)) {
+            if (Model.getVisibilityKind().getPrivate().equals(o)) {
                 return "-";
             }
-            if (ModelFacade.getProtectedVisibilityKindToken().equals(o)) {
+            if (Model.getVisibilityKind().getProtected().equals(o)) {
                 return "#";
             }
         }
@@ -902,7 +902,7 @@ public class GeneratorDisplay extends Generator2 {
     public String generateScope(Object f) {
         Object scope = ModelFacade.getOwnerScope(f);
         //if (scope == null) return "";
-        if (ModelFacade.getClassifierScopeKindToken().equals(scope)) {
+        if (Model.getScopeKind().getClassifier().equals(scope)) {
             return "static ";
         }
         return "";
@@ -915,7 +915,7 @@ public class GeneratorDisplay extends Generator2 {
     public String generateChangability(Object sf) {
         Object ck = ModelFacade.getChangeability(sf);
         //if (ck == null) return "";
-        if (ModelFacade.getFrozenChangeableKindToken().equals(ck)) {
+        if (Model.getChangeableKind().getFrozen().equals(ck)) {
             return "final ";
         }
         //if (ModelFacade.ADD_ONLY_CHANGEABLEKIND.equals(ck)) return "final ";
@@ -930,7 +930,7 @@ public class GeneratorDisplay extends Generator2 {
         if (m == null) {
             return "";
         }
-        if (ModelFacade.getM0NMultiplicityToken().equals(m)) {
+        if (Model.getMultiplicities().get0N().equals(m)) {
             return ANY_RANGE;
         }
         String s = "";

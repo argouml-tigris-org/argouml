@@ -183,4 +183,69 @@ public interface ModelImplementation {
      * @return the MetaTypes object.
      */
     MetaTypes getMetaTypes();
+
+    // Here follows the interfaces that contain the enums of different
+    // kinds in the UML meta-model.
+    /**
+     * Getter for the ChangeableKind object.
+     *
+     * @return The object implementing the interface.
+     */
+    ChangeableKind getChangeableKind();
+
+    /**
+     * Getter for the AggregationKind object.
+     *
+     * @return The object implementing the interface.
+     */
+    AggregationKind getAggregationKind();
+
+    /**
+     * Getter for the PseudostateKind object.
+     *
+     * @return The object implementing the interface.
+     */
+    PseudostateKind getPseudostateKind();
+
+    /**
+     * Getter for the ScopeKind object.
+     *
+     * @return The object implementing the interface.
+     */
+    ScopeKind getScopeKind();
+
+    /**
+     * Getter for the ConcurrencyKind object.
+     *
+     * @return The object implementing the interface.
+     */
+    ConcurrencyKind getConcurrencyKind();
+
+    /**
+     * Getter for the DirectionKind object.
+     *
+     * @return The object implementing the interface.
+     */
+    DirectionKind getDirectionKind();
+
+    /**
+     * Getter for the Multiplicities object.
+     *
+     * @return The object implementing the interface.
+     */
+    Multiplicities getMultiplicities();
+
+    /**
+     * Getter for the OrderingKind object.
+     *
+     * @return The object implementing the interface.
+     */
+    OrderingKind getOrderingKind();
+
+    /**
+     * Getter for the VisibilityKind object.
+     *
+     * @return The object implementing the interface.
+     */
+    VisibilityKind getVisibilityKind();
 }

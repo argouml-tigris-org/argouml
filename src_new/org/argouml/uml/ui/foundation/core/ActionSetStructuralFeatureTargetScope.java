@@ -61,8 +61,8 @@ public class ActionSetStructuralFeatureTargetScope extends UMLAction {
 		Model.getCoreHelper().setTargetScope(
 		        m,
 		        source.isSelected()
-		        ? ModelFacade.getClassifierScopeKindToken()
-		        : ModelFacade.getInstanceScopeKindToken());
+		        ? Model.getScopeKind().getClassifier()
+		        : Model.getScopeKind().getInstance());
 	    }
 	}
     }

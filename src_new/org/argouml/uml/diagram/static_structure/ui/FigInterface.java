@@ -902,7 +902,7 @@ public class FigInterface extends FigNodeModelElement
         	oper.setText(Notation.generate(this, behavioralFeature));
         	oper.setOwner(behavioralFeature);
         	// underline, if static
-        	oper.setUnderline(ModelFacade.getClassifierScopeKindToken()
+        	oper.setUnderline(Model.getScopeKind().getClassifier()
         			  .equals(ModelFacade
         				  .getOwnerScope(behavioralFeature)));
         	// italics, if abstract

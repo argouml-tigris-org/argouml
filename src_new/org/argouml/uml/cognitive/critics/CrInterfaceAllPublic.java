@@ -27,8 +27,10 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 /**
@@ -70,7 +72,7 @@ public class CrInterfaceAllPublic extends CrUML {
 	        return NO_PROBLEM;
 	    }
 	    if (!ModelFacade.getVisibility(f)
-                .equals(ModelFacade.getPublicVisibilityKindToken())) {
+                .equals(Model.getVisibilityKind().getPublic())) {
 	        return PROBLEM_FOUND;
 	    }
 	}

@@ -40,6 +40,7 @@ import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ProfileJava;
+import org.argouml.uml.generator.GeneratorDisplay.MsgPtr;
 import org.argouml.util.MyTokenizer;
 
 
@@ -207,10 +208,10 @@ public class ParserDisplay extends Parser {
                     if (ModelFacade.isAStructuralFeature(element)) {
                         if ("false".equalsIgnoreCase(value)) {
                             Model.getCoreHelper().setChangeability(element,
-                                    ModelFacade.getChangeableChangeableKindToken());
+                                    Model.getChangeableKind().getChangeable());
                         } else {
                             Model.getCoreHelper().setChangeability(element,
-                                    ModelFacade.getFrozenChangeableKindToken());
+                                    Model.getChangeableKind().getFrozen());
                         }
                     }
                 }
@@ -222,10 +223,10 @@ public class ParserDisplay extends Parser {
                     if (ModelFacade.isAStructuralFeature(element)) {
                         if ("false".equalsIgnoreCase(value)) {
                             Model.getCoreHelper().setChangeability(element,
-                                    ModelFacade.getChangeableChangeableKindToken());
+                                    Model.getChangeableKind().getChangeable());
                         } else {
                             Model.getCoreHelper().setChangeability(element,
-                                    ModelFacade.getAddOnlyChangeableKindToken());
+                                    Model.getChangeableKind().getAddOnly());
                         }
                     }
                 }
@@ -242,7 +243,7 @@ public class ParserDisplay extends Parser {
                 public void found(Object element, String value) {
                     if (ModelFacade.isAOperation(element)) {
                         Model.getCoreHelper().setConcurrency(element,
-                                ModelFacade.getSequentialConcurrencyKindToken());
+                                Model.getConcurrencyKind().getSequential());
                     }
                 }
             });
@@ -250,9 +251,9 @@ public class ParserDisplay extends Parser {
             new PropertySpecialString("guarded",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
-                    Object kind = ModelFacade.getGuardedConcurrencyKindToken();
+                    Object kind = Model.getConcurrencyKind().getGuarded();
                     if (value != null && value.equalsIgnoreCase("false")) {
-                        kind = ModelFacade.getSequentialConcurrencyKindToken();
+                        kind = Model.getConcurrencyKind().getSequential();
                     }
                     if (ModelFacade.isAOperation(element)) {
                         Model.getCoreHelper().setConcurrency(element, kind);
@@ -264,9 +265,9 @@ public class ParserDisplay extends Parser {
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     Object kind =
-                        ModelFacade.getConcurrentConcurrencyKindToken();
+                        Model.getConcurrencyKind().getConcurrent();
                     if (value != null && value.equalsIgnoreCase("false")) {
-                        kind = ModelFacade.getSequentialConcurrencyKindToken();
+                        kind = Model.getConcurrencyKind().getSequential();
                     }
                     if (ModelFacade.isAOperation(element)) {
                         Model.getCoreHelper().setConcurrency(element, kind);
@@ -278,11 +279,11 @@ public class ParserDisplay extends Parser {
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     Object kind =
-                        ModelFacade.getSequentialConcurrencyKindToken();
+                        Model.getConcurrencyKind().getSequential();
                     if ("guarded".equalsIgnoreCase(value)) {
-                        kind = ModelFacade.getGuardedConcurrencyKindToken();
+                        kind = Model.getConcurrencyKind().getGuarded();
                     } else if ("concurrent".equalsIgnoreCase(value)) {
-                        kind = ModelFacade.getConcurrentConcurrencyKindToken();
+                        kind = Model.getConcurrencyKind().getConcurrent();
                     }
                     if (ModelFacade.isAOperation(element)) {
                         Model.getCoreHelper().setConcurrency(element, kind);
@@ -1490,12 +1491,12 @@ public class ParserDisplay extends Parser {
      */
     private Object getVisibility(String name) {
         if ("+".equals(name) || "public".equals(name))
-            return ModelFacade.getPublicVisibilityKindToken();
+            return Model.getVisibilityKind().getPublic();
         else if ("#".equals(name) || "protected".equals(name))
-            return ModelFacade.getProtectedVisibilityKindToken();
+            return Model.getVisibilityKind().getProtected();
         else
             /* if ("-".equals(name) || "private".equals(name)) */
-            return ModelFacade.getPrivateVisibilityKindToken();
+            return Model.getVisibilityKind().getPrivate();
     }
 
     /**

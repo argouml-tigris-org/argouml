@@ -220,7 +220,7 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionAggregation() {
         if (actionAggregation == null) {
             actionAggregation = makeCreateAssociationAction(
-                ModelFacade.getAggregateAggregationKindToken(),
+                Model.getAggregationKind().getAggregate(),
                 false,
                 "Aggregation");
         }
@@ -232,7 +232,7 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionAssociation() {
         if (actionAssociation == null) {
             actionAssociation = makeCreateAssociationAction(
-                ModelFacade.getNoneAggregationKindToken(),
+                Model.getAggregationKind().getNone(),
                 false, "Association");
         }
         return actionAssociation;
@@ -268,7 +268,7 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionComposition() {
         if (actionComposition == null) {
             actionComposition = makeCreateAssociationAction(
-                ModelFacade.getCompositeAggregationKindToken(),
+                Model.getAggregationKind().getComposite(),
                 false, "Composition");
         }
         return actionComposition;
@@ -406,7 +406,7 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionUniAggregation() {
         if (actionUniAggregation == null) {
             actionUniAggregation = makeCreateAssociationAction(
-                ModelFacade.getAggregateAggregationKindToken(),
+                Model.getAggregationKind().getAggregate(),
                 true,
                 "UniAggregation");
         }
@@ -419,7 +419,7 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionUniAssociation() {
         if (actionUniAssociation == null) {
             actionUniAssociation = makeCreateAssociationAction(
-                ModelFacade.getNoneAggregationKindToken(),
+                Model.getAggregationKind().getNone(),
                 true,
                 "UniAssociation");
         }
@@ -432,7 +432,7 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionUniComposition() {
         if (actionUniComposition == null) {
             actionUniComposition = makeCreateAssociationAction(
-                ModelFacade.getCompositeAggregationKindToken(),
+                Model.getAggregationKind().getComposite(),
                 true,
                 "UniComposition");
         }
