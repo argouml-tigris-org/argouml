@@ -30,6 +30,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import org.argouml.uml.ui.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.tigris.gef.util.Util;
 
@@ -42,6 +43,8 @@ public class PropPanelClass extends PropPanelClassifier {
     super("Class Properties",2);
 
     Class mclass = MClass.class;
+    Font smallFont = MetalLookAndFeel.getSubTextFont();
+
 
     //
     //   this will cause the components on this page to be notified
@@ -64,6 +67,7 @@ public class PropPanelClass extends PropPanelClassifier {
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
     extendsList.setBackground(getBackground());
     extendsList.setForeground(Color.blue);
+    extendsList.setFont(smallFont);
     addField(extendsList,2,0,0);
 
     addCaption(new JLabel("Implements:"),3,0,0);
@@ -92,6 +96,7 @@ public class PropPanelClass extends PropPanelClassifier {
     JList opsList = new UMLList(new UMLOperationsListModel(this,"feature",true),true);
     opsList.setForeground(Color.blue);
     opsList.setVisibleRowCount(1);
+    opsList.setFont(smallFont);
     JScrollPane opsScroll = new JScrollPane(opsList);
     addField(opsScroll,0,1,0.25);
 
@@ -99,6 +104,7 @@ public class PropPanelClass extends PropPanelClassifier {
     JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
     attrList.setForeground(Color.blue);
     attrList.setVisibleRowCount(1);
+    attrList.setFont(smallFont);
     JScrollPane attrScroll= new JScrollPane(attrList);
     addField(attrScroll,1,1,0.25);
 
@@ -106,6 +112,7 @@ public class PropPanelClass extends PropPanelClassifier {
     JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
     connectList.setForeground(Color.blue);
     connectList.setVisibleRowCount(1);
+    connectList.setFont(smallFont);
     addField(new JScrollPane(connectList),2,1,0.25);
 
 
@@ -114,6 +121,7 @@ public class PropPanelClass extends PropPanelClassifier {
     JList innerList = new UMLList(new UMLClassifiersListModel(this,"ownedElement",true),true);
     innerList.setForeground(Color.blue);
     innerList.setVisibleRowCount(1);
+    innerList.setFont(smallFont);
     addField(new JScrollPane(innerList),3,1,0.25);
 
     JPanel buttonBorder = new JPanel(new BorderLayout());

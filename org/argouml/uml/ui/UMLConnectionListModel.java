@@ -31,11 +31,11 @@ import java.awt.*;
 public class UMLConnectionListModel extends UMLModelElementListModel  {
 
     private final static String _nullLabel = "(null)";
-    
+
     public UMLConnectionListModel(UMLUserInterfaceContainer container,String property,boolean showNone) {
         super(container,property,showNone);
     }
-    
+
     protected int recalcModelElementSize() {
         int size = 0;
         Collection connections = getConnections();
@@ -44,17 +44,20 @@ public class UMLConnectionListModel extends UMLModelElementListModel  {
         }
         return size;
     }
-    
+
     protected MModelElement getModelElementAt(int index) {
         MModelElement elem = null;
         Collection connections = getConnections();
         if(connections != null) {
             elem = elementAtUtil(connections,index,MAssociationEnd.class);
+            if(elem != null) {
+              elem = ((MAssociationEnd) elem).getAssociation();
+            }
         }
         return elem;
     }
-            
-        
+
+
     private Collection getConnections() {
         Collection connections = null;
         Object target = getTarget();
@@ -64,14 +67,14 @@ public class UMLConnectionListModel extends UMLModelElementListModel  {
         }
         return connections;
     }
-    
-    
+
+
     public void open(int index) {
-        MModelElement assocEnd = getModelElementAt(index);
-        if(assocEnd != null) {
-            navigateTo(assocEnd);
+        MModelElement assoc = getModelElementAt(index);
+        if(assoc != null) {
+            navigateTo(assoc);
         }
-    }    
+    }
 
     public void add(int index) {
         Object target = getTarget();
@@ -80,30 +83,39 @@ public class UMLConnectionListModel extends UMLModelElementListModel  {
             MAssociationEnd newEnd = new MAssociationEndImpl();
             newEnd.setType(classifier);
             classifier.addAssociationEnd(newEnd);
-            
+
             MAssociation newAssoc = new MAssociationImpl();
             newAssoc.setNamespace(((MClassifier) target).getNamespace());
             newEnd.setAssociation(newAssoc);
             newAssoc.addConnection(newEnd);
             MAssociationEnd otherEnd = new MAssociationEndImpl();
             newAssoc.addConnection(otherEnd);
-            
+
             fireIntervalAdded(this,index,index);
             navigateTo(newAssoc);
         }
     }
-    
+
     public void delete(int index) {
         Object target = getTarget();
         if(target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
-            MAssociationEnd assocEnd = (MAssociationEnd) getModelElementAt(index);
-            assocEnd.setType(null);
-            classifier.removeAssociationEnd(assocEnd);
+            MAssociation assoc = (MAssociation) getModelElementAt(index);
+            Collection ends = assoc.getConnections();
+            if(ends != null) {
+              Iterator iter = ends.iterator();
+              while(iter.hasNext()) {
+                MAssociationEnd end = (MAssociationEnd) iter.next();
+                if(end.getType() == target) {
+                  end.setType(null);
+                  classifier.removeAssociationEnd(end);
+                }
+              }
+            }
             fireIntervalRemoved(this,index,index);
         }
     }
-    
+
     public void moveUp(int index) {
         Object target = getTarget();
         if(target instanceof MClassifier) {
@@ -112,7 +124,7 @@ public class UMLConnectionListModel extends UMLModelElementListModel  {
             fireContentsChanged(this,index-1,index);
         }
     }
-    
+
     public void moveDown(int index) {
         Object target = getTarget();
         if(target instanceof MClassifier) {
@@ -121,12 +133,12 @@ public class UMLConnectionListModel extends UMLModelElementListModel  {
             fireContentsChanged(this,index,index+1);
         }
     }
-    
+
     public void roleAdded(final MElementEvent event) {
         super.roleAdded(event);
     }
 
-    
+
 }
 
 
