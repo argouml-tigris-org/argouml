@@ -144,7 +144,7 @@ public class SettingsTabNotation extends SettingsTabHelper
     /** Get a boolean from the configuration.
      *
      * @param a notation key.
-     * @returns a boolean
+     * @return a boolean
      */
     private static boolean getBoolean(ConfigurationKey key) {
     return Configuration.getBoolean(key, false);

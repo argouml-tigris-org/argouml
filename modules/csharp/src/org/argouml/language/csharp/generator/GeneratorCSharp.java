@@ -111,7 +111,7 @@ public class GeneratorCSharp extends Generator
     /** Generates a file for the classifier.
      * This method could have been static if it where not for the need to
      * call it through the Generatorinterface.
-     * @returns the full path name of the the generated file.
+     * @return the full path name of the the generated file.
      */
     public String GenerateFile(Object o, String path) {
 	MClassifier cls = (MClassifier) o;

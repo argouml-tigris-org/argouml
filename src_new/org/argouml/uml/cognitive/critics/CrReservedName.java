@@ -221,7 +221,7 @@ public class CrReservedName extends CrUML {
      * have those "reserved" names.
      *
      * @param the name of the type to test.
-     * @returns true if it is a builtin.
+     * @return true if it is a builtin.
      */
     private boolean isBuiltin(String name) {
         Project p = ProjectManager.getManager().getCurrentProject();

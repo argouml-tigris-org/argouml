@@ -80,7 +80,7 @@ public class CrNoAssociations extends CrUML {
     /**
      * @param handle the classifier to examine
      * @param number of levels searched
-     * @returns true if an association can be found in this classifier
+     * @return true if an association can be found in this classifier
      *		or in any of its generalizations.
      */
     private boolean findAssociation(Object dm, int depth) {

@@ -134,7 +134,7 @@ public class NotationNameImpl
 
     /** Create a NotationName with or without a version.
      * The NotationName is only created if there is no such notation before.
-     * @returns the newly created or the old NotationName
+     * @return the newly created or the old NotationName
      */
     public static NotationName makeNotation(String k1, String k2, Icon icon) {
 	NotationName nn = null;
