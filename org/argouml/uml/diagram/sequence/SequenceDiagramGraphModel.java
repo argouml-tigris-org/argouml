@@ -243,6 +243,7 @@ public class SequenceDiagramGraphModel
                 // cannot connect a callaction to a destactivation that allready exists
                 return false;
             }
+           //  if (getSrcFigObject().getPreviousActivation((Node)getSrcPort()).)
             if (getSrcPort() instanceof LinkNode && ((LinkNode)getSrcPort()).isDestroyed()) {
                 // cannot connect a callaction to a sourceActivation that is allready destroyed.
                 return false;
@@ -257,7 +258,7 @@ public class SequenceDiagramGraphModel
             			return false;
             		}
             	}
-            }         
+            }                    
             return true;
         }
 

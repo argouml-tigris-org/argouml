@@ -73,7 +73,7 @@ public class ModeCreateLink extends ModeCreate {
             snapY,
             Globals.getPrefs().getRubberbandColor());
     }
-    
+
     public String instructions() {
         return "Drag to define a link to another port";
     }
@@ -149,13 +149,17 @@ public class ModeCreateLink extends ModeCreate {
             f = null;
         MutableGraphModel mgm = (MutableGraphModel) gm;
         // needs-more-work: potential class cast exception
-
+        if (f == _sourceFigNode) {
+            done();
+            me.consume();
+            return;
+        }
         if (f instanceof FigNode) {
             FigNode destFigNode = (FigNode) f;
             // If its a FigNode, then check within the  
             // FigNode to see if a port exists 
             Object foundPort = null;
-            if (destFigNode != _sourceFigNode) {
+            if (destFigNode != _sourceFigNode) {            	
                 y = _startPortFig.getY();
                 foundPort = destFigNode.deepHitPort(x, y);
             } else {
@@ -176,7 +180,7 @@ public class ModeCreateLink extends ModeCreate {
                 // (determined by the GraphEdgeRenderer).
 
                 if (null != _newEdge) {
-                    LayerManager lm = ce.getLayerManager();                    
+                    LayerManager lm = ce.getLayerManager();
                     ce.damaged(_newItem);
                     _sourceFigNode.damage();
                     destFigNode.damage();
@@ -190,7 +194,7 @@ public class ModeCreateLink extends ModeCreate {
                     fe.setSourcePortFig(_startPortFig);
                     fe.setSourceFigNode(_sourceFigNode);
                     fe.setDestPortFig(destPortFig);
-                    fe.setDestFigNode(destFigNode);                    
+                    fe.setDestFigNode(destFigNode);
                     //					set the new edge in place
                     if (_sourceFigNode != null)
                         _sourceFigNode.updateEdges();
