@@ -116,9 +116,11 @@ public class FigClass extends FigNodeModelElement {
      * <p>Manages residency of a class within a component on a deployment
      *   diagram. Not clear why it is public, or even why it is an instance
      *   variable (rather than local to the method).</p>
+     *
+     * not currently used. should be lazily instantiated in future.
      */
-    public Object resident =
-	UmlFactory.getFactory().getCore().createElementResidence();
+//    public Object resident =
+//	UmlFactory.getFactory().getCore().createElementResidence();
 
     /**
      * <p>Text highlighted by mouse actions on the diagram.</p>
