@@ -726,9 +726,7 @@ public class ParserDisplay extends Parser {
 	else
 	    ns = op.getModel();
 	MClassifier mtype = getType(type.trim(), ns);
-	MParameter param = UmlFactory.getFactory().getCore().buildParameter();
-	param.setType(mtype);
-	UmlHelper.getHelper().getCore().setReturnParameter(op,param);
+	setReturnParameter(op, mtype);
     }
 
     if (properties != null)
@@ -878,6 +876,32 @@ public class ParserDisplay extends Parser {
 	if (!p.getKind().equals(MParameterDirectionKind.RETURN))
 	    op.removeParameter(p);
     }
+  }
+
+  /**
+   * Sets the return parameter of op to be of type type. If there is none,
+   * one is created. If there are many, all but one are removed.
+   */
+  private void setReturnParameter(MOperation op, MClassifier type) {
+    MParameter param = null;
+    Iterator it = op.getParameters().iterator();
+    while (it.hasNext()) {
+	MParameter p = (MParameter) it.next();
+	if (MParameterDirectionKind.RETURN.equals(p.getKind())) {
+	    param = p;
+	    break;
+	}
+    }
+    while (it.hasNext()) {
+	MParameter p = (MParameter) it.next();
+	if (MParameterDirectionKind.RETURN.equals(p.getKind()))
+	    op.removeParameter(p);
+    }
+    if (param == null) {
+	param = UmlFactory.getFactory().getCore().buildParameter();
+	op.addParameter(param);
+    }
+    param.setType(type);
   }
 
   private MParameterDirectionKind getParamKind(String s) {
