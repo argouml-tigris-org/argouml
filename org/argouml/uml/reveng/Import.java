@@ -35,6 +35,11 @@ import ru.novosoft.uml.model_management.*;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
+import java.lang.*;
+
+import org.argouml.ui.*;
+import org.argouml.application.api.*;
+import org.argouml.util.logging.*;
 
 /**
  * This is the main class for all import classes.
@@ -91,39 +96,85 @@ public class Import {
 	
 
     /**
-     * The main method for all parsing actions. It calls the
+     * The method that for all parsing actions. It calls the
      * actual parser methods depending on the type of the
      * file.
      *
      * @param p The current Argo project.
      * @param f The file or directory, we want to parse.
-     * @exception Parser exceptions.  */
-    public static void doFile(Project p, File f) throws Exception {
+     */
+    public static void doFile(Project p, File f) {
+	Vector files = listDirectoryRecursively(f);
 
-	secondPassFiles = new Vector();
+	ImportStatusScreen iss = new ImportStatusScreen("Importing",
+							"Splash");
 
-	if ( f.isDirectory()) {     // If f is a directory, 
-	    doDirectory( p, f);     // import all the files in this directory
+	SwingUtilities.invokeLater(new ImportRun(iss, p, _diagram, files));
+
+	iss.show();
+    }
+
+    /**
+     * This method does all the actual importing. Normally it runs in another
+     * thread.
+     *
+     * @param iss is the status screen that is called for updates.
+     * @param p is the project
+     * @param files is a Vector of the files to be imported.
+     */
+    public static void realDoFile(ImportStatusScreen iss, 
+				  Project p, Vector files) {
+
+	ProjectBrowser pb = ProjectBrowser.TheInstance;
+
+	int countFiles = files.size();
+
+	SimpleTimer st = new SimpleTimer("realDoFile");
+	st.mark("start");
+
+	while (files.size() > 0) { // Passes
+	    int countFilesThisPass = files.size();
+
+	    Vector nextPassFiles = new Vector();
+
+	    for (int i = 0; i < files.size(); i++) {
+		File curFile = (File)files.elementAt(i);
+
+		try {
+		    st.mark(curFile.getName());
+		    pb.showStatus("Importing " + curFile.getName() 
+				  + " (in " + curFile.getParent());
+		    parseFile(p, curFile);       // Try to parse this file.
+
+		    int tot;
+		    iss.setMaximum(tot = countFiles
+				   + _diagram.getModifiedDiagrams().size()/10);
+		    int act;
+		    iss.setValue(act = countFiles - countFilesThisPass
+				 + i + 1 - nextPassFiles.size());
+		    pb.getStatusBar().showProgress(100 * act/tot);
+		}
+		catch(Exception e1) {
+		    Argo.log.debug(e1);
+		    nextPassFiles.addElement(curFile);
+		}
+	    }
+
+	    // Now one sweep is done, set up everything for the next one.
+	    if (files.size() == nextPassFiles.size())
+		break;
+	    files = nextPassFiles;
 	}
-	else {
-	    try {
-		parseFile(p, f);       // Try to parse this file.
-	    }
-	    catch(Exception e1) {
-		secondPassFiles.addElement(f);
+
+	if (files.size() > 0) {
+	    Argo.log.info("There are unparseable files:");
+	    for (int i = 0; i < files.size(); i++) {
+		Argo.log.info("Unparseable file: " 
+			      + ((File)files.elementAt(i)).getName());
 	    }
 	}
 
-	for(Iterator i = secondPassFiles.iterator(); i.hasNext();) {
-	    try {
-		parseFile(p, (File)i.next());
-	    }
-	    catch(Exception e2) {
-		System.out.println("ERROR: " + e2.getMessage());
-		e2.printStackTrace();
-	    }
-	}
-
+	st.mark("layout");
 	// Layout the modified diagrams.
 	for(int i=0; i < _diagram.getModifiedDiagrams().size(); i++) {
 	    ClassdiagramLayouter layouter =
@@ -133,42 +184,73 @@ public class Import {
 	    layouter.layout();
 
 	    // Resize the diagram???
+	    iss.setValue(countFiles + (i + 1)/10);
 	}
+
+	iss.done();
+	
+	Argo.log.info(st);
+	pb.getStatusBar().showProgress(0);
     }
 
     /**
-     * This method imports an entire directory. It calls the parser for
-     * files and creates packages for the directories.
+     * This method returns a Vector with files to import.
      *
-     * @param p The current project.
-     * @param f The directory.
-     * @exception Parser exceptions.
+     * The result depends on the descend settings.
+     *
+     * @param f The directory or a file.
      */
-    public static void doDirectory(Project p, File f) throws Exception {
-	String [] files = f.list();  // Get the content of the directory
+    private static Vector listDirectoryRecursively(File f) {
+	Vector res = new Vector();
 
-	for( int i = 0; i < files.length; i++) {
-	    File curFile = new File( f, files[i]);
+	Vector toDoDirectories = new Vector();
+	Vector doneDirectories = new Vector();
 
-	    // The following test can cause trouble with links,
-	    // because links are accepted as directories, even if
-	    // they link files.
-	    if ( curFile.isDirectory()) {   // If this file is a directory
-		// MMFactory factory = new MMFactory((MModel)p.getModel());
-		// factory.createPackage( curFile);  // create a package for it.
-		if(descend.isSelected()) {
-		    doDirectory(p, curFile);
-		}
+	toDoDirectories.add(f);
+
+	while (toDoDirectories.size() > 0) {
+	    File curDir = (File)toDoDirectories.elementAt(0);
+	    toDoDirectories.removeElementAt(0);
+	    doneDirectories.add(curDir);
+
+	    if (!curDir.isDirectory()) {
+		// For some reason, this eledged directory is a single file
+		// This could be that there is some confusion or just
+		// the normal, that a single file was selected and is 
+		// supposed to be imported.
+		res.add(curDir);
+		continue;
 	    }
-	    else {
-		try {
-		    parseFile(p, curFile);       // Try to parse this file.
+
+	    // Get the contents of the directory
+	    String [] files = curDir.list();
+
+	    for( int i = 0; i < files.length; i++) {
+		File curFile = new File(curDir, files[i]);
+
+		// The following test can cause trouble with links,
+		// because links are accepted as directories, even if
+		// they link files.
+		// Links could also result in infinite loops. For this reason
+		// we don't do this traversing recursively.
+		if (curFile.isDirectory()) {   // If this file is a directory
+		    if(descend.isSelected()) {
+			if (doneDirectories.indexOf(curFile) >= 0
+			    || toDoDirectories.indexOf(curFile) >= 0) {
+			    // This one is already seen or to be seen.
+			}
+			else {
+			    toDoDirectories.add(curFile);
+			}
+		    }
 		}
-		catch(Exception e) {
-		    secondPassFiles.add(curFile);
+		else {
+		    if (isParseable(curFile))
+			res.add(curFile);
 		}
-	    }
-	} 
+	    } 
+	}
+	return res;
     }
 
 
@@ -187,6 +269,22 @@ public class Import {
     }
 
     /**
+     * Tells if the file is parseable or not.
+     * Must match with files that are actually parseable.
+     *
+     * @see #parseFile
+     * @param f file to be tested.
+     * @return true if parseable, false if not.
+     */
+    private static boolean isParseable(File f) {
+	if (f.getName().endsWith(".java")) {
+	    return true;
+	}
+
+	return false;
+    }
+
+    /**
      * If we have modified any diagrams, the project was modified and
      * should be saved. I don't consider a import, that only modifies
      * the metamodel, at this point (Andreas Rueckert <a_rueckert@gmx.net> ).
@@ -199,4 +297,119 @@ public class Import {
     public static boolean needsSave() {
 	return (_diagram.getModifiedDiagrams().size() > 0);
     }
+}
+
+
+class ImportRun implements Runnable {
+    ImportStatusScreen _iss;
+    Project _project;
+    DiagramInterface _diagram;
+    Vector _filesLeft;
+    int _countFiles;
+    int _countFilesThisPass;
+    Vector _nextPassFiles;
+    SimpleTimer _st;
+
+    public ImportRun(ImportStatusScreen iss, Project p, DiagramInterface d,
+		     Vector f) {
+	_iss = iss;
+	_project = p;
+	_diagram = d;
+	_filesLeft = f;
+	_countFiles = _filesLeft.size();
+	_countFilesThisPass = _countFiles;
+	_nextPassFiles = new Vector();
+	_st = new SimpleTimer("ImportRun");
+	_st.mark("start");
+    }
+
+    public void run() {
+	ProjectBrowser pb = ProjectBrowser.TheInstance;
+
+	if (_filesLeft.size() > 0) {
+	    File curFile = (File)_filesLeft.elementAt(0);
+	    _filesLeft.removeElementAt(0);
+	    
+	    try {
+		_st.mark(curFile.getName());
+		pb.showStatus("Importing " + curFile.getName() 
+			      + " (in " + curFile.getParent());
+		Import.parseFile(_project, curFile); // Try to parse this file.
+
+		int tot;
+		_iss.setMaximum(tot = _countFiles
+				+ _diagram.getModifiedDiagrams().size()/10);
+		int act;
+		_iss.setValue(act = _countFiles
+			      - _filesLeft.size() - _nextPassFiles.size());
+		pb.getStatusBar().showProgress(100 * act/tot);
+	    }
+	    catch(Exception e1) {
+		Argo.log.debug(e1);
+		_nextPassFiles.addElement(curFile);
+	    }
+
+	    SwingUtilities.invokeLater(this);
+	    return;
+	}
+
+	if (_nextPassFiles.size() > 0
+	    && _nextPassFiles.size() < _countFilesThisPass) {
+	    _filesLeft = _nextPassFiles;
+	    _nextPassFiles = new Vector();
+	    _countFilesThisPass = _filesLeft.size();
+
+	    SwingUtilities.invokeLater(this);
+	    return;
+	}
+	    
+	// Layout the modified diagrams.
+	_st.mark("layout");
+	for(int i=0; i < _diagram.getModifiedDiagrams().size(); i++) {
+	    ClassdiagramLayouter layouter =
+		new ClassdiagramLayouter((UMLDiagram)
+					 (_diagram.getModifiedDiagrams()
+					  .elementAt(i)));
+	    layouter.layout();
+
+	    // Resize the diagram???
+	    _iss.setValue(_countFiles + (i + 1)/10);
+	}
+
+	_iss.done();
+	
+	Argo.log.info(_st);
+	pb.getStatusBar().showProgress(0);
+    }
+}
+
+class ImportStatusBar extends StatusBar {
+    public void setMaximum(int i) { _progress.setMaximum(i); }
+    public void setValue(int i) { _progress.setValue(i); }
+}
+
+class ImportStatusScreen extends JDialog {
+    protected ImportStatusBar _statusBar = new ImportStatusBar();
+
+    public ImportStatusScreen(String title, String iconName) {
+	super();
+	if (title != null) setTitle(title);
+	Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
+	setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+	getContentPane().setLayout(new BorderLayout(0, 0));
+	getContentPane().add(_statusBar, BorderLayout.SOUTH);
+	Dimension contentPaneSize = getContentPane().getPreferredSize();
+	setSize(contentPaneSize.width, contentPaneSize.height);
+	setLocation(scrSize.width/2 - contentPaneSize.width/2,
+		    scrSize.height/2 - contentPaneSize.height/2);
+	pack();
+    }
+
+    public void setMaximum(int i) { _statusBar.setMaximum(i); }
+    public void setValue(int i) { 
+	_statusBar.setValue(i);
+	repaint();
+    }
+
+    public void done() { hide(); dispose(); }
 }
