@@ -1554,86 +1554,79 @@ This module contains the following main class types:
       <itemizedlist>
 	<listitem>
 	<para>
-YYY
+<classname>NotationProviderFactory</classname>
 </para>
 	</listitem>
+
+	<listitem>
+	<para>
+<classname>Notation</classname>,
+<classname>NotationContext</classname>,
+<classname>NotationProvider</classname>
+</para>
+	</listitem>
+
       </itemizedlist>
       <sect2>
-	<title>Collaborations for XXDESCXX</title>
+	<title>Collaborations for Notation</title>
 	<para>
-YYY
+Notations are used by the diagrams and tabs to provide the correct
+syntax when showing code.
 </para>
 	<sect3 id="comp-notation-to-comp-diagrams">
-	  <title>notation uses Diagrams</title>
+	  <title>Notation uses Diagrams</title>
 	  <para>
-YYY
+Not at all. It is the other way around.
 </para>
 	</sect3>
 	<sect3 id="comp-notation-to-comp-model">
-	  <title>notation uses the Model</title>
+	  <title>Notation uses the Model</title>
 	  <para>
-YYY
+Not at all. It is the other way around.
 </para>
 	</sect3>
 	<sect3 id="comp-notation-to-comp-saveload">
-	  <title>notation uses Saving/Loading</title>
-	  <para>Not at all!</para>
-	</sect3>
-	<sect3 id="comp-notation-to-comp-notation">
-	  <title>notation uses Notation</title>
+	  <title>Notation uses Saving/Loading</title>
 	  <para>Not at all!</para>
 	</sect3>
 	<sect3 id="comp-notation-to-comp-codegenreveng">
-	  <title>notation uses Code Generation and Reverse Engineering</title>
-	  <para>Not at all!</para>
+	  <title>Notation uses Code Generation and Reverse Engineering</title>
+	  <para>
+For generating parts of the java-notation, parts of the
+java code generation is used.
+</para>
 	</sect3>
 	<sect3 id="comp-notation-to-comp-critics">
-	  <title>notation uses the Cognitive stuff</title>
+	  <title>Notation uses the Cognitive stuff</title>
 	  <para>Not at all!</para>
 	</sect3>
 	<sect3 id="comp-notation-to-comp-help">
-	  <title>notation uses Help System</title>
-	  <para>
-YYY
-</para>
+	  <title>Notation uses Help System</title>
+	  <para>Not at all.</para>
 	</sect3>
 	<sect3 id="comp-notation-to-comp-internationalization">
-	  <title>notation uses Internationalization</title>
+	  <title>Notation uses Internationalization</title>
+	  <para>Not at all.</para>
 	</sect3>
 	<sect3 id="comp-notation-to-comp-plugins">
-	  <title>notation uses Plugin-Module API</title>
+	  <title>Notation uses Plugin-Module API</title>
 	  <para>
 Currently not!
 </para>
 	</sect3>
 	<sect3 id="comp-notation-to-comp-logging">
 	  <title>Notation uses Logging</title>
-	  <para>
-YYY
-</para>
+	  <para>Currently not.</para>
 	</sect3>
       </sect2>
-      <sect2>
-	<title>Main classes</title>
-	<para>
-XXDESCXX are currently located in:
-	  <itemizedlist>
-	    <listitem>
-	      <para>
-YYY
-</para>
-	    </listitem>
-	  </itemizedlist>
-</para>
-      </sect2>
 
-      <sect2 id="howdoi_YYY">
-	<title>How do I YYY...?</title>
+      <sect2 id="howdoi_notation">
+	<title>How do I ...?</title>
 	<itemizedlist>
 	  <listitem>
-	    <para>...YYY?</para>
+	    <para>...add a new notation?</para>
 	    <para>
-YYY
+Use the PluggableNotation api!
 </para>
 	    </listitem>
 	</itemizedlist>
