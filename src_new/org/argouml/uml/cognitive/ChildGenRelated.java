@@ -38,6 +38,8 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.util.*;
 
+/** @stereotype singleton
+ */
 public class ChildGenRelated implements ChildGenerator {
   public static ChildGenRelated SINGLETON = new ChildGenRelated();
 
