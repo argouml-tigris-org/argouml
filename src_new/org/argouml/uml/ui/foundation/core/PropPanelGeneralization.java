@@ -24,209 +24,80 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.uml.ui.UMLList;
-import org.argouml.uml.ui.UMLModelElementListModel;
-import org.argouml.uml.ui.UMLReflectionListModel;
-import org.argouml.uml.ui.UMLTextField;
-import org.argouml.uml.ui.UMLTextProperty;
+import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.util.ConfigLoader;
 
 /**
- * TODO: this property panel needs refactoring to remove dependency on
- *       old gui components.
+ * TODO: this property panel needs refactoring to remove dependency on old gui
+ * components.
  */
 public class PropPanelGeneralization extends PropPanelModelElement {
-    protected static Logger cat =
-        Logger.getLogger(PropPanelGeneralization.class);
 
-    private PropPanelButton _newButton;
+    private final static Logger LOG = Logger
+            .getLogger(PropPanelGeneralization.class);
+
+    private JTextField discriminatorTextField;
+
+    private JScrollPane parentScroll;
+
+    private JScrollPane childScroll;
+
+    private static UMLDiscriminatorNameDocument discriminatorDocument = new UMLDiscriminatorNameDocument();
+
+    private static UMLGeneralizationChildListModel childListModel = new UMLGeneralizationChildListModel();
+
+    private static UMLGeneralizationParentListModel parentListModel = new UMLGeneralizationParentListModel();
 
     public PropPanelGeneralization() {
         super("Generalization", ConfigLoader.getTabPropsOrientation());
-        Class mclass = (Class)ModelFacade.GENERALIZATION;
+        Class mclass = (Class) ModelFacade.GENERALIZATION;
 
-        Class[] namesToWatch = {(Class)ModelFacade.STEREOTYPE, (Class)ModelFacade.NAMESPACE, (Class)ModelFacade.CLASSIFIER };
+        Class[] namesToWatch = { (Class) ModelFacade.STEREOTYPE,
+                (Class) ModelFacade.NAMESPACE, (Class) ModelFacade.CLASSIFIER };
         setNameEventListening(namesToWatch);
 
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        //addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-        addField("Discriminator:", new UMLTextField(this, new UMLTextProperty(mclass, "discriminator", "getDiscriminator", "setDiscriminator")));
-        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+        addField(Translator.localize("UMLMenu", "label.name"),
+                getNameTextField());
+
+        addField(Translator.localize("UMLMenu", "label.stereotype"),
+                new UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
+                        "tooltip.nav-stereo"), getStereotypeComboBox()));
+
+        addField(Translator.localize("UMLMenu", "label.discriminator"),
+                getDiscriminatorTextField());
+
+        addField(Translator.localize("UMLMenu", "label.namespace"),
+                getNamespaceComboBox());
 
         addSeperator();
 
-        UMLModelElementListModel parentModel = new UMLReflectionListModel(this, "parent", true, "getParentElement", null, null, null);
-        parentModel.setUpperBound(1);
-        UMLList umlParentList = new UMLList(parentModel, true);
-        umlParentList.setVisibleRowCount(1);
-        addLinkField("Parent:", new JScrollPane(umlParentList, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
+        addField(Translator.localize("UMLMenu", "label.parent"),
+                getParentScroll());
 
-        UMLModelElementListModel childModel = new UMLReflectionListModel(this, "child", true, "getChild", null, null, null);
-        childModel.setUpperBound(1);
-        UMLList umlChildList = new UMLList(childModel, true);
-        umlChildList.setVisibleRowCount(1);
-        addLinkField("Child:", new JScrollPane(umlChildList, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
+        addField(Translator.localize("UMLMenu", "label.child"),
+                getChildScroll());
 
-        addField("Powertype:", new UMLComboBox2(new UMLGeneralizationPowertypeComboBoxModel(), ActionSetGeneralizationPowertype.SINGLETON));
+        addField(Translator.localize("UMLMenu", "label.powertype"),
+                new UMLComboBox2(new UMLGeneralizationPowertypeComboBoxModel(),
+                        ActionSetGeneralizationPowertype.SINGLETON));
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
-        new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete generalization"), "removeElement", null);
-    }
-
-
-    private void updateButton() {
-        Object target = getTarget();
-        if (ModelFacade.isAGeneralization(target)) {
-            Object gen = /*(MGeneralization)*/ target;
-            Object parent = ModelFacade.getParent(gen);
-            Object child = ModelFacade.getChild(gen);
-            //
-            //   if one and only one of child and parent are set
-            //
-            if (parent != null ^ child != null) {
-                if (parent == null) parent = child;
-
-                if (ModelFacade.isAClass(parent)) {
-                    _newButton.setIcon(_classIcon);
-                    _newButton.setToolTipText("Add new class");
-                }
-                else {
-                    if (ModelFacade.isAInterface(parent)) {
-                        _newButton.setIcon(_interfaceIcon);
-                        _newButton.setToolTipText("Add new interface");
-                    }
-                    else {
-                        if (ModelFacade.isAPackage(parent)) {
-                            _newButton.setIcon(_packageIcon);
-                            _newButton.setToolTipText("Add new package");
-                        }
-                    }
-                }
-                _newButton.setEnabled(true);
-            }
-            else {
-                _newButton.setEnabled(false);
-            }
-        }
-    }
-
-
-    public Object getParentElement() {
-        Object parent = null;
-        Object target = getTarget();
-        if (ModelFacade.isAGeneralization(target)) {
-            parent = ModelFacade.getParent(target);
-        }
-        return parent;
-    }
-
-    public void setParentElement(Object/*MGeneralizableElement*/ parent) {
-        Object target = getTarget();
-        if (ModelFacade.isAGeneralization(target)) {
-            Object generalization = target;
-            Object child = ModelFacade.getChild(generalization);
-            Object oldParent = ModelFacade.getParent(generalization);
-            //
-            //   can't do immediate circular generalization
-            //
-            if (parent != child && parent != oldParent) {
-                ModelFacade.setParent(generalization, parent);
-            } else {
-                //
-                //   force a refresh of the panel
-		//                refresh();
-            }
-        }
-    }
-
-    public Object getChild() {
-        Object child = null;
-        Object target = getTarget();
-        if (ModelFacade.isAGeneralization(target)) {
-            child = ModelFacade.getChild(target);
-        }
-        return child;
-    }
-
-    public void setChild(Object/*MGeneralizableElement*/ child) {
-        Object target = getTarget();
-        if (ModelFacade.isAGeneralization(target)) {
-            Object gen = /*(MGeneralization)*/ target;
-            Object parent = ModelFacade.getParent(gen);
-            Object oldChild = ModelFacade.getChild(gen);
-            if (child != parent && child != oldChild) {
-                ModelFacade.setChild(gen, child);
-            }
-            else {
-		//                refresh();
-            }
-        }
-    }
-
-
-
-    public Object getPowertype() {
-        Object ptype = null;
-        Object target = getTarget();
-        if (ModelFacade.isAGeneralization(target)) {
-            ptype = ModelFacade.getPowertype(target);
-        }
-        return ptype;
-    }
-
-    public void setPowertype(Object/*MClassifier*/ ptype) {
-        Object target = getTarget();
-        if (ModelFacade.isAGeneralization(target)) {
-            Object gen = /*(MGeneralization)*/ target;
-            Object oldPtype = ModelFacade.getPowertype(gen);
-            if (ptype != oldPtype) {
-                ModelFacade.setPowertype(gen, ptype);
-            }
-        }
-    }
-
-
-    public void newModelElement() {
-        Object target = getTarget();
-        if (ModelFacade.isAGeneralization(target)) {
-            Object gen = /*(MGeneralization)*/ target;
-            Object parent = ModelFacade.getParent(gen);
-            Object child = ModelFacade.getChild(gen);
-            if (parent != null ^ child != null) {
-                Object known = parent;
-                if (known == null) known = child;
-                Object ns = ModelFacade.getNamespace(known);
-                if (ns != null) {
-                    try {
-                        Object newElement = /*(MGeneralizableElement)*/
-			    known.getClass().getConstructor(new Class[] {}).newInstance(new Object[] {});
-                        ModelFacade.addOwnedElement(ns, newElement);
-                        if (parent == null) {
-                            ModelFacade.setParent(gen, newElement);
-                        }
-                        else {
-                            ModelFacade.setChild(gen, newElement);
-                        }
-                        _newButton.setEnabled(false);
-                        TargetManager.getInstance().setTarget(newElement);
-                    }
-                    catch (Exception e) {
-                        cat.error(e.toString() + " in PropPanelGeneralization.newElement", e);
-                    }
-                }
-            }
-        }
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize(
+                "UMLMenu", "button.go-up"), "navigateUp", null);
+        
+        new PropPanelButton(this, buttonPanel, _deleteIcon,
+                localize("Delete generalization"), "removeElement", null);
     }
 
     public void navigateUp() {
@@ -239,28 +110,33 @@ public class PropPanelGeneralization extends PropPanelModelElement {
         }
     }
 
-    private boolean isAcceptible(Object/*MGeneralizableElement*/ fixed,
-				 Object/*MModelElement*/ candidate) {
-        boolean isCompatible = true;
-        Class[] keys = {
-	    (Class)ModelFacade.CLASS, 
-	    (Class)ModelFacade.DATATYPE,
-	    (Class)ModelFacade.INTERFACE, 
-	    (Class)ModelFacade.ACTOR, 
-	    (Class)ModelFacade.SIGNAL 
-	};
-        int i;
-        for (i = 0; i < keys.length; i++) {
-            if (keys[i].isInstance(fixed)) {
-                isCompatible = keys[i].isInstance(candidate);
-                break;
-            }
+    protected JTextField getDiscriminatorTextField() {
+        if (discriminatorTextField == null) {
+            discriminatorTextField = new UMLTextField2(discriminatorDocument);
         }
-        return isCompatible;
+        return discriminatorTextField;
     }
 
-    public boolean isAcceptiblePowertype(Object/*MModelElement*/ element) {
-        return ModelFacade.isAClassifier(element);
+    protected JScrollPane getParentScroll() {
+        if (parentScroll == null) {
+            JList list = new UMLLinkedList(parentListModel);
+            list.setVisibleRowCount(1);
+            parentScroll = new JScrollPane(list,
+                    JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+                    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        }
+        return parentScroll;
+    }
+
+    public JScrollPane getChildScroll() {
+        if (childScroll == null) {
+            JList list = new UMLLinkedList(childListModel);
+            list.setVisibleRowCount(1);
+            childScroll = new JScrollPane(list,
+                    JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+                    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        }
+        return childScroll;
     }
 
 } /* end class PropPanelGeneralization */
