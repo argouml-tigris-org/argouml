@@ -587,7 +587,14 @@ public class ProjectBrowser
         return null;
     }
 
-    //TODO Bob Tarling 8 June 2003: What is dms?
+    /** get a list of offenders and display the according diagram, aka
+     *  implement a method which jumps to the offender.
+     *  TODO: this probably needs a lot of work, as the code looks
+     *  as if it can only jump to diagram offenders
+     *
+     *  @param dms vector of offenders
+     *  @see org.argouml.cognitive.ui.ToDoPane
+     */
     public void jumpToDiagramShowing(VectorSet dms) {
         if (dms.size() == 0)
             return;
