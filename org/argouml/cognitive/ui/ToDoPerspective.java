@@ -83,7 +83,7 @@ implements Serializable {
     return _registeredPerspectives;
   }
 
-  public static void registerRule(TreeModelPrereqs rule) {
+  public static void registerRule(TreeModel rule) {
     _rules.addElement(rule);
   }
 

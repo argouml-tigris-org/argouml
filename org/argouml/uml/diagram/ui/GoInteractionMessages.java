@@ -35,7 +35,7 @@ import ru.novosoft.uml.behavior.collaborations.*;
 import org.argouml.ui.*;
 import org.tigris.gef.util.Localizer;
 
-public class GoInteractionMessages implements TreeModelPrereqs {
+public class GoInteractionMessages implements TreeModel {
 
   public String toString() {
     return Localizer.localize ("Tree", "misc.interaction.messages");
@@ -79,16 +79,5 @@ public class GoInteractionMessages implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() {
-    Vector pros = new Vector();
-    pros.addElement(MInteraction.class);
-    return pros;
-  }
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(MMessage.class);
-    return pros;
-  }
 
 }

@@ -35,7 +35,7 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 import org.argouml.ui.*;
 import org.tigris.gef.util.Localizer;
 
-public class GoStimulusAction implements TreeModelPrereqs {
+public class GoStimulusAction implements TreeModel {
 
   public String toString() {
     return Localizer.localize ("Tree", "misc.stimulus.action");
@@ -82,16 +82,5 @@ public class GoStimulusAction implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() {
-    Vector pros = new Vector();
-    pros.addElement(MStimulus.class);
-    return pros;
-  }
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(MAction.class);
-    return pros;
-  }
 
 }

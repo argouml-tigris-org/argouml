@@ -34,7 +34,7 @@ import ru.novosoft.uml.behavior.collaborations.*;
 
 import org.argouml.ui.*;
 
-public class GoCollaborationInteraction implements TreeModelPrereqs {
+public class GoCollaborationInteraction implements TreeModel {
 
   public String toString() { return "Collaboration->Interaction"; }
 
@@ -78,16 +78,5 @@ public class GoCollaborationInteraction implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() {
-    Vector pros = new Vector();
-    pros.addElement(MCollaboration.class);
-    return pros;
-  }
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(MInteraction.class);
-    return pros;
-  }
 
 }

@@ -31,7 +31,7 @@ import javax.swing.tree.*;
 import org.argouml.ui.*;
 import org.argouml.cognitive.*;
 
-public class GoListToGoalsToItems implements TreeModelPrereqs {
+public class GoListToGoalsToItems implements TreeModel {
   
   ////////////////////////////////////////////////////////////////
   // TreeModel implementation
@@ -115,43 +115,5 @@ public class GoListToGoalsToItems implements TreeModelPrereqs {
   public Vector getGoals() {
     return Designer.TheDesigner.getGoalModel().getGoals();
   }
-  
-  public Vector getPrereqs() {
-    Vector res = new Vector();
-    res.addElement(ToDoList.class);
-    return res;
-  }
-
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(Goal.class);
-    pros.addElement(ToDoItem.class);
-    return pros;
-  }
-
-  //     Vector removes = new Vector();
-//     java.util.Enumeration enum = _pseudoNodes.elements();
-//     while (enum.hasMoreElements()) {
-//       ToDoPseudoNode node = (ToDoPseudoNode) enum.nextElement();
-//       if (!isNeeded(node)) removes.addElement(node);
-//     }
-//     enum = removes.elements();
-//     while (enum.hasMoreElements())
-//       _pseudoNodes.removeElement(enum.nextElement());
-//     enum = _root.elements();
-//     while (enum.hasMoreElements()) {
-//       ToDoItem item = (ToDoItem) enum.nextElement();
-//       addNewPseudoNodes(item);
-//     }
-    
-//     Object path[] = new Object[2];
-//     path[0] = _root;
-//     enum = _pseudoNodes.elements();
-//     while (enum.hasMoreElements()) {
-//       ToDoPseudoNode node = (ToDoPseudoNode) enum.nextElement();
-//       path[1] = node;
-//       fireTreeStructureChanged(path);
-//     }
-
   
 } /* end class GoListToGoalsToItems */

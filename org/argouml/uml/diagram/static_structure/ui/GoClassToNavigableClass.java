@@ -33,7 +33,7 @@ import ru.novosoft.uml.foundation.core.*;
 
 import org.argouml.ui.*;
 
-public class GoClassToNavigableClass implements TreeModelPrereqs {
+public class GoClassToNavigableClass implements TreeModel {
 
   public String toString() { return "Class->Navigable Class"; }
   
@@ -94,16 +94,5 @@ public class GoClassToNavigableClass implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() {
-    Vector pros = new Vector();
-    pros.addElement(MClassifier.class);
-    return pros;
-  }
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(MClassifier.class);
-    return pros;
-  }
 
 }

@@ -33,7 +33,7 @@ import ru.novosoft.uml.foundation.core.*;
 
 import org.argouml.ui.*;
 
-public class GoAssocToSource implements TreeModelPrereqs {
+public class GoAssocToSource implements TreeModel {
   public String toString() { return "Association->Source Class"; }
 
   public Object getRoot() {
@@ -75,17 +75,5 @@ public class GoAssocToSource implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() {
-    Vector pros = new Vector();
-    pros.addElement(MAssociation.class);
-    return pros;
-  }
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(MClassifier.class);
-    return pros;
-  }
-
   
 }

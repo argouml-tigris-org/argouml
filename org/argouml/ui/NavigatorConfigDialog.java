@@ -352,11 +352,11 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     }
     NavPerspective np = (NavPerspective) sel;
     Object selRule = _ruleLibList.getSelectedValue();
-    if (!(selRule instanceof TreeModelPrereqs)) {
-      System.out.println("doAddRule: unexepected non-TreeModelPrereqs");
+    if (!(selRule instanceof TreeModel)) {
+      System.out.println("doAddRule: unexepected non-TreeModel");
       return;
     }
-    TreeModelPrereqs tm = (TreeModelPrereqs) selRule;
+    TreeModel tm = (TreeModel) selRule;
     np.addSubTreeModel(tm);
     _rulesList.clearSelection();
     _rulesList.setListData(Converter.convert(np.getSubTreeModels()));
@@ -370,11 +370,11 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     }
     NavPerspective np = (NavPerspective) sel;
     Object selRule = _rulesList.getSelectedValue();
-    if (!(selRule instanceof TreeModelPrereqs)) {
-      System.out.println("doRemoveRule: unexepected non-TreeModelPrereqs");
+    if (!(selRule instanceof TreeModel)) {
+      System.out.println("doRemoveRule: unexepected non-TreeModel");
       return;
     }
-    TreeModelPrereqs tm = (TreeModelPrereqs) selRule;
+    TreeModel tm = (TreeModel) selRule;
     np.removeSubTreeModel(tm);
     _rulesList.clearSelection();
     _rulesList.setListData(Converter.convert(np.getSubTreeModels()));

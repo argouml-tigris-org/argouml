@@ -35,7 +35,7 @@ import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import org.argouml.kernel.Project;
 import org.argouml.ui.*;
 
-public class GoProjectMachine implements TreeModelPrereqs {
+public class GoProjectMachine implements TreeModel {
 
   public String toString() { return "Project->Machine"; }
 
@@ -99,16 +99,5 @@ public class GoProjectMachine implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() {
-    Vector pros = new Vector();
-    pros.addElement(Project.class);
-    return pros;
-  }
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(MStateMachine.class);
-    return pros;
-  }
 
 }

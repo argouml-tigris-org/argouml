@@ -35,7 +35,7 @@ import org.argouml.ui.*;
 import org.tigris.gef.util.Localizer;
 import org.argouml.uml.MMUtil;
 
-public class GoClassifierToStr implements TreeModelPrereqs {
+public class GoClassifierToStr implements TreeModel {
 
   public String toString() {
     return Localizer.localize ("Tree", "misc.class.attribute");
@@ -81,17 +81,5 @@ public class GoClassifierToStr implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() {
-    Vector pros = new Vector();
-    pros.addElement(MModelElement.class);
-    return pros;
-  }
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(MStructuralFeature.class);
-    return pros;
-  }
-
   
 }

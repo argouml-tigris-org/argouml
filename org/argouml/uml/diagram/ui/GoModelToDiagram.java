@@ -36,7 +36,7 @@ import org.argouml.ui.*;
 import org.tigris.gef.util.Localizer;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-public class GoModelToDiagram implements TreeModelPrereqs {
+public class GoModelToDiagram implements TreeModel {
 
   public String toString() {
     return Localizer.localize ("Tree", "misc.package.diagram");
@@ -104,16 +104,5 @@ public class GoModelToDiagram implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() {
-    Vector pres = new Vector();
-    pres.addElement(ru.novosoft.uml.model_management.MModel.class);
-    return pres;
-  }
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(org.tigris.gef.base.Diagram.class);
-    return pros;
-  }
 
 }

@@ -38,7 +38,6 @@ implements TreeModel, Cloneable {
   // instance variables
 
   protected Vector _subTreeModels = new Vector();
-  protected Vector _providedClasses = new Vector();
   //protected Vector _treeListeners = null;
   protected Object _root;
   protected boolean _flat;
@@ -70,24 +69,6 @@ implements TreeModel, Cloneable {
 
   public void addSubTreeModel(TreeModel tm) {
     if (_subTreeModels.contains(tm)) return;
-    if (tm instanceof TreeModelPrereqs) {
-      Vector prereqs = ((TreeModelPrereqs)tm).getPrereqs();
-      java.util.Enumeration preEnum = prereqs.elements();
-      while (preEnum.hasMoreElements()) {
-	Object pre = preEnum.nextElement();
-	// needs-more-work: check superclasses
-	if (!_providedClasses.contains(pre)) {
-	  //System.out.println("You cannot add " + tm +
-	  //		     " until something provides " + pre);
-	  //return;
-	}
-      }
-      Vector provided = ((TreeModelPrereqs)tm).getProvidedTypes();
-      java.util.Enumeration proEnum = provided.elements();
-      while (proEnum.hasMoreElements()) {
-	_providedClasses.addElement(proEnum.nextElement());
-      }
-    }    
     _subTreeModels.addElement(tm);
   }
 

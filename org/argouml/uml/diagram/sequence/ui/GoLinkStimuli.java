@@ -36,7 +36,7 @@ import org.argouml.ui.*;
 import org.tigris.gef.util.Localizer;
 
 
-public class GoLinkStimuli implements TreeModelPrereqs {
+public class GoLinkStimuli implements TreeModel {
 
   public String toString() {
     return Localizer.localize ("Tree", "misc.link.stimuli");
@@ -79,16 +79,5 @@ public class GoLinkStimuli implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() {
-    Vector pros = new Vector();
-    pros.addElement(MLink.class);
-    return pros;
-  }
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(MStimulus.class);
-    return pros;
-  }
 
 }

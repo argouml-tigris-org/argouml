@@ -35,7 +35,7 @@ import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.tigris.gef.util.Localizer;
 
-public class GoProjectDiagram implements TreeModelPrereqs {
+public class GoProjectDiagram implements TreeModel {
 
   public String toString() {
     return Localizer.localize ("Tree", "misc.project.diagram");
@@ -78,12 +78,5 @@ public class GoProjectDiagram implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() { return new Vector(); }
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(org.tigris.gef.base.Diagram.class);
-    return pros;
-  }
 
 }

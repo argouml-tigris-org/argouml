@@ -31,7 +31,7 @@ import javax.swing.tree.*;
 import org.argouml.ui.*;
 import org.argouml.cognitive.*;
 
-public class GoListToTypeToItem implements TreeModelPrereqs {
+public class GoListToTypeToItem implements TreeModel {
   
   ////////////////////////////////////////////////////////////////
   // TreeModel implementation
@@ -109,18 +109,4 @@ public class GoListToTypeToItem implements TreeModelPrereqs {
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
 
-  public Vector getPrereqs() {
-    Vector res = new Vector();
-    res.addElement(ToDoList.class);
-    return res;
-  }
-
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(KnowledgeTypeNode.class);
-    pros.addElement(ToDoItem.class);
-    return pros;
-  }
-
-  
 } /* end class GoListToTypeToItem */

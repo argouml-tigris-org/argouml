@@ -35,7 +35,7 @@ import ru.novosoft.uml.behavior.state_machines.*;
 import org.argouml.ui.*;
 import org.tigris.gef.util.Localizer;
 
-public class GoElementToReqElement implements TreeModelPrereqs {
+public class GoElementToReqElement implements TreeModel {
 
   public String toString() {
     return Localizer.localize ("Tree", "misc.element.required-element");
@@ -82,17 +82,5 @@ public class GoElementToReqElement implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() {
-    Vector pros = new Vector();
-    pros.addElement(MModelElement.class);
-    return pros;
-  }
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(MModelElement.class);
-    return pros;
-  }
-
 
 }

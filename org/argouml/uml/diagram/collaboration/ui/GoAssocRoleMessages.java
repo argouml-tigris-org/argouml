@@ -34,7 +34,7 @@ import ru.novosoft.uml.behavior.collaborations.*;
 
 import org.argouml.ui.*;
 
-public class GoAssocRoleMessages implements TreeModelPrereqs {
+public class GoAssocRoleMessages implements TreeModel {
 
   public String toString() { return "AssociationRole->Messages"; }
 
@@ -76,16 +76,5 @@ public class GoAssocRoleMessages implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() {
-    Vector pros = new Vector();
-    pros.addElement(MAssociationRole.class);
-    return pros;
-  }
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(MMessage.class);
-    return pros;
-  }
 
 }

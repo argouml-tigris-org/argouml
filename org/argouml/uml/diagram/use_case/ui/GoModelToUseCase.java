@@ -34,7 +34,7 @@ import ru.novosoft.uml.behavior.use_cases.*;
 
 import org.argouml.ui.*;
 
-public class GoModelToUseCase implements TreeModelPrereqs {
+public class GoModelToUseCase implements TreeModel {
 
   public String toString() { return "Package->Use Case"; }
   
@@ -93,16 +93,5 @@ public class GoModelToUseCase implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() {
-    Vector pros = new Vector();
-    pros.addElement(MModel.class);
-    return pros;
-  }
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(MUseCase.class);
-    return pros;
-  }
 
 }
