@@ -1008,7 +1008,15 @@ public class Modeller
 
             if (j < sJavaDocs.length()) {
               if (sJavaDocs.charAt (j) == '@') {
-                sbPureDocs.append (sJavaDocs.substring (j, sJavaDocs.indexOf('\n',j) + 1));  // afl 05/02/03 fix Issue 1511
+                // if the last javadoc is on the last line
+                // no new line will be found, causing an indexoutofboundexception.
+                int lineEndPos = 0;
+                if(sJavaDocs.indexOf('\n',j) < 0)
+                { lineEndPos = sJavaDocs.length()-2;}
+                else
+                { lineEndPos =sJavaDocs.indexOf('\n',j) + 1;}
+                
+                sbPureDocs.append (sJavaDocs.substring (j, lineEndPos));  // afl 05/02/03 fix Issue 1511
                 // start standard tag
                 // potentially add current tag to set of tagged values...
                 if (sCurrentTagName != null) {
