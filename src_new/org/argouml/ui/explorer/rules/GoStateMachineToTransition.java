@@ -35,7 +35,7 @@ import java.util.Collection;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public class GoStateMachineToTransition implements PerspectiveRule {
+public class GoStateMachineToTransition extends AbstractPerspectiveRule{
 
     public String getRuleName() { return "State Machine->Transition"; }
 

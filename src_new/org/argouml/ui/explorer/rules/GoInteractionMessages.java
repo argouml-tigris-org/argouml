@@ -29,7 +29,7 @@ import java.util.Collection;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
-public class GoInteractionMessages implements PerspectiveRule {
+public class GoInteractionMessages extends AbstractPerspectiveRule{
 
     public String getRuleName() {
         return Translator.localize("Tree", "misc.interaction.messages");

@@ -29,7 +29,7 @@ import java.util.Collection;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 
-public class GoStateToDownstream implements PerspectiveRule {
+public class GoStateToDownstream extends AbstractPerspectiveRule{
 
     public String getRuleName() { return "State->Following States"; }
   

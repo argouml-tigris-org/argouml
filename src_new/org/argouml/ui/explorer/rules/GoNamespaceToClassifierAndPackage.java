@@ -35,7 +35,7 @@ import org.argouml.model.ModelFacade;
  *
  * @since 0.15.2
  */
-public class GoNamespaceToClassifierAndPackage implements PerspectiveRule {
+public class GoNamespaceToClassifierAndPackage extends AbstractPerspectiveRule{
 
     public String getRuleName() {
         return "nsp -> owned elems";

@@ -26,6 +26,7 @@ package org.argouml.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -41,6 +42,9 @@ import org.argouml.ui.explorer.NameOrder;
 import org.argouml.ui.explorer.PerspectiveComboBox;
 import org.argouml.ui.explorer.PerspectiveManager;
 import org.argouml.ui.explorer.TypeThenNameOrder;
+import org.argouml.ui.explorer.PerspectiveConfigurator;
+import org.argouml.uml.ui.UMLAction;
+
 import org.tigris.toolbar.ToolBar;
 
 /**
@@ -134,6 +138,7 @@ public class NavigatorPane
         toolbar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
         toolbar.setFloatable(false);
         toolbar.add(combo);
+        toolbar.add(new ActionPerspectiveConfig());
         
         ToolBar toolbar2 = new ToolBar();
         
@@ -195,5 +200,17 @@ public class NavigatorPane
     public int getQuadrant() {
         return Q_TOP_LEFT;
     }
-
+    
+    class ActionPerspectiveConfig extends UMLAction {
+        
+        public ActionPerspectiveConfig() { super("action.nav-config"); }
+        
+        public void actionPerformed(ActionEvent ae) {
+            
+            PerspectiveConfigurator ncd =
+            new PerspectiveConfigurator(ProjectBrowser.getInstance());
+            ncd.setVisible(true);
+        }
+    }
+    
 } /* end class NavigatorPane */

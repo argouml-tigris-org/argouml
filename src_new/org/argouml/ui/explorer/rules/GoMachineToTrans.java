@@ -28,7 +28,7 @@ import java.util.Collection;
 
 import org.argouml.model.ModelFacade;
 
-public class GoMachineToTrans implements PerspectiveRule {
+public class GoMachineToTrans extends AbstractPerspectiveRule{
 
     public String getRuleName() { return "State Machine->Transition"; }
   

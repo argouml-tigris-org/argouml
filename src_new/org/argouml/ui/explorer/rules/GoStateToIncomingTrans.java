@@ -28,7 +28,7 @@ import java.util.Collection;
 
 import org.argouml.model.ModelFacade;
 
-public class GoStateToIncomingTrans implements PerspectiveRule {
+public class GoStateToIncomingTrans extends AbstractPerspectiveRule{
 
     public String getRuleName() { return "State->Incoming Transitions"; }
 

@@ -32,7 +32,7 @@ import java.util.Vector;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
-public class GoStimulusToAction implements PerspectiveRule {
+public class GoStimulusToAction extends AbstractPerspectiveRule{
 
     public Collection getChildren(Object parent) {
         if (!(org.argouml.model.ModelFacade.isAStimulus(parent)))

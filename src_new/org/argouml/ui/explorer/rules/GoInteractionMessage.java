@@ -34,7 +34,7 @@ import org.argouml.model.ModelFacade;
  * Navrule to navigate from an interaction to a message
  * @author jaap.branderhorst@xs4all.nl
  */
-public class GoInteractionMessage implements PerspectiveRule {
+public class GoInteractionMessage extends AbstractPerspectiveRule{
 
     public String getRuleName() {
 	return Translator.localize ("Tree", "misc.interaction.messages");

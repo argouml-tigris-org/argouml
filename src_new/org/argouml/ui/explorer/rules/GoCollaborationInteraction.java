@@ -28,7 +28,7 @@ import java.util.Collection;
 
 import org.argouml.model.ModelFacade;
 
-public class GoCollaborationInteraction implements PerspectiveRule {
+public class GoCollaborationInteraction extends AbstractPerspectiveRule{
 
     public String getRuleName() { return "Collaboration->Interaction"; }
 

@@ -34,7 +34,7 @@ import org.argouml.model.ModelFacade;
  * 
  * @author jaap.branderhorst@xs4all.nl
  */
-public class GoBehavioralFeatureToStateMachine implements PerspectiveRule {
+public class GoBehavioralFeatureToStateMachine extends AbstractPerspectiveRule{
 
     public String getRuleName() { return "BehavioralFeature->State Machine"; }
 

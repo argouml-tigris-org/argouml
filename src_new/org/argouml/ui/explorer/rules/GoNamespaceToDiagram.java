@@ -42,7 +42,7 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Dec 30, 2002
  */
-public class GoNamespaceToDiagram implements PerspectiveRule {
+public class GoNamespaceToDiagram extends AbstractPerspectiveRule{
 
     public String getRuleName() {
         return Translator.localize("Tree", "misc.package.diagram");

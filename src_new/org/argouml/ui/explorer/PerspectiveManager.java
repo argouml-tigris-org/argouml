@@ -25,11 +25,17 @@
 package org.argouml.ui.explorer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.argouml.ui.explorer.rules.*;
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
 
+import org.apache.log4j.Logger;
 /**
  * Provides a model and event management for perspectives(views) of the
  * Explorer.
@@ -39,11 +45,18 @@ import org.argouml.ui.explorer.rules.*;
  */
 public class PerspectiveManager {
     
+    private static Logger cat =
+	Logger.getLogger(PerspectiveManager.class);
+    
     private static PerspectiveManager instance;
     
     private List perspectiveListeners;
     
     private List perspectives;
+    
+    private List rules;
+    
+    public final String RULES_PACKAGE = "org.argouml.ui.explorer.rules.";
     
     public static PerspectiveManager getInstance() {
         if (instance == null) {
@@ -57,6 +70,8 @@ public class PerspectiveManager {
         
         perspectiveListeners = new ArrayList();
         perspectives = new ArrayList();
+        rules = new ArrayList();
+        loadRules();
     }
     
     public void addListener(PerspectiveManagerListener listener){
@@ -95,13 +110,94 @@ public class PerspectiveManager {
         }
     }
     
+    public void removeAllPerspectives(){
+        
+        Iterator perspectivesIt = getPerspectives().iterator();
+        while(perspectivesIt.hasNext()){
+            
+            removePerspective(perspectivesIt.next());
+        }
+    }
+    
     public List getPerspectives(){
         
         return perspectives;
     }
     
+    /**
+     * tries to load user defined perspectives, if it can't it
+     * calls oldLoadDefaultPerspectives() to load the default perspectives.
+     */
     public void loadDefaultPerspectives(){
         
+        String userPerspectives = 
+            Configuration.getString(Argo.KEY_USER_EXPLORER_PERSPECTIVES, "");
+        
+        StringTokenizer perspectives =new StringTokenizer(userPerspectives,";");
+        
+        if(perspectives.hasMoreTokens()){
+            
+            // load user perspectives
+            while(perspectives.hasMoreTokens()){
+                String perspective = perspectives.nextToken();
+                StringTokenizer perspectiveDetails =
+                    new StringTokenizer(perspective,",");
+                
+                //get the perspective name
+                String perspectiveName = perspectiveDetails.nextToken();
+                
+                ExplorerPerspective userDefinedPerspective =
+                    new ExplorerPerspective(perspectiveName);
+                
+                // make sure there are some rules...
+                if(perspectiveDetails.hasMoreTokens()){
+                    
+                    //get the rules
+                    while(perspectiveDetails.hasMoreTokens()){
+                        
+                        //get the rule name
+                        String ruleName = perspectiveDetails.nextToken();
+                        
+                        // create the rule:
+                        try{
+                            Class ruleClass = 
+                                Class.forName(RULES_PACKAGE+ruleName);
+                            
+                            PerspectiveRule rule =
+                                (PerspectiveRule)ruleClass.newInstance();
+                            
+                            userDefinedPerspective.addRule(rule);
+                            
+                        }catch(Exception ex){
+                            cat.error("could not create rule "+ex);
+                        }
+                    }
+                    
+                }
+                // rule name but no rules
+                else{
+                    continue;
+                }
+                
+                // add the perspective
+                addPerspective(userDefinedPerspective);
+            }
+        }
+        // no user defined perspectives, so load defaults.
+        else{
+            oldLoadDefaultPerspectives();
+        }
+        
+        // one last check that some loaded.
+        if(getPerspectives().size() ==0){
+            oldLoadDefaultPerspectives();
+        }
+    }
+        
+    /**
+     * loads a default set of perspectives.
+     */
+    public void oldLoadDefaultPerspectives(){
         ExplorerPerspective classPerspective = 
             new ExplorerPerspective("Class centric");
         classPerspective.addRule(new GoNamespaceToClassifierAndPackage());
@@ -193,5 +289,125 @@ public class PerspectiveManager {
         addPerspective(associationsPerspective);
         addPerspective(statePerspective);
         addPerspective(transitionsPerspective);
+    }
+    
+    /**
+     * hard coded rules library for now, it is quite a lot of work to 
+     * get all possible rule names in "org.argouml.ui.explorer.rules" from
+     * the classpath.
+     */
+    public void loadRules(){
+        
+        String[] ruleNamesArray =
+        {"GoAssocRoleMessages",
+         "GoBehavioralFeatureToStateDiagram",
+         "GoBehavioralFeatureToStateMachine",
+         "GoClassifierToBeh",
+         "GoClassifierToCollaboration",
+         "GoClassifierToInstance",
+         "GoClassifierToSequenceDiagram",
+         "GoClassifierToStateMachine",
+         "GoClassifierToStructuralFeature",
+         "GoClassToAssociatedClass",
+         "GoClassToNavigableClass",
+         "GoClassToSummary",
+         "GoCollaborationDiagram",
+         "GoCollaborationInteraction",
+         "GoCompositeStateToSubvertex",
+         "GoDiagramToEdge",
+         "GoDiagramToNode",
+         "GoElementToMachine",
+         "GoGenElementToDerived",
+         "GoInteractionMessage",
+         "GoInteractionMessages",
+         "GoLinkStimuli",
+         "GoMachineDiagram",
+         "GoMachineToState",
+         "GoMachineToTrans",
+         "GoMessageAction",
+         "GoModelElementToComment",
+         "GoModelToBaseElements",
+         "GoModelToClass",
+         "GoModelToCollaboration",
+         "GoModelToDiagrams",
+         "GoModelToElements",
+         "GoNamespaceToClassifierAndPackage",
+         "GoNamespaceToDiagram",
+         "GoNamespaceToOwnedElements",
+         "GoOperationToCollaborationDiagram",
+         "GoOperationToCollaboration",
+         "GoOperationToSequenceDiagram",
+         "GoProjectToCollaboration",
+         "GoProjectToDiagram",
+         "GoProjectToModel",
+         "GoProjectToStateMachine",
+         "GoSignalToReception",
+         "GoStateMachineToTop",
+         "GoStateMachineToTransition",
+         "GoStateToDoActivity",
+         "GoStateToDownstream",
+         "GoStateToEntry",
+         "GoStateToExit",
+         "GoStateToIncomingTrans",
+         "GoStateToInternalTrans",
+         "GoStateToOutgoingTrans",
+         "GoStimulusToAction",
+         "GoSummaryToAssociation",
+         "GoSummaryToAttribute",
+         "GoSummaryToIncomingDependency",
+         "GoSummaryToInheritance",
+         "GoSummaryToOperation",
+         "GoSummaryToOutgoingDependency",
+         "GoTransitionToSource",
+         "GoTransitionToTarget",
+         "GoUseCaseToExtensionPoint"};
+         
+         rules = Arrays.asList(ruleNamesArray);
+    }
+    
+    public Collection getRules(){
+        return rules;
+    }
+    
+    public void saveUserPerspectives(){
+        Configuration.setString(Argo.KEY_USER_EXPLORER_PERSPECTIVES, 
+            this.toString());
+    }
+    
+    /**
+     * string representation of the perspectives in the same format as
+     * saved in the user properties.
+     */
+    public String toString(){
+        
+        String perspectives="";
+        
+        Iterator perspectivesIt = getPerspectives().iterator();
+        while(perspectivesIt.hasNext()){
+            
+            ExplorerPerspective perspective = 
+                (ExplorerPerspective)perspectivesIt.next();
+            
+            String name = perspective.toString();
+            
+            perspectives+=name+",";
+            
+            Object[] rules = perspective.getRulesArray();
+            
+            for(int x=0;x<rules.length;x++){
+                
+                PerspectiveRule rule = (PerspectiveRule)rules[x];
+                perspectives+=rule.getClass().getName();
+                
+                if(x<rules.length-1)
+                    perspectives+=",";
+            }
+            
+            if(perspectivesIt.hasNext()){
+                perspectives+=";";
+            }
+        }
+        
+        return perspectives;
     }
 }

@@ -28,7 +28,7 @@ import java.util.Collection;
 
 import org.argouml.model.ModelFacade;
 
-public class GoAssocRoleMessages implements PerspectiveRule {
+public class GoAssocRoleMessages extends AbstractPerspectiveRule{
 
     public String getRuleName() { return "AssociationRole->Messages"; }
 

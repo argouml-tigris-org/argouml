@@ -28,7 +28,7 @@ import java.util.Collection;
 
 import org.argouml.model.ModelFacade;
 
-public class GoCompositeStateToSubvertex implements PerspectiveRule {
+public class GoCompositeStateToSubvertex extends AbstractPerspectiveRule{
 
     public String getRuleName() { return "State->Substates"; }
 

@@ -31,7 +31,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 
-public class GoModelToBaseElements implements PerspectiveRule {
+public class GoModelToBaseElements extends AbstractPerspectiveRule{
     protected static Logger cat =
 	Logger.getLogger(GoModelToBaseElements.class);
 

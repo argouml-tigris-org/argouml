@@ -29,7 +29,7 @@ import java.util.Collection;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
-public class GoClassifierToStructuralFeature implements PerspectiveRule {
+public class GoClassifierToStructuralFeature extends AbstractPerspectiveRule{
 
     public String getRuleName() {
 	return Translator.localize ("Tree", "misc.class.attribute");

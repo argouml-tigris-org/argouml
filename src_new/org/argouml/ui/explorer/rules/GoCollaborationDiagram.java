@@ -31,7 +31,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 
-public class GoCollaborationDiagram implements PerspectiveRule {
+public class GoCollaborationDiagram extends AbstractPerspectiveRule{
 
     public String getRuleName() {
         return "Collaboration->Diagram";

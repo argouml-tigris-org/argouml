@@ -29,7 +29,7 @@ import java.util.Collection;
 import org.argouml.i18n.Translator;
 import org.tigris.gef.base.Diagram;
 
-public class GoDiagramToEdge implements PerspectiveRule {
+public class GoDiagramToEdge extends AbstractPerspectiveRule{
 
     public String getRuleName() {
 	return Translator.localize ("Tree", "misc.diagram.edge");

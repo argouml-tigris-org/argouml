@@ -36,7 +36,7 @@ import org.argouml.model.ModelFacade;
  * 
  * @author jaap.branderhorst@xs4all.nl
  */
-public class GoMachineToState implements PerspectiveRule {
+public class GoMachineToState extends AbstractPerspectiveRule{
 
     public String getRuleName() { return "State Machine->State"; }
 

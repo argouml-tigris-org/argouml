@@ -22,30 +22,20 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.ui.explorer.rules;
 
-import java.util.Collection;
-
-import org.argouml.model.ModelFacade;
 /**
- * Go rule for navigation in the navpane from a classifier to the collaboration
- * representing it.
- * @since Oct 1, 2002
- * @author jaap.branderhorst@xs4all.nl
+ *
+ * @author  alexb
  */
-public class GoClassifierToCollaboration extends AbstractPerspectiveRule{
+public abstract class AbstractPerspectiveRule implements PerspectiveRule {
+    
+    public abstract java.util.Collection getChildren(Object parent);
+    
+    public abstract String getRuleName();
 
-    public String getRuleName() { return "Classifier->Collaboration"; }
-
-    /**
-     * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
-     */
-    public Collection getChildren(Object parent) {
-	if (ModelFacade.isAClassifier(parent)) {
-            return ModelFacade.getCollaborations(parent);
-        }
-        return null;
+    public String toString(){
+        return getRuleName();
     }
-
+    
 }

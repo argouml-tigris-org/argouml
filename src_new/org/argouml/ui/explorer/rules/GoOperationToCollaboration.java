@@ -34,7 +34,7 @@ import org.argouml.model.ModelFacade;
  * @since Oct 1, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class GoOperationToCollaboration implements PerspectiveRule {
+public class GoOperationToCollaboration extends AbstractPerspectiveRule{
 
     public String getRuleName() { return "Operation->Collaboration"; }
 
