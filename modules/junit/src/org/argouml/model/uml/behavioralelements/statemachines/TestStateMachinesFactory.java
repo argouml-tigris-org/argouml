@@ -64,4 +64,30 @@ public class TestStateMachinesFactory extends TestCase {
 	CheckUMLModelHelper.createAndRelease(this, 
 	    StateMachinesFactory.getFactory(), objs);
     }
+    
+     public void testRemoves() {
+    	String [] objs = {
+	     "CallEvent",
+	    "ChangeEvent",
+	    "CompositeState",
+	    // "Event",
+	    "FinalState",
+	    "Guard",
+	    "Pseudostate",
+	    "SignalEvent",
+	    "SimpleState",
+	    "State",
+	    "StateMachine",
+	    // "StateVertex",
+	    "StubState",
+	    "SubmachineState",
+	    "SynchState",
+	    "TimeEvent",
+	    "Transition"
+	};
+
+	CheckUMLModelHelper.testRemove(this, 
+	    StateMachinesFactory.getFactory(), objs);
+    }
+
 }

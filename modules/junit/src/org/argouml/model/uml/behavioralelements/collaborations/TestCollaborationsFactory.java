@@ -48,4 +48,18 @@ public class TestCollaborationsFactory extends TestCase {
 	CheckUMLModelHelper.createAndRelease(this,
 	    CollaborationsFactory.getFactory(), objs);
     }
+    
+    public void testRemoves() {
+    	String [] objs = {
+	    "AssociationEndRole",
+	    "AssociationRole",
+	    "ClassifierRole",
+	    "Collaboration",
+	    "Interaction",
+	    "Message"
+	};
+
+	CheckUMLModelHelper.testRemove(this, 
+	    CollaborationsFactory.getFactory(), objs);
+    }
 }

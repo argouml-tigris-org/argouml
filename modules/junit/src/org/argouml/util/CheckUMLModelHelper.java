@@ -28,8 +28,10 @@ import java.lang.reflect.*;
 
 import junit.framework.*;
 
+import org.apache.log4j.spi.LoggingEvent;
 import org.argouml.model.uml.*;
 import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  *   This class is the base class of tests that tests
@@ -127,6 +129,73 @@ public class CheckUMLModelHelper {
 	Object[] noarguments = { };
 
 	createAndRelease(tc, f, names, noarguments);
+    }
+    
+	/**
+	 * Tests the removal of a list of modelelements (array names) using the remove methods
+	 * defined on the uml factories.
+	 * @param tc
+	 * @param f
+	 * @param names
+	 */
+    public static void testRemove(TestCase tc, AbstractUmlModelFactory f, String[] names) {
+    	for (int i = 0; i < names.length; i++) {
+    		MBase modelelement = null;
+    		try {
+    			Method m = f.getClass().getMethod("create" + names[i], new Class[] {});
+    			modelelement = (MBase)m.invoke(f, new Object[] {});
+    		}
+    		catch (NoSuchMethodException e) {
+    			tc.fail("Method create" + names[i] 
+					+ " does not exist in " + f);
+    		}
+    		catch (InvocationTargetException e1) {
+    			tc.fail("Something went wrong invoking the method create" + 
+    			names[i] + " in " + f);
+    		}
+    		catch (IllegalAccessException e2) {
+    			tc.fail("Illegal access to method create" + 
+    			names[i] + " in " + f);
+    		}
+    		try {
+    			WeakReference wr = new WeakReference(modelelement);
+    			Class clazz = getModelElementClassAsInterface(tc, modelelement.getClass());
+    			Method m = f.getClass().getMethod("remove" + names[i], new Class[] {clazz});
+    			m.invoke(f, new Object[] {modelelement});
+    			modelelement = null;
+    			System.gc();
+				tc.assert("Could not reclaim " + names[i], wr.get() == null);
+    		}
+    		catch (NoSuchMethodException e) {
+    			System.out.println(modelelement.getClass().getName());
+    			tc.fail("Method remove" + names[i] 
+					+ " does not exist in " + f);
+    		}
+    		catch (InvocationTargetException e1) {
+    			tc.fail("Something went wrong invoking the method remove" + 
+    			names[i] + " in " + f);
+    		}
+    		catch (IllegalAccessException e2) {
+    			tc.fail("Illegal access to method remove" + 
+    			names[i] + " in " + f);
+    		}
+    	}
+    }
+    
+    private static Class getModelElementClassAsInterface(TestCase tc, Class modelelement) {
+    	String name = modelelement.getName();
+    	if (name.endsWith("Impl")) {
+    		name = name.substring(0, name.lastIndexOf("Impl"));	
+    		System.out.println(name);
+    	}
+    	Class clazz = null;
+    	try {
+    		clazz = Class.forName(name);
+    	}
+    	catch (ClassNotFoundException cn) {
+    		tc.fail("ClassNotFoundException. Was looking for class: " + name);
+    	}
+    	return clazz;
     }
 }
 
