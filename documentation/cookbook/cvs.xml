@@ -673,14 +673,14 @@ Code generation for C#.
 Source code.
 </para>
 	<para>
-This will contain one directory for each component within
+This will contain one directory for each subsystem within
 ArgoUML.
 They will all compile and be tested with controlled dependencies
-to other components.
+to other subsystems.
 </para>
         <para>
 The upcoming structure is used for the different language part of the
-internationalization component under
+internationalization subsystem under
 <filename class="directory">i18n/<replaceable>language</replaceable></filename>.
 </para>
       </listitem>

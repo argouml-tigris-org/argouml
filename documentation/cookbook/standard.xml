@@ -140,12 +140,12 @@ After the next stable release you (or someone else) can remove
 that method.
 </para>
         <para>
-In the future, when the components are well defined and it is clear
-what public methods and classes that are part of a certain component's
+In the future, when the subsystems are well defined and it is clear
+what public methods and classes that are part of a certain subsystem's
 exported interface 
 we can allow an exception to this rule for public methods and classes 
 that are not.
-(See <xref linkend="components_relationships"></xref>.)
+(See <xref linkend="subsystems_relationships"></xref>.)
 </para>
         <para>
 Rationale:

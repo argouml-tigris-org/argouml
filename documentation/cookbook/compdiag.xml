@@ -18,7 +18,7 @@ TODO: Notation!
 The Diagrams will be located in <classname>org.argouml.???</classname>.
 </para>
       <para>
-The Diagrams is a Layer 2 component. <xref linkend="layer2"></xref>.
+The Diagrams is a Layer 2 subsystem. <xref linkend="layer2"></xref>.
 </para>
       <para>
 The Diagrams are depending on the Model and the GUI framework.

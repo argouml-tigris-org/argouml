@@ -20,15 +20,15 @@ This help is based on the current model that the User works with.
 The Critics are located in <classname>org.argouml.cognitive</classname>.
 </para>
       <para>
-The Critics is a Layer 3 component. See <xref linkend="layer3"></xref>.
+The Critics is a Layer 3 subsystem. See <xref linkend="layer3"></xref>.
 </para>
       <para>
-The Critics component depends on the Model that it works against to take
+The Critics subsystem depends on the Model that it works against to take
 all decisions
 and the To Do Items used to present the information.
 </para>
       <para>
-This component contains the following main class types:
+This subsystem contains the following main class types:
 </para>
       <itemizedlist>
 	<listitem>

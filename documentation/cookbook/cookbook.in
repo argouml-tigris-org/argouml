@@ -8,11 +8,11 @@
 <!ENTITY standards SYSTEM "standard.xml">
 <!ENTITY processes SYSTEM "process.xml">
 
-<!ENTITY componentmodel SYSTEM "compmdl.xml">
-<!ENTITY componentcritics SYSTEM "compcrit.xml">
-<!ENTITY componentdiagrams SYSTEM "compdiag.xml">
-<!ENTITY componentpropertypanels SYSTEM "compprpp.xml">
-<!ENTITY componentinternationalization SYSTEM "compi18n.xml">
+<!ENTITY subsystemmodel SYSTEM "compmdl.xml">
+<!ENTITY subsystemcritics SYSTEM "compcrit.xml">
+<!ENTITY subsystemdiagrams SYSTEM "compdiag.xml">
+<!ENTITY subsystempropertypanels SYSTEM "compprpp.xml">
+<!ENTITY subsysteminternationalization SYSTEM "compi18n.xml">
 <!ENTITY cookbookmodules SYSTEM "cookbook_modules.xml">
 <!ENTITY cookbooklogging SYSTEM "cookbook_logging.xml">
 
@@ -395,7 +395,7 @@ problems found by themselves and others.
   &building;
   &requirements;
 
-<chapter id="components">
+<chapter id="subsystems">
     <title>ArgoUML Design, The Big Picture</title>
 
     <indexterm>
@@ -406,42 +406,54 @@ Currently this is more of a base for discussion and
 ambition but hopefully this will mature and 
 prove useful.
 </para>
-    <para>
-The code within ArgoUML is separated in components 
-that each have a responsibility.
-</para>
-    <para>
-<xref linkend="inside_components"></xref>
-explains each component in details.
-This chapter just gives an overall picture.
-</para>
 
     <indexterm>
-      <primary>layer</primary>
+      <primary>subsystem</primary>
+    </indexterm>
+    <indexterm>
+      <primary>component</primary>
     </indexterm>
     <para>
-The components are organized in layers.
-The purpose of the layers is to keep a clear view
-of what components provide services to others
-and to allow us to know how much is involved
-when testing each component.
+The code within ArgoUML is separated in subsystems 
+that each have a few responsibilities.
 </para>
     <para>
-TODO: Insert UML diagram describing the relation between components and layers.
+The subsystems were earlier called components.
 </para>
     <para>
-This chapter contains 
-a list of all components and what layer they are in
-and the definition of the responsibility of each component.
+In issuezilla each subsystem has its issues sorted in a
+subcomponent with the same name as the subsystem.
+Furthermore the Diagrams subsystem has a set of subcomponents
+for issues connected to the different diagrams.
+</para>
+    <para>
+This chapter gives an overall picture with 
+a list of subsystems, 
+their dependencies, and
+their main responsibility.
+<xref linkend="inside_subsystems"></xref>
+explains each subsystem in detail.
+</para>
+
+    <para>
+The subsystems are organized in layers.
+The purpose of the layers is to make it easy to see in what direction
+the dependencies are and thus allow us to know what dependencies are
+to be removed in the cases where we have circular dependencies.
+This will also allow us to know which other subsystems that are involved
+when testing a subsystem.
+</para>
+    <para>
+TODO: Insert UML diagram describing the relation between subsystems and layers.
 </para>
 
     <sect1>
-      <title>Definition of component</title>
+      <title>Definition of subsystem</title>
       <para>
-All ArgoUML code is organized in components.
+All ArgoUML code is organized in subsystems.
 </para>
       <para>
-Each component has:
+Each subsystem has:
 <itemizedlist>
 	  <listitem>
 	    <para>A name</para>
@@ -449,40 +461,51 @@ Each component has:
 	  <listitem>
 	    <para>A single directory/java package where it resides</para>
 	    <para>
-Subparts of the component can reside in subdirectories of this directory.
-Auxiliary parts of the components can reside somewhere else.
+Subparts of the subsystem can reside in subdirectories of this directory.
+Auxiliary parts, implemented in other products, of the subsystems
+can reside somewhere else.
+Notice that each other product used by ArgoUML is, in the design,
+located within one of the existing subsystems.
+This means that a change of version or indeed a change of choice
+of such a subproduct is an internal matter for the subsystem 
+and should ideally not affect any other subsystem.
 </para>
 	  </listitem>
+          <listitem>
+            <para>
+A section in the chapter <xref linkend="inside_subsystems"></xref>.
+</para>
+          </listitem>
 	</itemizedlist>
 </para>
       <para>
-Each component has a single Facade class that can be used by
-all other components when using the component.
+Each subsystem can have a Facade class that can be used by
+all other subsystems when using the subsystem.
 The Facade class is called
-<classname><replaceable>ComponentName</replaceable>Facade</classname>
-and is located in the component package.
+<classname><replaceable>SubsystemName</replaceable>Facade</classname>
+and is located in the subsystem package.
 How it is used is primarily documented in the class file itself 
 (as javadoc) but the more complex picture is documented in the
-Cookbook (in <xref linkend="inside_components"></xref>).
+Cookbook (in <xref linkend="inside_subsystems"></xref>).
 </para>
       <para>
-Each component can also have one or several plug-in interfaces.
+Each subsystem can also have one or several plug-in interfaces.
 That is Facade objects where modules or plug-ins can connect themselves
-to modify or augment the behavior of that component.
+to modify or augment the behavior of that subsystem.
 </para>
       <para>
-The plug-in interfaces are also all located in the component package
+The plug-in interfaces are also all located in the subsystem package
 and called
-<classname><replaceable>ComponentName</replaceable>Plugin<replaceable>Plug-inType</replaceable></classname>.
+<classname><replaceable>SubsystemName</replaceable>Plugin<replaceable>Plug-inType</replaceable></classname>.
 Example: 
 <classname>ModelPluginDiagram</classname>, 
 <classname>ModelPluginType</classname>.
 </para>
       <para>
-If the component uses a callback-technique
-the callback is always made to an interface.
-The interface is also in the component package and it is called
-<classname><replaceable>ComponentName</replaceable><replaceable>Plug-inType</replaceable>Interface</classname>.
+If the subsystem uses a callback-technique
+the callback is always made to an interface defined by the subsystem.
+The interface is also in the subsystem package and it is called
+<classname><replaceable>SubsystemName</replaceable><replaceable>Plug-inType</replaceable>Interface</classname>.
 Example:
 <classname>ModelDiagramInterface</classname>,
 <classname>ModelTypeInterface</classname>.
@@ -494,14 +517,25 @@ Example:
 	  </imageobject>
         </mediaobject>
 </para>
+      <para>
+The section about the subsystem 
+in the chapter <xref linkend="inside_subsystems"></xref>
+shall for each subsystem contain
+the responsibilities,
+the package name,
+the API,
+the Facade (if any),
+all the plug-in interfaces (if any),
+and documents the insides of the subsystem.
+      </para>
     </sect1>
 
-    <sect1 id="components_relationships">
-      <title>Relationship of the components</title>
+    <sect1 id="subsystems_relationships">
+      <title>Relationship of the subsystems</title>
 
       <para>
-Each component that is used by other components provide
-two ways for other components to use them:
+Each subsystem that is used by other subsystems provide
+two ways for other subsystems to use them:
         <itemizedlist>
           <listitem>
             <para>
@@ -510,13 +544,13 @@ The Facade class
             <para>
 The use of Facade class is not wide spread in ArgoUML.
 This is because ArgoUML is traditionally built as a whole
-and no components were clearly defined.
+and no subsystems were clearly defined.
 </para>
             <para>
-A Facade class provides the most common functions other components
-want to do when using that components to reduce the need of having
+A Facade class provides the most common functions other subsystems
+want to do when using that subsystems to reduce the need of having
 to use anything else but the Facade class.
-The Facade class should be very much more stable than the component
+The Facade class should be very much more stable than the subsystem
 itself.
 Methods in the Facade should change really slowly and only be 
 removed after several months (and one stable release) of deprecation.
@@ -524,80 +558,97 @@ removed after several months (and one stable release) of deprecation.
             <para>
 The Facade class is documented in the class file itself (as javadoc)
 and the more complex picture (if needed) is documented in the
-Cookbook (in <xref linkend="inside_components"></xref>).
+Cookbook (in <xref linkend="inside_subsystems"></xref>).
 </para>
           </listitem>
           <listitem>
             <para>
-Calls to public methods
+An API with calls to public methods in appointed classes
 </para>
             <para>
-Traditionally components interface through public methods and
-public variables.
+Traditionally subsystems communicate through public methods and
+public variables and
+the subsystems, as defined by the responsibilities,
+are spread over several package setting aside the java visibility rules.
+For this reason it is not well-known or documented
+what public methods form part of a subsystem's API and
+what public methods are internal to a subsystem.
 For this reason, always exercise extreme caution when changing
-the signature of a public method. 
+the signature of a public method.
 (See <xref linkend="groundrules"></xref>.)
 </para>
             <para>
+In order not to worsen things, make it very clear when adding a new
+public method, if it is part of the subsystem's API or not
+(in the javadoc of that method).
+</para>
+            <para>
 This way of communicating is still to be used when it is not
-convenient to use the Facade for a specific use of that component.
+convenient to use the Facade for a specific use of that subsystem.
 </para>
           </listitem>
         </itemizedlist>
-For each component X in ArgoUML that uses the component Y 
-the designer of that component X, 
-must decide if he wants to use calls to public methods
-when using the component Y 
+Notice that the Facade is normally a part of the API or 
+a simplified version of the API.
+</para>
+      <para>
+For each subsystem X in ArgoUML that uses the subsystem Y 
+the designer of the subsystem X, 
+must decide if he wants to use the API of Y
+when using the subsystem Y 
 (putting a set of import org.argouml.Y.internals.blabla.*; statements
-in each file in the files of component X that uses component Y)
-or just use the Facade class of component Y
+in each file of subsystem X that uses subsystem Y)
+or use the Facade class of subsystem Y
 (putting only one import org.argouml.Y.YFacade; 
-in each file in the component X that uses component Y).
+in each file in the subsystem X that uses subsystem Y).
 </para>
-            <para>
-The public calls solution 
-makes the component X depending on the component Y meaning
-that when we change the insides of the component Y we must also change
-component X.
+      <para>
+The API solution 
+makes the subsystem X depending on the subsystem Y meaning
+that when we change the API of the subsystem Y we must also change
+subsystem X.
 The facade calls solution
-doesn't make the component X depending on the component Y
-but just the Facade of component Y.
+doesn't make the subsystem X depending on the API of subsystem Y
+but just the Facade of subsystem Y.
 </para>
-            <para>
-If the public calls solution or facade calls solution is used
-shall be described in the Cookbook's description of component X
-in the list of used components.
+      <para>
+If the API or Facade solution is used
+shall be described in the Cookbook's description of subsystem X
+in the list of used subsystems.
 </para>
     </sect1>
 
     <sect1>
       <title>Definition of layer</title>
 
+      <indexterm>
+        <primary>layer</primary>
+      </indexterm>
       <para>
 Layers are used to organize and 
-clairify the relationships between the different components
+clairify the relationships between the different subsystems
 within ArgoUML.
 </para>
 
       <para>
 ArgoUML is built from the bottom and up.
-Components on a higher level are relying on components
+Subsystems on a higher level depend on subsystems
 on a lower level and never the other way around.
-A component cannot even rely on a component in the same layer.
+Subsystems don't depend on a subsystem in the same layer.
 </para>
 
       <para>
-This means that when testing a component,
-it can always be tested with just that component and
-components on lower levels.
+This means that when testing a subsystem,
+it can always be tested with just that subsystem and
+subsystems on lower levels.
 </para>
 
     </sect1>
 
     <sect1 id="layer0">
-      <title>Layer 0 - Description of components</title>
+      <title>Layer 0 - Description of subsystems</title>
       <para>
-Layer 0 contains some infrastructure components that
+Layer 0 contains some infrastructure subsystems that
 just are there for every other layer to use.
 </para>
       <para>
@@ -631,7 +682,7 @@ Every other module uses these strings in all communcations with
 the user.
 </para>
       <para>
-The Internationalization Component is described in detail in
+The Internationalization Subsystem is described in detail in
 <xref linkend="internationalization"></xref>.
 </para>
 	</listitem>
@@ -642,7 +693,7 @@ The Internationalization Component is described in detail in
 	    <primary>JRE</primary>
 	  </indexterm>
 	  <para>
-Every other component can use the classes available with the JRE.
+Every other subsystem can use the classes available with the JRE.
 </para>
 	</listitem>
 
@@ -658,14 +709,14 @@ Every other component can use the classes available with the JRE.
     </sect1>
 
     <sect1 id="layer1">
-      <title>Layer 1 - Description of components</title>
+      <title>Layer 1 - Description of subsystems</title>
       <para>
 Layer 1 is the lowest layer.
-The components in this layer do not rely on any other part
+The subsystems in this layer do not rely on any other part
 (except layer 0)
 of ArgoUML to do their work.
 They can all be tested in full individually 
-i.e. independant of any other component.
+i.e. independant of any other subsystem.
 </para>
       <para>
 <itemizedlist>
@@ -700,7 +751,7 @@ The Model is described in detail in
 This is the To do items. They can be created, deleted and saved.
 </para>
 	    <para>
-The To Do Items Component is described in detail in 
+The To Do Items Subsystem is described in detail in 
 <xref linkend="todoitems"></xref>.
 </para>
 	  </listitem>
@@ -713,10 +764,10 @@ The To Do Items Component is described in detail in
 	    <para>
 This is the framework with menus, tabs, and panes
 available for the other
-components to fill with actions and contents.
+subsystems to fill with actions and contents.
 </para>
 	    <para>
-The GUI Framework Component is described in detail in 
+The GUI Framework Subsystem is described in detail in 
 <xref linkend="guiframework"></xref>.
 </para>
 	  </listitem>
@@ -730,11 +781,11 @@ The GUI Framework Component is described in detail in
 Not yet implemented.
 </para>
 	    <para>
-This is the component that the other components can call
+This is the subsystem that the other subsystems can call
 to present some help for the user.
 </para>
 	    <para>
-The Help System Component is described in detail in 
+The Help System Subsystem is described in detail in 
 <xref linkend="help"></xref>.
 </para>
 	  </listitem>
@@ -751,9 +802,9 @@ The Help System Component is described in detail in
     </sect1>
 
     <sect1 id="layer2">
-      <title>Layer 2 - Description of components</title>
+      <title>Layer 2 - Description of subsystems</title>
       <para>
-These components rely on components of layer 1 in order to do their
+These subsystems rely on subsystems of layer 1 in order to do their
 work.
 </para>
 
@@ -771,10 +822,10 @@ work.
 This is the diagram view of the model.
 The notation is a property that belongs in the Diagrams
 so the different language register their provided notation 
-in the Diagrams component.
+in the Diagrams subsystem.
 </para>
 	    <para>
-The Diagrams Component is described in detail in 
+The Diagrams Subsystem is described in detail in 
 <xref linkend="diagrams"></xref>.
 </para>
 	  </listitem>
@@ -788,7 +839,7 @@ The Diagrams Component is described in detail in
 This is the property panel view of the model.
 </para>
 	    <para>
-The Property Panels Component is described in detail in 
+The Property Panels Subsystem is described in detail in 
 <xref linkend="propertypanels"></xref>.
 </para>
 	  </listitem>
@@ -808,7 +859,7 @@ The Property Panels Component is described in detail in
 This is the tree view of the model.
 </para>
 	    <para>
-The Explorer Component is described in detail in 
+The Explorer Subsystem is described in detail in 
 <xref linkend="explorer"></xref>.
 </para>
 	  </listitem>
@@ -824,7 +875,7 @@ and the point where each language
 with Code Generation possibility registers.
 </para>
 	    <para>
-The Code Generation Component is described in detail in 
+The Code Generation Subsystem is described in detail in 
 <xref linkend="codegeneration"></xref>.
 </para>
 	  </listitem>
@@ -840,7 +891,7 @@ and the point where each language
 with Reverse Engineering possibility registers.
 </para>
 	    <para>
-The Reverse Engineering Component is described in detail in 
+The Reverse Engineering Subsystem is described in detail in 
 <xref linkend="reverseengineering"></xref>.
 </para>
 	  </listitem>
@@ -854,11 +905,11 @@ The Reverse Engineering Component is described in detail in
 	      <primary>Pluggable interface</primary>
 	    </indexterm>
 	    <para>
-This is the load mechanism for loading all Layer 3 components and
+This is the load mechanism for loading all Layer 3 subsystems and
 other modules into ArgoUML.
 </para>
 	    <para>
-The Module Loader Component is described in detail in 
+The Module Loader Subsystem is described in detail in 
 <xref linkend="moduleloader"></xref>.
 </para>
 	  </listitem>
@@ -872,9 +923,9 @@ The Module Loader Component is described in detail in
 	</mediaobject>
 </para>
       <para>
-The components are all started and initiated from the Application component.
-The Application component starts the ball rolling.
-The Application component is  described in detail in
+The subsystems are all started and initiated from the Application subsystem.
+The Application subsystem starts the ball rolling.
+The Application subsystem is  described in detail in
 <xref linkend="application"></xref>.
 </para>
       <para>
@@ -887,9 +938,9 @@ The Application component is  described in detail in
     </sect1>
 
     <sect1 id="layer3">
-      <title>Layer 3 - Description of components</title>
+      <title>Layer 3 - Description of subsystems</title>
       <para>
-These components are primarily connected through the 
+These subsystems are primarily connected through the 
 pluggable interfaces meaning that they can be
 individually disabled using the module loader.
 </para>
@@ -906,7 +957,7 @@ individually disabled using the module loader.
 This is the ArgoUML connection to the java language.
 </para>
 	    <para>
-The Java Component is described in detail in 
+The Java Subsystem is described in detail in 
 <xref linkend="java"></xref>.
 </para>
 	  </listitem>
@@ -936,7 +987,7 @@ See <xref linkend="otherlanguages"></xref>.
 This is the critics.
 </para>
 	    <para>
-The Critics Component is described in detail in 
+The Critics Subsystem is described in detail in 
 <xref linkend="critics"></xref>.
 </para>
 	  </listitem>
@@ -950,7 +1001,7 @@ The Critics Component is described in detail in
 This is the editing of the OCL strings.
 </para>
 	    <para>
-The OCL Component is described in detail in 
+The OCL Subsystem is described in detail in 
 <xref linkend="ocl"></xref>.
 </para>
 	  </listitem>
@@ -1011,7 +1062,7 @@ Has to be rewritten.
     <sect1>
       <title>What is their task?</title>
       <para>
-(visual component, model, controller, ...)
+(visual subsystem, model, controller, ...)
 </para>
     </sect1>
 -->
@@ -1138,11 +1189,11 @@ ArgoUML itself breaks down into several components. The graphic does not reflect
 </chapter>
 
 
-<chapter id="inside_components">
-<title>Inside the components</title>
+<chapter id="inside_subsystems">
+<title>Inside the subsystems</title>
     <warning>
       <para>
-This chapter is currently under rework with new component organization.
+This chapter is currently under rework with new subsystem organization.
 </para>
       <para>
 Things that are not actually in place are: TargetManager
@@ -1151,21 +1202,21 @@ Things that are not actually in place are: TargetManager
 <para>...</para>
 
 <!--
-    Each section in this chapter describes a component.
+    Each section in this chapter describes a subsystem.
     It starts with:
     Purpose - one or two sentences/lines.
-    Where that component is located.
+    Where that subsystem is located.
     What layer it belongs to.
  -->
 
 
-    &componentmodel;
-    &componentcritics;
-    &componentdiagrams;
-    &componentpropertypanels;
+    &subsystemmodel;
+    &subsystemcritics;
+    &subsystemdiagrams;
+    &subsystempropertypanels;
 
     <sect1 id="reverseengineering">
-      <title>Reverse Engineering Component</title>
+      <title>Reverse Engineering Subsystem</title>
       <indexterm>
 	<primary>Reverse Engineering</primary>
       </indexterm>
@@ -1180,13 +1231,13 @@ The Reverse Engineering is located in
 <classname>org.argouml.uml.reveng</classname>.
 </para>
       <para>
-The Reverse Engineering Component is a Layer 2 component.
+The Reverse Engineering Subsystem is a Layer 2 subsystem.
 See <xref linkend="layer2"></xref>.
 </para>
     </sect1>
 
     <sect1 id="codegeneration">
-      <title>Code Generation Component</title>
+      <title>Code Generation Subsystem</title>
       <indexterm>
 	<primary>Code Generation</primary>
       </indexterm>
@@ -1201,7 +1252,7 @@ The Code Generation is located in
 <classname>org.argouml.language</classname>.
 </para>
       <para>
-The Code Generation component is a Layer 2 component.
+The Code Generation subsystem is a Layer 2 subsystem.
 See <xref linkend="layer2"></xref>.
 </para>
     </sect1>
@@ -1236,7 +1287,7 @@ The java things are located in
 <classname>org.argouml.language.java</classname>.
 </para>
       <para>
-The Java component is a Layer 3 component. See <xref linkend="layer3"></xref>.
+The Java subsystem is a Layer 3 subsystem. See <xref linkend="layer3"></xref>.
 </para> 
 
 <sect2 id="howdoi_reverse">
@@ -1403,7 +1454,7 @@ F E D
     <sect1 id="otherlanguages">
       <title>Other languages</title>
       <para>
-Each other language supported by ArgoUML has its own component.
+Each other language supported by ArgoUML has its own subsystem.
 They are each different in level of support and implementation
 language.
 </para>
@@ -1432,16 +1483,16 @@ Java class files has only reverse engineering.
       </indexterm>
       <para>
 Purpose - Provide an infrastructure with menus, tabs and panes available
-for the other components to fill with actions and contents.
+for the other subsystems to fill with actions and contents.
 </para>
       <para>
-This component has no knowledge of UML, Critics, Diagrams, or Model.
+This subsystem has no knowledge of UML, Critics, Diagrams, or Model.
 </para>
       <para>
 The GUI Framework is located in <classname>org.argouml.???</classname>.
 </para>
       <para>
-The GUI Framework is a Layer 1 component. See <xref linkend="layer1"></xref>.
+The GUI Framework is a Layer 1 subsystem. See <xref linkend="layer1"></xref>.
 </para>
       <para>
 This is implemented directly on top of Swing and Java2.
@@ -1481,9 +1532,9 @@ Responsibility to start the ball rolling.
 The Application is located in <classname>org.argouml.application</classname>.
 </para>
       <para>
-The Application is a Layer 3 component. 
+The Application is a Layer 3 subsystem. 
 It is however not loaded from the Module loader 
-as all other Layer 3 components.
+as all other Layer 3 subsystems.
 </para>
       <para>
 The entry point is called
@@ -1518,7 +1569,7 @@ or a newly generated project (see Project.makeEmptyProject()).
 	<para>
 Currently (May 2003) the Details pane contains several tabs:
 Property Panels (See <xref linkend="propertypanels"></xref>,
-Critics explanations and wizards (belonging to the Critics component)
+Critics explanations and wizards (belonging to the Critics subsystem)
 (See <xref linkend="critics"></xref>),
 Documentation,
 Style,
@@ -1529,7 +1580,7 @@ and
 Tagged values.
 	<warning>
 	  <para>
-It is not clear in what component
+It is not clear in what subsystem
 Documentation, 
 Style, 
 Source,
@@ -1591,7 +1642,7 @@ The Help System is not yet implemented.
 The Help System will be located in <classname>org.argouml.help</classname>.
 </para>
       <para>
-The Help System is a Layer 1 component. See <xref linkend="layer1"></xref>.
+The Help System is a Layer 1 subsystem. See <xref linkend="layer1"></xref>.
 <!--
 TODO: It however violates the layer concept by providing menu items that fit
 into the GUI Framework.
@@ -1603,7 +1654,7 @@ Javahelp or some other help function will probably be used.
 
 </sect1>
 
-    &componentinternationalization;
+    &subsysteminternationalization;
     &cookbooklogging;
 
 
@@ -1613,7 +1664,7 @@ Javahelp or some other help function will probably be used.
 Purpose - to provide the infrastructure to run everything.
 </para>
       <para>
-The JRE is a Layer 0 component. See <xref linkend="layer1"></xref>.
+The JRE is a Layer 0 subsystem. See <xref linkend="layer1"></xref>.
 It is not distributed with ArgoUML but considered to be 
 a precondition in the same respect as the user's host.
 </para>
@@ -1638,7 +1689,7 @@ The To do items are located in
 <classname>org.argouml.?</classname>
 </para>
       <para>
-The To do items is a Layer 1 component. See <xref linkend="layer1"></xref>.
+The To do items is a Layer 1 subsystem. See <xref linkend="layer1"></xref>.
 </para>
     </sect1>
 
@@ -1654,7 +1705,7 @@ The Explorer will be located in
 <classname>org.argouml.ui.navigator ??</classname>.
 </para>
       <para>
-The Explorer is a Layer 2 component. See <xref linkend="layer2"></xref>.
+The Explorer is a Layer 2 subsystem. See <xref linkend="layer2"></xref>.
 </para>
       <para>
 Several tree views are provided by means of Perspectives.
@@ -1863,7 +1914,7 @@ The Module loader will be located in
 <classname>org.argouml.?</classname>.
 </para>
       <para>
-The Module loader is a Layer 2 component. See <xref linkend="layer2"></xref>.
+The Module loader is a Layer 2 subsystem. See <xref linkend="layer2"></xref>.
 </para>
       <para>
 Currently the module loader is located in
@@ -1877,8 +1928,8 @@ This handles the enabling and disabling of every module.
       <para>
 An idea on how it could work:
 It is then the modules responsibility to connect and register to
-the component or components it is going to work with using that
-components Facade or Plugin interface.
+the subsystem or subsystems it is going to work with using that
+subsystems Facade or Plugin interface.
 </para>
       <para>
 For details on how to build a module
@@ -1919,7 +1970,7 @@ The OCL is located in
 <classname>org.argouml.ocl</classname>.
 </para>
       <para>
-The OCL is a Layer 3 component. See <xref linkend="layer3"></xref>.
+The OCL is a Layer 3 subsystem. See <xref linkend="layer3"></xref>.
 </para>
       <para>
 The OCL editor gui interface is 
@@ -1945,7 +1996,7 @@ it doesn't have anything to do with ocl constraints in your uml model.
 	<indexterm>
 	  <primary>Dresden OCL Toolkit</primary>
 	</indexterm>
-Currently this component is more or less only 
+Currently this subsystem is more or less only 
 Dresden OCL Toolkit
 and adaptation.
 </para>

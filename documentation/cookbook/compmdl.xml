@@ -13,7 +13,7 @@ and register interest in changes to the model.
 The Model is located in <classname>org.argouml.model</classname>.
 </para>
       <para>
-The Model is a Layer 1 component. See <xref linkend="layer1"></xref>.
+The Model is a Layer 1 subsystem. See <xref linkend="layer1"></xref>.
 </para>
       <para>
 This is currently implemented using NSUML internally to implement 
@@ -21,7 +21,7 @@ the UML model.
 The plan is to replace NSUML with some JMI compliant model instead
 (probably MDR),
 and for that reason
-all interfaces to the Model component using NSUML objects are
+all interfaces to the Model subsystem using NSUML objects are
 to be replaced by interfaces without NSUML object and
 eventually removed.
 </para>
@@ -435,24 +435,24 @@ standard instead of our own implementation.
     <title>How to work against the model</title>
 
     <para>
-NS-UML is used within the Model component to keep all data structures
+NS-UML is used within the Model subsystem to keep all data structures
 in place.
 Eventually we will change that to JMI/MDR that is newer and better and 
 will take us into UML 1.4, UML 1.5 and UML 2.0.
 Working directly against NS-UML or JMI/MDR will make changes in the
 NS-UML or JMI/MDR affect large portions of the code.
-For this reason we have in the Model component
+For this reason we have in the Model subsystem
 a set of classes that lay between the NS-UML and JMI/MDR that
 hides the apis of NS-UML or JMI/MDR between something that will not
 change while moving between them.
-This is the Facade classes of the Model component i.e. the ModelFacade.
+This is the Facade classes of the Model subsystem i.e. the ModelFacade.
 There are also other classes that hides the internals of NS-UML like the
 Factories and the UMLEventPump.
 </para>
     <para>
 Here follows a list of how different things are done for the purpose
 of making the transition easy.
-The plan is to move everything in the Model component 
+The plan is to move everything in the Model subsystem 
 (under <classname>org.argouml.model.*</classname>)
 from NS-UML to JMI/MDR and
 everything else within ArgoUML to the ModelFacade/ArgoUML solution.

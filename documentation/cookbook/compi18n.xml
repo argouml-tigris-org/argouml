@@ -19,7 +19,7 @@
 	<primary>ResourceBundles</primary>
       </indexterm>
       <para>
-Purpose - to provide the infrastructure that the other components can
+Purpose - to provide the infrastructure that the other subsystems can
 use to translate strings;
 to provide the infrastructure that makes it possible to plug in
 new languages;
@@ -37,7 +37,7 @@ and partly in
 - all files for a specific language.
 </para>
       <para>
-The Internationalization is a Layer 0 component. 
+The Internationalization is a Layer 0 subsystem. 
 See <xref linkend="layer0"></xref>.
 </para>
 
