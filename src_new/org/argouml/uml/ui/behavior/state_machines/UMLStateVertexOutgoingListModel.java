@@ -3,14 +3,14 @@
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -24,16 +24,18 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
+import java.util.ArrayList;
+
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
  * Listmodel for the outgoing transitions of a StateVertex
+ * 
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLStateVertexOutgoingListModel
-    extends UMLModelElementListModel2 {
+public class UMLStateVertexOutgoingListModel extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLStateVertexOutgoingListModel.
@@ -46,14 +48,22 @@ public class UMLStateVertexOutgoingListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(ModelFacade.getOutgoings(getTarget()));
+        ArrayList c = new ArrayList(ModelFacade.getOutgoings(getTarget()));
+        ArrayList i = new ArrayList(ModelFacade
+                .getInternalTransitions(getTarget()));
+        c.removeAll(i);
+        setAllElements(c);
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
-        return ModelFacade.getOutgoings(getTarget()).contains(element);
+    protected boolean isValidElement(Object/* MBase */element) {
+        ArrayList c = new ArrayList(ModelFacade.getOutgoings(getTarget()));
+        ArrayList i = new ArrayList(ModelFacade
+                .getInternalTransitions(getTarget()));
+        c.removeAll(i);
+        return c.contains(element);
     }
 
 }
