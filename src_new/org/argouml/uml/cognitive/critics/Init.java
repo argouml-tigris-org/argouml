@@ -184,15 +184,20 @@ public class Init {
   public static CompoundCritic noTrans2 = new CompoundCritic(crNoTransitions,
 					       crNoOutgoingTransitions);
 
+    // under testing / needs-more-work - mkl
+    //public static Critic crConsiderFacade = new CrConsiderFacade();
+
   /** static initializer, register all appropriate critics */
   public static void init() {
 //     try {
       java.lang.Class modelCls = MModelImpl.class;
+      java.lang.Class packageCls = MPackageImpl.class;
       java.lang.Class modelElementCls = MModelElementImpl.class;
       java.lang.Class classCls = MClassImpl.class;
       java.lang.Class classifierCls = MClassifierImpl.class;
       java.lang.Class interfaceCls = MInterfaceImpl.class;
       java.lang.Class attrCls = MAttributeImpl.class;
+      java.lang.Class paramCls = MParameterImpl.class;
       java.lang.Class operCls = MOperationImpl.class;
       java.lang.Class iassocCls = MAssociationImpl.class;
       java.lang.Class assocCls = MAssociationImpl.class;
@@ -269,7 +274,7 @@ public class Init {
       Agency.register(crNoAssociations, useCaseCls);
       Agency.register(crNoOperations, classCls);
       Agency.register(crConstructorNeeded, classCls);
-      Agency.register(crEmptyPackage, modelCls);
+      Agency.register(crEmptyPackage, packageCls);
       Agency.register(crNonAggDataType, datatypeCls);
 //      Agency.register(crOppEndConflict, classifierCls);
       Agency.register(crParamTypeNotImported, operCls);
@@ -285,6 +290,7 @@ public class Init {
       Agency.register(crIllegalName, assocCls);
       Agency.register(crIllegalName, operCls);
       Agency.register(crIllegalName, attrCls);
+      Agency.register(crIllegalName, paramCls);
       Agency.register(crIllegalName, stateCls);
       Agency.register(crReservedName, classifierCls);
       Agency.register(crReservedName, operCls);
@@ -341,6 +347,9 @@ public class Init {
 
       Agency.register(crNodesOverlap, diagramCls);
       Agency.register(crZeroLengthEdge, edgeCls);
+
+      // under testing
+      // Agency.register(crConsiderFacade, packageCls);
   }
 
       
