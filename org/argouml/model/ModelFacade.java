@@ -1924,10 +1924,10 @@ public class ModelFacade {
      */
     public static boolean isAConcurrentRegion(Object handle) {
         if ((handle instanceof MCompositeState)
-                && (getContainer(handle)!=null)) {
+                && (getContainer(handle) != null)) {
             return (isConcurrent(getContainer(handle)));
         }
-        return illegalArgumentBoolean(handle);
+        return false;
     }
 
     
