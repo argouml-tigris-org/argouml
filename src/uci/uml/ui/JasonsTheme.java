@@ -70,4 +70,6 @@ public class JasonsTheme extends MetalTheme {
     public FontUIResource getMenuTextFont() { return controlFont;}
     public FontUIResource getEmphasisTextFont() { return windowTitleFont;}
     public FontUIResource getSubTextFont() { return smallFont;}
+  // added for Swing-1.0.2
+    public FontUIResource getWindowTitleFont() { return windowTitleFont; }
 }
