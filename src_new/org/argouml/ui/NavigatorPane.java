@@ -83,16 +83,15 @@ import ru.novosoft.uml.model_management.MModel;
  * The upper-left pane of the main Argo/UML window, shows a tree view
  * of the UML model.
  *
- * <p>This shows the
- * contents of the current project in one of several ways that are
- * determined by NavPerspectives.
+ * <p>The model can be viewed from different tree "Perspectives".
  *
- * <p>This does not allow drag and drop as yet. This is considered
- * a must have for as yet undetermined future.
- *
- * <p>other feature enhancements include showing the presence of
- * note connected to individual UML artifacts and to diagrams
- * themselves.
+ * <p>The public interface of this class provides the following:
+ * <ol>
+ *  <li>selection via getSelectedObject(), getTree().getSelectionPaths()</li>
+ *  <li>model changed notification via forceUpdate()</li>
+ *  <li>History via various *nav*() methods</li>
+ *  <li>statistics gathering - not really used</li>
+ * </ol>
  *
  * $Id$
  */
@@ -100,7 +99,6 @@ public class NavigatorPane
     extends JPanel
     implements
         ItemListener,
-        TreeSelectionListener,
         PropertyChangeListener,
         QuadrantPanel {
     
@@ -116,28 +114,28 @@ public class NavigatorPane
     ////////////////////////////////////////////////////////////////
     // instance variables
     
-    /** needs documenting */
+    /** the java.swing.JTree component */
     protected DisplayTextTree _tree;
 
-    /** needs documenting */
+    /** toolbar for history navigation and perspectives config dialog*/
     protected Toolbar _toolbar;
 
-    /** needs documenting */
+    /** selects the perspective */
     protected JComboBox _combo;
     
-    /** needs documenting */
+    /** the current perspective */
     protected NavPerspective _curPerspective;
     
-    /** vector of TreeModels */
+    /** vector of TreeModels, that are the perspectives */
     protected Vector _perspectives;
     
-    /** needs documenting */
+    /** tree root object */
     protected Object _root;
     
-    /** needs documenting */
+    /** a vector of history items - not used - to be factored out...*/
     protected Vector _navHistory;
     
-    /** needs documenting */
+    /** history variable - to be factored out */
     protected int _historyIndex;
     
     
@@ -161,12 +159,8 @@ public class NavigatorPane
         
         _combo.addItemListener(this);
         
-        _tree.addTreeSelectionListener(this);
         _tree.addMouseListener(new NavigatorMouseListener());
-        _tree.addKeyListener(new NavigatorKeyListener());
-        //_tree.addActionListener(new NavigatorActionListener());
-        //_tree.setEditable(true);
-        //_tree.getCellEditor().addCellEditorListener(this);
+        _tree.addTreeSelectionListener(new NavigationTreeSelectionListener());
         
         toolbarPanel.add(_toolbar, BorderLayout.WEST);
         add(toolbarPanel, BorderLayout.NORTH);
@@ -194,6 +188,7 @@ public class NavigatorPane
         _perspectives = new Vector();
         _navHistory = new Vector();
         _historyIndex = 0;
+        
     }
     
     ////////////////////////////////////////////////////////////////
@@ -217,8 +212,11 @@ public class NavigatorPane
     public Vector getPerspectives() {
         return _perspectives;
     }
-    /** needs documenting */
-    public void setPerspectives(Vector pers) {
+    /** helper method for the 
+     *    - constructor
+     *     - NavConfigDialog
+     */
+    void setPerspectives(Vector pers) {
         _perspectives = pers;
         NavPerspective oldCurPers = _curPerspective;
         if (_combo.getItemCount() > 0)
@@ -248,7 +246,11 @@ public class NavigatorPane
         _combo.setSelectedItem(_curPerspective);
     }
     
-    /** needs documenting */
+    /** selection accessor - to be moved into some selection manager
+     * when used by ActionAddPackage and ActionSetSourcePath
+     *
+     * <p>then change to private for use by the NavigatorKeyListener, below.
+     */
     public Object getSelectedObject() {
         return _tree.getLastSelectedPathComponent();
     }
@@ -256,6 +258,9 @@ public class NavigatorPane
     /**
      * Notification from Argo that the model has changed and
      * the Tree view needs updating.
+     *
+     * TODO: More specific information needs to be provided, it is 
+     * expesive to update the whole tree.
      *
      * @see org.argouml.model.uml.UmlModelListener
      * @see org.argouml.uml.ui.ActionRemoveFromModel
@@ -267,10 +272,16 @@ public class NavigatorPane
         _tree.forceUpdate();
     }
     
-    /** This is pretty limited, it is really only useful for selecting
+    /**
+     * selection mutator - to be moved into some selection manager.
+     *
+     * This is pretty limited, it is really only useful for selecting
      *  the default diagram when the user does New.  A general function
      *  to select a given object would have to find the shortest path to
-     *  it. */
+     *  it.
+     *
+     * <p>called from main()
+     */
     public void setSelection(Object level1, Object level2) {
         Object objs[] = new Object[3];
         objs[0] = _root;
@@ -295,54 +306,41 @@ public class NavigatorPane
         _navPerspectivesChanged++;
     }
     
-    /** called when the user selects an item in the tree, by clicking or
-     *  otherwise. */
-    public void valueChanged(TreeSelectionEvent e) {
-        //TODO: should fire its own event and ProjectBrowser
-        //should register a listener
-        //ProjectBrowser.TheInstance.setTarget(getSelectedObject());
-        //ProjectBrowser.TheInstance.setTarget(getSelectedObject());
-    }
-    
-    /** called when the user clicks once on an item in the tree. */
-    public void mySingleClick(int row, TreePath path) {
-        //TODO: should fire its own event and ProjectBrowser
-        //should register a listener
-        /*
-        Object sel = getSelectedObject();
-        if (sel  == null) return;
-        //if (sel instanceof Diagram) {
-          myDoubleClick(row, path);
-          return;
-         
-        }
-        ProjectBrowser.TheInstance.select(sel);
-         */
+    /** called when the user clicks once on an item in the tree.
+     * used only to gather stats.
+     */
+    private void mySingleClick(int row, TreePath path) {
+System.out.println("mySingleClick");
         mouseClick(row, path);
         _clicksInNavPane++;
     }
     
     /** needs documenting */
-    protected void mouseClick(int row, TreePath path) {
+    private void mouseClick(int row, TreePath path) {
+        System.out.println("mouseClick");
         Object sel = getSelectedObject();
         if (sel == null)
             return;
         addToHistory(sel);
         ProjectBrowser.TheInstance.setTarget(sel);
-        // ProjectBrowser.TheInstance.setDetailsTarget(sel);
         repaint();
     }
     
-    /** called when the user clicks twice on an item in the tree. */
-    public void myDoubleClick(int row, TreePath path) {
-        //TODO: should fire its own event and ProjectBrowser
-        //should register a listener
+    /** called when the user clicks twice on an item in the tree.
+     * used only to gather stats.
+     */
+    private void myDoubleClick(int row, TreePath path) {
+System.out.println("myDoubleClick");
         mouseClick(row, path);
         _clicksInNavPane += 2;
         repaint();
     }
     
-    /** needs documenting */
+    // ------------- history methods --------------------
+    
+    /** history method - to be moved into some HistoryManager
+     *  that is linked to the not-yet-done SelectionManager ??
+     */
     public void navDown() {
         int row = _tree.getMinSelectionRow();
         if (row == _tree.getRowCount())
@@ -353,7 +351,9 @@ public class NavigatorPane
         ProjectBrowser.TheInstance.setTarget(getSelectedObject());
     }
     
-    /** needs documenting */
+    /** history method - to be moved into some HistoryManager
+     *  that is linked to the not-yet-done SelectionManager ??
+     */
     public void navUp() {
         int row = _tree.getMinSelectionRow();
         if (row == 0)
@@ -364,13 +364,17 @@ public class NavigatorPane
         ProjectBrowser.TheInstance.setTarget(getSelectedObject());
     }
     
-    /** needs documenting */
+    /** history method - to be moved into some HistoryManager
+     *  that is linked to the not-yet-done SelectionManager ??
+     */
     public void clearHistory() {
         _historyIndex = 0;
         _navHistory.removeAllElements();
     }
     
-    /** needs documenting */
+    /** history method - to be moved into some HistoryManager
+     *  that is linked to the not-yet-done SelectionManager ??
+     */
     public void addToHistory(Object sel) {
         if (_navHistory.size() == 0)
             _navHistory.addElement(ProjectBrowser.TheInstance.getTarget());
@@ -383,11 +387,15 @@ public class NavigatorPane
         _navHistory.addElement(sel);
         _historyIndex = _navHistory.size() - 1;
     }
-    /** needs documenting */
+    /** history method - to be moved into some HistoryManager
+     *  that is linked to the not-yet-done SelectionManager ??
+     */
     public boolean canNavBack() {
         return _navHistory.size() > 0 && _historyIndex > 0;
     }
-    /** needs documenting */
+    /** history method - to be moved into some HistoryManager
+     *  that is linked to the not-yet-done SelectionManager ??
+     */
     public void navBack() {
         _historyIndex = Math.max(0, _historyIndex - 1);
         if (_navHistory.size() <= _historyIndex)
@@ -396,11 +404,15 @@ public class NavigatorPane
         ProjectBrowser.TheInstance.setTarget(oldTarget);
     }
     
-    /** needs documenting */
+    /** history method - to be moved into some HistoryManager
+     *  that is linked to the not-yet-done SelectionManager ??
+     */
     public boolean canNavForw() {
         return _historyIndex < _navHistory.size() - 1;
     }
-    /** needs documenting */
+    /** history method - to be moved into some HistoryManager
+     *  that is linked to the not-yet-done SelectionManager ??
+     */
     public void navForw() {
         _historyIndex = Math.min(_navHistory.size() - 1, _historyIndex + 1);
         Object oldTarget = _navHistory.elementAt(_historyIndex);
@@ -410,7 +422,11 @@ public class NavigatorPane
     ////////////////////////////////////////////////////////////////
     // internal methods
     
-    /** needs documenting */
+    /**
+     * helper method to:
+     *   - itemStateChanged(),
+     *   - setPerspectives(Vector pers)
+     */
     protected void updateTree() {
         NavPerspective tm = (NavPerspective) _combo.getSelectedItem();
         //if (tm == _curPerspective) return;
@@ -431,43 +447,67 @@ public class NavigatorPane
      * @param key The key for the string to localize.
      * @return The localized string.
      */
-    final protected String menuLocalize(String key) {
+    final private String menuLocalize(String key) {
         return Argo.localize("Tree", key);
     }
     
-    ////////////////////////////////////////////////////////////////
-    // inner classes
     
-    /** needs documenting */
+    /** QuadrantPanel implementation */
+    public int getQuadrant() {
+        return Q_TOP_LEFT;
+    }
+    
+    /**
+     * Listen for configuration changes that could require repaint
+     *  of the navigator pane, calls forceUpdate(),
+     * Listens for changes of the project fired by projectmanager.
+     *
+     *  @since ARGO0.11.2
+     */
+    public void propertyChange(PropertyChangeEvent pce) {
+        if (pce
+        .getPropertyName()
+        .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
+            setRoot(pce.getNewValue());
+            forceUpdate();
+            return;
+        }
+        if (Notation.KEY_USE_GUILLEMOTS.isChangedProperty(pce)
+        || Notation.KEY_SHOW_STEREOTYPES.isChangedProperty(pce)) {
+            _tree.forceUpdate();
+        }
+    }
+    
+    /**
+     * used as a selection accessor - to be removed.
+     *
+     * Returns the DisplayTextTree.
+     * @return DisplayTextTree
+     */
+    public DisplayTextTree getTree() {
+        return _tree;
+    }
+    
+    ////////////////////////////////////////////////////////////////
+    // inner classes - listeners
+    
+    /** Listens to mouse events coming from the *JTree*,
+     * on right click, brings up the pop-up menu.
+     */
     class NavigatorMouseListener extends MouseAdapter {
         
-        /** needs documenting */
-        public void mouseClicked(MouseEvent me) {
-            //
-            //   if this platform's popup trigger is occurs on a click
-            //       then do the popup
+        /** brings up the pop-up menu */
+        public void mousePressed(MouseEvent me) {
+            
             if (me.isPopupTrigger()) {
-                me.consume();
+                //me.consume();
                 showPopupMenu(me);
-            } else {
-                //
-                //    otherwise expand the tree?
-                //?      //if (me.isConsumed()) return;
-                int row = _tree.getRowForLocation(me.getX(), me.getY());
-                TreePath path = _tree.getPathForLocation(me.getX(), me.getY());
-                if (row != -1) {
-                    if (me.getClickCount() == 1)
-                        mySingleClick(row, path);
-                    else if (me.getClickCount() >= 2)
-                        myDoubleClick(row, path);
-                    //me.consume();
-                }
             }
         }
         
-        /** needs documenting */
+        /** builds a pop-up menu for extra functionality for the Tree*/
         public void showPopupMenu(MouseEvent me) {
-            //TreeCellEditor tce = _tree.getCellEditor();
+            
             JPopupMenu popup = new JPopupMenu("test");
             Object obj = getSelectedObject();
             if (obj instanceof PopupGenerator) {
@@ -532,79 +572,24 @@ public class NavigatorPane
             }
             popup.show(_tree, me.getX(), me.getY());
         }
-        
-        /** needs documenting */
-        public void mousePressed(MouseEvent me) {
-            if (me.isPopupTrigger()) {
-                me.consume();
-                showPopupMenu(me);
-            }
-        }
-        
-        /** needs documenting */
-        public void mouseReleased(MouseEvent me) {
-            if (me.isPopupTrigger()) {
-                me.consume();
-                showPopupMenu(me);
-            }
-        }
-        
     } /* end class NavigatorMouseListener */
     
-    /** needs documenting */
-    class NavigatorKeyListener extends KeyAdapter {
+    /**
+     * manages selecting the item to show in Argo's other
+     * views based on the highlighted row.
+     */
+    class NavigationTreeSelectionListener implements TreeSelectionListener {
         
-        /** maybe use keyTyped?*/
-        public void keyPressed(KeyEvent e) {
-            cat.debug("got key: " + e.getKeyCode());
-            int code = e.getKeyCode();
-            if (code == KeyEvent.VK_ENTER || code == KeyEvent.VK_SPACE) {
-                Object newTarget = getSelectedObject();
-                if (newTarget != null)
-                    ProjectBrowser.TheInstance.setTarget(newTarget);
+        /**
+         * change in nav tree selection -> set target in project browser.
+         */
+        public void valueChanged(TreeSelectionEvent e){
+            
+            Object sel = getSelectedObject();
+            if (sel != null) {
+                ProjectBrowser.TheInstance.setTarget(sel);
             }
         }
-    }
-    
-    /** maybe use keyTyped?*/
-    public int getQuadrant() {
-        return Q_TOP_LEFT;
-    }
-    
-    /** maybe use keyTyped?*/
-    public TreePath getParentPath() {
-        TreePath path = _tree.getSelectionPath();
-        if (path != null)
-            return path.getParentPath();
-        return null;
-    }
-    
-    /** Listen for configuration changes that could require repaint
-     *  of the navigator pane.
-     * Listens for changes of the project fired by projectmanager.
-     *
-     *  @since ARGO0.11.2
-     */
-    public void propertyChange(PropertyChangeEvent pce) {
-        if (pce
-        .getPropertyName()
-        .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
-            setRoot(pce.getNewValue());
-            forceUpdate();
-            return;
-        }
-        if (Notation.KEY_USE_GUILLEMOTS.isChangedProperty(pce)
-        || Notation.KEY_SHOW_STEREOTYPES.isChangedProperty(pce)) {
-            _tree.forceUpdate();
-        }
-    }
-    
-    /**
-     * Returns the DisplayTextTree.
-     * @return DisplayTextTree
-     */
-    public DisplayTextTree getTree() {
-        return _tree;
     }
     
 } /* end class NavigatorPane */
