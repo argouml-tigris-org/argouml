@@ -34,7 +34,6 @@ import ru.novosoft.uml.foundation.core.*;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 
 public class GoModelToDiagram extends AbstractGoRule {
 
@@ -49,7 +48,7 @@ public class GoModelToDiagram extends AbstractGoRule {
   public Object getChild(Object parent, int index) {
     if (parent instanceof MNamespace) {
       MNamespace m = (MNamespace) parent;
-      Project proj = ProjectBrowser.TheInstance.getProject();
+      Project proj = ProjectManager.getManager().getCurrentProject();
       Vector diags = proj.getDiagrams();
       java.util.Enumeration diagEnum = diags.elements();
       while (diagEnum.hasMoreElements()) {
@@ -70,7 +69,7 @@ public class GoModelToDiagram extends AbstractGoRule {
     if (parent instanceof MNamespace) {
       int count = 0;
       MNamespace m = (MNamespace) parent;
-      Project proj = ProjectBrowser.TheInstance.getProject();
+      Project proj = ProjectManager.getManager().getCurrentProject();
       Vector diags = proj.getDiagrams();
       java.util.Enumeration diagEnum = diags.elements();
       while (diagEnum.hasMoreElements()) {
@@ -86,7 +85,7 @@ public class GoModelToDiagram extends AbstractGoRule {
     if (parent instanceof MNamespace) {
       int count = 0;
       MNamespace m = (MNamespace) parent;
-      Project proj = ProjectBrowser.TheInstance.getProject();
+      Project proj = ProjectManager.getManager().getCurrentProject();
       Vector diags = proj.getDiagrams();
       java.util.Enumeration diagEnum = diags.elements();
       while (diagEnum.hasMoreElements()) {

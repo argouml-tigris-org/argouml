@@ -45,8 +45,8 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      * Constructor for UMLModelElementNamespaceComboBoxModel.
      * @param container
      */
-    public UMLModelElementNamespaceComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container, "namespace", false);
+    public UMLModelElementNamespaceComboBoxModel() {
+        super("namespace", false);
         UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
     }
     

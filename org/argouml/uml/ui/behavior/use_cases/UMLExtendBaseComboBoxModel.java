@@ -50,8 +50,8 @@ public class UMLExtendBaseComboBoxModel extends UMLComboBoxModel2 {
      * Constructor for UMLExtendBaseComboBoxModel.
      * @param container
      */
-    public UMLExtendBaseComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container, "base", false);
+    public UMLExtendBaseComboBoxModel() {
+        super("base", false);
         UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
     }
 
@@ -61,8 +61,7 @@ public class UMLExtendBaseComboBoxModel extends UMLComboBoxModel2 {
     protected void buildModelList() {
         MExtend extend = (MExtend)getTarget();
         if (extend == null) return;
-        MNamespace ns = extend.getNamespace();
-        setElements(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MUseCase.class));
+        setElements(ModelManagementHelper.getHelper().getAllModelElementsOfKind(MUseCase.class));
         if (extend.getExtension() != null) {
             removeElement(extend.getExtension());
         }

@@ -77,9 +77,9 @@ implements ChangeListener, MouseListener, QuadrantPanel {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public MultiEditorPane(StatusBar sb) {
+  public MultiEditorPane() {
     Argo.log.info("making MultiEditorPane");
-    ConfigLoader.loadTabs(_tabPanels, "multi", sb, Horizontal.getInstance());
+    ConfigLoader.loadTabs(_tabPanels, "multi", Horizontal.getInstance());
 
     setLayout(new BorderLayout());
     add(_tabs, BorderLayout.CENTER);
@@ -134,6 +134,7 @@ implements ChangeListener, MouseListener, QuadrantPanel {
                 nextTab = i;
 	   }
     }
+    select(target);
 //    if this target doesn't match the tabs expectation    
 //        leave the previous tab displayed
     

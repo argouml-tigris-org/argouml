@@ -30,23 +30,30 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import java.awt.*;
-import java.util.*;
-import javax.swing.*;
+import java.awt.Color;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.MFactory;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 
 import org.apache.log4j.Category;
-import org.argouml.application.api.*;
+import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.uml.ui.foundation.core.*;
-import org.argouml.uml.ui.*;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLList;
+import org.argouml.uml.ui.UMLModelElementListModel;
+import org.argouml.uml.ui.UMLReflectionListModel;
+import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import ru.novosoft.uml.MFactory;
+import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.state_machines.MCallEvent;
+import ru.novosoft.uml.behavior.state_machines.MEvent;
+import ru.novosoft.uml.behavior.state_machines.MGuard;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
 
 public class PropPanelTransition extends PropPanelModelElement {
          protected static Category cat = 
@@ -177,7 +184,7 @@ public class PropPanelTransition extends PropPanelModelElement {
             trigger = factory.createCallEvent();
 	    trigger.setName("anon");
 	    //TODO
-	    trigger.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
+	    trigger.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
             trans.setTrigger(trigger);
         }
 	return trigger;

@@ -67,7 +67,7 @@ public class ActionImportFromSources extends UMLAction {
 
     public void actionPerformed(ActionEvent event) {
         ProjectBrowser pb = ProjectBrowser.TheInstance;
-        Project p = pb.getProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
 
         try {
             String directory = Globals.getLastDirectory();
@@ -95,6 +95,19 @@ public class ActionImportFromSources extends UMLAction {
                     if (filename != null) {
                         pb.showStatus("Parsing " + filename + "...");
                         Import.doFile(p, theFile);
+
+//                        p.postLoad();
+//
+//			// Check if any diagrams where modified and the project
+//			// should be saved before exiting.
+//			if(Import.needsSave()) {
+//			    p.setNeedsSave(true);
+//			}
+//
+//                        ProjectManager.getManager().setCurrentProject(p);
+//                        pb.showStatus("Parsed " + filename);
+
+
                         return;
                     }
                 }

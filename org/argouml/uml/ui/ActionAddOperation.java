@@ -61,12 +61,12 @@ public class ActionAddOperation extends UMLChangeAction {
     public void actionPerformed(ActionEvent ae) {
    
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Project p = pb.getProject();
+	Project p = ProjectManager.getManager().getCurrentProject();
 	Object target = pb.getDetailsTarget();
 	if (!(target instanceof MClassifier)) return;
 	MClassifier cls = (MClassifier) target;
 	MOperation oper = UmlFactory.getFactory().getCore().buildOperation(cls);
-	pb.getNavPane().addToHistory(oper);
+	pb.getNavigatorPane().addToHistory(oper);
 	pb.setTarget(oper);
 	 super.actionPerformed(ae);
 	

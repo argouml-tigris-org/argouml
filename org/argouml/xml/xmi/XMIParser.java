@@ -121,28 +121,27 @@ public class XMIParser {
         }
         Argo.log.info("=======================================");
 
-        try {
+        
             _proj.addModel(
                 (ru.novosoft.uml.foundation.core.MNamespace) _curModel);
-        }
-        catch (PropertyVetoException ex) {
-            System.err.println(
-                "An error occurred adding the model to the project!");
-            ex.printStackTrace();
-        }
+        
 
         Collection ownedElements = _curModel.getOwnedElements();
         Iterator oeIterator = ownedElements.iterator();
 
         while (oeIterator.hasNext()) {
             MModelElement me = (MModelElement) oeIterator.next();
+            if (me.getName() == null)
+                me.setName("anon");
+                /*
             if (me instanceof MClass) {
-                _proj.defineType((MClass) me);
+                // _proj.defineType((MClass) me);
             }
             else
                 if (me instanceof MDataType) {
                     _proj.defineType((MDataType) me);
                 }
+                */
         }
     }
 

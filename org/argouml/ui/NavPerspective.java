@@ -520,7 +520,7 @@ implements Serializable, TreeModel, Cloneable {
     fireTreeStructureChanged(source, path, null, null);
   }
 
-  /*
+  /**
    * Notify all listeners that have registered interest for
    * notification on this event type.  The event instance
    * is lazily created using the parameters passed into

@@ -201,7 +201,7 @@ class ActionGotoDiagram extends UMLAction {
   public ActionGotoDiagram() { super("Goto Diagram...", NO_ICON); }
   public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
+    Project p = ProjectManager.getManager().getCurrentProject();
     //TODO: class TearOffHostFrame and TearOffManager.
     //idea: pop-up on tab that lists docking locations, new window.
     JDialog f = new JDialog(pb, "Goto Diagram...");
@@ -222,9 +222,9 @@ class ActionNavBack extends UMLAction {
   public ActionNavBack() { super("Navigate Back"); }
   public boolean shouldBeEnabled() {
     if (ProjectBrowser.TheInstance != null) {
-        Project p = ProjectBrowser.TheInstance.getProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
         if (!(super.shouldBeEnabled() && p != null)) return false;
-        NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();
+        NavigatorPane np = ProjectBrowser.TheInstance.getNavigatorPane();
 	if ((np == null)) return false;
 	boolean b = np.canNavBack();
         return b;
@@ -233,7 +233,7 @@ class ActionNavBack extends UMLAction {
         return false;
   }
   public void actionPerformed(ActionEvent ae) {
-    NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();
+    NavigatorPane np = ProjectBrowser.TheInstance.getNavigatorPane();
     np.navBack();
   }
 } /* end class ActionNavBack */
@@ -242,15 +242,15 @@ class ActionNavForw extends UMLAction {
   public ActionNavForw() { super("Navigate Forward"); }
   public boolean shouldBeEnabled() {
     if (ProjectBrowser.TheInstance != null) {
-        Project p = ProjectBrowser.TheInstance.getProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
         if (!(super.shouldBeEnabled() && p != null)) return false;
-        NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();
+        NavigatorPane np = ProjectBrowser.TheInstance.getNavigatorPane();
         return np.canNavForw();
     } else
         return false;
   }
   public void actionPerformed(ActionEvent ae) {
-    NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();
+    NavigatorPane np = ProjectBrowser.TheInstance.getNavigatorPane();
     np.navForw();
   }
 } /* end class ActionNavForw */
@@ -267,7 +267,7 @@ class ActionNavConfig extends UMLAction {
   public ActionNavConfig() { super("NavConfig"); }
   public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    NavigatorPane nav = pb.getNavPane();
+    NavigatorPane nav = pb.getNavigatorPane();
     NavigatorConfigDialog ncd = new NavigatorConfigDialog(pb);
     ncd.setVisible(true);
   }
@@ -383,9 +383,7 @@ class ActionOpenCritics extends UMLAction {
 class ActionFlatToDo extends UMLAction {
   public ActionFlatToDo() { super("Toggle Flat View", NO_ICON); }
   public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    ToDoPane pane = pb.getToDoPane();
-    pane.toggleFlat();
+    ProjectBrowser.TheInstance.getTodoPane().toggleFlat();
   }
 } /* end class ActionFlatToDo */
 

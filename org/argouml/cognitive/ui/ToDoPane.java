@@ -86,11 +86,11 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
   public static int _clicksInToDoPane = 0;
   public static int _dblClicksInToDoPane = 0;
   public static int _toDoPerspectivesChanged = 0;
-
+    
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public ToDoPane() {
+  public ToDoPane(boolean doSplash) {
     _toolbar = new ToolBar();
     _toolbar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
 
@@ -117,7 +117,20 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
 
     _tree.addMouseListener(this);
 
+    // next line coming from projectbrowser
+    setRoot(Designer.TheDesigner.getToDoList());
     Designer.TheDesigner.getToDoList().addToDoListListener(this);
+    setPreferredSize(new Dimension(
+                                   Configuration.getInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, ProjectBrowser.DEFAULT_COMPONENTWIDTH),
+                                   Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, ProjectBrowser.DEFAULT_COMPONENTHEIGHT)
+                                   ));
+    
+    if (doSplash) {
+        SplashScreen splash = ProjectBrowser.TheInstance.getSplashScreen();
+        splash.getStatusBar().showStatus("Making TodoPane: Setting Perspectives");
+        splash.getStatusBar().showProgress(25);
+    }
+    setPerspectives(ToDoPerspective.getRegisteredPerspectives());
   }
 
   ////////////////////////////////////////////////////////////////

@@ -154,7 +154,7 @@ public class FigPackage extends FigNodeModelElement {
 					MNamespace	lNS = lPkg;
 
 					ProjectBrowser lPB = ProjectBrowser.TheInstance;
-					Project lP = lPB.getProject();
+					Project lP = ProjectManager.getManager().getCurrentProject();
 
 					Vector diags = lP.getDiagrams();
 					Enumeration diagEnum = diags.elements();
@@ -177,9 +177,8 @@ public class FigPackage extends FigNodeModelElement {
 								{
 								me.consume();
 								super.mouseClicked(me);
-								lPB.getNavPane().addToHistory(lDiagram);
+								ProjectBrowser.TheInstance.getNavigatorPane().addToHistory(lDiagram);
 								lPB.setTarget(lDiagram);
-								lPB.select(lDiagram);
 								return;
 								}
 							}
@@ -191,9 +190,8 @@ public class FigPackage extends FigNodeModelElement {
 						me.consume();
 						super.mouseClicked(me);
 
-						lPB.getNavPane().addToHistory(lFirst);
+						ProjectBrowser.TheInstance.getNavigatorPane().addToHistory(lFirst);
 						lPB.setTarget(lFirst);
-						lPB.select(lFirst);
 						return;
 						}
 					else
@@ -223,9 +221,8 @@ public class FigPackage extends FigNodeModelElement {
 
 								lP.addMember(lNew);
 								
-								lPB.getNavPane().addToHistory(lNew);
-								lPB.setTarget(lNew);
-								lPB.select(lNew);	
+								ProjectBrowser.TheInstance.getNavigatorPane().addToHistory(lNew);
+								lPB.setTarget(lNew);								
 								/* change prefix */
 								lNew.setName(diagramName);
 								}

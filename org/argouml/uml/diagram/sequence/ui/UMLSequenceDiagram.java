@@ -31,26 +31,32 @@
 
 package org.argouml.uml.diagram.sequence.ui;
 
-import java.util.*;
-import java.awt.*;
-import java.beans.*;
-import javax.swing.*;
+import java.beans.PropertyVetoException;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-
-import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.LayerPerspective;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.ui.*;
+import javax.swing.Action;
 
 import org.apache.log4j.Category;
-import org.argouml.ui.*;
-import org.argouml.uml.diagram.ui.*;
+import org.argouml.ui.CmdCreateNode;
+import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionAddNote;
-import org.argouml.uml.diagram.sequence.*;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.ui.ToolBar;
+import ru.novosoft.uml.behavior.common_behavior.MCallAction;
+import ru.novosoft.uml.behavior.common_behavior.MCreateAction;
+import ru.novosoft.uml.behavior.common_behavior.MDestroyAction;
+import ru.novosoft.uml.behavior.common_behavior.MLink;
+import ru.novosoft.uml.behavior.common_behavior.MObject;
+import ru.novosoft.uml.behavior.common_behavior.MReturnAction;
+import ru.novosoft.uml.behavior.common_behavior.MSendAction;
+import ru.novosoft.uml.behavior.common_behavior.MStimulus;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 
 
@@ -219,13 +225,9 @@ public class UMLSequenceDiagram extends UMLDiagram {
 
    protected static String getNewDiagramName() {
   	String name = null;
-  	Object[] args = {name};
-  	do {
         name = "sequence diagram " + _SequenceDiagramSerial;
         _SequenceDiagramSerial++;
-        args[0] = name;
-    }
-    while (TheInstance.vetoCheck("name", args));
+
     return name;
   }
 

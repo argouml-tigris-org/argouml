@@ -155,7 +155,7 @@ public class CrUML extends Critic {
 
 
   public boolean predicate(Object dm, Designer dsgr) {
-    Project p = ProjectBrowser.TheInstance.getProject();
+    Project p = ProjectManager.getManager().getCurrentProject();
     if (p.isInTrash(dm)) {
       cat.debug("in trash:" + dm);
       return NO_PROBLEM;

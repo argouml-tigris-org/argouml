@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,38 +22,40 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // $header$
-package org.argouml.uml.ui.foundation.core;
-
-import javax.swing.Action;
-
-import org.argouml.application.api.Argo;
-import org.argouml.uml.ui.UMLCheckBox2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
-import ru.novosoft.uml.foundation.core.MModelElement;
+package org.argouml.uml.ui;
 
 /**
- * @since Oct 12, 2002
+ * Classes implementing this interface are interested in changes of the
+ * target. Target changes occur when the user or argouml itself (programmatically)
+ * select another modelelement. 
+ *<p>
+ * This listener is introduced to remove the very close dependency between
+ * property panel and GUI elements. More specifically to support the need to
+ * implement GUI elements as singletons which is not possible with the implementation
+ * that uses UMLUserInterfaceComponent as the interface.
+ * </p>
+ * <p>
+ * The methods are called at the moment via UMLChangeDispatch. In the future
+ * an eventpump will come into place that does not call the components on a 
+ * property panel but that will call the interested instances (GUI elements) 
+ * directly.
+ * </p>
+ * @since Nov 8, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLElementOwnershipSpecificationCheckBox extends UMLCheckBox2 {
-
+public interface TargetChangedListener {
+    
     /**
-     * Constructor for UMLElementOwnershipSpecificationCheckBox.
-     * @param container
-     * @param text
-     * @param a
+     * This method is called when a new target is selected, either by the
+     * program or by the user.
+     * @param newTarget
      */
-    public UMLElementOwnershipSpecificationCheckBox(UMLUserInterfaceContainer container) {
-        super(container, 
-            Argo.localize("UMLMenu", "label.specialization"), 
-            ActionSetElementOwnershipSpecification.SINGLETON, "isSpecification");
-    }
-
+    public void targetChanged(Object newTarget);
+    
     /**
-     * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
+     * This method is called when the navigation history is updated.
+     * @param newTarget
      */
-    public void buildModel() {
-        setSelected(((MModelElement)getTarget()).isSpecification());
-    }
+    public void targetReasserted(Object newTarget);
 
 }

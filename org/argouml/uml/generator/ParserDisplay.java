@@ -24,8 +24,8 @@
 // File: ParserDisplay.java
 // Classes: ParserDisplay
 // Original Author:
-
 // $Id$
+
 
 
 
@@ -59,6 +59,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.graph.*;
 
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.UmlModelEventPump;
@@ -1194,7 +1195,7 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
    */
   private MClassifier getType(String name, MNamespace defaultSpace) {
     MClassifier type = null;
-    Project p = ProjectBrowser.TheInstance.getProject();
+    Project p = ProjectManager.getManager().getCurrentProject();
     // Should we be getting this from the GUI? BT 11 aug 2002
     type = p.findType(name);
     if (type == null) { // no type defined yet
@@ -1616,7 +1617,7 @@ nextProp:
                                     op.addParameter(p);
                                     // we set the listeners to the figs here too
                                     // it would be better to do that in the figs themselves
-                                    Project pr = ProjectBrowser.TheInstance.getProject();
+                                    Project pr = ProjectManager.getManager().getCurrentProject();
                                     Iterator it = pr.findFigsForMember(op).iterator();
                                     while (it.hasNext()) {
                                         MElementListener listener = (MElementListener)it.next();
@@ -1677,7 +1678,7 @@ nextProp:
             s = s.substring(1, s.length()).trim();
             String typeExpr = beforeAnyOf(s, " ={").trim();
 	    if (typeExpr.length() > 0) {
-		Project p = ProjectBrowser.TheInstance.getProject();
+		Project p = ProjectManager.getManager().getCurrentProject();
 		type = p.findType(typeExpr); // Should we be getting this from the GUI? BT 11 aug 2002
 		if (type == null) { // no type defined yet
 		    type = UmlFactory.getFactory().getCore().buildClass(typeExpr);
@@ -1707,7 +1708,7 @@ nextProp:
             String typeExpr = beforeAnyOf(s, " ={").trim();
 	    typeExpr = typeExpr.trim();
 	    if (typeExpr.length() > 0) {
-		Project p = ProjectBrowser.TheInstance.getProject();
+		Project p = ProjectManager.getManager().getCurrentProject();
 		type = p.findType(typeExpr);
 		if (type == null) { // no type defined yet
 		    type = UmlFactory.getFactory().getCore().buildClass(typeExpr);
@@ -1750,7 +1751,7 @@ nextProp:
 
     if (st.hasMoreTokens()) paramNameStr = st.nextToken();
     if (st.hasMoreTokens()) typeStr = st.nextToken();
-    Project p = ProjectBrowser.TheInstance.getProject();
+    Project p = ProjectManager.getManager().getCurrentProject();
     MClassifier cls = p.findType(typeStr);
     MParameter param = UmlFactory.getFactory().getCore().buildParameter();
     param.setType(cls);
@@ -3111,7 +3112,7 @@ predfor:
 	MCallEvent ce = UmlFactory.getFactory().getStateMachines().createCallEvent();
 
 	ce.setName(s);
-	ce.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
+	ce.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
         return ce;
   }
 
@@ -3144,7 +3145,7 @@ predfor:
     if (baseTokens != null) {
       while(baseTokens.hasMoreElements()){
   	String typeString = baseTokens.nextToken();
-	MClassifier type = ProjectBrowser.TheInstance.getProject().findType(typeString);
+	MClassifier type = ProjectManager.getManager().getCurrentProject().findType(typeString);
 	obj.addClassifier(type);
       }
     }

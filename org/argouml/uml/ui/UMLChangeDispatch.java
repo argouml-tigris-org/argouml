@@ -52,11 +52,18 @@ import ru.novosoft.uml.*;
  *  thread) to user interface components.  The class is created in response to a 
  *  NSUML change event being captures by a UMLUserInterfaceContainer and then
  *  is passed as an argument to InvokeLater to be run on the user interface thread.
+ * <p>
+ * This class is updated to cope with changes to the targetchanged mechanisme
+ * </p>
  */
 public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
     private MElementEvent _event;
     private int _eventType;
     private Container _container;
+    /**
+     * The target of the proppanel that constructs this umlchangedispatch
+     */
+    private Object _target;
 
     /**
      * <p>Dispatch a target changed event <em>and</em> add a NSUML listener to
@@ -139,6 +146,9 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
     public UMLChangeDispatch(Container container,int eventType) {
         _container = container;
         _eventType = eventType;
+        if (container instanceof PropPanel) {
+            _target = ((PropPanel)container).getTarget();
+        }
     }
     
     /**
@@ -291,7 +301,20 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
                         uiComp.targetReasserted();
                         break;
                 }
-            }       
+            } else {
+                if (component instanceof TargetChangedListener && _target != null) {
+                   TargetChangedListener listener = (TargetChangedListener) component;        
+                   switch(_eventType) {
+                        case -1:
+                        case 0:
+                            listener.targetChanged(_target);
+                            break;
+                        case 7:
+                            listener.targetReasserted(_target);
+                            break;
+                   }
+                }
+            }
         }
     }
 }

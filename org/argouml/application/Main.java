@@ -25,36 +25,46 @@
 
 package org.argouml.application;
 
-import org.argouml.application.api.*;
-
-import java.awt.*;
-import java.util.*;
-import java.net.*;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
+import java.util.Enumeration;
+import java.util.Locale;
+import java.util.Vector;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
+import javax.swing.ToolTipManager;
+import javax.swing.UIManager;
 
-import ru.novosoft.uml.model_management.MModel;
-import ru.novosoft.uml.*;
-
-import org.tigris.gef.util.*;
-
-import org.argouml.kernel.*;
-import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.ui.*;
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.ui.*;
-import org.argouml.i18n.Translator;
-import org.argouml.uml.cognitive.critics.*;
-import org.argouml.util.*;
-import org.argouml.util.logging.*;
-
-import org.argouml.application.security.ArgoSecurityManager;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Category;
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
-
-import org.apache.log4j.*;
+import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ui.ToDoPane;
+import org.argouml.cognitive.ui.ToDoPerspective;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.ui.LookAndFeelMgr;
+import org.argouml.ui.NavPerspective;
+import org.argouml.ui.NavigatorPane;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.SplashScreen;
+import org.argouml.uml.cognitive.critics.ChildGenUML;
+import org.argouml.util.Trash;
+import org.argouml.util.logging.SimpleTimer;
+import org.tigris.gef.util.ResourceLoader;
+import org.tigris.gef.util.Util;
+import ru.novosoft.uml.MFactoryImpl;
+import ru.novosoft.uml.model_management.MModel;
 
 public class Main {
     ////////////////////////////////////////////////////////////////
@@ -65,6 +75,7 @@ public class Main {
 
     private static Vector postLoadActions = new Vector();
 
+    
     ////////////////////////////////////////////////////////////////
     // main
 
@@ -207,36 +218,8 @@ public class Main {
         //
 	st.mark("locales");
         //String lookAndFeelClassName = LookAndFeelMgr.SINGLETON.determineLookAndFeel();
-        String lookAndFeelClassName;
-        if ("true".equals(System.getProperty("force.nativelaf","false"))) {
-            lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
-        }
-        else {
-            lookAndFeelClassName = "javax.swing.plaf.metal.MetalLookAndFeel";
-        }
-
-        String lookAndFeelGeneralImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/general";
-        String lookAndFeelNavigationImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/navigation";
-        String lookAndFeelDiagramImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/argouml/diagrams";
-        String lookAndFeelElementImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/argouml/elements";
-        String lookAndFeelArgoUmlImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/argouml";
-        ResourceLoader.addResourceExtension("gif");
-        ResourceLoader.addResourceLocation(lookAndFeelGeneralImagePath);
-        ResourceLoader.addResourceLocation(lookAndFeelNavigationImagePath);
-        ResourceLoader.addResourceLocation(lookAndFeelDiagramImagePath);
-        ResourceLoader.addResourceLocation(lookAndFeelElementImagePath);
-        ResourceLoader.addResourceLocation(lookAndFeelArgoUmlImagePath);
-        ResourceLoader.addResourceLocation("/org/argouml/Images");
-        ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
 
         Translator.init();
-
-	st.mark("splash");
-        SplashScreen splash = new SplashScreen("Loading ArgoUML...", "Splash");
-        splash.getStatusBar().showStatus("Making Project Browser");
-        splash.getStatusBar().showProgress(10);
-
-        splash.setVisible(doSplash);
 
 	st.mark("projectbrowser");
 
@@ -244,9 +227,13 @@ public class Main {
         Object dgd = org.argouml.uml.generator.GeneratorDisplay.getInstance();
 
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        ProjectBrowser pb = new ProjectBrowser("ArgoUML", splash.getStatusBar(),
-        themeMemory);
-
+        
+        // initialize the correct theme
+        LookAndFeelMgr.SINGLETON.setCurrentTheme(themeMemory);
+        
+        // make the projectbrowser
+        ProjectBrowser pb = new ProjectBrowser("ArgoUML", doSplash);
+                 
         JOptionPane.setRootFrame(pb);
 
         // Set the screen layout to what the user left it before, or
@@ -261,7 +248,8 @@ public class Main {
         pb.setLocation(x, y);
         pb.setSize(w, h);
 
-        if (splash != null) {
+        if (doSplash) {
+            SplashScreen splash = pb.getSplashScreen();
             if (urlToOpen == null)
                 splash.getStatusBar().showStatus("Making Default Project");
             else
@@ -273,7 +261,7 @@ public class Main {
 	st.mark("make empty project");
 
         if (urlToOpen == null) {
-            p = Project.makeEmptyProject();
+            p = ProjectManager.getManager().getCurrentProject();
         }
         else {
             try {
@@ -289,7 +277,7 @@ public class Main {
                 Argo.log.error(fn);
                 Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
                 urlToOpen = null;
-                p = Project.makeEmptyProject();
+                p = ProjectManager.getManager().makeEmptyProject();
             }
             catch (IOException io) {
                 JOptionPane.showMessageDialog(pb,
@@ -304,7 +292,7 @@ public class Main {
                 Argo.log.error(io);
                 Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
                 urlToOpen = null;
-                p = Project.makeEmptyProject();
+                p = ProjectManager.getManager().makeEmptyProject();
             }   
             catch (Exception ex) {
                 Argo.log.error("Could not load most recent project file: " + 
@@ -312,7 +300,7 @@ public class Main {
                 Argo.log.error(ex);
                 Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
                 urlToOpen = null;
-                p = Project.makeEmptyProject();
+                p = ProjectManager.getManager().makeEmptyProject();
             }
         }
 
@@ -321,27 +309,19 @@ public class Main {
         // Touch the trash
         Trash.SINGLETON.getSize();
 
-        pb.setProject(p);
+        ProjectManager.getManager().setCurrentProject(p);
 
 	st.mark("perspectives");
 
         if (urlToOpen == null) pb.setTitle("Untitled");
 
-        if (splash != null) {
-            splash.getStatusBar().showStatus("Setting Perspectives");
-            splash.getStatusBar().showProgress(50);
-        }
-
-
-        pb.setPerspectives(NavPerspective.getRegisteredPerspectives());
-        pb.setToDoPerspectives(ToDoPerspective.getRegisteredPerspectives());
-
-        pb.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        
         //pb.validate();
         //pb.repaint();
         //pb.requestDefaultFocus();
 
-        if (splash != null) {
+        if (doSplash) {
+            SplashScreen splash = pb.getSplashScreen();
             splash.getStatusBar().showStatus("Loading modules");
             splash.getStatusBar().showProgress(75);
         }
@@ -352,7 +332,8 @@ public class Main {
 
 	st.mark("open window");
 
-        if (splash != null) {
+        if (doSplash) {
+            SplashScreen splash = pb.getSplashScreen();
             splash.getStatusBar().showStatus("Opening Project Browser");
             splash.getStatusBar().showProgress(95);
         }
@@ -361,10 +342,11 @@ public class Main {
         Object model = p.getUserDefinedModels().elementAt(0);
         Object diag = p.getDiagrams().elementAt(0);
         //pb.setTarget(diag);
-        pb.getNavPane().setSelection(model, diag);
+        pb.getNavigatorPane().setSelection(model, diag);
 
 	st.mark("close splash");
-        if (splash != null) {
+        if (doSplash) {
+            SplashScreen splash = pb.getSplashScreen();
             splash.setVisible(false);
             splash.dispose();
             splash = null;
@@ -438,20 +420,17 @@ public class Main {
             Argo.log.info("");
         }
 	st = null;
+        pb.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
         //ToolTipManager.sharedInstance().setInitialDelay(500);
         ToolTipManager.sharedInstance().setDismissDelay(50000000);
     }
 
 
-    //   private static void defineMockHistory() {
-    //     History h = History.TheHistory;
-    //     h.addItem("In the beginning there was Argo");
-    //     h.addItem("And then I wrote a bunch of papers");
-    //     h.addItem("Now there is ArgoUML!");
-    //   }
+    
 
 
+    
     public static void  addPostLoadAction(Runnable r) {
         postLoadActions.addElement(r);
     }
@@ -506,8 +485,7 @@ class StartCritics implements Runnable {
         Designer dsgr = Designer.theDesigner();
         org.argouml.uml.cognitive.critics.Init.init();
         org.argouml.uml.cognitive.checklist.Init.init(Locale.getDefault());
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
-        Project p = pb.getProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
         dsgr.spawnCritiquer(p);
         dsgr.setChildGenerator(new ChildGenUML());
         java.util.Enumeration models = (p.getUserDefinedModels()).elements();

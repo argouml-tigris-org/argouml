@@ -37,18 +37,17 @@ import ru.novosoft.uml.MElementEvent;
  */
 public class UMLComboBox2
     extends JComboBox
-    implements UMLUserInterfaceComponent {
-
-    protected UMLUserInterfaceContainer container = null;
+    implements TargetChangedListener {
+        
+    private Object _target;
     
     /**
      * Constructor for UMLMessageActivatorComboBox.
      * @deprecated use the constructor with the action
      * @param arg0
      */
-    public UMLComboBox2(UMLUserInterfaceContainer container, UMLComboBoxModel2 arg0) {
+    public UMLComboBox2(UMLComboBoxModel2 arg0) {
         super(arg0);
-        setContainer(container);
         addActionListener(this);
     }
     
@@ -59,77 +58,26 @@ public class UMLComboBox2
      * @param arg0
      * @param action
      */
-    public UMLComboBox2(UMLUserInterfaceContainer container, UMLComboBoxModel2 arg0, UMLAction action) {
+    public UMLComboBox2(UMLComboBoxModel2 arg0, UMLAction action) {
         super(arg0);
-        setContainer(container);
         addActionListener(action);
     }
-        
-
+    
     /**
-     * Returns the container.
-     * @return UMLUserInterfaceContainer
+     * @see org.argouml.uml.ui.TargetChangedListener#targetChanged(java.lang.Object)
      */
-    public UMLUserInterfaceContainer getContainer() {
-        return container;
+    public void targetChanged(Object newTarget) {
+        setTarget(newTarget);
+        ((UMLComboBoxModel2)getModel()).targetChanged(newTarget);
     }
 
+    
     /**
-     * Sets the container.
-     * @param container The container to set
+     * @see org.argouml.uml.ui.TargetChangedListener#targetReasserted(java.lang.Object)
      */
-    public void setContainer(UMLUserInterfaceContainer container) {
-        this.container = container;
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
-     */
-    public void targetChanged() {
-        ((UMLComboBoxModel2)getModel()).targetChanged();
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
-     */
-    public void targetReasserted() {
-        ((UMLComboBoxModel2)getModel()).targetReasserted();
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(MElementEvent)
-     */
-    public void listRoleItemSet(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#propertySet(MElementEvent)
-     */
-    public void propertySet(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#recovered(MElementEvent)
-     */
-    public void recovered(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#removed(MElementEvent)
-     */
-    public void removed(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleAdded(MElementEvent)
-     */
-    public void roleAdded(MElementEvent e) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(MElementEvent)
-     */
-    public void roleRemoved(MElementEvent e) {
+    public void targetReasserted(Object newTarget) {
+        setTarget(newTarget);
+        ((UMLComboBoxModel2)getModel()).targetReasserted(newTarget);
     }
 
     /**
@@ -154,8 +102,15 @@ public class UMLComboBox2
      * @return Object
      */
     public Object getTarget() {
-        if (getContainer() != null) return getContainer().getTarget();
-        return null;
+        return _target;
+    }
+
+    /**
+     * Sets the target.
+     * @param target The target to set
+     */
+    public void setTarget(Object target) {
+        _target = target;
     }
 
 }

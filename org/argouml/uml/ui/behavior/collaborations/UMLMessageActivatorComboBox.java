@@ -47,7 +47,7 @@ public class UMLMessageActivatorComboBox extends UMLComboBox2 {
     public UMLMessageActivatorComboBox(
         UMLUserInterfaceContainer container,
         UMLComboBoxModel2 arg0) {
-        super(container, arg0);
+        super(arg0);
     }
 
     /**
@@ -56,7 +56,7 @@ public class UMLMessageActivatorComboBox extends UMLComboBox2 {
     protected void doIt(ActionEvent event) {
         Object o = getModel().getElementAt(getSelectedIndex());
         MMessage activator = (MMessage)o;
-        MMessage mes = (MMessage)getContainer().getTarget();
+        MMessage mes = (MMessage)getTarget();
         if (activator != mes.getActivator()) {
             CollaborationsHelper.getHelper().setActivator(mes, activator);
         }

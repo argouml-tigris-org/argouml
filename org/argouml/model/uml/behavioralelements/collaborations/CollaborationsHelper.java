@@ -30,11 +30,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
-import org.argouml.ui.ProjectBrowser;
-
 import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
@@ -82,7 +81,7 @@ public class CollaborationsHelper {
 	 * @return Collection
 	 */
 	public Collection getAllClassifierRoles() {
-		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
 		return getAllClassifierRoles(model);
 	}
 	
