@@ -102,9 +102,10 @@ public abstract class UMLComboBoxModel2
                     o = it.next();
                 }
             }
-            if (getIndexOf(o) >= 0) {
-                setSelectedItem(o);
+            if (getIndexOf(o) < 0) {
+                addElement(o);
             }
+            setSelectedItem(o);    
         }   
     }
 
@@ -332,10 +333,12 @@ public abstract class UMLComboBoxModel2
                 return;
         }
         */
+        /*
         int index = getIndexOf(arg0);
         if (index == -1) {
             addElement(arg0);
         }
+        */
         selectedIndex = list.indexOf(arg0);
         fireContentsChanged(this, selectedIndex, selectedIndex);
     }

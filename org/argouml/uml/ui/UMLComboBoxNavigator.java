@@ -78,7 +78,8 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener {
                     _container.navigateTo(target);
                 }
             }
-        }
+        } else
+            _container.navigateTo(item);
     }
 
 }
