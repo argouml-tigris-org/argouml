@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-99,2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,10 +25,6 @@
 // Classes: DisplayTextTree
 // Original Author:
 // $Id$
-
-// 26 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Patch to give a better
-// naming for extension points in convertValueToText.
-
 
 package org.argouml.ui;
 
@@ -232,7 +228,32 @@ implements MElementListener, VetoableChangeListener {
   public static final int REMOVE = 3;
   //public static Object path[] = new Object[DEPTH_LIMIT];
 
-  public void forceUpdate() {
+    private DisplayTextTreeRun _doit = new DisplayTextTreeRun(cat, this);
+
+    /** Signals to the tree that something has changed and it is best
+     * to update the tree.
+     * <P>
+     * For complex operations such as import(?) and add attribute(8), that 
+     * does several calls to this it is better if we defer the actual update
+     * until later and if it is not performed don't do an extra.
+     * Since import is done from invokeLater() we try to move this down
+     * in priority by not running until the second invokeLater().
+     * Depending on the queue order in invokeLater() this might result in
+     * updates but it is probably far from every file.
+     */
+    public void forceUpdate() {
+	_doit.onceMore();
+    }
+
+    /**
+     * This is the real update function. It won't return until the tree
+     * really is updated.
+     * <P>
+     * Never call this one from any code.
+     *
+     * @since 0.13.1
+     */
+  public void doForceUpdate() {
     Object rootArray[] = new Object[1];
     rootArray[0] = getModel().getRoot();
     Object noChildren[] = null;
@@ -295,3 +316,47 @@ implements MElementListener, VetoableChangeListener {
 
 
 } /* end class DisplayTextTree */
+
+/**
+ * This class is used to defer the actual update until "late"
+ * in the invokeLater()-call chain.
+ * <P>
+ * The real update will hopefully take place at the end of whatever long
+ * chain of forceUpdate:s that will be performed.
+ */
+class DisplayTextTreeRun implements Runnable {
+    protected Category cat;
+    private DisplayTextTree _tree;
+    int _timesToRun = 0;
+    boolean _queued = false;
+
+    public DisplayTextTreeRun(Category c, DisplayTextTree t) {
+	cat = c;
+	_tree = t;
+    }
+
+    public synchronized void onceMore() {
+	if (!_queued) {
+	    _queued = true;
+	    SwingUtilities.invokeLater(this);
+	}
+	_timesToRun++;
+    }
+
+    public synchronized void run() {
+	if (_timesToRun > 100)
+	    cat.debug("" + _timesToRun + " forceUpdates encountered.");
+
+	if (_timesToRun > 0) {
+	    // another forceUpdate was seen, wait again
+	    _queued = true;
+	    SwingUtilities.invokeLater(this);
+	    _timesToRun = 0;
+	} else if (_queued) {
+	    _queued = false;
+	    SwingUtilities.invokeLater(this);
+	} else {
+	    _tree.doForceUpdate();
+	}
+    }
+}
