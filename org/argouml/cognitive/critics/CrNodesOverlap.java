@@ -51,8 +51,10 @@ import org.tigris.gef.util.VectorSet;
 
 public class CrNodesOverlap extends CrUML {
 
-    ////////////////////////////////////////////////////////////////
-    // constructor
+    /**
+     * The constructor.
+     * 
+     */
     public CrNodesOverlap() {
 	// TODO: {name} is not expanded for diagram objects
 	setHeadline("Clean Up Diagram");
@@ -65,6 +67,10 @@ public class CrNodesOverlap extends CrUML {
     ////////////////////////////////////////////////////////////////
     // critiquing API
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(dm instanceof Diagram)) return NO_PROBLEM;
 	Diagram d = (Diagram) dm;
@@ -81,12 +87,20 @@ public class CrNodesOverlap extends CrUML {
     }
 
 
+    /**
+     * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object, 
+     * org.argouml.cognitive.Designer)
+     */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	Diagram d = (Diagram) dm;
 	VectorSet offs = computeOffenders(d);
 	return new ToDoItem(this, offs, dsgr);
     }
 
+    /**
+     * @see org.argouml.cognitive.Poster#stillValid(
+     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
 	VectorSet offs = i.getOffenders();
@@ -97,6 +111,10 @@ public class CrNodesOverlap extends CrUML {
 	return res;
     }
 
+    /**
+     * @param d the diagram
+     * @return the set of offenders
+     */
     public VectorSet computeOffenders(Diagram d) {
 	//TODO: algorithm is n^2 in number of nodes
 	Vector figs = new Vector(d.getLayer().getContents(null));
@@ -104,24 +122,24 @@ public class CrNodesOverlap extends CrUML {
 	int numRects = 0;
 	VectorSet offs = null;
 	for (int i = 0; i < numFigs - 1; i++) {
-	    Object o_i = figs.elementAt(i);
-	    if (!(o_i instanceof FigNode)) continue;
-	    FigNode fn_i = (FigNode) o_i;
-	    Rectangle bounds_i = fn_i.getBounds();
+	    Object oi = figs.elementAt(i);
+	    if (!(oi instanceof FigNode)) continue;
+	    FigNode fni = (FigNode) oi;
+	    Rectangle boundsi = fni.getBounds();
 	    for (int j = i + 1; j < numFigs; j++) {
-		Object o_j = figs.elementAt(j);
-		if (!(o_j instanceof FigNode)) continue;
-		FigNode fn_j = (FigNode) o_j;
-		if (fn_j.intersects(bounds_i)) {
+		Object oj = figs.elementAt(j);
+		if (!(oj instanceof FigNode)) continue;
+		FigNode fnj = (FigNode) oj;
+		if (fnj.intersects(boundsi)) {
 		    if (!(d instanceof UMLDeploymentDiagram)) {   
-			if (fn_i instanceof FigNodeModelElement) {
-			    if (((FigNodeModelElement) fn_i).getEnclosingFig()
-				== fn_j)
+			if (fni instanceof FigNodeModelElement) {
+			    if (((FigNodeModelElement) fni).getEnclosingFig()
+				== fnj)
 				continue;
 			}
-			if (fn_j instanceof FigNodeModelElement) {
-			    if (((FigNodeModelElement) fn_j).getEnclosingFig() 
-				== fn_i)
+			if (fnj instanceof FigNodeModelElement) {
+			    if (((FigNodeModelElement) fnj).getEnclosingFig() 
+				== fni)
 				continue;
 			}
 		    }
@@ -131,20 +149,20 @@ public class CrNodesOverlap extends CrUML {
 		    // while they are not the EnclosingFig, so you
 		    // have to prouve only these elements.
 		    else {
-			if ((!((fn_i instanceof  FigClass)
-			       || (fn_i instanceof FigInterface) 
-			       || (fn_i instanceof FigObject))) 
-			    || (!((fn_j instanceof  FigClass)
-				  || (fn_j instanceof FigInterface) 
-				  || (fn_j instanceof FigObject)))) 
+			if ((!((fni instanceof  FigClass)
+			       || (fni instanceof FigInterface) 
+			       || (fni instanceof FigObject))) 
+			    || (!((fnj instanceof  FigClass)
+				  || (fnj instanceof FigInterface) 
+				  || (fnj instanceof FigObject)))) 
 			    continue;
 		    }            
 		    if (offs == null) {
 			offs = new VectorSet();
 			offs.addElement(d);
 		    }
-		    offs.addElement(fn_i);
-		    offs.addElement(fn_j);
+		    offs.addElement(fni);
+		    offs.addElement(fnj);
 		    break;
 		}
 	    }
