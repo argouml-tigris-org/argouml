@@ -51,6 +51,7 @@ import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 import ru.novosoft.uml.behavior.common_behavior.MTerminateAction;
 import ru.novosoft.uml.behavior.common_behavior.MUninterpretedAction;
+import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MOperation;
 
 /**
@@ -352,6 +353,27 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
     	message.setAction(action);
         return action;
     }
+    
+    /**
+     * Builds a signal belonging to some behavioralfeature
+     */
+    public MSignal buildSignal(MBehavioralFeature feature) {
+    	if (feature == null) return null;
+    	MSignal signal = createSignal();
+    	signal.addContext(feature);
+    	return signal;
+    }
+    
+    /**
+     * Builds a reception belonging to some signal
+     */
+    public MReception buildReception(MSignal signal) {
+    	if (signal == null) return null;
+    	MReception reception = createReception();
+    	reception.setSignal(signal);
+    	return reception;
+    }
+    	
     	
         
 

@@ -239,7 +239,9 @@ class UMLTypeModel extends UMLComboBoxModel {
 			return;
 		}
 		
-		setSelectedItem(new UMLComboBoxEntry((MModelElement)event.getNewValue(), _container.getProfile(), false));
+		if (!event.getNewValue().equals(event.getOldValue())) {
+			setSelectedItem(new UMLComboBoxEntry((MModelElement)event.getNewValue(), _container.getProfile(), false));
+		}
 		
 	}
 

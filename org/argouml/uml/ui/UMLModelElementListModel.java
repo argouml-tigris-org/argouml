@@ -434,7 +434,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *
      *  @return               new list */
 
-    static protected java.util.List addAtUtil(Collection oldCollection,
+    public static java.util.List addAtUtil(Collection oldCollection,
                                     MModelElement newItem,int index) {
 
         int oldSize = oldCollection.size();
@@ -468,7 +468,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *  @param index index of element to move up.
      *  @return new collection
      */
-    static protected java.util.List moveUpUtil(Collection oldCollection,int index) {
+    public static java.util.List moveUpUtil(Collection oldCollection,int index) {
         int size = oldCollection.size();
         ArrayList newCollection = new ArrayList(size);
         int i;
@@ -498,7 +498,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *  @param index index of element to move down.
      *  @return new collection
      */
-    static protected java.util.List moveDownUtil(Collection oldCollection,int index) {
+    public static java.util.List moveDownUtil(Collection oldCollection,int index) {
         int size = oldCollection.size();
         ArrayList newCollection = new ArrayList(size);
         int i;
@@ -528,7 +528,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *  @param index index of element to move down.
      *  @return new collection
      */
-    static protected MModelElement elementAtUtil(Collection collection,int index,Class requiredClass) {
+    public static MModelElement elementAtUtil(Collection collection,int index,Class requiredClass) {
         Object obj = null;
         if(collection != null && index >= 0 && index < collection.size()) {
             if(collection instanceof java.util.List) {
