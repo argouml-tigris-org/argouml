@@ -121,12 +121,19 @@ public class ExplorerEventAdaptor
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(java.beans.PropertyChangeEvent pce) {
+
+        // We don't care if the save state has changed
+        if (pce.getPropertyName().equals(ProjectManager.SAVE_STATE_PROPERTY_NAME)) {
+            return;
+        }
         
         // project events
         if (pce.getPropertyName()
                 .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) 
 	{
-            treeModel.structureChanged();
+            if (pce.getNewValue() != null) {
+                treeModel.structureChanged();
+            }
             return;
         }
         

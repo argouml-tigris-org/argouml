@@ -52,7 +52,7 @@ public class ActionRevertToSaved extends ActionFileOperations {
      * Constructor.
      */
     public ActionRevertToSaved() {
-        super("action.revert-to-saved", true, HAS_ICON);
+        super(Translator.localize("action.revert-to-saved"));
     }
 
     ////////////////////////////////////////////////////////////////
@@ -90,16 +90,5 @@ public class ActionRevertToSaved extends ActionFileOperations {
         if (response == JOptionPane.YES_OPTION) {        
             loadProject(p.getURL());
         }
-    }
-    
-    /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
-     *
-     * Overridden to return true only if project has pending changes.
-     */
-    public boolean shouldBeEnabled() {
-        super.shouldBeEnabled();
-        Project p = ProjectManager.getManager().getCurrentProject();
-        return (p != null && p.needsSave() && p.getURL() != null);
     }
 }

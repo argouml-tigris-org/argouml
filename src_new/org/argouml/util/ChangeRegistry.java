@@ -30,6 +30,7 @@
 package org.argouml.util;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.uml.ui.ActionSaveProject;
 
 import org.tigris.gef.graph.GraphEvent;
 import org.tigris.gef.graph.GraphListener;
@@ -45,13 +46,13 @@ import org.tigris.gef.graph.GraphListener;
  */
 public class ChangeRegistry implements GraphListener
 {
-    private boolean changeFlag;
-
     /**
      * The constructor.
      * 
      */
-    public ChangeRegistry() { changeFlag = false; }
+    public ChangeRegistry() {
+        setChangeFlag(false);
+    }
 
     /**
      * Changes save state / notifies gui.
@@ -61,11 +62,11 @@ public class ChangeRegistry implements GraphListener
      */
     public void setChangeFlag( boolean newValue ) {
 		
-        boolean oldValue = changeFlag;
-        changeFlag = newValue;                
+        boolean oldValue = ActionSaveProject.getInstance().isEnabled();
         
 	if (oldValue != newValue) {
 	    // notify the gui to put a * on the title bar (swing gui):
+            ActionSaveProject.getInstance().setEnabled(newValue);
 	    ProjectManager.getManager().notifySavePropertyChanged(newValue);
 	}
                 
@@ -75,7 +76,7 @@ public class ChangeRegistry implements GraphListener
      * @return the change flag aka save state
      */
     public boolean hasChanged() {
-	return changeFlag;
+	return ActionSaveProject.getInstance().isEnabled();
     }
 
     /**

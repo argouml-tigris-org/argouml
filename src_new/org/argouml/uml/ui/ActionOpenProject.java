@@ -35,6 +35,7 @@ import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.CommandLineInterface;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -65,7 +66,9 @@ public class ActionOpenProject extends ActionFileOperations
      */
     public ActionOpenProject() {
         // this is not a "global" action, since it is never downlighted...
-        super("action.open-project", false, true);
+        super(Translator.localize("action.open-project"), ResourceLoaderWrapper
+                .lookupIconResource(Translator.getImageBinding("OpenProject"),
+                        Translator.localize("OpenProject")));
     }
 
     ////////////////////////////////////////////////////////////////
