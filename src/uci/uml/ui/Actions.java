@@ -188,6 +188,21 @@ public class Actions {
   public static UMLAction DestAggNone =
   new ActionAggregation(AggregationKind.NONE, "dest");
 
+  // compartments
+  public static UMLAction ShowAttrCompartment =
+  new ActionCompartmentDisplay(true, "Show Attribute Compartment");
+  public static UMLAction HideAttrCompartment =
+  new ActionCompartmentDisplay(false, "Hide Attribute Compartment");
+
+  public static UMLAction ShowOperCompartment =
+  new ActionCompartmentDisplay(true, "Show Operation Compartment");
+  public static UMLAction HideOperCompartment =
+  new ActionCompartmentDisplay(false, "Hide Operation Compartment");
+
+  public static UMLAction ShowAllCompartments =
+  new ActionCompartmentDisplay(true, "Show All Compartments");
+  public static UMLAction HideAllCompartments =
+  new ActionCompartmentDisplay(false, "Hide All Compartments");
 
 
   public static void updateAllEnabled() {
@@ -1998,3 +2013,39 @@ class ActionAggregation extends UMLAction {
   }
   public boolean shouldBeEnabled() { return true; }
 } /* end class ActionSrcMultOneToMany */
+
+
+class ActionCompartmentDisplay extends UMLAction {
+  boolean display = false;
+  String compartment = "";
+  public ActionCompartmentDisplay(boolean d, String c) {
+    super(c, NO_ICON);
+    display = d;
+    compartment = c;
+  }
+
+  public void actionPerformed(ActionEvent ae) {
+    Vector sels = Globals.curEditor().getSelectionManager().selections();
+    if( sels.size() == 1 ) {
+      Selection sel = (Selection) sels.firstElement();
+      Fig f = sel.getContent();
+      if (compartment.equals("Show Attribute Compartment"))
+        ((FigClass)f).setAttributeVisible(display);
+      else if (compartment.equals("Hide Attribute Compartment"))
+        ((FigClass)f).setAttributeVisible(display);
+      else if (compartment.equals("Show Operation Compartment"))
+        ((FigClass)f).setOperationVisible(display);
+      else if (compartment.equals("Hide Operation Compartment"))
+        ((FigClass)f).setOperationVisible(display);
+      else if (compartment.equals("Show All Compartments")) {
+        ((FigClass)f).setAttributeVisible(display);
+        ((FigClass)f).setOperationVisible(display);
+      }
+      else {
+        ((FigClass)f).setAttributeVisible(display);
+        ((FigClass)f).setOperationVisible(display);
+      }
+    }
+  }
+  public boolean shouldBeEnabled() { return true; }
+} /* end class ActionCompartmentDisplay */

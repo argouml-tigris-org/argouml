@@ -48,18 +48,14 @@ import uci.uml.Model_Management.*;
 
 /** Class to display graphics for a UML Class in a diagram. */
 
-public class FigClass extends FigNodeModelElement {
+public class FigClass extends FigNodeWithCompartments {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  protected FigText _attr;
-  protected FigText _oper;
+  protected FigCompartment _attr;
+  protected FigCompartment _oper;
   protected FigRect _bigPort;
-
-  protected FigText _lastVisible;
-  protected boolean _attrVisible = true;
-  protected boolean _operVisible = true;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -67,32 +63,26 @@ public class FigClass extends FigNodeModelElement {
   public FigClass() {
     _bigPort = new FigRect(10, 10, 90, 60, Color.cyan, Color.cyan);
 
-    _attr = new FigText(10, 30, 90, 21);
+    _attr = new FigCompartment(10, 30, 90, 21);
     _attr.setFont(LABEL_FONT);
     _attr.setExpandOnly(true);
     _attr.setTextColor(Color.black);
     _attr.setJustification(FigText.JUSTIFY_LEFT);
 
-    _oper = new FigText(10, 50, 90, 21);
+    _oper = new FigCompartment(10, 50, 90, 21);
     _oper.setFont(LABEL_FONT);
     _oper.setExpandOnly(true);
     _oper.setTextColor(Color.black);
     _oper.setJustification(FigText.JUSTIFY_LEFT);
-
-    _lastVisible = _attr; // added by Eric Lefevre 13 Mar 1999
 
     addFig(_bigPort);
     addFig(_name);
     addFig(_attr);
     addFig(_oper);
 
-    //Vector ports = gm.getPorts(node);
-    //Object onlyPort = ports.firstElement();
     Rectangle r = getBounds();
     setBounds(r.x, r.y, r.width, r.height);
 
-//     _attr.addPropertyChangeListener(this);
-//     _oper.addPropertyChangeListener(this);
   }
 
   public FigClass(GraphModel gm, Object node) {
@@ -107,8 +97,8 @@ public class FigClass extends FigNodeModelElement {
     Vector v = figClone.getFigs();
     figClone._bigPort = (FigRect) v.elementAt(0);
     figClone._name = (FigText) v.elementAt(1);
-    if (isAttributeVisible()) figClone._attr = (FigText) v.elementAt(2);
-    if (isOperationVisible()) figClone._oper = (FigText) v.elementAt(3);
+    figClone._attr = (FigCompartment) v.elementAt(2);
+    figClone._oper = (FigCompartment) v.elementAt(3);
     return figClone;
   }
 
@@ -126,6 +116,23 @@ public class FigClass extends FigNodeModelElement {
     addMenu.add(Actions.AddOperation);
     popUpActions.insertElementAt(addMenu,
 				 popUpActions.size() - 1);
+    JMenu showMenu = new JMenu("Show");
+    if(_attr.isDisplayed() && _oper.isDisplayed())
+      showMenu.add(Actions.HideAllCompartments);
+    else if(!_attr.isDisplayed() && !_oper.isDisplayed())
+      showMenu.add(Actions.ShowAllCompartments);
+
+    if (_attr.isDisplayed())
+      showMenu.add(Actions.HideAttrCompartment);
+    else
+      showMenu.add(Actions.ShowAttrCompartment);
+
+    if (_oper.isDisplayed())
+      showMenu.add(Actions.HideOperCompartment);
+    else
+      showMenu.add(Actions.ShowOperCompartment);
+
+    popUpActions.insertElementAt(showMenu, popUpActions.size() - 1);
     return popUpActions;
   }
 
@@ -143,80 +150,53 @@ public class FigClass extends FigNodeModelElement {
    * @return true if the operations are visible, false otherwise
    */
   // created by Eric Lefevre 13 Mar 1999
-  public boolean isOperationVisible() { return _operVisible; }
+  public boolean isOperationVisible() { return _oper.isDisplayed(); }
 
   /**
    * Returns the status of the attribute field.
    * @return true if the attributes are visible, false otherwise
    */
   // created by Eric Lefevre 13 Mar 1999
-  public boolean isAttributeVisible() { return _attrVisible; }
+  public boolean isAttributeVisible() {  return _attr.isDisplayed(); }
 
-  /**
-   * Returns the height of a text element in the class icon.
-   * This represents the size that the attribute part or the operator part could have.
-   */
-  // created by Eric Lefevre 13 Mar 1999
-  private int figTextHeight() {
-    return _lastVisible.getBounds().height;
-  }
-
-  /**
-   * Sets the operation field visible or not in the class icon.
-   * @param true to set the operations visible, false otherwise
-   */
-  // created by Eric Lefevre 13 Mar 1999
-  public void setOperationVisible(boolean isVisible) {
-    Rectangle rect = getBounds();
-    if ( _operVisible ) {
-      if ( !isVisible ) {
-        damage();
-        removeFig(_oper);
-        int h = figTextHeight();
-        _operVisible = false;
-        setBounds(rect.x, rect.y, rect.width, rect.height - h -1);
-        if ( !_attrVisible ) _lastVisible = _oper;
-        else _lastVisible = _attr;
-      }
-    }
-    else {
-      if ( isVisible ) {
-        int h = figTextHeight();
-        addFig(_oper);
-        _operVisible = true;
-        setBounds(rect.x, rect.y, rect.width, rect.height + h);
-        damage();
-        _lastVisible = _oper;
-      }
-    }
-  }
-
-  /**
-   * Sets the attribute field visible or not in the class icon.
-   * @param true to set the attributes visible, false otherwise
-   */
   // created by Eric Lefevre 13 Mar 1999
   public void setAttributeVisible(boolean isVisible) {
     Rectangle rect = getBounds();
-    if ( _attrVisible ) {
+    if ( _attr.isDisplayed() ) {
       if ( !isVisible ) {
         damage();
-        int h = figTextHeight();
-        removeFig(_attr);
-        _attrVisible = false;
-        setBounds(rect.x, rect.y, rect.width, rect.height - h);
-        if ( !_operVisible ) _lastVisible = _attr;
-        else _lastVisible = _oper;
+        int h = _attr.getBounds().height;
+        _attr.setDisplayed(false);
+        setBounds(rect.x, rect.y, rect.width, rect.height - h -1);
       }
     }
     else {
       if ( isVisible ) {
-        addFig(_attr);
-        int h = figTextHeight();
-        _attrVisible = true;
+        int h = _attr.getBounds().height;
+        _attr.setDisplayed(true);
         setBounds(rect.x, rect.y, rect.width, rect.height + h);
         damage();
-        _lastVisible = _attr;
+      }
+    }
+  }
+
+  // created by Eric Lefevre 13 Mar 1999
+  public void setOperationVisible(boolean isVisible) {
+    Rectangle rect = getBounds();
+    if ( _oper.isDisplayed() ) {
+      if ( !isVisible ) {
+        damage();
+        int h = _oper.getBounds().height;
+        _oper.setDisplayed(false);
+        setBounds(rect.x, rect.y, rect.width, rect.height - h -1);
+      }
+    }
+    else {
+      if ( isVisible ) {
+        int h = _oper.getBounds().height;
+        _oper.setDisplayed(true);
+        setBounds(rect.x, rect.y, rect.width, rect.height + h);
+        damage();
       }
     }
   }
@@ -225,23 +205,23 @@ public class FigClass extends FigNodeModelElement {
   public Dimension getMinimumSize() {
     Dimension nameMin = _name.getMinimumSize();
     Dimension attrMin;
-    if ( _attrVisible )
+    if ( _attr.isDisplayed() )
       attrMin = _attr.getMinimumSize();
     else
       attrMin = new Dimension();
     Dimension operMin;
-    if ( _operVisible )
+    if ( _oper.isDisplayed() )
       operMin = _oper.getMinimumSize();
     else
       operMin = new Dimension();
 
     int h = nameMin.height;
     int w = nameMin.width;
-    if ( _attrVisible ) {
+    if ( _attr.isDisplayed() ) {
       h += attrMin.height;
       w = Math.max(w, attrMin.width);
     }
-    if ( _operVisible ) {
+    if ( _oper.isDisplayed() ) {
       h += operMin.height;
       w = Math.max(w, operMin.width);
     }
@@ -257,56 +237,6 @@ public class FigClass extends FigNodeModelElement {
       ((SelectionClass)sel).hideButtons();
   }
 
-  /* Override setBounds to keep shapes looking right */
-  // modified by Eric Lefevre 13 Mar 1999
-  public void setBounds(int x, int y, int w, int h) {
-    if (_name == null) return;
-    Rectangle oldBounds = getBounds();
-    Dimension nameMin = _name.getMinimumSize();
-
-    Dimension attrMin;
-    if ( _attrVisible )
-      attrMin = _attr.getMinimumSize();
-    else
-      attrMin = new Dimension();
-
-    Dimension operMin;
-    if ( _operVisible )
-      operMin = _oper.getMinimumSize();
-    else
-      operMin = new Dimension();
-
-    int extra_total = h - nameMin.height - attrMin.height - operMin.height;
-    int extra_each = extra_total/2;
-    if ( _attrVisible ^ _operVisible )
-      extra_each = extra_total;
-
-    _name.setBounds(x, y, w, nameMin.height);
-
-    int attributeIncrement;
-    int increment2;
-    if ( _attrVisible ) {
-      _attr.setBounds(x, y + _name.getBounds().height - 1,
-                      w, attrMin.height + extra_each + 1);
-      attributeIncrement = _attr.getBounds().height -1;
-      increment2 = 2;
-    }
-    else {
-      attributeIncrement = 0;
-      increment2 = 1;
-    }
-    if ( _operVisible )
-      _oper.setBounds(x, y + attributeIncrement +
-                      _name.getBounds().height - 1,
-		      w, operMin.height + extra_each + increment2);
-    if ( (!_attrVisible) && (!_operVisible) )
-      h = nameMin.height;
-    _bigPort.setBounds(x+1, y+1, w-2, h-2);
-
-    calcBounds(); //_x = x; _y = y; _w = w; _h = h;
-    updateEdges();
-    firePropChange("bounds", oldBounds, getBounds());
-  }
 
   ////////////////////////////////////////////////////////////////
   // user interaction methods
