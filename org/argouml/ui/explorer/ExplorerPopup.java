@@ -144,7 +144,8 @@ public class ExplorerPopup extends JPopupMenu {
                     ? ((UMLStateDiagram) activeDiagram).getStateMachine()
                     : null;
                 
-                if ((classifierSelected && !dataTypeSelected && !classifierAndRelationShipSelected)
+                if ((classifierSelected && !dataTypeSelected 
+                    && !classifierAndRelationShipSelected)
                         || (packageSelected && selectedItem != projectModel)
                         || (stateVertexSelected && stateDiagramActive
                             && diagramStateMachine == selectedStateMachine)
