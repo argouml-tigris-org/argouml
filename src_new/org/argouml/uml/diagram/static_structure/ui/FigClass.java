@@ -74,18 +74,16 @@ public class FigClass extends FigNodeModelElement {
 //     _stereo.setLineWidth(0);
 //     _stereo.setFilled(false);
 
-    _attr = new FigText(10, 30, 90, 21);
+    _attr = new FigText(10, 30, 90, 21, true);
     _attr.setFilled(true);
     _attr.setLineWidth(1);
-    _attr.setExpandOnly(true);
     _attr.setFont(LABEL_FONT);
     _attr.setTextColor(Color.black);
     _attr.setJustification(FigText.JUSTIFY_LEFT);
 
-    _oper = new FigText(10, 50, 90, 21);
+    _oper = new FigText(10, 50, 90, 21, true);
     _oper.setFilled(true);
     _oper.setLineWidth(1);
-    _oper.setExpandOnly(true);
     _oper.setFont(LABEL_FONT);
     _oper.setTextColor(Color.black);
     _oper.setJustification(FigText.JUSTIFY_LEFT);
