@@ -209,13 +209,11 @@ public class ExtensionMechanismsHelper {
     
     public Collection getStereotypes() {
         List ret = new ArrayList();
-        if (ProjectBrowser.TheInstance != null) {
-            Project p = Project.getCurrentProject();
-            Iterator it = p.getModels().iterator();
-            while (it.hasNext()) {
-                MModel model = (MModel)it.next();
-                ret.addAll(getStereotypes(model));
-            }
+        Project p = Project.getCurrentProject();
+        Iterator it = p.getModels().iterator();
+        while (it.hasNext()) {
+            MModel model = (MModel)it.next();
+            ret.addAll(getStereotypes(model));
         }
         return ret;
     }
