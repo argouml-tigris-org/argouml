@@ -97,6 +97,16 @@ public class PerspectiveManager {
         }
     }
     
+    public void addAllPerspectives(Collection newPerspectives){
+        
+        Iterator newPerspectivesIt = newPerspectives.iterator();
+        while(newPerspectivesIt.hasNext()){
+            
+            Object newPerspective = newPerspectivesIt.next();
+            addPerspective(newPerspective);
+        }
+    }
+    
     public void removePerspective(Object perspective){
         
         perspectives.remove(perspective);
@@ -112,10 +122,11 @@ public class PerspectiveManager {
     
     public void removeAllPerspectives(){
         
-        Iterator perspectivesIt = getPerspectives().iterator();
-        while(perspectivesIt.hasNext()){
+        List pers = new ArrayList();
+        pers.addAll(getPerspectives());
+        for(int i=0;i<pers.size();i++){
             
-            removePerspective(perspectivesIt.next());
+            removePerspective(pers.get(i));
         }
     }
     
@@ -130,69 +141,73 @@ public class PerspectiveManager {
      */
     public void loadDefaultPerspectives(){
         
-        oldLoadDefaultPerspectives();
-//        String userPerspectives = 
-//            Configuration.getString(Argo.KEY_USER_EXPLORER_PERSPECTIVES, "");
-//        
-//        StringTokenizer perspectives =new StringTokenizer(userPerspectives,";");
-//        
-//        if(perspectives.hasMoreTokens()){
-//            
-//            // load user perspectives
-//            while(perspectives.hasMoreTokens()){
-//                String perspective = perspectives.nextToken();
-//                StringTokenizer perspectiveDetails =
-//                    new StringTokenizer(perspective,",");
-//                
-//                //get the perspective name
-//                String perspectiveName = perspectiveDetails.nextToken();
-//                
-//                ExplorerPerspective userDefinedPerspective =
-//                    new ExplorerPerspective(perspectiveName);
-//                
-//                // make sure there are some rules...
-//                if(perspectiveDetails.hasMoreTokens()){
-//                    
-//                    //get the rules
-//                    while(perspectiveDetails.hasMoreTokens()){
-//                        
-//                        //get the rule name
-//                        String ruleName = perspectiveDetails.nextToken();
-//                        
-//                        // create the rule:
-//                        try{
-//                            Class ruleClass = 
-//                                Class.forName(RULES_PACKAGE+ruleName);
-//                            
-//                            PerspectiveRule rule =
-//                                (PerspectiveRule)ruleClass.newInstance();
-//                            
-//                            userDefinedPerspective.addRule(rule);
-//                            
-//                        }catch(Exception ex){
-//                            cat.error("could not create rule "+ex);
-//                        }
-//                    }
-//                    
-//                }
-//                // rule name but no rules
-//                else{
-//                    continue;
-//                }
-//                
-//                // add the perspective
-//                addPerspective(userDefinedPerspective);
-//            }
-//        }
-//        // no user defined perspectives, so load defaults.
-//        else{
-//            oldLoadDefaultPerspectives();
-//        }
-//        
-//        // one last check that some loaded.
-//        if(getPerspectives().size() ==0){
-//            oldLoadDefaultPerspectives();
-//        }
+//        oldLoadDefaultPerspectives();
+        try{
+        String userPerspectives = 
+            Configuration.getString(Argo.KEY_USER_EXPLORER_PERSPECTIVES, "");
+        
+        StringTokenizer perspectives =new StringTokenizer(userPerspectives,";");
+        
+        if(perspectives.hasMoreTokens()){
+            
+            // load user perspectives
+            while(perspectives.hasMoreTokens()){
+                String perspective = perspectives.nextToken();
+                StringTokenizer perspectiveDetails =
+                    new StringTokenizer(perspective,",");
+                
+                //get the perspective name
+                String perspectiveName = perspectiveDetails.nextToken();
+                
+                ExplorerPerspective userDefinedPerspective =
+                    new ExplorerPerspective(perspectiveName);
+                
+                // make sure there are some rules...
+                if(perspectiveDetails.hasMoreTokens()){
+                    
+                    //get the rules
+                    while(perspectiveDetails.hasMoreTokens()){
+                        
+                        //get the rule name
+                        String ruleName = perspectiveDetails.nextToken();
+                        
+                        // create the rule:
+                        try{
+                            Class ruleClass = 
+                                Class.forName(ruleName);
+                            
+                            PerspectiveRule rule =
+                                (PerspectiveRule)ruleClass.newInstance();
+                            
+                            userDefinedPerspective.addRule(rule);
+                            
+                        }catch(Exception ex){
+                            cat.error("could not create rule "+ex);
+                        }
+                    }
+                    
+                }
+                // rule name but no rules
+                else{
+                    continue;
+                }
+                
+                // add the perspective
+                addPerspective(userDefinedPerspective);
+            }
+        }
+        // no user defined perspectives, so load defaults.
+        else{
+            oldLoadDefaultPerspectives();
+        }
+        
+        // one last check that some loaded.
+        if(getPerspectives().size() ==0){
+            oldLoadDefaultPerspectives();
+        }
+        }catch(Exception e1){
+            int i=0;
+        }
     }
         
     /**
@@ -299,69 +314,69 @@ public class PerspectiveManager {
      */
     public void loadRules(){
         
-        String[] ruleNamesArray =
-        {"GoAssocRoleMessages",
-         "GoBehavioralFeatureToStateDiagram",
-         "GoBehavioralFeatureToStateMachine",
-         "GoClassifierToBeh",
-         "GoClassifierToCollaboration",
-         "GoClassifierToInstance",
-         "GoClassifierToSequenceDiagram",
-         "GoClassifierToStateMachine",
-         "GoClassifierToStructuralFeature",
-         "GoClassToAssociatedClass",
-         "GoClassToNavigableClass",
-         "GoClassToSummary",
-         "GoCollaborationDiagram",
-         "GoCollaborationInteraction",
-         "GoCompositeStateToSubvertex",
-         "GoDiagramToEdge",
-         "GoDiagramToNode",
-         "GoElementToMachine",
-         "GoGenElementToDerived",
-         "GoInteractionMessage",
-         "GoInteractionMessages",
-         "GoLinkStimuli",
-         "GoMachineDiagram",
-         "GoMachineToState",
-         "GoMachineToTrans",
-         "GoMessageAction",
-         "GoModelElementToComment",
-         "GoModelToBaseElements",
-         "GoModelToClass",
-         "GoModelToCollaboration",
-         "GoModelToDiagrams",
-         "GoModelToElements",
-         "GoNamespaceToClassifierAndPackage",
-         "GoNamespaceToDiagram",
-         "GoNamespaceToOwnedElements",
-         "GoOperationToCollaborationDiagram",
-         "GoOperationToCollaboration",
-         "GoOperationToSequenceDiagram",
-         "GoProjectToCollaboration",
-         "GoProjectToDiagram",
-         "GoProjectToModel",
-         "GoProjectToStateMachine",
-         "GoSignalToReception",
-         "GoStateMachineToTop",
-         "GoStateMachineToTransition",
-         "GoStateToDoActivity",
-         "GoStateToDownstream",
-         "GoStateToEntry",
-         "GoStateToExit",
-         "GoStateToIncomingTrans",
-         "GoStateToInternalTrans",
-         "GoStateToOutgoingTrans",
-         "GoStimulusToAction",
-         "GoSummaryToAssociation",
-         "GoSummaryToAttribute",
-         "GoSummaryToIncomingDependency",
-         "GoSummaryToInheritance",
-         "GoSummaryToOperation",
-         "GoSummaryToOutgoingDependency",
-         "GoTransitionToSource",
-         "GoTransitionToTarget",
-         "GoUseCaseToExtensionPoint"};
+        PerspectiveRule[] ruleNamesArray =
+        {new GoAssocRoleMessages(),
+         new GoBehavioralFeatureToStateDiagram(),
+         new GoBehavioralFeatureToStateMachine(),
+         new GoClassifierToBeh(),
+         new GoClassifierToCollaboration(),
+         new GoClassifierToInstance(),
+         new GoClassifierToSequenceDiagram(),
+         new GoClassifierToStateMachine(),
+         new GoClassifierToStructuralFeature(),
+         new GoClassToAssociatedClass(),
+         new GoClassToNavigableClass(),
+         new GoClassToSummary(),
+         new GoCollaborationDiagram(),
+         new GoCollaborationInteraction(),
+         new GoCompositeStateToSubvertex(),
+         new GoDiagramToEdge(),
+         new GoDiagramToNode(),
+         new GoElementToMachine(),
+         new GoGenElementToDerived(),
+         new GoInteractionMessage(),
+         new GoInteractionMessages(),
+         new GoLinkStimuli(),
+         new GoMachineDiagram(),
+         new GoMachineToState(),
+         new GoMachineToTrans(),
+         new GoMessageAction(),
+         new GoModelElementToComment(),
+         new GoModelToBaseElements(),
+         new GoModelToClass(),
+         new GoModelToCollaboration(),
+         new GoModelToDiagrams(),
+         new GoModelToElements(),
+         new GoNamespaceToClassifierAndPackage(),
+         new GoNamespaceToDiagram(),
+         new GoNamespaceToOwnedElements(),
+         new GoOperationToCollaborationDiagram(),
+         new GoOperationToCollaboration(),
+         new GoOperationToSequenceDiagram(),
+         new GoProjectToCollaboration(),
+         new GoProjectToDiagram(),
+         new GoProjectToModel(),
+         new GoProjectToStateMachine(),
+         new GoSignalToReception(),
+         new GoStateMachineToTop(),
+         new GoStateMachineToTransition(),
+         new GoStateToDoActivity(),
+         new GoStateToDownstream(),
+         new GoStateToEntry(),
+         new GoStateToExit(),
+         new GoStateToIncomingTrans(),
+         new GoStateToInternalTrans(),
+         new GoStateToOutgoingTrans(),
+         new GoStimulusToAction(),
+         new GoSummaryToAssociation(),
+         new GoSummaryToAttribute(),
+         new GoSummaryToIncomingDependency(),
+         new GoSummaryToInheritance(),
+         new GoSummaryToOperation(),
+         new GoSummaryToOutgoingDependency(),
+         new GoTransitionToSource(),
+         new GoTransitionToTarget(),
+         new GoUseCaseToExtensionPoint()};
          
          rules = Arrays.asList(ruleNamesArray);
     }

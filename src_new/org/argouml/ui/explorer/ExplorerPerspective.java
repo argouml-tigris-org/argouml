@@ -59,6 +59,11 @@ public class ExplorerPerspective {
         rules.add(rule);
     }
     
+    public void removeRule(PerspectiveRule rule){
+        
+        rules.remove(rule);
+    }
+    
     public Object[] getRulesArray(){
         
         return rules.toArray();

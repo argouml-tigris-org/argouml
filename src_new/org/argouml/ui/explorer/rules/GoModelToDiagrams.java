@@ -38,7 +38,7 @@ import org.argouml.kernel.ProjectManager;
 public class GoModelToDiagrams extends AbstractPerspectiveRule{
 
     public String getRuleName() {
-	return Translator.localize ("Tree", "misc.model-diagram");
+	return Translator.localize ("Tree", "model -> diagrams");//"misc.model-diagram");
     }
 
     public Collection getChildren(Object parent) {
