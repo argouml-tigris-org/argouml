@@ -24,14 +24,8 @@
 
 package org.argouml.application.helpers;
 import org.argouml.application.api.*;
-import org.argouml.ui.*;
-import org.argouml.kernel.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
 import javax.swing.*;
 import java.util.*;
-import org.tigris.gef.util.*;
 
 /** Helper object for Settings Tabs
  *
