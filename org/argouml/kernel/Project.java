@@ -120,14 +120,13 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     private Vector diagrams;
     private Object defaultModel;
-    private boolean needsSave;
     private Object currentNamespace;
     private HashMap uuidRefs;
     private GenerationPreferences cgPrefs;
     private transient VetoableChangeSupport vetoSupport;
 
     /**
-     * The root of the modeltree the user is working on. (The untitled_model in
+     * The root of the modeltree the user is working on. (The untitledModel in
      * the navpane).
      */
     private Object treeRoot;
@@ -1075,14 +1074,6 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public GenerationPreferences getCgPrefs() {
         return cgPrefs;
-    }
-
-    /**
-     * Returns the needsSave.
-     * @return boolean
-     */
-    public boolean isNeedsSave() {
-        return needsSave;
     }
 
     /**
