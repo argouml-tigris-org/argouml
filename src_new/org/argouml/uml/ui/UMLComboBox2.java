@@ -46,7 +46,7 @@ public class UMLComboBox2
      * Constructor for UMLMessageActivatorComboBox.
      * @deprecated As of ArgoUml version unknown (before 0.13.5),
      * replaced by {@link #UMLComboBox2(UMLComboBoxModel2, UMLAction, boolean)}
-     * @param arg0
+     * @param arg0 the ComboBoxModel
      */
     protected UMLComboBox2(UMLComboBoxModel2 arg0) {
         super(arg0);
@@ -58,8 +58,9 @@ public class UMLComboBox2
     /**
      * Constructor for UMLMessageActivatorComboBox. Via the given action, the 
      * action for this combobox is done.
-     * @param arg0
-     * @param action
+     * @param arg0 the ComboBoxModel
+     * @param action the action
+     * @param showIcon true if an icon should be shown in front of the items
      */
     public UMLComboBox2(UMLComboBoxModel2 arg0, UMLAction action,
 			boolean showIcon) {
@@ -70,6 +71,12 @@ public class UMLComboBox2
         setRenderer(new UMLListCellRenderer2(showIcon));      
     }
            
+    /**
+     * The constructor.
+     * 
+     * @param arg0 the ComboBoxModel
+     * @param action the action
+     */
     public UMLComboBox2(UMLComboBoxModel2 arg0, UMLAction action) {
         this(arg0, action, true);
     }
@@ -87,7 +94,8 @@ public class UMLComboBox2
     /**
      * The 'body' of the actionPerformed method. Is only called if there is
      * actually a selection made.
-     * @param event
+     * 
+     * @param event the event
      */
     protected void doIt(ActionEvent event) { }
     

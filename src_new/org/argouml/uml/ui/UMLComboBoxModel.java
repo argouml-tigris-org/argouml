@@ -56,7 +56,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
     ComboBoxModel, UMLUserInterfaceComponent, ActionListener {
 
     /** logger */
-    private static Logger cat = Logger.getLogger(UMLComboBoxModel.class);
+    private static final Logger LOG = Logger.getLogger(UMLComboBoxModel.class);
 
     ///////////////////////////////////////////////////////////////////////////
     //
@@ -68,13 +68,13 @@ public class UMLComboBoxModel extends AbstractListModel implements
     /**
      * The container (PropPanel) in which we are used.<p>
      */
-    protected UMLUserInterfaceContainer _container;
+    private UMLUserInterfaceContainer theContainer;
 
 
     /**
      * The name of the NSUML event that affects our data model.<p>
      */
-    protected String _property;
+    private String theProperty;
 
 
     /**
@@ -83,7 +83,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
      * allowed in the combo box. If the method is non-existent has the
      * value <code>null</code>.<p>
      */
-    protected Method _filter = null;
+    private Method theFilter = null;
 
 
     /**
@@ -93,7 +93,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
      * ru.novosoft.uml.foundation.core.MModelElement}. If the method
      * is non-existent has the value <code>null</code>.<p>
      */
-    protected Method _getMethod;
+    private Method theGetMethod;
 
 
     /**
@@ -103,34 +103,34 @@ public class UMLComboBoxModel extends AbstractListModel implements
      * ru.novosoft.uml.foundation.core.MModelElement} as argument.  If
      * the method is non-existent has the value <code>null</code>.<p>
      */
-    protected Method _setMethod;
+    private Method theSetMethod;
 
 
     /**
      * The set of objects that are displayed in the drop down.<p>
      */
-    protected TreeSet _set;
+    private TreeSet set;
 
 
     /**
      * The currently selected object in the combo box (displayed when
      * the drop-down is not being shown).<p>
      */
-    protected Object _selectedItem;
+    private Object theSelectedItem;
 
 
     /**
      * Flag to indicate that an empty entry should be included (first)
      * in the drop down list.<p>
      */
-    protected boolean _allowVoid;
+    private boolean allowVoid;
 
 
     /**
      * Flag to indicate that the drop down should include elements
-     * from the model included within the profile.<p>
+     * from the model included within the profile.
      */
-    protected boolean _addElementsFromProfileModel;
+    private boolean addElementsFromProfileModel;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -162,30 +162,30 @@ public class UMLComboBoxModel extends AbstractListModel implements
      * set the value associated with this combo box. Takes as argument
      * an object of type <code>elementType</code> (see below).
      *
-     * @param allowVoid A flag to indicate that the drop down list
+     * @param allowVoidEntry A flag to indicate that the drop down list
      * should include (in first position) an empty entry.
      *
      * @param elementType The base type for all elements in the combo box.
      *
-     * @param addElementsFromProfileModel A flag to indicate that
+     * @param addProfileElements A flag to indicate that
      * elements from the model associated with the profile should be
      * included in the drop down list.
      */
     public UMLComboBoxModel(UMLUserInterfaceContainer container,
                             String filter, String property, String getMethod,
-                            String setMethod, boolean allowVoid, Class
-                            elementType, boolean addElementsFromProfileModel) {
+                            String setMethod, boolean allowVoidEntry, Class
+                            elementType, boolean addProfileElements) {
 
         // Record the simple arguments
 
-        _container                   = container;
-        _property                    = property;
-        _allowVoid                   = allowVoid;
-        _addElementsFromProfileModel = addElementsFromProfileModel;
+        theContainer                   = container;
+        theProperty                    = property;
+        allowVoid                   = allowVoidEntry;
+        addElementsFromProfileModel = addProfileElements;
 
         // Create an empty sorted set for the elements in the drop down
 
-        _set = new TreeSet();
+        set = new TreeSet();
 
         // Check the method arguments are valid if supplied
 
@@ -195,14 +195,14 @@ public class UMLComboBoxModel extends AbstractListModel implements
 	    };
 
             try {
-                _filter = _container.getClass().getMethod(filter, args);
+                theFilter = theContainer.getClass().getMethod(filter, args);
             }
             catch (Exception e) {
-                cat.error(e.toString() + ". "
+                LOG.error(e.toString() + ". "
 			  + this.getClass().toString()
 			  + ": invalid filter method " + filter,
 			  e);
-                cat.error("Need to rethrow this exception as "
+                LOG.error("Need to rethrow this exception as "
 			  + "a RuntimeException.");
 		throw new RuntimeException(e.toString());
             }
@@ -212,14 +212,15 @@ public class UMLComboBoxModel extends AbstractListModel implements
             Class[] getArgs = {};
 
             try {
-                _getMethod = container.getClass().getMethod(getMethod, getArgs);
+                theGetMethod = container.getClass()
+                    .getMethod(getMethod, getArgs);
             }
             catch (Exception e) {
-                cat.error(e.toString() + ". "
+                LOG.error(e.toString() + ". "
 			  + this.getClass().toString()
 			  + ": invalid get method " + getMethod,
 			  e);
-                cat.error("Need to rethrow this exception as "
+                LOG.error("Need to rethrow this exception as "
 			  + "a RuntimeException.");
 		throw new RuntimeException(e.toString());
             }
@@ -231,14 +232,15 @@ public class UMLComboBoxModel extends AbstractListModel implements
 	    };
 
             try {
-                _setMethod = container.getClass().getMethod(setMethod, setArgs);
+                theSetMethod = container.getClass()
+                    .getMethod(setMethod, setArgs);
             }
             catch (Exception e) {
-                cat.error(e.toString() + ". "
+                LOG.error(e.toString() + ". "
 			  + this.getClass().toString()
 			  + ": invalid set method " + setMethod,
 			  e);
-		cat.error("Need to rethrow this exception as "
+		LOG.error("Need to rethrow this exception as "
 			  + "a RuntimeException.");
 		throw new RuntimeException(e.toString());
             }
@@ -259,7 +261,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
      * @return  The set of elements shown in the drop down.
      */
     protected TreeSet getSet() {
-	return _set;
+	return set;
     }
 
 
@@ -271,7 +273,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
      *          associated with the profile, <code>false</code> otherwise.
      */
     protected boolean addElementsFromProfileModel() {
-	return _addElementsFromProfileModel;
+	return addElementsFromProfileModel;
     }
 
 
@@ -281,7 +283,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
      * @return  The container     
      */
     protected UMLUserInterfaceContainer getContainer() {
-	return _container;
+	return theContainer;
     }
 
 
@@ -293,7 +295,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
      *          <code>false</code> otherwise.
      */
     protected boolean allowVoid() {
-	return _allowVoid;
+	return allowVoid;
     }
 
 
@@ -305,7 +307,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
      *          <code>null</code> if no method is provided.
      */
     protected Method getGetMethod() {
-	return _getMethod;
+	return theGetMethod;
     }
 
 
@@ -317,7 +319,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
      *          <code>null</code> if no method is provided.
      */
     protected Method getSetMethod() {
-	return _setMethod;
+	return theSetMethod;
     }
 
 
@@ -330,7 +332,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
      *                   the combo box.
      */
     public void setSelectedItem(final java.lang.Object selection) {
-        _selectedItem = selection;
+        theSelectedItem = selection;
     }
 
 
@@ -343,7 +345,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
      *          the combo box.
      */
     public Object getSelectedItem() {
-        return _selectedItem;
+        return theSelectedItem;
     }
 
 
@@ -356,7 +358,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
      * @return  The number of elements in the drop down list.
      */
     public int getSize() {
-        return _set.size();
+        return set.size();
     }
 
 
@@ -377,7 +379,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
         // convert to an array).
 
         Object   element = null;
-        Iterator iter    = _set.iterator();
+        Iterator iter    = set.iterator();
 
         for (int i = 0; iter.hasNext(); i++) {
             element = iter.next();
@@ -454,7 +456,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
                 if (isPhantom) {
                     String   shortName = entry.getShortName();
-                    Iterator setIter   = _set.iterator();
+                    Iterator setIter   = set.iterator();
 
                     // Is the formatted name in the set?
 
@@ -473,7 +475,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
                 // Add if not already there
 
                 if (addMe) {
-                    _set.add(entry);
+                    set.add(entry);
                 }
             }
 
@@ -505,14 +507,14 @@ public class UMLComboBoxModel extends AbstractListModel implements
             Object[] args = {
 		element 
 	    };
-            Boolean  boo  = (Boolean) _filter.invoke(_container, args);
+            Boolean  boo  = (Boolean) theFilter.invoke(theContainer, args);
 
             if (boo != null) {
                 isAcceptible = boo.booleanValue();
             }
         }
         catch (Exception e) {
-            cat.error(e.toString() + ". "
+            LOG.error(e.toString() + ". "
 		      + this.getClass().toString()
 		      + ": isAcceptible() - filter failed.",
 		      e);
@@ -538,13 +540,15 @@ public class UMLComboBoxModel extends AbstractListModel implements
      * @author psager@tigris.org Oct. 13, 2001. Fixed problem with
      * reload or 2nd project load where stereotype would be set to
      * <code>null</code> on first class selected after load.
+     *
+     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
      */
     public void targetChanged() {
 
         // Give up if we don't have a target that is some sort of model
         // element.
 
-        Object target = _container.getTarget();
+        Object target = theContainer.getTarget();
 
         if (!(ModelFacade.isAModelElement(target))) {
             return;
@@ -558,7 +562,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
         if (model == null) {
         	// extra attempt
-            cat.error(this.getClass().toString() + " targetChanged() - "
+            LOG.error(this.getClass().toString() + " targetChanged() - "
 		      + "getModel() == null for "
 		      + target.getClass().toString());
             return;
@@ -579,13 +583,13 @@ public class UMLComboBoxModel extends AbstractListModel implements
         // Empty the set and get the profile we can use for creating new
         // entries, formatting etc.
 
-        _set.clear();
-        Profile profile = _container.getProfile();
+        set.clear();
+        Profile profile = theContainer.getProfile();
 
         // Add an empty entry if allowed
 
-        if (_allowVoid) {
-            _set.add(new UMLComboBoxEntry(null, profile, false));
+        if (allowVoid) {
+            set.add(new UMLComboBoxEntry(null, profile, false));
         }
 
         // Collect elements from the model supplied.
@@ -596,7 +600,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
         // Add elements from the model associated with the profile if allowed.
 
-        if (_addElementsFromProfileModel) {
+        if (addElementsFromProfileModel) {
             Object/*MModel*/ profileModel = profile.getProfileModel();
 
             if (profileModel != null) {
@@ -608,7 +612,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
         // entries is identical. Where this is the case, use the long name as
         // the display name.
 
-        Iterator iter = _set.iterator();
+        Iterator iter = set.iterator();
 
         String before = null;
         UMLComboBoxEntry currentEntry = null;
@@ -655,12 +659,12 @@ public class UMLComboBoxModel extends AbstractListModel implements
         // the first will appear in this set!
 
         try {
-            Object[] _noArgs    = {};
-            Object   currentObj = _getMethod.invoke(_container, _noArgs);
+            Object[] noArgs    = {};
+            Object   currentObj = theGetMethod.invoke(theContainer, noArgs);
 
             // Now find this one in the set
 
-            Iterator iter2 = _set.iterator();
+            Iterator iter2 = set.iterator();
 
             while (iter2.hasNext()) {
                 UMLComboBoxEntry entry = (UMLComboBoxEntry) iter2.next();
@@ -675,7 +679,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
                 if (!(entry.isPhantom())
 		        && (entry.getElement(model) == currentObj)) {
-                    _selectedItem = entry;
+                    theSelectedItem = entry;
                     // 2002-07-15
                     // Jaap Branderhorst
                     // Probably good idea for performance to break out
@@ -685,17 +689,17 @@ public class UMLComboBoxModel extends AbstractListModel implements
             }
         }
         catch (Exception e) {
-            cat.error(e.toString() + ". "
+            LOG.error(e.toString() + ". "
 		      + this.getClass().toString()
 		      + ": targetChanged() - get method failed.",
 		      e);
-            _selectedItem = null;
+            theSelectedItem = null;
         }
 
         // Finally tell Swing that things may have changed (I'm not sure we
         // shouldn't be using add and remove).
 
-        fireContentsChanged(this, 0, _set.size() - 1);
+        fireContentsChanged(this, 0, set.size() - 1);
 
     }
 
@@ -735,7 +739,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
         String   addedName = ModelFacade.getName(addedElement);
         boolean  inSet     = false;
-        Iterator iter      = _set.iterator();
+        Iterator iter      = set.iterator();
                  
         while (iter.hasNext() && !inSet) {
             UMLComboBoxEntry existingEntry = (UMLComboBoxEntry) iter.next();
@@ -762,9 +766,9 @@ public class UMLComboBoxModel extends AbstractListModel implements
         // things have changed.
 
         if (!inSet) {
-            _set.add(new UMLComboBoxEntry(addedElement,
-                                          _container.getProfile(), false));
-            fireContentsChanged(this, 0, _set.size());
+            set.add(new UMLComboBoxEntry(addedElement,
+                                          theContainer.getProfile(), false));
+            fireContentsChanged(this, 0, set.size());
         }
     }
 
@@ -790,7 +794,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
         // matter if the entry is phantom or not.
 
         UMLComboBoxEntry  foundEntry = null;
-        Iterator          iter       = _set.iterator();
+        Iterator          iter       = set.iterator();
                  
         while (iter.hasNext() && (foundEntry == null)) {
             UMLComboBoxEntry existingEntry = (UMLComboBoxEntry) iter.next();
@@ -804,8 +808,8 @@ public class UMLComboBoxModel extends AbstractListModel implements
         // things have changed.
 
         if (foundEntry != null) {
-            _set.remove(foundEntry);
-            fireContentsChanged(this, 0, _set.size());
+            set.remove(foundEntry);
+            fireContentsChanged(this, 0, set.size());
         }
     }
 
@@ -893,13 +897,13 @@ public class UMLComboBoxModel extends AbstractListModel implements
         // this event as its element.
 
         Object   source = event.getSource();
-        Iterator iter   = _set.iterator();
+        Iterator iter   = set.iterator();
 
         while (iter.hasNext()) {
             UMLComboBoxEntry entry = (UMLComboBoxEntry) iter.next();
 
             if ((!entry.isPhantom()) && (entry.getElement(null) == source)) {
-                _set.remove(entry);
+                set.remove(entry);
                 break;
             }
         }
@@ -944,7 +948,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
         // See if there is a (non-phantom) entry with that element. Count the
         // index, so we can tell where the changed happened.
 
-        Iterator iter = _set.iterator();
+        Iterator iter = set.iterator();
 
         for (int i = 0; iter.hasNext(); i++) {
             UMLComboBoxEntry entry = (UMLComboBoxEntry) iter.next();
@@ -977,15 +981,15 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
         // Only works if we actually have a selected item
 
-        if (_selectedItem == null) {
+        if (theSelectedItem == null) {
             return;
         }
 
-        UMLComboBoxEntry entry = (UMLComboBoxEntry) _selectedItem;
+        UMLComboBoxEntry entry = (UMLComboBoxEntry) theSelectedItem;
 
         // If we are a model element, we should have an associated model.
 
-        Object target = _container.getTarget();
+        Object target = theContainer.getTarget();
         Object model  = null;
 
         if (ModelFacade.isAModelElement(target)) {
@@ -1000,9 +1004,9 @@ public class UMLComboBoxModel extends AbstractListModel implements
 	};
 
         try {
-            _setMethod.invoke(_container, args);
+            theSetMethod.invoke(theContainer, args);
         } catch (Exception e) {
-            cat.error(e.toString() + ". "
+            LOG.error(e.toString() + ". "
 		      + this.getClass().toString()
 		      + ": actionPerformed() - set method failed.",
 		      e);

@@ -110,7 +110,7 @@ public class Import {
     private String srcPath;
 
     /** Create a interface to the current diagram */
-    private DiagramInterface _diagram;
+    private DiagramInterface diagramInterface;
 
     /**
      * current language module
@@ -391,7 +391,7 @@ public class Import {
         // we always start with a level 0 import
 	setAttribute("level", new Integer(0));
 
-        _diagram = getCurrentDiagram();
+        diagramInterface = getCurrentDiagram();
 
         ProjectBrowser.getInstance().setCursor(
                 Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -439,7 +439,7 @@ public class Import {
         if ( module.isParseable(f)) {
             ProjectBrowser.getInstance()
                 .showStatus("Parsing " + f.toString() + "...");
-            module.parseFile( project, f, _diagram, this);
+            module.parseFile( project, f, diagramInterface, this);
         }
     }
 
@@ -491,7 +491,7 @@ public class Import {
      * should be saved before exit.
      */
     public boolean needsSave() {
-        return (_diagram.getModifiedDiagrams().size() > 0);
+        return (diagramInterface.getModifiedDiagrams().size() > 0);
     }
 
     /**
@@ -594,8 +594,8 @@ public class Import {
                         curFile); // Try to parse this file.
 
                     int tot = countFiles;
-                    if (_diagram != null) {
-                        tot += _diagram.getModifiedDiagrams().size() / 10;
+                    if (diagramInterface != null) {
+                        tot += diagramInterface.getModifiedDiagrams().size() / 10;
                     }
                     iss.setMaximum(tot);
                     int act =
@@ -666,7 +666,7 @@ public class Import {
 
             // Check if any diagrams where modified and the project
             // should be saved before exiting.
-            if (_diagram != null && needsSave()) {
+            if (diagramInterface != null && needsSave()) {
                 ProjectManager.getManager().getCurrentProject()
                     .setNeedsSave(true);
             }
@@ -676,12 +676,12 @@ public class Import {
             // Layout the modified diagrams.
             if (doLayout) {
                 st.mark("layout");
-                if (_diagram != null) {
+                if (diagramInterface != null) {
                     for (int i = 0;
-                         i < _diagram.getModifiedDiagrams().size();
+                         i < diagramInterface.getModifiedDiagrams().size();
                          i++) {
                         UMLDiagram diagram =
-                            (UMLDiagram) _diagram.getModifiedDiagrams()
+                            (UMLDiagram) diagramInterface.getModifiedDiagrams()
                                 .elementAt(i);
                         ClassdiagramLayouter layouter = 
                             module.getLayout(diagram);

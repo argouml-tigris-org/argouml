@@ -28,28 +28,35 @@ import java.util.*;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 
+/**
+ * A combobox entry.
+ * 
+ * TODO: What is a Phantom element? Document it.
+ *
+ */
 public class UMLComboBoxEntry implements Comparable {
     private Object/*MModelElement*/ element;
     private String shortName;
     
-    /** _longName is composed of an identifier and a name as in Class: String */
+    /** longName is composed of an identifier and a name as in Class: String */
     private String longName;
     private Profile profile;
     
-    /** _display name will be the same as shortName unless there 
+    /** display name will be the same as shortName unless there 
      *  is a name collision */
     private String displayName;
     
-    /** i am not quite sure what _isPhantom means, it may be that it is an
+    /** i am not quite sure what isPhantom means, it may be that it is an
      *  entry that is not in the model list...pjs */
     private boolean thisIsAPhantom;
 
     /**
      * The constructor.
      * 
-     * @param modelElement the model element
-     * @param theProfile the profile
-     * @param isPhantom 
+     * @param modelElement the model element that this combobox entry represents
+     * @param theProfile the profile according which the textual 
+     *                   representatation of the modelelement is generated
+     * @param isPhantom true if this is a phantom element
      */
     public UMLComboBoxEntry(Object/*MModelElement*/ modelElement, 
             Profile theProfile, boolean isPhantom) {
@@ -61,7 +68,6 @@ public class UMLComboBoxEntry implements Comparable {
         else {
             shortName = "";
         }
-
 
         //
         //   format the element in its own namespace
@@ -79,6 +85,10 @@ public class UMLComboBoxEntry implements Comparable {
         return displayName;
     }
 
+    /**
+     * Generate a string representatation of the UML modelelement 
+     * of this combobox element.
+     */
     public void updateName() {
         if (element != null) {
             Object/*MNamespace*/ ns = ModelFacade.getNamespace(element);
@@ -86,6 +96,13 @@ public class UMLComboBoxEntry implements Comparable {
         }
     }
 
+    /**
+     * If one of the given names equals the "short name", then 
+     * we'll display the longname.
+     * 
+     * @param before the first given name
+     * @param after the 2nd given name
+     */
     public void checkCollision(String before, String after) {
         boolean collision = (before != null && before.equals(shortName)) 
             || (after != null && after.equals(shortName));
@@ -97,10 +114,16 @@ public class UMLComboBoxEntry implements Comparable {
         }
     }
 
+    /**
+     * @return the short name of the modelelement
+     */
     public String getShortName() {
         return shortName;
     }
 
+    /**
+     * @return the long name of the modelelement
+     */
     public String getLongName() {
         if (longName == null) {
             if (element != null) {
@@ -159,6 +182,10 @@ public class UMLComboBoxEntry implements Comparable {
         return ns;
     }
 
+    /**
+     * @param targetModel the UML Model that contains the modelelement
+     * @return the modelelement represented by this combobox item
+     */
     public Object/*MModelElement*/ getElement(Object targetModel) {
         //
         //  if phantom then
@@ -194,12 +221,19 @@ public class UMLComboBoxEntry implements Comparable {
     }
 
 
+    /**
+     * @param modelElement the modelelement represented by this combobox item
+     * @param isPhantom true if this is a phantom element
+     */
     public void setElement(Object/*MModelElement*/ modelElement, 
             boolean isPhantom) {
         element = modelElement;
         thisIsAPhantom = isPhantom;
     }
 
+    /**
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
     public int compareTo(final java.lang.Object other) {
         int compare = -1;
         if (other instanceof UMLComboBoxEntry) {
@@ -239,6 +273,9 @@ public class UMLComboBoxEntry implements Comparable {
         return compare;
     }
 
+    /**
+     * @param modelElement the modelelement that has its name changed
+     */
     public void nameChanged(Object/*MModelElement*/ modelElement) {
         if (modelElement == element && element != null) {
             Object/*MNamespace*/ ns = ModelFacade.getNamespace(element);
@@ -248,6 +285,9 @@ public class UMLComboBoxEntry implements Comparable {
         }
     }
 
+    /**
+     * @return true if this is a phantom element
+     */
     public boolean isPhantom() {
         return thisIsAPhantom;
     }

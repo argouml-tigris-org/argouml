@@ -52,17 +52,19 @@ public abstract class UMLCheckBox2
     extends JCheckBox
     implements TargetListener, MElementListener {
 
-    private Object _target;
-    private String _propertySetName;
+    private Object checkBoxTarget;
+    private String propertySetName;
     
     /**
      * Constructor for UMLCheckBox2.
-     * @param text
+     * @param text the text of the check box
+     * @param a the action we're going to listen to
+     * @param name the property set name
      */
-    public UMLCheckBox2(String text, Action a, String propertySetName) {
+    public UMLCheckBox2(String text, Action a, String name) {
         super(text);
         setFont(LookAndFeelMgr.getInstance().getSmallFont());
-        _propertySetName = propertySetName;
+        propertySetName = name;
         addActionListener(a);
 
 	// TODO: When no longer requiring support for JDK1.2 this constant
@@ -76,7 +78,7 @@ public abstract class UMLCheckBox2
      *          ru.novosoft.uml.MElementEvent)
      */
     public void propertySet(MElementEvent e) {
-        if (e.getName().equals(_propertySetName))
+        if (e.getName().equals(propertySetName))
             buildModel();
     }
 
@@ -123,7 +125,7 @@ public abstract class UMLCheckBox2
      * @return Object
      */
     public Object getTarget() {
-        return _target;
+        return checkBoxTarget;
     }
 
     /**
@@ -133,18 +135,18 @@ public abstract class UMLCheckBox2
      */
     public void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        if (ModelFacade.isABase(_target)) {
-            UmlModelEventPump.getPump()
-		.removeModelEventListener(this, _target, _propertySetName);
+        if (ModelFacade.isABase(checkBoxTarget)) {
+            UmlModelEventPump.getPump().removeModelEventListener(this, 
+                    checkBoxTarget, propertySetName);
         }
        
         if (ModelFacade.isABase(target)) {
-            _target = target;
+            checkBoxTarget = target;
 	    // UmlModelEventPump.getPump()
 	    // .removeModelEventListener(this, (MBase)_target,
 	    // _propertySetName);
 	    UmlModelEventPump.getPump()
-		.addModelEventListener(this, _target, _propertySetName);
+		.addModelEventListener(this, checkBoxTarget, propertySetName);
             buildModel();
         }
             
@@ -161,20 +163,22 @@ public abstract class UMLCheckBox2
     /**
      * TODO: Is this used? I cannot find the reference to
      * org.argouml.uml.ui.TargetChangedListener#targetChanged(Object)
-     */
+     *
+     * @param newTarget the new target
+     *
     public void targetChanged(Object newTarget) {
-        if (_target != newTarget)
+        if (checkBoxTarget != newTarget)
             setTarget(newTarget);
-    }
+    }*/
 
     /**
      * TODO: Is this used? I cannot find the reference to
      * org.argouml.uml.ui.TargetChangedListener#targetReasserted(Object)
-     */
+     *
     public void targetReasserted(Object newTarget) {
-        if (newTarget != _target)
+        if (newTarget != checkBoxTarget)
             setTarget(newTarget);
-    }
+    }*/
 
     /**
      * @see TargetListener#targetAdded(TargetEvent)

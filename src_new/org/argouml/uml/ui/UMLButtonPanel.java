@@ -46,16 +46,18 @@ public class UMLButtonPanel
     extends JPanel
     implements UMLUserInterfaceComponent {
         
-    private UMLButtonGroup _group;
+    private UMLButtonGroup group;
 
     /**
      * Constructor for UMLButtonPanel.
+     *
+     * @param buttonGroup the button group
      */
-    public UMLButtonPanel(UMLButtonGroup group) {
+    public UMLButtonPanel(UMLButtonGroup buttonGroup) {
         super();
-        _group = group;
+        group = buttonGroup;
         setLayout(new SerialLayout());
-        Enumeration en = group.getElements();
+        Enumeration en = buttonGroup.getElements();
         while (en.hasMoreElements()) {
             add((Component) en.nextElement());
         }
@@ -65,56 +67,56 @@ public class UMLButtonPanel
      * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
      */
     public void targetChanged() {
-        _group.targetChanged();
+        group.targetChanged();
     }
 
     /**
      * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
      */
     public void targetReasserted() {
-        _group.targetReasserted();
+        group.targetReasserted();
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
      */
     public void propertySet(MElementEvent e) {
-        _group.propertySet(e);
+        group.propertySet(e);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
-        _group.roleAdded(e);
+        group.roleAdded(e);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
-        _group.roleRemoved(e);
+        group.roleRemoved(e);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
      */
     public void listRoleItemSet(MElementEvent e) {
-        _group.listRoleItemSet(e);
+        group.listRoleItemSet(e);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
      */
     public void removed(MElementEvent e) {
-        _group.removed(e);
+        group.removed(e);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
      */
     public void recovered(MElementEvent e) {
-        _group.recovered(e);
+        group.recovered(e);
     }
 
 }

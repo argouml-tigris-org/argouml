@@ -40,8 +40,9 @@ import ru.novosoft.uml.MElementEvent;
 
 /**
  * The UMLButtonGroup is the buttongroup behind radio buttons that depict some 
- * attribute of a modelelement like visibility.  The radio buttons are controlled
- * by the buttongroup. The UMLButtonGroup can be compared to the UMLComboBoxModel
+ * attribute of a modelelement like visibility.  
+ * The radio buttons are controlled by the buttongroup. 
+ * The UMLButtonGroup can be compared to the UMLComboBoxModel
  * where the items in the model are the radionbuttons in the buttongroup.
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -55,35 +56,38 @@ public abstract class UMLButtonGroup
      * be performed when the button is pressed as value. We don't use 
      * the functionallity provided by JDK 1.3 to link an action to a button.
      */
-    private Map _actions = new HashMap();
+    private Map actions = new HashMap();
     
-    private Object _target = null;
+    private Object buttonGroupTarget = null;
     
-    private UMLUserInterfaceContainer _container = null;
+    private UMLUserInterfaceContainer container = null;
     
     /**
      * Constructor for UMLButtonGroup.
+     *
+     * @param c the user interface container for this buttongroup
      */
-    public UMLButtonGroup(UMLUserInterfaceContainer container) {
+    public UMLButtonGroup(UMLUserInterfaceContainer c) {
         super();
-        setContainer(container);
+        setContainer(c);
     }
     
     /**
      * Adds a button and an action to the group. When the button is selected,
      * the action is fired. If the action is null, no action is done.
-     * @param button
-     * @param action
+     * 
+     * @param button the button to be added
+     * @param action the action associated with this button
      */
     public void add(AbstractButton button, Action action) {
-        _actions.put(button, action);
+        actions.put(button, action);
         super.add(button);
         button.addActionListener(this);
     }
 
     /**
      * When the target changes, the buttonmodel must be updated. Since the 
-     * API of targetChanged does not have a parameter describing the old and new 
+     * API of targetChanged does not have a parameter describing the old and new
      * target, the target is retrieved via the container.
      * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
      */
@@ -153,7 +157,7 @@ public abstract class UMLButtonGroup
      */
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
-        Action action = (Action) _actions.get(o);
+        Action action = (Action) actions.get(o);
         if (action != null) {
             // e.setSource(this);
             action.actionPerformed(e);
@@ -165,27 +169,28 @@ public abstract class UMLButtonGroup
      * @return UMLUserInterfaceContainer
      */
     public UMLUserInterfaceContainer getContainer() {
-        return _container;
+        return container;
     }
 
     /**
-     * Returns the target. The target is directly asked from the _target attribute
-     * and not from the _container attribute to make the move to a new targeting
+     * Returns the target. The target is directly asked 
+     * from the buttonGroupTarget attribute
+     * and not from the container attribute to make the move to a new targeting
      * system as easy as possible.
      * @return Object
      */
     public Object getTarget() {
-        return _target;
+        return buttonGroupTarget;
     }
 
     /**
      * Sets the container.
-     * @param container The container to set
+     * @param theUIContainer The container to set
      */
-    public void setContainer(UMLUserInterfaceContainer container) {
-        _container = container;
-        if (container != null) {
-            setTarget(container.getTarget());
+    public void setContainer(UMLUserInterfaceContainer theUIContainer) {
+        container = theUIContainer;
+        if (theUIContainer != null) {
+            setTarget(theUIContainer.getTarget());
         }
     }
 
@@ -195,15 +200,18 @@ public abstract class UMLButtonGroup
      * @param target The target to set
      */
     public void setTarget(Object target) {
-        if (target == null || !ModelFacade.isAModelElement(target) || _target == target) return;
-        _target = target;
+        if (target == null 
+                || !ModelFacade.isAModelElement(target) 
+                || buttonGroupTarget == target) return;
+        buttonGroupTarget = target;
         buildModel();
     }
     
     /**
-     * Builds the model. That is: it selects the correct button. The name of this
-     * method is choosen to be compliant with for example UMLModelElementListModel2
+     * Builds the model. That is: it selects the correct button. 
+     * The name of this method is choosen to be compliant with 
+     * for example UMLModelElementListModel2
      */
-    abstract public void buildModel();
+    public abstract void buildModel();
 
 }

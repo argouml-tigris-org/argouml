@@ -43,21 +43,46 @@ import org.tigris.gef.util.Localizer;
 
 public class UMLAction extends AbstractAction {
 
-    private static Logger LOG = Logger.getLogger(UMLAction.class);
+    private static final Logger LOG = Logger.getLogger(UMLAction.class);
 
-    public static boolean HAS_ICON = true;
-    public static boolean NO_ICON = false;
+    /**
+     * Constant for determining the icon.
+     */
+    public static final boolean HAS_ICON = true;
+    
+    /**
+     * Constant for determining the icon.
+     */
+    public static final boolean NO_ICON = false;
 
     private String iconName;
 
+    /**
+     * The constructor.
+     * 
+     * @param name the (to be localized) description of the action
+     */
     public UMLAction(String name) {
         this(name, true, HAS_ICON);
     }
     
+    /**
+     * The constructor.
+     * 
+     * @param name the (to be localized) description of the action
+     * @param hasIcon true if an icon is to be shown
+     */
     public UMLAction(String name, boolean hasIcon) {
         this(name, true, hasIcon);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param name the (to be localized) description of the action
+     * @param global
+     * @param hasIcon true if an icon has to be shown
+     */
     public UMLAction(String name, boolean global, boolean hasIcon) {
         super(Translator.localize(name));
         if (hasIcon) {
@@ -98,8 +123,7 @@ public class UMLAction extends AbstractAction {
      */
     public Object getValue(String key) {
         if (iconName != null && Action.SMALL_ICON.equals(key)) {
-            Icon icon =
-            ResourceLoaderWrapper
+            Icon icon = ResourceLoaderWrapper
                 .lookupIconResource(Translator.getImageBinding(iconName),
                         Translator.localize(iconName));
             
@@ -113,7 +137,11 @@ public class UMLAction extends AbstractAction {
         return super.getValue(key);
     }
 
-    /** Perform the work the action is supposed to do.*/
+    /** 
+     * Perform the work the action is supposed to do.
+     * 
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent e) {
         LOG.debug("pushed " + getValue(Action.NAME));
         StatusBar sb = ProjectBrowser.getInstance().getStatusBar();
@@ -121,15 +149,24 @@ public class UMLAction extends AbstractAction {
         Actions.updateAllEnabled();
     }
 
+    /**
+     * Call this function when the  project is changed and may need saving.
+     */
     public void markNeedsSave() {
         Project p = ProjectManager.getManager().getCurrentProject();
         p.setNeedsSave(true);
     }
 
+    /**
+     * @param target the action to be enabled
+     */
     public void updateEnabled(Object target) {
         setEnabled(shouldBeEnabled());
     }
 
+    /**
+     * Enable the action if it should be enabled.
+     */
     public void updateEnabled() {
         boolean b = shouldBeEnabled();
         setEnabled(b);
@@ -137,7 +174,7 @@ public class UMLAction extends AbstractAction {
 
     /** 
      * Return true if this action should be available to the user. This
-     * method should examine the ProjectBrowser that owns it.  Sublass
+     * method should examine the ProjectBrowser that owns it. Subclass
      * implementations of this method should always call
      * super.shouldBeEnabled first.
      *
@@ -147,6 +184,10 @@ public class UMLAction extends AbstractAction {
         return true;
     }
 
+    /**
+     * @param s the string to be stripped from junk
+     * @return the cleansed string
+     */
     protected static String stripJunk(String s) {
         String res = "";
         int len = s.length();
@@ -157,21 +198,27 @@ public class UMLAction extends AbstractAction {
         }
         return res;
     }
+    
     /**
-     *    This function returns a localized menu shortcut key
-     *    to the specified key.
+     * This function returns a localized menu shortcut key
+     * to the specified key.
      *
      * @deprecated in 0.15.1. Replace by getMnemonic and the new way of
      *             retrieving shortcuts.
+     *
+     * @param key the shortcut key
+     * @return the keystroke
      */
     public static final KeyStroke getShortcut(String key) {
         return Localizer.getShortcut("CoreMenu", key);
     }
 
     /**
-     *    This function returns a localized string corresponding
-     *    to the specified key.
+     * This function returns a localized string corresponding
+     * to the specified key.
      *
+     * @param key the given key
+     * @return a localized string corresponding to the given key
      */
     public static final String getMnemonic(String key) {
         return Translator.localize(key);

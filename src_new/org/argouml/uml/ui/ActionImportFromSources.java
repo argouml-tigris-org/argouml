@@ -46,7 +46,7 @@ public class ActionImportFromSources extends UMLAction {
     /**
      * The singleton.
      */
-    public static ActionImportFromSources SINGLETON =
+    private static ActionImportFromSources singleton =
         new ActionImportFromSources(); 
 
 
@@ -69,6 +69,14 @@ public class ActionImportFromSources extends UMLAction {
      */
     public void actionPerformed(ActionEvent event) {
     	new Import();
+    }
+
+
+    /**
+     * @return Returns the sINGLETON.
+     */
+    public static ActionImportFromSources getSingleton() {
+        return singleton;
     }
 }
 /* end class ActionImportFromSources */   
