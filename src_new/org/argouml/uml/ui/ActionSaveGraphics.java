@@ -30,6 +30,7 @@ import org.argouml.util.osdep.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.util.*;
 import java.awt.event.*;
+import javax.swing.filechooser.FileFilter;
 import java.io.*;
 import javax.swing.*;
 
@@ -106,8 +107,28 @@ public class ActionSaveGraphics extends UMLAction {
 		    if( theFile != null ) {
 			String path = theFile.getParent();
 			String name = theFile.getName();
-			String extension=SuffixFilter.getExtension(name);
-
+			String extension = SuffixFilter.getExtension(theFile);
+			// 2002-07-16
+			// Jaap Branderhorst
+			// patch to issue 517
+			// issue is:
+			// a file should be saved with the extension from the selected filter and according to the format 
+			// of the selected filter.
+			// start new code
+			
+			if (extension == null || 
+				!((extension.equals(FileFilters.PSFilter._suffix)) || 
+					(extension.equals(FileFilters.EPSFilter._suffix)) ||
+					(extension.equals(FileFilters.GIFFilter._suffix)) ||
+					(extension.equals(FileFilters.SVGFilter._suffix))
+				)) {
+				// add the selected filter extension
+				FileFilter filter = (FileFilter) chooser.getFileFilter();
+				extension = FileFilters.getSuffix(filter);  
+				theFile = new File(theFile.getParentFile(), theFile.getName() + "." + extension);
+			}
+			// end new code
+				
 			CmdSaveGraphics cmd=null;
 			if (FileFilters.PSFilter._suffix.equals(extension))
 			    cmd = new CmdSavePS();

@@ -23,6 +23,8 @@
 
 package org.argouml.util;
 
+import javax.swing.filechooser.FileFilter;
+
 import org.argouml.kernel.Project;
 /** This class handles the the various file extensions.
  * It's not clear whether all of these are supported
@@ -113,5 +115,17 @@ public class FileFilters {
    */  
   public static final SuffixFilter SVGFilter = new
   SuffixFilter("svg", "Scalable Vector Graphics file");
+  
+/**
+ * Returns the suffix for which a FileFilter filters. 
+ * @param filter The FileFilter from which we want to know the suffix
+ * @return String The suffix of the FileFilter. Returns null if the FileFilter is not an instance of SuffixFilter.
+ */
+  public static String getSuffix(FileFilter filter) {
+  	if (filter instanceof SuffixFilter) {
+  		return ((SuffixFilter)filter)._suffix;
+  	}
+  	return null;
+  }
 
 } /* end class FileFilters */
