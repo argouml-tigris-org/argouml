@@ -30,6 +30,7 @@ import java.net.URL;
 import org.argouml.kernel.Project;
 import org.argouml.xml.SAXParserBase;
 import org.argouml.xml.XMLElement;
+import org.xml.sax.*;
 
 public class ArgoParser extends SAXParserBase {
 
@@ -45,6 +46,10 @@ public class ArgoParser extends SAXParserBase {
 
   private   ArgoTokenTable _tokens = new ArgoTokenTable();
 
+    private boolean _addMembers = true;
+
+    private URL _url = null;
+
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -57,11 +62,55 @@ public class ArgoParser extends SAXParserBase {
   // the current one.
 
   public synchronized void readProject(URL url) {
+      readProject(url, true);
+  }
+
+  public synchronized void readProject(URL url, boolean addMembers) {
+      
+      _url = url;
+      
+      try{
+	  readProject(url.openStream(), addMembers);
+      } catch (IOException e) {
+	  System.out.println("Couldn't open InputStream in ArgoParser.load("+url+") "+e);
+	  e.printStackTrace();
+      }
+  }
+
+    public void setURL(URL url) {
+	_url = url;
+    }
+
+  public synchronized void readProject(InputStream is, boolean addMembers) {
+
+      _addMembers = addMembers;
+
+      if ((_url == null) && _addMembers) {
+	  System.out.println("URL not set! Won't be able to add members! Aborting...");
+	  return;
+      }
+	  
+
     try {
       System.out.println("=======================================");
-      System.out.println("== READING PROJECT: " + url);
-      _proj = new Project(url);
-      parse(url);
+      System.out.println("== READING PROJECT "+_url);
+      _proj = new Project(_url);
+      parse(is);
+    }
+    catch(SAXException saxEx) {
+        System.out.println("Exception reading project================");
+        //
+        //  a SAX exception could have been generated
+        //    because of another exception.
+        //    Get the initial exception to display the
+        //    location of the true error
+        Exception ex = saxEx.getException();
+        if(ex == null) {
+            saxEx.printStackTrace();
+        }
+        else {
+            ex.printStackTrace();
+        }
     }
     catch (Exception ex) {
       System.out.println("Exception reading project================");
@@ -136,9 +185,11 @@ public class ArgoParser extends SAXParserBase {
   }
 
   protected void handleMember(XMLElement e) {
-    String name = e.getAttribute("name").trim();
-    String type = e.getAttribute("type").trim();
-    _proj.addMember(name, type);
+      if(_addMembers) {
+	  String name = e.getAttribute("name").trim();
+	  String type = e.getAttribute("type").trim();
+	  _proj.addMember(name, type);
+      }
   }
 
   protected void handleHistoryfile(XMLElement e) {

@@ -84,6 +84,7 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       depFig.setSourceFigNode(cliFN);
       depFig.setDestPortFig(supFN);
       depFig.setDestFigNode(supFN);
+      depFig.getFig().setDashed(true);
       return depFig;
     }
 

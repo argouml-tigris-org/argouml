@@ -185,7 +185,8 @@ public class JavaDocument extends PlainDocument {
     public class Scanner extends sun.tools.java.Scanner {
 
         Scanner() throws IOException {
-	    super(new LocalEnvironment(), new DocumentInputStream(0, getLength()));
+	    super(new LocalEnvironment());
+            useInputStream(new DocumentInputStream(0, getLength()));
 	    scanComments = true;
 	}
 

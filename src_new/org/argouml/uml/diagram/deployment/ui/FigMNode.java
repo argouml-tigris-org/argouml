@@ -80,6 +80,8 @@ public class FigMNode extends FigNodeModelElement {
   public FigMNode(GraphModel gm, Object node) {
     this();
     setOwner(node);
+    if (node instanceof MClassifier && (((MClassifier)node).getName() != null))
+	_name.setText(((MModelElement)node).getName());
   }
 
   public String placeString() { return "new Node"; }
@@ -146,14 +148,17 @@ public class FigMNode extends FigNodeModelElement {
   public void setEnclosingFig(Fig encloser) {
     super.setEnclosingFig(encloser);
     Vector figures = getEnclosedFigs();
-    elementOrdering(figures);
-    Vector contents = getLayer().getContents();
-    int contentsSize = contents.size();
-    for (int j=0; j<contentsSize; j++) {
-      Object o = contents.elementAt(j);
-      if (o instanceof FigEdgeModelElement) {
-        FigEdgeModelElement figedge = (FigEdgeModelElement) o;
-        figedge.getLayer().bringToFront(figedge);
+   
+    if (getLayer() != null) {
+      elementOrdering(figures); 
+      Vector contents = getLayer().getContents();
+      int contentsSize = contents.size();
+      for (int j=0; j<contentsSize; j++) {
+        Object o = contents.elementAt(j);
+        if (o instanceof FigEdgeModelElement) {
+          FigEdgeModelElement figedge = (FigEdgeModelElement) o;
+          figedge.getLayer().bringToFront(figedge);
+        }
       }
     }
   }

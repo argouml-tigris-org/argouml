@@ -178,8 +178,8 @@ public MStateMachine getStateMachine() {
     _toolBar.add(_actionDeepHistoryPseudoState);
     _toolBar.addSeparator();
 
-    _toolBar.add(Actions.AddInternalTrans);
-    _toolBar.addSeparator();
+    //_toolBar.add(Actions.AddInternalTrans);
+    //_toolBar.addSeparator();
 
     _toolBar.add(_actionRectangle);
     _toolBar.add(_actionRRectangle);

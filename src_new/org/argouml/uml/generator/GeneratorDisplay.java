@@ -32,7 +32,11 @@ import java.io.*;
 import java.util.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.data_types.MMultiplicityRange;
+import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.model_management.*;
@@ -60,24 +64,32 @@ public class GeneratorDisplay extends Generator {
   }
 
   public String generateOperation(MOperation op) {
+    boolean isConstructor = false;
+    if(op.getStereotype() != null) {
+	isConstructor = "create".equals(op.getStereotype().getName());
+    }
     String s = "";
     s += generateVisibility(op);
-    s += generateScope(op);
+    if (!isConstructor) {
+	s += generateScope(op);
+    }
     String nameStr = generateName(op.getName());
     String clsName = generateName(op.getOwner().getName());
 
     // pick out return type
-	MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
-	if (rp != null) {
-		MClassifier returnType = rp.getType();
-		if (returnType == null && !nameStr.equals(clsName)) s += "void?? ";
-		else if (returnType != null) s += generateClassifierRef(returnType) + " ";
-	} else s += "void?? ";
-		
-
+    MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
+    if (!isConstructor) {
+	if (rp != null && rp.getType() != null) {
+	    s += generateClassifierRef(rp.getType()) + " ";
+	}
+	else {
+	    s += "void?? ";
+	}
+    }
+    
     // name and params
     Vector params = new Vector(op.getParameters());
-	params.remove(rp);
+    params.remove(rp);
     s += nameStr + "(";
 	if (params != null) {
 		boolean first = true;
@@ -97,10 +109,10 @@ public class GeneratorDisplay extends Generator {
     s += generateVisibility(attr);
     s += generateScope(attr);
     s += generateChangability(attr);
-	if (!(attr.getMultiplicity() == null)) {
+    /*	if (!(attr.getMultiplicity() == null)) {
 		if (!MMultiplicity.M1_1.equals(attr.getMultiplicity()))
-			s += generateMultiplicity(attr.getMultiplicity()) + " ";
-	}
+ 			s += generateMultiplicity(attr.getMultiplicity()) + " ";
+			}*/
     MClassifier type = attr.getType();
     if (type != null) s += generateClassifierRef(type) + " ";
 
@@ -147,13 +159,13 @@ public class GeneratorDisplay extends Generator {
     }
     while(!stack.isEmpty())
       s += (String) stack.pop() + ".";
-    
+
     if (s.endsWith(".")) {
       int lastIndex = s.lastIndexOf(".");
       s = s.substring(0, lastIndex);
     }
     s += "." + packName + " {\n";
-      
+
 
     Collection ownedElements = p.getOwnedElements();
     if (ownedElements != null) {
@@ -174,7 +186,7 @@ public class GeneratorDisplay extends Generator {
   public String generateClassifier(MClassifier cls) {
     String generatedName = generateName(cls.getName());
     String classifierKeyword;
-    if (cls instanceof MClassImpl) classifierKeyword = "class"; 
+    if (cls instanceof MClassImpl) classifierKeyword = "class";
     else if (cls instanceof MInterface) classifierKeyword = "interface";
     else return ""; // actors and use cases
     String s = "";
@@ -184,7 +196,7 @@ public class GeneratorDisplay extends Generator {
     s += classifierKeyword + " " + generatedName + " ";
     String baseClass = generateGeneralization(cls.getGeneralizations(), false);
     if (!baseClass.equals("")) s += "extends " + baseClass + " ";
-    
+
     //nsuml: realizations!
 //     String interfaces = generateRealization(cls.getRealizations(), true);
 //     if (!interfaces.equals("")) s += "implements " + interfaces + " ";
@@ -242,7 +254,13 @@ public class GeneratorDisplay extends Generator {
   }
 
 
-  public String generateAssociationFrom(MAssociation a, MAssociationEnd ae) {
+    public String generateMessage(MMessage m) {
+	if (m == null) return "";
+	return generateName(m.getName()) + "::" +
+	    generateAction(m.getAction());
+    }
+
+    public String generateAssociationFrom(MAssociation a, MAssociationEnd ae) {
     // needs-more-work: does not handle n-ary associations
     String s = "";
     Collection connections = a.getConnections();
@@ -285,7 +303,7 @@ public class GeneratorDisplay extends Generator {
       s += "Vector "; //generateMultiplicity(m) + " ";
 
     s += " ";
-    
+
     String n = ae.getName();
     MAssociation asc = ae.getAssociation();
     String ascName = asc.getName();
@@ -389,7 +407,7 @@ public class GeneratorDisplay extends Generator {
   }
 
   public String generateMultiplicity(MMultiplicity m) {
-    if (m == null) { System.out.println("null Multiplicity"); return ""; }
+    if (m == null) { return ""; }
     if (MMultiplicity.M0_N.equals(m)) return ANY_RANGE;
     String s = "";
     Collection v = m.getRanges();
@@ -425,28 +443,29 @@ public class GeneratorDisplay extends Generator {
   }
 
   public String generateStateBody(MState m) {
-    String s = "";
-    MAction entry = m.getEntry();
-    MAction exit = m.getExit();
-    if (entry != null) {
-      String entryStr = Generate(entry);
-      if (entryStr.length() > 0) s += "entry / " + entryStr;
-    }
-    if (exit != null) {
-      String exitStr = Generate(exit);
-      if (s.length() > 0) s += "\n";
-      if (exitStr.length() > 0) s += "exit / " + exitStr;
-    }
-    Collection trans = m.getInternalTransitions();
-    if (trans != null) {
-      Iterator iter = trans.iterator();
-      while(iter.hasNext())
-      {
-		if (s.length() > 0) s += "\n";
-		s += Generate(iter.next());
-	  }
-    }
-    return s;
+      String s = "";
+	  
+      MAction entry = m.getEntry();
+      MAction exit = m.getExit();
+      if (entry != null) {
+	  String entryStr = Generate(entry);
+	  if (entryStr.length() > 0) s += "entry / " + entryStr;
+      }
+      if (exit != null) {
+	  String exitStr = Generate(exit);
+	  if (s.length() > 0) s += "\n";
+	  if (exitStr.length() > 0) s += "exit / " + exitStr;
+      }
+      Collection trans = m.getInternalTransitions();
+      if (trans != null) {
+	  Iterator iter = trans.iterator();
+	  while(iter.hasNext())
+	      {
+		  if (s.length() > 0) s += "\n";
+		  s += generateTransition((MTransition)iter.next());
+	      }
+      }
+      return s;
   }
 
   public String generateTransition(MTransition m) {

@@ -87,6 +87,7 @@ public abstract class ProjectMember {
 
   public abstract void load() throws IOException, org.xml.sax.SAXException;
   public abstract void save(String path, boolean overwrite);
+  public abstract void save(String path, boolean overwrite, Writer writer);
 
 } /* end class ProjectMember */
 

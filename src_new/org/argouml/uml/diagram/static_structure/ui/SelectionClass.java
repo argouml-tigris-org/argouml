@@ -152,7 +152,7 @@ public class SelectionClass extends SelectionWButtons {
     Dimension minSize = _content.getMinimumSize();
     int minWidth = minSize.width, minHeight = minSize.height;
     Class edgeClass = null;
-    Class nodeClass = ru.novosoft.uml.foundation.core.MClass.class;
+    Class nodeClass = ru.novosoft.uml.foundation.core.MClassImpl.class;
     int bx = mX, by = mY;
     boolean reverse = false;
     switch (hand.index) {
