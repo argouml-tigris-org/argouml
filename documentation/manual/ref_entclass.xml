@@ -23,6 +23,8 @@ Modifications
 19 Mar 2002:  Jeremy Bennett. Changed all tables to variablelists to fix
               problems with generating PDF.
 
+ 4 Apr 2002:  Jeremy Bennett. Updated references to generalizations and
+              specializations.
 -->
 
 <chapter id="ch.ref.entclass">
@@ -568,29 +570,101 @@ Modifications
           </itemizedlist></listitem>
         </varlistentry>
 
-        <!-- Entry for Derived -->
+        <!-- Entry for Specializations -->
 
         <varlistentry>
-          <term><literal>Derived</literal></term>
+          <term><literal>Specializations</literal></term>
 
-          <listitem><para>Text box. Lists any derived class. This would show
-            any packages, for which this package was the
-            generalization.</para>
+          <listitem><para>Text box. Lists any specialized package (i.e. for
+            which this package is a generalization.</para>
 
-          <para>However since &argouml; does not currently
-            implement generalization for packages, this always shows the
-            entry <literal>none</literal> and the pop-up menu is always
-            grayed out.</para></listitem>
+          <para>&button1; click navigates to the generalization and opens
+            its property tab.</para>
+
+          <para>&Button2; click yields a drop down menu with five
+            entries</para>
+
+          <itemizedlist>
+            <listitem><para><literal>Open</literal>. Navigate to the
+              selected generalization.</para></listitem>
+
+            <listitem><para><literal>Add</literal>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram.</para>
+
+            <tip><para>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Delete</literal>. The link from the
+              generalization to the package (<emphasis>but not the
+              generalization itself</emphasis>) is removed.</para>
+
+            <tip><para>This <emphasis>does not</emphasis> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the top. It is moved one up the
+              list.</para></listitem>
+
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the bottom. It is moved one
+              down the list.</para></listitem>
+          </itemizedlist></listitem>
         </varlistentry>
 
-        <!-- Entry for Extends -->
+        <!-- Entry for Generalizations -->
 
         <varlistentry>
-          <term><literal>Extends</literal></term>
+          <term><literal>Generalizations</literal></term>
 
-          <listitem><para>Text box. Lists any use case that is extended by
-            this package. Meaningless for a package, since extension
-            relates to use cases only.</para></listitem>
+          <listitem><para>Text area. Lists any package that
+            <emphasis>generalizes</emphasis> this package.</para>
+
+          <para>&Button1; click navigates to the generalization and opens
+            its property tab.</para>
+
+          <para>&Button2; click yields a drop down menu with five
+            entries</para>
+
+          <itemizedlist>
+            <listitem><para><literal>Open</literal>. Navigate to the
+              selected generalization.</para></listitem>
+
+            <listitem><para><literal>Add</literal>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram. You will need to find it in
+              the navigation pane and add it from there.</para>
+
+            <tip><para>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Delete</literal>. The link from the
+              generalization to the package (<emphasis>but not the
+              generalization itself</emphasis>) is removed.</para>
+
+            <tip><para>This <emphasis>does not</emphasis> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the top. It is moved one up the
+              list.</para></listitem>
+
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the bottom. It is moved one
+              down the list.</para></listitem>
+          </itemizedlist></listitem>
         </varlistentry>
 
         <!-- Entry for Implements -->
@@ -1072,61 +1146,53 @@ Modifications
             namespace).</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Extends -->
+        <!-- Entry for Generalizations -->
 
         <varlistentry>
-          <term><literal>Extends</literal></term>
+          <term><literal>Generalizations</literal></term>
 
-          <listitem><para>Text box. Lists any class that generalizes this
-            class (see <xref
-              linkend="s1.ref.generalization_class"/>).</para>
+          <listitem><para>Text area. Lists any class that
+            <emphasis>generalizes</emphasis> this class.</para>
 
-          <caution><para>&argouml; is incorrect in using the designation
-            <quote>Extends</quote> for this field. It should correctly be
-            called <quote>Generalizations</quote>.</para></caution>
+          <para>&Button1; click navigates to the generalization and opens
+            its property tab.</para>
 
-          <para>&Button1; click takes you to the selected entry, &button2;
-            gives a pop up menu with five entries.</para>
+          <para>&Button2; click yields a drop down menu with five
+            entries</para>
 
           <itemizedlist>
             <listitem><para><literal>Open</literal>. Navigate to the
               selected generalization.</para></listitem>
 
             <listitem><para><literal>Add</literal>. Add a new
-              generalization.</para>
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram. You will need to find it in
+              the navigation pane and add it from there.</para>
 
-            <note><para>&argouml; always has this option grayed out, which
-              appears to be a bug.</para></note>
+            <tip><para>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</para></tip></listitem>
 
-            <tip><para>New generalizations can be added from the class
-              diagram (but note the caution about multiple generalizations
-              below).</para></tip></listitem>
+            <listitem><para><literal>Delete</literal>. The link from the
+              generalization to the class (<emphasis>but not the
+              generalization itself</emphasis>) is removed.</para>
 
-            <listitem><para><literal>Delete</literal>. Removes the link to
-              the selected generalization.</para>
+            <tip><para>This <emphasis>does not</emphasis> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</para></tip></listitem>
 
-            <note><para>This only removes the link to the
-              generalization. To remove the generalization from the model
-              you must navigate to it (or select it on the diagram or
-              navigation pane) and then delete it.</para></note></listitem>
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the top. It is moved one up the
+              list.</para></listitem>
 
-            <listitem><para><literal>Move Up</literal>. Only available
-              where there are two or more generalizations, and the
-              generalization selected is not at the top. It is moved one up
-              the list.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available
-              where there are two or more generalizations listed, and the
-              generalization selected is not at the bottom. It is moved
-              one down the list.</para></listitem>
-          </itemizedlist>
-
-          <caution><para>UML&nbsp;1.3 allows you to create multiple
-            generalizations from a class, in other words permits multiple
-            inheritance. You should bear in mind that the absence of
-            multiple inheritance in many popular programming languages
-            (notably C++ and Java) may lead to implementation difficulties
-            with such designs.</para></caution></listitem>
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the bottom. It is moved one
+              down the list.</para></listitem>
+          </itemizedlist></listitem>
         </varlistentry>
 
         <!-- Entry for Modifiers -->
@@ -1251,6 +1317,54 @@ Modifications
               where there are two or more abstractions listed, and the
               abstraction selected is not at the bottom. It is moved
               one down the list.</para></listitem>
+          </itemizedlist></listitem>
+        </varlistentry>
+
+        <!-- Entry for Specializations -->
+
+        <varlistentry>
+          <term><literal>Specializations</literal></term>
+
+          <listitem><para>Text box. Lists any specialized class (i.e. for
+            which this class is a generalization.</para>
+
+          <para>&button1; click navigates to the generalization and opens
+            its property tab.</para>
+
+          <para>&Button2; click yields a drop down menu with five
+            entries</para>
+
+          <itemizedlist>
+            <listitem><para><literal>Open</literal>. Navigate to the
+              selected generalization.</para></listitem>
+
+            <listitem><para><literal>Add</literal>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram.</para>
+
+            <tip><para>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Delete</literal>. The link from the
+              generalization to the class (<emphasis>but not the
+              generalization itself</emphasis>) is removed.</para>
+
+            <tip><para>This <emphasis>does not</emphasis> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the top. It is moved one up the
+              list.</para></listitem>
+
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the bottom. It is moved one
+              down the list.</para></listitem>
           </itemizedlist></listitem>
         </varlistentry>
 
@@ -3782,61 +3896,53 @@ Modifications
             namespace).</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Extends -->
+        <!-- Entry for Generalizations -->
 
         <varlistentry>
-          <term><literal>Extends</literal></term>
+          <term><literal>Generalizations</literal></term>
 
-          <listitem><para>Text box. Lists any interface that generalizes this
-            interface (see <xref
-              linkend="s1.ref.generalization_class"/>).</para>
+          <listitem><para>Text area. Lists any interface that
+            <emphasis>generalizes</emphasis> this interface.</para>
 
-          <caution><para>&argouml; is incorrect in using the designation
-            <quote>Extends</quote> for this field. It should correctly be
-            called <quote>Generalizations</quote>.</para></caution>
+          <para>&Button1; click navigates to the generalization and opens
+            its property tab.</para>
 
-          <para>&Button1; click takes you to the selected entry, &button2;
-            gives a pop up menu with five entries.</para>
+          <para>&Button2; click yields a drop down menu with five
+            entries</para>
 
           <itemizedlist>
             <listitem><para><literal>Open</literal>. Navigate to the
               selected generalization.</para></listitem>
 
             <listitem><para><literal>Add</literal>. Add a new
-              generalization.</para>
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram. You will need to find it in
+              the navigation pane and add it from there.</para>
 
-            <note><para>&argouml; always has this option grayed out, which
-              appears to be a bug.</para></note>
+            <tip><para>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</para></tip></listitem>
 
-            <tip><para>New generalizations can be added from the class
-              diagram (but note the caution about multiple generalizations
-              below).</para></tip></listitem>
+            <listitem><para><literal>Delete</literal>. The link from the
+              generalization to the interface (<emphasis>but not the
+              generalization itself</emphasis>) is removed.</para>
 
-            <listitem><para><literal>Delete</literal>. Removes the link to
-              the selected generalization.</para>
+            <tip><para>This <emphasis>does not</emphasis> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</para></tip></listitem>
 
-            <note><para>This only removes the link to the
-              generalization. To remove the generalization from the model
-              you must navigate to it (or select it on the diagram or
-              navigation pane) and then delete it.</para></note></listitem>
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the top. It is moved one up the
+              list.</para></listitem>
 
-            <listitem><para><literal>Move Up</literal>. Only available
-              where there are two or more generalizations, and the
-              generalization selected is not at the top. It is moved one up
-              the list.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available
-              where there are two or more generalizations listed, and the
-              generalization selected is not at the bottom. It is moved
-              one down the list.</para></listitem>
-          </itemizedlist>
-
-          <caution><para>UML&nbsp;1.3 allows you to create multiple
-            generalizations from a interface, in other words permits
-            multiple inheritance. You should bear in mind that the absence
-            of multiple inheritance in many popular programming languages
-            (notably C++ and Java) may lead to implementation difficulties
-            with such designs.</para></caution></listitem>
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the bottom. It is moved one
+              down the list.</para></listitem>
+          </itemizedlist></listitem>
         </varlistentry>
 
         <!-- Entry for Modifiers -->
@@ -3942,30 +4048,52 @@ Modifications
             out.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Derived -->
+        <!-- Entry for Specializations -->
 
         <varlistentry>
-          <term><literal>Derived</literal></term>
+          <term><literal>Specializations</literal></term>
 
-          <listitem><para>Text area. Lists any derived interfaces, i.e those
-            for which this interface is a generalization.</para>
+          <listitem><para>Text box. Lists any specialized interface (i.e. for
+            which this interface is a generalization.</para>
 
-          <caution><para>This field should be correctly labeled
-            <literal>Generalizes</literal>.</para></caution>
+          <para>&button1; click navigates to the generalization and opens
+            its property tab.</para>
 
-          <para>&Button1; click takes you to the generalization for the
-            selected entry, &button2; gives a pop up menu with a single
-            entry, <literal>Open</literal>which also takes you to the
-            generalization.</para>
+          <para>&Button2; click yields a drop down menu with five
+            entries</para>
 
-          <tip><para>There may be difficulties setting up the
-            generalization parent this way. It is usually clearer to add
-            the generalization on a diagram.</para></tip>
+          <itemizedlist>
+            <listitem><para><literal>Open</literal>. Navigate to the
+              selected generalization.</para></listitem>
 
-          <caution><para>You may potentially have a large number of entries
-            here, and the pop up menu makes access very difficult. The work
-            around is to go to the parent interfaces on the diagram or the
-            navigation pane.</para></caution></listitem>
+            <listitem><para><literal>Add</literal>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram.</para>
+
+            <tip><para>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Delete</literal>. The link from the
+              generalization to the interface (<emphasis>but not the
+              generalization itself</emphasis>) is removed.</para>
+
+            <tip><para>This <emphasis>does not</emphasis> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the top. It is moved one up the
+              list.</para></listitem>
+
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the bottom. It is moved one
+              down the list.</para></listitem>
+          </itemizedlist></listitem>
         </varlistentry>
 
         <!-- Entry for Operations -->

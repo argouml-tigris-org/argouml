@@ -17,6 +17,10 @@ Modifications
 29 Jan 2001:  Jeremy Bennett. Updated info on interfaces to reflect bug fix.
 
  7 Feb 2002:  Jeremy Bennett. Added pop-up menus for Associations.
+
+ 4 Apr 2002:  Jeremy Bennett. Double click on package icons and new icons on
+              use case diagram added for release 0.9.8.
+
 -->
 
 <chapter id="ch.ref.editpane">
@@ -106,6 +110,11 @@ Modifications
       <para>For example double clicking over an operation compartment of a
         class will select the operation. Or create one if there is not one
         there.</para>
+
+      <para>A special use is with package artifacts on the class diagram. A
+        double click on a package will take you to the class diagram associated
+        with a package (the first created if there is more than one), or will
+        offer to create one for you if there is none.</para>
 
       <para>You can <quote>spawn</quote> a copy of the editing pane by
         double-clicking on the <literal>As Diagram</literal> tab at the bottom
@@ -392,7 +401,7 @@ Modifications
     <sect2>
       <title>Use Case Diagram Specific Tools</title>
 
-      <para>Five tools are provided specific to UML artifacts on use case
+      <para>Seven tools are provided specific to UML artifacts on use case
         diagrams. The detailed properties of these artifacts are described in
         the section on use case diagram artifacts (see
         <xref linkend="ch.ref.entusecase"/>).</para>
@@ -433,6 +442,22 @@ Modifications
           <literal>Generalization</literal>. Add a generalization between two
           artifacts selected using &button1; motion (from the child to the
           parent).</para></listitem>
+
+        <listitem><para><guiicon><inlinemediaobject><imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/icons/extend.gif"/> 
+          </imageobject></inlinemediaobject></guiicon>
+          <literal>Extend</literal>. Add an extend relationship between two
+          artifacts selected using &button1; motion (from the extended to the
+          extending use case).</para></listitem>
+
+        <listitem><para><guiicon><inlinemediaobject><imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/icons/include.gif"/> 
+          </imageobject></inlinemediaobject></guiicon>
+          <literal>Include</literal>. Add an include relationship between two
+          artifacts selected using &button1; motion (from the including to the
+          included use case).</para></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"

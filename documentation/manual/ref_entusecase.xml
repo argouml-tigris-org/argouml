@@ -14,6 +14,9 @@ Modifications
 19 Mar 2002:  Jeremy Bennett. Changed all tables to variablelists to fix
               problems with generating PDF.
 
+ 4 Apr 2002:  Jeremy Bennett. Updated details for actor and use case to show
+              new popup menus and fields to support include, extend and
+              extension points for 0.9.8.
 -->
 
 <chapter id="ch.ref.entusecase">
@@ -269,13 +272,13 @@ Modifications
             take you.</para></warning></listitem>
         </varlistentry>
 
-        <!-- Entry for New actor button -->
+        <!-- Entry for Add actor button -->
 
         <varlistentry>
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/actor.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>New
+          </imageobject></inlinemediaobject></guiicon> <literal>Add
             actor</literal></term>
 
           <listitem><para>This creates a new actor within the model, (but not
@@ -399,41 +402,12 @@ Modifications
           </itemizedlist></listitem>
         </varlistentry>
 
-        <!-- Entry for Derived -->
+        <!-- Entry for Generalizations -->
 
         <varlistentry>
-          <term><literal>Derived</literal></term>
+          <term><literal>Generalizations</literal></term>
 
-          <listitem><para>Text box. Lists any derived actor (i.e. for which
-            this actor is a generalization. The derived actors can
-            communicate with the same use case instances as this
-            actor.</para>
-
-          <para>&button1; click navigates to the generalization and opens
-            its property tab.</para>
-
-          <para>&Button2; click yields a drop down menu, with a single
-            entry, <literal>Open</literal>which navigates to the
-            generalization and opens its property tab.</para>
-
-          <warning><para>An actor may generalize several other
-            actors. Although they will all appear in the
-            <literal>Derived</literal> text box, the absence of a
-            comprehensive drop down menu (<literal>Open</literal>,
-            <literal>Add</literal>, <literal>Delete</literal>,
-            <literal>Move&nbsp;Up</literal> and
-            <literal>Move&nbsp;Down</literal>) renders access to all but
-            the first impossible via this field. They can of course be
-            accessed through the navigation pane or
-            diagram.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Extends -->
-
-        <varlistentry>
-          <term><literal>Extends</literal></term>
-
-          <listitem><para>Text area. Lists any use case that
+          <listitem><para>Text area. Lists any actor that
             <emphasis>generalizes</emphasis> this actor.</para>
 
           <para>&Button1; click navigates to the generalization and opens
@@ -465,22 +439,65 @@ Modifications
               to remove generalizations from the editing
               pane.</para></tip></listitem>
 
-            <listitem><para><literal>Move Up</literal>. Only available
-             where there are two or more generalizations listed, and the
-             generalization selected is not at the top. It is moved one up
-             the list.</para></listitem>
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the top. It is moved one up the
+              list.</para></listitem>
 
-            <listitem><para><literal>Move Down</literal>. Only available
-             where there are two or more generalizations listed, and the
-             generalization selected is not at the bottom. It is moved one
-             down the list.</para></listitem>
-          </itemizedlist>
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the bottom. It is moved one
+              down the list.</para></listitem>
+          </itemizedlist></listitem>
+        </varlistentry>
 
-          <warning><para>The use of the term <literal>Extends</literal> by
-            &argouml; is misleading, since this field does not relate to
-            <literal>extends</literal> relationships, but to
-            <literal>generalization</literal>
-            relationships.</para></warning></listitem>
+        <!-- Entry for Specializations -->
+
+        <varlistentry>
+          <term><literal>Specializations</literal></term>
+
+          <listitem><para>Text box. Lists any specialized actor (i.e. for which
+            this actor is a generalization. The specialized actors can
+            communicate with the same use case instances as this actor.</para>
+
+          <para>&button1; click navigates to the generalization and opens
+            its property tab.</para>
+
+          <para>&Button2; click yields a drop down menu with five
+            entries</para>
+
+          <itemizedlist>
+            <listitem><para><literal>Open</literal>. Navigate to the
+              selected generalization.</para></listitem>
+
+            <listitem><para><literal>Add</literal>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram.</para>
+
+            <tip><para>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Delete</literal>. The link from the
+              generalization to the actor (<emphasis>but not the
+              generalization itself</emphasis>) is removed.</para>
+
+            <tip><para>This <emphasis>does not</emphasis> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the top. It is moved one up the
+              list.</para></listitem>
+
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the bottom. It is moved one
+              down the list.</para></listitem>
+          </itemizedlist></listitem>
         </varlistentry>
 
         <!-- Entry for Associations -->
@@ -728,13 +745,13 @@ Modifications
             take you.</para></warning></listitem>
         </varlistentry>
 
-        <!-- Entry for New use case button -->
+        <!-- Entry for Add use case button -->
 
         <varlistentry>
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/use_case.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>New use
+          </imageobject></inlinemediaobject></guiicon> <literal>Add use
             case</literal></term>
 
           <listitem><para>This creates a new use case within the model, (but
@@ -744,6 +761,21 @@ Modifications
           <tip><para>This method of creating new use cases can be
             confusing. Much better to create them within diagrams where you
             want them.</para></tip></listitem>
+        </varlistentry>
+
+        <!-- Entry for Add extension point button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/extension_point.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>Add extension
+            point</literal></term>
+
+          <listitem><para>This creates a new use extension point within the
+            namespace of the current use case, with the current use case as its
+            associated use case, navigating immediately to the properties tab
+            for that extension point.</para></listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -865,7 +897,8 @@ Modifications
         <!-- Entry for Generalizations -->
 
         <varlistentry>
-          <term><literal><anchor id="ref.use_case_generalization"/>Generalizations
+          <term><literal>
+            <anchor id="ref.use_case_generalization"/>Generalizations
           </literal></term>
 
           <listitem><para>Text area. Lists use cases which are generalizations
@@ -916,44 +949,96 @@ Modifications
             </itemizedlist></listitem>
         </varlistentry>
 
+        <!-- Entry for Specializations -->
+
+        <varlistentry>
+          <term><literal>Specializations</literal></term>
+
+          <listitem><para>Text box. Lists any specialized use case (i.e. for
+            which this use case is a generalization.</para>
+
+          <para>&button1; click navigates to the generalization and opens
+            its property tab.</para>
+
+          <para>&Button2; click yields a drop down menu with five
+            entries</para>
+
+          <itemizedlist>
+            <listitem><para><literal>Open</literal>. Navigate to the
+              selected generalization.</para></listitem>
+
+            <listitem><para><literal>Add</literal>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram.</para>
+
+            <tip><para>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Delete</literal>. The link from the
+              generalization to the use case (<emphasis>but not the
+              generalization itself</emphasis>) is removed.</para>
+
+            <tip><para>This <emphasis>does not</emphasis> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Move Up</literal>. Only available
+             where there are two or more specializations listed, and the
+             specialization selected is not at the top. It is moved one up
+             the list.</para></listitem>
+
+            <listitem><para><literal>Move Down</literal>. Only available
+             where there are two or more specializations listed, and the
+             specialization selected is not at the bottom. It is moved one
+             down the list.</para></listitem>
+          </itemizedlist></listitem>
+        </varlistentry>
+
         <!-- Entry for Extends -->
 
         <varlistentry>
           <term><literal>Extends</literal></term>
 
           <listitem><para>Text box. Lists any class that is extended by this
-            use case. In &argouml; at present extension on a use case
-            diagram is through stereotyping a dependency relationship, which
-            will not show in this box.</para>
+            use case.</para>
 
           <para>Where an extends relationship has been created (see below),
-            &button1; click will navigate to that
-            relationship. &Button2; gives a pop up menu through which
-            an <emphasis>anonymous</emphasis> extends relationship can be
-            created.</para>
+            &button1; click will navigate to that relationship. &Button2; gives
+            a pop up menu with five entries.</para>
 
           <itemizedlist>
             <listitem><para><literal>Open</literal>. Where an extends
               relationship has been created, navigate to
               it.</para></listitem>
 
-            <listitem><para><literal>Add</literal>. Add a new anonymous
-              extends relationship. This is just a documentation artifact,
-              not a true relationship, where you can record details of the
-              extension.</para>
+            <listitem><para><literal>Add</literal>. Add a new
+              extend relationship and navigate to it. The current use case is
+              set as the extension end of the extend relationship.</para>
 
             <caution><para>It is possible to add multiple extends
               relationships. However is is hard to see a sensible meaning
-              for this. In addition the size of the text area, and the lack
-              of move up/move down options on the pop up menu, make all but
-              the top entry inaccessible in
-              &argouml;.</para></caution></listitem>
+              for this.</para></caution></listitem>
 
-            <listitem><para><literal>Delete</literal>. Where an extends
-              relationship has been created through use of
-              <literal>Add</literal> pop up menu, this removes
-              it.</para></listitem>
-          </itemizedlist></listitem>
+            <listitem><para><literal>Delete</literal>. Removes the link to the
+              selected extend relationship.</para>
+
+            <note><para>This deletes the connection to the extend relationship,
+              but does not delete the extend relationship from the
+              model.</para></note></listitem>
+
+            <listitem><para><literal>Move Up</literal>. Only available where
+             there are two or more extend relationships listed (not
+             recommended), and the extend relationship selected is not at the
+             top. It is moved one up the list.</para></listitem>
+
+            <listitem><para><literal>Move Down</literal>. Only available where
+             there are two or more extend relationships listed (not
+             recommended), and the extend relationship selected is not at the
+             bottom. It is moved one down the list.</para></listitem>
+           </itemizedlist></listitem>
         </varlistentry>
 
         <!-- Entry for Includes -->
@@ -961,39 +1046,40 @@ Modifications
         <varlistentry>
           <term><literal>Includes</literal></term>
 
-          <listitem><para>Text box. Lists any class that this use case
-            includes. In &argouml; at present inclusion on a use case
-            diagram is through stereotyping a dependency relationship, which
-            will not show in this box.</para>
+          <listitem><para>Text box. Lists any use case that this use case
+            includes.</para>
 
-          <para>Where an includes relationship has been created (see
-            below), &button1; click will navigate to that
-            relationship. &Button2; gives a pop up menu through which
-            an <emphasis>anonymous</emphasis> includes relationship can be
-            created.</para>
+          <para>Where an include relationship has been created (see below),
+            &button1; click will navigate to that relationship. &Button2; gives
+            a pop up menu with five entries.</para>
 
           <itemizedlist>
-            <listitem><para><literal>Open</literal>. Where an includes
+            <listitem><para><literal>Open</literal>. Where an include
               relationship has been created, navigate to
               it.</para></listitem>
 
-            <listitem><para><literal>Add</literal>. Add a new anonymous
-              includes relationship. This is just a documentation artifact,
-              not a true relationship, where you can record details of the
-              extension.</para>
+            <listitem><para><literal>Add</literal>. Add a new
+              include relationship and navigate to it. The current use case
+              will be made the base use case of the include
+              relationship.</para></listitem>
 
-            <caution><para>It is possible to add multiple includes
-              relationships. However is is hard to see a sensible meaning
-              for this. In addition the size of the text area, and the lack
-              of move up/move down options on the pop up menu, make all but
-              the top entry inaccessible in
-              &argouml;.</para></caution></listitem>
+            <listitem><para><literal>Delete</literal>. Removes the link to the
+              selected include relationship.</para>
 
-            <listitem><para><literal>Delete</literal>. Where an includes
-              relationship has been created through use of
-              <literal>Add</literal> pop up menu, this removes
-              it.</para></listitem>
-          </itemizedlist></listitem>
+            <note><para>This deletes the connection to the include
+              relationship, but does not delete the include relationship from
+              the model.</para></note></listitem>
+
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more include relationships listed, and the
+              include relationship selected is not at the top. It is moved one
+              up the list.</para></listitem>
+
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more include relationships listed, and the
+              include relationship selected is not at the bottom. It is moved
+              one down the list.</para></listitem>
+            </itemizedlist></listitem>
         </varlistentry>
 
         <!-- Entry for Extension Points -->
@@ -1002,29 +1088,39 @@ Modifications
           <term><literal>Extension Points</literal></term>
 
           <listitem><para>Text box. If this use case is, or can be extended,
-            this field is used to document the points at which such
-            extensions can occur.</para>
+            this field lists the extension points for the use case.</para>
 
-          <para>Where an extension point has been created (see
-            below), &button1; click will navigate to that
-            relationship. &Button2; gives a pop up menu through which
-            an <emphasis>anonymous</emphasis> extension points can be
-            created.</para>
+          <note><para>Extension points are listed by their location point
+            rather than their name.</para></note>
+
+          <para>Where an extension point has been created (see below),
+            &button1; click will navigate to that relationship. &Button2; gives
+            a pop up menu with five entries.</para>
 
           <itemizedlist>
             <listitem><para><literal>Open</literal>. Where an extension
               point has been created, navigate to it.</para></listitem>
 
-            <listitem><para><literal>Add</literal>. Add a new anonymous
-              extension point. This is a documentation artifact, where you
-              can record details of the extension point.</para>
-
-            <note><para>At present there is no way to give a name to an
-              extension point in &argouml;.</para></note></listitem>
+            <listitem><para><literal>Add</literal>. Add a new extension point
+              and navigate to it, making this use case the owning use case of
+              the extension point.</para></listitem>
 
             <listitem><para><literal>Delete</literal>. Where an extension
-              point has been created through use of <literal>Add</literal>
-              pop up menu, this removes it.</para></listitem>
+              point has been created, this removes it.</para>
+
+            <note><para>This deletes the connection to the extension point, but
+              does not delete the extension point from the
+              model.</para></note></listitem>
+
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more extension points listed, and the extension
+              point selected is not at the top. It is moved one up the
+              list.</para></listitem>
+
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more extension points listed, and the extension
+              point selected is not at the bottom. It is moved one down the
+              list.</para></listitem>
           </itemizedlist></listitem>
         </varlistentry>
 
@@ -1502,32 +1598,109 @@ Modifications
               one down the list.</para></listitem> </itemizedlist></listitem>
         </varlistentry>
 
-        <!-- Entry for Extends -->
+        <!-- Entry for Generalizations -->
 
         <varlistentry>
-          <term><literal>Extends</literal></term>
+          <term><literal>Generalizations</literal></term>
 
-          <listitem><para>Text box. These are the associations for which this
-            association is a specialization. It is possible to create
-            generalizations using the pop-up menu from here, but there is
-            no way within &argouml; to give them a parent, so the entry has
-            no use</para>
+          <listitem><para>Text area. Lists any association that
+            <emphasis>generalizes</emphasis> this association.</para>
 
-          <caution><para>This entry should properly be called
-            <literal>Generalizations</literal>.</para></caution></listitem>
+          <caution><para>It is possible to create generalizations using the
+            pop-up menu from here, but there is no way within &argouml; to give
+            them a parent, so the entry has no use.</para></caution>
+
+          <para>&Button1; click navigates to the generalization and opens
+            its property tab.</para>
+
+          <para>&Button2; click yields a drop down menu with five
+            entries</para>
+
+          <itemizedlist>
+            <listitem><para><literal>Open</literal>. Navigate to the
+              selected generalization.</para></listitem>
+
+            <listitem><para><literal>Add</literal>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram. You will need to find it in
+              the navigation pane and add it from there.</para>
+
+            <tip><para>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Delete</literal>. The link from the
+              generalization to the association (<emphasis>but not the
+              generalization itself</emphasis>) is removed.</para>
+
+            <tip><para>This <emphasis>does not</emphasis> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the top. It is moved one up the
+              list.</para></listitem>
+
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the bottom. It is moved one
+              down the list.</para></listitem>
+          </itemizedlist></listitem>
         </varlistentry>
 
-        <!-- Entry for Derived -->
+        <!-- Entry for Specializations -->
 
         <varlistentry>
-          <term><literal>Derived</literal></term>
+          <term><literal>Specializations</literal></term>
 
-          <listitem><para>Text box. These are the associations for which this
-            association is a generalization. The drop down menu is always
-            grayed out.</para>
+          <listitem><para>Text box. Lists any specialized association (i.e. for
+            which this association is a generalization.</para>
 
-          <caution><para>This entry should properly be called
-            <literal>Specializations</literal>.</para></caution></listitem>
+          <caution><para>It is possible to create generalizations using the
+            pop-up menu from here, but there is no way within &argouml; to give
+            them a parent, so the entry has no use.</para></caution>
+
+          <para>&button1; click navigates to the generalization and opens
+            its property tab.</para>
+
+          <para>&Button2; click yields a drop down menu with five
+            entries</para>
+
+          <itemizedlist>
+            <listitem><para><literal>Open</literal>. Navigate to the
+              selected generalization.</para></listitem>
+
+            <listitem><para><literal>Add</literal>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram.</para>
+
+            <tip><para>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Delete</literal>. The link from the
+              generalization to the association (<emphasis>but not the
+              generalization itself</emphasis>) is removed.</para>
+
+            <tip><para>This <emphasis>does not</emphasis> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the top. It is moved one up the
+              list.</para></listitem>
+
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the bottom. It is moved one
+              down the list.</para></listitem>
+          </itemizedlist></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -2384,7 +2557,1091 @@ Modifications
     </sect2>
   </sect1>
 
-  <!-- Dependency (includes extends and includes) -->
+  <!-- Extend relationship -->
+
+  <sect1 id="s1.ref.extend">
+    <title>Extend</title>
+
+    <para>Extend is a relationship between two use cases. Where A extends B, it
+      means A describes more specific behavior and B the general version of
+      that behavior.</para>
+
+    <para>In many respects extend is like generalization. However the key
+      difference is that the extended use case defines <emphasis>extension
+      points</emphasis> (see <xref linkend="s1.ref.extension_point"/>), which
+      are the only places where its behaviour may be extended. The extending
+      use case must define at which of these extension points it adds
+      behavior.</para>
+
+    <para>This makes the use of extend more tightly controlled than general
+      extension, and it is thus preferred wherever possible.</para>
+
+     <para>Examples for a travel agent sales system might be the use case for
+       paying for a ticket, which has an extension point in the specification
+       of the payment. Extending use cases may then extend at this point to pay
+       by cash, credit card etc.</para>
+
+    <para>Within the UML metamodel, <literal>Extend</literal> is a
+      sub-class of <literal>Relationship</literal>.</para>
+
+    <para>An extend relationship is represented as a dotted link with an open
+      arrow head and a label <literal>&laquo;extend&raquo;</literal> (see <xref
+      linkend="fig.ref.use_case_diagram"/>).</para>
+
+    <!-- The details tabs -->
+
+    <sect2>
+      <title>Extend Details Tabs</title>
+
+      <para>The details tabs that are active for extend relationships are as
+        follows.</para>
+
+      <note><para>There is no source tab, since there is no source code that
+        could be generated for an extend relationship.</para></note>
+
+      <variablelist>
+
+        <!-- Entry for ToDoItem tab -->
+
+        <varlistentry>
+          <term><literal>ToDoItem</literal></term>
+
+          <listitem><para>Standard tab.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Properties tab -->
+
+        <varlistentry>
+          <term><literal>Properties</literal></term>
+
+          <listitem><para>See <xref
+              linkend="s2.ref.extend_property_toolbar"/> and <xref
+              linkend="s2.ref.extend_property_fields"/>
+            below.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Documentation tab -->
+
+        <varlistentry>
+          <term><literal>Documentation</literal></term>
+
+          <listitem><para>Standard tab.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Style tab -->
+
+        <varlistentry>
+          <term><literal>Style</literal></term>
+
+          <listitem><para>Standard tab</para>
+
+          <note><para>The values for the bounds of the extend relationships
+            appear to have no meaning. Changing them has no effect on the
+            diagram. This is sensible behavior, given the extend
+            is tied to a particular pair of use
+            cases.</para></note></listitem>
+        </varlistentry>
+
+        <!-- Entry for Constraints tab -->
+
+        <varlistentry>
+          <term><literal>Constraints</literal></term>
+
+          <listitem><para>Standard tab. In the UML metamodel,
+            <literal>Extend</literal> has no standard
+            constraints defined.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Tagged Values tab -->
+
+        <varlistentry>
+          <term><literal>Tagged Values</literal></term>
+
+          <listitem><para>Standard tab. In the UML metamodel,
+            <literal>Extend</literal> has the following standard
+            tagged values defined.</para>
+
+            <itemizedlist>
+              <listitem><para><literal>derived</literal> (from the
+                superclass, <literal>ModelElement</literal>). Values
+                <literal>true</literal>, meaning the extend relationship is
+                redundant&mdash;it can be formally derived from other
+                elements, or <literal>false</literal> meaning it
+                cannot.</para>
+
+              <note><para>Derived extend relationships could have their value
+                in analysis to introduce useful names or
+                concepts.</para></note></listitem>
+            </itemizedlist>
+
+            <note><para>The UML <literal>Element</literal> metaclass from
+              which all other artifacts are derived includes the tagged
+              element <literal>documentation</literal> which is handled by
+              the <emphasis>documentation tab</emphasis> under
+              &argouml;</para></note></listitem>
+        </varlistentry>
+      </variablelist>
+    </sect2>
+
+    <!-- Extend properties -->
+
+    <sect2 id="s2.ref.extend_property_toolbar">
+      <title>Extend Property Toolbar</title>
+
+      <variablelist>
+
+        <!-- Entry for Go up button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/navigate_up.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>Go
+            up</literal></term>
+
+          <listitem><para>Navigate up through the package structure of the
+            model. For a extend this will be the package containing
+            the extend.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Go back button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/navigate_back.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>Go
+            back</literal></term>
+
+          <listitem><para>Navigate back to the previous
+            artifact.</para>
+
+          <warning><para>This feature is currently broken within &argouml;
+            and there is no guarantee where (if anywhere) this button will
+            take you.</para></warning></listitem>
+        </varlistentry>
+
+        <!-- Entry for Go forward button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/navigate_forward.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>Go
+            forward</literal></term>
+
+          <listitem><para>Navigate forward to the next
+            artifact.</para>
+
+          <warning><para>This feature is currently broken within &argouml;
+            and there is no guarantee where (if anywhere) this button will
+            take you.</para></warning></listitem>
+        </varlistentry>
+
+        <!-- Entry for Add extension point button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/extension_point.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>Add extension
+            point</literal></term>
+
+          <listitem><para>This creates a new use case extension point within
+            the namespace of the current extend relationship, with the current
+            extend relationship as its first extending relationship, navigating
+            immediately to the properties tab for that extension point.</para>
+
+          <tip><para>Whilst it is perfectly valid to create extension points
+            from an extend relationship, the created extension point will have
+            no associated use case (it can subsequently be set up).</para>
+
+          <para>It would be more usual to instead create the extension point
+            within a use case and subsequently link to it from an extend
+            relationship (see <xref linkend="s2.ref.extend_property_fields"/>
+            below).</para></tip></listitem>
+        </varlistentry>
+
+        <!-- Entry for Delete button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/property_delete.gif"/>
+          </imageobject></inlinemediaobject></guiicon>
+            <literal>Delete</literal></term>
+
+          <listitem><para>This deletes the selected extend relationshp from the
+            model.</para>
+
+          <warning><para>This is a deletion from the model
+            <emphasis>not</emphasis> just the diagram. To delete a
+            extend from the diagram, but keep it within the model,
+            use the main menu <literal>Edit/Remove From Diagram</literal>
+            (Ctrl-R).</para></warning></listitem>
+        </varlistentry>
+      </variablelist>
+    </sect2>
+
+    <!-- Fields in the properties tab -->
+
+    <sect2 id="s2.ref.extend_property_fields">
+      <title>Property Fields For Extend</title>
+
+      <variablelist>
+
+        <!-- Entry for Name -->
+
+        <varlistentry>
+          <term><literal>Name</literal></term>
+
+          <listitem><para>Text box. The name of the extend relationship.</para>
+
+          <tip><para>It is quite common to leave extends
+            unnamed in use case analysis.</para></tip>
+
+          <note><para>&argouml; does not enforce any naming convention for
+            extend relationships.</para></note>
+
+          <note><para>There is no representation of the stereotype of an
+            extend relationship on the diagram.</para></note></listitem>
+        </varlistentry>
+
+        <!-- Entry for Stereotype -->
+
+        <varlistentry>
+          <term><literal>Stereotype</literal></term>
+
+          <listitem><para>Drop down selector. &argouml; provides the
+            non-standard stereotypes, <literal>machine</literal>,
+            <literal>organization</literal> and
+            <literal>person</literal>. It also rather bizarly provides the
+            <literal>realize</literal> stereotype (which is more properly just
+            a stereotype of abstraction relationships.</para>
+
+          <tip><para>Stereotyping does not have great value on an extend
+            relationship.</para></tip></listitem>
+        </varlistentry>
+
+        <!-- Entry for NavStereo -->
+
+        <varlistentry>
+          <term><literal>Navigate Stereotype</literal></term>
+
+          <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
+              format="GIF" align="center"
+              fileref="images/icons/navigate_stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> icon. If a
+              stereotype has been selected, this will navigate you to the
+              stereotype property panel (see <xref
+                linkend="s1.ref.stereotype"/>).</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Namespace -->
+
+        <varlistentry>
+          <term><literal>Namespace</literal></term>
+
+          <listitem><para>Text box. Records the namespace for the
+            extend. This is the package hierarchy.</para>
+
+          <para>&Button1; click on the entry will take you to the package
+            defining this namespace (or the model for the top level
+            namespace).</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Base -->
+
+        <varlistentry>
+          <term><literal>Base</literal></term>
+
+          <listitem><para>Drop down selector. Records the use case that is
+            being extended by this extend relationship.  &Button1; click
+            on this entry will give a drop down menu of all available use cases
+            (and an empty entry) which may be selected by &button1;
+            click.</para>
+
+          <caution><para>In the current version of &argouml; if you change the
+            base use case on an extend relationship that is already shown on a
+            diagram, then it will NOT be redrawn. Currently the only way to
+            effect a redraw is to remove the use cases at each end from the
+            diagram and then add them back from the navigation
+            pane.</para></caution></listitem>
+        </varlistentry>
+
+        <!-- Entry for NavUseCase (Base) -->
+
+        <varlistentry>
+          <term><literal>Navigate Use Case (Base)</literal></term>
+
+          <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
+              format="GIF" align="center"
+              fileref="images/icons/navigate_stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> icon. If a
+              base use case has been selected, this will navigate you to the
+              use case property panel (see <xref
+                linkend="s1.ref.use_case"/>).</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Extension -->
+
+        <varlistentry>
+          <term><literal>Extension</literal></term>
+
+          <listitem><para>Drop down selector. Records the use case that is
+            doing the extending through this extend relationship.  &Button1;
+            click on this entry will give a drop down menu of all available use
+            cases (and an empty entry) which may be selected by &button1;
+            click.</para>
+
+          <caution><para>In the current version of &argouml; if you change the
+            extension use case on an extend relationship that is already shown
+            on a diagram, then it will NOT be redrawn. Currently the only way
+            to effect a redraw is to remove the use cases at each end from the
+            diagram and then add them back from the navigation
+            pane.</para></caution></listitem>
+        </varlistentry>
+
+        <!-- Entry for NavUseCase (Extension) -->
+
+        <varlistentry>
+          <term><literal>Navigate Use Case (Extension)</literal></term>
+
+          <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
+              format="GIF" align="center"
+              fileref="images/icons/navigate_stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> icon. If a
+              extension use case has been selected, this will navigate you to
+              the use case property panel (see <xref
+                linkend="s1.ref.use_case"/>).</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Extension Points -->
+
+        <varlistentry>
+          <term><literal>Extension Points</literal></term>
+
+          <listitem><para>Text box. If this use case is, or can be extended,
+            this field lists the extension points for the use case.</para>
+
+          <note><para>Extension points are listed by their location point
+            rather than their name.</para></note>
+
+          <para>Where an extension point has been created (see below),
+            &button1; click will navigate to that relationship. &Button2; gives
+            a pop up menu with six entries.</para>
+
+          <itemizedlist>
+            <listitem><para><literal>Open</literal>. Navigate to the selected
+              extension point. Grayed out if there are currently no extension
+              points.</para></listitem>
+
+            <listitem><para><literal>Add</literal>. Add a new extension point
+              before the current extension point in the list and navigate to
+              it. The current extend relationship is added as the first in list
+              of extending relationships of the new extension
+              point.</para></listitem>
+
+            <listitem><para><literal>Link</literal>. Where there are existing
+              extension points (other than those currently used by the extend
+              relationship) this produces a drop down menu of those extension
+              points. They are shown in two groups. First those that are
+              extension points of the current extend relationships base use
+              case (and which are therefore semantically valid within the UML
+              standard). Secondly those of other use cases (which are not
+              semnatically valid).</para>
+
+            <para>&button1; click on an extension point will add it to the
+              extension point list of the extend relationship before the
+              selected point in the current extension point list.</para>
+
+            <tip><para>It may still make sense to link to an extension point in
+              the second part of the list in the middle of a model
+              reorganisation. In the fullness of time, an &argouml; critic will
+              warn of this problem.</para></tip></listitem>
+
+            <listitem><para><literal>Delete</literal>. Where an extension
+              point has been created<literal>Add</literal>, this removes
+              it.</para>
+
+            <note><para>This deletes the connection to the extension point
+              extension point, but does not delete the extension point from the
+              model.</para></note></listitem>
+
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more extension points listed, and the extension
+              point selected is not at the top. It is moved one up the
+              list.</para></listitem>
+
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more extension points listed, and the extension
+              point selected is not at the bottom. It is moved one down the
+              list.</para></listitem>
+          </itemizedlist></listitem>
+        </varlistentry>
+      </variablelist>
+    </sect2>
+  </sect1>
+
+  <!-- Extension Point relationship -->
+
+  <sect1 id="s1.ref.extension_point">
+    <title>Extension Point</title>
+
+    <para>An extension point describes a point in a use case where an extending
+      use case may provide additional behaviour.</para>
+
+     <para>Examples for a travel agent sales system might be the use case for
+       paying for a ticket, which has an extension point in the specification
+       of the payment. Extending use cases may then extend at this point to pay
+       by cash, credit card etc.</para>
+
+    <para>Within the UML metamodel, <literal>Extension Point</literal> is a
+      sub-class of <literal>ModelElement</literal>. It has no representation on
+      the diagram.</para>
+
+    <!-- The details tabs -->
+
+    <sect2>
+      <title>Extension Point Details Tabs</title>
+
+      <para>The details tabs that are active for extension points are as
+        follows.</para>
+
+      <note><para>There is no source tab, since there is no source code that
+        could be generated for an extension point.</para></note>
+
+      <variablelist>
+
+        <!-- Entry for ToDoItem tab -->
+
+        <varlistentry>
+          <term><literal>ToDoItem</literal></term>
+
+          <listitem><para>Standard tab.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Properties tab -->
+
+        <varlistentry>
+          <term><literal>Properties</literal></term>
+
+          <listitem><para>See <xref
+              linkend="s2.ref.extension_point_property_toolbar"/> and <xref
+              linkend="s2.ref.extension_point_property_fields"/>
+            below.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Documentation tab -->
+
+        <varlistentry>
+          <term><literal>Documentation</literal></term>
+
+          <listitem><para>Standard tab.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Style tab -->
+
+        <varlistentry>
+          <term><literal>Style</literal></term>
+
+          <listitem><para>Standard tab</para>
+
+          <caution><para>The values here are those of the owning use
+            case.</para></caution></listitem>
+        </varlistentry>
+
+        <!-- Entry for Constraints tab -->
+
+        <varlistentry>
+          <term><literal>Constraints</literal></term>
+
+          <listitem><para>Standard tab. In the UML metamodel,
+            <literal>ExtensionPoint</literal> has no standard
+            constraints defined.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Tagged Values tab -->
+
+        <varlistentry>
+          <term><literal>Tagged Values</literal></term>
+
+          <listitem><para>Standard tab. In the UML metamodel,
+            <literal>ExtensionPoint</literal> has the following standard
+            tagged values defined.</para>
+
+            <itemizedlist>
+              <listitem><para><literal>derived</literal> (from the
+                superclass, <literal>ModelElement</literal>). Values
+                <literal>true</literal>, meaning the extension point is
+                redundant&mdash;it can be formally derived from other
+                elements, or <literal>false</literal> meaning it
+                cannot.</para>
+
+              <note><para>It is not clear how derived extension points could
+                have any value in analysis.</para></note></listitem>
+            </itemizedlist>
+
+            <note><para>The UML <literal>Element</literal> metaclass from
+              which all other artifacts are derived includes the tagged
+              element <literal>documentation</literal> which is handled by
+              the <emphasis>documentation tab</emphasis> under
+              &argouml;</para></note></listitem>
+        </varlistentry>
+      </variablelist>
+    </sect2>
+
+    <!-- Extension Point properties -->
+
+    <sect2 id="s2.ref.extension_point_property_toolbar">
+      <title>Extension Point Property Toolbar</title>
+
+      <variablelist>
+
+        <!-- Entry for Go up button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/navigate_up.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>Go
+            up</literal></term>
+
+          <listitem><para>Navigate up through the package structure of the
+            model. For a extension point this will be the package containing
+            the extension point.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Go back button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/navigate_back.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>Go
+            back</literal></term>
+
+          <listitem><para>Navigate back to the previous
+            artifact.</para>
+
+          <warning><para>This feature is currently broken within &argouml;
+            and there is no guarantee where (if anywhere) this button will
+            take you.</para></warning></listitem>
+        </varlistentry>
+
+        <!-- Entry for Go forward button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/navigate_forward.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>Go
+            forward</literal></term>
+
+          <listitem><para>Navigate forward to the next
+            artifact.</para>
+
+          <warning><para>This feature is currently broken within &argouml;
+            and there is no guarantee where (if anywhere) this button will
+            take you.</para></warning></listitem>
+        </varlistentry>
+
+        <!-- Entry for Delete button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/property_delete.gif"/>
+          </imageobject></inlinemediaobject></guiicon>
+            <literal>Delete</literal></term>
+
+          <listitem><para>This deletes the selected extension point from the
+            model.</para></listitem>
+        </varlistentry>
+      </variablelist>
+    </sect2>
+
+    <!-- Fields in the properties tab -->
+
+    <sect2 id="s2.ref.extension_point_property_fields">
+      <title>Property Fields For Extension Point</title>
+
+      <variablelist>
+
+        <!-- Entry for Name -->
+
+        <varlistentry>
+          <term><literal>Name</literal></term>
+
+          <listitem><para>Text box. The name of the extension point.</para>
+
+          <tip><para>It is quite common to leave extension points
+            unnamed in use case analysis, since they are always listed (within
+            use cases and extend relationships) by their location.</para></tip>
+
+          <note><para>&argouml; does not enforce any naming convention for
+            extension points.</para></note></listitem>
+        </varlistentry>
+
+        <!-- Entry for Stereotype -->
+
+        <varlistentry>
+          <term><literal>Stereotype</literal></term>
+
+          <listitem><para>Drop down selector. &argouml; provides the
+            non-standard stereotypes, <literal>machine</literal>,
+            <literal>organization</literal> and
+            <literal>person</literal>. It also rather bizarly provides the
+            <literal>realize</literal> stereotype (which is more properly just
+            a stereotype of abstraction relationships.</para>
+
+          <tip><para>Stereotyping does not have great value on an extension
+            point.</para></tip></listitem>
+        </varlistentry>
+
+        <!-- Entry for NavStereo -->
+
+        <varlistentry>
+          <term><literal>Navigate Stereotype</literal></term>
+
+          <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
+              format="GIF" align="center"
+              fileref="images/icons/navigate_stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> icon. If a
+              stereotype has been selected, this will navigate you to the
+              stereotype property panel (see <xref
+                linkend="s1.ref.stereotype"/>).</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Namespace -->
+
+        <varlistentry>
+          <term><literal>Namespace</literal></term>
+
+          <listitem><para>Text box. Records the namespace for the
+            extension point. This is the package hierarchy.</para>
+
+          <para>&Button1; click on the entry will take you to the package
+            defining this namespace (or the model for the top level
+            namespace).</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Location -->
+
+        <varlistentry>
+          <term><literal>Location</literal></term>
+
+          <listitem><para>Text box. A description of the location of this
+            extension point within the owning use case.</para>
+
+          <tip><para>Extension points are always listed (within
+            use cases and extend relationships) by their location. Typically
+            this will be the number/name of the paragraph in the
+            specification.</para></tip></listitem>
+        </varlistentry>
+
+        <!-- Entry for Base Use Case-->
+
+        <varlistentry>
+          <term><literal>Base Use Case</literal></term>
+
+          <listitem><para>Drop down selector. Records the base use case within
+            which this extension point is defined. &Button1; click
+            on this entry will give a drop down menu of all available use cases
+            (and an empty entry) which may be selected by &button1;
+            click.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for NavUseCase -->
+
+        <varlistentry>
+          <term><literal>Navigate Use Case</literal></term>
+
+          <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
+              format="GIF" align="center"
+              fileref="images/icons/navigate_stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> icon. If a
+              base use case has been selected, this will navigate you to the
+              use case property panel (see <xref
+                linkend="s1.ref.use_case"/>).</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Extending Use Case -->
+
+        <varlistentry>
+          <term><literal>Extending Use Cases</literal></term>
+
+          <listitem><para>Text box. Lists all use cases which extend the base
+            use case through this extension point.</para>
+
+          <para>Where an extending use case exists, &button1; click will
+            navigate to that relationship. &Button2; gives a pop up menu with
+            five entries.</para>
+
+          <itemizedlist>
+            <listitem><para><literal>Open</literal>. Navigate to the extend
+              relationship that links to the selected
+              use case. Grayed out if there are currently no extending use
+              cases.</para></listitem>
+
+            <listitem><para><literal>Add</literal>. Add a new extend
+              relationship (which can then add an extension use case)
+              before the current use case in the list and navigate to
+              it. The owning use case of the current extension point
+              relationship is made the base use case of the new extend
+              relationship.</para></listitem>
+
+            <listitem><para><literal>Delete</literal>. Where an extend
+              relationship to an extending use case has been
+              created<literal>Add</literal>, this removes the link to
+              it.</para>
+
+            <note><para>This deletes the connection to the extend relationship,
+              but does not delete the extend relationship from the
+              model.</para></note></listitem>
+
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more use cases listed, and the use case selected
+              is not at the top. It is moved one up the list.</para></listitem>
+
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more use cases listed, and the use case selected
+              is not at the bottom. It is moved one down the
+              list.</para></listitem> </itemizedlist></listitem>
+        </varlistentry>
+      </variablelist>
+    </sect2>
+  </sect1>
+
+  <!-- Include relationship -->
+
+  <sect1 id="s1.ref.include">
+    <title>Include</title>
+
+    <para>Include is a relationship between two use cases. Where A includes B,
+      it means B described behaviour that is to be included in the description
+      of the behaviour of A at some point (defined internally by A).</para>
+
+    <para>Examples for a travel agent sales system might be the use case for
+      booking travel, which includes use cases for booking flights and taking
+      payment.</para>
+
+    <para>Within the UML metamodel, <literal>Include</literal> is a
+      sub-class of <literal>Relationship</literal>.</para>
+
+    <para>An include relationship is represented as a dotted link with an open
+      arrow head and a label <literal>&laquo;include&raquo;</literal> (see
+      <xref linkend="fig.ref.use_case_diagram"/>).</para>
+
+    <!-- The details tabs -->
+
+    <sect2>
+      <title>Include Details Tabs</title>
+
+      <para>The details tabs that are active for include relationships are as
+        follows.</para>
+
+      <note><para>There is no source tab, since there is no source code that
+        could be generated for an include relationship.</para></note>
+
+      <variablelist>
+
+        <!-- Entry for ToDoItem tab -->
+
+        <varlistentry>
+          <term><literal>ToDoItem</literal></term>
+
+          <listitem><para>Standard tab.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Properties tab -->
+
+        <varlistentry>
+          <term><literal>Properties</literal></term>
+
+          <listitem><para>See <xref
+              linkend="s2.ref.include_property_toolbar"/> and <xref
+              linkend="s2.ref.include_property_fields"/>
+            below.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Documentation tab -->
+
+        <varlistentry>
+          <term><literal>Documentation</literal></term>
+
+          <listitem><para>Standard tab.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Style tab -->
+
+        <varlistentry>
+          <term><literal>Style</literal></term>
+
+          <listitem><para>Standard tab</para>
+
+          <note><para>The values for the bounds of the include relationships
+            appear to have no meaning. Changing them has no effect on the
+            diagram. This is sensible behavior, given the include
+            is tied to a particular pair of use
+            cases.</para></note></listitem>
+        </varlistentry>
+
+        <!-- Entry for Constraints tab -->
+
+        <varlistentry>
+          <term><literal>Constraints</literal></term>
+
+          <listitem><para>Standard tab. In the UML metamodel,
+            <literal>Include</literal> has no standard
+            constraints defined.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Tagged Values tab -->
+
+        <varlistentry>
+          <term><literal>Tagged Values</literal></term>
+
+          <listitem><para>Standard tab. In the UML metamodel,
+            <literal>Include</literal> has the following standard
+            tagged values defined.</para>
+
+            <itemizedlist>
+              <listitem><para><literal>derived</literal> (from the
+                superclass, <literal>ModelElement</literal>). Values
+                <literal>true</literal>, meaning the include relationship is
+                redundant&mdash;it can be formally derived from other
+                elements, or <literal>false</literal> meaning it
+                cannot.</para>
+
+              <note><para>Derived include relationships could have their value
+                in analysis to introduce useful names or
+                concepts.</para></note></listitem>
+            </itemizedlist>
+
+            <note><para>The UML <literal>Element</literal> metaclass from
+              which all other artifacts are derived includes the tagged
+              element <literal>documentation</literal> which is handled by
+              the <emphasis>documentation tab</emphasis> under
+              &argouml;</para></note></listitem>
+        </varlistentry>
+      </variablelist>
+    </sect2>
+
+    <!-- Include properties -->
+
+    <sect2 id="s2.ref.include_property_toolbar">
+      <title>Include Property Toolbar</title>
+
+      <variablelist>
+
+        <!-- Entry for Go up button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/navigate_up.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>Go
+            up</literal></term>
+
+          <listitem><para>Navigate up through the package structure of the
+            model. For a include this will be the package containing
+            the include.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Go back button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/navigate_back.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>Go
+            back</literal></term>
+
+          <listitem><para>Navigate back to the previous
+            artifact.</para>
+
+          <warning><para>This feature is currently broken within &argouml;
+            and there is no guarantee where (if anywhere) this button will
+            take you.</para></warning></listitem>
+        </varlistentry>
+
+        <!-- Entry for Go forward button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/navigate_forward.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>Go
+            forward</literal></term>
+
+          <listitem><para>Navigate forward to the next
+            artifact.</para>
+
+          <warning><para>This feature is currently broken within &argouml;
+            and there is no guarantee where (if anywhere) this button will
+            take you.</para></warning></listitem>
+        </varlistentry>
+
+        <!-- Entry for Delete button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/property_delete.gif"/>
+          </imageobject></inlinemediaobject></guiicon>
+            <literal>Delete</literal></term>
+
+          <listitem><para>This deletes the selected include relationshp from
+            the model.</para>
+
+          <warning><para>This is a deletion from the model
+            <emphasis>not</emphasis> just the diagram. To delete a
+            include from the diagram, but keep it within the model,
+            use the main menu <literal>Edit/Remove From Diagram</literal>
+            (Ctrl-R).</para></warning></listitem>
+        </varlistentry>
+      </variablelist>
+    </sect2>
+
+    <!-- Fields in the properties tab -->
+
+    <sect2 id="s2.ref.include_property_fields">
+      <title>Property Fields For Include</title>
+
+      <variablelist>
+
+        <!-- Entry for Name -->
+
+        <varlistentry>
+          <term><literal>Name</literal></term>
+
+          <listitem><para>Text box. The name of the include
+            relationship.</para>
+
+          <tip><para>It is quite common to leave include relationships unnamed
+            in use case analysis.</para></tip>
+
+          <note><para>&argouml; does not enforce any naming convention for
+            include relationships.</para></note>
+
+          <note><para>There is no representation of the stereotype of an
+            include relationship on the diagram.</para></note></listitem>
+        </varlistentry>
+
+        <!-- Entry for Stereotype -->
+
+        <varlistentry>
+          <term><literal>Stereotype</literal></term>
+
+          <listitem><para>Drop down selector. &argouml; provides the
+            non-standard stereotypes, <literal>machine</literal>,
+            <literal>organization</literal> and
+            <literal>person</literal>. It also rather bizarly provides the
+            <literal>realize</literal> stereotype (which is more properly just
+            a stereotype of abstraction relationships.</para>
+
+          <tip><para>Stereotyping does not have great value on an include
+            relationship.</para></tip></listitem>
+        </varlistentry>
+
+        <!-- Entry for NavStereo -->
+
+        <varlistentry>
+          <term><literal>Navigate Stereotype</literal></term>
+
+          <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
+              format="GIF" align="center"
+              fileref="images/icons/navigate_stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> icon. If a
+              stereotype has been selected, this will navigate you to the
+              stereotype property panel (see <xref
+                linkend="s1.ref.stereotype"/>).</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Namespace -->
+
+        <varlistentry>
+          <term><literal>Namespace</literal></term>
+
+          <listitem><para>Text box. Records the namespace for the
+            include. This is the package hierarchy.</para>
+
+          <para>&Button1; click on the entry will take you to the package
+            defining this namespace (or the model for the top level
+            namespace).</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Base -->
+
+        <varlistentry>
+          <term><literal>Base</literal></term>
+
+          <listitem><para>Drop down selector. Records the use case that is
+            doing the including in this include relationship.  &Button1; click
+            on this entry will give a drop down menu of all available use cases
+            (and an empty entry) which may be selected by &button1;
+            click.</para>
+
+          <caution><para>In the current version of &argouml; if you change the
+            base use case on an include relationship that is already shown on a
+            diagram, then it will NOT be redrawn. Currently the only way to
+            effect a redraw is to remove the use cases at each end from the
+            diagram and then add them back from the navigation
+            pane.</para></caution></listitem>
+        </varlistentry>
+
+        <!-- Entry for NavUseCase (Base) -->
+
+        <varlistentry>
+          <term><literal>Navigate Use Case (Base)</literal></term>
+
+          <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
+              format="GIF" align="center"
+              fileref="images/icons/navigate_stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> icon. If a
+              base use case has been selected, this will navigate you to the
+              use case property panel (see <xref
+                linkend="s1.ref.use_case"/>).</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Addition -->
+
+        <varlistentry>
+          <term><literal>Addition</literal></term>
+
+          <listitem><para>Drop down selector. Records the use case that is
+            being included by this include relationship.  &Button1;
+            click on this entry will give a drop down menu of all available use
+            cases (and an empty entry) which may be selected by &button1;
+            click.</para>
+
+          <caution><para>In the current version of &argouml; if you change the
+            addition use case on an include relationship that is already shown
+            on a diagram, then it will NOT be redrawn. Currently the only way
+            to effect a redraw is to remove the use cases at each end from the
+            diagram and then add them back from the navigation
+            pane.</para></caution></listitem>
+        </varlistentry>
+
+        <!-- Entry for NavUseCase (Addition) -->
+
+        <varlistentry>
+          <term><literal>Navigate Use Case (Addition)</literal></term>
+
+          <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
+              format="GIF" align="center"
+              fileref="images/icons/navigate_stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> icon. If a
+              addition use case has been selected, this will navigate you to
+              the use case property panel (see <xref
+                linkend="s1.ref.use_case"/>).</para></listitem>
+        </varlistentry>
+      </variablelist>
+    </sect2>
+  </sect1>
+
+  <!-- Dependency -->
 
   <sect1 id="s1.ref.dependency_use_case">
     <title>Dependency</title>
@@ -2392,39 +3649,15 @@ Modifications
     <para>Dependency is a relationship between two artifacts showing that one
       depends on the other.</para>
 
-    <note><para>UML&nbsp;1.3 does not include dependency as a relationship on a
-      use case diagram. For historic reasons, &argouml; has implemented
-      <literal>extends</literal> and <literal>includes</literal> as a
-      stereotype of the dependency relationship (they are types of relationship
-      in their own right under UML&nbsp;1.3).</para></note>
+    <caution><para>Dependency has little use in use case diagrams. It is
+      provided, because earlier versions of &argouml; used it (incorrectly) to
+      implement include and extends relationships</para></caution>
 
-    <para>Under &argouml; <literal>extends</literal> is represented as a
-      dependency with an <literal>extends</literal>stereotype. An extend
-      relationship from A to B indicates the behavior of B may be augmented by
-      the the behavior of A at a particular <emphasis>extension
-      point</emphasis> or points.</para>
+    <para>Within the UML metamodel, <literal>Dependency</literal> is a
+      sub-class of <literal>Relationship</literal>.</para>
 
-    <note><para>&argouml; has no formal representation of extension
-      points. They are held as anonymous documentation within a
-      dependency.</para></note>
-
-    <note><para>It is easy to confuse <emphasis>extends</emphasis>
-      relationships between use cases with generalization. However extends is
-      about augmenting a use case's behavior at a specific
-      point. Generalization is about specializing the behavior throughout the
-      use case.</para></note>
-
-    <para>Under &argouml; <literal>includes</literal> is represented as a
-      dependency with an <literal>includes</literal>stereotype. An include
-      relationship from A to B indicates the behavior of A will include the
-      behavior of B at a location defined by A.</para>
-
-    <para>Within the UML metamodel, <literal>Dependency</literal>,
-      <literal>Extend</literal> and <literal>Include</literal> are all
-      sub-classes of <literal>Relationship</literal>.</para>
-
-    <para>Dependency is represented as a dotted arrow from the dependent to the
-      depending use case (see <xref
+    <para>Dependency is represented as a dotted line with an open arrow head
+      from the dependent to the depending artifact (see <xref
       linkend="fig.ref.use_case_diagram"/>).</para>
 
     <!-- The details tabs -->
@@ -2486,8 +3719,7 @@ Modifications
           <term><literal>Constraints</literal></term>
 
           <listitem><para>Standard tab. There are no standard constraints
-            defined for <literal>Dependency</literal>,
-            <literal>Extend</literal> or <literal>Include</literal> within
+            defined for <literal>Dependency</literal> within
             the UML metamodel.</para></listitem>
         </varlistentry>
 
@@ -2497,22 +3729,19 @@ Modifications
           <term><literal>Tagged Values</literal></term>
 
           <listitem><para>Standard tab. In the UML metamodel,
-            <literal>Extends</literal>, <literal>Includes</literal> and
-            <literal>Dependency</literal> have no tagged values of their
-            own, but through superclasses have the following standard
-            tagged values defined.</para>
+            <literal>Dependency</literal> has no tagged values of its own, but
+            through superclasses has the following standard tagged values
+            defined.</para>
 
             <itemizedlist>
-              <listitem><para><literal>derived</literal> (from the
-                superclass, <literal>ModelElement</literal>). Values
-                <literal>true</literal>, meaning the dependency, includes
-                or extends relationship is redundant&mdash;it can be
-                formally derived from other elements, or
-                <literal>false</literal> meaning it cannot.</para>
+              <listitem><para><literal>derived</literal> (from the superclass,
+                <literal>ModelElement</literal>). Values
+                <literal>true</literal>, meaning the dependency relationship is
+                redundant&mdash;it can be formally derived from other elements,
+                or <literal>false</literal> meaning it cannot.</para>
 
-              <note><para>Derived dependencies, includes and extends
-                relationships still have their value in analysis to
-                introduce useful names or
+              <note><para>Derived dependencies still have their value in
+                analysis to introduce useful names or
                 concepts.</para></note></listitem>
             </itemizedlist>
 
@@ -2615,9 +3844,8 @@ Modifications
 
           <listitem><para>Text box. The name of the dependency.</para>
 
-          <tip><para>It is quite common to leave dependencies unnamed in use
-            case analysis, since they are only being used to carry the
-            extends, and are not represented on the diagram.</para></tip>
+          <tip><para>It is quite common to leave dependencies
+            unnamed.</para></tip> 
 
           <note><para>&argouml; does not enforce any naming convention for
             associations.</para></note>
@@ -2632,19 +3860,16 @@ Modifications
           <term><literal>Stereotype</literal></term>
 
           <listitem><para>Drop down selector. Dependency has no standard
-            stereotypes of its own under UML&nbsp;1.3. &argouml; provides
-            two stereotypes <literal>extend</literal> and
-            <literal>exclude</literal> to allow depend to be used to
-            draw these relationships. &argouml; also provides the
+            stereotypes of its own under UML&nbsp;1.3. &argouml; provides two
+            stereotypes <literal>extend</literal> and
+            <literal>include</literal>, which in the past allowed depend to be
+            used to draw these relationships. &argouml; also provides the
             additional stereotypes, <literal>machine</literal>,
-            <literal>organization</literal> and
-            <literal>person</literal>. The stereotype is shown between
-            &laquo; and &raquo; above or across the generalization.</para>
-
-          <tip><para>Stereotyping of dependencies on use case diagrams is
-            used solely for the purpose of displaying
-            <literal>includes</literal> and <literal>extends</literal>
-            relationships.</para></tip></listitem>
+            <literal>organization</literal>, <literal>person</literal> and
+            rather bizarrely <literal>realize</literal> (which properly is a
+            stereotype only of abstraction). The stereotype is shown between
+            &laquo; and &raquo; above or across the
+            generalization.</para></listitem>
         </varlistentry>
 
         <!-- Entry for NavStereo -->
@@ -2683,15 +3908,6 @@ Modifications
             of the relationship, i.e. the end supplying what is needed by
             the other end.</para>
 
-          <para>In the case of <literal>extends</literal> this is the use
-            case being augmented. In the case of
-            <literal>includes</literal> it is the use case doing the
-            including.</para>
-
-          <para>&Button1; click on a supplier will navigate to that
-            use case. &Button2; click gives a pop up menu with three
-            options.</para>
-
           <itemizedlist>
             <listitem><para><literal>Open</literal>. Where a supplier
               exists, navigate to it.</para></listitem>
@@ -2715,11 +3931,6 @@ Modifications
           <listitem><para>Text area. Lists the <quote>depending</quote> ends
             of the relationship, i.e. the end supplying what is needed by
             the other end.</para>
-
-          <para>In the case of <literal>extends</literal> this is the use
-            case providing the augmenting behavior. In the case of
-            <literal>includes</literal> it is the use case being
-            included.</para>
 
           <para>&Button1; click on a client will navigate to that
             use case. &Button2; click gives a pop up menu with three

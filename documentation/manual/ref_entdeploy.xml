@@ -309,60 +309,52 @@ Modifications
             convention.</para></note></listitem>
         </varlistentry>
 
-        <!-- Entry for Extends -->
+        <!-- Entry for Generalizations -->
 
         <varlistentry>
-          <term><literal>Extends</literal></term>
+          <term><literal>Generalizations</literal></term>
 
-          <listitem><para>Text box. Lists any node that generalizes this
-            node.</para>
+          <listitem><para>Text area. Lists any node that
+            <emphasis>generalizes</emphasis> this node.</para>
 
-          <caution><para>&argouml; is incorrect in using the designation
-            <quote>Extends</quote> for this field. It should correctly be
-            called <quote>Generalizations</quote>.</para></caution>
+          <para>&Button1; click navigates to the generalization and opens
+            its property tab.</para>
 
-          <para>&Button1; click takes you to the selected entry, &button2;
-            gives a pop up menu with five entries.</para>
+          <para>&Button2; click yields a drop down menu with five
+            entries</para>
 
           <itemizedlist>
             <listitem><para><literal>Open</literal>. Navigate to the
-              selected generalization.</para>
-
-            <caution><para>In the current release of &argouml;
-              generalizations of nodes are not implemented, and this button
-              is always grayed out.</para></caution></listitem>
+              selected generalization.</para></listitem>
 
             <listitem><para><literal>Add</literal>. Add a new
-              generalization.</para>
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram. You will need to find it in
+              the navigation pane and add it from there.</para>
 
-            <caution><para>In the current release of &argouml;
-              generalizations of nodes are not implemented, and this button
-              is always grayed out.</para></caution></listitem>
+            <tip><para>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</para></tip></listitem>
 
-            <listitem><para><literal>Delete</literal>. Removes the link to
-              the selected generalization.</para>
+            <listitem><para><literal>Delete</literal>. The link from the
+              generalization to the node (<emphasis>but not the
+              generalization itself</emphasis>) is removed.</para>
 
-            <caution><para>In the current release of &argouml;
-              generalizations of nodes are not implemented, and this button
-              is always grayed out.</para></caution></listitem>
+            <tip><para>This <emphasis>does not</emphasis> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</para></tip></listitem>
 
-            <listitem><para><literal>Move Up</literal>. Only available
-              where there are two or more generalizations, and the
-              generalization selected is not at the top. It is moved one up
-              the list.</para>
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the top. It is moved one up the
+              list.</para></listitem>
 
-            <caution><para>In the current release of &argouml;
-              generalizations of nodes are not implemented, and this button
-              is always grayed out.</para></caution></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available
-              where there are two or more generalizations listed, and the
-              generalization selected is not at the bottom. It is moved
-              one down the list.</para>
-
-            <caution><para>In the current release of &argouml;
-              generalizations of nodes are not implemented, and this button
-              is always grayed out.</para></caution></listitem>
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the bottom. It is moved one
+              down the list.</para></listitem>
           </itemizedlist></listitem>
         </varlistentry>
 
@@ -401,28 +393,51 @@ Modifications
             namespace).</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Derived -->
+        <!-- Entry for Specializations -->
 
         <varlistentry>
-          <term><literal>Derived</literal></term>
+          <term><literal>Specializations</literal></term>
 
-          <listitem><para>Text area. Lists any derived nodes, i.e those for
-            which this node is a generalization.</para>
+          <listitem><para>Text box. Lists any specialized node (i.e. for which
+            this node is a generalization.</para>
 
-          <caution><para>&argouml; is incorrect in using the designation
-            <quote>Derived</quote> for this field. It should correctly be
-            called <quote>Specializations</quote>.</para></caution>
+          <para>&button1; click navigates to the generalization and opens
+            its property tab.</para>
 
-          <para>&Button1; click takes you to the selected entry, &button2;
-            gives a pop up menu with one entry.</para>
+          <para>&Button2; click yields a drop down menu with five
+            entries</para>
 
           <itemizedlist>
             <listitem><para><literal>Open</literal>. Navigate to the
-              selected specialization.</para>
+              selected generalization.</para></listitem>
 
-            <caution><para>In the current release of &argouml;
-              generalizations of nodes are not implemented, and this button
-              is always grayed out.</para></caution></listitem>
+            <listitem><para><literal>Add</literal>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram.</para>
+
+            <tip><para>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Delete</literal>. The link from the
+              generalization to the node (<emphasis>but not the
+              generalization itself</emphasis>) is removed.</para>
+
+            <tip><para>This <emphasis>does not</emphasis> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the top. It is moved one up the
+              list.</para></listitem>
+
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the bottom. It is moved one
+              down the list.</para></listitem>
           </itemizedlist></listitem>
         </varlistentry>
 

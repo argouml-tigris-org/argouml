@@ -22,6 +22,9 @@ Modifications
 19 Mar 2002:  Jeremy Bennett. Changed all tables to variablelists to fix
               problems with generating PDF.
 
+ 4 Apr 2002:  Jeremy Bennett. Updated references to generalizations and
+              specializations.
+
 -->
 
 <chapter id="ch.ref.entities">
@@ -522,22 +525,109 @@ Modifications
               level.</para></tip></listitem> </itemizedlist></listitem>
         </varlistentry>
 
-        <!-- Entry for Derived -->
+        <!-- Entry for Specializations -->
 
         <varlistentry>
-          <term><literal>Derived</literal></term>
+          <term><literal>Specializations</literal></term>
 
-          <listitem><para>Text box. Lists any derived class. Meaningless for
-            a model.</para></listitem>
+          <listitem><para>Text box. Lists any specialized model (i.e. for
+            which this model is a generalization.</para>
+
+          <caution><para>Since there is only one model in ArgoUML there is no
+            sensible specialization of generalization that could be
+            created.</para></caution>
+
+          <para>&button1; click navigates to the generalization and opens
+            its property tab.</para>
+
+          <para>&Button2; click yields a drop down menu with five
+            entries</para>
+
+          <itemizedlist>
+            <listitem><para><literal>Open</literal>. Navigate to the
+              selected generalization.</para></listitem>
+
+            <listitem><para><literal>Add</literal>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram.</para>
+
+            <tip><para>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Delete</literal>. The link from the
+              generalization to the model (<emphasis>but not the
+              generalization itself</emphasis>) is removed.</para>
+
+            <tip><para>This <emphasis>does not</emphasis> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the top. It is moved one up the
+              list.</para></listitem>
+
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the bottom. It is moved one
+              down the list.</para></listitem>
+          </itemizedlist></listitem>
         </varlistentry>
 
-        <!-- Entry for Extends -->
+        <!-- Entry for Generalizations -->
 
         <varlistentry>
-          <term><literal>Extends</literal></term>
+          <term><literal>Generalizations</literal></term>
 
-          <listitem><para>Text box. Lists any use case that is extended by
-            this model. Meaningless for a model.</para></listitem>
+          <listitem><para>Text area. Lists any model that
+            <emphasis>generalizes</emphasis> this model.</para>
+
+          <caution><para>Since there is only one model in ArgoUML there is no
+            sensible specialization of generalization that could be
+            created.</para></caution>
+
+          <para>&Button1; click navigates to the generalization and opens
+            its property tab.</para>
+
+          <para>&Button2; click yields a drop down menu with five
+            entries</para>
+
+          <itemizedlist>
+            <listitem><para><literal>Open</literal>. Navigate to the
+              selected generalization.</para></listitem>
+
+            <listitem><para><literal>Add</literal>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram. You will need to find it in
+              the navigation pane and add it from there.</para>
+
+            <tip><para>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Delete</literal>. The link from the
+              generalization to the model (<emphasis>but not the
+              generalization itself</emphasis>) is removed.</para>
+
+            <tip><para>This <emphasis>does not</emphasis> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the top. It is moved one up the
+              list.</para></listitem>
+
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the bottom. It is moved one
+              down the list.</para></listitem>
+          </itemizedlist></listitem>
         </varlistentry>
 
         <!-- Entry for Implements -->
@@ -953,14 +1043,156 @@ Modifications
                 linkend="s1.ref.stereotype"/>).</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Extends -->
+        <!-- Entry for Namespace -->
 
         <varlistentry>
-          <term><literal>Extends</literal></term>
+          <term><literal>Namespace</literal></term>
 
-          <listitem><para>Text box. Lists any use case extended by this
-            datatype. Meaningless for a datatype. The entry is always none
-            and the pop up menu grayed out.</para></listitem>
+          <listitem><para>Text box. Records the namespace for the
+            datatype. This is the package hierarchy.</para>
+
+          <para>&Button1; click on the entry will take you to the package
+            defining this namespace (or the model for the top level
+            namespace).</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Modifiers -->
+
+        <varlistentry>
+          <term><literal>Modifiers</literal></term>
+
+          <listitem><para>Check box, with entries <literal>public</literal>,
+            <literal>abstract</literal>, <literal>final</literal> and
+            <literal>root</literal>.</para>
+
+          <itemizedlist>
+            <listitem><para><literal>public</literal> has identical meaning
+              to the <literal>public</literal> declaration in Java. It
+              indicates whether this datatype is restricted to use in its
+              own package (the default) or can be used by
+              anyone.</para></listitem>
+
+            <listitem><para><literal>abstract</literal> is used to declare
+              that this datatype cannot be instantiated, but must always be
+              specialized.</para>
+
+            <caution><para>&argouml; provides no mechanism for specializing
+              datatypes, so this check box is of little use.
+            </para></caution></listitem>
+
+            <listitem><para><literal>final</literal> indicates that this
+              datatype can have no further sub-types, while
+              <literal>root</literal> indicates it is a top level
+              datatype.</para>
+
+            <tip><para>In the absence of specialization of datatypes within
+              &argouml; these have little value. In effect all datatypes
+              are both <literal>root</literal> and
+              <literal>final</literal></para></tip></listitem>
+          </itemizedlist></listitem>
+        </varlistentry>
+
+        <!-- Entry for Generalizations -->
+
+        <varlistentry>
+          <term><literal>Generalizations</literal></term>
+
+          <listitem><para>Text area. Lists any datatype that
+            <emphasis>generalizes</emphasis> this datatype.</para>
+
+          <caution><para>It is not clear that generalizing datatypes makes much
+            sense.</para></caution>
+
+          <para>&Button1; click navigates to the generalization and opens
+            its property tab.</para>
+
+          <para>&Button2; click yields a drop down menu with five
+            entries</para>
+
+          <itemizedlist>
+            <listitem><para><literal>Open</literal>. Navigate to the
+              selected generalization.</para></listitem>
+
+            <listitem><para><literal>Add</literal>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram. You will need to find it in
+              the navigation pane and add it from there.</para>
+
+            <tip><para>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Delete</literal>. The link from the
+              generalization to the datatype (<emphasis>but not the
+              generalization itself</emphasis>) is removed.</para>
+
+            <tip><para>This <emphasis>does not</emphasis> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the top. It is moved one up the
+              list.</para></listitem>
+
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the bottom. It is moved one
+              down the list.</para></listitem>
+          </itemizedlist></listitem>
+        </varlistentry>
+
+        <!-- Entry for Specializations -->
+
+        <varlistentry>
+          <term><literal>Specializations</literal></term>
+
+          <listitem><para>Text box. Lists any specialized datatype (i.e. for
+            which this datatype is a generalization.</para>
+
+          <caution><para>It is not clear that specializing datatypes makes much
+            sense.</para></caution>
+
+          <para>&button1; click navigates to the generalization and opens
+            its property tab.</para>
+
+          <para>&Button2; click yields a drop down menu with five
+            entries</para>
+
+          <itemizedlist>
+            <listitem><para><literal>Open</literal>. Navigate to the
+              selected generalization.</para></listitem>
+
+            <listitem><para><literal>Add</literal>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram.</para>
+
+            <tip><para>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Delete</literal>. The link from the
+              generalization to the datatype (<emphasis>but not the
+              generalization itself</emphasis>) is removed.</para>
+
+            <tip><para>This <emphasis>does not</emphasis> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the top. It is moved one up the
+              list.</para></listitem>
+
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the bottom. It is moved one
+              down the list.</para></listitem>
+          </itemizedlist></listitem>
         </varlistentry>
 
         <!-- Entry for Implements -->
@@ -1014,66 +1246,6 @@ Modifications
           <warning><para>&Button1; click on the default entry navigates to
             the most recently selected to-do item in the to-do pane. This
             seems to be a bug in &argouml;.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Modifiers -->
-
-        <varlistentry>
-          <term><literal>Modifiers</literal></term>
-
-          <listitem><para>Check box, with entries <literal>public</literal>,
-            <literal>abstract</literal>, <literal>final</literal> and
-            <literal>root</literal>.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>public</literal> has identical meaning
-              to the <literal>public</literal> declaration in Java. It
-              indicates whether this datatype is restricted to use in its
-              own package (the default) or can be used by
-              anyone.</para></listitem>
-
-            <listitem><para><literal>abstract</literal> is used to declare
-              that this datatype cannot be instantiated, but must always be
-              specialized.</para>
-
-            <caution><para>&argouml; provides no mechanism for specializing
-              datatypes, so this check box is of little use.
-            </para></caution></listitem>
-
-            <listitem><para><literal>final</literal> indicates that this
-              datatype can have no further sub-types, while
-              <literal>root</literal> indicates it is a top level
-              datatype.</para>
-
-            <tip><para>In the absence of specialization of datatypes within
-              &argouml; these have little value. In effect all datatypes
-              are both <literal>root</literal> and
-              <literal>final</literal></para></tip></listitem>
-          </itemizedlist></listitem>
-        </varlistentry>
-
-        <!-- Entry for Namespace -->
-
-        <varlistentry>
-          <term><literal>Namespace</literal></term>
-
-          <listitem><para>Text box. Records the namespace for the
-            datatype. This is the package hierarchy.</para>
-
-          <para>&Button1; click on the entry will take you to the package
-            defining this namespace (or the model for the top level
-            namespace).</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Derived -->
-
-        <varlistentry>
-          <term><literal>Derived</literal></term>
-
-          <listitem><para>Text box. Meaningless for a datatype (which can
-            never be a generalization), which always
-            shows the entry <literal>none</literal> here. The pop-up menu
-            is always grayed out.</para></listitem>
         </varlistentry>
 
         <!-- Entry for Operations -->
@@ -1441,15 +1613,6 @@ Modifications
             namespace).</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Extends -->
-
-        <varlistentry>
-          <term><literal>Extends</literal></term>
-
-          <listitem><para>Text box. Lists any use case that is extended by
-            this stereotype.  Meaningless for a stereotype.</para></listitem>
-        </varlistentry>
-
         <!-- Entry for Modifiers -->
 
         <varlistentry>
@@ -1479,15 +1642,107 @@ Modifications
             modifiers.</para></warning></listitem> 
         </varlistentry>
 
-        <!-- Entry for Derived -->
+        <!-- Entry for Generalizations -->
 
         <varlistentry>
-          <term><literal>Derived</literal></term>
+          <term><literal>Generalizations</literal></term>
 
-          <listitem><para>Text box. Lists any derived
-            stereotype. The drop down menu <literal>Open</literal> is
-            permanently grayed out, suggesting it may not be possible to
-            create derived stereotypes within &argouml;.</para></listitem>
+          <listitem><para>Text area. Lists any stereotype that
+            <emphasis>generalizes</emphasis> this stereotype.</para>
+
+          <caution><para>It is not clear that generalizing stereotypes makes
+            much sense.</para></caution>
+
+          <para>&Button1; click navigates to the generalization and opens
+            its property tab.</para>
+
+          <para>&Button2; click yields a drop down menu with five
+            entries</para>
+
+          <itemizedlist>
+            <listitem><para><literal>Open</literal>. Navigate to the
+              selected generalization.</para></listitem>
+
+            <listitem><para><literal>Add</literal>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram. You will need to find it in
+              the navigation pane and add it from there.</para>
+
+            <tip><para>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Delete</literal>. The link from the
+              generalization to the stereotype (<emphasis>but not the
+              generalization itself</emphasis>) is removed.</para>
+
+            <tip><para>This <emphasis>does not</emphasis> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the top. It is moved one up the
+              list.</para></listitem>
+
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the bottom. It is moved one
+              down the list.</para></listitem>
+          </itemizedlist></listitem>
+        </varlistentry>
+
+        <!-- Entry for Specializations -->
+
+        <varlistentry>
+          <term><literal>Specializations</literal></term>
+
+          <listitem><para>Text box. Lists any specialized stereotype (i.e. for
+            which this stereotype is a generalization.</para>
+
+          <caution><para>It is not clear that specializing stereotypes makes
+            much sense.</para></caution>
+
+          <para>&button1; click navigates to the generalization and opens
+            its property tab.</para>
+
+          <para>&Button2; click yields a drop down menu with five
+            entries</para>
+
+          <itemizedlist>
+            <listitem><para><literal>Open</literal>. Navigate to the
+              selected generalization.</para></listitem>
+
+            <listitem><para><literal>Add</literal>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram.</para>
+
+            <tip><para>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Delete</literal>. The link from the
+              generalization to the stereotype (<emphasis>but not the
+              generalization itself</emphasis>) is removed.</para>
+
+            <tip><para>This <emphasis>does not</emphasis> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</para></tip></listitem>
+
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the top. It is moved one up the
+              list.</para></listitem>
+
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the bottom. It is moved one
+              down the list.</para></listitem>
+          </itemizedlist></listitem>
         </varlistentry>
       </variablelist>
     </sect2>

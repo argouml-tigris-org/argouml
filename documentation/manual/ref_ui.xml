@@ -17,6 +17,9 @@ Modifications
 
  1 Feb 2002:  Jeremy Bennett. Realised mouse stuff largely relates to panes or
               the menu, so most broken back out again.
+
+ 4 Apr 2002:  Jeremy Bennett. Updates for release 0.9.8. New pane resizing
+
 -->
 
 <chapter id="ch.ref.ui">
@@ -35,20 +38,20 @@ Modifications
   <sect1>
     <title>Overview of the Window</title>
 
-    <para><xref linkend="fig.ref.guioverview"/> shows the main &argouml;
+    <para><xref linkend="fig.ref.gui_overview"/> shows the main &argouml;
       window.</para>
 
     <!-- A big diagram with all the bits pointed out. At the moment its just a
          plane screenshot, but it would be nice to float in some bubbles
          pointing out things. -->
 
-    <figure id="fig.ref.guioverview" float="1">
+    <figure id="fig.ref.gui_overview" float="1">
       <title>Overview of the &argouml; window</title>
 
       <screenshot><mediaobject>
         <imageobject>
-          <imagedata format="GIF" align="center"
-                     fileref="images/reference/guioverview.gif"/>
+          <imagedata format="PNG" align="center"
+                     fileref="images/reference/gui_overview.png"/>
         </imageobject>
       </mediaobject></screenshot>
     </figure>
@@ -245,6 +248,23 @@ Modifications
       <para>You can re-size panes by dragging on the divider bars between
         them. The mouse cursor changes to a vertical or horizontal bar with an
         arrow at right-angles when over the divider bars.</para>
+
+      <para>In addition you will see there are two small left pointing arrows
+        within the vertical divider bars, one at the top of the vertical
+        divider bar between navigation pane and editing pane and one at the top
+        of the vertical divider bar between to-do pane and details
+        pane. &Button1; click on the first of these will expand the editing
+        pane to the full width of the window, &button1; click on the second
+        will expand the details pane to the full width of the window.</para>
+      
+      <para>There is also a small downward pointing arrow within the
+        horizontal divider bar at its leftmost end. Clicking on this will
+        expand the navigation and editing panes to the full depth of the
+        window.</para>
+
+      <para>By using both the top arrow on the vertical divider and the arrow
+        on the horizontal divider, it is possible to expand the editing pane to
+        use the entire window.</para>
     </sect2>
 
     <sect2 id="s2.ref.spawn">

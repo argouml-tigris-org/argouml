@@ -15,6 +15,9 @@ Modifications
 10 Dec 2001:  Jeremy Bennett. Introduction, background to UML and UML based
               processes, introduction to mouse, menus and drawing added for
               0.9.5, draft B.
+
+ 4 Apr 2002:  Jeremy Bennett. Added info about using XMI from Gentleware.
+
 -->
 
 <chapter id="ch.tut.uml">
@@ -1620,6 +1623,42 @@ Modifications
           <para>The conversion tool identified above will probably solve the
             problem. If you can document how this is done, you'd make a lot of
             friends in a hurry!</para>
+        </sect4>
+
+        <!-- Using Gentleware XMI -->
+
+        <sect4>
+          <title>Using models created by Gentleware</title>
+
+          <para>Gentleware is a commercial development based on &argouml;. It
+            diverged a little while ago and the XMI representations are no
+            longer full compatible.</para>
+
+          <para>Eugenio Alvarez suggests the following procedure to convert a
+            Gentleware project for use with &argouml;. It works if there are no
+            sequence diagrams in the project.</para>
+
+          <orderedlist>
+            <listitem><para>Make sure to backup your project
+              first.</para></listitem>
+
+            <listitem><para>Unpackage the Gentleware project Project.zargo. For
+              example <literal>unzip&nbsp;Project.zargo</literal> or
+              <literal>jar&nbsp;xvf&nbsp;Project.zargo</literal>.
+            </para></listitem>
+
+            <listitem><para>Then try reading and then saving the project with
+              <ulink url="http://umltool.d-a-t.com">
+                http://umltool.d-a-t.com</ulink>.</para></listitem>
+
+            <listitem><para>Repackage the project. For example
+              <literal>zip&nbsp;NewProject.zargo&nbsp;*.xmi&nbsp;*.pgml&nbsp;*.argo</literal>
+              or <literal>jar&nbsp;cvf&nbsp;NewProject.zargo&nbsp;*</literal>.
+            </para></listitem>
+
+            <listitem><para>Try reading the project with
+              ArgoUML.</para></listitem> 
+          </orderedlist>
         </sect4>
 
         <!-- Interchangeability of Argo/UML XMI between versions -->

@@ -24,6 +24,7 @@ Modifications
 
 14 Mar 2002:  Jeremy Bennett. First draft (A) for 0.9.8.
 
+ 4 Apr 2002:  Jeremy Bennett. Updated for issue 0.9.8.
 -->
 
 <bookinfo>
@@ -96,6 +97,22 @@ Modifications
   </legalnotice>
 
   <revhistory>
+    <revision>
+      <revnumber>0.9.8</revnumber> <date>5 Apr 2002</date>
+      <revdescription><para>Full issue for release 0.9.8. Update to capture
+        changes due to various bug fixes, and the extensions to the use case
+        diagram. The reference part of the manual (chapters 7 through 22) is
+        now completed. In addition chapter 1 (introduction), tutorial chapter 2
+        (UML based &ooad;) are now largely complete.</para>
+
+      <para>Description of include and extend relationships and extension
+        points on use case diagrams. Changes to naming of generalization and
+        specialization fields throughout. Double click on packages to navigate
+        to or create a class diagram. New screen divider bars. How to import
+        Gentleware projects. Changes to singleton critics, now it is a
+        predefined stereotype.</para></revdescription>
+    </revision>
+
     <revision>
       <revnumber>0.9.8, draft A</revnumber> <date>19 Mar 2002</date>
       <revdescription><para>Update taking on board some proof-reading
