@@ -35,6 +35,7 @@ import javax.swing.Action;
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -55,9 +56,16 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
+import ru.novosoft.uml.MElementEvent;
+
 public class UMLStateDiagram extends UMLDiagram {
     protected static Category cat = Category.getInstance(UMLStateDiagram.class);
 
+    /**
+     * this diagram needs to be deleted when its statemachine is deleted.
+     */
+    MStateMachine theStateMachine;
+    
     ////////////////
     // actions for toolbar
 
@@ -174,6 +182,12 @@ public class UMLStateDiagram extends UMLDiagram {
      */
     public void setup(MNamespace m, MStateMachine sm) {
         setNamespace(m);
+        
+        // add the diagram as a listener to the statemachine so
+        // that when the statemachine is removed() the diagram is deleted also.
+        UmlModelEventPump.getPump().addModelEventListener(this, sm);
+        theStateMachine = sm;
+        
         StateDiagramGraphModel gm = new StateDiagramGraphModel();
         gm.setNamespace(m);
         if (sm != null)
@@ -250,5 +264,15 @@ public class UMLStateDiagram extends UMLDiagram {
         }
         return name;
     }
+    
+  /**
+   * This diagram listens to NSUML events from its Statemachine;
+   * When the Statemachine is removed, we also want to delete this diagram too.
+   */
+  public void removed(MElementEvent e){
+      
+      UmlModelEventPump.getPump().removeModelEventListener(this,theStateMachine);
+      super.removed(e);
+  }
 
 } /* end class UMLStateDiagram */
