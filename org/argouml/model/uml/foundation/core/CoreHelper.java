@@ -309,7 +309,9 @@ public class CoreHelper {
             case 1 :
                 return (MParameter)returnParams.elementAt(0);
             case 0 :
-                cat.debug("No ReturnParameter found!");
+            	//Next line gives too many strings while debugging
+            	// obscuring other errors.
+                //cat.debug("No ReturnParameter found!");
                 return null;
             default :
                 cat.debug(
