@@ -93,7 +93,8 @@ public class WizBreakCircularComp extends Wizard {
 	    int size = offs.size();
 	    for (int i = 0; i < size; i++) {
 		Object me = /*(MModelElement)*/ offs.elementAt(i);
-		String s = GeneratorDisplay.Generate(ModelFacade.getName(me));
+		String s = GeneratorDisplay.getInstance()
+		    .generate(ModelFacade.getName(me));
 		res.addElement(s);
 	    }
 	}
@@ -110,7 +111,8 @@ public class WizBreakCircularComp extends Wizard {
 	    int size = aes.size();
 	    Object fromType = selectedCls;
 	    String fromName = 
-	        GeneratorDisplay.Generate(ModelFacade.getName(fromType));
+	        GeneratorDisplay.getInstance()
+	            .generate(ModelFacade.getName(fromType));
 	    for (Iterator iter = aes.iterator(); iter.hasNext();) {
 		Object fromEnd = /*(MAssociationEnd)*/ iter.next();
 		Object asc = ModelFacade.getAssociation(fromEnd);
@@ -120,10 +122,10 @@ public class WizBreakCircularComp extends Wizard {
 		    toEnd = /*(MAssociationEnd)*/ 
 		        new ArrayList(ModelFacade.getConnections(asc)).get(1);
 		Object toType = ModelFacade.getType(toEnd);
-		String ascName = 
-		    GeneratorDisplay.Generate(ModelFacade.getName(asc));
-		String toName = 
-		    GeneratorDisplay.Generate(ModelFacade.getName(toType));
+		String ascName = GeneratorDisplay.getInstance()
+		    .generate(ModelFacade.getName(asc));
+		String toName = GeneratorDisplay.getInstance()
+		    .generate(ModelFacade.getName(toType));
 		String s = ascName + " from " + fromName + " to " + toName;
 		res.addElement(s);
 	    }
