@@ -672,7 +672,6 @@ public class Import {
 
             // if errors occured, display the collected messages here
             if (problems != null && problems.length() > 0) {
-                System.out.println("THERE ARE PROBLEMS");
                 ProblemsDialog pd = new ProblemsDialog();
                 pd.setVisible(true);
             }
