@@ -44,6 +44,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.swingext.GridLayout2;
 import org.argouml.swingext.Orientation;
 import org.argouml.swingext.GridLayout2;
 import org.argouml.ui.ArgoDiagram;
@@ -67,6 +68,7 @@ import org.argouml.uml.ui.UMLReflectionBooleanProperty;
 import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.uml.ui.UMLSpecializationListModel;
 import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 
 import ru.novosoft.uml.MElementListener;
@@ -192,8 +194,8 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
 	    				Fig figinterface = diagram.getLayer().presentationFor(interf);
 	    				if (figclass != null && figinterface != null) {
 	    					GraphModel gm = diagram.getGraphModel();
-	    					if (gm instanceof ClassDiagramGraphModel) {
-	    						((ClassDiagramGraphModel)gm).connect(clazz, interf, MAbstraction.class);
+	    					if (gm instanceof MutableGraphModel) {
+	    						((MutableGraphModel)gm).connect(clazz, interf, MAbstraction.class);
 	    					}
 	    				} else {
 	    					CoreFactory.getFactory().buildRealization(clazz, interf);
@@ -277,14 +279,10 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
     		MClassifier clazz = (MClassifier)target;	
 	    	Vector choices = new Vector();
 	    	Vector selected = new Vector();
-	    	if (target instanceof MInterface) {
-	    		choices.addAll(CoreHelper.getHelper().getAllInterfaces());
-	    	} else {
-	    		choices.addAll(CoreHelper.getHelper().getAllClasses());
-	    	}
+	    	choices = getGeneralizationChoices();
 	    	choices.remove(clazz);
 	    	selected.addAll(CoreHelper.getHelper().getExtendedClasses(clazz));
-	    	UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-extended-classes"), true, true);
+	    	UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-generalizations"), true, true);
 	    	int returnValue = dialog.showDialog(ProjectBrowser.TheInstance);
 	    	if (returnValue == JOptionPane.OK_OPTION) {
 	    		Iterator it = dialog.getSelected().iterator();
@@ -297,8 +295,8 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
 	    				Fig figeclass = diagram.getLayer().presentationFor(eclass);
 	    				if (figclass != null && figeclass != null) {
 	    					GraphModel gm = diagram.getGraphModel();
-	    					if (gm instanceof ClassDiagramGraphModel) {
-	    						((ClassDiagramGraphModel)gm).connect(clazz, eclass, MGeneralization.class);
+	    					if (gm instanceof MutableGraphModel) {
+	    						((MutableGraphModel)gm).connect(clazz, eclass, MGeneralization.class);
 	    					}
 	    				} else {
 	    					CoreFactory.getFactory().buildGeneralization(clazz, eclass);
@@ -363,14 +361,10 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
     		MClassifier clazz = (MClassifier)target;	
 	    	Vector choices = new Vector();
 	    	Vector selected = new Vector();
-	    	if (target instanceof MInterface) {
-	    		choices.addAll(CoreHelper.getHelper().getAllInterfaces());
-	    	} else {
-	    		choices.addAll(CoreHelper.getHelper().getAllClasses());
-	    	}
+	    	choices = getSpecializationChoices();
 	    	choices.remove(clazz);
 	    	selected.addAll(clazz.getChildren());
-	    	UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-extending-classes"), true, true);
+	    	UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-specializations"), true, true);
 	    	int returnValue = dialog.showDialog(ProjectBrowser.TheInstance);
 	    	if (returnValue == JOptionPane.OK_OPTION) {
 	    		Iterator it = dialog.getSelected().iterator();
@@ -383,8 +377,8 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
 	    				Fig figeclass = diagram.getLayer().presentationFor(eclass);
 	    				if (figclass != null && figeclass != null) {
 	    					GraphModel gm = diagram.getGraphModel();
-	    					if (gm instanceof ClassDiagramGraphModel) {
-	    						((ClassDiagramGraphModel)gm).connect(eclass, clazz, MGeneralization.class);
+	    					if (gm instanceof MutableGraphModel) {
+	    						((MutableGraphModel)gm).connect(eclass, clazz, MGeneralization.class);
 	    					}
 	    				} else {
 	    					CoreFactory.getFactory().buildGeneralization(eclass, clazz);
@@ -457,7 +451,9 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
       implementsList.setVisibleRowCount(3);
       implementsScroll= new JScrollPane(implementsList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	  */
+	  
       _modifiersPanel = new JPanel(new GridLayout2(0, 2, GridLayout2.ROWCOLPREFERRED));
+
       _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.visibility.public-uc"),this,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null)));
       _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-uc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
       _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-uc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
@@ -491,7 +487,22 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
       innerList.setVisibleRowCount(3);
       innerScroll= new JScrollPane(innerList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-    }
-
+    } 
+    
+	/**
+	 * Gets all possible choices for generalizations, the classifier itself included.
+	 * This method is also called by getSpecializationsChoices since in most cases 
+	 * the two methods should return the same set. If a child of PropPanelClassifier
+	 * wants different behaviour, it should over override getSpecializationChoices.
+	 * @return Vector
+	 */
+    protected abstract Vector getGeneralizationChoices();
+	
+	/**
+	 * @see #getGeneralizationChoices()
+	 */
+	protected Vector getSpecializationChoices() {
+		return getGeneralizationChoices();
+	}
 
 } /* end class PropPanelClassifier */

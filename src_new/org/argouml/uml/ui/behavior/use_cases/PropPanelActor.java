@@ -38,12 +38,14 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Vector;
 
 import javax.swing.*;
 
@@ -199,5 +201,15 @@ public class PropPanelActor extends PropPanelClassifier {
             baseClass.equals("Namespace");
     }
 
+
+	/**
+	 * @see org.argouml.uml.ui.foundation.core.PropPanelClassifier#getGeneralizationChoices()
+	 */
+	protected Vector getGeneralizationChoices() {
+		Vector choices = new Vector();
+		choices.addAll(UseCasesHelper.getHelper().getAllActors());
+		return choices;
+	}
+	
 
 } /* end class PropActor */

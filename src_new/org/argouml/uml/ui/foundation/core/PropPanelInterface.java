@@ -31,12 +31,15 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.*;
+import java.util.Vector;
+
 import javax.swing.*;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
@@ -144,6 +147,15 @@ public class PropPanelInterface extends PropPanelClassifier {
             baseClass.equals("GeneralizableElement");
     }
 
+
+	/**
+	 * @see org.argouml.uml.ui.foundation.core.PropPanelClassifier#getGeneralizationChoices()
+	 */
+	protected Vector getGeneralizationChoices() {
+		Vector choices = new Vector();
+		choices.addAll(CoreHelper.getHelper().getAllInterfaces());
+		return choices;
+	}
 
 } /* end class PropPanelInterface */
 

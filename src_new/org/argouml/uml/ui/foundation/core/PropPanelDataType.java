@@ -41,6 +41,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.model_management.*;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
@@ -167,4 +168,13 @@ public class PropPanelDataType extends PropPanelClassifier {
             ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
+	/**
+	 * @see org.argouml.uml.ui.foundation.core.PropPanelClassifier#getGeneralizationChoices()
+	 */
+	protected Vector getGeneralizationChoices() {
+		Vector choices = new Vector();
+		choices.addAll(CoreHelper.getHelper().getAllDataTypes());
+		return choices;
+	}
+
 } /* end class PropPanelDataType */
