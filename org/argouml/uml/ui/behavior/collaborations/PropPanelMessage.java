@@ -98,7 +98,7 @@ public class PropPanelMessage extends PropPanelModelElement {
 
 	addSeperator();
 
-	addField(Argo.localize("UMLMenu", "label.activator"
+	addField(Argo.localize("UMLMenu", "label.activator"),
 		 new UMLMessageActivatorComboBox(this,
 			 new UMLMessageActivatorComboBoxModel()));
 
