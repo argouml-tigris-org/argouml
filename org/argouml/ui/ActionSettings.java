@@ -109,7 +109,7 @@ implements ArgoModuleEventListener {
             ProjectBrowser pb = ProjectBrowser.TheInstance;
 	    if (dlg == null) {
                 try {
-	            dlg = new JDialog(pb, localize("caption_settings"), true);
+	            dlg = new JDialog(pb, localize("caption.settings"), true);
 
 	            dlg.getContentPane().setLayout(new BorderLayout());
                     tabs = new JTabbedPane();
@@ -118,15 +118,15 @@ implements ArgoModuleEventListener {
 	            JPanel buttons = new JPanel();
 	            buttons.setLayout(new FlowLayout());
         
-	            buttonOk = new JButton(localize("button_ok"));
+	            buttonOk = new JButton(localize("button.ok"));
 	            buttonOk.addActionListener(this);
 	            buttons.add (buttonOk);
         
-	            buttonCancel = new JButton(localize("button_cancel"));
+	            buttonCancel = new JButton(localize("button.cancel"));
 	            buttonCancel.addActionListener(this);
 	            buttons.add (buttonCancel);
         
-	            buttonApply = new JButton(localize("button_apply"));
+	            buttonApply = new JButton(localize("button.apply"));
 	            buttonApply.addActionListener(this);
 	            buttons.add (buttonApply);
         
