@@ -492,7 +492,9 @@ public class Modeller
       }
           
       // if we want to create a UML attribute:
-      if(noAssociations || ModelFacade.isADataType(mClassifier)){
+      if(noAssociations ||
+         ModelFacade.isADataType(mClassifier) ||
+         ModelFacade.getNamespace(mClassifier) == getPackage("java.lang")){
       
             Object mAttribute = getAttribute(name, initializer, mClassifier);
 
