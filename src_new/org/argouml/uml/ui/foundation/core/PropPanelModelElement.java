@@ -32,10 +32,12 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import org.argouml.uml.ui.*;
 
 import org.tigris.gef.util.Util;
+import java.util.*;
 
 abstract public class PropPanelModelElement extends PropPanel {
 
     protected static ImageIcon _realizationIcon = Util.loadIconResource("Realization");
+    private static ResourceBundle _umlBundle = null;
 
     public PropPanelModelElement(String name,int columns) {
         super(name,columns);
@@ -68,5 +70,17 @@ abstract public class PropPanelModelElement extends PropPanel {
         }
     }
 
+    /**
+     * Loads the resource bundle for all UML related PropPanel's
+     * if not already loaded.
+     */
+    public ResourceBundle getResourceBundle() {
+        if(_umlBundle == null) {
+            _umlBundle =
+                ResourceBundle.getBundle
+                    ("org.argouml.uml.ui.UMLResourceBundle",Locale.getDefault());
+        }
+        return _umlBundle;
+    }
 
 }

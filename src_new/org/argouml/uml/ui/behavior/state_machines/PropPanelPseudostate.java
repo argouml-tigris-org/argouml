@@ -47,10 +47,10 @@ public class PropPanelPseudostate extends PropPanel {
 
     Class mclass = MPseudostate.class;
     
-    addCaption(new JLabel("Name:"),0,0,0);
+    addCaption("Name:",0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    addCaption(new JLabel("Kind:"),1,0,0);
+    addCaption("Kind:",1,0,0);
     
     JPanel kindPanel = new JPanel(new GridLayout(0,2));
     ButtonGroup kindGroup = new ButtonGroup();
@@ -88,14 +88,14 @@ public class PropPanelPseudostate extends PropPanel {
     addField(kindPanel,1,0,0);
     
 
-    addCaption(new JLabel("Namespace:"),2,0,1);
+    addCaption("Namespace:",2,0,1);
     JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
     addField(namespaceList,2,0,0);
     
-    addCaption(new JLabel("Incoming:"),0,1,0);
-    addCaption(new JLabel("Outgoing:"),1,1,1);
+    addCaption("Incoming:",0,1,0);
+    addCaption("Outgoing:",1,1,1);
     
     
   }

@@ -44,36 +44,36 @@ public class PropPanelNode extends PropPanel {
 
     Class mclass = MNode.class;
 
-    addCaption(new JLabel("Name:"),0,0,0);
+    addCaption("Name:",0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    addCaption(new JLabel("Extends:"),1,0,0);
+    addCaption("Extends:",1,0,0);
 
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
     extendsList.setBackground(getBackground());
     extendsList.setForeground(Color.blue);
     addField(extendsList,1,0,0);
 
-    addCaption(new JLabel("Modifiers:"),2,0,0);
+    addCaption("Modifiers:",2,0,0);
     JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
-    modifiersPanel.add(new UMLCheckBox("abstract",this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-    modifiersPanel.add(new UMLCheckBox("final",this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-    modifiersPanel.add(new UMLCheckBox("root",this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+    modifiersPanel.add(new UMLCheckBox(localize("abstract"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+    modifiersPanel.add(new UMLCheckBox(localize("final"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+    modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
     addField(modifiersPanel,2,0,0);
 
-    addCaption(new JLabel("Namespace:"),3,0,0);
+    addCaption("Namespace:",3,0,0);
     JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
     addField(namespaceList,3,0,0);
 
-    addCaption(new JLabel("Derived:"),4,0,1);
+    addCaption("Derived:",4,0,1);
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
     derivedList.setForeground(Color.blue);
     derivedList.setVisibleRowCount(1);
     addField(new JScrollPane(derivedList),4,0,1);
 
-    addCaption(new JLabel("Components:"),0,1,1);
+    addCaption("Components:",0,1,1);
     JList compList = new UMLList(new UMLReflectionListModel(this,"component",true,"getResidents","setResidents",null,null),true);
     compList.setForeground(Color.blue);
     compList.setVisibleRowCount(1);

@@ -51,27 +51,27 @@ public class PropPanelMessage extends PropPanel {
 
     Class mclass = MMessage.class;
 
-    addCaption(new JLabel("Name:"),0,0,0);
+    addCaption("Name:",0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    addCaption(new JLabel("Stereotype:"),1,0,0);
+    addCaption("Stereotype:",1,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
     addField(stereotypeBox,1,0,0);
 
-    addCaption(new JLabel("Namespace:"),2,0,1);
+    addCaption("Namespace:",2,0,1);
     JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
     addField(namespaceList,2,0,0);
 
 
-    addCaption(new JLabel("Predecessor:"),0,1,0);
+    addCaption("Predecessor:",0,1,0);
     addField(new JComboBox(),0,1,0);
 
-    addCaption(new JLabel("Activator:"),1,1,0);
+    addCaption("Activator:",1,1,0);
     addField(new JComboBox(),1,1,0);
 
-    addCaption(new JLabel("Action:"),2,1,1);
+    addCaption("Action:",2,1,1);
     addField(new JComboBox(),2,1,0);
 
   }

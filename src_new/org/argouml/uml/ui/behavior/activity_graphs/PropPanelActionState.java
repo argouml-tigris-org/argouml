@@ -57,31 +57,31 @@ public class PropPanelActionState extends PropPanel {
 
     Class mclass = MActionState.class;
 
-    addCaption(new JLabel("Name:"),0,0,0);
+    addCaption("Name:",0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    addCaption(new JLabel("Stereotype:"),1,0,0);
+    addCaption("Stereotype:",1,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
     addField(stereotypeBox,1,0,0);
 
-    addCaption(new JLabel("Namespace:"),2,0,0);
+    addCaption("Namespace:",2,0,0);
     JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
     addField(namespaceList,2,0,0);
 
-    addCaption(new JLabel("Modifiers:"),3,0,1);
+    addCaption("Modifiers:",3,0,1);
 
     JPanel modifiersPanel = new JPanel(new GridLayout(0,2));
-    modifiersPanel.add(new UMLCheckBox("dynamic",this,new UMLReflectionBooleanProperty("isDynamic",mclass,"isDynamic","setDynamic")));
+    modifiersPanel.add(new UMLCheckBox(localize("dynamic"),this,new UMLReflectionBooleanProperty("isDynamic",mclass,"isDynamic","setDynamic")));
     addField(modifiersPanel,3,0,0);
 
     //
     //  TODO: replace JComboBoxes with action combos
     //
-    addCaption(new JLabel("Entry"),0,1,0);
-    addCaption(new JLabel("Exit"),1,1,0);
-    addCaption(new JLabel("Transition"),2,1,1);
+    addCaption("Entry",0,1,0);
+    addCaption("Exit",1,1,0);
+    addCaption("Transition",2,1,1);
 
   }
 

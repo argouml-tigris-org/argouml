@@ -48,29 +48,29 @@ public class PropPanelTransition extends PropPanel {
 
         Class mclass = MTransition.class;
     
-        addCaption(new JLabel("Name:"),0,0,0);
+        addCaption("Name:",0,0,0);
         addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-        addCaption(new JLabel("Stereotype:"),1,0,0);
+        addCaption("Stereotype:",1,0,0);
         addField(new UMLStereotypeComboBox(this),1,0,0);
 
-        addCaption(new JLabel("State Machine:"),2,0,0);
+        addCaption("State Machine:",2,0,0);
         addLinkField(new UMLList(new UMLReflectionListModel(this,"statemachine",false,"getStateMachine",null,null,null),true),2,0,0);
         
-        addCaption(new JLabel("Namespace:"),3,0,1);
+        addCaption("Namespace:",3,0,1);
         addLinkField(new UMLList(new UMLNamespaceListModel(this),true),3,0,0);
     
-        addCaption(new JLabel("Trigger:"),0,1,0);
+        addCaption("Trigger:",0,1,0);
         UMLModelElementListModel trigModel = new UMLReflectionListModel(this,"trigger",true,"getTrigger",null,null,"deleteTrigger");
         trigModel.setUpperBound(1);
         addLinkField(new UMLList(trigModel,true),0,1,0);
         
-        addCaption(new JLabel("Guard:"),1,1,0);
+        addCaption("Guard:",1,1,0);
         UMLModelElementListModel guardModel = new UMLReflectionListModel(this,"guard",true,"getGuard",null,"addGuard","deleteGuard");
         guardModel.setUpperBound(1);
         addLinkField(new UMLList(guardModel,true),1,1,0);
 
-        addCaption(new JLabel("Effect:"),2,1,1);
+        addCaption("Effect:",2,1,1);
         UMLModelElementListModel effectModel = new UMLReflectionListModel(this,"effect",true,"getEffect",null,"addEffect","deleteEffect");
         effectModel.setUpperBound(1);
         addLinkField(new UMLList(effectModel,true),2,1,0);

@@ -48,19 +48,19 @@ public class PropPanelStimulus extends PropPanel {
 
     Class mclass = MStimulus.class;
 
-    addCaption(new JLabel("Name:"),0,0,0);
+    addCaption("Name:",0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    addCaption(new JLabel("Stereotype:"),2,0,0);
+    addCaption("Stereotype:",2,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
     addField(stereotypeBox,2,0,0);
 
-    addCaption(new JLabel("Sender:"),3,0,0);
+    addCaption("Sender:",3,0,0);
     UMLComboBoxModel senderModel = new UMLComboBoxModel(this,"isAcceptibleSender",
         "sender","getSender","setSender",false,MInstance.class,true);
     addField(new UMLComboBox(senderModel),3,0,0);
 
-    addCaption(new JLabel("Receiver:"),4,0,1);
+    addCaption("Receiver:",4,0,1);
     UMLComboBoxModel receiverModel = new UMLComboBoxModel(this,"isAcceptibleReceiver",
         "receiver","getReceiver","setReceiver",false,MInstance.class,true);
     addField(new UMLComboBox(receiverModel),4,0,1);
@@ -69,18 +69,18 @@ public class PropPanelStimulus extends PropPanel {
     //   this is really a property of the link
     //      but since the link has so few properties of its own
     //      more convienient to have it here
-    addCaption(new JLabel("Association:"),5,0,0);
+    addCaption("Association:",5,0,0);
     UMLComboBoxModel assocModel = new UMLComboBoxModel(this,"isAcceptibleAssociation",
         "association","getAssociation","setAssociation",false,MAssociation.class,true);
     addField(new UMLComboBox(assocModel),5,0,0);
 
-    addCaption(new JLabel("Namespace:"),6,0,1);
+    addCaption("Namespace:",6,0,1);
     JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
     addField(namespaceList,6,0,0);
 
-    addCaption(new JLabel("Connections:"),0,1,1);
+    addCaption("Connections:",0,1,1);
     addField(new JList(),0,1,1);
 
   }

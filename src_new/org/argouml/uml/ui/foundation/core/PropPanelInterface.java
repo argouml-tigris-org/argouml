@@ -40,15 +40,15 @@ public class PropPanelInterface extends PropPanelClassifier {
 
     Class mclass = MInterface.class;
 
-    addCaption(new JLabel("Name:"),0,0,0);
+    addCaption("Name:",0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
 
-    addCaption(new JLabel("Stereotype:"),1,0,0);
+    addCaption("Stereotype:",1,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
     addField(stereotypeBox,1,0,0);
 
-    addCaption(new JLabel("Extends:"),2,0,0);
+    addCaption("Extends:",2,0,0);
 
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
     extendsList.setBackground(getBackground());
@@ -56,22 +56,22 @@ public class PropPanelInterface extends PropPanelClassifier {
     addField(extendsList,2,0,0);
 
 
-    addCaption(new JLabel("Modifiers:"),3,0,0);
+    addCaption("Modifiers:",3,0,0);
 
     JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
-    modifiersPanel.add(new UMLCheckBox("Public",this,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null)));
-    modifiersPanel.add(new UMLCheckBox("Abstract",this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-    modifiersPanel.add(new UMLCheckBox("Final",this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-    modifiersPanel.add(new UMLCheckBox("Root",this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+    modifiersPanel.add(new UMLCheckBox(localize("Public"),this,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null)));
+    modifiersPanel.add(new UMLCheckBox(localize("Abstract"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+    modifiersPanel.add(new UMLCheckBox(localize("Final"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+    modifiersPanel.add(new UMLCheckBox(localize("Root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
     addField(modifiersPanel,3,0,0);
 
-    addCaption(new JLabel("Namespace:"),4,0,0);
+    addCaption("Namespace:",4,0,0);
     JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
     addField(namespaceList,4,0,0);
 
-    addCaption(new JLabel("Derived:"),5,0,0);
+    addCaption("Derived:",5,0,0);
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
     //derivedList.setBackground(getBackground());
     derivedList.setForeground(Color.blue);
@@ -79,7 +79,7 @@ public class PropPanelInterface extends PropPanelClassifier {
     JScrollPane derivedScroll = new JScrollPane(derivedList);
     addField(derivedScroll,5,0,0);
 
-    addCaption(new JLabel("Implementations:"),6,0,1);
+    addCaption("Implementations:",6,0,1);
     JList implementations = new UMLList(new UMLSupplierDependencyListModel(this,null,true),true);
     //derivedList.setBackground(getBackground());
     implementations.setForeground(Color.blue);
@@ -87,21 +87,21 @@ public class PropPanelInterface extends PropPanelClassifier {
     addField(new JScrollPane(implementations),6,0,1);
 
 
-    addCaption(new JLabel("Operations:"),0,1,0.3);
+    addCaption("Operations:",0,1,0.3);
     JList opsList = new UMLList(new UMLOperationsListModel(this,"feature",true),true);
     opsList.setForeground(Color.blue);
     opsList.setVisibleRowCount(1);
     JScrollPane opsScroll = new JScrollPane(opsList);
     addField(opsScroll,0,1,0.25);
 
-    addCaption(new JLabel("Attributes:"),1,1,0.3);
+    addCaption("Attributes:",1,1,0.3);
     JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
     attrList.setForeground(Color.blue);
     attrList.setVisibleRowCount(1);
     JScrollPane attrScroll= new JScrollPane(attrList);
     addField(attrScroll,1,1,0.25);
 
-    addCaption(new JLabel("Associations:"),2,1,0.4);
+    addCaption("Associations:",2,1,0.4);
     JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
     connectList.setForeground(Color.blue);
     connectList.setVisibleRowCount(1);
@@ -113,14 +113,14 @@ public class PropPanelInterface extends PropPanelClassifier {
     buttonBorder.add(buttonPanel,BorderLayout.NORTH);
     add(buttonBorder,BorderLayout.EAST);
 
-    new PropPanelButton(this,buttonPanel,_addOpIcon,"Add operation","addOperation",null);
-    new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateNamespace",null);
-    new PropPanelButton(this,buttonPanel,_generalizationIcon,"Add generalization","addGeneralization",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon,"Go back","navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete interface","removeElement",null);
-    new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
-    new PropPanelButton(this,buttonPanel,_realizationIcon,"Add realization","addRealization",null);
-    new PropPanelButton(this,buttonPanel,_interfaceIcon,"New interface","newInterface",null);
+    new PropPanelButton(this,buttonPanel,_addOpIcon,localize("Add operation"),"addOperation",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
+    new PropPanelButton(this,buttonPanel,_generalizationIcon,localize("Add generalization"),"addGeneralization",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete interface"),"removeElement",null);
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_realizationIcon,localize("Add realization"),"addRealization",null);
+    new PropPanelButton(this,buttonPanel,_interfaceIcon,localize("New interface"),"newInterface",null);
 
   }
 
