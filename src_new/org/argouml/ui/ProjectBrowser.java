@@ -326,6 +326,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     JMenuItem printItem = file.add(Actions.Print);
     setMnemonic(printItem,"Print",'P');
     setAccelerator(printItem,ctrlP);
+    JMenuItem pageSetupItem = file.add(Actions.PageSetup);
     JMenuItem saveGraphicsItem = file.add(ActionSaveGraphics.SINGLETON);
     setMnemonic(saveGraphicsItem,"SaveGraphics",'G');
     // JMenuItem savePSItem = file.add(Actions.SavePS);
@@ -504,7 +505,11 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     if (_help.getItemCount() > 0) {
         _help.insertSeparator(0);
     }
+
+    _help.add(Actions.SystemInfo);
+    _help.addSeparator();
     _help.add(Actions.AboutArgoUML);
+
     //_menuBar.setHelpMenu(help);
     _menuBar.add(_help);
 
