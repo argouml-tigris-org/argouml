@@ -531,7 +531,8 @@ Selecting <literal>Yes</literal> reloads the last saved file.
             <para>
               <literal>Level of import detail: Classifiers only / 
               Classifiers plus feature specifications /
-              Full import</literal>. The latter is the default.
+              Full import</literal>. The latter is the default.</para>
+          </listitem>
         </itemizedlist>
         
         <para>The second of the two tabs is labeled <literal>Java</literal>
