@@ -814,6 +814,11 @@ public abstract class FigNodeModelElement
      */
     protected void updateStereotypeText() {
         Object stereotype = null;
+        if (getOwner() == null) {
+                cat.warn("Owner of [" + this.toString() + "/" + this.getClass() + "] is null.");
+                cat.warn("I return...");
+                return;
+        }
         if (ModelFacade.getStereotypes(getOwner()).size() > 0) {
             stereotype = ModelFacade.getStereotypes(getOwner()).iterator().next();
         }
