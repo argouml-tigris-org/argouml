@@ -1200,6 +1200,7 @@ implements PluggableNotation, FileGenerator {
 
   public String generateAssociationEnd(MAssociationEnd ae) {
     if (!ae.isNavigable()) return "";
+    if (ae.getAssociation().isAbstract()) return "";
     //String s = INDENT + "protected ";
     // must be public or generate public navigation method!
     //String s = INDENT + "public ";
