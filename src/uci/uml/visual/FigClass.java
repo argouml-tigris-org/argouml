@@ -28,6 +28,8 @@ import java.util.*;
 
 import uci.gef.*;
 import uci.graph.*;
+import uci.uml.generate.*;
+import uci.uml.Foundation.Core.*;
 
 /** Class to display graphics for a UML Class in a diagram.
  *  <A HREF="../features.html#graph_visualization_nodes">
@@ -51,7 +53,8 @@ public class FigClass extends FigNode {
     _bigPort = new FigRect(8, 8, 92, 62, handleColor, Color.lightGray);
     _clss = new FigText(10,10,90,20, Color.blue, "Times", 10);
     _clss.setExpandOnly(true);
-    _clss.setText("Class data");
+    //_clss.setText((new GeneratorDisplay()).generateClassifierRef((Classifier)node));
+    _clss.setText("A sadfkak large line more\nthan one line of it");
     _attr = new FigText(10,30,90,20, Color.blue, "Times", 10);
     _attr.setExpandOnly(true);
     _attr.setText("Attrib data");
@@ -69,26 +72,24 @@ public class FigClass extends FigNode {
     Object onlyPort = node; //this kngl should be in the GraphModel
     bindPort(onlyPort, _bigPort);
     setBlinkPorts(true); 
+    Rectangle r = getBounds();  
+    setBounds(r.x, r.y, r.width, r.height);
   }
-
-
-//   /** Paints the FigClass to the given Graphics. */
-//   public void paint(Graphics g) {
-//     super.paint(g);
-//     if (_highlight) {
-//       g.setColor(Globals.getPrefs().getHighlightColor()); /* needs-more-work */
-//       g.drawRect(_x - 3, _y - 3, _w + 6 - 1, _h + 6 - 1);
-//       g.drawRect(_x - 2, _y - 2, _w + 4 - 1, _h + 4 - 1);
-//     }
-//   }
 
   /* Override setBounds to keep shapes looking right */
   public void setBounds(int x, int y, int w, int h) {
     if (_clss == null) return;
-    int leftSide = x+10;
-    int widthP = w-10;
-    int topSide = y+10;
-    int heightP = h-10;
+    int leftSide = x;
+    int widthP = w;
+    int topSide = y;
+    int heightP = h;
+
+    Rectangle _clss_pref = _clss.getBounds();
+    Rectangle _attr_pref = _attr.getBounds();
+    Rectangle _oper_pref = _oper.getBounds();
+
+    widthP = Math.max(widthP, Math.max(_clss_pref.width, Math.max(_attr_pref.width, _oper_pref.width)));
+    heightP = Math.max(heightP, 3*Math.max(_clss_pref.height, Math.max(_attr_pref.height, _oper_pref.height)));
 
     _clss.setBounds(leftSide, topSide, widthP, (heightP/3));
     _attr.setBounds(leftSide, topSide + (heightP/3), widthP, (heightP/3));
