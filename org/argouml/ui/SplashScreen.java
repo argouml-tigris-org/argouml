@@ -24,12 +24,16 @@
 
 package org.argouml.ui;
 
-import java.awt.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.border.*;
-
+import java.awt.BorderLayout;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.util.Vector;
+import javax.swing.JPanel;
+import javax.swing.JWindow;
+import javax.swing.border.EtchedBorder;
 import org.tigris.gef.ui.IStatusBar;
+
 // import org.tigris.gef.util.*;
 
 // JWindow? I don't want a frame or close widgets

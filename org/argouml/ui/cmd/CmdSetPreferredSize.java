@@ -25,14 +25,18 @@
 package org.argouml.ui.cmd;
 
 import java.awt.*;
-import java.util.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-
-import org.argouml.application.api.*;
-import org.argouml.uml.diagram.static_structure.ui.FigPackage;
+import java.util.Vector;
+import org.argouml.application.api.Argo;
 import org.argouml.uml.diagram.state.ui.FigCompositeState;
+import org.argouml.uml.diagram.static_structure.ui.FigPackage;
+
+
+import org.tigris.gef.base.Cmd;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.SelectionManager;
+import org.tigris.gef.presentation.Fig;
+
 
 /** A command to set selected figs to their preferred size or minimum size.
  * 

@@ -24,12 +24,16 @@
 
 package org.argouml.ui;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
+//import java.awt.*;
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JMenu;
+//import javax.swing.border.*;
+//import javax.swing.event.*;
+//import org.argouml.uml.ui.*;
 
-import org.argouml.uml.ui.*;
 
 /**
  * An extension of the standard swing JMenu class which provides

@@ -24,9 +24,9 @@
 
 package org.argouml.ui;
 
+import java.awt.event.ActionEvent;
+import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.UMLAction;
-import org.argouml.application.api.*;
-import java.awt.event.*;
 
 /** A class to keep track of the users desire to have his diagram nodes
  *  automatically resized.

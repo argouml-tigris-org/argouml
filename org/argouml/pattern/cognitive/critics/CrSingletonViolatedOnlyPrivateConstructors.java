@@ -26,14 +26,16 @@
 
 package org.argouml.pattern.cognitive.critics;
 
-import java.util.*;
+import java.util.Iterator;
 
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
-import org.argouml.uml.cognitive.critics.*;
-
+import org.argouml.cognitive.Designer;
+import org.argouml.uml.cognitive.critics.CrUML;
+import org.argouml.cognitive.ToDoItem;
 // Use Model through ModelFacade
 import org.argouml.model.ModelFacade;
+
+
+// Use Model through ModelFacade
 
 /**
  * A critic to detect whether a class violates the conditions required for
