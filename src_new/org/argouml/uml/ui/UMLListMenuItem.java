@@ -37,6 +37,11 @@ import java.awt.*;
  *   This class extends JMenuItem to invoke a method upon selection.
  *   The method must have the form of "void method(int index);".
  *   @author Curt Arnold
+ *
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+ *             replaced by nothing?,
+ *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ *             that used reflection a lot.
  */
 public class UMLListMenuItem extends JMenuItem implements ActionListener {
     protected static Category cat = Category.getInstance(UMLListMenuItem.class);

@@ -29,6 +29,10 @@ import org.argouml.ui.TabText;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
 
+/**
+ *  @deprecated as of argouml 0.13.5 (10-may-2003),
+ *              no replacement as this class was never used.
+ */
 public class TabUMLDisplay extends TabText {
     protected static Category cat = Category.getInstance(TabUMLDisplay.class);
     ////////////////////////////////////////////////////////////////

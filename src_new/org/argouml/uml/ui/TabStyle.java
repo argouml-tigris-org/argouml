@@ -71,6 +71,9 @@ import org.argouml.uml.diagram.use_case.ui.FigUseCase;
 import org.argouml.uml.diagram.use_case.ui.StylePanelFigUseCase;
 import org.tigris.gef.presentation.Fig;
 
+/**
+ * Provides support for changing the appearance of a diagram element.
+ */
 public class TabStyle
     extends TabSpawnable
     implements TabFigTarget, PropertyChangeListener, DelayedVChangeListener {

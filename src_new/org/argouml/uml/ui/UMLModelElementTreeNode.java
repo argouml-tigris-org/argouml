@@ -30,8 +30,13 @@ import java.util.*;
 
 /**
  *  This class implements a tree node that 
- *  displays one model element
+ *  displays one model element, but it is not currently used.
  *  @author Curt Arnold
+ *
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+ *             replaced by nothing,
+ *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ *             that used reflection a lot.
  */
 
 public class UMLModelElementTreeNode implements TreeNode {

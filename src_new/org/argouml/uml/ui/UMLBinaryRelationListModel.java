@@ -21,6 +21,11 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 /**
  * The base class for models behind scrollpanes for binary relations like the
  * association pane on PropPanelUsecase
+ *
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+ *             replaced by {@link org.argouml.uml.ui.foundation.core.PropPanelClassifier#getAssociationEndScroll()},
+ *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ *             that used reflection a lot.
  */
 abstract public class UMLBinaryRelationListModel
     extends UMLModelElementListModel {

@@ -41,6 +41,10 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
+/**
+ * Details panel tabbed panel for displaying a source code representation of
+ * a UML model element in a particular Notation.
+ */
 public class TabSrc
     extends TabText
     implements ArgoNotationEventListener, NotationContext, ItemListener {

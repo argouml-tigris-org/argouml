@@ -32,30 +32,33 @@ import org.argouml.swingext.LabelledLayout;
 import org.argouml.util.ConfigLoader;
 import org.tigris.gef.presentation.Fig;
 
-/** This the tab in the details pane for documentation.
- * It has been tested for saving and does work.
- * questions regarding where the data is stored i.e. author etc.
+/**
+ * This the tab in the details pane for documentation.
+ *
+ * <p>This prop panel now uses the new (0.13.*) event implementation.
+ *
+ * <p>questions regarding where the data is stored i.e. author etc.
  * edit>settings... and setting 'global' author does not affect the author
  * field in the documentation tab
- * Enabling output from the documentation fields when generating code as embedded
+ * <p>Enabling output from the documentation fields when generating code as embedded
  * in javadocs and for html/ diagram creation is considered important by users
  *
- * When importing sources, already saved javadoc statements
+ * <p>When importing sources, already saved javadoc statements
  * are not automatically added to the documenation Jtext window.
  * When Adding notes to classes the notes are not included in
  * the documentation text window.
- * Since: field is not validated for real date. change
+ * <p>Since: field is not validated for real date. change
  * to DateField?
  *
- * Note all fields in the TabDocumentation are
+ * <p>Note all fields in the TabDocumentation are
  * added automatically to the tagged value tab
  * view.
  *
- * refactored by: raphael-langerhorst@gmx.at; 5th April 03
+ * <p>refactored by: raphael-langerhorst@gmx.at; 5th April 03
  *      changes: uses LabelledLayout instead of GridBagLayout
  *              uses the new event pump introduced late 2002 by Jaap
  *
- * UMLModelElementTaggedValueDocument is used to access the tagged values 
+ * <p>UMLModelElementTaggedValueDocument is used to access the tagged values 
  * of an MModelElement
  */
 public class TabDocumentation extends PropPanel {

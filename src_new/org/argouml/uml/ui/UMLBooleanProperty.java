@@ -33,6 +33,11 @@ import ru.novosoft.uml.*;
  * with the UMLRadioButton and UMLCheckBox user interface components.
  *
  *  @author Curt Arnold
+ *
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+ *             replaced by nothing?,
+ *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ *             that used reflection a lot.
  */
 abstract public class UMLBooleanProperty  {
     protected static Category cat = 

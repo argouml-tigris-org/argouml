@@ -30,6 +30,12 @@ import ru.novosoft.uml.behavior.common_behavior.MObject;
 import java.util.*;
 import java.awt.*;
 
+/**
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+ *             replaced by ?,
+ *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ *             that used reflection a lot.
+ */
 public class UMLStimulusListModel extends UMLModelElementListModel  {
 
     private final static String _nullLabel = "(null)";

@@ -53,6 +53,10 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.model_management.MPackage;
 
+/**
+ * Provides support for setting a "src_path" tagged value used in Java 
+ * round trip engineering.
+ */
 public class SourcePathDialog extends JDialog implements ActionListener {
 
   ////////////////////////////////////////////////////////////////
@@ -159,7 +163,10 @@ public class SourcePathDialog extends JDialog implements ActionListener {
   }
 } /* end class SourcePathDialog */
 
-
+/**
+ * Provides support for setting a "src_path" tagged value used in Java 
+ * round trip engineering.
+ */
 class SrcPathTableModel extends DefaultTableModel {
 
   /** Creates a new instance of SrcPathTableModel */

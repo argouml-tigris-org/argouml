@@ -62,6 +62,11 @@ import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
  * <p>This list should support the full set of "Open", "Add", "Delete"</p>
  *
  * <p>Where there is no entry, the default text is "none".</p>
+ *
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+ *             replaced by {@link org.argouml.uml.ui.foundation.core.UMLGeneralizableElementGeneralizationListModel},
+ *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ *             that used reflection a lot.
  */
 
 public class UMLGeneralizationListModel extends UMLBinaryRelationListModel  {
