@@ -32,20 +32,22 @@ import java.awt.event.MouseListener;
 import javax.swing.JList;
 import javax.swing.JPopupMenu;
 import javax.swing.ListCellRenderer;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargettableModelView;
 
 /**
+ * This class is derived from a Swing JList, and adds:<p>
+ * Mouselistener for the implementation of a popup menu.<p>
+ * TargettableModelView: ???
+ * 
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public abstract class UMLList2
     extends JList
-    implements ListSelectionListener, TargettableModelView, MouseListener {
+    implements TargettableModelView, MouseListener {
 
     /**
      * Constructor for UMLList2.
@@ -56,7 +58,6 @@ public abstract class UMLList2
     public UMLList2(UMLModelElementListModel2 dataModel, boolean showIcon) {
         super(dataModel);
         // setDoubleBuffered(true);
-        getSelectionModel().addListSelectionListener(this);
         setCellRenderer(new UMLListCellRenderer2(showIcon));
         setFont(LookAndFeelMgr.getInstance().getSmallFont());
         addMouseListener(this);
@@ -82,30 +83,11 @@ public abstract class UMLList2
             ListCellRenderer renderer) {
         super(dataModel);
         setDoubleBuffered(true);
-        getSelectionModel().addListSelectionListener(this);
         if (renderer != null)
             setCellRenderer(renderer);
         setFont(LookAndFeelMgr.getInstance().getSmallFont());
         addMouseListener(this);
     }
-
-    /**
-     * @see javax.swing.event.ListSelectionListener#valueChanged(
-     *          javax.swing.event.ListSelectionEvent)
-     */
-    public void valueChanged(ListSelectionEvent e) {
-        if (e.getFirstIndex() >= 0) {
-            doIt(e);
-        }
-    }
-
-    /**
-     * The 'body' of the valueChanged method. Is only called if there is
-     * actually a selection made.
-     *
-     * @param e the event
-     */
-    protected abstract void doIt(ListSelectionEvent e);
 
     /**
      * Getter for the target. First approach to get rid of the container.

@@ -22,12 +22,12 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-//$Id$
 package org.argouml.uml.ui;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JList;
 import javax.swing.SwingUtilities;
 
 import org.argouml.ui.targetmanager.TargetManager;
@@ -35,19 +35,18 @@ import org.argouml.ui.targetmanager.TargetManager;
 /**
  * A mouselistener that implements behaviour 
  * to navigate to a selected modelelement
- * on double click of the left mousebutton.
+ * on double click of the left mousebutton
+ * for a JList.
  * 
  * @since Juli 9, 2004
  * @author jaap.branderhorst@xs4all.nl
  */
 public class UMLLinkMouseListener implements MouseListener {
     
-    private Object selectedValue = null;
-    
     /**
      * The graphical object for which this mouselistener is registrated.
      */
-    private Object owner = null;
+    private JList owner = null;
     
     /**
      * The total amount of mouseclicks the user has to do, 
@@ -61,7 +60,7 @@ public class UMLLinkMouseListener implements MouseListener {
      * @param theOwner the graphical object for which 
      *                 this mouselistener is registered
      */
-    public UMLLinkMouseListener(Object theOwner) {
+    public UMLLinkMouseListener(JList theOwner) {
         this(theOwner, 2);
     }
     
@@ -73,7 +72,7 @@ public class UMLLinkMouseListener implements MouseListener {
      * @param numberOfmouseClicks the total amount of mouseclicks the user 
      *                            has to do, to go to the selected element
      */
-    public UMLLinkMouseListener(Object theOwner, int numberOfmouseClicks) {
+    private UMLLinkMouseListener(JList theOwner, int numberOfmouseClicks) {
         owner = theOwner;
         numberOfMouseClicks = numberOfmouseClicks;
     }
@@ -86,7 +85,7 @@ public class UMLLinkMouseListener implements MouseListener {
         if (e.getClickCount() >= numberOfMouseClicks
                 && SwingUtilities.isLeftMouseButton(e)) {
             
-            Object o = getSelectedValue();
+            Object o = owner.getSelectedValue();
             if (org.argouml.model.ModelFacade.isAModelElement(o)) {
                 TargetManager.getInstance().setTarget(o);
             }
@@ -119,16 +118,5 @@ public class UMLLinkMouseListener implements MouseListener {
      */
     public void mouseReleased(MouseEvent e) {
     }
-    /**
-     * @return Returns the selectedValue.
-     */
-    public Object getSelectedValue() {
-        return selectedValue;
-    }
-    /**
-     * @param v The selectedValue to set.
-     */
-    public void setSelectedValue(Object v) {
-        selectedValue = v;
-    }
+
 }

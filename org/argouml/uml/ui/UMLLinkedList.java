@@ -28,18 +28,20 @@ package org.argouml.uml.ui;
 import java.awt.Color;
 
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 /**
- * An UMLList that implements 'jump' behaviour. As soon as the user
+ * An UMLList2 that implements 'jump' behaviour. As soon as the user
  * doubleclicks on an element in the list, that element is selected in
- * argouml.
+ * argouml. <p>
+ * 
+ * Also, it allows showing an icon with the text items in the list.<p>
+ * 
+ * And, in case the listed item has no name, a default name is generated. 
  *
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLLinkedList extends UMLList2 implements ListSelectionListener {
+public class UMLLinkedList extends UMLList2 {
     
     private UMLLinkMouseListener mouseListener;
 
@@ -57,7 +59,6 @@ public class UMLLinkedList extends UMLList2 implements ListSelectionListener {
         setSelectionForeground(Color.blue.darker());
         mouseListener = new UMLLinkMouseListener(this);
         addMouseListener(mouseListener);
-        addListSelectionListener(this);
     }
     
     /**
@@ -69,18 +70,4 @@ public class UMLLinkedList extends UMLList2 implements ListSelectionListener {
         this(dataModel, true);
     }
 
-    /**
-     * @see org.argouml.uml.ui.UMLList2#doIt(
-     *          javax.swing.event.ListSelectionEvent)
-     */
-    protected void doIt(ListSelectionEvent e) {
-    }
-    
-    /**
-     * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
-     */
-    public void valueChanged(ListSelectionEvent e) {       
-        super.valueChanged(e);
-        mouseListener.setSelectedValue(getSelectedValue());
-    }
 }
