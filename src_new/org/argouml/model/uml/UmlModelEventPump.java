@@ -81,12 +81,13 @@ public final class UmlModelEventPump implements MElementListener {
     
     
     /**
-     * Makes the key for the hashmap where the listeners are stored.
+     * Makes the key for the hashmap where the listeners are stored. For test
+     * purposes this method has a 'default' visibility
      * @param modelClass
      * @param eventName
      * @return String
      */
-    private String getKey(Class modelClass, String eventName) {
+    String getKey(Class modelClass, String eventName) {
         String className = modelClass.getName();
         if (className.endsWith("Impl")) {
             className = className.substring(0, className.lastIndexOf("Impl"));
@@ -185,7 +186,7 @@ public final class UmlModelEventPump implements MElementListener {
      * @param eventName
      * @return String
      */
-    private String getKey(MBase modelelement, String eventName) {
+    String getKey(MBase modelelement, String eventName) {
         return modelelement.hashCode() + eventName;
     }
     
