@@ -27,6 +27,7 @@ package org.argouml.xml.argo;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.HashMap;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -34,10 +35,13 @@ import org.apache.log4j.Logger;
 import org.argouml.cognitive.ProjectMemberTodoList;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.xml.SAXParserBase;
 import org.argouml.xml.XMLElement;
+import org.argouml.xml.xmi.XMIReader;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -59,17 +63,17 @@ public class ArgoParser extends SAXParserBase {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    private Project proj = null;
+    private Project project;
 
     private ArgoTokenTable tokens = new ArgoTokenTable();
 
     private boolean addMembers = true;
 
-    private URL url = null;
+    private URL url;
 
     private boolean lastLoadStatus = true;
 
-    private String lastLoadMessage = null;
+    private String lastLoadMessage;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -93,6 +97,9 @@ public class ArgoParser extends SAXParserBase {
      */
     public synchronized void readProject(URL theUrl) throws IOException,
             ParserConfigurationException, SAXException {
+        if (theUrl == null) {
+            throw new IllegalArgumentException("No URL has been supplied");
+        }
         readProject(theUrl, true);
     }
 
@@ -105,8 +112,7 @@ public class ArgoParser extends SAXParserBase {
      */
     public synchronized void readProject(URL theUrl, boolean addTheMembers)
         throws IOException, ParserConfigurationException, SAXException {
-        this.url = theUrl;
-        readProject(this.url.openStream(), addTheMembers);
+        readProject(url, addTheMembers);
     }
 
     /**
@@ -123,8 +129,7 @@ public class ArgoParser extends SAXParserBase {
      * @throws ParserConfigurationException in case of a parser problem
      * @throws SAXException when parsing xml
      */
-    public synchronized void readProject(InputStream is, 
-            boolean addTheMembers)
+    private void readProject(InputStream is, boolean addTheMembers)
         throws IOException, SAXException, ParserConfigurationException {
 
         lastLoadStatus = true;
@@ -132,24 +137,17 @@ public class ArgoParser extends SAXParserBase {
 
         this.addMembers = addTheMembers;
 
-        if ((url == null) && addTheMembers) {
-            LOG.info("URL not set! Won't be able to add members! Aborting...");
-            lastLoadMessage = "URL not set!";
-            return;
-        }
-
         try {
             LOG.info("=======================================");
             LOG.info("== READING PROJECT " + url);
-            proj = new Project(url);
+            project = new Project(url);
             parse(is);
-        } catch (SAXException saxEx) {
+        } catch (SAXException e) {
             lastLoadStatus = false;
             LOG.error("Exception reading project================");
             LOG.error(is.toString());
-            lastLoadMessage = saxEx.toString();
-            throw saxEx;
-
+            lastLoadMessage = e.toString();
+            throw e;
         } catch (IOException e) {
             lastLoadStatus = false;
             LOG.error("Exception reading project================");
@@ -166,25 +164,26 @@ public class ArgoParser extends SAXParserBase {
     }
 
     /**
+     * Get the project to which the URL is to be parsed.
      * @return the project
      */
     public Project getProject() {
-        Project returnValue = proj;
-        return proj;
+        return project;
     }
 
     /**
+     * Set the project to which the URL is to be parsed.
      * @param newProj the project
      */
     public void setProject(Project newProj) {
-        proj = newProj;
+        project = newProj;
     }
 
     /**
      * @see org.argouml.xml.SAXParserBase#handleStartElement(org.argouml.xml.XMLElement)
      */
     public void handleStartElement(XMLElement e) throws SAXException {
-        if (dbg) {
+        if (DBG) {
             LOG.debug("NOTE: ArgoParser handleStartTag:" + e.getName());
         }
         switch (tokens.toToken(e.getName(), true)) {
@@ -195,7 +194,7 @@ public class ArgoParser extends SAXParserBase {
             handleDocumentation(e);
             break;
         default:
-            if (dbg) {
+            if (DBG) {
                 LOG.warn("WARNING: unknown tag:" + e.getName());
             }
             break;
@@ -206,7 +205,7 @@ public class ArgoParser extends SAXParserBase {
      * @see org.argouml.xml.SAXParserBase#handleEndElement(org.argouml.xml.XMLElement)
      */
     public void handleEndElement(XMLElement e) throws SAXException {
-        if (dbg) {
+        if (DBG) {
             LOG.debug("NOTE: ArgoParser handleEndTag:" + e.getName() + ".");
         }
         switch (tokens.toToken(e.getName(), false)) {
@@ -229,12 +228,15 @@ public class ArgoParser extends SAXParserBase {
             handleHistoryfile(e);
             break;
         default:
-            if (dbg) {
+            if (DBG) {
                 LOG.warn("WARNING: unknown end tag:" + e.getName());
             }
         }
     }
     
+    /**
+     * @see org.argouml.xml.SAXParserBase#isElementOfInterest(java.util.String)
+     */
     protected boolean isElementOfInterest(String name) {
         return tokens.contains(name);
     }
@@ -258,7 +260,7 @@ public class ArgoParser extends SAXParserBase {
      */
     protected void handleAuthorname(XMLElement e) {
         String authorname = e.getText().trim();
-        proj.setAuthorname(authorname);
+        project.setAuthorname(authorname);
     }
 
     /**
@@ -266,7 +268,7 @@ public class ArgoParser extends SAXParserBase {
      */
     protected void handleVersion(XMLElement e) {
         String version = e.getText().trim();
-        proj.setVersion(version);
+        project.setVersion(version);
     }
 
     /**
@@ -274,7 +276,7 @@ public class ArgoParser extends SAXParserBase {
      */
     protected void handleDescription(XMLElement e) {
         String description = e.getText().trim();
-        proj.setDescription(description);
+        project.setDescription(description);
     }
 
     /**
@@ -282,17 +284,16 @@ public class ArgoParser extends SAXParserBase {
      */
     protected void handleSearchpath(XMLElement e) {
         String searchpath = e.getAttribute("href").trim();
-        proj.addSearchPath(searchpath);
+        project.addSearchPath(searchpath);
     }
 
     /**
      * @param e the element
+     * @throws SAXException on any error parsing the member XML.
      */
     protected void handleMember(XMLElement e) throws SAXException {
         if (addMembers) {
-            String name = e.getAttribute("name").trim();
-            String type = e.getAttribute("type").trim();
-            createProjectMember(name, type);
+            loadProjectMember(e);
         }
     }
 
@@ -303,22 +304,27 @@ public class ArgoParser extends SAXParserBase {
      * @param type The type of the member. 
      *         One of <tt>"pgml"</tt>, <tt>"xmi"</tt> or <tt>"todo"</tt>.
      */
-    private void createProjectMember(String name, String type) throws SAXException {
-        ProjectMember pm = proj.findMemberByName(name);
+    private void createProjectMember(String name, String type)
+        throws SAXException {
+        
+        ProjectMember pm = project.findMemberByName(name);
         if (pm != null) {
             return;
         }
         if ("pgml".equals(type)) {
-            pm = new ProjectMemberDiagram(name, proj);
+            pm = new ProjectMemberDiagram(name, project);
         } else if ("xmi".equals(type)) {
-            pm = new ProjectMemberModel(name, proj);
+            pm = new ProjectMemberModel(name, project);
         } else if ("todo".equals(type)) {
-            pm = new ProjectMemberTodoList(name, proj);
+            pm = new ProjectMemberTodoList(name, project);
         } else {
             throw new IllegalArgumentException("Unknown member type " + type);
         }
-        proj.addMember(pm);
+    
+        project.addMember(pm);
     }
+
+    
     
     /**
      * @param e the element
@@ -327,7 +333,7 @@ public class ArgoParser extends SAXParserBase {
         if (e.getAttribute("name") == null)
             return;
         String historyfile = e.getAttribute("name").trim();
-        proj.setHistoryFile(historyfile);
+        project.setHistoryFile(historyfile);
     }
 
     /**
@@ -364,4 +370,137 @@ public class ArgoParser extends SAXParserBase {
         lastLoadMessage = msg;
     }
 
+    /**
+     * @param project the project to load into
+     * @param theUrl the URL to load from
+     * @throws OpenException if opening the URL fails
+     */
+    private void loadProjectMember(XMLElement element) 
+        throws SAXException {
+
+        String name = element.getAttribute("name").trim();
+        String type = element.getAttribute("type").trim();
+        
+        if (type.equals("xmi")) {
+            String filename = url.toString();
+            filename = filename.substring(0, filename.length() - 4) + "xmi";
+            try {
+                loadModel(new URL(filename));
+            } catch (IOException e) {
+                throw new SAXException(e);
+            }
+        }
+//            String xslt = 
+//                "<xsl:stylesheet version='1.0' " +
+//                        "xmlns:xsl='http://www.w3.org/1999/XSL/Transform' " +
+//                        "xmlns:e4='http://csc/e4/Envelope'> " +
+//                    "<xsl:output method='xml' indent='yes'/> " +
+//                    "<xsl:template match='argo/member'> " +
+//                        "<xsl:copy> " +
+//                            "<xsl:apply-templates select='@*|node()' /> " +
+//                        "</xsl:copy> " +
+//                    "</xsl:template> " +
+//                "</xsl:stylesheet> ";
+//            Source xsltSource = new StreamSource(new StringReader(xslt));
+//            Source inputSource = new StreamSource(theUrl.openStream());
+//
+//            Transformer transformer = 
+//                TransformerFactory.newInstance().newTransformer(xsltSource);
+//            
+//            PipedReader pipedReader = new PipedReader();
+//            Writer pipedWriter = new PipedWriter(pipedReader);
+//            StreamResult result = new StreamResult(pipedWriter);
+//            
+//            transformer.transform(inputSource, result);
+//            
+//            InputSource is = new InputSource(pipedReader);
+//            loadModel(project, is);
+            
+    }
+
+    
+    /**
+     * Loads a model (XMI only) from a .zargo file. BE ADVISED this
+     * method has a side effect. It sets _UUIDREFS to the model.
+     * 
+     * If there is a problem with the xmi file, an error is set in the
+     * ArgoParser.SINGLETON.getLastLoadStatus() field. This needs to be
+     * examined by the calling function.
+     *
+     * @param theUrl The url with the .zargo file
+     * @param project the project to load into
+     * @return The model loaded
+     * @throws IOException Thrown if the model or the .zargo file is corrupted.
+     * @throws SAXException If the parser template is syntactically incorrect. 
+     */
+    private Object loadModel(URL theUrl)
+        throws SAXException, IOException {
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Loading Model from " + theUrl);
+        }
+        InputStream is = theUrl.openStream();
+        return loadModel(new InputSource(is));
+    }
+
+    /**
+     * Loads a model (XMI only) from an input source. BE ADVISED this
+     * method has a side effect. It sets _UUIDREFS to the model.
+     * 
+     * If there is a problem with the xmi file, an error is set in the
+     * getLastLoadStatus() field. This needs to be examined by the
+     * calling function.
+     *
+     * @return The model loaded
+     * @throws SAXException If the parser template is syntactically incorrect. 
+     * @param project the project to load into
+     * @param source the source to load from
+     */
+    private Object loadModel(InputSource source)
+        throws SAXException {
+        
+        Object mmodel = null;
+
+        // 2002-07-18
+        // Jaap Branderhorst
+        // changed the loading of the projectfiles to solve hanging 
+        // of argouml if a project is corrupted. Issue 913
+        // Created xmireader with method getErrors to check if parsing went well
+        XMIReader xmiReader = null;
+        try {
+            xmiReader = new XMIReader();
+            source.setEncoding("UTF-8");
+            mmodel = xmiReader.parseToModel(source);        
+        } catch (SAXException e) { // duh, this must be caught and handled
+            LOG.error("SAXException caught", e);
+            throw e;
+        } catch (ParserConfigurationException e) { 
+            LOG.error("ParserConfigurationException caught", e);
+            throw new SAXException(e);
+        } catch (IOException e) {
+            LOG.error("IOException caught", e);
+            throw new SAXException(e);
+        }
+
+        if (xmiReader.getErrors()) {
+            ArgoParser.SINGLETON.setLastLoadStatus(false);
+            ArgoParser.SINGLETON.setLastLoadMessage(
+                    "XMI file could not be parsed.");
+            LOG.error("XMI file could not be parsed.");
+            throw new SAXException(
+                    "XMI file could not be parsed.");
+        }
+
+        // This should probably be inside xmiReader.parse
+        // but there is another place in this source
+        // where XMIReader is used, but it appears to be
+        // the NSUML XMIReader.  When Argo XMIReader is used
+        // consistently, it can be responsible for loading
+        // the listener.  Until then, do it here.
+        UmlHelper.getHelper().addListenersToModel(mmodel);
+
+        project.addMember(mmodel);
+
+        project.setUUIDRefs(new HashMap(xmiReader.getXMIUUIDToObjectMap()));
+        return mmodel;
+    }
 } /* end class ArgoParser */
