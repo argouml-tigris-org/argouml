@@ -54,7 +54,7 @@ public class AboutBox extends JDialog {
 
     JTabbedPane _tabs = new JTabbedPane();
     /** Insets in pixels  */
-    private int i = 3;
+    private int insetPx = 3;
 
     /** Shared splash panel */
     SplashPanel _splashPanel = null;
@@ -88,7 +88,7 @@ public class AboutBox extends JDialog {
 	a.setEditable(false);
 	a.setLineWrap(true);
 	a.setWrapStyleWord(true);
-	a.setMargin(new Insets(i, i, i, i));
+	a.setMargin(new Insets(insetPx, insetPx, insetPx, insetPx));
 	a.setText(text);
 	a.setCaretPosition(0);
 	return new JScrollPane(a);
