@@ -66,8 +66,57 @@ class TokenSep {
 	}
 }
 
+class QuotedStringSeparator extends CustomSeparator {
+	private final char _escChr;
+	private final char _stopChr;
+	private boolean _esced;
+	private int _tokLen;
+
+	public QuotedStringSeparator(char q, char esc) {
+		super(q);
+
+		_esced = false;
+		_escChr = esc;
+		_stopChr = q;
+		_tokLen = 0;
+	}
+
+	public void reset() {
+		super.reset();
+		_tokLen = 0;
+	}
+
+	public int tokenLength() {
+		return super.tokenLength() + _tokLen;
+	}
+
+	public boolean hasFreePart() {
+		return true;
+	}
+
+	public boolean endChar(char c) {
+		_tokLen++;
+
+		if (_esced) {
+			_esced = false;
+			return false;
+		}
+		if (c == _escChr) {
+			_esced = true;
+			return false;
+		}
+		return c == _stopChr;
+	}
+}
+
 public class MyTokenizer implements Enumeration
 {
+	public final static CustomSeparator SINGLE_QUOTED_SEPARATOR =
+		new QuotedStringSeparator('\'', '\\');
+
+	public final static CustomSeparator DOUBLE_QUOTED_SEPARATOR =
+		new QuotedStringSeparator('\"', '\\');
+
 	private int _sIdx;
 	private final int _eIdx;
 	private int _tokIdx;
@@ -75,6 +124,7 @@ public class MyTokenizer implements Enumeration
 	private final TokenSep _delims;
 	private String _savedToken;
 	private int _savedIdx;
+	private Vector _customSeps;
 
 	public MyTokenizer(String string, String delim) {
 		_source = string;
@@ -83,6 +133,28 @@ public class MyTokenizer implements Enumeration
 		_tokIdx = 0;
 		_eIdx = string.length();
 		_savedToken = null;
+		_customSeps = null;
+	}
+
+	public MyTokenizer(String string, String delim, CustomSeparator sep) {
+		_source = string;
+		_delims = parseDelimString(delim);
+		_sIdx = 0;
+		_tokIdx = 0;
+		_eIdx = string.length();
+		_savedToken = null;
+		_customSeps = new Vector();
+		_customSeps.add(sep);
+	}
+
+	public MyTokenizer(String string, String delim, Collection seps) {
+		_source = string;
+		_delims = parseDelimString(delim);
+		_sIdx = 0;
+		_tokIdx = 0;
+		_eIdx = string.length();
+		_savedToken = null;
+		_customSeps = new Vector(seps);
 	}
 
 	public boolean hasMoreTokens() {
@@ -90,9 +162,10 @@ public class MyTokenizer implements Enumeration
 	}
 
 	public String nextToken() {
+		CustomSeparator csep;
 		TokenSep sep;
 		String s = null;
-		int i;
+		int i, j;
 
 		if (_savedToken != null) {
 			s = _savedToken;
@@ -107,8 +180,38 @@ public class MyTokenizer implements Enumeration
 		for (sep = _delims; sep != null; sep = sep.next)
 			sep.reset();
 
+		if (_customSeps != null) {
+			for (i = 0; i < _customSeps.size(); i++)
+				((CustomSeparator)_customSeps.get(i)).reset();
+		}
+
 		for (i = _sIdx; i < _eIdx; i++) {
 			char c = _source.charAt(i);
+
+			if (_customSeps != null) {
+				for (j = 0; j < _customSeps.size(); j++)
+					if (((CustomSeparator)_customSeps.get(j)).addChar(c))
+						break;
+				if (j < _customSeps.size()) {
+					csep = (CustomSeparator)_customSeps.get(j);
+					if (csep.hasFreePart()) {
+						for (i++; i < _eIdx; i++)
+							if (csep.endChar(_source.charAt(i)))
+								break;
+					}
+
+					if (i - _sIdx + 1 > csep.tokenLength()) {
+						s = _source.substring(_sIdx, i - csep.tokenLength() + 1);
+						_savedIdx = i - csep.tokenLength() + 1;
+						_savedToken = _source.substring(_savedIdx, Math.min(i+1, _source.length()));
+					} else {
+						s = _source.substring(_sIdx, Math.min(i+1, _source.length()));
+					}
+					_tokIdx = _sIdx;
+					_sIdx = i + 1;
+					break;
+				}
+			}
 
 			for (sep = _delims; sep != null; sep = sep.next)
 				if (sep.addChar(c))
