@@ -53,11 +53,12 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
   //private static final String BUNDLE = "Cognitive";
 
   //static final String high = Argo.localize(BUNDLE, "level.high");
-  
+
   ////////////////////////////////////////////////////////////////
   // instance variables
   private TableModelClassChecks _classTableModel = new TableModelClassChecks();
-  
+  private boolean isPathInModel = false;
+
   protected JCheckBox _compileCheckBox;
   protected JLabel _classesLabel;
   protected JTable _classTable;
@@ -73,11 +74,17 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
   ////////////////////////////////////////////////////////////////
   // constructors
 
+
   public ClassGenerationDialog(Vector nodes) {
+	  this(nodes,false);
+  }
+
+  public ClassGenerationDialog(Vector nodes, boolean isPathInModel) {
     super(ProjectBrowser.TheInstance, "Generate Classes");
-    
+    this.isPathInModel = isPathInModel;
+
     GridBagConstraints gridBagConstraints;
-    
+
     _classesLabel = new JLabel();
     _outputDirectoryLabel = new JLabel();
     _browseButton = new JButton();
@@ -114,7 +121,8 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
     gridBagConstraints.gridy = 3;
     gridBagConstraints.insets = new Insets(5, 5, 5, 5);
     gridBagConstraints.anchor = GridBagConstraints.EAST;
-    getContentPane().add(_browseButton, gridBagConstraints);
+    if (!isPathInModel)
+      getContentPane().add(_browseButton, gridBagConstraints);
 
     _cancelButton.setText("Cancel");
     gridBagConstraints = new GridBagConstraints();
@@ -138,10 +146,12 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
     gridBagConstraints.gridwidth = 2;
     gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
     gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-    _outputDirectoryComboBox.setEditable(true);
-    getContentPane().add(_outputDirectoryComboBox, gridBagConstraints);
+    if (!isPathInModel) {
+      _outputDirectoryComboBox.setEditable(true);
+      getContentPane().add(_outputDirectoryComboBox, gridBagConstraints);
+    }
 
-    ArrayList ll = Notation.getAvailableNotations(); 
+    ArrayList ll = Notation.getAvailableNotations();
     _languages = new ArrayList();
     for (int l = 0; l < ll.size(); l++) {
 	if (NotationProviderFactory.getInstance()
@@ -181,9 +191,9 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
     gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
     gridBagConstraints.anchor = GridBagConstraints.WEST;
     getContentPane().add(_compileCheckBox, gridBagConstraints);
-    
+
     pack();
-    
+
     // Center Dialog on Screen -- todo: this should be a support function
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Rectangle pbBox = pb.getBounds();
@@ -225,39 +235,48 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
   /** Either the Generate or the Cancel buttons is pressed.
    */
   public void actionPerformed(ActionEvent e) {
-      
-      // Generate Button --------------------------------------
-      if (e.getSource() == _generateButton) {
-      String path = ((String)_outputDirectoryComboBox.getModel().getSelectedItem()).trim();
 
+    // Generate Button --------------------------------------
+    if (e.getSource() == _generateButton) {
+      String path = ((String)_outputDirectoryComboBox.getModel().getSelectedItem()).trim();
       Project p = ProjectManager.getManager().getCurrentProject();
       p.getGenerationPrefs().setOutputDir(path);
       Vector[] fileNames = new Vector[_languages.size()];
       for (int i = 0; i < _languages.size(); i++) {
-	  fileNames[i] = new Vector();
-	  NotationName language = (NotationName)_languages.get(i);
-
-	  FileGenerator generator = 
-	      (FileGenerator)Generator.getGenerator(language);
-	  Set nodes = _classTableModel.getChecked(language);
-	  for (Iterator iter = nodes.iterator();
-	       iter.hasNext();
-	       ) {
-	      Object node = iter.next();
-
-	      if (node instanceof MClassifier) {
-		  // TODO:
-		  // This will only work for languages that have each node
-		  // in a separate files (one or more).
-		  String fn = generator.GenerateFile((MClassifier) node, path);
-		  fileNames[i].add(fn);
-	      }
-	  }
+        fileNames[i] = new Vector();
+        NotationName language = (NotationName)_languages.get(i);
+        FileGenerator generator = (FileGenerator)Generator.getGenerator(language);
+        Set nodes = _classTableModel.getChecked(language);
+        for (Iterator iter = nodes.iterator(); iter.hasNext(); ) {
+          Object node = iter.next();
+          if (node instanceof MClassifier) {
+            if (isPathInModel) {
+              path = Generator.getCodePath((MClassifier)node);
+              if (path == null) {
+                MNamespace parent = ((MClassifier)node).getNamespace();
+                parent = parent.getNamespace();
+                while (parent != null) {
+                  path = Generator.getCodePath(parent);
+                  if (path != null)
+                    break;
+                  parent = parent.getNamespace();
+                }
+              }
+            }
+            // TODO:
+            // This will only work for languages that have each node
+            // in a separate files (one or more).
+            if (path != null) {
+              String fn = generator.GenerateFile((MClassifier) node, path);
+              fileNames[i].add(fn);
+            }
+          }
+        }
       }
       setVisible(false);
       dispose();
     }
-    
+
     // Cancel Button ------------------------------------------
     if (e.getSource() == _cancelButton) {
       cat.debug("cancel");
@@ -270,15 +289,15 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
           try {
               // Show Filechooser to select OuputDirectory
               JFileChooser chooser = OsUtil.getFileChooser((String)_outputDirectoryComboBox.getModel().getSelectedItem());
-              
+
               if (chooser == null) chooser = OsUtil.getFileChooser();
-              
+
               chooser.setFileHidingEnabled(true);
               chooser.setMultiSelectionEnabled(false);
               chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
               chooser.setDialogTitle("Choose Output Directory");
               chooser.showDialog(this,"Choose");
-              
+
               if ("" != chooser.getSelectedFile().getPath()) {
                   _outputDirectoryComboBox.getModel().setSelectedItem(chooser.getSelectedFile().getPath());
               } // else ignore
@@ -321,7 +340,7 @@ class TableModelClassChecks extends AbstractTableModel {
       String name = cls.getName();
       if (!(name.length() > 0))
 	  continue;
-      
+
       for (int j = 0; j < getLanguagesCount(); j++) {
 	  // TODO:
 	  // if (cls.isSupposedToBeGeneratedAsLanguage(_languages.index(j)))
@@ -403,8 +422,8 @@ class TableModelClassChecks extends AbstractTableModel {
 	    return (name.length() > 0) ? name : "(anon)";
 	}
 	else if (langindex >= 0 && langindex < getLanguagesCount()) {
-	    return _checked[langindex].contains(cls) 
-		? Boolean.TRUE 
+	    return _checked[langindex].contains(cls)
+		? Boolean.TRUE
 		: Boolean.FALSE;
 	}
 	else

@@ -45,11 +45,11 @@ import org.argouml.uml.ui.*;
  *  for a different kind of menu bar, such as
  *  Mac OS X.
  */
-public class GenericArgoMenuBar extends JMenuBar 
+public class GenericArgoMenuBar extends JMenuBar
     implements ArgoModuleEventListener {
 
     private MultiToolbar _multiToolbar;
-    
+
     protected JMenu _import = null;
 
     /** Edit menu
@@ -96,7 +96,7 @@ public class GenericArgoMenuBar extends JMenuBar
     public MultiToolbar getMultiToolbar() {
         return _multiToolbar;
     }
-    
+
     static final protected KeyStroke getShortcut(String key) {
         return Localizer.getShortcut("CoreMenu",key);
     }
@@ -197,7 +197,7 @@ public class GenericArgoMenuBar extends JMenuBar
     public void moduleDisabled(ArgoModuleEvent event) {
         // TODO:  Disable menu
     }
-  
+
 
 
     /** construct the ordinary all purpose Argo Menu Bar.
@@ -234,7 +234,7 @@ public class GenericArgoMenuBar extends JMenuBar
         setMnemonic(openProjectItem,"Open",'O');
         setAccelerator(openProjectItem,ctrlO);
         fileToolbar.add((ActionOpenProject.SINGLETON));
-    
+
         //JMenuItem saveItem = _file.add(_actionSave);
         //file.add(_actionSaveAs);
         //file.add(_actionSaveAsXMI);
@@ -290,40 +290,40 @@ public class GenericArgoMenuBar extends JMenuBar
         //editToolbar.add((Actions.Undo));
         //_edit.add(Actions.Redo);
         //editToolbar.add((Actions.Redo));
-        
+
         _edit.addSeparator();
-        
+
         JMenuItem cutItem = _edit.add(ActionCut.SINGLETON);
         setMnemonic(cutItem,"Cut",'X');
         setAccelerator(cutItem,ctrlX);
         editToolbar.add(ActionCut.SINGLETON);
-        
+
         JMenuItem copyItem = _edit.add(ActionCopy.SINGLETON);
         setMnemonic(copyItem,"Copy",'C');
         setAccelerator(copyItem,ctrlC);
         editToolbar.add(ActionCopy.SINGLETON);
-        
+
         JMenuItem pasteItem = _edit.add(ActionPaste.SINGLETON);
         setMnemonic(pasteItem,"Paste",'V');
         setAccelerator(pasteItem,ctrlV);
         editToolbar.add(ActionPaste.SINGLETON);
-        
+
         _edit.addSeparator();
-        
+
         JMenuItem removeItem = _edit.add(ActionDeleteFromDiagram.SINGLETON);
         setMnemonic(removeItem,"Remove",'R');
         setAccelerator(removeItem,delKey);
         editToolbar.add(ActionDeleteFromDiagram.SINGLETON);
-        
+
         JMenuItem deleteItem = _edit.add(ActionRemoveFromModel.SINGLETON);
         setMnemonic(deleteItem,"Delete",'D');
         setAccelerator(deleteItem,ctrlDel);
         //editToolbar.add(ActionRemoveFromModel.SINGLETON); -- no toolbarbutton till a new one is designed for Erase
-        
+
         JMenuItem emptyItem = _edit.add(ActionEmptyTrash.SINGLETON);
-        
+
         _edit.addSeparator();
-        
+
         _edit.add(ActionSettings.getInstance());
 
         _view = (ArgoJMenu) add(new ArgoJMenu(menuLocalize("View")));
@@ -440,9 +440,9 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenu layout = (JMenu) _arrange.add(new JMenu(menuLocalize("Layout")));
         appendPluggableMenus(_arrange, PluggableMenu.KEY_ARRANGE);
 
-        Runnable initLater = new InitMenusLater(align, distribute, 
-                                                reorder, nudge, 
-                                                layout, 
+        Runnable initLater = new InitMenusLater(align, distribute,
+                                                reorder, nudge,
+                                                layout,
                                                 editTabs, detailsTabs);
 
         org.argouml.application.Main.addPostLoadAction(initLater);
@@ -452,6 +452,7 @@ public class GenericArgoMenuBar extends JMenuBar
         _generate.add(ActionGenerateOne.SINGLETON);
         JMenuItem genAllItem = _generate.add(ActionGenerateAll.SINGLETON);
         setAccelerator(genAllItem,F7);
+        _generate.add(ActionGenerateProjectCode.SINGLETON);
         //generate.add(Actions.GenerateWeb);
         appendPluggableMenus(_generate, PluggableMenu.KEY_GENERATE);
 
@@ -489,4 +490,4 @@ public class GenericArgoMenuBar extends JMenuBar
         ArgoEventPump.addListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
     }
 
-}    
+}

@@ -65,7 +65,7 @@ implements NotationProvider {
    * Special modus for testing using the JUnit module.
    */
   private boolean _testModus = false;
-  
+
   private NotationName _notationName = null;
 
   /** Two spaces used for indenting code in classes. */
@@ -73,7 +73,7 @@ implements NotationProvider {
 
     private static Map s_generators = new HashMap();
 
-	/** 
+	/**
 	 * suffix placed behind the tag defining a testcase for an element to be generated
 	 */
 	public final static String TEST_SUFFIX = "test";
@@ -93,7 +93,7 @@ implements NotationProvider {
 
 /**
  * Generates code for some modelelement. Subclasses should implement this to generate code for different notations.
- * @param o the element to be generated 
+ * @param o the element to be generated
  * @return String the generated code
  */
   public String generate(Object o) {
@@ -130,7 +130,7 @@ implements NotationProvider {
     	 */
     	if (_testModus && ((MTaggedValue)o).getTag().equals(getNotation().getName() + TEST_SUFFIX)) {
     		return "";
-    	}	
+    	}
       return generateTaggedValue((MTaggedValue) o);
     }
     if (o instanceof MAssociation)
@@ -233,6 +233,26 @@ public boolean isTestModus()
 public void setTestModus(boolean _testModus)
 {
 	this._testModus = _testModus;
+}
+
+/**
+ * Gets the path of the code base for a model element, otherwise null.
+ * @param me The model element
+ * @return String
+ */
+public static String getCodePath(MModelElement me) {
+  Collection tValues = me.getTaggedValues();
+  if (!tValues.isEmpty()) {
+    Iterator iter = tValues.iterator();
+    while(iter.hasNext()) {
+      MTaggedValue tv = (MTaggedValue)iter.next();
+      String tag = tv.getTag();
+      if (tag.equals("src_path")) {
+        return tv.getValue().trim();
+      }
+    }
+  }
+  return null;
 }
 
 } /* end class Generator */
