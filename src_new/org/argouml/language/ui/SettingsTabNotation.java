@@ -34,6 +34,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.SettingsTabPanel;
@@ -55,6 +56,7 @@ implements SettingsTabPanel {
     JCheckBox _showMultiplicity = null;
     JCheckBox _showInitialValue = null;
     JCheckBox _showProperties = null;
+    JCheckBox _showStereotypes = null;
 
     public SettingsTabNotation() {
     super();
@@ -140,6 +142,14 @@ implements SettingsTabPanel {
     top.add(new JLabel(""), labelConstraints);
     top.add(new JLabel(""), fieldConstraints);
 	
+    checkConstraints.gridy = 6;
+    labelConstraints.gridy = 6;
+    fieldConstraints.gridy = 6;
+    _showStereotypes = createCheckBox("label.show-stereotypes");
+    top.add(_showStereotypes, checkConstraints);
+    top.add(new JLabel(""), labelConstraints);
+    top.add(new JLabel(""), fieldConstraints);
+	
 	add(top, BorderLayout.NORTH);
     }
 
@@ -150,6 +160,7 @@ implements SettingsTabPanel {
         _showInitialValue.setSelected(Configuration.getBoolean(Notation.KEY_SHOW_INITIAL_VALUE, false));
         _showProperties.setSelected(Configuration.getBoolean(Notation.KEY_SHOW_PROPERTIES, false));
         _showMultiplicity.setSelected(Configuration.getBoolean(Notation.KEY_SHOW_MULTIPLICITY, false));
+        _showStereotypes.setSelected(Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false));
     }
 
     public void handleSettingsTabSave() {
@@ -159,6 +170,7 @@ implements SettingsTabPanel {
         Configuration.setBoolean(Notation.KEY_SHOW_MULTIPLICITY, _showMultiplicity.isSelected());
         Configuration.setBoolean(Notation.KEY_SHOW_PROPERTIES, _showProperties.isSelected());
         Configuration.setBoolean(Notation.KEY_SHOW_INITIAL_VALUE, _showInitialValue.isSelected());
+        Configuration.setBoolean(Notation.KEY_SHOW_STEREOTYPES, _showStereotypes.isSelected());
     }
 
     public void handleSettingsTabCancel() {
@@ -168,7 +180,7 @@ implements SettingsTabPanel {
   public String getModuleName() { return "SettingsTabNotation"; }
   public String getModuleDescription() { return "Settings Tab for Notation"; }
   public String getModuleAuthor() { return "ArgoUML Core"; }
-  public String getModuleVersion() { return "0.9.4"; }
+  public String getModuleVersion() { return ArgoVersion.VERSION; }
   public String getModuleKey() { return "module.settings.notation"; }
   public String getTabKey() { return "tab.notation"; }
   public String getTabResourceBundleKey() { return "CoreSettings"; }
