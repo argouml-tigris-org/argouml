@@ -56,8 +56,8 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
+import ru.novosoft.uml.model_management.MPackage;
 
 /** Class to display graphics for a UML package in a class diagram. */
 
@@ -544,7 +544,7 @@ public class FigPackage extends FigNodeModelElement {
      */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
-        Object mclass = /*(MPackage)*/ getOwner();
+        Object mpackage = /*(MPackage)*/ getOwner();
 
         ArgoJMenu modifierMenu = new ArgoJMenu("Modifiers");
 
@@ -552,9 +552,9 @@ public class FigPackage extends FigNodeModelElement {
 						     "isAbstract",
 						     "isAbstract",
 						     "setAbstract",
-						     (MClass)mclass));
-        modifierMenu.addCheckItem(new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf", (MClass)mclass));
-        modifierMenu.addCheckItem(new ActionModifier("Root", "isRoot", "isRoot", "setRoot", (MClass)mclass));
+						     (MPackage)mpackage));
+        modifierMenu.addCheckItem(new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf", (MPackage)mpackage));
+        modifierMenu.addCheckItem(new ActionModifier("Root", "isRoot", "isRoot", "setRoot", (MPackage)mpackage));
 
         popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 1);
 
