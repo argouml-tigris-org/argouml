@@ -44,7 +44,6 @@ import org.argouml.uml.reveng.Import;
 import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
 
-import ru.novosoft.uml.model_management.MModel;
 
 /**
  * This is the main class for the classfile import.
@@ -327,11 +326,11 @@ public class ClassfileImport extends FileImportSupport {
 
         // Create a modeller for the parser
         org.argouml.uml.reveng.java.Modeller modeller = 
-            new org.argouml.uml.reveng.java.Modeller(
-                    (MModel)_currentProject.getModel(),
-		    _diagram, _import,
-                    attribute.isSelected(),
-                    datatype.isSelected(), fileName);
+            new org.argouml.uml.reveng.java.Modeller(_currentProject.getModel(),
+                                                      _diagram, _import,
+                                                     attribute.isSelected(),
+                                                     datatype.isSelected(), 
+                                                     fileName);
 
 	// do something with the tree
 	ClassfileTreeParser tparser = new ClassfileTreeParser();
