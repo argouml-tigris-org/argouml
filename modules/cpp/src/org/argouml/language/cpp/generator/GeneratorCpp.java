@@ -1378,6 +1378,43 @@ public class GeneratorCpp extends Generator2
     }
 
     /**
+     * Generate three parts under public, protected and private visibility,
+     * adding the visibility keywords on top of each part. 
+     * @param parts the parts to output
+     * @return the composed parts
+     */
+    private String generateAllParts(StringBuffer[] parts) {
+        StringBuffer sb = new StringBuffer();
+        // generate all parts in order: public, protected, private
+        for (int i = 0; i < ALL_PARTS.length; i++) {
+            if (parts[i].toString().trim().length() > 0) {
+                if (generatorPass == HEADER_PASS) {
+                    sb.append(LINE_SEPARATOR);
+                    sb.append(' ').append(PART_NAME[i]).append(':');
+                    sb.append(LINE_SEPARATOR);
+                }
+                sb.append(parts[i]);
+            }
+        }
+        return sb.toString();
+    }
+    
+    private int getVisibilityPart(Object o) {
+        if (Model.getFacade().isPublic(o)) {
+            return PUBLIC_PART;
+        } else if (Model.getFacade().isProtected(o)) {
+            return PROTECTED_PART;
+        } else if (Model.getFacade().isPrivate(o)) {
+            return PRIVATE_PART;
+        } else {
+            LOG.warn(Model.getFacade().getName(o)
+                    + " is not public, nor protected, "
+                    + "nor private!!! (ignored)");
+            return -1;
+        }
+    }
+    
+    /**
      * @see org.argouml.application.api.NotationProvider2#generateClassifier(java.lang.Object)
      *
      * Generates code for a classifier. In case of Java code is
@@ -1510,51 +1547,30 @@ public class GeneratorCpp extends Generator2
      */
     private void generateClassifierBodyAssociations(Object cls,
             StringBuffer sb) {
-        Collection ends = Model.getFacade().getAssociationEnds(cls);
-        if (ends.isEmpty() || (generatorPass != HEADER_PASS)) {
-            return;
-        }
-        String tv = null; // helper for tagged values
-        sb.append(LINE_SEPARATOR);
-        if (verboseDocs && Model.getFacade().isAClass(cls)) {
-            sb.append(INDENT).append("// Associations")
-                  .append(LINE_SEPARATOR);
-        }
 
-        // generate attributes in order public, protected, private
-        for (int i = 0; i < ALL_PARTS.length; i++) {
-            int publicProtectedPrivate = ALL_PARTS[i];
+        if (generatorPass == SOURCE_PASS)
+            return;
+
+        Collection ends = Model.getFacade().getAssociationEnds(cls);
+        if (!ends.isEmpty()) {
+
+            sb.append(LINE_SEPARATOR);
+            if (verboseDocs && Model.getFacade().isAClass(cls)) {
+                sb.append(INDENT).append("// Associations").append(
+                        LINE_SEPARATOR);
+            }
+
+            StringBuffer part[] = new StringBuffer[3];
+            for (int i = 0; i < ALL_PARTS.length; i++)
+                part[i] = new StringBuffer(80);
+            
             Iterator endEnum = ends.iterator();
-            boolean isVisibilityLinePrinted = false;
             while (endEnum.hasNext()) {
                 Object ae = endEnum.next();
                 Object a = Model.getFacade().getAssociation(ae);
-                if (((publicProtectedPrivate == PUBLIC_PART)
-                         && Model.getFacade().isPublic(ae))
-                        || ((publicProtectedPrivate == PROTECTED_PART)
-                        && Model.getFacade().isProtected(ae))
-                        || ((publicProtectedPrivate == PRIVATE_PART)
-                        && Model.getFacade().isPrivate(ae))) {
-                    if (!isVisibilityLinePrinted) {
-                        isVisibilityLinePrinted = true;
-			sb.append(LINE_SEPARATOR);
-                        if (publicProtectedPrivate == PUBLIC_PART) {
-                            sb.append(" public:");
-                        } else if (publicProtectedPrivate == PROTECTED_PART) {
-                            sb.append(" protected:");
-                        } else if (publicProtectedPrivate == PRIVATE_PART) {
-                            sb.append(" private:");
-                        }
-                    }
-
-                    sb.append(generateAssociationFrom(a, ae));
-
-                    tv = generateTaggedValues(a, ALL_BUT_DOC_TAGS);
-                    if (tv != null && tv.length() > 0) {
-                        sb.append(INDENT).append(tv);
-                    }
-                }
+                generateAssociationFrom(a, ae, part);
             }
+            sb.append(generateAllParts(part));
         }
     }
 
@@ -1733,19 +1749,9 @@ public class GeneratorCpp extends Generator2
 	    Object bf = behEnum.next();
 	    StringBuffer tb = null;
 
-	    if (Model.getFacade().isPublic(bf)) {
-		tb = funcs[PUBLIC_PART];
-	    } else if (Model.getFacade().isProtected(bf)) {
-		tb = funcs[PROTECTED_PART];
-	    } else if (Model.getFacade().isPrivate(bf)) {
-		tb = funcs[PRIVATE_PART];
-	    } else {
-		LOG.warn(Model.getFacade().getName(bf)
-                    + " is not public, nor protected, "
-                    + "nor private!!! (ignored)");
-		continue;
-	    }
-
+	    int p = getVisibilityPart(bf);
+	    if (p < 0) continue;
+	    tb = funcs[p];
 	    tb.append(LINE_SEPARATOR).append(INDENT);
 
 	    boolean mustGenBody = checkGenerateOperationBody(bf);
@@ -1771,17 +1777,7 @@ public class GeneratorCpp extends Generator2
 	    }
 	} // end loop through all operations
 
-        // generate attributes in order public, protected, private
-        for (int i = 0; i < ALL_PARTS.length; i++) {
-	    if (funcs[i].toString().trim().length() > 0) {
-		if (generatorPass == HEADER_PASS) {
-		    sb.append(LINE_SEPARATOR)
-			.append(' ').append(PART_NAME[i]).append(':')
-			    .append(LINE_SEPARATOR);
-		}
-		sb.append(funcs[i]);
-	    }
-	}
+	sb.append(generateAllParts(funcs));
     }
 
     /**
@@ -2242,9 +2238,17 @@ public class GeneratorCpp extends Generator2
         }
     }
 
-    private String generateAssociationFrom(Object a, Object ae) {
+    /**
+     * 
+     * @param a association object
+     * @param ae association end attached to the classifier
+     *        for which the code is to be generated
+     * @param parts the buffers associated with the public, protected
+     *        and private parts, where the code is to be written.
+     */
+    private void generateAssociationFrom(Object a, Object ae,
+            StringBuffer[] parts) {
         // TODO: does not handle n-ary associations
-        StringBuffer sb = new StringBuffer(80);
 
         /*
          * Moved into while loop 2001-09-26 STEFFEN ZSCHALER
@@ -2259,21 +2263,30 @@ public class GeneratorCpp extends Generator2
         while (connEnum.hasNext()) {
             Object ae2 = connEnum.next();
             if (ae2 != ae) {
-                /**
-                 * Added generation of doccomment 2001-09-26 STEFFEN ZSCHALER
-                 */
-                sb.append(LINE_SEPARATOR).append(INDENT);
-                String comment = generateConstraintEnrichedDocComment(a, ae2);
-                // the comment line ends with simple newline -> place INDENT
-                // after comment, if not empty
-                if (comment.length() > 0)
-                    sb.append(comment).append(INDENT);
+                int p = getVisibilityPart(ae2);
+                if (p >= 0) {
+                    StringBuffer sb = parts[p];
+                    /**
+                     * Added generation of doccomment 2001-09-26 STEFFEN
+                     * ZSCHALER
+                     */
+                    sb.append(LINE_SEPARATOR).append(INDENT);
+                    String comment = generateConstraintEnrichedDocComment(a,
+                            ae2);
+                    // the comment line ends with simple newline -> place INDENT
+                    // after comment, if not empty
+                    if (comment.length() > 0)
+                        sb.append(comment).append(INDENT);
 
-                sb.append(generateAssociationEnd(ae2));
+                    sb.append(generateAssociationEnd(ae2));
+
+                    String tv = generateTaggedValues(a, ALL_BUT_DOC_TAGS);
+                    if (tv != null && tv.length() > 0) {
+                        sb.append(INDENT).append(tv);
+                    }
+                }
             }
         }
-
-        return sb.toString();
     }
 
     /**
@@ -2314,7 +2327,7 @@ public class GeneratorCpp extends Generator2
         sb.append(
                 generateMultiplicity(ae, name,
                              Model.getFacade().getMultiplicity(ae),
-                             generateAttributeParameterModifier(asc)));
+                             generateAttributeParameterModifier(ae)));
 
         return (sb.append(";").append(LINE_SEPARATOR)).toString();
     }
@@ -2551,60 +2564,70 @@ public class GeneratorCpp extends Generator2
         StringBuffer sb = new StringBuffer(80);
         int countUpper = Model.getFacade().getUpper(m);
         int countLower = Model.getFacade().getLower(m);
-        Integer upper = new Integer(countUpper);
 
-        if (countUpper	== 1) {
-            // simple generate identifier for default 0:1, 1:1 association
+        if (countUpper == 1 && countLower == 1) {
+            // simple generate identifier for default 1:1 multiplicity
             sb.append(type).append(' ').append(modifier).append(name);
-        }
-        else if (countUpper == countLower) {
+        } else if (countUpper == 1 && countLower == 0) {
+            // use a simple pointer for 0:1 multiplicity
+            // TODO: use an auto_ptr in case of attributes or compositions
+            sb.append(type).append(' ').append(modifier)
+                .append("* ").append(name);
+        } else if (countUpper == countLower) {
             // fixed array -> <type> <name>[<count>];
             sb.append(type).append(' ').append(modifier).append(name)
-                .append("[ ").append(upper.toString()).append(" ]");
-        }
-        else {
-            // variable association -> if no tag found use []
+                .append("[ " + countUpper + "]");
+        } else {
+            // variable association -> if no tag found use vector
             // else search for tag:
-            // <MultipliciyType> : array|vector|list|slist|map|stack
+            // <MultipliciyType> : vector|list|slist|map|stack|stringmap
             String multType =
                 Model.getFacade().getTaggedValueValue(item, "MultiplicityType");
-            if (multType == null) {
-                // no known container type found
-                sb.append(type).append(' ');
-                sb.append(modifier).append(name).append("[]");
-            }
-            else if (multType.equals("vector")) {
-                if (extraIncludes.indexOf("#include <vector>") == -1)
-                    extraIncludes += "#include <vector>" + LINE_SEPARATOR;
+            if (multType != null && multType.length() > 0) {
+                if (multType.equals("vector")) {
+                    containerType = "vector";
+                } else if (multType.equals("list")) {
+                    containerType = "list";
+                } else if (multType.equals("slist")) {
+                    containerType = "slist";
+                } else if (multType.equals("map")) {
+                    // FIXME: map does not work this way, needs a index type
+                    containerType = "map";
+                } else if (multType.equals("stack")) {
+                    containerType = "stack";
+                } else if (multType.equals("stringmap")) {
+                    if (extraIncludes.indexOf("#include <map>") == -1) {
+                        extraIncludes += "#include <map>" + LINE_SEPARATOR;
+                    }
+                    sb.append("map<string, ");
+                    if (modifier.indexOf('&') != -1) {
+                        LOG.warn("cannot generate STL container "
+                                + "with references, using pointers");
+                        modifier = "*";
+                    }
+                    sb.append(type).append(modifier);
+                    sb.append(" > ").append(name);
+                } else {
+                    LOG.warn("unknown MultiplicityType \"" + multType
+                            + "\", using default");
+                    containerType = "vector";
+                }
+            } else {
                 containerType = "vector";
-            }
-            else if (multType.equals("list")) {
-                if (extraIncludes.indexOf("#include <list>") == -1)
-                    extraIncludes += "#include <list>" + LINE_SEPARATOR;
-                containerType = "list";
-            }
-            else if (multType.equals("slist")) {
-                if (extraIncludes.indexOf("#include <slist>") == -1)
-                    extraIncludes += "#include <slist>" + LINE_SEPARATOR;
-                containerType = "slist";
-            }
-            else if (multType.equals("map")) {
-                if (extraIncludes.indexOf("#include <map>") == -1)
-                    extraIncludes += "#include <map>" + LINE_SEPARATOR;
-                containerType = "map";
-            }
-            else if (multType.equals("stack")) {
-                if (extraIncludes.indexOf("#include <stack>") == -1)
-                    extraIncludes += "#include <stack>" + LINE_SEPARATOR;
-                containerType = "stack";
             }
 
             if (containerType != null) {
-                // known container type
+                // these container are declared the same except the name
                 String includeLine = "#include <" + containerType + ">";
-                if (extraIncludes.indexOf(includeLine) == -1)
+                if (extraIncludes.indexOf(includeLine) == -1) {
                     extraIncludes += includeLine + LINE_SEPARATOR;
+                }
                 sb.append(containerType).append("< ");
+                if (modifier.indexOf('&') != -1) {
+                    LOG.warn("cannot generate STL container "
+                            + "with references, using pointers");
+                    modifier = "*";
+                }
                 sb.append(type).append(modifier);
                 sb.append(" > ").append(name);
             }
