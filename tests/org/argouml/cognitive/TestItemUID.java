@@ -40,9 +40,6 @@ import org.argouml.uml.diagram.deployment.ui.FigMNode;
 import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.FigObject;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
-import org.argouml.uml.diagram.sequence.ui.FigSeqLink;
-import org.argouml.uml.diagram.sequence.ui.FigSeqObject;
-import org.argouml.uml.diagram.sequence.ui.FigSeqStimulus;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.*;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
@@ -119,10 +116,6 @@ public class TestItemUID extends TestCase {
 	FigMNodeInstance figmnodeinstance = new FigMNodeInstance();
 	FigObject figobject = new FigObject();
 
-	FigSeqLink figseqlink = new FigSeqLink();
-	FigSeqObject figseqobject = new FigSeqObject();
-	FigSeqStimulus figseqstimulus = new FigSeqStimulus();
-
 	FigBranchState figbranchstate = new FigBranchState();
 	FigCompositeState figcompositestate = new FigCompositeState();
 	FigDeepHistoryState figdeephistorystate = new FigDeepHistoryState();
@@ -167,10 +160,6 @@ public class TestItemUID extends TestCase {
 	checkAssignIDToObject(figmnode, true, true);
 	checkAssignIDToObject(figmnodeinstance, true, true);
 	checkAssignIDToObject(figobject, true, true);
-
-	checkAssignIDToObject(figseqlink, true, true);
-	checkAssignIDToObject(figseqobject, true, true);
-	checkAssignIDToObject(figseqstimulus, true, true);
 
 	checkAssignIDToObject(figbranchstate, true, true);
 	checkAssignIDToObject(figcompositestate, true, true);

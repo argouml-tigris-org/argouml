@@ -41,7 +41,6 @@ public class UmlUiTestSuite {
         suite.addTestSuite(TestActionClassDiagram.class);
         suite.addTestSuite(TestActionCollaborationDiagram.class);
 		suite.addTestSuite(TestActionDeploymentDiagram.class);
-		suite.addTestSuite(TestActionSequenceDiagram.class);
 		suite.addTestSuite(TestActionStateDiagram.class);
 		suite.addTestSuite(TestActionUseCaseDiagram.class);
         return suite;
