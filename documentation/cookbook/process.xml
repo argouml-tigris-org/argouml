@@ -706,8 +706,8 @@ with.
         <primary>subproducts</primary>
       </indexterm>
       <para>
-ArgoUML uses some product internally and is to some respect very 
-dependant on the well functioning of these products.
+ArgoUML uses products internally and is very 
+dependant on that these products are functioning well.
 This are products like GEF, NS-UML, ocl, log4j, xerces, jre, ...
 </para>
       <para>
