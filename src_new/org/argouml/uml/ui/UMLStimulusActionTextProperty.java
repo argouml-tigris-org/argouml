@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -68,13 +68,16 @@ public class UMLStimulusActionTextProperty  {
     }
     
     public String getProperty(UMLUserInterfaceContainer container) {
-        String value = null;       
+	String value = null;       
 	Object/*MStimulus*/ stimulus = container.getTarget();
-	if (stimulus != null) {
+	if (ModelFacade.isAStimulus(stimulus)) {
 	    Object action = ModelFacade.getDispatchAction(stimulus);
-	    if (action != null) value = ModelFacade.getName(action);
+	    if (action != null) {
+		value = ModelFacade.getName(action);
+	    }
 	}
-        return value;
+
+	return value;
     }
     
     boolean isAffected(MElementEvent event) {
