@@ -161,7 +161,8 @@ public class Import {
 				if (chooser == null) chooser = new JPanel();
 				dialog.getContentPane().add(chooser, 0);
 				JComponent config = module.getConfigPanel();
-				if (config == null) config = new JPanel(); 
+				if (config == null) config = new JPanel();
+				tab.remove(1); 
 				tab.add(config, selected, 1);
 				tab.validate();
 				dialog.validate();
