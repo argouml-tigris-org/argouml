@@ -74,6 +74,8 @@ public class UMLAction extends AbstractAction {
             Translator.localize("CoreMenu", name) + " ");
         if (global)
             Actions.addAction(this);
+        // Jaap B. 17-6-2003 added next line to make sure every action is in the right enable condition on creation.
+        setEnabled(shouldBeEnabled());
     }
 
     /** Perform the work the action is supposed to do. */
