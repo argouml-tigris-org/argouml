@@ -231,7 +231,7 @@ public class CheckResourceBundle {
 		      + bname
 		      + " does not exist for " 
 		      + l.toString(),
-		      locb != null);
+		      locb != null && locb != b);
 
 	    checkContainsAllFrom(tc, locb, tags);
 	    checkNoDuplicates(tc, locb);
