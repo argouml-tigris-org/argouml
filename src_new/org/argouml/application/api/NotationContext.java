@@ -33,8 +33,7 @@ public interface NotationContext {
  /** The context must return a NotationName indicating the notation
   *  (and version if applicable) that it is using.
   *
-  *  If the context does not wish to name a specific notation, it should
-  *  return null;
+  *  @return null if the context does not wish to name a specific notation
   */
     public NotationName getContextNotation();
 }

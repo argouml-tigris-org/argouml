@@ -115,14 +115,13 @@ public class CompoundCritic extends Critic {
   }
 
   public Vector getSupportedDecisions() {
-    System.out.println("this method should never be called: "+
-		       "CompoundCritic getSupportedDecisions");
-    return new Vector();
+      throw new Error("this method should never be called: "+
+		      "CompoundCritic getSupportedDecisions");
   }
 
   public void addSupportedDecision(Decision d) {
-    System.out.println("this method should never be called: "+
-		       "CompoundCritic addSupportedDecision");
+      throw new Error("this method should never be called: "+
+		      "CompoundCritic addSupportedDecision");
   }
 
   public boolean supports(Goal g) {
@@ -135,14 +134,13 @@ public class CompoundCritic extends Critic {
   }
 
   public Vector getSupportedGoals() {
-    System.out.println("this method should never be called: "+
-		       "CompoundCritic getSupportedGoals");
-    return new Vector();
+    throw new Error("this method should never be called: "+
+		    "CompoundCritic getSupportedGoals");
   }
 
   public void addSupportedGoal(Goal g) {
-    System.out.println("this method should never be called: "+
-		       "CompoundCritic addSupportedGoal");
+    throw new Error("this method should never be called: "+
+		    "CompoundCritic addSupportedGoal");
   }
 
   public boolean containsKnowledgeType(String type) {
@@ -154,20 +152,18 @@ public class CompoundCritic extends Critic {
     return false;
   }
   public void addKnowledgeType(String type) {
-    System.out.println("this method should never be called: "+
-		       "CompoundCritic addKnowledgeType");
+    throw new Error("this method should never be called: "+
+		    "CompoundCritic addKnowledgeType");
   }
   
   public String expand(String desc, VectorSet offs) {
-    System.out.println("this method should never be called: "+
-		       "CompoundCritic expand");
-    return desc;
+      throw new Error("this method should never be called: "+
+		      "CompoundCritic expand");
   }
 
   public Icon getClarifier() {
-    System.out.println("this method should never be called: "+
-		       "CompoundCritic getClarifier");
-    return null;
+      throw new Error("this method should never be called: "+
+		      "CompoundCritic getClarifier");
   }
   
 
@@ -191,9 +187,8 @@ public class CompoundCritic extends Critic {
   // design feedback
 
   public ToDoItem toDoItem(Object dm, Designer dsgr) {
-    System.out.println("this method should never be called: "+
-		       "CompoundCritic toDoItem()");
-    return null;
+      throw new Error("this method should never be called: "+
+		      "CompoundCritic toDoItem()");
   }
 
 } /* end class CompoundCritic */

@@ -66,6 +66,8 @@ public class TabSpawnable extends JPanel implements Cloneable {
      * or
      * @see TabModelTarget
      * also the Target.
+     *
+     * @return the new object or null if not possible.
      */
   public Object clone() {
     try { return this.getClass().newInstance(); }
@@ -84,7 +86,9 @@ public class TabSpawnable extends JPanel implements Cloneable {
 
   ////////////////////////////////////////////////////////////////
   // actions
-
+    /**
+     * @return a copy of the frame or null if not clone-able.
+     */
   public TabSpawnable spawn() {
     JFrame f = new JFrame();
     f.getContentPane().setLayout(new BorderLayout());

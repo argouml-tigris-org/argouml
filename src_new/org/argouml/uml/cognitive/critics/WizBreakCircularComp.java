@@ -148,8 +148,7 @@ public class WizBreakCircularComp extends Wizard {
     case 1:
       if (_step1 != null) choice = _step1.getSelectedIndex();
       if (choice == -1) {
-	System.out.println("nothing selected, should not get here");
-	return;
+	throw new Error("nothing selected, should not get here");
       }
       _selectedCls = (MClassifier) offs.elementAt(choice);
       break;
@@ -157,8 +156,7 @@ public class WizBreakCircularComp extends Wizard {
     case 2:
       if (_step2 != null) choice = _step2.getSelectedIndex();
       if (choice == -1) {
-	System.out.println("nothing selected, should not get here");
-	return;
+	throw new Error("nothing selected, should not get here");
       }
       MAssociationEnd ae=null;
       Iterator iter = _selectedCls.getAssociationEnds().iterator();

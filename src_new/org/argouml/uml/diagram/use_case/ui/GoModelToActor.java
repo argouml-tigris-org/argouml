@@ -39,8 +39,7 @@ public class GoModelToActor implements TreeModel {
   public String toString() { return "Package->MActor"; }
   
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+    throw new Error("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
@@ -53,8 +52,7 @@ public class GoModelToActor implements TreeModel {
 	if (index == 0) return me;
       }
     }
-    System.out.println("getChild should never get here GoModelToActor");
-    return null;
+    throw new Error("getChild should never get here GoModelToActor");
   }
 
   public int getChildCount(Object parent) {

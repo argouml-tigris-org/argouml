@@ -67,7 +67,10 @@ public class WizCueCards extends Wizard {
 
   public void addCue(String s) { _cues.addElement(s); }
 
-  /** Create a new panel for the given step.  */
+  /** Create a new panel for the given step.
+   *
+   * @return a newly created panel or null if there isn't that many steps.
+   */
   public JPanel makePanel(int newStep) {
     if (newStep <= getNumSteps()) {
       String c = (String) _cues.elementAt(newStep - 1);

@@ -116,6 +116,10 @@ implements java.io.Serializable {
     _decisions.removeElement(d);
   }
 
+    /** Finds a decision with a specific name.
+     *
+     * @return a decision or null if not found.
+     */
   protected Decision findDecision(String decName) {
     Enumeration enum = _decisions.elements();
     while (enum.hasMoreElements()) {

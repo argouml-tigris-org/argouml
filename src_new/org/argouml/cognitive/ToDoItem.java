@@ -187,7 +187,10 @@ public class ToDoItem implements java.io.Serializable {
   public String getExpertEmail() { return _poster.getExpertEmail(); }
 
   /** Return a clarifier object that can graphical highlight this
-   *  error in a design diagram. By default return a DefaultClarifier*/
+   *  error in a design diagram. By default return a DefaultClarifier
+   *
+   * @return an Icon or null if none found.
+   */
   public Icon getClarifier() {
     if (_clarifier != null) return _clarifier;
     Icon posterClarifier = _poster.getClarifier();

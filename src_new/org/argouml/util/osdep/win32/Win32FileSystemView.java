@@ -121,9 +121,6 @@ public class Win32FileSystemView extends FileSystemView {
         File[] roots = new File[rootsVector.size()]; 
         rootsVector.copyInto(roots); 
         return roots; 
-    
-        // } 
-        // return null; 
     } 
     
     class FileSystemRoot extends File { 

@@ -42,16 +42,14 @@ public class GoInteractionMessages implements TreeModel {
   }
 
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+    throw new Error("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
     Vector children = getChildren(parent);
     if (children != null) return children.elementAt(index);
-    System.out.println("getChild should never be get here GoInteractionMessages");
-    return null;
+    throw new Error("getChild should never be get here GoInteractionMessages");
   }
 
   public int getChildCount(Object parent) {

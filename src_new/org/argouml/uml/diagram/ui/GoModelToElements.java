@@ -41,8 +41,7 @@ public class GoModelToElements implements TreeModel {
   }
 
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+    throw new Error("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
@@ -50,8 +49,7 @@ public class GoModelToElements implements TreeModel {
     if (parent instanceof MNamespace) {
       return new Vector(((MNamespace)parent).getOwnedElements()).elementAt(index);
     }
-    System.out.println("getChild should never be get here GoModelToElements");
-    return null;
+    throw new Error("getChild should never be get here GoModelToElements");
   }
 
   public int getChildCount(Object parent) {

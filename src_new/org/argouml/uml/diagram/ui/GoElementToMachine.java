@@ -42,8 +42,7 @@ public class GoElementToMachine implements TreeModel {
   }
   
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+      throw new Error("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
@@ -53,8 +52,7 @@ public class GoElementToMachine implements TreeModel {
       if (machines == null) return null;
       return machines.elementAt(index);
     }
-    System.out.println("getChild should never be get here GoElementToMachine");
-    return null;
+    throw new Error("getChild should never be get here GoElementToMachine");
   }
 
   public int getChildCount(Object parent) {

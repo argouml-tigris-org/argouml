@@ -33,10 +33,12 @@ import java.util.*;
  * points in the code.
  */
 public class SimpleTimer {
+    String _name = null;
     Vector _points = new Vector();
     Vector _labels = new Vector();
 
-    public SimpleTimer() {
+    public SimpleTimer(String n) {
+	_name = n;
     }
 
     public void mark() {

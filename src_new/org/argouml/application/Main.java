@@ -97,7 +97,7 @@ public class Main {
         String projectName = null;
         URL urlToOpen = null;
 
-	    SimpleTimer st = new SimpleTimer();
+	SimpleTimer st = new SimpleTimer("Main.main");
         st.mark("arguments");
 
         /* set properties for application behaviour */
@@ -428,6 +428,7 @@ public class Main {
             Argo.log.info("#################################");
             Argo.log.info("");
         }
+	st = null;
 
 
         //ToolTipManager.sharedInstance().setInitialDelay(500);

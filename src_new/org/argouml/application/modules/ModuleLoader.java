@@ -477,6 +477,8 @@ public class ModuleLoader {
     }
 
   /** Gets the current singleton of the module type requested.
+   *
+   * @return null if there is some problem.
    */
   public static ArgoModule getCurrentSingleton(Class moduleClass) {
       try {
@@ -528,7 +530,7 @@ public class ModuleLoader {
    *                    plugins.
    *
    *  @return A plug-in class which extends the type of class passed
-   *          as the argument.
+   *          as the argument or null if there is some problem.
    */
   public Pluggable getPlugin (Class pluginType,
                                     Object[] context) {

@@ -781,10 +781,9 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
      */
 
     public Object connect(Object fromPort, Object toPort) {
-        System.out.println(this.getClass().toString() +
-                           ": connect(fromPort, toPort) - " +
-                           "should not enter here!");
-        return null;
+        throw new Error(this.getClass().toString() +
+			": connect(fromPort, toPort) - " +
+			"should not enter here!");
     }
 
 

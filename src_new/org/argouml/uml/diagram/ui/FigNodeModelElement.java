@@ -552,6 +552,8 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   }
 
  /** This default implementation simply requests the default notation.
+  *
+  * @return null
   */
   public NotationName getContextNotation() { return null; }
 

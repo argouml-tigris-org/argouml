@@ -42,16 +42,14 @@ public class GoProjectDiagram implements TreeModel {
   }
   
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+    throw new Error("getRoot should never be called");
   } 
 
   public Object getChild(Object parent, int index) {
     if (parent instanceof Project) {
       return ((Project)parent).getDiagrams().elementAt(index);
     }
-    System.out.println("getChild should never get here GoProjectDiagram");
-    return null;
+    throw new Error("getChild should never get here GoProjectDiagram");
   }
   
   public int getChildCount(Object parent) {

@@ -90,7 +90,8 @@ implements PluggableNotation, FileGenerator {
     /** Generates a file for the classifier. 
      * This method could have been static if it where not for the need to
      * call it through the Generatorinterface.
-     * @returns the full path name of the the generated file.
+     * @return the full path name of the the generated file or
+     * 	       null if no file can be generated.
      */
   public String GenerateFile (MClassifier cls,
 			      String path) {
