@@ -69,6 +69,9 @@ public class Import {
     /** The files that needs a second RE pass. */
     private static Vector secondPassFiles;
 
+	// Imported directory
+	private static String src_path;
+	
     // log4j logging
     private static Category cat = Category.getInstance(org.argouml.uml.reveng.Import.class);
 
@@ -119,6 +122,9 @@ public class Import {
     public static void doFile(Project p, File f) {
 	Vector files = listDirectoryRecursively(f);
 
+	if (f.isDirectory()) src_path = f.getAbsolutePath();
+	else src_path = null;
+	
 	ProjectBrowser.TheInstance.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         
         //turn off critiquing for reverse engineering
@@ -223,6 +229,13 @@ public class Import {
 	pb.getStatusBar().showProgress(0);
     }
 
+	/**
+	 * @return path for processed directory.
+	 */
+	public static String getSrcPath() {
+		return src_path;
+	}
+	
     /**
      * <p>This method returns a Vector with files to import.
      *
