@@ -109,14 +109,18 @@ public class GeneratorCpp extends Generator2
      * @author Achim Spangler
      * @since 2002-11-28
      */
-    private static final int PUBLIC_PART = 1;
-    private static final int PROTECTED_PART = 2;
-    private static final int PRIVATE_PART = 3;
+    private static final int PUBLIC_PART = 0;
+    private static final int PROTECTED_PART = 1;
+    private static final int PRIVATE_PART = 2;
 
     private static final int[] ALL_PARTS = {
         PUBLIC_PART,
         PROTECTED_PART,
         PRIVATE_PART,
+    };
+
+    private static final String[] PART_NAME = {
+	"public", "protected", "private"
     };
 
     /**
@@ -388,6 +392,8 @@ public class GeneratorCpp extends Generator2
 
             LOG.info("----- end updating -----");
         }
+	// reset generator pass to NONE for the notation to be correct
+	generatorPass = NONE_PASS;
         return pathname;
     }
 
@@ -1072,12 +1078,13 @@ public class GeneratorCpp extends Generator2
         boolean constructor =
             generateOperationNameAndTestForConstructor(op, nameBuffer);
 
-        sb.append(LINE_SEPARATOR); // begin with a blank line
-        // generate DocComment from tagged values
-        String tv = generateTaggedValues (op, DOC_COMMENT_TAGS);
-        if (tv != null && tv.length() > 0) {
-            sb.append(LINE_SEPARATOR).append(operationIndent).append (tv);
-        }
+	if (documented) {
+	    // generate DocComment from tagged values
+	    String tv = generateTaggedValues (op, DOC_COMMENT_TAGS);
+	    if (tv != null && tv.length() > 0) {
+		sb.append (LINE_SEPARATOR).append(operationIndent).append (tv);
+	    }
+	}
 
         // 2002-07-14
         // Jaap Branderhorst
@@ -1119,8 +1126,11 @@ public class GeneratorCpp extends Generator2
             }
         }
 
-        sb.append(") ")
-            .append(generateOperationSuffix(op));
+	String suffix = generateOperationSuffix(op);
+	if (suffix.equals(""))
+	    sb.append(")");
+	else
+	    sb.append(") ").append(suffix);
 
         return sb.toString();
     }
@@ -1181,15 +1191,14 @@ public class GeneratorCpp extends Generator2
      */
     public String generateAttribute(Object attr, boolean documented) {
         StringBuffer sb = new StringBuffer(80);
-        sb.append(LINE_SEPARATOR); // begin with a blank line
 
         // list tagged values for documentation
-        String tv = generateTaggedValues (attr, DOC_COMMENT_TAGS);
-        if (tv != null && tv.length() > 0) {
-            sb.append(LINE_SEPARATOR).append (INDENT).append (tv);
-        }
-
-        sb.append(INDENT);
+	if (documented) {
+	    String tv = generateTaggedValues (attr, DOC_COMMENT_TAGS);
+	    if (tv != null && tv.length() > 0) {
+		sb.append (LINE_SEPARATOR).append (INDENT).append (tv);
+	    }
+	}
         // cat.info("generate Visibility for Attribute");
         sb.append(generateVisibility(attr));
         sb.append(generateOwnerScope(attr));
@@ -1207,7 +1216,9 @@ public class GeneratorCpp extends Generator2
                 sb.append(" = ").append(initStr);
         }
 
-        sb.append(";").append(LINE_SEPARATOR);
+        sb.append(";");
+        if (generatorPass != NONE_PASS)
+            sb.append(LINE_SEPARATOR);
 
         return sb.toString();
     }
@@ -1481,7 +1492,7 @@ public class GeneratorCpp extends Generator2
                         }
 			sb.append(LINE_SEPARATOR);
                     }
-                    sb.append(generate(sf));
+                    sb.append(INDENT).append(generate(sf));
 
                     tv = generateTaggedValues(sf, ALL_BUT_DOC_TAGS);
                     if (tv != null && tv.length() > 0) {
@@ -1645,7 +1656,7 @@ public class GeneratorCpp extends Generator2
         sb.append(" get_").append(Model.getFacade().getName(attr));
         sb.append("( void ) const { return ")
             .append(Model.getFacade().getName(attr));
-        sb.append("; };");
+        sb.append("; };").append(LINE_SEPARATOR);
     }
 
     /**
@@ -1709,82 +1720,68 @@ public class GeneratorCpp extends Generator2
         }
 
         // generate tag controlled access functions for attributes
-        StringBuffer funcPrivate = new StringBuffer(80);
-        StringBuffer funcProtected = new StringBuffer(80);
-        StringBuffer funcPublic = new StringBuffer(80);
-        generateClassifierBodyTaggedAccess4Attributes(cls,
-                                  funcPrivate,
-                                  funcProtected,
-                                  funcPublic);
+	StringBuffer[] funcs = new StringBuffer[3]; 
+        funcs[0] = new StringBuffer(80);
+        funcs[1] = new StringBuffer(80);
+        funcs[2] = new StringBuffer(80);
+        generateClassifierBodyTaggedAccess4Attributes(cls, funcs[PRIVATE_PART],
+				                      funcs[PROTECTED_PART],
+				                      funcs[PUBLIC_PART]);
+
+        Iterator behEnum = behs.iterator();
+	while (behEnum.hasNext()) {
+	    Object bf = behEnum.next();
+	    StringBuffer tb = null;
+
+	    if (Model.getFacade().isPublic(bf)) {
+		tb = funcs[PUBLIC_PART];
+	    } else if (Model.getFacade().isProtected(bf)) {
+		tb = funcs[PROTECTED_PART];
+	    } else if (Model.getFacade().isPrivate(bf)) {
+		tb = funcs[PRIVATE_PART];
+	    } else {
+		LOG.warn(Model.getFacade().getName(bf)
+                    + " is not public, nor protected, "
+                    + "nor private!!! (ignored)");
+		continue;
+	    }
+
+	    tb.append(LINE_SEPARATOR).append(INDENT);
+
+	    boolean mustGenBody = checkGenerateOperationBody(bf);
+	    if (tb != null 
+                && ((generatorPass == HEADER_PASS) || mustGenBody))
+	    {
+		tb.append(generate(bf));
+		
+		// helper for tagged values
+		String tv = generateTaggedValues(bf, ALL_BUT_DOC_TAGS);
+		
+		if (mustGenBody && (Model.getFacade().isAClass(cls))
+                        && (Model.getFacade().isAOperation(bf))
+                        && (!Model.getFacade().isAbstract(bf))) {
+                    // there is no ReturnType in behavioral feature (nsuml)
+                    tb.append(LINE_SEPARATOR).append(generateMethodBody(bf));
+                } else {
+		    tb.append(";").append(LINE_SEPARATOR);
+		    if (tv.length() > 0) {
+			tb.append(INDENT).append(tv).append(LINE_SEPARATOR);
+		    }
+		}
+	    }
+	} // end loop through all operations
 
         // generate attributes in order public, protected, private
         for (int i = 0; i < ALL_PARTS.length; i++) {
-            int publicProtectedPrivate = ALL_PARTS[i];
-            Iterator behEnum = behs.iterator();
-            boolean isVisibilityLinePrinted = false;
-
-            if ((publicProtectedPrivate == PRIVATE_PART)
-                    && (funcPrivate.length() > 0)) {
-                sb.append(LINE_SEPARATOR)
-		    .append(" private:").append(funcPrivate.toString());
-                isVisibilityLinePrinted = true;
-            }
-            if ((publicProtectedPrivate == PROTECTED_PART)
-                    && (funcProtected.length() > 0)) {
-                sb.append(LINE_SEPARATOR)
-		    .append(" protected:").append(funcProtected.toString());
-                isVisibilityLinePrinted = true;
-            }
-            if ((publicProtectedPrivate == PUBLIC_PART)
-                    && (funcPublic.length() > 0)) {
-                sb.append(LINE_SEPARATOR)
-		    .append(" public:").append(funcPublic.toString());
-                isVisibilityLinePrinted = true;
-            }
-
-            while (behEnum.hasNext()) {
-                Object bf = behEnum.next();
-                if ((((publicProtectedPrivate == PUBLIC_PART)
-                          && Model.getFacade().isPublic(bf))
-                         || ((publicProtectedPrivate == PROTECTED_PART)
-                         && Model.getFacade().isProtected(bf))
-                         || ((publicProtectedPrivate == PRIVATE_PART)
-                         && Model.getFacade().isPrivate(bf)))
-                        && ((generatorPass == HEADER_PASS)
-                        || (checkGenerateOperationBody(bf)))) {
-                    if ((!isVisibilityLinePrinted)
-                            && (generatorPass == HEADER_PASS)) {
-                        isVisibilityLinePrinted = true;
-                        if (publicProtectedPrivate == PUBLIC_PART) {
-                            sb.append(LINE_SEPARATOR).append(" public:");
-                        } else if (publicProtectedPrivate == PROTECTED_PART) {
-                            sb.append(LINE_SEPARATOR).append(" protected:");
-                        } else if (publicProtectedPrivate == PRIVATE_PART) {
-                            sb.append(LINE_SEPARATOR).append(" private:");
-                        }
-                    }
-
-                    sb.append(generate(bf));
-
-                    // helper for tagged values
-                    String tv = generateTaggedValues(bf, ALL_BUT_DOC_TAGS);
-
-                    if ((Model.getFacade().isAClass(cls))
-                            && (Model.getFacade().isAOperation(bf))
-                            && (!Model.getFacade().isAbstract(bf))
-                            && (checkGenerateOperationBody(bf))) {
-                        // there is no ReturnType in behavioral feature (nsuml)
-                        sb.append(LINE_SEPARATOR)
-                            .append(generateMethodBody(bf));
-                    } else {
-                        sb.append(";").append(LINE_SEPARATOR);
-                        if (tv.length() > 0) {
-                            sb.append(INDENT).append(tv).append(LINE_SEPARATOR);
-                        }
-                    }
-                }
-            }
-        }
+	    if (funcs[i].toString().trim().length() > 0) {
+		if (generatorPass == HEADER_PASS) {
+		    sb.append(LINE_SEPARATOR)
+			.append(' ').append(PART_NAME[i]).append(':')
+			    .append(LINE_SEPARATOR);
+		}
+		sb.append(funcs[i]);
+	    }
+	}
     }
 
     /**
