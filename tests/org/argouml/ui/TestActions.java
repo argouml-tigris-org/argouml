@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -21,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.ui;
 
 import java.awt.event.ActionEvent;
@@ -32,14 +32,15 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.UMLAction;
 
 /**
+ * Tests for org.argouml.ui.Actions.
+ *
  * @author jaap.branderhorst@xs4all.nl
  * Jul 21, 2003
  */
 public class TestActions extends TestCase {
 
     private class MockGlobalAction extends UMLAction {
-
-        private boolean _shouldBeEnabledCalled = false;
+        public MockGlobalAction() { super("test"); }
 
         /**
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -48,30 +49,31 @@ public class TestActions extends TestCase {
 
         }
 
-        public MockGlobalAction() {
-            super("test");
-        }
-
         /**
-         * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled(java.lang.Object[])
+         * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
          */
-        public boolean shouldBeEnabled(Object[] targets) {
-            setShouldBeEnabledCalled(true);
+        public boolean shouldBeEnabled() {
+            setCalled(true);
             return true;
         }
 
+
+        private boolean _called = false;
+
         /**
-         * @return
+         * @return true if {@link #shouldBeEnabled(java.lang.Object[])} 
+	 *              is called.
          */
-        public boolean isShouldBeEnabledCalled() {
-            return _shouldBeEnabledCalled;
+        public boolean isCalled() {
+            return _called;
         }
 
         /**
-         * @param b
+         * @param b true when {@link #shouldBeEnabled(java.lang.Object[])} 
+         *          is called.
          */
-        public void setShouldBeEnabledCalled(boolean b) {
-            _shouldBeEnabledCalled = b;
+        public void setCalled(boolean b) {
+            _called = b;
         }
 
     }
@@ -84,8 +86,8 @@ public class TestActions extends TestCase {
     }
 
     /**
-     * Tests if targetSet on the singleton instance of Actions updates the registred
-     * global actions.    
+     * Tests if targetSet on the singleton instance of Actions updates the 
+     * registred global actions.    
      */
     public void testTargetSet() {
         MockGlobalAction a = new MockGlobalAction();
@@ -98,7 +100,7 @@ public class TestActions extends TestCase {
                 new Object[] { null },
                 new Object[] { o });
         Actions.getInstance().targetSet(e);
-        assertTrue(a.isShouldBeEnabledCalled());
+        assertTrue(a.isCalled());
     }
 
 }
