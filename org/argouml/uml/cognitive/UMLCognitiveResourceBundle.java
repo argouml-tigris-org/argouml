@@ -387,56 +387,56 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
           "Consider using Singleton Pattern for <ocl>self</ocl>" },
 
         { "CrConsiderSingleton_desc" ,
-          "<ocl>self</ocl> has no non-static attributes nor any associations" +
-          "that are navigable away from instances of this class.  This means" +
-          "that every instance of this class will be identical to every" +
-          "other instance, since there will be nothing about the instances" +
-          "that can differentiate them.\n" +
+          "<ocl>self</ocl> has no non-static attributes nor any " +
+          "associations that are navigable away from instances of this " +
+          "class.  This means that every instance of this class will be " +
+          "identical to every other instance, since there will be nothing " +
+          "about the instances that can differentiate them.\n" +
           "\n" +
-          "Under these circumstances you should consider making explicit" +
-          "that you have exactly one instance of this class, by using the" +
-          "Singleton Pattern. Using the Singleton Pattern can save time and" +
-          "memory space. Within ArgoUML; this can be done by using the" +
+          "Under these circumstances you should consider making explicit " +
+          "that you have exactly one instance of this class, by using the " +
+          "Singleton Pattern. Using the Singleton Pattern can save time and " +
+          "memory space. Within ArgoUML; this can be done by using the " +
           "<<Singleton>> stereotype on this class.\n" +
           "\n" +
-          "If it is not your intent to have a single instance, you should" +
-          "define instance variables (i.e. non-static attributes) and/or" +
-          "outgoing associations that will represent differences bewteen" +
+          "If it is not your intent to have a single instance, you should " +
+          "define instance variables (i.e. non-static attributes) and/or " +
+          "outgoing associations that will represent differences bewteen " +
           "instances.\n" +
           "\n" +
-          "Having specified <ocl>self</ocl> as a Singleton, you need to" +
-          "define the class so there can only be a single instance. This" +
-          "will complete the information representation part of your" +
+          "Having specified <ocl>self</ocl> as a Singleton, you need to " +
+          "define the class so there can only be a single instance. This " +
+          "will complete the information representation part of your " +
           "design. To achieve this you need to do the following.\n" +
           "\n" +
-          "1. Define a static attribute (a class variable) holding the" +
+          "1. Define a static attribute (a class variable) holding the " +
           "instance. This must therefore have <ocl>self</ocl> as its type.\n" +
           "\n" +
-          "2. Provide only private constructors for <ocl>self</ocl> so that" +
-          "new instances cannot be made by other code. The creation of the" +
-          "single instance could be through a suitable helper operation," +
+          "2. Provide only private constructors for <ocl>self</ocl> so that " +
+          "new instances cannot be made by other code. The creation of the " +
+          "single instance could be through a suitable helper operation, " +
           "which invokes this private constructor just once.\n" +
           "\n" +
-          "3. Provide at least one constructor to override the default" +
-          "constructor, so that the default constructor is not used to" +
+          "3. Provide at least one constructor to override the default " +
+          "constructor, so that the default constructor is not used to " +
           "create multiple instances.\n" +
           "\n" +
-          "In the UML 1.3 standard, a constructor is an operation with the" +
-          "stereotype <<create>>. Although not strictly standard, ArgoUML" +
+          "In the UML 1.3 standard, a constructor is an operation with the " +
+          "stereotype <<create>>. Although not strictly standard, ArgoUML " +
           "will also accept <<Create>> as a stereotype for constructors.\n" +
           "\n" +
-          "By convention in Java and C++ a constructor has the same name as" +
-          "the class, is not static, and returns no value. Note that in" +
-          "ArgoUML this means you must remove the return value created by" +
-          "default for an operation. ArgoUML; will also accept any operation" +
-          "that follows these conventions as a constructor even if it is not" +
-          "stereotyped <<create>> or <<Create>>.\n" +
+          "By convention in Java and C++ a constructor has the same name as " +
+          "the class, is not static, and returns no value. Note that in " +
+          "ArgoUML this means you must remove the return value created by " +
+          "default for an operation. ArgoUML; will also accept any " +
+          "operation that follows these conventions as a constructor even if" +
+          "it is not stereotyped <<create>> or <<Create>>.\n" +
           "\n" +
-          "<<Singleton>> does not exist as a stereotype by default in" +
-          "ArgoUML; so you will need to create it the first time you use" +
-          "it. This can be done through the Stereotype property tab, reached" +
-          "using the NavStereo button on the class property sheet. The Base" +
-          "Class should be Class."},
+          "<<Singleton>> does not exist as a stereotype by default in " +
+          "ArgoUML; so you will need to create it the first time you use " +
+          "it. This can be done through the Stereotype property tab, " +
+          "reached using the NavStereo button on the class property sheet. " +
+          "The Base Class should be Class."},
 
         // Updated to reflect use of <<create>> stereotype for constructors and
         // lack of a wizard at this stage
@@ -445,60 +445,60 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
           "Singleton Stereotype Violated in <ocl>self</ocl>" },
 
         { "CrSingletonViolated_desc",
-          "<ocl>self</ocl> is marked with the <<Singleton>>; stereotype, but" +
-          "it does not satisfy the constraints imposed on Singletons" +
-          "(ArgoUML will also accept <<singleton>> stereotype as defining a" +
+          "<ocl>self</ocl> is marked with the <<Singleton>>; stereotype, " +
+          "but it does not satisfy the constraints imposed on Singletons " +
+          "(ArgoUML will also accept <<singleton>> stereotype as defining a " +
           "Singleton).\n" +
           "\n" +
-          "A Singleton class can have at most one instance.  This means that" +
-          "the class must meet the design criteria for a singleton.\n" +
+          "A Singleton class can have at most one instance.  This means " +
+          "that the class must meet the design criteria for a singleton.\n" +
           "\n" +
-          "1. It should have a static attribute (a class variable) to hold" +
+          "1. It should have a static attribute (a class variable) to hold " +
           "the instance.\n" +
           "\n" +
-          "2. It must have only private constructors so that new instances" +
+          "2. It must have only private constructors so that new instances " +
           "cannot be made by other code.\n" +
           "\n" +
-          "3.  It must have at least one constructor to override the default" +
-          "constructor, so that the default constructor is not used to" +
-          "create multiple instances.\n" +
+          "3.  It must have at least one constructor to override the " +
+          "default constructor, so that the default constructor is not used " +
+          "to create multiple instances.\n" +
           "\n" +
-          "Whenever you mark a class with a stereotype, the class should" +
-          "satisfy all constraints of the stereotype.  This is an important" +
-          "part of making a self-consistent and understangle design. Using" +
-          "the Singleton Pattern can save time and memory space.\n" +
+          "Whenever you mark a class with a stereotype, the class should " +
+          "satisfy all constraints of the stereotype.  This is an important " +
+          "part of making a self-consistent and understandable design. " +
+          "Using the Singleton Pattern can save time and memory space.\n" +
           "\n" +
-          "If you no longer want this class to be a Singleton, remove the" +
-          "<<Singleton>> or <<singleton>> stereotype by clicking on the" +
-          "class and selecting the blank selection on the stereotype" +
+          "If you no longer want this class to be a Singleton, remove the " +
+          "<<Singleton>> or <<singleton>> stereotype by clicking on the " +
+          "class and selecting the blank selection on the stereotype " +
           "drop-down within the properties tab.\n" +
           "\n" +
           "To apply the Singleton Pattern you should do the following.\n" +
           "\n" +
-          "1. Define a static attribute (a class variable) holding the" +
-          "instance. This must therefore have <ocl>self</ocl> as its" +
+          "1. Define a static attribute (a class variable) holding the " +
+          "instance. This must therefore have <ocl>self</ocl> as its " +
           "type.\n" +
           "\n" +
-          "2. Provide only private constructors for <ocl>self</ocl> so that" +
-          "new instances cannot be made by other code. The creation of the" +
-          "single instance could be through a suitable helper operation," +
+          "2. Provide only private constructors for <ocl>self</ocl> so that " +
+          "new instances cannot be made by other code. The creation of the " +
+          "single instance could be through a suitable helper operation, " +
           "which invokes this private constructor just once.\n" +
           "\n" +
-          "3. Provide at least one constructor to override the default" +
-          "constructor, so that the default constructor is not used to" +
+          "3. Provide at least one constructor to override the default " +
+          "constructor, so that the default constructor is not used to " +
           "create multiple instances.\n" +
           "\n" +
-          "In the UML 1.3 standard, a constructor is an operation with the" +
-          "stereotype <<create>>. Although not strictly standard, ArgoUML" +
-          "will also accept <<Create>> as a stereotype for" +
+          "In the UML 1.3 standard, a constructor is an operation with the " +
+          "stereotype <<create>>. Although not strictly standard, ArgoUML " +
+          "will also accept <<Create>> as a stereotype for " +
           "constructors.\n" +
           "\n" +
-          "By convention in Java and C++ a constructor has the same name as" +
-          "the class, is not static, and returns no value. Note that in" +
-          "ArgoUML this means you must remove the return value created by" +
-          "default for an operation. ArgoUML; will also accept any operation" +
-          "that follows these conventions as a constructor even if it is not" +
-          "stereotyped <<create>> or <<Create>>." },
+          "By convention in Java and C++ a constructor has the same name as " +
+          "the class, is not static, and returns no value. Note that in " +
+          "ArgoUML this means you must remove the return value created by " +
+          "default for an operation. ArgoUML; will also accept any " +
+          "operation that follows these conventions as a constructor even " +
+          "if it is not stereotyped <<create>> or <<Create>>." },
 
         { "CrNodesOverlap_head" ,
                 "Clean Up Diagram" },
