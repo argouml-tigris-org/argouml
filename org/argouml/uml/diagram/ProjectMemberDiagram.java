@@ -40,6 +40,8 @@ import org.tigris.gef.util.Util;
  * @author Piotr Kaminski
  */
 public class ProjectMemberDiagram extends ProjectMember {
+    private static final Logger LOG = 
+        Logger.getLogger(ProjectMemberDiagram.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -52,7 +54,6 @@ public class ProjectMemberDiagram extends ProjectMember {
     // static variables
 
     public static OCLExpander expander = null;
-    private Logger _cat = Logger.getLogger(this.getClass());
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -79,15 +80,24 @@ public class ProjectMemberDiagram extends ProjectMember {
     public ArgoDiagram getDiagram() {
         return _diagram;
     }
+    /**
+     * @see org.argouml.kernel.ProjectMember#getType()
+     */
     public String getType() {
         return MEMBER_TYPE;
     }
+    /**
+     * @see org.argouml.kernel.ProjectMember#getFileExtension()
+     */
     public String getFileExtension() {
         return FILE_EXT;
     }
 
+    /**
+     * @see org.argouml.kernel.ProjectMember#load()
+     */
     public void load() {
-        _cat.debug("Reading " + getURL());
+        LOG.debug("Reading " + getURL());
         PGMLParser.SINGLETON.setOwnerRegistry(getProject().getUUIDRefs());
         ArgoDiagram d =
 	    (ArgoDiagram) PGMLParser.SINGLETON.readDiagram(getURL());
@@ -98,15 +108,8 @@ public class ProjectMemberDiagram extends ProjectMember {
 
     /**
      * @deprecated since 0.l5.3 since the function in the
-     * interface is removed.
-     */
-    public void save(String path, boolean overwrite) {
-        save(path, overwrite, null);
-    }
-
-    /**
-     * @deprecated since 0.l5.3 since the function in the
      * interface is deprecated since 0.13.6.
+     * TODO: This is still used in 0.16.
      */
     public void save(String path, boolean overwrite, Writer writer) {
         if (expander == null)

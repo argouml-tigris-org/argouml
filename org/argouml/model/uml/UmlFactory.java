@@ -80,14 +80,10 @@ import ru.novosoft.uml.behavior.common_behavior.MSendAction;
 import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.behavior.common_behavior.MTerminateAction;
 import ru.novosoft.uml.behavior.common_behavior.MUninterpretedAction;
-import ru.novosoft.uml.behavior.state_machines.MCallEvent;
-import ru.novosoft.uml.behavior.state_machines.MChangeEvent;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
-import ru.novosoft.uml.behavior.state_machines.MEvent;
 import ru.novosoft.uml.behavior.state_machines.MFinalState;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
 import ru.novosoft.uml.behavior.state_machines.MPseudostate;
-import ru.novosoft.uml.behavior.state_machines.MSignalEvent;
 import ru.novosoft.uml.behavior.state_machines.MSimpleState;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
@@ -95,7 +91,6 @@ import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.behavior.state_machines.MStubState;
 import ru.novosoft.uml.behavior.state_machines.MSubmachineState;
 import ru.novosoft.uml.behavior.state_machines.MSynchState;
-import ru.novosoft.uml.behavior.state_machines.MTimeEvent;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
@@ -279,7 +274,6 @@ public class UmlFactory extends AbstractUmlModelFactory {
         // connection type first and then the elements to be connected
         
         Object connection = null;
-        Object lastConnection = null;
         for (int i = 0; i < VALID_CONNECTIONS.length; ++i) {
             connection = VALID_CONNECTIONS[i][0];
             ArrayList validItems =
@@ -1027,73 +1021,42 @@ public class UmlFactory extends AbstractUmlModelFactory {
         }
     }
 
-    /**
-     * Factored this method out of delete to simplify the design of the delete
-     * operation
-     * @param elem
-     */
-    private void deleteEvent(MEvent elem) {
-        getStateMachines().deleteEvent(elem);
-        if (elem instanceof MSignalEvent) {
-            getStateMachines().deleteSignalEvent((MSignalEvent) elem);
-        } else if (elem instanceof MCallEvent) {
-            getStateMachines().deleteCallEvent((MCallEvent) elem);
-        } else if (elem instanceof MTimeEvent) {
-            getStateMachines().deleteTimeEvent((MTimeEvent) elem);
-        } else if (elem instanceof MChangeEvent) {
-            getStateMachines().deleteChangeEvent((MChangeEvent) elem);
-        }
-    }
-
-    /**
-     * Used by the copy functions. Do not call this function directly.<p>
-     *
-     * Extensions? I don't think we use them anywhere.
-     *
-     * @deprecated by Linus Tolke as of 0.15.4. Should be made private (if
-     * at all used).
-     * @param source MBase
-     * @param target MBase
-     */
-    public void doCopyBase(MBase source, MBase target) {
-    }
-    
     class ObjectCreateInfo {
     
-        private Object _factory;
+        private Object factory;
 
-        private String _createMethod;
+        private String createMethod;
 
-        private Class _javaClass;
+        private Class javaClass;
 
 //        ObjectCreateInfo (Class javaClass, Object fact, String meth) {
 //            this(javaClass, fact, meth, fact, meth);
 //        }
         
         ObjectCreateInfo (Class cls, Object fact, String meth) {
-            _javaClass = cls;
-            _factory = fact;
-            _createMethod = meth;
+            javaClass = cls;
+            factory = fact;
+            createMethod = meth;
         }
         /**
          * @return
          */
         public Class getJavaClass() {
-            return _javaClass;
+            return javaClass;
         }
 
         /**
          * @return
          */
         public String getCreateMethod() {
-            return _createMethod;
+            return createMethod;
         }
 
         /**
          * @return
          */
         public Object getFactory() {
-            return _factory;
+            return factory;
         }
 
     }
@@ -1138,7 +1101,6 @@ public class UmlFactory extends AbstractUmlModelFactory {
             // throw new InvalidObjectRequestException
             //("Cannot identify the object type", entity);
         }
-        String mName = oi.getCreateMethod();
         Method method = null;
         try {
             method = oi.getFactory().getClass().getMethod(oi.getCreateMethod(),

@@ -554,12 +554,12 @@ public class FigUseCase extends FigNodeModelElement {
 
     public Dimension getMinimumSize() {
 
-        Dimension textSize = _getTextSize();
+        Dimension textSize = getTextSize();
 
-        Dimension _size = _calcEllipse(textSize, _MIN_VERT_PADDING);
+        Dimension size = calcEllipse(textSize, _MIN_VERT_PADDING);
 
-        return new Dimension(Math.max(_size.width, 100),
-			     Math.max(_size.height, 60));
+        return new Dimension(Math.max(size.width, 100),
+			     Math.max(size.height, 60));
     }
 
     /**
@@ -569,7 +569,7 @@ public class FigUseCase extends FigNodeModelElement {
      * @return  The dimensions of the rectangle
      */
 
-    private Dimension _getTextSize() {
+    private Dimension getTextSize() {
         Dimension minSize = getNameFig().getMinimumSize();
 
         // Now allow for the extension points, if they are displayed
@@ -606,23 +606,23 @@ public class FigUseCase extends FigNodeModelElement {
 
     /**
      * A private utility to calculate the bounding oval for the given
-     *   rectangular text box.<p>
+     * rectangular text box.<p>
      *
      * To sufficiently constrain the problem, we define that there is a gap
-     *   given by the parameter <code>vertPadding</code> above the top of the
-     *   box to the top of the oval.<p>
+     * given by the parameter <code>vertPadding</code> above the top of the
+     * box to the top of the oval.<p>
      *
      * All computations are done in double, and then converted to integer at
-     *   the end.<p>
+     * the end.<p>
      *
      * @param rectSize     The dimensions of the rectangle to be bounded
      *
      * @param vertPadding  The padding between the top of the box and the top
      *                     of the ellipse.
      *
-     * @return             The dimensions of the required oval */
-
-    private Dimension _calcEllipse(Dimension rectSize, int vertPadding) {
+     * @return             The dimensions of the required oval.
+     */
+    private Dimension calcEllipse(Dimension rectSize, int vertPadding) {
 
         // Work out the radii of the ellipse, a and b. The top right corner of
         // the ellipse (Cartesian coordinates, centred on the origin) will be
@@ -679,7 +679,7 @@ public class FigUseCase extends FigNodeModelElement {
         // Work out the size of the name and extension point rectangle, and
         // hence the vertical padding
 
-        Dimension textSize = _getTextSize();
+        Dimension textSize = getTextSize();
         int vPadding = (newH - textSize.height) / 2;
 
         // Adjust the alignment of the name.
@@ -701,7 +701,7 @@ public class FigUseCase extends FigNodeModelElement {
 
             int currY = y + vPadding + nameSize.height + _SPACER;
             int sepLen =
-		2 * (int) (_calcX(newW / 2.0,
+		2 * (int) (calcX(newW / 2.0,
 				  newH / 2.0,
 				  newH / 2.0 - (currY - y)));
 
@@ -720,13 +720,12 @@ public class FigUseCase extends FigNodeModelElement {
             // now we assume that extension points are the width of the overall
             // text rectangle (true unless the name is wider than any EP).
 
-            Dimension epSize =
-		getUpdatedSize(_epVec,
-			       x + ((newW - textSize.width) / 2),
-			       currY,
-			       textSize.width,
-			       (textSize.height - nameSize.height
-				- _SPACER * 2 - 1));
+            getUpdatedSize(_epVec,
+                    	   x + ((newW - textSize.width) / 2),
+                    	   currY,
+                    	   textSize.width,
+                    	   (textSize.height - nameSize.height
+                    	    - _SPACER * 2 - 1));
         }
 
         // Set the bounds of the bigPort and cover
@@ -755,7 +754,7 @@ public class FigUseCase extends FigNodeModelElement {
      * @param y  Y coordinate
      * @return   Positive X coordinate for the given Y coordinate
      */
-    private double _calcX(double a, double b, double y) {
+    private double calcX(double a, double b, double y) {
         return (a * Math.sqrt(b * b - y * y)) / b;
     }
 
@@ -861,12 +860,6 @@ public class FigUseCase extends FigNodeModelElement {
      *   this methods calculates where a connected edge ends.<p>
      */
     public class FigMyCircle extends FigCircle {
-	/**
-	 * @deprecated by Linus Tolke as of 0.15.4. Use your own logger
-	 * in your class. This will be removed.
-	 */
-        protected Logger cat = Logger.getLogger(FigMyCircle.class);
-
         /**
          * Constructor just invokes the parent constructor.<p>
          *

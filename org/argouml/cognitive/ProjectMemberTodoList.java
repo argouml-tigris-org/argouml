@@ -64,13 +64,17 @@ public class ProjectMemberTodoList extends ProjectMember
 	super(name, p);
     }
 
-    public String getType()
-    {
+    /**
+     * @see org.argouml.kernel.ProjectMember#getType()
+     */
+    public String getType() {
 	return "todo";
     }
 
-    public String getFileExtension()
-    {
+    /**
+     * @see org.argouml.kernel.ProjectMember#getFileExtension()
+     */
+    public String getFileExtension() {
 	return TODO_EXT;
     }
 
@@ -130,11 +134,13 @@ public class ProjectMemberTodoList extends ProjectMember
 	return out;
     }
 
-    public void load(InputStream is) throws IOException, SAXException
-    {
+    public void load(InputStream is) {
 	TodoParser.SINGLETON.readTodoList(is, true);
     }
 
+    /**
+     * @see org.argouml.kernel.ProjectMember#load()
+     */
     public void load() throws IOException, SAXException
     {
 	InputStream is = null;
@@ -148,6 +154,7 @@ public class ProjectMemberTodoList extends ProjectMember
     /**
      * @deprecated since 0.l5.3 since the function in the
      * interface is deprecated since 0.13.6.
+     * TODO: Still used in 0.16.
      */
     public void save(String path, boolean overwrite, Writer writer)
     {
@@ -169,15 +176,6 @@ public class ProjectMemberTodoList extends ProjectMember
 	expander.expand(writer, this, "", "");
 	
 	cat.debug("Done saving TODO LIST!!!");
-    }
-
-    /**
-     * @deprecated since 0.l5.3 since the function in the
-     * interface is removed.
-     */
-    public void save(String path, boolean overwrite)
-    {
-	save(path, overwrite, null);
     }
 }
 

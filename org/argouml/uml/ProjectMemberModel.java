@@ -45,7 +45,7 @@ import ru.novosoft.uml.model_management.MModel;
 
 public class ProjectMemberModel extends ProjectMember {
 
-    private static Logger cat =
+    private static final Logger LOG =
         Logger.getLogger(org.argouml.uml.ProjectMemberModel.class);
 
     ////////////////////////////////////////////////////////////////
@@ -86,9 +86,15 @@ public class ProjectMemberModel extends ProjectMember {
         _model = /*(MModel)*/model;
     }
 
+    /**
+     * @see org.argouml.kernel.ProjectMember#getType()
+     */
     public String getType() {
         return MEMBER_TYPE;
     }
+    /**
+     * @see org.argouml.kernel.ProjectMember#getFileExtension()
+     */
     public String getFileExtension() {
         return FILE_EXT;
     }
@@ -96,26 +102,21 @@ public class ProjectMemberModel extends ProjectMember {
     ////////////////////////////////////////////////////////////////
     // actions
 
+    /**
+     * @see org.argouml.kernel.ProjectMember#load()
+     */
     public void load() throws java.io.IOException, org.xml.sax.SAXException {
-        cat.info("Reading " + getURL());
+        LOG.info("Reading " + getURL());
         XMIParser.SINGLETON.readModels(_project, getURL());
         _model = XMIParser.SINGLETON.getCurModel();
         _project.setUUIDRefs(XMIParser.SINGLETON.getUUIDRefs());
-        cat.info("Done reading " + getURL());
-    }
-
-    /**
-     * @deprecated since 0.l5.3 since the function in the
-     * interface is removed.
-     */
-    public void save(String path, boolean overwrite) throws Exception {
-
-	throw new UnsupportedOperationException("This operation is no longer supported");
+        LOG.info("Done reading " + getURL());
     }
 
     /**
      * @deprecated since 0.l5.3 since the function in the
      * interface is deprecated since 0.13.6.
+     * TODO: This is still used in 0.16.
      */
     public void save(String path, boolean overwrite, Writer writer)
         throws Exception {
@@ -154,7 +155,7 @@ public class ProjectMemberModel extends ProjectMember {
         if (xmiwriter != null) {
             Iterator it = xmiwriter.getNotContainedElements().iterator();
             while (it.hasNext())
-                cat.error("Not contained in XMI: " + it.next());
+                LOG.error("Not contained in XMI: " + it.next());
         }
     }
 

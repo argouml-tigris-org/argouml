@@ -32,7 +32,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -40,7 +39,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.util.Iterator;
 import java.util.Vector;
@@ -106,13 +104,6 @@ public abstract class FigEdgeModelElement
         MElementListener,
         NotationContext,
         ArgoNotationEventListener {
-
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
-     */
-    protected static Logger cat =
-        Logger.getLogger(FigEdgeModelElement.class);
 
     private static final Logger LOG =
         Logger.getLogger(FigEdgeModelElement.class);
@@ -204,6 +195,9 @@ public abstract class FigEdgeModelElement
         return _id;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getTipString(java.awt.event.MouseEvent)
+     */
     public String getTipString(MouseEvent me) {
         ToDoItem item = hitClarifier(me.getX(), me.getY());
         String tip = "";
@@ -219,6 +213,9 @@ public abstract class FigEdgeModelElement
         return tip;
     }
 
+    /**
+     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
+     */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
         ToDoList list = Designer.TheDesigner.getToDoList();
@@ -366,6 +363,9 @@ public abstract class FigEdgeModelElement
         return _stereo;
     }
 
+    /**
+     * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
+     */
     public void vetoableChange(PropertyChangeEvent pce) {
         Object src = pce.getSource();
         if (src == getOwner()) {
@@ -376,7 +376,6 @@ public abstract class FigEdgeModelElement
     }
 
     public void delayedVetoableChange(PropertyChangeEvent pce) {
-        Object src = pce.getSource();
         // update any text, colors, fonts, etc.
         modelChanged(null);
         // update the relative sizes and positions of internel Figs
@@ -385,19 +384,18 @@ public abstract class FigEdgeModelElement
         endTrans();
     }
 
+    /**
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
     public void propertyChange(PropertyChangeEvent pve) {
         Object src = pve.getSource();
         String pName = pve.getPropertyName();
         if (pName.equals("editing")
             && Boolean.FALSE.equals(pve.getNewValue())) {
             LOG.debug("finished editing");
-            try {
-                textEdited((FigText) src);
-                calcBounds();
-                endTrans();
-            } catch (PropertyVetoException ex) {
-                LOG.error("could not parse the text entered.", ex);
-            }
+            textEdited((FigText) src);
+            calcBounds();
+            endTrans();
         } else
             super.propertyChange(pve);
     }
@@ -408,7 +406,7 @@ public abstract class FigEdgeModelElement
      * and update the model.  This class handles the name, subclasses
      * should override to handle other text elements.
      */
-    protected void textEdited(FigText ft) throws PropertyVetoException {
+    protected void textEdited(FigText ft) {
         if (ft == _name) {
             if (getOwner() == null)
                 return;
@@ -423,12 +421,27 @@ public abstract class FigEdgeModelElement
     ////////////////////////////////////////////////////////////////
     // event handlers - MouseListener implementation
 
+    /**
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     */
     public void mousePressed(MouseEvent me) {
     }
+
+    /**
+     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+     */
     public void mouseReleased(MouseEvent me) {
     }
+
+    /**
+     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+     */
     public void mouseEntered(MouseEvent me) {
     }
+
+    /**
+     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+     */
     public void mouseExited(MouseEvent me) {
     }
 
@@ -448,6 +461,9 @@ public abstract class FigEdgeModelElement
         me.consume();
     }
 
+    /**
+     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+     */
     public void keyPressed(KeyEvent ke) {
         if (ke.isConsumed())
             return;
@@ -456,11 +472,16 @@ public abstract class FigEdgeModelElement
     }
 
     /**
+     * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+     *
      * Not used, do nothing.
      */
     public void keyReleased(KeyEvent ke) {
     }
 
+    /**
+     * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+     */
     public void keyTyped(KeyEvent ke) {
     }
 
@@ -520,6 +541,9 @@ public abstract class FigEdgeModelElement
         }
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     */
     public void setOwner(Object newOwner) {
         super.setOwner(newOwner);
         if (newOwner != null) {
@@ -541,23 +565,35 @@ public abstract class FigEdgeModelElement
 
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     */
     public void propertySet(MElementEvent mee) {
         modelChanged(mee);
         damage();
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
+     */
     public void listRoleItemSet(MElementEvent mee) {
         
         modelChanged(mee);
         damage();
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
+     */
     public void recovered(MElementEvent mee) {
         
         modelChanged(mee);
         damage();
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     */
     public void removed(MElementEvent mee) {
         
         LOG.debug("deleting: " + this + mee);
@@ -570,12 +606,18 @@ public abstract class FigEdgeModelElement
 
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     */
     public void roleAdded(MElementEvent mee) {
         
         modelChanged(mee);
         damage();
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     */
     public void roleRemoved(MElementEvent mee) {
         
         modelChanged(mee);
@@ -616,12 +658,27 @@ public abstract class FigEdgeModelElement
         damage();
     }
 
+    /**
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationAdded(org.argouml.application.events.ArgoNotationEvent)
+     */
     public void notationAdded(ArgoNotationEvent event) {
     }
+
+    /**
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationRemoved(org.argouml.application.events.ArgoNotationEvent)
+     */
     public void notationRemoved(ArgoNotationEvent event) {
     }
+
+    /**
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderAdded(org.argouml.application.events.ArgoNotationEvent)
+     */
     public void notationProviderAdded(ArgoNotationEvent event) {
     }
+
+    /**
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderRemoved(org.argouml.application.events.ArgoNotationEvent)
+     */
     public void notationProviderRemoved(ArgoNotationEvent event) {
     }
 
@@ -639,75 +696,12 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * helper method for hit(Rectangle).
-     * 
-     * Checks if a point (x, y) is within maxDist units of a polygon poly.
-     * This is true if there is a point on some leg of the polygon such
-     * that the point is located orthogonally to it and the distance to the
-     * point is not greater than maxDist.
-     * 
-     * @param poly is the Polygon.
-     * @param x is the x-coordinate of the point.
-     * @param y is the y-coordinate of the point.
-     * @param maxDist is the longest acceptable distance.
-     * @return true if the point is not further than maxDist away from the
-     * polygon, otherwise false.
+     * @see org.tigris.gef.presentation.Fig#hit(java.awt.Rectangle)
      */
-    private boolean isPolyDistLessThan(Polygon poly, int x, int y,
-				       double maxDist) {
-	int vx, vy;
-	int px, py;
-	int dx, dy;
-	int tx, ty;
-	double vk, pd, dd;
-
-	for (int i = 0; i + 1 < poly.npoints; i++) {
-	    // Ignore zero length legs, since these have no direction vector
-	    if (poly.xpoints[i] == poly.xpoints[i + 1]
-		&& poly.ypoints[i] == poly.ypoints[i + 1]) {
-
-		continue;
-
-	    }
-
-	    // Translate origo to the beginning of the leg
-	    tx = x - poly.xpoints[i];
-	    ty = y - poly.ypoints[i];
-	    // Get the direction vector of the leg
-	    vx = poly.xpoints[i + 1] - poly.xpoints[i];
-	    vy = poly.ypoints[i + 1] - poly.ypoints[i];
-	    // Projection constant, (t * v) / (v * v)
-	    vk = (double) (tx * vx + ty * vy) / (vx * vx + vy * vy);
-	    // Project the point on the direction vector
-	    px = (int) (vk * vx);
-	    py = (int) (vk * vy);
-	    // Get the remainder of the point vector, orthogonal to the
-	    // direction vector.
-	    dx = tx - px;
-	    dy = ty - py;
-
-	    if (vx != 0)
-		pd = (double) px / vx;
-	    else
-		pd = (double) py / vy;
-
-	    // Check that the point is orthogonal to some point on this leg
-	    if (pd >= 0. && pd <= 1.) {
-		// Check if the length of the remainder vector, ie the
-		// orthogonal distance, is less than maxDist
-		if (Math.sqrt(dx * dx + dy * dy) <= maxDist)
-		    return true;
-	    }
-	}
-
-	return false;
-    }
-
     public boolean hit(Rectangle r) {
 	// Check if labels etc have been hit
 	// Apparently GEF does require PathItems to be "annotations"
 	// which ours aren't, so until that is resolved...
-	int size = _pathItems.size();
 	Iterator it = getPathItemFigs().iterator();
 	while (it.hasNext()) {
 	    Fig f = (Fig) it.next();
@@ -718,41 +712,6 @@ public abstract class FigEdgeModelElement
 	return super.hit(r);
     }
 
-// TODO: Explain the added value of this method to that given in
-// the GEF bas class. If this does actually add any value then
-// implement in GEF, not ArgoUML.
-// From my testing the GEF hit method work fine. Bob Tarling 14 Feb 2004
-//    /**
-//     * Necessary since GEF contains some errors regarding the hit subject.
-//     * TODO: make the bigBounds port go off a little less
-//     * @see org.tigris.gef.presentation.Fig#hit(Rectangle)
-//     */
-//    public boolean hit(Rectangle r) {
-//        Polygon poly = ((FigPoly) _fig).getPolygon();
-//	Rectangle rb = poly.getBounds();
-//	double MAX_EDGE_HIT_DIST = 6.;
-//
-//	// Check if labels etc have been hit
-//	int size = _pathItems.size();
-//	for (int i = 0; i < size; i++) {
-//	    Fig f = getPathItemFig((FigEdge.PathItem) _pathItems.elementAt(i));
-//	    if (f.hit(r))
-//		return true;
-//	}
-//
-//	rb.setBounds(
-//		(int) (rb.x - MAX_EDGE_HIT_DIST),
-//		(int) (rb.y - MAX_EDGE_HIT_DIST),
-//		(int) (rb.width + 2 * MAX_EDGE_HIT_DIST),
-//		(int) (rb.height + 2 * MAX_EDGE_HIT_DIST));
-//	if (!rb.intersects(r))
-//	    return false;
-//
-//	return isPolyDistLessThan(poly,
-//				  r.x + (r.width / 2),
-//				  r.y + (r.height / 2),
-//				  MAX_EDGE_HIT_DIST);
-//    }
 
     /**
      * @see org.tigris.gef.presentation.Fig#delete()

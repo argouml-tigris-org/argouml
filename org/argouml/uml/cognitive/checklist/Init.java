@@ -41,27 +41,11 @@ import org.argouml.i18n.Translator;
  * @see org.argouml.cognitive.checklist.CheckManager
  */
 public class Init {
-
-    /**
-     * @deprecated as of 0.15.3. Visibility changed to private.
-     */
-    protected static Logger cat =
-	Logger.getLogger(Init.class);
-
     /** 
      * static initializer, register all appropriate critics<p>
      */
     public static void init() {
 	createChecklists();
-    }
-
-    /**
-     * static initializer, register all appropriate critics<p>
-     *
-     * @deprecated as of 0.15.3. use @see #init()
-     */
-    public static void init(Locale locale) {
-	init();
     }
 
 

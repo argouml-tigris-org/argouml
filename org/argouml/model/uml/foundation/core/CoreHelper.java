@@ -90,11 +90,7 @@ import ru.novosoft.uml.model_management.MModel;
  */
 public class CoreHelper {
 
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
-     */
-    protected static Logger cat = Logger.getLogger(CoreHelper.class);
+    private static final Logger LOG = Logger.getLogger(CoreHelper.class);
 
     /**
      * Don't allow instantiation.
@@ -105,10 +101,12 @@ public class CoreHelper {
     /**
      * Singleton instance.
      */
-    private static CoreHelper SINGLETON = new CoreHelper();
+    private static final CoreHelper SINGLETON = new CoreHelper();
 
     /**
      * Singleton instance access method.
+     *
+     * @return The instance.
      */
     public static CoreHelper getHelper() {
         return SINGLETON;
@@ -309,7 +307,7 @@ public class CoreHelper {
         Iterator parents = ((MClassifier) classifier).getParents().iterator();
         while (parents.hasNext()) {
             MClassifier parent = (MClassifier) parents.next();
-            cat.debug("Adding attributes for: " + parent);
+            LOG.debug("Adding attributes for: " + parent);
             result.addAll(getAttributesInh(parent));
         }
         return result;
@@ -351,7 +349,6 @@ public class CoreHelper {
         MOperation operation = (MOperation) operation1;
         
         Vector returnParams = new Vector();
-        MParameter firstReturnParameter = null;
         Iterator params = operation.getParameters().iterator();
         while (params.hasNext()) {
             MParameter parameter = (MParameter) params.next();
@@ -368,7 +365,7 @@ public class CoreHelper {
 	    //cat.debug("No ReturnParameter found!");
 	    return null;
 	default :
-	    cat.debug(
+	    LOG.debug(
 		      "More than one ReturnParameter found, returning first!");
 	    return (MParameter) returnParams.elementAt(0);
         }
@@ -381,7 +378,6 @@ public class CoreHelper {
      */
     public Collection getReturnParameters(Object operation) {
         Vector returnParams = new Vector();
-        MParameter firstReturnParameter = null;
         Iterator params = ((MOperation) operation).getParameters().iterator();
         while (params.hasNext()) {
             MParameter parameter = (MParameter) params.next();
@@ -499,10 +495,8 @@ public class CoreHelper {
     public MDependency buildSupportDependency(MModelElement from,
 					      MModelElement to) {
         MDependency dep = CoreFactory.getFactory().buildDependency(from, to);
-        MStereotype stereo =
-            ExtensionMechanismsFactory.getFactory()
-	        .buildStereotype(dep, "support",
-				 getCurrentModel());
+        ExtensionMechanismsFactory.getFactory()
+	    .buildStereotype(dep, "support", getCurrentModel());
         return dep;
     }
 
@@ -535,17 +529,18 @@ public class CoreHelper {
      */
     public Collection getBehavioralFeatures(Object clazz) {
         if (ModelFacade.isAClassifier(clazz)) {
-        List ret = new ArrayList();
+            List ret = new ArrayList();
             Iterator it = ModelFacade.getFeatures(clazz).iterator();
-        while (it.hasNext()) {
-            Object o = it.next();
-            if (ModelFacade.isABehavioralFeature(o)) {
-                ret.add(o);
-            }      
-        }        
-        return ret;
-        } else
+            while (it.hasNext()) {
+                Object o = it.next();
+                if (ModelFacade.isABehavioralFeature(o)) {
+                    ret.add(o);
+                }      
+            }        
+            return ret;
+        } else {
             throw new IllegalArgumentException("Argument is not a classifier");
+        }
     }
 
     /**
@@ -651,7 +646,6 @@ public class CoreHelper {
             return new ArrayList();
         Iterator it = classifier.getClientDependencies().iterator();
         List list = new ArrayList();
-        MNamespace model = getCurrentModel();
         while (it.hasNext()) {
             Object clientDependency = it.next();
             if (ModelFacade.isAAbstraction(clientDependency)) {
@@ -1079,9 +1073,12 @@ public class CoreHelper {
      */
     public Object getSource(Object relationship) {        
         if (!(relationship instanceof MRelationship)
-	    && !(ModelFacade.isALink(relationship)) && !(relationship instanceof CommentEdge)) {
+	    && !(ModelFacade.isALink(relationship)) 
+	    && !(relationship instanceof CommentEdge)) {
 
-            throw new IllegalArgumentException("Argument " + relationship.toString() + " is not "
+            throw new IllegalArgumentException("Argument " 
+                    			       + relationship.toString() 
+                    			       + " is not "
 					       + "a relationship");
 
 	}
@@ -1128,7 +1125,7 @@ public class CoreHelper {
             return ModelFacade.getBase(include);
         }
         if (relationship instanceof CommentEdge) {
-            return ((CommentEdge)relationship).getSource();
+            return ((CommentEdge) relationship).getSource();
         }
         return null;
     }
@@ -1154,7 +1151,9 @@ public class CoreHelper {
     public Object getDestination(Object relationship) {
         
 	if (!(relationship instanceof MRelationship)
-	    && !(ModelFacade.isALink(relationship)) && !(relationship instanceof CommentEdge)) {
+	    && !(ModelFacade.isALink(relationship)) 
+	    && !(relationship instanceof CommentEdge)) {
+
 	    throw new IllegalArgumentException("Argument is not "
 					       + "a relationship");
 	}
@@ -1206,7 +1205,7 @@ public class CoreHelper {
             return ModelFacade.getAddition(include);
         }
         if (relationship instanceof CommentEdge) {
-            return ((CommentEdge)relationship).getDestination();
+            return ((CommentEdge) relationship).getDestination();
         }
         return null;
     }
@@ -1380,6 +1379,7 @@ public class CoreHelper {
         }
         return true;
     }
+
     private boolean isValidNamespace(MGeneralization gen, MNamespace ns) {
         if (gen.getParent() == null || gen.getChild() == null)
             return true;
@@ -1389,6 +1389,7 @@ public class CoreHelper {
             return true;
         return false;
     }
+
     private boolean isValidNamespace(MStructuralFeature struc, MNamespace ns) {
         if (struc.getType() == null || struc.getOwner() == null)
             return true;

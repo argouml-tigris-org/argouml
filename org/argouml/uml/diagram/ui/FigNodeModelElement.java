@@ -22,9 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigNodeModelElement.java
-// Classes: FigNodeModelElement
-
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
@@ -49,9 +46,7 @@ import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.text.ParseException;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.Icon;
@@ -127,7 +122,7 @@ public abstract class FigNodeModelElement
     ////////////////////////////////////////////////////////////////
     // constants
 
-    private NotationName _currentNotationName;
+    private NotationName currentNotationName;
     public static Font LABEL_FONT;
     public static Font ITALIC_LABEL_FONT;
     public final int MARGIN = 2;
@@ -145,11 +140,11 @@ public abstract class FigNodeModelElement
     protected static final int POPUP_ADD_OFFSET = 3;
     
     // Fields used in paint() for painting shadows
-    private BufferedImage           _shadowImage = null;
-    private int                     _cachedWidth = -1;
-    private int                     _cachedHeight = -1;
-    private static final LookupOp   _shadowLookupOp;
-    private static final ConvolveOp _shadowConvolveOp;
+    private BufferedImage           shadowImage = null;
+    private int                     cachedWidth = -1;
+    private int                     cachedHeight = -1;
+    private static final LookupOp   SHADOW_LOOKUP_OP;
+    private static final ConvolveOp SHADOW_CONVOLVE_OP;
 
     /**
      * The intensity value of the shadow color (0-255).
@@ -181,8 +176,8 @@ public abstract class FigNodeModelElement
         for (int i = 0; i < blur.length; ++i) {
             blur[i] = 1 / 12f;
         }
-        _shadowLookupOp = new LookupOp(new ByteLookupTable(0, data), null);
-        _shadowConvolveOp = new ConvolveOp(new Kernel(3, 3, blur));            
+        SHADOW_LOOKUP_OP = new LookupOp(new ByteLookupTable(0, data), null);
+        SHADOW_CONVOLVE_OP = new ConvolveOp(new Kernel(3, 3, blur));            
     }
 
     ////////////////////////////////////////////////////////////////
@@ -235,19 +230,7 @@ public abstract class FigNodeModelElement
      */
     public int _shadowSize =
         Configuration.getInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH, 1);
-    private ItemUID _id;
-
-    /**
-     * A set of object arrays consisting of a sender of events and the
-     * event types this object is interested in. The eventSenders are
-     * a cache to improve performance when this fig is
-     * disabled/enabled as interested listener to the events
-     * maintained in the _eventSenders set.
-     */
-    private Set _eventSenders = new HashSet();
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
+    private ItemUID itemUid;
 
     public FigNodeModelElement() {
         // this rectangle marks the whole interface figure; everything
@@ -285,6 +268,9 @@ public abstract class FigNodeModelElement
         ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
     }
 
+    /**
+     * @see java.lang.Object#finalize()
+     */
     public void finalize() {
         ArgoEventPump.removeListener(ArgoEvent.ANY_NOTATION_EVENT, this);
     }
@@ -320,11 +306,11 @@ public abstract class FigNodeModelElement
     // accessors
 
     public void setItemUID(ItemUID id) {
-        _id = id;
+        itemUid = id;
     }
 
     public ItemUID getItemUID() {
-        return _id;
+        return itemUid;
     }
 
     /**
@@ -359,6 +345,9 @@ public abstract class FigNodeModelElement
         _name.setText(name);
     }
 
+    /**
+     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
+     */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
         ToDoList list = Designer.TheDesigner.getToDoList();
@@ -390,6 +379,9 @@ public abstract class FigNodeModelElement
     ////////////////////////////////////////////////////////////////
     // Fig API
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getEnclosingFig()
+     */
     public Fig getEnclosingFig() {
         return _encloser;
     }
@@ -408,9 +400,9 @@ public abstract class FigNodeModelElement
 	Fig oldEncloser = _encloser;
 	if (encloser != oldEncloser) {
 	    Object owningModelelement = null;
-	    if (encloser == null && !isVisible()) {
-		// Most likely we're being deleted.
-	    } else if (encloser == null) {
+	    if (encloser == null && isVisible()) {
+	        // If we are not visible most likely we're being deleted.
+
 		// moved outside another fig onto the diagram canvas
 		Project currentProject =
 		    ProjectManager.getManager().getCurrentProject();
@@ -458,6 +450,9 @@ public abstract class FigNodeModelElement
         _enclosedFigs.remove(fig);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getEnclosedFigs()
+     */
     public Vector getEnclosedFigs() {
         return _enclosedFigs;
     }
@@ -480,6 +475,9 @@ public abstract class FigNodeModelElement
         }
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#makeSelection()
+     */
     public Selection makeSelection() {
         return new SelectionNodeClarifiers(this);
     }
@@ -503,10 +501,10 @@ public abstract class FigNodeModelElement
             int y = getY();
 
             // Only create new shadow image if figure size has changed.
-            if (width != _cachedWidth 
-                    || height != _cachedHeight) {
-                _cachedWidth = width;
-                _cachedHeight = height;
+            if (width != cachedWidth 
+                    || height != cachedHeight) {
+                cachedWidth = width;
+                cachedHeight = height;
 
                 BufferedImage img = new BufferedImage(
                     width + 100,
@@ -523,14 +521,14 @@ public abstract class FigNodeModelElement
                 //    figure to the same shadow color.
                 // 2. Apply ConvolveOp which creates blurred effect around
                 //    the edges of the shadow.
-                _shadowImage = _shadowConvolveOp.filter(
-                    _shadowLookupOp.filter(img, null), null);
+                shadowImage = SHADOW_CONVOLVE_OP.filter(
+                    SHADOW_LOOKUP_OP.filter(img, null), null);
             }
 
             // Paint shadow image onto canvas
             Graphics2D g2d = (Graphics2D) g;
             g2d.drawImage(
-                _shadowImage,
+                shadowImage,
                 null,
                 x + _shadowSize - 50,
                 y + _shadowSize - 50);
@@ -638,6 +636,9 @@ public abstract class FigNodeModelElement
         return null;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getTipString(java.awt.event.MouseEvent)
+     */
     public String getTipString(MouseEvent me) {
         ToDoItem item = hitClarifier(me.getX(), me.getY());
         String tip = "";
@@ -658,6 +659,9 @@ public abstract class FigNodeModelElement
     ////////////////////////////////////////////////////////////////
     // event handlers
 
+    /**
+     * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
+     */
     public void vetoableChange(PropertyChangeEvent pce) {
         LOG.debug("in vetoableChange");
         Object src = pce.getSource();
@@ -672,11 +676,11 @@ public abstract class FigNodeModelElement
         }
     }
 
+    /**
+     * @see org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.beans.PropertyChangeEvent)
+     */
     public void delayedVetoableChange(PropertyChangeEvent pce) {
         LOG.debug("in delayedVetoableChange");
-        // TODO: the src variable is never used. Must check if getSource()
-        // has any side effects before removing entire line
-        Object src = pce.getSource();
         // update any text, colors, fonts, etc.
         renderingChanged();
         endTrans();
@@ -693,6 +697,9 @@ public abstract class FigNodeModelElement
         setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
     }
 
+    /**
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
     public void propertyChange(PropertyChangeEvent pve) {
         Object src = pve.getSource();
         String pName = pve.getPropertyName();
@@ -794,6 +801,9 @@ public abstract class FigNodeModelElement
         }
     }
 
+    /**
+     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+     */
     public void keyPressed(KeyEvent ke) {
         if (!_readyToEdit) {
             if (ModelFacade.isAModelElement(getOwner())) {
@@ -810,11 +820,19 @@ public abstract class FigNodeModelElement
         _name.keyPressed(ke);
     }
 
-    /** not used, do nothing. */
+    /**
+     * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+     *
+     * not used, do nothing.
+     */
     public void keyReleased(KeyEvent ke) {
     }
 
-    /** not used, do nothing. */
+    /**
+     * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+     *
+     * not used, do nothing.
+     */
     public void keyTyped(KeyEvent ke) {
     }
 
@@ -840,10 +858,13 @@ public abstract class FigNodeModelElement
         if ((mee.getSource() == getOwner()
 	     && mee.getName().equals("stereotype"))) {
             if (mee.getOldValue() != null) {
-                UmlModelEventPump.getPump().removeModelEventListener(this, mee.getRemovedValue(), "name");
+                UmlModelEventPump.getPump()
+                    .removeModelEventListener(this, mee.getRemovedValue(), 
+                            		      "name");
             }
             if (mee.getNewValue() != null) {
-                UmlModelEventPump.getPump().addModelEventListener(this, mee.getNewValue(), "name");
+                UmlModelEventPump.getPump()
+                    .addModelEventListener(this, mee.getNewValue(), "name");
             }
             updateStereotypeText();
             damage();
@@ -855,17 +876,32 @@ public abstract class FigNodeModelElement
         // (I didn't want to make it abstract because it might not be required)
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     */
     public void propertySet(MElementEvent mee) {
         //if (_group != null) _group.propertySet(mee);        
         modelChanged(mee);
     }
+
+    /**
+     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
+     */
     public void listRoleItemSet(MElementEvent mee) {
         //if (_group != null) _group.listRoleItemSet(mee);
         modelChanged(mee);
     }
+
+    /**
+     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
+     */
     public void recovered(MElementEvent mee) {
         //if (_group != null) _group.recovered(mee);
     }
+
+    /**
+     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     */
     public void removed(MElementEvent mee) {
         LOG.debug("deleting: " + this + mee);
         Object o = mee.getSource();
@@ -911,15 +947,26 @@ public abstract class FigNodeModelElement
         }
         return false;
     }
+
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     */
     public void roleAdded(MElementEvent mee) {
         //if (_group != null) _group.roleAdded(mee);
         modelChanged(mee);
     }
+
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     */
     public void roleRemoved(MElementEvent mee) {
         //if (_group != null) _group.roleRemoved(mee);
         modelChanged(mee);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#dispose()
+     */
     public void dispose() {
         Object own = getOwner();
         if (own != null) {
@@ -935,10 +982,10 @@ public abstract class FigNodeModelElement
         super.dispose();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     */
     public void setOwner(Object own) {
-        // TODO: the oldOwner variable is never used. Must check if
-        // getOwner() has any side effects before removing entire line
-        Object oldOwner = getOwner();
         updateListeners(own);
         super.setOwner(own);
         if (ModelFacade.isAModelElement(own)
@@ -1015,23 +1062,41 @@ public abstract class FigNodeModelElement
      * @see org.argouml.application.api.NotationContext#getContextNotation()
      */
     public NotationName getContextNotation() {
-        return _currentNotationName;
+        return currentNotationName;
     }
 
+    /**
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
+     */
     public void notationChanged(ArgoNotationEvent event) {
         PropertyChangeEvent changeEvent =
 	    (PropertyChangeEvent) event.getSource();
-        _currentNotationName =
+        currentNotationName =
 	    Notation.findNotation((String) changeEvent.getNewValue());
         renderingChanged();
     }
 
+    /**
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationAdded(org.argouml.application.events.ArgoNotationEvent)
+     */
     public void notationAdded(ArgoNotationEvent event) {
     }
+
+    /**
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationRemoved(org.argouml.application.events.ArgoNotationEvent)
+     */
     public void notationRemoved(ArgoNotationEvent event) {
     }
+
+    /**
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderAdded(org.argouml.application.events.ArgoNotationEvent)
+     */
     public void notationProviderAdded(ArgoNotationEvent event) {
     }
+
+    /**
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderRemoved(org.argouml.application.events.ArgoNotationEvent)
+     */
     public void notationProviderRemoved(ArgoNotationEvent event) {
     }
 
@@ -1047,6 +1112,9 @@ public abstract class FigNodeModelElement
         damage();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#calcBounds()
+     */
     public void calcBounds() {
         if (suppressCalcBounds) {
             return;
@@ -1062,7 +1130,11 @@ public abstract class FigNodeModelElement
      * Returns the new size of the FigGroup (either attributes or
      * operations) after calculation new bounds for all sub-figs,
      * considering their minimal sizes; FigGroup need not be
-     * displayed; no update event is fired.
+     * displayed; no update event is fired.<p>
+     *
+     * This method has side effects that are sometimes used.
+     * TODO: Rename the method to updateSize() or something so that we 
+     *       don't forget these side effects. 
      */
     protected Dimension getUpdatedSize(
 				       FigGroup fg,
@@ -1105,6 +1177,7 @@ public abstract class FigNodeModelElement
     public int getShadowSize() {
         return _shadowSize;
     }
+
     /**
      * Necessary since GEF contains some errors regarding the hit subject.
      * @see org.tigris.gef.presentation.Fig#hit(Rectangle)
@@ -1181,6 +1254,8 @@ public abstract class FigNodeModelElement
     }
 
     /**
+     * @see org.tigris.gef.presentation.FigNode#superTranslate(int, int)
+     *
      * Overridden to notify project that save is needed when figure is moved.
      */
     public void superTranslate(int dx, int dy) {
@@ -1192,6 +1267,8 @@ public abstract class FigNodeModelElement
     }
 
     /**
+     * @see org.tigris.gef.presentation.Fig#setHandleBox(int, int, int, int)
+     *
      * Overridden to notify project that save is needed when figure is resized.
      */
     public void setHandleBox(int x, int y, int w, int h) {
