@@ -3,14 +3,14 @@
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -29,201 +29,78 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import java.awt.GridLayout;
-import java.util.Enumeration;
-import java.util.Iterator;
-
-import javax.swing.ButtonGroup;
-import javax.swing.JPanel;
-
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-
-import org.argouml.uml.diagram.state.ui.FigBranchState;
-import org.argouml.uml.diagram.state.ui.FigDeepHistoryState;
-import org.argouml.uml.diagram.state.ui.FigForkState;
-import org.argouml.uml.diagram.state.ui.FigHistoryState;
-import org.argouml.uml.diagram.state.ui.FigInitialState;
-import org.argouml.uml.diagram.state.ui.FigJoinState;
-import org.argouml.uml.diagram.state.ui.FigShallowHistoryState;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.uml.ui.UMLEnumerationBooleanProperty;
-import org.argouml.uml.ui.UMLRadioButton;
 import org.argouml.util.ConfigLoader;
+import org.tigris.gef.presentation.Fig;
 
 /**
- * TODO: this property panel needs refactoring to remove dependency on
- *       old gui components.
+ * Property Panbel for the collection of pseudostates (branch, fork, ...). It
+ * dynamically sets its name to the pseudostate used.
  */
 public class PropPanelPseudostate extends PropPanelStateVertex {
 
-    private ButtonGroup kindGroup = new ButtonGroup();
-    ////////////////////////////////////////////////////////////////
-    // contructors
     public PropPanelPseudostate() {
         super("Pseudostate", null, ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = (Class)ModelFacade.PSEUDOSTATE;
+        Class mclass = (Class) ModelFacade.PSEUDOSTATE;
 
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.container"), containerScroll);
-
-        JPanel kindPanel = new JPanel(new GridLayout(0, 2));
-        UMLRadioButton junctionButton =
-            new UMLRadioButton(
-                "junction",
-                this,
-                new UMLEnumerationBooleanProperty(
-                    "kind",
-                    mclass,
-                    "getKind",
-                    "setKind",
-                    ModelFacade.PSEUDOSTATEKIND,
-                    ModelFacade.JUNCTION_PSEUDOSTATEKIND,
-                    null));
-        junctionButton.setEnabled(false);
-        kindPanel.add(junctionButton);
-        kindGroup.add(junctionButton);
-
-        UMLRadioButton branchButton =
-            new UMLRadioButton(
-                "branch",
-                this,
-                new UMLEnumerationBooleanProperty(
-                    "kind",
-                    mclass,
-                    "getKind",
-                    "setKind",
-                    ModelFacade.PSEUDOSTATEKIND,
-                    ModelFacade.BRANCH_PSEUDOSTATEKIND,
-                    null));
-        branchButton.setEnabled(false);
-        kindPanel.add(branchButton);
-        kindGroup.add(branchButton);
-
-        UMLRadioButton forkButton =
-            new UMLRadioButton(
-                "fork",
-                this,
-                new UMLEnumerationBooleanProperty(
-                    "kind",
-                    mclass,
-                    "getKind",
-                    "setKind",
-                    ModelFacade.PSEUDOSTATEKIND,
-                    ModelFacade.FORK_PSEUDOSTATEKIND,
-                    null));
-        forkButton.setEnabled(false);
-        kindPanel.add(forkButton);
-        kindGroup.add(forkButton);
-
-        UMLRadioButton joinButton =
-            new UMLRadioButton(
-                "join",
-                this,
-                new UMLEnumerationBooleanProperty(
-                    "kind",
-                    mclass,
-                    "getKind",
-                    "setKind",
-                    ModelFacade.PSEUDOSTATEKIND,
-                    ModelFacade.JOIN_PSEUDOSTATEKIND,
-                    null));
-        joinButton.setEnabled(false);
-        kindPanel.add(joinButton);
-        kindGroup.add(joinButton);
-
-        UMLRadioButton deepButton =
-            new UMLRadioButton(
-                "deep history",
-                this,
-                new UMLEnumerationBooleanProperty(
-                    "kind",
-                    mclass,
-                    "getKind",
-                    "setKind",
-                    ModelFacade.PSEUDOSTATEKIND,
-                    ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND,
-                    null));
-        deepButton.setEnabled(false);
-        kindPanel.add(deepButton);
-        kindGroup.add(deepButton);
-
-        UMLRadioButton shallowButton =
-            new UMLRadioButton(
-                "shallow history",
-                this,
-                new UMLEnumerationBooleanProperty(
-                    "kind",
-                    mclass,
-                    "getKind",
-                    "setKind",
-                    ModelFacade.PSEUDOSTATEKIND,
-                    ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND,
-                    null));
-        shallowButton.setEnabled(false);
-        kindPanel.add(shallowButton);
-        kindGroup.add(shallowButton);
-
-        UMLRadioButton initialButton =
-            new UMLRadioButton(
-                "initial",
-                this,
-                new UMLEnumerationBooleanProperty(
-                    "kind",
-                    mclass,
-                    "getKind",
-                    "setKind",
-                    ModelFacade.PSEUDOSTATEKIND,
-                    ModelFacade.INITIAL_PSEUDOSTATEKIND,
-                    null));
-        initialButton.setEnabled(false);
-        kindPanel.add(initialButton);
-        kindGroup.add(initialButton);
-
-        addField(Translator.localize("UMLMenu", "label.pseudostate-kind"), kindPanel);
+        addField(Translator.localize("UMLMenu", "label.name"),
+                getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"),
+                new UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
+                        "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.container"),
+                containerScroll);
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.incoming"), incomingScroll);
-        addField(Translator.localize("UMLMenu", "label.outgoing"), outgoingScroll);
+        addField(Translator.localize("UMLMenu", "label.incoming"),
+                incomingScroll);
+        addField(Translator.localize("UMLMenu", "label.outgoing"),
+                outgoingScroll);
 
     }
-
 
     /**
-     * @see org.argouml.uml.ui.TabModelTarget#setTarget(java.lang.Object)
+     * This method is responsible for setting the title of the proppanel
+     * according to the type of the pseudo state displayed in the property
+     * panel. This is required as pseudostates share a common class and are
+     * distinguished only by an attribute (pseudostatekind).
+     * 
+     * @param target
+     *            the current target
      */
-    public void setTarget(Object o) {
-        super.setTarget(o);
-        Iterator it =
-            ProjectManager
-                .getManager()
-                .getCurrentProject()
-                .findFigsForMember(o)
-                .iterator();
-        boolean represented = false;
-        while (it.hasNext()) {
-            Object i = it.next();
-            // TODO: find out what happened to the junction
-            if (i instanceof FigForkState
-                || i instanceof FigBranchState
-                || i instanceof FigDeepHistoryState
-                || i instanceof FigForkState
-                || i instanceof FigHistoryState
-                || i instanceof FigInitialState
-                || i instanceof FigJoinState
-                || i instanceof FigShallowHistoryState) {
-                represented = true;
-                break;
-            }
-        }
-        Enumeration e = kindGroup.getElements();
-        while (e.hasMoreElements()) {
-            ((UMLRadioButton) e.nextElement()).setEnabled(!represented);
-        }
-    }
+    public void setTarget(Object target) {
+        super.setTarget(target);
 
+        Object o = ((target instanceof Fig) ? ((Fig) target).getOwner()
+                : target);
+        if (ModelFacade.isAPseudostate(o)) {
+            Object kind = ModelFacade.getPseudostateKind(o);
+            if (ModelFacade.equalsPseudostateKind(kind,
+                    ModelFacade.FORK_PSEUDOSTATEKIND))
+                    getTitleLabel().setText("Fork State");
+            if (ModelFacade.equalsPseudostateKind(kind,
+                    ModelFacade.JOIN_PSEUDOSTATEKIND))
+                    getTitleLabel().setText("Join State");
+            if (ModelFacade.equalsPseudostateKind(kind,
+                    ModelFacade.BRANCH_PSEUDOSTATEKIND))
+                    getTitleLabel().setText("Branch State");
+            if (ModelFacade.equalsPseudostateKind(kind,
+                    ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND))
+                    getTitleLabel().setText("Deep History State");
+            if (ModelFacade.equalsPseudostateKind(kind,
+                    ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND))
+                    getTitleLabel().setText("Shallow History State");
+            if (ModelFacade.equalsPseudostateKind(kind,
+                    ModelFacade.INITIAL_PSEUDOSTATEKIND))
+                    getTitleLabel().setText("Initial State");
+            if (ModelFacade.equalsPseudostateKind(kind,
+                    ModelFacade.JUNCTION_PSEUDOSTATEKIND))
+                    getTitleLabel().setText("Junction State");
+        }
+
+    }
 } /* end class PropPanelPseudostate */

@@ -300,7 +300,7 @@ public class TabProps
         String base = "";
 
         String targetClassName = targetClass.getName();
-	cat.info("Trying to locate panel for: " + targetClassName);
+        cat.info("Trying to locate panel for: " + targetClassName);
         int lastDot = targetClassName.lastIndexOf(".");
 
         //remove "ru.novosoft.uml"
