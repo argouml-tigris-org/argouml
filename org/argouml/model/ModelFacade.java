@@ -117,6 +117,15 @@ public class ModelFacade {
     ////////////////////////////////////////////////////////////////
     // Recognizer methods for the UML model (in alphabetic order)
 
+    /** Recognizer for Abstraction.
+     *
+     * @param handle candidate
+     * @returns true if handle is an Abstraction
+     */
+    public static boolean isAAbstraction(Object handle) {
+        return handle instanceof MAbstraction;
+    }
+    
     /** Recognizer for Association.
      *
      * @param handle candidate
