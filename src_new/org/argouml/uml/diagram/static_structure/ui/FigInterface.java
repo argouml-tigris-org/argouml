@@ -514,6 +514,10 @@ public class FigInterface extends FigNodeModelElement
         super.setEnclosingFig(encloser);
         if (!(ModelFacade.isAModelElement(getOwner())))
             return;
+        /* If this fig is not visible, do not adapt the UML model! 
+         * This is used for deleting. See issue 3042. */
+        if  (!isVisible())
+            return; 
         Object me = /*(MModelElement)*/ getOwner();
         Object m = null;
 

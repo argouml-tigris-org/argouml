@@ -84,7 +84,6 @@ import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
 import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.ui.UMLAction;
-import org.argouml.util.Trash;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.LayerDiagram;
@@ -124,6 +123,7 @@ public abstract class FigNodeModelElement
     private NotationName currentNotationName;
     private static final Font LABEL_FONT;
     private static final Font ITALIC_LABEL_FONT;
+    private static final int MARGIN = 2;
 
     /**
      * min. 17, used to calculate y pos of FigText items in a compartment
@@ -674,8 +674,8 @@ public abstract class FigNodeModelElement
      * @see Fig#setEnclosingFig(Fig)
      */
     public void setEnclosingFig(Fig newEncloser) {
-	super.setEnclosingFig(newEncloser);
 	Fig oldEncloser = encloser;
+	super.setEnclosingFig(newEncloser);
 	if (newEncloser != oldEncloser) {
 	    Object owningModelelement = null;
 	    if (newEncloser == null && isVisible()) {
@@ -685,6 +685,7 @@ public abstract class FigNodeModelElement
 		Project currentProject =
 		    ProjectManager.getManager().getCurrentProject();
                 ArgoDiagram diagram = currentProject.getActiveDiagram();
+                // TODO: Who said this was about the active diagram?
                 if (diagram instanceof UMLDiagram
 			&& ((UMLDiagram) diagram).getNamespace() != null) {
                     owningModelelement = ((UMLDiagram) diagram).getNamespace();
@@ -739,10 +740,10 @@ public abstract class FigNodeModelElement
         return enclosedFigs;
     }
 
-    /**
+    /** 
      * Update the order of this fig and the order of the
      * figs that are inside of this fig.
-     *
+     * 
      * @param figures in the new order
      */
     public void elementOrdering(Vector figures) {
@@ -1248,10 +1249,7 @@ public abstract class FigNodeModelElement
     public void deleteFromModel() {
         Object own = getOwner();
         if (own != null) {
-            Trash.SINGLETON.addItemFrom(own, null);
-            if (ModelFacade.isAModelElement(own)) {
-                Model.getUmlFactory().delete(own);
-            }
+            ProjectManager.getManager().getCurrentProject().moveToTrash(own);
         }
         Iterator it = getFigs().iterator();
         while (it.hasNext()) {
@@ -1502,7 +1500,7 @@ public abstract class FigNodeModelElement
             ArgoEventPump.removeListener(this);
         }
         Object own = getOwner();
-        if (org.argouml.model.ModelFacade.isAClassifier(own)) {
+        if (ModelFacade.isAClassifier(own)) {
             Iterator it = ModelFacade.getFeatures(own).iterator();
             while (it.hasNext()) {
                 Object feature = it.next();
@@ -1688,7 +1686,7 @@ public abstract class FigNodeModelElement
      * Method to draw a StateVertex Fig's enclosed figs.
      */
     public void redrawEnclosedFigs() {
-        if (!(ModelFacade.isAStateVertex(getOwner()))) {
+        if (!(org.argouml.model.ModelFacade.isAStateVertex(getOwner()))) {
             return;
         }
         Editor editor = Globals.curEditor();
@@ -1709,7 +1707,7 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * To redrawn each element correctly when changing his location
+     * To redraw each element correctly when changing its location
      * with X and U additions.
      *
      * @param xInc the increment in the x direction

@@ -66,6 +66,10 @@ public abstract class FigStateVertex extends FigNodeModelElement {
      */
     public void setEnclosingFig(Fig encloser) {
         super.setEnclosingFig(encloser);
+        /* If this fig is not visible, do not adapt the UML model! 
+         * This is used for deleting. See issue 3042. */
+        if  (!isVisible())
+            return; 
         if (!(ModelFacade.isAStateVertex(getOwner()))) return;
         Object stateVertex = getOwner();
         Object compositeState = null;
