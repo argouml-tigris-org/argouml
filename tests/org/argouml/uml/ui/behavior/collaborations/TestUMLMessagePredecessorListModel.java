@@ -28,8 +28,6 @@ import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFac
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
-import com.sun.corba.se.internal.iiop.messages.Message;
-
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 
