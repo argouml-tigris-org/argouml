@@ -25,7 +25,6 @@
 // File: FigComment.java
 // Classes: FigComment
 // Original Author: a_rueckert@gmx.net
-// $Id$
 
 package org.argouml.uml.diagram.static_structure.ui;
 
@@ -63,10 +62,7 @@ import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 /**
- * Class to display a UML note in a diagram
- * Since we don't need stereotypes for the note and an
- * empty stereotype textfield causes problems with the
- * note layout, I subclass FigNode instead of FigNodeModelElement.
+ * Class to display a UML comment in a diagram.
  */
 public class FigComment
     extends FigNodeModelElement
@@ -81,7 +77,6 @@ public class FigComment
     ////////////////////////////////////////////////////////////////
     // constants
 
-    // public final int MARGIN = 2;
     private int x = 0;
     private int y = 0;
     private int width = 80;
@@ -89,7 +84,6 @@ public class FigComment
     private int gapY = 10;
 
     private boolean readyToEdit = true;
-
 
     private static final int MARGIN = 2;
 
@@ -100,7 +94,7 @@ public class FigComment
     private FigText text;
 
     private FigPoly body;
-    private FigPoly urCorner;
+    private FigPoly urCorner; // the upper right corner
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -157,10 +151,10 @@ public class FigComment
     }
 
     /**
-     * Construct a new note
+     * Construct a new comment
      *
-     * @param gm The graphmodel
-     * @param node The underlying MComment node
+     * @param gm the graphmodel
+     * @param node the underlying UML Comment
      */
     public FigComment(GraphModel gm, Object node) {
         this();
@@ -249,9 +243,10 @@ public class FigComment
      * See FigNodeModelElement.java for more info on these methods.
      */
 
-    /** If the user double clicks on any part of this FigNode, pass it
-     *  down to one of the internal Figs.  This allows the user to
-     *  initiate direct text editing. 
+    /** 
+     * If the user double clicks on any part of this FigNode, pass it
+     * down to one of the internal Figs.  This allows the user to
+     * initiate direct text editing. 
      * 
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
@@ -544,7 +539,7 @@ public class FigComment
     // Internal methods
 
     /**
-     * This is called aftern any part of the UML MModelElement has
+     * This is called after any part of the UML ModelElement (the comment) has
      * changed. This method automatically updates the note FigText.
      *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
@@ -555,7 +550,6 @@ public class FigComment
         String noteStr = retrieveNote();
         if (noteStr != null)
             text.setText(noteStr);
-
     }
 
     /**
