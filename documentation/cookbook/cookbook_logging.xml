@@ -95,9 +95,9 @@ The purpose of this test is to avoid the creation of the argument.
                 You should <emphasis>not</emphasis> use
                 <function>System.out.println</function> in 
                 <application>ArgoUML</application> 
-                Java Code. The only exception of this rule shall be to
-                print the usage of <application>ArgoUML</application>
-                in <classname>Main.java</classname>.
+                Java Code.
+The only exception of this rule is for output in non-GUI mode
+like to print the usage message in <filename>Main.java</filename>.
             </para>
         
         <para>
@@ -113,18 +113,21 @@ The purpose of this test is to avoid the creation of the argument.
             <title>For log4j version 1.2.x</title>
             <programlisting>
 import org.apache.log4j.Logger;
-
-Logger _cat = Logger.getLogger(<replaceable>theClass</replaceable>.class.getName());
+...
+public class <replaceable>theClass</replaceable> {
+...
+    private static Logger _cat = 
+        Logger.getLogger(<replaceable>theClass</replaceable>.class.getName());
 
 ...
 
-public void anExample() {
-    _cat.debug("This is a debug message.");
-    _cat.info("This is a info message.");
-    _cat.warn("This is a warning.");
-    _cat.error("This is an error.");
-    _cat.fatal("This is fatal. The program stops now working...");
-}
+    public void anExample() {
+        _cat.debug("This is a debug message.");
+        _cat.info("This is a info message.");
+        _cat.warn("This is a warning.");
+        _cat.error("This is an error.");
+        _cat.fatal("This is fatal. The program stops now working...");
+    }
             </programlisting>
         </example>
 
@@ -136,17 +139,64 @@ public void anExample() {
             <title>Improving on speed/performance</title>
             <programlisting>
     if (_cat.isDebugEnabled()) {
-        _cat.debug("Entry number: " + i + " is " + String.valueOf(entry[i]));
+        _cat.debug("Entry number: " + i + " is " + entry[i]);
     }
     if (_cat.isInfoEnabled()) {
-        _cat.info("Entry number: " + i + " is " + String.valueOf(entry[i]));
+        _cat.info("Entry number: " + i + " is " + entry[i]);
     }
             </programlisting>
         </example>
+	<warning>
+	  <para>
+Since this has a big impact also on the readability, 
+only use it where it is really needed 
+(like places passed several times per second or hundreds of times
+for every key the user presses).
+</para>
+	</warning>
         <para>
             For more information go to the log4j homepage at
             <ulink url="http://jakarta.apache.org/log4j/">http://jakarta.apache.org/log4j</ulink>.
         </para>
+
+	<sect3>
+          <title>Reasoning around the performance issues</title>
+          <para>
+Most of the log statements passed in ArgoUML are passed with logging
+turned off.
+This means that the only thing log4j should do is to determine that
+logging is off and return.
+Log4j has a real quick algorithm to determine if logging is on for
+a certain level so that is not a problem.
+</para>
+          <para>
+The problem is instead explained by noticing
+the following log statement:
+	    <programlisting>
+        int i;
+...
+        _cat.debug("Entry number: " + i + " is " + entry[i]);
+	    </programlisting>
+It is quite innocent looking isn't it?
+Well that is because the java compiler is very helpful 
+when it comes to handling strings 
+and will convert it to the equivalent of:
+	    <programlisting>
+	StringBuffer sb = new StringBuffer();
+	sb.append("Entry number: ");
+	sb.append(i);
+	sb.append(" is ");
+	sb.append(entry[i].toString());
+        _cat.debug(sb.toString());
+	    </programlisting>
+If the entry[i] is some object with a lot of calculations 
+when toString() is called and the logging statement is passed
+often some action needs to be taken.
+If the toString() methods are simple you are still 
+stuck with the overhead of creating a <classname>StringBuffer</classname>
+(and a <classname>String</classname> from the sb.toString()-statement.
+</para>
+      </sect3>
     </sect2>
     
     <sect2>
