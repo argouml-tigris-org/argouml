@@ -26,6 +26,8 @@ package org.argouml.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
@@ -104,12 +106,28 @@ public class Actions implements TargetListener{
   public static UMLAction SystemInfo = new ActionSystemInfo();
   public static UMLAction AboutArgoUML = new ActionAboutArgoUML();
 
+  /**
+   * @deprecated use updateAllEnabled(TargetEvent e) instead.
+   *
+   */
   public static void updateAllEnabled() {
     java.util.Enumeration actions = _allActions.elements();
     while (actions.hasMoreElements()) {
       UMLAction a = (UMLAction) actions.nextElement();
       a.updateEnabled();
     }
+  }
+  
+  /**
+   * Updates all global actions as a consequence of the send TargetEvent.
+   * @param e
+   */
+  private static void updateAllEnabled(TargetEvent e) {
+      Iterator actions = _allActions.iterator();
+      while (actions.hasNext()) {
+          UMLAction a = (UMLAction) actions.next();
+          a.updateEnabled(e.getNewTargets()[0]);
+      }
   }
 
 	public static void addAction(AbstractAction newAction) {
@@ -124,7 +142,7 @@ public class Actions implements TargetListener{
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        updateAllEnabled();
+        updateAllEnabled(e);
 
     }
 
@@ -132,7 +150,7 @@ public class Actions implements TargetListener{
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        updateAllEnabled();
+        updateAllEnabled(e);
 
     }
 
@@ -140,7 +158,7 @@ public class Actions implements TargetListener{
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        updateAllEnabled();
+        updateAllEnabled(e);
 
     }
 
