@@ -100,7 +100,7 @@ public class ActionSettings extends UMLAction
      * @param key The key to localize.
      * @return The localized String.
      */
-    protected String localize(String key) {
+    private String localize(String key) {
         return Translator.localize("CoreSettings", key);
     }
 

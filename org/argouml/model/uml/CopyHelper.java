@@ -49,8 +49,8 @@ import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsF
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
 
 class CopyFunction {
-    final Object object;
-    final Method method;
+    private final Object object;
+    private final Method method;
 
     public CopyFunction(Object obj, Method m) {
 	if (m == null)
@@ -62,6 +62,20 @@ class CopyFunction {
 
 	object = obj;
 	method = m;
+    }
+
+    /**
+     * @return Returns the object.
+     */
+    Object getObject() {
+        return object;
+    }
+
+    /**
+     * @return Returns the method.
+     */
+    Method getMethod() {
+        return method;
     }
 }
 
@@ -177,7 +191,7 @@ public final class CopyHelper {
 
 	try {
 	    Object args[] = {element, ns};
-	    return (MModelElement) f.method.invoke(f.object, args);
+	    return (MModelElement) f.getMethod().invoke(f.getObject(), args);
 	} catch (Exception e) {
 	    LOG.error("CopyHelper copy method exception", e);
 	    return null;

@@ -587,11 +587,23 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
 			     + (actualRows - 1) * vgap);
     }
 
+    /**
+     * Calculate the cell height.
+     * 
+     * @param row the row for this cell
+     * @return the height
+     */
     protected int getComponentCellHeight(int row) {
         if (cellSizing == ROWCOLPREFERRED) return rowHeight[row];
         return largestHeight;
     }
 
+    /**
+     * Calculate the cell width.
+     * 
+     * @param col the column of this cell
+     * @return the width
+     */
     protected int getComponentCellWidth(int col) {
         if (cellSizing == ROWCOLPREFERRED) return colWidth[col];
         return largestWidth;

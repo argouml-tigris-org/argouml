@@ -62,7 +62,7 @@ public class UMLAction extends AbstractAction {
     private String iconName;
 
     /**
-     * The constructor.
+     * The constructor for a global action with icon.
      * 
      * @param name the (to be localized) description of the action
      */
@@ -71,7 +71,7 @@ public class UMLAction extends AbstractAction {
     }
     
     /**
-     * The constructor.
+     * The constructor for a global action.
      * 
      * @param name the (to be localized) description of the action
      * @param hasIcon true if an icon is to be shown
