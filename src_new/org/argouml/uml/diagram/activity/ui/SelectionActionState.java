@@ -49,12 +49,16 @@ import org.argouml.uml.diagram.state.ui.*;
 public class SelectionActionState extends SelectionWButtons {
   ////////////////////////////////////////////////////////////////
   // constants
-  public static Icon trans = ResourceLoader.lookupIconResource("Transition");
-
+  public static Icon trans = 
+      ResourceLoader.lookupIconResource("Transition");
+  public static Icon transDown = 
+      ResourceLoader.lookupIconResource("TransitionDown");
   ////////////////////////////////////////////////////////////////
   // instance varables
-  protected boolean _showIncoming = true;
-  protected boolean _showOutgoing = true;
+  protected boolean _showIncomingLeft = true;
+    protected boolean _showIncomingAbove = true;
+  protected boolean _showOutgoingRight = true;
+    protected boolean _showOutgoingBelow = true;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -65,12 +69,30 @@ public class SelectionActionState extends SelectionWButtons {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public void setIncomingButtonEnabled(boolean b) {
-    _showIncoming = b;
+  public void setOutgoingButtonEnabled(boolean b) {
+        setOutgoingRightButtonEnabled(b);
+        setIncomingAboveButtonEnabled(b);
   }
 
-  public void setOutgoingButtonEnabled(boolean b) {
-    _showOutgoing = b;
+  public void setIncomingButtonEnabled(boolean b) {
+        setIncomingLeftButtonEnabled(b);
+        setOutgoingBelowButtonEnabled(b);
+  }
+
+  public void setIncomingLeftButtonEnabled(boolean b) {
+    _showIncomingLeft = b;
+  }
+
+  public void setOutgoingRightButtonEnabled(boolean b) {
+    _showOutgoingRight = b;
+  }
+
+   public void setIncomingAboveButtonEnabled(boolean b) {
+    _showIncomingAbove = b;
+  }
+
+  public void setOutgoingBelowButtonEnabled(boolean b) {
+    _showOutgoingBelow = b;
   }
 
   public void hitHandle(Rectangle r, Handle h) {
@@ -88,13 +110,23 @@ public class SelectionActionState extends SelectionWButtons {
     int ch = _content.getHeight();
     int iw = trans.getIconWidth();
     int ih = trans.getIconHeight();
-    if (_showOutgoing && hitLeft(cx + cw, cy + ch/2, iw, ih, r)) {
+    int iwd = transDown.getIconWidth();
+    int ihd = transDown.getIconHeight();
+    if (_showOutgoingRight && hitLeft(cx + cw, cy + ch/2, iw, ih, r)) {
       h.index = 12;
       h.instructions = "Add an outgoing transition";
     }
-    else if (_showIncoming && hitRight(cx, cy + ch/2, iw, ih, r)) {
+    else if (_showIncomingLeft && hitRight(cx, cy + ch/2, iw, ih, r)) {
       h.index = 13;
       h.instructions = "Add an incoming transition";
+    }
+    else if (_showOutgoingBelow && hitAbove(cx+cw/2, cy, iwd, ihd, r)) {
+        h.index=14;
+        h.instructions = "Add an incoming transaction";
+    }
+    else if (_showIncomingAbove && hitBelow(cx+cw/2,cy+ch, iwd, ihd, r)) {
+        h.index=15;
+        h.instructions = "Add an outgoing transaction";
     }
     else {
       h.index = -1;
@@ -110,8 +142,14 @@ public class SelectionActionState extends SelectionWButtons {
     int cy = _content.getY();
     int cw = _content.getWidth();
     int ch = _content.getHeight();
-    if (_showOutgoing) paintButtonLeft(trans, g, cx + cw, cy + ch/2, 12);
-    if (_showIncoming) paintButtonRight(trans, g, cx, cy + ch/2, 13);
+    if (_showOutgoingRight) 
+        paintButtonLeft(trans, g, cx + cw, cy + ch/2, 12);
+    if (_showIncomingLeft) 
+        paintButtonRight(trans, g, cx, cy + ch/2, 13);
+    if (_showOutgoingBelow) 
+        paintButtonAbove(transDown, g, cx + cw/2, cy , 14);
+    if (_showIncomingAbove) 
+        paintButtonBelow(transDown, g, cx+cw/2, cy + ch, 15);
   }
 
 
@@ -148,6 +186,17 @@ public class SelectionActionState extends SelectionWButtons {
       reverse = true;
       by = cy + ch/2;
       bx = cx;
+      break;
+     case 14: // add incoming
+      edgeClass = MTransitionImpl.class;
+      reverse = true;
+      by = cy ;
+      bx = cx + cw/2;
+      break;
+     case 15: // add outgoing
+      edgeClass = MTransitionImpl.class;
+      by = cy + ch;
+      bx = cx + cw/2;
       break;
     default:
       System.out.println("invalid handle number");
@@ -196,6 +245,18 @@ public class SelectionActionState extends SelectionWButtons {
       outputRect.width = 200;
       lay.bumpOffOtherNodesIn(newFC, outputRect, false, true);
     }
+    else if (buttonCode == 14) {
+      newFC.setLocation(fc.getX(), Math.max(0,fc.getY() - 200));
+      outputRect.x = fc.getX();
+      outputRect.width = 200;
+      lay.bumpOffOtherNodesIn(newFC, outputRect, false, true);
+    }
+    else if (buttonCode == 15) {
+      newFC.setLocation(fc.getX(), fc.getY() + fc.getHeight()+100);
+      outputRect.x = fc.getX() ;
+      outputRect.width = 200;
+      lay.bumpOffOtherNodesIn(newFC, outputRect, false, true);
+    }
     ce.add(newFC);
     mgm.addNode(newNode);
 
@@ -207,6 +268,8 @@ public class SelectionActionState extends SelectionWButtons {
     Object newEdge = null;
     if (buttonCode == 12) newEdge = addOutgoingTrans(mgm, cls, newNode);
     else if (buttonCode == 13) newEdge = addIncomingTrans(mgm, cls, newNode);
+    else if (buttonCode == 14) newEdge = addIncomingTrans(mgm, cls, newNode);
+    else if (buttonCode == 15) newEdge = addOutgoingTrans(mgm, cls, newNode);
 
     FigEdge fe = (FigEdge) lay.presentationFor(newEdge);
     edgeShape.setLineColor(Color.black);
@@ -236,4 +299,7 @@ public class SelectionActionState extends SelectionWButtons {
   }
 
 } /* end class SelectionActionState */
+
+
+
 
