@@ -62,7 +62,7 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     }
 
     /** Create an empty but initialized instance of a UML Stereotype.
-     *  
+     *
      *  @return an initialized UML Stereotype instance.
      */
     public MStereotype createStereotype() {
@@ -72,7 +72,7 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     }
 
     /** Create an empty but initialized instance of a UML TaggedValue.
-     *  
+     *
      *  @return an initialized UML TaggedValue instance.
      */
     public MTaggedValue createTaggedValue() {
@@ -80,7 +80,7 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
 	super.initialize(modelElement);
 	return modelElement;
     }
-    
+
     /**
      * Builds a stereotype for some kind of modelelement.
      */
@@ -100,7 +100,22 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     		return stereo;
     	}
     }
-    
+
+    /**
+     * Builds an initialized stereotype.
+     *
+     * @param text
+     * @param namespace
+     * @return an initialized stereotype.
+     */
+    public MStereotype buildStereotype(String text, Object ns) {
+    	MStereotype stereo = createStereotype();
+    	stereo.setName(text);
+    	if (ns != null && ns instanceof MNamespace)
+    	    stereo.setNamespace((MNamespace)ns);
+    	return stereo;
+    }
+
     public MStereotype buildStereotype(MModelElement m, String text) {
         // if (m == null && text == null) throw new IllegalArgumentException("In buildStereotype: one of the arguments is null");
         MStereotype stereo = createStereotype();
@@ -118,10 +133,20 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
             return stereo;
         }
     }
-    
-    
+
+    /** Build an initialized instance of a UML TaggedValue.
+     *
+     *  @return an initialized UML TaggedValue instance.
+     */
+    public MTaggedValue buildTaggedValue(String tag, String value) {
+        MTaggedValue tv = createTaggedValue();
+        tv.setTag(tag);
+        tv.setValue(value);
+        return tv;
+    }
+
     public void deleteStereotype(MStereotype elem) {}
-    
+
     public void deleteTaggedValue(MTaggedValue elem) {}
 
     /**

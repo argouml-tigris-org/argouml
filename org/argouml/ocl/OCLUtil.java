@@ -14,7 +14,7 @@ public final class OCLUtil extends Object {
 
   /** OCLUtil shall not be instantiated! */
   private OCLUtil () {}
-  
+
   /**
    * Get the inner-most enclosing namespace for the model element.
    */
@@ -23,7 +23,7 @@ public final class OCLUtil extends Object {
            (! (me instanceof MNamespace))) {
       me = me.getModelElementContainer();
     }
-    
+
     return (MNamespace) me;
   }
 
@@ -34,15 +34,17 @@ public final class OCLUtil extends Object {
    *
    * @return the context string for the model element.
    */
-  public static String getContextString (final MModelElement me) {
-    MNamespace mnsContext = getInnerMostEnclosingNamespace (me);
+  public static String getContextString (final Object me) {
+	if (me == null || !(me instanceof MModelElement))
+	    return "";
+    MNamespace mnsContext = getInnerMostEnclosingNamespace ((MModelElement)me);
 
     if (me instanceof MBehavioralFeature) {
       StringBuffer sbContext =
           new StringBuffer ("context ")
             .append (mnsContext.getName())
             .append ("::")
-            .append (me.getName())
+            .append (((MModelElement)me).getName())
             .append (" (");
 
       List lParams = ((MBehavioralFeature) me).getParameters();

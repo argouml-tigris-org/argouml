@@ -67,7 +67,7 @@ class OuterClassifierContext extends Context
 	throws ClassifierNotFoundException
     {
         // Search in classifier
-        Object mInterface = ModelFacade.lookupNamespaceFor(mClassifier,name);
+        Object mInterface = ModelFacade.lookupIn(mClassifier,name);
 
 	if(mInterface == null) {
 	    // Try to find it via the classpath
@@ -114,7 +114,7 @@ class OuterClassifierContext extends Context
 	throws ClassifierNotFoundException
     {
 	// Search in classifier
-	Object iClassifier = ModelFacade.lookupNamespaceFor(mClassifier,name);
+	Object iClassifier = ModelFacade.lookupIn(mClassifier,name);
 
 	if(iClassifier == null) {
 	    // Try to find it via the classpath
