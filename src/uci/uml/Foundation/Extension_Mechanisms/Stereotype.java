@@ -10,6 +10,98 @@ import uci.uml.generate.*;
 
 
 public class Stereotype extends GeneralizableElementImpl {
+
+
+  //needs-more-work: some of these apply to multiple OCL base classes
+
+  //maybe these constants should be moved to their respective base
+  //class source files...
+
+  public static Stereotype BECOMES =
+  new Stereotype("becomes", "Dependency");
+  public static Stereotype CALL =
+  new Stereotype("call", "Dependency");
+  public static Stereotype COPY =
+  new Stereotype("copy", "Dependency");
+  public static Stereotype CREATE =
+  new Stereotype("create", "BehavioralFeature");
+  public static Stereotype DESTROY =
+  new Stereotype("destroy", "BehavioralFeature");
+  public static Stereotype DELETION =
+  new Stereotype("deletion", "Refinement");
+  public static Stereotype DERIVED =
+  new Stereotype("derived", "Dependency");
+  public static Stereotype DOCUMENT =
+  new Stereotype("document", "Component");
+  public static Stereotype ENUMERATION =
+  new Stereotype("enumeration", "DataType");
+  public static Stereotype EXECUTABLE =
+  new Stereotype("executable", "Component");
+  public static Stereotype EXTENDS =
+  new Stereotype("extends", "Generalization");
+  public static Stereotype FACADE =
+  new Stereotype("facade", "Package");
+  public static Stereotype FILE =
+  new Stereotype("file", "Component");
+  public static Stereotype FRAMEWORK =
+  new Stereotype("framework", "Package");
+  public static Stereotype FRIEND =
+  new Stereotype("friend", "Dependency");
+  public static Stereotype IMPORT =
+  new Stereotype("import", "Dependency");
+  public static Stereotype IMPLEMENTATIONCLASS =
+  new Stereotype("implementationClass", "Class");
+  public static Stereotype INHERITS =
+  new Stereotype("inherits", "Generalization");
+  public static Stereotype INSTANCE =
+  new Stereotype("instance", "Dependency");
+  public static Stereotype INVARIANT =
+  new Stereotype("invariant", "Constraint");
+  public static Stereotype LIBRARY =
+  new Stereotype("library", "Component");
+  public static Stereotype METACLASS =
+  new Stereotype("metaclass", "Dependency");
+  public static Stereotype POSTCONDITION =
+  new Stereotype("postcondition", "Constraint");
+  public static Stereotype POWERTYPE =
+  new Stereotype("powertype", "Classifier");
+  public static Stereotype PRECONDITION =
+  new Stereotype("precondition", "Constraint");
+  public static Stereotype PRIVATE =
+  new Stereotype("private", "Generalization");
+  public static Stereotype PROCESS =
+  new Stereotype("process", "Classifier");
+  public static Stereotype REQUIREMENT =
+  new Stereotype("requirement", "Comment");
+  public static Stereotype SEND =
+  new Stereotype("send", "Dependency");
+  public static Stereotype STEREOTYPE =
+  new Stereotype("stereotype", "Classifier");
+  public static Stereotype STUB =
+  new Stereotype("stub", "Package");
+  public static Stereotype SUBCLASS =
+  new Stereotype("subclass", "Generalization");
+  public static Stereotype SUBTRACTION =
+  new Stereotype("subtraction", "Refinement");
+  public static Stereotype SUBTYPE =
+  new Stereotype("subtype", "Generalization");
+  public static Stereotype SYSTEM =
+  new Stereotype("system", "Package");
+  public static Stereotype TABLE =
+  new Stereotype("table", "Component");
+  public static Stereotype THREAD =
+  new Stereotype("thread", "Classifier");
+  public static Stereotype TOPLEVELPACKAGE =
+  new Stereotype("topLevelPackage", "Package");
+  public static Stereotype TYPE =
+  new Stereotype("type", "Class");
+  public static Stereotype USECASEMODEL =
+  new Stereotype("useCaseModel", "Model");
+  public static Stereotype USES =
+  new Stereotype("uses", "Generalization");
+  public static Stereotype UTILITY =
+  new Stereotype("utility", "Classifier");
+  
   //public Geometry icon;
   public Name _baseClass;
   //% public TaggedValue _requiredTag[];

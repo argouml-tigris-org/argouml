@@ -1,5 +1,6 @@
 package uci.uml.generate;
 
+import java.util.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Foundation.Extension_Mechanisms.*;
@@ -52,15 +53,24 @@ public class GeneratorDisplay extends Generator {
     String s = "";
     s += generateVisibility(attr);
     s += generateScope(attr);
-    s += generateMultiplicity(attr.getMultiplicity());
+    if (attr.getMultiplicity() != Multiplicity.ONE)
+      s += generateMultiplicity(attr.getMultiplicity()) + " ";
 
     Classifier type = attr.getType();
     if (type != null) s += generateClassifierRef(type) + " ";
+
+    String slash = "";
+    if (attr.containsStereotype(Stereotype.DERIVED)) slash = "/";
     
-    s += generateName(attr.getName());
+    s += slash + generateName(attr.getName());
     Expression init = attr.getInitialValue();
     if (init != null)
       s += " = " + generateExpression(init);
+
+    String constraintStr = generateConstraints(attr);
+    if (constraintStr.length() > 0)
+      s += " " + constraintStr;
+    
     return s;
   }
 
@@ -96,18 +106,36 @@ public class GeneratorDisplay extends Generator {
   }
 
   public String generateAssociationEnd(AssociationEnd ae) {
-    System.out.println("asdasdasdqwdasd");
     String s = "";
     Name n = ae.getName();
     if (n != null && n != Name.UNSPEC) s += generateName(n) + " ";
     if (ae.getIsNavigable()) s += "navigable ";
     if (ae.getIsOrdered()) s += "ordered ";
     Multiplicity m = ae.getMultiplicity();
-    if (m != null) s+= generateMultiplicity(m) + " ";
+    if (m != Multiplicity.ONE)
+      s+= generateMultiplicity(m) + " ";
     s += generateClassifierRef(ae.getType());
     return s;
   }
 
+  public String generateConstraints(ModelElement me) {
+    Vector constr = me.getConstraint();
+    if (constr == null || constr.size() == 0) return "";
+    String s = "{";
+    java.util.Enumeration conEnum = constr.elements();
+    while (conEnum.hasMoreElements()) {
+      s += generateConstraint((Constraint)conEnum.nextElement());
+      if (conEnum.hasMoreElements()) s += "; ";
+    }
+    s += "}";
+    return s;
+  }
+
+
+  public String generateConstraint(Constraint c) {
+    return generateExpression(c.getBody());
+  }
+  
   ////////////////////////////////////////////////////////////////
   // internal methods?
   
@@ -128,10 +156,33 @@ public class GeneratorDisplay extends Generator {
   }
 
   public String generateMultiplicity(Multiplicity m) {
-    // needs-more-work 
-    return "";
+    if (m == Multiplicity.ZERO_OR_MORE) return ANY_RANGE;
+    String s = "";
+    Vector v = m.getRange();
+    if (v == null) return s;
+    java.util.Enumeration rangeEnum = v.elements();
+    while (rangeEnum.hasMoreElements()) {
+      MultiplicityRange mr = (MultiplicityRange) rangeEnum.nextElement();
+      s += generateMultiplicityRange(mr);
+      if (rangeEnum.hasMoreElements()) s += ",";
+    }
+    return s;
   }
 
 
+  public static final String ANY_RANGE = "*..0";
+  //public static final String ANY_RANGE = "*";
+  // needs-more-work: user preference between "*" and "0..*"
+  
+  public String generateMultiplicityRange(MultiplicityRange mr) {
+    
+    Integer lower = mr.getLower();
+    Integer upper = mr.getUpper();
+    if (lower == null && upper == null) return ANY_RANGE;
+    if (lower == null) return "*.."+ upper.toString();
+    if (upper == null) return lower.toString() + "..*";
+    if (lower.intValue() == upper.intValue()) return lower.toString();
+    return mr.getLower().toString() + ".." + mr.getUpper().toString();
+  } 
 
 } /* end class GeneratorDisplay */

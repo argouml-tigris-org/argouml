@@ -123,7 +123,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
     Vector v;
     java.util.Enumeration enum;
 
-    s += getOCLTypeStr() + "(" + getName().toString() + ")[";
+    s += getOCLTypeStr() + "(" + getName().getBody().toString() + ")[";
 
     String stereos = dbgStereotypes();
     if (stereos != "") s += "\n" + stereos;

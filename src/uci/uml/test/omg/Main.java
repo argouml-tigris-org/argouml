@@ -19,6 +19,12 @@ public class Main {
     System.out.println("\n\nCONSTRUCTING GRAPHICS EXAMPLE");
     GraphicsExample ge = new GraphicsExample();
 
+    System.out.println("\n\nCONSTRUCTING HUMAN RESOURCES EXAMPLE");
+    HumanResourcesExample hre = new HumanResourcesExample();
+
+    System.out.println("\n\nCONSTRUCTING SOCCER EXAMPLE");
+    SoccerExample se = new SoccerExample();
+
     System.out.println("\n\nSUCCESSFULLY CONSTRUCTED ALL EXAMPLES");
   }
 

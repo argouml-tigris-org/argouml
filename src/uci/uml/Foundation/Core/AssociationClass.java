@@ -10,33 +10,19 @@ import uci.uml.Foundation.Extension_Mechanisms.*;
 import uci.uml.Behavioral_Elements.Common_Behavior.Link;
 
 
-public class Association extends GeneralizableElementImpl
+public class AssociationClass extends Class
 implements IAssociation {
-  //% public AssociationEnd _connection[];
+
+
+  public AssociationClass() { }
+  public AssociationClass(Name name) { super(name); }
+  public AssociationClass(String nameStr) { super(new Name(nameStr)); }
+
+  ////////////////////////////////////////////////////////////////
+  // IAssociation implementation
   public Vector _connection;
-  //nmw: public AssociationRole associationRole[];
-  //% public Link _link[];
   public Vector _link;
     
-  public Association() { }
-  public Association(Name name) { super(name); }
-  public Association(String nameStr) { super(new Name(nameStr)); }
-  public Association(String nameStr,AssociationEnd from,AssociationEnd to){
-    super(new Name(nameStr));
-    addConnection(from);
-    addConnection(to);
-  }
-  public Association(Name name, Name srcN, Classifier srcC,
-		     Multiplicity srcM, AggregationKind srcA,
-		     Name dstN, Classifier dstC, Multiplicity dstM,
-		     AggregationKind dstA) { 
-    super(name);
-    AssociationEnd src = new AssociationEnd(srcN, srcC, srcM, srcA);
-    AssociationEnd dst = new AssociationEnd(dstN, dstC, dstM, dstA);
-    addConnection(src);
-    addConnection(dst);
-  }
-
   public Vector getConnection() { return _connection; }
   public void setConnection(Vector x) {
     _connection = x;
@@ -50,12 +36,6 @@ implements IAssociation {
     _connection.removeElement(x);
   }
  
-  //- public AssociationRole[] getAssociationRole() {
-  //-   return associationRole;
-  //- }
-  //- public void setAssociationRole(AssociationRole[] x) {
-  //-   associationRole = x;
-  //- }
 
   public Vector getLink() { return _link; }
   public void setLink(Vector x) {
@@ -94,6 +74,18 @@ implements IAssociation {
       enum = v.elements();
       while (enum.hasMoreElements())
 	s += "\n  | " + ((AssociationEnd)enum.nextElement()).dbgString();
+    }
+    if ((v = getStructuralFeature()) != null) {
+      s += "\n  attributes:";
+      enum = v.elements();
+      while (enum.hasMoreElements())
+	s += "\n  | " + ((Attribute)enum.nextElement()).dbgString();
+    }
+    if ((v = getBehavioralFeature()) != null) {
+      s += "\n  operations:";
+      enum = v.elements();
+      while (enum.hasMoreElements())
+	s += "\n  | " + ((Operation) enum.nextElement()).dbgString();
     }
     s += "\n]";
     return s;

@@ -18,6 +18,24 @@ public class Constraint extends ModelElementImpl {
   //- public Stereotype _constrainedStereotype;
 
   public Constraint() { }
+  public Constraint(Name name) { super(name); }
+  public Constraint(String nameStr) { super(new Name(nameStr)); }
+  public Constraint(Name name, String body) {
+    super(name);
+    setBody(new BooleanExpression(body));
+  }
+  public Constraint(String nameStr, String body) {
+    super(new Name(nameStr));
+    setBody(new BooleanExpression(body));
+  }
+  public Constraint(String nameStr, String lang, String body) {
+    super(new Name(nameStr));
+    setBody(new BooleanExpression(lang, body));
+  }
+  public Constraint(Name name, String lang, String body) {
+    super(name);
+    setBody(new BooleanExpression(lang, body));
+  }
 
   public BooleanExpression getBody() { return _body; }
   public void setBody(BooleanExpression x) {

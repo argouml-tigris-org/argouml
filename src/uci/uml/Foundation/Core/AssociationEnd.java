@@ -16,7 +16,7 @@ public class AssociationEnd extends ModelElementImpl {
   public ScopeKind _targetScope;
   public Multiplicity _multiplicity;
   public ChangeableKind _changeable;
-  public Association _association;
+  public IAssociation _association;
   //% public Attribute _qualifier[];
   public Vector _qualifier;
   public Classifier _type;
@@ -67,8 +67,8 @@ public class AssociationEnd extends ModelElementImpl {
     _changeable = x;
   }
 
-  public Association getAssociation() { return _association; }
-  public void setAssociation(Association x) {
+  public IAssociation getAssociation() { return _association; }
+  public void setAssociation(IAssociation x) {
     _association = x;
   }
 

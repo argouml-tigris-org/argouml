@@ -137,6 +137,10 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   public void removeStereotype(Stereotype x) {
     _stereotype.removeElement(x);
   }
+  public boolean containsStereotype(Stereotype x) {
+    if (_stereotype == null) return false;
+    return _stereotype.contains(x);
+  }
   
   public Vector getBehavior() { return _behavior; }
   public void setBehavior(Vector x) {

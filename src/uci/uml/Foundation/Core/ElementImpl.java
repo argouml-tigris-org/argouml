@@ -9,7 +9,7 @@ import uci.uml.Foundation.Data_Types.Name;
 
 
 public class ElementImpl implements Element {
-  public Name _name;
+  public Name _name = Name.UNSPEC;
   //% public TaggedValue _characteristic[];
   public Vector _characteristic;
   public Stereotype _classification;
