@@ -524,10 +524,12 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
      * @see FigNodeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object newOwner) {
-        if (Model.getFacade().isAInstance(newOwner)) {
-            Object oldOwner = getOwner();
-            ModelEventPump pump = Model.getPump();
+        Object oldOwner = getOwner();
+        ModelEventPump pump = Model.getPump();
+        if (oldOwner != null) {
             pump.removeModelEventListener(this, oldOwner);
+        }
+        if (Model.getFacade().isAInstance(newOwner)) {
             pump.addModelEventListener(this,
 				       newOwner,
 				       new String[] {
