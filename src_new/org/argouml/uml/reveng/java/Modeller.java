@@ -120,7 +120,7 @@ public class Modeller
 	}
 	// Save src_path in the upper package
 	Object mPackage = getPackage(currentName);
-	if (Import.getSrcPath() != null & ModelFacade.getTaggedValue(mPackage, "src_path") == null)
+	if (Import.getSrcPath() != null && ModelFacade.getTaggedValue(mPackage, "src_path") == null)
 		ModelFacade.setTaggedValue(mPackage, "src_path", Import.getSrcPath());
 		
 	// Find or create a MPackage NSUML object for this package.
