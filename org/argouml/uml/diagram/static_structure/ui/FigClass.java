@@ -287,21 +287,21 @@ public class FigClass extends FigNodeModelElement
 
         ArgoJMenu showMenu = new ArgoJMenu(BUNDLE, "menu.popup.show");
         if (isAttributesVisible() && isOperationsVisible()) {
-            showMenu.add(ActionCompartmentDisplay.HideAllCompartments);
+            showMenu.add(ActionCompartmentDisplay.hideAllCompartments());
         } else if (!isAttributesVisible() && !isOperationsVisible()) {
-            showMenu.add(ActionCompartmentDisplay.ShowAllCompartments);
+            showMenu.add(ActionCompartmentDisplay.showAllCompartments());
         }
 
         if (isAttributesVisible()) {
-            showMenu.add(ActionCompartmentDisplay.HideAttrCompartment);
+            showMenu.add(ActionCompartmentDisplay.hideAttrCompartment());
         } else {
-            showMenu.add(ActionCompartmentDisplay.ShowAttrCompartment);
+            showMenu.add(ActionCompartmentDisplay.showAttrCompartment());
         }
 
         if (isOperationsVisible()) {
-            showMenu.add(ActionCompartmentDisplay.HideOperCompartment);
+            showMenu.add(ActionCompartmentDisplay.hideOperCompartment());
         } else {
-            showMenu.add(ActionCompartmentDisplay.ShowOperCompartment);
+            showMenu.add(ActionCompartmentDisplay.showOperCompartment());
         }
 
         showMenu.add(ActionEdgesDisplay.getShowEdges());

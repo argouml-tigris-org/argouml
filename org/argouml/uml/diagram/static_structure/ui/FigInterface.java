@@ -262,9 +262,9 @@ public class FigInterface extends FigNodeModelElement
             popUpActions.size() - POPUP_ADD_OFFSET);
         ArgoJMenu showMenu = new ArgoJMenu(BUNDLE, "menu.popup.show");
         if (operVec.isVisible()) {
-            showMenu.add(ActionCompartmentDisplay.HideOperCompartment);
+            showMenu.add(ActionCompartmentDisplay.hideOperCompartment());
         } else {
-            showMenu.add(ActionCompartmentDisplay.ShowOperCompartment);
+            showMenu.add(ActionCompartmentDisplay.showOperCompartment());
         }
 
         popUpActions.insertElementAt(showMenu,
