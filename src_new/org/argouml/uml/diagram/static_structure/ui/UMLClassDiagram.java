@@ -29,17 +29,12 @@ import javax.swing.Action;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.CmdCreateNode;
-import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
-import org.argouml.uml.diagram.ui.ActionAddAssociation;
-import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.ui.ActionAddAttribute;
 import org.argouml.uml.diagram.ui.ActionAddOperation;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
-import org.tigris.gef.base.ModeCreatePolyEdge;
 
 /**
  * @author jrobbins@ics.uci.edy
@@ -50,67 +45,24 @@ public class UMLClassDiagram extends UMLDiagram {
 
     ////////////////
     // actions for toolbar
- 
-    private Action actionClass = new RadioAction(
-        new CmdCreateNode(ModelFacade.CLASS, "Class"));
-
-    private Action actionObject = new RadioAction(
-        new CmdCreateNode(ModelFacade.INSTANCE, "Instance"));
-
-    private Action actionInterface = new RadioAction(
-        new CmdCreateNode(ModelFacade.INTERFACE, "Interface"));
-
-    private Action actionDependency = new RadioAction(
-        new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
-                    ModelFacade.DEPENDENCY, "Dependency"));
-
-    private Action actionPermission = new RadioAction(
-        new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", 
-                    ModelFacade.PERMISSION, "Permission"));
-
-    private Action actionUsage = new RadioAction(
-        new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
-                    ModelFacade.USAGE, "Usage"));
-
-    private Action actionLink = new RadioAction(
-        new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
-                    ModelFacade.LINK, "Link"));
-
-    private Action actionGeneralize = new RadioAction(
-        new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
-                    ModelFacade.GENERALIZATION, "Generalization"));
-
-    private Action actionRealize = new RadioAction(
-        new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
-                    ModelFacade.ABSTRACTION, "Realization"));
-
-    private Action actionPackage = new RadioAction(
-        new CmdCreateNode(ModelFacade.PACKAGE, "Package"));
-
-    private Action actionModel = new RadioAction(
-        new CmdCreateNode(ModelFacade.MODEL, "Model"));
-
-    private Action actionSubsystem = new RadioAction(
-        new CmdCreateNode(ModelFacade.SUBSYSTEM, "Subsystem"));
-
-    private Action actionAssociation = new RadioAction(
-        new ActionAddAssociation(ModelFacade.NONE_AGGREGATIONKIND,
-                    false, "Association"));
-    private Action actionAggregation = new RadioAction(
-        new ActionAddAssociation(ModelFacade.AGGREGATE_AGGREGATIONKIND,
-                    false, "Aggregation"));
-    private Action actionComposition = new RadioAction(
-        new ActionAddAssociation(ModelFacade.COMPOSITE_AGGREGATIONKIND, 
-                    false, "Composition"));
-    private Action actionUniAssociation = new RadioAction(
-        new ActionAddAssociation(ModelFacade.NONE_AGGREGATIONKIND, 
-                    true, "UniAssociation"));
-    private Action actionUniAggregation = new RadioAction(
-        new ActionAddAssociation(ModelFacade.AGGREGATE_AGGREGATIONKIND, 
-                    true, "UniAggregation"));
-    private Action actionUniComposition = new RadioAction(
-        new ActionAddAssociation(ModelFacade.COMPOSITE_AGGREGATIONKIND, 
-                    true, "UniComposition"));
+    private Action actionClass;
+    private Action actionObject;
+    private Action actionInterface;
+    private Action actionDependency;
+    private Action actionPermission;
+    private Action actionUsage;
+    private Action actionLink;
+    private Action actionGeneralization;
+    private Action actionRealization;
+    private Action actionPackage;
+    private Action actionModel;
+    private Action actionSubsystem;
+    private Action actionAssociation;
+    private Action actionAggregation;
+    private Action actionComposition;
+    private Action actionUniAssociation;
+    private Action actionUniAggregation;
+    private Action actionUniComposition;
 
     private static int classDiagramSerial = 1;
 
@@ -177,10 +129,10 @@ public class UMLClassDiagram extends UMLDiagram {
             getActionPackage(),
             getActionClass(),
             getAssociationActions(),
-            getActionGeneralize(),
+            getActionGeneralization(),
             null,
             getActionInterface(),
-            getActionRealize(), 
+            getActionRealization(), 
             null,
             getDependencyActions(), 
             null,
@@ -267,112 +219,208 @@ public class UMLClassDiagram extends UMLDiagram {
     }
     
     /**
-     * See issue 2835.
      * @return Returns the actionAggregation.
      */
     protected Action getActionAggregation() {
+        if (actionAggregation == null) {
+            actionAggregation = makeCreateAssociationAction(
+                ModelFacade.AGGREGATE_AGGREGATIONKIND,
+                false,
+                "Aggregation");
+        }
         return actionAggregation;
     }
     /**
      * @return Returns the actionAssociation.
      */
     protected Action getActionAssociation() {
+        if (actionAssociation == null) {
+            actionAssociation = makeCreateAssociationAction(
+                ModelFacade.NONE_AGGREGATIONKIND,
+                false, "Association");
+        }
         return actionAssociation;
     }
     /**
      * @return Returns the actionClass.
      */
     protected Action getActionClass() {
+        if (actionClass == null) {
+            actionClass = makeCreateNodeAction(ModelFacade.CLASS, "Class");
+        }
+
         return actionClass;
     }
     /**
      * @return Returns the actionComposition.
      */
     protected Action getActionComposition() {
+        if (actionComposition == null) {
+            actionComposition = makeCreateAssociationAction(
+                ModelFacade.COMPOSITE_AGGREGATIONKIND,
+                false, "Composition");
+        }
         return actionComposition;
     }
     /**
      * @return Returns the actionDepend.
      */
     protected Action getActionDependency() {
+        if (actionDependency == null) {
+            actionDependency =
+                makeCreateEdgeAction(ModelFacade.DEPENDENCY, "Dependency");
+        }
         return actionDependency;
     }
+    
     /**
      * @return Returns the actionGeneralize.
      */
-    protected Action getActionGeneralize() {
-        return actionGeneralize;
+    protected Action getActionGeneralization() {
+        if (actionGeneralization == null) {
+            actionGeneralization = makeCreateEdgeAction(
+                    ModelFacade.GENERALIZATION,
+                    "Generalization");
+        }
+        
+        return actionGeneralization;
     }
+
     /**
      * @return Returns the actionInterface.
      */
     protected Action getActionInterface() {
+        if (actionInterface == null) {
+            actionInterface =
+                makeCreateNodeAction(ModelFacade.INTERFACE, "Interface");
+        }
         return actionInterface;
     }
+    
     /**
      * @return Returns the actionLink.
      */
     protected Action getActionLink() {
+        if (actionLink == null) {
+            actionLink = makeCreateEdgeAction(ModelFacade.LINK, "Link");
+        }
+
         return actionLink;
     }
     /**
      * @return Returns the actionModel.
      */
     protected Action getActionModel() {
+        if (actionModel == null) {
+            actionModel = makeCreateNodeAction(ModelFacade.MODEL, "Model");
+        }
+        
         return actionModel;
     }
     /**
      * @return Returns the actionObject.
      */
     protected Action getActionObject() {
+        if (actionObject == null) {
+            actionObject =
+                makeCreateNodeAction(ModelFacade.INSTANCE, "Instance");
+        }
+
         return actionObject;
     }
     /**
      * @return Returns the actionPackage.
      */
     protected Action getActionPackage() {
+        if (actionPackage == null) {
+            actionPackage = 
+                makeCreateNodeAction(ModelFacade.PACKAGE, "Package");
+        }
+
         return actionPackage;
     }
     /**
      * @return Returns the actionPermission.
      */
     protected Action getActionPermission() {
+        if (actionPermission == null) {
+            actionPermission = 
+                makeCreateEdgeAction(ModelFacade.PERMISSION, "Permission");
+        }
+
         return actionPermission;
     }
+    
     /**
      * @return Returns the actionRealize.
      */
-    protected Action getActionRealize() {
-        return actionRealize;
+    protected Action getActionRealization() {
+        if (actionRealization == null) {
+            actionRealization =
+                makeCreateEdgeAction(ModelFacade.ABSTRACTION, "Realization");
+        }
+
+        return actionRealization;
     }
+    
     /**
      * @return Returns the actionSubsystem.
      */
     protected Action getActionSubsystem() {
+        if (actionSubsystem == null) {
+            actionSubsystem = 
+                makeCreateNodeAction(ModelFacade.SUBSYSTEM, "Subsystem");
+        }
         return actionSubsystem;
     }
+    
     /**
      * @return Returns the actionUniAggregation.
      */
     protected Action getActionUniAggregation() {
+        if (actionUniAggregation == null) {
+            actionUniAggregation = makeCreateAssociationAction(
+                ModelFacade.AGGREGATE_AGGREGATIONKIND,
+                true,
+                "UniAggregation");
+        }
         return actionUniAggregation;
     }
+    
     /**
      * @return Returns the actionUniAssociation.
      */
     protected Action getActionUniAssociation() {
+        if (actionUniAssociation == null) {
+            actionUniAssociation = makeCreateAssociationAction(
+                ModelFacade.NONE_AGGREGATIONKIND,
+                true,
+                "UniAssociation");
+        }
         return actionUniAssociation;
     }
+    
     /**
      * @return Returns the actionUniComposition.
      */
     protected Action getActionUniComposition() {
+        if (actionUniComposition == null) {
+            actionUniComposition = makeCreateAssociationAction(
+                ModelFacade.COMPOSITE_AGGREGATIONKIND,
+                true,
+                "UniComposition");
+        }
         return actionUniComposition;
     }
+    
     /**
      * @return Returns the actionUsage.
      */
     protected Action getActionUsage() {
+        if (actionUsage == null) {
+            actionUsage = makeCreateEdgeAction(ModelFacade.USAGE, "Usage");
+        }
+
         return actionUsage;
     }
 } /* end class UMLClassDiagram */

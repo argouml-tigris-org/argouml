@@ -527,5 +527,49 @@ public abstract class UMLDiagram
             }
         }
     }
+
+    /**
+     * Factory method to build an Action for creating a node in the
+     * diagram.
+     * 
+     * @param modelElement identifies the model element type to make
+     * @param descr the description to give this action.
+     * @return The action to create a new node.
+     */
+    protected Action makeCreateNodeAction(Object modelElement, String descr) {
+        return new RadioAction(new CmdCreateNode(modelElement, descr));
+    }
+
+    /**
+     * Factory method to build an Action for creating an edge in the
+     * diagram.
+     * 
+     * @param modelElement identifies the model element type to make
+     * @param descr the description to give this action.
+     * @return The action to create a new node.
+     */
+    protected Action makeCreateEdgeAction(Object modelElement, String descr) {
+        return new RadioAction(
+            new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
+            modelElement, descr));
+    }
+    
+    /**
+     * Factory method to build an Action for creating an association edge in
+     * the diagram.
+     * 
+     * @param aggregationKind the type of aggregation for this association
+     * @param unidirectional true if this is a one way association.
+     * @param descr the description to give this action.
+     * @return The action to create a new association.
+     */
+    protected Action makeCreateAssociationAction(
+            Object aggregationKind,
+            boolean unidirectional,
+            String descr) {
+        
+        return new RadioAction(
+            new ActionAddAssociation(aggregationKind, unidirectional, descr));
+    }
 } /* end class UMLDiagram */
 
