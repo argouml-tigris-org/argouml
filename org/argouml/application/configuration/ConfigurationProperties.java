@@ -93,7 +93,7 @@ public class ConfigurationProperties extends ConfigurationHandler {
   public boolean loadFile(File file) {
       try {
           _properties.load(new FileInputStream(file));
-	  Argo.log.info ("Configuration loaded from " + file + "\n");
+	       Argo.log.info ("Configuration loaded from " + file + "\n");
           return true;
       }
       catch (Exception e) {

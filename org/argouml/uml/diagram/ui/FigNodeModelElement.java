@@ -139,7 +139,7 @@ public abstract class FigNodeModelElement
     // instance variables
 
     protected FigRect _bigPort;
-    public FigText _name;   // Scope problem in jdk1.2
+    public FigText _name; // Scope problem in jdk1.2
     public FigText _stereo; // Scope problem in jdk1.2
     protected Vector _enclosedFigs = new Vector();
     protected Fig _encloser = null;
@@ -207,7 +207,7 @@ public abstract class FigNodeModelElement
     /** Reply text to be shown while placing node in diagram */
     public String placeString() {
         if (getOwner() instanceof MModelElement) {
-            MModelElement me = (MModelElement) getOwner();
+            MModelElement me = (MModelElement)getOwner();
             String placeString = me.getName();
             if (placeString == null)
                 placeString = "new " + me.getUMLClassName();
@@ -219,9 +219,13 @@ public abstract class FigNodeModelElement
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    public void setItemUID(ItemUID id) { _id = id; }
+    public void setItemUID(ItemUID id) {
+        _id = id;
+    }
 
-    public ItemUID getItemUID() { return _id; }
+    public ItemUID getItemUID() {
+        return _id;
+    }
 
     public FigText getNameFig() {
         return _name;
@@ -230,7 +234,7 @@ public abstract class FigNodeModelElement
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
         ToDoList list = Designer.TheDesigner.getToDoList();
-        Vector items = (Vector) list.elementsForOffender(getOwner()).clone();
+        Vector items = (Vector)list.elementsForOffender(getOwner()).clone();
         if (items != null && items.size() > 0) {
             JMenu critiques = new JMenu("Critiques");
             ToDoItem itemUnderMouse = hitClarifier(me.getX(), me.getY());
@@ -239,7 +243,7 @@ public abstract class FigNodeModelElement
             critiques.addSeparator();
             int size = items.size();
             for (int i = 0; i < size; i++) {
-                ToDoItem item = (ToDoItem) items.elementAt(i);
+                ToDoItem item = (ToDoItem)items.elementAt(i);
                 if (item == itemUnderMouse)
                     continue;
                 critiques.add(new ActionGoToCritique(item));
@@ -260,25 +264,29 @@ public abstract class FigNodeModelElement
 
     public void setEnclosingFig(Fig f) {
         super.setEnclosingFig(f);
-        if (!(getOwner() instanceof MModelElement)) 
-        	return;
+        if (!(getOwner() instanceof MModelElement))
+            return;
         MModelElement elem = (MModelElement)getOwner();
-        if (f == null && getEnclosingFig() != null) { // move from a package to the diagram
+        if (f == null
+            && getEnclosingFig() != null) { // move from a package to the diagram
             // TODO: we should print "from blahblah package
             // TODO: we should take into account 'playing around with the classes' on some diagram
             return;
         }
-        if (f == null && getEnclosingFig() == null) { // placement on the diagram
+        if (f == null
+            && getEnclosingFig() == null) { // placement on the diagram
             return;
-        }        
+        }
         Object fOwner = f.getOwner();
         if (fOwner instanceof MNamespace) { // placed it on a package
-            if (CoreHelper.getHelper().isValidNamespace(elem, (MNamespace)fOwner)) 
-            	((MNamespace)fOwner).addOwnedElement(elem);
+            if (CoreHelper
+                .getHelper()
+                .isValidNamespace(elem, (MNamespace)fOwner))
+                 ((MNamespace)fOwner).addOwnedElement(elem);
             return;
         }
         _encloser = f;
-                
+
     }
 
     public Vector getEnclosedFigs() {
@@ -295,7 +303,7 @@ public abstract class FigNodeModelElement
                 Object o = figures.elementAt(i);
                 if (o instanceof FigNodeModelElement
                     && o != getEnclosingFig()) {
-                    FigNodeModelElement fignode = (FigNodeModelElement) o;
+                    FigNodeModelElement fignode = (FigNodeModelElement)o;
                     Vector enclosed = fignode.getEnclosedFigs();
                     fignode.elementOrdering(enclosed);
                 }
@@ -322,11 +330,11 @@ public abstract class FigNodeModelElement
         Vector items = list.elementsForOffender(getOwner());
         int size = items.size();
         for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+            ToDoItem item = (ToDoItem)items.elementAt(i);
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
-                ((Clarifier) icon).setFig(this);
-                ((Clarifier) icon).setToDoItem(item);
+                ((Clarifier)icon).setFig(this);
+                ((Clarifier)icon).setToDoItem(item);
             }
             icon.paintIcon(null, g, iconX, iconY);
             iconX += icon.getIconWidth();
@@ -334,11 +342,11 @@ public abstract class FigNodeModelElement
         items = list.elementsForOffender(this);
         size = items.size();
         for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+            ToDoItem item = (ToDoItem)items.elementAt(i);
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
-                ((Clarifier) icon).setFig(this);
-                ((Clarifier) icon).setToDoItem(item);
+                ((Clarifier)icon).setFig(this);
+                ((Clarifier)icon).setToDoItem(item);
             }
             icon.paintIcon(null, g, iconX, iconY);
             iconX += icon.getIconWidth();
@@ -351,7 +359,7 @@ public abstract class FigNodeModelElement
         Vector items = list.elementsForOffender(getOwner());
         int size = items.size();
         for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+            ToDoItem item = (ToDoItem)items.elementAt(i);
             Icon icon = item.getClarifier();
             int width = icon.getIconWidth();
             if (y >= _y - 15
@@ -362,19 +370,19 @@ public abstract class FigNodeModelElement
             iconX += width;
         }
         for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+            ToDoItem item = (ToDoItem)items.elementAt(i);
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
-                ((Clarifier) icon).setFig(this);
-                ((Clarifier) icon).setToDoItem(item);
-                if (((Clarifier) icon).hit(x, y))
+                ((Clarifier)icon).setFig(this);
+                ((Clarifier)icon).setToDoItem(item);
+                if (((Clarifier)icon).hit(x, y))
                     return item;
             }
         }
         items = list.elementsForOffender(this);
         size = items.size();
         for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+            ToDoItem item = (ToDoItem)items.elementAt(i);
             Icon icon = item.getClarifier();
             int width = icon.getIconWidth();
             if (y >= _y - 15
@@ -385,12 +393,12 @@ public abstract class FigNodeModelElement
             iconX += width;
         }
         for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+            ToDoItem item = (ToDoItem)items.elementAt(i);
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
-                ((Clarifier) icon).setFig(this);
-                ((Clarifier) icon).setToDoItem(item);
-                if (((Clarifier) icon).hit(x, y))
+                ((Clarifier)icon).setFig(this);
+                ((Clarifier)icon).setToDoItem(item);
+                if (((Clarifier)icon).hit(x, y))
                     return item;
             }
         }
@@ -456,7 +464,7 @@ public abstract class FigNodeModelElement
             try {
                 startTrans();
                 //parse the text that was edited
-                textEdited((FigText) src);
+                textEdited((FigText)src);
                 // resize the FigNode to accomodate the new text
                 Rectangle bbox = getBounds();
                 Dimension minSize = getMinimumSize();
@@ -479,15 +487,18 @@ public abstract class FigNodeModelElement
      *  should override to handle other text elements. */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         if (ft == _name) {
-            MModelElement me = (MModelElement) getOwner();
+            MModelElement me = (MModelElement)getOwner();
             if (me == null)
                 return;
             try {
-                ParserDisplay.SINGLETON.parseModelElement(me, ft.getText().trim());
+                ParserDisplay.SINGLETON.parseModelElement(
+                    me,
+                    ft.getText().trim());
                 ProjectBrowser.TheInstance.getStatusBar().showStatus("");
-		updateNameText();
+                updateNameText();
             } catch (ParseException pe) {
-                ProjectBrowser.TheInstance.getStatusBar().showStatus("Error: " + pe + " at " + pe.getErrorOffset());
+                ProjectBrowser.TheInstance.getStatusBar().showStatus(
+                    "Error: " + pe + " at " + pe.getErrorOffset());
             }
             //me.setName(ft.getText());
         }
@@ -502,7 +513,7 @@ public abstract class FigNodeModelElement
     public void mouseClicked(MouseEvent me) {
         if (!_readyToEdit) {
             if (getOwner() instanceof MModelElement) {
-                MModelElement own = (MModelElement) getOwner();
+                MModelElement own = (MModelElement)getOwner();
                 own.setName("");
                 _readyToEdit = true;
             } else {
@@ -520,14 +531,14 @@ public abstract class FigNodeModelElement
             Rectangle r = new Rectangle(me.getX() - 2, me.getY() - 2, 4, 4);
             Fig f = hitFig(r);
             if (f instanceof MouseListener)
-                 ((MouseListener) f).mouseClicked(me);
+                 ((MouseListener)f).mouseClicked(me);
             else if (f instanceof FigGroup) {
                 //this enables direct text editing for sub figs of a FigGroup object:
-                Fig f2 = ((FigGroup) f).hitFig(r);
+                Fig f2 = ((FigGroup)f).hitFig(r);
                 if (f2 instanceof MouseListener)
-                     ((MouseListener) f2).mouseClicked(me);
+                     ((MouseListener)f2).mouseClicked(me);
                 else
-                    createFeatureIn((FigGroup) f, me);
+                    createFeatureIn((FigGroup)f, me);
             }
         }
         me.consume();
@@ -536,7 +547,7 @@ public abstract class FigNodeModelElement
     public void keyPressed(KeyEvent ke) {
         if (!_readyToEdit) {
             if (getOwner() instanceof MModelElement) {
-                MModelElement me = (MModelElement) getOwner();
+                MModelElement me = (MModelElement)getOwner();
                 me.setName("");
                 _readyToEdit = true;
             } else {
@@ -578,22 +589,20 @@ public abstract class FigNodeModelElement
      *  Subclasses should override and update other parts.
      */
     protected void modelChanged(MElementEvent mee) {
-        // TODO remove the mee == null as soon as we have been migrated
-        MModelElement me = (MModelElement) getOwner();
+        if (mee == null)
+            throw new IllegalArgumentException("event may never be null with modelchanged");
+        MModelElement me = (MModelElement)getOwner();
         if (me == null)
             return;
-        if (mee == null || "name".equals(mee.getName()) && mee.getSource() == getOwner()) {
+        if ("name".equals(mee.getName()) && mee.getSource() == getOwner()) {
             updateNameText();
             damage();
         }
-        if (mee == null || (mee.getSource() == getOwner() && mee.getName().equals("stereotype"))) {
+        if ((mee.getSource() == getOwner()
+            && mee.getName().equals("stereotype"))) {
             updateStereotypeText();
             damage();
         }
-        // TODO: remove the damage, as soon as we migrated to a structure that takes
-        // the modelevents into account
-
-        damage();
     }
 
     protected void createFeatureIn(FigGroup fg, InputEvent me) {
@@ -615,14 +624,14 @@ public abstract class FigNodeModelElement
     public void removed(MElementEvent mee) {
         cat.debug("deleting: " + this +mee);
         Object o = mee.getSource();
-        if (isPartlyOwner(o)) {
+        if (o == getOwner()) {
+            delete();
+        } else if (isPartlyOwner(o)) {
             updateBounds();
             damage();
             return;
         }
-        if (o == getOwner()) {
-            delete();
-        }
+
     }
 
     protected boolean isPartlyOwner(Object o) {
@@ -632,7 +641,7 @@ public abstract class FigNodeModelElement
             return true;
         Iterator it = getFigs().iterator();
         while (it.hasNext()) {
-            Fig fig = (Fig) it.next();
+            Fig fig = (Fig)it.next();
             if (isPartlyOwner(fig, o))
                 return true;
         }
@@ -645,9 +654,9 @@ public abstract class FigNodeModelElement
         if (o == fig.getOwner())
             return true;
         if (fig instanceof FigGroup) {
-            Iterator it = ((FigGroup) fig).getFigs().iterator();
+            Iterator it = ((FigGroup)fig).getFigs().iterator();
             while (it.hasNext()) {
-                Fig fig2 = (Fig) it.next();
+                Fig fig2 = (Fig)it.next();
                 if (isPartlyOwner(fig2, o))
                     return true;
             }
@@ -668,56 +677,58 @@ public abstract class FigNodeModelElement
         if (own != null) {
             Trash.SINGLETON.addItemFrom(own, null);
             if (own instanceof MModelElement) {
-                UmlFactory.getFactory().delete((MModelElement) own);
+                UmlFactory.getFactory().delete((MModelElement)own);
             }
         }
         Iterator it = getFigs().iterator();
         while (it.hasNext()) {
-            ((Fig) it.next()).dispose();
+            ((Fig)it.next()).dispose();
         }
         super.dispose();
     }
 
     public void setOwner(Object own) {
         Object oldOwner = getOwner();
-        updateListeners(own);   
-        super.setOwner(own);                              
+        updateListeners(own);
+        super.setOwner(own);
         if (own instanceof MModelElement) {
-            MModelElement me = (MModelElement) own;          
+            MModelElement me = (MModelElement)own;
             if (me.getUUID() == null)
                 me.setUUID(UUIDManager.SINGLETON.getNewUUID());
         }
-        _readyToEdit = true;      
-        renderingChanged();
-        updateBounds();  
+        _readyToEdit = true;
+        if (own != null)
+            renderingChanged();
+        updateBounds();
         bindPort(own, _bigPort);
-        
 
     }
 
-   /**
-    * Updates the text of the sterotype FigText. Override in subclasses to get
-    * wanted behaviour.
-    * TODO remove all 'misuses' of the stereotype figtexts (like in FigInterface)
-    */
+    /**
+     * Updates the text of the sterotype FigText. Override in subclasses to get
+     * wanted behaviour.
+     * TODO remove all 'misuses' of the stereotype figtexts (like in FigInterface)
+     */
     protected void updateStereotypeText() {
-        _stereo.setText(Notation.generate(this, ModelFacade.getStereoType(getOwner())));
+        _stereo.setText(
+            Notation.generate(this, ModelFacade.getStereoType(getOwner())));
     }
-    
+
     /**
      * Updates the text of the name FigText.
      */
     protected void updateNameText() {
         if (_readyToEdit) {
-            if (getOwner() == null) return;
+            if (getOwner() == null)
+                return;
             MModelElement owner = (MModelElement)getOwner();
             String nameStr =
-                    Notation.generate(this, ((MModelElement) getOwner()).getName());
+                Notation.generate(this, ((MModelElement)getOwner()).getName());
             _name.setText(nameStr);
             updateBounds();
         }
     }
-    
+
     /**
      * Implementations of this method should register/unregister the fig for all
      * (model)events. For FigNodeModelElement only the fig itself is registred
@@ -728,12 +739,16 @@ public abstract class FigNodeModelElement
      */
     protected void updateListeners(Object newOwner) {
         Object oldOwner = getOwner();
-			if (oldOwner != null)
-            	UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)oldOwner);
-            if (newOwner != null) {
-            	UmlModelEventPump.getPump().addModelEventListener(this, (MBase)newOwner);                       
-            }
-        
+        if (oldOwner != null)
+            UmlModelEventPump.getPump().removeModelEventListener(
+                this,
+                (MBase)oldOwner);
+        if (newOwner != null) {
+            UmlModelEventPump.getPump().addModelEventListener(
+                this,
+                (MBase)newOwner);
+        }
+
     }
 
     /** This default implementation simply requests the default notation.
@@ -765,10 +780,6 @@ public abstract class FigNodeModelElement
         updateNameText();
         updateStereotypeText();
         updateBounds();
-        CmdSetPreferredSize cmdSPS = 
-            new CmdSetPreferredSize(CmdSetPreferredSize.MINIMUM_SIZE);
-        cmdSPS.setFigToResize(this);
-        cmdSPS.doIt();
         damage();
     }
 
@@ -800,11 +811,11 @@ public abstract class FigNodeModelElement
 
         //set new bounds for all included figs
         Enumeration figs = fg.elements();
-        Fig bigPort = (Fig) figs.nextElement();
+        Fig bigPort = (Fig)figs.nextElement();
         Fig fi;
         int fw, yy = y;
         while (figs.hasMoreElements()) {
-            fi = (Fig) figs.nextElement();
+            fi = (Fig)figs.nextElement();
             fw = fi.getMinimumSize().width;
             if (!checkSize && fw > newW - 2)
                 fw = newW - 2;
@@ -845,17 +856,17 @@ public abstract class FigNodeModelElement
 
         Object own = getOwner();
         if (own instanceof MClassifier) {
-            MClassifier cls = (MClassifier) own;
+            MClassifier cls = (MClassifier)own;
             Iterator it = cls.getFeatures().iterator();
             while (it.hasNext()) {
-                MFeature feature = (MFeature) it.next();
+                MFeature feature = (MFeature)it.next();
                 if (feature instanceof MOperation) {
-                    MOperation oper = (MOperation) feature;
+                    MOperation oper = (MOperation)feature;
                     Iterator it2 = oper.getParameters().iterator();
                     while (it2.hasNext()) {
                         UmlModelEventPump.getPump().removeModelEventListener(
                             this,
-                            (MParameter) it2.next());
+                            (MParameter)it2.next());
                     }
                 }
                 UmlModelEventPump.getPump().removeModelEventListener(
@@ -866,7 +877,7 @@ public abstract class FigNodeModelElement
         if (own instanceof MBase) {
             UmlModelEventPump.getPump().removeModelEventListener(
                 this,
-                (MBase) own);
+                (MBase)own);
         }
         super.delete();
     }
@@ -878,6 +889,5 @@ public abstract class FigNodeModelElement
         updateEdges();
         super.damage();
     }
-
 
 } /* end class FigNodeModelElement */
