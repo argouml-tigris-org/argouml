@@ -771,8 +771,7 @@ If you are running Eclipse 3 the development environment fitting ArgoUML
 is achieved using the following steps.
 These steps only go so far as to the building of ArgoUML itself.
 I (Linus Tolke) hope that we will eventually add steps that sets up also
-the JUnit test cases and
-the modules.
+the JUnit test cases and the modules correctly.
 </para>
     <itemizedlist>
       <listitem>
@@ -854,7 +853,8 @@ Compiler options.
 Compliance and classfiles => Compiler compliance level: 1.3.
 </para>
 	<para>
-Suggested settings (only things diverting from the Eclipse Defaults are listed):
+Suggested settings.
+Only things diverting from the Eclipse Defaults are listed:
           <itemizedlist>
 	    <listitem>
 	      <para>
@@ -921,28 +921,36 @@ Check overriding and implementing methods.
 	<para>
 CVS Repository.
 </para>
-	<para>
-		<itemizedlist>
-			<listitem>
-				Host: cvs.tigris.org
-			</listitem>
-			<listitem>
-				Repository path: /cvs
-			</listitem>
-			<listitem>
-				User: <replaceable>Your Tigris username.</replaceable>
-			</listitem>
-			<listitem>
-				Password: <replaceable>Your Tigris password.</replaceable>
-			</listitem>
-			<listitem>
-				Connection type: pserver
-			</listitem>
-			<listitem>
-				Use Default Port.
-			</listitem>
-		</itemizedlist>
-	</para>
+	<itemizedlist>
+	  <listitem>
+	    <para>Host:
+cvs.tigris.org
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>Repository path:
+/cvs
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>User:
+<replaceable>Your Tigris username.</replaceable>
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>Password:
+<replaceable>Your Tigris password.</replaceable>
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>Connection type:
+pserver
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>Use Default Port.</para>
+	  </listitem>
+	</itemizedlist>
       </listitem>
 
       <listitem>
@@ -1132,6 +1140,40 @@ are remembered by Eclipse so after this the Run tool can be used.
 </para>
 	  </listitem>
 	</itemizedlist>
+      </listitem>
+
+      <listitem>
+	<para>
+Settings for checkclipse.
+</para>
+	<para>
+In Project => Properties,
+select Checkclipse (appears only if checkclipse is correctly installed)
+and then fill the fields like this:
+          <itemizedlist>
+	    <listitem>
+	      <para>Enable Checkstyle
+Checked.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>Checkstyle Configuration File:
+<filename>/argouml/tools/checkstyle/checkstyle_argouml.xml</filename>
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>Checkstyle Properties File:
+<filename>/argouml/tools/checkstyle/checkstyle.properties</filename>
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>File Filter Definition:
+<filename>/argouml/tools/checkstyle/checkclipse.filefilters</filename>
+</para>
+	    </listitem>
+	  </itemizedlist>
+Leave the two other fields empty.
+</para>
       </listitem>
     </itemizedlist>
   </sect1>
