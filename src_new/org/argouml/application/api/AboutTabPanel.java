@@ -38,17 +38,17 @@ public interface AboutTabPanel {
     // Methods
 
     /** 
-     * Returns the unlocalized settings tab name.
+     * @return the unlocalized settings tab name.
      */
     public String getTabKey();
 
     /**
-     * Returns the name of the resource bundle to use.
+     * @return the name of the resource bundle to use.
      */
     public String getTabResourceBundleKey();
 
     /** 
-     * Returns the JPanel which implements the tab.
+     * @return the JPanel which implements the tab.
      */
     public JPanel getTabPanel();
 
