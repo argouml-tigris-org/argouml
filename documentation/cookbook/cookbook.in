@@ -2165,204 +2165,6 @@ as the package root.
 
 </chapter>
 
-  <chapter>
-    <title>CVS repository contents</title>
-    <para>
-This chapter describes what parts of the CVS repository is used for
-what purpose.
-This is a rather terse collection.
-Further details on specific parts can sometimes be found elsewhere in
-this document.
-</para>
-    <para>
-This chapter is organized as the CVS repository itself and
-everything is in alphabetical order.
-</para>
-    <para>
-<itemizedlist>
-	<listitem>
-	  <para><filename class="directory">build</filename></para>
-	  <para>Directory where the built things end up.</para>
-	  <para>
-There is actually no real need to keep this in CVS.
-It is there just as a place holder.
-</para>
-	</listitem>
-	<listitem>
-	  <para><filename class="directory">conf</filename></para>
-	  <para>Not used. Empty.</para>
-	</listitem>
-	<listitem>
-	  <para><filename class="directory">documentation</filename></para>
-	  <para>Directory where the source of the documentation is.</para>
-	  <para>
-<itemizedlist>
-	      <listitem>
-		<para><filename class="directory">cookbook</filename></para>
-		<para>XML-source code for this cookbook.</para>
-	      </listitem>
-	      <listitem>
-		<para><filename class="directory">docbook-setup</filename></para>
-		<para>
-XML Tools and configuration files used for the formatting of
-the documentation from the XML-source to HTML and PDF.
-</para>
-	      </listitem>
-	      <listitem>
-		<para><filename class="directory">images</filename></para>
-		<para>Pictures for all documents are collected here.</para>
-	      </listitem>
-	      <listitem>
-		<para><filename class="directory">javahelp</filename></para>
-		<para>Not used. Empty.</para>
-	      </listitem>
-	      <listitem>
-		<para><filename class="directory">manual</filename></para>
-		<para>XML-source code for the User Manual.</para>
-	      </listitem>
-	      <listitem>
-		<para><filename class="directory">quick-guide</filename></para>
-		<para>XML-source code for the Quick Guide.</para>
-	      </listitem>
-	    </itemizedlist>
-</para>
-	</listitem>
-	<listitem>
-	  <para><filename class="directory">extra</filename></para>
-	  <para>Not used. Empty.</para>
-	</listitem>
-	<listitem>
-	  <para><filename class="directory">lib</filename></para>
-	  <para>A set of jar files.</para>
-	  <para>
-This directory contains the jar files of products used
-by the ArgoUML
-(such as log4j, nsuml).
-</para>
-	  <para>
-These are distributed with argouml and have licenses that allow this.
-For clarity the README files and licenses and other distribution
-details of each used jar will also be stored in this directory.
-(Quick summary: BSD License, Apache License, LGPL are OK, GPL is not.)
-Don't forget to arrange for the modules version and license information
-to appear when starting ArgoUML and in the About box.
-</para>
-          <para>
-Take care also to make the versions of these libraries explicit,
-so as to allow people building from sources to figure out
-exact dependencies. Easiest way is to rename the files to
-include versioning informations, the same way as shared
-libraries in Unix world: foo-x.y.z.jar, bar-x.y.z.jar,
-etc...
-</para>
-	</listitem>
-	<listitem>
-	  <para><filename class="directory">modules</filename></para>
-	  <para>Contains source level modules of ArgoUML.</para>
-	  <para>
-Source level modules are modules that can be compiled and deployed
-independantly (after) the rest of ArgoUML.
-Each module is located in its own subdirectory.
-This is the list as it looks now (March 2003).
-</para>
-	  <para>
-<itemizedlist>
-	      <listitem>
-		<para><filename class="directory">jscheme</filename></para>
-		<para>
-Module that allows to extend ArgoUML using scheme.
-</para>
-	      </listitem>
-	      <listitem>
-		<para><filename class="directory">junit</filename></para>
-		<para>
-Old directory with JUnit tests.
-These should be migrated to and all new JUnit tests should be created in
-the directory <filename class="directory">tests</filename>.
-</para>
-	      </listitem>
-	      <listitem>
-		<para><filename class="directory">menutest</filename></para>
-		<para>
-Test module that tests the plugin interface for the menus.
-</para>
-	      </listitem>
-	      <listitem>
-		<para><filename class="directory">php</filename></para>
-		<para>
-Language generating, Notation and reverse engineering for PHP.
-</para>
-	      </listitem>
-	      <listitem>
-		<para><filename class="directory">cpp</filename></para>
-		<para>
-Code generation for C++.
-</para>
-	      </listitem>
-	      <listitem>
-		<para><filename class="directory">csharp</filename></para>
-		<para>
-Code generation for C#.
-</para>
-	      </listitem>
-	    </itemizedlist>
-</para>
-	</listitem>
-	<listitem>
-	  <para><filename class="directory">src</filename></para>
-	  <para>
-Source code.
-</para>
-	  <para>
-This will contain one directory for each component within
-ArgoUML.
-They will all compile and be tested with controlled dependencies
-to other components.
-</para>
-	</listitem>
-	<listitem>
-	  <para><filename class="directory">src_new</filename></para>
-	  <para>
-All source code for ArgoUML including pictures of icons.
-</para>
-	</listitem>
-
-	<listitem>
-	  <para><filename class="directory">tests</filename></para>
-	  <para>
-All source code for JUnit tests of everything that is in the src_new
-directory.
-See <xref linkend="junittests"/>.
-</para>
-	</listitem>
-
-	<listitem>
-	  <para><filename class="directory">tools</filename></para>
-	  <para>
-All tools used during the build process.
-</para>
-	  <para>
-Tools also have the readme files, licenses and other distribution files
-stored in this directory in much the same way as the libraries in
-<filename class="directory">lib</filename>.
-However the requirement on the license is different.
-The tools are never distributed with argouml but merely used in the
-development of argouml so it is enough to have a license that does not
-allow distribution.
-(Quick summary: BSD License, Apache license, LGPL, GPL, Freeware are OK.)
-</para>
-	</listitem>
-	<listitem>
-	  <para><filename class="directory">www</filename></para>
-	  <para>
-This is all the static contents of the web site.
-See <xref linkend="how_the_web_site_works"/>.
-</para>
-	</listitem>
-      </itemizedlist>
-</para>
-  </chapter>
-
 
   <chapter id="documentation_what_goes_where">
     <chapterinfo>
@@ -2721,3 +2523,14 @@ LINK: <ulink url="http://www.cocons.org/publications/CCL_plugin_for_ArgoUML.pdf"
   <index/>
 
 </book>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  cookbook.xml"
+indent-tabs-mode: nil
+End:
+
+-->
