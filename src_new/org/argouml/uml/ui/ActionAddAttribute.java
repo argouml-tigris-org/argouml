@@ -30,7 +30,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.tigris.gef.presentation.Fig;
 
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClass;
@@ -65,7 +64,6 @@ public class ActionAddAttribute extends UMLChangeAction {
 	if (!(target instanceof MClassifier)) return;
 	MClassifier cls = (MClassifier) target;
 	MAttribute attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
-	pb.getNavigatorPane().addToHistory(attr);
 	pb.setTarget(attr);
 	super.actionPerformed(ae);
     }

@@ -184,10 +184,7 @@ public class FigPackage extends FigNodeModelElement {
                                     && lDiagram.getName().startsWith(
                                         lsDefaultName)) {
                                     me.consume();
-                                    super.mouseClicked(me);
-                                    lPB.getNavigatorPane()
-                                       .addToHistory(
-                                        lDiagram);
+                                    super.mouseClicked(me);                                   
                                     lPB.setTarget(lDiagram);
                                     return;
                                 }
@@ -198,10 +195,7 @@ public class FigPackage extends FigNodeModelElement {
                         if (lFirst != null) {
                             me.consume();
                             super.mouseClicked(me);
-
-                            lPB.getNavigatorPane()
-                               .addToHistory(
-                               lFirst);
+                        
                             lPB.setTarget(lFirst);
                             return;
                         } else {
@@ -231,10 +225,7 @@ public class FigPackage extends FigNodeModelElement {
                                         lsDefaultName + "_" + lNew.getName();
 
                                     lP.addMember(lNew);
-
-                                    lPB.getNavigatorPane()
-                                       .addToHistory(
-                                        lNew);
+                                
                                     lPB.setTarget(lNew);
                                     /* change prefix */
                                     lNew.setName(diagramName);

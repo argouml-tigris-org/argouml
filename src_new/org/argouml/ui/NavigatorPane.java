@@ -54,7 +54,13 @@ import org.argouml.kernel.PredInstanceOf;
 import org.argouml.kernel.PredNotInstanceOf;
 import org.argouml.kernel.PredOR;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
+import org
+    .argouml
+    .model
+    .uml
+    .behavioralelements
+    .statemachines
+    .StateMachinesHelper;
 import org.argouml.swingext.Toolbar;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.collaboration.ui.GoAssocRoleMessages;
@@ -164,12 +170,6 @@ public class NavigatorPane
     /** tree root object */
     protected Object _root;
 
-    /** a vector of history items - not used - to be factored out...*/
-    protected Vector _navHistory;
-
-    /** history variable - to be factored out */
-    protected int _historyIndex;
-
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -193,8 +193,8 @@ public class NavigatorPane
         setLayout(new BorderLayout());
 
         _toolbar.add(_combo);
-        _toolbar.add(Actions.NavBack);
-        _toolbar.add(Actions.NavForw);
+        //_toolbar.add(Actions.NavBack);
+        //_toolbar.add(Actions.NavForw);
         _toolbar.add(Actions.NavConfig);
 
         _combo.addItemListener(this);
@@ -226,10 +226,7 @@ public class NavigatorPane
 
         _perspectives = buildPerspectives();
         setPerspectives(_perspectives);
-        //NavPerspective.getRegisteredPerspectives());
-
-        _navHistory = new Vector();
-        _historyIndex = 0;
+        //NavPerspective.getRegisteredPerspectives());      
     }
 
     ////////////////////////////////////////////////////////////////
@@ -242,7 +239,6 @@ public class NavigatorPane
             _curPerspective.setRoot(_root);
             _tree.setModel(_curPerspective); //forces a redraw
         }
-        clearHistory();
     }
     /** needs documenting */
     public Object getRoot() {
@@ -400,61 +396,6 @@ public class NavigatorPane
             row = row - 1;
         _tree.setSelectionRow(row);
         ProjectBrowser.getInstance().setTarget(getSelectedObject());
-    }
-
-    /** history method - to be moved into some HistoryManager
-     *  that is linked to the not-yet-done SelectionManager ??
-     */
-    public void clearHistory() {
-        _historyIndex = 0;
-        _navHistory.removeAllElements();
-    }
-
-    /** history method - to be moved into some HistoryManager
-     *  that is linked to the not-yet-done SelectionManager ??
-     */
-    public void addToHistory(Object sel) {
-        if (_navHistory.size() == 0)
-            _navHistory.addElement(ProjectBrowser.getInstance().getTarget());
-        while (_navHistory.size() - 1 > _historyIndex) {
-            _navHistory.removeElementAt(_navHistory.size() - 1);
-        }
-        if (_navHistory.size() > MAX_HISTORY) {
-            _navHistory.removeElementAt(0);
-        }
-        _navHistory.addElement(sel);
-        _historyIndex = _navHistory.size() - 1;
-    }
-    /** history method - to be moved into some HistoryManager
-     *  that is linked to the not-yet-done SelectionManager ??
-     */
-    public boolean canNavBack() {
-        return _navHistory.size() > 0 && _historyIndex > 0;
-    }
-    /** history method - to be moved into some HistoryManager
-     *  that is linked to the not-yet-done SelectionManager ??
-     */
-    public void navBack() {
-        _historyIndex = Math.max(0, _historyIndex - 1);
-        if (_navHistory.size() <= _historyIndex)
-            return;
-        Object oldTarget = _navHistory.elementAt(_historyIndex);
-        ProjectBrowser.getInstance().setTarget(oldTarget);
-    }
-
-    /** history method - to be moved into some HistoryManager
-     *  that is linked to the not-yet-done SelectionManager ??
-     */
-    public boolean canNavForw() {
-        return _historyIndex < _navHistory.size() - 1;
-    }
-    /** history method - to be moved into some HistoryManager
-     *  that is linked to the not-yet-done SelectionManager ??
-     */
-    public void navForw() {
-        _historyIndex = Math.min(_navHistory.size() - 1, _historyIndex + 1);
-        Object oldTarget = _navHistory.elementAt(_historyIndex);
-        ProjectBrowser.getInstance().setTarget(oldTarget);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -988,12 +929,12 @@ public class NavigatorPane
         public void valueChanged(TreeSelectionEvent e) {
             Object[] selections = getSelectedObjects();
             TargetManager.getInstance().setTargets(Arrays.asList(selections));
-/*
-            Object sel = getSelectedObject();
-            if (sel != null) {
-                ProjectBrowser.getInstance().setTarget(sel);
-            }
-            */
+            /*
+                        Object sel = getSelectedObject();
+                        if (sel != null) {
+                            ProjectBrowser.getInstance().setTarget(sel);
+                        }
+                        */
         }
     }
 
