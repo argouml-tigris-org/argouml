@@ -2,6 +2,7 @@ ArgoUML-*.tar.gz
 ArgoUML-*.zip
 ArgoUML-*.tgz
 # .classpath and .project are used by Eclipse IDE
+# .classpath.full is alternate .classpath with all plugin modules
 # .checkclipse is used by the CheckClipse plugin to Eclipse
 .classpath
 .project
@@ -11,3 +12,4 @@ argouml.log
 #
 #
 
+.classpath.full
