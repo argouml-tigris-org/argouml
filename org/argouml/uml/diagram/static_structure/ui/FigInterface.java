@@ -215,9 +215,8 @@ public class FigInterface extends FigNodeModelElement {
 	Fig f = hitFig(r);
     if (f == _operVec) {
 	  Vector v = _operVec.getFigs();
-	  int i = (me.getY() - f.getY()) / ROWHEIGHT;
-	  if (i >= 0 && i < mOpers.size() && i < v.size() && me.getX() >= f.getX()
-	      && me.getX() <= f.getX()+((Fig)(v.elementAt(i))).getWidth()+2) {
+	  int i = mOpers.size() * (me.getY() - f.getY() - 3) / _operVec.getHeight();
+	  if (i >= 0 && i < mOpers.size() && i < v.size()-1) {
 	    ProjectBrowser.TheInstance.setTarget(mOpers.elementAt(i));
 	    targetIsSet = true;
 	  }
@@ -279,7 +278,6 @@ public class FigInterface extends FigNodeModelElement {
   protected void modelChanged() {
     super.modelChanged();
     Rectangle rect = getBounds();
-	int operStep = (_operBigPort.getHeight()-1) / (Math.max(1,_operVec.getFigs().size()-1));
     int xpos = _operBigPort.getX();
     int ypos = _operBigPort.getY();
     MClassifier cls = (MClassifier) getOwner();
@@ -294,7 +292,7 @@ public class FigInterface extends FigNodeModelElement {
       while (iter.hasNext()) {
 	    MBehavioralFeature bf = (MBehavioralFeature) iter.next();
 	    if (figs.size() <= ocounter) {
-	      oper = new MyFigText(xpos+1, ypos+1+(ocounter-1)*operStep, 0, ROWHEIGHT-2, _operBigPort); // bounds not relevant here
+	      oper = new MyFigText(xpos+1, ypos+1+(ocounter-1)*ROWHEIGHT, 0, ROWHEIGHT-2, _operBigPort); // bounds not relevant here
           oper.setFilled(false);
           oper.setLineWidth(0);
           oper.setFont(LABEL_FONT);
@@ -333,12 +331,7 @@ public class FigInterface extends FigNodeModelElement {
     if (cls.isAbstract()) _name.setFont(ITALIC_LABEL_FONT);
     else _name.setFont(LABEL_FONT);
 
-    if (_operVec.isDisplayed()) {
-      if (ocounter > 1)
-        ocounter--;
-      ypos += ocounter*operStep;
-    }
-	setBounds(rect.x, rect.y, rect.width, ypos - rect.y + 1); // recalculates all bounds
+	setBounds(rect.x, rect.y, rect.width, rect.height); // recalculates all bounds
   }
 
   static final long serialVersionUID = 4928213949795787107L;
