@@ -33,6 +33,7 @@ import javax.swing.plaf.basic.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 
 import org.tigris.gef.base.*;
 
@@ -61,12 +62,18 @@ implements MElementListener, VetoableChangeListener {
     if (value instanceof ToDoItem) {
       return ((ToDoItem)value).getHeadline();
     }
-    if (value instanceof MElement) {
+    if (value instanceof MTaggedValue) {
+        String tagName = ((MTaggedValue)value).getTag();
+        if (tagName == null || tagName.equals("")) tagName = "(anon)";
+        return(tagName);
+    }
+    if ((value instanceof MElement)&&(!(value instanceof MTaggedValue))) {
+      // original
       MElement e = (MElement) value;
       String ocl = "";
       if (e instanceof MModelElementImpl)
 	ocl = ((MModelElementImpl)e).getUMLClassName();
-      String name = ((MModelElementImpl)e).getName();
+        String name = ((MModelElementImpl)e).getName();
       if (e instanceof MTransition) {
 		  name = GeneratorDisplay.Generate((MTransition)e);
       }
@@ -122,7 +129,7 @@ implements MElementListener, VetoableChangeListener {
     int childCount = tm.getChildCount(node);
     for (int i = 0; i < childCount; i++) {
       Object child = tm.getChild(node, i);
-      if (child instanceof MBase) 
+      if (child instanceof MBase)
 	((MBase)child).addMElementListener(this);
       if (child instanceof Diagram)
 	((Diagram)child).addVetoableChangeListener(this);
@@ -166,8 +173,8 @@ implements MElementListener, VetoableChangeListener {
 		}
 		//else System.out.println("update already pending");
 	}
-	
-	
+
+
 
 
 
