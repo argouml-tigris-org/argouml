@@ -113,8 +113,8 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /** TODO: should just be the directory to write
      */
-    private URL _url;
-    protected ChangeRegistry _saveRegistry;
+    private URL url;
+    protected ChangeRegistry saveRegistry;
 
     private String authorname;
     private String description;
@@ -133,15 +133,15 @@ public class Project implements java.io.Serializable, TargetListener {
     /**
      * Instances of the uml model.
      */
-    private Vector _models;
+    private Vector models;
 
     /**
      * Instances of the uml diagrams.
      */
     private Vector diagrams;
-    protected Object _defaultModel;
+    private Object defaultModel;
     private boolean needsSave;
-    protected Object _currentNamespace;
+    private Object currentNamespace;
     private HashMap uuidRefs;
     private GenerationPreferences cgPrefs;
     private transient VetoableChangeSupport vetoSupport;
@@ -175,12 +175,13 @@ public class Project implements java.io.Serializable, TargetListener {
     /**
      * Constructor.
      *
-     * @param url Url to read the project from.
+     * @param theProjectUrl Url to read the project from.
      */
-    public Project(URL url) {
+    public Project(URL theProjectUrl) {
         this();
-        _url = Util.fixURLExtension(url, FileConstants.COMPRESSED_FILE_EXT);
-        _saveRegistry = new UMLChangeRegistry();
+        url = Util.fixURLExtension(theProjectUrl, 
+                FileConstants.COMPRESSED_FILE_EXT);
+        saveRegistry = new UMLChangeRegistry();
 
     }
 
@@ -197,12 +198,12 @@ public class Project implements java.io.Serializable, TargetListener {
         searchpath = new Vector();
         members = new Vector();
         historyFile = "";
-        _models = new Vector();
+        models = new Vector();
         diagrams = new Vector();
         cgPrefs = new GenerationPreferences();
         defaultModelCache = new HashMap();
         
-        _saveRegistry = new UMLChangeRegistry();
+        saveRegistry = new UMLChangeRegistry();
         LOG.info("making empty project with empty model");
         // Jaap Branderhorst 2002-12-09
         // load the default model
@@ -263,16 +264,16 @@ public class Project implements java.io.Serializable, TargetListener {
      * ArgoParser.SINGLETON.getLastLoadStatus() field. This needs to be
      * examined by the calling function.
      *
-     * @param url The url with the .zargo file
+     * @param theUrl The url with the .zargo file
      * @return MModel The model loaded
      * @throws IOException Thrown if the model or the .zargo file is corrupted.
      * @throws SAXException If the parser template is syntactically incorrect. 
      * @throws ParserConfigurationException If the initialization of 
      *         the parser fails.
      */
-    protected Object loadModelFromXMI(URL url)
+    protected Object loadModelFromXMI(URL theUrl)
         throws IOException, SAXException, ParserConfigurationException {
-        ZipInputStream zis = new ZipInputStream(url.openStream());
+        ZipInputStream zis = new ZipInputStream(theUrl.openStream());
 
         String name = zis.getNextEntry().getName();
         while (!name.endsWith(".xmi")) {
@@ -280,7 +281,7 @@ public class Project implements java.io.Serializable, TargetListener {
         }
         
         if (LOG.isInfoEnabled()) {
-            LOG.info("Loading Model from " + url);
+            LOG.info("Loading Model from " + theUrl);
         }
         // 2002-07-18
         // Jaap Branderhorst
@@ -305,10 +306,11 @@ public class Project implements java.io.Serializable, TargetListener {
         mmodel = xmiReader.parseToModel(source);        
         if (xmiReader.getErrors()) {
             ArgoParser.SINGLETON.setLastLoadStatus(false);
-            ArgoParser.SINGLETON.setLastLoadMessage("XMI file " + url
+            ArgoParser.SINGLETON.setLastLoadMessage("XMI file " + theUrl
 						    + " could not be parsed.");
-            LOG.error("XMI file " + url + " could not be parsed.");
-            throw new SAXException("XMI file " + url + " could not be parsed.");
+            LOG.error("XMI file " + theUrl + " could not be parsed.");
+            throw new SAXException(
+                    "XMI file " + theUrl + " could not be parsed.");
         }
 
         // This should probably be inside xmiReader.parse
@@ -328,16 +330,16 @@ public class Project implements java.io.Serializable, TargetListener {
     /**
      * Loads all the members from a zipped input stream.
      *
-     * @param url The URL to the input stream.
+     * @param theUrl The URL to the input stream.
      * @throws IOException if there is something wrong with the zipped archive
      *                     or with the model.
      * @throws ParserConfigurationException if the parser is misconfigured.
      * @throws SAXException if the input is not correctly formatted XML.
      */
-    protected void loadZippedProjectMembers(URL url)
-            throws IOException, ParserConfigurationException, SAXException {
+    protected void loadZippedProjectMembers(URL theUrl)
+        throws IOException, ParserConfigurationException, SAXException {
 
-        loadModelFromXMI(url); // throws a IOException if things go wrong
+        loadModelFromXMI(theUrl); // throws a IOException if things go wrong
         // user interface has to handle that one
         try {
 
@@ -346,7 +348,7 @@ public class Project implements java.io.Serializable, TargetListener {
             PGMLParser.SINGLETON.setOwnerRegistry(uuidRefs);
 
             //zis.close();
-            ZipInputStream zis = new ZipInputStream(url.openStream());
+            ZipInputStream zis = new ZipInputStream(theUrl.openStream());
             SubInputStream sub = new SubInputStream(zis);
 
             ZipEntry currentEntry = null;
@@ -388,8 +390,8 @@ public class Project implements java.io.Serializable, TargetListener {
 	} catch (IOException e) {
             ArgoParser.SINGLETON.setLastLoadStatus(false);
             ArgoParser.SINGLETON.setLastLoadMessage(e.toString());
-            LOG.error("Something went wrong in " +
-		              "Project.loadZippedProjectMembers()", e);
+            LOG.error("Something went wrong in " 
+		              + "Project.loadZippedProjectMembers()", e);
             throw e;
         }
     }
@@ -420,9 +422,9 @@ public class Project implements java.io.Serializable, TargetListener {
 
     public String getName() {
         // TODO: maybe separate name
-        if (_url == null)
+        if (url == null)
             return UNTITLED_FILE;
-        String name = _url.getFile();
+        String name = url.getFile();
         int i = name.lastIndexOf('/');
         return name.substring(i + 1);
     }
@@ -449,25 +451,26 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return The URL.
      */
     public URL getURL() {
-        return _url;
+        return url;
     }
 
     /**
      * Set the URL for this project.
      * 
-     * @param url The URL to set.
+     * @param theUrl The URL to set.
      */
-    public void setURL(URL url) {
-        if (url != null) {
-            url = Util.fixURLExtension(url, FileConstants.COMPRESSED_FILE_EXT);
+    public void setURL(URL theUrl) {
+        if (theUrl != null) {
+            theUrl = Util.fixURLExtension(theUrl, 
+                    FileConstants.COMPRESSED_FILE_EXT);
         }
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Setting project URL from \"" + _url +
-                      "\" to \"" + url + "\".");
+            LOG.debug("Setting project URL from \"" + url 
+                      + "\" to \"" + theUrl + "\".");
         }
 
-        _url = url;
+        url = theUrl;
     }
 
     /**
@@ -479,17 +482,17 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void setFile(File file) {
         try {
-            URL url = Util.fileToURL(file);
+            URL theProjectUrl = Util.fileToURL(file);
 
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Setting project file name from \"" +
-                          _url +
-                          "\" to \"" +
-                          url +
-                          "\".");
+                LOG.debug("Setting project file name from \"" 
+                          + url 
+                          + "\" to \"" 
+                          + theProjectUrl 
+                          + "\".");
             }
 
-            _url = url;
+            url = theProjectUrl;
         } catch (MalformedURLException murle) {
             LOG.error("problem in setFile:" + file, murle);
         } catch (IOException ex) {
@@ -511,9 +514,9 @@ public class Project implements java.io.Serializable, TargetListener {
         if (getURL() != null)
             u = getURL().toString();
         u = u.substring(0, u.lastIndexOf("/") + 1);
-        URL url = null;
+        URL theUrl = null;
         try {
-            url = new URL(u + name);
+            theUrl = new URL(u + name);
         } catch (MalformedURLException murle) {
             LOG.error(
 		      "MalformedURLException in findMemberURLInSearchPath:"
@@ -521,7 +524,7 @@ public class Project implements java.io.Serializable, TargetListener {
 		      + name,
 		      murle);
         }
-        return url;
+        return theUrl;
     }
 
     /**
@@ -602,7 +605,7 @@ public class Project implements java.io.Serializable, TargetListener {
             }
         }
         if (!memberFound) {
-            if (!_models.contains(m)) {
+            if (!models.contains(m)) {
                 addModel(m);
             }
             // got past the veto, add the member
@@ -621,17 +624,16 @@ public class Project implements java.io.Serializable, TargetListener {
 	}
         
         // fire indeterminate change to avoid copying vector
-        if (!_models.contains(m))
-            _models.addElement(m);
+        if (!models.contains(m))
+            models.addElement(m);
         setCurrentNamespace(m);
         setNeedsSave(true);
     }
 
     /**
      * Removes a project member diagram completely from the project.
-     * @param d
+     * @param d the ArgoDiagram
      */
-
     protected void removeProjectMemberDiagram(ArgoDiagram d) {
 
         removeDiagram(d);
@@ -776,7 +778,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param newValue The new value.
      */
     public void setNeedsSave(boolean newValue) {
-        _saveRegistry.setChangeFlag(newValue);
+        saveRegistry.setChangeFlag(newValue);
     }
     
     /**
@@ -785,7 +787,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return <tt>true</tt> if the model needs to be saved.
      */
     public boolean needsSave() {
-        return _saveRegistry.hasChanged();
+        return saveRegistry.hasChanged();
     }
 
     /**
@@ -795,7 +797,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return A Vector of all user defined models.
      */
     public Vector getUserDefinedModels() {
-        return _models;
+        return models;
     }
 
     /**
@@ -805,8 +807,8 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public Collection getModels() {
         Set ret = new HashSet();
-        ret.addAll(_models);
-        ret.add(_defaultModel);
+        ret.addAll(models);
+        ret.add(defaultModel);
         return ret;
     }
 
@@ -818,16 +820,16 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return the model.
      */
     public Object getModel() {
-        if (_models.size() != 1) {
+        if (models.size() != 1) {
             return null;
         }
-        return _models.elementAt(0);
+        return models.elementAt(0);
     }
 
     /**
      * Searches for a type/classifier with name s. If the type is not found,
      * a new type is created and added to the current namespace.
-     * @param s
+     * @param s the name of the type/classifier to be found
      * @return MClassifier
      */
     public Object findType(String s) {
@@ -839,7 +841,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * true, a new type is defined if the type/classifier is not
      * found. The newly created type is added to the currentNamespace
      * and given the name s.
-     * @param s
+     * @param s the name of the type/classifier to be found
      * @param defineNew
      * @return MClassifier
      */
@@ -851,14 +853,14 @@ public class Project implements java.io.Serializable, TargetListener {
             return null;
         }
         Object cls = null;
-        int numModels = _models.size();
+        int numModels = models.size();
         for (int i = 0; i < numModels; i++) {
-            cls = findTypeInModel(s, _models.elementAt(i));
+            cls = findTypeInModel(s, models.elementAt(i));
             if (cls != null) {
                 return cls;
             }
         }
-        cls = findTypeInModel(s, _defaultModel);
+        cls = findTypeInModel(s, defaultModel);
         // hey, now we should move it to the model the user is working in
         if (cls != null) {
             cls = ModelManagementHelper.
@@ -935,11 +937,11 @@ public class Project implements java.io.Serializable, TargetListener {
             throw new IllegalArgumentException();
     	}
         
-        _currentNamespace = m;
+        currentNamespace = m;
     }
 
     public Object getCurrentNamespace() {
-        return _currentNamespace;
+        return currentNamespace;
     }
 
     public Vector getDiagrams() {
@@ -970,7 +972,7 @@ public class Project implements java.io.Serializable, TargetListener {
     public void addDiagram(ArgoDiagram d) {
         // send indeterminate new value instead of making copy of vector
         diagrams.addElement(d);
-        d.addChangeRegistryAsListener(_saveRegistry);
+        d.addChangeRegistryAsListener(saveRegistry);
         setNeedsSave(true);
     }
 
@@ -982,7 +984,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * not be called directly. Use moveToTrash if you want to remove a
      * diagram.
      * 
-     * @param d
+     * @param d the ArgoDiagram
      */
     protected void removeDiagram(ArgoDiagram d) {
         diagrams.removeElement(d);
@@ -997,7 +999,7 @@ public class Project implements java.io.Serializable, TargetListener {
                 this.moveToTrash(statediagram.getStateMachine());
             }
         }
-        d.removeChangeRegistryAsListener(_saveRegistry);
+        d.removeChangeRegistryAsListener(saveRegistry);
         setNeedsSave(true);
     }
 
@@ -1020,8 +1022,8 @@ public class Project implements java.io.Serializable, TargetListener {
         if (diagrams.size() > 0) {
             return diagrams.elementAt(0);
         }
-        if (_models.size() > 0) {
-            return _models.elementAt(0);
+        if (models.size() > 0) {
+            return models.elementAt(0);
         }
         return null;
     }
@@ -1119,8 +1121,8 @@ public class Project implements java.io.Serializable, TargetListener {
             if (members.contains(obj)) {
                 members.remove(obj);
             }
-            if (_models.contains(obj)) {
-                _models.remove(obj);
+            if (models.contains(obj)) {
+                models.remove(obj);
             }           
             needSave = true;
         } else {
@@ -1152,15 +1154,15 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * @param defaultModel a uml model
+     * @param theDefaultModel a uml model
      */
-    public void setDefaultModel(Object defaultModel) {
+    public void setDefaultModel(Object theDefaultModel) {
         
-        if (!ModelFacade.isAModel(defaultModel)) {
+        if (!ModelFacade.isAModel(theDefaultModel)) {
             throw new IllegalArgumentException();
         }
         
-        _defaultModel = defaultModel;
+        defaultModel = theDefaultModel;
         defaultModelCache = new HashMap();
     }
 
@@ -1170,7 +1172,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return A model.
      */
     public Object getDefaultModel() {
-        return _defaultModel;
+        return defaultModel;
     }
 
     /** Find a type by name in the default model.
@@ -1208,7 +1210,7 @@ public class Project implements java.io.Serializable, TargetListener {
         
         if (treeRoot != null) {
             members.remove(treeRoot);
-            _models.remove(treeRoot);
+            models.remove(treeRoot);
         }
         treeRoot = root;
         addMember(root);
@@ -1257,7 +1259,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return ChangeRegistry
      */
     public ChangeRegistry getSaveRegistry() {
-        return _saveRegistry;
+        return saveRegistry;
     }
 
     /**
@@ -1273,7 +1275,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return URL
      */
     public URL getUrl() {
-        return _url;
+        return url;
     }
 
     /**
@@ -1286,58 +1288,58 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Sets the cgPrefs.
-     * @param cgPrefs The cgPrefs to set
+     * @param theCgPrefs The cgPrefs to set
      */
-    public void setCgPrefs(GenerationPreferences cgPrefs) {
-        this.cgPrefs = cgPrefs;
+    public void setCgPrefs(GenerationPreferences theCgPrefs) {
+        this.cgPrefs = theCgPrefs;
     }
 
     /**
      * Sets the diagrams.
-     * @param diagrams The diagrams to set
+     * @param theDiagrams The diagrams to set
      */
-    public void setDiagrams(Vector diagrams) {
-        this.diagrams = diagrams;
+    public void setDiagrams(Vector theDiagrams) {
+        this.diagrams = theDiagrams;
     }
 
     /**
      * Sets the members.
-     * @param members The members to set
+     * @param theMembers The members to set
      */
-    public void setMembers(Vector members) {
-        this.members = members;
+    public void setMembers(Vector theMembers) {
+        this.members = theMembers;
     }
 
     /**
      * Sets the models.
-     * @param models The models to set
+     * @param theModels The models to set
      */
-    public void setModels(Vector models) {
-        _models = models;
+    public void setModels(Vector theModels) {
+        models = theModels;
     }
 
     /**
      * Sets the saveRegistry.
-     * @param saveRegistry The saveRegistry to set
+     * @param theSaveRegistry The saveRegistry to set
      */
-    public void setSaveRegistry(ChangeRegistry saveRegistry) {
-        _saveRegistry = saveRegistry;
+    public void setSaveRegistry(ChangeRegistry theSaveRegistry) {
+        saveRegistry = theSaveRegistry;
     }
 
     /**
      * Sets the searchpath.
-     * @param searchpath The searchpath to set
+     * @param theSearchpath The searchpath to set
      */
-    public void setSearchpath(Vector searchpath) {
-        this.searchpath = searchpath;
+    public void setSearchpath(Vector theSearchpath) {
+        this.searchpath = theSearchpath;
     }
 
     /**
      * Sets the url.
-     * @param url The url to set
+     * @param theUrl The url to set
      */
-    public void setUrl(URL url) {
-        _url = url;
+    public void setUrl(URL theUrl) {
+        url = theUrl;
     }
 
     /**
@@ -1350,10 +1352,10 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Sets the vetoSupport.
-     * @param vetoSupport The vetoSupport to set
+     * @param theVetoSupport The vetoSupport to set
      */
-    public void setVetoSupport(VetoableChangeSupport vetoSupport) {
-        this.vetoSupport = vetoSupport;
+    public void setVetoSupport(VetoableChangeSupport theVetoSupport) {
+        this.vetoSupport = theVetoSupport;
     }
 
     /**
@@ -1365,10 +1367,10 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * @param diagram
+     * @param theDiagram the ArgoDiagram
      */
-    public void setActiveDiagram(ArgoDiagram diagram) {
-        activeDiagram = diagram;
+    public void setActiveDiagram(ArgoDiagram theDiagram) {
+        activeDiagram = theDiagram;
     }
 
     /** 
@@ -1398,18 +1400,18 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param target
      */
     private void setTarget(Object target) {
-        Object currentNamespace = null;
+        Object theCurrentNamespace = null;
         target = TargetManager.getInstance().getModelTarget();
         if (target instanceof UMLDiagram) {
-            currentNamespace = ((UMLDiagram) target).getNamespace();
+            theCurrentNamespace = ((UMLDiagram) target).getNamespace();
         } else if (ModelFacade.isANamespace(target)) {
-            currentNamespace = target;
+            theCurrentNamespace = target;
         } else if (ModelFacade.isAModelElement(target)) {
-            currentNamespace = ModelFacade.getNamespace(target);
+            theCurrentNamespace = ModelFacade.getNamespace(target);
         } else {
-            currentNamespace = getRoot();
+            theCurrentNamespace = getRoot();
         }
-        setCurrentNamespace(currentNamespace);
+        setCurrentNamespace(theCurrentNamespace);
                
         if (target instanceof ArgoDiagram) {
             setActiveDiagram((ArgoDiagram) target);
@@ -1429,8 +1431,8 @@ public class Project implements java.io.Serializable, TargetListener {
             members.clear();
         }
         
-        if (_models != null) {
-            _models.clear();
+        if (models != null) {
+            models.clear();
         }
         
         if (diagrams != null) {
@@ -1446,21 +1448,21 @@ public class Project implements java.io.Serializable, TargetListener {
         }
         
         members = null;
-        _models = null;
+        models = null;
         diagrams = null;
         uuidRefs = null;
         defaultModelCache = null;
         
         expander = null;
-        _url = null;
-        _saveRegistry = null;
+        url = null;
+        saveRegistry = null;
         authorname = null;
         description = null;
         version = null;
         searchpath = null;
         historyFile = null;
-        _defaultModel = null;
-        _currentNamespace = null;
+        defaultModel = null;
+        currentNamespace = null;
         cgPrefs = null;
         vetoSupport = null;
         treeRoot = null;
