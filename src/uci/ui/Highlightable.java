@@ -24,66 +24,15 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-// from Sun's Beanbox
-// Support for PropertyEditor with custom editors.
 
 package uci.ui;
 
-import java.awt.*;
-import com.sun.java.swing.*;
-import java.awt.event.*;
 import java.beans.*;
 
-class PropertyDialog extends JFrame implements ActionListener {
+public interface Highlightable {
+  void setHighlight(boolean b);
+  boolean getHighlight();
 
-    private JButton doneButton;
-    private Component body;
-    private final static int vPad = 5;
-    private final static int hPad = 4;
-
-  public PropertyDialog(JFrame frame, PropertyEditor pe, int x, int y) {
-    super(pe.getClass().getName());
-    //new WindowCloser(this);
-    getContentPane().setLayout(new BorderLayout());
-    
-    body = pe.getCustomEditor();
-    //System.out.println("got custom editor!!");
-    getContentPane().add(body, BorderLayout.CENTER);
-    
-    doneButton = new JButton("Done");
-    doneButton.addActionListener(this);
-    getContentPane().add(doneButton, BorderLayout.SOUTH);
-    
-    pack();
-    setLocation(x, y);
-    setVisible(true);
-    doneButton.addActionListener(this);
-  }
-
-  public void actionPerformed(ActionEvent evt) {
-    // Button down.
-    dispose();
-  }
-  
-//   public void doLayout() {
-//     Insets ins = getInsets();
-//     Dimension bodySize = body.getPreferredSize();
-//     Dimension buttonSize = doneButton.getPreferredSize();
-    
-//     int width = ins.left + 2*hPad + ins.right + bodySize.width;
-//     int height = ins.top + 3*vPad + ins.bottom + bodySize.height +
-//       buttonSize.height;
-    
-//     body.setBounds(ins.left+hPad, ins.top+vPad,
-// 		   bodySize.width, bodySize.height);
-    
-//     doneButton.setBounds((width-buttonSize.width)/2,
-// 			 ins.top+(2*hPad) + bodySize.height,
-// 			 buttonSize.width, buttonSize.height);
-    
-//     setSize(width, height);
-    
-//   }
-
-}
-
+  void addPropertyChangeListener(PropertyChangeListener listen);
+  void removePropertyChangeListener(PropertyChangeListener listen);
+} /* end interface Highlightable */

@@ -73,8 +73,8 @@ public class PropsGridLayout implements LayoutManager {
    * @see #minimumLayoutSize
    */
   public Dimension preferredLayoutSize(Container parent) {
-    Insets insets = parent.insets();
-    int ncomponents = parent.countComponents();
+    Insets insets = parent.getInsets();
+    int ncomponents = parent.getComponentCount();
     int w = _labelWidth + _minPropWidth + hgap;
     int h = 0;
     for (int i = 0 ; i < ncomponents ; i++) {
@@ -94,8 +94,8 @@ public class PropsGridLayout implements LayoutManager {
    * @see #preferredLayoutSize
    */
   public Dimension minimumLayoutSize(Container parent) {
-    Insets insets = parent.insets();
-    int ncomponents = parent.countComponents();
+    Insets insets = parent.getInsets();
+    int ncomponents = parent.getComponentCount();
     int w = _labelWidth + _minPropWidth + hgap;
     int h = 0;
     for (int i = 0 ; i < ncomponents ; i++) {
@@ -113,8 +113,8 @@ public class PropsGridLayout implements LayoutManager {
    * @see Container
    */
   public void layoutContainer(Container parent) {
-    Insets insets = parent.insets();
-    int ncomponents = parent.countComponents();
+    Insets insets = parent.getInsets();
+    int ncomponents = parent.getComponentCount();
     if (ncomponents == 0) return;
     int used = insets.left + insets.right + hgap + _labelWidth;
     int propWidth = Math.max(parent.getSize().width - used,
@@ -124,11 +124,11 @@ public class PropsGridLayout implements LayoutManager {
     for (int i = 0 ; i < ncomponents ; i++) {
       Component comp = parent.getComponent(i);
       Dimension d = comp.getPreferredSize();
-      if (i %2 == 0) comp.reshape(0, h, _labelWidth, _labelHeight);
+      if (i %2 == 0) comp.setBounds(0, h, _labelWidth, _labelHeight);
       else {
-	comp.move(_labelWidth + hgap, h);
-	comp.resize(d);
-	//comp.resize(Math.min(d.width, propWidth),
+	comp.setLocation(_labelWidth + hgap, h);
+	comp.setSize(d);
+	//comp.setSize(Math.min(d.width, propWidth),
 	//	  Math.min(d.height, _labelHeight));
 	h += Math.max(d.height, _labelHeight) + vgap;
       }

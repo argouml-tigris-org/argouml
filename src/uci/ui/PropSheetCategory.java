@@ -83,7 +83,8 @@ public class PropSheetCategory extends PropSheet {
     //setLayout(new GridLayout(0, 2, 4, 4));
     //setLayout(new FlowLayout());
     //addNotify();
-    resize(insets().left + insets().right + 250,insets().top + insets().bottom + 300);
+    setSize(getInsets().left + getInsets().right + 250,
+	   getInsets().top + getInsets().bottom + 300);
     setFont(getPropertiesFont());
 //     _scroller.add(_innerPanel);
 //     add(_scroller, BorderLayout.CENTER);
@@ -156,7 +157,7 @@ public class PropSheetCategory extends PropSheet {
 	boolean canPut = (_properties[i].getWriteMethod() != null);
 	if (comp instanceof TextComponent)
 	  ((TextComponent)comp).setEditable(canPut);
-	else comp.enable(canPut);
+	else comp.setEnabled(canPut);
       }
     }
   }

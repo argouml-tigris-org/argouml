@@ -99,62 +99,63 @@ implements ChangeListener, ActionListener {
     //{{INIT_CONTROLS
     getContentPane().setLayout(new BorderLayout(0,0));
     addNotify();
-    resize(insets().left + insets().right + 300,insets().top + insets().bottom + 406);
+    Insets insets = getInsets();
+    setSize(insets.left + insets.right + 300,insets.top + insets.bottom + 406);
     getContentPane().setFont(new Font("Dialog", Font.PLAIN, 10));
     getContentPane().setBackground(new Color(12632256));
     tabPanel = new JTabbedPane();
     tabPanel.addChangeListener(this);
     //tabPanel.setLayout(null);
-    //tabPanel.reshape(insets().left + 0,
-    //                  insets().top + 24,300,351);
+    //tabPanel.setBounds(getInsets().left + 0,
+    //                  getInsets().top + 24,300,351);
     getContentPane().add(tabPanel, BorderLayout.CENTER);
     //tabPanel = new Panel();
     //tabPanel.setLayout(new CardLayout());
-    //tabPanel.reshape(insets().left + 0,
-    //                  insets().top + 24,300,351);
+    //tabPanel.setBounds(getInsets().left + 0,
+    //                  getInsets().top + 24,300,351);
     //tabPanel.setBackground(new Color(12632256));
     //add("Center", tabPanel);
     PropSheetCategory1 = new PropSheetCategory(this);
-    PropSheetCategory1.reshape(12,33,276,307);
+    PropSheetCategory1.setBounds(12,33,276,307);
     PropSheetCategory2 = new PropSheetCategory(this);
-    PropSheetCategory2.reshape(12,33,276,307);
+    PropSheetCategory2.setBounds(12,33,276,307);
     PropSheetCategory3 = new PropSheetCategory(this);
-    PropSheetCategory3.reshape(12,33,276,307);
+    PropSheetCategory3.setBounds(12,33,276,307);
     PropSheetCategory4 = new PropSheetCategory(this);
-    PropSheetCategory4.reshape(12,33,276,307);
+    PropSheetCategory4.setBounds(12,33,276,307);
     PropSheetCategory5 = new PropSheetCategory(this);
-    PropSheetCategory5.reshape(12,33,276,307);
+    PropSheetCategory5.setBounds(12,33,276,307);
     buttonPanel = new JPanel();
     buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER,5,5));
-    buttonPanel.reshape(insets().left + 0,insets().top + 375,300,31);
+    buttonPanel.setBounds(getInsets().left + 0,getInsets().top + 375,300,31);
     getContentPane().add(buttonPanel, BorderLayout.SOUTH);
     autoApplyCheckbox = new JCheckBox("AutoApply");
-    autoApplyCheckbox.reshape(66,5,78,21);
+    autoApplyCheckbox.setBounds(66,5,78,21);
     autoApplyCheckbox.setSelected(true);
     autoApplyCheckbox.addChangeListener(this);
     buttonPanel.add(autoApplyCheckbox);
     applyButton = new JButton("Apply");
-    applyButton.reshape(149,5,40,21);
-    applyButton.enable(false);
+    applyButton.setBounds(149,5,40,21);
+    applyButton.setEnabled(false);
     buttonPanel.add(applyButton);
     applyButton.addActionListener(this);
     applyButton.setEnabled(false);
     revertButton = new JButton("Revert");
-    revertButton.reshape(149,5,40,21);
-    revertButton.enable(false);
+    revertButton.setBounds(149,5,40,21);
+    revertButton.setEnabled(false);
     revertButton.addActionListener(this);
     revertButton.setEnabled(false);
     buttonPanel.add(revertButton);
     closeButton = new JButton("Close");
-    closeButton.reshape(194,5,40,21);
+    closeButton.setBounds(194,5,40,21);
     closeButton.addActionListener(this);
     //buttonPanel.add(closeButton);
     
     // //universeChoice = new java.awt.Choice();
-    // // universeChoice.reshape(insets().left + 0,insets().top + 0,300,21);
+    // // universeChoice.setBounds(getInsets().left + 0,getInsets().top + 0,300,21);
     //sheetChoice = new java.awt.Choice();
-    //sheetChoice.reshape(insets().left + 0,
-    //                    insets().top + 0,300,21);
+    //sheetChoice.setBounds(getInsets().left + 0,
+    //                    getInsets().top + 0,300,21);
     // //choicePanel = new Panel();
     // //choicePanel.setLayout(new GridLayout(1, 1, 5, 5));
     //choicePanel.setLayout(new GridLayout(2, 1, 5, 5));
@@ -222,9 +223,9 @@ implements ChangeListener, ActionListener {
   ////////////////////////////////////////////////////////////////
   // window operations
 
-  public synchronized void show() {
-    move(50, 50);
-    super.show();
+  public synchronized void setVisible(boolean b) {
+    setLocation(50, 50);
+    super.setVisible(b);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -419,7 +420,7 @@ implements ChangeListener, ActionListener {
 
   public static void main(String args[]) {
     TabPropFrame ps = new TabPropFrame();
-    ps.show();
+    ps.setVisible(true);
   }
 
 } /* end class TabPropFrame */
