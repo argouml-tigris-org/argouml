@@ -28,7 +28,6 @@ import java.lang.ref.WeakReference;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.util.CheckUMLModelHelper;
 

@@ -127,12 +127,14 @@ public class ModelTableModel extends DefaultTableModel implements Runnable {
             }
             // ommit root package name; it's the model's root
             if (ModelFacade.getNamespace(parentNamespace) != null) {
-        	packagePath = ModelFacade.getName(parentNamespace) + "." + packagePath;
+        	packagePath = ModelFacade.getName(parentNamespace) + "." 
+        	    + packagePath;
             }
             parentNamespace = ModelFacade.getNamespace(parentNamespace);
         }
         if (codePath != null && codePath.length() > 0) {
-            return new Object [] {ModelFacade.getName(cls), type, packagePath, codePath};
+            return new Object [] {ModelFacade.getName(cls), type, packagePath, 
+                codePath };
         } else {
             return null;
         }
