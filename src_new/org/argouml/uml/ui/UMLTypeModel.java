@@ -23,6 +23,9 @@
 
 package org.argouml.uml.ui;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -103,6 +106,23 @@ public class UMLTypeModel extends UMLComboBoxModel {
 	 */
 	public boolean isAcceptible(MModelElement element) {
 		return element instanceof MClassifier;
+	}
+
+	/**
+	 * @see ru.novosoft.uml.MElementListener#roleAdded(MElementEvent)
+	 */
+	public void roleAdded(MElementEvent e) {
+		if (e.getName().equals("ownedElement") && !e.getOldValue().equals(e.getNewValue())) {
+			Iterator it = ((Collection)e.getNewValue()).iterator();
+			while (it.hasNext()) {
+				MModelElement elem = (MModelElement)it.next();
+				if (!((Collection)e.getOldValue()).contains(elem)) {
+					updateElement(elem);
+					break;
+				}
+			}
+		}	
+		super.roleAdded(e);
 	}
 
 }
