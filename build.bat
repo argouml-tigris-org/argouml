@@ -1,4 +1,4 @@
-echo off
+@echo off
 
 rem
 rem build.bat always calls the version of ant distributed with ArgoUML
