@@ -369,7 +369,7 @@ public class ParserDisplay extends Parser {
 	String token;
 
 	try {
-	    st = new MyTokenizer(text, "<<,>>,::,.");
+	    st = new MyTokenizer(text, "<<,>>,::");
 	    while (st.hasMoreTokens()) {
 		token = st.nextToken();
 
@@ -386,7 +386,7 @@ public class ParserDisplay extends Parser {
 			    break;
 			stereotype += token;
 		    }
-		} else if ("::".equals(token) || ".".equals(token)) {
+		} else if ("::".equals(token)) {
 		    if (name != null)
 		        name = name.trim();
 
