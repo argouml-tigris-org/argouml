@@ -32,22 +32,33 @@ import org.argouml.application.api.*;
 import org.argouml.cognitive.ui.*;
 import org.argouml.uml.ui.*;
 import org.argouml.swingext.*;
+import org.argouml.uml.diagram.ui.TabDiagram;
 
 /** A subclass of JPanel that can act as a tab in the DetailsPane or
  *  MultiEditorPane.  When the tab is double-clicked, this JPanel will
  *  generate a separate window of the same size and with the same
- *  contents.  This is almost like "tearing off" a tab. */
-
-public class TabSpawnable extends JPanel implements Cloneable, org.argouml.swingext.Orientable  {
+ *  contents.  This is almost like "tearing off" a tab.
+ */
+public class TabSpawnable
+    extends JPanel
+    implements Cloneable, org.argouml.swingext.Orientable  {
+        
     protected static Category cat = 
         Category.getInstance(TabProps.class);
+    
   public final int OVERLAPP = 30;
+  
     private static final String BUNDLE = "UMLMenu";
 
   ////////////////////////////////////////////////////////////////
   // instance variables
+    
   String _title = "untitled";
-  boolean _tear = false; // if true, remove tab from parent JTabbedPane
+  
+  /**
+   * if true, remove tab from parent JTabbedPane
+   */
+  boolean _tear = false;
   protected Orientation orientation;
 
   ////////////////////////////////////////////////////////////////
@@ -100,17 +111,23 @@ public class TabSpawnable extends JPanel implements Cloneable, org.argouml.swing
 
   ////////////////////////////////////////////////////////////////
   // actions
+  
     /**
+     * this should take its inspiration from org.tigris.gef.base.CmdSpawn
+     *
+     * <p>The spawned/cloned tab will be a JFrame.
+     *
      * @return a copy of the frame or null if not clone-able.
      */
   public TabSpawnable spawn() {
-    // JFrame f = new JFrame();
-    JDialog f = new JDialog(ProjectBrowser.TheInstance);
+
+    JFrame  f = new JFrame();
     f.getContentPane().setLayout(new BorderLayout());
     f.setTitle(_title);
     TabSpawnable newPanel = (TabSpawnable) clone();
-    if (newPanel == null) return null; //failed to clone
-    newPanel.setTitle(_title);
+    if (newPanel == null)
+        return null; //failed to clone
+
     if (newPanel instanceof TabToDoTarget) {
       TabToDoTarget me = (TabToDoTarget) this;
       TabToDoTarget it = (TabToDoTarget) newPanel;
@@ -121,6 +138,14 @@ public class TabSpawnable extends JPanel implements Cloneable, org.argouml.swing
       TabModelTarget it = (TabModelTarget) newPanel;
       it.setTarget(me.getTarget());
     }
+    else if (newPanel instanceof TabDiagram) {
+      TabDiagram me = (TabDiagram) this;
+      TabDiagram it = (TabDiagram) newPanel;
+      it.setTarget(me.getTarget());
+    }
+    
+    newPanel.setTitle(_title);
+    
     f.getContentPane().add(newPanel, BorderLayout.CENTER);
     Rectangle bounds = getBounds();
     bounds.height += OVERLAPP*2;
@@ -137,7 +162,7 @@ public class TabSpawnable extends JPanel implements Cloneable, org.argouml.swing
 
     return newPanel;
   }
-
+  
 } /* end class TabSpawnable */
 
 
