@@ -598,9 +598,9 @@ Modifications
       <!-- SVG -->
 
       <sect3>
-        <title>Standard Vector Graphics (SVG)</title>
+        <title>Scalable Vector Graphics (SVG)</title>
 
-        <para><emphasis>Standard Vector Graphics (SVG)</emphasis> is a recent
+        <para><emphasis>Scalable Vector Graphics (SVG)</emphasis> is a recent
           standard proposed to the W3C Standardization body (<ulink
             url="http://www.w3c.org">www.w3c.org</ulink>) by Adobe (<ulink
             url="http://www.adobe.com">www.adobe.com</ulink>). As yet it is not
@@ -1561,7 +1561,7 @@ Like ArgoUML it is an open source project available via
         <!-- What is SVG -->
 
         <sect4 id="s4.tut.svg">
-          <title>Standard Vector Graphics (SVG)</title>
+          <title>Scalable Vector Graphics (SVG)</title>
 
           <para>A super cool vector graphics format (like MM Flash) that is
             totally open and is gaining enormous ground in the graphics
