@@ -22,8 +22,7 @@ name.)
 </para>
     <para>
 If you don't understand this or it doesn't work read the rest of 
-the chapter that describes all the nitty details about why and
-how.
+the chapter that describes why and how in more detail.
 </para>
      <sect1 id="starting">
      <title>Getting started</title>
@@ -75,7 +74,7 @@ and committing source code updates.
 	  </listitem>
 	  <listitem>
 	    <para>
-JDK, at least version 1.3 (includes the java compiler)
+JDK, at least version 1.3 (includes the Java compiler)
 </para>
 	  </listitem>
 	</itemizedlist>
@@ -166,7 +165,7 @@ To build a PDF file with the pictures included you need Jimi.
 	<para>
 These libraries are provided in the development environment that
 you get when you check out CVS.
-They are checked by the java compiler when compiling, 
+They are checked by the Java compiler when compiling, 
 needed for running ArgoUML and therefore distributed with ArgoUML.
 </para>
 	<itemizedlist>
@@ -215,7 +214,7 @@ to get it.
 The OCL package to parse and run the Object Constraint Language things.
 </para>
 	    <para>
-Details about the package are available from sourceforge
+Details about the package are available from SourceForge
 <ulink url="http://dresden-ocl.sourceforge.net/">OCL Compiler</ulink>.
 </para>
 	  </listitem>
@@ -231,7 +230,7 @@ log4j, a library with infrastructure for logs.
 
 	  <listitem>
 	    <para>
-antlrall, the run-time part of the antlr tool.
+antlrall, the run-time part of the ANTLR tool.
 </para>
 	  </listitem>
 
@@ -358,7 +357,7 @@ There are people known to build from JBuilder or Netbeans, but always
 make sure that your work compile with the plain vanilla build process.
      </para>
       <para>
-Ant is a tool written in java developed for Apache that reads an XML-file
+Ant is a tool written in Java developed for Apache that reads an XML-file
 with rules telling what to compile to what result and what files to include
 in what jar-file.
 </para>
@@ -453,7 +452,14 @@ Change the current directory to the directory you are building
 	      <para>This gives you a list of targets with descriptions</para>
 	    </listitem>
 	    <listitem>
-	      <para>
+              <indexterm>
+                <primary>Ant target</primary>
+                <secondary>run</secondary>
+              </indexterm>
+              <indexterm>
+                <primary>run ant target</primary>
+              </indexterm>
+      	      <para>
 Compile and run ArgoUML using <command>./build.sh run</command>
 </para>
 	      <para>
@@ -521,12 +527,20 @@ If you do this from Cygwin you work just like for Unix.
 	    <secondary>customized</secondary>
 	  </indexterm>
 	  <indexterm>
-	    <primary>Compiling</primary>
-	    <secondary>build.properties</secondary>
+	    <primary>build.properties</primary>
 	  </indexterm>
 	  <indexterm>
-	    <primary>Compiling</primary>
-	    <secondary>argouml.build.properties</secondary>
+	    <primary>default.properties</primary>
+	  </indexterm>
+	  <indexterm>
+	    <primary>argouml.build.properties</primary>
+	  </indexterm>
+	  <indexterm>
+	    <primary>Ant target</primary>
+            <secondary>list-property-files</secondary>
+	  </indexterm>
+	  <indexterm>
+	    <primary>list-property-files ant target</primary>
 	  </indexterm>
 	  <para>
 It is possible to customize your compilation of ArgoUML.
@@ -563,6 +577,13 @@ you do just before you commit.
 	  <indexterm>
 	    <primary>Building</primary>
 	    <secondary>javadoc</secondary>
+	  </indexterm>
+	  <indexterm>
+	    <primary>Ant target</primary>
+            <secondary>prepare-docs</secondary>
+	  </indexterm>
+	  <indexterm>
+	    <primary>prepare-docs ant target</primary>
 	  </indexterm>
 	  <para>
 By running ANT again using <command>build prepare-docs</command>
@@ -710,6 +731,13 @@ how a certain version of the documentation was generated.
 </para>
 	    </listitem>
 	    <listitem>
+              <indexterm>
+                <primary>Ant target</primary>
+                <secondary>docs</secondary>
+              </indexterm>
+              <indexterm>
+                <primary>docs ant target</primary>
+              </indexterm>
 	      <para>
 The documentation is generated using <command>build docs</command>.
 </para>
@@ -848,6 +876,13 @@ Look at the last couple of hours on the
 developers mailing list</ulink>!
 It is probably on fire.
 </para>
+          <indexterm>
+            <primary>Ant target</primary>
+            <secondary>clean</secondary>
+          </indexterm>
+          <indexterm>
+            <primary>clean ant target</primary>
+          </indexterm>
 	  <para>
 Another reason for problems is an unclean local source tree.
 This means that if you have updated different parts of your source
@@ -927,6 +962,20 @@ They are never distributed with ArgoUML but merely a tool for
 developers.
 </para>
 
+        <indexterm>
+          <primary>Ant target</primary>
+          <secondary>tests</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>tests ant target</primary>
+        </indexterm>
+        <indexterm>
+          <primary>Ant target</primary>
+          <secondary>guitests</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>guitests ant target</primary>
+        </indexterm>
 	<para>
 By running the command
 <command>build tests guitests</command>
@@ -965,7 +1014,14 @@ The test cases' java source code is located under
 Now this will make all you java-enthusiasts go nuts!
 We have both class names and method names with a special syntax.
 </para>
-	  <para>
+          <indexterm>
+            <primary>Ant target</primary>
+            <secondary>run-with-test-panel</secondary>
+          </indexterm>
+          <indexterm>
+            <primary>run-with-test-panel ant target</primary>
+          </indexterm>
+  	  <para>
 The name of the test case starts with "Test" (i.e. Capital T, then
 small e, s and t) or 
 "GUITest" (i.e. Capital G, U, I, T then small e, s, t).
@@ -1198,7 +1254,7 @@ after a development release is made and before a stable release is made.
 A signed statement with list of run tests including version number,
 a list (hopefully empty) of failed tests 
 together with their Issuezilla DEFECT number,
-the host type, OS, jdk version, ArgoUML version, ...
+the host type, OS, JDK version, ArgoUML version, ...
 shall be mailed to the dev list when these tests are completed.
 </para>
       </sect2>
@@ -1454,7 +1510,14 @@ instead.
 	    <para>
 Build the release!
 </para>
-	    <para>
+            <indexterm>
+              <primary>Ant target</primary>
+              <secondary>dist-release</secondary>
+            </indexterm>
+            <indexterm>
+              <primary>dist-release ant target</primary>
+            </indexterm>
+    	    <para>
 This is done in the
 <filename class="directory">argouml/src_new</filename>
 directory of the newly created copy
