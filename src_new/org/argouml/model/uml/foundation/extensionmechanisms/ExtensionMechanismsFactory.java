@@ -94,11 +94,15 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     	MStereotype stereo = createStereotype();
     	stereo.setName(text);
     	stereo.setBaseClass(getMetaModelName(m));
-    	if (ns != null) {
+    	MStereotype stereo2 = ExtensionMechanismsHelper.getHelper().getStereotype(ns, stereo);
+    	if (stereo2 != null) {
+    		stereo2.addExtendedElement(m);
+    		return stereo2;
+    	} else {
     		ns.addOwnedElement(stereo);
+    		stereo.addExtendedElement(m);
+    		return stereo;
     	}
-    	stereo.addExtendedElement(m);
-    	return stereo;
     }
     
     private String getMetaModelName(MModelElement m) {
