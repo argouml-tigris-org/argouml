@@ -61,18 +61,30 @@ import org.tigris.toolbar.toolbutton.ToolButton;
 
 /**
  * This class provides support for writing a UML diagram for argo using
- * the GEF framework.
- * <p>It adds common buttons, a namespace, capability
+ * the GEF framework. <p>
+ * 
+ * It adds common buttons, a namespace, capability
  * to delete itself when its namespace is deleted, some help
- * with creating a valid diagram name.
- * <p>There are various methods for returning 'structures' of Actions
+ * with creating a valid diagram name. <p>
+ * 
+ * There are various methods for returning 'structures' of Actions
  * which are used to build toolbars and dropdown buttons within toolbars.
  * These structures are arrays of Objects.
  * An array element is actually either an Action, null or another array.
  * When building a toolbar an Action is used to create a button and null
  * is used to create a spacer in the toolbar.
  * An element containing an array results in a dropdown toolbar button
- * being created which contains all the items in that array.
+ * being created which contains all the items in that array. <p>
+ * 
+ * The "owner" of the UMLDiagram needs to be set to the one and only 
+ * UML modelelement of which the diagram depends. 
+ * E.g. for a class diagram is that its namespace, 
+ * and for a collaboration diagram is that the Collaboration UML object. 
+ * Override the getOwner method to return the owner. <p>
+ * 
+ * The "namespace" of the diagram is e.g. used when creating new elements
+ * that are shown on the diagram; they will have their namespace set
+ * according this. It is NOT necessarily equal to the "owner". 
  */
 public abstract class UMLDiagram
     extends ArgoDiagram
@@ -192,16 +204,20 @@ public abstract class UMLDiagram
      */
     public void initialize(Object owner) {
         super.initialize(owner);
-        if (Model.getFacade().isANamespace(owner))
+        /* The following is the default implementation 
+         * for diagrams of which the owner is a namespace.
+         * */
+        if (Model.getFacade().isANamespace(owner)) {
             setNamespace(owner);
-        else
-            LOG.debug("unknown object in UMLDiagram initialize:" + owner);
+        }
     }
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
     /**
+     * The namespace that is used when new elements are drawn on the diagram.
+     * 
      * @return the namespace for the diagram
      */
     public Object getNamespace() {
@@ -239,9 +255,10 @@ public abstract class UMLDiagram
         return s + "|" + id;
     }
 
-    // TODO: should be overwritten by each subclass of UMLDiagram
-
     /**
+     * The default implementation for diagrams that 
+     * have the namespace as their owner.
+     * 
      * @return the namespace
      */
     public Object getOwner() {
@@ -585,7 +602,8 @@ public abstract class UMLDiagram
      * @return true if the diagram needs to be removed
      */
     public boolean needsToBeRemoved() {
-        return Model.getUmlFactory().isRemoved(namespace);
+        return Model.getUmlFactory().isRemoved(namespace) 
+        || Model.getUmlFactory().isRemoved(getOwner());
     }
 
 } /* end class UMLDiagram */
