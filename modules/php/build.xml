@@ -237,7 +237,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
            deprecation="${deprecation}"
            optimize="${optimize}">
         <classpath>
-            <fileset dir="${argo.lib.dir}">
+            <fileset dir="${argo.build.dir}">
                 <include name="argouml.jar" />
                 <include name="nsuml.jar" />
                 <include name="ocl-argo.jar" />
