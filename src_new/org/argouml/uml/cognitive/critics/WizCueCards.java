@@ -58,8 +58,8 @@ public class WizCueCards extends Wizard {
      * @return the offending modelelement
      */
     public Object getModelElement() {
-	if (item != null) {
-	    VectorSet offs = item.getOffenders();
+	if (getToDoItem() != null) {
+	    VectorSet offs = getToDoItem().getOffenders();
 	    if (offs.size() >= 1) {
 		Object me = /*(MModelElement)*/ offs.elementAt(0);
 		return me;
@@ -102,7 +102,7 @@ public class WizCueCards extends Wizard {
      * @see org.argouml.kernel.Wizard#canFinish()
      */
     public boolean canFinish() {
-	return step == getNumSteps();
+	return getStep() == getNumSteps();
     }
 
 

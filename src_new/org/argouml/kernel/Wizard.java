@@ -62,17 +62,17 @@ public abstract class Wizard implements java.io.Serializable {
     // instance variables
 
     /** User interface panels displayed so far. */
-    protected Vector panels = new Vector();
+    private Vector panels = new Vector();
 
     /** The current step that the Wizard is on.  Zero indicates that the
      *  wizard has not yet begun. */
-    protected int step = 0;
+    private int step = 0;
 
     /** True when the wizard has done everything it can. */
     private boolean finished = false;
     private boolean started = false;
 
-    protected ToDoItem item = null;
+    private ToDoItem item = null;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -83,8 +83,25 @@ public abstract class Wizard implements java.io.Serializable {
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    public void setToDoItem(ToDoItem i) { item = i; }
+    /**
+     * @param s the step number of the panel to be removed
+     */
+    protected void removePanel(int s) {
+        panels.remove(s);
+    }
+    
+    /**
+     * Setter for the todoitem.
+     * 
+     * @param i the todoitem
+     */
+    public void setToDoItem(ToDoItem i) { 
+        item = i; 
+    }
 
+    /**
+     * @return the todoitem
+     */
     public ToDoItem getToDoItem() { return item; }
 
     /** An integer between 0 and 100, shows percent done. The current
@@ -233,4 +250,11 @@ public abstract class Wizard implements java.io.Serializable {
      * Undo the action.
      */
     public void undoAction() { undoAction(step); }
+
+    /**
+     * @return Returns the step.
+     */
+    protected int getStep() {
+        return step;
+    }
 } /* end class Wizard */
