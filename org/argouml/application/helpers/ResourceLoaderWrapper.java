@@ -53,39 +53,22 @@ public final class ResourceLoaderWrapper {
     private static final Logger LOG =
         Logger.getLogger(ResourceLoaderWrapper.class);
 
-    private static ImageIcon actionStateIcon =
-        ResourceLoader.lookupIconResource("ActionState");
-    private static ImageIcon stateIcon =
-        ResourceLoader.lookupIconResource("State");
-    private static ImageIcon initialStateIcon =
-        ResourceLoader.lookupIconResource("Initial");
-    private static ImageIcon deepIcon =
-        ResourceLoader.lookupIconResource("DeepHistory");
-    private static ImageIcon shallowIcon =
-        ResourceLoader.lookupIconResource("ShallowHistory");
-    private static ImageIcon forkIcon =
-        ResourceLoader.lookupIconResource("Fork");
-    private static ImageIcon joinIcon =
-        ResourceLoader.lookupIconResource("Join");
-    private static ImageIcon branchIcon =
-        ResourceLoader.lookupIconResource("Choice");
-    private static ImageIcon junctionIcon =
-        ResourceLoader.lookupIconResource("Junction");
-    private static ImageIcon finalStateIcon =
-        ResourceLoader.lookupIconResource("FinalState");
-    private static ImageIcon realizeIcon =
-        ResourceLoader.lookupIconResource("Realization");
-    private static ImageIcon signalIcon =
-        ResourceLoader.lookupIconResource("SignalSending");
-    private static ImageIcon commentIcon =
-        ResourceLoader.lookupIconResource("Note");
-    private static ImageIcon callStateIcon =
-        ResourceLoader.lookupIconResource("CallState");
-    private static ImageIcon objectFlowStateIcon =
-        ResourceLoader.lookupIconResource("ObjectFlowState");
-    private static ImageIcon subactivityStateIcon =
-        ResourceLoader.lookupIconResource("SubactivityState");
-
+    private static ImageIcon actionStateIcon;
+    private static ImageIcon stateIcon;
+    private static ImageIcon initialStateIcon;
+    private static ImageIcon deepIcon;
+    private static ImageIcon shallowIcon;
+    private static ImageIcon forkIcon;
+    private static ImageIcon joinIcon;
+    private static ImageIcon branchIcon;
+    private static ImageIcon junctionIcon;
+    private static ImageIcon finalStateIcon;
+    private static ImageIcon realizeIcon;
+    private static ImageIcon signalIcon;
+    private static ImageIcon commentIcon;
+    private static ImageIcon callStateIcon;
+    private static ImageIcon objectFlowStateIcon;
+    private static ImageIcon subactivityStateIcon;
 
 
     private Hashtable iconCache = new Hashtable();
@@ -161,6 +144,25 @@ public final class ResourceLoaderWrapper {
 	ResourceLoader.addResourceLocation(lookAndFeelArgoUmlImagePath);
 	ResourceLoader.addResourceLocation("/org/argouml/Images");
 	ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
+    
+	actionStateIcon = ResourceLoader.lookupIconResource("ActionState");
+        stateIcon = ResourceLoader.lookupIconResource("State");
+        initialStateIcon = ResourceLoader.lookupIconResource("Initial");
+        deepIcon = ResourceLoader.lookupIconResource("DeepHistory");
+        shallowIcon = ResourceLoader.lookupIconResource("ShallowHistory");
+        forkIcon = ResourceLoader.lookupIconResource("Fork");
+        joinIcon = ResourceLoader.lookupIconResource("Join");
+        branchIcon = ResourceLoader.lookupIconResource("Choice");
+        junctionIcon = ResourceLoader.lookupIconResource("Junction");
+        finalStateIcon = ResourceLoader.lookupIconResource("FinalState");
+        realizeIcon = ResourceLoader.lookupIconResource("Realization");
+        signalIcon = ResourceLoader.lookupIconResource("SignalSending");
+        commentIcon = ResourceLoader.lookupIconResource("Note");
+        callStateIcon = ResourceLoader.lookupIconResource("CallState");
+        objectFlowStateIcon = 
+            ResourceLoader.lookupIconResource("ObjectFlowState");
+        subactivityStateIcon = 
+            ResourceLoader.lookupIconResource("SubactivityState");
     }
 
     /**
