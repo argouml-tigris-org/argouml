@@ -824,5 +824,14 @@ public class GenericArgoMenuBar extends JMenuBar
     public void addFileSaved(String filename) {
         lruList.addEntry(filename);
     }
-    
+
+
+    /**
+     * Getter for the Tools menu.
+     *
+     * @return The Tools menu.
+     */
+    public JMenu getTools() {
+	return tools;
+    }
 }
