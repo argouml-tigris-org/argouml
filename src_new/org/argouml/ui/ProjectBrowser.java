@@ -855,6 +855,8 @@ class InitMenusLater implements Runnable {
 
     JMenuItem autoLayout = layout.add(new ActionLayout("Automatic"));
     JMenuItem incrLayout = layout.add(new ActionLayout("Incremental"));
+    /** incremental layout is currently not implemented */
+    incrLayout.setEnabled(false);    
 
     JMenuItem nextEditItem = editTabs.add(Actions.NextEditTab);
     nextEditItem.setAccelerator(F6);

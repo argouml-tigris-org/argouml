@@ -57,10 +57,14 @@ public class ActionLayout extends UMLAction {
 
     /** check whether we deal with a supported diagram type 
      * (currently only UMLClassDiagram).
+     * Incremental Layout is not implemented for any diagram type,
+     * so it is greyed out.
+     * @see org.argouml.ui.ProjectBrowser
      */
     public boolean shouldBeEnabled() {
 	return (super.shouldBeEnabled() 
-		&& (ProjectBrowser.TheInstance.getTarget() instanceof UMLClassDiagram));
+		&& (ProjectBrowser.TheInstance.getActiveDiagram() instanceof UMLClassDiagram)
+        && "Automatic".equals(_tabName));
     }
 
     /** This action performs the layout and triggers a redraw
@@ -69,13 +73,13 @@ public class ActionLayout extends UMLAction {
     public void actionPerformed(ActionEvent ae) {
 	ClassdiagramLayouter layouter = 
 	    new ClassdiagramLayouter((UMLDiagram)ProjectBrowser.
-				     TheInstance.getTarget());
+				     TheInstance.getActiveDiagram());
 
 	Editor ce = Globals.curEditor();
 	SelectionManager sm = ce.getSelectionManager();         
 
         // Get all the figures from the diagram.
-        Vector nodes = ((UMLClassDiagram)ProjectBrowser.TheInstance.getTarget()).getLayer().getContents();
+        Vector nodes = ((UMLClassDiagram)ProjectBrowser.TheInstance.getActiveDiagram()).getLayer().getContents();
         for(int i=0; i < nodes.size(); i++) {
 	    sm.select((Fig)(nodes.elementAt(i)));  // Select all the figures in the diagram.
         }      
