@@ -1295,7 +1295,7 @@ a test case.
               <para>A revision</para>
               <para>
 Every test case has a revision.
-These start with REV1 and are increased with one every time
+These start with REVa and are increased with one every time
 the test case is changed.
 </para>
             </listitem>
@@ -1355,7 +1355,7 @@ This section contains all the tests each in a subsection of its own.
         <sect3>
           <title>Modules are enabled</title>
           <para>
-TEST1 REV1 (Does not test any current requirements.)
+TEST1 REVa (Does not test any current requirements.)
 </para>
           <para>
 <emphasis>Preparations:</emphasis>
@@ -1396,7 +1396,7 @@ The drop-down box contains Java and Java from classes.
         <sect3>
           <title>Class diagram</title>
           <para>
-TEST2 REV1
+TEST2 REVa
 (Requirements tested: 
 <xref linkend="REQ5"/> and
 <xref linkend="REQ6"/>) 
