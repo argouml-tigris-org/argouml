@@ -156,9 +156,7 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      *                {@link #PropPanel(????)}. Use of GridBagLayout is being
      *                dropped in favour of
      *                {@link org.argouml.swingext.LabelledLayout}
-     *
-     *    @todo 7-Dec-2002 by Bob Tarling. this constructor should be deprecated once no
-     *    longer in use. Use of GridBagLayout is being dropped in favour of LabelledLayout
+     *                I propose to remove this by version 0.13.7 (Bob Tarling)
      */
     public PropPanel(String title, ImageIcon icon, int panelCount) {
         super(title);

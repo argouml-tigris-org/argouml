@@ -38,7 +38,9 @@ import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLList;
@@ -46,6 +48,7 @@ import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.uml.ui.UMLStimulusActionTextField;
 import org.argouml.uml.ui.UMLStimulusActionTextProperty;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.common_behavior.MAction;
@@ -60,61 +63,39 @@ public class PropPanelStimulus extends PropPanelModelElement {
 
    protected static ImageIcon _stimulusIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Stimulus");
 
-  public PropPanelStimulus() {
-    super("Stimulus Properties",_stimulusIcon, 2);
+    public PropPanelStimulus() {
+        super("Stimulus Properties",_stimulusIcon, ConfigLoader.getTabPropsOrientation());
 
-    Class[] namesToWatch = { MAction.class};
-    setNameEventListening(namesToWatch);
+        Class[] namesToWatch = { MAction.class};
+        setNameEventListening(namesToWatch);
 
-    Class mclass = MStimulus.class;
+        Class mclass = MStimulus.class;
 
-    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-    addField(getNameTextField(),1,0,0);
-    
-    addCaption("Action:",2,0,0);
-    addField(new UMLStimulusActionTextField(this,new UMLStimulusActionTextProperty("name")),2,0,0);
+        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
+        addField("Action:", new UMLStimulusActionTextField(this,new UMLStimulusActionTextProperty("name")));
+        addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
 
+        UMLList senderList = new UMLList(new UMLReflectionListModel(this,"sender",true,"getSender",null,null,null),true);
+        senderList.setForeground(Color.blue);
+        senderList.setVisibleRowCount(1);
+        senderList.setFont(smallFont);
+        JScrollPane senderScroll = new JScrollPane(senderList);
+        addField("Sender:", senderScroll);
 
-    addCaption(Argo.localize("UMLMenu", "label.stereotype"),3,0,0);
-    addField(getStereotypeBox(),3,0,0);
+        UMLList receiverList = new UMLList(new UMLReflectionListModel(this,"receiver",true,"getReceiver",null,null,null),true);
+        receiverList.setForeground(Color.blue);
+        receiverList.setVisibleRowCount(1);
+        receiverList.setFont(smallFont);
+        JScrollPane receiverScroll = new JScrollPane(receiverList);
+        addField(Argo.localize("UMLMenu", "label.receiver"), receiverScroll);
 
-   
-    addCaption("Sender:",4,0,0);
-    UMLList senderList = new UMLList(new UMLReflectionListModel(this,"sender",true,"getSender",null,null,null),true);
-    senderList.setForeground(Color.blue);
-    senderList.setVisibleRowCount(1);
-    senderList.setFont(smallFont);
-    JScrollPane senderScroll = new JScrollPane(senderList);
-    addField(senderScroll,4,0,0.5);
+        addLinkField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-    addCaption(Argo.localize("UMLMenu", "label.receiver"),5,0,0);
-    UMLList receiverList = new UMLList(new UMLReflectionListModel(this,"receiver",true,"getReceiver",null,null,null),true);
-    receiverList.setForeground(Color.blue);
-    receiverList.setVisibleRowCount(1);
-    receiverList.setFont(smallFont);
-    JScrollPane receiverScroll = new JScrollPane(receiverList);
-    addField(receiverScroll,5,0,0.5);
+        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);    
+        new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete object"),"removeElement",null);
+    }
 
-     addCaption(Argo.localize("UMLMenu", "label.namespace"),6,0,1);
-     addLinkField(getNamespaceComboBox(),6,0,0);
-
-    
-
-   
-
-    
-   
-    
-
-  
-     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);    
-     new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete object"),"removeElement",null);
-
-    
-     
-  }
-
-     public void navigateNamespace() {
+    public void navigateNamespace() {
         Object target = getTarget();
         if(target instanceof MModelElement) {
             MModelElement elem = (MModelElement) target;
