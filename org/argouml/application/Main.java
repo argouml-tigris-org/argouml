@@ -52,6 +52,7 @@ import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
 import org.argouml.uml.ui.ActionOpenProject;
+import org.argouml.util.FileConstants;
 import org.argouml.util.Trash;
 import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.util.Util;
@@ -209,8 +210,8 @@ public class Main {
         URL urlToOpen = null;
 
         if (projectName != null) {
-            if (!projectName.endsWith(Project.COMPRESSED_FILE_EXT))
-                projectName += Project.COMPRESSED_FILE_EXT;
+            if (!projectName.endsWith(FileConstants.COMPRESSED_FILE_EXT))
+                projectName += FileConstants.COMPRESSED_FILE_EXT;
             projectFile = new File(projectName);
             if (!projectFile.exists()) {
                 System.err.println(
