@@ -191,10 +191,11 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
         // Updated following bug fix
 
         { "CrCrossNamespaceAssoc_head" ,
-          "Classifier not in Namespace of its Association" },
+          "Classifier <ocl>self</ocl> not in Namespace of its Association" },
 
         { "CrCrossNamespaceAssoc_desc" ,
-          "Each Class, Interface or other Classifier involved in an " +
+          "Each Class, Interface or other Classifier (<ocl>self</ocl>) " + 
+          "involved in an " +
           "Association should be in the Namespace of the Association.\n" +
           "\n" +
           "If this is not the case, then there will be no way for the " +
