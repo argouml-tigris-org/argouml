@@ -103,7 +103,11 @@ public class PropPanelNode extends PropPanelClassifier {
     }
 
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-        return baseClass.equals("Node");
+        return (baseClass.equals("Node") || 
+                baseClass.equals("Classifier") ||
+                baseClass.equals("GeneralizableElement") ||
+                baseClass.equals("Namespace")
+                );
     }
 
 
