@@ -27,11 +27,14 @@ import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.ButtonGroup;
+import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
+import javax.swing.SwingConstants;
 
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.SettingsTabPanel;
@@ -41,88 +44,110 @@ import org.argouml.application.helpers.SettingsTabHelper;
 /** Action object for handling Argo settings
  *
  *  @author Linus Tolke
+ *  @author Jeremy Jones
  *  @since  0.9.7
  */
-
 public class SettingsTabFonts extends SettingsTabHelper implements SettingsTabPanel {
 
-    ButtonGroup _bg = null;
-    JRadioButton _normal = null;
-    JRadioButton _big = null;
-    JRadioButton _huge = null;
-
+	private JComboBox	_lookAndFeel;
+	private JComboBox	_metalTheme;
+	private JLabel		_metalLabel;
+	
     public SettingsTabFonts() {
         super();
+        
         setLayout(new BorderLayout());
-	JPanel top = new JPanel();
-    	top.setLayout(new GridBagLayout()); 
+        
+        JPanel top = new JPanel(new GridBagLayout());        
+	
+		GridBagConstraints labelConstraints = new GridBagConstraints();
+		labelConstraints.anchor = GridBagConstraints.EAST;
+		labelConstraints.gridy = 0;
+		labelConstraints.gridx = 0;
+		labelConstraints.gridwidth = 1;
+		labelConstraints.gridheight = 1;
+		labelConstraints.insets = new Insets(5, 20, 5, 4);
 
-	GridBagConstraints checkConstraints = new GridBagConstraints();
-	checkConstraints.anchor = GridBagConstraints.WEST;
-	checkConstraints.gridy = 0;
-	checkConstraints.gridx = 0;
-	checkConstraints.gridwidth = 1;
-	checkConstraints.gridheight = 1;
-	checkConstraints.insets = new Insets(0, 30, 0, 4);
+		GridBagConstraints fieldConstraints = new GridBagConstraints();
+		fieldConstraints.anchor = GridBagConstraints.EAST;
+		fieldConstraints.fill = GridBagConstraints.HORIZONTAL;
+		fieldConstraints.gridy = 0;
+		fieldConstraints.gridx = 1;
+		fieldConstraints.gridwidth = 3;
+		fieldConstraints.gridheight = 1;
+		fieldConstraints.weightx = 1.0;
+		fieldConstraints.insets = new Insets(5, 4, 5, 20);
+	
+		labelConstraints.gridy = 0;
+		fieldConstraints.gridy = 0;
 
-	GridBagConstraints labelConstraints = new GridBagConstraints();
-	labelConstraints.anchor = GridBagConstraints.EAST;
-	labelConstraints.gridy = 0;
-	labelConstraints.gridx = 0;
-	labelConstraints.gridwidth = 1;
-	labelConstraints.gridheight = 1;
-	labelConstraints.insets = new Insets(2, 10, 2, 4);
+		JLabel label = createLabel("label.look-and-feel");
+		label.setHorizontalAlignment(SwingConstants.RIGHT);
+		top.add(label, labelConstraints);
+		
+		_lookAndFeel = new JComboBox(LookAndFeelMgr.SINGLETON.getAvailableLookAndFeelNames());
+		_lookAndFeel.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				setMetalThemeState();
+			}
+		});
+		label.setLabelFor(_lookAndFeel);
+		top.add(_lookAndFeel, fieldConstraints);
 
-	GridBagConstraints fieldConstraints = new GridBagConstraints();
-	fieldConstraints.anchor = GridBagConstraints.WEST;
-	fieldConstraints.fill = GridBagConstraints.HORIZONTAL;
-	fieldConstraints.gridy = 0;
-	fieldConstraints.gridx = 1;
-	fieldConstraints.gridwidth = 3;
-	fieldConstraints.gridheight = 1;
-	fieldConstraints.weightx = 1.0;
-	fieldConstraints.insets = new Insets(0, 4, 0, 20);
+		labelConstraints.gridy = 1;
+		fieldConstraints.gridy = 1;
 
-	labelConstraints.gridy = 0;
-	fieldConstraints.gridy = 0;
-
-	_bg = new ButtonGroup();
-	ProjectBrowser pb = ProjectBrowser.getInstance();
-
-	checkConstraints.gridy = 0;
-	_normal = createRadioButton(_bg, "label.fonts.normal",
-				    LookAndFeelMgr.SINGLETON.isCurrentTheme("normal"));
-	top.add(_normal, checkConstraints);
-	top.add(new JLabel(""), labelConstraints);
-	top.add(new JLabel(""), fieldConstraints);
-
-	checkConstraints.gridy = 1;
-        _big = createRadioButton(_bg, "label.fonts.big",
-				 LookAndFeelMgr.SINGLETON.isCurrentTheme("big"));
- 	top.add(_big, checkConstraints);
-
-	checkConstraints.gridy = 2;
-        _huge = createRadioButton(_bg, "label.fonts.huge",
-				  LookAndFeelMgr.SINGLETON.isCurrentTheme("huge"));
- 	top.add(_huge, checkConstraints);
-
-	add(top, BorderLayout.NORTH);
+		_metalLabel = createLabel("label.metal-theme");
+		_metalLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		top.add(_metalLabel, labelConstraints);
+		
+		_metalTheme = new JComboBox(LookAndFeelMgr.SINGLETON.getAvailableThemeNames());
+		_metalLabel.setLabelFor(_metalTheme);
+		top.add(_metalTheme, fieldConstraints);
+		
+		add(top, BorderLayout.CENTER);
+		
+		JLabel restart = createLabel("label.restart-application");
+		restart.setHorizontalAlignment(SwingConstants.CENTER);
+		restart.setVerticalAlignment(SwingConstants.CENTER);
+		restart.setBorder(BorderFactory.createEmptyBorder(10, 2, 10, 2));		
+		add(restart, BorderLayout.SOUTH);
+		
+		setMetalThemeState();
     }
+    
+    /**
+     * Enables or disables the metal theme controls depending on whether
+     * or not themes are supported by the selected look and feel.
+	**/
+	private void setMetalThemeState()
+	{
+		String lafName = (String) _lookAndFeel.getSelectedItem();
+		boolean enabled = LookAndFeelMgr.SINGLETON.isThemeCompatibleLookAndFeel(
+				LookAndFeelMgr.SINGLETON.getLookAndFeelFromName(lafName));
+		
+		_metalLabel.setEnabled(enabled);
+		_metalTheme.setEnabled(enabled);
+	}
 
     public void handleSettingsTabRefresh() {
+		String laf = LookAndFeelMgr.SINGLETON.getCurrentLookAndFeelName();
+    	String theme = LookAndFeelMgr.SINGLETON.getCurrentThemeName();
+    	
+		_lookAndFeel.setSelectedItem(laf);
+		_metalTheme.setSelectedItem(theme);		
     }
 
     public void handleSettingsTabSave() {
-	ProjectBrowser pb = ProjectBrowser.getInstance();
-	if (_normal.isSelected()) {
-	    LookAndFeelMgr.SINGLETON.setCurrentTheme("normal");
-	}
-	else if (_big.isSelected()) {
-	    LookAndFeelMgr.SINGLETON.setCurrentTheme("big");
-	}
-	else if (_huge.isSelected()) {
-	    LookAndFeelMgr.SINGLETON.setCurrentTheme("huge");
-	}
+		LookAndFeelMgr.SINGLETON.setCurrentLookAndFeel(
+				LookAndFeelMgr.SINGLETON.getLookAndFeelFromName(
+				(String) _lookAndFeel.getSelectedItem()));
+		
+		LookAndFeelMgr.SINGLETON.setCurrentTheme(
+				LookAndFeelMgr.SINGLETON.getThemeFromName(
+				(String) _metalTheme.getSelectedItem()));
     }
 
     public void handleSettingsTabCancel() {}
