@@ -49,6 +49,11 @@ public class ClassdiagramModelElementFactory
                     return (new ClassdiagramGeneralizationEdge((FigGeneralization) f));
                 if (f instanceof FigRealization)
                     return (new ClassdiagramRealizationEdge((FigRealization) f));
+                if (f instanceof FigAssociation)
+                    return (new ClassdiagramAssociationEdge((FigAssociation) f));
+                System.out.println("Do not know how to deal with: " +
+                                   f.getClass().getName() +
+                                   "\nUsing standard layout");
         }
         return null;
     }
