@@ -44,7 +44,6 @@ import org.tigris.gef.presentation.FigText;
 public class FigPartition extends FigNodeModelElement {
 
     private FigLine leftLine, rightLine;
-    private FigRect bigPort;
     
     private static final int PADDING = 8;
 
@@ -53,8 +52,8 @@ public class FigPartition extends FigNodeModelElement {
      *  
      */
     public FigPartition() {
-        bigPort = new FigRect(10, 10, 150, 200, Color.white, Color.white);
-        bigPort.setFilled(true);
+        setBigPort(new FigRect(10, 10, 150, 200, Color.white, Color.white));
+        getBigPort().setFilled(true);
         leftLine = new FigLine(10, 10, 10, 300, Color.gray);
         rightLine = new FigLine(150, 10, 150, 300, Color.gray);
         leftLine.setDashed(true);
@@ -65,7 +64,7 @@ public class FigPartition extends FigNodeModelElement {
         getNameFig().setFilled(false);
         getNameFig().setMultiLine(true);
 
-        addFig(bigPort);
+        addFig(getBigPort());
         addFig(rightLine);
         addFig(leftLine);
         addFig(getNameFig());
@@ -92,7 +91,7 @@ public class FigPartition extends FigNodeModelElement {
     public Object clone() {
         FigPartition figClone = (FigPartition) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
-        figClone.bigPort = (FigRect) it.next();
+        figClone.setBigPort((FigRect) it.next());
         figClone.rightLine = (FigLine) it.next();
         figClone.leftLine = (FigLine) it.next();
         figClone.setNameFig((FigText) it.next());
@@ -121,7 +120,7 @@ public class FigPartition extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
-        bigPort.setFillColor(col);
+        getBigPort().setFillColor(col);
         getNameFig().setFillColor(col);
     }
 
@@ -130,7 +129,7 @@ public class FigPartition extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() {
-        return bigPort.getFillColor();
+        return getBigPort().getFillColor();
     }
 
     /**
@@ -138,7 +137,7 @@ public class FigPartition extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) {
-        bigPort.setFilled(f);
+        getBigPort().setFilled(f);
     }
 
     /**
@@ -146,7 +145,7 @@ public class FigPartition extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
-        return bigPort.getFilled();
+        return getBigPort().getFilled();
     }
 
     /**
@@ -207,7 +206,7 @@ public class FigPartition extends FigNodeModelElement {
         getNameFig().setBounds(x + PADDING, y, w - PADDING * 2,
                 nameBounds.height);
 
-        bigPort.setBounds(x, y, w, h);
+        getBigPort().setBounds(x, y, w, h);
         leftLine.setBounds(x, y, 0, h);
         rightLine.setBounds(x + w , y, 0, h);
 
