@@ -29,12 +29,14 @@ import org.apache.log4j.or.ObjectRenderer;
 import java.io.*;
 import java.sql.*;
 
-/**
+  /**
    *  Renderer used for <code>log4j</code> to place full information
    *  from { @link java.lang.Throwable } into the log.
-  
-   @author Thierry Lach
-   @since 0.9.4
+   * 
+   * @author Thierry Lach
+   * @since 0.9.4
+   * 
+   * @deprecated without replacement since log4j provides this functionality now.
    */
 public class ThrowableRenderer implements ObjectRenderer {
 
