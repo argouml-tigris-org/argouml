@@ -1209,12 +1209,16 @@ public class CoreFactory extends AbstractUmlModelFactory {
     }
 
     /**
-     * Builds an operation for a classifier.<p>
+     * Builds an operation for a classifier.
      *
-     * @param classifier is the classifier.
-     * @return MOperation
+     * @param classifier is the given classifier
+     * @param model is the model to which the class belongs
+     * @param voidType the type of the return parameter
+     * @param propertyChangeListeners
+     * @return the operation
      */
-    public Object buildOperation(Object classifier, Object model, Object voidType, Collection propertyChangeListeners) {
+    public Object buildOperation(Object classifier, Object model, 
+            Object voidType, Collection propertyChangeListeners) {
         if (!(classifier instanceof MClassifier)) {
             throw new IllegalArgumentException("Handle is not a classifier");
         }
@@ -1237,7 +1241,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
         // oper.setNamespace(cls);
         oper.setConcurrency(MCallConcurrencyKind.SEQUENTIAL);
         
-        MParameter returnParameter = buildParameter(oper, model, voidType, propertyChangeListeners);
+        MParameter returnParameter = buildParameter(oper, model, voidType, 
+                propertyChangeListeners);
         returnParameter.setKind(MParameterDirectionKind.RETURN);
         returnParameter.setName("return");
         // we set the listeners to the figs here too it would be
@@ -1258,14 +1263,19 @@ public class CoreFactory extends AbstractUmlModelFactory {
     /**
      * Builds an operation with a given name for classifier.
      *
-     * @param cls is the classifier.
-     * @param name is the given name.
-     * @return MOperation
+     * @param cls is the classifier that shall own the operation
+     * @param model is the model that contains the class
+     * @param voidType the type of the return parameter
+     * @param name the given name for the operation
+     * @param propertyChangeListeners
+     * @return the operation
      */
-    public Object buildOperation(Object cls, Object model, Object voidType, String name, Collection propertyChangeListeners) {
-        Object oper = buildOperation(cls, model, voidType, propertyChangeListeners);
+    public Object buildOperation(Object cls, Object model, Object voidType, 
+            String name, Collection propertyChangeListeners) {
+        Object oper = buildOperation(cls, model, voidType, 
+                propertyChangeListeners);
         if (oper != null)
-            ((MOperation)oper).setName(name);
+            ((MOperation) oper).setName(name);
         return oper;
     }
 
@@ -1293,24 +1303,31 @@ public class CoreFactory extends AbstractUmlModelFactory {
     /**
      * Adds a parameter initialized to default values to a given event
      * or behavioral feature
+     * 
      * @param o an event or behavioral feature
-     * @return MParameter
+     * @param model the model to which the event or behavioral feature belongs
+     * @param voidType the type of the return parameter
+     * @param propertyChangeListeners
+     * @return the parameter
      */
-    public MParameter buildParameter(Object o, Object model, Object voidType, Collection propertyChangeListeners) {
+    public MParameter buildParameter(Object o, Object model, Object voidType, 
+            Collection propertyChangeListeners) {
         if (o instanceof MEvent) {
             MEvent event = (MEvent) o;
-            MParameter res = (MParameter)buildParameter((MModel)model, (MClassifier)voidType);
+            MParameter res = (MParameter) buildParameter((MModel) model, 
+                    (MClassifier) voidType);
             res.setKind(MParameterDirectionKind.IN);
             //    removing this next line solves issue 2209
             //res.setNamespace(event.getNamespace()); 
-                event.addParameter(res);
+            event.addParameter(res);
             return res;
         } else if (o instanceof MBehavioralFeature) {
             MBehavioralFeature oper = (MBehavioralFeature) o;
             if (oper == null || oper.getOwner() == null)
-                throw new IllegalArgumentException("operation is null or does not "
-                                   + "have an owner");
-            MParameter res = (MParameter)buildParameter((MModel)model, (MClassifier)voidType);
+                throw new IllegalArgumentException(
+                        "operation is null or does not have an owner");
+            MParameter res = (MParameter) buildParameter((MModel) model, 
+                    (MClassifier) voidType);
             String name = "arg";
             int counter = 1;
         
@@ -1319,7 +1336,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
             while (it.hasNext()) {
                 MParameter para = (MParameter) it.next();
                 if ((name + counter).equals(para.getName())) {
-                counter++;
+                    counter++;
                 }
             }
         
@@ -1355,8 +1372,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
             Object spplr,
             Object model)
     {
-        MModelElement client = (MModelElement)clnt;
-        MModelElement supplier = (MModelElement)spplr;
+        MModelElement client = (MModelElement) clnt;
+        MModelElement supplier = (MModelElement) spplr;
 	if (client == null
 	    || supplier == null
 	    || client.getNamespace() == null
@@ -1417,17 +1434,18 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * comment.<p>
      *
      * @param element is the model element
+     * @param model the namespace for the comment
      * @return MComment
      */
     public Object buildComment(Object element, Object model) {
-        MModelElement elementToComment = (MModelElement) element;
+        MModelElement elementToAnnotate = (MModelElement) element;
 	MComment comment = createComment();
-	if (elementToComment != null) {
-	    comment.addAnnotatedElement(elementToComment);
-	    comment.setNamespace(elementToComment.getModel());
+	if (elementToAnnotate != null) {
+	    comment.addAnnotatedElement(elementToAnnotate);
+	    comment.setNamespace(elementToAnnotate.getModel());
 	} else {
-	    comment.setNamespace((MNamespace)model);
-    }
+	    comment.setNamespace((MNamespace) model);
+	}
 
 	return comment;
     }
