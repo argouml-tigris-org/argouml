@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+
+<project name="argouml" default="package" basedir=".">
+
+    <target name="refresh.local" if="eclipse.running">
+        <eclipse.refreshLocal resource="." depth="infinite"/>
+    </target>
+    
+
+
+    <target name="clean">
+        <ant antfile="build.xml"
+             dir="components/api"
+             inheritall="false"
+             target="clean"/>
+        <ant antfile="build.xml"
+             dir="components/nsuml-model"
+             inheritall="false"
+             target="clean"/>
+        <ant antfile="build.xml"
+             dir="components/gef-diagram"
+             inheritall="false"
+             target="clean"/>
+        <ant antfile="build.xml"
+             dir="src_new"
+             inheritall="false"
+             target="clean"/>
+        <antcall target="refresh.local"/>
+    </target>
+    
+    <target name="jar">
+        <ant antfile="build.xml"
+             dir="components/api"
+             inheritall="false"
+             target="jar"/>
+        <ant antfile="build.xml"
+             dir="components/nsuml-model"
+             inheritall="false"
+             target="jar"/>
+        <ant antfile="build.xml"
+             dir="components/gef-diagram"
+             inheritall="false"
+             target="jar"/>
+        <ant antfile="build.xml"
+             dir="src_new"
+             inheritall="false"
+             target="jar"/>
+        <antcall target="refresh.local"/>
+    </target>
+    
+    <target name="package" depends="jar">
+        <ant antfile="build.xml"
+             dir="src_new"
+             inheritall="false"
+             target="package"/>
+        <antcall target="refresh.local"/>
+    </target>
+
+    <target name="run">
+        <antcall target="refresh.local"/>
+        <ant antfile="build.xml"
+             dir="src_new"
+             inheritall="false"
+             target="run"/>
+        <antcall target="refresh.local"/>
+    </target>
+
+</project>
