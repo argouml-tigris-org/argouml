@@ -38,8 +38,8 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
-/** A critic to detect when a class can never have instances (of
- *  itself of any subclasses). */
+/** A critic to detect when a class or its base claesss doesn't have any operations.
+ */
 
 public class CrNoOperations extends CrUML {
 
@@ -60,6 +60,11 @@ public class CrNoOperations extends CrUML {
 
     Collection beh = getInheritedBehavioralFeatures(cls,0);
     if (beh == null) return PROBLEM_FOUND;
+    
+    // please see explanation in CrNoInstanceVariables.java for an explanation
+    // of this fix.
+    if (beh.size() > 0) return NO_PROBLEM;
+
     for (Iterator iter = beh.iterator(); iter.hasNext();) {
       MBehavioralFeature bf = (MBehavioralFeature) iter.next();
       MScopeKind sk = bf.getOwnerScope();
