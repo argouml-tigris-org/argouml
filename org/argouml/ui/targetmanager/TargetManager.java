@@ -64,6 +64,15 @@ public final class TargetManager {
 	 * The list with targetlisteners
 	 */
 	private EventListenerList _listenerList = new EventListenerList();
+    
+    /**
+     * While firing events, the list with targets is not updated yet. Therefore
+     * getTarget() will return the old target. This can get nasty for classes that
+     * do not use the event mechanism yet. The newTarget is a variable that is 
+     * temporarily filled with the new target. When the targets are set, the new 
+     * target is nullified.
+     */
+    private Object _newTarget;
 
 	private boolean inTransaction = false;
 
@@ -88,8 +97,10 @@ public final class TargetManager {
 			startTargetTransaction();
 			Object[] targets = new Object[] { o };
 			if (!targets.equals(_targets)) {
+                _newTarget = o;
 				fireTargetSet(targets);
 				_targets = new Object[] { o };
+                _newTarget = null;
 
 			}
 			endTargetTransaction();
@@ -107,7 +118,7 @@ public final class TargetManager {
 		if (_targets.length == 0) {
 			_log.warn("Returning null as target. No target was selected.");
 		}
-		return _targets.length >= 1 ? _targets[0] : null;
+		return _newTarget != null ? _newTarget : (_targets.length >= 1 ? _targets[0] : null);
 	}
 
 	/**
@@ -122,8 +133,10 @@ public final class TargetManager {
 			if (targetsList != null && !targetsList.isEmpty()) {
 				Object[] targets = targetsList.toArray();
 				if (!targets.equals(_targets)) {
+                    _newTarget = targets[0];
 					fireTargetSet(targets);
 					_targets = targets;
+                    _newTarget = null;
 				}
 			} else {
 				_targets = new Object[0];
@@ -215,9 +228,7 @@ public final class TargetManager {
 		Object[] listeners = _listenerList.getListenerList();
 		TargetEvent targetEvent =
 			new TargetEvent(this, TargetEvent.TARGET_SET, _targets, newTargets);
-		// Process the listeners last to first, notifying
-		// those that are interested in this event
-		for (int i = listeners.length - 2; i >= 0; i -= 2) {
+		for (int i = 0; i <= listeners.length - 2; i += 2) {
 			if (listeners[i] == TargetListener.class) {
 				// Lazily create the event:                     
 				 ((TargetListener) listeners[i + 1]).targetSet(targetEvent);
@@ -235,9 +246,7 @@ public final class TargetManager {
 				_targets,
 				new Object[] { targetAdded });
 
-		// Process the listeners last to first, notifying
-		// those that are interested in this event
-		for (int i = listeners.length - 2; i >= 0; i -= 2) {
+		for (int i = 0; i <= listeners.length - 2; i += 2) {
 			if (listeners[i] == TargetListener.class) {
 				// Lazily create the event:                     
 				 ((TargetListener) listeners[i + 1]).targetAdded(targetEvent);
@@ -255,9 +264,7 @@ public final class TargetManager {
 				_targets,
 				new Object[] { targetRemoved });
 
-		// Process the listeners last to first, notifying
-		// those that are interested in this event
-		for (int i = listeners.length - 2; i >= 0; i -= 2) {
+		for (int i = 0; i <= listeners.length - 2; i += 2) {
 			if (listeners[i] == TargetListener.class) {
 				// Lazily create the event:                     
 				((TargetListener) listeners[i + 1]).targetRemoved(targetEvent);
@@ -276,5 +283,7 @@ public final class TargetManager {
 	private void endTargetTransaction() {
 		inTransaction = false;
 	}
+   
+   
 
 }

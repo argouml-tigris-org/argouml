@@ -29,6 +29,7 @@ import java.beans.PropertyVetoException;
 import javax.swing.JCheckBox;
 
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 
 import ru.novosoft.uml.MElementEvent;
 

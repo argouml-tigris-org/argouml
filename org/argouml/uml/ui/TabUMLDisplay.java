@@ -23,48 +23,38 @@
 
 package org.argouml.uml.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
+import org.apache.log4j.Category;
+import org.argouml.model.ModelFacade;
+import org.argouml.ui.TabText;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
 
-import org.apache.log4j.Category;
-import org.argouml.ui.*;
-
 public class TabUMLDisplay extends TabText {
-    protected static Category cat = 
-        Category.getInstance(TabUMLDisplay.class);
-  ////////////////////////////////////////////////////////////////
-  // constructor
-  public TabUMLDisplay() {
-    super("English");
-  }
+    protected static Category cat = Category.getInstance(TabUMLDisplay.class);
+    ////////////////////////////////////////////////////////////////
+    // constructor
+    public TabUMLDisplay() {
+        super("English");
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  protected String genText() {
-    if (!(_target instanceof MModelElement)) return "nothing selected";
-    return "This feature is not yet implemented";
-    //return GeneratorExplanation.Generate(_target);
-  }
+    protected String genText(Object o) {
+        if (!(ModelFacade.isAModelElement(o)))
+            return "Nothing selected";
+        return "This feature is not yet implemented";
+    }
 
-  protected void parseText(String s) {
-    if (s == null) s = "(null)";
-    cat.debug("TabUMLDisplay parsing text:" + s);
-  }
-  
+    protected void parseText(String s) {
+        if (s == null)
+            s = "(null)";
+        cat.debug("TabUMLDisplay parsing text:" + s);
+    }
 
-  public void setTarget(Object t) {
-    super.setTarget(t);
-    _shouldBeEnabled = (t instanceof MModelElement);
-  }
+    public void setTarget(Object t) {
+        super.setTarget(t);
+        _shouldBeEnabled = (t instanceof MModelElement);
+    }
 
-
-  
 } /* end class TabUMLDisplay */

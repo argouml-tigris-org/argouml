@@ -28,6 +28,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JRadioButton;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLButtonGroup;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import ru.novosoft.uml.foundation.core.MModelElement;

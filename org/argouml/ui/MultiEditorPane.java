@@ -213,7 +213,8 @@ public class MultiEditorPane
         Component curTab = _tabs.getSelectedComponent();
         if (curTab instanceof TabDiagram) {
             JGraph jg = ((TabDiagram) curTab).getJGraph();
-            jg.selectByOwnerOrFig(o);
+            if (jg.getEditor().getLayerManager().getContents().contains(o))
+                jg.selectByOwnerOrFig(o);
         }
         //TODO: handle tables
     }

@@ -46,50 +46,49 @@ import org.tigris.gef.event.ModeChangeListener;
 import org.tigris.gef.graph.presentation.JGraph;
 import org.tigris.gef.ui.ToolBar;
 
-
 /**
  * The TabDiagram is the tab in the multieditorpane that holds a diagram. The 
  * TabDiagram consists of a JGraph (with the figs) and a toolbar. It is possible
  * to spawn objects of this class into a dialog via the spawn method of its
  * parent.
  */
-public class TabDiagram extends TabSpawnable
-implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
-    
-    protected static Category cat = 
-        Category.getInstance(TabDiagram.class);
-    
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-    
-  /**
-   * the diagram object
-   */
-  protected UMLDiagram _target;
-  
-  /**
-   * The GEF JGraph in where the figs are painted
-   */
-  protected JGraph _jgraph;
-  
-  /**
-   * used but there doesn't appear to be a purpose.
-   */
-  protected boolean _shouldBeEnabled = true;
-  
-  /**
-   * the GEF toolbar that is positioned just above
-   * the diagram. is added to diagramPanel
-   */
-  protected ToolBar _toolBar;
+public class TabDiagram
+    extends TabSpawnable
+    implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
-  
-  /**
-   * calls the other constructor.
-   */
-  public TabDiagram() {
+    protected static Category cat = Category.getInstance(TabDiagram.class);
+
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+
+    /**
+     * the diagram object
+     */
+    protected UMLDiagram _target;
+
+    /**
+     * The GEF JGraph in where the figs are painted
+     */
+    protected JGraph _jgraph;
+
+    /**
+     * used but there doesn't appear to be a purpose.
+     */
+    protected boolean _shouldBeEnabled = true;
+
+    /**
+     * the GEF toolbar that is positioned just above
+     * the diagram. is added to diagramPanel
+     */
+    protected ToolBar _toolBar;
+
+    ////////////////////////////////////////////////////////////////
+    // constructors
+
+    /**
+     * calls the other constructor.
+     */
+    public TabDiagram() {
         this("Diagram");
     }
 
@@ -125,9 +124,9 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
         if (_target != null) {
             newPanel.setTarget(_target);
         }
-        newPanel.setToolBar(_target.getToolBar());           
+        newPanel.setToolBar(_target.getToolBar());
         return newPanel;
-        
+
     }
 
     /**
@@ -136,31 +135,34 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
      * @param t
      */
     public void setTarget(Object t) {
-        
+
         if (!(t instanceof UMLDiagram)) {
             _shouldBeEnabled = false;
-	    // This is perfectly normal and happens among other things
-	    // within the call to setDiagram (below).
-            cat.debug("target is null in set target or not an instance of UMLDiagram");
+            // This is perfectly normal and happens among other things
+            // within the call to setDiagram (below).
+            cat.debug(
+                "target is null in set target or not an instance of UMLDiagram");
             return;
         }
         if (_target != null) {
             _target.removeAsTarget();
-        }        
-        UMLDiagram target = (UMLDiagram)t;
-        
+        }
+        UMLDiagram target = (UMLDiagram) t;
+
         target.setAsTarget();
-        
+
         _shouldBeEnabled = true;
         setToolBar(target.getToolBar());
+        _jgraph.removeGraphSelectionListener(this);
         _jgraph.setDiagram(target);
-        _target = target;                
+        _jgraph.addGraphSelectionListener(this);
+        _target = target;
     }
-    
+
     public Object getTarget() {
         return _target;
     }
-    
+
     public ToolBar getToolBar() {
         return _toolBar;
     }
@@ -169,27 +171,19 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
         setTarget(_target);
     }
 
-  public boolean shouldBeEnabled(Object target) {
-  
-    if (target instanceof UMLDiagram) {
-      _shouldBeEnabled = true;
+    public boolean shouldBeEnabled(Object target) {
+
+        if (target instanceof UMLDiagram) {
+            _shouldBeEnabled = true;
+        } else {
+            _shouldBeEnabled = false;
+        }
+
+        return _shouldBeEnabled;
     }
-    else {
-      _shouldBeEnabled = false;
-    }
-    
-    return _shouldBeEnabled;
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
-    
-
-  
-
-  
- 
-
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
     public JGraph getJGraph() {
         return _jgraph;
@@ -211,10 +205,12 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
         Vector sels = gse.getSelections();
         ProjectBrowser pb = ProjectBrowser.getInstance();
 
-        if (sels.size() == 1)
-            pb.setTarget(sels.elementAt(0));
-        else
-            pb.setTarget(null);
+ 
+            if (sels.size() == 1)
+                pb.setTarget(sels.elementAt(0));
+            else
+                pb.setTarget(null);
+   
     }
 
     public void removeGraphSelectionListener(GraphSelectionListener listener) {
@@ -232,19 +228,19 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
     public void removeModeChangeListener(ModeChangeListener listener) {
         _jgraph.removeModeChangeListener(listener);
     }
-    
+
     /**
      * Sets the toolbar. Adds the toolbar to the north borderlayout position of
      * the diagram.
      * @param toolbar
      */
     public void setToolBar(ToolBar toolbar) {
-        if (!Arrays.asList(getComponents()).contains(toolbar) ) {
+        if (!Arrays.asList(getComponents()).contains(toolbar)) {
             if (_target != null) {
-                remove(((UMLDiagram)getTarget()).getToolBar());
-            }    
+                remove(((UMLDiagram) getTarget()).getToolBar());
+            }
             add(toolbar, BorderLayout.NORTH);
-            
+
             invalidate();
             validate();
             repaint();
@@ -284,13 +280,14 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
  * @since Apr 13, 2003
  */
 class ArgoJGraph extends JGraph {
-    
-     public boolean equals(Object o) {
-         if (o instanceof ArgoJGraph) {
-             ArgoJGraph a = (ArgoJGraph)o;
-            if (this._currentDiagramId.equals(a._currentDiagramId) &&
-                this.getEditor().equals(a.getEditor())) return true;
-         }
-         return false;
-     }
+
+    public boolean equals(Object o) {
+        if (o instanceof ArgoJGraph) {
+            ArgoJGraph a = (ArgoJGraph) o;
+            if (this._currentDiagramId.equals(a._currentDiagramId)
+                && this.getEditor().equals(a.getEditor()))
+                return true;
+        }
+        return false;
+    }
 }

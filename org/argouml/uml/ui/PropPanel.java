@@ -44,6 +44,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.MissingResourceException;
@@ -407,7 +408,7 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      * <p>Set the target to be associated with a particular property panel.</p>
      *
      * <p>This involves resetting the third party listeners.</p>
-     *
+     * @deprecated This will change visibility from release 0.16
      * @param t  The object to be set as a target.
      */
 
@@ -417,7 +418,7 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
         // If the target has changed notify the third party listener if it
         // exists and dispatch a new NSUML element listener to
         // ourself. Otherwise dispatch a target reasserted to ourself.
-
+        Runnable dispatch = null;
         if (t != _target) {
 
             // Set up the target and its model element variant.
@@ -431,12 +432,14 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
 
             // This will add a new MElement listener after update is complete
 
-            SwingUtilities.invokeLater(new UMLChangeDispatch(this, UMLChangeDispatch.TARGET_CHANGED_ADD));
-        } else {
-            UMLChangeDispatch dispatch = new UMLChangeDispatch(this, UMLChangeDispatch.TARGET_REASSERTED);
-            dispatch.targetReasserted();
+            dispatch = new UMLChangeDispatch(this, UMLChangeDispatch.TARGET_CHANGED_ADD);
             SwingUtilities.invokeLater(dispatch);
+        } 
+        else {
+            dispatch = new UMLChangeDispatch(this, UMLChangeDispatch.TARGET_REASSERTED);  
+            SwingUtilities.invokeLater(dispatch);                    
         }
+        
         
         // update the titleLabel 
         if (_titleLabel != null) {
@@ -444,6 +447,11 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
             if (icon != null)
                 _titleLabel.setIcon(icon);
         }
+        
+          
+       
+      
+        
     }
 
     public final Object getTarget() {
@@ -688,7 +696,9 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        // TODO Auto-generated method stub
+        // we can neglect this, the TabProps allways selects the first target
+         // in a set of targets. The first target can only be 
+         // changed in a targetRemoved or a TargetSet event
 
     }
 
@@ -696,7 +706,9 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        // TODO Auto-generated method stub
+        // how to handle empty target lists?
+        // probably the TabProps should only show an empty pane in that case
+        setTarget(e.getNewTargets()[0]);
 
     }
 
@@ -704,7 +716,7 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        // TODO Auto-generated method stub
+        setTarget(e.getNewTargets()[0]);
 
     }
 

@@ -294,16 +294,19 @@ public abstract class UMLComboBoxModel2
         if (_target instanceof MBase) {
             UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
         }
-        _target = target;
-        if (_target instanceof MBase) {
+      
+        if (target instanceof MBase) {
+            _target = target;
              // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
              UmlModelEventPump.getPump().addModelEventListener(this, (MBase)_target, _propertySetName);
+        } else {
+            _target = null;
         }
         _fireListEvents = false;
         removeAllElements();
         _fireListEvents = true;
-        buildModelList();
         if (_target != null) {
+            buildModelList();
             setSelectedItem(getSelectedModelElement());
         }
         if (getSelectedItem() != null && _clearable) {

@@ -124,13 +124,14 @@ public abstract class UMLCheckBox2
         if (_target instanceof MBase) {
             UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
         }
-        _target = target;
-        if (_target instanceof MBase) {
+       
+        if (target instanceof MBase) {
+            _target = target;
              // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
              UmlModelEventPump.getPump().addModelEventListener(this, (MBase)_target, _propertySetName);
-        }
-        if (_target != null)
             buildModel();
+        }
+            
     }
     
     /**

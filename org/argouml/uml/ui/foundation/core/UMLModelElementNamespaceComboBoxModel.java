@@ -137,19 +137,25 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
             (MBase)_target,
             _propertySetName);
         }
-        _target = target;
-        if (_target instanceof MBase) {
+        
+        if (target instanceof MBase) {
+            _target = target;
             UmlModelEventPump.getPump().addModelEventListener(this,
             (MBase)_target,
             _propertySetName);
+        } else {
+            target = null;
         }
         _fireListEvents = false;
         removeAllElements();
         _fireListEvents = true;
-        buildModelList();
+        if (target != null) {
+            buildModelList();
+            // calculate the new namespaces.
+            theBuilderThread.build();
+        }
         
-        // calculate the new namespaces.
-        theBuilderThread.build();
+       
     }
     
     /**

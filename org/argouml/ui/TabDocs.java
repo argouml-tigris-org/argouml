@@ -23,19 +23,11 @@
 
 package org.argouml.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-
-import ru.novosoft.uml.foundation.core.*;
-
-import org.tigris.gef.presentation.*;
-
 import org.apache.log4j.Category;
-import org.argouml.uml.*;
+import org.argouml.model.ModelFacade;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.DocumentationManager;
+import org.tigris.gef.presentation.Fig;
 
 public class TabDocs extends TabText {
     protected static Category cat = 
@@ -48,25 +40,14 @@ public class TabDocs extends TabText {
 
   ////////////////////////////////////////////////////////////////
   // accessors
-  protected String genText() {
-    cat.debug("Docstab getting docs for " + _target);
-    Object modelObject = _target;
-    if ( !(modelObject instanceof MElement) ) return null;
-    if (_target instanceof FigNode)
-      modelObject = ((FigNode)_target).getOwner();
-    if (_target instanceof FigEdge)
-      modelObject = ((FigEdge)_target).getOwner();
-    if (modelObject == null) return null;
-    return DocumentationManager.getDocs(modelObject,"");
+  protected String genText(Object modelObject) {
+    modelObject = (modelObject instanceof Fig) ? ((Fig)modelObject).getOwner() : modelObject;    
+    return !(ModelFacade.isAElement(modelObject)) ? null : DocumentationManager.getDocs(modelObject,"");
   }
 
   protected void parseText(String s) {
-    cat.debug("Docstab   setting docs for "+ _target);
-    Object modelObject = _target;
-    if (_target instanceof FigNode)
-      modelObject = ((FigNode)_target).getOwner();
-    if (_target instanceof FigEdge)
-      modelObject = ((FigEdge)_target).getOwner();
+    Object modelObject = TargetManager.getInstance().getTarget();
+   modelObject = (modelObject instanceof Fig) ? ((Fig)modelObject).getOwner() : modelObject;    
     if (modelObject == null) return;
     DocumentationManager.setDocs(modelObject, s);
   }
