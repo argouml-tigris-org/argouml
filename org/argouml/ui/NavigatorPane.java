@@ -38,6 +38,7 @@ import ru.novosoft.uml.behavior.state_machines.*;
 
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.*;
+import org.tigris.gef.util.*;            
 
 import org.argouml.uml.ui.*;
 import org.argouml.uml.diagram.ui.*;
@@ -275,7 +276,16 @@ implements ItemListener, TreeSelectionListener {
     }
   }
 
-
+    /**
+     * Locale a popup menu item in the navigator pane.
+     *
+     * @param key The key for the string to localize.
+     * @return The localized string.
+     */
+    final protected String menuLocalize(String key) {
+	return Localizer.localize("Tree",key);
+    }
+ 
   ////////////////////////////////////////////////////////////////
   // inner classes
 
@@ -315,12 +325,12 @@ implements ItemListener, TreeSelectionListener {
         else if (obj instanceof MClassifier || obj instanceof MUseCase
 		 || obj instanceof MActor || obj instanceof MPackage 
 		 || obj instanceof MStateVertex || obj instanceof MInstance) {
-			popup.add(new ActionGoToDetails("Properties"));
-			popup.add(new ActionAddExistingNode("Add to Diagram",obj));
+			popup.add(new ActionGoToDetails(menuLocalize("Properties")));
+			popup.add(new ActionAddExistingNode(menuLocalize("Add to Diagram"),obj));
 			popup.add(ActionRemoveFromModel.SINGLETON);
         }
 		else if (obj instanceof MModelElement || obj instanceof Diagram) {
-			popup.add(new ActionGoToDetails("Properties"));
+			popup.add(new ActionGoToDetails(menuLocalize("Properties")));
 			popup.add(ActionRemoveFromModel.SINGLETON);
         }
 		popup.show(_tree,me.getX(),me.getY());

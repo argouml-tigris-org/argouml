@@ -27,6 +27,7 @@ import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
+import org.tigris.gef.util.*;            
 import ru.novosoft.uml.foundation.core.*;
 import java.util.*;
 import java.awt.event.*;
@@ -45,7 +46,9 @@ public class ActionRemoveFromModel extends UMLChangeAction {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    public ActionRemoveFromModel() { super("Delete From Model", NO_ICON); }
+    public ActionRemoveFromModel() { 
+	super( Localizer.localize("CoreMenu", "Delete From Model"), NO_ICON); 
+    }
 
 
     ////////////////////////////////////////////////////////////////
