@@ -622,7 +622,7 @@ public class ProjectBrowser
         }
         Vector diagrams =
             ProjectManager.getManager().getCurrentProject().getDiagrams();
-        Object target = editorPane.getTarget();
+        Object target = TargetManager.getInstance().getTarget();
         if ((target instanceof Diagram)
             && ((Diagram) target).countContained(dms) == dms.size()) {
             setTarget(first);

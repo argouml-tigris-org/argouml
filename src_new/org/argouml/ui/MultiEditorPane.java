@@ -161,20 +161,6 @@ public class MultiEditorPane
             }
         }
     }
-    
-    
-    /**
-     * Returns the current target of the multieditorpane.
-     * TODO: check if the target is needed for the multieditorpane as an
-     * instance variable.
-     * @return Object
-     * @deprecated As of ArgoUml version 0.13.5, use 
-     * {@link org.argouml.ui.targetmanager.TargetManager#getTarget()}
-     * instead
-     */
-    public Object getTarget() {
-        return TargetManager.getInstance().getTarget();
-    }
 
     ////////////////////////////////////////////////////////////////
     // actions
