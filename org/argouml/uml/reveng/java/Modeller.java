@@ -36,9 +36,9 @@ import java.util.Hashtable;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.CoreFactory;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
-import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.ocl.OCLUtil;
 import org.argouml.uml.reveng.DiagramInterface;
 import org.argouml.uml.reveng.Import;

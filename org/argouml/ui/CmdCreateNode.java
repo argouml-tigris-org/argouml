@@ -43,7 +43,7 @@ import org.argouml.model.uml.UmlFactory;
  * no-parameter build method, the create method corresponding to the
  * modelelement is used.
  * 
- * @see org.argouml.model.uml.foundation.core.CoreFactory
+ * @see org.argouml.model.uml.CoreFactory
  * @author jaap.branderhorst@xs4all.nl
  */
 public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {

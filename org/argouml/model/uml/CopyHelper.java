@@ -44,9 +44,6 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotypeImpl;
 import ru.novosoft.uml.model_management.MPackage;
 import ru.novosoft.uml.model_management.MPackageImpl;
 
-import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
-import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
 
 class CopyFunction {
     private final Object object;

@@ -28,8 +28,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.CollaborationsHelper;
 import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.tigris.gef.presentation.Fig;
 

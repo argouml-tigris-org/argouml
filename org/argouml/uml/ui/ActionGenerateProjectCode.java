@@ -31,7 +31,7 @@ import java.util.Vector;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.UMLDiagram;

@@ -31,9 +31,9 @@ import java.util.List;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
-import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.model.uml.CollaborationsFactory;
+import org.argouml.model.uml.CollaborationsHelper;
+import org.argouml.model.uml.CoreHelper;
 import org.argouml.uml.ui.UMLConnectionListModel;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.tigris.gef.graph.MutableGraphModel;

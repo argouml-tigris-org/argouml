@@ -29,7 +29,7 @@ import java.util.Set;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+import org.argouml.model.uml.ModelManagementHelper;
 
 /**
  * Rule for Package->Class.

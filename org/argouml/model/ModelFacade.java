@@ -33,9 +33,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
+import org.argouml.model.uml.CoreHelper;
+import org.argouml.model.uml.ExtensionMechanismsHelper;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.tigris.gef.base.Diagram;
 

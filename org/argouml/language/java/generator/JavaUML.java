@@ -26,7 +26,7 @@
 package org.argouml.language.java.generator;
 
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.CoreFactory;
 import org.argouml.model.uml.UmlFactory;
 
 /** A file of information about the Java language.  This is used to

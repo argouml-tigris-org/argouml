@@ -32,8 +32,8 @@ import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.DataTypesHelper;
 import org.argouml.model.uml.UmlHelper;
-import org.argouml.model.uml.foundation.datatypes.DataTypesHelper;
 import org.argouml.uml.util.namespace.StringNamespace;
 import org.tigris.gef.util.ResourceLoader;
 

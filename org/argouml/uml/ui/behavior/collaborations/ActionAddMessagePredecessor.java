@@ -29,7 +29,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import java.util.Vector;
 
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
+import org.argouml.model.uml.CollaborationsHelper;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 
 /**

@@ -27,7 +27,7 @@ package org.argouml.uml.ui.behavior.state_machines;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
+import org.argouml.model.uml.StateMachinesFactory;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**

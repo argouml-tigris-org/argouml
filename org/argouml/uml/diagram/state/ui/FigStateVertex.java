@@ -25,7 +25,7 @@
 package org.argouml.uml.diagram.state.ui;
 
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
+import org.argouml.model.uml.StateMachinesHelper;
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;

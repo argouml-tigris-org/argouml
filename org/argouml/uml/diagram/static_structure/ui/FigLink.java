@@ -32,7 +32,7 @@ package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
 
-import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
+import org.argouml.model.uml.CommonBehaviorHelper;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.presentation.Fig;
 /**

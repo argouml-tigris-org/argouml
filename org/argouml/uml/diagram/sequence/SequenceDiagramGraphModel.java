@@ -38,11 +38,11 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.CollaborationsFactory;
+import org.argouml.model.uml.CollaborationsHelper;
+import org.argouml.model.uml.CommonBehaviorFactory;
+import org.argouml.model.uml.CommonBehaviorHelper;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
-import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
-import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.sequence.ui.FigLink;
 import org.argouml.uml.diagram.sequence.ui.FigLinkPort;

@@ -27,7 +27,7 @@ package org.argouml.uml.ui.behavior.use_cases;
 import java.awt.event.ActionEvent;
 import org.argouml.model.ModelFacade;
 
-import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
+import org.argouml.model.uml.UseCasesFactory;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**

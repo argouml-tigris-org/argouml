@@ -27,7 +27,7 @@ package org.argouml.uml.ui.behavior.collaborations;
 import java.awt.event.ActionEvent;
 import org.argouml.model.ModelFacade;
 
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
+import org.argouml.model.uml.CollaborationsHelper;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;

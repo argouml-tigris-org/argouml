@@ -31,8 +31,8 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
-import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
+import org.argouml.model.uml.CommonBehaviorHelper;
+import org.argouml.model.uml.CoreHelper;
 import org.apache.log4j.Logger;
 
 /**
