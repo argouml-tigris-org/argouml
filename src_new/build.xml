@@ -937,6 +937,22 @@ ${Name} Build file
 
   </target>
 
+  <target name="run-with-test-panel" depends="compile,junit-setup">
+    <echo message="--- Executing ${Name} ---"/>
+    <!-- Uncomment the sysproperty and change the value if you want -->
+    <java classname="org.argouml.application.Main"
+          fork="yes"
+          taskname="argouml">
+        <classpath>
+          <pathelement location="${argo.tests.classes}"/>
+	  <pathelement location="${argo.build.classes}"/>
+          <pathelement location="${junit.jar.path}" />
+	  <path refid="argo.runtime.classpath"/>
+        </classpath>
+    </java>
+  </target>
+
+
   <!-- =================================================================== -->
   <!-- Perform JDepend to find about the structure in ArgoUML.             -->
   <!-- =================================================================== -->
