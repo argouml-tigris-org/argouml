@@ -34,6 +34,7 @@ import javax.swing.border.TitledBorder;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.ActionNavigateAssociation;
 import org.argouml.uml.ui.ActionNavigateOppositeAssocEnd;
 import org.argouml.uml.ui.ActionRemoveFromModel;
@@ -47,6 +48,9 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.Orientation;
+import org.tigris.gef.presentation.Fig;
+
+import java.util.Collection;
 
 /**
  * TODO: this property panel needs refactoring to remove dependency on old gui
@@ -134,6 +138,9 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     private String associationLabel;
 
+    private PropPanelButton2 oppositeEndButton = new PropPanelButton2(new ActionNavigateOppositeAssocEnd(),
+            lookupIcon("AssociationEnd"));
+
     /**
      * Constructs the proppanel and places all scrollpanes etc. on the canvas.
      * 
@@ -215,8 +222,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         add(visibilityRadioButtonPanel);
 
         addButton(new PropPanelButton2(new ActionNavigateAssociation()));
-        addButton(new PropPanelButton2(new ActionNavigateOppositeAssocEnd(),
-                lookupIcon("AssociationEnd")));
+        addButton(oppositeEndButton);
         addButton(new PropPanelButton2(new ActionNewStereotype(), 
                 lookupIcon("Stereotype")));
         addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
@@ -272,6 +278,20 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
             return ModelFacade.getOtherAssociationEnds(getTarget()).size() > 1; 
         }
         return false;
+    }
+
+    public void targetSet(TargetEvent e) {
+        super.targetSet(e);
+        Object o = e.getNewTarget();
+        if (o instanceof Fig)
+            o = ((Fig) o).getOwner();
+        if(o != null && ModelFacade.isAAssociationEnd(o)) {
+            Collection ascEnds = ModelFacade.getConnections(ModelFacade.getAssociation(o));
+            if (ascEnds.size()>2)
+                oppositeEndButton.setEnabled(false);
+            else
+                oppositeEndButton.setEnabled(true);
+        }
     }
 
 } /* end class PropPanelAssociationEnd */

@@ -256,6 +256,8 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
          ModelFacade.MODELELEMENT, },
         {ModelFacade.TRANSITION,       ModelFacade.STATEVERTEX, },
         {ModelFacade.ASSOCIATION_CLASS, ModelFacade.CLASS, },
+    {ModelFacade.ASSOCIATION_END, ModelFacade.CLASS,
+     ModelFacade.ASSOCIATION}
     };
 
     private static Map elements;
@@ -498,6 +500,18 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
                        (MClassifier) toElement,
                        (MAggregationKind) toStyle,
                        (Boolean) unidirectional);
+        } else if (connectionType == ModelFacade.ASSOCIATION_END) {
+            if (fromElement instanceof MAssociation) {
+                connection =
+                        getCore().buildAssociationEnd(
+                                (MClassifier)toElement,
+                                (MAssociation) fromElement);
+            }
+            else if (fromElement instanceof MClassifier) {
+                connection = getCore().buildAssociationEnd(
+                        (MClassifier)fromElement,
+                        (MAssociation) toElement);
+            }
         } else if (connectionType == ModelFacade.ASSOCIATION_CLASS) {
             connection =
                 getCore().buildAssociationClass(

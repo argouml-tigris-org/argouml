@@ -31,8 +31,10 @@ import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigAssociationClass;
+import org.argouml.uml.diagram.ui.FigAssociationEnd;
 import org.argouml.uml.diagram.ui.FigDependency;
 import org.argouml.uml.diagram.ui.FigGeneralization;
+import org.argouml.uml.diagram.ui.FigNodeAssociation;
 import org.argouml.uml.diagram.ui.FigPermission;
 import org.argouml.uml.diagram.ui.FigRealization;
 import org.argouml.uml.diagram.ui.FigUsage;
@@ -100,6 +102,8 @@ public class ClassDiagramRenderer
             return new FigPackage(gm, node);
         } else if (ModelFacade.isAComment(node)) {
             return new FigComment(gm, node);
+        } else if (ModelFacade.isAAssociation(node)) {
+            return new FigNodeAssociation(gm, node);
         }
         LOG.error("TODO: ClassDiagramRenderer getFigNodeFor " + node);
         return null;
@@ -126,6 +130,17 @@ public class ClassDiagramRenderer
         if (ModelFacade.isAAssociationClass(edge)) {
             FigAssociationClass ascCFig = new FigAssociationClass(edge, lay);
             return ascCFig;
+        } else if (ModelFacade.isAAssociationEnd(edge)) {
+            FigAssociationEnd asend = new FigAssociationEnd(edge, lay);
+            ModelFacade.getAssociation(edge);
+            FigNode associationFN = (FigNode) lay.presentationFor(ModelFacade.getAssociation(edge));
+            FigNode classifierFN = (FigNode) lay.presentationFor(ModelFacade.getType(edge));
+
+            asend.setSourcePortFig(associationFN);
+            asend.setSourceFigNode(associationFN);
+            asend.setDestPortFig(classifierFN);
+            asend.setDestFigNode(classifierFN);
+            newEdge = asend;
         } else if (ModelFacade.isAAssociation(edge)) {
             FigAssociation ascFig = new FigAssociation(edge, lay);
             newEdge = ascFig;

@@ -280,6 +280,9 @@ class UmlHelperImpl implements UmlHelper {
         if (ModelFacade.isATransition(relationShip)) {
             return Model.getStateMachinesHelper().getSource(relationShip);
         }
+        if (ModelFacade.isAAssociationEnd(relationShip)) {
+            return Model.getCoreHelper().getSource(relationShip);
+        }
         return null;
     }
 
@@ -309,6 +312,9 @@ class UmlHelperImpl implements UmlHelper {
         }
         if (ModelFacade.isATransition(relationShip)) {
             return Model.getStateMachinesHelper().getDestination(relationShip);
+        }
+        if (ModelFacade.isAAssociationEnd(relationShip)) {
+            return Model.getCoreHelper().getDestination(relationShip);
         }
         return null;
     }
