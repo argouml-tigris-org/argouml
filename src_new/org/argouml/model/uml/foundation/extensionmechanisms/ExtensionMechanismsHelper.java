@@ -29,9 +29,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import org.argouml.kernel.Project;
+import org.argouml.ui.ProjectBrowser;
+
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
+import ru.novosoft.uml.model_management.MModel;
 
 /**
  * Helper class for UML Foundation::ExtensionMechanisms Package.
@@ -94,7 +98,12 @@ public class ExtensionMechanismsHelper {
     }
     
     public String getMetaModelName(MModelElement m) {
-        String name = m.getClass().getName();
+        return getMetaModelName(m.getClass());
+    }
+    
+    protected String getMetaModelName(Class clazz) {
+        if (clazz == null) return null;
+        String name = clazz.getName();
         name = name.substring(name.lastIndexOf('.')+2,name.length());
         if (name.endsWith("Impl")) {
             name = name.substring(0,name.lastIndexOf("Impl"));
@@ -114,16 +123,64 @@ public class ExtensionMechanismsHelper {
         List ret = new ArrayList();
         if (m == null || m.getNamespace() == null) return ret;
         MNamespace ns = m.getNamespace();
-        Iterator it = getStereotypes(ns).iterator();
+        Iterator it = getStereotypes().iterator();
         String baseClass = getMetaModelName(m);
         while (it.hasNext()) {
             MStereotype stereo = (MStereotype)it.next();
-            if (stereo.getBaseClass().equals(baseClass)) {
+            if (isValidStereoType(m.getClass(), stereo)) {
                 ret.add(stereo);
             }
         }
         return ret;
     }
+    
+    protected boolean isValidStereoType(Class clazz, MStereotype stereo) {
+        if (clazz == null || stereo == null) return false;
+        if (getMetaModelName(clazz).equals(stereo.getBaseClass())) 
+            return true;
+        else {
+            if (getMetaModelName(clazz).equals("ModelElement")) return false;
+            return isValidStereoType(clazz.getSuperclass(), stereo);
+        }
+    }
+    
+    /**
+     * Returns true if the given stereotype has a baseclass that equals the baseclass
+     * of the given modelelement or one of the superclasses of the given modelelement.
+     * @param m
+     * @param stereo
+     * @return boolean
+     */
+    public boolean isValidStereoType(MModelElement m, MStereotype stereo) {
+       return isValidStereoType(m.getClass(), stereo);
+    }
+    
+    public Collection getStereotypes() {
+        List ret = new ArrayList();
+        Project p = ProjectBrowser.TheInstance.getProject();
+        Iterator it = p.getModels().iterator();
+        while (it.hasNext()) {
+            MModel model = (MModel)it.next();
+            ret.addAll(getStereotypes(model));
+        }
+        return ret;
+    }
+    
+    /**
+     * Sets the stereotype of some modelelement. The method also copies a 
+     * stereotype that is not a part of the current model to the current model.
+     * @param m
+     * @param stereo
+     */
+    public void setStereoType(MModelElement m, MStereotype stereo) {
+        if (stereo != null && m.getModel() != stereo.getModel()) {
+            stereo.setNamespace(m.getModel());
+        }
+        m.setStereotype(stereo);
+    }
+            
+        
+         
     
    
 }

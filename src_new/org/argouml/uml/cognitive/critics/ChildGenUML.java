@@ -54,7 +54,7 @@ public class ChildGenUML implements ChildGenerator {
   public java.util.Enumeration gen(Object o) {
     if (o instanceof Project) {
       Project p = (Project) o;
-      return new EnumerationComposite(p.getModels().elements(),
+      return new EnumerationComposite(p.getUserDefinedModels().elements(),
 				      p.getDiagrams().elements());
     }
 

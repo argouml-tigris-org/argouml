@@ -24,10 +24,13 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /**
  * @since Oct 10, 2002
@@ -47,21 +50,28 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
      */
     protected boolean isValidRoleAdded(MElementEvent e) {
-        return false;
+        Object o = getChangedElement(e);
+        return o instanceof MStereotype 
+            && ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement)getTarget(), (MStereotype)o);
     }
 
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidPropertySet(ru.novosoft.uml.MElementEvent)
      */
     protected boolean isValidPropertySet(MElementEvent e) {
-        return false;
+        return e.getSource() == getTarget() && e.getName().equals("stereotype");
     }
 
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        
+        MModelElement elem = (MModelElement)getTarget();
+        setElements(ExtensionMechanismsHelper.getHelper().getAllPossibleStereotypes(elem));
+        if (elem != null && elem.getStereotype() != null) {
+            setSelectedItem(elem.getStereotype());
+        } else
+            setSelectedItem("");
     }
     
     

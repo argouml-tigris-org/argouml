@@ -22,35 +22,34 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // $header$
-package org.argouml.uml.ui.behavior.use_cases;
+package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
+import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLComboBox2;
 
-import ru.novosoft.uml.behavior.use_cases.MExtend;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /**
- * Sets the base of an extend. Updates both the model (NSUML) as the diagrams.
- * @since Oct 5, 2002
+ * @since Oct 10, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class ActionSetExtendBase extends UMLChangeAction {
+public class ActionSetModelElementStereotype extends UMLChangeAction {
 
-
-    public static final ActionSetExtendBase SINGLETON = new ActionSetExtendBase();
+    public static final ActionSetModelElementStereotype SINGLETON = new ActionSetModelElementStereotype();
 
     /**
-     * Constructor for ActionSetExtendBase.
+     * Constructor for ActionSetModelElementStereotype.
      * @param s
      */
-    protected ActionSetExtendBase() {
+    protected ActionSetModelElementStereotype() {
         super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
     }
+
 
    
     /**
@@ -59,20 +58,23 @@ public class ActionSetExtendBase extends UMLChangeAction {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object source = e.getSource();
-        MUseCase newBase = null;
-        MExtend extend = null;
+        MStereotype oldStereo = null;
+        MStereotype newStereo = null;
+        MModelElement target = null;
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 combo = (UMLComboBox2)source;
-            newBase = (MUseCase)combo.getSelectedItem();
-            if (combo.getTarget() instanceof MExtend) {
-                extend = (MExtend)combo.getTarget();
+            if (combo.getSelectedItem() instanceof MStereotype) 
+                newStereo = (MStereotype)combo.getSelectedItem();
+            if (combo.getTarget() instanceof MModelElement) {
+                target = (MModelElement)combo.getTarget();
+                oldStereo = target.getStereotype();
             }
         }
-        MUseCase oldBase = extend.getBase();
-        if (newBase == null) throw new IllegalStateException("Base of extend is null!");
-        if (oldBase != newBase) {
-            UseCasesHelper.getHelper().setBase(extend, newBase);
+        if (newStereo != oldStereo && target != null) {
+            ExtensionMechanismsHelper.getHelper().setStereoType(target, newStereo);
         }
     }
+            
+    
 
 }

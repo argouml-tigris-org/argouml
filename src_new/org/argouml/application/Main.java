@@ -342,7 +342,7 @@ public class Main {
         }
 
         pb.setVisible(true);
-        Object model = p.getModels().elementAt(0);
+        Object model = p.getUserDefinedModels().elementAt(0);
         Object diag = p.getDiagrams().elementAt(0);
         //pb.setTarget(diag);
         pb.getNavPane().setSelection(model, diag);
@@ -495,7 +495,7 @@ class StartCritics implements Runnable {
         Project p = pb.getProject();
         dsgr.spawnCritiquer(p);
         dsgr.setChildGenerator(new ChildGenUML());
-        java.util.Enumeration models = (p.getModels()).elements();
+        java.util.Enumeration models = (p.getUserDefinedModels()).elements();
         while (models.hasMoreElements()) {
             Object o = models.nextElement();     
             ((MModel)o).removeMElementListener(dsgr);
