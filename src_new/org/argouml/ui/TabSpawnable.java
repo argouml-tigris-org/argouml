@@ -57,6 +57,16 @@ public class TabSpawnable extends JPanel implements Cloneable {
     _tear = tear;
   }
 
+    /** This is not a real clone since it doesn't copy anything from the
+     * object it is cloning.
+     * The
+     * @see #spawn
+     * method copies the title and in some cases when we are a
+     * @see TabToDoTarget
+     * or
+     * @see TabModelTarget
+     * also the Target.
+     */
   public Object clone() {
     try { return this.getClass().newInstance(); }
     catch (Exception ex) {
