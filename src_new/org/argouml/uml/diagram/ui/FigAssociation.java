@@ -165,8 +165,8 @@ public class FigAssociation extends FigEdgeModelElement {
 	    ((MAssociationEnd)((Object[]) newAsc.getConnections().toArray())[i]).addMElementListener(this);
 
       newAsc.addMElementListener(this);
-      MAssociationEnd ae0 =  (MAssociationEnd)((Object[])(newAsc.getConnections()).toArray())[0];
-      MAssociationEnd ae1 =  (MAssociationEnd)((Object[])(newAsc.getConnections()).toArray())[1];
+      MAssociationEnd ae1 =  (MAssociationEnd)((Object[])(newAsc.getConnections()).toArray())[0];
+      MAssociationEnd ae0 =  (MAssociationEnd)((Object[])(newAsc.getConnections()).toArray())[1];
       FigNode destNode = (FigNode)getLayer().presentationFor(ae0.getType());
       FigNode srcNode = (FigNode)getLayer().presentationFor(ae1.getType());
       if (destNode != null) {
@@ -212,8 +212,8 @@ public class FigAssociation extends FigEdgeModelElement {
 
     super.modelChanged();
 
-    MAssociationEnd ae0 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[0];
-    MAssociationEnd ae1 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[1];
+    MAssociationEnd ae1 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[0];
+    MAssociationEnd ae0 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[1];
     
     FigNode oldDest = (FigNode)getDestFigNode();
     FigNode oldSource = (FigNode)getSourceFigNode();
