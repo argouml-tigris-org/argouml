@@ -191,8 +191,8 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         if(!t.equals(_target)) {            
             boolean removeOldPromiscuousListener = (_nameListener != null);
             if(t instanceof MBase && _nameListener != null) {
-                removeOldPromiscuousListener = 
-                    ((MBase) t).addPromiscuousListener(_nameListener);
+//XXX                removeOldPromiscuousListener = 
+//XXX                    ((MBase) t).addPromiscuousListener(_nameListener);
             }
             
             //
@@ -203,8 +203,8 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
                 //
                 //  this path shouldn't happen unless t == null
                 //
-                if(removeOldPromiscuousListener) {
-                    ((MBase) _target).removePromiscuousListener(_nameListener);
+//XXX                if(removeOldPromiscuousListener) {
+//XXX                    ((MBase) _target).removePromiscuousListener(_nameListener);
                 }
             }
             
@@ -381,10 +381,10 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         if(target instanceof MBase) {
             MBase base = (MBase) target;
             if(_nameListener != null) {
-                base.removePromiscuousListener(_nameListener);
+//XXX                base.removePromiscuousListener(_nameListener);
             }
             _nameListener = new UMLNameEventListener(this,metaclasses);
-            base.addPromiscuousListener(_nameListener);
+//XXX            base.addPromiscuousListener(_nameListener);
         }
         else {
             _nameListener = new UMLNameEventListener(this,metaclasses);
