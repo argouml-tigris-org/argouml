@@ -434,7 +434,7 @@ implements PluggableNotation, FileGenerator {
   public String generateClassifier(MClassifier cls) {
     String generatedName = generateName(cls.getName());
     String classifierKeyword;
-    if (cls instanceof MClassImpl) classifierKeyword = "class";
+    if (cls instanceof MClass) classifierKeyword = "class";
     else if (cls instanceof MInterface) classifierKeyword = "interface";
     else return ""; // actors and use cases
 
@@ -490,7 +490,7 @@ implements PluggableNotation, FileGenerator {
     if (strs != null) {
       sb.append('\n');
 
-      if (cls instanceof MClassImpl) sb.append(INDENT).append("// Attributes\n");
+      if (cls instanceof MClass) sb.append(INDENT).append("// Attributes\n");
       Iterator strEnum = strs.iterator();
       while (strEnum.hasNext()) {
         MStructuralFeature sf = (MStructuralFeature) strEnum.next();
@@ -503,7 +503,7 @@ implements PluggableNotation, FileGenerator {
     Collection ends = cls.getAssociationEnds();
     if (ends != null) {
       sb.append('\n');
-      if (cls instanceof MClassImpl) sb.append(INDENT).append("// Associations\n");
+      if (cls instanceof MClass) sb.append(INDENT).append("// Associations\n");
       Iterator endEnum = ends.iterator();
       while (endEnum.hasNext()) {
         MAssociationEnd ae = (MAssociationEnd) endEnum.next();
@@ -531,7 +531,7 @@ implements PluggableNotation, FileGenerator {
 
         tv = generateTaggedValues((MModelElement)bf);
 
-        if ((cls instanceof MClassImpl) &&
+        if ((cls instanceof MClass) &&
             (bf instanceof MOperation) &&
             (! ((MOperation) bf).isAbstract())) {
           sb.append ('\n').append (INDENT).append ("{\n");
