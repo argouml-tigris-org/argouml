@@ -60,7 +60,6 @@ public class FigComponent extends FigNodeModelElement {
   protected FigRect _cover;
   protected FigRect _upperRect;
   protected FigRect _lowerRect;
-  protected FigText _stereo;
 
 
   ////////////////////////////////////////////////////////////////
@@ -72,13 +71,6 @@ public class FigComponent extends FigNodeModelElement {
     _cover = new FigRect(BIGPORT_X, 10, 120, 80, Color.black, Color.white);
     _upperRect = new FigRect(0, 20, 20, 10, Color.black, Color.white);
     _lowerRect = new FigRect(0, 40, 20, 10, Color.black, Color.white);
-
-    _stereo = new FigText(BIGPORT_X,10,120,15,Color.black, "Times", 10);
-    _stereo.setExpandOnly(true);
-    _stereo.setFilled(false);
-    _stereo.setLineWidth(0);
-    _stereo.setEditable(false);
-    _stereo.setHeight(15);
 
     _name.setLineWidth(0);
     _name.setFilled(false);
@@ -283,24 +275,26 @@ public class FigComponent extends FigNodeModelElement {
 
   protected void modelChanged() {
     super.modelChanged();
-    updateStereotypeText();
   }
 
-  public void updateStereotypeText() {
-    MComponent comp = (MComponent) getOwner();
-    if (comp == null) return;
-    MStereotype stereo = comp.getStereotype();
-    if (stereo == null) {
-      _stereo.setText("");
-      return;
+  protected void updateStereotypeText() {
+    MModelElement me = (MModelElement) getOwner();
+    if (me == null) return;
+    MStereotype stereo = me.getStereotype();
+    if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0) 
+	_stereo.setText("");
+    else {
+	String stereoStr = stereo.getName();
+	_stereo.setText("<<" + stereoStr + ">>");
     }
-    if (stereo != null) {
-      String stereoStr = stereo.getName();
-      if (stereoStr.length() == 0) _stereo.setText("");
-      else _stereo.setText("<<" + stereoStr + ">>");
-    }
+    Rectangle oldBounds = getBounds();
+    _stereo.calcBounds();
+    calcBounds();
+    firePropChange("bounds", oldBounds, getBounds());
+  
   }
   
+
   
   /** Get the rectangle on whose corners the dragging handles are to be drawn.
   	  Used by Selection Resize. */

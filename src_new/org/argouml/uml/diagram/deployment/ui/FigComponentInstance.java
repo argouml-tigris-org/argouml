@@ -61,7 +61,6 @@ public class FigComponentInstance extends FigNodeModelElement {
   protected FigRect _cover;
   protected FigRect _upperRect;
   protected FigRect _lowerRect;
-  protected FigText _stereo;
 
 
   ////////////////////////////////////////////////////////////////
@@ -73,13 +72,6 @@ public class FigComponentInstance extends FigNodeModelElement {
     _cover = new FigRect(10, 10, 120, 80, Color.black, Color.white);
     _upperRect = new FigRect(0, 20, 20, 10, Color.black, Color.white);
     _lowerRect = new FigRect(0, 40, 20, 10, Color.black, Color.white);
-
-    _stereo = new FigText(10,10,120,15,Color.black, "Times", 10);
-    _stereo.setExpandOnly(true);
-    _stereo.setFilled(false);
-    _stereo.setLineWidth(0);
-    _stereo.setEditable(false);
-    _stereo.setHeight(15);
 
     _name.setLineWidth(0);
     _name.setFilled(false);
@@ -274,6 +266,24 @@ public class FigComponentInstance extends FigNodeModelElement {
     } 
   } 
 
+
+  protected void updateStereotypeText() {
+    MModelElement me = (MModelElement) getOwner();
+    if (me == null) return;
+    MStereotype stereo = me.getStereotype();
+    if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0) 
+	_stereo.setText("");
+    else {
+	String stereoStr = stereo.getName();
+	_stereo.setText("<<" + stereoStr + ">>");
+    }
+    Rectangle oldBounds = getBounds();
+    _stereo.calcBounds();
+    calcBounds();
+    firePropChange("bounds", oldBounds, getBounds());
+  
+  }
+
   protected void modelChanged() {
     super.modelChanged();
     MComponentInstance coi = (MComponentInstance) getOwner(); 
@@ -304,21 +314,6 @@ public class FigComponentInstance extends FigNodeModelElement {
     setBounds(r.x, r.y, r.width, r.height); 
 
     updateStereotypeText();
-  }
-
-  public void updateStereotypeText() {
-    MInstance minst = (MInstance) getOwner();
-    if (minst == null) return;
-    MStereotype stereo = minst.getStereotype();
-    if (stereo == null) {
-      _stereo.setText("");
-      return;
-    }
-    if (stereo != null) {
-      String stereoStr = stereo.getName();
-      if (stereoStr.length() == 0) _stereo.setText("");
-      else _stereo.setText("<<" + stereoStr + ">>");
-    }
   }
 
   static final long serialVersionUID = 1647392857462847651L;

@@ -37,6 +37,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
 import org.tigris.gef.base.*;
@@ -75,6 +76,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   // instance variables
 
   protected FigText _name;
+  protected FigText _stereo;
   protected Vector _enclosedFigs = new Vector();
   protected Fig _encloser = null;
   protected boolean _readyToEdit = true;
@@ -86,10 +88,20 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     _name = new FigText(10, 10, 90, 21);
     _name.setFont(LABEL_FONT);
     _name.setTextColor(Color.black);
+    // _name.setFilled(false);
     _name.setExpandOnly(true);
     _name.setMultiLine(false);
     _name.setAllowsTab(false);
     _name.setText(placeString());
+
+    _stereo = new FigText(10,10,90,15);
+    _stereo.setFont(LABEL_FONT);
+    _stereo.setTextColor(Color.black);
+    _stereo.setExpandOnly(true);
+    _stereo.setFilled(false);
+    // _stereo.setLineWidth(0);
+    //_stereo.setLineColor(Color.black);
+    _stereo.setEditable(false);
     _readyToEdit = false;
   }
 
@@ -415,6 +427,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
       String nameStr = GeneratorDisplay.Generate(me.getName());
       _name.setText(nameStr);
     }
+    updateStereotypeText();
   }
 
 
@@ -463,5 +476,10 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     _readyToEdit = true;
     updateBounds();
   }
+
+    // override this method in subclasses if you want to show stereotype information
+  protected void updateStereotypeText() {
+  }
+  
 
 } /* end class FigNodeModelElement */
