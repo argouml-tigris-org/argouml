@@ -55,7 +55,7 @@ public class PropPanelObject extends PropPanelModelElement {
 	addField(nameField,1,0,0);
 	
 	addCaption("Classifier:",2,0,0);   	
-	UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this,"isAcceptibleClassifier","classifier","getClassifier","setClassifier",false,MClassifier.class,true);
+	UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this,"isAcceptibleClassifier","classifier","getClassifier","setClassifier",true,MClassifier.class,true);
 	UMLComboBox clsComboBox = new UMLComboBox(classifierModel);
 	addField(new UMLComboBoxNavigator(this,"NavClass",clsComboBox),2,0,0);
 	
