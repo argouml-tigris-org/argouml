@@ -36,18 +36,16 @@ a stakeholder that is one of the stakeholders in the vision for who
 this is important.
 </para>
 
-    <sect1>
-      <title>Requirements for Look and feel</title>
-      <para>
+  <sect1>
+    <title>Requirements for Look and feel</title>
+    <para>
 This describes how the ArgoUML look and feel shall behave.
 </para>
-      <para>
-<orderedlist>
-	  <listitem id="REQ1">
-	    <para>
+    <sect2 id="REQ1">
+      <title>
 When multiple visual components are showing the same model element
 they shall be updated in a consistent manner throughout the application.
-</para>
+</title>
 	    <para>
 REQ1 REVa
 </para>
@@ -62,13 +60,13 @@ happens to show the same element is not showing the same thing.
 <emphasis>Stakeholder:</emphasis>
 User of ArgoUML
 </para>
-	  </listitem>
+    </sect2>
 
-	  <listitem id="REQ2">
-	    <para>
+    <sect2 id="REQ2">
+      <title>
 All views of a model element shall be update 
 as soon as the model element is updated.
-</para>
+</title>
 	    <para>
 REQ2 REVb
 </para>
@@ -82,13 +80,13 @@ might help him to get it right.
 <emphasis>Stakeholder:</emphasis>
 User of ArgoUML
 </para>
-	  </listitem>
+    </sect2>
 
-	  <listitem id="REQ11">
-	    <para>
+    <sect2 id="REQ11">
+      <title>
 Editable views of the model should update the model
 on each keystroke and mouse click.
-</para>
+</title>
 	    <para>
 REQ11 REVa
 </para>
@@ -102,13 +100,13 @@ might help him to get it right.
 <emphasis>Stakeholder:</emphasis>
 User of ArgoUML
 </para>
-	  </listitem>
+    </sect2>
 
-	  <listitem id="REQ12">
-	    <para>
+    <sect2 id="REQ12">
+      <title>
 Any text fields that require validation
 should not be editable directly from a view.
-</para>
+</title>
 	    <para>
 REQ12 REVa
 </para>
@@ -125,14 +123,14 @@ in a valid state or rejected.
 User of ArgoUML.
 TODO: Is this the correct stakeholder?
 </para>
-	  </listitem>
+    </sect2>
 
-	  <listitem id="REQ13">
-	    <para>
+    <sect2 id="REQ13">
+      <title>
 With dialogs, the model is not updated until the dialog
 is accepted by the user
 with valid fields.
-</para>
+</title>
 	    <para>
 REQ13 REVa
 </para>
@@ -147,14 +145,14 @@ This is a familiar look and feel for users.
 <emphasis>Stakeholder:</emphasis>
 User of ArgoUML.
 </para>
-	  </listitem>
+    </sect2>
 
-	  <listitem id="REQ14">
-	    <para>
+    <sect2 id="REQ14">
+      <title>
 The user shall receive some visual feedback during
 the edit process of textual UML to indicate whether
 the text represents valid UML syntax.
-</para>
+</title>
 	    <para>
 REQ14 REVa
 </para>
@@ -175,14 +173,14 @@ TODO: Is this the correct motivation for this?
 <emphasis>Stakeholder:</emphasis>
 User of ArgoUML.
 </para>
-	  </listitem>
+    </sect2>
 
-	  <listitem id="REQ3">
-	    <para>
+    <sect2 id="REQ3">
+      <title>
 There shall be no indication of an exception on the screen or in the
 log if it has occured merely because of a user mistyping or not being
 aware of UML syntax.
-</para>
+</title>
 	    <para>
 REQ3 REVa
 </para>
@@ -197,12 +195,12 @@ ArgoUML as a tool because he percieves it as not working correctly.
 <emphasis>Stakeholder:</emphasis>
 User of ArgoUML
 </para>
-	  </listitem>
+    </sect2>
 
-	  <listitem id="REQ4">
-	    <para>
+    <sect2 id="REQ4">
+      <title>
 All text fields shall have context sensitive help.
-</para>
+</title>
 	    <para>
 As follows:
 <orderedlist>
@@ -242,20 +240,15 @@ what he is actually supposed to do in that field.
 User of ArgoUML
 </para>
 
-	  </listitem>
-	</orderedlist>
- 
-</para>
-    </sect1>
+    </sect2>
+  </sect1>
 
-    <sect1>
-      <title>Requirements for UML</title>
-      <para>
-<orderedlist>
-	  <listitem id="REQ5">
-	    <para>
+  <sect1>
+    <title>Requirements for UML</title>
+    <sect2 id="REQ5">
+      <title>
 ArgoUML shall be a correct implementation of the UML 1.3 model.
-</para>
+</title>
 	    <para>
 REQ5 REVa
 </para>
@@ -275,11 +268,11 @@ is to implement UML correctly.
 <emphasis>Stakeholder:</emphasis>
 User of ArgoUML
 </para>
-	  </listitem>
-	  <listitem id="REQ6">
-	    <para>
+    </sect2>
+    <sect2 id="REQ6">
+      <title>
 ArgoUML shall implement everything in the UML 1.3 model.
-</para>
+</title>
 	    <para>
 REQ6 REVa
 </para>
@@ -294,22 +287,17 @@ a working tool.
 User of ArgoUML
 </para>
 
-	  </listitem>
-	</orderedlist>
-</para>
-    </sect1>
+    </sect2>
+  </sect1>
 
-    <sect1>
-      <title>Requirements on java and jvm</title>
-      <para>
-<orderedlist>
-	  <listitem id="REQ7">
-	    <para>Choice of JRE</para>
-	    <para>
+  <sect1>
+    <title>Requirements on java and jvm</title>
+    <sect2 id="REQ7">
+      <title>Choice of JRE:
 		We will support any JRE compatible with the Sun specification one version
 		behind the most recent stable JRE from Sun.
 		A stable JRE is considered to be one that has had a second non-beta release.
-	    </para>
+</title>
 	    <para>
                 This is to allow ArgoUML to gradually take on board new stable features of
                 the Java language while still offering users some choice of JRE.
@@ -339,10 +327,10 @@ support for 1.3.0 and 1.3.1 will be discontinued.
 <emphasis>Stakeholder:</emphasis>
 Developers of ArgoUML
 </para>
-	  </listitem>
+    </sect2>
 
-	  <listitem id="REQ8">
-	    <para>Download and start</para>
+    <sect2 id="REQ8">
+      <title>Download and start</title>
 	    <para>
 It shall be possible to install ArgoUML locally on the machine
 and use without Internet connection.
@@ -359,14 +347,14 @@ There is no need to have any network defined while doing this.
 <emphasis>Stakeholder:</emphasis>
 User of ArgoUML
 </para>
-	  </listitem>
+    </sect2>
 
-	  <listitem id="REQ9">
-	    <para>Console output</para>
-	    <para>
+    <sect2 id="REQ9">
+      <title>
+Console output: 
 Logging or tracing information shall not be written to the console
 or to any file unless explicitly turned on by the user.
-</para>
+</title>
 	    <para>
 REQ9 REVa
 </para>
@@ -382,22 +370,18 @@ it will be perceived as garbage generated by the ArgoUML application.
 User of ArgoUML
 </para>
 
-	  </listitem>
-	</orderedlist>
-</para>
-    </sect1>
+    </sect2>
+  </sect1>
 
-    <sect1>
-      <title>Requirements set up for the benefit of the development of ArgoUML</title>
-      <para>
-<orderedlist>
-	  <listitem id="REQ10">
-	    <para>Logging</para>
-	    <para>
+  <sect1>
+    <title>Requirements set up for the benefit of the development of ArgoUML</title>
+    <sect2 id="REQ10">
+      <title>
+Logging:
 The code shall contain entries logging important information
 for the purpose of helping Developers of ArgoUML in finding problems
 in ArgoUML itself.
-</para>
+</title>
 	    <para>
 REQ10 REVa
 </para>
@@ -412,9 +396,7 @@ such logging messages are very helpful.
 Developers of ArgoUML
 </para>
 
-	  </listitem>
-	</orderedlist>
-</para>
+    </sect2>
     </sect1>
 
   </chapter>
