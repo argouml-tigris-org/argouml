@@ -31,7 +31,6 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 
-import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -86,8 +85,7 @@ public class Actions implements TargetListener {
     }
 
     /**
-     * <code>allActions</code> is the list of 
-     * global AbstractActions in ArgoUML. 
+     * <code>allActions</code> is the list of global UMLActions in ArgoUML. 
      * All these are UMLActions!
      */
     private static Vector allActions = new Vector(100);
@@ -227,22 +225,16 @@ public class Actions implements TargetListener {
     /**
      * @param newAction the new action to be added
      */
-    public static void addAction(AbstractAction newAction) {
+    public static void addAction(UMLAction newAction) {
         LOG.debug("Adding action: " + newAction.getClass().getName());
-        if (newAction instanceof UMLAction) {
-            allActions.addElement(newAction);
-        } else {
-            LOG.debug("An atempt was made to add an Action to ui.Actions "
-                    + "which is not a UMLAction. See issue 2086. " 
-                    + "Name of the action:" + newAction.getClass().getName());
-        }
+        allActions.addElement(newAction);
     }
 
     /**
      * @param action the given action
      * @return truee if this is a global action
      */
-    public static boolean isGlobalAction(AbstractAction action) {
+    public static boolean isGlobalAction(UMLAction action) {
         return allActions.contains(action);
     }
 
