@@ -674,6 +674,10 @@ public class Project implements java.io.Serializable {
         try {
 
             // make sure to save the XMI file first so we get the id references
+            // 2002-07-15
+            // Jaap Branderhorst
+            // The diagram files are saved first. The line of comment before mine is strange
+            // therefore.
             for (int i = 0; i < size; i++) {
                 ProjectMember p = (ProjectMember) _members.elementAt(i);
                 if (!(p.getType().equalsIgnoreCase("xmi"))){
@@ -691,6 +695,13 @@ public class Project implements java.io.Serializable {
                     Argo.log.info("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
                     stream.putNextEntry(new ZipEntry(p.getName()));
                     p.save(path,overwrite,writer);
+                    // 2002-07-15
+                    // Jaap Branderhorst
+                    // zipentry is not closed properly. Added next two lines.
+                    // could be patch for issues 893 and 925
+                    writer.flush();
+                    stream.closeEntry();
+                    // end patch
                 }
             }
 
