@@ -60,8 +60,9 @@ public class SnoozeOrder implements java.io.Serializable {
   // constructor
 
   public SnoozeOrder() {
-    _snoozeUntil =  new Date(70, 1, 1); /* in the past */
-    _snoozeAgain =  new Date(70, 1, 1); /* in the past */
+    /* in the past, 0 milliseconds after January 1, 1970, 00:00:00 GMT. */
+    _snoozeUntil =  new Date(0); 
+    _snoozeAgain =  new Date(0); 
   }
 
   ////////////////////////////////////////////////////////////////
@@ -89,7 +90,8 @@ public class SnoozeOrder implements java.io.Serializable {
   }
 
   public void unsnooze() {
-    _snoozeUntil =  new Date(70, 1, 1); /* in the past */
+    /* in the past, 0 milliseconds after January 1, 1970, 00:00:00 GMT. */
+    _snoozeUntil =  new Date(0); 
   }
 
   protected long nextInterval(long last) {
