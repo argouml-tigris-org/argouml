@@ -36,6 +36,9 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.event.TreeWillExpandListener;
+import javax.swing.event.TreeExpansionListener;
+import javax.swing.event.TreeExpansionEvent;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -84,6 +87,8 @@ extends DisplayTextTree
         this.setModel(new ExplorerTreeModel(ProjectManager.getManager().getCurrentProject()));
         this.addMouseListener(new NavigatorMouseListener(this));
         this.addTreeSelectionListener(new NavigationTreeSelectionListener());
+        this.addTreeWillExpandListener(new ExplorerTreeWillExpandListener());
+        this.addTreeExpansionListener(new ExplorerTreeExpansionListener());
         
         TargetManager.getInstance().addTargetListener(new ExplorerTargetListener());
         
@@ -221,16 +226,93 @@ extends DisplayTextTree
             return "-";
     }
     
-    /** specific to the Navigator tree */
-    public void fireTreeWillExpand(TreePath path) {
+    /**
+     * helps prepare state before a node is expanded.
+     */
+    class ExplorerTreeWillExpandListener implements TreeWillExpandListener{
         
-        showStereotype =
-        Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
+        /** does nothing **/
+        public void treeWillCollapse(TreeExpansionEvent tee) {}
         
-        if(this.getModel() instanceof ExplorerTreeModel){
+        /**
+         * updates stereotype setting,
+         * adds all children per treemodel 'build on demand' design.
+         */
+        public void treeWillExpand(TreeExpansionEvent tee) {
             
-            ((ExplorerTreeModel)getModel()).addAllChildren(path);
+            showStereotype =
+            Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
+            
+            if(getModel() instanceof ExplorerTreeModel){
+                
+                ((ExplorerTreeModel)getModel()).addAllChildren(tee.getPath());
+            }
+            
         }
+    }
+    
+    /**
+     * helps react to tree expansion events.
+     */
+    class ExplorerTreeExpansionListener implements TreeExpansionListener{
+        
+        /**
+         * does nothing
+         */
+        public void treeCollapsed(TreeExpansionEvent event) {
+        }
+        
+        /**
+         * updates the selection state.
+         */
+        public void treeExpanded(TreeExpansionEvent event) {
+            
+            // need to update the selection state.
+            setSelection(TargetManager.getInstance().getTargets().toArray());
+        }
+        
+    }
+    
+    /**
+     * Sets the selection state for a given set of targets.
+     */
+    private void setSelection(Object[] targets){
+        
+        int rowToSelect = 0;
+        int[] rowIndexes = new int[targets.length];
+        int rowIndexCounter = 0;
+        int rows = getRowCount();
+        for (int i = 0; i < targets.length; i++) {
+            Object target = targets[i];
+            target =
+            target instanceof Fig
+            ? ((Fig)target).getOwner()
+            : target;
+            for (int j = 0; j < rows; j++) {
+                Object rowItem =
+                ((DefaultMutableTreeNode)getPathForRow(j)
+                .getLastPathComponent())
+                .getUserObject();
+                if (rowItem == target) {
+                    rowIndexes[rowIndexCounter] = j;
+                    rowIndexCounter++;
+                    if (rowToSelect == 0) {
+                        rowToSelect = j;
+                    }
+                    break;
+                }
+            }
+            
+        }
+        if (rowIndexCounter < targets.length) {
+            int[] rowIndexestmp = rowIndexes;
+            rowIndexes = new int[rowIndexCounter];
+            for (int i = 0 ; i < rowIndexCounter; i++) {
+                rowIndexes[i] = rowIndexestmp[i];
+            }
+        }
+        setSelectionRows(rowIndexes);
+        scrollRowToVisible(rowToSelect);
     }
     
     /**
@@ -281,41 +363,7 @@ extends DisplayTextTree
                     clearSelection();
                 } else {
                     
-                    int rowToSelect = 0;
-                    int[] rowIndexes = new int[targets.length];
-                    int rowIndexCounter = 0;
-                    int rows = getRowCount();
-                    for (int i = 0; i < targets.length; i++) {
-                        Object target = targets[i];
-                        target =
-                            target instanceof Fig
-                                ? ((Fig)target).getOwner()
-                                    : target;
-                        for (int j = 0; j < rows; j++) {
-                            Object rowItem =
-                            ((DefaultMutableTreeNode)getPathForRow(j)
-                                .getLastPathComponent())
-                                    .getUserObject();
-                            if (rowItem == target) {
-                                rowIndexes[rowIndexCounter] = j;
-                                rowIndexCounter++;
-                                if (rowToSelect == 0) {
-                                    rowToSelect = j;
-                                }
-                                break;
-                            }
-                        }
-                        
-                    }
-                    if (rowIndexCounter < targets.length) {
-                        int[] rowIndexestmp = rowIndexes;
-                        rowIndexes = new int[rowIndexCounter];
-                        for (int i = 0 ; i < rowIndexCounter; i++) {
-                            rowIndexes[i] = rowIndexestmp[i];
-                        }
-                    }
-                    setSelectionRows(rowIndexes);
-                    scrollRowToVisible(rowToSelect);
+                    setSelection(targets);
                 }
                 repaint();
                 updatingSelection = false;
