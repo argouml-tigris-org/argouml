@@ -368,7 +368,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         if (!containsNode(end0)) {
             return false;
         }
-            if (!containsNode(end1)) {
+        if (!containsNode(end1)) {
             return false;
         }
         
