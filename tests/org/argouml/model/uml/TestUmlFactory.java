@@ -60,7 +60,6 @@ public class TestUmlFactory extends TestCase {
 	fy.delete(fy.getCore().createClassifier());
 	fy.delete(fy.getCore().createComment());
 	fy.delete(fy.getCore().createComponent());
-	fy.delete(fy.getCore().createComponentInstance());
 	fy.delete(fy.getCore().createConstraint());
 	fy.delete(fy.getCore().createDataType());
 	fy.delete(fy.getCore().createDependency());
