@@ -43,7 +43,8 @@ import org.argouml.uml.cognitive.critics.CrUML;
  * as a Singleton (with stereotype &laquo;Singleton&raquo;.<p>
  *
  * @see <a
- * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_singleton_violated">
+ * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#
+ * s2.ref.critics_singleton_violated">
  * ArgoUML User Manual: Singleton Violated</a>
  */
 public class CrConsiderSingleton extends CrUML {
@@ -103,8 +104,8 @@ public class CrConsiderSingleton extends CrUML {
         }
         
         // with a name...
-        if (ModelFacade.getName(dm) == null ||
-            "".equals(ModelFacade.getName(dm))) {
+        if (ModelFacade.getName(dm) == null 
+                || "".equals(ModelFacade.getName(dm))) {
                 return NO_PROBLEM;
         }
         
