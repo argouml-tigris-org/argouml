@@ -616,7 +616,7 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
 		action = generateAction(act);
     }
 
-    return predecessors + number + " : " + m.getName() + " " + action;
+    return predecessors + number + " : " + action;
   }
 
     public String generateAssociationFrom(MAssociation a, MAssociationEnd ae) {
