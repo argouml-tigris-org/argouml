@@ -161,8 +161,6 @@ public class Project implements java.io.Serializable, TargetListener {
         this();
         url = Util.fixURLExtension(theProjectUrl, 
                 FileConstants.COMPRESSED_FILE_EXT);
-        saveRegistry = new UMLChangeRegistry();
-
     }
 
     /**
