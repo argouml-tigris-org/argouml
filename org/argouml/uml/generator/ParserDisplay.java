@@ -2033,6 +2033,7 @@ public class ParserDisplay extends Parser {
      *  The user input consists of multiple lines like:
      *      action-label / action-expression
      *  or the format of a regular transition - see parseTransition().
+     *  "action-label" stands for one of "entry", "do" and "exit". 
      *  The words "entry", "do" and "exit" are case-independent.
      *  @param  st       The State object.
      *  @param  s        The string to parse.
@@ -2169,9 +2170,11 @@ public class ParserDisplay extends Parser {
 	String guard = "";
 	String actions = "";
 	if (s.indexOf(":", 0) > -1) {
+	    String s1 = s.substring(0, s.indexOf(":"));
 	    /* the name may not contain a "(", for the case of: a(b:c) */
-	    if(s.substring(0, s.indexOf(":")).indexOf("(") < 0){ 
-	        name = s.substring(0, s.indexOf(":")).trim();
+	    /* the name may not contain a "/", for when the action contains a ":" */
+	    if((s1.indexOf("(") < 0) && (s1.indexOf("/") < 0)){ 
+	        name = s1.trim();
 	        s = s.substring(s.indexOf(":") + 1).trim();
 	    }  
         }
