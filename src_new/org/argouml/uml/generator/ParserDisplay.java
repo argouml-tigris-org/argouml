@@ -679,7 +679,7 @@ public class ParserDisplay extends Parser {
 
         // Build a new extension point
 
-	// This should be changed back to buildExtensionPoint, or the
+	// TODO: This should be changed back to buildExtensionPoint, or the
 	// ExtensionPoint should be an argument.
         MExtensionPoint ep =
 	    UmlFactory.getFactory().getUseCases().createExtensionPoint();
