@@ -55,6 +55,7 @@ public class FigClass extends FigNodeWithCompartments {
 
   protected FigCompartment _attr;
   protected FigCompartment _oper;
+  protected FigRect _bigPort;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -74,14 +75,13 @@ public class FigClass extends FigNodeWithCompartments {
     _oper.setTextColor(Color.black);
     _oper.setJustification(FigText.JUSTIFY_LEFT);
 
-    addFig(_bigPort);
+    setPort(_bigPort);
     addFig(_name);
-    addFig(_attr);
-    addFig(_oper);
+    addCompartment(_attr);
+    addCompartment(_oper);
 
     Rectangle r = getBounds();
     setBounds(r.x, r.y, r.width, r.height);
-
   }
 
   public FigClass(GraphModel gm, Object node) {
