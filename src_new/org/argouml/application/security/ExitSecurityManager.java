@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.model;
+package org.argouml.application.security;
 
 // Import the following classes fully qualified to ensure that
 // no one can short-circuit our intended inheritance.
@@ -30,6 +30,7 @@ import java.util.PropertyPermission;
 import java.security.Permission;
 
 import org.apache.log4j.Logger;
+import org.argouml.util.osdep.OsUtil;
 
 /**
  * The Argo custom security manager.
