@@ -51,6 +51,8 @@ import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.generator.*;
 import org.argouml.uml.diagram.ui.*;
+import org.argouml.util.*;
+
 
 /** Abstract class to display diagram icons for UML ModelElements that
  *  look like nodes and that have editiable names and can be
@@ -459,6 +461,16 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	    damage();
 	}
 
+    /**
+     * Add the owner of this element to the trash, so other Argo components (i.e. critics) 
+     * realize, that it is deleted.
+     */
+    public void delete() {
+	if(getOwner() != null) {
+	    Trash.SINGLETON.addItemFrom( getOwner(), null);
+	}
+	super.delete();
+    }
 
   public void setOwner(Object own) {
     Object oldOwner = getOwner();
