@@ -36,10 +36,18 @@ import junit.framework.TestSuite;
  */                                
 public class TestGeneratorCpp extends TestCase {
     
+    /**
+     * The constructor.
+     * 
+     * @param testName the name of the test
+     */
     public TestGeneratorCpp(java.lang.String testName) {
         super(testName);
     }
     
+    /**
+     * @return the test suite
+     */
     public static Test suite() {
         TestSuite suite = new TestSuite(TestGeneratorCpp.class);
         return suite;
@@ -60,7 +68,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testCppGenerate() {
         System.out.println("testCppGenerate");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -70,7 +78,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateFile2() {
         System.out.println("testGenerateFile2");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -80,7 +88,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateExtensionPoint() {
         System.out.println("testGenerateExtensionPoint");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -90,7 +98,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateAssociationRole() {
         System.out.println("testGenerateAssociationRole");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -100,7 +108,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateObjectFlowState() {
         System.out.println("testGenerateObjectFlowState");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -110,7 +118,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateOperation() {
         System.out.println("testGenerateOperation");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -120,7 +128,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateAttribute() {
         System.out.println("testGenerateAttribute");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -130,7 +138,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateParameter() {
         System.out.println("testGenerateParameter");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -140,7 +148,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGeneratePackage() {
         System.out.println("testGeneratePackage");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -150,7 +158,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateClassifierStart() {
         System.out.println("testGenerateClassifierStart");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -160,7 +168,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateClassifier() {
         System.out.println("testGenerateClassifier");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -170,7 +178,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateTaggedValue() {
         System.out.println("testGenerateTaggedValue");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -180,7 +188,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateConstraintEnrichedDocComment() {
         System.out.println("testGenerateConstraintEnrichedDocComment");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -190,7 +198,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateAssociation() {
         System.out.println("testGenerateAssociation");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -200,7 +208,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateAssociationEnd() {
         System.out.println("testGenerateAssociationEnd");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -210,7 +218,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateEvent() {
         System.out.println("testGenerateEvent");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -220,7 +228,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateVisibility() {
         System.out.println("testGenerateVisibility");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -230,7 +238,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateMultiplicity() {
         System.out.println("testGenerateMultiplicity");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -240,7 +248,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateState() {
         System.out.println("testGenerateState");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -250,7 +258,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateStateBody() {
         System.out.println("testGenerateStateBody");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -260,7 +268,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateTransition() {
         System.out.println("testGenerateTransition");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -270,7 +278,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateAction() {
         System.out.println("testGenerateAction");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -280,7 +288,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateGuard() {
         System.out.println("testGenerateGuard");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -290,7 +298,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateMessage() {
         System.out.println("testGenerateMessage");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -300,7 +308,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGetModuleName() {
         System.out.println("testGetModuleName");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -310,7 +318,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGetModuleDescription() {
         System.out.println("testGetModuleDescription");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -320,7 +328,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGetModuleAuthor() {
         System.out.println("testGetModuleAuthor");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -330,7 +338,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGetModuleVersion() {
         System.out.println("testGetModuleVersion");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -340,7 +348,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGetModuleKey() {
         System.out.println("testGetModuleKey");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -350,7 +358,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testIsLfBeforeCurly() {
         System.out.println("testIsLfBeforeCurly");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -360,7 +368,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testIsVerboseDocs() {
         System.out.println("testIsVerboseDocs");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -370,7 +378,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testSetLfBeforeCurly() {
         System.out.println("testSetLfBeforeCurly");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -380,7 +388,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testSetVerboseDocs() {
         System.out.println("testSetVerboseDocs");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 
@@ -390,7 +398,7 @@ public class TestGeneratorCpp extends TestCase {
     public void testGenerateActionState() {
         System.out.println("testGenerateActionState");
 
-        // TODO add your test code below by replacing the default call to fail.
+        // TODO: add your test code below by replacing the default call to fail.
         fail("The test case is empty.");
     }
 }
