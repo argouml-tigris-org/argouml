@@ -439,6 +439,7 @@ public class Modeller
 	for(Iterator i = generalizations.iterator(); i.hasNext(); ) {
 	    mGeneralization = (MGeneralization)i.next();
 	    if(parent != mGeneralization.getParent()) {
+		child.removeGeneralization(mGeneralization);
 		mGeneralization = null;
 	    }
 	}
@@ -468,11 +469,16 @@ public class Modeller
 	Collection abstractions = child.getClientDependencies();
 	for(Iterator i = abstractions.iterator(); i.hasNext(); ) {
 	    mAbstraction = (MAbstraction)i.next();
-	    if(parent != mAbstraction.getSuppliers().toArray()[0]) {
-		mAbstraction = null;
+	    if(mAbstraction.getSuppliers().size() == 0) {
+		child.removeClientDependency(mAbstraction);
 	    }
 	    else {
-		break;
+		if(parent != mAbstraction.getSuppliers().toArray()[0]) {
+		    mAbstraction = null;
+		}
+		else {
+		    break;
+		}
 	    }
 	}
 
