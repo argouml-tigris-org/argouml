@@ -30,6 +30,7 @@
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
+import java.beans.*;
 
 public class ActionState extends SimpleState {
     

@@ -30,8 +30,8 @@
 package uci.uml.Model_Management;
 
 import java.util.*;
-
 import java.beans.PropertyVetoException;
+
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 
@@ -42,11 +42,13 @@ public class ElementReference {
   public ElementReference() { }
   
   public VisibilityKind getVisibility() { return _visibility; }
-  public void setVisibility(VisibilityKind x) {
+  public void setVisibility(VisibilityKind x) { //throws PropertyVetoException {
+    //fireVetoableChange("visibility", _visibility, x);
     _visibility = x;
   }
   public Name getAlias() { return _alias; }
-  public void setAlias(Name x) {
+  public void setAlias(Name x) { //throws PropertyVetoException {
+    //fireVetoableChange("alias", _alias, x);
     _alias = x;
   }
   

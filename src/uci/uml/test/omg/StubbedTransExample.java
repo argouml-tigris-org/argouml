@@ -34,63 +34,64 @@ import java.beans.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Foundation.Extension_Mechanisms.*;
+import uci.uml.Behavioral_Elements.Common_Behavior.*;
+import uci.uml.Behavioral_Elements.State_Machines.*;
 import uci.uml.Model_Management.*;
 
-/** This is a very simple demo of how to represent a UML design that
- *  consists of three classes and one 3-way association with an
- *  association class.  This example is taken from page 62 of the UML
- *  1.1 notation guide (OMG document ad/97-08-05). */
+/** This is a very simple demo of how to represent a UML state machine
+ *  that deals with dialing a telephone.  This example is taken from
+ *  page 115 of the UML 1.1 notation guide (OMG document ad/97-08-05). */
 
 
-public class SoccerExample {
+public class StubbedTransExample {
   public Model model;
-  public MMClass teamClass, yearClass, playerClass;
-  public AssociationClass recordAC;
+  public MMClass stubbedClass;
+  public CompositeState top, w;
+  public State a, b, c, d, e, f;
+  public Transition t01, t02, t03, t04, t05, t06, t07, t08;
+  public Pseudostate wInitial, wFinal, fork, join;
+  public StateMachine sm;
   
-  public SoccerExample() {
+  public StubbedTransExample() {
     try {
-      model = new Model("SoccerExample");
-      playerClass = new MMClass("Player");
-      yearClass = new MMClass("Year");
-      teamClass = new MMClass("Team");
-
-      recordAC = new AssociationClass("Record");
-      recordAC.addStructuralFeature(new Attribute("goals for"));
-      recordAC.addStructuralFeature(new Attribute("goals against"));
-      recordAC.addStructuralFeature(new Attribute("wins"));
-      recordAC.addStructuralFeature(new Attribute("loses"));
-      recordAC.addStructuralFeature(new Attribute("ties"));
-
-      AssociationEnd ae1 =
-	new AssociationEnd(new Name("team"), teamClass,
-			   Multiplicity.ZERO_OR_MORE, AggregationKind.NONE);
-      AssociationEnd ae2 =
-	new AssociationEnd(new Name("season"), yearClass,
-			   Multiplicity.ZERO_OR_MORE, AggregationKind.NONE);
-      AssociationEnd ae3 =
-	new AssociationEnd(new Name("goalKeeper"), playerClass,
-			   Multiplicity.ZERO_OR_MORE, AggregationKind.NONE);
-
-
-      recordAC.addConnection(ae1);
-      recordAC.addConnection(ae2);
-      recordAC.addConnection(ae3);
-
-      model.addPublicOwnedElement(playerClass);
-      model.addPublicOwnedElement(teamClass);
-      model.addPublicOwnedElement(yearClass);
-      model.addPublicOwnedElement(recordAC);
+      model = new Model("StubbedTransExample");
+      stubbedClass = new MMClass("StubbedClass");
+      sm = new StateMachine("States", stubbedClass);
       
-      //System.out.println(playerClass.dbgString());
-      //System.out.println(teamClass.dbgString());
-      //System.out.println(yearClass.dbgString());
-      System.out.println(recordAC.dbgString());
+      top = new CompositeState();
+      
+      top.addSubstate(w = new CompositeState());
+      top.addSubstate(a = new SimpleState("A"));
+      top.addSubstate(b = new SimpleState("B"));
+      top.addSubstate(c = new SimpleState("C"));
+      top.addSubstate(d = new SimpleState("D"));
+
+      w.addSubstate(e = new SimpleState("E"));
+      w.addSubstate(f = new SimpleState("F"));
+      w.addSubstate(wInitial = new Pseudostate(PseudostateKind.INITIAL));
+      w.addSubstate(wFinal = new Pseudostate(PseudostateKind.FINAL));
+
+      sm.setTop(top);
+
+      sm.addTransition(t01 = new Transition(new Name("P"), a, e));
+      sm.addTransition(t02 = new Transition(new Name("r"), b, w));
+      sm.addTransition(t03 = new Transition(new Name("U"), e, f));
+      sm.addTransition(t04 = new Transition(wInitial, f));
+      sm.addTransition(t05 = new Transition(new Name("T"), f, wFinal));
+      sm.addTransition(t06 = new Transition(new Name("S"), e, c));
+      sm.addTransition(t07 = new Transition(new Name("S"), w, c));
+      sm.addTransition(t08 = new Transition(w, d));
+
+      model.addPublicOwnedElement(stubbedClass);
+      
+      System.out.println(stubbedClass.dbgString());
+      System.out.println(sm.dbgString());
     }
     catch (PropertyVetoException ex) {
-      System.out.println("an veto execption occured in SoccerExample");
+      System.out.println("an veto execption occured in StubbedTransExample");
     }
 
 
   }
 
-} /* end class GraphicsExample */
+} /* end class StubbedTransExample */

@@ -30,11 +30,14 @@
 package uci.uml.Behavioral_Elements.Collaborations;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Behavioral_Elements.Common_Behavior.MMAction;
+import uci.uml.Foundation.Core.*;
+import uci.uml.Foundation.Data_Types.*;
 
 
-public class Message {
+public class Message extends ModelElementImpl {
   public MMAction _action;
   public Message _activator;
   //public Message m_Message[];
@@ -50,60 +53,76 @@ public class Message {
   public Message() { }
 
   public MMAction getAction() { return _action; }
-  public void setAction(MMAction x) {
-     _action = x;
+  public void setAction(MMAction x) throws PropertyVetoException {
+    fireVetoableChange("action", _action, x);
+    _action = x;
   }
 
   public Message getActivator() { return _activator; }
-  public void setActivator(Message x) {
+  public void setActivator(Message x) throws PropertyVetoException {
+    fireVetoableChange("activator", _activator, x);
      _activator = x;
   }
 
 
 
   public Vector getMessage() { return _message; }
-  public void setMessage(Vector x) {
+  public void setMessage(Vector x) throws PropertyVetoException {
+    fireVetoableChange("message", _message, x);
      _message = x;
   }
-  public void addMessage(Message x) {
+  public void addMessage(Message x) throws PropertyVetoException {
     if (_message == null) _message = new Vector();
+    fireVetoableChange("message", _message, x);
     _message.addElement(x);
   }
-  public void removeMessage(Message x) {
+  public void removeMessage(Message x) throws PropertyVetoException {
+    if (_message == null) return;
+    fireVetoableChange("message", _message, x);
      _message.removeElement(x);
   }
 
   public Vector getPredecessor() { return _predecessor; }
-  public void setPredecessor(Vector x) {
+  public void setPredecessor(Vector x) throws PropertyVetoException {
+    fireVetoableChange("predecessor", _predecessor, x);
      _predecessor = x;
   }
-  public void addPredecessor(Message x) {
+  public void addPredecessor(Message x) throws PropertyVetoException {
     if (_predecessor == null) _predecessor = new Vector();
+    fireVetoableChange("predecessor", _predecessor, x);
     _predecessor.addElement(x);
   }
-  public void removePredecessor(Message x) {
+  public void removePredecessor(Message x) throws PropertyVetoException {
+    if (_predecessor == null) return;
+    fireVetoableChange("predecessor", _predecessor, x);
      _predecessor.removeElement(x);
   }
 
   public ClassifierRole getSender() { return _sender; }
-  public void setSender(ClassifierRole x) {
+  public void setSender(ClassifierRole x) throws PropertyVetoException {
+    fireVetoableChange("sender", _sender, x);
      _sender = x;
   }
 
   public ClassifierRole getReceiver() { return _receiver; }
-  public void setReceiver(ClassifierRole x) {
+  public void setReceiver(ClassifierRole x) throws PropertyVetoException {
+    fireVetoableChange("receiver", _receiver, x);
      _receiver = x;
   }
 
   public Vector getInteraction() { return _interaction; }
-  public void setInteraction(Vector x) {
+  public void setInteraction(Vector x) throws PropertyVetoException {
+    fireVetoableChange("interaction", _interaction, x);
      _interaction = x;
   }
-  public void addInteraction(Interaction x) {
+  public void addInteraction(Interaction x) throws PropertyVetoException {
     if (_interaction == null) _interaction = new Vector();
+    fireVetoableChange("interaction", _interaction, x);
     _interaction.addElement(x);
   }
-  public void removeInteraction(Interaction x) {
+  public void removeInteraction(Interaction x) throws PropertyVetoException {
+    if (_interaction == null) return;
+    fireVetoableChange("interaction", _interaction, x);
      _interaction.removeElement(x);
   }
   

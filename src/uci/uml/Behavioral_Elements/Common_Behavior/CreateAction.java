@@ -30,6 +30,7 @@
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
+import java.beans.*;
 
 public class CreateAction extends MMAction {
     

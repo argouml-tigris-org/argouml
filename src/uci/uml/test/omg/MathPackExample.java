@@ -48,7 +48,7 @@ public class MathPackExample {
   
   public MathPackExample() {
     try {
-      model = new Model("default");
+      model = new Model("MathPackExample");
       mathPackClass = new MMClass("MathPack");
       utilityStereotype = new Stereotype("utility", "Class");
       realType = new DataType("Real");

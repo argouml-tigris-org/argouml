@@ -30,29 +30,59 @@
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
+import java.beans.*;
+
+import uci.uml.Foundation.Data_Types.*;
 
 public class CompositeState extends State {
-  public Boolean _isConcurent;
+  public boolean _isConcurent;
   //% public StateVertex _substate[];
   public Vector _substate;
     
   public CompositeState() { }
+  public CompositeState(Name name) { super(name); }
+  public CompositeState(String nameStr) { super(new Name(nameStr)); }
   
-  public Boolean getIsConcurent() { return _isConcurent; }
-  public void setIsConcurent(Boolean x) {
+  public boolean getIsConcurent() { return _isConcurent; }
+  public void setIsConcurent(boolean x) throws PropertyVetoException {
+    fireVetoableChange("isConcurent",
+		       _isConcurent ? Boolean.TRUE : Boolean.FALSE,
+		       x ? Boolean.TRUE : Boolean.FALSE);
     _isConcurent = x;
   }
 
   public Vector getSubstate() { return _substate; }
-  public void setSubstate(Vector x) {
+  public void setSubstate(Vector x) throws PropertyVetoException {
+    fireVetoableChange("substate", _substate, x);
     _substate = x;
   }
-  public void addSubstate(StateVertex x) {
+  public void addSubstate(StateVertex x) throws PropertyVetoException {
     if (_substate == null) _substate = new Vector();
+    fireVetoableChange("substate", _substate, x);
     _substate.addElement(x);
   }
-  public void removeSubstate(StateVertex x) {
+  public void removeSubstate(StateVertex x) throws PropertyVetoException {
+    if (_substate == null) return;
+    fireVetoableChange("substate", _substate, x);
     _substate.removeElement(x);
+  }
+
+
+  ////////////////////////////////////////////////////////////////
+  // debugging
+
+  public String dbgString() {
+    String s = "  CompositeState " +
+      (getName() == null?"(anon)":getName().getBody());
+    s += "   {\n";
+    java.util.Enumeration subs = _substate.elements();
+    while (subs.hasMoreElements()) {
+      StateVertex sv = (StateVertex) subs.nextElement();
+      s += sv.dbgString() + "\n";
+    }
+    
+    s += "  }\n";
+    return s;
   }
   
 }

@@ -30,6 +30,7 @@
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
@@ -39,7 +40,7 @@ import uci.uml.Behavioral_Elements.Common_Behavior.*;
 
 
 
-public abstract class Event extends ModelElementImpl {
+public class Event extends ModelElementImpl {
   //% public State _state[];
   public Vector _state;
   //% public Parameter _parameters[];
@@ -48,42 +49,55 @@ public abstract class Event extends ModelElementImpl {
   public Vector _transition;
   
   public Event() { }
+  public Event(Name name) { super(name); }
+  public Event(String nameStr) { super(new Name(nameStr)); }
 
   public Vector getState() { return _state; }
-  public void setState(Vector x) {
+  public void setState(Vector x) throws PropertyVetoException {
+    fireVetoableChange("state", _state, x);
     _state = x;
   }
-  public void addState(State x) {
+  public void addState(State x) throws PropertyVetoException {
     if (_state == null) _state = new Vector();
+    fireVetoableChange("state", _state, x);
     _state.addElement(x);
   }
-  public void removeState(State x) {
+  public void removeState(State x) throws PropertyVetoException {
+    if (_state == null) return;
+    fireVetoableChange("state", _state, x);
     _state.removeElement(x);
   }
   
   public Vector getParameters() { return _parameters; }
-  public void setParameters(Vector x) {
+  public void setParameters(Vector x) throws PropertyVetoException {
+    fireVetoableChange("parameters", _parameters, x);
     _parameters = x;
   }
-  public void addParameters(Parameter x) {
+  public void addParameters(Parameter x) throws PropertyVetoException {
     if (_parameters == null) _parameters = new Vector();
+    fireVetoableChange("parameters", _parameters, x);
     _parameters.addElement(x);
   }
-  public void removeParameters(Parameter x) {
+  public void removeParameters(Parameter x) throws PropertyVetoException {
+    if (_parameters == null) return;
+    fireVetoableChange("parameters", _parameters, x);
     _parameters.removeElement(x);
   }
 
   public Vector getTransition() { return _transition; }
-  public void setTransition(Vector x) {
+  public void setTransition(Vector x) throws PropertyVetoException {
+    fireVetoableChange("transition", _transition, x);
     _transition = x;
   }
-  public void addTransition(Transition x) {
+  public void addTransition(Transition x) throws PropertyVetoException {
     if (_transition == null) _transition = new Vector();
+    fireVetoableChange("transition", _transition, x);
     _transition.addElement(x);
   }
-  public void removeTransition(Transition x) {
+  public void removeTransition(Transition x) throws PropertyVetoException {
+    if (_transition == null) return;
+    fireVetoableChange("transition", _transition, x);
     _transition.removeElement(x);
   }
-
 
 }

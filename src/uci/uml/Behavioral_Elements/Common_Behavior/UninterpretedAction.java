@@ -30,14 +30,25 @@
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
+import java.beans.*;
+
+import uci.uml.Foundation.Data_Types.*;
 
 public class UninterpretedAction extends MMAction {
   public String _body;
     
   public UninterpretedAction() { }
+  public UninterpretedAction(Name name) { super(name); }
+  public UninterpretedAction(String nameStr) { super(new Name(nameStr)); }
+  public UninterpretedAction(String nameStr, String body) {
+    super(new Name(nameStr));
+    try { setBody(body); }
+    catch (PropertyVetoException pve) { }
+  }
 
   public String getBody() { return _body; }
-  public void setBody(String x) {
+  public void setBody(String x) throws PropertyVetoException {
+    fireVetoableChange("body", _body, x);
     _body = x;
   }
   

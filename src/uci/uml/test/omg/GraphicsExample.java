@@ -52,7 +52,7 @@ public class GraphicsExample {
   
   public GraphicsExample() {
     try {
-      model = new Model("default");
+      model = new Model("GraphicsExample");
       
       polygonClass = new MMClass("Polygon");
       pointClass = new MMClass("Point");

@@ -33,6 +33,31 @@ import java.util.*;
 
 public class PseudostateKind {
     
-  public PseudostateKind() { }
+  public static final PseudostateKind INITIAL = new PseudostateKind("initial");
+  public static final PseudostateKind DEEP_HISTORY =
+  new PseudostateKind("deepHistpry");
+  public static final PseudostateKind SHALLOW_HISTORY =
+  new PseudostateKind("shallowHistory");
+  public static final PseudostateKind JOIN = new PseudostateKind("join");
+  public static final PseudostateKind FORK = new PseudostateKind("fork");
+  public static final PseudostateKind BRANCH = new PseudostateKind("branch");
+  public static final PseudostateKind FINAL = new PseudostateKind("final");
+
+  public static final PseudostateKind[] POSSIBLE_PSEUDOSTATES = {
+    INITIAL, DEEP_HISTORY, SHALLOW_HISTORY, JOIN, FORK, BRANCH, FINAL };
+
+  protected String _label = null;
+
+  public PseudostateKind(String label) { _label = label; }
   
+  public boolean equals(Object o) {
+    if (!(o instanceof VisibilityKind)) return false;
+    String oLabel = ((VisibilityKind)o)._label;
+    return _label.equals(oLabel);
+  }
+
+  public int hashCode() { return _label.hashCode(); }
+  
+  public String toString() { return _label.toString(); }
+
 }

@@ -30,8 +30,10 @@
 package uci.uml.Behavioral_Elements.Use_Cases;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Foundation.Core.Classifier;
+import uci.uml.Foundation.Data_Types.*;
 
 
 public class UseCase extends Classifier {
@@ -39,16 +41,21 @@ public class UseCase extends Classifier {
   public Vector _extensionPoint;
     
   public UseCase() { }
+  public UseCase(Name name) { super(name); }
+  public UseCase(String nameStr) { super(new Name(nameStr)); }
   
   public Vector getExtensionPoint() { return _extensionPoint; }
-  public void setExtensionPoint(Vector x) {
+  public void setExtensionPoint(Vector x) throws PropertyVetoException {
+    fireVetoableChange("extensionPoint", _extensionPoint, x);
     _extensionPoint = x;
   }
-  public void addExtensionPoint(String x) {
+  public void addExtensionPoint(String x) throws PropertyVetoException {
     if (_extensionPoint == null) _extensionPoint = new Vector();
+    fireVetoableChange("extensionPoint", _extensionPoint, x);
     _extensionPoint.addElement(x);
   }
-  public void removeExtensionPoint(String x) {
+  public void removeExtensionPoint(String x) throws PropertyVetoException {
+    fireVetoableChange("extensionPoint", _extensionPoint, x);
     _extensionPoint.removeElement(x);
   }
 

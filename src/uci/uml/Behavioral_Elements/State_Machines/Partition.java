@@ -30,31 +30,43 @@
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
+import java.beans.*;
 
-import uci.uml.Foundation.Core.ModelElement;
+import uci.uml.Foundation.Core.*;
+import uci.uml.Foundation.Data_Types.*;
 
-
-public class Partition {
+public class Partition extends ModelElementImpl{
   public ActivityModel _activityModel;
   //% public ModelElement _contents[];
   public Vector _contents;
   
   public Partition() { }
+  public Partition(Name name, ActivityModel am) {
+    super(name);
+    try { setActivityModel(am); }
+    catch (PropertyVetoException pve) { }
+  }
+  public Partition(String nameStr) { super(new Name(nameStr)); }
 
   public ActivityModel getActivityModel() { return _activityModel; }
-  public void setActivityModel(ActivityModel x) {
+  public void setActivityModel(ActivityModel x) throws PropertyVetoException {
+    fireVetoableChange("activityModel", _activityModel, x);
     _activityModel = x;
   }
 
   public Vector getContents() { return _contents; }
-  public void setContents(Vector x) {
+  public void setContents(Vector x) throws PropertyVetoException {
+    fireVetoableChange("contents", _contents, x);
     _contents = x;
   }
-  public void addContents(ModelElement x) {
+  public void addContents(ModelElement x) throws PropertyVetoException {
     if (_contents == null) _contents = new Vector();
+    fireVetoableChange("contents", _contents, x);
     _contents.addElement(x);
   }
-  public void removeContents(ModelElement x) {
+  public void removeContents(ModelElement x) throws PropertyVetoException {
+    if (_contents == null) return;
+    fireVetoableChange("contents", _contents, x);
     _contents.removeElement(x);
   }
   

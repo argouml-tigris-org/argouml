@@ -30,6 +30,7 @@
 package uci.uml.Behavioral_Elements.Collaborations;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
@@ -48,24 +49,30 @@ public class Collaboration extends NamespaceImpl {
   public ModelElement _constrainingElement[];
     
   public Collaboration() { }
+  public Collaboration(Name name) { super(name); }
+  public Collaboration(String nameStr) { super(new Name(nameStr)); }
 
 
   public Operation getRepresentedOperation() {
     return _representedOperation;
   }
-  public void setRepresentedOperation(Operation x) {
+  public void setRepresentedOperation(Operation x) throws PropertyVetoException {
+    fireVetoableChange("representedOperation", _representedOperation, x);
     _representedOperation = x;
   }
 
   public Interaction[] getInteraction() { return _interaction; }
-  public void setInteraction(Interaction[] x) {
+  public void setInteraction(Interaction[] x) throws PropertyVetoException {
+    fireVetoableChange("interaction", _interaction, x);
     _interaction = x;
   }
 
   public ModelElement[] getConstrainingElement() {
     return _constrainingElement;
   }
-  public void setConstrainingElement(ModelElement[] x) {
+  public void setConstrainingElement(ModelElement[] x)
+       throws PropertyVetoException {
+    fireVetoableChange("constrainingElement", _constrainingElement, x);
     _constrainingElement = x;
   }
   

@@ -30,17 +30,25 @@
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Behavioral_Elements.Common_Behavior.Signal;
-
+import uci.uml.Foundation.Data_Types.*;
 
 public class SignalEvent extends Event {
   public Signal _signal;
   
   public SignalEvent() { }
+  public SignalEvent(Name name, Signal s) {
+    super(name);
+    try { setSignal(s); }
+    catch (PropertyVetoException pve) { }
+  }
+  public SignalEvent(String nameStr) { super(new Name(nameStr)); }
   
   public Signal getSignal() { return _signal; }
-  public void setSignal(Signal x) {
+  public void setSignal(Signal x) throws PropertyVetoException {
+    fireVetoableChange("signal", _signal, x);
     _signal = x;
   }
   

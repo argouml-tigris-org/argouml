@@ -30,17 +30,31 @@
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
+import java.beans.*;
 
-import uci.uml.Foundation.Data_Types.PseudostateKind;
+import uci.uml.Foundation.Data_Types.*;
 
 public class Pseudostate extends StateVertex {
   public PseudostateKind _kind;
   
   public Pseudostate() { }
+  public Pseudostate(Name name, PseudostateKind kind) {
+    super(name);
+    try { setKind(kind); }
+    catch (PropertyVetoException pve) { }
+  }
+  public Pseudostate(PseudostateKind kind) {
+    super();
+    try { setKind(kind); }
+    catch (PropertyVetoException pve) { }
+  }
+  public Pseudostate(String nameStr) { super(new Name(nameStr)); }
   
   public PseudostateKind getKind() { return _kind; }
-  public void setKind(PseudostateKind x) {
+  public void setKind(PseudostateKind x) throws PropertyVetoException {
+    fireVetoableChange("kind", _kind, x);
     _kind = x;
+    setName(new Name(_kind.toString()));
   }
   
 }

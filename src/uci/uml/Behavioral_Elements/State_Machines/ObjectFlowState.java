@@ -30,22 +30,27 @@
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Foundation.Core.Parameter;
-
+import uci.uml.Foundation.Data_Types.*;
 
 public class ObjectFlowState extends SimpleState {
   public Parameter _available;
   public ClassifierInState _typeState;
     
   public ObjectFlowState() { }
+  public ObjectFlowState(Name name) { super(name); }
+  public ObjectFlowState(String nameStr) { super(new Name(nameStr)); }
   
   public Parameter getAvailable() { return _available; }
-  public void setAvailable(Parameter x) {
+  public void setAvailable(Parameter x) throws PropertyVetoException {
+    fireVetoableChange("available", _available, x);
     _available = x;
   }
   public ClassifierInState getTypeState() { return _typeState; }
-  public void setTypeState(ClassifierInState x) {
+  public void setTypeState(ClassifierInState x) throws PropertyVetoException {
+    fireVetoableChange("typeState", _typeState, x);
     _typeState = x;
   }
   

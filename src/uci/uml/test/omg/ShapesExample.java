@@ -49,7 +49,7 @@ public class ShapesExample {
   
   public ShapesExample() {
     try {
-      model = new Model("default");
+      model = new Model("ShapesExample");
       shapeClass = new MMClass("Shape");
       polygonClass = new MMClass("Polygon");
       ellipseClass = new MMClass("Ellipse");

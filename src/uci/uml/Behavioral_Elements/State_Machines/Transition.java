@@ -30,10 +30,11 @@
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Foundation.Core.*;
 import uci.uml.Behavioral_Elements.Common_Behavior.*;
-
+import uci.uml.Foundation.Data_Types.*;
 
 public class Transition extends ModelElementImpl {
   public Guard _guard;
@@ -45,34 +46,73 @@ public class Transition extends ModelElementImpl {
   public StateVertex _target;
     
   public Transition() { }
+  public Transition(Name name) { super(name); }
+  public Transition(Name name, StateVertex src, StateVertex tar) {
+    super(name);
+    try {
+      setSource(src);
+      setTarget(tar);
+    }
+    catch (PropertyVetoException pve) { }
+  }
+  public Transition(StateVertex src, StateVertex tar) {
+    super();
+    try {
+      setSource(src);
+      setTarget(tar);
+    }
+    catch (PropertyVetoException pve) { }
+  }
+  public Transition(String nameStr) { super(new Name(nameStr)); }
 
   public Guard getGuard() { return _guard; }
-  public void setGuard(Guard x) {
+  public void setGuard(Guard x) throws PropertyVetoException {
+    fireVetoableChange("guard", _guard, x);
     _guard = x;
   }
   public ActionSequence getEffect() { return _effect; }
-  public void setEffect(ActionSequence x) {
+  public void setEffect(ActionSequence x) throws PropertyVetoException {
+    fireVetoableChange("effect", _effect, x);
     _effect = x;
   }
   public State getState() { return _state; }
-  public void setState(State x) {
+  public void setState(State x) throws PropertyVetoException {
+    fireVetoableChange("state", _state, x);
     _state = x;
   }
   public Event getTrigger() { return _trigger; }
-  public void setTrigger(Event x) {
+  public void setTrigger(Event x) throws PropertyVetoException {
+    fireVetoableChange("trigger", _trigger, x);
     _trigger = x;
   }
   public StateMachine getStateMachine() { return _stateMachine; }
-  public void setStateMachine(StateMachine x) {
+  public void setStateMachine(StateMachine x) throws PropertyVetoException {
+    fireVetoableChange("stateMachine", _stateMachine, x);
     _stateMachine = x;
   }
   public StateVertex getSource() { return _source; }
-  public void setSource(StateVertex x) {
+  public void setSource(StateVertex x) throws PropertyVetoException {
+    fireVetoableChange("source", _source, x);
     _source = x;
   }
   public StateVertex getTarget() { return _target; }
-  public void setTarget(StateVertex x) {
+  public void setTarget(StateVertex x) throws PropertyVetoException {
+    fireVetoableChange("target", _target, x);
     _target = x;
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // debugging
+
+  public String dbgString() {
+    String s = "Transition " + (getName() == null ? "(anon)" : getName().getBody());
+    if (_source != null) s += " from " + _source.getName().getBody();
+    if (_target != null) s += " to " + _target.getName().getBody();
+
+    if (_trigger != null) s += " " + _trigger.dbgString();
+    if (_guard != null) s += " [" + _guard.dbgString() + "]";
+    if (_effect != null) s += " /" + _effect.dbgString();
+    return s;
   }
   
 }

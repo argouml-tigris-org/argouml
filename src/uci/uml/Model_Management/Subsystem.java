@@ -30,17 +30,29 @@
 package uci.uml.Model_Management;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Foundation.Core.*;
+import uci.uml.Foundation.Data_Types.*;
 
 
 public class Subsystem extends Classifier implements Package {
-  public Boolean _isInstantiable;
+  public boolean _isInstantiable;
   
   public Subsystem() { }
+  public Subsystem(Name name) { super(name); }
+  public Subsystem(Name name, boolean isInstantiable) {
+    super(name);
+    try { setIsInstantiable(isInstantiable); }
+    catch (PropertyVetoException pve) { }
+  }
+  public Subsystem(String nameStr) { super(new Name(nameStr)); }
 
-  public Boolean getIsInstantiable() { return _isInstantiable; }
-  public void setIsInstantiable(Boolean x) {
+  public boolean getIsInstantiable() { return _isInstantiable; }
+  public void setIsInstantiable(boolean x) throws PropertyVetoException {
+    fireVetoableChange("isInstantiable",
+		       _isInstantiable ? Boolean.TRUE : Boolean.FALSE,
+		       x ? Boolean.TRUE : Boolean.FALSE);
     _isInstantiable = x;
   }
 
@@ -49,17 +61,19 @@ public class Subsystem extends Classifier implements Package {
   
   public Vector _referencedElement;
 
-  public Vector getReferencedElement() {
-    return _referencedElement;
-  }
-  public void setReferencedElement(Vector x) {
+  public Vector getReferencedElement() { return _referencedElement; }
+  public void setReferencedElement(Vector x) throws PropertyVetoException {
+    fireVetoableChange("referencedElement", _referencedElement, x);
     _referencedElement = x;
   }
-  public void addReferencedElement(ModelElement x) {
+  public void addReferencedElement(ModelElement x) throws PropertyVetoException {
     if (_referencedElement == null) _referencedElement = new Vector();
+    fireVetoableChange("referencedElement", _referencedElement, x);
     _referencedElement.addElement(x);
   }
-  public void removeReferencedElement(ModelElement x) {
+  public void removeReferencedElement(ModelElement x) throws PropertyVetoException {
+    if (_referencedElement == null) return;
+    fireVetoableChange("referencedElement", _referencedElement, x);
     _referencedElement.removeElement(x);
   }
 

@@ -30,6 +30,7 @@
 package uci.uml.Behavioral_Elements.Collaborations;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
@@ -42,19 +43,24 @@ public class AssociationRole extends Association {
   public Collaboration _collaboration;
     
   public AssociationRole() { }
+  public AssociationRole(Name name) { super(name); }
+  public AssociationRole(String nameStr) { super(new Name(nameStr)); }
 
   public Multiplicity getMultiplicity() { return _multiplicity; }
-  public void setMultiplicity(Multiplicity x) {
+  public void setMultiplicity(Multiplicity x) throws PropertyVetoException {
+    fireVetoableChange("multiplicity", _multiplicity, x);
      _multiplicity = x;
   }
 
   public Association getBase() { return _base; }
-  public void setBase(Association x) {
+  public void setBase(Association x) throws PropertyVetoException {
+    fireVetoableChange("base", _base, x);
      _base = x;
   }
 
   public Collaboration getCollaboration() { return _collaboration; }
-  public void setCollaboration(Collaboration x) {
+  public void setCollaboration(Collaboration x) throws PropertyVetoException {
+    fireVetoableChange("collaboration", _collaboration, x);
      _collaboration = x;
   }
   

@@ -30,6 +30,7 @@
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
+import java.beans.*;
 
 public class SendAction extends MMAction {
   public Signal _raises;
@@ -38,11 +39,13 @@ public class SendAction extends MMAction {
   public SendAction() { }
   
   public Signal getRaises() { return _raises; }
-  public void setRaises(Signal x) {
+  public void setRaises(Signal x) throws PropertyVetoException {
+    fireVetoableChange("raises", _raises, x);
     _raises = x;
   }
   public Signal getRaised() { return _raised; }
-  public void setRaised(Signal x) {
+  public void setRaised(Signal x) throws PropertyVetoException {
+    fireVetoableChange("raised", _raised, x);
     _raised = x;
   }
   

@@ -28,12 +28,17 @@
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
+import java.beans.*;
+
+import uci.uml.Foundation.Data_Types.*;
+import uci.uml.Foundation.Core.*; 
 
 
 // needs-more-work
 
-public class Instance {
+public class Instance extends ModelElementImpl {
 
   public Instance() { }
+  public Instance(Name name) { super(name); }
 
 }

@@ -30,6 +30,7 @@
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
@@ -39,24 +40,29 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
 
 
 public class Reception extends BehavioralFeature {
-  public Boolean _isPolymorphic;
+  public boolean _isPolymorphic;
   public Uninterpreted _specification;
   public Signal _signal;
   
   public Reception() { }
 
-  public Boolean getIsPolymorphic() { return _isPolymorphic; }
-  public void setIsPolymorphic(Boolean x) {
+  public boolean getIsPolymorphic() { return _isPolymorphic; }
+  public void setIsPolymorphic(boolean x) throws PropertyVetoException {
+    fireVetoableChange("isPolymorphic",
+		       _isPolymorphic ? Boolean.TRUE : Boolean.FALSE,
+		       x ? Boolean.TRUE : Boolean.FALSE);
     _isPolymorphic = x;
   }
 
   public Uninterpreted getSpecification() { return _specification; }
-  public void setSpecification(Uninterpreted x) {
+  public void setSpecification(Uninterpreted x) throws PropertyVetoException {
+    fireVetoableChange("specification", _specification, x);
     _specification = x;
   }
 
   public Signal getSignal() { return _signal; }
-  public void setSignal(Signal x) {
+  public void setSignal(Signal x) throws PropertyVetoException {
+    fireVetoableChange("signal", _signal, x);
     _signal = x;
   }
   

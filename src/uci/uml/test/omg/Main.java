@@ -25,6 +25,21 @@ public class Main {
     System.out.println("\n\nCONSTRUCTING SHAPES EXAMPLE");
     ShapesExample she = new ShapesExample();
 
+    System.out.println("\n\nCONSTRUCTING PASSWORD EXAMPLE");
+    PasswordExample pwe = new PasswordExample();
+    
+    System.out.println("\n\nCONSTRUCTING DIALING EXAMPLE");
+    DialingExample de = new DialingExample();
+    
+    System.out.println("\n\nCONSTRUCTING CONCURRENT STATE EXAMPLE");
+    ConcurrentSubstatesExample cse = new ConcurrentSubstatesExample();
+    
+    System.out.println("\n\nCONSTRUCTING STUBBED TRANSITIONS EXAMPLE");
+    StubbedTransExample ste = new StubbedTransExample();
+    
+    System.out.println("\n\nCONSTRUCTING COMPLEX TRANSITIONS EXAMPLE");
+    ComplexTransExample cte = new ComplexTransExample();
+    
     System.out.println("\n\nSUCCESSFULLY CONSTRUCTED ALL EXAMPLES");
   }
 

@@ -30,22 +30,30 @@
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
+import java.beans.*;
+import uci.uml.Foundation.Data_Types.*;
 
 public class ActivityModel extends StateMachine {
   //% public Partition _partition[];
   public Vector _partition;
     
   public ActivityModel() { }
+  public ActivityModel(Name name) { super(name); }
+  public ActivityModel(String nameStr) { super(new Name(nameStr)); }
 
   public Vector getPartition() { return _partition; }
-  public void setPartition(Vector x) {
+  public void setPartition(Vector x) throws PropertyVetoException {
+    fireVetoableChange("partition", _partition, x);
     _partition = x;
   }
-  public void addPartition(Partition x) {
+  public void addPartition(Partition x) throws PropertyVetoException {
     if (_partition == null) _partition = new Vector();
+    fireVetoableChange("partition", _partition, x);
     _partition.addElement(x);
   }
-  public void removePartition(Partition x) {
+  public void removePartition(Partition x) throws PropertyVetoException {
+    if (_partition == null) return;
+    fireVetoableChange("partition", _partition, x);
     _partition.removeElement(x);
   }
   

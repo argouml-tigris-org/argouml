@@ -34,63 +34,65 @@ import java.beans.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Foundation.Extension_Mechanisms.*;
+import uci.uml.Behavioral_Elements.Common_Behavior.*;
+import uci.uml.Behavioral_Elements.State_Machines.*;
 import uci.uml.Model_Management.*;
 
-/** This is a very simple demo of how to represent a UML design that
- *  consists of three classes and one 3-way association with an
- *  association class.  This example is taken from page 62 of the UML
- *  1.1 notation guide (OMG document ad/97-08-05). */
+/** This is a very simple demo of how to represent a UML state machine
+ *  that deals with dialing a telephone.  This example is taken from
+ *  page 113 of the UML 1.1 notation guide (OMG document ad/97-08-05). */
 
 
-public class SoccerExample {
+public class ComplexTransExample {
   public Model model;
-  public MMClass teamClass, yearClass, playerClass;
-  public AssociationClass recordAC;
+  public MMClass complexClass;
+  public CompositeState top, s1, a, b;
+  public State setup, cleanup, a1, a2, b1, b2;
+  public Transition t01, t02, t03, t04, t05, t06, t07, t08;
+  public Pseudostate fork, join;
+  public StateMachine sm;
   
-  public SoccerExample() {
+  public ComplexTransExample() {
     try {
-      model = new Model("SoccerExample");
-      playerClass = new MMClass("Player");
-      yearClass = new MMClass("Year");
-      teamClass = new MMClass("Team");
-
-      recordAC = new AssociationClass("Record");
-      recordAC.addStructuralFeature(new Attribute("goals for"));
-      recordAC.addStructuralFeature(new Attribute("goals against"));
-      recordAC.addStructuralFeature(new Attribute("wins"));
-      recordAC.addStructuralFeature(new Attribute("loses"));
-      recordAC.addStructuralFeature(new Attribute("ties"));
-
-      AssociationEnd ae1 =
-	new AssociationEnd(new Name("team"), teamClass,
-			   Multiplicity.ZERO_OR_MORE, AggregationKind.NONE);
-      AssociationEnd ae2 =
-	new AssociationEnd(new Name("season"), yearClass,
-			   Multiplicity.ZERO_OR_MORE, AggregationKind.NONE);
-      AssociationEnd ae3 =
-	new AssociationEnd(new Name("goalKeeper"), playerClass,
-			   Multiplicity.ZERO_OR_MORE, AggregationKind.NONE);
-
-
-      recordAC.addConnection(ae1);
-      recordAC.addConnection(ae2);
-      recordAC.addConnection(ae3);
-
-      model.addPublicOwnedElement(playerClass);
-      model.addPublicOwnedElement(teamClass);
-      model.addPublicOwnedElement(yearClass);
-      model.addPublicOwnedElement(recordAC);
+      model = new Model("ComplexTransExample");
+      complexClass = new MMClass("ComplexClass");
+      sm = new StateMachine("States", complexClass);
       
-      //System.out.println(playerClass.dbgString());
-      //System.out.println(teamClass.dbgString());
-      //System.out.println(yearClass.dbgString());
-      System.out.println(recordAC.dbgString());
+      top = new CompositeState();
+      
+      top.addSubstate(s1 = new CompositeState());
+      top.addSubstate(setup = new SimpleState("Setup"));
+      top.addSubstate(cleanup = new SimpleState("Cleanup"));
+      top.addSubstate(fork = new Pseudostate(PseudostateKind.FORK));
+      top.addSubstate(join = new Pseudostate(PseudostateKind.JOIN));
+      s1.addSubstate(a = new CompositeState());
+      a.addSubstate(a1 = new SimpleState("A1"));
+      a.addSubstate(a2 = new SimpleState("A2"));
+      s1.addSubstate(b = new CompositeState());
+      b.addSubstate(b1 = new SimpleState("B1"));
+      b.addSubstate(b2 = new SimpleState("B2"));
+
+      sm.setTop(top);
+
+      sm.addTransition(t01 = new Transition(setup, fork));
+      sm.addTransition(t02 = new Transition(fork, a1));
+      sm.addTransition(t03 = new Transition(fork, b1));
+      sm.addTransition(t04 = new Transition(a1, a2));
+      sm.addTransition(t05 = new Transition(b1, b2));
+      sm.addTransition(t06 = new Transition(a2, join));
+      sm.addTransition(t07 = new Transition(b2, join));
+      sm.addTransition(t08 = new Transition(join, cleanup));
+
+      model.addPublicOwnedElement(complexClass);
+      
+      System.out.println(complexClass.dbgString());
+      System.out.println(sm.dbgString());
     }
     catch (PropertyVetoException ex) {
-      System.out.println("an veto execption occured in SoccerExample");
+      System.out.println("an veto execption occured in ComplexTransExample");
     }
 
 
   }
 
-} /* end class GraphicsExample */
+} /* end class ComplexTransExample */

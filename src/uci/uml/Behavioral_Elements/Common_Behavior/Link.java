@@ -28,6 +28,7 @@
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
+import java.beans.*;
 
 // needs-more-work
 

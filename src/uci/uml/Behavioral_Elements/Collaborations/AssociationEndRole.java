@@ -30,8 +30,10 @@
 package uci.uml.Behavioral_Elements.Collaborations;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Foundation.Core.AssociationEnd;
+import uci.uml.Foundation.Data_Types.*;
 
 
 public class AssociationEndRole extends AssociationEnd {
@@ -40,16 +42,20 @@ public class AssociationEndRole extends AssociationEnd {
   //public ClassifierRole /type;
     
   public AssociationEndRole() { }
+  public AssociationEndRole(Name name) { super(name); }
+  public AssociationEndRole(String nameStr) { super(new Name(nameStr)); }
 
   public AssociationEnd getBase() { return _base; }
-  public void setBase(AssociationEnd x) {
+  public void setBase(AssociationEnd x) throws PropertyVetoException {
+    fireVetoableChange("base", _base, x);
      _base = x;
   }
 
   public AssociationRole getAssociationRole() {
     return _associationRole;
   }
-  public void setAssociationRole(AssociationRole x) {
+  public void setAssociationRole(AssociationRole x) throws PropertyVetoException {
+    fireVetoableChange("associationRole", _associationRole, x);
     _associationRole = x;
   }
   

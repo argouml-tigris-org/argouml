@@ -178,7 +178,16 @@ public class ElementImpl implements Element {
     String javaClassName = getClass().getName();
     int dotIndex = javaClassName.lastIndexOf(".");
     String OCLTypeString = javaClassName.substring(dotIndex+1);
+    if (OCLTypeString.equals("MMAction")) return "Action";
+    if (OCLTypeString.equals("MMClass")) return "Class";
+    if (OCLTypeString.equals("MMException")) return "Exception";
     return OCLTypeString;
+  }
+
+  public String dbgString() {
+    String s = getOCLTypeStr();
+    if (getName() != null) s += "(" + getName().getBody() + ")";
+    return s;
   }
 
 }

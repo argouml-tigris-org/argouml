@@ -30,9 +30,14 @@
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
+import java.beans.*;
+
+import uci.uml.Foundation.Data_Types.*;
 
 public class ActivityState extends SimpleState {
     
-    public ActivityState() { }
+  public ActivityState() { }
+  public ActivityState(Name name) { super(name); }
+  public ActivityState(String nameStr) { super(new Name(nameStr)); }
   
 }

@@ -51,7 +51,7 @@ public class HumanResourcesExample {
   
   public HumanResourcesExample() {
     try {
-      model = new Model("default");
+      model = new Model("HumanResourcesExample");
       personClass = new MMClass("Person");
       companyClass = new MMClass("Company");
       deptClass = new MMClass("Deptartment");

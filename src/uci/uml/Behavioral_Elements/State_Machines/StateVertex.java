@@ -30,9 +30,10 @@
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Foundation.Core.*;
-
+import uci.uml.Foundation.Data_Types.*;
 
 public abstract class StateVertex extends ModelElementImpl {
   public CompositeState _parent;
@@ -42,5 +43,50 @@ public abstract class StateVertex extends ModelElementImpl {
   public Vector _incoming;
     
   public StateVertex() { }
+  public StateVertex(Name name) { super(name); }
+  public StateVertex(String nameStr) { super(new Name(nameStr)); }
+
+  public CompositeState getParent() { return _parent; }
+  public void setParent(CompositeState x) {
+    _parent = x;
+  }
+
+  public Vector getOutgoing() { return _outgoing; }
+  public void setOutgoing(Vector x) throws PropertyVetoException {
+    fireVetoableChange("outgoing", _outgoing, x);
+    _outgoing = x;
+  }
+  public void addOutgoing(Transition x) throws PropertyVetoException {
+    if (_outgoing == null) _outgoing = new Vector();
+    fireVetoableChange("outgoing", _outgoing, x);
+    _outgoing.addElement(x);
+  }
+  public void removeOutgoing(Transition x) throws PropertyVetoException {
+    if (_outgoing == null) return;
+    fireVetoableChange("outgoing", _outgoing, x);
+    _outgoing.removeElement(x);
+  }
+
   
+  public Vector getIncoming() { return _incoming; }
+  public void setIncoming(Vector x) throws PropertyVetoException {
+    fireVetoableChange("incoming", _incoming, x);
+    _incoming = x;
+  }
+  public void addIncoming(Transition x) throws PropertyVetoException {
+    if (_incoming == null) _incoming = new Vector();
+    fireVetoableChange("incoming", _incoming, x);
+    _incoming.addElement(x);
+  }
+  public void removeIncoming(Transition x) throws PropertyVetoException {
+    if (_incoming == null) return;
+    fireVetoableChange("incoming", _incoming, x);
+    _incoming.removeElement(x);
+  }
+
+  public String dbgString() {
+    String s = getClass().getName() + (getName() == null?"(anon)":getName().getBody());
+    return s;
+  }
+
 }

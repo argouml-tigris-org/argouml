@@ -34,5 +34,10 @@ import java.util.*;
 public class TimeExpression extends Expression {
     
   public TimeExpression() { }
+  public TimeExpression(Uninterpreted body) { super(body); }
+  public TimeExpression(String bodyStr) { super(bodyStr); }
+  public TimeExpression(String langStr, String bodyStr) {
+    super(langStr, bodyStr);
+  }
 
 }

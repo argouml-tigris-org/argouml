@@ -55,7 +55,7 @@ public class WindowExample {
   
   public WindowExample() {
     try {
-      model = new Model("default");
+      model = new Model("WindowExample");
       
       windowClass = new MMClass("Window");
       windowClass.setIsAbstract(Boolean.TRUE);

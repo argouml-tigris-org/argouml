@@ -30,6 +30,7 @@
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Foundation.Core.BehavioralFeature;
 
@@ -41,14 +42,17 @@ public class MMException extends Signal {
   public MMException() { }
 
   public Vector getContext() { return _context; }
-  public void setContext(Vector x) {
+  public void setContext(Vector x) throws PropertyVetoException {
+    fireVetoableChange("context", _context, x);
     _context = x;
   }
-  public void addContext(BehavioralFeature x) {
+  public void addContext(BehavioralFeature x) throws PropertyVetoException {
     if (_context == null) _context = new Vector();
+    fireVetoableChange("context", _context, x);
     _context.addElement(x);
   }
-  public void removeContext(BehavioralFeature x) {
+  public void removeContext(BehavioralFeature x) throws PropertyVetoException {
+    fireVetoableChange("context", _context, x);
     _context.removeElement(x);
   }
   

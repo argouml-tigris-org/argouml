@@ -30,8 +30,10 @@
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Foundation.Core.*;
+import uci.uml.Foundation.Data_Types.*;
 
 
 public class StateMachine extends ModelElementImpl {
@@ -43,39 +45,86 @@ public class StateMachine extends ModelElementImpl {
   public Vector _submachineState;
   
   public StateMachine() { }
+  public StateMachine(Name name) { super(name); }
+  public StateMachine(Name name, ModelElement context) {
+    super(name);
+    try { setContext(context); }
+    catch (PropertyVetoException pve) { }
+  }
+  public StateMachine(String nameStr) { super(new Name(nameStr)); }
+  public StateMachine(String nameStr, ModelElement context) {
+    this(new Name(nameStr), context);
+  }
 
   public ModelElement getContext() { return _context; }
-  public void setContext(ModelElement x) {
+  public void setContext(ModelElement x) throws PropertyVetoException {
+    fireVetoableChange("context", _context, x);
     _context = x;
   }
 
   public State getTop() { return _top; }
-  public void setTop(State x) {
+  public void setTop(State x) throws PropertyVetoException {
+    if (_top == x) return;
+    fireVetoableChange("top", _top, x);
+    State oldTop = _top;
     _top = x;
+    if (oldTop != null && oldTop.getStateMachine() == this) {
+      oldTop.setStateMachine(null);
+    }
   }
 
   public Vector getTransitions() { return _transitions; }
-  public void setTransitions(Vector x) {
+  public void setTransitions(Vector x) throws PropertyVetoException {
+    fireVetoableChange("transitions", _transitions, x);
     _transitions = x;
   }
-  public void addTransitions(Transition x) {
+  public void addTransition(Transition x) throws PropertyVetoException {
     if (_transitions == null) _transitions = new Vector();
+    fireVetoableChange("transitions", _transitions, x);
     _transitions.addElement(x);
   }
-  public void removeTransitions(Transition x) {
+  public void removeTransition(Transition x) throws PropertyVetoException {
+    if (_transitions == null) return;
+    fireVetoableChange("transitions", _transitions, x);
     _transitions.removeElement(x);
   }
 
   public Vector getSubmachineState() { return _submachineState; }
-  public void setSubmachineState(Vector x) {
+  public void setSubmachineState(Vector x) throws PropertyVetoException {
+    fireVetoableChange("submachineState", _submachineState, x);
     _submachineState = x;
   }
-  public void addSubmachineState(SubmachineState x) {
+  public void addSubmachineState(SubmachineState x) throws PropertyVetoException {
     if (_submachineState == null) _submachineState = new Vector();
+    fireVetoableChange("submachineState", _submachineState, x);
     _submachineState.addElement(x);
   }
-  public void removeSubmachineState(SubmachineState x) {
+  public void removeSubmachineState(SubmachineState x)throws PropertyVetoException {
+    if (_submachineState == null) return;
+    fireVetoableChange("submachineState", _submachineState, x);
     _submachineState.removeElement(x);
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // debugging
+
+  public String dbgString() {
+    String s = "StateMachine " + (getName() == null?"(anon)":getName().getBody());
+    s += " {\n";
+    if (_top != null) {
+      s += "\n\nStates ================\n";
+      s += _top.dbgString();
+    }
+    if (_transitions != null) {
+      s += "\n\nTransitions ================\n";
+      java.util.Enumeration trans = _transitions.elements();
+      while (trans.hasMoreElements()) {
+	Transition t = (Transition) trans.nextElement();
+	s += "  " + t.dbgString() + "\n";
+      }
+    }
+    s += "}";
+    return s;
   }
   
 }

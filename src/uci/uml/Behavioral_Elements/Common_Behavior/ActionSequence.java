@@ -30,6 +30,7 @@
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
@@ -48,26 +49,39 @@ public class ActionSequence extends ModelElementImpl {
   public Transition _transition;
     
   public ActionSequence() { }
+  public ActionSequence(Name name) { super(name); }
+  public ActionSequence(String actionNameStr) {
+    super();
+    try { addAction(new MMAction(actionNameStr)); }
+    catch (PropertyVetoException pve) { }
+  }
 
   public Vector getAction() { return _action; }
-  public void setAction(Vector x) {
-     _action = x;
+  public void setAction(Vector x) throws PropertyVetoException {
+    fireVetoableChange("action", _action, x);
+    _action = x;
   }
-  public void addAction(MMAction x) {
-     _action.addElement(x);
+  public void addAction(MMAction x) throws PropertyVetoException {
+    if (_action == null) _action = new Vector();
+    fireVetoableChange("action", _action, x);
+    _action.addElement(x);
   }
-  public void removeAction(MMAction x) {
-     _action.removeElement(x);
+  public void removeAction(MMAction x) throws PropertyVetoException {
+    if (_action == null) return;
+    fireVetoableChange("action", _action, x);
+    _action.removeElement(x);
   }
 
   public State getState() { return _state; }
-  public void setState(State x) {
-     _state = x;
+  public void setState(State x) throws PropertyVetoException {
+    fireVetoableChange("state", _state, x);
+    _state = x;
   }
 
   public Transition getTransition() { return _transition; }
-  public void setTransition(Transition x) {
-     _transition = x;
+  public void setTransition(Transition x) throws PropertyVetoException {
+    fireVetoableChange("transition", _state, x);
+    _transition = x;
   }
 
 }

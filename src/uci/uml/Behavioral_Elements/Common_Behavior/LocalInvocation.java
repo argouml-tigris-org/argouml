@@ -30,6 +30,7 @@
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Foundation.Core.Operation;
 
@@ -40,7 +41,8 @@ public class LocalInvocation extends MMAction {
   public LocalInvocation() { }
 
   public Operation getInvoked() { return _invoked; }
-  public void setInvoked(Operation x) {
+  public void setInvoked(Operation x) throws PropertyVetoException {
+    fireVetoableChange("invoked", _invoked, x);
     _invoked = x;
   }
   

@@ -30,14 +30,25 @@
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
+import java.beans.*;
+
+import uci.uml.Foundation.Data_Types.*;
 
 public class SubmachineState extends State {
   public StateMachine _submachine;
     
   public SubmachineState() { }
+  public SubmachineState(Name name, StateMachine machine) {
+    super(name);
+    try { setSubmachine(machine); }
+    catch (PropertyVetoException pve) { } 
+  }
+  public SubmachineState(String nameStr) { super(new Name(nameStr)); }
+
   
   public StateMachine getSubmachine() { return _submachine; }
-  public void setSubmachine(StateMachine x) {
+  public void setSubmachine(StateMachine x) throws PropertyVetoException {
+    fireVetoableChange("submachine", _submachine, x);
     _submachine = x;
   }
   

@@ -30,11 +30,15 @@
 package uci.uml.Behavioral_Elements.Use_Cases;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Foundation.Core.Classifier;
+import uci.uml.Foundation.Data_Types.*;
 
 
 public class Actor extends Classifier {
     
-    public Actor() { }
+  public Actor() { }
+  public Actor(Name name) { super(name); }
+  public Actor(String nameStr) { super(new Name(nameStr)); }
 }

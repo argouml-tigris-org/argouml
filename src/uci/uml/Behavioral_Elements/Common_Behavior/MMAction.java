@@ -30,6 +30,7 @@
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
@@ -42,7 +43,7 @@ import uci.uml.Behavioral_Elements.Collaborations.*;
 public class MMAction extends ModelElementImpl {
   public Expression _recurrence;
   public ObjectSetExpression _target;
-  public Boolean _isAsynchronous;
+  public boolean _isAsynchronous;
   public String _script;
   //public Argument _actualArgument[];
   public Request _request;
@@ -52,47 +53,59 @@ public class MMAction extends ModelElementImpl {
   public Vector _message;
     
   public MMAction() { }
+  public MMAction(Name name) { super(name); }
+  public MMAction(String nameStr) { super(new Name(nameStr)); }
   
   public Expression getRecurrence() { return _recurrence; }
-  public void setRecurrence(Expression x) {
+  public void setRecurrence(Expression x) throws PropertyVetoException {
+    fireVetoableChange("recurrence", _recurrence, x);
     _recurrence = x;
   }
 
   public Request getRequest() { return _request; }
-  public void setRequest(Request x) {
+  public void setRequest(Request x) throws PropertyVetoException {
+    fireVetoableChange("request", _request, x);
     _request = x;
   }
 
-  public ActionSequence getActionSequence() { return _actionSequence;
-  }
-  public void setActionSequence(ActionSequence x) {
+  public ActionSequence getActionSequence() { return _actionSequence; }
+  public void setActionSequence(ActionSequence x) throws PropertyVetoException {
+    fireVetoableChange("actionSequence", _actionSequence, x);
     _actionSequence = x;
   }
 
   public Vector getMessage() { return _message; }
-  public void setMessage(Vector x) {
+  public void setMessage(Vector x) throws PropertyVetoException {
+    fireVetoableChange("message", _message, x);
     _message = x;
   }
-  public void addMessage(Message x) {
+  public void addMessage(Message x) throws PropertyVetoException {
     if (_message == null) _message = new Vector();
+    fireVetoableChange("message", _message, x);
     _message.addElement(x);
   }
-  public void removeMessage(Message x) {
+  public void removeMessage(Message x) throws PropertyVetoException {
+    fireVetoableChange("message", _message, x);
     _message.removeElement(x);
   }
 
   public ObjectSetExpression getTarget() { return _target; }
-  public void setTarget(ObjectSetExpression x) {
+  public void setTarget(ObjectSetExpression x) throws PropertyVetoException {
+    fireVetoableChange("target", _target, x);
     _target = x;
   }
 
-  public Boolean getIsAsynchronous() { return _isAsynchronous; }
-  public void setIsAsynchronous(Boolean x) {
+  public boolean getIsAsynchronous() { return _isAsynchronous; }
+  public void setIsAsynchronous(boolean x) throws PropertyVetoException {
+    fireVetoableChange("isAsynchronous",
+		       _isAsynchronous ? Boolean.TRUE : Boolean.FALSE,
+		       x ? Boolean.TRUE : Boolean.FALSE);
     _isAsynchronous = x;
   }
 
   public String getScript() { return _script; }
-  public void setScript(String x) {
+  public void setScript(String x) throws PropertyVetoException {
+    fireVetoableChange("script", _script, x);
     _script = x;
   }
   

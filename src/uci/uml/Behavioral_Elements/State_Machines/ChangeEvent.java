@@ -30,19 +30,27 @@
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
+import java.beans.*;
 
-import uci.uml.Foundation.Data_Types.BooleanExpression;
+import uci.uml.Foundation.Data_Types.*;
+
 
 
 public class ChangeEvent extends Event {
   public BooleanExpression _changeExpression;
   
   public ChangeEvent() { }
-
-  public BooleanExpression getChangeExpression() {
-    return _changeExpression;
+  public ChangeEvent(Name name, BooleanExpression exp) {
+    super(name);
+    try { setChangeExpression(exp); }
+    catch (PropertyVetoException pve) { }
   }
-  public void setChangeExpression(BooleanExpression x) {
+  public ChangeEvent(String nameStr) { super(new Name(nameStr)); }
+
+  public BooleanExpression getChangeExpression() { return _changeExpression; }
+  public void setChangeExpression(BooleanExpression x)
+       throws PropertyVetoException {
+    fireVetoableChange("changeExpression", _changeExpression, x);
     _changeExpression = x;
   }
   

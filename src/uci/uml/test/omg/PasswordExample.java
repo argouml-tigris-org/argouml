@@ -25,49 +25,67 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-// Source file: f:/jr/projects/uml/Behavioral_Elements/State_Machines/ClassifierInState.java
-
-package uci.uml.Behavioral_Elements.State_Machines;
+package uci.uml.test.omg;
 
 import java.util.*;
 import java.beans.*;
 
-import uci.uml.Foundation.Core.Classifier;
+
+import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
+import uci.uml.Foundation.Extension_Mechanisms.*;
+import uci.uml.Behavioral_Elements.Common_Behavior.*;
+import uci.uml.Behavioral_Elements.State_Machines.*;
+import uci.uml.Model_Management.*;
 
-public class ClassifierInState extends Classifier {
-  public State _inState;
-  //% public ObjectFlowState _objectFlowState[];
-  public Vector _objectFlowState;
+/** This is a very simple demo of how to represent a UML state machine
+ *  that deals with dialing a telephone.  This example is taken from
+ *  page 106 of the UML 1.1 notation guide (OMG document ad/97-08-05). */
+
+
+public class PasswordExample {
+  public Model model;
+  public MMClass passwordClass;
+  public CompositeState top;
+  public State typingPassword;
+  public Transition character, help;
+  public StateMachine sm;
   
-  public ClassifierInState() { }
-  public ClassifierInState(Name name, State instate) {
-    super(name);
-    try { setInState(instate); }
-    catch (PropertyVetoException pve) { }
-  }
-  public ClassifierInState(String nameStr) { super(new Name(nameStr)); }
-  
-  public State getInState() { return _inState; }
-  public void setInState(State x) throws PropertyVetoException {
-    fireVetoableChange("inState", _inState, x);
-    _inState = x;
+  public PasswordExample() {
+    try {
+      model = new Model("PasswordExample");
+      passwordClass = new MMClass("PasswordClass");
+      sm = new StateMachine("States", passwordClass);
+      
+      top = new CompositeState();
+      
+      typingPassword = new SimpleState("Idle");
+
+      top.addSubstate(typingPassword);
+      
+      sm.setTop(top);
+
+
+      character = new Transition(new Name("do"), typingPassword, typingPassword);
+      character.setEffect(new ActionSequence("handle character"));
+      help = new Transition(new Name("do"), typingPassword, typingPassword);
+      help.setEffect(new ActionSequence("display help"));
+
+      typingPassword.setEntry(new ActionSequence("set echo invisible"));
+      typingPassword.setExit(new ActionSequence("set echo normal"));
+      typingPassword.addInternalTransition(character);
+      typingPassword.addInternalTransition(help);
+
+      model.addPublicOwnedElement(passwordClass);
+      
+      System.out.println(passwordClass.dbgString());
+      System.out.println(sm.dbgString());
+    }
+    catch (PropertyVetoException ex) {
+      System.out.println("an veto execption occured in PasswordExample");
+    }
+
+
   }
 
-  public Vector getObjectFlowState() { return _objectFlowState; }
-  public void setObjectFlowState(Vector x) throws PropertyVetoException {
-    fireVetoableChange("objectFlowState", _objectFlowState, x);
-    _objectFlowState = x;
-  }
-  public void addObjectFlowState(ObjectFlowState x) throws PropertyVetoException {
-    if (_objectFlowState == null) _objectFlowState = new Vector();
-    fireVetoableChange("objectFlowState", _objectFlowState, x);
-    _objectFlowState.addElement(x);
-  }
-  public void removeObjectFlowState(ObjectFlowState x)throws PropertyVetoException {
-    if (_objectFlowState == null) return;
-    fireVetoableChange("objectFlowState", _objectFlowState, x);
-    _objectFlowState.removeElement(x);
-  }
-  
-}
+} /* end class PasswordExample */

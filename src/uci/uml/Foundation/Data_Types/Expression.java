@@ -67,4 +67,23 @@ public class Expression {
     setBody(new Uninterpreted(x));
   }
 
+  ////////////////////////////////////////////////////////////////
+  // debugging
+  public String dbgString() {
+    String s = getOCLTypeStr();
+    if (_body != null) s += " " + _body.getBody();
+    return s;
+  }
+
+
+  public String getOCLTypeStr() {
+    String javaClassName = getClass().getName();
+    int dotIndex = javaClassName.lastIndexOf(".");
+    String OCLTypeString = javaClassName.substring(dotIndex+1);
+    if (OCLTypeString.equals("MMAction")) return "Action";
+    if (OCLTypeString.equals("MMClass")) return "Class";
+    if (OCLTypeString.equals("MMException")) return "Exception";
+    return OCLTypeString;
+  }
+  
 }

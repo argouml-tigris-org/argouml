@@ -30,6 +30,7 @@
 package uci.uml.Behavioral_Elements.Collaborations;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
@@ -46,25 +47,31 @@ public class Interaction extends ModelElementImpl {
   public Instance _instances[];
   
   public Interaction() { }
+  public Interaction(Name name) { super(name); }
+  public Interaction(String nameStr) { super(new Name(nameStr)); }
 
   public Message[] getMessage() { return _message; }
-  public void setMessage(Message[] x) {
-     _message = x;
+  public void setMessage(Message[] x) throws PropertyVetoException {
+    fireVetoableChange("message", _message, x);
+    _message = x;
   }
 
   public Collaboration getContext() { return _context; }
-  public void setContext(Collaboration x) {
-     _context = x;
+  public void setContext(Collaboration x) throws PropertyVetoException {
+    fireVetoableChange("context", _context, x);
+    _context = x;
   }
 
   public Link[] getLink() { return _link; }
-  public void setLink(Link[] x) {
-     _link = x;
+  public void setLink(Link[] x) throws PropertyVetoException {
+    fireVetoableChange("link", _link, x);
+    _link = x;
   }
 
   public Instance[] getInstances() { return _instances; }
-  public void setInstances(Instance[] x) {
-     _instances = x;
+  public void setInstances(Instance[] x) throws PropertyVetoException {
+    fireVetoableChange("instances", _instances, x);
+    _instances = x;
   }
   
 }

@@ -31,8 +31,12 @@ package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
 
+import uci.uml.Foundation.Data_Types.Name;
+
 public class SimpleState extends State {
     
-    public SimpleState() { }
+  public SimpleState() { }
+  public SimpleState(Name name) { super(name); }
+  public SimpleState(String nameStr) { super(new Name(nameStr)); }
   
 }

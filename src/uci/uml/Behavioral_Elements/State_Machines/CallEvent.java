@@ -30,6 +30,7 @@
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Foundation.Core.Operation;
 
@@ -47,9 +48,16 @@ public class CallEvent extends Event //implements ModelElement
   public Operation _operation;
   
   public CallEvent() { }
+  public CallEvent(Name name, Operation op) {
+    super(name);
+    try { setOperation(op); }
+    catch (PropertyVetoException pve) { } 
+  }
+  public CallEvent(String nameStr) { super(new Name(nameStr)); }
   
   public Operation getOperation() { return _operation; }
-  public void setOperation(Operation x) {
+  public void setOperation(Operation x) throws PropertyVetoException {
+    fireVetoableChange("operation", _operation, x);
     _operation = x;
   }
   

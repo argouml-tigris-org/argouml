@@ -30,6 +30,7 @@
 package uci.uml.Behavioral_Elements.Collaborations;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
@@ -47,54 +48,71 @@ public class ClassifierRole extends Classifier {
   public Collaboration _collaboration;
   
   public ClassifierRole() { }
+  public ClassifierRole(Name name) { super(name); }
+  public ClassifierRole(String nameStr) { super(new Name(nameStr)); }
 
   public Multiplicity getMultiplicity() { return _multiplicity; }
-  public void setMultiplicity(Multiplicity x) {
-     _multiplicity = x;
+  public void setMultiplicity(Multiplicity x) throws PropertyVetoException {
+    fireVetoableChange("multiplicity", _multiplicity, x);
+    _multiplicity = x;
   }
 
   public Vector getAssociationEndRole() {
     return _associationEndRole;
   }
-  public void setAssociationEndRole(Vector x) {
-     _associationEndRole = x;
+  public void setAssociationEndRole(Vector x) throws PropertyVetoException {
+    fireVetoableChange("associationEndRole", _associationEndRole, x);
+    _associationEndRole = x;
   }
-  public void addAssociationEndRole(AssociationEndRole x) {
-    if (_associationEndRole == null) _associationEndRole = new
-				       Vector();
+  public void addAssociationEndRole(AssociationEndRole x)
+       throws PropertyVetoException {
+    if (_associationEndRole == null) _associationEndRole = new Vector();
+    fireVetoableChange("associationEndRole", _associationEndRole, x);
     _associationEndRole.addElement(x);
   }
-  public void removeAssociationEndRole(AssociationEndRole x) {
-     _associationEndRole.removeElement(x);
+  public void removeAssociationEndRole(AssociationEndRole x)
+       throws PropertyVetoException {
+    if (_associationEndRole == null) return;
+    fireVetoableChange("associationEndRole", _associationEndRole, x);
+    _associationEndRole.removeElement(x);
   }
 
 
   public Vector getMessage() { return _message; }
-  public void setMessage(Vector x) {
-     _message = x;
+  public void setMessage(Vector x) throws PropertyVetoException {
+    fireVetoableChange("message", _message, x);
+    _message = x;
   }
-  public void addMessage(Message x) {
+  public void addMessage(Message x) throws PropertyVetoException {
     if (_message == null) _message = new Vector();
+    fireVetoableChange("message", _message, x);
     _message.addElement(x);
   }
-  public void removeMessage(Message x) {
-     _message.removeElement(x);
+  public void removeMessage(Message x) throws PropertyVetoException {
+    if (_message == null) return;
+    fireVetoableChange("message", _message, x);
+    _message.removeElement(x);
   }
 
   public Vector getAvailableFeature() { return _availableFeature; }
-  public void setAvailableFeature(Vector x) {
-     _availableFeature = x;
+  public void setAvailableFeature(Vector x) throws PropertyVetoException {
+    fireVetoableChange("availableFeature", _availableFeature, x);
+    _availableFeature = x;
   }
-  public void addAvailableFeature(Feature x) {
+  public void addAvailableFeature(Feature x) throws PropertyVetoException {
     if (_availableFeature == null) _availableFeature = new Vector();
+    fireVetoableChange("availableFeature", _availableFeature, x);
     _availableFeature.addElement(x);
   }
-  public void removeAvailableFeature(Feature x) {
-     _availableFeature.removeElement(x);
+  public void removeAvailableFeature(Feature x) throws PropertyVetoException {
+    if (_availableFeature == null) return;
+    fireVetoableChange("availableFeature", _availableFeature, x);
+    _availableFeature.removeElement(x);
   }
 
   public Collaboration getCollaboration() { return _collaboration; }
-  public void setCollaboration(Collaboration x) {
+  public void setCollaboration(Collaboration x) throws PropertyVetoException {
+    fireVetoableChange("collaboration", _collaboration, x);
      _collaboration = x;
   }
   
