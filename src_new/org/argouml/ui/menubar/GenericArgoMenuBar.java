@@ -37,6 +37,7 @@ import org.tigris.gef.util.*;
 import org.argouml.application.api.*;
 import org.argouml.application.events.*;
 import org.argouml.ui.*;
+import org.argouml.ui.cmd.CmdSetPreferredSize;
 import org.argouml.uml.ui.*;
 
 /** GenericArgoMenuBar defines the menubar for all
@@ -431,8 +432,9 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenu reorder = (JMenu) _arrange.add(new JMenu(menuLocalize("Reorder")));
         JMenu nudge = (JMenu) _arrange.add(new JMenu(menuLocalize("Nudge")));
 
-        JMenu setPreferredSize = 
-            (JMenu) _arrange.add(new JMenu(menuLocalize("Set size")));
+        _arrange.
+            add(new CmdSetPreferredSize(CmdSetPreferredSize.MINIMUM_SIZE));
+
         _arrange.addCheckItem((UMLAction) new ActionAutoResize());
 
         JMenu layout = (JMenu) _arrange.add(new JMenu(menuLocalize("Layout")));
@@ -440,7 +442,7 @@ public class GenericArgoMenuBar extends JMenuBar
 
         Runnable initLater = new InitMenusLater(align, distribute, 
                                                 reorder, nudge, 
-                                                setPreferredSize, layout, 
+                                                layout, 
                                                 editTabs, detailsTabs);
 
         org.argouml.application.Main.addPostLoadAction(initLater);
